@@ -8,6 +8,7 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.SerializedHyperbolicView;
 import org.caleydo.rcp.action.toolbar.view.hyperbolic.ChangeCanvasDrawingAction;
 import org.caleydo.rcp.action.toolbar.view.hyperbolic.ChangeTreeTypeAction;
+import org.caleydo.rcp.action.toolbar.view.hyperbolic.SwitchClusterTypeAction;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.ActionToolBarContainer;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
@@ -35,8 +36,11 @@ public class HyperbolicToolBarContent
 
 		IToolBarItem goChangeCanvasDrawing = new ChangeCanvasDrawingAction(targetViewID);
 		actionList.add(goChangeCanvasDrawing);
-		IToolBarItem goChangeTreeType = new ChangeTreeTypeAction(targetViewID);
-		actionList.add(goChangeTreeType);
+		//TODO: Switch it to changehyperbolicglobe switcher
+		//IToolBarItem goChangeTreeType = new ChangeTreeTypeAction(targetViewID);
+		//actionList.add(goChangeTreeType);
+		IToolBarItem goSwitchClusterType = new SwitchClusterTypeAction(targetViewID);
+		actionList.add(goSwitchClusterType);
 		// IToolBarItem goBackInHistory = new GoBackInHistoryAction(targetViewID);
 		// IToolBarItem goForthInHistory = new GoForthInHistoryAction(targetViewID);
 		// IToolBarItem changeColorMode = new ChangeColorModeAction(targetViewID);

@@ -65,6 +65,7 @@ import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.event.view.hyperbolic.ChangeCanvasDrawingEvent;
 import org.caleydo.core.manager.event.view.hyperbolic.ChangeTreeTypeEvent;
 import org.caleydo.core.manager.event.view.hyperbolic.SetMaxLayoutDepthEvent;
+import org.caleydo.core.manager.event.view.hyperbolic.SwitchClusterTypeEvent;
 import org.caleydo.core.net.event.ClientListEvent;
 
 /**
@@ -208,10 +209,13 @@ public class SerializationManager {
 		eventTypes.add(ClientListEvent.class);
 		eventTypes.add(AddConnectionLineVerticesEvent.class);
 		eventTypes.add(ClearConnectionsEvent.class);
+		
+		// Hyperbolic - Cluster
 		eventTypes.add(ChangeTreeTypeEvent.class);
 		eventTypes.add(ChangeCanvasDrawingEvent.class);
 		eventTypes.add(SetMaxLayoutDepthEvent.class);
-
+		eventTypes.add(SetMaxLayoutDepthEvent.class);
+		eventTypes.add(SwitchClusterTypeEvent.class);
 		// eventTypes.add(NewSetEvent.class);
 
 		return eventTypes;

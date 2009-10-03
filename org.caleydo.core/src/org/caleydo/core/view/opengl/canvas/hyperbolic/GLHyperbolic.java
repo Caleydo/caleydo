@@ -5,14 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.hyperbolic.ChangeCanvasDrawingEvent;
 import org.caleydo.core.manager.event.view.hyperbolic.ChangeTreeTypeEvent;
 import org.caleydo.core.manager.event.view.hyperbolic.SetMaxLayoutDepthEvent;
+import org.caleydo.core.manager.event.view.hyperbolic.SwitchClusterTypeEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -27,10 +31,10 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TextRenderingNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.ChangeCanvasDrawingListener;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.ChangeTreeTypeListener;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.SetMaxLayoutDepthListener;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.SwitchClusterTypeListener;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.HTLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ITreeLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LTLayouter;
@@ -38,10 +42,14 @@ import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
+import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 import com.sun.opengl.util.j2d.TextRenderer;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureCoords;
 
 /**
  * Rendering the hyperbolic view.
@@ -53,35 +61,26 @@ public class GLHyperbolic
 	extends AGLEventListener
 	implements IClusterNodeEventReceiver, IViewCommandHandler, ISelectionUpdateHandler {
 
-	// private Tree<DefaultNode> tree;
 	public List<Vec3f> vec;
-
 	boolean bIsInListMode = false;
-
 	boolean bUseDetailLevel = true;
-	// ISet set;
-
 	boolean bIsSomethingHighlighted = false;
-
 	Tree<ClusterNode> clusteredTree = null;
 	Tree<IDrawAbleNode> drawAbleTree = null;
-
+	IDrawAbleNode currentRoot = null;
 	ITreeLayouter layouter = null;
-
 	HyperbolicRenderStyle renderStyle = null;
-
 	private ColorMappingManager colorMappingManager = null;
-
 	private RedrawViewListener redrawViewListener = null;
-
 	private int iGLDisplayListNode;
 	private int iGLDisplayListConnection;
-
 	private ChangeTreeTypeListener changeTreeTypeListener;
-
 	private ChangeCanvasDrawingListener changeCanvasDrawingListener;
-	
 	private SetMaxLayoutDepthListener setMaxLayoutDepthListener;
+	private UpdateViewListener updateViewListener;
+
+	private boolean bUseGenClustering = true;
+	private SwitchClusterTypeListener switchClusterTypeListener;
 
 	/**
 	 * Constructor.
@@ -155,42 +154,52 @@ public class GLHyperbolic
 		iGLDisplayListConnection = gl.glGenLists(1);
 		if (set == null)
 			return;
-		// TODO: enable control for switching beetween genes and experiments
-		//clusteredTree = set.getClusteredTreeExps();
-		 clusteredTree = set.getClusteredTreeGenes();
-		// TODO: outtaken for test reasons
+		clusteredTree = set.getClusteredTreeGenes();
+		bUseGenClustering = true;
+		if (clusteredTree == null) {
+			clusteredTree = set.getClusteredTreeExps();
+			bUseGenClustering = false;
+		}
 		if (clusteredTree == null)
-			return;
+			bUseGenClustering = true;
 
-		layouter = new LTLayouter(viewFrustum, pickingManager, iUniqueID);
+		layouter =
+			new HTLayouter(viewFrustum, pickingManager, iUniqueID, renderStyle, (bUseGenClustering == true
+				? HyperbolicRenderStyle.INFORMATION_STRING_VIEW_GEN_CLUSTERING
+				: HyperbolicRenderStyle.INFORMATION_STRING_VIEW_EXPS_CLUSTERING));
 		layouter.init(iGLDisplayListNode, iGLDisplayListConnection);
 		buildDrawAbleTree();
 		layouter.setTree(getSubTreeForDisplay());
 	}
 
 	private Tree<IDrawAbleNode> getSubTreeForDisplay() {
+		if (drawAbleTree == null)
+			return null;
 		Tree<IDrawAbleNode> tree = new Tree<IDrawAbleNode>();
 		IDrawAbleNode rootNode = drawAbleTree.getRoot();
 		tree.setRootNode(rootNode);
 		getSubTreeForDisplayWorker(rootNode, tree, 1);
 		return tree;
 	}
-	
+
 	private void getSubTreeForDisplayWorker(IDrawAbleNode rootNode, Tree<IDrawAbleNode> tree, int layer) {
-		if(layer == HyperbolicRenderStyle.MAX_DEPTH)
+		if (layer == HyperbolicRenderStyle.MAX_DEPTH)
 			return;
-		if(drawAbleTree.hasChildren(rootNode))
-			for (IDrawAbleNode node : drawAbleTree.getChildren(rootNode)){
+		if (drawAbleTree.hasChildren(rootNode))
+			for (IDrawAbleNode node : drawAbleTree.getChildren(rootNode)) {
 				tree.addChild(rootNode, node);
-				getSubTreeForDisplayWorker(node, tree, layer+1);
-			}	
+				getSubTreeForDisplayWorker(node, tree, layer + 1);
+			}
 	}
 
 	private void buildDrawAbleTree() {
+		drawAbleTree = null;
+		if (clusteredTree == null)
+			return;
 		drawAbleTree = new Tree<IDrawAbleNode>();
 		ClusterNode clRootNode = clusteredTree.getRoot();
-		IDrawAbleNode daRootNode = convertClusterNodeToDrawAbleNode(clRootNode); 
-		//TextRenderingNode(clRootNode.getNodeName(), clRootNode.getClusterNr());//
+		IDrawAbleNode daRootNode = convertClusterNodeToDrawAbleNode(clRootNode);
+		// TextRenderingNode(clRootNode.getNodeName(), clRootNode.getClusterNr());//
 		drawAbleTree.setRootNode(daRootNode);
 		buildDrawAbleTreeWorker(clRootNode, daRootNode, 0);
 	}
@@ -206,7 +215,7 @@ public class GLHyperbolic
 
 	private IDrawAbleNode convertClusterNodeToDrawAbleNode(ClusterNode node) {
 		// TODO: maybe add different NodeTypes... but they need to be defined first
-		return new TestNode(node.getNodeName(), node.getClusterNr());
+		return new TestNode(node);
 	}
 
 	@Override
@@ -246,24 +255,22 @@ public class GLHyperbolic
 
 	@Override
 	public void displayLocal(GL gl) {
-		if (layouter == null) {
-			return;
-		}
-
 		pickingManager.handlePicking(this, gl);
+		if (drawAbleTree == null)
+			render(gl);
+		else {
+			if (bIsDisplayListDirtyLocal)
+				layouter.setLayoutDirty();
+			buildDisplayList(gl, iGLDisplayListIndexLocal);
+			bIsDisplayListDirtyLocal = false;
+			iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
-		if (bIsDisplayListDirtyLocal) {
-			layouter.setLayoutDirty();
-		}
-		buildDisplayList(gl, iGLDisplayListIndexLocal);
-		bIsDisplayListDirtyLocal = false;
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+			display(gl);
+			checkForHits(gl);
 
-		display(gl);
-		checkForHits(gl);
-
-		if (eBusyModeState != EBusyModeState.OFF) {
-			renderBusyMode(gl);
+			if (eBusyModeState != EBusyModeState.OFF) {
+				renderBusyMode(gl);
+			}
 		}
 		// if (bIsSomethingHighlighted) {
 		// bIsSomethingHighlighted = false;
@@ -273,25 +280,31 @@ public class GLHyperbolic
 
 	@Override
 	public void displayRemote(GL gl) {
-		if (bIsDisplayListDirtyRemote) {
-			buildDisplayList(gl, iGLDisplayListIndexRemote);
-			bIsDisplayListDirtyRemote = false;
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
+		if (drawAbleTree == null)
+			render(gl);
+		else {
+			if (bIsDisplayListDirtyRemote) {
+				buildDisplayList(gl, iGLDisplayListIndexRemote);
+				bIsDisplayListDirtyRemote = false;
+			}
+			iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
-		display(gl);
-		checkForHits(gl);
-		if (bIsSomethingHighlighted) {
-			bIsSomethingHighlighted = false;
-			setDisplayListDirty();
+			display(gl);
+			checkForHits(gl);
+			if (bIsSomethingHighlighted) {
+				bIsSomethingHighlighted = false;
+				setDisplayListDirty();
+			}
 		}
 	}
 
 	@Override
 	public void display(GL gl) {
 		processEvents();
+		// if(layouter == null)
+		// return;
 		layouter.display(gl);
-		gl.glCallList(iGLDisplayListToCall);
+		// gl.glCallList(iGLDisplayListToCall);
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
@@ -299,6 +312,30 @@ public class GLHyperbolic
 	}
 
 	private void render(GL gl) {
+
+		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
+		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
+		tempTexture.enable();
+		tempTexture.bind();
+
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glColor4f(1f, 1, 1, 1f);
+		gl.glBegin(GL.GL_POLYGON);
+
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.01f);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(fXButtonOrigin, 2 * fYButtonOrigin, 0.01f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(fXButtonOrigin * 2, 2 * fYButtonOrigin, 0.01f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(fXButtonOrigin * 2, fYButtonOrigin, 0.01f);
+		gl.glEnd();
+		gl.glPopAttrib();
+		tempTexture.disable();
 	}
 
 	@Override
@@ -320,11 +357,11 @@ public class GLHyperbolic
 				switch (pickingMode) {
 					case CLICKED:
 						if (!layouter.isAnimating()) {
-							if(drawAbleTree.getRoot().getID() == iExternalID)
+							if (drawAbleTree.getRoot().getID() == iExternalID)
 								break;
 							drawAbleTree = convertTreeToNewOne(iExternalID);
-							//buildDrawAbleTree();
-							//drawAbleTree = convertTreeToNewOne(iExternalID);
+							// buildDrawAbleTree();
+							// drawAbleTree = convertTreeToNewOne(iExternalID);
 							layouter.animateToNewTree(getSubTreeForDisplay());
 						}
 						// layouter.setTree(drawAbleTree);
@@ -367,36 +404,36 @@ public class GLHyperbolic
 		}
 	}
 
-//	private Tree<ClusterNode> convertTreeToNewOne(int iExternalID) {
-//		ClusterNode rootNode = clusteredTree.getNodeByNumber(iExternalID);
-//		if (clusteredTree.getRoot().compareTo(rootNode) == 0)
-//			return clusteredTree;
-//		Tree<ClusterNode> newTree = new Tree<ClusterNode>();
-//		newTree.setRootNode(rootNode);
-//		convertTreeToNewOneWorker(rootNode, newTree);
-//		return newTree;
-//	}
-//	
-//	private void convertTreeToNewOneWorker(ClusterNode rootNode, Tree<ClusterNode> newTree) {
-//
-//		ClusterNode theirRoot = clusteredTree.getParent(rootNode);
-//		ClusterNode ourRoot = newTree.getParent(rootNode);
-//		if (theirRoot != null) {
-//			if (ourRoot == null || theirRoot.compareTo(ourRoot) != 0) {
-//				newTree.addChild(rootNode, theirRoot);
-//				convertTreeToNewOneWorker(theirRoot, newTree);
-//			}
-//		}
-//		if (clusteredTree.hasChildren(rootNode))
-//			for (ClusterNode node : clusteredTree.getChildren(rootNode)) {
-//				if (ourRoot != null)
-//					if (node.compareTo(ourRoot) == 0)
-//						continue;
-//				newTree.addChild(rootNode, node);
-//				convertTreeToNewOneWorker(node, newTree);
-//			}
-//	}
-	
+	// private Tree<ClusterNode> convertTreeToNewOne(int iExternalID) {
+	// ClusterNode rootNode = clusteredTree.getNodeByNumber(iExternalID);
+	// if (clusteredTree.getRoot().compareTo(rootNode) == 0)
+	// return clusteredTree;
+	// Tree<ClusterNode> newTree = new Tree<ClusterNode>();
+	// newTree.setRootNode(rootNode);
+	// convertTreeToNewOneWorker(rootNode, newTree);
+	// return newTree;
+	// }
+	//	
+	// private void convertTreeToNewOneWorker(ClusterNode rootNode, Tree<ClusterNode> newTree) {
+	//
+	// ClusterNode theirRoot = clusteredTree.getParent(rootNode);
+	// ClusterNode ourRoot = newTree.getParent(rootNode);
+	// if (theirRoot != null) {
+	// if (ourRoot == null || theirRoot.compareTo(ourRoot) != 0) {
+	// newTree.addChild(rootNode, theirRoot);
+	// convertTreeToNewOneWorker(theirRoot, newTree);
+	// }
+	// }
+	// if (clusteredTree.hasChildren(rootNode))
+	// for (ClusterNode node : clusteredTree.getChildren(rootNode)) {
+	// if (ourRoot != null)
+	// if (node.compareTo(ourRoot) == 0)
+	// continue;
+	// newTree.addChild(rootNode, node);
+	// convertTreeToNewOneWorker(node, newTree);
+	// }
+	// }
+
 	private Tree<IDrawAbleNode> convertTreeToNewOne(int iExternalID) {
 		IDrawAbleNode rootNode = drawAbleTree.getNodeByNumber(iExternalID);
 		if (drawAbleTree.getRoot().compareTo(rootNode) == 0)
@@ -406,16 +443,13 @@ public class GLHyperbolic
 		convertTreeToNewOneWorker(rootNode, newTree);
 		return newTree;
 	}
-	
-/*	private Tree<IDrawAbleNode> convertTreeToNewOne(int iExternalID) {
-		IDrawAbleNode rootNode = drawAbleTree.getNodeByNumber(iExternalID);
-		if (drawAbleTree.getRoot().compareTo(rootNode) == 0)
-			return drawAbleTree;
-		Tree<IDrawAbleNode> newTree = new Tree<IDrawAbleNode>();
-		newTree.setRootNode(rootNode);
-		convertTreeToNewOneWorker(rootNode, newTree);
-		return newTree;
-	}*/
+
+	/*
+	 * private Tree<IDrawAbleNode> convertTreeToNewOne(int iExternalID) { IDrawAbleNode rootNode =
+	 * drawAbleTree.getNodeByNumber(iExternalID); if (drawAbleTree.getRoot().compareTo(rootNode) == 0) return
+	 * drawAbleTree; Tree<IDrawAbleNode> newTree = new Tree<IDrawAbleNode>(); newTree.setRootNode(rootNode);
+	 * convertTreeToNewOneWorker(rootNode, newTree); return newTree; }
+	 */
 
 	private void convertTreeToNewOneWorker(IDrawAbleNode rootNode, Tree<IDrawAbleNode> newTree) {
 
@@ -475,7 +509,11 @@ public class GLHyperbolic
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-		
+
+		switchClusterTypeListener = new SwitchClusterTypeListener();
+		switchClusterTypeListener.setHandler(this);
+		eventPublisher.addListener(SwitchClusterTypeEvent.class, switchClusterTypeListener);
+
 		setMaxLayoutDepthListener = new SetMaxLayoutDepthListener();
 		setMaxLayoutDepthListener.setHandler(this);
 		eventPublisher.addListener(SetMaxLayoutDepthEvent.class, setMaxLayoutDepthListener);
@@ -488,6 +526,10 @@ public class GLHyperbolic
 		changeTreeTypeListener.setHandler(this);
 		eventPublisher.addListener(ChangeTreeTypeEvent.class, changeTreeTypeListener);
 
+		updateViewListener = new UpdateViewListener();
+		updateViewListener.setHandler(this);
+		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
+
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
@@ -496,6 +538,25 @@ public class GLHyperbolic
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
+
+		if (switchClusterTypeListener != null) {
+			eventPublisher.removeListener(switchClusterTypeListener);
+			switchClusterTypeListener = null;
+		}
+
+		if (setMaxLayoutDepthListener != null) {
+			eventPublisher.removeListener(setMaxLayoutDepthListener);
+			setMaxLayoutDepthListener = null;
+		}
+		if (changeCanvasDrawingListener != null) {
+			eventPublisher.removeListener(changeCanvasDrawingListener);
+			changeCanvasDrawingListener = null;
+		}
+		if (changeTreeTypeListener != null) {
+			eventPublisher.removeListener(changeTreeTypeListener);
+			changeTreeTypeListener = null;
+		}
+
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);
 			redrawViewListener = null;
@@ -515,46 +576,51 @@ public class GLHyperbolic
 
 	@Override
 	public void handleUpdateView() {
-		// TODO Auto-generated method stub
+		if (bUseGenClustering)
+			clusteredTree = set.getClusteredTreeGenes();
+		else
+			clusteredTree = set.getClusteredTreeExps();
+		buildDrawAbleTree();
+		layouter.setTree(getSubTreeForDisplay());
 
 	}
 
-//	private Tree<IDrawAbleNode> buildTestTree(int iDepth, int iMaxNodesOnLayer) {
-//		int iComp = 1;
-//		Tree<IDrawAbleNode> tree = new Tree<IDrawAbleNode>();
-//		ADrawAbleNode root = new TestNode("root node: " + iComp + " Layer: " + 1, iComp);
-//		tree.setRootNode(root);
-//		for (int j = 0; j <= iMaxNodesOnLayer; ++j) {
-//			++iComp;
-//			tree.addChild(root, new TestNode("child node: " + iComp + " Layer: " + 2, iComp));
-//		}
-//		ArrayList<IDrawAbleNode> nodesOnLayer = tree.getChildren(root);
-//		for (int i = 2; i <= iDepth; ++i) {
-//
-//			ArrayList<IDrawAbleNode> nodes = new ArrayList<IDrawAbleNode>();
-//			for (int j = 0; j < iMaxNodesOnLayer; ++j) {
-//				++iComp;
-//				nodes.add(new TestNode("child node: " + iComp + " Layer: " + i, iComp));
-//			}
-//			ArrayList<IDrawAbleNode> nStore = new ArrayList<IDrawAbleNode>(nodes);
-//			while (!nodes.isEmpty())
-//				for (IDrawAbleNode node : nodesOnLayer) {
-//					if (nodes.isEmpty())
-//						continue;
-//					int s =
-//						Math.min(nodes.size(), (int) Math
-//							.round((Math.random() * (double) iMaxNodesOnLayer) / 0.9f));
-//
-//					for (int j = 0; j < s; ++j) {
-//						tree.addChild(node, nodes.get(0));
-//						nodes.remove(0);
-//					}
-//				}
-//			nodesOnLayer = nStore;
-//		}
-//
-//		return tree;
-//	}
+	// private Tree<IDrawAbleNode> buildTestTree(int iDepth, int iMaxNodesOnLayer) {
+	// int iComp = 1;
+	// Tree<IDrawAbleNode> tree = new Tree<IDrawAbleNode>();
+	// ADrawAbleNode root = new TestNode("root node: " + iComp + " Layer: " + 1, iComp);
+	// tree.setRootNode(root);
+	// for (int j = 0; j <= iMaxNodesOnLayer; ++j) {
+	// ++iComp;
+	// tree.addChild(root, new TestNode("child node: " + iComp + " Layer: " + 2, iComp));
+	// }
+	// ArrayList<IDrawAbleNode> nodesOnLayer = tree.getChildren(root);
+	// for (int i = 2; i <= iDepth; ++i) {
+	//
+	// ArrayList<IDrawAbleNode> nodes = new ArrayList<IDrawAbleNode>();
+	// for (int j = 0; j < iMaxNodesOnLayer; ++j) {
+	// ++iComp;
+	// nodes.add(new TestNode("child node: " + iComp + " Layer: " + i, iComp));
+	// }
+	// ArrayList<IDrawAbleNode> nStore = new ArrayList<IDrawAbleNode>(nodes);
+	// while (!nodes.isEmpty())
+	// for (IDrawAbleNode node : nodesOnLayer) {
+	// if (nodes.isEmpty())
+	// continue;
+	// int s =
+	// Math.min(nodes.size(), (int) Math
+	// .round((Math.random() * (double) iMaxNodesOnLayer) / 0.9f));
+	//
+	// for (int j = 0; j < s; ++j) {
+	// tree.addChild(node, nodes.get(0));
+	// nodes.remove(0);
+	// }
+	// }
+	// nodesOnLayer = nStore;
+	// }
+	//
+	// return tree;
+	// }
 
 	@Override
 	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
@@ -569,25 +635,39 @@ public class GLHyperbolic
 	}
 
 	public void changeTreeType() {
-		if (layouter == null)
-			return;
-		if (layouter instanceof LTLayouter)
-			layouter = new HTLayouter(viewFrustum, pickingManager, iUniqueID);
-		else
-			layouter = new LTLayouter(viewFrustum, pickingManager, iUniqueID);
-		layouter.init(iGLDisplayListNode, iGLDisplayListConnection);
-		layouter.setTree(getSubTreeForDisplay());
-		setDisplayListDirty();
+		// TODO: Delete all Listeners, events ... no linear tree support any longer
+		// if (layouter == null)
+		// return;
+		// if (layouter instanceof LTLayouter)
+		// layouter = new HTLayouter(viewFrustum, pickingManager, iUniqueID);
+		// else
+		// layouter = new LTLayouter(viewFrustum, pickingManager, iUniqueID);
+		// layouter.init(iGLDisplayListNode, iGLDisplayListConnection);
+		// layouter.setTree(getSubTreeForDisplay());
+		// setDisplayListDirty();
 	}
 
 	public void changeCanvasDrawing() {
 		HyperbolicRenderStyle.PROJECTION_DRAW_CANVAS = !HyperbolicRenderStyle.PROJECTION_DRAW_CANVAS;
 	}
-	public void setMaxLayoutDepth(int iMaxLayoutDepth){
+
+	public void setMaxLayoutDepth(int iMaxLayoutDepth) {
 		HyperbolicRenderStyle.MAX_DEPTH = iMaxLayoutDepth;
-		if(layouter != null)
+		if (layouter != null)
 			layouter.animateToNewTree(getSubTreeForDisplay());
-		
 	}
 
+	public void switchClusterType() {
+		if (bUseGenClustering)
+			clusteredTree = set.getClusteredTreeExps();
+		else
+			clusteredTree = set.getClusteredTreeGenes();
+		bUseGenClustering = !bUseGenClustering;
+		layouter.setInformationText((bUseGenClustering == true
+			? HyperbolicRenderStyle.INFORMATION_STRING_VIEW_GEN_CLUSTERING
+			: HyperbolicRenderStyle.INFORMATION_STRING_VIEW_EXPS_CLUSTERING));
+		buildDrawAbleTree();
+		layouter.init(iGLDisplayListNode, iGLDisplayListConnection);
+		layouter.setTree(getSubTreeForDisplay());
+	}
 }

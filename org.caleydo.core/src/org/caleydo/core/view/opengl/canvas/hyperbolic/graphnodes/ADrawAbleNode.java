@@ -12,7 +12,9 @@ import java.util.List;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.DrawAbleObjectFallback;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.DrawAbleObjectsFactory;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.IDrawAbleObject;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
@@ -27,8 +29,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public abstract class ADrawAbleNode
 	implements IDrawAbleNode {
-	private String sNodeName;
-	private int iID;
+	private ClusterNode clNode;
 	private EDrawAbleNodeDetailLevel eDetailLevel;
 	protected float fXCoord = 0;
 	protected float fYCoord = 0;
@@ -39,45 +40,42 @@ public abstract class ADrawAbleNode
 	private float fProjectedYCoord = 0;
 	private float fProjectedZCoord = 0;
 	private List<Vec3f> alOriginalCorrespondingPoints = null;
+
+	// TODO: create DAobjects which would handle this
 	private TextRenderer textRenderer = null;
 
 	private EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject> mRepresantations = null;
-	private boolean bAlternativeNodeExpression = false;
+
+	// private boolean bAlternativeNodeExpression = false;
+
+	public ADrawAbleNode(ClusterNode clNode) {
+		this.clNode = clNode;
+		this.mRepresantations =
+			new EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject>(EDrawAbleNodeDetailLevel.class);
+		this.textRenderer =
+			new TextRenderer(new Font(HyperbolicRenderStyle.NODE_FONT_NAME,
+				HyperbolicRenderStyle.NODE_FONT_STYLE, HyperbolicRenderStyle.NODE_FONT_SIZE), true, true);
+	}
 
 	@Override
 	public final String getNodeName() {
-		return sNodeName;
+		return clNode.getNodeName();
 	}
 
 	@Override
 	public final int getID() {
-		return iID;
+		return clNode.getClusterNr();
 	}
 
 	@Override
 	public final String toString() {
-		return (sNodeName + ' ' + iID);
+		return clNode.toString();
 	}
 
 	@Override
 	public final int compareTo(IDrawAbleNode node) {
-		return iID - node.getID();
+		return this.getID() - node.getID();
 	}
-
-	// @Override
-	// public final ArrayList<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float
-	// fWidth) {
-	// this.fXCoord = fXCoord;
-	// this.fYCoord = fYCoord;
-	// this.fZCoord = fZCoord;
-	// this.fHeight = fHeight;
-	// this.fWidth = fWidth;
-	// IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
-	// daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
-	// alOriginalCorrespondingPoints = new ArrayList<Vec3f>();
-	// alOriginalCorrespondingPoints = daObj.getConnectionPoints();
-	// return daObj.getConnectionPoints();
-	// }
 
 	@Override
 	public final List<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth,
@@ -115,7 +113,7 @@ public abstract class ADrawAbleNode
 	public void draw(GL gl, boolean bHighlight) {
 		if (mRepresantations != null) {
 			IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
-			daObj.setAlternativeNodeExpression(bAlternativeNodeExpression);
+			// daObj.setAlternativeNodeExpression(bAlternativeNodeExpression);
 			daObj.draw(gl, bHighlight);
 		}
 		else
@@ -150,29 +148,6 @@ public abstract class ADrawAbleNode
 		return alOriginalCorrespondingPoints;
 	}
 
-	/**
-	 * Constructor
-	 * 
-	 * @param sNodeName
-	 * @param iNodeID
-	 * @param sTypes
-	 */
-	public ADrawAbleNode(String sNodeName, int iNodeID, String[] sTypes) {
-		this.sNodeName = sNodeName;
-		this.iID = iNodeID;
-		if (sTypes != null) {
-			mRepresantations =
-				new EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject>(EDrawAbleNodeDetailLevel.class);
-			int i = 0;
-			for (EDrawAbleNodeDetailLevel e : EDrawAbleNodeDetailLevel.values()) {
-				mRepresantations.put(e, DrawAbleObjectsFactory.getDrawAbleObject(sTypes[i++]));
-			}
-		}
-		this.textRenderer =
-			new TextRenderer(new Font(HyperbolicRenderStyle.NODE_FONT_NAME,
-				HyperbolicRenderStyle.NODE_FONT_STYLE, HyperbolicRenderStyle.NODE_FONT_SIZE), true, true);
-	}
-
 	@Override
 	public final Vec3f getRealCoordinates() {
 		return new Vec3f(fXCoord, fYCoord, fZCoord);
@@ -182,11 +157,6 @@ public abstract class ADrawAbleNode
 	public final Vec3f getProjectedCoordinates() {
 		return new Vec3f(fProjectedXCoord, fProjectedYCoord, fProjectedZCoord);
 	}
-
-	// @Override
-	// public final boolean isPickAble() {
-	// return bIsAbleToPick;
-	// }
 
 	protected List<Vec3f> getConnectionPointsSpecialNode() {
 		return null;
@@ -231,25 +201,28 @@ public abstract class ADrawAbleNode
 		return fWidth;
 	}
 
-	public final void setAlternativeNodeExpression(boolean bAlternativeNodeExpression) {
-		this.bAlternativeNodeExpression = bAlternativeNodeExpression;
-	}
+	// TODO: delete
+	// public final void setAlternativeNodeExpression(boolean bAlternativeNodeExpression) {
+	// this.bAlternativeNodeExpression = bAlternativeNodeExpression;
+	// }
 
-	@Override
-	public final boolean isAlternativeNodeExpression() {
-		return bAlternativeNodeExpression;
-	}
+	// TODO: delete
+	// @Override
+	// public final boolean isAlternativeNodeExpression() {
+	// return bAlternativeNodeExpression;
+	// }
 
 	// TODO: Maybe replace iPostion with an Enum someday!
+	// TODO: Add this functionality to special DAobjects
 	@Override
-	public final void placeNodeName(int iPosition){
+	public final void placeNodeName(int iPosition) {
 		Rectangle2D rect = textRenderer.getBounds(this.getNodeName());
-		float fTextHeight = (float)rect.getHeight();
-		float fTextWidth = (float)rect.getWidth();
-		float fTextScaling = fHeight/fTextHeight / 2.0f;
+		float fTextHeight = (float) rect.getHeight();
+		float fTextWidth = (float) rect.getWidth();
+		float fTextScaling = fHeight / fTextHeight / 2.0f;
 		float fTextXPos = fXCoord - fTextWidth * fTextScaling / 2.0f;
 		float fTextYPos;
-		switch (iPosition){
+		switch (iPosition) {
 			case 0:
 				fTextYPos = fYCoord - fWidth / 2.0f - fTextHeight * fTextScaling;
 				break;
@@ -257,15 +230,25 @@ public abstract class ADrawAbleNode
 				fTextYPos = fYCoord + fWidth / 2.0f + fTextHeight * fTextScaling;
 				break;
 			default:
-					fTextYPos = fYCoord;
-					break;
-		}	
+				fTextYPos = fYCoord;
+				break;
+		}
 		// TODO: Specify this color in RendeStyle
 		textRenderer.setColor(0, 0, 0, 1);
 		textRenderer.setSmoothing(true);
 		textRenderer.begin3DRendering();
 		textRenderer.draw3D(this.getNodeName(), fTextXPos, fTextYPos, fZCoord, fTextScaling);
-		textRenderer.end3DRendering();			
+		textRenderer.end3DRendering();
+	}
+
+	@Override
+	public ClusterNode getDependingClusterNode() {
+		return clNode;
+	}
+
+	protected final void registerDrawAbleObject(EDrawAbleNodeDetailLevel eDetailLevel,
+		DrawAbleObjectFallback drawAbleObject) {
+		mRepresantations.put(eDetailLevel, drawAbleObject);
 	}
 }
 
@@ -275,3 +258,25 @@ public abstract class ADrawAbleNode
 // this.bHighlight = b;
 // }
 
+// /**
+// * Constructor
+// *
+// * @param sNodeName
+// * @param iNodeID
+// * @param sTypes
+// */
+// public ADrawAbleNode(String sNodeName, int iNodeID, String[] sTypes) {
+// this.sNodeName = sNodeName;
+// this.iID = iNodeID;
+// if (sTypes != null) {
+// mRepresantations =
+// new EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject>(EDrawAbleNodeDetailLevel.class);
+// int i = 0;
+// for (EDrawAbleNodeDetailLevel e : EDrawAbleNodeDetailLevel.values()) {
+// mRepresantations.put(e, DrawAbleObjectsFactory.getDrawAbleObject(sTypes[i++]));
+// }
+// }
+// this.textRenderer =
+// new TextRenderer(new Font(HyperbolicRenderStyle.NODE_FONT_NAME,
+// HyperbolicRenderStyle.NODE_FONT_STYLE, HyperbolicRenderStyle.NODE_FONT_SIZE), true, true);
+// }

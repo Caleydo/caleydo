@@ -16,11 +16,9 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.TextLabel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TextRenderingNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleHyperbolicLayoutConnector;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleTextBoxConnector;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.IDrawAbleConnection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.animation.AnimationConnectionHandler;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.animation.AnimationVec3f;
@@ -61,6 +59,7 @@ public abstract class ATreeLayouter
 	private int iViewID;
 	private int iGLDisplayListNode;
 	private int iGLDisplayListConnection;
+	protected HyperbolicRenderStyle renderStyle = null;
 
 	protected ITreeProjection treeProjector = null;
 
@@ -72,14 +71,16 @@ public abstract class ATreeLayouter
 
 	private List<IDrawAbleNode> lAnimationNodesLeave = null;
 
-	IDrawAbleNode textNode = null;
+	TextLabel nodeLabel = null;
 	IDrawAbleNode currentSelectedNode = null;
 	private boolean bIsBusy = false;
+	private String strInformation = null;
 
-	// protected CaleydoTextRenderer textRenderer = null;
+	//protected CaleydoTextRenderer textRenderer = null;
+	protected TextLabel informationLabel = null;
 
 	public ATreeLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID,
-		ITreeProjection treeProjector) {
+		HyperbolicRenderStyle renderStyle, ITreeProjection treeProjector, String strInformation) {
 		this.viewFrustum = frustum;
 		this.pickingManager = pickingManager;
 		this.iViewID = iViewID;
@@ -87,6 +88,13 @@ public abstract class ATreeLayouter
 		this.connectionLayout = new ArrayList<IDrawAbleConnection>();
 		this.alMaxSiblingsInLayer = new ArrayList<Integer>();
 		this.treeProjector = treeProjector;
+		this.strInformation = strInformation;
+		this.renderStyle = renderStyle;
+		this.informationLabel =
+			new TextLabel(new Font(renderStyle.LABEL_FONT_NAME, renderStyle.LABEL_FONT_STYLE,
+				renderStyle.LABEL_FONT_SIZE));
+		this.nodeLabel = new TextLabel(new Font(renderStyle.LABEL_FONT_NAME, renderStyle.LABEL_FONT_STYLE,
+			renderStyle.LABEL_FONT_SIZE));
 		// this.textRenderer =
 		// new CaleydoTextRenderer(new Font(HyperbolicRenderStyle.LABEL_FONT_NAME,
 		// HyperbolicRenderStyle.LABEL_FONT_STYLE, HyperbolicRenderStyle.LABEL_FONT_SIZE), false);
@@ -181,15 +189,11 @@ public abstract class ATreeLayouter
 	}
 
 	private void drawTextBox(GL gl) {
-		textNode =
-			new TextRenderingNode(currentSelectedNode.getNodeName() + " ID: " + currentSelectedNode.getID(),
-				currentSelectedNode.getID());
-		float fxcoord, fycoord;
-		Vec2f dimBox = textNode.getDimension();
-		fxcoord = viewFrustum.getLeft() + dimBox.y() / 4.0f;
-		fycoord = viewFrustum.getHeight() - dimBox.x() - dimBox.x() / 4.0f;
-		textNode.place(fxcoord, fycoord, 2.0f, dimBox.x(), dimBox.y(), null);
-		textNode.draw(gl, false);
+		// TODO: check usage of LABELS, from RADIAL View
+		//nodeLabel.setText("Elements: " + currentSelectedNode.getDependingClusterNode().getNrElements() + "\n" + "HirarchyDepth: " + currentSelectedNode.getDependingClusterNode().getDepth());
+		//float x = 
+		
+//		nodeLabel.place(currentSelectedNode., fYCoord, fZCoord, fHeight, fWidth)
 	}
 
 	private final void buildDisplayListConnections(GL gl) {
@@ -221,6 +225,8 @@ public abstract class ATreeLayouter
 
 	@Override
 	public final void buildDisplayLists(GL gl) {
+		if (tree == null)
+			return;
 		if (bIsLayoutDirty) {
 			setLayoutDirty();
 			clearDisplay();
@@ -239,9 +245,6 @@ public abstract class ATreeLayouter
 
 	@Override
 	public final void display(GL gl) {
-		// if(bIsBusy == true)
-		// return;
-		// bIsBusy = true;
 		if (treeProjector != null)
 			treeProjector.drawCanvas(gl);
 		if (bIsAnimating) {
@@ -296,16 +299,22 @@ public abstract class ATreeLayouter
 			// gl.glCallList(iGLDisplayListConnection);
 			buildDisplayListConnections(gl);
 			gl.glCallList(iGLDisplayListNode);
+			
 
-			if (bIsNodeHighlighted && currentSelectedNode != null) {
+			if (bIsNodeHighlighted && currentSelectedNode != null) 
 				drawTextBox(gl);
-				IDrawAbleConnection conn = new DrawAbleTextBoxConnector(textNode, currentSelectedNode);
-				conn.draw(gl, true);
-			}
+		//		IDrawAbleConnection conn = new DrawAbleTextBoxConnector(textNode, currentSelectedNode);
+		//		conn.draw(gl, true);
+		//	}
 		}
-		
+
 		bIsBusy = false;
 		bIsConnectionListDirty = true;
+		// textRenderer.renderText(gl, strInformation, fViewSpaceX[0], fViewSpaceY[1], 0.1f, 5, 32);
+		informationLabel.setText(strInformation);
+		informationLabel
+			.place(fViewSpaceX[0], fViewSpaceY[1], 1.0f, fHeight - fViewSpaceY[1], fViewSpaceXAbs);
+		informationLabel.draw3d(gl, false);
 	}
 
 	private final void clearDisplay() {
@@ -397,7 +406,7 @@ public abstract class ATreeLayouter
 
 		for (IDrawAbleNode i : mLayoutAnimationStart.keySet()) {
 			mAnimationNodes.put(i, new AnimationVec3f(mLayoutAnimationStart.get(i), mLayoutAnimationEnd
-				.get(i), 0.1f));
+				.get(i), 100f));
 		}
 		clearDisplay();
 		bIsNodeListDirty = true;
@@ -431,6 +440,10 @@ public abstract class ATreeLayouter
 			return 1;
 		return alMaxSiblingsInLayer.get(iCurrentLayer);
 
+	}
+
+	public void setInformationText(String strInformation) {
+		this.strInformation = strInformation;
 	}
 
 	// protected final Vec3f[] findClosestCorrespondendingPoints(List<Vec3f> pointsA, List<Vec3f> pointsB){

@@ -21,13 +21,13 @@ public class ChangeCanvasDrawingAction
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
 			.getWorkbench().getDisplay(), ICON)));
-		setChecked(true);
+		setChecked(false);
 	}
 
 	@Override
 	public void run() {
 		super.run();
 		GeneralManager.get().getEventPublisher().triggerEvent(new ChangeCanvasDrawingEvent());
+		setChecked(false);
 	}
-
 }

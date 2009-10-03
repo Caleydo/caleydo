@@ -15,9 +15,9 @@ public class AnimationVec3f{
 	
 	public AnimationVec3f(Vec3f start, Vec3f end, float stepSize) {
 		step = end.minus(start);
-		this.numsteps = (int) (step.length() / stepSize);
-		step.normalize();
-		step.scale(stepSize);
+		this.numsteps = (int)stepSize;//(int) (step.length() / stepSize);
+		//step.normalize();
+		step.scale((float)(1.0f/stepSize));
 		this.start = start;
 		this.end = end;
 	}

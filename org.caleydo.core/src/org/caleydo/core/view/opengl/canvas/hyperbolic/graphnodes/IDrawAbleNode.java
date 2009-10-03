@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.IDrawAbleObject;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
 
@@ -98,7 +99,7 @@ public interface IDrawAbleNode
 
 	Vec3f getRealCoordinates();
 
-	public void setAlternativeNodeExpression(boolean bAlternativeNodeExpression);
+//	public void setAlternativeNodeExpression(boolean bAlternativeNodeExpression);
 
 	Vec3f getProjectedCoordinates();
 
@@ -116,9 +117,11 @@ public interface IDrawAbleNode
 
 	public float getWidth();
 
-	boolean isAlternativeNodeExpression();
+//	boolean isAlternativeNodeExpression();
 
 	void placeNodeName(int iPosition);
+
+	ClusterNode getDependingClusterNode();
 
 	// /**
 	// * Set how the node is selected

@@ -33,5 +33,7 @@ public interface ITreeLayouter
 
 	boolean isAnimating();
 
+	void setInformationText(String strInformation);
+
 	//void changeCanvasDrawing();
 }

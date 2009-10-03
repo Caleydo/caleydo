@@ -38,8 +38,8 @@ public final class HTLayouter
 
 	Map<IDrawAbleNode, Integer> mNodeSpaceRec;
 
-	public HTLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID) {
-		super(frustum, pickingManager, iViewID, new DefaultProjection(1));//new HyperbolicGlobeProjection(1));
+	public HTLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID,HyperbolicRenderStyle renderStyle, String strInformation) {
+		super(frustum, pickingManager, iViewID, renderStyle, new DefaultProjection(1), strInformation);//new HyperbolicGlobeProjection(1));
 
 	}
 

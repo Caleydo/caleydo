@@ -11,8 +11,8 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 public class HyperbolicRenderStyle
 	extends GeneralRenderStyle {
 
-	public static final float X_BORDER_SPACING = 0.02f;
-	public static final float Y_BORDER_SPACING = 0.02f;
+	public static final float X_BORDER_SPACING = 0.05f;
+	public static final float Y_BORDER_SPACING = 0.05f;
 
 	public static final float SIDE_SPACING = 0.1f;
 
@@ -36,8 +36,8 @@ public class HyperbolicRenderStyle
 	public static float[] DA_OBJ_CIRCLE_WITH_NAME_COLORSCHEME = { 0.0f, 0.0f, 0.0f, 1f };
 	public static float[] DA_OBJ_CIRCLE_WITH_NAME_COLORSCHEME_HL = { 0.8f, 0.4f, 0.2f, 1f };
 	
-	public static final String[] DA_TEST_NODE_DL_OBJ =
-		{ "Fallback", "Quad", "Fallback", "Quad", "Fallback" };
+//	public static final String[] DA_TEST_NODE_DL_OBJ =
+//		{ "Fallback", "Fallback", "Fallback", "Fallback", "Fallback" };
 	
 	public static String[] DA_GEN_NODE_DL_OBJ = { "Fallback", "Quad", "Fallback", "Quad", "Fallback" };
 
@@ -61,27 +61,28 @@ public class HyperbolicRenderStyle
 	
 	public static final float[] DA_TREE_PROJECTION_CANVAS_COLORSCHEME = { 0.0f, 0.0f, 0.0f, 1.0f };
 	public static final float DA_TREE_PROJECTION_CANVAS_THICKNESS = 1.5f;
-	
-	
-	
+
 	public static boolean PROJECTION_DRAW_CANVAS = true;
-	// public static final String LINEAR_TREE_LAYOUTER_CONNECTION_TYPE = "Spline";
-	// public static final String HYPERBOLIC_TREE_LAYOUTER_CONNECTION_TYPE = "Spline";
 
 	public static String LABEL_FONT_NAME = "Arial";
 	public static int LABEL_FONT_STYLE = 0;
-	public static int LABEL_FONT_SIZE = 32;
+	public static int LABEL_FONT_SIZE = 48;
 	
 	public static String NODE_FONT_NAME = "Arial";
 	public static int NODE_FONT_STYLE = 0;
 	public static int NODE_FONT_SIZE = 16;
 	
 	
+	public static final String INFORMATION_STRING_VIEW_GEN_CLUSTERING = "Gen Clustering";
+	public static final String INFORMATION_STRING_VIEW_EXPS_CLUSTERING = "Experiment Clustering";
+	public static final String INFORMATION_STRING_VIEW_NO_DATA = "No data is available";
 	/**
 	 * Specify how many contact points a DA object should return. value must be a multiple of 4 (4, 8, 12,
 	 * 16,...)
 	 */
 	public static final int DA_OBJ_NUM_CONTACT_POINTS = 48;
+	public static final float[] LABEL_TEXT_COLOR = {0.0f,0.0f,0.0f,1.0f};
+	public static final float[] LABEL_CANVAS_COLOR = {1.0f,1.0f,1.0f,0.4f};
 
 	public HyperbolicRenderStyle(IViewFrustum viewFrustum) {
 		super(viewFrustum);

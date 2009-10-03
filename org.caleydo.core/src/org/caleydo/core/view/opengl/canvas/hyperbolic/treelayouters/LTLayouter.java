@@ -21,7 +21,7 @@ public final class LTLayouter
 	float fCurNodeRealSize;
 	float mostright;
 	private List<IDrawAbleNode> nodes;
-	
+
 	IDrawAbleNode[] lastPlacedinlayer = null;
 	int[] nodesplacedinlayer = null;
 
@@ -30,8 +30,9 @@ public final class LTLayouter
 	float[] fYLayers;
 	float[] fNodeSizes;
 
-	public LTLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID) {
-		super(frustum, pickingManager, iViewID, new DefaultProjection(1));
+	public LTLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID,
+		HyperbolicRenderStyle renderStyle, String strInformation) {
+		super(frustum, pickingManager, iViewID, renderStyle, new DefaultProjection(1), strInformation);
 	}
 
 	@Override
@@ -43,40 +44,40 @@ public final class LTLayouter
 			return;
 		mostright = 0;
 		lastPlacedinlayer = new IDrawAbleNode[tree.getDepth()];
-		nodesplacedinlayer = new int [tree.getDepth()];
+		nodesplacedinlayer = new int[tree.getDepth()];
 		nodes = new ArrayList<IDrawAbleNode>();
 		// find Y-Layer for placing
 		iDepth = tree.getDepth();
 		fYLayers = new float[iDepth];
 		fNodeSizes = new float[iDepth];
-		
+
 		float fScale = 1;
-		for(int i = 1; i<=iDepth; ++i){
+		for (int i = 1; i <= iDepth; ++i) {
 			fScale += Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, i);
 		}
-		
-		float fFirstLayer = 1/(fScale) * fViewSpaceYAbs;
-		float fCurYPos = fViewSpaceYAbs + (fViewSpaceY[1] - fViewSpaceYAbs)/2.0f;
-		
-		//fYLayers[0] = fCurYPos - fFirstLayer / 2.0f;
-		
-		for(int i=0; i<iDepth; ++i){
+
+		float fFirstLayer = 1 / (fScale) * fViewSpaceYAbs;
+		float fCurYPos = fViewSpaceYAbs + (fViewSpaceY[1] - fViewSpaceYAbs) / 2.0f;
+
+		// fYLayers[0] = fCurYPos - fFirstLayer / 2.0f;
+
+		for (int i = 0; i < iDepth; ++i) {
 			fYLayers[i] = fCurYPos - fFirstLayer / 2.0f;
 			fCurYPos -= fFirstLayer;
 			fFirstLayer *= HyperbolicRenderStyle.NODE_SCALING_PER_LAYER;
 			fNodeSizes[i] = 0.2f;
 		}
-		
+
 		IDrawAbleNode rootNode = tree.getRoot();
 		firstwalk(rootNode, 0);
 		float add = fViewSpaceX[1] - mostright;
-		
-			for (IDrawAbleNode node : nodes)
-			{
-				if(add>0)
-					node.place(node.getXCoord() + add/2.0f, node.getYCoord(), 0.1f, node.getHeight(), node.getWidth(), treeProjector);
-				placeNode(node);
-			}
+
+		for (IDrawAbleNode node : nodes) {
+			if (add > 0)
+				node.place(node.getXCoord() + add / 2.0f, node.getYCoord(), 0.1f, node.getHeight(), node
+					.getWidth(), treeProjector);
+			placeNode(node);
+		}
 
 	}
 
@@ -85,74 +86,74 @@ public final class LTLayouter
 		if (level < HyperbolicRenderStyle.DETAIL_LEVEL_GRADING.length)
 			rootNode.setDetailLevel(HyperbolicRenderStyle.DETAIL_LEVEL_GRADING[level]);
 		else
-			  rootNode.setDetailLevel(EDrawAbleNodeDetailLevel.VeryLow);
+			rootNode.setDetailLevel(EDrawAbleNodeDetailLevel.VeryLow);
 		rootNode.setXCoord(0.0f);
 		List<IDrawAbleNode> childs = null;
 		rootNode.setXCoord(mostright + 0.15f);
-		//if (lastPlacedinlayer[level] != null)
-		//	rootNode.setXCoord(lastPlacedinlayer[level].getXCoord() + 0.15f);
-		//else if(lastPlacedinlayer[level] != null)
-		//	rootNode.setXCoord(lastPlacedinlayer[level].getXCoord() + 0.15f);
+		// if (lastPlacedinlayer[level] != null)
+		// rootNode.setXCoord(lastPlacedinlayer[level].getXCoord() + 0.15f);
+		// else if(lastPlacedinlayer[level] != null)
+		// rootNode.setXCoord(lastPlacedinlayer[level].getXCoord() + 0.15f);
 		if (tree.hasChildren(rootNode)) {
-			//IDrawAbleNode leftChild = null;
+			// IDrawAbleNode leftChild = null;
 			childs = tree.getChildren(rootNode);
 			for (IDrawAbleNode node : childs) {
-				//leftChild = lastPlacedinlayer[level+1];
+				// leftChild = lastPlacedinlayer[level+1];
 				node.setDetailLevel(EDrawAbleNodeDetailLevel.High);
-				firstwalk(node,  level + 1);
-				
-				lastPlacedinlayer[level+1] = node;
+				firstwalk(node, level + 1);
+
+				lastPlacedinlayer[level + 1] = node;
 			}
 			float middle = (childs.get(0).getXCoord() + childs.get(childs.size() - 1).getXCoord()) / 2.0f;
-			//if(leftSister != null){
-			//	rootNode.setXCoord(rootNode.getXCoord() + middle);
-			//	apportion(rootNode, level);
-			//}
-			
-	//		else
-				rootNode.setXCoord(middle);
-			
-			
+			// if(leftSister != null){
+			// rootNode.setXCoord(rootNode.getXCoord() + middle);
+			// apportion(rootNode, level);
+			// }
+
+			// else
+			rootNode.setXCoord(middle);
+
 		}
 		rootNode.setYCoord(fYLayers[level]);
-		rootNode.place(rootNode.getXCoord(), rootNode.getYCoord(), 0.01f, fNodeSizes[level], fNodeSizes[level], treeProjector);
-		//placeNode(rootNode);
+		rootNode.place(rootNode.getXCoord(), rootNode.getYCoord(), 0.01f, fNodeSizes[level],
+			fNodeSizes[level], treeProjector);
+		// placeNode(rootNode);
 		nodes.add(rootNode);
 		if (childs != null)
 			for (IDrawAbleNode node : childs)
 				placeConnection(rootNode, node);
-		if(rootNode.getXCoord() > mostright)
+		if (rootNode.getXCoord() > mostright)
 			mostright = rootNode.getXCoord();
 		nodesplacedinlayer[level]++;
-		
+
 	}
 
 	private void apportion(IDrawAbleNode rootNode, int level) {
 		IDrawAbleNode linkestes = tree.getChildren(rootNode).get(0);
 		IDrawAbleNode nachbar = lastPlacedinlayer[level];
 		int tiefe = 1;
-		while(linkestes != null && nachbar != null){
+		while (linkestes != null && nachbar != null) {
 			float rechtepos = linkestes.getXCoord();
 			float linkepos = nachbar.getXCoord();
 			IDrawAbleNode vorfahrnachbar = tree.getParent(nachbar);
 			float abstand = rechtepos + 0.1f - linkepos;
-			if(abstand>0){
+			if (abstand > 0) {
 				int i = 0;
-				for(IDrawAbleNode node : tree.getChildren(tree.getParent(vorfahrnachbar))){
-					if(node.compareTo(vorfahrnachbar) == 0)
+				for (IDrawAbleNode node : tree.getChildren(tree.getParent(vorfahrnachbar))) {
+					if (node.compareTo(vorfahrnachbar) == 0)
 						break;
 					++i;
 				}
-				if(i>0){
-					float teil = abstand/i;
+				if (i > 0) {
+					float teil = abstand / i;
 				}
 			}
 		}
-		
+
 	}
 
 	private IDrawAbleNode linkerNachbar(IDrawAbleNode linkestes) {
-	
+
 		return null;
 	}
 
