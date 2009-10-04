@@ -8,6 +8,7 @@ import gleem.linalg.Vec3f;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 
 public class DefaultProjection
 	extends ATreeProjection {
@@ -68,16 +69,25 @@ public class DefaultProjection
 	@Override
 	public Vec3f getNearestPointOnEuclidianBorder(Vec3f point) {
 
-		if (point.y() >= fViewSpaceY[1] / 2.0f)
-			return new Vec3f(point.x(), fViewSpaceY[1], point.z());
-		else
-			return new Vec3f(point.x(), fViewSpaceY[0], point.z());
+		
+
+		Vec3f vec = point.minus(fCenterPoint);
+		vec.normalize();
+		vec.scale(radius);
+		vec.add(fCenterPoint);
+		return vec;
+//		if (point.y() >= fViewSpaceY[1] / 2.0f)
+//			return new Vec3f(point.x(), fViewSpaceY[1], point.z());
+//		else
+//			return new Vec3f(point.x(), fViewSpaceY[0], point.z());
+		
+		
 	}
 
 	@Override
 	public float getProjectedLineFromCenterToBorder() {
 		bIsRadialCanvasRequested = true;
-		return Math.min(fViewSpaceXAbs, fViewSpaceYAbs);
+		return Math.min(fViewSpaceXAbs/2, fViewSpaceYAbs/2);
 	}
 
 }
