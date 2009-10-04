@@ -69,25 +69,25 @@ public class DefaultProjection
 	@Override
 	public Vec3f getNearestPointOnEuclidianBorder(Vec3f point) {
 
-		
+		if (bIsRadialCanvasRequested) {
+			Vec3f vec = point.minus(fCenterPoint);
+			vec.normalize();
+			vec.scale(radius);
+			vec.add(fCenterPoint);
+			return vec;
+		}
 
-		Vec3f vec = point.minus(fCenterPoint);
-		vec.normalize();
-		vec.scale(radius);
-		vec.add(fCenterPoint);
-		return vec;
-//		if (point.y() >= fViewSpaceY[1] / 2.0f)
-//			return new Vec3f(point.x(), fViewSpaceY[1], point.z());
-//		else
-//			return new Vec3f(point.x(), fViewSpaceY[0], point.z());
-		
-		
+		if (point.y() >= fViewSpaceY[1] / 2.0f)
+			return new Vec3f(point.x(), fViewSpaceY[1], point.z());
+		else
+			return new Vec3f(point.x(), fViewSpaceY[0], point.z());
+
 	}
 
 	@Override
 	public float getProjectedLineFromCenterToBorder() {
 		bIsRadialCanvasRequested = true;
-		return Math.min(fViewSpaceXAbs/2, fViewSpaceYAbs/2);
+		return Math.min(fViewSpaceXAbs / 2, fViewSpaceYAbs / 2);
 	}
 
 }

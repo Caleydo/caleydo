@@ -582,7 +582,6 @@ public class GLHyperbolic
 			clusteredTree = set.getClusteredTreeExps();
 		buildDrawAbleTree();
 		layouter.setTree(getSubTreeForDisplay());
-
 	}
 
 	// private Tree<IDrawAbleNode> buildTestTree(int iDepth, int iMaxNodesOnLayer) {

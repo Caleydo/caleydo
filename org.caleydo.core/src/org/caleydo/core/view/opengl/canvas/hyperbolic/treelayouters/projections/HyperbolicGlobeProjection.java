@@ -273,8 +273,13 @@ public class HyperbolicGlobeProjection
 
 	@Override
 	public Vec3f getNearestPointOnEuclidianBorder(Vec3f point) {
-		// TODO Auto-generated method stub
-		return new Vec3f(0, 0, 0);
+
+	//	return point;
+		Vec3f vec = point.minus(fCenterPoint);
+		vec.normalize();
+		vec.scale(getProjectedLineFromCenterToBorder() );
+		vec.add(fCenterPoint);
+		return vec;
 	}
 
 }

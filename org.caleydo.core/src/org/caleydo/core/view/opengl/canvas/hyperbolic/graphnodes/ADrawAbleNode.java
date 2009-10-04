@@ -220,24 +220,24 @@ public abstract class ADrawAbleNode
 		float fTextHeight = (float) rect.getHeight();
 		float fTextWidth = (float) rect.getWidth();
 		float fTextScaling = fHeight / fTextHeight / 2.0f;
-		float fTextXPos = fXCoord - fTextWidth * fTextScaling / 2.0f;
+		float fTextXPos = fProjectedXCoord - fTextWidth * fTextScaling / 2.0f;
 		float fTextYPos;
 		switch (iPosition) {
 			case 0:
-				fTextYPos = fYCoord - fWidth / 2.0f - fTextHeight * fTextScaling;
+				fTextYPos = fProjectedYCoord - fWidth / 2.0f - fTextHeight * fTextScaling;
 				break;
 			case 1:
-				fTextYPos = fYCoord + fWidth / 2.0f + fTextHeight * fTextScaling;
+				fTextYPos = fProjectedYCoord + fWidth / 2.0f + fTextHeight * fTextScaling;
 				break;
 			default:
-				fTextYPos = fYCoord;
+				fTextYPos = fProjectedYCoord;
 				break;
 		}
 		// TODO: Specify this color in RendeStyle
 		textRenderer.setColor(0, 0, 0, 1);
 		textRenderer.setSmoothing(true);
 		textRenderer.begin3DRendering();
-		textRenderer.draw3D(this.getNodeName(), fTextXPos, fTextYPos, fZCoord, fTextScaling);
+		textRenderer.draw3D(this.getNodeName(), fTextXPos, fTextYPos, fProjectedZCoord, fTextScaling);
 		textRenderer.end3DRendering();
 	}
 

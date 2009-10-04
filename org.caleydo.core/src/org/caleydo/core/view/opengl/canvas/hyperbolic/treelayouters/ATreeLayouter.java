@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Lock;
 
 import javax.media.opengl.GL;
 
@@ -51,6 +53,8 @@ public abstract class ATreeLayouter
 
 	protected int iNumLayers;
 
+	protected Semaphore lockAnimation = null;
+
 	// TODO: Maybe replace by maps!
 	protected List<IDrawAbleNode> nodeLayout;
 	private List<IDrawAbleConnection> connectionLayout;
@@ -76,8 +80,9 @@ public abstract class ATreeLayouter
 	private boolean bIsBusy = false;
 	private String strInformation = null;
 
-	//protected CaleydoTextRenderer textRenderer = null;
+	// protected CaleydoTextRenderer textRenderer = null;
 	protected TextLabel informationLabel = null;
+	private Semaphore lockAnimateToNewTree = null;
 
 	public ATreeLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID,
 		HyperbolicRenderStyle renderStyle, ITreeProjection treeProjector, String strInformation) {
@@ -93,8 +98,11 @@ public abstract class ATreeLayouter
 		this.informationLabel =
 			new TextLabel(new Font(renderStyle.LABEL_FONT_NAME, renderStyle.LABEL_FONT_STYLE,
 				renderStyle.LABEL_FONT_SIZE));
-		this.nodeLabel = new TextLabel(new Font(renderStyle.LABEL_FONT_NAME, renderStyle.LABEL_FONT_STYLE,
-			renderStyle.LABEL_FONT_SIZE));
+		this.nodeLabel =
+			new TextLabel(new Font(renderStyle.LABEL_FONT_NAME, renderStyle.LABEL_FONT_STYLE,
+				renderStyle.LABEL_FONT_SIZE));
+		this.lockAnimation = new Semaphore(1);
+		this.lockAnimateToNewTree = new Semaphore(1);
 		// this.textRenderer =
 		// new CaleydoTextRenderer(new Font(HyperbolicRenderStyle.LABEL_FONT_NAME,
 		// HyperbolicRenderStyle.LABEL_FONT_STYLE, HyperbolicRenderStyle.LABEL_FONT_SIZE), false);
@@ -136,6 +144,7 @@ public abstract class ATreeLayouter
 
 	@Override
 	public final void setLayoutDirty() {
+		finishAnimation();
 		bIsLayoutDirty = true;
 		bIsNodeListDirty = true;
 		bIsConnectionListDirty = true;
@@ -190,10 +199,11 @@ public abstract class ATreeLayouter
 
 	private void drawTextBox(GL gl) {
 		// TODO: check usage of LABELS, from RADIAL View
-		//nodeLabel.setText("Elements: " + currentSelectedNode.getDependingClusterNode().getNrElements() + "\n" + "HirarchyDepth: " + currentSelectedNode.getDependingClusterNode().getDepth());
-		//float x = 
-		
-//		nodeLabel.place(currentSelectedNode., fYCoord, fZCoord, fHeight, fWidth)
+		// nodeLabel.setText("Elements: " + currentSelectedNode.getDependingClusterNode().getNrElements() +
+		// "\n" + "HirarchyDepth: " + currentSelectedNode.getDependingClusterNode().getDepth());
+		// float x =
+
+		// nodeLabel.place(currentSelectedNode., fYCoord, fZCoord, fHeight, fWidth)
 	}
 
 	private final void buildDisplayListConnections(GL gl) {
@@ -248,6 +258,17 @@ public abstract class ATreeLayouter
 		if (treeProjector != null)
 			treeProjector.drawCanvas(gl);
 		if (bIsAnimating) {
+			try {
+				lockAnimation.acquire();
+			}
+			catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (!bIsAnimating) {
+				lockAnimation.release();
+				return;
+			}
 			bIsAnimating = false;
 			List<IDrawAbleNode> dummy = new ArrayList<IDrawAbleNode>();
 			if (!mAnimationNodes.isEmpty())
@@ -272,7 +293,6 @@ public abstract class ATreeLayouter
 
 					}
 					node.draw(gl, false);
-
 				}
 			if (!dummy.isEmpty())
 				for (IDrawAbleNode node : dummy) {
@@ -291,7 +311,9 @@ public abstract class ATreeLayouter
 				bIsConnectionListDirty = true;
 				clearDisplay();
 				renderTreeLayout();
+				lockAnimateToNewTree.release();
 			}
+			lockAnimation.release();
 
 		}
 		else {
@@ -299,13 +321,12 @@ public abstract class ATreeLayouter
 			// gl.glCallList(iGLDisplayListConnection);
 			buildDisplayListConnections(gl);
 			gl.glCallList(iGLDisplayListNode);
-			
 
-			if (bIsNodeHighlighted && currentSelectedNode != null) 
+			if (bIsNodeHighlighted && currentSelectedNode != null)
 				drawTextBox(gl);
-		//		IDrawAbleConnection conn = new DrawAbleTextBoxConnector(textNode, currentSelectedNode);
-		//		conn.draw(gl, true);
-		//	}
+			// IDrawAbleConnection conn = new DrawAbleTextBoxConnector(textNode, currentSelectedNode);
+			// conn.draw(gl, true);
+			// }
 		}
 
 		bIsBusy = false;
@@ -367,8 +388,15 @@ public abstract class ATreeLayouter
 
 		// TODO: Maybe send an event to all controls!
 		// nothing to do
-		if (bIsAnimating)
-			return;
+		try {
+			lockAnimateToNewTree.acquire();
+			lockAnimation.acquire();
+		}
+		catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		bIsAnimating = true;
 
 		this.mAnimationNodes = new HashMap<IDrawAbleNode, AnimationVec3f>();
 		this.animationConnectionHandler = new AnimationConnectionHandler();
@@ -377,12 +405,11 @@ public abstract class ATreeLayouter
 		Map<IDrawAbleNode, Vec3f> mLayoutAnimationStart = new HashMap<IDrawAbleNode, Vec3f>();
 		Map<IDrawAbleNode, Vec3f> mLayoutAnimationEnd = new HashMap<IDrawAbleNode, Vec3f>();
 
-		bIsAnimating = true;
-
 		for (IDrawAbleNode node : nodeLayout)
 			mLayoutAnimationStart.put(node, node.getRealCoordinates());
 		for (IDrawAbleConnection conn : connectionLayout)
 			animationConnectionHandler.addConnectionInformation(conn);
+		Tree<IDrawAbleNode> oldTree = this.tree;
 		this.tree = tree;
 		clearDisplay();
 		renderTreeLayout();
@@ -391,18 +418,43 @@ public abstract class ATreeLayouter
 		for (IDrawAbleConnection conn : connectionLayout)
 			animationConnectionHandler.addConnectionInformation(conn);
 
-		// TODO: find nicer placing!
+		// TODO: find nicer placing!#
+		//raus
 		for (IDrawAbleNode i : mLayoutAnimationStart.keySet())
 			if (!mLayoutAnimationEnd.containsKey(i)) {
-				mLayoutAnimationEnd.put(i, treeProjector.getNearestPointOnEuclidianBorder(i
-					.getRealCoordinates()));
+				IDrawAbleNode parent = oldTree.getParent(i);
+				while(!mLayoutAnimationEnd.containsKey(parent))
+					parent = oldTree.getParent(parent);
+				mLayoutAnimationEnd.put(i, treeProjector.getNearestPointOnEuclidianBorder(mLayoutAnimationEnd.get(parent)));
 				lAnimationNodesLeave.add(i);
 			}
+		
+		//rein
 		for (IDrawAbleNode i : mLayoutAnimationEnd.keySet())
 			if (!mLayoutAnimationStart.containsKey(i)) {
-				mLayoutAnimationStart.put(i, treeProjector.getNearestPointOnEuclidianBorder(i
-					.getRealCoordinates()));
+				IDrawAbleNode parent = tree.getParent(i);
+				while(!mLayoutAnimationStart.containsKey(parent))
+					parent = tree.getParent(parent);
+				mLayoutAnimationStart.put(i, treeProjector.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(parent)));
+				
+		//		if (mLayoutAnimationStart.containsKey(tree.getParent(i)))
+		//			mLayoutAnimationStart.put(i, treeProjector
+		//				.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(tree.getParent(i))));
+		//		else
+		//			toadd.add(i);
 			}
+//		while (toadd.size() > 0) {
+//
+//			for (IDrawAbleNode node : toadd) {
+//				if (mLayoutAnimationStart.containsKey(tree.getParent(node))) {
+//					mLayoutAnimationStart.put(node, treeProjector
+//						.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(tree.getParent(node))));
+//					remove.add(node);
+//				}
+//				toadd.removeAll(remove);
+//				remove.clear();
+//			}
+//		}
 
 		for (IDrawAbleNode i : mLayoutAnimationStart.keySet()) {
 			mAnimationNodes.put(i, new AnimationVec3f(mLayoutAnimationStart.get(i), mLayoutAnimationEnd
@@ -413,6 +465,7 @@ public abstract class ATreeLayouter
 		bIsConnectionListDirty = true;
 		bIsNodeHighlighted = false;
 		bIsConnectionHighlighted = false;
+		lockAnimation.release();
 	}
 
 	protected int getMaxNumberOfSiblingsInLayer(IDrawAbleNode node, int iTargetLayer, int iCurrentLayer) {
@@ -444,6 +497,23 @@ public abstract class ATreeLayouter
 
 	public void setInformationText(String strInformation) {
 		this.strInformation = strInformation;
+	}
+
+	protected final void finishAnimation() {
+		try {
+			lockAnimation.acquire();
+		}
+		catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		bIsAnimating = false;
+		if (mAnimationNodes != null)
+			mAnimationNodes = null;
+		if (animationConnectionHandler != null)
+			animationConnectionHandler = null;
+		lockAnimation.release();
+		lockAnimateToNewTree.release();
 	}
 
 	// protected final Vec3f[] findClosestCorrespondendingPoints(List<Vec3f> pointsA, List<Vec3f> pointsB){
