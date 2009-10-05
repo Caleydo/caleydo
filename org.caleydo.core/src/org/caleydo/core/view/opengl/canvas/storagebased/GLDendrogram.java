@@ -1288,11 +1288,11 @@ public class GLDendrogram
 		fArTargetWorldCoordinates =
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
 
-		float fWidth = viewFrustum.getWidth() - 0.1f;
+		float fWidth = viewFrustum.getWidth();
 		float fHeight = viewFrustum.getHeight();
 
 		if (bRenderGeneTree) {
-			if (fArTargetWorldCoordinates[0] > -0.1f && fArTargetWorldCoordinates[0] < fWidth)
+			if (fArTargetWorldCoordinates[0] > 0.1f && fArTargetWorldCoordinates[0] < fWidth)
 				fPosCut = fArTargetWorldCoordinates[0] - fLevelWidth;
 		}
 		else {
