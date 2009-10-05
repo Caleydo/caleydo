@@ -21,7 +21,7 @@ import com.sun.opengl.util.texture.TextureCoords;
 /**
  * 
  * @author Oliver Pimas
- * @version 0.3 (2009-09-02)
+ * @version 0.5 (2009-10-04)
  * 
  * VisLink offers static methods to render a connection line.
  * 
