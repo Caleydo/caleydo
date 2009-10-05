@@ -99,10 +99,10 @@ public class VisLinkEnvironment {
 		
 //		callRenderLine(gl);
 //		callRenderPolygonLine(gl, true, true);
-		callRenderPolygonLineWithHalo(gl);
+//		callRenderPolygonLineWithHalo(gl);
 //		callRenderAnimatedPolygonLine(gl);
 //		callRenderAnimatedPolygonLineReverse(gl);
-//		callRenderAnimatedPolygonLineProgressive(gl);
+		callRenderAnimatedPolygonLineProgressive(gl);
 	}
 	
 	
