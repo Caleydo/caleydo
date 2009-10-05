@@ -4,6 +4,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.view.opengl.util.vislink.VisLinkEnvironment;
 
 /**
  * Listener for selection update events.
@@ -27,6 +28,7 @@ public class SelectionUpdateListener
 			boolean scrollToSelection = selectioUpdateEvent.isScrollToSelection();
 			String info = selectioUpdateEvent.getInfo();
 			handler.handleSelectionUpdate(delta, scrollToSelection, info);
+			VisLinkEnvironment.resetAnimation(System.currentTimeMillis());
 		}
 	}
 	
