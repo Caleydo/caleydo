@@ -71,6 +71,12 @@ public class HyperbolicGlobeProjection
 		float fZCoordOfProjectedPoint =
 			fCenterPoint.z() + (float) Math.cos(fYAngle) * (float) Math.cos(fXAngle) * radius;
 
+		if(fZCoordOfProjectedPoint > (float)Math.PI/2)
+			fZCoordOfProjectedPoint = (float)Math.PI/2;
+		else if(fZCoordOfProjectedPoint < -(float)Math.PI/2)
+			fZCoordOfProjectedPoint = -(float)Math.PI/2;
+//		if(fZCoordOfProjectedPoint < 0)
+//			fZCoordOfProjectedPoint = 0;
 		// float fZCoordOfProjectedPoint = 0;
 		// if(fXAngle >= -(float)Math.PI/2 || fXAngle <= (float)Math.PI/2)
 		// fZCoordOfProjectedPoint = 2.0f;

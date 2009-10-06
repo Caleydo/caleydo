@@ -19,11 +19,13 @@ import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.TextLabel;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleHyperbolicLayoutConnector;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.IDrawAbleConnection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.animation.AnimationConnectionHandler;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.animation.AnimationVec3f;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.htcalculation.HTModel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
 
 public abstract class ATreeLayouter
@@ -136,7 +138,7 @@ public abstract class ATreeLayouter
 		fViewSpaceY[1] = fHeight - fHeight * HyperbolicRenderStyle.Y_BORDER_SPACING;
 		fViewSpaceYAbs = Math.abs(fViewSpaceY[0] - fViewSpaceY[1]);
 		fvViewCenterPoint = new Vec3f(fWidth / 2.0f, fHeight / 2.0f, 0.0f);
-		fViewRadius = Math.min(fViewSpaceXAbs / 2, fViewSpaceYAbs / 2);
+		fViewRadius = Math.min(fViewSpaceXAbs / 2.0f, fViewSpaceYAbs / 2.0f);
 		if (treeProjector != null)
 			treeProjector.updateFrustumInfos(fHeight, fWidth, 0.0f, fViewSpaceX, fViewSpaceXAbs, fViewSpaceY,
 				fViewSpaceYAbs);
@@ -432,6 +434,7 @@ public abstract class ATreeLayouter
 		//rein
 		for (IDrawAbleNode i : mLayoutAnimationEnd.keySet())
 			if (!mLayoutAnimationStart.containsKey(i)) {
+
 				IDrawAbleNode parent = tree.getParent(i);
 				while(!mLayoutAnimationStart.containsKey(parent))
 					parent = tree.getParent(parent);
@@ -442,6 +445,7 @@ public abstract class ATreeLayouter
 		//				.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(tree.getParent(i))));
 		//		else
 		//			toadd.add(i);
+
 			}
 //		while (toadd.size() > 0) {
 //
@@ -467,6 +471,56 @@ public abstract class ATreeLayouter
 		bIsConnectionHighlighted = false;
 		lockAnimation.release();
 	}
+	
+//	public final void animateToNewTree(Vec3f endVec) {
+//	
+//		// TODO: Maybe send an event to all controls!
+//		// nothing to do
+//		try {
+//			lockAnimateToNewTree.acquire();
+//			lockAnimation.acquire();
+//		}
+//		catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		bIsAnimating = true;
+//
+//		this.mAnimationNodes = new HashMap<IDrawAbleNode, AnimationVec3f>();
+//		this.animationConnectionHandler = new AnimationConnectionHandler();
+//		this.lAnimationNodesLeave = new ArrayList<IDrawAbleNode>();
+//
+//		Map<IDrawAbleNode, Vec3f> mLayoutAnimationStart = new HashMap<IDrawAbleNode, Vec3f>();
+//		Map<IDrawAbleNode, Vec3f> mLayoutAnimationEnd = new HashMap<IDrawAbleNode, Vec3f>();
+//
+//
+//		for (IDrawAbleNode node : nodeLayout)
+//			mLayoutAnimationStart.put(node, node.getRealCoordinates());
+//		for (IDrawAbleConnection conn : connectionLayout)
+//			animationConnectionHandler.addConnectionInformation(conn);
+//		
+//		clearDisplay();
+//
+//		for (IDrawAbleNode node : nodeLayout)
+//			mLayoutAnimationEnd.put(node, node.getRealCoordinates());
+//		for (IDrawAbleConnection conn : connectionLayout)
+//			animationConnectionHandler.addConnectionInformation(conn);
+//
+//		
+//		
+//		for (IDrawAbleNode i : mLayoutAnimationStart.keySet()) {
+//			mAnimationNodes.put(i, new AnimationVec3f(mLayoutAnimationStart.get(i), endVec, 100f));
+//		}
+//		
+//		clearDisplay();
+//		bIsNodeListDirty = true;
+//		bIsConnectionListDirty = true;
+//		bIsNodeHighlighted = false;
+//		bIsConnectionHighlighted = false;
+//		lockAnimation.release();
+//	
+//	
+//	}
 
 	protected int getMaxNumberOfSiblingsInLayer(IDrawAbleNode node, int iTargetLayer, int iCurrentLayer) {
 		// IDrawAbleNode rootNode = tree.getRoot();
@@ -515,6 +569,51 @@ public abstract class ATreeLayouter
 		lockAnimation.release();
 		lockAnimateToNewTree.release();
 	}
+	
+	public Vec3f getTranslationVector(Vec3f source, Vec3f dest){
+		Vec3f vec = source.minus(dest);
+		return vec;
+	}
+	
+	public Vec3f translateTree(int iExternalID){
+		
+		IDrawAbleNode targetNode = tree.getNodeByNumber(iExternalID);
+		Vec3f targetVec = new Vec3f(targetNode.getXCoord(), targetNode.getYCoord(), 0.0f);
+		Vec3f translateVec = getTranslationVector(new Vec3f(fWidth/2, fHeight/2, 0.0f), targetVec);
+		
+//		if (this.tree == null)
+//			return;
+		IDrawAbleNode root = this.tree.getRoot();
+
+		runThroughTreeAndPlaceNew(translateVec , root, 1);
+
+		bIsNodeListDirty = true;
+		bIsConnectionListDirty = true;
+		//clearDisplay();
+		//renderTreeLayout();
+		return translateVec;
+
+	}
+	private void runThroughTreeAndPlaceNew(Vec3f vec, IDrawAbleNode node, int layer){
+		if(tree.hasChildren(node)){
+			for(IDrawAbleNode child : tree.getChildren(node)){
+				runThroughTreeAndPlaceNew(vec, child, layer++);
+			}
+		}
+
+//		for(IDrawAbleNode node: nodeLayout){
+		Vec3f newNode = new Vec3f(node.getXCoord(), node.getYCoord(), 0.0f);
+		newNode.add(vec);
+		node.setXCoord(newNode.x());
+		node.setYCoord(newNode.y());
+		node.setDetailLevel(EDrawAbleNodeDetailLevel.High);
+		node.place(node.getRealCoordinates().x(), node.getRealCoordinates().y(), 0.0f, 0.1f, 0.1f, treeProjector);
+		
+	//	placeConnection(tree.getParent(node), node);
+//	}
+	}
+		
+	
 
 	// protected final Vec3f[] findClosestCorrespondendingPoints(List<Vec3f> pointsA, List<Vec3f> pointsB){
 	// float fMin = Float.MAX_VALUE;

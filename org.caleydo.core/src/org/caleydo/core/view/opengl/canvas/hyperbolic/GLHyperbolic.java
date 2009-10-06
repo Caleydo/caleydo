@@ -35,6 +35,7 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.ChangeCanvasDraw
 import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.ChangeTreeTypeListener;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.SetMaxLayoutDepthListener;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.SwitchClusterTypeListener;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.HTGlobeLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.HTLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ITreeLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LTLayouter;
@@ -357,12 +358,14 @@ public class GLHyperbolic
 				switch (pickingMode) {
 					case CLICKED:
 						if (!layouter.isAnimating()) {
-							if (drawAbleTree.getRoot().getID() == iExternalID)
-								break;
-							drawAbleTree = convertTreeToNewOne(iExternalID);
+						//	if (drawAbleTree.getRoot().getID() == iExternalID)
+						//		break;
+							//drawAbleTree = convertTreeToNewOne(iExternalID);
 							// buildDrawAbleTree();
 							// drawAbleTree = convertTreeToNewOne(iExternalID);
-							layouter.animateToNewTree(getSubTreeForDisplay());
+							//layouter.animateToNewTree(getSubTreeForDisplay());
+//							layouter.animateToNewTree(layouter.translateTree(iExternalID));
+							layouter.translateTree(iExternalID);
 						}
 						// layouter.setTree(drawAbleTree);
 						break;

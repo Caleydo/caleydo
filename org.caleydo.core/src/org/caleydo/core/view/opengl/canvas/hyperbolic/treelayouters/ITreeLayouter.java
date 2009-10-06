@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 
+import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.graph.tree.Tree;
@@ -24,6 +26,8 @@ public interface ITreeLayouter
 	void display(GL gl);
 
 	void animateToNewTree(Tree<IDrawAbleNode> tree);
+	
+//	void animateToNewTree(Vec3f vec);
 
 	void setLayoutDirty();
 
@@ -34,6 +38,10 @@ public interface ITreeLayouter
 	boolean isAnimating();
 
 	void setInformationText(String strInformation);
+	
+	Vec3f getTranslationVector(Vec3f source, Vec3f dest);
+	
+	Vec3f translateTree(int tree);
 
 	//void changeCanvasDrawing();
 }
