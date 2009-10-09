@@ -47,6 +47,20 @@ public class HyperbolicGlobeProjection
 		float fXAngle = fDistanceInXDirection / radius;
 		float fYAngle = fDistanceInYDirection / radius;
 
+		float fZCoordOfProjectedPoint =
+			fCenterPoint.z() + (float) Math.cos(fYAngle) * (float) Math.cos(fXAngle) * radius;
+//		if(fZCoordOfProjectedPoint > (float)Math.PI/2){
+//			fZCoordOfProjectedPoint = (float)Math.PI/2;
+//		}
+//		else if(fZCoordOfProjectedPoint < -(float)Math.PI/2)
+//			fZCoordOfProjectedPoint = -(float)Math.PI/2;
+//		if(fZCoordOfProjectedPoint > (float)Math.PI/4){
+//			fZCoordOfProjectedPoint = (float)Math.PI/4;
+//		}
+//		else if(fZCoordOfProjectedPoint < 0)
+//			fZCoordOfProjectedPoint = 0;
+//	if(fZCoordOfProjectedPoint < 0)
+//		fZCoordOfProjectedPoint = 0;
 		float fProjectedXDistance = (float) Math.cos(fYAngle) * (float) Math.sin(fXAngle) * radius;
 		float fProjectedYDistance = ((float) Math.sin(fYAngle) * radius);
 
@@ -68,13 +82,11 @@ public class HyperbolicGlobeProjection
 		// float fZCoordOfProjectedPoint = -0.2f;
 
 		// TODO: disable picking!
-		float fZCoordOfProjectedPoint =
-			fCenterPoint.z() + (float) Math.cos(fYAngle) * (float) Math.cos(fXAngle) * radius;
 
-		if(fZCoordOfProjectedPoint > (float)Math.PI/2)
-			fZCoordOfProjectedPoint = (float)Math.PI/2;
-		else if(fZCoordOfProjectedPoint < -(float)Math.PI/2)
-			fZCoordOfProjectedPoint = -(float)Math.PI/2;
+//		if(fZCoordOfProjectedPoint > (float)Math.PI/2)
+//			fZCoordOfProjectedPoint = (float)Math.PI/2;
+//		else if(fZCoordOfProjectedPoint < -(float)Math.PI/2)
+//			fZCoordOfProjectedPoint = -(float)Math.PI/2;
 //		if(fZCoordOfProjectedPoint < 0)
 //			fZCoordOfProjectedPoint = 0;
 		// float fZCoordOfProjectedPoint = 0;

@@ -21,6 +21,7 @@ public class DrawAbleHyperbolicLayoutConnector
 	private ITreeProjection treeProjector = null;
 	private boolean bIsPickAble = true;
 	FloatBuffer fbSplinePoints = null;
+	boolean bIsVisible = false;
 
 	public DrawAbleHyperbolicLayoutConnector(IDrawAbleNode iNodeA, IDrawAbleNode iNodeB) {
 		if(iNodeA.getID() > iNodeB.getID()){
@@ -44,6 +45,10 @@ public class DrawAbleHyperbolicLayoutConnector
 		this.iID = generateID();
 		this.treeProjector = treeProjector;
 		//calculateSplinePoints();
+		if (this.iNodeA.IsNodeVisible() && this.iNodeB.IsNodeVisible())
+			this.bIsVisible = true;
+			
+		
 	}
 
 	@Override
@@ -133,6 +138,8 @@ public class DrawAbleHyperbolicLayoutConnector
 
 	@Override
 	public void draw(GL gl, boolean bHighlight) {
+		if (!bIsVisible)
+			return;
 		calculateSplinePoints();
 		if (bIsPickAble)
 			if (bHighlight) {

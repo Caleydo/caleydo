@@ -40,6 +40,8 @@ public abstract class ADrawAbleNode
 	private float fProjectedYCoord = 0;
 	private float fProjectedZCoord = 0;
 	private List<Vec3f> alOriginalCorrespondingPoints = null;
+	boolean bIsVisible = true;
+	Vec3f positionOutOfDisplay = null;
 
 	// TODO: create DAobjects which would handle this
 	private TextRenderer textRenderer = null;
@@ -57,6 +59,21 @@ public abstract class ADrawAbleNode
 				HyperbolicRenderStyle.NODE_FONT_STYLE, HyperbolicRenderStyle.NODE_FONT_SIZE), true, true);
 	}
 
+	public void setNodeVisible(){
+		bIsVisible = true;
+	}
+	public void setNodeInvisible(){
+		bIsVisible = false;
+	}
+	public boolean IsNodeVisible(){
+		return bIsVisible;
+	}
+	public void setNoneDisplayedNodePosition(float x, float y, float z){
+		this.positionOutOfDisplay.set(x, y, z);
+	}
+	public Vec3f getNoneDisplayedNodePosition(){
+		return this.positionOutOfDisplay;
+	}
 	@Override
 	public final String getNodeName() {
 		return clNode.getNodeName();
@@ -87,9 +104,28 @@ public abstract class ADrawAbleNode
 		this.fWidth = fWidth;
 		if (treeProjection != null) {
 			Vec3f vpProjectedPoint = treeProjection.projectCoordinates(new Vec3f(fXCoord, fYCoord, fZCoord));
-			this.fProjectedXCoord = vpProjectedPoint.x();
-			this.fProjectedYCoord = vpProjectedPoint.y();
-			this.fProjectedZCoord = vpProjectedPoint.z();
+			
+			
+//			if(vpProjectedPoint.z() > (float)Math.PI)
+			if(vpProjectedPoint.z() < 0){
+				bIsVisible = false;
+
+				this.fProjectedZCoord = vpProjectedPoint.z();
+				
+			}
+//			else if(vpProjectedPoint.z() < 0)
+//				bIsVisible = false;
+			else{
+				bIsVisible = true;
+				this.fProjectedXCoord = vpProjectedPoint.x();
+				this.fProjectedYCoord = vpProjectedPoint.y();
+				this.fProjectedZCoord = vpProjectedPoint.z();
+			}
+			{
+//			this.fProjectedXCoord = vpProjectedPoint.x();
+//			this.fProjectedYCoord = vpProjectedPoint.y();
+//			this.fProjectedZCoord = vpProjectedPoint.z();
+			}
 		}
 		else {
 			this.fProjectedXCoord = this.fXCoord;
@@ -112,9 +148,11 @@ public abstract class ADrawAbleNode
 	@Override
 	public void draw(GL gl, boolean bHighlight) {
 		if (mRepresantations != null) {
+			if(bIsVisible){
 			IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
 			// daObj.setAlternativeNodeExpression(bAlternativeNodeExpression);
 			daObj.draw(gl, bHighlight);
+			}
 		}
 		else
 			drawSpecialNode(gl);

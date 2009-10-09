@@ -365,7 +365,8 @@ public class GLHyperbolic
 							// drawAbleTree = convertTreeToNewOne(iExternalID);
 							//layouter.animateToNewTree(getSubTreeForDisplay());
 //							layouter.animateToNewTree(layouter.translateTree(iExternalID));
-							layouter.translateTree(iExternalID);
+//							layouter.translateTree(iExternalID);
+							layouter.animateToNewTree(iExternalID);
 						}
 						// layouter.setTree(drawAbleTree);
 						break;
@@ -655,8 +656,8 @@ public class GLHyperbolic
 
 	public void setMaxLayoutDepth(int iMaxLayoutDepth) {
 		HyperbolicRenderStyle.MAX_DEPTH = iMaxLayoutDepth;
-		if (layouter != null)
-			layouter.animateToNewTree(getSubTreeForDisplay());
+//		if (layouter != null)
+//			layouter.animateToNewTree(getSubTreeForDisplay());
 	}
 
 	public void switchClusterType() {

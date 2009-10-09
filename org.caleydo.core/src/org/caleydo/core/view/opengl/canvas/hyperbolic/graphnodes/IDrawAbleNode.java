@@ -116,6 +116,8 @@ public interface IDrawAbleNode
 	public float getHeight();
 
 	public float getWidth();
+	
+	public boolean IsNodeVisible();
 
 //	boolean isAlternativeNodeExpression();
 

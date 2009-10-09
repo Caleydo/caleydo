@@ -25,9 +25,9 @@ public interface ITreeLayouter
 
 	void display(GL gl);
 
-	void animateToNewTree(Tree<IDrawAbleNode> tree);
+//	void animateToNewTree(Tree<IDrawAbleNode> tree);
 	
-//	void animateToNewTree(Vec3f vec);
+	void animateToNewTree(int iExternalID);
 
 	void setLayoutDirty();
 

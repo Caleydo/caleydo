@@ -62,6 +62,7 @@ public class HTLayouter
 //			}
 			runThroughTreeAndFoundScalingFactor(root, 1);
 			runThroughTreeAndPlace(root);
+			runThroughTreeAndPlaceConnection(root);
 			
 		}
 //		IDrawAbleNode root = tree.getRoot();
@@ -92,18 +93,36 @@ public class HTLayouter
 //			placeNode(node,  node.getRealCoordinates().x(), node.getRealCoordinates().y(), 0.0f, 0.1f, 0.1f);
 //		else	
 			placeNode(node, fWidth/2 +  (node.getRealCoordinates().x() * fScalingFactor), fHeight/2 + (node.getRealCoordinates().y() * fScalingFactor), 0.0f, 0.1f, 0.1f);
-		if(tree.getParent(node) != null)
-		placeConnection(tree.getParent(node), node);
+			System.out.println(node.getNodeName());
+			System.out.println(String.valueOf(node.getProjectedCoordinates().x())+' '+String.valueOf(node.getProjectedCoordinates().y())+' '+String.valueOf(node.getProjectedCoordinates().z()));
+			System.out.println(String.valueOf(node.IsNodeVisible()));
+			System.out.println();
+			
+//			if(tree.getParent(node) != null)
+				
+		
+//		placeConnection(tree.getParent(node), node);
 
 	}
 	
+	private void runThroughTreeAndPlaceConnection(IDrawAbleNode node){
+		if(tree.hasChildren(node)){
+			for(IDrawAbleNode child : tree.getChildren(node)){
+				runThroughTreeAndPlaceConnection(child);
+			}
+		}
+		if(tree.getParent(node) != null)
+		placeConnection(tree.getParent(node), node);
+	}
+	
 	private float runThroughTreeAndFoundScalingFactor(IDrawAbleNode node, int layer){
-		int layer2 = layer;
+//		int layer2 = layer;
 		if(tree.hasChildren(node)){
 			for(IDrawAbleNode child : tree.getChildren(node)){
 				runThroughTreeAndFoundScalingFactor(child, ++layer);
 			}
 		}
+		
 		node.setDetailLevel(EDrawAbleNodeDetailLevel.High);
 //		placeNode(node, node.getXCoord(), node.getYCoord(), 0.0f, 0.1f, 0.1f);
 		placeNode(node, node.getRealCoordinates().x(), node.getRealCoordinates().y(), 0.0f, 0.1f, 0.1f);
@@ -124,6 +143,7 @@ public class HTLayouter
 				fScalingFactor = fNewScalingFactor;
 		}
 		}
+//		fScalingFactor = fScalingFactor - 0.5f;
 		return fScalingFactor;
 	}
 	

@@ -311,8 +311,9 @@ public abstract class ATreeLayouter
 				animationConnectionHandler = null;
 				bIsNodeListDirty = true;
 				bIsConnectionListDirty = true;
-				clearDisplay();
-				renderTreeLayout();
+//				bIsConnectionListDirty = false;
+//				clearDisplay();
+//				renderTreeLayout();
 				lockAnimateToNewTree.release();
 			}
 			lockAnimation.release();
@@ -342,7 +343,7 @@ public abstract class ATreeLayouter
 
 	private final void clearDisplay() {
 		nodeLayout.clear();
-		connectionLayout.clear();
+//		connectionLayout.clear();
 	}
 
 	@Override
@@ -386,8 +387,95 @@ public abstract class ATreeLayouter
 		return bIsAnimating;
 	}
 
-	public final void animateToNewTree(Tree<IDrawAbleNode> tree) {
-
+//	public final void animateToNewTree(Tree<IDrawAbleNode> tree) {
+//
+//		// TODO: Maybe send an event to all controls!
+//		// nothing to do
+//		try {
+//			lockAnimateToNewTree.acquire();
+//			lockAnimation.acquire();
+//		}
+//		catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		bIsAnimating = true;
+//
+//		this.mAnimationNodes = new HashMap<IDrawAbleNode, AnimationVec3f>();
+//		this.animationConnectionHandler = new AnimationConnectionHandler();
+//		this.lAnimationNodesLeave = new ArrayList<IDrawAbleNode>();
+//
+//		Map<IDrawAbleNode, Vec3f> mLayoutAnimationStart = new HashMap<IDrawAbleNode, Vec3f>();
+//		Map<IDrawAbleNode, Vec3f> mLayoutAnimationEnd = new HashMap<IDrawAbleNode, Vec3f>();
+//
+//		for (IDrawAbleNode node : nodeLayout)
+//			mLayoutAnimationStart.put(node, node.getRealCoordinates());
+//		for (IDrawAbleConnection conn : connectionLayout)
+//			animationConnectionHandler.addConnectionInformation(conn);
+//		Tree<IDrawAbleNode> oldTree = this.tree;
+//		this.tree = tree;
+//		clearDisplay();
+//		renderTreeLayout();
+//		for (IDrawAbleNode node : nodeLayout)
+//			mLayoutAnimationEnd.put(node, node.getRealCoordinates());
+//		for (IDrawAbleConnection conn : connectionLayout)
+//			animationConnectionHandler.addConnectionInformation(conn);
+//
+//		// TODO: find nicer placing!#
+//		//raus
+//		for (IDrawAbleNode i : mLayoutAnimationStart.keySet())
+//			if (!mLayoutAnimationEnd.containsKey(i)) {
+//				IDrawAbleNode parent = oldTree.getParent(i);
+//				while(!mLayoutAnimationEnd.containsKey(parent))
+//					parent = oldTree.getParent(parent);
+//				mLayoutAnimationEnd.put(i, treeProjector.getNearestPointOnEuclidianBorder(mLayoutAnimationEnd.get(parent)));
+//				lAnimationNodesLeave.add(i);
+//			}
+//		
+//		//rein
+//		for (IDrawAbleNode i : mLayoutAnimationEnd.keySet())
+//			if (!mLayoutAnimationStart.containsKey(i)) {
+//
+//				IDrawAbleNode parent = tree.getParent(i);
+//				while(!mLayoutAnimationStart.containsKey(parent))
+//					parent = tree.getParent(parent);
+//				mLayoutAnimationStart.put(i, treeProjector.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(parent)));
+//				
+//		//		if (mLayoutAnimationStart.containsKey(tree.getParent(i)))
+//		//			mLayoutAnimationStart.put(i, treeProjector
+//		//				.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(tree.getParent(i))));
+//		//		else
+//		//			toadd.add(i);
+//
+//			}
+////		while (toadd.size() > 0) {
+////
+////			for (IDrawAbleNode node : toadd) {
+////				if (mLayoutAnimationStart.containsKey(tree.getParent(node))) {
+////					mLayoutAnimationStart.put(node, treeProjector
+////						.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(tree.getParent(node))));
+////					remove.add(node);
+////				}
+////				toadd.removeAll(remove);
+////				remove.clear();
+////			}
+////		}
+//
+//		for (IDrawAbleNode i : mLayoutAnimationStart.keySet()) {
+//			mAnimationNodes.put(i, new AnimationVec3f(mLayoutAnimationStart.get(i), mLayoutAnimationEnd
+//				.get(i), 100f));
+//		}
+//		clearDisplay();
+//		bIsNodeListDirty = true;
+//		bIsConnectionListDirty = true;
+//		bIsNodeHighlighted = false;
+//		bIsConnectionHighlighted = false;
+//		lockAnimation.release();
+//	}
+	
+	public final void animateToNewTree(int iExternalID) {
+	
+		//
 		// TODO: Maybe send an event to all controls!
 		// nothing to do
 		try {
@@ -409,12 +497,12 @@ public abstract class ATreeLayouter
 
 		for (IDrawAbleNode node : nodeLayout)
 			mLayoutAnimationStart.put(node, node.getRealCoordinates());
-		for (IDrawAbleConnection conn : connectionLayout)
-			animationConnectionHandler.addConnectionInformation(conn);
-		Tree<IDrawAbleNode> oldTree = this.tree;
-		this.tree = tree;
+//		for (IDrawAbleConnection conn : connectionLayout)
+//			animationConnectionHandler.addConnectionInformation(conn);
+//		Tree<IDrawAbleNode> oldTree = this.tree;
+//		this.tree = tree;
 		clearDisplay();
-		renderTreeLayout();
+//		renderTreeLayout();
 		for (IDrawAbleNode node : nodeLayout)
 			mLayoutAnimationEnd.put(node, node.getRealCoordinates());
 		for (IDrawAbleConnection conn : connectionLayout)
@@ -422,23 +510,23 @@ public abstract class ATreeLayouter
 
 		// TODO: find nicer placing!#
 		//raus
-		for (IDrawAbleNode i : mLayoutAnimationStart.keySet())
-			if (!mLayoutAnimationEnd.containsKey(i)) {
-				IDrawAbleNode parent = oldTree.getParent(i);
-				while(!mLayoutAnimationEnd.containsKey(parent))
-					parent = oldTree.getParent(parent);
-				mLayoutAnimationEnd.put(i, treeProjector.getNearestPointOnEuclidianBorder(mLayoutAnimationEnd.get(parent)));
-				lAnimationNodesLeave.add(i);
-			}
-		
-		//rein
-		for (IDrawAbleNode i : mLayoutAnimationEnd.keySet())
-			if (!mLayoutAnimationStart.containsKey(i)) {
-
-				IDrawAbleNode parent = tree.getParent(i);
-				while(!mLayoutAnimationStart.containsKey(parent))
-					parent = tree.getParent(parent);
-				mLayoutAnimationStart.put(i, treeProjector.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(parent)));
+//		for (IDrawAbleNode i : mLayoutAnimationStart.keySet())
+//			if (!mLayoutAnimationEnd.containsKey(i)) {
+//				IDrawAbleNode parent = oldTree.getParent(i);
+//				while(!mLayoutAnimationEnd.containsKey(parent))
+//					parent = oldTree.getParent(parent);
+//				mLayoutAnimationEnd.put(i, treeProjector.getNearestPointOnEuclidianBorder(mLayoutAnimationEnd.get(parent)));
+//				lAnimationNodesLeave.add(i);
+//			}
+//		
+//		//rein
+//		for (IDrawAbleNode i : mLayoutAnimationEnd.keySet())
+//			if (!mLayoutAnimationStart.containsKey(i)) {
+//
+//				IDrawAbleNode parent = tree.getParent(i);
+//				while(!mLayoutAnimationStart.containsKey(parent))
+//					parent = tree.getParent(parent);
+//				mLayoutAnimationStart.put(i, treeProjector.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(parent)));
 				
 		//		if (mLayoutAnimationStart.containsKey(tree.getParent(i)))
 		//			mLayoutAnimationStart.put(i, treeProjector
@@ -446,7 +534,7 @@ public abstract class ATreeLayouter
 		//		else
 		//			toadd.add(i);
 
-			}
+//			}
 //		while (toadd.size() > 0) {
 //
 //			for (IDrawAbleNode node : toadd) {
@@ -460,67 +548,27 @@ public abstract class ATreeLayouter
 //			}
 //		}
 
+//		for (IDrawAbleNode i : mLayoutAnimationStart.keySet()) {
+//			mAnimationNodes.put(i, new AnimationVec3f(mLayoutAnimationStart.get(i), mLayoutAnimationEnd
+//				.get(i), 100f));
+//		}
+		
+		Vec3f vec = translateTree(iExternalID);
 		for (IDrawAbleNode i : mLayoutAnimationStart.keySet()) {
-			mAnimationNodes.put(i, new AnimationVec3f(mLayoutAnimationStart.get(i), mLayoutAnimationEnd
-				.get(i), 100f));
+			Vec3f start = new Vec3f(mLayoutAnimationStart.get(i));
+			Vec3f end = new Vec3f(mLayoutAnimationStart.get(i));
+			end.add(vec);
+			mLayoutAnimationEnd.put(i, end);
+			
+			mAnimationNodes.put(i, new AnimationVec3f(start, end, 50.0f));
 		}
-		clearDisplay();
+//		clearDisplay();
 		bIsNodeListDirty = true;
 		bIsConnectionListDirty = true;
 		bIsNodeHighlighted = false;
 		bIsConnectionHighlighted = false;
 		lockAnimation.release();
 	}
-	
-//	public final void animateToNewTree(Vec3f endVec) {
-//	
-//		// TODO: Maybe send an event to all controls!
-//		// nothing to do
-//		try {
-//			lockAnimateToNewTree.acquire();
-//			lockAnimation.acquire();
-//		}
-//		catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		bIsAnimating = true;
-//
-//		this.mAnimationNodes = new HashMap<IDrawAbleNode, AnimationVec3f>();
-//		this.animationConnectionHandler = new AnimationConnectionHandler();
-//		this.lAnimationNodesLeave = new ArrayList<IDrawAbleNode>();
-//
-//		Map<IDrawAbleNode, Vec3f> mLayoutAnimationStart = new HashMap<IDrawAbleNode, Vec3f>();
-//		Map<IDrawAbleNode, Vec3f> mLayoutAnimationEnd = new HashMap<IDrawAbleNode, Vec3f>();
-//
-//
-//		for (IDrawAbleNode node : nodeLayout)
-//			mLayoutAnimationStart.put(node, node.getRealCoordinates());
-//		for (IDrawAbleConnection conn : connectionLayout)
-//			animationConnectionHandler.addConnectionInformation(conn);
-//		
-//		clearDisplay();
-//
-//		for (IDrawAbleNode node : nodeLayout)
-//			mLayoutAnimationEnd.put(node, node.getRealCoordinates());
-//		for (IDrawAbleConnection conn : connectionLayout)
-//			animationConnectionHandler.addConnectionInformation(conn);
-//
-//		
-//		
-//		for (IDrawAbleNode i : mLayoutAnimationStart.keySet()) {
-//			mAnimationNodes.put(i, new AnimationVec3f(mLayoutAnimationStart.get(i), endVec, 100f));
-//		}
-//		
-//		clearDisplay();
-//		bIsNodeListDirty = true;
-//		bIsConnectionListDirty = true;
-//		bIsNodeHighlighted = false;
-//		bIsConnectionHighlighted = false;
-//		lockAnimation.release();
-//	
-//	
-//	}
 
 	protected int getMaxNumberOfSiblingsInLayer(IDrawAbleNode node, int iTargetLayer, int iCurrentLayer) {
 		// IDrawAbleNode rootNode = tree.getRoot();
@@ -585,10 +633,10 @@ public abstract class ATreeLayouter
 //			return;
 		IDrawAbleNode root = this.tree.getRoot();
 
-		runThroughTreeAndPlaceNew(translateVec , root, 1);
-
-		bIsNodeListDirty = true;
-		bIsConnectionListDirty = true;
+//		runThroughTreeAndPlaceNew(translateVec , root, 1);
+//
+//		bIsNodeListDirty = true;
+//		bIsConnectionListDirty = true;
 		//clearDisplay();
 		//renderTreeLayout();
 		return translateVec;
