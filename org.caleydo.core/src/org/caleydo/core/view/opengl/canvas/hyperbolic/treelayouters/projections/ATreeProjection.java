@@ -16,8 +16,8 @@ public abstract class ATreeProjection
 	protected float[] fViewSpaceY = {};
 	protected float fViewSpaceYAbs = 0;
 	
-	protected Vec3f fCenterPoint;
-	protected float radius;
+	protected Vec3f fCenterPoint = null;
+	protected float radius = 0.0f;
 	
 //	public ATreeProjection(int iID, float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
 //		float fViewSpaceXAbs, float[] fViewSpaceY, float fViewSpaceYAbs) {
@@ -58,9 +58,13 @@ public abstract class ATreeProjection
 		fCenterPoint = new Vec3f(fWidth / 2.0f, fHeight / 2.0f, fDepth);
 		radius = Math.min(fViewSpaceXAbs, fViewSpaceYAbs) / 2.0f;
 	}
-	//@Override
-	//public float getProjectedLineFromCenterToBorder(){
-	//	return Math.min(fViewSpaceXAbs, fViewSpaceYAbs);
-	//}
+	@Override
+	public float getLineFromCenterToBorderOfViewSpace(){
+		return radius * ((float) Math.PI / 2);
+	}
+	@Override
+	public float getLineFromPointToCenter(float fPointX, float fPointY){
+		return (float)Math.sqrt(Math.pow(fCenterPoint.x()- fPointX, 2)+Math.pow(fCenterPoint.y() - fPointY, 2));
+	}
 
 }

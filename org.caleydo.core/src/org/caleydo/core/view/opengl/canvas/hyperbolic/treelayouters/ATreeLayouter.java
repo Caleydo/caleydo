@@ -306,7 +306,7 @@ public abstract class ATreeLayouter
 				for (IDrawAbleNode node : nodeLayout)
 					node.draw(gl, false);
 			if (!bIsAnimating) {
-				connectionLayout = animationConnectionHandler.getAllConnections();
+//				connectionLayout = animationConnectionHandler.getAllConnections();
 				mAnimationNodes = null;
 				animationConnectionHandler = null;
 				bIsNodeListDirty = true;
@@ -322,7 +322,7 @@ public abstract class ATreeLayouter
 		else {
 			// TODO: Really bad!
 			// gl.glCallList(iGLDisplayListConnection);
-			buildDisplayListConnections(gl);
+//			buildDisplayListConnections(gl);
 			gl.glCallList(iGLDisplayListNode);
 
 			if (bIsNodeHighlighted && currentSelectedNode != null)
@@ -334,6 +334,7 @@ public abstract class ATreeLayouter
 
 		bIsBusy = false;
 		bIsConnectionListDirty = true;
+//		bIsConnectionListDirty = false;
 		// textRenderer.renderText(gl, strInformation, fViewSpaceX[0], fViewSpaceY[1], 0.1f, 5, 32);
 		informationLabel.setText(strInformation);
 		informationLabel
@@ -505,8 +506,8 @@ public abstract class ATreeLayouter
 //		renderTreeLayout();
 		for (IDrawAbleNode node : nodeLayout)
 			mLayoutAnimationEnd.put(node, node.getRealCoordinates());
-		for (IDrawAbleConnection conn : connectionLayout)
-			animationConnectionHandler.addConnectionInformation(conn);
+//		for (IDrawAbleConnection conn : connectionLayout)
+//			animationConnectionHandler.addConnectionInformation(conn);
 
 		// TODO: find nicer placing!#
 		//raus
@@ -559,12 +560,15 @@ public abstract class ATreeLayouter
 			Vec3f end = new Vec3f(mLayoutAnimationStart.get(i));
 			end.add(vec);
 			mLayoutAnimationEnd.put(i, end);
-			
+
 			mAnimationNodes.put(i, new AnimationVec3f(start, end, 50.0f));
 		}
-//		clearDisplay();
+//		for (IDrawAbleConnection conn : connectionLayout)
+//		animationConnectionHandler.addConnectionInformation(conn);
+		clearDisplay();
 		bIsNodeListDirty = true;
 		bIsConnectionListDirty = true;
+//		bIsConnectionListDirty = false;
 		bIsNodeHighlighted = false;
 		bIsConnectionHighlighted = false;
 		lockAnimation.release();

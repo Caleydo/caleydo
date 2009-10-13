@@ -23,6 +23,10 @@ public interface ITreeProjection
 	float[][] getEuclidianCanvas();
 
 	Vec3f getNearestPointOnEuclidianBorder(Vec3f point);
+	
+	public float getLineFromCenterToBorderOfViewSpace();
+	
+	public float getLineFromPointToCenter(float fPointX, float fPointY);
 
 
 }

@@ -33,6 +33,8 @@ public class HyperbolicGlobeProjection
 	@Override
 	public Vec3f projectCoordinates(Vec3f fvCoords) {
 
+		
+		
 		float fNewXCoordinate = 0;
 		float fNewYCoordinate = 0;
 		float fXCoordOfPoint = fvCoords.x();
@@ -144,10 +146,11 @@ public class HyperbolicGlobeProjection
 	// public float getGlobeSurfaceLengthFromEquatorToPole(){
 	// return radius * (float)Math.toRadians(90);
 	// }
-	@Override
-	public float getProjectedLineFromCenterToBorder() {
-		return radius * ((float) Math.PI / 2);
-	}
+//	@Override
+//	public float getLineFromCenterToBorderOfViewSpace() {
+//		return radius * ((float) Math.PI / 2);
+//	}
+	
 
 	@Override
 	public void drawCanvas(GL gl) {
@@ -298,6 +301,11 @@ public class HyperbolicGlobeProjection
 		vec.scale(getProjectedLineFromCenterToBorder() );
 		vec.add(fCenterPoint);
 		return vec;
+	}
+
+	@Override
+	public float getProjectedLineFromCenterToBorder() {
+		return radius * ((float) Math.PI / 2);
 	}
 
 }

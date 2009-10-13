@@ -103,28 +103,43 @@ public abstract class ADrawAbleNode
 		this.fHeight = fHeight;
 		this.fWidth = fWidth;
 		if (treeProjection != null) {
-			Vec3f vpProjectedPoint = treeProjection.projectCoordinates(new Vec3f(fXCoord, fYCoord, fZCoord));
 			
-			
-//			if(vpProjectedPoint.z() > (float)Math.PI)
-			if(vpProjectedPoint.z() < 0){
+			float fLenthOfPointToCenter = treeProjection.getLineFromPointToCenter(fXCoord, fYCoord);
+			float fViewAbleSpace = treeProjection.getProjectedLineFromCenterToBorder();
+			System.out.println(String.valueOf(fViewAbleSpace));
+			if (fLenthOfPointToCenter >= fViewAbleSpace){
 				bIsVisible = false;
-
-				this.fProjectedZCoord = vpProjectedPoint.z();
-				
+				System.out.println(String.valueOf(fLenthOfPointToCenter));
+				System.out.println(String.valueOf(bIsVisible));
 			}
-//			else if(vpProjectedPoint.z() < 0)
-//				bIsVisible = false;
 			else{
 				bIsVisible = true;
-				this.fProjectedXCoord = vpProjectedPoint.x();
-				this.fProjectedYCoord = vpProjectedPoint.y();
-				this.fProjectedZCoord = vpProjectedPoint.z();
+				System.out.println(String.valueOf(fLenthOfPointToCenter));
+				System.out.println(String.valueOf(bIsVisible));
 			}
+			Vec3f vpProjectedPoint = treeProjection.projectCoordinates(new Vec3f(fXCoord, fYCoord, fZCoord));
+			System.out.println();
+			
+			
+////			if(vpProjectedPoint.z() > (float)Math.PI)
+//			if(vpProjectedPoint.z() < 0){
+//				bIsVisible = false;
+//
+//				this.fProjectedZCoord = vpProjectedPoint.z();
+//				
+//			}
+////			else if(vpProjectedPoint.z() < 0)
+////				bIsVisible = false;
+//			else{
+//				bIsVisible = true;
+//				this.fProjectedXCoord = vpProjectedPoint.x();
+//				this.fProjectedYCoord = vpProjectedPoint.y();
+//				this.fProjectedZCoord = vpProjectedPoint.z();
+//			}
 			{
-//			this.fProjectedXCoord = vpProjectedPoint.x();
-//			this.fProjectedYCoord = vpProjectedPoint.y();
-//			this.fProjectedZCoord = vpProjectedPoint.z();
+			this.fProjectedXCoord = vpProjectedPoint.x();
+			this.fProjectedYCoord = vpProjectedPoint.y();
+			this.fProjectedZCoord = vpProjectedPoint.z();
 			}
 		}
 		else {
@@ -287,6 +302,12 @@ public abstract class ADrawAbleNode
 	protected final void registerDrawAbleObject(EDrawAbleNodeDetailLevel eDetailLevel,
 		DrawAbleObjectFallback drawAbleObject) {
 		mRepresantations.put(eDetailLevel, drawAbleObject);
+	}
+	public void changeCurrentVisiblyOfNode(){
+		if(this.bIsVisible)
+			this.bIsVisible = false;
+		else
+			this.bIsVisible = true;
 	}
 }
 

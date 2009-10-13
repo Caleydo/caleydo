@@ -47,6 +47,8 @@ public class DrawAbleHyperbolicLayoutConnector
 		//calculateSplinePoints();
 		if (this.iNodeA.IsNodeVisible() && this.iNodeB.IsNodeVisible())
 			this.bIsVisible = true;
+		else
+			this.bIsVisible = false;
 			
 		
 	}
@@ -138,8 +140,8 @@ public class DrawAbleHyperbolicLayoutConnector
 
 	@Override
 	public void draw(GL gl, boolean bHighlight) {
-		if (!bIsVisible)
-			return;
+//		if (!bIsVisible)
+//			return;
 		calculateSplinePoints();
 		if (bIsPickAble)
 			if (bHighlight) {
