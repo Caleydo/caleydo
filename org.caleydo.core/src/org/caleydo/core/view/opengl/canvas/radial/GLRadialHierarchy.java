@@ -105,7 +105,7 @@ public class GLRadialHierarchy
 	private OneWaySlider upwardNavigationSlider;
 	private Rectangle controlBox;
 
-	private ClusterNodeSelectionListener clusterNodeMouseOverListener;
+	private ClusterNodeSelectionListener clusterNodeSelectionListener;
 	private RedrawViewListener redrawViewListener;
 	private GoBackInHistoryListener goBackInHistoryListener;
 	private GoForthInHistoryListener goForthInHistoryListener;
@@ -165,7 +165,7 @@ public class GLRadialHierarchy
 			// initHierarchy(tree);
 		}
 		else {
-			// initTestHierarchy();
+//			initTestHierarchy();
 		}
 
 		gl.glEnable(GL.GL_LINE_SMOOTH);
@@ -298,7 +298,7 @@ public class GLRadialHierarchy
 
 		// "data/clustering/experiment_tree_nonbinar.xml"
 		try {
-			tree = treePorter.importTree("data/clustering/gen_tree_nonbinar.xml");
+			tree = treePorter.importTree("data/clustering/hcc_5000.xml");
 		}
 		catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -1029,9 +1029,9 @@ public class GLRadialHierarchy
 		redrawViewListener.setHandler(this);
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
 
-		clusterNodeMouseOverListener = new ClusterNodeSelectionListener();
-		clusterNodeMouseOverListener.setHandler(this);
-		eventPublisher.addListener(ClusterNodeSelectionEvent.class, clusterNodeMouseOverListener);
+		clusterNodeSelectionListener = new ClusterNodeSelectionListener();
+		clusterNodeSelectionListener.setHandler(this);
+		eventPublisher.addListener(ClusterNodeSelectionEvent.class, clusterNodeSelectionListener);
 
 		goBackInHistoryListener = new GoBackInHistoryListener();
 		goBackInHistoryListener.setHandler(this);
@@ -1074,9 +1074,9 @@ public class GLRadialHierarchy
 			eventPublisher.removeListener(redrawViewListener);
 			redrawViewListener = null;
 		}
-		if (clusterNodeMouseOverListener != null) {
-			eventPublisher.removeListener(clusterNodeMouseOverListener);
-			clusterNodeMouseOverListener = null;
+		if (clusterNodeSelectionListener != null) {
+			eventPublisher.removeListener(clusterNodeSelectionListener);
+			clusterNodeSelectionListener = null;
 		}
 		if (goBackInHistoryListener != null) {
 			eventPublisher.removeListener(goBackInHistoryListener);
@@ -1126,7 +1126,9 @@ public class GLRadialHierarchy
 	public void handleUpdateView() {
 		Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		if (tree != null) {
-			initHierarchy(tree);
+			if(pdRealRootElement == null) {
+				initHierarchy(tree);
+			}
 		}
 		else {
 			hashPartialDiscs.clear();

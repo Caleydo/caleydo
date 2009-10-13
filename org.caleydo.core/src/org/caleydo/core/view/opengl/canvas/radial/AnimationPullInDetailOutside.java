@@ -64,7 +64,7 @@ public class AnimationPullInDetailOutside
 		pdCurrentRootElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
 			.getDefaultDrawingStrategy(), iDisplayedOverviewDepth);
 		pdCurrentSelectedElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
-			.getDrawingStrategy(EPDDrawingStrategyType.INVISIBLE), iDisplayedDetailViewDepth);
+			.createDrawingStrategy(EPDDrawingStrategyType.INVISIBLE), iDisplayedDetailViewDepth);
 
 		pdCurrentRootElement.drawHierarchyFull(gl, glu, mvOverviewWidth.getMovementValue(),
 			iDisplayedOverviewDepth);

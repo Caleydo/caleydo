@@ -26,7 +26,7 @@ public class LabelManager {
 	private static float RIGHT_CONTAINER_SPACING = 0.1f;
 	private static float MARKER_RADIUS = 0.05f;
 
-	private ArrayList<Label> alLabels;
+	private ArrayList<LabelInfo> alLabels;
 	private ArrayList<LabelContainer> alLeftContainers;
 	private ArrayList<LabelContainer> alRightContainers;
 	private CaleydoTextRenderer textRenderer;
@@ -39,7 +39,7 @@ public class LabelManager {
 	 * Constructor.
 	 */
 	private LabelManager() {
-		alLabels = new ArrayList<Label>();
+		alLabels = new ArrayList<LabelInfo>();
 		alLeftContainers = new ArrayList<LabelContainer>();
 		alRightContainers = new ArrayList<LabelContainer>();
 		iMaxSegmentDepth = 0;
@@ -51,7 +51,7 @@ public class LabelManager {
 	 * @param label
 	 *            Label that shall be drawn.
 	 */
-	public void addLabel(Label label) {
+	public void addLabel(LabelInfo label) {
 		alLabels.add(label);
 		if (iMaxSegmentDepth < label.getSegmentLabelDepth()) {
 			iMaxSegmentDepth = label.getSegmentLabelDepth();
@@ -83,7 +83,7 @@ public class LabelManager {
 		float fXCenter = fScreenWidth / 2.0f;
 		float fYCenter = fScreenHeight / 2.0f;
 
-		for (Label label : alLabels) {
+		for (LabelInfo label : alLabels) {
 
 			float fSegmentXCenter = label.getSegmentXCenter();
 			float fSegmentYCenter = label.getSegmentYCenter();
@@ -206,7 +206,7 @@ public class LabelManager {
 	 *            Height of the screen.
 	 * @return Label container that has been created using the specified parameters.
 	 */
-	private LabelContainer createLabelContainer(GL gl, Label label, float fXContainerLeft,
+	private LabelContainer createLabelContainer(GL gl, LabelInfo label, float fXContainerLeft,
 		float fYContainerCenter, float fScreenHeight) {
 
 		float fLabelScaling;

@@ -8,7 +8,7 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 
 /**
- * PDDrawingStrategyLabelDecorator sets up a {@link Label} for the partial disc that shall be drawn and adds
+ * PDDrawingStrategyLabelDecorator sets up a {@link LabelInfo} for the partial disc that shall be drawn and adds
  * it to the {@link LabelManager}.
  * 
  * @author Christian Partl
@@ -34,7 +34,7 @@ public class PDDrawingStrategyLabelDecorator
 			drawingStrategy.drawFullCircle(gl, glu, pdDiscToDraw);
 		}
 
-		Label label = new Label(0, 0, 0, pdDiscToDraw.getDrawingStrategyDepth());
+		LabelInfo label = new LabelInfo(0, 0, 0, pdDiscToDraw.getDrawingStrategyDepth());
 
 		float fAverageExpressionValue = pdDiscToDraw.getAverageExpressionValue();
 		float fStandardDeviation = pdDiscToDraw.getStandardDeviation();
@@ -100,8 +100,8 @@ public class PDDrawingStrategyLabelDecorator
 		float fSegmentXCenter = (float) Math.cos(fMidAngleRadiants) * fCenterRadius;
 		float fSegmentYCenter = (float) Math.sin(fMidAngleRadiants) * fCenterRadius;
 
-		Label label =
-			new Label(fSegmentXCenter, fSegmentYCenter, fCenterRadius, pdDiscToDraw.getDrawingStrategyDepth());
+		LabelInfo label =
+			new LabelInfo(fSegmentXCenter, fSegmentYCenter, fCenterRadius, pdDiscToDraw.getDrawingStrategyDepth());
 
 		float fAverageExpressionValue = pdDiscToDraw.getAverageExpressionValue();
 		float fStandardDeviation = pdDiscToDraw.getStandardDeviation();

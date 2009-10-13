@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * 
  * @author Christian Partl
  */
-public class Label {
+public class LabelInfo {
 
 	private ArrayList<LabelLine> alLines;
 	private int iSegmentLabelDepth;
@@ -30,7 +30,7 @@ public class Label {
 	 *            current disc segment (partial disc) is. I.e. it is the drawing strategy depth of a partial
 	 *            disc where a {@link PDDrawingStrategyLabelDecorator} has been used.
 	 */
-	public Label(float fSegmentXCenter, float fSegmentYCenter, float fSegmentCenterRadius,
+	public LabelInfo(float fSegmentXCenter, float fSegmentYCenter, float fSegmentCenterRadius,
 		int iSegmentLabelDepth) {
 		this.fSegmentXCenter = fSegmentXCenter;
 		this.fSegmentYCenter = fSegmentYCenter;

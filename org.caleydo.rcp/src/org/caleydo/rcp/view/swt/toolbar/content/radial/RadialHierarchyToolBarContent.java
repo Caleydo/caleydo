@@ -8,7 +8,6 @@ import org.caleydo.core.view.opengl.canvas.radial.SerializedRadialHierarchyView;
 import org.caleydo.rcp.action.toolbar.view.radial.ChangeColorModeAction;
 import org.caleydo.rcp.action.toolbar.view.radial.GoBackInHistoryAction;
 import org.caleydo.rcp.action.toolbar.view.radial.GoForthInHistoryAction;
-import org.caleydo.rcp.action.toolbar.view.radial.ToggleMagnifyingGlassAction;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.ActionToolBarContainer;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
@@ -42,14 +41,14 @@ public class RadialHierarchyToolBarContent
 		IToolBarItem goBackInHistory = new GoBackInHistoryAction(targetViewID);
 		IToolBarItem goForthInHistory = new GoForthInHistoryAction(targetViewID);
 		IToolBarItem changeColorMode = new ChangeColorModeAction(targetViewID);
-		IToolBarItem magnifyingGlass = new ToggleMagnifyingGlassAction();
+//		IToolBarItem magnifyingGlass = new ToggleMagnifyingGlassAction();
 		if (depthSlider == null) {
 			depthSlider = new DepthSlider("", serializedView.getMaxDisplayedHierarchyDepth());
 		}
 		actionList.add(goBackInHistory);
 		actionList.add(goForthInHistory);
 		actionList.add(changeColorMode);
-		actionList.add(magnifyingGlass);
+//		actionList.add(magnifyingGlass);
 		actionList.add(depthSlider);
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
