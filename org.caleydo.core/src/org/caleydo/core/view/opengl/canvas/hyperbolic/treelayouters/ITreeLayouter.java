@@ -17,7 +17,7 @@ public interface ITreeLayouter
 
 	void setHighlightedNode(int iNodeID);
 
-	void setHiglightedLine(int iLineID);
+	void setHiglightedConnection(int iLineID);
 
 	void setTree(Tree<IDrawAbleNode> tree);
 

@@ -18,39 +18,18 @@ public class DrawAbleHyperbolicLayoutConnector
 	private int iID;
 	protected IDrawAbleNode iNodeA;
 	protected IDrawAbleNode iNodeB;
-	private ITreeProjection treeProjector = null;
+	//private ITreeProjection treeProjector = null;
 	private boolean bIsPickAble = true;
 	FloatBuffer fbSplinePoints = null;
-	boolean bIsVisible = false;
+//	boolean bIsVisible = false;
+	private boolean bHighlight;
 
-	public DrawAbleHyperbolicLayoutConnector(IDrawAbleNode iNodeA, IDrawAbleNode iNodeB) {
-		if(iNodeA.getID() > iNodeB.getID()){
-		this.iNodeA = iNodeA;
-		this.iNodeB = iNodeB;
-		}
-		else{
-			this.iNodeA = iNodeB;
-			this.iNodeB = iNodeA;
-		}
-		generateID();
-		this.treeProjector = null;
-		// isPickable = in
-		calculateSplinePoints();
-	}
-
-	public DrawAbleHyperbolicLayoutConnector(IDrawAbleNode iNodeA, IDrawAbleNode iNodeB,
-		ITreeProjection treeProjector) {
+	public DrawAbleHyperbolicLayoutConnector(IDrawAbleNode iNodeA, IDrawAbleNode iNodeB/*,
+		ITreeProjection treeProjector*/) {
 		this.iNodeA = iNodeA;
 		this.iNodeB = iNodeB;
 		this.iID = generateID();
-		this.treeProjector = treeProjector;
-		//calculateSplinePoints();
-		if (this.iNodeA.IsNodeVisible() && this.iNodeB.IsNodeVisible())
-			this.bIsVisible = true;
-		else
-			this.bIsVisible = false;
-			
-		
+		//this.treeProjector = treeProjector;
 	}
 
 	@Override
@@ -68,7 +47,23 @@ public class DrawAbleHyperbolicLayoutConnector
 		int right = iNodeB.hashCode();
 		return ((left << 12) | (left >> (32 - 12))) ^ right;
 	}
+	
+	@Override
+	public final boolean isVisible() {
+		return iNodeA.isVisible() && iNodeB.isVisible();
+		//return iNodeA.isVisible() || iNodeB.isVisible();
+	}
 
+	@Override
+	public void setHighlight(boolean b) {
+		this.bHighlight = b;
+	}
+
+	@Override
+	public void updateConnection(ITreeProjection treeProjector){
+		calculateSplinePoints(treeProjector);
+	}
+	
 	private final Vec3f[] findClosestCorrespondendingPoints() {
 		float fMin = Float.MAX_VALUE;
 		Vec3f foundA = null;
@@ -105,7 +100,7 @@ public class DrawAbleHyperbolicLayoutConnector
 		return vaPoints;
 	}
 
-	private final void calculateSplinePoints() {
+	private final void calculateSplinePoints(ITreeProjection treeProjector) {
 		Vec3f[] endPoints = findClosestCorrespondendingPoints();
 		// first point
 		Vec3f pStartP = endPoints[0];
@@ -135,31 +130,23 @@ public class DrawAbleHyperbolicLayoutConnector
 					pEndP.z() };
 		fbSplinePoints.put(fA);
 		fbSplinePoints.rewind();
-		//this.bIsPickAble = iNodeA.isPickAble() && iNodeB.isPickAble();
+		// this.bIsPickAble = iNodeA.isPickAble() && iNodeB.isPickAble();
 	}
 
 	@Override
-	public void draw(GL gl, boolean bHighlight) {
-//		if (!bIsVisible)
-//			return;
-		calculateSplinePoints();
-		if (bIsPickAble)
-			if (bHighlight) {
-				gl.glColor4fv(HyperbolicRenderStyle.DA_HB_GEOM_CONNECTION_COLORSHEME_HL, 0);
-				gl.glLineWidth(HyperbolicRenderStyle.DA_HB_GEOM_CONNECTION_THICKNESS_HL);
-			}
-			else {
-				gl.glColor4fv(HyperbolicRenderStyle.DA_HB_CONNECTION_COLORSHEME, 0);
-				gl.glLineWidth(HyperbolicRenderStyle.DA_HB_CONNECTION_THICKNESS);
-			}
+	public void draw(GL gl) {
+//		calculateSplinePoints();
+		if (bHighlight) {
+			gl.glColor4fv(HyperbolicRenderStyle.DA_HB_GEOM_CONNECTION_COLORSHEME_HL, 0);
+			gl.glLineWidth(HyperbolicRenderStyle.DA_HB_GEOM_CONNECTION_THICKNESS_HL);
+		}
 		else {
-			gl.glColor4fv(HyperbolicRenderStyle.DA_HB_CONNECTION_COLORSHEME_NO_PICK, 0);
-			gl.glLineWidth(HyperbolicRenderStyle.DA_HB_CONNECTION_THICKNESS_NO_PICK);
+			gl.glColor4fv(HyperbolicRenderStyle.DA_HB_CONNECTION_COLORSHEME, 0);
+			gl.glLineWidth(HyperbolicRenderStyle.DA_HB_CONNECTION_THICKNESS);
 		}
 		fbSplinePoints.rewind();
 		gl.glEnable(GL.GL_MAP1_VERTEX_3);
 		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 3, fbSplinePoints);
-
 		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = 0; i <= HyperbolicRenderStyle.DA_SPLINE_CONNECTION_NR_CTRLPOINTS; i++)
 			gl.glEvalCoord1f((float) i / (float) HyperbolicRenderStyle.DA_SPLINE_CONNECTION_NR_CTRLPOINTS);
@@ -187,17 +174,19 @@ public class DrawAbleHyperbolicLayoutConnector
 	public final boolean isPickAble() {
 		return bIsPickAble;
 	}
-	
+
 	@Override
-	public final IDrawAbleNode[] getConnectedNodes(){
+	public final IDrawAbleNode[] getConnectedNodes() {
 		IDrawAbleNode[] nodes = new IDrawAbleNode[2];
-		if(iNodeA.getID() < iNodeB.getID()){
+		if (iNodeA.getID() < iNodeB.getID()) {
 			nodes[0] = iNodeA;
-			nodes[1] = iNodeB;}
-		else{
+			nodes[1] = iNodeB;
+		}
+		else {
 			nodes[0] = iNodeB;
-			nodes[1] = iNodeA;}
-		
+			nodes[1] = iNodeA;
+		}
+
 		return nodes;
 	}
 
@@ -240,4 +229,24 @@ public class DrawAbleHyperbolicLayoutConnector
 	// @Override
 	// public abstract void drawConnectionFromStartToEnd(GL gl, List<Vec3f> lPoints, float fThickness);
 
+
+
 }
+//public DrawAbleHyperbolicLayoutConnector(IDrawAbleNode iNodeA, IDrawAbleNode iNodeB) {
+//if (iNodeA.getID() > iNodeB.getID()) {
+//	this.iNodeA = iNodeA;
+//	this.iNodeB = iNodeB;
+//}
+//else {
+//	this.iNodeA = iNodeB;
+//	this.iNodeB = iNodeA;
+//}
+//generateID();
+//this.treeProjector = null;
+//// isPickable = in
+//calculateSplinePoints();
+//}
+//if (this.iNodeA.isVisible() && this.iNodeB.isVisible())
+//this.bIsVisible = true;
+//else
+//this.bIsVisible = false;

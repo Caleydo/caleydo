@@ -58,8 +58,11 @@ public abstract class ATreeLayouter
 	protected Semaphore lockAnimation = null;
 
 	// TODO: Maybe replace by maps!
-	protected List<IDrawAbleNode> nodeLayout;
-	private List<IDrawAbleConnection> connectionLayout;
+	// protected List<IDrawAbleNode> nodeLayout;
+	// private List<IDrawAbleConnection> connectionLayout;
+
+	protected Map<Integer, IDrawAbleNode> nodeLayout;
+	protected Map<Integer, IDrawAbleConnection> connectionLayout;
 
 	private PickingManager pickingManager;
 	private int iViewID;
@@ -85,14 +88,19 @@ public abstract class ATreeLayouter
 	// protected CaleydoTextRenderer textRenderer = null;
 	protected TextLabel informationLabel = null;
 	private Semaphore lockAnimateToNewTree = null;
+	private Vec3f vTranslation = null;
+	private int iGoneAnimationSteps = 0;
 
 	public ATreeLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID,
 		HyperbolicRenderStyle renderStyle, ITreeProjection treeProjector, String strInformation) {
 		this.viewFrustum = frustum;
 		this.pickingManager = pickingManager;
 		this.iViewID = iViewID;
-		this.nodeLayout = new ArrayList<IDrawAbleNode>();
-		this.connectionLayout = new ArrayList<IDrawAbleConnection>();
+		this.nodeLayout = new HashMap<Integer, IDrawAbleNode>();
+		this.connectionLayout = new HashMap<Integer, IDrawAbleConnection>();
+
+		// this.nodeLayout = new ArrayList<IDrawAbleNode>();
+		// this.connectionLayout = new ArrayList<IDrawAbleConnection>();
 		this.alMaxSiblingsInLayer = new ArrayList<Integer>();
 		this.treeProjector = treeProjector;
 		this.strInformation = strInformation;
@@ -146,7 +154,9 @@ public abstract class ATreeLayouter
 
 	@Override
 	public final void setLayoutDirty() {
-		finishAnimation();
+		// finishAnimation();
+		nodeLayout.clear();
+		connectionLayout.clear();
 		bIsLayoutDirty = true;
 		bIsNodeListDirty = true;
 		bIsConnectionListDirty = true;
@@ -160,44 +170,97 @@ public abstract class ATreeLayouter
 	public final void setHighlightedNode(int iNodeID) {
 		if (bIsNodeHighlighted && iHighlightedNode == iNodeID)
 			return;
+		if (bIsNodeHighlighted)
+			setNodeHighlight(iHighlightedNode, false);
 		bIsNodeHighlighted = true;
 		iHighlightedNode = iNodeID;
+		setNodeHighlight(iHighlightedNode, true);
+		if (bIsConnectionHighlighted) {
+			setConnectionHighlight(iHighlightedConnection, false);
+			bIsConnectionHighlighted = false;
+			bIsConnectionListDirty = true;
+		}
 		bIsNodeListDirty = true;
-		bIsConnectionListDirty = bIsConnectionHighlighted;
-		bIsConnectionHighlighted = false;
 	}
 
-	public final void setHiglightedLine(int iLineID) {
+	private final void setNodeHighlight(int i, boolean b) {
+		IDrawAbleNode node = nodeLayout.get(i);
+		if (node != null)
+			node.setHighlight(b);
+	}
+
+	private final void setConnectionHighlight(int i, boolean b) {
+		IDrawAbleConnection conn = connectionLayout.get(i);
+		if (conn != null)
+			conn.setHighlight(b);
+	}
+
+	public final void setHiglightedConnection(int iLineID) {
 		if (bIsConnectionHighlighted && iHighlightedConnection == iLineID)
 			return;
+		if (bIsConnectionHighlighted)
+			setConnectionHighlight(iHighlightedConnection, false);
 		bIsConnectionHighlighted = true;
 		iHighlightedConnection = iLineID;
+		setConnectionHighlight(iHighlightedConnection, true);
+		if (bIsNodeHighlighted) {
+			setNodeHighlight(iHighlightedNode, false);
+			bIsNodeHighlighted = false;
+			bIsNodeListDirty = true;
+		}
 		bIsConnectionListDirty = true;
-		bIsNodeListDirty = bIsNodeHighlighted;
-		bIsNodeHighlighted = false;
 	}
 
 	private final void buildDisplayListNodes(GL gl) {
+		if (!bIsNodeListDirty)
+			return;
 		gl.glNewList(iGLDisplayListNode, GL.GL_COMPILE);
-		for (IDrawAbleNode node : nodeLayout) {
-			// if (node.isPickAble()) {
-			gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_NODE_SELECTION, node
-				.getID()));
-			if (bIsNodeHighlighted && node.getID() == iHighlightedNode) {
-				currentSelectedNode = node;
-				node.draw(gl, true);
+
+		for (Integer i : nodeLayout.keySet()) {
+			IDrawAbleNode node = nodeLayout.get(i);
+			if (node.isVisible()) {
+				gl
+					.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_NODE_SELECTION,
+						i));
+				node.draw(gl);
+				gl.glPopName();
 			}
-			else
-				node.draw(gl, false);
-			node.placeNodeName(0);
-			gl.glPopName();
-			// }
-			// else {
-			// node.draw(gl, false);
-			// }
+
 		}
 		gl.glEndList();
+		bIsNodeListDirty = false;
 	}
+
+	// for(IDrawAbleNode node : nodeLayout)
+	// if(node.isVisible())
+	// {
+	// gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_NODE_SELECTION, node
+	// .getID()));
+	// node.draw(gl);
+	// gl.glPopName();
+	// }
+	// gl.glEndList();
+	// bIsNodeListDirty = false;
+	// }
+	// for (IDrawAbleNode node : nodeLayout) {
+	// // if (node.isPickAble()) {
+	// gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_NODE_SELECTION, node
+	// .getID()));
+	// if (bIsNodeHighlighted && node.getID() == iHighlightedNode) {
+	// currentSelectedNode = node;
+	// node.draw(gl);//, true);
+	// }
+	// else
+	// node.draw(gl);//, false);
+	// node.placeNodeName(0);
+	// gl.glPopName();
+	// // }
+	// // else {
+	// // node.draw(gl, false);
+	// // }
+	// }
+
+	// }
 
 	private void drawTextBox(GL gl) {
 		// TODO: check usage of LABELS, from RADIAL View
@@ -210,22 +273,40 @@ public abstract class ATreeLayouter
 
 	private final void buildDisplayListConnections(GL gl) {
 		// TODO: check usage of DL with Bezier Splines and glevalcoord1f function!
+		// if(!bIsConnectionListDirty)
+		// return;
 		// gl.glNewList(iGLDisplayListConnection, GL.GL_COMPILE);
-		for (IDrawAbleConnection conn : connectionLayout) {
-			if (conn.isPickAble()) {
-				gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_LINE_SELECTION,
-					conn.getID()));
-				if (bIsConnectionHighlighted && conn.getID() == iHighlightedConnection)
-					conn.draw(gl, true);
-				else
-					conn.draw(gl, false);
+
+		//if(!bIsConnectionListDirty)
+		//	return;
+		updateAllConnections();
+		
+		for (int i : connectionLayout.keySet()) {
+			IDrawAbleConnection conn = connectionLayout.get(i);
+			if (conn.isVisible()) {
+				gl
+					.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_LINE_SELECTION,
+						i));
+				conn.draw(gl);
 				gl.glPopName();
 			}
-			else
-				conn.draw(gl, false);
-
 		}
-		// gl.glEndList();
+
+		// for (IDrawAbleConnection conn : connectionLayout) {
+		// if (conn.isPickAble()) {
+		// gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_LINE_SELECTION,
+		// conn.getID()));
+		// if (bIsConnectionHighlighted && conn.getID() == iHighlightedConnection)
+		// conn.draw(gl, true);
+		// else
+		// conn.draw(gl, false);
+		// gl.glPopName();
+		// }
+		// else
+		// conn.draw(gl, false);
+		//
+		// }
+		// // gl.glEndList();
 
 	}
 
@@ -237,114 +318,159 @@ public abstract class ATreeLayouter
 
 	@Override
 	public final void buildDisplayLists(GL gl) {
-		if (tree == null)
-			return;
-		if (bIsLayoutDirty) {
-			setLayoutDirty();
-			clearDisplay();
-			renderTreeLayout();
-		}
-		if (bIsNodeListDirty) {
-			buildDisplayListNodes(gl);
-			bIsNodeListDirty = false;
-		}
-		if (bIsConnectionListDirty) {
-			buildDisplayListConnections(gl);
-			bIsConnectionListDirty = false;
-		}
-		setLayoutClean();
+		buildDisplayListNodes(gl);
+		buildDisplayListConnections(gl);
+
+		// if (tree == null)
+		// return;
+		// if (bIsLayoutDirty) {
+		// setLayoutDirty();
+		// clearDisplay();
+		// renderTreeLayout();
+		// }
+		// if (bIsNodeListDirty) {
+		// buildDisplayListNodes(gl);
+		// bIsNodeListDirty = false;
+		// }
+		// if (bIsConnectionListDirty) {
+		// buildDisplayListConnections(gl);
+		// bIsConnectionListDirty = false;
+		// }
+		// setLayoutClean();
 	}
 
 	@Override
 	public final void display(GL gl) {
+		if (bIsAnimating) {
+			translateView();
+			iGoneAnimationSteps++;
+			bIsAnimating = !(iGoneAnimationSteps == HyperbolicRenderStyle.NUM_ANIMATION_STEPS);
+			bIsConnectionListDirty = true;
+			bIsNodeListDirty = true;
+		}
+		if (bIsLayoutDirty) {
+			this.renderTreeLayout();
+			bIsLayoutDirty = false;
+			bIsConnectionListDirty = true;
+			bIsNodeListDirty = true;
+		}
 		if (treeProjector != null)
 			treeProjector.drawCanvas(gl);
-		if (bIsAnimating) {
-			try {
-				lockAnimation.acquire();
-			}
-			catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (!bIsAnimating) {
-				lockAnimation.release();
-				return;
-			}
-			bIsAnimating = false;
-			List<IDrawAbleNode> dummy = new ArrayList<IDrawAbleNode>();
-			if (!mAnimationNodes.isEmpty())
-				for (IDrawAbleNode node : mAnimationNodes.keySet()) {
-					AnimationVec3f vec = mAnimationNodes.get(node);
-					if (!vec.nextStep()) {
-						bIsAnimating = true;
-						node.place(vec.getCurrentPos().x(), vec.getCurrentPos().y(), vec.getCurrentPos().z(),
-							node.getDimension().x(), node.getDimension().y(), treeProjector);
-					}
-					else {
-						node.place(vec.getFinalPos().x(), vec.getFinalPos().y(), vec.getFinalPos().z(), node
-							.getDimension().x(), node.getDimension().y(), treeProjector);
-						dummy.add(node);
+		if (nodeLayout.isEmpty())
+			return;
+		buildDisplayLists(gl);
+		gl.glCallList(iGLDisplayListNode);
+		//gl.glCallList(iGLDisplayListConnection);
 
-						if (lAnimationNodesLeave.contains(node)) {
-							animationConnectionHandler.clearAllOccurencesOfNode(node);
-							lAnimationNodesLeave.remove(node);
-						}
-						else
-							nodeLayout.add(node);
+		// for(IDrawAbleNode node : nodeLayout)
+		// if(node.IsNodeVisible())
+		// node.draw(gl);//, false);
+		// for(IDrawAbleConnection conn : connectionLayout)
+		// if(conn.isVisible())
+		// conn.draw(gl, false);
+		// if (bIsAnimating) {
+		// try {
+		// lockAnimation.acquire();
+		// }
+		// catch (InterruptedException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// if (!bIsAnimating) {
+		// lockAnimation.release();
+		// return;
+		// }
+		// bIsAnimating = false;
+		// List<IDrawAbleNode> dummy = new ArrayList<IDrawAbleNode>();
+		// if (!mAnimationNodes.isEmpty())
+		// for (IDrawAbleNode node : mAnimationNodes.keySet()) {
+		// AnimationVec3f vec = mAnimationNodes.get(node);
+		// if (!vec.nextStep()) {
+		// bIsAnimating = true;
+		// node.place(vec.getCurrentPos().x(), vec.getCurrentPos().y(), vec.getCurrentPos().z(),
+		// node.getDimension().x(), node.getDimension().y(), treeProjector);
+		// }
+		// else {
+		// node.place(vec.getFinalPos().x(), vec.getFinalPos().y(), vec.getFinalPos().z(), node
+		// .getDimension().x(), node.getDimension().y(), treeProjector);
+		// dummy.add(node);
+		//
+		// if (lAnimationNodesLeave.contains(node)) {
+		// animationConnectionHandler.clearAllOccurencesOfNode(node);
+		// lAnimationNodesLeave.remove(node);
+		// }
+		// else
+		// nodeLayout.add(node);
+		//
+		// }
+		// node.draw(gl, false);
+		// }
+		// if (!dummy.isEmpty())
+		// for (IDrawAbleNode node : dummy) {
+		// mAnimationNodes.remove(node);
+		// }
+		// for (IDrawAbleConnection conn : animationConnectionHandler.getAllConnections())
+		// if(conn.isVisible())
+		// conn.draw(gl, false);
+		// if (!nodeLayout.isEmpty())
+		// for (IDrawAbleNode node : nodeLayout)
+		// node.draw(gl, false);
+		// if (!bIsAnimating) {
+		// // connectionLayout = animationConnectionHandler.getAllConnections();
+		// mAnimationNodes = null;
+		// animationConnectionHandler = null;
+		// bIsNodeListDirty = true;
+		// bIsConnectionListDirty = true;
+		// // bIsConnectionListDirty = false;
+		// // clearDisplay();
+		// // renderTreeLayout();
+		// lockAnimateToNewTree.release();
+		// }
+		// lockAnimation.release();
+		//
+		// }
+		// else {
+		// // TODO: Really bad!
+		// // gl.glCallList(iGLDisplayListConnection);
+		// // buildDisplayListConnections(gl);
+		// gl.glCallList(iGLDisplayListNode);
+		//
+		// if (bIsNodeHighlighted && currentSelectedNode != null)
+		// drawTextBox(gl);
+		// // IDrawAbleConnection conn = new DrawAbleTextBoxConnector(textNode, currentSelectedNode);
+		// // conn.draw(gl, true);
+		// // }
+		// }
+		//
+		// bIsBusy = false;
+		// bIsConnectionListDirty = true;
+		// // bIsConnectionListDirty = false;
+		// // textRenderer.renderText(gl, strInformation, fViewSpaceX[0], fViewSpaceY[1], 0.1f, 5, 32);
+		// informationLabel.setText(strInformation);
+		// informationLabel
+		// .place(fViewSpaceX[0], fViewSpaceY[1], 1.0f, fHeight - fViewSpaceY[1], fViewSpaceXAbs);
+		// informationLabel.draw3d(gl, false);
+	}
 
-					}
-					node.draw(gl, false);
-				}
-			if (!dummy.isEmpty())
-				for (IDrawAbleNode node : dummy) {
-					mAnimationNodes.remove(node);
-				}
-			for (IDrawAbleConnection conn : animationConnectionHandler.getAllConnections())
-				conn.draw(gl, false);
-			if (!nodeLayout.isEmpty())
-				for (IDrawAbleNode node : nodeLayout)
-					node.draw(gl, false);
-			if (!bIsAnimating) {
-//				connectionLayout = animationConnectionHandler.getAllConnections();
-				mAnimationNodes = null;
-				animationConnectionHandler = null;
-				bIsNodeListDirty = true;
-				bIsConnectionListDirty = true;
-//				bIsConnectionListDirty = false;
-//				clearDisplay();
-//				renderTreeLayout();
-				lockAnimateToNewTree.release();
-			}
-			lockAnimation.release();
-
+	private void translateView() {
+		for (int i : nodeLayout.keySet()) {
+			IDrawAbleNode node = nodeLayout.get(i);
+			node.translate(vTranslation, treeProjector);
 		}
-		else {
-			// TODO: Really bad!
-			// gl.glCallList(iGLDisplayListConnection);
-//			buildDisplayListConnections(gl);
-			gl.glCallList(iGLDisplayListNode);
+	}
 
-			if (bIsNodeHighlighted && currentSelectedNode != null)
-				drawTextBox(gl);
-			// IDrawAbleConnection conn = new DrawAbleTextBoxConnector(textNode, currentSelectedNode);
-			// conn.draw(gl, true);
-			// }
+	private void updateAllConnections() {
+		for (int i : connectionLayout.keySet()) {
+			IDrawAbleConnection conn = connectionLayout.get(i);
+			if(conn.isVisible())
+				conn.updateConnection(treeProjector);
 		}
-
-		bIsBusy = false;
-		bIsConnectionListDirty = true;
-//		bIsConnectionListDirty = false;
-		// textRenderer.renderText(gl, strInformation, fViewSpaceX[0], fViewSpaceY[1], 0.1f, 5, 32);
-		informationLabel.setText(strInformation);
-		informationLabel
-			.place(fViewSpaceX[0], fViewSpaceY[1], 1.0f, fHeight - fViewSpaceY[1], fViewSpaceXAbs);
-		informationLabel.draw3d(gl, false);
 	}
 
 	private final void clearDisplay() {
-		nodeLayout.clear();
-//		connectionLayout.clear();
+		bIsNodeListDirty = true;
+		// nodeLayout.clear();
+		// connectionLayout.clear();
 	}
 
 	@Override
@@ -356,11 +482,11 @@ public abstract class ATreeLayouter
 	protected final void placeNode(IDrawAbleNode node, float fXCoord, float fYCoord, float fZCoord,
 		float fHeight, float fWidth) {
 		node.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth, treeProjector);
-		nodeLayout.add(node);
+		nodeLayout.put(node.getID(), node);
 	}
 
 	protected final void placeNode(IDrawAbleNode node) {
-		nodeLayout.add(node);
+		nodeLayout.put(node.getID(), node);
 	}
 
 	// protected final void placeNodeAndProject(IDrawAbleNode node, float fXCoord, float fYCoord, float
@@ -371,7 +497,8 @@ public abstract class ATreeLayouter
 	// }
 
 	protected final void placeConnection(IDrawAbleNode root, IDrawAbleNode child) {
-		connectionLayout.add(new DrawAbleHyperbolicLayoutConnector(root, child, treeProjector));
+		IDrawAbleConnection conn = new DrawAbleHyperbolicLayoutConnector(root, child);
+		connectionLayout.put(conn.getID(), conn);
 	}
 
 	// protected final void placeConnection(IDrawAbleConnection conn) {
@@ -388,191 +515,200 @@ public abstract class ATreeLayouter
 		return bIsAnimating;
 	}
 
-//	public final void animateToNewTree(Tree<IDrawAbleNode> tree) {
-//
-//		// TODO: Maybe send an event to all controls!
-//		// nothing to do
-//		try {
-//			lockAnimateToNewTree.acquire();
-//			lockAnimation.acquire();
-//		}
-//		catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		bIsAnimating = true;
-//
-//		this.mAnimationNodes = new HashMap<IDrawAbleNode, AnimationVec3f>();
-//		this.animationConnectionHandler = new AnimationConnectionHandler();
-//		this.lAnimationNodesLeave = new ArrayList<IDrawAbleNode>();
-//
-//		Map<IDrawAbleNode, Vec3f> mLayoutAnimationStart = new HashMap<IDrawAbleNode, Vec3f>();
-//		Map<IDrawAbleNode, Vec3f> mLayoutAnimationEnd = new HashMap<IDrawAbleNode, Vec3f>();
-//
-//		for (IDrawAbleNode node : nodeLayout)
-//			mLayoutAnimationStart.put(node, node.getRealCoordinates());
-//		for (IDrawAbleConnection conn : connectionLayout)
-//			animationConnectionHandler.addConnectionInformation(conn);
-//		Tree<IDrawAbleNode> oldTree = this.tree;
-//		this.tree = tree;
-//		clearDisplay();
-//		renderTreeLayout();
-//		for (IDrawAbleNode node : nodeLayout)
-//			mLayoutAnimationEnd.put(node, node.getRealCoordinates());
-//		for (IDrawAbleConnection conn : connectionLayout)
-//			animationConnectionHandler.addConnectionInformation(conn);
-//
-//		// TODO: find nicer placing!#
-//		//raus
-//		for (IDrawAbleNode i : mLayoutAnimationStart.keySet())
-//			if (!mLayoutAnimationEnd.containsKey(i)) {
-//				IDrawAbleNode parent = oldTree.getParent(i);
-//				while(!mLayoutAnimationEnd.containsKey(parent))
-//					parent = oldTree.getParent(parent);
-//				mLayoutAnimationEnd.put(i, treeProjector.getNearestPointOnEuclidianBorder(mLayoutAnimationEnd.get(parent)));
-//				lAnimationNodesLeave.add(i);
-//			}
-//		
-//		//rein
-//		for (IDrawAbleNode i : mLayoutAnimationEnd.keySet())
-//			if (!mLayoutAnimationStart.containsKey(i)) {
-//
-//				IDrawAbleNode parent = tree.getParent(i);
-//				while(!mLayoutAnimationStart.containsKey(parent))
-//					parent = tree.getParent(parent);
-//				mLayoutAnimationStart.put(i, treeProjector.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(parent)));
-//				
-//		//		if (mLayoutAnimationStart.containsKey(tree.getParent(i)))
-//		//			mLayoutAnimationStart.put(i, treeProjector
-//		//				.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(tree.getParent(i))));
-//		//		else
-//		//			toadd.add(i);
-//
-//			}
-////		while (toadd.size() > 0) {
-////
-////			for (IDrawAbleNode node : toadd) {
-////				if (mLayoutAnimationStart.containsKey(tree.getParent(node))) {
-////					mLayoutAnimationStart.put(node, treeProjector
-////						.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(tree.getParent(node))));
-////					remove.add(node);
-////				}
-////				toadd.removeAll(remove);
-////				remove.clear();
-////			}
-////		}
-//
-//		for (IDrawAbleNode i : mLayoutAnimationStart.keySet()) {
-//			mAnimationNodes.put(i, new AnimationVec3f(mLayoutAnimationStart.get(i), mLayoutAnimationEnd
-//				.get(i), 100f));
-//		}
-//		clearDisplay();
-//		bIsNodeListDirty = true;
-//		bIsConnectionListDirty = true;
-//		bIsNodeHighlighted = false;
-//		bIsConnectionHighlighted = false;
-//		lockAnimation.release();
-//	}
-	
+	// public final void animateToNewTree(Tree<IDrawAbleNode> tree) {
+	//
+	// // TODO: Maybe send an event to all controls!
+	// // nothing to do
+	// try {
+	// lockAnimateToNewTree.acquire();
+	// lockAnimation.acquire();
+	// }
+	// catch (InterruptedException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// bIsAnimating = true;
+	//
+	// this.mAnimationNodes = new HashMap<IDrawAbleNode, AnimationVec3f>();
+	// this.animationConnectionHandler = new AnimationConnectionHandler();
+	// this.lAnimationNodesLeave = new ArrayList<IDrawAbleNode>();
+	//
+	// Map<IDrawAbleNode, Vec3f> mLayoutAnimationStart = new HashMap<IDrawAbleNode, Vec3f>();
+	// Map<IDrawAbleNode, Vec3f> mLayoutAnimationEnd = new HashMap<IDrawAbleNode, Vec3f>();
+	//
+	// for (IDrawAbleNode node : nodeLayout)
+	// mLayoutAnimationStart.put(node, node.getRealCoordinates());
+	// for (IDrawAbleConnection conn : connectionLayout)
+	// animationConnectionHandler.addConnectionInformation(conn);
+	// Tree<IDrawAbleNode> oldTree = this.tree;
+	// this.tree = tree;
+	// clearDisplay();
+	// renderTreeLayout();
+	// for (IDrawAbleNode node : nodeLayout)
+	// mLayoutAnimationEnd.put(node, node.getRealCoordinates());
+	// for (IDrawAbleConnection conn : connectionLayout)
+	// animationConnectionHandler.addConnectionInformation(conn);
+	//
+	// // TODO: find nicer placing!#
+	// //raus
+	// for (IDrawAbleNode i : mLayoutAnimationStart.keySet())
+	// if (!mLayoutAnimationEnd.containsKey(i)) {
+	// IDrawAbleNode parent = oldTree.getParent(i);
+	// while(!mLayoutAnimationEnd.containsKey(parent))
+	// parent = oldTree.getParent(parent);
+	// mLayoutAnimationEnd.put(i,
+	// treeProjector.getNearestPointOnEuclidianBorder(mLayoutAnimationEnd.get(parent)));
+	// lAnimationNodesLeave.add(i);
+	// }
+	//		
+	// //rein
+	// for (IDrawAbleNode i : mLayoutAnimationEnd.keySet())
+	// if (!mLayoutAnimationStart.containsKey(i)) {
+	//
+	// IDrawAbleNode parent = tree.getParent(i);
+	// while(!mLayoutAnimationStart.containsKey(parent))
+	// parent = tree.getParent(parent);
+	// mLayoutAnimationStart.put(i,
+	// treeProjector.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(parent)));
+	//				
+	// // if (mLayoutAnimationStart.containsKey(tree.getParent(i)))
+	// // mLayoutAnimationStart.put(i, treeProjector
+	// // .getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(tree.getParent(i))));
+	// // else
+	// // toadd.add(i);
+	//
+	// }
+	// // while (toadd.size() > 0) {
+	// //
+	// // for (IDrawAbleNode node : toadd) {
+	// // if (mLayoutAnimationStart.containsKey(tree.getParent(node))) {
+	// // mLayoutAnimationStart.put(node, treeProjector
+	// // .getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(tree.getParent(node))));
+	// // remove.add(node);
+	// // }
+	// // toadd.removeAll(remove);
+	// // remove.clear();
+	// // }
+	// // }
+	//
+	// for (IDrawAbleNode i : mLayoutAnimationStart.keySet()) {
+	// mAnimationNodes.put(i, new AnimationVec3f(mLayoutAnimationStart.get(i), mLayoutAnimationEnd
+	// .get(i), 100f));
+	// }
+	// clearDisplay();
+	// bIsNodeListDirty = true;
+	// bIsConnectionListDirty = true;
+	// bIsNodeHighlighted = false;
+	// bIsConnectionHighlighted = false;
+	// lockAnimation.release();
+	// }
+
 	public final void animateToNewTree(int iExternalID) {
-	
-		//
-		// TODO: Maybe send an event to all controls!
-		// nothing to do
-		try {
-			lockAnimateToNewTree.acquire();
-			lockAnimation.acquire();
-		}
-		catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		vTranslation = translateTree(iExternalID);
+		vTranslation.scale(1.0f / HyperbolicRenderStyle.NUM_ANIMATION_STEPS);
 		bIsAnimating = true;
-
-		this.mAnimationNodes = new HashMap<IDrawAbleNode, AnimationVec3f>();
-		this.animationConnectionHandler = new AnimationConnectionHandler();
-		this.lAnimationNodesLeave = new ArrayList<IDrawAbleNode>();
-
-		Map<IDrawAbleNode, Vec3f> mLayoutAnimationStart = new HashMap<IDrawAbleNode, Vec3f>();
-		Map<IDrawAbleNode, Vec3f> mLayoutAnimationEnd = new HashMap<IDrawAbleNode, Vec3f>();
-
-		for (IDrawAbleNode node : nodeLayout)
-			mLayoutAnimationStart.put(node, node.getRealCoordinates());
-//		for (IDrawAbleConnection conn : connectionLayout)
-//			animationConnectionHandler.addConnectionInformation(conn);
-//		Tree<IDrawAbleNode> oldTree = this.tree;
-//		this.tree = tree;
-		clearDisplay();
-//		renderTreeLayout();
-		for (IDrawAbleNode node : nodeLayout)
-			mLayoutAnimationEnd.put(node, node.getRealCoordinates());
-//		for (IDrawAbleConnection conn : connectionLayout)
-//			animationConnectionHandler.addConnectionInformation(conn);
-
-		// TODO: find nicer placing!#
-		//raus
-//		for (IDrawAbleNode i : mLayoutAnimationStart.keySet())
-//			if (!mLayoutAnimationEnd.containsKey(i)) {
-//				IDrawAbleNode parent = oldTree.getParent(i);
-//				while(!mLayoutAnimationEnd.containsKey(parent))
-//					parent = oldTree.getParent(parent);
-//				mLayoutAnimationEnd.put(i, treeProjector.getNearestPointOnEuclidianBorder(mLayoutAnimationEnd.get(parent)));
-//				lAnimationNodesLeave.add(i);
-//			}
-//		
-//		//rein
-//		for (IDrawAbleNode i : mLayoutAnimationEnd.keySet())
-//			if (!mLayoutAnimationStart.containsKey(i)) {
-//
-//				IDrawAbleNode parent = tree.getParent(i);
-//				while(!mLayoutAnimationStart.containsKey(parent))
-//					parent = tree.getParent(parent);
-//				mLayoutAnimationStart.put(i, treeProjector.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(parent)));
-				
-		//		if (mLayoutAnimationStart.containsKey(tree.getParent(i)))
-		//			mLayoutAnimationStart.put(i, treeProjector
-		//				.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(tree.getParent(i))));
-		//		else
-		//			toadd.add(i);
-
-//			}
-//		while (toadd.size() > 0) {
-//
-//			for (IDrawAbleNode node : toadd) {
-//				if (mLayoutAnimationStart.containsKey(tree.getParent(node))) {
-//					mLayoutAnimationStart.put(node, treeProjector
-//						.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(tree.getParent(node))));
-//					remove.add(node);
-//				}
-//				toadd.removeAll(remove);
-//				remove.clear();
-//			}
-//		}
-
-//		for (IDrawAbleNode i : mLayoutAnimationStart.keySet()) {
-//			mAnimationNodes.put(i, new AnimationVec3f(mLayoutAnimationStart.get(i), mLayoutAnimationEnd
-//				.get(i), 100f));
-//		}
-		
-		Vec3f vec = translateTree(iExternalID);
-		for (IDrawAbleNode i : mLayoutAnimationStart.keySet()) {
-			Vec3f start = new Vec3f(mLayoutAnimationStart.get(i));
-			Vec3f end = new Vec3f(mLayoutAnimationStart.get(i));
-			end.add(vec);
-			mLayoutAnimationEnd.put(i, end);
-
-			mAnimationNodes.put(i, new AnimationVec3f(start, end, 50.0f));
-		}
-//		for (IDrawAbleConnection conn : connectionLayout)
-//		animationConnectionHandler.addConnectionInformation(conn);
-		clearDisplay();
-		bIsNodeListDirty = true;
-		bIsConnectionListDirty = true;
-//		bIsConnectionListDirty = false;
-		bIsNodeHighlighted = false;
-		bIsConnectionHighlighted = false;
-		lockAnimation.release();
+		this.iGoneAnimationSteps = 0;
 	}
+
+	//
+	// TODO: Maybe send an event to all controls!
+	// nothing to do
+	// try {
+	// lockAnimateToNewTree.acquire();
+	// lockAnimation.acquire();
+	// }
+	// catch (InterruptedException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// bIsAnimating = true;
+	//
+	// this.mAnimationNodes = new HashMap<IDrawAbleNode, AnimationVec3f>();
+	// this.animationConnectionHandler = new AnimationConnectionHandler();
+	// this.lAnimationNodesLeave = new ArrayList<IDrawAbleNode>();
+	//
+	// Map<IDrawAbleNode, Vec3f> mLayoutAnimationStart = new HashMap<IDrawAbleNode, Vec3f>();
+	// Map<IDrawAbleNode, Vec3f> mLayoutAnimationEnd = new HashMap<IDrawAbleNode, Vec3f>();
+	//
+	// for (IDrawAbleNode node : nodeLayout)
+	// mLayoutAnimationStart.put(node, node.getRealCoordinates());
+	// // for (IDrawAbleConnection conn : connectionLayout)
+	// // animationConnectionHandler.addConnectionInformation(conn);
+	// // Tree<IDrawAbleNode> oldTree = this.tree;
+	// // this.tree = tree;
+	// clearDisplay();
+	// // renderTreeLayout();
+	// for (IDrawAbleNode node : nodeLayout)
+	// mLayoutAnimationEnd.put(node, node.getRealCoordinates());
+	// // for (IDrawAbleConnection conn : connectionLayout)
+	// // animationConnectionHandler.addConnectionInformation(conn);
+	//
+	// // TODO: find nicer placing!#
+	// // raus
+	// // for (IDrawAbleNode i : mLayoutAnimationStart.keySet())
+	// // if (!mLayoutAnimationEnd.containsKey(i)) {
+	// // IDrawAbleNode parent = oldTree.getParent(i);
+	// // while(!mLayoutAnimationEnd.containsKey(parent))
+	// // parent = oldTree.getParent(parent);
+	// // mLayoutAnimationEnd.put(i,
+	// // treeProjector.getNearestPointOnEuclidianBorder(mLayoutAnimationEnd.get(parent)));
+	// // lAnimationNodesLeave.add(i);
+	// // }
+	// //
+	// // //rein
+	// // for (IDrawAbleNode i : mLayoutAnimationEnd.keySet())
+	// // if (!mLayoutAnimationStart.containsKey(i)) {
+	// //
+	// // IDrawAbleNode parent = tree.getParent(i);
+	// // while(!mLayoutAnimationStart.containsKey(parent))
+	// // parent = tree.getParent(parent);
+	// // mLayoutAnimationStart.put(i,
+	// // treeProjector.getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(parent)));
+	//
+	// // if (mLayoutAnimationStart.containsKey(tree.getParent(i)))
+	// // mLayoutAnimationStart.put(i, treeProjector
+	// // .getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(tree.getParent(i))));
+	// // else
+	// // toadd.add(i);
+	//
+	// // }
+	// // while (toadd.size() > 0) {
+	// //
+	// // for (IDrawAbleNode node : toadd) {
+	// // if (mLayoutAnimationStart.containsKey(tree.getParent(node))) {
+	// // mLayoutAnimationStart.put(node, treeProjector
+	// // .getNearestPointOnEuclidianBorder(mLayoutAnimationStart.get(tree.getParent(node))));
+	// // remove.add(node);
+	// // }
+	// // toadd.removeAll(remove);
+	// // remove.clear();
+	// // }
+	// // }
+	//
+	// // for (IDrawAbleNode i : mLayoutAnimationStart.keySet()) {
+	// // mAnimationNodes.put(i, new AnimationVec3f(mLayoutAnimationStart.get(i), mLayoutAnimationEnd
+	// // .get(i), 100f));
+	// // }
+	//
+	// Vec3f vec = translateTree(iExternalID);
+	// for (IDrawAbleNode i : mLayoutAnimationStart.keySet()) {
+	// Vec3f start = new Vec3f(mLayoutAnimationStart.get(i));
+	// Vec3f end = new Vec3f(mLayoutAnimationStart.get(i));
+	// end.add(vec);
+	// mLayoutAnimationEnd.put(i, end);
+	//
+	// mAnimationNodes.put(i, new AnimationVec3f(start, end, 50.0f));
+	// }
+	// // for (IDrawAbleConnection conn : connectionLayout)
+	// // animationConnectionHandler.addConnectionInformation(conn);
+	// clearDisplay();
+	// bIsNodeListDirty = true;
+	// bIsConnectionListDirty = true;
+	// // bIsConnectionListDirty = false;
+	// bIsNodeHighlighted = false;
+	// bIsConnectionHighlighted = false;
+	// lockAnimation.release();
+	// }
 
 	protected int getMaxNumberOfSiblingsInLayer(IDrawAbleNode node, int iTargetLayer, int iCurrentLayer) {
 		// IDrawAbleNode rootNode = tree.getRoot();
@@ -606,66 +742,52 @@ public abstract class ATreeLayouter
 	}
 
 	protected final void finishAnimation() {
-		try {
-			lockAnimation.acquire();
-		}
-		catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		bIsAnimating = false;
-		if (mAnimationNodes != null)
-			mAnimationNodes = null;
-		if (animationConnectionHandler != null)
-			animationConnectionHandler = null;
-		lockAnimation.release();
-		lockAnimateToNewTree.release();
+		// try {
+		// lockAnimation.acquire();
+		// }
+		// catch (InterruptedException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// bIsAnimating = false;
+		// if (mAnimationNodes != null)
+		// mAnimationNodes = null;
+		// if (animationConnectionHandler != null)
+		// animationConnectionHandler = null;
+		// lockAnimation.release();
+		// lockAnimateToNewTree.release();
 	}
-	
-	public Vec3f getTranslationVector(Vec3f source, Vec3f dest){
+
+	public Vec3f getTranslationVector(Vec3f source, Vec3f dest) {
 		Vec3f vec = source.minus(dest);
 		return vec;
 	}
-	
-	public Vec3f translateTree(int iExternalID){
-		
-		IDrawAbleNode targetNode = tree.getNodeByNumber(iExternalID);
-		Vec3f targetVec = new Vec3f(targetNode.getXCoord(), targetNode.getYCoord(), 0.0f);
-		Vec3f translateVec = getTranslationVector(new Vec3f(fWidth/2, fHeight/2, 0.0f), targetVec);
-		
-//		if (this.tree == null)
-//			return;
-		IDrawAbleNode root = this.tree.getRoot();
 
-//		runThroughTreeAndPlaceNew(translateVec , root, 1);
-//
-//		bIsNodeListDirty = true;
-//		bIsConnectionListDirty = true;
-		//clearDisplay();
-		//renderTreeLayout();
-		return translateVec;
-
+	public Vec3f translateTree(int iExternalID) {
+		IDrawAbleNode targetNode = nodeLayout.get(iExternalID);
+		return getTranslationVector(new Vec3f(fWidth / 2, fHeight / 2, 0.0f), new Vec3f(targetNode
+			.getXCoord(), targetNode.getYCoord(), 0.0f));
 	}
-	private void runThroughTreeAndPlaceNew(Vec3f vec, IDrawAbleNode node, int layer){
-		if(tree.hasChildren(node)){
-			for(IDrawAbleNode child : tree.getChildren(node)){
+
+	private void runThroughTreeAndPlaceNew(Vec3f vec, IDrawAbleNode node, int layer) {
+		if (tree.hasChildren(node)) {
+			for (IDrawAbleNode child : tree.getChildren(node)) {
 				runThroughTreeAndPlaceNew(vec, child, layer++);
 			}
 		}
 
-//		for(IDrawAbleNode node: nodeLayout){
+		// for(IDrawAbleNode node: nodeLayout){
 		Vec3f newNode = new Vec3f(node.getXCoord(), node.getYCoord(), 0.0f);
 		newNode.add(vec);
 		node.setXCoord(newNode.x());
 		node.setYCoord(newNode.y());
 		node.setDetailLevel(EDrawAbleNodeDetailLevel.High);
-		node.place(node.getRealCoordinates().x(), node.getRealCoordinates().y(), 0.0f, 0.1f, 0.1f, treeProjector);
-		
-	//	placeConnection(tree.getParent(node), node);
-//	}
+		node.place(node.getRealCoordinates().x(), node.getRealCoordinates().y(), 0.0f, 0.1f, 0.1f,
+			treeProjector);
+
+		// placeConnection(tree.getParent(node), node);
+		// }
 	}
-		
-	
 
 	// protected final Vec3f[] findClosestCorrespondendingPoints(List<Vec3f> pointsA, List<Vec3f> pointsB){
 	// float fMin = Float.MAX_VALUE;

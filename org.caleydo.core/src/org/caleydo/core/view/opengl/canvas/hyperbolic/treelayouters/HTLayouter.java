@@ -95,7 +95,7 @@ public class HTLayouter
 			placeNode(node, fWidth/2 +  (node.getRealCoordinates().x() * fScalingFactor), fHeight/2 + (node.getRealCoordinates().y() * fScalingFactor), 0.0f, 0.1f, 0.1f);
 			System.out.println(node.getNodeName());
 			System.out.println(String.valueOf(node.getProjectedCoordinates().x())+' '+String.valueOf(node.getProjectedCoordinates().y())+' '+String.valueOf(node.getProjectedCoordinates().z()));
-			System.out.println(String.valueOf(node.IsNodeVisible()));
+			System.out.println(String.valueOf(node.isVisible()));
 			System.out.println();
 			
 //			if(tree.getParent(node) != null)
@@ -128,7 +128,7 @@ public class HTLayouter
 		placeNode(node, node.getRealCoordinates().x(), node.getRealCoordinates().y(), 0.0f, 0.1f, 0.1f);
 //		placeNode(node, fWidth/2 + node.getRealCoordinates().x(), fHeight/2 + node.getRealCoordinates().y(), 0.0f, 0.1f, 0.1f);
 		if(tree.getParent(node) != null)
-		placeConnection(tree.getParent(node), node);
+			placeConnection(tree.getParent(node), node);
 		float originalLineLenth = 0.0f;
 		if (layer <= HyperbolicRenderStyle.MAX_DEPTH)
 		{

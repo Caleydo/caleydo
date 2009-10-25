@@ -308,4 +308,10 @@ public class HyperbolicGlobeProjection
 		return radius * ((float) Math.PI / 2);
 	}
 
+	@Override
+	public Vec3f getRootPoint() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -5,18 +5,25 @@ import java.util.List;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
 
 public interface IDrawAbleConnection
 	extends Comparable<IDrawAbleConnection> {
 
 	public int getID();
 
-	public void draw(GL gl, boolean bHighlight);
+	public void draw(GL gl);
 	
 
 	boolean isPickAble();
 
 	IDrawAbleNode[] getConnectedNodes();
+
+	boolean isVisible();
+	
+	void setHighlight(boolean b);
+
+	void updateConnection(ITreeProjection treeProjector); 
 
 	// public void place(List<Vec3f> lPoints);
 

@@ -28,5 +28,7 @@ public interface ITreeProjection
 	
 	public float getLineFromPointToCenter(float fPointX, float fPointY);
 
+	public Vec3f getRootPoint();
+
 
 }

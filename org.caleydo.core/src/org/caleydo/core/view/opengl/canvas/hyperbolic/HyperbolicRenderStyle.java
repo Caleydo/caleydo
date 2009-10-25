@@ -11,6 +11,8 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 public class HyperbolicRenderStyle
 	extends GeneralRenderStyle {
 
+	public static final int NUM_ANIMATION_STEPS = 30;
+	
 	public static final float X_BORDER_SPACING = 0.05f;
 	public static final float Y_BORDER_SPACING = 0.05f;
 
@@ -20,7 +22,7 @@ public class HyperbolicRenderStyle
 	public static final float X_NODE_SPACING = 0.1f;
 	public static final float NODE_SCALING_PER_LAYER = 0.9f;
 	public static final float MAX_NODE_SIZE = 0.2f;
-	public static int MAX_DEPTH = 5;
+	public static int MAX_DEPTH = 4;
 	public static final EDrawAbleNodeDetailLevel[] DETAIL_LEVEL_GRADING =
 		{ EDrawAbleNodeDetailLevel.VeryHigh, EDrawAbleNodeDetailLevel.High, EDrawAbleNodeDetailLevel.Normal,
 				EDrawAbleNodeDetailLevel.Low, EDrawAbleNodeDetailLevel.VeryLow };
@@ -80,7 +82,7 @@ public class HyperbolicRenderStyle
 	 * Specify how many contact points a DA object should return. value must be a multiple of 4 (4, 8, 12,
 	 * 16,...)
 	 */
-	public static final int DA_OBJ_NUM_CONTACT_POINTS = 48;
+	public static final int DA_OBJ_NUM_CONTACT_POINTS = 8;
 	public static final float[] LABEL_TEXT_COLOR = {0.0f,0.0f,0.0f,1.0f};
 	public static final float[] LABEL_CANVAS_COLOR = {1.0f,1.0f,1.0f,0.4f};
 

@@ -44,7 +44,7 @@ public class DrawAbleObjectFallback
 		for (int i = 0; i < 180; i++) {
 			float angle = (float) (i * 2 * Math.PI / 180f);
 			gl.glVertex3f((float) (fXCoord + Math.cos(angle) * radius), (float) (fYCoord + Math.sin(angle)
-				* radius), 0.0f);
+				* radius), 1.0f);
 		}
 		gl.glEnd();
 		return getConnectionPoints();

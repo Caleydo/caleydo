@@ -40,40 +40,74 @@ public abstract class ADrawAbleNode
 	private float fProjectedYCoord = 0;
 	private float fProjectedZCoord = 0;
 	private List<Vec3f> alOriginalCorrespondingPoints = null;
-	boolean bIsVisible = true;
+	boolean bIsVisible = false;
 	Vec3f positionOutOfDisplay = null;
 
 	// TODO: create DAobjects which would handle this
-	private TextRenderer textRenderer = null;
-
-	private EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject> mRepresantations = null;
-
+	//private TextRenderer textRenderer = null;
 	// private boolean bAlternativeNodeExpression = false;
+	
+	private EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject> mRepresantations = null;
+	protected boolean bHighlight = false;
+
+	private IDrawAbleObject useObject = null;
 
 	public ADrawAbleNode(ClusterNode clNode) {
 		this.clNode = clNode;
 		this.mRepresantations =
 			new EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject>(EDrawAbleNodeDetailLevel.class);
-		this.textRenderer =
-			new TextRenderer(new Font(HyperbolicRenderStyle.NODE_FONT_NAME,
-				HyperbolicRenderStyle.NODE_FONT_STYLE, HyperbolicRenderStyle.NODE_FONT_SIZE), true, true);
+//		this.textRenderer =
+//			new TextRenderer(new Font(HyperbolicRenderStyle.NODE_FONT_NAME,
+//				HyperbolicRenderStyle.NODE_FONT_STYLE, HyperbolicRenderStyle.NODE_FONT_SIZE), true, true);
+	}
+	
+	@Override
+	public final ClusterNode getDependingClusterNode() {
+		return clNode;
 	}
 
-	public void setNodeVisible(){
-		bIsVisible = true;
-	}
-	public void setNodeInvisible(){
-		bIsVisible = false;
-	}
-	public boolean IsNodeVisible(){
+	@Override
+	public boolean isVisible() {
 		return bIsVisible;
 	}
-	public void setNoneDisplayedNodePosition(float x, float y, float z){
+	
+	@Override
+	public final void setHighlight(boolean b) {
+		this.bHighlight = b;
+	}
+
+	protected final void registerDrawAbleObject(IDrawAbleObject DAO_VH, IDrawAbleObject DAO_H,
+		IDrawAbleObject DAO_N, IDrawAbleObject DAO_L, IDrawAbleObject DAO_VL) {
+		mRepresantations.put(EDrawAbleNodeDetailLevel.VeryHigh, DAO_VH);
+		mRepresantations.put(EDrawAbleNodeDetailLevel.High, DAO_H);
+		mRepresantations.put(EDrawAbleNodeDetailLevel.Normal, DAO_N);
+		mRepresantations.put(EDrawAbleNodeDetailLevel.Low, DAO_L);
+		mRepresantations.put(EDrawAbleNodeDetailLevel.VeryLow, DAO_VL);
+		eDetailLevel = EDrawAbleNodeDetailLevel.Normal;
+		useObject = DAO_N;
+	}
+
+	public final void translate(Vec3f vTranslation, ITreeProjection treeProjection){
+		place(fXCoord + vTranslation.x(), fYCoord + vTranslation.y(), 0.0f, fHeight, fWidth,treeProjection);
+	}
+	
+	
+	
+	public void setVisible(boolean bIsVisible) {
+		this.bIsVisible = bIsVisible;
+	}
+
+	
+	
+
+	public void setNoneDisplayedNodePosition(float x, float y, float z) {
 		this.positionOutOfDisplay.set(x, y, z);
 	}
-	public Vec3f getNoneDisplayedNodePosition(){
+
+	public Vec3f getNoneDisplayedNodePosition() {
 		return this.positionOutOfDisplay;
 	}
+
 	@Override
 	public final String getNodeName() {
 		return clNode.getNodeName();
@@ -103,43 +137,42 @@ public abstract class ADrawAbleNode
 		this.fHeight = fHeight;
 		this.fWidth = fWidth;
 		if (treeProjection != null) {
-			
+
 			float fLenthOfPointToCenter = treeProjection.getLineFromPointToCenter(fXCoord, fYCoord);
 			float fViewAbleSpace = treeProjection.getProjectedLineFromCenterToBorder();
 			System.out.println(String.valueOf(fViewAbleSpace));
-			if (fLenthOfPointToCenter >= fViewAbleSpace){
+			if (fLenthOfPointToCenter >= fViewAbleSpace) {
 				bIsVisible = false;
 				System.out.println(String.valueOf(fLenthOfPointToCenter));
 				System.out.println(String.valueOf(bIsVisible));
 			}
-			else{
+			else {
 				bIsVisible = true;
 				System.out.println(String.valueOf(fLenthOfPointToCenter));
 				System.out.println(String.valueOf(bIsVisible));
 			}
 			Vec3f vpProjectedPoint = treeProjection.projectCoordinates(new Vec3f(fXCoord, fYCoord, fZCoord));
 			System.out.println();
-			
-			
-////			if(vpProjectedPoint.z() > (float)Math.PI)
-//			if(vpProjectedPoint.z() < 0){
-//				bIsVisible = false;
-//
-//				this.fProjectedZCoord = vpProjectedPoint.z();
-//				
-//			}
-////			else if(vpProjectedPoint.z() < 0)
-////				bIsVisible = false;
-//			else{
-//				bIsVisible = true;
-//				this.fProjectedXCoord = vpProjectedPoint.x();
-//				this.fProjectedYCoord = vpProjectedPoint.y();
-//				this.fProjectedZCoord = vpProjectedPoint.z();
-//			}
+
+			// // if(vpProjectedPoint.z() > (float)Math.PI)
+			// if(vpProjectedPoint.z() < 0){
+			// bIsVisible = false;
+			//
+			// this.fProjectedZCoord = vpProjectedPoint.z();
+			//				
+			// }
+			// // else if(vpProjectedPoint.z() < 0)
+			// // bIsVisible = false;
+			// else{
+			// bIsVisible = true;
+			// this.fProjectedXCoord = vpProjectedPoint.x();
+			// this.fProjectedYCoord = vpProjectedPoint.y();
+			// this.fProjectedZCoord = vpProjectedPoint.z();
+			// }
 			{
-			this.fProjectedXCoord = vpProjectedPoint.x();
-			this.fProjectedYCoord = vpProjectedPoint.y();
-			this.fProjectedZCoord = vpProjectedPoint.z();
+				this.fProjectedXCoord = vpProjectedPoint.x();
+				this.fProjectedYCoord = vpProjectedPoint.y();
+				this.fProjectedZCoord = vpProjectedPoint.z();
 			}
 		}
 		else {
@@ -161,18 +194,11 @@ public abstract class ADrawAbleNode
 	}
 
 	@Override
-	public void draw(GL gl, boolean bHighlight) {
-		if (mRepresantations != null) {
-			if(bIsVisible){
-			IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
-			// daObj.setAlternativeNodeExpression(bAlternativeNodeExpression);
-			daObj.draw(gl, bHighlight);
-			}
-		}
-		else
-			drawSpecialNode(gl);
+	public final void draw(GL gl) {
+		useObject.draw(gl, bHighlight);
 	}
 
+	// TODO: delete
 	@Override
 	public final void setObjectToDetailLevel(EDrawAbleNodeDetailLevel eDetailLevel, IDrawAbleObject iObject) {
 		mRepresantations.put(eDetailLevel, iObject);
@@ -181,6 +207,7 @@ public abstract class ADrawAbleNode
 	@Override
 	public final void setDetailLevel(EDrawAbleNodeDetailLevel eDetailLevel) {
 		this.eDetailLevel = eDetailLevel;
+		useObject = mRepresantations.get(eDetailLevel);
 	}
 
 	@Override
@@ -216,8 +243,8 @@ public abstract class ADrawAbleNode
 	}
 
 	// TODO: KILL THIS METHOD!!! --> KILL TEXTRENDERING NODE (should be replaced by an Label)
-	protected void drawSpecialNode(GL gl) {
-	}
+//	protected void drawSpecialNode(GL gl) {
+//	}
 
 	@Override
 	public final Vec2f getDimension() {
@@ -269,53 +296,40 @@ public abstract class ADrawAbleNode
 	// TODO: Add this functionality to special DAobjects
 	@Override
 	public final void placeNodeName(int iPosition) {
-		Rectangle2D rect = textRenderer.getBounds(this.getNodeName());
-		float fTextHeight = (float) rect.getHeight();
-		float fTextWidth = (float) rect.getWidth();
-		float fTextScaling = fHeight / fTextHeight / 2.0f;
-		float fTextXPos = fProjectedXCoord - fTextWidth * fTextScaling / 2.0f;
-		float fTextYPos;
-		switch (iPosition) {
-			case 0:
-				fTextYPos = fProjectedYCoord - fWidth / 2.0f - fTextHeight * fTextScaling;
-				break;
-			case 1:
-				fTextYPos = fProjectedYCoord + fWidth / 2.0f + fTextHeight * fTextScaling;
-				break;
-			default:
-				fTextYPos = fProjectedYCoord;
-				break;
-		}
-		// TODO: Specify this color in RendeStyle
-		textRenderer.setColor(0, 0, 0, 1);
-		textRenderer.setSmoothing(true);
-		textRenderer.begin3DRendering();
-		textRenderer.draw3D(this.getNodeName(), fTextXPos, fTextYPos, fProjectedZCoord, fTextScaling);
-		textRenderer.end3DRendering();
+//		Rectangle2D rect = textRenderer.getBounds(this.getNodeName());
+//		float fTextHeight = (float) rect.getHeight();
+//		float fTextWidth = (float) rect.getWidth();
+//		float fTextScaling = fHeight / fTextHeight / 2.0f;
+//		float fTextXPos = fProjectedXCoord - fTextWidth * fTextScaling / 2.0f;
+//		float fTextYPos;
+//		switch (iPosition) {
+//			case 0:
+//				fTextYPos = fProjectedYCoord - fWidth / 2.0f - fTextHeight * fTextScaling;
+//				break;
+//			case 1:
+//				fTextYPos = fProjectedYCoord + fWidth / 2.0f + fTextHeight * fTextScaling;
+//				break;
+//			default:
+//				fTextYPos = fProjectedYCoord;
+//				break;
+//		}
+//		// TODO: Specify this color in RendeStyle
+//		textRenderer.setColor(0, 0, 0, 1);
+//		textRenderer.setSmoothing(true);
+//		textRenderer.begin3DRendering();
+//		textRenderer.draw3D(this.getNodeName(), fTextXPos, fTextYPos, fProjectedZCoord, fTextScaling);
+//		textRenderer.end3DRendering();
 	}
 
-	@Override
-	public ClusterNode getDependingClusterNode() {
-		return clNode;
+	
+	public void changeCurrentVisiblyOfNode() {
+		this.bIsVisible = !this.bIsVisible;
 	}
 
-	protected final void registerDrawAbleObject(EDrawAbleNodeDetailLevel eDetailLevel,
-		DrawAbleObjectFallback drawAbleObject) {
-		mRepresantations.put(eDetailLevel, drawAbleObject);
-	}
-	public void changeCurrentVisiblyOfNode(){
-		if(this.bIsVisible)
-			this.bIsVisible = false;
-		else
-			this.bIsVisible = true;
-	}
+
 }
 
 // private boolean bHighlight;
-// @Override
-// public final void setHighlight(boolean b) {
-// this.bHighlight = b;
-// }
 
 // /**
 // * Constructor

@@ -11,12 +11,9 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects
  */
 public final class TestNode
 	extends ADrawAbleNode {
-	public TestNode(ClusterNode clNode){//String nodeName, int iComparableValue) {
+	public TestNode(ClusterNode clNode) {
 		super(clNode);
-		registerDrawAbleObject(EDrawAbleNodeDetailLevel.VeryHigh, new DrawAbleObjectFallback());
-		registerDrawAbleObject(EDrawAbleNodeDetailLevel.High, new DrawAbleObjectFallback());
-		registerDrawAbleObject(EDrawAbleNodeDetailLevel.Normal, new DrawAbleObjectFallback());
-		registerDrawAbleObject(EDrawAbleNodeDetailLevel.Low, new DrawAbleObjectFallback());
-		registerDrawAbleObject(EDrawAbleNodeDetailLevel.VeryLow, new DrawAbleObjectFallback());
+		registerDrawAbleObject(new DrawAbleObjectFallback(), new DrawAbleObjectFallback(),
+			new DrawAbleObjectFallback(), new DrawAbleObjectFallback(), new DrawAbleObjectFallback());
 	}
 }

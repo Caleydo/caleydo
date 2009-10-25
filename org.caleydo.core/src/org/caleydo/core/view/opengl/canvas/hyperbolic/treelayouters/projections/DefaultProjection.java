@@ -90,4 +90,10 @@ public class DefaultProjection
 		return Math.min(fViewSpaceXAbs / 2, fViewSpaceYAbs / 2);
 	}
 
+	@Override
+	public Vec3f getRootPoint() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

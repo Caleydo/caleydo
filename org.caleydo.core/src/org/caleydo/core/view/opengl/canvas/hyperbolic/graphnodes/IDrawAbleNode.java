@@ -66,7 +66,7 @@ public interface IDrawAbleNode
 	 * @param gl
 	 * @return ArrayList<Vec3f>
 	 */
-	void draw(GL gl, boolean bHighlight);
+	void draw(GL gl);//, boolean bHighlight);
 
 	/**
 	 * Set or replace the representation for a specific detail-level for this node
@@ -117,13 +117,17 @@ public interface IDrawAbleNode
 
 	public float getWidth();
 	
-	public boolean IsNodeVisible();
+	public boolean isVisible();
 
 //	boolean isAlternativeNodeExpression();
 
 	void placeNodeName(int iPosition);
 
 	ClusterNode getDependingClusterNode();
+
+	void setHighlight(boolean b);
+
+	public void translate(Vec3f vTranslation, ITreeProjection treeProjection);
 
 	// /**
 	// * Set how the node is selected
