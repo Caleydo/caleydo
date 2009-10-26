@@ -36,7 +36,7 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.ChangeCanvasDraw
 import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.ChangeTreeTypeListener;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.SetMaxLayoutDepthListener;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.SwitchClusterTypeListener;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.HTGlobeLayouter;
+//import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.HTGlobeLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.HTLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ITreeLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LTLayouter;
@@ -205,6 +205,7 @@ public class GLHyperbolic
 
 	private IDrawAbleNode convertClusterNodeToDrawAbleNode(ClusterNode node) {
 		// TODO: maybe add different NodeTypes... but they need to be defined first
+		
 		return new TestNode(node);
 	}
 

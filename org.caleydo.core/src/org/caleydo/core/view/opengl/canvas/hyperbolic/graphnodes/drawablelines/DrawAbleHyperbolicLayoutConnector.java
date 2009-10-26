@@ -62,9 +62,9 @@ public class DrawAbleHyperbolicLayoutConnector
 	@Override
 	public void updateConnection(ITreeProjection treeProjector){
 		
-		if(!iNodeA.isVisible()){
-			calculateSplinePoints(treeProjector);
-		}
+//		if(!iNodeA.isVisible()){
+//			calculateSplinePoints(treeProjector);
+//		}
 		calculateSplinePoints(treeProjector);
 
 	}

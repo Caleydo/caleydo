@@ -363,6 +363,13 @@ public abstract class ATreeLayouter
 		gl.glCallList(iGLDisplayListNode);
 		//gl.glCallList(iGLDisplayListConnection);
 
+		informationLabel.setText(strInformation);
+		 informationLabel
+		 .place(fViewSpaceX[0], fViewSpaceY[1], 1.0f, fHeight - fViewSpaceY[1], fViewSpaceXAbs);
+		 informationLabel.draw3d(gl, false);
+		
+		
+		
 		// for(IDrawAbleNode node : nodeLayout)
 		// if(node.IsNodeVisible())
 		// node.draw(gl);//, false);
@@ -446,11 +453,13 @@ public abstract class ATreeLayouter
 		// bIsBusy = false;
 		// bIsConnectionListDirty = true;
 		// // bIsConnectionListDirty = false;
+		
 		// // textRenderer.renderText(gl, strInformation, fViewSpaceX[0], fViewSpaceY[1], 0.1f, 5, 32);
 		// informationLabel.setText(strInformation);
 		// informationLabel
 		// .place(fViewSpaceX[0], fViewSpaceY[1], 1.0f, fHeight - fViewSpaceY[1], fViewSpaceXAbs);
 		// informationLabel.draw3d(gl, false);
+
 	}
 
 	private void translateView() {

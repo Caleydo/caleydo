@@ -22,7 +22,7 @@ public class HyperbolicRenderStyle
 	public static final float X_NODE_SPACING = 0.1f;
 	public static final float NODE_SCALING_PER_LAYER = 0.9f;
 	public static final float MAX_NODE_SIZE = 0.2f;
-	public static int MAX_DEPTH = 4;
+	public static int MAX_DEPTH = 5;
 	public static final EDrawAbleNodeDetailLevel[] DETAIL_LEVEL_GRADING =
 		{ EDrawAbleNodeDetailLevel.VeryHigh, EDrawAbleNodeDetailLevel.High, EDrawAbleNodeDetailLevel.Normal,
 				EDrawAbleNodeDetailLevel.Low, EDrawAbleNodeDetailLevel.VeryLow };
