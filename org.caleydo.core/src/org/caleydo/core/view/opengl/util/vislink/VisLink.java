@@ -6,26 +6,24 @@ import javax.media.opengl.GL;
 
 import gleem.linalg.Vec3f;
 
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.general.GeneralManager;
+//import org.caleydo.core.manager.IGeneralManager;
+//import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 
 //import java.nio.ByteBuffer;
 //import java.nio.IntBuffer;
 //import com.sun.opengl.util.BufferUtil;
 
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
+//import com.sun.opengl.util.texture.Texture;
+//import com.sun.opengl.util.texture.TextureCoords;
 
 
 /**
+ * VisLink offers static and non-static methods to render a connection line.
  * 
  * @author Oliver Pimas
- * @version 0.3 (2009-09-02)
+ * @version 2009-10-21
  * 
- * VisLink offers static methods to render a connection line.
- * 
- *
  */
 
 public class VisLink {
@@ -46,7 +44,7 @@ public class VisLink {
 //	private int[] colorBuff;
 //	private int[] depthBuff;
 	
-	private IGeneralManager generalManager;
+//	private IGeneralManager generalManager;
 	
 	
 	/**
@@ -57,15 +55,14 @@ public class VisLink {
 	 */
 	protected VisLink(final Vec3f srcPoint, final Vec3f dstPoint) {
 		
-//		this.blurTexture = new int[1];
-//		this.frameBufferObject = new int[1];
+//		ArrayList<Vec3f> points = new ArrayList<Vec3f>(2);
+//		points.add(srcPoint);
+//		points.add(dstPoint);
+		StraightLine line = new StraightLine(srcPoint, dstPoint, 30); // FIXME: ), numberOfSegments);
+//		this.linePoints = points;
+		this.linePoints = line.getLinePoints();
 		
-		ArrayList<Vec3f> points = new ArrayList<Vec3f>(2);
-		points.add(srcPoint);
-		points.add(dstPoint);
-		this.linePoints = points;
-		
-		this.generalManager = GeneralManager.get();
+//		this.generalManager = GeneralManager.get();
 	}
 	
 	
@@ -77,21 +74,26 @@ public class VisLink {
 	 * @param numberOfSegments Specifies the subintervals of the spline. Note that for
 	 * n subintervals there are n+3 curve points. The begin of the curve, the end of
 	 * the curve and n+1 vertices connecting the n segments.
+	 * 
+	 * @throws IllegalArgumentException if there are < 2 control points
 	 */
-	protected VisLink(final ArrayList<Vec3f> controlPoints, final int offset, int numberOfSegments) {
-		
-//		this.blurTexture = new int[1];
-//		this.frameBufferObject = new int[1];
+	protected VisLink(final ArrayList<Vec3f> controlPoints, final int offset, int numberOfSegments)
+		throws IllegalArgumentException
+	{
 		
 		ArrayList<Vec3f> points = new ArrayList<Vec3f>(controlPoints.subList(offset, controlPoints.size()));
-		if(points.size() == 2) {
-			this.linePoints = points;
+		if(points.size() == (offset + 2)) {
+//			this.linePoints = points;
+			StraightLine line = new StraightLine(points.get(0), points.get(1), numberOfSegments);
+			this.linePoints = line.getLinePoints();
 		}
-		else {
+		else if(points.size() > (offset + 2)) {
 			NURBSCurve curve = new NURBSCurve(points, numberOfSegments);
 			this.linePoints = curve.getCurvePoints();
 		}
-		this.generalManager = GeneralManager.get();
+		else
+			throw new IllegalArgumentException("Need at least two points");
+//		this.generalManager = GeneralManager.get();
 	}
 	
 	
@@ -100,15 +102,15 @@ public class VisLink {
 	 * When the number of control points is 2, this method renders a straight line.
 	 * If the number of control points is greater then 2, a curved line (using NURBS) is rendered.
 	 *
-	 * @param gl the GL object
+	 * @param gl The GL object
 	 * 
-	 * @param controlPoints the control points for the NURBS spline
+	 * @param controlPoints Set of control points for the NURBS spline
 	 * 
-	 * @param numberOfSegments the number of sub-intervals the spline is evaluated with
+	 * @param numberOfSegments Specifies the number of sub-intervals the spline is evaluated with
 	 * (affects u in the Cox-de Boor recursive formula when evaluating the spline)
 	 * Note: For straight lines (only 2 control points), this value doesn't effect the resulting line.
 	 * 
-	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
+	 * @param shadow Turns shadow on/off (boolean: true = shadow on, false = shadow off)
 	 * 
 	 * @throws IllegalArgumentException if there are < 2 control points
 	 */	
@@ -131,13 +133,13 @@ public class VisLink {
 	/**
 	 * 		Creates a straight visual link. Static method.
 	 *
-	 * @param gl the GL object
+	 * @param gl The GL object
 	 * 
-	 * @param srcPoint the lines point of origin
+	 * @param srcPoint The lines point of origin
 	 * 
-	 * @param destPoint the lines end point
+	 * @param destPoint The lines end point
 	 * 
-	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
+	 * @param shadow Turns shadow on/off (boolean: true = shadow on, false = shadow off)
 	 */	
 	public static void renderLine(final GL gl, Vec3f srcPoint, Vec3f destPoint, boolean shadow) {
 		line(gl, srcPoint, destPoint, shadow);		
@@ -147,11 +149,11 @@ public class VisLink {
 	/**
 	 * 		Called for creating a curved visual link.
 	 * 		This method is not recommended when drawing visual links with higher
-	 * 		width, which would case v-shaped gaps to appear at the intersections.
+	 * 		width, which would cause v-shaped gaps to appear at the intersections.
 	 *
-	 * @param gl the GL object
+	 * @param gl The GL object
 	 * 
-	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
+	 * @param shadow Turns shadow on/off (boolean: true = shadow on, false = shadow off)
 	 */
 	protected void spline(final GL gl, boolean shadow) {
 		
@@ -180,13 +182,13 @@ public class VisLink {
 	/**
 	 * 		Called for creating a straight visual link.
 	 * 		
-	 * @param gl the GL object
+	 * @param gl The GL object
 	 * 
-	 * @param vecSrcPoint the lines point of origin
+	 * @param vecSrcPoint The lines point of origin
 	 * 
-	 * @param vecDestPoint the lines end point
+	 * @param vecDestPoint The lines end point
 	 * 
-	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
+	 * @param shadow Turns shadow on/off (boolean: true = shadow on, false = shadow off)
 	 */
 	protected static void line(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint, boolean shadow) {
 		
@@ -212,95 +214,16 @@ public class VisLink {
 	}
 	
 	
-	
-	
-	/**
-	 * 		Creates a polygon visual link.
-	 * When the number of control points is 2, this method renders a straight line.
-	 * If the number of control points is greater then 2, a curved line (using NURBS) is rendered.
-	 *
-	 * @param gl the GL object
-	 * @param controlPoints the control points for the NURBS spline
-	 * @param offset specifies the offset of control points
-	 * @param numberOfSegments the number of sub-intervals the spline is evaluated with
-	 * (affects u in the Cox-de Boor recursive formula when evaluating the spline)
-	 * Note: For straight lines (only 2 control points), this value doesn't effect the resulting line.
-	 * @param shadow turns shadow on/off
-	 * @param antiAliasing turns AA on/off
-	 * 
-	 * @throws IllegalArgumentException if there are < 2 control points
-	 */	
-	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, final int numberOfSegments, boolean shadow, boolean antiAliasing)
-		throws IllegalArgumentException
-	{
-		if(controlPoints.size() >= (offset + 2)) {
-			VisLink visLink = new VisLink(controlPoints, offset, numberOfSegments);
-			if(antiAliasing == true)
-				visLink.polygonLineAA(gl, shadow);
-			else
-				visLink.polygonLine(gl, shadow);
-			
-		}
-		else
-			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 			
-	}
-	
-	
-	/**
-	 * 		Creates a straight polygon visual link.
-	 *
-	 * @param gl the GL object
-	 * @param srcPoint the lines point of origin
-	 * @param destPoint the lines end point
-	 * @param shadow turns shadow on/off
-	 * @param antiAliasing turns AA on/off
-	 */	
-	public static void renderPolygonLine(final GL gl, Vec3f srcPoint, Vec3f destPoint, boolean shadow, boolean antiAliasing) {
-		VisLink visLink = new VisLink(srcPoint, destPoint);
-		if(antiAliasing == true)
-			visLink.polygonLineAA(gl, shadow);
-		else
-			visLink.polygonLine(gl, shadow);
-	}
-	
-	
-	/**
-	 * 		Renders a polygon line. Recommended for lines with higher width.
-	 * 
-	 * @param gl the GL object
-	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
-	 */
-	protected void polygonLine(final GL gl, boolean shadow) {
-		
-		if(shadow == true)
-			drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, (ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * 1.5f), 1);
-		
-		drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH, 1);
-	}
-	
-	
-	/**
-	 * 		Renders a polygon line with AA. Recommended for lines with higher width.
-	 * 
-	 * @param gl The GL object
-	 * @param shadow Turns shadow on/off (boolean: true = shadow on, false = shadow off)
-	 */
-	protected void polygonLineAA(final GL gl, boolean shadow) {
-		if(shadow == true) {
-			drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, (ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * 1.5f), ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-		}
-		
-		drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-	}
-	
-	
 	/** 
 	 * 		Generates vertices for a polygon line from a given set of curve points.
 	 * 
-	 *@param gl the GL Object
-	 *@param curvePoints set of curve points
+	 *@param gl The GL Object
+	 *@param curvePoints Set of curve points
+	 *@param width The width of the resulting line
 	 *
-	 *@return a list of vertices
+	 *@return A list of vertices (polygon line)
+	 *
+	 *@throws IllegalargumentException if there are < 2 control points
 	*/
 	protected static ArrayList<Vec3f> generatePolygonVertices(final GL gl, ArrayList<Vec3f> points, float width)
 	throws IllegalArgumentException
@@ -377,168 +300,6 @@ public class VisLink {
 	
 	
 	/**
-	 * 		Draws the line (AA-Quality can be specified)
-	 * 
-	 * @param gl The GL object
-	 * @param RGBA Specifies the color of the line
-	 * @param width Specifies the width of the line
-	 * @param quality Specifies the AA-Quality of the line. Higher value is better quality but costs performance.
-	 */
-	protected void drawPolygonLine(final GL gl, float[] RGBA, float width, int quality) {
-		
-		try {
-			checkRGBA(RGBA);
-		} catch(IllegalArgumentException iae) {throw iae;}
-		
-		float red = RGBA[0];
-		float green = RGBA[1];
-		float blue = RGBA[2];
-		float alpha = RGBA[3];
-		float alphaChange = alpha / quality;
-		float unit = width / quality;
-		float lineWidth = width - (((quality - 1) * unit) / 2);
-		
-		ArrayList<Vec3f> vertices = new ArrayList<Vec3f>();
-		
-		for(int j = 1; j <= quality; j++) {
-			// The spline attributes
-			gl.glColor4fv(new float[]{red, green, blue, alpha}, 0);
-			
-			vertices.clear();
-			vertices = generatePolygonVertices(gl, linePoints, lineWidth);
-			
-			// the spline
-			gl.glBegin(GL.GL_QUAD_STRIP);
-			for(int i = 0; i < vertices.size(); i++) {
-				gl.glVertex3f(vertices.get(i).x(), vertices.get(i).y(), vertices.get(i).z());
-			}
-			gl.glEnd();
-			
-			alpha -= alphaChange;
-			lineWidth += unit;
-		}	
-	}
-	
-	
-	/**
-	 * 		Draws the first [segments] segments of the line (AA-Quality can be specified)
-	 * 
-	 * @param gl The GL object
-	 * @param RGBA Specifies the color of the line
-	 * @param width Specifies the width of the line
-	 * @param quality Specifies the AA-Quality of the line. Higher value is better quality but costs performance.
-	 * @param drawSegments Specifies the first n segments to be drawn
-	 * 
-	 * @return true if the whole line has been drawn, false if it's only partly drawn
-	 * 
-	 * @throws IllegalArgumentException if drawSegments exceeds the number of line-segments
-	 */
-	public boolean drawPolygonLineBySegments(final GL gl, float[] RGBA, float width, int quality, long drawSegments)
-		throws IllegalArgumentException
-	{
-		
-		try {
-			checkRGBA(RGBA);
-		} catch(IllegalArgumentException iae) {throw iae;}
-		
-		quality = (quality < 1) ? 1 : quality; // line should be drawn at least 1 time
-		
-		float red = RGBA[0];
-		float green = RGBA[1];
-		float blue = RGBA[2];
-		float alpha = RGBA[3];
-		float alphaChange = alpha / quality;
-		float unit = width / quality;
-		float lineWidth = width - (((quality - 1) * unit) / 2);
-		long limit = (drawSegments + 1) * 2; // n segments have n+1 vertices
-		
-		ArrayList<Vec3f> vertices = new ArrayList<Vec3f>();
-		
-		for(int j = 1; j <= quality; j++) {
-			// The spline attributes
-			gl.glColor4fv(new float[]{red, green, blue, alpha}, 0);
-			
-			vertices.clear();
-			vertices = generatePolygonVertices(gl, linePoints, lineWidth);
-			
-			if(limit > vertices.size()) {
-				limit = vertices.size();
-				throw new IllegalArgumentException("Parameter segments is higher than the number of curve-segments. Capped it to max.");
-			}
-			
-			// the spline
-			gl.glBegin(GL.GL_QUAD_STRIP);
-			for(int i = 0; i < limit; i++) {
-				gl.glVertex3f(vertices.get(i).x(), vertices.get(i).y(), vertices.get(i).z());
-			}
-			gl.glEnd();
-			
-			alpha -= alphaChange;
-			lineWidth += unit;
-		}
-		return (limit >= vertices.size()) ? true : false;
-	}
-	
-	
-	/**
-	 * 		Draws the last [segments] segments of the line (AA-Quality can be specified)
-	 * 
-	 * @param gl The GL object
-	 * @param RGBA Specifies the color of the line
-	 * @param width Specifies the width of the line
-	 * @param quality Specifies the AA-Quality of the line. Higher value is better quality but costs performance.
-	 * @param drawSegments Specifies the last n segments to be drawn
-	 * 
-	 * @return true if the whole line has been drawn, false if it's only partly drawn
-	 * 
-	 * @throws IllegalArgumentException if drawSegments exceeds the number of line-segments
-	 */
-	public boolean drawPolygonLineBySegmentsReverse(final GL gl, float[] RGBA, float width, int quality, long drawSegments)
-		throws IllegalArgumentException
-	{
-		
-		try {
-			checkRGBA(RGBA);
-		} catch(IllegalArgumentException iae) {throw iae;}
-		
-		float red = RGBA[0];
-		float green = RGBA[1];
-		float blue = RGBA[2];
-		float alpha = RGBA[3];
-		float alphaChange = alpha / quality;
-		float unit = width / quality;
-		float lineWidth = width - (((quality - 1) * unit) / 2);
-		long limit = (drawSegments + 1) * 2; // n segments have n+1 vertices
-		
-		ArrayList<Vec3f> vertices = new ArrayList<Vec3f>();
-		
-		for(int j = 1; j <= quality; j++) {
-			// The spline attributes
-			gl.glColor4fv(new float[]{red, green, blue, alpha}, 0);
-			
-			vertices.clear();
-			vertices = generatePolygonVertices(gl, linePoints, lineWidth);
-			
-			if(limit > vertices.size()) {
-				limit = vertices.size();
-				throw new IllegalArgumentException("Parameter segments is higher than the number of curve-segments. Capped it to max.");
-			}
-			
-			// the spline
-			gl.glBegin(GL.GL_QUAD_STRIP);
-			for(int i = (vertices.size() - 1); i >= (vertices.size() - limit); i--) {
-				gl.glVertex3f(vertices.get(i).x(), vertices.get(i).y(), vertices.get(i).z());
-			}
-			gl.glEnd();
-			
-			alpha -= alphaChange;
-			lineWidth += unit;
-		}
-		return (limit >= vertices.size()) ? true : false;
-	}
-	
-	
-	/**
 	 * Checks if the given array is a valid rgba value.
 	 * If the values are < 0 or > 1 they are capped to this limits.
 	 * If the array contains less then 4 values, IllegalArgumentException is thrown.
@@ -551,7 +312,7 @@ public class VisLink {
 		throws IllegalArgumentException
 	{
 		if(rgba.length < 4)
-			throw new IllegalArgumentException( "need 4 values for RGBA (input argument color)" );
+			throw new IllegalArgumentException( "given color-parameter is no valid rgba color-value" );
 		for(int i = 0; i < 4; i++) {
 			if(rgba[i] < 0f)
 				rgba[i] = 0f;
@@ -565,125 +326,618 @@ public class VisLink {
 	 * Returns the number of line-segments
 	 * @return The number of line-segments
 	 */
-	public int getNumberOfSegments() {
+	public int numberOfSegments() {
+		/** n segments have n+1 vertices */
 		return this.linePoints.size() - 1;
-	}
+	}	
 	
 	
 	/**
 	 * Returns the number of line-points
 	 * @return The number of line-points
 	 */
-	public int getNumberOfLinePoints() {
+	public int numberOfLinePoints() {
 		return this.linePoints.size();
 	}
+	
 
-	
-	
-	
-//---------------------------------------------------------------------------------------------------------------------
-// Halo ...
-//---------------------------------------------------------------------------------------------------------------------
-	
 	/**
-	 * Renders the polygon line w/o further options
-	 * 
-	 * @param gl the GL object
-	 * @param controlPoints the control points for the NURBS spline
-	 * @param offset specifies the offset of control points
-	 * 
-	 * @throws IllegalArgumentException if there are < 2 control points
+	 * Renders a polygon-line with the given attributes
+	 * @param gl The GL-object
+	 * @param controlPoints A set of control points specifying the line/curve
+	 * @param offset Specifies the offset of the given parameter controlPoints
+	 * @param numberOfSegments Specifies the number of line-segments
+	 * @param width Specifies the width of the line
+	 * @param color Specifies the lines color (rgba)
+	 * @param style Specifies the lines style
+	 * @param antiAliasingQuality Specifies the anti-aliasing quality of the rendered line
+	 * @throws IllegalArgumentException If the number of given control points is < 2 (at least 2 points are needed to specify a line)
 	 */
-	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, float width)
+	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, int offset, int numberOfSegments,
+											float width, float[] color, EVisLinkStyleType style, int antiAliasingQuality)
 		throws IllegalArgumentException
 	{
-		if(controlPoints.size() >= (offset + 2)) {
-			VisLink visLink = new VisLink(controlPoints, offset, 10);			
-			visLink.polygonLine(gl, width);
-		}
-		else
-			throw new IllegalArgumentException( "Need at least two points to render a line!" );
-	}
-	
-	/**
-	 * Renders the halo of the polygon line
-	 * 
-	 * @param gl the GL object
-	 * @param controlPoints the control points for the NURBS spline
-	 * @param offset specifies the offset of control points
-	 * 
-	 * @throws IllegalArgumentException if there are < 2 control points
-	 */
-	public static void renderPolygonLineHalo(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset)
-		throws IllegalArgumentException
-	{
-		if(controlPoints.size() >= (offset + 2)) {
-			VisLink visLink = new VisLink(controlPoints, offset, 10);			
-			visLink.polygonLineHalo(gl);
-		}
-		else
-			throw new IllegalArgumentException( "Need at least two points to render a line!" );
-	}
-	
-	/**
-	 * This method is called by renderPolygonLineHalo
-	 * @param gl the GL Object
-	 */
-	protected void polygonLineHalo(final GL gl) {
-		float[] halo = new float[4];
-		halo[0] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[0];
-		halo[1] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[1];
-		halo[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
-		halo[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 2f;
-		
-		float halo_width = ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH * 3;
-		
-		drawPolygonLine(gl, halo, halo_width, 5);
-	}
-	
-	/**
-	 * This method is called by renderPolygonLine
-	 * @param gl the GL Object
-	 */
-	protected void polygonLine(final GL gl, float width) {
-		drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, width, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-	}
-	
-	
-	protected void polygonLineWithHaloTexture(final GL gl) {
-		
-		ArrayList<Vec3f> polygonLineVertices = generatePolygonVertices(gl, linePoints, ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
-		
-		// The spline attributes
-		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
-
-		Texture texture = null;
-		texture = generalManager.getResourceLoader().getTexture(new String("resources/vislinktextures/glowTextureYellow.png"));
-		texture.enable();
-		texture.bind();
-		
-		gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
-//		gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE);
-//		gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_BLEND);
-//		gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_DECAL);
-		
-//		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
-//		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP);
-		TextureCoords texCoords = texture.getImageTexCoords();
-		
-		// the spline
-		gl.glBegin(GL.GL_QUAD_STRIP);
-		for(int i = 0; i < polygonLineVertices.size(); i++) {
-			gl.glVertex3f(polygonLineVertices.get(i).x(), polygonLineVertices.get(i).y(), polygonLineVertices.get(i).z());
-			if(i%2 == 0)
-				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		if(controlPoints.size() >= (offset + 2)) { // fixme: special case if == 2
+			VisLink visLink = new VisLink(controlPoints, offset, numberOfSegments);
+			if(style == EVisLinkStyleType.SHADOW_VISLINK) {
+				visLink.drawPolygonLine(gl, (width * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR), ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, antiAliasingQuality);
+				visLink.drawPolygonLine(gl, width, color, antiAliasingQuality);
+			}
+			else if(style == EVisLinkStyleType.HALO_VISLINK) {
+				float[] haloColor = {color[0], color[1], color[2], (color[3] / 2.0f) };
+				visLink.drawPolygonLine(gl, (width * ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH_FACTOR), haloColor, antiAliasingQuality);
+				visLink.drawPolygonLine(gl, width, color, antiAliasingQuality);
+			}
 			else
-				gl.glTexCoord2f( texCoords.right(), texCoords.bottom());
+				visLink.drawPolygonLine(gl, width, color, antiAliasingQuality);
+			
 		}
-		gl.glEnd();
-		
-		texture.disable();
+		else
+			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 			
 	}
+	
+	
+	// not needed anymore
+//	/**
+//	 * Renders a polygon-line with the given attributes
+//	 * @param gl The GL-object
+//	 * @param width Specifies the width of the line
+//	 * @param color Specifies the lines color (rgba)
+//	 * @param style Specifies the lines style
+//	 * @param antiAliasingQuality Specifies the anti-aliasing quality of the rendered line
+//	 */
+//	public void renderPolygonLine(final GL gl, float width, float[] color, EVisLinkStyleType style, int antiAliasingQuality) {
+//		if(style == EVisLinkStyleType.SHADOW_VISLINK) {
+//			drawPolygonLine(gl, width, color, antiAliasingQuality);
+//			drawPolygonLine(gl, (width * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR), ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, antiAliasingQuality);
+////			drawPolygonLine(gl, width, color, antiAliasingQuality);
+//		}
+//		else if(style == EVisLinkStyleType.HALO_VISLINK) {
+//			float[] haloColor = {color[0], color[1], color[2], (color[3] / 2.0f) };
+//			drawPolygonLine(gl, width, color, antiAliasingQuality);
+//			drawPolygonLine(gl, (width * ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH_FACTOR), haloColor, antiAliasingQuality);
+////			drawPolygonLine(gl, width, color, antiAliasingQuality);
+//		}
+//		else
+//			drawPolygonLine(gl, width, color, antiAliasingQuality);			
+//	}
+	
+	
+	/**
+	 * Draws a polygon line with the given attributes
+	 * @param gl The GL-object
+	 * @param width Specifies the width of the line
+	 * @param color Specifies the lines color (rgba)
+	 * @param antiAliasingQuality Specifies the anti-aliasing quality of the rendered line (1 <= quality <= 20)
+	 * @throws IllegalArgumentException If the specified anti-aliasing quality is <1 or >20
+	 */
+	protected void drawPolygonLine(final GL gl, float width, float[] color, int antiAliasingQuality)
+		throws IllegalArgumentException
+	{		
+		try{
+			checkRGBA(color);
+		}catch(IllegalArgumentException iae) {
+			iae.printStackTrace();
+		}
+		
+		//antiAliasingQuality shouldn't be < 1 or > 20
+		if(antiAliasingQuality < 1 || antiAliasingQuality > 20)
+			throw new IllegalArgumentException("parameter antiAliasingQuality has to be >=1 and <= 20");
+		
+		float red = color[0];
+		float green = color[1];
+		float blue = color[2];
+		float alpha = color[3];
+		float alphaChange = alpha / antiAliasingQuality;
+		float unit = width / antiAliasingQuality;
+		width = width - (((antiAliasingQuality - 1) * unit) / 2);
+		
+		for(int j = 1; j <= antiAliasingQuality; j++) {
+			// The spline attributes
+			gl.glColor4fv(new float[]{red, green, blue, alpha}, 0);
+			
+			ArrayList<Vec3f> vertices = generatePolygonVertices(gl, linePoints, width);
+			
+			// the spline
+			gl.glBegin(GL.GL_QUAD_STRIP);
+			for(int i = 0; i < vertices.size(); i++) {
+				gl.glVertex3f(vertices.get(i).x(), vertices.get(i).y(), vertices.get(i).z());
+			}
+			gl.glEnd();
+			
+			alpha -= alphaChange; // fade out at borders for anti aliasing effect
+			width += unit;
+		}		
+	}
+	
+	
+	/**
+	 * Draws the first n segments of a polygon line with the given attributes
+	 * @param gl The GL-object
+	 * @param width Specifies the width of the line
+	 * @param color Specifies the lines color (rgba)
+	 * @param antiAliasingQuality Specifies the anti-aliasing quality of the rendered line (1 <= quality <= 20)
+	 * @param segmentsToDraw Specifies the number of segments to be drawn (=n)
+	 * @throws IllegalArgumentException If the specified anti-aliasing quality is <1 or >20
+	 */
+	protected void drawPolygonLine(final GL gl, float width, float[] color, int antiAliasingQuality, long segmentsToDraw)
+		throws IllegalArgumentException
+	{		
+		try{
+			checkRGBA(color);
+		}catch(IllegalArgumentException iae) {
+			iae.printStackTrace();
+		}
+		
+		//antiAliasingQuality shouldn't be < 1 or > 20
+		if(antiAliasingQuality < 1 || antiAliasingQuality > 20)
+			throw new IllegalArgumentException("parameter antiAliasingQuality has to be >= 1 and <= 20");
+		
+		float red = color[0];
+		float green = color[1];
+		float blue = color[2];
+		float alpha = color[3];
+		float alphaChange = alpha / antiAliasingQuality;
+		float unit = width / antiAliasingQuality;
+		width = width - (((antiAliasingQuality - 1) * unit) / 2);
+		long limit = (segmentsToDraw + 1) * 2; // n segments have n+1 vertices, *2 because of polygons
+		
+		for(int j = 1; j <= antiAliasingQuality; j++) {
+			// The spline attributes
+			gl.glColor4fv(new float[]{red, green, blue, alpha}, 0);
+			
+			ArrayList<Vec3f> vertices = generatePolygonVertices(gl, linePoints, width);
+			
+			if(limit > vertices.size())
+				throw new IllegalArgumentException("Specified parameter 'segmentsToDraw' too high (not enough curve-segments)");
+			
+			// the spline
+			gl.glBegin(GL.GL_QUAD_STRIP);
+			for(int i = 0; i < limit; i++) {
+				gl.glVertex3f(vertices.get(i).x(), vertices.get(i).y(), vertices.get(i).z());
+			}
+			gl.glEnd();
+			
+			alpha -= alphaChange; // fade out at borders for anti aliasing effect
+			width += unit;
+		}
+	}
+	
+	
+	/**
+	 * Draws the first n segments of a polygon line with the given attributes in inverse direction
+	 * (so it actually draws the last n segments)
+	 * @param gl The GL-object
+	 * @param width Specifies the width of the line
+	 * @param color Specifies the lines color (rgba)
+	 * @param antiAliasingQuality Specifies the anti-aliasing quality of the rendered line (1 <= quality <= 20)
+	 * @param segmentsToDraw Specifies the number of segments to be drawn (=n)
+	 * @throws IllegalArgumentException If the specified anti-aliasing quality is <1 or >20
+	 */
+	protected void drawPolygonLineReverse(final GL gl, float width, float[] color, int antiAliasingQuality, long segmentsToDraw)
+		throws IllegalArgumentException
+	{		
+		try{
+			checkRGBA(color);
+		}catch(IllegalArgumentException iae) {
+			iae.printStackTrace();
+		}
+		
+		//antiAliasingQuality shouldn't be < 1 or > 20
+		if(antiAliasingQuality < 1 || antiAliasingQuality > 20)
+			throw new IllegalArgumentException("parameter antiAliasingQuality has to be >= 1 and <= 20");
+		
+		float red = color[0];
+		float green = color[1];
+		float blue = color[2];
+		float alpha = color[3];
+		float alphaChange = alpha / antiAliasingQuality;
+		float unit = width / antiAliasingQuality;
+		width = width - (((antiAliasingQuality - 1) * unit) / 2);
+		long limit = (segmentsToDraw + 1) * 2; // n segments have n+1 vertices, *2 because of polygons
+		
+		for(int j = 1; j <= antiAliasingQuality; j++) {
+			// The spline attributes
+			gl.glColor4fv(new float[]{red, green, blue, alpha}, 0);
+			
+			ArrayList<Vec3f> vertices = generatePolygonVertices(gl, linePoints, width);
+			
+			if(limit > vertices.size())
+				throw new IllegalArgumentException("Specified parameter 'segmentsToDraw' too high (not enough curve-segments)");
+			
+			// the spline
+			gl.glBegin(GL.GL_QUAD_STRIP);
+			for(int i = (vertices.size() - 1); i >= (vertices.size() - limit); i--) {
+				gl.glVertex3f(vertices.get(i).x(), vertices.get(i).y(), vertices.get(i).z());
+			}
+			gl.glEnd();
+			
+			alpha -= alphaChange; // fade out at borders for anti aliasing effect
+			width += unit;
+		}
+	}
+	
+	
+//---------------------------------------------------------------------------------------------------------------------
+// NOTE: outdated stuff
+//---------------------------------------------------------------------------------------------------------------------
+	
+//	/**
+//	 * 		Creates a polygon visual link.
+//	 * When the number of control points is 2, this method renders a straight line.
+//	 * If the number of control points is greater then 2, a curved line (using NURBS) is rendered.
+//	 *
+//	 * @param gl the GL object
+//	 * @param controlPoints the control points for the NURBS spline
+//	 * @param offset specifies the offset of control points
+//	 * @param numberOfSegments the number of sub-intervals the spline is evaluated with
+//	 * (affects u in the Cox-de Boor recursive formula when evaluating the spline)
+//	 * Note: For straight lines (only 2 control points), this value doesn't effect the resulting line.
+//	 * @param shadow turns shadow on/off
+//	 * @param antiAliasing turns AA on/off
+//	 * 
+//	 * @throws IllegalArgumentException if there are < 2 control points
+//	 */	
+//	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, final int numberOfSegments, boolean shadow, boolean antiAliasing)
+//		throws IllegalArgumentException
+//	{
+//		if(controlPoints.size() >= (offset + 2)) {
+//			VisLink visLink = new VisLink(controlPoints, offset, numberOfSegments);
+//			if(antiAliasing == true)
+//				visLink.polygonLineAA(gl, shadow);
+//			else
+//				visLink.polygonLine(gl, shadow);
+//			
+//		}
+//		else
+//			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 			
+//	}
+//	
+//	
+//	/**
+//	 * 		Creates a straight polygon visual link.
+//	 *
+//	 * @param gl the GL object
+//	 * @param srcPoint the lines point of origin
+//	 * @param destPoint the lines end point
+//	 * @param shadow turns shadow on/off
+//	 * @param antiAliasing turns AA on/off
+//	 */	
+//	public static void renderPolygonLine(final GL gl, Vec3f srcPoint, Vec3f destPoint, boolean shadow, boolean antiAliasing) {
+//		VisLink visLink = new VisLink(srcPoint, destPoint);
+//		if(antiAliasing == true)
+//			visLink.polygonLineAA(gl, shadow);
+//		else
+//			visLink.polygonLine(gl, shadow);
+//	}
+//	
+//	
+//	/**
+//	 * 		Renders a polygon line. Recommended for lines with higher width.
+//	 * 
+//	 * @param gl the GL object
+//	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
+//	 */
+//	protected void polygonLine(final GL gl, boolean shadow) {
+//		
+//		if(shadow == true)
+//			drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, (ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * 1.5f), 1);
+//		
+//		drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH, 1);
+//	}
+//	
+//	
+//	/**
+//	 * 		Renders a polygon line with AA. Recommended for lines with higher width.
+//	 * 
+//	 * @param gl The GL object
+//	 * @param shadow Turns shadow on/off (boolean: true = shadow on, false = shadow off)
+//	 */
+//	protected void polygonLineAA(final GL gl, boolean shadow) {
+//		if(shadow == true) {
+//			drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, (ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * 1.5f), ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+//		}
+//		
+//		drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+//	}
+	
+	
+//	/**
+//	 * 		Draws the line (AA-Quality can be specified)
+//	 * 
+//	 * @param gl The GL object
+//	 * @param RGBA Specifies the color of the line
+//	 * @param width Specifies the width of the line
+//	 * @param quality Specifies the AA-Quality of the line. Higher value is better quality but costs performance.
+//	 */
+//	protected void drawPolygonLine(final GL gl, float[] RGBA, float width, int quality) {
+//		
+//		try {
+//			checkRGBA(RGBA);
+//		} catch(IllegalArgumentException iae) {throw iae;}
+//		
+//		float red = RGBA[0];
+//		float green = RGBA[1];
+//		float blue = RGBA[2];
+//		float alpha = RGBA[3];
+//		float alphaChange = alpha / quality;
+//		float unit = width / quality;
+//		float lineWidth = width - (((quality - 1) * unit) / 2);
+//		
+//		ArrayList<Vec3f> vertices = new ArrayList<Vec3f>();
+//		
+//		for(int j = 1; j <= quality; j++) {
+//			// The spline attributes
+//			gl.glColor4fv(new float[]{red, green, blue, alpha}, 0);
+//			
+//			vertices.clear();
+//			vertices = generatePolygonVertices(gl, linePoints, lineWidth);
+//			
+//			// the spline
+//			gl.glBegin(GL.GL_QUAD_STRIP);
+//			for(int i = 0; i < vertices.size(); i++) {
+//				gl.glVertex3f(vertices.get(i).x(), vertices.get(i).y(), vertices.get(i).z());
+//			}
+//			gl.glEnd();
+//			
+//			alpha -= alphaChange;
+//			lineWidth += unit;
+//		}	
+//	}
+//	
+//	
+//	/**
+//	 * 		Draws the first [segments] segments of the line (AA-Quality can be specified)
+//	 * 
+//	 * @param gl The GL object
+//	 * @param RGBA Specifies the color of the line
+//	 * @param width Specifies the width of the line
+//	 * @param quality Specifies the AA-Quality of the line. Higher value is better quality but costs performance.
+//	 * @param drawSegments Specifies the first n segments to be drawn
+//	 * 
+//	 * @return true if the whole line has been drawn, false if it's only partly drawn
+//	 * 
+//	 * @throws IllegalArgumentException if drawSegments exceeds the number of line-segments
+//	 */
+//	public boolean drawPolygonLineBySegments(final GL gl, float[] RGBA, float width, int quality, long drawSegments)
+//		throws IllegalArgumentException
+//	{
+//		
+//		try {
+//			checkRGBA(RGBA);
+//		} catch(IllegalArgumentException iae) {throw iae;}
+//		
+//		quality = (quality < 1) ? 1 : quality; // line should be drawn at least 1 time
+//		
+//		float red = RGBA[0];
+//		float green = RGBA[1];
+//		float blue = RGBA[2];
+//		float alpha = RGBA[3];
+//		float alphaChange = alpha / quality;
+//		float unit = width / quality;
+//		float lineWidth = width - (((quality - 1) * unit) / 2);
+//		long limit = (drawSegments + 1) * 2; // n segments have n+1 vertices
+//		
+//		ArrayList<Vec3f> vertices = new ArrayList<Vec3f>();
+//		
+//		for(int j = 1; j <= quality; j++) {
+//			// The spline attributes
+//			gl.glColor4fv(new float[]{red, green, blue, alpha}, 0);
+//			
+//			vertices.clear();
+//			vertices = generatePolygonVertices(gl, linePoints, lineWidth);
+//			
+//			if(limit > vertices.size()) {
+//				limit = vertices.size();
+//				throw new IllegalArgumentException("Parameter segments is higher than the number of curve-segments. Capped it to max.");
+//			}
+//			
+//			// the spline
+//			gl.glBegin(GL.GL_QUAD_STRIP);
+//			for(int i = 0; i < limit; i++) {
+//				gl.glVertex3f(vertices.get(i).x(), vertices.get(i).y(), vertices.get(i).z());
+//			}
+//			gl.glEnd();
+//			
+//			alpha -= alphaChange;
+//			lineWidth += unit;
+//		}
+//		return (limit >= vertices.size()) ? true : false;
+//	}
+//	
+//	
+//	/**
+//	 * 		Draws the last [segments] segments of the line (AA-Quality can be specified)
+//	 * 
+//	 * @param gl The GL object
+//	 * @param RGBA Specifies the color of the line
+//	 * @param width Specifies the width of the line
+//	 * @param quality Specifies the AA-Quality of the line. Higher value is better quality but costs performance.
+//	 * @param drawSegments Specifies the last n segments to be drawn
+//	 * 
+//	 * @return true if the whole line has been drawn, false if it's only partly drawn
+//	 * 
+//	 * @throws IllegalArgumentException if drawSegments exceeds the number of line-segments
+//	 */
+//	public boolean drawPolygonLineBySegmentsReverse(final GL gl, float[] RGBA, float width, int quality, long drawSegments)
+//		throws IllegalArgumentException
+//	{
+//		
+//		try {
+//			checkRGBA(RGBA);
+//		} catch(IllegalArgumentException iae) {throw iae;}
+//		
+//		float red = RGBA[0];
+//		float green = RGBA[1];
+//		float blue = RGBA[2];
+//		float alpha = RGBA[3];
+//		float alphaChange = alpha / quality;
+//		float unit = width / quality;
+//		float lineWidth = width - (((quality - 1) * unit) / 2);
+//		long limit = (drawSegments + 1) * 2; // n segments have n+1 vertices
+//		
+//		ArrayList<Vec3f> vertices = new ArrayList<Vec3f>();
+//		
+//		for(int j = 1; j <= quality; j++) {
+//			// The spline attributes
+//			gl.glColor4fv(new float[]{red, green, blue, alpha}, 0);
+//			
+//			vertices.clear();
+//			vertices = generatePolygonVertices(gl, linePoints, lineWidth);
+//			
+//			if(limit > vertices.size()) {
+//				limit = vertices.size();
+//				throw new IllegalArgumentException("Parameter segments is higher than the number of curve-segments. Capped it to max.");
+//			}
+//			
+//			// the spline
+//			gl.glBegin(GL.GL_QUAD_STRIP);
+//			for(int i = (vertices.size() - 1); i >= (vertices.size() - limit); i--) {
+//				gl.glVertex3f(vertices.get(i).x(), vertices.get(i).y(), vertices.get(i).z());
+//			}
+//			gl.glEnd();
+//			
+//			alpha -= alphaChange;
+//			lineWidth += unit;
+//		}
+//		return (limit >= vertices.size()) ? true : false;
+//	}
+	
+	
+//	public void renderPolygonLine(final GL gl, float width, float[] color, EVisLinkStyleType style, int antiAliasingQuality, long segmentsToDraw) {
+//	if(style == EVisLinkStyleType.SHADOW_VISLINK) {
+//		drawPolygonLine(gl, width, color, antiAliasingQuality, segmentsToDraw);
+//		drawPolygonLine(gl, (width * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR), ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, antiAliasingQuality, segmentsToDraw);
+////		drawPolygonLine(gl, width, color, antiAliasingQuality, segmentsToDraw);
+//	}
+//	else if(style == EVisLinkStyleType.HALO_VISLINK) {
+//		float[] haloColor = {color[0], color[1], color[2], (color[3] / 2.0f) };
+//		drawPolygonLine(gl, width, color, antiAliasingQuality, segmentsToDraw);
+//		drawPolygonLine(gl, (width * ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH_FACTOR), haloColor, antiAliasingQuality, segmentsToDraw);
+////		drawPolygonLine(gl, width, color, antiAliasingQuality, segmentsToDraw);
+//	}
+//	else
+//		drawPolygonLine(gl, width, color, antiAliasingQuality, segmentsToDraw);			
+//}
+//
+//public void renderPolygonLineReverse(final GL gl, float width, float[] color, EVisLinkStyleType style, int antiAliasingQuality, long segmentsToDraw) {
+//	if(style == EVisLinkStyleType.SHADOW_VISLINK) {
+//		drawPolygonLineReverse(gl, width, color, antiAliasingQuality, segmentsToDraw);
+//		drawPolygonLineReverse(gl, (width * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR), ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, antiAliasingQuality, segmentsToDraw);
+////		drawPolygonLineReverse(gl, width, color, antiAliasingQuality, segmentsToDraw);
+//	}
+//	else if(style == EVisLinkStyleType.HALO_VISLINK) {
+//		float[] haloColor = {color[0], color[1], color[2], (color[3] / 2.0f) };
+//		drawPolygonLineReverse(gl, width, color, antiAliasingQuality, segmentsToDraw);
+//		drawPolygonLineReverse(gl, (width * ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH_FACTOR), haloColor, antiAliasingQuality, segmentsToDraw);
+////		drawPolygonLineReverse(gl, width, color, antiAliasingQuality, segmentsToDraw);
+//	}
+//	else
+//		drawPolygonLineReverse(gl, width, color, antiAliasingQuality, segmentsToDraw);			
+//}
+	
+
+//	
+//	/**
+//	 * Renders the polygon line w/o further options
+//	 * 
+//	 * @param gl the GL object
+//	 * @param controlPoints the control points for the NURBS spline
+//	 * @param offset specifies the offset of control points
+//	 * 
+//	 * @throws IllegalArgumentException if there are < 2 control points
+//	 */
+//	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, float width)
+//		throws IllegalArgumentException
+//	{
+//		if(controlPoints.size() >= (offset + 2)) {
+//			VisLink visLink = new VisLink(controlPoints, offset, 10);			
+//			visLink.polygonLine(gl, width);
+//		}
+//		else
+//			throw new IllegalArgumentException( "Need at least two points to render a line!" );
+//	}
+//	
+//	/**
+//	 * Renders the halo of the polygon line
+//	 * 
+//	 * @param gl the GL object
+//	 * @param controlPoints the control points for the NURBS spline
+//	 * @param offset specifies the offset of control points
+//	 * 
+//	 * @throws IllegalArgumentException if there are < 2 control points
+//	 */
+//	public static void renderPolygonLineHalo(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset)
+//		throws IllegalArgumentException
+//	{
+//		if(controlPoints.size() >= (offset + 2)) {
+//			VisLink visLink = new VisLink(controlPoints, offset, 10);			
+//			visLink.polygonLineHalo(gl);
+//		}
+//		else
+//			throw new IllegalArgumentException( "Need at least two points to render a line!" );
+//	}
+//	
+//	/**
+//	 * This method is called by renderPolygonLineHalo
+//	 * @param gl the GL Object
+//	 */
+//	protected void polygonLineHalo(final GL gl) {
+//		float[] halo = new float[4];
+//		halo[0] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[0];
+//		halo[1] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[1];
+//		halo[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
+//		halo[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 2f;
+//		
+//		float halo_width = ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH * 3;
+//		
+//		drawPolygonLine(gl, halo, halo_width, 5);
+//	}
+//	
+//	/**
+//	 * This method is called by renderPolygonLine
+//	 * @param gl the GL Object
+//	 */
+//	protected void polygonLine(final GL gl, float width) {
+//		drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, width, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+//	}
+//	
+//	
+//	protected void polygonLineWithHaloTexture(final GL gl) {
+//		
+//		ArrayList<Vec3f> polygonLineVertices = generatePolygonVertices(gl, linePoints, ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
+//		
+//		// The spline attributes
+//		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+//
+//		Texture texture = null;
+//		texture = generalManager.getResourceLoader().getTexture(new String("resources/vislinktextures/glowTextureYellow.png"));
+//		texture.enable();
+//		texture.bind();
+//		
+//		gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
+////		gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE);
+////		gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_BLEND);
+////		gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_DECAL);
+//		
+////		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
+////		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP);
+//		TextureCoords texCoords = texture.getImageTexCoords();
+//		
+//		// the spline
+//		gl.glBegin(GL.GL_QUAD_STRIP);
+//		for(int i = 0; i < polygonLineVertices.size(); i++) {
+//			gl.glVertex3f(polygonLineVertices.get(i).x(), polygonLineVertices.get(i).y(), polygonLineVertices.get(i).z());
+//			if(i%2 == 0)
+//				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+//			else
+//				gl.glTexCoord2f( texCoords.right(), texCoords.bottom());
+//		}
+//		gl.glEnd();
+//		
+//		texture.disable();
+//	}
+
 	
 //	protected void polygonLineWithHalo(final GL gl) {
 //		try {
@@ -901,7 +1155,6 @@ public class VisLink {
 //		// Attach the texture to the frame buffer as the color attachment. This
 //		// will cause the results of rendering to the FBO to be written in the blur texture.
 //		gl.glFramebufferTexture2DEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_COLOR_ATTACHMENT0_EXT, GL.GL_TEXTURE_2D, colorBuffer[0], 0);
-////		gl.glFramebufferTexture2DEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_COLOR_ATTACHMENT0_EXT, GL.GL_TEXTURE_2D, blurTexture[0], 0); // FIXME: added
 //
 //		gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
 //		

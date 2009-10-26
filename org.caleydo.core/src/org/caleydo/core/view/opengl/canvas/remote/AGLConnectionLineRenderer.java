@@ -89,6 +89,13 @@ public abstract class AGLConnectionLineRenderer {
 		ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews = new ArrayList<ArrayList<ArrayList<Vec3f>>>(keySet.size());
 		ArrayList<ArrayList<Vec3f>> bundlingToCenterLines = new ArrayList<ArrayList<Vec3f>>(keySet.size());
 		ArrayList<ArrayList<Vec3f>> connectionLinesActiveView = new ArrayList<ArrayList<Vec3f>>(keySet.size());
+		ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViewsNew = new ArrayList<ArrayList<ArrayList<Vec3f>>>(4);
+		ArrayList<ArrayList<Vec3f>> connectionLinesActiveViewNew = new ArrayList<ArrayList<Vec3f>>();
+		ArrayList<ArrayList<Vec3f>> bundlingToCenterLinesActiveViewNew = new ArrayList<ArrayList<Vec3f>>();
+		ArrayList<ArrayList<Vec3f>> bundlingToCenterLinesOtherViewsNew = new ArrayList<ArrayList<Vec3f>>();
+		ArrayList<ArrayList<Vec3f>> connectionLinesOtherViewsNew = new ArrayList<ArrayList<Vec3f>>();
+		
+		
 
 		for (Integer iKey : keySet) {
 			Vec3f vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(iKey), vecCenter);
@@ -108,10 +115,14 @@ public abstract class AGLConnectionLineRenderer {
 			ArrayList<ArrayList<Vec3f>> connectionLinesCurrentView = new ArrayList<ArrayList<Vec3f>>(pointsToDepthSort.size()); //FIXME:added
 			
 			for(Vec3f currentPoint : depthSort(pointsToDepthSort)) {
-				if(activeViewID != -1 && iKey == activeViewID)
+				if(activeViewID != -1 && iKey == activeViewID) {
 					connectionLinesActiveView.add( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
-				else
+					connectionLinesActiveViewNew.add( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
+				}
+				else {
 					connectionLinesCurrentView.add( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
+					connectionLinesOtherViewsNew.add( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
+				}
 			}
 			
 //			renderLine(gl, vecViewBundlingPoint, vecCenter, 0, fArColor);
@@ -121,10 +132,24 @@ public abstract class AGLConnectionLineRenderer {
 			//connectionLinesCurrentView.add(bundlingToCenter);
 			connectionLinesAllViews.add(connectionLinesCurrentView);
 			bundlingToCenterLines.add(bundlingToCenter);
+			if(activeViewID != -1 && iKey == activeViewID) {
+				bundlingToCenterLinesActiveViewNew.add(bundlingToCenter);
+			}
+			else {
+				bundlingToCenterLinesOtherViewsNew.add(bundlingToCenter);
+			}
 			
 		}
 //		VisLinkEnvironment visLinkEnvironment = new VisLinkEnvironment(connectionLinesAllViews, bundlingToCenterLines);
-		VisLinkEnvironment visLinkEnvironment = new VisLinkEnvironment(connectionLinesAllViews, bundlingToCenterLines, connectionLinesActiveView);
+		
+		//FIXME new
+		connectionLinesAllViewsNew.add(connectionLinesActiveViewNew);
+		connectionLinesAllViewsNew.add(bundlingToCenterLinesActiveViewNew);
+		connectionLinesAllViewsNew.add(bundlingToCenterLinesOtherViewsNew);
+		connectionLinesAllViewsNew.add(connectionLinesOtherViewsNew);
+		
+//		VisLinkEnvironment visLinkEnvironment = new VisLinkEnvironment(connectionLinesAllViews, bundlingToCenterLines, connectionLinesActiveView);
+		VisLinkEnvironment visLinkEnvironment = new VisLinkEnvironment(connectionLinesAllViewsNew);
 		visLinkEnvironment.renderLines(gl);
 	}
 	

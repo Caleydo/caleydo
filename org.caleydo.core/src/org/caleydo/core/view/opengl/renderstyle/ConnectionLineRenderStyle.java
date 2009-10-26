@@ -14,13 +14,18 @@ public class ConnectionLineRenderStyle
 //	public static final float[] CONNECTION_LINE_COLOR = { 0.79f, 1f, 0.44f, 1f}; // dark olive green
 //	public static final float[] CONNECTION_LINE_COLOR = { 1f, 0.49f, 0.31f, 1f}; // coral	
 
-	public static final float CONNECTION_LINE_WIDTH = 3f;
+	public static final float CONNECTION_LINE_WIDTH = 3.0f;
+	
+	public static final float CONNECTION_LINE_SHADOW_WIDTH_FACTOR = 1.75f;
+	
+	public static final float CONNECTION_LINE_HALO_WIDTH_FACTOR = 2.0f;
 
 	public static final float[] CONNECTION_LINE_SHADOW_COLOR = { 0.4f, 0.4f, 0.4f, 0.8f };
 	
 	public static final float CONNECTION_LINE_HALO_WIDTH = 2f;
 	
-	public static final int LINE_ANTI_ALIASING_QUALITY = 5;
+	public static final int LINE_ANTI_ALIASING_QUALITY = 1;
 	
-	public static final int ANIMATION_SPEED_IN_MILLIS = 1500;
+	public static final boolean ANIMATION = true;
+	public static final int ANIMATION_SPEED_IN_MILLIS = 1000;
 }
