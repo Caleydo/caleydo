@@ -90,6 +90,7 @@ public abstract class ATreeLayouter
 	private Semaphore lockAnimateToNewTree = null;
 	private Vec3f vTranslation = null;
 	private int iGoneAnimationSteps = 0;
+	private int iAnimationStepsToGo = 0;
 
 	public ATreeLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID,
 		HyperbolicRenderStyle renderStyle, ITreeProjection treeProjector, String strInformation) {
@@ -340,11 +341,11 @@ public abstract class ATreeLayouter
 	}
 
 	@Override
-	public final void display(GL gl) {
+	public synchronized final void display(GL gl)  {
 		if (bIsAnimating) {
 			translateView();
 			iGoneAnimationSteps++;
-			bIsAnimating = !(iGoneAnimationSteps == HyperbolicRenderStyle.NUM_ANIMATION_STEPS);
+			bIsAnimating = !(iGoneAnimationSteps == iAnimationStepsToGo);
 			bIsConnectionListDirty = true;
 			bIsNodeListDirty = true;
 		}
@@ -605,7 +606,8 @@ public abstract class ATreeLayouter
 
 	public final void animateToNewTree(int iExternalID) {
 		vTranslation = translateTree(iExternalID);
-		vTranslation.scale(1.0f / HyperbolicRenderStyle.NUM_ANIMATION_STEPS);
+		iAnimationStepsToGo = treeProjector.numOfAnimationStepsToGo(vTranslation);
+		vTranslation.scale(1.0f / iAnimationStepsToGo);
 		bIsAnimating = true;
 		this.iGoneAnimationSteps = 0;
 	}
