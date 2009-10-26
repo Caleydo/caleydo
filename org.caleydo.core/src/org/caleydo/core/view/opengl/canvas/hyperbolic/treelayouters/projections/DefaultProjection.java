@@ -96,4 +96,10 @@ public class DefaultProjection
 		return null;
 	}
 
+	@Override
+	public int numOfAnimationStepsToGo(Vec3f vPoint) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

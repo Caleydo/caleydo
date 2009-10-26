@@ -314,4 +314,9 @@ public class HyperbolicGlobeProjection
 		return null;
 	}
 
+	@Override
+	public int numOfAnimationStepsToGo(Vec3f vTrans) {
+		return (int) Math.ceil(HyperbolicRenderStyle.NUM_ANIMATION_STEPS * vTrans.length() / getProjectedLineFromCenterToBorder());
+	}
+
 }
