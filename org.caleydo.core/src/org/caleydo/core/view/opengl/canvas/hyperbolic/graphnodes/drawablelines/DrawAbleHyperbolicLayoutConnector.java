@@ -50,8 +50,8 @@ public class DrawAbleHyperbolicLayoutConnector
 	
 	@Override
 	public final boolean isVisible() {
-		return iNodeA.isVisible() && iNodeB.isVisible();
-		//return iNodeA.isVisible() || iNodeB.isVisible();
+//		return iNodeA.isVisible() && iNodeB.isVisible();
+		return iNodeA.isVisible() || iNodeB.isVisible();
 	}
 
 	@Override
@@ -61,7 +61,12 @@ public class DrawAbleHyperbolicLayoutConnector
 
 	@Override
 	public void updateConnection(ITreeProjection treeProjector){
+		
+		if(!iNodeA.isVisible()){
+			calculateSplinePoints(treeProjector);
+		}
 		calculateSplinePoints(treeProjector);
+
 	}
 	
 	private final Vec3f[] findClosestCorrespondendingPoints() {
@@ -69,6 +74,7 @@ public class DrawAbleHyperbolicLayoutConnector
 		Vec3f foundA = null;
 		Vec3f foundB = null;
 		float ft;
+		
 		for (Vec3f pointA : iNodeA.getConnectionPoints())
 			for (Vec3f pointB : iNodeB.getConnectionPoints())
 				if ((ft =
@@ -77,7 +83,11 @@ public class DrawAbleHyperbolicLayoutConnector
 					foundA = pointA;
 					foundB = pointB;
 					fMin = ft;
-				}
+				
+
+			
+			
+		}
 		Vec3f[] vaPoints = { foundA, foundB };
 		return vaPoints;
 	}
@@ -106,6 +116,25 @@ public class DrawAbleHyperbolicLayoutConnector
 		Vec3f pStartP = endPoints[0];
 		// last point
 		Vec3f pEndP = endPoints[1];
+		
+//		if(!iNodeA.isVisible() && iNodeB.isVisible()){
+//			Vec3f h= pStartP;
+//			pStartP = new Vec3f(pEndP);
+//			pEndP = h;
+//			pEndP = foundInterceptPointWithBorder(pStartP, pEndP, treeProjector);
+//		}
+//		if(!iNodeB.isVisible() && iNodeA.isVisible()){
+//			Vec3f h = pEndP;
+//			pEndP = new Vec3f(pStartP);
+//			pStartP = h;
+//			pStartP = foundInterceptPointWithBorder(pStartP, pEndP, treeProjector);
+//		}
+		
+//		float fLineToCenter1 = treeProjector.getLineFromPointToCenter(pStartP.x(), pStartP.y());
+//		float fLineToCenter2 = treeProjector.getLineFromPointToCenter(pEndP.x(), pEndP.y());
+//		float fRadius = treeProjector.getProjectedLineFromCenterToBorder();
+		
+		
 		// vector from start to end
 		// Vec3f vSE = new Vec3f(pEndP.x() - pStartP.x(), pEndP.y() - pStartP.y(), pEndP.z() - pStartP.z());
 		// base point ... middle of vec start -> end
@@ -188,6 +217,28 @@ public class DrawAbleHyperbolicLayoutConnector
 		}
 
 		return nodes;
+	}
+	
+	private Vec3f foundInterceptPointWithBorder(Vec3f point1, Vec3f point2, ITreeProjection treeProjector){
+		Vec3f center = treeProjector.getCenterPoint();
+		Vec3f vec1 = center.minus(point1);
+		Vec3f vec1n = new Vec3f(vec1);
+		vec1n.normalize();
+		Vec3f vec2 = center.minus(point2);
+		Vec3f vec2n = new Vec3f(vec2);
+		vec2n.normalize();
+		Vec3f vec12 = point1.minus(point2);
+		Vec3f vec12n = new Vec3f(vec12);
+		vec12n.normalize();
+		float lenthV0 = (float)Math.cos(vec1n.length()) * vec1.length();
+		Vec3f vec02 = new Vec3f(vec2n);
+		vec02.scale(vec2.length() - lenthV0);
+		float alpha = (vec02.length()/vec12.length());
+		Vec3f vecr2 = new Vec3f(vec2);
+		vecr2.scale(vec2.length() - treeProjector.getProjectedLineFromCenterToBorder());
+		Vec3f vecr1 = new Vec3f(vec12n);
+		vecr1.scale(vec12.length() - vecr2.length()*(1/alpha));
+		return vecr1;
 	}
 
 	// @Override

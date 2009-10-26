@@ -5,6 +5,7 @@ import gleem.linalg.Vec3f;
 
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
+import java.beans.Visibility;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -42,6 +43,8 @@ public abstract class ADrawAbleNode
 	private List<Vec3f> alOriginalCorrespondingPoints = null;
 	boolean bIsVisible = false;
 	Vec3f positionOutOfDisplay = null;
+	private IDrawAbleNode parentNode = null;
+	private boolean bIsRoot = false;
 
 	// TODO: create DAobjects which would handle this
 	//private TextRenderer textRenderer = null;
@@ -91,7 +94,19 @@ public abstract class ADrawAbleNode
 		place(fXCoord + vTranslation.x(), fYCoord + vTranslation.y(), 0.0f, fHeight, fWidth,treeProjection);
 	}
 	
+	@Override
+	public void setParentOfNode(IDrawAbleNode parent){
+		this.parentNode = parent;
+	}
+	@Override
+	public void nodeIsRoot(){
+		bIsRoot = true;
+	}
 	
+	@Override
+	public boolean IsNodeRoot(){
+		return bIsRoot;
+	}
 	
 	public void setVisible(boolean bIsVisible) {
 		this.bIsVisible = bIsVisible;
@@ -141,13 +156,26 @@ public abstract class ADrawAbleNode
 			float fLenthOfPointToCenter = treeProjection.getLineFromPointToCenter(fXCoord, fYCoord);
 			float fViewAbleSpace = treeProjection.getProjectedLineFromCenterToBorder();
 			System.out.println(String.valueOf(fViewAbleSpace));
-			if (fLenthOfPointToCenter >= fViewAbleSpace) {
+
+			if (fLenthOfPointToCenter >= fViewAbleSpace ){//|| !this.foundVisibleAncestor()) {
 				bIsVisible = false;
 				System.out.println(String.valueOf(fLenthOfPointToCenter));
 				System.out.println(String.valueOf(bIsVisible));
 			}
 			else {
-				bIsVisible = true;
+
+//				if(parentNode != null){
+//				if (!parentNode.isVisible() && parentNode.IsNodeRoot())
+//					bIsVisible = true;
+//				else if (!parentNode.isVisible())
+//					bIsVisible = false;
+//				else
+//				bIsVisible = true;
+//				}
+//				else
+					bIsVisible = true;
+
+				
 				System.out.println(String.valueOf(fLenthOfPointToCenter));
 				System.out.println(String.valueOf(bIsVisible));
 			}
@@ -324,6 +352,17 @@ public abstract class ADrawAbleNode
 	
 	public void changeCurrentVisiblyOfNode() {
 		this.bIsVisible = !this.bIsVisible;
+	}
+	
+	public boolean foundVisibleAncestor(){
+		if(this.parentNode == null)
+			return true;
+		else if(!parentNode.isVisible())
+			return false;
+		else{
+			return true;
+		}
+			
 	}
 
 

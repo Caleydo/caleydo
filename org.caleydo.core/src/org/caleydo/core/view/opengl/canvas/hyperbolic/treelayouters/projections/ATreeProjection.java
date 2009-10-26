@@ -66,5 +66,10 @@ public abstract class ATreeProjection
 	public float getLineFromPointToCenter(float fPointX, float fPointY){
 		return (float)Math.sqrt(Math.pow(fCenterPoint.x()- fPointX, 2)+Math.pow(fCenterPoint.y() - fPointY, 2));
 	}
+	
+	@Override
+	public Vec3f getCenterPoint(){
+		return fCenterPoint;
+	}
 
 }

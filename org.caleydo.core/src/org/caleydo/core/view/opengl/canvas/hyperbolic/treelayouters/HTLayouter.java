@@ -43,6 +43,7 @@ public class HTLayouter
 		if (tree == null)
 			return;
 		this.root = tree.getRoot();
+		root.nodeIsRoot();
 		
 		model = new HTModel(tree, root);
 //		HTDraw drawClass = new HTDraw(model, this);
@@ -82,6 +83,7 @@ public class HTLayouter
 	private void runThroughTreeAndPlace(IDrawAbleNode node){
 		if(tree.hasChildren(node)){
 			for(IDrawAbleNode child : tree.getChildren(node)){
+				
 				runThroughTreeAndPlace(child);
 			}
 		}
@@ -119,6 +121,7 @@ public class HTLayouter
 //		int layer2 = layer;
 		if(tree.hasChildren(node)){
 			for(IDrawAbleNode child : tree.getChildren(node)){
+				child.setParentOfNode(node);
 				runThroughTreeAndFoundScalingFactor(child, ++layer);
 			}
 		}

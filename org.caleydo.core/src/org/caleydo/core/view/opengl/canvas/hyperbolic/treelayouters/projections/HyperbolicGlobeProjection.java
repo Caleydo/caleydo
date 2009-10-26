@@ -305,6 +305,7 @@ public class HyperbolicGlobeProjection
 
 	@Override
 	public float getProjectedLineFromCenterToBorder() {
+//		bIsRadialCanvasRequested = true;
 		return radius * ((float) Math.PI / 2);
 	}
 

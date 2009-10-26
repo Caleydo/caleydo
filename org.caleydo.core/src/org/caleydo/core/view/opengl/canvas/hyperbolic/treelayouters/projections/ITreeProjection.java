@@ -30,5 +30,7 @@ public interface ITreeProjection
 
 	public Vec3f getRootPoint();
 
+	public Vec3f getCenterPoint();
+
 	int numOfAnimationStepsToGo(Vec3f vPoint);
 }

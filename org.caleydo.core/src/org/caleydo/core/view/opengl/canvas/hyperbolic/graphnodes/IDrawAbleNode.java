@@ -118,6 +118,8 @@ public interface IDrawAbleNode
 	public float getWidth();
 	
 	public boolean isVisible();
+	
+	public boolean foundVisibleAncestor();
 
 //	boolean isAlternativeNodeExpression();
 
@@ -128,6 +130,12 @@ public interface IDrawAbleNode
 	void setHighlight(boolean b);
 
 	public void translate(Vec3f vTranslation, ITreeProjection treeProjection);
+
+	void setParentOfNode(IDrawAbleNode parent);
+
+	void nodeIsRoot();
+
+	boolean IsNodeRoot();
 
 	// /**
 	// * Set how the node is selected
