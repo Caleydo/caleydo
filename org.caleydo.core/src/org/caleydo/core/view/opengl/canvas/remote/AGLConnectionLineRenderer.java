@@ -78,8 +78,10 @@ public abstract class AGLConnectionLineRenderer {
 		// gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 1.5f);
 		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(vecSrcPoint.x() - 1.5f, vecSrcPoint.y() - 1.5f, vecSrcPoint.z() - 0.001f);
-		gl.glVertex3f(vecDestPoint.x() - 1.5f, vecDestPoint.y() - 1.5f, vecDestPoint.z() - 0.001f);
+//		gl.glVertex3f(vecSrcPoint.x() - 1.5f, vecSrcPoint.y() - 1.5f, vecSrcPoint.z() - 0.001f);
+//		gl.glVertex3f(vecDestPoint.x() - 1.5f, vecDestPoint.y() - 1.5f, vecDestPoint.z() - 0.001f);
+		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z() - 0.001f);
+		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z() - 0.001f);
 		gl.glEnd();
 
 		// gl.glColor4fv(fArColor, 0);
@@ -89,8 +91,11 @@ public abstract class AGLConnectionLineRenderer {
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
 
 		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(vecSrcPoint.x() - 1.5f, vecSrcPoint.y() - 1.5f, vecSrcPoint.z());
-		gl.glVertex3f(vecDestPoint.x() - 1.5f, vecDestPoint.y() - 1.5f, vecDestPoint.z());
+//		gl.glVertex3f(vecSrcPoint.x() - 1.5f, vecSrcPoint.y() - 1.5f, vecSrcPoint.z());
+//		gl.glVertex3f(vecDestPoint.x() - 1.5f, vecDestPoint.y() - 1.5f, vecDestPoint.z());
+		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z());
+		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z());
+
 		gl.glEnd();
 	}
 }
