@@ -140,18 +140,23 @@ public class VisLinkEnvironment {
 	 * @param gl The GL-object
 	 */
 	protected void callRenderPolygonLine(final GL gl) {
-		
-		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
-		
+				
 		float width = 0.0f;
 		float color[] = new float[4];
+		
+//		int antiAliasingQuality = ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY;
+		int antiAliasingQuality = 1;
 				
 		if( (style == EVisLinkStyleType.SHADOW_VISLINK) || (style == EVisLinkStyleType.HALO_VISLINK) ) {
+			
+			//clear stencil buffer
+			gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
 			
 			//set parameters
 			if(style == EVisLinkStyleType.SHADOW_VISLINK) {
 				width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR;
 				color = ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR;
+				antiAliasingQuality = 1;
 			}
 			if(style == EVisLinkStyleType.HALO_VISLINK) {
 				width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH_FACTOR;
@@ -159,6 +164,7 @@ public class VisLinkEnvironment {
 				color[1] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[1];
 				color[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
 				color[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 1.5f;
+				antiAliasingQuality = 5;
 			}
 			
 			//draw shadow oder halo
@@ -167,21 +173,26 @@ public class VisLinkEnvironment {
 					if(currentLine.size() >= 2) {
 						VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
 						enableStencilBuffer(gl);
-						visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+						visLink.drawPolygonLine(gl, width, color, antiAliasingQuality);
 						disableStencilBuffer(gl);
 					}
 				}		
 		}
 		
 		// background (halo or shadow) done, render frontline
+		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+		
 		width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
 		color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
+		antiAliasingQuality = 1;
 
 		for(ArrayList<ArrayList<Vec3f>> currentView : connectionLinesAllViews)
 			for(ArrayList<Vec3f> currentLine : currentView) {
 				if(currentLine.size() >= 2) {
 					VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
-					visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+					enableStencilBuffer(gl);
+					visLink.drawPolygonLine(gl, width, color, antiAliasingQuality);
+					disableStencilBuffer(gl);
 				}
 			}		
 	}
@@ -467,6 +478,9 @@ public class VisLinkEnvironment {
 		
 		float width = 0.0f;
 		float color[] = new float[4];
+		
+//		int antiAliasingQuality = ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY;
+		int antiAliasingQuality = 1;
 				
 		if( (style == EVisLinkStyleType.SHADOW_VISLINK) || (style == EVisLinkStyleType.HALO_VISLINK) ) {
 			
@@ -477,6 +491,7 @@ public class VisLinkEnvironment {
 			if(style == EVisLinkStyleType.SHADOW_VISLINK) {
 				width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR;
 				color = ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR;
+				antiAliasingQuality = 1;
 			}
 			if(style == EVisLinkStyleType.HALO_VISLINK) {
 				width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH_FACTOR;
@@ -484,6 +499,7 @@ public class VisLinkEnvironment {
 				color[1] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[1];
 				color[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
 				color[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 1.5f;
+				antiAliasingQuality = 5;
 			}
 			
 			//draw shadow oder halo
@@ -495,12 +511,12 @@ public class VisLinkEnvironment {
 						enableStencilBuffer(gl);
 						if(i == localStage && !animationFinished) {
 							if(i < 2)
-								visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw);
+								visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, numberOfSegmentsToDraw);
 							else
-								visLink.drawPolygonLineReverse(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw);
+								visLink.drawPolygonLineReverse(gl, width, color, antiAliasingQuality, numberOfSegmentsToDraw);
 						}
 						else
-							visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+							visLink.drawPolygonLine(gl, width, color, antiAliasingQuality);
 						disableStencilBuffer(gl);
 					}
 				}
@@ -510,6 +526,7 @@ public class VisLinkEnvironment {
 		// background (halo or shadow) done, render frontline
 		width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
 		color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
+		antiAliasingQuality = 1;
 		
 		for(int i = 0; i <= localStage; i++) {
 			ArrayList<ArrayList<Vec3f>> currentStage = connectionLinesAllViews.get(i);
@@ -518,12 +535,12 @@ public class VisLinkEnvironment {
 					VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
 					if(i == localStage && !animationFinished) {
 						if(i < 2)
-							visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw);
+							visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, numberOfSegmentsToDraw);
 						else
-							visLink.drawPolygonLineReverse(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw);
+							visLink.drawPolygonLineReverse(gl, width, color, antiAliasingQuality, numberOfSegmentsToDraw);
 					}
 					else
-						visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+						visLink.drawPolygonLine(gl, width, color, antiAliasingQuality);
 				}
 			}
 		}		

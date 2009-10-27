@@ -29,9 +29,9 @@ public class ConnectionLineRenderStyle
 	public static final int LINE_ANTI_ALIASING_QUALITY = 1;
 	
 //	public static final EVisLinkStyleType CONNECTION_LINE_STYLE = EVisLinkStyleType.STANDARD_VISLINK;
-	public static final EVisLinkStyleType CONNECTION_LINE_STYLE = EVisLinkStyleType.SHADOW_VISLINK;
-//	public static final EVisLinkStyleType CONNECTION_LINE_STYLE = EVisLinkStyleType.HALO_VISLINK;
+//	public static final EVisLinkStyleType CONNECTION_LINE_STYLE = EVisLinkStyleType.SHADOW_VISLINK;
+	public static final EVisLinkStyleType CONNECTION_LINE_STYLE = EVisLinkStyleType.HALO_VISLINK;
 	
 	public static final boolean ANIMATION = true;
-	public static final int ANIMATION_SPEED_IN_MILLIS = 1000;
+	public static final int ANIMATION_SPEED_IN_MILLIS = 650;
 }

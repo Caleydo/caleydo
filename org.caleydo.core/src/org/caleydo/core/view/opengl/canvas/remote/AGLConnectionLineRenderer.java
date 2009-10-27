@@ -86,9 +86,9 @@ public abstract class AGLConnectionLineRenderer {
 		Vec3f vecCenter = calculateCenter(hashViewToCenterPoint.values());
 //		ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
 //		ArrayList<ArrayList<Vec3f>> connectionLinesCurrentView = new ArrayList<ArrayList<Vec3f>>();
-		ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews = new ArrayList<ArrayList<ArrayList<Vec3f>>>(keySet.size());
-		ArrayList<ArrayList<Vec3f>> bundlingToCenterLines = new ArrayList<ArrayList<Vec3f>>(keySet.size());
-		ArrayList<ArrayList<Vec3f>> connectionLinesActiveView = new ArrayList<ArrayList<Vec3f>>(keySet.size());
+//		ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews = new ArrayList<ArrayList<ArrayList<Vec3f>>>(keySet.size());
+//		ArrayList<ArrayList<Vec3f>> bundlingToCenterLines = new ArrayList<ArrayList<Vec3f>>(keySet.size());
+//		ArrayList<ArrayList<Vec3f>> connectionLinesActiveView = new ArrayList<ArrayList<Vec3f>>(keySet.size());
 		ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViewsNew = new ArrayList<ArrayList<ArrayList<Vec3f>>>(4);
 		ArrayList<ArrayList<Vec3f>> connectionLinesActiveViewNew = new ArrayList<ArrayList<Vec3f>>();
 		ArrayList<ArrayList<Vec3f>> bundlingToCenterLinesActiveViewNew = new ArrayList<ArrayList<Vec3f>>();
@@ -112,15 +112,16 @@ public abstract class AGLConnectionLineRenderer {
 //			for(Vec3f currentPoint : depthSort(pointsToDepthSort))				
 //				renderLine(gl, vecViewBundlingPoint, currentPoint, 0, hashViewToCenterPoint.get(iKey), fArColor);
 			
-			ArrayList<ArrayList<Vec3f>> connectionLinesCurrentView = new ArrayList<ArrayList<Vec3f>>(pointsToDepthSort.size()); //FIXME:added
+//			ArrayList<ArrayList<Vec3f>> connectionLinesCurrentView = new ArrayList<ArrayList<Vec3f>>(pointsToDepthSort.size()); //FIXME:added
 			
 			for(Vec3f currentPoint : depthSort(pointsToDepthSort)) {
+//			for(Vec3f currentPoint : pointsToDepthSort) {
 				if(activeViewID != -1 && iKey == activeViewID) {
-					connectionLinesActiveView.add( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
+//					connectionLinesActiveView.add( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
 					connectionLinesActiveViewNew.add( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
 				}
 				else {
-					connectionLinesCurrentView.add( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
+//					connectionLinesCurrentView.add( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
 					connectionLinesOtherViewsNew.add( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
 				}
 			}
@@ -130,8 +131,8 @@ public abstract class AGLConnectionLineRenderer {
 			bundlingToCenter.add(vecViewBundlingPoint);
 			bundlingToCenter.add(vecCenter);
 			//connectionLinesCurrentView.add(bundlingToCenter);
-			connectionLinesAllViews.add(connectionLinesCurrentView);
-			bundlingToCenterLines.add(bundlingToCenter);
+//			connectionLinesAllViews.add(connectionLinesCurrentView);
+//			bundlingToCenterLines.add(bundlingToCenter);
 			if(activeViewID != -1 && iKey == activeViewID) {
 				bundlingToCenterLinesActiveViewNew.add(bundlingToCenter);
 			}
@@ -561,7 +562,7 @@ public abstract class AGLConnectionLineRenderer {
 		for(Vec3f point : points) {
 			foundSpot = false;
 			for(int i = 0; i < sortedPoints.size(); i++)
-				if(point.z() <= sortedPoints.get(i).z()) {
+				if(point.z() >= sortedPoints.get(i).z()) {
 					sortedPoints.add(i, point);
 					foundSpot = true;
 					break;
