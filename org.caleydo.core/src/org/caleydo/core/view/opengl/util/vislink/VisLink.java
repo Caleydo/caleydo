@@ -52,13 +52,16 @@ public class VisLink {
 	 * 
 	 * @param srcPoint Specifies the source point
 	 * @param dstPoint Specifies the destination point
+	 * @param numberOfSegments Specifies the subintervals of the spline. Note that for
+	 * n subintervals there are n+3 curve points. The begin of the curve, the end of
+	 * the curve and n+1 vertices connecting the n segments.
 	 */
-	protected VisLink(final Vec3f srcPoint, final Vec3f dstPoint) {
+	protected VisLink(final Vec3f srcPoint, final Vec3f dstPoint, int numberOfSegments) {
 		
 //		ArrayList<Vec3f> points = new ArrayList<Vec3f>(2);
 //		points.add(srcPoint);
 //		points.add(dstPoint);
-		StraightLine line = new StraightLine(srcPoint, dstPoint, 30); // FIXME: ), numberOfSegments);
+		StraightLine line = new StraightLine(srcPoint, dstPoint, numberOfSegments);
 //		this.linePoints = points;
 		this.linePoints = line.getLinePoints();
 		
