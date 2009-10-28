@@ -34,4 +34,5 @@ public class ConnectionLineRenderStyle
 	
 	public static final boolean ANIMATION = true;
 	public static final int ANIMATION_SPEED_IN_MILLIS = 1000;
+	public static final float CONNECTION_LINE_SEGMENT_LENGTH = 0.05f;
 }

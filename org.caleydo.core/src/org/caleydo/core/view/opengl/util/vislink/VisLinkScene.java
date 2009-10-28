@@ -45,7 +45,7 @@ public class VisLinkScene {
 	private static long animationStartTime = -1;
 	private static int NUMBER_OF_SEGMENTS = 30;
 	private static final float FULL_PERCENTAGE = 100;
-	private static final float SEGMENT_LENGTH = 0.05f;
+	private static final float SEGMENT_LENGTH = ConnectionLineRenderStyle.CONNECTION_LINE_SEGMENT_LENGTH;
 	
 	private EVisLinkStyleType style;
 //	private EVisLinkStyleType style = EVisLinkStyleType.STANDARD_VISLINK;
