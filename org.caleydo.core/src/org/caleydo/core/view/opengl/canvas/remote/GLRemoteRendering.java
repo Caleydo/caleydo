@@ -534,6 +534,7 @@ public class GLRemoteRendering
 		// comment here for connection lines
 		// transform-selections here
 		if (glConnectionLineRenderer != null && connectionLinesEnabled) {
+			glConnectionLineRenderer.setActiveViewID(iActiveViewID); // FIXME: added
 			glConnectionLineRenderer.render(gl);
 		}
 
