@@ -400,14 +400,11 @@ public class VisLink {
 			VisLink visLink = new VisLink(controlPoints, offset, numberOfSegments);
 			if(style == EVisLinkStyleType.SHADOW_VISLINK) {
 				visLink.drawPolygonLine(gl, (width * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR), ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, antiAliasingQuality, false, false);
-				visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, false, false);
 			}
 			else if(style == EVisLinkStyleType.HALO_VISLINK) {
 				float[] haloColor = {color[0], color[1], color[2], (color[3] / 2.0f) };
 				visLink.drawPolygonLine(gl, (width * ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH_FACTOR), haloColor, antiAliasingQuality, false, false);
-				visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, false, false);
 			}
-			else
 				visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, false, false);
 			
 		}

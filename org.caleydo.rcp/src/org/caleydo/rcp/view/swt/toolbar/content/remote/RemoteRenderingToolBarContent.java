@@ -29,6 +29,10 @@ public class RemoteRenderingToolBarContent
 
 	public static final String PATHWAY_IMAGE_PATH = "resources/icons/view/pathway/pathway.png";
 	public static final String PATHWAY_VIEW_TITLE = "Pathways";
+	
+	//FIXME
+	public static final String VISLINKS_IMAGE_PATH = "resources/icons/view/pathway/pathway.png";
+	public static final String VISLINKS_VIEW_TITLE = "VisualLinks";
 
 	RemoteRenderingToolBarMediator mediator;
 
@@ -44,6 +48,7 @@ public class RemoteRenderingToolBarContent
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(createBucketContainer());
 		list.add(createPathwayContainer());
+		list.add(createVisLinkContainer()); //FIXME
 
 		return list;
 	}
@@ -98,6 +103,14 @@ public class RemoteRenderingToolBarContent
 		container.setPathwayToolBarMediator(new PathwayToolBarMediator());
 		container.setTargetViewData((SerializedRemoteRenderingView) getTargetViewData());
 
+		return container;
+	}
+	
+	//FIXME
+	private ToolBarContainer createVisLinkContainer() {
+		VisLinksToolbarContainer container = new VisLinksToolbarContainer();
+		container.setImagePath(VISLINKS_IMAGE_PATH);
+		container.setTitle(VISLINKS_VIEW_TITLE);
 		return container;
 	}
 

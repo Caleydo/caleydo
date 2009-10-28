@@ -107,13 +107,25 @@ public class VisLinkScene {
 	 */
 	public void renderLines(final GL gl) {	
 		
-		ConnectionLineRenderStyle.CONNECTION_LINE_STYLE = EVisLinkStyleType.HALO_VISLINK;
-		ConnectionLineRenderStyle.ANIMATION = true;
-		ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH = 2.0f;
+//		ConnectionLineRenderStyle.CONNECTION_LINE_STYLE = EVisLinkStyleType.HALO_VISLINK;
+//		ConnectionLineRenderStyle.ANIMATION = true;
+//		ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH = 2.0f;
 		
 //		callRenderLine(gl);		
 		if(ConnectionLineRenderStyle.ANIMATION)
 			callRenderAnimatedPolygonLine(gl);
+		else if(ConnectionLineRenderStyle.ANIMATED_HIGHLIGHTING)
+		{
+			float tempWidth = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
+			VisLinksAttributeManager.setConnectionLinesWidth(1f);
+			style = EVisLinkStyleType.STANDARD_VISLINK;
+//			ConnectionLineRenderStyle.CONNECTION_LINE_STYLE = EVisLinkStyleType.STANDARD_VISLINK;
+			callRenderPolygonLine(gl);
+			style = ConnectionLineRenderStyle.CONNECTION_LINE_STYLE;
+//			ConnectionLineRenderStyle.CONNECTION_LINE_STYLE = EVisLinkStyleType.HALO_VISLINK;
+			ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH = tempWidth;
+			callRenderAnimatedPolygonLine(gl);
+		}
 		else
 			callRenderPolygonLine(gl);		
 	}
