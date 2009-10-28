@@ -18,7 +18,7 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
-import org.caleydo.core.view.opengl.util.vislink.VisLinkEnvironment;
+import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
 
 /**
  * Class is responsible for rendering and drawing of connection lines (resp. planes) between views in the
@@ -133,8 +133,8 @@ public abstract class AGLConnectionLineRenderer {
 		connectionLinesAllViews.add(bundlingToCenterLinesOtherViews);
 		connectionLinesAllViews.add(connectionLinesOtherViews);
 		
-		VisLinkEnvironment visLinkEnvironment = new VisLinkEnvironment(connectionLinesAllViews);
-		visLinkEnvironment.renderLines(gl);
+		VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
+		visLinkScene.renderLines(gl);
 	}
 	
 	private ArrayList<Vec3f> createControlPoints(Vec3f vecSrcPoint, Vec3f vecDstPoint, Vec3f vecViewCenterPoint) {
