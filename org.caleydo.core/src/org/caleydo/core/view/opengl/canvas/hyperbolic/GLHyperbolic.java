@@ -624,7 +624,11 @@ public class GLHyperbolic
 
 	public void setMaxLayoutDepth(int iMaxLayoutDepth) {
 		HyperbolicRenderStyle.MAX_DEPTH = iMaxLayoutDepth;
-//		if (layouter != null)
+		if (layouter != null){
+			Vec3f vec = layouter.getLastTranslationVector();
+			layouter.setNewTranslatedTree(vec);
+//			layouter.translateTree(tree);
+		}
 //			layouter.animateToNewTree(getSubTreeForDisplay());
 	}
 

@@ -43,5 +43,9 @@ public interface ITreeLayouter
 	
 	Vec3f translateTree(int tree);
 
+	Vec3f getLastTranslationVector();
+
+	void setNewTranslatedTree(Vec3f vec);
+
 	//void changeCanvasDrawing();
 }

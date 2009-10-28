@@ -20,7 +20,7 @@ public class HTLayouter
 
 	private HTModel model = null; // the model of the tree for the HyperTree
 	private IDrawAbleNode root = null;
-	private float fScalingFactor = 0.0f;
+
 	private float fOriginalLineLenth = 0.0f;
 	
 
@@ -61,9 +61,9 @@ public class HTLayouter
 //					placeConnection(node, child);
 //				}
 //			}
-			runThroughTreeAndFoundScalingFactor(root, 1);
-			runThroughTreeAndPlace(root);
-			runThroughTreeAndPlaceConnection(root);
+			runThroughTreeAndCalculateScalingFactor(root, 0);
+			runThroughTreeAndPlace(root, 0);
+			runThroughTreeAndPlaceConnection(root, 0);
 			
 		}
 //		IDrawAbleNode root = tree.getRoot();
@@ -80,12 +80,15 @@ public class HTLayouter
 
 
 	}
-	private void runThroughTreeAndPlace(IDrawAbleNode node){
+	private void runThroughTreeAndPlace(IDrawAbleNode node, int layer){
+		layer = layer+1;
+		if(layer < HyperbolicRenderStyle.MAX_DEPTH ){
 		if(tree.hasChildren(node)){
 			for(IDrawAbleNode child : tree.getChildren(node)){
 				
-				runThroughTreeAndPlace(child);
+				runThroughTreeAndPlace(child, layer);
 			}
+			
 		}
 
 		node.setDetailLevel(EDrawAbleNodeDetailLevel.High);
@@ -105,25 +108,32 @@ public class HTLayouter
 		
 //		placeConnection(tree.getParent(node), node);
 
+		}
 	}
 	
-	private void runThroughTreeAndPlaceConnection(IDrawAbleNode node){
+	private void runThroughTreeAndPlaceConnection(IDrawAbleNode node, int layer){
+		layer = layer+1;
+		if(layer < HyperbolicRenderStyle.MAX_DEPTH ){
 		if(tree.hasChildren(node)){
 			for(IDrawAbleNode child : tree.getChildren(node)){
-				runThroughTreeAndPlaceConnection(child);
+				runThroughTreeAndPlaceConnection(child, layer);
 			}
+			
 		}
 		if(tree.getParent(node) != null)
 		placeConnection(tree.getParent(node), node);
+		}
 	}
 	
-	private float runThroughTreeAndFoundScalingFactor(IDrawAbleNode node, int layer){
-//		int layer2 = layer;
+	private float runThroughTreeAndCalculateScalingFactor(IDrawAbleNode node, int layer){
+		layer = layer+1;
+		if(layer < HyperbolicRenderStyle.MAX_DEPTH ){
 		if(tree.hasChildren(node)){
 			for(IDrawAbleNode child : tree.getChildren(node)){
 				child.setParentOfNode(node);
-				runThroughTreeAndFoundScalingFactor(child, ++layer);
+				runThroughTreeAndCalculateScalingFactor(child, layer);
 			}
+			
 		}
 		
 		node.setDetailLevel(EDrawAbleNodeDetailLevel.High);
@@ -133,7 +143,7 @@ public class HTLayouter
 		if(tree.getParent(node) != null)
 			placeConnection(tree.getParent(node), node);
 		float originalLineLenth = 0.0f;
-		if (layer <= HyperbolicRenderStyle.MAX_DEPTH)
+//		if (layer < HyperbolicRenderStyle.MAX_DEPTH)
 		{
 			originalLineLenth = (float)Math.sqrt(
 				Math.pow((tree.getRoot().getXCoord() - node.getRealCoordinates().x()),2) + 
@@ -142,11 +152,13 @@ public class HTLayouter
 				fOriginalLineLenth = originalLineLenth;
 			
 			float fNewScalingFactor = treeProjector.getProjectedLineFromCenterToBorder() / fOriginalLineLenth;
-			if (fNewScalingFactor > fScalingFactor)
+//			if (fNewScalingFactor > fScalingFactor)
 				fScalingFactor = fNewScalingFactor;
 		}
 		}
-//		fScalingFactor = fScalingFactor - 0.5f;
+		}
+//		fScalingFactor = fScalingFactor * 0.9969f;
+//		fScalingFactor = 1.0f;
 		return fScalingFactor;
 	}
 	

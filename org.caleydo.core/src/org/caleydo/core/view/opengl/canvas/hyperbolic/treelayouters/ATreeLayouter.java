@@ -56,6 +56,9 @@ public abstract class ATreeLayouter
 	protected int iNumLayers;
 
 	protected Semaphore lockAnimation = null;
+	
+	protected float fScalingFactor = 0.0f;
+	protected Vec3f fvec = null;
 
 	// TODO: Maybe replace by maps!
 	// protected List<IDrawAbleNode> nodeLayout;
@@ -161,6 +164,7 @@ public abstract class ATreeLayouter
 		bIsLayoutDirty = true;
 		bIsNodeListDirty = true;
 		bIsConnectionListDirty = true;
+//		renderTreeLayout();
 	}
 
 	public final void setLayoutClean() {
@@ -468,6 +472,12 @@ public abstract class ATreeLayouter
 			node.translate(vTranslation, treeProjector);
 		}
 	}
+	
+	public final void setNewTranslatedTree(Vec3f vec){
+		vTranslation = vec;
+		setLayoutDirty();
+		translateView();
+	}
 
 	private void updateAllConnections() {
 		for (int i : connectionLayout.keySet()) {
@@ -770,8 +780,8 @@ public abstract class ATreeLayouter
 	}
 
 	public Vec3f getTranslationVector(Vec3f source, Vec3f dest) {
-		Vec3f vec = source.minus(dest);
-		return vec;
+		fvec = source.minus(dest);
+		return fvec;
 	}
 
 	public Vec3f translateTree(int iExternalID) {
@@ -798,6 +808,15 @@ public abstract class ATreeLayouter
 
 		// placeConnection(tree.getParent(node), node);
 		// }
+	}
+	
+	public float getScalingFactor(){
+		return fScalingFactor;
+	}
+	
+	@Override
+	public Vec3f getLastTranslationVector(){
+		return fvec;
 	}
 
 	// protected final Vec3f[] findClosestCorrespondendingPoints(List<Vec3f> pointsA, List<Vec3f> pointsB){
