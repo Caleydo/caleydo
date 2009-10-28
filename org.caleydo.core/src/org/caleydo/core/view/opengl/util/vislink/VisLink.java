@@ -56,7 +56,7 @@ public class VisLink {
 	 * n subintervals there are n+3 curve points. The begin of the curve, the end of
 	 * the curve and n+1 vertices connecting the n segments.
 	 */
-	protected VisLink(final Vec3f srcPoint, final Vec3f dstPoint, int numberOfSegments) {
+	public VisLink(final Vec3f srcPoint, final Vec3f dstPoint, int numberOfSegments) {
 		
 //		ArrayList<Vec3f> points = new ArrayList<Vec3f>(2);
 //		points.add(srcPoint);
@@ -80,7 +80,7 @@ public class VisLink {
 	 * 
 	 * @throws IllegalArgumentException if there are < 2 control points
 	 */
-	protected VisLink(final ArrayList<Vec3f> controlPoints, final int offset, int numberOfSegments)
+	public VisLink(final ArrayList<Vec3f> controlPoints, final int offset, int numberOfSegments)
 		throws IllegalArgumentException
 	{
 		
@@ -99,6 +99,42 @@ public class VisLink {
 //		this.generalManager = GeneralManager.get();
 	}
 	
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param controlPoints Specifies the set of control points of which the spline is generated.
+	 * @param offset Specifies the offset in controlPoints
+	 * @param segmentLength Specifies the length of the splines subintervals. The number of subintervals
+	 * is calculated by the length of the line divided by the segmentLength. Note that for
+	 * n subintervals there are n+3 curve points. The begin of the curve, the end of
+	 * the curve and n+1 vertices connecting the n segments.
+	 * 
+	 * @throws IllegalArgumentException if there are < 2 control points
+	 */
+	public VisLink(final ArrayList<Vec3f> controlPoints, final int offset, float segmentLength)
+		throws IllegalArgumentException
+	{
+		
+		ArrayList<Vec3f> points = new ArrayList<Vec3f>(controlPoints.subList(offset, controlPoints.size()));
+		if(points.size() < 2)
+			throw new IllegalArgumentException("Need at least two points");
+		
+		int numberOfSegments = calculateNumberOfSegmentsByEuclideanDistance(points, segmentLength);
+//		System.out.println("numberOfSegments=" + numberOfSegments);
+		
+		if(points.size() == 2) {
+//			this.linePoints = points;
+			StraightLine line = new StraightLine(points.get(0), points.get(1), numberOfSegments);
+			this.linePoints = line.getLinePoints();
+		}
+		else {
+			NURBSCurve curve = new NURBSCurve(points, numberOfSegments);
+			this.linePoints = curve.getCurvePoints();
+		}
+			
+//		this.generalManager = GeneralManager.get();
+	}
 	
 	/**
 	 * 		Creates a visual link. Static method.
@@ -363,16 +399,16 @@ public class VisLink {
 		if(controlPoints.size() >= (offset + 2)) { // fixme: special case if == 2
 			VisLink visLink = new VisLink(controlPoints, offset, numberOfSegments);
 			if(style == EVisLinkStyleType.SHADOW_VISLINK) {
-				visLink.drawPolygonLine(gl, (width * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR), ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, antiAliasingQuality);
-				visLink.drawPolygonLine(gl, width, color, antiAliasingQuality);
+				visLink.drawPolygonLine(gl, (width * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR), ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, antiAliasingQuality, false, false);
+				visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, false, false);
 			}
 			else if(style == EVisLinkStyleType.HALO_VISLINK) {
 				float[] haloColor = {color[0], color[1], color[2], (color[3] / 2.0f) };
-				visLink.drawPolygonLine(gl, (width * ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH_FACTOR), haloColor, antiAliasingQuality);
-				visLink.drawPolygonLine(gl, width, color, antiAliasingQuality);
+				visLink.drawPolygonLine(gl, (width * ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH_FACTOR), haloColor, antiAliasingQuality, false, false);
+				visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, false, false);
 			}
 			else
-				visLink.drawPolygonLine(gl, width, color, antiAliasingQuality);
+				visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, false, false);
 			
 		}
 		else
@@ -414,7 +450,7 @@ public class VisLink {
 	 * @param antiAliasingQuality Specifies the anti-aliasing quality of the rendered line (1 <= quality <= 20)
 	 * @throws IllegalArgumentException If the specified anti-aliasing quality is <1 or >20
 	 */
-	protected void drawPolygonLine(final GL gl, float width, float[] color, int antiAliasingQuality)
+	protected void drawPolygonLine(final GL gl, float width, float[] color, int antiAliasingQuality, boolean roundedStart, boolean roundedEnd)
 		throws IllegalArgumentException
 	{		
 		try{
@@ -448,6 +484,27 @@ public class VisLink {
 			}
 			gl.glEnd();
 			
+			//rounded start
+			if(roundedStart) {
+				Vec3f startPoint = linePoints.get(0);
+				gl.glPointSize(width*3);
+//				gl.glPointSize(calculateEuclideanDistance(vertices.get(0), vertices.get(1)));
+				gl.glBegin(GL.GL_POINTS);
+				gl.glVertex3f(startPoint.x(), startPoint.y(), startPoint.z());
+				gl.glEnd();
+			}
+			
+			//rounded end
+			if(roundedEnd) {
+				int endPointIndex = linePoints.size() - 1;
+				Vec3f endPoint = linePoints.get(endPointIndex);
+				gl.glPointSize(width*3); //FIXME: width calculation to be corrected
+//				gl.glPointSize(calculateEuclideanDistance(vertices.get(endPointIndex*2), vertices.get(endPointIndex*2-1)));
+				gl.glBegin(GL.GL_POINTS);
+				gl.glVertex3f(endPoint.x(), endPoint.y(), endPoint.z());
+				gl.glEnd();
+			}
+			
 			alpha -= alphaChange; // fade out at borders for anti aliasing effect
 			width += unit;
 		}		
@@ -461,9 +518,10 @@ public class VisLink {
 	 * @param color Specifies the lines color (rgba)
 	 * @param antiAliasingQuality Specifies the anti-aliasing quality of the rendered line (1 <= quality <= 20)
 	 * @param segmentsToDraw Specifies the number of segments to be drawn (=n)
+	 * @param roundedEnd If set to true, the end of the line is rounded
 	 * @throws IllegalArgumentException If the specified anti-aliasing quality is <1 or >20
 	 */
-	protected void drawPolygonLine(final GL gl, float width, float[] color, int antiAliasingQuality, long segmentsToDraw)
+	protected void drawPolygonLine(final GL gl, float width, float[] color, int antiAliasingQuality, int segmentsToDraw, boolean roundedStart, boolean roundedEnd)
 		throws IllegalArgumentException
 	{		
 		try{
@@ -476,6 +534,9 @@ public class VisLink {
 		if(antiAliasingQuality < 1 || antiAliasingQuality > 20)
 			throw new IllegalArgumentException("parameter antiAliasingQuality has to be >= 1 and <= 20");
 		
+		if(segmentsToDraw >= linePoints.size())
+			throw new IllegalArgumentException("Specified parameter 'segmentsToDraw' too high (not enough curve-segments)");
+		
 		float red = color[0];
 		float green = color[1];
 		float blue = color[2];
@@ -483,7 +544,7 @@ public class VisLink {
 		float alphaChange = alpha / antiAliasingQuality;
 		float unit = width / antiAliasingQuality;
 		width = width - (((antiAliasingQuality - 1) * unit) / 2);
-		long limit = (segmentsToDraw + 1) * 2; // n segments have n+1 vertices, *2 because of polygons
+		int limit = (segmentsToDraw + 1) * 2; // n segments have n+1 vertices, *2 because of polygons
 		
 		for(int j = 1; j <= antiAliasingQuality; j++) {
 			// The spline attributes
@@ -501,6 +562,24 @@ public class VisLink {
 			}
 			gl.glEnd();
 			
+			//rounded start
+			if(roundedStart) {
+				Vec3f startPoint = linePoints.get(0);
+				gl.glPointSize(width*3); //FIXME: width calculation to be corrected
+				gl.glBegin(GL.GL_POINTS);
+				gl.glVertex3f(startPoint.x(), startPoint.y(), startPoint.z());
+				gl.glEnd();
+			}
+			
+			//rounded end
+			if(roundedEnd) {
+				Vec3f endPoint = linePoints.get(segmentsToDraw);
+				gl.glPointSize(width*3); //FIXME: width calculation to be corrected
+				gl.glBegin(GL.GL_POINTS);
+				gl.glVertex3f(endPoint.x(), endPoint.y(), endPoint.z());
+				gl.glEnd();
+			}
+			
 			alpha -= alphaChange; // fade out at borders for anti aliasing effect
 			width += unit;
 		}
@@ -515,9 +594,10 @@ public class VisLink {
 	 * @param color Specifies the lines color (rgba)
 	 * @param antiAliasingQuality Specifies the anti-aliasing quality of the rendered line (1 <= quality <= 20)
 	 * @param segmentsToDraw Specifies the number of segments to be drawn (=n)
+	 * @param roundedEnd If set to true, the end of the line is rounded
 	 * @throws IllegalArgumentException If the specified anti-aliasing quality is <1 or >20
 	 */
-	protected void drawPolygonLineReverse(final GL gl, float width, float[] color, int antiAliasingQuality, long segmentsToDraw)
+	protected void drawPolygonLineReverse(final GL gl, float width, float[] color, int antiAliasingQuality, int segmentsToDraw, boolean roundedStart, boolean roundedEnd)
 		throws IllegalArgumentException
 	{		
 		try{
@@ -537,7 +617,7 @@ public class VisLink {
 		float alphaChange = alpha / antiAliasingQuality;
 		float unit = width / antiAliasingQuality;
 		width = width - (((antiAliasingQuality - 1) * unit) / 2);
-		long limit = (segmentsToDraw + 1) * 2; // n segments have n+1 vertices, *2 because of polygons
+		int limit = (segmentsToDraw + 1) * 2; // n segments have n+1 vertices, *2 because of polygons
 		
 		for(int j = 1; j <= antiAliasingQuality; j++) {
 			// The spline attributes
@@ -555,9 +635,61 @@ public class VisLink {
 			}
 			gl.glEnd();
 			
+			//rounded start
+			if(roundedStart) {
+				int startPointIndex = linePoints.size() - 1;
+				Vec3f startPoint = linePoints.get(startPointIndex);
+				gl.glPointSize(width*3);
+				gl.glBegin(GL.GL_POINTS);
+				gl.glVertex3f(startPoint.x(), startPoint.y(), startPoint.z());
+				gl.glEnd();
+			}
+			
+			//rounded end
+			if(roundedEnd) {
+				int endPointIndex = linePoints.size() - segmentsToDraw - 1;
+				Vec3f endPoint = linePoints.get(endPointIndex);
+				gl.glPointSize(width*3); //FIXME: width calculation to be corrected
+				gl.glBegin(GL.GL_POINTS);
+				gl.glVertex3f(endPoint.x(), endPoint.y(), endPoint.z());
+				gl.glEnd();
+			}
+			
 			alpha -= alphaChange; // fade out at borders for anti aliasing effect
 			width += unit;
 		}
+	}
+	
+	
+	/**
+	 * Calculates the euclidean distance between two points
+	 * @param srcPoint The source point
+	 * @param dstPoint The destination point
+	 * @return	The euclidean distance
+	 */
+	protected float calculateEuclideanDistance(Vec3f srcPoint, Vec3f dstPoint) {
+		float distance = 0.0f;
+		
+		distance = dstPoint.minus(srcPoint).length();
+//		System.out.println(distance);
+//		System.out.println("calculateEclideanDistance(): distance=" + distance);
+		return distance;
+	}
+	
+	
+	protected int calculateNumberOfSegmentsByEuclideanDistance(ArrayList<Vec3f> controlPoints, float segmentLength)
+		throws IllegalArgumentException
+	{
+		int numberOfSegments = 0;
+		float distance = 0.0f;
+		if(controlPoints.size() < 2)
+			throw new IllegalArgumentException("parameter controlPoints has not enough points (must be >= 2)");
+		for(int i = 1; i < controlPoints.size(); i++) {
+			distance += calculateEuclideanDistance(controlPoints.get(i-1), controlPoints.get(i));
+		}
+		numberOfSegments = (int) (distance / segmentLength);
+//		System.out.println("number of segments = " + numberOfSegments + "   (distance = " + distance + " )");
+		return numberOfSegments;
 	}
 	
 	
@@ -985,7 +1117,7 @@ public class VisLink {
 //	protected void polygonLineWithHalo(final GL gl) {
 //        
 //		this.blurTexture[0] = createBlurTexture(gl);  
-//		this.frameBufferObject[0] = createFrameBufferObject(gl); // FIXME: this method is buggy
+//		this.frameBufferObject[0] = createFrameBufferObject(gl);
 //		
 //		if (frameBufferObject[0] == -1) {
 //    		System.err.println("error: couldn't create framebuffer object needed for halo. rendering normal polygon line instead.");

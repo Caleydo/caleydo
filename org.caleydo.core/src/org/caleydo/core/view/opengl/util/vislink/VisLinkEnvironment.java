@@ -44,6 +44,8 @@ public class VisLinkEnvironment {
 	
 	private static long animationStartTime = -1;
 	private static int NUMBER_OF_SEGMENTS = 30;
+	private static final float FULL_PERCENTAGE = 100;
+	private static final float SEGMENT_LENGTH = 0.05f;
 	
 	private EVisLinkStyleType style;
 //	private EVisLinkStyleType style = EVisLinkStyleType.STANDARD_VISLINK;
@@ -103,7 +105,9 @@ public class VisLinkEnvironment {
 	 * Renders the connection line of the scene.
 	 * @param gl The GL-object
 	 */
-	public void renderLines(final GL gl) {		
+	public void renderLines(final GL gl) {	
+		
+		ConnectionLineRenderStyle.CONNECTION_LINE_STYLE = EVisLinkStyleType.HALO_VISLINK;
 //		callRenderLine(gl);		
 		if(ConnectionLineRenderStyle.ANIMATION)
 			callRenderAnimatedPolygonLine(gl);
@@ -143,6 +147,8 @@ public class VisLinkEnvironment {
 				
 		float width = 0.0f;
 		float color[] = new float[4];
+		boolean roundedStart = false;
+		boolean roundedEnd = false;
 		
 //		int antiAliasingQuality = ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY;
 		int antiAliasingQuality = 1;
@@ -165,6 +171,8 @@ public class VisLinkEnvironment {
 				color[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
 				color[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 1.5f;
 				antiAliasingQuality = 5;
+				roundedStart = true;
+				roundedEnd = true;
 			}
 			
 			//draw shadow oder halo
@@ -173,10 +181,12 @@ public class VisLinkEnvironment {
 					if(currentLine.size() >= 2) {
 						VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
 						enableStencilBuffer(gl);
-						visLink.drawPolygonLine(gl, width, color, antiAliasingQuality);
+						visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, roundedStart, roundedEnd);
 						disableStencilBuffer(gl);
 					}
-				}		
+				}
+			roundedStart = false;
+			roundedEnd = false;
 		}
 		
 		// background (halo or shadow) done, render frontline
@@ -191,7 +201,7 @@ public class VisLinkEnvironment {
 				if(currentLine.size() >= 2) {
 					VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
 					enableStencilBuffer(gl);
-					visLink.drawPolygonLine(gl, width, color, antiAliasingQuality);
+					visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, roundedStart, roundedEnd);
 					disableStencilBuffer(gl);
 				}
 			}		
@@ -432,10 +442,14 @@ public class VisLinkEnvironment {
 	 * Calculates the number of segments to be drawn for animation 
 	 * @return number of segments to be drawn
 	 */
-	public long numberOfSegmentsToDraw() {
-		long animationSpeed = ConnectionLineRenderStyle.ANIMATION_SPEED_IN_MILLIS / NUMBER_OF_SEGMENTS;
-		return (System.currentTimeMillis() - animationStartTime) / animationSpeed;
+	public float percentageOfSegmentsToDraw() {
+		float animationSpeed = ( ConnectionLineRenderStyle.ANIMATION_SPEED_IN_MILLIS / (FULL_PERCENTAGE * numberOfStages()) );
+		return ((System.currentTimeMillis() - animationStartTime) / animationSpeed);
 	}
+//	public int numberOfSegmentsToDraw() {
+//		long animationSpeed = ConnectionLineRenderStyle.ANIMATION_SPEED_IN_MILLIS / (NUMBER_OF_SEGMENTS * numberOfStages());
+//		return (int) ((System.currentTimeMillis() - animationStartTime) / animationSpeed);
+//	}
 //	public long numberOfSegmentsToDraw() {
 //		long animationSpeed = ConnectionLineRenderStyle.ANIMATION_SPEED_IN_MILLIS / NUMBER_OF_SEGMENTS;
 //		long segments = (System.currentTimeMillis() - animationStartTime) / animationSpeed;
@@ -456,19 +470,25 @@ public class VisLinkEnvironment {
 //			segments = 0;
 //		return (segments > NUMBER_OF_SEGMENTS ) ? NUMBER_OF_SEGMENTS : segments;
 //	}
+	
+	public int numberOfSegmentsToDraw(float percentageOfSegmentsToDraw, int totalNumberOfSegments) {
+		float number = ((percentageOfSegmentsToDraw / FULL_PERCENTAGE) * totalNumberOfSegments);
+		return (int) number;
+//		return ((percentageOfSegmentsToDraw / FULL_PERCENTAGE) * totalNumberOfSegments);
+	}
 
 	
 	/**
 	 * Renders the scene with animated polygonal connection lines (visual links)
 	 * @param gl The GL-object
 	 */
-	protected void callRenderAnimatedPolygonLine(final GL gl) {
+protected void callRenderAnimatedPolygonLine(final GL gl) {
 		
-		long numberOfSegmentsToDraw = numberOfSegmentsToDraw();
+		float percentageOfSegmentsToDraw = percentageOfSegmentsToDraw();
 		int localStage = 0;
-		while(numberOfSegmentsToDraw > NUMBER_OF_SEGMENTS){
+		while(percentageOfSegmentsToDraw > FULL_PERCENTAGE){
 			localStage++;
-			numberOfSegmentsToDraw -= NUMBER_OF_SEGMENTS;
+			percentageOfSegmentsToDraw -= FULL_PERCENTAGE;
 		}
 		if(localStage > numberOfStages() ) {
 			animationFinished = true;
@@ -476,10 +496,12 @@ public class VisLinkEnvironment {
 		}
 //		System.out.println("numberOfSegmentsToDraw=" + numberOfSegmentsToDraw + "   localStage=" + localStage);
 		
+//		float width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;;
+//		float color[] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
 		float width = 0.0f;
 		float color[] = new float[4];
-		
-//		int antiAliasingQuality = ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY;
+		boolean roundedStart = false;
+		boolean roundedEnd = false;
 		int antiAliasingQuality = 1;
 				
 		if( (style == EVisLinkStyleType.SHADOW_VISLINK) || (style == EVisLinkStyleType.HALO_VISLINK) ) {
@@ -500,30 +522,53 @@ public class VisLinkEnvironment {
 				color[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
 				color[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 1.5f;
 				antiAliasingQuality = 5;
+				roundedStart = true;
+				roundedEnd = true;
 			}
 			
 			//draw shadow oder halo
 			for(int i = 0; i <= localStage; i++) {
 				ArrayList<ArrayList<Vec3f>> currentStage = connectionLinesAllViews.get(i);
 				for(ArrayList<Vec3f> currentLine : currentStage) {
-					if(currentLine.size() >= 2) {
-						VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//					if(currentLine.size() >= 2) {
+//						VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+						VisLink visLink = new VisLink(currentLine, 0, SEGMENT_LENGTH);
+						int numberOfSegments = visLink.numberOfSegments();
+						int numberOfSegmentsToDraw = numberOfSegmentsToDraw(percentageOfSegmentsToDraw, numberOfSegments);
+//						System.out.println(numberOfSegmentsToDraw);
+						if( style == EVisLinkStyleType.HALO_VISLINK && i == 0)
+							roundedStart = true;
+						if( style == EVisLinkStyleType.HALO_VISLINK && i == localStage)
+							roundedEnd = true;
 						enableStencilBuffer(gl);
 						if(i == localStage && !animationFinished) {
 							if(i < 2)
-								visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, numberOfSegmentsToDraw);
+								visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, numberOfSegmentsToDraw, roundedStart, roundedEnd);
 							else
-								visLink.drawPolygonLineReverse(gl, width, color, antiAliasingQuality, numberOfSegmentsToDraw);
+								visLink.drawPolygonLineReverse(gl, width, color, antiAliasingQuality, numberOfSegmentsToDraw, roundedStart, roundedEnd);
 						}
-						else
-							visLink.drawPolygonLine(gl, width, color, antiAliasingQuality);
+						else {
+							if(i < 2)
+								visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, roundedStart, roundedEnd);
+							else
+								visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, roundedEnd, roundedStart); // Line is reverse, so start and end are inverted
+						}
 						disableStencilBuffer(gl);
-					}
-				}
-			}			
+//					}
+					roundedStart = false;
+					roundedEnd = false;
+				}				
+			}
+			// set parameters back for normal line
+//			roundedStart = false;
+//			roundedEnd = false;
+//			width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
+//			color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
+//			antiAliasingQuality = 1;
 		}
 		
-		// background (halo or shadow) done, render frontline
+//		// background (halo or shadow) done, render frontline
+		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
 		width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
 		color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
 		antiAliasingQuality = 1;
@@ -532,19 +577,127 @@ public class VisLinkEnvironment {
 			ArrayList<ArrayList<Vec3f>> currentStage = connectionLinesAllViews.get(i);
 			for(ArrayList<Vec3f> currentLine : currentStage) {
 				if(currentLine.size() >= 2) {
-					VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//					VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+					VisLink visLink = new VisLink(currentLine, 0, SEGMENT_LENGTH);
+					int numberOfSegments = visLink.numberOfSegments();
+					int numberOfSegmentsToDraw = numberOfSegmentsToDraw(percentageOfSegmentsToDraw, numberOfSegments);
+					enableStencilBuffer(gl);
 					if(i == localStage && !animationFinished) {
 						if(i < 2)
-							visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, numberOfSegmentsToDraw);
+							visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, numberOfSegmentsToDraw, roundedStart, roundedEnd);
 						else
-							visLink.drawPolygonLineReverse(gl, width, color, antiAliasingQuality, numberOfSegmentsToDraw);
+							visLink.drawPolygonLineReverse(gl, width, color, antiAliasingQuality, numberOfSegmentsToDraw, roundedStart, roundedEnd);
 					}
 					else
-						visLink.drawPolygonLine(gl, width, color, antiAliasingQuality);
+						visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, roundedStart, roundedEnd);
+					disableStencilBuffer(gl);
 				}
 			}
 		}		
 	}
+//	protected void callRenderAnimatedPolygonLine(final GL gl) {
+//		
+//		int numberOfSegmentsToDraw = numberOfSegmentsToDraw();
+//		int localStage = 0;
+//		while(numberOfSegmentsToDraw > NUMBER_OF_SEGMENTS){
+//			localStage++;
+//			numberOfSegmentsToDraw -= NUMBER_OF_SEGMENTS;
+//		}
+//		if(localStage > numberOfStages() ) {
+//			animationFinished = true;
+//			localStage = numberOfStages();
+//		}
+////		System.out.println("numberOfSegmentsToDraw=" + numberOfSegmentsToDraw + "   localStage=" + localStage);
+//		
+////		float width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;;
+////		float color[] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
+//		float width = 0.0f;
+//		float color[] = new float[4];
+//		boolean roundedStart = false;
+//		boolean roundedEnd = false;
+//		int antiAliasingQuality = 1;
+//				
+//		if( (style == EVisLinkStyleType.SHADOW_VISLINK) || (style == EVisLinkStyleType.HALO_VISLINK) ) {
+//			
+//			//clear stencil buffer
+//			gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+//			
+//			//set parameters
+//			if(style == EVisLinkStyleType.SHADOW_VISLINK) {
+//				width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR;
+//				color = ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR;
+//				antiAliasingQuality = 1;
+//			}
+//			if(style == EVisLinkStyleType.HALO_VISLINK) {
+//				width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH_FACTOR;
+//				color[0] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[0];
+//				color[1] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[1];
+//				color[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
+//				color[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 1.5f;
+//				antiAliasingQuality = 5;
+//				roundedStart = true;
+//				roundedEnd = true;
+//			}
+//			
+//			//draw shadow oder halo
+//			for(int i = 0; i <= localStage; i++) {
+//				ArrayList<ArrayList<Vec3f>> currentStage = connectionLinesAllViews.get(i);
+//				for(ArrayList<Vec3f> currentLine : currentStage) {
+////					if(currentLine.size() >= 2) {
+//						VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//						if( style == EVisLinkStyleType.HALO_VISLINK && i == 0)
+//							roundedStart = true;
+//						if( style == EVisLinkStyleType.HALO_VISLINK && i == localStage)
+//							roundedEnd = true;
+//						enableStencilBuffer(gl);
+//						if(i == localStage && !animationFinished) {
+//							if(i < 2)
+//								visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, numberOfSegmentsToDraw, roundedStart, roundedEnd);
+//							else
+//								visLink.drawPolygonLineReverse(gl, width, color, antiAliasingQuality, numberOfSegmentsToDraw, roundedStart, roundedEnd);
+//						}
+//						else {
+//							if(i < 2)
+//								visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, roundedStart, roundedEnd);
+//							else
+//								visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, roundedEnd, roundedStart); // Line is reverse, so start and end are inverted
+//						}
+//						disableStencilBuffer(gl);
+////					}
+//					roundedStart = false;
+//					roundedEnd = false;
+//				}				
+//			}
+//			// set parameters back for normal line
+////			roundedStart = false;
+////			roundedEnd = false;
+////			width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
+////			color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
+////			antiAliasingQuality = 1;
+//		}
+//		
+////		// background (halo or shadow) done, render frontline
+//		width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
+//		color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
+//		antiAliasingQuality = 1;
+//		
+//		for(int i = 0; i <= localStage; i++) {
+//			ArrayList<ArrayList<Vec3f>> currentStage = connectionLinesAllViews.get(i);
+//			for(ArrayList<Vec3f> currentLine : currentStage) {
+//				if(currentLine.size() >= 2) {
+//					VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//					if(i == localStage && !animationFinished) {
+//						if(i < 2)
+//							visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, numberOfSegmentsToDraw, roundedStart, roundedEnd);
+//						else
+//							visLink.drawPolygonLineReverse(gl, width, color, antiAliasingQuality, numberOfSegmentsToDraw, roundedStart, roundedEnd);
+//					}
+//					else
+//						visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, roundedStart, roundedEnd);
+//				}
+//			}
+//		}		
+//	}
 	
 	
 	/**
