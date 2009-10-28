@@ -30,7 +30,7 @@ import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
  *
  */
 
-public class VisLinkEnvironment { 
+public class VisLinkScene { 
 //	implements ISelectionUpdateHandler {
 	
 //	private int activeViewID;
@@ -61,7 +61,7 @@ public class VisLinkEnvironment {
 //	 * @param bundlingToCenterLines the lines connecting the bundling points and the center
 //	 * @param connectionLinesActiveView connection lines of the current view
 //	 */
-//	public VisLinkEnvironment(ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews, ArrayList<ArrayList<Vec3f>> bundlingToCenterLines, ArrayList<ArrayList<Vec3f>> connectionLinesActiveView) {
+//	public VisLinkScene(ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews, ArrayList<ArrayList<Vec3f>> bundlingToCenterLines, ArrayList<ArrayList<Vec3f>> connectionLinesActiveView) {
 //		this.connectionLinesAllViews = connectionLinesAllViews;
 //		this.bundlingToCenterLines = bundlingToCenterLines;
 //		this.connectionLinesActiveView = connectionLinesActiveView;
@@ -73,7 +73,7 @@ public class VisLinkEnvironment {
 	 * Constructor
 	 * @param connectionLinesAllViews Connection lines of the scene
 	 */
-	public VisLinkEnvironment(ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews) {
+	public VisLinkScene(ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews) {
 		this.connectionLinesAllViews = connectionLinesAllViews;
 		this.style = ConnectionLineRenderStyle.CONNECTION_LINE_STYLE;
 	}
