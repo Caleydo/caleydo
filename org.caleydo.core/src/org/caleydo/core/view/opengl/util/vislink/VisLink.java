@@ -488,7 +488,7 @@ public class VisLink {
 			if(roundedStart) {
 				Vec3f startPoint = linePoints.get(0);
 				gl.glPointSize(width*3);
-//				gl.glPointSize(calculateEuclideanDistance(vertices.get(0), vertices.get(1)));
+//				gl.glPointSize( (calculateEuclideanDistance(vertices.get(0), vertices.get(1))) * 100);
 				gl.glBegin(GL.GL_POINTS);
 				gl.glVertex3f(startPoint.x(), startPoint.y(), startPoint.z());
 				gl.glEnd();
@@ -499,7 +499,7 @@ public class VisLink {
 				int endPointIndex = linePoints.size() - 1;
 				Vec3f endPoint = linePoints.get(endPointIndex);
 				gl.glPointSize(width*3); //FIXME: width calculation to be corrected
-//				gl.glPointSize(calculateEuclideanDistance(vertices.get(endPointIndex*2), vertices.get(endPointIndex*2-1)));
+//				gl.glPointSize( (calculateEuclideanDistance(vertices.get(endPointIndex*2), vertices.get(endPointIndex*2-1))) * 100);
 				gl.glBegin(GL.GL_POINTS);
 				gl.glVertex3f(endPoint.x(), endPoint.y(), endPoint.z());
 				gl.glEnd();

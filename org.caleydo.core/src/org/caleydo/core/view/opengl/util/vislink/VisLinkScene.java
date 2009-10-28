@@ -43,7 +43,7 @@ public class VisLinkScene {
 	private static boolean animationFinished = false;
 	
 	private static long animationStartTime = -1;
-	private static int NUMBER_OF_SEGMENTS = 30;
+//	private static int NUMBER_OF_SEGMENTS = 30;
 	private static final float FULL_PERCENTAGE = 100;
 	private static final float SEGMENT_LENGTH = ConnectionLineRenderStyle.CONNECTION_LINE_SEGMENT_LENGTH;
 	
@@ -179,7 +179,8 @@ public class VisLinkScene {
 			for(ArrayList<ArrayList<Vec3f>> currentView : connectionLinesAllViews)
 				for(ArrayList<Vec3f> currentLine : currentView) {
 					if(currentLine.size() >= 2) {
-						VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//						VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+						VisLink visLink = new VisLink(currentLine, 0, SEGMENT_LENGTH);
 						enableStencilBuffer(gl);
 						visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, roundedStart, roundedEnd);
 						disableStencilBuffer(gl);
@@ -199,213 +200,14 @@ public class VisLinkScene {
 		for(ArrayList<ArrayList<Vec3f>> currentView : connectionLinesAllViews)
 			for(ArrayList<Vec3f> currentLine : currentView) {
 				if(currentLine.size() >= 2) {
-					VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//					VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+					VisLink visLink = new VisLink(currentLine, 0, SEGMENT_LENGTH);
 					enableStencilBuffer(gl);
 					visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, roundedStart, roundedEnd);
 					disableStencilBuffer(gl);
 				}
 			}		
 	}
-//	protected void callRenderPolygonLine(final GL gl) {
-//		
-//		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
-//		
-//		float width = 0.0f;
-//		float color[] = new float[4];
-//				
-//		if( (style == EVisLinkStyleType.SHADOW_VISLINK) || (style == EVisLinkStyleType.HALO_VISLINK) ) {
-//			
-//			//set parameters
-//			if(style == EVisLinkStyleType.SHADOW_VISLINK) {
-//				width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR;
-//				color = ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR;
-//			}
-//			if(style == EVisLinkStyleType.HALO_VISLINK) {
-//				width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH_FACTOR;
-//				color[0] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[0];
-//				color[1] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[1];
-//				color[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
-//				color[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 1.5f;
-//			}
-//			
-//			//draw shadow oder halo
-//			for(ArrayList<Vec3f> currentLine : connectionLinesActiveView) {
-//				if(currentLine.size() >= 2) {
-//					VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
-//					enableStencilBuffer(gl);
-//					visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-//					disableStencilBuffer(gl);
-//				}
-//				else
-//					throw new IllegalArgumentException( "Need at least two points to render a line!" );
-//			}
-//			for(ArrayList<Vec3f> currentLine : bundlingToCenterLines) {
-//				if(currentLine.size() >= 2) {
-//					VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
-//					enableStencilBuffer(gl);
-//					visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-//					disableStencilBuffer(gl);
-//				}
-//			}
-//			for(ArrayList<ArrayList<Vec3f>> currentView : connectionLinesAllViews)
-//				for(ArrayList<Vec3f> currentLine : currentView) {
-//					if(currentLine.size() >= 2) {
-//						VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
-//						enableStencilBuffer(gl);
-//						visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-//						disableStencilBuffer(gl);
-//					}
-//				}		
-//		}
-//		
-//		// background (halo or shadow) done, render frontline
-//		width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
-//		color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
-//		
-//		for(ArrayList<Vec3f> currentLine : connectionLinesActiveView) {
-//			if(currentLine.size() >= 2) {
-//				VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
-//				visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-//			}
-//			else
-//				throw new IllegalArgumentException( "Need at least two points to render a line!" );
-//		}
-//		for(ArrayList<Vec3f> currentLine : bundlingToCenterLines) {
-//			if(currentLine.size() >= 2) {
-//				VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
-//				visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-//			}
-//		}
-//		for(ArrayList<ArrayList<Vec3f>> currentView : connectionLinesAllViews)
-//			for(ArrayList<Vec3f> currentLine : currentView) {
-//				if(currentLine.size() >= 2) {
-//					VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
-//					visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-//				}
-//			}		
-//	}
-	
-
-	
-//	/**
-//	 * Renders the scene with animated polygonal connection lines (visual links)
-//	 * @param gl The GL-object
-//	 */
-//	protected void callRenderAnimatedPolygonLine(final GL gl) {
-//		
-//		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
-//		
-//		long numberOfSegmentsToDraw = numberOfSegmentsToDraw();
-//		float width = 0.0f;
-//		float color[] = new float[4];
-//				
-//		if( (style == EVisLinkStyleType.SHADOW_VISLINK) || (style == EVisLinkStyleType.HALO_VISLINK) ) {
-//			//set parameters
-//			if(style == EVisLinkStyleType.SHADOW_VISLINK) {
-//				width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR;
-//				color = ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR;
-//			}
-//			if(style == EVisLinkStyleType.HALO_VISLINK) {
-//				width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH_FACTOR;
-//				color[0] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[0];
-//				color[1] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[1];
-//				color[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
-//				color[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 1.5f;
-//			}
-//			
-//			//draw shadow oder halo
-//			for(ArrayList<Vec3f> currentLine : connectionLinesActiveView) {
-//				if(currentLine.size() >= 2) {
-//					VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
-//					if (numberOfSegmentsToDraw >= visLink.numberOfSegments()) {
-//						activeViewAnimationFinished = true;
-//						numberOfSegmentsToDraw = numberOfSegmentsToDraw();
-//					}
-//					enableStencilBuffer(gl);
-//					if(!activeViewAnimationFinished)
-//						visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw);
-//					else
-//						visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-//					disableStencilBuffer(gl);
-//				}
-//				else
-//					throw new IllegalArgumentException( "Need at least two points to render a line!" );
-//			}
-//			if(activeViewAnimationFinished) {
-//				for(ArrayList<Vec3f> currentLine : bundlingToCenterLines) {
-//					if(currentLine.size() >= 2) {
-//						VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
-//						enableStencilBuffer(gl);
-//						if(!animationFinished)
-//							visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw);
-//						else
-//							visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-//						disableStencilBuffer(gl);
-//					}
-//				}
-//				for(ArrayList<ArrayList<Vec3f>> currentView : connectionLinesAllViews)
-//					for(ArrayList<Vec3f> currentLine : currentView) {
-//						if(currentLine.size() >= 2) {
-//							VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
-//							if (numberOfSegmentsToDraw >= visLink.numberOfSegments()) {
-//								animationFinished = true;
-//							}
-//							enableStencilBuffer(gl);
-//							if(!animationFinished)
-//								visLink.drawPolygonLineReverse(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw);
-//							else
-//								visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-//							disableStencilBuffer(gl);
-//						}
-//					}
-//			}			
-//		}
-//		
-//		// background (halo or shadow) done, render frontline
-//		width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
-//		color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
-//		
-//		for(ArrayList<Vec3f> currentLine : connectionLinesActiveView) {
-//			if(currentLine.size() >= 2) {
-//				VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
-//				if (numberOfSegmentsToDraw >= visLink.numberOfSegments()) {
-//					activeViewAnimationFinished = true;
-//					numberOfSegmentsToDraw = numberOfSegmentsToDraw();
-//				}
-//				if(!activeViewAnimationFinished)
-//					visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw);
-//				else
-//					visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-//			}
-//			else
-//				throw new IllegalArgumentException( "Need at least two points to render a line!" );
-//		}
-//		if(activeViewAnimationFinished) {
-//			for(ArrayList<Vec3f> currentLine : bundlingToCenterLines) {
-//				if(currentLine.size() >= 2) {
-//					VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
-//					if(!animationFinished)
-//						visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw);
-//					else
-//						visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-//				}
-//			}
-//			for(ArrayList<ArrayList<Vec3f>> currentView : connectionLinesAllViews)
-//				for(ArrayList<Vec3f> currentLine : currentView) {
-//					if(currentLine.size() >= 2) {
-//						VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
-//						if (numberOfSegmentsToDraw >= visLink.numberOfSegments()) {
-//							animationFinished = true;
-//						}
-//						if(!animationFinished)
-//							visLink.drawPolygonLineReverse(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw);
-//						else
-//							visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-//					}
-//				}
-//		}		
-//	}
-
 	
 	/**
 	 * Enables the stencil buffer
@@ -446,30 +248,7 @@ public class VisLinkScene {
 		float animationSpeed = ( ConnectionLineRenderStyle.ANIMATION_SPEED_IN_MILLIS / (FULL_PERCENTAGE * numberOfStages()) );
 		return ((System.currentTimeMillis() - animationStartTime) / animationSpeed);
 	}
-//	public int numberOfSegmentsToDraw() {
-//		long animationSpeed = ConnectionLineRenderStyle.ANIMATION_SPEED_IN_MILLIS / (NUMBER_OF_SEGMENTS * numberOfStages());
-//		return (int) ((System.currentTimeMillis() - animationStartTime) / animationSpeed);
-//	}
-//	public long numberOfSegmentsToDraw() {
-//		long animationSpeed = ConnectionLineRenderStyle.ANIMATION_SPEED_IN_MILLIS / NUMBER_OF_SEGMENTS;
-//		long segments = (System.currentTimeMillis() - animationStartTime) / animationSpeed;
-//		if(activeViewAnimationFinished)
-//			segments -= NUMBER_OF_SEGMENTS;
-//		if(bundlingToCenterAnimationFinished)
-//			segments -= NUMBER_OF_SEGMENTS;
-//		if(segments < 0)
-//			segments = 0;
-//		return (segments > NUMBER_OF_SEGMENTS ) ? NUMBER_OF_SEGMENTS : segments;
-//	}
-	
-//	public long numberOfSegmentsToDraw() {
-//		long animationSpeed = ConnectionLineRenderStyle.ANIMATION_SPEED_IN_MILLIS / NUMBER_OF_SEGMENTS;
-//		long segments = (System.currentTimeMillis() - animationStartTime) / animationSpeed;
-//		segments -= (NUMBER_OF_SEGMENTS*stage);
-//		if(segments < 0)
-//			segments = 0;
-//		return (segments > NUMBER_OF_SEGMENTS ) ? NUMBER_OF_SEGMENTS : segments;
-//	}
+
 	
 	public int numberOfSegmentsToDraw(float percentageOfSegmentsToDraw, int totalNumberOfSegments) {
 		float number = ((percentageOfSegmentsToDraw / FULL_PERCENTAGE) * totalNumberOfSegments);
@@ -482,7 +261,7 @@ public class VisLinkScene {
 	 * Renders the scene with animated polygonal connection lines (visual links)
 	 * @param gl The GL-object
 	 */
-protected void callRenderAnimatedPolygonLine(final GL gl) {
+	protected void callRenderAnimatedPolygonLine(final GL gl) {
 		
 		float percentageOfSegmentsToDraw = percentageOfSegmentsToDraw();
 		int localStage = 0;
@@ -595,6 +374,230 @@ protected void callRenderAnimatedPolygonLine(final GL gl) {
 			}
 		}		
 	}
+
+//public int numberOfSegmentsToDraw() {
+//long animationSpeed = ConnectionLineRenderStyle.ANIMATION_SPEED_IN_MILLIS / (NUMBER_OF_SEGMENTS * numberOfStages());
+//return (int) ((System.currentTimeMillis() - animationStartTime) / animationSpeed);
+//}
+//public long numberOfSegmentsToDraw() {
+//long animationSpeed = ConnectionLineRenderStyle.ANIMATION_SPEED_IN_MILLIS / NUMBER_OF_SEGMENTS;
+//long segments = (System.currentTimeMillis() - animationStartTime) / animationSpeed;
+//if(activeViewAnimationFinished)
+//	segments -= NUMBER_OF_SEGMENTS;
+//if(bundlingToCenterAnimationFinished)
+//	segments -= NUMBER_OF_SEGMENTS;
+//if(segments < 0)
+//	segments = 0;
+//return (segments > NUMBER_OF_SEGMENTS ) ? NUMBER_OF_SEGMENTS : segments;
+//}
+
+//public long numberOfSegmentsToDraw() {
+//long animationSpeed = ConnectionLineRenderStyle.ANIMATION_SPEED_IN_MILLIS / NUMBER_OF_SEGMENTS;
+//long segments = (System.currentTimeMillis() - animationStartTime) / animationSpeed;
+//segments -= (NUMBER_OF_SEGMENTS*stage);
+//if(segments < 0)
+//	segments = 0;
+//return (segments > NUMBER_OF_SEGMENTS ) ? NUMBER_OF_SEGMENTS : segments;
+//}
+//protected void callRenderPolygonLine(final GL gl) {
+//
+//gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+//
+//float width = 0.0f;
+//float color[] = new float[4];
+//		
+//if( (style == EVisLinkStyleType.SHADOW_VISLINK) || (style == EVisLinkStyleType.HALO_VISLINK) ) {
+//	
+//	//set parameters
+//	if(style == EVisLinkStyleType.SHADOW_VISLINK) {
+//		width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR;
+//		color = ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR;
+//	}
+//	if(style == EVisLinkStyleType.HALO_VISLINK) {
+//		width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH_FACTOR;
+//		color[0] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[0];
+//		color[1] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[1];
+//		color[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
+//		color[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 1.5f;
+//	}
+//	
+//	//draw shadow oder halo
+//	for(ArrayList<Vec3f> currentLine : connectionLinesActiveView) {
+//		if(currentLine.size() >= 2) {
+//			VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//			enableStencilBuffer(gl);
+//			visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+//			disableStencilBuffer(gl);
+//		}
+//		else
+//			throw new IllegalArgumentException( "Need at least two points to render a line!" );
+//	}
+//	for(ArrayList<Vec3f> currentLine : bundlingToCenterLines) {
+//		if(currentLine.size() >= 2) {
+//			VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//			enableStencilBuffer(gl);
+//			visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+//			disableStencilBuffer(gl);
+//		}
+//	}
+//	for(ArrayList<ArrayList<Vec3f>> currentView : connectionLinesAllViews)
+//		for(ArrayList<Vec3f> currentLine : currentView) {
+//			if(currentLine.size() >= 2) {
+//				VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//				enableStencilBuffer(gl);
+//				visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+//				disableStencilBuffer(gl);
+//			}
+//		}		
+//}
+//
+//// background (halo or shadow) done, render frontline
+//width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
+//color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
+//
+//for(ArrayList<Vec3f> currentLine : connectionLinesActiveView) {
+//	if(currentLine.size() >= 2) {
+//		VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//		visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+//	}
+//	else
+//		throw new IllegalArgumentException( "Need at least two points to render a line!" );
+//}
+//for(ArrayList<Vec3f> currentLine : bundlingToCenterLines) {
+//	if(currentLine.size() >= 2) {
+//		VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//		visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+//	}
+//}
+//for(ArrayList<ArrayList<Vec3f>> currentView : connectionLinesAllViews)
+//	for(ArrayList<Vec3f> currentLine : currentView) {
+//		if(currentLine.size() >= 2) {
+//			VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//			visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+//		}
+//	}		
+//}
+
+
+
+///**
+//* Renders the scene with animated polygonal connection lines (visual links)
+//* @param gl The GL-object
+//*/
+//protected void callRenderAnimatedPolygonLine(final GL gl) {
+//
+//gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+//
+//long numberOfSegmentsToDraw = numberOfSegmentsToDraw();
+//float width = 0.0f;
+//float color[] = new float[4];
+//		
+//if( (style == EVisLinkStyleType.SHADOW_VISLINK) || (style == EVisLinkStyleType.HALO_VISLINK) ) {
+//	//set parameters
+//	if(style == EVisLinkStyleType.SHADOW_VISLINK) {
+//		width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR;
+//		color = ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR;
+//	}
+//	if(style == EVisLinkStyleType.HALO_VISLINK) {
+//		width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH_FACTOR;
+//		color[0] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[0];
+//		color[1] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[1];
+//		color[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
+//		color[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 1.5f;
+//	}
+//	
+//	//draw shadow oder halo
+//	for(ArrayList<Vec3f> currentLine : connectionLinesActiveView) {
+//		if(currentLine.size() >= 2) {
+//			VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//			if (numberOfSegmentsToDraw >= visLink.numberOfSegments()) {
+//				activeViewAnimationFinished = true;
+//				numberOfSegmentsToDraw = numberOfSegmentsToDraw();
+//			}
+//			enableStencilBuffer(gl);
+//			if(!activeViewAnimationFinished)
+//				visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw);
+//			else
+//				visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+//			disableStencilBuffer(gl);
+//		}
+//		else
+//			throw new IllegalArgumentException( "Need at least two points to render a line!" );
+//	}
+//	if(activeViewAnimationFinished) {
+//		for(ArrayList<Vec3f> currentLine : bundlingToCenterLines) {
+//			if(currentLine.size() >= 2) {
+//				VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//				enableStencilBuffer(gl);
+//				if(!animationFinished)
+//					visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw);
+//				else
+//					visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+//				disableStencilBuffer(gl);
+//			}
+//		}
+//		for(ArrayList<ArrayList<Vec3f>> currentView : connectionLinesAllViews)
+//			for(ArrayList<Vec3f> currentLine : currentView) {
+//				if(currentLine.size() >= 2) {
+//					VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//					if (numberOfSegmentsToDraw >= visLink.numberOfSegments()) {
+//						animationFinished = true;
+//					}
+//					enableStencilBuffer(gl);
+//					if(!animationFinished)
+//						visLink.drawPolygonLineReverse(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw);
+//					else
+//						visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+//					disableStencilBuffer(gl);
+//				}
+//			}
+//	}			
+//}
+//
+//// background (halo or shadow) done, render frontline
+//width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
+//color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
+//
+//for(ArrayList<Vec3f> currentLine : connectionLinesActiveView) {
+//	if(currentLine.size() >= 2) {
+//		VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//		if (numberOfSegmentsToDraw >= visLink.numberOfSegments()) {
+//			activeViewAnimationFinished = true;
+//			numberOfSegmentsToDraw = numberOfSegmentsToDraw();
+//		}
+//		if(!activeViewAnimationFinished)
+//			visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw);
+//		else
+//			visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+//	}
+//	else
+//		throw new IllegalArgumentException( "Need at least two points to render a line!" );
+//}
+//if(activeViewAnimationFinished) {
+//	for(ArrayList<Vec3f> currentLine : bundlingToCenterLines) {
+//		if(currentLine.size() >= 2) {
+//			VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//			if(!animationFinished)
+//				visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw);
+//			else
+//				visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+//		}
+//	}
+//	for(ArrayList<ArrayList<Vec3f>> currentView : connectionLinesAllViews)
+//		for(ArrayList<Vec3f> currentLine : currentView) {
+//			if(currentLine.size() >= 2) {
+//				VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
+//				if (numberOfSegmentsToDraw >= visLink.numberOfSegments()) {
+//					animationFinished = true;
+//				}
+//				if(!animationFinished)
+//					visLink.drawPolygonLineReverse(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw);
+//				else
+//					visLink.drawPolygonLine(gl, width, color, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+//			}
+//		}
+//}		
+//}
 //	protected void callRenderAnimatedPolygonLine(final GL gl) {
 //		
 //		int numberOfSegmentsToDraw = numberOfSegmentsToDraw();
