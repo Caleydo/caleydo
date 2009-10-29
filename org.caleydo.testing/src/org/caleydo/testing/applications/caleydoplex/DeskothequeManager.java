@@ -17,12 +17,16 @@ public class DeskothequeManager {
 	private GroupwareClientAppIPrx groupwareClientPrx;
 
 	private MasterApplicationIPrx masterPrx;
+	
+	private ServerApplicationIPrx serverPrx; 
 
 	private Communicator communicator;
 
 	String deskoID;
 
 	public void establishConnection(int x, int y, int w, int h) {
+		
+		System.out.println("Establish Deskotheque connection"); 
 
 		// check if there is already a connection 
 		if (this.masterPrx == null) {
@@ -88,51 +92,59 @@ public class DeskothequeManager {
 			// the port 8011 is defined by Deskotheque so we have to 
 			// hardcode that value here 
 			String serverEndPoint = "tcp -h " + hostname + " -p 8011";
-
-			Ice.ObjectPrx proxy = communicator.stringToProxy(serverName + ":" 
-					+ serverEndPoint);
-			ServerApplicationIPrx serverPrx = ServerApplicationIPrxHelper
-					.checkedCast(proxy);
-
-			masterPrx = serverPrx.getMasterProxy();
-
-			// registration at master proxy
-			GroupwareInformation info = masterPrx.registerGroupwareClient(
-					groupwareClientPrx, "Caleydo", serverPrx, x, y, w, h);
-
-			System.out.println("Groupware information: displayID: "
-					+ info.displayID + ", is private: " + info.isPrivate
-					+ ", deskoXID: " + info.deskoXID);
-
-			// info.deskoXID is the unique identifier for Deskotheque
-			this.deskoID = info.deskoXID;
 			
-			// testing communication
+			try{
 
-			// obtaining resource manager proxy
-			ResourceManagerIPrx resourceManagerPrx = masterPrx
-					.getResourceManagerProxy();
+				// if no Deskotheque system is running, this operatio
+				// will through an exception 
+				Ice.ObjectPrx proxy = communicator.stringToProxy(serverName + ":" 
+						+ serverEndPoint);
+				serverPrx = ServerApplicationIPrxHelper
+				.checkedCast(proxy);
 
-			// getting available target locations
-			String[] targetClients = resourceManagerPrx
-					.getAvailableGroupwareClients(info.deskoXID);
-			if (targetClients.length == 0) {
-				System.out.println("No target clients found");
+				masterPrx = serverPrx.getMasterProxy();
+
+				// registration at master proxy
+				GroupwareInformation info = masterPrx.registerGroupwareClient(
+						groupwareClientPrx, "Caleydo", serverPrx, x, y, w, h);
+
+				System.out.println("Groupware information: displayID: "
+						+ info.displayID + ", is private: " + info.isPrivate
+						+ ", deskoXID: " + info.deskoXID);
+
+				// info.deskoXID is the unique identifier for Deskotheque
+				this.deskoID = info.deskoXID;
+
+				// testing communication
+
+				// obtaining resource manager proxy
+				ResourceManagerIPrx resourceManagerPrx = masterPrx
+				.getResourceManagerProxy();
+
+				// getting available target locations
+				String[] targetClients = resourceManagerPrx
+				.getAvailableGroupwareClients(info.deskoXID);
+				if (targetClients.length == 0) {
+					System.out.println("No target clients found");
+				}
+				for (int i = 0; i < targetClients.length; i++) {
+					System.out.println("Target client [" + i + "]: "
+							+ targetClients[i]);
+				}
+
+				// get home of groupware client
+				String homeClient = resourceManagerPrx
+				.getHomeGroupwareClient(info.deskoXID);
+				System.out.println("Home client: " + homeClient);
+
+				// get public groupware client
+				String publicClient = resourceManagerPrx
+				.getPublicGroupwareClient(info.deskoXID);
+				System.out.println("Public client: " + publicClient);
 			}
-			for (int i = 0; i < targetClients.length; i++) {
-				System.out.println("Target client [" + i + "]: "
-						+ targetClients[i]);
+			catch(Ice.ConnectionRefusedException e){
+				System.out.println("Connection refused - Deskotheque not found"); 
 			}
-
-			// get home of groupware client
-			String homeClient = resourceManagerPrx
-					.getHomeGroupwareClient(info.deskoXID);
-			System.out.println("Home client: " + homeClient);
-
-			// get public groupware client
-			String publicClient = resourceManagerPrx
-					.getPublicGroupwareClient(info.deskoXID);
-			System.out.println("Public client: " + publicClient);
 		} else {
 			System.out.println("Already established connection with ID "
 					+ this.deskoID);
@@ -153,6 +165,18 @@ public class DeskothequeManager {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public MasterApplicationIPrx getMasterProxy(){
+		return this.masterPrx; 
+	}
+	
+	public ServerApplicationIPrx getServerProxy(){
+		return this.serverPrx; 
+	}
+	
+	public String getDeskoID(){
+		return this.deskoID; 
 	}
 
 }

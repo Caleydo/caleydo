@@ -10,6 +10,8 @@ import org.eclipse.swt.widgets.Shell;
 public class Main {
 
 	public static void main(String[] args) {
+		
+		System.out.println("Caleydoplex Tester"); 
 
 		Display display = new Display();
 		Shell shell = new Shell(display);
@@ -25,16 +27,22 @@ public class Main {
 		Button obtainButton = new Button(shell, SWT.PUSH);
 		obtainButton.setText("obtain");
 		obtainButton.addSelectionListener(new ObtainListener());
+		
+		Button linkButton = new Button(shell, SWT.PUSH);
+		linkButton.setText("show links"); 
 
 		Label label = new Label(shell, SWT.NULL);
 		label.setText("<no message>");
 
 		shell.setSize(300, 300);
 		shell.open();
+		shell.setText("Deskotheque Tester"); 
 
 		DeskothequeManager deskothequeManager = new DeskothequeManager();
 		connectButton.addSelectionListener(new ConnectListener(shell,
 				deskothequeManager));
+		linkButton.addSelectionListener(new LinkListener(shell, 
+				deskothequeManager)); 
 
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())

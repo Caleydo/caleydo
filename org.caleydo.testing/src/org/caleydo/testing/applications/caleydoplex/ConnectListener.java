@@ -29,6 +29,11 @@ public class ConnectListener implements SelectionListener {
 		org.eclipse.swt.graphics.Rectangle shellRect = shell.getBounds();
 		this.deskothequeManager.establishConnection(shellRect.x, shellRect.y,
 				shellRect.width, shellRect.height);
+		String deskoID = deskothequeManager.getDeskoID(); 
+		if(deskoID == null){
+			deskoID = "Unconnected"; 
+		}
+		shell.setText(deskoID); 
 	}
 
 }
