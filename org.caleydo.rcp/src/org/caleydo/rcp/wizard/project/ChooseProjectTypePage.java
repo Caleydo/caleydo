@@ -273,7 +273,7 @@ public class ChooseProjectTypePage
 			}
 		});
 		// btnOrganismMouse.setLayoutData(new GridData(GridData.FILL_BOTH));
-
+		
 		// Set organism which was used in last session
 		EOrganism lastChosenOrganism =
 			EOrganism.valueOf(GeneralManager.get().getPreferenceStore().getString(

@@ -1,12 +1,9 @@
 package org.caleydo.core.manager.general;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.EnumMap;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
-import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
@@ -34,16 +31,12 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;
-import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.tracking.TrackDataProvider;
 import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * General manager that contains all module managers.
@@ -58,11 +51,6 @@ public class GeneralManager
 	 * General manager as a singleton
 	 */
 	private static IGeneralManager generalManager;
-
-	/**
-	 * Preferences store enables storing and restoring of application specific preference data.
-	 */
-	private PreferenceStore preferenceStore;
 
 	private IStorageManager storageManager;
 	private ISetManager setManager;
@@ -99,8 +87,12 @@ public class GeneralManager
 
 	@Override
 	public void init() {
-		initLogger();
 
+		PreferenceManager preferenceManager = PreferenceManager.get();
+		preferenceManager.initialize();
+		
+		initLogger();
+		
 		storageManager = new StorageManager();
 		setManager = new SetManager();
 		// connectedElementRepManager = new SelectionManager();
@@ -118,8 +110,6 @@ public class GeneralManager
 
 		groupwareManager = null;
 		serializationManager = new SerializationManager();
-
-		initPreferences();
 
 		resourceLoader = new ResourceLoader();
 
@@ -143,67 +133,6 @@ public class GeneralManager
 			generalManager = new GeneralManager();
 		}
 		return generalManager;
-	}
-
-	private void initPreferences() {
-		preferenceStore = new PreferenceStore(IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME);
-
-		try {
-			if (IGeneralManager.VERSION == null)
-				throw new IllegalStateException("Cannot determine current version of Caleydo.");
-
-			preferenceStore.load();
-			String sStoredVersion = preferenceStore.getString(PreferenceConstants.VERSION);
-
-			// If stored version is older then current version - remove old Caleydo folder
-			// Test 1st and 2nd number of version string
-			if (sStoredVersion.equals("")
-				|| (new Integer(sStoredVersion.substring(0, 1)) <= new Integer(IGeneralManager.VERSION
-					.substring(0, 1)) && new Integer(sStoredVersion.substring(2, 3)) < new Integer(
-					IGeneralManager.VERSION.substring(2, 3)))) {
-
-				MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
-				messageBox.setText("Clean old data");
-				messageBox.setMessage("You have downloaded a new major version of Caleydo ("
-					+ IGeneralManager.VERSION
-					+ "). \nYour old Caleydo settings and pathway data will be discarded and newly created.");
-				messageBox.open();
-
-				CmdFetchPathwayData.deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH));
-
-				initCaleydoFolder();
-			}
-
-		}
-		catch (IOException e) {
-			initCaleydoFolder();
-		}
-
-		if (preferenceStore.getBoolean(PreferenceConstants.USE_PROXY)) {
-			System.setProperty("network.proxy_host", preferenceStore
-				.getString(PreferenceConstants.PROXY_SERVER));
-			System.setProperty("network.proxy_port", preferenceStore
-				.getString(PreferenceConstants.PROXY_PORT));
-		}
-	}
-
-	private void initCaleydoFolder() {
-
-		// Create .caleydo folder
-		if (!new File(IGeneralManager.CALEYDO_HOME_PATH).exists()) {
-			if (!new File(IGeneralManager.CALEYDO_HOME_PATH).mkdir())
-				throw new IllegalStateException(
-					"Unable to create home folder .caleydo. Check user permissions!");
-		}
-
-		// Create log folder in .caleydo
-		if (!new File(IGeneralManager.CALEYDO_HOME_PATH + "logs").mkdirs())
-			throw new IllegalStateException(
-				"Unable to create log folder .caleydo/log. Check user permissions!");
-
-		// logger.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Create new preference store at "
-		// + IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME));
-
 	}
 
 	/**
@@ -280,7 +209,7 @@ public class GeneralManager
 
 	@Override
 	public PreferenceStore getPreferenceStore() {
-		return preferenceStore;
+		return PreferenceManager.get().getPreferenceStore();
 	}
 
 	@Override

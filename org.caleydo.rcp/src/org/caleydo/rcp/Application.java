@@ -47,7 +47,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -77,8 +76,8 @@ public class Application
 	private static String BOOTSTRAP_FILE_GENE_EXPRESSION_MODE =
 		"data/bootstrap/shared/webstart/bootstrap_webstart_gene_expression.xml";
 
-	private static String BOOTSTRAP_FILE_SAMPLE_DATA_MODE =
-		"data/bootstrap/shared/sample/bootstrap_gene_expression_sample.xml";
+	// private static String BOOTSTRAP_FILE_SAMPLE_DATA_MODE =
+	// "data/bootstrap/shared/sample/bootstrap_gene_expression_sample.xml";
 
 	@SuppressWarnings("unused")
 	private static String BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE =
@@ -414,11 +413,6 @@ public class Application
 	}
 
 	public static void initializeColorMapping() {
-		// The next two lines are a hack FIXME which need to be replaces once we
-		// can call initializeDefaultPreferences() in PreferenceIntializer
-		// ourselves
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		store.getInt("");
 
 		ColorMappingManager.get().initiFromPreferenceStore(EColorMappingType.GENE_EXPRESSION);
 	}

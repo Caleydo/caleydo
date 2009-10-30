@@ -37,7 +37,6 @@ public interface IGeneralManager {
 
 	public static final String PLUGIN_ID = "org.caleydo.core";
 
-	public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
 	public static final String USER_HOME = "user.home";
 	public static final String CALEYDO_HOME_PATH =
 		System.getProperty(USER_HOME) + File.separator + ".caleydo" + File.separator;

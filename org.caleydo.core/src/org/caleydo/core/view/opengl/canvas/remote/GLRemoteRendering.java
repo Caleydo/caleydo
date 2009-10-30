@@ -122,7 +122,7 @@ public class GLRemoteRendering
 
 	private static final int SLERP_RANGE = 1000;
 	private static final int SLERP_SPEED = 1400;
-
+	
 	private int iMouseOverObjectID = -1;
 
 	private RemoteLevel focusLevel;
@@ -1560,7 +1560,7 @@ public class GLRemoteRendering
 
 		gl.glPushMatrix();
 
-		slerpMod.applySlerp(gl, transform, false);
+		slerpMod.applySlerp(gl, transform, true);
 
 		generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).displayRemote(gl);
 
