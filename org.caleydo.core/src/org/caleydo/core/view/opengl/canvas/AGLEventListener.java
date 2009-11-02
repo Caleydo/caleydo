@@ -246,7 +246,7 @@ public abstract class AGLEventListener
 			}
 		}
 		catch (RuntimeException exception) {
-			ExceptionHandler.get().handleException(exception);
+			ExceptionHandler.get().handleViewException(exception, this);
 		}
 	}
 

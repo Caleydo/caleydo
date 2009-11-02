@@ -7,6 +7,7 @@ import org.caleydo.rcp.command.handler.ExitHandler;
 import org.caleydo.rcp.view.opengl.ARcpGLViewPart;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -63,6 +64,18 @@ public class RCPBridge
 					throw new RuntimeException("could not create view with gui-id="
 						+ serializedView.getViewGUIID(), ex);
 				}
+			}
+		});
+	}
+
+	@Override
+	public void closeView(final String viewGUIID) {
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				IViewPart viewToClose =
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(viewGUIID);
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().hideView(viewToClose);
+
 			}
 		});
 	}

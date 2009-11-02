@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.media.opengl.GLCanvas;
-import javax.swing.JFrame;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.AManager;
@@ -73,8 +72,6 @@ public class ViewManager
 
 	protected HashMap<Integer, AGLEventListener> hashGLEventListenerID2GLEventListener;
 
-	protected ArrayList<JFrame> arWorkspaceJFrame;
-
 	private Animator fpsAnimator;
 
 	private PickingManager pickingManager;
@@ -107,7 +104,6 @@ public class ViewManager
 		hashGLCanvas2GLEventListeners = new HashMap<GLCaleydoCanvas, ArrayList<AGLEventListener>>();
 		hashGLEventListenerID2GLEventListener = new HashMap<Integer, AGLEventListener>();
 
-		arWorkspaceJFrame = new ArrayList<JFrame>();
 		fpsAnimator = new FPSAnimator(null, 60);
 
 		busyRequests = new HashSet<Object>();
@@ -398,11 +394,14 @@ public class ViewManager
 		// }
 
 		fpsAnimator.start();
+		fpsAnimator.setIgnoreExceptions(true);
+		fpsAnimator.setPrintExceptions(true);
 	}
 
 	@Override
 	public void stopAnimator() {
-		fpsAnimator.stop();
+		if (fpsAnimator.isAnimating())
+			fpsAnimator.stop();
 	}
 
 	@Override

@@ -26,4 +26,12 @@ public interface IGUIBridge {
 	 *            serialized form of the view to create
 	 */
 	public void createView(ASerializedView serializedView);
+
+	/**
+	 * Closes a GUI-based view.
+	 * 
+	 * @param viewGUIID
+	 *            the GUI ID (e.g. RCP)
+	 */
+	public void closeView(String viewGUIID);
 }
