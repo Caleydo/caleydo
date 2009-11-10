@@ -311,6 +311,11 @@ public class DeskothequeManager extends ADisplayLoopEventHandler
 	@Override
 	public void stop() {
 
+		unregisterEventListeners();
+		if (resourceManagerPrx != null) {
+			resourceManagerPrx.unregisterGroupwareClient(networkManager.getNetworkName());
+		}
+
 		// release groupware resources
 		if (groupwareClientPrx != null) {
 			groupwareClientPrx = null;
@@ -341,8 +346,6 @@ public class DeskothequeManager extends ADisplayLoopEventHandler
 				throw new IllegalStateException("unknown network status: "
 						+ networkManager.getStatus());
 		}
-
-		unregisterEventListeners();
 	}
 
 	/**
