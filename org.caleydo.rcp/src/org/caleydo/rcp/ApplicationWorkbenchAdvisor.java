@@ -5,6 +5,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.AutoSaver;
 import org.caleydo.core.serialize.ProjectSaver;
+import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
@@ -78,9 +79,15 @@ public class ApplicationWorkbenchAdvisor
 	private void filterPreferencePages() {
 		PreferenceManager preferenceManager =
 			this.getWorkbenchConfigurer().getWorkbench().getPreferenceManager();
-		preferenceManager.remove("org.eclipse.ui.preferencePages.Workbench");
-		preferenceManager.remove("org.eclipse.update.internal.ui.preferences.MainPreferencePage");
-		preferenceManager.remove("org.eclipse.help.ui.browsersPreferencePage");
+
+		for (Object node : preferenceManager.getElements(PreferenceManager.PRE_ORDER)) {
+			
+			IPreferenceNode prefNode = (IPreferenceNode)node;
+			if(!prefNode.getId().contains("org.caleydo.rcp")) {
+				preferenceManager.remove(prefNode);
+			}
+		}
+		
 	}
 
 	/**
