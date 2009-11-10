@@ -54,12 +54,12 @@ public class ExceptionHandler {
 			public void run() {
 				MessageBox messageBox = new MessageBox(glEventListener.getParentGLCanvas().getParentComposite().getShell(), SWT.OK);
 				messageBox.setText("Error in view");
-				messageBox.setMessage("An unexpected error occured in view " +glEventListener.getShortInfo() +". The view will be closed now. You can try to re-open it.");
+				messageBox.setMessage("An unexpected error occured in view " +glEventListener.getShortInfo() +". The view will be closed now. See the error log for details. You can try to re-open it.");
 				messageBox.open();
 			}
 		});
 		
-		// Ungegister view from GL event queue
+		// Unregister view from GL event queue
 		GeneralManager.get().getGUIBridge().closeView(glEventListener.getViewGUIID());
 		GeneralManager.get().getViewGLCanvasManager().unregisterGLCanvas(glEventListener.getParentGLCanvas());
 		GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(glEventListener);

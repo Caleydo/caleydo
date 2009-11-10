@@ -7,6 +7,8 @@ import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.PathwayUseCase;
+import org.caleydo.core.manager.specialized.TissueUseCase;
 import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
@@ -14,7 +16,7 @@ import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
- * Command, creates a new data domain
+ * Command creates a new data domain
  * 
  * @author Alexander Lex
  */
@@ -48,7 +50,11 @@ public class CmdDataCreateDataDomain
 				return new ClinicalUseCase();
 			case GENETIC_DATA:
 				return new GeneticUseCase();
-			case GENERAL_DATA:
+			case TISSUE_DATA:
+				return new TissueUseCase();
+			case PATHWAY_DATA:
+				return new PathwayUseCase();
+			case GENERAL_DATA:	
 				return new UnspecifiedUseCase();
 			default:
 				throw new IllegalStateException("Unknow data domain type: " + dataDomain);

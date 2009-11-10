@@ -10,7 +10,10 @@
 					cmdId="13993" uniqueId="453010" label="create_data_domain" attrib1="CLINICAL_DATA" />
 				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_DATA_DOMAIN"
 					cmdId="13993" uniqueId="453010" label="create_data_domain" attrib1="GENETIC_DATA" />
-
+				<!--Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_DATA_DOMAIN"
+					cmdId="13993" uniqueId="453010" label="create_data_domain" attrib1="TISSUE_DATA" /-->
+				<!--Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_DATA_DOMAIN"
+					cmdId="13993" uniqueId="453010" label="create_data_domain" attrib1="PATHWAY_DATA" /-->
 
 				<!-- read glyph definition to glyphManager -->
 				<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_GLYPH_DEFINITIONS"
@@ -39,7 +42,8 @@
 					attrib1="user.home/.caleydo/www.genome.jp/kegg/KGML/KGML_v0.6.1/"
 					attrib2="user.home/.caleydo/www.genome.jp/kegg/pathway/" attrib3="user.home/.caleydo/?" />
 
-				<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_PATHWAY_DATA" 	cmdId="" uniqueId="11331" label="Load pathway data" /> 				
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_PATHWAY_DATA"
+					cmdId="" uniqueId="11331" label="Load pathway data" />
 
 				<!-- 2nd window -->
 				<!--

@@ -51,7 +51,7 @@ public class AutoSaver
 	}
 
 	/**
-	 * Gets the interval to wait between 2 auto-saves in miliseconds.
+	 * Gets the interval to wait between 2 auto-saves in milliseconds.
 	 * 
 	 * @return auto save interval
 	 */
@@ -60,7 +60,7 @@ public class AutoSaver
 	}
 
 	/**
-	 * Sets the interval to wait between 2 auto-saves in miliseconds.
+	 * Sets the interval to wait between 2 auto-saves in milliseconds.
 	 * 
 	 * @param interval
 	 *            new auto save interval to set
@@ -70,7 +70,7 @@ public class AutoSaver
 	}
 
 	/**
-	 * Gets the timestamp when the most recent auto save operation has been performered. If no auto save
+	 * Gets the timestamp when the most recent auto save operation has been performed. If no auto save
 	 * operation has been performed yet, the initialization time of this instance is returned.
 	 * 
 	 * @return timestamp of most recent recent auto save operation.

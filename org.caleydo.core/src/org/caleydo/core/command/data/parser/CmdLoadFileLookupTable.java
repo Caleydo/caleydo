@@ -141,7 +141,6 @@ public class CmdLoadFileLookupTable
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
 	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() {

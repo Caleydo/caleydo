@@ -38,6 +38,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
+import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -701,8 +702,31 @@ public class GLDataFlipper
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		// TODO Auto-generated method stub
-		return null;
+		SerializedDataFlipperView serializedForm = new SerializedDataFlipperView(dataDomain);
+		serializedForm.setViewID(this.getID());
+
+//		IViewManager viewManager = generalManager.getViewGLCanvasManager();
+
+//		ArrayList<ASerializedView> remoteViews =
+//			new ArrayList<ASerializedView>(focusLevel.getAllElements().size());
+//		for (RemoteLevelElement rle : focusLevel.getAllElements()) {
+//			if (rle.getContainedElementID() != -1) {
+//				AGLEventListener remoteView = viewManager.getGLEventListener(rle.getContainedElementID());
+//				remoteViews.add(remoteView.getSerializableRepresentation());
+//			}
+//		}
+//		serializedForm.setFocusViews(remoteViews);
+//
+//		remoteViews = new ArrayList<ASerializedView>(stackLevel.getAllElements().size());
+//		for (RemoteLevelElement rle : stackLevel.getAllElements()) {
+//			if (rle.getContainedElementID() != -1) {
+//				AGLEventListener remoteView = viewManager.getGLEventListener(rle.getContainedElementID());
+//				remoteViews.add(remoteView.getSerializableRepresentation());
+//			}
+//		}
+//		serializedForm.setStackViews(remoteViews);
+
+		return serializedForm;
 	}
 
 	@Override
