@@ -430,7 +430,7 @@
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
-               id="fileMenu"
+               id="org.caleydo.menu.file"
                label="File">
             <command
                   commandId="org.caleydo.rcp.command.save_project"
@@ -471,7 +471,7 @@
             </command>
          </menu>
          <menu
-               id="org.caleydo.data.menu"
+               id="org.caleydo.menu.data"
                label="Data"
                tooltip="Data">
             <command
@@ -489,7 +489,7 @@
             </command>
          </menu>
          <menu
-               id="viewMenu"
+               id="org.caleydo.menu.view"
                label="View">
             <command
                   commandId="org.caleydo.rcp.command.openviews.hierarchical_heatmap"
@@ -593,7 +593,7 @@
             </command>
          </menu>
          <menu
-               id="windowMenu"
+               id="org.caleydo.menu.window"
                label="Window">
             <command
                   commandId="org.caleydo.rcp.command.fullscreen"
@@ -605,7 +605,7 @@
             </menu>
          </menu>
          <menu
-               id="adminMenu"
+               id="org.caleydo.menu.admin"
                label="Admin">
             <command
                   commandId="org.caleydo.rcp.command.open_collab"
@@ -625,6 +625,7 @@
             </command>
          </menu>
          <menu
+               id="org.caleydo.menu.data"
                label="Help"
                tooltip="Help">
             <command

@@ -87,9 +87,8 @@ public class ApplicationWorkbenchAdvisor
 				preferenceManager.remove(prefNode);
 			}
 		}
-		
 	}
-
+	
 	/**
 	 * Sets the views init-parameters. In case of a loaded project, the views are initialized from their
 	 * restored serialized-representation.
