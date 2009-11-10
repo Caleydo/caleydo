@@ -38,7 +38,7 @@ public class DeskothequeDummy {
 	}
 
 	public ServerInfo getServerInfo() {
-		String displayNum = "0";
+		String displayNum = "1";
 
 		ServerInfo info = new ServerInfo();
 

@@ -25,6 +25,7 @@ import org.caleydo.core.net.NetworkManager;
 import org.caleydo.core.serialize.ApplicationInitData;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
@@ -198,11 +199,24 @@ public class DeskothequeManager extends ADisplayLoopEventHandler
 	 */
 	private void registerGroupwareServer() {
 
-		// FIXME get shell coordinates
 		int left = 0;
 		int top = 0;
 		int width = 800;
 		int height = 600;
+
+		try {
+			Rectangle rectangle = Display.getDefault().getActiveShell().getBounds();
+			left = rectangle.x;
+			top = rectangle.y;
+			width = rectangle.width;
+			height = rectangle.height;
+		} catch (Exception e) {
+			System.out.println("could not get window position, defaulting to 0-0");
+		}
+		
+		System.out.println("GroupwareClientPrx: " + groupwareClientPrx + 
+				" - serverPrx: " + serverPrx + " - extents: " + left + 
+				", " + top + " - " + width + "x" + height);
 
 		groupwareInformation = masterPrx.registerGroupwareClient(
 				groupwareClientPrx, "Caleydo", serverPrx, left, top, width,
@@ -260,7 +274,7 @@ public class DeskothequeManager extends ADisplayLoopEventHandler
 				+ serverEndPoint + "'");
 		Ice.ObjectPrx proxy = communicator.stringToProxy(serverName + ":"
 				+ serverEndPoint);
-		ServerApplicationIPrx serverPrx = ServerApplicationIPrxHelper
+		serverPrx = ServerApplicationIPrxHelper
 				.checkedCast(proxy);
 
 		masterPrx = serverPrx.getMasterProxy();
@@ -282,7 +296,9 @@ public class DeskothequeManager extends ADisplayLoopEventHandler
 						"GroupwareClient", "default -p " + port);
 			} catch (Ice.SocketException e) {
 				// e.printStackTrace();
-				// System.out.println("Port " + port + " already in use");
+				System.out.println("Port " + port + " already in use");
+			} catch (Exception e) {
+				System.out.println("general exception, Port " + port + " already in use");
 			}
 			port++;
 		}
@@ -415,13 +431,15 @@ public class DeskothequeManager extends ADisplayLoopEventHandler
 					ConnectionLineVertex vertex = new ConnectionLineVertex();
 					vertex.x = p.getPoint().x;
 					vertex.y = p.getPoint().y;
+					vertex.clientID = p.getDeskoXID();
+					System.out.println("vertex.clientID = " + vertex.clientID);
 					vertices[i++] = vertex;
 					System.out.print("(" + vertex.x + ", " + vertex.y + "), ");
 				}
 				System.out.println();
 				Runnable drawer = new Runnable() {
 					public void run() {
-						masterPrx.drawConnectionLine(vertices, connectionID);
+						masterPrx.drawConnectionLines(networkManager.getNetworkName(), vertices, connectionID);
 					}
 				};
 				Thread drawThread = new Thread(drawer);

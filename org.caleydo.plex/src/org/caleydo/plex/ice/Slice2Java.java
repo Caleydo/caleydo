@@ -16,7 +16,8 @@ public class Slice2Java {
 		System.out.println("ICE_HOME = " + iceHome);
 		if (iceHome == null || iceHome.isEmpty()) {
 			System.out.println("ICE_HOME environment variable is not set");
-			System.exit(1);
+			iceHome = "/usr";
+			// System.exit(1);
 		}
 		try {
 			Runtime runtime = Runtime.getRuntime();
@@ -27,7 +28,7 @@ public class Slice2Java {
 			cmd[2] = "src";
 			cmd[3] = "slice" + File.separator + "*.ice";
 			runtime.exec(cmd);
-
+			System.out.println("executed slice: " + cmd[0] + " " + cmd[1] + " " + cmd[2] + " " + cmd[3]);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

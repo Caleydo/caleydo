@@ -17,7 +17,6 @@ Export-Package: Freeze,
  IceSSL,
  IceStorm,
  IceUtil,
- IceUtilInternal,
  org.caleydo.plex
 Import-Package: org.caleydo.core.manager,
  org.caleydo.core.manager.event,

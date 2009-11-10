@@ -57,7 +57,7 @@ module DKT {
     {
     	ResourceManagerI* getResourceManagerProxy();
         GroupwareInformation registerGroupwareClient(GroupwareClientAppI* client, string id, ServerApplicationI* serverApp, int x, int y, int w, int h);
-        void drawConnectionLine(ConnectionLineVertices vertices, int selectionID);
+        void drawConnectionLines(string groupwareClientID, ConnectionLineVertices vertices, int selectionID);
     };
 
 };

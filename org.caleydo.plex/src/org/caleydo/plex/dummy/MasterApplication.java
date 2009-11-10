@@ -77,7 +77,7 @@ public class MasterApplication extends _MasterApplicationIDisp {
 	}
 
 	@Override
-	public void drawConnectionLine(ConnectionLineVertex[] vertices,
+	public void drawConnectionLines(String clientID, ConnectionLineVertex[] vertices,
 			int connectionID, Current __current) {
 
 		Region region = new Region();
