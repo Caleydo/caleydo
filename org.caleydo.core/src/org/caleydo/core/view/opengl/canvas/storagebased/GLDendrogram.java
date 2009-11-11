@@ -1641,6 +1641,10 @@ public class GLDendrogram
 
 	@Override
 	public String getShortInfo() {
+		
+		if(tree == null)
+			return new String("Dendrogram - no tree available");
+		
 		if (bRenderGeneTree)
 			return new String("Dendrogram - " + tree.getRoot().getNrElements() + " genes");
 		else
@@ -1654,6 +1658,10 @@ public class GLDendrogram
 
 	@Override
 	public String toString() {
+		
+		if(tree == null)
+			return new String("Dendrogram - no tree available");
+		
 		return "Standalone " + ((bRenderGeneTree) ? "gene" : "experiment") + " dendrogram, rendered remote: "
 			+ isRenderedRemote() + ", Tree with: " + tree.getRoot().getNrElements()
 			+ ((bRenderGeneTree) ? " genes" : " experiments") + ", remoteRenderer: "
