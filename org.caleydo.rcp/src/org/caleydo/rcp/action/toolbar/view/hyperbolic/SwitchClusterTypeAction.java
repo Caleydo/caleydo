@@ -1,6 +1,5 @@
 package org.caleydo.rcp.action.toolbar.view.hyperbolic;
 
-import org.caleydo.core.manager.event.view.hyperbolic.ChangeTreeTypeEvent;
 import org.caleydo.core.manager.event.view.hyperbolic.SwitchClusterTypeEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;

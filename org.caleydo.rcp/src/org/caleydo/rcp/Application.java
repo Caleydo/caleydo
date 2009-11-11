@@ -64,6 +64,8 @@ import org.eclipse.ui.internal.WorkbenchPlugin;
 public class Application
 	implements IApplication {
 
+	public static final boolean RELEASE_MODE = true;
+	
 	/**
 	 * determines if initialize-views should be loaded lazy (=<code>true</code>)or immediate (=
 	 * <code>false</code)
@@ -177,12 +179,12 @@ public class Application
 					case GENE_EXPRESSION_SAMPLE_DATA:
 					case GENE_EXPRESSION_NEW_DATA:
 						sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
-						useCase.setBootsTrapFileName(sCaleydoXMLfile);
+						useCase.setBootstrapFileName(sCaleydoXMLfile);
 						break;
 					case UNSPECIFIED_NEW_DATA:
 						// not necessary to load any mapping or XML files
 						sCaleydoXMLfile = "";
-						useCase.setBootsTrapFileName(sCaleydoXMLfile);
+						useCase.setBootstrapFileName(sCaleydoXMLfile);
 						break;
 					case LOAD_PROJECT:
 					case COLLABORATION_CLIENT:

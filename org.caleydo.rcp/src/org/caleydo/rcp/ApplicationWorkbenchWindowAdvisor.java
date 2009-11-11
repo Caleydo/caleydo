@@ -4,6 +4,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.perspective.PartListener;
+import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -57,10 +58,11 @@ public class ApplicationWorkbenchWindowAdvisor
 		
 		getWindowConfigurer().getActionBarConfigurer().getMenuManager();
 		
-		// Removing all non Caleydo menus. 
-		// Espically useful for Eclipse contributed plugins when starting Caleydo from Eclipses
 		IMenuManager menuManager = getWindowConfigurer().getActionBarConfigurer().getMenuManager();
 		for(IContributionItem item : menuManager.getItems()) {
+
+			// Removing all non Caleydo menus. 
+			// Espically useful for Eclipse contributed plugins when starting Caleydo from Eclipses
 			if (!item.getId().contains("org.caleydo")) {
 				menuManager.remove(item);
 			}

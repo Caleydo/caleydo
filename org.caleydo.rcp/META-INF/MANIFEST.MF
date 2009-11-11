@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.ui,
  org.caleydo.util.gleem;bundle-version="1.0.0",
  org.caleydo.util.graph;bundle-version="1.0.0",
  org.caleydo.data;bundle-version="1.0.3",
- org.eclipse.ui.views.log
+ org.eclipse.ui.views.log,
+ org.eclipse.core.expressions;bundle-version="3.4.100"
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  resources/

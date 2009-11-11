@@ -440,7 +440,7 @@ public abstract class AUseCase
 		return bootsTrapFileName;
 	}
 
-	public void setBootsTrapFileName(String bootsTrapFileName) {
+	public void setBootstrapFileName(String bootsTrapFileName) {
 		this.bootsTrapFileName = bootsTrapFileName;
 	}
 

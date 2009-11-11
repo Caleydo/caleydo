@@ -108,6 +108,6 @@ public interface IUseCase {
 	public String getBootstrapFileName();
 
 	/** Gets the name of the boots-trap xml-file this useCase was or should be loaded */
-	public void setBootsTrapFileName(String bootstrapFileName);
+	public void setBootstrapFileName(String bootstrapFileName);
 
 }

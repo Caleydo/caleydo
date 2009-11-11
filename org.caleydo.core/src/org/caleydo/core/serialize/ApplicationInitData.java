@@ -85,5 +85,4 @@ public class ApplicationInitData {
 	public void setExperimentClusterTree(String experimentClusterTree) {
 		this.experimentClusterTree = experimentClusterTree;
 	}
-
 }
