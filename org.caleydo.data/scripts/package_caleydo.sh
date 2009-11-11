@@ -39,13 +39,21 @@ make_archive()
   #echo $export_path
   mkdir -p $export_path #{"win_vista","win_xp","linux"}
 
-  echo $export_path/caleydo_$version_number"_linux_x86.tar.gz"
-  echo $export_root/linux.gtk.x86/caleydo/*
-  tar -czvf $export_path/caleydo_$version_number"_linux_x86.tar.gz" -C $export_root/linux.gtk.x86/ caleydo
+  #echo $export_path/caleydo_$version_number"_linux_x86-32.tar.gz"
+  #echo $export_root/linux.gtk.x86/caleydo/*
+  tar -czvf $export_path/caleydo_$version_number"_linux_x86-32.tar.gz" -C $export_root/linux.gtk.x86/ caleydo
+  
+  tar -czvf $export_path/caleydo_$version_number"_linux_x86-64.tar.gz" -C $export_root/linux.gtk.x86_64/ caleydo
+  
+  
   cd $export_root/win32.win32.x86/
-  zip -r $export_path/caleydo_$version_number"_win_xp_x86.zip" caleydo
+  zip -r $export_path/caleydo_$version_number"_win_xp_x86-32.zip" caleydo
+  
+  cd $export_root/win32.win32.x86_64/
+  zip -r $export_path/caleydo_$version_number"_win_xp_x86-64.zip" caleydo 
+  
   cd $export_root/win32.wpf.x86/
-  zip -r $export_path/caleydo_$version_number"_win_vista_x86.zip" caleydo
+  zip -r $export_path/caleydo_$version_number"_win_vista_x86-32.zip" caleydo
 }
 
 print_help()
