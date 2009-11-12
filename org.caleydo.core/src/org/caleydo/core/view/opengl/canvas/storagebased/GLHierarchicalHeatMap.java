@@ -101,8 +101,7 @@ public class GLHierarchicalHeatMap
 	private final static float GAP_BETWEEN_LEVELS = 0.6f;
 
 	private int iSamplesPerTexture = 0;
-	private final static int MIN_SAMPLES_PER_TEXTURE = 200;
-	private final static int MAX_SAMPLES_PER_TEXTURE = 1000;
+	private final static int MAX_SAMPLES_PER_TEXTURE = 2000;
 
 	private int iSamplesLevel2;
 	private final static int MIN_SAMPLES_LEVEL_2 = 200;
@@ -276,26 +275,27 @@ public class GLHierarchicalHeatMap
 			bSkipLevel1 = true;
 			bSkipLevel2 = false;
 
+			iNrTextures = 1;
+
 			iSamplesPerTexture = iNumberOfElements;
 			iSamplesLevel2 = iNumberOfElements;
-			iSamplesPerHeatmap = (int) Math.floor(iSamplesPerTexture / 3);
+			iSamplesPerHeatmap = (int) Math.floor((double) iSamplesPerTexture / 3);
 
 		}
 		else {
 			bSkipLevel1 = false;
 			bSkipLevel2 = false;
 
-			iSamplesPerTexture = (int) Math.floor(iNumberOfElements / 5);
+			iNrTextures = (int) Math.ceil((double) iNumberOfElements / MAX_SAMPLES_PER_TEXTURE);
 
-			if (iSamplesPerTexture > MAX_SAMPLES_PER_TEXTURE)
+			if (iNrTextures <= 1)
+				iSamplesPerTexture = iNumberOfElements;
+			else
 				iSamplesPerTexture = MAX_SAMPLES_PER_TEXTURE;
-
-			if (iSamplesPerTexture < MIN_SAMPLES_PER_TEXTURE && iNumberOfElements > MIN_SAMPLES_PER_TEXTURE)
-				iSamplesPerTexture = MIN_SAMPLES_PER_TEXTURE;
 
 			iSamplesLevel2 = 200;
 
-			iSamplesPerHeatmap = (int) Math.floor(iSamplesLevel2 / 3);
+			iSamplesPerHeatmap = (int) Math.floor((double) iSamplesLevel2 / 3);
 		}
 
 		if (iSamplesPerHeatmap > MAX_SAMPLES_PER_HEATMAP)
@@ -360,21 +360,21 @@ public class GLHierarchicalHeatMap
 			iSamplesLevel2 = iNumberSample;
 
 		if (iSamplesLevel2 % 2 == 0) {
-			iFirstSampleLevel1 = iPickedSampleLevel1 - (int) Math.floor(iSamplesLevel2 / 2) + 1;
-			iLastSampleLevel1 = iPickedSampleLevel1 + (int) Math.floor(iSamplesLevel2 / 2);
+			iFirstSampleLevel1 = iPickedSampleLevel1 - (int) Math.floor((double) iSamplesLevel2 / 2) + 1;
+			iLastSampleLevel1 = iPickedSampleLevel1 + (int) Math.floor((double) iSamplesLevel2 / 2);
 		}
 		else {
-			iFirstSampleLevel1 = iPickedSampleLevel1 - (int) Math.ceil(iSamplesLevel2 / 2);
-			iLastSampleLevel1 = iPickedSampleLevel1 + (int) Math.floor(iSamplesLevel2 / 2);
+			iFirstSampleLevel1 = iPickedSampleLevel1 - (int) Math.ceil((double) iSamplesLevel2 / 2);
+			iLastSampleLevel1 = iPickedSampleLevel1 + (int) Math.floor((double) iSamplesLevel2 / 2);
 		}
 
 		if (iPickedSampleLevel1 < iSamplesLevel2 / 2) {
-			iPickedSampleLevel1 = (int) Math.floor(iSamplesLevel2 / 2);
+			iPickedSampleLevel1 = (int) Math.floor((double) iSamplesLevel2 / 2);
 			iFirstSampleLevel1 = 0;
 			iLastSampleLevel1 = iSamplesLevel2 - 1;
 		}
 		else if (iPickedSampleLevel1 > iNumberSample - 1 - iSamplesLevel2 / 2) {
-			iPickedSampleLevel1 = (int) Math.ceil(iNumberSample - iSamplesLevel2 / 2);
+			iPickedSampleLevel1 = (int) Math.ceil((double) iNumberSample - iSamplesLevel2 / 2);
 			iLastSampleLevel1 = iNumberSample - 1;
 			iFirstSampleLevel1 = iNumberSample - iSamplesLevel2;
 		}
@@ -389,14 +389,15 @@ public class GLHierarchicalHeatMap
 	private void initPosCursorLevel2() {
 
 		if (bSkipLevel2) {
-			iSamplesPerHeatmap = (int) Math.floor(iSamplesPerTexture / 3);
+			iSamplesPerHeatmap = (int) Math.floor((double) iSamplesPerTexture / 3);
 			if (iSamplesPerHeatmap % 2 == 0) {
-				iFirstSampleLevel2 = iPickedSampleLevel2 - (int) Math.floor(iSamplesPerHeatmap / 2) + 1;
-				iLastSampleLevel2 = iPickedSampleLevel2 + (int) Math.floor(iSamplesPerHeatmap / 2);
+				iFirstSampleLevel2 =
+					iPickedSampleLevel2 - (int) Math.floor((double) iSamplesPerHeatmap / 2) + 1;
+				iLastSampleLevel2 = iPickedSampleLevel2 + (int) Math.floor((double) iSamplesPerHeatmap / 2);
 			}
 			else {
-				iFirstSampleLevel2 = iPickedSampleLevel2 - (int) Math.ceil(iSamplesPerHeatmap / 2);
-				iLastSampleLevel2 = iPickedSampleLevel2 + (int) Math.floor(iSamplesPerHeatmap / 2);
+				iFirstSampleLevel2 = iPickedSampleLevel2 - (int) Math.ceil((double) iSamplesPerHeatmap / 2);
+				iLastSampleLevel2 = iPickedSampleLevel2 + (int) Math.floor((double) iSamplesPerHeatmap / 2);
 			}
 		}
 
@@ -410,7 +411,7 @@ public class GLHierarchicalHeatMap
 		if (iNumberOfElements <= MIN_SAMPLES_PER_HEATMAP)
 			iSamplesPerHeatmap = iNumberOfElements;
 
-		iPickedSampleLevel2 = (int) Math.floor(iSamplesPerHeatmap / 2);
+		iPickedSampleLevel2 = (int) Math.floor((double) iSamplesPerHeatmap / 2);
 		iFirstSampleLevel2 = 0;
 		iLastSampleLevel2 = iSamplesPerHeatmap - 1;
 	}
@@ -424,8 +425,6 @@ public class GLHierarchicalHeatMap
 
 		if (bSkipLevel1 || bSkipLevel2) {
 
-			iNrTextures = 1;
-
 			AlTextures.clear();
 			iAlNumberSamples.clear();
 
@@ -436,8 +435,6 @@ public class GLHierarchicalHeatMap
 
 		}
 		else {
-
-			iNrTextures = (int) Math.ceil(contentVA.size() / iSamplesPerTexture);
 
 			AlTextures.clear();
 			iAlNumberSamples.clear();
@@ -516,8 +513,6 @@ public class GLHierarchicalHeatMap
 		}
 		else {
 
-			iNrTextures = (int) Math.ceil((contentVA.size() + 0.0001) / iSamplesPerTexture);
-
 			AlTextures.clear();
 			iAlNumberSamples.clear();
 
@@ -526,7 +521,7 @@ public class GLHierarchicalHeatMap
 			int iTextureHeight = contentVA.size();
 			int iTextureWidth = storageVA.size();
 
-			iSamplesPerTexture = (int) Math.ceil((iTextureHeight + 0.0001) / iNrTextures);
+			iSamplesPerTexture = (int) Math.ceil((double) iTextureHeight / iNrTextures);
 
 			float fLookupValue = 0;
 			float fOpacity = 0;
@@ -641,7 +636,8 @@ public class GLHierarchicalHeatMap
 		cmdView.doCommand();
 
 		glGeneDendrogramView = (GLDendrogram) cmdView.getCreatedObject();
-		glGeneDendrogramView.setUseCase(GeneralManager.get().getUseCase(dataDomain));
+		glGeneDendrogramView.setDataDomain(dataDomain);
+		glGeneDendrogramView.setUseCase(useCase);
 		glGeneDendrogramView.setRemoteRenderingGLView(this);
 
 		cmdView =
@@ -1566,7 +1562,7 @@ public class GLHierarchicalHeatMap
 	 * 
 	 * @param gl
 	 */
-	private void renderOverviewBar(GL gl) {
+	private void renderLevel1(GL gl) {
 		float fHeight;
 		float fWidth;
 		float fyOffset = 0.0f;
@@ -1616,7 +1612,7 @@ public class GLHierarchicalHeatMap
 	 * 
 	 * @param gl
 	 */
-	private void renderMarkerOverviewBar(final GL gl) {
+	private void renderMarkerLevel1(final GL gl) {
 		float fHeight = viewFrustum.getHeight();
 		float fWidthLevel1 = renderStyle.getWidthLevel1();
 		Vec3f startpoint1, endpoint1, startpoint2, endpoint2;
@@ -1633,39 +1629,6 @@ public class GLHierarchicalHeatMap
 			fPosCursorLastElementLevel1 = viewFrustum.getHeight() - (iLastSampleLevel1 + 1) * fHeightElem;
 		}
 
-		// int iStartElem = 0;
-		// int iLastElem = 0;
-		//
-		// boolean colorToggle = true;
-		//
-		// gl.glLineWidth(2f);
-		// for (int currentTextureIdx = 0; currentTextureIdx < iNrTextures; currentTextureIdx++) {
-		//
-		// iStartElem = iLastElem;
-		// iLastElem += iAlNumberSamples.get(currentTextureIdx);
-		//
-		// if (colorToggle)
-		// gl.glColor4f(0f, 0f, 0f, 1f);
-		// else
-		// gl.glColor4f(1f, 1f, 1f, 1f);
-		//
-		// colorToggle = (colorToggle == true) ? false : true;
-		//
-		// gl.glBegin(GL.GL_LINE_LOOP);
-		// gl.glVertex3f(0, fHeight - fHeightElem * iStartElem, 0);
-		// gl.glVertex3f(fFieldWith, fHeight - fHeightElem * iStartElem, 0);
-		// // Different handling for last texture. To avoid problems with visualization.
-		// if (currentTextureIdx == iNrTextures - 1) {
-		// gl.glVertex3f(fFieldWith, (fHeight - fHeightElem * iLastElem), 0);
-		// gl.glVertex3f(0, (fHeight - fHeightElem * iLastElem), 0);
-		// }
-		// else {
-		// gl.glVertex3f(fFieldWith, (fHeight - fHeightElem * iLastElem) + 0.01f, 0);
-		// gl.glVertex3f(0, (fHeight - fHeightElem * iLastElem) + 0.01f, 0);
-		// }
-		// gl.glEnd();
-		// }
-
 		// selected domain level 1
 		startpoint1 = new Vec3f(fWidthLevel1 + fOffsetClusterVis, fPosCursorFirstElementLevel1, 0);
 		endpoint1 = new Vec3f(fWidthLevel1 + GAP_BETWEEN_LEVELS + fOffsetClusterVis, fHeight, 0);
@@ -1681,10 +1644,6 @@ public class GLHierarchicalHeatMap
 		gl.glVertex3f(fWidthLevel1, fPosCursorFirstElementLevel1, 0);
 		gl.glVertex3f(fWidthLevel1, fPosCursorLastElementLevel1, 0);
 		gl.glVertex3f(0, fPosCursorLastElementLevel1, 0);
-		// gl.glVertex3f(0, viewFrustum.getHeight() - iFirstSampleLevel1 * fHeightElem, 0);
-		// gl.glVertex3f(fFieldWith, viewFrustum.getHeight() - iFirstSampleLevel1 * fHeightElem, 0);
-		// gl.glVertex3f(fFieldWith, viewFrustum.getHeight() - (iLastSampleLevel1 + 1) * fHeightElem, 0);
-		// gl.glVertex3f(0, viewFrustum.getHeight() - (iLastSampleLevel1 + 1) * fHeightElem, 0);
 		gl.glEnd();
 
 		gl.glBegin(GL.GL_LINE_LOOP);
@@ -1712,7 +1671,7 @@ public class GLHierarchicalHeatMap
 	 * 
 	 * @param gl
 	 */
-	private void renderSelectedElementsOverviewBar(GL gl) {
+	private void renderSelectedElementsLevel1(GL gl) {
 		float fHeight = viewFrustum.getHeight();
 		float fWidthLevel1 = renderStyle.getWidthLevel1();
 
@@ -1755,11 +1714,10 @@ public class GLHierarchicalHeatMap
 	 * 
 	 * @param gl
 	 */
-	private void renderTextureHeatMap(GL gl) {
+	private void renderLevel2(GL gl) {
 		float fHeight;
 
 		fHeight = viewFrustum.getHeight();
-		// fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
 		float fWidthLevel2 = renderStyle.getWidthLevel2() * fScalingLevel2;
 
 		int iFirstTexture = 0;
@@ -1816,23 +1774,12 @@ public class GLHierarchicalHeatMap
 
 			iNrTexturesInUse = iLastTexture - iFirstTexture + 1;
 
-			// System.out.println("\niSamplesPerTexture: " + iSamplesPerTexture + "   isamplesLevel2: "
-			// + iSamplesLevel2);
-			// System.out.println("iFirstTexture: " + iFirstTexture);
-			// System.out.println("iFirstElementFirstTexture: " + iFirstElementFirstTexture);
-			// System.out.println("iLastTexture: " + iLastTexture);
-			// System.out.println("iLastElementLastTexture: " + iLastElementLastTexture);
-			// System.out.println("iNrTexturesInUse: " + iNrTexturesInUse);
-
 			if (iNrTexturesInUse == 1) {
 
 				float fScalingFirstElement =
 					(float) iFirstElementFirstTexture / iAlNumberSamples.get(iFirstTexture);
 				float fScalingLastElement =
 					(float) (iLastElementLastTexture + 1) / iAlNumberSamples.get(iFirstTexture);
-
-				// System.out.println("dScalingFirstElement: " + dScalingFirstElement);
-				// System.out.println("dScalingLastElement: " + dScalingLastElement);
 
 				Texture TexTemp1 = AlTextures.get(iFirstTexture);
 				TexTemp1.enable();
@@ -1862,11 +1809,6 @@ public class GLHierarchicalHeatMap
 						/ iAlNumberSamples.get(iFirstTexture);
 				float fRatioLastTexture =
 					(float) (iLastElementLastTexture + 1) / iAlNumberSamples.get(iLastTexture);
-
-				// System.out.println("dScalingFirstElement: " + dScalingFirstElement);
-				// System.out.println("dScalingLastElement: " + dScalingLastElement);
-				// double sum = dScalingLastElement + dScalingFirstElement;
-				// System.out.println("sum : " + sum);
 
 				Texture TexTemp1 = AlTextures.get(iFirstTexture);
 				TexTemp1.enable();
@@ -2002,7 +1944,7 @@ public class GLHierarchicalHeatMap
 	 * 
 	 * @param gl
 	 */
-	private void renderMarkerTexture(final GL gl) {
+	private void renderMarkerLevel2(final GL gl) {
 
 		// float fFieldWith = viewFrustum.getWidth() / 4.0f * fAnimationScale;
 		float fWidthLevel2 = renderStyle.getWidthLevel2() * fScalingLevel2;
@@ -2111,7 +2053,7 @@ public class GLHierarchicalHeatMap
 	 * 
 	 * @param gl
 	 */
-	private void renderSelectedElementsTexture(GL gl) {
+	private void renderSelectedElementsLevel2(GL gl) {
 
 		// float fFieldWith = viewFrustum.getWidth() / 4.0f * fAnimationScale;
 		float fWidthLevel2 = renderStyle.getWidthLevel2() * fScalingLevel2;
@@ -2795,9 +2737,9 @@ public class GLHierarchicalHeatMap
 
 		// all stuff for rendering level 1 (overview bar)
 		handleTexturePickingLevel1(gl);
-		renderOverviewBar(gl);
-		renderMarkerOverviewBar(gl);
-		renderSelectedElementsOverviewBar(gl);
+		renderLevel1(gl);
+		renderMarkerLevel1(gl);
+		renderSelectedElementsLevel1(gl);
 		renderCursorLevel1(gl);
 		renderGeneDendrogramBackground(gl);
 
@@ -2843,9 +2785,9 @@ public class GLHierarchicalHeatMap
 			gl.glTranslatef(renderStyle.getWidthClusterVisualization(), 0, 0);
 
 		handleTexturePickingLevel2(gl);
-		renderTextureHeatMap(gl);
-		renderMarkerTexture(gl);
-		renderSelectedElementsTexture(gl);
+		renderLevel2(gl);
+		renderMarkerLevel2(gl);
+		renderSelectedElementsLevel2(gl);
 		renderClassAssignmentsGenesLevel2(gl);
 		renderClassAssignmentsExperimentsLevel2(gl);
 
@@ -2918,9 +2860,9 @@ public class GLHierarchicalHeatMap
 	private void renderViewsLevel_2_3_Active(GL gl) {
 
 		handleTexturePickingLevel2(gl);
-		renderTextureHeatMap(gl);
-		renderMarkerTexture(gl);
-		renderSelectedElementsTexture(gl);
+		renderLevel2(gl);
+		renderMarkerLevel2(gl);
+		renderSelectedElementsLevel2(gl);
 		renderClassAssignmentsGenesLevel2(gl);
 		renderGeneDendrogramBackground(gl);
 
@@ -3431,30 +3373,29 @@ public class GLHierarchicalHeatMap
 				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pickingPointLevel1.x,
 					pickingPointLevel1.y);
 			fOffsety = viewFrustum.getHeight() - fArPickingCoords[1] + 0.4f;
-			iPickedSampleLevel1 = (int) Math.ceil(fOffsety / fHeightSample);
+			iPickedSampleLevel1 = (int) Math.ceil((double) fOffsety / fHeightSample);
 			pickingPointLevel1 = null;
 
 			if (iSamplesLevel2 % 2 == 0) {
-				iFirstSampleLevel1 = iPickedSampleLevel1 - (int) Math.floor(iSamplesLevel2 / 2) + 1;
-				iLastSampleLevel1 = iPickedSampleLevel1 + (int) Math.floor(iSamplesLevel2 / 2);
+				iFirstSampleLevel1 = iPickedSampleLevel1 - (int) Math.floor((double) iSamplesLevel2 / 2) + 1;
+				iLastSampleLevel1 = iPickedSampleLevel1 + (int) Math.floor((double) iSamplesLevel2 / 2);
 			}
 			else {
-				iFirstSampleLevel1 = iPickedSampleLevel1 - (int) Math.ceil(iSamplesLevel2 / 2);
-				iLastSampleLevel1 = iPickedSampleLevel1 + (int) Math.floor(iSamplesLevel2 / 2);
+				iFirstSampleLevel1 = iPickedSampleLevel1 - (int) Math.ceil((double) iSamplesLevel2 / 2);
+				iLastSampleLevel1 = iPickedSampleLevel1 + (int) Math.floor((double) iSamplesLevel2 / 2);
 			}
 
 			if (iPickedSampleLevel1 < iSamplesLevel2 / 2) {
-				iPickedSampleLevel1 = (int) Math.floor(iSamplesLevel2 / 2);
+				iPickedSampleLevel1 = (int) Math.floor((double) iSamplesLevel2 / 2);
 				iFirstSampleLevel1 = 0;
 				iLastSampleLevel1 = iSamplesLevel2 - 1;
 			}
 			else if (iPickedSampleLevel1 > iNumberSample - 1 - iSamplesLevel2 / 2) {
-				iPickedSampleLevel1 = (int) Math.ceil(iNumberSample - iSamplesLevel2 / 2);
+				iPickedSampleLevel1 = (int) Math.ceil((double) iNumberSample - iSamplesLevel2 / 2);
 				iLastSampleLevel1 = iNumberSample - 1;
 				iFirstSampleLevel1 = iNumberSample - iSamplesLevel2;
 			}
 		}
-		// initPosCursorLevel2();
 		setDisplayListDirty();
 		setEmbeddedHeatMapData();
 	}
@@ -3476,25 +3417,27 @@ public class GLHierarchicalHeatMap
 				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pickingPointLevel2.x,
 					pickingPointLevel2.y);
 			fOffsety = viewFrustum.getHeight() - fArPickingCoords[1] + 0.4f;
-			iPickedSampleLevel2 = (int) Math.ceil(fOffsety / fHeightSample);
+			iPickedSampleLevel2 = (int) Math.ceil((double) fOffsety / fHeightSample);
 			pickingPointLevel2 = null;
 
 			if (iSamplesLevel2 % 2 == 0) {
-				iFirstSampleLevel2 = iPickedSampleLevel2 - (int) Math.floor(iSamplesPerHeatmap / 2) + 1;
-				iLastSampleLevel2 = iPickedSampleLevel2 + (int) Math.floor(iSamplesPerHeatmap / 2);
+				iFirstSampleLevel2 =
+					iPickedSampleLevel2 - (int) Math.floor((double) iSamplesPerHeatmap / 2) + 1;
+				iLastSampleLevel2 = iPickedSampleLevel2 + (int) Math.floor((double) iSamplesPerHeatmap / 2);
 			}
 			else {
-				iFirstSampleLevel2 = iPickedSampleLevel2 - (int) Math.ceil(iSamplesPerHeatmap / 2);
-				iLastSampleLevel2 = iPickedSampleLevel2 + (int) Math.floor(iSamplesPerHeatmap / 2) - 1;
+				iFirstSampleLevel2 = iPickedSampleLevel2 - (int) Math.ceil((double) iSamplesPerHeatmap / 2);
+				iLastSampleLevel2 =
+					iPickedSampleLevel2 + (int) Math.floor((double) iSamplesPerHeatmap / 2) - 1;
 			}
 
 			if (iPickedSampleLevel2 < iSamplesPerHeatmap / 2) {
-				iPickedSampleLevel2 = (int) Math.floor(iSamplesPerHeatmap / 2);
+				iPickedSampleLevel2 = (int) Math.floor((double) iSamplesPerHeatmap / 2);
 				iFirstSampleLevel2 = 0;
 				iLastSampleLevel2 = iSamplesPerHeatmap - 1;
 			}
 			else if (iPickedSampleLevel2 > iNumberSample - 1 - iSamplesPerHeatmap / 2) {
-				iPickedSampleLevel2 = (int) Math.ceil(iNumberSample - iSamplesPerHeatmap / 2);
+				iPickedSampleLevel2 = (int) Math.ceil((double) iNumberSample - iSamplesPerHeatmap / 2);
 				iLastSampleLevel2 = iNumberSample - 1;
 				iFirstSampleLevel2 = iNumberSample - iSamplesPerHeatmap;
 			}
@@ -3551,7 +3494,7 @@ public class GLHierarchicalHeatMap
 
 		float fXPosRelease = fArTargetWorldCoordinates[0] - fleftOffset;
 
-		currentElement = (int) Math.ceil(fXPosRelease / fWidthSample);
+		currentElement = (int) Math.ceil((double) fXPosRelease / fWidthSample);
 
 		int iElemOffset = 0;
 		int cnt = 0;
@@ -3629,7 +3572,7 @@ public class GLHierarchicalHeatMap
 		gl.glEnd();
 
 		fOffsety = viewFrustum.getHeight() - fArTargetWorldCoordinates[1] - 0.4f;
-		currentElement = (int) Math.ceil(fOffsety / fHeightSample);
+		currentElement = (int) Math.ceil((double) fOffsety / fHeightSample);
 
 		int iElemOffset = 0;
 		int cnt = 0;
@@ -3700,11 +3643,8 @@ public class GLHierarchicalHeatMap
 			int iNrSamples = contentVA.size();
 			float fHeightSample = fHeight / iNrSamples;
 
-			int iFirstSample = iNrSamples - (int) Math.floor(fYPosDrag / fHeightSample);
-			int iLastSample = iNrSamples - (int) Math.ceil(fYPosRelease / fHeightSample);
-
-			// System.out.println("von: " + fYPosDrag + " bis: " + fYPosRelease);
-			// System.out.println("von: " + iFirstSample + " bis: " + iLastSample);
+			int iFirstSample = iNrSamples - (int) Math.floor((double) fYPosDrag / fHeightSample);
+			int iLastSample = iNrSamples - (int) Math.ceil((double) fYPosRelease / fHeightSample);
 
 			if (contentVA.getGroupList().split(iGroupToSplit, iFirstSample, iLastSample) == false)
 				System.out.println("Operation not allowed!!");
@@ -3739,8 +3679,8 @@ public class GLHierarchicalHeatMap
 			int iNrSamples = storageVA.size();
 			float fWidthSample = fWidth / iNrSamples;
 
-			int iFirstSample = (int) Math.floor(fXPosDrag / fWidthSample);
-			int iLastSample = (int) Math.ceil(fXPosRelease / fWidthSample);
+			int iFirstSample = (int) Math.floor((double) fXPosDrag / fWidthSample);
+			int iLastSample = (int) Math.ceil((double) fXPosRelease / fWidthSample);
 
 			if (storageVA.getGroupList().split(iGroupToSplit, iLastSample, iFirstSample) == false)
 				System.out.println("Operation not allowed!!");
@@ -3766,39 +3706,32 @@ public class GLHierarchicalHeatMap
 		float fStep = fTextureHeight / iNumberOfElements;
 		float fYPosMouse = fArTargetWorldCoordinates[1] - 0.4f;
 
-		iselElement = (int) Math.floor((fTextureHeight - fYPosMouse) / fStep);
+		iselElement = (int) Math.floor((double) (fTextureHeight - fYPosMouse) / fStep);
 		if (iSamplesLevel2 % 2 == 0) {
-			if ((iselElement - (int) Math.floor(iSamplesLevel2 / 2) + 1) >= 0
-				&& (iselElement + (int) Math.floor(iSamplesLevel2 / 2)) < iNumberOfElements) {
-				iFirstSampleLevel1 = iselElement - (int) Math.floor(iSamplesLevel2 / 2) + 1;
+			if ((iselElement - (int) Math.floor((double) iSamplesLevel2 / 2) + 1) >= 0
+				&& (iselElement + (int) Math.floor((double) iSamplesLevel2 / 2)) < iNumberOfElements) {
+				iFirstSampleLevel1 = iselElement - (int) Math.floor((double) iSamplesLevel2 / 2) + 1;
 				fPosCursorFirstElementLevel1 = fTextureHeight - (iFirstSampleLevel1 * fStep);
-				iLastSampleLevel1 = iselElement + (int) Math.floor(iSamplesLevel2 / 2);
+				iLastSampleLevel1 = iselElement + (int) Math.floor((double) iSamplesLevel2 / 2);
 				fPosCursorLastElementLevel1 = fTextureHeight - ((iLastSampleLevel1 + 1) * fStep);
 			}
 		}
 		else {
-			if ((iselElement - (int) Math.ceil(iSamplesLevel2 / 2)) >= 0
-				&& (iselElement + (int) Math.floor(iSamplesLevel2 / 2)) < iNumberOfElements) {
-				iFirstSampleLevel1 = iselElement - (int) Math.ceil(iSamplesLevel2 / 2);
+			if ((iselElement - (int) Math.ceil((double) iSamplesLevel2 / 2)) >= 0
+				&& (iselElement + (int) Math.floor((double) iSamplesLevel2 / 2)) < iNumberOfElements) {
+				iFirstSampleLevel1 = iselElement - (int) Math.ceil((double) iSamplesLevel2 / 2);
 				fPosCursorFirstElementLevel1 = fTextureHeight - (iFirstSampleLevel1 * fStep);
-				iLastSampleLevel1 = iselElement + (int) Math.floor(iSamplesLevel2 / 2);
+				iLastSampleLevel1 = iselElement + (int) Math.floor((double) iSamplesLevel2 / 2);
 				fPosCursorLastElementLevel1 = fTextureHeight - ((iLastSampleLevel1 + 1) * fStep);
 			}
 		}
 
 		setDisplayListDirty();
-		// setEmbeddedHeatMapData();
-
-		// System.out.println(" iSamplesPerTexture: " + iSamplesPerTexture + "  iFirstSampleLevel1: "
-		// + iFirstSampleLevel1 + "  iLastSampleLevel1: " + iLastSampleLevel1);
-		// System.out.println("fPosCursorFirstElementLevel2: " + fPosCursorFirstElementLevel2
-		// + "  fPosCursorLastElementLevel2: " + fPosCursorLastElementLevel2);
 
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingWholeBlockLevel1 = false;
 			bDisableCursorDraggingLevel1 = false;
 			bActivateDraggingLevel1 = false;
-			// initPosCursorLevel2();
 		}
 	}
 
@@ -3821,28 +3754,27 @@ public class GLHierarchicalHeatMap
 		float fStep = fTextureHeight / iSamplesLevel2;
 		float fYPosMouse = fArTargetWorldCoordinates[1] - 0.4f;
 
-		iselElement = (int) Math.floor((fTextureHeight - fYPosMouse) / fStep);
+		iselElement = (int) Math.floor((double) (fTextureHeight - fYPosMouse) / fStep);
 		if (iSamplesPerHeatmap % 2 == 0) {
-			if ((iselElement - (int) Math.floor(iSamplesPerHeatmap / 2) + 1) >= 0
-				&& (iselElement + (int) Math.floor(iSamplesPerHeatmap / 2)) < iSamplesLevel2) {
-				iFirstSampleLevel2 = iselElement - (int) Math.floor(iSamplesPerHeatmap / 2) + 1;
+			if ((iselElement - (int) Math.floor((double) iSamplesPerHeatmap / 2) + 1) >= 0
+				&& (iselElement + (int) Math.floor((double) iSamplesPerHeatmap / 2)) < iSamplesLevel2) {
+				iFirstSampleLevel2 = iselElement - (int) Math.floor((double) iSamplesPerHeatmap / 2) + 1;
 				fPosCursorFirstElementLevel2 = fTextureHeight - (iFirstSampleLevel2 * fStep);
-				iLastSampleLevel2 = iselElement + (int) Math.floor(iSamplesPerHeatmap / 2);
+				iLastSampleLevel2 = iselElement + (int) Math.floor((double) iSamplesPerHeatmap / 2);
 				fPosCursorLastElementLevel2 = fTextureHeight - ((iLastSampleLevel2 + 1) * fStep);
 			}
 		}
 		else {
-			if ((iselElement - (int) Math.ceil(iSamplesPerHeatmap / 2)) >= 0
-				&& (iselElement + (int) Math.floor(iSamplesPerHeatmap / 2)) < iSamplesLevel2) {
-				iFirstSampleLevel2 = iselElement - (int) Math.ceil(iSamplesPerHeatmap / 2);
+			if ((iselElement - (int) Math.ceil((double) iSamplesPerHeatmap / 2)) >= 0
+				&& (iselElement + (int) Math.floor((double) iSamplesPerHeatmap / 2)) < iSamplesLevel2) {
+				iFirstSampleLevel2 = iselElement - (int) Math.ceil((double) iSamplesPerHeatmap / 2);
 				fPosCursorFirstElementLevel2 = fTextureHeight - (iFirstSampleLevel2 * fStep);
-				iLastSampleLevel2 = iselElement + (int) Math.floor(iSamplesPerHeatmap / 2);
+				iLastSampleLevel2 = iselElement + (int) Math.floor((double) iSamplesPerHeatmap / 2);
 				fPosCursorLastElementLevel2 = fTextureHeight - ((iLastSampleLevel2 + 1) * fStep);
 			}
 		}
 
 		setDisplayListDirty();
-		// setEmbeddedHeatMapData();
 
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingWholeBlockLevel2 = false;
@@ -3873,7 +3805,7 @@ public class GLHierarchicalHeatMap
 		// cursor for iFirstElement
 		if (iDraggedCursorLevel1 == 1) {
 			if (fYPosMouse > fPosCursorLastElementLevel1 && fYPosMouse <= viewFrustum.getHeight() - 0.6f) {
-				iselElement = (int) Math.floor((fTextureHeight - fYPosMouse) / fStep);
+				iselElement = (int) Math.floor((double) (fTextureHeight - fYPosMouse) / fStep);
 				iNrSamples = iLastSampleLevel1 - iselElement + 1;
 				if (iNrSamples >= MIN_SAMPLES_LEVEL_2 && iNrSamples < MAX_SAMPLES_LEVEL_2) {
 					fPosCursorFirstElementLevel1 = fYPosMouse;
@@ -3889,7 +3821,7 @@ public class GLHierarchicalHeatMap
 		// cursor for iLastElement
 		if (iDraggedCursorLevel1 == 2) {
 			if (fYPosMouse < fPosCursorFirstElementLevel1 && fYPosMouse >= 0.0f) {
-				iselElement = (int) Math.floor((fTextureHeight - fYPosMouse) / fStep);
+				iselElement = (int) Math.floor((double) (fTextureHeight - fYPosMouse) / fStep);
 				iNrSamples = iselElement - iFirstSampleLevel1 + 1;
 				if (iNrSamples >= MIN_SAMPLES_LEVEL_2 && iNrSamples < MAX_SAMPLES_LEVEL_2) {
 					fPosCursorLastElementLevel1 = fYPosMouse;
@@ -3904,16 +3836,11 @@ public class GLHierarchicalHeatMap
 		}
 
 		setDisplayListDirty();
-		// setEmbeddedHeatMapData();
-
-		// System.out.println(" iSamplesPerTexture: " + iSamplesPerTexture + "  iFirstSampleLevel1: "
-		// + iFirstSampleLevel1 + "  iLastSampleLevel1: " + iLastSampleLevel1);
 
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingActiveLevel1 = false;
 			bDisableBlockDraggingLevel1 = false;
 			bActivateDraggingLevel1 = false;
-			// initPosCursorLevel2();
 		}
 	}
 
@@ -3938,7 +3865,7 @@ public class GLHierarchicalHeatMap
 		// cursor for iFirstElement
 		if (iDraggedCursorLevel2 == 1) {
 			if (fYPosMouse > fPosCursorLastElementLevel2 && fYPosMouse <= viewFrustum.getHeight() - 0.6f) {
-				iselElement = (int) Math.floor((fTextureHeight - fYPosMouse) / fStep);
+				iselElement = (int) Math.floor((double) (fTextureHeight - fYPosMouse) / fStep);
 				iNrSamples = iLastSampleLevel2 - iselElement + 1;
 				if (iNrSamples >= MIN_SAMPLES_PER_HEATMAP && iNrSamples < MAX_SAMPLES_PER_HEATMAP) {
 					fPosCursorFirstElementLevel2 = fYPosMouse;
@@ -3954,7 +3881,7 @@ public class GLHierarchicalHeatMap
 		// cursor for iLastElement
 		if (iDraggedCursorLevel2 == 2) {
 			if (fYPosMouse < fPosCursorFirstElementLevel2 && fYPosMouse >= 0.0f) {
-				iselElement = (int) Math.floor((fTextureHeight - fYPosMouse) / fStep);
+				iselElement = (int) Math.floor((double) (fTextureHeight - fYPosMouse) / fStep);
 				iNrSamples = iselElement - iFirstSampleLevel2 + 1;
 				if (iNrSamples >= MIN_SAMPLES_PER_HEATMAP && iNrSamples < MAX_SAMPLES_PER_HEATMAP) {
 					fPosCursorLastElementLevel2 = fYPosMouse;
@@ -3969,7 +3896,6 @@ public class GLHierarchicalHeatMap
 		}
 
 		setDisplayListDirty();
-		// setEmbeddedHeatMapData();
 
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingActiveLevel2 = false;
@@ -4499,12 +4425,11 @@ public class GLHierarchicalHeatMap
 		contentSelectionManager.clearSelections();
 		storageSelectionManager.clearSelections();
 
-		// iPickedSampleLevel1 = 0;
 		if (bSkipLevel1 == false)
 			initPosCursorLevel1();
 		bRedrawTextures = true;
 		setDisplayListDirty();
-		// setEmbeddedHeatMapData();
+
 		glHeatMapView.setDisplayListDirty();
 		glGeneDendrogramView.setDisplayListDirty();
 		glExperimentDendrogramView.setDisplayListDirty();
@@ -4659,12 +4584,6 @@ public class GLHierarchicalHeatMap
 		if (bSkipLevel2 == false) {
 			initPosCursorLevel2();
 		}
-		//
-		// glHeatMapView.setDataDomain(dataDomain);
-		// glHeatMapView.setUseCase(useCase);
-		// glHeatMapView.setSet(set);
-		// glHeatMapView.setContentVAType(EVAType.CONTENT_EMBEDDED_HM);
-		// glHeatMapView.initData();
 
 		if (set.getClusteredTreeGenes() != null) {
 			bGeneDendrogramActive = true;
@@ -4687,16 +4606,6 @@ public class GLHierarchicalHeatMap
 			bExperimentDendrogramActive = false;
 			bExperimentDendrogramRenderCut = false;
 		}
-
-		// glGeneDendrogramView.setSet(set);
-		// glGeneDendrogramView.setContentVAType(EVAType.CONTENT);
-		// glGeneDendrogramView.initData();
-		// glGeneDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
-		//
-		// glExperimentDendrogramView.setSet(set);
-		// glExperimentDendrogramView.setContentVAType(EVAType.CONTENT);
-		// glExperimentDendrogramView.initData();
-		// glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);
 
 		if (bSkipLevel2 == false)
 			bRedrawTextures = true;
@@ -4834,36 +4743,6 @@ public class GLHierarchicalHeatMap
 			}
 		}
 
-		// // restructure tree
-		// if (groupList.get(selGroups.get(0)).getClusterNode() != null) {
-		//
-		// ClusterNode tempParent0 = tree.getParent(groupList.get(selGroups.get(0)).getClusterNode());
-		// ClusterNode tempParent1 = tree.getParent(groupList.get(selGroups.get(1)).getClusterNode());
-		//
-		// tree.getGraph().removeEdge(tempParent0, groupList.get(selGroups.get(0)).getClusterNode());
-		// tree.getGraph().removeEdge(tempParent1, groupList.get(selGroups.get(1)).getClusterNode());
-		// tree.addChild(tempParent0, groupList.get(selGroups.get(1)).getClusterNode());
-		// tree.addChild(tempParent1, groupList.get(selGroups.get(0)).getClusterNode());
-		//
-		// ClusterHelper.determineHierarchyDepth(tree);
-		// ClusterHelper.determineNrElements(tree);
-		//
-		// generalManager.getEventPublisher().triggerEvent(new UpdateViewEvent());
-		//
-		// ArrayList<Integer> newArraylist = ClusterHelper.getGeneIdsOfNode(tree, tree.getRoot());
-		//
-		// IVirtualArray virtualArray = null;
-		// if (bGeneGroup) {
-		// virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), newArraylist);
-		// useCase.replaceVirtualArray(EVAType.CONTENT, virtualArray);
-		// }
-		// else {
-		// virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), newArraylist);
-		// useCase.replaceVirtualArray(EVAType.STORAGE, virtualArray);
-		// }
-		//
-		// }
-
 		// interchange
 		if (groupList.interchange(va, selGroups.get(0), selGroups.get(1)) == false) {
 			System.out.println("Problem during interchange!!!");
@@ -4928,35 +4807,6 @@ public class GLHierarchicalHeatMap
 				set.setClusteredTreeExps(null);
 			}
 		}
-
-		// if (selGroups.size() == 2) {
-		// // restructure tree
-		// if (groupList.get(selGroups.get(0)).getClusterNode() != null) {
-		//
-		// ClusterNode tempParent1 = tree.getParent(groupList.get(selGroups.get(1)).getClusterNode());
-		//
-		// tree.getGraph().removeEdge(tempParent1, groupList.get(selGroups.get(1)).getClusterNode());
-		// tree.addChild(groupList.get(selGroups.get(0)).getClusterNode(), groupList.get(
-		// selGroups.get(1)).getClusterNode());
-		//
-		// ClusterHelper.determineHierarchyDepth(tree);
-		// ClusterHelper.determineNrElements(tree);
-		//
-		// generalManager.getEventPublisher().triggerEvent(new UpdateViewEvent());
-		//
-		// ArrayList<Integer> newArraylist = ClusterHelper.getGeneIdsOfNode(tree, tree.getRoot());
-		//
-		// IVirtualArray virtualArray = null;
-		// if (bGeneGroup) {
-		// virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), newArraylist);
-		// useCase.replaceVirtualArray(EVAType.CONTENT, virtualArray);
-		// }
-		// else {
-		// virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), newArraylist);
-		// useCase.replaceVirtualArray(EVAType.STORAGE, virtualArray);
-		// }
-		// }
-		// }
 
 		// merge
 		while (selGroups.size() >= 2) {
@@ -5056,38 +4906,30 @@ public class GLHierarchicalHeatMap
 	 */
 	public void handleArrowAndAltPressed(boolean bArrowUp) {
 
-		int iNrElementsToShift = (int) Math.floor(Math.sqrt(iSamplesLevel2));
+		int iNrElementsToShift = (int) Math.floor(Math.sqrt((double) iSamplesLevel2));
 
 		if (bArrowUp) {
 			if (iFirstSampleLevel2 > iNrElementsToShift + 1) {
 				iLastSampleLevel2 -= iNrElementsToShift;
 				iFirstSampleLevel2 -= iNrElementsToShift;
-				// setEmbeddedHeatMapData();
 				setDisplayListDirty();
-				// glHeatMapView.upDownSelect(true);
 			}
 			else if (iFirstSampleLevel2 > 0) {
 				iLastSampleLevel2--;
 				iFirstSampleLevel2--;
-				// setEmbeddedHeatMapData();
 				setDisplayListDirty();
-				// glHeatMapView.upDownSelect(true);
 			}
 		}
 		else {
 			if (iLastSampleLevel2 < iSamplesLevel2 - 1 - iNrElementsToShift) {
 				iLastSampleLevel2 += iNrElementsToShift;
 				iFirstSampleLevel2 += iNrElementsToShift;
-				// setEmbeddedHeatMapData();
 				setDisplayListDirty();
-				// glHeatMapView.upDownSelect(false);
 			}
 			else if (iLastSampleLevel2 < iSamplesLevel2 - 1) {
 				iLastSampleLevel2++;
 				iFirstSampleLevel2++;
-				// setEmbeddedHeatMapData();
 				setDisplayListDirty();
-				// glHeatMapView.upDownSelect(false);
 			}
 		}
 	}
@@ -5100,20 +4942,18 @@ public class GLHierarchicalHeatMap
 	 */
 	public void handleArrowAndCtrlPressed(boolean bArrowUp) {
 
-		int iNrElementsToShift = (int) Math.floor(Math.sqrt(iNumberOfElements));
+		int iNrElementsToShift = (int) Math.floor(Math.sqrt((double) iNumberOfElements));
 
 		if (bArrowUp) {
 			if (iFirstSampleLevel1 > iNrElementsToShift + 1) {
 				iFirstSampleLevel1 -= iNrElementsToShift;
 				iLastSampleLevel1 -= iNrElementsToShift;
 				setDisplayListDirty();
-				// glHeatMapView.upDownSelect(true);
 			}
 			else if (iFirstSampleLevel1 > 0) {
 				iFirstSampleLevel1--;
 				iLastSampleLevel1--;
 				setDisplayListDirty();
-				// glHeatMapView.upDownSelect(true);
 			}
 		}
 		else {
@@ -5121,13 +4961,11 @@ public class GLHierarchicalHeatMap
 				iFirstSampleLevel1 += iNrElementsToShift;
 				iLastSampleLevel1 += iNrElementsToShift;
 				setDisplayListDirty();
-				// glHeatMapView.upDownSelect(false);
 			}
 			else if (iLastSampleLevel1 < iNumberOfElements - 1) {
 				iFirstSampleLevel1++;
 				iLastSampleLevel1++;
 				setDisplayListDirty();
-				// glHeatMapView.upDownSelect(false);
 			}
 		}
 	}
