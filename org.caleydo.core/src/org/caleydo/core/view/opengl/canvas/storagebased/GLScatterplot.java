@@ -62,6 +62,10 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
+import org.caleydo.core.view.opengl.canvas.storagebased.EScatterPointType;
+
+
+
 /**
  * Rendering the GLHeatMap
  * 
@@ -73,7 +77,8 @@ public class GLScatterplot
 	private HeatMapRenderStyle renderStyle;
 
 	private ColorMapping colorMapper;
-
+    
+	
 	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 	private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
 
@@ -242,13 +247,76 @@ public class GLScatterplot
 
 		GLHelperFunctions.drawAxis(gl);
 		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-		gl.glColor3f(0, 1, 0);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0.1f, 0.1f, 0);
-		gl.glVertex3f(0.1f, 0.5f, 0);
-		gl.glVertex3f(0.5f, 0.5f, 0);
-		gl.glVertex3f(0.5f, 0.1f, 0);
-		gl.glEnd();
+		
+		
+
+	
+		float XScale = 5.0f;
+		float YScale = 5.0f;
+		float Pointsize = 0.015f;
+	
+		 
+		int maxindex1 = set.size(); // contentVA
+		int maxindex2 = maxindex1;
+		
+		maxindex1=6;
+		maxindex2=6;
+		
+		int maxpoints = set.get(1).size();
+		
+		boolean bSelectedPlot=false;
+		
+		for (int iStorageIndex1=0;iStorageIndex1<maxindex1;iStorageIndex1++)
+		{
+		for (int iStorageIndex2=0;iStorageIndex2<maxindex2;iStorageIndex2++)
+		{
+			if (iStorageIndex2== iStorageIndex1) continue;
+
+			//if (contentSelectionManager.checkStatus(ESelectionType.DESELECTED, iContentIndex))
+			if (iStorageIndex1==3 && iStorageIndex2==2) 
+				bSelectedPlot=true;			
+				else 		
+					bSelectedPlot=false;
+			
+			for (int iContentIndex=0;iContentIndex<maxpoints;iContentIndex++)
+	
+			{
+				float xnormalized = set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+				float ynormalized = set.get(iStorageIndex2).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);																			
+				float x = xnormalized*XScale;
+				float y = ynormalized*YScale;															
+				//float[] fArMappingColor = colorMapper.getColor(xnormalized);
+				
+				if (bSelectedPlot)
+				{
+					float[] fArMappingColor = colorMapper.getColor(xnormalized*ynormalized);															
+					DrawPointPrimitive(gl,
+										x,y,0.0f, //z
+										fArMappingColor,
+										1.0f,	//fOpacity
+										Pointsize,
+										EScatterPointType.BOX);				
+				}
+				else 
+				{
+					//float[] fArMappingColor = colorMapper.getColor(xnormalized*ynormalized);
+					float[] fArMappingColor = {0.6f,0.6f,0.6f};
+					DrawPointPrimitive(gl,
+									x,y,-3.0f, //z
+									fArMappingColor,
+									0.5f, 	//fOpacity
+									Pointsize,
+									EScatterPointType.POINT);
+				}
+					
+					
+			}
+		}
+			
+		}
+
+		
+		
 		// clipToFrustum(gl);
 
 		// gl.glCallList(iGLDisplayListToCall);
@@ -259,6 +327,39 @@ public class GLScatterplot
 		// contextMenu.render(gl, this);
 	}
 
+	private void DrawPointPrimitive(GL gl,float x, float y,float z,float[] fArMappingColor,float fOpacity,float Pointsize,EScatterPointType type)
+	{
+		
+		
+		 switch (type)
+         {
+           case BOX:
+           {
+    	    gl.glBegin(GL.GL_POLYGON);
+    	    gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
+    	    gl.glVertex3f(x, y, z);
+			gl.glVertex3f(x, y+Pointsize, z);
+			gl.glVertex3f(x+Pointsize, y+Pointsize, z);
+			gl.glVertex3f(x+Pointsize, y, z);
+			gl.glEnd();
+           }
+           case POINT:
+           {
+        	//gl.glEnable(GL.GL_POINT_SMOOTH);
+        	
+    	    gl.glBegin(GL.GL_POINTS);
+    	    gl.glPointSize(Pointsize*1000.0f);
+    	    gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);    	    
+    	    gl.glVertex3f(x, y, z);
+    	    gl.glEnd();
+           }
+           default:
+              //
+         }
+
+		
+	}
+	
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 
 		if (bHasFrustumChanged) {
