@@ -16,6 +16,7 @@ import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLScatterplot;
 import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.view.CaleydoRCPViewPart;
 import org.caleydo.rcp.view.opengl.RcpGLGlyphView;
@@ -25,10 +26,12 @@ import org.caleydo.rcp.view.opengl.RcpGLHyperbolicView;
 import org.caleydo.rcp.view.opengl.RcpGLParCoordsView;
 import org.caleydo.rcp.view.opengl.RcpGLRadialHierarchyView;
 import org.caleydo.rcp.view.opengl.RcpGLRemoteRenderingView;
+import org.caleydo.rcp.view.opengl.RcpGLScatterplotView;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.GlyphToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.HeatMapToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.ParCoordsToolBarContent;
+import org.caleydo.rcp.view.swt.toolbar.content.ScatterplotToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.hyperbolic.HyperbolicToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.radial.RadialHierarchyToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.remote.RemoteRenderingToolBarContent;
@@ -142,6 +145,12 @@ public class ToolBarContentFactory {
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
 
+		info = new ToolBarInfo();
+		info.viewClass = GLScatterplot.class;
+		info.contentClass = ScatterplotToolBarContent.class;
+		info.rcpID = RcpGLScatterplotView.ID;
+		info.ignored = false;
+		toolBarInfos.put(info.viewClass, info);
 	}
 
 	/**

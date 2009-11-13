@@ -12,7 +12,7 @@ import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.ResetAxisSpaci
 import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.SaveSelectionsAction;
 
 /**
- * ToolBarContent implementation for heatmap specific toolbar items.
+ * ToolBarContent implementation for parcoords specific toolbar items.
  * 
  * @author Werner Puff
  */

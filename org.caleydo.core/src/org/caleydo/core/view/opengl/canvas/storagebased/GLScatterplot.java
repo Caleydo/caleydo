@@ -737,9 +737,10 @@ public class GLScatterplot
            {
         	//gl.glEnable(GL.GL_POINT_SMOOTH);
         	
-    	    gl.glBegin(GL.GL_POINTS);
-    	    gl.glPointSize(Pointsize*1000.0f);
+       	    gl.glPointSize(Pointsize*1000.0f/3f);
     	    gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);    	    
+
+    	    gl.glBegin(GL.GL_POINTS);
     	    gl.glVertex3f(x, y, z);
     	    gl.glEnd();
            }
