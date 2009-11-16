@@ -2,13 +2,16 @@ package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.FIELD_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.SELECTION_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.POINTSIZE;
+import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.POINTSTYLE;
+import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.XYAXISDISTANCE;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.AXIS_MARKER_WIDTH;
-import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.AXIS_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.AXIS_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.NUMBER_AXIS_MARKERS;
-import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.X_AXIS_COLOR;
-import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.X_AXIS_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.Y_AXIS_COLOR;
-import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH;
+import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.X_AXIS_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.X_AXIS_LINE_WIDTH;
+import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.Y_AXIS_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.Y_AXIS_LINE_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.Y_AXIS_LOW;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_COLOR;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_LINE_WIDTH;
@@ -26,6 +29,7 @@ import gleem.linalg.Vec4f;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Set;
+import java.lang.Math;
 
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
@@ -88,7 +92,8 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EScatterPointType;
  */
 public class GLScatterplot
 	extends AStorageBasedView {
-	private HeatMapRenderStyle renderStyle;
+	//private HeatMapRenderStyle renderStyle;
+	private ScatterPlotRenderStyle renderStyle;
 
 	private ColorMapping colorMapper;
     
@@ -157,6 +162,8 @@ public class GLScatterplot
 	@Override
 	public void init(GL gl) {
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
+		renderStyle = new ScatterPlotRenderStyle(this, viewFrustum);
+		
 		super.renderStyle = renderStyle;
 	}
 
@@ -284,29 +291,26 @@ public class GLScatterplot
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.X_AXIS_SELECTION, 1));
 		gl.glBegin(GL.GL_LINES);
-
-		//float fXAxisOverlap = 0.1f;
-		
-			
-		gl.glVertex3f(0.1f, 0.1f, 0.0f);
-		gl.glVertex3f(5.0f, 0.1f, 0.0f);
+				
+		gl.glVertex3f(XYAXISDISTANCE, XYAXISDISTANCE, 0.0f);
+		gl.glVertex3f((renderStyle.getRenderWidth()-XYAXISDISTANCE), XYAXISDISTANCE, 0.0f);
+		//gl.glVertex3f(5.0f, XYAXISDISTANCE, 0.0f);
 
 		gl.glEnd();
 		gl.glPopName();
 		
 		//draw all Y-Axis
 		
-		gl.glColor4fv(X_AXIS_COLOR, 0);
-		gl.glLineWidth(X_AXIS_LINE_WIDTH);
+		gl.glColor4fv(Y_AXIS_COLOR,0);
+		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.X_AXIS_SELECTION, 1));
 		gl.glBegin(GL.GL_LINES);
 
 		//float fXAxisOverlap = 0.1f;
-		
-			
-		gl.glVertex3f(0.1f, 0.1f, 0.0f);
-		gl.glVertex3f(0.1f, 5.0f, 0.0f);
+				
+		gl.glVertex3f(XYAXISDISTANCE, XYAXISDISTANCE, AXIS_Z);
+		gl.glVertex3f(XYAXISDISTANCE, renderStyle.getRenderHeight()-XYAXISDISTANCE, AXIS_Z);
 
 		gl.glEnd();
 		gl.glPopName();
@@ -641,111 +645,127 @@ public class GLScatterplot
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		
 		
-		float XScale = 5.0f;
-		float YScale = 5.0f;
-		float Pointsize = 0.015f;
-	
-		 
-		int maxindex1 = set.size(); // contentVA
-		int maxindex2 = maxindex1;
-		
-		maxindex1=6;
-		maxindex2=6;
-		
-		int maxpoints = set.get(1).size();
-		
-		boolean bSelectedPlot=false;
-		
-		for (int iStorageIndex1=0;iStorageIndex1<maxindex1;iStorageIndex1++)
-		{
-		for (int iStorageIndex2=0;iStorageIndex2<maxindex2;iStorageIndex2++)
-		{
-			if (iStorageIndex2== iStorageIndex1) continue;
-
-			//if (contentSelectionManager.checkStatus(ESelectionType.DESELECTED, iContentIndex))
-			if (iStorageIndex1==SELECTED_X_AXIS && iStorageIndex2==SELECTED_Y_AXIS) 
-				bSelectedPlot=true;			
-				else 		
-					bSelectedPlot=false;
-			
-			for (int iContentIndex=0;iContentIndex<maxpoints;iContentIndex++)
-	
-			{
-				float xnormalized = set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
-				float ynormalized = set.get(iStorageIndex2).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);																			
-				float x = xnormalized*XScale;
-				float y = ynormalized*YScale;															
-				//float[] fArMappingColor = colorMapper.getColor(xnormalized);
 				
-				if (bSelectedPlot)
-				{
-					float[] fArMappingColor = colorMapper.getColor(xnormalized*ynormalized);															
-					DrawPointPrimitive(gl,
-										x,y,0.0f, //z
-										fArMappingColor,
-										1.0f,	//fOpacity
-										Pointsize,
-										EScatterPointType.BOX);				
-				}
-				else 
-				{
-					//float[] fArMappingColor = colorMapper.getColor(xnormalized*ynormalized);
-					float[] fArMappingColor = {0.6f,0.6f,0.6f};
-					DrawPointPrimitive(gl,
-									x,y,-5.0f, //z
-									fArMappingColor,
-									0.5f, 	//fOpacity
-									Pointsize,
-									EScatterPointType.POINT);
-				}
-					
-					
-			}
-		}
-			
-		}
-
-		
-		renderCoordinateSystem(gl);
+	
 		// clipToFrustum(gl);
 
-		// gl.glCallList(iGLDisplayListToCall);
+		gl.glCallList(iGLDisplayListToCall);
 
-		// buildDisplayList(gl, iGLDisplayListIndexRemote);
+		buildDisplayList(gl, iGLDisplayListIndexRemote);
 
 		// if (!isRenderedRemote())
 		// contextMenu.render(gl, this);
 	}
 
-	private void DrawPointPrimitive(GL gl,float x, float y,float z,float[] fArMappingColor,float fOpacity,float Pointsize,EScatterPointType type)
+	private void RenderScatterPoints(GL gl)
 	{
+//		int maxindex1 = set.size(); // contentVA
+//		int maxindex2 = maxindex1;
+//		
+//		maxindex1=6;
+//		maxindex2=6;
+//		
+		int maxpoints = set.get(1).size();
 		
 		
-		 switch (type)
+//		boolean bSelectedPlot=false;
+		
+//		for (int iStorageIndex1=0;iStorageIndex1<maxindex1;iStorageIndex1++)
+//		{
+//		for (int iStorageIndex2=0;iStorageIndex2<maxindex2;iStorageIndex2++)
+//		{
+//			if (iStorageIndex2== iStorageIndex1) continue;
+
+			//if (contentSelectionManager.checkStatus(ESelectionType.DESELECTED, iContentIndex))
+//			if (iStorageIndex1==SELECTED_X_AXIS && iStorageIndex2==SELECTED_Y_AXIS) 
+//				bSelectedPlot=true;			
+//				else 		
+//					bSelectedPlot=false;
+						
+		float XScale = renderStyle.getRenderWidth()-XYAXISDISTANCE*2.0f;
+		float YScale = renderStyle.getRenderHeight()-XYAXISDISTANCE*2.0f;
+		  		  
+			for (int iContentIndex=0;iContentIndex<maxpoints;iContentIndex++)				
+			{
+//				float xnormalized = set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+//				float ynormalized = set.get(iStorageIndex2).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);	
+				float xnormalized = set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+				float ynormalized = set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);																			
+				float x = xnormalized*XScale;				
+				float y = ynormalized*YScale;															
+//				//float[] fArMappingColor = colorMapper.getColor(xnormalized);				
+//				if (bSelectedPlot)
+//				{
+					float[] fArMappingColor = colorMapper.getColor(Math.max(xnormalized,ynormalized));															
+					DrawPointPrimitive(gl,
+										x,y,0.0f, //z
+										fArMappingColor,
+										1.0f);	//fOpacity
+//				}											
+			} // end iContentIndex 
+//		}			
+//		}	
+	}
+	
+	private void DrawPointPrimitive(GL gl,float x, float y,float z,float[] fArMappingColor,float fOpacity)
+	{
+		//EScatterPointType type = renderStyle.POINTSTYLE;
+							
+		 switch (POINTSTYLE)
          {
            case BOX:
            {
     	    gl.glBegin(GL.GL_POLYGON);
     	    gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
     	    gl.glVertex3f(x, y, z);
-			gl.glVertex3f(x, y+Pointsize, z);
-			gl.glVertex3f(x+Pointsize, y+Pointsize, z);
-			gl.glVertex3f(x+Pointsize, y, z);
+			gl.glVertex3f(x, y+POINTSIZE, z);
+			gl.glVertex3f(x+POINTSIZE, y+POINTSIZE, z);
+			gl.glVertex3f(x+POINTSIZE, y, z);
 			gl.glEnd();
+			break;
            }
            case POINT:
            {
         	//gl.glEnable(GL.GL_POINT_SMOOTH);
         	
-       	    gl.glPointSize(Pointsize*1000.0f/3f);
+       	    gl.glPointSize(POINTSIZE*10.0f);
     	    gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);    	    
 
     	    gl.glBegin(GL.GL_POINTS);
     	    gl.glVertex3f(x, y, z);
     	    gl.glEnd();
+    	    break;
            }
+           case CROSS:
+           {
+        	   gl.glLineWidth(1.0f); 
+        	   gl.glBegin(GL.GL_LINES);
+        	    gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
+        	    gl.glVertex3f(x, y, z);
+    			gl.glVertex3f(x+POINTSIZE, y+POINTSIZE, z);
+    			gl.glVertex3f(x, y+POINTSIZE, z);
+    			gl.glVertex3f(x+POINTSIZE, y, z);
+    			gl.glEnd();
+           }
+           break;
+           case CIRCLE:
+           {
+        	  float angle;
+        	  float PI = (float)Math.PI;
+        	  
+        	  gl.glLineWidth(1.0f); 
+        	   gl.glBegin(GL.GL_LINE_LOOP);        	   
+        	   gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
+	    	  for(int i = 0; i < 10; i++) 
+	    	  {	    	        
+	    		  angle = (i*2*PI)/10;	    	       
+	    	      gl.glVertex3f(x + (float)(Math.cos(angle) * renderStyle.POINTSIZE), y + (float)(Math.sin(angle) * renderStyle.POINTSIZE),z);
+	    	  }         	            	   
+        	 gl.glEnd();
+           }
+           break;
            default:
-              //
+              
          }
 
 		
@@ -758,35 +778,16 @@ public class GLScatterplot
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-		if (contentSelectionManager.getNumberOfElements() == 0) {
-			renderSymbol(gl);
-		}
-		else {
+//		if (contentSelectionManager.getNumberOfElements() == 0) {
+//			renderSymbol(gl);
+//		}
+//		else {
 
-			float fSpacing = 0;
-			if (!bRenderStorageHorizontally) {
-				gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight() - fSpacing, vecTranslation.z());
-				gl.glRotatef(vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation.w());
-			}
-
-			gl.glTranslatef(fAnimationTranslation, 0.0f, 0.0f);
-
-			renderHeatMap(gl);
-
-			renderSelection(gl, ESelectionType.MOUSE_OVER);
-			renderSelection(gl, ESelectionType.SELECTION);
-
-			gl.glTranslatef(-fAnimationTranslation, 0.0f, 0.0f);
-
-			if (!bRenderStorageHorizontally) {
-				gl.glRotatef(-vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation.w());
-				gl
-					.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight() + fSpacing, -vecTranslation
-						.z());
-			}
-
-			// gl.glDisable(GL.GL_STENCIL_TEST);
-		}
+			gl.glTranslatef(XYAXISDISTANCE,	XYAXISDISTANCE, 0);
+			RenderScatterPoints(gl);		 
+			gl.glTranslatef(-XYAXISDISTANCE,	-XYAXISDISTANCE, 0);
+			renderCoordinateSystem(gl);
+//		}
 		gl.glEndList();
 	}
 
