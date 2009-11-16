@@ -83,14 +83,6 @@ public class PDDrawingStrategyRainbow
 		float fInnerRadius = pdDiscToDraw.getCurrentInnerRadius();
 		float fWidth = pdDiscToDraw.getCurrentWidth();
 
-		float fMidAngle = fStartAngle + (fAngle / 2.0f);
-		while (fMidAngle >= 360) {
-			fMidAngle -= 360;
-		}
-		while (fMidAngle < 0) {
-			fMidAngle += 360;
-		}
-
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
 			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
@@ -99,10 +91,7 @@ public class PDDrawingStrategyRainbow
 			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);
 		}
 
-		ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
-
-		float fArRGB[] = cmRainbow.getColor(fMidAngle / 360.0f);
-		gl.glColor4f(fArRGB[0], fArRGB[1], fArRGB[2], fTransparency);
+		gl.glColor4fv(getColor(pdDiscToDraw), 0);
 
 		GLPrimitives.renderPartialDisc(glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,
 			iNumSlicesPerFullDisc);
@@ -118,6 +107,27 @@ public class PDDrawingStrategyRainbow
 	@Override
 	public EPDDrawingStrategyType getDrawingStrategyType() {
 		return EPDDrawingStrategyType.RAINBOW_COLOR;
+	}
+
+	@Override
+	public float[] getColor(PartialDisc disc) {
+		
+		float fStartAngle = disc.getCurrentStartAngle();
+		float fAngle = disc.getCurrentAngle();
+		float fMidAngle = fStartAngle + (fAngle / 2.0f);
+		
+		while (fMidAngle >= 360) {
+			fMidAngle -= 360;
+		}
+		while (fMidAngle < 0) {
+			fMidAngle += 360;
+		}
+		
+		ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
+
+		float fArRGB[] = cmRainbow.getColor(fMidAngle / 360.0f);
+		
+		return new float[] { fArRGB[0], fArRGB[1], fArRGB[2], fTransparency };
 	}
 
 }

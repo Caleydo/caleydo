@@ -60,16 +60,18 @@ public class AnimationPullInDetailOutside
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
 		gl.glTranslatef(fXCenter, fYCenter, 0);
+		
+		DrawingStrategyManager drawingStrategyManager = radialHierarchy.getDrawingStrategyManager();
 
-		pdCurrentRootElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
+		pdCurrentRootElement.setPDDrawingStrategyChildren(drawingStrategyManager
 			.getDefaultDrawingStrategy(), iDisplayedOverviewDepth);
-		pdCurrentSelectedElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
+		pdCurrentSelectedElement.setPDDrawingStrategyChildren(drawingStrategyManager
 			.createDrawingStrategy(EPDDrawingStrategyType.INVISIBLE), iDisplayedDetailViewDepth);
 
 		pdCurrentRootElement.drawHierarchyFull(gl, glu, mvOverviewWidth.getMovementValue(),
 			iDisplayedOverviewDepth);
 
-		pdCurrentSelectedElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
+		pdCurrentSelectedElement.setPDDrawingStrategyChildren(drawingStrategyManager
 			.getDefaultDrawingStrategy(), iDisplayedDetailViewDepth);
 
 		pdCurrentSelectedElement.drawHierarchyAngular(gl, glu, mvDetailViewWidth.getMovementValue(),
@@ -96,8 +98,7 @@ public class AnimationPullInDetailOutside
 
 			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentRootElement, pdCurrentRootElement,
 				radialHierarchy.getMaxDisplayedHierarchyDepth());
-			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentRootElement,
-				pdCurrentRootElement);
+			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentRootElement);
 			radialHierarchy.setDisplayListDirty();
 		}
 		gl.glPopMatrix();

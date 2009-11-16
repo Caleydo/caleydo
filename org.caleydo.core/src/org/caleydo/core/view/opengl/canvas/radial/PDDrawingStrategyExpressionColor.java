@@ -5,6 +5,7 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -69,7 +70,6 @@ public class PDDrawingStrategyExpressionColor
 		float fAngle = pdDiscToDraw.getCurrentAngle();
 		float fInnerRadius = pdDiscToDraw.getCurrentInnerRadius();
 		float fWidth = pdDiscToDraw.getCurrentWidth();
-		float fAverageExpressionValue = pdDiscToDraw.getAverageExpressionValue();
 
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
 			pdDiscToDraw.getElementID()));
@@ -79,11 +79,7 @@ public class PDDrawingStrategyExpressionColor
 			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);
 		}
 
-		ColorMapping cmExpression =
-			ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
-		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue);
-
-		gl.glColor4f(fArRGB[0], fArRGB[1], fArRGB[2], fTransparency);
+		gl.glColor4fv(getColor(pdDiscToDraw), 0);
 
 		GLPrimitives.renderPartialDisc(glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,
 			iNumSlicesPerFullDisc);
@@ -100,6 +96,27 @@ public class PDDrawingStrategyExpressionColor
 	@Override
 	public EPDDrawingStrategyType getDrawingStrategyType() {
 		return EPDDrawingStrategyType.EXPRESSION_COLOR;
+	}
+
+	@Override
+	public float[] getColor(PartialDisc disc) {
+		float fAverageExpressionValue;
+
+		IHierarchyData<?> hierarchyData = disc.getHierarchyData();
+		ClusterNode clusterNode = null;
+		if (hierarchyData instanceof ClusterNode) {
+			clusterNode = (ClusterNode) hierarchyData;
+			fAverageExpressionValue = clusterNode.getAverageExpressionValue();
+		}
+		else {
+			fAverageExpressionValue = 0.0f;
+		}
+
+		ColorMapping cmExpression =
+			ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue);
+
+		return new float[] { fArRGB[0], fArRGB[1], fArRGB[2], fTransparency };
 	}
 
 }

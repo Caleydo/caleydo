@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.manager.picking.PickingManager;
 
 /**
@@ -10,15 +12,18 @@ import org.caleydo.core.manager.picking.PickingManager;
  */
 public final class DrawingStrategyManager {
 
-	private static DrawingStrategyManager instance;
 	private APDDrawingStrategy dsDefault;
 	private PickingManager pickingManager;
 	private int iViewID;
+	private ArrayList<EPDDrawingStrategyType> alColorModes;
+	private int iColorModeIndex;
 
 	/**
 	 * Constructor.
 	 */
-	private DrawingStrategyManager() {
+	public DrawingStrategyManager() {
+		alColorModes = new ArrayList<EPDDrawingStrategyType>();
+		iColorModeIndex = 0;
 	}
 
 	/**
@@ -28,37 +33,30 @@ public final class DrawingStrategyManager {
 	 *            PickingManager that shall be used for creating drawing strategies.
 	 * @param iViewID
 	 *            ViewID that shall be used for creating drawing strategies.
+	 * @param alColorModes
+	 *            List that specifies the drawing strategies which are used for color modes of the radial
+	 *            hierarchy view. It must at least contain one valid drawing strategy type.
 	 */
-	public static void init(PickingManager pickingManager, int iViewID) {
-		if (instance == null) {
-			instance = new DrawingStrategyManager();
-		}
-		
-		instance.initStrategies(pickingManager, iViewID);
-	}
+	public void init(PickingManager pickingManager, int iViewID,
+		ArrayList<EPDDrawingStrategyType> alColorModes) {
 
-	/**
-	 * Creates an instance of all drawing strategies and saves them in a hashmap.
-	 * 
-	 * @param pickingManager
-	 *            PickingManager that shall be used for creating drawing strategies.
-	 * @param iViewID
-	 *            ViewID that shall be used for creating drawing strategies.
-	 */
-	private void initStrategies(PickingManager pickingManager, int iViewID) {
 		this.pickingManager = pickingManager;
 		this.iViewID = iViewID;
-
-		dsDefault = new PDDrawingStrategyExpressionColor(pickingManager, iViewID);
+		this.alColorModes.clear();
+		this.alColorModes.addAll(alColorModes);
+		iColorModeIndex = 0;
+		dsDefault = createDrawingStrategy(this.alColorModes.get(iColorModeIndex));
 	}
 
 	/**
-	 * Gets the instance of the singleton.
-	 * 
-	 * @return Instance of the DrawingStrategyManager.
+	 * Sets the next drawing strategy specified in the StrategyManager's color mode strategy list as default
+	 * drawing strategy.
 	 */
-	public static DrawingStrategyManager get() {
-		return instance;
+	public void setNextColorModeStrategyDefault() {
+		iColorModeIndex++;
+		if (iColorModeIndex >= alColorModes.size())
+			iColorModeIndex = 0;
+		dsDefault = createDrawingStrategy(this.alColorModes.get(iColorModeIndex));
 	}
 
 	/**

@@ -6,7 +6,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
  * This class represents a partial disc that corresponds to a cluster node in a hierarchy and provides methods
@@ -19,10 +18,9 @@ public class PartialDisc
 
 	private float fSize;
 	private APDDrawingStrategy drawingStrategy;
-	private ClusterNode clusterNode;
+	private IHierarchyData<?> hierarchyData;
 	private PartialDisc pdLargestChild;
 
-	private int iElementID;
 	private float fCurrentAngle;
 	private float fCurrentStartAngle;
 	private int iCurrentDepth;
@@ -39,16 +37,16 @@ public class PartialDisc
 	 * @param clusterNode
 	 *            Cluster node that the partial disc shall correspond to.
 	 */
-	public PartialDisc(Tree<PartialDisc> partialDiscTree, ClusterNode clusterNode) {
+	public PartialDisc(Tree<PartialDisc> partialDiscTree, IHierarchyData<?> hierarchyData,
+		APDDrawingStrategy drawingStrategy) {
 
 		super(partialDiscTree);
 		setNode(this);
-		this.iElementID = clusterNode.getClusterNr();
-		this.fSize = clusterNode.getNrElements();
-		this.clusterNode = clusterNode;
-		drawingStrategy = DrawingStrategyManager.get().getDefaultDrawingStrategy();
+		this.fSize = hierarchyData.getSize();
+		this.hierarchyData = hierarchyData;
+		this.drawingStrategy = drawingStrategy;
 		fCurrentStartAngle = 0;
-		iHierarchyDepth = clusterNode.getDepth();
+		iHierarchyDepth = -1;
 	}
 
 	/**
@@ -340,10 +338,11 @@ public class PartialDisc
 	}
 
 	/**
-	 * @return ID of partial disc which is used for picking.
+	 * @return ID of partial disc which is used for picking. This ID equals the ID of the hierarchy data
+	 *         object the partial disc represents.
 	 */
 	public int getElementID() {
-		return iElementID;
+		return hierarchyData.getID();
 	}
 
 	/**
@@ -467,18 +466,8 @@ public class PartialDisc
 		return fCurrentInnerRadius;
 	}
 
-	/**
-	 * @return The name of the cluster node.
-	 */
-	public String getName() {
-		return clusterNode.getNodeName();
-	}
-
-	/**
-	 * @return The clustering coefficient.
-	 */
-	public float getCoefficient() {
-		return clusterNode.getCoefficient();
+	public IHierarchyData<?> getHierarchyData() {
+		return hierarchyData;
 	}
 
 	/**
@@ -487,20 +476,6 @@ public class PartialDisc
 	 */
 	public int getDrawingStrategyDepth() {
 		return iDrawingStrategyDepth;
-	}
-
-	/**
-	 * @return The average expression value of the cluster node.
-	 */
-	public float getAverageExpressionValue() {
-		return clusterNode.getAverageExpressionValue();
-	}
-
-	/**
-	 * @return The standard deviation from the average expression value of the cluster node.
-	 */
-	public float getStandardDeviation() {
-		return clusterNode.getStandardDeviation();
 	}
 
 	/**
@@ -517,7 +492,8 @@ public class PartialDisc
 
 	@Override
 	public int compareTo(PartialDisc disc) {
-		return clusterNode.getClusterNr() - disc.clusterNode.getClusterNr();
+
+		return hierarchyData.getComparableValue() - disc.hierarchyData.getComparableValue();
 	}
 
 	/**

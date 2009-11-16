@@ -64,7 +64,7 @@ public class DrawingStateDetailOutside
 		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
 		pdCurrentMouseOverElement = null;
 
-		DrawingStrategyManager drawingStrategyManager = DrawingStrategyManager.get();
+		DrawingStrategyManager drawingStrategyManager = radialHierarchy.getDrawingStrategyManager();
 
 		APDDrawingStrategy dsDefault = drawingStrategyManager.getDefaultDrawingStrategy();
 
@@ -257,7 +257,7 @@ public class DrawingStateDetailOutside
 		gl.glLoadIdentity();
 		gl.glTranslatef(fXCenter, fYCenter, 0);
 
-		DrawingStrategyManager drawingStrategyManager = DrawingStrategyManager.get();
+		DrawingStrategyManager drawingStrategyManager = radialHierarchy.getDrawingStrategyManager();
 		//
 		APDDrawingStrategy dsDefault = drawingStrategyManager.getDefaultDrawingStrategy();
 		APDDrawingStrategyChildIndicator dsTransparent =
@@ -409,7 +409,7 @@ public class DrawingStateDetailOutside
 
 		if (pdSelected != pdRealRootElement && pdSelected.hasChildren()) {
 
-			pdCurrentRootElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
+			pdCurrentRootElement.setPDDrawingStrategyChildren(radialHierarchy.getDrawingStrategyManager()
 				.getDefaultDrawingStrategy(), iDisplayedOverviewDepth);
 
 			if (pdSelected == pdCurrentRootElement) {
@@ -417,8 +417,8 @@ public class DrawingStateDetailOutside
 				drawingController.setDrawingState(EDrawingStateType.ANIMATION_PARENT_ROOT_ELEMENT);
 			}
 			else {
-				pdCurrentSelectedElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
-					.getDefaultDrawingStrategy(), iDisplayedDetailViewDepth);
+				pdCurrentSelectedElement.setPDDrawingStrategyChildren(radialHierarchy
+					.getDrawingStrategyManager().getDefaultDrawingStrategy(), iDisplayedDetailViewDepth);
 				pdCurrentSelectedElement.simulateDrawHierarchyAngular(fDetailViewDiscWidth,
 					iDisplayedDetailViewDepth, fDetailViewStartAngle, 360, fDetailViewInnerRadius);
 
@@ -430,7 +430,7 @@ public class DrawingStateDetailOutside
 			radialHierarchy.setDisplayListDirty();
 		}
 		else {
-			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected, pdCurrentRootElement);
+			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected);
 			radialHierarchy.setDisplayListDirty();
 		}
 
@@ -440,8 +440,7 @@ public class DrawingStateDetailOutside
 	public void handleMouseOver(PartialDisc pdMouseOver) {
 
 		if (pdMouseOver != pdCurrentMouseOverElement) {
-			radialHierarchy.setNewSelection(ESelectionType.MOUSE_OVER, pdMouseOver, radialHierarchy
-				.getCurrentRootElement());
+			radialHierarchy.setNewSelection(ESelectionType.MOUSE_OVER, pdMouseOver);
 			radialHierarchy.setDisplayListDirty();
 		}
 	}
@@ -454,7 +453,7 @@ public class DrawingStateDetailOutside
 
 		if (pdSelected.hasChildren() && pdSelected.getCurrentDepth() > 1) {
 
-			pdCurrentRootElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
+			pdCurrentRootElement.setPDDrawingStrategyChildren(radialHierarchy.getDrawingStrategyManager()
 				.getDefaultDrawingStrategy(), iDisplayedOverviewDepth);
 
 			if (pdSelected == pdCurrentSelectedElement || pdSelected == pdCurrentRootElement) {

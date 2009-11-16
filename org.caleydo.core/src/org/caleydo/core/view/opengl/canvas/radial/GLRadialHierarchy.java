@@ -4,7 +4,6 @@ import gleem.linalg.Vec2f;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -18,18 +17,13 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
-import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.radial.ChangeColorModeEvent;
 import org.caleydo.core.manager.event.view.radial.DetailOutsideEvent;
 import org.caleydo.core.manager.event.view.radial.GoBackInHistoryEvent;
 import org.caleydo.core.manager.event.view.radial.GoForthInHistoryEvent;
 import org.caleydo.core.manager.event.view.radial.SetMaxDisplayedHierarchyDepthEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -43,12 +37,8 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
-import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
-import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
-import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.radial.listener.ChangeColorModeListener;
 import org.caleydo.core.view.opengl.canvas.radial.listener.DetailOutsideListener;
@@ -72,7 +62,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLRadialHierarchy
 	extends AGLEventListener
-	implements IClusterNodeEventReceiver, IViewCommandHandler, ISelectionUpdateHandler {
+	implements IViewCommandHandler {
 
 	public static final int DISP_HIER_DEPTH_DEFAULT = 7;
 	private static final int MIN_PIXELS_PER_DISPLAYED_LEVEL = 10;
@@ -96,16 +86,28 @@ public class GLRadialHierarchy
 	 */
 	private HashMap<Integer, PartialDisc> hashPartialDiscs;
 
+	/**
+	 * The root element of the partial disc tree.
+	 */
 	private PartialDisc pdRealRootElement;
+	/**
+	 * The partial disc that is currently displayed as root.
+	 */
 	private PartialDisc pdCurrentRootElement;
+	/**
+	 * The partial disc that is currently "selected" regarding the current drawing state. For instance, in
+	 * DrawingStateFullHierarchy the current root element is currently selected, while in
+	 * DrawingStateDetailOutside the currently selected element is the root element of the detail view.
+	 */
 	private PartialDisc pdCurrentSelectedElement;
 
+	private ADataEventManager dataEventManager;
 	private DrawingController drawingController;
+	private DrawingStrategyManager drawingStrategyManager;
 	private NavigationHistory navigationHistory;
 	private OneWaySlider upwardNavigationSlider;
 	private Rectangle controlBox;
 
-	private ClusterNodeSelectionListener clusterNodeSelectionListener;
 	private RedrawViewListener redrawViewListener;
 	private GoBackInHistoryListener goBackInHistoryListener;
 	private GoForthInHistoryListener goForthInHistoryListener;
@@ -113,7 +115,6 @@ public class GLRadialHierarchy
 	private SetMaxDisplayedHierarchyDepthListener setMaxDisplayedHierarchyDepthListener;
 	private DetailOutsideListener detailOutsideListener;
 	private UpdateViewListener updateViewListener;
-	private SelectionUpdateListener selectionUpdateListener;
 	private ClearSelectionsListener clearSelectionsListener;
 
 	private SelectionManager selectionManager;
@@ -144,13 +145,11 @@ public class GLRadialHierarchy
 		// iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
 		navigationHistory = new NavigationHistory(this, null);
 		drawingController = new DrawingController(this, navigationHistory);
-		DrawingStrategyManager.init(pickingManager, iUniqueID);
+		drawingStrategyManager = new DrawingStrategyManager();
 		navigationHistory.setDrawingController(drawingController);
 		iUpwardNavigationSliderButtonID = 0;
 		iUpwardNavigationSliderID = 0;
 		iUpwardNavigationSliderBodyID = 0;
-
-		selectionManager = new SelectionManager.Builder(EIDType.CLUSTER_NUMBER).build();
 
 		glKeyListener = new GLRadialHierarchyKeyListener(this);
 
@@ -165,7 +164,7 @@ public class GLRadialHierarchy
 			// initHierarchy(tree);
 		}
 		else {
-//			initTestHierarchy();
+			// initTestHierarchy();
 		}
 
 		gl.glEnable(GL.GL_LINE_SMOOTH);
@@ -216,27 +215,46 @@ public class GLRadialHierarchy
 	 * @param tree
 	 *            Tree of cluster nodes which is used to build the partial disc tree.
 	 */
-	public void initHierarchy(Tree<ClusterNode> tree) {
-
-		// wpuff: default is set in constructor, possible initialization from serialized-form
+	/**
+	 * Initializes a new hierarchy of partial discs according to a tree of cluster nodes and other parameters.
+	 * 
+	 * @param <E>
+	 *            Concrete Type of IHierarchyData
+	 * @param tree
+	 *            Tree of hierarchy data objects which is used to build the partial disc tree.
+	 * @param idType
+	 *            IDType of the hierarchy data objects.
+	 * @param dataEventManager
+	 *            Concrete DataEventManager that is responsible for handling and triggering data specific
+	 *            events.
+	 * @param alColorModes
+	 *            List of drawing strategies that shall be used as color modes.
+	 */
+	public <E extends IHierarchyData<E>> void initHierarchy(Tree<E> tree, EIDType idType,
+		ADataEventManager dataEventManager, ArrayList<EPDDrawingStrategyType> alColorModes) {
 
 		hashPartialDiscs.clear();
-		selectionManager.resetSelectionManager();
+		selectionManager = new SelectionManager.Builder(idType).build();
 		partialDiscTree = new Tree<PartialDisc>();
 		navigationHistory.reset();
 		drawingController.setDrawingState(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY);
 		LabelManager.get().clearLabels();
-		DrawingStrategyManager.init(pickingManager, iUniqueID);
+		drawingStrategyManager.init(pickingManager, iUniqueID, alColorModes);
 
-		ClusterNode cnRoot = tree.getRoot();
-		PartialDisc pdRoot = new PartialDisc(partialDiscTree, cnRoot);
+		E heRoot = tree.getRoot();
+		PartialDisc pdRoot =
+			new PartialDisc(partialDiscTree, heRoot, drawingStrategyManager.getDefaultDrawingStrategy());
 		partialDiscTree.setRootNode(pdRoot);
-		hashPartialDiscs.put(cnRoot.getClusterNr(), pdRoot);
-		selectionManager.initialAdd(cnRoot.getClusterNr());
-		buildTree(tree, cnRoot, pdRoot);
+		hashPartialDiscs.put(heRoot.getID(), pdRoot);
+		selectionManager.initialAdd(heRoot.getID());
+		buildTree(tree, heRoot, pdRoot);
 		pdRoot.calculateHierarchyLevels(0);
 		pdRoot.calculateLargestChildren();
+		pdRoot.calculateHierarchyDepth();
 		iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
+
+		this.dataEventManager = dataEventManager;
+		this.dataEventManager.registerEventListeners();
 
 		pdCurrentRootElement = pdRoot;
 		pdCurrentSelectedElement = pdRoot;
@@ -256,32 +274,36 @@ public class GLRadialHierarchy
 	}
 
 	/**
-	 * Recursively builds the partial disc tree according to a cluster node tree. Note that the root element
+	 * Recursively builds the partial disc tree according to a hierarchy data tree. Note that the root element
 	 * of the partial disc tree has to be set separately.
 	 * 
 	 * @param tree
 	 *            Tree of cluster nodes which is used to build the partial disc tree.
-	 * @param clusterNode
-	 *            Current parent cluster node whose children are used for the creation of the children of
-	 *            partialDisc. Initially this variable should be the root element of the cluster node tree.
+	 * @param hierarchyElement
+	 *            Current parent hierarchy element whose children are used for the creation of the children of
+	 *            partialDisc. Initially this variable should be the root element of the hierarchy element
+	 *            tree.
 	 * @param partialDisc
 	 *            Current parent partial disc whose children will be created. Initially this variable should
 	 *            be the root element of the partial disc tree.
 	 */
-	private void buildTree(Tree<ClusterNode> tree, ClusterNode clusterNode, PartialDisc partialDisc) {
+	private <E extends IHierarchyData<E>> void buildTree(Tree<E> tree, E hierarchyElement,
+		PartialDisc partialDisc) {
 
-		ArrayList<ClusterNode> alChildNodes = tree.getChildren(clusterNode);
+		ArrayList<E> alChildNodes = tree.getChildren(hierarchyElement);
 		ArrayList<PartialDisc> alChildDiscs = new ArrayList<PartialDisc>();
 
 		if (alChildNodes != null) {
-			for (ClusterNode cnChild : alChildNodes) {
-				PartialDisc pdCurrentChildDisc = new PartialDisc(partialDiscTree, cnChild);
+			for (E heChild : alChildNodes) {
+				PartialDisc pdCurrentChildDisc =
+					new PartialDisc(partialDiscTree, heChild, drawingStrategyManager
+						.getDefaultDrawingStrategy());
 				try {
 					alChildDiscs.add(pdCurrentChildDisc);
 					partialDiscTree.addChild(partialDisc, pdCurrentChildDisc);
-					hashPartialDiscs.put(cnChild.getClusterNr(), pdCurrentChildDisc);
-					selectionManager.initialAdd(cnChild.getClusterNr());
-					buildTree(tree, cnChild, pdCurrentChildDisc);
+					hashPartialDiscs.put(heChild.getID(), pdCurrentChildDisc);
+					selectionManager.initialAdd(heChild.getID());
+					buildTree(tree, heChild, pdCurrentChildDisc);
 				}
 				catch (Exception e) {
 					e.printStackTrace();
@@ -309,7 +331,7 @@ public class GLRadialHierarchy
 			e.printStackTrace();
 		}
 
-		initHierarchy(tree);
+		// initHierarchy(tree);
 	}
 
 	@Override
@@ -570,7 +592,7 @@ public class GLRadialHierarchy
 				pdCurrentRootElement, pdCurrentSelectedElement, iMaxDisplayedHierarchyDepth);
 			setDisplayListDirty();
 
-			setNewSelection(ESelectionType.SELECTION, pdCurrentSelectedElement, pdCurrentRootElement);
+			setNewSelection(ESelectionType.SELECTION, pdCurrentSelectedElement);
 		}
 	}
 
@@ -699,7 +721,7 @@ public class GLRadialHierarchy
 	}
 
 	/**
-	 * Change the color mode from rainbow to gene expression or vice versa.
+	 * Change the color mode to the next one.
 	 */
 	public void changeColorMode() {
 
@@ -709,13 +731,7 @@ public class GLRadialHierarchy
 		//		
 		// eventPublisher.triggerEvent(event);
 
-		DrawingStrategyManager drawingStrategyManager = DrawingStrategyManager.get();
-		if (drawingStrategyManager.getDefaultDrawingStrategy().getDrawingStrategyType() == EPDDrawingStrategyType.RAINBOW_COLOR) {
-			drawingStrategyManager.setDefaultStrategy(EPDDrawingStrategyType.EXPRESSION_COLOR);
-		}
-		else {
-			drawingStrategyManager.setDefaultStrategy(EPDDrawingStrategyType.RAINBOW_COLOR);
-		}
+		drawingStrategyManager.setNextColorModeStrategyDefault();
 		setDisplayListDirty();
 	}
 
@@ -785,8 +801,18 @@ public class GLRadialHierarchy
 		return iMaxDisplayedHierarchyDepth;
 	}
 
+	/**
+	 * @return SelectionManager of the radial hierarchy view.
+	 */
 	public SelectionManager getSelectionManager() {
 		return selectionManager;
+	}
+
+	/**
+	 * @return Type of the currently active drawing state.
+	 */
+	public EDrawingStateType getCurrentDrawingStateType() {
+		return drawingController.getCurrentDrawingState().getType();
 	}
 
 	/**
@@ -830,6 +856,13 @@ public class GLRadialHierarchy
 	}
 
 	/**
+	 * @return The current DrawingStrategyManager of the radial hierarchy view.
+	 */
+	public DrawingStrategyManager getDrawingStrategyManager() {
+		return drawingStrategyManager;
+	}
+
+	/**
 	 * A new selection will be set in the selection manager with the specified parameters. A
 	 * ClusterNodeSelectionEvent with the new selection will be triggered. If the selected element corresponds
 	 * to a gene, a SelectionUpdateEvent will also be triggered.
@@ -838,41 +871,13 @@ public class GLRadialHierarchy
 	 *            Type of selection.
 	 * @param pdSelected
 	 *            Element that has been selected.
-	 * @param pdRoot
-	 *            Root element.
 	 */
-	public void setNewSelection(ESelectionType selectionType, PartialDisc pdSelected, PartialDisc pdRoot) {
+	public void setNewSelection(ESelectionType selectionType, PartialDisc pdSelected) {
 
 		selectionManager.clearSelections();
 		selectionManager.addToType(selectionType, pdSelected.getElementID());
 
-		ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
-		clearSelectionsEvent.setSender(this);
-		eventPublisher.triggerEvent(clearSelectionsEvent);
-
-		if (!pdSelected.hasChildren()) {
-			SelectionDelta delta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
-			delta.addSelection(pdSelected.getElementID(), selectionType);
-			SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
-			selectionUpdateEvent.setSender(this);
-			selectionUpdateEvent.setSelectionDelta((SelectionDelta) delta);
-			selectionUpdateEvent.setInfo(getShortInfo());
-			eventPublisher.triggerEvent(selectionUpdateEvent);
-		}
-
-		ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
-		event.setSender(this);
-		event.setSelectionDelta(selectionManager.getDelta());
-		// Specific elements for other RadialHierarchy Views
-		event.setSelectedElementID(pdCurrentSelectedElement.getElementID());
-		event.setSelectedElementStartAngle(pdCurrentSelectedElement.getCurrentStartAngle());
-		event.setRootElementID(pdRoot.getElementID());
-		event.setRootElementStartAngle(pdRoot.getCurrentStartAngle());
-		event.setDrawingStateType(drawingController.getCurrentDrawingState().getType());
-		event.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
-		event.setDefaultDrawingStrategyType(DrawingStrategyManager.get().getDefaultDrawingStrategy()
-			.getDrawingStrategyType());
-		event.setSenderRadialHierarchy(true);
+		dataEventManager.triggerDataSelectionEvents(selectionType, pdSelected);
 
 		if (selectionType == ESelectionType.SELECTION) {
 			bIsNewSelection = true;
@@ -880,9 +885,6 @@ public class GLRadialHierarchy
 		else {
 			bIsNewSelection = false;
 		}
-
-		event.setNewSelection(bIsNewSelection);
-		eventPublisher.triggerEvent(event);
 	}
 
 	public void setNewSelection(boolean bIsNewSelection) {
@@ -919,7 +921,7 @@ public class GLRadialHierarchy
 		serializedForm.setViewID(this.getID());
 		serializedForm.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
 		serializedForm.setNewSelection(bIsNewSelection);
-		serializedForm.setDefaultDrawingStrategyType(DrawingStrategyManager.get().getDefaultDrawingStrategy()
+		serializedForm.setDefaultDrawingStrategyType(drawingStrategyManager.getDefaultDrawingStrategy()
 			.getDrawingStrategyType());
 
 		ADrawingState currentDrawingState = drawingController.getCurrentDrawingState();
@@ -950,9 +952,14 @@ public class GLRadialHierarchy
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
 
+//		Tree<ClusterNode> tree = set.getClusteredTreeExps();
 		Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		if (tree != null) {
-			initHierarchy(tree);
+			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
+			alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
+			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
+			initHierarchy(tree, EIDType.CLUSTER_NUMBER, new GeneClusterDataEventManager(this), alColorModes);
+//			initHierarchy(tree, EIDType.CLUSTER_NUMBER, new ExperimentClusterDataEventManager(this), alColorModes);
 		}
 
 		SerializedRadialHierarchyView serializedView = (SerializedRadialHierarchyView) ser;
@@ -982,7 +989,7 @@ public class GLRadialHierarchy
 	 * @param maxDisplayedHierarchyDepth
 	 *            Maximum hierarchy depth that shall be displayed.
 	 */
-	private void setupDisplay(EDrawingStateType drawingStateType, EPDDrawingStrategyType drawingStrategyType,
+	public void setupDisplay(EDrawingStateType drawingStateType, EPDDrawingStrategyType drawingStrategyType,
 		boolean isNewSelection, int rootElementID, int selectedElementID, float rootElementStartAngle,
 		float selectedElementStartAngle, int maxDisplayedHierarchyDepth) {
 
@@ -990,7 +997,7 @@ public class GLRadialHierarchy
 		bIsNewSelection = isNewSelection;
 		PartialDisc pdTemp = hashPartialDiscs.get(rootElementID);
 		drawingController.setDrawingState(drawingStateType);
-		DrawingStrategyManager.get().setDefaultStrategy(drawingStrategyType);
+		drawingStrategyManager.setDefaultStrategy(drawingStrategyType);
 
 		if (pdTemp != null) {
 			setCurrentRootElement(pdTemp);
@@ -1003,24 +1010,24 @@ public class GLRadialHierarchy
 		setDisplayListDirty();
 	}
 
-	@Override
-	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
-
-		SelectionDelta selectionDelta = event.getSelectionDelta();
-
-		if (selectionDelta.getIDType() == EIDType.CLUSTER_NUMBER) {
-			if (event.isSenderRadialHierarchy()) {
-				setupDisplay(event.getDrawingStateType(), event.getDefaultDrawingStrategyType(), event
-					.isNewSelection(), event.getRootElementID(), event.getSelectedElementID(), event
-					.getRootElementStartAngle(), event.getSelectedElementStartAngle(), event
-					.getMaxDisplayedHierarchyDepth());
-			}
-			selectionManager.clearSelections();
-			selectionManager.setDelta(selectionDelta);
-			bIsNewSelection = true;
-			setDisplayListDirty();
-		}
-	}
+	// @Override
+	// public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
+	//
+	// SelectionDelta selectionDelta = event.getSelectionDelta();
+	//
+	// if (selectionDelta.getIDType() == EIDType.CLUSTER_NUMBER) {
+	// if (event.isSenderRadialHierarchy()) {
+	// setupDisplay(event.getDrawingStateType(), event.getDefaultDrawingStrategyType(), event
+	// .isNewSelection(), event.getRootElementID(), event.getSelectedElementID(), event
+	// .getRootElementStartAngle(), event.getSelectedElementStartAngle(), event
+	// .getMaxDisplayedHierarchyDepth());
+	// }
+	// selectionManager.clearSelections();
+	// selectionManager.setDelta(selectionDelta);
+	// bIsNewSelection = true;
+	// setDisplayListDirty();
+	// }
+	// }
 
 	@Override
 	public void registerEventListeners() {
@@ -1028,10 +1035,6 @@ public class GLRadialHierarchy
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
-
-		clusterNodeSelectionListener = new ClusterNodeSelectionListener();
-		clusterNodeSelectionListener.setHandler(this);
-		eventPublisher.addListener(ClusterNodeSelectionEvent.class, clusterNodeSelectionListener);
 
 		goBackInHistoryListener = new GoBackInHistoryListener();
 		goBackInHistoryListener.setHandler(this);
@@ -1058,13 +1061,12 @@ public class GLRadialHierarchy
 		updateViewListener.setHandler(this);
 		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
 
-		selectionUpdateListener = new SelectionUpdateListener();
-		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
-
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+
+		if (dataEventManager != null)
+			dataEventManager.registerEventListeners();
 	}
 
 	@Override
@@ -1073,10 +1075,6 @@ public class GLRadialHierarchy
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);
 			redrawViewListener = null;
-		}
-		if (clusterNodeSelectionListener != null) {
-			eventPublisher.removeListener(clusterNodeSelectionListener);
-			clusterNodeSelectionListener = null;
 		}
 		if (goBackInHistoryListener != null) {
 			eventPublisher.removeListener(goBackInHistoryListener);
@@ -1102,14 +1100,14 @@ public class GLRadialHierarchy
 			eventPublisher.removeListener(updateViewListener);
 			updateViewListener = null;
 		}
-		if (selectionUpdateListener != null) {
-			eventPublisher.removeListener(selectionUpdateListener);
-			selectionUpdateListener = null;
-		}
+
 		if (clearSelectionsListener != null) {
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
 		}
+
+		if (dataEventManager != null)
+			dataEventManager.unregisterEventListeners();
 	}
 
 	@Override
@@ -1126,8 +1124,11 @@ public class GLRadialHierarchy
 	public void handleUpdateView() {
 		Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		if (tree != null) {
-			if(pdRealRootElement == null) {
-				initHierarchy(tree);
+			if (pdRealRootElement == null) {
+				ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
+				alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
+				alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
+				initHierarchy(tree, EIDType.CLUSTER_NUMBER, new GeneClusterDataEventManager(this), alColorModes);
 			}
 		}
 		else {
@@ -1181,20 +1182,23 @@ public class GLRadialHierarchy
 		}
 	}
 
-	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
-		if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
-			selectionManager.clearSelections();
-			Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
-
-			for (SelectionDeltaItem item : deltaItems) {
-				selectionManager.addToType(item.getSelectionType(), item.getPrimaryID());
-			}
-
-			bIsNewSelection = true;
-			setDisplayListDirty();
-		}
-	}
+	// @Override
+	// public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String
+	// info) {
+	// if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
+	// selectionManager.clearSelections();
+	// Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
+	//
+	// for (SelectionDeltaItem item : deltaItems) {
+	// // This works because the ClusterID of leaves equals the Expression index of the corresponding
+	// // gene.
+	// selectionManager.addToType(item.getSelectionType(), item.getPrimaryID());
+	// }
+	//
+	// bIsNewSelection = true;
+	// setDisplayListDirty();
+	// }
+	// }
 
 	public Rectangle getControlBox() {
 		return controlBox;

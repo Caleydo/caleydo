@@ -5,9 +5,6 @@ import javax.media.opengl.glu.GLU;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.util.mapping.color.ColorMapping;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
 
 /**
  * This class represents the animation where the parent of the current root element becomes the new root
@@ -231,7 +228,7 @@ public class AnimationParentRootElement
 
 			navigationHistory.addNewHistoryEntry(dsNext, pdNewRootElement, pdNewRootElement, radialHierarchy
 				.getMaxDisplayedHierarchyDepth());
-			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdNewRootElement, pdNewRootElement);
+			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdNewRootElement);
 			radialHierarchy.setDisplayListDirty();
 		}
 		gl.glPopMatrix();
@@ -280,20 +277,28 @@ public class AnimationParentRootElement
 			fCurrentMidAngle += 360;
 		}
 
-		float fArRGB[];
-		if (DrawingStrategyManager.get().getDefaultDrawingStrategy().getDrawingStrategyType() == EPDDrawingStrategyType.RAINBOW_COLOR) {
-			ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
-			fArRGB = cmRainbow.getColor(fCurrentMidAngle / 360);
-		}
-		else {
-			ColorMapping cmExpression =
-				ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
-			fArRGB = cmExpression.getColor(pdCurrentSelectedElement.getAverageExpressionValue());
-		}
+		float fArRGB[] = radialHierarchy.getDrawingStrategyManager().getDefaultDrawingStrategy().getColor(pdCurrentSelectedElement);
+//		if (radialHierarchy.getDrawingStrategyManager().getDefaultDrawingStrategy().getDrawingStrategyType() == EPDDrawingStrategyType.RAINBOW_COLOR) {
+//			ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
+//			fArRGB = cmRainbow.getColor(fCurrentMidAngle / 360);
+//		}
+//		else {
+//			ColorMapping cmExpression =
+//				ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+//			IHierarchyData<?> hierarchyData = pdCurrentSelectedElement.getHierarchyData();
+//			ClusterNode clusterNode = null;
+//			if (hierarchyData instanceof ClusterNode) {
+//				clusterNode = (ClusterNode) hierarchyData;
+//				fArRGB = cmExpression.getColor(clusterNode.getAverageExpressionValue());
+//			}
+//			else {
+//				fArRGB = new float[] { 1.0f, 1.0f, 1.0f };
+//			}
+//		}
 
 		alMovementValues.clear();
-		
-		fAnimationDuration = 0.2f + ((fCurrentAngle - fTargetAngle) * 0.5f/fCurrentAngle);
+
+		fAnimationDuration = 0.2f + ((fCurrentAngle - fTargetAngle) * 0.5f / fCurrentAngle);
 
 		mvCurrentAngle = createNewMovementValue(fCurrentAngle, fTargetAngle, fAnimationDuration);
 		mvCurrentStartAngle =
@@ -312,7 +317,7 @@ public class AnimationParentRootElement
 				fAnimationDuration);
 
 		dsFixedColor =
-			(PDDrawingStrategyFixedColor) DrawingStrategyManager.get().createDrawingStrategy(
+			(PDDrawingStrategyFixedColor) radialHierarchy.getDrawingStrategyManager().createDrawingStrategy(
 				EPDDrawingStrategyType.FIXED_COLOR);
 
 		pdCurrentSelectedElement.setPDDrawingStrategy(dsFixedColor);

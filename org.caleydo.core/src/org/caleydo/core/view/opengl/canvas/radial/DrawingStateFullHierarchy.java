@@ -46,7 +46,8 @@ public class DrawingStateFullHierarchy
 	 *            Map is filled with key-value pairs where the key is a selected partial disc and its value is
 	 *            the corresponding drawing strategy.
 	 */
-	private void initDrawingStrategies(HashMap<PartialDisc, APDDrawingStrategy> mapSelectedDrawingStrategies) {
+	private void initDrawingStrategies(
+		HashMap<PartialDisc, PDDrawingStrategySelected> mapSelectedDrawingStrategies) {
 
 		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
 		int iMaxDisplayedHierarchyDepth = radialHierarchy.getMaxDisplayedHierarchyDepth();
@@ -55,7 +56,7 @@ public class DrawingStateFullHierarchy
 		iDisplayedHierarchyDepth =
 			Math.min(iMaxDisplayedHierarchyDepth, pdCurrentRootElement.getHierarchyDepth());
 
-		DrawingStrategyManager drawingStrategyManager = DrawingStrategyManager.get();
+		DrawingStrategyManager drawingStrategyManager = radialHierarchy.getDrawingStrategyManager();
 
 		APDDrawingStrategy dsDefault = drawingStrategyManager.getDefaultDrawingStrategy();
 
@@ -204,8 +205,8 @@ public class DrawingStateFullHierarchy
 	@Override
 	public void draw(float fXCenter, float fYCenter, GL gl, GLU glu) {
 
-		HashMap<PartialDisc, APDDrawingStrategy> mapSelectedDrawingStrategies =
-			new HashMap<PartialDisc, APDDrawingStrategy>();
+		HashMap<PartialDisc, PDDrawingStrategySelected> mapSelectedDrawingStrategies =
+			new HashMap<PartialDisc, PDDrawingStrategySelected>();
 		parentIndicatorType = ESelectionType.NORMAL;
 
 		initDrawingStrategies(mapSelectedDrawingStrategies);
@@ -226,8 +227,8 @@ public class DrawingStateFullHierarchy
 		// correct antialiasing
 
 		for (PartialDisc pdSelected : mapSelectedDrawingStrategies.keySet()) {
-			APDDrawingStrategy dsCurrent = mapSelectedDrawingStrategies.get(pdSelected);
-			dsCurrent.drawPartialDisc(gl, glu, pdSelected);
+			PDDrawingStrategySelected dsCurrent = mapSelectedDrawingStrategies.get(pdSelected);
+			dsCurrent.drawPartialDisc(gl, glu, pdSelected);			
 		}
 
 		if (parentIndicatorType != ESelectionType.NORMAL) {
@@ -255,7 +256,7 @@ public class DrawingStateFullHierarchy
 
 		if (pdSelected != pdRealRootElement && pdSelected.hasChildren()) {
 
-			pdCurrentRootElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
+			pdCurrentRootElement.setPDDrawingStrategyChildren(radialHierarchy.getDrawingStrategyManager()
 				.getDefaultDrawingStrategy(), iDisplayedHierarchyDepth);
 
 			if (pdSelected == pdCurrentRootElement) {
@@ -269,7 +270,7 @@ public class DrawingStateFullHierarchy
 			radialHierarchy.setDisplayListDirty();
 		}
 		else {
-			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected, pdCurrentRootElement);
+			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected);
 			radialHierarchy.setDisplayListDirty();
 		}
 
@@ -279,8 +280,7 @@ public class DrawingStateFullHierarchy
 	public void handleMouseOver(PartialDisc pdMouseOver) {
 
 		if (pdMouseOver != pdCurrentMouseOverElement) {
-			radialHierarchy.setNewSelection(ESelectionType.MOUSE_OVER, pdMouseOver, radialHierarchy
-				.getCurrentRootElement());
+			radialHierarchy.setNewSelection(ESelectionType.MOUSE_OVER, pdMouseOver);
 			radialHierarchy.setDisplayListDirty();
 		}
 	}
@@ -293,7 +293,7 @@ public class DrawingStateFullHierarchy
 		if (pdSelected != pdCurrentRootElement && pdSelected.hasChildren()
 			&& pdSelected.getCurrentDepth() > 1) {
 
-			pdCurrentRootElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
+			pdCurrentRootElement.setPDDrawingStrategyChildren(radialHierarchy.getDrawingStrategyManager()
 				.getDefaultDrawingStrategy(), iDisplayedHierarchyDepth);
 
 			radialHierarchy.setCurrentSelectedElement(pdSelected);

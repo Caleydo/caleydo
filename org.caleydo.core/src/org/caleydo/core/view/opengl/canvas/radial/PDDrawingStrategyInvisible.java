@@ -41,4 +41,9 @@ public class PDDrawingStrategyInvisible
 		return EPDDrawingStrategyType.INVISIBLE;
 	}
 
+	@Override
+	public float[] getColor(PartialDisc disc) {
+		return new float[] { 1.0f, 1.0f, 1.0f, 0.0f };
+	}
+
 }

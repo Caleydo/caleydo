@@ -3,13 +3,14 @@ package org.caleydo.core.view.opengl.canvas.radial;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 
 /**
- * PDDrawingStrategyLabelDecorator sets up a {@link LabelInfo} for the partial disc that shall be drawn and adds
- * it to the {@link LabelManager}.
+ * PDDrawingStrategyLabelDecorator sets up a {@link LabelInfo} for the partial disc that shall be drawn and
+ * adds it to the {@link LabelManager}.
  * 
  * @author Christian Partl
  */
@@ -34,53 +35,19 @@ public class PDDrawingStrategyLabelDecorator
 			drawingStrategy.drawFullCircle(gl, glu, pdDiscToDraw);
 		}
 
-		LabelInfo label = new LabelInfo(0, 0, 0, pdDiscToDraw.getDrawingStrategyDepth());
+		LabelInfo labelInfo = new LabelInfo(0, 0, 0, pdDiscToDraw.getDrawingStrategyDepth());
 
-		float fAverageExpressionValue = pdDiscToDraw.getAverageExpressionValue();
-		float fStandardDeviation = pdDiscToDraw.getStandardDeviation();
-		ColorMapping cmExpression =
-			ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+		IHierarchyData<?> hierarchyData = pdDiscToDraw.getHierarchyData();
+		ClusterNode clusterNode = null;
 
-		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue - fStandardDeviation);
-		RectangleItem leftRectangleItem = new RectangleItem(fArRGB, 1, 1, true);
-
-		fArRGB = cmExpression.getColor(fAverageExpressionValue);
-		RectangleItem middleRectangleItem = new RectangleItem(fArRGB, 1, 1, true);
-
-		fArRGB = cmExpression.getColor(fAverageExpressionValue + fStandardDeviation);
-		RectangleItem rightRectangleItem = new RectangleItem(fArRGB, 1, 1, true);
-
-		TextItem meanItem = new TextItem("Mean/Std-Dev:  ");
-		LabelLine expressionLine = new LabelLine();
-		expressionLine.addLabelItem(meanItem);
-		expressionLine.addLabelItem(leftRectangleItem);
-		expressionLine.addLabelItem(middleRectangleItem);
-		expressionLine.addLabelItem(rightRectangleItem);
-
-		if (pdDiscToDraw.hasChildren()) {
-			TextItem numElementsItem =
-				new TextItem("Elements: " + new Integer((int) pdDiscToDraw.getSize()).toString());
-			LabelLine numElementsLine = new LabelLine();
-			numElementsLine.addLabelItem(numElementsItem);
-
-			TextItem hierarchyDepthItem =
-				new TextItem("Hierarchy Depth: " + pdDiscToDraw.getHierarchyDepth());
-			LabelLine hierarchyDepthLine = new LabelLine();
-			hierarchyDepthLine.addLabelItem(hierarchyDepthItem);
-
-			label.addLine(numElementsLine);
-			label.addLine(hierarchyDepthLine);
+		if (hierarchyData instanceof ClusterNode) {
+			clusterNode = (ClusterNode) hierarchyData;
+			setupClusterNodeLabel(pdDiscToDraw, clusterNode, labelInfo);
 		}
 		else {
-			TextItem nameItem = new TextItem(pdDiscToDraw.getName());
-			LabelLine nameLine = new LabelLine();
-			nameLine.addLabelItem(nameItem);
-
-			label.addLine(nameLine);
+			setupDefaultLabel(hierarchyData, labelInfo);
 		}
-
-		label.addLine(expressionLine);
-		LabelManager.get().addLabel(label);
+		LabelManager.get().addLabel(labelInfo);
 	}
 
 	@Override
@@ -100,11 +67,48 @@ public class PDDrawingStrategyLabelDecorator
 		float fSegmentXCenter = (float) Math.cos(fMidAngleRadiants) * fCenterRadius;
 		float fSegmentYCenter = (float) Math.sin(fMidAngleRadiants) * fCenterRadius;
 
-		LabelInfo label =
-			new LabelInfo(fSegmentXCenter, fSegmentYCenter, fCenterRadius, pdDiscToDraw.getDrawingStrategyDepth());
+		LabelInfo labelInfo =
+			new LabelInfo(fSegmentXCenter, fSegmentYCenter, fCenterRadius, pdDiscToDraw
+				.getDrawingStrategyDepth());
 
-		float fAverageExpressionValue = pdDiscToDraw.getAverageExpressionValue();
-		float fStandardDeviation = pdDiscToDraw.getStandardDeviation();
+		IHierarchyData<?> hierarchyData = pdDiscToDraw.getHierarchyData();
+		ClusterNode clusterNode = null;
+
+		if (hierarchyData instanceof ClusterNode) {
+			clusterNode = (ClusterNode) hierarchyData;
+			setupClusterNodeLabel(pdDiscToDraw, clusterNode, labelInfo);
+		}
+		else {
+			setupDefaultLabel(hierarchyData, labelInfo);
+		}
+		
+		LabelManager.get().addLabel(labelInfo);
+	}
+
+	@Override
+	public EPDDrawingStrategyType getDrawingStrategyType() {
+		return EPDDrawingStrategyType.LABEL_DECORATOR;
+	}
+
+	@Override
+	public APDDrawingStrategyDecorator clone() {
+		PDDrawingStrategyLabelDecorator clone = new PDDrawingStrategyLabelDecorator();
+		clone.setDrawingStrategy(drawingStrategy);
+		return clone;
+	}
+
+	/**
+	 * Sets up a label specific for the representation of cluster nodes.
+	 * 
+	 * @param pdDiscToDraw The partial disc that corresponds to the label.
+	 * @param clusterNode The cluster node the label shall be set up for.
+	 * @param labelInfo LabelInfo object that shall contain the label data.
+	 */
+	private void setupClusterNodeLabel(PartialDisc pdDiscToDraw, ClusterNode clusterNode,
+		LabelInfo labelInfo) {
+
+		float fAverageExpressionValue = clusterNode.getAverageExpressionValue();
+		float fStandardDeviation = clusterNode.getStandardDeviation();
 		ColorMapping cmExpression =
 			ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
@@ -135,31 +139,36 @@ public class PDDrawingStrategyLabelDecorator
 			LabelLine hierarchyDepthLine = new LabelLine();
 			hierarchyDepthLine.addLabelItem(hierarchyDepthItem);
 
-			label.addLine(numElementsLine);
-			label.addLine(hierarchyDepthLine);
+			labelInfo.addLine(numElementsLine);
+			labelInfo.addLine(hierarchyDepthLine);
 		}
 		else {
-			TextItem nameItem = new TextItem(pdDiscToDraw.getName());
+			TextItem nameItem = new TextItem(clusterNode.getNodeName());
 			LabelLine nameLine = new LabelLine();
 			nameLine.addLabelItem(nameItem);
 
-			label.addLine(nameLine);
+			labelInfo.addLine(nameLine);
 		}
 
-		label.addLine(expressionLine);
-		LabelManager.get().addLabel(label);
+		labelInfo.addLine(expressionLine);
+	}
+
+	/**
+	 * Sets up a default label for the given hierarchy data object.
+	 * 
+	 * @param hierarchyData Hierarchy data object the label is set up for.
+	 * @param labelInfo LabelInfo object that shall contain the label data.
+	 */
+	private void setupDefaultLabel(IHierarchyData<?> hierarchyData, LabelInfo labelInfo) {
+		
+		TextItem textItem = new TextItem(hierarchyData.getLabel());
+		LabelLine labelLine = new LabelLine();
+		labelLine.addLabelItem(textItem);
+		labelInfo.addLine(labelLine);
 	}
 
 	@Override
-	public EPDDrawingStrategyType getDrawingStrategyType() {
-		return EPDDrawingStrategyType.LABEL_DECORATOR;
+	public float[] getColor(PartialDisc disc) {
+		return drawingStrategy.getColor(disc);
 	}
-
-	@Override
-	public APDDrawingStrategyDecorator clone() {
-		PDDrawingStrategyLabelDecorator clone = new PDDrawingStrategyLabelDecorator();
-		clone.setDrawingStrategy(drawingStrategy);
-		return clone;
-	}
-
 }

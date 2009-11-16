@@ -118,4 +118,38 @@ public class PDDrawingStrategySelected
 		return EPDDrawingStrategyType.SELECTED;
 	}
 
+	@Override
+	public float[] getColor(PartialDisc disc) {
+		return RadialHierarchyRenderStyle.PARTIAL_DISC_MOUSE_OVER_COLOR;
+	}
+
+	/**
+	 * Gets the coordinates of the connection point that is used for drawing a connection line to the
+	 * specified partial disc.
+	 * 
+	 * @param disc
+	 *            Partial disc the connection point shall be obtained for.
+	 * @param fHierarchyCenterX
+	 *            X coordinate of the radial hierarchy center.
+	 * @param fHierarchyCenterY
+	 *            Y coordinate of the radial hierarchy center.
+	 * @param fHierarchyCenterZ
+	 *            Z coordinate of the radial hierarchy center.
+	 * @return Connection point coordinates as float array with length 3.
+	 */
+	public float[] getElementRepConnectionPoint(PartialDisc disc, float fHierarchyCenterX,
+		float fHierarchyCenterY, float fHierarchyCenterZ) {
+		float fStartAngle = disc.getCurrentStartAngle();
+		float fInnerRadius = disc.getCurrentInnerRadius();
+
+		// This seemingly awkward angle transformation comes from the fact, that Partial Disc drawing angles
+		// start vertically at the top and move clockwise. But here the angle starts horizontally to the right
+		// and moves counter-clockwise
+		fStartAngle = -1 * (fStartAngle - 90);
+		float fStartAngleRadiants = fStartAngle * (float) Math.PI / 180.0f;
+		float fConnectionPointX = ((float) Math.cos(fStartAngleRadiants) * fInnerRadius) + fHierarchyCenterX;
+		float fConnectionPointY = ((float) Math.sin(fStartAngleRadiants) * fInnerRadius) + fHierarchyCenterY;
+
+		return new float[] { fConnectionPointX, fConnectionPointY, fHierarchyCenterZ };
+	}
 }

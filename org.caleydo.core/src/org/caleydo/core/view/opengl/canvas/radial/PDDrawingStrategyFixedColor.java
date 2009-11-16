@@ -151,4 +151,10 @@ public class PDDrawingStrategyFixedColor
 		return EPDDrawingStrategyType.FIXED_COLOR;
 	}
 
+	@Override
+	public float[] getColor(PartialDisc disc) {
+
+		return new float[] { fFillColorR, fFillColorG, fFillColorB, fFillAlpha };
+	}
+
 }

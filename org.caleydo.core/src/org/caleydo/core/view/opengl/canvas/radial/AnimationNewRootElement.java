@@ -5,9 +5,6 @@ import javax.media.opengl.glu.GLU;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.util.mapping.color.ColorMapping;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
 
 /**
  * This class represents the animation for a selected partial disc that becomes the new root element. When the
@@ -214,8 +211,7 @@ public class AnimationNewRootElement
 
 			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentSelectedElement, pdCurrentSelectedElement,
 				radialHierarchy.getMaxDisplayedHierarchyDepth());
-			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentSelectedElement,
-				pdCurrentSelectedElement);
+			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentSelectedElement);
 			radialHierarchy.setDisplayListDirty();
 
 		}
@@ -257,36 +253,48 @@ public class AnimationNewRootElement
 			fMidAngle += 360;
 		}
 
-		float fArRGB[];
-		if (DrawingStrategyManager.get().getDefaultDrawingStrategy().getDrawingStrategyType() == EPDDrawingStrategyType.RAINBOW_COLOR) {
-			ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
-			fArRGB = cmRainbow.getColor(fMidAngle / 360);
-		}
-		else {
-			ColorMapping cmExpression =
-				ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
-			fArRGB = cmExpression.getColor(pdCurrentSelectedElement.getAverageExpressionValue());
-		}
+		float fArRGB[] = radialHierarchy.getDrawingStrategyManager().getDefaultDrawingStrategy().getColor(pdCurrentSelectedElement);
+//		if (radialHierarchy.getDrawingStrategyManager().getDefaultDrawingStrategy().getDrawingStrategyType() == EPDDrawingStrategyType.RAINBOW_COLOR) {
+//			ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
+//			fArRGB = cmRainbow.getColor(fMidAngle / 360);
+//		}
+//		else {
+//			ColorMapping cmExpression =
+//				ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+//			IHierarchyData<?> hierarchyData = pdCurrentSelectedElement.getHierarchyData();
+//			ClusterNode clusterNode = null;
+//			if (hierarchyData instanceof ClusterNode) {
+//				clusterNode = (ClusterNode) hierarchyData;
+//				fArRGB = cmExpression.getColor(clusterNode.getAverageExpressionValue());
+//			}
+//			else {
+//				fArRGB = new float[] { 1.0f, 1.0f, 1.0f };
+//			}
+//		}
 
 		alMovementValues.clear();
-		
-		fAnimationDuration = 0.2f + ((TARGET_ROOT_ANGLE - fCurrentSelectedAngle) * 0.5f/TARGET_ROOT_ANGLE);
 
-		mvCurrentRootAngle = createNewMovementValue(fCurrentSelectedAngle, TARGET_ROOT_ANGLE, fAnimationDuration);
-		
+		fAnimationDuration = 0.2f + ((TARGET_ROOT_ANGLE - fCurrentSelectedAngle) * 0.5f / TARGET_ROOT_ANGLE);
+
+		mvCurrentRootAngle =
+			createNewMovementValue(fCurrentSelectedAngle, TARGET_ROOT_ANGLE, fAnimationDuration);
+
 		mvCurrentRootStartAngle = createNewMovementValue(fCurrentSelectedStartAngle, 0, fAnimationDuration);
 		mvCurrentRootInnerRadius =
 			createNewMovementValue(fCurrentSelectedInnerRadius, TARGET_ROOT_INNER_RADIUS, fAnimationDuration);
 		mvCurrentWidth = createNewMovementValue(fCurrentWidth, fTargetWidth, fAnimationDuration);
 		mvCurrentRootColorR =
-			createNewMovementValue(fArRGB[0], RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[0], fAnimationDuration);
+			createNewMovementValue(fArRGB[0], RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[0],
+				fAnimationDuration);
 		mvCurrentRootColorG =
-			createNewMovementValue(fArRGB[1], RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[1], fAnimationDuration);
+			createNewMovementValue(fArRGB[1], RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[1],
+				fAnimationDuration);
 		mvCurrentRootColorB =
-			createNewMovementValue(fArRGB[2], RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[2], fAnimationDuration);
+			createNewMovementValue(fArRGB[2], RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR[2],
+				fAnimationDuration);
 
 		dsFixedColor =
-			(PDDrawingStrategyFixedColor) DrawingStrategyManager.get().createDrawingStrategy(
+			(PDDrawingStrategyFixedColor) radialHierarchy.getDrawingStrategyManager().createDrawingStrategy(
 				EPDDrawingStrategyType.FIXED_COLOR);
 
 		pdCurrentSelectedElement.setPDDrawingStrategy(dsFixedColor);

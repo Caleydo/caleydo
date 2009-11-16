@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.view.opengl.canvas.radial.IHierarchyData;
 
 /**
  * Implementation of a node used in the cluster tree. Cluster node contains information needed in the
@@ -19,7 +20,7 @@ import org.caleydo.core.data.selection.ESelectionType;
 @XmlRootElement(name = "node")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ClusterNode
-	implements Comparable<ClusterNode> {
+	implements  IHierarchyData<ClusterNode> {
 
 	@XmlAttribute
 	private String sNodeName;
@@ -61,11 +62,6 @@ public class ClusterNode
 		this.eSelectionType = ESelectionType.NORMAL;
 		this.fAverageExpressionValue = 0f;
 		this.fStandardDeviation = 0f;
-	}
-
-	@Override
-	public int compareTo(ClusterNode node) {
-		return iClusterNr - node.iClusterNr;
 	}
 
 	public String getNodeName() {
@@ -156,6 +152,31 @@ public class ClusterNode
 
 	public Vec3f getPosSubTree() {
 		return vPosSubTree;
+	}
+
+	@Override
+	public String getLabel() {
+		return sNodeName;
+	}
+
+	@Override
+	public float getSize() {
+		return iNrElements;
+	}
+
+	@Override
+	public int getComparableValue() {
+		return iClusterNr;
+	}
+
+	@Override
+	public int getID() {
+		return iClusterNr;
+	}
+
+	@Override
+	public int compareTo(ClusterNode o) {
+		return iClusterNr - o.iClusterNr;
 	}
 
 	// public void setRepresentativeElement(float[] fArRepresentativeElement) {

@@ -65,6 +65,15 @@ public abstract class APDDrawingStrategy {
 	public abstract EPDDrawingStrategyType getDrawingStrategyType();
 
 	/**
+	 * Gets the color the specified partial disc would be drawn with.
+	 * 
+	 * @param disc
+	 *            Patrtial disc for which the color should be returned.
+	 * @return Color of the specified partial disc as array of RGBA values.
+	 */
+	public abstract float[] getColor(PartialDisc disc);
+
+	/**
 	 * Gets the number of slices which shall be drawn to approximate a disc.
 	 * 
 	 * @return Number of slices per full disc.

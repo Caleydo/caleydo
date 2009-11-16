@@ -62,15 +62,17 @@ public class AnimationPopOutDetailOutside
 		gl.glLoadIdentity();
 		gl.glTranslatef(fXCenter, fYCenter, 0);
 
-		pdCurrentRootElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
-			.getDefaultDrawingStrategy(), iDisplayedOverviewDepth);
-		pdCurrentSelectedElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
+		DrawingStrategyManager drawingStrategyManager = radialHierarchy.getDrawingStrategyManager();
+
+		pdCurrentRootElement.setPDDrawingStrategyChildren(drawingStrategyManager.getDefaultDrawingStrategy(),
+			iDisplayedOverviewDepth);
+		pdCurrentSelectedElement.setPDDrawingStrategyChildren(drawingStrategyManager
 			.createDrawingStrategy(EPDDrawingStrategyType.INVISIBLE), iDisplayedDetailViewDepth);
 
 		pdCurrentRootElement.drawHierarchyFull(gl, glu, mvOverviewWidth.getMovementValue(),
 			iDisplayedOverviewDepth);
 
-		pdCurrentSelectedElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
+		pdCurrentSelectedElement.setPDDrawingStrategyChildren(drawingStrategyManager
 			.getDefaultDrawingStrategy(), iDisplayedDetailViewDepth);
 
 		if (iAnimationPart == 1) {
@@ -103,8 +105,7 @@ public class AnimationPopOutDetailOutside
 
 			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentRootElement, pdCurrentSelectedElement,
 				radialHierarchy.getMaxDisplayedHierarchyDepth());
-			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentSelectedElement,
-				pdCurrentRootElement);
+			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentSelectedElement);
 			radialHierarchy.setDisplayListDirty();
 		}
 		gl.glPopMatrix();
