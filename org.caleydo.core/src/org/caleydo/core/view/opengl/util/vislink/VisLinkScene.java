@@ -186,13 +186,18 @@ public class VisLinkScene {
 				color[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
 				color[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 1.5f;
 				antiAliasingQuality = 5;
-				roundedStart = true;
-				roundedEnd = true;
 			}
 			
 			//draw shadow oder halo
-			for(ArrayList<ArrayList<Vec3f>> currentView : connectionLinesAllViews)
-				for(ArrayList<Vec3f> currentLine : currentView) {
+//			for(ArrayList<ArrayList<Vec3f>> currentView : connectionLinesAllViews) {
+			for(int i = 0; i < connectionLinesAllViews.size(); i++) {
+					ArrayList<ArrayList<Vec3f>> currentStage = connectionLinesAllViews.get(i);
+				if(style == EVisLinkStyleType.HALO_VISLINK)
+					if(i == 0)
+						roundedStart = true;
+					if(i == (connectionLinesAllViews.size() - 1) )
+						roundedEnd = true;
+				for(ArrayList<Vec3f> currentLine : currentStage) {
 					if(currentLine.size() >= 2) {
 //						VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
 						VisLink visLink = new VisLink(currentLine, 0, SEGMENT_LENGTH);
@@ -201,8 +206,11 @@ public class VisLinkScene {
 						disableStencilBuffer(gl);
 					}
 				}
-			roundedStart = false;
-			roundedEnd = false;
+				roundedStart = false;
+				roundedEnd = false;	
+			}
+//			roundedStart = false;
+//			roundedEnd = false;
 		}
 		
 		// background (halo or shadow) done, render frontline
