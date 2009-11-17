@@ -9,9 +9,9 @@ import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRender
 import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.YLABELDISTANCE;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.XLABELROTATIONNAGLE;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.YLABELROTATIONNAGLE;
-import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.AXIS_MARKER_WIDTH;
+import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.AXIS_MARKER_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.AXIS_Z;
-import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.NUMBER_AXIS_MARKERS;
+import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.NUMBER_AXIS_MARKERS;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.X_AXIS_COLOR;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.X_AXIS_LINE_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ScatterPlotRenderStyle.Y_AXIS_COLOR;
@@ -285,15 +285,60 @@ public class GLScatterplot
 		//axisVA = contentVA;
 		//axisVAType = contentVAType;
 		//polylineVA = storageVA;
-		//polylineVAType = storageVAType;
+		//polylineVAType = storageVAType;				
+		//int iNumberAxis = contentVA.size();
+		
+		// Markers On Axis		
+		float fXPosition = XYAXISDISTANCE;
+		float fYPosition = XYAXISDISTANCE;
+		float fMarkerSpacingY = renderStyle.getAxisHeight() / (NUMBER_AXIS_MARKERS + 1);
+		float fMarkerSpacingX = renderStyle.getAxisWidth() / (NUMBER_AXIS_MARKERS + 1);
+		for (int iInnerCount = 1; iInnerCount <= NUMBER_AXIS_MARKERS+1; iInnerCount++) 
+		{
+			float fCurrentHeight = fMarkerSpacingY * iInnerCount;
+			float fCurrentWidth = fMarkerSpacingX * iInnerCount;
+		
+			if (set.isSetHomogeneous())
+			{
+				float fNumber =
+					(float) set.getRawForNormalized(fCurrentHeight / renderStyle.getAxisHeight());
+
+				Rectangle2D bounds =
+					textRenderer.getScaledBounds(gl, getDecimalFormat().format(fNumber),
+						renderStyle.getSmallFontScalingFactor(),
+						ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);
+				float fWidth = (float) bounds.getWidth();
+				float fHeight = (float) bounds.getHeight();
+				float fHeightHalf = fHeight / 2.0f;
+				float fWidthHalf = fWidth  / 2.0f;
+				
+
+				renderNumber(gl, getDecimalFormat().format(fNumber), fXPosition - fWidth
+					- AXIS_MARKER_WIDTH, fCurrentHeight - fHeightHalf+XYAXISDISTANCE);
+				
+				renderNumber(gl, getDecimalFormat().format(fNumber), fCurrentWidth-fWidthHalf+XYAXISDISTANCE, fYPosition-AXIS_MARKER_WIDTH-fHeight);
+						
+			}
+			
+			gl.glColor4fv(X_AXIS_COLOR, 0);
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(fCurrentWidth+XYAXISDISTANCE,fYPosition - AXIS_MARKER_WIDTH, AXIS_Z);
+			gl.glVertex3f(fCurrentWidth+XYAXISDISTANCE,fYPosition + AXIS_MARKER_WIDTH, AXIS_Z);
+			gl.glEnd();
+			
+			gl.glColor4fv(Y_AXIS_COLOR, 0);
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(fXPosition - AXIS_MARKER_WIDTH, fCurrentHeight+XYAXISDISTANCE, AXIS_Z);
+			gl.glVertex3f(fXPosition + AXIS_MARKER_WIDTH, fCurrentHeight+XYAXISDISTANCE, AXIS_Z);
+			gl.glEnd();					
+		}
 		
 		
-//		int iNumberAxis = contentVA.size();
 		// draw X-Axis
 		gl.glColor4fv(X_AXIS_COLOR, 0);
 		gl.glLineWidth(X_AXIS_LINE_WIDTH);
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.X_AXIS_SELECTION, 1));
+		//gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.X_AXIS_SELECTION, 1));
 		gl.glBegin(GL.GL_LINES);
 				
 		gl.glVertex3f(XYAXISDISTANCE, XYAXISDISTANCE, 0.0f);
@@ -301,14 +346,14 @@ public class GLScatterplot
 		//gl.glVertex3f(5.0f, XYAXISDISTANCE, 0.0f);
 
 		gl.glEnd();
-		gl.glPopName();
+		//gl.glPopName();
 		
 		//draw all Y-Axis
 		
 		gl.glColor4fv(Y_AXIS_COLOR,0);
 		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.X_AXIS_SELECTION, 1));
+		//gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.X_AXIS_SELECTION, 1));
 		gl.glBegin(GL.GL_LINES);
 
 		//float fXAxisOverlap = 0.1f;
@@ -317,11 +362,11 @@ public class GLScatterplot
 		gl.glVertex3f(XYAXISDISTANCE, renderStyle.getRenderHeight()-XYAXISDISTANCE, AXIS_Z);
 
 		gl.glEnd();
-		gl.glPopName();
+		//gl.glPopName();
 		
 		//LABEL X
 		
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		//gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glTranslatef(renderStyle.getLAbelWidth(),			XLABELDISTANCE, 0);
 		gl.glRotatef(XLABELROTATIONNAGLE, 0, 0, 1);
 		textRenderer.begin3DRendering();
@@ -332,15 +377,15 @@ public class GLScatterplot
 		
 		String sAxisLabel ="X-Achse: "+set.get(SELECTED_X_AXIS).getLabel();  
 		textRenderer.draw3D(gl, sAxisLabel, 0, 0, 0, fScaling,
-			ParCoordsRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
+			ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
 		textRenderer.end3DRendering();
 		gl.glRotatef(-XLABELROTATIONNAGLE, 0, 0, 1);
 		gl.glTranslatef(-renderStyle.getLAbelWidth(),			-XLABELDISTANCE, 0);
-		gl.glPopAttrib();
+		//gl.glPopAttrib();
 		
 		//LABEL Y
 		
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		//gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glTranslatef(YLABELDISTANCE,			renderStyle.getLabelHeight(), 0);
 		gl.glRotatef(YLABELROTATIONNAGLE, 0, 0, 1);
 				
@@ -349,17 +394,18 @@ public class GLScatterplot
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
 		
-		//sAxisLabel ="Y-Achse: "+set.get(SELECTED_Y_AXIS).getLabel();  
+		sAxisLabel ="Y-Achse: "+set.get(SELECTED_Y_AXIS).getLabel();  
 		
-		sAxisLabel ="Y-Achse: "+set.get(2).getLabel()+" (O) / "+set.get(3).getLabel()+" (X)";
+		//sAxisLabel ="Y-Achse: "+set.get(2).getLabel()+" (O) / "+set.get(3).getLabel()+" (X)";
 		textRenderer.draw3D(gl, sAxisLabel, 0, 0, 0, fScaling,
-			ParCoordsRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
+			ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
 		textRenderer.end3DRendering();		
 		
 		gl.glRotatef(-YLABELROTATIONNAGLE, 0, 0, 1);
 		gl.glTranslatef(-YLABELDISTANCE,			renderStyle.getLabelHeight(), 0);
-		gl.glPopAttrib();
-
+		//gl.glPopAttrib();
+		
+	
 /*
 		// draw all Y-Axis
 		Set<Integer> selectedSet = axisSelectionManager.getElements(ESelectionType.SELECTION);
@@ -643,6 +689,24 @@ public class GLScatterplot
 		*/
 	}
 	
+	private void renderNumber(GL gl, String sRawValue, float fXOrigin, float fYOrigin) {
+		textRenderer.begin3DRendering();
+
+		// String text = "";
+		// if (Float.isNaN(fRawValue))
+		// text = "NaN";
+		// else
+		// text = getDecimalFormat().format(fRawValue);
+
+		float fScaling = renderStyle.getSmallFontScalingFactor();
+		if (isRenderedRemote())
+			fScaling *= 1.5f;
+
+		textRenderer.draw3D(gl, sRawValue, fXOrigin, fYOrigin, ScatterPlotRenderStyle.TEXT_ON_LABEL_Z,
+			fScaling, ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);
+		textRenderer.end3DRendering();
+	}
+	
 	@Override
 	public void display(GL gl) {
 		processEvents();
@@ -792,16 +856,11 @@ public class GLScatterplot
 //		else {
 
 			
-		// just to test 2 differnt Y_axis in one rendering
+
 			gl.glTranslatef(XYAXISDISTANCE,	XYAXISDISTANCE, 0);
 			SELECTED_Y_AXIS=2;
-			renderStyle.setPOINTSTYLE(EScatterPointType.CIRCLE);
-			RenderScatterPoints(gl);	
-			
-			 
-			SELECTED_Y_AXIS=3;
 			renderStyle.setPOINTSTYLE(EScatterPointType.CROSS);
-			RenderScatterPoints(gl);
+			RenderScatterPoints(gl);	
 			
 			gl.glTranslatef(-XYAXISDISTANCE,	-XYAXISDISTANCE, 0);
 			renderCoordinateSystem(gl);

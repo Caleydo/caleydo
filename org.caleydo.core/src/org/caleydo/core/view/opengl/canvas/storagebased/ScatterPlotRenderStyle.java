@@ -33,8 +33,17 @@ public class ScatterPlotRenderStyle
 	
 	public static final float XLABELROTATIONNAGLE = 0.0f;
 	public static final float YLABELROTATIONNAGLE = 90.0f;
-	public static final float XLABELDISTANCE = 0.05f;
-	public static final float YLABELDISTANCE = 0.15f;
+	public static final float XLABELDISTANCE = 0.03f;
+	public static final float YLABELDISTANCE = 0.10f;
+	
+	public static final int NUMBER_AXIS_MARKERS = 19;
+	
+	public static final int MIN_AXIS_LABEL_TEXT_SIZE = 60;
+	public static final int MIN_NUMBER_TEXT_SIZE = 55;
+	
+	public static final float LABEL_Z = 0.004f;
+	public static final float TEXT_ON_LABEL_Z = LABEL_Z + 0.0001f;
+	public static final float AXIS_MARKER_WIDTH = 0.02f;
 	
 	
 
@@ -297,9 +306,21 @@ public float getLAbelWidth() {
 	return viewFrustum.getWidth()/2;
 
 }
+public float getAxisHeight()
+{
+	return viewFrustum.getHeight()-2*XYAXISDISTANCE ;
+}
 	
+public float getAxisWidth()
+{
+	return viewFrustum.getWidth()-2*XYAXISDISTANCE ;
+}
+
 
 	public float getSizeHeatmapArrow() {
 		return fSizeHeatmapArrow;
 	}
 }
+	
+	
+
