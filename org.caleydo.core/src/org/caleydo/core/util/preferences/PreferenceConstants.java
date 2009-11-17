@@ -50,6 +50,12 @@ public class PreferenceConstants {
 	// Parallel Coordinates
 	public static final String PC_NUM_RANDOM_SAMPLING_POINT = "pcNumRandomSamplinPoints";
 	public static final String PC_LIMIT_REMOTE_TO_CONTEXT = "pcLimitRemoteToContext";
+	
+	// Visual Links FIXME
+	public static final String VISUAL_LINKS_STYLE = "visualLinksStyle";
+	public static final String VISUAL_LINKS_ANIMATION = "visualLinksAnimation";
+	public static final String VISUAL_LINKS_WIDTH = "visualLinksWidth";
+	public static final String VISUAL_LINKS_COLOR = "visualLinksColor";
 
 	@Deprecated
 	public static final String XP_CLASSIC_STYLE_MODE = "enableXPClassicStyleMode";

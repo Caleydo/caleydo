@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 
 //import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -107,9 +109,11 @@ public class VisLinkScene {
 	 */
 	public void renderLines(final GL gl) {	
 		
-//		ConnectionLineRenderStyle.CONNECTION_LINE_STYLE = EVisLinkStyleType.HALO_VISLINK;
-//		ConnectionLineRenderStyle.ANIMATION = true;
-//		ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH = 2.0f;
+		ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH = GeneralManager.get().getPreferenceStore().getFloat(PreferenceConstants.VISUAL_LINKS_WIDTH);
+		ConnectionLineRenderStyle.ANIMATION = GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATION);
+		ConnectionLineRenderStyle.CONNECTION_LINE_STYLE = EVisLinkStyleType.getStyleType(GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.VISUAL_LINKS_STYLE));
+		// FIXME: Animated Highlighting not chooseable atm, add to PrefPage
+//		ConnectionLineRenderStyle.ANIMATED_HIGHLIGHTING = true;
 		
 //		callRenderLine(gl);		
 		if(ConnectionLineRenderStyle.ANIMATION)
@@ -117,7 +121,7 @@ public class VisLinkScene {
 		else if(ConnectionLineRenderStyle.ANIMATED_HIGHLIGHTING)
 		{
 			float tempWidth = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
-			VisLinksAttributeManager.setConnectionLinesWidth(1f);
+			ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH = tempWidth / 2;
 			style = EVisLinkStyleType.STANDARD_VISLINK;
 //			ConnectionLineRenderStyle.CONNECTION_LINE_STYLE = EVisLinkStyleType.STANDARD_VISLINK;
 			callRenderPolygonLine(gl);

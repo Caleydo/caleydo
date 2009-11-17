@@ -17,6 +17,7 @@ import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
@@ -132,6 +133,13 @@ public class PreferenceManager {
 			+ ";" + EPathwayDatabaseType.BIOCARTA.name());
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, EDataDomain.GENETIC_DATA.name());
 		store.setDefault(PreferenceConstants.USE_PROXY, false);
+		
+		//visual links
+		store.setDefault(PreferenceConstants.VISUAL_LINKS_STYLE, 0);
+		store.setDefault(PreferenceConstants.VISUAL_LINKS_ANIMATION, false);
+		store.setDefault(PreferenceConstants.VISUAL_LINKS_WIDTH, 2.0f);
+		store.setDefault(PreferenceConstants.VISUAL_LINKS_COLOR, "255,255,0,255");
+		
 	}
 	
 	private void initCaleydoFolder() {

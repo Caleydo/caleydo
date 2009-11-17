@@ -743,6 +743,11 @@
                   id="org.caleydo.rcp.GeneralPreferencePage"
                   name="General">
             </page>
+            <page
+                  class="org.caleydo.rcp.preferences.VisualLinksPreferencePage"
+                  id="org.caleydo.rcp.VisualLinksPreferencePage"
+                  name="Visual Links">
+            </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
