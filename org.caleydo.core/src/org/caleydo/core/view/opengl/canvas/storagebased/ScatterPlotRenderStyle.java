@@ -25,11 +25,17 @@ public class ScatterPlotRenderStyle
 	public static final float X_AXIS_LINE_WIDTH = 2.0f;
 	public static final float[] Y_AXIS_COLOR = { 0.0f, 0.0f, 0.0f, 1.0f };
 	public static final float Y_AXIS_LINE_WIDTH = 2.0f;
-	public static final float XYAXISDISTANCE = 0.1f;
+	public static final float XYAXISDISTANCE = 0.2f;
 	public static final float AXIS_Z = 0.0f;
 		
 	public static final float POINTSIZE = 0.02f;
-	public static final EScatterPointType POINTSTYLE = EScatterPointType.CIRCLE;
+	public static EScatterPointType POINTSTYLE = EScatterPointType.CIRCLE;
+	
+	public static final float XLABELROTATIONNAGLE = 0.0f;
+	public static final float YLABELROTATIONNAGLE = 90.0f;
+	public static final float XLABELDISTANCE = 0.05f;
+	public static final float YLABELDISTANCE = 0.15f;
+	
 	
 
 	private static final float SELECTED_FIELD_WIDTH_PERCENTAGE = 0.1f;
@@ -42,6 +48,7 @@ public class ScatterPlotRenderStyle
 	public static final float CLUSTER_BORDERS_Z = 0.009f;
 	public static final float BUTTON_Z = 0.01f;
 	public static final float BACKGROUND_Z = -0.1f;
+	
 	
 	
 	private float fSelectedFieldWidth = 1.0f;
@@ -255,6 +262,11 @@ public class ScatterPlotRenderStyle
 		return 0.3f;
 	}
 
+	public void setPOINTSTYLE(EScatterPointType Type)
+	{
+		POINTSTYLE = Type;
+	}
+	
 	// public void setBRenderStorageHorizontally(boolean
 	// bRenderStorageHorizontally)
 	// {
@@ -272,6 +284,20 @@ public class ScatterPlotRenderStyle
 		return viewFrustum.getHeight();
 
 	}
+	
+public float getLabelHeight() {
+		
+		return viewFrustum.getHeight()/2;
+		
+
+	}
+
+public float getLAbelWidth() {
+	
+	return viewFrustum.getWidth()/2;
+
+}
+	
 
 	public float getSizeHeatmapArrow() {
 		return fSizeHeatmapArrow;
