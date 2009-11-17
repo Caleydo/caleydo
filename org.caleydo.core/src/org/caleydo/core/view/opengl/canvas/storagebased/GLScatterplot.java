@@ -231,11 +231,11 @@ public class GLScatterplot
 
 		pickingManager.handlePicking(this, gl);
 
-//		if (bIsDisplayListDirtyLocal) {
-//			buildDisplayList(gl, iGLDisplayListIndexLocal);
-//			bIsDisplayListDirtyLocal = false;
-//		}
-//		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+		if (bIsDisplayListDirtyLocal) {
+			buildDisplayList(gl, iGLDisplayListIndexLocal);
+			bIsDisplayListDirtyLocal = false;
+		}
+		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		display(gl);
 		checkForHits(gl);
@@ -251,10 +251,10 @@ public class GLScatterplot
 		if (set == null)
 			return;
 
-		if (bIsTranslationAnimationActive) {
-			bIsDisplayListDirtyRemote = true;
-			doTranslation();
-		}
+//		if (bIsTranslationAnimationActive) {
+//			bIsDisplayListDirtyRemote = true;
+//			doTranslation();
+//		}
 
 		if (bIsDisplayListDirtyRemote) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
@@ -647,10 +647,10 @@ public class GLScatterplot
 	public void display(GL gl) {
 		processEvents();
 
-		GLHelperFunctions.drawAxis(gl);
-		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+//		GLHelperFunctions.drawAxis(gl);
+//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		
-		gl.glEnable(GL.GL_DEPTH_TEST);
+//		gl.glEnable(GL.GL_DEPTH_TEST);
 		
 		
 				
@@ -659,7 +659,7 @@ public class GLScatterplot
 
 		gl.glCallList(iGLDisplayListToCall);
 
-		buildDisplayList(gl, iGLDisplayListIndexRemote);
+//		buildDisplayList(gl, iGLDisplayListIndexRemote);
 
 		// if (!isRenderedRemote())
 		// contextMenu.render(gl, this);
@@ -1580,31 +1580,31 @@ public class GLScatterplot
 		// bIsTranslationAnimationActive = true;
 	}
 
-	private void doTranslation() {
-
-		float fDelta = 0;
-		if (fAnimationTargetTranslation < fAnimationTranslation - 0.5f) {
-
-			fDelta = -0.5f;
-
-		}
-		else if (fAnimationTargetTranslation > fAnimationTranslation + 0.5f) {
-			fDelta = 0.5f;
-		}
-		else {
-			fDelta = fAnimationTargetTranslation - fAnimationTranslation;
-			bIsTranslationAnimationActive = false;
-		}
-
-		if (elementRep != null) {
-			ArrayList<Vec3f> alPoints = elementRep.getPoints();
-			for (Vec3f currentPoint : alPoints) {
-				currentPoint.setY(currentPoint.y() - fDelta);
-			}
-		}
-
-		fAnimationTranslation += fDelta;
-	}
+//	private void doTranslation() {
+//
+//		float fDelta = 0;
+//		if (fAnimationTargetTranslation < fAnimationTranslation - 0.5f) {
+//
+//			fDelta = -0.5f;
+//
+//		}
+//		else if (fAnimationTargetTranslation > fAnimationTranslation + 0.5f) {
+//			fDelta = 0.5f;
+//		}
+//		else {
+//			fDelta = fAnimationTargetTranslation - fAnimationTranslation;
+//			bIsTranslationAnimationActive = false;
+//		}
+//
+//		if (elementRep != null) {
+//			ArrayList<Vec3f> alPoints = elementRep.getPoints();
+//			for (Vec3f currentPoint : alPoints) {
+//				currentPoint.setY(currentPoint.y() - fDelta);
+//			}
+//		}
+//
+//		fAnimationTranslation += fDelta;
+//	}
 
 	@Override
 	public void renderContext(boolean bRenderOnlyContext) {
