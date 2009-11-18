@@ -615,7 +615,7 @@ public class VisLink {
 			if(roundedStart) {
 				int startPointIndex = linePoints.size() - 1;
 				Vec3f startPoint = linePoints.get(startPointIndex);
-				gl.glPointSize(width*3);
+				gl.glPointSize(width*3); //FIXME: width calculation to be corrected
 				gl.glBegin(GL.GL_POINTS);
 				gl.glVertex3f(startPoint.x(), startPoint.y(), startPoint.z());
 				gl.glEnd();

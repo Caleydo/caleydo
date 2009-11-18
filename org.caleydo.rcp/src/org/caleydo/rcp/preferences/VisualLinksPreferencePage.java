@@ -6,18 +6,13 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.conversion.ConversionTools;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.util.vislink.EVisLinkStyleType;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -26,22 +21,18 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Slider;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.PlatformUI;
 
 public class VisualLinksPreferencePage
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage {
 	
-	private ArrayList<String> sAlTargetColors; //FIXME
 	private EVisLinkStyleType style;
 	private boolean animation;
 	private float width;
 	private boolean animatedHalo;
 
-	private ArrayList<ArrayList<String>> colorMappings; //FIXME
 	private ArrayList<EVisLinkStyleType> styleTypes;
 
-	int iCurrentlyUsedMapping = 0; //FIXME
 	int iCurrentlyUsedStyle = 0;
 
 	public VisualLinksPreferencePage() {
@@ -49,7 +40,6 @@ public class VisualLinksPreferencePage
 		setPreferenceStore(GeneralManager.get().getPreferenceStore());
 		setDescription("Set visual link appearance");
 
-		colorMappings = new ArrayList<ArrayList<String>>(2); //FIXME
 		styleTypes = new ArrayList<EVisLinkStyleType>(3);
 		animation = false;
 		width = 2.0f;
@@ -59,18 +49,6 @@ public class VisualLinksPreferencePage
 		styleTypes.add(EVisLinkStyleType.STANDARD_VISLINK);
 		styleTypes.add(EVisLinkStyleType.SHADOW_VISLINK);
 		styleTypes.add(EVisLinkStyleType.HALO_VISLINK);
-
-		ArrayList<String> sAlGBR = new ArrayList<String>(3);
-		sAlGBR.add("0,255,0");
-		sAlGBR.add("0,0,0");
-		sAlGBR.add("255,0,0");
-		colorMappings.add(sAlGBR);
-
-		ArrayList<String> sAlBLBY = new ArrayList<String>(3);
-		sAlBLBY.add("0,0,255");
-		sAlBLBY.add("0,0,0");
-		sAlBLBY.add("255,255,0");
-		colorMappings.add(sAlBLBY);
 	}
 
 	/**
@@ -82,6 +60,7 @@ public class VisualLinksPreferencePage
 		iCurrentlyUsedStyle = GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.VISUAL_LINKS_STYLE);
 		animation = GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATION);
 		width = GeneralManager.get().getPreferenceStore().getFloat(PreferenceConstants.VISUAL_LINKS_WIDTH);
+		animatedHalo = GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO);
 		
 		style = styleTypes.get(iCurrentlyUsedStyle);
 
@@ -108,10 +87,6 @@ public class VisualLinksPreferencePage
 			}
 		});
 
-//		CLabel colorMappingPreviewLabel = new CLabel(group, SWT.SHADOW_IN);
-//		updateColorLabel(colorMappingPreviewLabel, colorMappings.get(0));
-//		colorMappingPreviewLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
 		final Button shadow = new Button(group, SWT.RADIO);
 		shadow.setText("Shadow");
 		if (iCurrentlyUsedStyle == 1)
@@ -125,10 +100,6 @@ public class VisualLinksPreferencePage
 				iCurrentlyUsedStyle = 1;
 			}
 		});
-
-//		colorMappingPreviewLabel = new CLabel(group, SWT.SHADOW_IN);
-//		updateColorLabel(colorMappingPreviewLabel, colorMappings.get(1));
-//		colorMappingPreviewLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		final Button halo = new Button(group, SWT.RADIO);
 		halo.setText("Halo");
@@ -179,6 +150,10 @@ public class VisualLinksPreferencePage
 		animatedHaloBox.setText("Animated Halo (overwrites other selections)");
 		if (animatedHalo == true) {
 			animatedHaloBox.setSelection(true);
+			animationBox.setEnabled(!animatedHalo);
+			standard.setEnabled(!animatedHalo);
+			shadow.setEnabled(!animatedHalo);
+			halo.setEnabled(!animatedHalo);
 		}
 		
 		animatedHaloBox.addSelectionListener(new SelectionAdapter() {
@@ -186,10 +161,19 @@ public class VisualLinksPreferencePage
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				animatedHalo = !animatedHalo;
+				if(animatedHalo) {
+					standard.setSelection(false);
+					shadow.setSelection(false);
+					halo.setSelection(true);
+					style = styleTypes.get(2);
+					iCurrentlyUsedStyle = 2;
+					animationBox.setSelection(true);
+					animation = true;
+				}
 				animationBox.setEnabled(!animatedHalo);
 				standard.setEnabled(!animatedHalo);
 				shadow.setEnabled(!animatedHalo);
-				halo.setEnabled(!animatedHalo);			
+				halo.setEnabled(!animatedHalo);		
 			}
 		});
 
