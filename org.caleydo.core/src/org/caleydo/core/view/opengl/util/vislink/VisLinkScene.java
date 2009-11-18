@@ -11,17 +11,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 
-//import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-//import org.caleydo.core.data.selection.delta.ISelectionDelta;
-//import org.caleydo.core.manager.IEventPublisher;
-//import org.caleydo.core.manager.event.AEvent;
-//import org.caleydo.core.manager.event.AEventListener;
-//import org.caleydo.core.manager.event.IListenerOwner;
-//import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-//import org.caleydo.core.manager.general.GeneralManager;
-//
-//import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-
 /**
  * This class provides higher level features to VisLinks such as halo and animation.
  * To provide this features, more context is needed than a single line. This
@@ -33,43 +22,16 @@ import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
  */
 
 public class VisLinkScene { 
-//	implements ISelectionUpdateHandler {
-	
-//	private int activeViewID;
-	
-//	ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews;
-//	ArrayList<ArrayList<Vec3f>> bundlingToCenterLines;
-//	ArrayList<ArrayList<Vec3f>> connectionLinesActiveView;
+
 	ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews;
-//	private static int stage;
 	private static boolean animationFinished = false;
 	
 	private static long animationStartTime = -1;
-//	private static int NUMBER_OF_SEGMENTS = 30;
 	private static final float FULL_PERCENTAGE = 100;
 	private static final float SEGMENT_LENGTH = ConnectionLineRenderStyle.CONNECTION_LINE_SEGMENT_LENGTH;
 	
 	private EVisLinkStyleType style;
-//	private EVisLinkStyleType style = EVisLinkStyleType.STANDARD_VISLINK;
-//	private EVisLinkStyleType style = EVisLinkStyleType.SHADOW_VISLINK;
-//	private EVisLinkStyleType style = EVisLinkStyleType.HALO_VISLINK;
 	
-//	protected static VLSelectionUpdateListener selectionUpdateListener = null;
-	
-	
-//	/**
-//	 * Constructor
-//	 * @param connectionLines connection lines from objects to bundling points of the non active views
-//	 * @param bundlingToCenterLines the lines connecting the bundling points and the center
-//	 * @param connectionLinesActiveView connection lines of the current view
-//	 */
-//	public VisLinkScene(ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews, ArrayList<ArrayList<Vec3f>> bundlingToCenterLines, ArrayList<ArrayList<Vec3f>> connectionLinesActiveView) {
-//		this.connectionLinesAllViews = connectionLinesAllViews;
-//		this.bundlingToCenterLines = bundlingToCenterLines;
-//		this.connectionLinesActiveView = connectionLinesActiveView;
-////		if(selectionUpdateListener == null)
-////			registerEventListeners();
-//	}
 	
 	/**
 	 * Constructor
@@ -81,28 +43,6 @@ public class VisLinkScene {
 	}
 	
 	
-//	public void registerEventListeners() {
-//		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
-//		
-//		selectionUpdateListener = new VLSelectionUpdateListener();
-//		selectionUpdateListener.setHandler(this);
-//		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
-//	}
-	
-//	public void unregisterEventListeners() {
-//		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
-//		
-//		if (selectionUpdateListener != null) {
-//			eventPublisher.removeListener(selectionUpdateListener);
-//			selectionUpdateListener = null;
-//		}
-//	}
-	
-//	public void setActiveViewID(int id) {
-//		activeViewID = id;
-//	}
-	
-	
 	/**
 	 * Renders the connection line of the scene.
 	 * @param gl The GL-object
@@ -112,24 +52,22 @@ public class VisLinkScene {
 		ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH = GeneralManager.get().getPreferenceStore().getFloat(PreferenceConstants.VISUAL_LINKS_WIDTH);
 		ConnectionLineRenderStyle.ANIMATION = GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATION);
 		ConnectionLineRenderStyle.CONNECTION_LINE_STYLE = EVisLinkStyleType.getStyleType(GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.VISUAL_LINKS_STYLE));
-		// FIXME: Animated Highlighting not chooseable atm, add to PrefPage
-//		ConnectionLineRenderStyle.ANIMATED_HIGHLIGHTING = true;
+		ConnectionLineRenderStyle.ANIMATED_HIGHLIGHTING = GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO);
 		
 //		callRenderLine(gl);		
-		if(ConnectionLineRenderStyle.ANIMATION)
-			callRenderAnimatedPolygonLine(gl);
-		else if(ConnectionLineRenderStyle.ANIMATED_HIGHLIGHTING)
+		
+		if(ConnectionLineRenderStyle.ANIMATED_HIGHLIGHTING)
 		{
 			float tempWidth = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
 			ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH = tempWidth / 2;
 			style = EVisLinkStyleType.STANDARD_VISLINK;
-//			ConnectionLineRenderStyle.CONNECTION_LINE_STYLE = EVisLinkStyleType.STANDARD_VISLINK;
 			callRenderPolygonLine(gl);
 			style = ConnectionLineRenderStyle.CONNECTION_LINE_STYLE;
-//			ConnectionLineRenderStyle.CONNECTION_LINE_STYLE = EVisLinkStyleType.HALO_VISLINK;
 			ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH = tempWidth;
 			callRenderAnimatedPolygonLine(gl);
 		}
+		else if(ConnectionLineRenderStyle.ANIMATION)
+			callRenderAnimatedPolygonLine(gl);
 		else
 			callRenderPolygonLine(gl);		
 	}

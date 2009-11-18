@@ -139,6 +139,7 @@ public class PreferenceManager {
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_ANIMATION, false);
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_WIDTH, 2.0f);
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_COLOR, "255,255,0,255");
+		store.setDefault(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO, false);
 		
 	}
 	

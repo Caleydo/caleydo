@@ -36,6 +36,7 @@ public class VisualLinksPreferencePage
 	private EVisLinkStyleType style;
 	private boolean animation;
 	private float width;
+	private boolean animatedHalo;
 
 	private ArrayList<ArrayList<String>> colorMappings; //FIXME
 	private ArrayList<EVisLinkStyleType> styleTypes;
@@ -52,6 +53,7 @@ public class VisualLinksPreferencePage
 		styleTypes = new ArrayList<EVisLinkStyleType>(3);
 		animation = false;
 		width = 2.0f;
+		animatedHalo = false;
 		//FIXME: add color
 		
 		styleTypes.add(EVisLinkStyleType.STANDARD_VISLINK);
@@ -90,7 +92,9 @@ public class VisualLinksPreferencePage
 		group.setText("Choose the desired highlighting-mode of visual links");
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		group.setLayout(new GridLayout(2, true));
-		Button standard = new Button(group, SWT.RADIO);
+		
+		
+		final Button standard = new Button(group, SWT.RADIO);
 		standard.setText("No highlighting");
 		if (iCurrentlyUsedStyle == 0)
 			standard.setSelection(true);
@@ -108,7 +112,7 @@ public class VisualLinksPreferencePage
 //		updateColorLabel(colorMappingPreviewLabel, colorMappings.get(0));
 //		colorMappingPreviewLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		Button shadow = new Button(group, SWT.RADIO);
+		final Button shadow = new Button(group, SWT.RADIO);
 		shadow.setText("Shadow");
 		if (iCurrentlyUsedStyle == 1)
 			shadow.setSelection(true);
@@ -126,7 +130,7 @@ public class VisualLinksPreferencePage
 //		updateColorLabel(colorMappingPreviewLabel, colorMappings.get(1));
 //		colorMappingPreviewLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
-		Button halo = new Button(group, SWT.RADIO);
+		final Button halo = new Button(group, SWT.RADIO);
 		halo.setText("Halo");
 		if (iCurrentlyUsedStyle == 2)
 			halo.setSelection(true);
@@ -140,7 +144,7 @@ public class VisualLinksPreferencePage
 			}
 		});
 		
-		Button animationBox = new Button(baseComposite, SWT.CHECK);
+		final Button animationBox = new Button(baseComposite, SWT.CHECK);
 		animationBox.setText("Animation");
 		if (animation == true)
 			animationBox.setSelection(true);
@@ -169,6 +173,24 @@ public class VisualLinksPreferencePage
 					width = 2.0f;
 			}
 		});
+		
+		final Button animatedHaloBox = new Button(baseComposite, SWT.CHECK);
+		animatedHaloBox.setText("Animated Halo (overwrites other selections)");
+		if (animatedHalo == true) {
+			animatedHaloBox.setSelection(true);
+		}
+		
+		animatedHaloBox.addSelectionListener(new SelectionAdapter() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				animatedHalo = !animatedHalo;
+				animationBox.setEnabled(!animatedHalo);
+				standard.setEnabled(!animatedHalo);
+				shadow.setEnabled(!animatedHalo);
+				halo.setEnabled(!animatedHalo);			
+			}
+		});
 
 		baseComposite.pack();
 	}
@@ -187,6 +209,7 @@ public class VisualLinksPreferencePage
 		store.setValue(PreferenceConstants.VISUAL_LINKS_STYLE, iCurrentlyUsedStyle);	
 		store.setValue(PreferenceConstants.VISUAL_LINKS_ANIMATION, animation);
 		store.setValue(PreferenceConstants.VISUAL_LINKS_WIDTH, width);
+		store.setValue(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO, animatedHalo);
 
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		RedrawViewEvent redrawEvent = new RedrawViewEvent();

@@ -56,6 +56,7 @@ public class PreferenceConstants {
 	public static final String VISUAL_LINKS_ANIMATION = "visualLinksAnimation";
 	public static final String VISUAL_LINKS_WIDTH = "visualLinksWidth";
 	public static final String VISUAL_LINKS_COLOR = "visualLinksColor";
+	public static final String VISUAL_LINKS_ANIMATED_HALO = "visualLinksAnimatedHalo";
 
 	@Deprecated
 	public static final String XP_CLASSIC_STYLE_MODE = "enableXPClassicStyleMode";
