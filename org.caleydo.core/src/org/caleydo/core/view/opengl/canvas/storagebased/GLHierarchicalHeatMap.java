@@ -4893,7 +4893,8 @@ public class GLHierarchicalHeatMap
 		bFirstStartExperimentDendrogram = true;
 		bFirstStartGeneDendrogram = true;
 
-		initData();
+		// TODO: maybe causes side effects
+		// initData();
 
 		setDisplayListDirty();
 	}
