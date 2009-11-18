@@ -26,6 +26,6 @@ public class ConnectionLineRenderStyle {
 	public static boolean ANIMATION = true;
 	public static boolean ANIMATED_HIGHLIGHTING = false;
 
-	public static final int ANIMATION_SPEED_IN_MILLIS = 250;
+	public static final int ANIMATION_SPEED_IN_MILLIS = 350;
 	public static final float CONNECTION_LINE_SEGMENT_LENGTH = 0.05f;
 }
