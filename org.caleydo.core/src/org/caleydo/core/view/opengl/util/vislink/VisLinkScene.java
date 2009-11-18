@@ -83,17 +83,6 @@ public class VisLinkScene {
 			for(ArrayList<Vec3f> currentLine : currentView) 
 				VisLink.renderLine(gl, currentLine, 0, 10, true);
 	}
-//	protected void callRenderLine(final GL gl) {
-//		for (ArrayList<ArrayList<Vec3f>> currentView : connectionLinesAllView) {
-//			for(ArrayList<Vec3f> currentLine : currentView) {
-//				VisLink.renderLine(gl, currentLine, 0, 10, true);
-//			}
-//		}
-//		for(ArrayList<Vec3f> currentLine : connectionLinesActiveView)
-//			VisLink.renderLine(gl, currentLine, 0, 10, true);
-//		for(ArrayList<Vec3f> currentLine : bundlingToCenterLines)
-//			VisLink.renderLine(gl, currentLine, 0, 10, true);
-//	}	
 	
 	
 	/**
@@ -165,7 +154,6 @@ public class VisLinkScene {
 		for(ArrayList<ArrayList<Vec3f>> currentView : connectionLinesAllViews)
 			for(ArrayList<Vec3f> currentLine : currentView) {
 				if(currentLine.size() >= 2) {
-//					VisLink visLink = new VisLink(currentLine, 0, NUMBER_OF_SEGMENTS);
 					VisLink visLink = new VisLink(currentLine, 0, SEGMENT_LENGTH);
 					enableStencilBuffer(gl);
 					visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, roundedStart, roundedEnd);

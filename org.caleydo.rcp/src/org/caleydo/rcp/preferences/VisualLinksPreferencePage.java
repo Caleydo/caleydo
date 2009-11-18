@@ -162,7 +162,8 @@ public class VisualLinksPreferencePage
 		widthSlider.setMaximum(40);
 		widthSlider.setIncrement(5);
 		widthSlider.setPageIncrement(5);
-		widthSlider.setSelection(20);
+		int currentWidth = (int) ( GeneralManager.get().getPreferenceStore().getFloat(PreferenceConstants.VISUAL_LINKS_WIDTH) * 10 );
+		widthSlider.setSelection(currentWidth);
 		
 		widthSlider.addSelectionListener(new SelectionAdapter() {
 			

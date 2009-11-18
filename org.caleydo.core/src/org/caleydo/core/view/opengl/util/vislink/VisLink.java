@@ -6,16 +6,10 @@ import javax.media.opengl.GL;
 
 import gleem.linalg.Vec3f;
 
-//import org.caleydo.core.manager.IGeneralManager;
-//import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 
-//import java.nio.ByteBuffer;
-//import java.nio.IntBuffer;
-//import com.sun.opengl.util.BufferUtil;
-
-//import com.sun.opengl.util.texture.Texture;
-//import com.sun.opengl.util.texture.TextureCoords;
 
 
 /**
@@ -29,22 +23,9 @@ import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 public class VisLink {
 	
 	private ArrayList<Vec3f> linePoints;
-	
-	
-//	private /*final*/ int TEXTURE_SIZE = 128;
-//	private int viewportX = 0;
-//	private int viewportY = 0;
-//	private int viewportWidth = 640;
-//	private int viewportHeight = 480;
-	
-//	private int[] blurTexture;
-//	private int[] frameBufferObject;
-	
-	// to delete the Buffers
-//	private int[] colorBuff;
-//	private int[] depthBuff;
-	
-//	private IGeneralManager generalManager;
+	private float width;
+	private float[] color;
+
 	
 	
 	/**
@@ -56,16 +37,14 @@ public class VisLink {
 	 * n subintervals there are n+3 curve points. The begin of the curve, the end of
 	 * the curve and n+1 vertices connecting the n segments.
 	 */
-	public VisLink(final Vec3f srcPoint, final Vec3f dstPoint, int numberOfSegments) {
-		
-//		ArrayList<Vec3f> points = new ArrayList<Vec3f>(2);
-//		points.add(srcPoint);
-//		points.add(dstPoint);
+	public VisLink(final Vec3f srcPoint, final Vec3f dstPoint, int numberOfSegments) {		
 		StraightLine line = new StraightLine(srcPoint, dstPoint, numberOfSegments);
-//		this.linePoints = points;
-		this.linePoints = line.getLinePoints();
 		
-//		this.generalManager = GeneralManager.get();
+		this.width = GeneralManager.get().getPreferenceStore().getFloat(PreferenceConstants.VISUAL_LINKS_WIDTH);
+		this.color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
+//		ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR;
+		
+		this.linePoints = line.getLinePoints();
 	}
 	
 	
