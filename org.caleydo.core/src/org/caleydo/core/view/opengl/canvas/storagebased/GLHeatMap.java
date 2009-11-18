@@ -986,7 +986,7 @@ public class GLHeatMap
 
 			int iViewID = iUniqueID;
 			// If rendered remote (hierarchical heat map) - use the remote view ID
-			if (glRemoteRenderingView != null)
+			if (glRemoteRenderingView != null && glRemoteRenderingView instanceof GLHierarchicalHeatMap)
 				iViewID = glRemoteRenderingView.getID();
 
 			if (bRenderStorageHorizontally) {
@@ -1220,7 +1220,7 @@ public class GLHeatMap
 	public RemoteLevelElement getRemoteLevelElement() {
 
 		// If the view is rendered remote - the remote level element from the parent is returned
-		if (glRemoteRenderingView != null && glRemoteRenderingView instanceof AGLEventListener)
+		if (glRemoteRenderingView != null && glRemoteRenderingView instanceof GLHierarchicalHeatMap)
 			return ((AGLEventListener) glRemoteRenderingView).getRemoteLevelElement();
 
 		return super.getRemoteLevelElement();
