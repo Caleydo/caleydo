@@ -625,7 +625,7 @@
             </command>
          </menu>
          <menu
-               id="org.caleydo.menu.data"
+               id="org.caleydo.menu.help"
                label="Help"
                tooltip="Help">
             <command
