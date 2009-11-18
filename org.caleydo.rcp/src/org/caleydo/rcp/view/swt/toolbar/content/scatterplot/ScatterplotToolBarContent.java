@@ -1,10 +1,15 @@
-package org.caleydo.rcp.view.swt.toolbar.content;
+package org.caleydo.rcp.view.swt.toolbar.content.scatterplot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.storagebased.GLScatterplot;
 import org.caleydo.rcp.action.toolbar.view.storagebased.scatterplot.ScatterplotTestAction;
+import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
+import org.caleydo.rcp.view.swt.toolbar.content.ActionToolBarContainer;
+import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
+import org.caleydo.rcp.view.swt.toolbar.content.ToolBarContainer;
+import org.caleydo.rcp.view.swt.toolbar.content.radial.DepthSlider;
 
 /**
  * ToolBarContent implementation for scatterplot specific toolbar items.
@@ -17,6 +22,8 @@ public class ScatterplotToolBarContent
 	public static final String IMAGE_PATH = "resources/icons/view/storagebased/parcoords/parcoords.png";
 
 	public static final String VIEW_TITLE = "Scatterplot";
+	
+	private IToolBarItem testSlider;
 
 	@Override
 	public Class<?> getViewClass() {
@@ -37,6 +44,11 @@ public class ScatterplotToolBarContent
 		IToolBarItem testAction = new ScatterplotTestAction(targetViewID);
 		actionList.add(testAction);
 
+		if (testSlider == null) {
+			testSlider = new DepthSlider("", 0);
+		}
+		actionList.add(testSlider);
+		
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);
 
