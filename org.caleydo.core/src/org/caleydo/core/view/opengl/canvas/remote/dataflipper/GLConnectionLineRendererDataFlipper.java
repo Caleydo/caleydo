@@ -17,6 +17,7 @@ import org.caleydo.core.manager.view.ConnectionMap;
 import org.caleydo.core.manager.view.SelectedElementRepList;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
+import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
 /**
@@ -144,5 +145,13 @@ public class GLConnectionLineRendererDataFlipper
 
 			// renderLine(gl, vecViewBundlingPoint, vecCenter, 0, fArColor);
 		}
+	}
+	
+	protected void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
+		final int iNumberOfLines, float[] fArColor) {
+
+		gl.glTranslatef(-1.5f, -1.5f, 0);
+		super.renderLine(gl, vecSrcPoint, vecDestPoint, iNumberOfLines, fArColor);
+		gl.glTranslatef(1.5f, 1.5f, 0);
 	}
 }

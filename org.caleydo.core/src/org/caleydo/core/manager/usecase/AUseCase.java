@@ -125,7 +125,8 @@ public abstract class AUseCase
 
 		if ((set.getSetType() == ESetType.GENE_EXPRESSION_DATA && useCaseMode == EDataDomain.GENETIC_DATA)
 			|| (set.getSetType() == ESetType.CLINICAL_DATA && useCaseMode == EDataDomain.CLINICAL_DATA)
-			|| (set.getSetType() == ESetType.UNSPECIFIED && useCaseMode == EDataDomain.GENERAL_DATA)) {
+			|| (set.getSetType() == ESetType.UNSPECIFIED && useCaseMode == EDataDomain.GENERAL_DATA)
+			|| (set.getSetType() == ESetType.GENE_EXPRESSION_DATA && useCaseMode == EDataDomain.PATHWAY_DATA)) {
 
 			oldSet = this.set;
 			this.set = set;

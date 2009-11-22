@@ -7,16 +7,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 
 /**
- * Catches exceptions and logs them, hides them when in release mode
+ * Catches exceptions and logs them
  * 
  * @author Alexander Lex
  * @author Marc Streit
  */
 public class ExceptionHandler {
-	/**
-	 * Determine whether to hide exceptions and log them, or whether to throw them
-	 */
-	public static final boolean HIDE_EXCEPTIONS = false;
 
 	private static ExceptionHandler singletonInstance = null;
 
@@ -38,17 +34,15 @@ public class ExceptionHandler {
 	}
 
 	/**
-	 * Handle view exceptions. Depending on {@link ExceptionHandler#HIDE_EXCEPTIONS} exceptions are either
-	 * rethrown or hidden and logged
+	 * Handle view exceptions.
 	 * 
 	 * @param exception
 	 */
 	public void handleViewException(RuntimeException exception, final AGLEventListener glEventListener) {
-		if (HIDE_EXCEPTIONS) {
-			GeneralManager.get().getLogger().log(
-				new Status(Status.ERROR, GeneralManager.PLUGIN_ID, "Caught Exception: "
-					+ exception.getMessage(), exception));
-		}
+		
+		GeneralManager.get().getLogger().log(
+			new Status(Status.ERROR, GeneralManager.PLUGIN_ID, "Caught Exception: "
+				+ exception.getMessage(), exception));
 
 		glEventListener.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
 			public void run() {

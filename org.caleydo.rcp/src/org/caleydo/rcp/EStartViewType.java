@@ -6,6 +6,7 @@ import org.caleydo.core.view.opengl.canvas.histogram.SerializedHistogramView;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.SerializedHyperbolicView;
 import org.caleydo.core.view.opengl.canvas.radial.SerializedRadialHierarchyView;
 import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
+import org.caleydo.core.view.opengl.canvas.remote.dataflipper.SerializedDataFlipperView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramHorizontalView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramVerticalView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
@@ -33,7 +34,8 @@ public enum EStartViewType {
 	histogram(SerializedHistogramView.class),
 	dendrogram_horizontal(SerializedDendogramHorizontalView.class),
 	dendrogram_vertical(SerializedDendogramVerticalView.class),
-	scatterplot(SerializedScatterplotView.class);	
+	scatterplot(SerializedScatterplotView.class),
+	dataflipper(SerializedDataFlipperView.class);
 
 	private Class<? extends ASerializedView> serializedViewClass;
 

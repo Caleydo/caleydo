@@ -7,6 +7,7 @@ import gleem.linalg.open.Transform;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -17,8 +18,10 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -38,7 +41,6 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
-import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -166,6 +168,8 @@ public class GLDataFlipper
 		// FIXME: remove when alex is ready with use case changes
 		generalManager.addUseCase(new PathwayUseCase());
 		generalManager.addUseCase(new TissueUseCase());
+		generalManager.getUseCase(EDataDomain.PATHWAY_DATA).setSet(
+			generalManager.getUseCase(EDataDomain.GENETIC_DATA).getSet());
 	}
 
 	@Override
@@ -391,12 +395,26 @@ public class GLDataFlipper
 			}
 
 			if (newViews.isEmpty()) {
-				// triggerToolBarUpdate();
+				triggerToolBarUpdate();
 				enableUserInteraction();
 			}
 		}
 	}
 
+	/**
+	 * Triggers a toolbar update by sending an event similar to the view activation
+	 */
+	private void triggerToolBarUpdate() {
+
+		ViewActivationEvent viewActivationEvent = new ViewActivationEvent();
+		viewActivationEvent.setSender(this);
+		List<Integer> viewIDs = this.getAllViewIDs();
+		viewActivationEvent.setViewIDs(viewIDs);
+
+		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+		eventPublisher.triggerEvent(viewActivationEvent);
+	}
+	
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
 		// resetView(false);
@@ -705,26 +723,26 @@ public class GLDataFlipper
 		SerializedDataFlipperView serializedForm = new SerializedDataFlipperView(dataDomain);
 		serializedForm.setViewID(this.getID());
 
-//		IViewManager viewManager = generalManager.getViewGLCanvasManager();
+		// IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
-//		ArrayList<ASerializedView> remoteViews =
-//			new ArrayList<ASerializedView>(focusLevel.getAllElements().size());
-//		for (RemoteLevelElement rle : focusLevel.getAllElements()) {
-//			if (rle.getContainedElementID() != -1) {
-//				AGLEventListener remoteView = viewManager.getGLEventListener(rle.getContainedElementID());
-//				remoteViews.add(remoteView.getSerializableRepresentation());
-//			}
-//		}
-//		serializedForm.setFocusViews(remoteViews);
-//
-//		remoteViews = new ArrayList<ASerializedView>(stackLevel.getAllElements().size());
-//		for (RemoteLevelElement rle : stackLevel.getAllElements()) {
-//			if (rle.getContainedElementID() != -1) {
-//				AGLEventListener remoteView = viewManager.getGLEventListener(rle.getContainedElementID());
-//				remoteViews.add(remoteView.getSerializableRepresentation());
-//			}
-//		}
-//		serializedForm.setStackViews(remoteViews);
+		// ArrayList<ASerializedView> remoteViews =
+		// new ArrayList<ASerializedView>(focusLevel.getAllElements().size());
+		// for (RemoteLevelElement rle : focusLevel.getAllElements()) {
+		// if (rle.getContainedElementID() != -1) {
+		// AGLEventListener remoteView = viewManager.getGLEventListener(rle.getContainedElementID());
+		// remoteViews.add(remoteView.getSerializableRepresentation());
+		// }
+		// }
+		// serializedForm.setFocusViews(remoteViews);
+		//
+		// remoteViews = new ArrayList<ASerializedView>(stackLevel.getAllElements().size());
+		// for (RemoteLevelElement rle : stackLevel.getAllElements()) {
+		// if (rle.getContainedElementID() != -1) {
+		// AGLEventListener remoteView = viewManager.getGLEventListener(rle.getContainedElementID());
+		// remoteViews.add(remoteView.getSerializableRepresentation());
+		// }
+		// }
+		// serializedForm.setStackViews(remoteViews);
 
 		return serializedForm;
 	}

@@ -38,7 +38,7 @@ public class SerializedDataFlipperView
 	 * No-Arg Constructor to create a serialized data flipper view with default parameters.
 	 */
 	public SerializedDataFlipperView() {
-
+		init();
 	}
 
 	public SerializedDataFlipperView(EDataDomain dataDomain) {
@@ -54,29 +54,28 @@ public class SerializedDataFlipperView
 		initialContainedViews.add(parCoords);
 
 		SerializedTissueView tissue = new SerializedTissueView();
-		tissue.setDataDomain(EDataDomain.GENETIC_DATA);
+		tissue.setDataDomain(EDataDomain.TISSUE_DATA);
 		initialContainedViews.add(tissue);
 
 		SerializedHierarchicalHeatMapView heatMap = new SerializedHierarchicalHeatMapView();
 		heatMap.setDataDomain(EDataDomain.GENETIC_DATA);
 		initialContainedViews.add(heatMap);
 
-		SerializedGlyphView glyph = new SerializedGlyphView();
-		glyph.setDataDomain(EDataDomain.GENETIC_DATA);
-		initialContainedViews.add(glyph);
+		parCoords = new SerializedParallelCoordinatesView();
+		parCoords.setDataDomain(EDataDomain.CLINICAL_DATA);
+		initialContainedViews.add(parCoords);
 
 		SerializedPathwayView pathway = new SerializedPathwayView();
 		pathway = new SerializedPathwayView();
 		pathway
 			.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems().toArray()[0])
 				.getID());
-		pathway.setDataDomain(EDataDomain.GENETIC_DATA);
+		pathway.setDataDomain(EDataDomain.PATHWAY_DATA);
 		initialContainedViews.add(pathway);
 
-		parCoords = new SerializedParallelCoordinatesView();
-		parCoords.setDataDomain(EDataDomain.CLINICAL_DATA);
-		initialContainedViews.add(parCoords);
-
+		SerializedGlyphView glyph = new SerializedGlyphView();
+		glyph.setDataDomain(EDataDomain.CLINICAL_DATA);
+		initialContainedViews.add(glyph);
 	}
 
 	@Override
