@@ -1,4 +1,4 @@
-package daemon;
+package test;
 
 import VIS.Color4f;
 import VIS.Selection;
