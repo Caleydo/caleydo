@@ -112,11 +112,9 @@ function setCenter() {
     map.setCenter(new GLatLng(47.07, 15.45, false), 8);
 }
 
-var recentId = null;
 function triggerSearch() {
 	var id = getId();
-	if ((id != null) && (id != recentId)) {
-        recentId = id;
+	if (id != null) {
         findAddress(id);
     }
 	setTimeout("triggerSearch()", 3000);

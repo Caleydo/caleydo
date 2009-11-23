@@ -6,21 +6,21 @@ import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public class VisLinkRenderMockup {
+public class VisLinkRenderMockup implements Runnable {
 
 	Display display = null;
 	
 	Shell shell = null;
+	
+	int fminx, fminy;
+	
+	Region region;
 	
 	public VisLinkRenderMockup() {
 		display = new Display();
 	}
 
 	public void drawVisualLinks(BoundingBoxList bbl) {
-		if (shell != null) {
-			shell.dispose();
-			shell = null;
-		}
 		if (bbl.getList().size() == 0) {
 			return;
 		}
@@ -37,10 +37,12 @@ public class VisLinkRenderMockup {
 			if (miny > bb.getY())
 				miny = bb.getY();
 		}
+		fminx = minx;
+		fminy = miny;
 		centerx = centerx / bbl.getList().size();
 		centery = centery / bbl.getList().size();
 
-		Region region = new Region();
+		region = new Region();
 		for (BoundingBox bb : bbl.getList()) {
 			int dx = bb.getX() - centerx;
 			if (dx < 0)
@@ -63,16 +65,24 @@ public class VisLinkRenderMockup {
 			region.add(coords);
 		}
 		
+		System.out.println("init syncExec");
+		Display.getCurrent().syncExec(this);
+	}
+	
+	public void run() {
+		System.out.println("**** syncExec()");
+		if (shell != null) {
+			shell.dispose();
+		}
 		shell = new Shell(display, SWT.NO_TRIM | SWT.ON_TOP);
 		shell.setBackground(display.getSystemColor(SWT.COLOR_RED));
-		shell.setLocation(minx, miny);
+		shell.setLocation(fminx, fminy);
 		shell.setRegion(region);
 
 		Rectangle size = region.getBounds();
 		shell.setSize(size.width, size.height);
 		shell.open();
 	}
-	
 /*	
 	public static void main(String[] args) {
 		VisLinkRenderMockup dummy = new VisLinkRenderMockup();

@@ -18,6 +18,12 @@
 	</welcome-file-list>
 	<servlet>
 		<description></description>
+		<display-name>selection</display-name>
+		<servlet-name>selection</servlet-name>
+		<servlet-class>daemon.SelectionDelivery</servlet-class>
+	</servlet>
+	<servlet>
+		<description></description>
 		<display-name>propagation</display-name>
 		<servlet-name>propagation</servlet-name>
 		<servlet-class>daemon.SelectionPropagation</servlet-class>
@@ -46,6 +52,10 @@
 	<servlet-mapping>
 		<servlet-name>propagation</servlet-name>
 		<url-pattern>/propagation</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>selection</servlet-name>
+		<url-pattern>/selection</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>register</servlet-name>

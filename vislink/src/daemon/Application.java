@@ -20,6 +20,12 @@ public class Application {
 	
 	/** bounding boxes of contained windows */
 	private List<BoundingBox> windows;
+
+	/** id to send */
+	private String sendId;
+	
+	/** last id that was sent */
+	private String recentId;
 	
 	public Application() {
 		name = null;
@@ -49,6 +55,16 @@ public class Application {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public String fetchSendId() {
+		String id = sendId;
+		sendId = null;
+		return id;
+	}
+
+	public void setSendId(String sendId) {
+		this.sendId = sendId;
 	}
 
 	@Override

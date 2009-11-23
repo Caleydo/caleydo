@@ -17,13 +17,13 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 /**
  * Servlet implementation class hello
  */
-public class SelectionPropagation extends HttpServlet {
+public class SelectionDelivery extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * Default constructor. 
      */
-    public SelectionPropagation() {
+    public SelectionDelivery() {
         // TODO Auto-generated constructor stub
     }
 
@@ -43,32 +43,17 @@ public class SelectionPropagation extends HttpServlet {
 
 	protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/xml");
-		PrintWriter out = response.getWriter();
-		
 		ApplicationManager applicationManager = (ApplicationManager) getApplicationContext().getBean("applicationManager");
 		String appName = request.getParameter("name");
-		Application application = applicationManager.getApplications().get(appName);
+		// todo if (appName == null)
+		String id = request.getParameter("id");
+		// todo if (id == null) 
 		
-		String filter = application.fetchSendId();
-
-		String empty = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" +
-			"<vislink>" + 
-			"</vislink>";
-
-		if (filter != null) {
-			getServletContext().setAttribute("recentFilter", filter);
-			String xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" +
-					"<vislink>" + 
-					"	<element>" +
-					"		<id>" + filter + "</id>" +
-					"	</element>" +
-					"</vislink>";
-			out.print(xml);
-			System.out.println("sending xml=" + xml);
-		} else {
-			out.println(empty);
-			System.out.println("sending empty links to " + application);
+		for (Application app : applicationManager.getApplications().values()) {
+			app.setSendId(id);
 		}
+		
+		response.getWriter().print("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><selection />");
 	}
 
 	private WebApplicationContext getApplicationContext() {
