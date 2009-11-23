@@ -403,18 +403,32 @@ public class GLDataFlipper
 
 	/**
 	 * Triggers a toolbar update by sending an event similar to the view activation
+	 * 
+	 * @TODO: Move to remote rendering base class
 	 */
 	private void triggerToolBarUpdate() {
 
 		ViewActivationEvent viewActivationEvent = new ViewActivationEvent();
 		viewActivationEvent.setSender(this);
-		List<Integer> viewIDs = this.getAllViewIDs();
+		List<AGLEventListener> views = getRemoteRenderedViews();
+
+		List<Integer> viewIDs = new ArrayList<Integer>();
+		viewIDs.add(getID());
+		for (AGLEventListener view : views) {
+			viewIDs.add(view.getID());
+		}
+
 		viewActivationEvent.setViewIDs(viewIDs);
 
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		eventPublisher.triggerEvent(viewActivationEvent);
 	}
 	
+	@Override
+	public List<AGLEventListener> getRemoteRenderedViews() {
+		return containedGLViews;
+	}
+
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
 		// resetView(false);

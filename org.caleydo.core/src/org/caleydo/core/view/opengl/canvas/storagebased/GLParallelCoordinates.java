@@ -33,6 +33,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
@@ -2953,6 +2954,11 @@ public class GLParallelCoordinates
 	@Override
 	public void setSet(ISet set) {
 		super.setSet(set);
+	}
+
+	@Override
+	public List<AGLEventListener> getRemoteRenderedViews() {
+		return new ArrayList<AGLEventListener>();
 	}
 
 }

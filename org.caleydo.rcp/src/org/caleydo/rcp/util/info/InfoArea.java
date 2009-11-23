@@ -179,6 +179,7 @@ public class InfoArea
 	@Override
 	public void handleSelectionUpdate(final ISelectionDelta selectionDelta, final boolean scrollToSelection,
 		final String info) {
+		
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 
@@ -353,7 +354,13 @@ public class InfoArea
 								// }
 
 								TreeItem item = new TreeItem(experimentTree, SWT.NONE);
-								item.setText(set.get(selectionItem.getPrimaryID()).getLabel());
+								
+								try {
+									item.setText(set.get(selectionItem.getPrimaryID()).getLabel());	
+								}
+								catch (IndexOutOfBoundsException e) {
+									item.setText("ERROR");
+								}
 								item.setData(selectionItem.getPrimaryID());
 								// item.setData("mapping_type",
 								// EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX.toString());

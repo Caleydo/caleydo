@@ -14,11 +14,13 @@ import org.caleydo.core.view.opengl.canvas.histogram.GLHistogram;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.GLHyperbolic;
 import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.remote.dataflipper.GLDataFlipper;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLScatterplot;
 import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.view.CaleydoRCPViewPart;
+import org.caleydo.rcp.view.opengl.RcpGLDataFlipperView;
 import org.caleydo.rcp.view.opengl.RcpGLGlyphView;
 import org.caleydo.rcp.view.opengl.RcpGLHeatMapView;
 import org.caleydo.rcp.view.opengl.RcpGLHistogramView;
@@ -31,6 +33,7 @@ import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.GlyphToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.HeatMapToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.ParCoordsToolBarContent;
+import org.caleydo.rcp.view.swt.toolbar.content.dataflipper.DataFlipperToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.hyperbolic.HyperbolicToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.radial.RadialHierarchyToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.remote.RemoteRenderingToolBarContent;
@@ -107,6 +110,13 @@ public class ToolBarContentFactory {
 		info.viewClass = GLRemoteRendering.class;
 		info.contentClass = RemoteRenderingToolBarContent.class;
 		info.rcpID = RcpGLRemoteRenderingView.ID;
+		info.ignored = false;
+		toolBarInfos.put(info.viewClass, info);
+		
+		info = new ToolBarInfo();
+		info.viewClass = GLDataFlipper.class;
+		info.contentClass = DataFlipperToolBarContent.class;
+		info.rcpID = RcpGLDataFlipperView.ID;
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
 

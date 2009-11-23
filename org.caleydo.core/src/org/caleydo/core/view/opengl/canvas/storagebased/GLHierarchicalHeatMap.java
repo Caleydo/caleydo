@@ -15,6 +15,7 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.media.opengl.GL;
@@ -5169,5 +5170,13 @@ public class GLHierarchicalHeatMap
 		updateLevels();
 		setDisplayListDirty();
 
+	}
+
+	@Override
+	public List<AGLEventListener> getRemoteRenderedViews() {
+//		List<AGLEventListener> views = new ArrayList<AGLEventListener>();
+//		views.add(glHeatMapView);
+//		return views;
+		return new ArrayList<AGLEventListener>();
 	}
 }

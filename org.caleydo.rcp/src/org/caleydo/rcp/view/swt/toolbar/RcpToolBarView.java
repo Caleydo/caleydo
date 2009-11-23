@@ -6,7 +6,7 @@ import java.util.List;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.view.opengl.RcpGLPathwayView;
 import org.eclipse.jface.action.ToolBarManager;
@@ -95,9 +95,9 @@ public class RcpToolBarView
 		// Remove toolbars of remote rendered views
 		AGLEventListener glView = GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
 
-		if (glView instanceof GLRemoteRendering) {
-			for (int iRemoteRenderedGLViewID : ((GLRemoteRendering) glView).getRemoteRenderedViews()) {
-				removeViewSpecificToolBar(iRemoteRenderedGLViewID);
+		if (glView instanceof IGLRemoteRenderingView) {
+			for (AGLEventListener view : ((IGLRemoteRenderingView) glView).getRemoteRenderedViews()) {
+				removeViewSpecificToolBar(view.getID());
 			}
 		}
 	}

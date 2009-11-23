@@ -4,7 +4,6 @@ import gleem.linalg.Vec3f;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -686,22 +685,6 @@ public abstract class AGLEventListener
 		// The new set is then assigned to the working set when the display list is dirty the next time.
 		// newSet = set;
 		// setDisplayListDirty();
-	}
-
-	/**
-	 * Retrieves all the contained view-types from a given view. FIXME: remote views does only work for bucket
-	 * FIXME: some kind of integration to IGLRemoteRendering
-	 * 
-	 * @return list of view-types contained in the given view
-	 */
-	public List<Integer> getAllViewIDs() {
-		List<Integer> viewIDs = new ArrayList<Integer>();
-		viewIDs.add(getID());
-		if (this instanceof GLRemoteRendering) {
-			GLRemoteRendering bucket = (GLRemoteRendering) this;
-			viewIDs.addAll(bucket.getRemoteRenderedViews());
-		}
-		return viewIDs;
 	}
 
 	@Override

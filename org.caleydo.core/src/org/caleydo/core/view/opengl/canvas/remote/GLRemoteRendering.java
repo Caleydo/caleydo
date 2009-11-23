@@ -122,7 +122,7 @@ public class GLRemoteRendering
 
 	private static final int SLERP_RANGE = 1000;
 	private static final int SLERP_SPEED = 1400;
-	
+
 	private int iMouseOverObjectID = -1;
 
 	private RemoteLevel focusLevel;
@@ -161,7 +161,7 @@ public class GLRemoteRendering
 
 	private BucketMouseWheelListener bucketMouseWheelListener;
 
-	private ArrayList<Integer> containedViewIDs;
+	private ArrayList<AGLEventListener> containedGLViews;
 
 	/**
 	 * The current view in which the user is performing actions.
@@ -283,7 +283,7 @@ public class GLRemoteRendering
 
 		arSlerpActions = new ArrayList<SlerpAction>();
 
-		containedViewIDs = new ArrayList<Integer>();
+		containedGLViews = new ArrayList<AGLEventListener>();
 		newViews = new ArrayList<ASerializedView>();
 
 		dragAndDrop = new GLDragAndDrop();
@@ -545,10 +545,6 @@ public class GLRemoteRendering
 		gl.glTranslatef(0, 0, fZTranslation);
 		contextMenu.render(gl, this);
 		gl.glTranslatef(0, 0, -fZTranslation);
-	}
-
-	public void setInitialContainedViews(ArrayList<Integer> iAlInitialContainedViewIDs) {
-		containedViewIDs = iAlInitialContainedViewIDs;
 	}
 
 	public void renderBucketWall(final GL gl, boolean bRenderBorder, RemoteLevelElement element) {
@@ -1836,7 +1832,7 @@ public class GLRemoteRendering
 
 						removeView(glEventListener);
 						element.setContainedElementID(-1);
-						containedViewIDs.remove(new Integer(glEventListener.getID()));
+						containedGLViews.remove(glEventListener);
 
 						if (element.getRemoteLevel() == poolLevel) {
 							compactPoolLevel();
@@ -2201,7 +2197,7 @@ public class GLRemoteRendering
 	public void resetView(boolean reinitialize) {
 
 		useCase.resetContextVA();
-		if (containedViewIDs == null)
+		if (containedGLViews == null)
 			return;
 
 		enableBusyMode(false);
@@ -2223,17 +2219,16 @@ public class GLRemoteRendering
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		if (reinitialize) {
-			ArrayList<Integer> removeViewIDs = new ArrayList<Integer>();
-			for (int viewID : containedViewIDs) {
-				AGLEventListener view = viewManager.getGLEventListener(viewID);
-				if (!(view instanceof GLParallelCoordinates || view instanceof GLHeatMap)) {
-					removeViewIDs.add(viewID);
+			ArrayList<AGLEventListener> removeView = new ArrayList<AGLEventListener>();
+			for (AGLEventListener glView : containedGLViews) {
+				if (!(glView instanceof GLParallelCoordinates || glView instanceof GLHeatMap)) {
+					removeView.add(glView);
 				}
 			}
-			containedViewIDs.removeAll(removeViewIDs);
+			containedGLViews.removeAll(removeView);
 		}
 		else {
-			containedViewIDs.clear();
+			containedGLViews.clear();
 		}
 
 		if (reinitialize) {
@@ -2255,14 +2250,13 @@ public class GLRemoteRendering
 		if (reinitialize) {
 			// Move heat map and par coords view to its initial position in the
 			// bucket
-			for (int viewID : containedViewIDs) {
-				AGLEventListener view = viewManager.getGLEventListener(viewID);
+			for (AGLEventListener view : containedGLViews) {
 				if (view instanceof GLParallelCoordinates) {
-					stackLevel.getElementByPositionIndex(0).setContainedElementID(viewID);
+					stackLevel.getElementByPositionIndex(0).setContainedElementID(view.getID());
 					view.setRemoteLevelElement(stackLevel.getElementByPositionIndex(0));
 				}
 				else if (view instanceof GLHeatMap) {
-					focusLevel.getElementByPositionIndex(0).setContainedElementID(viewID);
+					focusLevel.getElementByPositionIndex(0).setContainedElementID(view.getID());
 					view.setRemoteLevelElement(focusLevel.getElementByPositionIndex(0));
 				}
 			}
@@ -2446,7 +2440,7 @@ public class GLRemoteRendering
 			AGLEventListener view = createView(gl, serView);
 			if (hasFreeViewPosition()) {
 				addSlerpActionForView(gl, view);
-				containedViewIDs.add(view.getID());
+				containedGLViews.add(view);
 			}
 			else {
 				newViews.clear();
@@ -2460,12 +2454,21 @@ public class GLRemoteRendering
 
 	/**
 	 * Triggers a toolbar update by sending an event similar to the view activation
+	 * 
+	 * @TODO: Move to remote rendering base class
 	 */
 	private void triggerToolBarUpdate() {
 
 		ViewActivationEvent viewActivationEvent = new ViewActivationEvent();
 		viewActivationEvent.setSender(this);
-		List<Integer> viewIDs = this.getAllViewIDs();
+		List<AGLEventListener> views = getRemoteRenderedViews();
+
+		List<Integer> viewIDs = new ArrayList<Integer>();
+		viewIDs.add(getID());
+		for (AGLEventListener view : views) {
+			viewIDs.add(view.getID());
+		}
+
 		viewActivationEvent.setViewIDs(viewIDs);
 
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
@@ -2663,8 +2666,9 @@ public class GLRemoteRendering
 		}
 	}
 
-	public ArrayList<Integer> getRemoteRenderedViews() {
-		return containedViewIDs;
+	@Override
+	public List<AGLEventListener> getRemoteRenderedViews() {
+		return containedGLViews;
 	}
 
 	private void updateOffScreenTextures(final GL gl) {
@@ -2704,10 +2708,9 @@ public class GLRemoteRendering
 
 	@Override
 	public void clearAllSelections() {
-		for (Integer iViewID : containedViewIDs) {
-			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).clearAllSelections();
+		for (AGLEventListener view : containedGLViews) {
+			view.clearAllSelections();
 		}
-
 	}
 
 	/**

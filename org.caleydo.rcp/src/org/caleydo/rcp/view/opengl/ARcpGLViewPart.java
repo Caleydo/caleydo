@@ -22,6 +22,7 @@ import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.view.CaleydoRCPViewPart;
 import org.eclipse.swt.SWT;
@@ -237,9 +238,16 @@ public abstract class ARcpGLViewPart
 		// FIXXXME: rcp-view id is the same as the first gl-view-id, so rcp-view-ids have to be omitted
 		// List<Integer> ids = super.getAllViewIDs();
 
-		List<Integer> ids = new ArrayList<Integer>();
-		ids.addAll(this.getGLEventListener().getAllViewIDs());
-		return ids;
+		List<Integer> viewIDs = new ArrayList<Integer>();
+		viewIDs.add(getGLEventListener().getID());
+		if (getGLEventListener() instanceof IGLRemoteRenderingView) {
+			for (AGLEventListener view : ((IGLRemoteRenderingView) getGLEventListener())
+				.getRemoteRenderedViews()) {
+				viewIDs.add(view.getID());
+			}
+		}
+
+		return viewIDs;
 	}
 
 	public AGLEventListener getGLEventListener() {
