@@ -39,7 +39,10 @@ public class Main {
 		
 		// send selections to renderer 
 		renderer.renderLinks(groups); 
-		renderer.renderLinks(groups); 
+//		renderer.renderLinks(groups); 
+		
+		// simple test - to see if compiz receives it... 
+		//renderer.clearAll(); 
 		
 		// disconnect from VisRenderer
 		renderer.disconnect(); 

@@ -153,6 +153,13 @@ public class RenderManager {
 			this.rendererPrx.renderAllLinks(selections); 
 		}
 	}
+	
+	public void clearAll(){
+		System.out.println("clearAll"); 
+		if(this.rendererPrx != null){
+			this.rendererPrx.clearAll(); 
+		}
+	}
 
 
 }
