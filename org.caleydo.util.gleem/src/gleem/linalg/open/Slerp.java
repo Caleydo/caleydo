@@ -52,10 +52,10 @@ public class Slerp {
 		float fAngle = transform.getRotation().get(axis);
 
 		// Subtract 1.5 for slerping around the views center point
-		// gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f,
-		// translation.z());
+		gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f,
+				translation.z());
 
-		gl.glTranslatef(translation.x(), translation.y(), translation.z());
+		// gl.glTranslatef(translation.x(), translation.y(), translation.z());
 
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
