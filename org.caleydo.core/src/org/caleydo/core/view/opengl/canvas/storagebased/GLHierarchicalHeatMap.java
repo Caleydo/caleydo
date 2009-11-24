@@ -4377,7 +4377,7 @@ public class GLHierarchicalHeatMap
 				}
 				break;
 		}
-		setDisplayListDirty();
+//		setDisplayListDirty();
 	}
 
 	@Override
