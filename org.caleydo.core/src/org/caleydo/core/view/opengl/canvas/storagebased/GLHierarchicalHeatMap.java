@@ -3137,6 +3137,7 @@ public class GLHierarchicalHeatMap
 
 		// every time we change the window of the embedded heat map we need to remove the previously used ids
 		connectedElementRepresentationManager.clearByView(glHeatMapView.getID());
+		connectedElementRepresentationManager.clearByView(this.getID());
 
 		for (int index = 0; index < iSamplesPerHeatmap; index++) {
 			iIndex = iCount + index;
