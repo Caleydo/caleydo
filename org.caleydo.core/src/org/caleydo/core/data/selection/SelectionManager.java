@@ -770,4 +770,14 @@ public class SelectionManager {
 			hashConnectionToElementID.remove(iConnectionID);
 		}
 	}
+
+	@Override
+	public String toString() {
+		String result = "";
+		for (ESelectionType selectionType : hashSelectionTypes.keySet()) {
+			result = result + "[" + selectionType + ": " + hashSelectionTypes.get(selectionType).size() + "]";
+		}
+
+		return result;
+	}
 }

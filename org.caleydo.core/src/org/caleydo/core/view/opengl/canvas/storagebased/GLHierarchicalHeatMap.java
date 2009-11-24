@@ -15,6 +15,7 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +25,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -718,66 +720,6 @@ public class GLHierarchicalHeatMap
 	protected void reactOnExternalSelection(boolean scrollToSelection) {
 
 		if (scrollToSelection && bSkipLevel2 == false) {
-			// Set<Integer> setSelectedElements =
-			// contentSelectionManager.getElements(ESelectionType.SELECTION);
-			//
-			// for (Integer selectedElement : setSelectedElements) {
-			//
-			// int index = contentVA.indexOf(selectedElement.intValue());
-			//
-			// // selected element is in level 3
-			// if (index >= (iFirstSampleLevel1 + iFirstSampleLevel2)
-			// && index <= (iFirstSampleLevel1 + iLastSampleLevel2 + 1)) {
-			// // System.out.println("in range of level 3 --> do nothing");
-			// return;
-			// }
-			// // selected element is in level 2
-			// else if (index >= iFirstSampleLevel1 && index < iLastSampleLevel1) {
-			// // System.out.println("in range of level 2 --> move level 3");
-			// iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
-			// iLastSampleLevel2 = index + iSamplesPerHeatmap / 2 - iFirstSampleLevel1 - 1;
-			// if (iFirstSampleLevel2 < 0) {
-			// iFirstSampleLevel2 = 0;
-			// iLastSampleLevel2 = iSamplesPerHeatmap - 1;
-			// }
-			// if (iLastSampleLevel2 > iSamplesLevel2) {
-			// iFirstSampleLevel2 = iSamplesLevel2 - iSamplesPerHeatmap;
-			// iLastSampleLevel2 = iSamplesLevel2 - 1;
-			// }
-			// }
-			// else {
-			// // System.out.println("in range of level 1 --> move level 2 and 3");
-			// iFirstSampleLevel1 = index - iSamplesLevel2 / 2;
-			// iLastSampleLevel1 = index + iSamplesLevel2 / 2;
-			//
-			// if (iFirstSampleLevel1 <= 0) {
-			// iFirstSampleLevel1 = 0;
-			// iLastSampleLevel1 = iSamplesLevel2;
-			// iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2;
-			// iLastSampleLevel2 = index + iSamplesPerHeatmap / 2;
-			// if (iFirstSampleLevel2 < 0) {
-			// iFirstSampleLevel2 = 0;
-			// iLastSampleLevel2 = iSamplesPerHeatmap;
-			// }
-			// }
-			// else if (iLastSampleLevel1 > iNumberOfElements) {
-			// iFirstSampleLevel1 = iNumberOfElements - iSamplesLevel2;
-			// iLastSampleLevel1 = iNumberOfElements;
-			// iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
-			// iLastSampleLevel2 = index + iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
-			// if (iLastSampleLevel2 > iSamplesLevel2) {
-			// iFirstSampleLevel2 = iSamplesLevel2 - iSamplesPerHeatmap;
-			// iLastSampleLevel2 = iSamplesLevel2;
-			// }
-			// }
-			// else {
-			// iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
-			// iLastSampleLevel2 = index + iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
-			// }
-			// }
-			// return;
-			// }
-
 			Set<Integer> setMouseOverElements =
 				contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 			for (Integer mouseOverElement : setMouseOverElements) {
@@ -3186,6 +3128,9 @@ public class GLHierarchicalHeatMap
 		Set<Integer> setMouseOverElements = contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 		Set<Integer> setSelectedElements = contentSelectionManager.getElements(ESelectionType.SELECTION);
 		Set<Integer> setDeselectedElements = contentSelectionManager.getElements(ESelectionType.DESELECTED);
+		
+		// every time we change the window of the embedded heat map we need to remove the previously used ids
+		connectedElementRepresentationManager.clearByView(glHeatMapView.getID());
 
 		for (int index = 0; index < iSamplesPerHeatmap; index++) {
 			iIndex = iCount + index;
@@ -3197,14 +3142,25 @@ public class GLHierarchicalHeatMap
 
 			// set elements mouse over in embedded heat Map
 			for (Integer iSelectedID : setMouseOverElements) {
-				if (iSelectedID == iContentIndex)
+				if (iSelectedID == iContentIndex) {
 					selectionDelta.addSelection(iContentIndex, ESelectionType.MOUSE_OVER);
+					Collection<Integer> conenctionIDs =
+						contentSelectionManager.getConnectionForElementID(iContentIndex);
+
+					selectionDelta.addConnectionIDs(iSelectedID, conenctionIDs);
+				}
+
 			}
 
 			// set elements selected in embedded heat Map
 			for (Integer iSelectedID : setSelectedElements) {
-				if (iSelectedID == iContentIndex)
+				if (iSelectedID == iContentIndex) {
 					selectionDelta.addSelection(iContentIndex, ESelectionType.SELECTION);
+					Collection<Integer> conenctionIDs =
+						contentSelectionManager.getConnectionForElementID(iContentIndex);
+
+					selectionDelta.addConnectionIDs(iSelectedID, conenctionIDs);
+				}
 			}
 
 			// set elements deselected in embedded heat Map
@@ -3903,6 +3859,14 @@ public class GLHierarchicalHeatMap
 			bDisableBlockDraggingLevel2 = false;
 			bActivateDraggingLevel2 = false;
 		}
+	}
+	
+	@Override
+	public void handleContentTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
+		contentSelectionManager.executeSelectionCommand(selectionCommand);
+		glHeatMapView.handleContentTriggerSelectionCommand(category, selectionCommand);
+		setDisplayListDirty();
+		
 	}
 
 	private void deactivateAllDraggingCursor() {
@@ -5174,9 +5138,9 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public List<AGLEventListener> getRemoteRenderedViews() {
-//		List<AGLEventListener> views = new ArrayList<AGLEventListener>();
-//		views.add(glHeatMapView);
-//		return views;
+		// List<AGLEventListener> views = new ArrayList<AGLEventListener>();
+		// views.add(glHeatMapView);
+		// return views;
 		return new ArrayList<AGLEventListener>();
 	}
 }

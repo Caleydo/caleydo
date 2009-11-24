@@ -1,5 +1,7 @@
 package org.caleydo.core.data.selection.delta;
 
+import java.util.Collection;
+
 import org.caleydo.core.data.selection.ESelectionType;
 
 /**
@@ -49,5 +51,13 @@ public interface ISelectionDelta
 	 *            the connection id
 	 */
 	public void addConnectionID(int iSelectionID, int iConnectionID);
+
+	/**
+	 * Does the same as {@link #addConnectionID(int, int)} but for a bunch of connection ids at a time.
+	 * 
+	 * @param iSelectionID
+	 * @param connectionIDs
+	 */
+	public void addConnectionIDs(int iSelectionID, Collection<Integer> connectionIDs);
 
 }

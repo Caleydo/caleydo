@@ -522,6 +522,8 @@ public class GLHeatMap
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
 		contentSelectionManager.clearSelection(selectionType);
+		
+		
 		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
 		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 

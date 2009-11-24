@@ -99,6 +99,18 @@ public class SelectionDelta
 
 		item.addConnectionID(iConnectionID);
 	}
+	
+	@Override
+	public void addConnectionIDs(int iSelectionID, Collection<Integer> connectionIDs) {
+		SelectionDeltaItem item = selectionItems.get(iSelectionID);
+		if (item == null)
+			throw new IllegalStateException("Supplied selection ID is not in delta.");
+
+		for(Integer connectionID : connectionIDs)
+		{
+			item.addConnectionID(connectionID);
+		}
+	}
 
 	@Override
 	public void add(SelectionDeltaItem deltaItem) {
@@ -130,5 +142,18 @@ public class SelectionDelta
 	public void setSelectionItems(HashMap<Integer, SelectionDeltaItem> selectionItems) {
 		this.selectionItems = selectionItems;
 	}
+
+	@Override
+	public String toString()
+	{
+		String output = "";
+		for(Integer key : selectionItems.keySet())
+		{
+			output = output + selectionItems.get(key);
+		}
+		
+		return output;
+	}
+	
 
 }
