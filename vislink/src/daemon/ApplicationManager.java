@@ -6,6 +6,8 @@ public class ApplicationManager {
 
 	private HashMap<String, Application> applications;
 
+	
+	
 	public ApplicationManager() {
 		applications = new HashMap<String, Application>();
 	}

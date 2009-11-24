@@ -26,7 +26,7 @@ GSearch.setOnLoadCallback(LoadMapSearchControl);
 function LoadMapSearchControl() {
 
   var options = {
-        size : new GSize(1200, 700),
+        size : new GSize(600, 400),
         zoomControl : GSmapSearchControl.ZOOM_CONTROL_ENABLE_ALL,
         title : "Graz",
         idleMapZoom : GSmapSearchControl.ACTIVE_MAP_ZOOM,
@@ -48,28 +48,26 @@ function LoadMapSearchControl() {
    	setTimeout("triggerSearch()", 3000);
 }
 
-function getCoords(point) {
-    var cp = map.fromLatLngToContainerPixel(point);
+function getScreenCoords(point) {
+    var ll = map.fromLatLngToContainerPixel(point);
     var mapdiv = document.getElementById("mapsearch");
     var divpos = findPos(mapdiv);
 
     var yoffset = window.outerHeight - 24 - window.innerHeight;
-    pos = new GPoint(divpos.x + cp.x + window.screenX, window.screenY + divpos.y + cp.y + yoffset);
-    
-    var coords = document.getElementById("coords");
-    coords.innerHTML = "<h4>screenpos of graz: " + pos + "</h4> divpos: " + divpos + "; contpos: " + cp + "; point: " + point;
-    
-    sendBoundingBoxes(pos);
+    pos = new GPoint(divpos.x + ll.x + window.screenX, window.screenY + divpos.y + ll.y + yoffset);
+    return pos;
 }
 
 function sendBoundingBoxes(pos) {
     var xml = "<boundingBoxList>";
-    xml += "<boundingBox";
-    xml += " x=\"" + (pos.x - 10) + "\"";
-    xml += " y=\"" + (pos.y - 10) + "\"";
-    xml += " width=\"" + 20 + "\"";
-    xml += " height=\"" + 20 + "\"";
-    xml += " />\n";
+    if (pos != null) {
+	    xml += "<boundingBox";
+	    xml += " x=\"" + (pos.x - 10) + "\"";
+	    xml += " y=\"" + (pos.y - 10) + "\"";
+	    xml += " width=\"" + 20 + "\"";
+	    xml += " height=\"" + 20 + "\"";
+	    xml += " />\n";
+    }
     xml += "</boundingBoxList>\n";
 
     xml = escape(xml);
@@ -94,18 +92,20 @@ function findPos(obj) {
 }
 
 
-function findAddress(address) {
+function findAddress(address, callback) {
     if (geocoder) {
-        geocoder.getLatLng(address, findAddressCallback);
+        geocoder.getLatLng(address, callback);
     }
 }
 
-function findAddressCallback(point) {
-    if (!point) {
+function vislinkAddressCallback(point) {
+	var pos = null;
+    if (point != null) {
         alert(address + " not found");
     } else {
-        getCoords(point);
+        var pos = getScreenCoords(point);
     }
+    sendBoundingBoxes(pos);
 }
 
 function setCenter() {
@@ -115,7 +115,7 @@ function setCenter() {
 function triggerSearch() {
 	var id = getId();
 	if (id != null) {
-        findAddress(id);
+        findAddress(id, vislinkAddressCallback);
     }
 	setTimeout("triggerSearch()", 3000);
 }
@@ -140,14 +140,43 @@ function register() {
 	xmlDoc = xhttp.responseXML;
 }
 
+function addressLookup() {
+	var addressField = document.getElementById("address");
+	var address = addressField.value;
+	if (address != null && address.length > 0) {
+		findAddress(address, lookupCallback);
+	} else {
+		alert("address empty");
+	}
+}
+
+function lookupCallback(point) {
+    if (!point) {
+        alert(address + " not found");
+    } else {
+        map.setCenter(point);
+        var pos = getScreenCoords(point);
+
+        var addressField = document.getElementById("address");
+    	var address = addressField.value;
+        selectVisLink(address);
+    }
+}
+
+function selectVisLink(id) {
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("GET", "http://localhost:8080/visdaemon/selection?name=googlemaps&id=" + id, false);
+	xhttp.send("");
+	xmlDoc = xhttp.responseXML;
+}
+
 function debug(s) {
     var d = document.getElementById("debug");
     d.innerHTML += s + "<br />";
 }
-  </script>
-<!-- --End Map Search Solution Wizard Generated Code-- -->
+</script>
 
-<!-- <a href="javascript:button1()">get screen coords of graz</a> -->
+<input type="Text" id="address" value="Graz" /><button onclick="addressLookup()">find</button><br />
 
 <a href="javascript:findAddress('Graz')">find graz</a> <a href="javascript:setCenter()">setCenter</a><br />
 
