@@ -1,12 +1,28 @@
 package daemon;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public class VisLinkRenderMockup implements Runnable {
+import Ice.Communicator;
+import Ice.Current;
+import Ice.ObjectAdapter;
+import VIS.Selection;
+import VIS.SelectionContainer;
+import VIS.SelectionGroup;
+import VIS._VisRendererIDisp;
+import VIS.adapterName;
+import VIS.adapterPort;
+
+public class VisLinkRenderMockup extends _VisRendererIDisp implements Runnable {
+
+	/**	generated serial version id */
+	private static final long serialVersionUID = -4091627767767620876L;
 
 	Display display = null;
 	
@@ -17,12 +33,22 @@ public class VisLinkRenderMockup implements Runnable {
 	Region region;
 	
 	public VisLinkRenderMockup() {
-		display = new Display();
+		// display = new Display();
 	}
 
 	public void drawVisualLinks(BoundingBoxList bbl) {
+		region = calcRegion(bbl);
+		drawRegion();
+	}
+	
+	private void drawRegion() {
+		// Display.getDefault().syncExec(this);
+		run();
+	}
+	
+	private Region calcRegion(BoundingBoxList bbl) {
 		if (bbl.getList().size() == 0) {
-			return;
+			return null;
 		}
 
 		int minx = Integer.MAX_VALUE;
@@ -42,8 +68,11 @@ public class VisLinkRenderMockup implements Runnable {
 		centerx = centerx / bbl.getList().size();
 		centery = centery / bbl.getList().size();
 
-		region = new Region();
+		System.out.println("vislink center: (" + centerx + ", " + centery + ")");
+		
+		Region region = new Region();
 		for (BoundingBox bb : bbl.getList()) {
+			System.out.println(" -> vislink to: (" + bb.getX() + ", " + bb.getY() + ")");
 			int dx = bb.getX() - centerx;
 			if (dx < 0)
 				dx = -dx;
@@ -65,11 +94,13 @@ public class VisLinkRenderMockup implements Runnable {
 			region.add(coords);
 		}
 		
-		System.out.println("init syncExec");
-		Display.getCurrent().syncExec(this);
+		return region;
 	}
 	
 	public void run() {
+//		if (display == null) {
+//			display = new Display();
+//		}
 		System.out.println("**** syncExec()");
 		if (shell != null) {
 			shell.dispose();
@@ -83,14 +114,14 @@ public class VisLinkRenderMockup implements Runnable {
 		shell.setSize(size.width, size.height);
 		shell.open();
 	}
-/*	
+
 	public static void main(String[] args) {
 		VisLinkRenderMockup dummy = new VisLinkRenderMockup();
-		System.out.println("starting deskotheque dummy ...");
-		dummy.run();
+		System.out.println("starting VisLinkRenderMockup dummy ...");
+		dummy.execute();
 	}
 
-	public void run() {
+	public void execute() {
 		Communicator communicator = Ice.Util.initialize();
 
 		ServerInfo serverInfo = getServerInfo();
@@ -99,23 +130,71 @@ public class VisLinkRenderMockup implements Runnable {
 		// communicator.stringToProxy(serverInfo.serverName + ":" +
 		// serverInfo.endPoint);
 		ObjectAdapter adapter = communicator.createObjectAdapterWithEndpoints(
-				"desko_dummy", serverInfo.endPoint);
+				adapterName.value, serverInfo.endPoint);
 
-		ServerApplication serverApplication = new ServerApplication();
-		serverApplication.setCommunicator(communicator);
-		serverApplication.setAdapter(adapter);
+//		ServerApplication serverApplication = new ServerApplication();
+//		serverApplication.setCommunicator(communicator);
+//		serverApplication.setAdapter(adapter);
 
-		adapter.add(serverApplication, communicator
-				.stringToIdentity(serverInfo.serverName));
+		adapter.add(this, communicator.stringToIdentity(serverInfo.serverName));
 		adapter.activate();
 
-		System.out.println("deskotheque dummy running");
+		System.out.println("VisLinkRenderMockup running");
 		communicator.waitForShutdown();
 	}
 
-	public ServerInfo getServerInfo() {
-		String displayNum = "1";
+	public void clearAll(Current current) {
+		if (shell != null) {
+			shell.dispose();
+			shell = null;
+		}
+	}
 
+	public void clearSelections(Current current) {
+		clearAll(current);
+	}
+
+	public boolean registerSelectionContainer(SelectionContainer selectionContainer,
+			Current current) {
+		return true;
+	}
+
+	public void renderAllLinks(SelectionGroup[] selectionGroups, Current current) {
+		BoundingBoxList bbl = new BoundingBoxList();
+		for (SelectionGroup selectionGroup : selectionGroups) {
+			for (Selection selection : selectionGroup.selections) {
+				BoundingBox bb = new BoundingBox(selection.x, selection.y, selection.w, selection.h);
+				bbl.add(bb);
+			}
+		}
+		if (Display.getDefault() != null) {
+			display = Display.getDefault();
+		} else if (Display.getCurrent() != null) {
+			display = Display.getCurrent();
+		} else {
+			display = new Display();
+		}
+		region = calcRegion(bbl);
+		drawRegion();
+	}
+
+	public void renderLinks(SelectionGroup selectionGroup, Current current) {
+		// TODO Auto-generated method stub
+		System.out.println("renderLinks not implemented");
+	}
+
+	public void unregisterSelectionContainer(int selectionContainer, Current current) {
+		// TODO Auto-generated method stub
+		System.out.println("unregisterSelectionContainer not implemented");
+	}
+
+	public boolean updateSelectionContainer(SelectionContainer arg0,
+			Current arg1) {
+		System.out.println("updateSelectionContainer not implemented");
+		return false;
+	}
+
+	public ServerInfo getServerInfo() {
 		ServerInfo info = new ServerInfo();
 
 		try {
@@ -125,8 +204,8 @@ public class VisLinkRenderMockup implements Runnable {
 			throw new RuntimeException("could not get hostname", e);
 		}
 
-		info.serverName = "ServerAppI-" + info.hostName + "-" + displayNum;
-		info.endPoint = "tcp -h " + info.hostName + " -p 8011";
+		info.serverName = adapterName.value;
+		info.endPoint = "tcp -h " + info.hostName + " -p " + adapterPort.value;
 		return info;
 	}
 
@@ -135,5 +214,5 @@ public class VisLinkRenderMockup implements Runnable {
 		public String serverName;
 		public String endPoint;
 	}
-*/
+
 }

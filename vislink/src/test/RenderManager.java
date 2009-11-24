@@ -20,24 +20,20 @@ import Ice.Communicator;
  */
 public class RenderManager {
 	
-	/**
-	 * Ice communication object. 
-	 */
+	/** Ice communication object. */
 	private Communicator communicator;
 	
-	/**
-	 * Proxy object of VisRenderer for remote method invocation. 
-	 */
+	/** Proxy object of VisRenderer for remote method invocation. */
 	private VisRendererIPrx rendererPrx; 
 	
 	/**
 	 * Establishes a connection to the VisRenderer und creates 
 	 * a proxy object for remote method invocation. 
 	 */
-	public void connect(){
+	public void connect() {
 		System.out.println("Connect to VisRenderer"); 
 		
-		if(rendererPrx == null){
+		if(rendererPrx == null) {
 
 			// init communication channel 
 			communicator = Ice.Util.initialize();
@@ -60,19 +56,17 @@ public class RenderManager {
 			System.out.println("Server name: " + serverName); 
 			System.out.println("Server end point: " + serverEndPoint); 
 
-			try{
+			try {
 
 				// if no renderer system is running, this operation
 				// will throw an exception 
 				Ice.ObjectPrx proxy = communicator.stringToProxy(serverName + ":" 
 						+ serverEndPoint);
 				rendererPrx = VisRendererIPrxHelper.checkedCast(proxy);
-			}
-			catch(Ice.ConnectionRefusedException e){
+			} catch(Ice.ConnectionRefusedException e){
 				System.out.println("Connection refused - VisRenderer not found"); 
 			}
-		}
-		else{
+		} else {
 			System.out.println("Already established connection");
 		}
 	}
@@ -81,8 +75,7 @@ public class RenderManager {
 	 * Clears all elements from the VisRenderer and closes the 
 	 * network connection. 
 	 */
-	public void disconnect()
-	{
+	public void disconnect() {
 		System.out.println("disconnect"); 
 		if(this.rendererPrx != null){
 			this.rendererPrx.clearAll(); 
@@ -118,7 +111,7 @@ public class RenderManager {
 	 * been established of the id is invalid (e.g. duplicate). 
 	 */
 	public boolean registerSelectionContainer(int id, int x, int y, int w, 
-			int h, float r, float g, float b, float a)
+			int h, float r, float g, float b, float a) 
 	{
 		System.out.println("registerSelectionContainer"); 
 		if(this.rendererPrx != null){
@@ -146,7 +139,7 @@ public class RenderManager {
 	 * @param selections The group of selections. SelectionGroup is defined 
 	 * by the Ice interface of the VisRenderer. 
 	 */
-	public void renderLinks(SelectionGroup[] selections){
+	public void renderLinks(SelectionGroup[] selections) {
 		System.out.println("renderLinks"); 
 		if(this.rendererPrx != null){
 			System.out.println("Send data to renderer"); 
@@ -154,12 +147,11 @@ public class RenderManager {
 		}
 	}
 	
-	public void clearAll(){
+	public void clearAll() {
 		System.out.println("clearAll"); 
 		if(this.rendererPrx != null){
 			this.rendererPrx.clearAll(); 
 		}
 	}
-
 
 }
