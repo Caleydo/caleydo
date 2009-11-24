@@ -2360,10 +2360,10 @@ public class GLHierarchicalHeatMap
 
 		glHeatMapView.getViewFrustum().setTop(ftop);
 		glHeatMapView.getViewFrustum().setRight(fright);
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-			EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView.getID()));
+		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		// EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView.getID()));
 		glHeatMapView.displayRemote(gl);
-		gl.glPopName();
+		// gl.glPopName();
 		renderStyle.setWidthLevel3(glHeatMapView.getViewFrustum().getWidth() - 0.95f);
 
 		// render embedded experiment dendrogram
@@ -2440,10 +2440,10 @@ public class GLHierarchicalHeatMap
 
 		glHeatMapView.getViewFrustum().setTop(ftop);
 		glHeatMapView.getViewFrustum().setRight(fright);
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-			EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView.getID()));
+		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		// EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView.getID()));
 		glHeatMapView.displayRemote(gl);
-		gl.glPopName();
+		// gl.glPopName();
 
 		renderStyle.setWidthLevel3(glHeatMapView.getViewFrustum().getWidth() - 0.95f);
 
@@ -2515,10 +2515,10 @@ public class GLHierarchicalHeatMap
 
 		glHeatMapView.getViewFrustum().setTop(ftop);
 		glHeatMapView.getViewFrustum().setRight(fright);
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-			EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView.getID()));
+		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		// EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView.getID()));
 		glHeatMapView.displayRemote(gl);
-		gl.glPopName();
+		// gl.glPopName();
 
 		renderStyle.setWidthLevel3(glHeatMapView.getViewFrustum().getWidth() - 0.95f);
 
@@ -2679,7 +2679,9 @@ public class GLHierarchicalHeatMap
 		renderClassAssignmentsGenesLevel1(gl);
 
 		// all stuff for rendering level 1 (overview bar)
-		handleTexturePickingLevel1(gl);
+		if (pickingPointLevel1 != null)
+			handleTexturePickingLevel1(gl);
+
 		renderLevel1(gl);
 		renderMarkerLevel1(gl);
 		renderSelectedElementsLevel1(gl);
@@ -2727,7 +2729,9 @@ public class GLHierarchicalHeatMap
 		if (contentVA.getGroupList() != null)
 			gl.glTranslatef(renderStyle.getWidthClusterVisualization(), 0, 0);
 
-		handleTexturePickingLevel2(gl);
+		if (pickingPointLevel2 != null)
+			handleTexturePickingLevel2(gl);
+
 		renderLevel2(gl);
 		renderMarkerLevel2(gl);
 		renderSelectedElementsLevel2(gl);
@@ -2802,7 +2806,9 @@ public class GLHierarchicalHeatMap
 
 	private void renderViewsLevel_2_3_Active(GL gl) {
 
-		handleTexturePickingLevel2(gl);
+		if (pickingPointLevel2 != null)
+			handleTexturePickingLevel2(gl);
+
 		renderLevel2(gl);
 		renderMarkerLevel2(gl);
 		renderSelectedElementsLevel2(gl);
@@ -3128,7 +3134,7 @@ public class GLHierarchicalHeatMap
 		Set<Integer> setMouseOverElements = contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 		Set<Integer> setSelectedElements = contentSelectionManager.getElements(ESelectionType.SELECTION);
 		Set<Integer> setDeselectedElements = contentSelectionManager.getElements(ESelectionType.DESELECTED);
-		
+
 		// every time we change the window of the embedded heat map we need to remove the previously used ids
 		connectedElementRepresentationManager.clearByView(glHeatMapView.getID());
 
@@ -3860,13 +3866,13 @@ public class GLHierarchicalHeatMap
 			bActivateDraggingLevel2 = false;
 		}
 	}
-	
+
 	@Override
 	public void handleContentTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
 		contentSelectionManager.executeSelectionCommand(selectionCommand);
 		glHeatMapView.handleContentTriggerSelectionCommand(category, selectionCommand);
 		setDisplayListDirty();
-		
+
 	}
 
 	private void deactivateAllDraggingCursor() {
