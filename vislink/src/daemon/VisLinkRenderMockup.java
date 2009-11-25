@@ -184,9 +184,8 @@ public class VisLinkRenderMockup extends _VisRendererIDisp implements Runnable {
 		System.out.println("renderLinks not implemented");
 	}
 
-	public void unregisterSelectionContainer(int selectionContainer, Current current) {
-		// TODO Auto-generated method stub
-		System.out.println("unregisterSelectionContainer not implemented");
+	public void unregisterSelectionContainer(int id, Current current) {
+		System.out.println("unregistering application: id=" + id);
 	}
 
 	public boolean updateSelectionContainer(SelectionContainer arg0,

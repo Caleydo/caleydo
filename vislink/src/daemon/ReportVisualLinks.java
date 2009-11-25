@@ -60,9 +60,18 @@ public class ReportVisualLinks extends HttpServlet {
     @Override 
     public void destroy() {
 //    	visLinks = null;
+    	unregisterApplications();
     	disconnect();
     }
 
+    private void unregisterApplications() {
+		ApplicationManager applicationManager = (ApplicationManager) getApplicationContext().getBean("applicationManager");
+		for (Application app : applicationManager.getApplications().values()) {
+			rendererPrx.unregisterSelectionContainer(app.getId());
+		}
+    	
+    }
+    
     private void renderVisualLinks(HashMap<Integer, BoundingBoxList> app2bbs) {
 //		visLinks.drawVisualLinks(list);
     	renderWithIce(app2bbs);
