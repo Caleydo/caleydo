@@ -79,7 +79,6 @@ function sendBoundingBoxes(pos) {
 	xmlDoc = xhttp.responseXML;
 }
 
-
 function findPos(obj) {
 	var curleft = curtop = 0;
     if (obj.offsetParent) {
@@ -91,7 +90,6 @@ function findPos(obj) {
     return new GPoint(curleft, curtop);
 }
 
-
 function findAddress(address, callback) {
     if (geocoder) {
         geocoder.getLatLng(address, callback);
@@ -100,8 +98,8 @@ function findAddress(address, callback) {
 
 function vislinkAddressCallback(point) {
 	var pos = null;
-    if (point != null) {
-        alert(address + " not found");
+    if (point == null) {
+        alert("address not found");
     } else {
         var pos = getScreenCoords(point);
     }
@@ -170,14 +168,14 @@ function addressLookup() {
 }
 
 function lookupCallback(point) {
-    if (!point) {
-        alert(address + " not found");
+    var addressField = document.getElementById("address");
+	var address = addressField.value;
+
+	if (point == null) {
+        alert(address +" not found");
     } else {
         map.setCenter(point);
         var pos = getScreenCoords(point);
-
-        var addressField = document.getElementById("address");
-    	var address = addressField.value;
         selectVisLink(address);
     }
 }

@@ -89,10 +89,20 @@ public class RegistrationServlet extends HttpServlet {
 		
 	private void register(HttpServletRequest request, Document doc, Application app) throws ServletException {
 		ApplicationManager applicationManager = (ApplicationManager) getApplicationContext().getBean("applicationManager");
-		applicationManager.getApplications().put(app.getName(), app);
+		applicationManager.registerApplication(app);
 		
 		Element root = doc.createElement("registration");
 		doc.appendChild(root);
+		BoundingBox windowBoundingBox = app.getWindows().get(0);
+		SelectionContainer selectionContainer = new SelectionContainer(
+				app.getId(),
+				windowBoundingBox.getX(),
+				windowBoundingBox.getY(),
+				windowBoundingBox.getWidth(),
+				windowBoundingBox.getHeight(),
+				new Color4f(-1, 0, 0, 0));
+		VisRendererIPrx rendererPrx = (VisRendererIPrx) getServletContext().getAttribute("visRenderer");
+		rendererPrx.registerSelectionContainer(selectionContainer);
 		
 //		try {
 //			Marshaller marshaller = jaxbContext.createMarshaller();
@@ -117,16 +127,7 @@ public class RegistrationServlet extends HttpServlet {
 			app = new Application();
 			app.setDate(new Date());
 			app.setName(name);
-			app.getWindows().add(new BoundingBox(10, 10, 100, 100));
-			VisRendererIPrx rendererPrx = (VisRendererIPrx) getServletContext().getAttribute("visRenderer");
-			SelectionContainer selectionContainer = new SelectionContainer(
-					app.getId(),
-					windowBoundingBox.getX(),
-					windowBoundingBox.getY(),
-					windowBoundingBox.getWidth(),
-					windowBoundingBox.getHeight(),
-					new Color4f(-1, 0, 0, 0));
-			rendererPrx.registerSelectionContainer(selectionContainer);
+			app.getWindows().add(windowBoundingBox);
 		}
 		return app;
 	}
