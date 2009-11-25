@@ -27,13 +27,13 @@ import org.w3c.dom.Element;
 /**
  * Registration for applications
  */
-public class RegistrationServlet extends HttpServlet {
+public class UnregistrationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * Default constructor. 
      */
-    public RegistrationServlet() {
+    public UnregistrationServlet() {
         // TODO Auto-generated constructor stub
     }
 
@@ -59,18 +59,13 @@ public class RegistrationServlet extends HttpServlet {
 
 		String appName = (String) request.getParameter("name");
 		if (appName == null || appName.isEmpty()) {
-			throw new ServletException("Registration without application name is not allowed.");
-		}
-
-		String xml = request.getParameter("xml");
-		if (xml == null || xml.isEmpty()) {
-			throw new ServletException("Registration without application bounding box is not allowed.");
+			throw new ServletException("Unregistration without application name is not allowed.");
 		}
 
 		VisLinkManager vlm = (VisLinkManager) getApplicationContext().getBean("visLinkManager");
-		vlm.registerApplication(appName, xml);
+		vlm.unregisterApplication(appName);
 
-		Element root = doc.createElement("registration");
+		Element root = doc.createElement("unregistration");
 		doc.appendChild(root);
 		writeDocument(out, doc);
 	}

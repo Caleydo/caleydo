@@ -42,6 +42,18 @@
 		<load-on-startup>10</load-on-startup>
 	</servlet>
 	<servlet>
+		<display-name>unregister</display-name>
+		<servlet-name>unregister</servlet-name>
+		<servlet-class>daemon.UnregistrationServlet</servlet-class>
+		<load-on-startup>10</load-on-startup>
+	</servlet>
+	<servlet>
+		<display-name>clearVisualLinks</display-name>
+		<servlet-name>clearVisualLinks</servlet-name>
+		<servlet-class>daemon.ClearVisualLinksServlet</servlet-class>
+		<load-on-startup>10</load-on-startup>
+	</servlet>
+	<servlet>
 		<servlet-name>dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
@@ -49,6 +61,10 @@
 	<servlet-mapping>
 		<servlet-name>reportVisualLinks</servlet-name>
 		<url-pattern>/reportVisualLinks</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>clearVisualLinks</servlet-name>
+		<url-pattern>/clearVisualLinks</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>propagation</servlet-name>
@@ -61,6 +77,10 @@
 	<servlet-mapping>
 		<servlet-name>register</servlet-name>
 		<url-pattern>/register</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>unregister</servlet-name>
+		<url-pattern>/unregister</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>

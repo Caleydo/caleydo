@@ -260,4 +260,16 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		}
     }
 
+	public void unregisterApplication(String appName) {
+		Application app = applicationManager.getApplications().remove(appName);
+		if (app != null) {
+			rendererPrx.unregisterSelectionContainer(app.getId());
+			
+		}
+	}
+
+	public void clearVisLinks() {
+		rendererPrx.clearAll();
+	}
+
 }

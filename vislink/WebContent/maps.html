@@ -33,12 +33,6 @@ function LoadMapSearchControl() {
         activeMapZoom : GSmapSearchControl.ACTIVE_MAP_ZOOM
         }
 
-/*      new GSmapSearchControl(
-        document.getElementById("mapsearch"),
-        "FY3 0HH",
-        options
-        );
-*/
     map = new GMap2(document.getElementById("mapsearch"), options);
     map.setCenter(new GLatLng(47.07, 15.45, false), 8);
 
@@ -100,41 +94,43 @@ function findPos(obj) {
 
 function findAddress(address, callback) {
     if (geocoder) {
-<!--        geocoder.getLatLng(address, callback);-->
+// 		geocoder.getLatLng(address, callback);
 		geocoder.getLocations(address, callback); 
     }
 }
 
 function vislinkAddressCallback(response) {
 	var pos = null; 
-	if(!response || response.Status.code != 200){
+	if(!response || response.Status.code != 200) {
 		alert("address not found"); 
-	}
-	else{
+	} else {
 		var place = response.Placemark[0]; 
-		var point = new GLatLng(place.Point.coordinates[1], 
-				place.Point.coordinates[0]); 
+		var point = new GLatLng(place.Point.coordinates[1], place.Point.coordinates[0]); 
 		var accuracy = place.AddressDetails.Accuracy; 
-		map.setCenter(point, Math.round(2 + accuracy * 14/9)); 
-		var pos = getScreenCoords(point); 
+        var center = document.getElementById("center").checked;
+        if (center) {
+			map.setCenter(point, Math.round(2 + accuracy * 14/9));
+        } 
+		pos = getScreenCoords(point); 
 	}
 	sendBoundingBoxes(pos); 
 }
 
-
-<!--function vislinkAddressCallback(point) {-->
-<!--	var pos = null;-->
-<!--    if (point == null) {-->
-<!--        alert("address not found");-->
-<!--    } else {-->
-<!--        var center = document.getElementById("center").checked;-->
-<!--        if (center) {-->
-<!--        	map.setCenter(point);-->
-<!--        }-->
-<!--        var pos = getScreenCoords(point);-->
-<!--    }-->
-<!--    sendBoundingBoxes(pos);-->
-<!--}-->
+/*
+function vislinkAddressCallback(point) {
+	var pos = null;
+	if (point == null) {
+        alert("address not found");
+    } else {
+        var center = document.getElementById("center").checked;
+        if (center) {
+        	map.setCenter(point);
+        }
+        var pos = getScreenCoords(point);
+    }
+    sendBoundingBoxes(pos);
+}
+*/
 
 function setCenter() {
     map.setCenter(new GLatLng(47.07, 15.45, false), 8);
@@ -197,16 +193,20 @@ function addressLookup() {
 	}
 }
 
-function lookupCallback(point) {
+function lookupCallback(response) {
     var addressField = document.getElementById("address");
 	var address = addressField.value;
 
-	if (point == null) {
-        alert(address +" not found");
-    } else {
-        map.setCenter(point);
-        var pos = getScreenCoords(point);
-        var xml = generateBoundingBoxXML(pos, true);
+	if(!response || response.Status.code != 200) {
+		alert("address not found"); 
+	} else {
+		var place = response.Placemark[0]; 
+		var accuracy = place.AddressDetails.Accuracy; 
+		var point = new GLatLng(place.Point.coordinates[1], place.Point.coordinates[0]); 
+		map.setCenter(point, Math.round(2 + accuracy * 14/9));
+		var pos = getScreenCoords(point); 
+
+		var xml = generateBoundingBoxXML(pos, true);
         sendVisLinkSelection(address, xml);
     }
 }
