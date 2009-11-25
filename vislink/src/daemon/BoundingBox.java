@@ -11,6 +11,7 @@ public class BoundingBox {
 	private int y;
 	private int width;
 	private int height;
+	private boolean source;
 
 	public BoundingBox() {
 		this.x = 0;
@@ -58,6 +59,14 @@ public class BoundingBox {
 	@Override
 	public String toString() {
 		return "BoundingBox [("+x+":"+y+")-("+height+":"+width+")]";
+	}
+
+	public boolean isSource() {
+		return source;
+	}
+
+	public void setSource(boolean source) {
+		this.source = source;
 	}
 	
 }

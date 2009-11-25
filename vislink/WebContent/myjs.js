@@ -10,9 +10,21 @@ function myjsStart() {
 
 function selectVisLink() {
 	id = content.document.defaultView.getSelection();
+	var selectionId = "" + id + "";
+	
+	if (selectionId == null || selectionId == "") return;
+
+    var doc = content.document;
+	removeBoundingBoxes(doc);
+	var bbs = searchDocument(doc, selectionId);
+	var xml = generateBoundingBoxesXML(bbs);
+
+	var requrl = "http://localhost:8080/visdaemon/selection?name=firefox";
+	requrl += "&id=" + selectionId;
+	requrl += "&xml=" + xml;
 
 	var xhttp = new XMLHttpRequest();
-	xhttp.open("GET", "http://localhost:8080/visdaemon/selection?name=firefox&id=" + id, false);
+	xhttp.open("GET", requrl, false);
 	xhttp.send("");
 	xmlDoc = xhttp.responseXML;
 }
@@ -52,11 +64,12 @@ function triggerSearch(event) {
         var doc = content.document;
 		removeBoundingBoxes(doc);
 		var bbs = searchDocument(doc, id);
-		sendBoundingBoxes(bbs);
+		var xml = generateBoundingBoxesXML(bbs);
+		sendBoundingBoxes(xml);
 	} else {
 //		alert("request timed out, could not get filter from vislink daemon");
 	}
-	setTimeout("triggerSearch()", 3000);
+	setTimeout("triggerSearch()", 200);
 }
 
 function getId() {
@@ -131,7 +144,7 @@ function searchDocument(doc, id) {
 		}
 	}
 //    alert(bbs);
-    addBoundingBoxes();
+//    addBoundingBoxes();
     return bbs;
 }
 
@@ -187,19 +200,27 @@ function addBoundingBoxes() {
     }
 }
 
-function sendBoundingBoxes(bbs) {
+function generateBoundingBoxesXML(bbs) {
     var xml = "<boundingBoxList>";
+    var source = false;
     for (var i = 0; i<bbs.length; i++) {
         xml += "<boundingBox";
         xml += " x=\""+bbs[i].x+"\"";
         xml += " y=\""+bbs[i].y+"\"";
         xml += " width=\""+bbs[i].width+"\"";
         xml += " height=\""+bbs[i].height+"\"";
+        xml += " source=\""+source+"\"";
         xml += " />\n";
+        source = false;
     }
     xml += "</boundingBoxList>\n";
 
     xml = escape(xml);
+    
+    return xml;
+}
+
+function sendBoundingBoxes(xml) {
     var requrl = "http://localhost:8080/visdaemon/reportVisualLinks?name=firefox&xml=" + xml;
     
 	var xhttp = new XMLHttpRequest();

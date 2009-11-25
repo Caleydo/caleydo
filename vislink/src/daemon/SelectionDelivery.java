@@ -1,9 +1,6 @@
 package daemon;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -43,15 +40,17 @@ public class SelectionDelivery extends HttpServlet {
 
 	protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/xml");
-		ApplicationManager applicationManager = (ApplicationManager) getApplicationContext().getBean("applicationManager");
+
+		VisLinkManager visLinkManager = (VisLinkManager) getApplicationContext().getBean("visLinkManager"); 
+		
 		String appName = request.getParameter("name");
 		// todo if (appName == null)
-		String id = request.getParameter("id");
-		// todo if (id == null) 
 		
-		for (Application app : applicationManager.getApplications().values()) {
-			app.setSendId(id);
-		}
+		String selectionId = request.getParameter("id");
+		// todo if (id == null) 
+
+		String xml = request.getParameter("xml");
+		visLinkManager.reportSelection(appName, selectionId, xml);
 		
 		response.getWriter().print("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><selection />");
 	}

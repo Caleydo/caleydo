@@ -58,7 +58,7 @@ function getScreenCoords(point) {
     return pos;
 }
 
-function sendBoundingBoxes(pos) {
+function generateBoundingBoxXML(pos, source) {
     var xml = "<boundingBoxList>";
     if (pos != null) {
 	    xml += "<boundingBox";
@@ -66,11 +66,16 @@ function sendBoundingBoxes(pos) {
 	    xml += " y=\"" + (pos.y - 10) + "\"";
 	    xml += " width=\"" + 20 + "\"";
 	    xml += " height=\"" + 20 + "\"";
+	    xml += " source=\"" + source + "\"";
 	    xml += " />\n";
     }
     xml += "</boundingBoxList>\n";
-
     xml = escape(xml);
+    return xml;
+}
+
+function sendBoundingBoxes(pos) {
+    var xml = generateBoundingBoxXML(pos, false);
     var requrl = "http://localhost:8080/visdaemon/reportVisualLinks?name=googlemaps&xml=" + xml;
     
 	var xhttp = new XMLHttpRequest();
@@ -101,6 +106,10 @@ function vislinkAddressCallback(point) {
     if (point == null) {
         alert("address not found");
     } else {
+        var center = document.getElementById("center").checked;
+        if (center) {
+        	map.setCenter(point);
+        }
         var pos = getScreenCoords(point);
     }
     sendBoundingBoxes(pos);
@@ -115,7 +124,7 @@ function triggerSearch() {
 	if (id != null) {
         findAddress(id, vislinkAddressCallback);
     }
-	setTimeout("triggerSearch()", 3000);
+	setTimeout("triggerSearch()", 200);
 }
 
 function getId() {
@@ -176,13 +185,18 @@ function lookupCallback(point) {
     } else {
         map.setCenter(point);
         var pos = getScreenCoords(point);
-        selectVisLink(address);
+        var xml = generateBoundingBoxXML(pos, true);
+        sendVisLinkSelection(address, xml);
     }
 }
 
-function selectVisLink(id) {
+function sendVisLinkSelection(id, xml) {
+	var requrl = "http://localhost:8080/visdaemon/selection?name=googlemaps";
+	requrl += "&id=" + id;
+	requrl += "&xml=" + xml;
+
 	var xhttp = new XMLHttpRequest();
-	xhttp.open("GET", "http://localhost:8080/visdaemon/selection?name=googlemaps&id=" + id, false);
+	xhttp.open("GET", requrl, false);
 	xhttp.send("");
 	xmlDoc = xhttp.responseXML;
 }
@@ -193,9 +207,8 @@ function debug(s) {
 }
 </script>
 
-<input type="Text" id="address" value="Graz" /><button onclick="addressLookup()">find</button><br />
-
-<a href="javascript:findAddress('Graz')">find graz</a> <a href="javascript:setCenter()">setCenter</a><br />
+<input id="address" type="Text" value="Graz" /><button onclick="addressLookup()">find</button><br />
+<input id="center" type="checkbox" checked="true" /> center map to external selection<br />
 
 <div id="coords" />
 

@@ -2,8 +2,6 @@ package daemon;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -45,12 +43,10 @@ public class SelectionPropagation extends HttpServlet {
 		response.setContentType("text/xml");
 		PrintWriter out = response.getWriter();
 		
-		ApplicationManager applicationManager = (ApplicationManager) getApplicationContext().getBean("applicationManager");
+		VisLinkManager visLinkManager = (VisLinkManager) getApplicationContext().getBean("visLinkManager");
 		String appName = request.getParameter("name");
-		Application application = applicationManager.getApplications().get(appName);
+		String filter = visLinkManager.retrieveSelectionId(appName);
 		
-		String filter = application.fetchSendId();
-
 		String empty = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" +
 			"<vislink>" + 
 			"</vislink>";
@@ -64,10 +60,10 @@ public class SelectionPropagation extends HttpServlet {
 					"	</element>" +
 					"</vislink>";
 			out.print(xml);
-			System.out.println("sending xml=" + xml);
+			System.out.println("sending to " + appName + ", xml=" + xml);
 		} else {
 			out.println(empty);
-			System.out.println("sending empty links to " + application);
+			// System.out.println("sending empty links to " + appName);
 		}
 	}
 

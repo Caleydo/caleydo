@@ -6,4 +6,10 @@
 	<bean name="applicationManager" class="daemon.ApplicationManager">
 	</bean>
 
+	<bean name="visLinkManager" class="daemon.VisLinkManager">
+		<property name="applicationManager">
+			<ref bean="applicationManager" />
+		</property>
+	</bean>
+
 </beans>
