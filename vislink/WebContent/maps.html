@@ -39,6 +39,7 @@ function LoadMapSearchControl() {
     map.addControl(new GLargeMapControl()); 
     map.addControl(new GMapTypeControl()); 
 
+    GEvent.addListener(map, "moveend", clearVisualLinks);
     geocoder = new GClientGeocoder();
     
    	register();
@@ -217,6 +218,16 @@ function sendVisLinkSelection(id, xml) {
 	requrl += "&xml=" + xml;
 
 	var xhttp = new XMLHttpRequest();
+	xhttp.open("GET", requrl, false);
+	xhttp.send("");
+	xmlDoc = xhttp.responseXML;
+}
+
+function clearVisualLinks() {
+	var	requrl = "http://localhost:8080/visdaemon/clearVisualLinks";
+	requrl += "?name=" + window.visLinkAppName;
+
+	var	xhttp =	new	XMLHttpRequest();
 	xhttp.open("GET", requrl, false);
 	xhttp.send("");
 	xmlDoc = xhttp.responseXML;
