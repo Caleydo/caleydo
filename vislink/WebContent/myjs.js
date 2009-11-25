@@ -149,7 +149,7 @@ function findBoundingBox(doc, obj) {
 
     var body = doc.getElementsByTagName("body")[0];
     var win = body.ownerDocument.defaultView;
-    var yoffset = win.outerHeight - win.innerHeight;
+    var yoffset = win.outerHeight - win.innerHeight - 2;
 
     var ret = null;
     // check if visible
@@ -157,14 +157,14 @@ function findBoundingBox(doc, obj) {
         ((curleft - win.pageXOffset) > 0) && ((curleft - win.pageXOffset) < win.innerWidth)) {
             
         finaltop = curtop + win.screenY + yoffset - win.pageYOffset;
-        finalleft = curleft + win.screenX;
+        finalleft = curleft + win.screenX + 1;
         
         // debug("[(x:" + finalleft + ", y:" + finaltop + "), (w:" + w + ", h:" + h + ")]");
         ret = new Object();
         ret.x = finalleft;
         ret.y = finaltop;
-        ret.width = w;
-        ret.height = h;
+        ret.width = w + 2;
+        ret.height = h + 2;
     }
 
 /*

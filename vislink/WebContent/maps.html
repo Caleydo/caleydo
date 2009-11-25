@@ -53,7 +53,7 @@ function getScreenCoords(point) {
     var mapdiv = document.getElementById("mapsearch");
     var divpos = findPos(mapdiv);
 
-    var yoffset = window.outerHeight - 24 - window.innerHeight;
+    var yoffset = window.outerHeight - window.innerHeight;
     pos = new GPoint(divpos.x + ll.x + window.screenX, window.screenY + divpos.y + ll.y + yoffset);
     return pos;
 }

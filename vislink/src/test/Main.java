@@ -18,7 +18,8 @@ public class Main {
 		renderer.connect(); 
 
 		// register container at the renderer 
-		boolean success = renderer.registerSelectionContainer
+		boolean success = true; 
+		success &= renderer.registerSelectionContainer
 			(0, 200, 200, 400, 400, -1.0f, 0.0f, 0.0f, 1.0f);
 		success &= renderer.registerSelectionContainer
 			(1, 600, 200, 400, 400, -1.0f, 0.0f, 0.0f, 1.0f);
@@ -36,8 +37,8 @@ public class Main {
 		selections2[1] = new Selection
 			(700, 500, 100, 100, new Color4f(-1, 0, 0, 0), false); 
 		SelectionGroup[] groups = new SelectionGroup[2]; 
-		groups[0] = new SelectionGroup(0, selections1); 
-		groups[1] = new SelectionGroup(1, selections2); 
+		groups[1] = new SelectionGroup(0, selections1); 
+		groups[0] = new SelectionGroup(1, selections2); 
 		
 		// send selections to renderer 
 		renderer.renderLinks(groups); 
