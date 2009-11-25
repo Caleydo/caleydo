@@ -17,7 +17,7 @@ function selectVisLink() {
     var doc = content.document;
 	removeBoundingBoxes(doc);
 	var bbs = searchDocument(doc, selectionId);
-	var xml = generateBoundingBoxesXML(bbs);
+	var xml = generateBoundingBoxesXML(bbs, true);
 
 	var requrl = "http://localhost:8080/visdaemon/selection?name=firefox";
 	requrl += "&id=" + selectionId;
@@ -64,7 +64,7 @@ function triggerSearch(event) {
         var doc = content.document;
 		removeBoundingBoxes(doc);
 		var bbs = searchDocument(doc, id);
-		var xml = generateBoundingBoxesXML(bbs);
+		var xml = generateBoundingBoxesXML(bbs, false);
 		sendBoundingBoxes(xml);
 	} else {
 //		alert("request timed out, could not get filter from vislink daemon");
@@ -200,9 +200,8 @@ function addBoundingBoxes() {
     }
 }
 
-function generateBoundingBoxesXML(bbs) {
+function generateBoundingBoxesXML(bbs, source) {
     var xml = "<boundingBoxList>";
-    var source = false;
     for (var i = 0; i<bbs.length; i++) {
         xml += "<boundingBox";
         xml += " x=\""+bbs[i].x+"\"";

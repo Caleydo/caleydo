@@ -65,6 +65,7 @@ public class BoundingBox {
 		return source;
 	}
 
+	@XmlAttribute
 	public void setSource(boolean source) {
 		this.source = source;
 	}
