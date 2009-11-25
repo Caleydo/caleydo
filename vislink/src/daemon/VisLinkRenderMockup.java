@@ -156,6 +156,7 @@ public class VisLinkRenderMockup extends _VisRendererIDisp implements Runnable {
 
 	public boolean registerSelectionContainer(SelectionContainer selectionContainer,
 			Current current) {
+		System.out.println("registering application: id=" + selectionContainer.id);
 		return true;
 	}
 

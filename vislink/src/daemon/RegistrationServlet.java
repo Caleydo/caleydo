@@ -2,6 +2,7 @@ package daemon;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.util.Date;
 
 import javax.servlet.ServletContext;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -27,6 +29,10 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import VIS.Color4f;
+import VIS.SelectionContainer;
+import VIS.VisRendererIPrx;
 
 /**
  * Registration for applications
@@ -45,7 +51,7 @@ public class RegistrationServlet extends HttpServlet {
 
     public void init() throws ServletException {
 		try {
-			jaxbContext = JAXBContext.newInstance(Application.class);
+			jaxbContext = JAXBContext.newInstance(Application.class, BoundingBox.class);
 		} catch (JAXBException e) {
 			throw new ServletException(e);
 		}
@@ -88,12 +94,12 @@ public class RegistrationServlet extends HttpServlet {
 		Element root = doc.createElement("registration");
 		doc.appendChild(root);
 		
-		try {
-			Marshaller marshaller = jaxbContext.createMarshaller();
-			marshaller.marshal(app, root);
-		} catch (JAXBException e) {
-			throw new ServletException(e);
-		}
+//		try {
+//			Marshaller marshaller = jaxbContext.createMarshaller();
+//			marshaller.marshal(app, root);
+//		} catch (JAXBException e) {
+//			throw new ServletException(e);
+//		}
 	}
 
 	private Application readParams(HttpServletRequest request) throws ServletException {
@@ -107,12 +113,39 @@ public class RegistrationServlet extends HttpServlet {
 		if (app != null) {
 			System.out.println("re-registering " + name);
 		} else {
+			BoundingBox windowBoundingBox = getWindowBoundingBox(request);
 			app = new Application();
 			app.setDate(new Date());
 			app.setName(name);
 			app.getWindows().add(new BoundingBox(10, 10, 100, 100));
+			VisRendererIPrx rendererPrx = (VisRendererIPrx) getServletContext().getAttribute("visRenderer");
+			SelectionContainer selectionContainer = new SelectionContainer(
+					app.getId(),
+					windowBoundingBox.getX(),
+					windowBoundingBox.getY(),
+					windowBoundingBox.getWidth(),
+					windowBoundingBox.getHeight(),
+					new Color4f(-1, 0, 0, 0));
+			rendererPrx.registerSelectionContainer(selectionContainer);
 		}
 		return app;
+	}
+
+	private BoundingBox getWindowBoundingBox(HttpServletRequest request) 
+	throws ServletException {
+		String xml = request.getParameter("xml");
+		System.out.println(xml);
+
+		BoundingBox bb = null;
+		try {
+			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+			
+			StringReader sr = new StringReader(xml);
+			bb = (BoundingBox) unmarshaller.unmarshal(sr);
+		} catch (Exception e) {
+			throw new ServletException(e);
+		}
+		return bb;
 	}
 
 	protected Document createDocument() throws ServletException {
@@ -131,7 +164,7 @@ public class RegistrationServlet extends HttpServlet {
 		try {
             TransformerFactory transfac = TransformerFactory.newInstance();
             Transformer trans = transfac.newTransformer();
-            trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            // trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             trans.setOutputProperty(OutputKeys.INDENT, "yes");
 
             StreamResult result = new StreamResult(out);

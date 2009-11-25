@@ -33,6 +33,7 @@
 		<display-name>reportVisualLinks</display-name>
 		<servlet-name>reportVisualLinks</servlet-name>
 		<servlet-class>daemon.ReportVisualLinks</servlet-class>
+		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
 		<display-name>register</display-name>

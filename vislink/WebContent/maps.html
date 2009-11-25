@@ -134,10 +134,29 @@ function getId() {
 }
 
 function register() {
-	var xhttp = new XMLHttpRequest();
-	xhttp.open("GET", "http://localhost:8080/visdaemon/register?name=googlemaps", false);
-	xhttp.send("");
-	xmlDoc = xhttp.responseXML;
+	var x = window.screenX;
+	var y = window.screenY;
+	var w = window.outerWidth;
+	var h = window.outerHeight;
+
+	var xml = "";
+    xml += "<boundingBox";
+    xml += " x=\""+x+"\"";
+    xml += " y=\""+y+"\"";
+    xml += " width=\""+w+"\"";
+    xml += " height=\""+h+"\"";
+    xml += " />\n";
+
+    xml = escape(xml);
+
+	try {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "http://localhost:8080/visdaemon/register?name=googlemaps&xml=" + xml, false);
+		xhttp.send("");
+		xmlDoc = xhttp.responseXML;
+	} catch (err) {
+		alert("unexpected error: err");
+	}
 }
 
 function addressLookup() {

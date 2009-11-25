@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -53,6 +54,7 @@ public class ReportVisualLinks extends HttpServlet {
     public void init() {
 //    	visLinks = new VisLinkRenderMockup();
     	connect();
+    	getServletContext().setAttribute("visRenderer", rendererPrx);
     }
 
     @Override 
@@ -61,25 +63,32 @@ public class ReportVisualLinks extends HttpServlet {
     	disconnect();
     }
 
-    private void renderVisualLinks(BoundingBoxList bbl) {
+    private void renderVisualLinks(HashMap<Integer, BoundingBoxList> app2bbs) {
 //		visLinks.drawVisualLinks(list);
-    	renderWithIce(bbl);
+    	renderWithIce(app2bbs);
     }
     
-    private void renderWithIce(BoundingBoxList bbl) {
-    	SelectionGroup selectionGroup = new SelectionGroup();
-    	selectionGroup.selections = new Selection[bbl.getList().size()];
+    private void renderWithIce(HashMap<Integer, BoundingBoxList> app2bbs) {
     	boolean source = true;
-    	ArrayList<Selection> selectionList = new ArrayList<Selection>();
-    	for (BoundingBox bb : bbl.getList()) {
-    		Selection selection = new Selection(bb.getX(), bb.getY(), bb.getWidth(), bb.getHeight(),
-    				new Color4f(-1, 0, 0, 0), source);
-    		selectionList.add(selection);
-    		source = false;
+    	ArrayList<SelectionGroup> selectionGroupList = new ArrayList<SelectionGroup>();
+    	
+    	for (Entry<Integer, BoundingBoxList> e : app2bbs.entrySet()) {
+        	SelectionGroup selectionGroup = new SelectionGroup();
+        	selectionGroup.selections = new Selection[e.getValue().getList().size()];
+        	ArrayList<Selection> selectionList = new ArrayList<Selection>();
+    		for (BoundingBox bb : e.getValue().getList()) {
+        		Selection selection = new Selection(bb.getX(), bb.getY(), bb.getWidth(), bb.getHeight(),
+        				new Color4f(-1, 0, 0, 0), source);
+        		source = false;
+        		selectionList.add(selection);
+    		}
+    		selectionGroup.selections = selectionList.toArray(selectionGroup.selections);
+    		selectionGroup.containerID = e.getKey();
+    		selectionGroupList.add(selectionGroup);
     	}
-    	selectionGroup.selections = selectionList.toArray(selectionGroup.selections);
-    	SelectionGroup[] groups  = new SelectionGroup[1];
-    	groups[0] = selectionGroup;
+
+    	SelectionGroup[] groups  = new SelectionGroup[selectionGroupList.size()];
+    	selectionGroupList.toArray(groups);
     	rendererPrx.renderAllLinks(groups);
     }
 
@@ -119,19 +128,15 @@ public class ReportVisualLinks extends HttpServlet {
 			throw new ServletException(e);
 		}
 		
-		HashMap<String, BoundingBoxList> app2bbs = (HashMap<String, BoundingBoxList>) getServletContext().getAttribute("boundingBoxes");
+		HashMap<Integer, BoundingBoxList> app2bbs = (HashMap<Integer, BoundingBoxList>) getServletContext().getAttribute("boundingBoxes");
 		if (app2bbs == null) {
-			app2bbs = new HashMap<String, BoundingBoxList>();
+			app2bbs = new HashMap<Integer, BoundingBoxList>();
 			getServletContext().setAttribute("boundingBoxes", app2bbs);
 		}
-		app2bbs.put(app.getName(), bbl);
+		app2bbs.put(app.getId(), bbl);
 		
 		if (applicationManager.getApplications().size() == app2bbs.size()) {
-			BoundingBoxList list = new BoundingBoxList();
-			for (BoundingBoxList elem : app2bbs.values()) {
-				list.getList().addAll(elem.getList());
-			}
-			renderVisualLinks(list);
+			renderVisualLinks(app2bbs);
 			app2bbs.clear();
 		} else {
 			System.out.println("waiting for more reports, " + app2bbs.size() + " / " + applicationManager.getApplications().size());
@@ -181,7 +186,6 @@ public class ReportVisualLinks extends HttpServlet {
 			System.out.println("Server end point: " + serverEndPoint); 
 
 			try {
-
 				// if no renderer system is running, this operation
 				// will throw an exception 
 				Ice.ObjectPrx proxy = communicator.stringToProxy(serverName + ":" 

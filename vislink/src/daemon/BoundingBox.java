@@ -1,9 +1,11 @@
 package daemon;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType
+@XmlRootElement
 public class BoundingBox {
 	private int x;
 	private int y;

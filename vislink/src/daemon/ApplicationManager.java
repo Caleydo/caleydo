@@ -6,7 +6,7 @@ public class ApplicationManager {
 
 	private HashMap<String, Application> applications;
 
-	
+	private int idCounter = 0;
 	
 	public ApplicationManager() {
 		applications = new HashMap<String, Application>();
@@ -18,6 +18,11 @@ public class ApplicationManager {
 
 	public void setApplications(HashMap<String, Application> applications) {
 		this.applications = applications;
+	}
+	
+	public void registerApplication(Application app) {
+		app.setId(idCounter++);
+		applications.put(app.getName(), app);
 	}
 	
 }

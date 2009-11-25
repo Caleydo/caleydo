@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -14,6 +15,9 @@ public class Application {
 	
 	/** application name */
 	private String name;
+	
+	/** application id assigned by {@link ApplicationManager} */
+	private int id;
 	
 	/** creation timestamp */
 	private Date date;
@@ -38,6 +42,15 @@ public class Application {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@XmlElement(name="applicationId")
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	@XmlElementWrapper
