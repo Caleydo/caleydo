@@ -106,14 +106,14 @@ function triggerSearch() {
 	if (stopped) return;
 	var	id = getId();
 	if (stopped) return; // second check, because getId() might have lost connection to daemon
+	alert("id="+id);
 	if (id != null)	{
 		var	doc	= content.document;
-		removeBoundingBoxes(doc);
 		var	bbs	= searchDocument(doc, id);
 		var	xml	= generateBoundingBoxesXML(bbs,	false);
 		sendBoundingBoxes(xml);
 	}
-	setTimeout("triggerSearch()", 200);
+	setTimeout("triggerSearch()", 4000);
 }
 
 function getId() {
