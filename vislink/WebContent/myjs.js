@@ -215,8 +215,8 @@ function findBoundingBox(doc, obj) {
 
 	var	ret	= null;
 	// check if	visible
-	if (((curtop - win.pageYOffset)	> 0) &&	((curtop - win.pageYOffset)	< win.innerHeight) && 
-		((curleft -	win.pageXOffset) > 0) && ((curleft - win.pageXOffset) <	win.innerWidth)) {
+	//if (((curtop - win.pageYOffset)	> 0) &&	((curtop - win.pageYOffset)	< win.innerHeight) && 
+	//	((curleft -	win.pageXOffset) > 0) && ((curleft - win.pageXOffset) <	win.innerWidth)) {
 			
 		finaltop = curtop +	win.screenY	+ yoffset -	win.pageYOffset;
 		finalleft =	curleft	+ win.screenX +	1;
@@ -226,7 +226,7 @@ function findBoundingBox(doc, obj) {
 		ret.y =	finaltop;
 		ret.width =	w +	2;
 		ret.height = h + 2;
-	}
+	//}
 	return ret;
 }
 
