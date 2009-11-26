@@ -35,7 +35,7 @@
             class="org.caleydo.rcp.view.opengl.RcpGLHierarchicalHeatMapView"
             icon="resources/icons/view/heatmap.png"
             id="org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView"
-            name="Heat Map">
+            name="Hierarchichal Heat Map">
       </view>      
 
       <view
@@ -201,6 +201,14 @@
             icon="resources/icons/view/heatmap.png"
             id="org.caleydo.rcp.views.opengl.GLScatterplotView"
             name="Scatterplot">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLGrouperView"
+            icon="resources/icons/view/heatmap.png"
+            id="org.caleydo.rcp.views.opengl.GLGrouperView"
+            name="Grouper View">
       </view>
 
       
@@ -421,6 +429,11 @@
             id="org.caleydo.rcp.command.openviews.scatterplot"
             name="Open Scatterplot">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenGrouperHandler"
+            id="org.caleydo.rcp.command.openviews.grouper"
+            name="Open Grouper">
+      </command>
       		
    </extension>
    <extension
@@ -589,6 +602,12 @@
                   commandId="org.caleydo.rcp.command.openviews.scatterplot"
                   icon="resources/icons/view/heatmap.png"
                   label="Scatterplot"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.grouper"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Grouper"
                   style="push">
             </command>
          </menu>

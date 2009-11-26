@@ -30,6 +30,7 @@ import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager;
 import org.caleydo.core.view.opengl.canvas.cell.GLCell;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLGlyphSliderView;
+import org.caleydo.core.view.opengl.canvas.grouper.GLGrouper;
 import org.caleydo.core.view.opengl.canvas.histogram.GLHistogram;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.GLHyperbolic;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
@@ -262,8 +263,11 @@ public class ViewManager
 				break;
 
 			case CREATE_GL_HISTOGRAM:
-
 				glEventListener = new GLHistogram(glCanvas, sLabel, viewFrustum);
+				break;
+				
+			case CREATE_GL_GROUPER:
+				glEventListener = new GLGrouper(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_DENDROGRAM_HORIZONTAL:
