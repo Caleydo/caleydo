@@ -5,7 +5,12 @@ function selectVisLink() {
 	var	selectionId	= "" + selid +	"";
 
 	if (selectionId	== null	|| selectionId == "") return;
+	window.localSelectionId = selectionId;
+	
+	reportVisLinks(selectionId);
+}
 
+function reportVisLinks(selectionId) {
 	var	doc	= content.document;
 	var	bbs	= searchDocument(doc, selectionId);
 	var	xml	= generateBoundingBoxesXML(bbs,	true);
@@ -26,15 +31,24 @@ function startVisLinks() {
 	stopped = false;
 	if (register()) {
 		window.addEventListener('unload', stopVisLinks, false);
-		window.addEventListener('scroll', clearVisualLinks,	false);
-		setTimeout("triggerSearch()", 1000);
+		window.addEventListener('scroll', windowChanged, false);
+		window.addEventListener('resize', resize, false);
+		setTimeout("triggerSearch()", 500);
+	}
+}
+
+function windowChanged() {
+	if (window.localSelectionId != null) {
+		reportVisLinks(window.localSelectionId);
+	} else {
+		clearVisualLinks();
 	}
 }
 
 function stopVisLinks() {
 	stopped = true;
 	window.removeEventListener('unload', stopVisLinks, false);
-	window.removeEventListener('scroll', clearVisualLinks,	false);
+	window.removeEventListener('scroll', clearVisualLinks, false);
 	unregister();
 }
 
@@ -69,6 +83,7 @@ function register()	{
 		xmlDoc = xhttp.responseXML;
 	} catch (err) {
 		alert("Could not establish connection to visdaemon.");
+		stopped = true;
 		return false;
 	}
 	return true;
@@ -102,11 +117,34 @@ function clearVisualLinks()	{
 	}
 }
 
+function validateWindowPosition() {
+	var oldPos = window.oldPos;
+	if (oldPos != null) {
+		if (window.screenX != oldPos.x || window.screenY != oldPos.y) {
+			register();
+			oldPos.x = window.screenX;
+			oldPos.y = window.screenY;
+			windowChanged();
+		}
+	} else {
+		window.oldPos = new Object();
+		window.oldPos.x = window.screenX;
+		window.oldPos.y = window.screenY;
+	}
+}
+
+function resize() {
+	register();
+	windowChanged();
+}
+
 function triggerSearch() {
+	validateWindowPosition();
 	if (stopped) return;
 	var	id = getId();
 	if (stopped) return; // second check, because getId() might have lost connection to daemon
 	if (id != null)	{
+		window.localSelectionId = null;
 		var	doc	= content.document;
 		var	bbs	= searchDocument(doc, id);
 		var	xml	= generateBoundingBoxesXML(bbs,	false);
@@ -215,8 +253,8 @@ function findBoundingBox(doc, obj) {
 
 	var	ret	= null;
 	// check if	visible
-	//if (((curtop - win.pageYOffset)	> 0) &&	((curtop - win.pageYOffset)	< win.innerHeight) && 
-	//	((curleft -	win.pageXOffset) > 0) && ((curleft - win.pageXOffset) <	win.innerWidth)) {
+	if (((curtop - win.pageYOffset)	> 0) &&	((curtop - win.pageYOffset)	< win.innerHeight) && 
+		((curleft -	win.pageXOffset) > 0) && ((curleft - win.pageXOffset) <	win.innerWidth)) {
 			
 		finaltop = curtop +	win.screenY	+ yoffset -	win.pageYOffset;
 		finalleft =	curleft	+ win.screenX +	1;
@@ -226,7 +264,7 @@ function findBoundingBox(doc, obj) {
 		ret.y =	finaltop;
 		ret.width =	w +	2;
 		ret.height = h + 2;
-	//}
+	}
 	return ret;
 }
 

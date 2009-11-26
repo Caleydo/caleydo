@@ -14,6 +14,8 @@ import javax.xml.bind.Unmarshaller;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
+import sun.java2d.windows.WinVolatileSurfaceManager;
+
 import Ice.Communicator;
 import VIS.Color4f;
 import VIS.Selection;
@@ -75,29 +77,38 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 
 	public void registerApplication(String appName, String boundingBoxXML) {
 		Application app = applicationManager.getApplications().get(appName);
+		BoundingBox windowBoundingBox = getWindowBoundingBox(boundingBoxXML);
+
 		if (app != null) {
 			System.out.println("re-registering " + appName);
+			app.getWindows().clear();
+			app.getWindows().add(windowBoundingBox);
+			SelectionContainer selectionContainer = createSelectionContainer(app.getId(), windowBoundingBox);
+			rendererPrx.updateSelectionContainer(selectionContainer);
 		} else {
-			BoundingBox windowBoundingBox = getWindowBoundingBox(boundingBoxXML);
 			app = new Application();
 			app.setDate(new Date());
 			app.setName(appName);
 			app.getWindows().add(windowBoundingBox);
 
 			applicationManager.registerApplication(app);
+			SelectionContainer selectionContainer = createSelectionContainer(app.getId(), windowBoundingBox);
 
 			System.out.println("registering " + app); 
-			SelectionContainer selectionContainer = new SelectionContainer(
-					app.getId(),
-					windowBoundingBox.getX(),
-					windowBoundingBox.getY(),
-					windowBoundingBox.getWidth(),
-					windowBoundingBox.getHeight(),
-					new Color4f(-1, 0, 0, 0));
 			rendererPrx.registerSelectionContainer(selectionContainer);
 		}
 	}
 
+	private SelectionContainer createSelectionContainer(int appId, BoundingBox wbb) {
+		return new SelectionContainer(
+				appId,
+				wbb.getX(),
+				wbb.getY(),
+				wbb.getWidth(),
+				wbb.getHeight(),
+				new Color4f(-1, 0, 0, 0));
+	}
+	
 	private BoundingBox getWindowBoundingBox(String xml) { 
 		System.out.println(xml);
 

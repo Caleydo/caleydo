@@ -1,6 +1,9 @@
-<html><head>
+<html>
+<head>
     <title>Google Maps</title>
 </head>
+  <link href="http://www.google.com/uds/css/gsearch.css" rel="stylesheet" type="text/css"/>
+  <link href="http://www.google.com/uds/solutions/mapsearch/gsmapsearch.css" rel="stylesheet" type="text/css"/>
 <body>
 
 <!-- You can use things like divs and tables to position your map wherever you want it within your page -->
@@ -12,21 +15,23 @@
 
   <script src="http://maps.google.com/maps?file=api&v=2&amp;sensor=false&key=ABQIAAAAS3_IfYCkXPfhdPOAJAQtqBQiwqvF03-joXVPTwe3Qkq_-BUC3hTb_YsT2U2IWBGUa2lsmaxNUmC1Hg" type="text/javascript"></script>
   <script src="http://www.google.com/uds/api?file=uds.js&v=1.0&amp;sensor=false&key=ABQIAAAAS3_IfYCkXPfhdPOAJAQtqBQiwqvF03-joXVPTwe3Qkq_-BUC3hTb_YsT2U2IWBGUa2lsmaxNUmC1Hg" type="text/javascript"></script>
-  <link href="http://www.google.com/uds/css/gsearch.css" rel="stylesheet" type="text/css"/>
 
   <!-- Map Search Control and Stylesheet -->
   <script src="http://www.google.com/uds/solutions/mapsearch/gsmapsearch.js" type="text/javascript"></script>
-  <link href="http://www.google.com/uds/solutions/mapsearch/gsmapsearch.css" rel="stylesheet" type="text/css"/>
 
 <script type="text/javascript">
 var map;
 var geocoder;
+var localSelectionId = null;
+var remoteScroll = false;
+
 GSearch.setOnLoadCallback(LoadMapSearchControl);
 
 function LoadMapSearchControl() {
 
-  var options = {
-        size : new GSize(600, 400),
+	var mapSize = new GSize(window.innerWidth-40, window.innerHeight-80);
+	var options = {
+        size : mapSize,
         zoomControl : GSmapSearchControl.ZOOM_CONTROL_ENABLE_ALL,
         title : "Graz",
         idleMapZoom : GSmapSearchControl.ACTIVE_MAP_ZOOM,
@@ -39,11 +44,12 @@ function LoadMapSearchControl() {
     map.addControl(new GLargeMapControl()); 
     map.addControl(new GMapTypeControl()); 
 
-    GEvent.addListener(map, "moveend", clearVisualLinks);
+    GEvent.addListener(map, "moveend", scrollMap);
     geocoder = new GClientGeocoder();
     
    	register();
-   	setTimeout("triggerSearch()", 3000);
+	window.addEventListener('resize', resize, false);
+	setTimeout("triggerSearch()", 1000);
 }
 
 function getScreenCoords(point) {
@@ -110,6 +116,7 @@ function vislinkAddressCallback(response) {
 		var accuracy = place.AddressDetails.Accuracy; 
         var center = document.getElementById("center").checked;
         if (center) {
+			remoteScroll = true;
 			map.setCenter(point, Math.round(2 + accuracy * 14/9));
         } 
 		pos = getScreenCoords(point); 
@@ -117,29 +124,12 @@ function vislinkAddressCallback(response) {
 	sendBoundingBoxes(pos); 
 }
 
-/*
-function vislinkAddressCallback(point) {
-	var pos = null;
-	if (point == null) {
-        alert("address not found");
-    } else {
-        var center = document.getElementById("center").checked;
-        if (center) {
-        	map.setCenter(point);
-        }
-        var pos = getScreenCoords(point);
-    }
-    sendBoundingBoxes(pos);
-}
-*/
-
-function setCenter() {
-    map.setCenter(new GLatLng(47.07, 15.45, false), 8);
-}
-
 function triggerSearch() {
+	validateWindowPosition();
 	var id = getId();
 	if (id != null) {
+		localSelectionId = null;
+		document.getElementById("receivedId").innerHTML = id;
         findAddress(id, vislinkAddressCallback);
     }
 	setTimeout("triggerSearch()", 200);
@@ -159,12 +149,23 @@ function getId() {
 }
 
 function register() {
-	var x = window.screenX;
-	var y = window.screenY;
+	
+	var x = window.screenX + (window.outerWidth - window.innerWidth) / 2;
+	var y = window.screenY - (window.outerHeight - window.innerHeight);
 	var w = window.outerWidth;
 	var h = window.outerHeight;
 
-	var xml = "";
+	var bbs = "bb: " +x+":"+y+" - "+w+":"+h;
+	bbs += "\n";
+	bbs += "w.x=" + window.screenX + "\n";
+	bbs += "w.ow=" + window.outerWidth + "\n";
+	bbs += "w.iw=" + window.innerWidth + "\n";
+	bbs += "w.y=" + window.screenY + "\n";
+	bbs += "w.oh=" + window.outerHeight + "\n";
+	bbs += "w.ih=" + window.innerHeight + "\n";
+// alert(bbs);
+
+var xml = "";
     xml += "<boundingBox";
     xml += " x=\""+x+"\"";
     xml += " y=\""+y+"\"";
@@ -184,11 +185,40 @@ function register() {
 	}
 }
 
+function scrollMap() {
+	if (remoteScroll) {
+		remoteScroll = false;
+		return;
+	}
+	windowChanged();
+}
+function windowChanged() {
+	if (localSelectionId != null && localSelectionId.length > 0) {
+		findAddress(localSelectionId, windowChangedCallback);
+	} else {
+		clearVisualLinks();
+	}
+}
+
+function windowChangedCallback(response) {
+	if(!response || response.Status.code != 200) {
+		alert("address not found"); 
+	} else {
+		var place = response.Placemark[0]; 
+		var accuracy = place.AddressDetails.Accuracy; 
+		var point = new GLatLng(place.Point.coordinates[1], place.Point.coordinates[0]); 
+		var pos = getScreenCoords(point); 
+
+		var xml = generateBoundingBoxXML(pos, true);
+        sendVisLinkSelection(localSelectionId, xml);
+    }
+}
+
 function addressLookup() {
 	var addressField = document.getElementById("address");
 	var address = addressField.value;
 	if (address != null && address.length > 0) {
-		 findAddress(address, lookupCallback);
+		findAddress(address, lookupCallback);
 	} else {
 		alert("address empty");
 	}
@@ -197,6 +227,7 @@ function addressLookup() {
 function lookupCallback(response) {
     var addressField = document.getElementById("address");
 	var address = addressField.value;
+	localSelectionId = address;
 
 	if(!response || response.Status.code != 200) {
 		alert("address not found"); 
@@ -204,6 +235,8 @@ function lookupCallback(response) {
 		var place = response.Placemark[0]; 
 		var accuracy = place.AddressDetails.Accuracy; 
 		var point = new GLatLng(place.Point.coordinates[1], place.Point.coordinates[0]); 
+        var center = document.getElementById("center").checked;
+		remoteScroll = true;
 		map.setCenter(point, Math.round(2 + accuracy * 14/9));
 		var pos = getScreenCoords(point); 
 
@@ -233,18 +266,54 @@ function clearVisualLinks() {
 	xmlDoc = xhttp.responseXML;
 }
 
+function validateWindowPosition() {
+	var currentPos = new GPoint(window.screenX, window.screenY);
+	var oldPos = window.oldPos;
+	if (oldPos != null) {
+		if (currentPos.x != oldPos.x || currentPos.y != oldPos.y) {
+			register();
+			window.oldPos = currentPos;
+			windowChanged();
+		}
+	} else {
+		window.oldPos = currentPos;
+	}
+}
+
+function resize() {
+	var mapDiv = document.getElementById("mapsearch");
+	mapDiv.style.width = window.innerWidth-40;
+	mapDiv.style.height = window.innerHeight-80;
+	map.checkResize();
+	register();
+	windowChanged();
+}
+
 function debug(s) {
     var d = document.getElementById("debug");
     d.innerHTML += s + "<br />";
 }
 </script>
 
-<input id="address" type="Text" value="Graz" /><button onclick="addressLookup()">find</button><br />
-<input id="center" type="checkbox" checked="true" /> center map to external selection<br />
-
-<div id="coords" />
-
-<div id="debug" />
+<table>
+<tr>
+	<td>
+		<input id="address" type="Text" value="Graz" /><button onclick="addressLookup()">find</button>
+	</td>
+	<td width="20">&nbsp;</td>
+	<td>Received Selection:</td>
+	<td><span id="receivedId"></span></td>
+</tr>
+<tr>
+	<td>
+		<input id="center" type="checkbox" checked="true" /> center map to external selection
+	</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+</table>
+<div id="debug"></div>
 
 </body>
 
