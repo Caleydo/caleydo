@@ -269,7 +269,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	}
 
 	public void clearVisLinks() {
-		rendererPrx.clearAll();
+		rendererPrx.clearSelections();
 	}
 
 }
