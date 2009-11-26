@@ -1,22 +1,12 @@
-var	bboxes = new Array();
-
-function myjsStart() {
-	alert("myjsStart");
-	var	appcontent = window.document.getElementById("appcontent");
-	if (appcontent)	{
-		appcontent.addEventListener("DOMContentLoaded",	startVisLinks, false);
-	}
-} 
+var stopped = true;
 
 function selectVisLink() {
-    var selid = content.getSelection().toString();
-    window.aamysel = content.getSelection();
+	var	selid =	content.getSelection().toString();
 	var	selectionId	= "" + selid +	"";
-	
+
 	if (selectionId	== null	|| selectionId == "") return;
 
 	var	doc	= content.document;
-	removeBoundingBoxes(doc);
 	var	bbs	= searchDocument(doc, selectionId);
 	var	xml	= generateBoundingBoxesXML(bbs,	true);
 
@@ -33,16 +23,24 @@ function selectVisLink() {
 
 function startVisLinks() {
 	// alert("startVisLinks");
-	bboxes = new Array();
-	register();
-	window.addEventListener('unload', unregister, false);
-	window.addEventListener('scroll', clearVisualLinks, false);
-	setTimeout("triggerSearch()", 1000);
+	stopped = false;
+	if (register()) {
+		window.addEventListener('unload', stopVisLinks, false);
+		window.addEventListener('scroll', clearVisualLinks,	false);
+		setTimeout("triggerSearch()", 1000);
+	}
+}
+
+function stopVisLinks() {
+	stopped = true;
+	window.removeEventListener('unload', stopVisLinks, false);
+	window.removeEventListener('scroll', clearVisualLinks,	false);
+	unregister();
 }
 
 function register()	{
-    if (window.visLinkAppName == null) {
-	    window.visLinkAppName = "firefox-" + (new Date()).getTime();
+	if (window.visLinkAppName == null) {
+		window.visLinkAppName =	"firefox-" + (new Date()).getTime();
 	}
 
 	var	x =	window.screenX;
@@ -63,43 +61,57 @@ function register()	{
 	var	requrl = "http://localhost:8080/visdaemon/register";
 	requrl += "?name=" + window.visLinkAppName;
 	requrl += "&xml=" +	xml;
-
-	var	xhttp =	new	XMLHttpRequest();
-	xhttp.open("GET", requrl, false);
-	xhttp.send("");
-	xmlDoc = xhttp.responseXML;
+	
+	try {
+		var	xhttp =	new	XMLHttpRequest();
+		xhttp.open("GET", requrl, false);
+		xhttp.send("");
+		xmlDoc = xhttp.responseXML;
+	} catch (err) {
+		alert("Could not establish connection to visdaemon.");
+		return false;
+	}
+	return true;
 }
 
 function unregister() {
 	var	requrl = "http://localhost:8080/visdaemon/unregister";
 	requrl += "?name=" + window.visLinkAppName;
-
-	var	xhttp =	new	XMLHttpRequest();
-	xhttp.open("GET", requrl, false);
-	xhttp.send("");
-	xmlDoc = xhttp.responseXML;
+	try {
+		var	xhttp =	new	XMLHttpRequest();
+		xhttp.open("GET", requrl, false);
+		xhttp.send("");
+		xmlDoc = xhttp.responseXML;
+	} catch (err) {
+		// vis link server no reachable, nothing to do
+	}
 }
 
-function clearVisualLinks() {
+function clearVisualLinks()	{
 	var	requrl = "http://localhost:8080/visdaemon/clearVisualLinks";
 	requrl += "?name=" + window.visLinkAppName;
 
-	var	xhttp =	new	XMLHttpRequest();
-	xhttp.open("GET", requrl, false);
-	xhttp.send("");
-	xmlDoc = xhttp.responseXML;
+	try	{
+		var	xhttp =	new	XMLHttpRequest();
+		xhttp.open("GET", requrl, false);
+		xhttp.send("");
+		xmlDoc = xhttp.responseXML;
+	} catch (err) {
+		alert("Connection to visdaemon lost, stopping");
+		stopVisLinks();
+	}
 }
 
 function triggerSearch() {
+	if (stopped) return;
 	var	id = getId();
+	if (stopped) return; // second check, because getId() might have lost connection to daemon
 	if (id != null)	{
 		var	doc	= content.document;
 		removeBoundingBoxes(doc);
 		var	bbs	= searchDocument(doc, id);
 		var	xml	= generateBoundingBoxesXML(bbs,	false);
 		sendBoundingBoxes(xml);
-	} else {
-//		alert("request timed out, could	not	get	filter from	vislink	daemon");
 	}
 	setTimeout("triggerSearch()", 200);
 }
@@ -108,10 +120,16 @@ function getId() {
 	var	requrl = "http://localhost:8080/visdaemon/propagation";
 	requrl += "?name=" + window.visLinkAppName;
 
-	var	xhttp =	new	XMLHttpRequest();
-	xhttp.open("GET", requrl, false);
-	xhttp.send("");
-	xmlDoc = xhttp.responseXML;
+	try {
+		var	xhttp =	new	XMLHttpRequest();
+		xhttp.open("GET", requrl, false);
+		xhttp.send("");
+		xmlDoc = xhttp.responseXML;
+	} catch (err) {
+		alert("Connection to visdaemon lost, stopping");
+		stopVisLinks();
+		return null;
+	}
 
 	var	ids	= xmlDoc.getElementsByTagName("id");
 	if (ids.length > 0)	{
@@ -177,8 +195,6 @@ function searchDocument(doc, id) {
 			}
 		}
 	}
-//	  alert(bbs);
-//	  addBoundingBoxes();
 	return bbs;
 }
 
@@ -206,32 +222,13 @@ function findBoundingBox(doc, obj) {
 		finaltop = curtop +	win.screenY	+ yoffset -	win.pageYOffset;
 		finalleft =	curleft	+ win.screenX +	1;
 		
-		// debug("[(x:"	+ finalleft	+ ", y:" + finaltop	+ "), (w:" + w + ",	h:"	+ h	+ ")]");
 		ret	= new Object();
 		ret.x =	finalleft;
 		ret.y =	finaltop;
 		ret.width =	w +	2;
 		ret.height = h + 2;
 	}
-
-/*
-	var	bb = doc.createElement("DIV");
-	bb.style.position =	"absolute";
-	bb.style.top = curtop +	"px";
-	bb.style.left =	curleft	+ "px";
-	bb.style.width = w + "px";
-	bb.style.height	= h	+ "px";
-	bb.style.outline = "2px	solid red";
-	bboxes[bboxes.length] =	bb;
-*/
 	return ret;
-}
-
-function addBoundingBoxes()	{
-	var	body = content.document.getElementsByTagName("body")[0];
-	for	(var i = 0;	i <	bboxes.length; i++)	{
-		body.appendChild(bboxes[i]);
-	}
 }
 
 function generateBoundingBoxesXML(bbs, source) {
@@ -256,7 +253,7 @@ function generateBoundingBoxesXML(bbs, source) {
 function sendBoundingBoxes(xml)	{
 	var	requrl = "http://localhost:8080/visdaemon/reportVisualLinks"
 	requrl += "?name=" + window.visLinkAppName;
-	requrl += "&xml=" + xml;
+	requrl += "&xml=" +	xml;
 	
 	var	xhttp =	new	XMLHttpRequest();
 	xhttp.open("GET", requrl, false);
@@ -264,12 +261,13 @@ function sendBoundingBoxes(xml)	{
 	xmlDoc = xhttp.responseXML;
 }
 
-function removeBoundingBoxes(doc) {
-	var	body = doc.getElementsByTagName("body")[0];
-	for	(var i = 0;	i <	bboxes.length; i++)	{
-		body.removeChild(bboxes[i]);
-	}
-	bboxes = new Array();
-}
-
 // window.addEventListener('load', myjsStart, false);
+/*
+function myjsStart() {
+	alert("myjsStart");
+	var	appcontent = window.document.getElementById("appcontent");
+	if (appcontent)	{
+		appcontent.addEventListener("DOMContentLoaded",	startVisLinks, false);
+	}
+} 
+*/
