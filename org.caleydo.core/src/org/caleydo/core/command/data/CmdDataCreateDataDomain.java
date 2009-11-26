@@ -30,7 +30,7 @@ public class CmdDataCreateDataDomain
 	public CmdDataCreateDataDomain(final ECommandType cmdType) {
 		super(cmdType);
 
-		dataDomain = EDataDomain.GENERAL_DATA;
+		dataDomain = EDataDomain.UNSPECIFIED;
 	}
 
 	/**
@@ -54,13 +54,11 @@ public class CmdDataCreateDataDomain
 				return new TissueUseCase();
 			case PATHWAY_DATA:
 				return new PathwayUseCase();
-			case GENERAL_DATA:	
+			case UNSPECIFIED:	
 				return new UnspecifiedUseCase();
 			default:
 				throw new IllegalStateException("Unknow data domain type: " + dataDomain);
-
 		}
-
 	}
 
 	@Override

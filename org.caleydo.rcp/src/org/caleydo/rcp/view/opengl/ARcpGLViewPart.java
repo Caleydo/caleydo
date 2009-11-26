@@ -82,8 +82,10 @@ public abstract class ARcpGLViewPart
 
 		ECommandType glViewType = serializedView.getCreationCommandType();
 		dataDomain = serializedView.getDataDomain();
+		
+		// FIXME: when restructuring startup procedure
 		if (dataDomain == null)
-			dataDomain = EDataDomain.GENETIC_DATA;
+			dataDomain = Application.applicationMode.getDataDomain();
 
 		IGeneralManager generalManager = GeneralManager.get();
 

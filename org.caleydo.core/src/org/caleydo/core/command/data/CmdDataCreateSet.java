@@ -66,9 +66,11 @@ public class CmdDataCreateSet
 			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "New Set with internal ID "
 				+ createdObject.getID() + " and external ID " + iExternalID + " created."));
 
-		if (createdObject.getSetType() == ESetType.GENE_EXPRESSION_DATA
-			|| createdObject.getSetType() == ESetType.UNSPECIFIED) {
+		if (createdObject.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
 			GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).setSet(createdObject);
+		}
+		else if (createdObject.getSetType() == ESetType.UNSPECIFIED) {
+			GeneralManager.get().getUseCase(EDataDomain.UNSPECIFIED).setSet(createdObject);
 		}
 		else if (createdObject.getSetType() == ESetType.CLINICAL_DATA) {
 			GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA).setSet(createdObject);

@@ -642,7 +642,7 @@ public class GLParallelCoordinates
 			contentDataType = EIDType.EXPRESSION_INDEX;
 			storageDataType = EIDType.EXPERIMENT_INDEX;
 		}
-		else if (dataDomain == EDataDomain.CLINICAL_DATA) {
+		else if (dataDomain == EDataDomain.CLINICAL_DATA || dataDomain == EDataDomain.UNSPECIFIED) {
 			contentDataType = EIDType.EXPERIMENT_INDEX;
 			storageDataType = EIDType.EXPERIMENT_RECORD;
 		}

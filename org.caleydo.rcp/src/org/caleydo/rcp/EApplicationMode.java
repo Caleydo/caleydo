@@ -15,7 +15,7 @@ public enum EApplicationMode {
 	GENE_EXPRESSION_NEW_DATA(EDataDomain.GENETIC_DATA),
 	// GENE_EXPRESSION_PATHWAY_VIEWER,
 	GENE_EXPRESSION_SAMPLE_DATA(EDataDomain.GENETIC_DATA),
-	UNSPECIFIED_NEW_DATA(EDataDomain.GENERAL_DATA),
+	UNSPECIFIED_NEW_DATA(EDataDomain.UNSPECIFIED),
 
 	/**
 	 * specifies that the UseCase (including {@link Set} and {@link VirtualArray}) is loaded from a caleydo
@@ -46,7 +46,7 @@ public enum EApplicationMode {
 	 * 
 	 * @return
 	 */
-	EDataDomain getDataDomain() {
+	public EDataDomain getDataDomain() {
 		return dataDomain;
 	}
 

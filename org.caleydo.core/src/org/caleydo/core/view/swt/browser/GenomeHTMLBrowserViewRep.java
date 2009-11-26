@@ -106,7 +106,7 @@ public class GenomeHTMLBrowserViewRep
 			return;
 
 		// Prevent handling of non genetic entities
-		if (useCase.getDataDomain() != EDataDomain.GENETIC_DATA)
+		if (useCase == null || useCase.getDataDomain() != EDataDomain.GENETIC_DATA)
 			return;
 
 		Display.getDefault().asyncExec(new Runnable() {

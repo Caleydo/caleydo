@@ -18,7 +18,7 @@ public enum EIDCategory {
 	GENE("Genes", EDataDomain.GENETIC_DATA),
 	EXPERIMENT("Experiments", EDataDomain.CLINICAL_DATA),
 	PATHWAY("Pathways", EDataDomain.PATHWAY_DATA),
-	OTHER("Unspecified", EDataDomain.GENERAL_DATA);
+	OTHER("Unspecified", EDataDomain.UNSPECIFIED);
 
 	private String name;
 	private EDataDomain dataDomain;

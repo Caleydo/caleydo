@@ -29,8 +29,7 @@ public abstract class CaleydoRCPViewPart
 
 	protected int iViewID;
 
-	// FIXME we need to set this intelligently
-	protected EDataDomain dataDomain = EDataDomain.GENETIC_DATA;
+	protected EDataDomain dataDomain;
 
 	/** stores the attach status of the viewpart, true means within caleydo's main window, false otherwise */
 	protected boolean attached;

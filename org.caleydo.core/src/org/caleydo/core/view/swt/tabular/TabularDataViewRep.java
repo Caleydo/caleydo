@@ -399,7 +399,7 @@ public class TabularDataViewRep
 			column.setText("Gene Symbol");
 			column.setWidth(110);
 		}
-		else if (dataDomain == EDataDomain.GENERAL_DATA) {
+		else if (dataDomain == EDataDomain.UNSPECIFIED) {
 
 			column = new TableColumn(labelTable, SWT.NONE);
 			column.setText("ID");
@@ -491,7 +491,7 @@ public class TabularDataViewRep
 					item.setText(2, "Unknown");
 				}
 			}
-			else if (dataDomain == EDataDomain.GENERAL_DATA) {
+			else if (dataDomain == EDataDomain.UNSPECIFIED) {
 
 				item.setText(1, (String) idMappingManager.getID(EIDType.EXPRESSION_INDEX,
 					EIDType.UNSPECIFIED, iContentIndex));

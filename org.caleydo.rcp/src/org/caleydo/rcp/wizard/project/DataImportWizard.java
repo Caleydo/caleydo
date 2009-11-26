@@ -1,7 +1,5 @@
 package org.caleydo.rcp.wizard.project;
 
-import org.caleydo.rcp.Application;
-import org.caleydo.rcp.EApplicationMode;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.graphics.Rectangle;
@@ -58,7 +56,6 @@ public class DataImportWizard
 				return false;
 			}
 
-			Application.applicationMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
 			return true;
 		}
 

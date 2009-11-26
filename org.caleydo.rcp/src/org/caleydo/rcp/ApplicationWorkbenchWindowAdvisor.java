@@ -4,7 +4,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.perspective.PartListener;
-import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -73,7 +72,7 @@ public class ApplicationWorkbenchWindowAdvisor
 			getWindowConfigurer().getActionBarConfigurer().getStatusLineManager(),
 			getWindowConfigurer().getWindow().getShell().getDisplay());
 
-		if (GeneralManager.get().getUseCase(EDataDomain.GENERAL_DATA) != null) {
+		if (GeneralManager.get().getUseCase(EDataDomain.UNSPECIFIED) != null) {
 
 			IActionBarConfigurer configurer = getWindowConfigurer().getActionBarConfigurer();
 

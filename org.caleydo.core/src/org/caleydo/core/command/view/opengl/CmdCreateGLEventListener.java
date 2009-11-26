@@ -175,6 +175,7 @@ public class CmdCreateGLEventListener
 		final float fFar, final int iParentCanvasID, final float fCamOriginX, final float fCamOriginY,
 		final float fCamOriginZ, final float fCamRotationX, final float fCamRotationY,
 		final float fCamRotationZ, final float fCamRotationAngle) {
+		
 		setAttributes(dataDomain, eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar, iParentCanvasID);
 
 		cameraOrigin.set(fCamOriginX, fCamOriginY, fCamOriginZ);

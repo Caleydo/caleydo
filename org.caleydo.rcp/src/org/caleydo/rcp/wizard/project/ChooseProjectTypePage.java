@@ -48,7 +48,7 @@ public class ChooseProjectTypePage
 	public enum EProjectType {
 		NEW_PROJECT,
 		// PATHWAY_VIEWER_MODE,
-		SAMPLE_DATA_RANDOM,
+		// SAMPLE_DATA_RANDOM,
 		SAMPLE_DATA_REAL
 	}
 
@@ -234,9 +234,9 @@ public class ChooseProjectTypePage
 			}
 		});
 
-		Button buttonRandomSampleDataMode = new Button(composite, SWT.RADIO);
-		buttonRandomSampleDataMode.setText("Start with random generated sample gene expression data");
-		buttonRandomSampleDataMode.setLayoutData(new GridData(GridData.FILL_BOTH));
+		// Button buttonRandomSampleDataMode = new Button(composite, SWT.RADIO);
+		// buttonRandomSampleDataMode.setText("Start with random generated sample gene expression data");
+		// buttonRandomSampleDataMode.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		Button buttonNewProject = new Button(composite, SWT.RADIO);
 		buttonNewProject.setText("Load data from file (CSV, TXT)");
@@ -421,13 +421,13 @@ public class ChooseProjectTypePage
 		// }
 		// });
 
-		buttonRandomSampleDataMode.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				projectType = EProjectType.SAMPLE_DATA_RANDOM;
-				setPageComplete(true);
-			}
-		});
+//		buttonRandomSampleDataMode.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				projectType = EProjectType.SAMPLE_DATA_RANDOM;
+//				setPageComplete(true);
+//			}
+//		});
 
 		buttonSampleDataMode.addSelectionListener(new SelectionAdapter() {
 			@Override

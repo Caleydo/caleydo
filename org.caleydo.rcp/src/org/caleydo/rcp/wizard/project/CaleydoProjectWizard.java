@@ -106,15 +106,17 @@ public class CaleydoProjectWizard
 
 				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES,
 					sNewPathwayDataSources);
-				
-				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, Application.dataDomain.name());
+
+				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, Application.dataDomain
+					.name());
 			}
 			else if (page.getApplicationMode() == EApplicationMode.UNSPECIFIED_NEW_DATA) {
 				useCase = new UnspecifiedUseCase();
-				Application.dataDomain = EDataDomain.GENERAL_DATA;
+				Application.dataDomain = EDataDomain.UNSPECIFIED;
 				Application.applicationMode = EApplicationMode.UNSPECIFIED_NEW_DATA;
-				
-				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, Application.dataDomain.name());
+
+				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, Application.dataDomain
+					.name());
 			}
 			else if (page.getApplicationMode() == EApplicationMode.LOAD_PROJECT) {
 				// FIXME determine the application domain somewhere?

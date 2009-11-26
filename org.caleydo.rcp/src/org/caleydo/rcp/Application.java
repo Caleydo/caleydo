@@ -81,9 +81,9 @@ public class Application
 	// private static String BOOTSTRAP_FILE_SAMPLE_DATA_MODE =
 	// "data/bootstrap/shared/sample/bootstrap_gene_expression_sample.xml";
 
-	@SuppressWarnings("unused")
-	private static String BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE =
-		"data/bootstrap/shared/webstart/bootstrap_webstart_pathway_viewer.xml";
+	// @SuppressWarnings("unused")
+	// private static String BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE =
+	// "data/bootstrap/shared/webstart/bootstrap_webstart_pathway_viewer.xml";
 
 	private static String REAL_DATA_SAMPLE_FILE =
 		"data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
@@ -171,7 +171,7 @@ public class Application
 			}
 
 			if (sCaleydoXMLfile.equals("")) {
-				IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
+
 				switch (applicationMode) {
 					// case GENE_EXPRESSION_PATHWAY_VIEWER:
 					// sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
@@ -179,17 +179,16 @@ public class Application
 					case GENE_EXPRESSION_SAMPLE_DATA:
 					case GENE_EXPRESSION_NEW_DATA:
 						sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
-						useCase.setBootstrapFileName(sCaleydoXMLfile);
+						GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).setBootstrapFileName(sCaleydoXMLfile);
 						break;
 					case UNSPECIFIED_NEW_DATA:
 						// not necessary to load any mapping or XML files
 						sCaleydoXMLfile = "";
-						useCase.setBootstrapFileName(sCaleydoXMLfile);
 						break;
 					case LOAD_PROJECT:
 					case COLLABORATION_CLIENT:
 					case PLEX_CLIENT:
-						sCaleydoXMLfile = useCase.getBootstrapFileName();
+						sCaleydoXMLfile = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getBootstrapFileName();
 						break;
 
 					default:
@@ -440,7 +439,9 @@ public class Application
 		initializedStartViews = new ArrayList<ASerializedView>();
 		for (Class<? extends ASerializedView> viewType : startViews) {
 			try {
-				initializedStartViews.add(viewType.newInstance());
+				ASerializedView view = viewType.newInstance();
+				view.setDataDomain(dataDomain);
+				initializedStartViews.add(view);
 			}
 			catch (IllegalAccessException ex) {
 				ex.printStackTrace();
@@ -476,7 +477,8 @@ public class Application
 		startViews.add(SerializedHTMLBrowserView.class);
 
 		IUseCase useCase = GeneralManager.get().getUseCase(dataDomain);
-		if ((dataDomain == EDataDomain.GENETIC_DATA && !((GeneticUseCase) useCase).isPathwayViewerMode())
+		
+		if ((useCase instanceof GeneticUseCase && !((GeneticUseCase) useCase).isPathwayViewerMode())
 			|| useCase instanceof UnspecifiedUseCase) {
 			// alStartViews.add(EStartViewType.TABULAR);
 			startViews.add(SerializedParallelCoordinatesView.class);

@@ -19,7 +19,7 @@ public class UnspecifiedUseCase
 	public UnspecifiedUseCase() {
 
 		super();
-		useCaseMode = EDataDomain.GENERAL_DATA;
+		useCaseMode = EDataDomain.UNSPECIFIED;
 		contentLabelSingular = "entity";
 		contentLabelPlural = "entities";
 	}

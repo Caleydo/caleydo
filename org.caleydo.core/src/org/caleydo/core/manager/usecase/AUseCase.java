@@ -67,7 +67,7 @@ public abstract class AUseCase
 	 * not further specified data set is loaded. In the case of the unspecified data set some specialized gene
 	 * expression features are not available.
 	 */
-	protected EDataDomain useCaseMode = EDataDomain.GENERAL_DATA;
+	protected EDataDomain useCaseMode = EDataDomain.UNSPECIFIED;
 
 	/** map selection type to unique id for virtual array */
 	protected EnumMap<EVAType, Integer> mapVAIDs;
@@ -125,7 +125,7 @@ public abstract class AUseCase
 
 		if ((set.getSetType() == ESetType.GENE_EXPRESSION_DATA && useCaseMode == EDataDomain.GENETIC_DATA)
 			|| (set.getSetType() == ESetType.CLINICAL_DATA && useCaseMode == EDataDomain.CLINICAL_DATA)
-			|| (set.getSetType() == ESetType.UNSPECIFIED && useCaseMode == EDataDomain.GENERAL_DATA)
+			|| (set.getSetType() == ESetType.UNSPECIFIED && useCaseMode == EDataDomain.UNSPECIFIED)
 			|| (set.getSetType() == ESetType.GENE_EXPRESSION_DATA && useCaseMode == EDataDomain.PATHWAY_DATA)) {
 
 			oldSet = this.set;

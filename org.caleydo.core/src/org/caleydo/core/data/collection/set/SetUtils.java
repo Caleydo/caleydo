@@ -198,7 +198,7 @@ public class SetUtils {
 		if (useCase.getDataDomain() == EDataDomain.GENETIC_DATA) {
 			cmdCreateSet.setAttributes(iAlStorageId, ESetType.GENE_EXPRESSION_DATA);
 		}
-		else if (useCase.getDataDomain() == EDataDomain.GENERAL_DATA) {
+		else if (useCase.getDataDomain() == EDataDomain.UNSPECIFIED) {
 			cmdCreateSet.setAttributes(iAlStorageId, ESetType.UNSPECIFIED);
 		}
 		else {
@@ -231,7 +231,7 @@ public class SetUtils {
 			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(), loadDataParameters
 				.getStartParseFileAtLine(), -1, lookupTableInfo, loadDataParameters.getDelimiter(), "");
 		}
-		else if (useCase.getDataDomain() == EDataDomain.GENERAL_DATA) {
+		else if (useCase.getDataDomain() == EDataDomain.UNSPECIFIED) {
 			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(), loadDataParameters
 				.getStartParseFileAtLine(), -1, "UNSPECIFIED_2_EXPRESSION_INDEX REVERSE", loadDataParameters
 				.getDelimiter(), "");

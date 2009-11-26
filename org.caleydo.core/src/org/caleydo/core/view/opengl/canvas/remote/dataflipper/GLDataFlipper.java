@@ -423,7 +423,7 @@ public class GLDataFlipper
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		eventPublisher.triggerEvent(viewActivationEvent);
 	}
-	
+
 	@Override
 	public List<AGLEventListener> getRemoteRenderedViews() {
 		return containedGLViews;
@@ -936,9 +936,10 @@ public class GLDataFlipper
 					// // LEFT first
 					gl.glTranslatef(-fXPos - 1.56f + translation.x(), 0.47f + translation.y(), translation
 						.z() * 0);
-					textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-						new Vec3f(0.0f, 0.0f, 0.0f), new Vec3f(fPipeWidth, 0.0f, 0.0f), new Vec3f(fPipeWidth,
-							0.1f, 0.0f), new Vec3f(0.0f, 0.1f, 0.0f), 1, 1, 1, 1);
+					textureManager
+						.renderTexture(gl, EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT, new Vec3f(0.0f,
+							0.0f + fPipeWidth, 0.0f), new Vec3f(fPipeWidth, 0.0f + fPipeWidth, 0.0f),
+							new Vec3f(fPipeWidth, 0.1f, 0.0f), new Vec3f(0.0f, 0.1f, 0.0f), 1, 1, 1, 1);
 					gl.glTranslatef(0, -0.2f, 0);
 					// textureManager.renderTexture(gl,
 					// EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
@@ -956,8 +957,9 @@ public class GLDataFlipper
 					gl.glTranslatef(-fXPos - 1.53f + translation.x(), 0.34f + translation.y(), translation
 						.z() * 0);
 					textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-						new Vec3f(0.0f, 0.0f, 0.0f), new Vec3f(fPipeWidth, 0.0f, 0.0f), new Vec3f(fPipeWidth,
-							0.23f, 0.0f), new Vec3f(0.0f, 0.23f, 0.0f), 1, 1, 1, 1);
+						new Vec3f(0.0f, 0.0f + fPipeWidth, 0.0f), new Vec3f(fPipeWidth, 0.0f + fPipeWidth,
+							0.0f), new Vec3f(fPipeWidth, 0.23f, 0.0f), new Vec3f(0.0f, 0.23f, 0.0f), 1, 1, 1,
+						1);
 					gl.glTranslatef(0, -0.2f, 0);
 					// textureManager.renderTexture(gl,
 					// EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
@@ -974,9 +976,10 @@ public class GLDataFlipper
 					// RIGHT first
 					gl.glTranslatef(-fXPos - 2.53f + translation.x(), 0.76f + translation.y(), translation
 						.z() * 0);
-					textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-						new Vec3f(0.0f, 0.0f, 0.0f), new Vec3f(fPipeWidth, 0.0f, 0.0f), new Vec3f(fPipeWidth,
-							0.1f, 0.0f), new Vec3f(0.0f, 0.1f, 0.0f), 1, 1, 1, 1);
+					textureManager
+						.renderTexture(gl, EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT, new Vec3f(0.0f,
+							0.0f + fPipeWidth, 0.0f), new Vec3f(fPipeWidth, 0.0f + fPipeWidth, 0.0f),
+							new Vec3f(fPipeWidth, 0.1f, 0.0f), new Vec3f(0.0f, 0.1f, 0.0f), 1, 1, 1, 1);
 					gl.glTranslatef(0, -0.2f, 0);
 					// textureManager.renderTexture(gl,
 					// EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
@@ -994,8 +997,9 @@ public class GLDataFlipper
 					gl.glTranslatef(-fXPos - 2.63f + translation.x(), 0.64f + translation.y(), translation
 						.z() * 0);
 					textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-						new Vec3f(0.0f, 0.0f, 0.0f), new Vec3f(fPipeWidth, 0.0f, 0.0f), new Vec3f(fPipeWidth,
-							0.23f, 0.0f), new Vec3f(0.0f, 0.23f, 0.0f), 1, 1, 1, 1);
+						new Vec3f(0.0f, 0.0f + fPipeWidth, 0.0f), new Vec3f(fPipeWidth, 0.0f + fPipeWidth,
+							0.0f), new Vec3f(fPipeWidth, 0.23f, 0.0f), new Vec3f(0.0f, 0.23f, 0.0f), 1, 1, 1,
+						1);
 					gl.glTranslatef(0, -0.2f, 0);
 					// textureManager.renderTexture(gl,
 					// EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
@@ -1031,9 +1035,10 @@ public class GLDataFlipper
 							else {
 								gl.glTranslatef(0.032f, 0.43f, 0);
 								textureManager.renderTexture(gl,
-									EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT, new Vec3f(0.0f, 0.0f,
-										0.0f), new Vec3f(fPipeWidth, 0.0f, 0.0f), new Vec3f(fPipeWidth,
-										fPipeHeight, 0.0f), new Vec3f(0.0f, fPipeHeight, 0.0f), 1, 1, 1, 1);
+									EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT, new Vec3f(0.0f,
+										0.0f - fPipeWidth, 0.0f), new Vec3f(fPipeWidth, 0.0f - fPipeWidth,
+										0.0f), new Vec3f(fPipeWidth, fPipeHeight - fPipeWidth, 0.0f),
+									new Vec3f(0.0f, fPipeHeight - fPipeWidth, 0.0f), 1, 1, 1, 1);
 								gl.glTranslatef(-0.032f, -0.43f, 0);
 
 								if (stackElementsLeft.contains(element))
@@ -1056,7 +1061,9 @@ public class GLDataFlipper
 								textureManager.renderTexture(gl,
 									EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT, new Vec3f(0.0f, 0.0f,
 										0.0f), new Vec3f(fPipeWidth, 0.0f, 0.0f), new Vec3f(fPipeWidth,
-										fPipeHeight, 0.0f), new Vec3f(0.0f, fPipeHeight, 0.0f), 1, 1, 1, 1);
+										fPipeHeight - fPipeWidth, 0.0f), new Vec3f(0.0f, fPipeHeight
+										- fPipeWidth, 0.0f), 1, 1, 1, 1);
+
 								gl.glTranslatef(-0.17f, -0.43f, 0);
 
 								if (stackElementsLeft.contains(element))
@@ -1073,11 +1080,64 @@ public class GLDataFlipper
 							break;
 					}
 
-					textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-						new Vec3f(fHorizontalConnStart, fHorizontalConnHeight, 0.0f), new Vec3f(
-							fHorizontalConnStop, fHorizontalConnHeight, 0.0f), new Vec3f(fHorizontalConnStop,
-							fHorizontalConnHeight + 0.05f, 0.0f), new Vec3f(fHorizontalConnStart,
-							fHorizontalConnHeight + 0.05f, 0.0f), 1, 1, 1, 1);
+					if (element != focusElement) {
+						if (fHorizontalConnStart < fHorizontalConnStop) {
+							textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
+								new Vec3f(fHorizontalConnStart + fPipeWidth, fHorizontalConnHeight, 0.0f),
+								new Vec3f(fHorizontalConnStop - fPipeWidth, fHorizontalConnHeight, 0.0f),
+								new Vec3f(fHorizontalConnStop - fPipeWidth, fHorizontalConnHeight + 0.05f,
+									0.0f), new Vec3f(fHorizontalConnStart + fPipeWidth,
+									fHorizontalConnHeight + 0.05f, 0.0f), 1, 1, 1, 1);
+						}
+						else {
+							textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
+								new Vec3f(fHorizontalConnStart - fPipeWidth, fHorizontalConnHeight, 0.0f),
+								new Vec3f(fHorizontalConnStop + fPipeWidth, fHorizontalConnHeight, 0.0f),
+								new Vec3f(fHorizontalConnStop + fPipeWidth, fHorizontalConnHeight + 0.05f,
+									0.0f), new Vec3f(fHorizontalConnStart - fPipeWidth,
+									fHorizontalConnHeight + 0.05f, 0.0f), 1, 1, 1, 1);
+						}
+
+						// ROUND CORNERS near views
+						if (fHorizontalConnStart > fHorizontalConnStop) {
+							textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_CONNECTION_CORNER,
+								new Vec3f(fHorizontalConnStart - fPipeWidth, fHorizontalConnHeight
+									+ fPipeWidth + 0.05f, 0.0f), new Vec3f(fHorizontalConnStart + fPipeWidth,
+									fHorizontalConnHeight + fPipeWidth + 0.05f, 0.0f), new Vec3f(
+									fHorizontalConnStart + fPipeWidth, fHorizontalConnHeight, 0.0f),
+								new Vec3f(fHorizontalConnStart - fPipeWidth, fHorizontalConnHeight, 0.0f), 1,
+								1, 1, 1);
+						}
+						else {
+							textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_CONNECTION_CORNER,
+								new Vec3f(fHorizontalConnStart + fPipeWidth, fHorizontalConnHeight
+									+ fPipeWidth + 0.05f, 0.0f), new Vec3f(fHorizontalConnStart - fPipeWidth,
+									fHorizontalConnHeight + fPipeWidth + 0.05f, 0.0f), new Vec3f(
+									fHorizontalConnStart - fPipeWidth, fHorizontalConnHeight, 0.0f),
+								new Vec3f(fHorizontalConnStart + fPipeWidth, fHorizontalConnHeight, 0.0f), 1,
+								1, 1, 1);
+						}
+
+						// ROUND CORNERS near data sets
+						if (fHorizontalConnStart > fHorizontalConnStop) {
+							textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_CONNECTION_CORNER,
+								new Vec3f(fHorizontalConnStop + fPipeWidth, fHorizontalConnHeight
+									- fPipeWidth, 0.0f), new Vec3f(fHorizontalConnStop - fPipeWidth,
+									fHorizontalConnHeight - fPipeWidth, 0.0f), new Vec3f(fHorizontalConnStop
+									- fPipeWidth, fHorizontalConnHeight + 0.05f, 0.0f), new Vec3f(
+									fHorizontalConnStop + fPipeWidth, fHorizontalConnHeight + 0.05f, 0.0f),
+								1, 1, 1, 1);
+						}
+						else {
+							textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_CONNECTION_CORNER,
+								new Vec3f(fHorizontalConnStop - fPipeWidth, fHorizontalConnHeight
+									- fPipeWidth, 0.0f), new Vec3f(fHorizontalConnStop + fPipeWidth,
+									fHorizontalConnHeight - fPipeWidth, 0.0f), new Vec3f(fHorizontalConnStop
+									+ fPipeWidth, fHorizontalConnHeight + 0.05f, 0.0f), new Vec3f(
+									fHorizontalConnStop - fPipeWidth, fHorizontalConnHeight + 0.05f, 0.0f),
+								1, 1, 1, 1);
+						}
+					}
 				}
 			}
 
