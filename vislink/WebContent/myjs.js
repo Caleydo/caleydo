@@ -41,7 +41,8 @@ function windowChanged() {
 	if (window.localSelectionId != null) {
 		reportVisLinks(window.localSelectionId);
 	} else {
-		clearVisualLinks();
+//		clearVisualLinks();
+		reportVisLinks(window.localSelectionId);
 	}
 }
 
@@ -57,10 +58,11 @@ function register()	{
 		window.visLinkAppName =	"firefox-" + (new Date()).getTime();
 	}
 
-	var	x =	window.screenX;
-	var	y =	window.screenY;
-	var	w =	window.outerWidth;
-	var	h =	window.outerHeight;
+	var win = content.document.defaultView;
+	var x = win.screenX + (win.outerWidth - win.innerWidth) / 2;
+	var y = win.screenY + (win.outerHeight - win.innerHeight);
+	var w = win.innerWidth;
+	var h = win.innerHeight;
 
 	var	xml	= "";
 	xml	+= "<boundingBox";
@@ -144,7 +146,7 @@ function triggerSearch() {
 	var	id = getId();
 	if (stopped) return; // second check, because getId() might have lost connection to daemon
 	if (id != null)	{
-		window.localSelectionId = null;
+		window.localSelectionId = id;
 		var	doc	= content.document;
 		var	bbs	= searchDocument(doc, id);
 		var	xml	= generateBoundingBoxesXML(bbs,	false);
@@ -253,18 +255,18 @@ function findBoundingBox(doc, obj) {
 
 	var	ret	= null;
 	// check if	visible
-	if (((curtop - win.pageYOffset)	> 0) &&	((curtop - win.pageYOffset)	< win.innerHeight) && 
-		((curleft -	win.pageXOffset) > 0) && ((curleft - win.pageXOffset) <	win.innerWidth)) {
+	//if (((curtop - win.pageYOffset)	> 0) &&	((curtop - win.pageYOffset)	< win.innerHeight) && 
+	//	((curleft -	win.pageXOffset) > 0) && ((curleft - win.pageXOffset) <	win.innerWidth)) {
 			
-		finaltop = curtop +	win.screenY	+ yoffset -	win.pageYOffset;
-		finalleft =	curleft	+ win.screenX +	1;
+		finaltop = curtop + win.screenY + yoffset - win.pageYOffset;
+		finalleft = curleft + win.screenX + 1 - win.pageXOffset;
 		
 		ret	= new Object();
 		ret.x =	finalleft;
 		ret.y =	finaltop;
 		ret.width =	w +	2;
 		ret.height = h + 2;
-	}
+	//}
 	return ret;
 }
 

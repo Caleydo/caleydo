@@ -128,7 +128,7 @@ function triggerSearch() {
 	validateWindowPosition();
 	var id = getId();
 	if (id != null) {
-		localSelectionId = null;
+		localSelectionId = id;
 		document.getElementById("receivedId").innerHTML = id;
         findAddress(id, vislinkAddressCallback);
     }
@@ -151,21 +151,11 @@ function getId() {
 function register() {
 	
 	var x = window.screenX + (window.outerWidth - window.innerWidth) / 2;
-	var y = window.screenY - (window.outerHeight - window.innerHeight);
-	var w = window.outerWidth;
-	var h = window.outerHeight;
+	var y = window.screenY + (window.outerHeight - window.innerHeight);
+	var w = window.innerWidth;
+	var h = window.innerHeight;
 
-	var bbs = "bb: " +x+":"+y+" - "+w+":"+h;
-	bbs += "\n";
-	bbs += "w.x=" + window.screenX + "\n";
-	bbs += "w.ow=" + window.outerWidth + "\n";
-	bbs += "w.iw=" + window.innerWidth + "\n";
-	bbs += "w.y=" + window.screenY + "\n";
-	bbs += "w.oh=" + window.outerHeight + "\n";
-	bbs += "w.ih=" + window.innerHeight + "\n";
-// alert(bbs);
-
-var xml = "";
+	var xml = "";
     xml += "<boundingBox";
     xml += " x=\""+x+"\"";
     xml += " y=\""+y+"\"";
@@ -196,7 +186,8 @@ function windowChanged() {
 	if (localSelectionId != null && localSelectionId.length > 0) {
 		findAddress(localSelectionId, windowChangedCallback);
 	} else {
-		clearVisualLinks();
+		// clearVisualLinks();
+		findAddress(localSelectionId, windowChangedCallback);
 	}
 }
 

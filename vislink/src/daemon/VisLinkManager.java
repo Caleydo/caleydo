@@ -14,8 +14,6 @@ import javax.xml.bind.Unmarshaller;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
-import sun.java2d.windows.WinVolatileSurfaceManager;
-
 import Ice.Communicator;
 import VIS.Color4f;
 import VIS.Selection;
