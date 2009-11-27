@@ -240,7 +240,7 @@ public class GLParallelCoordinates
 	EIconTextures dropTexture = EIconTextures.DROP_NORMAL;
 	int iChangeDropOnAxisNumber = -1;
 
-	GLBookmarkManager glSelectionHeatMap;
+	GLBookmarkManager glBookmarks;
 	boolean bShowSelectionHeatMap = false;
 
 	private GLInfoAreaManager infoAreaManager;
@@ -270,9 +270,6 @@ public class GLParallelCoordinates
 
 		renderStyle = new ParCoordsRenderStyle(this, viewFrustum);
 		super.renderStyle = this.renderStyle;
-
-		contentSelectionManager = new SelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
-		storageSelectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
 		alIsAngleBlocking.add(new ArrayList<Integer>());
@@ -323,6 +320,7 @@ public class GLParallelCoordinates
 	@Override
 	public void init(final GL gl) {
 
+
 		fXDefaultTranslation = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
 	}
@@ -331,8 +329,8 @@ public class GLParallelCoordinates
 	public void initData() {
 		super.initData();
 
-		if (glSelectionHeatMap != null)
-			glSelectionHeatMap.setSet(set);
+		if (glBookmarks != null)
+			glBookmarks.setSet(set);
 		initGates();
 		resetAxisSpacing();
 	}
@@ -397,11 +395,10 @@ public class GLParallelCoordinates
 		processEvents();
 		if (bShowSelectionHeatMap) {
 
-			gl.glTranslatef(viewFrustum.getRight() - glSelectionHeatMap.getViewFrustum().getWidth(), 0,
-				0.002f);
+			gl.glTranslatef(viewFrustum.getRight() - glBookmarks.getViewFrustum().getWidth(), 0, 0.002f);
 
 			// Render memo pad background
-			IViewFrustum sHMFrustum = glSelectionHeatMap.getViewFrustum();
+			IViewFrustum sHMFrustum = glBookmarks.getViewFrustum();
 			sHMFrustum.setTop(viewFrustum.getTop());
 			sHMFrustum.setBottom(viewFrustum.getBottom());
 
@@ -409,21 +406,19 @@ public class GLParallelCoordinates
 			gl.glLineWidth(1);
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(glSelectionHeatMap.getViewFrustum().getWidth(), 0, 0);
-			gl.glVertex3f(glSelectionHeatMap.getViewFrustum().getWidth(), glSelectionHeatMap.getViewFrustum()
-				.getHeight(), 0);
-			gl.glVertex3f(0, glSelectionHeatMap.getViewFrustum().getHeight(), 0);
+			gl.glVertex3f(glBookmarks.getViewFrustum().getWidth(), 0, 0);
+			gl.glVertex3f(glBookmarks.getViewFrustum().getWidth(), glBookmarks.getViewFrustum().getHeight(),
+				0);
+			gl.glVertex3f(0, glBookmarks.getViewFrustum().getHeight(), 0);
 			gl.glEnd();
 
 			int iPickingID =
-				pickingManager.getPickingID(iUniqueID, EPickingType.PCS_VIEW_SELECTION, glSelectionHeatMap
-					.getID());
+				pickingManager.getPickingID(iUniqueID, EPickingType.PCS_VIEW_SELECTION, glBookmarks.getID());
 			gl.glPushName(iPickingID);
-			glSelectionHeatMap.displayRemote(gl);
+			glBookmarks.displayRemote(gl);
 
 			gl.glPopName();
-			gl.glTranslatef(-viewFrustum.getRight() + glSelectionHeatMap.getViewFrustum().getWidth(), 0,
-				-0.002f);
+			gl.glTranslatef(-viewFrustum.getRight() + glBookmarks.getViewFrustum().getWidth(), 0, -0.002f);
 		}
 
 		if (generalManager.getTrackDataProvider().isTrackModeActive())
@@ -466,14 +461,14 @@ public class GLParallelCoordinates
 		cmdCreateGLView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, viewFrustum
 			.getBottom(), viewFrustum.getTop(), -20, 20, -1);
 		cmdCreateGLView.doCommand();
-		glSelectionHeatMap = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
-		glSelectionHeatMap.setRemoteRenderingGLView(this);
-		glSelectionHeatMap.setUseCase(useCase);
-		glSelectionHeatMap.setSet(set);
-		glSelectionHeatMap.initData();
+		glBookmarks = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
+		glBookmarks.setRemoteRenderingGLView(this);
+		glBookmarks.setUseCase(useCase);
+		glBookmarks.setSet(set);
+		glBookmarks.initData();
 
 		// FIXME: remoteRenderingGLCanvas is null, conceptual error
-		glSelectionHeatMap.initRemote(gl, this, glMouseListener, null);
+		glBookmarks.initRemote(gl, this, glMouseListener, null);
 	}
 
 	public void triggerAngularBrushing() {
@@ -533,8 +528,8 @@ public class GLParallelCoordinates
 		setDisplayListDirty();
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
-		if (glSelectionHeatMap != null) {
-			glSelectionHeatMap.clearAllSelections();
+		if (glBookmarks != null) {
+			glBookmarks.clearAllSelections();
 		}
 
 	}
@@ -1910,9 +1905,11 @@ public class GLParallelCoordinates
 				polylineSelectionManager.addToType(eSelectionType, iExternalID);
 				polylineSelectionManager.addConnectionID(generalManager.getIDManager().createID(
 					EManagedObjectType.CONNECTION), iExternalID);
+				
 				// }
 
-				if (ePolylineDataType == EIDType.EXPRESSION_INDEX && !bAngularBrushingSelectPolyline) {
+				// if (ePolylineDataType == EIDType.EXPRESSION_INDEX && !bAngularBrushingSelectPolyline) {
+				if (!bAngularBrushingSelectPolyline) {
 					//
 					// SelectionCommand command =
 					// new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);

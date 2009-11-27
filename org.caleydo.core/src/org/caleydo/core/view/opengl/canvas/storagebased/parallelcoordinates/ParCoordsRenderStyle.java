@@ -163,7 +163,7 @@ public class ParCoordsRenderStyle
 
 		if (pcs.bShowSelectionHeatMap)
 			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * numberOfSpacings * getScaling()
-				- pcs.glSelectionHeatMap.getViewFrustum().getWidth();
+				- pcs.glBookmarks.getViewFrustum().getWidth();
 
 		else
 			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * numberOfSpacings * getScaling();

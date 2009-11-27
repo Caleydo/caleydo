@@ -17,6 +17,7 @@ import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -24,6 +25,7 @@ import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.usecase.EDataFilterLevel;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -115,6 +117,31 @@ public abstract class AStorageBasedView
 
 		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 		// registerEventListeners();
+
+	}
+
+	@Override
+	public void setUseCase(IUseCase useCase) {
+		this.useCase = useCase;
+		this.dataDomain = useCase.getDataDomain();
+
+		if (dataDomain == EDataDomain.GENETIC_DATA) {
+			contentSelectionManager = new SelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
+			storageSelectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
+		}
+		else if (dataDomain == EDataDomain.CLINICAL_DATA) {
+			contentSelectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
+			storageSelectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_RECORD).build();
+		}
+		else if (dataDomain == EDataDomain.UNSPECIFIED) {
+			contentSelectionManager = new SelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
+			storageSelectionManager = new SelectionManager.Builder(EIDType.UNSPECIFIED).build();
+		}
+		else {
+			throw new IllegalStateException("Don't know how to handle the data domain " + dataDomain
+				+ " for assigning EIDTypes");
+		}
+
 	}
 
 	/**
@@ -218,7 +245,8 @@ public abstract class AStorageBasedView
 		// + ", received in: " + this.getClass().getSimpleName());
 
 		// Check for type that can be handled
-		if (selectionDelta.getIDType().getCategory() == EIDCategory.GENE) {
+		if (selectionDelta.getIDType().getCategory() == EIDCategory.GENE
+			&& dataDomain == EDataDomain.GENETIC_DATA) {
 			contentSelectionManager.setDelta(selectionDelta);
 			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
@@ -227,11 +255,21 @@ public abstract class AStorageBasedView
 			setDisplayListDirty();
 		}
 
-		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
+		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
+			&& (dataDomain == EDataDomain.GENETIC_DATA)) {
 			// generalManager.getIDMappingManager().getID(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX,
 			// key)(type)
 
 			storageSelectionManager.setDelta(selectionDelta);
+			handleConnectedElementRep(storageSelectionManager.getCompleteDelta());
+			reactOnExternalSelection(scrollToSelection);
+			setDisplayListDirty();
+		}
+
+		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
+			&& dataDomain == EDataDomain.CLINICAL_DATA) {
+
+			contentSelectionManager.setDelta(selectionDelta);
 			handleConnectedElementRep(storageSelectionManager.getCompleteDelta());
 			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
