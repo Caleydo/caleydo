@@ -2,7 +2,6 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.htcalculati
 
 
 import org.caleydo.core.data.graph.tree.Tree;
-//import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 
 

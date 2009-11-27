@@ -13,7 +13,6 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
  * Implementation of IVirtualArray

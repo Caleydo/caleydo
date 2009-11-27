@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.mapping.color.ColorMapping;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 
 /**

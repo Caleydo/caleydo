@@ -1,18 +1,12 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 
-import gleem.linalg.Vec3f;
-
-import java.util.Set;
-
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.htcalculation.HTModel;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.DefaultProjection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.HyperbolicGlobeProjection;
-import org.omg.PortableServer.IdAssignmentPolicy;
 
 public class HTLayouter
 	extends ATreeLayouter

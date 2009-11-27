@@ -4,9 +4,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
-import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
  * <p>

@@ -9,11 +9,11 @@ import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
 import org.caleydo.core.data.collection.set.SetIterator;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
  * Interface for Sets

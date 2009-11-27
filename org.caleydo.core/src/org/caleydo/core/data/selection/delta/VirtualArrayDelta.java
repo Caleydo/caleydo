@@ -7,8 +7,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.util.collection.UniqueList;
-import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
  * Implementation of {@link IVirtualArrayDelta}

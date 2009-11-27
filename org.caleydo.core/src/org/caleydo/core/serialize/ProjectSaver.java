@@ -13,6 +13,7 @@ import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
+import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.IViewManager;
@@ -22,7 +23,6 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
  * Serializes the current state of the application into a directory or file.

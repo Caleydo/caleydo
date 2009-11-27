@@ -1,14 +1,10 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections;
 
-import java.util.Arrays;
-import java.util.List;
-
 import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 
 public class DefaultProjection
 	extends ATreeProjection {

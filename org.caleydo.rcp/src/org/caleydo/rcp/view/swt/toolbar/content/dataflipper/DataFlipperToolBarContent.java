@@ -3,12 +3,9 @@ package org.caleydo.rcp.view.swt.toolbar.content.dataflipper;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.remote.dataflipper.GLDataFlipper;
 import org.caleydo.rcp.action.toolbar.view.remote.ToggleConnectionLinesAction;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
-import org.caleydo.rcp.view.swt.toolbar.content.ActionToolBarContainer;
-import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
 import org.caleydo.rcp.view.swt.toolbar.content.ToolBarContainer;
 
 /**

@@ -7,7 +7,6 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.GLHyperbolic;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.SerializedHyperbolicView;
 import org.caleydo.rcp.action.toolbar.view.hyperbolic.ChangeCanvasDrawingAction;
-import org.caleydo.rcp.action.toolbar.view.hyperbolic.ChangeTreeTypeAction;
 import org.caleydo.rcp.action.toolbar.view.hyperbolic.SwitchClusterTypeAction;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.ActionToolBarContainer;

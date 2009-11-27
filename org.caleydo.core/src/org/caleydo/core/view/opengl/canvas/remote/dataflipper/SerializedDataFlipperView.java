@@ -15,8 +15,8 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
 import org.caleydo.core.view.opengl.canvas.pathway.SerializedPathwayView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHierarchicalHeatMapView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHierarchicalHeatMapView;
+import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.SerializedParallelCoordinatesView;
 import org.caleydo.core.view.opengl.canvas.tissue.SerializedTissueView;
 
 /**

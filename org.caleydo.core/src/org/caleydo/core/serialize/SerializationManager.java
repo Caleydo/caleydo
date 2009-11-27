@@ -31,6 +31,10 @@ import org.caleydo.core.manager.event.view.glyph.SetPositionModelEvent;
 import org.caleydo.core.manager.event.view.group.InterchangeGroupsEvent;
 import org.caleydo.core.manager.event.view.group.MergeGroupsEvent;
 import org.caleydo.core.manager.event.view.histogram.UpdateColorMappingEvent;
+import org.caleydo.core.manager.event.view.hyperbolic.ChangeCanvasDrawingEvent;
+import org.caleydo.core.manager.event.view.hyperbolic.ChangeTreeTypeEvent;
+import org.caleydo.core.manager.event.view.hyperbolic.SetMaxLayoutDepthEvent;
+import org.caleydo.core.manager.event.view.hyperbolic.SwitchClusterTypeEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
@@ -62,10 +66,6 @@ import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
-import org.caleydo.core.manager.event.view.hyperbolic.ChangeCanvasDrawingEvent;
-import org.caleydo.core.manager.event.view.hyperbolic.ChangeTreeTypeEvent;
-import org.caleydo.core.manager.event.view.hyperbolic.SetMaxLayoutDepthEvent;
-import org.caleydo.core.manager.event.view.hyperbolic.SwitchClusterTypeEvent;
 import org.caleydo.core.net.event.ClientListEvent;
 
 /**

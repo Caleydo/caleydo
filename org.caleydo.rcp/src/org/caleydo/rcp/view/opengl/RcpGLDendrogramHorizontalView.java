@@ -3,7 +3,7 @@ package org.caleydo.rcp.view.opengl;
 import java.util.ArrayList;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramHorizontalView;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedDendogramHorizontalView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 

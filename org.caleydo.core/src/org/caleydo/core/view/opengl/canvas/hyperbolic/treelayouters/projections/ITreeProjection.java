@@ -1,7 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections;
 
-import java.util.List;
-
 import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL;

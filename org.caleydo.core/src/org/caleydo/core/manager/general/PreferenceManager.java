@@ -17,7 +17,6 @@ import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;

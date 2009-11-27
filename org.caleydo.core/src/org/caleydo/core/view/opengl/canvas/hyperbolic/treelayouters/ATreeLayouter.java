@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 
-import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.awt.Font;
@@ -9,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.Lock;
 
 import javax.media.opengl.GL;
 
@@ -25,7 +23,6 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.D
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.IDrawAbleConnection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.animation.AnimationConnectionHandler;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.animation.AnimationVec3f;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.htcalculation.HTModel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
 
 public abstract class ATreeLayouter

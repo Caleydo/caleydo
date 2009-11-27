@@ -1,10 +1,9 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
+import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
-import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
-import org.caleydo.core.view.opengl.canvas.storagebased.listener.ReplaceVirtualArrayListener;
 
 /**
  * Interface for views, mediator or manager classes that needs to get virtual-array-update information.

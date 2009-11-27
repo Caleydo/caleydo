@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
 
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.DrawAbleObjectFallback;
 
 /**

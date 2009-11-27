@@ -2,7 +2,7 @@ package org.caleydo.rcp.view.opengl;
 
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
+import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.SerializedParallelCoordinatesView;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLParCoordsClinicalView

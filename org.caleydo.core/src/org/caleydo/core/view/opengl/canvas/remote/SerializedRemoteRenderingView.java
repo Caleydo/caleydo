@@ -15,8 +15,8 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHeatMapView;
+import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.SerializedParallelCoordinatesView;
 import org.eclipse.core.runtime.Status;
 
 /**

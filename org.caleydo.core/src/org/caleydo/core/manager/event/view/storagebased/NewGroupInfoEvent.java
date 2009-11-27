@@ -3,9 +3,9 @@ package org.caleydo.core.manager.event.view.storagebased;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
  * This event signals a view that a new groupList for a VA is available.

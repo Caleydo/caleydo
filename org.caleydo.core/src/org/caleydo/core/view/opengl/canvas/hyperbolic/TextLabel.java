@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic;
 import gleem.linalg.Vec3f;
 
 import java.awt.Font;
-import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
 import javax.media.opengl.GL;

@@ -6,9 +6,9 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.usecase.AUseCase;
-import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
  * Simple bean that holds the initialization data for new started caleydo application. Used to store and

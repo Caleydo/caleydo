@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL;

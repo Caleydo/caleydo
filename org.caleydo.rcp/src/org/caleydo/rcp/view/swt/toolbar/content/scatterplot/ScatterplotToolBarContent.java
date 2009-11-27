@@ -3,7 +3,7 @@ package org.caleydo.rcp.view.swt.toolbar.content.scatterplot;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.view.opengl.canvas.storagebased.GLScatterplot;
+import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.GLScatterplot;
 import org.caleydo.rcp.action.toolbar.view.storagebased.scatterplot.ScatterplotTestAction;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.ActionToolBarContainer;

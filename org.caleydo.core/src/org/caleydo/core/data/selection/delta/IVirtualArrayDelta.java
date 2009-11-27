@@ -1,6 +1,6 @@
 package org.caleydo.core.data.selection.delta;
 
-import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
+import org.caleydo.core.data.selection.EVAType;
 
 /**
  * Interface for a virtual array delta

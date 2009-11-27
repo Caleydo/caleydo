@@ -7,11 +7,11 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.SerializedHyperbolicView;
 import org.caleydo.core.view.opengl.canvas.radial.SerializedRadialHierarchyView;
 import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.remote.dataflipper.SerializedDataFlipperView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramHorizontalView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramVerticalView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedScatterplotView;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedDendogramHorizontalView;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedDendogramVerticalView;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHeatMapView;
+import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.SerializedParallelCoordinatesView;
+import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.SerializedScatterplotView;
 import org.caleydo.core.view.swt.browser.SerializedHTMLBrowserView;
 import org.caleydo.core.view.swt.tabular.SerializedTabularDataView;
 

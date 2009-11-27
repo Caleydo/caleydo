@@ -1,6 +1,5 @@
 package org.caleydo.rcp.command.handler.view;
 
-import org.caleydo.rcp.view.opengl.RcpGLHeatMapView;
 import org.caleydo.rcp.view.opengl.RcpGLScatterplotView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;

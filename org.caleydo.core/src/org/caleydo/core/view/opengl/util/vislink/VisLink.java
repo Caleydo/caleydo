@@ -1,14 +1,14 @@
 package org.caleydo.core.view.opengl.util.vislink;
 
+import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import gleem.linalg.Vec3f;
-
-import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 
 
 

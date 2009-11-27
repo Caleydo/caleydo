@@ -19,7 +19,7 @@ import org.caleydo.core.manager.data.set.SetManager;
 import org.caleydo.core.manager.data.storage.StorageManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.gui.SWTGUIManager;
-import org.caleydo.core.manager.id.IDManager;
+import org.caleydo.core.manager.id.IDCreator;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.parser.XmlParserManager;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
@@ -63,7 +63,7 @@ public class GeneralManager
 	private IXmlParserManager xmlParserManager;
 	private IIDMappingManager genomeIdManager;
 	private GlyphManager glyphManager;
-	private IDManager IDManager;
+	private IDCreator IDManager;
 	private ILog logger;
 	private IGUIBridge guiBridge;
 	private ResourceLoader resourceLoader;
@@ -105,7 +105,7 @@ public class GeneralManager
 		pathwayItemManager = new PathwayItemManager();
 		xmlParserManager = new XmlParserManager();
 		glyphManager = new GlyphManager();
-		IDManager = new IDManager();
+		IDManager = new IDCreator();
 		xmlParserManager.initHandlers();
 
 		groupwareManager = null;
@@ -213,7 +213,7 @@ public class GeneralManager
 	}
 
 	@Override
-	public IDManager getIDManager() {
+	public IDCreator getIDManager() {
 		return IDManager;
 	}
 

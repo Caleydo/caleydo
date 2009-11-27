@@ -3,7 +3,7 @@ package org.caleydo.rcp.view.swt.toolbar.content;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
 
 /**
  * THIS IS DEAD AT THE MOMENT ToolBarContent implementation for heatmap specific toolbar items.

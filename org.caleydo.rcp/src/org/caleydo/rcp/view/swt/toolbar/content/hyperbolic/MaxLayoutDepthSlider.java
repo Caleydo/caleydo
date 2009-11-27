@@ -1,5 +1,13 @@
 package org.caleydo.rcp.view.swt.toolbar.content.hyperbolic;
 
+import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.view.hyperbolic.SetMaxLayoutDepthEvent;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
+import org.eclipse.jface.action.ControlContribution;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -8,15 +16,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Slider;
 import org.eclipse.ui.PlatformUI;
-import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
-import org.caleydo.rcp.view.swt.toolbar.content.radial.UpdateDepthSliderPositionListener;
-import org.eclipse.jface.action.ControlContribution;
-import org.eclipse.swt.SWT;
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.view.hyperbolic.SetMaxLayoutDepthEvent;
 
 public class MaxLayoutDepthSlider 	
 	extends ControlContribution

@@ -1,9 +1,8 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.htcalculation;
 
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-//import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 

@@ -4,9 +4,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
  * Event that signals that the virtual array has changed. VA users have to load the new one from the UseCase

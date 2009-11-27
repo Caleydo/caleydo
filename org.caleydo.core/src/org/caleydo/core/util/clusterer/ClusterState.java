@@ -2,7 +2,7 @@ package org.caleydo.core.util.clusterer;
 
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
+import org.caleydo.core.data.selection.EVAType;
 
 /**
  * Stores the cluster state which is determined in the {@link StartClusteringAction}. Depending on the

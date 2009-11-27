@@ -3,24 +3,14 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
-import java.awt.Font;
-import java.awt.geom.Rectangle2D;
-import java.beans.Visibility;
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.DrawAbleObjectFallback;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.DrawAbleObjectsFactory;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.IDrawAbleObject;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
-
-import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * Abstract of draw able node type. This type defines node objects which are self drawing.

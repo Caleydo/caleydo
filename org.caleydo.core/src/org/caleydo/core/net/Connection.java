@@ -13,13 +13,13 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.SetUtils;
+import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ApplicationInitData;
-import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Status;
 

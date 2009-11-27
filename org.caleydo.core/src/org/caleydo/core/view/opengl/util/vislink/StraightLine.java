@@ -1,8 +1,8 @@
 package org.caleydo.core.view.opengl.util.vislink;
 
-import java.util.ArrayList;
-
 import gleem.linalg.Vec3f;
+
+import java.util.ArrayList;
 
 /**
  * StraightLine fragments a line given by its source- and destination-point in a given
