@@ -23,6 +23,7 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Serializes the current state of the application into a directory or file.
@@ -75,9 +76,16 @@ public class ProjectSaver {
 	public void saveRecentProject() {
 		ZipUtils zipUtils = new ZipUtils();
 		// FIXME - this works only for genetic data now
-		if (!GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getLoadDataParameters().getFileName()
-			.startsWith(RECENT_PROJECT_DIR_NAME)) {
-			zipUtils.deleteDirectory(RECENT_PROJECT_DIR_NAME);
+		IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
+		if (useCase != null) {
+			if (!useCase.getLoadDataParameters().getFileName()
+				.startsWith(RECENT_PROJECT_DIR_NAME)) {
+				zipUtils.deleteDirectory(RECENT_PROJECT_DIR_NAME);
+			}
+		} else {
+			GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID, 
+				"no genetic useCase, cannot save project"));
+			return;
 		}
 		saveProjectData(RECENT_PROJECT_DIR_NAME);
 

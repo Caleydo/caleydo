@@ -21,6 +21,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.listener.AddSelectionListener;
 import org.caleydo.core.manager.view.listener.ClearConnectionsListener;
 import org.caleydo.core.manager.view.listener.ClearTransformedConnectionsListener;
+import org.caleydo.core.manager.vislink.VisLinkManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 
@@ -295,13 +296,19 @@ public class ConnectedElementRepresentationManager
 		newTransformedPoints = transformer.transform(sourceConnectionsByType, transformedConnectionsByType);
 
 		IGroupwareManager gm = GeneralManager.get().getGroupwareManager();
-		if (gm != null && gm.isGroupwareConnectionLinesEnabled()) {
+//		if (gm != null && gm.isGroupwareConnectionLinesEnabled()) {
 			if (newTransformedPoints) {
-				transformer.project(gl, gm.getNetworkManager().getNetworkName(),
+				String networkName = null;
+				if (gm != null) {
+					networkName = gm.getNetworkManager().getNetworkName();
+				} else {
+					networkName = "visLinks";
+				}
+				transformer.project(gl, networkName,
 					transformedConnectionsByType, canvasConnectionsByType);
 				newCanvasVertices = true;
 			}
-		}
+//		}
 	}
 
 	/**

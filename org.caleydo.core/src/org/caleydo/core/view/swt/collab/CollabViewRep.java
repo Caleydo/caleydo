@@ -227,6 +227,18 @@ public class CollabViewRep
 		}
 
 		button = new Button(testControls, SWT.NULL);
+		button.setText("connect to visdaemon");
+		StartVisLinksListener startVisLinksListener = new StartVisLinksListener();
+		startVisLinksListener.setRequester(this);
+		button.addListener(SWT.Selection, startVisLinksListener);
+
+		button = new Button(testControls, SWT.NULL);
+		button.setText("disconnect from visdaemon");
+		StopVisLinksListener stopVisLinksListener = new StopVisLinksListener();
+		stopVisLinksListener.setRequester(this);
+		button.addListener(SWT.Selection, stopVisLinksListener);
+
+		button = new Button(testControls, SWT.NULL);
 		button.setText("enable busy");
 		EnableBusyListener enableListener = new EnableBusyListener();
 		enableListener.setRequester(this);
