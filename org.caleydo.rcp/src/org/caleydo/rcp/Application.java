@@ -355,8 +355,8 @@ public class Application
 			AUseCase useCase = (AUseCase) initData.getUseCase();
 			GeneralManager.get().addUseCase(useCase);
 
-			if (useCase instanceof GeneticUseCase)
-				triggerPathwayLoading();
+//			if (useCase instanceof GeneticUseCase)
+//				triggerPathwayLoading();
 
 			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
 			SetUtils.createStorages(loadDataParameters);
@@ -370,7 +370,7 @@ public class Application
 		}
 		else if (applicationMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA) {
 
-			triggerPathwayLoading();
+//			triggerPathwayLoading();
 
 			WizardDialog dataImportWizard =
 				new WizardDialog(shell, new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
@@ -382,8 +382,8 @@ public class Application
 		else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA || applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
 			&& (sCaleydoXMLfile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE) || sCaleydoXMLfile.equals(""))) {
 
-			if (applicationMode.getDataDomain() == EDataDomain.GENETIC_DATA)
-				triggerPathwayLoading();
+//			if (applicationMode.getDataDomain() == EDataDomain.GENETIC_DATA)
+//				triggerPathwayLoading();
 
 			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
 
@@ -392,6 +392,9 @@ public class Application
 			}
 		}
 
+		if (applicationMode.getDataDomain() == EDataDomain.GENETIC_DATA)
+			triggerPathwayLoading();
+		
 		// TODO - this initializes the VA after the data is written correctly in the set - probably not the
 		// nicest place to do this.
 		// This is only necessary if started from xml. Otherwise this is done in FileLoadDataAction
