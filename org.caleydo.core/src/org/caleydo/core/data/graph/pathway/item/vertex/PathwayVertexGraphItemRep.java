@@ -58,6 +58,8 @@ public class PathwayVertexGraphItemRep
 		final short shY, final short shWidth, final short shHeight) {
 		super(EGraphItemKind.NODE);
 
+		if (sShapeType == null || sShapeType.isEmpty())
+			throw new IllegalArgumentException("Shape type for pathway element is not specified.");
 		shape = EPathwayVertexShape.valueOf(sShapeType);
 		this.sName = sName;
 		this.shWidth = shWidth;
