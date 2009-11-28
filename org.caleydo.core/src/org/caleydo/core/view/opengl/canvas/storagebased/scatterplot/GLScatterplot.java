@@ -116,9 +116,6 @@ public class GLScatterplot
 		// alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		// alSelectionTypes.add(ESelectionType.SELECTION);
 
-		contentSelectionManager = new SelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
-		storageSelectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
-
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 		fAlXDistances = new ArrayList<Float>();

@@ -773,7 +773,7 @@ public class SelectionManager {
 
 	@Override
 	public String toString() {
-		String result = "";
+		String result = "IDType: " + iDType + " ";
 		for (ESelectionType selectionType : hashSelectionTypes.keySet()) {
 			result = result + "[" + selectionType + ": " + hashSelectionTypes.get(selectionType).size() + "]";
 		}

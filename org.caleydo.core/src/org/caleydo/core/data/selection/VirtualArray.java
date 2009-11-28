@@ -394,4 +394,15 @@ public class VirtualArray
 	public void setVaType(EVAType vaType) {
 		this.vaType = vaType;
 	}
+
+	@Override
+	public String toString() {
+
+		boolean hasGrouping = false;
+		if (groupList != null)
+			hasGrouping = true;
+
+		return "ID: " + getID() + ", Type: " + vaType + ", size: " + virtualArray.size() + ", hasGrouping: "
+			+ hasGrouping;
+	}
 }

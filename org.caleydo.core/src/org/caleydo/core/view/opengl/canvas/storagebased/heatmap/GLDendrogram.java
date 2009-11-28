@@ -144,9 +144,6 @@ public class GLDendrogram
 		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		alSelectionTypes.add(ESelectionType.SELECTION);
 
-		contentSelectionManager = new SelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
-		storageSelectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
-
 		renderStyle = new DendrogramRenderStyle(this, viewFrustum);
 
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);

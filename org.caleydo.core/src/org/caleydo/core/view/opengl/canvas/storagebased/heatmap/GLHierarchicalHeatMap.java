@@ -211,6 +211,8 @@ public class GLHierarchicalHeatMap
 
 	private boolean bRenderDendrogramBackgroundWhite = false;
 
+	private boolean hasDataWindowChanged = true;
+
 	// private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(0, 0);
 
 	/**
@@ -229,9 +231,6 @@ public class GLHierarchicalHeatMap
 		alSelectionTypes.add(ESelectionType.NORMAL);
 		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		alSelectionTypes.add(ESelectionType.SELECTION);
-
-		contentSelectionManager = new SelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
-		storageSelectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
@@ -779,6 +778,7 @@ public class GLHierarchicalHeatMap
 						iLastSampleLevel2 = index + iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
 					}
 				}
+				hasDataWindowChanged = true;
 			}
 		}
 	}
@@ -2605,7 +2605,8 @@ public class GLHierarchicalHeatMap
 		viewFrustum.setLeft(viewFrustum.getLeft() + 0.1f);
 		gl.glTranslatef(0.1f, 0.4f, 0);
 
-		setEmbeddedHeatMapData();
+		if (hasDataWindowChanged)
+			setEmbeddedHeatMapData();
 
 		if (set.getClusteredTreeGenes() != null)
 			bRenderDendrogramBackgroundWhite = true;
@@ -3116,6 +3117,9 @@ public class GLHierarchicalHeatMap
 	 * Function responsible for handling SelectionDelta for embedded heatmap
 	 */
 	private void setEmbeddedHeatMapData() {
+		// reset hasDataWindowChanged
+		hasDataWindowChanged = false;
+
 		int iCount = iFirstSampleLevel1 + iFirstSampleLevel2;
 
 		if (iCount < 0) {
@@ -3187,8 +3191,6 @@ public class GLHierarchicalHeatMap
 
 		// selected experiments
 
-		SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
-		glHeatMapView.handleStorageTriggerSelectionCommand(eExperimentDataType.getCategory(), command);
 
 		IVirtualArrayDelta deltaExp = new VirtualArrayDelta(storageVAType, eExperimentDataType);
 		ISelectionDelta selectionDeltaEx = new SelectionDelta(eExperimentDataType);
@@ -3364,7 +3366,7 @@ public class GLHierarchicalHeatMap
 			}
 		}
 		setDisplayListDirty();
-		setEmbeddedHeatMapData();
+		hasDataWindowChanged = true;
 	}
 
 	/**
@@ -3410,7 +3412,7 @@ public class GLHierarchicalHeatMap
 			}
 		}
 		setDisplayListDirty();
-		setEmbeddedHeatMapData();
+		hasDataWindowChanged = true;
 	}
 
 	/**
@@ -3694,6 +3696,7 @@ public class GLHierarchicalHeatMap
 		}
 
 		setDisplayListDirty();
+		hasDataWindowChanged = true;
 
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingWholeBlockLevel1 = false;
@@ -3742,7 +3745,8 @@ public class GLHierarchicalHeatMap
 		}
 
 		setDisplayListDirty();
-
+		hasDataWindowChanged = true;
+		
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingWholeBlockLevel2 = false;
 			bDisableCursorDraggingLevel2 = false;
@@ -3803,6 +3807,7 @@ public class GLHierarchicalHeatMap
 		}
 
 		setDisplayListDirty();
+		hasDataWindowChanged = true;
 
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingActiveLevel1 = false;
@@ -3863,6 +3868,7 @@ public class GLHierarchicalHeatMap
 		}
 
 		setDisplayListDirty();
+		hasDataWindowChanged = true;
 
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingActiveLevel2 = false;
@@ -3874,7 +3880,7 @@ public class GLHierarchicalHeatMap
 	@Override
 	public void handleContentTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
 		contentSelectionManager.executeSelectionCommand(selectionCommand);
-		glHeatMapView.handleContentTriggerSelectionCommand(category, selectionCommand);
+//		glHeatMapView.handleContentTriggerSelectionCommand(category, selectionCommand);
 		setDisplayListDirty();
 
 	}
@@ -4381,7 +4387,7 @@ public class GLHierarchicalHeatMap
 				}
 				break;
 		}
-//		setDisplayListDirty();
+		// setDisplayListDirty();
 	}
 
 	@Override

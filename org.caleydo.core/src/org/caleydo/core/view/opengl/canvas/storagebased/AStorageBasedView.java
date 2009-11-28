@@ -61,12 +61,14 @@ public abstract class AStorageBasedView
 	protected ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 	/**
-	 * This manager is responsible for the content in the storages (the indices)
+	 * This manager is responsible for the content in the storages (the indices). The contentSelectionManager
+	 * is initialized when the useCase is set ({@link #setUseCase(IUseCase)}).
 	 */
 	protected SelectionManager contentSelectionManager;
 
 	/**
-	 * This manager is responsible for the management of the storages in the set
+	 * This manager is responsible for the management of the storages in the set. The storageSelectionManager
+	 * is initialized when the useCase is set ({@link #setUseCase(IUseCase)}).
 	 */
 	protected SelectionManager storageSelectionManager;
 
@@ -271,6 +273,25 @@ public abstract class AStorageBasedView
 
 			contentSelectionManager.setDelta(selectionDelta);
 			handleConnectedElementRep(storageSelectionManager.getCompleteDelta());
+			reactOnExternalSelection(scrollToSelection);
+			setDisplayListDirty();
+		}
+		
+		// FIXME: this is not nice since we use expresison index for unspecified data
+		else if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX
+			&& dataDomain == EDataDomain.UNSPECIFIED) {
+
+			contentSelectionManager.setDelta(selectionDelta);
+			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
+			reactOnExternalSelection(scrollToSelection);
+			setDisplayListDirty();
+		}
+		
+		else if (selectionDelta.getIDType() == EIDType.UNSPECIFIED
+			&& dataDomain == EDataDomain.UNSPECIFIED) {
+
+			storageSelectionManager.setDelta(selectionDelta);
+			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
 			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
 		}
