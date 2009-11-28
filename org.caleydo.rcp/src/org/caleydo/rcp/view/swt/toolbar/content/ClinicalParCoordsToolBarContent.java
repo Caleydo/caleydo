@@ -23,9 +23,9 @@ import org.eclipse.jface.preference.PreferenceStore;
 public class ClinicalParCoordsToolBarContent
 	extends AToolBarContent {
 
-	public static final String IMAGE_PATH = "resources/icons/view/storagebased/heatmap/heatmap.png";
+	public static final String IMAGE_PATH = "resources/icons/view/storagebased/parcoords/parcoords.png";
 
-	public static final String VIEW_TITLE = "Heat Map";
+	public static final String VIEW_TITLE = "Clinical Parallel Coordinates";
 
 	@Override
 	public Class<?> getViewClass() {

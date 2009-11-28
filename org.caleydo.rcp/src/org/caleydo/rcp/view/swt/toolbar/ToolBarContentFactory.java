@@ -233,8 +233,8 @@ public class ToolBarContentFactory {
 		int type = AToolBarContent.STANDARD_RENDERING;
 		if (view instanceof AGLEventListener) {
 			AGLEventListener glView = (AGLEventListener) view;
-			if (glView.isRenderedRemote()) {
-				type = AToolBarContent.REMOTE_RENDERING;
+			if (glView.rendersContextOnly()) {
+				type = AToolBarContent.CONTEXT_ONLY_RENDERING;
 			}
 		}
 		return type;
@@ -297,8 +297,8 @@ public class ToolBarContentFactory {
 				content = (AToolBarContent) contentClass.newInstance();
 				content.setTargetViewData(view.getSerializableRepresentation());
 				if (view instanceof AGLEventListener) {
-					if (((AGLEventListener) view).isRenderedRemote()) {
-						content.setRenderType(AToolBarContent.REMOTE_RENDERING);
+					if (((AGLEventListener) view).rendersContextOnly()) {
+						content.setRenderType(AToolBarContent.CONTEXT_ONLY_RENDERING);
 					}
 				}
 			}

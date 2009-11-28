@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
@@ -30,7 +31,7 @@ public class TissueUseCase
 		possibleViews = new ArrayList<EManagedObjectType>();
 		possibleViews.add(EManagedObjectType.GL_TISSUE);
 
-		possibleIDCategories = new HashMap<EIDCategory, Boolean>();
+		possibleIDCategories = new HashMap<EIDCategory, String>();
 		// possibleIDCategories.put(EIDCategory.GENE, null);
 	}
 

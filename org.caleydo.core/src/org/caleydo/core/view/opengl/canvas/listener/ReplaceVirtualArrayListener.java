@@ -13,7 +13,9 @@ public class ReplaceVirtualArrayListener
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof ReplaceVirtualArrayEvent) {
-			handler.replaceVirtualArray(((ReplaceVirtualArrayEvent) event).getVaType());
+			ReplaceVirtualArrayEvent vaEvent = ((ReplaceVirtualArrayEvent) event);
+			
+			handler.replaceVirtualArray(vaEvent.getIDCategory(), vaEvent.getVaType());
 
 		}
 

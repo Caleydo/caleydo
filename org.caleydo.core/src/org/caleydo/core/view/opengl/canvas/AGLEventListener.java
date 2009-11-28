@@ -58,9 +58,9 @@ import com.sun.opengl.util.texture.TextureCoords;
 /**
  * Abstract class for OpenGL views.
  * 
- * @author Michael Kalkusch
  * @author Marc Streit
  * @author Alexander Lex
+ * @author Michael Kalkusch
  */
 public abstract class AGLEventListener
 	extends AView
@@ -518,6 +518,13 @@ public abstract class AGLEventListener
 
 	public final boolean isRenderedRemote() {
 		return glRemoteRenderingView != null;
+	}
+	
+	public final boolean rendersContextOnly()
+	{
+		if (contentVAType == EVAType.CONTENT)
+			return false;
+		return true;
 	}
 
 	public final void setRemoteRenderingGLView(IGLRemoteRenderingView glRemoteRenderingView) {

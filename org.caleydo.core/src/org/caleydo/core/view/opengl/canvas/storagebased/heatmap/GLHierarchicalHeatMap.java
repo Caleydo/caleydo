@@ -797,7 +797,13 @@ public class GLHierarchicalHeatMap
 
 		setDisplayListDirty();
 	}
-
+	
+	@Override
+	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType)
+	{
+		super.replaceVirtualArray(idCategory, vaType);
+		hasDataWindowChanged = true;
+	}
 	/**
 	 * Render caption, simplified version used in (original) heatmap
 	 * 
@@ -3218,7 +3224,7 @@ public class GLHierarchicalHeatMap
 			}
 		}
 
-		glHeatMapView.handleVirtualArrayUpdate(deltaExp, getShortInfo());
+//		glHeatMapView.handleVirtualArrayUpdate(deltaExp, getShortInfo());
 		if (selectionDeltaEx.size() > 0) {
 			glHeatMapView.handleSelectionUpdate(selectionDeltaEx, true, null);
 		}

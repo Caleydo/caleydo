@@ -60,9 +60,9 @@ public class GeneticUseCase
 		possibleViews.add(EManagedObjectType.GL_PARALLEL_COORDINATES);
 		possibleViews.add(EManagedObjectType.GL_HIER_HEAT_MAP);
 
-		possibleIDCategories = new HashMap<EIDCategory, Boolean>();
-		possibleIDCategories.put(EIDCategory.GENE, null);
-		possibleIDCategories.put(EIDCategory.EXPERIMENT, null);
+		possibleIDCategories = new HashMap<EIDCategory, String>();
+		possibleIDCategories.put(EIDCategory.GENE, EVAType.CONTENT_PRIMARY);
+		possibleIDCategories.put(EIDCategory.EXPERIMENT, EVAType.STORAGE_PRIMARY);
 
 	}
 

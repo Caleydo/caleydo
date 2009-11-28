@@ -973,7 +973,7 @@ public class GLPathway
 	}
 
 	@Override
-	public void replaceVirtualArray(EVAType vaType) {
+	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType) {
 		// TODO Auto-generated method stub
 
 	}

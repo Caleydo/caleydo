@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -34,6 +35,6 @@ public interface IVirtualArrayUpdateHandler
 	 * @param vaType
 	 *            the type of the VA which is updated
 	 */
-	public void replaceVirtualArray(EVAType vaType);
+	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType);
 
 }

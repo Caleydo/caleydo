@@ -617,7 +617,16 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void replaceVirtualArray(EVAType vaType) {
+	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType) {
+		String primaryVAType = useCase.getVATypeForIDCategory(idCategory);
+		if (primaryVAType == null)
+			return;
+
+		EVAType suggestedVAType = EVAType.getVATypeForPrimaryVAType(primaryVAType);
+
+		if (vaType != suggestedVAType || vaType.getPrimaryVAType() != primaryVAType)
+			return;
+		
 		if (vaType == storageVAType) {
 			storageVA = useCase.getVA(vaType);
 			// storageSelectionManager.setVA(storageVA);

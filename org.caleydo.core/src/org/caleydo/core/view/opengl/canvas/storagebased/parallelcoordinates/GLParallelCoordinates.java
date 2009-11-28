@@ -320,7 +320,6 @@ public class GLParallelCoordinates
 	@Override
 	public void init(final GL gl) {
 
-
 		fXDefaultTranslation = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
 	}
@@ -664,8 +663,8 @@ public class GLParallelCoordinates
 		}
 		else {
 
-			eAxisDataType = EIDType.EXPERIMENT_INDEX;
-			ePolylineDataType = EIDType.EXPRESSION_INDEX;
+			eAxisDataType = storageDataType;
+			ePolylineDataType = contentDataType;
 
 			polylineVA = contentVA;
 			polylineVAType = contentVAType;
@@ -1756,6 +1755,23 @@ public class GLParallelCoordinates
 				}
 			}
 		}
+		if (delta.getIDType() == ePolylineDataType) {
+
+			contentSelectionManager.setVADelta(delta);
+//			for (VADeltaItem item : delta) {
+//				int iElement = axisVA.get(item.getIndex());
+//				if (item.getType() == EVAOperation.REMOVE) {
+//					// resetAxisSpacing();
+//					if (axisVA.containsElement(iElement) == 1) {
+//						hashGates.remove(iElement);
+//					}
+//				}
+//				else if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
+//					// resetAxisSpacing();
+//					hashGates.remove(item.getPrimaryID());
+//				}
+//			}
+		}
 
 	}
 
@@ -1905,7 +1921,7 @@ public class GLParallelCoordinates
 				polylineSelectionManager.addToType(eSelectionType, iExternalID);
 				polylineSelectionManager.addConnectionID(generalManager.getIDManager().createID(
 					EManagedObjectType.CONNECTION), iExternalID);
-				
+
 				// }
 
 				// if (ePolylineDataType == EIDType.EXPRESSION_INDEX && !bAngularBrushingSelectPolyline) {
@@ -2945,10 +2961,11 @@ public class GLParallelCoordinates
 		int iNumElements =
 			(contentSelectionManager.getNumberOfElements() - contentSelectionManager
 				.getNumberOfElements(ESelectionType.DESELECTED));
+		String renderMode = "standalone";
 		if (isRenderedRemote())
-			return ("PCs, standalone, " + iNumElements + " elements");
-		else
-			return ("PCs, remote, " + iNumElements + " elements");
+			renderMode = "remote";
+		return ("PCs, " + renderMode + ", " + iNumElements + " elements" + " Axis DT: " + eAxisDataType
+			+ " Polyline DT:" + ePolylineDataType);
 	}
 
 	@Override

@@ -89,8 +89,11 @@ public abstract class AUseCase
 	/** Every use case needs to state all views that can visualize its data */
 	protected ArrayList<EManagedObjectType> possibleViews;
 
-	/** Every use case needs to state all ID Categories it can handle */
-	protected HashMap<EIDCategory, Boolean> possibleIDCategories;
+	/**
+	 * Every use case needs to state all ID Categories it can handle. The string must specify which primary
+	 * VAType ({@link EVAType#getPrimaryVAType()} is associated for the ID Category
+	 */
+	protected HashMap<EIDCategory, String> possibleIDCategories;
 
 	public AUseCase() {
 		eventPublisher = GeneralManager.get().getEventPublisher();
@@ -100,6 +103,11 @@ public abstract class AUseCase
 	@Override
 	public EDataDomain getDataDomain() {
 		return useCaseMode;
+	}
+
+	@Override
+	public String getVATypeForIDCategory(EIDCategory idCategory) {
+		return possibleIDCategories.get(idCategory);
 	}
 
 	// public void setUseCaseMode(EDataDomain useCaseMode) {
@@ -277,12 +285,12 @@ public abstract class AUseCase
 
 	}
 
-	@Override
-	/*
-	 * * This is the method which is used to synchronize the views with the Virtual Array, which is initiated
+	/**
+	 * This is the method which is used to synchronize the views with the Virtual Array, which is initiated
 	 * from this class. Therefore it should not be called any time!
 	 */
-	public void replaceVirtualArray(EVAType vaType) {
+	@Override
+	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType) {
 		throw new IllegalStateException("UseCases shouldn't react to this");
 
 	}
@@ -290,8 +298,12 @@ public abstract class AUseCase
 	@Override
 	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType, IVirtualArray virtualArray) {
 
-		if (!possibleIDCategories.containsKey(idCategory))
+		String idCategoryAsscoatedVAType = possibleIDCategories.get(idCategory);
+		if (idCategoryAsscoatedVAType == null)
 			return;
+
+		if (!idCategoryAsscoatedVAType.equals(vaType.getPrimaryVAType()))
+			vaType = EVAType.getVATypeForPrimaryVAType(idCategoryAsscoatedVAType);
 
 		set.replaceVA(mapVAIDs.get(vaType), virtualArray.clone());
 
