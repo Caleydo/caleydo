@@ -72,6 +72,9 @@ import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableGeneMappingLi
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableNeighborhoodListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableTexturesListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingBucketView;
+import org.caleydo.core.view.opengl.canvas.remote.dataflipper.GLDataFlipper;
+import org.caleydo.core.view.opengl.canvas.remote.viewbrowser.AGLViewBrowser;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.EmbeddedPathwayContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
@@ -371,8 +374,13 @@ public class GLPathway
 					(PathwayVertexGraphItemRep) generalManager.getPathwayItemManager().getItem(
 						item.getPrimaryID());
 
+				int iViewID = iUniqueID;
+				// If rendered remote (hierarchical heat map) - use the remote view ID
+				if (glRemoteRenderingView != null && glRemoteRenderingView instanceof AGLViewBrowser)
+					iViewID = glRemoteRenderingView.getID();
+				
 				SelectedElementRep elementRep =
-					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vertexRep.getXOrigin()
+					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iViewID, vertexRep.getXOrigin()
 						* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x() + vecTranslation.x(),
 						(iPathwayHeight - vertexRep.getYOrigin()) * PathwayRenderStyle.SCALING_FACTOR_Y
 							* vecScaling.y() + vecTranslation.y(), 0);
@@ -723,12 +731,17 @@ public class GLPathway
 		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep;
 		int iPathwayHeight = pathway.getHeight();
 
+		int iViewID = iUniqueID;
+		// If rendered remote (hierarchical heat map) - use the remote view ID
+		if (glRemoteRenderingView != null && glRemoteRenderingView instanceof AGLViewBrowser)
+			iViewID = glRemoteRenderingView.getID();
+		
 		for (int iVertexRepID : selectionManager.getElements(eSelectionType)) {
 			tmpPathwayVertexGraphItemRep =
 				generalManager.getPathwayItemManager().getPathwayVertexRep(iVertexRepID);
 
 			SelectedElementRep elementRep =
-				new SelectedElementRep(EIDType.EXPRESSION_INDEX, this.getID(), tmpPathwayVertexGraphItemRep
+				new SelectedElementRep(EIDType.EXPRESSION_INDEX, iViewID, tmpPathwayVertexGraphItemRep
 					.getXOrigin()
 					* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x() + vecTranslation.x(),
 					(iPathwayHeight - tmpPathwayVertexGraphItemRep.getYOrigin())

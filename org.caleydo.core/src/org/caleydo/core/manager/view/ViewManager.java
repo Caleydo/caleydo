@@ -38,6 +38,8 @@ import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.dataflipper.GLDataFlipper;
+import org.caleydo.core.view.opengl.canvas.remote.viewbrowser.GLPathwayViewBrowser;
+import org.caleydo.core.view.opengl.canvas.remote.viewbrowser.GLTissueViewBrowser;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLDendrogram;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
@@ -252,6 +254,14 @@ public class ViewManager
 
 			case CREATE_GL_DATA_FLIPPER:
 				glEventListener = new GLDataFlipper(glCanvas, sLabel, viewFrustum);
+				break;
+				
+			case CREATE_GL_TISSUE_VIEW_BROWSER:
+				glEventListener = new GLTissueViewBrowser(glCanvas, sLabel, viewFrustum);
+				break;
+				
+			case CREATE_GL_PATHWAY_VIEW_BROWSER:
+				glEventListener = new GLPathwayViewBrowser(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_RADIAL_HIERARCHY:

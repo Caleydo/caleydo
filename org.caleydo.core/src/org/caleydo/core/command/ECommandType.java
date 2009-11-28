@@ -34,6 +34,8 @@ public enum ECommandType {
 	CREATE_GL_JUKEBOX_3D("cmd", "type", "-1", "Create Jukebox 3D"),
 	CREATE_GL_REMOTE_GLYPH("cmd", "type", "-1", "Create Remote Glyph"),
 	CREATE_GL_DATA_FLIPPER("cmd", "type", "-1", "Create Data Flipper"),
+	CREATE_GL_TISSUE_VIEW_BROWSER("cmd", "type", "-1", "Create Tissue View Browser"),
+	CREATE_GL_PATHWAY_VIEW_BROWSER("cmd", "type", "-1", "Create Pathway View Browser"),	
 	CREATE_GL_CELL("cmd", "type", "-1", "Create Cell Component Localizer"),
 	CREATE_GL_TISSUE("cmd", "type", "-1", "Create Tissue Viewer"),
 	CREATE_GL_RADIAL_HIERARCHY("cmd", "type", "-1", "Create Radial Hierarchys"),

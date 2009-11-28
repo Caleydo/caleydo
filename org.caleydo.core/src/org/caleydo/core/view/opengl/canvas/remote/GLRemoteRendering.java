@@ -2955,7 +2955,7 @@ public class GLRemoteRendering
 		return glConnectionLineRenderer;
 	}
 
-	public RemoteRenderingTransformer getSelectionTransformer() {
-		return selectionTransformer;
-	}
+//	public RemoteRenderingTransformer getSelectionTransformer() {
+//		return selectionTransformer;
+//	}
 }

@@ -8,16 +8,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
-import org.caleydo.core.view.opengl.canvas.pathway.SerializedPathwayView;
+import org.caleydo.core.view.opengl.canvas.remote.viewbrowser.SerializedPathwayViewBrowserView;
+import org.caleydo.core.view.opengl.canvas.remote.viewbrowser.SerializedTissueViewBrowserView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHierarchicalHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.SerializedParallelCoordinatesView;
-import org.caleydo.core.view.opengl.canvas.tissue.SerializedTissueView;
 
 /**
  * Serialized form of the data flipper view.
@@ -53,9 +51,9 @@ public class SerializedDataFlipperView
 		parCoords.setDataDomain(EDataDomain.GENETIC_DATA);
 		initialContainedViews.add(parCoords);
 
-		SerializedTissueView tissue = new SerializedTissueView();
-		tissue.setDataDomain(EDataDomain.TISSUE_DATA);
-		initialContainedViews.add(tissue);
+		SerializedTissueViewBrowserView tissueViewBrowser = new SerializedTissueViewBrowserView();
+		tissueViewBrowser.setDataDomain(EDataDomain.TISSUE_DATA);
+		initialContainedViews.add(tissueViewBrowser);
 
 		SerializedHierarchicalHeatMapView heatMap = new SerializedHierarchicalHeatMapView();
 		heatMap.setDataDomain(EDataDomain.GENETIC_DATA);
@@ -65,13 +63,9 @@ public class SerializedDataFlipperView
 		parCoords.setDataDomain(EDataDomain.CLINICAL_DATA);
 		initialContainedViews.add(parCoords);
 
-		SerializedPathwayView pathway = new SerializedPathwayView();
-		pathway = new SerializedPathwayView();
-		pathway
-			.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems().toArray()[0])
-				.getID());
-		pathway.setDataDomain(EDataDomain.PATHWAY_DATA);
-		initialContainedViews.add(pathway);
+		SerializedPathwayViewBrowserView pathwayViewBrowser = new SerializedPathwayViewBrowserView();
+		pathwayViewBrowser.setDataDomain(EDataDomain.PATHWAY_DATA);
+		initialContainedViews.add(pathwayViewBrowser);
 
 		SerializedGlyphView glyph = new SerializedGlyphView();
 		glyph.setDataDomain(EDataDomain.CLINICAL_DATA);

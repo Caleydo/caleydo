@@ -369,7 +369,7 @@ public abstract class AGLEventListener
 	protected abstract void initLocal(final GL gl);
 
 	/**
-	 * Initialization for gl called by a managing view Has to call init internally!
+	 * Initialization for gl called by a managing view has to call init internally!
 	 * 
 	 * @param gl
 	 * @param infoAreaManager

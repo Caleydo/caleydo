@@ -31,16 +31,16 @@ public class SerializedRemoteRenderingView
 
 	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLRemoteRenderingView";
 
-	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.pathwayTexturesEnabled */
+	/** @see org.caleydo.core.view.opengl.canvas.remote.AGLViewBrowser.pathwayTexturesEnabled */
 	private boolean pathwayTexturesEnabled;
 
-	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.geneMappingEnabled */
+	/** @see org.caleydo.core.view.opengl.canvas.remote.AGLViewBrowser.geneMappingEnabled */
 	private boolean geneMappingEnabled;
 
-	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.neighborhoodEnabled */
+	/** @see org.caleydo.core.view.opengl.canvas.remote.AGLViewBrowser.neighborhoodEnabled */
 	private boolean neighborhoodEnabled;
 
-	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.connectionLinesEnabled */
+	/** @see org.caleydo.core.view.opengl.canvas.remote.AGLViewBrowser.connectionLinesEnabled */
 	private boolean connectionLinesEnabled;
 
 	/** list of view-ids contained in the focus-level */
