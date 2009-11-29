@@ -333,8 +333,17 @@ public class IDMappingManager
 
 		if (source.equals(destination))
 			return (V) sourceID;
+		
+		List<MappingEdge> path;
 
-		List<MappingEdge> path = DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
+		try {
+			path = DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
+		}
+		catch (IllegalArgumentException e) {
+			// data type is not in the mapping
+			return null;
+		}
+		
 		Object currentID = sourceID;
 
 		if (path == null)
