@@ -14,7 +14,6 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.ICommandManager;
@@ -846,9 +845,11 @@ public class GLDataFlipper
 					iconTextureType = EIconTextures.GLYPH_ICON;
 					break;
 				case GL_PATHWAY:
+				case GL_PATHWAY_VIEW_BROWSER:
 					iconTextureType = EIconTextures.PATHWAY_ICON;
 					break;
 				case GL_TISSUE:
+				case GL_TISSUE_VIEW_BROWSER:
 					iconTextureType = EIconTextures.TISSUE_SAMPLE;
 					break;
 				default:

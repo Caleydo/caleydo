@@ -83,12 +83,12 @@ public abstract class AGLViewBrowser
 
 	private int iMouseOverObjectID = -1;
 
-	private RemoteLevel focusLevel;
-	private RemoteLevel stackLevel;
-	private RemoteLevel poolLevel;
-	private RemoteLevel transitionLevel;
-	private RemoteLevel spawnLevel;
-	private RemoteLevel externalSelectionLevel;
+	protected RemoteLevel focusLevel;
+	protected RemoteLevel stackLevel;
+	protected RemoteLevel poolLevel;
+	protected RemoteLevel transitionLevel;
+	protected RemoteLevel spawnLevel;
+	protected RemoteLevel externalSelectionLevel;
 
 	private ArrayList<SlerpAction> arSlerpActions;
 
@@ -185,14 +185,15 @@ public abstract class AGLViewBrowser
 		iPoolLevelCommonID = generalManager.getIDManager().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT);
 	}
 
-	private void initFocusLevel() {
-		Transform transform = new Transform();
-
-		transform.setTranslation(new Vec3f(0, 1.3f, 0));
-		transform.setScale(new Vec3f(0.8f, 0.8f, 1));
-
-		focusLevel.getElementByPositionIndex(0).setTransform(transform);
-	}
+	protected abstract void initFocusLevel();
+	
+	protected abstract void initPoolLevel(int selectedElementId);
+	
+	protected abstract void initSpawnLevel();
+	
+	protected abstract void initExternalSelectionLevel();
+	
+	protected abstract void initTransitionLevel();
 
 	private void initStackLevel() {
 		Transform transform;
@@ -228,71 +229,6 @@ public abstract class AGLViewBrowser
 		transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn, fScalingFactorZoomedIn));
 		transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
 		stackLevel.getElementByPositionIndex(3).setTransform(transform);
-	}
-
-	public RemoteLevel initPoolLevel(int iSelectedRemoteLevelElementID) {
-		Transform transform;
-
-		float fScalingFactorPoolLevel = 0.05f;
-		float fSelectedScaling = 1;
-		float fYAdd = 8f;
-
-		int iRemoteLevelElementIndex = 0;
-		for (RemoteLevelElement element : poolLevel.getAllElements()) {
-
-			if (element.getID() == iSelectedRemoteLevelElementID) {
-				fSelectedScaling = 1.8f;
-				fYAdd -= 0.6f * fSelectedScaling;
-			}
-			else {
-				fSelectedScaling = 1;
-				fYAdd -= 0.5f * fSelectedScaling;
-			}
-
-			transform = new Transform();
-			transform.setTranslation(new Vec3f(6.5f, fYAdd, 0));
-			transform.setScale(new Vec3f(fScalingFactorPoolLevel * fSelectedScaling, fScalingFactorPoolLevel
-				* fSelectedScaling, fScalingFactorPoolLevel * fSelectedScaling));
-
-			poolLevel.getElementByPositionIndex(iRemoteLevelElementIndex).setTransform(transform);
-			iRemoteLevelElementIndex++;
-		}
-
-		return poolLevel;
-	}
-
-	public void initExternalSelectionLevel() {
-
-		float fScalingFactorSelectionLevel = 1;
-		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(1, -2.01f, 0));
-		transform.setScale(new Vec3f(fScalingFactorSelectionLevel, fScalingFactorSelectionLevel,
-			fScalingFactorSelectionLevel));
-
-		externalSelectionLevel.getElementByPositionIndex(0).setTransform(transform);
-	}
-
-	public void initTransitionLevel() {
-
-		float fScalingFactorTransitionLevel = 1;
-		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(0, -2f, 0.1f));
-		transform.setScale(new Vec3f(fScalingFactorTransitionLevel, fScalingFactorTransitionLevel,
-			fScalingFactorTransitionLevel));
-
-		transitionLevel.getElementByPositionIndex(0).setTransform(transform);
-
-	}
-
-	public void initSpawnLevel() {
-
-		float fScalingFactorSpawnLevel = 0.05f;
-		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(6.5f, 5, -0.2f));
-		transform.setScale(new Vec3f(fScalingFactorSpawnLevel, fScalingFactorSpawnLevel,
-			fScalingFactorSpawnLevel));
-
-		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
 	}
 
 	@Override
@@ -386,7 +322,7 @@ public abstract class AGLViewBrowser
 		initPoolLevel(iMouseOverObjectID);
 
 		// initStackLevel();
-		// initFocusLevel();
+		 initFocusLevel();
 
 		// Just for layout testing during runtime
 		// layoutRenderStyle.initStackLevel();
@@ -1751,7 +1687,7 @@ public abstract class AGLViewBrowser
 		else {
 			GeneralManager.get().getLogger().log(
 				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-					"No empty space left to add new pathway!"));
+					"No empty space left to add new view!"));
 			newViews.clear();
 			return false;
 		}
@@ -1775,7 +1711,7 @@ public abstract class AGLViewBrowser
 	 *            serialized form of the view to create
 	 * @return the created view ready to be used within the application
 	 */
-	private AGLEventListener createView(GL gl, ASerializedView serView) {
+	protected AGLEventListener createView(GL gl, ASerializedView serView) {
 
 		ICommandManager cm = generalManager.getCommandManager();
 		ECommandType cmdType = serView.getCreationCommandType();
@@ -1788,10 +1724,6 @@ public abstract class AGLViewBrowser
 		glView.setUseCase(useCase);
 		glView.setRemoteRenderingGLView(this);
 		glView.setSet(set);
-
-		// if (glView instanceof GLPathway) {
-		// initializePathwayView((GLPathway) glView);
-		// }
 
 		triggerMostRecentDelta();
 

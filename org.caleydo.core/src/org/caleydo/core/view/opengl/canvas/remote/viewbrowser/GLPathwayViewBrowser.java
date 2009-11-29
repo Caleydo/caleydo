@@ -1,5 +1,8 @@
 package org.caleydo.core.view.opengl.canvas.remote.viewbrowser;
 
+import gleem.linalg.Vec3f;
+import gleem.linalg.open.Transform;
+
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -7,6 +10,7 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.pathway.SerializedPathwayView;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
 public class GLPathwayViewBrowser
 	extends AGLViewBrowser {
@@ -27,5 +31,82 @@ public class GLPathwayViewBrowser
 			pathway.setDataDomain(EDataDomain.PATHWAY_DATA);
 			newViews.add(pathway);
 		}
+	}
+	
+	@Override
+	protected void initFocusLevel() {
+		Transform transform = new Transform();
+
+		transform.setTranslation(new Vec3f(0, 1.3f, 0));
+		transform.setScale(new Vec3f(0.8f, 0.8f, 1));
+
+		focusLevel.getElementByPositionIndex(0).setTransform(transform);
+	}
+	
+	@Override
+	protected void initPoolLevel(int iSelectedRemoteLevelElementID) {
+		Transform transform;
+
+		float fScalingFactorPoolLevel = 0.05f;
+		float fSelectedScaling = 1;
+		float fYAdd = 8f;
+
+		int iRemoteLevelElementIndex = 0;
+		for (RemoteLevelElement element : poolLevel.getAllElements()) {
+
+			if (element.getID() == iSelectedRemoteLevelElementID) {
+				fSelectedScaling = 1.8f;
+				fYAdd -= 0.6f * fSelectedScaling;
+			}
+			else {
+				fSelectedScaling = 1;
+				fYAdd -= 0.5f * fSelectedScaling;
+			}
+
+			transform = new Transform();
+			transform.setTranslation(new Vec3f(6.5f, fYAdd, 0));
+			transform.setScale(new Vec3f(fScalingFactorPoolLevel * fSelectedScaling, fScalingFactorPoolLevel
+				* fSelectedScaling, fScalingFactorPoolLevel * fSelectedScaling));
+
+			poolLevel.getElementByPositionIndex(iRemoteLevelElementIndex).setTransform(transform);
+			iRemoteLevelElementIndex++;
+		}
+	}
+
+	@Override
+	protected void initExternalSelectionLevel() {
+
+		float fScalingFactorSelectionLevel = 1;
+		Transform transform = new Transform();
+		transform.setTranslation(new Vec3f(1, -2.01f, 0));
+		transform.setScale(new Vec3f(fScalingFactorSelectionLevel, fScalingFactorSelectionLevel,
+			fScalingFactorSelectionLevel));
+
+		externalSelectionLevel.getElementByPositionIndex(0).setTransform(transform);
+	}
+
+	@Override
+	protected void initTransitionLevel() {
+
+		float fScalingFactorTransitionLevel = 1;
+		Transform transform = new Transform();
+		transform.setTranslation(new Vec3f(0, -2f, 0.1f));
+		transform.setScale(new Vec3f(fScalingFactorTransitionLevel, fScalingFactorTransitionLevel,
+			fScalingFactorTransitionLevel));
+
+		transitionLevel.getElementByPositionIndex(0).setTransform(transform);
+
+	}
+
+	@Override
+	protected void initSpawnLevel() {
+
+		float fScalingFactorSpawnLevel = 0.05f;
+		Transform transform = new Transform();
+		transform.setTranslation(new Vec3f(6.5f, 5, -0.2f));
+		transform.setScale(new Vec3f(fScalingFactorSpawnLevel, fScalingFactorSpawnLevel,
+			fScalingFactorSpawnLevel));
+
+		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
 	}
 }

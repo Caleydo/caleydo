@@ -20,15 +20,16 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
- * Single OpenGL pathway view
+ * Single OpenGL tissue view
  * 
  * @author Marc Streit
  */
 public class GLTissue
 	extends AGLEventListener {
+
+	private String texturePath;
 
 	/**
 	 * Constructor.
@@ -90,11 +91,10 @@ public class GLTissue
 
 	private void renderScene(final GL gl) {
 
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-
-		textureManager.renderTexture(gl, EIconTextures.TISSUE_SAMPLE, new Vec3f(0, 0, 0), new Vec3f(8, 0, 0),
-			new Vec3f(8, 8, 0), new Vec3f(0, 8, 0), 1, 1, 1, 1);
-
+		if (texturePath != null && !texturePath.isEmpty()) {
+			textureManager.renderTexture(gl, texturePath, new Vec3f(0, 0, 0), new Vec3f(8, 0, 0), new Vec3f(
+				8, 8, 0), new Vec3f(0, 8, 0), 1, 1, 1, 1);
+		}
 	}
 
 	@Override
@@ -160,6 +160,10 @@ public class GLTissue
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
+	}
+
+	public void setTexturePath(String texturePath) {
+		this.texturePath = texturePath;
 	}
 
 }

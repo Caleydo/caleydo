@@ -19,6 +19,8 @@ public class SerializedTissueView
 	extends ASerializedView {
 
 	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLTissueView";
+	
+	private String texturePath;
 
 	/**
 	 * Default constructor with default initialization
@@ -41,5 +43,13 @@ public class SerializedTissueView
 	@Override
 	public String getViewGUIID() {
 		return GUI_ID;
+	}
+
+	public void setTexturePath(String texturePath) {
+		this.texturePath = texturePath;
+	}
+
+	public String getTexturePath() {
+		return texturePath;
 	}
 }
