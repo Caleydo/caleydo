@@ -534,8 +534,12 @@ public abstract class AGLViewBrowser
 			float fTextScalingFactor = 0.09f;
 			float fTextXPosition = 0f;
 
+			float fXShift = -7.1f;
+			if (this instanceof GLTissueViewBrowser)
+				fXShift = -0.8f;
+			
 			if (element.getID() == iMouseOverObjectID) {
-				renderPoolSelection(gl, translation.x()-7.1f, translation.y() * scale.y()
+				renderPoolSelection(gl, translation.x()+fXShift, translation.y() * scale.y()
 					+ 5.2f,
 
 				(float) textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 23, 6f, element);
@@ -1018,7 +1022,7 @@ public abstract class AGLViewBrowser
 
 		gl.glPushMatrix();
 
-		slerpMod.applySlerp(gl, transform, true);
+		slerpMod.applySlerp(gl, transform, true, false);
 
 		generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).displayRemote(gl);
 
@@ -1071,126 +1075,30 @@ public abstract class AGLViewBrowser
 		compactPoolLevel();
 	}
 
-	// private void loadViewToFocusLevel(final int iRemoteLevelElementID) {
-	// RemoteLevelElement element = RemoteElementManager.get().getItem(iRemoteLevelElementID);
-	//
-	// // Check if other slerp action is currently running
-	// // if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
-	// // return;
-	//
-	// arSlerpActions.clear();
-	//
-	// int iViewID = element.getContainedElementID();
-	//
-	// if (iViewID == -1)
-	// return;
-	//
-	// // Only broadcast elements if view is moved from pool to bucket
-	// if (poolLevel.containsElement(element)) {
-	// generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).broadcastElements(
-	// EVAOperation.APPEND_UNIQUE);
-	// }
-	//
-	// {
-	// // Check if view is already loaded in the stack layer
-	// if (stackLevel.containsElement(element)) {
-	//
-	// // Slerp selected view to transition position
-	// SlerpAction slerpActionTransition =
-	// new SlerpAction(element, transitionLevel.getElementByPositionIndex(0));
-	// arSlerpActions.add(slerpActionTransition);
-	//
-	// // Check if focus level is free
-	// if (!focusLevel.hasFreePosition()) {
-	// // Slerp focus view to free spot in stack
-	// SlerpAction reverseSlerpAction =
-	// new SlerpAction(focusLevel.getElementByPositionIndex(0).getContainedElementID(),
-	// focusLevel.getElementByPositionIndex(0), element);
-	// arSlerpActions.add(reverseSlerpAction);
-	// }
-	//
-	// // Slerp selected view from transition position to focus
-	// // position
-	// SlerpAction slerpAction =
-	// new SlerpAction(element.getContainedElementID(), transitionLevel
-	// .getElementByPositionIndex(0), focusLevel.getElementByPositionIndex(0));
-	// arSlerpActions.add(slerpAction);
-	// }
-	// // Check if focus position is free
-	// else if (focusLevel.hasFreePosition()) {
-	//
-	// // Slerp selected view to focus position
-	// SlerpAction slerpActionTransition =
-	// new SlerpAction(element, focusLevel.getElementByPositionIndex(0));
-	// arSlerpActions.add(slerpActionTransition);
-	//
-	// }
-	// else {
-	// // Slerp selected view to transition position
-	// SlerpAction slerpActionTransition =
-	// new SlerpAction(element, transitionLevel.getElementByPositionIndex(0));
-	// arSlerpActions.add(slerpActionTransition);
-	//
-	// RemoteLevelElement freeStackElement = null;
-	// if (!stackLevel.hasFreePosition()) {
-	// int iReplacePosition = 1;
-	//
-	// // // Determine non locked stack position for view movement
-	// // to pool
-	// // for (int iTmpReplacePosition = 0; iTmpReplacePosition <
-	// // stackLevel.getCapacity(); iTmpReplacePosition++)
-	// // {
-	// // if
-	// // (stackLevel.getElementByPositionIndex(iTmpReplacePosition).isLocked())
-	// // continue;
-	// //
-	// // iReplacePosition = iTmpReplacePosition + 1; // +1 to
-	// // start with left view for outsourcing
-	// //
-	// // if (iReplacePosition == 4)
-	// // iReplacePosition = 0;
-	// //
-	// // break;
-	// // }
-	// //
-	// // if (iReplacePosition == -1)
-	// // throw new
-	// // IllegalStateException("All views in stack are locked!");
-	//
-	// freeStackElement = stackLevel.getElementByPositionIndex(iReplacePosition);
-	//
-	// // Slerp view from stack to pool
-	// SlerpAction reverseSlerpAction =
-	// new SlerpAction(freeStackElement, poolLevel.getNextFree());
-	// arSlerpActions.add(reverseSlerpAction);
-	//
-	// // Unregister all elements of the view that is moved out
-	// generalManager.getViewGLCanvasManager().getGLEventListener(
-	// freeStackElement.getContainedElementID()).broadcastElements(
-	// EVAOperation.REMOVE_ELEMENT);
-	// }
-	// else {
-	// freeStackElement = stackLevel.getNextFree();
-	// }
-	//
-	// if (!focusLevel.hasFreePosition()) {
-	// // Slerp focus view to free spot in stack
-	// SlerpAction reverseSlerpAction2 =
-	// new SlerpAction(focusLevel.getElementByPositionIndex(0), freeStackElement);
-	// arSlerpActions.add(reverseSlerpAction2);
-	// }
-	//
-	// // Slerp selected view from transition position to focus
-	// // position
-	// SlerpAction slerpAction =
-	// new SlerpAction(iViewID, transitionLevel.getElementByPositionIndex(0), focusLevel
-	// .getElementByPositionIndex(0));
-	// arSlerpActions.add(slerpAction);
-	// }
-	// }
-	//
-	// iSlerpFactor = 0;
-	// }
+	private void loadViewToFocusLevel(final int iRemoteLevelElementID) {
+		RemoteLevelElement element = RemoteElementManager.get().getItem(iRemoteLevelElementID);
+
+		// Check if other slerp action is currently running
+		// if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
+		// return;
+
+		arSlerpActions.clear();
+
+		int iViewID = element.getContainedElementID();
+
+		if (iViewID == -1)
+			return;
+		
+		// Slerp focus view to pool
+		SlerpAction makePlaceSlerpActionTransition = new SlerpAction(focusLevel.getElementByPositionIndex(0), poolLevel.getNextFree());
+		arSlerpActions.add(makePlaceSlerpActionTransition);
+
+		// Slerp selected view to focus position
+		SlerpAction slerpActionTransition = new SlerpAction(element, focusLevel.getElementByPositionIndex(0));
+		arSlerpActions.add(slerpActionTransition);
+		
+		iSlerpFactor = 0;
+	}
 
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
@@ -1289,13 +1197,13 @@ public abstract class AGLViewBrowser
 							break;
 						}
 
-						// // Check if view is contained in pool level
-						// for (RemoteLevelElement element : poolLevel.getAllElements()) {
-						// if (element.getID() == iExternalID) {
-						// loadViewToFocusLevel(iExternalID);
-						// break;
-						// }
-						// }
+						// Check if view is contained in pool level
+						for (RemoteLevelElement element : poolLevel.getAllElements()) {
+							if (element.getID() == iExternalID) {
+								loadViewToFocusLevel(iExternalID);
+								break;
+							}
+						}
 						break;
 				}
 				break;

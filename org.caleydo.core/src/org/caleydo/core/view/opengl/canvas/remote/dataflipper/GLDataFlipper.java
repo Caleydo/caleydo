@@ -541,7 +541,7 @@ public class GLDataFlipper
 
 		gl.glPushMatrix();
 
-		slerpMod.applySlerp(gl, transform, true);
+		slerpMod.applySlerp(gl, transform, true, true);
 
 		renderBucketWall(gl, true);
 		generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).displayRemote(gl);

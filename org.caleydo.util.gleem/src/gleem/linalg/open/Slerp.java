@@ -44,18 +44,20 @@ public class Slerp {
 	}
 
 	public void applySlerp(final GL gl, final Transform transform,
-			boolean bIgnoreZRotation) {
+			boolean bIgnoreZRotation, boolean bCenterPivotalPoint) {
 
 		Vec3f translation = transform.getTranslation();
 		Vec3f scale = transform.getScale();
 		Vec3f axis = new Vec3f();
 		float fAngle = transform.getRotation().get(axis);
 
-		// Subtract 1.5 for slerping around the views center point
-		gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f,
-				translation.z());
-
-		// gl.glTranslatef(translation.x(), translation.y(), translation.z());
+		if (bCenterPivotalPoint) {
+			// Subtract 1.5 for slerping around the views center point
+			gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f,
+					translation.z());
+		} else {
+			gl.glTranslatef(translation.x(), translation.y(), translation.z());
+		}
 
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 

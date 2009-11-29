@@ -36,7 +36,6 @@ public class GLPathwayViewBrowser
 	@Override
 	protected void initFocusLevel() {
 		Transform transform = new Transform();
-
 		transform.setTranslation(new Vec3f(0, 1.3f, 0));
 		transform.setScale(new Vec3f(0.8f, 0.8f, 1));
 
@@ -88,11 +87,9 @@ public class GLPathwayViewBrowser
 	@Override
 	protected void initTransitionLevel() {
 
-		float fScalingFactorTransitionLevel = 1;
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(0, -2f, 0.1f));
-		transform.setScale(new Vec3f(fScalingFactorTransitionLevel, fScalingFactorTransitionLevel,
-			fScalingFactorTransitionLevel));
+		transform.setTranslation(new Vec3f(0, 1.3f, 0));
+		transform.setScale(new Vec3f(0.8f, 0.8f, 1));
 
 		transitionLevel.getElementByPositionIndex(0).setTransform(transform);
 

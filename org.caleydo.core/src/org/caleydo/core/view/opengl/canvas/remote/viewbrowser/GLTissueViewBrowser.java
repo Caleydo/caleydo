@@ -52,8 +52,13 @@ public class GLTissueViewBrowser
 		ClinicalUseCase clinicalUseCase =
 			(ClinicalUseCase) generalManager.getUseCase(EDataDomain.CLINICAL_DATA);
 
+		int count = 0;
 		for (Integer experimentIndex : clinicalUseCase.getVA(EVAType.CONTENT)) {
 
+			// FIXME: just for faster loading of data flipper
+			if (count++>5)
+				break;
+			
 			generalManager.getViewGLCanvasManager().createGLEventListener(ECommandType.CREATE_GL_TISSUE,
 				parentGLCanvas, "", viewFrustum);
 
@@ -76,7 +81,6 @@ public class GLTissueViewBrowser
 	@Override
 	protected void initFocusLevel() {
 		Transform transform = new Transform();
-
 		transform.setTranslation(new Vec3f(1.5f, 1.3f, 0));
 		transform.setScale(new Vec3f(0.8f, 0.8f, 1));
 
@@ -128,11 +132,9 @@ public class GLTissueViewBrowser
 	@Override
 	protected void initTransitionLevel() {
 
-		float fScalingFactorTransitionLevel = 1;
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(0, -2f, 0.1f));
-		transform.setScale(new Vec3f(fScalingFactorTransitionLevel, fScalingFactorTransitionLevel,
-			fScalingFactorTransitionLevel));
+		transform.setTranslation(new Vec3f(1.5f, 1.3f, 0));
+		transform.setScale(new Vec3f(0.8f, 0.8f, 1));
 
 		transitionLevel.getElementByPositionIndex(0).setTransform(transform);
 
@@ -175,10 +177,6 @@ public class GLTissueViewBrowser
 			return;
 
 		for (int index = 0; index < clinicalSet.depth(); index++) {
-			
-			// FIXME: just for faster loading of data flipper
-			if (index>5)
-				break;
 			
 			mapExperimentToTexturePath.put(index, "data/tissue/breast_" + index % 24 + ".jpg");
 		}

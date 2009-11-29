@@ -1556,7 +1556,7 @@ public class GLRemoteRendering
 
 		gl.glPushMatrix();
 
-		slerpMod.applySlerp(gl, transform, true);
+		slerpMod.applySlerp(gl, transform, true, false);
 
 		generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).displayRemote(gl);
 
