@@ -28,16 +28,16 @@ public class GLTissueViewBrowser
 	extends AGLViewBrowser {
 
 	private HashMap<Integer, String> mapExperimentToTexturePath;
-	
+
 	private SelectionManager experiementSelectionManager;
-	
+
 	public GLTissueViewBrowser(GLCaleydoCanvas glCanvas, String sLabel, IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum);
-		
+
 		viewType = EManagedObjectType.GL_TISSUE_VIEW_BROWSER;
 		mapExperimentToTexturePath = new HashMap<Integer, String>();
 	}
-	
+
 	@Override
 	public void setUseCase(IUseCase useCase) {
 		super.setUseCase(useCase);
@@ -45,34 +45,33 @@ public class GLTissueViewBrowser
 		experiementSelectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 		generateTissuePatientConnection();
 	}
-	
+
 	@Override
 	protected void addInitialViews() {
-		
-//		for (int pathwayIndex = 1; pathwayIndex < 12; pathwayIndex++) {
-//					
-//			String texturePath = "data/tissue/breast_" + pathwayIndex + ".jpg";
-		ClinicalUseCase clinicalUseCase = (ClinicalUseCase) generalManager.getUseCase(EDataDomain.CLINICAL_DATA);
+
+		ClinicalUseCase clinicalUseCase =
+			(ClinicalUseCase) generalManager.getUseCase(EDataDomain.CLINICAL_DATA);
 
 		for (Integer experimentIndex : clinicalUseCase.getVA(EVAType.CONTENT)) {
-			
-			generalManager.getViewGLCanvasManager().createGLEventListener(ECommandType.CREATE_GL_TISSUE, parentGLCanvas, "", viewFrustum);
-			
+
+			generalManager.getViewGLCanvasManager().createGLEventListener(ECommandType.CREATE_GL_TISSUE,
+				parentGLCanvas, "", viewFrustum);
+
 			SerializedTissueView tissue = new SerializedTissueView();
 			tissue.setDataDomain(EDataDomain.TISSUE_DATA);
 			tissue.setTexturePath(mapExperimentToTexturePath.get(experimentIndex));
 			newViews.add(tissue);
 		}
 	}
-	
+
 	@Override
 	protected AGLEventListener createView(GL gl, ASerializedView serView) {
 
 		AGLEventListener glView = super.createView(gl, serView);
-		
-		((GLTissue) glView).setTexturePath(((SerializedTissueView)serView).getTexturePath());
+
+		((GLTissue) glView).setTexturePath(((SerializedTissueView) serView).getTexturePath());
 		return glView;
-	 }
+	}
 
 	@Override
 	protected void initFocusLevel() {
@@ -83,7 +82,7 @@ public class GLTissueViewBrowser
 
 		focusLevel.getElementByPositionIndex(0).setTransform(transform);
 	}
-	
+
 	@Override
 	protected void initPoolLevel(int iSelectedRemoteLevelElementID) {
 		Transform transform;
@@ -150,34 +149,50 @@ public class GLTissueViewBrowser
 
 		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
 	}
-	
+
+	@Override
+	public String getShortInfo() {
+		return "Tissue Browser";
+	}
+
+	@Override
+	public String getDetailedInfo() {
+		StringBuffer sInfoText = new StringBuffer();
+		sInfoText.append("Tissue Browser");
+		return sInfoText.toString();
+	}
+
 	/**
 	 * This method generates only valid associations for Asslaber dataset!
 	 */
 	private void generateTissuePatientConnection() {
-		
-		ClinicalUseCase clinicalUseCase = (ClinicalUseCase) generalManager.getUseCase(EDataDomain.CLINICAL_DATA);
+
+		ClinicalUseCase clinicalUseCase =
+			(ClinicalUseCase) generalManager.getUseCase(EDataDomain.CLINICAL_DATA);
 		ISet clinicalSet = clinicalUseCase.getSet();
-		
+
 		if (clinicalSet.get(0) == null)
 			return;
-		
-		for (int index = 0; index < clinicalSet.depth(); index++)
-		{
-			mapExperimentToTexturePath.put(index, "data/tissue/breast_" + index%24 + ".jpg");
+
+		for (int index = 0; index < clinicalSet.depth(); index++) {
+			
+			// FIXME: just for faster loading of data flipper
+			if (index>5)
+				break;
+			
+			mapExperimentToTexturePath.put(index, "data/tissue/breast_" + index % 24 + ".jpg");
 		}
-		
-		
-//		for (Integer vaID : clinicalUseCase.getVA(EVAType.CONTENT))
-//		{
-//			set.getStorageFromVA(
-//		}
-//		
-//		for (IStorage storage : set) {
-//			String experiment = storage.getLabel();
-//			mapExperimentToTexturePath.put(experiment, )
-//		}
-		
-		
+
+		// for (Integer vaID : clinicalUseCase.getVA(EVAType.CONTENT))
+		// {
+		// set.getStorageFromVA(
+		// }
+		//		
+		// for (IStorage storage : set) {
+		// String experiment = storage.getLabel();
+		// mapExperimentToTexturePath.put(experiment, )
+		// }
+
 	}
+
 }

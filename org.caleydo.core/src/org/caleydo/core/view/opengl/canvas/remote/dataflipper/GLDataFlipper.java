@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.remote.dataflipper;
 
+import gleem.RightTruncPyrMapping;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
@@ -213,7 +214,7 @@ public class GLDataFlipper
 		ConnectedElementRepresentationManager cerm =
 			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
-		
+
 		if (eBusyModeState != EBusyModeState.OFF) {
 			renderBusyMode(gl);
 		}
@@ -255,10 +256,6 @@ public class GLDataFlipper
 		}
 		// }
 
-		// renderHandles(gl);
-		// Transform transform = focusElement.getTransform();
-		// transform.setScale(new Vec3f(0.5f,0.5f,0.5f));
-		// transform.setTranslation(new Vec3f(0f,0f,4.5f));
 		renderRemoteLevelElement(gl, focusElement);
 
 		if (glConnectionLineRenderer != null && arSlerpActions.isEmpty()) {
@@ -304,22 +301,22 @@ public class GLDataFlipper
 		float fAngle = rot.get(axis);
 
 		if (glEventListener instanceof GLRemoteRendering) {
-			
+
 			gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f, translation.z());
-			gl.glScalef(scale.x(), scale.y(), scale.z());			
+			gl.glScalef(scale.x(), scale.y(), scale.z());
 			renderBucketWall(gl, true);
-			gl.glScalef(1/scale.x(), 1/scale.y(), 1/scale.z());
+			gl.glScalef(1 / scale.x(), 1 / scale.y(), 1 / scale.z());
 			gl.glTranslatef(-translation.x() + 1.5f, -translation.y() + 1.5f, -translation.z());
-			
-			gl.glTranslatef(translation.x()+0.14f, translation.y()-0.09f, translation.z()+2);
+
+			gl.glTranslatef(translation.x() + 0.14f, translation.y() - 0.09f, translation.z() + 2);
 			gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
-			gl.glScalef(scale.x(), scale.y(), scale.z());	
+			gl.glScalef(scale.x(), scale.y(), scale.z());
 		}
 		else {
 			gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f, translation.z());
 			gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 			gl.glScalef(scale.x(), scale.y(), scale.z());
-			
+
 			renderBucketWall(gl, true);
 		}
 
@@ -631,7 +628,8 @@ public class GLDataFlipper
 						break;
 
 				}
-//				infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX, pick.getPickedPoint(), 0.3f);// pick.getDepth());
+				// infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX, pick.getPickedPoint(),
+				// 0.3f);// pick.getDepth());
 				break;
 
 			case REMOTE_LEVEL_ELEMENT:
@@ -859,7 +857,7 @@ public class GLDataFlipper
 
 			RemoteLevelElement element = findElementContainingView(dataDomain, viewType);
 
-			if (element != null) {
+			if (element != null && arSlerpActions.isEmpty()) {
 
 				float fHorizontalConnStart = 0;
 				float fHorizontalConnStop = 0;
@@ -888,11 +886,7 @@ public class GLDataFlipper
 							0.0f + fPipeWidth, 0.0f), new Vec3f(fPipeWidth, 0.0f + fPipeWidth, 0.0f),
 							new Vec3f(fPipeWidth, 0.1f, 0.0f), new Vec3f(0.0f, 0.1f, 0.0f), 1, 1, 1, 1);
 					gl.glTranslatef(0, -0.2f, 0);
-					// textureManager.renderTexture(gl,
-					// EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-					// new Vec3f(0.0f, 0.0f, 0.0f), new Vec3f(0.08f, 0.0f,
-					// 0.0f), new Vec3f(0.08f, 0.2f,
-					// 0.0f), new Vec3f(0.0f, 0.2f, 0.0f), 1, 1, 1, 1);
+
 					gl.glTranslatef(fXPos + 1.56f - translation.x(), -0.47f - translation.y() + 0.2f,
 						-translation.z() * 0);
 					//					
@@ -908,11 +902,7 @@ public class GLDataFlipper
 							0.0f), new Vec3f(fPipeWidth, 0.23f, 0.0f), new Vec3f(0.0f, 0.23f, 0.0f), 1, 1, 1,
 						1);
 					gl.glTranslatef(0, -0.2f, 0);
-					// textureManager.renderTexture(gl,
-					// EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-					// new Vec3f(0.0f, 0.0f, 0.0f), new Vec3f(0.08f, 0.0f,
-					// 0.0f), new Vec3f(0.08f, 0.2f,
-					// 0.0f), new Vec3f(0.0f, 0.2f, 0.0f), 1, 1, 1, 1);
+
 					gl.glTranslatef(fXPos + 1.53f - translation.x(), -0.34f - translation.y() + 0.2f,
 						-translation.z() * 0);
 					//				
@@ -928,11 +918,7 @@ public class GLDataFlipper
 							0.0f + fPipeWidth, 0.0f), new Vec3f(fPipeWidth, 0.0f + fPipeWidth, 0.0f),
 							new Vec3f(fPipeWidth, 0.1f, 0.0f), new Vec3f(0.0f, 0.1f, 0.0f), 1, 1, 1, 1);
 					gl.glTranslatef(0, -0.2f, 0);
-					// textureManager.renderTexture(gl,
-					// EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-					// new Vec3f(0.0f, 0.0f, 0.0f), new Vec3f(0.08f, 0.0f,
-					// 0.0f), new Vec3f(0.08f, 0.2f,
-					// 0.0f), new Vec3f(0.0f, 0.2f, 0.0f), 1, 1, 1, 1);
+
 					gl.glTranslatef(fXPos + 2.53f - translation.x(), -0.76f - translation.y() + 0.2f,
 						-translation.z() * 0);
 					//				
@@ -948,11 +934,7 @@ public class GLDataFlipper
 							0.0f), new Vec3f(fPipeWidth, 0.23f, 0.0f), new Vec3f(0.0f, 0.23f, 0.0f), 1, 1, 1,
 						1);
 					gl.glTranslatef(0, -0.2f, 0);
-					// textureManager.renderTexture(gl,
-					// EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-					// new Vec3f(0.0f, 0.0f, 0.0f), new Vec3f(0.08f, 0.0f,
-					// 0.0f), new Vec3f(0.08f, 0.2f,
-					// 0.0f), new Vec3f(0.0f, 0.2f, 0.0f), 1, 1, 1, 1);
+
 					gl.glTranslatef(fXPos + 2.63f - translation.x(), -0.64f - translation.y() + 0.2f,
 						-translation.z() * 0);
 					//				
@@ -978,6 +960,41 @@ public class GLDataFlipper
 										0.0f), new Vec3f(0.04f + fPipeWidth, 0.43f, 0.0f), new Vec3f(
 										0.04f + fPipeWidth, 0.85f, 0.0f), new Vec3f(0.04f, 0.85f, 0.0f), 1,
 									1, 1, 1);
+
+								// Special case when focus element is last view on the right stack
+								if (stackElementsRight.get(0).isFree()) {
+									textureManager.renderTexture(gl,
+										EIconTextures.DATA_FLIPPER_CONNECTION_CORNER, new Vec3f(
+											0.04f - fPipeWidth, 0.85f, 0.0f), new Vec3f(0.04f + fPipeWidth,
+											0.85f, 0.0f), new Vec3f(0.04f + fPipeWidth,
+											0.85f + fPipeWidth + 0.05f, 0.0f), new Vec3f(0.04f - fPipeWidth,
+											0.85f + fPipeWidth + 0.05f, 0.0f), 1, 1, 1, 1);
+
+									textureManager.renderTexture(gl,
+										EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT, new Vec3f(
+											fHorizontalConnStart - 0.4f, 0.85f + fPipeWidth, 0.0f),
+										new Vec3f(0.04f - fPipeWidth, 0.85f + fPipeWidth, 0.0f), new Vec3f(
+											0.04f - fPipeWidth, 0.85f + fPipeWidth + 0.05f, 0.0f), new Vec3f(
+											fHorizontalConnStart - 0.4f, 0.85f + fPipeWidth + 0.05f, 0.0f),
+										1, 1, 1, 1);
+								}
+								// Special case when focus element is last view on the right stack
+								else if (stackElementsLeft.get(0).isFree()) {
+									textureManager.renderTexture(gl,
+										EIconTextures.DATA_FLIPPER_CONNECTION_CORNER, new Vec3f(
+											0.04f + 2*fPipeWidth, 0.85f, 0.0f), new Vec3f(0.04f,
+											0.85f, 0.0f), new Vec3f(0.04f,
+											0.85f + fPipeWidth + 0.05f, 0.0f), new Vec3f(0.04f + 2*fPipeWidth,
+											0.85f + fPipeWidth + 0.05f, 0.0f), 1, 1, 1, 1);
+
+									textureManager.renderTexture(gl,
+										EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT, new Vec3f(
+											fHorizontalConnStart + 0.9f, 0.85f + fPipeWidth, 0.0f),
+										new Vec3f(0.04f + 2*fPipeWidth, 0.85f + fPipeWidth, 0.0f), new Vec3f(
+											0.04f + 2*fPipeWidth, 0.85f + fPipeWidth + 0.05f, 0.0f), new Vec3f(
+											fHorizontalConnStart + 0.9f, 0.85f + fPipeWidth + 0.05f, 0.0f),
+										1, 1, 1, 1);
+								}
 							}
 							else {
 								gl.glTranslatef(0.032f, 0.43f, 0);
@@ -997,11 +1014,11 @@ public class GLDataFlipper
 						case 1:
 							if (element == focusElement) {
 
-								textureManager.renderTexture(gl,
-									EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT, new Vec3f(0.16f, 0.43f,
-										0.0f), new Vec3f(0.16f + fPipeWidth, 0.43f, 0.0f), new Vec3f(
-										0.16f + fPipeWidth, 0.85f, 0.0f), new Vec3f(0.16f, 0.85f, 0.0f), 1,
-									1, 1, 1);
+								// textureManager.renderTexture(gl,
+								// EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT, new Vec3f(0.16f, 0.43f,
+								// 0.0f), new Vec3f(0.16f + fPipeWidth, 0.43f, 0.0f), new Vec3f(
+								// 0.16f + fPipeWidth, 0.85f, 0.0f), new Vec3f(0.16f, 0.85f, 0.0f), 1,
+								// 1, 1, 1);
 							}
 							else {
 								gl.glTranslatef(0.17f, 0.43f, 0);

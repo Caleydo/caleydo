@@ -24,7 +24,7 @@ public class GLPathwayViewBrowser
 	@Override
 	protected void addInitialViews() {
 
-		for (int pathwayIndex = 0; pathwayIndex < 10; pathwayIndex++) {
+		for (int pathwayIndex = 0; pathwayIndex < 5; pathwayIndex++) {
 			SerializedPathwayView pathway = new SerializedPathwayView();
 			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems()
 				.toArray()[pathwayIndex]).getID());
@@ -109,4 +109,17 @@ public class GLPathwayViewBrowser
 
 		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
 	}
+	
+	@Override
+	public String getShortInfo() {
+		return "Pathway Browser";
+	}
+	
+	@Override
+	public String getDetailedInfo() {
+		StringBuffer sInfoText = new StringBuffer();
+		sInfoText.append("Pathway Browser");
+		return sInfoText.toString();
+	}
+
 }

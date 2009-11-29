@@ -8,16 +8,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.SerializedParallelCoordinatesView;
-import org.eclipse.core.runtime.Status;
 
 /**
  * Serialized form of the remote-rendering view (bucket).
@@ -65,30 +62,18 @@ public class SerializedRemoteRenderingView
 
 		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>();
 
-		// FIXME: This works only for genetic data - we need to ask the view about it's domain
-		IUseCase usecase = GeneralManager.get().getUseCase(dataDomain);
-		if (usecase != null && usecase instanceof GeneticUseCase
-			&& !((GeneticUseCase) usecase).isPathwayViewerMode()) {
-
-			// FIXME: This is just a temporary solution to check if glyph view
-			// should be added to bucket.
-			try {
-				GeneralManager.get().getIDManager().getInternalFromExternalID(453010);
-				SerializedGlyphView glyph1 = new SerializedGlyphView(EDataDomain.CLINICAL_DATA);
-				remoteViews.add(glyph1);
-				SerializedGlyphView glyph2 = new SerializedGlyphView(EDataDomain.CLINICAL_DATA);
-				remoteViews.add(glyph2);
-			}
-			catch (IllegalArgumentException e) {
-				GeneralManager.get().getLogger().log(
-					new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-						"Cannot add glyph to bucket! No glyph data loaded!"));
-			}
-
+		if (GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA) != null) {
 			SerializedHeatMapView heatMap = new SerializedHeatMapView(dataDomain);
 			remoteViews.add(heatMap);
 			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView(dataDomain);
 			remoteViews.add(parCoords);
+		}
+
+		if (GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA) != null) {
+			SerializedGlyphView glyph1 = new SerializedGlyphView(EDataDomain.CLINICAL_DATA);
+			remoteViews.add(glyph1);
+			SerializedGlyphView glyph2 = new SerializedGlyphView(EDataDomain.CLINICAL_DATA);
+			remoteViews.add(glyph2);
 		}
 
 		ArrayList<ASerializedView> focusLevel = new ArrayList<ASerializedView>();

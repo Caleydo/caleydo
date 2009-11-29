@@ -1345,18 +1345,6 @@ public abstract class AGLViewBrowser
 		}
 	}
 
-	@Override
-	public String getShortInfo() {
-		return "Bucket / Jukebox";
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		StringBuffer sInfoText = new StringBuffer();
-		sInfoText.append("Bucket / Jukebox");
-		return sInfoText.toString();
-	}
-
 	/**
 	 * Unregister view from event system. Remove view from GL render loop.
 	 */
