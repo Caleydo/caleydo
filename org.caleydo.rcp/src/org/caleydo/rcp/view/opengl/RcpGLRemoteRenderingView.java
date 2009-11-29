@@ -3,6 +3,7 @@ package org.caleydo.rcp.view.opengl;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
@@ -34,7 +35,7 @@ public class RcpGLRemoteRenderingView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedRemoteRenderingView serializedView = new SerializedRemoteRenderingView(dataDomain);
+		SerializedRemoteRenderingView serializedView = new SerializedRemoteRenderingView(EDataDomain.GENETIC_DATA);
 		return serializedView;
 	}
 
