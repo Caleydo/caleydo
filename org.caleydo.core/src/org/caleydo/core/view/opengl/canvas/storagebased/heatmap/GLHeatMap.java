@@ -37,6 +37,8 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.usecase.EDataFilterLevel;
+import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
+import org.caleydo.core.manager.view.StandardTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.AffinityClusterer;
 import org.caleydo.core.util.clusterer.ClusterState;
@@ -107,6 +109,9 @@ public class GLHeatMap
 
 	private boolean bClusterVisualizationExperimentsActive = false;
 
+	/** Utility object for coordinate transformation and projection */
+	protected StandardTransformer selectionTransformer;
+
 	/**
 	 * Constructor.
 	 * 
@@ -150,6 +155,8 @@ public class GLHeatMap
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+
+		selectionTransformer = new StandardTransformer(iUniqueID);
 		init(gl);
 	}
 
@@ -173,6 +180,8 @@ public class GLHeatMap
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
+
+		selectionTransformer = new StandardTransformer(iUniqueID);
 		init(gl);
 	}
 
@@ -205,6 +214,10 @@ public class GLHeatMap
 
 		display(gl);
 		checkForHits(gl);
+
+		ConnectedElementRepresentationManager cerm =
+			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		if (eBusyModeState != EBusyModeState.OFF) {
 			renderBusyMode(gl);
@@ -1233,6 +1246,12 @@ public class GLHeatMap
 			return ((AGLEventListener) glRemoteRenderingView).getRemoteLevelElement();
 
 		return super.getRemoteLevelElement();
+	}
+
+	@Override
+	public void destroy() {
+		selectionTransformer.destroy();
+		super.destroy();
 	}
 
 }

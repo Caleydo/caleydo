@@ -212,7 +212,7 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 						}
 						String bbl = "<boundingBoxList>";
 						for (SelectionPoint2D point : screenPoints) {
-							bbl += createBoundingBoxXML(point.getX()-10, point.getY() - 10, 20, 20);
+							bbl += createBoundingBoxXML(point.getX()-10, point.getY() - 10, 20, 20, caleydoSelectionId != null);
 						}
 						bbl += "</boundingBoxList>";
 						System.out.println("new bll = " + bbl);
