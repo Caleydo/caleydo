@@ -67,14 +67,20 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneConte
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
+import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
+
+import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.TogglePointTypeListener;
+
+
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
 /**
- * Rendering the GLHeatMap
+ * Rendering the GLSecatterplott
  * 
  * @author Alexander Lex
  * @author Marc Streit
+ * @author Jürgen Pillhofer
  */
 public class GLScatterplot
 	extends AStorageBasedView {
@@ -98,6 +104,10 @@ public class GLScatterplot
 
 	public static int SELECTED_X_AXIS = 1;
 	public static int SELECTED_Y_AXIS = 2;
+	
+	// listeners
+	
+	private TogglePointTypeListener togglePointTypeListener;
 
 	/**
 	 * Constructor.
@@ -612,6 +622,31 @@ public class GLScatterplot
 		}
 
 	}
+	
+	public void togglePointType() {
+		
+		
+		 switch (POINTSTYLE)
+        {
+          case BOX:
+       	  POINTSTYLE = EScatterPointType.CIRCLE;
+       	  break;
+          case POINT:
+       	  POINTSTYLE = EScatterPointType.BOX;
+        	  break;
+          case CROSS:
+       	  POINTSTYLE = EScatterPointType.POINT;
+        	  break;           
+          case CIRCLE:
+       	  POINTSTYLE = EScatterPointType.CROSS;
+        	  break;
+          default:
+             
+        }
+						
+		setDisplayListDirty();
+	}
+
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 
@@ -1075,4 +1110,27 @@ public class GLScatterplot
 		return super.getRemoteLevelElement();
 	}
 
+
+
+@Override
+public void registerEventListeners() {
+	super.registerEventListeners();
+
+	togglePointTypeListener = new TogglePointTypeListener();
+	togglePointTypeListener.setHandler(this);
+	eventPublisher.addListener(TogglePointTypeEvent.class, togglePointTypeListener);
 }
+
+@Override
+public void unregisterEventListeners() {
+	super.unregisterEventListeners();	
+
+	if (togglePointTypeListener != null) {
+		eventPublisher.removeListener(togglePointTypeListener);
+		togglePointTypeListener = null;
+	}
+
+
+}
+}
+
