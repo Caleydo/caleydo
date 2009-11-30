@@ -17,7 +17,7 @@ public class TogglePointTypeListener
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof TogglePointTypeEvent) {
-			//handler.resetAxisSpacing();
+		
 			handler.togglePointType();
 		}
 	}

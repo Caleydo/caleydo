@@ -68,8 +68,10 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
+import org.caleydo.core.manager.event.view.storagebased.SetPointSizeEvent;
 
 import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.TogglePointTypeListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.SetPointSizeListener;
 
 
 import com.sun.opengl.util.texture.Texture;
@@ -108,6 +110,7 @@ public class GLScatterplot
 	// listeners
 	
 	private TogglePointTypeListener togglePointTypeListener;
+	private SetPointSizeListener setPointSizeListener;
 
 	/**
 	 * Constructor.
@@ -662,7 +665,7 @@ public class GLScatterplot
 
 		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
 		SELECTED_Y_AXIS = 2;
-		renderStyle.setPOINTSTYLE(EScatterPointType.CROSS);
+
 		RenderScatterPoints(gl);
 
 		gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
@@ -1119,6 +1122,10 @@ public void registerEventListeners() {
 	togglePointTypeListener = new TogglePointTypeListener();
 	togglePointTypeListener.setHandler(this);
 	eventPublisher.addListener(TogglePointTypeEvent.class, togglePointTypeListener);
+	
+	setPointSizeListener = new SetPointSizeListener();
+	setPointSizeListener.setHandler(this);
+	eventPublisher.addListener(SetPointSizeEvent.class, setPointSizeListener);
 }
 
 @Override
@@ -1129,8 +1136,21 @@ public void unregisterEventListeners() {
 		eventPublisher.removeListener(togglePointTypeListener);
 		togglePointTypeListener = null;
 	}
+	
+	if (setPointSizeListener != null) {
+		eventPublisher.removeListener(setPointSizeListener);
+		setPointSizeListener = null;
+	}
 
 
+}
+
+public void setPointSize(int pointSize) {
+	if (renderStyle.getPointSize() == pointSize) 
+	{			
+		renderStyle.setPointSize(pointSize);		
+		setDisplayListDirty();
+	}
 }
 }
 

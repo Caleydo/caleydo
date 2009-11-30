@@ -28,7 +28,8 @@ public class ScatterPlotRenderStyle
 	public static final float XYAXISDISTANCE = 0.2f;
 	public static final float AXIS_Z = 0.0f;
 		
-	public static final float POINTSIZE = 0.02f;
+	public static float POINTSIZE = 0.02f;
+	private int iPointSize = 1;
 	public static EScatterPointType POINTSTYLE = EScatterPointType.CIRCLE;
 	
 	public static final float XLABELROTATIONNAGLE = 0.0f;
@@ -219,6 +220,16 @@ public class ScatterPlotRenderStyle
 	{
 		POINTSTYLE = Type;
 	}
+	
+	public void  setPointSize(int value) {
+		POINTSIZE = value / 50;
+		iPointSize = value;
+	}
+	
+	public int  getPointSize() {
+		return iPointSize;
+	}
+	
 	
 	// public void setBRenderStorageHorizontally(boolean
 	// bRenderStorageHorizontally)
