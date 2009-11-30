@@ -3,7 +3,8 @@ package org.caleydo.rcp.view.swt.toolbar.content.scatterplot;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.view.radial.SetMaxDisplayedHierarchyDepthEvent;
+//import org.caleydo.core.manager.event.view.radial.UpdateDepthSliderPositionEvent;
+import org.caleydo.core.manager.event.view.storagebased.SetPointSizeEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.action.ControlContribution;
@@ -23,7 +24,7 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author TODO
  */
-public class TestSlider
+public class PointSizeSlider
 	extends ControlContribution
 	implements IToolBarItem, IListenerOwner {
 
@@ -32,7 +33,7 @@ public class TestSlider
 	private Slider slider;
 	private int iSelection;
 
-	public TestSlider(String str, int iSliderSelection) {
+	public PointSizeSlider(String str, int iSliderSelection) {
 		super(str);
 		iSelection = iSliderSelection;
 	}
@@ -51,11 +52,11 @@ public class TestSlider
 
 		listener = new Listener() {
 			public void handleEvent(Event event) {
-				SetMaxDisplayedHierarchyDepthEvent setMaxDisplayedHierarchyDepthEvent =
-					new SetMaxDisplayedHierarchyDepthEvent();
-				setMaxDisplayedHierarchyDepthEvent.setSender(this);
-				setMaxDisplayedHierarchyDepthEvent.setMaxDisplayedHierarchyDepth(slider.getSelection());
-				GeneralManager.get().getEventPublisher().triggerEvent(setMaxDisplayedHierarchyDepthEvent);
+				SetPointSizeEvent setPointSizeEvent =
+					new SetPointSizeEvent();
+				setPointSizeEvent.setSender(this);
+				setPointSizeEvent.setPointSize(slider.getSelection());
+				GeneralManager.get().getEventPublisher().triggerEvent(setPointSizeEvent);
 			}
 
 		};
