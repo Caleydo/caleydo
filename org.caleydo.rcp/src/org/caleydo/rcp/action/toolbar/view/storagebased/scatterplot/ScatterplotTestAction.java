@@ -1,6 +1,6 @@
 package org.caleydo.rcp.action.toolbar.view.storagebased.scatterplot;
 
-import org.caleydo.core.manager.event.view.storagebased.BookmarkButtonEvent;
+import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
@@ -11,7 +11,7 @@ import org.eclipse.ui.PlatformUI;
 public class ScatterplotTestAction
 	extends AToolBarAction
 	implements IToolBarItem {
-	public static final String TEXT = "Scatter plot test action";
+	public static final String TEXT = "Toggle Point Type";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/bookmark.png";
 
 	/**
@@ -30,6 +30,6 @@ public class ScatterplotTestAction
 	public void run() {
 		super.run();
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new BookmarkButtonEvent());
+		GeneralManager.get().getEventPublisher().triggerEvent(new TogglePointTypeEvent());
 	};
 }
