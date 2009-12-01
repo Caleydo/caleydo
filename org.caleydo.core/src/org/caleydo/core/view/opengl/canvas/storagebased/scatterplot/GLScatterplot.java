@@ -572,14 +572,15 @@ public class GLScatterplot
 	private void DrawPointPrimitive(GL gl, float x, float y, float z, float[] fArMappingColor, float fOpacity) {
 		// EScatterPointType type = renderStyle.POINTSTYLE;
 
+		float halfPoint= POINTSIZE/2.0f;
 		switch (POINTSTYLE) {
 			case BOX: {
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
-				gl.glVertex3f(x, y, z);
-				gl.glVertex3f(x, y + POINTSIZE, z);
-				gl.glVertex3f(x + POINTSIZE, y + POINTSIZE, z);
-				gl.glVertex3f(x + POINTSIZE, y, z);
+				gl.glVertex3f(x-halfPoint, y-halfPoint, z);
+				gl.glVertex3f(x-halfPoint, y + halfPoint, z);
+				gl.glVertex3f(x + halfPoint, y + halfPoint, z);
+				gl.glVertex3f(x + halfPoint, y-halfPoint, z);
 				gl.glEnd();
 				break;
 			}
@@ -598,10 +599,10 @@ public class GLScatterplot
 				gl.glLineWidth(1.0f);
 				gl.glBegin(GL.GL_LINES);
 				gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
-				gl.glVertex3f(x, y, z);
-				gl.glVertex3f(x + POINTSIZE, y + POINTSIZE, z);
-				gl.glVertex3f(x, y + POINTSIZE, z);
-				gl.glVertex3f(x + POINTSIZE, y, z);
+				gl.glVertex3f(x-halfPoint, y-halfPoint, z);
+				gl.glVertex3f(x + halfPoint, y + halfPoint, z);
+				gl.glVertex3f(x-halfPoint, y + halfPoint, z);
+				gl.glVertex3f(x + halfPoint, y-halfPoint, z);
 				gl.glEnd();
 			}
 				break;
@@ -1146,7 +1147,7 @@ public void unregisterEventListeners() {
 }
 
 public void setPointSize(int pointSize) {
-	if (renderStyle.getPointSize() == pointSize) 
+	if (renderStyle.getPointSize() != pointSize) 
 	{			
 		renderStyle.setPointSize(pointSize);		
 		setDisplayListDirty();

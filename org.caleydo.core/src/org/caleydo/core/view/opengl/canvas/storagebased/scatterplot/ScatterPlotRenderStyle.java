@@ -30,7 +30,7 @@ public class ScatterPlotRenderStyle
 		
 	public static float POINTSIZE = 0.02f;
 	private int iPointSize = 1;
-	public static EScatterPointType POINTSTYLE = EScatterPointType.CIRCLE;
+	public static EScatterPointType POINTSTYLE = EScatterPointType.POINT;
 	
 	public static final float XLABELROTATIONNAGLE = 0.0f;
 	public static final float YLABELROTATIONNAGLE = 90.0f;
@@ -222,7 +222,7 @@ public class ScatterPlotRenderStyle
 	}
 	
 	public void  setPointSize(int value) {
-		POINTSIZE = value / 50;
+		POINTSIZE = value / 50.0f;
 		iPointSize = value;
 	}
 	
