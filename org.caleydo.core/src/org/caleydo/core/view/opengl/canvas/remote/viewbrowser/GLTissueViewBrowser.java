@@ -9,10 +9,15 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
@@ -20,16 +25,26 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.canvas.tissue.GLTissue;
 import org.caleydo.core.view.opengl.canvas.tissue.SerializedTissueView;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
 public class GLTissueViewBrowser
-	extends AGLViewBrowser {
+	extends AGLViewBrowser
+	implements IVirtualArrayUpdateHandler {
 
 	private HashMap<Integer, String> mapExperimentToTexturePath;
 
 	private SelectionManager experiementSelectionManager;
+
+	private SelectionUpdateListener selectionUpdateListener;
+
+	private VirtualArrayUpdateListener virtualArrayUpdateListener;
+
+	private EIDType primaryIDType = EIDType.EXPERIMENT_INDEX;
 
 	public GLTissueViewBrowser(GLCaleydoCanvas glCanvas, String sLabel, IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum);
@@ -42,8 +57,9 @@ public class GLTissueViewBrowser
 	public void setUseCase(IUseCase useCase) {
 		super.setUseCase(useCase);
 
-		experiementSelectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
+		experiementSelectionManager = new SelectionManager.Builder(primaryIDType).build();
 		generateTissuePatientConnection();
+		
 	}
 
 	@Override
@@ -56,9 +72,9 @@ public class GLTissueViewBrowser
 		for (Integer experimentIndex : clinicalUseCase.getVA(EVAType.CONTENT)) {
 
 			// FIXME: just for faster loading of data flipper
-			if (count++>5)
+			if (count++ > 5)
 				break;
-			
+
 			generalManager.getViewGLCanvasManager().createGLEventListener(ECommandType.CREATE_GL_TISSUE,
 				parentGLCanvas, "", viewFrustum);
 
@@ -177,7 +193,7 @@ public class GLTissueViewBrowser
 			return;
 
 		for (int index = 0; index < clinicalSet.depth(); index++) {
-			
+
 			mapExperimentToTexturePath.put(index, "data/tissue/breast_" + index % 24 + ".jpg");
 		}
 
@@ -191,6 +207,85 @@ public class GLTissueViewBrowser
 		// mapExperimentToTexturePath.put(experiment, )
 		// }
 
+	}
+
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+		if (selectionDelta.getIDType() == primaryIDType)
+			experiementSelectionManager.setDelta(selectionDelta);
+	}
+
+	/**
+	 * FIXME: should be moved to a bucket-mediator registers the event-listeners to the event framework
+	 */
+	@Override
+	public void registerEventListeners() {
+		super.registerEventListeners();
+
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+
+		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
+		virtualArrayUpdateListener.setHandler(this);
+		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
+
+	}
+
+	/**
+	 * FIXME: should be moved to a bucket-mediator registers the event-listeners to the event framework
+	 */
+	@Override
+	public void unregisterEventListeners() {
+
+		super.unregisterEventListeners();
+
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
+		}
+
+		if (virtualArrayUpdateListener != null) {
+			eventPublisher.removeListener(virtualArrayUpdateListener);
+			virtualArrayUpdateListener = null;
+		}
+
+	}
+
+	@Override
+	public void handleVirtualArrayUpdate(IVirtualArrayDelta vaDelta, String info) {
+		if (vaDelta.getIDType() == primaryIDType) {
+			experiementSelectionManager.setVADelta(vaDelta);
+		}
+	}
+
+	@Override
+	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType) {
+
+		if(idCategory != EIDCategory.EXPERIMENT)
+			return;
+		
+		String primaryVAType = useCase.getVATypeForIDCategory(idCategory);
+		if (primaryVAType == null)
+			return;
+
+		EVAType suggestedVAType = EVAType.getVATypeForPrimaryVAType(primaryVAType);
+
+		if (vaType != suggestedVAType || vaType.getPrimaryVAType() != primaryVAType)
+			return;
+
+		if (vaType == storageVAType) {
+			storageVA = useCase.getVA(vaType);
+			// storageSelectionManager.setVA(storageVA);
+		}
+		else if (vaType == contentVAType) {
+			contentVA = useCase.getVA(vaType);
+			// contentSelectionManager.setVA(contentVA);
+		}
+		else
+			return;
+
+		initData();
 	}
 
 }
