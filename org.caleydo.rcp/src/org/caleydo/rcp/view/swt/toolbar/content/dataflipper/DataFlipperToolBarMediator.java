@@ -1,10 +1,8 @@
 package org.caleydo.rcp.view.swt.toolbar.content.dataflipper;
 
-import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -16,13 +14,13 @@ import org.eclipse.swt.widgets.Display;
 public class DataFlipperToolBarMediator
 	implements IListenerOwner {
 
-	private IEventPublisher eventPublisher;
+	//sprivate IEventPublisher eventPublisher;
 
 	/** related toolBarContent that contains the gui-control items for mediatation */
 	private DataFlipperToolBarContent toolBarContent;
 
 	public DataFlipperToolBarMediator() {
-		eventPublisher = GeneralManager.get().getEventPublisher();
+		//eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
 	}
 

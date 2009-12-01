@@ -5,7 +5,6 @@ import gleem.linalg.Vec3f;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
@@ -17,12 +16,9 @@ import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.TextLabel;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleHyperbolicLayoutConnector;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.IDrawAbleConnection;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.animation.AnimationConnectionHandler;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.animation.AnimationVec3f;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
 
 public abstract class ATreeLayouter
@@ -40,7 +36,7 @@ public abstract class ATreeLayouter
 
 	private boolean bIsLayoutDirty = true;
 	private boolean bIsNodeListDirty = false;
-	private boolean bIsConnectionListDirty = false;
+	//private boolean bIsConnectionListDirty = false;
 
 	private boolean bIsNodeHighlighted = false;
 	private int iHighlightedNode = 0;
@@ -53,7 +49,7 @@ public abstract class ATreeLayouter
 	protected int iNumLayers;
 
 	protected Semaphore lockAnimation = null;
-	
+
 	protected float fScalingFactor = 0.0f;
 	protected Vec3f fvec = null;
 
@@ -67,7 +63,7 @@ public abstract class ATreeLayouter
 	private PickingManager pickingManager;
 	private int iViewID;
 	private int iGLDisplayListNode;
-	private int iGLDisplayListConnection;
+	// private int iGLDisplayListConnection;
 	protected HyperbolicRenderStyle renderStyle = null;
 
 	protected ITreeProjection treeProjector = null;
@@ -75,19 +71,19 @@ public abstract class ATreeLayouter
 	protected Tree<IDrawAbleNode> tree = null;
 	protected ArrayList<Integer> alMaxSiblingsInLayer = null;
 
-	private Map<IDrawAbleNode, AnimationVec3f> mAnimationNodes = null;
-	private AnimationConnectionHandler animationConnectionHandler = null;
+	// private Map<IDrawAbleNode, AnimationVec3f> mAnimationNodes = null;
+	// private AnimationConnectionHandler animationConnectionHandler = null;
 
-	private List<IDrawAbleNode> lAnimationNodesLeave = null;
+	// private List<IDrawAbleNode> lAnimationNodesLeave = null;
 
 	TextLabel nodeLabel = null;
 	IDrawAbleNode currentSelectedNode = null;
-	private boolean bIsBusy = false;
-	private String strInformation = null;
+	// private boolean bIsBusy = false;
+	// private String strInformation = null;
 
 	// protected CaleydoTextRenderer textRenderer = null;
 	protected TextLabel informationLabel = null;
-	private Semaphore lockAnimateToNewTree = null;
+	// private Semaphore lockAnimateToNewTree = null;
 	private Vec3f vTranslation = null;
 	private int iGoneAnimationSteps = 0;
 	private int iAnimationStepsToGo = 0;
@@ -104,16 +100,16 @@ public abstract class ATreeLayouter
 		// this.connectionLayout = new ArrayList<IDrawAbleConnection>();
 		this.alMaxSiblingsInLayer = new ArrayList<Integer>();
 		this.treeProjector = treeProjector;
-		this.strInformation = strInformation;
+		// this.strInformation = strInformation;
 		this.renderStyle = renderStyle;
 		this.informationLabel =
-			new TextLabel(new Font(renderStyle.LABEL_FONT_NAME, renderStyle.LABEL_FONT_STYLE,
-				renderStyle.LABEL_FONT_SIZE));
+			new TextLabel(new Font(HyperbolicRenderStyle.LABEL_FONT_NAME,
+				HyperbolicRenderStyle.LABEL_FONT_STYLE, HyperbolicRenderStyle.LABEL_FONT_SIZE));
 		this.nodeLabel =
-			new TextLabel(new Font(renderStyle.LABEL_FONT_NAME, renderStyle.LABEL_FONT_STYLE,
-				renderStyle.LABEL_FONT_SIZE));
+			new TextLabel(new Font(HyperbolicRenderStyle.LABEL_FONT_NAME,
+				HyperbolicRenderStyle.LABEL_FONT_STYLE, HyperbolicRenderStyle.LABEL_FONT_SIZE));
 		this.lockAnimation = new Semaphore(1);
-		this.lockAnimateToNewTree = new Semaphore(1);
+		// this.lockAnimateToNewTree = new Semaphore(1);
 		// this.textRenderer =
 		// new CaleydoTextRenderer(new Font(HyperbolicRenderStyle.LABEL_FONT_NAME,
 		// HyperbolicRenderStyle.LABEL_FONT_STYLE, HyperbolicRenderStyle.LABEL_FONT_SIZE), false);
@@ -160,8 +156,8 @@ public abstract class ATreeLayouter
 		connectionLayout.clear();
 		bIsLayoutDirty = true;
 		bIsNodeListDirty = true;
-		bIsConnectionListDirty = true;
-//		renderTreeLayout();
+		//bIsConnectionListDirty = true;
+		// renderTreeLayout();
 	}
 
 	public final void setLayoutClean() {
@@ -180,7 +176,7 @@ public abstract class ATreeLayouter
 		if (bIsConnectionHighlighted) {
 			setConnectionHighlight(iHighlightedConnection, false);
 			bIsConnectionHighlighted = false;
-			bIsConnectionListDirty = true;
+			//bIsConnectionListDirty = true;
 		}
 		bIsNodeListDirty = true;
 	}
@@ -210,7 +206,7 @@ public abstract class ATreeLayouter
 			bIsNodeHighlighted = false;
 			bIsNodeListDirty = true;
 		}
-		bIsConnectionListDirty = true;
+		//bIsConnectionListDirty = true;
 	}
 
 	private final void buildDisplayListNodes(GL gl) {
@@ -264,14 +260,14 @@ public abstract class ATreeLayouter
 
 	// }
 
-	private void drawTextBox(GL gl) {
-		// TODO: check usage of LABELS, from RADIAL View
-		// nodeLabel.setText("Elements: " + currentSelectedNode.getDependingClusterNode().getNrElements() +
-		// "\n" + "HirarchyDepth: " + currentSelectedNode.getDependingClusterNode().getDepth());
-		// float x =
+	// private void drawTextBox(GL gl) {
+	// TODO: check usage of LABELS, from RADIAL View
+	// nodeLabel.setText("Elements: " + currentSelectedNode.getDependingClusterNode().getNrElements() +
+	// "\n" + "HirarchyDepth: " + currentSelectedNode.getDependingClusterNode().getDepth());
+	// float x =
 
-		// nodeLabel.place(currentSelectedNode., fYCoord, fZCoord, fHeight, fWidth)
-	}
+	// nodeLabel.place(currentSelectedNode., fYCoord, fZCoord, fHeight, fWidth)
+	// }
 
 	private final void buildDisplayListConnections(GL gl) {
 		// TODO: check usage of DL with Bezier Splines and glevalcoord1f function!
@@ -279,10 +275,10 @@ public abstract class ATreeLayouter
 		// return;
 		// gl.glNewList(iGLDisplayListConnection, GL.GL_COMPILE);
 
-		//if(!bIsConnectionListDirty)
-		//	return;
+		// if(!bIsConnectionListDirty)
+		// return;
 		updateAllConnections();
-		
+
 		for (int i : connectionLayout.keySet()) {
 			IDrawAbleConnection conn = connectionLayout.get(i);
 			if (conn.isVisible()) {
@@ -315,7 +311,7 @@ public abstract class ATreeLayouter
 	@Override
 	public final void init(int iGLDisplayListNode, int iGLDisplayListConnection) {
 		this.iGLDisplayListNode = iGLDisplayListNode;
-		this.iGLDisplayListConnection = iGLDisplayListConnection;
+		// this.iGLDisplayListConnection = iGLDisplayListConnection;
 	}
 
 	@Override
@@ -342,18 +338,18 @@ public abstract class ATreeLayouter
 	}
 
 	@Override
-	public synchronized final void display(GL gl)  {
+	public synchronized final void display(GL gl) {
 		if (bIsAnimating) {
 			translateView();
 			iGoneAnimationSteps++;
 			bIsAnimating = !(iGoneAnimationSteps == iAnimationStepsToGo);
-			bIsConnectionListDirty = true;
+			//bIsConnectionListDirty = true;
 			bIsNodeListDirty = true;
 		}
 		if (bIsLayoutDirty) {
 			this.renderTreeLayout();
 			bIsLayoutDirty = false;
-			bIsConnectionListDirty = true;
+			//bIsConnectionListDirty = true;
 			bIsNodeListDirty = true;
 		}
 		if (treeProjector != null)
@@ -362,15 +358,13 @@ public abstract class ATreeLayouter
 			return;
 		buildDisplayLists(gl);
 		gl.glCallList(iGLDisplayListNode);
-		//gl.glCallList(iGLDisplayListConnection);
+		// gl.glCallList(iGLDisplayListConnection);
 
-		informationLabel.setText(strInformation);
-		 informationLabel
-		 .place(fViewSpaceX[0], fViewSpaceY[1], 1.0f, fHeight - fViewSpaceY[1], fViewSpaceXAbs);
-		 informationLabel.draw3d(gl, false);
-		
-		
-		
+		// informationLabel.setText(strInformation);
+		informationLabel
+			.place(fViewSpaceX[0], fViewSpaceY[1], 1.0f, fHeight - fViewSpaceY[1], fViewSpaceXAbs);
+		informationLabel.draw3d(gl, false);
+
 		// for(IDrawAbleNode node : nodeLayout)
 		// if(node.IsNodeVisible())
 		// node.draw(gl);//, false);
@@ -454,7 +448,7 @@ public abstract class ATreeLayouter
 		// bIsBusy = false;
 		// bIsConnectionListDirty = true;
 		// // bIsConnectionListDirty = false;
-		
+
 		// // textRenderer.renderText(gl, strInformation, fViewSpaceX[0], fViewSpaceY[1], 0.1f, 5, 32);
 		// informationLabel.setText(strInformation);
 		// informationLabel
@@ -469,8 +463,8 @@ public abstract class ATreeLayouter
 			node.translate(vTranslation, treeProjector);
 		}
 	}
-	
-	public final void setNewTranslatedTree(Vec3f vec){
+
+	public final void setNewTranslatedTree(Vec3f vec) {
 		vTranslation = vec;
 		setLayoutDirty();
 		translateView();
@@ -479,16 +473,16 @@ public abstract class ATreeLayouter
 	private void updateAllConnections() {
 		for (int i : connectionLayout.keySet()) {
 			IDrawAbleConnection conn = connectionLayout.get(i);
-			if(conn.isVisible())
+			if (conn.isVisible())
 				conn.updateConnection(treeProjector);
 		}
 	}
 
-	private final void clearDisplay() {
-		bIsNodeListDirty = true;
-		// nodeLayout.clear();
-		// connectionLayout.clear();
-	}
+//	private final void clearDisplay() {
+//		bIsNodeListDirty = true;
+//		// nodeLayout.clear();
+//		// connectionLayout.clear();
+//	}
 
 	@Override
 	public final void setTree(Tree<IDrawAbleNode> tree) {
@@ -756,7 +750,7 @@ public abstract class ATreeLayouter
 	}
 
 	public void setInformationText(String strInformation) {
-		this.strInformation = strInformation;
+		//this.strInformation = strInformation;
 	}
 
 	protected final void finishAnimation() {
@@ -787,32 +781,32 @@ public abstract class ATreeLayouter
 			.getXCoord(), targetNode.getYCoord(), 0.0f));
 	}
 
-	private void runThroughTreeAndPlaceNew(Vec3f vec, IDrawAbleNode node, int layer) {
-		if (tree.hasChildren(node)) {
-			for (IDrawAbleNode child : tree.getChildren(node)) {
-				runThroughTreeAndPlaceNew(vec, child, layer++);
-			}
-		}
+//	private void runThroughTreeAndPlaceNew(Vec3f vec, IDrawAbleNode node, int layer) {
+//		if (tree.hasChildren(node)) {
+//			for (IDrawAbleNode child : tree.getChildren(node)) {
+//				runThroughTreeAndPlaceNew(vec, child, layer++);
+//			}
+//		}
+//
+//		// for(IDrawAbleNode node: nodeLayout){
+//		Vec3f newNode = new Vec3f(node.getXCoord(), node.getYCoord(), 0.0f);
+//		newNode.add(vec);
+//		node.setXCoord(newNode.x());
+//		node.setYCoord(newNode.y());
+//		node.setDetailLevel(EDrawAbleNodeDetailLevel.High);
+//		node.place(node.getRealCoordinates().x(), node.getRealCoordinates().y(), 0.0f, 0.1f, 0.1f,
+//			treeProjector);
+//
+//		// placeConnection(tree.getParent(node), node);
+//		// }
+//	}
 
-		// for(IDrawAbleNode node: nodeLayout){
-		Vec3f newNode = new Vec3f(node.getXCoord(), node.getYCoord(), 0.0f);
-		newNode.add(vec);
-		node.setXCoord(newNode.x());
-		node.setYCoord(newNode.y());
-		node.setDetailLevel(EDrawAbleNodeDetailLevel.High);
-		node.place(node.getRealCoordinates().x(), node.getRealCoordinates().y(), 0.0f, 0.1f, 0.1f,
-			treeProjector);
-
-		// placeConnection(tree.getParent(node), node);
-		// }
-	}
-	
-	public float getScalingFactor(){
+	public float getScalingFactor() {
 		return fScalingFactor;
 	}
-	
+
 	@Override
-	public Vec3f getLastTranslationVector(){
+	public Vec3f getLastTranslationVector() {
 		return fvec;
 	}
 

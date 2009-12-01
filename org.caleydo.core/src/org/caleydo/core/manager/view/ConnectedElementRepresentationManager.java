@@ -21,7 +21,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.listener.AddSelectionListener;
 import org.caleydo.core.manager.view.listener.ClearConnectionsListener;
 import org.caleydo.core.manager.view.listener.ClearTransformedConnectionsListener;
-import org.caleydo.core.manager.vislink.VisLinkManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 

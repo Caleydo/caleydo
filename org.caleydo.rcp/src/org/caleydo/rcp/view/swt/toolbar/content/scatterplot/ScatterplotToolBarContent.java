@@ -9,7 +9,6 @@ import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.ActionToolBarContainer;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
 import org.caleydo.rcp.view.swt.toolbar.content.ToolBarContainer;
-import org.caleydo.rcp.view.swt.toolbar.content.radial.DepthSlider;
 
 /**
  * ToolBarContent implementation for scatterplot specific toolbar items.

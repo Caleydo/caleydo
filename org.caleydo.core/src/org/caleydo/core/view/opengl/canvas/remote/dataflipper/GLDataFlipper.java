@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.remote.dataflipper;
 
-import gleem.RightTruncPyrMapping;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
@@ -176,6 +175,8 @@ public class GLDataFlipper
 		remoteLevelElementWhiteList.add(focusElement);
 		remoteLevelElementWhiteList.add(stackElementsLeft.get(0));
 		remoteLevelElementWhiteList.add(stackElementsRight.get(0));
+//		remoteLevelElementWhiteList.add(stackElementsLeft.get(1));
+//		remoteLevelElementWhiteList.add(stackElementsRight.get(1));
 		selectionTransformer = new RemoteRenderingTransformer(iUniqueID, remoteLevelElementWhiteList);
 
 		init(gl);

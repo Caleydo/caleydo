@@ -262,6 +262,7 @@ public abstract class AGLViewBrowser
 		ArrayList<RemoteLevelElement> remoteLevelElementWhiteList = new ArrayList<RemoteLevelElement>();
 		remoteLevelElementWhiteList.addAll(focusLevel.getAllElements());
 		remoteLevelElementWhiteList.addAll(stackLevel.getAllElements());
+		remoteLevelElementWhiteList.addAll(poolLevel.getAllElements());		
 		selectionTransformer = new RemoteRenderingTransformer(iUniqueID, remoteLevelElementWhiteList);
 
 		addInitialViews();

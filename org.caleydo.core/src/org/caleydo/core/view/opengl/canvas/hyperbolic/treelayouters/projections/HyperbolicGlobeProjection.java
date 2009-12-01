@@ -131,15 +131,15 @@ public class HyperbolicGlobeProjection
 	// return newPoint;
 	// }
 
-	private float calculateLineLength(float fCenterPoint, float fLinePoint) {
-
-		float fDistanceFromCenterToPointOnGlobe = Math.abs(fCenterPoint - fLinePoint);
-
-		float fAngle = fDistanceFromCenterToPointOnGlobe / radius;
-		float fProjectedDistance = (float) Math.sin(fAngle);
-
-		return fProjectedDistance;
-	}
+	// private float calculateLineLength(float fCenterPoint, float fLinePoint) {
+	//
+	// float fDistanceFromCenterToPointOnGlobe = Math.abs(fCenterPoint - fLinePoint);
+	//
+	// float fAngle = fDistanceFromCenterToPointOnGlobe / radius;
+	// float fProjectedDistance = (float) Math.sin(fAngle);
+	//
+	// return fProjectedDistance;
+	// }
 
 	// public float getGlobeSurfaceLengthFromEquatorToPole(){
 	// return radius * (float)Math.toRadians(90);

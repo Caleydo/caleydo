@@ -127,34 +127,34 @@ public final class LTLayouter
 
 	}
 
-	private void apportion(IDrawAbleNode rootNode, int level) {
-		IDrawAbleNode linkestes = tree.getChildren(rootNode).get(0);
-		IDrawAbleNode nachbar = lastPlacedinlayer[level];
-		int tiefe = 1;
-		while (linkestes != null && nachbar != null) {
-			float rechtepos = linkestes.getXCoord();
-			float linkepos = nachbar.getXCoord();
-			IDrawAbleNode vorfahrnachbar = tree.getParent(nachbar);
-			float abstand = rechtepos + 0.1f - linkepos;
-			if (abstand > 0) {
-				int i = 0;
-				for (IDrawAbleNode node : tree.getChildren(tree.getParent(vorfahrnachbar))) {
-					if (node.compareTo(vorfahrnachbar) == 0)
-						break;
-					++i;
-				}
-				if (i > 0) {
-					float teil = abstand / i;
-				}
-			}
-		}
+//	private void apportion(IDrawAbleNode rootNode, int level) {
+//		IDrawAbleNode linkestes = tree.getChildren(rootNode).get(0);
+//		IDrawAbleNode nachbar = lastPlacedinlayer[level];
+//		int tiefe = 1;
+//		while (linkestes != null && nachbar != null) {
+//			float rechtepos = linkestes.getXCoord();
+//			float linkepos = nachbar.getXCoord();
+//			IDrawAbleNode vorfahrnachbar = tree.getParent(nachbar);
+//			float abstand = rechtepos + 0.1f - linkepos;
+//			if (abstand > 0) {
+//				int i = 0;
+//				for (IDrawAbleNode node : tree.getChildren(tree.getParent(vorfahrnachbar))) {
+//					if (node.compareTo(vorfahrnachbar) == 0)
+//						break;
+//					++i;
+//				}
+//				if (i > 0) {
+//					float teil = abstand / i;
+//				}
+//			}
+//		}
 
-	}
+//	}
 
-	private IDrawAbleNode linkerNachbar(IDrawAbleNode linkestes) {
-
-		return null;
-	}
+//	private IDrawAbleNode linkerNachbar(IDrawAbleNode linkestes) {
+//
+//		return null;
+//	}
 
 }
 
