@@ -45,7 +45,7 @@ public class ScatterplotToolBarContent
 		actionList.add(testAction);
 
 		if (testSlider == null) {
-			testSlider = new DepthSlider("", 0);
+			testSlider = new PointSizeSlider("", 0);
 		}
 		actionList.add(testSlider);
 		
