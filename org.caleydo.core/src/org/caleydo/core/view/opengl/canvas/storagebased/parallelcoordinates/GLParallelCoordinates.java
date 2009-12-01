@@ -391,6 +391,9 @@ public class GLParallelCoordinates
 	@Override
 	public void display(final GL gl) {
 
+//		if(storageVA.size() > 20)
+//			return;
+//		
 		processEvents();
 		if (bShowSelectionHeatMap) {
 

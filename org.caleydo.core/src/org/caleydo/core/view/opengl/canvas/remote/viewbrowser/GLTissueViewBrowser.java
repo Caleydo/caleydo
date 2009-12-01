@@ -16,8 +16,10 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
@@ -26,6 +28,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ReplaceVirtualArrayListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.canvas.tissue.GLTissue;
@@ -36,6 +39,8 @@ public class GLTissueViewBrowser
 	extends AGLViewBrowser
 	implements IVirtualArrayUpdateHandler {
 
+	private static final int VIEW_THRESHOLD = 20;
+
 	private HashMap<Integer, String> mapExperimentToTexturePath;
 
 	private SelectionManager experiementSelectionManager;
@@ -43,6 +48,8 @@ public class GLTissueViewBrowser
 	private SelectionUpdateListener selectionUpdateListener;
 
 	private VirtualArrayUpdateListener virtualArrayUpdateListener;
+
+	private ReplaceVirtualArrayListener replaceVirtualArrayListener;
 
 	private EIDType primaryIDType = EIDType.EXPERIMENT_INDEX;
 
@@ -56,24 +63,34 @@ public class GLTissueViewBrowser
 	@Override
 	public void setUseCase(IUseCase useCase) {
 		super.setUseCase(useCase);
-
+		contentVA = GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA).getVA(EVAType.CONTENT);
 		experiementSelectionManager = new SelectionManager.Builder(primaryIDType).build();
+		experiementSelectionManager.setVA(contentVA);
+
+		updateViews();
+
 		generateTissuePatientConnection();
-		
+
 	}
 
 	@Override
 	protected void addInitialViews() {
 
-		ClinicalUseCase clinicalUseCase =
-			(ClinicalUseCase) generalManager.getUseCase(EDataDomain.CLINICAL_DATA);
+	}
+
+	private void updateViews() {
+
+		if (contentVA.size() > VIEW_THRESHOLD)
+			return;
+
+		newViews.clear();
 
 		int count = 0;
-		for (Integer experimentIndex : clinicalUseCase.getVA(EVAType.CONTENT)) {
+		for (Integer experimentIndex : contentVA) {
 
 			// FIXME: just for faster loading of data flipper
-			if (count++ > 5)
-				break;
+//			if (count++ > 5)
+//				break;
 
 			generalManager.getViewGLCanvasManager().createGLEventListener(ECommandType.CREATE_GL_TISSUE,
 				parentGLCanvas, "", viewFrustum);
@@ -230,6 +247,10 @@ public class GLTissueViewBrowser
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
 
+		replaceVirtualArrayListener = new ReplaceVirtualArrayListener();
+		replaceVirtualArrayListener.setHandler(this);
+		eventPublisher.addListener(ReplaceVirtualArrayEvent.class, replaceVirtualArrayListener);
+
 	}
 
 	/**
@@ -250,6 +271,11 @@ public class GLTissueViewBrowser
 			virtualArrayUpdateListener = null;
 		}
 
+		if (replaceVirtualArrayListener != null) {
+			eventPublisher.removeListener(replaceVirtualArrayListener);
+			replaceVirtualArrayListener = null;
+		}
+
 	}
 
 	@Override
@@ -262,10 +288,12 @@ public class GLTissueViewBrowser
 	@Override
 	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType) {
 
-		if(idCategory != EIDCategory.EXPERIMENT)
+		if (idCategory != EIDCategory.EXPERIMENT)
 			return;
-		
-		String primaryVAType = useCase.getVATypeForIDCategory(idCategory);
+
+		IUseCase clinicalUseCase = GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA);
+
+		String primaryVAType = clinicalUseCase.getVATypeForIDCategory(idCategory);
 		if (primaryVAType == null)
 			return;
 
@@ -275,17 +303,18 @@ public class GLTissueViewBrowser
 			return;
 
 		if (vaType == storageVAType) {
-			storageVA = useCase.getVA(vaType);
+			storageVA = clinicalUseCase.getVA(vaType);
 			// storageSelectionManager.setVA(storageVA);
 		}
 		else if (vaType == contentVAType) {
-			contentVA = useCase.getVA(vaType);
+			contentVA = clinicalUseCase.getVA(vaType);
 			// contentSelectionManager.setVA(contentVA);
 		}
 		else
 			return;
 
 		initData();
+		updateViews();
 	}
 
 }
