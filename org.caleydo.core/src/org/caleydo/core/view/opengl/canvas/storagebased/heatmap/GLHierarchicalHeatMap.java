@@ -54,6 +54,8 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.usecase.EDataFilterLevel;
+import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
+import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
@@ -215,6 +217,11 @@ public class GLHierarchicalHeatMap
 
 	// private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(0, 0);
 
+	/**
+	 * Transformation utility object to transform and project view related coordinates
+	 */
+	protected RemoteRenderingTransformer selectionTransformer;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -2340,6 +2347,9 @@ public class GLHierarchicalHeatMap
 
 		contextMenu.render(gl, this);
 
+//		ConnectedElementRepresentationManager cerm =
+//			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+//		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 	}
 
 	private void renderRemoteViewsLevel_1_2_3_Active(GL gl) {

@@ -304,12 +304,13 @@ public abstract class AGLViewBrowser
 
 	@Override
 	public void displayRemote(final GL gl) {
-		ConnectedElementRepresentationManager cerm =
-			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
-		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		display(gl);
 		checkForHits(gl);
+
+		ConnectedElementRepresentationManager cerm =
+			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 	}
 
 	@Override

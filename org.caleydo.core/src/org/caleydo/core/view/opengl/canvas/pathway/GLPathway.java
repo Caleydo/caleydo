@@ -376,8 +376,8 @@ public class GLPathway
 
 				int iViewID = iUniqueID;
 				// If rendered remote (hierarchical heat map) - use the remote view ID
-				if (glRemoteRenderingView != null && glRemoteRenderingView instanceof AGLViewBrowser)
-					iViewID = glRemoteRenderingView.getID();
+//				if (glRemoteRenderingView != null && glRemoteRenderingView instanceof AGLViewBrowser)
+//					iViewID = glRemoteRenderingView.getID();
 				
 				SelectedElementRep elementRep =
 					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iViewID, vertexRep.getXOrigin()
@@ -733,8 +733,8 @@ public class GLPathway
 
 		int iViewID = iUniqueID;
 		// If rendered remote (hierarchical heat map) - use the remote view ID
-		if (glRemoteRenderingView != null && glRemoteRenderingView instanceof AGLViewBrowser)
-			iViewID = glRemoteRenderingView.getID();
+//		if (glRemoteRenderingView != null && glRemoteRenderingView instanceof AGLViewBrowser)
+//			iViewID = glRemoteRenderingView.getID();
 		
 		for (int iVertexRepID : selectionManager.getElements(eSelectionType)) {
 			tmpPathwayVertexGraphItemRep =

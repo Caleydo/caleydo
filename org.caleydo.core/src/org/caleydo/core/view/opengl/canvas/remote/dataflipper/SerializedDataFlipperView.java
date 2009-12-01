@@ -51,9 +51,9 @@ public class SerializedDataFlipperView
 		parCoords.setDataDomain(EDataDomain.GENETIC_DATA);
 		initialContainedViews.add(parCoords);
 
-		SerializedTissueViewBrowserView tissueViewBrowser = new SerializedTissueViewBrowserView();
-		tissueViewBrowser.setDataDomain(EDataDomain.TISSUE_DATA);
-		initialContainedViews.add(tissueViewBrowser);
+//		SerializedTissueViewBrowserView tissueViewBrowser = new SerializedTissueViewBrowserView();
+//		tissueViewBrowser.setDataDomain(EDataDomain.TISSUE_DATA);
+//		initialContainedViews.add(tissueViewBrowser);
 
 		SerializedHierarchicalHeatMapView heatMap = new SerializedHierarchicalHeatMapView();
 		heatMap.setDataDomain(EDataDomain.GENETIC_DATA);

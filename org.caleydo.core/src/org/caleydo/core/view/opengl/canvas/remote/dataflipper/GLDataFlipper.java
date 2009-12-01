@@ -211,16 +211,16 @@ public class GLDataFlipper
 
 		display(gl);
 
-		ConnectedElementRepresentationManager cerm =
-			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
-		cerm.doViewRelatedTransformation(gl, selectionTransformer);
-
 		if (eBusyModeState != EBusyModeState.OFF) {
 			renderBusyMode(gl);
 		}
 
 		checkForHits(gl);
 
+		ConnectedElementRepresentationManager cerm =
+			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		cerm.doViewRelatedTransformation(gl, selectionTransformer);
+		
 		// gl.glCallList(iGLDisplayListIndexLocal);
 	}
 

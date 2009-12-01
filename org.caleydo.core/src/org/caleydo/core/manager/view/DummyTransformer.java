@@ -21,7 +21,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
  * 
  * @author Werner Puff
  */
-public class RemoteRenderingTransformer
+public class DummyTransformer
 	extends StandardTransformer {
 
 	/**
@@ -38,7 +38,7 @@ public class RemoteRenderingTransformer
 	 * @param remoteLevelElementWhiteList
 	 *            the white list of remote level elements to transform.
 	 */
-	public RemoteRenderingTransformer(int viewID, ArrayList<RemoteLevelElement> remoteLevelElementWhiteList) {
+	public DummyTransformer(int viewID, ArrayList<RemoteLevelElement> remoteLevelElementWhiteList) {
 		super(viewID);
 
 		this.remoteLevelElementWhiteList = remoteLevelElementWhiteList;
@@ -67,7 +67,6 @@ public class RemoteRenderingTransformer
 				target.put(typeConnections.getKey(), connectionMap);
 			}
 
-			SelectedElementRepList newSourceConnections = new SelectedElementRepList(); 
 			for (Entry<Integer, SelectedElementRepList> connections : typeConnections.getValue().entrySet()) {
 
 				SelectedElementRepList repList = connectionMap.get(connections.getKey());
@@ -85,20 +84,12 @@ public class RemoteRenderingTransformer
 						for (Vec3f vec : sel.getPoints()) {
 							transformedPoints.add(transform(vec, rle));
 						}
-						if (((AGLEventListener) view.getRemoteRenderingGLCanvas()).isRenderedRemote()) {
-							SelectedElementRep trans =
-								new SelectedElementRep(sel.getIDType(), viewID, viewID,
-									transformedPoints);
-							newSourceConnections.add(trans);
-						} else {
-							SelectedElementRep trans =
-								new SelectedElementRep(sel.getIDType(), sel.getSourceViewID(), viewID,
-									transformedPoints);
-							repList.add(trans);
-						}
+						SelectedElementRep trans =
+							new SelectedElementRep(sel.getIDType(), sel.getSourceViewID(), viewID,
+								transformedPoints);
+						repList.add(trans);
 					}
 				}
-				connections.getValue().addAll(newSourceConnections);
 			}
 		}
 		return true;
