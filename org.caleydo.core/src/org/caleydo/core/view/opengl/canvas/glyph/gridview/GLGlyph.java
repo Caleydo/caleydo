@@ -328,7 +328,7 @@ public class GLGlyph
 			parentGLCanvas.addKeyListener(keyListener_);
 		}
 
-		grid_.setGlyphPositionModel(EPositionModel.DISPLAY_RECTANGLE);
+		grid_.setGlyphPositionModel(EPositionModel.DISPLAY_SCATTERPLOT);
 
 	}
 
@@ -348,7 +348,7 @@ public class GLGlyph
 		init(gl);
 
 		grid_.setGridSize(30, 60);
-		grid_.setGlyphPositionModel(EPositionModel.DISPLAY_RECTANGLE);
+		grid_.setGlyphPositionModel(EPositionModel.DISPLAY_SCATTERPLOT);
 		// grid_.setGlyphPositionModel(EPositionModel.DISPLAY_SCATTERPLOT);
 		// grid_.setGlyphPositionModel(EPositionModel.DISPLAY_PLUS);
 	}

@@ -2265,12 +2265,12 @@ public class GLParallelCoordinates
 			}
 		}
 		else {
-			// fXValue = fXValue + renderStyle.getXSpacing();
-			if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
-				fXValue = viewFrustum.getRight() - 0.2f;
-			else
-				fXValue = viewFrustum.getRight() - 0.4f;
-			// get the value on the leftmost axis
+			 fXValue = fXValue + renderStyle.getXSpacing();
+//			if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
+//				fXValue = viewFrustum.getRight() - 0.2f;
+//			else
+//				fXValue = viewFrustum.getRight() - 0.4f;
+//			// get the value on the leftmost axis
 			fYValue =
 				set.get(storageVA.get(storageVA.size() - 1)).getFloat(EDataRepresentation.NORMALIZED,
 					iStorageIndex);

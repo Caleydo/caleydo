@@ -45,7 +45,7 @@ public class GLGlyphGrid {
 
 	private int GLGridList_ = -1;
 
-	private EPositionModel iPositionType = EPositionModel.DISPLAY_RECTANGLE;
+	private EPositionModel iPositionType = EPositionModel.DISPLAY_SCATTERPLOT;
 
 	private Vec2i worldLimit_ = null;
 
