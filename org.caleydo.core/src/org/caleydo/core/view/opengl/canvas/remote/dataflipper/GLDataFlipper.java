@@ -97,7 +97,7 @@ public class GLDataFlipper
 	 */
 	private int iSlerpFactor = 0;
 
-	private boolean focusZoom = false;
+//	private boolean focusZoom = false;
 
 	/**
 	 * Constructor.
@@ -164,7 +164,7 @@ public class GLDataFlipper
 		generalManager.addUseCase(new PathwayUseCase());
 		generalManager.addUseCase(new TissueUseCase());
 		generalManager.getUseCase(EDataDomain.PATHWAY_DATA).setSet(
-			generalManager.getUseCase(EDataDomain.GENETIC_DATA).getSet());
+		generalManager.getUseCase(EDataDomain.GENETIC_DATA).getSet());
 	}
 
 	@Override

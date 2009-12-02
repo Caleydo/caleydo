@@ -14,6 +14,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.AOverlayManager;
@@ -339,8 +340,8 @@ public class ContextMenu
 		// FIXME: Find clean solution!!
 
 		Vec3f scalingPivot = new Vec3f(metaData.xOrigin, metaData.yOrigin, BASIC_Z);
-
-		if (!(masterGLView instanceof GLRemoteRendering))
+			
+		if (!(masterGLView instanceof IGLRemoteRenderingView))
 			gl.glTranslatef(0, 0, 2);
 
 		if (isBaseMenu)
@@ -489,7 +490,7 @@ public class ContextMenu
 		if (isBaseMenu)
 			endGUIElement(gl);
 
-		if (!(masterGLView instanceof GLRemoteRendering))
+		if (!(masterGLView instanceof IGLRemoteRenderingView))
 			gl.glTranslatef(0, 0, -2);
 	}
 

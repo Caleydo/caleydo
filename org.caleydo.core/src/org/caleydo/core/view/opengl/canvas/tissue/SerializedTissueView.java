@@ -21,6 +21,10 @@ public class SerializedTissueView
 	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLTissueView";
 	
 	private String texturePath;
+	
+	private String label;
+	
+	private int experimentIndex;
 
 	/**
 	 * Default constructor with default initialization
@@ -51,5 +55,21 @@ public class SerializedTissueView
 
 	public String getTexturePath() {
 		return texturePath;
+	}
+	
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+	
+	public int getExperimentIndex() {
+		return experimentIndex;
+	}
+
+	public void setExperimentIndex(int experimentIndex) {
+		this.experimentIndex = experimentIndex;
 	}
 }

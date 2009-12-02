@@ -186,13 +186,13 @@ public abstract class AGLViewBrowser
 	}
 
 	protected abstract void initFocusLevel();
-	
+
 	protected abstract void initPoolLevel(int selectedElementId);
-	
+
 	protected abstract void initSpawnLevel();
-	
+
 	protected abstract void initExternalSelectionLevel();
-	
+
 	protected abstract void initTransitionLevel();
 
 	private void initStackLevel() {
@@ -262,7 +262,7 @@ public abstract class AGLViewBrowser
 		ArrayList<RemoteLevelElement> remoteLevelElementWhiteList = new ArrayList<RemoteLevelElement>();
 		remoteLevelElementWhiteList.addAll(focusLevel.getAllElements());
 		remoteLevelElementWhiteList.addAll(stackLevel.getAllElements());
-		remoteLevelElementWhiteList.addAll(poolLevel.getAllElements());		
+		remoteLevelElementWhiteList.addAll(poolLevel.getAllElements());
 		selectionTransformer = new RemoteRenderingTransformer(iUniqueID, remoteLevelElementWhiteList);
 
 		addInitialViews();
@@ -324,7 +324,7 @@ public abstract class AGLViewBrowser
 		initPoolLevel(iMouseOverObjectID);
 
 		// initStackLevel();
-		 initFocusLevel();
+		initFocusLevel();
 
 		// Just for layout testing during runtime
 		// layoutRenderStyle.initStackLevel();
@@ -539,10 +539,9 @@ public abstract class AGLViewBrowser
 			float fXShift = -7.1f;
 			if (this instanceof GLTissueViewBrowser)
 				fXShift = -0.8f;
-			
+
 			if (element.getID() == iMouseOverObjectID) {
-				renderPoolSelection(gl, translation.x()+fXShift, translation.y() * scale.y()
-					+ 5.2f,
+				renderPoolSelection(gl, translation.x() + fXShift, translation.y() * scale.y() + 5.2f,
 
 				(float) textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 23, 6f, element);
 				gl.glTranslatef(0.8f, 1.3f, 0);
@@ -808,27 +807,27 @@ public abstract class AGLViewBrowser
 		}
 	}
 
-//	private void renderStackViewHandleBarZoomedIn(final GL gl, RemoteLevelElement element) {
-//		Transform transform = element.getTransform();
-//		Vec3f translation = transform.getTranslation();
-//		Vec3f scale = transform.getScale();
-//		// float fZoomedInScalingFactor = 0.1f;
-//		float fYCorrection = 0f;
-//		// if (!bucketMouseWheelListener.isZoomedIn()) {
-//		// fYCorrection = 0f;
-//		// }
-//		// else {
-//		fYCorrection = 0.145f;
-//		// }
-//
-//		gl.glTranslatef(translation.x(), translation.y() - 2 * 0.075f + fYCorrection,
-//			translation.z() + 0.001f);
-//		gl.glScalef(scale.x() * 4, scale.y() * 4, scale.z());
-//		renderNavigationHandleBar(gl, element, 2, 0.075f, false, 2);
-//		gl.glScalef(1 / (scale.x() * 4), 1 / (scale.y() * 4), 1 / scale.z());
-//		gl.glTranslatef(-translation.x(), -translation.y() + 2 * 0.075f - fYCorrection,
-//			-translation.z() - 0.001f);
-//	}
+	// private void renderStackViewHandleBarZoomedIn(final GL gl, RemoteLevelElement element) {
+	// Transform transform = element.getTransform();
+	// Vec3f translation = transform.getTranslation();
+	// Vec3f scale = transform.getScale();
+	// // float fZoomedInScalingFactor = 0.1f;
+	// float fYCorrection = 0f;
+	// // if (!bucketMouseWheelListener.isZoomedIn()) {
+	// // fYCorrection = 0f;
+	// // }
+	// // else {
+	// fYCorrection = 0.145f;
+	// // }
+	//
+	// gl.glTranslatef(translation.x(), translation.y() - 2 * 0.075f + fYCorrection,
+	// translation.z() + 0.001f);
+	// gl.glScalef(scale.x() * 4, scale.y() * 4, scale.z());
+	// renderNavigationHandleBar(gl, element, 2, 0.075f, false, 2);
+	// gl.glScalef(1 / (scale.x() * 4), 1 / (scale.y() * 4), 1 / scale.z());
+	// gl.glTranslatef(-translation.x(), -translation.y() + 2 * 0.075f - fYCorrection,
+	// -translation.z() - 0.001f);
+	// }
 
 	private void renderNavigationHandleBar(final GL gl, RemoteLevelElement element, float fHandleWidth,
 		float fHandleHeight, boolean bUpsideDown, float fScalingFactor) {
@@ -928,10 +927,10 @@ public abstract class AGLViewBrowser
 
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(fXOrigin+10.2f, fYOrigin - fHeight / 2f + fHeight, 0f);
-		gl.glVertex3f(fXOrigin+10.2f + fWidth, fYOrigin - fHeight / 2f + fHeight, 0f);
-		gl.glVertex3f(fXOrigin+10.2f + fWidth, fYOrigin - fHeight / 2f, 0f);
-		gl.glVertex3f(fXOrigin+10.2f, fYOrigin - fHeight / 2f, 0f);
+		gl.glVertex3f(fXOrigin + 10.2f, fYOrigin - fHeight / 2f + fHeight, 0f);
+		gl.glVertex3f(fXOrigin + 10.2f + fWidth, fYOrigin - fHeight / 2f + fHeight, 0f);
+		gl.glVertex3f(fXOrigin + 10.2f + fWidth, fYOrigin - fHeight / 2f, 0f);
+		gl.glVertex3f(fXOrigin + 10.2f, fYOrigin - fHeight / 2f, 0f);
 		gl.glEnd();
 
 		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND_SELECTION);
@@ -1090,15 +1089,16 @@ public abstract class AGLViewBrowser
 
 		if (iViewID == -1)
 			return;
-		
+
 		// Slerp focus view to pool
-		SlerpAction makePlaceSlerpActionTransition = new SlerpAction(focusLevel.getElementByPositionIndex(0), poolLevel.getNextFree());
+		SlerpAction makePlaceSlerpActionTransition =
+			new SlerpAction(focusLevel.getElementByPositionIndex(0), poolLevel.getNextFree());
 		arSlerpActions.add(makePlaceSlerpActionTransition);
 
 		// Slerp selected view to focus position
 		SlerpAction slerpActionTransition = new SlerpAction(element, focusLevel.getElementByPositionIndex(0));
 		arSlerpActions.add(slerpActionTransition);
-		
+
 		iSlerpFactor = 0;
 	}
 
@@ -1339,7 +1339,7 @@ public abstract class AGLViewBrowser
 		resetView(true);
 	}
 
-	private void clearRemoteLevel(RemoteLevel remoteLevel) {
+	protected void clearRemoteLevel(RemoteLevel remoteLevel) {
 		int iViewID;
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 		AGLEventListener glEventListener = null;
@@ -1509,7 +1509,26 @@ public abstract class AGLViewBrowser
 			ASerializedView serView = newViews.remove(0);
 			AGLEventListener view = createView(gl, serView);
 			if (hasFreeViewPosition()) {
-				addSlerpActionForView(gl, view);
+
+				// TODO use this when views should be slerped in
+//				if (this instanceof GLPathwayViewBrowser)
+					addSlerpActionForView(gl, view);
+//				else {
+//
+//					if (focusLevel.hasFreePosition()) {
+//						poolLevel.getNextFree().setContainedElementID(view.getID());
+//						view.broadcastElements(EVAOperation.APPEND_UNIQUE);
+//					}
+//					else if (poolLevel.hasFreePosition()) {
+//						poolLevel.getNextFree().setContainedElementID(view.getID());
+//					}
+//					else {
+//						GeneralManager.get().getLogger().log(
+//							new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+//								"No empty space left to add new view!"));
+//					}
+//				}
+
 				containedGLViews.add(view);
 			}
 			else {
@@ -1584,8 +1603,7 @@ public abstract class AGLViewBrowser
 		}
 		else {
 			GeneralManager.get().getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-					"No empty space left to add new view!"));
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "No empty space left to add new view!"));
 			newViews.clear();
 			return false;
 		}

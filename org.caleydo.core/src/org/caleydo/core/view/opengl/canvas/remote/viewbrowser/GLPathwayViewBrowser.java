@@ -3,18 +3,29 @@ package org.caleydo.core.view.opengl.canvas.remote.viewbrowser;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
+import java.util.Set;
+
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
+import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.pathway.SerializedPathwayView;
+import org.caleydo.core.view.opengl.canvas.remote.listener.AddPathwayListener;
+import org.caleydo.core.view.opengl.canvas.remote.listener.IRemoteRenderingHandler;
+import org.caleydo.core.view.opengl.canvas.remote.listener.LoadPathwaysByGeneListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
 public class GLPathwayViewBrowser
-	extends AGLViewBrowser {
+	extends AGLViewBrowser 
+	implements IRemoteRenderingHandler {
 
+	private LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
+	private AddPathwayListener addPathwayListener = null;
+	
 	public GLPathwayViewBrowser(GLCaleydoCanvas glCanvas, String sLabel, IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum);
 	
@@ -118,5 +129,94 @@ public class GLPathwayViewBrowser
 		sInfoText.append("Pathway Browser");
 		return sInfoText.toString();
 	}
+	
+	
+	@Override
+	public void registerEventListeners() {
 
+		super.registerEventListeners();
+		
+		addPathwayListener = new AddPathwayListener();
+		addPathwayListener.setHandler(this);
+		eventPublisher.addListener(LoadPathwayEvent.class, addPathwayListener);
+		
+		loadPathwaysByGeneListener = new LoadPathwaysByGeneListener();
+		loadPathwaysByGeneListener.setHandler(this);
+		eventPublisher.addListener(LoadPathwaysByGeneEvent.class, loadPathwaysByGeneListener);
+	}
+	
+	@Override
+	public void unregisterEventListeners() {
+
+		super.unregisterEventListeners();
+	
+		if (addPathwayListener != null) {
+			eventPublisher.removeListener(addPathwayListener);
+			addPathwayListener = null;
+		}
+		
+		if (loadPathwaysByGeneListener != null) {
+			eventPublisher.removeListener(loadPathwaysByGeneListener);
+			loadPathwaysByGeneListener = null;
+		}
+	}
+
+	@Override
+	public void addPathwayView(int iPathwayID) {
+		if (!generalManager.getPathwayManager().isPathwayVisible(
+			generalManager.getPathwayManager().getItem(iPathwayID))) {
+			SerializedPathwayView serPathway = new SerializedPathwayView(EDataDomain.GENETIC_DATA);
+			serPathway.setPathwayID(iPathwayID);
+			newViews.add(serPathway);
+		}
+	}
+
+	@Override
+	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
+
+		// add new pathways to bucket
+		for (PathwayGraph pathway : newPathwayGraphs) {
+			addPathwayView(pathway.getID());
+		}
+
+		if (!newViews.isEmpty()) {
+			disableUserInteraction();
+		}
+	}
+
+	@Override
+	public void setConnectionLinesEnabled(boolean enabled) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setGeneMappingEnabled(boolean geneMappingEnabled) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setNeighborhoodEnabled(boolean neighborhoodEnabled) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setPathwayTexturesEnabled(boolean pathwayTexturesEnabled) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void toggleNavigationMode() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void toggleZoom() {
+		// TODO Auto-generated method stub
+		
+	}
 }

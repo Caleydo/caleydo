@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.canvas.remote.viewbrowser;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.media.opengl.GL;
@@ -21,7 +22,6 @@ import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -46,12 +46,12 @@ public class GLTissueViewBrowser
 	private SelectionManager experiementSelectionManager;
 
 	private SelectionUpdateListener selectionUpdateListener;
-
 	private VirtualArrayUpdateListener virtualArrayUpdateListener;
-
 	private ReplaceVirtualArrayListener replaceVirtualArrayListener;
 
 	private EIDType primaryIDType = EIDType.EXPERIMENT_INDEX;
+
+	private ArrayList<SerializedTissueView> allTissueViews;
 
 	public GLTissueViewBrowser(GLCaleydoCanvas glCanvas, String sLabel, IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum);
@@ -67,15 +67,32 @@ public class GLTissueViewBrowser
 		experiementSelectionManager = new SelectionManager.Builder(primaryIDType).build();
 		experiementSelectionManager.setVA(contentVA);
 
-		updateViews();
-
-		generateTissuePatientConnection();
-
+		addInitialViews();
 	}
 
 	@Override
 	protected void addInitialViews() {
 
+		newViews.clear();
+		allTissueViews = new ArrayList<SerializedTissueView>();
+
+		ISet geneticSet = generalManager.getUseCase(EDataDomain.GENETIC_DATA).getSet();
+		for (int experimentIndex = 0; experimentIndex < geneticSet.size(); experimentIndex++) {
+
+			generalManager.getViewGLCanvasManager().createGLEventListener(ECommandType.CREATE_GL_TISSUE,
+				parentGLCanvas, "", viewFrustum);
+
+			mapExperimentToTexturePath.put(experimentIndex, "data/tissue/breast_" + experimentIndex % 24
+				+ ".jpg");
+
+			SerializedTissueView tissue = new SerializedTissueView();
+			tissue.setDataDomain(EDataDomain.TISSUE_DATA);
+			tissue.setTexturePath(mapExperimentToTexturePath.get(experimentIndex));
+			tissue.setLabel(geneticSet.get(experimentIndex).getLabel());
+			tissue.setExperimentIndex(experimentIndex);
+
+			allTissueViews.add(tissue);
+		}
 	}
 
 	private void updateViews() {
@@ -85,20 +102,12 @@ public class GLTissueViewBrowser
 
 		newViews.clear();
 
-		int count = 0;
+		clearRemoteLevel(focusLevel);
+		clearRemoteLevel(poolLevel);
+		clearRemoteLevel(transitionLevel);
+
 		for (Integer experimentIndex : contentVA) {
-
-			// FIXME: just for faster loading of data flipper
-//			if (count++ > 5)
-//				break;
-
-			generalManager.getViewGLCanvasManager().createGLEventListener(ECommandType.CREATE_GL_TISSUE,
-				parentGLCanvas, "", viewFrustum);
-
-			SerializedTissueView tissue = new SerializedTissueView();
-			tissue.setDataDomain(EDataDomain.TISSUE_DATA);
-			tissue.setTexturePath(mapExperimentToTexturePath.get(experimentIndex));
-			newViews.add(tissue);
+			newViews.add(allTissueViews.get(experimentIndex));
 		}
 	}
 
@@ -108,6 +117,8 @@ public class GLTissueViewBrowser
 		AGLEventListener glView = super.createView(gl, serView);
 
 		((GLTissue) glView).setTexturePath(((SerializedTissueView) serView).getTexturePath());
+		glView.setLabel(((SerializedTissueView) serView).getLabel());
+		((GLTissue) glView).setExperimentIndex(((SerializedTissueView) serView).getExperimentIndex());
 		return glView;
 	}
 
@@ -197,34 +208,34 @@ public class GLTissueViewBrowser
 		return sInfoText.toString();
 	}
 
-	/**
-	 * This method generates only valid associations for Asslaber dataset!
-	 */
-	private void generateTissuePatientConnection() {
-
-		ClinicalUseCase clinicalUseCase =
-			(ClinicalUseCase) generalManager.getUseCase(EDataDomain.CLINICAL_DATA);
-		ISet clinicalSet = clinicalUseCase.getSet();
-
-		if (clinicalSet.get(0) == null)
-			return;
-
-		for (int index = 0; index < clinicalSet.depth(); index++) {
-
-			mapExperimentToTexturePath.put(index, "data/tissue/breast_" + index % 24 + ".jpg");
-		}
-
-		// for (Integer vaID : clinicalUseCase.getVA(EVAType.CONTENT))
-		// {
-		// set.getStorageFromVA(
-		// }
-		//		
-		// for (IStorage storage : set) {
-		// String experiment = storage.getLabel();
-		// mapExperimentToTexturePath.put(experiment, )
-		// }
-
-	}
+	// /**
+	// * This method generates only valid associations for Asslaber dataset!
+	// */
+	// private void generateTissuePatientConnection() {
+	//
+	// ClinicalUseCase clinicalUseCase =
+	// (ClinicalUseCase) generalManager.getUseCase(EDataDomain.CLINICAL_DATA);
+	// ISet clinicalSet = clinicalUseCase.getSet();
+	//
+	// if (clinicalSet.get(0) == null)
+	// return;
+	//
+	// for (int index = 0; index < clinicalSet.depth(); index++) {
+	//
+	// mapExperimentToTexturePath.put(index, "data/tissue/breast_" + index % 24 + ".jpg");
+	// }
+	//
+	// // for (Integer vaID : clinicalUseCase.getVA(EVAType.CONTENT))
+	// // {
+	// // set.getStorageFromVA(
+	// // }
+	// //
+	// // for (IStorage storage : set) {
+	// // String experiment = storage.getLabel();
+	// // mapExperimentToTexturePath.put(experiment, )
+	// // }
+	//
+	// }
 
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
@@ -317,4 +328,7 @@ public class GLTissueViewBrowser
 		updateViews();
 	}
 
+	public SelectionManager getSelectionManager() {
+		return experiementSelectionManager;
+	}
 }

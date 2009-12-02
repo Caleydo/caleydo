@@ -2402,7 +2402,7 @@ public class GLHierarchicalHeatMap
 		
 		gl.glPushMatrix();
 
-		heatMapRemoteElement.getTransform().setTranslation(new Vec3f(fleftOffset, -0.2f, 0));
+		heatMapRemoteElement.getTransform().getTranslation().set(fleftOffset, -0.2f, 0);
 		heatMapRemoteElement.getTransform().getScale().set(fright/8, ftop/8, 1);
 		
 		Transform transform = heatMapRemoteElement.getTransform();

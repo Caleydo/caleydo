@@ -79,7 +79,7 @@ public class GLCoordinateUtils {
 	public static float[] convertWindowCoordinatesToWorldCoordinates(final GL gl,
 		final int iWindowCoordinatePositionX, final int iWindowCoordinatePositionY) {
 		return convertWindowCoordinatesToWorldCoordinates(gl, iWindowCoordinatePositionX,
-			iWindowCoordinatePositionY, 0.055f);
+			iWindowCoordinatePositionY, 0.55f); // 0.055 works for bucket
 	}
 
 	public static float[] convertWindowToGLCoordinates(final int iWindowWidth, final int iWindowHeight,

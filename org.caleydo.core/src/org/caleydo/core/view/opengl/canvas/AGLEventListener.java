@@ -555,7 +555,7 @@ public abstract class AGLEventListener
 		gl.glEnd();
 
 		float fXCenter, fYCenter;
-		if (this instanceof GLRemoteRendering) {
+		if (this instanceof IGLRemoteRenderingView) {
 			fXCenter = 0;
 			fYCenter = 0;
 		}

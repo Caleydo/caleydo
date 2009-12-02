@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -779,5 +780,20 @@ public class SelectionManager {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Returns the {@link ESelectionType} for a element ID or null, if element ID is not in the selection
+	 * manager
+	 * 
+	 * @param iElementID
+	 * @return selection type or NULL
+	 */
+	public ESelectionType getSelectionType(int iElementID) {
+		for (ESelectionType type : alSelectionTypes) {
+			if (checkStatus(type, iElementID))
+				return type;
+		}
+		return null;
 	}
 }

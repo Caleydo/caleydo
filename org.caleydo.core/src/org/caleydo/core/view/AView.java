@@ -162,5 +162,4 @@ public abstract class AView
 		event.setSelectionCommand(command);
 		eventPublisher.triggerEvent(event);
 	}
-
 }

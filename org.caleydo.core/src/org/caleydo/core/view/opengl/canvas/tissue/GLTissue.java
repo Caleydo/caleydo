@@ -18,7 +18,9 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.remote.viewbrowser.GLTissueViewBrowser;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 
 /**
@@ -30,6 +32,7 @@ public class GLTissue
 	extends AGLEventListener {
 
 	private String texturePath;
+	private int experimentIndex;
 
 	/**
 	 * Constructor.
@@ -90,6 +93,30 @@ public class GLTissue
 	}
 
 	private void renderScene(final GL gl) {
+
+		float[] color = null;
+		ESelectionType selectionType =
+			((GLTissueViewBrowser) glRemoteRenderingView).getSelectionManager().getSelectionType(
+				experimentIndex);
+
+		if (selectionType == ESelectionType.SELECTION)
+			color = GeneralRenderStyle.SELECTED_COLOR;
+		else if (selectionType == ESelectionType.MOUSE_OVER)
+			color = GeneralRenderStyle.MOUSE_OVER_COLOR;
+
+		float z = 0.02f;
+		
+		if (color != null) {
+			gl.glColor4fv(color, 0);
+			gl.glLineWidth(3);
+			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), z);
+			gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getBottom(), z);
+			gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getTop()
+				- viewFrustum.getBottom(), z);
+			gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop() - viewFrustum.getBottom(), z);
+			gl.glEnd();
+		}
 
 		if (texturePath != null && !texturePath.isEmpty()) {
 			textureManager.renderTexture(gl, texturePath, new Vec3f(0, 0, 0), new Vec3f(8, 0, 0), new Vec3f(
@@ -166,4 +193,7 @@ public class GLTissue
 		this.texturePath = texturePath;
 	}
 
+	public void setExperimentIndex(int experimentIndex) {
+		this.experimentIndex = experimentIndex;
+	}
 }
