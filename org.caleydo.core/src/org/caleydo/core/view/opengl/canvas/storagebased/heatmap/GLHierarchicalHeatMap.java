@@ -10,7 +10,9 @@ import static org.caleydo.core.view.opengl.canvas.storagebased.heatmap.HeatMapRe
 import static org.caleydo.core.view.opengl.canvas.storagebased.heatmap.HeatMapRenderStyle.SELECTION_Z;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
+import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+import gleem.linalg.open.Transform;
 
 import java.awt.Point;
 import java.nio.FloatBuffer;
@@ -52,6 +54,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.usecase.EDataFilterLevel;
+import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -77,6 +80,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.listener.GLHierarchicalHeatMapKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GroupContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -217,7 +221,9 @@ public class GLHierarchicalHeatMap
 	/**
 	 * Transformation utility object to transform and project view related coordinates
 	 */
-	protected RemoteRenderingTransformer selectionTransformer;
+	private RemoteRenderingTransformer selectionTransformer;
+	
+	private RemoteLevelElement heatMapRemoteElement;
 	
 	/**
 	 * Constructor.
@@ -242,7 +248,16 @@ public class GLHierarchicalHeatMap
 
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
 		super.renderStyle = renderStyle;
-
+		
+		heatMapRemoteElement = new RemoteLevelElement(null);
+		Transform transform = new Transform();
+		transform.setTranslation(new Vec3f(0, 0, 0));
+		transform.setScale(new Vec3f(1, 1, 1));
+		heatMapRemoteElement.setTransform(transform);
+		
+		ArrayList<RemoteLevelElement> remoteLevelElementWhiteList = new ArrayList<RemoteLevelElement>();
+		remoteLevelElementWhiteList.add(heatMapRemoteElement);
+		selectionTransformer = new RemoteRenderingTransformer(iUniqueID, remoteLevelElementWhiteList);
 	}
 
 	@Override
@@ -617,6 +632,8 @@ public class GLHierarchicalHeatMap
 		glHeatMapView = (GLHeatMap) cmdView.getCreatedObject();
 		glHeatMapView.setUseCase(useCase);
 		glHeatMapView.setRemoteRenderingGLView(this);
+		glHeatMapView.setRemoteLevelElement(heatMapRemoteElement);
+		heatMapRemoteElement.setContainedElementID(glHeatMapView.getID());
 
 		glHeatMapView.setDataDomain(dataDomain);
 		glHeatMapView.setUseCase(useCase);
@@ -715,6 +732,10 @@ public class GLHierarchicalHeatMap
 
 		display(gl);
 		checkForHits(gl);
+		
+		ConnectedElementRepresentationManager cerm =
+			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 	}
 
 	/**
@@ -2368,17 +2389,36 @@ public class GLHierarchicalHeatMap
 
 		fright = viewFrustum.getWidth() - fleftOffset;
 
-		gl.glTranslatef(fleftOffset, -0.2f, 0);
+//		gl.glTranslatef(fleftOffset, -0.2f, 0);
 
 		// render embedded heat map
 		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
 			ftop -= renderStyle.getHeightExperimentDendrogram();
 
-		glHeatMapView.getViewFrustum().setTop(ftop);
-		glHeatMapView.getViewFrustum().setRight(fright);
+//		glHeatMapView.getViewFrustum().setTop(ftop);
+//		glHeatMapView.getViewFrustum().setRight(fright);
 		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
 		// EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView.getID()));
+		
+		gl.glPushMatrix();
+
+		heatMapRemoteElement.getTransform().setTranslation(new Vec3f(fleftOffset, -0.2f, 0));
+		heatMapRemoteElement.getTransform().getScale().set(fright/8, ftop/8, 1);
+		
+		Transform transform = heatMapRemoteElement.getTransform();
+		Vec3f translation = transform.getTranslation();
+		Rotf rot = transform.getRotation();
+		Vec3f scale = transform.getScale();
+		Vec3f axis = new Vec3f();
+		float fAngle = rot.get(axis);
+
+		gl.glTranslatef(translation.x(), translation.y(), translation.z());
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
+		gl.glScalef(scale.x(), scale.y(), scale.z());
+
 		glHeatMapView.displayRemote(gl);
+		gl.glPopMatrix();
+		
 		// gl.glPopName();
 		renderStyle.setWidthLevel3(glHeatMapView.getViewFrustum().getWidth() - 0.95f);
 
@@ -2428,7 +2468,6 @@ public class GLHierarchicalHeatMap
 			gl.glPopName();
 			gl.glTranslatef(0f, -0.4f, 0f);
 		}
-
 	}
 
 	private void renderRemoteViewsLevel_2_3_Active(GL gl) {

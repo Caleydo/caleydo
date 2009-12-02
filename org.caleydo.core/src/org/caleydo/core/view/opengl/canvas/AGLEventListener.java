@@ -507,7 +507,7 @@ public abstract class AGLEventListener
 		setDisplayListDirty();
 	}
 
-	public final void setRemoteLevelElement(RemoteLevelElement element) {
+	public void setRemoteLevelElement(RemoteLevelElement element) {
 		this.remoteLevelElement = element;
 	}
 

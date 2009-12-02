@@ -13,6 +13,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
 import org.caleydo.core.view.opengl.canvas.remote.viewbrowser.SerializedPathwayViewBrowserView;
+import org.caleydo.core.view.opengl.canvas.remote.viewbrowser.SerializedTissueViewBrowserView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHierarchicalHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.SerializedParallelCoordinatesView;
 
@@ -50,9 +51,9 @@ public class SerializedDataFlipperView
 		parCoords.setDataDomain(EDataDomain.GENETIC_DATA);
 		initialContainedViews.add(parCoords);
 
-//		SerializedTissueViewBrowserView tissueViewBrowser = new SerializedTissueViewBrowserView();
-//		tissueViewBrowser.setDataDomain(EDataDomain.TISSUE_DATA);
-//		initialContainedViews.add(tissueViewBrowser);
+		SerializedTissueViewBrowserView tissueViewBrowser = new SerializedTissueViewBrowserView();
+		tissueViewBrowser.setDataDomain(EDataDomain.TISSUE_DATA);
+		initialContainedViews.add(tissueViewBrowser);
 
 		SerializedHierarchicalHeatMapView heatMap = new SerializedHierarchicalHeatMapView();
 		heatMap.setDataDomain(EDataDomain.GENETIC_DATA);
