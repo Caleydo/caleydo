@@ -61,6 +61,7 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayInUseCaseEvent;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
@@ -391,10 +392,12 @@ public class GLParallelCoordinates
 	@Override
 	public void display(final GL gl) {
 
-//		if(storageVA.size() > 20)
-//			return;
-//		
+		// if(storageVA.size() > 20)
+		// return;
+		//		
 		processEvents();
+
+		IIDMappingManager m = idMappingManager;
 		if (bShowSelectionHeatMap) {
 
 			gl.glTranslatef(viewFrustum.getRight() - glBookmarks.getViewFrustum().getWidth(), 0, 0.002f);
@@ -1761,19 +1764,19 @@ public class GLParallelCoordinates
 		if (delta.getIDType() == ePolylineDataType) {
 
 			contentSelectionManager.setVADelta(delta);
-//			for (VADeltaItem item : delta) {
-//				int iElement = axisVA.get(item.getIndex());
-//				if (item.getType() == EVAOperation.REMOVE) {
-//					// resetAxisSpacing();
-//					if (axisVA.containsElement(iElement) == 1) {
-//						hashGates.remove(iElement);
-//					}
-//				}
-//				else if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
-//					// resetAxisSpacing();
-//					hashGates.remove(item.getPrimaryID());
-//				}
-//			}
+			// for (VADeltaItem item : delta) {
+			// int iElement = axisVA.get(item.getIndex());
+			// if (item.getType() == EVAOperation.REMOVE) {
+			// // resetAxisSpacing();
+			// if (axisVA.containsElement(iElement) == 1) {
+			// hashGates.remove(iElement);
+			// }
+			// }
+			// else if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
+			// // resetAxisSpacing();
+			// hashGates.remove(item.getPrimaryID());
+			// }
+			// }
 		}
 
 	}
@@ -1991,7 +1994,7 @@ public class GLParallelCoordinates
 				sendSelectionCommandEvent(eAxisDataType, command);
 
 				ISelectionDelta selectionDelta = axisSelectionManager.getDelta();
-				if (eAxisDataType == EIDType.EXPRESSION_INDEX) {
+				if (eAxisDataType == EIDType.EXPRESSION_INDEX || eAxisDataType == EIDType.EXPERIMENT_INDEX) {
 					handleConnectedElementRep(selectionDelta);
 				}
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -2250,8 +2253,9 @@ public class GLParallelCoordinates
 		float fXValue = 0;
 		float fYValue = 0;
 
-		if (bRenderStorageHorizontally && idType == EIDType.EXPRESSION_INDEX || !bRenderStorageHorizontally
-			&& idType == EIDType.EXPERIMENT_INDEX) {
+		if ((bRenderStorageHorizontally && idType == EIDType.EXPRESSION_INDEX || !bRenderStorageHorizontally
+			&& idType == EIDType.EXPERIMENT_INDEX)
+			&& ePolylineDataType != EIDType.EXPERIMENT_INDEX) {
 			for (int iAxisNumber : axisVA.indicesOf(iStorageIndex)) {
 
 				fXValue = iAxisNumber * renderStyle.getAxisSpacing(axisVA.size());
@@ -2261,10 +2265,15 @@ public class GLParallelCoordinates
 			}
 		}
 		else {
-
-			fXValue = renderStyle.getXSpacing() + fXTranslation;
+			// fXValue = fXValue + renderStyle.getXSpacing();
+			if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
+				fXValue = viewFrustum.getRight() - 0.2f;
+			else
+				fXValue = viewFrustum.getRight() - 0.4f;
 			// get the value on the leftmost axis
-			fYValue = set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
+			fYValue =
+				set.get(storageVA.get(storageVA.size() - 1)).getFloat(EDataRepresentation.NORMALIZED,
+					iStorageIndex);
 
 			if (Float.isNaN(fYValue)) {
 				fYValue = NAN_Y_OFFSET * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();

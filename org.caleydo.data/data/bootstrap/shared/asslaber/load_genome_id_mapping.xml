@@ -46,19 +46,26 @@
 		   		attrib3="0 -1"
 		   		attrib4="BIOCARTA_GENE_ID_2_DAVID" />				   				   			
 		   		
- 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
+ 		<!--  	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
 		   		detail="data/genome/microarray/asslaber/mapping.csv"	
 		   		attrib1="REFSEQ_MRNA_2_OLIGO REVERSE LUT" 
 		   		attrib2=";" 
 		   		attrib3="0 -1" 
-		   		attrib4="REFSEQ_MRNA_INT_2_OLIGO" />			   		
+		   		attrib4="REFSEQ_MRNA_INT_2_OLIGO" /> 			   		
 		   		
   		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
 		   		detail="data/genome/microarray/asslaber/gene_matrix.csv"	
 		   		attrib1="OLIGO_2_EXPRESSION_INDEX REVERSE LUT" 
 		   		attrib2="\t" 
 		   		attrib3="1 -1"
-		   		attrib4="REFSEQ_MRNA_INT_2_EXPRESSION_INDEX" />
+		   		attrib4="REFSEQ_MRNA_INT_2_EXPRESSION_INDEX" />-->
+		   		
+		   	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
+		   		detail="data/genome/microarray/asslaber/gene_matrix_reduced_nan.csv"	
+		   		attrib1="REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT" 
+		   		attrib2="\t" 
+		   		attrib3="1 -1"
+		   		attrib4="REFSEQ_MRNA_INT_2_EXPRESSION_INDEX" />	  
 		   		
   		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
 		   		detail="data/genome/microarray/asslaber/clinical-data.csv"	
