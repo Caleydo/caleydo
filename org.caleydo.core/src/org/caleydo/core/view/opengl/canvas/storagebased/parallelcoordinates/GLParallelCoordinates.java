@@ -1748,18 +1748,22 @@ public class GLParallelCoordinates
 		if (delta.getIDType() == eAxisDataType) {
 
 			for (VADeltaItem item : delta) {
-				int iElement = axisVA.get(item.getIndex());
 				if (item.getType() == EVAOperation.REMOVE) {
+					int iElement = axisVA.get(item.getIndex());
+
 					// resetAxisSpacing();
 					if (axisVA.containsElement(iElement) == 1) {
 						hashGates.remove(iElement);
 					}
 				}
 				else if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
-					// resetAxisSpacing();
+					
 					hashGates.remove(item.getPrimaryID());
 				}
 			}
+			
+			axisSelectionManager.setVADelta(delta);
+			resetAxisSpacing();	
 		}
 		if (delta.getIDType() == ePolylineDataType) {
 
@@ -2272,7 +2276,7 @@ public class GLParallelCoordinates
 //				fXValue = viewFrustum.getRight() - 0.4f;
 //			// get the value on the leftmost axis
 			fYValue =
-				set.get(storageVA.get(storageVA.size() - 1)).getFloat(EDataRepresentation.NORMALIZED,
+				set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
 					iStorageIndex);
 
 			if (Float.isNaN(fYValue)) {

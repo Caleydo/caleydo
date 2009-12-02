@@ -13,10 +13,14 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.selection.delta.VADeltaItem;
+import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IViewManager;
@@ -48,6 +52,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.GLParallelCoordinates;
 import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.SerializedParallelCoordinatesView;
+import org.caleydo.core.view.opengl.canvas.tissue.GLTissue;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
@@ -352,10 +357,10 @@ public abstract class AGLViewBrowser
 			glConnectionLineRenderer.render(gl);
 		}
 
-		float fZTranslation = 0;
-		gl.glTranslatef(0, 0, fZTranslation);
-		contextMenu.render(gl, this);
-		gl.glTranslatef(0, 0, -fZTranslation);
+//		float fZTranslation = 0;
+//		gl.glTranslatef(0, 0, fZTranslation);
+//		contextMenu.render(gl, this);
+//		gl.glTranslatef(0, 0, -fZTranslation);
 
 		if (glMouseListener.getPickedPoint() != null) {
 			dragAndDrop.setCurrentMousePos(gl, glMouseListener.getPickedPoint());
@@ -525,6 +530,9 @@ public abstract class AGLViewBrowser
 		if (level == poolLevel) {
 			String sRenderText = glEventListener.getShortInfo();
 
+			if (glEventListener instanceof GLTissue)
+				sRenderText = ((GLTissue)glEventListener).getLabel();
+			
 			// Limit sub view name in length
 			int iMaxChars;
 			iMaxChars = 20;
@@ -589,10 +597,10 @@ public abstract class AGLViewBrowser
 			}
 
 			if (iNumberOfGenesMouseOver == 0 && iNumberOfGenesSelected == 0) {
-				textRenderer.draw3D(sRenderText, fTextXPosition, 3f, 0, fTextScalingFactor);
+				textRenderer.draw3D(sRenderText, fTextXPosition, 3f, 0.1f, fTextScalingFactor);
 			}
 			else {
-				textRenderer.draw3D(sRenderText, fTextXPosition, 4.5f, 0, fTextScalingFactor);
+				textRenderer.draw3D(sRenderText, fTextXPosition, 4.5f, 0.1f, fTextScalingFactor);
 			}
 
 			textRenderer.end3DRendering();
@@ -925,12 +933,14 @@ public abstract class AGLViewBrowser
 		float fHeight, RemoteLevelElement element) {
 		float fPanelSideWidth = 11f;
 
+		float z = 0.06f;
+		
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(fXOrigin + 10.2f, fYOrigin - fHeight / 2f + fHeight, 0f);
-		gl.glVertex3f(fXOrigin + 10.2f + fWidth, fYOrigin - fHeight / 2f + fHeight, 0f);
-		gl.glVertex3f(fXOrigin + 10.2f + fWidth, fYOrigin - fHeight / 2f, 0f);
-		gl.glVertex3f(fXOrigin + 10.2f, fYOrigin - fHeight / 2f, 0f);
+		gl.glVertex3f(fXOrigin + 10.2f, fYOrigin - fHeight / 2f + fHeight, z);
+		gl.glVertex3f(fXOrigin + 10.2f + fWidth, fYOrigin - fHeight / 2f + fHeight, z);
+		gl.glVertex3f(fXOrigin + 10.2f + fWidth, fYOrigin - fHeight / 2f, z);
+		gl.glVertex3f(fXOrigin + 10.2f, fYOrigin - fHeight / 2f, z);
 		gl.glEnd();
 
 		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND_SELECTION);
@@ -1106,22 +1116,7 @@ public abstract class AGLViewBrowser
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		lastSelectionDelta = selectionDelta;
 	}
-
-	// /**
-	// * Add pathway view. Also used when serialized pathways are loaded.
-	// *
-	// * @param iPathwayIDToLoad
-	// */
-	// public void addPathwayView(final int iPathwayID) {
-	//
-	// if (!generalManager.getPathwayManager().isPathwayVisible(
-	// generalManager.getPathwayManager().getItem(iPathwayID))) {
-	// SerializedPathwayView serPathway = new SerializedPathwayView(dataDomain);
-	// serPathway.setPathwayID(iPathwayID);
-	// newViews.add(serPathway);
-	// }
-	// }
-
+	
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
@@ -1168,6 +1163,11 @@ public abstract class AGLViewBrowser
 							compactPoolLevel();
 						}
 
+						if (glEventListener instanceof GLTissue)
+							removeSelection(((GLTissue) glEventListener).getExperimentIndex());
+						
+						setDisplayListDirty();
+						
 						break;
 				}
 				break;
@@ -1754,64 +1754,6 @@ public abstract class AGLViewBrowser
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-
-		// addPathwayListener = new AddPathwayListener();
-		// addPathwayListener.setHandler(this);
-		// eventPublisher.addListener(LoadPathwayEvent.class, addPathwayListener);
-		//
-		// loadPathwaysByGeneListener = new LoadPathwaysByGeneListener();
-		// loadPathwaysByGeneListener.setHandler(this);
-		// eventPublisher.addListener(LoadPathwaysByGeneEvent.class, loadPathwaysByGeneListener);
-		//
-		// enableTexturesListener = new EnableTexturesListener();
-		// enableTexturesListener.setHandler(this);
-		// eventPublisher.addListener(EnableTexturesEvent.class, enableTexturesListener);
-		//
-		// disableTexturesListener = new DisableTexturesListener();
-		// disableTexturesListener.setHandler(this);
-		// eventPublisher.addListener(DisableTexturesEvent.class, disableTexturesListener);
-		//
-		// enableGeneMappingListener = new EnableGeneMappingListener();
-		// enableGeneMappingListener.setHandler(this);
-		// eventPublisher.addListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
-		//
-		// disableGeneMappingListener = new DisableGeneMappingListener();
-		// disableGeneMappingListener.setHandler(this);
-		// eventPublisher.addListener(DisableGeneMappingEvent.class, disableGeneMappingListener);
-		//
-		// enableNeighborhoodListener = new EnableNeighborhoodListener();
-		// enableNeighborhoodListener.setHandler(this);
-		// eventPublisher.addListener(EnableNeighborhoodEvent.class, enableNeighborhoodListener);
-		//
-		// disableNeighborhoodListener = new DisableNeighborhoodListener();
-		// disableNeighborhoodListener.setHandler(this);
-		// eventPublisher.addListener(DisableNeighborhoodEvent.class, disableNeighborhoodListener);
-		//
-		// enableConnectionLinesListener = new EnableConnectionLinesListener();
-		// enableConnectionLinesListener.setHandler(this);
-		// eventPublisher.addListener(EnableConnectionLinesEvent.class, enableConnectionLinesListener);
-		//
-		// disableConnectionLinesListener = new DisableConnectionLinesListener();
-		// disableConnectionLinesListener.setHandler(this);
-		// eventPublisher.addListener(DisableConnectionLinesEvent.class, disableConnectionLinesListener);
-		//
-		// resetViewListener = new ResetViewListener();
-		// resetViewListener.setHandler(this);
-		// eventPublisher.addListener(ResetAllViewsEvent.class, resetViewListener);
-		//
-		// eventPublisher.addListener(ResetRemoteRendererEvent.class, resetViewListener);
-		//
-		// selectionUpdateListener = new SelectionUpdateListener();
-		// selectionUpdateListener.setHandler(this);
-		// eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
-		//
-		// toggleNavigationModeListener = new ToggleNavigationModeListener();
-		// toggleNavigationModeListener.setHandler(this);
-		// eventPublisher.addListener(ToggleNavigationModeEvent.class, toggleNavigationModeListener);
-		//
-		// toggleZoomListener = new ToggleZoomListener();
-		// toggleZoomListener.setHandler(this);
-		// eventPublisher.addListener(ToggleZoomEvent.class, toggleZoomListener);
 	}
 
 	/**
@@ -1821,59 +1763,6 @@ public abstract class AGLViewBrowser
 	public void unregisterEventListeners() {
 
 		super.unregisterEventListeners();
-		// if (addPathwayListener != null) {
-		// eventPublisher.removeListener(addPathwayListener);
-		// addPathwayListener = null;
-		// }
-		//
-		// if (loadPathwaysByGeneListener != null) {
-		// eventPublisher.removeListener(loadPathwaysByGeneListener);
-		// loadPathwaysByGeneListener = null;
-		// }
-		// if (enableTexturesListener != null) {
-		// eventPublisher.removeListener(enableTexturesListener);
-		// enableTexturesListener = null;
-		// }
-		// if (disableTexturesListener != null) {
-		// eventPublisher.removeListener(disableTexturesListener);
-		// disableTexturesListener = null;
-		// }
-		// if (enableGeneMappingListener != null) {
-		// eventPublisher.removeListener(enableGeneMappingListener);
-		// enableGeneMappingListener = null;
-		// }
-		// if (disableGeneMappingListener != null) {
-		// eventPublisher.removeListener(disableGeneMappingListener);
-		// disableGeneMappingListener = null;
-		// }
-		// if (enableNeighborhoodListener != null) {
-		// eventPublisher.removeListener(enableNeighborhoodListener);
-		// enableNeighborhoodListener = null;
-		// }
-		// if (disableNeighborhoodListener != null) {
-		// eventPublisher.removeListener(disableNeighborhoodListener);
-		// disableNeighborhoodListener = null;
-		// }
-		// if (enableConnectionLinesListener != null) {
-		// eventPublisher.removeListener(enableConnectionLinesListener);
-		// enableConnectionLinesListener = null;
-		// }
-		// if (disableConnectionLinesListener != null) {
-		// eventPublisher.removeListener(disableConnectionLinesListener);
-		// disableConnectionLinesListener = null;
-		// }
-		// if (resetViewListener != null) {
-		// eventPublisher.removeListener(resetViewListener);
-		// resetViewListener = null;
-		// }
-		// if (selectionUpdateListener != null) {
-		// eventPublisher.removeListener(selectionUpdateListener);
-		// selectionUpdateListener = null;
-		// }
-		// if (toggleZoomListener != null) {
-		// eventPublisher.removeListener(toggleZoomListener);
-		// toggleZoomListener = null;
-		// }
 	}
 
 	@Override
@@ -1977,5 +1866,9 @@ public abstract class AGLViewBrowser
 
 	public AGLConnectionLineRenderer getGlConnectionLineRenderer() {
 		return glConnectionLineRenderer;
+	}
+	
+	protected void removeSelection(int iElementID) {
+		
 	}
 }

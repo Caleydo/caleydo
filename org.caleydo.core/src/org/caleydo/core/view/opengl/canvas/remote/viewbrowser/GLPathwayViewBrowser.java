@@ -35,13 +35,13 @@ public class GLPathwayViewBrowser
 	@Override
 	protected void addInitialViews() {
 
-		for (int pathwayIndex = 0; pathwayIndex < 5; pathwayIndex++) {
-			SerializedPathwayView pathway = new SerializedPathwayView();
-			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems()
-				.toArray()[pathwayIndex]).getID());
-			pathway.setDataDomain(EDataDomain.PATHWAY_DATA);
-			newViews.add(pathway);
-		}
+//		for (int pathwayIndex = 0; pathwayIndex < 5; pathwayIndex++) {
+//			SerializedPathwayView pathway = new SerializedPathwayView();
+//			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems()
+//				.toArray()[pathwayIndex]).getID());
+//			pathway.setDataDomain(EDataDomain.PATHWAY_DATA);
+//			newViews.add(pathway);
+//		}
 	}
 	
 	@Override

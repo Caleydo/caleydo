@@ -94,7 +94,14 @@ public class GLTissue
 
 	private void renderScene(final GL gl) {
 
+		if (texturePath != null && !texturePath.isEmpty()) {
+			textureManager.renderTexture(gl, texturePath, new Vec3f(0, 0, 0), new Vec3f(8, 0, 0), new Vec3f(
+				8, 8, 0), new Vec3f(0, 8, 0), 1, 1, 1, 1);
+		}
+
 		float[] color = null;
+
+		float z = 0.005f;
 		ESelectionType selectionType =
 			((GLTissueViewBrowser) glRemoteRenderingView).getSelectionManager().getSelectionType(
 				experimentIndex);
@@ -103,8 +110,17 @@ public class GLTissue
 			color = GeneralRenderStyle.SELECTED_COLOR;
 		else if (selectionType == ESelectionType.MOUSE_OVER)
 			color = GeneralRenderStyle.MOUSE_OVER_COLOR;
-
-		float z = 0.02f;
+		else if (selectionType == ESelectionType.DESELECTED)
+		{
+			gl.glColor4f(1f, 1f, 1f, 0.7f);
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), z);
+			gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getBottom(), z);
+			gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getTop()
+				- viewFrustum.getBottom(), z);
+			gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop() - viewFrustum.getBottom(), z);
+			gl.glEnd();
+		}
 		
 		if (color != null) {
 			gl.glColor4fv(color, 0);
@@ -116,11 +132,6 @@ public class GLTissue
 				- viewFrustum.getBottom(), z);
 			gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop() - viewFrustum.getBottom(), z);
 			gl.glEnd();
-		}
-
-		if (texturePath != null && !texturePath.isEmpty()) {
-			textureManager.renderTexture(gl, texturePath, new Vec3f(0, 0, 0), new Vec3f(8, 0, 0), new Vec3f(
-				8, 8, 0), new Vec3f(0, 8, 0), 1, 1, 1, 1);
 		}
 	}
 
@@ -195,5 +206,9 @@ public class GLTissue
 
 	public void setExperimentIndex(int experimentIndex) {
 		this.experimentIndex = experimentIndex;
+	}
+	
+	public int getExperimentIndex() {
+		return experimentIndex;
 	}
 }

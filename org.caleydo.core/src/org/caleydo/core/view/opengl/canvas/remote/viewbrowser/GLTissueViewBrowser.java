@@ -16,6 +16,8 @@ import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.data.selection.delta.VADeltaItem;
+import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -52,6 +54,8 @@ public class GLTissueViewBrowser
 	private EIDType primaryIDType = EIDType.EXPERIMENT_INDEX;
 
 	private ArrayList<SerializedTissueView> allTissueViews;
+	
+	private boolean poolLeft = true;
 
 	public GLTissueViewBrowser(GLCaleydoCanvas glCanvas, String sLabel, IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum);
@@ -124,8 +128,13 @@ public class GLTissueViewBrowser
 
 	@Override
 	protected void initFocusLevel() {
+		
+		float xOffset = 1.5f;
+		if (!poolLeft)
+			xOffset = 0.1f;
+		
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(1.5f, 1.3f, 0));
+		transform.setTranslation(new Vec3f(xOffset, 1.3f, 0));
 		transform.setScale(new Vec3f(0.8f, 0.8f, 1));
 
 		focusLevel.getElementByPositionIndex(0).setTransform(transform);
@@ -135,6 +144,10 @@ public class GLTissueViewBrowser
 	protected void initPoolLevel(int iSelectedRemoteLevelElementID) {
 		Transform transform;
 
+		float xOffset = 6.6f;
+		if (poolLeft)
+			xOffset = 0.1f;
+		
 		float fScalingFactorPoolLevel = 0.05f;
 		float fSelectedScaling = 1;
 		float fYAdd = 8f;
@@ -152,7 +165,7 @@ public class GLTissueViewBrowser
 			}
 
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(0.1f, fYAdd, 0));
+			transform.setTranslation(new Vec3f(xOffset, fYAdd, 0));
 			transform.setScale(new Vec3f(fScalingFactorPoolLevel * fSelectedScaling, fScalingFactorPoolLevel
 				* fSelectedScaling, fScalingFactorPoolLevel * fSelectedScaling));
 
@@ -239,8 +252,9 @@ public class GLTissueViewBrowser
 
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
-		if (selectionDelta.getIDType() == primaryIDType)
+		if (selectionDelta.getIDType() == primaryIDType) {
 			experiementSelectionManager.setDelta(selectionDelta);
+		}
 	}
 
 	/**
@@ -330,5 +344,24 @@ public class GLTissueViewBrowser
 
 	public SelectionManager getSelectionManager() {
 		return experiementSelectionManager;
+	}
+	
+	public void setPoolSide(boolean poolLeft) {
+		this.poolLeft = poolLeft;
+	}
+	
+	@Override
+	protected void removeSelection(int iElementID) {
+
+		experiementSelectionManager.remove(iElementID, false);
+		IVirtualArrayDelta vaDelta =
+			new VirtualArrayDelta(EVAType.CONTENT, EIDType.EXPERIMENT_INDEX);
+		vaDelta.add(VADeltaItem.removeElement(iElementID));
+		
+		VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
+		virtualArrayUpdateEvent.setSender(this);
+		virtualArrayUpdateEvent.setVirtualArrayDelta((VirtualArrayDelta) vaDelta);
+		virtualArrayUpdateEvent.setInfo(getShortInfo());
+		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
 	}
 }

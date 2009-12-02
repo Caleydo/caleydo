@@ -1006,14 +1006,9 @@ public class GLHeatMap
 			// break;
 			// }
 
-			int iViewID = iUniqueID;
-			// If rendered remote (hierarchical heat map) - use the remote view ID
-//			if (glRemoteRenderingView != null && glRemoteRenderingView instanceof GLHierarchicalHeatMap)
-//				iViewID = glRemoteRenderingView.getID();
-
 			if (bRenderStorageHorizontally) {
 				elementRep =
-					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iViewID,
+					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID,
 						fXValue + fAnimationTranslation, fYValue, 0);
 
 			}
@@ -1022,7 +1017,7 @@ public class GLHeatMap
 				Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
 				vecPoint.setY(vecPoint.y() + vecTranslation.y());
 				elementRep =
-					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iViewID, vecPoint.x(), vecPoint.y()
+					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vecPoint.x(), vecPoint.y()
 						- fAnimationTranslation, 0);
 
 			}
