@@ -349,7 +349,7 @@ public class GLDataFlipper
 			|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
 			|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
 				.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-				&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
+				&& isExperimentCountOK && renderGeneticViews)
 			|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
 			|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
 
@@ -695,7 +695,7 @@ public class GLDataFlipper
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
-
+		
 		isPatientAlternativeGuideActive = false;
 		switch (pickingType) {
 
