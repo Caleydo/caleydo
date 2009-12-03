@@ -788,6 +788,10 @@ public class GLDataFlipper
 	}
 
 	private void chainMove(RemoteLevelElement selectedElement) {
+		
+		// Clear connection lines
+		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
+		
 		// Chain slerping to the right
 		if (stackElementsLeft.contains(selectedElement)) {
 
