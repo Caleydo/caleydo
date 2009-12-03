@@ -3929,13 +3929,14 @@ public class GLHierarchicalHeatMap
 		}
 	}
 
-	@Override
-	public void handleContentTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
-		contentSelectionManager.executeSelectionCommand(selectionCommand);
-//		glHeatMapView.handleContentTriggerSelectionCommand(category, selectionCommand);
-		setDisplayListDirty();
-
-	}
+//	@Override
+//	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
+//		if(EIDCategory.GENE == categ)
+//		contentSelectionManager.executeSelectionCommand(selectionCommand);
+////		glHeatMapView.handleContentTriggerSelectionCommand(category, selectionCommand);
+//		setDisplayListDirty();
+//
+//	}
 
 	private void deactivateAllDraggingCursor() {
 		bActivateDraggingExperiments = false;

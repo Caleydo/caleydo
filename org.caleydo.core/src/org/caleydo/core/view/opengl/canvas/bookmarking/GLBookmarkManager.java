@@ -304,17 +304,13 @@ public class GLBookmarkManager
 			container.handleSelectionUpdate(selectionDelta);
 	}
 
+	
+
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
 		ABookmarkContainer container = hashCategoryToBookmarkContainer.get(category);
 		if (container != null)
 			container.handleSelectionCommand(selectionCommand);
-	}
-
-	@Override
-	public void handleStorageTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
-		// separation is not necessary here
-		handleContentTriggerSelectionCommand(category, selectionCommand);
 	}
 
 	ContextMenu getContextMenu() {

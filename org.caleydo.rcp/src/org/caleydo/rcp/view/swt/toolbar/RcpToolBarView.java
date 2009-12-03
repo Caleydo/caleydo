@@ -75,45 +75,45 @@ public class RcpToolBarView
 	}
 
 	public void removeViewSpecificToolBar(int iViewID) {
-		Group removedGroup = null;
-		for (Group group : viewSpecificGroups) {
-			if (!(group.getData("view") instanceof AGLEventListener)) {
-				continue;
-			}
-
-			if (group.getData("viewID") != null && ((Integer) group.getData("viewID")).intValue() == iViewID) {
-				group.dispose();
-				removedGroup = group;
-				break;
-			}
-		}
-
-		if (removedGroup != null) {
-			viewSpecificGroups.remove(removedGroup);
-		}
-
-		// Remove toolbars of remote rendered views
-		AGLEventListener glView = GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
-
-		if (glView instanceof IGLRemoteRenderingView) {
-			for (AGLEventListener view : ((IGLRemoteRenderingView) glView).getRemoteRenderedViews()) {
-				removeViewSpecificToolBar(view.getID());
-			}
-		}
+//		Group removedGroup = null;
+//		for (Group group : viewSpecificGroups) {
+//			if (!(group.getData("view") instanceof AGLEventListener)) {
+//				continue;
+//			}
+//
+//			if (group.getData("viewID") != null && ((Integer) group.getData("viewID")).intValue() == iViewID) {
+//				group.dispose();
+//				removedGroup = group;
+//				break;
+//			}
+//		}
+//
+//		if (removedGroup != null) {
+//			viewSpecificGroups.remove(removedGroup);
+//		}
+//
+//		// Remove toolbars of remote rendered views
+//		AGLEventListener glView = GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
+//
+//		if (glView instanceof IGLRemoteRenderingView) {
+//			for (AGLEventListener view : ((IGLRemoteRenderingView) glView).getRemoteRenderedViews()) {
+//				removeViewSpecificToolBar(view.getID());
+//			}
+//		}
 	}
 
 	@SuppressWarnings("unchecked")
 	public void removeAllViewSpecificToolBars() {
-		for (Group group : viewSpecificGroups) {
-			List<ToolBarManager> toolBarManagers = (List<ToolBarManager>) group.getData("toolBarManagers");
-			if (toolBarManagers != null) {
-				for (ToolBarManager toolBarManager : toolBarManagers) {
-					toolBarManager.dispose();
-				}
-			}
-			group.dispose();
-		}
-		viewSpecificGroups.clear();
+//		for (Group group : viewSpecificGroups) {
+//			List<ToolBarManager> toolBarManagers = (List<ToolBarManager>) group.getData("toolBarManagers");
+//			if (toolBarManagers != null) {
+//				for (ToolBarManager toolBarManager : toolBarManagers) {
+//					toolBarManager.dispose();
+//				}
+//			}
+//			group.dispose();
+//		}
+//		viewSpecificGroups.clear();
 	}
 
 	private void addGeneralToolBar() {

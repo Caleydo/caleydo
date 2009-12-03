@@ -272,11 +272,12 @@ public abstract class AStorageBasedView
 			&& dataDomain == EDataDomain.CLINICAL_DATA) {
 
 			contentSelectionManager.setDelta(selectionDelta);
-			handleConnectedElementRep(storageSelectionManager.getCompleteDelta());
+
+			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
 			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
 		}
-		
+
 		// FIXME: this is not nice since we use expresison index for unspecified data
 		else if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX
 			&& dataDomain == EDataDomain.UNSPECIFIED) {
@@ -286,9 +287,8 @@ public abstract class AStorageBasedView
 			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
 		}
-		
-		else if (selectionDelta.getIDType() == EIDType.UNSPECIFIED
-			&& dataDomain == EDataDomain.UNSPECIFIED) {
+
+		else if (selectionDelta.getIDType() == EIDType.UNSPECIFIED && dataDomain == EDataDomain.UNSPECIFIED) {
 
 			storageSelectionManager.setDelta(selectionDelta);
 			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
@@ -418,14 +418,11 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
-		contentSelectionManager.executeSelectionCommand(selectionCommand);
-		setDisplayListDirty();
-	}
-
-	@Override
-	public void handleStorageTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
-		storageSelectionManager.executeSelectionCommand(selectionCommand);
+	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
+		if (category == EIDCategory.GENE)
+			contentSelectionManager.executeSelectionCommand(selectionCommand);
+		else
+			storageSelectionManager.executeSelectionCommand(selectionCommand);
 		setDisplayListDirty();
 	}
 
@@ -626,7 +623,7 @@ public abstract class AStorageBasedView
 
 		if (vaType != suggestedVAType || vaType.getPrimaryVAType() != primaryVAType)
 			return;
-		
+
 		if (vaType == storageVAType) {
 			storageVA = useCase.getVA(vaType);
 			// storageSelectionManager.setVA(storageVA);

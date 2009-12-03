@@ -46,6 +46,7 @@ import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -1519,8 +1520,12 @@ public class GLParallelCoordinates
 			gl.glColor4fv(ParCoordsRenderStyle.GATE_BODY_COLOR, 0);
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f(fXOrigin, fBottom, 0);
-			gl.glVertex3f(viewFrustum.getWidth(), fBottom, 0);
-			gl.glVertex3f(viewFrustum.getWidth(), fTop, 0);
+			gl.glVertex3f(viewFrustum.getWidth() -1, fBottom, 0);
+			gl.glVertex3f(viewFrustum.getWidth() -1, fTop, 0);
+			// todo eurovis hacke
+//			gl.glVertex3f(viewFrustum.getWidth(), fBottom, 0);
+//			gl.glVertex3f(viewFrustum.getWidth(), fTop, 0);
+//			
 			gl.glVertex3f(fXOrigin - 0.05f, fTop, 0);
 			gl.glEnd();
 
@@ -2987,6 +2992,18 @@ public class GLParallelCoordinates
 		}
 	}
 
+	@Override
+	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
+		if (category ==  ePolylineDataType.getCategory() )
+			polylineSelectionManager.executeSelectionCommand(selectionCommand);
+		else if(category == eAxisDataType.getCategory())
+			axisSelectionManager.executeSelectionCommand(selectionCommand);
+		else
+			return;
+		
+		setDisplayListDirty();
+	}
+	
 	@Override
 	public String toString() {
 		int iNumElements =

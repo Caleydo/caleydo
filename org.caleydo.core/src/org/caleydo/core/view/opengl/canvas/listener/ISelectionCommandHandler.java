@@ -18,14 +18,5 @@ public interface ISelectionCommandHandler
 	 * 
 	 * @param selectionCommands
 	 */
-	public void handleContentTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand);
-
-	/**
-	 * Handler method to be called when a TriggerSelectionCommand event is caught that should trigger a
-	 * storage-selection-command by a related. by a related {@link SelectionCommandListener}.
-	 * 
-	 * @param selectionCommands
-	 */
-	public void handleStorageTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand);
-
+	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand);
 }

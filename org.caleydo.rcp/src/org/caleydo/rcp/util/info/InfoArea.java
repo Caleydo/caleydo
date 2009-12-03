@@ -427,8 +427,10 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDCategory category,
+	public void handleSelectionCommand(EIDCategory category,
 		final SelectionCommand selectionCommand) {
+		
+		
 		if (parentComposite.isDisposed())
 			return;
 
@@ -452,11 +454,6 @@ public class InfoArea
 				}
 			}
 		});
-	}
-
-	@Override
-	public void handleStorageTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
-
 	}
 
 	protected AGLEventListener getUpdateTriggeringView() {

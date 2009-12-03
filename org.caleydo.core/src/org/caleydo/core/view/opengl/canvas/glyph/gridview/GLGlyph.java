@@ -985,13 +985,9 @@ public class GLGlyph
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
-
-	}
-
-	@Override
-	public void handleStorageTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
-		selectionManager.executeSelectionCommand(selectionCommand);
+	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
+		if (EIDCategory.EXPERIMENT == category)
+			selectionManager.executeSelectionCommand(selectionCommand);
 	}
 
 	/**

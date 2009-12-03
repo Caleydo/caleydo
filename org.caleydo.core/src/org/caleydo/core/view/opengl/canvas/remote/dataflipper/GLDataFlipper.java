@@ -981,22 +981,22 @@ public class GLDataFlipper
 				0.15f + fGuidancePipeWidth + 0.05f, 0.0f), 1, 1, 1, alpha);
 		}
 
-		if (isPatientAlternativeGuideActive && dataDomain == EDataDomain.CLINICAL_DATA) {
-			textureManager.renderTexture(gl, connTexture, new Vec3f(0.52f, 0.05f, 0.02f), new Vec3f(1.5f,
-				0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.52f,
-				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
-
-			gl.glTranslatef(1f, 0, 0);
-			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f,
-				0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
-				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);;
-
-			gl.glTranslatef(0.5f, 0, 0);
-			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f,
-				0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
-				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
-			gl.glTranslatef(-1.5f, 0, 0);
-		}
+//		if (isPatientAlternativeGuideActive && dataDomain == EDataDomain.CLINICAL_DATA) {
+//			textureManager.renderTexture(gl, connTexture, new Vec3f(0.52f, 0.05f, 0.02f), new Vec3f(1.5f,
+//				0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.52f,
+//				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
+//
+//			gl.glTranslatef(1f, 0, 0);
+//			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f,
+//				0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
+//				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);;
+//
+//			gl.glTranslatef(0.5f, 0, 0);
+//			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f,
+//				0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
+//				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
+//			gl.glTranslatef(-1.5f, 0, 0);
+//		}
 
 		for (int iViewIndex = 0; iViewIndex < possibleViews.size(); iViewIndex++) {
 

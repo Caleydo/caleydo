@@ -373,9 +373,9 @@ public class GLPathway
 
 				int iViewID = iUniqueID;
 				// If rendered remote (hierarchical heat map) - use the remote view ID
-//				if (glRemoteRenderingView != null && glRemoteRenderingView instanceof AGLViewBrowser)
-//					iViewID = glRemoteRenderingView.getID();
-				
+				// if (glRemoteRenderingView != null && glRemoteRenderingView instanceof AGLViewBrowser)
+				// iViewID = glRemoteRenderingView.getID();
+
 				SelectedElementRep elementRep =
 					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iViewID, vertexRep.getXOrigin()
 						* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x() + vecTranslation.x(),
@@ -730,9 +730,9 @@ public class GLPathway
 
 		int iViewID = iUniqueID;
 		// If rendered remote (hierarchical heat map) - use the remote view ID
-//		if (glRemoteRenderingView != null && glRemoteRenderingView instanceof AGLViewBrowser)
-//			iViewID = glRemoteRenderingView.getID();
-		
+		// if (glRemoteRenderingView != null && glRemoteRenderingView instanceof AGLViewBrowser)
+		// iViewID = glRemoteRenderingView.getID();
+
 		for (int iVertexRepID : selectionManager.getElements(eSelectionType)) {
 			tmpPathwayVertexGraphItemRep =
 				generalManager.getPathwayItemManager().getPathwayVertexRep(iVertexRepID);
@@ -972,14 +972,10 @@ public class GLPathway
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
-		selectionManager.executeSelectionCommand(selectionCommand);
+	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
+		if (EIDCategory.GENE == category)
+			selectionManager.executeSelectionCommand(selectionCommand);
 
-	}
-
-	@Override
-	public void handleStorageTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
-		// no storage selection manager
 	}
 
 	@Override

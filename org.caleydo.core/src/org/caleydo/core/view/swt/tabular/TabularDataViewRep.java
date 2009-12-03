@@ -579,13 +579,11 @@ public class TabularDataViewRep
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
-		contentSelectionManager.executeSelectionCommand(selectionCommand);
-	}
-
-	@Override
-	public void handleStorageTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
-		storageSelectionManager.executeSelectionCommand(selectionCommand);
+	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
+		if (EIDCategory.GENE == category)
+			contentSelectionManager.executeSelectionCommand(selectionCommand);
+		else
+			storageSelectionManager.executeSelectionCommand(selectionCommand);
 	}
 
 	@Override

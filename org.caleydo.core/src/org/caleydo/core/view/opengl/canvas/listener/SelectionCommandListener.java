@@ -27,12 +27,8 @@ public class SelectionCommandListener
 			SelectionCommandEvent selectionCommandEvent = (SelectionCommandEvent) event;
 			SelectionCommand selectionCommand = selectionCommandEvent.getSelectionCommand();
 			EIDCategory category = selectionCommandEvent.getCategory();
-			if (category == EIDCategory.GENE)
-				handler.handleContentTriggerSelectionCommand(category, selectionCommand);
 
-			if (category == EIDCategory.EXPERIMENT)
-				handler.handleStorageTriggerSelectionCommand(category, selectionCommand);
-
+			handler.handleSelectionCommand(category, selectionCommand);
 		}
 	}
 
