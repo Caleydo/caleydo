@@ -585,6 +585,12 @@ public class GLDataFlipper
 				tmpSlerpAction.finished();
 
 				updateViewDetailLevels(tmpSlerpAction.getDestinationRemoteLevelElement());
+			
+				AGLEventListener glEventListener =
+					generalManager.getViewGLCanvasManager().getGLEventListener(tmpSlerpAction.getElementId());
+
+				if (glEventListener instanceof GLTissueViewBrowser)
+					((GLTissueViewBrowser)glEventListener).setSlerpActive(false);
 			}
 
 			arSlerpActions.clear();
@@ -742,6 +748,8 @@ public class GLDataFlipper
 
 							isTissueGuideActive = true;
 							// isGeneticGuideActive = false;
+							
+							((GLTissueViewBrowser)pickedView).setSlerpActive(true);
 						}
 
 						else if ((pickedView instanceof GLParallelCoordinates && pickedView.getSet()

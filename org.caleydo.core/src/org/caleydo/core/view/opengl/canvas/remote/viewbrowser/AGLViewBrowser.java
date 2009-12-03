@@ -136,6 +136,8 @@ public abstract class AGLViewBrowser
 	 * Transformation utility object to transform and project view related coordinates
 	 */
 	protected RemoteRenderingTransformer selectionTransformer;
+	
+	private boolean isSlerpActive = false;
 
 	// protected AddPathwayListener addPathwayListener = null;
 	// protected LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
@@ -1503,6 +1505,11 @@ public abstract class AGLViewBrowser
 	 * @param GL
 	 */
 	private void initNewView(GL gl) {
+		
+		// Views should not be loaded until the browser is finished to be slerped
+		if (isSlerpActive)
+			return;
+		
 		if (!newViews.isEmpty() && GeneralManager.get().getPathwayManager().isPathwayLoadingFinished()
 			&& arSlerpActions.isEmpty()) {
 
@@ -1870,5 +1877,9 @@ public abstract class AGLViewBrowser
 	
 	protected void removeSelection(int iElementID) {
 		
+	}
+	
+	public void setSlerpActive(boolean isSlerpActive) {
+		this.isSlerpActive = isSlerpActive;
 	}
 }
