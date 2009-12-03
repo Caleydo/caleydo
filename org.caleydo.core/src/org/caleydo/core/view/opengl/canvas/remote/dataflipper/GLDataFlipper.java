@@ -323,69 +323,83 @@ public class GLDataFlipper
 		else
 			isExperimentCountOK = true;
 
-		if (((glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-			|| glEventListener instanceof GLHierarchicalHeatMap
-			|| glEventListener instanceof GLTissueViewBrowser || (glEventListener instanceof GLPathwayViewBrowser && renderPathwayViews))
-			&& !isExperimentCountOK) {
-			return;
+		// if (((glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() ==
+		// ESetType.GENE_EXPRESSION_DATA)
+		// || glEventListener instanceof GLHierarchicalHeatMap
+		// || glEventListener instanceof GLTissueViewBrowser || (glEventListener instanceof
+		// GLPathwayViewBrowser && renderPathwayViews))
+		// && !isExperimentCountOK) {
+		// return;
+		// }
+		//
+		// if (((glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() ==
+		// ESetType.GENE_EXPRESSION_DATA)
+		// || glEventListener instanceof GLHierarchicalHeatMap
+		// || glEventListener instanceof GLTissueViewBrowser || glEventListener instanceof
+		// GLPathwayViewBrowser)
+		// && !renderGeneticViews) {
+		// return;
+		// }
+		//
+		// if ((glEventListener instanceof GLPathwayViewBrowser && !isPathwayContentAvailable)
+		// || (glEventListener instanceof GLPathwayViewBrowser && !renderPathwayViews))
+		// return;
+
+		if (glEventListener instanceof GLGlyph
+			|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+			|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
+				.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+				&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
+			|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
+			|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
+
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT, element
+				.getID()));
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION, iViewID));
+
+			gl.glPushMatrix();
+
+			Transform transform = element.getTransform();
+			Vec3f translation = transform.getTranslation();
+			Rotf rot = transform.getRotation();
+			Vec3f scale = transform.getScale();
+			Vec3f axis = new Vec3f();
+			float fAngle = rot.get(axis);
+
+			if (glEventListener instanceof GLRemoteRendering) {
+
+				gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f, translation.z());
+				gl.glScalef(scale.x(), scale.y(), scale.z());
+				renderBucketWall(gl, true);
+				gl.glScalef(1 / scale.x(), 1 / scale.y(), 1 / scale.z());
+				gl.glTranslatef(-translation.x() + 1.5f, -translation.y() + 1.5f, -translation.z());
+
+				gl.glTranslatef(translation.x() + 0.14f, translation.y() - 0.09f, translation.z() + 2);
+				gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
+				gl.glScalef(scale.x(), scale.y(), scale.z());
+			}
+			else {
+				gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f, translation.z());
+				gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
+				gl.glScalef(scale.x(), scale.y(), scale.z());
+
+				renderBucketWall(gl, true);
+			}
+
+			if ((stackElementsLeft.contains(element) || focusElement == element)
+				&& glEventListener instanceof GLTissueViewBrowser)
+				((GLTissueViewBrowser) glEventListener).setPoolSide(true);
+			else if (stackElementsRight.contains(element) && glEventListener instanceof GLTissueViewBrowser)
+				((GLTissueViewBrowser) glEventListener).setPoolSide(false);
+
+			glEventListener.displayRemote(gl);
+
+			gl.glPopMatrix();
+
+			gl.glPopName();
+			gl.glPopName();
+
 		}
-
-		if (((glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-			|| glEventListener instanceof GLHierarchicalHeatMap
-			|| glEventListener instanceof GLTissueViewBrowser || glEventListener instanceof GLPathwayViewBrowser)
-			&& !renderGeneticViews) {
-			return;
-		}
-
-		if ((glEventListener instanceof GLPathwayViewBrowser && !isPathwayContentAvailable)
-			|| (glEventListener instanceof GLPathwayViewBrowser && !renderPathwayViews))
-			return;
-
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT, element
-			.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION, iViewID));
-
-		gl.glPushMatrix();
-
-		Transform transform = element.getTransform();
-		Vec3f translation = transform.getTranslation();
-		Rotf rot = transform.getRotation();
-		Vec3f scale = transform.getScale();
-		Vec3f axis = new Vec3f();
-		float fAngle = rot.get(axis);
-
-		if (glEventListener instanceof GLRemoteRendering) {
-
-			gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f, translation.z());
-			gl.glScalef(scale.x(), scale.y(), scale.z());
-			renderBucketWall(gl, true);
-			gl.glScalef(1 / scale.x(), 1 / scale.y(), 1 / scale.z());
-			gl.glTranslatef(-translation.x() + 1.5f, -translation.y() + 1.5f, -translation.z());
-
-			gl.glTranslatef(translation.x() + 0.14f, translation.y() - 0.09f, translation.z() + 2);
-			gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
-			gl.glScalef(scale.x(), scale.y(), scale.z());
-		}
-		else {
-			gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f, translation.z());
-			gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
-			gl.glScalef(scale.x(), scale.y(), scale.z());
-
-			renderBucketWall(gl, true);
-		}
-
-		if ((stackElementsLeft.contains(element) || focusElement == element)
-			&& glEventListener instanceof GLTissueViewBrowser)
-			((GLTissueViewBrowser) glEventListener).setPoolSide(true);
-		else if (stackElementsRight.contains(element) && glEventListener instanceof GLTissueViewBrowser)
-			((GLTissueViewBrowser) glEventListener).setPoolSide(false);
-
-		glEventListener.displayRemote(gl);
-
-		gl.glPopMatrix();
-
-		gl.glPopName();
-		gl.glPopName();
 	}
 
 	/**
@@ -603,8 +617,20 @@ public class GLDataFlipper
 
 		slerpMod.applySlerp(gl, transform, true, true);
 
-		renderBucketWall(gl, true);
-		generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).displayRemote(gl);
+		AGLEventListener glEventListener =
+			generalManager.getViewGLCanvasManager().getGLEventListener(slerpAction.getElementId());
+
+		if (glEventListener instanceof GLGlyph
+			|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+			|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
+				.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+				&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
+			|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
+			|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
+
+			renderBucketWall(gl, true);
+			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).displayRemote(gl);
+		}
 
 		gl.glPopMatrix();
 
@@ -713,15 +739,16 @@ public class GLDataFlipper
 								iLastPickedViewID);
 
 						if (pickedView instanceof GLTissueViewBrowser) {
-							renderGeneticViews = true;
+
 							isTissueGuideActive = true;
 							// isGeneticGuideActive = false;
 						}
-						// else if ((pickedView instanceof GLParallelCoordinates && pickedView.getSet()
-						// .getSetType() == ESetType.GENE_EXPRESSION_DATA)
-						// || pickedView instanceof GLHierarchicalHeatMap) {
-						// isGeneticGuideActive = true;
-						// }
+
+						else if ((pickedView instanceof GLParallelCoordinates && pickedView.getSet()
+							.getSetType() == ESetType.GENE_EXPRESSION_DATA)
+							|| pickedView instanceof GLHierarchicalHeatMap) {
+							renderGeneticViews = true;
+						}
 						else if (pickedView instanceof GLPathwayViewBrowser)
 							renderPathwayViews = true;
 
@@ -730,15 +757,14 @@ public class GLDataFlipper
 
 						RemoteLevelElement element = RemoteElementManager.get().getItem(iExternalID);
 						int pickID = element.getContainedElementID();
-					
+
 						AGLEventListener pickedView2 =
-							GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
-								pickID);
+							GeneralManager.get().getViewGLCanvasManager().getGLEventListener(pickID);
 
 						if (pickedView2 instanceof GLGlyph) {
 							isPatientAlternativeGuideActive = true;
 						}
-						
+
 						break;
 				}
 				break;
@@ -928,28 +954,28 @@ public class GLDataFlipper
 		}
 
 		if (dataDomain != EDataDomain.PATHWAY_DATA) {
-			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.15f, 0.0f), new Vec3f(1.5f, 0.15f,
-				0.0f), new Vec3f(1.5f, 0.15f + fGuidancePipeWidth + 0.05f, 0.0f), new Vec3f(0.51f,
+			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.15f, 0.0f), new Vec3f(1.5f,
+				0.15f, 0.0f), new Vec3f(1.5f, 0.15f + fGuidancePipeWidth + 0.05f, 0.0f), new Vec3f(0.51f,
 				0.15f + fGuidancePipeWidth + 0.05f, 0.0f), 1, 1, 1, alpha);
 		}
 
 		if (isPatientAlternativeGuideActive && dataDomain == EDataDomain.CLINICAL_DATA) {
-			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f, 0.05f,
-				0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
+			textureManager.renderTexture(gl, connTexture, new Vec3f(0.52f, 0.05f, 0.02f), new Vec3f(1.5f,
+				0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.52f,
 				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
-			
+
 			gl.glTranslatef(1f, 0, 0);
-			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f, 0.05f,
-				0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
+			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f,
+				0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
 				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);;
-			
+
 			gl.glTranslatef(0.5f, 0, 0);
-			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f, 0.05f,
-				0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
+			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f,
+				0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
 				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
 			gl.glTranslatef(-1.5f, 0, 0);
 		}
-		
+
 		for (int iViewIndex = 0; iViewIndex < possibleViews.size(); iViewIndex++) {
 
 			EIconTextures iconTextureType;
@@ -1055,15 +1081,19 @@ public class GLDataFlipper
 			if (element != null)
 				gl.glPopName();
 
-			if (glEventListener instanceof GLGlyph 
+			if (glEventListener instanceof GLGlyph
 				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) && isExperimentCountOK && isTissueGuideActive)
+				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
+					.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+					&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
 				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews))
-			{
-//			if ((glEventListener instanceof GLGlyph
-//				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
-//				
+				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
+
+				// if ((glEventListener instanceof GLGlyph
+				// || (glEventListener instanceof GLParallelCoordinates &&
+				// glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) ||
+				// isExperimentCountOK)) {
+				//				
 				if (element != null && arSlerpActions.isEmpty()) {
 
 					float fHorizontalConnStart = 0;
@@ -1392,15 +1422,18 @@ public class GLDataFlipper
 			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
 		if (element.getContainedElementID() != -1) {
 
-//			if ((glEventListener instanceof GLGlyph
-//				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
+			// if ((glEventListener instanceof GLGlyph
+			// || (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType()
+			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
 
-			if (glEventListener instanceof GLGlyph 
+			if (glEventListener instanceof GLGlyph
 				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) && isExperimentCountOK && isTissueGuideActive)
+				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
+					.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+					&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
 				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews))
-			{
+				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
+
 				Transform transform;
 				Vec3f translation;
 				// Vec3f scale;
@@ -1429,15 +1462,18 @@ public class GLDataFlipper
 			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
 		if (element.getContainedElementID() != -1) {
 
-//			if ((glEventListener instanceof GLGlyph
-//				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
+			// if ((glEventListener instanceof GLGlyph
+			// || (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType()
+			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
 
-			if (glEventListener instanceof GLGlyph 
+			if (glEventListener instanceof GLGlyph
 				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) && isExperimentCountOK && isTissueGuideActive)
+				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
+					.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+					&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
 				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews))
-			{
+				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
+
 				gl.glTranslatef(-0.64f, -1.25f, 4.02f);
 				gl.glRotatef(90, 0, 0, 1);
 				renderNavigationHandleBar(gl, element, 3.33f, 0.075f, false, 2);
@@ -1451,14 +1487,17 @@ public class GLDataFlipper
 		glEventListener =
 			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
 		if (element.getContainedElementID() != -1) {
-//			if ((glEventListener instanceof GLGlyph
-//				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
-			if (glEventListener instanceof GLGlyph 
+			// if ((glEventListener instanceof GLGlyph
+			// || (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType()
+			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
+			if (glEventListener instanceof GLGlyph
 				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) && isExperimentCountOK && isTissueGuideActive)
+				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
+					.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+					&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
 				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews))
-			{
+				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
+
 				gl.glTranslatef(-1.17f, -1.25f, 4.02f);
 				gl.glRotatef(90, 0, 0, 1);
 				renderNavigationHandleBar(gl, element, 3.32f, 0.075f, false, 2);
@@ -1472,34 +1511,40 @@ public class GLDataFlipper
 		glEventListener =
 			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
 		if (element.getContainedElementID() != -1) {
-//			if ((glEventListener instanceof GLGlyph
-//				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
-//
-//				if ((glEventListener instanceof GLGlyph || (glEventListener instanceof GLParallelCoordinates && glEventListener
-//					.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-//					&& isTissueGuideActive)) {
-			if (glEventListener instanceof GLGlyph 
+			// if ((glEventListener instanceof GLGlyph
+			// || (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType()
+			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
+			//
+			// if ((glEventListener instanceof GLGlyph || (glEventListener instanceof GLParallelCoordinates &&
+			// glEventListener
+			// .getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+			// && isTissueGuideActive)) {
+			if (glEventListener instanceof GLGlyph
 				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) && isExperimentCountOK && isTissueGuideActive)
+				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
+					.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+					&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
 				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews))
-			{
-					gl.glTranslatef(0.65f, 2.08f, 4.02f);
-					gl.glRotatef(-90, 0, 0, 1);
-					renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
-					gl.glRotatef(90, 0, 0, 1);
-					gl.glTranslatef(-0.65f, -2.08f, -4.02f);
-				}
-//				else if ((glEventListener instanceof GLTissueViewBrowser || glEventListener instanceof GLPathwayViewBrowser
-//					|| glEventListener instanceof GLParallelCoordinates || glEventListener instanceof GLHierarchicalHeatMap)
-//					&& isTissueGuideActive) {
-//					gl.glTranslatef(0.65f, 2.08f, 4.02f);
-//					gl.glRotatef(-90, 0, 0, 1);
-//					renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
-//					gl.glRotatef(90, 0, 0, 1);
-//					gl.glTranslatef(-0.65f, -2.08f, -4.02f);
-//				}
-//			}
+				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
+
+				gl.glTranslatef(0.65f, 2.08f, 4.02f);
+				gl.glRotatef(-90, 0, 0, 1);
+				renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
+				gl.glRotatef(90, 0, 0, 1);
+				gl.glTranslatef(-0.65f, -2.08f, -4.02f);
+			}
+			// else if ((glEventListener instanceof GLTissueViewBrowser || glEventListener instanceof
+			// GLPathwayViewBrowser
+			// || glEventListener instanceof GLParallelCoordinates || glEventListener instanceof
+			// GLHierarchicalHeatMap)
+			// && isTissueGuideActive) {
+			// gl.glTranslatef(0.65f, 2.08f, 4.02f);
+			// gl.glRotatef(-90, 0, 0, 1);
+			// renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
+			// gl.glRotatef(90, 0, 0, 1);
+			// gl.glTranslatef(-0.65f, -2.08f, -4.02f);
+			// }
+			// }
 		}
 
 		// Right second
@@ -1507,34 +1552,39 @@ public class GLDataFlipper
 		glEventListener =
 			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
 		if (element.getContainedElementID() != -1) {
-//			if ((glEventListener instanceof GLGlyph
-//				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
-//
-//				if ((glEventListener instanceof GLTissueViewBrowser || glEventListener instanceof GLParallelCoordinates || glEventListener instanceof GLHierarchicalHeatMap)
-//					&& isTissueGuideActive) {
-			
-			if (glEventListener instanceof GLGlyph 
+			// if ((glEventListener instanceof GLGlyph
+			// || (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType()
+			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
+			//
+			// if ((glEventListener instanceof GLTissueViewBrowser || glEventListener instanceof
+			// GLParallelCoordinates || glEventListener instanceof GLHierarchicalHeatMap)
+			// && isTissueGuideActive) {
+
+			if (glEventListener instanceof GLGlyph
 				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) && isExperimentCountOK && isTissueGuideActive)
+				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
+					.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+					&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
 				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews))
-			{
-					gl.glTranslatef(1.1f, 2.08f, 4.02f);
-					gl.glRotatef(-90, 0, 0, 1);
-					renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
-					gl.glRotatef(90, 0, 0, 1);
-					gl.glTranslatef(-1.1f, -2.08f, -4.02f);
-				}
-//			}
-//			else if ((glEventListener instanceof GLTissueViewBrowser
-//				|| glEventListener instanceof GLParallelCoordinates || glEventListener instanceof GLHierarchicalHeatMap)
-//				&& isTissueGuideActive) {
-//				gl.glTranslatef(1.1f, 2.08f, 4.02f);
-//				gl.glRotatef(-90, 0, 0, 1);
-//				renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
-//				gl.glRotatef(90, 0, 0, 1);
-//				gl.glTranslatef(-1.1f, -2.08f, -4.02f);
-//			}
+				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
+
+				gl.glTranslatef(1.1f, 2.08f, 4.02f);
+				gl.glRotatef(-90, 0, 0, 1);
+				renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
+				gl.glRotatef(90, 0, 0, 1);
+				gl.glTranslatef(-1.1f, -2.08f, -4.02f);
+			}
+			// }
+			// else if ((glEventListener instanceof GLTissueViewBrowser
+			// || glEventListener instanceof GLParallelCoordinates || glEventListener instanceof
+			// GLHierarchicalHeatMap)
+			// && isTissueGuideActive) {
+			// gl.glTranslatef(1.1f, 2.08f, 4.02f);
+			// gl.glRotatef(-90, 0, 0, 1);
+			// renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
+			// gl.glRotatef(90, 0, 0, 1);
+			// gl.glTranslatef(-1.1f, -2.08f, -4.02f);
+			// }
 		}
 	}
 
