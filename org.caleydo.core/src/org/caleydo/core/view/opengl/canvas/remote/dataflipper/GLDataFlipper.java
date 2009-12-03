@@ -591,6 +591,16 @@ public class GLDataFlipper
 
 				if (glEventListener instanceof GLTissueViewBrowser)
 					((GLTissueViewBrowser)glEventListener).setSlerpActive(false);
+				
+				if (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+			
+					boolean renderConnectionsLeft = true;
+					if (glEventListener.getID() == focusElement.getContainedElementID())
+						renderConnectionsLeft = false;
+					
+					((GLParallelCoordinates)glEventListener).setRenderConnectionState(renderConnectionsLeft);
+						
+				}
 			}
 
 			arSlerpActions.clear();

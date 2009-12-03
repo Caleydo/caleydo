@@ -262,6 +262,11 @@ public class GLParallelCoordinates
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(0, 0);
 
 	/**
+	 * FIXME: remove after data flipper video
+	 */
+	private boolean renderConnectionsLeft = true;
+
+	/**
 	 * Constructor.
 	 */
 	public GLParallelCoordinates(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
@@ -1757,13 +1762,13 @@ public class GLParallelCoordinates
 					}
 				}
 				else if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
-					
+
 					hashGates.remove(item.getPrimaryID());
 				}
 			}
-			
+
 			axisSelectionManager.setVADelta(delta);
-			resetAxisSpacing();	
+			resetAxisSpacing();
 		}
 		if (delta.getIDType() == ePolylineDataType) {
 
@@ -2269,15 +2274,25 @@ public class GLParallelCoordinates
 			}
 		}
 		else {
-			 fXValue = fXValue + renderStyle.getXSpacing();
-//			if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
-//				fXValue = viewFrustum.getRight() - 0.2f;
-//			else
-//				fXValue = viewFrustum.getRight() - 0.4f;
-//			// get the value on the leftmost axis
-			fYValue =
-				set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
-					iStorageIndex);
+			// if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
+			// fXValue = viewFrustum.getRight() - 0.2f;
+			// else
+			// fXValue = viewFrustum.getRight() - 0.4f;
+
+			if (renderConnectionsLeft) {
+				fXValue = fXValue + renderStyle.getXSpacing();
+				fYValue = set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
+			}
+			else {
+				if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
+					fXValue = viewFrustum.getRight() - 0.2f;
+				else
+					fXValue = viewFrustum.getRight() - 0.4f;
+				fYValue = set.get(storageVA.get(storageVA.size()-1)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
+			}
+			
+			// // get the value on the leftmost axis
+			// fYValue = set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
 
 			if (Float.isNaN(fYValue)) {
 				fYValue = NAN_Y_OFFSET * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
@@ -2994,4 +3009,8 @@ public class GLParallelCoordinates
 		return new ArrayList<AGLEventListener>();
 	}
 
+	public void setRenderConnectionState(boolean renderConnectionssLeft) {
+		this.renderConnectionsLeft = renderConnectionssLeft;
+
+	}
 }
