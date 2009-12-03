@@ -26,7 +26,6 @@ import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
-import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -50,7 +49,6 @@ import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.remote.listener.AddPathwayListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.IRemoteRenderingHandler;
-import org.caleydo.core.view.opengl.canvas.remote.listener.LoadPathwaysByGeneListener;
 import org.caleydo.core.view.opengl.canvas.remote.viewbrowser.GLPathwayViewBrowser;
 import org.caleydo.core.view.opengl.canvas.remote.viewbrowser.GLTissueViewBrowser;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
@@ -69,7 +67,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
-public class GLDataFlipper
+public class CopyOfGLDataFlipper
 	extends AGLEventListener
 	implements IGLRemoteRenderingView, IRemoteRenderingHandler {
 
@@ -118,19 +116,11 @@ public class GLDataFlipper
 	private boolean isPathwayContentAvailable = false;
 
 	private AddPathwayListener addPathwayListener = null;
-	private LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
-
-	boolean isPatientGuideActive = true;
-	boolean isPatientAlternativeGuideActive = false;
-	boolean isTissueGuideActive = false;
-	boolean isGeneticGuideActive = false;
-	boolean renderGeneticViews = false;
-	boolean renderPathwayViews = false;
 
 	/**
 	 * Constructor.
 	 */
-	public GLDataFlipper(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
+	public CopyOfGLDataFlipper(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 
 		super(glCanvas, sLabel, viewFrustum, true);
 
@@ -286,7 +276,6 @@ public class GLDataFlipper
 		renderDataViewIcons(gl, EDataDomain.TISSUE_DATA);
 		renderDataViewIcons(gl, EDataDomain.GENETIC_DATA);
 		renderDataViewIcons(gl, EDataDomain.PATHWAY_DATA);
-		renderGuidanceConnections(gl);
 
 		if (glConnectionLineRenderer != null && arSlerpActions.isEmpty()) {
 			glConnectionLineRenderer.render(gl);
@@ -307,6 +296,10 @@ public class GLDataFlipper
 
 		int iViewID = element.getContainedElementID();
 
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT, element
+			.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION, iViewID));
+
 		AGLEventListener glEventListener =
 			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID);
 
@@ -325,25 +318,13 @@ public class GLDataFlipper
 
 		if (((glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
 			|| glEventListener instanceof GLHierarchicalHeatMap
-			|| glEventListener instanceof GLTissueViewBrowser || (glEventListener instanceof GLPathwayViewBrowser && renderPathwayViews))
+			|| glEventListener instanceof GLTissueViewBrowser || glEventListener instanceof GLPathwayViewBrowser)
 			&& !isExperimentCountOK) {
 			return;
 		}
 
-		if (((glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-			|| glEventListener instanceof GLHierarchicalHeatMap
-			|| glEventListener instanceof GLTissueViewBrowser || glEventListener instanceof GLPathwayViewBrowser)
-			&& !renderGeneticViews) {
+		if (glEventListener instanceof GLPathwayViewBrowser && !isPathwayContentAvailable)
 			return;
-		}
-
-		if ((glEventListener instanceof GLPathwayViewBrowser && !isPathwayContentAvailable)
-			|| (glEventListener instanceof GLPathwayViewBrowser && !renderPathwayViews))
-			return;
-
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT, element
-			.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION, iViewID));
 
 		gl.glPushMatrix();
 
@@ -670,7 +651,6 @@ public class GLDataFlipper
 	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
 
-		isPatientAlternativeGuideActive = false;
 		switch (pickingType) {
 
 			case VIEW_SELECTION:
@@ -708,37 +688,9 @@ public class GLDataFlipper
 						iLastPickedViewID = lastPickedRemoteLevelElement.getContainedElementID();
 						chainMove(lastPickedRemoteLevelElement);
 
-						AGLEventListener pickedView =
-							GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
-								iLastPickedViewID);
-
-						if (pickedView instanceof GLTissueViewBrowser) {
-							renderGeneticViews = true;
-							isTissueGuideActive = true;
-							// isGeneticGuideActive = false;
-						}
-						// else if ((pickedView instanceof GLParallelCoordinates && pickedView.getSet()
-						// .getSetType() == ESetType.GENE_EXPRESSION_DATA)
-						// || pickedView instanceof GLHierarchicalHeatMap) {
-						// isGeneticGuideActive = true;
-						// }
-						else if (pickedView instanceof GLPathwayViewBrowser)
-							renderPathwayViews = true;
-
 						break;
 					case MOUSE_OVER:
 
-						RemoteLevelElement element = RemoteElementManager.get().getItem(iExternalID);
-						int pickID = element.getContainedElementID();
-					
-						AGLEventListener pickedView2 =
-							GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
-								pickID);
-
-						if (pickedView2 instanceof GLGlyph) {
-							isPatientAlternativeGuideActive = true;
-						}
-						
 						break;
 				}
 				break;
@@ -917,39 +869,6 @@ public class GLDataFlipper
 			new Vec3f(0, fViewIconWidth, 0), 1, 1, 1, 1);
 		gl.glTranslatef(-3 * fViewIconWidth - 0.03f, -0.31f, 0);
 
-		float fGuidancePipeWidth = 0.02f;
-		float alpha = 0.3f;
-		EIconTextures connTexture = EIconTextures.DATA_FLIPPER_GUIDANCE_CONNECTION_STRAIGHT;
-		if ((dataDomain == EDataDomain.CLINICAL_DATA && isExperimentCountOK && isPatientGuideActive)
-			|| (dataDomain == EDataDomain.TISSUE_DATA && isTissueGuideActive)
-			|| (dataDomain == EDataDomain.GENETIC_DATA && isPathwayContentAvailable)) {
-			alpha = 1f;
-			connTexture = EIconTextures.DATA_FLIPPER_GUIDANCE_CONNECTION_STRAIGHT_HIGHLIGHT;
-		}
-
-		if (dataDomain != EDataDomain.PATHWAY_DATA) {
-			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.15f, 0.0f), new Vec3f(1.5f, 0.15f,
-				0.0f), new Vec3f(1.5f, 0.15f + fGuidancePipeWidth + 0.05f, 0.0f), new Vec3f(0.51f,
-				0.15f + fGuidancePipeWidth + 0.05f, 0.0f), 1, 1, 1, alpha);
-		}
-
-		if (isPatientAlternativeGuideActive && dataDomain == EDataDomain.CLINICAL_DATA) {
-			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f, 0.05f,
-				0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
-				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
-			
-			gl.glTranslatef(1f, 0, 0);
-			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f, 0.05f,
-				0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
-				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);;
-			
-			gl.glTranslatef(0.5f, 0, 0);
-			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f, 0.05f,
-				0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
-				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
-			gl.glTranslatef(-1.5f, 0, 0);
-		}
-		
 		for (int iViewIndex = 0; iViewIndex < possibleViews.size(); iViewIndex++) {
 
 			EIconTextures iconTextureType;
@@ -1052,18 +971,9 @@ public class GLDataFlipper
 					break;
 			}
 
-			if (element != null)
-				gl.glPopName();
+			if ((glEventListener instanceof GLGlyph
+				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
 
-			if (glEventListener instanceof GLGlyph 
-				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) && isExperimentCountOK && isTissueGuideActive)
-				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews))
-			{
-//			if ((glEventListener instanceof GLGlyph
-//				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
-//				
 				if (element != null && arSlerpActions.isEmpty()) {
 
 					float fHorizontalConnStart = 0;
@@ -1338,25 +1248,14 @@ public class GLDataFlipper
 					}
 				}
 
-				// if (element != null)
-				// gl.glPopName();
+				if (element != null)
+					gl.glPopName();
 
 			}
 			gl.glTranslatef(0, 0, -0.001f);
 
 		}
 		gl.glTranslatef(-fXPos, 2.07f, -4);
-	}
-
-	private void renderGuidanceConnections(final GL gl) {
-
-		// float fPipeWidth = 0.1f;
-		//
-		// textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_GUIDANCE_CONNECTION_STRAIGHT, new
-		// Vec3f(
-		// 0, 0.85f, 0.0f), new Vec3f(0.16f, 0.85f, 0.0f),
-		// new Vec3f(0.16f, 0.85f + fPipeWidth + 0.05f, 0.0f),
-		// new Vec3f(0, 0.85f + fPipeWidth + 0.05f, 0.0f), 1, 1, 1, 1);
 	}
 
 	private RemoteLevelElement findElementContainingView(EDataDomain dataDomain, EManagedObjectType viewType) {
@@ -1392,15 +1291,9 @@ public class GLDataFlipper
 			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
 		if (element.getContainedElementID() != -1) {
 
-//			if ((glEventListener instanceof GLGlyph
-//				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
+			if ((glEventListener instanceof GLGlyph
+				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
 
-			if (glEventListener instanceof GLGlyph 
-				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) && isExperimentCountOK && isTissueGuideActive)
-				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews))
-			{
 				Transform transform;
 				Vec3f translation;
 				// Vec3f scale;
@@ -1429,15 +1322,9 @@ public class GLDataFlipper
 			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
 		if (element.getContainedElementID() != -1) {
 
-//			if ((glEventListener instanceof GLGlyph
-//				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
+			if ((glEventListener instanceof GLGlyph
+				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
 
-			if (glEventListener instanceof GLGlyph 
-				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) && isExperimentCountOK && isTissueGuideActive)
-				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews))
-			{
 				gl.glTranslatef(-0.64f, -1.25f, 4.02f);
 				gl.glRotatef(90, 0, 0, 1);
 				renderNavigationHandleBar(gl, element, 3.33f, 0.075f, false, 2);
@@ -1451,14 +1338,9 @@ public class GLDataFlipper
 		glEventListener =
 			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
 		if (element.getContainedElementID() != -1) {
-//			if ((glEventListener instanceof GLGlyph
-//				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
-			if (glEventListener instanceof GLGlyph 
-				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) && isExperimentCountOK && isTissueGuideActive)
-				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews))
-			{
+			if ((glEventListener instanceof GLGlyph
+				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
+
 				gl.glTranslatef(-1.17f, -1.25f, 4.02f);
 				gl.glRotatef(90, 0, 0, 1);
 				renderNavigationHandleBar(gl, element, 3.32f, 0.075f, false, 2);
@@ -1472,34 +1354,15 @@ public class GLDataFlipper
 		glEventListener =
 			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
 		if (element.getContainedElementID() != -1) {
-//			if ((glEventListener instanceof GLGlyph
-//				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
-//
-//				if ((glEventListener instanceof GLGlyph || (glEventListener instanceof GLParallelCoordinates && glEventListener
-//					.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-//					&& isTissueGuideActive)) {
-			if (glEventListener instanceof GLGlyph 
-				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) && isExperimentCountOK && isTissueGuideActive)
-				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews))
-			{
-					gl.glTranslatef(0.65f, 2.08f, 4.02f);
-					gl.glRotatef(-90, 0, 0, 1);
-					renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
-					gl.glRotatef(90, 0, 0, 1);
-					gl.glTranslatef(-0.65f, -2.08f, -4.02f);
-				}
-//				else if ((glEventListener instanceof GLTissueViewBrowser || glEventListener instanceof GLPathwayViewBrowser
-//					|| glEventListener instanceof GLParallelCoordinates || glEventListener instanceof GLHierarchicalHeatMap)
-//					&& isTissueGuideActive) {
-//					gl.glTranslatef(0.65f, 2.08f, 4.02f);
-//					gl.glRotatef(-90, 0, 0, 1);
-//					renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
-//					gl.glRotatef(90, 0, 0, 1);
-//					gl.glTranslatef(-0.65f, -2.08f, -4.02f);
-//				}
-//			}
+			if ((glEventListener instanceof GLGlyph
+				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
+
+				gl.glTranslatef(0.65f, 2.08f, 4.02f);
+				gl.glRotatef(-90, 0, 0, 1);
+				renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
+				gl.glRotatef(90, 0, 0, 1);
+				gl.glTranslatef(-0.65f, -2.08f, -4.02f);
+			}
 		}
 
 		// Right second
@@ -1507,34 +1370,17 @@ public class GLDataFlipper
 		glEventListener =
 			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
 		if (element.getContainedElementID() != -1) {
-//			if ((glEventListener instanceof GLGlyph
-//				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
-//
-//				if ((glEventListener instanceof GLTissueViewBrowser || glEventListener instanceof GLParallelCoordinates || glEventListener instanceof GLHierarchicalHeatMap)
-//					&& isTissueGuideActive) {
-			
-			if (glEventListener instanceof GLGlyph 
-				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) && isExperimentCountOK && isTissueGuideActive)
-				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews))
-			{
+			if ((glEventListener instanceof GLGlyph
+				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
+
+				if (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable) {
 					gl.glTranslatef(1.1f, 2.08f, 4.02f);
 					gl.glRotatef(-90, 0, 0, 1);
 					renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
 					gl.glRotatef(90, 0, 0, 1);
 					gl.glTranslatef(-1.1f, -2.08f, -4.02f);
 				}
-//			}
-//			else if ((glEventListener instanceof GLTissueViewBrowser
-//				|| glEventListener instanceof GLParallelCoordinates || glEventListener instanceof GLHierarchicalHeatMap)
-//				&& isTissueGuideActive) {
-//				gl.glTranslatef(1.1f, 2.08f, 4.02f);
-//				gl.glRotatef(-90, 0, 0, 1);
-//				renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
-//				gl.glRotatef(90, 0, 0, 1);
-//				gl.glTranslatef(-1.1f, -2.08f, -4.02f);
-//			}
+			}
 		}
 	}
 
@@ -1853,10 +1699,6 @@ public class GLDataFlipper
 		addPathwayListener = new AddPathwayListener();
 		addPathwayListener.setHandler(this);
 		eventPublisher.addListener(LoadPathwayEvent.class, addPathwayListener);
-
-		loadPathwaysByGeneListener = new LoadPathwaysByGeneListener();
-		loadPathwaysByGeneListener.setHandler(this);
-		eventPublisher.addListener(LoadPathwaysByGeneEvent.class, loadPathwaysByGeneListener);
 	}
 
 	@Override
@@ -1868,11 +1710,6 @@ public class GLDataFlipper
 			eventPublisher.removeListener(addPathwayListener);
 			addPathwayListener = null;
 		}
-
-		if (loadPathwaysByGeneListener != null) {
-			eventPublisher.removeListener(loadPathwaysByGeneListener);
-			loadPathwaysByGeneListener = null;
-		}
 	}
 
 	@Override
@@ -1883,7 +1720,8 @@ public class GLDataFlipper
 
 	@Override
 	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
-		isPathwayContentAvailable = true;
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
