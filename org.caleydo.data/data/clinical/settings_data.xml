@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyphview version="1.0">
+ <glyphobjects>
+  <glyph detaillevel="0" source="resources/3dmodels/glyph/glyph.obj"  description="Minimal Detail Level">
+
+   <part name="base">
+   	<parameter type="color" description="Farbe" />
+   </part>
+  
+  </glyph>
+  
+  <glyph detaillevel="1" source="resources/3dmodels/glyph/glyph.obj" description="Medium Detail Level" >
+
+   <part name="base" detail="Sockel" />
+
+   
+   
+   <part name="tower" detail="Tower" >
+<!--      <anchor type="top" to="top" />-->
+     <anchor type="bottom" to="base" />
+   	<parameter type="scale" value="z" description="Quader - Höhe" />
+   	<parameter type="color"           description="Quader - Farbe" />
+   </part>
+   
+   <part name="top" detail="Deckel">
+    <anchor type="bottom" to="tower" />
+   	<parameter type="color"           description="Deckel - Farbe" />
+   </part>
+  </glyph>
+  
+  <glyph detaillevel="2" source="resources/3dmodels/glyph/glyph2.obj" description="Maximum Detail Level" >
+
+   <part name="base" detail="Sockel" />
+
+   <part name="tower" detail="Tower" >
+    <anchor type="bottom" to="base" />
+   	<parameter type="scale" value="z" description="Quader - Höhe" />
+   	<parameter type="color"           description="Quader - Farbe" />
+   </part>
+   
+   <part name="top" detail="Deckel">
+    <anchor type="bottom" to="tower" />
+   	<parameter type="color"           description="Deckel - Farbe" />
+   </part>
+   
+   <part name="cylinder1" detail="Zylinder 1">
+    <anchor type="bottom" to="base" />
+   	<parameter type="scale" value="z" description="Zylinder 1 - Höhe" />
+   	<parameter type="color"           description="Zylinder 1 - Farbe" />
+   </part>
+   <part name="cylinder2" detail="Zylinder 2">
+    <anchor type="bottom" to="base" />
+   	<parameter type="scale" value="z" description="Zylinder 2 - Höhe" />
+   	<parameter type="color"           description="Zylinder 2 - Farbe" />
+   </part>
+   <part name="cylinder3" detail="Zylinder 3">
+    <anchor type="bottom" to="base" />
+   	<parameter type="scale" value="z" description="Zylinder 3 - Höhe" />
+   	<parameter type="color"           description="Zylinder 3 - Farbe" />
+   </part>
+   <part name="cylinder4" detail="Zylinder 4">
+    <anchor type="bottom" to="base" />
+   	<parameter type="scale" value="z" description="Zylinder 4 - Höhe" />
+   	<parameter type="color"           description="Zylinder 4 - Farbe" />
+   </part>
+   
+  </glyph>
+  
+ </glyphobjects>
+ 
+ 
+ <!-- nominal ordinal numeric -->
+ <profile name="default">
+  <settings>
+   <item type="sort" colnum="2" />
+   <item type="sort" colnum="7" />
+   <item type="sort" colnum="9" />
+   
+   <item level="0" type="color" on="base" colnum="2">
+     <color rn="1.0" gn="1.0" bn="1.0" a="1.0" />
+     <color rn="0.0" gn="1.0" bn="0.0" a="1.0" /> <!-- green -->
+     <color r ="0.0" g ="255" b ="255" a="1.0" /> <!-- tuerkis -->
+     <color r ="255" gn="1.0" bn="0.0" a="1.0" /> <!-- yellow -->
+     <color rgb="#ff0000"              a="1.0" /> <!-- red -->
+   </item>
+   
+   <item level="1" type="color" on="tower" colnum="2">
+     <color rn="1.0" gn="1.0" bn="1.0" a="1.0" />
+     <color rn="0.0" gn="1.0" bn="0.0" a="1.0" /> <!-- green -->
+     <color r ="0.0" g ="255" b ="255" a="1.0" /> <!-- tuerkis -->
+     <color r ="255" gn="1.0" bn="0.0" a="1.0" /> <!-- yellow -->
+     <color rgb="#ff0000"              a="1.0" /> <!-- red -->
+   </item>
+   
+   <item level="1" type="color" on="top" colnum="7">
+     <color rn="0.0"  gn="0.0"  bn="0.0"  a="1.0" /> <!-- black -->
+     <color rn="-1.0" gn="-1.0" bn="-1.0" a="-1.0" /> <!-- special mode (same color as box) -->
+   </item>
+
+   <item level="1" type="scale" on="tower" direction="z" colnum="9" />
+
+
+   <item level="2" type="color" on="tower" colnum="2">
+     <color rn="1.0" gn="1.0" bn="1.0" a="1.0" />
+     <color rn="0.0" gn="1.0" bn="0.0" a="1.0" /> <!-- green -->
+     <color r ="0.0" g ="255" b ="255" a="1.0" /> <!-- tuerkis -->
+     <color r ="255" gn="1.0" bn="0.0" a="1.0" /> <!-- yellow -->
+     <color rgb="#ff0000"              a="1.0" /> <!-- red -->
+   </item>
+   
+   <item level="2" type="color" on="top" colnum="7">
+     <color rn="0.0"  gn="0.0"  bn="0.0"  a="1.0" /> <!-- black -->
+     <color rn="-1.0" gn="-1.0" bn="-1.0" a="-1.0" /> <!-- special mode (same color as box) -->
+   </item>
+
+   <item level="2" type="scale" on="tower" direction="z" colnum="9" />
+
+   <item level="2" type="color" on="cylinder1" colnum="3">
+     <color rn="1.0" gn="1.0" bn="1.0" a="1.0" />
+     <color rn="0.0" gn="1.0" bn="0.0" a="1.0" /> <!-- green -->
+     <color r ="0.0" g ="255" b ="255" a="1.0" /> <!-- tuerkis -->
+     <color r ="255" gn="1.0" bn="0.0" a="1.0" /> <!-- yellow -->
+     <color rgb="#ff0000"              a="1.0" /> <!-- red -->
+   </item>
+   <item level="2" type="scale" on="cylinder1" direction="z" colnum="3" />
+   
+   <item level="2" type="color" on="cylinder2" colnum="4">
+     <color rn="1.0" gn="1.0" bn="1.0" a="1.0" />
+     <color rn="0.0" gn="1.0" bn="0.0" a="1.0" /> <!-- green -->
+     <color r ="0.0" g ="255" b ="255" a="1.0" /> <!-- tuerkis -->
+     <color r ="255" gn="1.0" bn="0.0" a="1.0" /> <!-- yellow -->
+     <color rgb="#ff0000"              a="1.0" /> <!-- red -->
+   </item>
+   <item level="2" type="scale" on="cylinder2" direction="z" colnum="4" />
+   
+   <item level="2" type="color" on="cylinder3" colnum="5">
+     <color rn="1.0" gn="1.0" bn="1.0" a="1.0" />
+     <color rn="0.0" gn="1.0" bn="0.0" a="1.0" /> <!-- green -->
+     <color r ="0.0" g ="255" b ="255" a="1.0" /> <!-- tuerkis -->
+     <color r ="255" gn="1.0" bn="0.0" a="1.0" /> <!-- yellow -->
+     <color rgb="#ff0000"              a="1.0" /> <!-- red -->
+   </item>
+   <item level="2" type="scale" on="cylinder3" direction="z" colnum="5" />
+   
+   <item level="2" type="color" on="cylinder4" colnum="6">
+     <color rn="1.0" gn="1.0" bn="1.0" a="1.0" />
+     <color rn="0.0" gn="1.0" bn="0.0" a="1.0" /> <!-- green -->
+     <color r ="0.0" g ="255" b ="255" a="1.0" /> <!-- tuerkis -->
+     <color r ="255" gn="1.0" bn="0.0" a="1.0" /> <!-- yellow -->
+     <color rgb="#ff0000"              a="1.0" /> <!-- red -->
+   </item>
+   <item level="2" type="scale" on="cylinder4" direction="z" colnum="6" />
+
+   <item type="scatterPlotAxisX"    colnum="2" />
+   <item type="scatterPlotAxisY"    colnum="5" />
+  </settings>
+
+
+  <data>
+   <column type="ordinal" colnum="0"  label="ID" />
+   <column type="nominal" colnum="2"  label="Staging T">
+     <nominal string="X"  group="0" numeric="0.0" />
+     <nominal string="1"  group="1" numeric="1.5" />
+     <nominal string="1A" group="1" numeric="1.2" />
+     <nominal string="1B" group="1" numeric="1.5" />
+     <nominal string="1C" group="1" numeric="1.8" />
+     <nominal string="2"  group="2" numeric="2.5" />
+     <nominal string="2A" group="2" numeric="2.2" />
+     <nominal string="2B" group="2" numeric="2.8" />
+     <nominal string="3"  group="3" numeric="3.5" />
+     <nominal string="3A" group="3" numeric="3.2" />
+     <nominal string="3B" group="3" numeric="3.8" />
+     <nominal string="4"  group="4" numeric="4.5" />
+     <nominal string="4A" group="4" numeric="4.3" />
+     <nominal string="4B" group="4" numeric="4.4" />
+     <nominal string="4C" group="4" numeric="4.6" />
+     <nominal string="4D" group="4" numeric="4.8" />
+   </column>
+
+   <column type="nominal" colnum="3"  label="Staging N">
+     <nominal string="X"      group="0" numeric="0.0" />
+     <nominal string="0"      group="1" numeric="1.0" />
+     <nominal string="1"      group="2" numeric="2.0" />
+     <nominal string="1A"     group="2" numeric="2.0" />
+     <nominal string="1BI"    group="2" numeric="2.0" />
+     <nominal string="1BII"   group="2" numeric="2.0" />
+     <nominal string="1BIII"  group="2" numeric="2.0" />
+     <nominal string="1BIV"   group="2" numeric="2.0" />
+     <nominal string="2"      group="3" numeric="3.0" />
+   </column>
+
+   <column type="nominal" colnum="4"  label="Staging M">
+     <nominal string="X"      group="0" numeric="0.0" />
+     <nominal string="0"      group="1" numeric="1.0" />
+     <nominal string="1"      group="2" numeric="2.0" />
+   </column>
+
+   <column type="nominal" colnum="5"  label="Grading">
+     <nominal string="0"      group="0" numeric="0.0" />
+     <nominal string="1"      group="1" numeric="1.0" />
+     <nominal string="2"      group="2" numeric="2.0" />
+     <nominal string="3"      group="3" numeric="3.0" />
+   </column>
+
+
+   <column type="nominal" colnum="6"  label="Sex">
+     <nominal string="f"  group="0" />
+     <nominal string="m"  group="1" />
+   </column>
+
+   <column type="nominal" colnum="7"  label="is dead">
+     <nominal string="t" group="0" />
+     <nominal string="f" group="1" />
+   </column>
+
+   <column type="ordinal" colnum="8"  label="Year of Diagnosis">
+     <int min="1950" max="2008" interval="1" />
+   </column>
+   <column type="ordinal" colnum="9"  label="Disease Free Survival (Months)">
+     <int min="0" max="200" interval="1" />
+   </column>
+   <column type="ordinal" colnum="10"  label="Overal Survival (Months)">
+     <int min="0" max="300" interval="1" />
+   </column>
+
+  </data>
+ </profile>
+ 
+
+ 
+ 
+</glyphview>

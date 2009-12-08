@@ -1,0 +1,84 @@
+<caleydo version="0.1">
+
+	<workspace title="primary" server="localhost">
+
+		<Application remote="no" IP="127.0.0.1" port="4000">
+
+			<CommandBuffer>
+
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_DATA_DOMAIN"
+					cmdId="13993" uniqueId="453010" label="create_data_domain" attrib1="CLINICAL_DATA" />
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_DATA_DOMAIN"
+					cmdId="13993" uniqueId="453010" label="create_data_domain" attrib1="GENETIC_DATA" />
+				<!--Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_DATA_DOMAIN"
+					cmdId="13993" uniqueId="453010" label="create_data_domain" attrib1="TISSUE_DATA" /-->
+				<!--Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_DATA_DOMAIN"
+					cmdId="13993" uniqueId="453010" label="create_data_domain" attrib1="PATHWAY_DATA" /-->
+
+				<!-- read glyph definition to glyphManager -->
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_GLYPH_DEFINITIONS"
+					cmdId="" uniqueId="11332" label="load Glyph Definition" attrib1="data/clinical/settings_data.xml" />
+
+				<!-- Creating GenomeId mapping -->
+				<read-xml-file
+					target="data/bootstrap/shared/kashofer/hcc/load_genome_id_mapping.xml" />
+
+				<!-- Creating Data -->
+				<read-xml-file
+					target="data/bootstrap/shared/kashofer/hcc/all_hcc/load_data.xml" />
+
+				<!-- Creating Data -->
+				<read-xml-file target="data/bootstrap/private/stefan/load_data.xml" />
+
+				<!-- Setting paths -->
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS"
+					cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths"
+					detail="BIOCARTA" attrib1="user.home/.caleydo/cgap.nci.nih.gov/Pathways/BioCarta/"
+					attrib2="user.home/.caleydo/cgap.nci.nih.gov/BIOCARTA/Pathways/"
+					attrib3="user.home/.caleydo/cgap.nci.nih.gov/Pathways/BioCarta/" />
+
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS"
+					cmdId="" uniqueId="11331" label="Set KEGG Pathway Path" detail="KEGG"
+					attrib1="user.home/.caleydo/www.genome.jp/kegg/KGML/KGML_v0.6.1/"
+					attrib2="user.home/.caleydo/www.genome.jp/kegg/pathway/" attrib3="user.home/.caleydo/?" />
+
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_PATHWAY_DATA"
+					cmdId="" uniqueId="11331" label="Load pathway data" />
+
+				<!-- 2nd window -->
+				<!--
+
+					<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"
+					cmdId="40991" uniqueId="10332" label="Glyph 2" attrib1="ROW
+					HORIZONTAL" /> <Cmd mementoId="0" process="RUN_CMD_NOW"
+					type="CREATE_VIEW_SWT_GLCANVAS" cmdId="69991" uniqueId="16402"
+					gl_canvas="99076" parent="10332" label="Canvas" attrib2="600 600"
+					detail="1077991" /> <Cmd mementoId="0" process="RUN_CMD_NOW"
+					type="CREATE_GL_GLYPH" cmdId="69994" uniqueId="82402"
+					parent="99076" label="Glyph 2" gl_origin="0 0 0" gl_rotation="0 0 0
+					0" attrib3="ORTHOGRAPHIC -8 8 -8 8 -20 20" detail="351010 551010
+					651010 901010" /> <Cmd mementoId="0" process="RUN_CMD_NOW"
+					type="CREATE_EVENT_MEDIATOR" cmdId="69991" uniqueId="93501"
+					label="Glyph Mediator" attrib1="82401" attrib2="82402"
+					detail="SELECTION_MEDIATOR" /> <Cmd mementoId="0"
+					process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR" cmdId="69991"
+					uniqueId="94501" label="Glyph Mediator Reverse" attrib1="82402"
+					attrib2="82401" detail="SELECTION_MEDIATOR" />
+				-->
+
+
+
+				<!--
+					<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"
+					cmdId="40991" uniqueId="10332" label="Slider view" attrib1="ROW
+					HORIZONTAL" /> <Cmd mementoId="0" process="RUN_CMD_NOW"
+					type="CREATE_VIEW_MIXER" cmdId="61993" uniqueId="11401"
+					label="Mixer" parent="10332" attrib1="3" attrib2="400 200" />
+				-->
+			</CommandBuffer>
+
+		</Application>
+
+	</workspace>
+
+</caleydo>

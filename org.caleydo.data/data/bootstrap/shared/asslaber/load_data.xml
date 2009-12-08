@@ -1,0 +1,206 @@
+<!-- must be called inside a CommandBuffer section-->
+
+<details>
+	
+	
+	
+	<!-- Expression data set/storage/ -->
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="1" label="A001"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="2" label="A002"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="3" label="A003"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="4" label="A004"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="5" label="A005"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="6" label="A006"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="7" label="A007"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="8" label="A009"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="9" label="A012"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="10" label="A013"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="11" label="A014"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="12" label="A015"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="13" label="A016"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="14" label="A017"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="15" label="A018"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="16" label="A019"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="17" label="A020"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="18" label="A021"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="19" label="A022"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="20" label="A023"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="21" label="A024"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="22" label="A025"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="23" label="A026"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="24" label="A027"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="25" label="A028"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="26" label="A030"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="27" label="A031"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="28" label="A032"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="29" label="A033"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="30" label="A035"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="31" label="A036"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="32" label="A037"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="33" label="A038"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="34" label="A039"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="35" label="A040"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="36" label="A042"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="37" label="A043"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="38" label="A044"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="39" label="A045"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="40" label="A046"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="41" label="A047"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="42" label="A049"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="43" label="A050"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="44" label="A051"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="45" label="A052"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="46" label="A053"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="47" label="A054"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="48" label="A056"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="49" label="A057"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="50" label="A058"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="51" label="A059"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="52" label="A061"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="53" label="A062"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="54" label="A063"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="55" label="A064"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="56" label="A066"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="57" label="A067"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="58" label="A068"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="59" label="A069"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="60" label="A070"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="61" label="A071"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="62" label="A074"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="63" label="A075"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="64" label="A077"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="65" label="A078"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="66" label="A079"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="67" label="A080"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="68" label="A081"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="69" label="A082"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="70" label="A083"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="71" label="A084"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="72" label="A085"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="73" label="A087"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="74" label="A088"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="75" label="A090"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="76" label="A093"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="77" label="A094"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="78" label="A095"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="79" label="A096"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="80" label="A097"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="81" label="A099"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="82" label="A101"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="83" label="A102"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="84" label="A103"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="85" label="A104"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="86" label="A105"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="87" label="A106"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="88" label="A107"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="89" label="A108"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="90" label="B012"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="91" label="B013"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="92" label="B014"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="93" label="B015"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="94" label="B016"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="95" label="B017"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="96" label="B019"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="97" label="B022"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="98" label="B023"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="99" label="B024"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="100" label="B025"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="101" label="B026"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="102" label="B027"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="103" label="B028"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="104" label="B029"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="105" label="B030"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="106" label="B031"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="107" label="B032"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="108" label="B033"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="109" label="B034"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="110" label="B035"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="111" label="B036"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="112" label="B037"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="113" label="B038"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="114" label="B039"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="115" label="B040"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="116" label="B041"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="117" label="B042"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="118" label="B043"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="119" label="B044"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="120" label="B045"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="121" label="B046"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="122" label="B047"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="123" label="B048"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="124" label="B049"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="125" label="B050"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="126" label="B051"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="127" label="B052"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="128" label="B053"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="129" label="B054"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="130" label="B055"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="131" label="B056"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="132" label="B057"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="133" label="B058"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="134" label="B059"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="135" label="B060"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="136" label="B061"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="137" label="B062"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="138" label="B063"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="139" label="B064"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="140" label="B065"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="141" label="B066"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="142" label="B068"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="143" label="B069"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="144" label="B070"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="145" label="B071"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="146" label="B072"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="147" label="B073"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="148" label="B074"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="149" label="B075"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="150" label="B076"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="151" label="B078"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="152" label="B079"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="153" label="B080"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="154" label="B081"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="155" label="B082"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="156" label="B083"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="157" label="B084"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="158" label="B085"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="159" label="B086"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="160" label="B087"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="161" label="B088"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="162" label="B089"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="163" label="B091"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="164" label="B092"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="165" label="B093"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="166" label="B094"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="167" label="B095"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="168" label="B096"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="169" label="B097"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="170" label="B098"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="171" label="B099"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="172" label="B100"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="173" label="B101"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="174" label="B102"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="175" label="B103"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="176" label="B104"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="177" label="B105"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="178" label="B106"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="179" label="B108"  attrib1="NUMERICAL" />
+
+	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label=""  attrib1="35201" 
+	attrib2="1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31	32	33	34	35	36	37	38	39	40	41	42	43	44	45	46	47	48	49	50	51	52	53	54	55	56	57	58	59	60	61	62	63	64	65	66	67	68	69	70	71	72	73	74	75	76	77	78	79	80	81	82	83	84	85	86	87	88	89	90	91	92	93	94	95	96	97	98	99	100	101	102	103	104	105	106	107	108	109	110	111	112	113	114	115	116	117	118	119	120	121	122	123	124	125	126	127	128	129	130	131	132	133	134	135	136	137	138	139	140	141	142	143	144	145	146	147	148	149	150	151	152	153	154	155	156	157	158	159	160	161	162	163	164	165	166	167	168	169	170	171	172	173	174	175	176	177	178	179" attrib3="GENE_EXPRESSION_DATA" />
+	
+	<!-- Data file loading -->      
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/asslaber/gene_matrix_reduced_nan.csv"	
+			attrib1="SKIP;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;ABORT"	
+			attrib2="1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31	32	33	34	35	36	37	38	39	40	41	42	43	44	45	46	47	48	49	50	51	52	53	54	55	56	57	58	59	60	61	62	63	64	65	66	67	68	69	70	71	72	73	74	75	76	77	78	79	80	81	82	83	84	85	86	87	88	89	90	91	92	93	94	95	96	97	98	99	100	101	102	103	104	105	106	107	108	109	110	111	112	113	114	115	116	117	118	119	120	121	122	123	124	125	126	127	128	129	130	131	132	133	134	135	136	137	138	139	140	141	142	143	144	145	146	147	148	149	150	151	152	153	154	155	156	157	158	159	160	161	162	163	164	165	166	167	168	169	170	171	172	173	174	175	176	177	178	179" 
+			attrib3="1 -1" attrib4="GENETIC_DATA" />			
+
+			
+	<!-- Data filtering (preprocessing) -->																
+	<!--<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="NORMALIZE"	attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301 55301 56301 57301 58301" attrib3="STORAGE"/>	-->								
+	<!--<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="NORMALIZE"	attrib2="85101 86101 87101 88101 89101 90101 91101 92101 93101 94101 95101 96101 97101 98101" attrib3="SET"/> -->									
+	<!--<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="LIN_2_LOG"	attrib2="85101" attrib3="SET"/>-->									
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_DATA_REPRESENTATION"			cmdId="99010"	uniqueId="-1"	attrib1="NORMAL"	attrib2="85101" attrib3="SET"/>									
+	
+
+</details>

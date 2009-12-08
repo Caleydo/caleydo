@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="org.caleydo.rcp.Application">
+         </run>
+      </application>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.views">
+     <category
+            name="Caleydo"
+            id="org.caleydo.rcp.views">
+      </category>
+       
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLHeatMapView"
+            icon="resources/icons/view/heatmap.png"
+            id="org.caleydo.rcp.views.opengl.GLHeatMapView"
+            name="Heat Map">
+      </view>
+      
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLHierarchicalHeatMapView"
+            icon="resources/icons/view/heatmap.png"
+            id="org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView"
+            name="Hierarchichal Heat Map">
+      </view>      
+
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLParCoordsView"
+            icon="resources/icons/view/parcoords.png"
+            id="org.caleydo.rcp.views.opengl.GLParCoordsView"
+            name="Parallel Coordinates">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLParCoordsClinicalView"
+            icon="resources/icons/view/parcoords.png"
+            id="org.caleydo.rcp.views.opengl.ClinicalGLParCoordsView"
+            name="Clinical Parallel Coordinates">
+      </view>         
+      
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLPathwayView"
+            icon="resources/icons/view/pathway.png"
+            id="org.caleydo.rcp.views.opengl.GLPathwayView"
+            name="Pathway">
+      </view> 
+      
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLRemoteRenderingView"
+            icon="resources/icons/view/remote.png"
+            id="org.caleydo.rcp.views.opengl.GLRemoteRenderingView"
+            name="Bucket">
+      </view> 
+      
+      <view
+            id="org.caleydo.rcp.views.swt.HTMLBrowserView"
+            name="Browser"
+            icon="resources/icons/view/browser.png"
+            class="org.caleydo.rcp.view.swt.RcpHTMLBrowserView"
+            category="org.caleydo.rcp.views">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLGlyphView"
+            icon="resources/icons/view/glyph.png"
+            id="org.caleydo.rcp.views.opengl.GLGlyphView"
+            name="Glyph">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLGlyphSliderView"
+            icon="resources/icons/view/glyph.png"
+            id="org.caleydo.rcp.views.opengl.GLGlyphSliderView"
+            name="Glyph Slider">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.swt.RcpGlyphMappingConfigurationView"
+            icon="resources/icons/view/glyph.png"
+            id="org.caleydo.rcp.views.swt.SWTGlyphMappingConfigurationView"
+            name="Glyph Mapping Configuration">
+      </view>
+      <view
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.swt.RcpTabularDataView"
+            icon="resources/icons/view/tabular_data_viewer.png"
+            id="org.caleydo.rcp.views.swt.TabularDataView"
+            name="Tabular Data Viewer">
+      </view>
+      <view
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.swt.toolbar.RcpToolBarView"
+            icon="resources/icons/view/general.png"
+            id="org.caleydo.rcp.views.swt.ToolBarView"
+            name="Tool Bar">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLRadialHierarchyView"
+            icon="resources/icons/view/radial.png"
+            id="org.caleydo.rcp.views.GLRadialHierarchyView"
+            name="Radial Hierarchy">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLHyperbolicView"
+            id="org.caleydo.rcp.views.GLHyperbolicView"
+            name="Hyperbolic">
+      </view>
+      <view
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.swt.RcpCollabView"
+            id="org.caleydo.rcp.views.swt.CollabView"
+            name="Testing">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLHistogramView"
+            icon="resources/icons/view/color_mapping.png"
+            id="org.caleydo.rcp.views.opengl.GLHistogramView"
+            name="Color Map">
+      </view>
+      <view
+            allowMultiple="false"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.swt.RcpSearchView"
+            icon="resources/icons/view/search.png"
+            id="org.caleydo.rcp.views.swt.SearchView"
+            name="Search">
+      </view>
+      <view
+            allowMultiple="false"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.swt.RcpSelectionInfoView"
+            icon="resources/icons/view/info.png"
+            id="org.caleydo.rcp.views.swt.SelectionInfoView"
+            name="Info">
+      </view>
+      <view
+            allowMultiple="false"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLDendrogramHorizontalView"
+            icon="resources/icons/view/color_mapping.png"
+            id="org.caleydo.rcp.views.opengl.GLDendrogramHorizontalView"
+            name="Dendrogram Horizontal">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLHistogramView"
+            icon="resources/icons/view/color_mapping.png"
+            id="org.caleydo.rcp.views.opengl.GLHistogramView"
+            name="Histogram">
+      </view>
+      <view
+            allowMultiple="false"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLDendrogramVerticalView"
+            icon="resources/icons/view/color_mapping.png"
+            id="org.caleydo.rcp.views.opengl.GLDendrogramVerticalView"
+            name="Dendrogram Vertical">
+      </view>
+      <view
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLDataFlipperView"
+            icon="resources/icons/view/browser.png"
+            id="org.caleydo.rcp.views.opengl.GLDataFlipperView"
+            name="Data Flippper">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLScatterplotView"
+            icon="resources/icons/view/heatmap.png"
+            id="org.caleydo.rcp.views.opengl.GLScatterplotView"
+            name="Scatterplot">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLGrouperView"
+            icon="resources/icons/view/heatmap.png"
+            id="org.caleydo.rcp.views.opengl.GLGrouperView"
+            name="Grouper View">
+      </view>
+
+      
+   </extension>   
+   
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Genome Perspective"  class="org.caleydo.rcp.perspective.GenomePerspective"
+            id="org.caleydo.rcp.perspective">
+            
+      </perspective>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+          <product
+            application="org.caleydo.rcp.application"
+            name="Caleydo">
+         <property
+               name="appName"
+               value="Caleydo">
+         </property>        
+         <property
+               name="aboutImage"
+               value="resources/wizard/wizard.png">
+         </property>
+         <property
+               name="windowImages"
+               value="resources/icons/caleydo16.gif,resources/icons/caleydo32.gif,resources/icons/caleydo48.gif,resources/icons/caleydo64.gif,resources/icons/caleydo128.gif">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+         <property
+               name="aboutText"
+               value="Caleydo Visualization Framework&#x0A;Check out www.caleydo.org&#x0A;&#x0A;© Copyright by www.caleydo.org and Institute for Computer Graphics and Vision&#x0A;Graz University of Technology - 2009.&#x0A;All Rights Reserved.">
+         </property>
+      </product>
+   </extension>
+   <extension
+         name="Caleydo"
+         point="org.eclipse.ui.splashHandlers">
+      <splashHandler
+            class="org.caleydo.rcp.splashHandlers.InteractiveSplashHandler"
+            id="org.caleydo.rcp.splashHandlers.progress">
+      </splashHandler>
+      <splashHandlerProductBinding
+            productId="org.caleydo.rcp.product"
+            splashId="org.caleydo.rcp.splashHandlers.progress">
+      </splashHandlerProductBinding>         
+   </extension>   
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.ExitHandler"
+            id="org.caleydo.rcp.command.exit"
+            name="Exit">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.FullScreenHandler"
+            id="org.caleydo.rcp.command.fullscreen"
+            name="Full Screen">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenHeatMapHandler"
+            id="org.caleydo.rcp.command.openviews.heatmap"
+            name="Open Heatmap">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenParCoordsHandler"
+            id="org.caleydo.rcp.command.openviews.parcoords"
+            name="Open Parallel Coordinates">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenDataFlipperHandler"
+            id="org.caleydo.rcp.command.openviews.dataflipper"
+            name="Open Data Flipper">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenRemoteHandler"
+            id="org.caleydo.rcp.command.openviews.remote"
+            name="Open Bucket">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.SendRemoteHandler"
+            id="org.caleydo.rcp.command.sendviews.remote"
+            name="Send Bucket">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.ObtainViewHandler"
+            id="org.caleydo.rcp.command.sendviews.obtain"
+            name="Send Bucket">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.PublishViewHandler"
+            id="org.caleydo.rcp.command.sendviews.publish"
+            name="Send Bucket">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenBrowserHandler"
+            id="org.caleydo.rcp.command.openviews.browser"
+            name="Open Web Browser">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenGlyphViewHandler"
+            id="org.caleydo.rcp.command.openviews.glyphview"
+            name="Open Glyph View">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenGlyphSliderViewHandler"
+            id="org.caleydo.rcp.command.openviews.glyphsliderview"
+            name="Open Glyph Slider View">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenGlyphMappingConfigurationHandler"
+            id="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
+            name="Open Glyph Mapping Configuration View">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenHierarchicalHeatMapHandler"
+            id="org.caleydo.rcp.command.openviews.hierarchical_heatmap"
+            name="Open Hierarchical Heat Map">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenTabularDataHandler"
+            id="org.caleydo.rcp.command.openviews.tabulardata"
+            name="Open Tabular Data Viewer">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenClinicalParCoordsHandler"
+            id="org.caleydo.rcp.command.openviews.clinicalparcoords"
+            name="Open Clinical Parallel Coordinates">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.ExportDataHandler"
+            id="org.caleydo.rcp.command.export_data"
+            name="Export Data">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.ImportDataHandler"
+            id="org.caleydo.rcp.command.import_data"
+            name="Import Data">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.SaveProjectHandler"
+            id="org.caleydo.rcp.command.save_project"
+            name="Save Project">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenRadialHierarchyHandler"
+            id="org.caleydo.rcp.command.openviews.radial_hierarchy"
+            name="Open Radial Hierarchy">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenHyperbolicHandler"
+            id="org.caleydo.rcp.command.openviews.hyperbolic"
+            name="Open Hyperbolic">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenCollabHandler"
+            id="org.caleydo.rcp.command.open_collab"
+            name="Open Collaboration">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenHistogramHandler"
+            id="org.caleydo.rcp.command.openviews.histogram"
+            name="Open Histogram">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenDendrogramHorizontalHandler"
+            id="org.caleydo.rcp.command.openviews.dendrogram_horizontal"
+            name="Open Dendrogram Horizontal">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.help.HelpContentsHandler"
+            id="org.caleydo.rcp.command.help.help_contents"
+            name="Help Contents">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.help.KnownBugsHandler"
+            id="org.caleydo.rcp.command.help.known_bugs"
+            name="Known Bugs">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.help.ReportBugHandler"
+            id="org.caleydo.rcp.command.help.report_bug"
+            name="Report Bug">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenDendrogramVerticallHandler"
+            id="org.caleydo.rcp.command.openviews.dendrogram_vertical"
+            name="Open Dendrogram Vertical">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenSearchHandler"
+            id="org.caleydo.rcp.command.openviews.search"
+            name="Open Search">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.StartTrackingHandler"
+            id="org.caleydo.rcp.command.start_tracking"
+            name="Start Tracking">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.StopTrackingHandler"
+            id="org.caleydo.rcp.command.stop_tracking"
+            name="Stop Tracking">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.ClusterHandler"
+            id="org.caleydo.rcp.command.cluster"
+            name="Cluster">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenScatterplotHandler"
+            id="org.caleydo.rcp.command.openviews.scatterplot"
+            name="Open Scatterplot">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenGrouperHandler"
+            id="org.caleydo.rcp.command.openviews.grouper"
+            name="Open Grouper">
+      </command>
+      		
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+         
+         
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.caleydo.menu.file"
+               label="File">
+            <command
+                  commandId="org.caleydo.rcp.command.save_project"
+                  icon="resources/icons/general/save.png"
+                  label="Save Project"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.import_data"
+                  icon="resources/icons/general/import_data.png"
+                  label="Import Data"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.export_data"
+                  icon="resources/icons/general/export_data.png"
+                  label="Export Data"
+                  style="push">
+            </command>
+            <separator
+                  name="org.caleydo.rcp.separator1"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.window.preferences"
+                  mnemonic="P"
+                  style="push">
+            </command>
+            <separator
+                  name="org.caleydo.rcp.separator2"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.caleydo.rcp.command.exit"
+                  label="Exit"
+                  mnemonic="E"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               id="org.caleydo.menu.data"
+               label="Data"
+               tooltip="Data">
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.search"
+                  icon="resources/icons/view/search.png"
+                  label="Search Gene/Pathway"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.cluster"
+                  icon="resources/icons/general/clustering.png"
+                  label="Cluster Data"
+                  style="push"
+                  tooltip="Open Clustering Dialog">
+            </command>
+         </menu>
+         <menu
+               id="org.caleydo.menu.view"
+               label="View">
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.hierarchical_heatmap"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Heat Map"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.parcoords"
+                  icon="resources/icons/view/parcoords.png"
+                  label="Parallel Coordinates"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.remote"
+                  icon="resources/icons/view/remote.png"
+                  label="Bucket"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.browser"
+                  icon="resources/icons/view/browser.png"
+                  label="Web Browser"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.tabulardata"
+                  icon="resources/icons/view/tabular_data_viewer.png"
+                  label="Tabular Data Viewer"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.histogram"
+                  icon="resources/icons/view/color_mapping.png"
+                  label="Color Mapper"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.clinicalparcoords"
+                  icon="resources/icons/view/parcoords.png"
+                  label="Clinical Parallel Coordinates"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.radial_hierarchy"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Radial Hierarchy"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.hyperbolic"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Hyperbolic"
+                  style="push">
+            </command>
+            <menu
+                  icon="resources/icons/view/glyph.png"
+                  label="Glyph">
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.glyphview"
+                     icon="resources/icons/view/glyph.png"
+                     label="Glyph View"
+                     style="push">
+               </command>
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.glyphsliderview"
+                     icon="resources/icons/view/glyph.png"
+                     label="Glyph Slider View"
+                     style="push">
+               </command>
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
+                     icon="resources/icons/view/glyph.png"
+                     label="Glyph Mapping Configuration"
+                     style="push">
+               </command>
+            </menu>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.dendrogram_horizontal"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Dendrogram Horizontal"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.dendrogram_vertical"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Dendrogram Vertical"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.dataflipper"
+                  icon="resources/icons/view/browser.png"
+                  label="Data Flipper"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.scatterplot"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Scatterplot"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.grouper"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Grouper"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               id="org.caleydo.menu.window"
+               label="Window">
+            <command
+                  commandId="org.caleydo.rcp.command.fullscreen"
+                  label="Full Screen"
+                  mnemonic="F"
+                  style="push">
+            </command>
+            <menu label="Open Views">
+            </menu>
+         </menu>
+         <menu
+               id="org.caleydo.menu.admin"
+               label="Admin">
+            <command
+                  commandId="org.caleydo.rcp.command.open_collab"
+                  label="Collaboration"
+                  mnemonic="T"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.start_tracking"
+                  label="Start Tracking"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.stop_tracking"
+                  label="Stop Tracking"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               id="org.caleydo.menu.help"
+               label="Help"
+               tooltip="Help">
+            <command
+                  commandId="org.caleydo.rcp.command.help.help_contents"
+                  icon="resources/icons/general/help.gif"
+                  label="Help Contents"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="resources/icons/general/error_log.gif"
+                  label="Error Log"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="org.eclipse.pde.runtime.LogView">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.help.known_bugs"
+                  icon="resources/icons/general/known_bugs.gif"
+                  label="Known Bugs"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.help.report_bug"
+                  icon="resources/icons/general/report_bug.gif"
+                  label="Report Bug"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.help.aboutAction"
+                  icon="resources/icons/caleydo16.gif"
+                  label="About Caleydo"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:org.caleydo.rcp.views.opengl.GLRemoteRenderingView">
+         <command
+               commandId="org.caleydo.rcp.command.sendviews.remote"
+               label="Send View to ..."
+               style="push">
+         </command>
+         <command
+               commandId="org.caleydo.rcp.command.sendviews.obtain"
+               label="Obtain View"
+               style="push">
+         </command>
+         <command
+               commandId="org.caleydo.rcp.command.sendviews.publish"
+               label="Publish View"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:org.caleydo.rcp.views.opengl.GLParCoordsView">
+         <command
+               commandId="org.caleydo.rcp.command.sendviews.remote"
+               label="Send View to ..."
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView">
+         <command
+               commandId="org.caleydo.rcp.command.sendviews.remote"
+               label="Send View to ..."
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:org.caleydo.rcp.views.GLRadialHierarchyView">
+         <command
+               commandId="org.caleydo.rcp.command.sendviews.remote"
+               label="Send View to ..."
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.caleydo.rcp.actionSet"
+            label="actionSet"
+            visible="true">
+         <action
+               class="org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction"
+               id="org.caleydo.rcp.action.progressindicator"
+               label="Progress Indicator"
+               state="true"
+               style="push">
+         </action>
+         <menu
+               id="org.caleydo.rcp.menu1"
+               label="label">
+         </menu>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+            <page
+            class="org.caleydo.rcp.preferences.ColorMappingPreferencePage"
+            id="org.caleydo.rcp.preferences.ColorMappingPreferencePage"
+            name="Color Mapping">
+      </page>
+            <page
+                  class="org.caleydo.rcp.preferences.PathwayUpdatePreferencePage"
+                  id="org.caleydo.rcp.PathwayUpdatePreferences"
+                  name="Update Pathways">
+            </page>
+            <page
+                  class="org.caleydo.rcp.preferences.GeneralPreferencePage"
+                  id="org.caleydo.rcp.GeneralPreferencePage"
+                  name="General">
+            </page>
+            <page
+                  class="org.caleydo.rcp.preferences.VisualLinksPreferencePage"
+                  id="org.caleydo.rcp.VisualLinksPreferencePage"
+                  name="Visual Links">
+            </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.caleydo.rcp.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+
+</plugin>

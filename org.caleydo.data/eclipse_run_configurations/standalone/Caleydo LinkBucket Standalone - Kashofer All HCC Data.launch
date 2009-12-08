@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/org.caleydo.core/src/org/caleydo/core/application/core/CaleydoBootloader.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.caleydo.core.application.core.CaleydoBootloader"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="data/bootstrap/shared/kashofer/hcc/all_hcc/standalone/bootstrap.xml"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.caleydo.core"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dsun.java2d.opengl=true -Djava.util.logging.config.file=data/logging/logging.properties&#10;-Xss16384k&#10;-XX:+HeapDumpOnOutOfMemoryError"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:org.caleydo.data}"/>
+</launchConfiguration>

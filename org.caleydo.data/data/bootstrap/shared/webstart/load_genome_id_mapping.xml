@@ -1,0 +1,55 @@
+<!-- must be called inside a CommandBuffer section-->
+
+<details>
+
+ 		<!-- Data Mapping Import -->
+		   				
+  		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
+		   		detail="data/genome/mapping/david/ORGANISM_DAVID2REFSEQ_MRNA.txt"	
+		   		attrib1="DAVID_2_REFSEQ_MRNA REVERSE" 
+		   		attrib2="\t" 
+		   		attrib3="0 -1" />				   	
+
+ 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
+		   		detail="generate"	
+		   		attrib1="REFSEQ_MRNA_2_REFSEQ_MRNA_INT REVERSE" />				   	
+
+ 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
+		   		detail="already_loaded"	
+		   		attrib1="DAVID_2_REFSEQ_MRNA REVERSE LUT" 
+		   		attrib2="\t" 
+		   		attrib3="0 -1"
+		   		attrib4="DAVID_2_REFSEQ_MRNA_INT" />				   			   				
+		   		
+ 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
+		   		detail="data/genome/mapping/david/ORGANISM_DAVID2ENTREZ_GENE_ID.txt"	
+		   		attrib1="DAVID_2_ENTREZ_GENE_ID REVERSE" 
+		   		attrib2="\t" 
+		   		attrib3="0 -1" />	 		 		
+
+ 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
+		   		detail="data/genome/mapping/david/ORGANISM_DAVID2GENE_SYMBOL.txt"	
+		   		attrib1="DAVID_2_GENE_SYMBOL REVERSE" 
+		   		attrib2="\t" 
+		   		attrib3="0 -1" />	
+
+ 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
+		   		detail="data/genome/mapping/david/ORGANISM_DAVID2GENE_NAME.txt"	
+		   		attrib1="DAVID_2_GENE_NAME REVERSE" 
+		   		attrib2="\t" 
+		   		attrib3="0 -1" />	
+		   		
+		    <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
+		   		detail="data/genome/mapping/ORGANISM_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt"	
+		   		attrib1="BIOCARTA_GENE_ID_2_REFSEQ_MRNA REVERSE LUT" 
+		   		attrib2=";" 
+		   		attrib3="0 -1"
+		   		attrib4="BIOCARTA_GENE_ID_2_DAVID" />				   				   			
+		   		  		
+ 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
+		   		detail="data/genome/mapping/david/ORGANISM_DAVID2GOTERM_CC_ALL.txt"	
+		   		attrib1="DAVID_2_CELL_COMPONENT REVERSE" 
+		   		attrib2="\t" 
+		   		attrib3="0 -1" />		   					   			   			   		  		
+		   		
+</details>
