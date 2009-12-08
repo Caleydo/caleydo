@@ -1,0 +1,45 @@
+<caleydo version="0.1">
+
+	<workspace title="primary" server="localhost">
+
+		<Application remote="no" IP="127.0.0.1" port="4000">
+
+			<CommandBuffer>
+
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_DATA_DOMAIN"
+					cmdId="13993" uniqueId="453010" label="create_data_domain" attrib1="CLINICAL_DATA" />
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_DATA_DOMAIN"
+					cmdId="13993" uniqueId="453010" label="create_data_domain" attrib1="GENETIC_DATA" />
+
+
+				<!-- read glyph definition to glyphManager -->
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_GLYPH_DEFINITIONS"
+					cmdId="" uniqueId="11332" label="load Glyph Definition" attrib1="data/clinical/settings_data.xml" />
+
+				<!-- Creating GenomeId mapping -->
+				<read-xml-file
+					target="data/bootstrap/shared/asslaber/load_genome_id_mapping.xml" />
+
+				<!-- Creating Data -->
+				<read-xml-file target="data/bootstrap/shared/asslaber/load_data_tiny.xml" />
+				<read-xml-file target="data/bootstrap/private/stefan/load_data.xml" />
+
+				<!-- Setting paths -->
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS"
+					cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths"
+					detail="BIOCARTA" attrib1="user.home/.caleydo/cgap.nci.nih.gov/Pathways/BioCarta/"
+					attrib2="user.home/.caleydo/cgap.nci.nih.gov/BIOCARTA/Pathways/"
+					attrib3="user.home/.caleydo/cgap.nci.nih.gov/Pathways/BioCarta/" />
+
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS"
+					cmdId="" uniqueId="11331" label="Set KEGG Pathway Path" detail="KEGG"
+					attrib1="user.home/.caleydo/www.genome.jp/kegg/KGML/KGML_v0.6.1/"
+					attrib2="user.home/.caleydo/www.genome.jp/kegg/pathway/" attrib3="user.home/.caleydo/?" />
+
+			</CommandBuffer>
+
+		</Application>
+
+	</workspace>
+
+</caleydo>

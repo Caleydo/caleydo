@@ -1,0 +1,68 @@
+<caleydo version="0.1">
+
+  <workspace title="primary" server="localhost">
+  
+    <Application remote="no" IP="127.0.0.1" port="4000" >
+  
+    <CommandBuffer>  							
+						
+      	<!-- Creating GenomeId mapping -->
+		  	<read-xml-file target="data/bootstrap/shared/kashofer/hcc/load_genome_id_mapping.xml" />	   				
+						
+		<!-- Creating Data -->
+			<read-xml-file target="data/bootstrap/shared/kashofer/hcc/all_hcc/load_data.xml" />						   																		
+					
+		<!-- Window 14331 -->
+		<!-- 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" uniqueId="14331" label="Caleydo Browser" 		attrib1="ROW HORIZONTAL" />   
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" uniqueId="85401" label="Browser"				parent="14331"  /> -->
+			
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="82401" parent="-1" label="Parallel Coordinates" 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="ORTHOGRAPHIC 0 8 0 8 -20 20"
+							attrib4="transparency 0.6" 
+							detail="85101" /> 
+							
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEAT_MAP_3D"		cmdId="69994"	uniqueId="84401" parent="-1" label="Parallel Coordinates" 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="ORTHOGRAPHIC 0 8 0 8 -20 20"
+							attrib4="transparency 0.6" 
+							detail="85101" /> 				
+					
+		<!-- Window	10331 -->	
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" 
+				label="Bucket 3D" attrib1="ROW	HORIZONTAL"	/>	 
+				 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="99075" 
+			  parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
+
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_BUCKET_3D"		cmdId="69994"	uniqueId="83401" parent="99075" label="Bucket" 
+							gl_origin="0 0 -8" 
+							gl_rotation="0 0 0 0"					
+							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 100"
+							attrib4="transparency 1" 								
+							detail="85101" /> 				    
+				
+		<!-- Setting paths -->	
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths" 
+			detail="BIOCARTA"
+			attrib1="user.home/.caleydo/cgap.nci.nih.gov/Pathways/BioCarta/" 
+			attrib2="user.home/.caleydo/cgap.nci.nih.gov/BIOCARTA/Pathways/" 
+			attrib3="user.home/.caleydo/cgap.nci.nih.gov/Pathways/BioCarta/" /> 
+			
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set KEGG Pathway Path" 
+			detail="KEGG"
+			attrib1="user.home/.caleydo/www.genome.jp/kegg/KGML/KGML_v0.6.1/" 
+			attrib2="user.home/.caleydo/www.genome.jp/kegg/pathway/" 
+			attrib3="user.home/.caleydo/?" /> 
+			
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_PATHWAY_DATA" 	cmdId="" uniqueId="11331" label="Load pathway data" /> 				
+							    
+   </CommandBuffer>
+    
+  </Application>
+  
+  </workspace>
+
+</caleydo>

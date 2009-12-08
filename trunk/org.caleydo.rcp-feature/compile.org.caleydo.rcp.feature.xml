@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Compile org.caleydo.rcp.feature" default="main">
+	<target name="main">
+		<ant antfile="build.xml" dir="../org.caleydo.lib.core" target="build.jars"/>
+		<ant antfile="build.xml" dir="../org.caleydo.util.graph" target="build.jars"/>
+		<ant antfile="build.xml" dir="../org.caleydo.lib.jogl" target="build.jars"/>
+		<ant antfile="build.xml" dir="../org.caleydo.util.gleem" target="build.jars"/>
+		<ant antfile="build.xml" dir="../org.caleydo.data" target="build.jars"/>
+		<ant antfile="build.xml" dir="../org.caleydo.core" target="build.jars"/>
+		<ant antfile="build.xml" dir="../org.caleydo.rcp" target="build.jars"/>
+	</target>
+</project>

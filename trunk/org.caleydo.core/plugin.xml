@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="org.caleydo.plex.GroupwareManager" name="GroupwareManager" schema="schema/org.caleydo.plex.GroupwareManager.exsd"/>
+
+</plugin>

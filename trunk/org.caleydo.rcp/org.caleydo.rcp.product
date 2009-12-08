@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="Caleydo" id="org.caleydo.rcp.product" application="org.caleydo.rcp.application" useFeatures="true">
+
+   <aboutInfo>
+      <image path="resources/wizard/wizard.png"/>
+      <text>
+         Caleydo Visualization Framework
+Check out www.caleydo.org
+
+© Copyright by www.caleydo.org and Institute for Computer Graphics and Vision
+Graz University of Technology - 2009.
+All Rights Reserved.
+      </text>
+   </aboutInfo>
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <vmArgs>-Xms512m -Xmx1024m -Dsun.java2d.opengl=true -Djava.util.logging.config.file=data/logging/logging.properties
+-Xss16384k</vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <windowImages i16="resources/icons/caleydo16.gif" i32="/org.caleydo.rcp/resources/icons/caleydo32.gif" i48="/org.caleydo.rcp/resources/icons/caleydo48.gif" i64="/org.caleydo.rcp/resources/icons/caleydo64.gif" i128="/org.caleydo.rcp/resources/icons/caleydo128.gif"/>
+
+   <splash
+      location="org.caleydo.rcp" />
+   <launcher name="caleydo">
+      <linux icon="/org.caleydo.data/resources/icons/caleydo/caleydo16.xpm"/>
+      <solaris/>
+      <win useIco="false">
+         <ico path="/org.caleydo.rcp/resources/icons/caleydo_icon.ico"/>
+         <bmp/>
+      </win>
+   </launcher>
+
+   <vm>
+   </vm>
+
+   <plugins>
+      <plugin id="org.caleydo.core"/>
+      <plugin id="org.caleydo.data"/>
+      <plugin id="org.caleydo.lib.core"/>
+      <plugin id="org.caleydo.lib.jogl"/>
+      <plugin id="org.caleydo.rcp"/>
+      <plugin id="org.caleydo.util.gleem"/>
+      <plugin id="org.caleydo.util.graph"/>
+   </plugins>
+
+   <features>
+      <feature id="org.caleydo.rcp.feature" version="1.3"/>
+   </features>
+
+
+</product>

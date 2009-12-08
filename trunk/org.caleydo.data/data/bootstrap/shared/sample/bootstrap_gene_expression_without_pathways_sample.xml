@@ -1,0 +1,21 @@
+<caleydo version="0.1">
+
+  <workspace title="primary" server="localhost">
+  
+    <Application remote="no" IP="127.0.0.1" port="4000" >
+  
+    <CommandBuffer>  			   				
+
+      	<!-- Creating GenomeId mapping -->
+		  	<read-xml-file target="data/bootstrap/shared/sample/load_genome_id_mapping_without_pathways.xml" />	   				
+							
+		<!-- Creating Data -->
+			<read-xml-file target="data/bootstrap/shared/sample/load_data.xml" />						
+			
+   </CommandBuffer>
+    
+  </Application>
+  
+  </workspace>
+
+</caleydo>
