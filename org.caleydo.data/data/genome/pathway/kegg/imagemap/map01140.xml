@@ -1,6 +1,0 @@
-<imagemap image="map01140.gif">
- 
-  <area shape="rect"	coords="156,91,453,258"		link="map00230.xml" />
-  <area shape="rect"	coords="175,264,438,437"	link="map00240.xml" />
-
-</imagemap>
