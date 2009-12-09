@@ -187,6 +187,8 @@ public class SetUtils {
 	 *            definition how to load the set
 	 */
 	public static boolean createData(IUseCase useCase) {
+
+	
 		LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
 		ArrayList<Integer> iAlStorageId = loadDataParameters.getStorageIds();
 
@@ -253,14 +255,16 @@ public class SetUtils {
 			set.setMax(loadDataParameters.getMax());
 		}
 
+		boolean isSetHomogeneous = loadDataParameters.isDataHomogeneous();
+		
 		if (loadDataParameters.getMathFilterMode().equals("Normal")) {
-			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL, true);
+			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL, isSetHomogeneous);
 		}
 		else if (loadDataParameters.getMathFilterMode().equals("Log10")) {
-			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG10, true);
+			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG10, isSetHomogeneous);
 		}
 		else if (loadDataParameters.getMathFilterMode().equals("Log2")) {
-			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG2, true);
+			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG2, isSetHomogeneous);
 		}
 		else
 			throw new IllegalStateException("Unknown data representation type");

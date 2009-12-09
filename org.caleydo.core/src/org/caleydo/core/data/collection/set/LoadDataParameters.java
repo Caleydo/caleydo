@@ -67,6 +67,8 @@ public class LoadDataParameters {
 	/** TODO doc */
 	private boolean useExperimentClusterInfo;
 
+	private boolean isDataHomogeneous = true;
+
 	public LoadDataParameters() {
 		this.fileName = null;
 		this.geneTreeFileName = null;
@@ -213,6 +215,25 @@ public class LoadDataParameters {
 
 	public EIDType getFileIDType() {
 		return fileIDType;
+	}
+
+	/**
+	 * Set whether the data you want to load is homogeneous (i.e.: there is a global minimum and maximum)
+	 * 
+	 * @param isDataHomogeneous
+	 *            true if your data has a global min and max, else false
+	 */
+	public void setIsDataHomogeneous(boolean isDataHomogeneous) {
+		this.isDataHomogeneous = isDataHomogeneous;
+	}
+
+	/**
+	 * Tells you whether the data to be processed is homogeneous (i.e.: there is a global minimum and maximum)
+	 * 
+	 * @return true if data is homogeneous, else false
+	 */
+	public boolean isDataHomogeneous() {
+		return isDataHomogeneous;
 	}
 
 }
