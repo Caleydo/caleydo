@@ -10,10 +10,11 @@ import org.caleydo.rcp.view.swt.toolbar.content.ActionToolBarContainer;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
 import org.caleydo.rcp.view.swt.toolbar.content.ToolBarContainer;
 
+
 /**
  * ToolBarContent implementation for scatterplot specific toolbar items.
  * 
- * @author Marc Streit
+ * @author Marc Streit, Jürgen Pillhofer
  */
 public class ScatterplotToolBarContent
 	extends AToolBarContent {
@@ -22,7 +23,9 @@ public class ScatterplotToolBarContent
 
 	public static final String VIEW_TITLE = "Scatterplot";
 	
-	private IToolBarItem testSlider;
+	private IToolBarItem pointSizeSlider;
+	private IToolBarItem xAxisSelector;
+	private IToolBarItem yAxisSelector;
 
 	@Override
 	public Class<?> getViewClass() {
@@ -43,10 +46,20 @@ public class ScatterplotToolBarContent
 		IToolBarItem testAction = new ScatterplotTestAction(targetViewID);
 		actionList.add(testAction);
 
-		if (testSlider == null) {
-			testSlider = new PointSizeSlider("", 0);
+		if (pointSizeSlider == null) {
+			pointSizeSlider = new PointSizeSlider("", 0);
 		}
-		actionList.add(testSlider);
+		actionList.add(pointSizeSlider);
+		
+		if (xAxisSelector == null)	 {
+			xAxisSelector = new XAxisSelector("", 0);
+		}
+		actionList.add(xAxisSelector);
+		
+		if (yAxisSelector == null)	 {
+			yAxisSelector = new YAxisSelector("", 0);
+		}
+		actionList.add(yAxisSelector);
 		
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);
