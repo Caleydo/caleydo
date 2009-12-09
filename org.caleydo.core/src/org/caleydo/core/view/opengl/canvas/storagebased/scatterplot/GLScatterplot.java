@@ -37,9 +37,8 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.manager.event.view.radial.UpdateDepthSliderPositionEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.SetPointSizeEvent;
-import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -62,14 +61,26 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHeatMapView;
-import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.SetPointSizeListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.TogglePointTypeListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+
+import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
+import org.caleydo.core.manager.event.view.storagebased.SetPointSizeEvent;
+import org.caleydo.core.manager.event.view.storagebased.XAxisSelectorEvent;
+import org.caleydo.core.manager.event.view.storagebased.YAxisSelectorEvent;
+import org.caleydo.core.manager.event.view.storagebased.InitAxisComboEvent;
+import org.caleydo.core.manager.general.GeneralManager;
+
+import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.TogglePointTypeListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.SetPointSizeListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.XAxisSelectorListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.YAxisSelectorListener;
+
+
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -79,7 +90,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * 
  * @author Alexander Lex
  * @author Marc Streit
- * @author Jï¿½rgen Pillhofer
+ * @author Jürgen Pillhofer
  */
 public class GLScatterplot
 	extends AStorageBasedView {
@@ -101,13 +112,15 @@ public class GLScatterplot
 
 	int iCurrentMouseOverElement = -1;
 
-	public static int SELECTED_X_AXIS = 1;
-	public static int SELECTED_Y_AXIS = 2;
+	public static int SELECTED_X_AXIS = 0;
+	public static int SELECTED_Y_AXIS = 1;
 	
 	// listeners
 	
 	private TogglePointTypeListener togglePointTypeListener;
 	private SetPointSizeListener setPointSizeListener;
+	private XAxisSelectorListener xAxisSelectorListener;
+	private YAxisSelectorListener yAxisSelectorListener;
 
 	/**
 	 * Constructor.
@@ -139,7 +152,15 @@ public class GLScatterplot
 		renderStyle = new ScatterPlotRenderStyle(this, viewFrustum);
 
 		super.renderStyle = renderStyle;
+		
+		
+		InitAxisComboEvent initAxisComboEvent = new InitAxisComboEvent();
+		initAxisComboEvent.setSender(this);
+		initAxisComboEvent.setAxisNames(this.getAxisString());
+		GeneralManager.get().getEventPublisher().triggerEvent(initAxisComboEvent);
 	}
+
+
 
 	@Override
 	public void initLocal(GL gl) {
@@ -368,116 +389,7 @@ public class GLScatterplot
 		gl.glTranslatef(-YLABELDISTANCE, renderStyle.getLabelHeight(), 0);
 		// gl.glPopAttrib();
 
-		/*
-		 * // draw all Y-Axis Set<Integer> selectedSet =
-		 * axisSelectionManager.getElements(ESelectionType.SELECTION); Set<Integer> mouseOverSet =
-		 * axisSelectionManager.getElements(ESelectionType.MOUSE_OVER); int iCount = 0; while (iCount <
-		 * iNumberAxis) { float fXPosition = alAxisSpacing.get(iCount); if
-		 * (selectedSet.contains(axisVA.get(iCount))) { gl.glColor4fv(Y_AXIS_SELECTED_COLOR, 0);
-		 * gl.glLineWidth(Y_AXIS_SELECTED_LINE_WIDTH); gl.glEnable(GL.GL_LINE_STIPPLE); gl.glLineStipple(2,
-		 * (short) 0xAAAA); } else if (mouseOverSet.contains(axisVA.get(iCount))) {
-		 * gl.glColor4fv(Y_AXIS_MOUSE_OVER_COLOR, 0); gl.glLineWidth(Y_AXIS_MOUSE_OVER_LINE_WIDTH);
-		 * gl.glEnable(GL.GL_LINE_STIPPLE); gl.glLineStipple(2, (short) 0xAAAA); } else {
-		 * gl.glColor4fv(Y_AXIS_COLOR, 0); gl.glLineWidth(Y_AXIS_LINE_WIDTH); }
-		 * gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.Y_AXIS_SELECTION, axisVA
-		 * .get(iCount))); gl.glBegin(GL.GL_LINES); gl.glVertex3f(fXPosition, Y_AXIS_LOW, AXIS_Z);
-		 * gl.glVertex3f(fXPosition, renderStyle.getAxisHeight(), AXIS_Z); // Top marker
-		 * gl.glVertex3f(fXPosition - AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), AXIS_Z);
-		 * gl.glVertex3f(fXPosition + AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), AXIS_Z); gl.glEnd();
-		 * gl.glDisable(GL.GL_LINE_STIPPLE); if (detailLevel != EDetailLevel.HIGH ||
-		 * !renderStyle.isEnoughSpaceForText(iNumberAxis)) { // pop the picking id here when we don't want to
-		 * include the // axis label gl.glPopName(); } if (detailLevel == EDetailLevel.HIGH) { // NaN Button
-		 * float fXButtonOrigin = alAxisSpacing.get(iCount); Vec3f lowerLeftCorner = new Vec3f(fXButtonOrigin
-		 * - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f, ParCoordsRenderStyle.NAN_Z); Vec3f
-		 * lowerRightCorner = new Vec3f(fXButtonOrigin + 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
-		 * ParCoordsRenderStyle.NAN_Z); Vec3f upperRightCorner = new Vec3f(fXButtonOrigin + 0.03f,
-		 * ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f, ParCoordsRenderStyle.NAN_Z); Vec3f upperLeftCorner = new
-		 * Vec3f(fXButtonOrigin - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
-		 * ParCoordsRenderStyle.NAN_Z); Vec3f scalingPivot = new Vec3f(fXButtonOrigin,
-		 * ParCoordsRenderStyle.NAN_Y_OFFSET, ParCoordsRenderStyle.NAN_Z); int iPickingID =
-		 * pickingManager.getPickingID(iUniqueID, EPickingType.REMOVE_NAN, axisVA.get(iCount));
-		 * gl.glPushName(iPickingID); textureManager.renderGUITexture(gl, EIconTextures.NAN, lowerLeftCorner,
-		 * lowerRightCorner, upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
-		 * gl.glPopName(); // markers on axis float fMarkerSpacing = renderStyle.getAxisHeight() /
-		 * (NUMBER_AXIS_MARKERS + 1); for (int iInnerCount = 1; iInnerCount <= NUMBER_AXIS_MARKERS;
-		 * iInnerCount++) { float fCurrentHeight = fMarkerSpacing * iInnerCount; if (iCount == 0) { if
-		 * (set.isSetHomogeneous()) { float fNumber = (float) set.getRawForNormalized(fCurrentHeight /
-		 * renderStyle.getAxisHeight()); Rectangle2D bounds = textRenderer.getScaledBounds(gl,
-		 * getDecimalFormat().format(fNumber), renderStyle.getSmallFontScalingFactor(),
-		 * ParCoordsRenderStyle.MIN_NUMBER_TEXT_SIZE); float fWidth = (float) bounds.getWidth(); float
-		 * fHeightHalf = (float) bounds.getHeight() / 3.0f; renderNumber(gl,
-		 * getDecimalFormat().format(fNumber), fXPosition - fWidth - AXIS_MARKER_WIDTH, fCurrentHeight -
-		 * fHeightHalf); } else { // TODO: storage based access } } gl.glColor3fv(Y_AXIS_COLOR, 0);
-		 * gl.glBegin(GL.GL_LINES); gl.glVertex3f(fXPosition - AXIS_MARKER_WIDTH, fCurrentHeight, AXIS_Z);
-		 * gl.glVertex3f(fXPosition + AXIS_MARKER_WIDTH, fCurrentHeight, AXIS_Z); gl.glEnd(); } String
-		 * sAxisLabel = null; switch (eAxisDataType) { // TODO not very generic here case EXPRESSION_INDEX: //
-		 * FIXME: Due to new mapping system, a mapping involving expression index can return a // Set of //
-		 * values, depending on the IDType that has been specified when loading expression // data. //
-		 * Possibly a different handling of the Set is required. Set<String> setGeneSymbols =
-		 * idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, axisVA .get(iCount)); if
-		 * ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) { sAxisLabel = (String)
-		 * setGeneSymbols.toArray()[0]; } if (sAxisLabel == null) sAxisLabel = "Unknown Gene"; break; case
-		 * EXPERIMENT: default: if (bRenderStorageHorizontally) { sAxisLabel = "TODO: gene labels for axis"; }
-		 * else sAxisLabel = set.get(storageVA.get(iCount)).getLabel(); break; }
-		 * gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT); gl.glTranslatef(fXPosition,
-		 * renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(), 0); gl.glRotatef(25, 0, 0, 1);
-		 * textRenderer.begin3DRendering(); float fScaling = renderStyle.getSmallFontScalingFactor(); if
-		 * (isRenderedRemote()) fScaling *= 1.5f; textRenderer.draw3D(gl, sAxisLabel, 0, 0, 0, fScaling,
-		 * ParCoordsRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE); textRenderer.end3DRendering(); gl.glRotatef(-25, 0,
-		 * 0, 1); gl.glTranslatef(-fXPosition, -(renderStyle.getAxisHeight() + renderStyle
-		 * .getAxisCaptionSpacing()), 0); if (set.isSetHomogeneous()) { // textRenderer.begin3DRendering(); //
-		 * // // render values on top and bottom of axis // // // top // String text =
-		 * getDecimalFormat().format(set.getMax()); // textRenderer.draw3D(text, fXPosition + 2 * //
-		 * AXIS_MARKER_WIDTH, renderStyle // .getAxisHeight(), 0, // renderStyle.getSmallFontScalingFactor());
-		 * // // // bottom // text = getDecimalFormat().format(set.getMin()); // textRenderer.draw3D(text,
-		 * fXPosition + 2 * // AXIS_MARKER_WIDTH, 0, 0, // renderStyle.getSmallFontScalingFactor()); //
-		 * textRenderer.end3DRendering(); } else { // TODO } gl.glPopAttrib(); // render Buttons iPickingID =
-		 * -1; float fYDropOrigin = -ParCoordsRenderStyle.AXIS_BUTTONS_Y_OFFSET; gl.glBlendFunc(GL.GL_ONE,
-		 * GL.GL_ONE_MINUS_SRC_ALPHA); // the gate add button float fYGateAddOrigin =
-		 * renderStyle.getAxisHeight(); iPickingID = pickingManager.getPickingID(iUniqueID,
-		 * EPickingType.ADD_GATE, axisVA.get(iCount)); lowerLeftCorner.set(fXButtonOrigin - 0.03f,
-		 * fYGateAddOrigin, AXIS_Z); lowerRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
-		 * upperRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
-		 * upperLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
-		 * scalingPivot.set(fXButtonOrigin, fYGateAddOrigin, AXIS_Z); gl.glPushName(iPickingID);
-		 * textureManager.renderGUITexture(gl, EIconTextures.ADD_GATE, lowerLeftCorner, lowerRightCorner,
-		 * upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100); gl.glPopName(); if
-		 * (selectedSet.contains(axisVA.get(iCount)) || mouseOverSet.contains(axisVA.get(iCount))) {
-		 * lowerLeftCorner.set(fXButtonOrigin - 0.15f, fYDropOrigin - 0.3f, AXIS_Z + 0.005f);
-		 * lowerRightCorner.set(fXButtonOrigin + 0.15f, fYDropOrigin - 0.3f, AXIS_Z + 0.005f);
-		 * upperRightCorner.set(fXButtonOrigin + 0.15f, fYDropOrigin, AXIS_Z + 0.005f);
-		 * upperLeftCorner.set(fXButtonOrigin - 0.15f, fYDropOrigin, AXIS_Z + 0.005f);
-		 * scalingPivot.set(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.005f); // the mouse over drop if
-		 * (iChangeDropOnAxisNumber == iCount) { // tempTexture = textureManager.getIconTexture(gl,
-		 * dropTexture); textureManager.renderGUITexture(gl, dropTexture, lowerLeftCorner, lowerRightCorner,
-		 * upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80); if (!bWasAxisMoved) { dropTexture
-		 * = EIconTextures.DROP_NORMAL; } } else { textureManager .renderGUITexture(gl,
-		 * EIconTextures.DROP_NORMAL, lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner,
-		 * scalingPivot, 1, 1, 1, 1, 80); } iPickingID = pickingManager.getPickingID(iUniqueID,
-		 * EPickingType.MOVE_AXIS, iCount); gl.glColor4f(0, 0, 0, 0f); gl.glPushName(iPickingID);
-		 * gl.glBegin(GL.GL_TRIANGLES); gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
-		 * gl.glVertex3f(fXButtonOrigin + 0.08f, fYDropOrigin - 0.3f, AXIS_Z + 0.01f);
-		 * gl.glVertex3f(fXButtonOrigin - 0.08f, fYDropOrigin - 0.3f, AXIS_Z + 0.01f); gl.glEnd();
-		 * gl.glPopName(); iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.DUPLICATE_AXIS,
-		 * iCount); // gl.glColor4f(0, 1, 0, 0.5f); gl.glPushName(iPickingID); gl.glBegin(GL.GL_TRIANGLES);
-		 * gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f); gl.glVertex3f(fXButtonOrigin - 0.08f,
-		 * fYDropOrigin - 0.21f, AXIS_Z + 0.01f); gl.glVertex3f(fXButtonOrigin - 0.23f, fYDropOrigin - 0.21f,
-		 * AXIS_Z + 0.01f); gl.glEnd(); gl.glPopName(); iPickingID = pickingManager.getPickingID(iUniqueID,
-		 * EPickingType.REMOVE_AXIS, iCount); // gl.glColor4f(0, 0, 1, 0.5f); gl.glPushName(iPickingID);
-		 * gl.glBegin(GL.GL_TRIANGLES); gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
-		 * gl.glVertex3f(fXButtonOrigin + 0.08f, fYDropOrigin - 0.21f, AXIS_Z + 0.01f);
-		 * gl.glVertex3f(fXButtonOrigin + 0.23f, fYDropOrigin - 0.21f, AXIS_Z + 0.01f); gl.glEnd();
-		 * gl.glPopName(); } else { iPickingID = pickingManager.getPickingID(iUniqueID,
-		 * EPickingType.MOVE_AXIS, iCount); gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		 * gl.glPushName(iPickingID); lowerLeftCorner.set(fXButtonOrigin - 0.05f, fYDropOrigin - 0.2f,
-		 * AXIS_Z); lowerRightCorner.set(fXButtonOrigin + 0.05f, fYDropOrigin - 0.2f, AXIS_Z);
-		 * upperRightCorner.set(fXButtonOrigin + 0.05f, fYDropOrigin, AXIS_Z);
-		 * upperLeftCorner.set(fXButtonOrigin - 0.05f, fYDropOrigin, AXIS_Z); scalingPivot.set(fXButtonOrigin,
-		 * fYDropOrigin, AXIS_Z); textureManager.renderGUITexture(gl, EIconTextures.SMALL_DROP,
-		 * lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1,
-		 * 80); gl.glPopName(); gl.glPopAttrib(); } gl.glBlendFunc(GL.GL_SRC_ALPHA,
-		 * GL.GL_ONE_MINUS_SRC_ALPHA); gl.glPopName(); } iCount++; }
-		 */
+	
 	}
 
 	private void renderNumber(GL gl, String sRawValue, float fXOrigin, float fYOrigin) {
@@ -524,10 +436,13 @@ public class GLScatterplot
 		// maxindex1=6;
 		// maxindex2=6;
 		//		
-		int maxpoints = set.get(1).size();
+		//int maxpoints = set.get(1).size();
+		
+		//contentVA.indicesOf(1);
+		//int testcont= contentVA.size();
+		//int testsize= storageVA.size();
 
 		// boolean bSelectedPlot=false;
-
 		// for (int iStorageIndex1=0;iStorageIndex1<maxindex1;iStorageIndex1++)
 		// {
 		// for (int iStorageIndex2=0;iStorageIndex2<maxindex2;iStorageIndex2++)
@@ -543,7 +458,15 @@ public class GLScatterplot
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 
-		for (int iContentIndex = 0; iContentIndex < maxpoints; iContentIndex++) {
+		//for (int iContentIndex = 0; iContentIndex < maxpoints; iContentIndex++) {
+		for (Integer iContentIndex : contentVA) {
+		
+			if (iContentIndex == -1) {
+				// throw new
+				// IllegalStateException("No such element in virtual array");
+				// TODO this shouldn't happen here.
+				continue;
+			}
 			// float xnormalized = set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED,
 			// iContentIndex);
 			// float ynormalized = set.get(iStorageIndex2).getFloat(EDataRepresentation.NORMALIZED,
@@ -566,6 +489,16 @@ public class GLScatterplot
 		// }
 	}
 
+	private String[] getAxisString() {
+		String[] tmpString = new String[storageVA.size()] ;
+		for (Integer iStorageIndex : storageVA) {
+			
+			 tmpString[iStorageIndex] = set.get(iStorageIndex).getLabel();
+			
+		}
+		return tmpString;
+	}
+	
 	private void DrawPointPrimitive(GL gl, float x, float y, float z, float[] fArMappingColor, float fOpacity) {
 		// EScatterPointType type = renderStyle.POINTSTYLE;
 
@@ -584,7 +517,7 @@ public class GLScatterplot
 			case POINT: {
 				// gl.glEnable(GL.GL_POINT_SMOOTH);
 
-				gl.glPointSize(POINTSIZE * 10.0f);
+				gl.glPointSize(POINTSIZE * 20.0f);
 				gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 				gl.glBegin(GL.GL_POINTS);
@@ -624,6 +557,15 @@ public class GLScatterplot
 
 	}
 	
+//	public void GetAllAxis()
+//	{
+//		for (String AxisName: set.)
+//		
+//			set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+//		
+//	}
+	
+	
 	public void togglePointType() {
 		
 		
@@ -662,7 +604,7 @@ public class GLScatterplot
 		// else {
 
 		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
-		SELECTED_Y_AXIS = 2;
+		
 
 		RenderScatterPoints(gl);
 
@@ -712,15 +654,24 @@ public class GLScatterplot
 
 	@Override
 	protected void initLists() {
+		if (contentVAType != EVAType.CONTENT_EMBEDDED_HM) {
+			if (bRenderOnlyContext)
+				contentVAType = EVAType.CONTENT_CONTEXT;
+			else
+				contentVAType = EVAType.CONTENT;
+		}
+
+		contentVA = useCase.getVA(contentVAType);
+		storageVA = useCase.getVA(storageVAType);
 
 	}
 
 	@Override
 	public String getShortInfo() {
 		if (contentVA == null)
-			return "Heat Map - 0 " + useCase.getContentLabel(false, true) + " / 0 experiments";
+			return "Scatterplot - 0 " + useCase.getContentLabel(false, true) + " / 0 experiments";
 
-		return "Heat Map - " + contentVA.size() + " " + useCase.getContentLabel(false, true) + " / "
+		return "Scatterplot - " + contentVA.size() + " " + useCase.getContentLabel(false, true) + " / "
 			+ storageVA.size() + " experiments";
 	}
 
@@ -1124,6 +1075,17 @@ public void registerEventListeners() {
 	setPointSizeListener = new SetPointSizeListener();
 	setPointSizeListener.setHandler(this);
 	eventPublisher.addListener(SetPointSizeEvent.class, setPointSizeListener);
+	
+	
+	
+	xAxisSelectorListener = new XAxisSelectorListener();
+	xAxisSelectorListener.setHandler(this);
+	eventPublisher.addListener(XAxisSelectorEvent.class, xAxisSelectorListener);
+	
+	yAxisSelectorListener = new YAxisSelectorListener();
+	yAxisSelectorListener.setHandler(this);
+	eventPublisher.addListener(YAxisSelectorEvent.class, yAxisSelectorListener);
+
 }
 
 @Override
@@ -1139,14 +1101,44 @@ public void unregisterEventListeners() {
 		eventPublisher.removeListener(setPointSizeListener);
 		setPointSizeListener = null;
 	}
+	
+	if (xAxisSelectorListener != null) {
+		eventPublisher.removeListener(xAxisSelectorListener);
+		xAxisSelectorListener = null;
+	}
+	
+	if (yAxisSelectorListener != null) {
+		eventPublisher.removeListener(yAxisSelectorListener);
+		yAxisSelectorListener = null;
+	}
 
 
+}
+
+public void setXAxis(int iAxisIndex)
+{
+	if (SELECTED_X_AXIS!=iAxisIndex)
+	{
+		SELECTED_X_AXIS = iAxisIndex;
+		setDisplayListDirty();
+	}
+		
+}
+
+public void setYAxis(int iAxisIndex)
+{
+	if (SELECTED_Y_AXIS!=iAxisIndex)
+	{
+		SELECTED_Y_AXIS = iAxisIndex;
+		setDisplayListDirty();
+	}
+		
 }
 
 public void setPointSize(int pointSize) {
 	if (renderStyle.getPointSize() != pointSize) 
 	{			
-		renderStyle.setPointSize(pointSize);		
+		renderStyle.setPointSize(pointSize);
 		setDisplayListDirty();
 	}
 }

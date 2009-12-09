@@ -28,7 +28,8 @@ public class ScatterPlotRenderStyle
 	public static final float XYAXISDISTANCE = 0.2f;
 	public static final float AXIS_Z = 0.0f;
 		
-	public static float POINTSIZE = 0.02f;
+	public static float POINTSIZE = 0.005f;
+	
 	private int iPointSize = 1;
 	public static EScatterPointType POINTSTYLE = EScatterPointType.POINT;
 	
@@ -222,7 +223,7 @@ public class ScatterPlotRenderStyle
 	}
 	
 	public void  setPointSize(int value) {
-		POINTSIZE = value / 50.0f;
+		POINTSIZE = value / 200.0f;
 		iPointSize = value;
 	}
 	

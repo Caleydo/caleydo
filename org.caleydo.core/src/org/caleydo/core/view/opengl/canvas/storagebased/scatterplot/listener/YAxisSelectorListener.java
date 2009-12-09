@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.view.storagebased.SetPointSizeEvent;
+import org.caleydo.core.manager.event.view.storagebased.YAxisSelectorEvent;
 import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.GLScatterplot;
 
 /**
@@ -11,14 +11,14 @@ import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.GLScatterplo
  * @author Christian
  */
 
-public class SetPointSizeListener 
+public class YAxisSelectorListener 
 	extends AEventListener<GLScatterplot> {
 
 		@Override
 		public void handleEvent(AEvent event) {
-			if (event instanceof SetPointSizeEvent) {
-				handler.setPointSize(((SetPointSizeEvent) event)
-					.getPointSize());
+			if (event instanceof YAxisSelectorEvent) {
+				handler.setYAxis(((YAxisSelectorEvent) event)
+					.getSelectedAxis());
 
 			
 			}
