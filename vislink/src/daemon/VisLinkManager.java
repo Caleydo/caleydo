@@ -73,9 +73,12 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		checkRender();
 	}
 
-	public void registerApplication(String appName, String boundingBoxXML) {
+	public void registerApplication(String appName, String xml) {
+		registerApplication(appName, getWindowBoundingBox(xml));
+	}
+
+	public void registerApplication(String appName, BoundingBox windowBoundingBox) {
 		Application app = applicationManager.getApplications().get(appName);
-		BoundingBox windowBoundingBox = getWindowBoundingBox(boundingBoxXML);
 
 		if (app != null) {
 			System.out.println("re-registering " + appName);
@@ -97,6 +100,15 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		}
 	}
 
+	public void registerApplication(Application app) {
+		applicationManager.registerApplication(app);
+		SelectionContainer selectionContainer = createSelectionContainer(app.getId(), app.getWindows().get(0));
+
+		System.out.println("registering " + app); 
+		rendererPrx.registerSelectionContainer(selectionContainer);
+	}
+
+		
 	private SelectionContainer createSelectionContainer(int appId, BoundingBox wbb) {
 		return new SelectionContainer(
 				appId,
@@ -104,7 +116,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 				wbb.getY(),
 				wbb.getWidth(),
 				wbb.getHeight(),
-				new Color4f(-1, 0, 0, 0));
+				new Color4f(1.0f, 0.0f, 0.0f, 0.9f));
 	}
 	
 	private BoundingBox getWindowBoundingBox(String xml) { 
@@ -238,7 +250,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
         	ArrayList<Selection> selectionList = new ArrayList<Selection>();
     		for (BoundingBox bb : e.getValue().getList()) {
         		Selection selection = new Selection(bb.getX(), bb.getY(), bb.getWidth(), bb.getHeight(),
-        				new Color4f(-1, 0, 0, 0), bb.isSource());
+        				new Color4f(1.0f, 0, 0, 0.5f), bb.isSource());
         		selectionList.add(selection);
     		}
     		selectionGroup.selections = selectionList.toArray(selectionGroup.selections);

@@ -28,9 +28,6 @@ public class Application {
 	/** id to send */
 	private String sendId;
 	
-	/** last id that was sent */
-	private String recentId;
-	
 	public Application() {
 		name = null;
 		windows = new ArrayList<BoundingBox>();

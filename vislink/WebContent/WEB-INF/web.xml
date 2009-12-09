@@ -54,6 +54,12 @@
 		<load-on-startup>10</load-on-startup>
 	</servlet>
 	<servlet>
+		<display-name>officeCalcServlet</display-name>
+		<servlet-name>officeCalcServlet</servlet-name>
+		<servlet-class>daemon.OfficeCalcServlet</servlet-class>
+		<load-on-startup>10</load-on-startup>
+	</servlet>
+	<servlet>
 		<servlet-name>dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
@@ -81,6 +87,10 @@
 	<servlet-mapping>
 		<servlet-name>unregister</servlet-name>
 		<url-pattern>/unregister</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>officeCalcServlet</servlet-name>
+		<url-pattern>/officeCalcServlet</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>
