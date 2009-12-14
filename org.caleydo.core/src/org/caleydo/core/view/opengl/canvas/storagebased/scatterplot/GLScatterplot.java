@@ -121,6 +121,8 @@ public class GLScatterplot
 	private SetPointSizeListener setPointSizeListener;
 	private XAxisSelectorListener xAxisSelectorListener;
 	private YAxisSelectorListener yAxisSelectorListener;
+	
+	private SelectionManager elementSelectionManager;
 
 	/**
 	 * Constructor.
@@ -428,6 +430,16 @@ public class GLScatterplot
 		// if (!isRenderedRemote())
 		// contextMenu.render(gl, this);
 	}
+	
+	private String[] getAxisString() {
+		String[] tmpString = new String[storageVA.size()] ;
+		for (Integer iStorageIndex : storageVA) {
+			
+			 tmpString[iStorageIndex] = set.get(iStorageIndex).getLabel();
+			
+		}
+		return tmpString;
+	}
 
 	private void RenderScatterPoints(GL gl) {
 		// int maxindex1 = set.size(); // contentVA
@@ -482,31 +494,76 @@ public class GLScatterplot
 			// {
 			float[] fArMappingColor = colorMapper.getColor(Math.max(xnormalized, ynormalized));
 			DrawPointPrimitive(gl, x, y, 0.0f, // z
-				fArMappingColor, 1.0f); // fOpacity
+				fArMappingColor, 1.0f, iContentIndex); // fOpacity
+			
+			if (elementSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex))
+			{
+				DrawLabel(gl, x, y, 0.0f, // z
+					fArMappingColor, 1.0f, iContentIndex); // fOpacity
+			}
 			// }
 		} // end iContentIndex
 		// }
 		// }
 	}
 
-	private String[] getAxisString() {
-		String[] tmpString = new String[storageVA.size()] ;
-		for (Integer iStorageIndex : storageVA) {
-			
-			 tmpString[iStorageIndex] = set.get(iStorageIndex).getLabel();
-			
-		}
-		return tmpString;
+	
+	
+	private void DrawLabel(GL gl, float x, float y, float z, float[] fArMappingColor, float fOpacity, int iContentIndex) {
+		
+		
+		z= z+2.1f;
+		gl.glTranslatef(x, y, z);		
+		textRenderer.begin3DRendering();
+		float fScaling = renderStyle.getSmallFontScalingFactor();
+		if (isRenderedRemote())
+			fScaling *= 1.5f;		
+		String sLabel = "Point: " + 
+						set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.RAW, iContentIndex)+
+						" / " +
+						set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.RAW, iContentIndex);
+		textRenderer.draw3D(gl, sLabel, 0, 0, 0, fScaling,
+			ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
+		textRenderer.end3DRendering();
+		
+		gl.glTranslatef(-x, -y, -z);
 	}
 	
-	private void DrawPointPrimitive(GL gl, float x, float y, float z, float[] fArMappingColor, float fOpacity) {
-		// EScatterPointType type = renderStyle.POINTSTYLE;
+	private void DrawPointPrimitive(GL gl, float x, float y, float z, float[] fArMappingColor, float fOpacity, int iContentIndex) {
+		
+		
+		EScatterPointType type = POINTSTYLE;
 
+		
 		float halfPoint= POINTSIZE/2.0f;
-		switch (POINTSTYLE) {
+		float fullPoint = POINTSIZE;
+		int iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.SCATTER_POINT_SELECTION, iContentIndex);
+		//gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
+		gl.glColor3f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2]);
+		
+		int test = elementSelectionManager.getNumberOfElements(ESelectionType.SELECTION);
+		int test2 = elementSelectionManager.getNumberOfElements(ESelectionType.MOUSE_OVER);
+		
+		
+		
+		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex))
+		{
+			z=+1.0f;
+			gl.glColor3f(1.0f, 0.1f, 0.5f);
+		}
+		
+		if (elementSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex))
+		{
+			z=+2.0f;
+			fullPoint= 0.03f;
+			gl.glColor3f(1.0f, 1.0f, 0.0f);			
+			type = EScatterPointType.DISK;
+		}
+				
+		gl.glPushName(iPickingID);
+		switch (type) {
 			case BOX: {
-				gl.glBegin(GL.GL_POLYGON);
-				gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
+				gl.glBegin(GL.GL_POLYGON);			
 				gl.glVertex3f(x-halfPoint, y-halfPoint, z);
 				gl.glVertex3f(x-halfPoint, y + halfPoint, z);
 				gl.glVertex3f(x + halfPoint, y + halfPoint, z);
@@ -515,11 +572,7 @@ public class GLScatterplot
 				break;
 			}
 			case POINT: {
-				// gl.glEnable(GL.GL_POINT_SMOOTH);
-
 				gl.glPointSize(POINTSIZE * 20.0f);
-				gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
-
 				gl.glBegin(GL.GL_POINTS);
 				gl.glVertex3f(x, y, z);
 				gl.glEnd();
@@ -527,8 +580,7 @@ public class GLScatterplot
 			}
 			case CROSS: {
 				gl.glLineWidth(1.0f);
-				gl.glBegin(GL.GL_LINES);
-				gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
+				gl.glBegin(GL.GL_LINES);				
 				gl.glVertex3f(x-halfPoint, y-halfPoint, z);
 				gl.glVertex3f(x + halfPoint, y + halfPoint, z);
 				gl.glVertex3f(x-halfPoint, y + halfPoint, z);
@@ -540,49 +592,57 @@ public class GLScatterplot
 				float angle;
 				float PI = (float) Math.PI;
 
-				gl.glLineWidth(1.0f);
-				gl.glBegin(GL.GL_LINE_LOOP);
-				gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
+				gl.glLineWidth(1.0f);				
+				gl.glBegin(GL.GL_LINE_LOOP);			
 				for (int i = 0; i < 10; i++) {
 					angle = (i * 2 * PI) / 10;
-					gl.glVertex3f(x + (float) (Math.cos(angle) * POINTSIZE), y
-						+ (float) (Math.sin(angle) * POINTSIZE), z);
+					gl.glVertex3f(x + (float) (Math.cos(angle) * fullPoint), y
+						+ (float) (Math.sin(angle) * fullPoint), z);
+				}
+				gl.glEnd();
+			}
+				break;
+			case DISK: {
+				float angle;
+				float PI = (float) Math.PI;
+								
+				gl.glBegin(GL.GL_POLYGON);
+				for (int i = 0; i < 10; i++) {
+					angle = (i * 2 * PI) / 10;
+					gl.glVertex3f(x + (float) (Math.cos(angle) * fullPoint), y
+						+ (float) (Math.sin(angle) * fullPoint), z);
 				}
 				gl.glEnd();
 			}
 				break;
 			default:
-
+				
 		}
-
+		gl.glPopName();
 	}
 	
-//	public void GetAllAxis()
-//	{
-//		for (String AxisName: set.)
-//		
-//			set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
-//		
-//	}
-	
+
 	
 	public void togglePointType() {
 		
 		
 		 switch (POINTSTYLE)
         {
-          case BOX:
+        	case POINT:
+          POINTSTYLE = EScatterPointType.BOX;
+              	  break;
+        	case BOX:
        	  POINTSTYLE = EScatterPointType.CIRCLE;
-       	  break;
-          case POINT:
-       	  POINTSTYLE = EScatterPointType.BOX;
-        	  break;
-          case CROSS:
-       	  POINTSTYLE = EScatterPointType.POINT;
-        	  break;           
+       	  		break;                    
           case CIRCLE:
-       	  POINTSTYLE = EScatterPointType.CROSS;
+       	  POINTSTYLE = EScatterPointType.DISK;
         	  break;
+          case DISK:
+           	  POINTSTYLE = EScatterPointType.CROSS;
+            	  break;
+          case CROSS:
+           	  POINTSTYLE = EScatterPointType.POINT;
+            	  break;         
           default:
              
         }
@@ -663,6 +723,8 @@ public class GLScatterplot
 
 		contentVA = useCase.getVA(contentVAType);
 		storageVA = useCase.getVA(storageVAType);
+		
+		elementSelectionManager = storageSelectionManager;
 
 	}
 
@@ -725,7 +787,7 @@ public class GLScatterplot
 
 		ESelectionType eSelectionType;
 		switch (ePickingType) {
-			case HEAT_MAP_LINE_SELECTION:
+			case SCATTER_POINT_SELECTION:
 				iCurrentMouseOverElement = iExternalID;
 				switch (pickingMode) {
 
@@ -735,25 +797,12 @@ public class GLScatterplot
 					case MOUSE_OVER:
 
 						eSelectionType = ESelectionType.MOUSE_OVER;
+						elementSelectionManager.clearSelection(eSelectionType);
 
 						break;
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
 
-						// Prevent handling of non genetic data in context menu
-						if (generalManager.getUseCase(dataDomain).getDataDomain() != EDataDomain.GENETIC_DATA)
-							break;
-
-						if (!isRenderedRemote()) {
-							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
-								getParentGLCanvas().getHeight());
-							contextMenu.setMasterGLView(this);
-						}
-
-						GeneContextMenuItemContainer geneContextMenuItemContainer =
-							new GeneContextMenuItemContainer();
-						geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX, iExternalID);
-						contextMenu.addItemContanier(geneContextMenuItemContainer);
 					default:
 						return;
 
@@ -763,97 +812,69 @@ public class GLScatterplot
 
 				break;
 
-			case HEAT_MAP_STORAGE_SELECTION:
-
-				switch (pickingMode) {
-					case CLICKED:
-						eSelectionType = ESelectionType.SELECTION;
-						break;
-					case MOUSE_OVER:
-						eSelectionType = ESelectionType.MOUSE_OVER;
-						break;
-					case RIGHT_CLICKED:
-						if (!isRenderedRemote()) {
-							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
-								getParentGLCanvas().getHeight());
-							contextMenu.setMasterGLView(this);
-						}
-						ExperimentContextMenuItemContainer experimentContextMenuItemContainer =
-							new ExperimentContextMenuItemContainer();
-						experimentContextMenuItemContainer.setID(iExternalID);
-						contextMenu.addItemContanier(experimentContextMenuItemContainer);
-					default:
-						return;
-				}
-
-				createStorageSelection(eSelectionType, iExternalID);
-
-				break;
-			// case LIST_HEAT_MAP_CLEAR_ALL:
-			// switch (pickingMode) {
-			// case CLICKED:
-			// contentSelectionManager.resetSelectionManager();
-			// setDisplayListDirty();
-			// SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
-			//
-			// TriggerPropagationCommandEvent event = new TriggerPropagationCommandEvent();
-			// event.setType(EIDType.EXPRESSION_INDEX);
-			// event.setSelectionCommand(command);
-			// event.setSender(this);
-			// eventPublisher.triggerEvent(event);
-			// break;
-			//
-			// }
-			// break;
+		
+		
 		}
 	}
 
 	private void createContentSelection(ESelectionType selectionType, int contentID) {
-		if (contentSelectionManager.checkStatus(selectionType, contentID))
+		if (elementSelectionManager.checkStatus(selectionType, contentID))
 			return;
 
 		// check if the mouse-overed element is already selected, and if it is, whether mouse over is clear.
 		// If that all is true we don't need to do anything
 		if (selectionType == ESelectionType.MOUSE_OVER
-			&& contentSelectionManager.checkStatus(ESelectionType.SELECTION, contentID)
-			&& contentSelectionManager.getElements(ESelectionType.MOUSE_OVER).size() == 0)
+			&& elementSelectionManager.checkStatus(ESelectionType.SELECTION, contentID)
+			&& elementSelectionManager.getElements(ESelectionType.MOUSE_OVER).size() == 0)
 			return;
 
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
-		contentSelectionManager.clearSelection(selectionType);
-		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
-		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, contentID) && selectionType == ESelectionType.SELECTION)
+			elementSelectionManager.removeFromType(selectionType, contentID);
+		
+		
+		
+//		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
+//		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+		
+		int test = elementSelectionManager.getNumberOfElements();
+		elementSelectionManager.add(contentID);
+		elementSelectionManager.addToType(selectionType, contentID);
+		test = elementSelectionManager.getNumberOfElements();
 
-		// TODO: Integrate multi spotting support again
-		// // Resolve multiple spotting on chip and add all to the
-		// // selection manager.
-		// Integer iRefSeqID =
-		// idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);
-		//
-		Integer iMappingID = generalManager.getIDManager().createID(EManagedObjectType.CONNECTION);
-		// for (Object iExpressionIndex : idMappingManager.getMultiID(
-		// EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
-		// contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
-		// contentSelectionManager.addConnectionID(iMappingID, (Integer) iExpressionIndex);
-		// }
-		contentSelectionManager.addToType(selectionType, contentID);
-		contentSelectionManager.addConnectionID(iMappingID, contentID);
-
-		if (eFieldDataType == EIDType.EXPRESSION_INDEX) {
-			SelectionDelta selectionDelta = contentSelectionManager.getDelta();
-
-			// SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
-			// eSelectionType);
-			// sendSelectionCommandEvent(EIDType.REFSEQ_MRNA_INT, command);
-
-			handleConnectedElementRep(selectionDelta);
-			SelectionUpdateEvent event = new SelectionUpdateEvent();
-			event.setSender(this);
-			event.setSelectionDelta(selectionDelta);
-			event.setInfo(getShortInfo());
-			eventPublisher.triggerEvent(event);
-		}
+		
+		
+		
+//		// TODO: Integrate multi spotting support again
+//		// // Resolve multiple spotting on chip and add all to the
+//		// // selection manager.
+//		// Integer iRefSeqID =
+//		// idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);
+//		//
+//		Integer iMappingID = generalManager.getIDManager().createID(EManagedObjectType.CONNECTION);
+//		// for (Object iExpressionIndex : idMappingManager.getMultiID(
+//		// EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
+//		// contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
+//		// contentSelectionManager.addConnectionID(iMappingID, (Integer) iExpressionIndex);
+//		// }
+//		contentSelectionManager.addToType(selectionType, contentID);
+//		contentSelectionManager.addConnectionID(iMappingID, contentID);
+//
+//		if (eFieldDataType == EIDType.EXPRESSION_INDEX) {
+//			SelectionDelta selectionDelta = contentSelectionManager.getDelta();
+//
+//			// SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
+//			// eSelectionType);
+//			// sendSelectionCommandEvent(EIDType.REFSEQ_MRNA_INT, command);
+//
+//			handleConnectedElementRep(selectionDelta);
+//			SelectionUpdateEvent event = new SelectionUpdateEvent();
+//			event.setSender(this);
+//			event.setSelectionDelta(selectionDelta);
+//			event.setInfo(getShortInfo());
+//			eventPublisher.triggerEvent(event);
+//		}
 
 		setDisplayListDirty();
 	}

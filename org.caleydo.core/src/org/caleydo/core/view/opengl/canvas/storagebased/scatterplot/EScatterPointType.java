@@ -8,6 +8,7 @@ package org.caleydo.core.view.opengl.canvas.storagebased.scatterplot;
 public enum EScatterPointType {
 	BOX,
 	CIRCLE,
+	DISK,
 	CROSS,
 	POINT
 }
