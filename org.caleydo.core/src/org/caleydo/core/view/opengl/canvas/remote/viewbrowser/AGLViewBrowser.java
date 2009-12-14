@@ -45,7 +45,7 @@ import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
-import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
+import org.caleydo.core.view.opengl.canvas.remote.bucket.graphtype.GLGlobalBundlingPointConnectionGraphDrawing;
 import org.caleydo.core.view.opengl.canvas.remote.list.ListLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
@@ -175,7 +175,7 @@ public abstract class AGLViewBrowser
 		initSpawnLevel();
 		initExternalSelectionLevel();
 
-		glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel, stackLevel);
+		glConnectionLineRenderer = new GLGlobalBundlingPointConnectionGraphDrawing(focusLevel, stackLevel);
 
 		if (glMouseListener != null)
 			glMouseListener.addGLCanvas(this);

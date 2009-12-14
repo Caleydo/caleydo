@@ -16,6 +16,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Slider;
@@ -34,7 +35,8 @@ public class VisualLinksPreferencePage
 	private ArrayList<EVisLinkStyleType> styleTypes;
 
 	int iCurrentlyUsedStyle = 0;
-
+	//ADDED
+	private String iCurrentlyUsedGraphType = "GLOBAL_BUNDLING";
 	public VisualLinksPreferencePage() {
 		super(GRID);
 		setPreferenceStore(GeneralManager.get().getPreferenceStore());
@@ -45,7 +47,6 @@ public class VisualLinksPreferencePage
 		width = 2.0f;
 		animatedHalo = false;
 		//FIXME: add color
-		
 		styleTypes.add(EVisLinkStyleType.STANDARD_VISLINK);
 		styleTypes.add(EVisLinkStyleType.SHADOW_VISLINK);
 		styleTypes.add(EVisLinkStyleType.HALO_VISLINK);
@@ -58,12 +59,13 @@ public class VisualLinksPreferencePage
 	public void createFieldEditors() {
 
 		iCurrentlyUsedStyle = GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.VISUAL_LINKS_STYLE);
+		iCurrentlyUsedGraphType = GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.VISUAL_LINKS_TYPE);
 		animation = GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATION);
 		width = GeneralManager.get().getPreferenceStore().getFloat(PreferenceConstants.VISUAL_LINKS_WIDTH);
 		animatedHalo = GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO);
 		
 		style = styleTypes.get(iCurrentlyUsedStyle);
-
+		
 		Composite baseComposite = new Composite(getFieldEditorParent(), SWT.NULL);
 		baseComposite.setLayout(new GridLayout(1, false));
 
@@ -71,6 +73,26 @@ public class VisualLinksPreferencePage
 		group.setText("Choose the desired highlighting-mode of visual links");
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		group.setLayout(new GridLayout(2, true));
+		
+		final Combo combo = new Combo(baseComposite, SWT.DROP_DOWN);
+		combo.add("GLOBAL BUNDLING");
+		combo.add("VIEW CENTERED");
+		combo.add("CONSECUTIVE");
+		combo.setText("Choose Graph Type");
+		combo.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (combo.getText().equals("GLOBAL BUNDLING")){
+					iCurrentlyUsedGraphType = "GLOBAL_BUNDLING";
+				}
+				else if (combo.getText().equals("VIEW CENTERED"))
+					iCurrentlyUsedGraphType = "VIEW_CENTERED";
+				else if (combo.getText().equals("CONSECUTIVE"))
+					iCurrentlyUsedGraphType = "CONSECUTIVE";
+			}
+		});
+
 		
 		
 		final Button standard = new Button(group, SWT.RADIO);
@@ -195,7 +217,7 @@ public class VisualLinksPreferencePage
 		store.setValue(PreferenceConstants.VISUAL_LINKS_ANIMATION, animation);
 		store.setValue(PreferenceConstants.VISUAL_LINKS_WIDTH, width);
 		store.setValue(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO, animatedHalo);
-
+		store.setValue(PreferenceConstants.VISUAL_LINKS_TYPE, iCurrentlyUsedGraphType);
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		RedrawViewEvent redrawEvent = new RedrawViewEvent();
 		redrawEvent.setSender(this);

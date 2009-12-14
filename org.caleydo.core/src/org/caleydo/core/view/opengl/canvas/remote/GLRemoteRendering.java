@@ -48,6 +48,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
@@ -66,7 +67,9 @@ import org.caleydo.core.view.opengl.canvas.pathway.SerializedPathwayView;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle.LayoutMode;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
-import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
+import org.caleydo.core.view.opengl.canvas.remote.bucket.graphtype.GLConsecutiveConnectionGraphDrawing;
+import org.caleydo.core.view.opengl.canvas.remote.bucket.graphtype.GLGlobalBundlingPointConnectionGraphDrawing;
+import org.caleydo.core.view.opengl.canvas.remote.bucket.graphtype.GLViewCenteredConnectionGraphDrawing;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRendererJukebox;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.JukeboxLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.list.ListLayoutRenderStyle;
@@ -117,7 +120,9 @@ import com.sun.opengl.util.texture.TextureCoords;
 public class GLRemoteRendering
 	extends AGLEventListener
 	implements ISelectionUpdateHandler, IGLRemoteRenderingBucketView, IRemoteRenderingHandler {
-
+	
+	String graphtype = GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.VISUAL_LINKS_TYPE);
+	
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
 
 	private static final int SLERP_RANGE = 1000;
@@ -225,7 +230,7 @@ public class GLRemoteRendering
 		final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode) {
 
 		super(glCanvas, sLabel, viewFrustum, true);
-
+		graphtype = GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.VISUAL_LINKS_TYPE);
 		viewType = EManagedObjectType.GL_REMOTE_RENDERING;
 		this.layoutMode = layoutMode;
 
@@ -270,7 +275,12 @@ public class GLRemoteRendering
 		spawnLevel = layoutRenderStyle.initSpawnLevel();
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
-			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel, stackLevel);
+			if (graphtype.equals("GLOBAL_BUNDLING"))
+				glConnectionLineRenderer = new GLGlobalBundlingPointConnectionGraphDrawing(focusLevel, stackLevel);
+			else if (graphtype.equals("VIEW_CENTERED"))
+				glConnectionLineRenderer = new GLViewCenteredConnectionGraphDrawing(focusLevel, stackLevel);
+			else if (graphtype.equals("CONSECUTIVE"))
+					glConnectionLineRenderer = new GLConsecutiveConnectionGraphDrawing(focusLevel, stackLevel);
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
 			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(focusLevel, stackLevel, poolLevel);
@@ -2122,6 +2132,9 @@ public class GLRemoteRendering
 	}
 
 	public void toggleLayoutMode() {
+		String type = GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.VISUAL_LINKS_TYPE);
+		System.out.println("THETYPE" +graphtype);
+
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			// layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.LIST;
 			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX;
@@ -2143,7 +2156,15 @@ public class GLRemoteRendering
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 			parentGLCanvas.addMouseListener(bucketMouseWheelListener);
 
-			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel, stackLevel);
+			if (graphtype.equals("GLOBAL_BUNDLING"))
+					glConnectionLineRenderer = new GLGlobalBundlingPointConnectionGraphDrawing(focusLevel, stackLevel);
+			else if (graphtype.equals("VIEW_CENTERED"))
+					glConnectionLineRenderer = new GLViewCenteredConnectionGraphDrawing(focusLevel, stackLevel);
+			else if (graphtype.equals("CONSECUTIVE"))
+					glConnectionLineRenderer = new GLConsecutiveConnectionGraphDrawing(focusLevel, stackLevel);
+
+			if (type.equals("VIEW_CENTERED"))
+				glConnectionLineRenderer = new GLViewCenteredConnectionGraphDrawing(focusLevel, stackLevel);
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
 			layoutRenderStyle = new JukeboxLayoutRenderStyle(viewFrustum, layoutRenderStyle);
