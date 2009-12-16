@@ -45,9 +45,11 @@ public class PointSizeSlider
 		GridLayout layout = new GridLayout(1, false);
 		layout.marginHeight = layout.marginWidth = layout.horizontalSpacing = 0;
 		composite.setLayout(layout);
-
+		
+		
+		iSelection = 5;
 		slider = new Slider(composite, SWT.HORIZONTAL);
-		slider.setValues(iSelection, 2, 20, 1, 1, 1);
+		slider.setValues(iSelection, 1, 10, 1, 1, 1);
 		slider.setLayoutData(new GridData(130, 20));
 
 		listener = new Listener() {
