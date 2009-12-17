@@ -247,7 +247,8 @@ public class ScatterPlotRenderStyle
 	public float getRenderHeight() {
 		
 		return viewFrustum.getHeight();
-
+				
+		
 	}
 	
 public float getLabelHeight() {

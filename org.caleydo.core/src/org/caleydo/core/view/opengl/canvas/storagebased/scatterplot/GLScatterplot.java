@@ -18,6 +18,7 @@ import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.getDec
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Set;
@@ -62,6 +63,7 @@ import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHeatMapView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
@@ -82,6 +84,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.YAx
 
 
 
+
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -99,6 +102,9 @@ public class GLScatterplot
 
 	private ColorMapping colorMapper;
 
+	
+	
+	
 	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 	private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
 
@@ -123,6 +129,15 @@ public class GLScatterplot
 	private YAxisSelectorListener yAxisSelectorListener;
 	
 	private SelectionManager elementSelectionManager;
+	
+	
+	
+	
+	private float[] fDragStartPoint = new float[3];
+	private float[] fDragEndPoint   = new float[3];
+	private boolean bRectangleSelection=false;
+	private boolean bSelectThemNow=false;
+	
 
 	/**
 	 * Constructor.
@@ -154,6 +169,8 @@ public class GLScatterplot
 		renderStyle = new ScatterPlotRenderStyle(this, viewFrustum);
 
 		super.renderStyle = renderStyle;
+		
+
 		
 		
 		InitAxisComboEvent initAxisComboEvent = new InitAxisComboEvent();
@@ -193,7 +210,9 @@ public class GLScatterplot
 				glParentView.getParentGLCanvas().getParentComposite().addKeyListener(glKeyListener);
 			}
 		});
-
+		
+		
+		
 		bRenderStorageHorizontally = false;
 
 		this.glMouseListener = glMouseListener;
@@ -222,6 +241,50 @@ public class GLScatterplot
 		// doTranslation();
 		// }
 
+		//pickingManager.getHits(this, EPickingType.SCATTER_POINT_SELECTION);
+
+		
+		ArrayList<Pick> alHits = null;
+
+		alHits = pickingManager.getHits(iUniqueID, EPickingType.SCATTER_POINT_SELECTION);
+		
+	//	if (alHits == null && alHits.size() == 0) { 
+		
+			GLMouseListener glMouseListener = getParentGLCanvas().getGLMouseListener();
+
+
+						
+			if (glMouseListener.wasMouseDragged()) 
+			{
+				bRectangleSelection=true;	
+				Point pDragEndPoint = glMouseListener.getPickedPoint();				
+				Point pDragStartPoint = glMouseListener.getPickedPointDragStart();
+								
+//				fDragStartPoint =			
+//					GLCoordinateUtils.convertWindowToGLCoordinates(1024, 768, pDragStartPoint.x, pDragStartPoint.y, renderStyle.getRenderWidth(), renderStyle.getRenderHeight());								
+//				fDragEndPoint =
+//					GLCoordinateUtils.convertWindowToGLCoordinates(1024, 768, pDragEndPoint.x, pDragEndPoint.y, renderStyle.getRenderWidth(), renderStyle.getRenderHeight());
+
+				fDragStartPoint =			
+					GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pDragStartPoint.x, pDragStartPoint.y);								
+				fDragEndPoint =
+					GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pDragEndPoint.x, pDragEndPoint.y);
+
+				
+				
+				setDisplayListDirty();
+			}
+			if (glMouseListener.wasMouseReleased() && bRectangleSelection) 
+			{
+				bRectangleSelection=false;					
+				// TODO : Get all between pDragStartPoint && pDragEndPoint in the selection
+				// Do this here insterad of in the Drawing maybe
+			}
+	//	};
+		
+		
+		
+		
 		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
@@ -478,6 +541,24 @@ public class GLScatterplot
 
 	}
 
+	private boolean IsInSelectionRectangle(float x,float y)
+	{
+		float XMin = Math.min(fDragStartPoint[0], fDragEndPoint[0]);
+		float XMax = Math.max(fDragStartPoint[0], fDragEndPoint[0]);
+		
+		float YMin = Math.min(fDragStartPoint[1], fDragEndPoint[1]);
+		float YMax = Math.max(fDragStartPoint[1], fDragEndPoint[1]);
+		
+		x=x+XYAXISDISTANCE;
+		y=y+XYAXISDISTANCE;
+		
+		if (x>= XMin && x <= XMax)
+			if (y>= YMin && y <= YMax)
+				return true;
+				
+		return false;
+				
+	}
 	
 	
 	private void DrawLabel(GL gl, float x, float y, float z, float[] fArMappingColor, float fOpacity, int iContentIndex) {
@@ -511,6 +592,8 @@ public class GLScatterplot
 		textRenderer.end3DRendering();
 		
 		gl.glTranslatef(-x, -y, -z);
+		
+		
 	}
 	
 	private void DrawPointPrimitive(GL gl, float x, float y, float z, float[] fArMappingColor, float fOpacity, int iContentIndex) {
@@ -521,6 +604,13 @@ public class GLScatterplot
 		int iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.SCATTER_POINT_SELECTION, iContentIndex);		
 		gl.glColor3f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2]);		
 			
+		
+		if (IsInSelectionRectangle(x,y))
+		{
+			if (!elementSelectionManager.checkStatus(iContentIndex)) elementSelectionManager.add(iContentIndex);
+			elementSelectionManager.addToType(ESelectionType.SELECTION, iContentIndex);
+		}
+		
 		// Render Selected Items;
 		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex))
 		{
@@ -622,6 +712,27 @@ public class GLScatterplot
 	}
 	
 
+	private void DrawRectangularSelection(GL gl) 
+	{
+		
+		float length=fDragEndPoint[0]-fDragStartPoint[0];
+		float hight=fDragEndPoint[1]-fDragStartPoint[1];
+		float x=fDragStartPoint[0];
+		float y=fDragStartPoint[1];
+		float z=3.5f;
+	    	
+	    
+		gl.glColor3f(0.0f, 1.0f, 0.0f); 	
+		gl.glLineWidth(2.0f);
+		gl.glBegin(GL.GL_LINE_LOOP);	
+		//gl.glBegin(GL.GL_POLYGON);	
+		gl.glVertex3f(x, y, z);
+		gl.glVertex3f(x, y + hight, z);
+		gl.glVertex3f(x + length, y + hight, z);
+		gl.glVertex3f(x + length, y, z);
+		gl.glEnd();
+	}
+	
 	
 	public void togglePointType() {
 				
@@ -654,8 +765,10 @@ public class GLScatterplot
 			bHasFrustumChanged = false;
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
+		//if (bRectangleSelection) 
+			DrawRectangularSelection(gl); 
 		
+		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
 		RenderScatterPoints(gl);
 		gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
 		renderCoordinateSystem(gl);
@@ -772,7 +885,9 @@ public class GLScatterplot
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
-
+		
+		if(bRectangleSelection) return;
+		
 		ESelectionType eSelectionType;
 		switch (ePickingType) {
 			case SCATTER_POINT_SELECTION:
@@ -791,6 +906,9 @@ public class GLScatterplot
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.DESELECTED;
 						break;
+					case DRAGGED:
+						eSelectionType = ESelectionType.SELECTION;
+						//break;
 					default:
 						return;
 
