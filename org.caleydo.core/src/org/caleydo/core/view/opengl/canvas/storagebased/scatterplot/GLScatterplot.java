@@ -75,9 +75,11 @@ import org.caleydo.core.manager.event.view.storagebased.SetPointSizeEvent;
 import org.caleydo.core.manager.event.view.storagebased.XAxisSelectorEvent;
 import org.caleydo.core.manager.event.view.storagebased.YAxisSelectorEvent;
 import org.caleydo.core.manager.event.view.storagebased.InitAxisComboEvent;
+import org.caleydo.core.manager.event.view.storagebased.ResetScatterSelectionEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 
 import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.TogglePointTypeListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.ResetSelectionListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.SetPointSizeListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.XAxisSelectorListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.YAxisSelectorListener;
@@ -124,6 +126,8 @@ public class GLScatterplot
 	// listeners
 	
 	private TogglePointTypeListener togglePointTypeListener;
+	private ResetSelectionListener resetSelectionListener;
+	
 	private SetPointSizeListener setPointSizeListener;
 	private XAxisSelectorListener xAxisSelectorListener;
 	private YAxisSelectorListener yAxisSelectorListener;
@@ -944,6 +948,12 @@ public class GLScatterplot
 			return;
 		}
 		
+		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, contentID))
+		{
+			fDragStartPoint = new float[3];
+			fDragEndPoint   = new float[3];
+		}
+		
 		
 //		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
 //		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
@@ -954,13 +964,18 @@ public class GLScatterplot
 	//	}
 		//test = elementSelectionManager.getNumberOfElements();
 
-		
-		
-
 
 		setDisplayListDirty();
 	}
 
+	
+	public void ResetSelection() {
+		elementSelectionManager.clearSelections();
+		fDragStartPoint = new float[3];
+		fDragEndPoint   = new float[3];
+		setDisplayListDirty();
+	}
+	
 	private void createStorageSelection(ESelectionType selectionType, int storageID) {
 		if (storageSelectionManager.checkStatus(selectionType, storageID))
 			return;
@@ -989,6 +1004,8 @@ public class GLScatterplot
 		}
 		setDisplayListDirty();
 	}
+	
+
 
 	private int cursorSelect(IVirtualArray virtualArray, SelectionManager selectionManager, boolean isUp) {
 
@@ -1174,6 +1191,10 @@ public void registerEventListeners() {
 	togglePointTypeListener = new TogglePointTypeListener();
 	togglePointTypeListener.setHandler(this);
 	eventPublisher.addListener(TogglePointTypeEvent.class, togglePointTypeListener);
+		
+	resetSelectionListener = new ResetSelectionListener();
+	resetSelectionListener.setHandler(this);
+	eventPublisher.addListener(ResetScatterSelectionEvent.class, resetSelectionListener);
 	
 	setPointSizeListener = new SetPointSizeListener();
 	setPointSizeListener.setHandler(this);
@@ -1200,6 +1221,11 @@ public void unregisterEventListeners() {
 		togglePointTypeListener = null;
 	}
 	
+	if (resetSelectionListener != null) {
+		eventPublisher.removeListener(resetSelectionListener);
+		resetSelectionListener = null;
+	}
+		
 	if (setPointSizeListener != null) {
 		eventPublisher.removeListener(setPointSizeListener);
 		setPointSizeListener = null;
@@ -1245,5 +1271,7 @@ public void setPointSize(int pointSize) {
 		setDisplayListDirty();
 	}
 }
+
+
 }
 

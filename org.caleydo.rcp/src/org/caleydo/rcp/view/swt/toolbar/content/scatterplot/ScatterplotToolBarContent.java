@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.GLScatterplot;
 import org.caleydo.rcp.action.toolbar.view.storagebased.scatterplot.ScatterplotTestAction;
+import org.caleydo.rcp.action.toolbar.view.storagebased.scatterplot.ScatterplotResetSelectionAction;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.ActionToolBarContainer;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
@@ -45,6 +46,9 @@ public class ScatterplotToolBarContent
 
 		IToolBarItem testAction = new ScatterplotTestAction(targetViewID);
 		actionList.add(testAction);
+		
+		IToolBarItem resetSelection = new ScatterplotResetSelectionAction(targetViewID);
+		actionList.add(resetSelection);
 
 		if (pointSizeSlider == null) {
 			pointSizeSlider = new PointSizeSlider("", 0);
