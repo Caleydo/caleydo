@@ -52,12 +52,12 @@ public class GLConsecutiveConnectionGraphDrawing
 		ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews = new ArrayList<ArrayList<ArrayList<Vec3f>>>(4);
 		ArrayList<ArrayList<Vec3f>> connectionLinesActiveView = new ArrayList<ArrayList<Vec3f>>();
 		ArrayList<ArrayList<Vec3f>> bundlingToCenterLinesActiveView = new ArrayList<ArrayList<Vec3f>>();
-		ArrayList<ArrayList<Vec3f>> bundlingToCenterLinesOtherViews = new ArrayList<ArrayList<Vec3f>>();
-		Vec3f previousBundlingPoint =  new Vec3f();
+		Vec3f previousBundlingPoint =  new Vec3f(0,0,0);
 		for (Integer iKey : keySet) {
 			Vec3f vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(iKey), vecCenter);
 			ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
 			ArrayList<ArrayList<Vec3f>> connectionLinesOtherViews = new ArrayList<ArrayList<Vec3f>>();
+			ArrayList<ArrayList<Vec3f>> bundlingToCenterLinesOtherViews = new ArrayList<ArrayList<Vec3f>>();
 
 
 			for (ArrayList<Vec3f> alCurrentPoints : hashIDTypeToViewToPointLists.get(idType).get(iKey)) {
@@ -76,16 +76,17 @@ public class GLConsecutiveConnectionGraphDrawing
 				else
 					connectionLinesOtherViews.add(createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey)));
 			}
-			if(connectionLinesOtherViews.size() > 0)
-				connectionLinesAllViews.add(connectionLinesOtherViews);
-			
-			if((previousBundlingPoint != null) && (activeViewID == iKey))
+			if((previousBundlingPoint.length() > 0) && (activeViewID == iKey))
 				bundlingToCenterLinesActiveView.add(createControlPoints(previousBundlingPoint, vecViewBundlingPoint, vecCenter));
 			else
-				bundlingToCenterLinesOtherViews.add(createControlPoints(vecViewBundlingPoint, previousBundlingPoint, vecCenter));
+				bundlingToCenterLinesOtherViews.add(createControlPoints(previousBundlingPoint, vecViewBundlingPoint, vecCenter));
+			
 			previousBundlingPoint = vecViewBundlingPoint;
-			connectionLinesAllViews.add(bundlingToCenterLinesOtherViews);
-
+			if(bundlingToCenterLinesOtherViews.size() > 0)
+				connectionLinesAllViews.add(bundlingToCenterLinesOtherViews);
+			if(connectionLinesOtherViews.size() > 0)
+				connectionLinesAllViews.add(connectionLinesOtherViews);
+	
 		}
 		connectionLinesAllViews.add(0, connectionLinesActiveView);
 		connectionLinesAllViews.add(1, bundlingToCenterLinesActiveView);
