@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Date;
+import java.util.HashSet;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -121,7 +122,13 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 		caleydoSelectionId = null;
 		
 		IIDMappingManager idmm = GeneralManager.get().getIDMappingManager();
-		int destId = idmm.getID(EIDType.UNSPECIFIED, EIDType.EXPRESSION_INDEX, selectionId);
+		int destId = 0;
+		try {
+			destId = idmm.getID(EIDType.UNSPECIFIED, EIDType.EXPRESSION_INDEX, selectionId);
+		} catch (NullPointerException e) {
+			HashSet set = idmm.getID(EIDType.GENE_SYMBOL, EIDType.EXPRESSION_INDEX, selectionId);
+			destId = (Integer) set.iterator().next();
+		}
 		SelectionDelta sd = new SelectionDelta(EIDType.EXPRESSION_INDEX);
 		SelectionDeltaItem sdi = sd.addSelection(destId, ESelectionType.MOUSE_OVER);
 		sdi.addConnectionID(885);
@@ -156,6 +163,9 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 		if (sdi != null) {
 			IIDMappingManager idmm = GeneralManager.get().getIDMappingManager();
 			caleydoSelectionId = idmm.getID(EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED, sdi.getPrimaryID());
+			if (caleydoSelectionId == null) {
+				caleydoSelectionId = idmm.getID(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, sdi.getPrimaryID());
+			}
 		}
 	}
 
@@ -174,7 +184,7 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 		StringBuffer responseBuf;
 
 		try {
-			System.out.println("visdaemon request: " + urlString);
+			// System.out.println("visdaemon request: " + urlString);
 			URL registerURL = new URL(urlString);
 			URLConnection registerCon = registerURL.openConnection();
 	
@@ -212,7 +222,7 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 						}
 						String bbl = "<boundingBoxList>";
 						for (SelectionPoint2D point : screenPoints) {
-							bbl += createBoundingBoxXML(point.getX()-10, point.getY() - 10, 20, 20, caleydoSelectionId != null);
+							bbl += createBoundingBoxXML(point.getX(), point.getY(), 0, 0, caleydoSelectionId != null);
 						}
 						bbl += "</boundingBoxList>";
 						System.out.println("new bll = " + bbl);

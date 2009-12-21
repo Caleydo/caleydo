@@ -24,7 +24,7 @@ public class SelectionRetriever
 	public void run() {
 		while (!stopped) {
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(200);
 				if (!stopped) {
 					String getSelection = "propagation?name=" + visLinkManager.getAppName();
 					String selectionXML = visLinkManager.doVisdaemonRequest(getSelection);
