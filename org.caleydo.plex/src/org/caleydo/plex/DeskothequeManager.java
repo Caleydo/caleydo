@@ -149,7 +149,7 @@ public class DeskothequeManager extends ADisplayLoopEventHandler
 		networkManager.startNetworkService();
 
 		// FIXME obtain server address from deskotheque
-		initData = networkManager.createConnection("127.0.0.1");
+		initData = networkManager.createConnection(serverAddress);
 
 		// FIXME
 		networkManager.setNetworkName(groupwareInformation.deskoXID);
@@ -601,6 +601,7 @@ public class DeskothequeManager extends ADisplayLoopEventHandler
 	 * @param serverAddress
 	 *            caleydo application server ip address
 	 */
+	@Override
 	public void setServerAddress(String serverAddress) {
 		this.serverAddress = serverAddress;
 	}

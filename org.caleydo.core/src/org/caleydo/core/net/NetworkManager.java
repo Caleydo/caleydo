@@ -145,6 +145,7 @@ public class NetworkManager
 
 		unregisterEventListeners();
 		for (Connection connection : connections) {
+			disposeEventSystem(connection);
 			connection.dispose();
 		}
 		connections.clear();
@@ -377,11 +378,11 @@ public class NetworkManager
 		if (!connections.remove(connection)) {
 			throw new RuntimeException("The specified connection is not managed by this NetworkManager");
 		}
+		disposeEventSystem(connection);
+		connection.dispose();
 		if (status == ENetworkStatus.STATUS_SERVER) {
 			publishClientList();
 		}
-		disposeEventSystem(connection);
-		connection.dispose();
 
 	}
 

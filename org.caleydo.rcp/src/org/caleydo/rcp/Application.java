@@ -123,6 +123,9 @@ public class Application
 	public RCPBridge rcpGuiBridge;
 
 	private PreferenceStore prefStore;
+	
+	// TODO: server address for plex-client mode, should be obtained from deskotheque instead from command line param 
+	private String serverAddress = null;
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -160,7 +163,7 @@ public class Application
 		if (sCaleydoXMLfile.equals("")) {
 
 			if (Application.applicationMode == EApplicationMode.PLEX_CLIENT) {
-				Application.initData = GroupwareUtils.startPlexClient();
+				Application.initData = GroupwareUtils.startPlexClient(serverAddress);
 				GeneralManager.get().addUseCase(Application.initData.getUseCase());
 			}
 			else {
@@ -247,12 +250,17 @@ public class Application
 					// bLoadPathwayData = true;
 					bOverrulePrefStoreLoadPathwayData = true;
 				}
-				else if (element.equals("plexclient")) {
+				else if (element.startsWith("plexclient")) {
 					if (sCaleydoXMLfile != null && !sCaleydoXMLfile.isEmpty()) {
 						throw new IllegalArgumentException(
 							"It is not allowed to specify a bootstrap-file in plex-client mode.");
 					}
 					Application.applicationMode = EApplicationMode.PLEX_CLIENT;
+					if (element.startsWith("plexclient:")) {
+						serverAddress = element.substring("plexclient:".length());
+					} else {
+						serverAddress = "127.0.0.1";
+					}
 				}
 				else {
 					EStartViewType viewType = null;

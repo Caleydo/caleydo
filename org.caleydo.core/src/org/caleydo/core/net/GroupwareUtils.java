@@ -41,11 +41,13 @@ public class GroupwareUtils {
 	 * Starts the plugin org.caleydo.plex, retrieves the deskotheque-manager from it and starts this
 	 * application as a groupware-client.
 	 * 
+	 * @param serverAddress TODO should better be obtained from deskotheque
 	 * @return intiialization data retrieved from the groupware server to complete application startup
 	 */
-	public static ApplicationInitData startPlexClient() {
+	public static ApplicationInitData startPlexClient(String serverAddress) {
 		IGroupwareManager groupwareManager = GroupwareUtils.createDeskothequeManager();
 		GeneralManager.get().setGroupwareManager(groupwareManager);
+		groupwareManager.setServerAddress(serverAddress);
 		groupwareManager.startClient();
 		GeneralManager.get().getViewGLCanvasManager().getDisplayLoopExecution().executeMultiple(
 			groupwareManager);
