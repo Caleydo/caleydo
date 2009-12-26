@@ -22,12 +22,17 @@ public class GroupRepresentation
 	private Vec3f vecPosition;
 	private float fHeight;
 	private float fWidth;
+	private float fRelDraggingPosX;
+	private float fRelDraggingPosY;
 	private int iViewID;
+	private int iHierarchyLevel;
 	private boolean bCollapsed;
 	private PickingManager pickingManager;
 	private ClusterNode clusterNode;
+	private GrouperRenderStyle renderStyle;
 
-	public GroupRepresentation(int iViewID, PickingManager pickingManager, ClusterNode clusterNode) {
+	public GroupRepresentation(int iViewID, PickingManager pickingManager, ClusterNode clusterNode,
+		GrouperRenderStyle renderStyle) {
 		alChildren = new ArrayList<ICompositeGraphic>();
 		alDropPositions = new ArrayList<Float>();
 		setMinSize(GrouperRenderStyle.GUI_ELEMENT_MIN_SIZE);
@@ -36,6 +41,7 @@ public class GroupRepresentation
 		this.iViewID = iViewID;
 		this.pickingManager = pickingManager;
 		this.clusterNode = clusterNode;
+		this.renderStyle = renderStyle;
 	}
 
 	@Override
@@ -58,7 +64,7 @@ public class GroupRepresentation
 			.getClusterNr()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 
-		gl.glColor3f(1.0f, 0.0f, 0.0f);
+		gl.glColor4fv(renderStyle.getGroupColorForLevel(iHierarchyLevel), 0);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(vecPosition.x(), vecPosition.y(), vecPosition.z());
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), vecPosition.z());
@@ -82,35 +88,71 @@ public class GroupRepresentation
 
 			fCurrentChildYPosition -= GrouperRenderStyle.ELEMENT_TOP_SPACING;
 			child.setPosition(new Vec3f(vecPosition.x() + GrouperRenderStyle.ELEMENT_LEFT_SPACING,
-				fCurrentChildYPosition, vecPosition.z()));
+				fCurrentChildYPosition, vecPosition.z() + 0.01f));
 			child.draw(gl, textRenderer, vecRelativeDrawingPosition);
-			
+
 			fCurrentChildYPosition -= child.getHeight() + GrouperRenderStyle.ELEMENT_BOTTOM_SPACING;
 
 			if (i == alChildren.size() - 1)
-				alDropPositions.add(fCurrentChildYPosition + GrouperRenderStyle.ELEMENT_BOTTOM_SPACING / 2.0f);
+				alDropPositions
+					.add(fCurrentChildYPosition + GrouperRenderStyle.ELEMENT_BOTTOM_SPACING / 2.0f);
 			else
 				alDropPositions.add(fCurrentChildYPosition);
 		}
 	}
 
 	@Override
-	public void handleDragging(float fMouseCoordinateX, float fMouseCoordinateY) {
-		// TODO Auto-generated method stub
+	public void handleDragging(GL gl, float fMouseCoordinateX, float fMouseCoordinateY) {
+
+		float fGroupColor[] = renderStyle.getGroupColorForLevel(iHierarchyLevel);
+
+		gl.glColor4f(fGroupColor[0], fGroupColor[1], fGroupColor[2], 0.5f);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(fMouseCoordinateX + fRelDraggingPosX, fMouseCoordinateY + fRelDraggingPosY, 0.1f);
+		gl.glVertex3f(fMouseCoordinateX + fRelDraggingPosX + fWidth, fMouseCoordinateY + fRelDraggingPosY,
+			0.1f);
+		gl.glVertex3f(fMouseCoordinateX + fRelDraggingPosX + fWidth, fMouseCoordinateY + fRelDraggingPosY
+			- fHeight, 0.1f);
+		gl.glVertex3f(fMouseCoordinateX + fRelDraggingPosX, fMouseCoordinateY + fRelDraggingPosY - fHeight,
+			0.1f);
+		gl.glEnd();
 
 	}
 
 	@Override
 	public void setDraggingStartPoint(float fMouseCoordinateX, float fMouseCoordinateY) {
-		// TODO Auto-generated method stub
-
+		fRelDraggingPosX = vecPosition.x() - fMouseCoordinateX;
+		fRelDraggingPosY = vecPosition.y() - fMouseCoordinateY;
 	}
 
 	@Override
-	public void handleDragOver(ArrayList<IDraggable> alDraggables, float fMouseCoordinateX,
+	public void handleDragOver(GL gl, ArrayList<IDraggable> alDraggables, float fMouseCoordinateX,
 		float fMouseCoordinateY) {
-		// TODO Auto-generated method stub
 
+		for (IDraggable draggable : alDraggables) {
+			if (draggable == this)
+				return;
+		}
+
+		float fMinDistanceFromDropPosition = Float.MAX_VALUE;
+		int iDropPositionIndex = 0;
+
+		for (int i = 0; i < alDropPositions.size(); i++) {
+			Float fDropPosition = alDropPositions.get(i);
+			float fCurrentDistanceFromDropPosition = Math.abs(fMouseCoordinateY - fDropPosition);
+			if (fCurrentDistanceFromDropPosition < fMinDistanceFromDropPosition) {
+				fMinDistanceFromDropPosition = fCurrentDistanceFromDropPosition;
+				iDropPositionIndex = i;
+			}
+		}
+		
+		gl.glColor3f(0.0f, 0.0f, 0.0f);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(vecPosition.x(), alDropPositions.get(iDropPositionIndex), 0.0f);
+		gl.glVertex3f(vecPosition.x() + fWidth, alDropPositions.get(iDropPositionIndex), 0.0f);
+		gl.glVertex3f(vecPosition.x() + fWidth, alDropPositions.get(iDropPositionIndex) + 0.01f, 0.0f);
+		gl.glVertex3f(vecPosition.x(), alDropPositions.get(iDropPositionIndex) + 0.01f, 0.0f);
+		gl.glEnd();
 	}
 
 	@Override
@@ -153,13 +195,14 @@ public class GroupRepresentation
 
 		for (ICompositeGraphic child : alChildren) {
 			child.setToMaxWidth(fMaxChildWidth);
+			child.setDepth(vecPosition.z());
 		}
 
 	}
 
 	@Override
 	public void calculateDimensions(GL gl, TextRenderer textRenderer) {
-		
+
 		float fMaxChildWidth = 0.0f;
 		fHeight = 0.0f;
 
@@ -186,11 +229,9 @@ public class GroupRepresentation
 	@Override
 	public void setToMaxWidth(float fWidth) {
 
-		if (fWidth > this.fWidth) {
-			this.fWidth = fWidth;
-			for (ICompositeGraphic child : alChildren) {
-				child.setToMaxWidth(fWidth - GrouperRenderStyle.ELEMENT_LEFT_SPACING);
-			}
+		this.fWidth = fWidth;
+		for (ICompositeGraphic child : alChildren) {
+			child.setToMaxWidth(fWidth - GrouperRenderStyle.ELEMENT_LEFT_SPACING);
 		}
 
 	}
@@ -201,6 +242,23 @@ public class GroupRepresentation
 
 	public void setCollapsed(boolean bCollapsed) {
 		this.bCollapsed = bCollapsed;
+	}
+
+	@Override
+	public void calculateHierarchyLevels(int iLevel) {
+		iHierarchyLevel = iLevel;
+
+		for (ICompositeGraphic child : alChildren) {
+			child.calculateHierarchyLevels(iLevel + 1);
+		}
+	}
+
+	@Override
+	public void setDepth(float fDepth) {
+		vecPosition.setZ(fDepth + 0.01f);
+		for (ICompositeGraphic child : alChildren) {
+			child.setDepth(vecPosition.z());
+		}
 	}
 
 }

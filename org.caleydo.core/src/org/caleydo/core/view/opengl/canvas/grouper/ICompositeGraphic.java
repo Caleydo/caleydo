@@ -17,6 +17,8 @@ public interface ICompositeGraphic {
 	public void calculateDrawingParameters(GL gl, TextRenderer textRenderer);
 
 	public void calculateDimensions(GL gl, TextRenderer textRenderer);
+	
+	public void calculateHierarchyLevels(int iLevel);
 
 	public Vec3f getPosition();
 
@@ -27,5 +29,7 @@ public interface ICompositeGraphic {
 	public float getWidth();
 
 	public void setToMaxWidth(float fWidth);
+	
+	public void setDepth(float fDepth);
 
 }

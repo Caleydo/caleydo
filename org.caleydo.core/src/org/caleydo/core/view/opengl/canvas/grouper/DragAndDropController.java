@@ -48,24 +48,25 @@ public class DragAndDropController {
 				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, mouseWinCoords.x,
 					mouseWinCoords.y);
 
+			if (dropArea != null) {
+				dropArea.handleDragOver(gl, alDraggables, fArTargetWorldCoordinates[0],
+					fArTargetWorldCoordinates[1]);
+			}
+			
 			for (IDraggable draggable : alDraggables) {
 				if (bDraggingFirstTime) {
 					draggable.setDraggingStartPoint(fArTargetWorldCoordinates[0],
 						fArTargetWorldCoordinates[1]);
 				}
-				draggable.handleDragging(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1]);
+				draggable.handleDragging(gl, fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1]);
 			}
-
+			
 			if (glMouseListener.wasMouseReleased()) {
 				bDragging = false;
 				if (dropArea != null) {
 					dropArea.handleDrop(alDraggables, fArTargetWorldCoordinates[0],
 						fArTargetWorldCoordinates[1]);
 				}
-			}
-			else if (dropArea != null) {
-				dropArea.handleDragOver(alDraggables, fArTargetWorldCoordinates[0],
-					fArTargetWorldCoordinates[1]);
 			}
 
 			bDraggingFirstTime = false;

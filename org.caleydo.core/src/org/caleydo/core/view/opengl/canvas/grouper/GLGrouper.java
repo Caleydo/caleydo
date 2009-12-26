@@ -102,23 +102,51 @@ public class GLGrouper
 
 	public void initTestHierarchy() {
 		GroupRepresentation root =
-			new GroupRepresentation(iUniqueID, pickingManager, new ClusterNode("root", 0, 0, 0, true));
+			new GroupRepresentation(iUniqueID, pickingManager, new ClusterNode("root", 0, 0, 0, true),
+				renderStyle);
+		
+		GroupRepresentation group1 =
+			new GroupRepresentation(iUniqueID, pickingManager, new ClusterNode("group1", 4, 0, 0, false),
+				renderStyle);
+		GroupRepresentation group2 =
+			new GroupRepresentation(iUniqueID, pickingManager, new ClusterNode("group2", 5, 0, 0, false),
+				renderStyle);
+		GroupRepresentation group3 =
+			new GroupRepresentation(iUniqueID, pickingManager, new ClusterNode("group3", 6, 0, 0, false),
+				renderStyle);
 
 		VAElementRepresentation element1 =
-			new VAElementRepresentation(iUniqueID, pickingManager, new ClusterNode("one", 1, 0, 0, true));
+			new VAElementRepresentation(iUniqueID, pickingManager, new ClusterNode("one", 1, 0, 0, false));
 		VAElementRepresentation element2 =
-			new VAElementRepresentation(iUniqueID, pickingManager, new ClusterNode("two", 2, 0, 0, true));
+			new VAElementRepresentation(iUniqueID, pickingManager, new ClusterNode("two", 2, 0, 0, false));
 		VAElementRepresentation element3 =
-			new VAElementRepresentation(iUniqueID, pickingManager, new ClusterNode("three", 3, 0, 0, true));
+			new VAElementRepresentation(iUniqueID, pickingManager, new ClusterNode("three", 3, 0, 0, false));
+		VAElementRepresentation element4 =
+			new VAElementRepresentation(iUniqueID, pickingManager, new ClusterNode("four", 7, 0, 0, false));
+		VAElementRepresentation element5 =
+			new VAElementRepresentation(iUniqueID, pickingManager, new ClusterNode("five", 8, 0, 0, false));
 
 		root.add(element1);
-		root.add(element2);
-		root.add(element3);
+		root.add(group1);
+		root.add(group3);
+		group1.add(element2);
+		group1.add(group2);
+		group2.add(element3);
+		group2.add(element4);
+		group3.add(element5);
+		
 
 		hashGroups.put(0, root);
+		hashGroups.put(4, group1);
+		hashGroups.put(5, group2);
+		hashGroups.put(6, group3);
 		hashElements.put(1, element1);
 		hashElements.put(2, element2);
 		hashElements.put(3, element3);
+		hashElements.put(7, element4);
+		hashElements.put(8, element5);
+		
+		root.calculateHierarchyLevels(0);
 	}
 
 	@Override
@@ -150,7 +178,7 @@ public class GLGrouper
 	public void displayLocal(GL gl) {
 		pickingManager.handlePicking(this, gl);
 
-		if (bIsDisplayListDirtyLocal) {
+		if (bIsDisplayListDirtyLocal || dragAndDropController.isDragging()) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
 		}
@@ -162,7 +190,7 @@ public class GLGrouper
 
 	@Override
 	public void displayRemote(GL gl) {
-		if (bIsDisplayListDirtyRemote) {
+		if (bIsDisplayListDirtyRemote || dragAndDropController.isDragging()) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
 		}
@@ -180,12 +208,14 @@ public class GLGrouper
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+
 		
 		GroupRepresentation root = hashGroups.get(0);
-		Vec3f vecPosition = new Vec3f(viewFrustum.getWidth() / 2.0f, viewFrustum.getHeight(), 0.0f);
-		root.calculateDrawingParameters(gl, textRenderer);
+		Vec3f vecPosition = new Vec3f(viewFrustum.getWidth() / 2.0f, viewFrustum.getHeight(), -10.0f);	
 		root.setPosition(vecPosition);
+		root.calculateDrawingParameters(gl, textRenderer);
 		root.draw(gl, textRenderer, vecPosition);
+		dragAndDropController.handleDragging(gl, glMouseListener);
 
 		gl.glEndList();
 	}
@@ -204,11 +234,21 @@ public class GLGrouper
 		switch (ePickingType) {
 
 			case GROUPER_GROUP_SELECTION:
-
+				GroupRepresentation groupRep = hashGroups.get(iExternalID);
 				switch (pickingMode) {
-					case CLICKED:
+					case CLICKED:			
+						if(groupRep != null) {
+							dragAndDropController.clearDraggables();
+							dragAndDropController.addDraggable(groupRep);
+							dragAndDropController.startDragging();
+						}
 						break;
-					case MOUSE_OVER:
+					case DRAGGED:
+						if(groupRep != null) {
+							if(dragAndDropController.isDragging()) {
+								dragAndDropController.setDropArea(groupRep);
+							}
+						}
 						break;
 					default:
 						return;

@@ -132,9 +132,18 @@ public class VAElementRepresentation
 			(float) bounds.getHeight() * GrouperRenderStyle.TEXT_SCALING + 2.0f
 				* GrouperRenderStyle.TEXT_SPACING;
 		bounds = textRenderer.getBounds(clusterNode.getNodeName());
-		float fTempWidth =
+		fWidth =
 			(float) bounds.getWidth() * GrouperRenderStyle.TEXT_SCALING + 2.0f
 				* GrouperRenderStyle.TEXT_SPACING;
-		fWidth = fTempWidth;
+	}
+
+	@Override
+	public void calculateHierarchyLevels(int iLevel) {
+	}
+
+	@Override
+	public void setDepth(float fDepth) {
+		vecPosition.setZ(fDepth + 0.01f);
+		
 	}
 }
