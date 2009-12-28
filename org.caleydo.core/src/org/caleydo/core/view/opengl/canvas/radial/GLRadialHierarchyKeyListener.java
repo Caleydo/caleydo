@@ -18,7 +18,7 @@ public class GLRadialHierarchyKeyListener
 	 * Constructor.
 	 * 
 	 * @param radialHierarchy
-	 *            Instance of the radial hierarchy that should handle the keypoard events.
+	 *            Instance of the radial hierarchy that should handle the keyboard events.
 	 */
 	public GLRadialHierarchyKeyListener(GLRadialHierarchy radialHierarchy) {
 		this.radialHierarchy = radialHierarchy;
@@ -36,6 +36,12 @@ public class GLRadialHierarchyKeyListener
 	public void handleEvent(AEvent event) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	protected void handleKeyReleasedEvent(KeyEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

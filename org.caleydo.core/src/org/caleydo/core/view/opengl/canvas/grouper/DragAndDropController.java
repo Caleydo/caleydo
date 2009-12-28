@@ -2,6 +2,8 @@ package org.caleydo.core.view.opengl.canvas.grouper;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.media.opengl.GL;
 
@@ -10,13 +12,13 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
 public class DragAndDropController {
 
-	private ArrayList<IDraggable> alDraggables;
+	private Set<IDraggable> alDraggables;
 	private IDropArea dropArea;
 	boolean bDragging;
 	boolean bDraggingFirstTime;
 
 	public DragAndDropController() {
-		alDraggables = new ArrayList<IDraggable>();
+		alDraggables = new HashSet<IDraggable>();
 		bDragging = false;
 		bDraggingFirstTime = false;
 	}
@@ -29,6 +31,7 @@ public class DragAndDropController {
 	public void startDragging() {
 		bDragging = true;
 		bDraggingFirstTime = true;
+		dropArea = null;
 	}
 
 	public void setDropArea(IDropArea dropArea) {

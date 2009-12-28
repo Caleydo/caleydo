@@ -1,14 +1,14 @@
 package org.caleydo.core.view.opengl.canvas.grouper;
 
-import java.util.ArrayList;
+import java.util.Set;
 
 import javax.media.opengl.GL;
 
 public interface IDropArea {
 
-	public void handleDragOver(GL gl, ArrayList<IDraggable> alDraggables, float fMouseCoordinateX,
+	public void handleDragOver(GL gl, Set<IDraggable> alDraggables, float fMouseCoordinateX,
 		float fMouseCoordinateY);
 	
-	public void handleDrop(ArrayList<IDraggable> alDraggables, float fMouseCoordinateX,
+	public void handleDrop(Set<IDraggable> alDraggables, float fMouseCoordinateX,
 		float fMouseCoordinateY);
 }

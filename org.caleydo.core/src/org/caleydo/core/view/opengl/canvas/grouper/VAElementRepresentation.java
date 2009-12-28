@@ -6,8 +6,8 @@ import java.awt.geom.Rectangle2D;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
 
@@ -21,19 +21,18 @@ public class VAElementRepresentation
 		"Text without characters below the bottom textline";
 
 	private Vec3f vecPosition;
+	private Vec3f vecHierarchyPsoition;
 	private float fHeight;
 	private float fWidth;
 	private int iVAIndex;
-	private int iViewID;
-	private PickingManager pickingManager;
+	private ICompositeGraphic parent;
 	private ClusterNode clusterNode;
+	private IVAElementDrawingStrategy drawingStrategy;
 
-	public VAElementRepresentation(int iViewID, PickingManager pickingManager, ClusterNode clusterNode) {
-		setMinSize(GrouperRenderStyle.GUI_ELEMENT_MIN_SIZE);
+	public VAElementRepresentation(ClusterNode clusterNode, IVAElementDrawingStrategy drawingStrategy) {
 		vecPosition = new Vec3f();
-		this.iViewID = iViewID;
-		this.pickingManager = pickingManager;
 		this.clusterNode = clusterNode;
+		this.drawingStrategy = drawingStrategy;
 	}
 
 	@Override
@@ -47,39 +46,9 @@ public class VAElementRepresentation
 	}
 
 	@Override
-	public void draw(GL gl, TextRenderer textRenderer, Vec3f vecRelativeDrawingPosition) {
+	public void draw(GL gl, TextRenderer textRenderer) {
 
-		beginGUIElement(gl, vecRelativeDrawingPosition);
-
-		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.GROUPER_VA_ELEMENT_SELECTION,
-			clusterNode.getClusterNr()));
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-
-		gl.glColor3f(0.6f, 0.6f, 0.6f);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(vecPosition.x(), vecPosition.y(), vecPosition.z());
-		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), vecPosition.z());
-		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight, vecPosition.z());
-		gl.glVertex3f(vecPosition.x(), vecPosition.y() - fHeight, vecPosition.z());
-		gl.glEnd();
-
-		float[] text_color = GrouperRenderStyle.TEXT_COLOR;
-		textRenderer.setColor(text_color[0], text_color[1], text_color[2], text_color[3]);
-
-		textRenderer.begin3DRendering();
-
-		textRenderer.draw3D(clusterNode.getNodeName(), vecPosition.x() + GrouperRenderStyle.TEXT_SPACING,
-			vecPosition.y() - fHeight + GrouperRenderStyle.TEXT_SPACING, vecPosition.z(),
-			GrouperRenderStyle.TEXT_SCALING);
-		textRenderer.flush();
-
-		textRenderer.end3DRendering();
-
-		gl.glPopAttrib();
-
-		gl.glPopName();
-
-		endGUIElement(gl);
+		drawingStrategy.draw(gl, this, textRenderer);
 	}
 
 	@Override
@@ -105,22 +74,13 @@ public class VAElementRepresentation
 		this.iVAIndex = iVAIndex;
 	}
 
-	public void setViewID(int iViewID) {
-		this.iViewID = iViewID;
-	}
-
-	@Override
-	public void calculateDrawingParameters(GL gl, TextRenderer textRenderer) {
-		calculateDimensions(gl, textRenderer);
-	}
-
 	@Override
 	public float getWidth() {
 		return fWidth;
 	}
 
 	@Override
-	public void setToMaxWidth(float fWidth) {
+	public void setToMaxWidth(float fWidth, float fChildWidthOffset) {
 		if (this.fWidth < fWidth)
 			this.fWidth = fWidth;
 	}
@@ -142,8 +102,90 @@ public class VAElementRepresentation
 	}
 
 	@Override
-	public void setDepth(float fDepth) {
-		vecPosition.setZ(fDepth + 0.01f);
+	public int getID() {
+		return clusterNode.getClusterNr();
+	}
+
+	@Override
+	public ICompositeGraphic getParent() {
+		return parent;
+	}
+
+	@Override
+	public void setParent(ICompositeGraphic parent) {
+		this.parent = parent;
+	}
+
+	@Override
+	public boolean hasParent(ICompositeGraphic parent) {
+		if (this.parent == null)
+			return false;
+		if (this.parent == parent)
+			return true;
+		return this.parent.hasParent(parent);
+	}
+
+	public String getName() {
+		return clusterNode.getNodeName();
+	}
+
+	public IVAElementDrawingStrategy getDrawingStrategy() {
+		return drawingStrategy;
+	}
+
+	public void setDrawingStrategy(IVAElementDrawingStrategy drawingStrategy) {
+		this.drawingStrategy = drawingStrategy;
+	}
+
+	@Override
+	public void updateDrawingStrategies(SelectionManager selectionManager,
+		DrawingStrategyManager drawingStrategyManager) {
+
+		if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER, getID())) {
+			drawingStrategy =
+				drawingStrategyManager.getVAElementDrawingStrategy(EVAElementDrawingStrategyType.MOUSE_OVER);
+		}
+		else if (selectionManager.checkStatus(ESelectionType.SELECTION, getID())) {
+			drawingStrategy =
+				drawingStrategyManager.getVAElementDrawingStrategy(EVAElementDrawingStrategyType.SELECTION);
+		}
+		else {
+			drawingStrategy =
+				drawingStrategyManager.getVAElementDrawingStrategy(EVAElementDrawingStrategyType.NORMAL);
+		}
+
+	}
+
+	@Override
+	public Vec3f getHierarchyPosition() {
+		return vecHierarchyPsoition;
+	}
+
+	@Override
+	public void setHierarchyPosition(Vec3f vecHierarchyPosition) {
+		this.vecHierarchyPsoition = vecHierarchyPosition;
+
+	}
+
+	@Override
+	public void handleDragging(GL gl, float fMouseCoordinateX, float fMouseCoordinateY) {
+		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void setDraggingStartPoint(float fMouseCoordinateX, float fMouseCoordinateY) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setSelectionType(ESelectionType selectionType, SelectionManager selectionManager) {
+		selectionManager.addToType(selectionType, getID());
+	}
+
+	@Override
+	public void addAsDraggable(DragAndDropController dragAndDropController) {
+		dragAndDropController.addDraggable(this);
 	}
 }

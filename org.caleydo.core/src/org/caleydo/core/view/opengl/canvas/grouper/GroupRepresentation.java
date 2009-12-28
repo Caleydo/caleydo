@@ -3,102 +3,60 @@ package org.caleydo.core.view.opengl.canvas.grouper;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.view.opengl.util.AGLGUIElement;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
 public class GroupRepresentation
-	extends AGLGUIElement
-	implements ICompositeGraphic, IDraggable, IDropArea {
+	implements ICompositeGraphic, IDropArea {
 
 	private ArrayList<ICompositeGraphic> alChildren;
+	private ICompositeGraphic parent;
 	private ArrayList<Float> alDropPositions;
 	private Vec3f vecPosition;
+	private Vec3f vecHierarchyPosition;
 	private float fHeight;
 	private float fWidth;
 	private float fRelDraggingPosX;
 	private float fRelDraggingPosY;
-	private int iViewID;
 	private int iHierarchyLevel;
 	private boolean bCollapsed;
-	private PickingManager pickingManager;
 	private ClusterNode clusterNode;
 	private GrouperRenderStyle renderStyle;
+	private IGroupDrawingStrategy drawingStrategy;
 
-	public GroupRepresentation(int iViewID, PickingManager pickingManager, ClusterNode clusterNode,
-		GrouperRenderStyle renderStyle) {
+	public GroupRepresentation(ClusterNode clusterNode, GrouperRenderStyle renderStyle,
+		IGroupDrawingStrategy drawingStrategy) {
 		alChildren = new ArrayList<ICompositeGraphic>();
 		alDropPositions = new ArrayList<Float>();
-		setMinSize(GrouperRenderStyle.GUI_ELEMENT_MIN_SIZE);
 		vecPosition = new Vec3f();
 		bCollapsed = false;
-		this.iViewID = iViewID;
-		this.pickingManager = pickingManager;
 		this.clusterNode = clusterNode;
 		this.renderStyle = renderStyle;
+		this.drawingStrategy = drawingStrategy;
 	}
 
 	@Override
 	public void add(ICompositeGraphic graphic) {
 		alChildren.add(graphic);
-
+		graphic.setParent(this);
 	}
 
 	@Override
 	public void delete(ICompositeGraphic graphic) {
 		alChildren.remove(graphic);
-
+		graphic.setParent(null);
 	}
 
 	@Override
-	public void draw(GL gl, TextRenderer textRenderer, Vec3f vecRelativeDrawingPosition) {
-		beginGUIElement(gl, vecRelativeDrawingPosition);
-
-		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.GROUPER_GROUP_SELECTION, clusterNode
-			.getClusterNr()));
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-
-		gl.glColor4fv(renderStyle.getGroupColorForLevel(iHierarchyLevel), 0);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(vecPosition.x(), vecPosition.y(), vecPosition.z());
-		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), vecPosition.z());
-		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight, vecPosition.z());
-		gl.glVertex3f(vecPosition.x(), vecPosition.y() - fHeight, vecPosition.z());
-		gl.glEnd();
-
-		gl.glPopAttrib();
-
-		gl.glPopName();
-
-		endGUIElement(gl);
-
-		float fCurrentChildYPosition = vecPosition.y();
-		alDropPositions.clear();
-		alDropPositions.add(vecPosition.y() - GrouperRenderStyle.ELEMENT_TOP_SPACING / 2.0f);
-
-		for (int i = 0; i < alChildren.size(); i++) {
-
-			ICompositeGraphic child = alChildren.get(i);
-
-			fCurrentChildYPosition -= GrouperRenderStyle.ELEMENT_TOP_SPACING;
-			child.setPosition(new Vec3f(vecPosition.x() + GrouperRenderStyle.ELEMENT_LEFT_SPACING,
-				fCurrentChildYPosition, vecPosition.z() + 0.01f));
-			child.draw(gl, textRenderer, vecRelativeDrawingPosition);
-
-			fCurrentChildYPosition -= child.getHeight() + GrouperRenderStyle.ELEMENT_BOTTOM_SPACING;
-
-			if (i == alChildren.size() - 1)
-				alDropPositions
-					.add(fCurrentChildYPosition + GrouperRenderStyle.ELEMENT_BOTTOM_SPACING / 2.0f);
-			else
-				alDropPositions.add(fCurrentChildYPosition);
-		}
+	public void draw(GL gl, TextRenderer textRenderer) {
+		drawingStrategy.draw(gl, this, textRenderer);
 	}
 
 	@Override
@@ -126,37 +84,37 @@ public class GroupRepresentation
 	}
 
 	@Override
-	public void handleDragOver(GL gl, ArrayList<IDraggable> alDraggables, float fMouseCoordinateX,
+	public void handleDragOver(GL gl, Set<IDraggable> alDraggables, float fMouseCoordinateX,
 		float fMouseCoordinateY) {
 
 		for (IDraggable draggable : alDraggables) {
 			if (draggable == this)
 				return;
-		}
-
-		float fMinDistanceFromDropPosition = Float.MAX_VALUE;
-		int iDropPositionIndex = 0;
-
-		for (int i = 0; i < alDropPositions.size(); i++) {
-			Float fDropPosition = alDropPositions.get(i);
-			float fCurrentDistanceFromDropPosition = Math.abs(fMouseCoordinateY - fDropPosition);
-			if (fCurrentDistanceFromDropPosition < fMinDistanceFromDropPosition) {
-				fMinDistanceFromDropPosition = fCurrentDistanceFromDropPosition;
-				iDropPositionIndex = i;
+			if (draggable instanceof ICompositeGraphic) {
+				if (hasParent((ICompositeGraphic) draggable))
+					return;
 			}
 		}
-		
-		gl.glColor3f(0.0f, 0.0f, 0.0f);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(vecPosition.x(), alDropPositions.get(iDropPositionIndex), 0.0f);
-		gl.glVertex3f(vecPosition.x() + fWidth, alDropPositions.get(iDropPositionIndex), 0.0f);
-		gl.glVertex3f(vecPosition.x() + fWidth, alDropPositions.get(iDropPositionIndex) + 0.01f, 0.0f);
-		gl.glVertex3f(vecPosition.x(), alDropPositions.get(iDropPositionIndex) + 0.01f, 0.0f);
-		gl.glEnd();
+
+		AGroupDrawingStrategyRectangular drawingStrategyRectangular;
+		int iDropPositionIndex = 0;
+
+		if (drawingStrategy instanceof AGroupDrawingStrategyRectangular) {
+			drawingStrategyRectangular = (AGroupDrawingStrategyRectangular) drawingStrategy;
+			iDropPositionIndex =
+				drawingStrategyRectangular.getClosestDropPositionIndex(gl, this, alDraggables, fMouseCoordinateY);
+			if (iDropPositionIndex == -1)
+				return;
+		}
+		else {
+			return;
+		}
+
+		drawingStrategyRectangular.drawDropPositionMarker(gl, this, iDropPositionIndex);
 	}
 
 	@Override
-	public void handleDrop(ArrayList<IDraggable> alDraggables, float fMouseCoordinateX,
+	public void handleDrop(Set<IDraggable> alDraggables, float fMouseCoordinateX,
 		float fMouseCoordinateY) {
 		// TODO Auto-generated method stub
 
@@ -182,56 +140,22 @@ public class GroupRepresentation
 		return fWidth;
 	}
 
-	@Override
 	public void calculateDrawingParameters(GL gl, TextRenderer textRenderer) {
-		calculateDimensions(gl, textRenderer);
-
-		float fMaxChildWidth = 0.0f;
-
-		for (ICompositeGraphic child : alChildren) {
-			if (child.getWidth() > fMaxChildWidth)
-				fMaxChildWidth = child.getWidth();
-		}
-
-		for (ICompositeGraphic child : alChildren) {
-			child.setToMaxWidth(fMaxChildWidth);
-			child.setDepth(vecPosition.z());
-		}
-
+		drawingStrategy.calculateDrawingParameters(gl, textRenderer, this);
 	}
 
 	@Override
 	public void calculateDimensions(GL gl, TextRenderer textRenderer) {
 
-		float fMaxChildWidth = 0.0f;
-		fHeight = 0.0f;
-
-		for (int i = 0; i < alChildren.size(); i++) {
-
-			ICompositeGraphic child = alChildren.get(i);
-
-			fHeight += GrouperRenderStyle.ELEMENT_TOP_SPACING;
-
-			child.calculateDimensions(gl, textRenderer);
-
-			float fCurrentChildWidth = child.getWidth();
-
-			if (fCurrentChildWidth > fMaxChildWidth)
-				fMaxChildWidth = fCurrentChildWidth;
-
-			fHeight += child.getHeight() + GrouperRenderStyle.ELEMENT_BOTTOM_SPACING;
-		}
-
-		fWidth = fMaxChildWidth + GrouperRenderStyle.ELEMENT_LEFT_SPACING;
-
+		drawingStrategy.calculateDimensions(gl, textRenderer, this);
 	}
 
 	@Override
-	public void setToMaxWidth(float fWidth) {
+	public void setToMaxWidth(float fWidth, float fChildWidthOffseth) {
 
 		this.fWidth = fWidth;
 		for (ICompositeGraphic child : alChildren) {
-			child.setToMaxWidth(fWidth - GrouperRenderStyle.ELEMENT_LEFT_SPACING);
+			child.setToMaxWidth(fWidth - fChildWidthOffseth, fChildWidthOffseth);
 		}
 
 	}
@@ -253,12 +177,111 @@ public class GroupRepresentation
 		}
 	}
 
+	public int getHierarchyLevel() {
+		return iHierarchyLevel;
+	}
+
 	@Override
-	public void setDepth(float fDepth) {
-		vecPosition.setZ(fDepth + 0.01f);
-		for (ICompositeGraphic child : alChildren) {
-			child.setDepth(vecPosition.z());
+	public int getID() {
+		return clusterNode.getClusterNr();
+	}
+
+	public ArrayList<ICompositeGraphic> getChildren() {
+		return alChildren;
+	}
+
+	public ArrayList<Float> getDropPositions() {
+		return alDropPositions;
+	}
+
+	public void setHeight(float fHeight) {
+		this.fHeight = fHeight;
+	}
+
+	public void setWidth(float fWidth) {
+		this.fWidth = fWidth;
+	}
+
+	public IGroupDrawingStrategy getDrawingStrategy() {
+		return drawingStrategy;
+	}
+
+	public void setDrawingStrategy(IGroupDrawingStrategy drawingStrategy) {
+		this.drawingStrategy = drawingStrategy;
+	}
+
+	@Override
+	public boolean hasParent(ICompositeGraphic parent) {
+		if (this.parent == null)
+			return false;
+		if (this.parent == parent)
+			return true;
+		return this.parent.hasParent(parent);
+	}
+
+	@Override
+	public ICompositeGraphic getParent() {
+		return parent;
+	}
+
+	@Override
+	public void setParent(ICompositeGraphic parent) {
+		this.parent = parent;
+	}
+
+	@Override
+	public void updateDrawingStrategies(SelectionManager selectionManager,
+		DrawingStrategyManager drawingStrategyManager) {
+
+		if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER, getID())) {
+			drawingStrategy =
+				drawingStrategyManager.getGroupDrawingStrategy(EGroupDrawingStrategyType.MOUSE_OVER);
+
 		}
+		else if (selectionManager.checkStatus(ESelectionType.SELECTION, getID())) {
+			drawingStrategy =
+				drawingStrategyManager.getGroupDrawingStrategy(EGroupDrawingStrategyType.SELECTION);
+		}
+		else {
+			drawingStrategy =
+				drawingStrategyManager.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
+		}
+
+		for (ICompositeGraphic child : alChildren) {
+			child.updateDrawingStrategies(selectionManager, drawingStrategyManager);
+		}
+
+	}
+
+	@Override
+	public Vec3f getHierarchyPosition() {
+		return vecHierarchyPosition;
+	}
+
+	@Override
+	public void setHierarchyPosition(Vec3f vecHierarchyPosition) {
+		this.vecHierarchyPosition = vecHierarchyPosition;
+		
+		for(ICompositeGraphic child : alChildren) {
+			child.setHierarchyPosition(vecHierarchyPosition);
+		}
+	}
+	
+	@Override
+	public void setSelectionType(ESelectionType selectionType, SelectionManager selectionManager) {
+		selectionManager.addToType(selectionType, getID());
+		for(ICompositeGraphic child : alChildren) {
+			child.setSelectionType(selectionType, selectionManager);
+		}
+	}
+
+	@Override
+	public void addAsDraggable(DragAndDropController dragAndDropController) {
+		dragAndDropController.addDraggable(this);
+		for(ICompositeGraphic child : alChildren) {
+			child.addAsDraggable(dragAndDropController);
+		}
+		
 	}
 
 }
