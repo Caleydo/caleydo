@@ -36,7 +36,6 @@ import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.IGroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -80,6 +79,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.listener.GLHierarchicalHeatMapKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GroupContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -2268,6 +2268,7 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public void display(GL gl) {
+		
 		processEvents();
 		if (generalManager.isWiiModeActive()) {
 			handleWiiInput();
@@ -2401,9 +2402,11 @@ public class GLHierarchicalHeatMap
 		// EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView.getID()));
 		
 		gl.glPushMatrix();
-
+		
 		heatMapRemoteElement.getTransform().getTranslation().set(fleftOffset, -0.2f, 0);
-		heatMapRemoteElement.getTransform().getScale().set(fright/8, ftop/8, 1);
+		heatMapRemoteElement.getTransform().getScale().set(fright/8, 1*fAspectRatio, 1);
+//		heatMapRemoteElement.getTransform().getTranslation().set(0, 0, 0);
+//		heatMapRemoteElement.getTransform().getScale().set(1, 0.5f, 1);
 		
 		Transform transform = heatMapRemoteElement.getTransform();
 		Vec3f translation = transform.getTranslation();
@@ -2417,7 +2420,6 @@ public class GLHierarchicalHeatMap
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
 		glHeatMapView.displayRemote(gl);
-		gl.glPopMatrix();
 		
 		// gl.glPopName();
 		renderStyle.setWidthLevel3(glHeatMapView.getViewFrustum().getWidth() - 0.95f);
@@ -2446,7 +2448,9 @@ public class GLHierarchicalHeatMap
 			gl.glTranslatef(0f, -fOffsety, 0f);
 		}
 
-		gl.glTranslatef(-fleftOffset, +0.2f, 0);
+		gl.glPopMatrix();
+		
+//		gl.glTranslatef(-fleftOffset, +0.2f, 0);
 
 		// render embedded gene dendrogram
 		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
@@ -2493,8 +2497,8 @@ public class GLHierarchicalHeatMap
 		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
 			ftop -= renderStyle.getHeightExperimentDendrogram();
 
-		glHeatMapView.getViewFrustum().setTop(ftop);
-		glHeatMapView.getViewFrustum().setRight(fright);
+//		glHeatMapView.getViewFrustum().setTop(ftop);
+//		glHeatMapView.getViewFrustum().setRight(fright);
 		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
 		// EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView.getID()));
 		glHeatMapView.displayRemote(gl);
