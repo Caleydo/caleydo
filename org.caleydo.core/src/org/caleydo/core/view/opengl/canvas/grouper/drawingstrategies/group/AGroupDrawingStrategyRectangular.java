@@ -1,12 +1,17 @@
-package org.caleydo.core.view.opengl.canvas.grouper;
+package org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.group;
 
 import gleem.linalg.Vec3f;
 
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Set;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.view.opengl.canvas.grouper.GrouperRenderStyle;
+import org.caleydo.core.view.opengl.canvas.grouper.compositegraphic.GroupRepresentation;
+import org.caleydo.core.view.opengl.canvas.grouper.compositegraphic.ICompositeGraphic;
+import org.caleydo.core.view.opengl.canvas.grouper.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -14,6 +19,9 @@ import com.sun.opengl.util.j2d.TextRenderer;
 public abstract class AGroupDrawingStrategyRectangular
 	extends AGLGUIElement
 	implements IGroupDrawingStrategy {
+
+	private static final String sTextForHeightCalculation =
+		"Text without characters below the bottom textline";
 
 	public AGroupDrawingStrategyRectangular() {
 		setMinSize(GrouperRenderStyle.GUI_ELEMENT_MIN_SIZE);
@@ -30,15 +38,11 @@ public abstract class AGroupDrawingStrategyRectangular
 
 		calculateDimensions(gl, textRenderer, groupRepresentation);
 
-		float fMaxChildWidth = 0.0f;
-
-		for (ICompositeGraphic child : alChildren) {
-			if (child.getWidth() > fMaxChildWidth)
-				fMaxChildWidth = child.getWidth();
-		}
-
-		for (ICompositeGraphic child : alChildren) {
-			child.setToMaxWidth(fMaxChildWidth, GrouperRenderStyle.ELEMENT_LEFT_SPACING);
+		if (!groupRepresentation.isCollapsed()) {
+			for (ICompositeGraphic child : alChildren) {
+				child.setToMaxWidth(groupRepresentation.getWidth() - GrouperRenderStyle.ELEMENT_LEFT_SPACING,
+					GrouperRenderStyle.ELEMENT_LEFT_SPACING);
+			}
 		}
 
 	}
@@ -47,37 +51,49 @@ public abstract class AGroupDrawingStrategyRectangular
 	public void calculateDimensions(GL gl, TextRenderer textRenderer, GroupRepresentation groupRepresentation) {
 
 		float fMaxChildWidth = 0.0f;
-		float fHeight = 0.0f;
+		float fHeight = getTextHeight(textRenderer);
 		float fWidth = 0.0f;
 
 		ArrayList<ICompositeGraphic> alChildren = groupRepresentation.getChildren();
 		ArrayList<Float> alDropPositions = groupRepresentation.getDropPositions();
 
 		alDropPositions.clear();
-		alDropPositions.add(GrouperRenderStyle.ELEMENT_TOP_SPACING / 2.0f);
 
-		for (int i = 0; i < alChildren.size(); i++) {
+		if (!groupRepresentation.isCollapsed()) {
+			alDropPositions.add(fHeight + (GrouperRenderStyle.ELEMENT_TOP_SPACING / 2.0f));
 
-			ICompositeGraphic child = alChildren.get(i);
+			for (int i = 0; i < alChildren.size(); i++) {
 
-			fHeight += GrouperRenderStyle.ELEMENT_TOP_SPACING;
+				ICompositeGraphic child = alChildren.get(i);
 
-			child.calculateDimensions(gl, textRenderer);
+				fHeight += GrouperRenderStyle.ELEMENT_TOP_SPACING;
 
-			float fCurrentChildWidth = child.getWidth();
+				child.calculateDimensions(gl, textRenderer);
 
-			if (fCurrentChildWidth > fMaxChildWidth)
-				fMaxChildWidth = fCurrentChildWidth;
+				float fCurrentChildWidth = child.getWidth();
 
-			fHeight += child.getHeight() + GrouperRenderStyle.ELEMENT_BOTTOM_SPACING;
+				if (fCurrentChildWidth > fMaxChildWidth)
+					fMaxChildWidth = fCurrentChildWidth;
 
-			if (i == alChildren.size() - 1)
-				alDropPositions.add(fHeight - GrouperRenderStyle.ELEMENT_BOTTOM_SPACING / 2.0f);
-			else
-				alDropPositions.add(fHeight);
+				fHeight += child.getHeight() + GrouperRenderStyle.ELEMENT_BOTTOM_SPACING;
+
+				if (i == alChildren.size() - 1)
+					alDropPositions.add(fHeight - GrouperRenderStyle.ELEMENT_BOTTOM_SPACING / 2.0f);
+				else
+					alDropPositions.add(fHeight);
+			}
+		}
+		else {
+			fHeight += GrouperRenderStyle.ELEMENT_BOTTOM_SPACING;
+			alDropPositions.add(fHeight - (GrouperRenderStyle.ELEMENT_BOTTOM_SPACING / 2.0f));
 		}
 
-		fWidth = fMaxChildWidth + GrouperRenderStyle.ELEMENT_LEFT_SPACING;
+		Rectangle2D bounds = textRenderer.getBounds(groupRepresentation.getName());
+		float fTextWidth =
+			(float) bounds.getWidth() * GrouperRenderStyle.TEXT_SCALING + 2.0f
+				* GrouperRenderStyle.TEXT_SPACING;
+
+		fWidth = Math.max(fTextWidth, fMaxChildWidth) + GrouperRenderStyle.ELEMENT_LEFT_SPACING;
 
 		groupRepresentation.setHeight(fHeight);
 		groupRepresentation.setWidth(fWidth);
@@ -87,19 +103,64 @@ public abstract class AGroupDrawingStrategyRectangular
 		TextRenderer textRenderer) {
 
 		Vec3f vecPosition = groupRepresentation.getPosition();
-		float fHeight = groupRepresentation.getHeight();
-		float fWidth = groupRepresentation.getWidth();
+
+		drawBackgroudRectangle(gl, groupRepresentation, vecPosition);
 
 		beginGUIElement(gl, groupRepresentation.getHierarchyPosition());
 
+		float[] text_color = GrouperRenderStyle.TEXT_COLOR;
+		float fTextHeight = getTextHeight(textRenderer);
+
+		textRenderer.setColor(text_color[0], text_color[1], text_color[2], text_color[3]);
+
+		textRenderer.begin3DRendering();
+
+		textRenderer
+			.draw3D(groupRepresentation.getName(), vecPosition.x() + GrouperRenderStyle.ELEMENT_LEFT_SPACING
+				+ GrouperRenderStyle.TEXT_SPACING, vecPosition.y() - fTextHeight
+				+ GrouperRenderStyle.TEXT_SPACING, vecPosition.z(), GrouperRenderStyle.TEXT_SCALING);
+		textRenderer.flush();
+
+		textRenderer.end3DRendering();
+
+		gl.glPopAttrib();
+
+		endGUIElement(gl);
+	}
+
+	protected void drawCollapseButton(GL gl, GroupRepresentation groupRepresentation,
+		TextRenderer textRenderer) {
+
+		float fTextHeight = getTextHeight(textRenderer);
+		Vec3f vecPosition = groupRepresentation.getPosition();
+
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+
+		beginGUIElement(gl, groupRepresentation.getHierarchyPosition());
+
+		float fCollapseButtonSize = 0.8f * fTextHeight;
+		float fCollapseButtonPositionX =
+			vecPosition.x() + (GrouperRenderStyle.ELEMENT_LEFT_SPACING / 2.0f) - fCollapseButtonSize / 2.0f;
+		float fCollapseButtonPositionY = vecPosition.y() - 0.1f * fTextHeight;
+
+		// TODO: Use Texture for rendering
+		if (groupRepresentation.isCollapsed())
+			gl.glColor4f(1, 1, 1, 1);
+		else
+			gl.glColor4f(0, 0, 0, 1);
+
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(vecPosition.x(), vecPosition.y(), vecPosition.z());
-		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), vecPosition.z());
-		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight, vecPosition.z());
-		gl.glVertex3f(vecPosition.x(), vecPosition.y() - fHeight, vecPosition.z());
+		gl.glVertex3f(fCollapseButtonPositionX, fCollapseButtonPositionY, vecPosition.z() + 0.01f);
+		gl.glVertex3f(fCollapseButtonPositionX + fCollapseButtonSize, fCollapseButtonPositionY, vecPosition
+			.z() + 0.01f);
+		gl.glVertex3f(fCollapseButtonPositionX + fCollapseButtonSize, fCollapseButtonPositionY
+			- fCollapseButtonSize, vecPosition.z() + 0.01f);
+		gl.glVertex3f(fCollapseButtonPositionX, fCollapseButtonPositionY - fCollapseButtonSize, vecPosition
+			.z() + 0.01f);
 		gl.glEnd();
 
 		endGUIElement(gl);
+
 	}
 
 	protected void drawRectangularBorder(GL gl, GroupRepresentation groupRepresentation,
@@ -121,11 +182,34 @@ public abstract class AGroupDrawingStrategyRectangular
 		endGUIElement(gl);
 	}
 
+	protected void drawBackgroudRectangle(GL gl, GroupRepresentation groupRepresentation, Vec3f vecPosition) {
+
+		float fHeight = groupRepresentation.getHeight();
+		float fWidth = groupRepresentation.getWidth();
+
+		beginGUIElement(gl, groupRepresentation.getHierarchyPosition());
+
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(vecPosition.x(), vecPosition.y(), vecPosition.z());
+		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), vecPosition.z());
+		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight, vecPosition.z());
+		gl.glVertex3f(vecPosition.x(), vecPosition.y() - fHeight, vecPosition.z());
+		gl.glEnd();
+
+		endGUIElement(gl);
+
+	}
+
 	protected void drawChildren(GL gl, GroupRepresentation groupRepresentation, TextRenderer textRenderer) {
+
+		if (groupRepresentation.isCollapsed())
+			return;
 
 		Vec3f vecPosition = groupRepresentation.getPosition();
 		ArrayList<ICompositeGraphic> alChildren = groupRepresentation.getChildren();
-		float fCurrentChildYPosition = vecPosition.y();
+		float fTextHeight = getTextHeight(textRenderer);
+
+		float fCurrentChildYPosition = vecPosition.y() - fTextHeight;
 
 		for (int i = 0; i < alChildren.size(); i++) {
 
@@ -142,7 +226,7 @@ public abstract class AGroupDrawingStrategyRectangular
 	}
 
 	public int getClosestDropPositionIndex(GL gl, GroupRepresentation groupRepresentation,
-		Set<IDraggable> alDraggables, float fMouseCoordinateY) {
+		Set<IDraggable> setDraggables, float fMouseCoordinateY) {
 
 		Vec3f vecPosition = groupRepresentation.getPosition();
 		ArrayList<Float> alDropPositions = groupRepresentation.getDropPositions();
@@ -166,19 +250,19 @@ public abstract class AGroupDrawingStrategyRectangular
 		ICompositeGraphic childNearDropPositionUpper = null;
 
 		if (iDropPositionIndex == alDropPositions.size() - 1) {
-			childNearDropPositionLower = alChildren.get(iDropPositionIndex - 1);
+			childNearDropPositionLower = null;
 		}
 		else {
 			childNearDropPositionLower = alChildren.get(iDropPositionIndex);
 		}
 		if (iDropPositionIndex == 0) {
-			childNearDropPositionUpper = alChildren.get(iDropPositionIndex);
+			childNearDropPositionUpper = null;
 		}
 		else {
 			childNearDropPositionUpper = alChildren.get(iDropPositionIndex - 1);
 		}
 
-		for (IDraggable draggable : alDraggables) {
+		for (IDraggable draggable : setDraggables) {
 			if (draggable == childNearDropPositionLower || draggable == childNearDropPositionUpper)
 				return -1;
 		}
@@ -207,5 +291,11 @@ public abstract class AGroupDrawingStrategyRectangular
 		gl.glPopAttrib();
 
 		endGUIElement(gl);
+	}
+
+	protected float getTextHeight(TextRenderer textRenderer) {
+		Rectangle2D bounds = textRenderer.getBounds(sTextForHeightCalculation);
+		return (float) bounds.getHeight() * GrouperRenderStyle.TEXT_SCALING + 2.0f
+			* GrouperRenderStyle.TEXT_SPACING;
 	}
 }

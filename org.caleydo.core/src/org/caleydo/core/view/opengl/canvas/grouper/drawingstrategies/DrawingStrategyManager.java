@@ -1,8 +1,21 @@
-package org.caleydo.core.view.opengl.canvas.grouper;
+package org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies;
 
 import java.util.HashMap;
 
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.canvas.grouper.GrouperRenderStyle;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.group.EGroupDrawingStrategyType;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.group.GroupDrawingStrategyDragged;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.group.GroupDrawingStrategyMouseOver;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.group.GroupDrawingStrategyNormal;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.group.GroupDrawingStrategySelection;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.group.IGroupDrawingStrategy;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement.EVAElementDrawingStrategyType;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement.IVAElementDrawingStrategy;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement.VAElementDrawingStrategyDragged;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement.VAElementDrawingStrategyMouseOver;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement.VAElementDrawingStrategyNormal;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement.VAElementDrawingStrategySelection;
 
 public class DrawingStrategyManager {
 
@@ -20,6 +33,7 @@ public class DrawingStrategyManager {
 			pickingManager, iViewID, renderStyle));
 		hashGroupDrawingStrategies.put(EGroupDrawingStrategyType.SELECTION, new GroupDrawingStrategySelection(
 			pickingManager, iViewID, renderStyle));
+		hashGroupDrawingStrategies.put(EGroupDrawingStrategyType.DRAGGED, new GroupDrawingStrategyDragged(renderStyle));
 		
 		hashVAElementDrawingStrategies.put(EVAElementDrawingStrategyType.NORMAL, new VAElementDrawingStrategyNormal(
 			pickingManager, iViewID));
@@ -27,6 +41,7 @@ public class DrawingStrategyManager {
 			pickingManager, iViewID));
 		hashVAElementDrawingStrategies.put(EVAElementDrawingStrategyType.SELECTION, new VAElementDrawingStrategySelection(
 			pickingManager, iViewID));
+		hashVAElementDrawingStrategies.put(EVAElementDrawingStrategyType.DRAGGED, new VAElementDrawingStrategyDragged());
 
 	}
 	

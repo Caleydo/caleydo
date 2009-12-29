@@ -1,6 +1,8 @@
-package org.caleydo.core.view.opengl.canvas.grouper;
+package org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.group;
 
 import javax.media.opengl.GL;
+
+import org.caleydo.core.view.opengl.canvas.grouper.compositegraphic.GroupRepresentation;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 

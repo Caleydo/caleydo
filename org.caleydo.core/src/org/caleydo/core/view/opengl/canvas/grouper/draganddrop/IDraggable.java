@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.grouper;
+package org.caleydo.core.view.opengl.canvas.grouper.draganddrop;
 
 import javax.media.opengl.GL;
 

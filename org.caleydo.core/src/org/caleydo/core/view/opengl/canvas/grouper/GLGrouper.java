@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.canvas.grouper;
 import gleem.linalg.Vec3f;
 
 import java.awt.Font;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import javax.media.opengl.GL;
@@ -23,6 +24,14 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.grouper.compositegraphic.GroupRepresentation;
+import org.caleydo.core.view.opengl.canvas.grouper.compositegraphic.VAElementRepresentation;
+import org.caleydo.core.view.opengl.canvas.grouper.draganddrop.DragAndDropController;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.DrawingStrategyManager;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.group.EGroupDrawingStrategyType;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.group.IGroupDrawingStrategy;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement.EVAElementDrawingStrategyType;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement.IVAElementDrawingStrategy;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
@@ -42,7 +51,10 @@ public class GLGrouper
 	implements IViewCommandHandler {
 
 	boolean bUseDetailLevel = true;
-	boolean bControlPressed = false;
+
+	private boolean bControlPressed = false;
+	private double dCollapseButtonDragOverTime;
+	private int iDraggedOverCollapseButtonID;
 
 	private GrouperRenderStyle renderStyle;
 	private HashMap<Integer, GroupRepresentation> hashGroups;
@@ -79,6 +91,8 @@ public class GLGrouper
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32), true, true);
 
 		glKeyListener = new GLGrouperKeyListener(this);
+
+		iDraggedOverCollapseButtonID = -1;
 		// registerEventListeners();
 	}
 
@@ -112,28 +126,34 @@ public class GLGrouper
 			drawingStrategyManager.getVAElementDrawingStrategy(EVAElementDrawingStrategyType.NORMAL);
 
 		rootGroup =
-			new GroupRepresentation(new ClusterNode("root", 0, 0, 0, true), renderStyle, groupDrawingStrategy);
+			new GroupRepresentation(new ClusterNode("root", 0, 0, 0, true), renderStyle,
+				groupDrawingStrategy, drawingStrategyManager);
 
 		GroupRepresentation group1 =
 			new GroupRepresentation(new ClusterNode("group1", 4, 0, 0, false), renderStyle,
-				groupDrawingStrategy);
+				groupDrawingStrategy, drawingStrategyManager);
 		GroupRepresentation group2 =
 			new GroupRepresentation(new ClusterNode("group2", 5, 0, 0, false), renderStyle,
-				groupDrawingStrategy);
+				groupDrawingStrategy, drawingStrategyManager);
 		GroupRepresentation group3 =
 			new GroupRepresentation(new ClusterNode("group3", 6, 0, 0, false), renderStyle,
-				groupDrawingStrategy);
+				groupDrawingStrategy, drawingStrategyManager);
 
 		VAElementRepresentation element1 =
-			new VAElementRepresentation(new ClusterNode("one", 1, 0, 0, false), elementDrawingStrategy);
+			new VAElementRepresentation(new ClusterNode("one", 1, 0, 0, false), elementDrawingStrategy,
+				drawingStrategyManager);
 		VAElementRepresentation element2 =
-			new VAElementRepresentation(new ClusterNode("two", 2, 0, 0, false), elementDrawingStrategy);
+			new VAElementRepresentation(new ClusterNode("two", 2, 0, 0, false), elementDrawingStrategy,
+				drawingStrategyManager);
 		VAElementRepresentation element3 =
-			new VAElementRepresentation(new ClusterNode("three", 3, 0, 0, false), elementDrawingStrategy);
+			new VAElementRepresentation(new ClusterNode("three", 3, 0, 0, false), elementDrawingStrategy,
+				drawingStrategyManager);
 		VAElementRepresentation element4 =
-			new VAElementRepresentation(new ClusterNode("four", 7, 0, 0, false), elementDrawingStrategy);
+			new VAElementRepresentation(new ClusterNode("four", 7, 0, 0, false), elementDrawingStrategy,
+				drawingStrategyManager);
 		VAElementRepresentation element5 =
-			new VAElementRepresentation(new ClusterNode("five", 8, 0, 0, false), elementDrawingStrategy);
+			new VAElementRepresentation(new ClusterNode("five", 8, 0, 0, false), elementDrawingStrategy,
+				drawingStrategyManager);
 
 		rootGroup.add(group1);
 		rootGroup.add(element1);
@@ -243,10 +263,9 @@ public class GLGrouper
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GROUPER_BACKGROUND_SELECTION,
-			0));
-		
+
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GROUPER_BACKGROUND_SELECTION, 0));
+
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 		gl.glColor3f(1.0f, 1.0f, 1.0f);
 		gl.glBegin(GL.GL_POLYGON);
@@ -256,7 +275,7 @@ public class GLGrouper
 		gl.glVertex3f(0.0f, viewFrustum.getHeight(), -11.0f);
 		gl.glEnd();
 		gl.glPopAttrib();
-		
+
 		gl.glPopName();
 
 		Vec3f vecPosition = new Vec3f(viewFrustum.getWidth() / 2.0f, viewFrustum.getHeight(), -10.0f);
@@ -265,7 +284,7 @@ public class GLGrouper
 		rootGroup.calculateDrawingParameters(gl, textRenderer);
 		rootGroup.draw(gl, textRenderer);
 		dragAndDropController.handleDragging(gl, glMouseListener);
-		
+
 		gl.glEndList();
 	}
 
@@ -286,21 +305,23 @@ public class GLGrouper
 				GroupRepresentation groupRep = hashGroups.get(iExternalID);
 				switch (pickingMode) {
 					case CLICKED:
-						if (groupRep != null) {			
-
-							if (!bControlPressed && !selectionManager.checkStatus(ESelectionType.SELECTION, groupRep.getID())) {
-								dragAndDropController.clearDraggables();				
+						iDraggedOverCollapseButtonID = -1;
+						if (groupRep != null) {
+							if (!bControlPressed
+								&& !selectionManager.checkStatus(ESelectionType.SELECTION, groupRep.getID())) {
+								dragAndDropController.clearDraggables();
 								selectionManager.clearSelection(ESelectionType.SELECTION);
 							}
 							groupRep.addAsDraggable(dragAndDropController);
 							dragAndDropController.startDragging();
-							
+
 							groupRep.setSelectionType(ESelectionType.SELECTION, selectionManager);
 							rootGroup.updateDrawingStrategies(selectionManager, drawingStrategyManager);
 							setDisplayListDirty();
 						}
 						break;
 					case DRAGGED:
+						iDraggedOverCollapseButtonID = -1;
 						if (groupRep != null) {
 							if (dragAndDropController.isDragging()) {
 								dragAndDropController.setDropArea(groupRep);
@@ -308,6 +329,7 @@ public class GLGrouper
 						}
 						break;
 					case MOUSE_OVER:
+						iDraggedOverCollapseButtonID = -1;
 						if (groupRep != null) {
 							if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER, groupRep.getID())
 								|| selectionManager.checkStatus(ESelectionType.SELECTION, groupRep.getID())) {
@@ -328,9 +350,12 @@ public class GLGrouper
 				VAElementRepresentation elementRep = hashElements.get(iExternalID);
 				switch (pickingMode) {
 					case CLICKED:
+						iDraggedOverCollapseButtonID = -1;
 						if (elementRep != null) {
 
-							if (!bControlPressed && !selectionManager.checkStatus(ESelectionType.SELECTION, elementRep.getID()) ) {
+							if (!bControlPressed
+								&& !selectionManager
+									.checkStatus(ESelectionType.SELECTION, elementRep.getID())) {
 								dragAndDropController.clearDraggables();
 								selectionManager.clearSelection(ESelectionType.SELECTION);
 							}
@@ -343,6 +368,7 @@ public class GLGrouper
 						}
 						break;
 					case MOUSE_OVER:
+						iDraggedOverCollapseButtonID = -1;
 						if (elementRep != null) {
 							if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER, elementRep.getID())
 								|| selectionManager.checkStatus(ESelectionType.SELECTION, elementRep.getID())) {
@@ -358,18 +384,50 @@ public class GLGrouper
 						return;
 				}
 				break;
-				
+
 			case GROUPER_BACKGROUND_SELECTION:
 				switch (pickingMode) {
 					case CLICKED:
-							dragAndDropController.clearDraggables();
-							selectionManager.clearSelections();
-							rootGroup.updateDrawingStrategies(selectionManager, drawingStrategyManager);
-							setDisplayListDirty();
+						iDraggedOverCollapseButtonID = -1;
+						dragAndDropController.clearDraggables();
+						selectionManager.clearSelections();
+						rootGroup.updateDrawingStrategies(selectionManager, drawingStrategyManager);
+						setDisplayListDirty();
 						break;
 					default:
 						return;
 				}
+				break;
+
+			case GROUPER_COLLAPSE_BUTTON_SELECTION:
+				GroupRepresentation group = hashGroups.get(iExternalID);
+				switch (pickingMode) {
+					case CLICKED:
+						iDraggedOverCollapseButtonID = -1;
+						if (group != null) {
+							group.setCollapsed(!group.isCollapsed());
+							setDisplayListDirty();
+						}
+						break;
+					case DRAGGED:
+						if (group != null && group.isCollapsed()) {
+							double dCurrentTimeStamp = GregorianCalendar.getInstance().getTimeInMillis();
+
+							if (dCurrentTimeStamp - dCollapseButtonDragOverTime > 500
+								&& group.getID() == iDraggedOverCollapseButtonID) {
+								group.setCollapsed(false);
+								iDraggedOverCollapseButtonID = -1;
+								setDisplayListDirty();
+								return;
+							}
+							if (group.getID() != iDraggedOverCollapseButtonID)
+								dCollapseButtonDragOverTime = dCurrentTimeStamp;
+							iDraggedOverCollapseButtonID = group.getID();
+						}
+					default:
+						return;
+				}
+				break;
 		}
 	}
 

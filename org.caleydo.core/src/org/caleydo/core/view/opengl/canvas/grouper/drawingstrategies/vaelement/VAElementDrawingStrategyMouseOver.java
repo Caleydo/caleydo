@@ -1,25 +1,28 @@
-package org.caleydo.core.view.opengl.canvas.grouper;
+package org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.canvas.grouper.GrouperRenderStyle;
+import org.caleydo.core.view.opengl.canvas.grouper.compositegraphic.VAElementRepresentation;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
-public class VAElementDrawingStrategyNormal
+public class VAElementDrawingStrategyMouseOver
 	extends AVAElementDrawingStrategyRectangular {
-	
+
 	private PickingManager pickingManager;
 	private int iViewID;
 	
-	public VAElementDrawingStrategyNormal(PickingManager pickingManager, int iViewID) {
+	public VAElementDrawingStrategyMouseOver(PickingManager pickingManager, int iViewID) {
 		this.pickingManager = pickingManager;
 		this.iViewID = iViewID;
 	}
-
+	
 	@Override
 	public void draw(GL gl, VAElementRepresentation elementRepresentation, TextRenderer textRenderer) {
+		
 		
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.GROUPER_VA_ELEMENT_SELECTION,
 			elementRepresentation.getID()));
@@ -29,10 +32,15 @@ public class VAElementDrawingStrategyNormal
 
 		drawElementRectangular(gl, elementRepresentation, textRenderer);
 		
+		gl.glLineWidth(3.0f);
+		gl.glColor4fv(GrouperRenderStyle.MOUSE_OVER_COLOR, 0);
+		
+		drawRectangularBorder(gl, elementRepresentation, textRenderer);
+		
 		gl.glPopAttrib();
 
 		gl.glPopName();
-		
+
 	}
-	
+
 }

@@ -1,20 +1,22 @@
-package org.caleydo.core.view.opengl.canvas.grouper;
+package org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.group;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.canvas.grouper.GrouperRenderStyle;
+import org.caleydo.core.view.opengl.canvas.grouper.compositegraphic.GroupRepresentation;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
-public class GroupDrawingStrategySelection
+public class GroupDrawingStrategyNormal
 	extends AGroupDrawingStrategyRectangular {
-	
+
 	private PickingManager pickingManager;
 	private GrouperRenderStyle renderStyle;
 	private int iViewID;
 
-	public GroupDrawingStrategySelection(PickingManager pickingManager, int iViewID,
+	public GroupDrawingStrategyNormal(PickingManager pickingManager, int iViewID,
 		GrouperRenderStyle renderStyle) {
 		this.pickingManager = pickingManager;
 		this.iViewID = iViewID;
@@ -23,7 +25,7 @@ public class GroupDrawingStrategySelection
 
 	@Override
 	public void draw(GL gl, GroupRepresentation groupRepresentation, TextRenderer textRenderer) {
-		
+
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.GROUPER_GROUP_SELECTION,
 			groupRepresentation.getID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
@@ -31,17 +33,20 @@ public class GroupDrawingStrategySelection
 		gl.glColor4fv(renderStyle.getGroupColorForLevel(groupRepresentation.getHierarchyLevel()), 0);
 
 		drawGroupRectangular(gl, groupRepresentation, textRenderer);
-		
-		gl.glColor4fv(GrouperRenderStyle.SELECTED_COLOR, 0);
-		gl.glLineWidth(3.0f);
-
-		drawRectangularBorder(gl, groupRepresentation, textRenderer);
-
-		gl.glPopAttrib();
 
 		gl.glPopName();
 
+		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.GROUPER_COLLAPSE_BUTTON_SELECTION,
+			groupRepresentation.getID()));
+
+		drawCollapseButton(gl, groupRepresentation, textRenderer);
+		
+		gl.glPopName();
+
+		gl.glPopAttrib();
+
 		drawChildren(gl, groupRepresentation, textRenderer);
+
 	}
 
 }

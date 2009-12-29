@@ -1,7 +1,6 @@
-package org.caleydo.core.view.opengl.canvas.grouper;
+package org.caleydo.core.view.opengl.canvas.grouper.draganddrop;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,20 +11,28 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
 public class DragAndDropController {
 
-	private Set<IDraggable> alDraggables;
+	private Set<IDraggable> setDraggables;
 	private IDropArea dropArea;
 	boolean bDragging;
 	boolean bDraggingFirstTime;
+	float fArDraggingStartMouseCoordinates[];
+
+	
 
 	public DragAndDropController() {
-		alDraggables = new HashSet<IDraggable>();
+		setDraggables = new HashSet<IDraggable>();
 		bDragging = false;
 		bDraggingFirstTime = false;
+		fArDraggingStartMouseCoordinates = new float[2];
 	}
 
 	public void addDraggable(IDraggable draggable) {
 		if (draggable != null)
-			alDraggables.add(draggable);
+			setDraggables.add(draggable);
+	}
+	
+	public void removeDraggable(IDraggable draggable) {
+		setDraggables.remove(draggable);
 	}
 
 	public void startDragging() {
@@ -39,7 +46,7 @@ public class DragAndDropController {
 	}
 
 	public void clearDraggables() {
-		alDraggables.clear();
+		setDraggables.clear();
 	}
 
 	public void handleDragging(GL gl, GLMouseListener glMouseListener) {
@@ -52,11 +59,11 @@ public class DragAndDropController {
 					mouseWinCoords.y);
 
 			if (dropArea != null) {
-				dropArea.handleDragOver(gl, alDraggables, fArTargetWorldCoordinates[0],
+				dropArea.handleDragOver(gl, setDraggables, fArTargetWorldCoordinates[0],
 					fArTargetWorldCoordinates[1]);
 			}
 			
-			for (IDraggable draggable : alDraggables) {
+			for (IDraggable draggable : setDraggables) {
 				if (bDraggingFirstTime) {
 					draggable.setDraggingStartPoint(fArTargetWorldCoordinates[0],
 						fArTargetWorldCoordinates[1]);
@@ -67,7 +74,7 @@ public class DragAndDropController {
 			if (glMouseListener.wasMouseReleased()) {
 				bDragging = false;
 				if (dropArea != null) {
-					dropArea.handleDrop(alDraggables, fArTargetWorldCoordinates[0],
+					dropArea.handleDrop(gl, setDraggables, fArTargetWorldCoordinates[0],
 						fArTargetWorldCoordinates[1]);
 				}
 			}
@@ -78,6 +85,14 @@ public class DragAndDropController {
 
 	public boolean isDragging() {
 		return bDragging;
+	}
+	
+	public Set<IDraggable> getDraggables() {
+		return setDraggables;
+	}
+	
+	public float[] getDraggingStartMouseCoordinates() {
+		return fArDraggingStartMouseCoordinates;
 	}
 
 }

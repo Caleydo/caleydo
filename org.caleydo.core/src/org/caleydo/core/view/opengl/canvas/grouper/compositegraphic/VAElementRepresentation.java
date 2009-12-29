@@ -1,14 +1,18 @@
-package org.caleydo.core.view.opengl.canvas.grouper;
+package org.caleydo.core.view.opengl.canvas.grouper.compositegraphic;
 
 import gleem.linalg.Vec3f;
-
-import java.awt.geom.Rectangle2D;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.view.opengl.canvas.grouper.draganddrop.DragAndDropController;
+import org.caleydo.core.view.opengl.canvas.grouper.draganddrop.IDraggable;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.DrawingStrategyManager;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement.EVAElementDrawingStrategyType;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement.IVAElementDrawingStrategy;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement.VAElementDrawingStrategyDragged;
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -17,22 +21,24 @@ public class VAElementRepresentation
 	extends AGLGUIElement
 	implements ICompositeGraphic {
 
-	private static final String sTextForHeightCalculation =
-		"Text without characters below the bottom textline";
-
 	private Vec3f vecPosition;
 	private Vec3f vecHierarchyPsoition;
+	private float fDraggingStartMouseCoordinateX;
+	private float fDraggingStartMouseCoordinateY;
 	private float fHeight;
 	private float fWidth;
 	private int iVAIndex;
 	private ICompositeGraphic parent;
 	private ClusterNode clusterNode;
 	private IVAElementDrawingStrategy drawingStrategy;
+	private DrawingStrategyManager drawingStrategyManager;
 
-	public VAElementRepresentation(ClusterNode clusterNode, IVAElementDrawingStrategy drawingStrategy) {
+	public VAElementRepresentation(ClusterNode clusterNode, IVAElementDrawingStrategy drawingStrategy,
+		DrawingStrategyManager drawingStrategyManager) {
 		vecPosition = new Vec3f();
 		this.clusterNode = clusterNode;
 		this.drawingStrategy = drawingStrategy;
+		this.drawingStrategyManager = drawingStrategyManager;
 	}
 
 	@Override
@@ -87,14 +93,7 @@ public class VAElementRepresentation
 
 	@Override
 	public void calculateDimensions(GL gl, TextRenderer textRenderer) {
-		Rectangle2D bounds = textRenderer.getBounds(sTextForHeightCalculation);
-		fHeight =
-			(float) bounds.getHeight() * GrouperRenderStyle.TEXT_SCALING + 2.0f
-				* GrouperRenderStyle.TEXT_SPACING;
-		bounds = textRenderer.getBounds(clusterNode.getNodeName());
-		fWidth =
-			(float) bounds.getWidth() * GrouperRenderStyle.TEXT_SCALING + 2.0f
-				* GrouperRenderStyle.TEXT_SPACING;
+		drawingStrategy.calculateDimensions(gl, this, textRenderer);
 	}
 
 	@Override
@@ -117,7 +116,7 @@ public class VAElementRepresentation
 	}
 
 	@Override
-	public boolean hasParent(ICompositeGraphic parent) {
+	public boolean hasParent(IDraggable parent) {
 		if (this.parent == null)
 			return false;
 		if (this.parent == parent)
@@ -125,6 +124,7 @@ public class VAElementRepresentation
 		return this.parent.hasParent(parent);
 	}
 
+	@Override
 	public String getName() {
 		return clusterNode.getNodeName();
 	}
@@ -169,14 +169,19 @@ public class VAElementRepresentation
 
 	@Override
 	public void handleDragging(GL gl, float fMouseCoordinateX, float fMouseCoordinateY) {
-		// TODO Auto-generated method stub
-		
+		VAElementDrawingStrategyDragged drawingStrategyDragged =
+			(VAElementDrawingStrategyDragged) drawingStrategyManager
+				.getVAElementDrawingStrategy(EVAElementDrawingStrategyType.DRAGGED);
+
+		drawingStrategyDragged.drawDragged(gl, this, fMouseCoordinateX, fMouseCoordinateY,
+			fDraggingStartMouseCoordinateX, fDraggingStartMouseCoordinateY);
+
 	}
 
 	@Override
 	public void setDraggingStartPoint(float fMouseCoordinateX, float fMouseCoordinateY) {
-		// TODO Auto-generated method stub
-		
+		fDraggingStartMouseCoordinateX = fMouseCoordinateX;
+		fDraggingStartMouseCoordinateY = fMouseCoordinateY;
 	}
 
 	@Override
@@ -187,5 +192,20 @@ public class VAElementRepresentation
 	@Override
 	public void addAsDraggable(DragAndDropController dragAndDropController) {
 		dragAndDropController.addDraggable(this);
+	}
+
+	@Override
+	public void setHeight(float fHeight) {
+		this.fHeight = fHeight;
+	}
+
+	@Override
+	public void setWidth(float fWidth) {
+		this.fWidth = fWidth;
+	}
+
+	@Override
+	public void removeFromDraggables(DragAndDropController dragAndDropController) {
+		dragAndDropController.removeDraggable(this);
 	}
 }

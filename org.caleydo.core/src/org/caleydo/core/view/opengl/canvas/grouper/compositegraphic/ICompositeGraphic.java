@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.grouper;
+package org.caleydo.core.view.opengl.canvas.grouper.compositegraphic;
 
 import gleem.linalg.Vec3f;
 
@@ -6,6 +6,9 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.view.opengl.canvas.grouper.draganddrop.DragAndDropController;
+import org.caleydo.core.view.opengl.canvas.grouper.draganddrop.IDraggable;
+import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.DrawingStrategyManager;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -28,8 +31,14 @@ public interface ICompositeGraphic extends IDraggable {
 	public float getHeight();
 
 	public float getWidth();
+	
+	public void setHeight(float fHeight);
+	
+	public void setWidth(float fWidth);
 
 	public int getID();
+	
+	public String getName();
 
 	public void setToMaxWidth(float fWidth, float fChildWidthOffset);
 
@@ -37,7 +46,7 @@ public interface ICompositeGraphic extends IDraggable {
 
 	public ICompositeGraphic getParent();
 
-	public boolean hasParent(ICompositeGraphic parent);
+	public boolean hasParent(IDraggable parent);
 
 	public void updateDrawingStrategies(SelectionManager selectionManager,
 		DrawingStrategyManager drawingStrategyManager);
@@ -49,4 +58,6 @@ public interface ICompositeGraphic extends IDraggable {
 	public void setSelectionType(ESelectionType selectionType, SelectionManager selectionManager);
 
 	public void addAsDraggable(DragAndDropController dragAndDropController);
+	
+	public void removeFromDraggables(DragAndDropController dragAndDropController);
 }

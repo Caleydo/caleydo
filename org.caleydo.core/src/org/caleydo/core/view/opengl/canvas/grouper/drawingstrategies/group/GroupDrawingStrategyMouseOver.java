@@ -1,9 +1,11 @@
-package org.caleydo.core.view.opengl.canvas.grouper;
+package org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.group;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.canvas.grouper.GrouperRenderStyle;
+import org.caleydo.core.view.opengl.canvas.grouper.compositegraphic.GroupRepresentation;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -31,16 +33,22 @@ public class GroupDrawingStrategyMouseOver
 		gl.glColor4fv(renderStyle.getGroupColorForLevel(groupRepresentation.getHierarchyLevel()), 0);
 
 		drawGroupRectangular(gl, groupRepresentation, textRenderer);
-		
+
 		gl.glColor4fv(GrouperRenderStyle.MOUSE_OVER_COLOR, 0);
 		gl.glLineWidth(3.0f);
 
 		drawRectangularBorder(gl, groupRepresentation, textRenderer);
 
-		gl.glPopAttrib();
-
 		gl.glPopName();
 
+		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.GROUPER_COLLAPSE_BUTTON_SELECTION,
+			groupRepresentation.getID()));
+
+		drawCollapseButton(gl, groupRepresentation, textRenderer);
+
+		gl.glPopName();
+		gl.glPopAttrib();
+		
 		drawChildren(gl, groupRepresentation, textRenderer);
 
 	}

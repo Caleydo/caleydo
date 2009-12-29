@@ -1,9 +1,11 @@
-package org.caleydo.core.view.opengl.canvas.grouper;
+package org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.canvas.grouper.GrouperRenderStyle;
+import org.caleydo.core.view.opengl.canvas.grouper.compositegraphic.VAElementRepresentation;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
