@@ -378,7 +378,7 @@ public class Application
 		}
 		else if (applicationMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA) {
 
-//			triggerPathwayLoading();
+			triggerPathwayLoading();
 
 			WizardDialog dataImportWizard =
 				new WizardDialog(shell, new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
@@ -400,8 +400,8 @@ public class Application
 			}
 		}
 
-		if (applicationMode.getDataDomain() == EDataDomain.GENETIC_DATA)
-			triggerPathwayLoading();
+//		if (applicationMode.getDataDomain() == EDataDomain.GENETIC_DATA)
+//			triggerPathwayLoading();
 		
 		// TODO - this initializes the VA after the data is written correctly in the set - probably not the
 		// nicest place to do this.
@@ -416,12 +416,6 @@ public class Application
 		if (initializedStartViews == null) {
 			initializeDefaultStartViews(applicationMode.getDataDomain());
 		}
-
-		// if (GeneralManager.get().isStandalone()) {
-		// // Start OpenGL rendering
-		// GeneralManager.get().getViewGLCanvasManager().startAnimator();
-		// GeneralManager.get().getSWTGUIManager().runApplication();
-		// }
 	}
 
 	public static void initializeColorMapping() {

@@ -2420,11 +2420,11 @@ public class GLHierarchicalHeatMap
 		//gl.glScalef(scale.x(), scale.y(), scale.z());
 		gl.glScalef(1,1,1);
 		
-//		IViewFrustum embeddedHeatMapFrustum = glHeatMapView.getViewFrustum();
-//		embeddedHeatMapFrustum.setLeft(0);
-//		embeddedHeatMapFrustum.setRight(5);
-//		embeddedHeatMapFrustum.setTop(5.5f);
-//		glHeatMapView.setFrustum(embeddedHeatMapFrustum);
+		IViewFrustum embeddedHeatMapFrustum = glHeatMapView.getViewFrustum();
+		embeddedHeatMapFrustum.setLeft(0);
+		embeddedHeatMapFrustum.setRight(5);
+		embeddedHeatMapFrustum.setTop(5.51f);
+		glHeatMapView.setFrustum(embeddedHeatMapFrustum);
 
 		glHeatMapView.displayRemote(gl);
 		
