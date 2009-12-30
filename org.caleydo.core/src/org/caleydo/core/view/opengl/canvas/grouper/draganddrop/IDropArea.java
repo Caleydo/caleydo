@@ -10,5 +10,5 @@ public interface IDropArea {
 		float fMouseCoordinateY);
 	
 	public void handleDrop(GL gl, Set<IDraggable> setDraggables, float fMouseCoordinateX,
-		float fMouseCoordinateY);
+		float fMouseCoordinateY, DragAndDropController dragAndDropController);
 }

@@ -2,6 +2,9 @@ package org.caleydo.core.view.opengl.canvas.grouper.compositegraphic;
 
 import gleem.linalg.Vec3f;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.ESelectionType;
@@ -12,12 +15,13 @@ import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.DrawingStra
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
-public interface ICompositeGraphic extends IDraggable {
+public interface ICompositeGraphic
+	extends IDraggable {
 
 	public void add(ICompositeGraphic graphic);
 
 	public void delete(ICompositeGraphic graphic);
-
+	
 	public void draw(GL gl, TextRenderer textRenderer);
 
 	public void calculateDimensions(GL gl, TextRenderer textRenderer);
@@ -31,13 +35,13 @@ public interface ICompositeGraphic extends IDraggable {
 	public float getHeight();
 
 	public float getWidth();
-	
+
 	public void setHeight(float fHeight);
-	
+
 	public void setWidth(float fWidth);
 
 	public int getID();
-	
+
 	public String getName();
 
 	public void setToMaxWidth(float fWidth, float fChildWidthOffset);
@@ -58,6 +62,17 @@ public interface ICompositeGraphic extends IDraggable {
 	public void setSelectionType(ESelectionType selectionType, SelectionManager selectionManager);
 
 	public void addAsDraggable(DragAndDropController dragAndDropController);
-	
+
 	public void removeFromDraggables(DragAndDropController dragAndDropController);
+
+	public void getOrderedCompositeList(Set<ICompositeGraphic> setComposites,
+		ArrayList<ICompositeGraphic> alComposites);
+	
+	public ICompositeGraphic getRoot();
+	
+	public ICompositeGraphic getShallowCopy();
+	
+	public void setChildrensParent(ICompositeGraphic parent);
+	
+	public void removeOnChildAbsence();
 }

@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.canvas.grouper.compositegraphic;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.media.opengl.GL;
@@ -10,6 +11,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.view.opengl.canvas.grouper.GLGrouper;
 import org.caleydo.core.view.opengl.canvas.grouper.GrouperRenderStyle;
 import org.caleydo.core.view.opengl.canvas.grouper.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.canvas.grouper.draganddrop.IDraggable;
@@ -40,9 +42,11 @@ public class GroupRepresentation
 	private GrouperRenderStyle renderStyle;
 	private IGroupDrawingStrategy drawingStrategy;
 	private DrawingStrategyManager drawingStrategyManager;
+	private GLGrouper glGrouper;
 
 	public GroupRepresentation(ClusterNode clusterNode, GrouperRenderStyle renderStyle,
-		IGroupDrawingStrategy drawingStrategy, DrawingStrategyManager drawingStrategyManager) {
+		IGroupDrawingStrategy drawingStrategy, DrawingStrategyManager drawingStrategyManager,
+		GLGrouper glGrouper) {
 		alChildren = new ArrayList<ICompositeGraphic>();
 		alDropPositions = new ArrayList<Float>();
 		vecPosition = new Vec3f();
@@ -51,6 +55,7 @@ public class GroupRepresentation
 		this.renderStyle = renderStyle;
 		this.drawingStrategy = drawingStrategy;
 		this.drawingStrategyManager = drawingStrategyManager;
+		this.glGrouper = glGrouper;
 	}
 
 	@Override
@@ -62,7 +67,6 @@ public class GroupRepresentation
 	@Override
 	public void delete(ICompositeGraphic graphic) {
 		alChildren.remove(graphic);
-		graphic.setParent(null);
 	}
 
 	@Override
@@ -76,8 +80,8 @@ public class GroupRepresentation
 		GroupDrawingStrategyDragged drawingStrategyDragged =
 			(GroupDrawingStrategyDragged) drawingStrategyManager
 				.getGroupDrawingStrategy(EGroupDrawingStrategyType.DRAGGED);
-		drawingStrategyDragged.drawDragged(gl, this, fMouseCoordinateX, fMouseCoordinateY, fDraggingStartMouseCoordinateX,
-			fDraggingStartMouseCoordinateY);
+		drawingStrategyDragged.drawDragged(gl, this, fMouseCoordinateX, fMouseCoordinateY,
+			fDraggingStartMouseCoordinateX, fDraggingStartMouseCoordinateY);
 
 	}
 
@@ -111,7 +115,7 @@ public class GroupRepresentation
 
 	@Override
 	public void handleDrop(GL gl, Set<IDraggable> setDraggables, float fMouseCoordinateX,
-		float fMouseCoordinateY) {
+		float fMouseCoordinateY, DragAndDropController dragAndDropController) {
 
 		int iDropPositionIndex = -1;
 
@@ -119,13 +123,60 @@ public class GroupRepresentation
 			iDropPositionIndex =
 				getDropPositionIndex(gl, setDraggables, fMouseCoordinateX, fMouseCoordinateY,
 					(AGroupDrawingStrategyRectangular) drawingStrategy);
-			if (iDropPositionIndex == -1)
+			if (iDropPositionIndex == -1 || iDropPositionIndex > alChildren.size()) {
 				return;
+			}
+				
 		}
 		else {
 			return;
 		}
 
+		Set<ICompositeGraphic> setComposites = new HashSet<ICompositeGraphic>();
+
+		for (IDraggable draggable : setDraggables) {
+			if (draggable instanceof ICompositeGraphic) {
+				setComposites.add((ICompositeGraphic) draggable);
+			}
+		}
+
+		ArrayList<ICompositeGraphic> alCompositesToInsert = new ArrayList<ICompositeGraphic>();
+
+		ICompositeGraphic root = getRoot();
+		root.getOrderedCompositeList(setComposites, alCompositesToInsert);
+
+		for (int i = alCompositesToInsert.size() - 1; i >= 0; i--) {
+			ICompositeGraphic composite = alCompositesToInsert.get(i);
+			ICompositeGraphic copy = composite.getShallowCopy();
+
+			if (iDropPositionIndex == alChildren.size()) {
+				alChildren.add(copy);
+			}
+			else {
+				alChildren.add(iDropPositionIndex, copy);
+			}
+			copy.setParent(this);
+			
+			dragAndDropController.removeDraggable(composite);
+			dragAndDropController.addDraggable(copy);
+			
+			copy.setChildrensParent(copy);
+
+			if (copy instanceof GroupRepresentation)
+				glGrouper.addGroupRepresentation(copy.getID(), (GroupRepresentation) copy);
+			if (copy instanceof VAElementRepresentation)
+				glGrouper.addVAElementRepresentation(copy.getID(), (VAElementRepresentation) copy);
+		}
+
+		for (ICompositeGraphic composite : alCompositesToInsert) {
+			ICompositeGraphic parent = composite.getParent();
+			if (parent != null) {
+				parent.delete(composite);
+				parent.removeOnChildAbsence();
+			}
+		}
+
+		glGrouper.setHierarchyChanged(true);
 	}
 
 	private int getDropPositionIndex(GL gl, Set<IDraggable> setDraggables, float fMouseCoordinateX,
@@ -190,6 +241,7 @@ public class GroupRepresentation
 
 	public void setCollapsed(boolean bCollapsed) {
 		this.bCollapsed = bCollapsed;
+		glGrouper.setHierarchyChanged(true);
 	}
 
 	@Override
@@ -326,6 +378,71 @@ public class GroupRepresentation
 		dragAndDropController.removeDraggable(this);
 		for (ICompositeGraphic child : alChildren) {
 			child.removeFromDraggables(dragAndDropController);
+		}
+	}
+
+	@Override
+	public void getOrderedCompositeList(Set<ICompositeGraphic> setComposites,
+		ArrayList<ICompositeGraphic> alComposites) {
+
+		if (alComposites == null || setComposites == null)
+			return;
+
+		for (ICompositeGraphic child : alChildren) {
+
+			child.getOrderedCompositeList(setComposites, alComposites);
+
+			for (ICompositeGraphic composite : setComposites) {
+				if (child == composite)
+					alComposites.add(child);
+			}
+		}
+
+	}
+
+	@Override
+	public ICompositeGraphic getRoot() {
+		if (parent == null)
+			return this;
+		return parent.getRoot();
+	}
+
+	@Override
+	public ICompositeGraphic getShallowCopy() {
+		GroupRepresentation copy =
+			new GroupRepresentation(clusterNode, renderStyle, drawingStrategy, drawingStrategyManager,
+				glGrouper);
+		copy.alChildren = alChildren;
+		copy.vecHierarchyPosition = vecHierarchyPosition;
+		copy.vecPosition = vecPosition;
+		copy.fDraggingStartMouseCoordinateX = fDraggingStartMouseCoordinateX;
+		copy.fDraggingStartMouseCoordinateY = fDraggingStartMouseCoordinateY;
+		copy.fHeight = fHeight;
+		copy.fWidth = fWidth;
+		copy.alDropPositions = alDropPositions;
+		copy.bCollapsed = bCollapsed;
+		copy.iHierarchyLevel = iHierarchyLevel;
+		copy.parent = parent;
+
+		return copy;
+	}
+
+	@Override
+	public void setChildrensParent(ICompositeGraphic parent) {
+		for(ICompositeGraphic child : alChildren) {
+			child.setParent(parent);
+		}
+		
+	}
+
+	@Override
+	public void removeOnChildAbsence() {
+		if(alChildren.size() <= 0) {
+			glGrouper.removeGroupRepresentation(getID());
+			if(parent != null) {
+				parent.delete(this);
+				parent.removeOnChildAbsence();
+			}
 		}
 	}
 }

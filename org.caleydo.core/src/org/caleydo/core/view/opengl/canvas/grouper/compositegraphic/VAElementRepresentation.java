@@ -2,43 +2,46 @@ package org.caleydo.core.view.opengl.canvas.grouper.compositegraphic;
 
 import gleem.linalg.Vec3f;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.view.opengl.canvas.grouper.GLGrouper;
 import org.caleydo.core.view.opengl.canvas.grouper.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.canvas.grouper.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.DrawingStrategyManager;
 import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement.EVAElementDrawingStrategyType;
 import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement.IVAElementDrawingStrategy;
 import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement.VAElementDrawingStrategyDragged;
-import org.caleydo.core.view.opengl.util.AGLGUIElement;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
 public class VAElementRepresentation
-	extends AGLGUIElement
 	implements ICompositeGraphic {
 
 	private Vec3f vecPosition;
-	private Vec3f vecHierarchyPsoition;
+	private Vec3f vecHierarchyPosition;
 	private float fDraggingStartMouseCoordinateX;
 	private float fDraggingStartMouseCoordinateY;
 	private float fHeight;
 	private float fWidth;
-	private int iVAIndex;
 	private ICompositeGraphic parent;
 	private ClusterNode clusterNode;
 	private IVAElementDrawingStrategy drawingStrategy;
 	private DrawingStrategyManager drawingStrategyManager;
+	private GLGrouper glGrouper;
 
 	public VAElementRepresentation(ClusterNode clusterNode, IVAElementDrawingStrategy drawingStrategy,
-		DrawingStrategyManager drawingStrategyManager) {
+		DrawingStrategyManager drawingStrategyManager, GLGrouper glGrouper) {
 		vecPosition = new Vec3f();
 		this.clusterNode = clusterNode;
 		this.drawingStrategy = drawingStrategy;
 		this.drawingStrategyManager = drawingStrategyManager;
+		this.glGrouper = glGrouper;
 	}
 
 	@Override
@@ -70,14 +73,6 @@ public class VAElementRepresentation
 	@Override
 	public float getHeight() {
 		return fHeight;
-	}
-
-	public int getVAIndex() {
-		return iVAIndex;
-	}
-
-	public void setVAIndex(int iVAIndex) {
-		this.iVAIndex = iVAIndex;
 	}
 
 	@Override
@@ -158,12 +153,12 @@ public class VAElementRepresentation
 
 	@Override
 	public Vec3f getHierarchyPosition() {
-		return vecHierarchyPsoition;
+		return vecHierarchyPosition;
 	}
 
 	@Override
 	public void setHierarchyPosition(Vec3f vecHierarchyPosition) {
-		this.vecHierarchyPsoition = vecHierarchyPosition;
+		this.vecHierarchyPosition = vecHierarchyPosition;
 
 	}
 
@@ -208,4 +203,47 @@ public class VAElementRepresentation
 	public void removeFromDraggables(DragAndDropController dragAndDropController) {
 		dragAndDropController.removeDraggable(this);
 	}
+
+	@Override
+	public void getOrderedCompositeList(Set<ICompositeGraphic> setComposites,
+		ArrayList<ICompositeGraphic> alComposites) {
+
+	}
+
+	@Override
+	public ICompositeGraphic getRoot() {
+		if (parent == null)
+			return this;
+		return parent.getRoot();
+	}
+
+	@Override
+	public ICompositeGraphic getShallowCopy() {
+		VAElementRepresentation copy =
+			new VAElementRepresentation(clusterNode, drawingStrategy, drawingStrategyManager, glGrouper);
+		copy.vecPosition = vecPosition;
+		copy.vecHierarchyPosition = vecHierarchyPosition;
+		copy.fDraggingStartMouseCoordinateX = fDraggingStartMouseCoordinateX;
+		copy.fDraggingStartMouseCoordinateY = fDraggingStartMouseCoordinateY;
+		copy.fHeight = fHeight;
+		copy.fWidth = fWidth;
+		copy.parent = parent;
+
+		return copy;
+	}
+
+	@Override
+	public void setChildrensParent(ICompositeGraphic parent) {
+		// This element has no children
+
+	}
+
+	@Override
+	public void removeOnChildAbsence() {
+		glGrouper.removeVAElementRepresentation(getID());
+		if(parent != null) {
+			parent.removeOnChildAbsence();
+		}
+	}
+
 }

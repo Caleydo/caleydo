@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
@@ -16,14 +17,16 @@ public class DragAndDropController {
 	boolean bDragging;
 	boolean bDraggingFirstTime;
 	float fArDraggingStartMouseCoordinates[];
+	AGLEventListener view;
 
 	
 
-	public DragAndDropController() {
+	public DragAndDropController(AGLEventListener view) {
 		setDraggables = new HashSet<IDraggable>();
 		bDragging = false;
 		bDraggingFirstTime = false;
 		fArDraggingStartMouseCoordinates = new float[2];
+		this.view = view;
 	}
 
 	public void addDraggable(IDraggable draggable) {
@@ -75,8 +78,10 @@ public class DragAndDropController {
 				bDragging = false;
 				if (dropArea != null) {
 					dropArea.handleDrop(gl, setDraggables, fArTargetWorldCoordinates[0],
-						fArTargetWorldCoordinates[1]);
+						fArTargetWorldCoordinates[1], this);
+					
 				}
+				view.setDisplayListDirty();
 			}
 
 			bDraggingFirstTime = false;

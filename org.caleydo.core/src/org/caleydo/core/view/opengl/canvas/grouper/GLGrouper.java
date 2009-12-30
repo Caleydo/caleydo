@@ -56,6 +56,8 @@ public class GLGrouper
 	private double dCollapseButtonDragOverTime;
 	private int iDraggedOverCollapseButtonID;
 
+	private boolean bHierarchyChanged;
+
 	private GrouperRenderStyle renderStyle;
 	private HashMap<Integer, GroupRepresentation> hashGroups;
 	private HashMap<Integer, VAElementRepresentation> hashElements;
@@ -83,7 +85,7 @@ public class GLGrouper
 		hashElements = new HashMap<Integer, VAElementRepresentation>();
 		hashGroups = new HashMap<Integer, GroupRepresentation>();
 		viewType = EManagedObjectType.GL_HISTOGRAM;
-		dragAndDropController = new DragAndDropController();
+		dragAndDropController = new DragAndDropController(this);
 		// TODO:if this should be general, use dynamic idType
 		selectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
@@ -93,6 +95,7 @@ public class GLGrouper
 		glKeyListener = new GLGrouperKeyListener(this);
 
 		iDraggedOverCollapseButtonID = -1;
+		bHierarchyChanged = true;
 		// registerEventListeners();
 	}
 
@@ -127,33 +130,33 @@ public class GLGrouper
 
 		rootGroup =
 			new GroupRepresentation(new ClusterNode("root", 0, 0, 0, true), renderStyle,
-				groupDrawingStrategy, drawingStrategyManager);
+				groupDrawingStrategy, drawingStrategyManager, this);
 
 		GroupRepresentation group1 =
 			new GroupRepresentation(new ClusterNode("group1", 4, 0, 0, false), renderStyle,
-				groupDrawingStrategy, drawingStrategyManager);
+				groupDrawingStrategy, drawingStrategyManager, this);
 		GroupRepresentation group2 =
 			new GroupRepresentation(new ClusterNode("group2", 5, 0, 0, false), renderStyle,
-				groupDrawingStrategy, drawingStrategyManager);
+				groupDrawingStrategy, drawingStrategyManager, this);
 		GroupRepresentation group3 =
 			new GroupRepresentation(new ClusterNode("group3", 6, 0, 0, false), renderStyle,
-				groupDrawingStrategy, drawingStrategyManager);
+				groupDrawingStrategy, drawingStrategyManager, this);
 
 		VAElementRepresentation element1 =
 			new VAElementRepresentation(new ClusterNode("one", 1, 0, 0, false), elementDrawingStrategy,
-				drawingStrategyManager);
+				drawingStrategyManager, this);
 		VAElementRepresentation element2 =
 			new VAElementRepresentation(new ClusterNode("two", 2, 0, 0, false), elementDrawingStrategy,
-				drawingStrategyManager);
+				drawingStrategyManager, this);
 		VAElementRepresentation element3 =
 			new VAElementRepresentation(new ClusterNode("three", 3, 0, 0, false), elementDrawingStrategy,
-				drawingStrategyManager);
+				drawingStrategyManager, this);
 		VAElementRepresentation element4 =
 			new VAElementRepresentation(new ClusterNode("four", 7, 0, 0, false), elementDrawingStrategy,
-				drawingStrategyManager);
+				drawingStrategyManager, this);
 		VAElementRepresentation element5 =
 			new VAElementRepresentation(new ClusterNode("five", 8, 0, 0, false), elementDrawingStrategy,
-				drawingStrategyManager);
+				drawingStrategyManager, this);
 
 		rootGroup.add(group1);
 		rootGroup.add(element1);
@@ -223,7 +226,7 @@ public class GLGrouper
 	public void displayLocal(GL gl) {
 		pickingManager.handlePicking(this, gl);
 
-		if (bIsDisplayListDirtyLocal || dragAndDropController.isDragging()) {
+		if (bIsDisplayListDirtyLocal) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
 		}
@@ -235,7 +238,7 @@ public class GLGrouper
 
 	@Override
 	public void displayRemote(GL gl) {
-		if (bIsDisplayListDirtyRemote || dragAndDropController.isDragging()) {
+		if (bIsDisplayListDirtyRemote) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
 		}
@@ -249,6 +252,8 @@ public class GLGrouper
 	public void display(GL gl) {
 		processEvents();
 		gl.glCallList(iGLDisplayListToCall);
+		
+		dragAndDropController.handleDragging(gl, glMouseListener);
 
 		if (bControlPressed) {
 			gl.glColor3f(0, 0, 0);
@@ -281,9 +286,12 @@ public class GLGrouper
 		Vec3f vecPosition = new Vec3f(viewFrustum.getWidth() / 2.0f, viewFrustum.getHeight(), -10.0f);
 		rootGroup.setPosition(vecPosition);
 		rootGroup.setHierarchyPosition(vecPosition);
-		rootGroup.calculateDrawingParameters(gl, textRenderer);
+		if (bHierarchyChanged) {
+			rootGroup.calculateHierarchyLevels(0);
+			rootGroup.calculateDrawingParameters(gl, textRenderer);
+			bHierarchyChanged = false;
+		}
 		rootGroup.draw(gl, textRenderer);
-		dragAndDropController.handleDragging(gl, glMouseListener);
 
 		gl.glEndList();
 	}
@@ -508,6 +516,30 @@ public class GLGrouper
 
 	public void setControlPressed(boolean bControlPressed) {
 		this.bControlPressed = bControlPressed;
+	}
+
+	public boolean isHierarchyChanged() {
+		return bHierarchyChanged;
+	}
+
+	public void setHierarchyChanged(boolean bHierarchyChanged) {
+		this.bHierarchyChanged = bHierarchyChanged;
+	}
+	
+	public void addGroupRepresentation(int iID, GroupRepresentation groupRepresentation) {
+		hashGroups.put(iID, groupRepresentation);
+	}
+	
+	public void addVAElementRepresentation(int iID, VAElementRepresentation elementRepresentation) {
+		hashElements.put(iID, elementRepresentation);
+	}
+	
+	public void removeGroupRepresentation(int iID) {
+		hashGroups.remove(iID);
+	}
+	
+	public void removeVAElementRepresentation(int iID) {
+		hashElements.remove(iID);
 	}
 
 }
