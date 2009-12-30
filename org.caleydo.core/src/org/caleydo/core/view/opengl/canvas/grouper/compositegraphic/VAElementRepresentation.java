@@ -29,6 +29,7 @@ public class VAElementRepresentation
 	private float fDraggingStartMouseCoordinateY;
 	private float fHeight;
 	private float fWidth;
+	int iHierarchyLevel;
 	private ICompositeGraphic parent;
 	private ClusterNode clusterNode;
 	private IVAElementDrawingStrategy drawingStrategy;
@@ -93,6 +94,7 @@ public class VAElementRepresentation
 
 	@Override
 	public void calculateHierarchyLevels(int iLevel) {
+		iHierarchyLevel = iLevel;
 	}
 
 	@Override
@@ -205,7 +207,7 @@ public class VAElementRepresentation
 	}
 
 	@Override
-	public void getOrderedCompositeList(Set<ICompositeGraphic> setComposites,
+	public void getOrderedTopElementCompositeList(Set<ICompositeGraphic> setComposites,
 		ArrayList<ICompositeGraphic> alComposites) {
 
 	}
@@ -228,6 +230,7 @@ public class VAElementRepresentation
 		copy.fHeight = fHeight;
 		copy.fWidth = fWidth;
 		copy.parent = parent;
+		glGrouper.addVAElementRepresentation(copy.getID(), (VAElementRepresentation) copy);
 
 		return copy;
 	}
@@ -244,6 +247,39 @@ public class VAElementRepresentation
 		if(parent != null) {
 			parent.removeOnChildAbsence();
 		}
+	}
+
+	@Override
+	public int getHierarchyLevel() {
+		return iHierarchyLevel;
+	}
+
+	@Override
+	public void replaceChild(ICompositeGraphic childToReplace, ICompositeGraphic newChild) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ICompositeGraphic createDeepCopyWithNewIDs(int[] iConsecutiveID) {
+		
+		//TODO: COPIED CLUSTER NODE IS NOT IN TREE
+		ClusterNode copiedNode =
+			new ClusterNode(clusterNode.getNodeName(), iConsecutiveID[0], clusterNode.getCoefficient(),
+				clusterNode.getDepth(), false);
+		VAElementRepresentation copy =
+			new VAElementRepresentation(copiedNode, drawingStrategy, drawingStrategyManager, glGrouper);
+		copy.vecPosition = vecPosition;
+		copy.vecHierarchyPosition = vecHierarchyPosition;
+		copy.fDraggingStartMouseCoordinateX = fDraggingStartMouseCoordinateX;
+		copy.fDraggingStartMouseCoordinateY = fDraggingStartMouseCoordinateY;
+		copy.fHeight = fHeight;
+		copy.fWidth = fWidth;
+		copy.parent = parent;
+		glGrouper.addVAElementRepresentation(copy.getID(), (VAElementRepresentation) copy);
+		glGrouper.addNewSelectionID(copy.getID());
+
+		return copy;
 	}
 
 }

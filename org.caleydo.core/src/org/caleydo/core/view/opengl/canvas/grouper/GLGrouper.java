@@ -3,8 +3,11 @@ package org.caleydo.core.view.opengl.canvas.grouper;
 import gleem.linalg.Vec3f;
 
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.media.opengl.GL;
 
@@ -13,6 +16,7 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.grouper.CreateGroupEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -25,6 +29,7 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.grouper.compositegraphic.GroupRepresentation;
+import org.caleydo.core.view.opengl.canvas.grouper.compositegraphic.ICompositeGraphic;
 import org.caleydo.core.view.opengl.canvas.grouper.compositegraphic.VAElementRepresentation;
 import org.caleydo.core.view.opengl.canvas.grouper.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.DrawingStrategyManager;
@@ -32,10 +37,12 @@ import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.group.EGrou
 import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.group.IGroupDrawingStrategy;
 import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement.EVAElementDrawingStrategyType;
 import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.vaelement.IVAElementDrawingStrategy;
+import org.caleydo.core.view.opengl.canvas.grouper.listeners.CreateGroupEventListener;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CreateGroupItem;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -56,6 +63,8 @@ public class GLGrouper
 	private double dCollapseButtonDragOverTime;
 	private int iDraggedOverCollapseButtonID;
 
+	private Integer iLastUsedCompositeID;
+
 	private boolean bHierarchyChanged;
 
 	private GrouperRenderStyle renderStyle;
@@ -68,6 +77,8 @@ public class GLGrouper
 	private DragAndDropController dragAndDropController = null;
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
+
+	private CreateGroupEventListener createGroupEventListener = null;
 
 	private TextRenderer textRenderer;
 	private SelectionManager selectionManager;
@@ -96,6 +107,7 @@ public class GLGrouper
 
 		iDraggedOverCollapseButtonID = -1;
 		bHierarchyChanged = true;
+		iLastUsedCompositeID = 0;
 		// registerEventListeners();
 	}
 
@@ -129,34 +141,34 @@ public class GLGrouper
 			drawingStrategyManager.getVAElementDrawingStrategy(EVAElementDrawingStrategyType.NORMAL);
 
 		rootGroup =
-			new GroupRepresentation(new ClusterNode("root", 0, 0, 0, true), renderStyle,
+			new GroupRepresentation(new ClusterNode("root", iLastUsedCompositeID++, 0, 0, true), renderStyle,
 				groupDrawingStrategy, drawingStrategyManager, this);
 
 		GroupRepresentation group1 =
-			new GroupRepresentation(new ClusterNode("group1", 4, 0, 0, false), renderStyle,
-				groupDrawingStrategy, drawingStrategyManager, this);
+			new GroupRepresentation(new ClusterNode("group1", iLastUsedCompositeID++, 0, 0, false),
+				renderStyle, groupDrawingStrategy, drawingStrategyManager, this);
 		GroupRepresentation group2 =
-			new GroupRepresentation(new ClusterNode("group2", 5, 0, 0, false), renderStyle,
-				groupDrawingStrategy, drawingStrategyManager, this);
+			new GroupRepresentation(new ClusterNode("group2", iLastUsedCompositeID++, 0, 0, false),
+				renderStyle, groupDrawingStrategy, drawingStrategyManager, this);
 		GroupRepresentation group3 =
-			new GroupRepresentation(new ClusterNode("group3", 6, 0, 0, false), renderStyle,
-				groupDrawingStrategy, drawingStrategyManager, this);
+			new GroupRepresentation(new ClusterNode("group3", iLastUsedCompositeID++, 0, 0, false),
+				renderStyle, groupDrawingStrategy, drawingStrategyManager, this);
 
 		VAElementRepresentation element1 =
-			new VAElementRepresentation(new ClusterNode("one", 1, 0, 0, false), elementDrawingStrategy,
-				drawingStrategyManager, this);
+			new VAElementRepresentation(new ClusterNode("one", iLastUsedCompositeID++, 0, 0, false),
+				elementDrawingStrategy, drawingStrategyManager, this);
 		VAElementRepresentation element2 =
-			new VAElementRepresentation(new ClusterNode("two", 2, 0, 0, false), elementDrawingStrategy,
-				drawingStrategyManager, this);
+			new VAElementRepresentation(new ClusterNode("two", iLastUsedCompositeID++, 0, 0, false),
+				elementDrawingStrategy, drawingStrategyManager, this);
 		VAElementRepresentation element3 =
-			new VAElementRepresentation(new ClusterNode("three", 3, 0, 0, false), elementDrawingStrategy,
-				drawingStrategyManager, this);
+			new VAElementRepresentation(new ClusterNode("three", iLastUsedCompositeID++, 0, 0, false),
+				elementDrawingStrategy, drawingStrategyManager, this);
 		VAElementRepresentation element4 =
-			new VAElementRepresentation(new ClusterNode("four", 7, 0, 0, false), elementDrawingStrategy,
-				drawingStrategyManager, this);
+			new VAElementRepresentation(new ClusterNode("four", iLastUsedCompositeID++, 0, 0, false),
+				elementDrawingStrategy, drawingStrategyManager, this);
 		VAElementRepresentation element5 =
-			new VAElementRepresentation(new ClusterNode("five", 8, 0, 0, false), elementDrawingStrategy,
-				drawingStrategyManager, this);
+			new VAElementRepresentation(new ClusterNode("five", iLastUsedCompositeID++, 0, 0, false),
+				elementDrawingStrategy, drawingStrategyManager, this);
 
 		rootGroup.add(group1);
 		rootGroup.add(element1);
@@ -252,18 +264,11 @@ public class GLGrouper
 	public void display(GL gl) {
 		processEvents();
 		gl.glCallList(iGLDisplayListToCall);
-		
+
 		dragAndDropController.handleDragging(gl, glMouseListener);
 
-		if (bControlPressed) {
-			gl.glColor3f(0, 0, 0);
-			gl.glBegin(GL.GL_POLYGON);
-			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(0, 1, 0);
-			gl.glVertex3f(1, 1, 0);
-			gl.glVertex3f(1, 0, 0);
-			gl.glEnd();
-		}
+		if (!isRenderedRemote())
+			contextMenu.render(gl, this);
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
@@ -274,16 +279,16 @@ public class GLGrouper
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 		gl.glColor3f(1.0f, 1.0f, 1.0f);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0.0f, 0.0f, -11.0f);
-		gl.glVertex3f(viewFrustum.getWidth(), 0.0f, -11.0f);
-		gl.glVertex3f(viewFrustum.getWidth(), viewFrustum.getHeight(), -11.0f);
-		gl.glVertex3f(0.0f, viewFrustum.getHeight(), -11.0f);
+		gl.glVertex3f(0.0f, 0.0f, 0.0f);
+		gl.glVertex3f(viewFrustum.getWidth(), 0.0f, 0.0f);
+		gl.glVertex3f(viewFrustum.getWidth(), viewFrustum.getHeight(), 0.0f);
+		gl.glVertex3f(0.0f, viewFrustum.getHeight(), 0.0f);
 		gl.glEnd();
 		gl.glPopAttrib();
 
 		gl.glPopName();
 
-		Vec3f vecPosition = new Vec3f(viewFrustum.getWidth() / 2.0f, viewFrustum.getHeight(), -10.0f);
+		Vec3f vecPosition = new Vec3f(viewFrustum.getWidth() / 2.0f, viewFrustum.getHeight(), 0.001f);
 		rootGroup.setPosition(vecPosition);
 		rootGroup.setHierarchyPosition(vecPosition);
 		if (bHierarchyChanged) {
@@ -349,6 +354,20 @@ public class GLGrouper
 							setDisplayListDirty();
 						}
 						break;
+					case RIGHT_CLICKED:
+						if (groupRep != null) {
+							if (selectionManager.checkStatus(ESelectionType.SELECTION, groupRep.getID())) {
+								CreateGroupItem createGroupItem = new CreateGroupItem();
+								contextMenu.addContextMenueItem(createGroupItem);
+
+								if (!isRenderedRemote()) {
+									contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
+										.getWidth(), getParentGLCanvas().getHeight());
+									contextMenu.setMasterGLView(this);
+								}
+							}
+						}
+						break;
 					default:
 						return;
 				}
@@ -386,6 +405,20 @@ public class GLGrouper
 							selectionManager.addToType(ESelectionType.MOUSE_OVER, elementRep.getID());
 							rootGroup.updateDrawingStrategies(selectionManager, drawingStrategyManager);
 							setDisplayListDirty();
+						}
+						break;
+					case RIGHT_CLICKED:
+						if (elementRep != null) {
+							if (selectionManager.checkStatus(ESelectionType.SELECTION, elementRep.getID())) {
+								CreateGroupItem createGroupItem = new CreateGroupItem();
+								contextMenu.addContextMenueItem(createGroupItem);
+
+								if (!isRenderedRemote()) {
+									contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
+										.getWidth(), getParentGLCanvas().getHeight());
+									contextMenu.setMasterGLView(this);
+								}
+							}
 						}
 						break;
 					default:
@@ -495,6 +528,11 @@ public class GLGrouper
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+
+		createGroupEventListener = new CreateGroupEventListener();
+		createGroupEventListener.setHandler(this);
+		eventPublisher.addListener(CreateGroupEvent.class, createGroupEventListener);
+
 	}
 
 	@Override
@@ -507,6 +545,10 @@ public class GLGrouper
 		if (clearSelectionsListener != null) {
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
+		}
+		if (createGroupEventListener != null) {
+			eventPublisher.removeListener(createGroupEventListener);
+			createGroupEventListener = null;
 		}
 	}
 
@@ -525,21 +567,120 @@ public class GLGrouper
 	public void setHierarchyChanged(boolean bHierarchyChanged) {
 		this.bHierarchyChanged = bHierarchyChanged;
 	}
-	
+
 	public void addGroupRepresentation(int iID, GroupRepresentation groupRepresentation) {
 		hashGroups.put(iID, groupRepresentation);
 	}
-	
+
 	public void addVAElementRepresentation(int iID, VAElementRepresentation elementRepresentation) {
 		hashElements.put(iID, elementRepresentation);
 	}
-	
+
 	public void removeGroupRepresentation(int iID) {
 		hashGroups.remove(iID);
 	}
-	
+
 	public void removeVAElementRepresentation(int iID) {
 		hashElements.remove(iID);
+	}
+
+	public void createNewGroup() {
+		GroupRepresentation newGroup =
+			new GroupRepresentation(new ClusterNode("group" + iLastUsedCompositeID, iLastUsedCompositeID++,
+				0, 0, false), renderStyle, drawingStrategyManager
+				.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL), drawingStrategyManager, this);
+
+		Set<ICompositeGraphic> setComposites = new HashSet<ICompositeGraphic>();
+		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = new ArrayList<ICompositeGraphic>();
+
+		for(Integer id : selectionManager.getElements(ESelectionType.SELECTION)) {
+			if(hashElements.containsKey(id))
+				setComposites.add(hashElements.get(id));
+			if(hashGroups.containsKey(id))
+				setComposites.add(hashGroups.get(id));
+		}
+		
+		rootGroup.getOrderedTopElementCompositeList(setComposites, alOrderedTopLevelComposites);
+		
+		ICompositeGraphic commonParent = findCommonParent(alOrderedTopLevelComposites);
+
+		if(commonParent == null)
+			return;
+		boolean bSharedParent = true;
+		
+		for(ICompositeGraphic composite : alOrderedTopLevelComposites) {
+			if(composite.getParent() != commonParent) {	
+				bSharedParent = false;
+			}
+		}
+		
+		if(bSharedParent) {
+			commonParent.replaceChild(alOrderedTopLevelComposites.get(0), newGroup);
+			for(ICompositeGraphic composite : alOrderedTopLevelComposites) {
+				composite.setParent(newGroup);
+				commonParent.delete(composite);
+				newGroup.add(composite);
+			}
+		}
+		else {
+			commonParent.add(newGroup);
+			int iTempID[] = {iLastUsedCompositeID};
+			for(ICompositeGraphic composite : alOrderedTopLevelComposites) {
+				iTempID[0]++;
+				ICompositeGraphic copy = composite.createDeepCopyWithNewIDs(iTempID);
+				copy.setParent(newGroup);
+				newGroup.add(copy);
+			}
+			iLastUsedCompositeID = iTempID[0] + 1;
+		}
+		
+		newGroup.setParent(commonParent);
+		
+		hashGroups.put(newGroup.getID(), newGroup);
+		selectionManager.add(newGroup.getID());
+		
+		bHierarchyChanged = true;
+		setDisplayListDirty();
+	}
+	
+	private ICompositeGraphic findCommonParent(ArrayList<ICompositeGraphic> alComposites) {
+		
+		ICompositeGraphic compositeWithLowestHierarchyLevel = null;
+		int iLowestHierarchyLevel = Integer.MAX_VALUE;
+		
+		for(ICompositeGraphic composite : alComposites) {
+			if(composite.getHierarchyLevel() < iLowestHierarchyLevel) {
+				iLowestHierarchyLevel = composite.getHierarchyLevel();
+				compositeWithLowestHierarchyLevel = composite;
+			}
+		}
+		
+		ICompositeGraphic commonParent = null;
+		int iNumberOfCompositesWithCommonParent = 0;
+		
+		while(commonParent == null) {
+			ICompositeGraphic commonParentGuess = compositeWithLowestHierarchyLevel.getParent();
+			if(commonParentGuess == null)
+				return null;
+			
+			for(ICompositeGraphic composite : alComposites) {
+				if(composite.hasParent(commonParentGuess))
+					iNumberOfCompositesWithCommonParent++;
+			}
+			if(iNumberOfCompositesWithCommonParent == alComposites.size()) {
+				commonParent = commonParentGuess;
+			}
+			else {
+				compositeWithLowestHierarchyLevel = commonParentGuess;
+				iNumberOfCompositesWithCommonParent = 0;
+			}
+		}
+		
+		return commonParent;
+	}
+	
+	public void addNewSelectionID(int iID) {
+		selectionManager.add(iID);
 	}
 
 }

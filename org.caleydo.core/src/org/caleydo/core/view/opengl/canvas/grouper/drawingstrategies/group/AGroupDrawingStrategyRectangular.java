@@ -217,7 +217,7 @@ public abstract class AGroupDrawingStrategyRectangular
 
 			fCurrentChildYPosition -= GrouperRenderStyle.ELEMENT_TOP_SPACING;
 			child.setPosition(new Vec3f(vecPosition.x() + GrouperRenderStyle.ELEMENT_LEFT_SPACING,
-				fCurrentChildYPosition, vecPosition.z() + 0.01f));
+				fCurrentChildYPosition, vecPosition.z() + 0.001f));
 			child.draw(gl, textRenderer);
 
 			fCurrentChildYPosition -= child.getHeight() + GrouperRenderStyle.ELEMENT_BOTTOM_SPACING;
@@ -283,9 +283,10 @@ public abstract class AGroupDrawingStrategyRectangular
 
 		gl.glColor3f(0.0f, 0.0f, 0.0f);
 		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(vecPosition.x(), vecPosition.y() - alDropPositions.get(iDropPositionIndex), 0.0f);
+		gl.glVertex3f(vecPosition.x(), vecPosition.y() - alDropPositions.get(iDropPositionIndex),
+			groupRepresentation.getPosition().z());
 		gl.glVertex3f(vecPosition.x() + groupRepresentation.getWidth(), vecPosition.y()
-			- alDropPositions.get(iDropPositionIndex), 0.0f);
+			- alDropPositions.get(iDropPositionIndex), groupRepresentation.getPosition().z());
 		gl.glEnd();
 
 		gl.glPopAttrib();

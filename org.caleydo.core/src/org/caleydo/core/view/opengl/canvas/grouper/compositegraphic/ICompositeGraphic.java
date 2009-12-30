@@ -65,7 +65,7 @@ public interface ICompositeGraphic
 
 	public void removeFromDraggables(DragAndDropController dragAndDropController);
 
-	public void getOrderedCompositeList(Set<ICompositeGraphic> setComposites,
+	public void getOrderedTopElementCompositeList(Set<ICompositeGraphic> setComposites,
 		ArrayList<ICompositeGraphic> alComposites);
 	
 	public ICompositeGraphic getRoot();
@@ -75,4 +75,11 @@ public interface ICompositeGraphic
 	public void setChildrensParent(ICompositeGraphic parent);
 	
 	public void removeOnChildAbsence();
+	
+	public int getHierarchyLevel();
+	
+	public void replaceChild(ICompositeGraphic childToReplace, ICompositeGraphic newChild);
+	
+	public ICompositeGraphic createDeepCopyWithNewIDs(int[] iConsecutiveID);
+
 }

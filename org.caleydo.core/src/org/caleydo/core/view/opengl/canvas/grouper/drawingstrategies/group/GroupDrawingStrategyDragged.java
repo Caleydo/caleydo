@@ -41,7 +41,7 @@ public class GroupDrawingStrategyDragged
 
 		Vec3f vecPosition =
 			new Vec3f(fMouseCoordinateX + fRealRelDraggingPosX, fMouseCoordinateY + fRealRelDraggingPosY,
-				0.1f);
+				0.2f);
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		gl.glColor4f(fGroupColor[0], fGroupColor[1], fGroupColor[2], 0.5f);
