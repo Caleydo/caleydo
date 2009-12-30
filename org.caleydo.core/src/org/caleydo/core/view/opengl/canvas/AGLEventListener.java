@@ -42,6 +42,8 @@ import org.caleydo.core.view.opengl.canvas.listener.ToggleMagnifyingGlassListene
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.remote.dataflipper.GLDataFlipper;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -269,7 +271,13 @@ public abstract class AGLEventListener
 			// viewFrustum.setRight(8);// frame.width / 100);
 			viewFrustum.setBottom(0);
 			float value = (float) frame.height / (float) frame.width * 8.0f;
-			viewFrustum.setTop(value);
+
+			// Special case for embedded heatmap in hierarchical heatmap
+			if (this instanceof GLHierarchicalHeatMap)
+				viewFrustum.setTop(5.51f);
+			else
+				viewFrustum.setTop(value);
+			
 			viewFrustum.setRight(8);
 
 			bIsDisplayListDirtyLocal = true;

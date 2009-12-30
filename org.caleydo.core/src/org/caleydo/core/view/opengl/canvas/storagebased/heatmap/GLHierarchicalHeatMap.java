@@ -2417,7 +2417,14 @@ public class GLHierarchicalHeatMap
 
 		gl.glTranslatef(translation.x(), translation.y(), translation.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
-		gl.glScalef(scale.x(), scale.y(), scale.z());
+		//gl.glScalef(scale.x(), scale.y(), scale.z());
+		gl.glScalef(1,1,1);
+		
+//		IViewFrustum embeddedHeatMapFrustum = glHeatMapView.getViewFrustum();
+//		embeddedHeatMapFrustum.setLeft(0);
+//		embeddedHeatMapFrustum.setRight(5);
+//		embeddedHeatMapFrustum.setTop(5.5f);
+//		glHeatMapView.setFrustum(embeddedHeatMapFrustum);
 
 		glHeatMapView.displayRemote(gl);
 		
