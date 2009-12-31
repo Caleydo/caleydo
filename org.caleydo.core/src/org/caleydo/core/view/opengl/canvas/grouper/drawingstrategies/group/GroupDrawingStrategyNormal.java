@@ -49,4 +49,21 @@ public class GroupDrawingStrategyNormal
 
 	}
 
+	@Override
+	public void drawAsLeaf(GL gl, GroupRepresentation groupRepresentation, TextRenderer textRenderer) {
+		
+		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.GROUPER_GROUP_SELECTION,
+			groupRepresentation.getID()));
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+
+		gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);
+
+		drawLeafRectangular(gl, groupRepresentation, textRenderer);
+		
+		gl.glPopAttrib();
+
+		gl.glPopName();
+		
+	}
+
 }

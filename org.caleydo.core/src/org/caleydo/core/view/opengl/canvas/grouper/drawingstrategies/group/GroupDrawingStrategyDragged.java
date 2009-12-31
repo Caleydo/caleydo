@@ -20,15 +20,35 @@ public class GroupDrawingStrategyDragged
 
 	@Override
 	public void draw(GL gl, GroupRepresentation groupRepresentation, TextRenderer textRenderer) {
-
-		// Use drawDragged Method
+		// Use drawDraggedGroup Method
 
 	}
 
-	public void drawDragged(GL gl, GroupRepresentation groupRepresentation, float fMouseCoordinateX,
+	public void drawDraggedGroup(GL gl, GroupRepresentation groupRepresentation, float fMouseCoordinateX,
 		float fMouseCoordinateY, float fDraggingStartMouseCoordinateX, float fDraggingStartMouseCoordinateY) {
 
 		float fGroupColor[] = renderStyle.getGroupColorForLevel(groupRepresentation.getHierarchyLevel());
+		float fColor[] = {fGroupColor[0], fGroupColor[1], fGroupColor[2], 0.5f};
+		drawDragged(gl, groupRepresentation, fMouseCoordinateX, fMouseCoordinateY,
+			fDraggingStartMouseCoordinateX, fDraggingStartMouseCoordinateY, fColor);
+
+	}
+
+	public void drawDraggedLeaf(GL gl, GroupRepresentation groupRepresentation, float fMouseCoordinateX,
+		float fMouseCoordinateY, float fDraggingStartMouseCoordinateX, float fDraggingStartMouseCoordinateY) {
+
+		float fColor[] =
+			{ GrouperRenderStyle.TEXT_BG_COLOR[0], GrouperRenderStyle.TEXT_BG_COLOR[1],
+					GrouperRenderStyle.TEXT_BG_COLOR[2], 0.5f };
+		drawDragged(gl, groupRepresentation, fMouseCoordinateX, fMouseCoordinateY,
+			fDraggingStartMouseCoordinateX, fDraggingStartMouseCoordinateY, fColor);
+
+	}
+
+	private void drawDragged(GL gl, GroupRepresentation groupRepresentation, float fMouseCoordinateX,
+		float fMouseCoordinateY, float fDraggingStartMouseCoordinateX, float fDraggingStartMouseCoordinateY,
+		float fColor[]) {
+
 		float fHeight = groupRepresentation.getHeight();
 		float fWidth = groupRepresentation.getWidth();
 
@@ -44,7 +64,7 @@ public class GroupDrawingStrategyDragged
 				0.2f);
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
-		gl.glColor4f(fGroupColor[0], fGroupColor[1], fGroupColor[2], 0.5f);
+		gl.glColor4fv(fColor, 0);
 
 		beginGUIElement(gl, vecPosition);
 
@@ -58,6 +78,11 @@ public class GroupDrawingStrategyDragged
 		endGUIElement(gl);
 
 		gl.glPopAttrib();
+	}
+
+	@Override
+	public void drawAsLeaf(GL gl, GroupRepresentation groupRepresentation, TextRenderer textRenderer) {
+		// Use drawDraggedLeaf Method
 
 	}
 

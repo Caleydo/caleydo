@@ -81,5 +81,7 @@ public interface ICompositeGraphic
 	public void replaceChild(ICompositeGraphic childToReplace, ICompositeGraphic newChild);
 	
 	public ICompositeGraphic createDeepCopyWithNewIDs(int[] iConsecutiveID);
+	
+	public void printTree();
 
 }

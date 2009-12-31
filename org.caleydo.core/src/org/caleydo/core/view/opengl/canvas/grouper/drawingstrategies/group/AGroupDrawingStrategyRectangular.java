@@ -77,10 +77,12 @@ public abstract class AGroupDrawingStrategyRectangular
 
 				fHeight += child.getHeight() + GrouperRenderStyle.ELEMENT_BOTTOM_SPACING;
 
-				if (i == alChildren.size() - 1)
+				if (i == alChildren.size() - 1) {
 					alDropPositions.add(fHeight - GrouperRenderStyle.ELEMENT_BOTTOM_SPACING / 2.0f);
-				else
+				}
+				else {
 					alDropPositions.add(fHeight);
+				}
 			}
 		}
 		else {
@@ -94,6 +96,25 @@ public abstract class AGroupDrawingStrategyRectangular
 				* GrouperRenderStyle.TEXT_SPACING;
 
 		fWidth = Math.max(fTextWidth, fMaxChildWidth) + GrouperRenderStyle.ELEMENT_LEFT_SPACING;
+
+		groupRepresentation.setHeight(fHeight);
+		groupRepresentation.setWidth(fWidth);
+	}
+
+	@Override
+	public void calculateDimensionsOfLeaf(GL gl, TextRenderer textRenderer,
+		GroupRepresentation groupRepresentation) {
+		float fHeight = 0.0f;
+		float fWidth = 0.0f;
+
+		Rectangle2D bounds = textRenderer.getBounds(sTextForHeightCalculation);
+		fHeight =
+			(float) bounds.getHeight() * GrouperRenderStyle.TEXT_SCALING + 2.0f
+				* GrouperRenderStyle.TEXT_SPACING;
+		bounds = textRenderer.getBounds(groupRepresentation.getName());
+		fWidth =
+			(float) bounds.getWidth() * GrouperRenderStyle.TEXT_SCALING + 2.0f
+				* GrouperRenderStyle.TEXT_SPACING;
 
 		groupRepresentation.setHeight(fHeight);
 		groupRepresentation.setWidth(fWidth);
@@ -233,6 +254,9 @@ public abstract class AGroupDrawingStrategyRectangular
 		ArrayList<ICompositeGraphic> alChildren = groupRepresentation.getChildren();
 		float fMinDistanceFromDropPosition = Float.MAX_VALUE;
 		int iDropPositionIndex = -1;
+		
+		if(groupRepresentation.isLeaf())
+			return -1;
 
 		for (int i = 0; i < alDropPositions.size(); i++) {
 			Float fDropPosition =
@@ -249,18 +273,25 @@ public abstract class AGroupDrawingStrategyRectangular
 		ICompositeGraphic childNearDropPositionLower = null;
 		ICompositeGraphic childNearDropPositionUpper = null;
 
-		if (iDropPositionIndex == alDropPositions.size() - 1) {
-			childNearDropPositionLower = null;
-		}
-		else {
-			childNearDropPositionLower = alChildren.get(iDropPositionIndex);
-		}
-		if (iDropPositionIndex == 0) {
+		if(groupRepresentation.isCollapsed()) {
 			childNearDropPositionUpper = null;
+			childNearDropPositionLower = alChildren.get(0);
 		}
 		else {
-			childNearDropPositionUpper = alChildren.get(iDropPositionIndex - 1);
+			if (iDropPositionIndex == alDropPositions.size() - 1) {
+				childNearDropPositionLower = null;
+			}
+			else {
+				childNearDropPositionLower = alChildren.get(iDropPositionIndex);
+			}
+			if (iDropPositionIndex == 0) {
+				childNearDropPositionUpper = null;
+			}
+			else {
+				childNearDropPositionUpper = alChildren.get(iDropPositionIndex - 1);
+			}
 		}
+		
 
 		for (IDraggable draggable : setDraggables) {
 			if (draggable == childNearDropPositionLower || draggable == childNearDropPositionUpper)
@@ -298,5 +329,37 @@ public abstract class AGroupDrawingStrategyRectangular
 		Rectangle2D bounds = textRenderer.getBounds(sTextForHeightCalculation);
 		return (float) bounds.getHeight() * GrouperRenderStyle.TEXT_SCALING + 2.0f
 			* GrouperRenderStyle.TEXT_SPACING;
+	}
+
+	protected void drawLeafRectangular(GL gl, GroupRepresentation groupRepresentation,
+		TextRenderer textRenderer) {
+
+		Vec3f vecPosition = groupRepresentation.getPosition();
+		float fHeight = groupRepresentation.getHeight();
+		float fWidth = groupRepresentation.getWidth();
+
+		beginGUIElement(gl, groupRepresentation.getHierarchyPosition());
+
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(vecPosition.x(), vecPosition.y(), vecPosition.z());
+		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), vecPosition.z());
+		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight, vecPosition.z());
+		gl.glVertex3f(vecPosition.x(), vecPosition.y() - fHeight, vecPosition.z());
+		gl.glEnd();
+
+		float[] text_color = GrouperRenderStyle.TEXT_COLOR;
+		textRenderer.setColor(text_color[0], text_color[1], text_color[2], text_color[3]);
+
+		textRenderer.begin3DRendering();
+
+		textRenderer.draw3D(groupRepresentation.getName(), vecPosition.x()
+			+ GrouperRenderStyle.TEXT_SPACING, vecPosition.y() - fHeight + GrouperRenderStyle.TEXT_SPACING,
+			vecPosition.z(), GrouperRenderStyle.TEXT_SCALING);
+		textRenderer.flush();
+
+		textRenderer.end3DRendering();
+
+		endGUIElement(gl);
+
 	}
 }

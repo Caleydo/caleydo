@@ -38,6 +38,7 @@ public class GroupRepresentation
 	private float fDraggingStartMouseCoordinateY;
 	private int iHierarchyLevel;
 	private boolean bCollapsed;
+	private boolean bLeaf;
 	private ClusterNode clusterNode;
 	private GrouperRenderStyle renderStyle;
 	private IGroupDrawingStrategy drawingStrategy;
@@ -46,7 +47,7 @@ public class GroupRepresentation
 
 	public GroupRepresentation(ClusterNode clusterNode, GrouperRenderStyle renderStyle,
 		IGroupDrawingStrategy drawingStrategy, DrawingStrategyManager drawingStrategyManager,
-		GLGrouper glGrouper) {
+		GLGrouper glGrouper, boolean bLeaf) {
 		alChildren = new ArrayList<ICompositeGraphic>();
 		alDropPositions = new ArrayList<Float>();
 		vecPosition = new Vec3f();
@@ -56,10 +57,13 @@ public class GroupRepresentation
 		this.drawingStrategy = drawingStrategy;
 		this.drawingStrategyManager = drawingStrategyManager;
 		this.glGrouper = glGrouper;
+		this.bLeaf = bLeaf;
 	}
 
 	@Override
 	public void add(ICompositeGraphic graphic) {
+		if (bLeaf)
+			return;
 		alChildren.add(graphic);
 		graphic.setParent(this);
 	}
@@ -71,7 +75,12 @@ public class GroupRepresentation
 
 	@Override
 	public void draw(GL gl, TextRenderer textRenderer) {
-		drawingStrategy.draw(gl, this, textRenderer);
+		if (bLeaf) {
+			drawingStrategy.drawAsLeaf(gl, this, textRenderer);
+		}
+		else {
+			drawingStrategy.draw(gl, this, textRenderer);
+		}
 	}
 
 	@Override
@@ -80,8 +89,14 @@ public class GroupRepresentation
 		GroupDrawingStrategyDragged drawingStrategyDragged =
 			(GroupDrawingStrategyDragged) drawingStrategyManager
 				.getGroupDrawingStrategy(EGroupDrawingStrategyType.DRAGGED);
-		drawingStrategyDragged.drawDragged(gl, this, fMouseCoordinateX, fMouseCoordinateY,
-			fDraggingStartMouseCoordinateX, fDraggingStartMouseCoordinateY);
+		if (bLeaf) {
+			drawingStrategyDragged.drawDraggedLeaf(gl, this, fMouseCoordinateX, fMouseCoordinateY,
+				fDraggingStartMouseCoordinateX, fDraggingStartMouseCoordinateY);
+		}
+		else {
+			drawingStrategyDragged.drawDraggedGroup(gl, this, fMouseCoordinateX, fMouseCoordinateY,
+				fDraggingStartMouseCoordinateX, fDraggingStartMouseCoordinateY);
+		}
 
 	}
 
@@ -172,6 +187,7 @@ public class GroupRepresentation
 		}
 
 		glGrouper.setHierarchyChanged(true);
+		glGrouper.setDisplayListDirty();
 	}
 
 	private int getDropPositionIndex(GL gl, Set<IDraggable> setDraggables, float fMouseCoordinateX,
@@ -216,8 +232,12 @@ public class GroupRepresentation
 
 	@Override
 	public void calculateDimensions(GL gl, TextRenderer textRenderer) {
-
-		drawingStrategy.calculateDimensions(gl, textRenderer, this);
+		if (bLeaf) {
+			drawingStrategy.calculateDimensionsOfLeaf(gl, textRenderer, this);
+		}
+		else {
+			drawingStrategy.calculateDimensions(gl, textRenderer, this);
+		}
 	}
 
 	@Override
@@ -237,6 +257,7 @@ public class GroupRepresentation
 	public void setCollapsed(boolean bCollapsed) {
 		this.bCollapsed = bCollapsed;
 		glGrouper.setHierarchyChanged(true);
+		glGrouper.setDisplayListDirty();
 	}
 
 	@Override
@@ -413,7 +434,7 @@ public class GroupRepresentation
 	public ICompositeGraphic getShallowCopy() {
 		GroupRepresentation copy =
 			new GroupRepresentation(clusterNode, renderStyle, drawingStrategy, drawingStrategyManager,
-				glGrouper);
+				glGrouper, bLeaf);
 		copy.alChildren = alChildren;
 		copy.vecHierarchyPosition = vecHierarchyPosition;
 		copy.vecPosition = vecPosition;
@@ -464,26 +485,26 @@ public class GroupRepresentation
 	@Override
 	public ICompositeGraphic createDeepCopyWithNewIDs(int[] iConsecutiveID) {
 
-		//TODO: COPIED CLUSTER NODE IS NOT IN TREE
+		// TODO: COPIED CLUSTER NODE IS NOT IN TREE
 		ClusterNode copiedNode =
-			new ClusterNode(clusterNode.getNodeName() + "_copy", iConsecutiveID[0], clusterNode.getCoefficient(),
-				clusterNode.getDepth(), false);
+			new ClusterNode(clusterNode.getNodeName() + "_copy", iConsecutiveID[0], clusterNode
+				.getCoefficient(), clusterNode.getDepth(), false);
 		GroupRepresentation copy =
 			new GroupRepresentation(copiedNode, renderStyle, drawingStrategy, drawingStrategyManager,
-				glGrouper);
-		for(ICompositeGraphic child : alChildren) {
-			iConsecutiveID[0] ++;
+				glGrouper, bLeaf);
+		for (ICompositeGraphic child : alChildren) {
+			iConsecutiveID[0]++;
 			ICompositeGraphic copiedChild = child.createDeepCopyWithNewIDs(iConsecutiveID);
 			copy.add(copiedChild);
 		}
-		
+
 		copy.vecHierarchyPosition = vecHierarchyPosition;
 		copy.vecPosition = vecPosition;
 		copy.fDraggingStartMouseCoordinateX = fDraggingStartMouseCoordinateX;
 		copy.fDraggingStartMouseCoordinateY = fDraggingStartMouseCoordinateY;
 		copy.fHeight = fHeight;
 		copy.fWidth = fWidth;
-		copy.alDropPositions = alDropPositions;
+		copy.alDropPositions.addAll(alDropPositions);
 		copy.bCollapsed = bCollapsed;
 		copy.iHierarchyLevel = iHierarchyLevel;
 		copy.parent = parent;
@@ -493,5 +514,35 @@ public class GroupRepresentation
 
 		return copy;
 
+	}
+
+	public boolean isLeaf() {
+		return bLeaf;
+	}
+
+	public void setLeaf(boolean bLeaf) {
+		this.bLeaf = bLeaf;
+	}
+
+	@Override
+	public void printTree() {
+		StringBuffer children = new StringBuffer();
+
+		for (ICompositeGraphic child : alChildren) {
+			children.append("ID: " + child.getID());
+			children.append(", Name: " + child.getName() + "; ");
+		}
+
+		System.out.println("ID: " + getID() + ", Name: " + getName() + ", Parent: "
+			+ ((parent != null) ? parent.getID() : "null") + ", NumChildren: " + alChildren.size()
+			+ ", NumDropPositions: " + alDropPositions.size());
+		System.out.println("Children: " + children.toString() + "\n");
+		
+		if(!bLeaf && alDropPositions.size() != alChildren.size() +1)
+			System.out.println("ALERT!!!!!!!!!!!!!!!!!!!!!!");
+
+		for (ICompositeGraphic child : alChildren) {
+			child.printTree();
+		}
 	}
 }
