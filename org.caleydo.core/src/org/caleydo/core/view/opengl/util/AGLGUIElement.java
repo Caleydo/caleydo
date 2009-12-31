@@ -100,11 +100,11 @@ public abstract class AGLGUIElement {
 		gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
 		int currentWidth = buffer.get(2);
 
-		float referenceWidth = (float) minSize * 10.0f;
+		float referenceWidth = minSize * 10.0f;
 		float scaling = 1;
 
-		if (referenceWidth > (float) currentWidth)
-			scaling = referenceWidth / (float) currentWidth;
+		if (referenceWidth > currentWidth)
+			scaling = referenceWidth / currentWidth;
 
 		return scaling;
 	}

@@ -265,11 +265,11 @@ public class LabelManager {
 		}
 
 		if (labelContainer.getLeft() < fXCenter) {
-			labelContainer.setContainerPosition((float) rectControlBox.getMaxX() + LEFT_CONTAINER_SPACING,
+			labelContainer.setContainerPosition(rectControlBox.getMaxX() + LEFT_CONTAINER_SPACING,
 				labelContainer.getYContainerCenter());
 		}
 		else {
-			labelContainer.setContainerPosition((float) rectControlBox.getMinX() - RIGHT_CONTAINER_SPACING
+			labelContainer.setContainerPosition(rectControlBox.getMinX() - RIGHT_CONTAINER_SPACING
 				- labelContainer.getWidth(), labelContainer.getYContainerCenter());
 		}
 	}

@@ -10,6 +10,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.texture.Texture;
@@ -49,7 +50,7 @@ public class GLPathwayTextureManager {
 				+ sPathwayTexturePath;
 
 		generalManager.getLogger().log(
-			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Load pathway texture with ID: "
+			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Load pathway texture with ID: "
 				+ pathway.getID()));
 
 		pathwayTexture = generalManager.getResourceLoader().getTexture(sPathwayTexturePath);

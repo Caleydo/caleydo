@@ -8,7 +8,7 @@ import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-//TODO: delete! or rebuild it to switch globeprojection type
+// TODO: delete! or rebuild it to switch globeprojection type
 
 public class ChangeTreeTypeAction
 	extends AToolBarAction
@@ -18,7 +18,7 @@ public class ChangeTreeTypeAction
 	public static final String[] ICON =
 		{ "resources/icons/view/hyperbolic/tree_switch_hyp.png",
 				"resources/icons/view/hyperbolic/tree_switch_lin.png" };
-	
+
 	public ChangeTreeTypeAction(int iViewID) {
 		super(iViewID);
 		setText(TEXT);
@@ -27,17 +27,17 @@ public class ChangeTreeTypeAction
 			.getWorkbench().getDisplay(), ICON[0])));
 		setChecked(false);
 	}
-	
+
 	@Override
-	public void run(){
+	public void run() {
 		super.run();
-		if(isChecked()){
-			//setChecked(true);
+		if (isChecked()) {
+			// setChecked(true);
 			setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
 				.getWorkbench().getDisplay(), ICON[1])));
 		}
-		else{
-			//setChecked(false);
+		else {
+			// setChecked(false);
 			setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
 				.getWorkbench().getDisplay(), ICON[0])));
 		}

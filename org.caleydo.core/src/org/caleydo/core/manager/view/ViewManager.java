@@ -32,7 +32,6 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLGlyphSliderView;
 import org.caleydo.core.view.opengl.canvas.grouper.GLGrouper;
 import org.caleydo.core.view.opengl.canvas.histogram.GLHistogram;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.GLHyperbolic;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
@@ -53,6 +52,7 @@ import org.caleydo.core.view.swt.collab.CollabViewRep;
 import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import org.caleydo.core.view.swt.tabular.TabularDataViewRep;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
@@ -196,7 +196,7 @@ public class ViewManager
 	public AGLEventListener createGLEventListener(ECommandType type, GLCaleydoCanvas glCanvas,
 		final String sLabel, final IViewFrustum viewFrustum) {
 		GeneralManager.get().getLogger().log(
-			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Creating GL canvas view from type: [" + type
+			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Creating GL canvas view from type: [" + type
 				+ "] and label: [" + sLabel + "]"));
 
 		AGLEventListener glEventListener = null;
@@ -255,11 +255,11 @@ public class ViewManager
 			case CREATE_GL_DATA_FLIPPER:
 				glEventListener = new GLDataFlipper(glCanvas, sLabel, viewFrustum);
 				break;
-				
+
 			case CREATE_GL_TISSUE_VIEW_BROWSER:
 				glEventListener = new GLTissueViewBrowser(glCanvas, sLabel, viewFrustum);
 				break;
-				
+
 			case CREATE_GL_PATHWAY_VIEW_BROWSER:
 				glEventListener = new GLPathwayViewBrowser(glCanvas, sLabel, viewFrustum);
 				break;
@@ -268,14 +268,10 @@ public class ViewManager
 				glEventListener = new GLRadialHierarchy(glCanvas, sLabel, viewFrustum);
 				break;
 
-			case CREATE_GL_HYPERBOLIC:
-				glEventListener = new GLHyperbolic(glCanvas, sLabel, viewFrustum);
-				break;
-
 			case CREATE_GL_HISTOGRAM:
 				glEventListener = new GLHistogram(glCanvas, sLabel, viewFrustum);
 				break;
-				
+
 			case CREATE_GL_GROUPER:
 				glEventListener = new GLGrouper(glCanvas, sLabel, viewFrustum);
 				break;
@@ -305,7 +301,7 @@ public class ViewManager
 
 		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasID)) {
 			generalManager.getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "GL Canvas with ID " + iGLCanvasID
+				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "GL Canvas with ID " + iGLCanvasID
 					+ " is already registered! Do nothing."));
 
 			return false;
@@ -362,7 +358,7 @@ public class ViewManager
 		if (glEventListener == null)
 			return;
 
-		GLCaleydoCanvas parentGLCanvas = ((AGLEventListener) glEventListener).getParentGLCanvas();
+		GLCaleydoCanvas parentGLCanvas = (glEventListener).getParentGLCanvas();
 
 		if (parentGLCanvas != null) {
 			parentGLCanvas.removeGLEventListener(glEventListener);

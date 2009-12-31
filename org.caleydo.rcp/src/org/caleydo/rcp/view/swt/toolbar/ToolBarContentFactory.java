@@ -11,7 +11,6 @@ import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.histogram.GLHistogram;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.GLHyperbolic;
 import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.dataflipper.GLDataFlipper;
@@ -24,7 +23,6 @@ import org.caleydo.rcp.view.opengl.RcpGLDataFlipperView;
 import org.caleydo.rcp.view.opengl.RcpGLGlyphView;
 import org.caleydo.rcp.view.opengl.RcpGLHeatMapView;
 import org.caleydo.rcp.view.opengl.RcpGLHistogramView;
-import org.caleydo.rcp.view.opengl.RcpGLHyperbolicView;
 import org.caleydo.rcp.view.opengl.RcpGLParCoordsView;
 import org.caleydo.rcp.view.opengl.RcpGLRadialHierarchyView;
 import org.caleydo.rcp.view.opengl.RcpGLRemoteRenderingView;
@@ -34,10 +32,10 @@ import org.caleydo.rcp.view.swt.toolbar.content.GlyphToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.HeatMapToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.ParCoordsToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.dataflipper.DataFlipperToolBarContent;
-import org.caleydo.rcp.view.swt.toolbar.content.hyperbolic.HyperbolicToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.radial.RadialHierarchyToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.remote.RemoteRenderingToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.scatterplot.ScatterplotToolBarContent;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -112,7 +110,7 @@ public class ToolBarContentFactory {
 		info.rcpID = RcpGLRemoteRenderingView.ID;
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
-		
+
 		info = new ToolBarInfo();
 		info.viewClass = GLDataFlipper.class;
 		info.contentClass = DataFlipperToolBarContent.class;
@@ -145,13 +143,6 @@ public class ToolBarContentFactory {
 		info.viewClass = GLRadialHierarchy.class;
 		info.contentClass = RadialHierarchyToolBarContent.class;
 		info.rcpID = RcpGLRadialHierarchyView.ID;
-		info.ignored = false;
-		toolBarInfos.put(info.viewClass, info);
-
-		info = new ToolBarInfo();
-		info.viewClass = GLHyperbolic.class;
-		info.contentClass = HyperbolicToolBarContent.class;
-		info.rcpID = RcpGLHyperbolicView.ID;
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
 
@@ -192,7 +183,7 @@ public class ToolBarContentFactory {
 		for (int viewID : viewIDs) {
 			IView view = retrieveView(viewID);
 			if (view != null) {
-				AToolBarContent content = getContent((IView) view);
+				AToolBarContent content = getContent(view);
 				if (content != null) {
 					int renderType = retrieveRenderType(view);
 					content.setRenderType(renderType);
@@ -262,7 +253,7 @@ public class ToolBarContentFactory {
 		}
 
 		GeneralManager.get().getLogger().log(
-			new Status(Status.WARNING, Activator.PLUGIN_ID, "Could not find view with view-id=" + viewID
+			new Status(IStatus.WARNING, Activator.PLUGIN_ID, "Could not find view with view-id=" + viewID
 				+ " in the workbench"));
 		return false;
 	}
@@ -304,7 +295,7 @@ public class ToolBarContentFactory {
 			}
 			catch (Exception e) {
 				GeneralManager.get().getLogger().log(
-					new Status(Status.WARNING, Activator.PLUGIN_ID,
+					new Status(IStatus.WARNING, Activator.PLUGIN_ID,
 						"No toolbar content providing class known for " + view
 							+ "; add its ToolBarInfo to ToolBarContentFactory"));
 				// e.printStackTrace();

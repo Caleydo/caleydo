@@ -8,7 +8,6 @@ import java.util.Set;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -20,30 +19,30 @@ import org.caleydo.core.view.opengl.canvas.remote.listener.LoadPathwaysByGeneLis
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
 public class GLPathwayViewBrowser
-	extends AGLViewBrowser 
+	extends AGLViewBrowser
 	implements IRemoteRenderingHandler {
 
 	private LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
 	private AddPathwayListener addPathwayListener = null;
-	
+
 	public GLPathwayViewBrowser(GLCaleydoCanvas glCanvas, String sLabel, IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum);
-	
+
 		viewType = EManagedObjectType.GL_PATHWAY_VIEW_BROWSER;
 	}
 
 	@Override
 	protected void addInitialViews() {
 
-//		for (int pathwayIndex = 0; pathwayIndex < 5; pathwayIndex++) {
-//			SerializedPathwayView pathway = new SerializedPathwayView();
-//			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems()
-//				.toArray()[pathwayIndex]).getID());
-//			pathway.setDataDomain(EDataDomain.PATHWAY_DATA);
-//			newViews.add(pathway);
-//		}
+		// for (int pathwayIndex = 0; pathwayIndex < 5; pathwayIndex++) {
+		// SerializedPathwayView pathway = new SerializedPathwayView();
+		// pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems()
+		// .toArray()[pathwayIndex]).getID());
+		// pathway.setDataDomain(EDataDomain.PATHWAY_DATA);
+		// newViews.add(pathway);
+		// }
 	}
-	
+
 	@Override
 	protected void initFocusLevel() {
 		Transform transform = new Transform();
@@ -52,7 +51,7 @@ public class GLPathwayViewBrowser
 
 		focusLevel.getElementByPositionIndex(0).setTransform(transform);
 	}
-	
+
 	@Override
 	protected void initPoolLevel(int iSelectedRemoteLevelElementID) {
 		Transform transform;
@@ -117,44 +116,43 @@ public class GLPathwayViewBrowser
 
 		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
 	}
-	
+
 	@Override
 	public String getShortInfo() {
 		return "Pathway Browser";
 	}
-	
+
 	@Override
 	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("Pathway Browser");
 		return sInfoText.toString();
 	}
-	
-	
+
 	@Override
 	public void registerEventListeners() {
 
 		super.registerEventListeners();
-		
+
 		addPathwayListener = new AddPathwayListener();
 		addPathwayListener.setHandler(this);
 		eventPublisher.addListener(LoadPathwayEvent.class, addPathwayListener);
-		
+
 		loadPathwaysByGeneListener = new LoadPathwaysByGeneListener();
 		loadPathwaysByGeneListener.setHandler(this);
 		eventPublisher.addListener(LoadPathwaysByGeneEvent.class, loadPathwaysByGeneListener);
 	}
-	
+
 	@Override
 	public void unregisterEventListeners() {
 
 		super.unregisterEventListeners();
-	
+
 		if (addPathwayListener != null) {
 			eventPublisher.removeListener(addPathwayListener);
 			addPathwayListener = null;
 		}
-		
+
 		if (loadPathwaysByGeneListener != null) {
 			eventPublisher.removeListener(loadPathwaysByGeneListener);
 			loadPathwaysByGeneListener = null;
@@ -187,36 +185,36 @@ public class GLPathwayViewBrowser
 	@Override
 	public void setConnectionLinesEnabled(boolean enabled) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setGeneMappingEnabled(boolean geneMappingEnabled) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setNeighborhoodEnabled(boolean neighborhoodEnabled) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setPathwayTexturesEnabled(boolean pathwayTexturesEnabled) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void toggleNavigationMode() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void toggleZoom() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

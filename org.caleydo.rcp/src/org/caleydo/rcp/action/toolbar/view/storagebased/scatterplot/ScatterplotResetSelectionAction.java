@@ -13,7 +13,7 @@ public class ScatterplotResetSelectionAction
 	implements IToolBarItem {
 	public static final String TEXT = "Reset Selections";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/reset_axis_spacing.png";
-	
+
 	/**
 	 * Constructor.
 	 */

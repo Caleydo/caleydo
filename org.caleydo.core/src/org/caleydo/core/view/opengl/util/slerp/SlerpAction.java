@@ -45,8 +45,7 @@ public class SlerpAction {
 
 		if (iElementID != -1) {
 			AGLEventListener glView =
-				(AGLEventListener) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
-					iElementID);
+				GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iElementID);
 			if (glView != null)
 				glView.setRemoteLevelElement(destinationRemoteLevelElement);
 		}

@@ -43,7 +43,7 @@ public class GlyphEntry {
 	 */
 	public GlyphEntry(int id) {
 		this.generalManager = GeneralManager.get();
-		gman = (GlyphManager) generalManager.getGlyphManager();
+		gman = generalManager.getGlyphManager();
 		id_ = id;
 		parameter_ = new Vector<Integer>();
 

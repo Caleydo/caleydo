@@ -127,13 +127,6 @@
             name="Radial Hierarchy">
       </view>
       <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.opengl.RcpGLHyperbolicView"
-            id="org.caleydo.rcp.views.GLHyperbolicView"
-            name="Hyperbolic">
-      </view>
-      <view
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.view.swt.RcpCollabView"
             id="org.caleydo.rcp.views.swt.CollabView"
@@ -363,11 +356,6 @@
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenRadialHierarchyHandler"
             id="org.caleydo.rcp.command.openviews.radial_hierarchy"
             name="Open Radial Hierarchy">
-      </command>
-      <command
-            defaultHandler="org.caleydo.rcp.command.handler.view.OpenHyperbolicHandler"
-            id="org.caleydo.rcp.command.openviews.hyperbolic"
-            name="Open Hyperbolic">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenCollabHandler"

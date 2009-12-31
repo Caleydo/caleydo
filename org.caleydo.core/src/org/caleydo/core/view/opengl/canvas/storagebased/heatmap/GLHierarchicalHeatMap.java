@@ -41,6 +41,7 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.group.ExportGroupsEvent;
 import org.caleydo.core.manager.event.view.group.InterchangeGroupsEvent;
@@ -79,7 +80,6 @@ import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.listener.GLHierarchicalHeatMapKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GroupContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -222,9 +222,9 @@ public class GLHierarchicalHeatMap
 	 * Transformation utility object to transform and project view related coordinates
 	 */
 	private RemoteRenderingTransformer selectionTransformer;
-	
+
 	private RemoteLevelElement heatMapRemoteElement;
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -248,13 +248,13 @@ public class GLHierarchicalHeatMap
 
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
 		super.renderStyle = renderStyle;
-		
+
 		heatMapRemoteElement = new RemoteLevelElement(null);
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(0, 0, 0));
 		transform.setScale(new Vec3f(1, 1, 1));
 		heatMapRemoteElement.setTransform(transform);
-		
+
 		ArrayList<RemoteLevelElement> remoteLevelElementWhiteList = new ArrayList<RemoteLevelElement>();
 		remoteLevelElementWhiteList.add(heatMapRemoteElement);
 		selectionTransformer = new RemoteRenderingTransformer(iUniqueID, remoteLevelElementWhiteList);
@@ -732,7 +732,7 @@ public class GLHierarchicalHeatMap
 
 		display(gl);
 		checkForHits(gl);
-		
+
 		ConnectedElementRepresentationManager cerm =
 			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
@@ -822,13 +822,13 @@ public class GLHierarchicalHeatMap
 
 		setDisplayListDirty();
 	}
-	
+
 	@Override
-	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType)
-	{
+	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType) {
 		super.replaceVirtualArray(idCategory, vaType);
 		hasDataWindowChanged = true;
 	}
+
 	/**
 	 * Render caption, simplified version used in (original) heatmap
 	 * 
@@ -2268,7 +2268,7 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public void display(GL gl) {
-		
+
 		processEvents();
 		if (generalManager.isWiiModeActive()) {
 			handleWiiInput();
@@ -2366,9 +2366,9 @@ public class GLHierarchicalHeatMap
 
 		contextMenu.render(gl, this);
 
-//		ConnectedElementRepresentationManager cerm =
-//			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
-//		cerm.doViewRelatedTransformation(gl, selectionTransformer);
+		// ConnectedElementRepresentationManager cerm =
+		// GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		// cerm.doViewRelatedTransformation(gl, selectionTransformer);
 	}
 
 	private void renderRemoteViewsLevel_1_2_3_Active(GL gl) {
@@ -2390,36 +2390,36 @@ public class GLHierarchicalHeatMap
 
 		fright = viewFrustum.getWidth() - fleftOffset;
 
-//		gl.glTranslatef(fleftOffset, -0.2f, 0);
+		// gl.glTranslatef(fleftOffset, -0.2f, 0);
 
 		// render embedded heat map
 		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
 			ftop -= renderStyle.getHeightExperimentDendrogram();
 
-//		glHeatMapView.getViewFrustum().setTop(ftop);
-//		glHeatMapView.getViewFrustum().setRight(fright);
+		// glHeatMapView.getViewFrustum().setTop(ftop);
+		// glHeatMapView.getViewFrustum().setRight(fright);
 		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
 		// EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView.getID()));
-		
+
 		gl.glPushMatrix();
-		
+
 		heatMapRemoteElement.getTransform().getTranslation().set(fleftOffset, -0.2f, 0);
-		heatMapRemoteElement.getTransform().getScale().set(fright/8, 1*fAspectRatio, 1);
-//		heatMapRemoteElement.getTransform().getTranslation().set(0, 0, 0);
-//		heatMapRemoteElement.getTransform().getScale().set(1, 0.5f, 1);
-		
+		heatMapRemoteElement.getTransform().getScale().set(fright / 8, 1 * fAspectRatio, 1);
+		// heatMapRemoteElement.getTransform().getTranslation().set(0, 0, 0);
+		// heatMapRemoteElement.getTransform().getScale().set(1, 0.5f, 1);
+
 		Transform transform = heatMapRemoteElement.getTransform();
 		Vec3f translation = transform.getTranslation();
 		Rotf rot = transform.getRotation();
-		Vec3f scale = transform.getScale();
+		//Vec3f scale = transform.getScale();
 		Vec3f axis = new Vec3f();
 		float fAngle = rot.get(axis);
 
 		gl.glTranslatef(translation.x(), translation.y(), translation.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
-		//gl.glScalef(scale.x(), scale.y(), scale.z());
-		gl.glScalef(1,1,1);
-		
+		// gl.glScalef(scale.x(), scale.y(), scale.z());
+		gl.glScalef(1, 1, 1);
+
 		IViewFrustum embeddedHeatMapFrustum = glHeatMapView.getViewFrustum();
 		embeddedHeatMapFrustum.setLeft(0);
 		embeddedHeatMapFrustum.setRight(5);
@@ -2427,7 +2427,7 @@ public class GLHierarchicalHeatMap
 		glHeatMapView.setFrustum(embeddedHeatMapFrustum);
 
 		glHeatMapView.displayRemote(gl);
-		
+
 		// gl.glPopName();
 		renderStyle.setWidthLevel3(glHeatMapView.getViewFrustum().getWidth() - 0.95f);
 
@@ -2456,8 +2456,8 @@ public class GLHierarchicalHeatMap
 		}
 
 		gl.glPopMatrix();
-		
-//		gl.glTranslatef(-fleftOffset, +0.2f, 0);
+
+		// gl.glTranslatef(-fleftOffset, +0.2f, 0);
 
 		// render embedded gene dendrogram
 		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
@@ -2482,7 +2482,7 @@ public class GLHierarchicalHeatMap
 	}
 
 	private void renderRemoteViewsLevel_2_3_Active(GL gl) {
-		float fright = 0.0f;
+		//float fright = 0.0f;
 		float ftop = viewFrustum.getTop();
 
 		float fleftOffset = 0.1f + renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS;
@@ -2496,7 +2496,7 @@ public class GLHierarchicalHeatMap
 		if (!bIsHeatmapInFocus)
 			fleftOffset -= 0.02;
 
-		fright = viewFrustum.getWidth() - fleftOffset;
+		//fright = viewFrustum.getWidth() - fleftOffset;
 
 		gl.glTranslatef(fleftOffset, -0.2f, 0);
 
@@ -2504,8 +2504,8 @@ public class GLHierarchicalHeatMap
 		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
 			ftop -= renderStyle.getHeightExperimentDendrogram();
 
-//		glHeatMapView.getViewFrustum().setTop(ftop);
-//		glHeatMapView.getViewFrustum().setRight(fright);
+		// glHeatMapView.getViewFrustum().setTop(ftop);
+		// glHeatMapView.getViewFrustum().setRight(fright);
 		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
 		// EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView.getID()));
 		glHeatMapView.displayRemote(gl);
@@ -3254,7 +3254,6 @@ public class GLHierarchicalHeatMap
 
 		// selected experiments
 
-
 		IVirtualArrayDelta deltaExp = new VirtualArrayDelta(storageVAType, eExperimentDataType);
 		ISelectionDelta selectionDeltaEx = new SelectionDelta(eExperimentDataType);
 
@@ -3281,7 +3280,7 @@ public class GLHierarchicalHeatMap
 			}
 		}
 
-//		glHeatMapView.handleVirtualArrayUpdate(deltaExp, getShortInfo());
+		// glHeatMapView.handleVirtualArrayUpdate(deltaExp, getShortInfo());
 		if (selectionDeltaEx.size() > 0) {
 			glHeatMapView.handleSelectionUpdate(selectionDeltaEx, true, null);
 		}
@@ -3809,7 +3808,7 @@ public class GLHierarchicalHeatMap
 
 		setDisplayListDirty();
 		hasDataWindowChanged = true;
-		
+
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingWholeBlockLevel2 = false;
 			bDisableCursorDraggingLevel2 = false;
@@ -3940,14 +3939,14 @@ public class GLHierarchicalHeatMap
 		}
 	}
 
-//	@Override
-//	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
-//		if(EIDCategory.GENE == categ)
-//		contentSelectionManager.executeSelectionCommand(selectionCommand);
-////		glHeatMapView.handleContentTriggerSelectionCommand(category, selectionCommand);
-//		setDisplayListDirty();
-//
-//	}
+	// @Override
+	// public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
+	// if(EIDCategory.GENE == categ)
+	// contentSelectionManager.executeSelectionCommand(selectionCommand);
+	// // glHeatMapView.handleContentTriggerSelectionCommand(category, selectionCommand);
+	// setDisplayListDirty();
+	//
+	// }
 
 	private void deactivateAllDraggingCursor() {
 		bActivateDraggingExperiments = false;
@@ -4730,7 +4729,7 @@ public class GLHierarchicalHeatMap
 		// }
 		// });
 
-		set.exportGroups(GeneralManager.CALEYDO_HOME_PATH + "exportedGroups.csv", algenesToExport,
+		set.exportGroups(IGeneralManager.CALEYDO_HOME_PATH + "exportedGroups.csv", algenesToExport,
 			alExperiments);
 
 	}
@@ -4952,7 +4951,7 @@ public class GLHierarchicalHeatMap
 	 */
 	public void handleArrowAndAltPressed(boolean bArrowUp) {
 
-		int iNrElementsToShift = (int) Math.floor(Math.sqrt((double) iSamplesLevel2));
+		int iNrElementsToShift = (int) Math.floor(Math.sqrt(iSamplesLevel2));
 
 		if (bArrowUp) {
 			if (iFirstSampleLevel2 > iNrElementsToShift + 1) {
@@ -4988,7 +4987,7 @@ public class GLHierarchicalHeatMap
 	 */
 	public void handleArrowAndCtrlPressed(boolean bArrowUp) {
 
-		int iNrElementsToShift = (int) Math.floor(Math.sqrt((double) iNumberOfElements));
+		int iNrElementsToShift = (int) Math.floor(Math.sqrt(iNumberOfElements));
 
 		if (bArrowUp) {
 			if (iFirstSampleLevel1 > iNrElementsToShift + 1) {

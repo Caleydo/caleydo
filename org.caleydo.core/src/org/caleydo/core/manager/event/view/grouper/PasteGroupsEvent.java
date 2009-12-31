@@ -4,9 +4,9 @@ import org.caleydo.core.manager.event.AEvent;
 
 public class PasteGroupsEvent
 	extends AEvent {
-	
+
 	private int iParentGroupID = -1;
-	
+
 	public PasteGroupsEvent(int iParentGroupID) {
 		this.iParentGroupID = iParentGroupID;
 	}

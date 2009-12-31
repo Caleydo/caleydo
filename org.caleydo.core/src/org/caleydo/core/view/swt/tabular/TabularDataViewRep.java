@@ -709,7 +709,7 @@ public class TabularDataViewRep
 			return;
 
 		contentSelectionManager.clearSelection(eSelectionType);
-		contentSelectionManager.addToType(eSelectionType, (Integer) iContentIndex);
+		contentSelectionManager.addToType(eSelectionType, iContentIndex);
 
 		if (dataDomain == EDataDomain.GENETIC_DATA) {
 			// Resolve multiple spotting on chip and add all to the

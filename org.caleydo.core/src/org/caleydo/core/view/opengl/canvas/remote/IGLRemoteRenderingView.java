@@ -17,7 +17,7 @@ public interface IGLRemoteRenderingView
 	public GLCaleydoCanvas getParentGLCanvas();
 
 	/**
-	 * Retrieves all the contained view-types from a given view. 
+	 * Retrieves all the contained view-types from a given view.
 	 * 
 	 * @return list of view-types contained in the given view
 	 */

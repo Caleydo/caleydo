@@ -6,12 +6,13 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.canvas.grouper.GrouperRenderStyle;
 import org.caleydo.core.view.opengl.canvas.grouper.compositegraphic.GroupRepresentation;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
 public class GroupDrawingStrategySelection
 	extends AGroupDrawingStrategyRectangular {
-	
+
 	private PickingManager pickingManager;
 	private GrouperRenderStyle renderStyle;
 	private int iViewID;
@@ -25,7 +26,7 @@ public class GroupDrawingStrategySelection
 
 	@Override
 	public void draw(GL gl, GroupRepresentation groupRepresentation, TextRenderer textRenderer) {
-		
+
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.GROUPER_GROUP_SELECTION,
 			groupRepresentation.getID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
@@ -33,14 +34,14 @@ public class GroupDrawingStrategySelection
 		gl.glColor4fv(renderStyle.getGroupColorForLevel(groupRepresentation.getHierarchyLevel()), 0);
 
 		drawGroupRectangular(gl, groupRepresentation, textRenderer);
-		
-		gl.glColor4fv(GrouperRenderStyle.SELECTED_COLOR, 0);
+
+		gl.glColor4fv(GeneralRenderStyle.SELECTED_COLOR, 0);
 		gl.glLineWidth(3.0f);
 
 		drawRectangularBorder(gl, groupRepresentation, textRenderer);
 
 		gl.glPopName();
-		
+
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.GROUPER_COLLAPSE_BUTTON_SELECTION,
 			groupRepresentation.getID()));
 
@@ -54,7 +55,7 @@ public class GroupDrawingStrategySelection
 
 	@Override
 	public void drawAsLeaf(GL gl, GroupRepresentation groupRepresentation, TextRenderer textRenderer) {
-		
+
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.GROUPER_GROUP_SELECTION,
 			groupRepresentation.getID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
@@ -62,15 +63,15 @@ public class GroupDrawingStrategySelection
 		gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);
 
 		drawLeafRectangular(gl, groupRepresentation, textRenderer);
-		
+
 		gl.glLineWidth(3.0f);
-		gl.glColor4fv(GrouperRenderStyle.SELECTED_COLOR, 0);
-		
+		gl.glColor4fv(GeneralRenderStyle.SELECTED_COLOR, 0);
+
 		drawRectangularBorder(gl, groupRepresentation, textRenderer);
-		
+
 		gl.glPopAttrib();
 
 		gl.glPopName();
-		
+
 	}
 }

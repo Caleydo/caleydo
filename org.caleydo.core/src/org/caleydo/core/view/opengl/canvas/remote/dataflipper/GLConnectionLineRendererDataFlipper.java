@@ -145,7 +145,8 @@ public class GLConnectionLineRendererDataFlipper
 			// renderLine(gl, vecViewBundlingPoint, vecCenter, 0, fArColor);
 		}
 	}
-	
+
+	@Override
 	protected void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
 		final int iNumberOfLines, float[] fArColor) {
 

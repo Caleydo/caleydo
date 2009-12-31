@@ -209,7 +209,7 @@ public class SerializationManager {
 		eventTypes.add(ClientListEvent.class);
 		eventTypes.add(AddConnectionLineVerticesEvent.class);
 		eventTypes.add(ClearConnectionsEvent.class);
-		
+
 		// Hyperbolic - Cluster
 		eventTypes.add(ChangeTreeTypeEvent.class);
 		eventTypes.add(ChangeCanvasDrawingEvent.class);

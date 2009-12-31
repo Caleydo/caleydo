@@ -14,8 +14,7 @@ public class OpenGrouperHandler
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(
-				RcpGLGrouperView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpGLGrouperView.ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

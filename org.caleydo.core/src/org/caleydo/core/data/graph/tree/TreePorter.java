@@ -164,7 +164,7 @@ public class TreePorter {
 	 */
 	public void exportTree(Writer writer, Tree<ClusterNode> tree) throws JAXBException, IOException {
 
-		Set<DefaultEdge> edgeSet = (Set<DefaultEdge>) tree.graph.edgeSet();
+		Set<DefaultEdge> edgeSet = tree.graph.edgeSet();
 
 		for (DefaultEdge edge : edgeSet) {
 			String temp[] = new String[2];

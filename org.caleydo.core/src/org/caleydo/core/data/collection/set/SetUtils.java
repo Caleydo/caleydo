@@ -30,6 +30,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -188,7 +189,6 @@ public class SetUtils {
 	 */
 	public static boolean createData(IUseCase useCase) {
 
-	
 		LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
 		ArrayList<Integer> iAlStorageId = loadDataParameters.getStorageIds();
 
@@ -256,7 +256,7 @@ public class SetUtils {
 		}
 
 		boolean isSetHomogeneous = loadDataParameters.isDataHomogeneous();
-		
+
 		if (loadDataParameters.getMathFilterMode().equals("Normal")) {
 			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL, isSetHomogeneous);
 		}
@@ -394,7 +394,7 @@ public class SetUtils {
 		if (geneTreeFileName != null) {
 			if (geneTreeFileName.equals("") == false) {
 				GeneralManager.get().getLogger().log(
-					new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Loading gene tree from file "
+					new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Loading gene tree from file "
 						+ geneTreeFileName));
 
 				TreePorter treePorter = new TreePorter();
@@ -417,7 +417,7 @@ public class SetUtils {
 		if (experimentsTreeFileName != null) {
 			if (experimentsTreeFileName.equals("") == false) {
 				GeneralManager.get().getLogger().log(
-					new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Loading experiments tree from file "
+					new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Loading experiments tree from file "
 						+ experimentsTreeFileName));
 
 				TreePorter treePorter = new TreePorter();

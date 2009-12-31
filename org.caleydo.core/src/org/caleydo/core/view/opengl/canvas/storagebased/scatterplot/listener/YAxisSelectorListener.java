@@ -8,22 +8,17 @@ import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.GLScatterplo
 /**
  * Listener that reacts events for setting the max. displayed hierarchy depth in RadialHierarchy.
  * 
- * @author Christian
+ * @author Juergen Pillhofer
  */
 
-public class YAxisSelectorListener 
+public class YAxisSelectorListener
 	extends AEventListener<GLScatterplot> {
 
-		@Override
-		public void handleEvent(AEvent event) {
-			if (event instanceof YAxisSelectorEvent) {
-				handler.setYAxis(((YAxisSelectorEvent) event)
-					.getSelectedAxis());
+	@Override
+	public void handleEvent(AEvent event) {
+		if (event instanceof YAxisSelectorEvent) {
+			handler.setYAxis(((YAxisSelectorEvent) event).getSelectedAxis());
 
-			
-			}
 		}
+	}
 }
-
-
-

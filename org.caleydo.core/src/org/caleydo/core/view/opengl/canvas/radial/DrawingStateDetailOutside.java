@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
  * This drawing state draws the full hierarchy at the center of the screen, just smaller than in
@@ -153,14 +154,14 @@ public class DrawingStateDetailOutside
 					.createDrawingStrategy(EPDDrawingStrategyType.SELECTED);
 
 			if (mapSelectedElements.get(pdSelected) == ESelectionType.SELECTION) {
-				dsCurrent.setBorderColor(RadialHierarchyRenderStyle.SELECTED_COLOR);
+				dsCurrent.setBorderColor(GeneralRenderStyle.SELECTED_COLOR);
 			}
 			if (mapChildIndictatorElements.containsKey(pdSelected)) {
 				if (mapChildIndictatorElements.get(pdSelected) == ESelectionType.SELECTION) {
-					dsCurrent.setChildIndicatorColor(RadialHierarchyRenderStyle.SELECTED_COLOR);
+					dsCurrent.setChildIndicatorColor(GeneralRenderStyle.SELECTED_COLOR);
 				}
 				else {
-					dsCurrent.setChildIndicatorColor(RadialHierarchyRenderStyle.MOUSE_OVER_COLOR);
+					dsCurrent.setChildIndicatorColor(GeneralRenderStyle.MOUSE_OVER_COLOR);
 				}
 				mapChildIndictatorElements.remove(pdSelected);
 			}
@@ -176,10 +177,10 @@ public class DrawingStateDetailOutside
 						.getDrawingStrategyType());
 
 			if (mapChildIndictatorElements.get(pdIndicated) == ESelectionType.SELECTION) {
-				dsCurrent.setChildIndicatorColor(RadialHierarchyRenderStyle.SELECTED_COLOR);
+				dsCurrent.setChildIndicatorColor(GeneralRenderStyle.SELECTED_COLOR);
 			}
 			else {
-				dsCurrent.setChildIndicatorColor(RadialHierarchyRenderStyle.MOUSE_OVER_COLOR);
+				dsCurrent.setChildIndicatorColor(GeneralRenderStyle.MOUSE_OVER_COLOR);
 			}
 
 			pdIndicated.setPDDrawingStrategy(dsCurrent);
@@ -321,9 +322,9 @@ public class DrawingStateDetailOutside
 		if (parentIndicatorType != ESelectionType.NORMAL) {
 			gl.glPushClientAttrib(GL.GL_COLOR_BUFFER_BIT);
 			if (parentIndicatorType == ESelectionType.SELECTION)
-				gl.glColor3fv(RadialHierarchyRenderStyle.SELECTED_COLOR, 0);
+				gl.glColor3fv(GeneralRenderStyle.SELECTED_COLOR, 0);
 			else
-				gl.glColor3fv(RadialHierarchyRenderStyle.MOUSE_OVER_COLOR, 0);
+				gl.glColor3fv(GeneralRenderStyle.MOUSE_OVER_COLOR, 0);
 			GLPrimitives.renderCircle(glu, fOverviewDiscWidth / 2.0f, 100);
 			GLPrimitives.renderCircleBorder(gl, glu, fOverviewDiscWidth / 2.0f, 100, 2);
 			gl.glPopAttrib();
@@ -367,8 +368,7 @@ public class DrawingStateDetailOutside
 		else {
 			float fPercentageStep =
 				(RadialHierarchyRenderStyle.MAX_DETAIL_SCREEN_PERCENTAGE - RadialHierarchyRenderStyle.MIN_DETAIL_SCREEN_PERCENTAGE)
-					/ ((float) (iMaxDisplayedHierarchyDepth
-						- RadialHierarchyRenderStyle.MIN_DISPLAYED_DETAIL_DEPTH - 1));
+					/ ((iMaxDisplayedHierarchyDepth - RadialHierarchyRenderStyle.MIN_DISPLAYED_DETAIL_DEPTH - 1));
 
 			fDetailViewScreenPercentage =
 				RadialHierarchyRenderStyle.MIN_DETAIL_SCREEN_PERCENTAGE

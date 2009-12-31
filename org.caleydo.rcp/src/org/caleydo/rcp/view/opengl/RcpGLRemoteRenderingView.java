@@ -35,7 +35,8 @@ public class RcpGLRemoteRenderingView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedRemoteRenderingView serializedView = new SerializedRemoteRenderingView(EDataDomain.GENETIC_DATA);
+		SerializedRemoteRenderingView serializedView =
+			new SerializedRemoteRenderingView(EDataDomain.GENETIC_DATA);
 		return serializedView;
 	}
 

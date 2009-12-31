@@ -44,7 +44,7 @@ public class SWTStandaloneBridge
 	@Override
 	public void closeView(String viewGUIID) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

@@ -42,12 +42,12 @@ public class SerializedPathwayViewBrowserView
 	public void init() {
 		initialContainedViews = new ArrayList<ASerializedView>();
 
-//		SerializedPathwayView pathway = new SerializedPathwayView();
-//		pathway
-//			.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems().toArray()[0])
-//				.getID());
-//		pathway.setDataDomain(EDataDomain.PATHWAY_DATA);
-//		initialContainedViews.add(pathway);
+		// SerializedPathwayView pathway = new SerializedPathwayView();
+		// pathway
+		// .setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems().toArray()[0])
+		// .getID());
+		// pathway.setDataDomain(EDataDomain.PATHWAY_DATA);
+		// initialContainedViews.add(pathway);
 	}
 
 	@Override

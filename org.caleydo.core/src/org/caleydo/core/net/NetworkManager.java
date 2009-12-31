@@ -23,6 +23,7 @@ import org.caleydo.core.serialize.ApplicationInitData;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.view.swt.collab.RedrawCollabViewEvent;
 import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -299,7 +300,7 @@ public class NetworkManager
 			centralEventPublisher.triggerEvent(event);
 		}
 		catch (ConnectException ex) {
-			log.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Could not connect to server", ex));
+			log.log(new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Could not connect to server", ex));
 			if (clientListListener != null) {
 				centralEventPublisher.removeListener(clientListListener);
 				clientListListener = null;

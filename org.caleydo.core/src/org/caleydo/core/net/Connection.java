@@ -15,12 +15,14 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ApplicationInitData;
 import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -127,7 +129,7 @@ public class Connection {
 	 *             if a error during handshaking occurs
 	 */
 	public ApplicationInitData connect(InetAddress address, int port) throws ConnectException {
-		log.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "connect(): address=" + address));
+		log.log(new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "connect(): address=" + address));
 		ApplicationInitData initData;
 		try {
 			socket = new Socket(address, port);
@@ -143,7 +145,7 @@ public class Connection {
 			networkUtils.writeHandshake(clientHandshake, outputStream);
 
 			ServerHandshake serverHandshake = (ServerHandshake) networkUtils.readHandshake(inputStream);
-			log.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "connect(): serverHandshake="
+			log.log(new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "connect(): serverHandshake="
 				+ serverHandshake));
 
 			if (serverHandshake.getError() != null) {

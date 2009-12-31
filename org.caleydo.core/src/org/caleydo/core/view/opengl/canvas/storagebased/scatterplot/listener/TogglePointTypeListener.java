@@ -5,11 +5,10 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
 import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.GLScatterplot;
 
-
 /**
  * Listener for
  * 
- * @author Jürgen Pillhofer
+ * @author Juergen Pillhofer
  */
 public class TogglePointTypeListener
 	extends AEventListener<GLScatterplot> {
@@ -17,10 +16,9 @@ public class TogglePointTypeListener
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof TogglePointTypeEvent) {
-		
+
 			handler.togglePointType();
 		}
 	}
 
 }
-

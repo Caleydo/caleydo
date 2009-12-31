@@ -100,7 +100,7 @@ public class PartListener
 		}
 		else {
 			// viewpart is attached within caleydo main window
-			removeInlineToolBar((CaleydoRCPViewPart) viewPart);
+			removeInlineToolBar(viewPart);
 			sendViewActivationEvent(viewPart);
 		}
 	}

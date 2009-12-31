@@ -22,6 +22,7 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
@@ -63,6 +64,7 @@ import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -312,7 +314,7 @@ public class GLDataFlipper
 
 		if (glEventListener == null) {
 			generalManager.getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
 					"Remote level element is null and cannot be rendered!"));
 			return;
 		}
@@ -585,21 +587,22 @@ public class GLDataFlipper
 				tmpSlerpAction.finished();
 
 				updateViewDetailLevels(tmpSlerpAction.getDestinationRemoteLevelElement());
-			
+
 				AGLEventListener glEventListener =
 					generalManager.getViewGLCanvasManager().getGLEventListener(tmpSlerpAction.getElementId());
 
 				if (glEventListener instanceof GLTissueViewBrowser)
-					((GLTissueViewBrowser)glEventListener).setSlerpActive(false);
-				
-				if (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-			
+					((GLTissueViewBrowser) glEventListener).setSlerpActive(false);
+
+				if (glEventListener instanceof GLParallelCoordinates
+					&& glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+
 					boolean renderConnectionsLeft = true;
 					if (glEventListener.getID() == focusElement.getContainedElementID())
 						renderConnectionsLeft = false;
-					
-					((GLParallelCoordinates)glEventListener).setRenderConnectionState(renderConnectionsLeft);
-						
+
+					((GLParallelCoordinates) glEventListener).setRenderConnectionState(renderConnectionsLeft);
+
 				}
 			}
 
@@ -711,7 +714,7 @@ public class GLDataFlipper
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
-		
+
 		isPatientAlternativeGuideActive = false;
 		switch (pickingType) {
 
@@ -758,8 +761,8 @@ public class GLDataFlipper
 
 							isTissueGuideActive = true;
 							// isGeneticGuideActive = false;
-							
-							((GLTissueViewBrowser)pickedView).setSlerpActive(true);
+
+							((GLTissueViewBrowser) pickedView).setSlerpActive(true);
 						}
 
 						else if ((pickedView instanceof GLParallelCoordinates && pickedView.getSet()
@@ -798,10 +801,10 @@ public class GLDataFlipper
 	}
 
 	private void chainMove(RemoteLevelElement selectedElement) {
-		
+
 		// Clear connection lines
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
-		
+
 		// Chain slerping to the right
 		if (stackElementsLeft.contains(selectedElement)) {
 
@@ -981,22 +984,22 @@ public class GLDataFlipper
 				0.15f + fGuidancePipeWidth + 0.05f, 0.0f), 1, 1, 1, alpha);
 		}
 
-//		if (isPatientAlternativeGuideActive && dataDomain == EDataDomain.CLINICAL_DATA) {
-//			textureManager.renderTexture(gl, connTexture, new Vec3f(0.52f, 0.05f, 0.02f), new Vec3f(1.5f,
-//				0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.52f,
-//				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
-//
-//			gl.glTranslatef(1f, 0, 0);
-//			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f,
-//				0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
-//				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);;
-//
-//			gl.glTranslatef(0.5f, 0, 0);
-//			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f,
-//				0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
-//				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
-//			gl.glTranslatef(-1.5f, 0, 0);
-//		}
+		// if (isPatientAlternativeGuideActive && dataDomain == EDataDomain.CLINICAL_DATA) {
+		// textureManager.renderTexture(gl, connTexture, new Vec3f(0.52f, 0.05f, 0.02f), new Vec3f(1.5f,
+		// 0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.52f,
+		// 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
+		//
+		// gl.glTranslatef(1f, 0, 0);
+		// textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f,
+		// 0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
+		// 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);;
+		//
+		// gl.glTranslatef(0.5f, 0, 0);
+		// textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f,
+		// 0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
+		// 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
+		// gl.glTranslatef(-1.5f, 0, 0);
+		// }
 
 		for (int iViewIndex = 0; iViewIndex < possibleViews.size(); iViewIndex++) {
 

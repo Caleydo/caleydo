@@ -98,7 +98,7 @@ public class GeneClusterDataEventManager
 			delta.addSelection(pdSelected.getElementID(), selectionType);
 			SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 			selectionUpdateEvent.setSender(this);
-			selectionUpdateEvent.setSelectionDelta((SelectionDelta) delta);
+			selectionUpdateEvent.setSelectionDelta(delta);
 			selectionUpdateEvent.setInfo(radialHierarchy.getShortInfo());
 			eventPublisher.triggerEvent(selectionUpdateEvent);
 		}

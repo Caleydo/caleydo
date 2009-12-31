@@ -21,7 +21,7 @@ public interface ICompositeGraphic
 	public void add(ICompositeGraphic graphic);
 
 	public void delete(ICompositeGraphic graphic);
-	
+
 	public void draw(GL gl, TextRenderer textRenderer);
 
 	public void calculateDimensions(GL gl, TextRenderer textRenderer);
@@ -67,21 +67,21 @@ public interface ICompositeGraphic
 
 	public void getOrderedTopElementCompositeList(Set<ICompositeGraphic> setComposites,
 		ArrayList<ICompositeGraphic> alComposites);
-	
+
 	public ICompositeGraphic getRoot();
-	
+
 	public ICompositeGraphic getShallowCopy();
-	
+
 	public void setChildrensParent(ICompositeGraphic parent);
-	
+
 	public void removeOnChildAbsence();
-	
+
 	public int getHierarchyLevel();
-	
+
 	public void replaceChild(ICompositeGraphic childToReplace, ICompositeGraphic newChild);
-	
+
 	public ICompositeGraphic createDeepCopyWithNewIDs(int[] iConsecutiveID);
-	
+
 	public void printTree();
 
 }

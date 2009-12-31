@@ -252,8 +252,8 @@ public class GLMouseListener
 			 * --- PANING ---
 			 */
 			Vec3f addVec3f =
-				new Vec3f(fPanScale * (float) (x - prevMouseX) / (float) size.width, fPanScale
-					* (float) (prevMouseY - y) / (float) size.height, 0.0f);
+				new Vec3f(fPanScale * (x - prevMouseX) / size.width, fPanScale * (prevMouseY - y)
+					/ size.height, 0.0f);
 
 			prevMouseX = x;
 			prevMouseY = y;

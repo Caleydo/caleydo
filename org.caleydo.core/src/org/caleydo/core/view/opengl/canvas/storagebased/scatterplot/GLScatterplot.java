@@ -28,23 +28,26 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.manager.event.view.radial.UpdateDepthSliderPositionEvent;
+import org.caleydo.core.manager.event.view.storagebased.InitAxisComboEvent;
+import org.caleydo.core.manager.event.view.storagebased.ResetScatterSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.SetPointSizeEvent;
+import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
+import org.caleydo.core.manager.event.view.storagebased.XAxisSelectorEvent;
+import org.caleydo.core.manager.event.view.storagebased.YAxisSelectorEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.usecase.EDataFilterLevel;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.AffinityClusterer;
@@ -62,30 +65,16 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHeatMapView;
+import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.ResetSelectionListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.SetPointSizeListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.TogglePointTypeListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.XAxisSelectorListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.YAxisSelectorListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-
-import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
-import org.caleydo.core.manager.event.view.storagebased.SetPointSizeEvent;
-import org.caleydo.core.manager.event.view.storagebased.XAxisSelectorEvent;
-import org.caleydo.core.manager.event.view.storagebased.YAxisSelectorEvent;
-import org.caleydo.core.manager.event.view.storagebased.InitAxisComboEvent;
-import org.caleydo.core.manager.event.view.storagebased.ResetScatterSelectionEvent;
-import org.caleydo.core.manager.general.GeneralManager;
-
-import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.TogglePointTypeListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.ResetSelectionListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.SetPointSizeListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.XAxisSelectorListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.listener.YAxisSelectorListener;
-
-
-
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -95,8 +84,9 @@ import com.sun.opengl.util.texture.TextureCoords;
  * 
  * @author Alexander Lex
  * @author Marc Streit
- * @author Jürgen Pillhofer
+ * @author Juergen Pillhofer
  */
+@SuppressWarnings("unused")
 public class GLScatterplot
 	extends AStorageBasedView {
 
@@ -104,9 +94,6 @@ public class GLScatterplot
 
 	private ColorMapping colorMapper;
 
-	
-	
-	
 	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 	private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
 
@@ -122,26 +109,22 @@ public class GLScatterplot
 
 	public static int SELECTED_X_AXIS = 0;
 	public static int SELECTED_Y_AXIS = 1;
-	
+
 	// listeners
-	
+
 	private TogglePointTypeListener togglePointTypeListener;
 	private ResetSelectionListener resetSelectionListener;
-	
+
 	private SetPointSizeListener setPointSizeListener;
 	private XAxisSelectorListener xAxisSelectorListener;
 	private YAxisSelectorListener yAxisSelectorListener;
-	
+
 	private SelectionManager elementSelectionManager;
-	
-	
-	
-	
+
 	private float[] fDragStartPoint = new float[3];
-	private float[] fDragEndPoint   = new float[3];
-	private boolean bRectangleSelection=false;
-	private boolean bSelectThemNow=false;
-	
+	private float[] fDragEndPoint = new float[3];
+	private boolean bRectangleSelection = false;
+	private boolean bSelectThemNow = false;
 
 	/**
 	 * Constructor.
@@ -173,17 +156,12 @@ public class GLScatterplot
 		renderStyle = new ScatterPlotRenderStyle(this, viewFrustum);
 
 		super.renderStyle = renderStyle;
-		
 
-		
-		
 		InitAxisComboEvent initAxisComboEvent = new InitAxisComboEvent();
 		initAxisComboEvent.setSender(this);
 		initAxisComboEvent.setAxisNames(this.getAxisString());
 		GeneralManager.get().getEventPublisher().triggerEvent(initAxisComboEvent);
 	}
-
-
 
 	@Override
 	public void initLocal(GL gl) {
@@ -214,9 +192,7 @@ public class GLScatterplot
 				glParentView.getParentGLCanvas().getParentComposite().addKeyListener(glKeyListener);
 			}
 		});
-		
-		
-		
+
 		bRenderStorageHorizontally = false;
 
 		this.glMouseListener = glMouseListener;
@@ -245,50 +221,44 @@ public class GLScatterplot
 		// doTranslation();
 		// }
 
-		//pickingManager.getHits(this, EPickingType.SCATTER_POINT_SELECTION);
+		// pickingManager.getHits(this, EPickingType.SCATTER_POINT_SELECTION);
 
-		
 		ArrayList<Pick> alHits = null;
 
 		alHits = pickingManager.getHits(iUniqueID, EPickingType.SCATTER_POINT_SELECTION);
-		
-	//	if (alHits == null && alHits.size() == 0) { 
-		
-			GLMouseListener glMouseListener = getParentGLCanvas().getGLMouseListener();
 
+		// if (alHits == null && alHits.size() == 0) {
 
-						
-			if (glMouseListener.wasMouseDragged()) 
-			{
-				bRectangleSelection=true;	
-				Point pDragEndPoint = glMouseListener.getPickedPoint();				
-				Point pDragStartPoint = glMouseListener.getPickedPointDragStart();
-								
-//				fDragStartPoint =			
-//					GLCoordinateUtils.convertWindowToGLCoordinates(1024, 768, pDragStartPoint.x, pDragStartPoint.y, renderStyle.getRenderWidth(), renderStyle.getRenderHeight());								
-//				fDragEndPoint =
-//					GLCoordinateUtils.convertWindowToGLCoordinates(1024, 768, pDragEndPoint.x, pDragEndPoint.y, renderStyle.getRenderWidth(), renderStyle.getRenderHeight());
+		GLMouseListener glMouseListener = getParentGLCanvas().getGLMouseListener();
 
-				fDragStartPoint =			
-					GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pDragStartPoint.x, pDragStartPoint.y);								
-				fDragEndPoint =
-					GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pDragEndPoint.x, pDragEndPoint.y);
+		if (glMouseListener.wasMouseDragged()) {
+			bRectangleSelection = true;
+			Point pDragEndPoint = glMouseListener.getPickedPoint();
+			Point pDragStartPoint = glMouseListener.getPickedPointDragStart();
 
-				
-				
-				setDisplayListDirty();
-			}
-			if (glMouseListener.wasMouseReleased() && bRectangleSelection) 
-			{
-				bRectangleSelection=false;					
-				// TODO : Get all between pDragStartPoint && pDragEndPoint in the selection
-				// Do this here insterad of in the Drawing maybe
-			}
-	//	};
-		
-		
-		
-		
+			// fDragStartPoint =
+			// GLCoordinateUtils.convertWindowToGLCoordinates(1024, 768, pDragStartPoint.x, pDragStartPoint.y,
+			// renderStyle.getRenderWidth(), renderStyle.getRenderHeight());
+			// fDragEndPoint =
+			// GLCoordinateUtils.convertWindowToGLCoordinates(1024, 768, pDragEndPoint.x, pDragEndPoint.y,
+			// renderStyle.getRenderWidth(), renderStyle.getRenderHeight());
+
+			fDragStartPoint =
+				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pDragStartPoint.x,
+					pDragStartPoint.y);
+			fDragEndPoint =
+				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pDragEndPoint.x,
+					pDragEndPoint.y);
+
+			setDisplayListDirty();
+		}
+		if (glMouseListener.wasMouseReleased() && bRectangleSelection) {
+			bRectangleSelection = false;
+			// TODO : Get all between pDragStartPoint && pDragEndPoint in the selection
+			// Do this here insterad of in the Drawing maybe
+		}
+		// };
+
 		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
@@ -341,8 +311,6 @@ public class GLScatterplot
 
 		textRenderer.setColor(0, 0, 0, 1);
 
-	
-
 		// Markers On Axis
 		float fXPosition = XYAXISDISTANCE;
 		float fYPosition = XYAXISDISTANCE;
@@ -354,8 +322,8 @@ public class GLScatterplot
 
 			if (set.isSetHomogeneous()) {
 				float fNumber = (float) set.getRawForNormalized(fCurrentHeight / renderStyle.getAxisHeight());
-				float max  = (float) set.getMax();
-				float min  = (float) set.getMin();
+				float max = (float) set.getMax();
+				float min = (float) set.getMin();
 
 				Rectangle2D bounds =
 					textRenderer.getScaledBounds(gl, getDecimalFormat().format(fNumber), renderStyle
@@ -456,7 +424,6 @@ public class GLScatterplot
 		gl.glTranslatef(-YLABELDISTANCE, renderStyle.getLabelHeight(), 0);
 		// gl.glPopAttrib();
 
-	
 	}
 
 	private void renderNumber(GL gl, String sRawValue, float fXOrigin, float fYOrigin) {
@@ -489,25 +456,24 @@ public class GLScatterplot
 		// if (!isRenderedRemote())
 		// contextMenu.render(gl, this);
 	}
-	
+
 	private String[] getAxisString() {
-		String[] tmpString = new String[storageVA.size()] ;
+		String[] tmpString = new String[storageVA.size()];
 		for (Integer iStorageIndex : storageVA) {
-			
-			 tmpString[iStorageIndex] = set.get(iStorageIndex).getLabel();
-			
+
+			tmpString[iStorageIndex] = set.get(iStorageIndex).getLabel();
+
 		}
 		return tmpString;
 	}
 
 	private void RenderScatterPoints(GL gl) {
-	
 
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 
 		for (Integer iContentIndex : contentVA) {
-		
+
 			if (iContentIndex == -1) {
 				// throw new
 				// IllegalStateException("No such element in virtual array");
@@ -515,123 +481,116 @@ public class GLScatterplot
 				continue;
 			}
 
-		float xnormalized =
-			set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
-		float ynormalized =
-			set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+			float xnormalized =
+				set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+			float ynormalized =
+				set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
-// 			Hmm, doesnt work;		
-//			float xnormalized =
-//				set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.LOG2, iContentIndex);
-//			float ynormalized =
-//				set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.LOG2, iContentIndex);
+			// Hmm, doesnt work;
+			// float xnormalized =
+			// set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.LOG2, iContentIndex);
+			// float ynormalized =
+			// set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.LOG2, iContentIndex);
 			float x = xnormalized * XScale;
 			float y = ynormalized * YScale;
 			float[] fArMappingColor = colorMapper.getColor(Math.max(xnormalized, ynormalized));
 			DrawPointPrimitive(gl, x, y, 0.0f, // z
 				fArMappingColor, 1.0f, iContentIndex); // fOpacity
-			
-			if (elementSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex))
-			{
+
+			if (elementSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)) {
 				DrawLabel(gl, x, y, 0.0f, // z
 					fArMappingColor, 1.0f, iContentIndex); // fOpacity
 			}
-			
-		} 
-		
-//		int test = elementSelectionManager.getNumberOfElements(ESelectionType.SELECTION);
-//		int test2 = elementSelectionManager.getNumberOfElements(ESelectionType.MOUSE_OVER);
-//		int test3 = elementSelectionManager.getNumberOfElements();
+
+		}
+
+		// int test = elementSelectionManager.getNumberOfElements(ESelectionType.SELECTION);
+		// int test2 = elementSelectionManager.getNumberOfElements(ESelectionType.MOUSE_OVER);
+		// int test3 = elementSelectionManager.getNumberOfElements();
 
 	}
 
-	private boolean IsInSelectionRectangle(float x,float y)
-	{
+	private boolean IsInSelectionRectangle(float x, float y) {
 		float XMin = Math.min(fDragStartPoint[0], fDragEndPoint[0]);
 		float XMax = Math.max(fDragStartPoint[0], fDragEndPoint[0]);
-		
+
 		float YMin = Math.min(fDragStartPoint[1], fDragEndPoint[1]);
 		float YMax = Math.max(fDragStartPoint[1], fDragEndPoint[1]);
-		
-		x=x+XYAXISDISTANCE;
-		y=y+XYAXISDISTANCE;
-		
-		if (x>= XMin && x <= XMax)
-			if (y>= YMin && y <= YMax)
+
+		x = x + XYAXISDISTANCE;
+		y = y + XYAXISDISTANCE;
+
+		if (x >= XMin && x <= XMax)
+			if (y >= YMin && y <= YMax)
 				return true;
-				
+
 		return false;
-				
+
 	}
-	
-	
-	private void DrawLabel(GL gl, float x, float y, float z, float[] fArMappingColor, float fOpacity, int iContentIndex) {
-				
-		z= z+3.0f;
-		x= x+0.1f;
-		gl.glTranslatef(x, y, z);		
-		
-		
-		float boxLengh= 0.8f;
-		float boxHight= 0.1f;
-		
+
+	private void DrawLabel(GL gl, float x, float y, float z, float[] fArMappingColor, float fOpacity,
+		int iContentIndex) {
+
+		z = z + 3.0f;
+		x = x + 0.1f;
+		gl.glTranslatef(x, y, z);
+
+		float boxLengh = 0.8f;
+		float boxHight = 0.1f;
+
 		gl.glColor3f(1.0f, 1.0f, 1.0f);
-		gl.glBegin(GL.GL_POLYGON);			
+		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(0.0f, -0.02f, -0.1f);
 		gl.glVertex3f(0.0f, boxHight, -0.1f);
 		gl.glVertex3f(boxLengh, boxHight, -0.1f);
-		gl.glVertex3f(boxLengh,-0.02f, -0.1f);
+		gl.glVertex3f(boxLengh, -0.02f, -0.1f);
 		gl.glEnd();
-		
+
 		textRenderer.begin3DRendering();
 		float fScaling = renderStyle.getSmallFontScalingFactor();
 		if (isRenderedRemote())
-			fScaling *= 1.5f;		
-		String sLabel = "Point: " + 
-						set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.RAW, iContentIndex)+
-						" / " +
-						set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.RAW, iContentIndex);
-		textRenderer.draw3D(gl, sLabel, 0, 0, 0, fScaling,
-			ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
+			fScaling *= 1.5f;
+		String sLabel =
+			"Point: " + set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.RAW, iContentIndex) + " / "
+				+ set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.RAW, iContentIndex);
+		textRenderer.draw3D(gl, sLabel, 0, 0, 0, fScaling, ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
 		textRenderer.end3DRendering();
-		
+
 		gl.glTranslatef(-x, -y, -z);
-		
-		
+
 	}
-	
-	private void DrawPointPrimitive(GL gl, float x, float y, float z, float[] fArMappingColor, float fOpacity, int iContentIndex) {
-				
-		EScatterPointType type = POINTSTYLE;		
-		float halfPoint= POINTSIZE/2.0f;
+
+	private void DrawPointPrimitive(GL gl, float x, float y, float z, float[] fArMappingColor,
+		float fOpacity, int iContentIndex) {
+
+		EScatterPointType type = POINTSTYLE;
+		float halfPoint = POINTSIZE / 2.0f;
 		float fullPoint = POINTSIZE;
-		int iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.SCATTER_POINT_SELECTION, iContentIndex);		
-		gl.glColor3f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2]);		
-			
-		
-		if (IsInSelectionRectangle(x,y))
-		{
-			if (!elementSelectionManager.checkStatus(iContentIndex)) elementSelectionManager.add(iContentIndex);
+		int iPickingID =
+			pickingManager.getPickingID(iUniqueID, EPickingType.SCATTER_POINT_SELECTION, iContentIndex);
+		gl.glColor3f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2]);
+
+		if (IsInSelectionRectangle(x, y)) {
+			if (!elementSelectionManager.checkStatus(iContentIndex))
+				elementSelectionManager.add(iContentIndex);
 			elementSelectionManager.addToType(ESelectionType.SELECTION, iContentIndex);
 		}
-		
+
 		// Render Selected Items;
-		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex))
-		{
-			z=+1.0f;
+		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)) {
+			z = +1.0f;
 			gl.glColor3f(1.0f, 0.1f, 0.5f);
 		}
-		
-		// Render Item on Mousover 
-		if (elementSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex))
-		{
-			z=+1.5f;
-			fullPoint= POINTSIZE*2f;
-			gl.glColor3f(1.0f, 1.0f, 0.0f);	
-			
+
+		// Render Item on Mousover
+		if (elementSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)) {
+			z = +1.5f;
+			fullPoint = POINTSIZE * 2f;
+			gl.glColor3f(1.0f, 1.0f, 0.0f);
+
 			float angle;
 			float PI = (float) Math.PI;
-							
+
 			gl.glBegin(GL.GL_POLYGON);
 			for (int i = 0; i < 20; i++) {
 				angle = (i * 2 * PI) / 10;
@@ -639,29 +598,29 @@ public class GLScatterplot
 					+ (float) (Math.sin(angle) * fullPoint), z);
 			}
 			gl.glEnd();
-			z=+2.0f;
-			gl.glColor3f(0.0f, 0.0f, 0.0f); 	
+			z = +2.0f;
+			gl.glColor3f(0.0f, 0.0f, 0.0f);
 			gl.glPointSize(POINTSIZE * 50.0f);
 			gl.glBegin(GL.GL_POINTS);
 			gl.glVertex3f(x, y, z);
 			gl.glEnd();
-			z=+2.5f;
-			
+			z = +2.5f;
+
 			gl.glColor3f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2]);
-						
-			halfPoint= POINTSIZE*0.75f;
-			
-			fullPoint = POINTSIZE*1.5f;
+
+			halfPoint = POINTSIZE * 0.75f;
+
+			fullPoint = POINTSIZE * 1.5f;
 		}
-				
+
 		gl.glPushName(iPickingID);
 		switch (type) {
 			case BOX: {
-				gl.glBegin(GL.GL_POLYGON);			
-				gl.glVertex3f(x-halfPoint, y-halfPoint, z);
-				gl.glVertex3f(x-halfPoint, y + halfPoint, z);
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glVertex3f(x - halfPoint, y - halfPoint, z);
+				gl.glVertex3f(x - halfPoint, y + halfPoint, z);
 				gl.glVertex3f(x + halfPoint, y + halfPoint, z);
-				gl.glVertex3f(x + halfPoint, y-halfPoint, z);
+				gl.glVertex3f(x + halfPoint, y - halfPoint, z);
 				gl.glEnd();
 				break;
 			}
@@ -674,11 +633,11 @@ public class GLScatterplot
 			}
 			case CROSS: {
 				gl.glLineWidth(1.0f);
-				gl.glBegin(GL.GL_LINES);				
-				gl.glVertex3f(x-halfPoint, y-halfPoint, z);
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(x - halfPoint, y - halfPoint, z);
 				gl.glVertex3f(x + halfPoint, y + halfPoint, z);
-				gl.glVertex3f(x-halfPoint, y + halfPoint, z);
-				gl.glVertex3f(x + halfPoint, y-halfPoint, z);
+				gl.glVertex3f(x - halfPoint, y + halfPoint, z);
+				gl.glVertex3f(x + halfPoint, y - halfPoint, z);
 				gl.glEnd();
 			}
 				break;
@@ -686,8 +645,8 @@ public class GLScatterplot
 				float angle;
 				float PI = (float) Math.PI;
 
-				gl.glLineWidth(1.0f);				
-				gl.glBegin(GL.GL_LINE_LOOP);			
+				gl.glLineWidth(1.0f);
+				gl.glBegin(GL.GL_LINE_LOOP);
 				for (int i = 0; i < 10; i++) {
 					angle = (i * 2 * PI) / 10;
 					gl.glVertex3f(x + (float) (Math.cos(angle) * fullPoint), y
@@ -699,7 +658,7 @@ public class GLScatterplot
 			case DISK: {
 				float angle;
 				float PI = (float) Math.PI;
-								
+
 				gl.glBegin(GL.GL_POLYGON);
 				for (int i = 0; i < 10; i++) {
 					angle = (i * 2 * PI) / 10;
@@ -710,58 +669,52 @@ public class GLScatterplot
 			}
 				break;
 			default:
-				
+
 		}
 		gl.glPopName();
 	}
-	
 
-	private void DrawRectangularSelection(GL gl) 
-	{
-		
-		float length=fDragEndPoint[0]-fDragStartPoint[0];
-		float hight=fDragEndPoint[1]-fDragStartPoint[1];
-		float x=fDragStartPoint[0];
-		float y=fDragStartPoint[1];
-		float z=3.5f;
-	    	
-	    
-		gl.glColor3f(0.0f, 1.0f, 0.0f); 	
+	private void DrawRectangularSelection(GL gl) {
+
+		float length = fDragEndPoint[0] - fDragStartPoint[0];
+		float hight = fDragEndPoint[1] - fDragStartPoint[1];
+		float x = fDragStartPoint[0];
+		float y = fDragStartPoint[1];
+		float z = 3.5f;
+
+		gl.glColor3f(0.0f, 1.0f, 0.0f);
 		gl.glLineWidth(2.0f);
-		gl.glBegin(GL.GL_LINE_LOOP);	
-		//gl.glBegin(GL.GL_POLYGON);	
+		gl.glBegin(GL.GL_LINE_LOOP);
+		// gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(x, y, z);
 		gl.glVertex3f(x, y + hight, z);
 		gl.glVertex3f(x + length, y + hight, z);
 		gl.glVertex3f(x + length, y, z);
 		gl.glEnd();
 	}
-	
-	
+
 	public void togglePointType() {
-				
-		 switch (POINTSTYLE)
-        {
-        	case POINT:
-          POINTSTYLE = EScatterPointType.BOX;
-              	  break;
-        	case BOX:
-       	  POINTSTYLE = EScatterPointType.CIRCLE;
-       	  		break;                    
-          case CIRCLE:
-       	  POINTSTYLE = EScatterPointType.DISK;
-        	  break;
-          case DISK:
-           	  POINTSTYLE = EScatterPointType.CROSS;
-            	  break;
-          case CROSS:
-           	  POINTSTYLE = EScatterPointType.POINT;
-            	  break;         
-          default:            
-        }						
+
+		switch (POINTSTYLE) {
+			case POINT:
+				POINTSTYLE = EScatterPointType.BOX;
+				break;
+			case BOX:
+				POINTSTYLE = EScatterPointType.CIRCLE;
+				break;
+			case CIRCLE:
+				POINTSTYLE = EScatterPointType.DISK;
+				break;
+			case DISK:
+				POINTSTYLE = EScatterPointType.CROSS;
+				break;
+			case CROSS:
+				POINTSTYLE = EScatterPointType.POINT;
+				break;
+			default:
+		}
 		setDisplayListDirty();
 	}
-
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 
@@ -769,9 +722,9 @@ public class GLScatterplot
 			bHasFrustumChanged = false;
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		//if (bRectangleSelection) 
-			DrawRectangularSelection(gl); 
-		
+		// if (bRectangleSelection)
+		DrawRectangularSelection(gl);
+
 		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
 		RenderScatterPoints(gl);
 		gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
@@ -828,7 +781,7 @@ public class GLScatterplot
 
 		contentVA = useCase.getVA(contentVAType);
 		storageVA = useCase.getVA(storageVAType);
-		
+
 		elementSelectionManager = storageSelectionManager;
 
 	}
@@ -889,9 +842,10 @@ public class GLScatterplot
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
-		
-		if(bRectangleSelection) return;
-		
+
+		if (bRectangleSelection)
+			return;
+
 		ESelectionType eSelectionType;
 		switch (ePickingType) {
 			case SCATTER_POINT_SELECTION:
@@ -912,7 +866,7 @@ public class GLScatterplot
 						break;
 					case DRAGGED:
 						eSelectionType = ESelectionType.SELECTION;
-						//break;
+						// break;
 					default:
 						return;
 
@@ -922,8 +876,6 @@ public class GLScatterplot
 
 				break;
 
-		
-		
 		}
 	}
 
@@ -933,49 +885,46 @@ public class GLScatterplot
 
 		// check if the mouse-overed element is already selected, and if it is, whether mouse over is clear.
 		// If that all is true we don't need to do anything
-//		if (selectionType == ESelectionType.MOUSE_OVER
-//			&& elementSelectionManager.checkStatus(ESelectionType.SELECTION, contentID)
-//			&& elementSelectionManager.getElements(ESelectionType.MOUSE_OVER).size() == 0)
-//			return;
+		// if (selectionType == ESelectionType.MOUSE_OVER
+		// && elementSelectionManager.checkStatus(ESelectionType.SELECTION, contentID)
+		// && elementSelectionManager.getElements(ESelectionType.MOUSE_OVER).size() == 0)
+		// return;
 
-		//connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
+		// connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
-		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, contentID) && selectionType == ESelectionType.DESELECTED)
-		//if (selectionType == ESelectionType.SELECTION)
+		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, contentID)
+			&& selectionType == ESelectionType.DESELECTED)
+		// if (selectionType == ESelectionType.SELECTION)
 		{
 			elementSelectionManager.removeFromType(ESelectionType.SELECTION, contentID);
 			setDisplayListDirty();
 			return;
 		}
-		
-		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, contentID))
-		{
+
+		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, contentID)) {
 			fDragStartPoint = new float[3];
-			fDragEndPoint   = new float[3];
+			fDragEndPoint = new float[3];
 		}
-		
-		
-//		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
-//		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
-		
 
-		if (!elementSelectionManager.checkStatus(contentID)) elementSelectionManager.add(contentID);
+		// SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
+		// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+
+		if (!elementSelectionManager.checkStatus(contentID))
+			elementSelectionManager.add(contentID);
 		elementSelectionManager.addToType(selectionType, contentID);
-	//	}
-		//test = elementSelectionManager.getNumberOfElements();
-
+		// }
+		// test = elementSelectionManager.getNumberOfElements();
 
 		setDisplayListDirty();
 	}
 
-	
 	public void ResetSelection() {
 		elementSelectionManager.clearSelections();
 		fDragStartPoint = new float[3];
-		fDragEndPoint   = new float[3];
+		fDragEndPoint = new float[3];
 		setDisplayListDirty();
 	}
-	
+
 	private void createStorageSelection(ESelectionType selectionType, int storageID) {
 		if (storageSelectionManager.checkStatus(selectionType, storageID))
 			return;
@@ -1004,8 +953,6 @@ public class GLScatterplot
 		}
 		setDisplayListDirty();
 	}
-	
-
 
 	private int cursorSelect(IVirtualArray virtualArray, SelectionManager selectionManager, boolean isUp) {
 
@@ -1182,96 +1129,84 @@ public class GLScatterplot
 		return super.getRemoteLevelElement();
 	}
 
+	@Override
+	public void registerEventListeners() {
+		super.registerEventListeners();
 
+		togglePointTypeListener = new TogglePointTypeListener();
+		togglePointTypeListener.setHandler(this);
+		eventPublisher.addListener(TogglePointTypeEvent.class, togglePointTypeListener);
 
-@Override
-public void registerEventListeners() {
-	super.registerEventListeners();
+		resetSelectionListener = new ResetSelectionListener();
+		resetSelectionListener.setHandler(this);
+		eventPublisher.addListener(ResetScatterSelectionEvent.class, resetSelectionListener);
 
-	togglePointTypeListener = new TogglePointTypeListener();
-	togglePointTypeListener.setHandler(this);
-	eventPublisher.addListener(TogglePointTypeEvent.class, togglePointTypeListener);
-		
-	resetSelectionListener = new ResetSelectionListener();
-	resetSelectionListener.setHandler(this);
-	eventPublisher.addListener(ResetScatterSelectionEvent.class, resetSelectionListener);
-	
-	setPointSizeListener = new SetPointSizeListener();
-	setPointSizeListener.setHandler(this);
-	eventPublisher.addListener(SetPointSizeEvent.class, setPointSizeListener);
-	
-	
-	
-	xAxisSelectorListener = new XAxisSelectorListener();
-	xAxisSelectorListener.setHandler(this);
-	eventPublisher.addListener(XAxisSelectorEvent.class, xAxisSelectorListener);
-	
-	yAxisSelectorListener = new YAxisSelectorListener();
-	yAxisSelectorListener.setHandler(this);
-	eventPublisher.addListener(YAxisSelectorEvent.class, yAxisSelectorListener);
+		setPointSizeListener = new SetPointSizeListener();
+		setPointSizeListener.setHandler(this);
+		eventPublisher.addListener(SetPointSizeEvent.class, setPointSizeListener);
+
+		xAxisSelectorListener = new XAxisSelectorListener();
+		xAxisSelectorListener.setHandler(this);
+		eventPublisher.addListener(XAxisSelectorEvent.class, xAxisSelectorListener);
+
+		yAxisSelectorListener = new YAxisSelectorListener();
+		yAxisSelectorListener.setHandler(this);
+		eventPublisher.addListener(YAxisSelectorEvent.class, yAxisSelectorListener);
+
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
+
+		if (togglePointTypeListener != null) {
+			eventPublisher.removeListener(togglePointTypeListener);
+			togglePointTypeListener = null;
+		}
+
+		if (resetSelectionListener != null) {
+			eventPublisher.removeListener(resetSelectionListener);
+			resetSelectionListener = null;
+		}
+
+		if (setPointSizeListener != null) {
+			eventPublisher.removeListener(setPointSizeListener);
+			setPointSizeListener = null;
+		}
+
+		if (xAxisSelectorListener != null) {
+			eventPublisher.removeListener(xAxisSelectorListener);
+			xAxisSelectorListener = null;
+		}
+
+		if (yAxisSelectorListener != null) {
+			eventPublisher.removeListener(yAxisSelectorListener);
+			yAxisSelectorListener = null;
+		}
+
+	}
+
+	public void setXAxis(int iAxisIndex) {
+		if (SELECTED_X_AXIS != iAxisIndex) {
+			SELECTED_X_AXIS = iAxisIndex;
+			setDisplayListDirty();
+		}
+
+	}
+
+	public void setYAxis(int iAxisIndex) {
+		if (SELECTED_Y_AXIS != iAxisIndex) {
+			SELECTED_Y_AXIS = iAxisIndex;
+			setDisplayListDirty();
+		}
+
+	}
+
+	public void setPointSize(int pointSize) {
+		if (renderStyle.getPointSize() != pointSize) {
+			renderStyle.setPointSize(pointSize);
+			setDisplayListDirty();
+		}
+	}
 
 }
-
-@Override
-public void unregisterEventListeners() {
-	super.unregisterEventListeners();	
-
-	if (togglePointTypeListener != null) {
-		eventPublisher.removeListener(togglePointTypeListener);
-		togglePointTypeListener = null;
-	}
-	
-	if (resetSelectionListener != null) {
-		eventPublisher.removeListener(resetSelectionListener);
-		resetSelectionListener = null;
-	}
-		
-	if (setPointSizeListener != null) {
-		eventPublisher.removeListener(setPointSizeListener);
-		setPointSizeListener = null;
-	}
-	
-	if (xAxisSelectorListener != null) {
-		eventPublisher.removeListener(xAxisSelectorListener);
-		xAxisSelectorListener = null;
-	}
-	
-	if (yAxisSelectorListener != null) {
-		eventPublisher.removeListener(yAxisSelectorListener);
-		yAxisSelectorListener = null;
-	}
-
-
-}
-
-public void setXAxis(int iAxisIndex)
-{
-	if (SELECTED_X_AXIS!=iAxisIndex)
-	{
-		SELECTED_X_AXIS = iAxisIndex;
-		setDisplayListDirty();
-	}
-		
-}
-
-public void setYAxis(int iAxisIndex)
-{
-	if (SELECTED_Y_AXIS!=iAxisIndex)
-	{
-		SELECTED_Y_AXIS = iAxisIndex;
-		setDisplayListDirty();
-	}
-		
-}
-
-public void setPointSize(int pointSize) {
-	if (renderStyle.getPointSize() != pointSize) 
-	{			
-		renderStyle.setPointSize(pointSize);
-		setDisplayListDirty();
-	}
-}
-
-
-}
-

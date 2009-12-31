@@ -16,7 +16,7 @@ public class SwitchClusterTypeAction
 	public static final String[] ICON =
 		{ "resources/icons/view/hyperbolic/tree_switch_hyp.png",
 				"resources/icons/view/hyperbolic/tree_switch_lin.png" };
-	
+
 	public SwitchClusterTypeAction(int iViewID) {
 		super(iViewID);
 		setText(TEXT);
@@ -25,20 +25,20 @@ public class SwitchClusterTypeAction
 			.getWorkbench().getDisplay(), ICON[0])));
 		setChecked(false);
 	}
-	
+
 	@Override
-	public void run(){
+	public void run() {
 		super.run();
-//		if(isChecked()){
-//			//setChecked(true);
-//			setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-//				.getWorkbench().getDisplay(), ICON[1])));
-//		}
-//		else{
-//			//setChecked(false);
-//			setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-//				.getWorkbench().getDisplay(), ICON[0])));
-//		}
+		// if(isChecked()){
+		// //setChecked(true);
+		// setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+		// .getWorkbench().getDisplay(), ICON[1])));
+		// }
+		// else{
+		// //setChecked(false);
+		// setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+		// .getWorkbench().getDisplay(), ICON[0])));
+		// }
 		GeneralManager.get().getEventPublisher().triggerEvent(new SwitchClusterTypeEvent());
 		setChecked(false);
 	}

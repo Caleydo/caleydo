@@ -340,7 +340,7 @@ public class ContextMenu
 		// FIXME: Find clean solution!!
 
 		Vec3f scalingPivot = new Vec3f(metaData.xOrigin, metaData.yOrigin, BASIC_Z);
-			
+
 		if (!(masterGLView instanceof IGLRemoteRenderingView))
 			gl.glTranslatef(0, 0, 2);
 

@@ -81,7 +81,7 @@ public class PDDrawingStrategyLabelDecorator
 		else {
 			setupDefaultLabel(hierarchyData, labelInfo);
 		}
-		
+
 		LabelManager.get().addLabel(labelInfo);
 	}
 
@@ -100,12 +100,14 @@ public class PDDrawingStrategyLabelDecorator
 	/**
 	 * Sets up a label specific for the representation of cluster nodes.
 	 * 
-	 * @param pdDiscToDraw The partial disc that corresponds to the label.
-	 * @param clusterNode The cluster node the label shall be set up for.
-	 * @param labelInfo LabelInfo object that shall contain the label data.
+	 * @param pdDiscToDraw
+	 *            The partial disc that corresponds to the label.
+	 * @param clusterNode
+	 *            The cluster node the label shall be set up for.
+	 * @param labelInfo
+	 *            LabelInfo object that shall contain the label data.
 	 */
-	private void setupClusterNodeLabel(PartialDisc pdDiscToDraw, ClusterNode clusterNode,
-		LabelInfo labelInfo) {
+	private void setupClusterNodeLabel(PartialDisc pdDiscToDraw, ClusterNode clusterNode, LabelInfo labelInfo) {
 
 		float fAverageExpressionValue = clusterNode.getAverageExpressionValue();
 		float fStandardDeviation = clusterNode.getStandardDeviation();
@@ -156,11 +158,13 @@ public class PDDrawingStrategyLabelDecorator
 	/**
 	 * Sets up a default label for the given hierarchy data object.
 	 * 
-	 * @param hierarchyData Hierarchy data object the label is set up for.
-	 * @param labelInfo LabelInfo object that shall contain the label data.
+	 * @param hierarchyData
+	 *            Hierarchy data object the label is set up for.
+	 * @param labelInfo
+	 *            LabelInfo object that shall contain the label data.
 	 */
 	private void setupDefaultLabel(IHierarchyData<?> hierarchyData, LabelInfo labelInfo) {
-		
+
 		TextItem textItem = new TextItem(hierarchyData.getLabel());
 		LabelLine labelLine = new LabelLine();
 		labelLine.addLabelItem(textItem);

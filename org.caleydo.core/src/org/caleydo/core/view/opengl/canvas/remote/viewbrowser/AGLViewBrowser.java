@@ -13,16 +13,13 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.delta.VADeltaItem;
-import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -63,6 +60,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -136,7 +134,7 @@ public abstract class AGLViewBrowser
 	 * Transformation utility object to transform and project view related coordinates
 	 */
 	protected RemoteRenderingTransformer selectionTransformer;
-	
+
 	private boolean isSlerpActive = false;
 
 	// protected AddPathwayListener addPathwayListener = null;
@@ -359,10 +357,10 @@ public abstract class AGLViewBrowser
 			glConnectionLineRenderer.render(gl);
 		}
 
-//		float fZTranslation = 0;
-//		gl.glTranslatef(0, 0, fZTranslation);
-//		contextMenu.render(gl, this);
-//		gl.glTranslatef(0, 0, -fZTranslation);
+		// float fZTranslation = 0;
+		// gl.glTranslatef(0, 0, fZTranslation);
+		// contextMenu.render(gl, this);
+		// gl.glTranslatef(0, 0, -fZTranslation);
 
 		if (glMouseListener.getPickedPoint() != null) {
 			dragAndDrop.setCurrentMousePos(gl, glMouseListener.getPickedPoint());
@@ -511,7 +509,7 @@ public abstract class AGLViewBrowser
 
 		if (glEventListener == null) {
 			generalManager.getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
 					"Bucket level element is null and cannot be rendered!"));
 			return;
 		}
@@ -533,8 +531,8 @@ public abstract class AGLViewBrowser
 			String sRenderText = glEventListener.getShortInfo();
 
 			if (glEventListener instanceof GLTissue)
-				sRenderText = ((GLTissue)glEventListener).getLabel();
-			
+				sRenderText = ((GLTissue) glEventListener).getLabel();
+
 			// Limit sub view name in length
 			int iMaxChars;
 			iMaxChars = 20;
@@ -936,7 +934,7 @@ public abstract class AGLViewBrowser
 		float fPanelSideWidth = 11f;
 
 		float z = 0.06f;
-		
+
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(fXOrigin + 10.2f, fYOrigin - fHeight / 2f + fHeight, z);
@@ -1118,7 +1116,7 @@ public abstract class AGLViewBrowser
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		lastSelectionDelta = selectionDelta;
 	}
-	
+
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
@@ -1150,7 +1148,7 @@ public abstract class AGLViewBrowser
 						RemoteLevelElement element = RemoteElementManager.get().getItem(iExternalID);
 
 						AGLEventListener glEventListener =
-							(AGLEventListener) generalManager.getViewGLCanvasManager().getGLEventListener(
+							generalManager.getViewGLCanvasManager().getGLEventListener(
 								element.getContainedElementID());
 
 						// // Unregister all elements of the view that is
@@ -1167,9 +1165,9 @@ public abstract class AGLViewBrowser
 
 						if (glEventListener instanceof GLTissue)
 							removeSelection(((GLTissue) glEventListener).getExperimentIndex());
-						
+
 						setDisplayListDirty();
-						
+
 						break;
 				}
 				break;
@@ -1337,6 +1335,7 @@ public abstract class AGLViewBrowser
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
 	}
 
+	@Override
 	public void resetView() {
 		resetView(true);
 	}
@@ -1505,11 +1504,11 @@ public abstract class AGLViewBrowser
 	 * @param GL
 	 */
 	private void initNewView(GL gl) {
-		
+
 		// Views should not be loaded until the browser is finished to be slerped
 		if (isSlerpActive)
 			return;
-		
+
 		if (!newViews.isEmpty() && GeneralManager.get().getPathwayManager().isPathwayLoadingFinished()
 			&& arSlerpActions.isEmpty()) {
 
@@ -1518,23 +1517,23 @@ public abstract class AGLViewBrowser
 			if (hasFreeViewPosition()) {
 
 				// TODO use this when views should be slerped in
-//				if (this instanceof GLPathwayViewBrowser)
-					addSlerpActionForView(gl, view);
-//				else {
-//
-//					if (focusLevel.hasFreePosition()) {
-//						poolLevel.getNextFree().setContainedElementID(view.getID());
-//						view.broadcastElements(EVAOperation.APPEND_UNIQUE);
-//					}
-//					else if (poolLevel.hasFreePosition()) {
-//						poolLevel.getNextFree().setContainedElementID(view.getID());
-//					}
-//					else {
-//						GeneralManager.get().getLogger().log(
-//							new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-//								"No empty space left to add new view!"));
-//					}
-//				}
+				// if (this instanceof GLPathwayViewBrowser)
+				addSlerpActionForView(gl, view);
+				// else {
+				//
+				// if (focusLevel.hasFreePosition()) {
+				// poolLevel.getNextFree().setContainedElementID(view.getID());
+				// view.broadcastElements(EVAOperation.APPEND_UNIQUE);
+				// }
+				// else if (poolLevel.hasFreePosition()) {
+				// poolLevel.getNextFree().setContainedElementID(view.getID());
+				// }
+				// else {
+				// GeneralManager.get().getLogger().log(
+				// new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				// "No empty space left to add new view!"));
+				// }
+				// }
 
 				containedGLViews.add(view);
 			}
@@ -1609,8 +1608,10 @@ public abstract class AGLViewBrowser
 			destination = poolLevel.getNextFree();
 		}
 		else {
-			GeneralManager.get().getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "No empty space left to add new view!"));
+			GeneralManager.get().getLogger()
+				.log(
+					new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+						"No empty space left to add new view!"));
 			newViews.clear();
 			return false;
 		}
@@ -1874,11 +1875,11 @@ public abstract class AGLViewBrowser
 	public AGLConnectionLineRenderer getGlConnectionLineRenderer() {
 		return glConnectionLineRenderer;
 	}
-	
+
 	protected void removeSelection(int iElementID) {
-		
+
 	}
-	
+
 	public void setSlerpActive(boolean isSlerpActive) {
 		this.isSlerpActive = isSlerpActive;
 	}

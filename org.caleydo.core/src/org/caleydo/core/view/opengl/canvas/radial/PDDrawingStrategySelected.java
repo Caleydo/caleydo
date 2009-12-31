@@ -5,6 +5,7 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
  * PDDrawingStrategySelected is responsible for drawing partial discs which have been selected in some
@@ -28,7 +29,7 @@ public class PDDrawingStrategySelected
 	 */
 	public PDDrawingStrategySelected(PickingManager pickingManager, int iViewID) {
 		super(pickingManager, iViewID);
-		fArBorderColor = RadialHierarchyRenderStyle.MOUSE_OVER_COLOR;
+		fArBorderColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 	}
 
 	@Override

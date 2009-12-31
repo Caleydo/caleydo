@@ -19,11 +19,11 @@ public class SerializedTissueView
 	extends ASerializedView {
 
 	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLTissueView";
-	
+
 	private String texturePath;
-	
+
 	private String label;
-	
+
 	private int experimentIndex;
 
 	/**
@@ -56,7 +56,7 @@ public class SerializedTissueView
 	public String getTexturePath() {
 		return texturePath;
 	}
-	
+
 	public String getLabel() {
 		return label;
 	}
@@ -64,7 +64,7 @@ public class SerializedTissueView
 	public void setLabel(String label) {
 		this.label = label;
 	}
-	
+
 	public int getExperimentIndex() {
 		return experimentIndex;
 	}

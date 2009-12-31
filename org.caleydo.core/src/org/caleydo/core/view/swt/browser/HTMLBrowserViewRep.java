@@ -3,6 +3,7 @@ package org.caleydo.core.view.swt.browser;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -12,6 +13,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
 import org.caleydo.data.loader.ResourceLoader;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
@@ -212,7 +214,7 @@ public class HTMLBrowserViewRep
 
 	@Override
 	public void drawView() {
-		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Load " + url));
+		generalManager.getLogger().log(new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Load " + url));
 
 		try {
 			parentComposite.getDisplay().asyncExec(new Runnable() {
@@ -229,7 +231,7 @@ public class HTMLBrowserViewRep
 		}
 		catch (SWTException swte) {
 			generalManager.getLogger().log(
-				new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Error while loading " + url, swte));
+				new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Error while loading " + url, swte));
 		}
 	}
 

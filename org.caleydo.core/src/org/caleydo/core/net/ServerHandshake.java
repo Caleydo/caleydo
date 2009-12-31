@@ -59,6 +59,7 @@ public class ServerHandshake {
 		this.error = error;
 	}
 
+	@Override
 	public String toString() {
 		String s = "ServerHandshake { ";
 		s += "serverNetworkName=" + serverNetworkName + ", ";

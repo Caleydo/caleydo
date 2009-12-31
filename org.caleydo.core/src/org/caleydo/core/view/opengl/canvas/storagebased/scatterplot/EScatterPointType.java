@@ -3,7 +3,7 @@ package org.caleydo.core.view.opengl.canvas.storagebased.scatterplot;
 /**
  * Renderstyle of Scatterplot-Points
  * 
- * @author J�rgen Pillhofer
+ * @author Juergen Pillhofer
  */
 public enum EScatterPointType {
 	BOX,

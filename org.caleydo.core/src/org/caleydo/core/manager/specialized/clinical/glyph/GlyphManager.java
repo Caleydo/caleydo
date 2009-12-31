@@ -11,6 +11,7 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -51,7 +52,7 @@ public class GlyphManager {
 
 	public void loadGlyphDefinitaion(String xmlPath) {
 		generalManager.getLogger().log(
-			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "loadGlyphDefinitaion"));
+			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "loadGlyphDefinitaion"));
 		generalManager.getXmlParserManager().parseXmlFileByName(xmlPath);
 
 		bIsActive = true;
@@ -113,7 +114,7 @@ public class GlyphManager {
 		if (dataTypesExt.containsKey(index)) {
 			dataTypesExt.remove(index);
 			generalManager.getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
 					"GlyphManager::addColumnAttributeType() - double column definition, dropping first one"));
 		}
 		dataTypesExt.put(index, type);

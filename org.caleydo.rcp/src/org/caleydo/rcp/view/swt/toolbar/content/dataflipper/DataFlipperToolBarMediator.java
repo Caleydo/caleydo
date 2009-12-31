@@ -14,13 +14,13 @@ import org.eclipse.swt.widgets.Display;
 public class DataFlipperToolBarMediator
 	implements IListenerOwner {
 
-	//sprivate IEventPublisher eventPublisher;
+	// sprivate IEventPublisher eventPublisher;
 
 	/** related toolBarContent that contains the gui-control items for mediatation */
 	private DataFlipperToolBarContent toolBarContent;
 
 	public DataFlipperToolBarMediator() {
-		//eventPublisher = GeneralManager.get().getEventPublisher();
+		// eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
 	}
 
@@ -30,7 +30,7 @@ public class DataFlipperToolBarMediator
 	private void unregisterEventListeners() {
 
 	}
-	
+
 	@Override
 	public void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
 		System.out.println("queue: listener.handleEvent(event);");

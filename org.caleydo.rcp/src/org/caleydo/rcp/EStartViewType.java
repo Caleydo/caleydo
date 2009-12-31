@@ -3,7 +3,6 @@ package org.caleydo.rcp;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
 import org.caleydo.core.view.opengl.canvas.histogram.SerializedHistogramView;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.SerializedHyperbolicView;
 import org.caleydo.core.view.opengl.canvas.radial.SerializedRadialHierarchyView;
 import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.remote.dataflipper.SerializedDataFlipperView;
@@ -30,7 +29,6 @@ public enum EStartViewType {
 	browser(SerializedHTMLBrowserView.class),
 	tabular(SerializedTabularDataView.class),
 	radial(SerializedRadialHierarchyView.class),
-	hyperbolic(SerializedHyperbolicView.class),
 	histogram(SerializedHistogramView.class),
 	dendrogram_horizontal(SerializedDendogramHorizontalView.class),
 	dendrogram_vertical(SerializedDendogramVerticalView.class),

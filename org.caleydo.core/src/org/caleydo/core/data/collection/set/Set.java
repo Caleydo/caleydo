@@ -30,6 +30,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -474,7 +475,7 @@ public class Set
 				}
 			}
 		}
-		else if (alStorages.get(0) instanceof INominalStorage)
+		else if (alStorages.get(0) instanceof INominalStorage<?>)
 			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
 				+ "on nominal data");
 	}
@@ -719,7 +720,7 @@ public class Set
 	@Override
 	public void finalize() {
 		GeneralManager.get().getLogger().log(
-			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Set " + this + "destroyed"));
+			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Set " + this + "destroyed"));
 	}
 
 	@Override

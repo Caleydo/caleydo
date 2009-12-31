@@ -35,6 +35,7 @@ import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
 import org.caleydo.util.graph.algorithm.GraphVisitorSearchBFS;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -431,7 +432,7 @@ public class GLPathwayContentCreator {
 
 		if (vertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).toArray().length == 0) {
 			generalManager.getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
 					"Cannot create pathway vertex. Pathway node representation " + vertexRep.getName()
 						+ " has not parent in graph!"));
 			return;

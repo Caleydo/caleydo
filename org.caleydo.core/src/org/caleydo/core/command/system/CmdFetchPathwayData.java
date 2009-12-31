@@ -12,7 +12,6 @@ import org.caleydo.core.application.helper.cacher.kegg.KeggPathwayCacher;
 import org.caleydo.core.application.helper.cacher.kegg.KeggPathwayImageCacher;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
@@ -213,14 +212,14 @@ public class CmdFetchPathwayData
 	/**
 	 * @TODO: Call before updating pathway source
 	 */
-	private void clearOldPathwayData() {
-		deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "kegg"));
-		deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "cgap.nci.nih.gov"));
-		deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "www.genome.jp"));
-
-		deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "pathway_list_KEGG.txt"));
-		deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "pathway_list_BIOCARTA.txt"));
-	}
+	// private void clearOldPathwayData() {
+	// deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "kegg"));
+	// deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "cgap.nci.nih.gov"));
+	// deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "www.genome.jp"));
+	//
+	// deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "pathway_list_KEGG.txt"));
+	// deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "pathway_list_BIOCARTA.txt"));
+	// }
 
 	// Deletes all files and subdirectories under dir.
 	// Returns true if all deletions were successful.

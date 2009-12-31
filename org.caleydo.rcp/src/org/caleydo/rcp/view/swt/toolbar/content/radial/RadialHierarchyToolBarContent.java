@@ -41,14 +41,14 @@ public class RadialHierarchyToolBarContent
 		IToolBarItem goBackInHistory = new GoBackInHistoryAction(targetViewID);
 		IToolBarItem goForthInHistory = new GoForthInHistoryAction(targetViewID);
 		IToolBarItem changeColorMode = new ChangeColorModeAction(targetViewID);
-//		IToolBarItem magnifyingGlass = new ToggleMagnifyingGlassAction();
+		// IToolBarItem magnifyingGlass = new ToggleMagnifyingGlassAction();
 		if (depthSlider == null) {
 			depthSlider = new DepthSlider("", serializedView.getMaxDisplayedHierarchyDepth());
 		}
 		actionList.add(goBackInHistory);
 		actionList.add(goForthInHistory);
 		actionList.add(changeColorMode);
-//		actionList.add(magnifyingGlass);
+		// actionList.add(magnifyingGlass);
 		actionList.add(depthSlider);
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();

@@ -47,6 +47,7 @@ public class ClientHandshake {
 		this.version = version;
 	}
 
+	@Override
 	public String toString() {
 		String s = "ClientHandshake { ";
 		s += "clientNetworkName=" + clientNetworkName + ", ";

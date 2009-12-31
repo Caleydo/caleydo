@@ -77,7 +77,7 @@ public class GLGlyphSliderView
 
 		super(glCanvas, sLabel, viewFrustum, true);
 
-		gman = (GlyphManager) generalManager.getGlyphManager();
+		gman = generalManager.getGlyphManager();
 
 		alSlider = new ArrayList<GLSliderMiniView>();
 		alDistribution = new ArrayList<GLDistributionMiniView>();

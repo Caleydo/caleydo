@@ -23,6 +23,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
@@ -99,6 +100,7 @@ import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLOffScreenTextureRenderer;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.Point;
 
@@ -614,7 +616,7 @@ public class GLRemoteRendering
 
 		if (glEventListener == null) {
 			generalManager.getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
 					"Bucket level element is null and cannot be rendered!"));
 			return;
 		}
@@ -1823,7 +1825,7 @@ public class GLRemoteRendering
 						RemoteLevelElement element = RemoteElementManager.get().getItem(iExternalID);
 
 						AGLEventListener glEventListener =
-							(AGLEventListener) generalManager.getViewGLCanvasManager().getGLEventListener(
+							generalManager.getViewGLCanvasManager().getGLEventListener(
 								element.getContainedElementID());
 
 						// // Unregister all elements of the view that is
@@ -2265,6 +2267,7 @@ public class GLRemoteRendering
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
 	}
 
+	@Override
 	public void resetView() {
 		resetView(true);
 	}
@@ -2514,7 +2517,7 @@ public class GLRemoteRendering
 		}
 		else {
 			GeneralManager.get().getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
 					"No empty space left to add new pathway!"));
 			newViews.clear();
 			return false;
@@ -2955,7 +2958,7 @@ public class GLRemoteRendering
 		return glConnectionLineRenderer;
 	}
 
-//	public RemoteRenderingTransformer getSelectionTransformer() {
-//		return selectionTransformer;
-//	}
+	// public RemoteRenderingTransformer getSelectionTransformer() {
+	// return selectionTransformer;
+	// }
 }

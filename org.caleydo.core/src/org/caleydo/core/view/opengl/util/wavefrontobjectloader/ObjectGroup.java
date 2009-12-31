@@ -7,7 +7,9 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -51,7 +53,7 @@ public class ObjectGroup {
 	public void draw(GL gl) {
 		if (iDisplayList < 0) {
 			GeneralManager.get().getLogger().log(
-				new Status(Status.INFO, GeneralManager.PLUGIN_ID, this.getClass().toString()
+				new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, this.getClass().toString()
 					+ ": display list was drawn, before init!"));
 			init(gl);
 		}

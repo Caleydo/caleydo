@@ -1,10 +1,6 @@
 package org.caleydo.rcp.view.opengl;
 
-import java.util.ArrayList;
-
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.remote.dataflipper.GLDataFlipper;
 import org.caleydo.core.view.opengl.canvas.remote.dataflipper.SerializedDataFlipperView;
 import org.eclipse.swt.widgets.Composite;
 
@@ -13,7 +9,7 @@ public class RcpGLDataFlipperView
 
 	public static final String ID = SerializedDataFlipperView.GUI_ID;
 
-	private ArrayList<Integer> iAlContainedViewIDs;
+	// private ArrayList<Integer> iAlContainedViewIDs;
 
 	/**
 	 * Constructor.
@@ -21,7 +17,7 @@ public class RcpGLDataFlipperView
 	public RcpGLDataFlipperView() {
 		super();
 
-		iAlContainedViewIDs = new ArrayList<Integer>();
+		// iAlContainedViewIDs = new ArrayList<Integer>();
 	}
 
 	@Override
@@ -40,8 +36,8 @@ public class RcpGLDataFlipperView
 
 	@Override
 	public void dispose() {
-		GLDataFlipper glDataFlipperView =
-			(GLDataFlipper) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
+//		GLDataFlipper glDataFlipperView =
+//			(GLDataFlipper) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		// glRemoteView.clearAll();
 

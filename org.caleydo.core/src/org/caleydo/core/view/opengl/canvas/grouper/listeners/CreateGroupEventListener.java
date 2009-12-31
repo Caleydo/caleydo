@@ -13,7 +13,7 @@ public class CreateGroupEventListener
 		if (event instanceof CreateGroupEvent) {
 			handler.createNewGroup();
 		}
-		
+
 	}
 
 }

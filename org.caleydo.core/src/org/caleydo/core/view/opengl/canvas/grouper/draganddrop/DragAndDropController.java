@@ -19,8 +19,6 @@ public class DragAndDropController {
 	float fArDraggingStartMouseCoordinates[];
 	AGLEventListener view;
 
-	
-
 	public DragAndDropController(AGLEventListener view) {
 		setDraggables = new HashSet<IDraggable>();
 		bDragging = false;
@@ -33,7 +31,7 @@ public class DragAndDropController {
 		if (draggable != null)
 			setDraggables.add(draggable);
 	}
-	
+
 	public void removeDraggable(IDraggable draggable) {
 		setDraggables.remove(draggable);
 	}
@@ -65,7 +63,7 @@ public class DragAndDropController {
 				dropArea.handleDragOver(gl, setDraggables, fArTargetWorldCoordinates[0],
 					fArTargetWorldCoordinates[1]);
 			}
-			
+
 			for (IDraggable draggable : setDraggables) {
 				if (bDraggingFirstTime) {
 					draggable.setDraggingStartPoint(fArTargetWorldCoordinates[0],
@@ -73,13 +71,13 @@ public class DragAndDropController {
 				}
 				draggable.handleDragging(gl, fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1]);
 			}
-			
+
 			if (glMouseListener.wasMouseReleased()) {
 				bDragging = false;
 				if (dropArea != null) {
 					dropArea.handleDrop(gl, setDraggables, fArTargetWorldCoordinates[0],
 						fArTargetWorldCoordinates[1], this);
-					
+
 				}
 				view.setDisplayListDirty();
 			}
@@ -91,11 +89,11 @@ public class DragAndDropController {
 	public boolean isDragging() {
 		return bDragging;
 	}
-	
+
 	public Set<IDraggable> getDraggables() {
 		return setDraggables;
 	}
-	
+
 	public float[] getDraggingStartMouseCoordinates() {
 		return fArDraggingStartMouseCoordinates;
 	}

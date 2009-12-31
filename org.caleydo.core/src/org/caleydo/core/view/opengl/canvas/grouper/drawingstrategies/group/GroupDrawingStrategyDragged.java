@@ -28,7 +28,7 @@ public class GroupDrawingStrategyDragged
 		float fMouseCoordinateY, float fDraggingStartMouseCoordinateX, float fDraggingStartMouseCoordinateY) {
 
 		float fGroupColor[] = renderStyle.getGroupColorForLevel(groupRepresentation.getHierarchyLevel());
-		float fColor[] = {fGroupColor[0], fGroupColor[1], fGroupColor[2], 0.5f};
+		float fColor[] = { fGroupColor[0], fGroupColor[1], fGroupColor[2], 0.5f };
 		drawDragged(gl, groupRepresentation, fMouseCoordinateX, fMouseCoordinateY,
 			fDraggingStartMouseCoordinateX, fDraggingStartMouseCoordinateY, fColor);
 

@@ -529,8 +529,7 @@ public class BucketLayoutRenderStyle
 		// Top plane
 		transform = new Transform();
 		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, BUCKET_HEIGHT, BUCKET_DEPTH));
-		transform
-			.setRotation(new Rotf(new Vec3f(1, 0, 0), (float) (Vec3f.convertGrad2Radiant(270) - fAngle)));
+		transform.setRotation(new Rotf(new Vec3f(1, 0, 0), (Vec3f.convertGrad2Radiant(270) - fAngle)));
 		transform.setScale(new Vec3f(1, 1, 1));
 		stackLevel.getElementByPositionIndex(0).setTransform(transform);
 
@@ -540,7 +539,7 @@ public class BucketLayoutRenderStyle
 		// Left plane
 		transform = new Transform();
 		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, 0, BUCKET_DEPTH));
-		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), (float) (Vec3f.convertGrad2Radiant(90) - fAngle)));
+		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), (Vec3f.convertGrad2Radiant(90) - fAngle)));
 		transform.setScale(new Vec3f(1, 1, 1));
 		stackLevel.getElementByPositionIndex(1).setTransform(transform);
 
@@ -550,8 +549,7 @@ public class BucketLayoutRenderStyle
 		// Bottom plane
 		transform = new Transform();
 		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, -BUCKET_HEIGHT, BUCKET_DEPTH));
-		transform
-			.setRotation(new Rotf(new Vec3f(-1, 0, 0), (float) (Vec3f.convertGrad2Radiant(90) - fAngle)));
+		transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), (Vec3f.convertGrad2Radiant(90) - fAngle)));
 		transform.setScale(new Vec3f(1, 1, 1));
 		stackLevel.getElementByPositionIndex(2).setTransform(transform);
 
@@ -561,8 +559,7 @@ public class BucketLayoutRenderStyle
 		// Right plane
 		transform = new Transform();
 		transform.setTranslation(new Vec3f(BUCKET_WIDTH, 0, BUCKET_DEPTH));
-		transform
-			.setRotation(new Rotf(new Vec3f(0, -1, 0), (float) (Vec3f.convertGrad2Radiant(270) - fAngle)));
+		transform.setRotation(new Rotf(new Vec3f(0, -1, 0), (Vec3f.convertGrad2Radiant(270) - fAngle)));
 		transform.setScale(new Vec3f(1, 1, 1));
 		stackLevel.getElementByPositionIndex(3).setTransform(transform);
 
@@ -607,8 +604,7 @@ public class BucketLayoutRenderStyle
 		// Top plane
 		transform = new Transform();
 		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, BUCKET_HEIGHT, BUCKET_DEPTH));
-		transform
-			.setRotation(new Rotf(new Vec3f(1, 0, 0), (float) (Vec3f.convertGrad2Radiant(270) - fAngle)));
+		transform.setRotation(new Rotf(new Vec3f(1, 0, 0), (Vec3f.convertGrad2Radiant(270) - fAngle)));
 		transform.setScale(new Vec3f(1, 1, 1));
 		stackLevel.getElementByPositionIndex(0).setTransform(transform);
 
@@ -618,7 +614,7 @@ public class BucketLayoutRenderStyle
 		// Left plane
 		transform = new Transform();
 		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, 0, BUCKET_DEPTH));
-		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), (float) (Vec3f.convertGrad2Radiant(90) - fAngle)));
+		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), (Vec3f.convertGrad2Radiant(90) - fAngle)));
 		transform.setScale(new Vec3f(1, 1, 1));
 		stackLevel.getElementByPositionIndex(1).setTransform(transform);
 
@@ -628,8 +624,7 @@ public class BucketLayoutRenderStyle
 		// Bottom plane
 		transform = new Transform();
 		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, -BUCKET_HEIGHT, BUCKET_DEPTH));
-		transform
-			.setRotation(new Rotf(new Vec3f(-1, 0, 0), (float) (Vec3f.convertGrad2Radiant(90) - fAngle)));
+		transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), (Vec3f.convertGrad2Radiant(90) - fAngle)));
 		transform.setScale(new Vec3f(1, 1, 1));
 		stackLevel.getElementByPositionIndex(2).setTransform(transform);
 
@@ -639,8 +634,7 @@ public class BucketLayoutRenderStyle
 		// Right plane
 		transform = new Transform();
 		transform.setTranslation(new Vec3f(BUCKET_WIDTH, 0, BUCKET_DEPTH));
-		transform
-			.setRotation(new Rotf(new Vec3f(0, -1, 0), (float) (Vec3f.convertGrad2Radiant(270) - fAngle)));
+		transform.setRotation(new Rotf(new Vec3f(0, -1, 0), (Vec3f.convertGrad2Radiant(270) - fAngle)));
 		transform.setScale(new Vec3f(1, 1, 1));
 		stackLevel.getElementByPositionIndex(3).setTransform(transform);
 

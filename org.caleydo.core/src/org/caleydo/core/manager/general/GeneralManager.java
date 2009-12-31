@@ -90,9 +90,9 @@ public class GeneralManager
 
 		PreferenceManager preferenceManager = PreferenceManager.get();
 		preferenceManager.initialize();
-		
+
 		initLogger();
-		
+
 		storageManager = new StorageManager();
 		setManager = new SetManager();
 		// connectedElementRepManager = new SelectionManager();

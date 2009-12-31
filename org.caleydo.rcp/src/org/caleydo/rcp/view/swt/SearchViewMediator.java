@@ -15,6 +15,7 @@ import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.Activator;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 public class SearchViewMediator {
@@ -76,7 +77,7 @@ public class SearchViewMediator {
 
 		if (alExpressionIndex == null) {
 			GeneralManager.get().getLogger().log(
-				new Status(Status.WARNING, Activator.PLUGIN_ID,
+				new Status(IStatus.WARNING, Activator.PLUGIN_ID,
 					"Cannot load gene in heat map because no gene expression is associated."));
 			return;
 		}

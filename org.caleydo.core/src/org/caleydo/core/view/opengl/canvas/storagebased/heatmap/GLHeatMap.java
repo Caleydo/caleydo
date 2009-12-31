@@ -57,7 +57,6 @@ import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.listener.GLHeatMapKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
@@ -1009,8 +1008,8 @@ public class GLHeatMap
 
 			if (bRenderStorageHorizontally) {
 				elementRep =
-					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID,
-						fXValue + fAnimationTranslation, fYValue, 0);
+					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, fXValue
+						+ fAnimationTranslation, fYValue, 0);
 
 			}
 			else {
@@ -1238,8 +1237,8 @@ public class GLHeatMap
 	public RemoteLevelElement getRemoteLevelElement() {
 
 		// If the view is rendered remote - the remote level element from the parent is returned
-//		if (glRemoteRenderingView != null && glRemoteRenderingView instanceof GLHierarchicalHeatMap)
-//			return ((AGLEventListener) glRemoteRenderingView).getRemoteLevelElement();
+		// if (glRemoteRenderingView != null && glRemoteRenderingView instanceof GLHierarchicalHeatMap)
+		// return ((AGLEventListener) glRemoteRenderingView).getRemoteLevelElement();
 
 		return super.getRemoteLevelElement();
 	}

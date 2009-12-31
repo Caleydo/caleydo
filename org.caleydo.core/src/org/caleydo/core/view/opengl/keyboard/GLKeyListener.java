@@ -40,7 +40,7 @@ public abstract class GLKeyListener<T extends IListenerOwner>
 	 *            the SWT key event
 	 */
 	protected abstract void handleKeyPressedEvent(KeyEvent event);
-	
+
 	/**
 	 * This method has to queue the key event to the event queue of the view by creating a
 	 * {@link WrapperKeyEvent} and may not react directly on the events.

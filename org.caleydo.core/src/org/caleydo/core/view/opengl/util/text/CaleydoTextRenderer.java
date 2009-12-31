@@ -182,10 +182,10 @@ public class CaleydoTextRenderer
 		gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
 		int currentWidth = buffer.get(2);
 
-		float referenceWidth = (float) minSize / (float) referenceBounds.getHeight() * 500.0f;
+		float referenceWidth = minSize / (float) referenceBounds.getHeight() * 500.0f;
 
-		if (referenceWidth > (float) currentWidth)
-			scaling = scaling * referenceWidth / (float) currentWidth;
+		if (referenceWidth > currentWidth)
+			scaling = scaling * referenceWidth / currentWidth;
 
 		return scaling;
 	}

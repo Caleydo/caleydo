@@ -6,6 +6,7 @@ import java.util.TreeSet;
 
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -110,7 +111,7 @@ public class GlyphAttributeType {
 		}
 		else {
 			generalManager.getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "double nominal value (" + sValue
+				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "double nominal value (" + sValue
 					+ ") found in " + sName + " (" + group + ")"));
 		}
 
@@ -119,7 +120,7 @@ public class GlyphAttributeType {
 		}
 		else {
 			generalManager.getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "double ordinal value (" + sValue
+				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "double ordinal value (" + sValue
 					+ ") found in " + sName + " (" + group + ")"));
 		}
 

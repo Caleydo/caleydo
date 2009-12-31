@@ -55,6 +55,7 @@ public abstract class APDDrawingStrategyDecorator
 		this.drawingStrategy = drawingStrategy;
 	}
 
+	@Override
 	public abstract APDDrawingStrategyDecorator clone();
 
 }

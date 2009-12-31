@@ -7,7 +7,7 @@ import org.eclipse.swt.events.KeyEvent;
 
 public class GLGrouperKeyListener
 	extends GLKeyListener<GLGrouper> {
-	
+
 	GLGrouper glGrouper;
 
 	/**
@@ -19,19 +19,19 @@ public class GLGrouperKeyListener
 	public GLGrouperKeyListener(GLGrouper glGrouper) {
 		this.glGrouper = glGrouper;
 	}
-	
+
 	@Override
 	protected void handleKeyPressedEvent(KeyEvent event) {
 		if (event.keyCode == SWT.CONTROL) {
 			glGrouper.setControlPressed(true);
 		}
-		
+
 	}
 
 	@Override
 	public void handleEvent(AEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

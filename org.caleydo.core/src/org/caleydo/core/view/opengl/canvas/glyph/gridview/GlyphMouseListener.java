@@ -128,9 +128,8 @@ public class GlyphMouseListener
 		fPanScale = -viewCanvas.getViewCamera().getCameraPosition().z();
 
 		Vec3f addVec3f =
-			new Vec3f(fPanScale * (float) (x - prevMouseX) / (float) size.width, fPanScale
-				* (float) (prevMouseY - y) / (float) size.height * (float) Math.cos(rot), -fPanScale
-				* (float) (prevMouseY - y) / (float) size.height * (float) Math.sin(rot));
+			new Vec3f(fPanScale * (x - prevMouseX) / size.width, fPanScale * (prevMouseY - y) / size.height
+				* (float) Math.cos(rot), -fPanScale * (prevMouseY - y) / size.height * (float) Math.sin(rot));
 
 		prevMouseX = x;
 		prevMouseY = y;

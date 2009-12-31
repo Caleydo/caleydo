@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -16,7 +15,9 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -619,7 +620,7 @@ public class SelectionManager {
 
 			if (iSelectionID == -1) {
 				GeneralManager.get().getLogger().log(
-					new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "No internal id for "
+					new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "No internal id for "
 						+ item.getPrimaryID()));
 
 				continue;

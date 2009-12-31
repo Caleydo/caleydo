@@ -154,6 +154,7 @@ public class SelectionPoint2D {
 	 * 
 	 * @return {@link String} representation
 	 */
+	@Override
 	public String toString() {
 		String s = "{'" + deskoXID + "', " + viewID + ", " + "(" + x + ", " + y + ") }";
 		return s;

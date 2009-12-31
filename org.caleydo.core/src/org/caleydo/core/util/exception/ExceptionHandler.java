@@ -1,7 +1,9 @@
 package org.caleydo.core.util.exception;
 
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
@@ -39,20 +41,25 @@ public class ExceptionHandler {
 	 * @param exception
 	 */
 	public void handleViewException(RuntimeException exception, final AGLEventListener glEventListener) {
-		
+
 		GeneralManager.get().getLogger().log(
-			new Status(Status.ERROR, GeneralManager.PLUGIN_ID, "Caught Exception: "
+			new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID, "Caught Exception: "
 				+ exception.getMessage(), exception));
 
 		glEventListener.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				MessageBox messageBox = new MessageBox(glEventListener.getParentGLCanvas().getParentComposite().getShell(), SWT.OK);
+				MessageBox messageBox =
+					new MessageBox(glEventListener.getParentGLCanvas().getParentComposite().getShell(),
+						SWT.OK);
 				messageBox.setText("Error in view");
-				messageBox.setMessage("An unexpected error occured in view " +glEventListener.getShortInfo() +". The view will be closed now. See the error log for details. You can try to re-open it.");
+				messageBox
+					.setMessage("An unexpected error occured in view "
+						+ glEventListener.getShortInfo()
+						+ ". The view will be closed now. See the error log for details. You can try to re-open it.");
 				messageBox.open();
 			}
 		});
-		
+
 		// Unregister view from GL event queue
 		GeneralManager.get().getGUIBridge().closeView(glEventListener.getViewGUIID());
 		GeneralManager.get().getViewGLCanvasManager().unregisterGLCanvas(glEventListener.getParentGLCanvas());

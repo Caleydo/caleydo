@@ -9,7 +9,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
 import org.caleydo.core.view.opengl.canvas.glyph.sliderview.SerializedGlyphSliderView;
 import org.caleydo.core.view.opengl.canvas.histogram.SerializedHistogramView;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.SerializedHyperbolicView;
 import org.caleydo.core.view.opengl.canvas.pathway.SerializedPathwayView;
 import org.caleydo.core.view.opengl.canvas.radial.SerializedRadialHierarchyView;
 import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
@@ -33,9 +32,9 @@ import org.caleydo.core.view.swt.browser.SerializedHTMLBrowserView;
 @XmlSeeAlso( { SerializedHistogramView.class, SerializedRadialHierarchyView.class,
 		SerializedRemoteRenderingView.class, SerializedHierarchicalHeatMapView.class,
 		SerializedParallelCoordinatesView.class, SerializedHeatMapView.class, SerializedPathwayView.class,
-		SerializedHyperbolicView.class, SerializedGlyphView.class, SerializedGlyphSliderView.class,
-		SerializedDendogramVerticalView.class, SerializedDendogramHorizontalView.class,
-		SerializedHTMLBrowserView.class, SerializedDataFlipperView.class})
+		SerializedGlyphView.class, SerializedGlyphSliderView.class, SerializedDendogramVerticalView.class,
+		SerializedDendogramHorizontalView.class, SerializedHTMLBrowserView.class,
+		SerializedDataFlipperView.class })
 public abstract class ASerializedView {
 
 	public ASerializedView() {

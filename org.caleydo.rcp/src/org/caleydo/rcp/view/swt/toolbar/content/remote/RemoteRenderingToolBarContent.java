@@ -29,7 +29,6 @@ public class RemoteRenderingToolBarContent
 
 	public static final String PATHWAY_IMAGE_PATH = "resources/icons/view/pathway/pathway.png";
 	public static final String PATHWAY_VIEW_TITLE = "Pathways";
-	
 
 	RemoteRenderingToolBarMediator mediator;
 
@@ -101,7 +100,6 @@ public class RemoteRenderingToolBarContent
 
 		return container;
 	}
-	
 
 	@Override
 	public void dispose() {

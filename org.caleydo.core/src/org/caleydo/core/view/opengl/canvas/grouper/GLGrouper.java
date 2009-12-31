@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -72,7 +72,7 @@ public class GLGrouper
 
 	private GrouperRenderStyle renderStyle;
 	private HashMap<Integer, GroupRepresentation> hashGroups;
-	
+
 	private Set<Integer> setCopiedGroups;
 
 	private GroupRepresentation rootGroup;
@@ -385,22 +385,22 @@ public class GLGrouper
 								CreateGroupItem createGroupItem = new CreateGroupItem();
 								contextMenu.addContextMenueItem(createGroupItem);
 								CopyGroupsItem copyGroupsItem =
-									new CopyGroupsItem(new HashSet<Integer>(selectionManager.getElements(ESelectionType.SELECTION)));
+									new CopyGroupsItem(new HashSet<Integer>(selectionManager
+										.getElements(ESelectionType.SELECTION)));
 								contextMenu.addContextMenueItem(copyGroupsItem);
 
-		
-								}
-							if(setCopiedGroups == null || !setCopiedGroups.contains(groupRep.getID())) {
+							}
+							if (setCopiedGroups == null || !setCopiedGroups.contains(groupRep.getID())) {
 								PasteGroupsItem pasteGroupItem = new PasteGroupsItem(groupRep.getID());
 								contextMenu.addContextMenueItem(pasteGroupItem);
 							}
-							
+
 							if (!isRenderedRemote()) {
-								contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-									.getWidth(), getParentGLCanvas().getHeight());
+								contextMenu.setLocation(pick.getPickedPoint(),
+									getParentGLCanvas().getWidth(), getParentGLCanvas().getHeight());
 								contextMenu.setMasterGLView(this);
 							}
-							
+
 						}
 						break;
 					default:
@@ -487,7 +487,7 @@ public class GLGrouper
 						break;
 					case DRAGGED:
 						if (group != null && group.isCollapsed()) {
-							double dCurrentTimeStamp = GregorianCalendar.getInstance().getTimeInMillis();
+							double dCurrentTimeStamp = Calendar.getInstance().getTimeInMillis();
 
 							if (dCurrentTimeStamp - dCollapseButtonDragOverTime > 500
 								&& group.getID() == iDraggedOverCollapseButtonID) {
@@ -732,17 +732,17 @@ public class GLGrouper
 	public void addNewSelectionID(int iID) {
 		selectionManager.add(iID);
 	}
-	
+
 	public void copyGroups(Set<Integer> setGroupsToCopy) {
 		setCopiedGroups = setGroupsToCopy;
 	}
-	
+
 	public void pasteGroups(int iParentGroupID) {
 		GroupRepresentation parent = hashGroups.get(iParentGroupID);
-		
-		if(parent == null || setCopiedGroups == null)
+
+		if (parent == null || setCopiedGroups == null)
 			return;
-		
+
 		Set<ICompositeGraphic> setComposites = new HashSet<ICompositeGraphic>();
 		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = new ArrayList<ICompositeGraphic>();
 
@@ -753,7 +753,6 @@ public class GLGrouper
 
 		rootGroup.getOrderedTopElementCompositeList(setComposites, alOrderedTopLevelComposites);
 
-		
-	}	
+	}
 
 }

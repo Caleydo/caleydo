@@ -254,8 +254,8 @@ public abstract class AGroupDrawingStrategyRectangular
 		ArrayList<ICompositeGraphic> alChildren = groupRepresentation.getChildren();
 		float fMinDistanceFromDropPosition = Float.MAX_VALUE;
 		int iDropPositionIndex = -1;
-		
-		if(groupRepresentation.isLeaf())
+
+		if (groupRepresentation.isLeaf())
 			return -1;
 
 		for (int i = 0; i < alDropPositions.size(); i++) {
@@ -273,7 +273,7 @@ public abstract class AGroupDrawingStrategyRectangular
 		ICompositeGraphic childNearDropPositionLower = null;
 		ICompositeGraphic childNearDropPositionUpper = null;
 
-		if(groupRepresentation.isCollapsed()) {
+		if (groupRepresentation.isCollapsed()) {
 			childNearDropPositionUpper = null;
 			childNearDropPositionLower = alChildren.get(0);
 		}
@@ -291,7 +291,6 @@ public abstract class AGroupDrawingStrategyRectangular
 				childNearDropPositionUpper = alChildren.get(iDropPositionIndex - 1);
 			}
 		}
-		
 
 		for (IDraggable draggable : setDraggables) {
 			if (draggable == childNearDropPositionLower || draggable == childNearDropPositionUpper)
@@ -352,9 +351,9 @@ public abstract class AGroupDrawingStrategyRectangular
 
 		textRenderer.begin3DRendering();
 
-		textRenderer.draw3D(groupRepresentation.getName(), vecPosition.x()
-			+ GrouperRenderStyle.TEXT_SPACING, vecPosition.y() - fHeight + GrouperRenderStyle.TEXT_SPACING,
-			vecPosition.z(), GrouperRenderStyle.TEXT_SCALING);
+		textRenderer.draw3D(groupRepresentation.getName(), vecPosition.x() + GrouperRenderStyle.TEXT_SPACING,
+			vecPosition.y() - fHeight + GrouperRenderStyle.TEXT_SPACING, vecPosition.z(),
+			GrouperRenderStyle.TEXT_SCALING);
 		textRenderer.flush();
 
 		textRenderer.end3DRendering();

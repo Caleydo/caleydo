@@ -63,6 +63,7 @@ public class NominalGate
 	 * @param iViewID
 	 *            Unique ID of the view.
 	 */
+	@Override
 	public void draw(GL gl, PickingManager pickingManager, TextureManager textureManager,
 		CaleydoTextRenderer textRenderer, int iViewID) {
 
@@ -225,6 +226,7 @@ public class NominalGate
 	 * @param isGateDraggingFirstTime
 	 *            Specifies whether the gate is dragged the first time or not.
 	 */
+	@Override
 	public void handleDragging(GL gl, float mousePositionX, float mousePositionY, EPickingType draggedObject,
 		boolean isGateDraggingFirstTime) {
 

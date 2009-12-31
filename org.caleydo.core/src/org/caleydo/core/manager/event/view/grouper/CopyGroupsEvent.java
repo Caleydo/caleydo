@@ -7,7 +7,7 @@ import org.caleydo.core.manager.event.AEvent;
 public class CopyGroupsEvent
 	extends AEvent {
 	private Set<Integer> setGroupsToCopy;
-	
+
 	public CopyGroupsEvent(Set<Integer> setGroupsToCopy) {
 		this.setGroupsToCopy = setGroupsToCopy;
 	}

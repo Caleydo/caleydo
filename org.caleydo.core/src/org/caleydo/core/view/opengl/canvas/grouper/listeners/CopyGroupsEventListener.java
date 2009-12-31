@@ -15,7 +15,7 @@ public class CopyGroupsEventListener
 			copyGroupsEvent = (CopyGroupsEvent) event;
 			handler.copyGroups(copyGroupsEvent.getGroupsToCopy());
 		}
-		
+
 	}
 
 }

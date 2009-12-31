@@ -30,6 +30,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.glyph.GlyphChangePersonalNameEvent;
@@ -68,6 +69,7 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.BufferUtil;
@@ -911,7 +913,7 @@ public class GLGlyph
 
 					if (g == null) {
 						generalManager.getLogger().log(
-							new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "Glyph with external ID "
+							new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "Glyph with external ID "
 								+ iExternalID + " not found!"));
 						return;
 					}

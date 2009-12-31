@@ -137,10 +137,9 @@ public class SelectionDeltaItem
 	public void setSecondaryID(int iSecondaryID) {
 		this.secondaryID = iSecondaryID;
 	}
-	
+
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "[Pri: " + primaryID + " Type: " + selectionType + "]";
 	}
 

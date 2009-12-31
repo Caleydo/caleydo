@@ -197,7 +197,7 @@ public class GroupRepresentation
 			if (draggable == this)
 				return -1;
 			if (draggable instanceof ICompositeGraphic) {
-				if (hasParent((ICompositeGraphic) draggable))
+				if (hasParent(draggable))
 					return -1;
 			}
 		}
@@ -447,7 +447,7 @@ public class GroupRepresentation
 		copy.iHierarchyLevel = iHierarchyLevel;
 		copy.parent = parent;
 
-		glGrouper.addGroupRepresentation(copy.getID(), (GroupRepresentation) copy);
+		glGrouper.addGroupRepresentation(copy.getID(), copy);
 
 		return copy;
 	}
@@ -509,7 +509,7 @@ public class GroupRepresentation
 		copy.iHierarchyLevel = iHierarchyLevel;
 		copy.parent = parent;
 
-		glGrouper.addGroupRepresentation(copy.getID(), (GroupRepresentation) copy);
+		glGrouper.addGroupRepresentation(copy.getID(), copy);
 		glGrouper.addNewSelectionID(copy.getID());
 
 		return copy;
@@ -537,8 +537,8 @@ public class GroupRepresentation
 			+ ((parent != null) ? parent.getID() : "null") + ", NumChildren: " + alChildren.size()
 			+ ", NumDropPositions: " + alDropPositions.size());
 		System.out.println("Children: " + children.toString() + "\n");
-		
-		if(!bLeaf && alDropPositions.size() != alChildren.size() +1)
+
+		if (!bLeaf && alDropPositions.size() != alChildren.size() + 1)
 			System.out.println("ALERT!!!!!!!!!!!!!!!!!!!!!!");
 
 		for (ICompositeGraphic child : alChildren) {

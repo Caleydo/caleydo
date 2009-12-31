@@ -16,7 +16,7 @@ public class PasteGroupsEventListener
 			pasteGroupsEvent = (PasteGroupsEvent) event;
 			handler.pasteGroups(pasteGroupsEvent.getParentGroupID());
 		}
-		
+
 	}
 
 }

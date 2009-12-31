@@ -44,6 +44,7 @@ import org.caleydo.rcp.wizard.firststart.ProxyConfigurationPage;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
 import org.caleydo.rcp.wizard.project.DataImportWizard;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -65,7 +66,7 @@ public class Application
 	implements IApplication {
 
 	public static final boolean RELEASE_MODE = true;
-	
+
 	/**
 	 * determines if initialize-views should be loaded lazy (=<code>true</code>)or immediate (=
 	 * <code>false</code)
@@ -123,8 +124,9 @@ public class Application
 	public RCPBridge rcpGuiBridge;
 
 	private PreferenceStore prefStore;
-	
-	// TODO: server address for plex-client mode, should be obtained from deskotheque instead from command line param 
+
+	// TODO: server address for plex-client mode, should be obtained from deskotheque instead from command
+	// line param
 	private String serverAddress = null;
 
 	@Override
@@ -139,7 +141,7 @@ public class Application
 
 		startViews = new ArrayList<Class<? extends ASerializedView>>();
 
-		Map<String, Object> map = (Map<String, Object>) context.getArguments();
+		Map<String, Object> map = context.getArguments();
 		parseApplicationArguments(map);
 
 		rcpGuiBridge = new RCPBridge();
@@ -182,7 +184,8 @@ public class Application
 					case GENE_EXPRESSION_SAMPLE_DATA:
 					case GENE_EXPRESSION_NEW_DATA:
 						sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
-						GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).setBootstrapFileName(sCaleydoXMLfile);
+						GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).setBootstrapFileName(
+							sCaleydoXMLfile);
 						break;
 					case UNSPECIFIED_NEW_DATA:
 						// not necessary to load any mapping or XML files
@@ -191,7 +194,8 @@ public class Application
 					case LOAD_PROJECT:
 					case COLLABORATION_CLIENT:
 					case PLEX_CLIENT:
-						sCaleydoXMLfile = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getBootstrapFileName();
+						sCaleydoXMLfile =
+							GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getBootstrapFileName();
 						break;
 
 					default:
@@ -258,7 +262,8 @@ public class Application
 					Application.applicationMode = EApplicationMode.PLEX_CLIENT;
 					if (element.startsWith("plexclient:")) {
 						serverAddress = element.substring("plexclient:".length());
-					} else {
+					}
+					else {
 						serverAddress = "127.0.0.1";
 					}
 				}
@@ -288,7 +293,7 @@ public class Application
 		IGeneralManager generalManager = GeneralManager.get();
 		try {
 			generalManager.getLogger().log(
-				new Status(Status.WARNING, Activator.PLUGIN_ID, "Save Caleydo preferences..."));
+				new Status(IStatus.WARNING, Activator.PLUGIN_ID, "Save Caleydo preferences..."));
 			generalManager.getPreferenceStore().save();
 		}
 		catch (IOException e) {
@@ -303,7 +308,7 @@ public class Application
 
 		generalManager.getViewGLCanvasManager().stopAnimator();
 
-		generalManager.getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, "Bye bye!"));
+		generalManager.getLogger().log(new Status(IStatus.INFO, Activator.PLUGIN_ID, "Bye bye!"));
 		// display.dispose();
 	}
 
@@ -333,7 +338,7 @@ public class Application
 
 		if (applicationMode == EApplicationMode.COLLABORATION_CLIENT
 			|| applicationMode == EApplicationMode.PLEX_CLIENT) {
-			AUseCase useCase = (AUseCase) initData.getUseCase();
+			AUseCase useCase = initData.getUseCase();
 			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
 			SetUtils.saveSetFile(loadDataParameters, initData.getSetFileContent());
 			if (initData.getGeneClusterTree() != null) {
@@ -360,11 +365,11 @@ public class Application
 		}
 		else if (applicationMode == EApplicationMode.LOAD_PROJECT) {
 			System.out.println("Load Project");
-			AUseCase useCase = (AUseCase) initData.getUseCase();
+			AUseCase useCase = initData.getUseCase();
 			GeneralManager.get().addUseCase(useCase);
 
-//			if (useCase instanceof GeneticUseCase)
-//				triggerPathwayLoading();
+			// if (useCase instanceof GeneticUseCase)
+			// triggerPathwayLoading();
 
 			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
 			SetUtils.createStorages(loadDataParameters);
@@ -390,8 +395,8 @@ public class Application
 		else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA || applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
 			&& (sCaleydoXMLfile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE) || sCaleydoXMLfile.equals(""))) {
 
-//			if (applicationMode.getDataDomain() == EDataDomain.GENETIC_DATA)
-//				triggerPathwayLoading();
+			// if (applicationMode.getDataDomain() == EDataDomain.GENETIC_DATA)
+			// triggerPathwayLoading();
 
 			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
 
@@ -400,9 +405,9 @@ public class Application
 			}
 		}
 
-//		if (applicationMode.getDataDomain() == EDataDomain.GENETIC_DATA)
-//			triggerPathwayLoading();
-		
+		// if (applicationMode.getDataDomain() == EDataDomain.GENETIC_DATA)
+		// triggerPathwayLoading();
+
 		// TODO - this initializes the VA after the data is written correctly in the set - probably not the
 		// nicest place to do this.
 		// This is only necessary if started from xml. Otherwise this is done in FileLoadDataAction
@@ -482,7 +487,7 @@ public class Application
 		startViews.add(SerializedHTMLBrowserView.class);
 
 		IUseCase useCase = GeneralManager.get().getUseCase(dataDomain);
-		
+
 		if ((useCase instanceof GeneticUseCase && !((GeneticUseCase) useCase).isPathwayViewerMode())
 			|| useCase instanceof UnspecifiedUseCase) {
 			// alStartViews.add(EStartViewType.TABULAR);

@@ -279,6 +279,7 @@ public class RcpSearchView
 			showOnlyGenesContainedInAnyPathway.setText("Show only genes contained in any pathway");
 			showOnlyGenesContainedInAnyPathway.setSelection(bShowOnlyGenesContainedInAnyPathway);
 			showOnlyGenesContainedInAnyPathway.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent e) {
 					bShowOnlyGenesContainedInAnyPathway = showOnlyGenesContainedInAnyPathway.getSelection();
 					startSearch();
@@ -548,6 +549,7 @@ public class RcpSearchView
 					openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(
 						geneTable.getDisplay(), "resources/icons/view/browser/browser.png"));
 					openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
+						@Override
 						public void widgetSelected(SelectionEvent e) {
 
 							searchViewMediator.selectGeneSystemWide((Integer) tableItem.getData());
@@ -569,6 +571,7 @@ public class RcpSearchView
 						geneTable.getDisplay(), "resources/icons/view/remote/remote.png"));
 
 					loadPathwayInBucketMenuItem.addSelectionListener(new SelectionAdapter() {
+						@Override
 						public void widgetSelected(SelectionEvent e) {
 
 							searchViewMediator.loadPathwayByGene((Integer) tableItem.getData());
@@ -581,6 +584,7 @@ public class RcpSearchView
 						geneTable.getDisplay(), "resources/icons/view/storagebased/heatmap/heatmap.png"));
 
 					loadGeneInHeatMapMenuItem.addSelectionListener(new SelectionAdapter() {
+						@Override
 						public void widgetSelected(SelectionEvent e) {
 
 							searchViewMediator.selectGeneSystemWide((Integer) tableItem.getData());
@@ -603,6 +607,7 @@ public class RcpSearchView
 							"resources/icons/view/storagebased/parcoords/parcoords.png"));
 
 					loadGeneInParallelCoordinatesMenuItem.addSelectionListener(new SelectionAdapter() {
+						@Override
 						public void widgetSelected(SelectionEvent e) {
 
 							searchViewMediator.selectGeneSystemWide((Integer) tableItem.getData());
@@ -642,6 +647,7 @@ public class RcpSearchView
 				openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(
 					pathwayTable.getDisplay(), "resources/icons/view/browser/browser.png"));
 				openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
+					@Override
 					public void widgetSelected(SelectionEvent e) {
 
 						// Switch to browser view
@@ -664,6 +670,7 @@ public class RcpSearchView
 					pathwayTable.getDisplay(), "resources/icons/view/remote/remote.png"));
 
 				loadPathwayInBucketMenuItem.addSelectionListener(new SelectionAdapter() {
+					@Override
 					public void widgetSelected(SelectionEvent e) {
 
 						// Switch to bucket view
@@ -718,6 +725,7 @@ public class RcpSearchView
 				return ((TableItem) o1).getText(colIndex).compareTo(((TableItem) o2).getText(colIndex));
 			}
 
+			@Override
 			public boolean equals(Object obj) {
 				return false;
 			}

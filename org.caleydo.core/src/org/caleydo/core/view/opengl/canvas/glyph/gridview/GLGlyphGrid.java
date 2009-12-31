@@ -23,6 +23,7 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.Gly
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelRandom;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelRectangle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelScatterplot;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -297,7 +298,7 @@ public class GLGlyphGrid {
 		}
 
 		generalManager.getLogger().log(
-			new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+			new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
 				"Someone wanted a Glyph GL List on the grid position " + x + ", " + y
 					+ ", but there is nothing"));
 		return -1;
@@ -369,7 +370,7 @@ public class GLGlyphGrid {
 
 		if (!glyphs_.containsKey(id)) {
 			generalManager.getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "Someone wanted a Glyph with the id "
+				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "Someone wanted a Glyph with the id "
 					+ id + " but it doesn't exist."));
 			return null;
 		}

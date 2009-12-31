@@ -3,7 +3,6 @@ package org.caleydo.rcp.view.swt.toolbar.content.scatterplot;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
-//import org.caleydo.core.manager.event.view.radial.UpdateDepthSliderPositionEvent;
 import org.caleydo.core.manager.event.view.storagebased.SetPointSizeEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
@@ -21,7 +20,6 @@ import org.eclipse.ui.PlatformUI;
 /**
  * Toolbar item that contains a slider for TODO
  * 
- * 
  * @author TODO
  */
 public class PointSizeSlider
@@ -29,7 +27,7 @@ public class PointSizeSlider
 	implements IToolBarItem, IListenerOwner {
 
 	private Listener listener;
-//	private UpdateDepthSliderPositionListener updateSliderPositionListener;
+	// private UpdateDepthSliderPositionListener updateSliderPositionListener;
 	private Slider slider;
 	private int iSelection;
 
@@ -45,8 +43,7 @@ public class PointSizeSlider
 		GridLayout layout = new GridLayout(1, false);
 		layout.marginHeight = layout.marginWidth = layout.horizontalSpacing = 0;
 		composite.setLayout(layout);
-		
-		
+
 		iSelection = 5;
 		slider = new Slider(composite, SWT.HORIZONTAL);
 		slider.setValues(iSelection, 1, 10, 1, 1, 1);
@@ -54,8 +51,7 @@ public class PointSizeSlider
 
 		listener = new Listener() {
 			public void handleEvent(Event event) {
-				SetPointSizeEvent setPointSizeEvent =
-					new SetPointSizeEvent();
+				SetPointSizeEvent setPointSizeEvent = new SetPointSizeEvent();
 				setPointSizeEvent.setSender(this);
 				setPointSizeEvent.setPointSize(slider.getSelection());
 				GeneralManager.get().getEventPublisher().triggerEvent(setPointSizeEvent);
@@ -65,10 +61,10 @@ public class PointSizeSlider
 		iSelection = slider.getSelection();
 		slider.addListener(SWT.Selection, listener);
 
-//		updateSliderPositionListener = new UpdateDepthSliderPositionListener();
-//		updateSliderPositionListener.setHandler(this);
-//		GeneralManager.get().getEventPublisher().addListener(UpdateDepthSliderPositionEvent.class,
-//			updateSliderPositionListener);
+		// updateSliderPositionListener = new UpdateDepthSliderPositionListener();
+		// updateSliderPositionListener.setHandler(this);
+		// GeneralManager.get().getEventPublisher().addListener(UpdateDepthSliderPositionEvent.class,
+		// updateSliderPositionListener);
 
 		return composite;
 	}
@@ -96,10 +92,10 @@ public class PointSizeSlider
 
 	@Override
 	public void dispose() {
-//		// Unregister event listener
-//		if (updateSliderPositionListener != null) {
-//			GeneralManager.get().getEventPublisher().removeListener(updateSliderPositionListener);
-//			updateSliderPositionListener = null;
-//		}
+		// // Unregister event listener
+		// if (updateSliderPositionListener != null) {
+		// GeneralManager.get().getEventPublisher().removeListener(updateSliderPositionListener);
+		// updateSliderPositionListener = null;
+		// }
 	}
 }

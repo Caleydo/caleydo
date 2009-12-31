@@ -179,7 +179,7 @@ public class InfoArea
 	@Override
 	public void handleSelectionUpdate(final ISelectionDelta selectionDelta, final boolean scrollToSelection,
 		final String info) {
-		
+
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 
@@ -354,9 +354,9 @@ public class InfoArea
 								// }
 
 								TreeItem item = new TreeItem(experimentTree, SWT.NONE);
-								
+
 								try {
-									item.setText(set.get(selectionItem.getPrimaryID()).getLabel());	
+									item.setText(set.get(selectionItem.getPrimaryID()).getLabel());
 								}
 								catch (IndexOutOfBoundsException e) {
 									item.setText("ERROR");
@@ -427,10 +427,8 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleSelectionCommand(EIDCategory category,
-		final SelectionCommand selectionCommand) {
-		
-		
+	public void handleSelectionCommand(EIDCategory category, final SelectionCommand selectionCommand) {
+
 		if (parentComposite.isDisposed())
 			return;
 

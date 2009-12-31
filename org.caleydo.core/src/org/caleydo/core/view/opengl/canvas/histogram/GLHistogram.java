@@ -51,7 +51,7 @@ public class GLHistogram
 
 	private Histogram histogram;
 	private ColorMapping colorMapping;
-	private HistogramRenderStyle renderStyle;
+	// private HistogramRenderStyle renderStyle;
 
 	private boolean bUpdateColorPointPosition = false;
 	private boolean bUpdateLeftSpread = false;

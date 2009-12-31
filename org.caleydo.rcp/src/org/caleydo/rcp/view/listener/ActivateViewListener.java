@@ -11,17 +11,17 @@ public class ActivateViewListener
 	public void handleEvent(AEvent event) {
 
 		// FIXME: just commented out for EUROVIS
-//		if (event instanceof LoadPathwayEvent || event instanceof LoadPathwaysByGeneEvent) {
-//			try {
-//				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-//					RcpGLRemoteRenderingView.ID);
-//			}
-//			catch (PartInitException e) {
-//				e.printStackTrace();
-//				GeneralManager.get().getLogger().log(
-//					new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Unable to open bucket view.", e));
-//			}
-//		}
+		// if (event instanceof LoadPathwayEvent || event instanceof LoadPathwaysByGeneEvent) {
+		// try {
+		// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+		// RcpGLRemoteRenderingView.ID);
+		// }
+		// catch (PartInitException e) {
+		// e.printStackTrace();
+		// GeneralManager.get().getLogger().log(
+		// new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Unable to open bucket view.", e));
+		// }
+		// }
 	}
 
 }

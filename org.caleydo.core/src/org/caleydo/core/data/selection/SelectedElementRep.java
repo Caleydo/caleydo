@@ -36,9 +36,12 @@ public class SelectedElementRep {
 	 *            the type of the element to be connected.
 	 * @param sourceViewID
 	 *            the unique id of the view
-	 * @param x coordinate in x direction
-	 * @param y coordinate in y direction
-	 * @param z coordinate in z direction
+	 * @param x
+	 *            coordinate in x direction
+	 * @param y
+	 *            coordinate in y direction
+	 * @param z
+	 *            coordinate in z direction
 	 */
 	public SelectedElementRep(EIDType idType, final int sourceViewID, final float x, final float y,
 		final float z) {

@@ -21,7 +21,6 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -47,7 +46,7 @@ public class GLBookmarkManager
 	extends AGLEventListener
 	implements ISelectionUpdateHandler, ISelectionCommandHandler {
 
-	private ColorMapping colorMapper;
+	// private ColorMapping colorMapper;
 
 	protected BookmarkRenderStyle renderStyle;
 
@@ -303,8 +302,6 @@ public class GLBookmarkManager
 		if (container != null)
 			container.handleSelectionUpdate(selectionDelta);
 	}
-
-	
 
 	@Override
 	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {

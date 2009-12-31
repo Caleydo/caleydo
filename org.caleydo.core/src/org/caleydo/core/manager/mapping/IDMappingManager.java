@@ -333,7 +333,7 @@ public class IDMappingManager
 
 		if (source.equals(destination))
 			return (V) sourceID;
-		
+
 		List<MappingEdge> path;
 
 		try {
@@ -343,7 +343,7 @@ public class IDMappingManager
 			// data type is not in the mapping
 			return null;
 		}
-		
+
 		Object currentID = sourceID;
 
 		if (path == null)

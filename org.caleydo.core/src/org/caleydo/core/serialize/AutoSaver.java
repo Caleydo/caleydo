@@ -2,10 +2,12 @@ package org.caleydo.core.serialize;
 
 import java.util.Date;
 
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.execution.DisplayLoopExecution;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -43,7 +45,7 @@ public class AutoSaver
 			Date start = new Date();
 			projectSaver.saveRecentProject();
 			Date stop = new Date();
-			log.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "AutoSaver: auto save took "
+			log.log(new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "AutoSaver: auto save took "
 				+ (stop.getTime() - start.getTime()) + " ms"));
 
 			lastSaveTimeStamp = new Date();

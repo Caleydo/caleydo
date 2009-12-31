@@ -49,9 +49,9 @@ public class TextureManager {
 		}
 		return mapPathToTexture.get(texturePath);
 	}
-	
+
 	public Texture getIconTexture(GL gl, final EIconTextures eIconTexture) {
-		
+
 		String texturePath = eIconTexture.getFileName();
 		if (!mapPathToTexture.containsKey(texturePath)) {
 			Texture tmpTexture = GeneralManager.get().getResourceLoader().getTexture(texturePath);
@@ -149,11 +149,11 @@ public class TextureManager {
 		gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
 		int currentWidth = buffer.get(2);
 
-		float referenceWidth = (float) minSize * 10.0f;
+		float referenceWidth = minSize * 10.0f;
 		float scaling = 1;
 
-		if (referenceWidth > (float) currentWidth)
-			scaling = referenceWidth / (float) currentWidth;
+		if (referenceWidth > currentWidth)
+			scaling = referenceWidth / currentWidth;
 
 		gl.glPushMatrix();
 		gl.glTranslatef(scalingPivot.x(), scalingPivot.y(), scalingPivot.z());

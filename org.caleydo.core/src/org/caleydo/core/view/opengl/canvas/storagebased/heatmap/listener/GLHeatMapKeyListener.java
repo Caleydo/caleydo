@@ -49,7 +49,7 @@ public class GLHeatMapKeyListener
 	@Override
 	protected void handleKeyReleasedEvent(KeyEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

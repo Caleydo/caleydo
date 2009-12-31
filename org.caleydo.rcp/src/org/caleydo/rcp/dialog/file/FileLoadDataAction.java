@@ -65,7 +65,7 @@ public class FileLoadDataAction
 	private Text txtStartParseAtLine;
 	private Text txtMin;
 	private Text txtMax;
-	
+
 	private Button buttonHomogeneous;
 
 	private Table previewTable;
@@ -85,7 +85,6 @@ public class FileLoadDataAction
 
 	private boolean useGeneClusterInfo = false;
 	private boolean useExperimentClusterInfo = false;
-
 
 	public FileLoadDataAction() {
 
@@ -222,7 +221,7 @@ public class FileLoadDataAction
 		createDelimiterGroup();
 
 		createFilterGroup();
-		
+
 		createDataPropertiesGroup();
 
 		previewTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
@@ -525,22 +524,19 @@ public class FileLoadDataAction
 		dataPropertiesGroup.setLayout(new RowLayout());
 		dataPropertiesGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		
 		buttonHomogeneous = new Button(dataPropertiesGroup, SWT.CHECK);
 		buttonHomogeneous.setText("Homogeneous data");
 		buttonHomogeneous.setEnabled(true);
 		buttonHomogeneous.setSelection(true);
-//		buttonHomogeneous.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				txtMin.setEnabled(buttonHomogeneous.getSelection());
-//			}
-//		});
+		// buttonHomogeneous.addSelectionListener(new SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// txtMin.setEnabled(buttonHomogeneous.getSelection());
+		// }
+		// });
 
-		
 	}
 
-	
 	private void createDataPreviewTable(final String sDelimiter) {
 		this.loadDataParameters.setDelimiter(sDelimiter);
 
@@ -752,7 +748,7 @@ public class FileLoadDataAction
 		}
 
 		loadDataParameters.setMathFilterMode(mathFilterMode);
-		
+
 		loadDataParameters.setIsDataHomogeneous(buttonHomogeneous.getSelection());
 	}
 

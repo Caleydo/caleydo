@@ -26,7 +26,7 @@ public class GLOffScreenTextureRenderer {
 	}
 
 	public void renderToTexture(GL gl, int iViewID, int iTextureIndex, int iViewWidth, int iViewHeight) {
-		gl.glViewport(0, 0, 1024, (int) 1024);
+		gl.glViewport(0, 0, 1024, 1024);
 
 		gl.glLoadIdentity();
 

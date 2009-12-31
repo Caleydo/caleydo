@@ -10,47 +10,44 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 /**
  * ScatterPlot render styles
  * 
- * @author J�rgen Pillhofer
+ * @author Juergen Pillhofer
  */
 
 public class ScatterPlotRenderStyle
 	extends GeneralRenderStyle {
 
-		
 	public static final float FIELD_Z = 0.001f;
 
 	public static final float SELECTION_Z = 0.005f;
-	
+
 	public static final float[] X_AXIS_COLOR = { 0.0f, 0.0f, 0.0f, 1.0f };
 	public static final float X_AXIS_LINE_WIDTH = 2.0f;
 	public static final float[] Y_AXIS_COLOR = { 0.0f, 0.0f, 0.0f, 1.0f };
 	public static final float Y_AXIS_LINE_WIDTH = 2.0f;
 	public static final float XYAXISDISTANCE = 0.2f;
 	public static final float AXIS_Z = 0.0f;
-		
+
 	public static float POINTSIZE = 0.05f;
-	
+
 	private int iPointSize = 1;
 	public static EScatterPointType POINTSTYLE = EScatterPointType.BOX;
-	
+
 	public static final float XLABELROTATIONNAGLE = 0.0f;
 	public static final float YLABELROTATIONNAGLE = 90.0f;
 	public static final float XLABELDISTANCE = 0.03f;
 	public static final float YLABELDISTANCE = 0.10f;
-	
+
 	public static final int NUMBER_AXIS_MARKERS = 19;
-	
+
 	public static final int MIN_AXIS_LABEL_TEXT_SIZE = 60;
 	public static final int MIN_NUMBER_TEXT_SIZE = 55;
-	
+
 	public static final float LABEL_Z = 0.004f;
 	public static final float TEXT_ON_LABEL_Z = LABEL_Z + 0.0001f;
 	public static final float AXIS_MARKER_WIDTH = 0.02f;
-	
-	
 
-	private static final float SELECTED_FIELD_WIDTH_PERCENTAGE = 0.1f;
-	private static final float MAXIMUM_SELECTED_AREA_PERCENTAGE = 0.8f;
+	// private static final float SELECTED_FIELD_WIDTH_PERCENTAGE = 0.1f;
+	// private static final float MAXIMUM_SELECTED_AREA_PERCENTAGE = 0.8f;
 	public static final int LABEL_TEXT_MIN_SIZE = 50;
 
 	public static final float[] BACKGROUND_COLOR = { 0.8f, 0.8f, 0.8f, 1 };
@@ -59,9 +56,7 @@ public class ScatterPlotRenderStyle
 	public static final float CLUSTER_BORDERS_Z = 0.009f;
 	public static final float BUTTON_Z = 0.01f;
 	public static final float BACKGROUND_Z = -0.1f;
-	
-	
-	
+
 	private float fSelectedFieldWidth = 1.0f;
 
 	private float fNormalFieldWidth = 0f;
@@ -87,18 +82,18 @@ public class ScatterPlotRenderStyle
 	GLHeatMap heatMap;
 	GLHierarchicalHeatMap hierarchicalHeatMap;
 
-	private boolean useFishEye = true;
+	// private boolean useFishEye = true;
 
 	public void disableFishEye() {
-		useFishEye = false;
+		// useFishEye = false;
 	}
 
-	//public ScatterPlotRenderStyle(GLHeatMap heatMap, IViewFrustum viewFrustum) {
+	// public ScatterPlotRenderStyle(GLHeatMap heatMap, IViewFrustum viewFrustum) {
 	public ScatterPlotRenderStyle(GLScatterplot scatterPlot, IViewFrustum viewFrustum) {
 
 		super(viewFrustum);
 
-		//this.heatMap = heatMap;
+		// this.heatMap = heatMap;
 
 		// alFieldWidths = new ArrayList<FieldWidthElement>();
 
@@ -131,10 +126,6 @@ public class ScatterPlotRenderStyle
 
 	}
 
-
-
-
-	
 	public float getHeightExperimentDendrogram() {
 
 		return fHeightExperimentDendrogram;
@@ -217,21 +208,19 @@ public class ScatterPlotRenderStyle
 		return 0.3f;
 	}
 
-	public void setPOINTSTYLE(EScatterPointType Type)
-	{
+	public void setPOINTSTYLE(EScatterPointType Type) {
 		POINTSTYLE = Type;
 	}
-	
-	public void  setPointSize(int value) {
+
+	public void setPointSize(int value) {
 		POINTSIZE = value / 100.0f;
 		iPointSize = value;
 	}
-	
-	public int  getPointSize() {
+
+	public int getPointSize() {
 		return iPointSize;
 	}
-	
-	
+
 	// public void setBRenderStorageHorizontally(boolean
 	// bRenderStorageHorizontally)
 	// {
@@ -240,44 +229,36 @@ public class ScatterPlotRenderStyle
 
 	public float getRenderWidth() {
 
-	
 		return viewFrustum.getWidth();
 	}
 
 	public float getRenderHeight() {
-		
+
 		return viewFrustum.getHeight();
-				
-		
-	}
-	
-public float getLabelHeight() {
-		
-		return viewFrustum.getHeight()/2;
-		
 
 	}
 
-public float getLAbelWidth() {
-	
-	return viewFrustum.getWidth()/2;
+	public float getLabelHeight() {
 
-}
-public float getAxisHeight()
-{
-	return viewFrustum.getHeight()-2*XYAXISDISTANCE ;
-}
-	
-public float getAxisWidth()
-{
-	return viewFrustum.getWidth()-2*XYAXISDISTANCE ;
-}
+		return viewFrustum.getHeight() / 2;
 
+	}
+
+	public float getLAbelWidth() {
+
+		return viewFrustum.getWidth() / 2;
+
+	}
+
+	public float getAxisHeight() {
+		return viewFrustum.getHeight() - 2 * XYAXISDISTANCE;
+	}
+
+	public float getAxisWidth() {
+		return viewFrustum.getWidth() - 2 * XYAXISDISTANCE;
+	}
 
 	public float getSizeHeatmapArrow() {
 		return fSizeHeatmapArrow;
 	}
 }
-	
-	
-

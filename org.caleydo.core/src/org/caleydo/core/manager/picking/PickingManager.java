@@ -505,7 +505,7 @@ public class PickingManager {
 	}
 
 	private float getDepth(int iZValue) {
-		long depth = (long) iZValue; // large -ve number
+		long depth = iZValue; // large -ve number
 		return (1.0f + ((float) depth / 0x7fffffff));
 		// return as a float between 0 and 1
 	}

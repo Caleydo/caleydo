@@ -67,7 +67,7 @@ public class RemoteRenderingTransformer
 				target.put(typeConnections.getKey(), connectionMap);
 			}
 
-			SelectedElementRepList newSourceConnections = new SelectedElementRepList(); 
+			SelectedElementRepList newSourceConnections = new SelectedElementRepList();
 			for (Entry<Integer, SelectedElementRepList> connections : typeConnections.getValue().entrySet()) {
 
 				SelectedElementRepList repList = connectionMap.get(connections.getKey());
@@ -87,10 +87,10 @@ public class RemoteRenderingTransformer
 						}
 						if (((AGLEventListener) view.getRemoteRenderingGLCanvas()).isRenderedRemote()) {
 							SelectedElementRep trans =
-								new SelectedElementRep(sel.getIDType(), viewID, viewID,
-									transformedPoints);
+								new SelectedElementRep(sel.getIDType(), viewID, viewID, transformedPoints);
 							newSourceConnections.add(trans);
-						} else {
+						}
+						else {
 							SelectedElementRep trans =
 								new SelectedElementRep(sel.getIDType(), sel.getSourceViewID(), viewID,
 									transformedPoints);

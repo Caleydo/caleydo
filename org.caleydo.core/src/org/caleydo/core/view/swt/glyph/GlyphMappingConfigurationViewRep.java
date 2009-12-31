@@ -41,7 +41,7 @@ public class GlyphMappingConfigurationViewRep
 	implements ISWTView {
 
 	private class DataPack {
-		public Composite composite;
+		// public Composite composite;
 		public CCombo comboBox;
 		public GlyphObjectDefinition model;
 
@@ -280,7 +280,7 @@ public class GlyphMappingConfigurationViewRep
 
 					DataPack pack = new DataPack();
 					pack.comboBox = box;
-					pack.composite = comp;
+					// pack.composite = comp;
 					pack.model = model;
 					pack.parameterName = name;
 					pack.parameterType = EGlyphSettingIDs.SCALE;
@@ -301,7 +301,7 @@ public class GlyphMappingConfigurationViewRep
 
 				DataPack pack = new DataPack();
 				pack.comboBox = box;
-				pack.composite = comp;
+				// pack.composite = comp;
 				pack.model = model;
 				pack.parameterName = name;
 				pack.parameterType = EGlyphSettingIDs.COLOR;
