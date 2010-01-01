@@ -10,8 +10,10 @@ public class CreateGroupEventListener
 
 	@Override
 	public void handleEvent(AEvent event) {
+		CreateGroupEvent createGroupEvent;
 		if (event instanceof CreateGroupEvent) {
-			handler.createNewGroup();
+			createGroupEvent = (CreateGroupEvent) event;
+			handler.createNewGroup(createGroupEvent.getContainedGroups());
 		}
 
 	}

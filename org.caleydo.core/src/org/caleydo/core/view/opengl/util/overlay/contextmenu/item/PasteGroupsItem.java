@@ -8,7 +8,7 @@ public class PasteGroupsItem
 
 	public PasteGroupsItem(int iParentGroupID) {
 		super();
-		setText("Paste here");
+		setText("Paste");
 		PasteGroupsEvent event = new PasteGroupsEvent(iParentGroupID);
 		event.setSender(this);
 		registerEvent(event);

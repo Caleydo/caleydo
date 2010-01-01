@@ -52,7 +52,7 @@ public class GroupDrawingStrategyDragged
 		float fHeight = groupRepresentation.getHeight();
 		float fWidth = groupRepresentation.getWidth();
 
-		Vec3f vecRealGroupPosition = groupRepresentation.getPosition();
+		Vec3f vecRealGroupPosition = groupRepresentation.getDraggingStartPosition();
 		Vec3f vecScaledRealGroupPosition =
 			getScaledPosition(gl, vecRealGroupPosition, groupRepresentation.getHierarchyPosition());
 

@@ -32,6 +32,7 @@ public class GroupRepresentation
 	private ArrayList<Float> alDropPositions;
 	private Vec3f vecPosition;
 	private Vec3f vecHierarchyPosition;
+	private Vec3f vecDraggingStartPosition;
 	private float fHeight;
 	private float fWidth;
 	private float fDraggingStartMouseCoordinateX;
@@ -104,6 +105,7 @@ public class GroupRepresentation
 	public void setDraggingStartPoint(float fMouseCoordinateX, float fMouseCoordinateY) {
 		fDraggingStartMouseCoordinateX = fMouseCoordinateX;
 		fDraggingStartMouseCoordinateY = fMouseCoordinateY;
+		vecDraggingStartPosition = new Vec3f(vecPosition);
 	}
 
 	@Override
@@ -111,15 +113,15 @@ public class GroupRepresentation
 		float fMouseCoordinateY) {
 
 		AGroupDrawingStrategyRectangular drawingStrategyRectangular = null;
-		int iDropPositionIndex = -1;
+		int iDropPositionIndex =
+			getDropPositionIndex(gl, setDraggables, fMouseCoordinateX, fMouseCoordinateY);
+
+		if(iDropPositionIndex == -1)
+			return;
+		
 
 		if (drawingStrategy instanceof AGroupDrawingStrategyRectangular) {
 			drawingStrategyRectangular = (AGroupDrawingStrategyRectangular) drawingStrategy;
-			iDropPositionIndex =
-				getDropPositionIndex(gl, setDraggables, fMouseCoordinateX, fMouseCoordinateY,
-					drawingStrategyRectangular);
-			if (iDropPositionIndex == -1)
-				return;
 		}
 		else {
 			return;
@@ -132,21 +134,12 @@ public class GroupRepresentation
 	public void handleDrop(GL gl, Set<IDraggable> setDraggables, float fMouseCoordinateX,
 		float fMouseCoordinateY, DragAndDropController dragAndDropController) {
 
-		int iDropPositionIndex = -1;
+		int iDropPositionIndex =
+			getDropPositionIndex(gl, setDraggables, fMouseCoordinateX, fMouseCoordinateY);
 
-		if (drawingStrategy instanceof AGroupDrawingStrategyRectangular) {
-			iDropPositionIndex =
-				getDropPositionIndex(gl, setDraggables, fMouseCoordinateX, fMouseCoordinateY,
-					(AGroupDrawingStrategyRectangular) drawingStrategy);
-			if (iDropPositionIndex == -1 || iDropPositionIndex > alChildren.size()) {
-				return;
-			}
-
-		}
-		else {
+		if(iDropPositionIndex == -1)
 			return;
-		}
-
+		
 		Set<ICompositeGraphic> setComposites = new HashSet<ICompositeGraphic>();
 
 		for (IDraggable draggable : setDraggables) {
@@ -190,8 +183,17 @@ public class GroupRepresentation
 		glGrouper.setDisplayListDirty();
 	}
 
-	private int getDropPositionIndex(GL gl, Set<IDraggable> setDraggables, float fMouseCoordinateX,
-		float fMouseCoordinateY, AGroupDrawingStrategyRectangular drawingStrategyRectangular) {
+	public int getDropPositionIndex(GL gl, Set<IDraggable> setDraggables, float fMouseCoordinateX,
+		float fMouseCoordinateY) {
+
+		AGroupDrawingStrategyRectangular drawingStrategyRectangular;
+
+		if (drawingStrategy instanceof AGroupDrawingStrategyRectangular) {
+			drawingStrategyRectangular = (AGroupDrawingStrategyRectangular) drawingStrategy;
+		}
+		else {
+			return -1;
+		}
 
 		for (IDraggable draggable : setDraggables) {
 			if (draggable == this)
@@ -522,6 +524,14 @@ public class GroupRepresentation
 
 	public void setLeaf(boolean bLeaf) {
 		this.bLeaf = bLeaf;
+	}
+
+	public Vec3f getDraggingStartPosition() {
+		return vecDraggingStartPosition;
+	}
+
+	public void setDraggingStartPosition(Vec3f vecDraggingStartPosition) {
+		this.vecDraggingStartPosition = vecDraggingStartPosition;
 	}
 
 	@Override

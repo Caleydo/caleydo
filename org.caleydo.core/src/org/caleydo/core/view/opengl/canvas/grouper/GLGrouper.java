@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +18,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.grouper.CopyGroupsEvent;
 import org.caleydo.core.manager.event.view.grouper.CreateGroupEvent;
+import org.caleydo.core.manager.event.view.grouper.DeleteGroupsEvent;
 import org.caleydo.core.manager.event.view.grouper.PasteGroupsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -38,6 +39,7 @@ import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.group.EGrou
 import org.caleydo.core.view.opengl.canvas.grouper.drawingstrategies.group.IGroupDrawingStrategy;
 import org.caleydo.core.view.opengl.canvas.grouper.listeners.CopyGroupsEventListener;
 import org.caleydo.core.view.opengl.canvas.grouper.listeners.CreateGroupEventListener;
+import org.caleydo.core.view.opengl.canvas.grouper.listeners.DeleteGroupsEventListener;
 import org.caleydo.core.view.opengl.canvas.grouper.listeners.PasteGroupsEventListener;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -45,6 +47,7 @@ import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CopyGroupsItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CreateGroupItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DeleteGroupsItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.PasteGroupsItem;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 
@@ -85,6 +88,7 @@ public class GLGrouper
 	private CreateGroupEventListener createGroupEventListener = null;
 	private CopyGroupsEventListener copyGroupsEventListener = null;
 	private PasteGroupsEventListener pasteGroupsEventListener = null;
+	private DeleteGroupsEventListener deleteGroupsEventListener = null;
 
 	private TextRenderer textRenderer;
 	private SelectionManager selectionManager;
@@ -381,13 +385,21 @@ public class GLGrouper
 						break;
 					case RIGHT_CLICKED:
 						if (groupRep != null) {
-							if (selectionManager.checkStatus(ESelectionType.SELECTION, groupRep.getID())) {
-								CreateGroupItem createGroupItem = new CreateGroupItem();
+							if (selectionManager.checkStatus(ESelectionType.SELECTION, groupRep.getID())
+								&& groupRep != rootGroup) {
+
+								Set<Integer> setSelectedGroups =
+									new HashSet<Integer>(selectionManager
+										.getElements(ESelectionType.SELECTION));
+
+								CreateGroupItem createGroupItem = new CreateGroupItem(setSelectedGroups);
 								contextMenu.addContextMenueItem(createGroupItem);
-								CopyGroupsItem copyGroupsItem =
-									new CopyGroupsItem(new HashSet<Integer>(selectionManager
-										.getElements(ESelectionType.SELECTION)));
+
+								CopyGroupsItem copyGroupsItem = new CopyGroupsItem(setSelectedGroups);
 								contextMenu.addContextMenueItem(copyGroupsItem);
+
+								DeleteGroupsItem deleteGroupsItem = new DeleteGroupsItem(setSelectedGroups);
+								contextMenu.addContextMenueItem(deleteGroupsItem);
 
 							}
 							if (setCopiedGroups == null || !setCopiedGroups.contains(groupRep.getID())) {
@@ -487,7 +499,7 @@ public class GLGrouper
 						break;
 					case DRAGGED:
 						if (group != null && group.isCollapsed()) {
-							double dCurrentTimeStamp = Calendar.getInstance().getTimeInMillis();
+							double dCurrentTimeStamp = GregorianCalendar.getInstance().getTimeInMillis();
 
 							if (dCurrentTimeStamp - dCollapseButtonDragOverTime > 500
 								&& group.getID() == iDraggedOverCollapseButtonID) {
@@ -576,6 +588,10 @@ public class GLGrouper
 		pasteGroupsEventListener.setHandler(this);
 		eventPublisher.addListener(PasteGroupsEvent.class, pasteGroupsEventListener);
 
+		deleteGroupsEventListener = new DeleteGroupsEventListener();
+		deleteGroupsEventListener.setHandler(this);
+		eventPublisher.addListener(DeleteGroupsEvent.class, deleteGroupsEventListener);
+
 	}
 
 	@Override
@@ -600,6 +616,10 @@ public class GLGrouper
 		if (pasteGroupsEventListener != null) {
 			eventPublisher.removeListener(pasteGroupsEventListener);
 			pasteGroupsEventListener = null;
+		}
+		if (deleteGroupsEventListener != null) {
+			eventPublisher.removeListener(deleteGroupsEventListener);
+			deleteGroupsEventListener = null;
 		}
 	}
 
@@ -635,22 +655,31 @@ public class GLGrouper
 	// hashElements.remove(iID);
 	// }
 
-	public void createNewGroup() {
+	private ArrayList<ICompositeGraphic> getOrderedTopElementCompositeList(Set<Integer> setGroupIds) {
+
+		Set<ICompositeGraphic> setComposites = new HashSet<ICompositeGraphic>();
+		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = new ArrayList<ICompositeGraphic>();
+
+		for (Integer id : setGroupIds) {
+			if (hashGroups.containsKey(id))
+				setComposites.add(hashGroups.get(id));
+		}
+
+		rootGroup.getOrderedTopElementCompositeList(setComposites, alOrderedTopLevelComposites);
+
+		return alOrderedTopLevelComposites;
+	}
+
+	public void createNewGroup(Set<Integer> setContainedGroups) {
+		
 		GroupRepresentation newGroup =
 			new GroupRepresentation(new ClusterNode("group" + iLastUsedCompositeID, iLastUsedCompositeID++,
 				0, 0, false), renderStyle, drawingStrategyManager
 				.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL), drawingStrategyManager, this,
 				false);
 
-		Set<ICompositeGraphic> setComposites = new HashSet<ICompositeGraphic>();
-		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = new ArrayList<ICompositeGraphic>();
-
-		for (Integer id : selectionManager.getElements(ESelectionType.SELECTION)) {
-			if (hashGroups.containsKey(id))
-				setComposites.add(hashGroups.get(id));
-		}
-
-		rootGroup.getOrderedTopElementCompositeList(setComposites, alOrderedTopLevelComposites);
+		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites =
+			getOrderedTopElementCompositeList(setContainedGroups);
 
 		ICompositeGraphic commonParent = findCommonParent(alOrderedTopLevelComposites);
 
@@ -743,16 +772,37 @@ public class GLGrouper
 		if (parent == null || setCopiedGroups == null)
 			return;
 
-		Set<ICompositeGraphic> setComposites = new HashSet<ICompositeGraphic>();
-		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = new ArrayList<ICompositeGraphic>();
-
-		for (Integer id : setCopiedGroups) {
-			if (hashGroups.containsKey(id))
-				setComposites.add(hashGroups.get(id));
+		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites =
+			getOrderedTopElementCompositeList(setCopiedGroups);
+		
+		int iTempID[] = { iLastUsedCompositeID };
+		for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
+			iTempID[0]++;
+			ICompositeGraphic copy = composite.createDeepCopyWithNewIDs(iTempID);
+			parent.add(copy);
 		}
+		iLastUsedCompositeID = iTempID[0] + 1;
 
-		rootGroup.getOrderedTopElementCompositeList(setComposites, alOrderedTopLevelComposites);
-
+		bHierarchyChanged = true;
+		setDisplayListDirty();
 	}
 
+	public void deleteGroups(Set<Integer> setGroupsToDelete) {
+		
+		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites =
+			getOrderedTopElementCompositeList(setGroupsToDelete);
+		
+		for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
+			ICompositeGraphic parent = composite.getParent();
+			if(parent != null) {
+				parent.delete(composite);
+				composite.setParent(null);
+				if(parent != rootGroup)
+					parent.removeOnChildAbsence();
+			}
+		}
+
+		bHierarchyChanged = true;
+		setDisplayListDirty();
+	}
 }
