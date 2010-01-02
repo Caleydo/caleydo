@@ -12,7 +12,6 @@ import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHeatMa
 import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.SerializedParallelCoordinatesView;
 import org.caleydo.core.view.swt.browser.SerializedHTMLBrowserView;
 import org.caleydo.core.view.swt.tabular.SerializedTabularDataView;
-import org.caleydo.view.scatterplot.serialized.SerializedScatterplotView;
 
 /**
  * Enum for triggering view loading in RCP over the command line.
@@ -32,7 +31,7 @@ public enum EStartViewType {
 	histogram(SerializedHistogramView.class),
 	dendrogram_horizontal(SerializedDendogramHorizontalView.class),
 	dendrogram_vertical(SerializedDendogramVerticalView.class),
-	scatterplot(SerializedScatterplotView.class),
+	//scatterplot(SerializedScatterplotView.class),
 	dataflipper(SerializedDataFlipperView.class);
 
 	private Class<? extends ASerializedView> serializedViewClass;

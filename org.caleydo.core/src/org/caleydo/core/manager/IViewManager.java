@@ -9,6 +9,7 @@ import org.caleydo.core.manager.execution.DisplayLoopExecution;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
+import org.caleydo.core.manager.view.creator.IGLViewCreator;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -108,4 +109,11 @@ public interface IViewManager
 	 * @return {@link DisplayLoopExecution} for executing code in the display loop
 	 */
 	public DisplayLoopExecution getDisplayLoopExecution();
+
+	/**
+	 * TODO Document me
+	 * @param viewCreator
+	 */
+	public void addGLViewCreator(IGLViewCreator glViewCreator);
+
 }

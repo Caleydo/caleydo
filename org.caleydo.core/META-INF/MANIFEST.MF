@@ -210,6 +210,7 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.manager.picking,
    org.eclipse.swt.widgets,
    org.caleydo.core.data.selection",
+ org.caleydo.core.manager.view.creator,
  org.caleydo.core.net,
  org.caleydo.core.parser.ascii;uses:="org.caleydo.core.manager",
  org.caleydo.core.parser.ascii.lookuptable;uses:="org.caleydo.core.data.mapping,org.caleydo.core.parser.ascii,org.caleydo.core.manager",

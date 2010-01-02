@@ -1,11 +1,7 @@
 package org.caleydo.core.bridge.gui.standalone;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
-import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.eclipse.swt.widgets.Display;
 
 // TODO: doku
@@ -50,12 +46,4 @@ public class SWTStandaloneBridge
 		// TODO Auto-generated method stub
 
 	}
-
-	@Override
-	public AGLView createGLEventListener(ECommandType type, GLCaleydoCanvas glCanvas, String label,
-		IViewFrustum viewFrustum) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

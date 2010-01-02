@@ -34,7 +34,5 @@ public interface IGUIBridge {
 	 *            the GUI ID (e.g. RCP)
 	 */
 	public void closeView(String viewGUIID);
-	
-	public AGLView createGLEventListener(ECommandType type, GLCaleydoCanvas glCanvas,
-		final String label, final IViewFrustum viewFrustum);
+
 }
