@@ -19,7 +19,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.selection.NewConnectionsEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.listener.NewConnectionsListener;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.swt.graphics.Point;
 
 /**
@@ -43,10 +43,10 @@ public class StandardTransformer
 	private NewConnectionsListener newConnectionsListener;
 
 	/**
-	 * Creates a new instance for a related {@link AGLEventListener} (view).
+	 * Creates a new instance for a related {@link AGLView} (view).
 	 * 
 	 * @param viewID
-	 *            the viewID of the {@link AGLEventListener} (view) to do transformations for
+	 *            the viewID of the {@link AGLView} (view) to do transformations for
 	 */
 	public StandardTransformer(int viewID) {
 		eventPublisher = GeneralManager.get().getEventPublisher();
@@ -89,7 +89,7 @@ public class StandardTransformer
 		final GLU glu = new GLU();
 
 		IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
-		AGLEventListener view = vm.getGLEventListener(viewID);
+		AGLView view = vm.getGLEventListener(viewID);
 		int canvasHeight = view.getParentGLCanvas().getHeight();
 
 		for (Entry<EIDType, ConnectionMap> typeConnections : source.entrySet()) {

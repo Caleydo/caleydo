@@ -90,7 +90,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager;
@@ -307,7 +307,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLEventListener glParentView,
+	public void initRemote(final GL gl, final AGLView glParentView,
 		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		bShowSelectionHeatMap = false;
@@ -3021,8 +3021,8 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public List<AGLEventListener> getRemoteRenderedViews() {
-		return new ArrayList<AGLEventListener>();
+	public List<AGLView> getRemoteRenderedViews() {
+		return new ArrayList<AGLView>();
 	}
 
 	public void setRenderConnectionState(boolean renderConnectionssLeft) {

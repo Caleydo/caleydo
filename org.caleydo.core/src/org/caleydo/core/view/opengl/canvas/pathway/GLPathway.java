@@ -52,7 +52,7 @@ import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
@@ -89,7 +89,7 @@ import org.eclipse.core.runtime.Status;
  * @author Alexander Lex
  */
 public class GLPathway
-	extends AGLEventListener
+	extends AGLView
 	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, IViewCommandHandler,
 	ISelectionCommandHandler {
 
@@ -199,7 +199,7 @@ public class GLPathway
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLEventListener glParentView,
+	public void initRemote(final GL gl, final AGLView glParentView,
 		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;

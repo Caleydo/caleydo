@@ -10,9 +10,9 @@ import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedDendog
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedDendogramVerticalView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.SerializedParallelCoordinatesView;
-import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.SerializedScatterplotView;
 import org.caleydo.core.view.swt.browser.SerializedHTMLBrowserView;
 import org.caleydo.core.view.swt.tabular.SerializedTabularDataView;
+import org.caleydo.view.scatterplot.serialized.SerializedScatterplotView;
 
 /**
  * Enum for triggering view loading in RCP over the command line.

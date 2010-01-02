@@ -15,7 +15,7 @@ import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.ConnectionMap;
 import org.caleydo.core.manager.view.SelectedElementRepList;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
@@ -68,7 +68,7 @@ public class GLConnectionLineRendererDataFlipper
 						throw new IllegalStateException(
 							"Current ID Type does not match the selected elemen rep's");
 
-					AGLEventListener glView =
+					AGLView glView =
 						viewGLCanvasManager.getGLEventListener(selectedElementRep.getSourceViewID());
 
 					if (glView == null) {

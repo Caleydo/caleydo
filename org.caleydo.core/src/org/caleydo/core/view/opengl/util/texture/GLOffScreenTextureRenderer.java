@@ -7,7 +7,7 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketLayoutRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
@@ -34,7 +34,7 @@ public class GLOffScreenTextureRenderer {
 		glu.gluLookAt(4, 4, 4.8f, 4, 4, 0, 0, 1, 0);
 
 		// RENDER VIEW CONTENT
-		AGLEventListener glEventListener =
+		AGLView glEventListener =
 			GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		IViewFrustum viewFrustum = glEventListener.getViewFrustum();

@@ -63,7 +63,7 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
@@ -351,7 +351,7 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public void initRemote(GL gl, final AGLEventListener glParentView, GLMouseListener glMouseListener,
+	public void initRemote(GL gl, final AGLView glParentView, GLMouseListener glMouseListener,
 		GLInfoAreaManager infoAreaManager) {
 
 		// Register keyboard listener to GL canvas
@@ -5216,10 +5216,10 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public List<AGLEventListener> getRemoteRenderedViews() {
+	public List<AGLView> getRemoteRenderedViews() {
 		// List<AGLEventListener> views = new ArrayList<AGLEventListener>();
 		// views.add(glHeatMapView);
 		// return views;
-		return new ArrayList<AGLEventListener>();
+		return new ArrayList<AGLView>();
 	}
 }

@@ -2,7 +2,7 @@ package org.caleydo.core.util.exception;
 
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
@@ -40,7 +40,7 @@ public class ExceptionHandler {
 	 * 
 	 * @param exception
 	 */
-	public void handleViewException(RuntimeException exception, final AGLEventListener glEventListener) {
+	public void handleViewException(RuntimeException exception, final AGLView glEventListener) {
 
 		GeneralManager.get().getLogger().log(
 			new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID, "Caught Exception: "

@@ -1,0 +1,9 @@
+package org.caleydo.rcp.toolbar.listener;
+
+import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.rcp.toolbar.ToolBarMediator;
+
+public abstract class ToolBarListener
+	extends AEventListener<ToolBarMediator> {
+
+}

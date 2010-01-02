@@ -7,7 +7,7 @@ import java.util.Vector;
 
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
@@ -85,7 +85,7 @@ public class GlyphManager {
 		}
 		settings.put(type, value);
 
-		for (AGLEventListener agleventlistener : generalManager.getViewGLCanvasManager()
+		for (AGLView agleventlistener : generalManager.getViewGLCanvasManager()
 			.getAllGLEventListeners())
 			if (agleventlistener instanceof GLGlyph) {
 				((GLGlyph) agleventlistener).forceRebuild();

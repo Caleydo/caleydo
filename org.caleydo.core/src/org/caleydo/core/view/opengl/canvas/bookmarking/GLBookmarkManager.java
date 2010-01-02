@@ -22,7 +22,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -43,7 +43,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Alexander Lex
  */
 public class GLBookmarkManager
-	extends AGLEventListener
+	extends AGLView
 	implements ISelectionUpdateHandler, ISelectionCommandHandler {
 
 	// private ColorMapping colorMapper;
@@ -263,7 +263,7 @@ public class GLBookmarkManager
 	}
 
 	@Override
-	public void initRemote(GL gl, AGLEventListener glParentView, GLMouseListener glMouseListener,
+	public void initRemote(GL gl, AGLView glParentView, GLMouseListener glMouseListener,
 		GLInfoAreaManager infoAreaManager) {
 
 		init(gl);

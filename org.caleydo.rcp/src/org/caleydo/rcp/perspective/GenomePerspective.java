@@ -1,9 +1,9 @@
 package org.caleydo.rcp.perspective;
 
 import org.caleydo.rcp.Application;
-import org.caleydo.rcp.view.opengl.RcpGLHistogramView;
-import org.caleydo.rcp.view.swt.RcpSelectionInfoView;
-import org.caleydo.rcp.view.swt.toolbar.RcpToolBarView;
+import org.caleydo.rcp.toolbar.RcpToolBarView;
+import org.caleydo.view.base.rcp.RcpGLHistogramView;
+import org.caleydo.view.base.swt.RcpSelectionInfoView;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IFolderLayout;

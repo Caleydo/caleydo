@@ -27,7 +27,7 @@ import org.caleydo.core.manager.view.CanvasConnectionMap;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.SelectionPoint2D;
 import org.caleydo.core.manager.view.SelectionPoint2DList;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -265,7 +265,7 @@ public class VisLinkManager
 		SelectionPoint2DList displayPoints = new SelectionPoint2DList();
 		for (SelectionPoint2D p : canvasPoints) {
 			IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
-			AGLEventListener view = vm.getGLEventListener(p.getViewID());
+			AGLView view = vm.getGLEventListener(p.getViewID());
 			Composite composite = view.getParentGLCanvas().getParentComposite();
 			Point dp = composite.toDisplay(p.getPoint());
 			SelectionPoint2D displayPoint = new SelectionPoint2D(appName, p.getViewID(), dp);

@@ -42,7 +42,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
@@ -72,7 +72,7 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
 public class GLDataFlipper
-	extends AGLEventListener
+	extends AGLView
 	implements IGLRemoteRenderingView, IRemoteRenderingHandler {
 
 	private static final int SLERP_RANGE = 1000;
@@ -82,7 +82,7 @@ public class GLDataFlipper
 
 	private ArrayList<ASerializedView> newViews;
 
-	private ArrayList<AGLEventListener> containedGLViews;
+	private ArrayList<AGLView> containedGLViews;
 
 	private RemoteLevelElement focusElement;
 	private ArrayList<RemoteLevelElement> stackElementsLeft;
@@ -151,7 +151,7 @@ public class GLDataFlipper
 		glMouseListener.addGLCanvas(this);
 
 		newViews = new ArrayList<ASerializedView>();
-		containedGLViews = new ArrayList<AGLEventListener>();
+		containedGLViews = new ArrayList<AGLView>();
 		stackElementsRight = new ArrayList<RemoteLevelElement>();
 		stackElementsLeft = new ArrayList<RemoteLevelElement>();
 
@@ -213,7 +213,7 @@ public class GLDataFlipper
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLEventListener glParentView,
+	public void initRemote(final GL gl, final AGLView glParentView,
 		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		throw new IllegalStateException("Not implemented to be rendered remote");
@@ -309,7 +309,7 @@ public class GLDataFlipper
 
 		int iViewID = element.getContainedElementID();
 
-		AGLEventListener glEventListener =
+		AGLView glEventListener =
 			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		if (glEventListener == null) {
@@ -416,7 +416,7 @@ public class GLDataFlipper
 		// {
 		if (!newViews.isEmpty()) {
 			ASerializedView serView = newViews.remove(0);
-			AGLEventListener view = createView(gl, serView);
+			AGLView view = createView(gl, serView);
 
 			// addSlerpActionForView(gl, view);
 
@@ -476,11 +476,11 @@ public class GLDataFlipper
 
 		ViewActivationEvent viewActivationEvent = new ViewActivationEvent();
 		viewActivationEvent.setSender(this);
-		List<AGLEventListener> views = getRemoteRenderedViews();
+		List<AGLView> views = getRemoteRenderedViews();
 
 		List<Integer> viewIDs = new ArrayList<Integer>();
 		viewIDs.add(getID());
-		for (AGLEventListener view : views) {
+		for (AGLView view : views) {
 			viewIDs.add(view.getID());
 		}
 
@@ -491,7 +491,7 @@ public class GLDataFlipper
 	}
 
 	@Override
-	public List<AGLEventListener> getRemoteRenderedViews() {
+	public List<AGLView> getRemoteRenderedViews() {
 		return containedGLViews;
 	}
 
@@ -514,7 +514,7 @@ public class GLDataFlipper
 	 *            serialized form of the view to create
 	 * @return the created view ready to be used within the application
 	 */
-	private AGLEventListener createView(GL gl, ASerializedView serView) {
+	private AGLView createView(GL gl, ASerializedView serView) {
 
 		ICommandManager commandManager = generalManager.getCommandManager();
 		ECommandType cmdType = serView.getCreationCommandType();
@@ -523,7 +523,7 @@ public class GLDataFlipper
 		cmdView.setAttributesFromSerializedForm(serView);
 		cmdView.doCommand();
 
-		AGLEventListener glView = cmdView.getCreatedObject();
+		AGLView glView = cmdView.getCreatedObject();
 		glView.setRemoteRenderingGLView(this);
 
 		return glView;
@@ -588,7 +588,7 @@ public class GLDataFlipper
 
 				updateViewDetailLevels(tmpSlerpAction.getDestinationRemoteLevelElement());
 
-				AGLEventListener glEventListener =
+				AGLView glEventListener =
 					generalManager.getViewGLCanvasManager().getGLEventListener(tmpSlerpAction.getElementId());
 
 				if (glEventListener instanceof GLTissueViewBrowser)
@@ -636,7 +636,7 @@ public class GLDataFlipper
 
 		slerpMod.applySlerp(gl, transform, true, true);
 
-		AGLEventListener glEventListener =
+		AGLView glEventListener =
 			generalManager.getViewGLCanvasManager().getGLEventListener(slerpAction.getElementId());
 
 		if (glEventListener instanceof GLGlyph
@@ -753,7 +753,7 @@ public class GLDataFlipper
 						iLastPickedViewID = lastPickedRemoteLevelElement.getContainedElementID();
 						chainMove(lastPickedRemoteLevelElement);
 
-						AGLEventListener pickedView =
+						AGLView pickedView =
 							GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
 								iLastPickedViewID);
 
@@ -779,7 +779,7 @@ public class GLDataFlipper
 						RemoteLevelElement element = RemoteElementManager.get().getItem(iExternalID);
 						int pickID = element.getContainedElementID();
 
-						AGLEventListener pickedView2 =
+						AGLView pickedView2 =
 							GeneralManager.get().getViewGLCanvasManager().getGLEventListener(pickID);
 
 						if (pickedView2 instanceof GLGlyph) {
@@ -896,7 +896,7 @@ public class GLDataFlipper
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
 
-		AGLEventListener glView =
+		AGLView glView =
 			generalManager.getViewGLCanvasManager().getGLEventListener(focusElement.getContainedElementID());
 
 		if (glView == null)
@@ -1029,7 +1029,7 @@ public class GLDataFlipper
 			}
 
 			RemoteLevelElement element = findElementContainingView(dataDomain, viewType);
-			AGLEventListener glEventListener = null;
+			AGLView glEventListener = null;
 			if (element != null) {
 				glEventListener =
 					generalManager.getViewGLCanvasManager().getGLEventListener(
@@ -1416,7 +1416,7 @@ public class GLDataFlipper
 
 	private RemoteLevelElement findElementContainingView(EDataDomain dataDomain, EManagedObjectType viewType) {
 
-		for (AGLEventListener glView : containedGLViews) {
+		for (AGLView glView : containedGLViews) {
 			if (glView.getViewType() == viewType && glView.getDataDomain() == dataDomain) {
 				if (focusElement.getContainedElementID() == glView.getID())
 					return focusElement;
@@ -1439,7 +1439,7 @@ public class GLDataFlipper
 	// FIXME: method copied from bucket
 	private void renderHandles(final GL gl) {
 
-		AGLEventListener glEventListener;
+		AGLView glEventListener;
 
 		// Bucket center (focus)
 		RemoteLevelElement element = focusElement;
@@ -1906,7 +1906,7 @@ public class GLDataFlipper
 		if (element.getContainedElementID() == -1)
 			return;
 
-		AGLEventListener glActiveSubView =
+		AGLView glActiveSubView =
 			GeneralManager.get().getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
 
 		glActiveSubView.setRemoteLevelElement(element);

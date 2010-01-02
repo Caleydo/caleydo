@@ -34,7 +34,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -76,7 +76,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Werner Puff
  */
 public abstract class AGLViewBrowser
-	extends AGLEventListener
+	extends AGLView
 	implements ISelectionUpdateHandler, IGLRemoteRenderingView {
 
 	private static final int SLERP_RANGE = 1000;
@@ -112,7 +112,7 @@ public abstract class AGLViewBrowser
 
 	protected ArrayList<ASerializedView> newViews;
 
-	private ArrayList<AGLEventListener> containedGLViews;
+	private ArrayList<AGLView> containedGLViews;
 
 	/**
 	 * The current view in which the user is performing actions.
@@ -180,7 +180,7 @@ public abstract class AGLViewBrowser
 
 		arSlerpActions = new ArrayList<SlerpAction>();
 
-		containedGLViews = new ArrayList<AGLEventListener>();
+		containedGLViews = new ArrayList<AGLView>();
 		newViews = new ArrayList<ASerializedView>();
 
 		dragAndDrop = new GLDragAndDrop();
@@ -244,7 +244,7 @@ public abstract class AGLViewBrowser
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLEventListener glParentView,
+	public void initRemote(final GL gl, final AGLView glParentView,
 		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		// Register keyboard listener to GL canvas
@@ -402,12 +402,12 @@ public abstract class AGLViewBrowser
 
 					IViewManager viewGLCanvasManager = generalManager.getViewGLCanvasManager();
 
-					AGLEventListener originView = viewGLCanvasManager.getGLEventListener(iOriginElementID);
+					AGLView originView = viewGLCanvasManager.getGLEventListener(iOriginElementID);
 					if (originView != null) {
 						originView.setRemoteLevelElement(mouseOverElement);
 					}
 
-					AGLEventListener mouseOverView =
+					AGLView mouseOverView =
 						viewGLCanvasManager.getGLEventListener(iMouseOverElementID);
 					if (mouseOverView != null) {
 						mouseOverView.setRemoteLevelElement(originElement);
@@ -504,7 +504,7 @@ public abstract class AGLViewBrowser
 			.getID()));
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION, iViewID));
 
-		AGLEventListener glEventListener =
+		AGLView glEventListener =
 			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		if (glEventListener == null) {
@@ -1067,7 +1067,7 @@ public abstract class AGLViewBrowser
 		if (element.getContainedElementID() == -1)
 			return;
 
-		AGLEventListener glActiveSubView =
+		AGLView glActiveSubView =
 			GeneralManager.get().getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
 
 		glActiveSubView.setRemoteLevelElement(element);
@@ -1147,7 +1147,7 @@ public abstract class AGLViewBrowser
 
 						RemoteLevelElement element = RemoteElementManager.get().getItem(iExternalID);
 
-						AGLEventListener glEventListener =
+						AGLView glEventListener =
 							generalManager.getViewGLCanvasManager().getGLEventListener(
 								element.getContainedElementID());
 
@@ -1258,7 +1258,7 @@ public abstract class AGLViewBrowser
 	/**
 	 * Unregister view from event system. Remove view from GL render loop.
 	 */
-	public void removeView(AGLEventListener glEventListener) {
+	public void removeView(AGLView glEventListener) {
 		if (glEventListener != null) {
 			glEventListener.destroy();
 		}
@@ -1289,8 +1289,8 @@ public abstract class AGLViewBrowser
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		if (reinitialize) {
-			ArrayList<AGLEventListener> removeView = new ArrayList<AGLEventListener>();
-			for (AGLEventListener glView : containedGLViews) {
+			ArrayList<AGLView> removeView = new ArrayList<AGLView>();
+			for (AGLView glView : containedGLViews) {
 				if (!(glView instanceof GLParallelCoordinates || glView instanceof GLHeatMap)) {
 					removeView.add(glView);
 				}
@@ -1320,7 +1320,7 @@ public abstract class AGLViewBrowser
 		if (reinitialize) {
 			// Move heat map and par coords view to its initial position in the
 			// bucket
-			for (AGLEventListener view : containedGLViews) {
+			for (AGLView view : containedGLViews) {
 				if (view instanceof GLParallelCoordinates) {
 					stackLevel.getElementByPositionIndex(0).setContainedElementID(view.getID());
 					view.setRemoteLevelElement(stackLevel.getElementByPositionIndex(0));
@@ -1343,7 +1343,7 @@ public abstract class AGLViewBrowser
 	protected void clearRemoteLevel(RemoteLevel remoteLevel) {
 		int iViewID;
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
-		AGLEventListener glEventListener = null;
+		AGLView glEventListener = null;
 
 		for (RemoteLevelElement element : remoteLevel.getAllElements()) {
 			iViewID = element.getContainedElementID();
@@ -1513,7 +1513,7 @@ public abstract class AGLViewBrowser
 			&& arSlerpActions.isEmpty()) {
 
 			ASerializedView serView = newViews.remove(0);
-			AGLEventListener view = createView(gl, serView);
+			AGLView view = createView(gl, serView);
 			if (hasFreeViewPosition()) {
 
 				// TODO use this when views should be slerped in
@@ -1556,11 +1556,11 @@ public abstract class AGLViewBrowser
 
 		ViewActivationEvent viewActivationEvent = new ViewActivationEvent();
 		viewActivationEvent.setSender(this);
-		List<AGLEventListener> views = getRemoteRenderedViews();
+		List<AGLView> views = getRemoteRenderedViews();
 
 		List<Integer> viewIDs = new ArrayList<Integer>();
 		viewIDs.add(getID());
-		for (AGLEventListener view : views) {
+		for (AGLView view : views) {
 			viewIDs.add(view.getID());
 		}
 
@@ -1591,7 +1591,7 @@ public abstract class AGLViewBrowser
 	 *            the view for which the slerp transition should be added
 	 * @return <code>true</code> if adding the slerp action was successfull, <code>false</code> otherwise
 	 */
-	private boolean addSlerpActionForView(GL gl, AGLEventListener view) {
+	private boolean addSlerpActionForView(GL gl, AGLView view) {
 
 		RemoteLevelElement origin = spawnLevel.getElementByPositionIndex(0);
 		RemoteLevelElement destination = null;
@@ -1635,7 +1635,7 @@ public abstract class AGLViewBrowser
 	 *            serialized form of the view to create
 	 * @return the created view ready to be used within the application
 	 */
-	protected AGLEventListener createView(GL gl, ASerializedView serView) {
+	protected AGLView createView(GL gl, ASerializedView serView) {
 
 		ICommandManager cm = generalManager.getCommandManager();
 		ECommandType cmdType = serView.getCreationCommandType();
@@ -1644,7 +1644,7 @@ public abstract class AGLViewBrowser
 		// cmdView.setSet(set);
 		cmdView.doCommand();
 
-		AGLEventListener glView = cmdView.getCreatedObject();
+		AGLView glView = cmdView.getCreatedObject();
 		glView.setUseCase(useCase);
 		glView.setRemoteRenderingGLView(this);
 		glView.setSet(set);
@@ -1745,13 +1745,13 @@ public abstract class AGLViewBrowser
 	}
 
 	@Override
-	public List<AGLEventListener> getRemoteRenderedViews() {
+	public List<AGLView> getRemoteRenderedViews() {
 		return containedGLViews;
 	}
 
 	@Override
 	public void clearAllSelections() {
-		for (AGLEventListener view : containedGLViews) {
+		for (AGLView view : containedGLViews) {
 			view.clearAllSelections();
 		}
 	}
@@ -1788,7 +1788,7 @@ public abstract class AGLViewBrowser
 			new ArrayList<ASerializedView>(focusLevel.getAllElements().size());
 		for (RemoteLevelElement rle : focusLevel.getAllElements()) {
 			if (rle.getContainedElementID() != -1) {
-				AGLEventListener remoteView = viewManager.getGLEventListener(rle.getContainedElementID());
+				AGLView remoteView = viewManager.getGLEventListener(rle.getContainedElementID());
 				remoteViews.add(remoteView.getSerializableRepresentation());
 			}
 		}
@@ -1797,7 +1797,7 @@ public abstract class AGLViewBrowser
 		remoteViews = new ArrayList<ASerializedView>(stackLevel.getAllElements().size());
 		for (RemoteLevelElement rle : stackLevel.getAllElements()) {
 			if (rle.getContainedElementID() != -1) {
-				AGLEventListener remoteView = viewManager.getGLEventListener(rle.getContainedElementID());
+				AGLView remoteView = viewManager.getGLEventListener(rle.getContainedElementID());
 				remoteViews.add(remoteView.getSerializableRepresentation());
 			}
 		}

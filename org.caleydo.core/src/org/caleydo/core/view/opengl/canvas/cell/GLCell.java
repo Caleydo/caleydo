@@ -13,7 +13,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializedDummyView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -29,7 +29,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Marc Streit
  */
 public class GLCell
-	extends AGLEventListener {
+	extends AGLView {
 	// private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 	// private GenericSelectionManager selectionManager;
@@ -59,7 +59,7 @@ public class GLCell
 	}
 
 	@Override
-	public void initRemote(GL gl, AGLEventListener glParentView, GLMouseListener glMouseListener,
+	public void initRemote(GL gl, AGLView glParentView, GLMouseListener glMouseListener,
 		GLInfoAreaManager infoAreaManager) {
 		this.glMouseListener = glMouseListener;
 		init(gl);

@@ -21,7 +21,7 @@ import org.caleydo.core.net.config.IConfigureableEventList;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializedDummyView;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
 import org.eclipse.swt.SWT;
@@ -260,10 +260,10 @@ public class CollabViewRep
 
 		org.eclipse.swt.widgets.List viewList = new org.eclipse.swt.widgets.List(testControls, SWT.LEFT);
 		IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
-		Collection<AGLEventListener> views = vm.getAllGLEventListeners();
+		Collection<AGLView> views = vm.getAllGLEventListeners();
 		int[] viewIds = new int[views.size()];
 		int viewIndex = 0;
-		for (AGLEventListener view : views) {
+		for (AGLView view : views) {
 			viewIds[viewIndex++] = view.getID();
 			viewList.add(viewIndex + " - " + view.getClass().getCanonicalName());
 		}

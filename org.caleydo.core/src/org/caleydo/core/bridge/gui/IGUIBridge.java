@@ -1,16 +1,16 @@
 package org.caleydo.core.bridge.gui;
 
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.eclipse.swt.widgets.Display;
 
 public interface IGUIBridge {
+	
 	public void closeApplication();
-
-	// public void setActiveGLView();
-
-	// public void setActiveGLSubView(AGLEventListener parentGLEventListener,
-	// AGLEventListener subGLEventListener);
-
+	
 	public void setShortInfo(String sMessage);
 
 	public void setFileNameCurrentDataSet(String sFileName);
@@ -34,4 +34,7 @@ public interface IGUIBridge {
 	 *            the GUI ID (e.g. RCP)
 	 */
 	public void closeView(String viewGUIID);
+	
+	public AGLView createGLEventListener(ECommandType type, GLCaleydoCanvas glCanvas,
+		final String label, final IViewFrustum viewFrustum);
 }

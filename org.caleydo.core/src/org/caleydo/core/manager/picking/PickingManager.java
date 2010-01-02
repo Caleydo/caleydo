@@ -13,20 +13,20 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 
 import com.sun.opengl.util.BufferUtil;
 
 /**
  * <p>
- * Handles picking for instances of {@link AGLEventListener}. When drawing objects which should later be
+ * Handles picking for instances of {@link AGLView}. When drawing objects which should later be
  * picked, use the {@link #getPickingID(int, EPickingType, int)} method to get an ID to use in the
  * glPushName() function. This function is provided with an externalID which is intended for use in the
  * calling instance to identify the picked element.
  * </p>
  * <p>
- * To perform the actual picking the {@link #handlePicking(AGLEventListener, GL)} method has to be called in
+ * To perform the actual picking the {@link #handlePicking(AGLView, GL)} method has to be called in
  * every render step.
  * </p>
  * <p>
@@ -254,7 +254,7 @@ public class PickingManager {
 	 * @param gl
 	 *            the GL context
 	 */
-	public void handlePicking(final AGLEventListener glView, final GL gl) {
+	public void handlePicking(final AGLView glView, final GL gl) {
 
 		if (bEnablePicking == false)
 			return;

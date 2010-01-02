@@ -28,7 +28,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
@@ -46,7 +46,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Stefan Sauer
  */
 public class GLGlyphSliderView
-	extends AGLEventListener {
+	extends AGLView {
 
 	private static final long serialVersionUID = 1L;
 
@@ -170,7 +170,7 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLEventListener glParentView,
+	public void initRemote(final GL gl, final AGLView glParentView,
 		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;

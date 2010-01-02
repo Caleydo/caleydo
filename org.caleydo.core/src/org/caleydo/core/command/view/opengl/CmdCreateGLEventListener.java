@@ -20,7 +20,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 
 /**
@@ -30,7 +30,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
  * @author Marc Streit
  */
 public class CmdCreateGLEventListener
-	extends ACmdCreational<AGLEventListener> {
+	extends ACmdCreational<AGLView> {
 	protected ECommandType viewType;
 
 	protected IViewFrustum viewFrustum;

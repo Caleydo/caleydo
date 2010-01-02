@@ -28,7 +28,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.grouper.compositegraphic.GroupRepresentation;
@@ -60,7 +60,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Alexander Lex
  */
 public class GLGrouper
-	extends AGLEventListener
+	extends AGLView
 	implements IViewCommandHandler {
 
 	boolean bUseDetailLevel = true;
@@ -230,7 +230,7 @@ public class GLGrouper
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLEventListener glParentView,
+	public void initRemote(final GL gl, final AGLView glParentView,
 		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		// Register keyboard listener to GL canvas

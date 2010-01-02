@@ -6,7 +6,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
@@ -17,9 +17,9 @@ public class DragAndDropController {
 	boolean bDragging;
 	boolean bDraggingFirstTime;
 	float fArDraggingStartMouseCoordinates[];
-	AGLEventListener view;
+	AGLView view;
 
-	public DragAndDropController(AGLEventListener view) {
+	public DragAndDropController(AGLView view) {
 		setDraggables = new HashSet<IDraggable>();
 		bDragging = false;
 		bDraggingFirstTime = false;

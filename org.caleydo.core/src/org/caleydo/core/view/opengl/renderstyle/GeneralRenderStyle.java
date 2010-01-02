@@ -6,7 +6,7 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.SetMinViewSizeEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
@@ -149,7 +149,7 @@ public class GeneralRenderStyle {
 		return minViewWidth;
 	}
 
-	public void setMinViewWidth(int minViewWidth, AGLEventListener view) {
+	public void setMinViewWidth(int minViewWidth, AGLView view) {
 		this.minViewWidth = minViewWidth;
 
 		sendSetMinSizeEvent(view);
@@ -159,20 +159,20 @@ public class GeneralRenderStyle {
 		return minViewHeight;
 	}
 
-	public void setMinViewHeight(int minViewHeight, AGLEventListener view) {
+	public void setMinViewHeight(int minViewHeight, AGLView view) {
 		this.minViewHeight = minViewHeight;
 
 		sendSetMinSizeEvent(view);
 	}
 
-	public void setMinViewDimensions(int minViewWidth, int minViewHeight, AGLEventListener view) {
+	public void setMinViewDimensions(int minViewWidth, int minViewHeight, AGLView view) {
 		this.minViewHeight = minViewHeight;
 		this.minViewWidth = minViewWidth;
 
 		sendSetMinSizeEvent(view);
 	}
 
-	private void sendSetMinSizeEvent(AGLEventListener view) {
+	private void sendSetMinSizeEvent(AGLView view) {
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		SetMinViewSizeEvent event = new SetMinViewSizeEvent();
 		event.setMinViewSize(minViewWidth, minViewHeight);

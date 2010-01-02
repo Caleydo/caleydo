@@ -49,7 +49,7 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
@@ -83,7 +83,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Stefan Sauer
  */
 public class GLGlyph
-	extends AGLEventListener
+	extends AGLView
 	implements ISelectionUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	private static final long serialVersionUID = -7899479912218913482L;
@@ -335,7 +335,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLEventListener glParentView,
+	public void initRemote(final GL gl, final AGLView glParentView,
 		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		bIsLocal = false;

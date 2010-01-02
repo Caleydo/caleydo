@@ -1,11 +1,11 @@
 package org.caleydo.core.manager.event;
 
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 
 /**
  * Interface for {@link IListenerOwner}s that need to perform polling. All subclasses of
- * {@link AGLEventListener} do so.
+ * {@link AGLView} do so.
  * 
  * @author Alexander Lex
  */

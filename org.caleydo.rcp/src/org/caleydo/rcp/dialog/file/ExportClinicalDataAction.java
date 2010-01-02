@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
@@ -53,7 +53,7 @@ public class ExportClinicalDataAction
 		super("Export Clinical Data");
 		this.parentComposite = parentComposite;
 
-		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
+		for (AGLView view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
 			if (view instanceof GLGlyph) {
 				if (view.getID() == iViewID) {
 					glyphview = (GLGlyph) view;

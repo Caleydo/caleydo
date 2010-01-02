@@ -10,7 +10,7 @@ import org.caleydo.core.manager.specialized.clinical.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializedDummyView;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyphGenerator;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphObjectDefinition;
@@ -134,7 +134,7 @@ public class GlyphMappingConfigurationViewRep
 					}
 				}
 
-				for (AGLEventListener agleventlistener : generalManager.getViewGLCanvasManager()
+				for (AGLView agleventlistener : generalManager.getViewGLCanvasManager()
 					.getAllGLEventListeners())
 					if (agleventlistener instanceof GLGlyph) {
 						((GLGlyph) agleventlistener).forceRebuild();

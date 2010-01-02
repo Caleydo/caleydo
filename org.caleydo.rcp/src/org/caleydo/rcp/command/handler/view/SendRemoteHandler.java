@@ -1,8 +1,8 @@
 package org.caleydo.rcp.command.handler.view;
 
 import org.caleydo.rcp.dialog.sendview.SendViewDialog;
-import org.caleydo.rcp.view.CaleydoRCPViewPart;
-import org.caleydo.rcp.view.opengl.ARcpGLViewPart;
+import org.caleydo.view.base.rcp.ARcpGLViewPart;
+import org.caleydo.view.base.rcp.CaleydoRCPViewPart;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

@@ -6,7 +6,7 @@ import java.util.Date;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
@@ -102,7 +102,7 @@ public class ExportDataAction
 		boolean bDoesBucketExist = false;
 		// boolean doesHeatMapExist = false;
 		// boolean doParallelCoordinatesExist = false;
-		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
+		for (AGLView view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
 			if (view instanceof GLRemoteRendering) {
 				bDoesBucketExist = true;
 			}

@@ -5,7 +5,7 @@ import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.net.NetworkManager;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -98,7 +98,7 @@ public class SendViewDialog
 				System.out.println("sending view " + viewID + " to " + clientNames[selection]);
 
 				CreateGUIViewEvent event = new CreateGUIViewEvent();
-				AGLEventListener view = viewManager.getGLEventListener(viewID);
+				AGLView view = viewManager.getGLEventListener(viewID);
 				event.setSerializedView(view.getSerializableRepresentation());
 				event.setTargetApplicationID(clientNames[selection]);
 				event.setSender(this);

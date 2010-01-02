@@ -29,7 +29,7 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.usecase.EDataFilterLevel;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
@@ -53,7 +53,7 @@ import org.eclipse.core.runtime.Status;
  * @author Marc Streit
  */
 public abstract class AStorageBasedView
-	extends AGLEventListener
+	extends AGLView
 	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ISelectionCommandHandler,
 	IViewCommandHandler {
 

@@ -30,7 +30,7 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
@@ -58,7 +58,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Christian Partl
  */
 public class GLRadialHierarchy
-	extends AGLEventListener
+	extends AGLView
 	implements IViewCommandHandler {
 
 	public static final int DISP_HIER_DEPTH_DEFAULT = 7;
@@ -188,7 +188,7 @@ public class GLRadialHierarchy
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLEventListener glParentView,
+	public void initRemote(final GL gl, final AGLView glParentView,
 		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		// Register keyboard listener to GL canvas

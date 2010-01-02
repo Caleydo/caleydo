@@ -23,7 +23,7 @@ import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -184,8 +184,8 @@ public class ProjectSaver {
 
 		IViewManager viewManager = GeneralManager.get().getViewGLCanvasManager();
 
-		Collection<AGLEventListener> glViews = viewManager.getAllGLEventListeners();
-		for (AGLEventListener glView : glViews) {
+		Collection<AGLView> glViews = viewManager.getAllGLEventListeners();
+		for (AGLView glView : glViews) {
 			if (!glView.isRenderedRemote()) {
 				ASerializedView serView = glView.getSerializableRepresentation();
 				if (!(serView instanceof SerializedDummyView)) {

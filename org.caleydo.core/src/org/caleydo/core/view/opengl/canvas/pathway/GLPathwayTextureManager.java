@@ -9,7 +9,7 @@ import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -65,7 +65,7 @@ public class GLPathwayTextureManager {
 		return pathwayTexture;
 	}
 
-	public void renderPathway(final GL gl, final AGLEventListener containingView, final PathwayGraph pathway,
+	public void renderPathway(final GL gl, final AGLView containingView, final PathwayGraph pathway,
 		final float fTextureTransparency, final boolean bHighlight) {
 
 		Texture tmpPathwayTexture = loadPathwayTexture(pathway);

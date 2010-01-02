@@ -22,5 +22,8 @@
 	<classpathentry kind="lib" path="lib/jgrapht/lib/svnClientAdapter.jar"/>
 	<classpathentry kind="lib" path="lib/jgrapht/lib/TGGraphLayout.jar"/>
 	<classpathentry kind="lib" path="lib/jgrapht/lib/xmlunit1.0.jar"/>
+	<classpathentry kind="lib" path="lib/r/JRI.jar"/>
+	<classpathentry kind="lib" path="lib/r/JRIEngine.jar"/>
+	<classpathentry kind="lib" path="lib/r/REngine.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

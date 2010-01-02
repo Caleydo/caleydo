@@ -11,7 +11,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 
 /**
  * Specialized mouse wheel listener for the glyph plane view
@@ -24,7 +24,7 @@ public class GlyphMouseListener
 
 	protected float fPanScale = 3.0f;
 
-	private AGLEventListener viewCanvas;
+	private AGLView viewCanvas;
 
 	protected int prevMouseX, prevMouseY;
 
@@ -39,7 +39,7 @@ public class GlyphMouseListener
 	/**
 	 * Constructor.
 	 */
-	public GlyphMouseListener(final AGLEventListener remoteRendering3D) {
+	public GlyphMouseListener(final AGLView remoteRendering3D) {
 		this.viewCanvas = remoteRendering3D;
 		this.currentRotation = new Rotf();
 	}

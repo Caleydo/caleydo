@@ -11,7 +11,7 @@ import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.eclipse.swt.widgets.Composite;
@@ -27,23 +27,23 @@ public interface IViewManager
 	public IView createView(final EManagedObjectType useViewType, final int iParentContainerId,
 		final String sLabel);
 
-	public AGLEventListener createGLEventListener(ECommandType type, GLCaleydoCanvas glCanvas, String sLabel,
+	public AGLView createGLEventListener(ECommandType type, GLCaleydoCanvas glCanvas, String sLabel,
 		IViewFrustum viewFrustum);
 
 	public IView createGLView(final EManagedObjectType type, final int iParentContainerID, final String sLabel);
 
 	public Collection<GLCaleydoCanvas> getAllGLCanvasUsers();
 
-	public Collection<AGLEventListener> getAllGLEventListeners();
+	public Collection<AGLView> getAllGLEventListeners();
 
 	public boolean registerGLCanvas(final GLCaleydoCanvas glCanvas);
 
 	public boolean unregisterGLCanvas(final GLCaleydoCanvas glCanvas);
 
 	public void registerGLEventListenerByGLCanvas(final GLCaleydoCanvas glCanvas,
-		final AGLEventListener gLEventListener);
+		final AGLView gLEventListener);
 
-	public void unregisterGLEventListener(final AGLEventListener glEventListener);
+	public void unregisterGLEventListener(final AGLView glEventListener);
 
 	/**
 	 * Remove canvas from animator. Therefore the canvas is not rendered anymore.
@@ -77,7 +77,7 @@ public interface IViewManager
 
 	public GLCaleydoCanvas getCanvas(int iItemID);
 
-	public AGLEventListener getGLEventListener(int iItemID);
+	public AGLView getGLEventListener(int iItemID);
 
 	public void setActiveSWTView(Composite composite);
 

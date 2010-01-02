@@ -27,7 +27,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceVirtualArrayListener;
@@ -116,9 +116,9 @@ public class GLTissueViewBrowser
 	}
 
 	@Override
-	protected AGLEventListener createView(GL gl, ASerializedView serView) {
+	protected AGLView createView(GL gl, ASerializedView serView) {
 
-		AGLEventListener glView = super.createView(gl, serView);
+		AGLView glView = super.createView(gl, serView);
 
 		((GLTissue) glView).setTexturePath(((SerializedTissueView) serView).getTexturePath());
 		glView.setLabel(((SerializedTissueView) serView).getLabel());

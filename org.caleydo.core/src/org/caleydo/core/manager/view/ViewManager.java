@@ -24,27 +24,8 @@ import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager;
-import org.caleydo.core.view.opengl.canvas.cell.GLCell;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
-import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLGlyphSliderView;
-import org.caleydo.core.view.opengl.canvas.grouper.GLGrouper;
-import org.caleydo.core.view.opengl.canvas.histogram.GLHistogram;
-import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
-import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
-import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.remote.dataflipper.GLDataFlipper;
-import org.caleydo.core.view.opengl.canvas.remote.viewbrowser.GLPathwayViewBrowser;
-import org.caleydo.core.view.opengl.canvas.remote.viewbrowser.GLTissueViewBrowser;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLDendrogram;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.GLParallelCoordinates;
-import org.caleydo.core.view.opengl.canvas.storagebased.scatterplot.GLScatterplot;
-import org.caleydo.core.view.opengl.canvas.tissue.GLTissue;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
@@ -71,9 +52,9 @@ public class ViewManager
 	implements IViewManager, IListenerOwner {
 	protected HashMap<Integer, GLCaleydoCanvas> hashGLCanvasID2GLCanvas;
 
-	protected HashMap<GLCaleydoCanvas, ArrayList<AGLEventListener>> hashGLCanvas2GLEventListeners;
+	protected HashMap<GLCaleydoCanvas, ArrayList<AGLView>> hashGLCanvas2GLEventListeners;
 
-	protected HashMap<Integer, AGLEventListener> hashGLEventListenerID2GLEventListener;
+	protected HashMap<Integer, AGLView> hashGLEventListenerID2GLEventListener;
 
 	private Animator fpsAnimator;
 
@@ -104,8 +85,8 @@ public class ViewManager
 		infoAreaManager = new GLInfoAreaManager();
 
 		hashGLCanvasID2GLCanvas = new HashMap<Integer, GLCaleydoCanvas>();
-		hashGLCanvas2GLEventListeners = new HashMap<GLCaleydoCanvas, ArrayList<AGLEventListener>>();
-		hashGLEventListenerID2GLEventListener = new HashMap<Integer, AGLEventListener>();
+		hashGLCanvas2GLEventListeners = new HashMap<GLCaleydoCanvas, ArrayList<AGLView>>();
+		hashGLEventListenerID2GLEventListener = new HashMap<Integer, AGLView>();
 
 		fpsAnimator = new FPSAnimator(null, 60);
 
@@ -137,7 +118,7 @@ public class ViewManager
 		return hashGLCanvasID2GLCanvas.get(iItemID);
 	}
 
-	public AGLEventListener getGLEventListener(int iItemID) {
+	public AGLView getGLEventListener(int iItemID) {
 		return hashGLEventListenerID2GLEventListener.get(iItemID);
 	}
 
@@ -193,102 +174,14 @@ public class ViewManager
 	}
 
 	@Override
-	public AGLEventListener createGLEventListener(ECommandType type, GLCaleydoCanvas glCanvas,
-		final String sLabel, final IViewFrustum viewFrustum) {
+	public AGLView createGLEventListener(ECommandType type, GLCaleydoCanvas glCanvas,
+		final String label, final IViewFrustum viewFrustum) {
 		GeneralManager.get().getLogger().log(
 			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Creating GL canvas view from type: [" + type
-				+ "] and label: [" + sLabel + "]"));
+				+ "] and label: [" + label + "]"));
 
-		AGLEventListener glEventListener = null;
-
-		switch (type) {
-			case CREATE_GL_HEAT_MAP_3D:
-
-				glEventListener = new GLHeatMap(glCanvas, sLabel, viewFrustum);
-				break;
-			case CREATE_GL_SCATTERPLOT:
-				glEventListener = new GLScatterplot(glCanvas, sLabel, viewFrustum);
-				break;
-			case CREATE_GL_PROPAGATION_HEAT_MAP_3D:
-				glEventListener = new GLBookmarkManager(glCanvas, sLabel, viewFrustum);
-				break;
-
-			case CREATE_GL_TEXTURE_HEAT_MAP_3D:
-				glEventListener = new GLHierarchicalHeatMap(glCanvas, sLabel, viewFrustum);
-				break;
-
-			case CREATE_GL_PATHWAY_3D:
-				glEventListener = new GLPathway(glCanvas, sLabel, viewFrustum);
-				break;
-
-			case CREATE_GL_PARALLEL_COORDINATES:
-				glEventListener = new GLParallelCoordinates(glCanvas, sLabel, viewFrustum);
-				break;
-			case CREATE_GL_GLYPH:
-				glEventListener = new GLGlyph(glCanvas, sLabel, viewFrustum);
-				break;
-
-			case CREATE_GL_GLYPH_SLIDER:
-				glEventListener = new GLGlyphSliderView(glCanvas, sLabel, viewFrustum);
-				break;
-
-			case CREATE_GL_CELL:
-				glEventListener = new GLCell(glCanvas, sLabel, viewFrustum);
-				break;
-
-			case CREATE_GL_TISSUE:
-				glEventListener = new GLTissue(glCanvas, sLabel, viewFrustum);
-				break;
-
-			case CREATE_GL_BUCKET_3D:
-				glEventListener =
-					new GLRemoteRendering(glCanvas, sLabel, viewFrustum,
-						ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);
-				break;
-
-			case CREATE_GL_JUKEBOX_3D:
-				glEventListener =
-					new GLRemoteRendering(glCanvas, sLabel, viewFrustum,
-						ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);
-				break;
-
-			case CREATE_GL_DATA_FLIPPER:
-				glEventListener = new GLDataFlipper(glCanvas, sLabel, viewFrustum);
-				break;
-
-			case CREATE_GL_TISSUE_VIEW_BROWSER:
-				glEventListener = new GLTissueViewBrowser(glCanvas, sLabel, viewFrustum);
-				break;
-
-			case CREATE_GL_PATHWAY_VIEW_BROWSER:
-				glEventListener = new GLPathwayViewBrowser(glCanvas, sLabel, viewFrustum);
-				break;
-
-			case CREATE_GL_RADIAL_HIERARCHY:
-				glEventListener = new GLRadialHierarchy(glCanvas, sLabel, viewFrustum);
-				break;
-
-			case CREATE_GL_HISTOGRAM:
-				glEventListener = new GLHistogram(glCanvas, sLabel, viewFrustum);
-				break;
-
-			case CREATE_GL_GROUPER:
-				glEventListener = new GLGrouper(glCanvas, sLabel, viewFrustum);
-				break;
-
-			case CREATE_GL_DENDROGRAM_HORIZONTAL:
-				glEventListener = new GLDendrogram(glCanvas, sLabel, viewFrustum, true);
-				break;
-
-			case CREATE_GL_DENDROGRAM_VERTICAL:
-				glEventListener = new GLDendrogram(glCanvas, sLabel, viewFrustum, false);
-				break;
-
-			default:
-				throw new RuntimeException(
-					"ViewJoglManager.createGLCanvasUser() failed due to unhandled type [" + type.toString()
-						+ "]");
-		}
+		AGLView glEventListener =
+			generalManager.getGUIBridge().createGLEventListener(type, glCanvas, label, viewFrustum);
 
 		registerGLEventListenerByGLCanvas(glCanvas, glEventListener);
 
@@ -328,7 +221,7 @@ public class ViewManager
 
 	@Override
 	public void registerGLEventListenerByGLCanvas(final GLCaleydoCanvas glCanvas,
-		final AGLEventListener gLEventListener) {
+		final AGLView gLEventListener) {
 		hashGLEventListenerID2GLEventListener.put(gLEventListener.getID(), gLEventListener);
 
 		// This is the case when a view is rendered remote
@@ -336,7 +229,7 @@ public class ViewManager
 			return;
 
 		if (!hashGLCanvas2GLEventListeners.containsKey(glCanvas)) {
-			hashGLCanvas2GLEventListeners.put(glCanvas, new ArrayList<AGLEventListener>());
+			hashGLCanvas2GLEventListeners.put(glCanvas, new ArrayList<AGLView>());
 		}
 
 		hashGLCanvas2GLEventListeners.get(glCanvas).add(gLEventListener);
@@ -353,7 +246,7 @@ public class ViewManager
 	}
 
 	@Override
-	public void unregisterGLEventListener(final AGLEventListener glEventListener) {
+	public void unregisterGLEventListener(final AGLView glEventListener) {
 
 		if (glEventListener == null)
 			return;
@@ -377,7 +270,7 @@ public class ViewManager
 	}
 
 	@Override
-	public Collection<AGLEventListener> getAllGLEventListeners() {
+	public Collection<AGLView> getAllGLEventListeners() {
 		return hashGLEventListenerID2GLEventListener.values();
 	}
 
@@ -442,7 +335,7 @@ public class ViewManager
 		}
 		synchronized (busyRequests) {
 			if (busyRequests.isEmpty()) {
-				for (AGLEventListener tmpGLEventListener : getAllGLEventListeners()) {
+				for (AGLView tmpGLEventListener : getAllGLEventListeners()) {
 					if (!tmpGLEventListener.isRenderedRemote()) {
 						tmpGLEventListener.enableBusyMode(true);
 					}
@@ -464,7 +357,7 @@ public class ViewManager
 				busyRequests.remove(requestInstance);
 			}
 			if (busyRequests.isEmpty()) {
-				for (AGLEventListener tmpGLEventListener : getAllGLEventListeners()) {
+				for (AGLView tmpGLEventListener : getAllGLEventListeners()) {
 					if (!tmpGLEventListener.isRenderedRemote()) {
 						tmpGLEventListener.enableBusyMode(false);
 					}
