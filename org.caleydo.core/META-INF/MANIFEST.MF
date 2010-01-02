@@ -284,7 +284,6 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.view.opengl.util.overlay.contextmenu,
    org.caleydo.core.data.selection",
  org.caleydo.core.view.opengl.canvas.bookmarking,
- org.caleydo.core.view.opengl.canvas.cell,
  org.caleydo.core.view.opengl.canvas.glyph.gridview;
   uses:="org.caleydo.core.view.opengl.canvas.remote,
    org.caleydo.core.view.opengl.util.wavefrontobjectloader,

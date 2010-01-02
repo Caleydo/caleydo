@@ -633,7 +633,7 @@ public class GLHierarchicalHeatMap
 		glHeatMapView.setUseCase(useCase);
 		glHeatMapView.setRemoteRenderingGLView(this);
 		glHeatMapView.setRemoteLevelElement(heatMapRemoteElement);
-		heatMapRemoteElement.setContainedElementID(glHeatMapView.getID());
+		heatMapRemoteElement.setGLView(glHeatMapView);
 
 		glHeatMapView.setDataDomain(dataDomain);
 		glHeatMapView.setUseCase(useCase);
@@ -2411,7 +2411,7 @@ public class GLHierarchicalHeatMap
 		Transform transform = heatMapRemoteElement.getTransform();
 		Vec3f translation = transform.getTranslation();
 		Rotf rot = transform.getRotation();
-		//Vec3f scale = transform.getScale();
+		// Vec3f scale = transform.getScale();
 		Vec3f axis = new Vec3f();
 		float fAngle = rot.get(axis);
 
@@ -2482,7 +2482,7 @@ public class GLHierarchicalHeatMap
 	}
 
 	private void renderRemoteViewsLevel_2_3_Active(GL gl) {
-		//float fright = 0.0f;
+		// float fright = 0.0f;
 		float ftop = viewFrustum.getTop();
 
 		float fleftOffset = 0.1f + renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS;
@@ -2496,7 +2496,7 @@ public class GLHierarchicalHeatMap
 		if (!bIsHeatmapInFocus)
 			fleftOffset -= 0.02;
 
-		//fright = viewFrustum.getWidth() - fleftOffset;
+		// fright = viewFrustum.getWidth() - fleftOffset;
 
 		gl.glTranslatef(fleftOffset, -0.2f, 0);
 

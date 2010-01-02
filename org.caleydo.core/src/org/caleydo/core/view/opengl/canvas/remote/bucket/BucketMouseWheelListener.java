@@ -9,6 +9,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 
@@ -157,26 +158,22 @@ public class BucketMouseWheelListener
 				bBucketBottomReached = true;
 
 				// Update detail level of view in center bucket position
-				int iGLEventListenerID =
-					bucketGLEventListener.getFocusLevel().getElementByPositionIndex(0)
-						.getContainedElementID();
+				AGLView glView =
+					bucketGLEventListener.getFocusLevel().getElementByPositionIndex(0).getGLView();
 
-				if (iGLEventListenerID != -1) {
-					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iGLEventListenerID)
-						.setDetailLevel(EDetailLevel.HIGH);
+				if (glView != null) {
+					glView.setDetailLevel(EDetailLevel.HIGH);
 				}
 			}
 			else if (iCurrentBucketZoom == 0) {
 				bBucketBottomReached = false;
 
 				// Update detail level of view in center bucket position
-				int iGLEventListenerID =
-					bucketGLEventListener.getFocusLevel().getElementByPositionIndex(0)
-						.getContainedElementID();
+				AGLView glView =
+					bucketGLEventListener.getFocusLevel().getElementByPositionIndex(0).getGLView();
 
-				if (iGLEventListenerID != -1) {
-					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iGLEventListenerID)
-						.setDetailLevel(EDetailLevel.MEDIUM);
+				if (glView != null) {
+					glView.setDetailLevel(EDetailLevel.MEDIUM);
 				}
 			}
 		}

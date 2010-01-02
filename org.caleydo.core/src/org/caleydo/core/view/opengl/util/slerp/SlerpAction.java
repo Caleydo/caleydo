@@ -33,19 +33,19 @@ public class SlerpAction {
 		RemoteLevelElement destinationRemoteLevelElement) {
 		this.originRemoteLevelElement = originRemoteLevelElement;
 		this.destinationRemoteLevelElement = destinationRemoteLevelElement;
-		this.iElementID = originRemoteLevelElement.getContainedElementID();
+		this.iElementID = originRemoteLevelElement.getGLView().getID();
 	}
 
 	public void start() {
-		originRemoteLevelElement.setContainedElementID(-1);
+		originRemoteLevelElement.setGLView(null);
 	}
 
 	public void finished() {
-		destinationRemoteLevelElement.setContainedElementID(iElementID);
+		destinationRemoteLevelElement.setGLView(GeneralManager.get().getViewGLCanvasManager()
+			.getGLEventListener(iElementID));
 
 		if (iElementID != -1) {
-			AGLView glView =
-				GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iElementID);
+			AGLView glView = GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iElementID);
 			if (glView != null)
 				glView.setRemoteLevelElement(destinationRemoteLevelElement);
 		}

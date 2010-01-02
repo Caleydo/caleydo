@@ -28,7 +28,6 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager;
-import org.caleydo.core.view.opengl.canvas.cell.GLCell;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLGlyphSliderView;
 import org.caleydo.core.view.opengl.canvas.grouper.GLGrouper;
@@ -211,6 +210,8 @@ public class ViewManager
 				glView = glViewCreator.createGLEventListener(type, glCanvas, label, viewFrustum);
 				break;
 			}
+			
+			//TODO: GL_CELL
 		}
 
 		if (glView == null) {
@@ -236,9 +237,6 @@ public class ViewManager
 					break;
 				case CREATE_GL_GLYPH_SLIDER:
 					glView = new GLGlyphSliderView(glCanvas, label, viewFrustum);
-					break;
-				case CREATE_GL_CELL:
-					glView = new GLCell(glCanvas, label, viewFrustum);
 					break;
 				case CREATE_GL_TISSUE:
 					glView = new GLTissue(glCanvas, label, viewFrustum);

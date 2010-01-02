@@ -5,6 +5,7 @@ import gleem.linalg.open.Transform;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 
 public class RemoteLevelElement
 	extends AUniqueObject {
@@ -17,10 +18,7 @@ public class RemoteLevelElement
 
 	private boolean bIsLocked = false;
 
-	/**
-	 * ID of the element that is rendered at this remote level position.
-	 */
-	private int iContainedElementID = -1;
+	private AGLView glView;
 
 	public RemoteLevelElement(RemoteLevel remoteLevel) {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT));
@@ -29,12 +27,12 @@ public class RemoteLevelElement
 		this.remoteLevel = remoteLevel;
 	}
 
-	public int getContainedElementID() {
-		return iContainedElementID;
+	public AGLView getGLView() {
+		return glView;
 	}
 
-	public void setContainedElementID(int iContainedElementID) {
-		this.iContainedElementID = iContainedElementID;
+	public void setGLView(AGLView glView) {
+		this.glView = glView;
 	}
 
 	public RemoteLevel getRemoteLevel() {
@@ -50,7 +48,7 @@ public class RemoteLevelElement
 	}
 
 	public boolean isFree() {
-		return iContainedElementID == -1 ? true : false;
+		return glView == null ? true : false;
 	}
 
 	public void lock(boolean bLock) {

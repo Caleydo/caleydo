@@ -1,10 +1,6 @@
 package org.caleydo.core.bridge.gui;
 
-import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.eclipse.swt.widgets.Display;
 
 public interface IGUIBridge {

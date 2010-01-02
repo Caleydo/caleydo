@@ -29,11 +29,10 @@ public class TestButtonListener
 	}
 
 	private void printRemoteLevel(String name, RemoteLevel rl) {
-		IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
 		System.out.println(name);
 		ArrayList<RemoteLevelElement> rles = rl.getAllElements();
 		for (RemoteLevelElement rle : rles) {
-			IView rv = vm.getGLEventListener(rle.getContainedElementID());
+			IView rv = rle.getGLView();
 			if (rv != null) {
 				System.out.println(" - " + rv.getClass());
 			}

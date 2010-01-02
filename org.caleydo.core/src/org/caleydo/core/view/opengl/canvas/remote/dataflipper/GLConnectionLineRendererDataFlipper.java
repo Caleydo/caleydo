@@ -100,22 +100,22 @@ public class GLConnectionLineRendererDataFlipper
 				}
 			}
 
-			if (viewToPointList.containsKey(focusElement.getContainedElementID())) {
+			if (viewToPointList.containsKey(focusElement.getGLView().getID())) {
 				for (ArrayList<Vec3f> sourceViewPoints : viewToPointList.get(focusElement
-					.getContainedElementID())) {
+					.getGLView().getID())) {
 					// Connect point in focus view with points in first view in LEFT stack
-					if (viewToPointList.containsKey(stackElementsLeft.get(0).getContainedElementID())) {
+					if (viewToPointList.containsKey(stackElementsLeft.get(0).getGLView().getID())) {
 						for (ArrayList<Vec3f> targetViewPoints : viewToPointList.get(stackElementsLeft.get(0)
-							.getContainedElementID())) {
+							.getGLView().getID())) {
 							renderLine(gl, sourceViewPoints.get(0), targetViewPoints.get(0), 0, new float[] {
 									1, 0, 0 });
 						}
 					}
 
 					// Connect point in focus view with points in first view in RIGHT stack
-					if (viewToPointList.containsKey(stackElementsRight.get(0).getContainedElementID())) {
+					if (viewToPointList.containsKey(stackElementsRight.get(0).getGLView().getID())) {
 						for (ArrayList<Vec3f> targetViewPoints : viewToPointList.get(stackElementsRight
-							.get(0).getContainedElementID())) {
+							.get(0).getGLView().getID())) {
 							renderLine(gl, sourceViewPoints.get(0), targetViewPoints.get(0), 0, new float[] {
 									1, 0, 0 });
 						}
