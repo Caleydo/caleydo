@@ -142,13 +142,14 @@ public class Application
 		startViews = new ArrayList<Class<? extends ASerializedView>>();
 
 		Map<String, Object> map = context.getArguments();
-		parseApplicationArguments(map);
 
 		rcpGuiBridge = new RCPBridge();
 
 		// Create Caleydo core
 		caleydoCoreBootloader = new CaleydoBootloader(rcpGuiBridge);
 
+		parseApplicationArguments(map);
+		
 		prefStore = GeneralManager.get().getPreferenceStore();
 
 		Display display = PlatformUI.createDisplay();
