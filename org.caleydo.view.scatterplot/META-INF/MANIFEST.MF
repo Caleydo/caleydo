@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Scatterplot
+Bundle-SymbolicName: org.caleydo.view.scatterplot; singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.caleydo.view.scatterplot.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.caleydo.core;bundle-version="1.3.0",
+ org.caleydo.lib.jogl;bundle-version="1.2.0",
+ org.caleydo.view.base;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: com.sun.opengl.util.texture,
+ gleem.linalg,
+ javax.media.opengl,
+ org.caleydo.data.loader
+Export-Package: org.caleydo.view.scatterplot,
+ org.caleydo.view.scatterplot.command.handler
