@@ -205,13 +205,15 @@ public class ViewManager
 		AGLView glView = null;
 
 		for (IGLViewCreator glViewCreator : glViewCreators) {
-//			if (glViewCreator.getViewType().equals("org.caleydo.view.scatterplot.GLScatterplotView")) {
-			if (type.name().equals("CREATE_GL_SCATTERPLOT")) {
+			
+			if (type.name().equals(ECommandType.CREATE_GL_SCATTERPLOT)
+				&& glViewCreator.getViewType().equals("org.caleydo.view.scatterplot")) {
+				
 				glView = glViewCreator.createGLEventListener(type, glCanvas, label, viewFrustum);
 				break;
 			}
-			
-			//TODO: GL_CELL
+
+			// TODO: GL_CELL
 		}
 
 		if (glView == null) {
@@ -281,7 +283,7 @@ public class ViewManager
 							+ type.toString() + "]");
 			}
 		}
-		
+
 		if (glView == null) {
 			throw new RuntimeException("Unable to create GL view because view plugin is not available!");
 		}
