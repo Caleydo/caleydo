@@ -23,12 +23,6 @@ import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
 public class GLConsecutiveConnectionGraphDrawing
 	extends GraphDrawingUtils {
 	
-	private final static int UP = 0;
-	private final static int LEFT = 1;
-	private final static int DOWN = 2;
-	private final static int RIGHT = 3;
-
-	
 	protected RemoteLevel focusLevel;
 	protected RemoteLevel stackLevel;
 
@@ -86,9 +80,9 @@ public class GLConsecutiveConnectionGraphDrawing
 		if (focusLevel.getElementByPositionIndex(0).getContainedElementID() == activeViewID)
 			renderFromCenter(gl);
 		else {
-			for (int stackElement = 0; stackElement < stackLevel.getElementByPositionIndex(stackElement).getContainedElementID(); stackElement++) {
+			for (int stackElement = 0; stackElement < stackLevel.getCapacity(); stackElement++) {
 				if(activeViewID == stackLevel.getElementByPositionIndex(stackElement).getContainedElementID())
-				renderFromStack(gl, stackElement);
+					renderFromStackLevel(gl);
 			}
 		}
 	}
@@ -104,8 +98,17 @@ public class GLConsecutiveConnectionGraphDrawing
 				ids.add(id);
 		}
 		
-		if(ids.size()>1){}
-			//TODO: Implementation
+		if(ids.size()>1){
+			ArrayList<ArrayList<Vec3f>> bundlingLine = new ArrayList<ArrayList<Vec3f>>();
+			connectionLinesAllViews.add(0, connections.get(activeViewID));
+			Vec3f src = bundlingPoints.get(activeViewID);
+			for (Integer currentID : ids) {
+				bundlingLine.add(createControlPoints(bundlingPoints.get(currentID), src, vecCenter));
+				connectionLinesAllViews.add(bundlingLine);
+				connectionLinesAllViews.add(connections.get(currentID));
+				src = bundlingPoints.get(currentID);
+			}			
+		}
 		else{
 			int remoteId = ids.get(0);
 			ArrayList<ArrayList<Vec3f>> bundlingLine = new ArrayList<ArrayList<Vec3f>>();
@@ -120,37 +123,49 @@ public class GLConsecutiveConnectionGraphDrawing
 		visLinkScene.renderLines(gl);
 	}
 	
-	
-	private void renderFromStack(GL gl, int position){
-		switch(position){
-			case UP:
-				renderFromTop(gl);
-				break;
-			case LEFT:
-				renderFromLeft(gl);
-				break;
-			case DOWN:
-				renderFromBottom(gl);
-				break;
-			case RIGHT:
-				renderFromRight(gl);
-				break;
+	private void renderFromStackLevel(GL gl){
+		ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews = new ArrayList<ArrayList<ArrayList<Vec3f>>>(4);
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+		
+		for (int stackCount = 0; stackCount < stackLevel.getCapacity(); stackCount++) {
+			int id = stackLevel.getElementByPositionIndex(stackCount).getContainedElementID();
+			if (bundlingPoints.containsKey(id))
+				ids.add(id);
 		}
-	}
-	
-	private void renderFromTop(GL gl){
-	//TODO: implementation	
-	}
-	
-	private void renderFromLeft(GL gl){
-		//TODO: implementation	
-	}
-	
-	private void renderFromBottom(GL gl){
-		//TODO: implementation	
-	}
-
-	private void renderFromRight(GL gl){
-		//TODO: implementation	
+		
+		while(!ids.get(0).equals(activeViewID)){
+			Integer temp = ids.get(0);
+			ids.remove(0);
+			ids.add(temp);
+		}
+		
+		if (ids.size() > 1){
+			ArrayList<ArrayList<Vec3f>> bundlingLine = new ArrayList<ArrayList<Vec3f>>();
+			connectionLinesAllViews.add(0, connections.get(activeViewID));
+			Vec3f src = bundlingPoints.get(activeViewID);
+			for (Integer currentID : ids) {
+				bundlingLine.add(createControlPoints(src, bundlingPoints.get(currentID), vecCenter));
+				connectionLinesAllViews.add(bundlingLine);
+				connectionLinesAllViews.add(connections.get(currentID));
+				src = bundlingPoints.get(currentID);
+			}
+			if (bundlingPoints.containsKey(focusLevel.getElementByPositionIndex(0).getContainedElementID())){
+				Vec3f centerBundlingPoint = bundlingPoints.get(focusLevel.getElementByPositionIndex(0).getContainedElementID());
+				bundlingLine.add(createControlPoints(src, centerBundlingPoint, vecCenter));
+				connectionLinesAllViews.add(bundlingLine);
+				connectionLinesAllViews.add(connections.get(focusLevel.getElementByPositionIndex(0).getContainedElementID()));
+			}			
+			
+		}
+		else {
+			int remoteId = focusLevel.getElementByPositionIndex(0).getContainedElementID();
+			ArrayList<ArrayList<Vec3f>> bundlingLine = new ArrayList<ArrayList<Vec3f>>();
+			bundlingLine.add(createControlPoints(bundlingPoints.get(remoteId), bundlingPoints.get(activeViewID), vecCenter));
+			connectionLinesAllViews.add(0, connections.get(activeViewID));
+			connectionLinesAllViews.add(1, bundlingLine);
+			connectionLinesAllViews.add(2, connections.get(remoteId));
+		}	
+		VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
+		visLinkScene.renderLines(gl);	
 	}
 }
