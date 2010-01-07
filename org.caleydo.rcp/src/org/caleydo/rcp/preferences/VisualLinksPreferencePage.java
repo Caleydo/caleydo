@@ -45,6 +45,7 @@ public class VisualLinksPreferencePage
 		width = 2.0f;
 		animatedHalo = false;
 		// FIXME: add color
+		// FIXME: add aa quality
 
 		styleTypes.add(EVisLinkStyleType.STANDARD_VISLINK);
 		styleTypes.add(EVisLinkStyleType.SHADOW_VISLINK);

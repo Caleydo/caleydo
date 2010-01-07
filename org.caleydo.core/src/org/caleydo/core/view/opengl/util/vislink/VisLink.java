@@ -100,10 +100,8 @@ public class VisLink {
 			throw new IllegalArgumentException("Need at least two points");
 
 		int numberOfSegments = calculateNumberOfSegmentsByEuclideanDistance(points, segmentLength);
-		// System.out.println("numberOfSegments=" + numberOfSegments);
 
 		if (points.size() == 2) {
-			// this.linePoints = points;
 			StraightLine line = new StraightLine(points.get(0), points.get(1), numberOfSegments);
 			this.linePoints = line.getLinePoints();
 		}
@@ -389,48 +387,20 @@ public class VisLink {
 					.drawPolygonLine(gl,
 						(width * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR),
 						ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, antiAliasingQuality, false,
-						false);
+						false, false);
 			}
 			else if (style == EVisLinkStyleType.HALO_VISLINK) {
 				float[] haloColor = { color[0], color[1], color[2], (color[3] / 2.0f) };
 				visLink.drawPolygonLine(gl,
 					(width * ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH_FACTOR), haloColor,
-					antiAliasingQuality, false, false);
+					antiAliasingQuality, false, false, true);
 			}
-			visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, false, false);
+			visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, false, false, false);
 
 		}
 		else
 			throw new IllegalArgumentException("Need at least two points to render a line!");
 	}
-
-	// not needed anymore
-	// /**
-	// * Renders a polygon-line with the given attributes
-	// * @param gl The GL-object
-	// * @param width Specifies the width of the line
-	// * @param color Specifies the lines color (rgba)
-	// * @param style Specifies the lines style
-	// * @param antiAliasingQuality Specifies the anti-aliasing quality of the rendered line
-	// */
-	// public void renderPolygonLine(final GL gl, float width, float[] color, EVisLinkStyleType style, int
-	// antiAliasingQuality) {
-	// if(style == EVisLinkStyleType.SHADOW_VISLINK) {
-	// drawPolygonLine(gl, width, color, antiAliasingQuality);
-	// drawPolygonLine(gl, (width * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR),
-	// ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, antiAliasingQuality);
-	// // drawPolygonLine(gl, width, color, antiAliasingQuality);
-	// }
-	// else if(style == EVisLinkStyleType.HALO_VISLINK) {
-	// float[] haloColor = {color[0], color[1], color[2], (color[3] / 2.0f) };
-	// drawPolygonLine(gl, width, color, antiAliasingQuality);
-	// drawPolygonLine(gl, (width * ConnectionLineRenderStyle.CONNECTION_LINE_HALO_WIDTH_FACTOR), haloColor,
-	// antiAliasingQuality);
-	// // drawPolygonLine(gl, width, color, antiAliasingQuality);
-	// }
-	// else
-	// drawPolygonLine(gl, width, color, antiAliasingQuality);
-	// }
 
 	/**
 	 * Draws a polygon line with the given attributes
@@ -443,11 +413,17 @@ public class VisLink {
 	 *            Specifies the lines color (rgba)
 	 * @param antiAliasingQuality
 	 *            Specifies the anti-aliasing quality of the rendered line (1 <= quality <= 20)
+	 * @param roundedStart
+	 * 			  Toggles rounded beginning of the line
+	 * @param roundedEnd
+	 * 			  Toggles rounded ending of the line
+	 * @param halo
+	 * 			  Set this to true if you want to draw a halo (alters the way alpha changes during iterations)
 	 * @throws IllegalArgumentException
 	 *             If the specified anti-aliasing quality is <1 or >20
 	 */
 	protected void drawPolygonLine(final GL gl, float width, float[] color, int antiAliasingQuality,
-		boolean roundedStart, boolean roundedEnd) throws IllegalArgumentException {
+		boolean roundedStart, boolean roundedEnd, boolean halo) throws IllegalArgumentException {
 		try {
 			checkRGBA(color);
 		}
@@ -463,8 +439,12 @@ public class VisLink {
 		float green = color[1];
 		float blue = color[2];
 		float alpha = color[3];
-		float alphaChange = alpha / antiAliasingQuality;
-		float unit = width / antiAliasingQuality;
+		float alphaChange = 0;
+		if(halo)
+			alphaChange = alpha / antiAliasingQuality;
+		else
+			alphaChange = (alpha + 0.2f) / antiAliasingQuality;
+		float unit = width / antiAliasingQuality / 2.5f;
 		width = width - (((antiAliasingQuality - 1) * unit) / 2);
 
 		for (int j = 1; j <= antiAliasingQuality; j++) {
@@ -483,28 +463,36 @@ public class VisLink {
 			// rounded start
 			if (roundedStart) {
 				Vec3f startPoint = linePoints.get(0);
-				gl.glPointSize(width * 3); // FIXME: width calculation to be corrected
-				// gl.glPointSize( (calculateEuclideanDistance(vertices.get(0), vertices.get(1))) * 100);
-				gl.glBegin(GL.GL_POINTS);
-				gl.glVertex3f(startPoint.x(), startPoint.y(), startPoint.z());
-				gl.glEnd();
+				drawRoundedEndSegment(gl, startPoint, width);
 			}
 
 			// rounded end
 			if (roundedEnd) {
 				int endPointIndex = linePoints.size() - 1;
 				Vec3f endPoint = linePoints.get(endPointIndex);
-				gl.glPointSize(width * 3); // FIXME: width calculation to be corrected
-				// gl.glPointSize( (calculateEuclideanDistance(vertices.get(endPointIndex*2),
-				// vertices.get(endPointIndex*2-1))) * 100);
-				gl.glBegin(GL.GL_POINTS);
-				gl.glVertex3f(endPoint.x(), endPoint.y(), endPoint.z());
-				gl.glEnd();
+				drawRoundedEndSegment(gl, endPoint, width);
 			}
 
 			alpha -= alphaChange; // fade out at borders for anti aliasing effect
 			width += unit;
 		}
+	}
+	
+	/**
+	 * Draws a point to smooth the start and end of the line
+	 * @param gl
+	 * 			The GL-object
+	 * @param point
+	 * 			The coords where the point should be drawn (start or end of the line)
+	 * @param width
+	 * 			The width of the line where the point should fit
+	 */
+	void drawRoundedEndSegment(GL gl, Vec3f point, float width) {
+		gl.glPointSize(width * 3); // FIXME: width calculation to be corrected
+		// gl.glPointSize( (calculateEuclideanDistance(vertices.get(0), vertices.get(1))) * 100);
+		gl.glBegin(GL.GL_POINTS);
+		gl.glVertex3f(point.x(), point.y(), point.z());
+		gl.glEnd();
 	}
 
 	/**
@@ -520,13 +508,17 @@ public class VisLink {
 	 *            Specifies the anti-aliasing quality of the rendered line (1 <= quality <= 20)
 	 * @param segmentsToDraw
 	 *            Specifies the number of segments to be drawn (=n)
+	 * @param roundedStart
+	 * 			  Toggles rounded beginning of the line
 	 * @param roundedEnd
-	 *            If set to true, the end of the line is rounded
+	 * 			  Toggles rounded ending of the line
+	 * @param halo
+	 * 			  Set this to true if you want to draw a halo (alters the way alpha changes during iterations)
 	 * @throws IllegalArgumentException
 	 *             If the specified anti-aliasing quality is <1 or >20
 	 */
 	protected void drawPolygonLine(final GL gl, float width, float[] color, int antiAliasingQuality,
-		int segmentsToDraw, boolean roundedStart, boolean roundedEnd) throws IllegalArgumentException {
+		int segmentsToDraw, boolean roundedStart, boolean roundedEnd, boolean halo) throws IllegalArgumentException {
 		try {
 			checkRGBA(color);
 		}
@@ -546,8 +538,12 @@ public class VisLink {
 		float green = color[1];
 		float blue = color[2];
 		float alpha = color[3];
-		float alphaChange = alpha / antiAliasingQuality;
-		float unit = width / antiAliasingQuality;
+		float alphaChange = 0;
+		if(halo)
+			alphaChange = alpha / antiAliasingQuality;
+		else
+			alphaChange = (alpha + 0.2f) / antiAliasingQuality;
+		float unit = width / antiAliasingQuality / 2.5f;
 		width = width - (((antiAliasingQuality - 1) * unit) / 2);
 		int limit = (segmentsToDraw + 1) * 2; // n segments have n+1 vertices, *2 because of polygons
 
@@ -571,19 +567,13 @@ public class VisLink {
 			// rounded start
 			if (roundedStart) {
 				Vec3f startPoint = linePoints.get(0);
-				gl.glPointSize(width * 3); // FIXME: width calculation to be corrected
-				gl.glBegin(GL.GL_POINTS);
-				gl.glVertex3f(startPoint.x(), startPoint.y(), startPoint.z());
-				gl.glEnd();
+				drawRoundedEndSegment(gl, startPoint, width);
 			}
 
 			// rounded end
 			if (roundedEnd) {
 				Vec3f endPoint = linePoints.get(segmentsToDraw);
-				gl.glPointSize(width * 3); // FIXME: width calculation to be corrected
-				gl.glBegin(GL.GL_POINTS);
-				gl.glVertex3f(endPoint.x(), endPoint.y(), endPoint.z());
-				gl.glEnd();
+				drawRoundedEndSegment(gl, endPoint, width);
 			}
 
 			alpha -= alphaChange; // fade out at borders for anti aliasing effect
@@ -605,13 +595,17 @@ public class VisLink {
 	 *            Specifies the anti-aliasing quality of the rendered line (1 <= quality <= 20)
 	 * @param segmentsToDraw
 	 *            Specifies the number of segments to be drawn (=n)
+	 * @param roundedStart
+	 * 			  Toggles rounded beginning of the line
 	 * @param roundedEnd
-	 *            If set to true, the end of the line is rounded
+	 * 			  Toggles rounded ending of the line
+	 * @param halo
+	 * 			  Set this to true if you want to draw a halo (alters the way alpha changes during iterations)
 	 * @throws IllegalArgumentException
 	 *             If the specified anti-aliasing quality is <1 or >20
 	 */
 	protected void drawPolygonLineReverse(final GL gl, float width, float[] color, int antiAliasingQuality,
-		int segmentsToDraw, boolean roundedStart, boolean roundedEnd) throws IllegalArgumentException {
+		int segmentsToDraw, boolean roundedStart, boolean roundedEnd, boolean halo) throws IllegalArgumentException {
 		try {
 			checkRGBA(color);
 		}
@@ -627,8 +621,12 @@ public class VisLink {
 		float green = color[1];
 		float blue = color[2];
 		float alpha = color[3];
-		float alphaChange = alpha / antiAliasingQuality;
-		float unit = width / antiAliasingQuality;
+		float alphaChange = 0;
+		if(halo)
+			alphaChange = alpha / antiAliasingQuality;
+		else
+			alphaChange = (alpha + 0.2f) / antiAliasingQuality;
+		float unit = width / antiAliasingQuality / 2.5f;
 		width = width - (((antiAliasingQuality - 1) * unit) / 2);
 		int limit = (segmentsToDraw + 1) * 2; // n segments have n+1 vertices, *2 because of polygons
 
@@ -653,20 +651,15 @@ public class VisLink {
 			if (roundedStart) {
 				int startPointIndex = linePoints.size() - 1;
 				Vec3f startPoint = linePoints.get(startPointIndex);
-				gl.glPointSize(width * 3); // FIXME: width calculation to be corrected
-				gl.glBegin(GL.GL_POINTS);
-				gl.glVertex3f(startPoint.x(), startPoint.y(), startPoint.z());
-				gl.glEnd();
+				drawRoundedEndSegment(gl, startPoint, width);
 			}
 
 			// rounded end
 			if (roundedEnd) {
 				int endPointIndex = linePoints.size() - segmentsToDraw - 1;
 				Vec3f endPoint = linePoints.get(endPointIndex);
-				gl.glPointSize(width * 3); // FIXME: width calculation to be corrected
-				gl.glBegin(GL.GL_POINTS);
-				gl.glVertex3f(endPoint.x(), endPoint.y(), endPoint.z());
-				gl.glEnd();
+				drawRoundedEndSegment(gl, endPoint, width);
+
 			}
 
 			alpha -= alphaChange; // fade out at borders for anti aliasing effect
