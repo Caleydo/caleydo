@@ -206,7 +206,7 @@ public class ViewManager
 
 		for (IGLViewCreator glViewCreator : glViewCreators) {
 			
-			if (//type.name().equals(ECommandType.CREATE_GL_SCATTERPLOT)&& 
+			if (type.equals(ECommandType.CREATE_GL_SCATTERPLOT)&& 
 				glViewCreator.getViewType().equals("org.caleydo.view.scatterplot")) {
 				
 				glView = glViewCreator.createGLEventListener(type, glCanvas, label, viewFrustum);
