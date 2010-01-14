@@ -23,6 +23,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Set;
 
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
@@ -35,10 +36,9 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
+//import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.storagebased.InitAxisComboEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetScatterSelectionEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SetPointSizeEvent;
 import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
 import org.caleydo.core.manager.event.view.storagebased.XAxisSelectorEvent;
@@ -65,11 +65,12 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHeatMapView;
+import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.ParCoordsRenderStyle;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+//import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.scatterplot.listener.ResetSelectionListener;
 import org.caleydo.view.scatterplot.listener.SetPointSizeListener;
 import org.caleydo.view.scatterplot.listener.TogglePointTypeListener;
@@ -78,8 +79,9 @@ import org.caleydo.view.scatterplot.listener.YAxisSelectorListener;
 import org.caleydo.view.scatterplot.renderstyle.EScatterPointType;
 import org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle;
 
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
+// Sonn needed for LoD rendering
+//import com.sun.opengl.util.texture.Texture;
+//import com.sun.opengl.util.texture.TextureCoords;
 
 /**
  * Rendering the GLSecatterplott
@@ -88,7 +90,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Marc Streit
  * @author Juergen Pillhofer
  */
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
 public class GLScatterplot
 	extends AStorageBasedView {
 
@@ -96,8 +98,8 @@ public class GLScatterplot
 
 	private ColorMapping colorMapper;
 
-	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
-	private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
+//	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
+//	private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
 
 	private Vec3f vecTranslation;
 
@@ -106,6 +108,8 @@ public class GLScatterplot
 	private ArrayList<Float> fAlXDistances;
 
 	boolean bUseDetailLevel = true;
+	
+	boolean bUpdateSelection = false;
 
 	int iCurrentMouseOverElement = -1;
 
@@ -126,7 +130,11 @@ public class GLScatterplot
 	private float[] fDragStartPoint = new float[3];
 	private float[] fDragEndPoint = new float[3];
 	private boolean bRectangleSelection = false;
-	private boolean bSelectThemNow = false;
+//	private boolean bSelectThemNow = false;
+	private int iGLDisplayListIndexBrush;
+	private int iGLDisplayListIndexCoord;
+	private int iGLDisplayListIndexMouseOver;
+	private int iGLDisplayListIndexSelection;
 
 	/**
 	 * Constructor.
@@ -176,7 +184,12 @@ public class GLScatterplot
 		// }
 		// });
 
-		iGLDisplayListIndexLocal = gl.glGenLists(1);
+		iGLDisplayListIndexLocal = gl.glGenLists(5);
+		iGLDisplayListIndexBrush=2;
+		iGLDisplayListIndexCoord=3;
+		iGLDisplayListIndexMouseOver=4;
+		iGLDisplayListIndexSelection=5;
+
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 	}
@@ -225,9 +238,9 @@ public class GLScatterplot
 
 		// pickingManager.getHits(this, EPickingType.SCATTER_POINT_SELECTION);
 
-		ArrayList<Pick> alHits = null;
-
-		alHits = pickingManager.getHits(iUniqueID, EPickingType.SCATTER_POINT_SELECTION);
+//		ArrayList<Pick> alHits = null;
+//
+//		alHits = pickingManager.getHits(iUniqueID, EPickingType.SCATTER_POINT_SELECTION);
 
 		// if (alHits == null && alHits.size() == 0) {
 
@@ -252,55 +265,145 @@ public class GLScatterplot
 				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pDragEndPoint.x,
 					pDragEndPoint.y);
 
-			setDisplayListDirty();
+			 gl.glNewList(iGLDisplayListIndexBrush, GL.GL_COMPILE);		
+			 DrawRectangularSelection(gl);	 
+			 gl.glEndList();	
 		}
 		if (glMouseListener.wasMouseReleased() && bRectangleSelection) {
-			bRectangleSelection = false;
-			// TODO : Get all between pDragStartPoint && pDragEndPoint in the selection
-			// Do this here insterad of in the Drawing maybe
+			bRectangleSelection = false;			
+			setDisplayListDirty();
+			UpdateSelection();
+			gl.glDeleteLists(iGLDisplayListIndexBrush, 1);
+			bUpdateSelection = true;
+			
+			
 		}
 		// };
 
 		pickingManager.handlePicking(this, gl);
 
+		
+		
+		
 		if (bIsDisplayListDirtyLocal) {
+			
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
-			bIsDisplayListDirtyLocal = false;
+			bIsDisplayListDirtyLocal = false;		
+		
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
+		
+		if (bUpdateSelection)
+		{
+			bUpdateSelection=false;
+			buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
+		}
+		
+				
 		display(gl);
 		checkForHits(gl);
-
-		if (eBusyModeState != EBusyModeState.OFF) {
+		
+		if (eBusyModeState != EBusyModeState.OFF) 		
 			renderBusyMode(gl);
-		}
+
 	}
 
 	@Override
 	public void displayRemote(GL gl) {
 
-		if (set == null)
-			return;
-
-		// if (bIsTranslationAnimationActive) {
-		// bIsDisplayListDirtyRemote = true;
-		// doTranslation();
-		// }
-
-		if (bIsDisplayListDirtyRemote) {
-			buildDisplayList(gl, iGLDisplayListIndexRemote);
-			bIsDisplayListDirtyRemote = false;
-			// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
-
-		display(gl);
-		checkForHits(gl);
+//		if (set == null)
+//			return;
+//
+//		// if (bIsTranslationAnimationActive) {
+//		// bIsDisplayListDirtyRemote = true;
+//		// doTranslation();
+//		// }
+//
+//		if (bIsDisplayListDirtyRemote) {
+//			buildDisplayList(gl, iGLDisplayListIndexRemote);
+//			bIsDisplayListDirtyRemote = false;
+//			// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
+//		}
+//		iGLDisplayListToCall = iGLDisplayListIndexRemote;
+//
+//		display(gl);
+//		checkForHits(gl);
 
 		// glMouseListener.resetEvents();
 	}
 
+	@Override
+	public void display(GL gl) {
+		processEvents();
+
+		// GLHelperFunctions.drawAxis(gl);
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+
+		// gl.glEnable(GL.GL_DEPTH_TEST);
+
+		// clipToFrustum(gl);
+
+		gl.glCallList(iGLDisplayListToCall);
+		gl.glCallList(iGLDisplayListIndexBrush);
+		gl.glCallList(iGLDisplayListIndexCoord);
+		gl.glCallList(iGLDisplayListIndexMouseOver);
+		gl.glCallList(iGLDisplayListIndexSelection);
+
+		// buildDisplayList(gl, iGLDisplayListIndexRemote);
+
+		// if (!isRenderedRemote())
+		// contextMenu.render(gl, this);
+	}
+	
+	
+	private void buildDisplayListSelection(final GL gl, int iGLDisplayListIndex) {
+		
+		 gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		 gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
+		 RenderSelection(gl);
+		 gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
+		 gl.glEndList();		
+	}
+	
+	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
+
+		if (bHasFrustumChanged) {
+			bHasFrustumChanged = false;
+			gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
+			renderCoordinateSystem(gl);			
+			gl.glEndList();	
+			
+			 gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+			 gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
+			 RenderScatterPoints(gl);
+			 gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
+			 gl.glEndList();	
+		}		
+		else 
+		{		
+		 gl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
+		 gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
+		 RenderMouseOver(gl);
+		 gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
+		 gl.glEndList();
+		 		 		 		 		 		 
+		}
+							  
+		 
+	
+		
+		
+//		 if (bRectangleSelection)
+//		 {
+//			DrawRectangularSelection(gl);
+//			
+//		 }
+//		 else
+//		 {
+//			
+//		 }
+	}
+	
 	/**
 	 * Render the coordinate system of the parallel coordinates, including the axis captions and axis-specific
 	 * buttons
@@ -324,8 +427,8 @@ public class GLScatterplot
 
 			if (set.isSetHomogeneous()) {
 				float fNumber = (float) set.getRawForNormalized(fCurrentHeight / renderStyle.getAxisHeight());
-				float max = (float) set.getMax();
-				float min = (float) set.getMin();
+	//			float max = (float) set.getMax();
+	//			float min = (float) set.getMin();
 
 				Rectangle2D bounds =
 					textRenderer.getScaledBounds(gl, getDecimalFormat().format(fNumber), renderStyle
@@ -356,7 +459,7 @@ public class GLScatterplot
 			gl.glEnd();
 		}
 
-		// draw X-Axis
+	//	 draw X-Axis
 		gl.glColor4fv(X_AXIS_COLOR, 0);
 		gl.glLineWidth(X_AXIS_LINE_WIDTH);
 
@@ -386,8 +489,9 @@ public class GLScatterplot
 		gl.glEnd();
 		// gl.glPopName();
 
-		// LABEL X
+//		// LABEL X
 
+		
 		// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glTranslatef(renderStyle.getLAbelWidth(), XLABELDISTANCE, 0);
 		gl.glRotatef(XLABELROTATIONNAGLE, 0, 0, 1);
@@ -402,14 +506,14 @@ public class GLScatterplot
 		textRenderer.end3DRendering();
 		gl.glRotatef(-XLABELROTATIONNAGLE, 0, 0, 1);
 		gl.glTranslatef(-renderStyle.getLAbelWidth(), -XLABELDISTANCE, 0);
-		// gl.glPopAttrib();
+		//gl.glPopAttrib();
 
 		// LABEL Y
-
-		// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		
+	//	gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glTranslatef(YLABELDISTANCE, renderStyle.getLabelHeight(), 0);
 		gl.glRotatef(YLABELROTATIONNAGLE, 0, 0, 1);
-
+				
 		textRenderer.begin3DRendering();
 		fScaling = renderStyle.getSmallFontScalingFactor();
 		if (isRenderedRemote())
@@ -422,9 +526,11 @@ public class GLScatterplot
 			ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
 		textRenderer.end3DRendering();
 
+		//gl.glRotatef(-YLABELROTATIONNAGLE, 0, 0, 1);
+		
 		gl.glRotatef(-YLABELROTATIONNAGLE, 0, 0, 1);
-		gl.glTranslatef(-YLABELDISTANCE, renderStyle.getLabelHeight(), 0);
-		// gl.glPopAttrib();
+		gl.glTranslatef(-YLABELDISTANCE, -renderStyle.getLabelHeight(), 0);
+//		gl.glPopAttrib();
 
 	}
 
@@ -438,25 +544,6 @@ public class GLScatterplot
 		textRenderer.draw3D(gl, sRawValue, fXOrigin, fYOrigin, ScatterPlotRenderStyle.TEXT_ON_LABEL_Z,
 			fScaling, ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);
 		textRenderer.end3DRendering();
-	}
-
-	@Override
-	public void display(GL gl) {
-		processEvents();
-
-		// GLHelperFunctions.drawAxis(gl);
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-
-		// gl.glEnable(GL.GL_DEPTH_TEST);
-
-		// clipToFrustum(gl);
-
-		gl.glCallList(iGLDisplayListToCall);
-
-		// buildDisplayList(gl, iGLDisplayListIndexRemote);
-
-		// if (!isRenderedRemote())
-		// contextMenu.render(gl, this);
 	}
 
 	private String[] getAxisString() {
@@ -473,6 +560,8 @@ public class GLScatterplot
 
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
+		float x = 0.0f;
+		float y = 0.0f;
 
 		for (Integer iContentIndex : contentVA) {
 
@@ -493,25 +582,123 @@ public class GLScatterplot
 			// set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.LOG2, iContentIndex);
 			// float ynormalized =
 			// set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.LOG2, iContentIndex);
-			float x = xnormalized * XScale;
-			float y = ynormalized * YScale;
+			x = xnormalized * XScale;
+			y = ynormalized * YScale;
 			float[] fArMappingColor = colorMapper.getColor(Math.max(xnormalized, ynormalized));
 			DrawPointPrimitive(gl, x, y, 0.0f, // z
-				fArMappingColor, 1.0f, iContentIndex); // fOpacity
-
-			if (elementSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)) {
-				DrawLabel(gl, x, y, 0.0f, // z
-					fArMappingColor, 1.0f, iContentIndex); // fOpacity
-			}
-
+				fArMappingColor, 1.0f,// fOpacity 
+				iContentIndex,1.0f); //scale
 		}
+	}
+	
+	private void RenderMouseOver(GL gl) {
 
-		// int test = elementSelectionManager.getNumberOfElements(ESelectionType.SELECTION);
-		// int test2 = elementSelectionManager.getNumberOfElements(ESelectionType.MOUSE_OVER);
-		// int test3 = elementSelectionManager.getNumberOfElements();
+		
+		if (elementSelectionManager.getNumberOfElements(ESelectionType.MOUSE_OVER) ==0)			
+			return;
+				 		
+		 Set<Integer> mouseOver = elementSelectionManager.getElements(ESelectionType.MOUSE_OVER);
+		 int iContentIndex =0;
+		 for (int i : mouseOver)
+		 {
+			 iContentIndex =i;
+			 break;
+		 }
+				
+		
+		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
+		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
+		
+		float xnormalized =
+			set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+		float ynormalized =
+			set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+		
+		float x = xnormalized * XScale;
+		float y = ynormalized * YScale;
+		float[] fArMappingColor = colorMapper.getColor(Math.max(xnormalized, ynormalized));
+		
+		
+
+		float z = +1.5f;
+		float fullPoint = POINTSIZE * 2f;
+		gl.glColor3f(1.0f, 1.0f, 0.0f);
+
+		float angle;
+		float PI = (float) Math.PI;
+
+		gl.glBegin(GL.GL_POLYGON);
+		for (int i = 0; i < 20; i++) {
+			angle = (i * 2 * PI) / 10;
+			gl.glVertex3f(x + (float) (Math.cos(angle) * fullPoint), y
+				+ (float) (Math.sin(angle) * fullPoint), z);
+		}
+		gl.glEnd();
+		z = +2.0f;
+		gl.glColor3f(0.0f, 0.0f, 0.0f);
+		gl.glPointSize(POINTSIZE * 50.0f);
+		gl.glBegin(GL.GL_POINTS);
+		gl.glVertex3f(x, y, z);
+		gl.glEnd();
+		z = +2.5f;
+
+		gl.glColor3f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2]);
+			
+		DrawPointPrimitive(gl, x, y, z, // z
+				fArMappingColor, 1.0f, iContentIndex,2.0f); // fOpacity
+
+		DrawMouseOverLabel(gl, x, y, 0.0f, // z
+				fArMappingColor, 1.0f, iContentIndex); // fOpacity
+			
+	}
+	
+	private void DrawMouseOverLabel(GL gl, float x, float y, float z, float[] fArMappingColor, float fOpacity,
+		int iContentIndex) {
+
+		textRenderer.setColor(0, 0, 0, 1);
+		
+		z = z + 3.0f;
+		x = x + 0.1f;
+		gl.glTranslatef(x, y, z);
+
+		String sLabel =
+			"Point :" + set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.RAW, iContentIndex) + " / "
+				+ set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.RAW, iContentIndex);
+	//	sLabel="Point :: ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890 //// ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890 //// ";
+		
+		float fScaling = renderStyle.getSmallFontScalingFactor();
+		if (isRenderedRemote())
+			fScaling *= 1.5f;
+		
+		Rectangle2D bounds =
+			textRenderer.getScaledBounds(gl, sLabel, fScaling, ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);
+		
+		
+		
+        float boxLengh = (float) bounds.getWidth()+0.2f;
+		float boxHight = (float) bounds.getHeight();
+		
+	//	gl.glTranslatef(0.0f, 0.0f, 0.1f);
+		gl.glColor3f(1.0f, 1.0f, 0.0f);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(0.0f, -0.02f, -0.1f);
+		gl.glVertex3f(0.0f, boxHight, -0.1f);
+		gl.glVertex3f(boxLengh, boxHight, -0.1f);
+		gl.glVertex3f(boxLengh, -0.02f, -0.1f);
+		gl.glEnd();
+//		gl.glTranslatef(0.0f, 0.0f, -0.1f);
+
+
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		textRenderer.begin3DRendering();
+		textRenderer.draw3D(gl, sLabel, 0, 0, ScatterPlotRenderStyle.TEXT_ON_LABEL_Z, fScaling, ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
+		textRenderer.end3DRendering();
+		gl.glPopAttrib();
+		
+		gl.glTranslatef(-x, -y, -z);
 
 	}
-
+	
 	private boolean IsInSelectionRectangle(float x, float y) {
 		float XMin = Math.min(fDragStartPoint[0], fDragEndPoint[0]);
 		float XMax = Math.max(fDragStartPoint[0], fDragEndPoint[0]);
@@ -529,54 +716,86 @@ public class GLScatterplot
 		return false;
 
 	}
+	
+	private void UpdateSelection()	
+	{
+		
+		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
+		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
+		float x = 0.0f;
+		float y = 0.0f;
+		
+		for (Integer iContentIndex : contentVA) {
 
-	private void DrawLabel(GL gl, float x, float y, float z, float[] fArMappingColor, float fOpacity,
-		int iContentIndex) {
+			if (iContentIndex == -1) {
+				// throw new
+				// IllegalStateException("No such element in virtual array");
+				// TODO this shouldn't happen here.
+				continue;
+			}
+			float xnormalized =
+				set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+			float ynormalized =
+				set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
-		z = z + 3.0f;
-		x = x + 0.1f;
-		gl.glTranslatef(x, y, z);
-
-		float boxLengh = 0.8f;
-		float boxHight = 0.1f;
-
-		gl.glColor3f(1.0f, 1.0f, 1.0f);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0.0f, -0.02f, -0.1f);
-		gl.glVertex3f(0.0f, boxHight, -0.1f);
-		gl.glVertex3f(boxLengh, boxHight, -0.1f);
-		gl.glVertex3f(boxLengh, -0.02f, -0.1f);
-		gl.glEnd();
-
-		textRenderer.begin3DRendering();
-		float fScaling = renderStyle.getSmallFontScalingFactor();
-		if (isRenderedRemote())
-			fScaling *= 1.5f;
-		String sLabel =
-			"Point: " + set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.RAW, iContentIndex) + " / "
-				+ set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.RAW, iContentIndex);
-		textRenderer.draw3D(gl, sLabel, 0, 0, 0, fScaling, ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
-		textRenderer.end3DRendering();
-
-		gl.glTranslatef(-x, -y, -z);
-
+			x = xnormalized * XScale;
+			y = ynormalized * YScale;
+				
+			if (IsInSelectionRectangle(x, y)) 
+			{
+				if (!elementSelectionManager.checkStatus(iContentIndex))
+					elementSelectionManager.add(iContentIndex);
+				elementSelectionManager.addToType(ESelectionType.SELECTION, iContentIndex);
+			}
+		}
 	}
+	
+		
+private void RenderSelection(GL gl) {
 
+		
+		if (elementSelectionManager.getNumberOfElements(ESelectionType.SELECTION) ==0)			
+			return;
+		
+		 float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
+		 float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
+		
+		 Set<Integer> selectionSet = elementSelectionManager.getElements(ESelectionType.SELECTION);
+		 
+		 float x = 0.0f;
+		 float y = 0.0f;
+		 float z = 1.0f;
+		 
+		 float[] fArMappingColor = new float[]{1.0f, 0.1f, 0.5f};
+		 					 
+		 for (int iContentIndex : selectionSet)
+		 {				
+			float xnormalized =
+				set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+			float ynormalized =
+				set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+			
+			x = xnormalized * XScale;
+			y = ynormalized * YScale;
+						
+			DrawPointPrimitive(gl, x, y, z, // z
+					fArMappingColor, 1.0f,// fOpacity 
+					iContentIndex,1.0f); //scale
+						
+		 }
+}
+	
 	private void DrawPointPrimitive(GL gl, float x, float y, float z, float[] fArMappingColor,
-		float fOpacity, int iContentIndex) {
+		float fOpacity, int iContentIndex, float scale) {
 
 		EScatterPointType type = POINTSTYLE;
-		float halfPoint = POINTSIZE / 2.0f;
-		float fullPoint = POINTSIZE;
+		float fullPoint = POINTSIZE*scale;
+		float halfPoint = (fullPoint / 2.0f);
+		
 		int iPickingID =
 			pickingManager.getPickingID(iUniqueID, EPickingType.SCATTER_POINT_SELECTION, iContentIndex);
 		gl.glColor3f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2]);
 
-		if (IsInSelectionRectangle(x, y)) {
-			if (!elementSelectionManager.checkStatus(iContentIndex))
-				elementSelectionManager.add(iContentIndex);
-			elementSelectionManager.addToType(ESelectionType.SELECTION, iContentIndex);
-		}
 
 		// Render Selected Items;
 		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)) {
@@ -584,36 +803,7 @@ public class GLScatterplot
 			gl.glColor3f(1.0f, 0.1f, 0.5f);
 		}
 
-		// Render Item on Mousover
-		if (elementSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)) {
-			z = +1.5f;
-			fullPoint = POINTSIZE * 2f;
-			gl.glColor3f(1.0f, 1.0f, 0.0f);
-
-			float angle;
-			float PI = (float) Math.PI;
-
-			gl.glBegin(GL.GL_POLYGON);
-			for (int i = 0; i < 20; i++) {
-				angle = (i * 2 * PI) / 10;
-				gl.glVertex3f(x + (float) (Math.cos(angle) * fullPoint), y
-					+ (float) (Math.sin(angle) * fullPoint), z);
-			}
-			gl.glEnd();
-			z = +2.0f;
-			gl.glColor3f(0.0f, 0.0f, 0.0f);
-			gl.glPointSize(POINTSIZE * 50.0f);
-			gl.glBegin(GL.GL_POINTS);
-			gl.glVertex3f(x, y, z);
-			gl.glEnd();
-			z = +2.5f;
-
-			gl.glColor3f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2]);
-
-			halfPoint = POINTSIZE * 0.75f;
-
-			fullPoint = POINTSIZE * 1.5f;
-		}
+	
 
 		gl.glPushName(iPickingID);
 		switch (type) {
@@ -718,52 +908,38 @@ public class GLScatterplot
 		setDisplayListDirty();
 	}
 
-	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
-
-		if (bHasFrustumChanged) {
-			bHasFrustumChanged = false;
-		}
-		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		// if (bRectangleSelection)
-		DrawRectangularSelection(gl);
-
-		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
-		RenderScatterPoints(gl);
-		gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
-		renderCoordinateSystem(gl);
-		gl.glEndList();
-	}
+	
 
 	/**
 	 * Render the symbol of the view instead of the view
 	 * 
 	 * @param gl
 	 */
-	private void renderSymbol(GL gl) {
-		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
-		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
-		tempTexture.enable();
-		tempTexture.bind();
-
-		TextureCoords texCoords = tempTexture.getImageTexCoords();
-
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		gl.glColor4f(1f, 1, 1, 1f);
-		gl.glBegin(GL.GL_POLYGON);
-
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.01f);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fXButtonOrigin, 2 * fYButtonOrigin, 0.01f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fXButtonOrigin * 2, 2 * fYButtonOrigin, 0.01f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fXButtonOrigin * 2, fYButtonOrigin, 0.01f);
-		gl.glEnd();
-		gl.glPopAttrib();
-		tempTexture.disable();
-	}
+//	private void renderSymbol(GL gl) {
+//		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
+//		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
+//		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
+//		tempTexture.enable();
+//		tempTexture.bind();
+//
+//		TextureCoords texCoords = tempTexture.getImageTexCoords();
+//
+//		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+//		gl.glColor4f(1f, 1, 1, 1f);
+//		gl.glBegin(GL.GL_POLYGON);
+//
+//		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+//		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.01f);
+//		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+//		gl.glVertex3f(fXButtonOrigin, 2 * fYButtonOrigin, 0.01f);
+//		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+//		gl.glVertex3f(fXButtonOrigin * 2, 2 * fYButtonOrigin, 0.01f);
+//		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+//		gl.glVertex3f(fXButtonOrigin * 2, fYButtonOrigin, 0.01f);
+//		gl.glEnd();
+//		gl.glPopAttrib();
+//		tempTexture.disable();
+//	}
 
 	public void renderHorizontally(boolean bRenderStorageHorizontally) {
 
@@ -855,16 +1031,17 @@ public class GLScatterplot
 				switch (pickingMode) {
 
 					case CLICKED:
-						eSelectionType = ESelectionType.SELECTION;
+						eSelectionType = ESelectionType.SELECTION;						
 						break;
 					case MOUSE_OVER:
 
 						eSelectionType = ESelectionType.MOUSE_OVER;
 						elementSelectionManager.clearSelection(eSelectionType);
+						
 
 						break;
 					case RIGHT_CLICKED:
-						eSelectionType = ESelectionType.DESELECTED;
+						eSelectionType = ESelectionType.DESELECTED;						
 						break;
 					case DRAGGED:
 						eSelectionType = ESelectionType.SELECTION;
@@ -900,18 +1077,21 @@ public class GLScatterplot
 		{
 			elementSelectionManager.removeFromType(ESelectionType.SELECTION, contentID);
 			setDisplayListDirty();
+			bUpdateSelection = true;
 			return;
 		}
 
 		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, contentID)) {
-			fDragStartPoint = new float[3];
-			fDragEndPoint = new float[3];
+			//fDragStartPoint = new float[3];
+			//fDragEndPoint = new float[3];
+			bUpdateSelection = true;
 		}
 
 		// SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
 		// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 		if (!elementSelectionManager.checkStatus(contentID))
+		
 			elementSelectionManager.add(contentID);
 		elementSelectionManager.addToType(selectionType, contentID);
 		// }
@@ -926,65 +1106,10 @@ public class GLScatterplot
 		fDragEndPoint = new float[3];
 		setDisplayListDirty();
 	}
+	
+	
 
-	private void createStorageSelection(ESelectionType selectionType, int storageID) {
-		if (storageSelectionManager.checkStatus(selectionType, storageID))
-			return;
-
-		// check if the mouse-overed element is already selected, and if it is, whether mouse over is clear.
-		// If that all is true we don't need to do anything
-		if (selectionType == ESelectionType.MOUSE_OVER
-			&& storageSelectionManager.checkStatus(ESelectionType.SELECTION, storageID)
-			&& storageSelectionManager.getElements(ESelectionType.MOUSE_OVER).size() == 0)
-			return;
-
-		storageSelectionManager.clearSelection(selectionType);
-		storageSelectionManager.addToType(selectionType, storageID);
-
-		if (eStorageDataType == EIDType.EXPERIMENT_INDEX) {
-
-			// SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
-			// eSelectionType);
-			// sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
-
-			SelectionDelta selectionDelta = storageSelectionManager.getDelta();
-			SelectionUpdateEvent event = new SelectionUpdateEvent();
-			event.setSender(this);
-			event.setSelectionDelta(selectionDelta);
-			eventPublisher.triggerEvent(event);
-		}
-		setDisplayListDirty();
-	}
-
-	private int cursorSelect(IVirtualArray virtualArray, SelectionManager selectionManager, boolean isUp) {
-
-		Set<Integer> elements = selectionManager.getElements(ESelectionType.MOUSE_OVER);
-		if (elements.size() == 0) {
-			elements = selectionManager.getElements(ESelectionType.SELECTION);
-			if (elements.size() == 0)
-				return -1;
-		}
-
-		if (elements.size() == 1) {
-			Integer element = elements.iterator().next();
-			int index = virtualArray.indexOf(element);
-			int newIndex;
-			if (isUp) {
-				newIndex = index - 1;
-				if (newIndex < 0)
-					return -1;
-			}
-			else {
-				newIndex = index + 1;
-				if (newIndex == virtualArray.size())
-					return -1;
-
-			}
-			return virtualArray.get(newIndex);
-
-		}
-		return -1;
-	}
+	
 
 	@Override
 	protected void handleConnectedElementRep(ISelectionDelta selectionDelta) {
