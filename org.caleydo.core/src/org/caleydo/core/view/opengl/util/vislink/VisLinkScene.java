@@ -132,10 +132,9 @@ public class VisLinkScene {
 			// draw shadow oder halo
 			for (int i = 0; i < connectionLinesAllViews.size(); i++) {
 				ArrayList<ArrayList<Vec3f>> currentStage = connectionLinesAllViews.get(i);
-				if (style == EVisLinkStyleType.HALO_VISLINK)
-					if (i == 0)
-						roundedStart = true;
-				if (i == (connectionLinesAllViews.size() - 1))
+				if (style == EVisLinkStyleType.HALO_VISLINK && i == 0)
+					roundedStart = true;
+				if (style == EVisLinkStyleType.HALO_VISLINK && i == (connectionLinesAllViews.size() - 1))
 					roundedEnd = true;
 				for (ArrayList<Vec3f> currentLine : currentStage) {
 					if (currentLine.size() >= 2) {
