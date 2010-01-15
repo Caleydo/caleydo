@@ -10,7 +10,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.histogram.UpdateColorMappingEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.histogram.listener.UpdateColorMappingListener;
 import org.caleydo.core.view.opengl.canvas.listener.IColorMappingHandler;
 
@@ -101,7 +101,7 @@ public class ColorMappingManager
 		}
 		hashColorMapping.put(colorMappingType, new ColorMapping(colorMappingType));
 
-		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
+		for (AGLView view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
 			view.setDisplayListDirty();
 		}
 

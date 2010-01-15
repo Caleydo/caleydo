@@ -33,7 +33,7 @@ public class GLPrimitives {
 
 		GLUquadric quadric = glu.gluNewQuadric();
 		int iMinNumSlices = fAngle < 180 ? 2 : 3;
-		int iNumSlices = Math.max(Math.round(fAngle / 360.0f * (float) iNumSlicesPerFullDisc), iMinNumSlices);
+		int iNumSlices = Math.max(Math.round(fAngle / 360.0f * iNumSlicesPerFullDisc), iMinNumSlices);
 
 		glu.gluQuadricDrawStyle(quadric, GLU.GLU_FILL);
 		glu.gluPartialDisk(quadric, fInnerRadius, fOuterRadius, iNumSlices, 1, fStartAngle, fAngle);
@@ -67,7 +67,7 @@ public class GLPrimitives {
 
 		GLUquadric quadric = glu.gluNewQuadric();
 		int iMinNumSlices = fAngle < 180 ? 2 : 3;
-		int iNumSlices = Math.max(Math.round(fAngle / 360.0f * (float) iNumSlicesPerFullDisc), iMinNumSlices);
+		int iNumSlices = Math.max(Math.round(fAngle / 360.0f * iNumSlicesPerFullDisc), iMinNumSlices);
 
 		gl.glLineWidth(fBorderWidth);
 		glu.gluQuadricDrawStyle(quadric, GLU.GLU_SILHOUETTE);

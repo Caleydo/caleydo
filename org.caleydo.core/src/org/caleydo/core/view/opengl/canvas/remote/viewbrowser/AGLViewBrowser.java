@@ -13,16 +13,13 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.delta.VADeltaItem;
-import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -37,7 +34,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -63,6 +60,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -78,7 +76,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Werner Puff
  */
 public abstract class AGLViewBrowser
-	extends AGLEventListener
+	extends AGLView
 	implements ISelectionUpdateHandler, IGLRemoteRenderingView {
 
 	private static final int SLERP_RANGE = 1000;
@@ -114,7 +112,7 @@ public abstract class AGLViewBrowser
 
 	protected ArrayList<ASerializedView> newViews;
 
-	private ArrayList<AGLEventListener> containedGLViews;
+	private ArrayList<AGLView> containedGLViews;
 
 	/**
 	 * The current view in which the user is performing actions.
@@ -136,7 +134,7 @@ public abstract class AGLViewBrowser
 	 * Transformation utility object to transform and project view related coordinates
 	 */
 	protected RemoteRenderingTransformer selectionTransformer;
-	
+
 	private boolean isSlerpActive = false;
 
 	// protected AddPathwayListener addPathwayListener = null;
@@ -182,7 +180,7 @@ public abstract class AGLViewBrowser
 
 		arSlerpActions = new ArrayList<SlerpAction>();
 
-		containedGLViews = new ArrayList<AGLEventListener>();
+		containedGLViews = new ArrayList<AGLView>();
 		newViews = new ArrayList<ASerializedView>();
 
 		dragAndDrop = new GLDragAndDrop();
@@ -246,8 +244,8 @@ public abstract class AGLViewBrowser
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+	public void initRemote(final GL gl, final AGLView glParentView, final GLMouseListener glMouseListener,
+		GLInfoAreaManager infoAreaManager) {
 
 		// Register keyboard listener to GL canvas
 		// glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
@@ -359,10 +357,10 @@ public abstract class AGLViewBrowser
 			glConnectionLineRenderer.render(gl);
 		}
 
-//		float fZTranslation = 0;
-//		gl.glTranslatef(0, 0, fZTranslation);
-//		contextMenu.render(gl, this);
-//		gl.glTranslatef(0, 0, -fZTranslation);
+		// float fZTranslation = 0;
+		// gl.glTranslatef(0, 0, fZTranslation);
+		// contextMenu.render(gl, this);
+		// gl.glTranslatef(0, 0, -fZTranslation);
 
 		if (glMouseListener.getPickedPoint() != null) {
 			dragAndDrop.setCurrentMousePos(gl, glMouseListener.getPickedPoint());
@@ -396,21 +394,16 @@ public abstract class AGLViewBrowser
 				if (mouseOverElement != null) {
 					RemoteLevelElement originElement = RemoteElementManager.get().getItem(iDraggedObjectId);
 
-					int iMouseOverElementID = mouseOverElement.getContainedElementID();
-					int iOriginElementID = originElement.getContainedElementID();
+					AGLView mouseOverView = mouseOverElement.getGLView();
+					AGLView originView = originElement.getGLView();
 
-					mouseOverElement.setContainedElementID(iOriginElementID);
-					originElement.setContainedElementID(iMouseOverElementID);
+					mouseOverElement.setGLView(originView);
+					originElement.setGLView(mouseOverView);
 
-					IViewManager viewGLCanvasManager = generalManager.getViewGLCanvasManager();
-
-					AGLEventListener originView = viewGLCanvasManager.getGLEventListener(iOriginElementID);
 					if (originView != null) {
 						originView.setRemoteLevelElement(mouseOverElement);
 					}
 
-					AGLEventListener mouseOverView =
-						viewGLCanvasManager.getGLEventListener(iMouseOverElementID);
 					if (mouseOverView != null) {
 						mouseOverView.setRemoteLevelElement(originElement);
 					}
@@ -418,21 +411,17 @@ public abstract class AGLViewBrowser
 					updateViewDetailLevels(originElement);
 					updateViewDetailLevels(mouseOverElement);
 
-					if (mouseOverElement.getContainedElementID() != -1) {
+					if (mouseOverElement.getGLView() != null) {
 						if (poolLevel.containsElement(originElement)
 							&& (stackLevel.containsElement(mouseOverElement) || focusLevel
 								.containsElement(mouseOverElement))) {
-							generalManager.getViewGLCanvasManager().getGLEventListener(
-								mouseOverElement.getContainedElementID()).broadcastElements(
-								EVAOperation.APPEND_UNIQUE);
+							mouseOverElement.getGLView().broadcastElements(EVAOperation.APPEND_UNIQUE);
 						}
 
 						if (poolLevel.containsElement(mouseOverElement)
 							&& (stackLevel.containsElement(originElement) || focusLevel
 								.containsElement(originElement))) {
-							generalManager.getViewGLCanvasManager().getGLEventListener(
-								mouseOverElement.getContainedElementID()).broadcastElements(
-								EVAOperation.REMOVE_ELEMENT);
+							mouseOverElement.getGLView().broadcastElements(EVAOperation.REMOVE_ELEMENT);
 						}
 					}
 				}
@@ -497,24 +486,17 @@ public abstract class AGLViewBrowser
 		// if (!level.getElementVisibilityById(iViewID))
 		// return;
 
-		if (element.getContainedElementID() == -1)
-			return;
-
-		int iViewID = element.getContainedElementID();
-
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT, element
-			.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION, iViewID));
-
-		AGLEventListener glEventListener =
-			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID);
-
-		if (glEventListener == null) {
+		AGLView glView = element.getGLView();
+		if (glView == null) {
 			generalManager.getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
 					"Bucket level element is null and cannot be rendered!"));
 			return;
 		}
+
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT, element
+			.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION, glView.getID()));
 
 		gl.glPushMatrix();
 
@@ -530,11 +512,11 @@ public abstract class AGLViewBrowser
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
 		if (level == poolLevel) {
-			String sRenderText = glEventListener.getShortInfo();
+			String sRenderText = glView.getShortInfo();
 
-			if (glEventListener instanceof GLTissue)
-				sRenderText = ((GLTissue)glEventListener).getLabel();
-			
+			if (glView instanceof GLTissue)
+				sRenderText = ((GLTissue) glView).getLabel();
+
 			// Limit sub view name in length
 			int iMaxChars;
 			iMaxChars = 20;
@@ -586,8 +568,8 @@ public abstract class AGLViewBrowser
 				fTextXPosition = 9.5f;
 			}
 
-			int iNumberOfGenesSelected = glEventListener.getNumberOfSelections(ESelectionType.SELECTION);
-			int iNumberOfGenesMouseOver = glEventListener.getNumberOfSelections(ESelectionType.MOUSE_OVER);
+			int iNumberOfGenesSelected = glView.getNumberOfSelections(ESelectionType.SELECTION);
+			int iNumberOfGenesMouseOver = glView.getNumberOfSelections(ESelectionType.MOUSE_OVER);
 
 			textRenderer.begin3DRendering();
 
@@ -689,7 +671,7 @@ public abstract class AGLViewBrowser
 			}
 		}
 
-		glEventListener.displayRemote(gl);
+		glView.displayRemote(gl);
 
 		gl.glPopMatrix();
 
@@ -787,7 +769,7 @@ public abstract class AGLViewBrowser
 
 		// Bucket center (focus)
 		RemoteLevelElement element = focusLevel.getElementByPositionIndex(0);
-		if (element.getContainedElementID() != -1) {
+		if (element.getGLView() != null) {
 
 			Transform transform;
 			Vec3f translation;
@@ -876,9 +858,7 @@ public abstract class AGLViewBrowser
 		gl.glPopName();
 
 		// Render view information
-		String sText =
-			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID())
-				.getShortInfo();
+		String sText = element.getGLView().getShortInfo();
 
 		int iMaxChars = 50;
 		if (sText.length() > iMaxChars) {
@@ -936,7 +916,7 @@ public abstract class AGLViewBrowser
 		float fPanelSideWidth = 11f;
 
 		float z = 0.06f;
-		
+
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(fXOrigin + 10.2f, fYOrigin - fHeight / 2f + fHeight, z);
@@ -1066,12 +1046,10 @@ public abstract class AGLViewBrowser
 	private void updateViewDetailLevels(RemoteLevelElement element) {
 		RemoteLevel destinationLevel = element.getRemoteLevel();
 
-		if (element.getContainedElementID() == -1)
+		if (element.getGLView() == null)
 			return;
 
-		AGLEventListener glActiveSubView =
-			GeneralManager.get().getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
-
+		AGLView glActiveSubView = element.getGLView();
 		glActiveSubView.setRemoteLevelElement(element);
 
 		// Update detail level of moved view when slerp action is finished;
@@ -1097,9 +1075,7 @@ public abstract class AGLViewBrowser
 
 		arSlerpActions.clear();
 
-		int iViewID = element.getContainedElementID();
-
-		if (iViewID == -1)
+		if (element.getGLView() == null)
 			return;
 
 		// Slerp focus view to pool
@@ -1118,7 +1094,7 @@ public abstract class AGLViewBrowser
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		lastSelectionDelta = selectionDelta;
 	}
-	
+
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
@@ -1149,27 +1125,25 @@ public abstract class AGLViewBrowser
 
 						RemoteLevelElement element = RemoteElementManager.get().getItem(iExternalID);
 
-						AGLEventListener glEventListener =
-							(AGLEventListener) generalManager.getViewGLCanvasManager().getGLEventListener(
-								element.getContainedElementID());
+						AGLView glView = element.getGLView();
 
 						// // Unregister all elements of the view that is
 						// removed
 						// glEventListener.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 
-						removeView(glEventListener);
-						element.setContainedElementID(-1);
-						containedGLViews.remove(glEventListener);
+						removeView(glView);
+						element.setGLView(null);
+						containedGLViews.remove(glView);
 
 						if (element.getRemoteLevel() == poolLevel) {
 							compactPoolLevel();
 						}
 
-						if (glEventListener instanceof GLTissue)
-							removeSelection(((GLTissue) glEventListener).getExperimentIndex());
-						
+						if (glView instanceof GLTissue)
+							removeSelection(((GLTissue) glView).getExperimentIndex());
+
 						setDisplayListDirty();
-						
+
 						break;
 				}
 				break;
@@ -1260,7 +1234,7 @@ public abstract class AGLViewBrowser
 	/**
 	 * Unregister view from event system. Remove view from GL render loop.
 	 */
-	public void removeView(AGLEventListener glEventListener) {
+	public void removeView(AGLView glEventListener) {
 		if (glEventListener != null) {
 			glEventListener.destroy();
 		}
@@ -1291,8 +1265,8 @@ public abstract class AGLViewBrowser
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		if (reinitialize) {
-			ArrayList<AGLEventListener> removeView = new ArrayList<AGLEventListener>();
-			for (AGLEventListener glView : containedGLViews) {
+			ArrayList<AGLView> removeView = new ArrayList<AGLView>();
+			for (AGLView glView : containedGLViews) {
 				if (!(glView instanceof GLParallelCoordinates || glView instanceof GLHeatMap)) {
 					removeView.add(glView);
 				}
@@ -1322,13 +1296,13 @@ public abstract class AGLViewBrowser
 		if (reinitialize) {
 			// Move heat map and par coords view to its initial position in the
 			// bucket
-			for (AGLEventListener view : containedGLViews) {
+			for (AGLView view : containedGLViews) {
 				if (view instanceof GLParallelCoordinates) {
-					stackLevel.getElementByPositionIndex(0).setContainedElementID(view.getID());
+					stackLevel.getElementByPositionIndex(0).setGLView(view);
 					view.setRemoteLevelElement(stackLevel.getElementByPositionIndex(0));
 				}
 				else if (view instanceof GLHeatMap) {
-					focusLevel.getElementByPositionIndex(0).setContainedElementID(view.getID());
+					focusLevel.getElementByPositionIndex(0).setGLView(view);
 					view.setRemoteLevelElement(focusLevel.getElementByPositionIndex(0));
 				}
 			}
@@ -1337,38 +1311,36 @@ public abstract class AGLViewBrowser
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
 	}
 
+	@Override
 	public void resetView() {
 		resetView(true);
 	}
 
 	protected void clearRemoteLevel(RemoteLevel remoteLevel) {
-		int iViewID;
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
-		AGLEventListener glEventListener = null;
+		AGLView glView = null;
 
 		for (RemoteLevelElement element : remoteLevel.getAllElements()) {
-			iViewID = element.getContainedElementID();
-
-			if (iViewID == -1) {
+			if (element.getGLView() == null) {
 				continue;
 			}
 
-			glEventListener = viewManager.getGLEventListener(iViewID);
+			glView = element.getGLView();
 
-			if (glEventListener instanceof GLHeatMap || glEventListener instanceof GLParallelCoordinates) {
+			if (glView instanceof GLHeatMap || glView instanceof GLParallelCoordinates) {
 				// Remove all elements from heatmap and parallel coordinates
-				((AStorageBasedView) glEventListener).resetView();
+				((AStorageBasedView) glView).resetView();
 
-				if (!glEventListener.isRenderedRemote()) {
-					glEventListener.enableBusyMode(false);
+				if (!glView.isRenderedRemote()) {
+					glView.enableBusyMode(false);
 				}
 			}
 			else {
-				removeView(glEventListener);
-				glEventListener.broadcastElements(EVAOperation.REMOVE_ELEMENT);
+				removeView(glView);
+				glView.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 			}
 
-			element.setContainedElementID(-1);
+			element.setGLView(null);
 		}
 	}
 
@@ -1505,36 +1477,36 @@ public abstract class AGLViewBrowser
 	 * @param GL
 	 */
 	private void initNewView(GL gl) {
-		
+
 		// Views should not be loaded until the browser is finished to be slerped
 		if (isSlerpActive)
 			return;
-		
+
 		if (!newViews.isEmpty() && GeneralManager.get().getPathwayManager().isPathwayLoadingFinished()
 			&& arSlerpActions.isEmpty()) {
 
 			ASerializedView serView = newViews.remove(0);
-			AGLEventListener view = createView(gl, serView);
+			AGLView view = createView(gl, serView);
 			if (hasFreeViewPosition()) {
 
 				// TODO use this when views should be slerped in
-//				if (this instanceof GLPathwayViewBrowser)
-					addSlerpActionForView(gl, view);
-//				else {
-//
-//					if (focusLevel.hasFreePosition()) {
-//						poolLevel.getNextFree().setContainedElementID(view.getID());
-//						view.broadcastElements(EVAOperation.APPEND_UNIQUE);
-//					}
-//					else if (poolLevel.hasFreePosition()) {
-//						poolLevel.getNextFree().setContainedElementID(view.getID());
-//					}
-//					else {
-//						GeneralManager.get().getLogger().log(
-//							new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-//								"No empty space left to add new view!"));
-//					}
-//				}
+				// if (this instanceof GLPathwayViewBrowser)
+				addSlerpActionForView(gl, view);
+				// else {
+				//
+				// if (focusLevel.hasFreePosition()) {
+				// poolLevel.getNextFree().setContainedElementID(view.getID());
+				// view.broadcastElements(EVAOperation.APPEND_UNIQUE);
+				// }
+				// else if (poolLevel.hasFreePosition()) {
+				// poolLevel.getNextFree().setContainedElementID(view.getID());
+				// }
+				// else {
+				// GeneralManager.get().getLogger().log(
+				// new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				// "No empty space left to add new view!"));
+				// }
+				// }
 
 				containedGLViews.add(view);
 			}
@@ -1557,11 +1529,11 @@ public abstract class AGLViewBrowser
 
 		ViewActivationEvent viewActivationEvent = new ViewActivationEvent();
 		viewActivationEvent.setSender(this);
-		List<AGLEventListener> views = getRemoteRenderedViews();
+		List<AGLView> views = getRemoteRenderedViews();
 
 		List<Integer> viewIDs = new ArrayList<Integer>();
 		viewIDs.add(getID());
-		for (AGLEventListener view : views) {
+		for (AGLView view : views) {
 			viewIDs.add(view.getID());
 		}
 
@@ -1592,7 +1564,7 @@ public abstract class AGLViewBrowser
 	 *            the view for which the slerp transition should be added
 	 * @return <code>true</code> if adding the slerp action was successfull, <code>false</code> otherwise
 	 */
-	private boolean addSlerpActionForView(GL gl, AGLEventListener view) {
+	private boolean addSlerpActionForView(GL gl, AGLView view) {
 
 		RemoteLevelElement origin = spawnLevel.getElementByPositionIndex(0);
 		RemoteLevelElement destination = null;
@@ -1609,13 +1581,15 @@ public abstract class AGLViewBrowser
 			destination = poolLevel.getNextFree();
 		}
 		else {
-			GeneralManager.get().getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "No empty space left to add new view!"));
+			GeneralManager.get().getLogger()
+				.log(
+					new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+						"No empty space left to add new view!"));
 			newViews.clear();
 			return false;
 		}
 
-		origin.setContainedElementID(view.getID());
+		origin.setGLView(view);
 		SlerpAction slerpActionTransition = new SlerpAction(origin, destination);
 		arSlerpActions.add(slerpActionTransition);
 
@@ -1634,7 +1608,7 @@ public abstract class AGLViewBrowser
 	 *            serialized form of the view to create
 	 * @return the created view ready to be used within the application
 	 */
-	protected AGLEventListener createView(GL gl, ASerializedView serView) {
+	protected AGLView createView(GL gl, ASerializedView serView) {
 
 		ICommandManager cm = generalManager.getCommandManager();
 		ECommandType cmdType = serView.getCreationCommandType();
@@ -1643,7 +1617,7 @@ public abstract class AGLViewBrowser
 		// cmdView.setSet(set);
 		cmdView.doCommand();
 
-		AGLEventListener glView = cmdView.getCreatedObject();
+		AGLView glView = cmdView.getCreatedObject();
 		glView.setUseCase(useCase);
 		glView.setRemoteRenderingGLView(this);
 		glView.setSet(set);
@@ -1734,8 +1708,8 @@ public abstract class AGLViewBrowser
 						continue;
 					}
 
-					element.setContainedElementID(elementInner.getContainedElementID());
-					elementInner.setContainedElementID(-1);
+					element.setGLView(elementInner.getGLView());
+					elementInner.setGLView(null);
 
 					break;
 				}
@@ -1744,13 +1718,13 @@ public abstract class AGLViewBrowser
 	}
 
 	@Override
-	public List<AGLEventListener> getRemoteRenderedViews() {
+	public List<AGLView> getRemoteRenderedViews() {
 		return containedGLViews;
 	}
 
 	@Override
 	public void clearAllSelections() {
-		for (AGLEventListener view : containedGLViews) {
+		for (AGLView view : containedGLViews) {
 			view.clearAllSelections();
 		}
 	}
@@ -1786,8 +1760,8 @@ public abstract class AGLViewBrowser
 		ArrayList<ASerializedView> remoteViews =
 			new ArrayList<ASerializedView>(focusLevel.getAllElements().size());
 		for (RemoteLevelElement rle : focusLevel.getAllElements()) {
-			if (rle.getContainedElementID() != -1) {
-				AGLEventListener remoteView = viewManager.getGLEventListener(rle.getContainedElementID());
+			if (rle.getGLView() != null) {
+				AGLView remoteView = rle.getGLView();
 				remoteViews.add(remoteView.getSerializableRepresentation());
 			}
 		}
@@ -1795,8 +1769,8 @@ public abstract class AGLViewBrowser
 
 		remoteViews = new ArrayList<ASerializedView>(stackLevel.getAllElements().size());
 		for (RemoteLevelElement rle : stackLevel.getAllElements()) {
-			if (rle.getContainedElementID() != -1) {
-				AGLEventListener remoteView = viewManager.getGLEventListener(rle.getContainedElementID());
+			if (rle.getGLView() != null) {
+				AGLView remoteView = rle.getGLView();
 				remoteViews.add(remoteView.getSerializableRepresentation());
 			}
 		}
@@ -1874,11 +1848,11 @@ public abstract class AGLViewBrowser
 	public AGLConnectionLineRenderer getGlConnectionLineRenderer() {
 		return glConnectionLineRenderer;
 	}
-	
+
 	protected void removeSelection(int iElementID) {
-		
+
 	}
-	
+
 	public void setSlerpActive(boolean isSlerpActive) {
 		this.isSlerpActive = isSlerpActive;
 	}

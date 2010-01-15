@@ -66,6 +66,8 @@ public class FileLoadDataAction
 	private Text txtMin;
 	private Text txtMax;
 
+	private Button buttonHomogeneous;
+
 	private Table previewTable;
 
 	private ArrayList<Button> arSkipColumn;
@@ -113,10 +115,10 @@ public class FileLoadDataAction
 	}
 
 	private void createGUI() {
-		int numGridCols = 4;
+		int numGridCols = 5;
 
 		if (Application.dataDomain != EDataDomain.GENETIC_DATA)
-			numGridCols = 3;
+			numGridCols = 4;
 
 		loadDataParameters.setDataDomain(Application.dataDomain);
 
@@ -216,6 +218,36 @@ public class FileLoadDataAction
 			});
 		}
 
+		createDelimiterGroup();
+
+		createFilterGroup();
+
+		createDataPropertiesGroup();
+
+		previewTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
+		previewTable.setLinesVisible(true);
+		previewTable.setHeaderVisible(true);
+		gridData = new GridData(GridData.FILL_BOTH);
+		gridData.horizontalSpan = numGridCols;
+		gridData.heightHint = 400;
+		gridData.widthHint = 1000;
+		previewTable.setLayoutData(gridData);
+
+		// Check if an external file name is given to the action
+		if (!inputFile.isEmpty()) {
+			txtFileName.setText(inputFile);
+			loadDataParameters.setFileName(inputFile);
+			mathFilterMode = "Log10";
+			// mathFilterCombo.select(1);
+
+			createDataPreviewTable("\t");
+
+			if (loadDataParameters.getDataDomain() == EDataDomain.GENETIC_DATA)
+				determineFileIDType();
+		}
+	}
+
+	private void createDelimiterGroup() {
 		Group delimiterGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		delimiterGroup.setText("Separated by (delimiter)");
 		delimiterGroup.setLayout(new RowLayout());
@@ -402,7 +434,9 @@ public class FileLoadDataAction
 				composite.pack();
 			}
 		});
+	}
 
+	private void createFilterGroup() {
 		Group filterGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		filterGroup.setText("Apply filter");
 		filterGroup.setLayout(new RowLayout());
@@ -482,27 +516,25 @@ public class FileLoadDataAction
 			}
 		});
 
-		previewTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
-		previewTable.setLinesVisible(true);
-		previewTable.setHeaderVisible(true);
-		gridData = new GridData(GridData.FILL_BOTH);
-		gridData.horizontalSpan = numGridCols;
-		gridData.heightHint = 400;
-		gridData.widthHint = 1000;
-		previewTable.setLayoutData(gridData);
+	}
 
-		// Check if an external file name is given to the action
-		if (!inputFile.isEmpty()) {
-			txtFileName.setText(inputFile);
-			loadDataParameters.setFileName(inputFile);
-			mathFilterMode = "Log10";
-			mathFilterCombo.select(1);
+	private void createDataPropertiesGroup() {
+		Group dataPropertiesGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		dataPropertiesGroup.setText("Data properties");
+		dataPropertiesGroup.setLayout(new RowLayout());
+		dataPropertiesGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-			createDataPreviewTable("\t");
+		buttonHomogeneous = new Button(dataPropertiesGroup, SWT.CHECK);
+		buttonHomogeneous.setText("Homogeneous data");
+		buttonHomogeneous.setEnabled(true);
+		buttonHomogeneous.setSelection(true);
+		// buttonHomogeneous.addSelectionListener(new SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// txtMin.setEnabled(buttonHomogeneous.getSelection());
+		// }
+		// });
 
-			if (loadDataParameters.getDataDomain() == EDataDomain.GENETIC_DATA)
-				determineFileIDType();
-		}
 	}
 
 	private void createDataPreviewTable(final String sDelimiter) {
@@ -716,6 +748,8 @@ public class FileLoadDataAction
 		}
 
 		loadDataParameters.setMathFilterMode(mathFilterMode);
+
+		loadDataParameters.setIsDataHomogeneous(buttonHomogeneous.getSelection());
 	}
 
 	/**

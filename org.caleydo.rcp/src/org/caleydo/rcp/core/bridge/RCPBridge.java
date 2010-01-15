@@ -2,9 +2,9 @@ package org.caleydo.rcp.core.bridge;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.rcp.command.handler.ExitHandler;
-import org.caleydo.rcp.view.opengl.ARcpGLViewPart;
+import org.caleydo.view.base.rcp.ARcpGLViewPart;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
@@ -55,7 +55,7 @@ public class RCPBridge
 					IWorkbenchPage page =
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 					ARcpGLViewPart viewPart = (ARcpGLViewPart) page.showView(serializedView.getViewGUIID());
-					AGLEventListener view = viewPart.getGLEventListener();
+					AGLView view = viewPart.getGLEventListener();
 					view.initFromSerializableRepresentation(serializedView);
 					// TODO re-init view with its serializedView
 

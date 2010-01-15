@@ -14,6 +14,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.parser.ascii.AbstractLoader;
 import org.caleydo.core.parser.ascii.IParserObject;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -108,7 +109,7 @@ public class TabularAsciiDataReader
 				bAllTokensProper = false;
 
 				GeneralManager.get().getLogger().log(
-					new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "Unknown column data type: "
+					new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "Unknown column data type: "
 						+ tokenPattern));
 			}
 		}
@@ -226,7 +227,7 @@ public class TabularAsciiDataReader
 								MessageDialog.openError(new Shell(), "Error during parsing", sErrorMessage);
 
 								GeneralManager.get().getLogger().log(
-									new Status(Status.ERROR, GeneralManager.PLUGIN_ID, sErrorMessage));
+									new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID, sErrorMessage));
 								throw nfe;
 							}
 

@@ -18,7 +18,7 @@ public class GlyphGridPositionModelPlus
 
 	public GlyphGridPositionModelPlus(GlyphRenderStyle renderStyle) {
 		super(renderStyle);
-		gman = (GlyphManager) generalManager.getGlyphManager();
+		gman = generalManager.getGlyphManager();
 	}
 
 	public void setParameterWithInternalColnumX(int value) {

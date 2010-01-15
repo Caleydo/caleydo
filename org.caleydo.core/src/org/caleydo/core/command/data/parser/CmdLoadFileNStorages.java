@@ -12,6 +12,7 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.system.StringConversionTool;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -73,7 +74,7 @@ public class CmdLoadFileNStorages
 
 				if (iArrayStartStop[0] > iArrayStartStop[1] && iArrayStartStop[1] != -1) {
 					generalManager.getLogger().log(
-						new Status(Status.ERROR, GeneralManager.PLUGIN_ID, "Ignore stop inde="
+						new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID, "Ignore stop inde="
 							+ iArrayStartStop[1] + " because it is maller that start index="
 							+ iArrayStartStop[0]));
 
@@ -99,7 +100,7 @@ public class CmdLoadFileNStorages
 	@Override
 	public void doCommand() {
 		generalManager.getLogger().log(
-			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Loading data from file "
+			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Loading data from file "
 				+ loadDataParameters.getFileName() + " using token pattern "
 				+ loadDataParameters.getInputPattern() + ". Data is stored in Storage with ID "
 				+ iAlStorageIDs.toString()));

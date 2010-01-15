@@ -7,7 +7,7 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketLayoutRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
@@ -26,7 +26,7 @@ public class GLOffScreenTextureRenderer {
 	}
 
 	public void renderToTexture(GL gl, int iViewID, int iTextureIndex, int iViewWidth, int iViewHeight) {
-		gl.glViewport(0, 0, 1024, (int) 1024);
+		gl.glViewport(0, 0, 1024, 1024);
 
 		gl.glLoadIdentity();
 
@@ -34,7 +34,7 @@ public class GLOffScreenTextureRenderer {
 		glu.gluLookAt(4, 4, 4.8f, 4, 4, 0, 0, 1, 0);
 
 		// RENDER VIEW CONTENT
-		AGLEventListener glEventListener =
+		AGLView glEventListener =
 			GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		IViewFrustum viewFrustum = glEventListener.getViewFrustum();
@@ -79,7 +79,7 @@ public class GLOffScreenTextureRenderer {
 
 		float fNormalizedHeadDist = bucketLayoutRenderStyle.getHeadDistance();
 
-		if (stackLevel.getElementByPositionIndex(0).getContainedElementID() != -1) {
+		if (stackLevel.getElementByPositionIndex(0).getGLView() != null) {
 			// gl.glPushMatrix();
 			// Transform transform = stackLevel.getElementByPositionIndex(0).getTransform();
 			// Vec3f translation = transform.getTranslation();
@@ -129,7 +129,7 @@ public class GLOffScreenTextureRenderer {
 			gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
 		}
 
-		if (stackLevel.getElementByPositionIndex(1).getContainedElementID() != -1) {
+		if (stackLevel.getElementByPositionIndex(1).getGLView() != null) {
 			// Background plane
 			// gl.glBegin(GL.GL_QUADS);
 			// gl.glVertex3f(-fBucketWidth, fBucketHeight, fBucketDepth);
@@ -161,7 +161,7 @@ public class GLOffScreenTextureRenderer {
 			gl.glBindTexture(GL.GL_TEXTURE_2D, 1);
 		}
 
-		if (stackLevel.getElementByPositionIndex(2).getContainedElementID() != -1) {
+		if (stackLevel.getElementByPositionIndex(2).getGLView() != null) {
 			gl.glEnable(GL.GL_TEXTURE_2D);
 			gl.glDisable(GL.GL_DEPTH_TEST);
 			gl.glBindTexture(GL.GL_TEXTURE_2D, iArOffScreenTextures[2]);
@@ -185,7 +185,7 @@ public class GLOffScreenTextureRenderer {
 			gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
 		}
 
-		if (stackLevel.getElementByPositionIndex(3).getContainedElementID() != -1) {
+		if (stackLevel.getElementByPositionIndex(3).getGLView() != null) {
 			gl.glEnable(GL.GL_TEXTURE_2D);
 			gl.glDisable(GL.GL_DEPTH_TEST);
 			gl.glBindTexture(GL.GL_TEXTURE_2D, iArOffScreenTextures[3]);

@@ -90,4 +90,13 @@ public interface IGroupwareManager
 	 * @return
 	 */
 	public boolean isGroupwareConnectionLinesEnabled();
+
+	/**
+	 * TODO: this method is only here, because deskotheque does not deliver server address to connecting
+	 * clients yet
+	 * 
+	 * @param serverAddress
+	 */
+	public void setServerAddress(String serverAddress);
+
 }

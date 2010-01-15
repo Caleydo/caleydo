@@ -24,8 +24,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Handles creation and initialization of preference store. 
- * Preferences store enables storing and restoring of
+ * Handles creation and initialization of preference store. Preferences store enables storing and restoring of
  * application specific preference data.
  */
 public class PreferenceManager {
@@ -35,7 +34,7 @@ public class PreferenceManager {
 	private static PreferenceManager preferenceManager;
 
 	private PreferenceStore preferenceStore;
-	
+
 	public static PreferenceManager get() {
 		if (preferenceManager == null) {
 			preferenceManager = new PreferenceManager();
@@ -46,7 +45,7 @@ public class PreferenceManager {
 	public PreferenceStore getPreferenceStore() {
 		return preferenceStore;
 	}
-	
+
 	void initialize() {
 
 		preferenceStore = new PreferenceStore(IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME);
@@ -132,16 +131,16 @@ public class PreferenceManager {
 			+ ";" + EPathwayDatabaseType.BIOCARTA.name());
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, EDataDomain.GENETIC_DATA.name());
 		store.setDefault(PreferenceConstants.USE_PROXY, false);
-		
-		//visual links
+
+		// visual links
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_STYLE, 0);
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_ANIMATION, false);
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_WIDTH, 2.0f);
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_COLOR, "255,255,0,255");
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO, false);
-		
+
 	}
-	
+
 	private void initCaleydoFolder() {
 
 		// Create .caleydo folder

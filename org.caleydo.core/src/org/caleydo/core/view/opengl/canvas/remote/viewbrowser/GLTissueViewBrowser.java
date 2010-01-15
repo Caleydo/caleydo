@@ -27,7 +27,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceVirtualArrayListener;
@@ -54,7 +54,7 @@ public class GLTissueViewBrowser
 	private EIDType primaryIDType = EIDType.EXPERIMENT_INDEX;
 
 	private ArrayList<SerializedTissueView> allTissueViews;
-	
+
 	private boolean poolLeft = true;
 
 	public GLTissueViewBrowser(GLCaleydoCanvas glCanvas, String sLabel, IViewFrustum viewFrustum) {
@@ -116,9 +116,9 @@ public class GLTissueViewBrowser
 	}
 
 	@Override
-	protected AGLEventListener createView(GL gl, ASerializedView serView) {
+	protected AGLView createView(GL gl, ASerializedView serView) {
 
-		AGLEventListener glView = super.createView(gl, serView);
+		AGLView glView = super.createView(gl, serView);
 
 		((GLTissue) glView).setTexturePath(((SerializedTissueView) serView).getTexturePath());
 		glView.setLabel(((SerializedTissueView) serView).getLabel());
@@ -128,11 +128,11 @@ public class GLTissueViewBrowser
 
 	@Override
 	protected void initFocusLevel() {
-		
+
 		float xOffset = 1.5f;
 		if (!poolLeft)
 			xOffset = 0.1f;
-		
+
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(xOffset, 1.3f, 0));
 		transform.setScale(new Vec3f(0.8f, 0.8f, 1));
@@ -147,7 +147,7 @@ public class GLTissueViewBrowser
 		float xOffset = 6.6f;
 		if (poolLeft)
 			xOffset = 0.1f;
-		
+
 		float fScalingFactorPoolLevel = 0.05f;
 		float fSelectedScaling = 1;
 		float fYAdd = 8f;
@@ -345,19 +345,18 @@ public class GLTissueViewBrowser
 	public SelectionManager getSelectionManager() {
 		return experiementSelectionManager;
 	}
-	
+
 	public void setPoolSide(boolean poolLeft) {
 		this.poolLeft = poolLeft;
 	}
-	
+
 	@Override
 	protected void removeSelection(int iElementID) {
 
 		experiementSelectionManager.remove(iElementID, false);
-		IVirtualArrayDelta vaDelta =
-			new VirtualArrayDelta(EVAType.CONTENT, EIDType.EXPERIMENT_INDEX);
+		IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EVAType.CONTENT, EIDType.EXPERIMENT_INDEX);
 		vaDelta.add(VADeltaItem.removeElement(iElementID));
-		
+
 		VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
 		virtualArrayUpdateEvent.setSender(this);
 		virtualArrayUpdateEvent.setVirtualArrayDelta((VirtualArrayDelta) vaDelta);

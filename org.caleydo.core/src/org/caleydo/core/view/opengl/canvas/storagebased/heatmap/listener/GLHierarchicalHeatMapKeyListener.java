@@ -84,4 +84,10 @@ public class GLHierarchicalHeatMapKeyListener
 				break;
 		}
 	}
+
+	@Override
+	protected void handleKeyReleasedEvent(KeyEvent event) {
+		// TODO Auto-generated method stub
+
+	}
 }

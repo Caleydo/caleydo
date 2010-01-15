@@ -17,6 +17,7 @@ import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -73,7 +74,7 @@ public class GlyphDataLoader {
 							INominalStorage<String> storage = (INominalStorage<String>) tmpStorage;
 							if (storage.getRaw(i) == null) {
 								GeneralManager.get().getLogger().log(
-									new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+									new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
 										"GlyphDataLoader: no numerical data found"
 											+ " - empty line in csv file?????"));
 								temp2[i] = -1;
@@ -86,7 +87,7 @@ public class GlyphDataLoader {
 							INumericalStorage storage = (INumericalStorage) tmpStorage;
 							if (storage.get(EDataRepresentation.RAW, i) == null) {
 								GeneralManager.get().getLogger().log(
-									new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+									new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
 										"GlyphDataLoader: no numerical data found"
 											+ " - empty line in csv file?????"));
 								temp2[i] = -1;
@@ -108,7 +109,7 @@ public class GlyphDataLoader {
 
 						if (t2 == -1 && !value.equals("-1")) {
 							this.generalManager.getLogger().log(
-								new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+								new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
 									"GlyphDataLoader: No data mapping found for " + tmpStorage.getLabel()
 										+ " value " + value));
 						}
@@ -138,8 +139,10 @@ public class GlyphDataLoader {
 		}
 
 		if (aliStoreMapped.size() <= 0) {
-			this.generalManager.getLogger().log(
-				new Status(Status.ERROR, GeneralManager.PLUGIN_ID, "GlyphDataLoader: No data in file found"));
+			this.generalManager.getLogger()
+				.log(
+					new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID,
+						"GlyphDataLoader: No data in file found"));
 			return;
 		}
 

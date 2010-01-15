@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Date;
+import java.util.HashSet;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -26,7 +27,7 @@ import org.caleydo.core.manager.view.CanvasConnectionMap;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.SelectionPoint2D;
 import org.caleydo.core.manager.view.SelectionPoint2DList;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -35,25 +36,26 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
-public class VisLinkManager extends ADisplayLoopEventHandler
-	implements IViewCommandHandler, ISelectionUpdateHandler{
-	
+public class VisLinkManager
+	extends ADisplayLoopEventHandler
+	implements IViewCommandHandler, ISelectionUpdateHandler {
+
 	private static VisLinkManager visLinkManager = null;
-	
+
 	private Display display;
-	
+
 	private String appName = null;
 
 	private String caleydoSelectionId;
-	
+
 	private SelectionRetriever selectionRetriever = null;
 	private Thread selectionRetrieverThread = null;
-	
+
 	private IEventPublisher eventPublisher;
 	private VisLinkSelectionListener visLinkSelectionListener;
 	private SelectionUpdateListener selectionUpdateListener;
 	private ClearSelectionsListener clearSelectionsListener;
-	
+
 	public static VisLinkManager get() {
 		if (visLinkManager == null) {
 			visLinkManager = new VisLinkManager();
@@ -61,24 +63,24 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 		}
 		return visLinkManager;
 	}
-	
+
 	private void init() {
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
-		
+
 		selectionRetriever = new SelectionRetriever();
 		selectionRetriever.setVisLinkManager(this);
 		selectionRetrieverThread = new Thread(selectionRetriever);
 		selectionRetrieverThread.start();
 	}
-	
+
 	public void dispose() {
 		unregisterEventListeners();
 		doVisdaemonRequest("unregister?name=" + appName);
 		selectionRetriever.setStopped(true);
 		visLinkManager = null;
 	}
-	
+
 	public void register(int x, int y, int w, int h, Display display) {
 		this.display = display;
 		String bbs = createBoundingBoxXML(x, y, w, h);
@@ -95,7 +97,7 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 	private String createBoundingBoxXML(int x, int y, int w, int h) {
 		return createBoundingBoxXML(x, y, w, h, null);
 	}
-	
+
 	private String createBoundingBoxXML(int x, int y, int w, int h, Boolean source) {
 		StringBuffer bb = new StringBuffer();
 		bb.append("<boundingBox ");
@@ -110,18 +112,27 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 		return bb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void handleVisLinkSelection(String selectionId) {
 		System.out.println(this.getClass() + " got selectionId: " + selectionId);
 		ClearSelectionsEvent cse = new ClearSelectionsEvent();
 		cse.setSender(this);
 		eventPublisher.triggerEvent(cse);
-		
-		GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
-		
+
+		GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager()
+			.clearTransformedConnections();
+
 		caleydoSelectionId = null;
-		
+
 		IIDMappingManager idmm = GeneralManager.get().getIDMappingManager();
-		int destId = idmm.getID(EIDType.UNSPECIFIED, EIDType.EXPRESSION_INDEX, selectionId);
+		int destId = 0;
+		try {
+			destId = idmm.getID(EIDType.UNSPECIFIED, EIDType.EXPRESSION_INDEX, selectionId);
+		}
+		catch (NullPointerException e) {
+			HashSet set = idmm.getID(EIDType.GENE_SYMBOL, EIDType.EXPRESSION_INDEX, selectionId);
+			destId = (Integer) set.iterator().next();
+		}
 		SelectionDelta sd = new SelectionDelta(EIDType.EXPRESSION_INDEX);
 		SelectionDeltaItem sdi = sd.addSelection(destId, ESelectionType.MOUSE_OVER);
 		sdi.addConnectionID(885);
@@ -129,14 +140,14 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 		sue.setSelectionDelta(sd);
 		sue.setSender(this);
 		eventPublisher.triggerEvent(sue);
-		
-//		String bbl = "<boundingBoxList>";
-//		bbl += createBoundingBoxXML(200, 200, 20, 20, false);
-//		bbl += "</boundingBoxList>";
-//		bbl = urlEncode(bbl);
-//		doVisdaemonRequest("reportVisualLinks?name=" + appName + "&xml=" + bbl);
+
+		// String bbl = "<boundingBoxList>";
+		// bbl += createBoundingBoxXML(200, 200, 20, 20, false);
+		// bbl += "</boundingBoxList>";
+		// bbl = urlEncode(bbl);
+		// doVisdaemonRequest("reportVisualLinks?name=" + appName + "&xml=" + bbl);
 	}
-	
+
 	@Override
 	public void handleClearSelections() {
 		System.out.println("VisLinkManager: handleClearSelections");
@@ -146,7 +157,7 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		System.out.println("VisLinkManager: handleSelectionUpdate");
-		
+
 		SelectionDeltaItem sdi = null;
 		for (SelectionDeltaItem s : selectionDelta.getAllItems()) {
 			if (s.getSelectionType() == ESelectionType.MOUSE_OVER) {
@@ -155,7 +166,12 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 		}
 		if (sdi != null) {
 			IIDMappingManager idmm = GeneralManager.get().getIDMappingManager();
-			caleydoSelectionId = idmm.getID(EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED, sdi.getPrimaryID());
+			caleydoSelectionId =
+				idmm.getID(EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED, sdi.getPrimaryID());
+			if (caleydoSelectionId == null) {
+				caleydoSelectionId =
+					idmm.getID(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, sdi.getPrimaryID());
+			}
 		}
 	}
 
@@ -165,24 +181,24 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 		}
 		catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
-		} 
+		}
 	}
-	
+
 	public String doVisdaemonRequest(String urlCommand) {
 
 		String urlString = "http://localhost:8080/visdaemon/" + urlCommand;
 		StringBuffer responseBuf;
 
 		try {
-			System.out.println("visdaemon request: " + urlString);
+			// System.out.println("visdaemon request: " + urlString);
 			URL registerURL = new URL(urlString);
 			URLConnection registerCon = registerURL.openConnection();
-	
+
 			BufferedReader in = new BufferedReader(new InputStreamReader(registerCon.getInputStream()));
-	
+
 			responseBuf = new StringBuffer();
 			String line;
-			while ((line = in.readLine()) != null) { 
+			while ((line = in.readLine()) != null) {
 				responseBuf.append(line);
 			}
 			in.close();
@@ -190,7 +206,8 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 		catch (MalformedURLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
@@ -198,7 +215,7 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 	}
 
 	public void run() {
-		ConnectedElementRepresentationManager cerm = 
+		ConnectedElementRepresentationManager cerm =
 			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
 		if (cerm.isNewCanvasVertices()) {
 			final CanvasConnectionMap ccm = cerm.getCanvasConnectionsByType().get(EIDType.EXPRESSION_INDEX);
@@ -212,17 +229,20 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 						}
 						String bbl = "<boundingBoxList>";
 						for (SelectionPoint2D point : screenPoints) {
-							bbl += createBoundingBoxXML(point.getX()-10, point.getY() - 10, 20, 20, caleydoSelectionId != null);
+							bbl +=
+								createBoundingBoxXML(point.getX(), point.getY(), 0, 0,
+									caleydoSelectionId != null);
 						}
 						bbl += "</boundingBoxList>";
 						System.out.println("new bll = " + bbl);
-						
+
 						String requrl = null;
 						if (caleydoSelectionId != null) {
 							requrl = "selection?name=" + appName;
 							requrl += "&id=" + urlEncode(caleydoSelectionId);
 							requrl += "&xml=" + urlEncode(bbl);
-						} else {
+						}
+						else {
 							requrl = "reportVisualLinks?name=" + appName;
 							requrl += "&xml=" + urlEncode(bbl);
 						}
@@ -235,19 +255,17 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 	}
 
 	/**
-	 * Transforms the given list of selection vertices from canvas coordinates
-	 * to display coordinates
+	 * Transforms the given list of selection vertices from canvas coordinates to display coordinates
 	 * 
 	 * @param canvasPoints
 	 *            list of canvas-vertices of connection lines
 	 * @return list of selection vertices in display coordinates
 	 */
-	private SelectionPoint2DList canvasPointsToDisplay(
-			SelectionPoint2DList canvasPoints) {
+	private SelectionPoint2DList canvasPointsToDisplay(SelectionPoint2DList canvasPoints) {
 		SelectionPoint2DList displayPoints = new SelectionPoint2DList();
 		for (SelectionPoint2D p : canvasPoints) {
 			IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
-			AGLEventListener view = vm.getGLEventListener(p.getViewID());
+			AGLView view = vm.getGLEventListener(p.getViewID());
 			Composite composite = view.getParentGLCanvas().getParentComposite();
 			Point dp = composite.toDisplay(p.getPoint());
 			SelectionPoint2D displayPoint = new SelectionPoint2D(appName, p.getViewID(), dp);
@@ -260,16 +278,16 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 		visLinkSelectionListener = new VisLinkSelectionListener();
 		visLinkSelectionListener.setHandler(this);
 		eventPublisher.addListener(VisLinkSelectionEvent.class, visLinkSelectionListener);
-		
+
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
-		
+
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 	}
-	
+
 	private void unregisterEventListeners() {
 		if (visLinkSelectionListener != null) {
 			eventPublisher.removeListener(visLinkSelectionListener);
@@ -288,13 +306,13 @@ public class VisLinkManager extends ADisplayLoopEventHandler
 	@Override
 	public void handleRedrawView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void handleUpdateView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public String getAppName() {

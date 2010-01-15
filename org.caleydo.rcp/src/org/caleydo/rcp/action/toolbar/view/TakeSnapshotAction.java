@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.rcp.action.toolbar.AToolBarAction;
+import org.caleydo.view.base.action.toolbar.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;

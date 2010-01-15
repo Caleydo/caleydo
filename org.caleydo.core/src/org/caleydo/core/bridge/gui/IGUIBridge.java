@@ -4,13 +4,9 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.eclipse.swt.widgets.Display;
 
 public interface IGUIBridge {
+	
 	public void closeApplication();
-
-	// public void setActiveGLView();
-
-	// public void setActiveGLSubView(AGLEventListener parentGLEventListener,
-	// AGLEventListener subGLEventListener);
-
+	
 	public void setShortInfo(String sMessage);
 
 	public void setFileNameCurrentDataSet(String sFileName);
@@ -34,4 +30,5 @@ public interface IGUIBridge {
 	 *            the GUI ID (e.g. RCP)
 	 */
 	public void closeView(String viewGUIID);
+
 }

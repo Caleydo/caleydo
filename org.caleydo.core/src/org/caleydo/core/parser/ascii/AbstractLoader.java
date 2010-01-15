@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -189,7 +190,7 @@ public abstract class AbstractLoader
 		BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
 
 		GeneralManager.get().getLogger().log(
-			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Start loading file " + sFileName + "..."));
+			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Start loading file " + sFileName + "..."));
 
 		try {
 			this.loadDataParseFile(brFile, computeNumberOfLinesInFile(sFileName));
@@ -206,7 +207,7 @@ public abstract class AbstractLoader
 		}
 
 		GeneralManager.get().getLogger().log(
-			new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "File " + sFileName
+			new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "File " + sFileName
 				+ " successfully loaded."));
 
 		setArraysToStorages();

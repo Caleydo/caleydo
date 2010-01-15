@@ -60,11 +60,11 @@ public class AnimationPullInDetailOutside
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
 		gl.glTranslatef(fXCenter, fYCenter, 0);
-		
+
 		DrawingStrategyManager drawingStrategyManager = radialHierarchy.getDrawingStrategyManager();
 
-		pdCurrentRootElement.setPDDrawingStrategyChildren(drawingStrategyManager
-			.getDefaultDrawingStrategy(), iDisplayedOverviewDepth);
+		pdCurrentRootElement.setPDDrawingStrategyChildren(drawingStrategyManager.getDefaultDrawingStrategy(),
+			iDisplayedOverviewDepth);
 		pdCurrentSelectedElement.setPDDrawingStrategyChildren(drawingStrategyManager
 			.createDrawingStrategy(EPDDrawingStrategyType.INVISIBLE), iDisplayedDetailViewDepth);
 

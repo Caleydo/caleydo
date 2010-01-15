@@ -2,7 +2,7 @@ package org.caleydo.rcp.command.handler.help;
 
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.rcp.view.swt.RcpHTMLBrowserView;
+import org.caleydo.view.base.swt.RcpHTMLBrowserView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

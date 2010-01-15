@@ -15,6 +15,7 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -22,7 +23,8 @@ import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -35,11 +37,11 @@ public class ProjectSaver {
 
 	/** full path to directory to temporarily store the projects file before zipping */
 	public static final String TEMP_PROJECT_DIR_NAME =
-		GeneralManager.CALEYDO_HOME_PATH + "tempSave" + File.separator;
+		IGeneralManager.CALEYDO_HOME_PATH + "tempSave" + File.separator;
 
 	/** full path to directory of the recently open project */
 	public static final String RECENT_PROJECT_DIR_NAME =
-		GeneralManager.CALEYDO_HOME_PATH + "recent_project" + File.separator;
+		IGeneralManager.CALEYDO_HOME_PATH + "recent_project" + File.separator;
 
 	/** file name of the set-data-file in project-folders */
 	public static final String SET_DATA_FILE_NAME = "data.csv";
@@ -78,13 +80,14 @@ public class ProjectSaver {
 		// FIXME - this works only for genetic data now
 		IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
 		if (useCase != null) {
-			if (!useCase.getLoadDataParameters().getFileName()
-				.startsWith(RECENT_PROJECT_DIR_NAME)) {
+			if (!useCase.getLoadDataParameters().getFileName().startsWith(RECENT_PROJECT_DIR_NAME)) {
 				zipUtils.deleteDirectory(RECENT_PROJECT_DIR_NAME);
 			}
-		} else {
-			GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID, 
-				"no genetic useCase, cannot save project"));
+		}
+		else {
+			GeneralManager.get().getLogger().log(
+				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+					"no genetic useCase, cannot save project"));
 			return;
 		}
 		saveProjectData(RECENT_PROJECT_DIR_NAME);
@@ -181,8 +184,8 @@ public class ProjectSaver {
 
 		IViewManager viewManager = GeneralManager.get().getViewGLCanvasManager();
 
-		Collection<AGLEventListener> glViews = viewManager.getAllGLEventListeners();
-		for (AGLEventListener glView : glViews) {
+		Collection<AGLView> glViews = viewManager.getAllGLEventListeners();
+		for (AGLView glView : glViews) {
 			if (!glView.isRenderedRemote()) {
 				ASerializedView serView = glView.getSerializableRepresentation();
 				if (!(serView instanceof SerializedDummyView)) {

@@ -1,6 +1,6 @@
 package org.caleydo.rcp.command.handler;
 
-import org.caleydo.rcp.action.toolbar.view.storagebased.StartClusteringAction;
+import org.caleydo.rcp.action.toolbar.view.StartClusteringAction;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

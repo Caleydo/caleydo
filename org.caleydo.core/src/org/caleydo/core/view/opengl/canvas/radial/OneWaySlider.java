@@ -87,9 +87,9 @@ public class OneWaySlider
 		fSlidingElementHeight = Math.min(fHeight * 0.2f, SLIDING_ELEMENT_MAX_HEIGHT);
 		fDownButtonHeight = Math.min(fHeight * 0.2f, DOWN_BUTTON_MAX_HEIGHT);
 		fDrawingStep =
-			(float) iValueStep
-				* ((fHeight - fSlidingElementHeight - fDownButtonHeight) / (float) (iMaxValue - iMinValue - 1));
-		fSlidingElementDrawingPosition = fDownButtonHeight + (float) iSelectedValue * fDrawingStep;
+			iValueStep
+				* ((fHeight - fSlidingElementHeight - fDownButtonHeight) / (iMaxValue - iMinValue - 1));
+		fSlidingElementDrawingPosition = fDownButtonHeight + iSelectedValue * fDrawingStep;
 
 		textRenderer =
 			new TextRenderer(new Font(SLIDER_FONT_NAME, SLIDER_FONT_STYLE, SLIDER_FONT_SIZE), false);
@@ -246,7 +246,7 @@ public class OneWaySlider
 			if (iSelectedValue < iMinValue) {
 				iSelectedValue = iMinValue;
 			}
-			fSlidingElementDrawingPosition = fDownButtonHeight + (float) (iSelectedValue * fDrawingStep);
+			fSlidingElementDrawingPosition = fDownButtonHeight + (iSelectedValue * fDrawingStep);
 		}
 
 		if (glMouseListener.wasMouseReleased()) {
@@ -276,7 +276,7 @@ public class OneWaySlider
 					iSelectedValue = iMinValue;
 				}
 
-				fSlidingElementDrawingPosition = fDownButtonHeight + (float) (iSelectedValue * fDrawingStep);
+				fSlidingElementDrawingPosition = fDownButtonHeight + (iSelectedValue * fDrawingStep);
 				return true;
 
 			case RAD_HIERARCHY_SLIDER_SELECTION:
@@ -295,7 +295,7 @@ public class OneWaySlider
 
 	public void setPosition(Vec2f vecPosition) {
 		this.vecPosition = vecPosition;
-		fSlidingElementDrawingPosition = fDownButtonHeight + (float) iSelectedValue * fDrawingStep;
+		fSlidingElementDrawingPosition = fDownButtonHeight + iSelectedValue * fDrawingStep;
 	}
 
 	public float getHeight() {
@@ -307,9 +307,9 @@ public class OneWaySlider
 		fSlidingElementHeight = Math.min(fHeight * 0.2f, SLIDING_ELEMENT_MAX_HEIGHT);
 		fDownButtonHeight = Math.min(fHeight * 0.2f, DOWN_BUTTON_MAX_HEIGHT);
 		fDrawingStep =
-			(float) iValueStep
-				* ((fHeight - fSlidingElementHeight - fDownButtonHeight) / (float) (iMaxValue - iMinValue - 1));
-		fSlidingElementDrawingPosition = fDownButtonHeight + (float) iSelectedValue * fDrawingStep;
+			iValueStep
+				* ((fHeight - fSlidingElementHeight - fDownButtonHeight) / (iMaxValue - iMinValue - 1));
+		fSlidingElementDrawingPosition = fDownButtonHeight + iSelectedValue * fDrawingStep;
 	}
 
 	public float getWidth() {
@@ -326,7 +326,7 @@ public class OneWaySlider
 
 	public void setSelectedValue(int iSelectedValue) {
 		this.iSelectedValue = iSelectedValue;
-		fSlidingElementDrawingPosition = fDownButtonHeight + (float) iSelectedValue * fDrawingStep;
+		fSlidingElementDrawingPosition = fDownButtonHeight + iSelectedValue * fDrawingStep;
 	}
 
 	public int getValueStep() {
@@ -336,9 +336,9 @@ public class OneWaySlider
 	public void setValueStep(int iValueStep) {
 		this.iValueStep = iValueStep;
 		fDrawingStep =
-			(float) iValueStep
-				* ((fHeight - fSlidingElementHeight - fDownButtonHeight) / (float) (iMaxValue - iMinValue - 1));
-		fSlidingElementDrawingPosition = fDownButtonHeight + (float) iSelectedValue * fDrawingStep;
+			iValueStep
+				* ((fHeight - fSlidingElementHeight - fDownButtonHeight) / (iMaxValue - iMinValue - 1));
+		fSlidingElementDrawingPosition = fDownButtonHeight + iSelectedValue * fDrawingStep;
 	}
 
 	public int getMaxValue() {
@@ -348,9 +348,9 @@ public class OneWaySlider
 	public void setMaxValue(int iMaxValue) {
 		this.iMaxValue = iMaxValue;
 		fDrawingStep =
-			(float) iValueStep
-				* ((fHeight - fSlidingElementHeight - fDownButtonHeight) / (float) (iMaxValue - iMinValue - 1));
-		fSlidingElementDrawingPosition = fDownButtonHeight + (float) iSelectedValue * fDrawingStep;
+			iValueStep
+				* ((fHeight - fSlidingElementHeight - fDownButtonHeight) / (iMaxValue - iMinValue - 1));
+		fSlidingElementDrawingPosition = fDownButtonHeight + iSelectedValue * fDrawingStep;
 	}
 
 	public int getMinValue() {
@@ -360,9 +360,9 @@ public class OneWaySlider
 	public void setMinValue(int iMinValue) {
 		this.iMinValue = iMinValue;
 		fDrawingStep =
-			(float) iValueStep
-				* ((fHeight - fSlidingElementHeight - fDownButtonHeight) / (float) (iMaxValue - iMinValue - 1));
-		fSlidingElementDrawingPosition = fDownButtonHeight + (float) iSelectedValue * fDrawingStep;
+			iValueStep
+				* ((fHeight - fSlidingElementHeight - fDownButtonHeight) / (iMaxValue - iMinValue - 1));
+		fSlidingElementDrawingPosition = fDownButtonHeight + iSelectedValue * fDrawingStep;
 	}
 
 	public float getScaledHeight(GL gl) {

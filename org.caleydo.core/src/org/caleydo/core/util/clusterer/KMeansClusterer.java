@@ -234,11 +234,11 @@ public class KMeansClusterer
 		// System.out.println(data.numAttributes());
 		// System.out.println(data.numInstances());
 
-		IVirtualArray currentVA = null;
-		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-			currentVA = set.getVA(iVAIdContent);
-		else
-			currentVA = set.getVA(iVAIdStorage);
+		//IVirtualArray currentVA = null;
+		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+		// currentVA = set.getVA(iVAIdContent);
+		// else
+		// currentVA = set.getVA(iVAIdStorage);
 
 		for (int cluster = 0; cluster < iNrCluster; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {

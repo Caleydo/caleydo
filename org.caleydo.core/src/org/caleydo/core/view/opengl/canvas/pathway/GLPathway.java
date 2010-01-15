@@ -28,6 +28,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
@@ -42,7 +43,6 @@ import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -52,7 +52,7 @@ import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
@@ -79,6 +79,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -88,7 +89,7 @@ import org.eclipse.core.runtime.Status;
  * @author Alexander Lex
  */
 public class GLPathway
-	extends AGLEventListener
+	extends AGLView
 	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, IViewCommandHandler,
 	ISelectionCommandHandler {
 
@@ -198,7 +199,7 @@ public class GLPathway
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLEventListener glParentView,
+	public void initRemote(final GL gl, final AGLView glParentView,
 		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
@@ -409,7 +410,7 @@ public class GLPathway
 
 			if (iSetRefSeq == null) {
 				generalManager.getLogger().log(
-					new Status(Status.ERROR, GeneralManager.PLUGIN_ID, "No RefSeq IDs found for David: "
+					new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID, "No RefSeq IDs found for David: "
 						+ iDavidID));
 				continue;
 			}
@@ -432,11 +433,11 @@ public class GLPathway
 
 		for (SelectionDeltaItem item : selectionDelta) {
 			for (int iExpressionIndex : getExpressionIndicesFromPathwayVertexGraphItemRep(item.getPrimaryID())) {
-				newSelectionDelta.addSelection((Integer) iExpressionIndex, item.getSelectionType(), item
-					.getPrimaryID());
+				newSelectionDelta
+					.addSelection(iExpressionIndex, item.getSelectionType(), item.getPrimaryID());
 
 				for (Integer iConnectionID : item.getConnectionIDs()) {
-					newSelectionDelta.addConnectionID((Integer) iExpressionIndex, iConnectionID);
+					newSelectionDelta.addConnectionID(iExpressionIndex, iConnectionID);
 				}
 			}
 		}
@@ -524,12 +525,12 @@ public class GLPathway
 		int iImageHeight = pathway.getHeight();
 
 		generalManager.getLogger().log(
-			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Pathway texture width=" + iImageWidth
+			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Pathway texture width=" + iImageWidth
 				+ " / height=" + iImageHeight));
 
 		if (iImageWidth == -1 || iImageHeight == -1) {
 			generalManager.getLogger().log(
-				new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
+				new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID,
 					"Problem because pathway texture width or height is invalid!"));
 		}
 
@@ -778,8 +779,8 @@ public class GLPathway
 				if (iSetRefSeq == null) {
 
 					generalManager.getLogger().log(
-						new Status(Status.ERROR, GeneralManager.PLUGIN_ID, "No RefSeq IDs found for David: "
-							+ iDavidID));
+						new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID,
+							"No RefSeq IDs found for David: " + iDavidID));
 					continue;
 				}
 

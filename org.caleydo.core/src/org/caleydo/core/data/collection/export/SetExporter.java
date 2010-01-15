@@ -90,8 +90,8 @@ public class SetExporter {
 		IVirtualArray storageVA = null;
 
 		IUseCase useCase = GeneralManager.get().getUseCase(set.getSetType().getDataDomain());
-		
-		if(useCase.getDataDomain() != EDataDomain.GENETIC_DATA)
+
+		if (useCase.getDataDomain() != EDataDomain.GENETIC_DATA)
 			return;
 
 		if (eWhichViewToExport == EWhichViewToExport.BUCKET) {

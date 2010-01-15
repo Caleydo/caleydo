@@ -16,10 +16,12 @@ import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.command.queue.ICommandQueue;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.command.factory.CommandFactory;
 import org.caleydo.core.manager.command.factory.ICommandFactory;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -221,7 +223,7 @@ public class CommandManager
 				out.writeObject(tmpCmd);
 
 				GeneralManager.get().getLogger().log(
-					new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Serialize command: ["
+					new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Serialize command: ["
 						+ tmpCmd.getInfoText() + "]"));
 			}
 

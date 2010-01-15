@@ -8,6 +8,7 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
  * In this drawing state the radial hierarchy is drawn at the center of the screen. Other drawing states can
@@ -162,14 +163,14 @@ public class DrawingStateFullHierarchy
 					.createDrawingStrategy(EPDDrawingStrategyType.SELECTED);
 
 			if (mapSelectedElements.get(pdSelected) == ESelectionType.SELECTION) {
-				dsCurrent.setBorderColor(RadialHierarchyRenderStyle.SELECTED_COLOR);
+				dsCurrent.setBorderColor(GeneralRenderStyle.SELECTED_COLOR);
 			}
 			if (mapChildIndictatorElements.containsKey(pdSelected)) {
 				if (mapChildIndictatorElements.get(pdSelected) == ESelectionType.SELECTION) {
-					dsCurrent.setChildIndicatorColor(RadialHierarchyRenderStyle.SELECTED_COLOR);
+					dsCurrent.setChildIndicatorColor(GeneralRenderStyle.SELECTED_COLOR);
 				}
 				else {
-					dsCurrent.setChildIndicatorColor(RadialHierarchyRenderStyle.MOUSE_OVER_COLOR);
+					dsCurrent.setChildIndicatorColor(GeneralRenderStyle.MOUSE_OVER_COLOR);
 				}
 				mapChildIndictatorElements.remove(pdSelected);
 			}
@@ -185,10 +186,10 @@ public class DrawingStateFullHierarchy
 						.getDrawingStrategyType());
 
 			if (mapChildIndictatorElements.get(pdIndicated) == ESelectionType.SELECTION) {
-				dsCurrent.setChildIndicatorColor(RadialHierarchyRenderStyle.SELECTED_COLOR);
+				dsCurrent.setChildIndicatorColor(GeneralRenderStyle.SELECTED_COLOR);
 			}
 			else {
-				dsCurrent.setChildIndicatorColor(RadialHierarchyRenderStyle.MOUSE_OVER_COLOR);
+				dsCurrent.setChildIndicatorColor(GeneralRenderStyle.MOUSE_OVER_COLOR);
 			}
 
 			pdIndicated.setPDDrawingStrategy(dsCurrent);
@@ -228,15 +229,15 @@ public class DrawingStateFullHierarchy
 
 		for (PartialDisc pdSelected : mapSelectedDrawingStrategies.keySet()) {
 			PDDrawingStrategySelected dsCurrent = mapSelectedDrawingStrategies.get(pdSelected);
-			dsCurrent.drawPartialDisc(gl, glu, pdSelected);			
+			dsCurrent.drawPartialDisc(gl, glu, pdSelected);
 		}
 
 		if (parentIndicatorType != ESelectionType.NORMAL) {
 			gl.glPushClientAttrib(GL.GL_COLOR_BUFFER_BIT);
 			if (parentIndicatorType == ESelectionType.SELECTION)
-				gl.glColor3fv(RadialHierarchyRenderStyle.SELECTED_COLOR, 0);
+				gl.glColor3fv(GeneralRenderStyle.SELECTED_COLOR, 0);
 			else
-				gl.glColor3fv(RadialHierarchyRenderStyle.MOUSE_OVER_COLOR, 0);
+				gl.glColor3fv(GeneralRenderStyle.MOUSE_OVER_COLOR, 0);
 			GLPrimitives.renderCircle(glu, fDiscWidth / 2.0f, 100);
 			GLPrimitives.renderCircleBorder(gl, glu, fDiscWidth / 2.0f, 100, 2);
 			gl.glPopAttrib();

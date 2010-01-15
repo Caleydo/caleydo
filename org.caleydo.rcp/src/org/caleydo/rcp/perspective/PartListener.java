@@ -8,13 +8,13 @@ import org.caleydo.core.manager.event.view.RemoveViewSpecificItemsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.ViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.rcp.view.CaleydoRCPViewPart;
-import org.caleydo.rcp.view.opengl.ARcpGLViewPart;
-import org.caleydo.rcp.view.swt.toolbar.RcpToolBarView;
-import org.caleydo.rcp.view.swt.toolbar.ToolBarContentFactory;
-import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
-import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
-import org.caleydo.rcp.view.swt.toolbar.content.ToolBarContainer;
+import org.caleydo.rcp.toolbar.RcpToolBarView;
+import org.caleydo.rcp.toolbar.ToolBarContentFactory;
+import org.caleydo.view.base.rcp.ARcpGLViewPart;
+import org.caleydo.view.base.rcp.CaleydoRCPViewPart;
+import org.caleydo.view.base.swt.toolbar.content.AToolBarContent;
+import org.caleydo.view.base.swt.toolbar.content.IToolBarItem;
+import org.caleydo.view.base.swt.toolbar.content.ToolBarContainer;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -100,7 +100,7 @@ public class PartListener
 		}
 		else {
 			// viewpart is attached within caleydo main window
-			removeInlineToolBar((CaleydoRCPViewPart) viewPart);
+			removeInlineToolBar(viewPart);
 			sendViewActivationEvent(viewPart);
 		}
 	}

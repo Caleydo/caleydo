@@ -10,7 +10,7 @@ public class ApplicationActionBarAdvisor
 	public static IStatusLineManager statusLineManager;
 
 	public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
-		super(configurer);      
+		super(configurer);
 		statusLineManager = configurer.getStatusLineManager();
 	}
 }

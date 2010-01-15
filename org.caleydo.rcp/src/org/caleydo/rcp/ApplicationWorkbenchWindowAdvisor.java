@@ -54,13 +54,13 @@ public class ApplicationWorkbenchWindowAdvisor
 		super.postWindowCreate();
 
 		getWindowConfigurer().getWindow().getShell().setMaximized(true);
-		
-		getWindowConfigurer().getActionBarConfigurer().getMenuManager();
-		
-		IMenuManager menuManager = getWindowConfigurer().getActionBarConfigurer().getMenuManager();
-		for(IContributionItem item : menuManager.getItems()) {
 
-			// Removing all non Caleydo menus. 
+		getWindowConfigurer().getActionBarConfigurer().getMenuManager();
+
+		IMenuManager menuManager = getWindowConfigurer().getActionBarConfigurer().getMenuManager();
+		for (IContributionItem item : menuManager.getItems()) {
+
+			// Removing all non Caleydo menus.
 			// Espically useful for Eclipse contributed plugins when starting Caleydo from Eclipses
 			if (!item.getId().contains("org.caleydo")) {
 				menuManager.remove(item);

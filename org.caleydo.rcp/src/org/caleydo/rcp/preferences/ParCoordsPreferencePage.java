@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.GLParallelCoordinates;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -72,9 +72,9 @@ public class ParCoordsPreferencePage
 	public boolean performOk() {
 		boolean bReturn = super.performOk();
 
-		Collection<AGLEventListener> eventListeners =
+		Collection<AGLView> eventListeners =
 			GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners();
-		for (AGLEventListener eventListener : eventListeners) {
+		for (AGLView eventListener : eventListeners) {
 			if (eventListener instanceof GLParallelCoordinates) {
 				GLParallelCoordinates parCoords = (GLParallelCoordinates) eventListener;
 				// if(!heatMap.isRenderedRemote())

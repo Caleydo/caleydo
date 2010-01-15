@@ -1,13 +1,13 @@
 package org.caleydo.core.manager.event;
 
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 
 public class SetMinViewSizeEvent
 	extends AEvent {
 
 	private int minHeight;
 	private int minWidth;
-	private AGLEventListener view;
+	private AGLView view;
 
 	public SetMinViewSizeEvent() {
 		minHeight = -1;
@@ -43,11 +43,11 @@ public class SetMinViewSizeEvent
 		this.minHeight = minHeight;
 	}
 
-	public AGLEventListener getView() {
+	public AGLView getView() {
 		return view;
 	}
 
-	public void setView(AGLEventListener view) {
+	public void setView(AGLView view) {
 		this.view = view;
 	}
 

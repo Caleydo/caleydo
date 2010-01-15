@@ -12,7 +12,7 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
@@ -67,7 +67,7 @@ public class RemoteRenderingTransformer
 				target.put(typeConnections.getKey(), connectionMap);
 			}
 
-			SelectedElementRepList newSourceConnections = new SelectedElementRepList(); 
+			SelectedElementRepList newSourceConnections = new SelectedElementRepList();
 			for (Entry<Integer, SelectedElementRepList> connections : typeConnections.getValue().entrySet()) {
 
 				SelectedElementRepList repList = connectionMap.get(connections.getKey());
@@ -78,19 +78,19 @@ public class RemoteRenderingTransformer
 
 				IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
 				for (SelectedElementRep sel : connections.getValue()) {
-					AGLEventListener view = vm.getGLEventListener(sel.getSourceViewID());
+					AGLView view = vm.getGLEventListener(sel.getSourceViewID());
 					RemoteLevelElement rle = view.getRemoteLevelElement();
 					if (remoteLevelElementWhiteList.contains(rle)) {
 						ArrayList<Vec3f> transformedPoints = new ArrayList<Vec3f>();
 						for (Vec3f vec : sel.getPoints()) {
 							transformedPoints.add(transform(vec, rle));
 						}
-						if (((AGLEventListener) view.getRemoteRenderingGLCanvas()).isRenderedRemote()) {
+						if (((AGLView) view.getRemoteRenderingGLCanvas()).isRenderedRemote()) {
 							SelectedElementRep trans =
-								new SelectedElementRep(sel.getIDType(), viewID, viewID,
-									transformedPoints);
+								new SelectedElementRep(sel.getIDType(), viewID, viewID, transformedPoints);
 							newSourceConnections.add(trans);
-						} else {
+						}
+						else {
 							SelectedElementRep trans =
 								new SelectedElementRep(sel.getIDType(), sel.getSourceViewID(), viewID,
 									transformedPoints);

@@ -62,7 +62,6 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
-import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayInUseCaseEvent;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
@@ -89,10 +88,9 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.StandardTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager;
@@ -309,7 +307,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLEventListener glParentView,
+	public void initRemote(final GL gl, final AGLView glParentView,
 		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		bShowSelectionHeatMap = false;
@@ -403,7 +401,6 @@ public class GLParallelCoordinates
 		//		
 		processEvents();
 
-		IIDMappingManager m = idMappingManager;
 		if (bShowSelectionHeatMap) {
 
 			gl.glTranslatef(viewFrustum.getRight() - glBookmarks.getViewFrustum().getWidth(), 0, 0.002f);
@@ -1311,7 +1308,7 @@ public class GLParallelCoordinates
 			for (int iAxisIndex : iAlAxisIndex) {
 				float fCurrentPosition = alAxisSpacing.get(iAxisIndex);
 				gate.setCurrentPosition(fCurrentPosition);
-				String label = set.get(iAxisID).getLabel();
+				//String label = set.get(iAxisID).getLabel();
 
 				gate.draw(gl, pickingManager, textureManager, textRenderer, iUniqueID);
 				// renderSingleGate(gl, gate, iAxisID, iGateID, fCurrentPosition);
@@ -1520,12 +1517,12 @@ public class GLParallelCoordinates
 			gl.glColor4fv(ParCoordsRenderStyle.GATE_BODY_COLOR, 0);
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f(fXOrigin, fBottom, 0);
-			gl.glVertex3f(viewFrustum.getWidth() -1, fBottom, 0);
-			gl.glVertex3f(viewFrustum.getWidth() -1, fTop, 0);
+			gl.glVertex3f(viewFrustum.getWidth() - 1, fBottom, 0);
+			gl.glVertex3f(viewFrustum.getWidth() - 1, fTop, 0);
 			// todo eurovis hacke
-//			gl.glVertex3f(viewFrustum.getWidth(), fBottom, 0);
-//			gl.glVertex3f(viewFrustum.getWidth(), fTop, 0);
-//			
+			// gl.glVertex3f(viewFrustum.getWidth(), fBottom, 0);
+			// gl.glVertex3f(viewFrustum.getWidth(), fTop, 0);
+			//			
 			gl.glVertex3f(fXOrigin - 0.05f, fTop, 0);
 			gl.glEnd();
 
@@ -1847,7 +1844,7 @@ public class GLParallelCoordinates
 
 	private void triggerSelectionUpdate() {
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
-		selectionUpdateEvent.setSelectionDelta((SelectionDelta) polylineSelectionManager.getDelta());
+		selectionUpdateEvent.setSelectionDelta(polylineSelectionManager.getDelta());
 		selectionUpdateEvent.setSender(this);
 		eventPublisher.triggerEvent(selectionUpdateEvent);
 		// send out a major update which tells the hhm to update its textures
@@ -2293,9 +2290,11 @@ public class GLParallelCoordinates
 					fXValue = viewFrustum.getRight() - 0.2f;
 				else
 					fXValue = viewFrustum.getRight() - 0.4f;
-				fYValue = set.get(storageVA.get(storageVA.size()-1)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
+				fYValue =
+					set.get(storageVA.get(storageVA.size() - 1)).getFloat(EDataRepresentation.NORMALIZED,
+						iStorageIndex);
 			}
-			
+
 			// // get the value on the leftmost axis
 			// fYValue = set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
 
@@ -2825,65 +2824,65 @@ public class GLParallelCoordinates
 		setDisplayListDirty();
 	}
 
-	private void focusOnAreaWii() {
-		if (!generalManager.isWiiModeActive())
-			return;
-
-		WiiRemote wii = generalManager.getWiiRemote();
-
-		float fXWiiPosition = wii.getCurrentSmoothHeadPosition()[0] + 1f;
-
-		// we assume that this is far right, and -fMax is far left
-		float fMaxX = 2;
-
-		if (fXWiiPosition > fMaxX) {
-			fXWiiPosition = fMaxX;
-		}
-		else if (fXWiiPosition < -fMaxX) {
-			fXWiiPosition = -fMaxX;
-		}
-
-		// now we normalize to 0 to 1
-		fXWiiPosition = (fXWiiPosition + fMaxX) / (2 * fMaxX);
-
-		fXWiiPosition *= renderStyle.getWidthOfCoordinateSystem();
-		int iAxisNumber = 0;
-		for (int iCount = 0; iCount < alAxisSpacing.size() - 1; iCount++) {
-			if (alAxisSpacing.get(iCount) < fXWiiPosition && alAxisSpacing.get(iCount + 1) > fXWiiPosition) {
-				if (fXWiiPosition - alAxisSpacing.get(iCount) < alAxisSpacing.get(iCount) - fXWiiPosition) {
-					iAxisNumber = iCount;
-				}
-				else {
-					iAxisNumber = iCount + 1;
-				}
-
-				break;
-			}
-		}
-
-		int iNumberOfAxis = axisVA.size();
-
-		float fOriginalAxisSpacing = renderStyle.getAxisSpacing(iNumberOfAxis);
-
-		float fFocusAxisSpacing = 2 * fOriginalAxisSpacing;
-
-		float fReducedSpacing =
-			(renderStyle.getWidthOfCoordinateSystem() - 2 * fFocusAxisSpacing) / (iNumberOfAxis - 3);
-
-		float fCurrentX = 0;
-		alAxisSpacing.clear();
-		for (int iCount = 0; iCount < iNumberOfAxis; iCount++) {
-			alAxisSpacing.add(fCurrentX);
-			if (iCount + 1 == iAxisNumber || iCount == iAxisNumber) {
-				fCurrentX += fFocusAxisSpacing;
-			}
-			else {
-				fCurrentX += fReducedSpacing;
-			}
-		}
-
-		setDisplayListDirty();
-	}
+//	private void focusOnAreaWii() {
+//		if (!generalManager.isWiiModeActive())
+//			return;
+//
+//		WiiRemote wii = generalManager.getWiiRemote();
+//
+//		float fXWiiPosition = wii.getCurrentSmoothHeadPosition()[0] + 1f;
+//
+//		// we assume that this is far right, and -fMax is far left
+//		float fMaxX = 2;
+//
+//		if (fXWiiPosition > fMaxX) {
+//			fXWiiPosition = fMaxX;
+//		}
+//		else if (fXWiiPosition < -fMaxX) {
+//			fXWiiPosition = -fMaxX;
+//		}
+//
+//		// now we normalize to 0 to 1
+//		fXWiiPosition = (fXWiiPosition + fMaxX) / (2 * fMaxX);
+//
+//		fXWiiPosition *= renderStyle.getWidthOfCoordinateSystem();
+//		int iAxisNumber = 0;
+//		for (int iCount = 0; iCount < alAxisSpacing.size() - 1; iCount++) {
+//			if (alAxisSpacing.get(iCount) < fXWiiPosition && alAxisSpacing.get(iCount + 1) > fXWiiPosition) {
+//				if (fXWiiPosition - alAxisSpacing.get(iCount) < alAxisSpacing.get(iCount) - fXWiiPosition) {
+//					iAxisNumber = iCount;
+//				}
+//				else {
+//					iAxisNumber = iCount + 1;
+//				}
+//
+//				break;
+//			}
+//		}
+//
+//		int iNumberOfAxis = axisVA.size();
+//
+//		float fOriginalAxisSpacing = renderStyle.getAxisSpacing(iNumberOfAxis);
+//
+//		float fFocusAxisSpacing = 2 * fOriginalAxisSpacing;
+//
+//		float fReducedSpacing =
+//			(renderStyle.getWidthOfCoordinateSystem() - 2 * fFocusAxisSpacing) / (iNumberOfAxis - 3);
+//
+//		float fCurrentX = 0;
+//		alAxisSpacing.clear();
+//		for (int iCount = 0; iCount < iNumberOfAxis; iCount++) {
+//			alAxisSpacing.add(fCurrentX);
+//			if (iCount + 1 == iAxisNumber || iCount == iAxisNumber) {
+//				fCurrentX += fFocusAxisSpacing;
+//			}
+//			else {
+//				fCurrentX += fReducedSpacing;
+//			}
+//		}
+//
+//		setDisplayListDirty();
+//	}
 
 	public void resetAxisSpacing() {
 		alAxisSpacing.clear();
@@ -2994,16 +2993,16 @@ public class GLParallelCoordinates
 
 	@Override
 	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
-		if (category ==  ePolylineDataType.getCategory() )
+		if (category == ePolylineDataType.getCategory())
 			polylineSelectionManager.executeSelectionCommand(selectionCommand);
-		else if(category == eAxisDataType.getCategory())
+		else if (category == eAxisDataType.getCategory())
 			axisSelectionManager.executeSelectionCommand(selectionCommand);
 		else
 			return;
-		
+
 		setDisplayListDirty();
 	}
-	
+
 	@Override
 	public String toString() {
 		int iNumElements =
@@ -3022,8 +3021,8 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public List<AGLEventListener> getRemoteRenderedViews() {
-		return new ArrayList<AGLEventListener>();
+	public List<AGLView> getRemoteRenderedViews() {
+		return new ArrayList<AGLView>();
 	}
 
 	public void setRenderConnectionState(boolean renderConnectionssLeft) {

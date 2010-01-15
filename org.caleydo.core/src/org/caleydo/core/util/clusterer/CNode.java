@@ -436,7 +436,7 @@ public class CNode
 			totalCU += categoryUtilityChild(child);
 		}
 
-		totalCU /= (double) m_children.size();
+		totalCU /= m_children.size();
 		return totalCU;
 	}
 
@@ -651,7 +651,7 @@ public class CNode
 		for (int i = 0; i < m_children.size(); i++) {
 			CNode temp = (CNode) m_children.elementAt(i);
 			for (int j = 0; j < temp.m_clusterInstances.numInstances(); j++) {
-				tempInst.instance(z).setValue(m_numAttributes, (double) i);
+				tempInst.instance(z).setValue(m_numAttributes, i);
 				z++;
 			}
 		}

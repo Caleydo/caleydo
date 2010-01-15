@@ -25,7 +25,7 @@ public interface IUseCase {
 	 * if a more specialized use case (e.g. gene expression) is active.
 	 */
 	public EDataDomain getDataDomain();
-	
+
 	/**
 	 * Returns the Primary VA Type (see ({@link EVAType#getPrimaryVAType()}) for a ID category for this use
 	 * case, or null if the category is not supported at all.
@@ -106,9 +106,12 @@ public interface IUseCase {
 	/**
 	 * Replaces the virtual array of that id category with the virtual array specified
 	 * 
-	 * @param idCategory the type of id
-	 * @param the type of the virtual array
-	 * @param virtualArray the new virtual array
+	 * @param idCategory
+	 *            the type of id
+	 * @param the
+	 *            type of the virtual array
+	 * @param virtualArray
+	 *            the new virtual array
 	 */
 	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType, IVirtualArray virtualArray);
 

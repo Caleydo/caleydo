@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
@@ -61,8 +60,8 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		if (rootNode instanceof ClusterNode)
 			hashNodes.put(((ClusterNode) rootNode).getClusterNr(), rootNode);
 
-		if (rootNode instanceof IDrawAbleNode)
-			hashNodes.put(((IDrawAbleNode) rootNode).getID(), rootNode);
+		// if (rootNode instanceof IDrawAbleNode)
+		// hashNodes.put(((IDrawAbleNode) rootNode).getID(), rootNode);
 	}
 
 	/**
@@ -108,8 +107,8 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		if (childNode instanceof ClusterNode)
 			hashNodes.put(((ClusterNode) childNode).getClusterNr(), childNode);
 
-		if (childNode instanceof IDrawAbleNode)
-			hashNodes.put(((IDrawAbleNode) childNode).getID(), childNode);
+		// if (childNode instanceof IDrawAbleNode)
+		// hashNodes.put(((IDrawAbleNode) childNode).getID(), childNode);
 	}
 
 	/**
@@ -142,7 +141,7 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		DefaultEdge edge = null;
 
 		for (DefaultEdge tempEdge : setEdges) {
-			edge = (DefaultEdge) tempEdge;
+			edge = tempEdge;
 		}
 		if (edge == null) {
 			// this is the root node

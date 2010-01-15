@@ -6,7 +6,7 @@ public class VisLinkSelectionEvent
 	extends AEvent {
 
 	String selectionId;
-	
+
 	@Override
 	public boolean checkIntegrity() {
 		// TODO Auto-generated method stub

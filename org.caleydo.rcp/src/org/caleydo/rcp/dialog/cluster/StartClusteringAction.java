@@ -10,7 +10,7 @@ import org.caleydo.core.util.clusterer.EDistanceMeasure;
 import org.caleydo.core.util.clusterer.ETreeClustererAlgo;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.progress.ClusteringProgressBar;
-import org.caleydo.rcp.view.swt.RcpHTMLBrowserView;
+import org.caleydo.view.base.swt.RcpHTMLBrowserView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;

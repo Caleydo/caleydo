@@ -7,8 +7,8 @@ import org.caleydo.core.manager.event.AEvent;
 
 @XmlRootElement
 @XmlType
-public class SetMaxLayoutDepthEvent 	
-extends AEvent {
+public class SetMaxLayoutDepthEvent
+	extends AEvent {
 
 	private int iMaxLayoutDepth = 0;
 

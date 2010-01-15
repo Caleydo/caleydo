@@ -81,14 +81,14 @@ public class ApplicationWorkbenchAdvisor
 			this.getWorkbenchConfigurer().getWorkbench().getPreferenceManager();
 
 		for (Object node : preferenceManager.getElements(PreferenceManager.PRE_ORDER)) {
-			
-			IPreferenceNode prefNode = (IPreferenceNode)node;
-			if(!prefNode.getId().contains("org.caleydo.rcp")) {
+
+			IPreferenceNode prefNode = (IPreferenceNode) node;
+			if (!prefNode.getId().contains("org.caleydo.rcp")) {
 				preferenceManager.remove(prefNode);
 			}
 		}
 	}
-	
+
 	/**
 	 * Sets the views init-parameters. In case of a loaded project, the views are initialized from their
 	 * restored serialized-representation.

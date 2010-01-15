@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.util.slerp;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
 /**
@@ -33,20 +33,19 @@ public class SlerpAction {
 		RemoteLevelElement destinationRemoteLevelElement) {
 		this.originRemoteLevelElement = originRemoteLevelElement;
 		this.destinationRemoteLevelElement = destinationRemoteLevelElement;
-		this.iElementID = originRemoteLevelElement.getContainedElementID();
+		this.iElementID = originRemoteLevelElement.getGLView().getID();
 	}
 
 	public void start() {
-		originRemoteLevelElement.setContainedElementID(-1);
+		originRemoteLevelElement.setGLView(null);
 	}
 
 	public void finished() {
-		destinationRemoteLevelElement.setContainedElementID(iElementID);
+		destinationRemoteLevelElement.setGLView(GeneralManager.get().getViewGLCanvasManager()
+			.getGLEventListener(iElementID));
 
 		if (iElementID != -1) {
-			AGLEventListener glView =
-				(AGLEventListener) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
-					iElementID);
+			AGLView glView = GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iElementID);
 			if (glView != null)
 				glView.setRemoteLevelElement(destinationRemoteLevelElement);
 		}

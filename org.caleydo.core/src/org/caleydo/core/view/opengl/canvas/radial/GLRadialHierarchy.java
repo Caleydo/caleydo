@@ -2,17 +2,14 @@ package org.caleydo.core.view.opengl.canvas.radial;
 
 import gleem.linalg.Vec2f;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
-import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -33,7 +30,7 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
@@ -61,7 +58,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Christian Partl
  */
 public class GLRadialHierarchy
-	extends AGLEventListener
+	extends AGLView
 	implements IViewCommandHandler {
 
 	public static final int DISP_HIER_DEPTH_DEFAULT = 7;
@@ -191,7 +188,7 @@ public class GLRadialHierarchy
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLEventListener glParentView,
+	public void initRemote(final GL gl, final AGLView glParentView,
 		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		// Register keyboard listener to GL canvas
@@ -313,26 +310,26 @@ public class GLRadialHierarchy
 	}
 
 	// TODO: Remove when really not needed any more.
-	private void initTestHierarchy() {
-
-		Tree<ClusterNode> tree = new Tree<ClusterNode>();
-		TreePorter treePorter = new TreePorter();
-
-		// "data/clustering/experiment_tree_nonbinar.xml"
-		try {
-			tree = treePorter.importTree("data/clustering/hcc_5000.xml");
-		}
-		catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		// initHierarchy(tree);
-	}
+	// private void initTestHierarchy() {
+	//
+	// //Tree<ClusterNode> tree = new Tree<ClusterNode>();
+	// TreePorter treePorter = new TreePorter();
+	//
+	// // "data/clustering/experiment_tree_nonbinar.xml"
+	// try {
+	// tree = treePorter.importTree("data/clustering/hcc_5000.xml");
+	// }
+	// catch (FileNotFoundException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// catch (JAXBException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	//
+	// // initHierarchy(tree);
+	// }
 
 	@Override
 	public void setDetailLevel(EDetailLevel detailLevel) {
@@ -952,14 +949,15 @@ public class GLRadialHierarchy
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
 
-//		Tree<ClusterNode> tree = set.getClusteredTreeExps();
+		// Tree<ClusterNode> tree = set.getClusteredTreeExps();
 		Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		if (tree != null) {
 			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
 			alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
 			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
 			initHierarchy(tree, EIDType.CLUSTER_NUMBER, new GeneClusterDataEventManager(this), alColorModes);
-//			initHierarchy(tree, EIDType.CLUSTER_NUMBER, new ExperimentClusterDataEventManager(this), alColorModes);
+			// initHierarchy(tree, EIDType.CLUSTER_NUMBER, new ExperimentClusterDataEventManager(this),
+			// alColorModes);
 		}
 
 		SerializedRadialHierarchyView serializedView = (SerializedRadialHierarchyView) ser;
@@ -1128,7 +1126,8 @@ public class GLRadialHierarchy
 				ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
 				alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
 				alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
-				initHierarchy(tree, EIDType.CLUSTER_NUMBER, new GeneClusterDataEventManager(this), alColorModes);
+				initHierarchy(tree, EIDType.CLUSTER_NUMBER, new GeneClusterDataEventManager(this),
+					alColorModes);
 			}
 		}
 		else {

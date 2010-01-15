@@ -54,7 +54,7 @@ public class CmdDataCreateDataDomain
 				return new TissueUseCase();
 			case PATHWAY_DATA:
 				return new PathwayUseCase();
-			case UNSPECIFIED:	
+			case UNSPECIFIED:
 				return new UnspecifiedUseCase();
 			default:
 				throw new IllegalStateException("Unknow data domain type: " + dataDomain);

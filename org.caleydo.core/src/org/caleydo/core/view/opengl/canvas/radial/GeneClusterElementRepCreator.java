@@ -19,7 +19,7 @@ public class GeneClusterElementRepCreator
 				dsSelected.getElementRepConnectionPoint(partialDisc, fHierarchyCenterX, fHierarchyCenterY,
 					fHierarchyCenterZ);
 			ConnectedElementRepresentationManager connectedElementRepresentationManager =
-		         GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+				GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
 		}
 	}
 

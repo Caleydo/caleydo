@@ -259,7 +259,7 @@ public class AnimationParentRootElement
 		float fTargetWidth =
 			Math.min(fXCenter * RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE, fYCenter
 				* RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE)
-				/ (float) iDisplayedHierarchyDepth;
+				/ iDisplayedHierarchyDepth;
 
 		pdNewRootElement.setCurrentStartAngle(0);
 		pdNewRootElement.simulateDrawHierarchyFull(fTargetWidth, iDisplayedHierarchyDepth);
@@ -277,24 +277,28 @@ public class AnimationParentRootElement
 			fCurrentMidAngle += 360;
 		}
 
-		float fArRGB[] = radialHierarchy.getDrawingStrategyManager().getDefaultDrawingStrategy().getColor(pdCurrentSelectedElement);
-//		if (radialHierarchy.getDrawingStrategyManager().getDefaultDrawingStrategy().getDrawingStrategyType() == EPDDrawingStrategyType.RAINBOW_COLOR) {
-//			ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
-//			fArRGB = cmRainbow.getColor(fCurrentMidAngle / 360);
-//		}
-//		else {
-//			ColorMapping cmExpression =
-//				ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
-//			IHierarchyData<?> hierarchyData = pdCurrentSelectedElement.getHierarchyData();
-//			ClusterNode clusterNode = null;
-//			if (hierarchyData instanceof ClusterNode) {
-//				clusterNode = (ClusterNode) hierarchyData;
-//				fArRGB = cmExpression.getColor(clusterNode.getAverageExpressionValue());
-//			}
-//			else {
-//				fArRGB = new float[] { 1.0f, 1.0f, 1.0f };
-//			}
-//		}
+		float fArRGB[] =
+			radialHierarchy.getDrawingStrategyManager().getDefaultDrawingStrategy().getColor(
+				pdCurrentSelectedElement);
+		// if
+		// (radialHierarchy.getDrawingStrategyManager().getDefaultDrawingStrategy().getDrawingStrategyType()
+		// == EPDDrawingStrategyType.RAINBOW_COLOR) {
+		// ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
+		// fArRGB = cmRainbow.getColor(fCurrentMidAngle / 360);
+		// }
+		// else {
+		// ColorMapping cmExpression =
+		// ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+		// IHierarchyData<?> hierarchyData = pdCurrentSelectedElement.getHierarchyData();
+		// ClusterNode clusterNode = null;
+		// if (hierarchyData instanceof ClusterNode) {
+		// clusterNode = (ClusterNode) hierarchyData;
+		// fArRGB = cmExpression.getColor(clusterNode.getAverageExpressionValue());
+		// }
+		// else {
+		// fArRGB = new float[] { 1.0f, 1.0f, 1.0f };
+		// }
+		// }
 
 		alMovementValues.clear();
 

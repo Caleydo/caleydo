@@ -34,18 +34,18 @@ public class ClusteringProgressBar
 	private ProgressBar pbOverall;
 	private ProgressBar pbClusterer;
 	private EClustererAlgo algorithmType;
-	private EClustererType clusterType;;
+	// private EClustererType clusterType;;
 	private ClusterProgressListener clusterProgressListener;
 
-	private boolean bOpenDendrogram = true;
-	private boolean bOpenRadialHierarchy = true;
+	// private boolean bOpenDendrogram = true;
+	// private boolean bOpenRadialHierarchy = true;
 
 	private Shell shell;
 	private Label lbProgressBarClusterer;
 
 	public ClusteringProgressBar(EClustererAlgo algorithmType, EClustererType clustererType) {
 		this.algorithmType = algorithmType;
-		this.clusterType = clustererType;
+		// this.clusterType = clustererType;
 	}
 
 	public void run() {

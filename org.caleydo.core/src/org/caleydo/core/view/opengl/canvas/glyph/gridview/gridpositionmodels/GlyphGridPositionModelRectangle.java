@@ -3,10 +3,11 @@ package org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphGridPosition;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 public class GlyphGridPositionModelRectangle
@@ -30,7 +31,7 @@ public class GlyphGridPositionModelRectangle
 		for (GlyphEntry g : gg) {
 			if (j >= worldLimit.y()) {
 				generalManager.getLogger().log(
-					new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
 						"The world is not enough! I've no place to put the glyphs any more."));
 				break;
 			}

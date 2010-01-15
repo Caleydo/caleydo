@@ -16,6 +16,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -46,7 +47,7 @@ public class PathwayLoaderThread
 		this.pathwayDatabases = pathwayDatabases;
 
 		generalManager.getLogger().log(
-			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Start pathway databases loader thread"));
+			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Start pathway databases loader thread"));
 
 		start();
 	}
@@ -75,7 +76,7 @@ public class PathwayLoaderThread
 		// File[] arFiles = folder.listFiles();
 
 		generalManager.getLogger().log(
-			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Start parsing " + pathwayDatabase.getName()
+			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Start parsing " + pathwayDatabase.getName()
 				+ " pathways."));
 
 		BufferedReader file = null;
@@ -176,7 +177,7 @@ public class PathwayLoaderThread
 
 				if (iImageWidth == -1 || iImageHeight == -1) {
 					generalManager.getLogger().log(
-						new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Pathway texture width="
+						new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Pathway texture width="
 							+ iImageWidth + " / height=" + iImageHeight));
 				}
 
@@ -203,7 +204,7 @@ public class PathwayLoaderThread
 		// }
 
 		generalManager.getLogger().log(
-			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Finished parsing " + pathwayDatabase.getName()
-				+ " pathways."));
+			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Finished parsing "
+				+ pathwayDatabase.getName() + " pathways."));
 	}
 }

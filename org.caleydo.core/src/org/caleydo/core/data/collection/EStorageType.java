@@ -23,7 +23,8 @@ public enum EStorageType {
 	NONE(false, null);
 
 	private boolean bIsControlSequence;
-	private Class<?> storageClass;
+
+	// private Class<?> storageClass;
 
 	private <T> EStorageType(final boolean bIsControlSequence, Class<T> storageClass) {
 

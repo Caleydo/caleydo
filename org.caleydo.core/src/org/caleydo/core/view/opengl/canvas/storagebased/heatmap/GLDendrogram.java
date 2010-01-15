@@ -45,7 +45,7 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
@@ -199,7 +199,7 @@ public class GLDendrogram
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLEventListener glParentView,
+	public void initRemote(final GL gl, final AGLView glParentView,
 		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
@@ -677,7 +677,7 @@ public class GLDendrogram
 			Vec3f[] positions = new Vec3f[iNrChildsNode];
 
 			for (int i = 0; i < iNrChildsNode; i++) {
-				ClusterNode node = (ClusterNode) alChilds.get(i);
+				ClusterNode node = alChilds.get(i);
 				positions[i] = determinePosRecSubTree(node);
 			}
 
@@ -750,7 +750,7 @@ public class GLDendrogram
 
 			for (int i = 0; i < iNrChildsNode; i++) {
 
-				ClusterNode current = (ClusterNode) listGraph.get(i);
+				ClusterNode current = listGraph.get(i);
 
 				tempPositions[i] = new Vec3f();
 				tempPositions[i].setX(current.getPosSubTree().x());
@@ -833,7 +833,7 @@ public class GLDendrogram
 
 			for (int i = 0; i < iNrChildsNode; i++) {
 
-				ClusterNode node = (ClusterNode) alChilds.get(i);
+				ClusterNode node = alChilds.get(i);
 				positions[i] = determinePosRecGenes(node);
 			}
 
@@ -890,7 +890,7 @@ public class GLDendrogram
 
 			for (int i = 0; i < iNrChildsNode; i++) {
 
-				ClusterNode node = (ClusterNode) alChilds.get(i);
+				ClusterNode node = alChilds.get(i);
 				positions[i] = determinePosRecExperiments(node);
 			}
 
@@ -1004,7 +1004,7 @@ public class GLDendrogram
 
 			for (int i = 0; i < iNrChildsNode; i++) {
 
-				ClusterNode current = (ClusterNode) listGraph.get(i);
+				ClusterNode current = listGraph.get(i);
 
 				tempPositions[i] = new Vec3f();
 				tempPositions[i].setX(current.getPos().x());
@@ -1120,7 +1120,7 @@ public class GLDendrogram
 
 			for (int i = 0; i < iNrChildsNode; i++) {
 
-				ClusterNode current = (ClusterNode) listGraph.get(i);
+				ClusterNode current = listGraph.get(i);
 
 				tempPositions[i] = new Vec3f();
 				tempPositions[i].setX(current.getPos().x());
@@ -1640,10 +1640,10 @@ public class GLDendrogram
 
 	@Override
 	public String getShortInfo() {
-		
-		if(tree == null)
+
+		if (tree == null)
 			return new String("Dendrogram - no tree available");
-		
+
 		if (bRenderGeneTree)
 			return new String("Dendrogram - " + tree.getRoot().getNrElements() + " genes");
 		else
@@ -1657,10 +1657,10 @@ public class GLDendrogram
 
 	@Override
 	public String toString() {
-		
-		if(tree == null)
+
+		if (tree == null)
 			return new String("Dendrogram - no tree available");
-		
+
 		return "Standalone " + ((bRenderGeneTree) ? "gene" : "experiment") + " dendrogram, rendered remote: "
 			+ isRenderedRemote() + ", Tree with: " + tree.getRoot().getNrElements()
 			+ ((bRenderGeneTree) ? " genes" : " experiments") + ", remoteRenderer: "

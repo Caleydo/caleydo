@@ -7,6 +7,7 @@ import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_LINE_WIDTH;
 import gleem.linalg.Rotf;
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
@@ -49,7 +50,7 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
@@ -161,8 +162,8 @@ public class GLHeatMap
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+	public void initRemote(final GL gl, final AGLView glParentView, final GLMouseListener glMouseListener,
+		GLInfoAreaManager infoAreaManager) {
 
 		if (glRemoteRenderingView instanceof GLRemoteRendering)
 			renderStyle.disableFishEye();
@@ -580,6 +581,26 @@ public class GLHeatMap
 		setDisplayListDirty();
 	}
 
+	public void upDownSelect(boolean isUp) {
+		IVirtualArray virtualArray = contentVA;
+		if (virtualArray == null)
+			throw new IllegalStateException("Virtual Array is required for selectNext Operation");
+		int selectedElement = cursorSelect(virtualArray, contentSelectionManager, isUp);
+		if (selectedElement < 0)
+			return;
+		createContentSelection(ESelectionType.MOUSE_OVER, selectedElement);
+	}
+
+	public void leftRightSelect(boolean isLeft) {
+		IVirtualArray virtualArray = storageVA;
+		if (virtualArray == null)
+			throw new IllegalStateException("Virtual Array is required for selectNext Operation");
+		int selectedElement = cursorSelect(virtualArray, storageSelectionManager, isLeft);
+		if (selectedElement < 0)
+			return;
+		createStorageSelection(ESelectionType.MOUSE_OVER, selectedElement);
+	}
+
 	private void createStorageSelection(ESelectionType selectionType, int storageID) {
 		if (storageSelectionManager.checkStatus(selectionType, storageID))
 			return;
@@ -607,26 +628,6 @@ public class GLHeatMap
 			eventPublisher.triggerEvent(event);
 		}
 		setDisplayListDirty();
-	}
-
-	public void upDownSelect(boolean isUp) {
-		IVirtualArray virtualArray = contentVA;
-		if (virtualArray == null)
-			throw new IllegalStateException("Virtual Array is required for selectNext Operation");
-		int selectedElement = cursorSelect(virtualArray, contentSelectionManager, isUp);
-		if (selectedElement < 0)
-			return;
-		createContentSelection(ESelectionType.MOUSE_OVER, selectedElement);
-	}
-
-	public void leftRightSelect(boolean isLeft) {
-		IVirtualArray virtualArray = storageVA;
-		if (virtualArray == null)
-			throw new IllegalStateException("Virtual Array is required for selectNext Operation");
-		int selectedElement = cursorSelect(virtualArray, storageSelectionManager, isLeft);
-		if (selectedElement < 0)
-			return;
-		createStorageSelection(ESelectionType.MOUSE_OVER, selectedElement);
 	}
 
 	private int cursorSelect(IVirtualArray virtualArray, SelectionManager selectionManager, boolean isUp) {
@@ -985,8 +986,9 @@ public class GLHeatMap
 
 		SelectedElementRep elementRep;
 		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
-
+		float offset = renderStyle.getSelectedFieldWidth(); 
 		for (int iContentIndex : contentVA.indicesOf(iStorageIndex)) {
+			
 			if (iContentIndex == -1) {
 				// throw new
 				// IllegalStateException("No such element in virtual array");
@@ -994,10 +996,19 @@ public class GLHeatMap
 				continue;
 			}
 
-			float fXValue = fAlXDistances.get(iContentIndex); // + renderStyle.getSelectedFieldWidth() / 2;
-			// float fYValue = 0;
-			float fYValue = renderStyle.getYCenter();
-
+			
+			//calculating additional points for vislinks in bucket view
+			ArrayList<Vec2f> pointCollection = new ArrayList<Vec2f>();
+			for (int count = 0; count < 6; count++) {
+				if (count%2 == 0)
+					pointCollection.add(new Vec2f(fAlXDistances.get(iContentIndex), renderStyle.getYCenter() * (count/2)));
+				else
+					pointCollection.add(new Vec2f(fAlXDistances.get(iContentIndex)+ offset, renderStyle.getYCenter() * (count/2)));
+			}
+			/*
+			 * float fXValue = fAlXDistances.get(iContentIndex); // + renderStyle.getSelectedFieldWidth() / 2;
+			 * // float fYValue = 0; float fYValue = renderStyle.getYCenter();
+			 */
 			// Set<Integer> mouseOver = storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 			// for (int iLineIndex : mouseOver)
 			// {
@@ -1005,23 +1016,35 @@ public class GLHeatMap
 			// renderStyle.getFieldHeight()/2;
 			// break;
 			// }
+			for (int count = 0; count < pointCollection.size(); count++) {
+				if (bRenderStorageHorizontally) {
+					elementRep =
+						new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, pointCollection.get(count).x()
+							+ fAnimationTranslation, pointCollection.get(count).y(), 0);
 
-			if (bRenderStorageHorizontally) {
-				elementRep =
-					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID,
-						fXValue + fAnimationTranslation, fYValue, 0);
+				}
+				else {
+					Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
+					Vec3f vecPoint =
+						myRotf.rotateVector(new Vec3f(pointCollection.get(count).x(),
+							pointCollection.get(count).y(), 0));
+					vecPoint.setY(vecPoint.y() + vecTranslation.y());
+					elementRep =
+						new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vecPoint.x(), vecPoint
+							.y()
+							- fAnimationTranslation, 0);
 
+				}
+				alElementReps.add(elementRep);
 			}
-			else {
-				Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
-				Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
-				vecPoint.setY(vecPoint.y() + vecTranslation.y());
-				elementRep =
-					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vecPoint.x(), vecPoint.y()
-						- fAnimationTranslation, 0);
-
-			}
-			alElementReps.add(elementRep);
+			/*
+			 * if (bRenderStorageHorizontally) { elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX,
+			 * iUniqueID, fXValue + fAnimationTranslation, fYValue, 0); } else { Rotf myRotf = new Rotf(new
+			 * Vec3f(0, 0, 1), -(float) Math.PI / 2); Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue,
+			 * fYValue, 0)); vecPoint.setY(vecPoint.y() + vecTranslation.y()); elementRep = new
+			 * SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vecPoint.x(), vecPoint.y() -
+			 * fAnimationTranslation, 0); } alElementReps.add(elementRep); }
+			 */
 		}
 		return alElementReps;
 	}
@@ -1237,8 +1260,8 @@ public class GLHeatMap
 	public RemoteLevelElement getRemoteLevelElement() {
 
 		// If the view is rendered remote - the remote level element from the parent is returned
-//		if (glRemoteRenderingView != null && glRemoteRenderingView instanceof GLHierarchicalHeatMap)
-//			return ((AGLEventListener) glRemoteRenderingView).getRemoteLevelElement();
+		// if (glRemoteRenderingView != null && glRemoteRenderingView instanceof GLHierarchicalHeatMap)
+		// return ((AGLEventListener) glRemoteRenderingView).getRemoteLevelElement();
 
 		return super.getRemoteLevelElement();
 	}

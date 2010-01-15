@@ -13,6 +13,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphGridPosition;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -88,7 +89,7 @@ public class GlyphGridPositionModel {
 	 */
 	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap_, ArrayList<GlyphEntry> gg) {
 		GeneralManager.get().getLogger().log(
-			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "setGlyphPositions in base class called"));
+			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "setGlyphPositions in base class called"));
 	}
 
 	/**
@@ -106,7 +107,7 @@ public class GlyphGridPositionModel {
 	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap_, ArrayList<GlyphEntry> gg,
 		int centerX, int centerY) {
 		GeneralManager.get().getLogger().log(
-			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "setGlyphPositions in base class called"));
+			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "setGlyphPositions in base class called"));
 	}
 
 	/**

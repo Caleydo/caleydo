@@ -12,7 +12,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -71,7 +71,7 @@ public class ContextMenu
 
 	private PickingManager pickingManager;
 
-	private AGLEventListener masterGLView;
+	private AGLView masterGLView;
 
 	private int mouseOverElement = -1;
 
@@ -128,7 +128,7 @@ public class ContextMenu
 	 * @param masterViewID
 	 *            the id of the view where the menu should be rendered
 	 */
-	public void setMasterGLView(AGLEventListener masterGLView) {
+	public void setMasterGLView(AGLView masterGLView) {
 		this.masterGLView = masterGLView;
 	}
 
@@ -185,7 +185,7 @@ public class ContextMenu
 	 * @param gl
 	 * @param masterGLView
 	 */
-	public void render(GL gl, AGLEventListener masterGLView) {
+	public void render(GL gl, AGLView masterGLView) {
 		if (this.masterGLView != masterGLView)
 			return;
 		if (!isEnabled)
@@ -340,7 +340,7 @@ public class ContextMenu
 		// FIXME: Find clean solution!!
 
 		Vec3f scalingPivot = new Vec3f(metaData.xOrigin, metaData.yOrigin, BASIC_Z);
-			
+
 		if (!(masterGLView instanceof IGLRemoteRenderingView))
 			gl.glTranslatef(0, 0, 2);
 

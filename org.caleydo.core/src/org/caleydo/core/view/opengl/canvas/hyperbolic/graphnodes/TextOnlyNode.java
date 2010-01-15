@@ -1,3 +1,0 @@
-package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
-
-

@@ -15,7 +15,7 @@ import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.ConnectionMap;
 import org.caleydo.core.manager.view.SelectedElementRepList;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
@@ -50,12 +50,13 @@ public abstract class GraphDrawingUtils
 	@Override
 	protected void renderConnectionLines(final GL gl) {
 		IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
-
+		//System.out.println("ids:" + connectedElementRepManager.getCanvasConnectionsByType());
 		for (Entry<EIDType, ConnectionMap> typeConnections : connectedElementRepManager
 			.getTransformedConnectionsByType().entrySet()) {
 			ArrayList<ArrayList<Vec3f>> alPointLists = null;
 
 			EIDType idType = typeConnections.getKey();
+
 			HashMap<Integer, ArrayList<ArrayList<Vec3f>>> viewToPointList =
 				hashIDTypeToViewToPointLists.get(idType);
 
@@ -71,7 +72,7 @@ public abstract class GraphDrawingUtils
 						throw new IllegalStateException(
 							"Current ID Type does not match the selected elemen rep's");
 
-					AGLEventListener glView =
+					AGLView glView =
 						viewGLCanvasManager.getGLEventListener(selectedElementRep.getSourceViewID());
 
 					if (glView == null) {
@@ -156,7 +157,7 @@ public abstract class GraphDrawingUtils
 		// Vec3f vecDestBundingPoint = new Vec3f();
 
 		vecViewBundlingPoint = vecViewCenter.copy();
-		vecDirection.scale(fLength / 1.5f);
+		vecDirection.scale(fLength / 1.7f);
 		vecViewBundlingPoint.add(vecDirection);
 		return vecViewBundlingPoint;
 	}

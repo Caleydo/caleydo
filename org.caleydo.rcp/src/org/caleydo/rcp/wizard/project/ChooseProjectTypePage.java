@@ -273,7 +273,7 @@ public class ChooseProjectTypePage
 			}
 		});
 		// btnOrganismMouse.setLayoutData(new GridData(GridData.FILL_BOTH));
-		
+
 		// Set organism which was used in last session
 		EOrganism lastChosenOrganism =
 			EOrganism.valueOf(GeneralManager.get().getPreferenceStore().getString(
@@ -421,13 +421,13 @@ public class ChooseProjectTypePage
 		// }
 		// });
 
-//		buttonRandomSampleDataMode.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				projectType = EProjectType.SAMPLE_DATA_RANDOM;
-//				setPageComplete(true);
-//			}
-//		});
+		// buttonRandomSampleDataMode.addSelectionListener(new SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// projectType = EProjectType.SAMPLE_DATA_RANDOM;
+		// setPageComplete(true);
+		// }
+		// });
 
 		buttonSampleDataMode.addSelectionListener(new SelectionAdapter() {
 			@Override

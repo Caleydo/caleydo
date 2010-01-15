@@ -41,7 +41,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
@@ -63,14 +63,13 @@ import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
 public class GLDataFlipper
-	extends AGLEventListener
+	extends AGLView
 	implements IGLRemoteRenderingView, IRemoteRenderingHandler {
 
 	private static final int SLERP_RANGE = 1000;
@@ -80,7 +79,7 @@ public class GLDataFlipper
 
 	private ArrayList<ASerializedView> newViews;
 
-	private ArrayList<AGLEventListener> containedGLViews;
+	private ArrayList<AGLView> containedGLViews;
 
 	private RemoteLevelElement focusElement;
 	private ArrayList<RemoteLevelElement> stackElementsLeft;
@@ -149,7 +148,7 @@ public class GLDataFlipper
 		glMouseListener.addGLCanvas(this);
 
 		newViews = new ArrayList<ASerializedView>();
-		containedGLViews = new ArrayList<AGLEventListener>();
+		containedGLViews = new ArrayList<AGLView>();
 		stackElementsRight = new ArrayList<RemoteLevelElement>();
 		stackElementsLeft = new ArrayList<RemoteLevelElement>();
 
@@ -211,8 +210,8 @@ public class GLDataFlipper
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+	public void initRemote(final GL gl, final AGLView glParentView, final GLMouseListener glMouseListener,
+		GLInfoAreaManager infoAreaManager) {
 
 		throw new IllegalStateException("Not implemented to be rendered remote");
 	}
@@ -302,18 +301,8 @@ public class GLDataFlipper
 
 	private void renderRemoteLevelElement(final GL gl, RemoteLevelElement element) {
 
-		if (element.getContainedElementID() == -1)
-			return;
-
-		int iViewID = element.getContainedElementID();
-
-		AGLEventListener glEventListener =
-			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID);
-
-		if (glEventListener == null) {
-			generalManager.getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-					"Remote level element is null and cannot be rendered!"));
+		AGLView glView = element.getGLView();
+		if (glView == null) {
 			return;
 		}
 
@@ -345,17 +334,19 @@ public class GLDataFlipper
 		// || (glEventListener instanceof GLPathwayViewBrowser && !renderPathwayViews))
 		// return;
 
-		if (glEventListener instanceof GLGlyph
-			|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-			|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
+		if (glView instanceof GLGlyph
+			|| (glView instanceof GLParallelCoordinates && glView.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+			|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
 				.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
 				&& isExperimentCountOK && renderGeneticViews)
-			|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-			|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
+			|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
+			|| (glView instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT, element
 				.getID()));
-			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION, iViewID));
+			gl
+				.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION, glView
+					.getID()));
 
 			gl.glPushMatrix();
 
@@ -366,7 +357,7 @@ public class GLDataFlipper
 			Vec3f axis = new Vec3f();
 			float fAngle = rot.get(axis);
 
-			if (glEventListener instanceof GLRemoteRendering) {
+			if (glView instanceof GLRemoteRendering) {
 
 				gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f, translation.z());
 				gl.glScalef(scale.x(), scale.y(), scale.z());
@@ -387,12 +378,12 @@ public class GLDataFlipper
 			}
 
 			if ((stackElementsLeft.contains(element) || focusElement == element)
-				&& glEventListener instanceof GLTissueViewBrowser)
-				((GLTissueViewBrowser) glEventListener).setPoolSide(true);
-			else if (stackElementsRight.contains(element) && glEventListener instanceof GLTissueViewBrowser)
-				((GLTissueViewBrowser) glEventListener).setPoolSide(false);
+				&& glView instanceof GLTissueViewBrowser)
+				((GLTissueViewBrowser) glView).setPoolSide(true);
+			else if (stackElementsRight.contains(element) && glView instanceof GLTissueViewBrowser)
+				((GLTissueViewBrowser) glView).setPoolSide(false);
 
-			glEventListener.displayRemote(gl);
+			glView.displayRemote(gl);
 
 			gl.glPopMatrix();
 
@@ -414,7 +405,7 @@ public class GLDataFlipper
 		// {
 		if (!newViews.isEmpty()) {
 			ASerializedView serView = newViews.remove(0);
-			AGLEventListener view = createView(gl, serView);
+			AGLView view = createView(gl, serView);
 
 			// addSlerpActionForView(gl, view);
 
@@ -425,7 +416,7 @@ public class GLDataFlipper
 			containedGLViews.add(view);
 
 			if (focusElement.isFree()) {
-				focusElement.setContainedElementID(view.getID());
+				focusElement.setGLView(view);
 				view.setRemoteLevelElement(focusElement);
 				view.setDetailLevel(EDetailLevel.HIGH);
 			}
@@ -437,7 +428,7 @@ public class GLDataFlipper
 					while (iter.hasNext()) {
 						RemoteLevelElement element = iter.next();
 						if (element.isFree()) {
-							element.setContainedElementID(view.getID());
+							element.setGLView(view);
 							view.setRemoteLevelElement(element);
 							view.setDetailLevel(EDetailLevel.LOW);
 							break;
@@ -449,7 +440,7 @@ public class GLDataFlipper
 					while (iter.hasNext()) {
 						RemoteLevelElement element = iter.next();
 						if (element.isFree()) {
-							element.setContainedElementID(view.getID());
+							element.setGLView(view);
 							view.setRemoteLevelElement(element);
 							view.setDetailLevel(EDetailLevel.LOW);
 							break;
@@ -474,11 +465,11 @@ public class GLDataFlipper
 
 		ViewActivationEvent viewActivationEvent = new ViewActivationEvent();
 		viewActivationEvent.setSender(this);
-		List<AGLEventListener> views = getRemoteRenderedViews();
+		List<AGLView> views = getRemoteRenderedViews();
 
 		List<Integer> viewIDs = new ArrayList<Integer>();
 		viewIDs.add(getID());
-		for (AGLEventListener view : views) {
+		for (AGLView view : views) {
 			viewIDs.add(view.getID());
 		}
 
@@ -489,7 +480,7 @@ public class GLDataFlipper
 	}
 
 	@Override
-	public List<AGLEventListener> getRemoteRenderedViews() {
+	public List<AGLView> getRemoteRenderedViews() {
 		return containedGLViews;
 	}
 
@@ -512,7 +503,7 @@ public class GLDataFlipper
 	 *            serialized form of the view to create
 	 * @return the created view ready to be used within the application
 	 */
-	private AGLEventListener createView(GL gl, ASerializedView serView) {
+	private AGLView createView(GL gl, ASerializedView serView) {
 
 		ICommandManager commandManager = generalManager.getCommandManager();
 		ECommandType cmdType = serView.getCreationCommandType();
@@ -521,7 +512,7 @@ public class GLDataFlipper
 		cmdView.setAttributesFromSerializedForm(serView);
 		cmdView.doCommand();
 
-		AGLEventListener glView = cmdView.getCreatedObject();
+		AGLView glView = cmdView.getCreatedObject();
 		glView.setRemoteRenderingGLView(this);
 
 		return glView;
@@ -585,21 +576,22 @@ public class GLDataFlipper
 				tmpSlerpAction.finished();
 
 				updateViewDetailLevels(tmpSlerpAction.getDestinationRemoteLevelElement());
-			
-				AGLEventListener glEventListener =
+
+				AGLView glView =
 					generalManager.getViewGLCanvasManager().getGLEventListener(tmpSlerpAction.getElementId());
 
-				if (glEventListener instanceof GLTissueViewBrowser)
-					((GLTissueViewBrowser)glEventListener).setSlerpActive(false);
-				
-				if (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-			
+				if (glView instanceof GLTissueViewBrowser)
+					((GLTissueViewBrowser) glView).setSlerpActive(false);
+
+				if (glView instanceof GLParallelCoordinates
+					&& glView.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+
 					boolean renderConnectionsLeft = true;
-					if (glEventListener.getID() == focusElement.getContainedElementID())
+					if (glView == focusElement.getGLView())
 						renderConnectionsLeft = false;
-					
-					((GLParallelCoordinates)glEventListener).setRenderConnectionState(renderConnectionsLeft);
-						
+
+					((GLParallelCoordinates) glView).setRenderConnectionState(renderConnectionsLeft);
+
 				}
 			}
 
@@ -608,7 +600,7 @@ public class GLDataFlipper
 
 			// Trigger chain move when selected view has not reached the focus
 			// position
-			if (iLastPickedViewID != focusElement.getContainedElementID())
+			if (iLastPickedViewID != focusElement.getGLView().getID())
 				chainMove(lastPickedRemoteLevelElement);
 		}
 	}
@@ -633,7 +625,7 @@ public class GLDataFlipper
 
 		slerpMod.applySlerp(gl, transform, true, true);
 
-		AGLEventListener glEventListener =
+		AGLView glEventListener =
 			generalManager.getViewGLCanvasManager().getGLEventListener(slerpAction.getElementId());
 
 		if (glEventListener instanceof GLGlyph
@@ -711,7 +703,7 @@ public class GLDataFlipper
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
-		
+
 		isPatientAlternativeGuideActive = false;
 		switch (pickingType) {
 
@@ -747,10 +739,10 @@ public class GLDataFlipper
 
 						arSlerpActions.clear();
 						lastPickedRemoteLevelElement = RemoteElementManager.get().getItem(iExternalID);
-						iLastPickedViewID = lastPickedRemoteLevelElement.getContainedElementID();
+						iLastPickedViewID = lastPickedRemoteLevelElement.getGLView().getID();
 						chainMove(lastPickedRemoteLevelElement);
 
-						AGLEventListener pickedView =
+						AGLView pickedView =
 							GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
 								iLastPickedViewID);
 
@@ -758,8 +750,8 @@ public class GLDataFlipper
 
 							isTissueGuideActive = true;
 							// isGeneticGuideActive = false;
-							
-							((GLTissueViewBrowser)pickedView).setSlerpActive(true);
+
+							((GLTissueViewBrowser) pickedView).setSlerpActive(true);
 						}
 
 						else if ((pickedView instanceof GLParallelCoordinates && pickedView.getSet()
@@ -774,9 +766,9 @@ public class GLDataFlipper
 					case MOUSE_OVER:
 
 						RemoteLevelElement element = RemoteElementManager.get().getItem(iExternalID);
-						int pickID = element.getContainedElementID();
+						int pickID = element.getGLView().getID();
 
-						AGLEventListener pickedView2 =
+						AGLView pickedView2 =
 							GeneralManager.get().getViewGLCanvasManager().getGLEventListener(pickID);
 
 						if (pickedView2 instanceof GLGlyph) {
@@ -798,10 +790,10 @@ public class GLDataFlipper
 	}
 
 	private void chainMove(RemoteLevelElement selectedElement) {
-		
+
 		// Clear connection lines
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
-		
+
 		// Chain slerping to the right
 		if (stackElementsLeft.contains(selectedElement)) {
 
@@ -893,11 +885,9 @@ public class GLDataFlipper
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
 
-		AGLEventListener glView =
-			generalManager.getViewGLCanvasManager().getGLEventListener(focusElement.getContainedElementID());
-
-		if (glView == null)
-			return;
+		// AGLView glView = focusElement.getGLView();
+		// if (glView == null)
+		// return;
 
 		// IViewFrustum frustum = glView.getViewFrustum();
 		// frustum.setTop(8*fAspectRatio);
@@ -981,22 +971,22 @@ public class GLDataFlipper
 				0.15f + fGuidancePipeWidth + 0.05f, 0.0f), 1, 1, 1, alpha);
 		}
 
-//		if (isPatientAlternativeGuideActive && dataDomain == EDataDomain.CLINICAL_DATA) {
-//			textureManager.renderTexture(gl, connTexture, new Vec3f(0.52f, 0.05f, 0.02f), new Vec3f(1.5f,
-//				0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.52f,
-//				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
-//
-//			gl.glTranslatef(1f, 0, 0);
-//			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f,
-//				0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
-//				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);;
-//
-//			gl.glTranslatef(0.5f, 0, 0);
-//			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f,
-//				0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
-//				0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
-//			gl.glTranslatef(-1.5f, 0, 0);
-//		}
+		// if (isPatientAlternativeGuideActive && dataDomain == EDataDomain.CLINICAL_DATA) {
+		// textureManager.renderTexture(gl, connTexture, new Vec3f(0.52f, 0.05f, 0.02f), new Vec3f(1.5f,
+		// 0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.52f,
+		// 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
+		//
+		// gl.glTranslatef(1f, 0, 0);
+		// textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f,
+		// 0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
+		// 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);;
+		//
+		// gl.glTranslatef(0.5f, 0, 0);
+		// textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f, 0.02f), new Vec3f(1.5f,
+		// 0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), new Vec3f(0.51f,
+		// 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
+		// gl.glTranslatef(-1.5f, 0, 0);
+		// }
 
 		for (int iViewIndex = 0; iViewIndex < possibleViews.size(); iViewIndex++) {
 
@@ -1026,20 +1016,17 @@ public class GLDataFlipper
 			}
 
 			RemoteLevelElement element = findElementContainingView(dataDomain, viewType);
-			AGLEventListener glEventListener = null;
+			AGLView glView = null;
 			if (element != null) {
-				glEventListener =
-					generalManager.getViewGLCanvasManager().getGLEventListener(
-						element.getContainedElementID());
+				glView = element.getGLView();
 			}
 
 			float fIconBackgroundGray = 1;
 			if (element == null)
 				fIconBackgroundGray = 0.6f;
 			else {
-				if ((glEventListener instanceof GLGlyph
-					|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet()
-						.getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
+				if ((glView instanceof GLGlyph
+					|| (glView instanceof GLParallelCoordinates && glView.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
 					fIconBackgroundGray = 1f;
 				}
 				else
@@ -1103,13 +1090,13 @@ public class GLDataFlipper
 			if (element != null)
 				gl.glPopName();
 
-			if (glEventListener instanceof GLGlyph
-				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
+			if (glView instanceof GLGlyph
+				|| (glView instanceof GLParallelCoordinates && glView.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+				|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
 					.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
 					&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
+				|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
+				|| (glView instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
 
 				// if ((glEventListener instanceof GLGlyph
 				// || (glEventListener instanceof GLParallelCoordinates &&
@@ -1413,18 +1400,18 @@ public class GLDataFlipper
 
 	private RemoteLevelElement findElementContainingView(EDataDomain dataDomain, EManagedObjectType viewType) {
 
-		for (AGLEventListener glView : containedGLViews) {
+		for (AGLView glView : containedGLViews) {
 			if (glView.getViewType() == viewType && glView.getDataDomain() == dataDomain) {
-				if (focusElement.getContainedElementID() == glView.getID())
+				if (focusElement.getGLView() == glView)
 					return focusElement;
 
 				for (RemoteLevelElement element : stackElementsLeft) {
-					if (element.getContainedElementID() == glView.getID())
+					if (element.getGLView() == glView)
 						return element;
 				}
 
 				for (RemoteLevelElement element : stackElementsRight) {
-					if (element.getContainedElementID() == glView.getID())
+					if (element.getGLView() == glView)
 						return element;
 				}
 			}
@@ -1436,25 +1423,22 @@ public class GLDataFlipper
 	// FIXME: method copied from bucket
 	private void renderHandles(final GL gl) {
 
-		AGLEventListener glEventListener;
-
 		// Bucket center (focus)
 		RemoteLevelElement element = focusElement;
-		glEventListener =
-			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
-		if (element.getContainedElementID() != -1) {
+		AGLView glView = element.getGLView();
+		if (glView != null) {
 
 			// if ((glEventListener instanceof GLGlyph
 			// || (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType()
 			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
 
-			if (glEventListener instanceof GLGlyph
-				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
+			if (glView instanceof GLGlyph
+				|| (glView instanceof GLParallelCoordinates && glView.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+				|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
 					.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
 					&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
+				|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
+				|| (glView instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
 
 				Transform transform;
 				Vec3f translation;
@@ -1480,21 +1464,20 @@ public class GLDataFlipper
 
 		// Left first
 		element = stackElementsLeft.get(0);
-		glEventListener =
-			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
-		if (element.getContainedElementID() != -1) {
+		glView = element.getGLView();
+		if (glView != null) {
 
 			// if ((glEventListener instanceof GLGlyph
 			// || (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType()
 			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
 
-			if (glEventListener instanceof GLGlyph
-				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
+			if (glView instanceof GLGlyph
+				|| (glView instanceof GLParallelCoordinates && glView.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+				|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
 					.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
 					&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
+				|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
+				|| (glView instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
 
 				gl.glTranslatef(-0.64f, -1.25f, 4.02f);
 				gl.glRotatef(90, 0, 0, 1);
@@ -1506,19 +1489,18 @@ public class GLDataFlipper
 
 		// Left second
 		element = stackElementsLeft.get(1);
-		glEventListener =
-			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
-		if (element.getContainedElementID() != -1) {
+		glView = element.getGLView();
+		if (glView != null) {
 			// if ((glEventListener instanceof GLGlyph
 			// || (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType()
 			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
-			if (glEventListener instanceof GLGlyph
-				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
+			if (glView instanceof GLGlyph
+				|| (glView instanceof GLParallelCoordinates && glView.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+				|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
 					.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
 					&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
+				|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
+				|| (glView instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
 
 				gl.glTranslatef(-1.17f, -1.25f, 4.02f);
 				gl.glRotatef(90, 0, 0, 1);
@@ -1530,9 +1512,8 @@ public class GLDataFlipper
 
 		// Right first
 		element = stackElementsRight.get(0);
-		glEventListener =
-			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
-		if (element.getContainedElementID() != -1) {
+		glView = element.getGLView();
+		if (element.getGLView() != null) {
 			// if ((glEventListener instanceof GLGlyph
 			// || (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType()
 			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
@@ -1541,13 +1522,13 @@ public class GLDataFlipper
 			// glEventListener
 			// .getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
 			// && isTissueGuideActive)) {
-			if (glEventListener instanceof GLGlyph
-				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
+			if (glView instanceof GLGlyph
+				|| (glView instanceof GLParallelCoordinates && glView.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+				|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
 					.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
 					&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
+				|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
+				|| (glView instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
 
 				gl.glTranslatef(0.65f, 2.08f, 4.02f);
 				gl.glRotatef(-90, 0, 0, 1);
@@ -1571,9 +1552,9 @@ public class GLDataFlipper
 
 		// Right second
 		element = stackElementsRight.get(1);
-		glEventListener =
-			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
-		if (element.getContainedElementID() != -1) {
+		glView = element.getGLView();
+
+		if (glView != null) {
 			// if ((glEventListener instanceof GLGlyph
 			// || (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType()
 			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
@@ -1582,13 +1563,13 @@ public class GLDataFlipper
 			// GLParallelCoordinates || glEventListener instanceof GLHierarchicalHeatMap)
 			// && isTissueGuideActive) {
 
-			if (glEventListener instanceof GLGlyph
-				|| (glEventListener instanceof GLParallelCoordinates && glEventListener.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
+			if (glView instanceof GLGlyph
+				|| (glView instanceof GLParallelCoordinates && glView.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+				|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
 					.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
 					&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
+				|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
+				|| (glView instanceof GLPathwayViewBrowser && isPathwayContentAvailable && renderPathwayViews)) {
 
 				gl.glTranslatef(1.1f, 2.08f, 4.02f);
 				gl.glRotatef(-90, 0, 0, 1);
@@ -1784,9 +1765,7 @@ public class GLDataFlipper
 		gl.glPopName();
 
 		// Render view information
-		String sText =
-			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID())
-				.getShortInfo();
+		String sText = element.getGLView().getShortInfo();
 
 		int iMaxChars = 50;
 		if (sText.length() > iMaxChars) {
@@ -1900,11 +1879,12 @@ public class GLDataFlipper
 	}
 
 	private void updateViewDetailLevels(RemoteLevelElement element) {
-		if (element.getContainedElementID() == -1)
-			return;
 
-		AGLEventListener glActiveSubView =
-			GeneralManager.get().getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
+		AGLView glActiveSubView =
+			element.getGLView();
+		
+		if (glActiveSubView == null)
+			return;
 
 		glActiveSubView.setRemoteLevelElement(element);
 

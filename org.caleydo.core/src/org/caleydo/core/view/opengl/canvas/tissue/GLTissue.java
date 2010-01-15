@@ -1,11 +1,9 @@
 package org.caleydo.core.view.opengl.canvas.tissue;
 
-import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
-import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.EIDCategory;
@@ -20,7 +18,6 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -29,8 +26,7 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializedDummyView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.viewbrowser.GLTissueViewBrowser;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -43,7 +39,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
  * @author Marc Streit
  */
 public class GLTissue
-	extends AGLEventListener {
+	extends AGLView {
 
 	private String texturePath;
 	private int experimentIndex;
@@ -68,7 +64,7 @@ public class GLTissue
 	}
 
 	@Override
-	public void initRemote(GL gl, AGLEventListener glParentView, GLMouseListener glMouseListener,
+	public void initRemote(GL gl, AGLView glParentView, GLMouseListener glMouseListener,
 		GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;

@@ -5,7 +5,7 @@ import java.awt.Point;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
 
 /**
@@ -75,11 +75,10 @@ public class GLDragAndDrop {
 		gl.glTranslatef(fArCurrentMousePos[0] + fOffset, fArCurrentMousePos[1] + fOffset, fZ);
 		gl.glScalef(0.05f, 0.05f, 0.05f);
 
-		int iGLEventListenerID = RemoteElementManager.get().getItem(iDragObjectId).getContainedElementID();
+		AGLView glView = RemoteElementManager.get().getItem(iDragObjectId).getGLView();
 
-		if (iGLEventListenerID != -1) {
-			GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iGLEventListenerID)
-				.displayRemote(gl);
+		if (glView != null) {
+			glView.displayRemote(gl);
 		}
 
 		gl.glPopMatrix();

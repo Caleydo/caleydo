@@ -68,6 +68,7 @@ public class Gate
 	 * @param iViewID
 	 *            Unique ID of the view.
 	 */
+	@Override
 	public void draw(GL gl, PickingManager pickingManager, TextureManager textureManager,
 		CaleydoTextRenderer textRenderer, int iViewID) {
 
@@ -218,6 +219,7 @@ public class Gate
 	 * @param currentPosition
 	 *            Position of the gate.
 	 */
+	@Override
 	public void setCurrentPosition(float currentPosition) {
 		this.currentPosition = currentPosition;
 	}
@@ -228,6 +230,7 @@ public class Gate
 	 * @param bottom
 	 *            Value the bottom of the gate shall be set to.
 	 */
+	@Override
 	public void setBottom(float bottom) {
 		this.bottom = bottom;
 		lowerValue = (float) set.getRawForNormalized(bottom / renderStyle.getAxisHeight());
@@ -245,6 +248,7 @@ public class Gate
 	 * @param top
 	 *            Value the top of the gate shall be set to.
 	 */
+	@Override
 	public void setTop(float top) {
 		this.top = top;
 		upperValue = (float) set.getRawForNormalized(top / renderStyle.getAxisHeight());
@@ -270,6 +274,7 @@ public class Gate
 	/**
 	 * @return Upper cutoff value of the gate.
 	 */
+	@Override
 	public float getUpperValue() {
 		return upperValue;
 	}
@@ -288,6 +293,7 @@ public class Gate
 	/**
 	 * @return Lower cutoff value of the gate.
 	 */
+	@Override
 	public float getLowerValue() {
 		return lowerValue;
 	}

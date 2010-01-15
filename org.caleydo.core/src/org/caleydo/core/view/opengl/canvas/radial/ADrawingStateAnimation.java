@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
+import java.util.Calendar;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
@@ -55,9 +55,10 @@ public abstract class ADrawingStateAnimation
 		alMovementValues = new ArrayList<MovementValue>();
 	}
 
+	@Override
 	public final void draw(float fXCenter, float fYCenter, GL gl, GLU glu) {
 
-		double fCurrentTimeStamp = GregorianCalendar.getInstance().getTimeInMillis();
+		double fCurrentTimeStamp = Calendar.getInstance().getTimeInMillis();
 
 		if (!bAnimationStarted)
 			draw(fXCenter, fYCenter, gl, glu, 0);

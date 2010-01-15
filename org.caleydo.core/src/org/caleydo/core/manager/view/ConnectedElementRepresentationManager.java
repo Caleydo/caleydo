@@ -295,19 +295,19 @@ public class ConnectedElementRepresentationManager
 		newTransformedPoints = transformer.transform(sourceConnectionsByType, transformedConnectionsByType);
 
 		IGroupwareManager gm = GeneralManager.get().getGroupwareManager();
-//		if (gm != null && gm.isGroupwareConnectionLinesEnabled()) {
-			if (newTransformedPoints) {
-				String networkName = null;
-				if (gm != null) {
-					networkName = gm.getNetworkManager().getNetworkName();
-				} else {
-					networkName = "visLinks";
-				}
-				transformer.project(gl, networkName,
-					transformedConnectionsByType, canvasConnectionsByType);
-				newCanvasVertices = true;
+		// if (gm != null && gm.isGroupwareConnectionLinesEnabled()) {
+		if (newTransformedPoints) {
+			String networkName = null;
+			if (gm != null) {
+				networkName = gm.getNetworkManager().getNetworkName();
 			}
-//		}
+			else {
+				networkName = "visLinks";
+			}
+			transformer.project(gl, networkName, transformedConnectionsByType, canvasConnectionsByType);
+			newCanvasVertices = true;
+		}
+		// }
 	}
 
 	/**

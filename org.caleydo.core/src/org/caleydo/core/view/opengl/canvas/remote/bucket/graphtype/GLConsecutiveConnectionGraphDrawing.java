@@ -10,6 +10,8 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GraphDrawingUtils;
+import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
 
@@ -26,9 +28,10 @@ public class GLConsecutiveConnectionGraphDrawing
 	protected RemoteLevel focusLevel;
 	protected RemoteLevel stackLevel;
 
-	HashMap<Integer, Vec3f> bundlingPoints;
+	HashMap<Integer, Vec3f> bundlingPoints = new HashMap<Integer, Vec3f>();
 	Vec3f vecCenter = new Vec3f();
-	HashMap<Integer, ArrayList<ArrayList<Vec3f>>> connections;
+	HashMap<Integer, ArrayList<ArrayList<Vec3f>>> connections = new HashMap<Integer, ArrayList<ArrayList<Vec3f>>>();
+
 	/**
 	 * Constructor.
 	 * 
@@ -36,7 +39,6 @@ public class GLConsecutiveConnectionGraphDrawing
 	 * @param stackLevel
 	 */
 	public GLConsecutiveConnectionGraphDrawing(final RemoteLevel focusLevel, final RemoteLevel stackLevel) {
-
 		super(focusLevel, stackLevel);
 
 		this.focusLevel = focusLevel;
@@ -46,13 +48,12 @@ public class GLConsecutiveConnectionGraphDrawing
 	protected void renderLineBundling(final GL gl, EIDType idType, float[] fArColor) {
 		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
-		bundlingPoints = new HashMap<Integer, Vec3f>();
-		connections = new HashMap<Integer, ArrayList<ArrayList<Vec3f>>>();
+		connections.clear();
+		bundlingPoints.clear();
 		
-		for (Integer iKey : keySet) {
+		for (Integer iKey : keySet)
 			hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists.get(idType).get(iKey)));
-		}
-		
+	
 		vecCenter = calculateCenter(hashViewToCenterPoint.values());
 		ArrayList<ArrayList<Vec3f>> connectionLinesCurrentView = new ArrayList<ArrayList<Vec3f>>();
 
@@ -69,38 +70,45 @@ public class GLConsecutiveConnectionGraphDrawing
 				else
 					pointsToDepthSort.add(alCurrentPoints.get(0));
 			}
-			for(Vec3f currentPoint : depthSort(pointsToDepthSort))
+			for(Vec3f currentPoint : depthSort(pointsToDepthSort)){
 				if (iKey == activeViewID)
 					connectionLinesCurrentView.add( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
 				else
 					connectionLinesCurrentView.add( createControlPoints( currentPoint, vecViewBundlingPoint, hashViewToCenterPoint.get(iKey) ) );
+			}
 			connections.put(iKey, connectionLinesCurrentView);
 		}
-		
-		if (focusLevel.getElementByPositionIndex(0).getContainedElementID() == activeViewID)
-			renderFromCenter(gl);
+		if (focusLevel.getElementByPositionIndex(0).getGLView() != null){
+			if (focusLevel.getElementByPositionIndex(0).getGLView().getID() == activeViewID)
+				renderFromCenter(gl);
+		}
 		else {
 			for (int stackElement = 0; stackElement < stackLevel.getCapacity(); stackElement++) {
-				if(activeViewID == stackLevel.getElementByPositionIndex(stackElement).getContainedElementID())
-					renderFromStackLevel(gl);
+				if (stackLevel.getElementByPositionIndex(stackElement).getGLView() != null){
+					if(activeViewID == stackLevel.getElementByPositionIndex(stackElement).getGLView().getID()){
+						renderFromStackLevel(gl);
+						break;
+					}
+				}
 			}
 		}
 	}
 	
 	private void renderFromCenter(GL gl){
+
 		ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews = new ArrayList<ArrayList<ArrayList<Vec3f>>>(4);
 		ArrayList<Integer> ids = new ArrayList<Integer>();
-
-
 		for (int stackCount = 0; stackCount < stackLevel.getCapacity(); stackCount++) {
-			int id = stackLevel.getElementByPositionIndex(stackCount).getContainedElementID();
-			if (bundlingPoints.containsKey(id))
-				ids.add(id);
+			if(stackLevel.getElementByPositionIndex(stackCount).getGLView() != null){
+				int id = stackLevel.getElementByPositionIndex(stackCount).getGLView().getID();
+				if (bundlingPoints.containsKey(id))
+					ids.add(id);
+			}
 		}
 		
 		if(ids.size()>1){
 			ArrayList<ArrayList<Vec3f>> bundlingLine = new ArrayList<ArrayList<Vec3f>>();
-			connectionLinesAllViews.add(0, connections.get(activeViewID));
+			connectionLinesAllViews.add(connections.get(activeViewID));
 			Vec3f src = bundlingPoints.get(activeViewID);
 			for (Integer currentID : ids) {
 				bundlingLine.add(createControlPoints(bundlingPoints.get(currentID), src, vecCenter));
@@ -109,13 +117,13 @@ public class GLConsecutiveConnectionGraphDrawing
 				src = bundlingPoints.get(currentID);
 			}			
 		}
-		else{
+		else if (ids.size() == 1){
 			int remoteId = ids.get(0);
 			ArrayList<ArrayList<Vec3f>> bundlingLine = new ArrayList<ArrayList<Vec3f>>();
 			bundlingLine.add(createControlPoints(bundlingPoints.get(remoteId), bundlingPoints.get(activeViewID), vecCenter));
-			connectionLinesAllViews.add(0, connections.get(activeViewID));
-			connectionLinesAllViews.add(1, bundlingLine);
-			connectionLinesAllViews.add(2, connections.get(remoteId));
+			connectionLinesAllViews.add(connections.get(activeViewID));
+			connectionLinesAllViews.add(bundlingLine);
+			connectionLinesAllViews.add(connections.get(remoteId));
 		}
 	
 		
@@ -128,11 +136,12 @@ public class GLConsecutiveConnectionGraphDrawing
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 		
 		for (int stackCount = 0; stackCount < stackLevel.getCapacity(); stackCount++) {
-			int id = stackLevel.getElementByPositionIndex(stackCount).getContainedElementID();
-			if (bundlingPoints.containsKey(id))
-				ids.add(id);
+			if (stackLevel.getElementByPositionIndex(stackCount).getGLView() != null){
+				int id = stackLevel.getElementByPositionIndex(stackCount).getGLView().getID();
+				if (bundlingPoints.containsKey(id))
+					ids.add(id);
+			}
 		}
-		
 		while(!ids.get(0).equals(activeViewID)){
 			Integer temp = ids.get(0);
 			ids.remove(0);
@@ -141,7 +150,7 @@ public class GLConsecutiveConnectionGraphDrawing
 		
 		if (ids.size() > 1){
 			ArrayList<ArrayList<Vec3f>> bundlingLine = new ArrayList<ArrayList<Vec3f>>();
-			connectionLinesAllViews.add(0, connections.get(activeViewID));
+			connectionLinesAllViews.add(connections.get(activeViewID));
 			Vec3f src = bundlingPoints.get(activeViewID);
 			for (Integer currentID : ids) {
 				bundlingLine.add(createControlPoints(src, bundlingPoints.get(currentID), vecCenter));
@@ -149,23 +158,38 @@ public class GLConsecutiveConnectionGraphDrawing
 				connectionLinesAllViews.add(connections.get(currentID));
 				src = bundlingPoints.get(currentID);
 			}
-			if (bundlingPoints.containsKey(focusLevel.getElementByPositionIndex(0).getContainedElementID())){
-				Vec3f centerBundlingPoint = bundlingPoints.get(focusLevel.getElementByPositionIndex(0).getContainedElementID());
-				bundlingLine.add(createControlPoints(src, centerBundlingPoint, vecCenter));
-				connectionLinesAllViews.add(bundlingLine);
-				connectionLinesAllViews.add(connections.get(focusLevel.getElementByPositionIndex(0).getContainedElementID()));
-			}			
+			if (focusLevel.getElementByPositionIndex(0).getGLView() != null){
+				if (bundlingPoints.containsKey(focusLevel.getElementByPositionIndex(0).getGLView().getID())){
+					Vec3f centerBundlingPoint = bundlingPoints.get(focusLevel.getElementByPositionIndex(0).getGLView().getID());
+					bundlingLine.add(createControlPoints(src, centerBundlingPoint, vecCenter));
+					connectionLinesAllViews.add(bundlingLine);
+					connectionLinesAllViews.add(connections.get(focusLevel.getElementByPositionIndex(0).getGLView().getID()));
+				}	
+			}
 			
 		}
 		else {
-			int remoteId = focusLevel.getElementByPositionIndex(0).getContainedElementID();
-			ArrayList<ArrayList<Vec3f>> bundlingLine = new ArrayList<ArrayList<Vec3f>>();
-			bundlingLine.add(createControlPoints(bundlingPoints.get(remoteId), bundlingPoints.get(activeViewID), vecCenter));
-			connectionLinesAllViews.add(0, connections.get(activeViewID));
-			connectionLinesAllViews.add(1, bundlingLine);
-			connectionLinesAllViews.add(2, connections.get(remoteId));
+			if (focusLevel.getElementByPositionIndex(0).getGLView() != null){
+				int remoteId = focusLevel.getElementByPositionIndex(0).getGLView().getID();
+				ArrayList<ArrayList<Vec3f>> bundlingLine = new ArrayList<ArrayList<Vec3f>>();
+				bundlingLine.add(createControlPoints(bundlingPoints.get(remoteId), bundlingPoints.get(activeViewID), vecCenter));
+				connectionLinesAllViews.add(connections.get(activeViewID));
+				connectionLinesAllViews.add(bundlingLine);
+				connectionLinesAllViews.add(connections.get(remoteId));
+			}
 		}	
 		VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
-		visLinkScene.renderLines(gl);	
+		visLinkScene.renderLines(gl);
+	}
+	
+	private int findHeatMap(){
+		if (focusLevel.getElementByPositionIndex(0).getGLView() instanceof GLHeatMap)
+			return focusLevel.getElementByPositionIndex(0).getGLView().getID();
+		else
+			for (int stack = 0; stack < stackLevel.getCapacity(); stack++) {
+				if (stackLevel.getElementByPositionIndex(stack).getGLView() instanceof GLHeatMap)
+					return stackLevel.getElementByPositionIndex(stack).getGLView().getID();
+			}
+		return -1;
 	}
 }

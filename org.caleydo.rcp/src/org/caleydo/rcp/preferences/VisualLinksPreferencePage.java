@@ -26,7 +26,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class VisualLinksPreferencePage
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage {
-	
+
 	private EVisLinkStyleType style;
 	private boolean animation;
 	private float width;
@@ -46,7 +46,9 @@ public class VisualLinksPreferencePage
 		animation = false;
 		width = 2.0f;
 		animatedHalo = false;
-		//FIXME: add color
+		// FIXME: add color
+		// FIXME: add aa quality
+
 		styleTypes.add(EVisLinkStyleType.STANDARD_VISLINK);
 		styleTypes.add(EVisLinkStyleType.SHADOW_VISLINK);
 		styleTypes.add(EVisLinkStyleType.HALO_VISLINK);
@@ -61,9 +63,12 @@ public class VisualLinksPreferencePage
 		iCurrentlyUsedStyle = GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.VISUAL_LINKS_STYLE);
 		iCurrentlyUsedGraphType = GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.VISUAL_LINKS_TYPE);
 		animation = GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATION);
+
 		width = GeneralManager.get().getPreferenceStore().getFloat(PreferenceConstants.VISUAL_LINKS_WIDTH);
-		animatedHalo = GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO);
-		
+		animatedHalo =
+			GeneralManager.get().getPreferenceStore().getBoolean(
+				PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO);
+
 		style = styleTypes.get(iCurrentlyUsedStyle);
 		
 		Composite baseComposite = new Composite(getFieldEditorParent(), SWT.NULL);
@@ -92,8 +97,6 @@ public class VisualLinksPreferencePage
 					iCurrentlyUsedGraphType = "CONSECUTIVE";
 			}
 		});
-
-		
 		
 		final Button standard = new Button(group, SWT.RADIO);
 		standard.setText("No highlighting");
@@ -122,7 +125,7 @@ public class VisualLinksPreferencePage
 				iCurrentlyUsedStyle = 1;
 			}
 		});
-		
+
 		final Button halo = new Button(group, SWT.RADIO);
 		halo.setText("Halo");
 		if (iCurrentlyUsedStyle == 2)
@@ -136,38 +139,39 @@ public class VisualLinksPreferencePage
 				iCurrentlyUsedStyle = 2;
 			}
 		});
-		
+
 		final Button animationBox = new Button(baseComposite, SWT.CHECK);
 		animationBox.setText("Animation");
 		if (animation == true)
 			animationBox.setSelection(true);
-		
+
 		animationBox.addSelectionListener(new SelectionAdapter() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				animation = !animation;
 			}
 		});
-		
+
 		final Slider widthSlider = new Slider(baseComposite, SWT.HORIZONTAL);
 		widthSlider.setMinimum(10);
 		widthSlider.setMaximum(40);
 		widthSlider.setIncrement(5);
 		widthSlider.setPageIncrement(5);
-		int currentWidth = (int) ( GeneralManager.get().getPreferenceStore().getFloat(PreferenceConstants.VISUAL_LINKS_WIDTH) * 10 );
+		int currentWidth =
+			(int) (GeneralManager.get().getPreferenceStore().getFloat(PreferenceConstants.VISUAL_LINKS_WIDTH) * 10);
 		widthSlider.setSelection(currentWidth);
-		
+
 		widthSlider.addSelectionListener(new SelectionAdapter() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				width = (float) (widthSlider.getSelection() / 10.0f);
-				if(width < 1.0f || width > 4.0f)
+				width = (widthSlider.getSelection() / 10.0f);
+				if (width < 1.0f || width > 4.0f)
 					width = 2.0f;
 			}
 		});
-		
+
 		final Button animatedHaloBox = new Button(baseComposite, SWT.CHECK);
 		animatedHaloBox.setText("Animated Halo (overwrites other selections)");
 		if (animatedHalo == true) {
@@ -177,13 +181,13 @@ public class VisualLinksPreferencePage
 			shadow.setEnabled(!animatedHalo);
 			halo.setEnabled(!animatedHalo);
 		}
-		
+
 		animatedHaloBox.addSelectionListener(new SelectionAdapter() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				animatedHalo = !animatedHalo;
-				if(animatedHalo) {
+				if (animatedHalo) {
 					standard.setSelection(false);
 					shadow.setSelection(false);
 					halo.setSelection(true);
@@ -195,7 +199,7 @@ public class VisualLinksPreferencePage
 				animationBox.setEnabled(!animatedHalo);
 				standard.setEnabled(!animatedHalo);
 				shadow.setEnabled(!animatedHalo);
-				halo.setEnabled(!animatedHalo);		
+				halo.setEnabled(!animatedHalo);
 			}
 		});
 
@@ -213,7 +217,7 @@ public class VisualLinksPreferencePage
 
 		PreferenceStore store = GeneralManager.get().getPreferenceStore();
 
-		store.setValue(PreferenceConstants.VISUAL_LINKS_STYLE, iCurrentlyUsedStyle);	
+		store.setValue(PreferenceConstants.VISUAL_LINKS_STYLE, iCurrentlyUsedStyle);
 		store.setValue(PreferenceConstants.VISUAL_LINKS_ANIMATION, animation);
 		store.setValue(PreferenceConstants.VISUAL_LINKS_WIDTH, width);
 		store.setValue(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO, animatedHalo);
@@ -235,5 +239,5 @@ public class VisualLinksPreferencePage
 		// TODO Auto-generated method stub
 
 	}
-	
+
 }

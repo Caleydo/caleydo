@@ -9,11 +9,13 @@ import java.util.regex.Pattern;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.AManager;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.PathwayImageMap;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.core.Graph;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -73,10 +75,10 @@ public class PathwayManager
 		hashPathwayDatabase.put(type, tmpPathwayDatabase);
 
 		GeneralManager.get().getLogger().log(
-			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Setting pathway loading path: database-type:["
-				+ type + "] " + "xml-path:[" + tmpPathwayDatabase.getXMLPath() + "] image-path:["
-				+ tmpPathwayDatabase.getImagePath() + "] image-map-path:["
-				+ tmpPathwayDatabase.getImageMapPath() + "]"));
+			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID,
+				"Setting pathway loading path: database-type:[" + type + "] " + "xml-path:["
+					+ tmpPathwayDatabase.getXMLPath() + "] image-path:[" + tmpPathwayDatabase.getImagePath()
+					+ "] image-map-path:[" + tmpPathwayDatabase.getImageMapPath() + "]"));
 	}
 
 	@Override

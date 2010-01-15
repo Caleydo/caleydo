@@ -10,7 +10,7 @@ import org.caleydo.core.manager.specialized.clinical.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializedDummyView;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyphGenerator;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphObjectDefinition;
@@ -41,7 +41,7 @@ public class GlyphMappingConfigurationViewRep
 	implements ISWTView {
 
 	private class DataPack {
-		public Composite composite;
+		// public Composite composite;
 		public CCombo comboBox;
 		public GlyphObjectDefinition model;
 
@@ -134,7 +134,7 @@ public class GlyphMappingConfigurationViewRep
 					}
 				}
 
-				for (AGLEventListener agleventlistener : generalManager.getViewGLCanvasManager()
+				for (AGLView agleventlistener : generalManager.getViewGLCanvasManager()
 					.getAllGLEventListeners())
 					if (agleventlistener instanceof GLGlyph) {
 						((GLGlyph) agleventlistener).forceRebuild();
@@ -280,7 +280,7 @@ public class GlyphMappingConfigurationViewRep
 
 					DataPack pack = new DataPack();
 					pack.comboBox = box;
-					pack.composite = comp;
+					// pack.composite = comp;
 					pack.model = model;
 					pack.parameterName = name;
 					pack.parameterType = EGlyphSettingIDs.SCALE;
@@ -301,7 +301,7 @@ public class GlyphMappingConfigurationViewRep
 
 				DataPack pack = new DataPack();
 				pack.comboBox = box;
-				pack.composite = comp;
+				// pack.composite = comp;
 				pack.model = model;
 				pack.parameterName = name;
 				pack.parameterType = EGlyphSettingIDs.COLOR;

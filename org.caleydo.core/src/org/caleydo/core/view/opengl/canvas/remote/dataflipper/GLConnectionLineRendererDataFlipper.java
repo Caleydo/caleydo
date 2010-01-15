@@ -15,7 +15,7 @@ import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.ConnectionMap;
 import org.caleydo.core.manager.view.SelectedElementRepList;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
@@ -68,7 +68,7 @@ public class GLConnectionLineRendererDataFlipper
 						throw new IllegalStateException(
 							"Current ID Type does not match the selected elemen rep's");
 
-					AGLEventListener glView =
+					AGLView glView =
 						viewGLCanvasManager.getGLEventListener(selectedElementRep.getSourceViewID());
 
 					if (glView == null) {
@@ -100,22 +100,22 @@ public class GLConnectionLineRendererDataFlipper
 				}
 			}
 
-			if (viewToPointList.containsKey(focusElement.getContainedElementID())) {
+			if (viewToPointList.containsKey(focusElement.getGLView().getID())) {
 				for (ArrayList<Vec3f> sourceViewPoints : viewToPointList.get(focusElement
-					.getContainedElementID())) {
+					.getGLView().getID())) {
 					// Connect point in focus view with points in first view in LEFT stack
-					if (viewToPointList.containsKey(stackElementsLeft.get(0).getContainedElementID())) {
+					if (viewToPointList.containsKey(stackElementsLeft.get(0).getGLView().getID())) {
 						for (ArrayList<Vec3f> targetViewPoints : viewToPointList.get(stackElementsLeft.get(0)
-							.getContainedElementID())) {
+							.getGLView().getID())) {
 							renderLine(gl, sourceViewPoints.get(0), targetViewPoints.get(0), 0, new float[] {
 									1, 0, 0 });
 						}
 					}
 
 					// Connect point in focus view with points in first view in RIGHT stack
-					if (viewToPointList.containsKey(stackElementsRight.get(0).getContainedElementID())) {
+					if (viewToPointList.containsKey(stackElementsRight.get(0).getGLView().getID())) {
 						for (ArrayList<Vec3f> targetViewPoints : viewToPointList.get(stackElementsRight
-							.get(0).getContainedElementID())) {
+							.get(0).getGLView().getID())) {
 							renderLine(gl, sourceViewPoints.get(0), targetViewPoints.get(0), 0, new float[] {
 									1, 0, 0 });
 						}
@@ -145,7 +145,8 @@ public class GLConnectionLineRendererDataFlipper
 			// renderLine(gl, vecViewBundlingPoint, vecCenter, 0, fArColor);
 		}
 	}
-	
+
+	@Override
 	protected void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
 		final int iNumberOfLines, float[] fArColor) {
 

@@ -146,8 +146,7 @@ public class AnimationPopOutDetailOutside
 		else {
 			float fPercentageStep =
 				(RadialHierarchyRenderStyle.MAX_DETAIL_SCREEN_PERCENTAGE - RadialHierarchyRenderStyle.MIN_DETAIL_SCREEN_PERCENTAGE)
-					/ ((float) (iMaxDisplayedHierarchyDepth
-						- RadialHierarchyRenderStyle.MIN_DISPLAYED_DETAIL_DEPTH - 1));
+					/ ((iMaxDisplayedHierarchyDepth - RadialHierarchyRenderStyle.MIN_DISPLAYED_DETAIL_DEPTH - 1));
 
 			fDetailViewScreenPercentage =
 				RadialHierarchyRenderStyle.MIN_DETAIL_SCREEN_PERCENTAGE

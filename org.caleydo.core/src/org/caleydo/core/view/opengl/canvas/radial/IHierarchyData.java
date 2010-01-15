@@ -5,13 +5,14 @@ package org.caleydo.core.view.opengl.canvas.radial;
  * 
  * @author Christian Partl
  */
-public interface IHierarchyData<E extends IHierarchyData<E>> extends Comparable<E>{
+public interface IHierarchyData<E extends IHierarchyData<E>>
+	extends Comparable<E> {
 
 	/**
 	 * @return ID of the hierarchical data object.
 	 */
 	public int getID();
-	
+
 	/**
 	 * @return Size of the hierarchical data object.
 	 */
@@ -21,7 +22,7 @@ public interface IHierarchyData<E extends IHierarchyData<E>> extends Comparable<
 	 * @return Text describing the hierarchical data object.
 	 */
 	public String getLabel();
-	
+
 	/**
 	 * @return Value that shall be used when comparing hierarchical data object.
 	 */

@@ -17,6 +17,7 @@ import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
@@ -24,12 +25,11 @@ import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.usecase.EDataFilterLevel;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
@@ -43,6 +43,7 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -52,7 +53,7 @@ import org.eclipse.core.runtime.Status;
  * @author Marc Streit
  */
 public abstract class AStorageBasedView
-	extends AGLEventListener
+	extends AGLView
 	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ISelectionCommandHandler,
 	IViewCommandHandler {
 
@@ -162,6 +163,7 @@ public abstract class AStorageBasedView
 		return bRenderOnlyContext;
 	}
 
+	@Override
 	public void initData() {
 
 		super.initData();
@@ -491,7 +493,7 @@ public abstract class AStorageBasedView
 		}
 		catch (InvalidAttributeValueException e) {
 			generalManager.getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
 					"Can not handle data type of update in selectionDelta", e));
 		}
 	}

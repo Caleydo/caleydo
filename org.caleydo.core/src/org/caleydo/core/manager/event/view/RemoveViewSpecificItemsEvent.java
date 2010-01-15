@@ -15,6 +15,7 @@ import org.caleydo.core.manager.event.AEvent;
 public class RemoveViewSpecificItemsEvent
 	extends AEvent {
 
+	@Override
 	public boolean checkIntegrity() {
 		// nothing to check
 		return true;

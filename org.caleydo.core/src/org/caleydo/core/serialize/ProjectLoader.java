@@ -9,6 +9,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.AUseCase;
 
@@ -21,7 +22,7 @@ public class ProjectLoader {
 
 	/** full path to directory to temporarily store the projects file before zipping */
 	public static final String TEMP_PROJECT_DIR_NAME =
-		GeneralManager.CALEYDO_HOME_PATH + "tempLoad" + File.separator;
+		IGeneralManager.CALEYDO_HOME_PATH + "tempLoad" + File.separator;
 
 	/**
 	 * Loads the project from a specified zip-archive.

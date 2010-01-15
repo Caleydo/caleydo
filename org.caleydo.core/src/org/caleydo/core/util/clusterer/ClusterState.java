@@ -23,7 +23,7 @@ public class ClusterState {
 	private float affinityPropClusterFactorExperiments;
 
 	private EVAType contentVAType = EVAType.CONTENT;
-	private EVAType storageVAType = EVAType.STORAGE;
+	// private EVAType storageVAType = EVAType.STORAGE;
 
 	private int contentVaId = 0;
 	private int storageVaId = 0;

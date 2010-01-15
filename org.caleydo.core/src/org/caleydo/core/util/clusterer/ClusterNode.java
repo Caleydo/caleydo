@@ -20,7 +20,7 @@ import org.caleydo.core.view.opengl.canvas.radial.IHierarchyData;
 @XmlRootElement(name = "node")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ClusterNode
-	implements  IHierarchyData<ClusterNode> {
+	implements IHierarchyData<ClusterNode> {
 
 	@XmlAttribute
 	private String sNodeName;

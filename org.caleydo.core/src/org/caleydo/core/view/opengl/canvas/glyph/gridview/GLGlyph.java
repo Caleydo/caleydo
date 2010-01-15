@@ -30,6 +30,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.glyph.GlyphChangePersonalNameEvent;
@@ -48,7 +49,7 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
@@ -68,6 +69,7 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.BufferUtil;
@@ -81,7 +83,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Stefan Sauer
  */
 public class GLGlyph
-	extends AGLEventListener
+	extends AGLView
 	implements ISelectionUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	private static final long serialVersionUID = -7899479912218913482L;
@@ -333,7 +335,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLEventListener glParentView,
+	public void initRemote(final GL gl, final AGLView glParentView,
 		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		bIsLocal = false;
@@ -911,7 +913,7 @@ public class GLGlyph
 
 					if (g == null) {
 						generalManager.getLogger().log(
-							new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "Glyph with external ID "
+							new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "Glyph with external ID "
 								+ iExternalID + " not found!"));
 						return;
 					}

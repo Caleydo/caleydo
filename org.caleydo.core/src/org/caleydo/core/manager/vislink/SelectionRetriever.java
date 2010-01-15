@@ -17,14 +17,14 @@ public class SelectionRetriever
 	implements Runnable {
 
 	private VisLinkManager visLinkManager;
-	
+
 	private boolean stopped = false;
-	
+
 	@Override
 	public void run() {
 		while (!stopped) {
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(200);
 				if (!stopped) {
 					String getSelection = "propagation?name=" + visLinkManager.getAppName();
 					String selectionXML = visLinkManager.doVisdaemonRequest(getSelection);
@@ -42,19 +42,24 @@ public class SelectionRetriever
 						GeneralManager.get().getEventPublisher().triggerEvent(vlse);
 					}
 				}
-			} catch (InterruptedException e) {
+			}
+			catch (InterruptedException e) {
 				e.printStackTrace();
 				stopped = true;
-			} catch (ParserConfigurationException e) {
+			}
+			catch (ParserConfigurationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (SAXException e) {
+			}
+			catch (SAXException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch(RuntimeException e) {
+			}
+			catch (RuntimeException e) {
 				e.printStackTrace();
 			}
 		}

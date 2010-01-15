@@ -27,7 +27,7 @@ public abstract class AGLConnectionLineRenderer {
 	protected boolean bEnableRendering = true;
 
 	protected EnumMap<EIDType, HashMap<Integer, ArrayList<ArrayList<Vec3f>>>> hashIDTypeToViewToPointLists;
-	
+
 	protected int activeViewID = -1;
 
 	/**
@@ -91,46 +91,46 @@ public abstract class AGLConnectionLineRenderer {
 		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z());
 		gl.glEnd();
 	}
-	
-	
+
 	/**
 	 * Sets the activeViewID needed for animated lines
+	 * 
 	 * @param viewID
 	 */
-	public void setActiveViewID(int viewID){
+	public void setActiveViewID(int viewID) {
 		activeViewID = viewID;
 	}
-	
-	
+
 	/**
-	 * 		Depth-sorts the given set of points according to their z-value.
+	 * Depth-sorts the given set of points according to their z-value.
 	 * 
-	 * @param points Specifies the given set of points to be depth-sorted.
+	 * @param points
+	 *            Specifies the given set of points to be depth-sorted.
 	 * @return The depth-sorted set of points.
 	 */
 	protected ArrayList<Vec3f> depthSort(final ArrayList<Vec3f> points) {
 		ArrayList<Vec3f> sortedPoints = new ArrayList<Vec3f>();
 		boolean foundSpot = false;
-		
-		for(Vec3f point : points) {
+
+		for (Vec3f point : points) {
 			foundSpot = false;
-			for(int i = 0; i < sortedPoints.size(); i++)
-				if(point.z() >= sortedPoints.get(i).z()) {
+			for (int i = 0; i < sortedPoints.size(); i++)
+				if (point.z() >= sortedPoints.get(i).z()) {
 					sortedPoints.add(i, point);
 					foundSpot = true;
 					break;
 				}
-			if(foundSpot == false)
+			if (foundSpot == false)
 				sortedPoints.add(point);
 		}
-//		System.out.println("Points:");
-//		for(Vec3f point : points)
-//			System.out.println(point.z());
-//		System.out.println("Sorted Points:");
-//		for(Vec3f sorted : sortedPoints)
-//			System.out.println(sorted.z());
-//		System.out.println("----------------------------------------");
+		// System.out.println("Points:");
+		// for(Vec3f point : points)
+		// System.out.println(point.z());
+		// System.out.println("Sorted Points:");
+		// for(Vec3f sorted : sortedPoints)
+		// System.out.println(sorted.z());
+		// System.out.println("----------------------------------------");
 		return sortedPoints;
 	}
-	
+
 }

@@ -12,6 +12,7 @@ import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -63,7 +64,7 @@ public class CmdDataCreateSet
 		fillSets(createdObject);
 
 		generalManager.getLogger().log(
-			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "New Set with internal ID "
+			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "New Set with internal ID "
 				+ createdObject.getID() + " and external ID " + iExternalID + " created."));
 
 		if (createdObject.getSetType() == ESetType.GENE_EXPRESSION_DATA) {

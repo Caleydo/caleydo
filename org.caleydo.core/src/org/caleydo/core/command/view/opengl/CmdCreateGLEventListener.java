@@ -20,7 +20,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 
 /**
@@ -30,7 +30,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
  * @author Marc Streit
  */
 public class CmdCreateGLEventListener
-	extends ACmdCreational<AGLEventListener> {
+	extends ACmdCreational<AGLView> {
 	protected ECommandType viewType;
 
 	protected IViewFrustum viewFrustum;
@@ -125,6 +125,7 @@ public class CmdCreateGLEventListener
 	 * 
 	 * @deprecated
 	 */
+	@Deprecated
 	private void extractDataIDs() {
 
 		// // Read Set and Selection IDs
@@ -175,7 +176,7 @@ public class CmdCreateGLEventListener
 		final float fFar, final int iParentCanvasID, final float fCamOriginX, final float fCamOriginY,
 		final float fCamOriginZ, final float fCamRotationX, final float fCamRotationY,
 		final float fCamRotationZ, final float fCamRotationAngle) {
-		
+
 		setAttributes(dataDomain, eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar, iParentCanvasID);
 
 		cameraOrigin.set(fCamOriginX, fCamOriginY, fCamOriginZ);

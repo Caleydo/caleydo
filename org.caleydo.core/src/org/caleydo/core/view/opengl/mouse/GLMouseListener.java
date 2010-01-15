@@ -14,7 +14,7 @@ import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 
 /**
  * Mouse picking listener for JOGL views
@@ -30,7 +30,7 @@ public class GLMouseListener
 	/**
 	 * All canvas objects which camera is manipulated by the mouse listener
 	 */
-	private ArrayList<AGLEventListener> alGlCanvas;
+	private ArrayList<AGLView> alGlCanvas;
 
 	private Point pickedPointDragStart;
 	private Point pickedPointCurrent;
@@ -67,7 +67,7 @@ public class GLMouseListener
 		super();
 		pickedPointDragStart = new Point();
 
-		alGlCanvas = new ArrayList<AGLEventListener>();
+		alGlCanvas = new ArrayList<AGLView>();
 	}
 
 	@Override
@@ -218,7 +218,7 @@ public class GLMouseListener
 				prevMouseY = y;
 
 				/* set new paramters to ViewCamera */
-				Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
+				Iterator<AGLView> iterGLCanvas = alGlCanvas.iterator();
 
 				while (iterGLCanvas.hasNext()) {
 					iterGLCanvas.next().getViewCamera().addCameraRotation(currentRotX);
@@ -240,7 +240,7 @@ public class GLMouseListener
 				prevMouseY = y;
 
 				/* set new paramters to ViewCamera */
-				Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
+				Iterator<AGLView> iterGLCanvas = alGlCanvas.iterator();
 
 				while (iterGLCanvas.hasNext()) {
 					iterGLCanvas.next().getViewCamera().addCameraScale(new Vec3f(0, 0, zoomY + zoomX));
@@ -252,14 +252,14 @@ public class GLMouseListener
 			 * --- PANING ---
 			 */
 			Vec3f addVec3f =
-				new Vec3f(fPanScale * (float) (x - prevMouseX) / (float) size.width, fPanScale
-					* (float) (prevMouseY - y) / (float) size.height, 0.0f);
+				new Vec3f(fPanScale * (x - prevMouseX) / size.width, fPanScale * (prevMouseY - y)
+					/ size.height, 0.0f);
 
 			prevMouseX = x;
 			prevMouseY = y;
 
 			/* set new paramters to ViewCamera */
-			Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
+			Iterator<AGLView> iterGLCanvas = alGlCanvas.iterator();
 
 			while (iterGLCanvas.hasNext()) {
 				iterGLCanvas.next().getViewCamera().addCameraPosition(addVec3f);
@@ -277,7 +277,7 @@ public class GLMouseListener
 		 */
 		float fZoom = fZoomScale * e.getWheelRotation();
 
-		Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
+		Iterator<AGLView> iterGLCanvas = alGlCanvas.iterator();
 
 		while (iterGLCanvas.hasNext()) {
 			iterGLCanvas.next().getViewCamera().addCameraScale(new Vec3f(0, 0, fZoom));
@@ -328,7 +328,7 @@ public class GLMouseListener
 		this.bEnableZoom = bEnableZoom;
 	}
 
-	public void addGLCanvas(final AGLEventListener gLCanvas) {
+	public void addGLCanvas(final AGLView gLCanvas) {
 
 		alGlCanvas.add(gLCanvas);
 	}

@@ -23,14 +23,14 @@ public class StartVisLinksListener
 		Display display = Display.getCurrent();
 
 		// FIXME: how to get the correct shell?
-//		for (Shell s : display.getShells()) {
-//			System.out.println("shell: " + s.getBounds());
-//		}
+		// for (Shell s : display.getShells()) {
+		// System.out.println("shell: " + s.getBounds());
+		// }
 		Rectangle r = display.getShells()[3].getBounds();
 		visLinkManager.register(r.x, r.y, r.width, r.height, display);
 		DisplayLoopExecution dle = DisplayLoopExecution.get();
 		dle.executeMultiple(visLinkManager);
-		
+
 	}
 
 	public void setRequester(Object requester) {

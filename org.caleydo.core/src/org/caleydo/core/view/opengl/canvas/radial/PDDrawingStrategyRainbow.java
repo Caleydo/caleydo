@@ -111,22 +111,22 @@ public class PDDrawingStrategyRainbow
 
 	@Override
 	public float[] getColor(PartialDisc disc) {
-		
+
 		float fStartAngle = disc.getCurrentStartAngle();
 		float fAngle = disc.getCurrentAngle();
 		float fMidAngle = fStartAngle + (fAngle / 2.0f);
-		
+
 		while (fMidAngle >= 360) {
 			fMidAngle -= 360;
 		}
 		while (fMidAngle < 0) {
 			fMidAngle += 360;
 		}
-		
+
 		ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
 
 		float fArRGB[] = cmRainbow.getColor(fMidAngle / 360.0f);
-		
+
 		return new float[] { fArRGB[0], fArRGB[1], fArRGB[2], fTransparency };
 	}
 

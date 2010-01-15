@@ -27,7 +27,7 @@ public class TissueUseCase
 	 */
 	public TissueUseCase() {
 		useCaseMode = EDataDomain.TISSUE_DATA;
-		
+
 		possibleViews = new ArrayList<EManagedObjectType>();
 		possibleViews.add(EManagedObjectType.GL_TISSUE_VIEW_BROWSER);
 

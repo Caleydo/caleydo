@@ -267,7 +267,7 @@ public class PartialDisc
 
 		if (alChildren != null) {
 			for (int i = 0; i < alChildren.size(); i++) {
-				PartialDisc pdCurrentChild = (PartialDisc) alChildren.get(i);
+				PartialDisc pdCurrentChild = alChildren.get(i);
 				fChildStartAngle +=
 					pdCurrentChild.drawHierarchy(gl, glu, fWidth, fChildStartAngle, fInnerRadius,
 						fAnglePerSizeUnit, iDepth, bSimulation);
@@ -390,7 +390,7 @@ public class PartialDisc
 
 		if (iDepth > 0 && alChildren != null) {
 			for (int i = 0; i < alChildren.size(); i++) {
-				PartialDisc pdCurrentChild = (PartialDisc) alChildren.get(i);
+				PartialDisc pdCurrentChild = alChildren.get(i);
 				pdCurrentChild.setPDDrawingStrategyChildren(drawingStrategy, iDepth);
 			}
 		}
@@ -415,7 +415,7 @@ public class PartialDisc
 
 		if (iDepth > 0 && alChildren != null) {
 			for (int i = 0; i < alChildren.size(); i++) {
-				PartialDisc pdCurrentChild = (PartialDisc) alChildren.get(i);
+				PartialDisc pdCurrentChild = alChildren.get(i);
 				pdCurrentChild.decoratePDDrawingStrategyChildren(decorator, iDepth);
 			}
 		}
