@@ -65,7 +65,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHeatMapView;
-import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.ParCoordsRenderStyle;
+//import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.ParCoordsRenderStyle;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -126,6 +126,7 @@ public class GLScatterplot
 	private YAxisSelectorListener yAxisSelectorListener;
 
 	private SelectionManager elementSelectionManager;
+	private SelectionManager mouseoverSelectionManager;
 
 	private float[] fDragStartPoint = new float[3];
 	private float[] fDragEndPoint = new float[3];
@@ -171,6 +172,10 @@ public class GLScatterplot
 		initAxisComboEvent.setSender(this);
 		initAxisComboEvent.setAxisNames(this.getAxisString());
 		GeneralManager.get().getEventPublisher().triggerEvent(initAxisComboEvent);
+		
+		//TODO: Remove when Toolbar working again
+		POINTSIZE = POINTSIZE /1.0f;  
+		POINTSTYLE = EScatterPointType.CROSS;
 	}
 
 	@Override
@@ -298,10 +303,13 @@ public class GLScatterplot
 			bUpdateSelection=false;
 			buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
 		}
-		
-				
+						
 		display(gl);
 		checkForHits(gl);
+		
+//		int test1 = contentSelectionManager.getNumberOfElements();
+//		int test2 = storageSelectionManager.getNumberOfElements();
+		
 		
 		if (eBusyModeState != EBusyModeState.OFF) 		
 			renderBusyMode(gl);
@@ -338,9 +346,7 @@ public class GLScatterplot
 
 		// GLHelperFunctions.drawAxis(gl);
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-
 		// gl.glEnable(GL.GL_DEPTH_TEST);
-
 		// clipToFrustum(gl);
 
 		gl.glCallList(iGLDisplayListToCall);
@@ -350,7 +356,6 @@ public class GLScatterplot
 		gl.glCallList(iGLDisplayListIndexSelection);
 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
-
 		// if (!isRenderedRemote())
 		// contextMenu.render(gl, this);
 	}
@@ -388,29 +393,16 @@ public class GLScatterplot
 		 gl.glEndList();
 		 		 		 		 		 		 
 		}
-							  
-		 
-	
-		
-		
-//		 if (bRectangleSelection)
-//		 {
-//			DrawRectangularSelection(gl);
-//			
-//		 }
-//		 else
-//		 {
-//			
-//		 }
+
 	}
 	
 	/**
-	 * Render the coordinate system of the parallel coordinates, including the axis captions and axis-specific
-	 * buttons
+	 * Render the coordinate system of the Scatterplot
+	 * 
 	 * 
 	 * @param gl
 	 *            the gl context
-	 * @param iNumberAxis
+	 * 
 	 */
 	private void renderCoordinateSystem(GL gl) {
 
@@ -490,7 +482,6 @@ public class GLScatterplot
 		// gl.glPopName();
 
 //		// LABEL X
-
 		
 		// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glTranslatef(renderStyle.getLAbelWidth(), XLABELDISTANCE, 0);
@@ -592,20 +583,18 @@ public class GLScatterplot
 	}
 	
 	private void RenderMouseOver(GL gl) {
-
 		
-		if (elementSelectionManager.getNumberOfElements(ESelectionType.MOUSE_OVER) ==0)			
+		if (mouseoverSelectionManager.getNumberOfElements(ESelectionType.MOUSE_OVER) ==0)			
 			return;
 				 		
-		 Set<Integer> mouseOver = elementSelectionManager.getElements(ESelectionType.MOUSE_OVER);
+		 Set<Integer> mouseOver = mouseoverSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 		 int iContentIndex =0;
 		 for (int i : mouseOver)
 		 {
 			 iContentIndex =i;
 			 break;
 		 }
-				
-		
+						
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 		
@@ -617,9 +606,9 @@ public class GLScatterplot
 		float x = xnormalized * XScale;
 		float y = ynormalized * YScale;
 		float[] fArMappingColor = colorMapper.getColor(Math.max(xnormalized, ynormalized));
-		
-		
-
+		 if (elementSelectionManager.checkStatus(ESelectionType.SELECTION,iContentIndex))
+			 fArMappingColor = new float[]{1.0f, 0.1f, 0.5f};
+				
 		float z = +1.5f;
 		float fullPoint = POINTSIZE * 2f;
 		gl.glColor3f(1.0f, 1.0f, 0.0f);
@@ -661,10 +650,16 @@ public class GLScatterplot
 		x = x + 0.1f;
 		gl.glTranslatef(x, y, z);
 
-		String sLabel =
-			"Point :" + set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.RAW, iContentIndex) + " / "
+		String sLabel = "";
+		
+		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION,iContentIndex))
+			sLabel="Selected Point :" + set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.RAW, iContentIndex) + " / "
 				+ set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.RAW, iContentIndex);
-	//	sLabel="Point :: ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890 //// ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890 //// ";
+		else
+			sLabel="Point :" + set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.RAW, iContentIndex) + " / "
+			+ set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.RAW, iContentIndex);
+
+		//	sLabel="Point :: ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890 //// ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890 //// ";
 		
 		float fScaling = renderStyle.getSmallFontScalingFactor();
 		if (isRenderedRemote())
@@ -672,13 +667,10 @@ public class GLScatterplot
 		
 		Rectangle2D bounds =
 			textRenderer.getScaledBounds(gl, sLabel, fScaling, ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);
-		
-		
-		
+					
         float boxLengh = (float) bounds.getWidth()+0.2f;
 		float boxHight = (float) bounds.getHeight();
 		
-	//	gl.glTranslatef(0.0f, 0.0f, 0.1f);
 		gl.glColor3f(1.0f, 1.0f, 0.0f);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(0.0f, -0.02f, -0.1f);
@@ -686,8 +678,6 @@ public class GLScatterplot
 		gl.glVertex3f(boxLengh, boxHight, -0.1f);
 		gl.glVertex3f(boxLengh, -0.02f, -0.1f);
 		gl.glEnd();
-//		gl.glTranslatef(0.0f, 0.0f, -0.1f);
-
 
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		textRenderer.begin3DRendering();
@@ -714,7 +704,6 @@ public class GLScatterplot
 				return true;
 
 		return false;
-
 	}
 	
 	private void UpdateSelection()	
@@ -752,7 +741,6 @@ public class GLScatterplot
 	
 		
 private void RenderSelection(GL gl) {
-
 		
 		if (elementSelectionManager.getNumberOfElements(ESelectionType.SELECTION) ==0)			
 			return;
@@ -780,8 +768,7 @@ private void RenderSelection(GL gl) {
 						
 			DrawPointPrimitive(gl, x, y, z, // z
 					fArMappingColor, 1.0f,// fOpacity 
-					iContentIndex,1.0f); //scale
-						
+					iContentIndex,1.0f); //scale					
 		 }
 }
 	
@@ -795,15 +782,6 @@ private void RenderSelection(GL gl) {
 		int iPickingID =
 			pickingManager.getPickingID(iUniqueID, EPickingType.SCATTER_POINT_SELECTION, iContentIndex);
 		gl.glColor3f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2]);
-
-
-		// Render Selected Items;
-		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)) {
-			z = +1.0f;
-			gl.glColor3f(1.0f, 0.1f, 0.5f);
-		}
-
-	
 
 		gl.glPushName(iPickingID);
 		switch (type) {
@@ -960,8 +938,12 @@ private void RenderSelection(GL gl) {
 		contentVA = useCase.getVA(contentVAType);
 		storageVA = useCase.getVA(storageVAType);
 
-		elementSelectionManager = storageSelectionManager;
-
+		
+	//	mouseoverSelectionManager = storageSelectionManager;
+		mouseoverSelectionManager = new SelectionManager.Builder(EIDType.UNSPECIFIED).build();
+		elementSelectionManager = contentSelectionManager;
+		//mouseoverSelectionManager = contentSelectionManager;
+		// TODO: Thats just for testing! 
 	}
 
 	@Override
@@ -1034,11 +1016,7 @@ private void RenderSelection(GL gl) {
 						eSelectionType = ESelectionType.SELECTION;						
 						break;
 					case MOUSE_OVER:
-
 						eSelectionType = ESelectionType.MOUSE_OVER;
-						elementSelectionManager.clearSelection(eSelectionType);
-						
-
 						break;
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.DESELECTED;						
@@ -1059,41 +1037,43 @@ private void RenderSelection(GL gl) {
 	}
 
 	private void createContentSelection(ESelectionType selectionType, int contentID) {
-		if (elementSelectionManager.checkStatus(selectionType, contentID))
-			return;
 
-		// check if the mouse-overed element is already selected, and if it is, whether mouse over is clear.
-		// If that all is true we don't need to do anything
-		// if (selectionType == ESelectionType.MOUSE_OVER
-		// && elementSelectionManager.checkStatus(ESelectionType.SELECTION, contentID)
-		// && elementSelectionManager.getElements(ESelectionType.MOUSE_OVER).size() == 0)
-		// return;
 
-		// connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
-		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, contentID)
-			&& selectionType == ESelectionType.DESELECTED)
-		// if (selectionType == ESelectionType.SELECTION)
+		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, contentID))
 		{
-			elementSelectionManager.removeFromType(ESelectionType.SELECTION, contentID);
-			setDisplayListDirty();
-			bUpdateSelection = true;
-			return;
+			if (selectionType == ESelectionType.DESELECTED)		
+			{
+				elementSelectionManager.removeFromType(ESelectionType.SELECTION, contentID);
+				setDisplayListDirty();
+				bUpdateSelection = true;
+				return;
+			}
+			
+									
 		}
-
-		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, contentID)) {
+		if(selectionType == ESelectionType.SELECTION) 
+		{
 			//fDragStartPoint = new float[3];
 			//fDragEndPoint = new float[3];
+			if (!elementSelectionManager.checkStatus(contentID))
+				
+				elementSelectionManager.add(contentID);
+			elementSelectionManager.addToType(selectionType, contentID);
 			bUpdateSelection = true;
+			//return;
 		}
-
-		// SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
-		// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
-
-		if (!elementSelectionManager.checkStatus(contentID))
 		
-			elementSelectionManager.add(contentID);
-		elementSelectionManager.addToType(selectionType, contentID);
+		
+		if ((selectionType == ESelectionType.MOUSE_OVER))
+			//	 && (!mouseoverSelectionManager.checkStatus(contentID)))
+		{			
+			mouseoverSelectionManager.resetSelectionManager(); // This may be not necessary;
+			mouseoverSelectionManager.add(contentID);
+			mouseoverSelectionManager.addToType(selectionType, contentID);			
+		}
+		
+		
 		// }
 		// test = elementSelectionManager.getNumberOfElements();
 
