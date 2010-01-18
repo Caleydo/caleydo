@@ -36,6 +36,7 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 //import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.storagebased.InitAxisComboEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetScatterSelectionEvent;
@@ -84,7 +85,7 @@ import org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle;
 //import com.sun.opengl.util.texture.TextureCoords;
 
 /**
- * Rendering the GLSecatterplott
+ * Rendering the GLScatterplott
  * 
  * @author Alexander Lex
  * @author Marc Streit
@@ -110,11 +111,14 @@ public class GLScatterplot
 	boolean bUseDetailLevel = true;
 	
 	boolean bUpdateSelection = false;
+	boolean bRender2Axis = true;
 
 	int iCurrentMouseOverElement = -1;
 
 	public static int SELECTED_X_AXIS = 0;
 	public static int SELECTED_Y_AXIS = 1;
+	public static int SELECTED_X_AXIS_2 = 2;
+	public static int SELECTED_Y_AXIS_2 = 3;
 
 	// listeners
 
@@ -378,6 +382,14 @@ public class GLScatterplot
 			renderCoordinateSystem(gl);			
 			gl.glEndList();	
 			
+			// TODO remove l8ter 
+			bRender2Axis=true;
+			SELECTED_X_AXIS = 0;
+			SELECTED_Y_AXIS = 1;
+			SELECTED_X_AXIS_2 = 0;
+			SELECTED_Y_AXIS_2 = 2;
+
+			
 			 gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 			 gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
 			 RenderScatterPoints(gl);
@@ -553,6 +565,13 @@ public class GLScatterplot
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 		float x = 0.0f;
 		float y = 0.0f;
+		float xnormalized = 0.0f;
+		float ynormalized = 0.0f;
+			
+		float x_2 = 0.0f;
+		float y_2 = 0.0f;
+
+		
 
 		for (Integer iContentIndex : contentVA) {
 
@@ -563,22 +582,50 @@ public class GLScatterplot
 				continue;
 			}
 
-			float xnormalized =
+			xnormalized =
 				set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
-			float ynormalized =
+			ynormalized =
 				set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
-			// Hmm, doesnt work;
-			// float xnormalized =
-			// set.get(SELECTED_X_AXIS).getFloat(EDataRepresentation.LOG2, iContentIndex);
-			// float ynormalized =
-			// set.get(SELECTED_Y_AXIS).getFloat(EDataRepresentation.LOG2, iContentIndex);
+			
+			
+			
 			x = xnormalized * XScale;
 			y = ynormalized * YScale;
 			float[] fArMappingColor = colorMapper.getColor(Math.max(xnormalized, ynormalized));
+			if  (bRender2Axis) fArMappingColor = new float[]{1.0f, 0.0f, 0.0f};
 			DrawPointPrimitive(gl, x, y, 0.0f, // z
 				fArMappingColor, 1.0f,// fOpacity 
 				iContentIndex,1.0f); //scale
+			
+			if (bRender2Axis)
+			{
+				xnormalized =
+					set.get(SELECTED_X_AXIS_2).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+				ynormalized =
+					set.get(SELECTED_Y_AXIS_2).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+				x_2 = xnormalized * XScale;
+				y_2 = ynormalized * YScale;
+				fArMappingColor = new float[]{0.0f, 1.0f, 0.0f};
+				EScatterPointType tmpPoint = POINTSTYLE;  
+				POINTSTYLE = POINTSTYLE.CIRCLE;
+				
+				DrawPointPrimitive(gl, x_2, y_2, 0.0f, // z
+						fArMappingColor, 1.0f,// fOpacity 
+						iContentIndex,1.0f); //scale
+				
+
+				POINTSTYLE=tmpPoint;  
+				
+				gl.glColor3f(0.0f, 0.0f, 1.0f);
+				gl.glLineWidth(0.5f);
+				gl.glBegin(GL.GL_LINES);
+				// gl.glBegin(GL.GL_POLYGON);
+				gl.glVertex3f(x, y, 1.0f);
+				gl.glVertex3f(x_2, y_2, 1.0f);				
+				gl.glEnd();
+				
+			}
 		}
 	}
 	
@@ -740,7 +787,7 @@ public class GLScatterplot
 	}
 	
 		
-private void RenderSelection(GL gl) {
+	private void RenderSelection(GL gl) {
 		
 		if (elementSelectionManager.getNumberOfElements(ESelectionType.SELECTION) ==0)			
 			return;
@@ -1038,8 +1085,6 @@ private void RenderSelection(GL gl) {
 
 	private void createContentSelection(ESelectionType selectionType, int contentID) {
 
-
-
 		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION, contentID))
 		{
 			if (selectionType == ESelectionType.DESELECTED)		
@@ -1056,9 +1101,9 @@ private void RenderSelection(GL gl) {
 		{
 			//fDragStartPoint = new float[3];
 			//fDragEndPoint = new float[3];
-			if (!elementSelectionManager.checkStatus(contentID))
-				
+			if (!elementSelectionManager.checkStatus(contentID))			
 				elementSelectionManager.add(contentID);
+			
 			elementSelectionManager.addToType(selectionType, contentID);
 			bUpdateSelection = true;
 			//return;
@@ -1073,9 +1118,6 @@ private void RenderSelection(GL gl) {
 			mouseoverSelectionManager.addToType(selectionType, contentID);			
 		}
 		
-		
-		// }
-		// test = elementSelectionManager.getNumberOfElements();
 
 		setDisplayListDirty();
 	}
@@ -1147,6 +1189,25 @@ private void RenderSelection(GL gl) {
 		}
 		return alElementReps;
 	}
+	
+	private void UpdateMouseOverfromExternal()
+	{
+	 Set<Integer> selectionSet = contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);		 	 					
+	 for (int iContentIndex : selectionSet)
+	 {
+			mouseoverSelectionManager.resetSelectionManager(); // This may be not necessary;
+			mouseoverSelectionManager.add(iContentIndex);
+			mouseoverSelectionManager.addToType(ESelectionType.MOUSE_OVER, iContentIndex);	
+	 }
+	}
+	
+	
+	@Override
+	protected void reactOnExternalSelection(boolean scrollToSelection) {
+		bUpdateSelection = true;
+		UpdateMouseOverfromExternal();
+	}
+	
 
 	@Override
 	public void renderContext(boolean bRenderOnlyContext) {
