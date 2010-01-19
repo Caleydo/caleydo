@@ -4,9 +4,9 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.eclipse.swt.widgets.Display;
 
 public interface IGUIBridge {
-	
+
 	public void closeApplication();
-	
+
 	public void setShortInfo(String sMessage);
 
 	public void setFileNameCurrentDataSet(String sFileName);

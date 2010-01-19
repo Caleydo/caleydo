@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Data Flipper View
+Bundle-SymbolicName: org.caleydo.view.dataflipper
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.caleydo.view.dataflipper.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.caleydo.core;bundle-version="1.3.0",
+ org.caleydo.view.base;bundle-version="1.0.0",
+ org.caleydo.lib.jogl;bundle-version="1.2.0",
+ org.caleydo.util.gleem;bundle-version="1.0.1",
+ org.caleydo.view.tissuebrowser;bundle-version="1.0.0",
+ org.caleydo.view.pathwaybrowser;bundle-version="1.0.0",
+ org.caleydo.view.pathway;bundle-version="1.0.0",
+ org.caleydo.view.bucket;bundle-version="1.0.0",
+ org.caleydo.view.heatmap;bundle-version="1.0.0",
+ org.caleydo.view.parcoords;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

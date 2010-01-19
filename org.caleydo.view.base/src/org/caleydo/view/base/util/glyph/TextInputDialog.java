@@ -12,8 +12,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-public class TextInputDialog
-	extends Dialog {
+public class TextInputDialog extends Dialog {
 	protected String value;
 
 	public TextInputDialog(Shell parent) {
@@ -33,7 +32,8 @@ public class TextInputDialog
 
 	public String open() {
 		Shell parent = getParent();
-		final Shell shell = new Shell(parent, SWT.TITLE | SWT.BORDER | SWT.APPLICATION_MODAL);
+		final Shell shell = new Shell(parent, SWT.TITLE | SWT.BORDER
+				| SWT.APPLICATION_MODAL);
 		shell.setText("Name Input Dialog");
 
 		shell.setLayout(new GridLayout(2, true));
@@ -50,15 +50,15 @@ public class TextInputDialog
 		buttonOK.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 		Button buttonCancel = new Button(shell, SWT.PUSH);
 		buttonCancel.setText("Cancel");
-		buttonCancel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
+		buttonCancel
+				.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 
 		text.addListener(SWT.Modify, new Listener() {
 			public void handleEvent(Event event) {
 				try {
 					value = text.getText().trim();
 					buttonOK.setEnabled(true);
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					buttonOK.setEnabled(false);
 				}
 			}

@@ -13,7 +13,6 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -233,14 +232,15 @@ public class ContextMenu
 			// This is necessary because of the problems
 			// with the frustum and picking in the Bucket view.
 			// FIXME: Find clean solution!!
-			if (masterGLView instanceof GLRemoteRendering) {
-				baseMenuMetaData.xOrigin *= 2f;
-				baseMenuMetaData.yOrigin *= 2f;
-				fRightBorder *= 2f;
-				fLeftBorder *= 2f;
-				fTopBorder *= 2f;
-				fBottomBorder *= 2f;
-			}
+			// FIXME: after view plugin reorganization
+			// if (masterGLView instanceof GLRemoteRendering) {
+			// baseMenuMetaData.xOrigin *= 2f;
+			// baseMenuMetaData.yOrigin *= 2f;
+			// fRightBorder *= 2f;
+			// fLeftBorder *= 2f;
+			// fTopBorder *= 2f;
+			// fBottomBorder *= 2f;
+			// }
 
 			initializeSubMenus(contextMenuEntries, baseMenuMetaData);
 

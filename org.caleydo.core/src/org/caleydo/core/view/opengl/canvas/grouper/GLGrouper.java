@@ -230,8 +230,8 @@ public class GLGrouper
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView,
-		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+	public void initRemote(final GL gl, final AGLView glParentView, final GLMouseListener glMouseListener,
+		GLInfoAreaManager infoAreaManager) {
 
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
@@ -671,7 +671,7 @@ public class GLGrouper
 	}
 
 	public void createNewGroup(Set<Integer> setContainedGroups) {
-		
+
 		GroupRepresentation newGroup =
 			new GroupRepresentation(new ClusterNode("group" + iLastUsedCompositeID, iLastUsedCompositeID++,
 				0, 0, false), renderStyle, drawingStrategyManager
@@ -774,7 +774,7 @@ public class GLGrouper
 
 		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites =
 			getOrderedTopElementCompositeList(setCopiedGroups);
-		
+
 		int iTempID[] = { iLastUsedCompositeID };
 		for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
 			iTempID[0]++;
@@ -788,16 +788,16 @@ public class GLGrouper
 	}
 
 	public void deleteGroups(Set<Integer> setGroupsToDelete) {
-		
+
 		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites =
 			getOrderedTopElementCompositeList(setGroupsToDelete);
-		
+
 		for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
 			ICompositeGraphic parent = composite.getParent();
-			if(parent != null) {
+			if (parent != null) {
 				parent.delete(composite);
 				composite.setParent(null);
-				if(parent != rootGroup)
+				if (parent != rootGroup)
 					parent.removeOnChildAbsence();
 			}
 		}

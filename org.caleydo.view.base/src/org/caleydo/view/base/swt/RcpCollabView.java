@@ -1,22 +1,20 @@
 package org.caleydo.view.base.swt;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.collab.CollabViewRep;
 import org.caleydo.view.base.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;
 
-public class RcpCollabView
-	extends CaleydoRCPViewPart {
+public class RcpCollabView extends CaleydoRCPViewPart {
 	public static final String ID = "org.caleydo.rcp.views.swt.CollabView";
 
 	private CollabViewRep testingView;
 
 	@Override
 	public void createPartControl(Composite parent) {
-		testingView =
-			(CollabViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
-				EManagedObjectType.VIEW_SWT_COLLAB, -1, "Collaboration");
+		testingView = (CollabViewRep) GeneralManager.get()
+				.getViewGLCanvasManager().createView("org.caleydo.view.collab",
+						-1, "Collaboration");
 
 		testingView.initViewRCP(parent);
 		testingView.drawView();

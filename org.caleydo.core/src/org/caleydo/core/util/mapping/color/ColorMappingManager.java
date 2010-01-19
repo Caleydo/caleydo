@@ -11,8 +11,8 @@ import org.caleydo.core.manager.event.view.histogram.UpdateColorMappingEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.histogram.listener.UpdateColorMappingListener;
 import org.caleydo.core.view.opengl.canvas.listener.IColorMappingHandler;
+import org.caleydo.core.view.opengl.canvas.listener.UpdateColorMappingListener;
 
 /**
  * Manage color mappings for different situations system-wide. There can only be one color mapping for each of

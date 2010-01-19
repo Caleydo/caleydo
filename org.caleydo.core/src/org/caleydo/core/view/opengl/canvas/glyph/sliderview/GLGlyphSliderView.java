@@ -170,8 +170,8 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void initRemote(final GL gl, final AGLView glParentView,
-		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+	public void initRemote(final GL gl, final AGLView glParentView, final GLMouseListener glMouseListener,
+		GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
 		iMaxCols = 5;

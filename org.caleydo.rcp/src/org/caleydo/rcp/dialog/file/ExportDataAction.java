@@ -7,7 +7,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -103,7 +102,7 @@ public class ExportDataAction
 		// boolean doesHeatMapExist = false;
 		// boolean doParallelCoordinatesExist = false;
 		for (AGLView view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
-			if (view instanceof GLRemoteRendering) {
+			if (view.getViewID().equals("org.caleydo.view.bucket")) {
 				bDoesBucketExist = true;
 			}
 			// if (view instanceof GLHierarchicalHeatMap && !view.isRenderedRemote()) {

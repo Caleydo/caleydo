@@ -12,7 +12,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
+import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -76,10 +76,10 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	 *            the id of canvas where you want to render
 	 * @return the ID of the view
 	 */
-	protected AGLView createGLEventListener(
-			ASerializedView serializedView, int iParentCanvasID) {
+	protected AGLView createGLEventListener(ASerializedView serializedView,
+			int iParentCanvasID) {
 
-		ECommandType glViewType = serializedView.getCreationCommandType();
+		String viewType = serializedView.getViewGUIID();
 		dataDomain = serializedView.getDataDomain();
 
 		// FIXME: when restructuring startup procedure
@@ -91,11 +91,12 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 
 		IGeneralManager generalManager = GeneralManager.get();
 
-		CmdCreateGLEventListener cmdView = (CmdCreateGLEventListener) generalManager
-				.getCommandManager().createCommandByType(glViewType);
-
-		if (glViewType == ECommandType.CREATE_GL_BUCKET_3D
-				|| glViewType == ECommandType.CREATE_GL_DATA_FLIPPER) {
+		CmdCreateView cmdView = (CmdCreateView) generalManager
+				.getCommandManager().createCommandByType(
+						ECommandType.CREATE_GL_VIEW);
+		cmdView.setViewID(viewType);
+		if (viewType.equals("org.caleydo.view.bucket")
+				|| viewType.equals("org.caleydo.view.dataflipper")) {
 
 			cmdView.setAttributes(dataDomain, EProjectionMode.PERSPECTIVE, -1f,
 					1f, -1f, 1f, 1.9f, 100, iParentCanvasID, 0, 0, -8, 0, 0, 0,
@@ -103,7 +104,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 			// cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -2f, 2f, -2f,
 			// 2f, 3.82f, 100, set,
 
-		} else if (glViewType == ECommandType.CREATE_GL_GLYPH) {
+		} else if (viewType.equals("org.caleydo.view.glyph")) {
 
 			cmdView.setAttributes(dataDomain, EProjectionMode.PERSPECTIVE, -1f,
 					1f, -1f, 1f, 2.9f, 100, iParentCanvasID, 0, 0, -8, 0, 0, 0,
@@ -122,7 +123,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 		setGLData(glCanvas, glView);
 		createPartControlGL();
 
-		glView.setViewGUIID(getViewGUIID());
+		// glView.setViewID(getViewGUIID());
 		glView.initFromSerializableRepresentation(serializedView);
 
 		return glView;

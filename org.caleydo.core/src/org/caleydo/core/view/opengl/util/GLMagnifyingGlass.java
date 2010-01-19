@@ -68,9 +68,9 @@ public class GLMagnifyingGlass {
 
 			IntBuffer buffer = BufferUtil.newIntBuffer(4);
 			gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
-			//int xOrigin = buffer.get(0);
+			// int xOrigin = buffer.get(0);
 			int yOrigin = buffer.get(1);
-			//int currentWidth = buffer.get(2);
+			// int currentWidth = buffer.get(2);
 			int currentHeight = buffer.get(3);
 
 			gl.glLoadIdentity();

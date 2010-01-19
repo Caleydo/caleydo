@@ -22,9 +22,10 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Juergen Pillhofer
  */
-public class PointSizeSlider
-	extends ControlContribution
-	implements IToolBarItem, IListenerOwner {
+public class PointSizeSlider extends ControlContribution
+		implements
+			IToolBarItem,
+			IListenerOwner {
 
 	private Listener listener;
 	// private UpdateDepthSliderPositionListener updateSliderPositionListener;
@@ -54,14 +55,16 @@ public class PointSizeSlider
 				SetPointSizeEvent setPointSizeEvent = new SetPointSizeEvent();
 				setPointSizeEvent.setSender(this);
 				setPointSizeEvent.setPointSize(slider.getSelection());
-				GeneralManager.get().getEventPublisher().triggerEvent(setPointSizeEvent);
+				GeneralManager.get().getEventPublisher().triggerEvent(
+						setPointSizeEvent);
 			}
 
 		};
 		iSelection = slider.getSelection();
 		slider.addListener(SWT.Selection, listener);
 
-		// updateSliderPositionListener = new UpdateDepthSliderPositionListener();
+		// updateSliderPositionListener = new
+		// UpdateDepthSliderPositionListener();
 		// updateSliderPositionListener.setHandler(this);
 		// GeneralManager.get().getEventPublisher().addListener(UpdateDepthSliderPositionEvent.class,
 		// updateSliderPositionListener);
@@ -70,7 +73,9 @@ public class PointSizeSlider
 	}
 
 	@Override
-	public void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
+	public void queueEvent(
+			final AEventListener<? extends IListenerOwner> listener,
+			final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				listener.handleEvent(event);

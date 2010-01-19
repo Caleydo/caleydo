@@ -10,28 +10,22 @@ import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
-import org.caleydo.core.view.opengl.canvas.histogram.GLHistogram;
-import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.remote.dataflipper.GLDataFlipper;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.GLParallelCoordinates;
 import org.caleydo.rcp.Activator;
 import org.caleydo.view.base.rcp.CaleydoRCPViewPart;
-import org.caleydo.view.base.rcp.RcpGLDataFlipperView;
 import org.caleydo.view.base.rcp.RcpGLGlyphView;
-import org.caleydo.view.base.rcp.RcpGLHeatMapView;
-import org.caleydo.view.base.rcp.RcpGLHistogramView;
-import org.caleydo.view.base.rcp.RcpGLParCoordsView;
-import org.caleydo.view.base.rcp.RcpGLRadialHierarchyView;
-import org.caleydo.view.base.rcp.RcpGLRemoteRenderingView;
 import org.caleydo.view.base.swt.toolbar.content.AToolBarContent;
 import org.caleydo.view.base.swt.toolbar.content.GlyphToolBarContent;
-import org.caleydo.view.base.swt.toolbar.content.HeatMapToolBarContent;
-import org.caleydo.view.base.swt.toolbar.content.ParCoordsToolBarContent;
-import org.caleydo.view.base.swt.toolbar.content.dataflipper.DataFlipperToolBarContent;
-import org.caleydo.view.base.swt.toolbar.content.radial.RadialHierarchyToolBarContent;
-import org.caleydo.view.base.swt.toolbar.content.remote.RemoteRenderingToolBarContent;
+import org.caleydo.view.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.GLHierarchicalHeatMap;
+import org.caleydo.view.heatmap.toolbar.HeatMapToolBarContent;
+import org.caleydo.view.heatmap.toolbar.HierarchicalHeatMapToolBarContent;
+import org.caleydo.view.histogram.GLHistogram;
+import org.caleydo.view.parcoords.GLParallelCoordinates;
+import org.caleydo.view.parcoords.toolbar.ParCoordsToolBarContent;
+import org.caleydo.view.radial.GLRadialHierarchy;
+import org.caleydo.view.radial.toolbar.RadialHierarchyToolBarContent;
+import org.caleydo.view.scatterplot.GLScatterplot;
+import org.caleydo.view.scatterplot.toolbar.ScatterplotToolBarContent;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IViewPart;
@@ -83,37 +77,37 @@ public class ToolBarContentFactory {
 		info = new ToolBarInfo();
 		info.viewClass = GLHeatMap.class;
 		info.contentClass = HeatMapToolBarContent.class;
-		info.rcpID = RcpGLHeatMapView.ID;
+		info.rcpID = GLHeatMap.VIEW_ID;
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
 
-		// info = new ToolBarInfo();
-		// info.viewClass = GLHierarchicalHeatMap.class;
-		// info.contentClass = HierarchicalHeatMapToolBarContent.class;
-		// info.rcpID = GLHierarchicalHeatMapView.ID;
-		// info.ignored = false;
-		// toolBarInfos.put(info.viewClass, info);
+		info = new ToolBarInfo();
+		info.viewClass = GLHierarchicalHeatMap.class;
+		info.contentClass = HierarchicalHeatMapToolBarContent.class;
+		info.rcpID = GLHierarchicalHeatMap.VIEW_ID;
+		info.ignored = false;
+		toolBarInfos.put(info.viewClass, info);
 
 		info = new ToolBarInfo();
 		info.viewClass = GLParallelCoordinates.class;
 		info.contentClass = ParCoordsToolBarContent.class;
-		info.rcpID = RcpGLParCoordsView.ID;
+		info.rcpID = GLParallelCoordinates.VIEW_ID;
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
 
-		info = new ToolBarInfo();
-		info.viewClass = GLRemoteRendering.class;
-		info.contentClass = RemoteRenderingToolBarContent.class;
-		info.rcpID = RcpGLRemoteRenderingView.ID;
-		info.ignored = false;
-		toolBarInfos.put(info.viewClass, info);
+		// info = new ToolBarInfo();
+		// info.viewClass = GLRemoteRendering.class;
+		// info.contentClass = RemoteRenderingToolBarContent.class;
+		// info.rcpID = RcpGLRemoteRenderingView.ID;
+		// info.ignored = false;
+		// toolBarInfos.put(info.viewClass, info);
 
-		info = new ToolBarInfo();
-		info.viewClass = GLDataFlipper.class;
-		info.contentClass = DataFlipperToolBarContent.class;
-		info.rcpID = RcpGLDataFlipperView.ID;
-		info.ignored = false;
-		toolBarInfos.put(info.viewClass, info);
+		// info = new ToolBarInfo();
+		// info.viewClass = GLDataFlipper.class;
+		// info.contentClass = DataFlipperToolBarContent.class;
+		// info.rcpID = RcpGLDataFlipperView.ID;
+		// info.ignored = false;
+		// toolBarInfos.put(info.viewClass, info);
 
 		// info = new ToolBarInfo();
 		// info.viewClass = ; // FIXME gl-view class of clinical par coords
@@ -132,23 +126,23 @@ public class ToolBarContentFactory {
 		info = new ToolBarInfo();
 		info.viewClass = GLHistogram.class;
 		info.contentClass = null;
-		info.rcpID = RcpGLHistogramView.ID;
+		info.rcpID = GLHistogram.VIEW_ID;
 		info.ignored = true;
 		toolBarInfos.put(info.viewClass, info);
 
 		info = new ToolBarInfo();
 		info.viewClass = GLRadialHierarchy.class;
 		info.contentClass = RadialHierarchyToolBarContent.class;
-		info.rcpID = RcpGLRadialHierarchyView.ID;
+		info.rcpID = GLRadialHierarchy.VIEW_ID;
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
 
-//		info = new ToolBarInfo();
-//		info.viewClass = GLScatterplot.class;
-//		info.contentClass = ScatterplotToolBarContent.class;
-//		info.rcpID = RcpGLScatterplotView.ID;
-//		info.ignored = false;
-//		toolBarInfos.put(info.viewClass, info);
+		info = new ToolBarInfo();
+		info.viewClass = GLScatterplot.class;
+		info.contentClass = ScatterplotToolBarContent.class;
+		info.rcpID = GLScatterplot.VIEW_ID;
+		info.ignored = false;
+		toolBarInfos.put(info.viewClass, info);
 	}
 
 	/**

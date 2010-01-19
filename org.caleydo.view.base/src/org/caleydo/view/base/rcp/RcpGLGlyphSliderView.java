@@ -7,8 +7,7 @@ import org.caleydo.core.view.opengl.canvas.glyph.sliderview.SerializedGlyphSlide
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 
-public class RcpGLGlyphSliderView
-	extends ARcpGLViewPart {
+public class RcpGLGlyphSliderView extends ARcpGLViewPart {
 
 	public static final String ID = SerializedGlyphSliderView.GUI_ID;
 
@@ -35,7 +34,8 @@ public class RcpGLGlyphSliderView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedGlyphSliderView serializedView = new SerializedGlyphSliderView(dataDomain);
+		SerializedGlyphSliderView serializedView = new SerializedGlyphSliderView(
+				dataDomain);
 		return serializedView;
 	}
 

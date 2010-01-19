@@ -36,7 +36,7 @@ public class ApplicationInitData {
 	private HashMap<EVAType, VirtualArray> virtualArrayMap;
 
 	/** list of views in use, not used to sync remote clients */
-	private List<ASerializedView> views;
+	private List<String> viewIDs;
 
 	public AUseCase getUseCase() {
 		return useCase;
@@ -62,12 +62,12 @@ public class ApplicationInitData {
 		this.virtualArrayMap = virtualArrayMap;
 	}
 
-	public List<ASerializedView> getViews() {
-		return views;
+	public List<String> getViewIDs() {
+		return viewIDs;
 	}
 
-	public void setViews(List<ASerializedView> views) {
-		this.views = views;
+	public void setViews(List<String> viewIDs) {
+		this.viewIDs = viewIDs;
 	}
 
 	public String getGeneClusterTree() {

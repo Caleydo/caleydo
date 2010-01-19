@@ -6,9 +6,5 @@ package org.caleydo.view.scatterplot.renderstyle;
  * @author Juergen Pillhofer
  */
 public enum EScatterPointType {
-	BOX,
-	CIRCLE,
-	DISK,
-	CROSS,
-	POINT
+	BOX, CIRCLE, DISK, CROSS, POINT
 }

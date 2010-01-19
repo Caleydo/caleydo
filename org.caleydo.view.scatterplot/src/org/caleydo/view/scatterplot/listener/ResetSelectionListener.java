@@ -10,8 +10,7 @@ import org.caleydo.view.scatterplot.GLScatterplot;
  * 
  * @author Juergen Pillhofer
  */
-public class ResetSelectionListener
-	extends AEventListener<GLScatterplot> {
+public class ResetSelectionListener extends AEventListener<GLScatterplot> {
 
 	@Override
 	public void handleEvent(AEvent event) {

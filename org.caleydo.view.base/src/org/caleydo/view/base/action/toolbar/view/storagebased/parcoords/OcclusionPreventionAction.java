@@ -8,9 +8,9 @@ import org.caleydo.view.base.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class OcclusionPreventionAction
-	extends AToolBarAction
-	implements IToolBarItem {
+public class OcclusionPreventionAction extends AToolBarAction
+		implements
+			IToolBarItem {
 	public static final String TEXT = "Toggle occlusion prevention";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/occlusion_prevention.png";
 
@@ -24,8 +24,8 @@ public class OcclusionPreventionAction
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-			.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
+				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
 		setChecked(bEnable);
 	}
 
@@ -35,6 +35,7 @@ public class OcclusionPreventionAction
 
 		bEnable = !bEnable;
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new PreventOcclusionEvent(bEnable));
+		GeneralManager.get().getEventPublisher().triggerEvent(
+				new PreventOcclusionEvent(bEnable));
 	};
 }

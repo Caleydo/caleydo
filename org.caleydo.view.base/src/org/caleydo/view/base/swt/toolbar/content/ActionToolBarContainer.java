@@ -7,8 +7,7 @@ import java.util.List;
  * 
  * @author Werner Puff
  */
-public class ActionToolBarContainer
-	extends ToolBarContainer {
+public class ActionToolBarContainer extends ToolBarContainer {
 
 	/** list of actions within this tool bar container */
 	private List<IToolBarItem> actions;

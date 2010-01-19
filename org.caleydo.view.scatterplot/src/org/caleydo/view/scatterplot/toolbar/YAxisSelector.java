@@ -23,9 +23,10 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Juergen Pillhofer
  */
-public class YAxisSelector
-	extends ControlContribution
-	implements IToolBarItem, IListenerOwner {
+public class YAxisSelector extends ControlContribution
+		implements
+			IToolBarItem,
+			IListenerOwner {
 
 	private InitYAxisComboListener initAxisComboListener;
 	private Combo combo;
@@ -62,19 +63,23 @@ public class YAxisSelector
 				YAxisSelectorEvent yAxisSelectorEvent = new YAxisSelectorEvent();
 				yAxisSelectorEvent.setSender(this);
 				yAxisSelectorEvent.setSelectedAxis(iSelection);
-				GeneralManager.get().getEventPublisher().triggerEvent(yAxisSelectorEvent);
+				GeneralManager.get().getEventPublisher().triggerEvent(
+						yAxisSelectorEvent);
 			}
 		});
 
 		initAxisComboListener = new InitYAxisComboListener();
 		initAxisComboListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(InitAxisComboEvent.class, initAxisComboListener);
+		GeneralManager.get().getEventPublisher().addListener(
+				InitAxisComboEvent.class, initAxisComboListener);
 
 		return composite;
 	}
 
 	@Override
-	public void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
+	public void queueEvent(
+			final AEventListener<? extends IListenerOwner> listener,
+			final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				listener.handleEvent(event);
@@ -106,7 +111,8 @@ public class YAxisSelector
 	public void dispose() {
 		// Unregister event listener
 		if (initAxisComboListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(initAxisComboListener);
+			GeneralManager.get().getEventPublisher().removeListener(
+					initAxisComboListener);
 			initAxisComboListener = null;
 		}
 	}

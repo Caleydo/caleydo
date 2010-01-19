@@ -8,7 +8,6 @@ import java.util.Set;
 
 import javax.media.opengl.GLCanvas;
 
-import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
@@ -21,36 +20,16 @@ import org.caleydo.core.manager.execution.DisplayLoopExecution;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.manager.view.creator.IGLViewCreator;
+import org.caleydo.core.manager.view.creator.AGLViewCreator;
+import org.caleydo.core.manager.view.creator.ASWTViewCreator;
+import org.caleydo.core.manager.view.creator.IViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
-import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLGlyphSliderView;
-import org.caleydo.core.view.opengl.canvas.grouper.GLGrouper;
-import org.caleydo.core.view.opengl.canvas.histogram.GLHistogram;
-import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
-import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
-import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.remote.dataflipper.GLDataFlipper;
-import org.caleydo.core.view.opengl.canvas.remote.viewbrowser.GLPathwayViewBrowser;
-import org.caleydo.core.view.opengl.canvas.remote.viewbrowser.GLTissueViewBrowser;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLDendrogram;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.GLParallelCoordinates;
-import org.caleydo.core.view.opengl.canvas.tissue.GLTissue;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
-import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
-import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
-import org.caleydo.core.view.swt.collab.CollabViewRep;
-import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
-import org.caleydo.core.view.swt.tabular.TabularDataViewRep;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
@@ -94,7 +73,7 @@ public class ViewManager
 	 */
 	private DisplayLoopExecution displayLoopExecution;
 
-	private ArrayList<IGLViewCreator> glViewCreators;
+	private ArrayList<IViewCreator> glViewCreators;
 
 	/**
 	 * Constructor.
@@ -119,7 +98,7 @@ public class ViewManager
 
 		displayLoopExecution.executeMultiple(selectionManager);
 
-		glViewCreators = new ArrayList<IGLViewCreator>();
+		glViewCreators = new ArrayList<IViewCreator>();
 	}
 
 	@Override
@@ -145,31 +124,40 @@ public class ViewManager
 	}
 
 	@Override
-	public IView createView(final EManagedObjectType type, final int iParentContainerID, final String sLabel) {
+	public IView createView(String viewType, int parentContainerID, String label) {
 		IView view = null;
 
-		switch (type) {
-			case VIEW:
+		for (IViewCreator viewCreator : glViewCreators) {
+
+			if (viewCreator instanceof ASWTViewCreator && viewCreator.getViewType().equals(viewType)) {
+
+				view = ((ASWTViewCreator) viewCreator).createView(parentContainerID, label);
 				break;
-			case VIEW_SWT_TABULAR_DATA_VIEWER:
-				view = new TabularDataViewRep(iParentContainerID, sLabel);
-				break;
-			case VIEW_SWT_BROWSER_GENERAL:
-				view = new HTMLBrowserViewRep(iParentContainerID, sLabel);
-				break;
-			case VIEW_SWT_BROWSER_GENOME:
-				view = new GenomeHTMLBrowserViewRep(iParentContainerID, sLabel);
-				break;
-			case VIEW_SWT_GLYPH_MAPPINGCONFIGURATION:
-				view = new GlyphMappingConfigurationViewRep(iParentContainerID, sLabel);
-				break;
-			case VIEW_SWT_COLLAB:
-				view = new CollabViewRep(iParentContainerID, sLabel);
-				break;
-			default:
-				throw new IllegalStateException("ViewManager.createView() failed due to unhandled type ["
-					+ type.toString() + "]");
+			}
 		}
+
+		// switch (type) {
+		// case VIEW:
+		// break;
+		// case VIEW_SWT_TABULAR_DATA_VIEWER:
+		// view = new TabularDataViewRep(iParentContainerID, sLabel);
+		// break;
+		// // case VIEW_SWT_BROWSER_GENERAL:
+		// // view = new HTMLBrowserViewRep(iParentContainerID, sLabel);
+		// // break;
+		// // case VIEW_SWT_BROWSER_GENOME:
+		// // view = new GenomeHTMLBrowserViewRep(iParentContainerID, sLabel);
+		// // break;
+		// case VIEW_SWT_GLYPH_MAPPINGCONFIGURATION:
+		// view = new GlyphMappingConfigurationViewRep(iParentContainerID, sLabel);
+		// break;
+		// case VIEW_SWT_COLLAB:
+		// view = new CollabViewRep(iParentContainerID, sLabel);
+		// break;
+		// default:
+		// throw new IllegalStateException("ViewManager.createView() failed due to unhandled type ["
+		// + type.toString() + "]");
+		// }
 
 		registerItem(view);
 
@@ -196,93 +184,87 @@ public class ViewManager
 	}
 
 	@Override
-	public AGLView createGLEventListener(ECommandType type, GLCaleydoCanvas glCanvas, final String label,
+	public AGLView createGLView(String viewID, GLCaleydoCanvas glCanvas, final String label,
 		final IViewFrustum viewFrustum) {
 		GeneralManager.get().getLogger().log(
-			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Creating GL canvas view from type: [" + type
-				+ "] and label: [" + label + "]"));
+			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Creating GL canvas view from type: ["
+				+ viewID + "] and label: [" + label + "]"));
 
 		AGLView glView = null;
 
-		for (IGLViewCreator glViewCreator : glViewCreators) {
-			
-			if (type.equals(ECommandType.CREATE_GL_SCATTERPLOT)&& 
-				glViewCreator.getViewType().equals("org.caleydo.view.scatterplot")) {
-				
-				glView = glViewCreator.createGLEventListener(type, glCanvas, label, viewFrustum);
+		for (IViewCreator glViewCreator : glViewCreators) {
+
+			if (glViewCreator instanceof AGLViewCreator && glViewCreator.getViewType().equals(viewID)) {
+
+				glView = ((AGLViewCreator) glViewCreator).createGLView(glCanvas, label, viewFrustum);
 				break;
 			}
-
-			// TODO: GL_CELL
 		}
 
-		if (glView == null) {
-
-			switch (type) {
-				case CREATE_GL_HEAT_MAP_3D:
-					glView = new GLHeatMap(glCanvas, label, viewFrustum);
-					break;
-				case CREATE_GL_PROPAGATION_HEAT_MAP_3D:
-					glView = new GLBookmarkManager(glCanvas, label, viewFrustum);
-					break;
-				case CREATE_GL_TEXTURE_HEAT_MAP_3D:
-					glView = new GLHierarchicalHeatMap(glCanvas, label, viewFrustum);
-					break;
-				case CREATE_GL_PATHWAY_3D:
-					glView = new GLPathway(glCanvas, label, viewFrustum);
-					break;
-				case CREATE_GL_PARALLEL_COORDINATES:
-					glView = new GLParallelCoordinates(glCanvas, label, viewFrustum);
-					break;
-				case CREATE_GL_GLYPH:
-					glView = new GLGlyph(glCanvas, label, viewFrustum);
-					break;
-				case CREATE_GL_GLYPH_SLIDER:
-					glView = new GLGlyphSliderView(glCanvas, label, viewFrustum);
-					break;
-				case CREATE_GL_TISSUE:
-					glView = new GLTissue(glCanvas, label, viewFrustum);
-					break;
-				case CREATE_GL_BUCKET_3D:
-					glView =
-						new GLRemoteRendering(glCanvas, label, viewFrustum,
-							ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);
-					break;
-				case CREATE_GL_JUKEBOX_3D:
-					glView =
-						new GLRemoteRendering(glCanvas, label, viewFrustum,
-							ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);
-					break;
-				case CREATE_GL_DATA_FLIPPER:
-					glView = new GLDataFlipper(glCanvas, label, viewFrustum);
-					break;
-				case CREATE_GL_TISSUE_VIEW_BROWSER:
-					glView = new GLTissueViewBrowser(glCanvas, label, viewFrustum);
-					break;
-				case CREATE_GL_PATHWAY_VIEW_BROWSER:
-					glView = new GLPathwayViewBrowser(glCanvas, label, viewFrustum);
-					break;
-				case CREATE_GL_RADIAL_HIERARCHY:
-					glView = new GLRadialHierarchy(glCanvas, label, viewFrustum);
-					break;
-				case CREATE_GL_HISTOGRAM:
-					glView = new GLHistogram(glCanvas, label, viewFrustum);
-					break;
-				case CREATE_GL_GROUPER:
-					glView = new GLGrouper(glCanvas, label, viewFrustum);
-					break;
-				case CREATE_GL_DENDROGRAM_HORIZONTAL:
-					glView = new GLDendrogram(glCanvas, label, viewFrustum, true);
-					break;
-				case CREATE_GL_DENDROGRAM_VERTICAL:
-					glView = new GLDendrogram(glCanvas, label, viewFrustum, false);
-					break;
-				default:
-					throw new RuntimeException(
-						"ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
-							+ type.toString() + "]");
-			}
-		}
+		// if (glView == null) {
+		//
+		// switch (type) {
+		// // case CREATE_GL_HEAT_MAP_3D:
+		// // glView = new GLHeatMap(glCanvas, label, viewFrustum);
+		// // break;
+		// case CREATE_GL_PROPAGATION_HEAT_MAP_3D:
+		// glView = new GLBookmarkManager(glCanvas, label, viewFrustum);
+		// break;
+		// // case CREATE_GL_TEXTURE_HEAT_MAP_3D:
+		// // glView = new GLHierarchicalHeatMap(glCanvas, label, viewFrustum);
+		// // break;
+		// // case CREATE_GL_PATHWAY_3D:
+		// // glView = new GLPathway(glCanvas, label, viewFrustum);
+		// // break;
+		// // case CREATE_GL_PARALLEL_COORDINATES:
+		// // glView = new GLParallelCoordinates(glCanvas, label, viewFrustum);
+		// // break;
+		// case CREATE_GL_GLYPH:
+		// glView = new GLGlyph(glCanvas, label, viewFrustum);
+		// break;
+		// case CREATE_GL_GLYPH_SLIDER:
+		// glView = new GLGlyphSliderView(glCanvas, label, viewFrustum);
+		// break;
+		// // case CREATE_GL_TISSUE:
+		// // glView = new GLTissue(glCanvas, label, viewFrustum);
+		// // break;
+		// // case CREATE_GL_BUCKET_3D:
+		// // glView =
+		// // new GLRemoteRendering(glCanvas, label, viewFrustum,
+		// // ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);
+		// // break;
+		// // case CREATE_GL_JUKEBOX_3D:
+		// // glView =
+		// // new GLRemoteRendering(glCanvas, label, viewFrustum,
+		// // ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);
+		// // break;
+		// // case CREATE_GL_DATA_FLIPPER:
+		// // glView = new GLDataFlipper(glCanvas, label, viewFrustum);
+		// // break;
+		// // case CREATE_GL_TISSUE_VIEW_BROWSER:
+		// // glView = new GLTissueViewBrowser(glCanvas, label, viewFrustum);
+		// // break;
+		// // case CREATE_GL_PATHWAY_VIEW_BROWSER:
+		// // glView = new GLPathwayViewBrowser(glCanvas, label, viewFrustum);
+		// // break;
+		// // case CREATE_GL_RADIAL_HIERARCHY:
+		// // glView = new GLRadialHierarchy(glCanvas, label, viewFrustum);
+		// // break;
+		// case CREATE_GL_GROUPER:
+		// glView = new GLGrouper(glCanvas, label, viewFrustum);
+		// break;
+		// // case CREATE_GL_DENDROGRAM_HORIZONTAL:
+		// // glView = new GLDendrogram(glCanvas, label, viewFrustum, true);
+		// // break;
+		// // case CREATE_GL_DENDROGRAM_VERTICAL:
+		// // glView = new GLDendrogram(glCanvas, label, viewFrustum, false);
+		// // break;
+		// default:
+		// throw new RuntimeException(
+		// "ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
+		// + type.toString() + "]");
+		// }
+		// }
 
 		if (glView == null) {
 			throw new RuntimeException("Unable to create GL view because view plugin is not available!");
@@ -512,7 +494,19 @@ public class ViewManager
 	}
 
 	@Override
-	public void addGLViewCreator(IGLViewCreator glViewCreator) {
+	public void addViewCreator(IViewCreator glViewCreator) {
 		glViewCreators.add(glViewCreator);
+	}
+
+	@Override
+	public IViewCreator getViewCreator(String viewID) {
+
+		for (IViewCreator glViewCreator : glViewCreators) {
+			if (glViewCreator.getViewType().equals(viewID)) {
+				return glViewCreator;
+			}
+		}
+
+		throw new IllegalStateException("Cannot find view creator for " + viewID);
 	}
 }

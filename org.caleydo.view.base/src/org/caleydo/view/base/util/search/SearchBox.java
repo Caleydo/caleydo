@@ -35,16 +35,16 @@ import org.eclipse.swt.widgets.TypedListener;
 import org.eclipse.swt.widgets.Widget;
 
 /**
- * The SearchBox class represents a selectable user interface object that combines a text field and a list.
- * The values in the list are filtered according to the text in the text field (only values that starts with
- * the current text will be visible in the list).
+ * The SearchBox class represents a selectable user interface object that
+ * combines a text field and a list. The values in the list are filtered
+ * according to the text in the text field (only values that starts with the
+ * current text will be visible in the list).
  * <p>
- * Note that although this class is a subclass of <code>Composite</code>, it does not make sense to add
- * children to it, or set a layout on it.
+ * Note that although this class is a subclass of <code>Composite</code>, it
+ * does not make sense to add children to it, or set a layout on it.
  * </p>
  */
-public final class SearchBox
-	extends Composite {
+public final class SearchBox extends Composite {
 
 	private Text text;
 
@@ -69,18 +69,20 @@ public final class SearchBox
 	private Font font;
 
 	/**
-	 * Constructs a new instance of this class given its parent and a style value describing its behavior and
-	 * appearance.
+	 * Constructs a new instance of this class given its parent and a style
+	 * value describing its behavior and appearance.
 	 * <p>
-	 * The style value is either one of the style constants defined in class <code>SWT</code> which is
-	 * applicable to instances of this class, or must be built by <em>bitwise OR</em>'ing together (that is,
-	 * using the <code>int</code> "|" operator) two or more of those <code>SWT</code> style constants. The
-	 * class description lists the style constants that are applicable to the class. Style bits are also
-	 * inherited from superclasses.
+	 * The style value is either one of the style constants defined in class
+	 * <code>SWT</code> which is applicable to instances of this class, or must
+	 * be built by <em>bitwise OR</em>'ing together (that is, using the
+	 * <code>int</code> "|" operator) two or more of those <code>SWT</code>
+	 * style constants. The class description lists the style constants that are
+	 * applicable to the class. Style bits are also inherited from superclasses.
 	 * </p>
 	 * 
 	 * @param parent
-	 *            a widget which will be the parent of the new instance (cannot be null)
+	 *            a widget which will be the parent of the new instance (cannot
+	 *            be null)
 	 * @param style
 	 *            the style of widget to construct
 	 * @exception IllegalArgumentException
@@ -89,7 +91,8 @@ public final class SearchBox
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the parent</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
+	 *                thread that created the parent</li>
 	 *                </ul>
 	 * @see SWT#BORDER
 	 * @see SWT#FLAT
@@ -145,17 +148,17 @@ public final class SearchBox
 			}
 		};
 
-		int[] comboEvents = { SWT.Dispose, SWT.Move, SWT.Resize };
+		int[] comboEvents = {SWT.Dispose, SWT.Move, SWT.Resize};
 		for (int comboEvent : comboEvents) {
 			this.addListener(comboEvent, listener);
 		}
 
-		int[] textEvents = { SWT.KeyDown, SWT.KeyUp, SWT.FocusIn };
+		int[] textEvents = {SWT.KeyDown, SWT.KeyUp, SWT.FocusIn};
 		for (int textEvent : textEvents) {
 			text.addListener(textEvent, listener);
 		}
 
-		int[] arrowEvents = { SWT.Selection, SWT.FocusIn };
+		int[] arrowEvents = {SWT.Selection, SWT.FocusIn};
 		for (int arrowEvent : arrowEvents) {
 			arrow.addListener(arrowEvent, listener);
 		}
@@ -165,7 +168,8 @@ public final class SearchBox
 	}
 
 	static int checkStyle(int style) {
-		int mask = SWT.BORDER | SWT.READ_ONLY | SWT.FLAT | SWT.LEFT_TO_RIGHT | SWT.RIGHT_TO_LEFT;
+		int mask = SWT.BORDER | SWT.READ_ONLY | SWT.FLAT | SWT.LEFT_TO_RIGHT
+				| SWT.RIGHT_TO_LEFT;
 		return style & mask;
 	}
 
@@ -180,9 +184,10 @@ public final class SearchBox
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the
-	 *                receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
+	 *                disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
+	 *                thread that created the receiver</li>
 	 *                </ul>
 	 * @see #add(String,int)
 	 */
@@ -197,8 +202,9 @@ public final class SearchBox
 	}
 
 	/**
-	 * Adds the listener to the collection of listeners who will be notified when the receiver's text is
-	 * modified, by sending it one of the messages defined in the <code>ModifyListener</code> interface.
+	 * Adds the listener to the collection of listeners who will be notified
+	 * when the receiver's text is modified, by sending it one of the messages
+	 * defined in the <code>ModifyListener</code> interface.
 	 * 
 	 * @param listener
 	 *            the listener which should be notified
@@ -208,9 +214,10 @@ public final class SearchBox
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the
-	 *                receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
+	 *                disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
+	 *                thread that created the receiver</li>
 	 *                </ul>
 	 * @see ModifyListener
 	 * @see #removeModifyListener
@@ -225,11 +232,13 @@ public final class SearchBox
 	}
 
 	/**
-	 * Adds the listener to the collection of listeners who will be notified when the receiver's selection
-	 * changes, by sending it one of the messages defined in the <code>SelectionListener</code> interface.
+	 * Adds the listener to the collection of listeners who will be notified
+	 * when the receiver's selection changes, by sending it one of the messages
+	 * defined in the <code>SelectionListener</code> interface.
 	 * <p>
-	 * <code>widgetSelected</code> is called when the combo's list selection changes.
-	 * <code>widgetDefaultSelected</code> is typically called when ENTER is pressed the combo's text area.
+	 * <code>widgetSelected</code> is called when the combo's list selection
+	 * changes. <code>widgetDefaultSelected</code> is typically called when
+	 * ENTER is pressed the combo's text area.
 	 * </p>
 	 * <ul>
 	 * 
@@ -241,9 +250,10 @@ public final class SearchBox
 	 *                </ul>
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the
-	 *                receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
+	 *                disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
+	 *                thread that created the receiver</li>
 	 *                </ul>
 	 * @see SelectionListener
 	 * @see #removeSelectionListener
@@ -261,11 +271,11 @@ public final class SearchBox
 
 	void arrowEvent(Event event) {
 		switch (event.type) {
-			case SWT.FocusIn: {
+			case SWT.FocusIn : {
 				handleFocus(SWT.FocusIn);
 				break;
 			}
-			case SWT.Selection: {
+			case SWT.Selection : {
 				dropDown(!isDropped());
 				break;
 			}
@@ -273,17 +283,19 @@ public final class SearchBox
 	}
 
 	/**
-	 * Sets the selection in the receiver's text field to an empty selection starting just before the first
-	 * character.
+	 * Sets the selection in the receiver's text field to an empty selection
+	 * starting just before the first character.
 	 * <p>
-	 * Note: To clear the selected items in the receiver's list, use <code>deselectAll()</code>.
+	 * Note: To clear the selected items in the receiver's list, use
+	 * <code>deselectAll()</code>.
 	 * </p>
 	 * 
 	 * @exception SWTException
 	 *                <ul>
-	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the
-	 *                receiver</li>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
+	 *                disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
+	 *                thread that created the receiver</li>
 	 *                </ul>
 	 * @see #deselectAll
 	 */
@@ -295,7 +307,7 @@ public final class SearchBox
 
 	void comboEvent(Event event) {
 		switch (event.type) {
-			case SWT.Dispose:
+			case SWT.Dispose :
 				if (popup != null && !popup.isDisposed()) {
 					list.removeListener(SWT.Dispose, listener);
 					popup.dispose();
@@ -309,10 +321,10 @@ public final class SearchBox
 				list = null;
 				arrow = null;
 				break;
-			case SWT.Move:
+			case SWT.Move :
 				dropDown(false);
 				break;
-			case SWT.Resize:
+			case SWT.Resize :
 				internalLayout(false);
 				break;
 		}
@@ -321,10 +333,10 @@ public final class SearchBox
 	void shellEvent(Event event) {
 		switch (event.type) {
 
-			case SWT.Move:
+			case SWT.Move :
 				dropDown(false);
 				break;
-			case SWT.Resize:
+			case SWT.Resize :
 				internalLayout(false);
 				break;
 		}
@@ -347,8 +359,10 @@ public final class SearchBox
 		Point listSize = list.computeSize(wHint, SWT.DEFAULT, changed);
 		int borderWidth = getBorderWidth();
 
-		height = Math.max(hHint, Math.max(textSize.y, arrowSize.y) + 2 * borderWidth);
-		width = Math.max(wHint, Math.max(textWidth + 2 * spacer + arrowSize.x + 2 * borderWidth, listSize.x));
+		height = Math.max(hHint, Math.max(textSize.y, arrowSize.y) + 2
+				* borderWidth);
+		width = Math.max(wHint, Math.max(textWidth + 2 * spacer + arrowSize.x
+				+ 2 * borderWidth, listSize.x));
 
 		return new Point(width, height);
 	}
@@ -378,12 +392,12 @@ public final class SearchBox
 			list.setBackground(background);
 		}
 
-		int[] popupEvents = { SWT.Close, SWT.Paint, SWT.Deactivate };
+		int[] popupEvents = {SWT.Close, SWT.Paint, SWT.Deactivate};
 		for (int popupEvent : popupEvents) {
 			popup.addListener(popupEvent, listener);
 		}
-		int[] listEvents =
-			{ SWT.MouseUp, SWT.Selection, SWT.Traverse, SWT.KeyDown, SWT.KeyUp, SWT.FocusIn, SWT.Dispose };
+		int[] listEvents = {SWT.MouseUp, SWT.Selection, SWT.Traverse,
+				SWT.KeyDown, SWT.KeyUp, SWT.FocusIn, SWT.Dispose};
 		for (int listEvent : listEvents) {
 			list.addListener(listEvent, listener);
 		}
@@ -436,7 +450,8 @@ public final class SearchBox
 
 		Point size = getSize();
 		int itemCount = list.getItemCount();
-		itemCount = itemCount == 0 ? visibleItemCount : Math.min(visibleItemCount, itemCount);
+		itemCount = itemCount == 0 ? visibleItemCount : Math.min(
+				visibleItemCount, itemCount);
 		int itemHeight = list.getItemHeight() * itemCount;
 		Point listSize = list.computeSize(SWT.DEFAULT, itemHeight, false);
 
@@ -468,7 +483,8 @@ public final class SearchBox
 	}
 
 	/*
-	 * Return the Label immediately preceding the receiver in the z-order, or null if none.
+	 * Return the Label immediately preceding the receiver in the z-order, or
+	 * null if none.
 	 */
 	Label getAssociatedLabel() {
 		Control[] siblings = getParent().getChildren();
@@ -602,7 +618,7 @@ public final class SearchBox
 		if (isDisposed())
 			return;
 		switch (type) {
-			case SWT.FocusIn: {
+			case SWT.FocusIn : {
 				if (hasFocus)
 					return;
 				hasFocus = true;
@@ -619,13 +635,14 @@ public final class SearchBox
 				break;
 
 			}
-			case SWT.FocusOut: {
+			case SWT.FocusOut : {
 				if (!hasFocus)
 					return;
 
 				Control focusControl = getDisplay().getFocusControl();
 
-				if (focusControl == arrow || focusControl == list || focusControl == text)
+				if (focusControl == arrow || focusControl == list
+						|| focusControl == text)
 					return;
 
 				hasFocus = false;
@@ -704,7 +721,8 @@ public final class SearchBox
 		arrow.getAccessible().addAccessibleListener(new AccessibleAdapter() {
 			@Override
 			public void getName(AccessibleEvent e) {
-				e.result = isDropped() ? SWT.getMessage("SWT_Close") : SWT.getMessage("SWT_Open"); //$NON-NLS-1$ //$NON-NLS-2$
+				e.result = isDropped()
+						? SWT.getMessage("SWT_Close") : SWT.getMessage("SWT_Open"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 			@Override
@@ -725,59 +743,65 @@ public final class SearchBox
 			}
 		});
 
-		getAccessible().addAccessibleControlListener(new AccessibleControlAdapter() {
-			@Override
-			public void getChildAtPoint(AccessibleControlEvent e) {
-				Point testPoint = toControl(e.x, e.y);
-				if (getBounds().contains(testPoint)) {
-					e.childID = ACC.CHILDID_SELF;
-				}
-			}
+		getAccessible().addAccessibleControlListener(
+				new AccessibleControlAdapter() {
+					@Override
+					public void getChildAtPoint(AccessibleControlEvent e) {
+						Point testPoint = toControl(e.x, e.y);
+						if (getBounds().contains(testPoint)) {
+							e.childID = ACC.CHILDID_SELF;
+						}
+					}
 
-			@Override
-			public void getLocation(AccessibleControlEvent e) {
-				Rectangle location = getBounds();
-				Point pt = toDisplay(location.x, location.y);
-				e.x = pt.x;
-				e.y = pt.y;
-				e.width = location.width;
-				e.height = location.height;
-			}
+					@Override
+					public void getLocation(AccessibleControlEvent e) {
+						Rectangle location = getBounds();
+						Point pt = toDisplay(location.x, location.y);
+						e.x = pt.x;
+						e.y = pt.y;
+						e.width = location.width;
+						e.height = location.height;
+					}
 
-			@Override
-			public void getChildCount(AccessibleControlEvent e) {
-				e.detail = 0;
-			}
+					@Override
+					public void getChildCount(AccessibleControlEvent e) {
+						e.detail = 0;
+					}
 
-			@Override
-			public void getRole(AccessibleControlEvent e) {
-				e.detail = ACC.ROLE_COMBOBOX;
-			}
+					@Override
+					public void getRole(AccessibleControlEvent e) {
+						e.detail = ACC.ROLE_COMBOBOX;
+					}
 
-			@Override
-			public void getState(AccessibleControlEvent e) {
-				e.detail = ACC.STATE_NORMAL;
-			}
+					@Override
+					public void getState(AccessibleControlEvent e) {
+						e.detail = ACC.STATE_NORMAL;
+					}
 
-			@Override
-			public void getValue(AccessibleControlEvent e) {
-				e.result = getText();
-			}
-		});
+					@Override
+					public void getValue(AccessibleControlEvent e) {
+						e.result = getText();
+					}
+				});
 
-		text.getAccessible().addAccessibleControlListener(new AccessibleControlAdapter() {
-			@Override
-			public void getRole(AccessibleControlEvent e) {
-				e.detail = text.getEditable() ? ACC.ROLE_TEXT : ACC.ROLE_LABEL;
-			}
-		});
+		text.getAccessible().addAccessibleControlListener(
+				new AccessibleControlAdapter() {
+					@Override
+					public void getRole(AccessibleControlEvent e) {
+						e.detail = text.getEditable()
+								? ACC.ROLE_TEXT
+								: ACC.ROLE_LABEL;
+					}
+				});
 
-		arrow.getAccessible().addAccessibleControlListener(new AccessibleControlAdapter() {
-			@Override
-			public void getDefaultAction(AccessibleControlEvent e) {
-				e.result = isDropped() ? SWT.getMessage("SWT_Close") : SWT.getMessage("SWT_Open"); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-		});
+		arrow.getAccessible().addAccessibleControlListener(
+				new AccessibleControlAdapter() {
+					@Override
+					public void getDefaultAction(AccessibleControlEvent e) {
+						e.result = isDropped()
+								? SWT.getMessage("SWT_Close") : SWT.getMessage("SWT_Open"); //$NON-NLS-1$ //$NON-NLS-2$
+					}
+				});
 	}
 
 	boolean isDropped() {
@@ -787,8 +811,8 @@ public final class SearchBox
 	@Override
 	public boolean isFocusControl() {
 		checkWidget();
-		if (text.isFocusControl() || arrow.isFocusControl() || list.isFocusControl()
-			|| popup.isFocusControl())
+		if (text.isFocusControl() || arrow.isFocusControl()
+				|| list.isFocusControl() || popup.isFocusControl())
 			return true;
 		return super.isFocusControl();
 	}
@@ -807,7 +831,7 @@ public final class SearchBox
 
 	void listEvent(Event event) {
 		switch (event.type) {
-			case SWT.Dispose:
+			case SWT.Dispose :
 				if (getShell() != popup.getParent()) {
 					String[] items = list.getItems();
 					int selectionIndex = list.getSelectionIndex();
@@ -817,7 +841,7 @@ public final class SearchBox
 				}
 				break;
 
-			case SWT.MouseUp: {
+			case SWT.MouseUp : {
 				// if (event.button != 1)
 				// return;
 				text.setText(list.getItem(list.getSelectionIndex()));
@@ -836,22 +860,23 @@ public final class SearchBox
 				break;
 
 			}
-			case SWT.Selection: {
+			case SWT.Selection : {
 
-				// Do nothing here - beause it would also trigger a selection when the user just
+				// Do nothing here - beause it would also trigger a selection
+				// when the user just
 				// browses through the list by using the arrows.
 				// The selection is either trigger on mouse click or SWT.CR
 				break;
 			}
 
-			case SWT.KeyUp: {
+			case SWT.KeyUp : {
 				if (list.getItemCount() > 0 && list.getSelectionIndex() != -1) {
 					text.setText(list.getItem(list.getSelectionIndex()));
 					text.selectAll();
 				}
 				break;
 			}
-			case SWT.KeyDown: {
+			case SWT.KeyDown : {
 
 				if (event.character == SWT.ESC) {
 					// Escape key cancels popup list
@@ -874,7 +899,8 @@ public final class SearchBox
 					notifyListeners(SWT.Selection, e);
 					event.doit = e.doit;
 				}
-				if (event.keyCode == SWT.ARROW_UP && list.getSelectionIndex() == 0) {
+				if (event.keyCode == SWT.ARROW_UP
+						&& list.getSelectionIndex() == 0) {
 					// dropDown (false);
 					text.setFocus();
 				}
@@ -885,18 +911,19 @@ public final class SearchBox
 
 	void popupEvent(Event event) {
 		switch (event.type) {
-			case SWT.Paint:
+			case SWT.Paint :
 				// draw black rectangle around list
 				Rectangle listRect = list.getBounds();
 				Color black = getDisplay().getSystemColor(SWT.COLOR_BLACK);
 				event.gc.setForeground(black);
-				event.gc.drawRectangle(0, 0, listRect.width + 1, listRect.height + 1);
+				event.gc.drawRectangle(0, 0, listRect.width + 1,
+						listRect.height + 1);
 				break;
-			case SWT.Close:
+			case SWT.Close :
 				event.doit = false;
 				dropDown(false);
 				break;
-			case SWT.Deactivate:
+			case SWT.Deactivate :
 				// dropDown(false);
 				break;
 		}
@@ -1079,8 +1106,7 @@ public final class SearchBox
 		text.setText("");
 		if (listItems != null) {
 			listItems.clear();
-		}
-		else {
+		} else {
 			listItems = new ArrayList<String>(items.length);
 		}
 
@@ -1174,7 +1200,8 @@ public final class SearchBox
 			if (++index >= length)
 				return string;
 			if (string.charAt(index) != '&')
-				return string.substring(0, index - 1) + string.substring(index, length);
+				return string.substring(0, index - 1)
+						+ string.substring(index, length);
 			index++;
 		} while (index < length);
 		return string;
@@ -1182,21 +1209,21 @@ public final class SearchBox
 
 	void textEvent(Event event) {
 		switch (event.type) {
-			case SWT.Modify: {
+			case SWT.Modify : {
 				Event e = new Event();
 				e.time = event.time;
 				notifyListeners(SWT.Modify, e);
 				break;
 			}
-			case SWT.FocusIn: {
+			case SWT.FocusIn : {
 				handleFocus(SWT.FocusIn);
 
 				break;
 			}
-			case SWT.KeyDown: {
+			case SWT.KeyDown : {
 				break;
 			}
-			case SWT.KeyUp: {
+			case SWT.KeyUp : {
 				if (event.keyCode == SWT.CR) {
 					text.selectAll();
 					dropDown(false);

@@ -3,8 +3,6 @@ package org.caleydo.view.scatterplot.renderstyle;
 import java.util.HashMap;
 
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.scatterplot.GLScatterplot;
 
@@ -14,16 +12,15 @@ import org.caleydo.view.scatterplot.GLScatterplot;
  * @author Juergen Pillhofer
  */
 
-public class ScatterPlotRenderStyle
-	extends GeneralRenderStyle {
+public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 
 	public static final float FIELD_Z = 0.001f;
 
 	public static final float SELECTION_Z = 0.005f;
 
-	public static final float[] X_AXIS_COLOR = { 0.0f, 0.0f, 0.0f, 1.0f };
+	public static final float[] X_AXIS_COLOR = {0.0f, 0.0f, 0.0f, 1.0f};
 	public static final float X_AXIS_LINE_WIDTH = 2.0f;
-	public static final float[] Y_AXIS_COLOR = { 0.0f, 0.0f, 0.0f, 1.0f };
+	public static final float[] Y_AXIS_COLOR = {0.0f, 0.0f, 0.0f, 1.0f};
 	public static final float Y_AXIS_LINE_WIDTH = 2.0f;
 	public static final float XYAXISDISTANCE = 0.2f;
 	public static final float AXIS_Z = 0.0f;
@@ -51,9 +48,9 @@ public class ScatterPlotRenderStyle
 	// private static final float MAXIMUM_SELECTED_AREA_PERCENTAGE = 0.8f;
 	public static final int LABEL_TEXT_MIN_SIZE = 50;
 
-	public static final float[] BACKGROUND_COLOR = { 0.8f, 0.8f, 0.8f, 1 };
-	public static final float[] DRAGGING_CURSOR_COLOR = { 0.2f, 0.2f, 0.2f, 1 };
-	public static final float[] DENDROGRAM_BACKROUND = { 0.5f, 0.5f, 0.5f, 1 };
+	public static final float[] BACKGROUND_COLOR = {0.8f, 0.8f, 0.8f, 1};
+	public static final float[] DRAGGING_CURSOR_COLOR = {0.2f, 0.2f, 0.2f, 1};
+	public static final float[] DENDROGRAM_BACKROUND = {0.5f, 0.5f, 0.5f, 1};
 	public static final float CLUSTER_BORDERS_Z = 0.009f;
 	public static final float BUTTON_Z = 0.01f;
 	public static final float BACKGROUND_Z = -0.1f;
@@ -80,8 +77,8 @@ public class ScatterPlotRenderStyle
 
 	private HashMap<Integer, Float> hashLevelToWidth;
 
-	GLHeatMap heatMap;
-	GLHierarchicalHeatMap hierarchicalHeatMap;
+	// GLHeatMap heatMap;
+	// GLHierarchicalHeatMap hierarchicalHeatMap;
 
 	// private boolean useFishEye = true;
 
@@ -89,8 +86,10 @@ public class ScatterPlotRenderStyle
 		// useFishEye = false;
 	}
 
-	// public ScatterPlotRenderStyle(GLHeatMap heatMap, IViewFrustum viewFrustum) {
-	public ScatterPlotRenderStyle(GLScatterplot scatterPlot, IViewFrustum viewFrustum) {
+	// public ScatterPlotRenderStyle(GLHeatMap heatMap, IViewFrustum
+	// viewFrustum) {
+	public ScatterPlotRenderStyle(GLScatterplot scatterPlot,
+			IViewFrustum viewFrustum) {
 
 		super(viewFrustum);
 
@@ -99,18 +98,17 @@ public class ScatterPlotRenderStyle
 		// alFieldWidths = new ArrayList<FieldWidthElement>();
 
 		// init fish eye
-		float fDelta = (fSelectedFieldWidth - fNormalFieldWidth) / (iLevels + 1);
+		float fDelta = (fSelectedFieldWidth - fNormalFieldWidth)
+				/ (iLevels + 1);
 		hashLevelToWidth = new HashMap<Integer, Float>();
 		hashLevelToWidth.put(iNotSelectedLevel, fNormalFieldWidth);
 		float fCurrentWidth = fNormalFieldWidth;
 		for (int iCount = -iLevels; iCount <= iLevels; iCount++) {
 			if (iCount < 0) {
 				fCurrentWidth += fDelta;
-			}
-			else if (iCount == 0) {
+			} else if (iCount == 0) {
 				fCurrentWidth = fSelectedFieldWidth;
-			}
-			else {
+			} else {
 				fCurrentWidth -= fDelta;
 			}
 
@@ -119,13 +117,14 @@ public class ScatterPlotRenderStyle
 
 	}
 
-	public ScatterPlotRenderStyle(GLHierarchicalHeatMap hierarchicalHeatMap, IViewFrustum viewFrustum) {
-
-		super(viewFrustum);
-
-		this.hierarchicalHeatMap = hierarchicalHeatMap;
-
-	}
+	// public ScatterPlotRenderStyle(GLHierarchicalHeatMap hierarchicalHeatMap,
+	// IViewFrustum viewFrustum) {
+	//
+	// super(viewFrustum);
+	//
+	// this.hierarchicalHeatMap = hierarchicalHeatMap;
+	//
+	// }
 
 	public float getHeightExperimentDendrogram() {
 
@@ -159,12 +158,12 @@ public class ScatterPlotRenderStyle
 		return fWidthLevel1;
 	}
 
-	public float getWidthLevel2() {
-
-		fWidthLevel2 = hierarchicalHeatMap.getViewFrustum().getWidth() / 5;
-
-		return fWidthLevel2;
-	}
+	// public float getWidthLevel2() {
+	//
+	// fWidthLevel2 = hierarchicalHeatMap.getViewFrustum().getWidth() / 5;
+	//
+	// return fWidthLevel2;
+	// }
 
 	public float getWidthLevel3() {
 

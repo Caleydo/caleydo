@@ -31,10 +31,6 @@ import org.caleydo.core.serialize.ApplicationInitData;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHierarchicalHeatMapView;
-import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.SerializedParallelCoordinatesView;
-import org.caleydo.core.view.swt.browser.SerializedHTMLBrowserView;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.caleydo.rcp.view.RCPViewManager;
@@ -43,6 +39,7 @@ import org.caleydo.rcp.wizard.firststart.InternetConfigurationWizard;
 import org.caleydo.rcp.wizard.firststart.ProxyConfigurationPage;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
 import org.caleydo.rcp.wizard.project.DataImportWizard;
+import org.caleydo.view.base.EStartViewType;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -113,10 +110,10 @@ public class Application
 	public static String sCaleydoXMLfile = "";
 
 	/** list of serialized-view class to create during startup */
-	public static List<Class<? extends ASerializedView>> startViews;
+	public static List<String> startViews;
 
-	/** list of initialized {@link ASerializedView} instances */
-	public static List<ASerializedView> initializedStartViews;
+	/** list of initialized view instances */
+	public static List<String> initializedStartViews;
 
 	/** initialization data received from a caleydo-server-application during startup */
 	public static ApplicationInitData initData = null;
@@ -139,7 +136,7 @@ public class Application
 			bIsWindowsOS = true;
 		}
 
-		startViews = new ArrayList<Class<? extends ASerializedView>>();
+		startViews = new ArrayList<String>();
 
 		Map<String, Object> map = context.getArguments();
 
@@ -149,7 +146,7 @@ public class Application
 		caleydoCoreBootloader = new CaleydoBootloader(rcpGuiBridge);
 
 		parseApplicationArguments(map);
-		
+
 		prefStore = GeneralManager.get().getPreferenceStore();
 
 		Display display = PlatformUI.createDisplay();
@@ -223,6 +220,8 @@ public class Application
 
 			int returnCode = PlatformUI.createAndRunWorkbench(display, applicationWorkbenchAdvisor);
 
+			// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("org.caleydo.view.heatmap");
+
 			GeneralManager.get().getPreferenceStore().setValue("firstStart", false);
 
 			if (returnCode == PlatformUI.RETURN_RESTART) {
@@ -272,7 +271,7 @@ public class Application
 					EStartViewType viewType = null;
 					try {
 						viewType = EStartViewType.valueOf(element);
-						startViews.add(viewType.getSerializedViewClass());
+						startViews.add(viewType.getViewID());
 					}
 					catch (IllegalArgumentException ex) {
 						// command line parameter was not a related to a view type, so it must be the
@@ -430,7 +429,7 @@ public class Application
 	}
 
 	/**
-	 * parses throw the list of start-views to initialize them by creating default serialized representations
+	 * Parses throw the list of start-views to initialize them by creating default serialized representations
 	 * of them.
 	 */
 	public static void initializeDefaultStartViews(EDataDomain dataDomain) {
@@ -447,20 +446,12 @@ public class Application
 			}
 		}
 
-		initializedStartViews = new ArrayList<ASerializedView>();
-		for (Class<? extends ASerializedView> viewType : startViews) {
-			try {
-				ASerializedView view = viewType.newInstance();
-				view.setDataDomain(dataDomain);
-				initializedStartViews.add(view);
-			}
-			catch (IllegalAccessException ex) {
-				ex.printStackTrace();
-				// nothing we can do when the views no-arg constructor not public
-			}
-			catch (InstantiationException ex) {
-				throw new RuntimeException("Error while instantiating a view of type '" + viewType + "'", ex);
-			}
+		initializedStartViews = new ArrayList<String>();
+		for (String viewID : startViews) {
+			ASerializedView view =
+				GeneralManager.get().getViewGLCanvasManager().getViewCreator(viewID).createSerializedView();
+			view.setDataDomain(dataDomain);
+			initializedStartViews.add(viewID);
 		}
 		startViews = null;
 	}
@@ -471,8 +462,8 @@ public class Application
 		RCPViewManager.get();
 
 		if (Application.LAZY_VIEW_LOADING) {
-			for (ASerializedView startView : initializedStartViews) {
-				layout.addView(startView.getViewGUIID());
+			for (String startViewID : initializedStartViews) {
+				layout.addView(startViewID);
 			}
 		}
 
@@ -485,20 +476,20 @@ public class Application
 	 *            {@link IUseCase} to determine the correct default start views.
 	 */
 	private static void addDefaultStartViews(EDataDomain dataDomain) {
-		startViews.add(SerializedHTMLBrowserView.class);
+		startViews.add(EStartViewType.browser.getViewID());
 
 		IUseCase useCase = GeneralManager.get().getUseCase(dataDomain);
 
 		if ((useCase instanceof GeneticUseCase && !((GeneticUseCase) useCase).isPathwayViewerMode())
 			|| useCase instanceof UnspecifiedUseCase) {
 			// alStartViews.add(EStartViewType.TABULAR);
-			startViews.add(SerializedParallelCoordinatesView.class);
-			startViews.add(SerializedHierarchicalHeatMapView.class);
+			startViews.add(EStartViewType.parcoords.getViewID());
+			startViews.add(EStartViewType.heatmap.getViewID());
 		}
 
 		// Only show bucket when pathway data is loaded
 		if (GeneralManager.get().getPathwayManager().size() > 0) {
-			startViews.add(SerializedRemoteRenderingView.class);
+			startViews.add(EStartViewType.remote.getViewID());
 		}
 	}
 
@@ -506,12 +497,10 @@ public class Application
 	 * Filter all views except remote and browser in case of pathway viewer mode
 	 */
 	private static void applyPathwayViewerViewFilter() {
-		ArrayList<Class<? extends ASerializedView>> newStartViews =
-			new ArrayList<Class<? extends ASerializedView>>();
-		for (Class<? extends ASerializedView> view : startViews) {
-			if (view.equals(SerializedRemoteRenderingView.class)
-				|| view.equals(SerializedHTMLBrowserView.class)) {
-				newStartViews.add(view);
+		ArrayList<String> newStartViews = new ArrayList<String>();
+		for (String viewID : startViews) {
+			if (viewID.equals(EStartViewType.remote.getViewID()) || viewID.equals("org.caleydo.view.browser")) {
+				newStartViews.add(viewID);
 			}
 		}
 		startViews = newStartViews;

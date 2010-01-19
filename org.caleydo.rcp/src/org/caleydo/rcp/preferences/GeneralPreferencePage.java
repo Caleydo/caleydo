@@ -1,11 +1,7 @@
 package org.caleydo.rcp.preferences;
 
-import java.util.Collection;
-
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.GLParallelCoordinates;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
@@ -89,17 +85,18 @@ public class GeneralPreferencePage
 
 		boolean bReturn = super.performOk();
 
-		Collection<AGLView> eventListeners =
-			GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners();
-		for (AGLView eventListener : eventListeners) {
-			if (eventListener instanceof GLParallelCoordinates) {
-				GLParallelCoordinates parCoords = (GLParallelCoordinates) eventListener;
-				// if(!heatMap.isRenderedRemote())
-				// {
-				parCoords.setNumberOfSamplesToShow(numRandomSamplesFE.getIntValue());
-				// }
-			}
-		}
+		// FIXME after view plugin reogranization
+		// Collection<AGLView> eventListeners =
+		// GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners();
+		// for (AGLView glView : eventListeners) {
+		// if (glView instanceof GLParallelCoordinates) {
+		// GLParallelCoordinates parCoords = (GLParallelCoordinates) glView;
+		// // if(!heatMap.isRenderedRemote())
+		// // {
+		// parCoords.setNumberOfSamplesToShow(numRandomSamplesFE.getIntValue());
+		// // }
+		// }
+		// }
 
 		return bReturn;
 	}

@@ -128,13 +128,6 @@ public class CommandManager
 
 		ICommand createdCommand = commandFactory.createCommandByType(cmdType);
 
-		// BUG! creating command is not executing command!
-		// //FIXME: should iterate over all undo/redo views.
-		// if ( ! arUndoRedoViews.isEmpty() )
-		// {
-		// arUndoRedoViews.get(0).addCommand(createdCommand);
-		// }
-
 		return createdCommand;
 	}
 

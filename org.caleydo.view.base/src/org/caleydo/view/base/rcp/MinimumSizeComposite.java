@@ -10,9 +10,9 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
-public class MinimumSizeComposite
-	extends ScrolledComposite
-	implements IListenerOwner {
+public class MinimumSizeComposite extends ScrolledComposite
+		implements
+			IListenerOwner {
 
 	SetMinViewSizeEventListener setMinSizeEventListener;
 
@@ -20,8 +20,8 @@ public class MinimumSizeComposite
 		super(parent, style);
 		setMinSizeEventListener = new SetMinViewSizeEventListener();
 		setMinSizeEventListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(SetMinViewSizeEvent.class,
-			setMinSizeEventListener);
+		GeneralManager.get().getEventPublisher().addListener(
+				SetMinViewSizeEvent.class, setMinSizeEventListener);
 	}
 
 	public void setView(AGLView view) {
@@ -29,7 +29,9 @@ public class MinimumSizeComposite
 	}
 
 	@Override
-	public void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
+	public void queueEvent(
+			final AEventListener<? extends IListenerOwner> listener,
+			final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				listener.handleEvent(event);

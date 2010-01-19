@@ -2,8 +2,7 @@ package org.caleydo.view.base.action.toolbar;
 
 import org.eclipse.jface.action.Action;
 
-public class AToolBarAction
-	extends Action {
+public class AToolBarAction extends Action {
 	protected int iViewID;
 
 	/**

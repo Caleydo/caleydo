@@ -8,9 +8,9 @@ import org.caleydo.view.base.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class ScatterplotResetSelectionAction
-	extends AToolBarAction
-	implements IToolBarItem {
+public class ScatterplotResetSelectionAction extends AToolBarAction
+		implements
+			IToolBarItem {
 	public static final String TEXT = "Reset Selections";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/reset_axis_spacing.png";
 
@@ -22,14 +22,15 @@ public class ScatterplotResetSelectionAction
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-			.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
+				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
 	public void run() {
 		super.run();
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new ResetScatterSelectionEvent());
+		GeneralManager.get().getEventPublisher().triggerEvent(
+				new ResetScatterSelectionEvent());
 	};
 }

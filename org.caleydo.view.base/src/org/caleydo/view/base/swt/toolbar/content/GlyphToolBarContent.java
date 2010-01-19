@@ -16,8 +16,7 @@ import org.caleydo.view.base.action.toolbar.view.glyph.RemoveUnselectedFromViewA
  * 
  * @author Werner Puff
  */
-public class GlyphToolBarContent
-	extends AToolBarContent {
+public class GlyphToolBarContent extends AToolBarContent {
 
 	public static final String IMAGE_PATH = "resources/icons/view/glyph/glyph.png";
 
@@ -44,7 +43,8 @@ public class GlyphToolBarContent
 		actionList.add(new EnterViewNameAction(targetViewID));
 		actionList.add(new OpenDataExportAction(targetViewID));
 
-		ChangeViewModeSecondaryAction cvm2a = new ChangeViewModeSecondaryAction(targetViewID);
+		ChangeViewModeSecondaryAction cvm2a = new ChangeViewModeSecondaryAction(
+				targetViewID);
 		cvm2a.setAction(null);
 		actionList.add(new ChangeViewModeAction(targetViewID, cvm2a));
 		actionList.add(cvm2a);

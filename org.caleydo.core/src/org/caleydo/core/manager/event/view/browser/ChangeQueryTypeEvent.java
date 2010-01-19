@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.view.swt.browser.EBrowserQueryType;
 
 /**
  * Events that signals browser-views to change the query type

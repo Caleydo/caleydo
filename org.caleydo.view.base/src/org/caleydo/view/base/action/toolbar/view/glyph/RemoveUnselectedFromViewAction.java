@@ -8,9 +8,9 @@ import org.caleydo.view.base.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class RemoveUnselectedFromViewAction
-	extends AToolBarAction
-	implements IToolBarItem {
+public class RemoveUnselectedFromViewAction extends AToolBarAction
+		implements
+			IToolBarItem {
 
 	public static final String TEXT = "remove unselected glyphs from view";
 	public static final String ICON = "resources/icons/view/glyph/glyph_remove_unselected.png";
@@ -20,14 +20,15 @@ public class RemoveUnselectedFromViewAction
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-			.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
+				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
 	public void run() {
 		super.run();
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new RemoveUnselectedGlyphsEvent(iViewID));
+		GeneralManager.get().getEventPublisher().triggerEvent(
+				new RemoveUnselectedGlyphsEvent(iViewID));
 	};
 }

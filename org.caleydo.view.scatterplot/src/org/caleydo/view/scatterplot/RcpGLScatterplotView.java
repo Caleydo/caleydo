@@ -11,14 +11,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-public class RcpGLScatterplotView
-	extends ARcpGLViewPart {
+public class RcpGLScatterplotView extends ARcpGLViewPart {
 
-	public static final String ID = SerializedScatterplotView.GUI_ID;
-
-	//FIXME: check if it is ok to overwrite 
+	// FIXME: check if it is ok to overwrite
 	private EDataDomain dataDomain;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -32,9 +29,10 @@ public class RcpGLScatterplotView
 
 		IUseCase usecase = GeneralManager.get().getUseCase(dataDomain);
 		if (usecase != null && usecase instanceof GeneticUseCase
-			&& ((GeneticUseCase) usecase).isPathwayViewerMode()) {
+				&& ((GeneticUseCase) usecase).isPathwayViewerMode()) {
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
-			alert.setMessage("Cannot create scatterplot in pathway viewer mode!");
+			alert
+					.setMessage("Cannot create scatterplot in pathway viewer mode!");
 			alert.open();
 
 			dispose();
@@ -47,13 +45,14 @@ public class RcpGLScatterplotView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedScatterplotView serializedView = new SerializedScatterplotView(dataDomain);
+		SerializedScatterplotView serializedView = new SerializedScatterplotView(
+				dataDomain);
 		return serializedView;
 	}
 
 	@Override
 	public String getViewGUIID() {
-		return ID;
+		return GLScatterplot.VIEW_ID;
 	}
 
 }

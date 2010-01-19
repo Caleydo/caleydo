@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
 
 /**
  * Event that signals a major update a view has to react to. In contrast to {@link RedrawViewEvent} a simple

@@ -1,0 +1,23 @@
+package org.caleydo.view.browser;
+
+import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.view.browser.ChangeQueryTypeEvent;
+
+/**
+ * Handles change-query-type events by setting the related browser-view's query
+ * type
+ * 
+ * @author Werner Puff
+ */
+public class ChangeQueryTypeListener extends ABrowserListener {
+
+	@Override
+	public void handleEvent(AEvent event) {
+		if (event instanceof ChangeQueryTypeEvent) {
+			((GenomeHTMLBrowser) handler)
+					.changeQueryType(((ChangeQueryTypeEvent) event)
+							.getQueryType());
+		}
+	}
+
+}

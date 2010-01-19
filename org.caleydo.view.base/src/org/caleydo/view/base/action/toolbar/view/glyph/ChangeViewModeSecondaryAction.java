@@ -11,9 +11,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.PlatformUI;
 
-public class ChangeViewModeSecondaryAction
-	extends AToolBarAction
-	implements IMenuCreator, IToolBarItem {
+public class ChangeViewModeSecondaryAction extends AToolBarAction
+		implements
+			IMenuCreator,
+			IToolBarItem {
 	public static final String TEXT = "disabled";
 	public static final String TEXT_SCATTERPLOT = "Scatterplot Axis Definition";
 	public static final String TEXT_PLUSMODEL = "Distribution Model Axis Definition";
@@ -33,8 +34,8 @@ public class ChangeViewModeSecondaryAction
 		this.iViewID = iViewID;
 
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-			.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
+				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
 
 		setMenuCreator(this);
 	}
@@ -45,22 +46,22 @@ public class ChangeViewModeSecondaryAction
 		if (action instanceof ChangeViewModeToScatterplotAction) {
 			setToolTipText(TEXT_SCATTERPLOT);
 
-			// setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+			// setImageDescriptor(ImageDescriptor.createFromImage(new
+			// ResourceLoader().getImage(
 			// PlatformUI.getWorkbench().getDisplay(),
 			// ChangeViewModeToScatterplotAction.ICON)));
 
 			this.setEnabled(true);
-		}
-		else if (primaryAction instanceof ChangeViewModeToPlusModelAction) {
+		} else if (primaryAction instanceof ChangeViewModeToPlusModelAction) {
 			setToolTipText(TEXT_PLUSMODEL);
 
-			// setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+			// setImageDescriptor(ImageDescriptor.createFromImage(new
+			// ResourceLoader().getImage(
 			// PlatformUI.getWorkbench().getDisplay(),
 			// ChangeViewModeToPlusModelAction.ICON)));
 
 			this.setEnabled(true);
-		}
-		else {
+		} else {
 			this.setEnabled(false);
 		}
 	}
@@ -90,14 +91,18 @@ public class ChangeViewModeSecondaryAction
 		menu = new Menu(parent);
 
 		if (primaryAction instanceof ChangeViewModeToScatterplotAction) {
-			addActionToMenu(menu, new ChangeViewModeSecondaryScatterplotAxisAction(iViewID, 0));
-			addActionToMenu(menu, new ChangeViewModeSecondaryScatterplotAxisAction(iViewID, 1));
-		}
-		else if (primaryAction instanceof ChangeViewModeToPlusModelAction) {
-			addActionToMenu(menu, new ChangeViewModeSecondaryPlusModelAxisAction(iViewID, 0));
-			addActionToMenu(menu, new ChangeViewModeSecondaryPlusModelAxisAction(iViewID, 1));
-		}
-		else {
+			addActionToMenu(
+					menu,
+					new ChangeViewModeSecondaryScatterplotAxisAction(iViewID, 0));
+			addActionToMenu(
+					menu,
+					new ChangeViewModeSecondaryScatterplotAxisAction(iViewID, 1));
+		} else if (primaryAction instanceof ChangeViewModeToPlusModelAction) {
+			addActionToMenu(menu,
+					new ChangeViewModeSecondaryPlusModelAxisAction(iViewID, 0));
+			addActionToMenu(menu,
+					new ChangeViewModeSecondaryPlusModelAxisAction(iViewID, 1));
+		} else {
 		}
 
 		return menu;

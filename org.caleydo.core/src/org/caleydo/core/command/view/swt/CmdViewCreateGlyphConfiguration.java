@@ -3,7 +3,6 @@ package org.caleydo.core.command.view.swt;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
 
 /**
@@ -33,7 +32,7 @@ public class CmdViewCreateGlyphConfiguration
 
 		GlyphMappingConfigurationViewRep view =
 			(GlyphMappingConfigurationViewRep) viewManager.createView(
-				EManagedObjectType.VIEW_SWT_GLYPH_MAPPINGCONFIGURATION, iParentContainerId, sLabel);
+				"org.caleydo.view.glyph.mappingconfiguration", iParentContainerId, sLabel);
 
 		viewManager.registerItem(view);
 

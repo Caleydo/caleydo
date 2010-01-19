@@ -15,12 +15,10 @@ import org.caleydo.core.command.system.CmdLoadGlyphDefinition;
 import org.caleydo.core.command.system.CmdLoadPathwayData;
 import org.caleydo.core.command.system.CmdSystemExit;
 import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
-import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.command.view.opengl.CmdCreateGLPathway;
+import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.command.view.swt.CmdViewCreateGlyphConfiguration;
-import org.caleydo.core.command.view.swt.CmdViewCreateHTMLBrowser;
-import org.caleydo.core.command.view.swt.CmdViewCreatePathway;
 import org.caleydo.core.command.view.swt.CmdViewCreateSwtGLCanvas;
 import org.caleydo.core.command.window.swt.CmdContainerCreate;
 import org.caleydo.core.command.window.swt.CmdWindowCreate;
@@ -95,45 +93,16 @@ public class CommandFactory
 				createdCommand = new CmdViewCreateRcpGLCanvas(cmdType);
 				break;
 			}
-			case CREATE_VIEW_PATHWAY: {
-				createdCommand = new CmdViewCreatePathway(cmdType);
-				break;
-			}
 			case CREATE_VIEW_GLYPHCONFIG: {
 				createdCommand = new CmdViewCreateGlyphConfiguration(cmdType);
-				break;
-			}
-			case CREATE_VIEW_BROWSER: {
-				createdCommand = new CmdViewCreateHTMLBrowser(cmdType);
 				break;
 			}
 			case CREATE_GL_PATHWAY_3D: {
 				createdCommand = new CmdCreateGLPathway(cmdType);
 				break;
 			}
-				// the next entries are all CmdCreateGLEventListener, so we do
-				// it only once
-			case CREATE_GL_HEAT_MAP_3D:
-			case CREATE_GL_PROPAGATION_HEAT_MAP_3D:
-			case CREATE_GL_TEXTURE_HEAT_MAP_3D:
-			case CREATE_GL_GLYPH:
-			case CREATE_GL_GLYPH_SLIDER:
-			case CREATE_GL_PARALLEL_COORDINATES:
-			case CREATE_GL_BUCKET_3D:
-			case CREATE_GL_JUKEBOX_3D:
-			case CREATE_GL_DATA_FLIPPER:
-			case CREATE_GL_TISSUE_VIEW_BROWSER:
-			case CREATE_GL_PATHWAY_VIEW_BROWSER:
-			case CREATE_GL_CELL:
-			case CREATE_GL_TISSUE:
-			case CREATE_GL_REMOTE_GLYPH:
-			case CREATE_GL_RADIAL_HIERARCHY:
-			case CREATE_GL_HISTOGRAM:
-			case CREATE_GL_GROUPER:
-			case CREATE_GL_DENDROGRAM_VERTICAL:
-			case CREATE_GL_DENDROGRAM_HORIZONTAL:
-			case CREATE_GL_SCATTERPLOT: {
-				createdCommand = new CmdCreateGLEventListener(cmdType);
+			case CREATE_GL_VIEW: {
+				createdCommand = new CmdCreateView(cmdType);
 				break;
 			}
 			case SYSTEM_SHUT_DOWN: {

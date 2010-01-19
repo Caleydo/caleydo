@@ -116,9 +116,8 @@ public class GroupRepresentation
 		int iDropPositionIndex =
 			getDropPositionIndex(gl, setDraggables, fMouseCoordinateX, fMouseCoordinateY);
 
-		if(iDropPositionIndex == -1)
+		if (iDropPositionIndex == -1)
 			return;
-		
 
 		if (drawingStrategy instanceof AGroupDrawingStrategyRectangular) {
 			drawingStrategyRectangular = (AGroupDrawingStrategyRectangular) drawingStrategy;
@@ -137,9 +136,9 @@ public class GroupRepresentation
 		int iDropPositionIndex =
 			getDropPositionIndex(gl, setDraggables, fMouseCoordinateX, fMouseCoordinateY);
 
-		if(iDropPositionIndex == -1)
+		if (iDropPositionIndex == -1)
 			return;
-		
+
 		Set<ICompositeGraphic> setComposites = new HashSet<ICompositeGraphic>();
 
 		for (IDraggable draggable : setDraggables) {

@@ -1,6 +1,5 @@
 package org.caleydo.core.serialize;
 
-import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -18,11 +17,6 @@ public class SerializedDummyView
 
 	public SerializedDummyView(EDataDomain dataDomain) {
 		super(dataDomain);
-	}
-
-	@Override
-	public ECommandType getCreationCommandType() {
-		return ECommandType.CMD_ID;
 	}
 
 	@Override

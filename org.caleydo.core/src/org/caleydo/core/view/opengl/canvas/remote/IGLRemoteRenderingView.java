@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.canvas.remote;
 
 import java.util.List;
 
-import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 
@@ -12,7 +12,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
  * @author Marc Streit
  */
 public interface IGLRemoteRenderingView
-	extends IUniqueObject {
+	extends IView {
 
 	public GLCaleydoCanvas getParentGLCanvas();
 

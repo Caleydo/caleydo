@@ -3,9 +3,7 @@ package org.caleydo.rcp.toolbar;
 import java.util.ArrayList;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.rcp.perspective.GenomePerspective;
-import org.caleydo.view.base.rcp.RcpGLPathwayView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -135,7 +133,7 @@ public class RcpToolBarView
 
 	public void highlightViewSpecificGroup(final Object eventTrigger) {
 		if (eventTrigger instanceof AGLView) {
-			final int iViewID = ((AGLView) eventTrigger).getID();
+			final AGLView glView = ((AGLView) eventTrigger);
 
 			// if (parentComposite == null || !parentComposite.isDisposed()) {
 			// GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID,
@@ -150,9 +148,9 @@ public class RcpToolBarView
 						for (Control subControl : group.getChildren()) {
 							if (subControl instanceof Label && subControl.getData() == group) {
 								if (group.getData("viewID") != null
-									&& ((Integer) group.getData("viewID")).intValue() == iViewID
-									|| eventTrigger instanceof GLPathway
-									&& group.getData("viewType") == RcpGLPathwayView.ID) {
+									&& ((Integer) group.getData("viewID")).intValue() == glView.getID()
+									|| glView.getViewID().equals("org.caleydo.view.pathway")
+									&& group.getData("viewType") == "org.caleydo.view.pathway") {
 									((Label) subControl).setBackground(Display.getCurrent().getSystemColor(
 										SWT.COLOR_DARK_GRAY));
 								}

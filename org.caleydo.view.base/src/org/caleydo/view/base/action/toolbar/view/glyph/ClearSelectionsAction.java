@@ -7,8 +7,7 @@ import org.caleydo.view.base.action.toolbar.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class ClearSelectionsAction
-	extends AToolBarAction {
+public class ClearSelectionsAction extends AToolBarAction {
 
 	public static final String TEXT = "Clear the selection";
 	public static final String ICON = "resources/icons/view/glyph/glyph_reset_view.png";
@@ -18,14 +17,15 @@ public class ClearSelectionsAction
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-			.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
+				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
 	public void run() {
 		super.run();
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new ClearSelectionsEvent());
+		GeneralManager.get().getEventPublisher().triggerEvent(
+				new ClearSelectionsEvent());
 	};
 }

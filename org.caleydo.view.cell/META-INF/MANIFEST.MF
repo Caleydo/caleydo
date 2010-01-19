@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Cell View
+Bundle-SymbolicName: org.caleydo.view.cell
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.caleydo.view.cell.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.caleydo.core;bundle-version="1.3.0",
+ org.caleydo.view.base;bundle-version="1.0.0",
+ org.caleydo.lib.jogl;bundle-version="1.2.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

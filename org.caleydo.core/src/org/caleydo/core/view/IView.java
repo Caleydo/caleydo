@@ -77,4 +77,5 @@ public interface IView
 	 */
 	public void initFromSerializableRepresentation(ASerializedView serializedView);
 
+	public String getViewID();
 }

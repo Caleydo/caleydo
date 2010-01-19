@@ -10,8 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-public class RcpGLGrouperView
-	extends ARcpGLViewPart {
+public class RcpGLGrouperView extends ARcpGLViewPart {
 
 	public static final String ID = SerializedGrouperView.GUI_ID;
 
@@ -28,7 +27,7 @@ public class RcpGLGrouperView
 
 		IUseCase usecase = GeneralManager.get().getUseCase(dataDomain);
 		if (usecase != null && usecase instanceof GeneticUseCase
-			&& ((GeneticUseCase) usecase).isPathwayViewerMode()) {
+				&& ((GeneticUseCase) usecase).isPathwayViewerMode()) {
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
 			alert.setMessage("Cannot create grouper in pathway viewer mode!");
 			alert.open();
@@ -43,7 +42,8 @@ public class RcpGLGrouperView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedGrouperView serializedView = new SerializedGrouperView(dataDomain);
+		SerializedGrouperView serializedView = new SerializedGrouperView(
+				dataDomain);
 		return serializedView;
 	}
 

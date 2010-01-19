@@ -9,11 +9,11 @@ import org.eclipse.swt.widgets.Shell;
 public class SearchBoxSnippet {
 
 	public static void main(String[] args) {
-		String items[] =
-			{ "Lions", "Tigers", "Bears", "Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf",
-					"Hotel", "India", "Juliet", "Kilo", "Lima", "Mike", "November", "Oscar", "Papa",
-					"Quebec", "Romeo", "Sierra", "Tango", "Uniform", "Victor", "Whiskey", "X-Ray", "Yankee",
-					"Zulu" };
+		String items[] = {"Lions", "Tigers", "Bears", "Alpha", "Bravo",
+				"Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel",
+				"India", "Juliet", "Kilo", "Lima", "Mike", "November", "Oscar",
+				"Papa", "Quebec", "Romeo", "Sierra", "Tango", "Uniform",
+				"Victor", "Whiskey", "X-Ray", "Yankee", "Zulu"};
 		Display display = Display.getDefault();
 		Shell shell1 = new Shell(display);
 		shell1.setLayout(new GridLayout());

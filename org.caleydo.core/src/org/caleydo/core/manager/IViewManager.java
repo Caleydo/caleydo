@@ -4,12 +4,11 @@ import java.util.Collection;
 
 import javax.media.opengl.GLCanvas;
 
-import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.execution.DisplayLoopExecution;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
-import org.caleydo.core.manager.view.creator.IGLViewCreator;
+import org.caleydo.core.manager.view.creator.IViewCreator;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -25,10 +24,10 @@ import org.eclipse.swt.widgets.Composite;
  */
 public interface IViewManager
 	extends IManager<IView> {
-	public IView createView(final EManagedObjectType useViewType, final int iParentContainerId,
-		final String sLabel);
 
-	public AGLView createGLEventListener(ECommandType type, GLCaleydoCanvas glCanvas, String sLabel,
+	public IView createView(String viewType, int parentContainerId, String sLabel);
+
+	public AGLView createGLView(String viewID, GLCaleydoCanvas glCanvas, String label,
 		IViewFrustum viewFrustum);
 
 	public IView createGLView(final EManagedObjectType type, final int iParentContainerID, final String sLabel);
@@ -112,8 +111,16 @@ public interface IViewManager
 
 	/**
 	 * TODO Document me
+	 * 
 	 * @param viewCreator
 	 */
-	public void addGLViewCreator(IGLViewCreator glViewCreator);
+	public void addViewCreator(IViewCreator glViewCreator);
+
+	/**
+	 * TODO Document me
+	 * 
+	 * @return
+	 */
+	public IViewCreator getViewCreator(String viewID);
 
 }

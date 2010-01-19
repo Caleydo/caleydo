@@ -1,6 +1,5 @@
 package org.caleydo.core.view.swt.tabular;
 
-import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -20,11 +19,6 @@ public class SerializedTabularDataView
 
 	public SerializedTabularDataView(EDataDomain dataDomain) {
 		super(dataDomain);
-	}
-
-	@Override
-	public ECommandType getCreationCommandType() {
-		return null;
 	}
 
 	@Override

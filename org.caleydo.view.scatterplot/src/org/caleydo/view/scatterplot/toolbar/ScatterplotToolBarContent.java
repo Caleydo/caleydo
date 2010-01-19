@@ -17,8 +17,7 @@ import org.caleydo.view.scatterplot.actions.ScatterplotTestAction;
  * @author Marc Streit
  * @author Juergen Pillhofer
  */
-public class ScatterplotToolBarContent
-	extends AToolBarContent {
+public class ScatterplotToolBarContent extends AToolBarContent {
 
 	public static final String IMAGE_PATH = "resources/icons/view/storagebased/parcoords/parcoords.png";
 
@@ -47,7 +46,8 @@ public class ScatterplotToolBarContent
 		IToolBarItem testAction = new ScatterplotTestAction(targetViewID);
 		actionList.add(testAction);
 
-		IToolBarItem resetSelection = new ScatterplotResetSelectionAction(targetViewID);
+		IToolBarItem resetSelection = new ScatterplotResetSelectionAction(
+				targetViewID);
 		actionList.add(resetSelection);
 
 		if (pointSizeSlider == null) {

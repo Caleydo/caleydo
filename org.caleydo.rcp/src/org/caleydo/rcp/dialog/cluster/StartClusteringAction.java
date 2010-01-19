@@ -10,7 +10,6 @@ import org.caleydo.core.util.clusterer.EDistanceMeasure;
 import org.caleydo.core.util.clusterer.ETreeClustererAlgo;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.progress.ClusteringProgressBar;
-import org.caleydo.view.base.swt.RcpHTMLBrowserView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
@@ -114,7 +113,7 @@ public class StartClusteringAction
 			public void helpRequested(HelpEvent e) {
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-						RcpHTMLBrowserView.ID);
+						"org.caleydo.view.browser");
 
 					final String URL_HELP_CLUSTERING =
 						"http://www.caleydo.org/help/gene_expression.html#Clustering";
@@ -140,7 +139,7 @@ public class StartClusteringAction
 			public void widgetSelected(SelectionEvent e) {
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-						RcpHTMLBrowserView.ID);
+						"org.caleydo.view.browser");
 
 					String stHelp = "http://www.caleydo.org/help/gene_expression.html#Cobweb";
 

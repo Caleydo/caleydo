@@ -20,14 +20,14 @@ import com.sun.opengl.util.BufferUtil;
 
 /**
  * <p>
- * Handles picking for instances of {@link AGLView}. When drawing objects which should later be
- * picked, use the {@link #getPickingID(int, EPickingType, int)} method to get an ID to use in the
- * glPushName() function. This function is provided with an externalID which is intended for use in the
- * calling instance to identify the picked element.
+ * Handles picking for instances of {@link AGLView}. When drawing objects which should later be picked, use
+ * the {@link #getPickingID(int, EPickingType, int)} method to get an ID to use in the glPushName() function.
+ * This function is provided with an externalID which is intended for use in the calling instance to identify
+ * the picked element.
  * </p>
  * <p>
- * To perform the actual picking the {@link #handlePicking(AGLView, GL)} method has to be called in
- * every render step.
+ * To perform the actual picking the {@link #handlePicking(AGLView, GL)} method has to be called in every
+ * render step.
  * </p>
  * <p>
  * The results of the operation can later be retrieved by first calling {@link #getHitTypes(int)} to get all

@@ -234,7 +234,7 @@ public class KMeansClusterer
 		// System.out.println(data.numAttributes());
 		// System.out.println(data.numInstances());
 
-		//IVirtualArray currentVA = null;
+		// IVirtualArray currentVA = null;
 		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 		// currentVA = set.getVA(iVAIdContent);
 		// else

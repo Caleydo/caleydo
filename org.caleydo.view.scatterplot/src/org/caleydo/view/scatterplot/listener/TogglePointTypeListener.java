@@ -10,8 +10,7 @@ import org.caleydo.view.scatterplot.GLScatterplot;
  * 
  * @author Juergen Pillhofer
  */
-public class TogglePointTypeListener
-	extends AEventListener<GLScatterplot> {
+public class TogglePointTypeListener extends AEventListener<GLScatterplot> {
 
 	@Override
 	public void handleEvent(AEvent event) {

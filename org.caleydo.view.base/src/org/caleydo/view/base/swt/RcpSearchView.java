@@ -19,9 +19,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
-import org.caleydo.view.base.rcp.RcpGLHierarchicalHeatMapView;
-import org.caleydo.view.base.rcp.RcpGLParCoordsView;
-import org.caleydo.view.base.rcp.RcpGLRemoteRenderingView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -56,8 +53,7 @@ import org.eclipse.ui.part.ViewPart;
  * 
  * @author Marc Streit
  */
-public class RcpSearchView
-	extends ViewPart {
+public class RcpSearchView extends ViewPart {
 
 	public static final String ID = "org.caleydo.rcp.views.swt.SearchView";
 
@@ -110,7 +106,8 @@ public class RcpSearchView
 		composite.setLayout(new GridLayout(1, false));
 
 		Group searchQueryGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		// searchDataKindGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		// searchDataKindGroup.setLayoutData(new
+		// GridData(GridData.FILL_HORIZONTAL));
 		searchQueryGroup.setLayout(new RowLayout());
 		searchQueryGroup.setText("Search query");
 
@@ -124,7 +121,8 @@ public class RcpSearchView
 		});
 
 		Group searchDataKindGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		// searchDataKindGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		// searchDataKindGroup.setLayoutData(new
+		// GridData(GridData.FILL_HORIZONTAL));
 		searchDataKindGroup.setLayout(new RowLayout());
 		searchDataKindGroup.setText("Search filter");
 
@@ -140,7 +138,8 @@ public class RcpSearchView
 
 		useGeneSymbol = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneSymbol.setText("Gene symbol");
-		if (generalManager.getIDMappingManager().hasMapping(EIDType.GENE_SYMBOL, EIDType.DAVID))
+		if (generalManager.getIDMappingManager().hasMapping(
+				EIDType.GENE_SYMBOL, EIDType.DAVID))
 			useGeneSymbol.setSelection(true);
 		else
 			useGeneSymbol.setEnabled(false);
@@ -154,21 +153,24 @@ public class RcpSearchView
 
 		useGeneRefSeqID = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneRefSeqID.setText("RefSeq ID");
-		if (generalManager.getIDMappingManager().hasMapping(EIDType.REFSEQ_MRNA, EIDType.DAVID))
+		if (generalManager.getIDMappingManager().hasMapping(
+				EIDType.REFSEQ_MRNA, EIDType.DAVID))
 			useGeneRefSeqID.setSelection(true);
 		else
 			useGeneRefSeqID.setEnabled(false);
 
 		useGeneEntrezGeneID = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneEntrezGeneID.setText("Entrez Gene ID");
-		if (generalManager.getIDMappingManager().hasMapping(EIDType.ENTREZ_GENE_ID, EIDType.DAVID))
+		if (generalManager.getIDMappingManager().hasMapping(
+				EIDType.ENTREZ_GENE_ID, EIDType.DAVID))
 			useGeneEntrezGeneID.setSelection(true);
 		else
 			useGeneEntrezGeneID.setEnabled(false);
 
 		useGeneDavidID = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneDavidID.setText("David ID");
-		if (generalManager.getIDMappingManager().hasMapping(EIDType.DAVID, EIDType.REFSEQ_MRNA_INT))
+		if (generalManager.getIDMappingManager().hasMapping(EIDType.DAVID,
+				EIDType.REFSEQ_MRNA_INT))
 			useGeneDavidID.setSelection(true);
 		else
 			useGeneDavidID.setEnabled(false);
@@ -200,7 +202,7 @@ public class RcpSearchView
 			@Override
 			public void keyPressed(KeyEvent event) {
 				switch (event.keyCode) {
-					case SWT.CR: {
+					case SWT.CR : {
 						startSearch();
 					}
 				}
@@ -230,20 +232,21 @@ public class RcpSearchView
 			horizontalSeparator.dispose();
 
 		if (useGeneSymbol.getSelection() || useGeneDavidID.getSelection()
-			|| useGeneEntrezGeneID.getSelection() || useGeneName.getSelection()
-			|| useGeneRefSeqID.getSelection()) {
+				|| useGeneEntrezGeneID.getSelection()
+				|| useGeneName.getSelection() || useGeneRefSeqID.getSelection()) {
 
 			geneResultsLabel = new Label(composite, SWT.NULL);
 			geneResultsLabel.setText("Gene results:");
 
-			geneTable = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
+			geneTable = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION
+					| SWT.VIRTUAL);
 			geneTable.setLinesVisible(true);
 			geneTable.setHeaderVisible(true);
 			geneTable.setLayoutData(new GridData(GridData.FILL_BOTH));
 			addGeneContextMenu();
 
-			String[] titles =
-				{ "Expression", "RefSeq ID", "David ID", "Entrez Gene ID", "Gene Symbol", "Gene Name" };
+			String[] titles = {"Expression", "RefSeq ID", "David ID",
+					"Entrez Gene ID", "Gene Symbol", "Gene Name"};
 			for (int i = 0; i < titles.length; i++) {
 				TableColumn column = new TableColumn(geneTable, SWT.NONE);
 				column.setText(titles[i]);
@@ -260,8 +263,10 @@ public class RcpSearchView
 					pathwayContainingGeneLabel.setEnabled(true);
 					pathwayContainingGeneTable.setEnabled(true);
 
-					for (PathwayGraph pathway : getPathwaysContainingGene((Integer) e.item.getData())) {
-						TableItem item = new TableItem(pathwayContainingGeneTable, SWT.NULL);
+					for (PathwayGraph pathway : getPathwaysContainingGene((Integer) e.item
+							.getData())) {
+						TableItem item = new TableItem(
+								pathwayContainingGeneTable, SWT.NULL);
 						item.setText(0, pathway.getType().getName());
 						item.setText(1, pathway.getTitle());
 						item.setData(pathway);
@@ -270,29 +275,36 @@ public class RcpSearchView
 					pathwayContainingGeneTable.getColumn(0).pack();
 					pathwayContainingGeneTable.getColumn(1).pack();
 
-					pathwayContainingGeneLabel.setText("Pathway containing selected gene: "
-						+ geneTable.getSelection()[0].getText(3));
+					pathwayContainingGeneLabel
+							.setText("Pathway containing selected gene: "
+									+ geneTable.getSelection()[0].getText(3));
 				}
 			});
 
-			showOnlyGenesContainedInAnyPathway = new Button(composite, SWT.CHECK);
-			showOnlyGenesContainedInAnyPathway.setText("Show only genes contained in any pathway");
-			showOnlyGenesContainedInAnyPathway.setSelection(bShowOnlyGenesContainedInAnyPathway);
-			showOnlyGenesContainedInAnyPathway.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					bShowOnlyGenesContainedInAnyPathway = showOnlyGenesContainedInAnyPathway.getSelection();
-					startSearch();
-				}
-			});
+			showOnlyGenesContainedInAnyPathway = new Button(composite,
+					SWT.CHECK);
+			showOnlyGenesContainedInAnyPathway
+					.setText("Show only genes contained in any pathway");
+			showOnlyGenesContainedInAnyPathway
+					.setSelection(bShowOnlyGenesContainedInAnyPathway);
+			showOnlyGenesContainedInAnyPathway
+					.addSelectionListener(new SelectionAdapter() {
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							bShowOnlyGenesContainedInAnyPathway = showOnlyGenesContainedInAnyPathway
+									.getSelection();
+							startSearch();
+						}
+					});
 		}
 
 		if ((useGeneSymbol.getSelection() || useGeneDavidID.getSelection()
-			|| useGeneEntrezGeneID.getSelection() || useGeneName.getSelection() || useGeneRefSeqID
-			.getSelection())
-			&& usePathways.getSelection()) {
+				|| useGeneEntrezGeneID.getSelection()
+				|| useGeneName.getSelection() || useGeneRefSeqID.getSelection())
+				&& usePathways.getSelection()) {
 
-			horizontalSeparator = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
+			horizontalSeparator = new Label(composite, SWT.SEPARATOR
+					| SWT.HORIZONTAL);
 			GridData data = new GridData(GridData.FILL_HORIZONTAL);
 			data.heightHint = 20;
 			horizontalSeparator.setLayoutData(data);
@@ -301,40 +313,48 @@ public class RcpSearchView
 		if (usePathways.getSelection()) {
 
 			pathwayResultsComposite = new Composite(composite, SWT.NULL);
-			pathwayResultsComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+			pathwayResultsComposite.setLayoutData(new GridData(
+					GridData.FILL_BOTH));
 			pathwayResultsComposite.setLayout(new GridLayout(2, true));
 
 			pathwayResultsLabel = new Label(pathwayResultsComposite, SWT.NULL);
 			pathwayResultsLabel.setText("Pathway results:");
 
-			pathwayContainingGeneLabel = new Label(pathwayResultsComposite, SWT.NULL);
-			pathwayContainingGeneLabel.setText("Pathway containing selected gene:");
-			pathwayContainingGeneLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			pathwayContainingGeneLabel = new Label(pathwayResultsComposite,
+					SWT.NULL);
+			pathwayContainingGeneLabel
+					.setText("Pathway containing selected gene:");
+			pathwayContainingGeneLabel.setLayoutData(new GridData(
+					GridData.FILL_HORIZONTAL));
 
-			pathwayTable = new Table(pathwayResultsComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
+			pathwayTable = new Table(pathwayResultsComposite, SWT.BORDER
+					| SWT.FULL_SELECTION | SWT.VIRTUAL);
 			pathwayTable.setLinesVisible(true);
 			pathwayTable.setHeaderVisible(true);
 			pathwayTable.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-			TableColumn pathwayDatabaseColumn = new TableColumn(pathwayTable, SWT.NONE);
+			TableColumn pathwayDatabaseColumn = new TableColumn(pathwayTable,
+					SWT.NONE);
 			pathwayDatabaseColumn.setText("Database");
-			TableColumn pathwayNameColumn = new TableColumn(pathwayTable, SWT.NONE);
+			TableColumn pathwayNameColumn = new TableColumn(pathwayTable,
+					SWT.NONE);
 			pathwayNameColumn.setText("Pathway Name");
 
 			addPathwayContextMenu(pathwayTable);
 
-			pathwayContainingGeneTable =
-				new Table(pathwayResultsComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
+			pathwayContainingGeneTable = new Table(pathwayResultsComposite,
+					SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
 			pathwayContainingGeneTable.setLinesVisible(true);
 			pathwayContainingGeneTable.setHeaderVisible(true);
-			pathwayContainingGeneTable.setLayoutData(new GridData(GridData.FILL_BOTH));
+			pathwayContainingGeneTable.setLayoutData(new GridData(
+					GridData.FILL_BOTH));
 			pathwayContainingGeneTable.setEnabled(false);
 
-			TableColumn pathwayContainingGeneDatabaseColumn =
-				new TableColumn(pathwayContainingGeneTable, SWT.NONE);
+			TableColumn pathwayContainingGeneDatabaseColumn = new TableColumn(
+					pathwayContainingGeneTable, SWT.NONE);
 			pathwayContainingGeneDatabaseColumn.setText("Database");
-			TableColumn pathwayContainingGeneNameColumn =
-				new TableColumn(pathwayContainingGeneTable, SWT.NONE);
+			TableColumn pathwayContainingGeneNameColumn = new TableColumn(
+					pathwayContainingGeneTable, SWT.NONE);
 			pathwayContainingGeneNameColumn.setText("Pathway Name");
 
 			addPathwayContextMenu(pathwayContainingGeneTable);
@@ -351,7 +371,8 @@ public class RcpSearchView
 
 			MessageBox messageBox = new MessageBox(composite.getShell(), SWT.OK);
 			messageBox.setText("Invalid search query");
-			messageBox.setMessage("Please enter a search query with the minimum of 3 characters.");
+			messageBox
+					.setMessage("Please enter a search query with the minimum of 3 characters.");
 			messageBox.open();
 			return;
 		}
@@ -364,8 +385,8 @@ public class RcpSearchView
 		}
 
 		if (useGeneSymbol.getSelection() || useGeneDavidID.getSelection()
-			|| useGeneEntrezGeneID.getSelection() || useGeneName.getSelection()
-			|| useGeneRefSeqID.getSelection()) {
+				|| useGeneEntrezGeneID.getSelection()
+				|| useGeneName.getSelection() || useGeneRefSeqID.getSelection()) {
 
 			searchForGene(searchText.getText());
 		}
@@ -380,11 +401,13 @@ public class RcpSearchView
 		if (!usePathways.getSelection())
 			return;
 
-		Pattern pattern = Pattern.compile(sSearchQuery, Pattern.CASE_INSENSITIVE);
+		Pattern pattern = Pattern.compile(sSearchQuery,
+				Pattern.CASE_INSENSITIVE);
 		Matcher regexMatcher;
 
 		// Search for pathways
-		for (PathwayGraph pathway : generalManager.getPathwayManager().getAllItems()) {
+		for (PathwayGraph pathway : generalManager.getPathwayManager()
+				.getAllItems()) {
 			regexMatcher = pattern.matcher(pathway.getTitle());
 			if (regexMatcher.find()) {
 				TableItem item = new TableItem(pathwayTable, SWT.NULL);
@@ -404,86 +427,98 @@ public class RcpSearchView
 		for (TableItem item : geneTable.getItems())
 			item.dispose();
 
-		Pattern pattern = Pattern.compile(sSearchQuery, Pattern.CASE_INSENSITIVE);
+		Pattern pattern = Pattern.compile(sSearchQuery,
+				Pattern.CASE_INSENSITIVE);
 		Matcher regexMatcher;
 		ArrayList<Integer> iArDavidGeneResults = new ArrayList<Integer>();
 
 		if (useGeneSymbol.getSelection()) {
-			for (Object sGeneSymbol : idMappingManager.getMap(EMappingType.GENE_SYMBOL_2_DAVID).keySet()) {
+			for (Object sGeneSymbol : idMappingManager.getMap(
+					EMappingType.GENE_SYMBOL_2_DAVID).keySet()) {
 				regexMatcher = pattern.matcher((String) sGeneSymbol);
 				if (regexMatcher.find())
-					iArDavidGeneResults.add((Integer) idMappingManager.getID(EIDType.GENE_SYMBOL,
-						EIDType.DAVID, sGeneSymbol));
+					iArDavidGeneResults.add((Integer) idMappingManager.getID(
+							EIDType.GENE_SYMBOL, EIDType.DAVID, sGeneSymbol));
 			}
 		}
 
 		if (useGeneEntrezGeneID.getSelection()) {
-			for (Object iEntrezGeneID : idMappingManager.getMap(EMappingType.ENTREZ_GENE_ID_2_DAVID).keySet()) {
+			for (Object iEntrezGeneID : idMappingManager.getMap(
+					EMappingType.ENTREZ_GENE_ID_2_DAVID).keySet()) {
 				regexMatcher = pattern.matcher(iEntrezGeneID.toString());
 				if (regexMatcher.find())
-					iArDavidGeneResults.add((Integer) idMappingManager.getID(EIDType.ENTREZ_GENE_ID,
-						EIDType.DAVID, iEntrezGeneID));
+					iArDavidGeneResults.add((Integer) idMappingManager.getID(
+							EIDType.ENTREZ_GENE_ID, EIDType.DAVID,
+							iEntrezGeneID));
 			}
 		}
 
 		if (useGeneRefSeqID.getSelection()) {
-			for (Object sGeneSymbol : idMappingManager.getMap(EMappingType.REFSEQ_MRNA_2_DAVID).keySet()) {
+			for (Object sGeneSymbol : idMappingManager.getMap(
+					EMappingType.REFSEQ_MRNA_2_DAVID).keySet()) {
 				regexMatcher = pattern.matcher((String) sGeneSymbol);
 				if (regexMatcher.find())
-					iArDavidGeneResults.add((Integer) idMappingManager.getID(EIDType.REFSEQ_MRNA,
-						EIDType.DAVID, sGeneSymbol));
+					iArDavidGeneResults.add((Integer) idMappingManager.getID(
+							EIDType.REFSEQ_MRNA, EIDType.DAVID, sGeneSymbol));
 			}
 		}
 
 		if (useGeneName.getSelection()) {
-			for (Object sGeneName : idMappingManager.getMap(EMappingType.GENE_NAME_2_DAVID).keySet()) {
+			for (Object sGeneName : idMappingManager.getMap(
+					EMappingType.GENE_NAME_2_DAVID).keySet()) {
 				regexMatcher = pattern.matcher((String) sGeneName);
 				if (regexMatcher.find())
-					iArDavidGeneResults.add((Integer) generalManager.getIDMappingManager().getID(
-						EIDType.GENE_NAME, EIDType.DAVID, sGeneName));
+					iArDavidGeneResults.add((Integer) generalManager
+							.getIDMappingManager().getID(EIDType.GENE_NAME,
+									EIDType.DAVID, sGeneName));
 			}
 		}
 
 		// Fill results in table
 		for (Integer iDavidID : iArDavidGeneResults) {
 
-			// When gene filter is on and gene is not contained in any pathway -> ignore
+			// When gene filter is on and gene is not contained in any pathway
+			// -> ignore
 			if (showOnlyGenesContainedInAnyPathway.getSelection()
-				&& getPathwaysContainingGene(iDavidID).size() == 0)
+					&& getPathwaysContainingGene(iDavidID).size() == 0)
 				continue;
 
 			String sRefSeqIDs = "";
 
 			try {
-				for (Object sRefSeqID : idMappingManager.<Integer, Set<Object>> getID(EIDType.DAVID,
-					EIDType.REFSEQ_MRNA, iDavidID)) {
+				for (Object sRefSeqID : idMappingManager
+						.<Integer, Set<Object>> getID(EIDType.DAVID,
+								EIDType.REFSEQ_MRNA, iDavidID)) {
 					sRefSeqIDs += sRefSeqID + " ";
 				}
-			}
-			catch (NullPointerException npe) {
+			} catch (NullPointerException npe) {
 				sRefSeqIDs = "<No Mapping>";
 			}
 
 			String sEntrezGeneID = "";
-			Integer iEntrezGeneID = idMappingManager.getID(EIDType.DAVID, EIDType.ENTREZ_GENE_ID, iDavidID);
+			Integer iEntrezGeneID = idMappingManager.getID(EIDType.DAVID,
+					EIDType.ENTREZ_GENE_ID, iDavidID);
 			if (iEntrezGeneID == null)
 				sEntrezGeneID = "<No Mapping>";
 			else
 				sEntrezGeneID = iEntrezGeneID.toString();
 
-			String sGeneSymbol = idMappingManager.getID(EIDType.DAVID, EIDType.GENE_SYMBOL, iDavidID);
+			String sGeneSymbol = idMappingManager.getID(EIDType.DAVID,
+					EIDType.GENE_SYMBOL, iDavidID);
 			if (sGeneSymbol == null)
 				sGeneSymbol = "<Unknown>";
 
-			String sGeneName = idMappingManager.getID(EIDType.DAVID, EIDType.GENE_NAME, iDavidID);
+			String sGeneName = idMappingManager.getID(EIDType.DAVID,
+					EIDType.GENE_NAME, iDavidID);
 			if (sGeneName == null)
 				sGeneName = "<Unknown>";
 
-			// Determine whether the gene has a valid expression value in the current data set
+			// Determine whether the gene has a valid expression value in the
+			// current data set
 			String sExpressionValueInCurrentDataSet = "NOT FOUND";
 
-			Set<Integer> setExpIndex =
-				idMappingManager.getIDAsSet(EIDType.DAVID, EIDType.EXPRESSION_INDEX, iDavidID);
+			Set<Integer> setExpIndex = idMappingManager.getIDAsSet(
+					EIDType.DAVID, EIDType.EXPRESSION_INDEX, iDavidID);
 			// h.getExpressionIndicesFromDavid(iDavidID);
 
 			if (setExpIndex != null && setExpIndex.size() > 0)
@@ -500,7 +535,8 @@ public class RcpSearchView
 			item.setData(iDavidID);
 		}
 
-		// Sort gene table using the info whether expression data is available or not.
+		// Sort gene table using the info whether expression data is available
+		// or not.
 		sortTable(geneTable, 0);
 
 		// Highlight content if it matches the search query
@@ -508,7 +544,8 @@ public class RcpSearchView
 			for (TableItem item : geneTable.getItems()) {
 				regexMatcher = pattern.matcher(item.getText(iIndex));
 				if (regexMatcher.find()) {
-					item.setBackground(iIndex, Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+					item.setBackground(iIndex, Display.getCurrent()
+							.getSystemColor(SWT.COLOR_GRAY));
 				}
 			}
 		}
@@ -540,88 +577,126 @@ public class RcpSearchView
 
 				for (final TableItem tableItem : geneTable.getSelection()) {
 
-					// Do not create context menu for genes that have to expression value
+					// Do not create context menu for genes that have to
+					// expression value
 					if (!tableItem.getText(0).equals("FOUND"))
 						continue;
 
-					MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
+					MenuItem openInBrowserMenuItem = new MenuItem(menu,
+							SWT.PUSH);
 					openInBrowserMenuItem.setText("Open in browser");
-					openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(
-						geneTable.getDisplay(), "resources/icons/view/browser/browser.png"));
-					openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
-						@Override
-						public void widgetSelected(SelectionEvent e) {
+					openInBrowserMenuItem
+							.setImage(generalManager
+									.getResourceLoader()
+									.getImage(geneTable.getDisplay(),
+											"resources/icons/view/browser/browser.png"));
+					openInBrowserMenuItem
+							.addSelectionListener(new SelectionAdapter() {
+								@Override
+								public void widgetSelected(SelectionEvent e) {
 
-							searchViewMediator.selectGeneSystemWide((Integer) tableItem.getData());
+									searchViewMediator
+											.selectGeneSystemWide((Integer) tableItem
+													.getData());
 
-							// Switch to browser view
-							try {
-								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-									.showView(RcpHTMLBrowserView.ID);
-							}
-							catch (PartInitException e1) {
-								e1.printStackTrace();
-							}
-						};
-					});
+									// Switch to browser view
+									try {
+										PlatformUI
+												.getWorkbench()
+												.getActiveWorkbenchWindow()
+												.getActivePage()
+												.showView(
+														"org.caleydo.view.browser");
+									} catch (PartInitException e1) {
+										e1.printStackTrace();
+									}
+								};
+							});
 
-					MenuItem loadPathwayInBucketMenuItem = new MenuItem(menu, SWT.PUSH);
-					loadPathwayInBucketMenuItem.setText("Load containing pathways in Bucket");
-					loadPathwayInBucketMenuItem.setImage(generalManager.getResourceLoader().getImage(
-						geneTable.getDisplay(), "resources/icons/view/remote/remote.png"));
+					MenuItem loadPathwayInBucketMenuItem = new MenuItem(menu,
+							SWT.PUSH);
+					loadPathwayInBucketMenuItem
+							.setText("Load containing pathways in Bucket");
+					loadPathwayInBucketMenuItem.setImage(generalManager
+							.getResourceLoader().getImage(
+									geneTable.getDisplay(),
+									"resources/icons/view/remote/remote.png"));
 
-					loadPathwayInBucketMenuItem.addSelectionListener(new SelectionAdapter() {
-						@Override
-						public void widgetSelected(SelectionEvent e) {
+					loadPathwayInBucketMenuItem
+							.addSelectionListener(new SelectionAdapter() {
+								@Override
+								public void widgetSelected(SelectionEvent e) {
 
-							searchViewMediator.loadPathwayByGene((Integer) tableItem.getData());
-						};
-					});
+									searchViewMediator
+											.loadPathwayByGene((Integer) tableItem
+													.getData());
+								};
+							});
 
-					MenuItem loadGeneInHeatMapMenuItem = new MenuItem(menu, SWT.PUSH);
+					MenuItem loadGeneInHeatMapMenuItem = new MenuItem(menu,
+							SWT.PUSH);
 					loadGeneInHeatMapMenuItem.setText("Show gene in heat map");
-					loadGeneInHeatMapMenuItem.setImage(generalManager.getResourceLoader().getImage(
-						geneTable.getDisplay(), "resources/icons/view/storagebased/heatmap/heatmap.png"));
+					loadGeneInHeatMapMenuItem
+							.setImage(generalManager
+									.getResourceLoader()
+									.getImage(geneTable.getDisplay(),
+											"resources/icons/view/storagebased/heatmap/heatmap.png"));
 
-					loadGeneInHeatMapMenuItem.addSelectionListener(new SelectionAdapter() {
-						@Override
-						public void widgetSelected(SelectionEvent e) {
+					loadGeneInHeatMapMenuItem
+							.addSelectionListener(new SelectionAdapter() {
+								@Override
+								public void widgetSelected(SelectionEvent e) {
 
-							searchViewMediator.selectGeneSystemWide((Integer) tableItem.getData());
+									searchViewMediator
+											.selectGeneSystemWide((Integer) tableItem
+													.getData());
 
-							// Switch to browser view
-							try {
-								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-									.showView(RcpGLHierarchicalHeatMapView.ID);
-							}
-							catch (PartInitException e1) {
-								e1.printStackTrace();
-							}
-						};
-					});
+									// Switch to browser view
+									try {
+										PlatformUI
+												.getWorkbench()
+												.getActiveWorkbenchWindow()
+												.getActivePage()
+												.showView(
+														"org.caleydo.view.heatmap.hierarchical");
+									} catch (PartInitException e1) {
+										e1.printStackTrace();
+									}
+								};
+							});
 
-					MenuItem loadGeneInParallelCoordinatesMenuItem = new MenuItem(menu, SWT.PUSH);
-					loadGeneInParallelCoordinatesMenuItem.setText("Show gene in parallel coordinates");
-					loadGeneInParallelCoordinatesMenuItem.setImage(generalManager.getResourceLoader()
-						.getImage(geneTable.getDisplay(),
-							"resources/icons/view/storagebased/parcoords/parcoords.png"));
+					MenuItem loadGeneInParallelCoordinatesMenuItem = new MenuItem(
+							menu, SWT.PUSH);
+					loadGeneInParallelCoordinatesMenuItem
+							.setText("Show gene in parallel coordinates");
+					loadGeneInParallelCoordinatesMenuItem
+							.setImage(generalManager
+									.getResourceLoader()
+									.getImage(geneTable.getDisplay(),
+											"resources/icons/view/storagebased/parcoords/parcoords.png"));
 
-					loadGeneInParallelCoordinatesMenuItem.addSelectionListener(new SelectionAdapter() {
-						@Override
-						public void widgetSelected(SelectionEvent e) {
+					loadGeneInParallelCoordinatesMenuItem
+							.addSelectionListener(new SelectionAdapter() {
+								@Override
+								public void widgetSelected(SelectionEvent e) {
 
-							searchViewMediator.selectGeneSystemWide((Integer) tableItem.getData());
+									searchViewMediator
+											.selectGeneSystemWide((Integer) tableItem
+													.getData());
 
-							// Switch to browser view
-							try {
-								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-									.showView(RcpGLParCoordsView.ID);
-							}
-							catch (PartInitException e1) {
-								e1.printStackTrace();
-							}
-						};
-					});
+									// Switch to browser view
+									try {
+										PlatformUI
+												.getWorkbench()
+												.getActiveWorkbenchWindow()
+												.getActivePage()
+												.showView(
+														"org.caleydo.view.parcoords");
+									} catch (PartInitException e1) {
+										e1.printStackTrace();
+									}
+								};
+							});
 				}
 			}
 		});
@@ -644,47 +719,59 @@ public class RcpSearchView
 
 				MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
 				openInBrowserMenuItem.setText("Open in browser");
-				openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(
-					pathwayTable.getDisplay(), "resources/icons/view/browser/browser.png"));
-				openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
+				openInBrowserMenuItem.setImage(generalManager
+						.getResourceLoader().getImage(
+								pathwayTable.getDisplay(),
+								"resources/icons/view/browser/browser.png"));
+				openInBrowserMenuItem
+						.addSelectionListener(new SelectionAdapter() {
+							@Override
+							public void widgetSelected(SelectionEvent e) {
 
-						// Switch to browser view
-						try {
-							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-								RcpHTMLBrowserView.ID);
-						}
-						catch (PartInitException e1) {
-							e1.printStackTrace();
-						}
+								// Switch to browser view
+								try {
+									PlatformUI.getWorkbench()
+											.getActiveWorkbenchWindow()
+											.getActivePage().showView(
+													"org.caleydo.view.browser");
+								} catch (PartInitException e1) {
+									e1.printStackTrace();
+								}
 
-						searchViewMediator.loadURLInBrowser(((PathwayGraph) tableItem.getData())
-							.getExternalLink());
-					};
-				});
+								searchViewMediator
+										.loadURLInBrowser(((PathwayGraph) tableItem
+												.getData()).getExternalLink());
+							};
+						});
 
-				MenuItem loadPathwayInBucketMenuItem = new MenuItem(menu, SWT.PUSH);
+				MenuItem loadPathwayInBucketMenuItem = new MenuItem(menu,
+						SWT.PUSH);
 				loadPathwayInBucketMenuItem.setText("Load pathway in Bucket");
-				loadPathwayInBucketMenuItem.setImage(generalManager.getResourceLoader().getImage(
-					pathwayTable.getDisplay(), "resources/icons/view/remote/remote.png"));
+				loadPathwayInBucketMenuItem.setImage(generalManager
+						.getResourceLoader().getImage(
+								pathwayTable.getDisplay(),
+								"resources/icons/view/remote/remote.png"));
 
-				loadPathwayInBucketMenuItem.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
+				loadPathwayInBucketMenuItem
+						.addSelectionListener(new SelectionAdapter() {
+							@Override
+							public void widgetSelected(SelectionEvent e) {
 
-						// Switch to bucket view
-						try {
-							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-								RcpGLRemoteRenderingView.ID);
-						}
-						catch (PartInitException e1) {
-							e1.printStackTrace();
-						}
+								// Switch to bucket view
+								try {
+									PlatformUI.getWorkbench()
+											.getActiveWorkbenchWindow()
+											.getActivePage().showView(
+													"org.caleydo.view.bucket");
+								} catch (PartInitException e1) {
+									e1.printStackTrace();
+								}
 
-						searchViewMediator.loadPathway(((PathwayGraph) tableItem.getData()).getID());
-					};
-				});
+								searchViewMediator
+										.loadPathway(((PathwayGraph) tableItem
+												.getData()).getID());
+							};
+						});
 			}
 		});
 	}
@@ -694,17 +781,19 @@ public class RcpSearchView
 		// set to avoid duplicate pathways
 		Set<PathwayGraph> pathwaysContainingGene = new HashSet<PathwayGraph>();
 
-		PathwayVertexGraphItem pathwayGraphItem =
-			generalManager.getPathwayItemManager().getPathwayVertexGraphItemByDavidId(iDavidID);
+		PathwayVertexGraphItem pathwayGraphItem = generalManager
+				.getPathwayItemManager().getPathwayVertexGraphItemByDavidId(
+						iDavidID);
 
 		// Only handle David IDs that does exist in any pathway
 		if (pathwayGraphItem != null) {
 
-			List<IGraphItem> pathwayItems =
-				pathwayGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
+			List<IGraphItem> pathwayItems = pathwayGraphItem
+					.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
 			for (IGraphItem pathwayItem : pathwayItems) {
-				PathwayGraph pathwayGraph =
-					(PathwayGraph) pathwayItem.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).get(0);
+				PathwayGraph pathwayGraph = (PathwayGraph) pathwayItem
+						.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT)
+						.get(0);
 				pathwaysContainingGene.add(pathwayGraph);
 			}
 		}
@@ -712,17 +801,19 @@ public class RcpSearchView
 		return pathwaysContainingGene;
 	}
 
-	@SuppressWarnings(value = { "unchecked" })
+	@SuppressWarnings(value = {"unchecked"})
 	public static void sortTable(Table table, int iColumnIndex) {
 		if (table == null || table.getColumnCount() <= 1)
 			return;
 		if (iColumnIndex < 0 || iColumnIndex >= table.getColumnCount())
-			throw new IllegalArgumentException("The specified column does not exits. ");
+			throw new IllegalArgumentException(
+					"The specified column does not exits. ");
 
 		final int colIndex = iColumnIndex;
 		Comparator comparator = new Comparator() {
 			public int compare(Object o1, Object o2) {
-				return ((TableItem) o1).getText(colIndex).compareTo(((TableItem) o2).getText(colIndex));
+				return ((TableItem) o1).getText(colIndex).compareTo(
+						((TableItem) o2).getText(colIndex));
 			}
 
 			@Override

@@ -5,8 +5,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
-import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
-import org.caleydo.core.view.opengl.canvas.pathway.SerializedPathwayView;
 
 /**
  * Create single OpenGL pathway view.
@@ -14,7 +12,7 @@ import org.caleydo.core.view.opengl.canvas.pathway.SerializedPathwayView;
  * @author Marc Streit
  */
 public class CmdCreateGLPathway
-	extends CmdCreateGLEventListener {
+	extends CmdCreateView {
 
 	private int iPathwayID = -1;
 
@@ -46,8 +44,10 @@ public class CmdCreateGLPathway
 	@Override
 	public void setAttributesFromSerializedForm(ASerializedView serView) {
 		super.setAttributesFromSerializedForm(serView);
-		SerializedPathwayView serPathway = (SerializedPathwayView) serView;
-		setPathwayID(serPathway.getPathwayID());
+
+		// FIXME after view plugin reorganization
+		// SerializedPathwayView serPathway = (SerializedPathwayView) serView;
+		// setPathwayID(serPathway.getPathwayID());
 	}
 
 	public void setPathwayID(int pathwayID) {
@@ -58,6 +58,7 @@ public class CmdCreateGLPathway
 	public final void doCommand() {
 		super.doCommand();
 
-		((GLPathway) createdObject).setPathway(iPathwayID);
+		// FIXME after view plugin reorganization
+		// ((GLPathway) createdObject).setPathway(iPathwayID);
 	}
 }

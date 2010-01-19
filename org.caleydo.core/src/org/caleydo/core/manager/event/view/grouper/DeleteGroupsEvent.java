@@ -6,9 +6,9 @@ import org.caleydo.core.manager.event.AEvent;
 
 public class DeleteGroupsEvent
 	extends AEvent {
-	
+
 	private Set<Integer> setGroupsToDelete;
-	
+
 	public DeleteGroupsEvent(Set<Integer> setGroupsToDelete) {
 		this.setGroupsToDelete = setGroupsToDelete;
 	}

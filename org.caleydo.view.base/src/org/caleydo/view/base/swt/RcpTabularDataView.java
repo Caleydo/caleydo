@@ -2,14 +2,12 @@ package org.caleydo.view.base.swt;
 
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.tabular.SerializedTabularDataView;
 import org.caleydo.core.view.swt.tabular.TabularDataViewRep;
 import org.caleydo.view.base.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;
 
-public class RcpTabularDataView
-	extends CaleydoRCPViewPart {
+public class RcpTabularDataView extends CaleydoRCPViewPart {
 
 	public static final String ID = SerializedTabularDataView.GUI_ID;
 
@@ -17,9 +15,9 @@ public class RcpTabularDataView
 
 	@Override
 	public void createPartControl(Composite parent) {
-		tabularDataView =
-			(TabularDataViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
-				EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER, -1, "Tabular Data Viewer");
+		tabularDataView = (TabularDataViewRep) GeneralManager.get()
+				.getViewGLCanvasManager().createView(
+						"org.caleydo.view.tabular", -1, "Tabular Data Viewer");
 
 		// tabularDataView.setInputFile(GeneralManager.get().getGUIBridge()
 		// .getFileNameCurrentDataSet());
@@ -31,7 +29,8 @@ public class RcpTabularDataView
 
 		parentComposite = parent;
 
-		GeneralManager.get().getViewGLCanvasManager().registerItem(tabularDataView);
+		GeneralManager.get().getViewGLCanvasManager().registerItem(
+				tabularDataView);
 		iViewID = tabularDataView.getID();
 	}
 

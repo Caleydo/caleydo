@@ -133,7 +133,7 @@ public class CaleydoProjectWizard
 				}
 				useCase = Application.initData.getUseCase();
 				Application.startViews.clear();
-				Application.initializedStartViews = Application.initData.getViews();
+				Application.initializedStartViews = Application.initData.getViewIDs();
 				Application.applicationMode = EApplicationMode.LOAD_PROJECT;
 				Application.bDeleteRestoredWorkbenchState = true;
 			}

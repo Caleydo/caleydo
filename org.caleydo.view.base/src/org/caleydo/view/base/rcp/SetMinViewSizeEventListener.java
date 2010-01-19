@@ -7,7 +7,8 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
 public class SetMinViewSizeEventListener
-	extends AEventListener<MinimumSizeComposite> {
+		extends
+			AEventListener<MinimumSizeComposite> {
 
 	private AGLView view;
 
@@ -21,7 +22,8 @@ public class SetMinViewSizeEventListener
 		if (event instanceof SetMinViewSizeEvent) {
 			SetMinViewSizeEvent setMinViewSizeEvent = (SetMinViewSizeEvent) event;
 			if (setMinViewSizeEvent.getView() == view) {
-				handler.setMinSize(setMinViewSizeEvent.getMinWidth(), setMinViewSizeEvent.getMinHeight());
+				handler.setMinSize(setMinViewSizeEvent.getMinWidth(),
+						setMinViewSizeEvent.getMinHeight());
 			}
 		}
 	}

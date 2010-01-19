@@ -6,11 +6,10 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 
 /**
- * The activator class controls the plug-in life cycle
- * FIXME: don't know if activator is needed - check after view plugin reorganization
+ * The activator class controls the plug-in life cycle FIXME: don't know if
+ * activator is needed - check after view plugin reorganization
  */
-public class Activator
-	extends AbstractUIPlugin {
+public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.caleydo.view.base";
@@ -30,7 +29,8 @@ public class Activator
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		sVersion = getBundle().getHeaders().get(Constants.BUNDLE_VERSION).toString();
+		sVersion = getBundle().getHeaders().get(Constants.BUNDLE_VERSION)
+				.toString();
 	}
 
 	@Override
@@ -49,7 +49,8 @@ public class Activator
 	}
 
 	/**
-	 * Returns an image descriptor for the image file at the given plug-in relative path
+	 * Returns an image descriptor for the image file at the given plug-in
+	 * relative path
 	 * 
 	 * @param path
 	 *            the path

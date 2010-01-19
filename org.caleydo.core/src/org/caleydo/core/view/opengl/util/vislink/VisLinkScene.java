@@ -141,11 +141,11 @@ public class VisLinkScene {
 						VisLink visLink = new VisLink(currentLine, 0, SEGMENT_LENGTH);
 						enableStencilBuffer(gl);
 						if (i < 2)
-							visLink.drawPolygonLine(gl, width, color, hlAAQuality, roundedStart,
-								roundedEnd, halo);
+							visLink.drawPolygonLine(gl, width, color, hlAAQuality, roundedStart, roundedEnd,
+								halo);
 						else
-							visLink.drawPolygonLine(gl, width, color, hlAAQuality, roundedEnd,
-								roundedStart, halo);
+							visLink.drawPolygonLine(gl, width, color, hlAAQuality, roundedEnd, roundedStart,
+								halo);
 						disableStencilBuffer(gl);
 					}
 				}
@@ -159,15 +159,16 @@ public class VisLinkScene {
 
 		width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
 		color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
-		//antiAliasingQuality = 5;
+		// antiAliasingQuality = 5;
 
 		for (ArrayList<ArrayList<Vec3f>> currentView : connectionLinesAllViews)
 			for (ArrayList<Vec3f> currentLine : currentView) {
 				if (currentLine.size() >= 2) {
 					VisLink visLink = new VisLink(currentLine, 0, SEGMENT_LENGTH);
-					//enableStencilBuffer(gl);
-					visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, roundedStart, roundedEnd, false);
-					//disableStencilBuffer(gl);
+					// enableStencilBuffer(gl);
+					visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, roundedStart, roundedEnd,
+						false);
+					// disableStencilBuffer(gl);
 				}
 			}
 	}
@@ -286,19 +287,19 @@ public class VisLinkScene {
 					enableStencilBuffer(gl);
 					if (i == localStage && !animationFinished) {
 						if (i < 2)
-							visLink.drawPolygonLine(gl, width, color, hlAAQuality,
-								numberOfSegmentsToDraw, roundedStart, roundedEnd, halo);
+							visLink.drawPolygonLine(gl, width, color, hlAAQuality, numberOfSegmentsToDraw,
+								roundedStart, roundedEnd, halo);
 						else
 							visLink.drawPolygonLineReverse(gl, width, color, hlAAQuality,
 								numberOfSegmentsToDraw, roundedStart, roundedEnd, halo);
 					}
 					else {
 						if (i < 2)
-							visLink.drawPolygonLine(gl, width, color, hlAAQuality, roundedStart,
-								roundedEnd, halo);
+							visLink.drawPolygonLine(gl, width, color, hlAAQuality, roundedStart, roundedEnd,
+								halo);
 						else
-							visLink.drawPolygonLine(gl, width, color, hlAAQuality, roundedEnd,
-								roundedStart, halo); // Line is reverse, so start and end are inverted
+							visLink.drawPolygonLine(gl, width, color, hlAAQuality, roundedEnd, roundedStart,
+								halo); // Line is reverse, so start and end are inverted
 					}
 					disableStencilBuffer(gl);
 					roundedStart = false;
@@ -321,7 +322,7 @@ public class VisLinkScene {
 					int numberOfSegments = visLink.numberOfSegments();
 					int numberOfSegmentsToDraw =
 						numberOfSegmentsToDraw(percentageOfSegmentsToDraw, numberOfSegments);
-					//enableStencilBuffer(gl);
+					// enableStencilBuffer(gl);
 					if (i == localStage && !animationFinished) {
 						if (i < 2)
 							visLink.drawPolygonLine(gl, width, color, antiAliasingQuality,
@@ -333,7 +334,7 @@ public class VisLinkScene {
 					else
 						visLink.drawPolygonLine(gl, width, color, antiAliasingQuality, roundedStart,
 							roundedEnd, false);
-					//disableStencilBuffer(gl);
+					// disableStencilBuffer(gl);
 				}
 			}
 		}

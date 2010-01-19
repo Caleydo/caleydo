@@ -2,7 +2,6 @@ package org.caleydo.rcp;
 
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.AutoSaver;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.eclipse.jface.preference.IPreferenceNode;
@@ -49,12 +48,12 @@ public class ApplicationWorkbenchAdvisor
 		super.postStartup();
 
 		if (!Application.LAZY_VIEW_LOADING) {
-			ASerializedView[] serViews = new ASerializedView[Application.initializedStartViews.size()];
+			String[] serViews = new String[Application.initializedStartViews.size()];
 			serViews = Application.initializedStartViews.toArray(serViews);
 			IWorkbenchPage activePage = workbenchConfigurer.getWindow().getActivePage();
-			for (ASerializedView startView : serViews) {
+			for (String startView : serViews) {
 				try {
-					activePage.showView(startView.getViewGUIID());
+					activePage.showView(startView);
 				}
 				catch (PartInitException ex) {
 					ex.printStackTrace();

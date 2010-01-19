@@ -5,8 +5,8 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.view.opengl.canvas.radial.EDrawingStateType;
-import org.caleydo.core.view.opengl.canvas.radial.EPDDrawingStrategyType;
+import org.caleydo.core.util.clusterer.EDrawingStateType;
+import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 
 /**
  * Event that should be triggered when cluster nodes are selected.

@@ -6,13 +6,13 @@ import org.caleydo.core.manager.event.view.storagebased.XAxisSelectorEvent;
 import org.caleydo.view.scatterplot.GLScatterplot;
 
 /**
- * Listener that reacts events for setting the max. displayed hierarchy depth in RadialHierarchy.
+ * Listener that reacts events for setting the max. displayed hierarchy depth in
+ * RadialHierarchy.
  * 
  * @author Juergen Pillhofer
  */
 
-public class XAxisSelectorListener
-	extends AEventListener<GLScatterplot> {
+public class XAxisSelectorListener extends AEventListener<GLScatterplot> {
 
 	@Override
 	public void handleEvent(AEvent event) {

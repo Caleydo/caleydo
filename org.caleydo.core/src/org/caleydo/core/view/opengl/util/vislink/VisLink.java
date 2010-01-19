@@ -383,11 +383,10 @@ public class VisLink {
 		if (controlPoints.size() >= (offset + 2)) { // fixme: special case if == 2
 			VisLink visLink = new VisLink(controlPoints, offset, numberOfSegments);
 			if (style == EVisLinkStyleType.SHADOW_VISLINK) {
-				visLink
-					.drawPolygonLine(gl,
-						(width * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR),
-						ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, antiAliasingQuality, false,
-						false, false);
+				visLink.drawPolygonLine(gl,
+					(width * ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_WIDTH_FACTOR),
+					ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, antiAliasingQuality, false,
+					false, false);
 			}
 			else if (style == EVisLinkStyleType.HALO_VISLINK) {
 				float[] haloColor = { color[0], color[1], color[2], (color[3] / 2.0f) };
@@ -414,11 +413,11 @@ public class VisLink {
 	 * @param antiAliasingQuality
 	 *            Specifies the anti-aliasing quality of the rendered line (1 <= quality <= 20)
 	 * @param roundedStart
-	 * 			  Toggles rounded beginning of the line
+	 *            Toggles rounded beginning of the line
 	 * @param roundedEnd
-	 * 			  Toggles rounded ending of the line
+	 *            Toggles rounded ending of the line
 	 * @param halo
-	 * 			  Set this to true if you want to draw a halo (alters the way alpha changes during iterations)
+	 *            Set this to true if you want to draw a halo (alters the way alpha changes during iterations)
 	 * @throws IllegalArgumentException
 	 *             If the specified anti-aliasing quality is <1 or >20
 	 */
@@ -440,7 +439,7 @@ public class VisLink {
 		float blue = color[2];
 		float alpha = color[3];
 		float alphaChange = 0;
-		if(halo)
+		if (halo)
 			alphaChange = alpha / antiAliasingQuality;
 		else
 			alphaChange = (alpha + 0.2f) / antiAliasingQuality;
@@ -477,15 +476,16 @@ public class VisLink {
 			width += unit;
 		}
 	}
-	
+
 	/**
 	 * Draws a point to smooth the start and end of the line
+	 * 
 	 * @param gl
-	 * 			The GL-object
+	 *            The GL-object
 	 * @param point
-	 * 			The coords where the point should be drawn (start or end of the line)
+	 *            The coords where the point should be drawn (start or end of the line)
 	 * @param width
-	 * 			The width of the line where the point should fit
+	 *            The width of the line where the point should fit
 	 */
 	void drawRoundedEndSegment(GL gl, Vec3f point, float width) {
 		gl.glPointSize(width * 3); // FIXME: width calculation to be corrected
@@ -509,16 +509,17 @@ public class VisLink {
 	 * @param segmentsToDraw
 	 *            Specifies the number of segments to be drawn (=n)
 	 * @param roundedStart
-	 * 			  Toggles rounded beginning of the line
+	 *            Toggles rounded beginning of the line
 	 * @param roundedEnd
-	 * 			  Toggles rounded ending of the line
+	 *            Toggles rounded ending of the line
 	 * @param halo
-	 * 			  Set this to true if you want to draw a halo (alters the way alpha changes during iterations)
+	 *            Set this to true if you want to draw a halo (alters the way alpha changes during iterations)
 	 * @throws IllegalArgumentException
 	 *             If the specified anti-aliasing quality is <1 or >20
 	 */
 	protected void drawPolygonLine(final GL gl, float width, float[] color, int antiAliasingQuality,
-		int segmentsToDraw, boolean roundedStart, boolean roundedEnd, boolean halo) throws IllegalArgumentException {
+		int segmentsToDraw, boolean roundedStart, boolean roundedEnd, boolean halo)
+		throws IllegalArgumentException {
 		try {
 			checkRGBA(color);
 		}
@@ -539,7 +540,7 @@ public class VisLink {
 		float blue = color[2];
 		float alpha = color[3];
 		float alphaChange = 0;
-		if(halo)
+		if (halo)
 			alphaChange = alpha / antiAliasingQuality;
 		else
 			alphaChange = (alpha + 0.2f) / antiAliasingQuality;
@@ -596,16 +597,17 @@ public class VisLink {
 	 * @param segmentsToDraw
 	 *            Specifies the number of segments to be drawn (=n)
 	 * @param roundedStart
-	 * 			  Toggles rounded beginning of the line
+	 *            Toggles rounded beginning of the line
 	 * @param roundedEnd
-	 * 			  Toggles rounded ending of the line
+	 *            Toggles rounded ending of the line
 	 * @param halo
-	 * 			  Set this to true if you want to draw a halo (alters the way alpha changes during iterations)
+	 *            Set this to true if you want to draw a halo (alters the way alpha changes during iterations)
 	 * @throws IllegalArgumentException
 	 *             If the specified anti-aliasing quality is <1 or >20
 	 */
 	protected void drawPolygonLineReverse(final GL gl, float width, float[] color, int antiAliasingQuality,
-		int segmentsToDraw, boolean roundedStart, boolean roundedEnd, boolean halo) throws IllegalArgumentException {
+		int segmentsToDraw, boolean roundedStart, boolean roundedEnd, boolean halo)
+		throws IllegalArgumentException {
 		try {
 			checkRGBA(color);
 		}
@@ -622,7 +624,7 @@ public class VisLink {
 		float blue = color[2];
 		float alpha = color[3];
 		float alphaChange = 0;
-		if(halo)
+		if (halo)
 			alphaChange = alpha / antiAliasingQuality;
 		else
 			alphaChange = (alpha + 0.2f) / antiAliasingQuality;

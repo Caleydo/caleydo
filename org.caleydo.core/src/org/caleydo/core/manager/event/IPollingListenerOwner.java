@@ -4,8 +4,8 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
 /**
- * Interface for {@link IListenerOwner}s that need to perform polling. All subclasses of
- * {@link AGLView} do so.
+ * Interface for {@link IListenerOwner}s that need to perform polling. All subclasses of {@link AGLView} do
+ * so.
  * 
  * @author Alexander Lex
  */

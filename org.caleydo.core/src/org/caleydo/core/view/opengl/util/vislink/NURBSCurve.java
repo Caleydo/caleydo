@@ -33,16 +33,17 @@ public class NURBSCurve {
 	protected float step_length;
 
 	protected static final float SEGMENT_LENGTH = ConnectionLineRenderStyle.CONNECTION_LINE_SEGMENT_LENGTH; // FIXME:
-																											// This
-																											// is
-																											// not
-																											// nice,
-																											// NURBSCurve
-																											// should
-																											// work
-																											// without
-																											// this
-																											// context
+
+	// This
+	// is
+	// not
+	// nice,
+	// NURBSCurve
+	// should
+	// work
+	// without
+	// this
+	// context
 
 	/**
 	 * Constructor.
@@ -188,7 +189,7 @@ public class NURBSCurve {
 			for (int k = 0; k <= n; k++) {
 				this.u = this.u_min + this.step_length * step;
 				if (step == numberOfPoints) // because of rounding errors we call the last blending function
-											// with exact u_max to avoid u outside the definition
+					// with exact u_max to avoid u outside the definition
 					this.u = this.u_max;
 				point = point.addScaled(this.coxDeBoor(k, this.d), this.controlPoints.get(k));
 			}

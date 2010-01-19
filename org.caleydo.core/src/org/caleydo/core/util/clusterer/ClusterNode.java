@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.view.opengl.canvas.radial.IHierarchyData;
 
 /**
  * Implementation of a node used in the cluster tree. Cluster node contains information needed in the

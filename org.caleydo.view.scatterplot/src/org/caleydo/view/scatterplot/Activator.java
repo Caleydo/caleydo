@@ -34,8 +34,8 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		GeneralManager.get().getViewGLCanvasManager().addGLViewCreator(
-				new ViewCreator(this.getClass().getPackage().getName()));
+		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
+				new ViewCreator(PLUGIN_ID));
 	}
 
 	/*

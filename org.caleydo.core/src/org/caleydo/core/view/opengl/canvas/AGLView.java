@@ -36,13 +36,9 @@ import org.caleydo.core.view.AView;
 import org.caleydo.core.view.opengl.camera.IViewCamera;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewCameraBase;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
 import org.caleydo.core.view.opengl.canvas.listener.ToggleMagnifyingGlassListener;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
-import org.caleydo.core.view.opengl.canvas.remote.dataflipper.GLDataFlipper;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -66,13 +62,12 @@ import com.sun.opengl.util.texture.TextureCoords;
 public abstract class AGLView
 	extends AView
 	implements GLEventListener, IPollingListenerOwner, IResettableView {
+
 	public enum EBusyModeState {
 		SWITCH_OFF,
 		ON,
 		OFF
 	}
-
-	protected EManagedObjectType viewType = EManagedObjectType.GL_EVENT_LISTENER;
 
 	// TODO: should be a list of parent canvas object to be generic
 	protected GLCaleydoCanvas parentGLCanvas;
@@ -161,8 +156,8 @@ public abstract class AGLView
 	 */
 	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue;
 
-	/** id of the related view in the gui (e.g. RCP) */
-	private String viewGUIID;
+	// /** id of the related view in the gui (e.g. RCP) */
+	// private String viewGUIID;
 
 	/**
 	 * Constructor.
@@ -173,6 +168,8 @@ public abstract class AGLView
 		// If the glCanvas object is null - then the view is rendered remote.
 		super(glCanvas != null ? glCanvas.getID() : -1, sLabel, GeneralManager.get().getIDManager().createID(
 			EManagedObjectType.GL_EVENT_LISTENER));
+
+		viewType = EManagedObjectType.GL_EVENT_LISTENER;
 
 		parentGLCanvas = glCanvas;
 
@@ -259,8 +256,9 @@ public abstract class AGLView
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
-		if (glRemoteRenderingView != null || this instanceof GLRemoteRendering || this instanceof GLGlyph
-			|| this instanceof GLDataFlipper) {
+		if (glRemoteRenderingView != null || this.getViewID().equals("org.caleydo.view.bucket")
+			|| this.getViewID().equals("org.caleydo.view.glyph")
+			|| this.getViewID().equals("org.caleydo.view.dataflipper")) {
 			viewFrustum.considerAspectRatio(true);
 		}
 		else {
@@ -272,7 +270,7 @@ public abstract class AGLView
 			float value = (float) frame.height / (float) frame.width * 8.0f;
 
 			// Special case for embedded heatmap in hierarchical heatmap
-			if (this instanceof GLHierarchicalHeatMap)
+			if (this.getViewID().equals("org.caleydo.view.heatmap.hierarchical"))
 				viewFrustum.setTop(5.51f);
 			else
 				viewFrustum.setTop(value);
@@ -708,18 +706,6 @@ public abstract class AGLView
 	@Override
 	public synchronized Pair<AEventListener<? extends IListenerOwner>, AEvent> getEvent() {
 		return queue.poll();
-	}
-
-	public String getViewGUIID() {
-		return viewGUIID;
-	}
-
-	public EManagedObjectType getViewType() {
-		return viewType;
-	}
-
-	public void setViewGUIID(String viewGUIID) {
-		this.viewGUIID = viewGUIID;
 	}
 
 	@Override

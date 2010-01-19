@@ -11,6 +11,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.canvas.listener.NewSetListener;
 import org.eclipse.swt.widgets.Composite;
@@ -25,6 +26,10 @@ import org.eclipse.swt.widgets.Composite;
 public abstract class AView
 	extends AUniqueObject
 	implements IView, IListenerOwner {
+
+	public String viewID;
+
+	protected EManagedObjectType viewType;
 
 	protected IGeneralManager generalManager;
 
@@ -161,5 +166,13 @@ public abstract class AView
 		event.setCategory(genomeType.getCategory());
 		event.setSelectionCommand(command);
 		eventPublisher.triggerEvent(event);
+	}
+
+	public EManagedObjectType getViewType() {
+		return viewType;
+	}
+
+	public String getViewID() {
+		return viewID;
 	}
 }
