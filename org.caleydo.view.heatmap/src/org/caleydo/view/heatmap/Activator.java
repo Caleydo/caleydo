@@ -1,7 +1,10 @@
 package org.caleydo.view.heatmap;
 
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.view.heatmap.creator.ViewCreatorDendrogramHorizontal;
+import org.caleydo.view.heatmap.creator.ViewCreatorDendrogramVertical;
 import org.caleydo.view.heatmap.creator.ViewCreatorHeatMap;
+import org.caleydo.view.heatmap.creator.ViewCreatorHierarchicalHeatMap;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -37,7 +40,13 @@ public class Activator extends AbstractUIPlugin {
 				new ViewCreatorHeatMap(GLHeatMap.VIEW_ID));
 
 		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
-				new ViewCreatorHeatMap(GLHierarchicalHeatMap.VIEW_ID));
+				new ViewCreatorHierarchicalHeatMap(GLHierarchicalHeatMap.VIEW_ID));
+		
+		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
+				new ViewCreatorDendrogramHorizontal(GLDendrogram.VIEW_ID+".horizontal"));
+		
+		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
+				new ViewCreatorDendrogramVertical(GLDendrogram.VIEW_ID+".vertical"));
 	}
 
 	/*
