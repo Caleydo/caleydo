@@ -36,7 +36,6 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
 //import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.storagebased.InitAxisComboEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetScatterSelectionEvent;
@@ -66,6 +65,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHeatMapView;
+
 //import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.ParCoordsRenderStyle;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -77,10 +77,11 @@ import org.caleydo.view.scatterplot.listener.SetPointSizeListener;
 import org.caleydo.view.scatterplot.listener.TogglePointTypeListener;
 import org.caleydo.view.scatterplot.listener.XAxisSelectorListener;
 import org.caleydo.view.scatterplot.listener.YAxisSelectorListener;
+import org.caleydo.view.scatterplot.listener.GLScatterPlotKeyListener;
 import org.caleydo.view.scatterplot.renderstyle.EScatterPointType;
 import org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle;
 
-// Sonn needed for LoD rendering
+// Soon needed for LoD rendering
 //import com.sun.opengl.util.texture.Texture;
 //import com.sun.opengl.util.texture.TextureCoords;
 
@@ -111,7 +112,7 @@ public class GLScatterplot
 	boolean bUseDetailLevel = true;
 	
 	boolean bUpdateSelection = false;
-	boolean bRender2Axis = true;
+	boolean bRender2Axis = false;
 
 	int iCurrentMouseOverElement = -1;
 
@@ -140,6 +141,7 @@ public class GLScatterplot
 	private int iGLDisplayListIndexCoord;
 	private int iGLDisplayListIndexMouseOver;
 	private int iGLDisplayListIndexSelection;
+	
 
 	/**
 	 * Constructor.
@@ -162,7 +164,7 @@ public class GLScatterplot
 
 		fAlXDistances = new ArrayList<Float>();
 
-		// glKeyListener = new GLHeatMapKeyListener(this);
+	//	glKeyListener = new GLScatterPlotKeyListener(this);
 	}
 
 	@Override
@@ -176,6 +178,13 @@ public class GLScatterplot
 		initAxisComboEvent.setSender(this);
 		initAxisComboEvent.setAxisNames(this.getAxisString());
 		GeneralManager.get().getEventPublisher().triggerEvent(initAxisComboEvent);
+		
+//		// Register keyboard listener to GL canvas
+//		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+//			public void run() {
+//				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+//			}
+//		});
 		
 		//TODO: Remove when Toolbar working again
 		POINTSIZE = POINTSIZE /1.0f;  
@@ -378,12 +387,17 @@ public class GLScatterplot
 
 		if (bHasFrustumChanged) {
 			bHasFrustumChanged = false;
+			
+			
+			
+			
 			gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
 			renderCoordinateSystem(gl);			
-			gl.glEndList();	
+			gl.glEndList();				
 			
-			// TODO remove l8ter 
+			// TODO remove l8ter when Keylistener or Toolbar working again  
 			bRender2Axis=true;
+			
 			SELECTED_X_AXIS = 0;
 			SELECTED_Y_AXIS = 1;
 			SELECTED_X_AXIS_2 = 0;
@@ -1375,6 +1389,26 @@ public class GLScatterplot
 			renderStyle.setPointSize(pointSize);
 			setDisplayListDirty();
 		}
+	}
+
+	public void upDownSelect(boolean bUpIsTrue) {
+		
+		if (bUpIsTrue) SELECTED_X_AXIS++;
+		else SELECTED_X_AXIS--;
+		if (SELECTED_X_AXIS<0) SELECTED_X_AXIS=0; 
+	}
+
+	public void leftRightSelect(boolean bLeftIsTrue) {
+		if (bLeftIsTrue) SELECTED_Y_AXIS++;
+		else SELECTED_Y_AXIS--;
+		if (SELECTED_Y_AXIS<0) SELECTED_Y_AXIS=0; 
+		
+	}
+
+	public void toggleSpecialAxisMode() {
+		if (bRender2Axis) bRender2Axis = false;
+		else bRender2Axis = true;
+		
 	}
 
 }
