@@ -477,7 +477,7 @@ public class GLParallelCoordinates extends AStorageBasedView
 		CmdCreateView cmdCreateGLView = (CmdCreateView) generalManager
 				.getCommandManager().createCommandByType(
 						ECommandType.CREATE_GL_VIEW);
-		cmdCreateGLView.setViewID("org.caleydo.view.heatmap.propagation");
+		cmdCreateGLView.setViewID("org.caleydo.view.bookmarking");
 		cmdCreateGLView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC,
 				0, 0.8f, viewFrustum.getBottom(), viewFrustum.getTop(), -20,
 				20, -1);

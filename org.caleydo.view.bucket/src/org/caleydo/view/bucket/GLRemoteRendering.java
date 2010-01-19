@@ -350,7 +350,7 @@ public class GLRemoteRendering extends AGLView
 		CmdCreateView cmdCreateGLView = (CmdCreateView) generalManager
 				.getCommandManager().createCommandByType(
 						ECommandType.CREATE_GL_VIEW);
-		cmdCreateGLView.setViewID("org.caleydo.view.heatmap.propagation");
+		cmdCreateGLView.setViewID("org.caleydo.view.bookmarking");
 		cmdCreateGLView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC,
 				0, 0.8f, 0.1f, 4.1f, -20, 20, -1);
 		// cmdCreateGLView.setSet(set);
