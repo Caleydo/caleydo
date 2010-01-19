@@ -91,7 +91,6 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager;
 import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -102,6 +101,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneConte
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.base.core.AStorageBasedView;
+import org.caleydo.view.bookmarking.GLBookmarkManager;
 import org.caleydo.view.parcoords.listener.AngularBrushingListener;
 import org.caleydo.view.parcoords.listener.ApplyCurrentSelectionToVirtualArrayListener;
 import org.caleydo.view.parcoords.listener.BookmarkButtonListener;

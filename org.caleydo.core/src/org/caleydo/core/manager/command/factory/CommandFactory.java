@@ -15,7 +15,6 @@ import org.caleydo.core.command.system.CmdLoadGlyphDefinition;
 import org.caleydo.core.command.system.CmdLoadPathwayData;
 import org.caleydo.core.command.system.CmdSystemExit;
 import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
-import org.caleydo.core.command.view.opengl.CmdCreateGLPathway;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.command.view.swt.CmdViewCreateGlyphConfiguration;
@@ -97,10 +96,6 @@ public class CommandFactory
 				createdCommand = new CmdViewCreateGlyphConfiguration(cmdType);
 				break;
 			}
-//			case CREATE_GL_PATHWAY_3D: {
-//				createdCommand = new CmdCreateGLPathway(cmdType);
-//				break;
-//			}
 			case CREATE_GL_VIEW: {
 				createdCommand = new CmdCreateView(cmdType);
 				break;

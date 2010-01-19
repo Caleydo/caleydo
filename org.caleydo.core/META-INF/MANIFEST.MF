@@ -147,6 +147,7 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
  org.caleydo.core.manager.event.view.browser;uses:="org.caleydo.core.view.swt.browser,org.caleydo.core.manager.event",
  org.caleydo.core.manager.event.view.glyph;uses:="org.caleydo.core.view.opengl.canvas.glyph.gridview,org.caleydo.core.manager.event",
  org.caleydo.core.manager.event.view.group,
+ org.caleydo.core.manager.event.view.grouper,
  org.caleydo.core.manager.event.view.histogram,
  org.caleydo.core.manager.event.view.hyperbolic;uses:="org.caleydo.core.manager.event",
  org.caleydo.core.manager.event.view.infoarea;uses:="org.caleydo.core.manager.event",
@@ -289,7 +290,6 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.view.opengl.util.hierarchy,
    org.caleydo.core.view.opengl.util.overlay.contextmenu,
    org.caleydo.core.data.selection",
- org.caleydo.core.view.opengl.canvas.bookmarking,
  org.caleydo.core.view.opengl.canvas.glyph.gridview;
   uses:="org.caleydo.core.view.opengl.canvas.remote,
    org.caleydo.core.view.opengl.util.wavefrontobjectloader,
@@ -320,7 +320,6 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    javax.media.opengl,
    org.caleydo.core.view.serialize,
    org.caleydo.core.data.selection",
- org.caleydo.core.view.opengl.canvas.grouper,
  org.caleydo.core.view.opengl.canvas.listener;
   uses:="org.caleydo.core.data.mapping,
    org.caleydo.core.data.collection,

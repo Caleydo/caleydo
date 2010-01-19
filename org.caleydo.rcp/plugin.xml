@@ -190,9 +190,9 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.view.base.rcp.RcpGLGrouperView"
+            class="org.caleydo.view.grouper.RcpGLGrouperView"
             icon="resources/icons/view/heatmap.png"
-            id="org.caleydo.rcp.views.opengl.GLGrouperView"
+            id="org.caleydo.view.grouper"
             name="Grouper View">
       </view>
 
@@ -410,7 +410,7 @@
             name="Open Scatterplot">
       </command>
       <command
-            defaultHandler="org.caleydo.rcp.command.handler.view.OpenGrouperHandler"
+            defaultHandler="org.caleydo.view.grouper.command.handler.OpenGrouperHandler"
             id="org.caleydo.rcp.command.openviews.grouper"
             name="Open Grouper">
       </command>
