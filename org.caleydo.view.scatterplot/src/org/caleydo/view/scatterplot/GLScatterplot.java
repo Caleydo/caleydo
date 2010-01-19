@@ -29,16 +29,20 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 //import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.storagebased.InitAxisComboEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetScatterSelectionEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SetPointSizeEvent;
 import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
 import org.caleydo.core.manager.event.view.storagebased.XAxisSelectorEvent;
@@ -68,6 +72,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.SerializedHeatMa
 
 //import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.ParCoordsRenderStyle;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -396,7 +401,7 @@ public class GLScatterplot
 			gl.glEndList();				
 			
 			// TODO remove l8ter when Keylistener or Toolbar working again  
-			bRender2Axis=true;
+			bRender2Axis=false;
 			
 			SELECTED_X_AXIS = 0;
 			SELECTED_Y_AXIS = 1;
@@ -668,7 +673,7 @@ public class GLScatterplot
 		float y = ynormalized * YScale;
 		float[] fArMappingColor = colorMapper.getColor(Math.max(xnormalized, ynormalized));
 		 if (elementSelectionManager.checkStatus(ESelectionType.SELECTION,iContentIndex))
-			 fArMappingColor = new float[]{1.0f, 0.1f, 0.5f};
+			 fArMappingColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 				
 		float z = +1.5f;
 		float fullPoint = POINTSIZE * 2f;
@@ -1001,8 +1006,11 @@ public class GLScatterplot
 
 		
 	//	mouseoverSelectionManager = storageSelectionManager;
-		mouseoverSelectionManager = new SelectionManager.Builder(EIDType.UNSPECIFIED).build();
+		mouseoverSelectionManager = new SelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
 		elementSelectionManager = contentSelectionManager;
+		mouseoverSelectionManager.setVA(contentVA);
+		elementSelectionManager.setVA(contentVA);
+//		mouseoverSelectionManager.initialAdd(iAlElementIDs)
 		//mouseoverSelectionManager = contentSelectionManager;
 		// TODO: Thats just for testing! 
 	}
@@ -1111,6 +1119,13 @@ public class GLScatterplot
 			
 									
 		}
+		
+		
+		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
+		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+		mouseoverSelectionManager.clearSelection(selectionType);
+		elementSelectionManager.clearSelection(selectionType);
+		
 		if(selectionType == ESelectionType.SELECTION) 
 		{
 			//fDragStartPoint = new float[3];
@@ -1119,6 +1134,9 @@ public class GLScatterplot
 				elementSelectionManager.add(contentID);
 			
 			elementSelectionManager.addToType(selectionType, contentID);
+			
+		
+			
 			bUpdateSelection = true;
 			//return;
 		}
@@ -1127,10 +1145,18 @@ public class GLScatterplot
 		if ((selectionType == ESelectionType.MOUSE_OVER))
 			//	 && (!mouseoverSelectionManager.checkStatus(contentID)))
 		{			
-			mouseoverSelectionManager.resetSelectionManager(); // This may be not necessary;
+//			mouseoverSelectionManager.resetSelectionManager(); // This may be not necessary;
 			mouseoverSelectionManager.add(contentID);
 			mouseoverSelectionManager.addToType(selectionType, contentID);			
 		}
+		
+		ISelectionDelta selectionDelta = mouseoverSelectionManager.getDelta();
+		handleConnectedElementRep(selectionDelta);
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
+		event.setSelectionDelta((SelectionDelta) selectionDelta);
+		event.setInfo(getShortInfo());
+		eventPublisher.triggerEvent(event);
 		
 
 		setDisplayListDirty();
@@ -1204,22 +1230,22 @@ public class GLScatterplot
 		return alElementReps;
 	}
 	
-	private void UpdateMouseOverfromExternal()
-	{
-	 Set<Integer> selectionSet = contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);		 	 					
-	 for (int iContentIndex : selectionSet)
-	 {
-			mouseoverSelectionManager.resetSelectionManager(); // This may be not necessary;
-			mouseoverSelectionManager.add(iContentIndex);
-			mouseoverSelectionManager.addToType(ESelectionType.MOUSE_OVER, iContentIndex);	
-	 }
-	}
-	
+//	private void UpdateMouseOverfromExternal()
+//	{
+//	 Set<Integer> selectionSet = contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);		 	 					
+//	 for (int iContentIndex : selectionSet)
+//	 {
+////			mouseoverSelectionManager.resetSelectionManager(); // This may be not necessary;
+//			mouseoverSelectionManager.add(iContentIndex);
+//			mouseoverSelectionManager.addToType(ESelectionType.MOUSE_OVER, iContentIndex);	
+//	 }
+//	}
+//	
 	
 	@Override
 	protected void reactOnExternalSelection(boolean scrollToSelection) {
 		bUpdateSelection = true;
-		UpdateMouseOverfromExternal();
+//		UpdateMouseOverfromExternal();
 	}
 	
 
