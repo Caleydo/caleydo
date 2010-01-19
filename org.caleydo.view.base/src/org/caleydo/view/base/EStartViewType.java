@@ -9,8 +9,8 @@ package org.caleydo.view.base;
 public enum EStartViewType {
 
 	glyphview("org.caleydo.view.glyph"), parcoords("org.caleydo.view.parcoords"), heatmap(
-			"org.caleydo.view.heatmap.hierarchical"), remote(
-			"org.caleydo.view.remote"), browser("org.caleydo.view.browser"), tabular(
+			"org.caleydo.view.heatmap.hierarchical"), bucket(
+			"org.caleydo.view.bucket"), browser("org.caleydo.view.browser"), tabular(
 			"org.caleydo.view.tabular"), radial("org.caleydo.view.radial"), histogram(
 			"org.caleydo.view.histogram"), dendrogram_horizontal(
 			"org.caleydo.view.dendrogram.horizontal"), dendrogram_vertical(

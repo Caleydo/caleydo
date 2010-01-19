@@ -15,6 +15,10 @@ import org.caleydo.view.base.rcp.CaleydoRCPViewPart;
 import org.caleydo.view.base.rcp.RcpGLGlyphView;
 import org.caleydo.view.base.swt.toolbar.content.AToolBarContent;
 import org.caleydo.view.base.swt.toolbar.content.GlyphToolBarContent;
+import org.caleydo.view.bucket.GLRemoteRendering;
+import org.caleydo.view.bucket.toolbar.RemoteRenderingToolBarContent;
+import org.caleydo.view.dataflipper.GLDataFlipper;
+import org.caleydo.view.dataflipper.toolbar.DataFlipperToolBarContent;
 import org.caleydo.view.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.GLHierarchicalHeatMap;
 import org.caleydo.view.heatmap.toolbar.HeatMapToolBarContent;
@@ -95,19 +99,19 @@ public class ToolBarContentFactory {
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
 
-		// info = new ToolBarInfo();
-		// info.viewClass = GLRemoteRendering.class;
-		// info.contentClass = RemoteRenderingToolBarContent.class;
-		// info.rcpID = RcpGLRemoteRenderingView.ID;
-		// info.ignored = false;
-		// toolBarInfos.put(info.viewClass, info);
+		info = new ToolBarInfo();
+		info.viewClass = GLRemoteRendering.class;
+		info.contentClass = RemoteRenderingToolBarContent.class;
+		info.rcpID = GLRemoteRendering.VIEW_ID;
+		info.ignored = false;
+		toolBarInfos.put(info.viewClass, info);
 
-		// info = new ToolBarInfo();
-		// info.viewClass = GLDataFlipper.class;
-		// info.contentClass = DataFlipperToolBarContent.class;
-		// info.rcpID = RcpGLDataFlipperView.ID;
-		// info.ignored = false;
-		// toolBarInfos.put(info.viewClass, info);
+		info = new ToolBarInfo();
+		info.viewClass = GLDataFlipper.class;
+		info.contentClass = DataFlipperToolBarContent.class;
+		info.rcpID = GLDataFlipper.VIEW_ID;
+		info.ignored = false;
+		toolBarInfos.put(info.viewClass, info);
 
 		// info = new ToolBarInfo();
 		// info.viewClass = ; // FIXME gl-view class of clinical par coords

@@ -97,10 +97,10 @@ public class CommandFactory
 				createdCommand = new CmdViewCreateGlyphConfiguration(cmdType);
 				break;
 			}
-			case CREATE_GL_PATHWAY_3D: {
-				createdCommand = new CmdCreateGLPathway(cmdType);
-				break;
-			}
+//			case CREATE_GL_PATHWAY_3D: {
+//				createdCommand = new CmdCreateGLPathway(cmdType);
+//				break;
+//			}
 			case CREATE_GL_VIEW: {
 				createdCommand = new CmdCreateView(cmdType);
 				break;

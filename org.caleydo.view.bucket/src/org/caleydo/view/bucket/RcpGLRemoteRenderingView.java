@@ -10,8 +10,6 @@ import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLRemoteRenderingView extends ARcpGLViewPart {
 
-	public static final String ID = SerializedRemoteRenderingView.GUI_ID;
-
 	private ArrayList<Integer> iAlContainedViewIDs;
 
 	/**
@@ -60,6 +58,6 @@ public class RcpGLRemoteRenderingView extends ARcpGLViewPart {
 
 	@Override
 	public String getViewGUIID() {
-		return ID;
+		return GLRemoteRendering.VIEW_ID;
 	}
 }

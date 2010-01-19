@@ -489,7 +489,7 @@ public class Application
 
 		// Only show bucket when pathway data is loaded
 		if (GeneralManager.get().getPathwayManager().size() > 0) {
-			startViews.add(EStartViewType.remote.getViewID());
+			startViews.add(EStartViewType.bucket.getViewID());
 		}
 	}
 
@@ -499,7 +499,7 @@ public class Application
 	private static void applyPathwayViewerViewFilter() {
 		ArrayList<String> newStartViews = new ArrayList<String>();
 		for (String viewID : startViews) {
-			if (viewID.equals(EStartViewType.remote.getViewID()) || viewID.equals("org.caleydo.view.browser")) {
+			if (viewID.equals(EStartViewType.bucket.getViewID()) || viewID.equals("org.caleydo.view.browser")) {
 				newStartViews.add(viewID);
 			}
 		}

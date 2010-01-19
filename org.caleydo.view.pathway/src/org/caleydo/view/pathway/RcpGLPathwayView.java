@@ -5,8 +5,6 @@ import org.caleydo.view.base.rcp.ARcpGLViewPart;
 
 public class RcpGLPathwayView extends ARcpGLViewPart {
 
-	public static final String ID = SerializedPathwayView.GUI_ID;
-
 	/**
 	 * Constructor.
 	 */
@@ -23,7 +21,7 @@ public class RcpGLPathwayView extends ARcpGLViewPart {
 
 	@Override
 	public String getViewGUIID() {
-		return ID;
+		return GLPathway.VIEW_ID;
 	}
 
 }

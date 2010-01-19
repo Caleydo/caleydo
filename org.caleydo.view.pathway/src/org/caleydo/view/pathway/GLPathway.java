@@ -94,6 +94,8 @@ public class GLPathway extends AGLView
 			IViewCommandHandler,
 			ISelectionCommandHandler {
 
+	public final static String VIEW_ID = "org.caleydo.view.pathway";
+	
 	private PathwayGraph pathway;
 
 	private boolean bEnablePathwayTexture = true;
@@ -149,7 +151,7 @@ public class GLPathway extends AGLView
 
 		super(glCanvas, sLabel, viewFrustum, false);
 		viewType = EManagedObjectType.GL_PATHWAY;
-		viewID = "org.caleydo.view.pathway";
+		viewID = VIEW_ID;
 
 		pathwayManager = generalManager.getPathwayManager();
 

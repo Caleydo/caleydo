@@ -24,8 +24,6 @@ import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
 @XmlType
 public class SerializedRemoteRenderingView extends ASerializedView {
 
-	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLRemoteRenderingView";
-
 	/** @see org.caleydo.core.view.opengl.canvas.remote.AGLViewBrowser.pathwayTexturesEnabled */
 	private boolean pathwayTexturesEnabled;
 
@@ -144,7 +142,7 @@ public class SerializedRemoteRenderingView extends ASerializedView {
 
 	@Override
 	public String getViewGUIID() {
-		return GUI_ID;
+		return GLRemoteRendering.VIEW_ID;
 	}
 
 	@Override

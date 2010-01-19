@@ -1,9 +1,13 @@
 package org.caleydo.rcp.toolbar;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.rcp.perspective.GenomePerspective;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -69,45 +73,45 @@ public class RcpToolBarView
 	}
 
 	public void removeViewSpecificToolBar(int iViewID) {
-		// Group removedGroup = null;
-		// for (Group group : viewSpecificGroups) {
-		// if (!(group.getData("view") instanceof AGLEventListener)) {
-		// continue;
-		// }
-		//
-		// if (group.getData("viewID") != null && ((Integer) group.getData("viewID")).intValue() == iViewID) {
-		// group.dispose();
-		// removedGroup = group;
-		// break;
-		// }
-		// }
-		//
-		// if (removedGroup != null) {
-		// viewSpecificGroups.remove(removedGroup);
-		// }
-		//
-		// // Remove toolbars of remote rendered views
-		// AGLEventListener glView =
-		// GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
-		//
-		// if (glView instanceof IGLRemoteRenderingView) {
-		// for (AGLEventListener view : ((IGLRemoteRenderingView) glView).getRemoteRenderedViews()) {
-		// removeViewSpecificToolBar(view.getID());
-		// }
-		// }
+		 Group removedGroup = null;
+		 for (Group group : viewSpecificGroups) {
+		 if (!(group.getData("view") instanceof AGLView)) {
+		 continue;
+		 }
+		
+		 if (group.getData("viewID") != null && ((Integer) group.getData("viewID")).intValue() == iViewID) {
+		 group.dispose();
+		 removedGroup = group;
+		 break;
+		 }
+		 }
+		
+		 if (removedGroup != null) {
+		 viewSpecificGroups.remove(removedGroup);
+		 }
+		
+		 // Remove toolbars of remote rendered views
+		 AGLView glView =
+		 GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
+		
+		 if (glView instanceof IGLRemoteRenderingView) {
+		 for (AGLView view : ((IGLRemoteRenderingView) glView).getRemoteRenderedViews()) {
+		 removeViewSpecificToolBar(view.getID());
+		 }
+		 }
 	}
 
 	public void removeAllViewSpecificToolBars() {
-		// for (Group group : viewSpecificGroups) {
-		// List<ToolBarManager> toolBarManagers = (List<ToolBarManager>) group.getData("toolBarManagers");
-		// if (toolBarManagers != null) {
-		// for (ToolBarManager toolBarManager : toolBarManagers) {
-		// toolBarManager.dispose();
-		// }
-		// }
-		// group.dispose();
-		// }
-		// viewSpecificGroups.clear();
+		for (Group group : viewSpecificGroups) {
+			List<ToolBarManager> toolBarManagers = (List<ToolBarManager>) group.getData("toolBarManagers");
+			if (toolBarManagers != null) {
+				for (ToolBarManager toolBarManager : toolBarManagers) {
+					toolBarManager.dispose();
+				}
+			}
+			group.dispose();
+		}
+		viewSpecificGroups.clear();
 	}
 
 	private void addGeneralToolBar() {

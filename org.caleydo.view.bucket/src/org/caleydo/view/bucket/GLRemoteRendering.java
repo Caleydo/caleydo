@@ -622,13 +622,6 @@ public class GLRemoteRendering extends AGLView
 		AGLView glView = element.getGLView();
 
 		if (glView == null) {
-
-			generalManager
-					.getLogger()
-					.log(
-							new Status(IStatus.WARNING,
-									IGeneralManager.PLUGIN_ID,
-									"Bucket level element is null and cannot be rendered!"));
 			return;
 		}
 
@@ -2726,27 +2719,19 @@ public class GLRemoteRendering extends AGLView
 		glView.setSet(set);
 
 		if (glView instanceof GLPathway) {
-			initializePathwayView((GLPathway) glView);
+			GLPathway glPathway = (GLPathway)glView;
+			
+			glPathway.setPathway(((SerializedPathwayView)serView).getPathwayID());
+			glPathway.enablePathwayTextures(pathwayTexturesEnabled);
+			glPathway.enableNeighborhood(neighborhoodEnabled);
+			glPathway.enableGeneMapping(geneMappingEnabled);
 		}
 
 		triggerMostRecentDelta();
 
 		return glView;
 	}
-
-	/**
-	 * initializes the configuration of a pathway to the configuration currently
-	 * stored in this remote-rendering-view.
-	 * 
-	 * @param pathway
-	 *            pathway to set the configuration
-	 */
-	private void initializePathwayView(GLPathway pathway) {
-		pathway.enablePathwayTextures(pathwayTexturesEnabled);
-		pathway.enableNeighborhood(neighborhoodEnabled);
-		pathway.enableGeneMapping(geneMappingEnabled);
-	}
-
+	
 	/**
 	 * Triggers the most recent user selection to the views. This is especially
 	 * needed to initialize new added views with the current selection

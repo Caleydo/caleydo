@@ -510,12 +510,6 @@ public abstract class AGLViewBrowser extends AGLView
 
 		AGLView glView = element.getGLView();
 		if (glView == null) {
-			generalManager
-					.getLogger()
-					.log(
-							new Status(IStatus.WARNING,
-									IGeneralManager.PLUGIN_ID,
-									"Bucket level element is null and cannot be rendered!"));
 			return;
 		}
 
