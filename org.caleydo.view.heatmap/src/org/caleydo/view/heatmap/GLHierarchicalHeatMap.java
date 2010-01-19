@@ -690,7 +690,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView
 		CmdCreateView cmdView = (CmdCreateView) generalManager
 				.getCommandManager().createCommandByType(
 						ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID("org.caleydo.dendrogram.horizontal");
+		cmdView.setViewID(GLDendrogram.VIEW_ID+".horizontal");
 
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
@@ -707,7 +707,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView
 
 		cmdView = (CmdCreateView) generalManager.getCommandManager()
 				.createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID("org.caleydo.dendrogram.vertical");
+		cmdView.setViewID(GLDendrogram.VIEW_ID+".vertical");
 
 		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0,
 				fHeatMapHeight, 0, fHeatMapWidth, -20, 20, -1);

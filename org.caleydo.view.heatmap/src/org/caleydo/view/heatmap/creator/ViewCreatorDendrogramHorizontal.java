@@ -5,8 +5,8 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.view.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.SerializedHeatMapView;
+import org.caleydo.view.heatmap.GLDendrogram;
+import org.caleydo.view.heatmap.SerializedDendogramHorizontalView;
 
 public class ViewCreatorDendrogramHorizontal extends AGLViewCreator {
 
@@ -18,12 +18,12 @@ public class ViewCreatorDendrogramHorizontal extends AGLViewCreator {
 	public AGLView createGLView(GLCaleydoCanvas glCanvas, String label,
 			IViewFrustum viewFrustum) {
 
-		return new GLHeatMap(glCanvas, label, viewFrustum);
+		return new GLDendrogram(glCanvas, label, viewFrustum, true);
 	}
 
 	@Override
 	public ASerializedView createSerializedView() {
 
-		return new SerializedHeatMapView();
+		return new SerializedDendogramHorizontalView();
 	}
 }
