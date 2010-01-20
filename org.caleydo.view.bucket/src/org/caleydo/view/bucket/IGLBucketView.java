@@ -4,7 +4,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 
-public interface IGLRemoteRenderingBucketView extends IGLRemoteRenderingView {
+public interface IGLBucketView extends IGLRemoteRenderingView {
 
 	/**
 	 * Returns the center layer of the bucket.

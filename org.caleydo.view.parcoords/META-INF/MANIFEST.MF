@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Parallel Coordinates View
-Bundle-SymbolicName: org.caleydo.view.parcoords
+Bundle-SymbolicName: org.caleydo.view.parcoords;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.caleydo.view.parcoords.Activator
 Require-Bundle: org.eclipse.ui,
@@ -14,5 +14,4 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.caleydo.view.parcoords,
- org.caleydo.view.parcoords.toolbar,
- org.caleydo.view.parcoords.command.handler
+ org.caleydo.view.parcoords.toolbar

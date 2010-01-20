@@ -6,7 +6,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
-import org.caleydo.view.bucket.GLRemoteRendering;
+import org.caleydo.view.bucket.GLBucket;
 import org.caleydo.view.bucket.SerializedRemoteRenderingView;
 import org.caleydo.view.bucket.toolbar.RemoteRenderingToolBarContent;
 
@@ -20,7 +20,7 @@ public class ViewCreator extends AGLViewCreator {
 	public AGLView createGLView(GLCaleydoCanvas glCanvas, String label,
 			IViewFrustum viewFrustum) {
 
-		return new GLRemoteRendering(glCanvas, label, viewFrustum, ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);
+		return new GLBucket(glCanvas, label, viewFrustum, ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);
 	}
 
 	@Override

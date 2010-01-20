@@ -9,6 +9,9 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.actions.ContributionItemFactory;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -66,7 +69,7 @@ public class ApplicationWorkbenchWindowAdvisor
 				menuManager.remove(item);
 			}
 		}
-
+		
 		// Set status line in caleydo core
 		GeneralManager.get().getSWTGUIManager().setExternalRCPStatusLine(
 			getWindowConfigurer().getActionBarConfigurer().getStatusLineManager(),

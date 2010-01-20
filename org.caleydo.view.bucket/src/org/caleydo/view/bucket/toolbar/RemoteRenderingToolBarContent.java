@@ -7,7 +7,7 @@ import org.caleydo.view.base.swt.toolbar.content.AToolBarContent;
 import org.caleydo.view.base.swt.toolbar.content.ActionToolBarContainer;
 import org.caleydo.view.base.swt.toolbar.content.IToolBarItem;
 import org.caleydo.view.base.swt.toolbar.content.ToolBarContainer;
-import org.caleydo.view.bucket.GLRemoteRendering;
+import org.caleydo.view.bucket.GLBucket;
 import org.caleydo.view.bucket.SerializedRemoteRenderingView;
 import org.caleydo.view.bucket.toolbar.actions.CloseOrResetContainedViews;
 import org.caleydo.view.bucket.toolbar.actions.NavigationModeAction;
@@ -34,7 +34,7 @@ public class RemoteRenderingToolBarContent extends AToolBarContent {
 
 	@Override
 	public Class<?> getViewClass() {
-		return GLRemoteRendering.class;
+		return GLBucket.class;
 	}
 
 	@Override

@@ -71,7 +71,7 @@ public class GLOffScreenTextureRenderer {
 
 	public void renderRubberBucket(final GL gl, RemoteLevel stackLevel,
 			BucketLayoutRenderStyle bucketLayoutRenderStyle,
-			GLRemoteRendering glRemoteRendering) {
+			GLBucket glRemoteRendering) {
 		gl.glColor4f(1f, 1f, 1f, 1f);
 
 		float fBucketBottomLeft = bucketLayoutRenderStyle.getBucketBottomLeft();

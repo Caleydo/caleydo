@@ -22,7 +22,7 @@ public class BucketMouseWheelListener extends MouseAdapter
 			MouseWheelListener,
 			MouseMotionListener {
 
-	private GLRemoteRendering bucketGLEventListener;
+	private GLBucket bucketGLEventListener;
 
 	private float fBuketZoomMax = BUCKET_ZOOM_MAX;
 
@@ -47,7 +47,7 @@ public class BucketMouseWheelListener extends MouseAdapter
 	/**
 	 * Constructor.
 	 */
-	public BucketMouseWheelListener(final GLRemoteRendering remoteRendering3D,
+	public BucketMouseWheelListener(final GLBucket remoteRendering3D,
 			final BucketLayoutRenderStyle bucketLayoutRenderStyle) {
 		this.bucketGLEventListener = remoteRendering3D;
 		this.bucketLayoutRenderStyle = bucketLayoutRenderStyle;

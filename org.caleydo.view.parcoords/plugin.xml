@@ -6,10 +6,10 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.view.scatterplot.RcpGLScatterplotView"
-            icon="resources/icons/scatterplot.png"
-            id="org.caleydo.view.scatterplot"
-            name="Scatterplot">
+            class="org.caleydo.view.parcoords.RcpGLParCoordsView"
+            icon="resources/icons/parcoords.png"
+            id="org.caleydo.view.parcoords"
+            name="Parallel Coordinates">
       </view>
    </extension>
    <extension
@@ -20,8 +20,8 @@
                id="org.caleydo.menu.view"
                label="View">
             <command
-                  commandId="org.caleydo.view.scatterplot.command.openscatterplot"
-                  icon="resources/icons/scatterplot.png"
+                  commandId="org.caleydo.view.heatmap.command.openparcoords"
+                  icon="resources/icons/parcoords.png"
                   style="push">
             </command>
          </menu>
@@ -30,9 +30,9 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.scatterplot.command.handler.OpenScatterplotHandler"
-            id="org.caleydo.view.scatterplot.command.openscatterplot"
-            name="Scatterplot">
+            defaultHandler="org.caleydo.view.parcoords.command.handler.OpenParCoordsHandler"
+            id="org.caleydo.view.heatmap.command.openparcoords"
+            name="Parallel Coordinates">
       </command>
    </extension>
 

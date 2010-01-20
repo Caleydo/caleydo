@@ -8,14 +8,14 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.view.base.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
-public class RcpGLRemoteRenderingView extends ARcpGLViewPart {
+public class RcpGLBucketView extends ARcpGLViewPart {
 
 	private ArrayList<Integer> iAlContainedViewIDs;
 
 	/**
 	 * Constructor.
 	 */
-	public RcpGLRemoteRenderingView() {
+	public RcpGLBucketView() {
 		super();
 
 		iAlContainedViewIDs = new ArrayList<Integer>();
@@ -38,7 +38,7 @@ public class RcpGLRemoteRenderingView extends ARcpGLViewPart {
 
 	@Override
 	public void dispose() {
-		GLRemoteRendering glRemoteView = (GLRemoteRendering) GeneralManager
+		GLBucket glRemoteView = (GLBucket) GeneralManager
 				.get().getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		for (Integer iContainedViewID : iAlContainedViewIDs) {
@@ -58,6 +58,6 @@ public class RcpGLRemoteRenderingView extends ARcpGLViewPart {
 
 	@Override
 	public String getViewGUIID() {
-		return GLRemoteRendering.VIEW_ID;
+		return GLBucket.VIEW_ID;
 	}
 }

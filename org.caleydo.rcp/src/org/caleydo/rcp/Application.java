@@ -55,6 +55,7 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.WorkbenchPlugin;
+import org.osgi.framework.BundleException;
 
 /**
  * This class controls all aspects of the application's execution
@@ -149,7 +150,7 @@ public class Application
 		parseApplicationArguments(map);
 
 		prefStore = GeneralManager.get().getPreferenceStore();
-		
+
 		Display display = PlatformUI.createDisplay();
 		Shell shell = new Shell(display);
 
@@ -449,6 +450,19 @@ public class Application
 
 		initializedStartViews = new ArrayList<String>();
 		for (String viewID : startViews) {
+
+			// Force plugins of start views to load
+			try {
+				if (viewID.contains("hierarchical"))
+					Platform.getBundle(viewID.replace(".hierarchical", "")).start();
+				else
+					Platform.getBundle(viewID).start();
+			}
+			catch (BundleException e) {
+				// TODO Write message that plugin is not available
+				e.printStackTrace();
+			}
+
 			ASerializedView view =
 				GeneralManager.get().getViewGLCanvasManager().getViewCreator(viewID).createSerializedView();
 			view.setDataDomain(dataDomain);

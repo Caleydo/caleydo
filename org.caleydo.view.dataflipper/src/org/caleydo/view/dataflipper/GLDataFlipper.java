@@ -58,7 +58,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.base.listener.AddPathwayListener;
 import org.caleydo.view.base.listener.IRemoteRenderingHandler;
 import org.caleydo.view.base.listener.LoadPathwaysByGeneListener;
-import org.caleydo.view.bucket.GLRemoteRendering;
+import org.caleydo.view.bucket.GLBucket;
 import org.caleydo.view.heatmap.GLHierarchicalHeatMap;
 import org.caleydo.view.parcoords.GLParallelCoordinates;
 import org.caleydo.view.pathwaybrowser.GLPathwayViewBrowser;
@@ -380,7 +380,7 @@ public class GLDataFlipper extends AGLView
 			Vec3f axis = new Vec3f();
 			float fAngle = rot.get(axis);
 
-			if (glView instanceof GLRemoteRendering) {
+			if (glView instanceof GLBucket) {
 
 				gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f,
 						translation.z());

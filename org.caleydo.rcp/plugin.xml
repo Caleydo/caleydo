@@ -19,42 +19,7 @@
             name="Caleydo"
             id="org.caleydo.rcp.views">
       </category>
-       
-      <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.heatmap.RcpGLHeatMapView"
-            icon="resources/icons/view/heatmap.png"
-            id="org.caleydo.view.heatmap"
-            name="Heat Map">
-      </view>
-      
-      <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.heatmap.RcpGLHierarchicalHeatMapView"
-            icon="resources/icons/view/heatmap.png"
-            id="org.caleydo.view.heatmap.hierarchical"
-            name="Hierarchichal Heat Map">
-      </view>      
-
-      <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.parcoords.RcpGLParCoordsView"
-            icon="resources/icons/view/parcoords.png"
-            id="org.caleydo.view.parcoords"
-            name="Parallel Coordinates">
-      </view>
-      <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.parcoords.RcpGLParCoordsClinicalView"
-            icon="resources/icons/view/parcoords.png"
-            id="org.caleydo.rcp.view.parcoords.clinical"
-            name="Clinical Parallel Coordinates">
-      </view>         
-      
+    
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
@@ -64,22 +29,6 @@
             name="Pathway">
       </view> 
       
-      <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.bucket.RcpGLRemoteRenderingView"
-            icon="resources/icons/view/remote.png"
-            id="org.caleydo.view.bucket"
-            name="Bucket">
-      </view> 
-      
-      <view
-            id="org.caleydo.view.browser"
-            name="Browser"
-            icon="resources/icons/view/browser.png"
-            class="org.caleydo.view.browser.RcpHTMLBrowserView"
-            category="org.caleydo.rcp.views">
-      </view>
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
@@ -117,14 +66,6 @@
             icon="resources/icons/view/general.png"
             id="org.caleydo.rcp.views.swt.ToolBarView"
             name="Tool Bar">
-      </view>
-      <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.radial.RcpGLRadialHierarchyView"
-            icon="resources/icons/view/radial.png"
-            id="org.caleydo.view.radial"
-            name="Radial Hierarchy">
       </view>
       <view
             category="org.caleydo.rcp.views"
@@ -178,14 +119,6 @@
             icon="resources/icons/view/browser.png"
             id="org.caleydo.view.dataflipper"
             name="Data Flippper">
-      </view>
-      <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.scatterplot.RcpGLScatterplotView"
-            icon="resources/icons/view/heatmap.png"
-            id="org.caleydo.view.scatterplot"
-            name="Scatterplot">
       </view>
       <view
             allowMultiple="true"
@@ -260,26 +193,6 @@
             name="Full Screen">
       </command>
       <command
-            defaultHandler="org.caleydo.view.heatmap.command.handler.OpenHeatMapHandler"
-            id="org.caleydo.rcp.command.openviews.heatmap"
-            name="Open Heatmap">
-      </command>
-      <command
-            defaultHandler="org.caleydo.view.parcoords.command.handler.OpenParCoordsHandler"
-            id="org.caleydo.rcp.command.openviews.parcoords"
-            name="Open Parallel Coordinates">
-      </command>
-      <command
-            defaultHandler="org.caleydo.view.dataflipper.command.handler.OpenDataFlipperHandler"
-            id="org.caleydo.rcp.command.openviews.dataflipper"
-            name="Open Data Flipper">
-      </command>
-      <command
-            defaultHandler="org.caleydo.view.bucket.command.handler.OpenRemoteHandler"
-            id="org.caleydo.rcp.command.openviews.remote"
-            name="Open Bucket">
-      </command>
-      <command
             defaultHandler="org.caleydo.rcp.command.handler.view.SendRemoteHandler"
             id="org.caleydo.rcp.command.sendviews.remote"
             name="Send Bucket">
@@ -293,41 +206,6 @@
             defaultHandler="org.caleydo.rcp.command.handler.view.PublishViewHandler"
             id="org.caleydo.rcp.command.sendviews.publish"
             name="Send Bucket">
-      </command>
-      <command
-            defaultHandler="org.caleydo.view.browser.command.handler.OpenBrowserHandler"
-            id="org.caleydo.rcp.command.openviews.browser"
-            name="Open Web Browser">
-      </command>
-      <command
-            defaultHandler="org.caleydo.rcp.command.handler.view.OpenGlyphViewHandler"
-            id="org.caleydo.rcp.command.openviews.glyphview"
-            name="Open Glyph View">
-      </command>
-      <command
-            defaultHandler="org.caleydo.rcp.command.handler.view.OpenGlyphSliderViewHandler"
-            id="org.caleydo.rcp.command.openviews.glyphsliderview"
-            name="Open Glyph Slider View">
-      </command>
-      <command
-            defaultHandler="org.caleydo.rcp.command.handler.view.OpenGlyphMappingConfigurationHandler"
-            id="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
-            name="Open Glyph Mapping Configuration View">
-      </command>
-      <command
-            defaultHandler="org.caleydo.view.heatmap.command.handler.OpenHierarchicalHeatMapHandler"
-            id="org.caleydo.rcp.command.openviews.hierarchical_heatmap"
-            name="Open Hierarchical Heat Map">
-      </command>
-      <command
-            defaultHandler="org.caleydo.rcp.command.handler.view.OpenTabularDataHandler"
-            id="org.caleydo.rcp.command.openviews.tabulardata"
-            name="Open Tabular Data Viewer">
-      </command>
-      <command
-            defaultHandler="org.caleydo.view.parcoords.command.handler.OpenClinicalParCoordsHandler"
-            id="org.caleydo.rcp.command.openviews.clinicalparcoords"
-            name="Open Clinical Parallel Coordinates">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.ExportDataHandler"
@@ -345,24 +223,9 @@
             name="Save Project">
       </command>
       <command
-            defaultHandler="org.caleydo.view.radial.command.handler.OpenRadialHierarchyHandler"
-            id="org.caleydo.rcp.command.openviews.radial_hierarchy"
-            name="Open Radial Hierarchy">
-      </command>
-      <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenCollabHandler"
             id="org.caleydo.rcp.command.open_collab"
             name="Open Collaboration">
-      </command>
-      <command
-            defaultHandler="org.caleydo.view.histogram.command.handler.OpenHistogramHandler"
-            id="org.caleydo.rcp.command.openviews.histogram"
-            name="Open Histogram">
-      </command>
-      <command
-            defaultHandler="org.caleydo.view.heatmap.command.handler.OpenDendrogramHorizontalHandler"
-            id="org.caleydo.rcp.command.openviews.dendrogram_horizontal"
-            name="Open Dendrogram Horizontal">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.help.HelpContentsHandler"
@@ -378,11 +241,6 @@
             defaultHandler="org.caleydo.rcp.command.handler.help.ReportBugHandler"
             id="org.caleydo.rcp.command.help.report_bug"
             name="Report Bug">
-      </command>
-      <command
-            defaultHandler="org.caleydo.view.heatmap.command.handler.OpenDendrogramVerticallHandler"
-            id="org.caleydo.rcp.command.openviews.dendrogram_vertical"
-            name="Open Dendrogram Vertical">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenSearchHandler"
@@ -403,16 +261,6 @@
             defaultHandler="org.caleydo.rcp.command.handler.ClusterHandler"
             id="org.caleydo.rcp.command.cluster"
             name="Cluster">
-      </command>
-      <command
-            defaultHandler="org.caleydo.view.scatterplot.command.handler.OpenScatterplotHandler"
-            id="org.caleydo.rcp.command.openviews.scatterplot"
-            name="Open Scatterplot">
-      </command>
-      <command
-            defaultHandler="org.caleydo.view.grouper.command.handler.OpenGrouperHandler"
-            id="org.caleydo.rcp.command.openviews.grouper"
-            name="Open Grouper">
       </command>
       		
    </extension>
@@ -484,118 +332,16 @@
          <menu
                id="org.caleydo.menu.view"
                label="View">
-            <command
-                  commandId="org.caleydo.rcp.command.openviews.hierarchical_heatmap"
-                  icon="resources/icons/view/heatmap.png"
-                  label="Heat Map"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.caleydo.rcp.command.openviews.parcoords"
-                  icon="resources/icons/view/parcoords.png"
-                  label="Parallel Coordinates"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.caleydo.rcp.command.openviews.remote"
-                  icon="resources/icons/view/remote.png"
-                  label="Bucket"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.caleydo.rcp.command.openviews.browser"
-                  icon="resources/icons/view/browser.png"
-                  label="Web Browser"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.caleydo.rcp.command.openviews.tabulardata"
-                  icon="resources/icons/view/tabular_data_viewer.png"
-                  label="Tabular Data Viewer"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.caleydo.rcp.command.openviews.histogram"
-                  icon="resources/icons/view/color_mapping.png"
-                  label="Color Mapper"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.caleydo.rcp.command.openviews.clinicalparcoords"
-                  icon="resources/icons/view/parcoords.png"
-                  label="Clinical Parallel Coordinates"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.caleydo.rcp.command.openviews.radial_hierarchy"
-                  icon="resources/icons/view/heatmap.png"
-                  label="Radial Hierarchy"
-                  style="push">
-            </command>
-            <menu
-                  icon="resources/icons/view/glyph.png"
-                  label="Glyph">
-               <command
-                     commandId="org.caleydo.rcp.command.openviews.glyphview"
-                     icon="resources/icons/view/glyph.png"
-                     label="Glyph View"
-                     style="push">
-               </command>
-               <command
-                     commandId="org.caleydo.rcp.command.openviews.glyphsliderview"
-                     icon="resources/icons/view/glyph.png"
-                     label="Glyph Slider View"
-                     style="push">
-               </command>
-               <command
-                     commandId="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
-                     icon="resources/icons/view/glyph.png"
-                     label="Glyph Mapping Configuration"
-                     style="push">
-               </command>
-            </menu>
-            <command
-                  commandId="org.caleydo.rcp.command.openviews.dendrogram_horizontal"
-                  icon="resources/icons/view/heatmap.png"
-                  label="Dendrogram Horizontal"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.caleydo.rcp.command.openviews.dendrogram_vertical"
-                  icon="resources/icons/view/heatmap.png"
-                  label="Dendrogram Vertical"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.caleydo.rcp.command.openviews.dataflipper"
-                  icon="resources/icons/view/browser.png"
-                  label="Data Flipper"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.caleydo.rcp.command.openviews.scatterplot"
-                  icon="resources/icons/view/heatmap.png"
-                  label="Scatterplot"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.caleydo.rcp.command.openviews.grouper"
-                  icon="resources/icons/view/heatmap.png"
-                  label="Grouper"
-                  style="push">
-            </command>
          </menu>
          <menu
                id="org.caleydo.menu.window"
-               label="Window">
+               label="Windowsddaf">
             <command
                   commandId="org.caleydo.rcp.command.fullscreen"
                   label="Full Screen"
                   mnemonic="F"
                   style="push">
             </command>
-            <menu label="Open Views">
-            </menu>
          </menu>
          <menu
                id="org.caleydo.menu.admin"

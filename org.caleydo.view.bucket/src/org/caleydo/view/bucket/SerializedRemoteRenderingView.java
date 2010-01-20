@@ -142,7 +142,7 @@ public class SerializedRemoteRenderingView extends ASerializedView {
 
 	@Override
 	public String getViewGUIID() {
-		return GLRemoteRendering.VIEW_ID;
+		return GLBucket.VIEW_ID;
 	}
 
 	@Override

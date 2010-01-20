@@ -6,10 +6,10 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.view.scatterplot.RcpGLScatterplotView"
-            icon="resources/icons/scatterplot.png"
-            id="org.caleydo.view.scatterplot"
-            name="Scatterplot">
+            class="org.caleydo.view.radial.RcpGLRadialHierarchyView"
+            icon="resources/icons/radial.png"
+            id="org.caleydo.view.radial"
+            name="Radial Hierarchy">
       </view>
    </extension>
    <extension
@@ -20,8 +20,8 @@
                id="org.caleydo.menu.view"
                label="View">
             <command
-                  commandId="org.caleydo.view.scatterplot.command.openscatterplot"
-                  icon="resources/icons/scatterplot.png"
+                  commandId="org.caleydo.view.radial.command.openradial"
+                  icon="resources/icons/radial.png"
                   style="push">
             </command>
          </menu>
@@ -30,9 +30,9 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.scatterplot.command.handler.OpenScatterplotHandler"
-            id="org.caleydo.view.scatterplot.command.openscatterplot"
-            name="Scatterplot">
+            defaultHandler="org.caleydo.view.radial.command.handler.OpenRadialHierarchyHandler"
+            id="org.caleydo.view.radial.command.openradial"
+            name="Radial Hierarchy">
       </command>
    </extension>
 

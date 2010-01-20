@@ -109,10 +109,10 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Alexander Lex
  * @author Werner Puff
  */
-public class GLRemoteRendering extends AGLView
+public class GLBucket extends AGLView
 		implements
 			ISelectionUpdateHandler,
-			IGLRemoteRenderingBucketView,
+			IGLBucketView,
 			IRemoteRenderingHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.bucket";
@@ -221,14 +221,14 @@ public class GLRemoteRendering extends AGLView
 	/**
 	 * Constructor.
 	 */
-	public GLRemoteRendering(GLCaleydoCanvas glCanvas, final String sLabel,
+	public GLBucket(GLCaleydoCanvas glCanvas, final String sLabel,
 			final IViewFrustum viewFrustum,
 			final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode) {
 
 		super(glCanvas, sLabel, viewFrustum, true);
 
 		viewType = EManagedObjectType.GL_REMOTE_RENDERING;
-		viewID = GLRemoteRendering.VIEW_ID;
+		viewID = GLBucket.VIEW_ID;
 
 		this.layoutMode = layoutMode;
 
