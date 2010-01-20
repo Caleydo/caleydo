@@ -7,6 +7,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.view.parcoords.GLParallelCoordinates;
 import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
+import org.caleydo.view.parcoords.toolbar.ParCoordsToolBarContent;
 
 public class ViewCreator extends AGLViewCreator {
 
@@ -25,5 +26,10 @@ public class ViewCreator extends AGLViewCreator {
 	public ASerializedView createSerializedView() {
 
 		return new SerializedParallelCoordinatesView();
+	}
+	
+	@Override
+	public Object createToolBarContent() {
+		return new ParCoordsToolBarContent();
 	}
 }

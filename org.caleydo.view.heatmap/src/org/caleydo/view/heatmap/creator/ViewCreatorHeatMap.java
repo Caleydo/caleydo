@@ -7,6 +7,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.view.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.SerializedHeatMapView;
+import org.caleydo.view.heatmap.toolbar.HeatMapToolBarContent;
 
 public class ViewCreatorHeatMap extends AGLViewCreator {
 
@@ -25,5 +26,10 @@ public class ViewCreatorHeatMap extends AGLViewCreator {
 	public ASerializedView createSerializedView() {
 
 		return new SerializedHeatMapView();
+	}
+	
+	@Override
+	public Object createToolBarContent() {
+		return new HeatMapToolBarContent();
 	}
 }

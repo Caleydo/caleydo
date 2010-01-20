@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Bookmarking View
-Bundle-SymbolicName: org.caleydo.view.bookmarking
+Bundle-SymbolicName: org.caleydo.view.bookmarking;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.caleydo.view.bookmarking.Activator
 Require-Bundle: org.eclipse.ui,

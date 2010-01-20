@@ -7,6 +7,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.view.scatterplot.GLScatterplot;
 import org.caleydo.view.scatterplot.SerializedScatterplotView;
+import org.caleydo.view.scatterplot.toolbar.ScatterplotToolBarContent;
 
 public class ViewCreator extends AGLViewCreator {
 
@@ -25,5 +26,10 @@ public class ViewCreator extends AGLViewCreator {
 	public ASerializedView createSerializedView() {
 
 		return new SerializedScatterplotView();
+	}
+	
+	@Override
+	public Object createToolBarContent() {
+		return new ScatterplotToolBarContent();
 	}
 }

@@ -6,30 +6,13 @@ import java.util.List;
 
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.view.creator.IViewCreator;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.rcp.Activator;
 import org.caleydo.view.base.rcp.CaleydoRCPViewPart;
-import org.caleydo.view.base.rcp.RcpGLGlyphView;
 import org.caleydo.view.base.swt.toolbar.content.AToolBarContent;
-import org.caleydo.view.base.swt.toolbar.content.GlyphToolBarContent;
-import org.caleydo.view.bucket.GLRemoteRendering;
-import org.caleydo.view.bucket.toolbar.RemoteRenderingToolBarContent;
-import org.caleydo.view.dataflipper.GLDataFlipper;
-import org.caleydo.view.dataflipper.toolbar.DataFlipperToolBarContent;
-import org.caleydo.view.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.GLHierarchicalHeatMap;
-import org.caleydo.view.heatmap.toolbar.HeatMapToolBarContent;
-import org.caleydo.view.heatmap.toolbar.HierarchicalHeatMapToolBarContent;
-import org.caleydo.view.histogram.GLHistogram;
-import org.caleydo.view.parcoords.GLParallelCoordinates;
-import org.caleydo.view.parcoords.toolbar.ParCoordsToolBarContent;
-import org.caleydo.view.radial.GLRadialHierarchy;
-import org.caleydo.view.radial.toolbar.RadialHierarchyToolBarContent;
-import org.caleydo.view.scatterplot.GLScatterplot;
-import org.caleydo.view.scatterplot.toolbar.ScatterplotToolBarContent;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IViewPart;
@@ -47,8 +30,8 @@ public class ToolBarContentFactory {
 	/** reference to singleton instance */
 	private static ToolBarContentFactory toolBarContentFactory = null;
 
-	/** Maps views to its {@link ToolBarInfo} */
-	private HashMap<Class<? extends IView>, ToolBarInfo> toolBarInfos;
+	/** Maps view IDs to its {@link ToolBarInfo} */
+	private HashMap<String, ToolBarInfo> toolBarInfos;
 
 	/** Hidden default constructor. */
 	public ToolBarContentFactory() {
@@ -73,80 +56,41 @@ public class ToolBarContentFactory {
 	 * Initializes an instance of this class. Must be called before the first usage.
 	 */
 	public void init() {
-		toolBarInfos = new HashMap<Class<? extends IView>, ToolBarInfo>();
+		toolBarInfos = new HashMap<String, ToolBarInfo>();
 
-		// FIXME wpuff: mapping should be read from config file (use wiring framework?)
 		ToolBarInfo info;
+		
+		// TODO glyph, clinicalparcoords, dataflipper
 
-		info = new ToolBarInfo();
-		info.viewClass = GLHeatMap.class;
-		info.contentClass = HeatMapToolBarContent.class;
-		info.rcpID = GLHeatMap.VIEW_ID;
-		info.ignored = false;
-		toolBarInfos.put(info.viewClass, info);
+		 info = new ToolBarInfo();
+		 info.viewID = "org.caleydo.view.heatmap";
+		 info.ignored = false;
+		 toolBarInfos.put(info.viewID, info);
 
-		info = new ToolBarInfo();
-		info.viewClass = GLHierarchicalHeatMap.class;
-		info.contentClass = HierarchicalHeatMapToolBarContent.class;
-		info.rcpID = GLHierarchicalHeatMap.VIEW_ID;
-		info.ignored = false;
-		toolBarInfos.put(info.viewClass, info);
-
-		info = new ToolBarInfo();
-		info.viewClass = GLParallelCoordinates.class;
-		info.contentClass = ParCoordsToolBarContent.class;
-		info.rcpID = GLParallelCoordinates.VIEW_ID;
-		info.ignored = false;
-		toolBarInfos.put(info.viewClass, info);
-
-		info = new ToolBarInfo();
-		info.viewClass = GLRemoteRendering.class;
-		info.contentClass = RemoteRenderingToolBarContent.class;
-		info.rcpID = GLRemoteRendering.VIEW_ID;
-		info.ignored = false;
-		toolBarInfos.put(info.viewClass, info);
-
-		info = new ToolBarInfo();
-		info.viewClass = GLDataFlipper.class;
-		info.contentClass = DataFlipperToolBarContent.class;
-		info.rcpID = GLDataFlipper.VIEW_ID;
-		info.ignored = false;
-		toolBarInfos.put(info.viewClass, info);
-
-		// info = new ToolBarInfo();
-		// info.viewClass = ; // FIXME gl-view class of clinical par coords
-		// info.contentClass = ClinicalParCoordsToolBarContent.class;
-		// info.rcpID = ClinicalGLParCoordsView.ID;
-		// info.ignored = false;
-		// toolBarInfos.put(info.viewClass, info);
-
-		info = new ToolBarInfo();
-		info.viewClass = GLGlyph.class;
-		info.contentClass = GlyphToolBarContent.class;
-		info.rcpID = RcpGLGlyphView.ID;
-		info.ignored = false;
-		toolBarInfos.put(info.viewClass, info);
-
-		info = new ToolBarInfo();
-		info.viewClass = GLHistogram.class;
-		info.contentClass = null;
-		info.rcpID = GLHistogram.VIEW_ID;
-		info.ignored = true;
-		toolBarInfos.put(info.viewClass, info);
-
-		info = new ToolBarInfo();
-		info.viewClass = GLRadialHierarchy.class;
-		info.contentClass = RadialHierarchyToolBarContent.class;
-		info.rcpID = GLRadialHierarchy.VIEW_ID;
-		info.ignored = false;
-		toolBarInfos.put(info.viewClass, info);
-
-		info = new ToolBarInfo();
-		info.viewClass = GLScatterplot.class;
-		info.contentClass = ScatterplotToolBarContent.class;
-		info.rcpID = GLScatterplot.VIEW_ID;
-		info.ignored = false;
-		toolBarInfos.put(info.viewClass, info);
+		 info = new ToolBarInfo();
+		 info.viewID = "org.caleydo.view.heatmap.hierarchical";
+		 info.ignored = false;
+		 toolBarInfos.put(info.viewID, info);
+		
+		 info = new ToolBarInfo();
+		 info.viewID = "org.caleydo.view.parcoords";
+		 info.ignored = false;
+		 toolBarInfos.put(info.viewID, info);
+		
+		 info = new ToolBarInfo();
+		 info.viewID = "org.caleydo.view.bucket";
+		 info.ignored = false;
+		 toolBarInfos.put(info.viewID, info);
+		
+		 info = new ToolBarInfo();
+		 info.viewID = "org.caleydo.view.radial";
+		 info.ignored = false;
+		 toolBarInfos.put(info.viewID, info);
+		
+		 info = new ToolBarInfo();
+		 info.viewID = "org.caleydo.view.scatterplot";
+		 info.ignored = false;
+		 toolBarInfos.put(info.viewID, info);
 	}
 
 	/**
@@ -256,9 +200,9 @@ public class ToolBarContentFactory {
 	private CaleydoRCPViewPart getRelatedViewPart(IView view) {
 
 		IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
-		ToolBarInfo info = toolBarInfos.get(view.getClass());
+		ToolBarInfo info = toolBarInfos.get(view.getViewID());
 		if (info != null) {
-			String rcpViewPartID = info.rcpID;
+			String rcpViewPartID = info.viewID;
 			for (IWorkbenchWindow window : windows) {
 				IWorkbenchPage[] pages = window.getPages();
 				for (IWorkbenchPage page : pages) {
@@ -276,24 +220,19 @@ public class ToolBarContentFactory {
 
 	private AToolBarContent getContent(IView view) {
 		AToolBarContent content = null;
-		ToolBarInfo info = toolBarInfos.get(view.getClass());
+		ToolBarInfo info = toolBarInfos.get(view.getViewID());
 		if (info != null) {
-			Class<?> contentClass = info.contentClass;
-			try {
-				content = (AToolBarContent) contentClass.newInstance();
-				content.setTargetViewData(view.getSerializableRepresentation());
-				if (view instanceof AGLView) {
-					if (((AGLView) view).rendersContextOnly()) {
-						content.setRenderType(AToolBarContent.CONTEXT_ONLY_RENDERING);
-					}
+			IViewCreator viewCreator =
+				GeneralManager.get().getViewGLCanvasManager().getViewCreator(info.viewID);
+			if (viewCreator == null)
+				return null;
+
+			content = (AToolBarContent) viewCreator.createToolBarContent();
+			content.setTargetViewData(view.getSerializableRepresentation());
+			if (view instanceof AGLView) {
+				if (((AGLView) view).rendersContextOnly()) {
+					content.setRenderType(AToolBarContent.CONTEXT_ONLY_RENDERING);
 				}
-			}
-			catch (Exception e) {
-				GeneralManager.get().getLogger().log(
-					new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-						"No toolbar content providing class known for " + view
-							+ "; add its ToolBarInfo to ToolBarContentFactory"));
-				// e.printStackTrace();
 			}
 		}
 
@@ -312,10 +251,8 @@ public class ToolBarContentFactory {
 		boolean ignored = false;
 		for (int viewID : viewIDs) {
 			ToolBarInfo info;
-			IView view;
 			try {
-				view = retrieveView(viewID);
-				info = toolBarInfos.get(view.getClass());
+				info = toolBarInfos.get(viewID);
 				if (info != null) {
 					ignored |= info.ignored;
 				}

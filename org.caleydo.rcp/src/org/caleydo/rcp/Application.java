@@ -42,6 +42,7 @@ import org.caleydo.rcp.wizard.project.DataImportWizard;
 import org.caleydo.view.base.EStartViewType;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -148,7 +149,7 @@ public class Application
 		parseApplicationArguments(map);
 
 		prefStore = GeneralManager.get().getPreferenceStore();
-
+		
 		Display display = PlatformUI.createDisplay();
 		Shell shell = new Shell(display);
 

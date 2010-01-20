@@ -8,6 +8,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
 import org.caleydo.view.bucket.GLRemoteRendering;
 import org.caleydo.view.bucket.SerializedRemoteRenderingView;
+import org.caleydo.view.bucket.toolbar.RemoteRenderingToolBarContent;
 
 public class ViewCreator extends AGLViewCreator {
 
@@ -26,5 +27,10 @@ public class ViewCreator extends AGLViewCreator {
 	public ASerializedView createSerializedView() {
 
 		return new SerializedRemoteRenderingView();
+	}
+	
+	@Override
+	public Object createToolBarContent() {
+		return new RemoteRenderingToolBarContent();
 	}
 }

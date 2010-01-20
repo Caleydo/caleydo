@@ -7,6 +7,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.view.radial.GLRadialHierarchy;
 import org.caleydo.view.radial.SerializedRadialHierarchyView;
+import org.caleydo.view.radial.toolbar.RadialHierarchyToolBarContent;
 
 public class ViewCreator extends AGLViewCreator {
 
@@ -25,5 +26,10 @@ public class ViewCreator extends AGLViewCreator {
 	public ASerializedView createSerializedView() {
 
 		return new SerializedRadialHierarchyView();
+	}
+	
+	@Override
+	public Object createToolBarContent() {
+		return new RadialHierarchyToolBarContent();
 	}
 }

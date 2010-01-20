@@ -1,5 +1,7 @@
 package org.caleydo.view.bookmarking;
 
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.view.bookmarking.creator.ViewCreator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -31,8 +33,8 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		// GeneralManager.get().getViewGLCanvasManager().addGLViewCreator(
-		// new ViewCreator(SerializedScatterplotView.GUI_ID));
+		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
+				new ViewCreator(PLUGIN_ID));
 	}
 
 	/*

@@ -18,4 +18,15 @@ public abstract class AViewCreator
 	public String getViewType() {
 		return viewType;
 	}
+	
+	/**
+	 * If a toolbar is available for this view this method is overwritten in the concrete 
+	 * subcluss. There the toolbar object is returned.
+	 */
+	@Override
+	public Object createToolBarContent() {
+		
+		// No toolbar available for this view
+		return null;
+	}
 }

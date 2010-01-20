@@ -2,6 +2,7 @@ package org.caleydo.view.bucket;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.view.bucket.creator.ViewCreator;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -33,8 +34,12 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		 GeneralManager.get().getViewGLCanvasManager().addViewCreator(
-				 new ViewCreator(PLUGIN_ID));
+		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
+				new ViewCreator(PLUGIN_ID));
+
+		// Force bundle view plugin bookmarking to be loaded because it is not
+		// created via RCP
+		Platform.getBundle("org.caleydo.view.bookmarking").start();
 	}
 
 	/*

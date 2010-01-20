@@ -5,6 +5,7 @@ import org.caleydo.view.heatmap.creator.ViewCreatorDendrogramHorizontal;
 import org.caleydo.view.heatmap.creator.ViewCreatorDendrogramVertical;
 import org.caleydo.view.heatmap.creator.ViewCreatorHeatMap;
 import org.caleydo.view.heatmap.creator.ViewCreatorHierarchicalHeatMap;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -47,6 +48,9 @@ public class Activator extends AbstractUIPlugin {
 		
 		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
 				new ViewCreatorDendrogramVertical(GLDendrogram.VIEW_ID+".vertical"));
+		
+		// Force bundle view plugin bookmarking to be loaded because it is not created via RCP
+		Platform.getBundle("org.caleydo.view.bookmarking").start();
 	}
 
 	/*
