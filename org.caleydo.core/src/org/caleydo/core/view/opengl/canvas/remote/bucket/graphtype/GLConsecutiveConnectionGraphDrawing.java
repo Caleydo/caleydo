@@ -181,15 +181,4 @@ public class GLConsecutiveConnectionGraphDrawing
 		VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
 		visLinkScene.renderLines(gl);
 	}
-	
-	private int findHeatMap(){
-		if (focusLevel.getElementByPositionIndex(0).getGLView() instanceof GLHeatMap)
-			return focusLevel.getElementByPositionIndex(0).getGLView().getID();
-		else
-			for (int stack = 0; stack < stackLevel.getCapacity(); stack++) {
-				if (stackLevel.getElementByPositionIndex(stack).getGLView() instanceof GLHeatMap)
-					return stackLevel.getElementByPositionIndex(stack).getGLView().getID();
-			}
-		return -1;
-	}
 }
