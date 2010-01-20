@@ -184,18 +184,8 @@ public class GLScatterplot extends AStorageBasedView {
 		initAxisComboEvent.setAxisNames(this.getAxisString());
 		GeneralManager.get().getEventPublisher().triggerEvent(
 				initAxisComboEvent);
-
-		// // Register keyboard listener to GL canvas
-		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new
-		// Runnable() {
-		// public void run() {
-		// parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
-		// }
-		// });
-
-		// TODO: Remove when Toolbar working again
-		//POINTSIZE = POINTSIZE / 1.0f;
-		//POINTSTYLE = EScatterPointType.CROSS;
+	//	detailLevel = EDetailLevel.LOW;
+		detailLevel = EDetailLevel.HIGH;
 	}
 
 	@Override
@@ -264,8 +254,8 @@ public class GLScatterplot extends AStorageBasedView {
 	@Override
 	public void displayLocal(GL gl) {
 
-		// if (set == null)
-		// return;
+		if (set == null)
+		 return;
 		//
 		// if (bIsTranslationAnimationActive) {
 		// doTranslation();
@@ -280,46 +270,40 @@ public class GLScatterplot extends AStorageBasedView {
 
 		// if (alHits == null && alHits.size() == 0) {
 
-		GLMouseListener glMouseListener = getParentGLCanvas()
-				.getGLMouseListener();
-
-		if (glMouseListener.wasMouseDragged()) {
-			bRectangleSelection = true;
-			Point pDragEndPoint = glMouseListener.getPickedPoint();
-			Point pDragStartPoint = glMouseListener.getPickedPointDragStart();
-
-			// fDragStartPoint =
-			// GLCoordinateUtils.convertWindowToGLCoordinates(1024, 768,
-			// pDragStartPoint.x, pDragStartPoint.y,
-			// renderStyle.getRenderWidth(), renderStyle.getRenderHeight());
-			// fDragEndPoint =
-			// GLCoordinateUtils.convertWindowToGLCoordinates(1024, 768,
-			// pDragEndPoint.x, pDragEndPoint.y,
-			// renderStyle.getRenderWidth(), renderStyle.getRenderHeight());
-
-			fDragStartPoint = GLCoordinateUtils
-					.convertWindowCoordinatesToWorldCoordinates(gl,
-							pDragStartPoint.x, pDragStartPoint.y);
-			fDragEndPoint = GLCoordinateUtils
-					.convertWindowCoordinatesToWorldCoordinates(gl,
-							pDragEndPoint.x, pDragEndPoint.y);
-
-			gl.glNewList(iGLDisplayListIndexBrush, GL.GL_COMPILE);
-			DrawRectangularSelection(gl);
-			gl.glEndList();
-		}
-		if (glMouseListener.wasMouseReleased() && bRectangleSelection) {
-			bRectangleSelection = false;
-			setDisplayListDirty();
-			UpdateSelection();
-			gl.glDeleteLists(iGLDisplayListIndexBrush, 1);
-			bUpdateSelection = true;
-
-		}
-		// };
-
+		if (detailLevel == EDetailLevel.HIGH)
+		{	
+			GLMouseListener glMouseListener = getParentGLCanvas()
+					.getGLMouseListener();
+	
+			if (glMouseListener.wasMouseDragged()) {
+				bRectangleSelection = true;
+				
+				Point pDragEndPoint = glMouseListener.getPickedPoint();
+				Point pDragStartPoint = glMouseListener.getPickedPointDragStart();
+			
+	
+				fDragStartPoint = GLCoordinateUtils
+						.convertWindowCoordinatesToWorldCoordinates(gl,
+								pDragStartPoint.x, pDragStartPoint.y);
+				fDragEndPoint = GLCoordinateUtils
+						.convertWindowCoordinatesToWorldCoordinates(gl,
+								pDragEndPoint.x, pDragEndPoint.y);
+	
+				gl.glNewList(iGLDisplayListIndexBrush, GL.GL_COMPILE);
+				DrawRectangularSelection(gl);
+				gl.glEndList();
+			}
+			if (glMouseListener.wasMouseReleased() && bRectangleSelection) {
+				bRectangleSelection = false;
+				setDisplayListDirty();
+				UpdateSelection();
+				gl.glDeleteLists(iGLDisplayListIndexBrush, 1);
+				bUpdateSelection = true;
+			}
+		
 		pickingManager.handlePicking(this, gl);
-
+		}
+		
 		if (bIsDisplayListDirtyLocal) {
 
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
@@ -327,14 +311,10 @@ public class GLScatterplot extends AStorageBasedView {
 
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
 	
 		display(gl);
 		checkForHits(gl);
-
-		// int test1 = contentSelectionManager.getNumberOfElements();
-		// int test2 = storageSelectionManager.getNumberOfElements();
-
+	
 		if (eBusyModeState != EBusyModeState.OFF)
 			renderBusyMode(gl);
 
@@ -375,11 +355,14 @@ public class GLScatterplot extends AStorageBasedView {
 		// clipToFrustum(gl);
 
 		gl.glCallList(iGLDisplayListToCall);
-		gl.glCallList(iGLDisplayListIndexBrush);
-		gl.glCallList(iGLDisplayListIndexCoord);
-		gl.glCallList(iGLDisplayListIndexMouseOver);
+		if (detailLevel == EDetailLevel.HIGH)
+		{
+			gl.glCallList(iGLDisplayListIndexBrush);
+			gl.glCallList(iGLDisplayListIndexCoord);
+			gl.glCallList(iGLDisplayListIndexMouseOver);
+			
+		}
 		gl.glCallList(iGLDisplayListIndexSelection);
-
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 		// if (!isRenderedRemote())
 		// contextMenu.render(gl, this);
@@ -419,10 +402,12 @@ public class GLScatterplot extends AStorageBasedView {
 			
 		if (bUpdateAll)
 		{
-			
-		 gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
-		 renderCoordinateSystem(gl);			
-		 gl.glEndList();				
+		 if (detailLevel == EDetailLevel.HIGH)
+		 {
+		  gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
+		  renderCoordinateSystem(gl);			
+		  gl.glEndList();
+		 }
 								
 		 gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 		 gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
@@ -623,6 +608,12 @@ public class GLScatterplot extends AStorageBasedView {
 
 		float x_2 = 0.0f;
 		float y_2 = 0.0f;
+		
+		if (detailLevel != EDetailLevel.HIGH)
+		{
+			bRender2Axis=false;
+			POINTSTYLE = POINTSTYLE.POINT;
+		}
 
 		for (Integer iContentIndex : contentVA) {
 
@@ -1143,10 +1134,10 @@ public class GLScatterplot extends AStorageBasedView {
 						break;
 					case DRAGGED :
 						eSelectionType = ESelectionType.SELECTION;
-						// break;
+						// break;						
 					default :
 						return;
-
+								
 				}
 
 				createContentSelection(eSelectionType, iExternalID);
@@ -1168,7 +1159,6 @@ public class GLScatterplot extends AStorageBasedView {
 				bUpdateSelection = true;
 				return;
 			}
-
 		}
 
 		SelectionCommand command = new SelectionCommand(
@@ -1512,6 +1502,14 @@ public void upDownSelect(boolean bDownIsTrue) {
 		else bRender2Axis = true;
 		bUpdateAll=true;
 		setDisplayListDirty();
+		
+	}
+
+	public void toggleDetailLevel() 
+	{
+		if (detailLevel == EDetailLevel.HIGH)
+			detailLevel = EDetailLevel.LOW;
+		else detailLevel = EDetailLevel.HIGH;
 		
 	}
 

@@ -34,6 +34,13 @@ public class GLScatterPlotKeyListener
 			glScatterplot.togglePointType();
 			return;
 		}
+		
+		if (event.character == 'd') 
+		{
+			glScatterplot.toggleDetailLevel();
+			return;
+		}
+		
 						
 		switch (event.keyCode) {
 			case SWT.ARROW_UP:
