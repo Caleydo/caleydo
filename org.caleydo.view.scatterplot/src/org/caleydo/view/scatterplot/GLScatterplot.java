@@ -75,6 +75,7 @@ import org.caleydo.view.scatterplot.listener.SetPointSizeListener;
 import org.caleydo.view.scatterplot.listener.TogglePointTypeListener;
 import org.caleydo.view.scatterplot.listener.XAxisSelectorListener;
 import org.caleydo.view.scatterplot.listener.YAxisSelectorListener;
+import org.caleydo.view.scatterplot.listener.GLScatterPlotKeyListener;
 import org.caleydo.view.scatterplot.renderstyle.EScatterPointType;
 import org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle;
 
@@ -107,10 +108,13 @@ public class GLScatterplot extends AStorageBasedView {
 
 	private ArrayList<Float> fAlXDistances;
 
+	
 	boolean bUseDetailLevel = true;
 
-	boolean bUpdateSelection = false;
-	boolean bRender2Axis = false;
+	private boolean bUpdateSelection = false;
+	private boolean bUpdateAll = false;
+	private boolean bRender2Axis = false;
+
 
 	int iCurrentMouseOverElement = -1;
 
@@ -165,7 +169,7 @@ public class GLScatterplot extends AStorageBasedView {
 
 		fAlXDistances = new ArrayList<Float>();
 
-		// glKeyListener = new GLScatterPlotKeyListener(this);
+		glKeyListener = new GLScatterPlotKeyListener(this);
 	}
 
 	@Override
@@ -190,8 +194,8 @@ public class GLScatterplot extends AStorageBasedView {
 		// });
 
 		// TODO: Remove when Toolbar working again
-		POINTSIZE = POINTSIZE / 1.0f;
-		POINTSTYLE = EScatterPointType.CROSS;
+		//POINTSIZE = POINTSIZE / 1.0f;
+		//POINTSTYLE = EScatterPointType.CROSS;
 	}
 
 	@Override
@@ -211,6 +215,13 @@ public class GLScatterplot extends AStorageBasedView {
 		iGLDisplayListIndexCoord = 3;
 		iGLDisplayListIndexMouseOver = 4;
 		iGLDisplayListIndexSelection = 5;
+		
+		// Register keyboard listener to GL canvas
+		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
@@ -229,6 +240,8 @@ public class GLScatterplot extends AStorageBasedView {
 								.addKeyListener(glKeyListener);
 					}
 				});
+		
+		
 
 		bRenderStorageHorizontally = false;
 
@@ -315,11 +328,7 @@ public class GLScatterplot extends AStorageBasedView {
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
-		if (bUpdateSelection) {
-			bUpdateSelection = false;
-			buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
-		}
-
+	
 		display(gl);
 		checkForHits(gl);
 
@@ -387,34 +396,51 @@ public class GLScatterplot extends AStorageBasedView {
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 
-		if (bHasFrustumChanged) {
+		if (bHasFrustumChanged) 
+		{
 			bHasFrustumChanged = false;
+			bUpdateAll = true;
+		}	
+		
+		// TODO remove l8ter when Keylistener or Toolbar working again  
+//		bRender2Axis=false;
+//		
+//		SELECTED_X_AXIS = 0;
+//		SELECTED_Y_AXIS = 1;
+//		SELECTED_X_AXIS_2 = 0;
+//		SELECTED_Y_AXIS_2 = 2;
 
-			gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
-			renderCoordinateSystem(gl);
-			gl.glEndList();
-
-			// TODO remove l8ter when Keylistener or Toolbar working again
-			bRender2Axis = false;
-
-			SELECTED_X_AXIS = 0;
-			SELECTED_Y_AXIS = 1;
-			SELECTED_X_AXIS_2 = 0;
-			SELECTED_Y_AXIS_2 = 2;
-
-			gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-			gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
-			RenderScatterPoints(gl);
-			gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
-			gl.glEndList();
-		} else {
-			gl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
-			gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
-			RenderMouseOver(gl);
-			gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
-			gl.glEndList();
-
+		
+		if (bUpdateSelection || bUpdateAll)
+		{
+			bUpdateSelection=false;			
+			buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
 		}
+			
+		if (bUpdateAll)
+		{
+			
+		 gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
+		 renderCoordinateSystem(gl);			
+		 gl.glEndList();				
+								
+		 gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		 gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
+		 RenderScatterPoints(gl);
+		 gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
+		 gl.glEndList();
+		 
+		 bUpdateAll = false;
+		}
+			 
+			 	
+		 gl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
+		 gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
+		 RenderMouseOver(gl);
+		 gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
+		 gl.glEndList();
+		 		 		 		 		 		 
+
 
 	}
 
@@ -616,8 +642,13 @@ public class GLScatterplot extends AStorageBasedView {
 			y = ynormalized * YScale;
 			float[] fArMappingColor = colorMapper.getColor(Math.max(
 					xnormalized, ynormalized));
+			EScatterPointType tmpPoint = POINTSTYLE;
 			if (bRender2Axis)
-				fArMappingColor = new float[]{1.0f, 0.0f, 0.0f};
+			{
+				fArMappingColor = new float[]{1.0f, 0.0f, 0.0f};			    
+			    POINTSTYLE = POINTSTYLE.POINT;
+			}
+			    
 			DrawPointPrimitive(gl, x, y, 0.0f, // z
 					fArMappingColor, 1.0f,// fOpacity
 					iContentIndex, 1.0f); // scale
@@ -630,9 +661,7 @@ public class GLScatterplot extends AStorageBasedView {
 				x_2 = xnormalized * XScale;
 				y_2 = ynormalized * YScale;
 				fArMappingColor = new float[]{0.0f, 1.0f, 0.0f};
-				EScatterPointType tmpPoint = POINTSTYLE;
-				POINTSTYLE = POINTSTYLE.CIRCLE;
-
+								
 				DrawPointPrimitive(gl, x_2, y_2, 0.0f, // z
 						fArMappingColor, 1.0f,// fOpacity
 						iContentIndex, 1.0f); // scale
@@ -703,8 +732,7 @@ public class GLScatterplot extends AStorageBasedView {
 		gl.glEnd();
 		z = +2.5f;
 
-		gl
-				.glColor3f(fArMappingColor[0], fArMappingColor[1],
+		gl.glColor3f(fArMappingColor[0], fArMappingColor[1],
 						fArMappingColor[2]);
 
 		DrawPointPrimitive(gl, x, y, z, // z
@@ -970,6 +998,7 @@ public class GLScatterplot extends AStorageBasedView {
 				break;
 			default :
 		}
+		bUpdateAll = true;
 		setDisplayListDirty();
 	}
 
@@ -1184,6 +1213,7 @@ public class GLScatterplot extends AStorageBasedView {
 		elementSelectionManager.clearSelections();
 		fDragStartPoint = new float[3];
 		fDragEndPoint = new float[3];
+		bUpdateAll = true;
 		setDisplayListDirty();
 	}
 
@@ -1267,6 +1297,7 @@ public class GLScatterplot extends AStorageBasedView {
 	@Override
 	protected void reactOnExternalSelection(boolean scrollToSelection) {
 		bUpdateSelection = true;
+		setDisplayListDirty();
 		// UpdateMouseOverfromExternal();
 	}
 
@@ -1430,6 +1461,7 @@ public class GLScatterplot extends AStorageBasedView {
 	public void setXAxis(int iAxisIndex) {
 		if (SELECTED_X_AXIS != iAxisIndex) {
 			SELECTED_X_AXIS = iAxisIndex;
+			bUpdateAll=true;
 			setDisplayListDirty();
 		}
 
@@ -1438,6 +1470,7 @@ public class GLScatterplot extends AStorageBasedView {
 	public void setYAxis(int iAxisIndex) {
 		if (SELECTED_Y_AXIS != iAxisIndex) {
 			SELECTED_Y_AXIS = iAxisIndex;
+			bUpdateAll=true;
 			setDisplayListDirty();
 		}
 
@@ -1446,36 +1479,40 @@ public class GLScatterplot extends AStorageBasedView {
 	public void setPointSize(int pointSize) {
 		if (renderStyle.getPointSize() != pointSize) {
 			renderStyle.setPointSize(pointSize);
+			bUpdateAll=true;
 			setDisplayListDirty();
 		}
 	}
 
-	public void upDownSelect(boolean bUpIsTrue) {
-
-		if (bUpIsTrue)
-			SELECTED_X_AXIS++;
-		else
-			SELECTED_X_AXIS--;
-		if (SELECTED_X_AXIS < 0)
-			SELECTED_X_AXIS = 0;
+public void upDownSelect(boolean bDownIsTrue) {
+		
+		int tmpAxis=SELECTED_Y_AXIS;
+		if (bDownIsTrue) tmpAxis++;
+		else tmpAxis--;
+		if (tmpAxis<0) tmpAxis=0;
+		if ((tmpAxis+1)>=storageVA.size()) tmpAxis=SELECTED_Y_AXIS;
+		SELECTED_Y_AXIS=tmpAxis;
+		bUpdateAll=true;
+		setDisplayListDirty();
 	}
 
-	public void leftRightSelect(boolean bLeftIsTrue) {
-		if (bLeftIsTrue)
-			SELECTED_Y_AXIS++;
-		else
-			SELECTED_Y_AXIS--;
-		if (SELECTED_Y_AXIS < 0)
-			SELECTED_Y_AXIS = 0;
-
+	public void leftRightSelect(boolean bRightIsTrue) {
+		int tmpAxis=SELECTED_X_AXIS;
+		if (bRightIsTrue) tmpAxis++;
+			else tmpAxis--;
+		if (tmpAxis<0) tmpAxis=0;
+		if ((tmpAxis+1)>=storageVA.size()) tmpAxis=SELECTED_X_AXIS;
+		SELECTED_X_AXIS=tmpAxis;
+		bUpdateAll=true;
+		setDisplayListDirty();	
 	}
 
 	public void toggleSpecialAxisMode() {
-		if (bRender2Axis)
-			bRender2Axis = false;
-		else
-			bRender2Axis = true;
-
+		if (bRender2Axis) bRender2Axis = false;
+		else bRender2Axis = true;
+		bUpdateAll=true;
+		setDisplayListDirty();
+		
 	}
 
 }
