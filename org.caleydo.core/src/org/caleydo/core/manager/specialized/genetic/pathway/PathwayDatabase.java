@@ -5,7 +5,12 @@ import java.io.Serializable;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
+import static org.caleydo.core.manager.IGeneralManager.CALEYDO_FOLDER;
+import static org.caleydo.core.manager.IGeneralManager.CALEYDO_FOLDER_TEMPLATE;
+import static org.caleydo.core.manager.IGeneralManager.USER_HOME_TEMPLATE;
+
 import org.caleydo.core.manager.usecase.EDataDomain;
+
 
 /**
  * Class that holds information about a specific pathway database.
@@ -14,7 +19,6 @@ import org.caleydo.core.manager.usecase.EDataDomain;
  */
 public class PathwayDatabase
 	implements Serializable {
-	private static final String USER_HOME = "user.home";
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,19 +40,16 @@ public class PathwayDatabase
 		this.sImagePath = sImagePath;
 		this.sImageMapPath = sImageMapPath;
 
-		String sUserHomePath = System.getProperty(USER_HOME);
+		String sUserHomePath = System.getProperty(USER_HOME_TEMPLATE);
 
-		if (sXMLPath.startsWith(USER_HOME)) {
-			this.sXMLPath = sXMLPath.replace(USER_HOME, sUserHomePath);
-		}
+		this.sXMLPath = sXMLPath.replace(USER_HOME_TEMPLATE, sUserHomePath);
+		this.sXMLPath = this.sXMLPath.replace(CALEYDO_FOLDER_TEMPLATE, CALEYDO_FOLDER);
 
-		if (sImagePath.startsWith(USER_HOME)) {
-			this.sImagePath = sImagePath.replace(USER_HOME, sUserHomePath);
-		}
+		this.sImagePath = sImagePath.replace(USER_HOME_TEMPLATE, sUserHomePath);
+		this.sImagePath = this.sImagePath.replace(CALEYDO_FOLDER_TEMPLATE, CALEYDO_FOLDER);
 
-		if (sImageMapPath.startsWith(USER_HOME)) {
-			this.sImageMapPath = sImageMapPath.replace(USER_HOME, sUserHomePath);
-		}
+		this.sImageMapPath = sImageMapPath.replace(USER_HOME_TEMPLATE, sUserHomePath);
+		this.sImageMapPath = this.sImageMapPath.replace(CALEYDO_FOLDER_TEMPLATE, CALEYDO_FOLDER);
 
 		if (type == EPathwayDatabaseType.KEGG) {
 			EOrganism eOrganism =

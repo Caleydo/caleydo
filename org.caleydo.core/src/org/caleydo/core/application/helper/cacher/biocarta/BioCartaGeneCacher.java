@@ -4,6 +4,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import de.phleisch.app.itsucks.constants.ApplicationConstants;
@@ -61,7 +63,7 @@ public class BioCartaGeneCacher
 		DownloadJobFactory jobFactory = (DownloadJobFactory) context.getBean("JobFactory");
 
 		String sOutputFileName =
-			System.getProperty("user.home") + System.getProperty("file.separator") + "/.caleydo";
+			System.getProperty("user.home") + System.getProperty("file.separator") + IGeneralManager.CALEYDO_FOLDER;
 
 		// create an initial job
 		UrlDownloadJob job = jobFactory.createDownloadJob();

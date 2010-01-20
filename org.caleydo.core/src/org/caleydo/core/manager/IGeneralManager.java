@@ -7,6 +7,7 @@ import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.IDCreator;
+import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
@@ -37,9 +38,17 @@ public interface IGeneralManager {
 
 	public static final String PLUGIN_ID = "org.caleydo.core";
 
-	public static final String USER_HOME = "user.home";
+	public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
+	public static final String USER_HOME_TEMPLATE = "user.home";
+	/**
+	 * The template for the concrete caleydo folder, ie CALEYDO_FOLDER. This is used for example in XML files
+	 * and is then replaced with the concrete folder
+	 */
+	public static final String CALEYDO_FOLDER_TEMPLATE = "caleydo.folder";
+	public static final String CALEYDO_FOLDER = ".caleydo_" + VERSION;
 	public static final String CALEYDO_HOME_PATH =
-		System.getProperty(USER_HOME) + File.separator + ".caleydo" + File.separator;
+		System.getProperty(USER_HOME_TEMPLATE) + File.separator + CALEYDO_FOLDER + File.separator;
+	public static final String USER_HOME = "user.home";
 
 	public static final String sDelimiter_Paser_DataItemBlock = "@";
 	public static final String sDelimiter_Parser_DataItems = " ";
@@ -106,17 +115,31 @@ public interface IGeneralManager {
 
 	public TrackDataProvider getTrackDataProvider();
 
-	/**
-	 * Returns the current use case. The use case determines which views are showing what kind of data and
-	 * which data set is currently in use.
-	 */
+//	/**
+//	 * Returns the current use case. The use case determines which views are showing what kind of data and
+//	 * which data set is currently in use.
+//	 */
+//	public IUseCase getUseCase();
+
+//	/**
+//	 * Set a different use case. The use case changes the behavior of the views and its loaded data.
+//	 * 
+//	 * @param useCase
+//	 *            Returns the current use case. The use case determines which views are showing what kind of
+//	 *            data and which data set is currently in use.
+//	 */
+//
+//	public void setUseCase(IUseCase useCase);
+
 	public IUseCase getUseCase(EDataDomain useCaseType);
 
-	/**
-	 * Returns all use cases that are currently registered.
-	 * 
-	 * @return
-	 */
+//	/**
+//	 * Returns all use cases that are currently registered.
+//	 * 
+//	 * @return
+//	 */
+//	public ClinicalUseCase getClinicalUseCase();
+
 	public Collection<IUseCase> getAllUseCases();
 
 	/**

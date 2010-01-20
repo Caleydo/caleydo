@@ -8,6 +8,7 @@ import java.net.URL;
 import org.caleydo.core.application.helper.PathwayListGenerator;
 import org.caleydo.core.application.helper.cacher.APathwayCacher;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
@@ -108,7 +109,7 @@ public class BioCartaPathwayCacher
 		DownloadJobFactory jobFactory = (DownloadJobFactory) context.getBean("JobFactory");
 
 		String sOutputFileName =
-			System.getProperty("user.home") + System.getProperty("file.separator") + "/.caleydo";
+			System.getProperty("user.home") + System.getProperty("file.separator") + IGeneralManager.CALEYDO_FOLDER;
 
 		// create an initial job
 		UrlDownloadJob job = jobFactory.createDownloadJob();
