@@ -451,17 +451,17 @@ public class Application
 		initializedStartViews = new ArrayList<String>();
 		for (String viewID : startViews) {
 
-			// // Force plugins of start views to load
-			// try {
-			// if (viewID.contains("hierarchical"))
-			// Platform.getBundle(viewID.replace(".hierarchical", "")).start();
-			// else
-			// Platform.getBundle(viewID).start();
-			// }
-			// catch (BundleException e) {
-			// // TODO Write message that plugin is not available
-			// e.printStackTrace();
-			// }
+			 // Force plugins of start views to load
+			 try {
+			 if (viewID.contains("hierarchical"))
+			 Platform.getBundle(viewID.replace(".hierarchical", "")).start();
+			 else
+			 Platform.getBundle(viewID).start();
+			 }
+			 catch (BundleException e) {
+			 // TODO Write message that plugin is not available
+			 e.printStackTrace();
+			 }
 
 			ASerializedView view =
 				GeneralManager.get().getViewGLCanvasManager().getViewCreator(viewID).createSerializedView();

@@ -151,10 +151,14 @@ abstract class ABookmarkContainer {
 		dimensions.increaseHeight(BookmarkRenderStyle.CONTAINER_HEADING_SIZE);
 		yOrigin -= BookmarkRenderStyle.CONTAINER_HEADING_SIZE;
 
+		// render heading
+		
 		RenderingHelpers.renderText(gl, textRenderer, categoryName, dimensions
 				.getXOrigin()
 				+ BookmarkRenderStyle.SIDE_SPACING, yOrigin,
 				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
+		
+		
 
 		for (ABookmark item : bookmarkItems) {
 
@@ -187,7 +191,6 @@ abstract class ABookmarkContainer {
 				float height = item.getDimensions().getHeight() - BookmarkRenderStyle.FRAME_SPACING;
 
 				gl.glColor3fv(highlightColor, 0);
-//				GLHelperFunctions.drawPointAt(gl, xOrigin, yOrigin, 0);
 				gl.glBegin(GL.GL_LINE_LOOP);
 				gl.glVertex3f(xOrigin, yOrigin, 0);
 				gl.glVertex3f(xOrigin + width, yOrigin, 0);
@@ -198,6 +201,8 @@ abstract class ABookmarkContainer {
 			gl.glPopName();
 			dimensions.increaseHeight(item.getDimensions().getHeight());
 		}
+		
+		GLHelperFunctions.drawPointAt(gl, 0, dimensions.getHeight(), 0);
 	}
 
 	/**

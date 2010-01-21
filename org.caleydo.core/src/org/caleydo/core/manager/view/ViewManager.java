@@ -96,7 +96,7 @@ public class ViewManager
 
 		glViewCreators = new ArrayList<IViewCreator>();
 	}
-	
+
 	@Override
 	public void init() {
 		fpsAnimator = new FPSAnimator(null, 60);
@@ -198,15 +198,15 @@ public class ViewManager
 
 		AGLView glView = null;
 
-		// if (Platform.getBundle(viewID).getState() != Bundle.INSTALLED) {
-		// try {
-		// Platform.getBundle(viewID).start();
-		// }
-		// catch (BundleException e) {
-		// // TODO handle
-		// e.printStackTrace();
-		// }
-		// }
+		if (Platform.getBundle(viewID).getState() != Bundle.INSTALLED) {
+			try {
+				Platform.getBundle(viewID).start();
+			}
+			catch (BundleException e) {
+				// TODO handle
+				e.printStackTrace();
+			}
+		}
 
 		for (IViewCreator glViewCreator : glViewCreators) {
 
@@ -348,7 +348,7 @@ public class ViewManager
 
 	@Override
 	public void registerGLCanvasToAnimator(final GLCanvas glCanvas) {
-		
+
 		fpsAnimator.add(glCanvas);
 	}
 
