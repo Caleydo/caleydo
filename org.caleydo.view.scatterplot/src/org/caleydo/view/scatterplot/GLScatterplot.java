@@ -612,7 +612,7 @@ public class GLScatterplot extends AStorageBasedView {
 		if (detailLevel != EDetailLevel.HIGH)
 		{
 			bRender2Axis=false;
-			POINTSTYLE = POINTSTYLE.POINT;
+			POINTSTYLE = EScatterPointType.POINT;
 		}
 
 		for (Integer iContentIndex : contentVA) {

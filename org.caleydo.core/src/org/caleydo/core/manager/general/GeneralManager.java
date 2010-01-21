@@ -81,7 +81,7 @@ public class GeneralManager
 
 	@Override
 	public void init(IGUIBridge externalGUIBridge) {
-		this.init();
+//		this.init();
 		this.guiBridge = externalGUIBridge;
 	}
 
@@ -131,6 +131,7 @@ public class GeneralManager
 	public static IGeneralManager get() {
 		if (generalManager == null) {
 			generalManager = new GeneralManager();
+			generalManager.init();
 		}
 		return generalManager;
 	}

@@ -13,18 +13,7 @@ Require-Bundle: org.eclipse.ui,
  org.caleydo.data;bundle-version="1.0.3",
  org.eclipse.ui.views.log,
  org.eclipse.core.expressions;bundle-version="3.4.100",
- org.caleydo.view.base;bundle-version="1.0.0",
- org.caleydo.view.scatterplot;bundle-version="1.0.0";resolution:=optional,
- org.caleydo.view.cell;bundle-version="1.0.0";resolution:=optional,
- org.caleydo.view.histogram;bundle-version="1.0.0",
- org.caleydo.view.radial;bundle-version="1.0.0";resolution:=optional,
- org.caleydo.view.parcoords;bundle-version="1.0.0";resolution:=optional,
- org.caleydo.view.browser;bundle-version="1.0.0";resolution:=optional,
- org.caleydo.view.heatmap;bundle-version="1.0.0";resolution:=optional,
- org.caleydo.view.pathway;bundle-version="1.0.0";resolution:=optional,
- org.caleydo.view.bucket;bundle-version="1.0.0";resolution:=optional,
- org.caleydo.view.dataflipper;bundle-version="1.0.0";resolution:=optional,
- org.caleydo.view.grouper;bundle-version="1.0.0";resolution:=optional
+ org.caleydo.view.base;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  resources/

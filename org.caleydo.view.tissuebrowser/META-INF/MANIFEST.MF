@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tissue Browser View
-Bundle-SymbolicName: org.caleydo.view.tissuebrowser
+Bundle-SymbolicName: org.caleydo.view.tissuebrowser;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.caleydo.view.tissuebrowser.Activator
 Require-Bundle: org.eclipse.ui,
@@ -11,6 +11,5 @@ Require-Bundle: org.eclipse.ui,
  org.caleydo.lib.jogl;bundle-version="1.2.0",
  org.caleydo.util.gleem;bundle-version="1.0.1",
  org.caleydo.view.tissue;bundle-version="1.0.0"
-Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.caleydo.view.tissuebrowser

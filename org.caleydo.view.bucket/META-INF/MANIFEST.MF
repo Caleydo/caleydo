@@ -15,7 +15,6 @@ Require-Bundle: org.eclipse.ui,
  org.caleydo.view.heatmap;bundle-version="1.0.0",
  org.caleydo.view.parcoords;bundle-version="1.0.0",
  org.caleydo.view.bookmarking;bundle-version="1.0.0"
-Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.caleydo.view.bucket,
  org.caleydo.view.bucket.toolbar,

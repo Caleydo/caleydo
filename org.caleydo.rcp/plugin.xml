@@ -19,47 +19,7 @@
             name="Caleydo"
             id="org.caleydo.rcp.views">
       </category>
-    
-      <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.pathway.RcpGLPathwayView"
-            icon="resources/icons/view/pathway.png"
-            id="org.caleydo.view.pathway"
-            name="Pathway">
-      </view> 
-      
-      <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.base.rcp.RcpGLGlyphView"
-            icon="resources/icons/view/glyph.png"
-            id="org.caleydo.rcp.views.opengl.GLGlyphView"
-            name="Glyph">
-      </view>
-      <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.base.rcp.RcpGLGlyphSliderView"
-            icon="resources/icons/view/glyph.png"
-            id="org.caleydo.rcp.views.opengl.GLGlyphSliderView"
-            name="Glyph Slider">
-      </view>
-      <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.base.swt.RcpGlyphMappingConfigurationView"
-            icon="resources/icons/view/glyph.png"
-            id="org.caleydo.rcp.views.swt.SWTGlyphMappingConfigurationView"
-            name="Glyph Mapping Configuration">
-      </view>
-      <view
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.base.swt.RcpTabularDataView"
-            icon="resources/icons/view/tabular_data_viewer.png"
-            id="org.caleydo.rcp.views.swt.TabularDataView"
-            name="Tabular Data Viewer">
-      </view>
+  
       <view
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.toolbar.RcpToolBarView"
@@ -72,14 +32,6 @@
             class="org.caleydo.view.base.swt.RcpCollabView"
             id="org.caleydo.rcp.views.swt.CollabView"
             name="Testing">
-      </view>
-      <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.histogram.RcpGLHistogramView"
-            icon="resources/icons/view/color_mapping.png"
-            id="org.caleydo.view.histogram"
-            name="Color Map">
       </view>
       <view
             allowMultiple="false"
@@ -97,39 +49,6 @@
             id="org.caleydo.rcp.views.swt.SelectionInfoView"
             name="Info">
       </view>
-      <view
-            allowMultiple="false"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.heatmap.RcpGLDendrogramHorizontalView"
-            icon="resources/icons/view/color_mapping.png"
-            id="org.caleydo.view.dendrogram.horizontal"
-            name="Dendrogram Horizontal">
-      </view>
-      <view
-            allowMultiple="false"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.heatmap.RcpGLDendrogramVerticalView"
-            icon="resources/icons/view/color_mapping.png"
-            id="org.caleydo.view.dendrogram.vertical"
-            name="Dendrogram Vertical">
-      </view>
-      <view
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.dataflipper.RcpGLDataFlipperView"
-            icon="resources/icons/view/browser.png"
-            id="org.caleydo.view.dataflipper"
-            name="Data Flippper">
-      </view>
-      <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.view.grouper.RcpGLGrouperView"
-            icon="resources/icons/view/heatmap.png"
-            id="org.caleydo.view.grouper"
-            name="Grouper View">
-      </view>
-
-      
    </extension>   
    
    <extension
@@ -335,7 +254,7 @@
          </menu>
          <menu
                id="org.caleydo.menu.window"
-               label="Windowsddaf">
+               label="Window">
             <command
                   commandId="org.caleydo.rcp.command.fullscreen"
                   label="Full Screen"

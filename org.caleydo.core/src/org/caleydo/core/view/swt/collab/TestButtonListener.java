@@ -1,10 +1,5 @@
 package org.caleydo.core.view.swt.collab;
 
-import java.util.ArrayList;
-
-import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
@@ -25,20 +20,20 @@ public class TestButtonListener
 		// }
 	}
 
-	private void printRemoteLevel(String name, RemoteLevel rl) {
-		System.out.println(name);
-		ArrayList<RemoteLevelElement> rles = rl.getAllElements();
-		for (RemoteLevelElement rle : rles) {
-			IView rv = rle.getGLView();
-			if (rv != null) {
-				System.out.println(" - " + rv.getClass());
-			}
-			else {
-				System.out.println(" - [empty]");
-			}
-		}
-
-	}
+	// private void printRemoteLevel(String name, RemoteLevel rl) {
+	// System.out.println(name);
+	// ArrayList<RemoteLevelElement> rles = rl.getAllElements();
+	// for (RemoteLevelElement rle : rles) {
+	// IView rv = rle.getGLView();
+	// if (rv != null) {
+	// System.out.println(" - " + rv.getClass());
+	// }
+	// else {
+	// System.out.println(" - [empty]");
+	// }
+	// }
+	//
+	// }
 
 	public void setRequester(Object requester) {
 		this.requester = requester;

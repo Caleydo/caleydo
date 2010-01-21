@@ -6,10 +6,10 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.view.histogram.RcpGLHistogramView"
-            icon="resources/icons/histogram.png"
-            id="org.caleydo.view.histogram"
-            name="Histogram">
+            class="org.caleydo.view.grouper.RcpGLGrouperView"
+            icon="resources/icons/grouper.png"
+            id="org.caleydo.view.grouper"
+            name="Grouper">
       </view>
    </extension>
    <extension
@@ -20,8 +20,8 @@
                id="org.caleydo.menu.view"
                label="View">
             <command
-                  commandId="org.caleydo.view.histogram.command.openhistogram"
-                  icon="resources/icons/histogram.png"
+                  commandId="org.caleydo.view.grouper.command.opengrouper"
+                  icon="resources/icons/grouper.png"
                   style="push">
             </command>
          </menu>
@@ -30,9 +30,9 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.histogram.command.handler.OpenHistogramHandler"
-            id="org.caleydo.view.histogram.command.openhistogram"
-            name="Histogram">
+            defaultHandler="org.caleydo.view.grouper.command.handler.OpenGrouperHandler"
+            id="org.caleydo.view.grouper.command.opengrouper"
+            name="Grouper">
       </command>
    </extension>
 

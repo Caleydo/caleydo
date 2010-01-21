@@ -31,8 +31,11 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleException;
 
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
@@ -87,18 +90,21 @@ public class ViewManager
 		hashGLCanvas2GLEventListeners = new HashMap<GLCaleydoCanvas, ArrayList<AGLView>>();
 		hashGLEventListenerID2GLEventListener = new HashMap<Integer, AGLView>();
 
-		fpsAnimator = new FPSAnimator(null, 60);
-
 		busyRequests = new HashSet<Object>();
 
 		registerEventListeners();
+
+		glViewCreators = new ArrayList<IViewCreator>();
+	}
+	
+	@Override
+	public void init() {
+		fpsAnimator = new FPSAnimator(null, 60);
 
 		displayLoopExecution = DisplayLoopExecution.get();
 		fpsAnimator.add(displayLoopExecution.getDisplayLoopCanvas());
 
 		displayLoopExecution.executeMultiple(selectionManager);
-
-		glViewCreators = new ArrayList<IViewCreator>();
 	}
 
 	@Override
@@ -192,6 +198,16 @@ public class ViewManager
 
 		AGLView glView = null;
 
+		// if (Platform.getBundle(viewID).getState() != Bundle.INSTALLED) {
+		// try {
+		// Platform.getBundle(viewID).start();
+		// }
+		// catch (BundleException e) {
+		// // TODO handle
+		// e.printStackTrace();
+		// }
+		// }
+
 		for (IViewCreator glViewCreator : glViewCreators) {
 
 			if (glViewCreator instanceof AGLViewCreator && glViewCreator.getViewType().equals(viewID)) {
@@ -200,71 +216,6 @@ public class ViewManager
 				break;
 			}
 		}
-
-		// if (glView == null) {
-		//
-		// switch (type) {
-		// // case CREATE_GL_HEAT_MAP_3D:
-		// // glView = new GLHeatMap(glCanvas, label, viewFrustum);
-		// // break;
-		// case CREATE_GL_PROPAGATION_HEAT_MAP_3D:
-		// glView = new GLBookmarkManager(glCanvas, label, viewFrustum);
-		// break;
-		// // case CREATE_GL_TEXTURE_HEAT_MAP_3D:
-		// // glView = new GLHierarchicalHeatMap(glCanvas, label, viewFrustum);
-		// // break;
-		// // case CREATE_GL_PATHWAY_3D:
-		// // glView = new GLPathway(glCanvas, label, viewFrustum);
-		// // break;
-		// // case CREATE_GL_PARALLEL_COORDINATES:
-		// // glView = new GLParallelCoordinates(glCanvas, label, viewFrustum);
-		// // break;
-		// case CREATE_GL_GLYPH:
-		// glView = new GLGlyph(glCanvas, label, viewFrustum);
-		// break;
-		// case CREATE_GL_GLYPH_SLIDER:
-		// glView = new GLGlyphSliderView(glCanvas, label, viewFrustum);
-		// break;
-		// // case CREATE_GL_TISSUE:
-		// // glView = new GLTissue(glCanvas, label, viewFrustum);
-		// // break;
-		// // case CREATE_GL_BUCKET_3D:
-		// // glView =
-		// // new GLRemoteRendering(glCanvas, label, viewFrustum,
-		// // ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);
-		// // break;
-		// // case CREATE_GL_JUKEBOX_3D:
-		// // glView =
-		// // new GLRemoteRendering(glCanvas, label, viewFrustum,
-		// // ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);
-		// // break;
-		// // case CREATE_GL_DATA_FLIPPER:
-		// // glView = new GLDataFlipper(glCanvas, label, viewFrustum);
-		// // break;
-		// // case CREATE_GL_TISSUE_VIEW_BROWSER:
-		// // glView = new GLTissueViewBrowser(glCanvas, label, viewFrustum);
-		// // break;
-		// // case CREATE_GL_PATHWAY_VIEW_BROWSER:
-		// // glView = new GLPathwayViewBrowser(glCanvas, label, viewFrustum);
-		// // break;
-		// // case CREATE_GL_RADIAL_HIERARCHY:
-		// // glView = new GLRadialHierarchy(glCanvas, label, viewFrustum);
-		// // break;
-		// case CREATE_GL_GROUPER:
-		// glView = new GLGrouper(glCanvas, label, viewFrustum);
-		// break;
-		// // case CREATE_GL_DENDROGRAM_HORIZONTAL:
-		// // glView = new GLDendrogram(glCanvas, label, viewFrustum, true);
-		// // break;
-		// // case CREATE_GL_DENDROGRAM_VERTICAL:
-		// // glView = new GLDendrogram(glCanvas, label, viewFrustum, false);
-		// // break;
-		// default:
-		// throw new RuntimeException(
-		// "ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
-		// + type.toString() + "]");
-		// }
-		// }
 
 		if (glView == null) {
 			throw new RuntimeException("Unable to create GL view because view plugin is not available!");
@@ -375,6 +326,7 @@ public class ViewManager
 
 	@Override
 	public void startAnimator() {
+
 		// // add all canvas objects before starting animator
 		// // this is needed because all the views are fully filled with needed
 		// data at that time.
@@ -396,6 +348,7 @@ public class ViewManager
 
 	@Override
 	public void registerGLCanvasToAnimator(final GLCanvas glCanvas) {
+		
 		fpsAnimator.add(glCanvas);
 	}
 

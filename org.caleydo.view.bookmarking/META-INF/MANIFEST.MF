@@ -10,6 +10,5 @@ Require-Bundle: org.eclipse.ui,
  org.caleydo.view.base;bundle-version="1.0.0",
  org.caleydo.lib.jogl;bundle-version="1.2.0",
  org.caleydo.util.gleem;bundle-version="1.0.1"
-Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.caleydo.view.bookmarking

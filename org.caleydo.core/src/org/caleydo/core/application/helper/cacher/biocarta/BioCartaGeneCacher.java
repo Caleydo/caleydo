@@ -5,7 +5,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import de.phleisch.app.itsucks.constants.ApplicationConstants;

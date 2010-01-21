@@ -127,7 +127,7 @@ public class Application
 	// TODO: server address for plex-client mode, should be obtained from deskotheque instead from command
 	// line param
 	private String serverAddress = null;
-
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public Object start(IApplicationContext context) throws Exception {
@@ -153,6 +153,8 @@ public class Application
 
 		Display display = PlatformUI.createDisplay();
 		Shell shell = new Shell(display);
+		
+		GeneralManager.get().getViewGLCanvasManager().init();
 
 		// Check if Caleydo will be started the first time and no Internet connection is detected
 		if (prefStore.getBoolean(PreferenceConstants.FIRST_START) && !isInternetConnectionOK()) {
@@ -222,10 +224,8 @@ public class Application
 
 			int returnCode = PlatformUI.createAndRunWorkbench(display, applicationWorkbenchAdvisor);
 
-			// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("org.caleydo.view.heatmap");
-
 			GeneralManager.get().getPreferenceStore().setValue("firstStart", false);
-
+			
 			if (returnCode == PlatformUI.RETURN_RESTART) {
 				return IApplication.EXIT_RESTART;
 			}
@@ -451,17 +451,17 @@ public class Application
 		initializedStartViews = new ArrayList<String>();
 		for (String viewID : startViews) {
 
-			// Force plugins of start views to load
-			try {
-				if (viewID.contains("hierarchical"))
-					Platform.getBundle(viewID.replace(".hierarchical", "")).start();
-				else
-					Platform.getBundle(viewID).start();
-			}
-			catch (BundleException e) {
-				// TODO Write message that plugin is not available
-				e.printStackTrace();
-			}
+			// // Force plugins of start views to load
+			// try {
+			// if (viewID.contains("hierarchical"))
+			// Platform.getBundle(viewID.replace(".hierarchical", "")).start();
+			// else
+			// Platform.getBundle(viewID).start();
+			// }
+			// catch (BundleException e) {
+			// // TODO Write message that plugin is not available
+			// e.printStackTrace();
+			// }
 
 			ASerializedView view =
 				GeneralManager.get().getViewGLCanvasManager().getViewCreator(viewID).createSerializedView();
