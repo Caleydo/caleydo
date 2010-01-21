@@ -134,6 +134,7 @@ public class GLScatterplot extends AStorageBasedView {
 
 	private SelectionManager elementSelectionManager;
 	private SelectionManager mouseoverSelectionManager;
+	private SelectionManager axisSelectionManager;
 
 	private float[] fDragStartPoint = new float[3];
 	private float[] fDragEndPoint = new float[3];
@@ -1032,6 +1033,60 @@ public class GLScatterplot extends AStorageBasedView {
 		setDisplayListDirty();
 	}
 
+	public void selectAxesfromExternal()
+	{
+
+		if (axisSelectionManager
+				.getNumberOfElements(ESelectionType.SELECTION) == 0)
+		{	
+	
+			Set<Integer> axis = axisSelectionManager
+					.getElements(ESelectionType.SELECTION);
+			
+			for (int i : axis) 
+			{
+				//TODO : If Multiple Selections or Scatterplots are Available. adjust this (take first 2 axis selections?)
+				SELECTED_X_AXIS = i;
+				bUpdateAll=true;
+				break;
+			}
+		}
+		
+		//TODO Remove l8ter, Mousover shouldnd select an Axis
+		if (axisSelectionManager
+				.getNumberOfElements(ESelectionType.MOUSE_OVER) == 0)
+			return;
+
+		Set<Integer> axis = axisSelectionManager
+				.getElements(ESelectionType.MOUSE_OVER);
+		
+		for (int i : axis) 
+		{
+			//TODO : If Multiple Selections or Scatterplots are Available. adjust this (take first 2 axis selections?)
+			SELECTED_Y_AXIS = i;
+			bUpdateAll=true;
+			break;
+		}
+		
+	}
+	
+	public void selectNewAxes()
+	{
+		axisSelectionManager.clearSelection(ESelectionType.SELECTION);
+	
+		axisSelectionManager.addToType(ESelectionType.SELECTION, SELECTED_X_AXIS);
+		axisSelectionManager.addToType(ESelectionType.SELECTION, SELECTED_Y_AXIS);
+		
+		ISelectionDelta selectionDelta = axisSelectionManager.getDelta();
+		handleConnectedElementRep(selectionDelta);
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
+		event.setSelectionDelta((SelectionDelta) selectionDelta);
+		event.setInfo(getShortInfo());
+		eventPublisher.triggerEvent(event);				
+	}
+	
+	
 	@Override
 	protected void initLists() {
 		if (contentVAType != EVAType.CONTENT_EMBEDDED_HM) {
@@ -1050,6 +1105,12 @@ public class GLScatterplot extends AStorageBasedView {
 		elementSelectionManager = contentSelectionManager;
 		mouseoverSelectionManager.setVA(contentVA);
 		elementSelectionManager.setVA(contentVA);
+		
+		
+		axisSelectionManager = storageSelectionManager;
+		axisSelectionManager.setVA(storageVA);
+		
+		
 		// mouseoverSelectionManager.initialAdd(iAlElementIDs)
 		// mouseoverSelectionManager = contentSelectionManager;
 		// TODO: Thats just for testing!
@@ -1208,89 +1269,18 @@ public class GLScatterplot extends AStorageBasedView {
 	}
 
 	@Override
-	protected void handleConnectedElementRep(ISelectionDelta selectionDelta) {
-		// TODO
-	}
-
-	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(EIDType idType,
-			int iStorageIndex) throws InvalidAttributeValueException {
-
-		SelectedElementRep elementRep;
-		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(
-				4);
-
-		for (int iContentIndex : contentVA.indicesOf(iStorageIndex)) {
-			if (iContentIndex == -1) {
-				// throw new
-				// IllegalStateException("No such element in virtual array");
-				// TODO this shouldn't happen here.
-				continue;
-			}
-
-			float fXValue = fAlXDistances.get(iContentIndex); // +
-																// renderStyle.getSelectedFieldWidth()
-																// / 2;
-			// float fYValue = 0;
-			float fYValue = renderStyle.getYCenter();
-
-			// Set<Integer> mouseOver =
-			// storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
-			// for (int iLineIndex : mouseOver)
-			// {
-			// fYValue = storageVA.indexOf(iLineIndex) *
-			// renderStyle.getFieldHeight() +
-			// renderStyle.getFieldHeight()/2;
-			// break;
-			// }
-
-			int iViewID = iUniqueID;
-			// If rendered remote (hierarchical heat map) - use the remote view
-			// ID
-			if (glRemoteRenderingView != null)
-				iViewID = glRemoteRenderingView.getID();
-
-			if (bRenderStorageHorizontally) {
-				elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX,
-						iViewID, fXValue + fAnimationTranslation, fYValue, 0);
-
-			} else {
-				Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
-				Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue,
-						fYValue, 0));
-				vecPoint.setY(vecPoint.y() + vecTranslation.y());
-				elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX,
-						iViewID, vecPoint.x(), vecPoint.y()
-								- fAnimationTranslation, 0);
-
-			}
-			alElementReps.add(elementRep);
-		}
-		return alElementReps;
-	}
-
-	// private void UpdateMouseOverfromExternal()
-	// {
-	// Set<Integer> selectionSet =
-	// contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
-	// for (int iContentIndex : selectionSet)
-	// {
-	// // mouseoverSelectionManager.resetSelectionManager(); // This may be not
-	// necessary;
-	// mouseoverSelectionManager.add(iContentIndex);
-	// mouseoverSelectionManager.addToType(ESelectionType.MOUSE_OVER,
-	// iContentIndex);
-	// }
-	// }
-	//	
-
-	@Override
 	protected void reactOnExternalSelection(boolean scrollToSelection) {
+		selectAxesfromExternal();
 		bUpdateSelection = true;
 		setDisplayListDirty();
 		// UpdateMouseOverfromExternal();
 	}
 
+	@Override
+	protected void handleConnectedElementRep(ISelectionDelta selectionDelta) {
+		// TODO
+	}
+	
 	@Override
 	public void renderContext(boolean bRenderOnlyContext) {
 
@@ -1368,7 +1358,7 @@ public class GLScatterplot extends AStorageBasedView {
 
 	@Override
 	public String toString() {
-		return "Standalone heat map, rendered remote: " + isRenderedRemote()
+		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote()
 				+ ", contentSize: " + contentVA.size() + ", storageSize: "
 				+ storageVA.size() + ", contentVAType: " + contentVAType
 				+ ", remoteRenderer:" + getRemoteRenderingGLCanvas();
@@ -1386,6 +1376,58 @@ public class GLScatterplot extends AStorageBasedView {
 		return super.getRemoteLevelElement();
 	}
 
+	@Override
+	protected ArrayList<SelectedElementRep> createElementRep(EIDType idType, int iStorageIndex)
+		throws InvalidAttributeValueException {
+
+		SelectedElementRep elementRep;
+		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
+
+		for (int iContentIndex : contentVA.indicesOf(iStorageIndex)) {
+			if (iContentIndex == -1) {
+				// throw new
+				// IllegalStateException("No such element in virtual array");
+				// TODO this shouldn't happen here.
+				continue;
+			}
+
+			float fXValue = fAlXDistances.get(iContentIndex); // + renderStyle.getSelectedFieldWidth() / 2;
+			// float fYValue = 0;
+			float fYValue = renderStyle.getYCenter();
+
+			// Set<Integer> mouseOver = storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
+			// for (int iLineIndex : mouseOver)
+			// {
+			// fYValue = storageVA.indexOf(iLineIndex) * renderStyle.getFieldHeight() +
+			// renderStyle.getFieldHeight()/2;
+			// break;
+			// }
+
+			int iViewID = iUniqueID;
+			// If rendered remote (hierarchical heat map) - use the remote view ID
+			if (glRemoteRenderingView != null)
+				iViewID = glRemoteRenderingView.getID();
+
+			if (bRenderStorageHorizontally) {
+				elementRep =
+					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iViewID,
+						fXValue + fAnimationTranslation, fYValue, 0);
+
+			}
+			else {
+				Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
+				Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
+				vecPoint.setY(vecPoint.y() + vecTranslation.y());
+				elementRep =
+					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iViewID, vecPoint.x(), vecPoint.y()
+						- fAnimationTranslation, 0);
+
+			}
+			alElementReps.add(elementRep);
+		}
+		return alElementReps;
+	}
+	
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
@@ -1452,6 +1494,7 @@ public class GLScatterplot extends AStorageBasedView {
 		if (SELECTED_X_AXIS != iAxisIndex) {
 			SELECTED_X_AXIS = iAxisIndex;
 			bUpdateAll=true;
+			selectNewAxes();
 			setDisplayListDirty();
 		}
 
@@ -1461,6 +1504,7 @@ public class GLScatterplot extends AStorageBasedView {
 		if (SELECTED_Y_AXIS != iAxisIndex) {
 			SELECTED_Y_AXIS = iAxisIndex;
 			bUpdateAll=true;
+			selectNewAxes();
 			setDisplayListDirty();
 		}
 
@@ -1483,6 +1527,7 @@ public void upDownSelect(boolean bDownIsTrue) {
 		if ((tmpAxis+1)>=storageVA.size()) tmpAxis=SELECTED_Y_AXIS;
 		SELECTED_Y_AXIS=tmpAxis;
 		bUpdateAll=true;
+		selectNewAxes();
 		setDisplayListDirty();
 	}
 
@@ -1494,6 +1539,7 @@ public void upDownSelect(boolean bDownIsTrue) {
 		if ((tmpAxis+1)>=storageVA.size()) tmpAxis=SELECTED_X_AXIS;
 		SELECTED_X_AXIS=tmpAxis;
 		bUpdateAll=true;
+		selectNewAxes();
 		setDisplayListDirty();	
 	}
 
@@ -1501,8 +1547,7 @@ public void upDownSelect(boolean bDownIsTrue) {
 		if (bRender2Axis) bRender2Axis = false;
 		else bRender2Axis = true;
 		bUpdateAll=true;
-		setDisplayListDirty();
-		
+		setDisplayListDirty();		
 	}
 
 	public void toggleDetailLevel() 
@@ -1510,7 +1555,8 @@ public void upDownSelect(boolean bDownIsTrue) {
 		if (detailLevel == EDetailLevel.HIGH)
 			detailLevel = EDetailLevel.LOW;
 		else detailLevel = EDetailLevel.HIGH;
-		
+		bUpdateAll=true;
+		setDisplayListDirty();		
 	}
 
 }
