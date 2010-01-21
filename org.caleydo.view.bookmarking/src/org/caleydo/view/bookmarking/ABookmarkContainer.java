@@ -22,6 +22,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.collection.UniqueList;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.BookmarkContextMenuItemContainer;
 import org.caleydo.view.bookmarking.GLBookmarkManager.PickingIDManager;
@@ -157,16 +158,43 @@ abstract class ABookmarkContainer {
 
 		for (ABookmark item : bookmarkItems) {
 
-			item.getDimensions().setOrigins(0, yOrigin);
+			item.getDimensions().setOrigins(BookmarkRenderStyle.SIDE_SPACING, yOrigin);
+			item.getDimensions().setWidth(dimensions.getWidth() - 2 * BookmarkRenderStyle.SIDE_SPACING);
 			yOrigin -= item.getDimensions().getHeight();
+		
 
-			// if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER,
-			// item.getID()))
-			// GLHelperFunctions.drawPointAt(gl,
-			// item.getDimensions().getXOrigin(), yOrigin, 0);
+			float[] highlightColor = null;
+
+			if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER, item
+					.getID())) {
+				highlightColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+			} else if (selectionManager.checkStatus(ESelectionType.SELECTION,
+					item.getID())) {
+				highlightColor = GeneralRenderStyle.SELECTED_COLOR;
+
+			}
 			int pickingID = pickingIDManager.getPickingID(this, item.getID());
 			gl.glPushName(pickingID);
+
+	
+
 			item.render(gl);
+			
+			if (highlightColor != null) {
+				
+				float xOrigin = item.getDimensions().getXOrigin();
+				float width = item.getDimensions().getWidth();
+				float height = item.getDimensions().getHeight() - BookmarkRenderStyle.FRAME_SPACING;
+
+				gl.glColor3fv(highlightColor, 0);
+//				GLHelperFunctions.drawPointAt(gl, xOrigin, yOrigin, 0);
+				gl.glBegin(GL.GL_LINE_LOOP);
+				gl.glVertex3f(xOrigin, yOrigin, 0);
+				gl.glVertex3f(xOrigin + width, yOrigin, 0);
+				gl.glVertex3f(xOrigin + width, yOrigin + height, 0);
+				gl.glVertex3f(xOrigin, yOrigin + height, 0);
+				gl.glEnd();
+			}
 			gl.glPopName();
 			dimensions.increaseHeight(item.getDimensions().getHeight());
 		}
@@ -187,58 +215,56 @@ abstract class ABookmarkContainer {
 		ESelectionType selectionType;
 		switch (ePickingType) {
 
-			case BOOKMARK_ELEMENT :
+		case BOOKMARK_ELEMENT:
 
-				switch (pickingMode) {
-					case CLICKED :
-						selectionType = ESelectionType.SELECTION;
-						break;
-					case MOUSE_OVER :
-						selectionType = ESelectionType.MOUSE_OVER;
-						break;
-					case RIGHT_CLICKED :
-						selectionType = ESelectionType.SELECTION;
+			switch (pickingMode) {
+			case CLICKED:
+				selectionType = ESelectionType.SELECTION;
+				break;
+			case MOUSE_OVER:
+				selectionType = ESelectionType.MOUSE_OVER;
+				break;
+			case RIGHT_CLICKED:
+				selectionType = ESelectionType.SELECTION;
 
-						BookmarkContextMenuItemContainer bookmarkContextMenuItemContainer = new BookmarkContextMenuItemContainer();
-						bookmarkContextMenuItemContainer.setID(internalIDType,
-								iExternalID);
-						ContextMenu contextMenu = manager.getContextMenu();
-						contextMenu
-								.addItemContanier(bookmarkContextMenuItemContainer);
+				BookmarkContextMenuItemContainer bookmarkContextMenuItemContainer = new BookmarkContextMenuItemContainer();
+				bookmarkContextMenuItemContainer.setID(internalIDType,
+						iExternalID);
+				ContextMenu contextMenu = manager.getContextMenu();
+				contextMenu.addItemContanier(bookmarkContextMenuItemContainer);
 
-						if (manager.isRenderedRemote()) {
-							contextMenu.setLocation(pick.getPickedPoint(),
-									manager.getParentGLCanvas().getWidth(),
-									manager.getParentGLCanvas().getHeight());
-							contextMenu.setMasterGLView(manager);
-						}
-						break;
-
-					default :
-						return;
+				if (manager.isRenderedRemote()) {
+					contextMenu.setLocation(pick.getPickedPoint(), manager
+							.getParentGLCanvas().getWidth(), manager
+							.getParentGLCanvas().getHeight());
+					contextMenu.setMasterGLView(manager);
 				}
-				selectionManager.clearSelection(selectionType);
-				selectionManager.addToType(selectionType, iExternalID);
-
-				SelectionCommand command = new SelectionCommand(
-						ESelectionCommandType.CLEAR, selectionType);
-				SelectionCommandEvent commandEvent = new SelectionCommandEvent();
-				commandEvent.setSender(this);
-				commandEvent.setCategory(category);
-				commandEvent.setSelectionCommand(command);
-				GeneralManager.get().getEventPublisher().triggerEvent(
-						commandEvent);
-
-				ISelectionDelta selectionDelta = selectionManager.getDelta();
-				SelectionUpdateEvent event = new SelectionUpdateEvent();
-				event.setSender(this);
-				event.setSelectionDelta((SelectionDelta) selectionDelta);
-				GeneralManager.get().getEventPublisher().triggerEvent(event);
 				break;
 
-			case BOOKMARK_CONTAINER_HEADING :
+			default:
+				return;
+			}
+			selectionManager.clearSelection(selectionType);
+			selectionManager.addToType(selectionType, iExternalID);
 
-				break;
+			SelectionCommand command = new SelectionCommand(
+					ESelectionCommandType.CLEAR, selectionType);
+			SelectionCommandEvent commandEvent = new SelectionCommandEvent();
+			commandEvent.setSender(this);
+			commandEvent.setCategory(category);
+			commandEvent.setSelectionCommand(command);
+			GeneralManager.get().getEventPublisher().triggerEvent(commandEvent);
+
+			ISelectionDelta selectionDelta = selectionManager.getDelta();
+			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSender(this);
+			event.setSelectionDelta((SelectionDelta) selectionDelta);
+			GeneralManager.get().getEventPublisher().triggerEvent(event);
+			break;
+
+		case BOOKMARK_CONTAINER_HEADING:
+
+			break;
 		}
 
 	}

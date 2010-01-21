@@ -29,6 +29,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 
@@ -41,10 +42,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * 
  * @author Alexander Lex
  */
-public class GLBookmarkManager extends AGLView
-		implements
-			ISelectionUpdateHandler,
-			ISelectionCommandHandler {
+public class GLBookmarkManager extends AGLView implements
+		ISelectionUpdateHandler, ISelectionCommandHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.bookmarking";
 
@@ -190,16 +189,17 @@ public class GLBookmarkManager extends AGLView
 
 		processEvents();
 
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		float currentHeight = viewFrustum.getHeight()
 				- BookmarkRenderStyle.TOP_SPACING;
 		for (ABookmarkContainer container : bookmarkContainers) {
 			container.getDimensions().setOrigins(0.0f, currentHeight);
+			container.getDimensions().setWidth(viewFrustum.getWidth());
 			currentHeight -= container.getDimensions().getHeight();
 			container.render(gl);
-
 		}
+
 	}
 
 	@Override
@@ -233,12 +233,11 @@ public class GLBookmarkManager extends AGLView
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode ePickingMode, int iExternalID, Pick pick) {
 		switch (ePickingType) {
-			case BOOKMARK_ELEMENT :
-				Pair<EIDCategory, Integer> pair = pickingIDManager
-						.getPrivateID(iExternalID);
-				hashCategoryToBookmarkContainer.get(pair.getFirst())
-						.handleEvents(ePickingType, ePickingMode,
-								pair.getSecond(), pick);
+		case BOOKMARK_ELEMENT:
+			Pair<EIDCategory, Integer> pair = pickingIDManager
+					.getPrivateID(iExternalID);
+			hashCategoryToBookmarkContainer.get(pair.getFirst()).handleEvents(
+					ePickingType, ePickingMode, pair.getSecond(), pick);
 		}
 	}
 

@@ -35,7 +35,7 @@ class GeneBookmark extends ABookmark {
 		float yOrigin = dimensions.getYOrigin() - 0.08f;
 		RenderingHelpers.renderText(gl, textRenderer, sContent, dimensions
 				.getXOrigin()
-				+ BookmarkRenderStyle.SIDE_SPACING * 2, yOrigin,
+				+ BookmarkRenderStyle.SIDE_SPACING, yOrigin,
 				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
 	}

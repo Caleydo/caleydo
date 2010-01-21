@@ -12,6 +12,8 @@ class BookmarkRenderStyle extends GeneralRenderStyle {
 	public static final float SIDE_SPACING = 0.05f;
 	public static final float TOP_SPACING = 0.1f;
 	public static final float CONTAINER_HEADING_SIZE = 0.08f;
+	/** The spacing between a highlighting frame and the highlighted element **/
+	public static final float FRAME_SPACING = 0.01f;
 
 	public static final int NUMBER_OF_LIST_ITEMS_PER_PAGE = 30;
 

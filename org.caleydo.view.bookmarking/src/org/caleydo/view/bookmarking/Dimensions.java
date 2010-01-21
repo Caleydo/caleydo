@@ -72,4 +72,10 @@ public class Dimensions {
 		this.height += delta;
 	}
 
+	@Override
+	public String toString() {
+		return "xOrigin: " + xOrigin + ", yOrigin: " + yOrigin + ", widht: "
+				+ width + ", height: " + height;
+	}
+
 }
