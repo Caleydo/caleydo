@@ -198,14 +198,17 @@ public class ViewManager
 
 		AGLView glView = null;
 
-		if (Platform.getBundle(viewID).getState() != Bundle.INSTALLED) {
-			try {
+		
+		// Force plugins of start views to load
+		try {
+			if (viewID.contains("hierarchical") || viewID.contains("vertical") || viewID.contains("horizontal"))
+				Platform.getBundle("org.caleydo.view.heatmap").start();
+			else
 				Platform.getBundle(viewID).start();
-			}
-			catch (BundleException e) {
-				// TODO handle
-				e.printStackTrace();
-			}
+		}
+		catch (BundleException e) {
+			// TODO Write message that plugin is not available
+			e.printStackTrace();
 		}
 
 		for (IViewCreator glViewCreator : glViewCreators) {
