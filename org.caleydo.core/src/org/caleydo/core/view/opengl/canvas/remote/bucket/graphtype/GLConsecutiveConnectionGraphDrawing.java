@@ -10,8 +10,6 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GraphDrawingUtils;
-import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
 
@@ -180,5 +178,11 @@ public class GLConsecutiveConnectionGraphDrawing
 		}	
 		VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
 		visLinkScene.renderLines(gl);
+	}
+
+	@Override
+	protected HashMap<Integer, Vec3f> getOptimalDynamicPoints(EIDType idType) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

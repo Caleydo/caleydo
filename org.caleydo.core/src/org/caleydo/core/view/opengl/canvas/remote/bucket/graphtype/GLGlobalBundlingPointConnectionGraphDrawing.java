@@ -10,10 +10,8 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GraphDrawingUtils;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
-
 /**
  * Specialized connection line renderer for bucket view.
  * 
@@ -25,7 +23,7 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 
 	protected RemoteLevel focusLevel;
 	protected RemoteLevel stackLevel;
-
+	private Vec3f vecCenter = new Vec3f();
 	/**
 	 * Constructor.
 	 * 
@@ -44,9 +42,9 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
 		
-		hashViewToCenterPoint = getOptimalHeatMapPoint(idType);
-
-		Vec3f vecCenter = calculateCenter(hashViewToCenterPoint.values());
+		hashViewToCenterPoint = getOptimalDynamicPoints(idType);
+		if (hashViewToCenterPoint == null)
+			return;
 		
 		ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews = new ArrayList<ArrayList<ArrayList<Vec3f>>>(4);
 		ArrayList<ArrayList<Vec3f>> connectionLinesActiveView = new ArrayList<ArrayList<Vec3f>>();
@@ -101,42 +99,68 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 	
 	
 	/**
-	 * selects the point of the heatmap point set that corresponds to the shortest path
+	 * selects optimal points of views which have a set of points to choose from (atm this especially concerns HeatMap and Parallel Coordinates)
 	 * @param idType
 	 * @return returns a {@link HashMap} that contains the local center points
 	 */
-	
-	private HashMap<Integer, Vec3f> getOptimalHeatMapPoint(EIDType idType) {
+	protected HashMap<Integer, Vec3f> getOptimalDynamicPoints(EIDType idType) {
 			
 			Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
 			ArrayList<ArrayList<Vec3f>> heatMapPoints = new ArrayList<ArrayList<Vec3f>>();
+			ArrayList<ArrayList<Vec3f>> parCoordsPoints = new ArrayList<ArrayList<Vec3f>>();
 			HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
-			int heatMapID = findHeatMapID();
-
+			int heatMapID = getSpecialViewID(HEATMAP);
+			int parCoordID = getSpecialViewID(PARCOORDS);
+			if ((heatMapID < 0) || parCoordID < 0)
+				return null;
+			
 			for (Integer iKey : keySet) {
 				if (iKey.equals(heatMapID))
 					heatMapPoints = hashIDTypeToViewToPointLists.get(idType).get(iKey);
+				else if (iKey.equals(parCoordID))
+					parCoordsPoints = hashIDTypeToViewToPointLists.get(idType).get(iKey);
 				else
 					hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists.get(idType).get(iKey)));
 			}
 
 			double minPath = Double.MAX_VALUE;
-			ArrayList<Vec3f> heatMap = new ArrayList<Vec3f>();
-			Vec3f optimalPoint = new Vec3f();
-			for (ArrayList<Vec3f> arrayList : heatMapPoints) {
-				hashViewToCenterPoint.put(heatMapID, arrayList.get(0));
-				Vec3f centerPoint = calculateCenter(hashViewToCenterPoint.values());
-				double currentPath = calculateCurrentPathLength(hashViewToCenterPoint, centerPoint);
-				if (currentPath < minPath){
-					minPath = currentPath;
-					heatMap = arrayList;
-					optimalPoint = arrayList.get(0);
+			ArrayList<Vec3f> optimalHeatMap = new ArrayList<Vec3f>();
+			ArrayList<Vec3f> optimalParCoords = new ArrayList<Vec3f>();
+			Vec3f optimalHeatMapPoint = new Vec3f();
+			Vec3f optimalParCoordPoint = new Vec3f();
+			for (ArrayList<Vec3f> heatMapList : heatMapPoints) {
+				for (ArrayList<Vec3f> parCoordsList : parCoordsPoints) {
+					hashViewToCenterPoint.put(heatMapID, heatMapList.get(0));
+					hashViewToCenterPoint.put(parCoordID, parCoordsList.get(0));
+					Vec3f centerPoint = calculateCenter(hashViewToCenterPoint.values());
+				
+					//TODO: Choose if global minimum or local minimum
+					double currentPath = calculateCurrentPathLength(hashViewToCenterPoint, centerPoint);
+					/*Vec3f temp = centerPoint.minus(arrayList.get(0));
+					double currentPath = temp.length();*/
+				
+					if (currentPath < minPath){
+						minPath = currentPath;
+						optimalHeatMap = heatMapList;
+						optimalParCoords = parCoordsList;
+						optimalHeatMapPoint = heatMapList.get(0);
+						optimalParCoordPoint = parCoordsList.get(0);
+						vecCenter = centerPoint;
+					}
 				}
 			}
-			ArrayList<ArrayList<Vec3f>> temp = new ArrayList<ArrayList<Vec3f>>();
-			temp.add(heatMap);
-			hashIDTypeToViewToPointLists.get(idType).put(heatMapID, temp);
-			hashViewToCenterPoint.put(heatMapID, optimalPoint);
+			if ((optimalHeatMap.size() == 0) || (optimalParCoords.size() == 0))
+				return null;
+			ArrayList<ArrayList<Vec3f>> tempArray = new ArrayList<ArrayList<Vec3f>>();
+			tempArray.add(optimalHeatMap);
+			hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
+			hashIDTypeToViewToPointLists.get(idType).put(heatMapID, tempArray);
+			hashViewToCenterPoint.put(heatMapID, optimalHeatMapPoint);
+			tempArray = new ArrayList<ArrayList<Vec3f>>();
+			tempArray.add(optimalParCoords);
+			hashIDTypeToViewToPointLists.get(idType).remove(parCoordID);
+			hashIDTypeToViewToPointLists.get(idType).put(parCoordID, tempArray);
+			hashViewToCenterPoint.put(parCoordID, optimalParCoordPoint);
 
 		return hashViewToCenterPoint;
 	}
@@ -158,24 +182,5 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 			length += temp.length();
 		}
 		return length;
-	}
-
-	/** Helper method to find the id of a possibly existing heatmap
-	 * 
-	 * @return returns the id of the heatmap if one has been found
-	 */
-	private int findHeatMapID(){
-		if (focusLevel.getElementByPositionIndex(0).getGLView() != null){
-			if (focusLevel.getElementByPositionIndex(0).getGLView() instanceof GLHeatMap)
-				return focusLevel.getElementByPositionIndex(0).getGLView().getID();
-		}
-		else
-			for (int stack = 0; stack < stackLevel.getCapacity(); stack++) {
-				if (stackLevel.getElementByPositionIndex(stack).getGLView() != null){
-					if (stackLevel.getElementByPositionIndex(stack).getGLView() instanceof GLHeatMap)
-						return stackLevel.getElementByPositionIndex(stack).getGLView().getID();
-				}
-			}
-		return -1;
 	}
 }

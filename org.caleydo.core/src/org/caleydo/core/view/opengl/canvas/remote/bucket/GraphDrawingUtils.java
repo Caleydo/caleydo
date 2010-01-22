@@ -17,6 +17,8 @@ import org.caleydo.core.manager.view.ConnectionMap;
 import org.caleydo.core.manager.view.SelectedElementRepList;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.GLParallelCoordinates;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -30,6 +32,9 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 public abstract class GraphDrawingUtils
 	extends AGLConnectionLineRenderer {
 
+	protected final static char HEATMAP = 1;
+	protected final static char PARCOORDS = 2;
+	
 	protected RemoteLevel focusLevel;
 	protected RemoteLevel stackLevel;
 
@@ -356,5 +361,41 @@ public abstract class GraphDrawingUtils
 		vecCenterPoint.scale(1.0f / iCount);
 		return vecCenterPoint;
 	}
-
+	
+	/** Helper method to find the id of heatmap or parallel coordinates
+	 * 
+	 * @return returns the id of the view if one has been found
+	 */
+	protected int getSpecialViewID(char type){
+		if (focusLevel.getElementByPositionIndex(0).getGLView() != null){
+			if ((type == HEATMAP) && (focusLevel.getElementByPositionIndex(0).getGLView() instanceof GLHeatMap))
+				return focusLevel.getElementByPositionIndex(0).getGLView().getID();
+			else if ((type == PARCOORDS) && (focusLevel.getElementByPositionIndex(0).getGLView() instanceof GLParallelCoordinates))
+				return focusLevel.getElementByPositionIndex(0).getGLView().getID();
+			else {
+				for (int stack = 0; stack < stackLevel.getCapacity(); stack++) {
+					if (stackLevel.getElementByPositionIndex(stack).getGLView() != null){
+						if ((type == HEATMAP) && (stackLevel.getElementByPositionIndex(stack).getGLView() instanceof GLHeatMap))
+							return stackLevel.getElementByPositionIndex(stack).getGLView().getID();
+						else if ((type == PARCOORDS) && (stackLevel.getElementByPositionIndex(stack).getGLView() instanceof GLParallelCoordinates))
+							return stackLevel.getElementByPositionIndex(stack).getGLView().getID();
+					}
+				}
+			}
+		}
+		else {
+			for (int stack = 0; stack < stackLevel.getCapacity(); stack++) {
+				if (stackLevel.getElementByPositionIndex(stack).getGLView() != null){
+					if ((type == HEATMAP) && (stackLevel.getElementByPositionIndex(stack).getGLView() instanceof GLHeatMap))
+						return stackLevel.getElementByPositionIndex(stack).getGLView().getID();
+					else if ((type == PARCOORDS) && (stackLevel.getElementByPositionIndex(stack).getGLView() instanceof GLParallelCoordinates))
+						return stackLevel.getElementByPositionIndex(stack).getGLView().getID();
+				}
+			}		
+		}
+		return -1;
+	}
+	
+	
+	protected abstract HashMap<Integer, Vec3f> getOptimalDynamicPoints(EIDType idType);
 }

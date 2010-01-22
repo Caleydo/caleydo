@@ -89,4 +89,10 @@ public class GLViewCenteredConnectionGraphDrawing
 		VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
 		visLinkScene.renderLines(gl);
 	}
+
+	@Override
+	protected HashMap<Integer, Vec3f> getOptimalDynamicPoints(EIDType idType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
