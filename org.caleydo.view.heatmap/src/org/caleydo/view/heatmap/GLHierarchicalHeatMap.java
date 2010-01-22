@@ -4355,6 +4355,43 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		case HIER_HEAT_MAP_GENES_GROUP:
 			switch (pickingMode) {
 
+			case RIGHT_CLICKED:
+
+				boolean bEnableInterchange = false;
+				boolean bEnableMerge = false;
+				boolean bEnableExport = true;
+				int iNrSelectedGroups = 0;
+
+				IGroupList tempGroupList = contentVA.getGroupList();
+
+				for (Group group : tempGroupList) {
+					if (group.getSelectionType() == ESelectionType.SELECTION)
+						iNrSelectedGroups++;
+				}
+
+				if (iNrSelectedGroups >= 2) {
+
+					bEnableMerge = true;
+
+					if (iNrSelectedGroups == 2)
+						bEnableInterchange = true;
+				}
+
+				GroupContextMenuItemContainer groupContextMenuItemContainer = new GroupContextMenuItemContainer();
+				groupContextMenuItemContainer.setContextMenuFlags(true,
+						bEnableMerge, bEnableInterchange, bEnableExport);
+				groupContextMenuItemContainer.setGenes(
+						EIDType.EXPRESSION_INDEX, contentVA
+								.getGeneIdsOfGroup(iExternalID));
+
+				contextMenu.addItemContanier(groupContextMenuItemContainer);
+				contextMenu.setLocation(pick.getPickedPoint(),
+						getParentGLCanvas().getWidth(), getParentGLCanvas()
+								.getHeight());
+				contextMenu.setMasterGLView(this);
+
+				// we want to go to clicked as well
+
 			case CLICKED:
 				contentVA.getGroupList().get(iExternalID).toggleSelectionType();
 				deactivateAllDraggingCursor();
@@ -4407,46 +4444,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				setDisplayListDirty();
 				break;
 
-			case RIGHT_CLICKED:
-
-				boolean bEnableInterchange = false;
-				boolean bEnableMerge = false;
-				boolean bEnableExport = false;
-				int iNrSelectedGroups = 0;
-
-				IGroupList tempGroupList = contentVA.getGroupList();
-
-				for (Group group : tempGroupList) {
-					if (group.getSelectionType() == ESelectionType.SELECTION)
-						iNrSelectedGroups++;
-				}
-
-				if (iNrSelectedGroups >= 1)
-					bEnableExport = true;
-
-				if (iNrSelectedGroups >= 2) {
-
-					bEnableMerge = true;
-
-					if (iNrSelectedGroups == 2)
-						bEnableInterchange = true;
-				}
-
-				GroupContextMenuItemContainer groupContextMenuItemContainer = new GroupContextMenuItemContainer();
-				groupContextMenuItemContainer.setContextMenuFlags(true,
-						bEnableMerge, bEnableInterchange, bEnableExport);
-				groupContextMenuItemContainer.setGenes(
-						EIDType.EXPRESSION_INDEX, contentVA
-								.getGeneIdsOfGroup(iExternalID));
-
-				contextMenu.addItemContanier(groupContextMenuItemContainer);
-				contextMenu.setLocation(pick.getPickedPoint(),
-						getParentGLCanvas().getWidth(), getParentGLCanvas()
-								.getHeight());
-				contextMenu.setMasterGLView(this);
-
-				break;
-
 			case MOUSE_OVER:
 				// System.out.print("genes group " + iExternalID);
 				// System.out.print(" number elements in group: ");
@@ -4460,6 +4457,38 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		// handling the groups/clusters of experiments
 		case HIER_HEAT_MAP_EXPERIMENTS_GROUP:
 			switch (pickingMode) {
+			case RIGHT_CLICKED:
+
+				boolean bEnableInterchange = false;
+				boolean bEnableMerge = false;
+				boolean bEnableExport = true;
+				int iNrSelectedGroups = 0;
+
+				IGroupList tempGroupList = storageVA.getGroupList();
+
+				for (Group group : tempGroupList) {
+					if (group.getSelectionType() == ESelectionType.SELECTION)
+						iNrSelectedGroups++;
+				}
+
+				if (iNrSelectedGroups >= 2) {
+
+					bEnableMerge = true;
+
+					if (iNrSelectedGroups == 2)
+						bEnableInterchange = true;
+				}
+				GroupContextMenuItemContainer groupContextMenuItemContainer = new GroupContextMenuItemContainer();
+				groupContextMenuItemContainer.setContextMenuFlags(false,
+						bEnableMerge, bEnableInterchange, bEnableExport);
+
+				contextMenu.addItemContanier(groupContextMenuItemContainer);
+				contextMenu.setLocation(pick.getPickedPoint(),
+						getParentGLCanvas().getWidth(), getParentGLCanvas()
+								.getHeight());
+				contextMenu.setMasterGLView(this);
+
+				// we want to do clicked here as well
 			case CLICKED:
 				storageVA.getGroupList().get(iExternalID).toggleSelectionType();
 				deactivateAllDraggingCursor();
@@ -4510,48 +4539,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				setDisplayListDirty();
 				break;
 
-			case RIGHT_CLICKED:
-
-				boolean bEnableInterchange = false;
-				boolean bEnableMerge = false;
-				boolean bEnableExport = false;
-				int iNrSelectedGroups = 0;
-
-				IGroupList tempGroupList = storageVA.getGroupList();
-
-				for (Group group : tempGroupList) {
-					if (group.getSelectionType() == ESelectionType.SELECTION)
-						iNrSelectedGroups++;
-				}
-
-				if (iNrSelectedGroups >= 1)
-					bEnableExport = true;
-
-				if (iNrSelectedGroups >= 2) {
-
-					bEnableMerge = true;
-
-					if (iNrSelectedGroups == 2)
-						bEnableInterchange = true;
-				}
-				GroupContextMenuItemContainer groupContextMenuItemContainer = new GroupContextMenuItemContainer();
-				groupContextMenuItemContainer.setContextMenuFlags(false,
-						bEnableMerge, bEnableInterchange, bEnableExport);
-
-				contextMenu.addItemContanier(groupContextMenuItemContainer);
-				contextMenu.setLocation(pick.getPickedPoint(),
-						getParentGLCanvas().getWidth(), getParentGLCanvas()
-								.getHeight());
-				contextMenu.setMasterGLView(this);
-
-				break;
-
 			case MOUSE_OVER:
-				// System.out.print("patients group " + iExternalID);
-				// System.out.print(" number elements in group: ");
-				// System.out.println(storageVA.getGroupList().get(iExternalID)
-				// .getNrElements());
-				// setDisplayListDirty();
 				break;
 			}
 			break;
