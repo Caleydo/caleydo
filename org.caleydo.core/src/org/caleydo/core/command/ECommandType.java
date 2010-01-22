@@ -63,11 +63,6 @@ public enum ECommandType {
 	CREATE_VIEW_RCP_GLCANVAS("cmd", "type", "-1", "Create RCP GL Canvas"),
 
 	/**
-	 * Set path for pathway XML files, images and imagemaps.
-	 */
-	SET_SYSTEM_PATH_PATHWAYS("cmd", "type", "-1", "Set path to pathway files"),
-
-	/**
 	 * Load data definition for glyph view
 	 */
 	LOAD_GLYPH_DEFINITIONS("cmd", "type", "-1", "load definition for the glyphs"),

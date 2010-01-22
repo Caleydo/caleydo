@@ -36,6 +36,9 @@ public class PathwayLoadingProgressIndicatorAction
 
 					if (sPathwayDataSources.contains(EPathwayDatabaseType.KEGG.name())) {
 						monitor.subTask("KEGG");
+
+						GeneralManager.get().getPathwayManager().createPathwayDatabase(
+							EPathwayDatabaseType.KEGG, "data/xml/", "data/images/", "");
 						PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), GeneralManager.get()
 							.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG));
 						// monitor.worked(50);
@@ -43,6 +46,12 @@ public class PathwayLoadingProgressIndicatorAction
 
 					if (sPathwayDataSources.contains(EPathwayDatabaseType.BIOCARTA.name())) {
 						monitor.subTask("BioCarta");
+
+						GeneralManager.get().getPathwayManager().createPathwayDatabase(
+							EPathwayDatabaseType.BIOCARTA,
+							"user.home/caleydo.folder/cgap.nci.nih.gov/Pathways/BioCarta/",
+							"user.home/caleydo.folder/cgap.nci.nih.gov/BIOCARTA/Pathways/",
+							"user.home/caleydo.folder/cgap.nci.nih.gov/Pathways/BioCarta/");
 						PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), GeneralManager.get()
 							.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.BIOCARTA));
 						// monitor.worked(50);

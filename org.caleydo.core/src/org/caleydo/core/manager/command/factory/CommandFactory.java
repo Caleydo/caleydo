@@ -14,7 +14,6 @@ import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.command.system.CmdLoadGlyphDefinition;
 import org.caleydo.core.command.system.CmdLoadPathwayData;
 import org.caleydo.core.command.system.CmdSystemExit;
-import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.command.view.swt.CmdViewCreateGlyphConfiguration;
@@ -102,10 +101,6 @@ public class CommandFactory
 			}
 			case SYSTEM_SHUT_DOWN: {
 				createdCommand = new CmdSystemExit(cmdType);
-				break;
-			}
-			case SET_SYSTEM_PATH_PATHWAYS: {
-				createdCommand = new CmdSetPathwayDatabasePath(cmdType);
 				break;
 			}
 			case LOAD_GLYPH_DEFINITIONS: {

@@ -10,20 +10,7 @@
 		  	<read-xml-file target="data/bootstrap/shared/sample/load_genome_id_mapping.xml" />	   				
 							
 		<!-- Creating Data -->
-			<read-xml-file target="data/bootstrap/shared/sample/load_data.xml" />						   																									
-									
-		<!-- Setting paths -->	
-		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths" 
-			detail="BIOCARTA"
-			attrib1="user.home/caleydo.folder/cgap.nci.nih.gov/Pathways/BioCarta/" 
-			attrib2="user.home/caleydo.folder/cgap.nci.nih.gov/BIOCARTA/Pathways/" 
-			attrib3="user.home/caleydo.folder/cgap.nci.nih.gov/Pathways/BioCarta/" /> 
-			
-		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set KEGG Pathway Path" 
-			detail="KEGG"
-			attrib1="user.home/caleydo.folder/www.genome.jp/kegg/KGML/KGML_v0.6.1/" 
-			attrib2="user.home/caleydo.folder/www.genome.jp/kegg/pathway/" 
-			attrib3="user.home/caleydo.folder/?" /> 								
+			<read-xml-file target="data/bootstrap/shared/sample/load_data.xml" />						   																															
 			
    </CommandBuffer>
     

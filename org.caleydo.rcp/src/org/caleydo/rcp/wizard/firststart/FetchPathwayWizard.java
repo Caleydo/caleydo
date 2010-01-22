@@ -23,17 +23,6 @@ import org.eclipse.swt.widgets.Shell;
 public class FetchPathwayWizard
 	extends Wizard {
 
-	private ArrayList<EPathwayDatabaseType> alFetchPathwaySources;
-
-	/**
-	 * Constructor.
-	 */
-	public FetchPathwayWizard(ArrayList<EPathwayDatabaseType> alFetchPathwaySources) {
-		super();
-
-		this.alFetchPathwaySources = alFetchPathwaySources;
-	}
-
 	@Override
 	public void addPages() {
 		// Check if Caleydo will be started the first time and no Internet connection is detected
@@ -41,7 +30,7 @@ public class FetchPathwayWizard
 			addPage(new ProxyConfigurationPage());
 		}
 
-		addPage(new FetchPathwayDataPage(alFetchPathwaySources));
+		addPage(new FetchPathwayDataPage());
 
 		setWindowTitle("Pathway Wizard");
 	}
@@ -59,15 +48,9 @@ public class FetchPathwayWizard
 		boolean bFetchSuccessful = true;
 		PreferenceStore prefStore = GeneralManager.get().getPreferenceStore();
 		String sLoadedPathwaySources = prefStore.getString(PreferenceConstants.PATHWAY_DATA_OK);
-		EOrganism eOrganism =
-			EOrganism.valueOf(prefStore.getString(PreferenceConstants.LAST_CHOSEN_ORGANISM));
 
-		// Look if organism and pathway source combination has been already fetched
-		for (EPathwayDatabaseType ePathwayDatabasesToBeFetched : alFetchPathwaySources) {
-
-			if (!sLoadedPathwaySources.contains(eOrganism.name() + "+" + ePathwayDatabasesToBeFetched.name()))
-				bFetchSuccessful = false;
-		}
+		if (!sLoadedPathwaySources.contains("BIOCARTA"))
+			bFetchSuccessful = false;
 
 		if (!bFetchSuccessful) {
 			MessageBox messageBox = new MessageBox(new Shell(), SWT.ERROR);

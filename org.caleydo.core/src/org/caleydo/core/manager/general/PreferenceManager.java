@@ -133,12 +133,11 @@ public class PreferenceManager {
 		store.setDefault(PreferenceConstants.USE_PROXY, false);
 
 		// visual links
-		store.setDefault(PreferenceConstants.VISUAL_LINKS_STYLE, 0);
+		store.setDefault(PreferenceConstants.VISUAL_LINKS_STYLE, 2);
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_ANIMATION, false);
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_WIDTH, 2.0f);
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_COLOR, "255,255,0,255");
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_ANIMATED_HALO, false);
-
 	}
 
 	private void initCaleydoFolder() {

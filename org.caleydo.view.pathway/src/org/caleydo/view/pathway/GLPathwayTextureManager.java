@@ -53,13 +53,13 @@ public class GLPathwayTextureManager {
 				new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID,
 						"Load pathway texture with ID: " + pathway.getID()));
 
-		pathwayTexture = generalManager.getResourceLoader().getTexture(
-				sPathwayTexturePath);
-
-		// pathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER,
-		// GL.GL_LINEAR);
-		// pathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER,
-		// GL.GL_LINEAR);
+		if (type == EPathwayDatabaseType.BIOCARTA) {
+			pathwayTexture = generalManager.getResourceLoader().getTexture(
+					sPathwayTexturePath);
+		} else {
+			pathwayTexture = generalManager.getPathwayManager()
+					.getPathwayResourceLoader().getTexture(sPathwayTexturePath);
+		}
 
 		hashPathwayToTexture.put(pathway, pathwayTexture);
 

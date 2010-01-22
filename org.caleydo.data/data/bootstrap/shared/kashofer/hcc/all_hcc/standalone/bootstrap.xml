@@ -44,19 +44,6 @@
 							attrib4="transparency 1" 								
 							detail="85101" /> 				    
 				
-		<!-- Setting paths -->	
-		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths" 
-			detail="BIOCARTA"
-			attrib1="user.home/.caleydo/cgap.nci.nih.gov/Pathways/BioCarta/" 
-			attrib2="user.home/.caleydo/cgap.nci.nih.gov/BIOCARTA/Pathways/" 
-			attrib3="user.home/.caleydo/cgap.nci.nih.gov/Pathways/BioCarta/" /> 
-			
-		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set KEGG Pathway Path" 
-			detail="KEGG"
-			attrib1="user.home/.caleydo/www.genome.jp/kegg/KGML/KGML_v0.6.1/" 
-			attrib2="user.home/.caleydo/www.genome.jp/kegg/pathway/" 
-			attrib3="user.home/.caleydo/?" /> 
-			
 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_PATHWAY_DATA" 	cmdId="" uniqueId="11331" label="Load pathway data" /> 				
 							    
    </CommandBuffer>

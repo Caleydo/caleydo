@@ -25,18 +25,6 @@
 					target="data/bootstrap/shared/asslaber/load_data_reduced.xml" />
 				<read-xml-file target="data/bootstrap/private/stefan/load_data.xml" />
 
-				<!-- Setting paths -->
-				<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS"
-					cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths"
-					detail="BIOCARTA" attrib1="user.home/.caleydo/cgap.nci.nih.gov/Pathways/BioCarta/"
-					attrib2="user.home/.caleydo/cgap.nci.nih.gov/BIOCARTA/Pathways/"
-					attrib3="user.home/.caleydo/cgap.nci.nih.gov/Pathways/BioCarta/" />
-
-				<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS"
-					cmdId="" uniqueId="11331" label="Set KEGG Pathway Path" detail="KEGG"
-					attrib1="user.home/.caleydo/www.genome.jp/kegg/KGML/KGML_v0.6.1/"
-					attrib2="user.home/.caleydo/www.genome.jp/kegg/pathway/" attrib3="user.home/.caleydo/?" />
-
 			</CommandBuffer>
 
 		</Application>

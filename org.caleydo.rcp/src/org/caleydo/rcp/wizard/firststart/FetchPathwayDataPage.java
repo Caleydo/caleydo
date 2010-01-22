@@ -31,19 +31,17 @@ public final class FetchPathwayDataPage
 	public static final String PAGE_NAME = "Fetch Pathway Data";
 
 	public final WizardPage thisPage;
-	private ArrayList<EPathwayDatabaseType> alFetchPathwaySources;
 
 	/**
 	 * Constructor.
 	 */
-	public FetchPathwayDataPage(ArrayList<EPathwayDatabaseType> alFetchPathwaySources) {
+	public FetchPathwayDataPage() {
 		super(PAGE_NAME, PAGE_NAME, null);
 
 		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader().getResource(
 			"resources/wizard/wizard.png")));
 
 		thisPage = this;
-		this.alFetchPathwaySources = alFetchPathwaySources;
 
 		setPageComplete(false);
 	}
@@ -68,15 +66,13 @@ public final class FetchPathwayDataPage
 		progressBarGroup.setText("Fetch Progress");
 
 		ProgressBar progressBarBioCartaPathwayCacher = null;
-		if (alFetchPathwaySources.contains(EPathwayDatabaseType.BIOCARTA)) {
-			Label lblBioCartaPathwayCacher = new Label(progressBarGroup, SWT.NULL);
-			lblBioCartaPathwayCacher.setText("BioCarta Data and Image Download Status:");
-			lblBioCartaPathwayCacher.setAlignment(SWT.RIGHT);
-			lblBioCartaPathwayCacher.setBounds(10, 10, 80, 20);
+		Label lblBioCartaPathwayCacher = new Label(progressBarGroup, SWT.NULL);
+		lblBioCartaPathwayCacher.setText("BioCarta Data and Image Download Status:");
+		lblBioCartaPathwayCacher.setAlignment(SWT.RIGHT);
+		lblBioCartaPathwayCacher.setBounds(10, 10, 80, 20);
 
-			progressBarBioCartaPathwayCacher = new ProgressBar(progressBarGroup, SWT.SMOOTH);
-			progressBarBioCartaPathwayCacher.setBounds(10, 10, 200, 32);
-		}
+		progressBarBioCartaPathwayCacher = new ProgressBar(progressBarGroup, SWT.SMOOTH);
+		progressBarBioCartaPathwayCacher.setBounds(10, 10, 200, 32);
 
 		CmdFetchPathwayData cmdPathwayFetch =
 			(CmdFetchPathwayData) GeneralManager.get().getCommandManager().createCommandByType(
@@ -89,7 +85,7 @@ public final class FetchPathwayDataPage
 			EOrganism.valueOf(prefStore.getString(PreferenceConstants.LAST_CHOSEN_ORGANISM));
 
 		cmdPathwayFetch.setAttributes(composite.getDisplay(), progressBarBioCartaPathwayCacher, parentPage,
-			eOrganism, alFetchPathwaySources);
+			eOrganism);
 
 		if (prefStore.getBoolean(PreferenceConstants.USE_PROXY)) {
 			String sProxyServer = prefStore.getString(PreferenceConstants.PROXY_SERVER);

@@ -567,23 +567,11 @@ public class Application
 
 		String sPathwayDataSources =
 			prefStore.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
-		StringTokenizer tokenizer = new StringTokenizer(sPathwayDataSources, ";");
 		String sLoadedPathwaySources = prefStore.getString(PreferenceConstants.PATHWAY_DATA_OK);
-		ArrayList<EPathwayDatabaseType> alFetchPathwaySources = new ArrayList<EPathwayDatabaseType>();
-		EOrganism eOrganism =
-			EOrganism.valueOf(prefStore.getString(PreferenceConstants.LAST_CHOSEN_ORGANISM));
 
-		// Look if organism and pathway source combination has been already fetched
-		while (tokenizer.hasMoreTokens()) {
-			EPathwayDatabaseType sTmpPathwayDataSource = EPathwayDatabaseType.valueOf(tokenizer.nextToken());
-			if (!sLoadedPathwaySources.contains(eOrganism.name() + "+" + sTmpPathwayDataSource))
-				alFetchPathwaySources.add(sTmpPathwayDataSource);
-		}
-
-		if (!alFetchPathwaySources.isEmpty()) {
+		if (!sLoadedPathwaySources.contains("BIOCARTA") && sPathwayDataSources.contains("BIOCARTA")) {
 			WizardDialog firstStartWizard =
-				new WizardDialog(Display.getCurrent().getActiveShell(), new FetchPathwayWizard(
-					alFetchPathwaySources));
+				new WizardDialog(Display.getCurrent().getActiveShell(), new FetchPathwayWizard());
 			firstStartWizard.open();
 		}
 	}

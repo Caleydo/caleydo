@@ -317,9 +317,8 @@ public class ChooseProjectTypePage
 
 		// Set pathway databases which was used in last session
 		if (sLastChosenPathwayDataSources.contains(EPathwayDatabaseType.KEGG.name())) {
-			btnLoadKEGGPathwayData.setSelection(false);
-			btnLoadKEGGPathwayData.setEnabled(false);
-
+			btnLoadKEGGPathwayData.setSelection(true);
+			btnLoadKEGGPathwayData.setEnabled(true);
 		}
 		else {
 			btnLoadKEGGPathwayData.setSelection(false);
@@ -344,12 +343,23 @@ public class ChooseProjectTypePage
 		btnLoadKEGGPathwayData.setEnabled(btnLoadPathwayData.getSelection());
 		btnLoadBioCartaPathwayData.setEnabled(btnLoadPathwayData.getSelection());
 
+		btnLoadPathwayData.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				boolean bLoadPathwayData = ((Button) e.widget).getSelection();
+				groupPathways.setEnabled(bLoadPathwayData);
+				btnLoadKEGGPathwayData.setEnabled(bLoadPathwayData);
+				btnLoadBioCartaPathwayData.setEnabled(bLoadPathwayData);
+			}
+		});
+		
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.kegg.PathwayResourceLoader");
 		IExtension ext = ep.getExtension("org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader");
 		if (ext != null) {
 
 			btnLoadKEGGPathwayData.setEnabled(true);
+			bLoadKEGGPathwayData = true;
 			btnLoadKEGGPathwayData.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -368,16 +378,6 @@ public class ChooseProjectTypePage
 			btnLoadKEGGPathwayData.setEnabled(false);
 		}
 
-		btnLoadPathwayData.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				boolean bLoadPathwayData = ((Button) e.widget).getSelection();
-				groupPathways.setEnabled(bLoadPathwayData);
-				btnLoadKEGGPathwayData.setEnabled(bLoadPathwayData);
-				btnLoadBioCartaPathwayData.setEnabled(bLoadPathwayData);
-			}
-		});
-
 		btnLoadBioCartaPathwayData.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -390,9 +390,6 @@ public class ChooseProjectTypePage
 				}
 			}
 		});
-
-		// Link sampleDataPaperLink = new Link(composite, SWT.BORDER);
-		// sampleDataPaperLink.setText("See: <a>http://www.ncbi.nlm.nih.gov/pubmed/17241883</a>");
 
 		buttonNewProject.addSelectionListener(new SelectionAdapter() {
 			@Override

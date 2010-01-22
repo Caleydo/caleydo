@@ -3,7 +3,6 @@ package org.caleydo.core.command.system;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import org.caleydo.core.application.helper.cacher.biocarta.BioCartaPathwayCacher;
@@ -62,17 +61,14 @@ public class CmdFetchPathwayData
 	}
 
 	public void setAttributes(final Display display, final ProgressBar progressBarBioCartaPathwayCacher,
-		final DialogPage parentPage, final EOrganism eOrganism,
-		final ArrayList<EPathwayDatabaseType> alPathwayDataSources) {
+		final DialogPage parentPage, final EOrganism eOrganism) {
 
 		this.display = display;
 		this.parentPage = parentPage;
 		this.eOrganism = eOrganism;
 
-		if (alPathwayDataSources.contains(EPathwayDatabaseType.BIOCARTA)) {
-			bioCartaPathwayCacher =
-				new BioCartaPathwayCacher(display, progressBarBioCartaPathwayCacher, this, eOrganism);
-		}
+		bioCartaPathwayCacher =
+			new BioCartaPathwayCacher(display, progressBarBioCartaPathwayCacher, this, eOrganism);
 	}
 
 	public void setProxySettings(String sProxyServer, int iProxyPort) {
