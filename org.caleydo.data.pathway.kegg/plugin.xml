@@ -4,10 +4,10 @@
   <extension
         id="org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader"
         name="KEGGPathwayResourceLoader"
-        point="org.caleydo.data.pathway.kegg.PathwayResourceLoader">
+        point="org.caleydo.data.pathway.PathwayResourceLoader">
         <PathwayResourceLoader
           id="org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader"
-          name="KEGPathwayResourceLoader"
+          name="KEGGPathwayResourceLoader"
           class="org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader" />
   </extension>
 

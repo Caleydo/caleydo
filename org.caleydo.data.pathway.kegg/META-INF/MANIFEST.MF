@@ -11,5 +11,5 @@ Require-Bundle: org.eclipse.ui,
  org.caleydo.lib.jogl;bundle-version="1.2.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.genome.jp/kegg
 Export-Package: org.caleydo.data.pathway.kegg

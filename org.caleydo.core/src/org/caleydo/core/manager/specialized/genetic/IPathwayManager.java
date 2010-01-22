@@ -49,7 +49,7 @@ public interface IPathwayManager
 	 */
 	public boolean isPathwayLoadingFinished();
 
-	public void createPathwayResourceLoader();
+	public void createPathwayResourceLoader(EPathwayDatabaseType type);
 
-	public IPathwayResourceLoader getPathwayResourceLoader();
+	public IPathwayResourceLoader getPathwayResourceLoader(EPathwayDatabaseType type);
 }

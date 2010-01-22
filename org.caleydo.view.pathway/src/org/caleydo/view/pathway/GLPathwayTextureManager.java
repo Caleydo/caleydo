@@ -1,5 +1,6 @@
 package org.caleydo.view.pathway;
 
+import java.nio.channels.IllegalSelectorException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -54,11 +55,16 @@ public class GLPathwayTextureManager {
 						"Load pathway texture with ID: " + pathway.getID()));
 
 		if (type == EPathwayDatabaseType.BIOCARTA) {
-			pathwayTexture = generalManager.getResourceLoader().getTexture(
-					sPathwayTexturePath);
-		} else {
 			pathwayTexture = generalManager.getPathwayManager()
-					.getPathwayResourceLoader().getTexture(sPathwayTexturePath);
+					.getPathwayResourceLoader(EPathwayDatabaseType.BIOCARTA)
+					.getTexture(sPathwayTexturePath);
+		} else if (type == EPathwayDatabaseType.KEGG) {
+			pathwayTexture = generalManager.getPathwayManager()
+					.getPathwayResourceLoader(EPathwayDatabaseType.KEGG)
+					.getTexture(sPathwayTexturePath);
+
+		} else {
+			throw new IllegalStateException("Unknown pathway database " + type);
 		}
 
 		hashPathwayToTexture.put(pathway, pathwayTexture);

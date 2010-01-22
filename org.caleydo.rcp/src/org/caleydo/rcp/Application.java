@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.util.Map.Entry;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
@@ -18,9 +17,7 @@ import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
-import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
@@ -34,7 +31,6 @@ import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.caleydo.rcp.view.RCPViewManager;
-import org.caleydo.rcp.wizard.firststart.FetchPathwayWizard;
 import org.caleydo.rcp.wizard.firststart.InternetConfigurationWizard;
 import org.caleydo.rcp.wizard.firststart.ProxyConfigurationPage;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
@@ -212,8 +208,6 @@ public class Application
 			// GeneralManager.get().addUseCase(useCase);
 			isStartedFromXML = true;
 		}
-
-		triggerPathwayFetching();
 
 		if (bDeleteRestoredWorkbenchState) {
 			removeStoredWorkbenchState();
@@ -555,24 +549,6 @@ public class Application
 		if (GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA) != null) {
 			// Trigger pathway loading
 			new PathwayLoadingProgressIndicatorAction().run(null);
-		}
-	}
-
-	private void triggerPathwayFetching() {
-
-		// Only fetch pathways if in genetic use case mode
-		if (!prefStore.getString(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE).equals(
-			EDataDomain.GENETIC_DATA.name()))
-			return;
-
-		String sPathwayDataSources =
-			prefStore.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
-		String sLoadedPathwaySources = prefStore.getString(PreferenceConstants.PATHWAY_DATA_OK);
-
-		if (!sLoadedPathwaySources.contains("BIOCARTA") && sPathwayDataSources.contains("BIOCARTA")) {
-			WizardDialog firstStartWizard =
-				new WizardDialog(Display.getCurrent().getActiveShell(), new FetchPathwayWizard());
-			firstStartWizard.open();
 		}
 	}
 

@@ -49,9 +49,9 @@ public class PathwayLoadingProgressIndicatorAction
 
 						GeneralManager.get().getPathwayManager().createPathwayDatabase(
 							EPathwayDatabaseType.BIOCARTA,
-							"user.home/caleydo.folder/cgap.nci.nih.gov/Pathways/BioCarta/",
-							"user.home/caleydo.folder/cgap.nci.nih.gov/BIOCARTA/Pathways/",
-							"user.home/caleydo.folder/cgap.nci.nih.gov/Pathways/BioCarta/");
+							"data/html/",
+							"data/images/",
+							"data/html");
 						PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), GeneralManager.get()
 							.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.BIOCARTA));
 						// monitor.worked(50);

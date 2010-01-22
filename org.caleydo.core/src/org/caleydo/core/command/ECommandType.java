@@ -16,35 +16,12 @@ public enum ECommandType {
 	LOAD_LOOKUP_TABLE_FILE("cmd", "type", "", "Load a lookup table"),
 	LOAD_ON_DEMAND("cmd", "process", "LOAD_ON_DEMAND", "No description available!"),
 
-	FETCH_PATHWAY_DATA("cmd", "type", "", "No description available!"),
-
 	SET_DATA_REPRESENTATION("cmd", "type", "-1", "Set data representation (Raw, Log2, Log10)"),
 	DATA_FILTER_MIN_MAX("cmd", "type", "-1", "Evaluate min and max of an entity"),
 
 	EVENT_MEDIATOR_ADD_OBJECT("cmd", "type", null, "Add Objects ad sender or receiver to Event Mediator"),
 
 	CREATE_GL_VIEW("cmd", "type", "-1", "Create GL View"),
-	// CREATE_GL_HEAT_MAP_3D("cmd", "type", "-1", "Create Heat Map"),
-	// CREATE_GL_PROPAGATION_HEAT_MAP_3D("cmd", "type", "-1", "Create List Heat Map"),
-	// CREATE_GL_TEXTURE_HEAT_MAP_3D("cmd", "type", "-1", "Create Texture Heat Map"),
-	// CREATE_GL_GLYPH("cmd", "type", "-1", "Create Glyph"),
-	// CREATE_GL_GLYPH_SLIDER("cmd", "type", "-1", "Create Glyph Slider View"),
-	// CREATE_GL_PATHWAY_3D("cmd", "type", "-1", "Create Pathway 3D"),
-	// CREATE_GL_PARALLEL_COORDINATES("cmd", "type", "-1", "Create Parallel Coordinates "),
-	// CREATE_GL_BUCKET_3D("cmd", "type", "-1", "Create Bucket 3D"),
-	// CREATE_GL_JUKEBOX_3D("cmd", "type", "-1", "Create Jukebox 3D"),
-	// CREATE_GL_REMOTE_GLYPH("cmd", "type", "-1", "Create Remote Glyph"),
-	// CREATE_GL_DATA_FLIPPER("cmd", "type", "-1", "Create Data Flipper"),
-	// CREATE_GL_TISSUE_VIEW_BROWSER("cmd", "type", "-1", "Create Tissue View Browser"),
-	// CREATE_GL_PATHWAY_VIEW_BROWSER("cmd", "type", "-1", "Create Pathway View Browser"),
-	// CREATE_GL_CELL("cmd", "type", "-1", "Create Cell Component Localizer"),
-	// CREATE_GL_TISSUE("cmd", "type", "-1", "Create Tissue Viewer"),
-	// CREATE_GL_RADIAL_HIERARCHY("cmd", "type", "-1", "Create Radial Hierarchys"),
-	// CREATE_GL_HISTOGRAM("cmd", "type", "-1", "Create Histogram"),
-	// CREATE_GL_GROUPER("cmd", "type", "-1", "Create Grouper"),
-	// CREATE_GL_DENDROGRAM_HORIZONTAL("cmd", "type", "-1", "Create horizontal Dendrogram"),
-	// CREATE_GL_DENDROGRAM_VERTICAL("cmd", "type", "-1", "Create vertical Dendrogram"),
-	// CREATE_GL_SCATTERPLOT("cmd", "type", "-1", "Create Scatterplot"),
 
 	EXTERNAL_OBJECT_SETTER("cmd", "type", "-1", "External object setter"),
 	EXTERNAL_FLAG_SETTER("cmd", "type", "-1", "External flag setter"),
@@ -58,7 +35,6 @@ public enum ECommandType {
 	CREATE_SWT_WINDOW("cmd", "type", "-1", "Create SWT window"),
 	CREATE_SWT_CONTAINER("cmd", "type", "-1", "Create SWTContainer"),
 	CREATE_VIEW_GLYPHCONFIG("cmd", "type", "-1", "Create Mixer"),
-	// CREATE_VIEW_BROWSER("cmd", "type", "-1", "Create Browser"),
 	CREATE_VIEW_SWT_GLCANVAS("cmd", "type", "-1", "Create SWT GL Canvas"),
 	CREATE_VIEW_RCP_GLCANVAS("cmd", "type", "-1", "Create RCP GL Canvas"),
 

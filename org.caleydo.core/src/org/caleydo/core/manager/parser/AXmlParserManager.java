@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.ccil.cowan.tagsoup.HTMLSchema;
 import org.ccil.cowan.tagsoup.Parser;
@@ -197,9 +198,16 @@ public abstract class AXmlParserManager
 		InputSource inputSource;
 
 		// FIXME: not smart to parse for hsa and mmu when searching kegg pathways
-		if (sFileName.contains("hsa") || sFileName.contains("mmu"))
+		if (sFileName.contains("hsa") || sFileName.contains("mmu")) {
 			inputSource =
-				GeneralManager.get().getPathwayManager().getPathwayResourceLoader().getInputSource(sFileName);
+				GeneralManager.get().getPathwayManager().getPathwayResourceLoader(EPathwayDatabaseType.KEGG)
+					.getInputSource(sFileName);
+		}
+		else if (sFileName.contains("h_") || sFileName.contains("h_")) {
+			inputSource =
+				GeneralManager.get().getPathwayManager().getPathwayResourceLoader(EPathwayDatabaseType.BIOCARTA)
+					.getInputSource(sFileName);
+		}
 		else
 			inputSource = generalManager.getResourceLoader().getInputSource(sFileName);
 

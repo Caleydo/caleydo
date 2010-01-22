@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.application.helper.PathwayListGenerator;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
@@ -80,7 +79,7 @@ public class PathwayLoaderThread
 		EOrganism eOrganism =
 			((GeneticUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA)).getOrganism();
 
-		if (pathwayDatabase.getName().equals("KEGG")) {
+		if (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG) {
 
 			if (eOrganism == EOrganism.HOMO_SAPIENS) {
 				sFileName = "data/pathway_list_KEGG_homo_sapiens.txt";
@@ -94,21 +93,14 @@ public class PathwayLoaderThread
 
 			generalManager.getSWTGUIManager()
 				.setProgressBarTextFromExternalThread("Loading KEGG Pathways...");
-
-			generalManager.getPathwayManager().createPathwayResourceLoader();
-			pathwayResourceLoader = generalManager.getPathwayManager().getPathwayResourceLoader();
 		}
-		else if (pathwayDatabase.getName().equals("BioCarta")) {
+		else if (pathwayDatabase.getType() == EPathwayDatabaseType.BIOCARTA) {
 
 			if (eOrganism == EOrganism.HOMO_SAPIENS) {
-				sFileName =
-					IGeneralManager.CALEYDO_HOME_PATH
-						+ PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA_HOMO_SAPIENS;
+				sFileName = "data/pathway_list_BIOCARTA_homo_sapiens.txt";
 			}
 			else if (eOrganism == EOrganism.MUS_MUSCULUS) {
-				sFileName =
-					IGeneralManager.CALEYDO_HOME_PATH
-						+ PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA_MUS_MUSCULUS;
+				sFileName = "data/pathway_list_BIOCARTA_mus_musculus.txt";
 			}
 			else {
 				throw new IllegalStateException("Cannot load pathways from organism " + eOrganism);
@@ -117,12 +109,15 @@ public class PathwayLoaderThread
 			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
 				"Loading BioCarta Pathways...");
 		}
+		
+		generalManager.getPathwayManager().createPathwayResourceLoader(pathwayDatabase.getType());
+		pathwayResourceLoader = generalManager.getPathwayManager().getPathwayResourceLoader(pathwayDatabase.getType());
 
 		int iPathwayIndex = 0;
 
 		try {
 
-			if (pathwayDatabase.getName().equals("KEGG"))
+			if (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG || pathwayDatabase.getType() == EPathwayDatabaseType.BIOCARTA)
 				file = pathwayResourceLoader.getResource(sFileName);
 			else
 				file = GeneralManager.get().getResourceLoader().getResource(sFileName);

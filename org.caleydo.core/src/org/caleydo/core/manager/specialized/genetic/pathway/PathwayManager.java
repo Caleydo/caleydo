@@ -32,7 +32,8 @@ public class PathwayManager
 	extends AManager<PathwayGraph>
 	implements IPathwayManager {
 
-	public IPathwayResourceLoader pathwayResourceLoader;
+	public IPathwayResourceLoader keggPathwayResourceLoader;
+	public IPathwayResourceLoader biocartaPathwayResourceLoader;
 
 	private HashMap<PathwayGraph, Boolean> hashPathwayToVisibilityState;
 
@@ -211,23 +212,51 @@ public class PathwayManager
 	}
 
 	@Override
-	public void createPathwayResourceLoader() {
-		IExtensionRegistry reg = Platform.getExtensionRegistry();
-		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.kegg.PathwayResourceLoader");
-		IExtension ext = ep.getExtension("org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader");
-		IConfigurationElement[] ce = ext.getConfigurationElements();
+	public void createPathwayResourceLoader(EPathwayDatabaseType type) {
 
-		try {
-			pathwayResourceLoader = (IPathwayResourceLoader) ce[0].createExecutableExtension("class");
+		IExtensionRegistry reg = Platform.getExtensionRegistry();
+
+		if (type == EPathwayDatabaseType.KEGG) {
+			IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
+			IExtension ext = ep.getExtension("org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader");
+			IConfigurationElement[] ce = ext.getConfigurationElements();
+
+			try {
+				keggPathwayResourceLoader = (IPathwayResourceLoader) ce[0].createExecutableExtension("class");
+			}
+			catch (Exception ex) {
+				throw new RuntimeException("Could not instantiate KEGG Pathway Resource Loader", ex);
+			}
 		}
-		catch (Exception ex) {
-			throw new RuntimeException("Could not instantiate Pathway Resource Loader", ex);
+		else if (type == EPathwayDatabaseType.BIOCARTA) {
+			IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
+			IExtension ext =
+				ep.getExtension("org.caleydo.data.pathway.biocarta.BioCartaPathwayResourceLoader");
+			IConfigurationElement[] ce = ext.getConfigurationElements();
+
+			try {
+				biocartaPathwayResourceLoader =
+					(IPathwayResourceLoader) ce[0].createExecutableExtension("class");
+			}
+			catch (Exception ex) {
+				throw new RuntimeException("Could not instantiate BioCarta Pathway Resource Loader", ex);
+			}
+		}
+		else {
+			throw new IllegalStateException("Unknown pathway database " + type);
 		}
 	}
 
 	@Override
-	public IPathwayResourceLoader getPathwayResourceLoader() {
+	public IPathwayResourceLoader getPathwayResourceLoader(EPathwayDatabaseType type) {
 
-		return pathwayResourceLoader;
+		if (type == EPathwayDatabaseType.KEGG) {
+			return keggPathwayResourceLoader;
+		}
+		else if (type == EPathwayDatabaseType.BIOCARTA) {
+			return biocartaPathwayResourceLoader;
+		}
+
+		throw new IllegalStateException("Unknown pathway database " + type);
 	}
 }

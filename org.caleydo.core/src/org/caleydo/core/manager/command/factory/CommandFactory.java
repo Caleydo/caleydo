@@ -10,7 +10,6 @@ import org.caleydo.core.command.data.CmdSetDataRepresentation;
 import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
-import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.command.system.CmdLoadGlyphDefinition;
 import org.caleydo.core.command.system.CmdLoadPathwayData;
 import org.caleydo.core.command.system.CmdSystemExit;
@@ -109,10 +108,6 @@ public class CommandFactory
 			}
 			case LOAD_PATHWAY_DATA: {
 				createdCommand = new CmdLoadPathwayData(cmdType);
-				break;
-			}
-			case FETCH_PATHWAY_DATA: {
-				createdCommand = new CmdFetchPathwayData(cmdType);
 				break;
 			}
 			case SET_DATA_REPRESENTATION: {

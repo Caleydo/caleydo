@@ -354,7 +354,7 @@ public class ChooseProjectTypePage
 		});
 		
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
-		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.kegg.PathwayResourceLoader");
+		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
 		IExtension ext = ep.getExtension("org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader");
 		if (ext != null) {
 
@@ -378,18 +378,28 @@ public class ChooseProjectTypePage
 			btnLoadKEGGPathwayData.setEnabled(false);
 		}
 
-		btnLoadBioCartaPathwayData.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				bLoadBioCartaPathwayData = ((Button) e.widget).getSelection();
+		ext = ep.getExtension("org.caleydo.data.pathway.biocarta.BioCartaPathwayResourceLoader");
+		if (ext != null) {
 
-				if (!bLoadKEGGPathwayData && !bLoadBioCartaPathwayData) {
-					btnLoadPathwayData.setSelection(false);
-					btnLoadKEGGPathwayData.setEnabled(false);
-					btnLoadBioCartaPathwayData.setEnabled(false);
+			btnLoadBioCartaPathwayData.setEnabled(true);
+			bLoadBioCartaPathwayData = true;
+			btnLoadBioCartaPathwayData.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					bLoadBioCartaPathwayData = ((Button) e.widget).getSelection();
+
+					if (!bLoadKEGGPathwayData && !bLoadBioCartaPathwayData) {
+						btnLoadPathwayData.setSelection(false);
+						btnLoadKEGGPathwayData.setEnabled(false);
+						btnLoadBioCartaPathwayData.setEnabled(false);
+					}
 				}
-			}
-		});
+			});
+		}
+		else {
+			bLoadBioCartaPathwayData = false;
+			btnLoadBioCartaPathwayData.setEnabled(false);
+		}
 
 		buttonNewProject.addSelectionListener(new SelectionAdapter() {
 			@Override
