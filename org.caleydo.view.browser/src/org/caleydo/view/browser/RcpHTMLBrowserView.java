@@ -16,7 +16,7 @@ public class RcpHTMLBrowserView extends CaleydoRCPViewPart {
 
 		browserView.initViewRCP(parent);
 		browserView.drawView();
-		iViewID = browserView.getID();
+		view = browserView;
 	}
 
 	@Override

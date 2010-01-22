@@ -8,6 +8,7 @@ import org.caleydo.core.manager.event.view.RemoveViewSpecificItemsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.ViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.IView;
 import org.caleydo.rcp.toolbar.RcpToolBarView;
 import org.caleydo.rcp.toolbar.ToolBarContentFactory;
 import org.caleydo.view.base.rcp.ARcpGLViewPart;
@@ -71,7 +72,7 @@ public class PartListener
 		if (toolBarView == null)
 			return;
 
-		toolBarView.removeViewSpecificToolBar(glView.getGLEventListener().getID());
+		toolBarView.removeViewSpecificToolBar(glView.getGLView().getID());
 	}
 
 	@Override
@@ -161,8 +162,7 @@ public class PartListener
 		ViewEvent viewActivationEvent;
 		viewActivationEvent = new ViewActivationEvent();
 		viewActivationEvent.setSender(this);
-		List<Integer> viewIDs = getAllViewIDs(viewPart);
-		viewActivationEvent.setViewIDs(viewIDs);
+		viewActivationEvent.setViews(getAllViews(viewPart));
 		eventPublisher.triggerEvent(viewActivationEvent);
 	}
 
@@ -177,10 +177,10 @@ public class PartListener
 	 *            view to add the toolbar items
 	 */
 	private void drawInlineToolBar(CaleydoRCPViewPart viewPart) {
-		List<Integer> viewIDs = getAllViewIDs(viewPart);
+		List<IView> views = getAllViews(viewPart);
 
 		ToolBarContentFactory contentFactory = ToolBarContentFactory.get();
-		List<AToolBarContent> toolBarContents = contentFactory.getToolBarContent(viewIDs);
+		List<AToolBarContent> toolBarContents = contentFactory.getToolBarContent(views);
 
 		final IToolBarManager toolBarManager = viewPart.getViewSite().getActionBars().getToolBarManager();
 
@@ -224,29 +224,14 @@ public class PartListener
 	}
 
 	/**
-	 * Gets the view-ids and all sub-view-ids (if there are any)
+	 * Gets the views and all sub-views (if there are any)
 	 * 
 	 * @param viewPart
 	 * @return
 	 */
-	private List<Integer> getAllViewIDs(CaleydoRCPViewPart viewPart) {
-		return viewPart.getAllViewIDs();
+	private List<IView> getAllViews(CaleydoRCPViewPart viewPart) {
+		return viewPart.getAllViews();
 	}
-
-	// List<Integer> viewIDs;
-	// if (viewPart instanceof HTMLBrowserView) {
-	// viewIDs = new ArrayList<Integer>();
-	// viewIDs.add(viewPart.getViewID());
-	// } else if (viewPart instanceof AGLViewPart) {
-	// IViewManager viewManager = GeneralManager.get().getViewGLCanvasManager();
-	// viewManager.setActiveSWTView(viewPart.getSWTComposite());
-	// AGLEventListener glView = ((AGLViewPart) viewPart).getGLEventListener();
-	// viewIDs = glView.getAllViewIDs();
-	// } else {
-	// viewIDs = new ArrayList<Integer>();
-	// }
-	// return viewIDs;
-	// }
 
 	public boolean isViewAttached(IViewPart viewPart) {
 		if (viewPart.getSite().getShell().getText().equals("Caleydo")) {

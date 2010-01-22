@@ -454,14 +454,14 @@ public class ViewManager
 	}
 
 	@Override
-	public IViewCreator getViewCreator(String viewID) {
+	public IViewCreator getViewCreator(String viewType) {
 
 		for (IViewCreator glViewCreator : glViewCreators) {
-			if (glViewCreator.getViewType().equals(viewID)) {
+			if (glViewCreator.getViewType().equals(viewType)) {
 				return glViewCreator;
 			}
 		}
 
-		throw new IllegalStateException("Cannot find view creator for " + viewID);
+		throw new IllegalStateException("Cannot find view creator for " + viewType);
 	}
 }

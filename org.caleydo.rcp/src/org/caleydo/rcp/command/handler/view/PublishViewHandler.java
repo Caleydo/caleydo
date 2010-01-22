@@ -37,7 +37,7 @@ public class PublishViewHandler
 				String targetApplicationID = groupwareManager.getPublicGroupwareClient();
 
 				CreateGUIViewEvent viewEvent = new CreateGUIViewEvent();
-				viewEvent.setSerializedView(glViewPart.getGLEventListener().getSerializableRepresentation());
+				viewEvent.setSerializedView(glViewPart.getGLView().getSerializableRepresentation());
 				viewEvent.setTargetApplicationID(targetApplicationID);
 				viewEvent.setSender(this);
 

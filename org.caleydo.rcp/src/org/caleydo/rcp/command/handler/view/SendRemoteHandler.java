@@ -29,7 +29,7 @@ public class SendRemoteHandler
 			if (activePart instanceof ARcpGLViewPart) {
 				SendViewDialog dialog = new SendViewDialog(new Shell());
 				ARcpGLViewPart glViewPart = (ARcpGLViewPart) activePart;
-				dialog.setViewID(glViewPart.getGLEventListener().getID());
+				dialog.setViewID(glViewPart.getGLView().getID());
 				dialog.open();
 			}
 			else {

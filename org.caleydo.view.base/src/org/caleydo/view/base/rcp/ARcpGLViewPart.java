@@ -19,6 +19,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializationManager;
+import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -42,7 +43,6 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 
 	protected Frame frameGL;
 	protected GLCaleydoCanvas glCanvas;
-	protected AGLView glView;
 	protected MinimumSizeComposite minSizeComposite;
 
 	/** serialized representation of the view to initialize the view itself */
@@ -204,7 +204,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 
 		StringWriter xmlOutputWriter = new StringWriter();
 		try {
-			marshaller.marshal(glView.getSerializableRepresentation(),
+			marshaller.marshal(((AGLView)view).getSerializableRepresentation(),
 					xmlOutputWriter);
 			String xmlOutput = xmlOutputWriter.getBuffer().toString();
 			memento.putString("serialized", xmlOutput);
@@ -214,10 +214,9 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	}
 
 	public void setGLData(final GLCaleydoCanvas glCanvas,
-			final AGLView glEventListener) {
+			final AGLView glView) {
 		this.glCanvas = glCanvas;
-		this.glView = glEventListener;
-		this.iViewID = glEventListener.getID();
+		this.view = glView;
 	}
 
 	public void createPartControlGL() {
@@ -240,31 +239,30 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	public void dispose() {
 		super.dispose();
 
-		GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
-				iViewID).destroy();
+		GeneralManager.get().getViewGLCanvasManager().getGLEventListener(view.getID()).destroy();
 	}
 
 	@Override
-	public List<Integer> getAllViewIDs() {
+	public List<IView> getAllViews() {
 
 		// FIXXXME: rcp-view id is the same as the first gl-view-id, so
 		// rcp-view-ids have to be omitted
 		// List<Integer> ids = super.getAllViewIDs();
 
-		List<Integer> viewIDs = new ArrayList<Integer>();
-		viewIDs.add(getGLEventListener().getID());
-		if (getGLEventListener() instanceof IGLRemoteRenderingView) {
-			for (AGLView view : ((IGLRemoteRenderingView) getGLEventListener())
+		List<IView> views = new ArrayList<IView>();
+		views.add(getGLView());
+		if (getGLView() instanceof IGLRemoteRenderingView) {
+			for (AGLView view : ((IGLRemoteRenderingView) getGLView())
 					.getRemoteRenderedViews()) {
-				viewIDs.add(view.getID());
+				views.add(view);
 			}
 		}
 
-		return viewIDs;
+		return views;
 	}
 
-	public AGLView getGLEventListener() {
-		return glView;
+	public AGLView getGLView() {
+		return (AGLView)view;
 	}
 
 	public GLCaleydoCanvas getGLCanvas() {

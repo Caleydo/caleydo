@@ -22,7 +22,7 @@ public class RcpCollabView extends CaleydoRCPViewPart {
 		parentComposite = parent;
 
 		GeneralManager.get().getViewGLCanvasManager().registerItem(testingView);
-		iViewID = testingView.getID();
+		view = testingView;
 	}
 
 	@Override

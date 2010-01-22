@@ -10,11 +10,8 @@ import org.caleydo.core.manager.view.creator.IViewCreator;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.rcp.Activator;
 import org.caleydo.view.base.rcp.CaleydoRCPViewPart;
 import org.caleydo.view.base.swt.toolbar.content.AToolBarContent;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -111,16 +108,15 @@ public class ToolBarContentFactory {
 	 *            collection of view-types to obtain a tool bar content for
 	 * @return toolbar content providers for the given view types
 	 */
-	public List<AToolBarContent> getToolBarContent(List<Integer> viewIDs) {
+	public List<AToolBarContent> getToolBarContent(List<IView> views) {
 		List<AToolBarContent> contents = new ArrayList<AToolBarContent>();
 
 		boolean isViewAttached = true;
-		if (viewIDs.size() > 0) {
-			isViewAttached = isViewAttached(viewIDs.get(0));
+		if (views.size() > 0) {
+			isViewAttached = isViewAttached(views.get(0));
 		}
 
-		for (int viewID : viewIDs) {
-			IView view = retrieveView(viewID);
+		for (IView view : views) {
 			if (view != null) {
 				AToolBarContent content = getContent(view);
 				if (content != null) {
@@ -132,22 +128,6 @@ public class ToolBarContentFactory {
 			}
 		}
 		return contents;
-	}
-
-	/**
-	 * Retrieves a view to a given view-id from the view manager TODO: move this method to ViewManager?
-	 * 
-	 * @param viewID
-	 *            to get to related view
-	 * @return view related to the given view-id
-	 */
-	private IView retrieveView(int viewID) {
-		IViewManager canvasManager = GeneralManager.get().getViewGLCanvasManager();
-		IView view = canvasManager.getGLEventListener(viewID);
-		if (view == null) {
-			view = canvasManager.getItem(viewID);
-		}
-		return view;
 	}
 
 	/**
@@ -174,12 +154,10 @@ public class ToolBarContentFactory {
 	 * determines if a view is attached to the caleydo's main window or not
 	 * 
 	 * @param viewID
-	 *            id of the view as used by {@link IViewManager}
+	 *            view as used by {@link IViewManager}
 	 * @return true if the view is attached, false otherwise
 	 */
-	private boolean isViewAttached(int viewID) {
-
-		IView view = retrieveView(viewID);
+	private boolean isViewAttached(IView view) {
 
 		if (view instanceof CaleydoRCPViewPart) {
 			return ((CaleydoRCPViewPart) view).isAttached();
@@ -191,9 +169,9 @@ public class ToolBarContentFactory {
 			}
 		}
 
-		GeneralManager.get().getLogger().log(
-			new Status(IStatus.WARNING, Activator.PLUGIN_ID, "Could not find view with view-id=" + viewID
-				+ " in the workbench"));
+		// GeneralManager.get().getLogger().log(
+		// new Status(IStatus.WARNING, Activator.PLUGIN_ID, "Could not find view with view-id=" + view
+		// + " in the workbench"));
 		return false;
 	}
 
@@ -247,12 +225,12 @@ public class ToolBarContentFactory {
 	 *            list of view-ids as used by IViewManager
 	 * @return true if the views should be ignored by the toolbar, false otherwise
 	 */
-	public boolean isIgnored(List<Integer> viewIDs) {
+	public boolean isIgnored(List<IView> views) {
 		boolean ignored = false;
-		for (int viewID : viewIDs) {
+		for (IView view : views) {
 			ToolBarInfo info;
 			try {
-				info = toolBarInfos.get(viewID);
+				info = toolBarInfos.get(view.getViewType());
 				if (info != null) {
 					ignored |= info.ignored;
 				}

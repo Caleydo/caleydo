@@ -11,6 +11,7 @@ import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.IView;
 import org.caleydo.rcp.toolbar.listener.GroupHighlightingListener;
 import org.caleydo.rcp.toolbar.listener.RemoveViewSpecificItemsEventListener;
 import org.caleydo.rcp.toolbar.listener.ViewActivationListener;
@@ -46,9 +47,9 @@ public class ToolBarMediator
 	 * @param viewIDs
 	 *            list of viewIDs to render a toolbar for
 	 */
-	public void renderToolBar(List<Integer> viewIDs) {
+	public void renderToolBar(List<IView> views) {
 		ToolBarContentFactory contentFactory = ToolBarContentFactory.get();
-		boolean isIgnored = contentFactory.isIgnored(viewIDs);
+		boolean isIgnored = contentFactory.isIgnored(views);
 		if (!isIgnored) {
 			if (currentToolBarContents != null) {
 				for (AToolBarContent toolBarContent : currentToolBarContents) {
@@ -57,7 +58,7 @@ public class ToolBarMediator
 				currentToolBarContents = null;
 			}
 
-			currentToolBarContents = contentFactory.getToolBarContent(viewIDs);
+			currentToolBarContents = contentFactory.getToolBarContent(views);
 
 			IToolBarRenderer renderer = toolBarView.getToolBarRenderer();
 			Runnable job = renderer.createRenderJob(toolBarView, currentToolBarContents);

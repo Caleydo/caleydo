@@ -33,6 +33,7 @@ import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
+import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -1614,15 +1615,14 @@ public abstract class AGLViewBrowser extends AGLView
 
 		ViewActivationEvent viewActivationEvent = new ViewActivationEvent();
 		viewActivationEvent.setSender(this);
-		List<AGLView> views = getRemoteRenderedViews();
-
-		List<Integer> viewIDs = new ArrayList<Integer>();
-		viewIDs.add(getID());
-		for (AGLView view : views) {
-			viewIDs.add(view.getID());
+		List<AGLView> glViews = getRemoteRenderedViews();
+		List<IView> views = new ArrayList<IView>();
+		views.add(this);
+		for (AGLView view : glViews) {
+			views.add(view);
 		}
 
-		viewActivationEvent.setViewIDs(viewIDs);
+		viewActivationEvent.setViews(views);
 
 		IEventPublisher eventPublisher = GeneralManager.get()
 				.getEventPublisher();

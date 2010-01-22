@@ -55,7 +55,7 @@ public class RCPBridge
 					IWorkbenchPage page =
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 					ARcpGLViewPart viewPart = (ARcpGLViewPart) page.showView(serializedView.getViewType());
-					AGLView view = viewPart.getGLEventListener();
+					AGLView view = viewPart.getGLView();
 					view.initFromSerializableRepresentation(serializedView);
 					// TODO re-init view with its serializedView
 

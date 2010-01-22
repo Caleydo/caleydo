@@ -31,7 +31,7 @@ public class RcpTabularDataView extends CaleydoRCPViewPart {
 
 		GeneralManager.get().getViewGLCanvasManager().registerItem(
 				tabularDataView);
-		iViewID = tabularDataView.getID();
+		view = tabularDataView;
 	}
 
 	@Override

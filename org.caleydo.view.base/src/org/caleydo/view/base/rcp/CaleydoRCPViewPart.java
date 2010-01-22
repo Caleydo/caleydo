@@ -7,6 +7,7 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.view.IView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IViewSite;
@@ -26,7 +27,7 @@ public abstract class CaleydoRCPViewPart extends ViewPart {
 	protected IGeneralManager generalManager = null;
 	protected IEventPublisher eventPublisher = null;
 
-	protected int iViewID;
+	protected IView view;
 
 	protected EDataDomain dataDomain;
 
@@ -47,19 +48,19 @@ public abstract class CaleydoRCPViewPart extends ViewPart {
 	}
 
 	/**
-	 * Generates and returns a list of all view-ids, caleydo-view-part-ids and
-	 * gl-view-ids, contained in this view.
+	 * Generates and returns a list of all views, caleydo-view-parts and
+	 * gl-views, contained in this view.
 	 * 
-	 * @return list of all view-ids contained in this view
+	 * @return list of all views contained in this view
 	 */
-	public List<Integer> getAllViewIDs() {
-		List<Integer> ids = new ArrayList<Integer>();
-		ids.add(getViewID());
-		return ids;
+	public List<IView> getAllViews() {
+		List<IView> viwes = new ArrayList<IView>();
+		viwes.add(getView());
+		return viwes;
 	}
 
-	public int getViewID() {
-		return iViewID;
+	public IView getView() {
+		return view;
 	}
 
 	public Composite getSWTComposite() {
