@@ -21,7 +21,6 @@ import org.caleydo.core.manager.event.view.grouper.CreateGroupEvent;
 import org.caleydo.core.manager.event.view.grouper.DeleteGroupsEvent;
 import org.caleydo.core.manager.event.view.grouper.PasteGroupsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -104,8 +103,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, true);
 
-		viewType = EManagedObjectType.GL_HISTOGRAM;
-		viewID = VIEW_ID;
+		viewType = VIEW_ID;
 
 		hashGroups = new HashMap<Integer, GroupRepresentation>();
 

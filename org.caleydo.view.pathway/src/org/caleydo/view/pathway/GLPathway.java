@@ -150,8 +150,7 @@ public class GLPathway extends AGLView
 			final IViewFrustum viewFrustum) {
 
 		super(glCanvas, sLabel, viewFrustum, false);
-		viewType = EManagedObjectType.GL_PATHWAY;
-		viewID = VIEW_ID;
+		viewType = VIEW_ID;
 
 		pathwayManager = generalManager.getPathwayManager();
 

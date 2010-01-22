@@ -30,7 +30,7 @@ public class SerializedGrouperView extends ASerializedView {
 	}
 
 	@Override
-	public String getViewGUIID() {
+	public String getViewType() {
 		return GLGrouper.VIEW_ID;
 	}
 

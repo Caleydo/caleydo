@@ -80,5 +80,5 @@ public abstract class ASerializedView {
 	 * 
 	 * @return GUI-related view-id.
 	 */
-	public abstract String getViewGUIID();
+	public abstract String getViewType();
 }

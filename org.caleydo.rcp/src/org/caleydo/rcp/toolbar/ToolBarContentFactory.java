@@ -200,7 +200,7 @@ public class ToolBarContentFactory {
 	private CaleydoRCPViewPart getRelatedViewPart(IView view) {
 
 		IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
-		ToolBarInfo info = toolBarInfos.get(view.getViewID());
+		ToolBarInfo info = toolBarInfos.get(view.getViewType());
 		if (info != null) {
 			String rcpViewPartID = info.viewID;
 			for (IWorkbenchWindow window : windows) {
@@ -220,7 +220,7 @@ public class ToolBarContentFactory {
 
 	private AToolBarContent getContent(IView view) {
 		AToolBarContent content = null;
-		ToolBarInfo info = toolBarInfos.get(view.getViewID());
+		ToolBarInfo info = toolBarInfos.get(view.getViewType());
 		if (info != null) {
 			IViewCreator viewCreator =
 				GeneralManager.get().getViewGLCanvasManager().getViewCreator(info.viewID);

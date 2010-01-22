@@ -1318,8 +1318,8 @@ public abstract class AGLViewBrowser extends AGLView
 		if (reinitialize) {
 			ArrayList<ASerializedView> removeNewViews = new ArrayList<ASerializedView>();
 			for (ASerializedView view : newViews) {
-				if (!(view.getViewGUIID().equals("org.caleydo.view.parcoords") || view
-						.getViewGUIID().equals("org.caleydo.view.heatmap"))) {
+				if (!(view.getViewType().equals("org.caleydo.view.parcoords") || view
+						.getViewType().equals("org.caleydo.view.heatmap"))) {
 					removeNewViews.add(view);
 				}
 			}
@@ -1333,7 +1333,7 @@ public abstract class AGLViewBrowser extends AGLView
 		if (reinitialize) {
 			ArrayList<AGLView> removeView = new ArrayList<AGLView>();
 			for (AGLView glView : containedGLViews) {
-				if (!(glView.viewID.equals("org.caleydo.view.parcoords") || glView.viewID
+				if (!(glView.viewType.equals("org.caleydo.view.parcoords") || glView.viewType
 						.equals("org.caleydo.view.heatmap"))) {
 					removeView.add(glView);
 				}
@@ -1363,11 +1363,12 @@ public abstract class AGLViewBrowser extends AGLView
 			// Move heat map and par coords view to its initial position in the
 			// bucket
 			for (AGLView view : containedGLViews) {
-				if (view.getViewID().equals("org.caleydo.view.parcoords")) {
+				if (view.getViewType().equals("org.caleydo.view.parcoords")) {
 					stackLevel.getElementByPositionIndex(0).setGLView(view);
 					view.setRemoteLevelElement(stackLevel
 							.getElementByPositionIndex(0));
-				} else if (view.getViewID().equals("org.caleydo.view.heatmap")) {
+				} else if (view.getViewType()
+						.equals("org.caleydo.view.heatmap")) {
 					focusLevel.getElementByPositionIndex(0).setGLView(view);
 					view.setRemoteLevelElement(focusLevel
 							.getElementByPositionIndex(0));
@@ -1395,8 +1396,9 @@ public abstract class AGLViewBrowser extends AGLView
 
 			glView = element.getGLView();
 
-			if (glView.getViewID().equals("org.caleydo.view.heatmap")
-					|| glView.getViewID().equals("org.caleydo.view.parcoords")) {
+			if (glView.getViewType().equals("org.caleydo.view.heatmap")
+					|| glView.getViewType()
+							.equals("org.caleydo.view.parcoords")) {
 				// Remove all elements from heatmap and parallel coordinates
 				((AStorageBasedView) glView).resetView();
 
@@ -1699,7 +1701,7 @@ public abstract class AGLViewBrowser extends AGLView
 		ICommandManager cm = generalManager.getCommandManager();
 		CmdCreateView cmdView = (CmdCreateView) cm
 				.createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID(serView.getViewGUIID());
+		cmdView.setViewID(serView.getViewType());
 		cmdView.setAttributesFromSerializedForm(serView);
 		// cmdView.setSet(set);
 		cmdView.doCommand();
@@ -1842,7 +1844,6 @@ public abstract class AGLViewBrowser extends AGLView
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 
-		// FIXME after view plugin reorganization
 		// SerializedRemoteRenderingView serializedForm = new
 		// SerializedRemoteRenderingView(
 		// dataDomain);
@@ -1851,9 +1852,9 @@ public abstract class AGLViewBrowser extends AGLView
 		// // serializedForm.setNeighborhoodEnabled(neighborhoodEnabled);
 		// // serializedForm.setGeneMappingEnabled(geneMappingEnabled);
 		// serializedForm.setConnectionLinesEnabled(connectionLinesEnabled);
-		//
+		//		
 		// IViewManager viewManager = generalManager.getViewGLCanvasManager();
-		//
+		//		
 		// ArrayList<ASerializedView> remoteViews = new
 		// ArrayList<ASerializedView>(
 		// focusLevel.getAllElements().size());
@@ -1864,7 +1865,7 @@ public abstract class AGLViewBrowser extends AGLView
 		// }
 		// }
 		// serializedForm.setFocusViews(remoteViews);
-		//
+		//		
 		// remoteViews = new ArrayList<ASerializedView>(stackLevel
 		// .getAllElements().size());
 		// for (RemoteLevelElement rle : stackLevel.getAllElements()) {
@@ -1874,9 +1875,11 @@ public abstract class AGLViewBrowser extends AGLView
 		// }
 		// }
 		// serializedForm.setStackViews(remoteViews);
-		//
+		//		
 		// return serializedForm;
-		return null;
+
+		throw new IllegalStateException(
+				"TODO implement view browser serialization");
 	}
 
 	@Override

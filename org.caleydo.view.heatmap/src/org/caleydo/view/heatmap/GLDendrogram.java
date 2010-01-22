@@ -34,7 +34,6 @@ import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.NewGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -139,8 +138,7 @@ public class GLDendrogram extends AStorageBasedView
 			final IViewFrustum viewFrustum, final boolean bRenderGeneTree) {
 		super(glCanvas, sLabel, viewFrustum);
 
-		viewType = EManagedObjectType.GL_DENDOGRAM;
-		viewID = GLDendrogram.VIEW_ID;
+		viewType = GLDendrogram.VIEW_ID;
 
 		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
 		alSelectionTypes.add(ESelectionType.NORMAL);

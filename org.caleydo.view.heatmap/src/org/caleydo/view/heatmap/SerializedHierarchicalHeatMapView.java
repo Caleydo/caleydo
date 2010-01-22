@@ -32,7 +32,7 @@ public class SerializedHierarchicalHeatMapView extends ASerializedView {
 	}
 
 	@Override
-	public String getViewGUIID() {
+	public String getViewType() {
 		return GLHierarchicalHeatMap.VIEW_ID;
 	}
 }

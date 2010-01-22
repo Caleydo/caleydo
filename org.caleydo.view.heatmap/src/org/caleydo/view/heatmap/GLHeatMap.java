@@ -125,8 +125,7 @@ public class GLHeatMap extends AStorageBasedView {
 			final IViewFrustum viewFrustum) {
 
 		super(glCanvas, sLabel, viewFrustum);
-		viewType = EManagedObjectType.GL_HEAT_MAP;
-		viewID = GLHeatMap.VIEW_ID;
+		viewType = GLHeatMap.VIEW_ID;
 
 		// ArrayList<ESelectionType> alSelectionTypes = new
 		// ArrayList<ESelectionType>();
@@ -173,7 +172,8 @@ public class GLHeatMap extends AStorageBasedView {
 			final GLMouseListener glMouseListener,
 			GLInfoAreaManager infoAreaManager) {
 
-		if (glRemoteRenderingView.getViewID().equals("org.caleydo.view.bucket"))
+		if (glRemoteRenderingView.getViewType().equals(
+				"org.caleydo.view.bucket"))
 			renderStyle.disableFishEye();
 
 		// Register keyboard listener to GL canvas
@@ -1215,7 +1215,7 @@ public class GLHeatMap extends AStorageBasedView {
 	private void renderCaption(GL gl, String sLabel, float fXOrigin,
 			float fYOrigin, float fZOrigin, float fRotation, float fFontScaling) {
 		if (isRenderedRemote()
-				&& glRemoteRenderingView.getViewID().equals(
+				&& glRemoteRenderingView.getViewType().equals(
 						"org.caleydo.view.bucket"))
 			fFontScaling *= 1.5;
 		if (sLabel.length() > GeneralRenderStyle.NUM_CHAR_LIMIT + 1) {

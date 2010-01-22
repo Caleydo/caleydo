@@ -28,7 +28,6 @@ import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -61,7 +60,9 @@ import org.caleydo.view.base.listener.LoadPathwaysByGeneListener;
 import org.caleydo.view.bucket.GLBucket;
 import org.caleydo.view.heatmap.GLHierarchicalHeatMap;
 import org.caleydo.view.parcoords.GLParallelCoordinates;
+import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathwaybrowser.GLPathwayViewBrowser;
+import org.caleydo.view.tissue.GLTissue;
 import org.caleydo.view.tissuebrowser.GLTissueViewBrowser;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -138,8 +139,7 @@ public class GLDataFlipper extends AGLView
 
 		super(glCanvas, sLabel, viewFrustum, true);
 
-		viewType = EManagedObjectType.GL_DATA_FLIPPER;
-		viewID = GLDataFlipper.VIEW_ID;
+		viewType = GLDataFlipper.VIEW_ID;
 
 		// // Unregister standard mouse wheel listener
 		// parentGLCanvas.removeMouseWheelListener(glMouseListener);
@@ -540,7 +540,7 @@ public class GLDataFlipper extends AGLView
 		ICommandManager commandManager = generalManager.getCommandManager();
 		CmdCreateView cmdView = (CmdCreateView) commandManager
 				.createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID(serView.getViewGUIID());
+		cmdView.setViewID(serView.getViewType());
 		cmdView.setAttributesFromSerializedForm(serView);
 		cmdView.doCommand();
 
@@ -958,8 +958,7 @@ public class GLDataFlipper extends AGLView
 	private void renderDataViewIcons(final GL gl, EDataDomain dataDomain) {
 
 		IUseCase useCase = GeneralManager.get().getUseCase(dataDomain);
-		ArrayList<EManagedObjectType> possibleViews = useCase
-				.getPossibleViews();
+		ArrayList<String> possibleViews = useCase.getPossibleViews();
 
 		EIconTextures dataIcon = null;
 		float fXPos = 0.5f;
@@ -1065,32 +1064,23 @@ public class GLDataFlipper extends AGLView
 		// gl.glTranslatef(-1.5f, 0, 0);
 		// }
 
-		for (int iViewIndex = 0; iViewIndex < possibleViews.size(); iViewIndex++) {
+		for (int viewIndex = 0; viewIndex < possibleViews.size(); viewIndex++) {
 
 			EIconTextures iconTextureType;
-			EManagedObjectType viewType = possibleViews.get(iViewIndex);
-			switch (viewType) {
-				case GL_HIER_HEAT_MAP :
-					iconTextureType = EIconTextures.HEAT_MAP_ICON;
-					break;
-				case GL_PARALLEL_COORDINATES :
-					iconTextureType = EIconTextures.PAR_COORDS_ICON;
-					break;
-				case GL_GLYPH :
-					iconTextureType = EIconTextures.GLYPH_ICON;
-					break;
-				case GL_PATHWAY :
-				case GL_PATHWAY_VIEW_BROWSER :
-					iconTextureType = EIconTextures.PATHWAY_ICON;
-					break;
-				case GL_TISSUE :
-				case GL_TISSUE_VIEW_BROWSER :
-					iconTextureType = EIconTextures.TISSUE_SAMPLE;
-					break;
-				default :
-					iconTextureType = EIconTextures.LOCK;
-					break;
-			}
+			if (viewType.equals(GLHierarchicalHeatMap.VIEW_ID))
+				iconTextureType = EIconTextures.HEAT_MAP_ICON;
+			else if (viewType.equals(GLParallelCoordinates.VIEW_ID))
+				iconTextureType = EIconTextures.PAR_COORDS_ICON;
+			else if (viewType.equals(GLGlyph.VIEW_ID))
+				iconTextureType = EIconTextures.GLYPH_ICON;
+			else if (viewType.equals(GLPathway.VIEW_ID)
+					|| viewType.equals(GLPathwayViewBrowser.VIEW_ID))
+				iconTextureType = EIconTextures.PATHWAY_ICON;
+			else if (viewType.equals(GLTissue.VIEW_ID)
+					|| viewType.equals(GLTissueViewBrowser.VIEW_ID))
+				iconTextureType = EIconTextures.TISSUE_SAMPLE;
+			else
+				iconTextureType = EIconTextures.LOCK;
 
 			RemoteLevelElement element = findElementContainingView(dataDomain,
 					viewType);
@@ -1116,7 +1106,7 @@ public class GLDataFlipper extends AGLView
 
 			float fIconPadding = 0.015f;
 			gl.glTranslatef(0, 0, 0.001f);
-			switch (iViewIndex) {
+			switch (viewIndex) {
 				case 0 :
 					// Data icon
 					textureManager.renderTexture(gl, dataIcon, new Vec3f(0f,
@@ -1304,7 +1294,7 @@ public class GLDataFlipper extends AGLView
 						if (fHorizontalConnHeight > 0.6)
 							fPipeHeight = 0.24f;
 
-						switch (iViewIndex) {
+						switch (viewIndex) {
 							case 0 :
 
 								if (element == focusElement) {
@@ -1707,10 +1697,10 @@ public class GLDataFlipper extends AGLView
 	}
 
 	private RemoteLevelElement findElementContainingView(
-			EDataDomain dataDomain, EManagedObjectType viewType) {
+			EDataDomain dataDomain, String viewID) {
 
 		for (AGLView glView : containedGLViews) {
-			if (glView.getViewType() == viewType
+			if (glView.getViewType().equals(viewID)
 					&& glView.getDataDomain() == dataDomain) {
 				if (focusElement.getGLView() == glView)
 					return focusElement;

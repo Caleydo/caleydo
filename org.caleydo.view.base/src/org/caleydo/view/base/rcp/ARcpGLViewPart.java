@@ -79,7 +79,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	protected AGLView createGLView(ASerializedView serializedView,
 			int iParentCanvasID) {
 
-		String viewType = serializedView.getViewGUIID();
+		String viewType = serializedView.getViewType();
 		dataDomain = serializedView.getDataDomain();
 
 		// FIXME: when restructuring startup procedure

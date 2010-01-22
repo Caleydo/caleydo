@@ -76,7 +76,7 @@ public class KEGGPathwayResourceLoader implements IPathwayResourceLoader {
 
 		return file;
 	}
-	
+
 	public Texture getTexture(String sFileName) {
 		Texture texture;
 

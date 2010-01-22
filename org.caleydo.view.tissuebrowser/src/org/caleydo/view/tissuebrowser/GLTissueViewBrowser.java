@@ -22,7 +22,6 @@ import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -40,6 +39,8 @@ import org.caleydo.view.tissue.SerializedTissueView;
 public class GLTissueViewBrowser extends AGLViewBrowser
 		implements
 			IVirtualArrayUpdateHandler {
+
+	public final static String VIEW_ID = "org.caleydo.view.tissuebrowser";
 
 	private static final int VIEW_THRESHOLD = 20;
 
@@ -61,7 +62,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser
 			IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum);
 
-		viewType = EManagedObjectType.GL_TISSUE_VIEW_BROWSER;
+		viewType = VIEW_ID;
 		mapExperimentToTexturePath = new HashMap<Integer, String>();
 	}
 

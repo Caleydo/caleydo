@@ -189,7 +189,7 @@ public class ProjectSaver {
 			if (!glView.isRenderedRemote()) {
 				ASerializedView serView = glView.getSerializableRepresentation();
 				if (!(serView instanceof SerializedDummyView)) {
-					storeViews.add(serView.getViewGUIID());
+					storeViews.add(serView.getViewType());
 				}
 			}
 		}
@@ -198,7 +198,7 @@ public class ProjectSaver {
 		for (IView swtView : swtViews) {
 			ASerializedView serView = swtView.getSerializableRepresentation();
 			if (!(serView instanceof SerializedDummyView)) {
-				storeViews.add(serView.getViewGUIID());
+				storeViews.add(serView.getViewType());
 			}
 		}
 

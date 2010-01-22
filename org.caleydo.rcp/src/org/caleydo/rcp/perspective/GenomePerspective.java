@@ -12,16 +12,17 @@ import org.eclipse.ui.PlatformUI;
 
 public class GenomePerspective
 	implements IPerspectiveFactory {
-	public static boolean bIsWideScreen = false;
 
 	// private static final String LOG_VIEW = "org.eclipse.pde.runtime.LogView";
+
+	public static boolean bIsWideScreen = false;
 
 	@Override
 	public void createInitialLayout(final IPageLayout layout) {
 
 		layout.setEditorAreaVisible(false);
 
-		Rectangle rectDisplay = Display.getCurrent().getMonitors()[0].getBounds();
+		Rectangle rectDisplay = Display.getCurrent().getClientArea();
 		float fRatio = (float) rectDisplay.width / rectDisplay.height;
 
 		if (fRatio > 1.35) {

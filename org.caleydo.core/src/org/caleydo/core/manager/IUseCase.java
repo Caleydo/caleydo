@@ -7,7 +7,6 @@ import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterState;
 
@@ -40,7 +39,7 @@ public interface IUseCase {
 	 * 
 	 * @return
 	 */
-	public ArrayList<EManagedObjectType> getPossibleViews();
+	public ArrayList<String> getPossibleViews();
 
 	/**
 	 * Returns the set which is currently loaded and used inside the views for this use case.

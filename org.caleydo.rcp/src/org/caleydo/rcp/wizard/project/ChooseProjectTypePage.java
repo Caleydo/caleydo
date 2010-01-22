@@ -352,7 +352,7 @@ public class ChooseProjectTypePage
 				btnLoadBioCartaPathwayData.setEnabled(bLoadPathwayData);
 			}
 		});
-		
+
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
 		IExtension ext = ep.getExtension("org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader");

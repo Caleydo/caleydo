@@ -68,7 +68,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 	public HTMLBrowser(final int iParentContainerId, final String sLabel) {
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager()
 				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENERAL));
-		viewID = VIEW_ID;
+		viewType = VIEW_ID;
 		init();
 	}
 

@@ -122,7 +122,7 @@ public class SerializedRadialHierarchyView extends ASerializedView {
 	}
 
 	@Override
-	public String getViewGUIID() {
+	public String getViewType() {
 		return GLRadialHierarchy.VIEW_ID;
 	}
 }

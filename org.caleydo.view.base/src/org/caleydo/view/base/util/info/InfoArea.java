@@ -134,18 +134,12 @@ public class InfoArea
 		gridData.minimumHeight = 62;
 		gridData.heightHint = 156;
 
-		// FIXME: when view plugin reorganization is done
-		// if (Application.bIsWindowsOS) {
-		// // In windows the list needs more space because of no multi line
-		// // support
-		// gridData.widthHint = 145;
-		// gridData.minimumWidth = 145;
-		// }
-
-		// else {
-		// gridData.widthHint = 145;
-		// gridData.minimumWidth = 145;
-		// }
+		if (System.getProperty("os.name").contains("Win")) {
+			// In windows the list needs more space because of no multi line
+			// support
+			gridData.widthHint = 145;
+			gridData.minimumWidth = 145;
+		}
 
 		selectionTree.setLayoutData(gridData);
 

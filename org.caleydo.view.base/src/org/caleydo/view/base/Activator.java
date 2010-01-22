@@ -6,8 +6,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 
 /**
- * The activator class controls the plug-in life cycle FIXME: don't know if
- * activator is needed - check after view plugin reorganization
+ * The activator class controls the plug-in life cycle
  */
 public class Activator extends AbstractUIPlugin {
 

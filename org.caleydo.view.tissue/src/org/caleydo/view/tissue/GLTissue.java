@@ -8,7 +8,6 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -30,13 +29,16 @@ public class GLTissue extends AGLView {
 	private String texturePath;
 	private int experimentIndex;
 
+	public final static String VIEW_ID = "org.caleydo.view.tissue";
+
 	/**
 	 * Constructor.
 	 */
 	public GLTissue(GLCaleydoCanvas glCanvas, final String sLabel,
 			final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, false);
-		viewType = EManagedObjectType.GL_TISSUE;
+
+		viewType = VIEW_ID;
 
 		// initialize internal gene selection manager
 		ArrayList<ESelectionType> alSelectionType = new ArrayList<ESelectionType>();

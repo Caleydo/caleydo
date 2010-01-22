@@ -22,8 +22,7 @@ public class RcpGLRadialHierarchyView extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		AGLView view = createGLView(initSerializedView, glCanvas
-				.getID());
+		AGLView view = createGLView(initSerializedView, glCanvas.getID());
 		minSizeComposite.setView(view);
 	}
 

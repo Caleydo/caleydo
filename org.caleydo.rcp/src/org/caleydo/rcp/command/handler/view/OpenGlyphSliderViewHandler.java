@@ -1,6 +1,6 @@
 package org.caleydo.rcp.command.handler.view;
 
-import org.caleydo.view.base.rcp.RcpGLGlyphSliderView;
+import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLGlyphSliderView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -14,7 +14,7 @@ public class OpenGlyphSliderViewHandler
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpGLGlyphSliderView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(GLGlyphSliderView.VIEW_ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

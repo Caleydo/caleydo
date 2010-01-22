@@ -16,7 +16,6 @@ import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.data.RemoveBookmarkEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -111,8 +110,7 @@ public class GLBookmarkManager extends AGLView
 			IViewFrustum viewFrustum) {
 
 		super(glCanvas, label, viewFrustum, false);
-		viewID = GLBookmarkManager.VIEW_ID;
-		viewType = EManagedObjectType.GL_BOOKMARK_VIEWER;
+		viewType = GLBookmarkManager.VIEW_ID;
 
 		renderStyle = new BookmarkRenderStyle(viewFrustum);
 
@@ -193,7 +191,7 @@ public class GLBookmarkManager extends AGLView
 
 		processEvents();
 
-//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		float currentHeight = viewFrustum.getHeight()
 				- BookmarkRenderStyle.TOP_SPACING;

@@ -47,7 +47,6 @@ import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
 import org.caleydo.core.manager.event.view.storagebased.XAxisSelectorEvent;
 import org.caleydo.core.manager.event.view.storagebased.YAxisSelectorEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -71,19 +70,17 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.base.core.AStorageBasedView;
+import org.caleydo.view.scatterplot.listener.GLScatterPlotKeyListener;
 import org.caleydo.view.scatterplot.listener.ResetSelectionListener;
 import org.caleydo.view.scatterplot.listener.SetPointSizeListener;
 import org.caleydo.view.scatterplot.listener.TogglePointTypeListener;
 import org.caleydo.view.scatterplot.listener.XAxisSelectorListener;
 import org.caleydo.view.scatterplot.listener.YAxisSelectorListener;
-import org.caleydo.view.scatterplot.listener.GLScatterPlotKeyListener;
 import org.caleydo.view.scatterplot.renderstyle.EScatterPointType;
 import org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle;
 
-// Soon needed for LoD rendering
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
 
@@ -112,13 +109,11 @@ public class GLScatterplot extends AStorageBasedView {
 
 	private ArrayList<Float> fAlXDistances;
 
-	
 	boolean bUseDetailLevel = true;
 
 	private boolean bUpdateSelection = false;
 	private boolean bUpdateAll = false;
 	private boolean bRender2Axis = false;
-
 
 	int iCurrentMouseOverElement = -1;
 
@@ -137,34 +132,32 @@ public class GLScatterplot extends AStorageBasedView {
 	private YAxisSelectorListener yAxisSelectorListener;
 
 	// Selections
-	
+
 	private SelectionManager elementSelectionManager;
 	private SelectionManager mouseoverSelectionManager;
 	private SelectionManager axisSelectionManager;
 
 	// Brushes
-	
+
 	private float[] fRectangleDragStartPoint = new float[3];
 	private float[] fRectangleDragEndPoint = new float[3];
 	private boolean bRectangleSelection = false;
-	
-	
-	//DIsplaylists
+
+	// DIsplaylists
 	private int iGLDisplayListIndexBrush;
 	private int iGLDisplayListIndexCoord;
 	private int iGLDisplayListIndexMouseOver;
 	private int iGLDisplayListIndexSelection;
 
-	
-	//Textures
+	// Textures
 	private int iSamplesPerTexture = 0;
 	private final static int MAX_SAMPLES_PER_TEXTURE = 2000;
 	// array of textures for holding the data samples
-	private int iNrTextures=25; //TMP
+	private int iNrTextures = 25; // TMP
 	private ArrayList<Texture> AlTextures = new ArrayList<Texture>();
 	private ArrayList<Integer> iAlNumberSamples = new ArrayList<Integer>();
 	private boolean bRedrawTextures = false;
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -176,8 +169,7 @@ public class GLScatterplot extends AStorageBasedView {
 			final IViewFrustum viewFrustum) {
 
 		super(glCanvas, sLabel, viewFrustum);
-		viewType = EManagedObjectType.GL_HEAT_MAP;
-		viewID = GLScatterplot.VIEW_ID;
+		viewType = GLScatterplot.VIEW_ID;
 
 		// ArrayList<ESelectionType> alSelectionTypes = new
 		// ArrayList<ESelectionType>();
@@ -193,9 +185,8 @@ public class GLScatterplot extends AStorageBasedView {
 		glKeyListener = new GLScatterPlotKeyListener(this);
 	}
 
-	
 	private void calculateTextures() {
-	
+
 		AlTextures.clear();
 		iAlNumberSamples.clear();
 
@@ -205,10 +196,10 @@ public class GLScatterplot extends AStorageBasedView {
 
 			AlTextures.add(tempTextur);
 			iAlNumberSamples.add(iSamplesPerTexture);
-	
+
 		}
 	}
-	
+
 	/**
 	 * Init textures, build array of textures used for holding the whole
 	 * examples
@@ -217,19 +208,17 @@ public class GLScatterplot extends AStorageBasedView {
 	 */
 	private void initTextures(final GL gl) {
 
-		
 		AlTextures.clear();
 		iAlNumberSamples.clear();
 
 		Texture tempTextur;
-		
-		
 
-//		tempTextur.
-		int iTextureSize = contentVA.size();		
+		// tempTextur.
+		int iTextureSize = contentVA.size();
 
-		gl.glCopyTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_LUMINANCE, 0, 0, 128, 128, 0);
-		
+		gl.glCopyTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_LUMINANCE, 0, 0, 128,
+				128, 0);
+
 		iSamplesPerTexture = (int) Math.ceil((double) iTextureSize
 				/ iNrTextures);
 
@@ -270,8 +259,7 @@ public class GLScatterplot extends AStorageBasedView {
 				fLookupValue = set.get(iStorageIndex).getFloat(
 						EDataRepresentation.NORMALIZED, iContentIndex);
 
-				float[] fArMappingColor = colorMapper
-						.getColor(fLookupValue);
+				float[] fArMappingColor = colorMapper.getColor(fLookupValue);
 
 				float[] fArRgba = {fArMappingColor[0], fArMappingColor[1],
 						fArMappingColor[2], fOpacity};
@@ -288,8 +276,8 @@ public class GLScatterplot extends AStorageBasedView {
 						0 /* border */, GL.GL_RGBA /* pixelFormat */,
 						GL.GL_FLOAT /* pixelType */, false /* mipmap */,
 						false /* dataIsCompressed */,
-						false /* mustFlipVertically */,
-						FbTemp[iTextureCounter], null);
+						false /* mustFlipVertically */, FbTemp[iTextureCounter],
+						null);
 
 				tempTextur = TextureIO.newTexture(0);
 				tempTextur.updateImage(texData);
@@ -300,10 +288,9 @@ public class GLScatterplot extends AStorageBasedView {
 				iCount = 0;
 			}
 		}
-		
+
 	}
-	
-	
+
 	@Override
 	public void init(GL gl) {
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
@@ -316,7 +303,7 @@ public class GLScatterplot extends AStorageBasedView {
 		initAxisComboEvent.setAxisNames(this.getAxisString());
 		GeneralManager.get().getEventPublisher().triggerEvent(
 				initAxisComboEvent);
-	//	detailLevel = EDetailLevel.LOW;
+		// detailLevel = EDetailLevel.LOW;
 		detailLevel = EDetailLevel.HIGH;
 	}
 
@@ -337,13 +324,15 @@ public class GLScatterplot extends AStorageBasedView {
 		iGLDisplayListIndexCoord = 3;
 		iGLDisplayListIndexMouseOver = 4;
 		iGLDisplayListIndexSelection = 5;
-		
+
 		// Register keyboard listener to GL canvas
-		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
-			}
-		});
+		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(
+				new Runnable() {
+					public void run() {
+						parentGLCanvas.getParentComposite().addKeyListener(
+								glKeyListener);
+					}
+				});
 
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
@@ -362,8 +351,6 @@ public class GLScatterplot extends AStorageBasedView {
 								.addKeyListener(glKeyListener);
 					}
 				});
-		
-		
 
 		bRenderStorageHorizontally = false;
 
@@ -387,7 +374,7 @@ public class GLScatterplot extends AStorageBasedView {
 	public void displayLocal(GL gl) {
 
 		if (set == null)
-		 return;
+			return;
 		//
 		// if (bIsTranslationAnimationActive) {
 		// doTranslation();
@@ -402,25 +389,24 @@ public class GLScatterplot extends AStorageBasedView {
 
 		// if (alHits == null && alHits.size() == 0) {
 
-		if (detailLevel == EDetailLevel.HIGH)
-		{	
+		if (detailLevel == EDetailLevel.HIGH) {
 			GLMouseListener glMouseListener = getParentGLCanvas()
 					.getGLMouseListener();
-	
+
 			if (glMouseListener.wasMouseDragged()) {
 				bRectangleSelection = true;
-				
+
 				Point pDragEndPoint = glMouseListener.getPickedPoint();
-				Point pDragStartPoint = glMouseListener.getPickedPointDragStart();
-			
-	
+				Point pDragStartPoint = glMouseListener
+						.getPickedPointDragStart();
+
 				fRectangleDragStartPoint = GLCoordinateUtils
 						.convertWindowCoordinatesToWorldCoordinates(gl,
 								pDragStartPoint.x, pDragStartPoint.y);
 				fRectangleDragEndPoint = GLCoordinateUtils
 						.convertWindowCoordinatesToWorldCoordinates(gl,
 								pDragEndPoint.x, pDragEndPoint.y);
-	
+
 				gl.glNewList(iGLDisplayListIndexBrush, GL.GL_COMPILE);
 				DrawRectangularSelection(gl);
 				gl.glEndList();
@@ -432,10 +418,10 @@ public class GLScatterplot extends AStorageBasedView {
 				gl.glDeleteLists(iGLDisplayListIndexBrush, 1);
 				bUpdateSelection = true;
 			}
-		
-		pickingManager.handlePicking(this, gl);
+
+			pickingManager.handlePicking(this, gl);
 		}
-		
+
 		if (bIsDisplayListDirtyLocal) {
 
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
@@ -443,10 +429,10 @@ public class GLScatterplot extends AStorageBasedView {
 
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-	
+
 		display(gl);
 		checkForHits(gl);
-	
+
 		if (eBusyModeState != EBusyModeState.OFF)
 			renderBusyMode(gl);
 
@@ -487,12 +473,11 @@ public class GLScatterplot extends AStorageBasedView {
 		// clipToFrustum(gl);
 
 		gl.glCallList(iGLDisplayListToCall);
-		if (detailLevel == EDetailLevel.HIGH)
-		{
+		if (detailLevel == EDetailLevel.HIGH) {
 			gl.glCallList(iGLDisplayListIndexBrush);
 			gl.glCallList(iGLDisplayListIndexCoord);
 			gl.glCallList(iGLDisplayListIndexMouseOver);
-			
+
 		}
 		gl.glCallList(iGLDisplayListIndexSelection);
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
@@ -511,53 +496,45 @@ public class GLScatterplot extends AStorageBasedView {
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 
-		if (bHasFrustumChanged) 
-		{
+		if (bHasFrustumChanged) {
 			bHasFrustumChanged = false;
 			bUpdateAll = true;
-		}	
-		
-		// TODO remove l8ter when Keylistener or Toolbar working again  
-//		bRender2Axis=false;
-//		
-//		SELECTED_X_AXIS = 0;
-//		SELECTED_Y_AXIS = 1;
-//		SELECTED_X_AXIS_2 = 0;
-//		SELECTED_Y_AXIS_2 = 2;
+		}
 
-		
-		if (bUpdateSelection || bUpdateAll)
-		{
-			bUpdateSelection=false;			
+		// TODO remove l8ter when Keylistener or Toolbar working again
+		// bRender2Axis=false;
+		//		
+		// SELECTED_X_AXIS = 0;
+		// SELECTED_Y_AXIS = 1;
+		// SELECTED_X_AXIS_2 = 0;
+		// SELECTED_Y_AXIS_2 = 2;
+
+		if (bUpdateSelection || bUpdateAll) {
+			bUpdateSelection = false;
 			buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
 		}
-			
-		if (bUpdateAll)
-		{
-		 if (detailLevel == EDetailLevel.HIGH)
-		 {
-		  gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
-		  renderCoordinateSystem(gl);			
-		  gl.glEndList();
-		 }
-								
-		 gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		 gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
-		 RenderScatterPoints(gl);
-		 gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
-		 gl.glEndList();
-		 
-		 bUpdateAll = false;
-		}
-			 
-			 	
-		 gl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
-		 gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
-		 RenderMouseOver(gl);
-		 gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
-		 gl.glEndList();
-		 		 		 		 		 		 
 
+		if (bUpdateAll) {
+			if (detailLevel == EDetailLevel.HIGH) {
+				gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
+				renderCoordinateSystem(gl);
+				gl.glEndList();
+			}
+
+			gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+			gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
+			RenderScatterPoints(gl);
+			gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
+			gl.glEndList();
+
+			bUpdateAll = false;
+		}
+
+		gl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
+		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
+		RenderMouseOver(gl);
+		gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
+		gl.glEndList();
 
 	}
 
@@ -740,15 +717,12 @@ public class GLScatterplot extends AStorageBasedView {
 
 		float x_2 = 0.0f;
 		float y_2 = 0.0f;
-		
-		if (detailLevel != EDetailLevel.HIGH)
-		{
-			bRender2Axis=false;
+
+		if (detailLevel != EDetailLevel.HIGH) {
+			bRender2Axis = false;
 			POINTSTYLE = EScatterPointType.POINT;
 		}
 
-				
-		
 		for (Integer iContentIndex : contentVA) {
 
 			if (iContentIndex == -1) {
@@ -768,12 +742,11 @@ public class GLScatterplot extends AStorageBasedView {
 			float[] fArMappingColor = colorMapper.getColor(Math.max(
 					xnormalized, ynormalized));
 			EScatterPointType tmpPoint = POINTSTYLE;
-			if (bRender2Axis)
-			{
-				fArMappingColor = new float[]{1.0f, 0.0f, 0.0f};			    
-			    POINTSTYLE = POINTSTYLE.POINT;
+			if (bRender2Axis) {
+				fArMappingColor = new float[]{1.0f, 0.0f, 0.0f};
+				POINTSTYLE = POINTSTYLE.POINT;
 			}
-			    
+
 			DrawPointPrimitive(gl, x, y, 0.0f, // z
 					fArMappingColor, 1.0f,// fOpacity
 					iContentIndex, 1.0f); // scale
@@ -786,7 +759,7 @@ public class GLScatterplot extends AStorageBasedView {
 				x_2 = xnormalized * XScale;
 				y_2 = ynormalized * YScale;
 				fArMappingColor = new float[]{0.0f, 1.0f, 0.0f};
-								
+
 				DrawPointPrimitive(gl, x_2, y_2, 0.0f, // z
 						fArMappingColor, 1.0f,// fOpacity
 						iContentIndex, 1.0f); // scale
@@ -857,7 +830,8 @@ public class GLScatterplot extends AStorageBasedView {
 		gl.glEnd();
 		z = +2.5f;
 
-		gl.glColor3f(fArMappingColor[0], fArMappingColor[1],
+		gl
+				.glColor3f(fArMappingColor[0], fArMappingColor[1],
 						fArMappingColor[2]);
 
 		DrawPointPrimitive(gl, x, y, z, // z
@@ -873,29 +847,33 @@ public class GLScatterplot extends AStorageBasedView {
 
 		textRenderer.setColor(0, 0, 0, 1);
 
-	//	z = z + 3.0f;
+		// z = z + 3.0f;
 		x = x + 0.1f;
 		gl.glTranslatef(x, y, z);
 
 		String sLabel = "";
 
 		String genLabel = idMappingManager.getID(EIDType.EXPRESSION_INDEX,
-										EIDType.GENE_SYMBOL, iContentIndex);
-		
+				EIDType.GENE_SYMBOL, iContentIndex);
+
 		if (genLabel.equals(""))
 			genLabel = "Unkonwn Gene";
-		
+
 		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION,
 				iContentIndex))
-			sLabel = "Selected Point ("+genLabel+"):"+
-					+ set.get(SELECTED_X_AXIS).getFloat(
+			sLabel = "Selected Point ("
+					+ genLabel
+					+ "):"
+					+ +set.get(SELECTED_X_AXIS).getFloat(
 							EDataRepresentation.RAW, iContentIndex)
 					+ " / "
 					+ set.get(SELECTED_Y_AXIS).getFloat(
 							EDataRepresentation.RAW, iContentIndex);
 		else
-			sLabel = "Point ("+genLabel+"):"+
-					+ set.get(SELECTED_X_AXIS).getFloat(
+			sLabel = "Point ("
+					+ genLabel
+					+ "):"
+					+ +set.get(SELECTED_X_AXIS).getFloat(
 							EDataRepresentation.RAW, iContentIndex)
 					+ " / "
 					+ set.get(SELECTED_Y_AXIS).getFloat(
@@ -934,11 +912,15 @@ public class GLScatterplot extends AStorageBasedView {
 	}
 
 	private boolean IsInSelectionRectangle(float x, float y) {
-		float XMin = Math.min(fRectangleDragStartPoint[0], fRectangleDragEndPoint[0]);
-		float XMax = Math.max(fRectangleDragStartPoint[0], fRectangleDragEndPoint[0]);
+		float XMin = Math.min(fRectangleDragStartPoint[0],
+				fRectangleDragEndPoint[0]);
+		float XMax = Math.max(fRectangleDragStartPoint[0],
+				fRectangleDragEndPoint[0]);
 
-		float YMin = Math.min(fRectangleDragStartPoint[1], fRectangleDragEndPoint[1]);
-		float YMax = Math.max(fRectangleDragStartPoint[1], fRectangleDragEndPoint[1]);
+		float YMin = Math.min(fRectangleDragStartPoint[1],
+				fRectangleDragEndPoint[1]);
+		float YMax = Math.max(fRectangleDragStartPoint[1],
+				fRectangleDragEndPoint[1]);
 
 		x = x + XYAXISDISTANCE;
 		y = y + XYAXISDISTANCE;
@@ -1172,60 +1154,56 @@ public class GLScatterplot extends AStorageBasedView {
 		setDisplayListDirty();
 	}
 
-	public void selectAxesfromExternal()
-	{
+	public void selectAxesfromExternal() {
 
-		if (axisSelectionManager
-				.getNumberOfElements(ESelectionType.SELECTION) == 0)
-		{	
-	
+		if (axisSelectionManager.getNumberOfElements(ESelectionType.SELECTION) == 0) {
+
 			Set<Integer> axis = axisSelectionManager
 					.getElements(ESelectionType.SELECTION);
-			
-			for (int i : axis) 
-			{
-				//TODO : If Multiple Selections or Scatterplots are Available. adjust this (take first 2 axis selections?)
+
+			for (int i : axis) {
+				// TODO : If Multiple Selections or Scatterplots are Available.
+				// adjust this (take first 2 axis selections?)
 				SELECTED_X_AXIS = i;
-				bUpdateAll=true;
+				bUpdateAll = true;
 				break;
 			}
 		}
-		
-		//TODO Remove l8ter, Mousover shouldnd select an Axis
-		if (axisSelectionManager
-				.getNumberOfElements(ESelectionType.MOUSE_OVER) == 0)
+
+		// TODO Remove l8ter, Mousover shouldnd select an Axis
+		if (axisSelectionManager.getNumberOfElements(ESelectionType.MOUSE_OVER) == 0)
 			return;
 
 		Set<Integer> axis = axisSelectionManager
 				.getElements(ESelectionType.MOUSE_OVER);
-		
-		for (int i : axis) 
-		{
-			//TODO : If Multiple Selections or Scatterplots are Available. adjust this (take first 2 axis selections?)
+
+		for (int i : axis) {
+			// TODO : If Multiple Selections or Scatterplots are Available.
+			// adjust this (take first 2 axis selections?)
 			SELECTED_Y_AXIS = i;
-			bUpdateAll=true;
+			bUpdateAll = true;
 			break;
 		}
-		
+
 	}
-	
-	public void selectNewAxes()
-	{
+
+	public void selectNewAxes() {
 		axisSelectionManager.clearSelection(ESelectionType.SELECTION);
-	
-		axisSelectionManager.addToType(ESelectionType.SELECTION, SELECTED_X_AXIS);
-		axisSelectionManager.addToType(ESelectionType.SELECTION, SELECTED_Y_AXIS);
-		
+
+		axisSelectionManager.addToType(ESelectionType.SELECTION,
+				SELECTED_X_AXIS);
+		axisSelectionManager.addToType(ESelectionType.SELECTION,
+				SELECTED_Y_AXIS);
+
 		ISelectionDelta selectionDelta = axisSelectionManager.getDelta();
 		handleConnectedElementRep(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
 		event.setInfo(getShortInfo());
-		eventPublisher.triggerEvent(event);				
+		eventPublisher.triggerEvent(event);
 	}
-	
-	
+
 	@Override
 	protected void initLists() {
 		if (contentVAType != EVAType.CONTENT_EMBEDDED_HM) {
@@ -1244,12 +1222,10 @@ public class GLScatterplot extends AStorageBasedView {
 		elementSelectionManager = contentSelectionManager;
 		mouseoverSelectionManager.setVA(contentVA);
 		elementSelectionManager.setVA(contentVA);
-		
-		
+
 		axisSelectionManager = storageSelectionManager;
 		axisSelectionManager.setVA(storageVA);
-		
-		
+
 		// mouseoverSelectionManager.initialAdd(iAlElementIDs)
 		// mouseoverSelectionManager = contentSelectionManager;
 		// TODO: Thats just for testing!
@@ -1270,8 +1246,8 @@ public class GLScatterplot extends AStorageBasedView {
 	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Scatter Plot\n");
-//TODO Everything
-		
+		// TODO Everything
+
 		if (bRenderStorageHorizontally) {
 			sInfoText.append(contentVA.size() + " "
 					+ useCase.getContentLabel(false, true) + " in columns and "
@@ -1305,7 +1281,7 @@ public class GLScatterplot extends AStorageBasedView {
 			}
 		}
 
-		//return sInfoText.toString();
+		// return sInfoText.toString();
 		return "TODO: ScatterploT Deatil Info";
 	}
 
@@ -1336,10 +1312,10 @@ public class GLScatterplot extends AStorageBasedView {
 						break;
 					case DRAGGED :
 						eSelectionType = ESelectionType.SELECTION;
-						// break;						
+						// break;
 					default :
 						return;
-								
+
 				}
 
 				createContentSelection(eSelectionType, iExternalID);
@@ -1421,7 +1397,7 @@ public class GLScatterplot extends AStorageBasedView {
 	protected void handleConnectedElementRep(ISelectionDelta selectionDelta) {
 		// TODO
 	}
-	
+
 	@Override
 	public void renderContext(boolean bRenderOnlyContext) {
 
@@ -1518,11 +1494,12 @@ public class GLScatterplot extends AStorageBasedView {
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(EIDType idType, int iStorageIndex)
-		throws InvalidAttributeValueException {
+	protected ArrayList<SelectedElementRep> createElementRep(EIDType idType,
+			int iStorageIndex) throws InvalidAttributeValueException {
 
 		SelectedElementRep elementRep;
-		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
+		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(
+				4);
 
 		for (int iContentIndex : contentVA.indicesOf(iStorageIndex)) {
 			if (iContentIndex == -1) {
@@ -1532,43 +1509,47 @@ public class GLScatterplot extends AStorageBasedView {
 				continue;
 			}
 
-			float fXValue = fAlXDistances.get(iContentIndex); // + renderStyle.getSelectedFieldWidth() / 2;
+			float fXValue = fAlXDistances.get(iContentIndex); // +
+																// renderStyle.getSelectedFieldWidth()
+																// / 2;
 			// float fYValue = 0;
 			float fYValue = renderStyle.getYCenter();
 
-			// Set<Integer> mouseOver = storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
+			// Set<Integer> mouseOver =
+			// storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 			// for (int iLineIndex : mouseOver)
 			// {
-			// fYValue = storageVA.indexOf(iLineIndex) * renderStyle.getFieldHeight() +
+			// fYValue = storageVA.indexOf(iLineIndex) *
+			// renderStyle.getFieldHeight() +
 			// renderStyle.getFieldHeight()/2;
 			// break;
 			// }
 
 			int iViewID = iUniqueID;
-			// If rendered remote (hierarchical heat map) - use the remote view ID
+			// If rendered remote (hierarchical heat map) - use the remote view
+			// ID
 			if (glRemoteRenderingView != null)
 				iViewID = glRemoteRenderingView.getID();
 
 			if (bRenderStorageHorizontally) {
-				elementRep =
-					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iViewID,
-						fXValue + fAnimationTranslation, fYValue, 0);
+				elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX,
+						iViewID, fXValue + fAnimationTranslation, fYValue, 0);
 
-			}
-			else {
+			} else {
 				Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
-				Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
+				Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue,
+						fYValue, 0));
 				vecPoint.setY(vecPoint.y() + vecTranslation.y());
-				elementRep =
-					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iViewID, vecPoint.x(), vecPoint.y()
-						- fAnimationTranslation, 0);
+				elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX,
+						iViewID, vecPoint.x(), vecPoint.y()
+								- fAnimationTranslation, 0);
 
 			}
 			alElementReps.add(elementRep);
 		}
 		return alElementReps;
 	}
-	
+
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
@@ -1634,7 +1615,7 @@ public class GLScatterplot extends AStorageBasedView {
 	public void setXAxis(int iAxisIndex) {
 		if (SELECTED_X_AXIS != iAxisIndex) {
 			SELECTED_X_AXIS = iAxisIndex;
-			bUpdateAll=true;
+			bUpdateAll = true;
 			selectNewAxes();
 			setDisplayListDirty();
 		}
@@ -1644,7 +1625,7 @@ public class GLScatterplot extends AStorageBasedView {
 	public void setYAxis(int iAxisIndex) {
 		if (SELECTED_Y_AXIS != iAxisIndex) {
 			SELECTED_Y_AXIS = iAxisIndex;
-			bUpdateAll=true;
+			bUpdateAll = true;
 			selectNewAxes();
 			setDisplayListDirty();
 		}
@@ -1654,50 +1635,60 @@ public class GLScatterplot extends AStorageBasedView {
 	public void setPointSize(int pointSize) {
 		if (renderStyle.getPointSize() != pointSize) {
 			renderStyle.setPointSize(pointSize);
-			bUpdateAll=true;
+			bUpdateAll = true;
 			setDisplayListDirty();
 		}
 	}
 
-public void upDownSelect(boolean bDownIsTrue) {
-		
-		int tmpAxis=SELECTED_Y_AXIS;
-		if (bDownIsTrue) tmpAxis++;
-		else tmpAxis--;
-		if (tmpAxis<0) tmpAxis=0;
-		if ((tmpAxis+1)>=storageVA.size()) tmpAxis=SELECTED_Y_AXIS;
-		SELECTED_Y_AXIS=tmpAxis;
-		bUpdateAll=true;
+	public void upDownSelect(boolean bDownIsTrue) {
+
+		int tmpAxis = SELECTED_Y_AXIS;
+		if (bDownIsTrue)
+			tmpAxis++;
+		else
+			tmpAxis--;
+		if (tmpAxis < 0)
+			tmpAxis = 0;
+		if ((tmpAxis + 1) >= storageVA.size())
+			tmpAxis = SELECTED_Y_AXIS;
+		SELECTED_Y_AXIS = tmpAxis;
+		bUpdateAll = true;
 		selectNewAxes();
 		setDisplayListDirty();
 	}
 
 	public void leftRightSelect(boolean bRightIsTrue) {
-		int tmpAxis=SELECTED_X_AXIS;
-		if (bRightIsTrue) tmpAxis++;
-			else tmpAxis--;
-		if (tmpAxis<0) tmpAxis=0;
-		if ((tmpAxis+1)>=storageVA.size()) tmpAxis=SELECTED_X_AXIS;
-		SELECTED_X_AXIS=tmpAxis;
-		bUpdateAll=true;
+		int tmpAxis = SELECTED_X_AXIS;
+		if (bRightIsTrue)
+			tmpAxis++;
+		else
+			tmpAxis--;
+		if (tmpAxis < 0)
+			tmpAxis = 0;
+		if ((tmpAxis + 1) >= storageVA.size())
+			tmpAxis = SELECTED_X_AXIS;
+		SELECTED_X_AXIS = tmpAxis;
+		bUpdateAll = true;
 		selectNewAxes();
-		setDisplayListDirty();	
+		setDisplayListDirty();
 	}
 
 	public void toggleSpecialAxisMode() {
-		if (bRender2Axis) bRender2Axis = false;
-		else bRender2Axis = true;
-		bUpdateAll=true;
-		setDisplayListDirty();		
+		if (bRender2Axis)
+			bRender2Axis = false;
+		else
+			bRender2Axis = true;
+		bUpdateAll = true;
+		setDisplayListDirty();
 	}
 
-	public void toggleDetailLevel() 
-	{
+	public void toggleDetailLevel() {
 		if (detailLevel == EDetailLevel.HIGH)
 			detailLevel = EDetailLevel.LOW;
-		else detailLevel = EDetailLevel.HIGH;
-		bUpdateAll=true;
-		setDisplayListDirty();		
+		else
+			detailLevel = EDetailLevel.HIGH;
+		bUpdateAll = true;
+		setDisplayListDirty();
 	}
 
 }

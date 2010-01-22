@@ -41,8 +41,8 @@ public class GeneralRenderStyle {
 	private static final float[] BACKGROUND_COLOR = { 0.7f, 0.7f, 0.7f, 1f };
 
 	public static final float[] PANEL_BACKGROUN_COLOR = { 0.85f, 0.85f, 0.85f, 1f };
-	
-//	public static final float [] MENU_ITEM_COLOR = {0.}
+
+	// public static final float [] MENU_ITEM_COLOR = {0.}
 
 	public static final float LOADING_BOX_HALF_WIDTH = 1f;
 

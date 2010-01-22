@@ -1,5 +1,6 @@
 package org.caleydo.view.base.action.toolbar.view.glyph;
 
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.view.base.action.toolbar.AToolBarAction;
 import org.caleydo.view.base.rcp.RcpGLGlyphView;
@@ -28,7 +29,7 @@ public class OpenNewWindowAction extends AToolBarAction implements IToolBarItem 
 		super.run();
 
 		try {
-			String rcpid = RcpGLGlyphView.ID;
+			String rcpid = GLGlyph.VIEW_ID;
 
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 					.getActivePage().showView(rcpid,

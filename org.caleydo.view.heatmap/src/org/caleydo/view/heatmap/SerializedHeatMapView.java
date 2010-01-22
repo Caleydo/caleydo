@@ -35,7 +35,7 @@ public class SerializedHeatMapView extends ASerializedView {
 	}
 
 	@Override
-	public String getViewGUIID() {
+	public String getViewType() {
 		return GLHeatMap.VIEW_ID;
 	}
 }

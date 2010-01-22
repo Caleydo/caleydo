@@ -80,7 +80,7 @@ public class SerializedDataFlipperView extends ASerializedView {
 	}
 
 	@Override
-	public String getViewGUIID() {
+	public String getViewType() {
 		return GLDataFlipper.VIEW_ID;
 	}
 }

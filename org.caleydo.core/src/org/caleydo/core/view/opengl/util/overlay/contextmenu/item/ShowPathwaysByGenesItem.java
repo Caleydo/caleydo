@@ -89,5 +89,4 @@ public class ShowPathwaysByGenesItem
 		// setText("Pathways (" + iPathwayCount + ")");
 	}
 
-
 }

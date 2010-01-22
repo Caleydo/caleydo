@@ -141,7 +141,7 @@ public class SerializedRemoteRenderingView extends ASerializedView {
 	}
 
 	@Override
-	public String getViewGUIID() {
+	public String getViewType() {
 		return GLBucket.VIEW_ID;
 	}
 

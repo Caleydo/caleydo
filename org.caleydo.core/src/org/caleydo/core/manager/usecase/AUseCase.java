@@ -30,7 +30,6 @@ import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -87,7 +86,7 @@ public abstract class AUseCase
 	private VirtualArrayUpdateListener virtualArrayUpdateListener;
 
 	/** Every use case needs to state all views that can visualize its data */
-	protected ArrayList<EManagedObjectType> possibleViews;
+	protected ArrayList<String> possibleViews;
 
 	/**
 	 * Every use case needs to state all ID Categories it can handle. The string must specify which primary
@@ -115,7 +114,7 @@ public abstract class AUseCase
 	// }
 
 	@Override
-	public ArrayList<EManagedObjectType> getPossibleViews() {
+	public ArrayList<String> getPossibleViews() {
 		return possibleViews;
 	}
 

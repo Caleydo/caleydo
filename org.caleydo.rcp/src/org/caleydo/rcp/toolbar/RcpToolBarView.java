@@ -152,7 +152,7 @@ public class RcpToolBarView
 							if (subControl instanceof Label && subControl.getData() == group) {
 								if (group.getData("viewID") != null
 									&& ((Integer) group.getData("viewID")).intValue() == glView.getID()
-									|| glView.getViewID().equals("org.caleydo.view.pathway")
+									|| glView.getViewType().equals("org.caleydo.view.pathway")
 									&& group.getData("viewType") == "org.caleydo.view.pathway") {
 									((Label) subControl).setBackground(Display.getCurrent().getSystemColor(
 										SWT.COLOR_DARK_GRAY));

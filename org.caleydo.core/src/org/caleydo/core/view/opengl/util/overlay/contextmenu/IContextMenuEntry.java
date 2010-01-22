@@ -5,6 +5,6 @@ package org.caleydo.core.view.opengl.util.overlay.contextmenu;
  * 
  * @author Alexander Lex
  */
-public interface IContextMenuEntry{
+public interface IContextMenuEntry {
 
 }

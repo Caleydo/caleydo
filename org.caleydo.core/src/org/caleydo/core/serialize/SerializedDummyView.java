@@ -25,7 +25,7 @@ public class SerializedDummyView
 	}
 
 	@Override
-	public String getViewGUIID() {
+	public String getViewType() {
 		return null;
 	}
 

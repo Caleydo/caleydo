@@ -54,7 +54,7 @@ public class RCPBridge
 				try {
 					IWorkbenchPage page =
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					ARcpGLViewPart viewPart = (ARcpGLViewPart) page.showView(serializedView.getViewGUIID());
+					ARcpGLViewPart viewPart = (ARcpGLViewPart) page.showView(serializedView.getViewType());
 					AGLView view = viewPart.getGLEventListener();
 					view.initFromSerializableRepresentation(serializedView);
 					// TODO re-init view with its serializedView
@@ -62,7 +62,7 @@ public class RCPBridge
 				}
 				catch (PartInitException ex) {
 					throw new RuntimeException("could not create view with gui-id="
-						+ serializedView.getViewGUIID(), ex);
+						+ serializedView.getViewType(), ex);
 				}
 			}
 		});

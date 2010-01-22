@@ -109,15 +109,17 @@ public class PathwayLoaderThread
 			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
 				"Loading BioCarta Pathways...");
 		}
-		
+
 		generalManager.getPathwayManager().createPathwayResourceLoader(pathwayDatabase.getType());
-		pathwayResourceLoader = generalManager.getPathwayManager().getPathwayResourceLoader(pathwayDatabase.getType());
+		pathwayResourceLoader =
+			generalManager.getPathwayManager().getPathwayResourceLoader(pathwayDatabase.getType());
 
 		int iPathwayIndex = 0;
 
 		try {
 
-			if (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG || pathwayDatabase.getType() == EPathwayDatabaseType.BIOCARTA)
+			if (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG
+				|| pathwayDatabase.getType() == EPathwayDatabaseType.BIOCARTA)
 				file = pathwayResourceLoader.getResource(sFileName);
 			else
 				file = GeneralManager.get().getResourceLoader().getResource(sFileName);

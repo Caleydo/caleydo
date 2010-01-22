@@ -15,7 +15,6 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -80,8 +79,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 			final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, true);
 
-		viewType = EManagedObjectType.GL_HISTOGRAM;
-		viewID = VIEW_ID;
+		viewType = VIEW_ID;
 
 		colorMappingManager = ColorMappingManager.get();
 		colorMapping = colorMappingManager

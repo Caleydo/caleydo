@@ -179,7 +179,7 @@ public abstract class AStorageBasedView extends AGLView
 		super.initData();
 
 		bRenderOnlyContext = (glRemoteRenderingView != null && glRemoteRenderingView
-				.getViewID().equals("org.caleydo.view.bucket"));
+				.getViewType().equals("org.caleydo.view.bucket"));
 
 		// TODO: do we need this here?
 		if (set == null) {

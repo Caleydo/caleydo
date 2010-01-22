@@ -86,7 +86,7 @@ public class GLGlyph
 	extends AGLView
 	implements ISelectionUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
-	private static final long serialVersionUID = -7899479912218913482L;
+	public final static String VIEW_ID = "org.caleydo.view.glyph";
 
 	GLGlyphGrid grid_;
 
@@ -143,6 +143,7 @@ public class GLGlyph
 	 */
 	public GLGlyph(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, true);
+		viewType = VIEW_ID;
 
 		alSelectionBrushCornerPoints = new ArrayList<Vec2i>();
 		mouseListener_ = new GlyphMouseListener(this);
@@ -152,7 +153,6 @@ public class GLGlyph
 		gman = generalManager.getGlyphManager();
 
 		selectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
-		viewType = EManagedObjectType.GL_GLYPH;
 
 	}
 

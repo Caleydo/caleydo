@@ -20,8 +20,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 @XmlType
 public class SerializedTissueViewBrowserView extends ASerializedView {
 
-	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLViewBrowserView";
-
 	/** list of initially contained view-ids */
 	private List<ASerializedView> initialContainedViews;
 
@@ -61,7 +59,7 @@ public class SerializedTissueViewBrowserView extends ASerializedView {
 	}
 
 	@Override
-	public String getViewGUIID() {
-		return GUI_ID;
+	public String getViewType() {
+		return GLTissueViewBrowser.VIEW_ID;
 	}
 }

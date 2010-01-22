@@ -11,6 +11,6 @@ public interface IPathwayResourceLoader {
 	public BufferedReader getResource(String file);
 
 	public InputSource getInputSource(String file);
-	
+
 	public Texture getTexture(String file);
 }

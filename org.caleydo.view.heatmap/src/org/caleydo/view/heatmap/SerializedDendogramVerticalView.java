@@ -37,7 +37,7 @@ public class SerializedDendogramVerticalView extends ASerializedView {
 	}
 
 	@Override
-	public String getViewGUIID() {
+	public String getViewType() {
 		return GUI_ID;
 	}
 

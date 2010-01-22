@@ -6,7 +6,6 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -34,13 +33,15 @@ public class GLCell extends AGLView {
 
 	// private GenericSelectionManager selectionManager;
 
+	public final static String VIEW_ID = "org.caleydo.view.cell";
+
 	/**
 	 * Constructor.
 	 */
 	public GLCell(GLCaleydoCanvas glCanvas, final String sLabel,
 			final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, false);
-		viewType = EManagedObjectType.GL_CELL_LOCALIZATION;
+		viewType = VIEW_ID;
 
 		// connectedElementRepresentationManager =
 		// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();

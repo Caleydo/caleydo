@@ -102,7 +102,7 @@ public class ExportDataAction
 		// boolean doesHeatMapExist = false;
 		// boolean doParallelCoordinatesExist = false;
 		for (AGLView view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
-			if (view.getViewID().equals("org.caleydo.view.bucket")) {
+			if (view.getViewType().equals("org.caleydo.view.bucket")) {
 				bDoesBucketExist = true;
 			}
 			// if (view instanceof GLHierarchicalHeatMap && !view.isRenderedRemote()) {

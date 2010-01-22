@@ -15,7 +15,6 @@ import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.AOverlayManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -235,7 +234,6 @@ public class ContextMenu
 			// This is necessary because of the problems
 			// with the frustum and picking in the Bucket view.
 			// FIXME: Find clean solution!!
-			// FIXME: after view plugin reorganization
 			// if (masterGLView instanceof GLRemoteRendering) {
 			// baseMenuMetaData.xOrigin *= 2f;
 			// baseMenuMetaData.yOrigin *= 2f;
@@ -442,7 +440,6 @@ public class ContextMenu
 						ContextMenuMetaData subMetaData = hashContextMenuItemToMetaData.get(entry);
 						subMetaData.xOrigin = metaData.xOrigin + metaData.width;
 						subMetaData.yOrigin = yPosition + ITEM_HEIGHT;
-					
 
 						float remainingXSpace =
 							fRightBorder - (metaData.xOrigin + getScaledSizeOf(gl, metaData.width));
@@ -451,28 +448,29 @@ public class ContextMenu
 						if (remainingXSpace < scaledWidth)
 							subMetaData.xOrigin = metaData.xOrigin - subMetaData.width;
 
-								
-//						float remainigYSpace = Math.abs(fBottomBorder - getScaledSizeOf(gl,subMetaData.yOrigin - metaData.yOrigin));
+						// float remainigYSpace = Math.abs(fBottomBorder -
+						// getScaledSizeOf(gl,subMetaData.yOrigin - metaData.yOrigin));
 
-//						float remainigYSpace = Math.abs(getScaledSizeOf(gl,subMetaData.yOrigin - metaData.yOrigin));
+						// float remainigYSpace = Math.abs(getScaledSizeOf(gl,subMetaData.yOrigin -
+						// metaData.yOrigin));
 
 						float scaledHeight = getScaledSizeOf(gl, subMetaData.height);
 						// float scaledHeight = subMetaData.height;
 
-						if (getScaledCoordinate(gl, subMetaData.yOrigin, metaData.yOrigin) -fBottomBorder < scaledHeight) {
-							
+						if (getScaledCoordinate(gl, subMetaData.yOrigin, metaData.yOrigin) - fBottomBorder < scaledHeight) {
+
 							float distance = Math.abs(metaData.yOrigin - fBottomBorder);
-							float scaledDistance =  getUnscaledSizeOf(gl, distance);
-							
+							float scaledDistance = getUnscaledSizeOf(gl, distance);
+
 							subMetaData.yOrigin = metaData.yOrigin - scaledDistance + subMetaData.height;
-						
-//							endGUIElement(gl);
+
+							// endGUIElement(gl);
 							// GLHelperFunctions.drawPointAt(gl, metaData.xOrigin, metaData.yOrigin, -10f);
-//							GLHelperFunctions.drawPointAt(gl, 3, fBottomBorder + subMetaData.height, 0);
-							
+							// GLHelperFunctions.drawPointAt(gl, 3, fBottomBorder + subMetaData.height, 0);
+
 						}
 						drawMenu(gl, item.getSubItems(), subMetaData, false);
-//						beginGUIElement(gl, new Vec3f(metaData.xOrigin, metaData.yOrigin, 0));
+						// beginGUIElement(gl, new Vec3f(metaData.xOrigin, metaData.yOrigin, 0));
 					}
 				}
 			}

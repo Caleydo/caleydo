@@ -18,8 +18,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 public class SerializedGlyphView
 	extends ASerializedView {
 
-	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLGlyphView";
-
 	public SerializedGlyphView() {
 	}
 
@@ -34,7 +32,7 @@ public class SerializedGlyphView
 	}
 
 	@Override
-	public String getViewGUIID() {
-		return GUI_ID;
+	public String getViewType() {
+		return GLGlyph.VIEW_ID;
 	}
 }

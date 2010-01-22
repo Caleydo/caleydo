@@ -16,7 +16,6 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.usecase.EDataFilterLevel;
@@ -55,10 +54,9 @@ public class GeneticUseCase
 		contentLabelSingular = "gene";
 		contentLabelPlural = "genes";
 
-		possibleViews = new ArrayList<EManagedObjectType>();
-		// possibleViews.add(EManagedObjectType.GL_HEAT_MAP);
-		possibleViews.add(EManagedObjectType.GL_PARALLEL_COORDINATES);
-		possibleViews.add(EManagedObjectType.GL_HIER_HEAT_MAP);
+		possibleViews = new ArrayList<String>();
+		possibleViews.add("org.caleydo.view.parcoords");
+		possibleViews.add("org.caleydo.view.heatmap.hierarchical");
 
 		possibleIDCategories = new HashMap<EIDCategory, String>();
 		possibleIDCategories.put(EIDCategory.GENE, EVAType.CONTENT_PRIMARY);

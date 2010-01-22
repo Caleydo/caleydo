@@ -167,9 +167,7 @@ public abstract class AGLView
 
 		// If the glCanvas object is null - then the view is rendered remote.
 		super(glCanvas != null ? glCanvas.getID() : -1, sLabel, GeneralManager.get().getIDManager().createID(
-			EManagedObjectType.GL_EVENT_LISTENER));
-
-		viewType = EManagedObjectType.GL_EVENT_LISTENER;
+			EManagedObjectType.GL_VIEW));
 
 		parentGLCanvas = glCanvas;
 
@@ -256,9 +254,9 @@ public abstract class AGLView
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
-		if (glRemoteRenderingView != null || this.getViewID().equals("org.caleydo.view.bucket")
-			|| this.getViewID().equals("org.caleydo.view.glyph")
-			|| this.getViewID().equals("org.caleydo.view.dataflipper")) {
+		if (glRemoteRenderingView != null || this.getViewType().equals("org.caleydo.view.bucket")
+			|| this.getViewType().equals("org.caleydo.view.glyph")
+			|| this.getViewType().equals("org.caleydo.view.dataflipper")) {
 			viewFrustum.considerAspectRatio(true);
 		}
 		else {
@@ -270,7 +268,7 @@ public abstract class AGLView
 			float value = (float) frame.height / (float) frame.width * 8.0f;
 
 			// Special case for embedded heatmap in hierarchical heatmap
-			if (this.getViewID().equals("org.caleydo.view.heatmap.hierarchical"))
+			if (this.getViewType().equals("org.caleydo.view.heatmap.hierarchical"))
 				viewFrustum.setTop(5.51f);
 			else
 				viewFrustum.setTop(value);

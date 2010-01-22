@@ -22,7 +22,6 @@ import org.caleydo.core.manager.event.view.radial.GoForthInHistoryEvent;
 import org.caleydo.core.manager.event.view.radial.SetMaxDisplayedHierarchyDepthEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -130,8 +129,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 			final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, true);
 
-		viewType = EManagedObjectType.GL_RADIAL_HIERARCHY;
-		viewID = VIEW_ID;
+		viewType = VIEW_ID;
 
 		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
 		alSelectionTypes.add(ESelectionType.NORMAL);

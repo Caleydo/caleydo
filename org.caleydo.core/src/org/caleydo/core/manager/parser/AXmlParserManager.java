@@ -205,8 +205,8 @@ public abstract class AXmlParserManager
 		}
 		else if (sFileName.contains("h_") || sFileName.contains("h_")) {
 			inputSource =
-				GeneralManager.get().getPathwayManager().getPathwayResourceLoader(EPathwayDatabaseType.BIOCARTA)
-					.getInputSource(sFileName);
+				GeneralManager.get().getPathwayManager().getPathwayResourceLoader(
+					EPathwayDatabaseType.BIOCARTA).getInputSource(sFileName);
 		}
 		else
 			inputSource = generalManager.getResourceLoader().getInputSource(sFileName);

@@ -276,8 +276,7 @@ public class GLParallelCoordinates extends AStorageBasedView
 			final IViewFrustum viewFrustum) {
 
 		super(glCanvas, sLabel, viewFrustum);
-		viewType = EManagedObjectType.GL_PARALLEL_COORDINATES;
-		viewID = GLParallelCoordinates.VIEW_ID;
+		viewType = GLParallelCoordinates.VIEW_ID;
 
 		renderStyle = new ParCoordsRenderStyle(this, viewFrustum);
 		super.renderStyle = this.renderStyle;

@@ -48,10 +48,7 @@ public class PathwayLoadingProgressIndicatorAction
 						monitor.subTask("BioCarta");
 
 						GeneralManager.get().getPathwayManager().createPathwayDatabase(
-							EPathwayDatabaseType.BIOCARTA,
-							"data/html/",
-							"data/images/",
-							"data/html");
+							EPathwayDatabaseType.BIOCARTA, "data/html/", "data/images/", "data/html");
 						PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), GeneralManager.get()
 							.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.BIOCARTA));
 						// monitor.worked(50);

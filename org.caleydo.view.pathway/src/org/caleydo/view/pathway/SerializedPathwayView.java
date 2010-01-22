@@ -59,7 +59,7 @@ public class SerializedPathwayView extends ASerializedView {
 	}
 
 	@Override
-	public String getViewGUIID() {
+	public String getViewType() {
 		return GLPathway.VIEW_ID;
 	}
 }

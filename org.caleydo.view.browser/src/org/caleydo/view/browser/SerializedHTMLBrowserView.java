@@ -47,7 +47,7 @@ public class SerializedHTMLBrowserView extends ASerializedView {
 	}
 
 	@Override
-	public String getViewGUIID() {
+	public String getViewType() {
 		return HTMLBrowser.VIEW_ID;
 	}
 

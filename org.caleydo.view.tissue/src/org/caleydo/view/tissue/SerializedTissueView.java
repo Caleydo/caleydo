@@ -39,7 +39,7 @@ public class SerializedTissueView extends ASerializedView {
 	}
 
 	@Override
-	public String getViewGUIID() {
+	public String getViewType() {
 		return GUI_ID;
 	}
 

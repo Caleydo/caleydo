@@ -21,7 +21,6 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -47,6 +46,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
  */
 public class GLGlyphSliderView
 	extends AGLView {
+
+	public final static String VIEW_ID = "org.caleydo.view.glyph.slider";
 
 	private static final long serialVersionUID = 1L;
 
@@ -85,7 +86,7 @@ public class GLGlyphSliderView
 		alGridPosition = new ArrayList<Vec2f>();
 
 		selectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
-		viewType = EManagedObjectType.GL_GLYPH_SLIDER;
+		viewType = VIEW_ID;
 	}
 
 	@Override

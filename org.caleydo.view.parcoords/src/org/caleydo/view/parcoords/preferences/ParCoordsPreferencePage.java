@@ -78,7 +78,7 @@ public class ParCoordsPreferencePage extends FieldEditorPreferencePage
 		Collection<AGLView> eventListeners = GeneralManager.get()
 				.getViewGLCanvasManager().getAllGLEventListeners();
 		for (AGLView glView : eventListeners) {
-			if (glView.getViewID().equals("org.caleydo.view.parcoords")) {
+			if (glView.getViewType().equals("org.caleydo.view.parcoords")) {
 				GLParallelCoordinates parCoords = (GLParallelCoordinates) glView;
 				// if(!heatMap.isRenderedRemote())
 				// {

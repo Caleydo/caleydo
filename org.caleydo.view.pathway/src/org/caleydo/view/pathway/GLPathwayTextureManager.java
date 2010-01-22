@@ -1,6 +1,5 @@
 package org.caleydo.view.pathway;
 
-import java.nio.channels.IllegalSelectorException;
 import java.util.HashMap;
 import java.util.LinkedList;
 

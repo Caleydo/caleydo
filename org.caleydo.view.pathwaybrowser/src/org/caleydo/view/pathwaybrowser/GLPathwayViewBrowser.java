@@ -8,7 +8,6 @@ import java.util.Set;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -23,6 +22,8 @@ public class GLPathwayViewBrowser extends AGLViewBrowser
 		implements
 			IRemoteRenderingHandler {
 
+	public final static String VIEW_ID = "org.caleydo.view.pathwaybrowser";
+
 	private LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
 	private AddPathwayListener addPathwayListener = null;
 
@@ -30,8 +31,7 @@ public class GLPathwayViewBrowser extends AGLViewBrowser
 			IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum);
 
-		viewType = EManagedObjectType.GL_PATHWAY_VIEW_BROWSER;
-		viewID = "org.caleydo.view.pathwaybrowser";
+		viewType = "org.caleydo.view.pathwaybrowser";
 	}
 
 	@Override
