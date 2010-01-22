@@ -101,7 +101,7 @@ public class ColorMappingManager
 		}
 		hashColorMapping.put(colorMappingType, new ColorMapping(colorMappingType));
 
-		for (AGLView view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
+		for (AGLView view : GeneralManager.get().getViewGLCanvasManager().getAllGLViews()) {
 			view.setDisplayListDirty();
 		}
 

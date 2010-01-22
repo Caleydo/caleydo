@@ -82,7 +82,7 @@ public class ChangeViewModeAction extends AToolBarAction
 		this.iViewID = id;
 		glyphview = null;
 		for (AGLView l : GeneralManager.get().getViewGLCanvasManager()
-				.getAllGLEventListeners()) {
+				.getAllGLViews()) {
 			if (l.getID() == iViewID && l instanceof GLGlyph) {
 				glyphview = (GLGlyph) l;
 			}

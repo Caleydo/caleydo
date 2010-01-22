@@ -76,7 +76,7 @@ public class ParCoordsPreferencePage extends FieldEditorPreferencePage
 		boolean bReturn = super.performOk();
 
 		Collection<AGLView> eventListeners = GeneralManager.get()
-				.getViewGLCanvasManager().getAllGLEventListeners();
+				.getViewGLCanvasManager().getAllGLViews();
 		for (AGLView glView : eventListeners) {
 			if (glView.getViewType().equals("org.caleydo.view.parcoords")) {
 				GLParallelCoordinates parCoords = (GLParallelCoordinates) glView;

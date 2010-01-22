@@ -20,7 +20,7 @@ public class RenderContextAction extends AToolBarAction implements IToolBarItem 
 	public RenderContextAction(int iViewID) {
 		super(iViewID);
 		AStorageBasedView storageBasedView = (AStorageBasedView) GeneralManager
-				.get().getViewGLCanvasManager().getGLEventListener(iViewID);
+				.get().getViewGLCanvasManager().getGLView(iViewID);
 		bEnable = storageBasedView.isRenderingOnlyContext();
 
 		setText(TEXT);

@@ -60,34 +60,34 @@ public class ToolBarContentFactory {
 		// TODO glyph, clinicalparcoords, dataflipper
 
 		info = new ToolBarInfo();
-		info.viewID = "org.caleydo.view.heatmap";
+		info.viewType = "org.caleydo.view.heatmap";
 		info.ignored = false;
-		toolBarInfos.put(info.viewID, info);
+		toolBarInfos.put(info.viewType, info);
 
 		info = new ToolBarInfo();
-		info.viewID = "org.caleydo.view.heatmap.hierarchical";
+		info.viewType = "org.caleydo.view.heatmap.hierarchical";
 		info.ignored = false;
-		toolBarInfos.put(info.viewID, info);
+		toolBarInfos.put(info.viewType, info);
 
 		info = new ToolBarInfo();
-		info.viewID = "org.caleydo.view.parcoords";
+		info.viewType = "org.caleydo.view.parcoords";
 		info.ignored = false;
-		toolBarInfos.put(info.viewID, info);
+		toolBarInfos.put(info.viewType, info);
 
 		info = new ToolBarInfo();
-		info.viewID = "org.caleydo.view.bucket";
+		info.viewType = "org.caleydo.view.bucket";
 		info.ignored = false;
-		toolBarInfos.put(info.viewID, info);
+		toolBarInfos.put(info.viewType, info);
 
 		info = new ToolBarInfo();
-		info.viewID = "org.caleydo.view.radial";
+		info.viewType = "org.caleydo.view.radial";
 		info.ignored = false;
-		toolBarInfos.put(info.viewID, info);
+		toolBarInfos.put(info.viewType, info);
 
 		info = new ToolBarInfo();
-		info.viewID = "org.caleydo.view.scatterplot";
+		info.viewType = "org.caleydo.view.scatterplot";
 		info.ignored = false;
-		toolBarInfos.put(info.viewID, info);
+		toolBarInfos.put(info.viewType, info);
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class ToolBarContentFactory {
 	/**
 	 * determines if a view is attached to the caleydo's main window or not
 	 * 
-	 * @param viewID
+	 * @param viewType
 	 *            view as used by {@link IViewManager}
 	 * @return true if the view is attached, false otherwise
 	 */
@@ -180,7 +180,7 @@ public class ToolBarContentFactory {
 		IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
 		ToolBarInfo info = toolBarInfos.get(view.getViewType());
 		if (info != null) {
-			String rcpViewPartID = info.viewID;
+			String rcpViewPartID = info.viewType;
 			for (IWorkbenchWindow window : windows) {
 				IWorkbenchPage[] pages = window.getPages();
 				for (IWorkbenchPage page : pages) {
@@ -201,7 +201,7 @@ public class ToolBarContentFactory {
 		ToolBarInfo info = toolBarInfos.get(view.getViewType());
 		if (info != null) {
 			IViewCreator viewCreator =
-				GeneralManager.get().getViewGLCanvasManager().getViewCreator(info.viewID);
+				GeneralManager.get().getViewGLCanvasManager().getViewCreator(info.viewType);
 			if (viewCreator == null)
 				return null;
 

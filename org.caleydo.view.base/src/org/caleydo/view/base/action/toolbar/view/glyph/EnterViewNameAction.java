@@ -33,7 +33,7 @@ public class EnterViewNameAction extends AToolBarAction implements IToolBarItem 
 		GLGlyph glyphview = null;
 
 		for (AGLView view : GeneralManager.get().getViewGLCanvasManager()
-				.getAllGLEventListeners()) {
+				.getAllGLViews()) {
 			if (view instanceof GLGlyph) {
 				if (view.getID() == iViewID) {
 					glyphview = (GLGlyph) view;

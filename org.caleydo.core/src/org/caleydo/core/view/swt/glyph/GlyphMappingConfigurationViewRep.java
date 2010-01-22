@@ -135,7 +135,7 @@ public class GlyphMappingConfigurationViewRep
 				}
 
 				for (AGLView agleventlistener : generalManager.getViewGLCanvasManager()
-					.getAllGLEventListeners())
+					.getAllGLViews())
 					if (agleventlistener instanceof GLGlyph) {
 						((GLGlyph) agleventlistener).forceRebuild();
 					}

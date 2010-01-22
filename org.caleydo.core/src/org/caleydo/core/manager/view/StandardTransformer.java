@@ -89,7 +89,7 @@ public class StandardTransformer
 		final GLU glu = new GLU();
 
 		IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
-		AGLView view = vm.getGLEventListener(viewID);
+		AGLView view = vm.getGLView(viewID);
 		int canvasHeight = view.getParentGLCanvas().getHeight();
 
 		for (Entry<EIDType, ConnectionMap> typeConnections : source.entrySet()) {

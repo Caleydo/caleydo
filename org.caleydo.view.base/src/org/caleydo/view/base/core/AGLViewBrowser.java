@@ -1073,7 +1073,7 @@ public abstract class AGLViewBrowser extends AGLView
 
 		slerpMod.applySlerp(gl, transform, true, false);
 
-		generalManager.getViewGLCanvasManager().getGLEventListener(iViewID)
+		generalManager.getViewGLCanvasManager().getGLView(iViewID)
 				.displayRemote(gl);
 
 		gl.glPopMatrix();
@@ -1350,7 +1350,7 @@ public abstract class AGLViewBrowser extends AGLView
 
 		// Send out remove broadcast for views that are currently slerped
 		for (SlerpAction slerpAction : arSlerpActions) {
-			viewManager.getGLEventListener(slerpAction.getElementId())
+			viewManager.getGLView(slerpAction.getElementId())
 					.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 		}
 		arSlerpActions.clear();

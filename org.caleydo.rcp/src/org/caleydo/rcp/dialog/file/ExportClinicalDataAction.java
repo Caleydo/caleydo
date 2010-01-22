@@ -53,7 +53,7 @@ public class ExportClinicalDataAction
 		super("Export Clinical Data");
 		this.parentComposite = parentComposite;
 
-		for (AGLView view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
+		for (AGLView view : GeneralManager.get().getViewGLCanvasManager().getAllGLViews()) {
 			if (view instanceof GLGlyph) {
 				if (view.getID() == iViewID) {
 					glyphview = (GLGlyph) view;

@@ -260,7 +260,7 @@ public class CollabViewRep
 
 		org.eclipse.swt.widgets.List viewList = new org.eclipse.swt.widgets.List(testControls, SWT.LEFT);
 		IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
-		Collection<AGLView> views = vm.getAllGLEventListeners();
+		Collection<AGLView> views = vm.getAllGLViews();
 		int[] viewIds = new int[views.size()];
 		int viewIndex = 0;
 		for (AGLView view : views) {

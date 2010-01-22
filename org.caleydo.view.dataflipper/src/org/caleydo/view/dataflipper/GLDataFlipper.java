@@ -612,7 +612,7 @@ public class GLDataFlipper extends AGLView
 						.getDestinationRemoteLevelElement());
 
 				AGLView glView = generalManager.getViewGLCanvasManager()
-						.getGLEventListener(tmpSlerpAction.getElementId());
+						.getGLView(tmpSlerpAction.getElementId());
 
 				if (glView instanceof GLTissueViewBrowser)
 					((GLTissueViewBrowser) glView).setSlerpActive(false);
@@ -662,7 +662,7 @@ public class GLDataFlipper extends AGLView
 		slerpMod.applySlerp(gl, transform, true, true);
 
 		AGLView glEventListener = generalManager.getViewGLCanvasManager()
-				.getGLEventListener(slerpAction.getElementId());
+				.getGLView(slerpAction.getElementId());
 
 		if (glEventListener instanceof GLGlyph
 				|| (glEventListener instanceof GLParallelCoordinates && glEventListener
@@ -675,7 +675,7 @@ public class GLDataFlipper extends AGLView
 						&& isPathwayContentAvailable && renderPathwayViews)) {
 
 			renderBucketWall(gl, true);
-			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID)
+			generalManager.getViewGLCanvasManager().getGLView(iViewID)
 					.displayRemote(gl);
 		}
 
@@ -786,7 +786,7 @@ public class GLDataFlipper extends AGLView
 						chainMove(lastPickedRemoteLevelElement);
 
 						AGLView pickedView = GeneralManager.get()
-								.getViewGLCanvasManager().getGLEventListener(
+								.getViewGLCanvasManager().getGLView(
 										iLastPickedViewID);
 
 						if (pickedView instanceof GLTissueViewBrowser) {
@@ -813,7 +813,7 @@ public class GLDataFlipper extends AGLView
 						int pickID = element.getGLView().getID();
 
 						AGLView pickedView2 = GeneralManager.get()
-								.getViewGLCanvasManager().getGLEventListener(
+								.getViewGLCanvasManager().getGLView(
 										pickID);
 
 						if (pickedView2 instanceof GLGlyph) {

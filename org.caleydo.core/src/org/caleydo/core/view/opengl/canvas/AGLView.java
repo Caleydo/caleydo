@@ -677,7 +677,7 @@ public abstract class AGLView
 		// .clearByView(EIDType.REFSEQ_MRNA_INT, iUniqueID);
 
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
-		generalManager.getViewGLCanvasManager().unregisterGLEventListener(this);
+		generalManager.getViewGLCanvasManager().unregisterGLView(this);
 		unregisterEventListeners();
 	}
 

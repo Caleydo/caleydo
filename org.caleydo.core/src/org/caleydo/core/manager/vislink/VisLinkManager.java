@@ -265,7 +265,7 @@ public class VisLinkManager
 		SelectionPoint2DList displayPoints = new SelectionPoint2DList();
 		for (SelectionPoint2D p : canvasPoints) {
 			IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
-			AGLView view = vm.getGLEventListener(p.getViewID());
+			AGLView view = vm.getGLView(p.getViewID());
 			Composite composite = view.getParentGLCanvas().getParentComposite();
 			Point dp = composite.toDisplay(p.getPoint());
 			SelectionPoint2D displayPoint = new SelectionPoint2D(appName, p.getViewID(), dp);

@@ -76,7 +76,7 @@ public class DummyTransformer
 
 				IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
 				for (SelectedElementRep sel : connections.getValue()) {
-					AGLView view = vm.getGLEventListener(sel.getSourceViewID());
+					AGLView view = vm.getGLView(sel.getSourceViewID());
 					RemoteLevelElement rle = view.getRemoteLevelElement();
 					if (remoteLevelElementWhiteList.contains(rle)) {
 						ArrayList<Vec3f> transformedPoints = new ArrayList<Vec3f>();

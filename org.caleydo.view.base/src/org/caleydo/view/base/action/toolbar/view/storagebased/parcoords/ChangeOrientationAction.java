@@ -28,7 +28,7 @@ public class ChangeOrientationAction extends AToolBarAction
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
 				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
 		bEnable = ((AStorageBasedView) GeneralManager.get()
-				.getViewGLCanvasManager().getGLEventListener(iViewID))
+				.getViewGLCanvasManager().getGLView(iViewID))
 				.isInDefaultOrientation();
 		setChecked(bEnable);
 	}

@@ -116,7 +116,7 @@ public class ExportDataAction
 		boolean bDoesBucketExist = false;
 		// boolean doesHeatMapExist = false;
 		// boolean doParallelCoordinatesExist = false;
-		for (AGLView view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
+		for (AGLView view : GeneralManager.get().getViewGLCanvasManager().getAllGLViews()) {
 			if (view.getViewType().equals("org.caleydo.view.bucket")) {
 				bDoesBucketExist = true;
 			}

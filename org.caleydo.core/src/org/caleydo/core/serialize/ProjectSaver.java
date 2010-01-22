@@ -184,7 +184,7 @@ public class ProjectSaver {
 
 		IViewManager viewManager = GeneralManager.get().getViewGLCanvasManager();
 
-		Collection<AGLView> glViews = viewManager.getAllGLEventListeners();
+		Collection<AGLView> glViews = viewManager.getAllGLViews();
 		for (AGLView glView : glViews) {
 			if (!glView.isRenderedRemote()) {
 				ASerializedView serView = glView.getSerializableRepresentation();

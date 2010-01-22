@@ -98,7 +98,7 @@ public class SendViewDialog
 				System.out.println("sending view " + viewID + " to " + clientNames[selection]);
 
 				CreateGUIViewEvent event = new CreateGUIViewEvent();
-				AGLView view = viewManager.getGLEventListener(viewID);
+				AGLView view = viewManager.getGLView(viewID);
 				event.setSerializedView(view.getSerializableRepresentation());
 				event.setTargetApplicationID(clientNames[selection]);
 				event.setSender(this);

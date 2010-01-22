@@ -51,9 +51,9 @@ public class ViewManager
 	implements IViewManager, IListenerOwner {
 	protected HashMap<Integer, GLCaleydoCanvas> hashGLCanvasID2GLCanvas;
 
-	protected HashMap<GLCaleydoCanvas, ArrayList<AGLView>> hashGLCanvas2GLEventListeners;
+	protected HashMap<GLCaleydoCanvas, ArrayList<AGLView>> hashGLCanvas2GLView;
 
-	protected HashMap<Integer, AGLView> hashGLEventListenerID2GLEventListener;
+	protected HashMap<Integer, AGLView> hashGLViewID2GLView;
 
 	private Animator fpsAnimator;
 
@@ -86,8 +86,8 @@ public class ViewManager
 		infoAreaManager = new GLInfoAreaManager();
 
 		hashGLCanvasID2GLCanvas = new HashMap<Integer, GLCaleydoCanvas>();
-		hashGLCanvas2GLEventListeners = new HashMap<GLCaleydoCanvas, ArrayList<AGLView>>();
-		hashGLEventListenerID2GLEventListener = new HashMap<Integer, AGLView>();
+		hashGLCanvas2GLView = new HashMap<GLCaleydoCanvas, ArrayList<AGLView>>();
+		hashGLViewID2GLView = new HashMap<Integer, AGLView>();
 
 		busyRequests = new HashSet<Object>();
 
@@ -114,7 +114,7 @@ public class ViewManager
 		if (hashGLCanvasID2GLCanvas.containsKey(iItemId))
 			return true;
 
-		if (hashGLEventListenerID2GLEventListener.containsKey(iItemId))
+		if (hashGLViewID2GLView.containsKey(iItemId))
 			return true;
 
 		return false;
@@ -124,8 +124,8 @@ public class ViewManager
 		return hashGLCanvasID2GLCanvas.get(iItemID);
 	}
 
-	public AGLView getGLEventListener(int iItemID) {
-		return hashGLEventListenerID2GLEventListener.get(iItemID);
+	public AGLView getGLView(int iItemID) {
+		return hashGLViewID2GLView.get(iItemID);
 	}
 
 	@Override
@@ -140,30 +140,7 @@ public class ViewManager
 				break;
 			}
 		}
-
-		// switch (type) {
-		// case VIEW:
-		// break;
-		// case VIEW_SWT_TABULAR_DATA_VIEWER:
-		// view = new TabularDataViewRep(iParentContainerID, sLabel);
-		// break;
-		// // case VIEW_SWT_BROWSER_GENERAL:
-		// // view = new HTMLBrowserViewRep(iParentContainerID, sLabel);
-		// // break;
-		// // case VIEW_SWT_BROWSER_GENOME:
-		// // view = new GenomeHTMLBrowserViewRep(iParentContainerID, sLabel);
-		// // break;
-		// case VIEW_SWT_GLYPH_MAPPINGCONFIGURATION:
-		// view = new GlyphMappingConfigurationViewRep(iParentContainerID, sLabel);
-		// break;
-		// case VIEW_SWT_COLLAB:
-		// view = new CollabViewRep(iParentContainerID, sLabel);
-		// break;
-		// default:
-		// throw new IllegalStateException("ViewManager.createView() failed due to unhandled type ["
-		// + type.toString() + "]");
-		// }
-
+		
 		registerItem(view);
 
 		return view;
@@ -254,7 +231,7 @@ public class ViewManager
 
 		fpsAnimator.remove(glCanvas);
 		hashGLCanvasID2GLCanvas.remove(glCanvas.getID());
-		hashGLCanvas2GLEventListeners.remove(glCanvas);
+		hashGLCanvas2GLView.remove(glCanvas);
 
 		return true;
 	}
@@ -262,17 +239,17 @@ public class ViewManager
 	@Override
 	public void registerGLEventListenerByGLCanvas(final GLCaleydoCanvas glCanvas,
 		final AGLView gLEventListener) {
-		hashGLEventListenerID2GLEventListener.put(gLEventListener.getID(), gLEventListener);
+		hashGLViewID2GLView.put(gLEventListener.getID(), gLEventListener);
 
 		// This is the case when a view is rendered remote
 		if (glCanvas == null)
 			return;
 
-		if (!hashGLCanvas2GLEventListeners.containsKey(glCanvas)) {
-			hashGLCanvas2GLEventListeners.put(glCanvas, new ArrayList<AGLView>());
+		if (!hashGLCanvas2GLView.containsKey(glCanvas)) {
+			hashGLCanvas2GLView.put(glCanvas, new ArrayList<AGLView>());
 		}
 
-		hashGLCanvas2GLEventListeners.get(glCanvas).add(gLEventListener);
+		hashGLCanvas2GLView.get(glCanvas).add(gLEventListener);
 		glCanvas.addGLEventListener(gLEventListener);
 	}
 
@@ -280,38 +257,38 @@ public class ViewManager
 	public void cleanup() {
 
 		hashGLCanvasID2GLCanvas.clear();
-		hashGLCanvas2GLEventListeners.clear();
-		hashGLEventListenerID2GLEventListener.clear();
+		hashGLCanvas2GLView.clear();
+		hashGLViewID2GLView.clear();
 		hashItems.clear();
 	}
 
 	@Override
-	public void unregisterGLEventListener(final AGLView glEventListener) {
+	public void unregisterGLView(final AGLView gViews) {
 
-		if (glEventListener == null)
+		if (gViews == null)
 			return;
 
-		GLCaleydoCanvas parentGLCanvas = (glEventListener).getParentGLCanvas();
+		GLCaleydoCanvas parentGLCanvas = (gViews).getParentGLCanvas();
 
 		if (parentGLCanvas != null) {
-			parentGLCanvas.removeGLEventListener(glEventListener);
+			parentGLCanvas.removeGLEventListener(gViews);
 
-			if (hashGLCanvas2GLEventListeners.containsKey(parentGLCanvas)) {
-				hashGLCanvas2GLEventListeners.get(parentGLCanvas).remove(glEventListener);
+			if (hashGLCanvas2GLView.containsKey(parentGLCanvas)) {
+				hashGLCanvas2GLView.get(parentGLCanvas).remove(gViews);
 			}
 		}
 
-		hashGLEventListenerID2GLEventListener.remove(glEventListener.getID());
+		hashGLViewID2GLView.remove(gViews.getID());
 	}
 
 	@Override
-	public Collection<GLCaleydoCanvas> getAllGLCanvasUsers() {
+	public Collection<GLCaleydoCanvas> getAllGLCanvas() {
 		return hashGLCanvasID2GLCanvas.values();
 	}
 
 	@Override
-	public Collection<AGLView> getAllGLEventListeners() {
-		return hashGLEventListenerID2GLEventListener.values();
+	public Collection<AGLView> getAllGLViews() {
+		return hashGLViewID2GLView.values();
 	}
 
 	public PickingManager getPickingManager() {
@@ -377,7 +354,7 @@ public class ViewManager
 		}
 		synchronized (busyRequests) {
 			if (busyRequests.isEmpty()) {
-				for (AGLView tmpGLEventListener : getAllGLEventListeners()) {
+				for (AGLView tmpGLEventListener : getAllGLViews()) {
 					if (!tmpGLEventListener.isRenderedRemote()) {
 						tmpGLEventListener.enableBusyMode(true);
 					}
@@ -399,7 +376,7 @@ public class ViewManager
 				busyRequests.remove(requestInstance);
 			}
 			if (busyRequests.isEmpty()) {
-				for (AGLView tmpGLEventListener : getAllGLEventListeners()) {
+				for (AGLView tmpGLEventListener : getAllGLViews()) {
 					if (!tmpGLEventListener.isRenderedRemote()) {
 						tmpGLEventListener.enableBusyMode(false);
 					}

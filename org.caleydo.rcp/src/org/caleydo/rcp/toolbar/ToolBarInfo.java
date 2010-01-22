@@ -8,7 +8,7 @@ package org.caleydo.rcp.toolbar;
 public class ToolBarInfo {
 
 	/** view-id as used within rcp framework and configuration */
-	String viewID;
+	String viewType;
 
 	/** information if the related view should be ignored when rendering toolbars */
 	boolean ignored;

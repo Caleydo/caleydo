@@ -34,9 +34,9 @@ public interface IViewManager
 
 	public IView createGLView(final EManagedObjectType type, final int iParentContainerID, final String sLabel);
 
-	public Collection<GLCaleydoCanvas> getAllGLCanvasUsers();
+	public Collection<GLCaleydoCanvas> getAllGLCanvas();
 
-	public Collection<AGLView> getAllGLEventListeners();
+	public Collection<AGLView> getAllGLViews();
 
 	public boolean registerGLCanvas(final GLCaleydoCanvas glCanvas);
 
@@ -45,7 +45,7 @@ public interface IViewManager
 	public void registerGLEventListenerByGLCanvas(final GLCaleydoCanvas glCanvas,
 		final AGLView gLEventListener);
 
-	public void unregisterGLEventListener(final AGLView glEventListener);
+	public void unregisterGLView(final AGLView glEventListener);
 
 	/**
 	 * Remove canvas from animator. Therefore the canvas is not rendered anymore.
@@ -79,7 +79,7 @@ public interface IViewManager
 
 	public GLCaleydoCanvas getCanvas(int iItemID);
 
-	public AGLView getGLEventListener(int iItemID);
+	public AGLView getGLView(int iItemID);
 
 	public void setActiveSWTView(Composite composite);
 

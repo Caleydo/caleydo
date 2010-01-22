@@ -91,7 +91,7 @@ public class RcpToolBarView
 		}
 
 		// Remove toolbars of remote rendered views
-		AGLView glView = GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
+		AGLView glView = GeneralManager.get().getViewGLCanvasManager().getGLView(iViewID);
 
 		if (glView instanceof IGLRemoteRenderingView) {
 			for (AGLView view : ((IGLRemoteRenderingView) glView).getRemoteRenderedViews()) {

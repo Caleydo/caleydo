@@ -78,7 +78,7 @@ public class GLConnectionLineRendererBucket extends AGLConnectionLineRenderer {
 								"Current ID Type does not match the selected elemen rep's");
 
 					AGLView glView = viewGLCanvasManager
-							.getGLEventListener(selectedElementRep
+							.getGLView(selectedElementRep
 									.getSourceViewID());
 
 					if (glView == null) {

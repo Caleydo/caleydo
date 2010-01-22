@@ -34,7 +34,7 @@ public class GLOffScreenTextureRenderer {
 
 		// RENDER VIEW CONTENT
 		AGLView glEventListener = GeneralManager.get().getViewGLCanvasManager()
-				.getGLEventListener(iViewID);
+				.getGLView(iViewID);
 
 		IViewFrustum viewFrustum = glEventListener.getViewFrustum();
 

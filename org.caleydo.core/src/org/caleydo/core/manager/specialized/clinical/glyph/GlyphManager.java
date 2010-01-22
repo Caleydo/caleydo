@@ -85,7 +85,7 @@ public class GlyphManager {
 		}
 		settings.put(type, value);
 
-		for (AGLView agleventlistener : generalManager.getViewGLCanvasManager().getAllGLEventListeners())
+		for (AGLView agleventlistener : generalManager.getViewGLCanvasManager().getAllGLViews())
 			if (agleventlistener instanceof GLGlyph) {
 				((GLGlyph) agleventlistener).forceRebuild();
 			}
