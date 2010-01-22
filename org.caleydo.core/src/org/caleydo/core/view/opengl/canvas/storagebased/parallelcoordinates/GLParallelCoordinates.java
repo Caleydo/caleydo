@@ -25,6 +25,7 @@ import static org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinat
 import static org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.ParCoordsRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.getDecimalFormat;
 import gleem.linalg.Rotf;
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
@@ -2268,7 +2269,6 @@ public class GLParallelCoordinates
 			&& idType == EIDType.EXPERIMENT_INDEX)
 			&& ePolylineDataType != EIDType.EXPERIMENT_INDEX) {
 			for (int iAxisNumber : axisVA.indicesOf(iStorageIndex)) {
-
 				fXValue = iAxisNumber * renderStyle.getAxisSpacing(axisVA.size());
 				fXValue = fXValue + renderStyle.getXSpacing();
 				fYValue = renderStyle.getBottomSpacing();
@@ -2280,9 +2280,12 @@ public class GLParallelCoordinates
 			// fXValue = viewFrustum.getRight() - 0.2f;
 			// else
 			// fXValue = viewFrustum.getRight() - 0.4f;
-
+			ArrayList<Vec2f> connectionPoints = new ArrayList<Vec2f>();
+			for (int count = 0; count < 3; count++)
+				connectionPoints.add(new Vec2f((renderStyle.getWidthOfCoordinateSystem()*count/2) + renderStyle.getXSpacing(), set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex)));
+				
 			if (renderConnectionsLeft) {
-				fXValue = fXValue + renderStyle.getXSpacing();
+				//fXValue = fXValue + renderStyle.getXSpacing() + (renderStyle.getXAxisEnd()/2)*count;
 				fYValue = set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
 			}
 			else {
@@ -2294,7 +2297,7 @@ public class GLParallelCoordinates
 					set.get(storageVA.get(storageVA.size() - 1)).getFloat(EDataRepresentation.NORMALIZED,
 						iStorageIndex);
 			}
-
+			
 			// // get the value on the leftmost axis
 			// fYValue = set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
 
@@ -2304,9 +2307,8 @@ public class GLParallelCoordinates
 			else {
 				fYValue = fYValue * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
 			}
-			alElementReps.add(new SelectedElementRep(idType, iUniqueID, fXValue, fYValue, 0.0f));
+			alElementReps.add(new SelectedElementRep(idType, iUniqueID,fXValue, fYValue, 0.0f));
 		}
-
 		return alElementReps;
 	}
 

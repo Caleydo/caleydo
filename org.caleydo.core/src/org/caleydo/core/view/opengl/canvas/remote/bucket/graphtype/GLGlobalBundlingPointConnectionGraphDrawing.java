@@ -111,9 +111,7 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 			HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
 			int heatMapID = getSpecialViewID(HEATMAP);
 			int parCoordID = getSpecialViewID(PARCOORDS);
-			if ((heatMapID < 0) || parCoordID < 0)
-				return null;
-			
+
 			for (Integer iKey : keySet) {
 				if (iKey.equals(heatMapID))
 					heatMapPoints = hashIDTypeToViewToPointLists.get(idType).get(iKey);
@@ -122,15 +120,44 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 				else
 					hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists.get(idType).get(iKey)));
 			}
-
+			if ((heatMapID < 0) && (parCoordID < 0)){
+				vecCenter = calculateCenter(hashViewToCenterPoint.values());
+				return hashViewToCenterPoint;
+			}
+			
+			
 			double minPath = Double.MAX_VALUE;
 			ArrayList<Vec3f> optimalHeatMap = new ArrayList<Vec3f>();
 			ArrayList<Vec3f> optimalParCoords = new ArrayList<Vec3f>();
 			Vec3f optimalHeatMapPoint = new Vec3f();
 			Vec3f optimalParCoordPoint = new Vec3f();
-			for (ArrayList<Vec3f> heatMapList : heatMapPoints) {
+			if (heatMapPoints.size() > 0){
+				for (ArrayList<Vec3f> heatMapList : heatMapPoints) {
+					for (ArrayList<Vec3f> parCoordsList : parCoordsPoints) {
+						hashViewToCenterPoint.put(heatMapID, heatMapList.get(0));
+						hashViewToCenterPoint.put(parCoordID, parCoordsList.get(0));
+						Vec3f centerPoint = calculateCenter(hashViewToCenterPoint.values());
+					
+						//TODO: Choose if global minimum or local minimum
+						double currentPath = calculateCurrentPathLength(hashViewToCenterPoint, centerPoint);
+						/*Vec3f temp = centerPoint.minus(arrayList.get(0));
+						double currentPath = temp.length();*/
+					
+						if (currentPath < minPath){
+							minPath = currentPath;
+							optimalHeatMap = heatMapList;
+							optimalParCoords = parCoordsList;
+							optimalHeatMapPoint = heatMapList.get(0);
+							optimalParCoordPoint = parCoordsList.get(0);
+							vecCenter = centerPoint;
+						}
+					}
+				}
+				if ((optimalHeatMap.size() == 0) || (optimalParCoords.size() == 0))
+					return null;
+			}
+			else{
 				for (ArrayList<Vec3f> parCoordsList : parCoordsPoints) {
-					hashViewToCenterPoint.put(heatMapID, heatMapList.get(0));
 					hashViewToCenterPoint.put(parCoordID, parCoordsList.get(0));
 					Vec3f centerPoint = calculateCenter(hashViewToCenterPoint.values());
 				
@@ -141,22 +168,22 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 				
 					if (currentPath < minPath){
 						minPath = currentPath;
-						optimalHeatMap = heatMapList;
 						optimalParCoords = parCoordsList;
-						optimalHeatMapPoint = heatMapList.get(0);
 						optimalParCoordPoint = parCoordsList.get(0);
 						vecCenter = centerPoint;
 					}
 				}
+				if (optimalParCoords.size() == 0)
+					return null;
 			}
-			if ((optimalHeatMap.size() == 0) || (optimalParCoords.size() == 0))
-				return null;
 			ArrayList<ArrayList<Vec3f>> tempArray = new ArrayList<ArrayList<Vec3f>>();
-			tempArray.add(optimalHeatMap);
-			hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
-			hashIDTypeToViewToPointLists.get(idType).put(heatMapID, tempArray);
-			hashViewToCenterPoint.put(heatMapID, optimalHeatMapPoint);
-			tempArray = new ArrayList<ArrayList<Vec3f>>();
+			if (heatMapPoints.size() > 0){
+				tempArray.add(optimalHeatMap);
+				hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
+				hashIDTypeToViewToPointLists.get(idType).put(heatMapID, tempArray);
+				hashViewToCenterPoint.put(heatMapID, optimalHeatMapPoint);
+				tempArray = new ArrayList<ArrayList<Vec3f>>();
+			}
 			tempArray.add(optimalParCoords);
 			hashIDTypeToViewToPointLists.get(idType).remove(parCoordID);
 			hashIDTypeToViewToPointLists.get(idType).put(parCoordID, tempArray);

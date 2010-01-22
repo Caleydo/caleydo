@@ -2104,8 +2104,7 @@ public class GLRemoteRendering
 	}
 
 	public void toggleLayoutMode() {
-		String type = GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.VISUAL_LINKS_TYPE);
-		System.out.println("THETYPE" +graphtype);
+		graphtype = GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.VISUAL_LINKS_TYPE);
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			// layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.LIST;
@@ -2128,6 +2127,7 @@ public class GLRemoteRendering
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 			parentGLCanvas.addMouseListener(bucketMouseWheelListener);
 
+			System.out.println(graphtype);
 			if (graphtype.equals("GLOBAL_BUNDLING"))
 					glConnectionLineRenderer = new GLGlobalBundlingPointConnectionGraphDrawing(focusLevel, stackLevel);
 			else if (graphtype.equals("VIEW_CENTERED"))
@@ -2135,9 +2135,9 @@ public class GLRemoteRendering
 			else if (graphtype.equals("CONSECUTIVE"))
 					glConnectionLineRenderer = new GLConsecutiveConnectionGraphDrawing(focusLevel, stackLevel);
 
-			if (type.equals("VIEW_CENTERED"))
+	/*		if (type.equals("VIEW_CENTERED"))
 				glConnectionLineRenderer = new GLViewCenteredConnectionGraphDrawing(focusLevel, stackLevel);
-		}
+	*/	}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
 			layoutRenderStyle = new JukeboxLayoutRenderStyle(viewFrustum, layoutRenderStyle);
 

@@ -24,7 +24,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
 /**
- * Specialized connection line renderer for bucket view.
+ * Abstract class which provides tools needed for rendering different graphs in bucket view
  * 
  * @author Alexander Lex
  * @author Marc Streit
