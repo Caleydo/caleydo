@@ -3,6 +3,7 @@ package org.caleydo.core.manager.specialized.genetic;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genetic.pathway.IPathwayResourceLoader;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayDatabase;
 import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.PathwayImageMap;
 
@@ -13,6 +14,7 @@ import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.PathwayImageM
  */
 public interface IPathwayManager
 	extends IManager<PathwayGraph> {
+
 	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName,
 		final String sTitle, final String sImageLink, final String sExternalLink);
 
@@ -46,4 +48,8 @@ public interface IPathwayManager
 	 * @return state of pathway loading
 	 */
 	public boolean isPathwayLoadingFinished();
+
+	public void createPathwayResourceLoader();
+
+	public IPathwayResourceLoader getPathwayResourceLoader();
 }

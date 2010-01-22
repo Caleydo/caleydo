@@ -63,7 +63,7 @@ public class BucketMouseWheelListener extends MouseAdapter
 			return;
 
 		fBuketZoomMax = BUCKET_ZOOM_MAX;// *
-										// bucketGLEventListener.getAspectRatio();
+		// bucketGLEventListener.getAspectRatio();
 
 		// Change bucket tilt angle
 		if (event.isControlDown() || event.isAltDown()) {
@@ -151,7 +151,7 @@ public class BucketMouseWheelListener extends MouseAdapter
 			}
 
 			if (iCurrentBucketZoom >= fBuketZoomMax)// iCurrentBucketZoom ==
-													// (int)fBuketZoomMax)
+			// (int)fBuketZoomMax)
 			{
 				bBucketBottomReached = true;
 

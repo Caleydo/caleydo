@@ -59,38 +59,38 @@ public class ToolBarContentFactory {
 		toolBarInfos = new HashMap<String, ToolBarInfo>();
 
 		ToolBarInfo info;
-		
+
 		// TODO glyph, clinicalparcoords, dataflipper
 
-		 info = new ToolBarInfo();
-		 info.viewID = "org.caleydo.view.heatmap";
-		 info.ignored = false;
-		 toolBarInfos.put(info.viewID, info);
+		info = new ToolBarInfo();
+		info.viewID = "org.caleydo.view.heatmap";
+		info.ignored = false;
+		toolBarInfos.put(info.viewID, info);
 
-		 info = new ToolBarInfo();
-		 info.viewID = "org.caleydo.view.heatmap.hierarchical";
-		 info.ignored = false;
-		 toolBarInfos.put(info.viewID, info);
-		
-		 info = new ToolBarInfo();
-		 info.viewID = "org.caleydo.view.parcoords";
-		 info.ignored = false;
-		 toolBarInfos.put(info.viewID, info);
-		
-		 info = new ToolBarInfo();
-		 info.viewID = "org.caleydo.view.bucket";
-		 info.ignored = false;
-		 toolBarInfos.put(info.viewID, info);
-		
-		 info = new ToolBarInfo();
-		 info.viewID = "org.caleydo.view.radial";
-		 info.ignored = false;
-		 toolBarInfos.put(info.viewID, info);
-		
-		 info = new ToolBarInfo();
-		 info.viewID = "org.caleydo.view.scatterplot";
-		 info.ignored = false;
-		 toolBarInfos.put(info.viewID, info);
+		info = new ToolBarInfo();
+		info.viewID = "org.caleydo.view.heatmap.hierarchical";
+		info.ignored = false;
+		toolBarInfos.put(info.viewID, info);
+
+		info = new ToolBarInfo();
+		info.viewID = "org.caleydo.view.parcoords";
+		info.ignored = false;
+		toolBarInfos.put(info.viewID, info);
+
+		info = new ToolBarInfo();
+		info.viewID = "org.caleydo.view.bucket";
+		info.ignored = false;
+		toolBarInfos.put(info.viewID, info);
+
+		info = new ToolBarInfo();
+		info.viewID = "org.caleydo.view.radial";
+		info.ignored = false;
+		toolBarInfos.put(info.viewID, info);
+
+		info = new ToolBarInfo();
+		info.viewID = "org.caleydo.view.scatterplot";
+		info.ignored = false;
+		toolBarInfos.put(info.viewID, info);
 	}
 
 	/**

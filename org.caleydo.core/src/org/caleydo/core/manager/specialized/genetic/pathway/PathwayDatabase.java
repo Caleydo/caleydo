@@ -1,16 +1,15 @@
 package org.caleydo.core.manager.specialized.genetic.pathway;
 
+import static org.caleydo.core.manager.IGeneralManager.CALEYDO_FOLDER;
+import static org.caleydo.core.manager.IGeneralManager.CALEYDO_FOLDER_TEMPLATE;
+import static org.caleydo.core.manager.IGeneralManager.USER_HOME_TEMPLATE;
+
 import java.io.Serializable;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
-import static org.caleydo.core.manager.IGeneralManager.CALEYDO_FOLDER;
-import static org.caleydo.core.manager.IGeneralManager.CALEYDO_FOLDER_TEMPLATE;
-import static org.caleydo.core.manager.IGeneralManager.USER_HOME_TEMPLATE;
-
 import org.caleydo.core.manager.usecase.EDataDomain;
-
 
 /**
  * Class that holds information about a specific pathway database.

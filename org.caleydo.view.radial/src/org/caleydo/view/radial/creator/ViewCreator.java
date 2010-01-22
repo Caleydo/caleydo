@@ -27,7 +27,7 @@ public class ViewCreator extends AGLViewCreator {
 
 		return new SerializedRadialHierarchyView();
 	}
-	
+
 	@Override
 	public Object createToolBarContent() {
 		return new RadialHierarchyToolBarContent();

@@ -2,7 +2,6 @@ package org.caleydo.core.manager.specialized.genetic.pathway;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -26,12 +25,6 @@ import org.eclipse.core.runtime.Status;
  */
 public class PathwayLoaderThread
 	extends Thread {
-
-	/**
-	 * Needed for updating progress bar
-	 */
-	private static final int APPROX_PATHWAY_COUNT_KEGG = 214;
-	private static final int APPROX_PATHWAY_COUNT_BIOCARTA = 314;
 
 	private IGeneralManager generalManager;
 
@@ -83,39 +76,27 @@ public class PathwayLoaderThread
 		String sLine = null;
 		String sFileName = "";
 		String sPathwayPath = pathwayDatabase.getXMLPath();
-		float fProgressFactor = 0;
-
+		IPathwayResourceLoader pathwayResourceLoader = null;
 		EOrganism eOrganism =
 			((GeneticUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA)).getOrganism();
 
 		if (pathwayDatabase.getName().equals("KEGG")) {
 
 			if (eOrganism == EOrganism.HOMO_SAPIENS) {
-				sFileName =
-					IGeneralManager.CALEYDO_HOME_PATH
-						+ PathwayListGenerator.OUTPUT_FILE_NAME_KEGG_HOMO_SAPIENS;
-
-				// Make sure that old pathway list files without organism specification still work
-				try {
-					new BufferedReader(new FileReader(sFileName));
-				}
-				catch (FileNotFoundException e) {
-					sFileName = IGeneralManager.CALEYDO_HOME_PATH + "pathway_list_KEGG.txt";
-				}
+				sFileName = "data/pathway_list_KEGG_homo_sapiens.txt";
 			}
 			else if (eOrganism == EOrganism.MUS_MUSCULUS) {
-				sFileName =
-					IGeneralManager.CALEYDO_HOME_PATH
-						+ PathwayListGenerator.OUTPUT_FILE_NAME_KEGG_MUS_MUSCULUS;
+				sFileName = "data/pathway_list_KEGG_mus_musculus.txt";
 			}
 			else {
 				throw new IllegalStateException("Cannot load pathways from organism " + eOrganism);
 			}
 
-			fProgressFactor = 100f / APPROX_PATHWAY_COUNT_KEGG;
-
 			generalManager.getSWTGUIManager()
 				.setProgressBarTextFromExternalThread("Loading KEGG Pathways...");
+
+			generalManager.getPathwayManager().createPathwayResourceLoader();
+			pathwayResourceLoader = generalManager.getPathwayManager().getPathwayResourceLoader();
 		}
 		else if (pathwayDatabase.getName().equals("BioCarta")) {
 
@@ -123,14 +104,6 @@ public class PathwayLoaderThread
 				sFileName =
 					IGeneralManager.CALEYDO_HOME_PATH
 						+ PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA_HOMO_SAPIENS;
-
-				// Make sure that old pathway list files without organism specification still work
-				try {
-					new BufferedReader(new FileReader(sFileName));
-				}
-				catch (FileNotFoundException e) {
-					sFileName = IGeneralManager.CALEYDO_HOME_PATH + "pathway_list_BIOCARTA.txt";
-				}
 			}
 			else if (eOrganism == EOrganism.MUS_MUSCULUS) {
 				sFileName =
@@ -141,16 +114,18 @@ public class PathwayLoaderThread
 				throw new IllegalStateException("Cannot load pathways from organism " + eOrganism);
 			}
 
-			fProgressFactor = 100f / APPROX_PATHWAY_COUNT_BIOCARTA;
-
 			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
 				"Loading BioCarta Pathways...");
 		}
 
 		int iPathwayIndex = 0;
+
 		try {
 
-			file = GeneralManager.get().getResourceLoader().getResource(sFileName);
+			if (pathwayDatabase.getName().equals("KEGG"))
+				file = pathwayResourceLoader.getResource(sFileName);
+			else
+				file = GeneralManager.get().getResourceLoader().getResource(sFileName);
 
 			StringTokenizer tokenizer;
 			String sPathwayName;
@@ -182,12 +157,6 @@ public class PathwayLoaderThread
 				}
 
 				iPathwayIndex++;
-
-				// Update progress bar only on each 10th pathway
-				if (iPathwayIndex % 10 == 0) {
-					generalManager.getSWTGUIManager().setProgressBarPercentageFromExternalThread(
-						(int) (fProgressFactor * iPathwayIndex));
-				}
 			}
 
 		}

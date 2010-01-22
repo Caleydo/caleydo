@@ -27,7 +27,7 @@ public class ViewCreatorHierarchicalHeatMap extends AGLViewCreator {
 
 		return new SerializedHierarchicalHeatMapView();
 	}
-	
+
 	@Override
 	public Object createToolBarContent() {
 		return new HierarchicalHeatMapToolBarContent();

@@ -1,6 +1,5 @@
 package org.caleydo.core.manager.specialized.genetic.pathway;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,7 +14,12 @@ import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.PathwayImageMap;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.core.Graph;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -26,9 +30,9 @@ import org.eclipse.core.runtime.Status;
  */
 public class PathwayManager
 	extends AManager<PathwayGraph>
-	implements IPathwayManager, Serializable {
+	implements IPathwayManager {
 
-	private static final long serialVersionUID = 1L;
+	public IPathwayResourceLoader pathwayResourceLoader;
 
 	private HashMap<PathwayGraph, Boolean> hashPathwayToVisibilityState;
 
@@ -204,5 +208,26 @@ public class PathwayManager
 	@Override
 	public boolean isPathwayLoadingFinished() {
 		return pathwayLoadingFinished;
+	}
+
+	@Override
+	public void createPathwayResourceLoader() {
+		IExtensionRegistry reg = Platform.getExtensionRegistry();
+		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.kegg.PathwayResourceLoader");
+		IExtension ext = ep.getExtension("org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader");
+		IConfigurationElement[] ce = ext.getConfigurationElements();
+
+		try {
+			pathwayResourceLoader = (IPathwayResourceLoader) ce[0].createExecutableExtension("class");
+		}
+		catch (Exception ex) {
+			throw new RuntimeException("Could not instantiate Pathway Resource Loader", ex);
+		}
+	}
+
+	@Override
+	public IPathwayResourceLoader getPathwayResourceLoader() {
+
+		return pathwayResourceLoader;
 	}
 }

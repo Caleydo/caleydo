@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.0_.dtd">
+<!-- Creation date: Apr 2, 2009 18:01:50 +0900 (JST) -->
+<pathway name="path:mmu00514" org="mmu" number="00514"
+         title="O-Mannosyl glycan biosynthesis"
+         image="http://www.genome.jp/kegg/pathway/mmu/mmu00514.png"
+         link="http://www.genome.jp/kegg-bin/show_pathway?mmu00514">
+    <entry id="1" name="path:mmu00514" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?pathway+mmu00514">
+        <graphics name="TITLE:O-Mannosyl glycan biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="183" y="58" width="286" height="25"/>
+    </entry>
+    <entry id="2" name="ko:K05538 ko:K10968 ko:K10969" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K05538+K10968+K10969">
+        <graphics name="K05538..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="line" coords="147,133,177,163"/>
+    </entry>
+    <entry id="4" name="mmu:68273" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:68273">
+        <graphics name="Pomgnt1" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="298,254,328,224"/>
+    </entry>
+    <entry id="5" name="ko:K10970" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K10970">
+        <graphics name="K10970" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="line" coords="70,221,100,221"/>
+    </entry>
+    <entry id="6" name="ko:K10970" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K10970">
+        <graphics name="K10970" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="line" coords="146,219,176,189"/>
+    </entry>
+    <entry id="7" name="ko:K10967" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K10967">
+        <graphics name="K10967" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="line" coords="222,174,252,174"/>
+    </entry>
+    <entry id="8" name="ko:K10967" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K10967">
+        <graphics name="K10967" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="line" coords="299,175,329,205"/>
+    </entry>
+    <entry id="9" name="mmu:217734 mmu:99011" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:217734+mmu:99011">
+        <graphics name="Pomt2..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="360,213,390,213"/>
+    </entry>
+    <entry id="11" name="ko:K05538 ko:K10968 ko:K10969" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K05538+K10968+K10969">
+        <graphics name="K05538..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="line" coords="71,128,101,128"/>
+    </entry>
+    <entry id="13" name="ko:K10971" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K10971">
+        <graphics name="K10971" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="line" coords="200,191,200,221"/>
+    </entry>
+</pathway>

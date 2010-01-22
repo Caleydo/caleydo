@@ -95,7 +95,7 @@ public class GLPathway extends AGLView
 			ISelectionCommandHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.pathway";
-	
+
 	private PathwayGraph pathway;
 
 	private boolean bEnablePathwayTexture = true;

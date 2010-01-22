@@ -1,0 +1,278 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.0_.dtd">
+<!-- Creation date: Nov 16, 2009 16:27:09 +0900 (JST) -->
+<pathway name="path:hsa03050" org="hsa" number="03050"
+         title="Proteasome"
+         image="http://www.genome.jp/kegg/pathway/hsa/hsa03050.png"
+         link="http://www.genome.jp/kegg-bin/show_pathway?hsa03050">
+    <entry id="1" name="hsa:3458" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3458">
+        <graphics name="IFNG" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="342" y="653" width="46" height="17"/>
+    </entry>
+    <entry id="2" name="hsa:5709" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5709">
+        <graphics name="PSMD3" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="693" y="106" width="46" height="17"/>
+    </entry>
+    <entry id="3" name="hsa:5718" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5718">
+        <graphics name="PSMD12" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="739" y="106" width="46" height="17"/>
+    </entry>
+    <entry id="4" name="hsa:5717" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5717">
+        <graphics name="PSMD11" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="784" y="106" width="46" height="17"/>
+    </entry>
+    <entry id="5" name="hsa:9861" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9861">
+        <graphics name="PSMD6" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="830" y="106" width="46" height="17"/>
+    </entry>
+    <entry id="6" name="hsa:100132108 hsa:5713" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100132108+hsa:5713">
+        <graphics name="100132108..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="693" y="123" width="46" height="17"/>
+    </entry>
+    <entry id="7" name="hsa:5719" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5719">
+        <graphics name="PSMD13" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="739" y="123" width="46" height="17"/>
+    </entry>
+    <entry id="8" name="hsa:10213" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10213">
+        <graphics name="PSMD14" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="785" y="123" width="46" height="17"/>
+    </entry>
+    <entry id="9" name="hsa:5714" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5714">
+        <graphics name="PSMD8" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="830" y="123" width="46" height="17"/>
+    </entry>
+    <entry id="10" name="hsa:7979" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7979">
+        <graphics name="SHFM1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="876" y="123" width="46" height="17"/>
+    </entry>
+    <entry id="11" name="hsa:5710" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5710">
+        <graphics name="PSMD4" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="693" y="153" width="46" height="17"/>
+    </entry>
+    <entry id="12" name="hsa:5708" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5708">
+        <graphics name="PSMD2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="693" y="204" width="46" height="17"/>
+    </entry>
+    <entry id="13" name="hsa:5707" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5707">
+        <graphics name="PSMD1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="739" y="204" width="46" height="17"/>
+    </entry>
+    <entry id="14" name="ko:K06691" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K06691">
+        <graphics name="K06691" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="785" y="204" width="46" height="17"/>
+    </entry>
+    <entry id="15" name="hsa:5701" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5701">
+        <graphics name="PSMC2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="693" y="221" width="46" height="17"/>
+    </entry>
+    <entry id="16" name="hsa:345645 hsa:5700" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:345645+hsa:5700">
+        <graphics name="345645..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="739" y="221" width="46" height="17"/>
+    </entry>
+    <entry id="17" name="hsa:5704 hsa:652826" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5704+hsa:652826">
+        <graphics name="PSMC4..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="922" y="221" width="46" height="17"/>
+    </entry>
+    <entry id="18" name="hsa:5706" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5706">
+        <graphics name="PSMC6" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="830" y="221" width="46" height="17"/>
+    </entry>
+    <entry id="19" name="hsa:5702" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5702">
+        <graphics name="PSMC3" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="876" y="221" width="46" height="17"/>
+    </entry>
+    <entry id="20" name="hsa:5705" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5705">
+        <graphics name="PSMC5" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="785" y="221" width="46" height="17"/>
+    </entry>
+    <entry id="21" name="hsa:5720" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5720">
+        <graphics name="PSME1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="971" y="122" width="46" height="17"/>
+    </entry>
+    <entry id="22" name="hsa:5721" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5721">
+        <graphics name="PSME2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="1017" y="122" width="46" height="17"/>
+    </entry>
+    <entry id="23" name="hsa:10197" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10197">
+        <graphics name="PSME3; proteasome (prosome, macropain) activator subunit 3 (PA28 gamma" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="1086" y="124" width="46" height="17"/>
+    </entry>
+    <entry id="24" name="hsa:23198" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23198">
+        <graphics name="PSME4" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="993" y="220" width="46" height="17"/>
+    </entry>
+    <entry id="25" name="hsa:121906 hsa:5687" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:121906+hsa:5687">
+        <graphics name="121906..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="699" y="357" width="46" height="17"/>
+    </entry>
+    <entry id="26" name="hsa:5683" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5683">
+        <graphics name="PSMA2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="745" y="357" width="46" height="17"/>
+    </entry>
+    <entry id="27" name="hsa:5685" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5685">
+        <graphics name="PSMA4" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="791" y="357" width="46" height="17"/>
+    </entry>
+    <entry id="28" name="hsa:143471 hsa:5688" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:143471+hsa:5688">
+        <graphics name="PSMA8..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="837" y="357" width="46" height="17"/>
+    </entry>
+    <entry id="29" name="hsa:5686" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5686">
+        <graphics name="PSMA5" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="883" y="357" width="46" height="17"/>
+    </entry>
+    <entry id="30" name="hsa:5682" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5682">
+        <graphics name="PSMA1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="929" y="357" width="46" height="17"/>
+    </entry>
+    <entry id="31" name="hsa:5684" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5684">
+        <graphics name="PSMA3" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="975" y="357" width="46" height="17"/>
+    </entry>
+    <entry id="32" name="hsa:5694" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5694">
+        <graphics name="PSMB6" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="699" y="374" width="46" height="17"/>
+    </entry>
+    <entry id="33" name="hsa:5695" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5695">
+        <graphics name="PSMB7" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="745" y="374" width="46" height="17"/>
+    </entry>
+    <entry id="34" name="hsa:5691" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5691">
+        <graphics name="PSMB3" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="791" y="374" width="46" height="17"/>
+    </entry>
+    <entry id="35" name="hsa:5690" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5690">
+        <graphics name="PSMB2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="837" y="374" width="46" height="17"/>
+    </entry>
+    <entry id="36" name="hsa:5693" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5693">
+        <graphics name="PSMB5" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="883" y="374" width="46" height="17"/>
+    </entry>
+    <entry id="37" name="hsa:5689" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5689">
+        <graphics name="PSMB1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="929" y="374" width="46" height="17"/>
+    </entry>
+    <entry id="38" name="hsa:5692" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5692">
+        <graphics name="PSMB4" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="975" y="374" width="46" height="17"/>
+    </entry>
+    <entry id="39" name="hsa:5698" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5698">
+        <graphics name="PSMB9" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="699" y="441" width="46" height="17"/>
+    </entry>
+    <entry id="40" name="hsa:5699" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5699">
+        <graphics name="PSMB10" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="759" y="441" width="46" height="17"/>
+    </entry>
+    <entry id="41" name="hsa:5696" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5696">
+        <graphics name="PSMB8" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="815" y="441" width="46" height="17"/>
+    </entry>
+    <entry id="42" name="hsa:122706" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:122706">
+        <graphics name="PSMB11" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="929" y="441" width="46" height="17"/>
+    </entry>
+    <entry id="43" name="ko:K03432" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03432">
+        <graphics name="K03432" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="1086" y="357" width="46" height="17"/>
+    </entry>
+    <entry id="44" name="ko:K03433" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03433">
+        <graphics name="K03433" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="1086" y="374" width="46" height="17"/>
+    </entry>
+    <entry id="45" name="ko:K03420" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03420">
+        <graphics name="K03420" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="1086" y="220" width="46" height="17"/>
+    </entry>
+    <entry id="46" name="path:hsa04120" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa04120">
+        <graphics name="Ubiquitin mediated proteolysis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="126" y="448" width="128" height="34"/>
+    </entry>
+    <entry id="47" name="path:map03500" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?map03500">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="102" y="58" width="124" height="25"/>
+    </entry>
+    <entry id="48" name="hsa:9491" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9491">
+        <graphics name="PSMF1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="393" y="845" width="46" height="17"/>
+    </entry>
+    <entry id="49" name="hsa:51371" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51371">
+        <graphics name="POMP" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="343" y="813" width="46" height="17"/>
+    </entry>
+    <entry id="50" name="hsa:5698" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5698">
+        <graphics name="PSMB9" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="293" y="693" width="46" height="17"/>
+    </entry>
+    <entry id="51" name="hsa:5699" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5699">
+        <graphics name="PSMB10" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="343" y="693" width="46" height="17"/>
+    </entry>
+    <entry id="52" name="hsa:5696" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5696">
+        <graphics name="PSMB8" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="393" y="693" width="46" height="17"/>
+    </entry>
+    <entry id="53" name="hsa:5720" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5720">
+        <graphics name="PSME1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="343" y="756" width="46" height="17"/>
+    </entry>
+    <entry id="54" name="hsa:5721" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5721">
+        <graphics name="PSME2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="343" y="773" width="46" height="17"/>
+    </entry>
+</pathway>

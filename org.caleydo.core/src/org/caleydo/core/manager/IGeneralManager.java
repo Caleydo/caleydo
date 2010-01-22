@@ -114,30 +114,30 @@ public interface IGeneralManager {
 
 	public TrackDataProvider getTrackDataProvider();
 
-//	/**
-//	 * Returns the current use case. The use case determines which views are showing what kind of data and
-//	 * which data set is currently in use.
-//	 */
-//	public IUseCase getUseCase();
+	// /**
+	// * Returns the current use case. The use case determines which views are showing what kind of data and
+	// * which data set is currently in use.
+	// */
+	// public IUseCase getUseCase();
 
-//	/**
-//	 * Set a different use case. The use case changes the behavior of the views and its loaded data.
-//	 * 
-//	 * @param useCase
-//	 *            Returns the current use case. The use case determines which views are showing what kind of
-//	 *            data and which data set is currently in use.
-//	 */
-//
-//	public void setUseCase(IUseCase useCase);
+	// /**
+	// * Set a different use case. The use case changes the behavior of the views and its loaded data.
+	// *
+	// * @param useCase
+	// * Returns the current use case. The use case determines which views are showing what kind of
+	// * data and which data set is currently in use.
+	// */
+	//
+	// public void setUseCase(IUseCase useCase);
 
 	public IUseCase getUseCase(EDataDomain useCaseType);
 
-//	/**
-//	 * Returns all use cases that are currently registered.
-//	 * 
-//	 * @return
-//	 */
-//	public ClinicalUseCase getClinicalUseCase();
+	// /**
+	// * Returns all use cases that are currently registered.
+	// *
+	// * @return
+	// */
+	// public ClinicalUseCase getClinicalUseCase();
 
 	public Collection<IUseCase> getAllUseCases();
 
@@ -171,5 +171,4 @@ public interface IGeneralManager {
 	 * @return the {@link SerializationManager} of this caleydo application
 	 */
 	public SerializationManager getSerializationManager();
-
 }

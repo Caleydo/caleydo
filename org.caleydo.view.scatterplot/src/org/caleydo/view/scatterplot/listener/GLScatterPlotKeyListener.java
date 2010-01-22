@@ -6,8 +6,7 @@ import org.caleydo.view.scatterplot.GLScatterplot;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 
-public class GLScatterPlotKeyListener 
-	extends GLKeyListener<GLScatterplot> {
+public class GLScatterPlotKeyListener extends GLKeyListener<GLScatterplot> {
 
 	private GLScatterplot glScatterplot;
 
@@ -19,45 +18,43 @@ public class GLScatterPlotKeyListener
 	@Override
 	protected void handleKeyPressedEvent(KeyEvent event) {
 
-//		// if ctrl, alt, or shift is pressed do nothing --> HHM handles this events
-//		if (event.stateMask == SWT.CTRL || event.stateMask == SWT.ALT || event.stateMask == SWT.SHIFT)
-//			return;
+		// // if ctrl, alt, or shift is pressed do nothing --> HHM handles this
+		// events
+		// if (event.stateMask == SWT.CTRL || event.stateMask == SWT.ALT ||
+		// event.stateMask == SWT.SHIFT)
+		// return;
 
-		if (event.character == 'b') 
-		{
+		if (event.character == 'b') {
 			glScatterplot.toggleSpecialAxisMode();
 			return;
 		}
-		
-		if (event.character == 'p') 
-		{
+
+		if (event.character == 'p') {
 			glScatterplot.togglePointType();
 			return;
 		}
-		
-		if (event.character == 'd') 
-		{
+
+		if (event.character == 'd') {
 			glScatterplot.toggleDetailLevel();
 			return;
 		}
-		
-						
+
 		switch (event.keyCode) {
-			case SWT.ARROW_UP:
+			case SWT.ARROW_UP :
 				glScatterplot.upDownSelect(false);
 				break;
-			case SWT.ARROW_DOWN:
+			case SWT.ARROW_DOWN :
 				glScatterplot.upDownSelect(true);
 				break;
-			case SWT.ARROW_LEFT:
+			case SWT.ARROW_LEFT :
 				glScatterplot.leftRightSelect(false);
 				break;
-			case SWT.ARROW_RIGHT:
+			case SWT.ARROW_RIGHT :
 				glScatterplot.leftRightSelect(true);
 				break;
-			case SWT.HOME:
+			case SWT.HOME :
 				glScatterplot.ResetSelection();
-				break;			
+				break;
 		}
 
 	}

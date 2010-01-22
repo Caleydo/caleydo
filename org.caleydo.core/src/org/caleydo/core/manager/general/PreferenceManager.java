@@ -11,12 +11,12 @@ import static org.caleydo.core.util.preferences.PreferenceConstants.NUMBER_OF_CO
 import java.io.File;
 import java.io.IOException;
 
-import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
@@ -72,7 +72,7 @@ public class PreferenceManager {
 					+ "). \nYour old Caleydo settings and pathway data will be discarded and newly created.");
 				messageBox.open();
 
-				CmdFetchPathwayData.deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH));
+				FileOperations.deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH));
 
 				initCaleydoFolder();
 			}

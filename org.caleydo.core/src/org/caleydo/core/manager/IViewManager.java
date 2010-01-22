@@ -26,7 +26,7 @@ public interface IViewManager
 	extends IManager<IView> {
 
 	public void init();
-	
+
 	public IView createView(String viewType, int parentContainerId, String sLabel);
 
 	public AGLView createGLView(String viewID, GLCaleydoCanvas glCanvas, String label,

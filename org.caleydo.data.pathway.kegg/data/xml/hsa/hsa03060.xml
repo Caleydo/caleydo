@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.0_.dtd">
+<!-- Creation date: Jun 16, 2009 10:57:12 +0900 (JST) -->
+<pathway name="path:hsa03060" org="hsa" number="03060"
+         title="Protein export"
+         image="http://www.genome.jp/kegg/pathway/hsa/hsa03060.png"
+         link="http://www.genome.jp/kegg-bin/show_pathway?hsa03060">
+    <entry id="1" name="ko:K03425" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03425">
+        <graphics name="K03425" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="475" y="408" width="46" height="17"/>
+    </entry>
+    <entry id="2" name="ko:K01983" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K01983">
+        <graphics name="K01983" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="760" y="308" width="46" height="17"/>
+    </entry>
+    <entry id="3" name="hsa:5018" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5018">
+        <graphics name="OXA1L" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="566" y="177" width="46" height="17"/>
+    </entry>
+    <entry id="4" name="ko:K03117" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03117">
+        <graphics name="K03117" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="520" y="391" width="46" height="17"/>
+    </entry>
+    <entry id="5" name="ko:K03118" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03118">
+        <graphics name="K03118" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="565" y="391" width="46" height="17"/>
+    </entry>
+    <entry id="6" name="ko:K03116" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03116">
+        <graphics name="K03116" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="475" y="391" width="46" height="17"/>
+    </entry>
+    <entry id="7" name="ko:K03070" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03070">
+        <graphics name="K03070" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="520" y="154" width="46" height="17"/>
+    </entry>
+    <entry id="8" name="ko:K03076" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03076">
+        <graphics name="K03076" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="565" y="154" width="46" height="17"/>
+    </entry>
+    <entry id="9" name="ko:K03073" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03073">
+        <graphics name="K03073" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="611" y="154" width="46" height="17"/>
+    </entry>
+    <entry id="10" name="ko:K03075" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03075">
+        <graphics name="K03075" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="656" y="154" width="46" height="17"/>
+    </entry>
+    <entry id="11" name="ko:K03072 ko:K03074 ko:K12257" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03072+K03074+K12257">
+        <graphics name="K03072..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="475" y="177" width="46" height="17"/>
+    </entry>
+    <entry id="12" name="ko:K03210" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03210">
+        <graphics name="K03210" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="521" y="177" width="46" height="17"/>
+    </entry>
+    <entry id="13" name="hsa:23478 hsa:90701" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23478+hsa:90701">
+        <graphics name="SEC11A..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="475" y="242" width="46" height="17"/>
+    </entry>
+    <entry id="14" name="ko:K03101" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03101">
+        <graphics name="K03101" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="520" y="242" width="46" height="17"/>
+    </entry>
+    <entry id="15" name="hsa:6727" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6727">
+        <graphics name="SRP14" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="475" y="325" width="46" height="17"/>
+    </entry>
+    <entry id="16" name="hsa:6731" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6731">
+        <graphics name="SRP72" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="538" y="308" width="46" height="17"/>
+    </entry>
+    <entry id="17" name="hsa:6730" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6730">
+        <graphics name="SRP68" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="538" y="325" width="46" height="17"/>
+    </entry>
+    <entry id="18" name="hsa:6729" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6729">
+        <graphics name="SRP54" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="602" y="325" width="46" height="17"/>
+    </entry>
+    <entry id="19" name="hsa:6728" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6728">
+        <graphics name="SRP19" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="602" y="308" width="46" height="17"/>
+    </entry>
+    <entry id="20" name="hsa:6734" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6734">
+        <graphics name="SRPR" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="666" y="308" width="46" height="17"/>
+    </entry>
+    <entry id="21" name="hsa:653226 hsa:6726" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:653226+hsa:6726">
+        <graphics name="SRP9L1..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="475" y="308" width="46" height="17"/>
+    </entry>
+    <entry id="22" name="ko:K03071" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03071">
+        <graphics name="K03071" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="475" y="154" width="46" height="17"/>
+    </entry>
+    <entry id="23" name="path:hsa03060" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?pathway+hsa03060">
+        <graphics name="TITLE:Protein export" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="108" y="58" width="136" height="25"/>
+    </entry>
+</pathway>

@@ -42,8 +42,10 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * 
  * @author Alexander Lex
  */
-public class GLBookmarkManager extends AGLView implements
-		ISelectionUpdateHandler, ISelectionCommandHandler {
+public class GLBookmarkManager extends AGLView
+		implements
+			ISelectionUpdateHandler,
+			ISelectionCommandHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.bookmarking";
 
@@ -233,11 +235,12 @@ public class GLBookmarkManager extends AGLView implements
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode ePickingMode, int iExternalID, Pick pick) {
 		switch (ePickingType) {
-		case BOOKMARK_ELEMENT:
-			Pair<EIDCategory, Integer> pair = pickingIDManager
-					.getPrivateID(iExternalID);
-			hashCategoryToBookmarkContainer.get(pair.getFirst()).handleEvents(
-					ePickingType, ePickingMode, pair.getSecond(), pick);
+			case BOOKMARK_ELEMENT :
+				Pair<EIDCategory, Integer> pair = pickingIDManager
+						.getPrivateID(iExternalID);
+				hashCategoryToBookmarkContainer.get(pair.getFirst())
+						.handleEvents(ePickingType, ePickingMode,
+								pair.getSecond(), pick);
 		}
 	}
 

@@ -33,8 +33,8 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		 GeneralManager.get().getViewGLCanvasManager().addViewCreator(
-		 new ViewCreator(GLPathway.VIEW_ID));
+		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
+				new ViewCreator(GLPathway.VIEW_ID));
 	}
 
 	/*

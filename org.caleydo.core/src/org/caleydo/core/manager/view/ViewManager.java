@@ -34,7 +34,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 
 import com.sun.opengl.util.Animator;
@@ -198,10 +197,10 @@ public class ViewManager
 
 		AGLView glView = null;
 
-		
 		// Force plugins of start views to load
 		try {
-			if (viewID.contains("hierarchical") || viewID.contains("vertical") || viewID.contains("horizontal"))
+			if (viewID.contains("hierarchical") || viewID.contains("vertical")
+				|| viewID.contains("horizontal"))
 				Platform.getBundle("org.caleydo.view.heatmap").start();
 			else
 				Platform.getBundle(viewID).start();

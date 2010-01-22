@@ -690,7 +690,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView
 		CmdCreateView cmdView = (CmdCreateView) generalManager
 				.getCommandManager().createCommandByType(
 						ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID(GLDendrogram.VIEW_ID+".horizontal");
+		cmdView.setViewID(GLDendrogram.VIEW_ID + ".horizontal");
 
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
@@ -707,7 +707,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView
 
 		cmdView = (CmdCreateView) generalManager.getCommandManager()
 				.createCommandByType(ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID(GLDendrogram.VIEW_ID+".vertical");
+		cmdView.setViewID(GLDendrogram.VIEW_ID + ".vertical");
 
 		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0,
 				fHeatMapHeight, 0, fHeatMapWidth, -20, 20, -1);
@@ -2821,7 +2821,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView
 		// render embedded experiment dendrogram
 		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut) {
 			float fOffsety = viewFrustum.getTop() - 1.45f;// -
-															// renderStyle.getHeightExperimentDendrogram();
+			// renderStyle.getHeightExperimentDendrogram();
 
 			gl.glTranslatef(0f, fOffsety, 0f);
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,

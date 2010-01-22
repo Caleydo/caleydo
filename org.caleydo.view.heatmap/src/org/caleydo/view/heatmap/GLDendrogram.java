@@ -728,7 +728,7 @@ public class GLDendrogram extends AStorageBasedView
 				pos.setY(yPosInitSubTree);
 				yPosInitSubTree -= fSampleHeightSubTree;
 				pos.setX(xGlobalMaxSubTree - fLevelWidthSubTree);// * (1 -
-																	// fCoeff));
+				// fCoeff));
 				pos.setZ(DENDROGRAM_Z);
 			}
 		}

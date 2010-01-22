@@ -27,7 +27,7 @@ public class ViewCreatorHeatMap extends AGLViewCreator {
 
 		return new SerializedHeatMapView();
 	}
-	
+
 	@Override
 	public Object createToolBarContent() {
 		return new HeatMapToolBarContent();

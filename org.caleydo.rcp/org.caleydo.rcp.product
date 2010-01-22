@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Caleydo" id="org.caleydo.rcp.product" application="org.caleydo.rcp.application" useFeatures="true">
+<product name="Caleydo" uid="org.caleydo" id="org.caleydo.rcp.product" application="org.caleydo.rcp.application" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="resources/wizard/wizard.png"/>
@@ -10,7 +10,7 @@
 Check out www.caleydo.org
 
 © Copyright by www.caleydo.org and Institute for Computer Graphics and Vision
-Graz University of Technology - 2009.
+Graz University of Technology - 2010.
 All Rights Reserved.
       </text>
    </aboutInfo>
@@ -37,8 +37,10 @@ All Rights Reserved.
       </win>
    </launcher>
 
+
    <vm>
    </vm>
+
 
    <plugins>
       <plugin id="org.caleydo.core"/>

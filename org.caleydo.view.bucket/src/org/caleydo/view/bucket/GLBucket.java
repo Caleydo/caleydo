@@ -2719,9 +2719,10 @@ public class GLBucket extends AGLView
 		glView.setSet(set);
 
 		if (glView instanceof GLPathway) {
-			GLPathway glPathway = (GLPathway)glView;
-			
-			glPathway.setPathway(((SerializedPathwayView)serView).getPathwayID());
+			GLPathway glPathway = (GLPathway) glView;
+
+			glPathway.setPathway(((SerializedPathwayView) serView)
+					.getPathwayID());
 			glPathway.enablePathwayTextures(pathwayTexturesEnabled);
 			glPathway.enableNeighborhood(neighborhoodEnabled);
 			glPathway.enableGeneMapping(geneMappingEnabled);
@@ -2731,7 +2732,7 @@ public class GLBucket extends AGLView
 
 		return glView;
 	}
-	
+
 	/**
 	 * Triggers the most recent user selection to the views. This is especially
 	 * needed to initialize new added views with the current selection

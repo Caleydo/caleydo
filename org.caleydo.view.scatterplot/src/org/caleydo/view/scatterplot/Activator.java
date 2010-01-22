@@ -2,7 +2,6 @@ package org.caleydo.view.scatterplot;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.view.scatterplot.creator.ViewCreator;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

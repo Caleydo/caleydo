@@ -36,8 +36,8 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 
 	private boolean bIsZoomedIn = false;
 
-//	private float x = 0;
-//	private float y = 0;
+	// private float x = 0;
+	// private float y = 0;
 
 	// private float fTargetY = 0;
 	// private boolean bAnimationRunningOut = false;

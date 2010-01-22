@@ -1067,8 +1067,8 @@ public class GLHeatMap extends AStorageBasedView {
 			}
 
 			float fXValue = fAlXDistances.get(iContentIndex); // +
-																// renderStyle.getSelectedFieldWidth()
-																// / 2;
+			// renderStyle.getSelectedFieldWidth()
+			// / 2;
 			// float fYValue = 0;
 			float fYValue = renderStyle.getYCenter();
 

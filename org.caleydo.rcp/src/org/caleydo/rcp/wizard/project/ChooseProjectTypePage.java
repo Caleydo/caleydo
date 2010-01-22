@@ -8,6 +8,10 @@ import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
@@ -307,18 +311,15 @@ public class ChooseProjectTypePage
 
 		final Button btnLoadKEGGPathwayData = new Button(groupPathways, SWT.CHECK);
 		btnLoadKEGGPathwayData.setText("KEGG");
-		btnLoadKEGGPathwayData.setEnabled(true);
-		// btnLoadKEGGPathwayData.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		final Button btnLoadBioCartaPathwayData = new Button(groupPathways, SWT.CHECK);
 		btnLoadBioCartaPathwayData.setText("BioCarta");
-		btnLoadBioCartaPathwayData.setEnabled(true);
-		// btnLoadKEGGPathwayData.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// Set pathway databases which was used in last session
 		if (sLastChosenPathwayDataSources.contains(EPathwayDatabaseType.KEGG.name())) {
-			btnLoadKEGGPathwayData.setSelection(true);
-			bLoadKEGGPathwayData = true;
+			btnLoadKEGGPathwayData.setSelection(false);
+			btnLoadKEGGPathwayData.setEnabled(false);
+
 		}
 		else {
 			btnLoadKEGGPathwayData.setSelection(false);
@@ -343,6 +344,30 @@ public class ChooseProjectTypePage
 		btnLoadKEGGPathwayData.setEnabled(btnLoadPathwayData.getSelection());
 		btnLoadBioCartaPathwayData.setEnabled(btnLoadPathwayData.getSelection());
 
+		IExtensionRegistry reg = Platform.getExtensionRegistry();
+		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.kegg.PathwayResourceLoader");
+		IExtension ext = ep.getExtension("org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader");
+		if (ext != null) {
+
+			btnLoadKEGGPathwayData.setEnabled(true);
+			btnLoadKEGGPathwayData.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					bLoadKEGGPathwayData = ((Button) e.widget).getSelection();
+
+					if (!bLoadKEGGPathwayData && !bLoadBioCartaPathwayData) {
+						btnLoadPathwayData.setSelection(false);
+						btnLoadKEGGPathwayData.setEnabled(false);
+						btnLoadBioCartaPathwayData.setEnabled(false);
+					}
+				}
+			});
+		}
+		else {
+			bLoadKEGGPathwayData = false;
+			btnLoadKEGGPathwayData.setEnabled(false);
+		}
+
 		btnLoadPathwayData.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -350,19 +375,6 @@ public class ChooseProjectTypePage
 				groupPathways.setEnabled(bLoadPathwayData);
 				btnLoadKEGGPathwayData.setEnabled(bLoadPathwayData);
 				btnLoadBioCartaPathwayData.setEnabled(bLoadPathwayData);
-			}
-		});
-
-		btnLoadKEGGPathwayData.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				bLoadKEGGPathwayData = ((Button) e.widget).getSelection();
-
-				if (!bLoadKEGGPathwayData && !bLoadBioCartaPathwayData) {
-					btnLoadPathwayData.setSelection(false);
-					btnLoadKEGGPathwayData.setEnabled(false);
-					btnLoadBioCartaPathwayData.setEnabled(false);
-				}
 			}
 		});
 
@@ -378,28 +390,6 @@ public class ChooseProjectTypePage
 				}
 			}
 		});
-		//
-		// btnLoadPathwayData.addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// boolean bLoadPathwayData = ((Button) e.widget).getSelection();
-		//
-		// // if (projectType == EProjectType.PATHWAY_VIEWER_MODE && !bLoadPathwayData) {
-		// // MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
-		// // messageBox.setText("Load KEGG and BioCarta pathway data");
-		// // messageBox
-		// //
-		// .setMessage("You have selected the pathway viewer mode. Therefore pathway data loading cannot be turned off.");
-		// // messageBox.open();
-		// //
-		// // ((Button) e.widget).setSelection(true);
-		// //
-		// // return;
-		// // }
-		//
-		// // Application.bLoadPathwayData = bLoadPathwayData;
-		// }
-		// });
 
 		// Link sampleDataPaperLink = new Link(composite, SWT.BORDER);
 		// sampleDataPaperLink.setText("See: <a>http://www.ncbi.nlm.nih.gov/pubmed/17241883</a>");
@@ -411,23 +401,6 @@ public class ChooseProjectTypePage
 				setPageComplete(true);
 			}
 		});
-
-		// buttonPathwayViewerMode.addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// projectType = EProjectType.PATHWAY_VIEWER_MODE;
-		// btnLoadPathwayData.setSelection(true);
-		// setPageComplete(true);
-		// }
-		// });
-
-		// buttonRandomSampleDataMode.addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// projectType = EProjectType.SAMPLE_DATA_RANDOM;
-		// setPageComplete(true);
-		// }
-		// });
 
 		buttonSampleDataMode.addSelectionListener(new SelectionAdapter() {
 			@Override

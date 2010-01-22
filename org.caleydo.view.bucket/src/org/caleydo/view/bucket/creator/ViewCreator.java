@@ -20,7 +20,8 @@ public class ViewCreator extends AGLViewCreator {
 	public AGLView createGLView(GLCaleydoCanvas glCanvas, String label,
 			IViewFrustum viewFrustum) {
 
-		return new GLBucket(glCanvas, label, viewFrustum, ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);
+		return new GLBucket(glCanvas, label, viewFrustum,
+				ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);
 	}
 
 	@Override
@@ -28,7 +29,7 @@ public class ViewCreator extends AGLViewCreator {
 
 		return new SerializedRemoteRenderingView();
 	}
-	
+
 	@Override
 	public Object createToolBarContent() {
 		return new RemoteRenderingToolBarContent();

@@ -41,15 +41,19 @@ public class Activator extends AbstractUIPlugin {
 				new ViewCreatorHeatMap(GLHeatMap.VIEW_ID));
 
 		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
-				new ViewCreatorHierarchicalHeatMap(GLHierarchicalHeatMap.VIEW_ID));
-		
+				new ViewCreatorHierarchicalHeatMap(
+						GLHierarchicalHeatMap.VIEW_ID));
+
 		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
-				new ViewCreatorDendrogramHorizontal(GLDendrogram.VIEW_ID+".horizontal"));
-		
+				new ViewCreatorDendrogramHorizontal(GLDendrogram.VIEW_ID
+						+ ".horizontal"));
+
 		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
-				new ViewCreatorDendrogramVertical(GLDendrogram.VIEW_ID+".vertical"));
-		
-		// Force bundle view plugin bookmarking to be loaded because it is not created via RCP
+				new ViewCreatorDendrogramVertical(GLDendrogram.VIEW_ID
+						+ ".vertical"));
+
+		// Force bundle view plugin bookmarking to be loaded because it is not
+		// created via RCP
 		Platform.getBundle("org.caleydo.view.bookmarking").start();
 	}
 

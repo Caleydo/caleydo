@@ -15,7 +15,8 @@ import org.caleydo.core.manager.IGeneralManager;
 public class MappingBuilder_BioCartaGeneID2Accession {
 
 	private static String BIOCARTA_INPUT_FOLDER_PATH =
-		System.getProperty("user.home") + File.separator + IGeneralManager.CALEYDO_FOLDER +  File.separator + "cgap.nci.nih.gov/Genes";
+		System.getProperty("user.home") + File.separator + IGeneralManager.CALEYDO_FOLDER + File.separator
+			+ "cgap.nci.nih.gov/Genes";
 
 	// private static String OUTPUT_FILE_PATH =
 	// "data/genome/mapping/HOMO_SAPIENS_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt";

@@ -66,7 +66,7 @@ public class ApplicationWorkbenchWindowAdvisor
 				menuManager.remove(item);
 			}
 		}
-		
+
 		// Set status line in caleydo core
 		GeneralManager.get().getSWTGUIManager().setExternalRCPStatusLine(
 			getWindowConfigurer().getActionBarConfigurer().getStatusLineManager(),

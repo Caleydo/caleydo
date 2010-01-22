@@ -27,7 +27,7 @@ public class ViewCreator extends AGLViewCreator {
 
 		return new SerializedParallelCoordinatesView();
 	}
-	
+
 	@Override
 	public Object createToolBarContent() {
 		return new ParCoordsToolBarContent();

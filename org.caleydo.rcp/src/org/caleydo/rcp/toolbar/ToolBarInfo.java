@@ -1,6 +1,5 @@
 package org.caleydo.rcp.toolbar;
 
-
 /**
  * Infos about toolbar content.
  * 

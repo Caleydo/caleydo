@@ -73,32 +73,31 @@ public class RcpToolBarView
 	}
 
 	public void removeViewSpecificToolBar(int iViewID) {
-		 Group removedGroup = null;
-		 for (Group group : viewSpecificGroups) {
-		 if (!(group.getData("view") instanceof AGLView)) {
-		 continue;
-		 }
-		
-		 if (group.getData("viewID") != null && ((Integer) group.getData("viewID")).intValue() == iViewID) {
-		 group.dispose();
-		 removedGroup = group;
-		 break;
-		 }
-		 }
-		
-		 if (removedGroup != null) {
-		 viewSpecificGroups.remove(removedGroup);
-		 }
-		
-		 // Remove toolbars of remote rendered views
-		 AGLView glView =
-		 GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
-		
-		 if (glView instanceof IGLRemoteRenderingView) {
-		 for (AGLView view : ((IGLRemoteRenderingView) glView).getRemoteRenderedViews()) {
-		 removeViewSpecificToolBar(view.getID());
-		 }
-		 }
+		Group removedGroup = null;
+		for (Group group : viewSpecificGroups) {
+			if (!(group.getData("view") instanceof AGLView)) {
+				continue;
+			}
+
+			if (group.getData("viewID") != null && ((Integer) group.getData("viewID")).intValue() == iViewID) {
+				group.dispose();
+				removedGroup = group;
+				break;
+			}
+		}
+
+		if (removedGroup != null) {
+			viewSpecificGroups.remove(removedGroup);
+		}
+
+		// Remove toolbars of remote rendered views
+		AGLView glView = GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
+
+		if (glView instanceof IGLRemoteRenderingView) {
+			for (AGLView view : ((IGLRemoteRenderingView) glView).getRemoteRenderedViews()) {
+				removeViewSpecificToolBar(view.getID());
+			}
+		}
 	}
 
 	public void removeAllViewSpecificToolBars() {

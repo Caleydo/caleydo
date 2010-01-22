@@ -29,7 +29,7 @@ public enum ECommandType {
 	// CREATE_GL_TEXTURE_HEAT_MAP_3D("cmd", "type", "-1", "Create Texture Heat Map"),
 	// CREATE_GL_GLYPH("cmd", "type", "-1", "Create Glyph"),
 	// CREATE_GL_GLYPH_SLIDER("cmd", "type", "-1", "Create Glyph Slider View"),
-	//CREATE_GL_PATHWAY_3D("cmd", "type", "-1", "Create Pathway 3D"),
+	// CREATE_GL_PATHWAY_3D("cmd", "type", "-1", "Create Pathway 3D"),
 	// CREATE_GL_PARALLEL_COORDINATES("cmd", "type", "-1", "Create Parallel Coordinates "),
 	// CREATE_GL_BUCKET_3D("cmd", "type", "-1", "Create Bucket 3D"),
 	// CREATE_GL_JUKEBOX_3D("cmd", "type", "-1", "Create Jukebox 3D"),

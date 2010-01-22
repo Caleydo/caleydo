@@ -67,26 +67,6 @@ public final class FetchPathwayDataPage
 		progressBarGroup.setLayout(new GridLayout(2, false));
 		progressBarGroup.setText("Fetch Progress");
 
-		ProgressBar progressBarKeggPathwayCacher = null;
-		ProgressBar progressBarKeggImagePathwayCacher = null;
-		if (alFetchPathwaySources.contains(EPathwayDatabaseType.KEGG)) {
-			Label lblKeggPathwayCacher = new Label(progressBarGroup, SWT.NULL);
-			lblKeggPathwayCacher.setText("KEGG Pathway Data Download Status:");
-			lblKeggPathwayCacher.setAlignment(SWT.RIGHT);
-			lblKeggPathwayCacher.setBounds(10, 10, 80, 20);
-
-			progressBarKeggPathwayCacher = new ProgressBar(progressBarGroup, SWT.SMOOTH);
-			progressBarKeggPathwayCacher.setBounds(10, 10, 200, 32);
-
-			Label lblKeggImagePathwayCacher = new Label(progressBarGroup, SWT.NULL);
-			lblKeggImagePathwayCacher.setText("KEGG Image Download Status:");
-			lblKeggImagePathwayCacher.setAlignment(SWT.RIGHT);
-			lblKeggImagePathwayCacher.setBounds(10, 10, 80, 20);
-
-			progressBarKeggImagePathwayCacher = new ProgressBar(progressBarGroup, SWT.SMOOTH);
-			progressBarKeggImagePathwayCacher.setBounds(10, 10, 200, 32);
-		}
-
 		ProgressBar progressBarBioCartaPathwayCacher = null;
 		if (alFetchPathwaySources.contains(EPathwayDatabaseType.BIOCARTA)) {
 			Label lblBioCartaPathwayCacher = new Label(progressBarGroup, SWT.NULL);
@@ -108,9 +88,8 @@ public final class FetchPathwayDataPage
 		EOrganism eOrganism =
 			EOrganism.valueOf(prefStore.getString(PreferenceConstants.LAST_CHOSEN_ORGANISM));
 
-		cmdPathwayFetch.setAttributes(composite.getDisplay(), progressBarKeggPathwayCacher,
-			progressBarKeggImagePathwayCacher, progressBarBioCartaPathwayCacher, parentPage, eOrganism,
-			alFetchPathwaySources);
+		cmdPathwayFetch.setAttributes(composite.getDisplay(), progressBarBioCartaPathwayCacher, parentPage,
+			eOrganism, alFetchPathwaySources);
 
 		if (prefStore.getBoolean(PreferenceConstants.USE_PROXY)) {
 			String sProxyServer = prefStore.getString(PreferenceConstants.PROXY_SERVER);

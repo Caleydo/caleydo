@@ -73,7 +73,6 @@ All Rights Reserved.
       <import plugin="org.eclipse.swt" version="3.4.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.osgi" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.3.0" match="compatible"/>
-      <import plugin="org.caleydo.plex"/>
       <import plugin="org.eclipse.core.databinding" version="1.0.0" match="compatible"/>
       <import plugin="org.eclipse.osgi" version="3.3.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.1.0" match="compatible"/>

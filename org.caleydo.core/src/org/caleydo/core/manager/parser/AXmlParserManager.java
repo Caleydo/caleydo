@@ -193,7 +193,15 @@ public abstract class AXmlParserManager
 	}
 
 	public boolean parseOnce(final String sFileName) {
-		InputSource inputSource = generalManager.getResourceLoader().getInputSource(sFileName);
+
+		InputSource inputSource;
+
+		// FIXME: not smart to parse for hsa and mmu when searching kegg pathways
+		if (sFileName.contains("hsa") || sFileName.contains("mmu"))
+			inputSource =
+				GeneralManager.get().getPathwayManager().getPathwayResourceLoader().getInputSource(sFileName);
+		else
+			inputSource = generalManager.getResourceLoader().getInputSource(sFileName);
 
 		try {
 			XMLReader reader = null;

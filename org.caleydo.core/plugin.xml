@@ -2,5 +2,6 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension-point id="org.caleydo.plex.GroupwareManager" name="GroupwareManager" schema="schema/org.caleydo.plex.GroupwareManager.exsd"/>
+   <extension-point id="org.caleydo.data.pathway.kegg.PathwayResourceLoader" name="PathwayResourceLoader" schema="schema/org.caleydo.data.pathway.kegg.PathwayResourceLoader.exsd"/>
 
 </plugin>

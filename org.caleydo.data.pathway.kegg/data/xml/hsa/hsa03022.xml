@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.0_.dtd">
+<!-- Creation date: May 11, 2009 09:19:18 +0900 (JST) -->
+<pathway name="path:hsa03022" org="hsa" number="03022"
+         title="Basal transcription factors"
+         image="http://www.genome.jp/kegg/pathway/hsa/hsa03022.png"
+         link="http://www.genome.jp/kegg-bin/show_pathway?hsa03022">
+    <entry id="1" name="path:hsa03022" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?pathway+hsa03022">
+        <graphics name="TITLE:Basal transcription factors" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="221" y="58" width="361" height="25"/>
+    </entry>
+    <entry id="2" name="hsa:387332 hsa:6908 hsa:9519" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:387332+hsa:6908+hsa:9519">
+        <graphics name="TBPL2..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="67" y="305" width="46" height="17"/>
+    </entry>
+    <entry id="3" name="hsa:138474 hsa:6872" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:138474+hsa:6872">
+        <graphics name="TAF1L..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="113" y="305" width="46" height="17"/>
+    </entry>
+    <entry id="4" name="hsa:6873" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6873">
+        <graphics name="TAF2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="159" y="305" width="46" height="17"/>
+    </entry>
+    <entry id="5" name="hsa:6874 hsa:6875" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6874+hsa:6875">
+        <graphics name="TAF4..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="205" y="305" width="46" height="17"/>
+    </entry>
+    <entry id="6" name="hsa:27097 hsa:6877" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:27097+hsa:6877">
+        <graphics name="TAF5L..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="251" y="305" width="46" height="17"/>
+    </entry>
+    <entry id="7" name="hsa:10629 hsa:6878" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10629+hsa:6878">
+        <graphics name="TAF6L..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="297" y="305" width="46" height="17"/>
+    </entry>
+    <entry id="8" name="hsa:54457 hsa:6879" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:54457+hsa:6879">
+        <graphics name="TAF7L..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="343" y="305" width="46" height="17"/>
+    </entry>
+    <entry id="9" name="hsa:51616 hsa:6880" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51616+hsa:6880">
+        <graphics name="TAF9B..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="389" y="305" width="46" height="17"/>
+    </entry>
+    <entry id="10" name="hsa:6881" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6881">
+        <graphics name="TAF10" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="435" y="305" width="46" height="17"/>
+    </entry>
+    <entry id="11" name="hsa:391764 hsa:6882" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:391764+hsa:6882">
+        <graphics name="391764..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="481" y="305" width="46" height="17"/>
+    </entry>
+    <entry id="12" name="hsa:6883" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6883">
+        <graphics name="TAF12" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="527" y="305" width="46" height="17"/>
+    </entry>
+    <entry id="13" name="hsa:6884" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6884">
+        <graphics name="TAF13" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="573" y="305" width="46" height="17"/>
+    </entry>
+    <entry id="14" name="hsa:2959" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2959">
+        <graphics name="GTF2B" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="67" y="322" width="46" height="17"/>
+    </entry>
+    <entry id="15" name="hsa:11036 hsa:11037 hsa:2957" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:11036+hsa:11037+hsa:2957">
+        <graphics name="GTF2A1L..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="113" y="322" width="46" height="17"/>
+    </entry>
+    <entry id="16" name="hsa:2958" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2958">
+        <graphics name="GTF2A2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="159" y="322" width="46" height="17"/>
+    </entry>
+    <entry id="17" name="hsa:2969 hsa:9569" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2969+hsa:9569">
+        <graphics name="GTF2I..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="205" y="322" width="46" height="17"/>
+    </entry>
+    <entry id="18" name="hsa:2962" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2962">
+        <graphics name="GTF2F1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="67" y="339" width="46" height="17"/>
+    </entry>
+    <entry id="19" name="hsa:2963" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2963">
+        <graphics name="GTF2F2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="113" y="339" width="46" height="17"/>
+    </entry>
+    <entry id="20" name="ko:K03140" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03140">
+        <graphics name="K03140" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="159" y="339" width="46" height="17"/>
+    </entry>
+    <entry id="21" name="hsa:2960" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2960">
+        <graphics name="GTF2E1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="205" y="339" width="46" height="17"/>
+    </entry>
+    <entry id="22" name="hsa:2961" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2961">
+        <graphics name="GTF2E2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="251" y="339" width="46" height="17"/>
+    </entry>
+    <entry id="23" name="hsa:2965" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2965">
+        <graphics name="GTF2H1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="297" y="339" width="46" height="17"/>
+    </entry>
+    <entry id="24" name="hsa:2966" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2966">
+        <graphics name="GTF2H2" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="343" y="339" width="46" height="17"/>
+    </entry>
+    <entry id="25" name="hsa:2967" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2967">
+        <graphics name="GTF2H3" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="389" y="339" width="46" height="17"/>
+    </entry>
+    <entry id="26" name="hsa:2968" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2968">
+        <graphics name="GTF2H4" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="435" y="339" width="46" height="17"/>
+    </entry>
+</pathway>

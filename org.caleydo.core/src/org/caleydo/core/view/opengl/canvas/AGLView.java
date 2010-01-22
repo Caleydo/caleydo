@@ -65,7 +65,7 @@ public abstract class AGLView
 
 	public enum EBusyModeState {
 		SWITCH_OFF,
-		ON,		
+		ON,
 		OFF
 	}
 

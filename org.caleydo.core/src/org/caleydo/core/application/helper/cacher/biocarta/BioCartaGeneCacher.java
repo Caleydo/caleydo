@@ -62,7 +62,8 @@ public class BioCartaGeneCacher
 		DownloadJobFactory jobFactory = (DownloadJobFactory) context.getBean("JobFactory");
 
 		String sOutputFileName =
-			System.getProperty("user.home") + System.getProperty("file.separator") + IGeneralManager.CALEYDO_FOLDER;
+			System.getProperty("user.home") + System.getProperty("file.separator")
+				+ IGeneralManager.CALEYDO_FOLDER;
 
 		// create an initial job
 		UrlDownloadJob job = jobFactory.createDownloadJob();

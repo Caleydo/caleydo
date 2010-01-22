@@ -458,6 +458,10 @@ public class Application
 				else
 					Platform.getBundle(viewID).start();
 			}
+			catch (NullPointerException ex) {
+				System.out.println(viewID);
+				ex.printStackTrace();
+			}
 			catch (BundleException e) {
 				// TODO Write message that plugin is not available
 				e.printStackTrace();
