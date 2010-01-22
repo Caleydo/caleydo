@@ -1,6 +1,7 @@
 package org.caleydo.rcp.dialog.file;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.caleydo.core.data.collection.ISet;
@@ -37,7 +38,7 @@ public class ExportDataAction
 
 	private IWorkbenchWindow window;
 
-	private Button[] radios = new Button[2];
+	private Button[] radios = new Button[3];
 
 	private Composite composite;
 
@@ -45,6 +46,9 @@ public class ExportDataAction
 
 	private String sFileName = "";
 	private String sFilePath = "";
+
+	private ArrayList<Integer> genesToExport = null;
+	private ArrayList<Integer> experimentsToExport = null;
 
 	/**
 	 * Constructor.
@@ -65,6 +69,17 @@ public class ExportDataAction
 		else {
 			createGUI();
 		}
+	}
+
+	/**
+	 * Add data for group exports.
+	 * 
+	 * @param genesToExport the list of genes to export
+	 * @param experimentsToExport the list of experiments to export
+	 */
+	public void addGroupData(ArrayList<Integer> genesToExport, ArrayList<Integer> experimentsToExport) {
+		this.genesToExport = genesToExport;
+		this.experimentsToExport = experimentsToExport;
 	}
 
 	private void createGUI() {
@@ -114,7 +129,7 @@ public class ExportDataAction
 		}
 
 		radios[0] = new Button(composite, SWT.RADIO);
-		radios[0].setText("Export Bucket Contents");
+		radios[0].setText("Export bucket contents");
 		radios[0].setBounds(10, 5, 75, 30);
 		if (!bDoesBucketExist) {
 			radios[0].setEnabled(false);
@@ -123,7 +138,19 @@ public class ExportDataAction
 		radios[1] = new Button(composite, SWT.RADIO);
 		radios[1].setText("Export data as shown in the standalone views");
 		radios[1].setBounds(10, 30, 75, 30);
-		radios[1].setSelection(true);
+		if (experimentsToExport == null)
+			radios[1].setSelection(true);
+
+		radios[2] = new Button(composite, SWT.RADIO);
+		radios[2].setText("Export group data");
+		radios[2].setBounds(10, 30, 75, 30);
+		if (experimentsToExport == null) {
+			radios[2].setEnabled(false);
+		}
+		else {
+			radios[2].setSelection(true);
+		}
+
 		// if (!doesHeatMapExist) {
 		// radios[1].setEnabled(false);
 		// }
@@ -151,9 +178,9 @@ public class ExportDataAction
 			else if (radios[1].getSelection()) {
 				set.export(sFileName, EWhichViewToExport.WHOLE_DATA);
 			}
-			// else if (radios[2].getSelection()) {
-			// set.export(sFileName, EWhichViewToExport.PARALLEL_COORDINATES);
-			// }
+			 else if (radios[2].getSelection()) {
+				 set.exportGroups(sFileName, genesToExport, experimentsToExport);
+			 }
 
 		}
 
@@ -168,7 +195,7 @@ public class ExportDataAction
 	 */
 	public static void main(String[] args) {
 
-		LoadDataDialog dialog = new LoadDataDialog(new Shell());
+		ExportDataDialog dialog = new ExportDataDialog(new Shell());
 		dialog.open();
 	}
 
