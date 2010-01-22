@@ -109,11 +109,8 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Alexander Lex
  * @author Werner Puff
  */
-public class GLBucket extends AGLView
-		implements
-			ISelectionUpdateHandler,
-			IGLBucketView,
-			IRemoteRenderingHandler {
+public class GLBucket extends AGLView implements ISelectionUpdateHandler,
+		IGLBucketView, IRemoteRenderingHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.bucket";
 
@@ -1930,330 +1927,325 @@ public class GLBucket extends AGLView
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
 
 		switch (pickingType) {
-			case BUCKET_DRAG_ICON_SELECTION :
+		case BUCKET_DRAG_ICON_SELECTION:
 
-				switch (pickingMode) {
-					case CLICKED :
+			switch (pickingMode) {
+			case CLICKED:
 
-						if (!dragAndDrop.isDragActionRunning()) {
-							// System.out.println("Start drag!");
-							dragAndDrop.startDragAction(iExternalID);
-						}
-
-						iMouseOverObjectID = iExternalID;
-
-						compactPoolLevel();
-
-						break;
+				if (!dragAndDrop.isDragActionRunning()) {
+					// System.out.println("Start drag!");
+					dragAndDrop.startDragAction(iExternalID);
 				}
+
+				iMouseOverObjectID = iExternalID;
+
+				compactPoolLevel();
+
 				break;
+			}
+			break;
 
-			case BUCKET_REMOVE_ICON_SELECTION :
+		case BUCKET_REMOVE_ICON_SELECTION:
 
-				switch (pickingMode) {
-					case CLICKED :
+			switch (pickingMode) {
+			case CLICKED:
 
-						RemoteLevelElement element = RemoteElementManager.get()
-								.getItem(iExternalID);
+				RemoteLevelElement element = RemoteElementManager.get()
+						.getItem(iExternalID);
 
-						AGLView glView = element.getGLView();
+				AGLView glView = element.getGLView();
 
-						// // Unregister all elements of the view that is
-						// removed
-						// glEventListener.broadcastElements(EVAOperation.REMOVE_ELEMENT);
+				// // Unregister all elements of the view that is
+				// removed
+				// glEventListener.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 
-						removeView(glView);
-						element.setGLView(null);
-						containedGLViews.remove(glView);
+				removeView(glView);
+				element.setGLView(null);
+				containedGLViews.remove(glView);
 
-						if (element.getRemoteLevel() == poolLevel) {
-							compactPoolLevel();
-						}
-
-						break;
+				if (element.getRemoteLevel() == poolLevel) {
+					compactPoolLevel();
 				}
+
 				break;
+			}
+			break;
 
-			case BUCKET_LOCK_ICON_SELECTION :
+		case BUCKET_LOCK_ICON_SELECTION:
 
-				switch (pickingMode) {
-					case CLICKED :
+			switch (pickingMode) {
+			case CLICKED:
 
-						RemoteLevelElement element = RemoteElementManager.get()
-								.getItem(iExternalID);
+				RemoteLevelElement element = RemoteElementManager.get()
+						.getItem(iExternalID);
 
-						// Toggle lock flag
-						element.lock(!element.isLocked());
+				// Toggle lock flag
+				element.lock(!element.isLocked());
 
-						break;
+				break;
+			}
+			break;
+
+		case REMOTE_LEVEL_ELEMENT:
+			switch (pickingMode) {
+			case MOUSE_OVER:
+			case DRAGGED:
+				iMouseOverObjectID = iExternalID;
+				break;
+			case CLICKED:
+
+				// Do not handle click if element is dragged
+				if (dragAndDrop.isDragActionRunning()) {
+					break;
 				}
-				break;
 
-			case REMOTE_LEVEL_ELEMENT :
-				switch (pickingMode) {
-					case MOUSE_OVER :
-					case DRAGGED :
-						iMouseOverObjectID = iExternalID;
-						break;
-					case CLICKED :
-
-						// Do not handle click if element is dragged
-						if (dragAndDrop.isDragActionRunning()) {
-							break;
-						}
-
-						// Check if view is contained in pool level
-						for (RemoteLevelElement element : poolLevel
-								.getAllElements()) {
-							if (element.getID() == iExternalID) {
-								loadViewToFocusLevel(iExternalID);
-								break;
-							}
-						}
-						break;
-				}
-				break;
-
-			case VIEW_SELECTION :
-				switch (pickingMode) {
-					case MOUSE_OVER :
-
-						// generalManager.getViewGLCanvasManager().getInfoAreaManager()
-						// .setDataAboutView(iExternalID);
-
-						// Prevent update flood when moving mouse over view
-						if (iActiveViewID == iExternalID) {
-							break;
-						}
-
-						iActiveViewID = iExternalID;
-
-						setDisplayListDirty();
-
-						// TODO
-						// generalManager.getEventPublisher().triggerEvent(
-						// EMediatorType.VIEW_SELECTION,
-						// generalManager.getViewGLCanvasManager().getGLEventListener(
-						// iExternalID), );
-
-						break;
-
-					case CLICKED :
-
-						// generalManager.getViewGLCanvasManager().getInfoAreaManager()
-						// .setDataAboutView(iExternalID);
-
-						break;
-					case RIGHT_CLICKED :
-						contextMenu.setLocation(pick.getPickedPoint(),
-								getParentGLCanvas().getWidth(),
-								getParentGLCanvas().getHeight());
-						contextMenu.setMasterGLView(this);
-						break;
-
-				}
-				infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX,
-						pick.getPickedPoint(), 0.3f);// pick.getDepth());
-				break;
-
-			case BUCKET_MOVE_IN_ICON_SELECTION :
-				switch (pickingMode) {
-					case CLICKED :
+				// Check if view is contained in pool level
+				for (RemoteLevelElement element : poolLevel.getAllElements()) {
+					if (element.getID() == iExternalID) {
 						loadViewToFocusLevel(iExternalID);
-						bEnableNavigationOverlay = false;
-						// glConnectionLineRenderer.enableRendering(true);
 						break;
-
-					case MOUSE_OVER :
-						iNavigationMouseOverViewID_left = -1;
-						iNavigationMouseOverViewID_right = -1;
-						iNavigationMouseOverViewID_out = -1;
-						iNavigationMouseOverViewID_in = iExternalID;
-						iNavigationMouseOverViewID_lock = -1;
-
-						break;
+					}
 				}
 				break;
+			}
+			break;
 
-			case BUCKET_MOVE_OUT_ICON_SELECTION :
-				switch (pickingMode) {
-					case CLICKED :
+		case VIEW_SELECTION:
+			switch (pickingMode) {
+			case MOUSE_OVER:
 
-						// Check if other slerp action is currently running
-						if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE) {
-							break;
-						}
+				// generalManager.getViewGLCanvasManager().getInfoAreaManager()
+				// .setDataAboutView(iExternalID);
 
-						// glConnectionLineRenderer.enableRendering(true);
-
-						arSlerpActions.clear();
-
-						RemoteLevelElement element = RemoteElementManager.get()
-								.getItem(iExternalID);
-						SlerpAction slerpActionTransition = new SlerpAction(
-								element, poolLevel.getNextFree());
-						arSlerpActions.add(slerpActionTransition);
-
-						bEnableNavigationOverlay = false;
-
-						// Unregister all elements of the view that is moved out
-						element.getGLView().broadcastElements(
-								EVAOperation.REMOVE_ELEMENT);
-
-						break;
-
-					case MOUSE_OVER :
-
-						iNavigationMouseOverViewID_left = -1;
-						iNavigationMouseOverViewID_right = -1;
-						iNavigationMouseOverViewID_out = iExternalID;
-						iNavigationMouseOverViewID_in = -1;
-						iNavigationMouseOverViewID_lock = -1;
-
-						break;
+				// Prevent update flood when moving mouse over view
+				if (iActiveViewID == iExternalID) {
+					break;
 				}
+
+				iActiveViewID = iExternalID;
+
+				setDisplayListDirty();
+
+				// TODO
+				// generalManager.getEventPublisher().triggerEvent(
+				// EMediatorType.VIEW_SELECTION,
+				// generalManager.getViewGLCanvasManager().getGLEventListener(
+				// iExternalID), );
+
 				break;
 
-			case BUCKET_MOVE_LEFT_ICON_SELECTION :
-				switch (pickingMode) {
-					case CLICKED :
-						// Check if other slerp action is currently running
-						if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE) {
-							break;
-						}
+			case CLICKED:
 
-						// glConnectionLineRenderer.enableRendering(true);
+				// generalManager.getViewGLCanvasManager().getInfoAreaManager()
+				// .setDataAboutView(iExternalID);
 
-						arSlerpActions.clear();
+				break;
+			case RIGHT_CLICKED:
+				contextMenu.setLocation(pick.getPickedPoint(),
+						getParentGLCanvas().getWidth(), getParentGLCanvas()
+								.getHeight());
+				contextMenu.setMasterGLView(this);
+				break;
 
-						RemoteLevelElement selectedElement = RemoteElementManager
-								.get().getItem(iExternalID);
+			}
+			infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX, pick
+					.getPickedPoint(), 0.3f);// pick.getDepth());
+			break;
 
-						int iDestinationPosIndex = stackLevel
-								.getPositionIndexByElementID(selectedElement);
+		case BUCKET_MOVE_IN_ICON_SELECTION:
+			switch (pickingMode) {
+			case CLICKED:
+				loadViewToFocusLevel(iExternalID);
+				bEnableNavigationOverlay = false;
+				// glConnectionLineRenderer.enableRendering(true);
+				break;
 
-						if (iDestinationPosIndex == 3) {
-							iDestinationPosIndex = 0;
-						} else {
-							iDestinationPosIndex++;
-						}
+			case MOUSE_OVER:
+				iNavigationMouseOverViewID_left = -1;
+				iNavigationMouseOverViewID_right = -1;
+				iNavigationMouseOverViewID_out = -1;
+				iNavigationMouseOverViewID_in = iExternalID;
+				iNavigationMouseOverViewID_lock = -1;
 
-						// Check if destination position in stack is free
-						if (stackLevel.getElementByPositionIndex(
-								iDestinationPosIndex).getGLView() == null) {
-							SlerpAction slerpAction = new SlerpAction(
-									selectedElement,
-									stackLevel
-											.getElementByPositionIndex(iDestinationPosIndex));
-							arSlerpActions.add(slerpAction);
-						} else {
-							SlerpAction slerpActionTransition = new SlerpAction(
-									selectedElement, transitionLevel
-											.getElementByPositionIndex(0));
-							arSlerpActions.add(slerpActionTransition);
+				break;
+			}
+			break;
 
-							SlerpAction slerpAction = new SlerpAction(
-									stackLevel
-											.getElementByPositionIndex(iDestinationPosIndex),
-									selectedElement);
-							arSlerpActions.add(slerpAction);
+		case BUCKET_MOVE_OUT_ICON_SELECTION:
+			switch (pickingMode) {
+			case CLICKED:
 
-							SlerpAction slerpActionTransitionReverse = new SlerpAction(
-									selectedElement.getGLView().getID(),
-									transitionLevel
-											.getElementByPositionIndex(0),
-									stackLevel
-											.getElementByPositionIndex(iDestinationPosIndex));
-							arSlerpActions.add(slerpActionTransitionReverse);
-						}
-
-						bEnableNavigationOverlay = false;
-
-						break;
-
-					case MOUSE_OVER :
-
-						iNavigationMouseOverViewID_left = iExternalID;
-						iNavigationMouseOverViewID_right = -1;
-						iNavigationMouseOverViewID_out = -1;
-						iNavigationMouseOverViewID_in = -1;
-						iNavigationMouseOverViewID_lock = -1;
-
-						break;
+				// Check if other slerp action is currently running
+				if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE) {
+					break;
 				}
+
+				// glConnectionLineRenderer.enableRendering(true);
+
+				arSlerpActions.clear();
+
+				RemoteLevelElement element = RemoteElementManager.get()
+						.getItem(iExternalID);
+				SlerpAction slerpActionTransition = new SlerpAction(element,
+						poolLevel.getNextFree());
+				arSlerpActions.add(slerpActionTransition);
+
+				bEnableNavigationOverlay = false;
+
+				// Unregister all elements of the view that is moved out
+				element.getGLView().broadcastElements(
+						EVAOperation.REMOVE_ELEMENT);
+
 				break;
 
-			case BUCKET_MOVE_RIGHT_ICON_SELECTION :
-				switch (pickingMode) {
-					case CLICKED :
-						// Check if other slerp action is currently running
-						if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE) {
-							break;
-						}
+			case MOUSE_OVER:
 
-						// glConnectionLineRenderer.enableRendering(true);
+				iNavigationMouseOverViewID_left = -1;
+				iNavigationMouseOverViewID_right = -1;
+				iNavigationMouseOverViewID_out = iExternalID;
+				iNavigationMouseOverViewID_in = -1;
+				iNavigationMouseOverViewID_lock = -1;
 
-						arSlerpActions.clear();
+				break;
+			}
+			break;
 
-						RemoteLevelElement selectedElement = RemoteElementManager
-								.get().getItem(iExternalID);
-
-						int iDestinationPosIndex = stackLevel
-								.getPositionIndexByElementID(selectedElement);
-
-						if (iDestinationPosIndex == 0) {
-							iDestinationPosIndex = 3;
-						} else {
-							iDestinationPosIndex--;
-						}
-
-						// Check if destination position in stack is free
-						if (stackLevel.getElementByPositionIndex(
-								iDestinationPosIndex).getGLView() == null) {
-							SlerpAction slerpAction = new SlerpAction(
-									selectedElement,
-									stackLevel
-											.getElementByPositionIndex(iDestinationPosIndex));
-							arSlerpActions.add(slerpAction);
-						} else {
-							SlerpAction slerpActionTransition = new SlerpAction(
-									selectedElement, transitionLevel
-											.getElementByPositionIndex(0));
-							arSlerpActions.add(slerpActionTransition);
-
-							SlerpAction slerpAction = new SlerpAction(
-									stackLevel
-											.getElementByPositionIndex(iDestinationPosIndex),
-									selectedElement);
-							arSlerpActions.add(slerpAction);
-
-							SlerpAction slerpActionTransitionReverse = new SlerpAction(
-									selectedElement.getGLView().getID(),
-									transitionLevel
-											.getElementByPositionIndex(0),
-									stackLevel
-											.getElementByPositionIndex(iDestinationPosIndex));
-							arSlerpActions.add(slerpActionTransitionReverse);
-						}
-
-						bEnableNavigationOverlay = false;
-
-						break;
-
-					case MOUSE_OVER :
-
-						iNavigationMouseOverViewID_left = -1;
-						iNavigationMouseOverViewID_right = iExternalID;
-						iNavigationMouseOverViewID_out = -1;
-						iNavigationMouseOverViewID_in = -1;
-						iNavigationMouseOverViewID_lock = -1;
-
-						break;
+		case BUCKET_MOVE_LEFT_ICON_SELECTION:
+			switch (pickingMode) {
+			case CLICKED:
+				// Check if other slerp action is currently running
+				if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE) {
+					break;
 				}
+
+				// glConnectionLineRenderer.enableRendering(true);
+
+				arSlerpActions.clear();
+
+				RemoteLevelElement selectedElement = RemoteElementManager.get()
+						.getItem(iExternalID);
+
+				int iDestinationPosIndex = stackLevel
+						.getPositionIndexByElementID(selectedElement);
+
+				if (iDestinationPosIndex == 3) {
+					iDestinationPosIndex = 0;
+				} else {
+					iDestinationPosIndex++;
+				}
+
+				// Check if destination position in stack is free
+				if (stackLevel.getElementByPositionIndex(iDestinationPosIndex)
+						.getGLView() == null) {
+					SlerpAction slerpAction = new SlerpAction(
+							selectedElement,
+							stackLevel
+									.getElementByPositionIndex(iDestinationPosIndex));
+					arSlerpActions.add(slerpAction);
+				} else {
+					SlerpAction slerpActionTransition = new SlerpAction(
+							selectedElement, transitionLevel
+									.getElementByPositionIndex(0));
+					arSlerpActions.add(slerpActionTransition);
+
+					SlerpAction slerpAction = new SlerpAction(stackLevel
+							.getElementByPositionIndex(iDestinationPosIndex),
+							selectedElement);
+					arSlerpActions.add(slerpAction);
+
+					SlerpAction slerpActionTransitionReverse = new SlerpAction(
+							selectedElement.getGLView().getID(),
+							transitionLevel.getElementByPositionIndex(0),
+							stackLevel
+									.getElementByPositionIndex(iDestinationPosIndex));
+					arSlerpActions.add(slerpActionTransitionReverse);
+				}
+
+				bEnableNavigationOverlay = false;
+
 				break;
-			case CONTEXT_MENU_SELECTION :
-				System.out.println("Waa");
+
+			case MOUSE_OVER:
+
+				iNavigationMouseOverViewID_left = iExternalID;
+				iNavigationMouseOverViewID_right = -1;
+				iNavigationMouseOverViewID_out = -1;
+				iNavigationMouseOverViewID_in = -1;
+				iNavigationMouseOverViewID_lock = -1;
+
 				break;
+			}
+			break;
+
+		case BUCKET_MOVE_RIGHT_ICON_SELECTION:
+			switch (pickingMode) {
+			case CLICKED:
+				// Check if other slerp action is currently running
+				if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE) {
+					break;
+				}
+
+				// glConnectionLineRenderer.enableRendering(true);
+
+				arSlerpActions.clear();
+
+				RemoteLevelElement selectedElement = RemoteElementManager.get()
+						.getItem(iExternalID);
+
+				int iDestinationPosIndex = stackLevel
+						.getPositionIndexByElementID(selectedElement);
+
+				if (iDestinationPosIndex == 0) {
+					iDestinationPosIndex = 3;
+				} else {
+					iDestinationPosIndex--;
+				}
+
+				// Check if destination position in stack is free
+				if (stackLevel.getElementByPositionIndex(iDestinationPosIndex)
+						.getGLView() == null) {
+					SlerpAction slerpAction = new SlerpAction(
+							selectedElement,
+							stackLevel
+									.getElementByPositionIndex(iDestinationPosIndex));
+					arSlerpActions.add(slerpAction);
+				} else {
+					SlerpAction slerpActionTransition = new SlerpAction(
+							selectedElement, transitionLevel
+									.getElementByPositionIndex(0));
+					arSlerpActions.add(slerpActionTransition);
+
+					SlerpAction slerpAction = new SlerpAction(stackLevel
+							.getElementByPositionIndex(iDestinationPosIndex),
+							selectedElement);
+					arSlerpActions.add(slerpAction);
+
+					SlerpAction slerpActionTransitionReverse = new SlerpAction(
+							selectedElement.getGLView().getID(),
+							transitionLevel.getElementByPositionIndex(0),
+							stackLevel
+									.getElementByPositionIndex(iDestinationPosIndex));
+					arSlerpActions.add(slerpActionTransitionReverse);
+				}
+
+				bEnableNavigationOverlay = false;
+
+				break;
+
+			case MOUSE_OVER:
+
+				iNavigationMouseOverViewID_left = -1;
+				iNavigationMouseOverViewID_right = iExternalID;
+				iNavigationMouseOverViewID_out = -1;
+				iNavigationMouseOverViewID_in = -1;
+				iNavigationMouseOverViewID_lock = -1;
+
+				break;
+			}
+			break;
+		case CONTEXT_MENU_SELECTION:
+			System.out.println("Waa");
+			break;
 		}
 	}
 

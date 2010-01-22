@@ -202,7 +202,7 @@ abstract class ABookmarkContainer {
 			dimensions.increaseHeight(item.getDimensions().getHeight());
 		}
 		
-		GLHelperFunctions.drawPointAt(gl, 0, dimensions.getHeight(), 0);
+//		GLHelperFunctions.drawPointAt(gl, 0, dimensions.getHeight(), 0);
 	}
 
 	/**

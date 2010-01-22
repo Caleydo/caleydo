@@ -15,7 +15,7 @@ import org.caleydo.util.graph.core.Graph;
  */
 public class PathwayGraph
 	extends Graph
-	implements IUniqueObject, Serializable {
+	implements IUniqueObject, Serializable, Comparable<PathwayGraph> {
 	private static final long serialVersionUID = 1L;
 
 	private EPathwayDatabaseType type;
@@ -90,7 +90,7 @@ public class PathwayGraph
 
 	@Override
 	public String toString() {
-		return getTitle();
+		return type + ": " + getTitle();
 	}
 
 	@Override
@@ -121,6 +121,11 @@ public class PathwayGraph
 		else {
 			return false;
 		}
+	}
+
+	@Override
+	public int compareTo(PathwayGraph o) {
+		return this.sTitle.compareToIgnoreCase(o.getTitle());
 	}
 
 }

@@ -8,4 +8,5 @@ package org.caleydo.core.view.opengl.util.overlay.contextmenu;
 public class Separator
 	implements IContextMenuEntry {
 
+
 }

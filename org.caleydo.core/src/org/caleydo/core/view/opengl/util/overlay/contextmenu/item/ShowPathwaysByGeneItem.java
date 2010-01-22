@@ -1,5 +1,9 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
@@ -8,6 +12,8 @@ import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+
+import com.sun.gluegen.runtime.CPU;
 
 /**
  * <p>
@@ -50,9 +56,16 @@ public class ShowPathwaysByGeneItem
 
 			iPathwayCount = pathwayGraphs.size();
 
-			for (PathwayGraph pathwayGraph : pathwayGraphs) {
+			PathwayGraph[] pathways = new PathwayGraph[pathwayGraphs.size()];
+			pathwayGraphs.toArray(pathways);
+			Arrays.sort(pathways);
+			
+			
+			for (PathwayGraph pathwayGraph : pathways) {
 				addSubItem(new LoadPathwaysByPathwayIDItem(pathwayGraph.getID()));
 			}
+			
+			
 		}
 
 		setText("Pathways (" + iPathwayCount + ")");

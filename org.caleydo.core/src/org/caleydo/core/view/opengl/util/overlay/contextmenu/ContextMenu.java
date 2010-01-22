@@ -13,9 +13,9 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.AOverlayManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -52,7 +52,7 @@ public class ContextMenu
 	private static final float SPACING = 0.04f;
 	private static final float FONT_SCALING = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
-	private static final float BASIC_Z = 0.04f;
+	private static final float BASIC_Z = 0.1f;
 	private static final float BUTTON_Z = BASIC_Z + 0.001f;
 	private static final float TEXT_Z = BUTTON_Z + 0.001f;
 
@@ -95,9 +95,7 @@ public class ContextMenu
 	private ContextMenu() {
 		super();
 		contextMenuEntries = new ArrayList<IContextMenuEntry>();
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
-		textRenderer.setSmoothing(true);
-		iconManager = new TextureManager();
+
 		pickingManager = GeneralManager.get().getViewGLCanvasManager().getPickingManager();
 
 		hashContextMenuItemToUniqueID = new HashMap<AContextMenuItem, Integer>();
@@ -129,6 +127,10 @@ public class ContextMenu
 	 */
 	public void setMasterGLView(AGLView masterGLView) {
 		this.masterGLView = masterGLView;
+
+		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
+		textRenderer.setSmoothing(true);
+		iconManager = new TextureManager();
 	}
 
 	/**
@@ -185,6 +187,7 @@ public class ContextMenu
 	 * @param masterGLView
 	 */
 	public void render(GL gl, AGLView masterGLView) {
+
 		if (this.masterGLView != masterGLView)
 			return;
 		if (!isEnabled)
@@ -211,8 +214,8 @@ public class ContextMenu
 			fLeftBorder = fArLeftLimitWorldCoords[0];
 			// notice that top and bottom are inverse in opengl vs window coordinates
 			fTopBorder = fArLeftLimitWorldCoords[1];
-			// GLHelperFunctions.drawPointAt(gl, new
-			// Vec3f(fArLeftLimitWorldCoords[0],fArLeftLimitWorldCoords[1], fArLeftLimitWorldCoords[2]));
+			// GLHelperFunctions.drawPointAt(gl, new Vec3f(fArLeftLimitWorldCoords[0],
+			// fArLeftLimitWorldCoords[1], fArLeftLimitWorldCoords[2]));
 			//			
 			//			
 			float[] fArRightLimitWorldCoords =
@@ -244,7 +247,6 @@ public class ContextMenu
 
 			initializeSubMenus(contextMenuEntries, baseMenuMetaData);
 
-			// GLHelperFunctions.drawPointAt(gl, baseMenuMetaData.xOrigin, 1, 1);
 			if ((fRightBorder - baseMenuMetaData.xOrigin) < getScaledSizeOf(gl, baseMenuMetaData.width))
 				baseMenuMetaData.xOrigin -= baseMenuMetaData.width;
 
@@ -253,13 +255,16 @@ public class ContextMenu
 
 		}
 
-		// GLHelperFunctions.drawPointAt(gl, new Vec3f(fRightBorder, fBottomBorder, 0));
-		// GLHelperFunctions.drawPointAt(gl, new Vec3f(fLeftBorder, fTopBorder, 0));
-
 		if (isDisplayListDirty) {
 			gl.glNewList(displayListIndex, GL.GL_COMPILE);
 			gl.glDisable(GL.GL_DEPTH_TEST);
+
+			Vec3f scalingPivot = new Vec3f(baseMenuMetaData.xOrigin, baseMenuMetaData.yOrigin, BASIC_Z);
+
+			beginGUIElement(gl, scalingPivot);
 			drawMenu(gl, contextMenuEntries, baseMenuMetaData, true);
+			endGUIElement(gl);
+
 			gl.glEnable(GL.GL_DEPTH_TEST);
 			gl.glEndList();
 			isDisplayListDirty = false;
@@ -338,14 +343,9 @@ public class ContextMenu
 		// This is necessary because of the problems
 		// with the frustum and picking in the Bucket view.
 		// FIXME: Find clean solution!!
+		// if (!(masterGLView instanceof GLBucket))
+		// gl.glTranslatef(0, 0, 2);
 
-		Vec3f scalingPivot = new Vec3f(metaData.xOrigin, metaData.yOrigin, BASIC_Z);
-
-		if (!(masterGLView instanceof IGLRemoteRenderingView))
-			gl.glTranslatef(0, 0, 2);
-
-		if (isBaseMenu)
-			beginGUIElement(gl, scalingPivot);
 		drawBackground(gl, metaData);
 
 		float yPosition = metaData.yOrigin - SIDE_SPACING;
@@ -360,10 +360,8 @@ public class ContextMenu
 
 				Integer itemID = hashContextMenuItemToUniqueID.get(entry);
 
-				// float alpha = 0f;
 				if (itemID == mouseOverElement || isSubElementSelected(item))
 					renderHighlighting(gl, metaData, yPosition);
-				// alpha = 0.8f;
 
 				gl.glColor4f(1, 1, 1, 0);
 
@@ -374,7 +372,6 @@ public class ContextMenu
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glVertex3f(xPosition, yPosition - SPACING / 2, BUTTON_Z);
 				gl.glVertex3f(xPosition, yPosition + ITEM_HEIGHT - SPACING / 2, BUTTON_Z);
-				// gl.glColor4f(1, 1, 1, 0.0f);
 				gl.glVertex3f(xPosition + metaData.width - 2 * SPACING, yPosition + ITEM_HEIGHT - SPACING,
 					BUTTON_Z);
 				gl.glVertex3f(xPosition + metaData.width - 2 * SPACING, yPosition - SPACING / 2, BUTTON_Z);
@@ -394,13 +391,13 @@ public class ContextMenu
 					gl.glColor4f(1, 1, 1, 1);
 					gl.glPushName(iPickingID);
 					gl.glBegin(GL.GL_POLYGON);
-					gl.glTexCoord2f(texCoords.left(), texCoords.top());
-					gl.glVertex3f(xPosition, yPosition, TEXT_Z);
-					gl.glTexCoord2f(texCoords.right(), texCoords.top());
-					gl.glVertex3f(xPosition + ICON_SIZE, yPosition, TEXT_Z);
-					gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-					gl.glVertex3f(xPosition + ICON_SIZE, yPosition + ICON_SIZE, TEXT_Z);
 					gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+					gl.glVertex3f(xPosition, yPosition, TEXT_Z);
+					gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+					gl.glVertex3f(xPosition + ICON_SIZE, yPosition, TEXT_Z);
+					gl.glTexCoord2f(texCoords.right(), texCoords.top());
+					gl.glVertex3f(xPosition + ICON_SIZE, yPosition + ICON_SIZE, TEXT_Z);
+					gl.glTexCoord2f(texCoords.left(), texCoords.top());
 					gl.glVertex3f(xPosition, yPosition + ICON_SIZE, TEXT_Z);
 					gl.glEnd();
 					tempTexture.disable();
@@ -441,18 +438,41 @@ public class ContextMenu
 					gl.glPopName();
 
 					if (itemID == mouseOverElement || isSubElementSelected(item)) {
+
 						ContextMenuMetaData subMetaData = hashContextMenuItemToMetaData.get(entry);
 						subMetaData.xOrigin = metaData.xOrigin + metaData.width;
 						subMetaData.yOrigin = yPosition + ITEM_HEIGHT;
-						if ((fRightBorder - subMetaData.xOrigin) < subMetaData.width)
-							subMetaData.xOrigin -= subMetaData.width + metaData.width;
+					
 
-						if ((subMetaData.yOrigin - subMetaData.height) < fBottomBorder)
-							subMetaData.yOrigin = fBottomBorder + subMetaData.height;
+						float remainingXSpace =
+							fRightBorder - (metaData.xOrigin + getScaledSizeOf(gl, metaData.width));
+						float scaledWidth = getScaledSizeOf(gl, subMetaData.width);
 
-						// endGUIElement(gl);
+						if (remainingXSpace < scaledWidth)
+							subMetaData.xOrigin = metaData.xOrigin - subMetaData.width;
+
+								
+//						float remainigYSpace = Math.abs(fBottomBorder - getScaledSizeOf(gl,subMetaData.yOrigin - metaData.yOrigin));
+
+//						float remainigYSpace = Math.abs(getScaledSizeOf(gl,subMetaData.yOrigin - metaData.yOrigin));
+
+						float scaledHeight = getScaledSizeOf(gl, subMetaData.height);
+						// float scaledHeight = subMetaData.height;
+
+						if (getScaledCoordinate(gl, subMetaData.yOrigin, metaData.yOrigin) -fBottomBorder < scaledHeight) {
+							
+							float distance = Math.abs(metaData.yOrigin - fBottomBorder);
+							float scaledDistance =  getUnscaledSizeOf(gl, distance);
+							
+							subMetaData.yOrigin = metaData.yOrigin - scaledDistance + subMetaData.height;
+						
+//							endGUIElement(gl);
+							// GLHelperFunctions.drawPointAt(gl, metaData.xOrigin, metaData.yOrigin, -10f);
+//							GLHelperFunctions.drawPointAt(gl, 3, fBottomBorder + subMetaData.height, 0);
+							
+						}
 						drawMenu(gl, item.getSubItems(), subMetaData, false);
-						// beginGUIElement(gl, scalingPivot);
+//						beginGUIElement(gl, new Vec3f(metaData.xOrigin, metaData.yOrigin, 0));
 					}
 				}
 			}
@@ -487,11 +507,8 @@ public class ContextMenu
 		// This is necessary because of the problems
 		// with the frustum and picking in the Bucket view.
 		// FIXME: Find clean solution!!
-		if (isBaseMenu)
-			endGUIElement(gl);
-
-		if (!(masterGLView instanceof IGLRemoteRenderingView))
-			gl.glTranslatef(0, 0, -2);
+		// if (!(masterGLView instanceof IGLRemoteRenderingView))
+		// gl.glTranslatef(0, 0, -2);
 	}
 
 	private boolean isSubElementSelected(AContextMenuItem item) {
@@ -552,10 +569,13 @@ public class ContextMenu
 
 	private void drawBackground(GL gl, ContextMenuMetaData metaData) {
 		// the body
+		// gl.glBlendFunc(GL.GL_DST_ALPHA, GL.GL_ONE_MINUS_DST_ALPHA);
+
 		gl.glPushName(pickingManager.getPickingID(masterGLView.getID(), EPickingType.CONTEXT_MENU_SELECTION,
 			Integer.MAX_VALUE));
 		gl.glColor4f(0f, 0f, 0f, 0.9f);
 		gl.glBegin(GL.GL_POLYGON);
+
 		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin - TEXTURE_SIZE, BASIC_Z);
 		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin - metaData.height + TEXTURE_SIZE,
 			BASIC_Z);

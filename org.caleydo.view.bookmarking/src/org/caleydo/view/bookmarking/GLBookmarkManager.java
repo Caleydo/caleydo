@@ -191,7 +191,7 @@ public class GLBookmarkManager extends AGLView
 
 		processEvents();
 
-		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		float currentHeight = viewFrustum.getHeight()
 				- BookmarkRenderStyle.TOP_SPACING;

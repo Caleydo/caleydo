@@ -1,7 +1,9 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -30,13 +32,19 @@ public class LoadPathwaysByPathwayIDItem
 	}
 
 	private void setPathwayID(int pathwayID) {
-		String pathwayName = GeneralManager.get().getPathwayManager().getItem(pathwayID).getTitle();
+		PathwayGraph pathway = GeneralManager.get().getPathwayManager().getItem(pathwayID);
+
+		String pathwayName = pathway.getTitle();
 		if (numberOfOccurences == 0)
 			setText(pathwayName);
 		else
 			setText("(" + numberOfOccurences + ") " + pathwayName);
 
-		setIconTexture(EIconTextures.CM_LOAD_DEPENDING_PATHWAYS);
+		if (pathway.getType() == EPathwayDatabaseType.KEGG)
+			setIconTexture(EIconTextures.CM_KEGG);
+		else if (pathway.getType() == EPathwayDatabaseType.BIOCARTA)
+			setIconTexture(EIconTextures.CM_BIOCARTA);
+
 		LoadPathwayEvent loadPathwayEvent = new LoadPathwayEvent();
 		loadPathwayEvent.setSender(this);
 		loadPathwayEvent.setPathwayID(pathwayID);

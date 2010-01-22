@@ -111,7 +111,9 @@ public enum EIconTextures {
 	CM_EDGE_BLACK("/resources/context_menu/edge_black.png"),
 	CM_SELECTION_SIDE_BLACK("/resources/context_menu/selection_side_black.png"),
 	CM_SELECTION_RIGHT_EXTENSIBLE_BLACK("/resources/context_menu/submenue_black.png"),
-	CM_SELECTION_LINES_BLACK("/resources/context_menu/selection_lines_black.png");
+	CM_SELECTION_LINES_BLACK("/resources/context_menu/selection_lines_black.png"),
+	CM_BIOCARTA("/resources/context_menu/biocarta.png"),
+	CM_KEGG("/resources/context_menu/kegg.png");
 
 	private String sFileName;
 

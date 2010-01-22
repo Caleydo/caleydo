@@ -88,6 +88,20 @@ public abstract class AGLGUIElement {
 	}
 
 	/**
+	 * When submitting a scaled length this returns the value of the unscaled length. Note that the scaling is
+	 * dependent on the current window size and the minimum size of the gui element.
+	 * 
+	 * @param gl
+	 *            GL context.
+	 * @param value
+	 *            Value for which the scaled size shall be calculated.
+	 * @return Scaled value.
+	 */
+	public float getUnscaledSizeOf(GL gl, float value) {
+		return value / getScaling(gl);
+	}
+
+	/**
 	 * Calculates the current scaling dependent on the current window size and the minimum size of the gui
 	 * element.
 	 * 

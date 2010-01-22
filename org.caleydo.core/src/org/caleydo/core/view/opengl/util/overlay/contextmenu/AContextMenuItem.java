@@ -15,11 +15,14 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  * @author Alexander Lex
  */
 public abstract class AContextMenuItem
-	implements IContextMenuEntry {
+	implements IContextMenuEntry{
 	private String text;
 	private EIconTextures iconTexture;
 	private AEvent event;
 
+
+	private static final int MAX_TEXT_LENGTH = 25; 
+	
 	private ArrayList<IContextMenuEntry> subItems;
 
 	/**
@@ -29,7 +32,10 @@ public abstract class AContextMenuItem
 	 *            The text containing a brief description of the event
 	 */
 	public void setText(String text) {
-		this.text = text;
+		if (text.length() < MAX_TEXT_LENGTH)
+			this.text = text;
+		else
+			this.text = text.substring(0, MAX_TEXT_LENGTH - 3) + "...";
 	}
 
 	/**
@@ -114,5 +120,5 @@ public abstract class AContextMenuItem
 		if (event != null)
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
-
+	
 }
