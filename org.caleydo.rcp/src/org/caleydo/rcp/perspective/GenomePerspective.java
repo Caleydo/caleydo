@@ -32,7 +32,7 @@ public class GenomePerspective
 		if (bIsWideScreen) {
 			fRatio =
 				(float) RcpToolBarView.TOOLBAR_WIDTH
-					/ PlatformUI.getWorkbench().getDisplay().getMonitors()[0].getBounds().width;
+					/ PlatformUI.getWorkbench().getDisplay().getClientArea().width;
 
 			IFolderLayout topLeft =
 				layout.createFolder("topLeft", IPageLayout.LEFT, fRatio, IPageLayout.ID_EDITOR_AREA);
@@ -57,7 +57,7 @@ public class GenomePerspective
 		else {
 			fRatio =
 				(float) RcpToolBarView.TOOLBAR_HEIGHT
-					/ PlatformUI.getWorkbench().getDisplay().getMonitors()[0].getBounds().height;
+					/ PlatformUI.getWorkbench().getDisplay().getClientArea().height;
 
 			IFolderLayout topFolder =
 				layout.createFolder("top", IPageLayout.TOP, fRatio, IPageLayout.ID_EDITOR_AREA);

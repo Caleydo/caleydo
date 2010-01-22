@@ -1387,7 +1387,6 @@ public abstract class AGLViewBrowser extends AGLView
 	}
 
 	protected void clearRemoteLevel(RemoteLevel remoteLevel) {
-		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 		AGLView glView = null;
 
 		for (RemoteLevelElement element : remoteLevel.getAllElements()) {

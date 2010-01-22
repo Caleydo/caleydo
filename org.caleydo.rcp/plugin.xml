@@ -390,12 +390,7 @@
             class="org.caleydo.rcp.preferences.ColorMappingPreferencePage"
             id="org.caleydo.rcp.preferences.ColorMappingPreferencePage"
             name="Color Mapping">
-      </page>
-            <page
-                  class="org.caleydo.rcp.preferences.PathwayUpdatePreferencePage"
-                  id="org.caleydo.rcp.PathwayUpdatePreferences"
-                  name="Update Pathways">
-            </page>
+ 			</page>
             <page
                   class="org.caleydo.rcp.preferences.GeneralPreferencePage"
                   id="org.caleydo.rcp.GeneralPreferencePage"
@@ -407,11 +402,4 @@
                   name="Visual Links">
             </page>
    </extension>
-   <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="org.caleydo.rcp.preferences.PreferenceInitializer">
-      </initializer>
-   </extension>
-
 </plugin>

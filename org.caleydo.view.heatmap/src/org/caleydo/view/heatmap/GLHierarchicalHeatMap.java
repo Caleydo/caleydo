@@ -41,7 +41,6 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.group.ExportGroupsEvent;
 import org.caleydo.core.manager.event.view.group.InterchangeGroupsEvent;

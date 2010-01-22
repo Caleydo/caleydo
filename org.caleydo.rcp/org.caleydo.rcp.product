@@ -37,10 +37,8 @@ All Rights Reserved.
       </win>
    </launcher>
 
-
    <vm>
    </vm>
-
 
    <plugins>
       <plugin id="org.caleydo.core"/>
