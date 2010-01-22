@@ -43,11 +43,12 @@ public class GLViewCenteredConnectionGraphDrawing
 		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
 		
-		for (Integer iKey : keySet) {
-			hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists.get(idType).get(iKey)));
-		}
+		hashViewToCenterPoint = getOptimalDynamicPoints(idType);
+		if (hashViewToCenterPoint == null)
+			return;
+		
 		Vec3f activeViewBundlingPoint = new Vec3f();
-		Vec3f vecCenter = calculateCenter(hashViewToCenterPoint.values());
+		vecCenter = calculateCenter(hashViewToCenterPoint.values());
 		ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews = new ArrayList<ArrayList<ArrayList<Vec3f>>>(4);
 		ArrayList<ArrayList<Vec3f>> connectionLinesActiveView = new ArrayList<ArrayList<Vec3f>>();
 		ArrayList<ArrayList<Vec3f>> bundlingToCenterLinesActiveView = new ArrayList<ArrayList<Vec3f>>();
@@ -91,8 +92,92 @@ public class GLViewCenteredConnectionGraphDrawing
 	}
 
 	@Override
+	/**
+	 * selects optimal points of views which have a set of points to choose from (atm this especially concerns HeatMap and Parallel Coordinates)
+	 * @param idType
+	 * @return returns a {@link HashMap} that contains the local center points
+	 */
 	protected HashMap<Integer, Vec3f> getOptimalDynamicPoints(EIDType idType) {
-		// TODO Auto-generated method stub
-		return null;
+				
+		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
+		ArrayList<ArrayList<Vec3f>> heatMapPoints = new ArrayList<ArrayList<Vec3f>>();
+		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
+		int heatMapID = getSpecialViewID(HEATMAP);
+
+		for (Integer iKey : keySet) {
+			if (iKey.equals(heatMapID))
+				heatMapPoints = hashIDTypeToViewToPointLists.get(idType).get(iKey);
+			else
+				hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists.get(idType).get(iKey)));
+		}
+		if (heatMapID < 0)
+			return hashViewToCenterPoint;
+				
+		double minPath = Double.MAX_VALUE;
+		ArrayList<Vec3f> optimalHeatMap = new ArrayList<Vec3f>();
+		Vec3f optimalHeatMapPoint = new Vec3f();
+		
+		if (activeViewID == heatMapID){
+			for (ArrayList<Vec3f> heatMapList : heatMapPoints) {
+				Vec3f heatMapCenterPoint = heatMapList.get(0);
+		
+				//TODO: Choose if global minimum or local minimum
+				double currentPath = calculateCurrentPathLengthHeatMapCentered(hashViewToCenterPoint, heatMapCenterPoint);
+				/*Vec3f temp = centerPoint.minus(arrayList.get(0));
+				double currentPath = temp.length();*/
+					
+				if (currentPath < minPath){
+					minPath = currentPath;
+					optimalHeatMap = heatMapList;
+					optimalHeatMapPoint = heatMapList.get(0);
+					vecCenter = heatMapCenterPoint;
+				}
+			}
+		}
+		else{
+			Vec3f centerActiveView = hashViewToCenterPoint.get(activeViewID);
+			for (ArrayList<Vec3f> heatMapList : heatMapPoints) {
+				Vec3f heatMapCenterPoint = heatMapList.get(0);
+				Vec3f temp = centerActiveView.minus(heatMapList.get(0));
+				double currentPath = temp.length();
+				
+				if (currentPath < minPath){
+					minPath = currentPath;
+					optimalHeatMap = heatMapList;
+					optimalHeatMapPoint = heatMapList.get(0);
+					vecCenter = heatMapCenterPoint;
+				}
+			}
+			
+		}
+		if (optimalHeatMap.size() == 0)
+			return null;
+
+		ArrayList<ArrayList<Vec3f>> tempArray = new ArrayList<ArrayList<Vec3f>>();
+		tempArray.add(optimalHeatMap);
+		hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
+		hashIDTypeToViewToPointLists.get(idType).put(heatMapID, tempArray);
+		hashViewToCenterPoint.put(heatMapID, optimalHeatMapPoint);
+		tempArray = new ArrayList<ArrayList<Vec3f>>();
+
+	return hashViewToCenterPoint;
 	}
+
+	/**
+	 * calculates the shortest path between the local view centers
+	 * @param hashViewToCenterPoint local center points
+	 * @param centerPoint global center point
+	 * @return path length
+	 */
+	private double calculateCurrentPathLengthHeatMapCentered(HashMap<Integer, Vec3f> hashViewToCenterPoint, Vec3f heatMapCenterPoint) {
+	
+		double length = 0;
+		Set<Integer> keySet = hashViewToCenterPoint.keySet();
+		
+		for (Integer element : keySet) {
+				Vec3f temp = heatMapCenterPoint.minus(hashViewToCenterPoint.get(element));
+				length += temp.length();
+		}
+		return length;
+		}
 }

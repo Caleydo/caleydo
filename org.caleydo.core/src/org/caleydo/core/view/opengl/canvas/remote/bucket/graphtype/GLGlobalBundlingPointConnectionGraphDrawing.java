@@ -23,7 +23,6 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 
 	protected RemoteLevel focusLevel;
 	protected RemoteLevel stackLevel;
-	private Vec3f vecCenter = new Vec3f();
 	/**
 	 * Constructor.
 	 * 
@@ -131,6 +130,8 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 			ArrayList<Vec3f> optimalParCoords = new ArrayList<Vec3f>();
 			Vec3f optimalHeatMapPoint = new Vec3f();
 			Vec3f optimalParCoordPoint = new Vec3f();
+			
+			//if heatmap view exists in bucket view
 			if (heatMapPoints.size() > 0){
 				for (ArrayList<Vec3f> heatMapList : heatMapPoints) {
 					for (ArrayList<Vec3f> parCoordsList : parCoordsPoints) {
@@ -156,6 +157,7 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 				if ((optimalHeatMap.size() == 0) || (optimalParCoords.size() == 0))
 					return null;
 			}
+			// no heatmap loaded in bucket view
 			else{
 				for (ArrayList<Vec3f> parCoordsList : parCoordsPoints) {
 					hashViewToCenterPoint.put(parCoordID, parCoordsList.get(0));
@@ -198,7 +200,6 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 	 * @param centerPoint global center point
 	 * @return path length
 	 */
-	
 	private double calculateCurrentPathLength(HashMap<Integer, Vec3f> hashViewToCenterPoint, Vec3f centerPoint) {
 
 		double length = 0;
