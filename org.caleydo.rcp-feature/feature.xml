@@ -343,4 +343,25 @@ All Rights Reserved.
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="org.caleydo.data.pathway.biocarta"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.data.pathway.kegg"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.pathway"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
