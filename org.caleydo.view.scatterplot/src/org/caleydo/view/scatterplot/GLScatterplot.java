@@ -20,6 +20,7 @@ import gleem.linalg.Vec3f;
 
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -80,8 +81,11 @@ import org.caleydo.view.scatterplot.renderstyle.EScatterPointType;
 import org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle;
 
 // Soon needed for LoD rendering
-//import com.sun.opengl.util.texture.Texture;
-//import com.sun.opengl.util.texture.TextureCoords;
+import com.sun.opengl.util.BufferUtil;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureCoords;
+import com.sun.opengl.util.texture.TextureData;
+import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * Rendering the GLScatterplott
@@ -90,7 +94,7 @@ import org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle;
  * @author Marc Streit
  * @author Juergen Pillhofer
  */
-// @SuppressWarnings("unused")
+@SuppressWarnings("unused")
 public class GLScatterplot extends AStorageBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.scatterplot";
@@ -132,19 +136,35 @@ public class GLScatterplot extends AStorageBasedView {
 	private XAxisSelectorListener xAxisSelectorListener;
 	private YAxisSelectorListener yAxisSelectorListener;
 
+	// Selections
+	
 	private SelectionManager elementSelectionManager;
 	private SelectionManager mouseoverSelectionManager;
 	private SelectionManager axisSelectionManager;
 
-	private float[] fDragStartPoint = new float[3];
-	private float[] fDragEndPoint = new float[3];
+	// Brushes
+	
+	private float[] fRectangleDragStartPoint = new float[3];
+	private float[] fRectangleDragEndPoint = new float[3];
 	private boolean bRectangleSelection = false;
-	// private boolean bSelectThemNow = false;
+	
+	
+	//DIsplaylists
 	private int iGLDisplayListIndexBrush;
 	private int iGLDisplayListIndexCoord;
 	private int iGLDisplayListIndexMouseOver;
 	private int iGLDisplayListIndexSelection;
 
+	
+	//Textures
+	private int iSamplesPerTexture = 0;
+	private final static int MAX_SAMPLES_PER_TEXTURE = 2000;
+	// array of textures for holding the data samples
+	private int iNrTextures=25; //TMP
+	private ArrayList<Texture> AlTextures = new ArrayList<Texture>();
+	private ArrayList<Integer> iAlNumberSamples = new ArrayList<Integer>();
+	private boolean bRedrawTextures = false;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -173,6 +193,117 @@ public class GLScatterplot extends AStorageBasedView {
 		glKeyListener = new GLScatterPlotKeyListener(this);
 	}
 
+	
+	private void calculateTextures() {
+	
+		AlTextures.clear();
+		iAlNumberSamples.clear();
+
+		Texture tempTextur = null;
+
+		for (int i = 0; i < iNrTextures; i++) {
+
+			AlTextures.add(tempTextur);
+			iAlNumberSamples.add(iSamplesPerTexture);
+	
+		}
+	}
+	
+	/**
+	 * Init textures, build array of textures used for holding the whole
+	 * examples
+	 * 
+	 * @param gl
+	 */
+	private void initTextures(final GL gl) {
+
+		
+		AlTextures.clear();
+		iAlNumberSamples.clear();
+
+		Texture tempTextur;
+		
+		
+
+//		tempTextur.
+		int iTextureSize = contentVA.size();		
+
+		gl.glCopyTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_LUMINANCE, 0, 0, 128, 128, 0);
+		
+		iSamplesPerTexture = (int) Math.ceil((double) iTextureSize
+				/ iNrTextures);
+
+		float fLookupValue = 0;
+		float fOpacity = 0;
+
+		FloatBuffer[] FbTemp = new FloatBuffer[iNrTextures];
+
+		for (int itextures = 0; itextures < iNrTextures; itextures++) {
+
+			if (itextures == iNrTextures - 1) {
+				iAlNumberSamples.add(iTextureSize - iSamplesPerTexture
+						* itextures);
+				FbTemp[itextures] = BufferUtil
+						.newFloatBuffer((iTextureSize - iSamplesPerTexture
+								* itextures)
+								* iTextureSize);
+			} else {
+				iAlNumberSamples.add(iSamplesPerTexture);
+				FbTemp[itextures] = BufferUtil
+						.newFloatBuffer(iSamplesPerTexture * iTextureSize);
+			}
+		}
+
+		int iCount = 0;
+		int iTextureCounter = 0;
+
+		for (Integer iContentIndex : contentVA) {
+			iCount++;
+			for (Integer iStorageIndex : storageVA) {
+				if (contentSelectionManager.checkStatus(
+						ESelectionType.DESELECTED, iContentIndex)) {
+					fOpacity = 0.3f;
+				} else {
+					fOpacity = 1.0f;
+				}
+
+				fLookupValue = set.get(iStorageIndex).getFloat(
+						EDataRepresentation.NORMALIZED, iContentIndex);
+
+				float[] fArMappingColor = colorMapper
+						.getColor(fLookupValue);
+
+				float[] fArRgba = {fArMappingColor[0], fArMappingColor[1],
+						fArMappingColor[2], fOpacity};
+
+				FbTemp[iTextureCounter].put(fArRgba);
+			}
+			if (iCount >= iAlNumberSamples.get(iTextureCounter)) {
+				FbTemp[iTextureCounter].rewind();
+
+				TextureData texData = new TextureData(
+						GL.GL_RGBA /* internalFormat */,
+						iTextureSize /* height */, iAlNumberSamples
+								.get(iTextureCounter) /* width */,
+						0 /* border */, GL.GL_RGBA /* pixelFormat */,
+						GL.GL_FLOAT /* pixelType */, false /* mipmap */,
+						false /* dataIsCompressed */,
+						false /* mustFlipVertically */,
+						FbTemp[iTextureCounter], null);
+
+				tempTextur = TextureIO.newTexture(0);
+				tempTextur.updateImage(texData);
+
+				AlTextures.add(tempTextur);
+
+				iTextureCounter++;
+				iCount = 0;
+			}
+		}
+		
+	}
+	
+	
 	@Override
 	public void init(GL gl) {
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
@@ -283,10 +414,10 @@ public class GLScatterplot extends AStorageBasedView {
 				Point pDragStartPoint = glMouseListener.getPickedPointDragStart();
 			
 	
-				fDragStartPoint = GLCoordinateUtils
+				fRectangleDragStartPoint = GLCoordinateUtils
 						.convertWindowCoordinatesToWorldCoordinates(gl,
 								pDragStartPoint.x, pDragStartPoint.y);
-				fDragEndPoint = GLCoordinateUtils
+				fRectangleDragEndPoint = GLCoordinateUtils
 						.convertWindowCoordinatesToWorldCoordinates(gl,
 								pDragEndPoint.x, pDragEndPoint.y);
 	
@@ -616,6 +747,8 @@ public class GLScatterplot extends AStorageBasedView {
 			POINTSTYLE = EScatterPointType.POINT;
 		}
 
+				
+		
 		for (Integer iContentIndex : contentVA) {
 
 			if (iContentIndex == -1) {
@@ -730,7 +863,7 @@ public class GLScatterplot extends AStorageBasedView {
 		DrawPointPrimitive(gl, x, y, z, // z
 				fArMappingColor, 1.0f, iContentIndex, 2.0f); // fOpacity
 
-		DrawMouseOverLabel(gl, x, y, 0.0f, // z
+		DrawMouseOverLabel(gl, x, y, z, // z
 				fArMappingColor, 1.0f, iContentIndex); // fOpacity
 
 	}
@@ -740,22 +873,28 @@ public class GLScatterplot extends AStorageBasedView {
 
 		textRenderer.setColor(0, 0, 0, 1);
 
-		z = z + 3.0f;
+	//	z = z + 3.0f;
 		x = x + 0.1f;
 		gl.glTranslatef(x, y, z);
 
 		String sLabel = "";
 
+		String genLabel = idMappingManager.getID(EIDType.EXPRESSION_INDEX,
+										EIDType.GENE_SYMBOL, iContentIndex);
+		
+		if (genLabel.equals(""))
+			genLabel = "Unkonwn Gene";
+		
 		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION,
 				iContentIndex))
-			sLabel = "Selected Point :"
+			sLabel = "Selected Point ("+genLabel+"):"+
 					+ set.get(SELECTED_X_AXIS).getFloat(
 							EDataRepresentation.RAW, iContentIndex)
 					+ " / "
 					+ set.get(SELECTED_Y_AXIS).getFloat(
 							EDataRepresentation.RAW, iContentIndex);
 		else
-			sLabel = "Point :"
+			sLabel = "Point ("+genLabel+"):"+
 					+ set.get(SELECTED_X_AXIS).getFloat(
 							EDataRepresentation.RAW, iContentIndex)
 					+ " / "
@@ -795,11 +934,11 @@ public class GLScatterplot extends AStorageBasedView {
 	}
 
 	private boolean IsInSelectionRectangle(float x, float y) {
-		float XMin = Math.min(fDragStartPoint[0], fDragEndPoint[0]);
-		float XMax = Math.max(fDragStartPoint[0], fDragEndPoint[0]);
+		float XMin = Math.min(fRectangleDragStartPoint[0], fRectangleDragEndPoint[0]);
+		float XMax = Math.max(fRectangleDragStartPoint[0], fRectangleDragEndPoint[0]);
 
-		float YMin = Math.min(fDragStartPoint[1], fDragEndPoint[1]);
-		float YMax = Math.max(fDragStartPoint[1], fDragEndPoint[1]);
+		float YMin = Math.min(fRectangleDragStartPoint[1], fRectangleDragEndPoint[1]);
+		float YMax = Math.max(fRectangleDragStartPoint[1], fRectangleDragEndPoint[1]);
 
 		x = x + XYAXISDISTANCE;
 		y = y + XYAXISDISTANCE;
@@ -953,10 +1092,10 @@ public class GLScatterplot extends AStorageBasedView {
 
 	private void DrawRectangularSelection(GL gl) {
 
-		float length = fDragEndPoint[0] - fDragStartPoint[0];
-		float hight = fDragEndPoint[1] - fDragStartPoint[1];
-		float x = fDragStartPoint[0];
-		float y = fDragStartPoint[1];
+		float length = fRectangleDragEndPoint[0] - fRectangleDragStartPoint[0];
+		float hight = fRectangleDragEndPoint[1] - fRectangleDragStartPoint[1];
+		float x = fRectangleDragStartPoint[0];
+		float y = fRectangleDragStartPoint[1];
 		float z = 3.5f;
 
 		gl.glColor3f(0.0f, 1.0f, 0.0f);
@@ -1131,7 +1270,8 @@ public class GLScatterplot extends AStorageBasedView {
 	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Scatter Plot\n");
-
+//TODO Everything
+		
 		if (bRenderStorageHorizontally) {
 			sInfoText.append(contentVA.size() + " "
 					+ useCase.getContentLabel(false, true) + " in columns and "
@@ -1165,7 +1305,8 @@ public class GLScatterplot extends AStorageBasedView {
 			}
 		}
 
-		return sInfoText.toString();
+		//return sInfoText.toString();
+		return "TODO: ScatterploT Deatil Info";
 	}
 
 	@Override
@@ -1262,8 +1403,8 @@ public class GLScatterplot extends AStorageBasedView {
 
 	public void ResetSelection() {
 		elementSelectionManager.clearSelections();
-		fDragStartPoint = new float[3];
-		fDragEndPoint = new float[3];
+		fRectangleDragStartPoint = new float[3];
+		fRectangleDragEndPoint = new float[3];
 		bUpdateAll = true;
 		setDisplayListDirty();
 	}
