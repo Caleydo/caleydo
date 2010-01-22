@@ -21,7 +21,7 @@ public class RcpGLDendrogramHorizontalView extends ARcpGLViewPart {
 
 		super.createPartControl(parent);
 		createGLCanvas();
-		createGLEventListener(initSerializedView, glCanvas.getID());
+		createGLView(initSerializedView, glCanvas.getID());
 	}
 
 	public static void createToolBarItems(int iViewID) {

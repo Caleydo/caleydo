@@ -91,7 +91,7 @@ public class InteractiveSplashHandler
 		brandingLabelMUGNames.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label copyrightLabel = new Label(splash, SWT.NONE);
-		copyrightLabel.setText(" (c) 2005 - 2009  www.caleydo.org");
+		copyrightLabel.setText(" (c) 2005 - 2010  www.caleydo.org");
 		copyrightLabel.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
 		copyrightLabel.setBounds(385, 312, 180, 16);
 		copyrightLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));

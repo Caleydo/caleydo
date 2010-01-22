@@ -42,7 +42,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 
 	protected Frame frameGL;
 	protected GLCaleydoCanvas glCanvas;
-	protected AGLView glEventListener;
+	protected AGLView glView;
 	protected MinimumSizeComposite minSizeComposite;
 
 	/** serialized representation of the view to initialize the view itself */
@@ -76,7 +76,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	 *            the id of canvas where you want to render
 	 * @return the ID of the view
 	 */
-	protected AGLView createGLEventListener(ASerializedView serializedView,
+	protected AGLView createGLView(ASerializedView serializedView,
 			int iParentCanvasID) {
 
 		String viewType = serializedView.getViewGUIID();
@@ -204,7 +204,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 
 		StringWriter xmlOutputWriter = new StringWriter();
 		try {
-			marshaller.marshal(glEventListener.getSerializableRepresentation(),
+			marshaller.marshal(glView.getSerializableRepresentation(),
 					xmlOutputWriter);
 			String xmlOutput = xmlOutputWriter.getBuffer().toString();
 			memento.putString("serialized", xmlOutput);
@@ -216,7 +216,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	public void setGLData(final GLCaleydoCanvas glCanvas,
 			final AGLView glEventListener) {
 		this.glCanvas = glCanvas;
-		this.glEventListener = glEventListener;
+		this.glView = glEventListener;
 		this.iViewID = glEventListener.getID();
 	}
 
@@ -264,7 +264,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	}
 
 	public AGLView getGLEventListener() {
-		return glEventListener;
+		return glView;
 	}
 
 	public GLCaleydoCanvas getGLCanvas() {

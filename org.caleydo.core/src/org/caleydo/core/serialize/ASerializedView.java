@@ -1,5 +1,6 @@
 package org.caleydo.core.serialize;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.manager.usecase.EDataDomain;
@@ -13,12 +14,8 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
  * @author Alexander Lex
  * @author Marc Streit
  */
+@XmlRootElement
 @XmlType
-// @XmlSeeAlso( { SerializedHistogramView.class, SerializedRadialHierarchyView.class,
-// SerializedRemoteRenderingView.class, SerializedHierarchicalHeatMapView.class,
-// SerializedParallelCoordinatesView.class, SerializedHeatMapView.class, SerializedPathwayView.class,
-// SerializedGlyphView.class, SerializedGlyphSliderView.class, SerializedDendogramVerticalView.class,
-// SerializedDendogramHorizontalView.class, SerializedHTMLBrowserView.class })
 public abstract class ASerializedView {
 
 	public ASerializedView() {

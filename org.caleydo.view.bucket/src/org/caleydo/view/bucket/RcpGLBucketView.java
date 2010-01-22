@@ -26,7 +26,7 @@ public class RcpGLBucketView extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		createGLEventListener(initSerializedView, glCanvas.getID());
+		createGLView(initSerializedView, glCanvas.getID());
 	}
 
 	@Override

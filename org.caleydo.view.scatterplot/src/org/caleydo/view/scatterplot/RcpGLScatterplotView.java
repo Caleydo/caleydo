@@ -40,7 +40,7 @@ public class RcpGLScatterplotView extends ARcpGLViewPart {
 		}
 
 		createGLCanvas();
-		createGLEventListener(initSerializedView, glCanvas.getID());
+		createGLView(initSerializedView, glCanvas.getID());
 	}
 
 	@Override

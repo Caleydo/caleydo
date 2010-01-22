@@ -96,7 +96,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart
 	public void redrawView(SerializedHistogramView serialized) {
 
 		createGLCanvas();
-		createGLEventListener(initSerializedView, glCanvas.getID());
+		createGLView(initSerializedView, glCanvas.getID());
 
 		// Composite colorMappingComposite = new Composite(baseComposite,
 		// SWT.NULL);
