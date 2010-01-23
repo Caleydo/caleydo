@@ -210,10 +210,17 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 			gl.glVertex3f(fSpacing * iCount + SIDE_SPACING, SIDE_SPACING, 0);
 			gl.glVertex3f(fSpacing * iCount + SIDE_SPACING, SIDE_SPACING
 					+ iValue * fOneHeightValue, 0);
+			gl.glColor3fv(colorMapping
+					.getColor(fContinuousColorRegion * (iCount+ 1)), 0);
 			gl.glVertex3f(fSpacing * (iCount + 1) + SIDE_SPACING, SIDE_SPACING
 					+ iValue * fOneHeightValue, 0);
 			gl.glVertex3f(fSpacing * (iCount + 1) + SIDE_SPACING, SIDE_SPACING,
 					0);
+			gl.glEnd();
+			
+			gl.glBegin(GL.GL_LINE);
+			gl.glVertex3f(0,0,0);
+			gl.glVertex3f(2, 2, 2);
 			gl.glEnd();
 
 			iCount++;
@@ -368,17 +375,17 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 			}
 
 			// the central line
-			gl.glColor3f(0, 0, 1);
-			if (!bIsFirstOrLast)
-				gl.glPushName(iColorLinePickingID);
-			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(SIDE_SPACING + markerPoint.getValue() * fRenderWidth,
-					0, 0);
-			gl.glVertex3f(SIDE_SPACING + markerPoint.getValue() * fRenderWidth,
-					viewFrustum.getHeight(), 0);
-			gl.glEnd();
-			if (!bIsFirstOrLast)
-				gl.glPopName();
+//			gl.glColor3f(0, 0, 1);
+//			if (!bIsFirstOrLast)
+//				gl.glPushName(iColorLinePickingID);
+//			gl.glBegin(GL.GL_LINES);
+//			gl.glVertex3f(SIDE_SPACING + markerPoint.getValue() * fRenderWidth,
+//					0, 0);
+//			gl.glVertex3f(SIDE_SPACING + markerPoint.getValue() * fRenderWidth,
+//					viewFrustum.getHeight(), 0);
+//			gl.glEnd();
+//			if (!bIsFirstOrLast)
+//				gl.glPopName();
 
 			renderCaption(gl, markerPoint.getValue());
 
