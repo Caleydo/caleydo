@@ -13,6 +13,8 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 public abstract class AGate extends AGLGUIElement {
 
+	
+	protected int axisID;
 	protected int gateID;
 	protected float currentPosition;
 
@@ -35,6 +37,14 @@ public abstract class AGate extends AGLGUIElement {
 	 */
 	public void setCurrentPosition(float currentPosition) {
 		this.currentPosition = currentPosition;
+	}
+	
+	/**
+	 * Returns the ID of the associated axis
+	 */
+	public int getAxisID()
+	{
+		return axisID;
 	}
 
 	/**
@@ -148,6 +158,15 @@ public abstract class AGate extends AGLGUIElement {
 	 */
 	public float getUpperValue() {
 		return top;
+	}
+	
+	/**
+	 * This returns false unless is it is overwritten in sub-classes.
+	 * 
+	 * @return
+	 */
+	public boolean isMasterGate() {
+		return false;
 	}
 
 }

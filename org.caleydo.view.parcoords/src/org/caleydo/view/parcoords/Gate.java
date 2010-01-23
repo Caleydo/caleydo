@@ -25,6 +25,11 @@ public class Gate extends AGate {
 
 	private float upperValue;
 	private float lowerValue;
+	/**
+	 * Flag determining whether this gate is a master gate or not, defaults to
+	 * false
+	 */
+	private boolean isMasterGate = false;
 
 	/**
 	 * Constructor.
@@ -40,9 +45,10 @@ public class Gate extends AGate {
 	 * @param renderStyle
 	 *            Render Style.
 	 */
-	public Gate(int gateID, float lowerValue, float upperValue, ISet set,
-			ParCoordsRenderStyle renderStyle) {
+	public Gate(int gateID, int axisID, float lowerValue, float upperValue,
+			ISet set, ParCoordsRenderStyle renderStyle) {
 		this.gateID = gateID;
+		this.axisID = axisID;
 		this.upperValue = upperValue;
 		this.lowerValue = lowerValue;
 		this.set = set;
@@ -236,6 +242,27 @@ public class Gate extends AGate {
 
 	public void setGateID(int gateID) {
 		this.gateID = gateID;
+	}
+
+	/**
+	 * Sets a gate to be a master gate (a gate which is used accross several
+	 * axes). Defaults to false, if this is not called.
+	 * 
+	 * @param isMasterGate
+	 *            true if this should be a master gate
+	 */
+	public void setMasterGate(boolean isMasterGate) {
+		this.isMasterGate = isMasterGate;
+	}
+
+	/**
+	 * True if this gate is a master gate, else false
+	 * 
+	 * @return
+	 */
+	@Override
+	public boolean isMasterGate() {
+		return isMasterGate;
 	}
 
 	/**
