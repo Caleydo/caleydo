@@ -40,7 +40,6 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 	protected void renderLineBundling(final GL gl, EIDType idType, float[] fArColor) {
 		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
-		
 		hashViewToCenterPoint = getOptimalDynamicPoints(idType);
 		if (hashViewToCenterPoint == null)
 			return;
@@ -108,6 +107,7 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 			ArrayList<ArrayList<Vec3f>> heatMapPoints = new ArrayList<ArrayList<Vec3f>>();
 			ArrayList<ArrayList<Vec3f>> parCoordsPoints = new ArrayList<ArrayList<Vec3f>>();
 			HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
+			
 			int heatMapID = getSpecialViewID(HEATMAP);
 			int parCoordID = getSpecialViewID(PARCOORDS);
 
@@ -125,15 +125,63 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 			}
 			
 			
-			double minPath = Double.MAX_VALUE;
-			ArrayList<Vec3f> optimalHeatMap = new ArrayList<Vec3f>();
-			ArrayList<Vec3f> optimalParCoords = new ArrayList<Vec3f>();
-			Vec3f optimalHeatMapPoint = new Vec3f();
-			Vec3f optimalParCoordPoint = new Vec3f();
+			ArrayList<ArrayList<Vec3f>> pointsList = new ArrayList<ArrayList<Vec3f>>();
+			if ((heatMapPoints.size() < 7) && (parCoordsPoints.size() < 4))
+				pointsList = calculateOptimalSinglePoints(heatMapPoints, heatMapID, parCoordsPoints, parCoordID, hashViewToCenterPoint);
+		
+			if (pointsList == null)
+				return null;
 			
-			//if heatmap view exists in bucket view
-			if (heatMapPoints.size() > 0){
-				for (ArrayList<Vec3f> heatMapList : heatMapPoints) {
+			ArrayList<ArrayList<Vec3f>> tempArray = new ArrayList<ArrayList<Vec3f>>();
+			if ((pointsList.size() == 2) && (pointsList.get(1).size() == 0)){
+				tempArray.add(pointsList.get(0));
+				hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
+				hashIDTypeToViewToPointLists.get(idType).put(heatMapID, tempArray);
+				hashViewToCenterPoint.put(heatMapID, pointsList.get(0).get(0));
+			}
+			else if (pointsList.size() == 2){
+				tempArray.add(pointsList.get(0));
+				hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
+				hashIDTypeToViewToPointLists.get(idType).put(heatMapID, tempArray);
+				hashViewToCenterPoint.put(heatMapID, pointsList.get(0).get(0));
+				tempArray = new ArrayList<ArrayList<Vec3f>>();		
+				tempArray.add(pointsList.get(1));
+				hashIDTypeToViewToPointLists.get(idType).remove(parCoordID);
+				hashIDTypeToViewToPointLists.get(idType).put(parCoordID, tempArray);
+				hashViewToCenterPoint.put(parCoordID, pointsList.get(1).get(0));
+			}
+			else {
+				tempArray.add(pointsList.get(0));
+				hashIDTypeToViewToPointLists.get(idType).remove(parCoordID);
+				hashIDTypeToViewToPointLists.get(idType).put(parCoordID, tempArray);
+				hashViewToCenterPoint.put(parCoordID, pointsList.get(0).get(0));
+				
+			}
+
+		return hashViewToCenterPoint;
+	}
+
+	/**
+	 *  Calculates the optimal heatmap and parcoord connection point if not more than one entry is available
+	 * @param heatMapPoints
+	 * @param heatMapID
+	 * @param parCoordsPoints
+	 * @param parCoordID
+	 * @param hashViewToCenterPoint
+	 * @return
+	 */
+	private ArrayList<ArrayList<Vec3f>> calculateOptimalSinglePoints(
+		ArrayList<ArrayList<Vec3f>> heatMapPoints, int heatMapID, ArrayList<ArrayList<Vec3f>> parCoordsPoints, int parCoordID, HashMap<Integer, Vec3f> hashViewToCenterPoint) {
+		
+		double minPath = Double.MAX_VALUE;
+		ArrayList<Vec3f> optimalHeatMap = new ArrayList<Vec3f>();
+		ArrayList<Vec3f> optimalParCoords = new ArrayList<Vec3f>();
+		ArrayList<ArrayList<Vec3f>> pointsList = new ArrayList<ArrayList<Vec3f>>();
+		
+		//if heatmap view exists in bucket view
+		if (heatMapPoints.size() > 0){
+			for (ArrayList<Vec3f> heatMapList : heatMapPoints) {
+				if (parCoordsPoints.size() > 0){
 					for (ArrayList<Vec3f> parCoordsList : parCoordsPoints) {
 						hashViewToCenterPoint.put(heatMapID, heatMapList.get(0));
 						hashViewToCenterPoint.put(parCoordID, parCoordsList.get(0));
@@ -148,19 +196,12 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 							minPath = currentPath;
 							optimalHeatMap = heatMapList;
 							optimalParCoords = parCoordsList;
-							optimalHeatMapPoint = heatMapList.get(0);
-							optimalParCoordPoint = parCoordsList.get(0);
 							vecCenter = centerPoint;
 						}
 					}
 				}
-				if ((optimalHeatMap.size() == 0) || (optimalParCoords.size() == 0))
-					return null;
-			}
-			// no heatmap loaded in bucket view
-			else{
-				for (ArrayList<Vec3f> parCoordsList : parCoordsPoints) {
-					hashViewToCenterPoint.put(parCoordID, parCoordsList.get(0));
+				else {
+					hashViewToCenterPoint.put(heatMapID, heatMapList.get(0));
 					Vec3f centerPoint = calculateCenter(hashViewToCenterPoint.values());
 				
 					//TODO: Choose if global minimum or local minimum
@@ -170,28 +211,38 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 				
 					if (currentPath < minPath){
 						minPath = currentPath;
-						optimalParCoords = parCoordsList;
-						optimalParCoordPoint = parCoordsList.get(0);
+						optimalHeatMap = heatMapList;
 						vecCenter = centerPoint;
 					}
+					
 				}
-				if (optimalParCoords.size() == 0)
-					return null;
 			}
-			ArrayList<ArrayList<Vec3f>> tempArray = new ArrayList<ArrayList<Vec3f>>();
-			if (heatMapPoints.size() > 0){
-				tempArray.add(optimalHeatMap);
-				hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
-				hashIDTypeToViewToPointLists.get(idType).put(heatMapID, tempArray);
-				hashViewToCenterPoint.put(heatMapID, optimalHeatMapPoint);
-				tempArray = new ArrayList<ArrayList<Vec3f>>();
-			}
-			tempArray.add(optimalParCoords);
-			hashIDTypeToViewToPointLists.get(idType).remove(parCoordID);
-			hashIDTypeToViewToPointLists.get(idType).put(parCoordID, tempArray);
-			hashViewToCenterPoint.put(parCoordID, optimalParCoordPoint);
 
-		return hashViewToCenterPoint;
+			pointsList.add(optimalHeatMap);
+			pointsList.add(optimalParCoords);
+		}
+		// no heatmap loaded in bucket view
+		else{
+			for (ArrayList<Vec3f> parCoordsList : parCoordsPoints) {
+				hashViewToCenterPoint.put(parCoordID, parCoordsList.get(0));
+				Vec3f centerPoint = calculateCenter(hashViewToCenterPoint.values());
+			
+				//TODO: Choose if global minimum or local minimum
+				double currentPath = calculateCurrentPathLength(hashViewToCenterPoint, centerPoint);
+				/*Vec3f temp = centerPoint.minus(arrayList.get(0));
+				double currentPath = temp.length();*/
+			
+				if (currentPath < minPath){
+					minPath = currentPath;
+					optimalParCoords = parCoordsList;
+					vecCenter = centerPoint;
+				}
+			}
+			if (optimalParCoords.size() == 0)
+				return null;
+			pointsList.add(optimalParCoords);
+		}
+		return pointsList;
 	}
 
 	/**

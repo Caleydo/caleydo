@@ -2280,12 +2280,9 @@ public class GLParallelCoordinates
 			// fXValue = viewFrustum.getRight() - 0.2f;
 			// else
 			// fXValue = viewFrustum.getRight() - 0.4f;
-			ArrayList<Vec2f> connectionPoints = new ArrayList<Vec2f>();
-			for (int count = 0; count < 3; count++)
-				connectionPoints.add(new Vec2f((renderStyle.getWidthOfCoordinateSystem()*count/2) + renderStyle.getXSpacing(), set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex)));
-				
+
 			if (renderConnectionsLeft) {
-				//fXValue = fXValue + renderStyle.getXSpacing() + (renderStyle.getXAxisEnd()/2)*count;
+				fXValue = fXValue + renderStyle.getXSpacing();
 				fYValue = set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
 			}
 			else {
