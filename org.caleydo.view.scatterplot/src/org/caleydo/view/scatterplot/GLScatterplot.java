@@ -889,7 +889,7 @@ public class GLScatterplot extends AStorageBasedView {
 			EScatterPointType tmpPoint = POINTSTYLE;
 			if (bRender2Axis) {
 				fArMappingColor = new float[]{1.0f, 0.0f, 0.0f};
-				POINTSTYLE = POINTSTYLE.POINT;
+				POINTSTYLE = EScatterPointType.POINT;
 			}
 
 			DrawPointPrimitive(gl, x, y, 0.0f, // z

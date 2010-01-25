@@ -3,7 +3,7 @@ package org.caleydo.view.browser.creator;
 import org.caleydo.core.manager.view.creator.ASWTViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.AView;
-import org.caleydo.view.browser.HTMLBrowser;
+import org.caleydo.view.browser.GenomeHTMLBrowser;
 import org.caleydo.view.browser.SerializedHTMLBrowserView;
 
 public class ViewCreator extends ASWTViewCreator {
@@ -15,7 +15,7 @@ public class ViewCreator extends ASWTViewCreator {
 	@Override
 	public AView createView(int parentContainerID, String label) {
 
-		return new HTMLBrowser(parentContainerID, label);
+		return new GenomeHTMLBrowser(parentContainerID, label);
 	}
 
 	@Override

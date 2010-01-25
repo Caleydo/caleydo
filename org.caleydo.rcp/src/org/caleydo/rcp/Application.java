@@ -168,8 +168,10 @@ public class Application
 			}
 			else {
 				WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
-				if (Window.CANCEL == projectWizardDialog.open()) {
-					shutDown();
+				projectWizardDialog.open();
+				if (bDoExit) {
+					shutdown();
+					System.exit(0);
 				}
 			}
 
@@ -229,7 +231,7 @@ public class Application
 		}
 		finally {
 			if (!bDoExit) {
-				shutDown();
+				shutdown();
 			}
 		}
 	}
@@ -284,7 +286,7 @@ public class Application
 		}
 	}
 
-	private void shutDown() {
+	private static void shutdown() {
 		// Save preferences before shutdown
 		IGeneralManager generalManager = GeneralManager.get();
 		try {
@@ -360,12 +362,9 @@ public class Application
 			Application.initData = null;
 		}
 		else if (applicationMode == EApplicationMode.LOAD_PROJECT) {
-			System.out.println("Load Project");
+
 			AUseCase useCase = initData.getUseCase();
 			GeneralManager.get().addUseCase(useCase);
-
-			// if (useCase instanceof GeneticUseCase)
-			// triggerPathwayLoading();
 
 			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
 			SetUtils.createStorages(loadDataParameters);
@@ -385,7 +384,8 @@ public class Application
 				new WizardDialog(shell, new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
 
 			if (Window.CANCEL == dataImportWizard.open()) {
-				bDoExit = true;
+				shutdown();
+				System.exit(0);
 			}
 		}
 		else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA || applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
@@ -397,12 +397,10 @@ public class Application
 			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
 
 			if (Window.CANCEL == dataImportWizard.open()) {
-				bDoExit = true;
+				shutdown();
+				System.exit(0);
 			}
 		}
-
-		// if (applicationMode.getDataDomain() == EDataDomain.GENETIC_DATA)
-		// triggerPathwayLoading();
 
 		// TODO - this initializes the VA after the data is written correctly in the set - probably not the
 		// nicest place to do this.

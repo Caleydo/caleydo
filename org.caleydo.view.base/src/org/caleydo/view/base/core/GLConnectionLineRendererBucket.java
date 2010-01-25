@@ -2,7 +2,6 @@ package org.caleydo.view.base.core;
 
 import gleem.linalg.Vec3f;
 
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -297,73 +296,73 @@ public class GLConnectionLineRendererBucket extends AGLConnectionLineRenderer {
 		gl.glEnd();
 	}
 
-	/**
-	 * Render curved connection lines.
-	 * 
-	 * @param gl
-	 * @param vecSrcPoint
-	 * @param vecDestPoint
-	 * @param iNumberOfLines
-	 * @param vecViewCenterPoint
-	 * @param fArColor
-	 */
-	private void renderLine(final GL gl, final Vec3f vecSrcPoint,
-			final Vec3f vecDestPoint, final int iNumberOfLines,
-			Vec3f vecViewCenterPoint, float[] fArColor) {
-		Vec3f[] arSplinePoints = new Vec3f[3];
-
-		arSplinePoints[0] = vecSrcPoint.copy();
-		arSplinePoints[1] = calculateBundlingPoint(vecSrcPoint,
-				vecViewCenterPoint);
-		arSplinePoints[2] = vecDestPoint.copy();
-
-		FloatBuffer splinePoints = FloatBuffer.allocate(8 * 3);
-		// float[] fArPoints =
-		// {1,2,-1,0,1,2,2,0,0,3,3,1,2,3,-2,1,3,1,1,3,0,2,-1,-1};
-		float[] fArPoints = {arSplinePoints[0].x(), arSplinePoints[0].y(),
-				arSplinePoints[0].z(), arSplinePoints[1].x(),
-				arSplinePoints[1].y(), arSplinePoints[1].z(),
-				arSplinePoints[2].x(), arSplinePoints[2].y(),
-				arSplinePoints[2].z()};
-		splinePoints.put(fArPoints);
-		splinePoints.rewind();
-
-		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 3, splinePoints);
-
-		// Line shadow
-		gl
-				.glColor4fv(
-						ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR,
-						0);
-		// gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
-		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2);
-		gl.glBegin(GL.GL_LINE_STRIP);
-		for (int i = 0; i <= 10; i++) {
-			gl.glEvalCoord1f((float) i / 10);
-		}
-		gl.glEnd();
-
-		// gl.glColor4fv(fArColor, 0);
-		// Point to mask artefacts
-		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
-		// gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
-
-		gl.glPointSize(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH - 0.5f);
-		gl.glBegin(GL.GL_POINTS);
-		for (int i = 0; i <= 10; i++) {
-			gl.glEvalCoord1f((float) i / 10);
-		}
-		gl.glEnd();
-
-		// The spline
-		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
-
-		gl.glBegin(GL.GL_LINE_STRIP);
-		for (int i = 0; i <= 10; i++) {
-			gl.glEvalCoord1f((float) i / 10);
-		}
-		gl.glEnd();
-	}
+	// /**
+	// * Render curved connection lines.
+	// *
+	// * @param gl
+	// * @param vecSrcPoint
+	// * @param vecDestPoint
+	// * @param iNumberOfLines
+	// * @param vecViewCenterPoint
+	// * @param fArColor
+	// */
+	// private void renderLine(final GL gl, final Vec3f vecSrcPoint,
+	// final Vec3f vecDestPoint, final int iNumberOfLines,
+	// Vec3f vecViewCenterPoint, float[] fArColor) {
+	// Vec3f[] arSplinePoints = new Vec3f[3];
+	//
+	// arSplinePoints[0] = vecSrcPoint.copy();
+	// arSplinePoints[1] = calculateBundlingPoint(vecSrcPoint,
+	// vecViewCenterPoint);
+	// arSplinePoints[2] = vecDestPoint.copy();
+	//
+	// FloatBuffer splinePoints = FloatBuffer.allocate(8 * 3);
+	// // float[] fArPoints =
+	// // {1,2,-1,0,1,2,2,0,0,3,3,1,2,3,-2,1,3,1,1,3,0,2,-1,-1};
+	// float[] fArPoints = {arSplinePoints[0].x(), arSplinePoints[0].y(),
+	// arSplinePoints[0].z(), arSplinePoints[1].x(),
+	// arSplinePoints[1].y(), arSplinePoints[1].z(),
+	// arSplinePoints[2].x(), arSplinePoints[2].y(),
+	// arSplinePoints[2].z()};
+	// splinePoints.put(fArPoints);
+	// splinePoints.rewind();
+	//
+	// gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 3, splinePoints);
+	//
+	// // Line shadow
+	// gl
+	// .glColor4fv(
+	// ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR,
+	// 0);
+	// // gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
+	// gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2);
+	// gl.glBegin(GL.GL_LINE_STRIP);
+	// for (int i = 0; i <= 10; i++) {
+	// gl.glEvalCoord1f((float) i / 10);
+	// }
+	// gl.glEnd();
+	//
+	// // gl.glColor4fv(fArColor, 0);
+	// // Point to mask artefacts
+	// gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+	// // gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
+	//
+	// gl.glPointSize(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH - 0.5f);
+	// gl.glBegin(GL.GL_POINTS);
+	// for (int i = 0; i <= 10; i++) {
+	// gl.glEvalCoord1f((float) i / 10);
+	// }
+	// gl.glEnd();
+	//
+	// // The spline
+	// gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
+	//
+	// gl.glBegin(GL.GL_LINE_STRIP);
+	// for (int i = 0; i <= 10; i++) {
+	// gl.glEvalCoord1f((float) i / 10);
+	// }
+	// gl.glEnd();
+	// }
 
 	// private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f
 	// vecDestPoint,

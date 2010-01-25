@@ -66,7 +66,7 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 	private int iNotSelectedLevel = 1000;
 
 	private float fWidthLevel1 = 0.2f;
-	private float fWidthLevel2 = 0.0f;
+	//private float fWidthLevel2 = 0.0f;
 	private float fWidthLevel3 = 0.0f;
 	private float fWidthClusterVisualization = 0.1f;
 	private float fHeightExperimentDendrogram = 1.45f;

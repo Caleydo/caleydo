@@ -64,6 +64,7 @@ public class DataImportWizard
 
 	@Override
 	public boolean performCancel() {
+		
 		return true;
 	}
 

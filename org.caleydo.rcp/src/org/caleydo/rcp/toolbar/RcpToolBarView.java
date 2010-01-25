@@ -100,6 +100,7 @@ public class RcpToolBarView
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void removeAllViewSpecificToolBars() {
 		for (Group group : viewSpecificGroups) {
 			List<ToolBarManager> toolBarManagers = (List<ToolBarManager>) group.getData("toolBarManagers");

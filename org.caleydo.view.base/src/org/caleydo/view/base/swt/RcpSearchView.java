@@ -256,6 +256,9 @@ public class RcpSearchView extends ViewPart {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 
+					if (pathwayContainingGeneTable == null || pathwayContainingGeneTable.getItemCount() <= 0) 
+						return;
+				
 					// Flush old pathway results
 					for (TableItem item : pathwayContainingGeneTable.getItems())
 						item.dispose();
@@ -579,9 +582,8 @@ public class RcpSearchView extends ViewPart {
 
 					// Do not create context menu for genes that have to
 					// expression value
-					if (!tableItem.getText(0).equals("FOUND"))
-						continue;
-
+					if (tableItem.getText(0).equals("FOUND"))
+					{
 					MenuItem openInBrowserMenuItem = new MenuItem(menu,
 							SWT.PUSH);
 					openInBrowserMenuItem.setText("Open in browser");
@@ -697,6 +699,12 @@ public class RcpSearchView extends ViewPart {
 									}
 								};
 							});
+					}
+					else {
+						MenuItem openInBrowserMenuItem = new MenuItem(menu,
+								SWT.PUSH);
+						openInBrowserMenuItem.setText("Sorry, no mapping was found in your data (see first column).");
+					}
 				}
 			}
 		});

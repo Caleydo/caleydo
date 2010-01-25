@@ -18,6 +18,7 @@ import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -783,8 +784,13 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	protected void reactOnExternalSelection(boolean scrollToSelection) {
 
 		if (scrollToSelection && bSkipLevel2 == false) {
-			Set<Integer> setMouseOverElements = contentSelectionManager
-					.getElements(ESelectionType.MOUSE_OVER);
+			Set<Integer> setMouseOverElements = new HashSet<Integer>();
+			
+			setMouseOverElements.addAll(contentSelectionManager
+					.getElements(ESelectionType.MOUSE_OVER));
+			
+			setMouseOverElements.addAll(contentSelectionManager.getElements(ESelectionType.SELECTION));
+			
 			for (Integer mouseOverElement : setMouseOverElements) {
 
 				int index = contentVA.indexOf(mouseOverElement.intValue());
