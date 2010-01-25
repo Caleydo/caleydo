@@ -81,6 +81,7 @@ import org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureCoords;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
 
@@ -153,7 +154,7 @@ public class GLScatterplot extends AStorageBasedView {
 	private int iSamplesPerTexture = 0;
 	private final static int MAX_SAMPLES_PER_TEXTURE = 2000;
 	// array of textures for holding the data samples
-	private int iNrTextures = 25; // TMP
+	private int iNrTextures = 1; // TMP
 	private ArrayList<Texture> AlTextures = new ArrayList<Texture>();
 	private ArrayList<Integer> iAlNumberSamples = new ArrayList<Integer>();
 	private boolean bRedrawTextures = false;
@@ -199,6 +200,64 @@ public class GLScatterplot extends AStorageBasedView {
 
 		}
 	}
+	
+	
+	private void renderTextures(GL gl) {
+		float fHeight;
+		float fWidth;
+		float fyOffset = 0.0f;
+
+		calculateTextures();
+		initTextures();			
+		
+		fHeight = viewFrustum.getHeight();
+		fWidth = viewFrustum.getWidth();
+
+		float fHeightElem = fHeight; // / iNumberOfElements;
+
+		float fStep = fWidth;
+		
+		//fyOffset=fWidth/2;
+
+		gl.glColor4f(1f, 0f, 0f, 1f);
+
+		for (int i = 0; i < iNrTextures; i++) {
+
+			//fStep = fHeightElem * iAlNumberSamples.get(iNrTextures - i - 1);
+
+			AlTextures.get(iNrTextures - i - 1).enable();
+			AlTextures.get(iNrTextures - i - 1).bind();
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S,
+					GL.GL_CLAMP);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T,
+					GL.GL_CLAMP);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
+					GL.GL_NEAREST);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
+					GL.GL_NEAREST);
+			TextureCoords texCoords = AlTextures.get(iNrTextures - i - 1)
+					.getImageTexCoords();
+
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					EPickingType.HIER_HEAT_MAP_TEXTURE_SELECTION, iNrTextures
+							- i));
+			gl.glBegin(GL.GL_QUADS);
+			gl.glTexCoord2d(texCoords.left(), texCoords.top());
+			gl.glVertex3f(0, fyOffset, 0);
+			gl.glTexCoord2d(texCoords.left(), texCoords.bottom());
+			gl.glVertex3f(0, fyOffset + fStep, 0);
+			gl.glTexCoord2d(texCoords.right(), texCoords.bottom());
+			gl.glVertex3f(fWidth, fyOffset + fStep, 0);
+			gl.glTexCoord2d(texCoords.right(), texCoords.top());
+			gl.glVertex3f(fWidth, fyOffset, 0);
+			gl.glEnd();
+			gl.glPopName();
+
+			fyOffset += fStep;
+			AlTextures.get(iNrTextures - i - 1).disable();
+		}
+	}
+	
 
 	/**
 	 * Init textures, build array of textures used for holding the whole
@@ -206,7 +265,7 @@ public class GLScatterplot extends AStorageBasedView {
 	 * 
 	 * @param gl
 	 */
-	private void initTextures(final GL gl) {
+	private void initTextures() {
 
 		AlTextures.clear();
 		iAlNumberSamples.clear();
@@ -214,80 +273,159 @@ public class GLScatterplot extends AStorageBasedView {
 		Texture tempTextur;
 
 		// tempTextur.
-		int iTextureSize = contentVA.size();
+		int iTextureHeight = contentVA.size();
+		int iTextureWidth = contentVA.size();
 
-		gl.glCopyTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_LUMINANCE, 0, 0, 128,
-				128, 0);
+		iTextureHeight = 128;
+		iTextureWidth = 128;
 
-		iSamplesPerTexture = (int) Math.ceil((double) iTextureSize
-				/ iNrTextures);
+//iSamplesPerTexture = (int) Math.ceil((double) iTextureSize
+//		/ iNrTextures);
 
+		
+		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
+		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
+		int ix = 0;
+		int iy = 0;
+		float xnormalized = 0.0f;
+		float ynormalized = 0.0f;
+				
 		float fLookupValue = 0;
 		float fOpacity = 0;
+		int TextureSize= iTextureWidth* iTextureHeight ;
 
-		FloatBuffer[] FbTemp = new FloatBuffer[iNrTextures];
-
-		for (int itextures = 0; itextures < iNrTextures; itextures++) {
-
-			if (itextures == iNrTextures - 1) {
-				iAlNumberSamples.add(iTextureSize - iSamplesPerTexture
-						* itextures);
-				FbTemp[itextures] = BufferUtil
-						.newFloatBuffer((iTextureSize - iSamplesPerTexture
-								* itextures)
-								* iTextureSize);
-			} else {
-				iAlNumberSamples.add(iSamplesPerTexture);
-				FbTemp[itextures] = BufferUtil
-						.newFloatBuffer(iSamplesPerTexture * iTextureSize);
-			}
+		FloatBuffer FbTemp = BufferUtil.newFloatBuffer(TextureSize*4);
+		
+		
+		float[] fArRgbaWhite = { 1.0f, 1.0f,1.0f, 
+											1.0f }; //OPACY
+		
+		for (Integer i=0;i<TextureSize;i++)
+		{
+				FbTemp.put(fArRgbaWhite);
 		}
-
-		int iCount = 0;
-		int iTextureCounter = 0;
-
+		
+		int maxX=0;
+		int maxY=0;
+		
 		for (Integer iContentIndex : contentVA) {
-			iCount++;
-			for (Integer iStorageIndex : storageVA) {
-				if (contentSelectionManager.checkStatus(
-						ESelectionType.DESELECTED, iContentIndex)) {
-					fOpacity = 0.3f;
-				} else {
-					fOpacity = 1.0f;
-				}
-
-				fLookupValue = set.get(iStorageIndex).getFloat(
+			
+			
+				xnormalized = set.get(SELECTED_X_AXIS).getFloat(
+						EDataRepresentation.NORMALIZED, iContentIndex);
+				ynormalized = set.get(SELECTED_Y_AXIS).getFloat(
 						EDataRepresentation.NORMALIZED, iContentIndex);
 
-				float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+				ix = (int) Math.floor(xnormalized * (double)iTextureWidth);
+				iy = ix* iTextureWidth*4+
+					(int) Math.floor(ynormalized * (double)iTextureHeight)*4;
+												
+				float[] fArMappingColor = colorMapper.getColor(Math.max(
+						xnormalized, ynormalized));
 
-				float[] fArRgba = {fArMappingColor[0], fArMappingColor[1],
-						fArMappingColor[2], fOpacity};
+//			float[] fArRgba = { fArMappingColor[0], fArMappingColor[1],
+//					fArMappingColor[2], fOpacity };
 
-				FbTemp[iTextureCounter].put(fArRgba);
-			}
-			if (iCount >= iAlNumberSamples.get(iTextureCounter)) {
-				FbTemp[iTextureCounter].rewind();
+				if(ix>maxX) maxX=ix;
+				if(iy>maxY) maxY=iy;
+				
+				if(iy>TextureSize*4-10)
+				{
+					iy=0; // TODO : DIRDY HACK CAUSEINIDICES ARE WRONG!
+				}
+				
 
-				TextureData texData = new TextureData(
-						GL.GL_RGBA /* internalFormat */,
-						iTextureSize /* height */, iAlNumberSamples
-								.get(iTextureCounter) /* width */,
-						0 /* border */, GL.GL_RGBA /* pixelFormat */,
-						GL.GL_FLOAT /* pixelType */, false /* mipmap */,
-						false /* dataIsCompressed */,
-						false /* mustFlipVertically */, FbTemp[iTextureCounter],
-						null);
-
-				tempTextur = TextureIO.newTexture(0);
-				tempTextur.updateImage(texData);
-
-				AlTextures.add(tempTextur);
-
-				iTextureCounter++;
-				iCount = 0;
-			}
+				
+				FbTemp.put(iy,fArMappingColor[0]);
+				FbTemp.put(iy+1,fArMappingColor[1]);
+				FbTemp.put(iy+2,fArMappingColor[2]);
+				FbTemp.put(iy+3,fOpacity);
+				
+			
 		}
+		
+		maxX=maxX;
+		maxY=maxY;
+		
+		FbTemp.rewind();
+
+		TextureData texData = new TextureData(
+				GL.GL_RGBA /* internalFormat */,
+				iTextureWidth /* height */, iTextureHeight /* width */,
+				0 /* border */, GL.GL_RGBA /* pixelFormat */,
+				GL.GL_FLOAT /* pixelType */, false /* mipmap */,
+				false /* dataIsCompressed */, false /* mustFlipVertically */,
+				FbTemp, null);
+
+		tempTextur = TextureIO.newTexture(0);
+		tempTextur.updateImage(texData);
+
+		AlTextures.add(tempTextur);
+		
+		
+//
+//		for (int itextures = 0; itextures < iNrTextures; itextures++) 
+//		{
+//
+//			if (itextures == iNrTextures - 1) {
+//				iAlNumberSamples.add(iTextureSize - iSamplesPerTexture
+//						* itextures);
+//				FbTemp[itextures] = BufferUtil
+//						.newFloatBuffer((iTextureSize - iSamplesPerTexture
+//								* itextures)
+//								* iTextureSize);
+//			} else {
+//				iAlNumberSamples.add(iSamplesPerTexture);
+//				FbTemp[itextures] = BufferUtil
+//						.newFloatBuffer(iSamplesPerTexture * iTextureSize);
+//			}
+//		}
+//
+//		int iCount = 0;
+//		int iTextureCounter = 0;
+//
+//		for (Integer iContentIndex : contentVA) {
+//			iCount++;
+//			for (Integer iStorageIndex : storageVA) {
+//				if (contentSelectionManager.checkStatus(
+//						ESelectionType.DESELECTED, iContentIndex)) {
+//					fOpacity = 0.3f;
+//				} else {
+//					fOpacity = 1.0f;
+//				}
+//
+//				fLookupValue = set.get(iStorageIndex).getFloat(
+//						EDataRepresentation.NORMALIZED, iContentIndex);
+//
+//				float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+//
+//				float[] fArRgba = {fArMappingColor[0], fArMappingColor[1],
+//						fArMappingColor[2], fOpacity};
+//
+//				FbTemp[iTextureCounter].put(fArRgba);
+//			}
+//			if (iCount >= iAlNumberSamples.get(iTextureCounter)) {
+//				FbTemp[iTextureCounter].rewind();
+//
+//				TextureData texData = new TextureData(
+//						GL.GL_RGBA /* internalFormat */,
+//						iTextureSize /* height */, iAlNumberSamples
+//								.get(iTextureCounter) /* width */,
+//						0 /* border */, GL.GL_RGBA /* pixelFormat */,
+//						GL.GL_FLOAT /* pixelType */, false /* mipmap */,
+//						false /* dataIsCompressed */,
+//						false /* mustFlipVertically */, FbTemp[iTextureCounter],
+//						null);
+//
+//				tempTextur = TextureIO.newTexture(0);
+//				tempTextur.updateImage(texData);
+//
+//				AlTextures.add(tempTextur);
+//
+//				iTextureCounter++;
+//				iCount = 0;
+//			}
+//		}
 
 	}
 
@@ -305,6 +443,7 @@ public class GLScatterplot extends AStorageBasedView {
 				initAxisComboEvent);
 		// detailLevel = EDetailLevel.LOW;
 		detailLevel = EDetailLevel.HIGH;
+
 	}
 
 	@Override
@@ -472,6 +611,12 @@ public class GLScatterplot extends AStorageBasedView {
 		// gl.glEnable(GL.GL_DEPTH_TEST);
 		// clipToFrustum(gl);
 
+		if (detailLevel == EDetailLevel.LOW) 
+		{
+			renderTextures(gl);			
+			return;
+		}
+		
 		gl.glCallList(iGLDisplayListToCall);
 		if (detailLevel == EDetailLevel.HIGH) {
 			gl.glCallList(iGLDisplayListIndexBrush);
@@ -1684,7 +1829,9 @@ public class GLScatterplot extends AStorageBasedView {
 
 	public void toggleDetailLevel() {
 		if (detailLevel == EDetailLevel.HIGH)
-			detailLevel = EDetailLevel.LOW;
+		{			
+			detailLevel = EDetailLevel.LOW;			
+		}
 		else
 			detailLevel = EDetailLevel.HIGH;
 		bUpdateAll = true;
