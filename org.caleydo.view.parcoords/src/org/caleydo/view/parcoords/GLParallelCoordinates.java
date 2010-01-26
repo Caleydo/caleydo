@@ -96,6 +96,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -2191,12 +2192,16 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		if ((bRenderStorageHorizontally && idType == EIDType.EXPRESSION_INDEX || !bRenderStorageHorizontally
 				&& idType == EIDType.EXPERIMENT_INDEX)
 				&& ePolylineDataType != EIDType.EXPERIMENT_INDEX) {
-			for (int iAxisNumber : axisVA.indicesOf(iStorageIndex)) {
+			for (int iAxisNumber : axisVA) {
 
 				fXValue = iAxisNumber
 						* renderStyle.getAxisSpacing(axisVA.size());
 				fXValue = fXValue + renderStyle.getXSpacing();
-				fYValue = renderStyle.getBottomSpacing();
+				fYValue =	set
+				.get(storageVA.get(storageVA.size() - 1))
+				.getFloat(EDataRepresentation.NORMALIZED, iAxisNumber);
+				
+//				fYValue = renderStyle.getBottomSpacing();
 				alElementReps.add(new SelectedElementRep(idType, iUniqueID,
 						fXValue, fYValue, 0.0f));
 			}
