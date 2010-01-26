@@ -456,8 +456,10 @@ public abstract class AGLView
 					}
 
 					EPickingMode ePickingMode = tempPick.getPickingMode();
-					if (pickingType == EPickingType.CONTEXT_MENU_SELECTION) {
-						contextMenu.handleEvents(ePickingMode, iExternalID);
+					if (pickingType == EPickingType.CONTEXT_MENU_SELECTION
+						|| pickingType == EPickingType.CONTEXT_MENU_SCROLL_DOWN
+						|| pickingType == EPickingType.CONTEXT_MENU_SCROLL_UP) {
+						contextMenu.handlePickingEvents(pickingType, ePickingMode, iExternalID);
 					}
 					else {
 						if (tempPick.getPickingMode() != EPickingMode.RIGHT_CLICKED)

@@ -22,7 +22,9 @@ public abstract class AContextMenuItem
 
 	private static final int MAX_TEXT_LENGTH = 25;
 
-	private ArrayList<IContextMenuEntry> subItems;
+	private SubMenu subMenuData;
+
+	// private ArrayList<IContextMenuEntry> subItems;
 
 	/**
 	 * Sets the text which is shown when the item is rendered in a context menu. It is mandatory to set a text
@@ -67,10 +69,10 @@ public abstract class AContextMenuItem
 	 *            the sub-item to be added
 	 */
 	public void addSubItem(AContextMenuItem subItem) {
-		if (subItems == null)
-			subItems = new ArrayList<IContextMenuEntry>();
+		if (subMenuData == null)
+			subMenuData = new SubMenu();
 
-		subItems.add(subItem);
+		subMenuData.add(subItem);
 
 	}
 
@@ -98,7 +100,7 @@ public abstract class AContextMenuItem
 	 * @return flag determining whether this item contains sub items
 	 */
 	public boolean hasSubItems() {
-		if (subItems == null)
+		if (subMenuData == null)
 			return false;
 		return true;
 	}
@@ -108,8 +110,8 @@ public abstract class AContextMenuItem
 	 * 
 	 * @return
 	 */
-	public ArrayList<IContextMenuEntry> getSubItems() {
-		return subItems;
+	public SubMenu getSubMenu() {
+		return subMenuData;
 	}
 
 	/**
