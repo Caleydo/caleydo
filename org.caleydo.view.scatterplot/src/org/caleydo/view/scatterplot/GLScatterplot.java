@@ -206,27 +206,39 @@ public class GLScatterplot extends AStorageBasedView {
 		float fHeight;
 		float fWidth;
 		float fyOffset = 0.0f;
+		float fxOffset = 0.0f;
 
+		iNrTextures=25;
+		int iNrTexturesX=5;
+		int iNrTexturesY=5;
+		int size = AlTextures.size();
 		calculateTextures();
 		initTextures();			
+		size = AlTextures.size();
 		
 		fHeight = viewFrustum.getHeight();
 		fWidth = viewFrustum.getWidth();
 
 		float fHeightElem = fHeight; // / iNumberOfElements;
 
-		float fStep = fWidth;
+		float fStepY = fHeight / 6.0f;
+		float fStepX = fWidth / 6.0f;
+		
+		float fSpacerX = fStepX /6.0f;
+		float fSpacerY = fStepY /6.0f;
 		
 		//fyOffset=fWidth/2;
 
-		gl.glColor4f(1f, 0f, 0f, 1f);
+		gl.glColor4f(1f, 1f, 1f, 1f);
+		int icounter=0;
 
-		for (int i = 0; i < iNrTextures; i++) {
+		for (int i = 0; i < iNrTexturesX; i++) {
+			for (int j = 0; j < iNrTexturesY; j++) {
 
 			//fStep = fHeightElem * iAlNumberSamples.get(iNrTextures - i - 1);
 
-			AlTextures.get(iNrTextures - i - 1).enable();
-			AlTextures.get(iNrTextures - i - 1).bind();
+			AlTextures.get(iNrTextures - icounter - 1).enable();
+			AlTextures.get(iNrTextures - icounter - 1).bind();
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S,
 					GL.GL_CLAMP);
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T,
@@ -243,18 +255,23 @@ public class GLScatterplot extends AStorageBasedView {
 							- i));
 			gl.glBegin(GL.GL_QUADS);
 			gl.glTexCoord2d(texCoords.left(), texCoords.top());
-			gl.glVertex3f(0, fyOffset, 0);
+			gl.glVertex3f(fxOffset, fyOffset, 0);
 			gl.glTexCoord2d(texCoords.left(), texCoords.bottom());
-			gl.glVertex3f(0, fyOffset + fStep, 0);
+			gl.glVertex3f(fxOffset, fyOffset + fStepY, 0);
 			gl.glTexCoord2d(texCoords.right(), texCoords.bottom());
-			gl.glVertex3f(fWidth, fyOffset + fStep, 0);
+			gl.glVertex3f(fxOffset+ fStepX, fyOffset + fStepY, 0);
 			gl.glTexCoord2d(texCoords.right(), texCoords.top());
-			gl.glVertex3f(fWidth, fyOffset, 0);
+			gl.glVertex3f(fxOffset+ fStepX, fyOffset, 0);
 			gl.glEnd();
 			gl.glPopName();
 
-			fyOffset += fStep;
-			AlTextures.get(iNrTextures - i - 1).disable();
+			fyOffset += fStepY+fSpacerY;
+			
+			AlTextures.get(iNrTextures - icounter - 1).disable();
+			icounter++;
+			}
+			fyOffset =0;
+			fxOffset += fStepX+fSpacerX;
 		}
 	}
 	
@@ -291,7 +308,7 @@ public class GLScatterplot extends AStorageBasedView {
 		float ynormalized = 0.0f;
 				
 		float fLookupValue = 0;
-		float fOpacity = 0;
+		float fOpacity = 1.0f;
 		int TextureSize= iTextureWidth* iTextureHeight ;
 
 		FloatBuffer FbTemp = BufferUtil.newFloatBuffer(TextureSize*4);
@@ -300,133 +317,86 @@ public class GLScatterplot extends AStorageBasedView {
 		float[] fArRgbaWhite = { 1.0f, 1.0f,1.0f, 
 											1.0f }; //OPACY
 		
-		for (Integer i=0;i<TextureSize;i++)
+		int StartindexX=0;
+		int StartindexY=0;
+		int EndindexX=4;
+		int EndindexY=4;
+		
+		
+		for (Integer iAxisX=StartindexX;iAxisX<=EndindexX;iAxisX++)
 		{
-				FbTemp.put(fArRgbaWhite);
-		}
-		
-		int maxX=0;
-		int maxY=0;
-		
-		for (Integer iContentIndex : contentVA) {
-			
-			
-				xnormalized = set.get(SELECTED_X_AXIS).getFloat(
-						EDataRepresentation.NORMALIZED, iContentIndex);
-				ynormalized = set.get(SELECTED_Y_AXIS).getFloat(
-						EDataRepresentation.NORMALIZED, iContentIndex);
-
-				ix = (int) Math.floor(xnormalized * (double)iTextureWidth);
-				iy = ix* iTextureWidth*4+
-					(int) Math.floor(ynormalized * (double)iTextureHeight)*4;
-												
-				float[] fArMappingColor = colorMapper.getColor(Math.max(
-						xnormalized, ynormalized));
-
-//			float[] fArRgba = { fArMappingColor[0], fArMappingColor[1],
-//					fArMappingColor[2], fOpacity };
-
-				if(ix>maxX) maxX=ix;
-				if(iy>maxY) maxY=iy;
-				
-				if(iy>TextureSize*4-10)
+			for (Integer iAxisY=StartindexY;iAxisY<=EndindexY;iAxisY++)
+			{
+						
+					
+				for (Integer i=0;i<TextureSize;i++)
 				{
-					iy=0; // TODO : DIRDY HACK CAUSEINIDICES ARE WRONG!
+						FbTemp.put(fArRgbaWhite);
 				}
 				
-
+				int maxX=0;
+				int maxY=0;
 				
-				FbTemp.put(iy,fArMappingColor[0]);
-				FbTemp.put(iy+1,fArMappingColor[1]);
-				FbTemp.put(iy+2,fArMappingColor[2]);
-				FbTemp.put(iy+3,fOpacity);
-				
+				for (Integer iContentIndex : contentVA) {
+					
+					int current_SELECTED_X_AXIS=iAxisX;
+					int current_SELECTED_Y_AXIS=iAxisY;
+					
+						xnormalized = set.get(current_SELECTED_X_AXIS).getFloat(
+								EDataRepresentation.NORMALIZED, iContentIndex);
+						ynormalized = set.get(current_SELECTED_Y_AXIS).getFloat(
+								EDataRepresentation.NORMALIZED, iContentIndex);
 			
-		}
+						ix = (int) Math.floor(xnormalized * (double)(iTextureWidth-1));
+						iy = ix* (iTextureWidth)*4+
+							(int) Math.floor(ynormalized * (double)(iTextureHeight-1))*4;
+						
+					
+														
+						float[] fArMappingColor = colorMapper.getColor(Math.max(
+								xnormalized, ynormalized));
+			
+			//			float[] fArRgba = { fArMappingColor[0], fArMappingColor[1],
+			//					fArMappingColor[2], fOpacity };
+			
+						if(ix>maxX) maxX=ix;
+						if(iy>maxY) maxY=iy;
+						
+						if(iy>=TextureSize*4-1)
+						{
+							iy=0; // TODO : DIRDY HACK CAUSE INIDICES ARE WRONG!
+						}
+						
+			
+						
+						FbTemp.put(iy,fArMappingColor[0]);
+						FbTemp.put(iy+1,fArMappingColor[1]);
+						FbTemp.put(iy+2,fArMappingColor[2]);
+						FbTemp.put(iy+3,fOpacity);
+						
+					
+				}
+				
+				maxX=maxX;
+				maxY=maxY;
+				
+				FbTemp.rewind();
+			
+				TextureData texData = new TextureData(
+						GL.GL_RGBA /* internalFormat */,
+						iTextureWidth /* height */, iTextureHeight /* width */,
+						0 /* border */, GL.GL_RGBA /* pixelFormat */,
+						GL.GL_FLOAT /* pixelType */, false /* mipmap */,
+						false /* dataIsCompressed */, true /* mustFlipVertically */,
+						FbTemp, null);
+			
+				tempTextur = TextureIO.newTexture(0);
+				tempTextur.updateImage(texData);
+			
+				AlTextures.add(tempTextur);
 		
-		maxX=maxX;
-		maxY=maxY;
-		
-		FbTemp.rewind();
-
-		TextureData texData = new TextureData(
-				GL.GL_RGBA /* internalFormat */,
-				iTextureWidth /* height */, iTextureHeight /* width */,
-				0 /* border */, GL.GL_RGBA /* pixelFormat */,
-				GL.GL_FLOAT /* pixelType */, false /* mipmap */,
-				false /* dataIsCompressed */, false /* mustFlipVertically */,
-				FbTemp, null);
-
-		tempTextur = TextureIO.newTexture(0);
-		tempTextur.updateImage(texData);
-
-		AlTextures.add(tempTextur);
-		
-		
-//
-//		for (int itextures = 0; itextures < iNrTextures; itextures++) 
-//		{
-//
-//			if (itextures == iNrTextures - 1) {
-//				iAlNumberSamples.add(iTextureSize - iSamplesPerTexture
-//						* itextures);
-//				FbTemp[itextures] = BufferUtil
-//						.newFloatBuffer((iTextureSize - iSamplesPerTexture
-//								* itextures)
-//								* iTextureSize);
-//			} else {
-//				iAlNumberSamples.add(iSamplesPerTexture);
-//				FbTemp[itextures] = BufferUtil
-//						.newFloatBuffer(iSamplesPerTexture * iTextureSize);
-//			}
-//		}
-//
-//		int iCount = 0;
-//		int iTextureCounter = 0;
-//
-//		for (Integer iContentIndex : contentVA) {
-//			iCount++;
-//			for (Integer iStorageIndex : storageVA) {
-//				if (contentSelectionManager.checkStatus(
-//						ESelectionType.DESELECTED, iContentIndex)) {
-//					fOpacity = 0.3f;
-//				} else {
-//					fOpacity = 1.0f;
-//				}
-//
-//				fLookupValue = set.get(iStorageIndex).getFloat(
-//						EDataRepresentation.NORMALIZED, iContentIndex);
-//
-//				float[] fArMappingColor = colorMapper.getColor(fLookupValue);
-//
-//				float[] fArRgba = {fArMappingColor[0], fArMappingColor[1],
-//						fArMappingColor[2], fOpacity};
-//
-//				FbTemp[iTextureCounter].put(fArRgba);
-//			}
-//			if (iCount >= iAlNumberSamples.get(iTextureCounter)) {
-//				FbTemp[iTextureCounter].rewind();
-//
-//				TextureData texData = new TextureData(
-//						GL.GL_RGBA /* internalFormat */,
-//						iTextureSize /* height */, iAlNumberSamples
-//								.get(iTextureCounter) /* width */,
-//						0 /* border */, GL.GL_RGBA /* pixelFormat */,
-//						GL.GL_FLOAT /* pixelType */, false /* mipmap */,
-//						false /* dataIsCompressed */,
-//						false /* mustFlipVertically */, FbTemp[iTextureCounter],
-//						null);
-//
-//				tempTextur = TextureIO.newTexture(0);
-//				tempTextur.updateImage(texData);
-//
-//				AlTextures.add(tempTextur);
-//
-//				iTextureCounter++;
-//				iCount = 0;
-//			}
-//		}
-
+			}
+		}			
 	}
 
 	@Override
