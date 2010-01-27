@@ -87,12 +87,9 @@ import org.eclipse.core.runtime.Status;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class GLPathway extends AGLView
-		implements
-			ISelectionUpdateHandler,
-			IVirtualArrayUpdateHandler,
-			IViewCommandHandler,
-			ISelectionCommandHandler {
+public class GLPathway extends AGLView implements ISelectionUpdateHandler,
+		IVirtualArrayUpdateHandler, IViewCommandHandler,
+		ISelectionCommandHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.pathway";
 
@@ -660,137 +657,135 @@ public class GLPathway extends AGLView
 		}
 
 		switch (ePickingType) {
-			case PATHWAY_ELEMENT_SELECTION :
+		case PATHWAY_ELEMENT_SELECTION:
 
-				ESelectionType eSelectionType;
+			ESelectionType eSelectionType;
 
-				PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager
-						.getPathwayItemManager().getItem(iExternalID);
+			PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager
+					.getPathwayItemManager().getItem(iExternalID);
 
-				setDisplayListDirty();
+			setDisplayListDirty();
 
-				selectionManager.clearSelection(ESelectionType.NEIGHBORHOOD_1);
-				selectionManager.clearSelection(ESelectionType.NEIGHBORHOOD_2);
-				selectionManager.clearSelection(ESelectionType.NEIGHBORHOOD_3);
+			selectionManager.clearSelection(ESelectionType.NEIGHBORHOOD_1);
+			selectionManager.clearSelection(ESelectionType.NEIGHBORHOOD_2);
+			selectionManager.clearSelection(ESelectionType.NEIGHBORHOOD_3);
 
-				switch (pickingMode) {
-					case DOUBLE_CLICKED :
-						// same behavior as for single click except that
-						// pathways are also loaded
-						eSelectionType = ESelectionType.SELECTION;
+			switch (pickingMode) {
+			case DOUBLE_CLICKED:
+				// same behavior as for single click except that
+				// pathways are also loaded
+				eSelectionType = ESelectionType.SELECTION;
 
-						// Load embedded pathway
-						if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map) {
-							PathwayGraph pathway = generalManager
-									.getPathwayManager().searchPathwayByName(
-											tmpVertexGraphItemRep.getName(),
-											EPathwayDatabaseType.KEGG);
+				// Load embedded pathway
+				if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map) {
+					PathwayGraph pathway = generalManager.getPathwayManager()
+							.searchPathwayByName(
+									tmpVertexGraphItemRep.getName(),
+									EPathwayDatabaseType.KEGG);
 
-							if (pathway != null) {
-								LoadPathwayEvent event = new LoadPathwayEvent();
-								event.setSender(this);
-								event.setPathwayID(pathway.getID());
-								eventPublisher.triggerEvent(event);
-							}
-						} else {
+					if (pathway != null) {
+						LoadPathwayEvent event = new LoadPathwayEvent();
+						event.setSender(this);
+						event.setPathwayID(pathway.getID());
+						eventPublisher.triggerEvent(event);
+					}
+				} else {
 
-							// // Load pathways
-							// for (IGraphItem pathwayVertexGraphItem :
-							// tmpVertexGraphItemRep
-							// .getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD))
-							// {
-							//
-							// LoadPathwaysByGeneEvent loadPathwaysByGeneEvent =
-							// new LoadPathwaysByGeneEvent();
-							// loadPathwaysByGeneEvent.setSender(this);
-							// loadPathwaysByGeneEvent.setGeneID(pathwayVertexGraphItem.getId());
-							// loadPathwaysByGeneEvent.setIdType(EIDType.PATHWAY_VERTEX);
-							// generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
-							//
-							// }
-						}
-						break;
-
-					case CLICKED :
-						eSelectionType = ESelectionType.SELECTION;
-						break;
-					case MOUSE_OVER :
-						eSelectionType = ESelectionType.MOUSE_OVER;
-						break;
-					case RIGHT_CLICKED :
-						eSelectionType = ESelectionType.SELECTION;
-
-						if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map) {
-
-							EmbeddedPathwayContextMenuItemContainer pathwayContextMenuItemContainer = new EmbeddedPathwayContextMenuItemContainer();
-							pathwayContextMenuItemContainer
-									.setPathway(generalManager
-											.getPathwayManager()
-											.searchPathwayByName(
-													tmpVertexGraphItemRep
-															.getName(),
-													EPathwayDatabaseType.KEGG));
-							contextMenu
-									.addItemContanier(pathwayContextMenuItemContainer);
-						} else if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.gene) {
-							for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
-									.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
-
-								GeneContextMenuItemContainer geneContextMenuItemContainer = new GeneContextMenuItemContainer();
-								geneContextMenuItemContainer
-										.setID(
-												EIDType.DAVID,
-												generalManager
-														.getPathwayItemManager()
-														.getDavidIdByPathwayVertexGraphItem(
-																(PathwayVertexGraphItem) pathwayVertexGraphItem));
-								contextMenu
-										.addItemContanier(geneContextMenuItemContainer);
-							}
-						} else {
-							// do nothing if the type is neither a gene nor an
-							// embedded pathway
-							break;
-						}
-
-					default :
-						return;
+					// // Load pathways
+					// for (IGraphItem pathwayVertexGraphItem :
+					// tmpVertexGraphItemRep
+					// .getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD))
+					// {
+					//
+					// LoadPathwaysByGeneEvent loadPathwaysByGeneEvent =
+					// new LoadPathwaysByGeneEvent();
+					// loadPathwaysByGeneEvent.setSender(this);
+					// loadPathwaysByGeneEvent.setGeneID(pathwayVertexGraphItem.getId());
+					// loadPathwaysByGeneEvent.setIdType(EIDType.PATHWAY_VERTEX);
+					// generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
+					//
+					// }
 				}
+				break;
 
-				if (selectionManager.checkStatus(eSelectionType, iExternalID)) {
+			case CLICKED:
+				eSelectionType = ESelectionType.SELECTION;
+				break;
+			case MOUSE_OVER:
+				eSelectionType = ESelectionType.MOUSE_OVER;
+				break;
+			case RIGHT_CLICKED:
+				eSelectionType = ESelectionType.SELECTION;
+
+				if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map) {
+
+					EmbeddedPathwayContextMenuItemContainer pathwayContextMenuItemContainer = new EmbeddedPathwayContextMenuItemContainer();
+					pathwayContextMenuItemContainer.setPathway(generalManager
+							.getPathwayManager().searchPathwayByName(
+									tmpVertexGraphItemRep.getName(),
+									EPathwayDatabaseType.KEGG));
+					contextMenu
+							.addItemContanier(pathwayContextMenuItemContainer);
+				} else if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.gene) {
+					for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
+							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
+
+						GeneContextMenuItemContainer geneContextMenuItemContainer = new GeneContextMenuItemContainer();
+						geneContextMenuItemContainer
+								.setID(
+										EIDType.DAVID,
+										generalManager
+												.getPathwayItemManager()
+												.getDavidIdByPathwayVertexGraphItem(
+														(PathwayVertexGraphItem) pathwayVertexGraphItem));
+						contextMenu
+								.addItemContanier(geneContextMenuItemContainer);
+					}
+				} else {
+					// do nothing if the type is neither a gene nor an
+					// embedded pathway
 					break;
 				}
 
-				selectionManager.clearSelection(eSelectionType);
+			default:
+				return;
+			}
 
-				// Add new vertex to internal selection manager
-				selectionManager.addToType(eSelectionType,
-						tmpVertexGraphItemRep.getId());
-
-				int iConnectionID = generalManager.getIDManager().createID(
-						EManagedObjectType.CONNECTION);
-				selectionManager.addConnectionID(iConnectionID,
-						tmpVertexGraphItemRep.getId());
-				connectedElementRepresentationManager
-						.clear(EIDType.EXPRESSION_INDEX);
-				gLPathwayContentCreator
-						.performIdenticalNodeHighlighting(eSelectionType);
-
-				createConnectionLines(eSelectionType, iConnectionID);
-
-				SelectionCommand command = new SelectionCommand(
-						ESelectionCommandType.CLEAR, eSelectionType);
-				sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
-
-				ISelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager
-						.getDelta());
-				SelectionUpdateEvent event = new SelectionUpdateEvent();
-				event.setSender(this);
-				event.setSelectionDelta((SelectionDelta) selectionDelta);
-				event.setInfo(getShortInfo());
-				eventPublisher.triggerEvent(event);
-
+			if (selectionManager.checkStatus(eSelectionType, iExternalID)) {
 				break;
+			}
+
+			selectionManager.clearSelection(eSelectionType);
+
+			// Add new vertex to internal selection manager
+			selectionManager.addToType(eSelectionType, tmpVertexGraphItemRep
+					.getId());
+
+			int iConnectionID = generalManager.getIDManager().createID(
+					EManagedObjectType.CONNECTION);
+			selectionManager.addConnectionID(iConnectionID,
+					tmpVertexGraphItemRep.getId());
+			connectedElementRepresentationManager
+					.clear(EIDType.EXPRESSION_INDEX);
+			gLPathwayContentCreator
+					.performIdenticalNodeHighlighting(eSelectionType);
+
+			createConnectionLines(eSelectionType, iConnectionID);
+
+			SelectionCommand command = new SelectionCommand(
+					ESelectionCommandType.CLEAR, eSelectionType);
+			sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+
+			ISelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager
+					.getDelta());
+			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSender(this);
+			event.setSelectionDelta((SelectionDelta) selectionDelta);
+			event.setInfo(getShortInfoLocal());
+
+			eventPublisher.triggerEvent(event);
+
+			break;
 		}
 	}
 
@@ -875,18 +870,22 @@ public class GLPathway extends AGLView
 		VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
 		virtualArrayUpdateEvent.setSender(this);
 		virtualArrayUpdateEvent.setVirtualArrayDelta((VirtualArrayDelta) delta);
-		virtualArrayUpdateEvent.setInfo(getShortInfo());
+		virtualArrayUpdateEvent.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
 	}
 
 	@Override
 	public String getShortInfo() {
-
 		return pathway.getTitle() + " (" + pathway.getType().getName() + ")";
 	}
 
 	@Override
 	public String getDetailedInfo() {
+		
+		if (isRenderedRemote())
+			return (((AGLView) getRemoteRenderingGLCanvas()).getDetailedInfo());
+
+		
 		StringBuffer sInfoText = new StringBuffer();
 
 		sInfoText.append("<b>Pathway</b>\n\n<b>Name:</b> " + pathway.getTitle()

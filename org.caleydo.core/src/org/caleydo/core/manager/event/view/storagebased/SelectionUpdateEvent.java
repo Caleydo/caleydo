@@ -7,7 +7,8 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event to signal that the user's selection has been updated. Migration from EEventType.SELECTION_UPDATE
+ * Event to signal that the user's selection has been updated. Contains both a selection delta and information
+ * about the selection in text form. Also contains information whether to scroll to the selection or not.
  * 
  * @author Werner Puff
  */

@@ -123,13 +123,16 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	private final static int MAX_SAMPLES_PER_HEATMAP = 50;
 
 	private int iNumberOfElements = 0;
-	// if only a small number of genes is in the data set, level_1 (overViewBar)
-	// will not be
-	// rendered
+	/**
+	 * if only a small number of genes is in the data set, level_1 (overViewBar)
+	 * will not be rendered
+	 */
 	private boolean bSkipLevel1 = false;
 	private final static int MIN_SAMPLES_SKIP_LEVEL_1 = 200;
-	// if only a small number of genes is in the data set, level_2 (textures)
-	// will not be rendered
+	/**
+	 * if only a small number of genes is in the data set, level_2 (textures)
+	 * will not be rendered
+	 */
 	private boolean bSkipLevel2 = false;
 	private final static int MIN_SAMPLES_SKIP_LEVEL_2 = 40;
 
@@ -138,8 +141,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 	private EIDType eExperimentDataType = EIDType.EXPERIMENT_INDEX;
 
-	// array of textures for holding the data samples
 	private int iNrTextures = 0;
+	/** array of textures for holding the data samples */
 	private ArrayList<Texture> AlTextures = new ArrayList<Texture>();
 	private ArrayList<Integer> iAlNumberSamples = new ArrayList<Integer>();
 
@@ -157,11 +160,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	private float fScalingLevel2 = 1.0f;
 
-	// embedded heat map
+	/** embedded heat map */
 	private GLHeatMap glHeatMapView;
 	private boolean bIsHeatmapInFocus = false;
 
-	// embedded dendrogram
+	/** embedded dendrogram */
 	private GLDendrogram glGeneDendrogramView;
 	private boolean bGeneDendrogramActive = false;
 	private boolean bGeneDendrogramRenderCut = false;
@@ -193,11 +196,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	private float fPosCursorLastElementLevel1 = 0;
 	private boolean bActivateDraggingLevel1 = false;
 
-	// clustering/grouping stuff
-	@SuppressWarnings("unused")
-	private boolean bSplitGroupExp = false;
-	@SuppressWarnings("unused")
-	private boolean bSplitGroupGene = false;
 	private int iGroupToSplit = 0;
 	private Point DraggingPoint = null;
 
@@ -209,6 +207,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	private int iGeneGroupToDrag = -1;
 	private boolean bActivateDraggingGenes = false;
 
+	// listeners
 	private GroupExportingListener groupExportingListener;
 	private GroupInterChangingActionListener groupInterchangingListener;
 	private GroupMergingActionListener groupMergingListener;
@@ -3606,17 +3605,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	}
 
-	public void renderHorizontally(boolean bRenderStorageHorizontally) {
-
-		if (glHeatMapView.isInDefaultOrientation()) {
-			glHeatMapView.changeOrientation(false);
-		} else {
-			glHeatMapView.changeOrientation(true);
-		}
-
-		setDisplayListDirty();
-	}
-
 	@Override
 	protected void initLists() {
 
@@ -3668,7 +3656,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	@Override
 	public String getShortInfo() {
-		return "Hierarchical Heat Map (" + contentVA.size()
+		return "Hierarchical Heat Map (" + contentVA.size() + " " 
 				+ useCase.getContentLabel(false, true) + " / "
 				+ storageVA.size() + " experiments)";
 	}
@@ -4002,7 +3990,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 						currentPoint.y);
 
 		if (glMouseListener.wasMouseReleased()) {
-			bSplitGroupGene = false;
 
 			fArDraggedPoint = GLCoordinateUtils
 					.convertWindowCoordinatesToWorldCoordinates(gl,
@@ -4042,7 +4029,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 						currentPoint.y);
 
 		if (glMouseListener.wasMouseReleased()) {
-			bSplitGroupExp = false;
 
 			fArDraggedPoint = GLCoordinateUtils
 					.convertWindowCoordinatesToWorldCoordinates(gl,
@@ -4328,17 +4314,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		}
 	}
 
-	// @Override
-	// public void handleSelectionCommand(EIDCategory category, SelectionCommand
-	// selectionCommand) {
-	// if(EIDCategory.GENE == categ)
-	// contentSelectionManager.executeSelectionCommand(selectionCommand);
-	// // glHeatMapView.handleContentTriggerSelectionCommand(category,
-	// selectionCommand);
-	// setDisplayListDirty();
-	//
-	// }
-
 	private void deactivateAllDraggingCursor() {
 		bActivateDraggingExperiments = false;
 		bActivateDraggingGenes = false;
@@ -4450,9 +4425,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				// }
 				setDisplayListDirty();
 				break;
-
-			case MOUSE_OVER:
-				break;
 			}
 			break;
 		// handling the groups/clusters of experiments
@@ -4542,9 +4514,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				// }
 				setDisplayListDirty();
 				break;
-
-			case MOUSE_OVER:
-				break;
 			}
 			break;
 		// handle click on button for setting EHM in focus
@@ -4558,13 +4527,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				glGeneDendrogramView.setDisplayListDirty();
 				glExperimentDendrogramView.setRedrawDendrogram();
 				setDisplayListDirty();
-
-				break;
-
-			case DRAGGED:
-				break;
-
-			case MOUSE_OVER:
 				break;
 			}
 			break;
@@ -4574,7 +4536,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			switch (pickingMode) {
 
 			case CLICKED:
-
 				bExperimentDendrogramActive = bExperimentDendrogramActive == true ? false
 						: true;
 
@@ -4603,13 +4564,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				glGeneDendrogramView.setRedrawDendrogram();
 				glHeatMapView.setDisplayListDirty();
 				setDisplayListDirty();
-
-				break;
-
-			case DRAGGED:
-				break;
-
-			case MOUSE_OVER:
 				break;
 			}
 			break;
@@ -4619,7 +4573,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			switch (pickingMode) {
 
 			case CLICKED:
-
 				bGeneDendrogramActive = bGeneDendrogramActive == true ? false
 						: true;
 
@@ -4643,14 +4596,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				glExperimentDendrogramView.setRedrawDendrogram();
 				glHeatMapView.setDisplayListDirty();
 				setDisplayListDirty();
-
 				break;
 
-			case DRAGGED:
-				break;
-
-			case MOUSE_OVER:
-				break;
 			}
 			break;
 
@@ -4673,9 +4620,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				iDraggedCursorLevel1 = iExternalID;
 				setDisplayListDirty();
 				break;
-
-			case MOUSE_OVER:
-				break;
 			}
 			break;
 
@@ -4696,9 +4640,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				bDisableCursorDraggingLevel1 = true;
 				iDraggedCursorLevel1 = iExternalID;
 				setDisplayListDirty();
-				break;
-
-			case MOUSE_OVER:
 				break;
 			}
 			break;
@@ -4722,9 +4663,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				iDraggedCursorLevel2 = iExternalID;
 				setDisplayListDirty();
 				break;
-
-			case MOUSE_OVER:
-				break;
 			}
 			break;
 
@@ -4746,9 +4684,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				iDraggedCursorLevel2 = iExternalID;
 				setDisplayListDirty();
 				break;
-
-			case MOUSE_OVER:
-				break;
 			}
 			break;
 
@@ -4756,15 +4691,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		case HIER_HEAT_MAP_TEXTURE_SELECTION:
 			switch (pickingMode) {
 			case CLICKED:
-
 				pickingPointLevel1 = pick.getPickedPoint();
 				setDisplayListDirty();
-				break;
-
-			case DRAGGED:
-				break;
-
-			case MOUSE_OVER:
 				break;
 			}
 			break;
@@ -4776,27 +4704,12 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				pickingPointLevel2 = pick.getPickedPoint();
 				setDisplayListDirty();
 				break;
-
-			case DRAGGED:
-				break;
-
-			case MOUSE_OVER:
-				break;
 			}
 			break;
 
 		// handle click on level 3 (EHM)
 		case HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION:
 			switch (pickingMode) {
-			case CLICKED:
-				break;
-
-			case DRAGGED:
-				break;
-
-			case MOUSE_OVER:
-				break;
-
 			case RIGHT_CLICKED:
 				contextMenu.setLocation(pick.getPickedPoint(),
 						getParentGLCanvas().getWidth(), getParentGLCanvas()
@@ -4809,15 +4722,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		// handle click on gene dendrogram
 		case HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION:
 			switch (pickingMode) {
-			case CLICKED:
-				break;
-
-			case DRAGGED:
-				break;
-
-			case MOUSE_OVER:
-				break;
-
 			case RIGHT_CLICKED:
 				contextMenu.setLocation(pick.getPickedPoint(),
 						getParentGLCanvas().getWidth(), getParentGLCanvas()
@@ -4830,15 +4734,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		// handle click on gene dendrogram
 		case HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION:
 			switch (pickingMode) {
-			case CLICKED:
-				break;
-
-			case DRAGGED:
-				break;
-
-			case MOUSE_OVER:
-				break;
-
 			case RIGHT_CLICKED:
 				contextMenu.setLocation(pick.getPickedPoint(),
 						getParentGLCanvas().getWidth(), getParentGLCanvas()
@@ -4895,7 +4790,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	@Override
 	public void changeOrientation(boolean defaultOrientation) {
-		renderHorizontally(defaultOrientation);
+		// nothing to do
 	}
 
 	@Override

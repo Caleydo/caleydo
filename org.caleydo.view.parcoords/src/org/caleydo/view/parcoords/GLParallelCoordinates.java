@@ -1560,7 +1560,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		bIsDisplayListDirtyRemote = true;
 		InfoAreaUpdateEvent event = new InfoAreaUpdateEvent();
 		event.setSender(this);
-		event.setInfo(getShortInfo());
+		event.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(event);
 
 		if (glMouseListener.wasMouseReleased()) {
@@ -1903,7 +1903,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
 				event.setSelectionDelta((SelectionDelta) selectionDelta);
-				event.setInfo(getShortInfo());
+				event.setInfo(getShortInfoLocal());
 				eventPublisher.triggerEvent(event);
 			}
 
@@ -2176,7 +2176,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
 		virtualArrayUpdateEvent.setSender(this);
 		virtualArrayUpdateEvent.setVirtualArrayDelta((VirtualArrayDelta) delta);
-		virtualArrayUpdateEvent.setInfo(getShortInfo());
+		virtualArrayUpdateEvent.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
 	}
 
@@ -2243,6 +2243,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		return alElementReps;
 	}
+	
 
 	@Override
 	public String getShortInfo() {

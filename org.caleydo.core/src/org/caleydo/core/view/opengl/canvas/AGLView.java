@@ -489,9 +489,50 @@ public abstract class AGLView
 	abstract protected void handlePickingEvents(final EPickingType ePickingType,
 		final EPickingMode ePickingMode, final int iExternalID, final Pick pick);
 
+	/**
+	 * Returns a short info string about the view. Typically this should mention the name of the view plus the
+	 * number of elements displayed. This method is intended to be called only by remote views, for calls
+	 * within the local class implementing this view use {@link #getShortInfoLocal()}.
+	 * 
+	 * @return the info string
+	 */
 	public abstract String getShortInfo();
 
+	/**
+	 * The variaton of {@link #getShortInfo()} which must be called locally. This takes care of integrating
+	 * possible information from a remote rendering view.
+	 * 
+	 * @return the info string
+	 */
+	protected String getShortInfoLocal() {
+		if (isRenderedRemote())
+			return (((AGLView) getRemoteRenderingGLCanvas()).getShortInfo());
+		else
+			return getShortInfo();
+	}
+
+	/**
+	 * Returns a extensive info string about the view. Typically this should mention the name of the view plus
+	 * the number of elements displayed, plus possible states of the view. This method is intended to be
+	 * called only by remote views, for calls within the local class implementing this view use
+	 * {@link #getShortInfoLocal()}.
+	 * 
+	 * @return the info string
+	 */
 	public abstract String getDetailedInfo();
+
+	/**
+	 * The variaton of {@link #getDetailedInfo()} which must be called locally. This takes care of integrating
+	 * possible information from a remote rendering view.
+	 * 
+	 * @return the info string
+	 */
+	protected String getDetailInfoLocal() {
+		if (isRenderedRemote())
+			return (((AGLView) getRemoteRenderingGLCanvas()).getDetailedInfo());
+		else
+			return getDetailedInfo();
+	}
 
 	public final IViewCamera getViewCamera() {
 		return viewCamera;

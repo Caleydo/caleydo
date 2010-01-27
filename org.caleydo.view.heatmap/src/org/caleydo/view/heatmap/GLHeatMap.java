@@ -54,7 +54,6 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -401,9 +400,10 @@ public class GLHeatMap extends AStorageBasedView {
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 
 	}
-
+	
 	@Override
 	public String getShortInfo() {
+
 		if (contentVA == null)
 			return "Heat Map - 0 " + useCase.getContentLabel(false, true)
 					+ " / 0 experiments";
@@ -415,6 +415,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	@Override
 	public String getDetailedInfo() {
+
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Heat Map\n");
 
@@ -586,7 +587,7 @@ public class GLHeatMap extends AStorageBasedView {
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
 			event.setSelectionDelta(selectionDelta);
-			event.setInfo(getShortInfo());
+			event.setInfo(getShortInfoLocal());
 			eventPublisher.triggerEvent(event);
 		}
 
@@ -991,7 +992,7 @@ public class GLHeatMap extends AStorageBasedView {
 					// TODO we need indices of all elements
 
 					fYPosition = iLineIndex * renderStyle.getFieldHeight();
-					
+
 					gl.glPushName(pickingManager.getPickingID(iUniqueID,
 							EPickingType.HEAT_MAP_STORAGE_SELECTION,
 							iCurrentLine));
