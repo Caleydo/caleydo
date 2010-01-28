@@ -2276,35 +2276,44 @@ public class GLParallelCoordinates
 			}
 		}
 		else {
-			// if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
-			// fXValue = viewFrustum.getRight() - 0.2f;
-			// else
-			// fXValue = viewFrustum.getRight() - 0.4f;
-
-			if (renderConnectionsLeft) {
-				fXValue = fXValue + renderStyle.getXSpacing();
-				fYValue = set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
-			}
-			else {
-				if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
-					fXValue = viewFrustum.getRight() - 0.2f;
-				else
-					fXValue = viewFrustum.getRight() - 0.4f;
-				fYValue =
-					set.get(storageVA.get(storageVA.size() - 1)).getFloat(EDataRepresentation.NORMALIZED,
-						iStorageIndex);
+			//added to create multiple connection points
+			for (int count = 0; count < 3; count++) {
+				// if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
+				// fXValue = viewFrustum.getRight() - 0.2f;
+				// else
+				// fXValue = viewFrustum.getRight() - 0.4f;
+				if (renderConnectionsLeft) {
+					
+					//replaced to get multiple connection points
+					fXValue = renderStyle.getXSpacing() + renderStyle.getAxisSpacing(axisVA.size())* axisVA.get(axisVA.size()-1)/2*count;
+					fYValue =	set.get(storageVA.get(storageVA.size() - 1)/2*count).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
+					//fXValue = fXValue + renderStyle.getXSpacing();
+					//fYValue = set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
+	
+				}
+				else {
+					if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
+						fXValue = viewFrustum.getRight() - 0.2f;
+					else
+						fXValue = viewFrustum.getRight() - 0.4f;
+					fYValue =
+						set.get(storageVA.get(storageVA.size() - 1)).getFloat(EDataRepresentation.NORMALIZED,
+							iStorageIndex);
+				}
+				
+				// // get the value on the leftmost axis
+				// fYValue = set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
+	
+				if (Float.isNaN(fYValue)) {
+					fYValue = NAN_Y_OFFSET * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
+				}
+				else {
+					fYValue = fYValue * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
+				}
+				alElementReps.add(new SelectedElementRep(idType, iUniqueID,fXValue, fYValue, 0.0f));
 			}
 			
-			// // get the value on the leftmost axis
-			// fYValue = set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
-
-			if (Float.isNaN(fYValue)) {
-				fYValue = NAN_Y_OFFSET * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
-			}
-			else {
-				fYValue = fYValue * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
-			}
-			alElementReps.add(new SelectedElementRep(idType, iUniqueID,fXValue, fYValue, 0.0f));
+		//	
 		}
 		return alElementReps;
 	}

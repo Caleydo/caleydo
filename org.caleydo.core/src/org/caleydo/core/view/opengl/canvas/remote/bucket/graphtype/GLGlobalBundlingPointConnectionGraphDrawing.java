@@ -124,41 +124,172 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 				return hashViewToCenterPoint;
 			}
 			
-			
 			ArrayList<ArrayList<Vec3f>> pointsList = new ArrayList<ArrayList<Vec3f>>();
-			if ((heatMapPoints.size() < 7) && (parCoordsPoints.size() < 4))
+			ArrayList<ArrayList<ArrayList<Vec3f>>> multiplePointsList = new ArrayList<ArrayList<ArrayList<Vec3f>>>();
+			if ((heatMapPoints.size() < 7) && (parCoordsPoints.size() < 4)){
 				pointsList = calculateOptimalSinglePoints(heatMapPoints, heatMapID, parCoordsPoints, parCoordID, hashViewToCenterPoint);
-		
-			if (pointsList == null)
-				return null;
-			
-			ArrayList<ArrayList<Vec3f>> tempArray = new ArrayList<ArrayList<Vec3f>>();
-			if ((pointsList.size() == 2) && (pointsList.get(1).size() == 0)){
-				tempArray.add(pointsList.get(0));
-				hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
-				hashIDTypeToViewToPointLists.get(idType).put(heatMapID, tempArray);
-				hashViewToCenterPoint.put(heatMapID, pointsList.get(0).get(0));
-			}
-			else if (pointsList.size() == 2){
-				tempArray.add(pointsList.get(0));
-				hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
-				hashIDTypeToViewToPointLists.get(idType).put(heatMapID, tempArray);
-				hashViewToCenterPoint.put(heatMapID, pointsList.get(0).get(0));
-				tempArray = new ArrayList<ArrayList<Vec3f>>();		
-				tempArray.add(pointsList.get(1));
-				hashIDTypeToViewToPointLists.get(idType).remove(parCoordID);
-				hashIDTypeToViewToPointLists.get(idType).put(parCoordID, tempArray);
-				hashViewToCenterPoint.put(parCoordID, pointsList.get(1).get(0));
+				if (pointsList == null)
+					return null;
 			}
 			else {
-				tempArray.add(pointsList.get(0));
-				hashIDTypeToViewToPointLists.get(idType).remove(parCoordID);
-				hashIDTypeToViewToPointLists.get(idType).put(parCoordID, tempArray);
-				hashViewToCenterPoint.put(parCoordID, pointsList.get(0).get(0));
+				multiplePointsList = calculateOptimalMultiplePoints(heatMapPoints, heatMapID, parCoordsPoints, parCoordID, hashViewToCenterPoint);
+				if (multiplePointsList == null)
+					return null;
+			}
+					
+			if (pointsList.size() >0){
+				ArrayList<ArrayList<Vec3f>> tempArray = new ArrayList<ArrayList<Vec3f>>();
+				if ((pointsList.size() == 2) && (pointsList.get(1).size() == 0)){
+					tempArray.add(pointsList.get(0));
+					hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
+					hashIDTypeToViewToPointLists.get(idType).put(heatMapID, tempArray);
+					hashViewToCenterPoint.put(heatMapID, pointsList.get(0).get(0));
+				}
+				else if (pointsList.size() == 2){
+					tempArray.add(pointsList.get(0));
+					hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
+					hashIDTypeToViewToPointLists.get(idType).put(heatMapID, tempArray);
+					hashViewToCenterPoint.put(heatMapID, pointsList.get(0).get(0));
+					tempArray = new ArrayList<ArrayList<Vec3f>>();		
+					tempArray.add(pointsList.get(1));
+					hashIDTypeToViewToPointLists.get(idType).remove(parCoordID);
+					hashIDTypeToViewToPointLists.get(idType).put(parCoordID, tempArray);
+					hashViewToCenterPoint.put(parCoordID, pointsList.get(1).get(0));
+				}
+				else {
+					tempArray.add(pointsList.get(0));
+					hashIDTypeToViewToPointLists.get(idType).remove(parCoordID);
+					hashIDTypeToViewToPointLists.get(idType).put(parCoordID, tempArray);
+					hashViewToCenterPoint.put(parCoordID, pointsList.get(0).get(0));
+					
+				}
+			}
+			else if (multiplePointsList.size() > 0){
+				if ((multiplePointsList.size() == 2) && (multiplePointsList.get(1).size() == 0)){
+					hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
+					hashIDTypeToViewToPointLists.get(idType).put(heatMapID, multiplePointsList.get(0));
+					hashViewToCenterPoint.put(heatMapID, calculateCenter(multiplePointsList.get(0)));
+				}
+				else if (multiplePointsList.size() == 2){
+					hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
+					hashIDTypeToViewToPointLists.get(idType).put(heatMapID, multiplePointsList.get(0));
+					hashViewToCenterPoint.put(heatMapID, calculateCenter(multiplePointsList.get(0)));
+					hashIDTypeToViewToPointLists.get(idType).remove(parCoordID);
+					hashIDTypeToViewToPointLists.get(idType).put(parCoordID, multiplePointsList.get(1));
+					hashViewToCenterPoint.put(parCoordID, calculateCenter(multiplePointsList.get(1)));
+				}
+				else {
+					hashIDTypeToViewToPointLists.get(idType).remove(parCoordID);
+					hashIDTypeToViewToPointLists.get(idType).put(parCoordID,multiplePointsList.get(0));
+					hashViewToCenterPoint.put(parCoordID, calculateCenter(multiplePointsList.get(0)));
+					
+				}				
+			}
+		return hashViewToCenterPoint;
+	}
+
+	private ArrayList<ArrayList<ArrayList<Vec3f>>> calculateOptimalMultiplePoints(
+		ArrayList<ArrayList<Vec3f>> heatMapPoints, int heatMapID,
+		ArrayList<ArrayList<Vec3f>> parCoordsPoints, int parCoordID,
+		HashMap<Integer, Vec3f> hashViewToCenterPoint) {
+		
+		
+		ArrayList<ArrayList<ArrayList<Vec3f>>> multipleHeatMapPoints = new ArrayList<ArrayList<ArrayList<Vec3f>>>();
+		ArrayList<ArrayList<ArrayList<Vec3f>>> multipleParCoordPoints = new ArrayList<ArrayList<ArrayList<Vec3f>>>();
+		for (int count = 0; count < 6; count++)
+			multipleHeatMapPoints.add(new ArrayList<ArrayList<Vec3f>>());
+		for (int count = 0; count < 3; count++)
+			multipleParCoordPoints.add(new ArrayList<ArrayList<Vec3f>>());
+		
+		ArrayList<Vec3f> heatMapCenterPoints = new ArrayList<Vec3f>();
+		ArrayList<Vec3f> parCoordCenterPoints = new ArrayList<Vec3f>();
+		
+		for (int pointCount = 0; pointCount < heatMapPoints.size(); pointCount++)
+			multipleHeatMapPoints.get(pointCount%6).add(heatMapPoints.get(pointCount));
+		
+		for (int pointCount = 0; pointCount < parCoordsPoints.size(); pointCount++)
+			multipleParCoordPoints.get(pointCount%3).add(parCoordsPoints.get(pointCount));
+
+		for (int count = 0; count < multipleHeatMapPoints.size(); count++) {
+			heatMapCenterPoints.add(calculateCenter(multipleHeatMapPoints.get(count)));
+		}
+		
+		for (int count = 0; count < multipleParCoordPoints.size(); count++) {
+			parCoordCenterPoints.add(calculateCenter(multipleParCoordPoints.get(count)));
+		}
+		
+		
+		
+		double minPath = Double.MAX_VALUE;
+		ArrayList<ArrayList<Vec3f>> optimalHeatMap = new ArrayList<ArrayList<Vec3f>>();
+		ArrayList<ArrayList<Vec3f>> optimalParCoords = new ArrayList<ArrayList<Vec3f>>();
+		ArrayList<ArrayList<ArrayList<Vec3f>>> pointsList = new ArrayList<ArrayList<ArrayList<Vec3f>>>();
+		
+		//if heatmap view exists in bucket view
+		if (heatMapPoints.size() > 0){
+			for (Vec3f heatMapCenterPoint : heatMapCenterPoints) {
+				if (parCoordsPoints.size() > 0){
+					for (Vec3f parCoordCenterPoint : parCoordCenterPoints) {
+						hashViewToCenterPoint.put(heatMapID, heatMapCenterPoint);
+						hashViewToCenterPoint.put(parCoordID, parCoordCenterPoint);
+						Vec3f centerPoint = calculateCenter(hashViewToCenterPoint.values());
+					
+						//TODO: Choose if global minimum or local minimum
+						double currentPath = calculateCurrentPathLength(hashViewToCenterPoint, centerPoint);
+						/*Vec3f temp = centerPoint.minus(arrayList.get(0));
+						double currentPath = temp.length();*/
+					
+						if (currentPath < minPath){
+							minPath = currentPath;
+							optimalHeatMap = multipleHeatMapPoints.get(heatMapCenterPoints.indexOf(heatMapCenterPoint));
+							optimalParCoords = multipleParCoordPoints.get(parCoordCenterPoints.indexOf(parCoordCenterPoint));
+							vecCenter = centerPoint;
+						}
+					}
+				}
+				else {
+					hashViewToCenterPoint.put(heatMapID, heatMapCenterPoint);
+					Vec3f centerPoint = calculateCenter(hashViewToCenterPoint.values());
 				
+					//TODO: Choose if global minimum or local minimum
+					double currentPath = calculateCurrentPathLength(hashViewToCenterPoint, centerPoint);
+					/*Vec3f temp = centerPoint.minus(arrayList.get(0));
+					double currentPath = temp.length();*/
+				
+					if (currentPath < minPath){
+						minPath = currentPath;
+						optimalHeatMap = multipleHeatMapPoints.get(heatMapCenterPoints.indexOf(heatMapCenterPoint));
+						vecCenter = centerPoint;
+					}
+					
+				}
 			}
 
-		return hashViewToCenterPoint;
+			pointsList.add(optimalHeatMap);
+			pointsList.add(optimalParCoords);
+		}
+		// no heatmap loaded in bucket view
+		else{
+			for (Vec3f parCoordCenterPoint : parCoordCenterPoints) {
+				hashViewToCenterPoint.put(parCoordID, parCoordCenterPoint);
+				Vec3f centerPoint = calculateCenter(hashViewToCenterPoint.values());
+			
+				//TODO: Choose if global minimum or local minimum
+				double currentPath = calculateCurrentPathLength(hashViewToCenterPoint, centerPoint);
+				/*Vec3f temp = centerPoint.minus(arrayList.get(0));
+				double currentPath = temp.length();*/
+			
+				if (currentPath < minPath){
+					minPath = currentPath;
+					optimalParCoords = multipleParCoordPoints.get(parCoordCenterPoints.indexOf(parCoordCenterPoint));
+					vecCenter = centerPoint;
+				}
+			}
+			if (optimalParCoords.size() == 0)
+				return null;
+			pointsList.add(optimalParCoords);
+		}
+		return pointsList;
 	}
 
 	/**
