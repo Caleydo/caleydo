@@ -24,6 +24,10 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 	public static final float Y_AXIS_LINE_WIDTH = 2.0f;
 	public static final float XYAXISDISTANCE = 0.2f;
 	public static final float AXIS_Z = 0.0f;
+	
+	public static int NR_TEXTURESX =5;
+	public static int NR_TEXTURESY =5;
+	public static int NR_TEXTURES = 25;
 
 	public static float POINTSIZE = 0.05f;
 
@@ -170,6 +174,14 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 		return fWidthLevel3;
 	}
 
+	public static void setTextureNr(int x,int y)
+	{
+		NR_TEXTURESX=x;
+		NR_TEXTURESY=y;			
+		NR_TEXTURES=NR_TEXTURESX*NR_TEXTURESY;		
+	}
+	
+	
 	// function called by HHM to set width of embedded HM
 	public void setWidthLevel3(float fWidthLevel3) {
 
