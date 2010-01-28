@@ -56,6 +56,7 @@ import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -63,6 +64,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
+import org.caleydo.core.view.opengl.canvas.remote.GLConnectionLineRendererBucket;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle.LayoutMode;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRendererJukebox;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.JukeboxLayoutRenderStyle;
@@ -77,21 +79,19 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.view.base.core.AStorageBasedView;
-import org.caleydo.view.base.core.GLConnectionLineRendererBucket;
-import org.caleydo.view.base.listener.AddPathwayListener;
-import org.caleydo.view.base.listener.DisableConnectionLinesListener;
-import org.caleydo.view.base.listener.DisableGeneMappingListener;
-import org.caleydo.view.base.listener.DisableNeighborhoodListener;
-import org.caleydo.view.base.listener.DisableTexturesListener;
-import org.caleydo.view.base.listener.EnableConnectionLinesListener;
-import org.caleydo.view.base.listener.EnableGeneMappingListener;
-import org.caleydo.view.base.listener.EnableNeighborhoodListener;
-import org.caleydo.view.base.listener.EnableTexturesListener;
-import org.caleydo.view.base.listener.IRemoteRenderingHandler;
-import org.caleydo.view.base.listener.LoadPathwaysByGeneListener;
-import org.caleydo.view.base.listener.ToggleNavigationModeListener;
-import org.caleydo.view.base.listener.ToggleZoomListener;
+import org.caleydo.rcp.view.listener.AddPathwayListener;
+import org.caleydo.rcp.view.listener.DisableConnectionLinesListener;
+import org.caleydo.rcp.view.listener.DisableGeneMappingListener;
+import org.caleydo.rcp.view.listener.DisableNeighborhoodListener;
+import org.caleydo.rcp.view.listener.DisableTexturesListener;
+import org.caleydo.rcp.view.listener.EnableConnectionLinesListener;
+import org.caleydo.rcp.view.listener.EnableGeneMappingListener;
+import org.caleydo.rcp.view.listener.EnableNeighborhoodListener;
+import org.caleydo.rcp.view.listener.EnableTexturesListener;
+import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
+import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
+import org.caleydo.rcp.view.listener.ToggleNavigationModeListener;
+import org.caleydo.rcp.view.listener.ToggleZoomListener;
 import org.caleydo.view.bookmarking.GLBookmarkManager;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
@@ -3026,7 +3026,7 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedRemoteRenderingView serializedForm = new SerializedRemoteRenderingView(
+		SerializedBucketView serializedForm = new SerializedBucketView(
 				dataDomain);
 		serializedForm.setViewID(this.getID());
 		serializedForm.setPathwayTexturesEnabled(pathwayTexturesEnabled);
@@ -3061,7 +3061,7 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 	public void initFromSerializableRepresentation(ASerializedView ser) {
 		resetView(false);
 
-		SerializedRemoteRenderingView serializedView = (SerializedRemoteRenderingView) ser;
+		SerializedBucketView serializedView = (SerializedBucketView) ser;
 
 		pathwayTexturesEnabled = serializedView.isPathwayTexturesEnabled();
 		neighborhoodEnabled = serializedView.isNeighborhoodEnabled();

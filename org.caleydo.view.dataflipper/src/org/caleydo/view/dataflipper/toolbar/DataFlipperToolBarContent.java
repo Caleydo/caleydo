@@ -3,8 +3,8 @@ package org.caleydo.view.dataflipper.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.view.base.swt.toolbar.content.AToolBarContent;
-import org.caleydo.view.base.swt.toolbar.content.ToolBarContainer;
+import org.caleydo.rcp.view.toolbar.ToolBarContainer;
+import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
 import org.caleydo.view.dataflipper.GLDataFlipper;
 
 /**

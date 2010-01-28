@@ -10,12 +10,12 @@ import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.AGLViewBrowser;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
-import org.caleydo.view.base.core.AGLViewBrowser;
-import org.caleydo.view.base.listener.AddPathwayListener;
-import org.caleydo.view.base.listener.IRemoteRenderingHandler;
-import org.caleydo.view.base.listener.LoadPathwaysByGeneListener;
+import org.caleydo.rcp.view.listener.AddPathwayListener;
+import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
+import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
 import org.caleydo.view.pathway.SerializedPathwayView;
 
 public class GLPathwayViewBrowser extends AGLViewBrowser

@@ -1,7 +1,7 @@
 package org.caleydo.view.bucket.toolbar.actions;
 
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.view.base.action.toolbar.AToolBarAction;
+import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 

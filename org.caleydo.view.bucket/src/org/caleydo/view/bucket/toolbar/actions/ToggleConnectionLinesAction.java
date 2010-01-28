@@ -1,7 +1,7 @@
 package org.caleydo.view.bucket.toolbar.actions;
 
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.view.base.swt.toolbar.content.IToolBarItem;
+import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.view.bucket.toolbar.RemoteRenderingToolBarMediator;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;

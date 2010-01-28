@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.view.base.rcp.ARcpGLViewPart;
+import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLBucketView extends ARcpGLViewPart {
@@ -31,7 +31,7 @@ public class RcpGLBucketView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedRemoteRenderingView serializedView = new SerializedRemoteRenderingView(
+		SerializedBucketView serializedView = new SerializedBucketView(
 				EDataDomain.GENETIC_DATA);
 		return serializedView;
 	}

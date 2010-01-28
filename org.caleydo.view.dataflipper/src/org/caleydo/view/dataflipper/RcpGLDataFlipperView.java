@@ -1,7 +1,7 @@
 package org.caleydo.view.dataflipper;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.view.base.rcp.ARcpGLViewPart;
+import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLDataFlipperView extends ARcpGLViewPart {

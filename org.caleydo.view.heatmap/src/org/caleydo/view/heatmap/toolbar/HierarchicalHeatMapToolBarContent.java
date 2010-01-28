@@ -3,10 +3,10 @@ package org.caleydo.view.heatmap.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.view.base.swt.toolbar.content.AToolBarContent;
-import org.caleydo.view.base.swt.toolbar.content.ActionToolBarContainer;
-import org.caleydo.view.base.swt.toolbar.content.IToolBarItem;
-import org.caleydo.view.base.swt.toolbar.content.ToolBarContainer;
+import org.caleydo.rcp.view.toolbar.ActionToolBarContainer;
+import org.caleydo.rcp.view.toolbar.IToolBarItem;
+import org.caleydo.rcp.view.toolbar.ToolBarContainer;
+import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
 import org.caleydo.view.heatmap.GLHierarchicalHeatMap;
 
 /**

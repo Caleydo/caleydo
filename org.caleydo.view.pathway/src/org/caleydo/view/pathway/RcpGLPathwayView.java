@@ -1,7 +1,7 @@
 package org.caleydo.view.pathway;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.view.base.rcp.ARcpGLViewPart;
+import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 
 public class RcpGLPathwayView extends ARcpGLViewPart {
 

@@ -45,7 +45,7 @@ public class SerializedPathwayView extends ASerializedView {
 	 * 
 	 * @param pathwayId
 	 *            a valid pathwayId as in Caleydo's pathway library or -1 for an
-	 *            unknow or unitialized pathway
+	 *            unknown or uninitialized pathway
 	 */
 	public void setPathwayID(int pathwayId) {
 		this.pathwayID = pathwayId;

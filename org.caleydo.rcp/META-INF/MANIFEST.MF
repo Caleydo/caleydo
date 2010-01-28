@@ -12,8 +12,7 @@ Require-Bundle: org.eclipse.ui,
  org.caleydo.util.graph;bundle-version="1.0.0",
  org.caleydo.data;bundle-version="1.0.3",
  org.eclipse.ui.views.log,
- org.eclipse.core.expressions;bundle-version="3.4.100",
- org.caleydo.view.base;bundle-version="1.0.0"
+ org.eclipse.core.expressions;bundle-version="3.4.100"
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  resources/
@@ -50,6 +49,14 @@ Export-Package: org.caleydo.rcp;
    org.eclipse.jface.viewers,
    org.caleydo.core.manager.event",
  org.caleydo.rcp.splashHandlers;uses:="org.eclipse.swt.widgets,org.eclipse.ui.splash",
+ org.caleydo.rcp.util.search,
+ org.caleydo.rcp.view.listener,
+ org.caleydo.rcp.view.rcp,
+ org.caleydo.rcp.view.toolbar,
+ org.caleydo.rcp.view.toolbar.action,
+ org.caleydo.rcp.view.toolbar.action.storagebased,
+ org.caleydo.rcp.view.toolbar.action.storagebased.parcoords,
+ org.caleydo.rcp.view.toolbar.content,
  org.caleydo.rcp.wizard.firststart;uses:="org.eclipse.jface.wizard,org.eclipse.swt.widgets,org.eclipse.jface.dialogs",
  org.caleydo.rcp.wizard.project;
   uses:="org.eclipse.jface.wizard,

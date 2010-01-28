@@ -6,7 +6,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.radial.SetMaxDisplayedHierarchyDepthEvent;
 import org.caleydo.core.manager.event.view.radial.UpdateDepthSliderPositionEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.view.base.swt.toolbar.content.IToolBarItem;
+import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

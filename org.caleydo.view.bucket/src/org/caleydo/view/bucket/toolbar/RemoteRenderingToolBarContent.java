@@ -3,12 +3,12 @@ package org.caleydo.view.bucket.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.view.base.swt.toolbar.content.AToolBarContent;
-import org.caleydo.view.base.swt.toolbar.content.ActionToolBarContainer;
-import org.caleydo.view.base.swt.toolbar.content.IToolBarItem;
-import org.caleydo.view.base.swt.toolbar.content.ToolBarContainer;
+import org.caleydo.rcp.view.toolbar.ActionToolBarContainer;
+import org.caleydo.rcp.view.toolbar.IToolBarItem;
+import org.caleydo.rcp.view.toolbar.ToolBarContainer;
+import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
 import org.caleydo.view.bucket.GLBucket;
-import org.caleydo.view.bucket.SerializedRemoteRenderingView;
+import org.caleydo.view.bucket.SerializedBucketView;
 import org.caleydo.view.bucket.toolbar.actions.CloseOrResetContainedViews;
 import org.caleydo.view.bucket.toolbar.actions.NavigationModeAction;
 import org.caleydo.view.bucket.toolbar.actions.ToggleConnectionLinesAction;
@@ -54,7 +54,7 @@ public class RemoteRenderingToolBarContent extends AToolBarContent {
 	private ToolBarContainer createBucketContainer() {
 		mediator = new RemoteRenderingToolBarMediator();
 		mediator.setToolBarContent(this);
-		SerializedRemoteRenderingView serializedView = (SerializedRemoteRenderingView) getTargetViewData();
+		SerializedBucketView serializedView = (SerializedBucketView) getTargetViewData();
 		ActionToolBarContainer container = new ActionToolBarContainer();
 
 		container.setImagePath(BUCKET_IMAGE_PATH);
@@ -99,7 +99,7 @@ public class RemoteRenderingToolBarContent extends AToolBarContent {
 
 		container.setPathwayToolBarMediator(new PathwayToolBarMediator());
 		container
-				.setTargetViewData((SerializedRemoteRenderingView) getTargetViewData());
+				.setTargetViewData((SerializedBucketView) getTargetViewData());
 
 		return container;
 	}

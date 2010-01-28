@@ -1,7 +1,7 @@
 package org.caleydo.view.browser;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.view.base.rcp.CaleydoRCPViewPart;
+import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpHTMLBrowserView extends CaleydoRCPViewPart {

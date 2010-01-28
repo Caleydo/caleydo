@@ -2,7 +2,7 @@ package org.caleydo.rcp.toolbar;
 
 import java.util.List;
 
-import org.caleydo.view.base.swt.toolbar.content.AToolBarContent;
+import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Group;

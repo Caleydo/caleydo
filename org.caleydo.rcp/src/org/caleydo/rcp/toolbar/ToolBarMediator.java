@@ -15,7 +15,7 @@ import org.caleydo.core.view.IView;
 import org.caleydo.rcp.toolbar.listener.GroupHighlightingListener;
 import org.caleydo.rcp.toolbar.listener.RemoveViewSpecificItemsEventListener;
 import org.caleydo.rcp.toolbar.listener.ViewActivationListener;
-import org.caleydo.view.base.swt.toolbar.content.AToolBarContent;
+import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 

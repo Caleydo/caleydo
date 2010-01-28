@@ -2,7 +2,7 @@ package org.caleydo.rcp.action.toolbar.general;
 
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.dialog.file.ExportDataDialog;
-import org.caleydo.view.base.action.toolbar.AToolBarAction;
+import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;

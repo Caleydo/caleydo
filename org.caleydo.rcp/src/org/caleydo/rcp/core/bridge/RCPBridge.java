@@ -4,7 +4,7 @@ import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.rcp.command.handler.ExitHandler;
-import org.caleydo.view.base.rcp.ARcpGLViewPart;
+import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;

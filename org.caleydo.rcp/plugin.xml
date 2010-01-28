@@ -29,14 +29,14 @@
       </view>
       <view
             category="org.caleydo.rcp.views"
-            class="org.caleydo.view.base.swt.RcpCollabView"
+            class="org.caleydo.rcp.view.rcp.RcpCollabView"
             id="org.caleydo.rcp.views.swt.CollabView"
             name="Testing">
       </view>
       <view
             allowMultiple="false"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.view.base.swt.RcpSearchView"
+            class="org.caleydo.rcp.view.rcp.RcpSearchView"
             icon="resources/icons/view/search.png"
             id="org.caleydo.rcp.views.swt.SearchView"
             name="Search">
@@ -44,7 +44,7 @@
       <view
             allowMultiple="false"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.view.base.swt.RcpSelectionInfoView"
+            class="org.caleydo.rcp.view.rcp.RcpSelectionInfoView"
             icon="resources/icons/view/info.png"
             id="org.caleydo.rcp.views.swt.SelectionInfoView"
             name="Info">

@@ -6,7 +6,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.storagebased.InitAxisComboEvent;
 import org.caleydo.core.manager.event.view.storagebased.YAxisSelectorEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.view.base.swt.toolbar.content.IToolBarItem;
+import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

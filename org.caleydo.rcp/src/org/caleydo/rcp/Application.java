@@ -30,12 +30,12 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
+import org.caleydo.rcp.view.EStartViewType;
 import org.caleydo.rcp.view.RCPViewManager;
 import org.caleydo.rcp.wizard.firststart.InternetConfigurationWizard;
 import org.caleydo.rcp.wizard.firststart.ProxyConfigurationPage;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
 import org.caleydo.rcp.wizard.project.DataImportWizard;
-import org.caleydo.view.base.EStartViewType;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -59,8 +59,6 @@ import org.osgi.framework.BundleException;
 @SuppressWarnings("restriction")
 public class Application
 	implements IApplication {
-
-	public static final boolean RELEASE_MODE = true;
 
 	/**
 	 * determines if initialize-views should be loaded lazy (=<code>true</code>)or immediate (=
@@ -374,6 +372,10 @@ public class Application
 			for (Entry<EVAType, VirtualArray> entry : virtualArrayMap.entrySet()) {
 				useCase.setVirtualArray(entry.getKey(), entry.getValue());
 			}
+			
+			if (useCase instanceof GeneticUseCase)
+				triggerPathwayLoading();
+			
 			Application.initData = null;
 		}
 		else if (applicationMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA) {

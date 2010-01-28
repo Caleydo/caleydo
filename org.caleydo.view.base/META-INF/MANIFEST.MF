@@ -13,14 +13,3 @@ Require-Bundle: org.eclipse.ui,
  org.caleydo.util.gleem;bundle-version="1.0.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.caleydo.view.base,
- org.caleydo.view.base.action.toolbar,
- org.caleydo.view.base.action.toolbar.view.glyph,
- org.caleydo.view.base.action.toolbar.view.storagebased,
- org.caleydo.view.base.action.toolbar.view.storagebased.parcoords,
- org.caleydo.view.base.core,
- org.caleydo.view.base.listener,
- org.caleydo.view.base.rcp,
- org.caleydo.view.base.swt,
- org.caleydo.view.base.swt.toolbar.content,
- org.caleydo.view.base.util.search

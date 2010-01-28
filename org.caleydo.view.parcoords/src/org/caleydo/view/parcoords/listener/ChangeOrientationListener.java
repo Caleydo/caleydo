@@ -3,7 +3,7 @@ package org.caleydo.view.parcoords.listener;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.AFlagSetterEvent;
-import org.caleydo.view.base.core.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
 
 public class ChangeOrientationListener
 		extends

@@ -2,7 +2,7 @@ package org.caleydo.view.parcoords;
 
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.view.base.rcp.ARcpGLViewPart;
+import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLParCoordsClinicalView extends ARcpGLViewPart {

@@ -3,8 +3,8 @@ package org.caleydo.view.scatterplot.actions;
 import org.caleydo.core.manager.event.view.storagebased.ResetScatterSelectionEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.view.base.action.toolbar.AToolBarAction;
-import org.caleydo.view.base.swt.toolbar.content.IToolBarItem;
+import org.caleydo.rcp.view.toolbar.IToolBarItem;
+import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 

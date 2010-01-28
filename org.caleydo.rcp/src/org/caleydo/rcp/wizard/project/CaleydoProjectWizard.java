@@ -13,15 +13,12 @@ import org.caleydo.core.serialize.ProjectLoader;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
-import org.caleydo.rcp.command.handler.ExitHandler;
 import org.caleydo.rcp.wizard.project.ChooseProjectTypePage.EProjectType;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
  * Wizard that appears after Caleydo startup.

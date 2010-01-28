@@ -3,7 +3,7 @@ package org.caleydo.view.heatmap;
 import java.util.ArrayList;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.view.base.rcp.ARcpGLViewPart;
+import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 
