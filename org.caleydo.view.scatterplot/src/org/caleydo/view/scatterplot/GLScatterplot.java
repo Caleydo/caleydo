@@ -15,6 +15,9 @@ import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.YL
 import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.YLABELROTATIONNAGLE;
 import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.Y_AXIS_COLOR;
 import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.Y_AXIS_LINE_WIDTH;
+import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.NR_TEXTURESX;
+import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.NR_TEXTURESY;			
+import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.NR_TEXTURES;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
@@ -62,7 +65,8 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
+//import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
+import org.caleydo.view.base.core.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -151,10 +155,11 @@ public class GLScatterplot extends AStorageBasedView {
 	private int iGLDisplayListIndexSelection;
 
 	// Textures
-	private int iSamplesPerTexture = 0;
-	private final static int MAX_SAMPLES_PER_TEXTURE = 2000;
+	private int iSamplesPerTexture = 0; // TODO not used yet, remove completly probably
+	private final static int MAX_SAMPLES_PER_TEXTURE = 2000; // TODO not used yet, remove completly probably
 	// array of textures for holding the data samples
-	private int iNrTextures = 1; // TMP
+	
+	 
 	private ArrayList<Texture> AlTextures = new ArrayList<Texture>();
 	private ArrayList<Integer> iAlNumberSamples = new ArrayList<Integer>();
 	private boolean bRedrawTextures = false;
@@ -190,10 +195,11 @@ public class GLScatterplot extends AStorageBasedView {
 
 		AlTextures.clear();
 		iAlNumberSamples.clear();
+		
 
 		Texture tempTextur = null;
 
-		for (int i = 0; i < iNrTextures; i++) {
+		for (int i = 0; i < NR_TEXTURES; i++) {
 
 			AlTextures.add(tempTextur);
 			iAlNumberSamples.add(iSamplesPerTexture);
@@ -208,11 +214,8 @@ public class GLScatterplot extends AStorageBasedView {
 		float fyOffset = 0.0f;
 		float fxOffset = 0.0f;
 
-		iNrTextures=25;
-		int iNrTexturesX=5;
-		int iNrTexturesY=5;
-		int size = AlTextures.size();
-		calculateTextures();
+		
+		int size = AlTextures.size();		
 		initTextures();			
 		size = AlTextures.size();
 		
@@ -221,24 +224,24 @@ public class GLScatterplot extends AStorageBasedView {
 
 		float fHeightElem = fHeight; // / iNumberOfElements;
 
-		float fStepY = fHeight / 6.0f;
-		float fStepX = fWidth / 6.0f;
+		float fStepY = fHeight / (float)(NR_TEXTURESY+1);
+		float fStepX = fWidth / (float)(NR_TEXTURESX+1);
 		
-		float fSpacerX = fStepX /6.0f;
-		float fSpacerY = fStepY /6.0f;
+		float fSpacerX = fStepX / (float)(NR_TEXTURESX+1);
+		float fSpacerY = fStepY /(float)(NR_TEXTURESX+1);
 		
 		//fyOffset=fWidth/2;
 
 		gl.glColor4f(1f, 1f, 1f, 1f);
 		int icounter=0;
 
-		for (int i = 0; i < iNrTexturesX; i++) {
-			for (int j = 0; j < iNrTexturesY; j++) {
+		for (int i = 0; i < NR_TEXTURESX; i++) {
+			for (int j = 0; j < NR_TEXTURESY; j++) {
 
 			//fStep = fHeightElem * iAlNumberSamples.get(iNrTextures - i - 1);
 
-			AlTextures.get(iNrTextures - icounter - 1).enable();
-			AlTextures.get(iNrTextures - icounter - 1).bind();
+			AlTextures.get(NR_TEXTURES - icounter - 1).enable();
+			AlTextures.get(NR_TEXTURES - icounter - 1).bind();
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S,
 					GL.GL_CLAMP);
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T,
@@ -247,11 +250,11 @@ public class GLScatterplot extends AStorageBasedView {
 					GL.GL_NEAREST);
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
 					GL.GL_NEAREST);
-			TextureCoords texCoords = AlTextures.get(iNrTextures - i - 1)
+			TextureCoords texCoords = AlTextures.get(NR_TEXTURES - i - 1)
 					.getImageTexCoords();
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.HIER_HEAT_MAP_TEXTURE_SELECTION, iNrTextures
+					EPickingType.HIER_HEAT_MAP_TEXTURE_SELECTION, NR_TEXTURES
 							- i));
 			gl.glBegin(GL.GL_QUADS);
 			gl.glTexCoord2d(texCoords.left(), texCoords.top());
@@ -267,7 +270,7 @@ public class GLScatterplot extends AStorageBasedView {
 
 			fyOffset += fStepY+fSpacerY;
 			
-			AlTextures.get(iNrTextures - icounter - 1).disable();
+			AlTextures.get(NR_TEXTURES - icounter - 1).disable();
 			icounter++;
 			}
 			fyOffset =0;
@@ -283,46 +286,49 @@ public class GLScatterplot extends AStorageBasedView {
 	 * @param gl
 	 */
 	private void initTextures() {
-
-		AlTextures.clear();
-		iAlNumberSamples.clear();
-
-		Texture tempTextur;
-
-		// tempTextur.
-		int iTextureHeight = contentVA.size();
-		int iTextureWidth = contentVA.size();
-
-		iTextureHeight = 128;
-		iTextureWidth = 128;
-
-//iSamplesPerTexture = (int) Math.ceil((double) iTextureSize
-//		/ iNrTextures);
-
-		
-		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
-		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
+				
 		int ix = 0;
 		int iy = 0;
 		float xnormalized = 0.0f;
 		float ynormalized = 0.0f;
-				
-		float fLookupValue = 0;
+		float[] fArRgbaWhite = { 1.0f, 1.0f,1.0f, 
+				1.0f }; //OPACY		
 		float fOpacity = 1.0f;
+		
+		//iSamplesPerTexture = (int) Math.ceil((double) iTextureSize
+		//		/ iNrTextures);
+							
+		
+		//ScatterPlotRenderStyle.setTextureNr(NR_TEXTURESX,NR_TEXTURESY);
+		ScatterPlotRenderStyle.setTextureNr(100,100);
+		
+		int StartindexX=0; //TODO Make this adjustable
+		int StartindexY=0;
+		int EndindexX=StartindexX+NR_TEXTURESX-1;
+		int EndindexY=StartindexY+NR_TEXTURESY-1;
+					
+		if (EndindexX>=storageVA.size())
+		{
+			EndindexX=storageVA.size()-1;
+			ScatterPlotRenderStyle.setTextureNr(EndindexX-StartindexX+1,NR_TEXTURESY);
+		}
+		if (EndindexY>=storageVA.size())
+		{
+			EndindexY=storageVA.size()-1;
+			ScatterPlotRenderStyle.setTextureNr(NR_TEXTURESX,EndindexY-StartindexY+1);
+		}	
+		
+		int iTextureHeight = (int)(1000.0f / (double)NR_TEXTURESY);
+		int iTextureWidth = (int)(1000.0f / (double)NR_TEXTURESX);
 		int TextureSize= iTextureWidth* iTextureHeight ;
 
-		FloatBuffer FbTemp = BufferUtil.newFloatBuffer(TextureSize*4);
-		
-		
-		float[] fArRgbaWhite = { 1.0f, 1.0f,1.0f, 
-											1.0f }; //OPACY
-		
-		int StartindexX=0;
-		int StartindexY=0;
-		int EndindexX=4;
-		int EndindexY=4;
-		
-		
+		FloatBuffer FbTemp = BufferUtil.newFloatBuffer(TextureSize*4);		
+		calculateTextures();
+		AlTextures.clear();
+		iAlNumberSamples.clear();
+
+		Texture tempTextur;
+											
 		for (Integer iAxisX=StartindexX;iAxisX<=EndindexX;iAxisX++)
 		{
 			for (Integer iAxisY=StartindexY;iAxisY<=EndindexY;iAxisY++)
@@ -362,9 +368,9 @@ public class GLScatterplot extends AStorageBasedView {
 						if(ix>maxX) maxX=ix;
 						if(iy>maxY) maxY=iy;
 						
-						if(iy>=TextureSize*4-1)
+						if(iy>=TextureSize*4-4)
 						{
-							iy=0; // TODO : DIRDY HACK CAUSE INIDICES ARE WRONG!
+							iy=0; // TODO : DIRTY HACK CAUSE INIDICES ARE WRONG!
 						}
 						
 			
@@ -377,8 +383,8 @@ public class GLScatterplot extends AStorageBasedView {
 					
 				}
 				
-//				maxX=maxX;
-//				maxY=maxY;
+				maxX=maxX;
+				maxY=maxY;
 				
 				FbTemp.rewind();
 			
