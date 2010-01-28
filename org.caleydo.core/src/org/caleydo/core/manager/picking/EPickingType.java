@@ -59,9 +59,11 @@ public enum EPickingType {
 	// hierarchical heat map
 	HIER_HEAT_MAP_FIELD_SELECTION,
 	HIER_HEAT_MAP_TEXTURE_SELECTION,
+	/** Button that triggers whether level 2 is large or small */
 	HIER_HEAT_MAP_INFOCUS_SELECTION,
 	HIER_HEAT_MAP_ACTIVATE_HORIZONTAL_DENDROGRAM,
-	HIER_HEAT_MAP_ACTIVATE_VERTICAL_DENDROGRAM,
+	/** Button that triggers wheter storage dendrogram shows the whole tree, or only the tree till the cut-off */
+	HIER_HEAT_MAP_ACTIVATE_STORAGE_DENDROGRAM,
 	HIER_HEAT_MAP_CURSOR_LEVEL1,
 	HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL1,
 	HIER_HEAT_MAP_CURSOR_LEVEL2,

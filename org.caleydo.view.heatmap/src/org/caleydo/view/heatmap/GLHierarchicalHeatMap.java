@@ -10,9 +10,7 @@ import static org.caleydo.view.heatmap.HeatMapRenderStyle.DENDROGRAM_BACKROUND;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.DRAGGING_CURSOR_COLOR;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
-import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
-import gleem.linalg.open.Transform;
 
 import java.awt.Point;
 import java.nio.FloatBuffer;
@@ -53,8 +51,6 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.usecase.EDataFilterLevel;
-import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
-import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
@@ -74,7 +70,6 @@ import org.caleydo.core.view.opengl.canvas.remote.receiver.IGroupsActionHandler;
 import org.caleydo.core.view.opengl.canvas.remote.receiver.INewGroupInfoHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GroupContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -196,6 +191,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	private float fPosCursorLastElementLevel1 = 0;
 	private boolean bActivateDraggingLevel1 = false;
 
+	// clustering/grouping stuff
+	@SuppressWarnings("unused")
+	private boolean bSplitGroupExp = false;
+	@SuppressWarnings("unused")
+	private boolean bSplitGroupGene = false;
 	private int iGroupToSplit = 0;
 	private Point DraggingPoint = null;
 
@@ -207,7 +207,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	private int iGeneGroupToDrag = -1;
 	private boolean bActivateDraggingGenes = false;
 
-	// listeners
 	private GroupExportingListener groupExportingListener;
 	private GroupInterChangingActionListener groupInterchangingListener;
 	private GroupMergingActionListener groupMergingListener;
@@ -221,14 +220,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	// private org.eclipse.swt.graphics.Point upperLeftScreenPos = new
 	// org.eclipse.swt.graphics.Point(0, 0);
-
-	/**
-	 * Transformation utility object to transform and project view related
-	 * coordinates
-	 */
-	private RemoteRenderingTransformer selectionTransformer;
-
-	private RemoteLevelElement heatMapRemoteElement;
 
 	/**
 	 * Constructor.
@@ -256,16 +247,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
 		super.renderStyle = renderStyle;
 
-		heatMapRemoteElement = new RemoteLevelElement(null);
-		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(0, 0, 0));
-		transform.setScale(new Vec3f(1, 1, 1));
-		heatMapRemoteElement.setTransform(transform);
-
-		ArrayList<RemoteLevelElement> remoteLevelElementWhiteList = new ArrayList<RemoteLevelElement>();
-		remoteLevelElementWhiteList.add(heatMapRemoteElement);
-		selectionTransformer = new RemoteRenderingTransformer(iUniqueID,
-				remoteLevelElementWhiteList);
 	}
 
 	@Override
@@ -665,8 +646,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		glHeatMapView = (GLHeatMap) cmdView.getCreatedObject();
 		glHeatMapView.setUseCase(useCase);
 		glHeatMapView.setRemoteRenderingGLView(this);
-		glHeatMapView.setRemoteLevelElement(heatMapRemoteElement);
-		heatMapRemoteElement.setGLView(glHeatMapView);
 
 		glHeatMapView.setDataDomain(dataDomain);
 		glHeatMapView.setUseCase(useCase);
@@ -767,11 +746,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		display(gl);
 		checkForHits(gl);
-
-		ConnectedElementRepresentationManager cerm = GeneralManager.get()
-				.getViewGLCanvasManager()
-				.getConnectedElementRepresentationManager();
-		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 	}
 
 	/**
@@ -784,12 +758,13 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		if (scrollToSelection && bSkipLevel2 == false) {
 			Set<Integer> setMouseOverElements = new HashSet<Integer>();
-			
+
 			setMouseOverElements.addAll(contentSelectionManager
 					.getElements(ESelectionType.MOUSE_OVER));
-			
-			setMouseOverElements.addAll(contentSelectionManager.getElements(ESelectionType.SELECTION));
-			
+
+			setMouseOverElements.addAll(contentSelectionManager
+					.getElements(ESelectionType.SELECTION));
+
 			for (Integer mouseOverElement : setMouseOverElements) {
 
 				int index = contentVA.indexOf(mouseOverElement.intValue());
@@ -2479,7 +2454,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	@Override
 	public void display(GL gl) {
-
 		processEvents();
 		if (generalManager.isWiiModeActive()) {
 			handleWiiInput();
@@ -2578,9 +2552,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		contextMenu.render(gl, this);
 
-		// ConnectedElementRepresentationManager cerm =
-		// GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
-		// cerm.doViewRelatedTransformation(gl, selectionTransformer);
 	}
 
 	private void renderRemoteViewsLevel_1_2_3_Active(GL gl) {
@@ -2602,49 +2573,19 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		fright = viewFrustum.getWidth() - fleftOffset;
 
-		// gl.glTranslatef(fleftOffset, -0.2f, 0);
+		gl.glTranslatef(fleftOffset, -0.2f, 0);
 
 		// render embedded heat map
 		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
 			ftop -= renderStyle.getHeightExperimentDendrogram();
 
-		// glHeatMapView.getViewFrustum().setTop(ftop);
-		// glHeatMapView.getViewFrustum().setRight(fright);
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
-				glHeatMapView.getID()));
-
-		gl.glPushMatrix();
-
-		heatMapRemoteElement.getTransform().getTranslation().set(fleftOffset,
-				-0.2f, 0);
-		heatMapRemoteElement.getTransform().getScale().set(fright / 8,
-				1 * fAspectRatio, 1);
-		// heatMapRemoteElement.getTransform().getTranslation().set(0, 0, 0);
-		// heatMapRemoteElement.getTransform().getScale().set(1, 0.5f, 1);
-
-		Transform transform = heatMapRemoteElement.getTransform();
-		Vec3f translation = transform.getTranslation();
-		Rotf rot = transform.getRotation();
-		// Vec3f scale = transform.getScale();
-		Vec3f axis = new Vec3f();
-		float fAngle = rot.get(axis);
-
-		gl.glTranslatef(translation.x(), translation.y(), translation.z());
-		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(),
-				axis.z());
-		// gl.glScalef(scale.x(), scale.y(), scale.z());
-		// gl.glScalef(1, 1, 1);
-
-		IViewFrustum embeddedHeatMapFrustum = glHeatMapView.getViewFrustum();
-		embeddedHeatMapFrustum.setLeft(0);
-		embeddedHeatMapFrustum.setRight(5);
-		embeddedHeatMapFrustum.setTop(5.51f);
-		glHeatMapView.setFrustum(embeddedHeatMapFrustum);
-
+		glHeatMapView.getViewFrustum().setTop(ftop);
+		glHeatMapView.getViewFrustum().setRight(fright);
+		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		// EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
+		// glHeatMapView.getID()));
 		glHeatMapView.displayRemote(gl);
-
-		gl.glPopName();
+		// gl.glPopName();
 		renderStyle
 				.setWidthLevel3(glHeatMapView.getViewFrustum().getWidth() - 0.95f);
 
@@ -2674,9 +2615,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glTranslatef(0f, -fOffsety, 0f);
 		}
 
-		gl.glPopMatrix();
-
-		// gl.glTranslatef(-fleftOffset, +0.2f, 0);
+		gl.glTranslatef(-fleftOffset, +0.2f, 0);
 
 		// render embedded gene dendrogram
 		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
@@ -2700,10 +2639,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glPopName();
 			gl.glTranslatef(0f, -0.4f, 0f);
 		}
+
 	}
 
 	private void renderRemoteViewsLevel_2_3_Active(GL gl) {
-		// float fright = 0.0f;
+		float fright = 0.0f;
 		float ftop = viewFrustum.getTop();
 
 		float fleftOffset = 0.1f + renderStyle.getWidthLevel2()
@@ -2718,7 +2658,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		if (!bIsHeatmapInFocus)
 			fleftOffset -= 0.02;
 
-		// fright = viewFrustum.getWidth() - fleftOffset;
+		fright = viewFrustum.getWidth() - fleftOffset;
 
 		gl.glTranslatef(fleftOffset, -0.2f, 0);
 
@@ -2726,8 +2666,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
 			ftop -= renderStyle.getHeightExperimentDendrogram();
 
-		// glHeatMapView.getViewFrustum().setTop(ftop);
-		// glHeatMapView.getViewFrustum().setRight(fright);
+		glHeatMapView.getViewFrustum().setTop(ftop);
+		glHeatMapView.getViewFrustum().setRight(fright);
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
 				glHeatMapView.getID()));
@@ -3437,12 +3377,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
-			gl
-					.glPushName(pickingManager
-							.getPickingID(
-									iUniqueID,
-									EPickingType.HIER_HEAT_MAP_ACTIVATE_VERTICAL_DENDROGRAM,
-									1));
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					EPickingType.HIER_HEAT_MAP_ACTIVATE_STORAGE_DENDROGRAM, 1));
 			if (bExperimentDendrogramActive) {
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
@@ -3483,9 +3419,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	 * Function responsible for handling SelectionDelta for embedded heatmap
 	 */
 	private void setEmbeddedHeatMapData() {
-		// reset hasDataWindowChanged
 		hasDataWindowChanged = false;
-
 		int iCount = iFirstSampleLevel1 + iFirstSampleLevel2;
 
 		if (iCount < 0) {
@@ -3656,7 +3590,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	@Override
 	public String getShortInfo() {
-		return "Hierarchical Heat Map (" + contentVA.size() + " " 
+		return "Hierarchical Heat Map (" + contentVA.size() + " "
 				+ useCase.getContentLabel(false, true) + " / "
 				+ storageVA.size() + " experiments)";
 	}
@@ -3990,6 +3924,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 						currentPoint.y);
 
 		if (glMouseListener.wasMouseReleased()) {
+			// bSplitGroupGene = false;
 
 			fArDraggedPoint = GLCoordinateUtils
 					.convertWindowCoordinatesToWorldCoordinates(gl,
@@ -4029,6 +3964,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 						currentPoint.y);
 
 		if (glMouseListener.wasMouseReleased()) {
+			// bSplitGroupExp = false;
 
 			fArDraggedPoint = GLCoordinateUtils
 					.convertWindowCoordinatesToWorldCoordinates(gl,
@@ -4165,7 +4101,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		setDisplayListDirty();
 		hasDataWindowChanged = true;
-
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingWholeBlockLevel2 = false;
 			bDisableCursorDraggingLevel2 = false;
@@ -4333,7 +4268,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		// handling the groups/clusters of genes
 		case HIER_HEAT_MAP_GENES_GROUP:
 			switch (pickingMode) {
-
 			case RIGHT_CLICKED:
 
 				boolean bEnableInterchange = false;
@@ -4347,6 +4281,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 					if (group.getSelectionType() == ESelectionType.SELECTION)
 						iNrSelectedGroups++;
 				}
+
+				if (iNrSelectedGroups >= 1)
+					bEnableExport = true;
 
 				if (iNrSelectedGroups >= 2) {
 
@@ -4373,7 +4310,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 						.getSelectionType() == ESelectionType.SELECTION)
 					break;
 				// else we want to go to clicked as well
-
 			case CLICKED:
 				contentVA.getGroupList().get(iExternalID).toggleSelectionType();
 				deactivateAllDraggingCursor();
@@ -4425,8 +4361,17 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				// }
 				setDisplayListDirty();
 				break;
+
+			case MOUSE_OVER:
+				// System.out.print("genes group " + iExternalID);
+				// System.out.print(" number elements in group: ");
+				// System.out.println(contentVA.getGroupList().get(iExternalID)
+				// .getNrElements());
+				// setDisplayListDirty();
+				break;
 			}
 			break;
+
 		// handling the groups/clusters of experiments
 		case HIER_HEAT_MAP_EXPERIMENTS_GROUP:
 			switch (pickingMode) {
@@ -4532,7 +4477,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			break;
 
 		// handle click on button for setting experiment dendrogram active
-		case HIER_HEAT_MAP_ACTIVATE_VERTICAL_DENDROGRAM:
+		case HIER_HEAT_MAP_ACTIVATE_STORAGE_DENDROGRAM:
 			switch (pickingMode) {
 
 			case CLICKED:
@@ -4597,12 +4542,10 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				glHeatMapView.setDisplayListDirty();
 				setDisplayListDirty();
 				break;
-
 			}
 			break;
 
-		// handle dragging cursor for first and last element of block in
-		// level 1
+		// handle dragging cursor for first and last element of block in level 1
 		case HIER_HEAT_MAP_CURSOR_LEVEL1:
 			switch (pickingMode) {
 			case CLICKED:
@@ -4644,8 +4587,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			}
 			break;
 
-		// handle dragging cursor for first and last element of block in
-		// level 2
+		// handle dragging cursor for first and last element of block in level 2
 		case HIER_HEAT_MAP_CURSOR_LEVEL2:
 			switch (pickingMode) {
 			case CLICKED:
@@ -4691,6 +4633,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		case HIER_HEAT_MAP_TEXTURE_SELECTION:
 			switch (pickingMode) {
 			case CLICKED:
+
 				pickingPointLevel1 = pick.getPickedPoint();
 				setDisplayListDirty();
 				break;
