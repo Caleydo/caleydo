@@ -377,8 +377,8 @@ public class GLScatterplot extends AStorageBasedView {
 					
 				}
 				
-				maxX=maxX;
-				maxY=maxY;
+//				maxX=maxX;
+//				maxY=maxY;
 				
 				FbTemp.rewind();
 			

@@ -159,7 +159,7 @@ public abstract class AStorage
 
 	@Override
 	public Number get(EDataRepresentation storageKind, int iIndex) {
-		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer))
+		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer<?>))
 			throw new IllegalArgumentException("Requested storage kind is not a subtype of Number");
 
 		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers.get(storageKind);
@@ -168,7 +168,7 @@ public abstract class AStorage
 
 	@Override
 	public Iterator<? extends Number> iterator(EDataRepresentation storageKind) {
-		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer))
+		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer<?>))
 			throw new IllegalArgumentException("Requested storage kind is not a subtype of Number");
 
 		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers.get(storageKind);

@@ -84,7 +84,7 @@ public class SetExporter {
 			e.printStackTrace();
 		}
 	}
-
+	@SuppressWarnings("unused")
 	public void export(ISet set, String sFileName, EWhichViewToExport eWhichViewToExport) {
 		IVirtualArray contentVA = null;
 		IVirtualArray storageVA = null;
@@ -195,7 +195,7 @@ public class SetExporter {
 
 				cluster = 0;
 				cnt = -1;
-
+				
 				for (Integer iStorageIndex : storageVA) {
 					if (cnt == storageVA.getGroupList().get(cluster).getNrElements() - 1) {
 						offset = offset + storageVA.getGroupList().get(cluster).getNrElements();
