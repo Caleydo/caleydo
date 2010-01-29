@@ -262,6 +262,7 @@
                   style="push">
             </command>
          </menu>
+         <!--
          <menu
                id="org.caleydo.menu.admin"
                label="Admin">
@@ -282,6 +283,7 @@
                   style="push">
             </command>
          </menu>
+         -->
          <menu
                id="org.caleydo.menu.help"
                label="Help"
