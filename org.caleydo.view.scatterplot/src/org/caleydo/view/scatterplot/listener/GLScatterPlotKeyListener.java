@@ -38,7 +38,12 @@ public class GLScatterPlotKeyListener extends GLKeyListener<GLScatterplot> {
 			glScatterplot.toggleDetailLevel();
 			return;
 		}
-
+		
+		if (event.character == 'm') {
+			glScatterplot.toggleMatrixMode();
+			return;
+		}
+		
 		switch (event.keyCode) {
 			case SWT.ARROW_UP :
 				glScatterplot.upDownSelect(false);
