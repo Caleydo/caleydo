@@ -1,6 +1,10 @@
 package org.caleydo.core.util.system;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class FileOperations {
 
@@ -20,5 +24,20 @@ public class FileOperations {
 
 		// The directory is now empty so delete it
 		return dir.delete();
+	}
+
+	public static void writeInputStreamToFile(String fileName, InputStream inputStream) {
+		try {
+			File f = new File(fileName);
+			OutputStream out = new FileOutputStream(f);
+			byte buf[] = new byte[1024];
+			int len;
+			while ((len = inputStream.read(buf)) > 0)
+				out.write(buf, 0, len);
+			out.close();
+			inputStream.close();
+		}
+		catch (IOException e) {
+		}
 	}
 }

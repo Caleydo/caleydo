@@ -22,6 +22,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.core.runtime.IStatus;
@@ -113,11 +114,8 @@ public class ProjectSaver {
 		// FIXME - this works only for genetic data now
 		AUseCase useCase = (AUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
 		LoadDataParameters parameters = useCase.getLoadDataParameters();
-		byte[] data = SetUtils.loadSetFile(parameters);
-
-		String setFileName = dirName + SET_DATA_FILE_NAME;
-		File setFile = new File(setFileName);
-		SetUtils.saveFile(data, setFile);
+		FileOperations.writeInputStreamToFile(dirName + SET_DATA_FILE_NAME, GeneralManager.get().getResourceLoader().getInputSource(
+			parameters.getFileName()).getByteStream());
 
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 		JAXBContext projectContext = serializationManager.getProjectContext();

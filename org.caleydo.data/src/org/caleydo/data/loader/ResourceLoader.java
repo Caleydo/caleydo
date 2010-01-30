@@ -114,14 +114,8 @@ public class ResourceLoader {
 
 	private InputStream loadResourceAsInputStream(String sFileName) {
 		InputStream file;
-		// try
-		// {
+
 		file = this.getClass().getClassLoader().getResourceAsStream(sFileName);
-		// }
-		// catch (IOException e)
-		// {Textu
-		// throw new IllegalStateException("Cannot load resource: " +sFileName);
-		// }
 
 		if (file == null)
 			throw new IllegalStateException("Cannot load resource: "
