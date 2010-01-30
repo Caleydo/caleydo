@@ -20,6 +20,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
+import org.caleydo.core.view.opengl.util.vislink.VisLinkAnimationStage;
 import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
 
 /**
@@ -129,13 +130,14 @@ public class GLConnectionLineRendererBucket extends AGLConnectionLineRenderer {
 		}
 
 		Vec3f vecCenter = calculateCenter(hashViewToCenterPoint.values());
-		// ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
-		ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews = new ArrayList<ArrayList<ArrayList<Vec3f>>>(
-				4);
-		ArrayList<ArrayList<Vec3f>> connectionLinesActiveView = new ArrayList<ArrayList<Vec3f>>();
-		ArrayList<ArrayList<Vec3f>> bundlingToCenterLinesActiveView = new ArrayList<ArrayList<Vec3f>>();
-		ArrayList<ArrayList<Vec3f>> bundlingToCenterLinesOtherViews = new ArrayList<ArrayList<Vec3f>>();
-		ArrayList<ArrayList<Vec3f>> connectionLinesOtherViews = new ArrayList<ArrayList<Vec3f>>();
+		
+		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>(4);
+		
+		VisLinkAnimationStage connectionLinesActiveView = new VisLinkAnimationStage();
+		VisLinkAnimationStage bundlingToCenterLinesActiveView = new VisLinkAnimationStage();
+		VisLinkAnimationStage bundlingToCenterLinesOtherViews = new VisLinkAnimationStage(true);
+		VisLinkAnimationStage connectionLinesOtherViews = new VisLinkAnimationStage(true);
+		
 
 		for (Integer iKey : keySet) {
 			Vec3f vecViewBundlingPoint = calculateBundlingPoint(
@@ -149,30 +151,25 @@ public class GLConnectionLineRendererBucket extends AGLConnectionLineRenderer {
 				} else
 					pointsToDepthSort.add(alCurrentPoints.get(0));
 			}
-			// for(Vec3f currentPoint : depthSort(pointsToDepthSort))
-			// renderLine(gl, vecViewBundlingPoint, currentPoint, 0,
-			// hashViewToCenterPoint.get(iKey),
-			// fArColor);
 
 			for (Vec3f currentPoint : depthSort(pointsToDepthSort)) {
 				if (activeViewID != -1 && iKey == activeViewID)
-					connectionLinesActiveView.add(createControlPoints(
+					connectionLinesActiveView.addLine(createControlPoints(
 							vecViewBundlingPoint, currentPoint,
 							hashViewToCenterPoint.get(iKey)));
 				else
-					connectionLinesOtherViews.add(createControlPoints(
+					connectionLinesOtherViews.addLine(createControlPoints(
 							vecViewBundlingPoint, currentPoint,
 							hashViewToCenterPoint.get(iKey)));
 			}
 
-			// renderLine(gl, vecViewBundlingPoint, vecCenter, 0, fArColor);
 			ArrayList<Vec3f> bundlingToCenter = new ArrayList<Vec3f>(2);
 			bundlingToCenter.add(vecViewBundlingPoint);
 			bundlingToCenter.add(vecCenter);
 			if (activeViewID != -1 && iKey == activeViewID) {
-				bundlingToCenterLinesActiveView.add(bundlingToCenter);
+				bundlingToCenterLinesActiveView.addLine(bundlingToCenter);
 			} else {
-				bundlingToCenterLinesOtherViews.add(bundlingToCenter);
+				bundlingToCenterLinesOtherViews.addLine(bundlingToCenter);
 			}
 
 		}
@@ -186,39 +183,6 @@ public class GLConnectionLineRendererBucket extends AGLConnectionLineRenderer {
 		visLinkScene.renderLines(gl);
 	}
 
-	// protected void renderLineBundling(final GL gl, EIDType idType, float[]
-	// fArColor) {
-	// Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
-	// HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer,
-	// Vec3f>();
-	//
-	// for (Integer iKey : keySet) {
-	// hashViewToCenterPoint.put(iKey,
-	// calculateCenter(hashIDTypeToViewToPointLists.get(idType)
-	// .get(iKey)));
-	// }
-	//
-	// Vec3f vecCenter = calculateCenter(hashViewToCenterPoint.values());
-	//
-	// for (Integer iKey : keySet) {
-	// Vec3f vecViewBundlingPoint =
-	// calculateBundlingPoint(hashViewToCenterPoint.get(iKey), vecCenter);
-	//
-	// for (ArrayList<Vec3f> alCurrentPoints :
-	// hashIDTypeToViewToPointLists.get(idType).get(iKey)) {
-	// if (alCurrentPoints.size() > 1) {
-	// renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
-	// }
-	// else {
-	// renderLine(gl, vecViewBundlingPoint, alCurrentPoints.get(0), 0,
-	// hashViewToCenterPoint
-	// .get(iKey), fArColor);
-	// }
-	// }
-	//
-	// renderLine(gl, vecViewBundlingPoint, vecCenter, 0, fArColor);
-	// }
-	// }
 
 	private ArrayList<Vec3f> createControlPoints(Vec3f vecSrcPoint,
 			Vec3f vecDstPoint, Vec3f vecViewCenterPoint) {
