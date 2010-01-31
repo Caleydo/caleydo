@@ -117,10 +117,14 @@ public class GLScatterplot extends AStorageBasedView {
 	boolean bUseDetailLevel = true;
 
 	private boolean bUpdateSelection = false;
-	private boolean bUpdateAll = false;
+	private boolean bUpdateMainView = false;
 	private boolean bRender2Axis = false;
 	private boolean bRenderMatrix = false;
 	private boolean bRenderMainView = true;
+	
+	
+	private boolean bUseColorOnMatrix= false;
+	private boolean bOnlyRenderHalfMatrix= true;
 
 	int iCurrentMouseOverElement = -1;
 
@@ -193,20 +197,205 @@ public class GLScatterplot extends AStorageBasedView {
 		glKeyListener = new GLScatterPlotKeyListener(this);
 	}
 
-	private void calculateTextures() {
+	private void resetFullTextures() {
 
-		AlFullTextures.clear();
-		AlSelectionTextures.clear();
-				
+		AlFullTextures.clear();						
 		Texture tempTextur = null;
 
 		for (int i = 0; i < NR_TEXTURES; i++) {
 
-			AlFullTextures.add(tempTextur);			
-			AlSelectionTextures.add(tempTextur);
+			AlFullTextures.add(tempTextur);						
 		}
 	}
 	
+	private void resetSelectionTextures() {
+
+		AlSelectionTextures.clear();						
+		Texture tempTextur = null;
+
+		for (int i = 0; i < NR_TEXTURES; i++) {
+
+			AlSelectionTextures.add(tempTextur);						
+		}
+	}
+
+	
+	/**
+	 * Init textures, build array of textures used for holding the whole
+	 * examples
+	 * 
+	 * @param gl
+	 */
+	private void initTextures(boolean bIsSelection) {
+		
+		//if (bIsSelection) return;
+		
+		int ix = 0;
+		int iy = 0;
+		float xnormalized = 0.0f;
+		float ynormalized = 0.0f;
+		float fSelectionFaktor=1.0f;
+		
+		int debugsize1 = AlSelectionTextures.size();
+		int debugsize2 = AlFullTextures.size();
+		
+		float[] fArRgbaWhite = { 1.0f, 1.0f,1.0f, 
+				1f }; //OPACY		
+		float fOpacity = 1f;
+		
+		float[] fSelectionColor = {1.0f, 0.1f, 0.5f}; //Selection Color
+		float[] fBlackColor = {0.0f, 0.0f, 0.0f}; //Black Color
+		
+		int debugsize=0;
+		
+		Set<Integer> selectionSet = elementSelectionManager
+		.getAllElements();
+		debugsize=selectionSet.size();
+		
+		//for (Integer i : contentVA)
+		//	selectionSet.add(i);
+		//TODO DOesnt woek ATM
+		
+				
+		
+		if (bIsSelection) 
+		{
+			fSelectionFaktor=2.0f;
+			fArRgbaWhite = new float[] { 1.0f, 1.0f,1.0f, 
+					0f }; //OPACY
+			selectionSet.clear();
+			selectionSet = elementSelectionManager
+			.getElements(ESelectionType.SELECTION);
+			debugsize=selectionSet.size();
+		}
+//		else 
+//		{
+//			ArrayList<Integer> tmp = new ArrayList<Integer>();
+//			int size=0;
+//			tmp =	contentVA.getIndexList();
+//			size=tmp.size();
+//			selectionSet.addAll(contentVA.getIndexList());
+//		}
+		//iSamplesPerTexture = (int) Math.ceil((double) iTextureSize
+		//		/ iNrTextures);
+											
+		int StartindexX=0; //TODO Make this adjustable
+		int StartindexY=0;
+		int EndindexX=StartindexX+NR_TEXTURESX-1;
+		int EndindexY=StartindexY+NR_TEXTURESY-1;
+					
+		if (EndindexX>=storageVA.size())
+		{
+			EndindexX=storageVA.size()-1;
+			ScatterPlotRenderStyle.setTextureNr(EndindexX-StartindexX+1,NR_TEXTURESY);
+		}
+		if (EndindexY>=storageVA.size())
+		{
+			EndindexY=storageVA.size()-1;
+			ScatterPlotRenderStyle.setTextureNr(NR_TEXTURESX,EndindexY-StartindexY+1);
+		}	
+		
+		//if (bIsSelection) resetSelectionTextures();		
+		//else resetFullTextures();
+		
+		if (bIsSelection) AlSelectionTextures.clear();		
+		else AlFullTextures.clear();
+		
+		debugsize1 = AlSelectionTextures.size();
+		debugsize2 = AlFullTextures.size();
+		
+				
+		float fGlobalTexturePointsX = 1000.0f / fSelectionFaktor;
+		float fGlobalTexturePointsY = 1000.0f / fSelectionFaktor;
+		
+		int iTextureWidth =  (int)(fGlobalTexturePointsX / (double)NR_TEXTURESX);
+		int iTextureHeight = (int)(fGlobalTexturePointsY / (double)NR_TEXTURESY);
+		
+		int TextureSize= iTextureWidth* iTextureHeight ;
+
+		FloatBuffer FbTemp = BufferUtil.newFloatBuffer(TextureSize*4);		
+		//calculateTextures();
+		//AlTextures.clear();		
+
+		Texture tempTextur;
+											
+		for (Integer iAxisY=StartindexY;iAxisY<=EndindexY;iAxisY++)
+		{
+			for (Integer iAxisX=StartindexX;iAxisX<=EndindexX;iAxisX++)
+			{
+						
+					
+				for (Integer i=0;i<TextureSize;i++)
+				{
+						FbTemp.put(fArRgbaWhite);
+				}
+										
+				for (Integer iContentIndex : selectionSet) {
+					
+					int current_SELECTED_X_AXIS=iAxisX;
+					int current_SELECTED_Y_AXIS=iAxisY;
+					
+						xnormalized = set.get(current_SELECTED_X_AXIS).getFloat(
+								EDataRepresentation.NORMALIZED, iContentIndex);
+						ynormalized = set.get(current_SELECTED_Y_AXIS).getFloat(
+								EDataRepresentation.NORMALIZED, iContentIndex);
+			
+						ix = (int) Math.floor(xnormalized * (double)(iTextureWidth-1));
+						iy = ix* (iTextureWidth)*4+
+							(int) Math.floor(ynormalized * (double)(iTextureHeight-1))*4;
+						
+					
+														
+						float[] fArMappingColor = null;
+						
+						if (bIsSelection)
+							fArMappingColor = fSelectionColor;
+						else
+							if(bUseColorOnMatrix)
+							fArMappingColor = colorMapper.getColor(Math.max(
+								xnormalized, ynormalized));
+							else fArMappingColor = fBlackColor;
+						
+			
+			//			float[] fArRgba = { fArMappingColor[0], fArMappingColor[1],
+			//					fArMappingColor[2], fOpacity };
+			
+	
+						
+						if(iy>=TextureSize*4-4)
+						{
+							iy=0; // TODO : DIRTY HACK CAUSE INIDICES ARE WRONG!
+						}															
+						FbTemp.put(iy,fArMappingColor[0]);
+						FbTemp.put(iy+1,fArMappingColor[1]);
+						FbTemp.put(iy+2,fArMappingColor[2]);
+						FbTemp.put(iy+3,fOpacity);
+						
+					
+				}
+				
+				
+				FbTemp.rewind();			
+				TextureData texData = new TextureData(
+						GL.GL_RGBA /* internalFormat */,
+						iTextureWidth /* height */, iTextureHeight /* width */,
+						0 /* border */, GL.GL_RGBA /* pixelFormat */,
+						GL.GL_FLOAT /* pixelType */, false /* mipmap */,
+						false /* dataIsCompressed */, true /* mustFlipVertically */,
+						FbTemp, null);
+			
+				tempTextur = TextureIO.newTexture(0);
+				tempTextur.updateImage(texData);		
+				if (bIsSelection)
+					AlSelectionTextures.add(tempTextur);
+				else 
+					AlFullTextures.add(tempTextur);
+			}	
+		}
+		debugsize1 = AlSelectionTextures.size();
+		debugsize2 = AlFullTextures.size();
+	}
+
 	
 	private void renderMatrixSelection(GL gl) {
 		
@@ -243,11 +432,14 @@ public class GLScatterplot extends AStorageBasedView {
 		
 	}
 	
-	private void renderTextures(GL gl,ArrayList<Texture> AlTextures, float z) {
+	private void renderTextures(GL gl,boolean bIsSelection, float z) {
 		float fHeight;
 		float fWidth;
 		fHeight = viewFrustum.getHeight();
 		fWidth = viewFrustum.getWidth();
+		
+		int debugsize1 = AlSelectionTextures.size();
+		int debugsize2 = AlFullTextures.size();
 		
 		float fStepY = fHeight / (float)(NR_TEXTURESY+1);
 		float fStepX = fWidth / (float)(NR_TEXTURESX+1);
@@ -269,14 +461,27 @@ public class GLScatterplot extends AStorageBasedView {
 			//fStep = fHeightElem * iAlNumberSamples.get(iNrTextures - i - 1);
 			fyOffset -= fStepY+fSpacerY;
 
+			if (i>j && bOnlyRenderHalfMatrix) 
+				{
+					icounter++;
+					continue;
+				}
 //			AlTextures.get(NR_TEXTURES - icounter - 1).enable();
 //			AlTextures.get(NR_TEXTURES - icounter - 1).bind();
 			
 			if (i!=j)
 			{
 				gl.glColor4f(1f, 1f, 1f, 1f);
-				AlTextures.get(icounter).enable();
-				AlTextures.get(icounter).bind();
+				if (bIsSelection)
+				{
+					AlSelectionTextures.get(icounter).enable();
+					AlSelectionTextures.get(icounter).bind();
+				}
+				else
+				{
+					AlFullTextures.get(icounter).enable();
+					AlFullTextures.get(icounter).bind();				
+				}
 				gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S,
 						GL.GL_CLAMP);
 				gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T,
@@ -285,7 +490,12 @@ public class GLScatterplot extends AStorageBasedView {
 						GL.GL_NEAREST);
 				gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
 						GL.GL_NEAREST);
-				TextureCoords texCoords = AlTextures.get(NR_TEXTURES - i - 1)
+				TextureCoords texCoords=null;
+				if(bIsSelection)				
+					texCoords = AlSelectionTextures.get(NR_TEXTURES - i - 1)
+						.getImageTexCoords();				
+				else
+					texCoords = AlFullTextures.get(NR_TEXTURES - i - 1)
 						.getImageTexCoords();
 	
 				gl.glPushName(pickingManager.getPickingID(iUniqueID,
@@ -303,14 +513,17 @@ public class GLScatterplot extends AStorageBasedView {
 				gl.glVertex3f(fxOffset+ fStepX, fyOffset, z);
 				gl.glEnd();
 				gl.glPopName();
+				if(bIsSelection)
+					AlSelectionTextures.get(icounter).disable();
+				else
+					AlFullTextures.get(icounter).disable();
 																
 			}
-			else renderHistogram(gl,fxOffset,fyOffset,fStepX,fStepY,i);
+			else if(!bIsSelection) renderHistogram(gl,fxOffset,fyOffset,fStepX,fStepY,i);
 			//fyOffset -= fStepY-fSpacerY;
 			//fyOffset += fStepY+fSpacerY;
 			
-			//AlTextures.get(NR_TEXTURES - icounter - 1).disable();
-			AlTextures.get(icounter).disable();
+			//AlTextures.get(NR_TEXTURES - icounter - 1).disable();			
 			icounter++;
 			}
 			//fyOffset =0;
@@ -356,146 +569,7 @@ public class GLScatterplot extends AStorageBasedView {
 		gl.glPopAttrib();
 	}
 
-	/**
-	 * Init textures, build array of textures used for holding the whole
-	 * examples
-	 * 
-	 * @param gl
-	 */
-	private void initTextures(boolean bIsSelection,ArrayList<Texture> AlTextures) {
-		
-		if (bIsSelection) return;
-		
-		int ix = 0;
-		int iy = 0;
-		float xnormalized = 0.0f;
-		float ynormalized = 0.0f;
-		float fSelectionFaktor=1.0f;
-		
-		
-		float[] fArRgbaWhite = { 1.0f, 1.0f,1.0f, 
-				1f }; //OPACY		
-		float fOpacity = 1f;
-		
-		Set<Integer> selectionSet = null;
-		
-		//for (Integer i : contentVA)
-		//	selectionSet.add(i);
-		//TODO DOesnt woek ATM
-		selectionSet.addAll(contentVA.getIndexList());
-				
-		
-		if (bIsSelection) 
-		{
-			fSelectionFaktor=2.0f;
-			fArRgbaWhite = new float[] { 1.0f, 1.0f,1.0f, 
-					0f }; //OPACY
-			selectionSet = elementSelectionManager
-			.getElements(ESelectionType.SELECTION);
-		}
-		
-		//iSamplesPerTexture = (int) Math.ceil((double) iTextureSize
-		//		/ iNrTextures);
-											
-		int StartindexX=0; //TODO Make this adjustable
-		int StartindexY=0;
-		int EndindexX=StartindexX+NR_TEXTURESX-1;
-		int EndindexY=StartindexY+NR_TEXTURESY-1;
-					
-		if (EndindexX>=storageVA.size())
-		{
-			EndindexX=storageVA.size()-1;
-			ScatterPlotRenderStyle.setTextureNr(EndindexX-StartindexX+1,NR_TEXTURESY);
-		}
-		if (EndindexY>=storageVA.size())
-		{
-			EndindexY=storageVA.size()-1;
-			ScatterPlotRenderStyle.setTextureNr(NR_TEXTURESX,EndindexY-StartindexY+1);
-		}	
-		
-		
-		
-		
-		
-		float fGlobalTexturePointsX = 1000.0f / fSelectionFaktor;
-		float fGlobalTexturePointsY = 1000.0f / fSelectionFaktor;
-		
-		int iTextureWidth =  (int)(fGlobalTexturePointsX / (double)NR_TEXTURESX);
-		int iTextureHeight = (int)(fGlobalTexturePointsY / (double)NR_TEXTURESY);
-		
-		int TextureSize= iTextureWidth* iTextureHeight ;
-
-		FloatBuffer FbTemp = BufferUtil.newFloatBuffer(TextureSize*4);		
-		//calculateTextures();
-		AlTextures.clear();		
-
-		Texture tempTextur;
-											
-		for (Integer iAxisY=StartindexY;iAxisY<=EndindexY;iAxisY++)
-		{
-			for (Integer iAxisX=StartindexX;iAxisX<=EndindexX;iAxisX++)
-			{
-						
-					
-				for (Integer i=0;i<TextureSize;i++)
-				{
-						FbTemp.put(fArRgbaWhite);
-				}
-				
-		
-				
-				for (Integer iContentIndex : selectionSet) {
-					
-					int current_SELECTED_X_AXIS=iAxisX;
-					int current_SELECTED_Y_AXIS=iAxisY;
-					
-						xnormalized = set.get(current_SELECTED_X_AXIS).getFloat(
-								EDataRepresentation.NORMALIZED, iContentIndex);
-						ynormalized = set.get(current_SELECTED_Y_AXIS).getFloat(
-								EDataRepresentation.NORMALIZED, iContentIndex);
-			
-						ix = (int) Math.floor(xnormalized * (double)(iTextureWidth-1));
-						iy = ix* (iTextureWidth)*4+
-							(int) Math.floor(ynormalized * (double)(iTextureHeight-1))*4;
-						
-					
-														
-						float[] fArMappingColor = colorMapper.getColor(Math.max(
-								xnormalized, ynormalized));
-			
-			//			float[] fArRgba = { fArMappingColor[0], fArMappingColor[1],
-			//					fArMappingColor[2], fOpacity };
-			
 	
-						
-						if(iy>=TextureSize*4-4)
-						{
-							iy=0; // TODO : DIRTY HACK CAUSE INIDICES ARE WRONG!
-						}															
-						FbTemp.put(iy,fArMappingColor[0]);
-						FbTemp.put(iy+1,fArMappingColor[1]);
-						FbTemp.put(iy+2,fArMappingColor[2]);
-						FbTemp.put(iy+3,fOpacity);
-						
-					
-				}
-				}
-				
-				FbTemp.rewind();			
-				TextureData texData = new TextureData(
-						GL.GL_RGBA /* internalFormat */,
-						iTextureWidth /* height */, iTextureHeight /* width */,
-						0 /* border */, GL.GL_RGBA /* pixelFormat */,
-						GL.GL_FLOAT /* pixelType */, false /* mipmap */,
-						false /* dataIsCompressed */, true /* mustFlipVertically */,
-						FbTemp, null);
-			
-				tempTextur = TextureIO.newTexture(0);
-				tempTextur.updateImage(texData);			
-				AlTextures.add(tempTextur);		
-			}					
-	}
-
 	@Override
 	public void init(GL gl) {
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
@@ -511,9 +585,10 @@ public class GLScatterplot extends AStorageBasedView {
 		// detailLevel = EDetailLevel.LOW;
 		detailLevel = EDetailLevel.HIGH;
 		ScatterPlotRenderStyle.setTextureNr(100,100);
-		calculateTextures();
-		initTextures(false,AlFullTextures);		
-		initTextures(true,AlSelectionTextures);
+		resetFullTextures();
+		resetSelectionTextures();
+		initTextures(false);		
+		initTextures(true);
 
 	}
 
@@ -640,7 +715,7 @@ public class GLScatterplot extends AStorageBasedView {
 				setDisplayListDirty();
 				UpdateSelection();
 				gl.glDeleteLists(iGLDisplayListIndexBrush, 1);
-				bUpdateSelection = true;
+				bUpdateSelection = true;				
 			}
 
 			pickingManager.handlePicking(this, gl);
@@ -698,7 +773,9 @@ public class GLScatterplot extends AStorageBasedView {
 
 		if (bRenderMatrix) 
 		{
-			renderTextures(gl,AlFullTextures,0.0f);		
+			renderTextures(gl,false,0.0f); // All textures
+			renderTextures(gl,true,0.0f); // Selection textures
+			//renderTextures(gl,false,0.0f); // Selection Textures
 			renderMatrixSelection(gl);
 			return;
 		}
@@ -732,7 +809,7 @@ public class GLScatterplot extends AStorageBasedView {
 
 		if (bHasFrustumChanged) {
 			bHasFrustumChanged = false;
-			bUpdateAll = true;
+			bUpdateMainView = true;
 		}
 
 		// TODO remove l8ter when Keylistener or Toolbar working again
@@ -743,12 +820,19 @@ public class GLScatterplot extends AStorageBasedView {
 		// SELECTED_X_AXIS_2 = 0;
 		// SELECTED_Y_AXIS_2 = 2;
 
-		if ((bUpdateSelection || bUpdateAll) && bRenderMainView) {
+		if ((bUpdateMainView || bUpdateSelection)) {
+			
+			
+			if (bRenderMainView) 
+				buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
+			if (bUpdateSelection)// && bRenderMatrix) TODO : Evaluate Performance here
+				initTextures(true);			
 			bUpdateSelection = false;
-			buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
 		}
+		
+		
 
-		if (bUpdateAll && bRenderMainView) {
+		if (bUpdateMainView && bRenderMainView) {
 			if (detailLevel == EDetailLevel.HIGH) {
 				gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
 				renderCoordinateSystem(gl);
@@ -761,7 +845,7 @@ public class GLScatterplot extends AStorageBasedView {
 			gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
 			gl.glEndList();
 
-			bUpdateAll = false;
+			bUpdateMainView = false;
 		}
 
 		gl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
@@ -1342,7 +1426,7 @@ public class GLScatterplot extends AStorageBasedView {
 				break;
 			default :
 		}
-		bUpdateAll = true;
+		bUpdateMainView = true;
 		setDisplayListDirty();
 	}
 
@@ -1396,7 +1480,7 @@ public class GLScatterplot extends AStorageBasedView {
 				// TODO : If Multiple Selections or Scatterplots are Available.
 				// adjust this (take first 2 axis selections?)
 				SELECTED_X_AXIS = i;
-				bUpdateAll = true;
+				bUpdateMainView = true;
 				break;
 			}
 		}
@@ -1412,7 +1496,7 @@ public class GLScatterplot extends AStorageBasedView {
 			// TODO : If Multiple Selections or Scatterplots are Available.
 			// adjust this (take first 2 axis selections?)
 			SELECTED_Y_AXIS = i;
-			bUpdateAll = true;
+			bUpdateMainView = true;
 			break;
 		}
 
@@ -1612,7 +1696,7 @@ public class GLScatterplot extends AStorageBasedView {
 		elementSelectionManager.clearSelections();
 		fRectangleDragStartPoint = new float[3];
 		fRectangleDragEndPoint = new float[3];
-		bUpdateAll = true;
+		bUpdateSelection = true;		
 		setDisplayListDirty();
 	}
 
@@ -1846,7 +1930,7 @@ public class GLScatterplot extends AStorageBasedView {
 	public void setXAxis(int iAxisIndex) {
 		if (SELECTED_X_AXIS != iAxisIndex) {
 			SELECTED_X_AXIS = iAxisIndex;
-			bUpdateAll = true;
+			bUpdateMainView = true;
 			selectNewAxes();
 			setDisplayListDirty();
 		}
@@ -1856,7 +1940,7 @@ public class GLScatterplot extends AStorageBasedView {
 	public void setYAxis(int iAxisIndex) {
 		if (SELECTED_Y_AXIS != iAxisIndex) {
 			SELECTED_Y_AXIS = iAxisIndex;
-			bUpdateAll = true;
+			bUpdateMainView = true;
 			selectNewAxes();
 			setDisplayListDirty();
 		}
@@ -1866,7 +1950,7 @@ public class GLScatterplot extends AStorageBasedView {
 	public void setPointSize(int pointSize) {
 		if (renderStyle.getPointSize() != pointSize) {
 			renderStyle.setPointSize(pointSize);
-			bUpdateAll = true;
+			bUpdateMainView = true;
 			setDisplayListDirty();
 		}
 	}
@@ -1878,30 +1962,33 @@ public class GLScatterplot extends AStorageBasedView {
 			tmpAxis++;
 		else
 			tmpAxis--;
+		if (tmpAxis==SELECTED_X_AXIS &&  bOnlyRenderHalfMatrix)
+			return;
 		if (tmpAxis < 0)
 			tmpAxis = 0;
 		if ((tmpAxis + 1) > storageVA.size())
 			tmpAxis = SELECTED_Y_AXIS;
 		SELECTED_Y_AXIS = tmpAxis;
-		bUpdateAll = true;
+		bUpdateMainView = true;
 		selectNewAxes();
 		setDisplayListDirty();
 	}
 
 	public void leftRightSelect(boolean bRightIsTrue) {
-		int tmpAxis = SELECTED_X_AXIS;
-		if (bRightIsTrue)
-		{
-			tmpAxis++;
-		}
+		int tmpAxis = SELECTED_X_AXIS;		
+		if (bRightIsTrue)		
+			tmpAxis++;		
 		else
 			tmpAxis--;
+		if (tmpAxis==SELECTED_Y_AXIS &&  bOnlyRenderHalfMatrix)
+			return;
+		
 		if (tmpAxis < 0)
 			tmpAxis = 0;
 		if ((tmpAxis + 1) > storageVA.size())
 			tmpAxis = SELECTED_X_AXIS;
 		SELECTED_X_AXIS = tmpAxis;
-		bUpdateAll = true;
+		bUpdateMainView = true;
 		selectNewAxes();
 		setDisplayListDirty();
 	}
@@ -1911,7 +1998,7 @@ public class GLScatterplot extends AStorageBasedView {
 			bRender2Axis = false;
 		else
 			bRender2Axis = true;
-		bUpdateAll = true;
+		bUpdateMainView = true;
 		setDisplayListDirty();
 	}
 
@@ -1922,7 +2009,7 @@ public class GLScatterplot extends AStorageBasedView {
 		}
 		else
 			detailLevel = EDetailLevel.HIGH;
-		bUpdateAll = true;
+		bUpdateMainView = true;
 		setDisplayListDirty();
 	}
 
@@ -1935,7 +2022,7 @@ public class GLScatterplot extends AStorageBasedView {
 		}
 		else //-> MainView Mode
 		{
-			bUpdateAll = true;
+			bUpdateMainView = true;
 			bRenderMainView=true;
 			bRenderMatrix=false;
 			setDisplayListDirty();
