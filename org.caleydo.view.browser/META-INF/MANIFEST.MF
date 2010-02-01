@@ -14,4 +14,5 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.caleydo.view.browser,
  org.caleydo.view.browser.command.handler
+Bundle-ActivationPolicy: lazy
  

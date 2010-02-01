@@ -7,6 +7,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import org.caleydo.core.manager.general.GeneralManager;
+
 /**
  * Utility class for zipping and deleting directories.
  * 
@@ -98,8 +100,7 @@ public class ZipUtils {
 		tempDirFile.mkdir();
 
 		try {
-			FileInputStream fis = new FileInputStream(fileName);
-			ZipInputStream zis = new ZipInputStream(fis);
+			ZipInputStream zis = new ZipInputStream(GeneralManager.get().getResourceLoader().getInputSource(fileName).getByteStream());		
 			unzipToDirectory(zis, dirName);
 		}
 		catch (Exception ex) {

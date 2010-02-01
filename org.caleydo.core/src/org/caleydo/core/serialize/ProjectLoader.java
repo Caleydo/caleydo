@@ -1,6 +1,7 @@
 package org.caleydo.core.serialize;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 import javax.xml.bind.JAXBContext;
@@ -46,7 +47,7 @@ public class ProjectLoader {
 	public ApplicationInitData loadRecent() {
 		return loadDirectory(ProjectSaver.RECENT_PROJECT_DIR_NAME);
 	}
-	
+
 	/**
 	 * Loads the project from a directory
 	 * 
@@ -62,8 +63,14 @@ public class ProjectLoader {
 
 		try {
 			Unmarshaller unmarshaller = projectContext.createUnmarshaller();
-			File useCaseFile = new File(dirName + ProjectSaver.USECASE_FILE_NAME);
-			AUseCase useCase = (AUseCase) unmarshaller.unmarshal(useCaseFile);
+			AUseCase useCase;
+			try {
+				useCase = (AUseCase) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader().getResource(
+					dirName + ProjectSaver.USECASE_FILE_NAME));
+			}
+			catch (FileNotFoundException e1) {
+				throw new IllegalStateException("Cannot load use case from project file");
+			}
 
 			String setFileName = dirName + ProjectSaver.SET_DATA_FILE_NAME;
 			useCase.getLoadDataParameters().setFileName(setFileName);
@@ -76,10 +83,13 @@ public class ProjectLoader {
 				EVAType.CONTENT_EMBEDDED_HM));
 			virtualArrayMap.put(EVAType.STORAGE, loadVirtualArray(unmarshaller, dirName, EVAType.STORAGE));
 
-			File viewFile = new File(dirName + ProjectSaver.VIEWS_FILE_NAME);
 			ViewList loadViews = null;
-			if (viewFile.exists()) {
-				loadViews = (ViewList) unmarshaller.unmarshal(viewFile);
+			try {
+				loadViews = (ViewList) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader().getResource(
+					dirName + ProjectSaver.VIEWS_FILE_NAME));
+			}
+			catch (FileNotFoundException e) {
+				// do nothing - no view list available
 			}
 
 			initData = new ApplicationInitData();
@@ -89,15 +99,8 @@ public class ProjectLoader {
 				initData.setViews(loadViews.getViews());
 			}
 
-			File geneClusterFile = new File(dirName + ProjectSaver.GENE_TREE_FILE_NAME);
-			if (geneClusterFile.exists()) {
-				useCase.getLoadDataParameters().setGeneTreeFileName(geneClusterFile.getAbsolutePath());
-			}
-			File expClusterFile = new File(dirName + ProjectSaver.EXP_TREE_FILE_NAME);
-			if (expClusterFile.exists()) {
-				useCase.getLoadDataParameters().setExperimentsFileName(expClusterFile.getAbsolutePath());
-			}
-
+			useCase.getLoadDataParameters().setGeneTreeFileName(dirName + ProjectSaver.GENE_TREE_FILE_NAME);
+			useCase.getLoadDataParameters().setExperimentsFileName(dirName + ProjectSaver.EXP_TREE_FILE_NAME);
 		}
 		catch (JAXBException ex) {
 			throw new RuntimeException("Error while loading project", ex);

@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.util.wavefrontobjectloader;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.caleydo.core.manager.IGeneralManager;
@@ -23,7 +24,15 @@ public class ObjectLoader {
 	 */
 	public ObjectModel loadFile(String resourceName) {
 		ResourceLoader loader = new ResourceLoader();
-		return loadFile(loader.getResource(resourceName));
+		try {
+			return loadFile(loader.getResource(resourceName));
+		}
+		catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	/**

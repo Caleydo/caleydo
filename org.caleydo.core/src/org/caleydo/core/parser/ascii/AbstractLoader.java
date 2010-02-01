@@ -187,12 +187,14 @@ public abstract class AbstractLoader
 
 	public boolean loadData() {
 
-		BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
-
-		GeneralManager.get().getLogger().log(
-			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Start loading file " + sFileName + "..."));
-
 		try {
+
+			GeneralManager.get().getLogger()
+				.log(
+					new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Start loading file " + sFileName
+						+ "..."));
+			BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
+
 			this.loadDataParseFile(brFile, computeNumberOfLinesInFile(sFileName));
 
 			if (brFile != null) {

@@ -2,6 +2,7 @@ package org.caleydo.rcp.wizard.project;
 
 import java.io.IOException;
 
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
@@ -11,8 +12,11 @@ import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
 import org.caleydo.core.net.StandardGroupwareManager;
 import org.caleydo.core.serialize.ProjectLoader;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -76,7 +80,9 @@ public class CaleydoProjectWizard
 			IUseCase useCase;
 			EApplicationMode appMode = page.getApplicationMode();
 			if (appMode == EApplicationMode.SAMPLE_PROJECT) {
-				System.out.println("Load sample Project");
+				
+				GeneralManager.get().getLogger().log(new Status(IStatus.INFO, Activator.PLUGIN_ID, "Load sample project"));
+				
 				ProjectLoader loader = new ProjectLoader();
 
 				Application.initData = loader.load(SAMPLE_PROJECT_LOCATION);
@@ -116,7 +122,9 @@ public class CaleydoProjectWizard
 
 			}
 			else if (page.getApplicationMode() == EApplicationMode.LOAD_PROJECT) {
-				System.out.println("Load Project");
+
+				GeneralManager.get().getLogger().log(new Status(IStatus.INFO, Activator.PLUGIN_ID, "Load existing project."));
+				
 				ProjectLoader loader = new ProjectLoader();
 				if (page.getProjectLoadType() == ChooseProjectTypePage.EProjectLoadType.RECENT) {
 					Application.initData = loader.loadRecent();

@@ -1,6 +1,7 @@
 package org.caleydo.core.serialize;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +11,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import org.caleydo.core.data.collection.set.LoadDataParameters;
-import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.selection.EVAType;
@@ -114,8 +114,13 @@ public class ProjectSaver {
 		// FIXME - this works only for genetic data now
 		AUseCase useCase = (AUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
 		LoadDataParameters parameters = useCase.getLoadDataParameters();
-		FileOperations.writeInputStreamToFile(dirName + SET_DATA_FILE_NAME, GeneralManager.get().getResourceLoader().getResource(
-			parameters.getFileName()));
+		try {
+			FileOperations.writeInputStreamToFile(dirName + SET_DATA_FILE_NAME, GeneralManager.get().getResourceLoader().getResource(
+				parameters.getFileName()));
+		}
+		catch (FileNotFoundException e) {
+			throw new IllegalStateException("Error saving project file", e);
+		}
 
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 		JAXBContext projectContext = serializationManager.getProjectContext();

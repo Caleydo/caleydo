@@ -403,11 +403,11 @@ public class SetUtils {
 					tree = treePorter.importTree(geneTreeFileName);
 					set.setClusteredTreeGenes(tree);
 				}
-				catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
 				catch (JAXBException e) {
 					e.printStackTrace();
+				}
+				catch (FileNotFoundException e) {
+					// do nothing - no gene tree is available
 				}
 			}
 		}
@@ -426,11 +426,11 @@ public class SetUtils {
 					tree = treePorter.importTree(experimentsTreeFileName);
 					set.setClusteredTreeExps(tree);
 				}
-				catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
 				catch (JAXBException e) {
 					e.printStackTrace();
+				}
+				catch (FileNotFoundException e) {
+					// do nothing - no experiment tree is available
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 package org.caleydo.core.manager.parser;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -209,7 +210,12 @@ public abstract class AXmlParserManager
 					EPathwayDatabaseType.BIOCARTA).getInputSource(sFileName);
 		}
 		else
-			inputSource = generalManager.getResourceLoader().getInputSource(sFileName);
+			try {
+				inputSource = generalManager.getResourceLoader().getInputSource(sFileName);
+			}
+			catch (FileNotFoundException e) {
+				throw new IllegalStateException("Cannot load input file " + sFileName);
+			}
 
 		try {
 			XMLReader reader = null;

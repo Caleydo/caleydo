@@ -1,10 +1,8 @@
 package org.caleydo.core.data.graph.tree;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +18,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
@@ -48,40 +47,12 @@ public class TreePorter {
 	 * Imports a tree with the aid of {@link JAXBContext}.
 	 * 
 	 * @param fileName
-	 *            name of the file where the tree is saved
-	 * @return returns the imported tree
-	 * @throws FileNotFoundException
-	 * @throws JAXBException
-	 */
-	public Tree<ClusterNode> importTree(String fileName) throws FileNotFoundException, JAXBException {
-		FileReader reader = new FileReader(fileName);
-		Tree<ClusterNode> tree = null;
-		try {
-			tree = importTree(reader);
-		}
-		finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				}
-				catch (IOException ex) {
-					// nothing to do here, assuming reader is already closed
-				}
-			}
-		}
-		return tree;
-	}
-
-	/**
-	 * Imports a tree with the aid of {@link JAXBContext}.
-	 * 
-	 * @param reader
-	 *            Reader to read the tree-XML-document from
+	 *            Full file name of the serialized tree
 	 * @return the imported tree
 	 * @throws JAXBException
 	 *             in case of a XML-serialization error
 	 */
-	public Tree<ClusterNode> importTree(Reader reader) throws JAXBException {
+	public Tree<ClusterNode> importTree(String fileName) throws JAXBException, FileNotFoundException {
 
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
 		ClusterNode rootNode = null;
@@ -98,7 +69,9 @@ public class TreePorter {
 
 		jaxbContext = JAXBContext.newInstance(TreePorter.class);
 		unmarshaller = jaxbContext.createUnmarshaller();
-		treePorter = (TreePorter) unmarshaller.unmarshal(reader);
+		treePorter =
+			(TreePorter) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
+				.getResource(fileName));
 
 		for (ClusterNode node : treePorter.nodeSet) {
 			graph.addVertex(node);

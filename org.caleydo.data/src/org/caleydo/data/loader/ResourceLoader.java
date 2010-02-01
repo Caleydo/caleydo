@@ -22,46 +22,30 @@ import com.sun.opengl.util.texture.TextureIO;
  * @author Marc Streit
  */
 public class ResourceLoader {
-	public BufferedReader getResource(String sFileName) {
+	public BufferedReader getResource(String sFileName)
+			throws FileNotFoundException {
 		BufferedReader file;
 
 		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
 			file = new BufferedReader(new InputStreamReader(
 					loadResourceAsInputStream(sFileName)));
 		} else {
-			try {
-				file = new BufferedReader(new FileReader(sFileName));
-			} catch (FileNotFoundException e) {
-				throw new IllegalStateException("Cannot load resource: "
-						+ sFileName);
-			}
+			file = new BufferedReader(new FileReader(sFileName));
 		}
-
-		if (file == null)
-			throw new IllegalStateException("Cannot load resource: "
-					+ sFileName);
 
 		return file;
 	}
 
-	public InputSource getInputSource(String sFileName) {
+	public InputSource getInputSource(String sFileName)
+			throws FileNotFoundException {
+		
 		InputSource inputSource;
 
 		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
 			inputSource = new InputSource(loadResourceAsInputStream(sFileName));
 		} else {
-			try {
-				inputSource = new InputSource(new FileReader(
-						new File(sFileName)));
-			} catch (IOException e) {
-				throw new IllegalStateException("Cannot load resource: "
-						+ sFileName);
-			}
+			inputSource = new InputSource(new FileReader(new File(sFileName)));
 		}
-
-		if (inputSource == null)
-			throw new IllegalStateException("Cannot load resource: "
-					+ sFileName);
 
 		return inputSource;
 	}
