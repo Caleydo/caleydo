@@ -136,6 +136,8 @@ public class GLScatterplot extends AStorageBasedView {
 	public static int SELECTED_Y_AXIS = 1;
 	public static int SELECTED_X_AXIS_2 = 2;
 	public static int SELECTED_Y_AXIS_2 = 3;
+	
+	public int MAX_AXES=10; 
 
 	// listeners
 
@@ -288,15 +290,15 @@ public class GLScatterplot extends AStorageBasedView {
 		int EndindexX=StartindexX+NR_TEXTURESX-1;
 		int EndindexY=StartindexY+NR_TEXTURESY-1;
 					
-		if (EndindexX>=storageVA.size())
+		if (EndindexX>=MAX_AXES)
 		{
-			EndindexX=storageVA.size()-1;
-			ScatterPlotRenderStyle.setTextureNr(EndindexX-StartindexX+1,NR_TEXTURESY);
+			EndindexX=MAX_AXES-1;
+			renderStyle.setTextureNr(EndindexX-StartindexX+1,NR_TEXTURESY);
 		}
-		if (EndindexY>=storageVA.size())
+		if (EndindexY>=MAX_AXES)
 		{
-			EndindexY=storageVA.size()-1;
-			ScatterPlotRenderStyle.setTextureNr(NR_TEXTURESX,EndindexY-StartindexY+1);
+			EndindexY=MAX_AXES-1;
+			renderStyle.setTextureNr(NR_TEXTURESX,EndindexY-StartindexY+1);
 		}	
 		
 		//if (bIsSelection) resetSelectionTextures();		
@@ -588,7 +590,8 @@ public class GLScatterplot extends AStorageBasedView {
 				initAxisComboEvent);
 		// detailLevel = EDetailLevel.LOW;
 		detailLevel = EDetailLevel.HIGH;
-		ScatterPlotRenderStyle.setTextureNr(100,100);
+		if(MAX_AXES>storageVA.size()) MAX_AXES=storageVA.size(); 
+		renderStyle.setTextureNr(100,100);
 		resetFullTextures();
 		resetSelectionTextures();
 		initTextures(false);		
@@ -1992,7 +1995,7 @@ public class GLScatterplot extends AStorageBasedView {
 			return;
 		if (tmpAxis < 0)
 			tmpAxis = 0;
-		if ((tmpAxis + 1) > storageVA.size())
+		if ((tmpAxis + 1) > MAX_AXES)
 			tmpAxis = SELECTED_Y_AXIS;
 		SELECTED_Y_AXIS = tmpAxis;
 		bUpdateMainView = true;
@@ -2011,7 +2014,7 @@ public class GLScatterplot extends AStorageBasedView {
 		
 		if (tmpAxis < 0)
 			tmpAxis = 0;
-		if ((tmpAxis + 1) > storageVA.size())
+		if ((tmpAxis + 1) > MAX_AXES)
 			tmpAxis = SELECTED_X_AXIS;
 		SELECTED_X_AXIS = tmpAxis;
 		bUpdateMainView = true;

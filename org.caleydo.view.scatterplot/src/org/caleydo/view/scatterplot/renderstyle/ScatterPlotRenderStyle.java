@@ -77,7 +77,7 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 	
 	
 
-	public static void setTextureNr(int x,int y)
+	public void setTextureNr(int x,int y)
 	{
 		NR_TEXTURESX=x;
 		NR_TEXTURESY=y;			
