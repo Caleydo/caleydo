@@ -545,11 +545,9 @@ public class Application
 	}
 
 	private static void triggerPathwayLoading() {
-		// Only load pathways in genetic use case mode
-		if (GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA) != null) {
+
 			// Trigger pathway loading
 			new PathwayLoadingProgressIndicatorAction().run(null);
-		}
 	}
 
 	// Deletes all files and subdirectories under dir.

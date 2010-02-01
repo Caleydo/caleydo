@@ -114,8 +114,8 @@ public class ProjectSaver {
 		// FIXME - this works only for genetic data now
 		AUseCase useCase = (AUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
 		LoadDataParameters parameters = useCase.getLoadDataParameters();
-		FileOperations.writeInputStreamToFile(dirName + SET_DATA_FILE_NAME, GeneralManager.get().getResourceLoader().getInputSource(
-			parameters.getFileName()).getByteStream());
+		FileOperations.writeInputStreamToFile(dirName + SET_DATA_FILE_NAME, GeneralManager.get().getResourceLoader().getResource(
+			parameters.getFileName()));
 
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 		JAXBContext projectContext = serializationManager.getProjectContext();
