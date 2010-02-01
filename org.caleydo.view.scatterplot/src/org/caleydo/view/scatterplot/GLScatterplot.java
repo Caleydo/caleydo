@@ -96,7 +96,7 @@ import com.sun.opengl.util.texture.TextureIO;
  * @author Marc Streit
  * @author Juergen Pillhofer
  */
-//@SuppressWarnings("unused")
+@SuppressWarnings("unused")
 public class GLScatterplot extends AStorageBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.scatterplot";
