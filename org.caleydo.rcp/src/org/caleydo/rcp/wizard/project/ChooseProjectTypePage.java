@@ -88,6 +88,7 @@ public class ChooseProjectTypePage
 	private Text projectFileName;
 
 	private Button btnLoadPathwayData;
+	private Button btnSampleProject;
 
 	/**
 	 * Constructor.
@@ -117,6 +118,10 @@ public class ChooseProjectTypePage
 
 		final TabFolder tabFolder = new TabFolder(composite, SWT.BORDER);
 
+		projectMode =
+			EApplicationMode.valueOf(GeneralManager.get().getPreferenceStore().getString(
+				PreferenceConstants.LAST_CHOSEN_APPLICATION_MODE));
+
 		createSampleTab(tabFolder);
 		createGeneticUseCaseTab(tabFolder);
 		createGeneralDataUseCaseTab(tabFolder);
@@ -124,40 +129,29 @@ public class ChooseProjectTypePage
 		if (!GeneralManager.IS_IN_RELEASE_MODE)
 			createCollaborationClientTab(tabFolder);
 
-			
-		EApplicationMode previousApplicationMode = EApplicationMode.valueOf(GeneralManager.get().getPreferenceStore()
-		.getString(PreferenceConstants.LAST_CHOSEN_APPLICATION_MODE));
-		
-
 		// restore the previously selected tab
-		if (previousApplicationMode == null || previousApplicationMode.equals(EApplicationMode.SAMPLE_PROJECT)) {
+		if (projectMode == null || projectMode.equals(EApplicationMode.SAMPLE_PROJECT)) {
 			tabFolder.setSelection(0);
-			projectMode = EApplicationMode.SAMPLE_PROJECT;
 		}
-		else if (previousApplicationMode.equals(EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA)) {
+		else if (projectMode.equals(EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA)) {
 			tabFolder.setSelection(0);
-			projectMode = EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA;
 		}
-		else if (previousApplicationMode.equals(EApplicationMode.GENE_EXPRESSION_NEW_DATA)) {
+		else if (projectMode.equals(EApplicationMode.GENE_EXPRESSION_NEW_DATA)) {
 			tabFolder.setSelection(1);
-			projectMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
 		}
-		else if (previousApplicationMode.equals(EApplicationMode.UNSPECIFIED_NEW_DATA)) {
+		else if (projectMode.equals(EApplicationMode.UNSPECIFIED_NEW_DATA)) {
 			tabFolder.setSelection(2);
-			projectMode = EApplicationMode.UNSPECIFIED_NEW_DATA;
 		}
-		else if (previousApplicationMode.equals(EApplicationMode.LOAD_PROJECT)) {
-			projectMode = EApplicationMode.LOAD_PROJECT;
+		else if (projectMode.equals(EApplicationMode.LOAD_PROJECT)) {
 			tabFolder.setSelection(3);
 		}
-		else if (previousApplicationMode.equals(EApplicationMode.COLLABORATION_CLIENT)) {
+		else if (projectMode.equals(EApplicationMode.COLLABORATION_CLIENT)) {
 			// if we are in release mode we don't have the collab client
 			if (GeneralManager.IS_IN_RELEASE_MODE) {
 				tabFolder.setSelection(0);
 				projectMode = EApplicationMode.SAMPLE_PROJECT;
 			}
 			else {
-				projectMode = EApplicationMode.COLLABORATION_CLIENT;
 				tabFolder.setSelection(4);
 			}
 		}
@@ -170,7 +164,10 @@ public class ChooseProjectTypePage
 					projectMode = EApplicationMode.UNSPECIFIED_NEW_DATA;
 				}
 				else if (((TabItem) e.item) == sampleTab) {
-					projectMode = EApplicationMode.SAMPLE_PROJECT;
+					if (btnSampleProject.getSelection())
+						projectMode = EApplicationMode.SAMPLE_PROJECT;
+					else
+						projectMode = EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA;
 				}
 				else if (((TabItem) e.item) == geneticDataUseCaseTab) {
 					projectMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
@@ -206,14 +203,16 @@ public class ChooseProjectTypePage
 		sampleTab.setControl(composite);
 		composite.setLayout(new GridLayout(1, false));
 
-		Button sampleProject = new Button(composite, SWT.RADIO);
-		sampleProject.setText("Load sample project");
-		sampleProject.setSelection(true);
+		btnSampleProject = new Button(composite, SWT.RADIO);
+		btnSampleProject.setText("Load sample project");
+		if (projectMode != EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA)
+			btnSampleProject.setSelection(true);
+
 		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gd.horizontalSpan = 1;
-		sampleProject.setLayoutData(gd);
+		btnSampleProject.setLayoutData(gd);
 
-		sampleProject.addSelectionListener(new SelectionAdapter() {
+		btnSampleProject.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				projectMode = EApplicationMode.SAMPLE_PROJECT;
@@ -231,11 +230,14 @@ public class ChooseProjectTypePage
 		gd.widthHint = 400;
 		sampleProjectDescription.setLayoutData(gd);
 
-		Button buttonSampleDataMode = new Button(composite, SWT.RADIO);
-		buttonSampleDataMode.setText("Start with sample gene expression data");
+		Button btnSampleData = new Button(composite, SWT.RADIO);
+		btnSampleData.setText("Start with sample gene expression data");
 		// buttonSampleDataMode.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
-		buttonSampleDataMode.setSelection(false);
-		buttonSampleDataMode.setLayoutData(new GridData(GridData.FILL_BOTH));
+		if (projectMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA)
+			btnSampleData.setSelection(true);
+		else
+			btnSampleData.setSelection(false);
+		btnSampleData.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		Text sampleDataDescription = new Text(composite, SWT.MULTI | SWT.WRAP);
 		sampleDataDescription
@@ -288,7 +290,7 @@ public class ChooseProjectTypePage
 
 		});
 
-		buttonSampleDataMode.addSelectionListener(new SelectionAdapter() {
+		btnSampleData.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				projectMode = EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA;
@@ -314,7 +316,6 @@ public class ChooseProjectTypePage
 		buttonNewProject.setSelection(true);
 		setPageComplete(true);
 
-
 		Group groupOrganism = new Group(composite, SWT.None);
 		groupOrganism.setText("Select organism");
 		groupOrganism.setLayout(new RowLayout(SWT.VERTICAL));
@@ -328,7 +329,7 @@ public class ChooseProjectTypePage
 				organism = EOrganism.HOMO_SAPIENS;
 			}
 		});
-	
+
 		final Button btnOrganismMouse = new Button(groupOrganism, SWT.RADIO);
 		btnOrganismMouse.setText("Mouse (mus musculus)");
 		btnOrganismMouse.setEnabled(true);
@@ -338,7 +339,7 @@ public class ChooseProjectTypePage
 				organism = EOrganism.MUS_MUSCULUS;
 			}
 		});
-	
+
 		// Set organism which was used in last session
 		EOrganism lastChosenOrganism =
 			EOrganism.valueOf(GeneralManager.get().getPreferenceStore().getString(
@@ -609,7 +610,6 @@ public class ChooseProjectTypePage
 
 		setPageComplete(true);
 	}
-
 
 	public EApplicationMode getApplicationMode() {
 		return projectMode;

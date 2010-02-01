@@ -189,6 +189,7 @@ public class Application
 						// not necessary to load any mapping or XML files
 						sCaleydoXMLfile = "";
 						break;
+					case SAMPLE_PROJECT:
 					case LOAD_PROJECT:
 					case COLLABORATION_CLIENT:
 					case PLEX_CLIENT:
@@ -359,7 +360,7 @@ public class Application
 			}
 			Application.initData = null;
 		}
-		else if (applicationMode == EApplicationMode.LOAD_PROJECT) {
+		else if (applicationMode == EApplicationMode.LOAD_PROJECT || applicationMode == EApplicationMode.SAMPLE_PROJECT) {
 
 			AUseCase useCase = initData.getUseCase();
 			GeneralManager.get().addUseCase(useCase);

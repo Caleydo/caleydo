@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.usecase.EDataDomain;
@@ -90,16 +91,32 @@ public class CaleydoProjectWizard
 				useCase = Application.initData.getUseCase();
 				Application.startViews.clear();
 				Application.initializedStartViews = Application.initData.getViewIDs();
-				Application.applicationMode = EApplicationMode.LOAD_PROJECT;
+				Application.applicationMode = EApplicationMode.SAMPLE_PROJECT;
 				Application.bDeleteRestoredWorkbenchState = true;
 			}
-			else if (page.getApplicationMode() == EApplicationMode.GENE_EXPRESSION_NEW_DATA
-				|| page.getApplicationMode() == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA) {
+			else if (appMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA) {
+				Application.dataDomain = EDataDomain.GENETIC_DATA;
+				useCase = new GeneticUseCase();
+				((GeneticUseCase) useCase).setOrganism(EOrganism.HOMO_SAPIENS);
+
+				Application.applicationMode = appMode;
+
+				String sNewPathwayDataSources =
+					EPathwayDatabaseType.KEGG.name() + ";" + EPathwayDatabaseType.BIOCARTA.name() + ";";
+
+				if (sNewPathwayDataSources != prefStore
+					.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES))
+					Application.bDeleteRestoredWorkbenchState = true;
+
+				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES,
+					sNewPathwayDataSources);
+			}
+			else if (appMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA) {
 				Application.dataDomain = EDataDomain.GENETIC_DATA;
 				useCase = new GeneticUseCase();
 				((GeneticUseCase) useCase).setOrganism(page.getOrganism());
 
-				Application.applicationMode = page.getApplicationMode();
+				Application.applicationMode = appMode;
 
 				String sNewPathwayDataSources = "";
 				if (page.isKEGGPathwayDataLoadingRequested())
@@ -115,13 +132,13 @@ public class CaleydoProjectWizard
 					sNewPathwayDataSources);
 
 			}
-			else if (page.getApplicationMode() == EApplicationMode.UNSPECIFIED_NEW_DATA) {
+			else if (appMode == EApplicationMode.UNSPECIFIED_NEW_DATA) {
 				useCase = new UnspecifiedUseCase();
 				Application.dataDomain = EDataDomain.UNSPECIFIED;
 				Application.applicationMode = EApplicationMode.UNSPECIFIED_NEW_DATA;
 
 			}
-			else if (page.getApplicationMode() == EApplicationMode.LOAD_PROJECT) {
+			else if (appMode == EApplicationMode.LOAD_PROJECT) {
 
 				GeneralManager.get().getLogger().log(new Status(IStatus.INFO, Activator.PLUGIN_ID, "Load existing project."));
 				
@@ -141,7 +158,7 @@ public class CaleydoProjectWizard
 				Application.applicationMode = EApplicationMode.LOAD_PROJECT;
 				Application.bDeleteRestoredWorkbenchState = true;
 			}
-			else if (page.getApplicationMode() == EApplicationMode.COLLABORATION_CLIENT) {
+			else if (appMode == EApplicationMode.COLLABORATION_CLIENT) {
 				StandardGroupwareManager groupwareManager = new StandardGroupwareManager();
 				groupwareManager.setNetworkName(page.getNetworkName());
 				groupwareManager.setServerAddress(page.getNetworkAddress());
