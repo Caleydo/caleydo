@@ -116,14 +116,18 @@ public class GLScatterplot extends AStorageBasedView {
 
 	boolean bUseDetailLevel = true;
 
-	private boolean bUpdateSelection = false;
+	
 	private boolean bUpdateMainView = false;
 	private boolean bRender2Axis = false;
 	private boolean bRenderMatrix = false;
 	private boolean bRenderMainView = true;
 	
+	private boolean bUpdateSelection = false;
+	//private boolean bUpdateSelectionTexures =false;
+	private boolean bUpdateFullTexures =false;
 	
-	private boolean bUseColorOnMatrix= false;
+	
+	private boolean bUseColor= false;
 	private boolean bOnlyRenderHalfMatrix= true;
 
 	int iCurrentMouseOverElement = -1;
@@ -351,7 +355,7 @@ public class GLScatterplot extends AStorageBasedView {
 						if (bIsSelection)
 							fArMappingColor = fSelectionColor;
 						else
-							if(bUseColorOnMatrix)
+							if(bUseColor)
 							fArMappingColor = colorMapper.getColor(Math.max(
 								xnormalized, ynormalized));
 							else fArMappingColor = fBlackColor;
@@ -830,7 +834,11 @@ public class GLScatterplot extends AStorageBasedView {
 			bUpdateSelection = false;
 		}
 		
-		
+		if(bUpdateFullTexures)
+		{
+			bUpdateFullTexures=false;
+			initTextures(false);
+		}
 
 		if (bUpdateMainView && bRenderMainView) {
 			if (detailLevel == EDetailLevel.HIGH) {
@@ -1036,6 +1044,7 @@ public class GLScatterplot extends AStorageBasedView {
 		float x_2 = 0.0f;
 		float y_2 = 0.0f;
 		EScatterPointType tmpPointStyle = POINTSTYLE;
+		float[] fArMappingColor = {0.0f, 0.0f, 0.0f}; //(black);
 		
 		if (detailLevel != EDetailLevel.HIGH) {
 			bRender2Axis = false;
@@ -1058,7 +1067,8 @@ public class GLScatterplot extends AStorageBasedView {
 
 			x = xnormalized * XScale;
 			y = ynormalized * YScale;
-			float[] fArMappingColor = colorMapper.getColor(Math.max(
+			if(bUseColor)				
+				fArMappingColor = colorMapper.getColor(Math.max(
 					xnormalized, ynormalized));
 			EScatterPointType tmpPoint = POINTSTYLE;
 			if (bRender2Axis) {
@@ -2028,6 +2038,17 @@ public class GLScatterplot extends AStorageBasedView {
 			setDisplayListDirty();
 		}
 		
+	}
+
+	public void toggleColorMode() {
+		// TODO Auto-generated method stub
+		if(bUseColor) bUseColor=false;
+		else bUseColor=true;
+		
+		bUpdateMainView = true;
+		bUpdateFullTexures=true;
+		setDisplayListDirty();
+
 	}
 
 }

@@ -44,6 +44,11 @@ public class GLScatterPlotKeyListener extends GLKeyListener<GLScatterplot> {
 			return;
 		}
 		
+		if (event.character == 'c') {
+			glScatterplot.toggleColorMode();
+			return;
+		}
+		
 		switch (event.keyCode) {
 			case SWT.ARROW_UP :
 				glScatterplot.upDownSelect(false);
