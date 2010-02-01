@@ -354,7 +354,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	@Override
 	public void displayLocal(final GL gl) {
-
+		processEvents();
+		if (glBookmarks != null)
+			glBookmarks.processEvents();
+		if (!isVisible())
+			return;
 		if (set == null)
 			return;
 
@@ -410,7 +414,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		// if(storageVA.size() > 20)
 		// return;
 		//		
-		processEvents();
+		// processEvents();
 
 		if (bShowSelectionHeatMap) {
 
@@ -2196,11 +2200,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				fXValue = iAxisNumber
 						* renderStyle.getAxisSpacing(axisVA.size());
 				fXValue = fXValue + renderStyle.getXSpacing();
-				fYValue =	set
-				.get(storageVA.get(storageVA.size() - 1))
-				.getFloat(EDataRepresentation.NORMALIZED, iAxisNumber);
-				
-//				fYValue = renderStyle.getBottomSpacing();
+				fYValue = set.get(storageVA.get(storageVA.size() - 1))
+						.getFloat(EDataRepresentation.NORMALIZED, iAxisNumber);
+
+				// fYValue = renderStyle.getBottomSpacing();
 				alElementReps.add(new SelectedElementRep(idType, iUniqueID,
 						fXValue, fYValue, 0.0f));
 			}
@@ -2242,7 +2245,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		return alElementReps;
 	}
-	
 
 	@Override
 	public String getShortInfo() {

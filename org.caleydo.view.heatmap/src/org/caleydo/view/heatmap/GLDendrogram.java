@@ -224,6 +224,9 @@ public class GLDendrogram extends AStorageBasedView
 
 	@Override
 	public void displayLocal(GL gl) {
+		processEvents();
+		if (!isVisible())
+			return;
 		if (set == null)
 			return;
 
@@ -260,7 +263,7 @@ public class GLDendrogram extends AStorageBasedView
 
 	@Override
 	public void display(GL gl) {
-		processEvents();
+//		processEvents();
 
 		if (bIsDraggingActive) {
 			handleDragging(gl);

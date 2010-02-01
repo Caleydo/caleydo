@@ -278,6 +278,9 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void displayLocal(GL gl) {
+		processEvents();
+		if (!isVisible())
+			return;
 		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
@@ -304,7 +307,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void display(GL gl) {
-		processEvents();
+//		processEvents();
 		gl.glCallList(iGLDisplayListToCall);
 
 		dragAndDropController.handleDragging(gl, glMouseListener);

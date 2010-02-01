@@ -206,7 +206,9 @@ public class GLHeatMap extends AStorageBasedView {
 
 	@Override
 	public void displayLocal(GL gl) {
-
+		processEvents();
+		if(!isVisible())
+			return;
 		if (set == null)
 			return;
 
@@ -237,7 +239,6 @@ public class GLHeatMap extends AStorageBasedView {
 
 	@Override
 	public void displayRemote(GL gl) {
-
 		if (set == null)
 			return;
 
@@ -261,7 +262,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	@Override
 	public void display(GL gl) {
-		processEvents();
+//		processEvents();
 		// clipToFrustum(gl);
 
 		gl.glCallList(iGLDisplayListToCall);

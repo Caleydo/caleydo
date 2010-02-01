@@ -712,7 +712,15 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	@Override
 	public void displayLocal(GL gl) {
-
+		processEvents();
+		if (glExperimentDendrogramView != null)
+			glExperimentDendrogramView.processEvents();
+		if (glGeneDendrogramView != null)
+			glGeneDendrogramView.processEvents();
+		if (glHeatMapView != null)
+			glHeatMapView.processEvents();
+		if (!isVisible())
+			return;
 		if (set == null)
 			return;
 
@@ -2454,7 +2462,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	@Override
 	public void display(GL gl) {
-		processEvents();
+		// processEvents();
 		if (generalManager.isWiiModeActive()) {
 			handleWiiInput();
 		}

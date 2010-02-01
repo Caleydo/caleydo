@@ -47,6 +47,14 @@ public class PartListener
 
 	@Override
 	public void partOpened(IWorkbenchPartReference partRef) {
+		IWorkbenchPart activePart = partRef.getPart(false);
+
+		if (!(activePart instanceof ARcpGLViewPart))
+			return;
+
+		ARcpGLViewPart glView = (ARcpGLViewPart) activePart;
+
+		GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(glView.getGLCanvas());
 	}
 
 	@Override
@@ -90,8 +98,10 @@ public class PartListener
 		// "partVisible(): " +viewPart));
 
 		if (viewPart instanceof ARcpGLViewPart) {
-			GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(
-				((ARcpGLViewPart) viewPart).getGLCanvas());
+			ARcpGLViewPart glViewPart = (ARcpGLViewPart) activePart;
+
+			glViewPart.getGLView().setVisible(true);
+
 		}
 
 		if (!activePart.getSite().getShell().getText().equals("Caleydo")) {
@@ -130,8 +140,10 @@ public class PartListener
 		}
 		ARcpGLViewPart glViewPart = (ARcpGLViewPart) activePart;
 
-		GeneralManager.get().getViewGLCanvasManager()
-			.unregisterGLCanvasFromAnimator(glViewPart.getGLCanvas());
+		// GeneralManager.get().getViewGLCanvasManager()
+		// .unregisterGLCanvasFromAnimator(glViewPart.getGLCanvas());
+		glViewPart.getGLView().setVisible(false);
+
 	}
 
 	@Override

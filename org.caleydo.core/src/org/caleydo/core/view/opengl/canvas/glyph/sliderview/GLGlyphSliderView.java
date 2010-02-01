@@ -182,6 +182,9 @@ public class GLGlyphSliderView
 
 	@Override
 	public void displayLocal(GL gl) {
+		processEvents();
+		if (!isVisible())
+			return;
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
@@ -208,7 +211,7 @@ public class GLGlyphSliderView
 	@Override
 	public void display(GL gl) {
 		// gl.glScalef(0.25f, 0.25f, 1f);
-		processEvents();
+//		processEvents();
 		gl.glPushMatrix();
 
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);

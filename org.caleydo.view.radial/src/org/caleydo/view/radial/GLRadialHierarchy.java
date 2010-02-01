@@ -382,6 +382,9 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void displayRemote(GL gl) {
+		processEvents();
+		if (!isVisible())
+			return;
 
 		if (bIsDisplayListDirtyRemote && !bIsAnimationActive) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
@@ -397,7 +400,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void display(GL gl) {
-		processEvents();
+		// processEvents();
 
 		if (pdRealRootElement != null && pdCurrentRootElement != null) {
 
@@ -638,107 +641,105 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 		}
 		switch (ePickingType) {
 
-			case RAD_HIERARCHY_PDISC_SELECTION :
+		case RAD_HIERARCHY_PDISC_SELECTION:
 
-				PartialDisc pdPickedElement = hashPartialDiscs.get(iExternalID);
+			PartialDisc pdPickedElement = hashPartialDiscs.get(iExternalID);
 
-				switch (pickingMode) {
-					case CLICKED :
-						if (pdPickedElement != null)
-							drawingController.handleSelection(pdPickedElement);
+			switch (pickingMode) {
+			case CLICKED:
+				if (pdPickedElement != null)
+					drawingController.handleSelection(pdPickedElement);
+				break;
+
+			case MOUSE_OVER:
+				if (pdPickedElement != null)
+					drawingController.handleMouseOver(pdPickedElement);
+				break;
+
+			case RIGHT_CLICKED:
+				if (pdPickedElement != null) {
+					// Prevent handling of non genetic data in context
+					// menu
+					if (dataDomain != EDataDomain.GENETIC_DATA)
 						break;
+					if (!pdPickedElement.hasChildren()) {
+						GeneContextMenuItemContainer geneContextMenuItemContainer = new GeneContextMenuItemContainer();
+						geneContextMenuItemContainer.setID(
+								EIDType.EXPRESSION_INDEX, iExternalID);
+						contextMenu
+								.addItemContanier(geneContextMenuItemContainer);
+					} else {
+						DetailOutsideItem detailOutsideItem = new DetailOutsideItem(
+								iExternalID);
+						contextMenu.addContextMenueItem(detailOutsideItem);
+					}
 
-					case MOUSE_OVER :
-						if (pdPickedElement != null)
-							drawingController.handleMouseOver(pdPickedElement);
-						break;
+					if (!isRenderedRemote()) {
+						contextMenu.setLocation(pick.getPickedPoint(),
+								getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+						contextMenu.setMasterGLView(this);
+					}
+					break;
+				}
+				drawingController.handleAlternativeSelection(pdPickedElement);
+				break;
 
-					case RIGHT_CLICKED :
-						if (pdPickedElement != null) {
-							// Prevent handling of non genetic data in context
-							// menu
-							if (dataDomain != EDataDomain.GENETIC_DATA)
-								break;
-							if (!pdPickedElement.hasChildren()) {
-								GeneContextMenuItemContainer geneContextMenuItemContainer = new GeneContextMenuItemContainer();
-								geneContextMenuItemContainer.setID(
-										EIDType.EXPRESSION_INDEX, iExternalID);
-								contextMenu
-										.addItemContanier(geneContextMenuItemContainer);
-							} else {
-								DetailOutsideItem detailOutsideItem = new DetailOutsideItem(
-										iExternalID);
-								contextMenu
-										.addContextMenueItem(detailOutsideItem);
-							}
+			default:
+				return;
+			}
+			break;
 
-							if (!isRenderedRemote()) {
-								contextMenu.setLocation(pick.getPickedPoint(),
-										getParentGLCanvas().getWidth(),
-										getParentGLCanvas().getHeight());
-								contextMenu.setMasterGLView(this);
-							}
-							break;
-						}
-						drawingController
-								.handleAlternativeSelection(pdPickedElement);
-						break;
-
-					default :
-						return;
+		case RAD_HIERARCHY_SLIDER_SELECTION:
+			switch (pickingMode) {
+			case CLICKED:
+				if (iExternalID == iUpwardNavigationSliderID) {
+					if (upwardNavigationSlider
+							.handleSliderSelection(ePickingType)) {
+						updateHierarchyAccordingToNavigationSlider();
+						setDisplayListDirty();
+					}
 				}
 				break;
 
-			case RAD_HIERARCHY_SLIDER_SELECTION :
-				switch (pickingMode) {
-					case CLICKED :
-						if (iExternalID == iUpwardNavigationSliderID) {
-							if (upwardNavigationSlider
-									.handleSliderSelection(ePickingType)) {
-								updateHierarchyAccordingToNavigationSlider();
-								setDisplayListDirty();
-							}
-						}
-						break;
+			default:
+				return;
+			}
+			break;
 
-					default :
-						return;
+		case RAD_HIERARCHY_SLIDER_BUTTON_SELECTION:
+			switch (pickingMode) {
+			case CLICKED:
+				if (iExternalID == iUpwardNavigationSliderButtonID) {
+					if (upwardNavigationSlider
+							.handleSliderSelection(ePickingType)) {
+						updateHierarchyAccordingToNavigationSlider();
+						setDisplayListDirty();
+					}
 				}
 				break;
 
-			case RAD_HIERARCHY_SLIDER_BUTTON_SELECTION :
-				switch (pickingMode) {
-					case CLICKED :
-						if (iExternalID == iUpwardNavigationSliderButtonID) {
-							if (upwardNavigationSlider
-									.handleSliderSelection(ePickingType)) {
-								updateHierarchyAccordingToNavigationSlider();
-								setDisplayListDirty();
-							}
-						}
-						break;
+			default:
+				return;
+			}
+			break;
 
-					default :
-						return;
+		case RAD_HIERARCHY_SLIDER_BODY_SELECTION:
+			switch (pickingMode) {
+			case CLICKED:
+				if (iExternalID == iUpwardNavigationSliderBodyID) {
+					if (upwardNavigationSlider
+							.handleSliderSelection(ePickingType)) {
+						updateHierarchyAccordingToNavigationSlider();
+						setDisplayListDirty();
+					}
 				}
 				break;
 
-			case RAD_HIERARCHY_SLIDER_BODY_SELECTION :
-				switch (pickingMode) {
-					case CLICKED :
-						if (iExternalID == iUpwardNavigationSliderBodyID) {
-							if (upwardNavigationSlider
-									.handleSliderSelection(ePickingType)) {
-								updateHierarchyAccordingToNavigationSlider();
-								setDisplayListDirty();
-							}
-						}
-						break;
-
-					default :
-						return;
-				}
-				break;
+			default:
+				return;
+			}
+			break;
 		}
 	}
 

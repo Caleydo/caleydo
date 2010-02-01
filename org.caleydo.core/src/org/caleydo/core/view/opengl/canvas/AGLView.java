@@ -159,6 +159,8 @@ public abstract class AGLView
 	// /** id of the related view in the gui (e.g. RCP) */
 	// private String viewGUIID;
 
+	private boolean isVisible = true;
+
 	/**
 	 * Constructor.
 	 */
@@ -214,7 +216,6 @@ public abstract class AGLView
 
 	@Override
 	public final void display(GLAutoDrawable drawable) {
-
 		try {
 			((GLEventListener) parentGLCanvas).display(drawable);
 
@@ -382,7 +383,9 @@ public abstract class AGLView
 		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager);
 
 	/**
-	 * GL display method that has to be called in all cases
+	 * GL display method that has to be called in all cases manually, either by {@link #displayLocal(GL)} or
+	 * {@link #displayRemote(GL)}. It must be responsible for rendering the scene. It is also called by the
+	 * picking manager.
 	 * 
 	 * @param gl
 	 */
@@ -401,7 +404,22 @@ public abstract class AGLView
 	}
 
 	/**
-	 * Intended for internal use when no other view is managing the scene. Has to call display internally!
+	 * <p>
+	 * This method is called by the animator of a registered class. It should not be called by anyone else,
+	 * but has to call the local {@link #display(GL)}, where the actual rendering must happen. If a view is
+	 * rendered remote, this method may not be called - instead use {@link #displayRemote(GL)}.
+	 * </p>
+	 * <p>
+	 * Typically a displayLocal should contain:
+	 * <ul>
+	 * <li>a call to {@link #processEvents()}, where the event queue is processed</li>
+	 * <li>a call to the {@link #processEvents()} method of all views it renders locally</li>
+	 * <li>this has to be followed by a check whether the view is active, using {@link #isVisible}. If the
+	 * view is inactive it should return at this point.</li>
+	 * <li>a call to the {@link PickingManager#handlePicking(AGLView, GL)} method, which renders the scene in
+	 * picking mode.</li>
+	 * <li>and finally a call to the local display</li>
+	 * </ul>
 	 * 
 	 * @param gl
 	 */
@@ -409,7 +427,8 @@ public abstract class AGLView
 
 	/**
 	 * Intended for external use when another instance of a view manages the scene. This is specially designed
-	 * for composite views. Has to call display internally!
+	 * for composite views. Has to call display internally! The steps necessary in {@link #displayLocal(GL)},
+	 * such as handling of events and picking have to be taken care of the instance calling this method.
 	 * 
 	 * @param gl
 	 */
@@ -774,5 +793,25 @@ public abstract class AGLView
 
 	public void handleToggleMagnifyingGlassEvent() {
 		bShowMagnifyingGlass = !bShowMagnifyingGlass;
+	}
+
+	/**
+	 * Set whether this view is visible.
+	 * 
+	 * @param isVisible
+	 *            true if the view is visible
+	 */
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
+	}
+
+	/**
+	 * Check whether the view is visible. If not, it should not be rendered. Note that events should be
+	 * processed anyway.
+	 * 
+	 * @return true if it is visible
+	 */
+	protected boolean isVisible() {
+		return isVisible;
 	}
 }

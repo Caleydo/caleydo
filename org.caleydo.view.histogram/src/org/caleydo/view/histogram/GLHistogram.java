@@ -134,6 +134,9 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void displayLocal(GL gl) {
+		processEvents();
+		if (!isVisible())
+			return;
 		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
@@ -168,7 +171,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void display(GL gl) {
-		processEvents();
+//		processEvents();
 		if (bUpdateColorPointPosition || bUpdateLeftSpread
 				|| bUpdateRightSpread)
 			updateColorPointPosition(gl);

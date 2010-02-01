@@ -357,6 +357,9 @@ public class GLGlyph
 
 	@Override
 	public void displayLocal(GL gl) {
+		processEvents();
+		if (!isVisible())
+			return;
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
@@ -372,7 +375,7 @@ public class GLGlyph
 
 	@Override
 	public void display(GL gl) {
-		processEvents();
+//		processEvents();
 		if (grid_ == null) {
 			renderSymbol(gl);
 			return;

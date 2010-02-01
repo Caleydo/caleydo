@@ -189,10 +189,6 @@ public class GLBookmarkManager extends AGLView
 	@Override
 	public void display(GL gl) {
 
-		processEvents();
-
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-
 		float currentHeight = viewFrustum.getHeight()
 				- BookmarkRenderStyle.TOP_SPACING;
 		for (ABookmarkContainer container : bookmarkContainers) {
@@ -206,6 +202,10 @@ public class GLBookmarkManager extends AGLView
 
 	@Override
 	protected void displayLocal(GL gl) {
+		processEvents();
+		if (!isVisible())
+			return;
+		
 		pickingManager.handlePicking(this, gl);
 		display(gl);
 		checkForHits(gl);

@@ -52,8 +52,8 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 
 
 
-	private float fRenderHeight = 0f;
-	private float fRenderWith = 0f;
+//	private float fRenderHeight = 0f;
+//	private float fRenderWith = 0f;
 	
 	private boolean bIsEmbedded=true;
 
@@ -65,8 +65,8 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 
 		super(viewFrustum);
 
-		fRenderHeight=viewFrustum.getHeight();
-		fRenderWith=viewFrustum.getWidth();	
+//		fRenderHeight=viewFrustum.getHeight();
+//		fRenderWith=viewFrustum.getWidth();	
 	}
 
 	

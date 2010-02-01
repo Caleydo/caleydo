@@ -365,7 +365,14 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 
 	@Override
 	public void displayLocal(final GL gl) {
-
+		processEvents();
+		for (AGLView view : containedGLViews)
+			view.processEvents();
+		if (glBookmarkContainer != null)
+			glBookmarkContainer.processEvents();
+		if (!isVisible())
+			return;
+		
 		pickingManager.handlePicking(this, gl);
 
 		// if (bIsDisplayListDirtyLocal)
@@ -478,7 +485,7 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 	@Override
 	public void display(final GL gl) {
 		time.update();
-		processEvents();
+		// processEvents();
 
 		// Update the pool transformations according to the current mouse over
 		// object

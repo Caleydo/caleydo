@@ -74,6 +74,9 @@ public class GLCell extends AGLView {
 
 	@Override
 	public void displayLocal(final GL gl) {
+		processEvents();
+		if (!isVisible())
+			return;
 		pickingManager.handlePicking(this, gl);
 		if (bIsDisplayListDirtyLocal) {
 			// rebuildPathwayDisplayList(gl);
@@ -84,6 +87,7 @@ public class GLCell extends AGLView {
 
 	@Override
 	public void displayRemote(final GL gl) {
+
 		if (bIsDisplayListDirtyRemote) {
 			// rebuildPathwayDisplayList(gl);
 			bIsDisplayListDirtyRemote = false;
@@ -94,7 +98,7 @@ public class GLCell extends AGLView {
 
 	@Override
 	public void display(final GL gl) {
-		processEvents();
+//		processEvents();
 		checkForHits(gl);
 		renderScene(gl);
 	}

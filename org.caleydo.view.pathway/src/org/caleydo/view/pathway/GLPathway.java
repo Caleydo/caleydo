@@ -227,6 +227,10 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 
 	@Override
 	public void displayLocal(final GL gl) {
+		processEvents();
+		if (!isVisible())
+			return;
+
 		// Check if pathway exists or if it's already loaded
 		// FIXME: not good because check in every rendered frame
 		if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
@@ -258,7 +262,7 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 
 	@Override
 	public void display(final GL gl) {
-		processEvents();
+		// processEvents();
 		checkForHits(gl);
 
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
@@ -881,11 +885,10 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 
 	@Override
 	public String getDetailedInfo() {
-		
+
 		if (isRenderedRemote())
 			return (((AGLView) getRemoteRenderingGLCanvas()).getDetailedInfo());
 
-		
 		StringBuffer sInfoText = new StringBuffer();
 
 		sInfoText.append("<b>Pathway</b>\n\n<b>Name:</b> " + pathway.getTitle()
