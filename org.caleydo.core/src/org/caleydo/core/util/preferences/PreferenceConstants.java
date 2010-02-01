@@ -26,7 +26,9 @@ public class PreferenceConstants {
 	public static final String PATHWAY_DATA_OK = "pathwayDataOK";
 	public static final String LAST_CHOSEN_PATHWAY_DATA_SOURCES = "lastLoadedPathwayDataSources";
 	public static final String LAST_CHOSEN_ORGANISM = "lastLoadedOrganism";
-	public static final String LAST_CHOSEN_USE_CASE_MODE = "lastChosenUseCaseMode";
+	// public static final String LAST_CHOSEN_USE_CASE_MODE = "lastChosenUseCaseMode";
+	/** The application mode chosen during the last time. A value of EApplicationMode */
+	public static final String LAST_CHOSEN_APPLICATION_MODE = "lastChosenApplicationMode";
 
 	// TODO: make it specific for each pathway database + organism combination
 	public static final String LAST_PATHWAY_UPDATE = "lastPathwayDataUpdate";
@@ -58,8 +60,8 @@ public class PreferenceConstants {
 	public static final String VISUAL_LINKS_COLOR = "visualLinksColor";
 	public static final String VISUAL_LINKS_ANIMATED_HALO = "visualLinksAnimatedHalo";
 
-	@Deprecated
-	public static final String XP_CLASSIC_STYLE_MODE = "enableXPClassicStyleMode";
+//	@Deprecated
+//	public static final String XP_CLASSIC_STYLE_MODE = "enableXPClassicStyleMode";
 
 	public static final String USE_PROXY = "useProxy";
 	public static final String PROXY_SERVER = "proxyServer";

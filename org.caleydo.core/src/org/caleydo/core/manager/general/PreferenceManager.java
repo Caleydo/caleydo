@@ -14,7 +14,6 @@ import java.io.IOException;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -129,7 +128,7 @@ public class PreferenceManager {
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES, EPathwayDatabaseType.KEGG
 			.name()
 			+ ";" + EPathwayDatabaseType.BIOCARTA.name());
-		store.setDefault(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, EDataDomain.GENETIC_DATA.name());
+		store.setDefault(PreferenceConstants.LAST_CHOSEN_APPLICATION_MODE, "SAMPLE_PROJECT");
 		store.setDefault(PreferenceConstants.USE_PROXY, false);
 
 		// visual links

@@ -46,7 +46,7 @@ public class ProjectLoader {
 	public ApplicationInitData loadRecent() {
 		return loadDirectory(ProjectSaver.RECENT_PROJECT_DIR_NAME);
 	}
-
+	
 	/**
 	 * Loads the project from a directory
 	 * 

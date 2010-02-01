@@ -14,6 +14,10 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 public enum EApplicationMode {
 	GENE_EXPRESSION_NEW_DATA(EDataDomain.GENETIC_DATA),
 	// GENE_EXPRESSION_PATHWAY_VIEWER,
+
+	/** specifies to load an entire sample project */
+	SAMPLE_PROJECT(EDataDomain.GENETIC_DATA),
+
 	GENE_EXPRESSION_SAMPLE_DATA(EDataDomain.GENETIC_DATA),
 	UNSPECIFIED_NEW_DATA(EDataDomain.UNSPECIFIED),
 

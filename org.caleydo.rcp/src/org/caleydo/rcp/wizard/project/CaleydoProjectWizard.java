@@ -13,9 +13,9 @@ import org.caleydo.core.serialize.ProjectLoader;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
-import org.caleydo.rcp.wizard.project.ChooseProjectTypePage.EProjectType;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
@@ -25,9 +25,12 @@ import org.eclipse.swt.widgets.Shell;
  * 
  * @author Marc Streit
  * @author Werner Puff
+ * @author Alexander Lex
  */
 public class CaleydoProjectWizard
 	extends Wizard {
+
+	public static final String SAMPLE_PROJECT_LOCATION = "data/sample_project/sample_project.cal";
 
 	/**
 	 * Constructor.
@@ -61,38 +64,36 @@ public class CaleydoProjectWizard
 			// preferences the old workbench state should be deleted.
 			// EApplicationMode eOldUseCaseMode =
 
-			EDataDomain dataDomain =
-				EDataDomain.valueOf(prefStore.getString(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE));
-			EApplicationMode eOldUseCaseMode = EApplicationMode.getApplicationModeFromDomain(dataDomain);
+			EApplicationMode previousApplicationMode =
+				EApplicationMode.valueOf(prefStore
+					.getString(PreferenceConstants.LAST_CHOSEN_APPLICATION_MODE));
 
-			if (page.getApplicationMode() != eOldUseCaseMode)
+			if (page.getApplicationMode() != previousApplicationMode)
 				Application.bDeleteRestoredWorkbenchState = true;
 
 			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_ORGANISM, page.getOrganism().name());
 
-			try {
-				prefStore.save();
-			}
-			catch (IOException e) {
-				throw new IllegalStateException("Unable to save preference file.");
-			}
-
 			IUseCase useCase;
-			if (page.getApplicationMode() == EApplicationMode.GENE_EXPRESSION_NEW_DATA
+			EApplicationMode appMode = page.getApplicationMode();
+			if (appMode == EApplicationMode.SAMPLE_PROJECT) {
+				System.out.println("Load sample Project");
+				ProjectLoader loader = new ProjectLoader();
+
+				Application.initData = loader.load(SAMPLE_PROJECT_LOCATION);
+
+				useCase = Application.initData.getUseCase();
+				Application.startViews.clear();
+				Application.initializedStartViews = Application.initData.getViewIDs();
+				Application.applicationMode = EApplicationMode.LOAD_PROJECT;
+				Application.bDeleteRestoredWorkbenchState = true;
+			}
+			else if (page.getApplicationMode() == EApplicationMode.GENE_EXPRESSION_NEW_DATA
 				|| page.getApplicationMode() == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA) {
 				Application.dataDomain = EDataDomain.GENETIC_DATA;
 				useCase = new GeneticUseCase();
 				((GeneticUseCase) useCase).setOrganism(page.getOrganism());
 
-				// if (page.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
-				// Application.applicationMode = EApplicationMode.PATHWAY_VIEWER;
-				// }
-				if (page.getProjectType() == EProjectType.SAMPLE_DATA_REAL) {
-					Application.applicationMode = EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA;
-				}
-				else if (page.getProjectType() == EProjectType.NEW_PROJECT) {
-					Application.applicationMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
-				}
+				Application.applicationMode = page.getApplicationMode();
 
 				String sNewPathwayDataSources = "";
 				if (page.isKEGGPathwayDataLoadingRequested())
@@ -107,19 +108,14 @@ public class CaleydoProjectWizard
 				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES,
 					sNewPathwayDataSources);
 
-				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, Application.dataDomain
-					.name());
 			}
 			else if (page.getApplicationMode() == EApplicationMode.UNSPECIFIED_NEW_DATA) {
 				useCase = new UnspecifiedUseCase();
 				Application.dataDomain = EDataDomain.UNSPECIFIED;
 				Application.applicationMode = EApplicationMode.UNSPECIFIED_NEW_DATA;
 
-				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, Application.dataDomain
-					.name());
 			}
 			else if (page.getApplicationMode() == EApplicationMode.LOAD_PROJECT) {
-				// FIXME determine the application domain somewhere?
 				System.out.println("Load Project");
 				ProjectLoader loader = new ProjectLoader();
 				if (page.getProjectLoadType() == ChooseProjectTypePage.EProjectLoadType.RECENT) {
@@ -150,6 +146,16 @@ public class CaleydoProjectWizard
 				throw new IllegalStateException("Not implemented!");
 			}
 
+			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_APPLICATION_MODE, Application.applicationMode
+				.name());
+
+			try {
+				prefStore.save();
+			}
+			catch (IOException e) {
+				throw new IllegalStateException("Unable to save preference file.");
+			}
+
 			GeneralManager.get().addUseCase(useCase);
 
 			return true;
@@ -173,49 +179,12 @@ public class CaleydoProjectWizard
 		return false;
 	}
 
-	// @Override
-	// public IWizardPage getNextPage(IWizardPage page) {
-	// if (page instanceof ChooseProjectTypePage) {
-	//
-	// ChooseProjectTypePage projectPage = (ChooseProjectTypePage) page;
-	//
-	//
-	// if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).getProjectType() ==
-	// EProjectType.NEW_PROJECT) {
-	// NewProjectImportDataPage nextPage =
-	// (NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME);
-	//
-	// nextPage.setPageComplete(true);
-	// return nextPage;
-	// }
-	// /*
-	// * else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)) .getProjectType()
-	// * == EProjectType.EXISTING_PROJECT) { // FileOpenProjectAction fileOpenProjectAction = new
-	// * FileOpenProjectAction(this.getShell()); // fileOpenProjectAction.run(); this.performFinish(); }
-	// */else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).getProjectType() ==
-	// EProjectType.SAMPLE_DATA_RANDOM) {
-	//
-	// }
-	// else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).getProjectType() ==
-	// EProjectType.SAMPLE_DATA_REAL) {
-	//
-	// }
-	// // else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
-	// // .getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
-	// // // Remove heatmap and par coord views
-	// // for (AGLEventListener glEventListener : GeneralManager.get().getViewGLCanvasManager()
-	// // .getAllGLEventListeners()) {
-	// // if (glEventListener instanceof GLHeatMap
-	// // || glEventListener instanceof GLParallelCoordinates) {
-	// // GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(
-	// // glEventListener);
-	// // }
-	// // }
-	// //
-	// // this.performFinish();
-	// // }
-	// }
-	//
-	// return page;
-	// }
+	/** Main method for testing */
+	public static void main(String args[]) {
+		while (true) {
+			Shell shell = new Shell();
+			WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
+			projectWizardDialog.open();
+		}
+	}
 }

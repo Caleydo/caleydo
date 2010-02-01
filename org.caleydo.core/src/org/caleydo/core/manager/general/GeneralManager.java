@@ -47,6 +47,8 @@ import org.eclipse.jface.preference.PreferenceStore;
 public class GeneralManager
 	implements IGeneralManager {
 
+	public static final boolean IS_IN_RELEASE_MODE = true;
+	
 	/**
 	 * General manager as a singleton
 	 */
