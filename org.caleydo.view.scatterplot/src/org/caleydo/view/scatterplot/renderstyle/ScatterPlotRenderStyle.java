@@ -54,6 +54,8 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 
 	private float fRenderHeight = 0f;
 	private float fRenderWith = 0f;
+	
+	private boolean bIsEmbedded=true;
 
 
 	private float fSizeHeatmapArrow = 0.17f;
@@ -67,6 +69,12 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 		fRenderWith=viewFrustum.getWidth();	
 	}
 
+	
+	public void setIsEmbedded(boolean value)
+	{
+		bIsEmbedded=value;
+	}
+	
 	
 
 	public static void setTextureNr(int x,int y)
@@ -110,31 +118,35 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 	}
 
 		
-	public void setRenderWidth(boolean bFullView) {
-
-		if (bFullView) fRenderWith=viewFrustum.getWidth();
-		else fRenderWith = getXCenter();
-		
-	}
-	
-	public void setRenderHeight(boolean bFullView) {		
-		if (bFullView) fRenderHeight=viewFrustum.getHeight();
-		else fRenderHeight = getYCenter();
-
-	}
+//	public void setRenderWidth(boolean bFullView) {
+//
+//		if (bFullView) fRenderWith=viewFrustum.getWidth();
+//		else fRenderWith = getXCenter();
+//		
+//	}
+//	
+//	public void setRenderHeight(boolean bFullView) {		
+//		if (bFullView) fRenderHeight=viewFrustum.getHeight();
+//		else fRenderHeight = getYCenter();
+//
+//	}
 	
 	public float getRenderWidth() {
 
-		//return fRenderWith; 
-		return viewFrustum.getWidth();
+		//return fRenderWith; 		
+		if (!bIsEmbedded)
+			return viewFrustum.getWidth();
+			else return getXCenter();
 		
 					
 	}
 
 	public float getRenderHeight() {
 
-		//return fRenderHeight;
+		//
+		if (!bIsEmbedded)
 		return viewFrustum.getHeight();
+		else return getYCenter();
 
 	}
 

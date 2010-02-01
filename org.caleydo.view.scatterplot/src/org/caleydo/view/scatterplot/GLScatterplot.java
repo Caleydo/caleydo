@@ -119,7 +119,7 @@ public class GLScatterplot extends AStorageBasedView {
 	
 	private boolean bUpdateMainView = false;
 	private boolean bRender2Axis = false;
-	private boolean bRenderMatrix = false;
+	private boolean bRenderMatrix = true;
 	private boolean bRenderMainView = true;
 	
 	private boolean bUpdateSelection = false;
@@ -127,7 +127,7 @@ public class GLScatterplot extends AStorageBasedView {
 	private boolean bUpdateFullTexures =false;
 	
 	
-	private boolean bUseColor= false;
+	private boolean bUseColor= true;
 	private boolean bOnlyRenderHalfMatrix= true;
 
 	int iCurrentMouseOverElement = -1;
@@ -717,7 +717,9 @@ public class GLScatterplot extends AStorageBasedView {
 			if (glMouseListener.wasMouseReleased() && bRectangleSelection) {
 				bRectangleSelection = false;
 				setDisplayListDirty();
+				if (bRenderMatrix) gl.glTranslatef(renderStyle.getXCenter(),renderStyle.getYCenter() , 0);
 				UpdateSelection();
+				if (bRenderMatrix) gl.glTranslatef(-renderStyle.getXCenter(),-renderStyle.getYCenter() , 0);
 				gl.glDeleteLists(iGLDisplayListIndexBrush, 1);
 				bUpdateSelection = true;				
 			}
@@ -781,7 +783,7 @@ public class GLScatterplot extends AStorageBasedView {
 			renderTextures(gl,true,0.0f); // Selection textures
 			//renderTextures(gl,false,0.0f); // Selection Textures
 			renderMatrixSelection(gl);
-			return;
+			//return;
 		}
 		
 		if(bRenderMainView)
@@ -804,7 +806,9 @@ public class GLScatterplot extends AStorageBasedView {
 
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
+		if (bRenderMatrix) gl.glTranslatef(renderStyle.getXCenter(),renderStyle.getYCenter() , 0);
 		RenderSelection(gl);
+		if (bRenderMatrix) gl.glTranslatef(-renderStyle.getXCenter(),-renderStyle.getYCenter() , 0);
 		gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
 		gl.glEndList();
 	}
@@ -827,8 +831,8 @@ public class GLScatterplot extends AStorageBasedView {
 		if ((bUpdateMainView || bUpdateSelection)) {
 			
 			
-			if (bRenderMainView) 
-				buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
+			if (bRenderMainView) 				
+				buildDisplayListSelection(gl, iGLDisplayListIndexSelection);				
 			if (bUpdateSelection)// && bRenderMatrix) TODO : Evaluate Performance here
 				initTextures(true);			
 			bUpdateSelection = false;
@@ -843,13 +847,17 @@ public class GLScatterplot extends AStorageBasedView {
 		if (bUpdateMainView && bRenderMainView) {
 			if (detailLevel == EDetailLevel.HIGH) {
 				gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
+				if (bRenderMatrix) gl.glTranslatef(renderStyle.getXCenter(),renderStyle.getYCenter() , 0);	
 				renderCoordinateSystem(gl);
+				if (bRenderMatrix) gl.glTranslatef(-renderStyle.getXCenter(),-renderStyle.getYCenter() , 0);
 				gl.glEndList();
 			}
 
 			gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 			gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
+			if (bRenderMatrix) gl.glTranslatef(renderStyle.getXCenter(),renderStyle.getYCenter() , 0);			
 			RenderScatterPoints(gl);
+			if (bRenderMatrix) gl.glTranslatef(-renderStyle.getXCenter(),-renderStyle.getYCenter() , 0);
 			gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
 			gl.glEndList();
 
@@ -858,7 +866,9 @@ public class GLScatterplot extends AStorageBasedView {
 
 		gl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
 		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
+		if (bRenderMatrix && bRenderMainView) gl.glTranslatef(renderStyle.getXCenter(),renderStyle.getYCenter() , 0);	
 		RenderMouseOver(gl);
+		if (bRenderMatrix && bRenderMainView) gl.glTranslatef(-renderStyle.getXCenter(),-renderStyle.getYCenter() , 0);
 		gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
 		gl.glEndList();
 
@@ -1254,7 +1264,13 @@ public class GLScatterplot extends AStorageBasedView {
 
 		x = x + XYAXISDISTANCE;
 		y = y + XYAXISDISTANCE;
-
+		
+		if (bRenderMatrix && bRenderMainView)
+		{
+			x += renderStyle.getXCenter();
+			y += renderStyle.getYCenter();
+		}
+			
 		if (x >= XMin && x <= XMax)
 			if (y >= YMin && y <= YMax)
 				return true;
@@ -2025,17 +2041,35 @@ public class GLScatterplot extends AStorageBasedView {
 
 	public void toggleMatrixMode() {
 		
-		if(bRenderMainView) //-> Matrix Mode
+		if(bRenderMainView && bRenderMatrix) // embedded view->MainView
+		{			
+			bRenderMainView=true;
+			bRenderMatrix=false;
+			renderStyle.setIsEmbedded(false);
+			bUpdateMainView = true;
+			setDisplayListDirty();			
+			return;
+		}
+				
+		if(bRenderMainView && !bRenderMatrix) //MainView-> Matrix Mode
 		{			
 			bRenderMainView=false;
 			bRenderMatrix=true;
+			bOnlyRenderHalfMatrix=false;
+			return;
 		}
-		else //-> MainView Mode
+		
+		if(!bRenderMainView && bRenderMatrix) //Matrix View -> Embedded View
 		{
-			bUpdateMainView = true;
+			
 			bRenderMainView=true;
-			bRenderMatrix=false;
+			bRenderMatrix=true;
+			bOnlyRenderHalfMatrix=true;
+			renderStyle.setIsEmbedded(true);
+			bUpdateMainView = true;
 			setDisplayListDirty();
+			
+			return;
 		}
 		
 	}
@@ -2044,7 +2078,7 @@ public class GLScatterplot extends AStorageBasedView {
 		// TODO Auto-generated method stub
 		if(bUseColor) bUseColor=false;
 		else bUseColor=true;
-		
+				
 		bUpdateMainView = true;
 		bUpdateFullTexures=true;
 		setDisplayListDirty();
