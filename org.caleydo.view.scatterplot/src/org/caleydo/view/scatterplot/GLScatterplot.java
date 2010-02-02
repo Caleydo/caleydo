@@ -1648,34 +1648,57 @@ public class GLScatterplot extends AStorageBasedView {
 
 		ESelectionType eSelectionType;
 		switch (ePickingType) {
-		case SCATTER_POINT_SELECTION:
+		case SCATTER_POINT_SELECTION:		
 			iCurrentMouseOverElement = iExternalID;
-			switch (pickingMode) {
-
-			case CLICKED:
-				eSelectionType = ESelectionType.SELECTION;
-				break;
-			case MOUSE_OVER:
-				eSelectionType = ESelectionType.MOUSE_OVER;
-				break;
-			case RIGHT_CLICKED:
-				eSelectionType = ESelectionType.DESELECTED;
-				break;
-			case DRAGGED:
-				eSelectionType = ESelectionType.SELECTION;
-				// break;
-			default:
-				return;
-
+			switch (pickingMode) 
+			{
+	
+				case CLICKED:
+					eSelectionType = ESelectionType.SELECTION;
+					break;
+				case MOUSE_OVER:
+					eSelectionType = ESelectionType.MOUSE_OVER;
+					break;
+				case RIGHT_CLICKED:
+					eSelectionType = ESelectionType.DESELECTED;
+					break;
+				case DRAGGED:
+					eSelectionType = ESelectionType.SELECTION;
+					// break;
+				default:
+					return;
+				
 			}
-
-			createContentSelection(eSelectionType, iExternalID);
-
+			createContentSelection(eSelectionType, iExternalID);			
 			break;
-
+		
+		case SCATTER_MATRIX_SELECTION:
+			iCurrentMouseOverElement = iExternalID;
+			switch (pickingMode) 
+			{
+				case CLICKED:
+					eSelectionType = ESelectionType.SELECTION;
+					break;
+				case MOUSE_OVER:
+					eSelectionType = ESelectionType.MOUSE_OVER;
+					break;
+				default:
+					return;
+			}
+			createStorageSelection(eSelectionType, iExternalID);
+			break;
 		}
 	}
 
+	private void createStorageSelection(ESelectionType selectionType,
+			int contentID) 
+	{
+		// TODO Add AxisSelection stuff 
+	//	if (selectionType == ESelectionType.SELECTION) {
+		
+		selectNewAxes();
+	}
+	
 	private void createContentSelection(ESelectionType selectionType,
 			int contentID) {
 
