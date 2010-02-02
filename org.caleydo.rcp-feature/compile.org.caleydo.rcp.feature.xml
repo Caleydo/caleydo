@@ -7,6 +7,16 @@
 		<ant antfile="build.xml" dir="../org.caleydo.util.gleem" target="build.jars"/>
 		<ant antfile="build.xml" dir="../org.caleydo.data" target="build.jars"/>
 		<ant antfile="build.xml" dir="../org.caleydo.core" target="build.jars"/>
+		<ant antfile="build.xml" dir="../org.caleydo.view.bookmarking" target="build.jars"/>
+		<ant antfile="build.xml" dir="../org.caleydo.data.pathway.kegg" target="build.jars"/>
+		<ant antfile="build.xml" dir="../org.caleydo.data.pathway.biocarta" target="build.jars"/>
 		<ant antfile="build.xml" dir="../org.caleydo.rcp" target="build.jars"/>
+		<ant antfile="build.xml" dir="../org.caleydo.view.radial" target="build.jars"/>
+		<ant antfile="build.xml" dir="../org.caleydo.view.parcoords" target="build.jars"/>
+		<ant antfile="build.xml" dir="../org.caleydo.view.histogram" target="build.jars"/>
+		<ant antfile="build.xml" dir="../org.caleydo.view.browser" target="build.jars"/>
+		<ant antfile="build.xml" dir="../org.caleydo.view.heatmap" target="build.jars"/>
+		<ant antfile="build.xml" dir="../org.caleydo.view.pathway" target="build.jars"/>
+		<ant antfile="build.xml" dir="../org.caleydo.view.bucket" target="build.jars"/>
 	</target>
 </project>
