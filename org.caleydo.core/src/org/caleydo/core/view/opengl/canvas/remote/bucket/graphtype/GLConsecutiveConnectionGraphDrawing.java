@@ -181,7 +181,19 @@ public class GLConsecutiveConnectionGraphDrawing
 	}
 
 	@Override
-	protected HashMap<Integer, Vec3f> getOptimalDynamicPoints(EIDType idType) {
+	protected ArrayList<ArrayList<ArrayList<Vec3f>>> calculateOptimalMultiplePoints(
+		ArrayList<ArrayList<Vec3f>> heatMapPoints, int heatMapID,
+		ArrayList<ArrayList<Vec3f>> parCoordsPoints, int parCoordID,
+		HashMap<Integer, Vec3f> hashViewToCenterPoint) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected ArrayList<ArrayList<Vec3f>> calculateOptimalSinglePoints(
+		ArrayList<ArrayList<Vec3f>> heatMapPoints, int heatMapID,
+		ArrayList<ArrayList<Vec3f>> parCoordsPoints, int parCoordID,
+		HashMap<Integer, Vec3f> hashViewToCenterPoint) {
 		// TODO Auto-generated method stub
 		return null;
 	}
