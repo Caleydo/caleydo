@@ -31,7 +31,7 @@ copy_to_web()
 
 copy_webstart()
 {
-  sudo cp $webstart_export_path"_"$version_number"/plugins/org.caleydo."* $webstart_plugins_folder -v
+  sudo cp $webstart_export_path"/plugins/org.caleydo."* $webstart_plugins_folder"_"$version_number -v
 }
 
 make_archive()
