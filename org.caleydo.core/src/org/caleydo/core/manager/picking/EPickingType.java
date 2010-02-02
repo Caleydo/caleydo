@@ -103,6 +103,7 @@ public enum EPickingType {
 	// scatterplot
 
 	SCATTER_POINT_SELECTION,
+	SCATTER_MATRIX_SELECTION,
 
 	// grouper
 	GROUPER_GROUP_SELECTION,

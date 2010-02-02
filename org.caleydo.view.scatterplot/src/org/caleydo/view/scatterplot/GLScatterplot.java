@@ -497,16 +497,27 @@ public class GLScatterplot extends AStorageBasedView {
 				gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
 						GL.GL_NEAREST);
 				TextureCoords texCoords=null;
+//				if(bIsSelection)				
+//					texCoords = AlSelectionTextures.get(NR_TEXTURES - i - 1)
+//						.getImageTexCoords();				
+//				else
+//					texCoords = AlFullTextures.get(NR_TEXTURES - i - 1)
+//						.getImageTexCoords();
+	
 				if(bIsSelection)				
-					texCoords = AlSelectionTextures.get(NR_TEXTURES - i - 1)
+					texCoords = AlSelectionTextures.get(icounter)
 						.getImageTexCoords();				
 				else
-					texCoords = AlFullTextures.get(NR_TEXTURES - i - 1)
+					texCoords = AlFullTextures.get(icounter)
 						.getImageTexCoords();
-	
+				
+//				gl.glPushName(pickingManager.getPickingID(iUniqueID,
+//						EPickingType.SCATTER_MATRIX_SELECTION, NR_TEXTURES
+//								- i));
+				
 				gl.glPushName(pickingManager.getPickingID(iUniqueID,
-						EPickingType.HIER_HEAT_MAP_TEXTURE_SELECTION, NR_TEXTURES
-								- i));
+						EPickingType.SCATTER_MATRIX_SELECTION, icounter));
+				
 								
 				gl.glBegin(GL.GL_QUADS);
 				gl.glTexCoord2d(texCoords.left(), texCoords.top());
@@ -692,7 +703,8 @@ public class GLScatterplot extends AStorageBasedView {
 			GLMouseListener glMouseListener = getParentGLCanvas()
 					.getGLMouseListener();
 
-			if (glMouseListener.wasMouseDragged()) {
+			if (glMouseListener.wasMouseDragged() && (!bRender2Axis)) {
+				
 				bRectangleSelection = true;
 
 				Point pDragEndPoint = glMouseListener.getPickedPoint();
@@ -775,7 +787,7 @@ public class GLScatterplot extends AStorageBasedView {
 
 	@Override
 	public void display(GL gl) {
-		processEvents();
+		//processEvents();
 
 		// GLHelperFunctions.drawAxis(gl);
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
@@ -800,7 +812,7 @@ public class GLScatterplot extends AStorageBasedView {
 				gl.glCallList(iGLDisplayListIndexMouseOver);
 	
 			}
-			gl.glCallList(iGLDisplayListIndexSelection);
+			if (!bRender2Axis) gl.glCallList(iGLDisplayListIndexSelection);
 		}
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 		// if (!isRenderedRemote())
@@ -1060,13 +1072,23 @@ public class GLScatterplot extends AStorageBasedView {
 		float y_2 = 0.0f;
 		EScatterPointType tmpPointStyle = POINTSTYLE;
 		float[] fArMappingColor = {0.0f, 0.0f, 0.0f}; //(black);
+				
 		
 		if (detailLevel != EDetailLevel.HIGH) {
 			bRender2Axis = false;
 			POINTSTYLE = EScatterPointType.POINT;
 		}
+		
+		Set<Integer> selectionSet = elementSelectionManager
+		.getAllElements();
+		
+		if (bRender2Axis)
+			if(elementSelectionManager.getNumberOfElements(ESelectionType.SELECTION)>0)
+				selectionSet = elementSelectionManager
+				.getElements(ESelectionType.SELECTION);
+		
 
-		for (Integer iContentIndex : contentVA) {
+		for (Integer iContentIndex : selectionSet) {
 
 			if (iContentIndex == -1) {
 				// throw new
