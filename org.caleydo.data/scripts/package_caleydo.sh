@@ -31,7 +31,7 @@ copy_to_web()
 
 copy_webstart()
 {
-  sudo cp $webstart_export_path"/plugins/org.caleydo."* $webstart_plugins_folder -v
+  sudo cp $webstart_export_path"_"$version_number"/plugins/org.caleydo."* $webstart_plugins_folder -v
 }
 
 make_archive()
@@ -47,13 +47,13 @@ make_archive()
   
   
   cd $export_root/win32.win32.x86/
-  zip -r $export_path/caleydo_$version_number"_win_xp_x86-32.zip" caleydo
+  zip -r $export_path/caleydo_$version_number"_win_x86-32.zip" caleydo
   
   cd $export_root/win32.win32.x86_64/
-  zip -r $export_path/caleydo_$version_number"_win_xp_x86-64.zip" caleydo 
+  zip -r $export_path/caleydo_$version_number"_win_x86-64.zip" caleydo 
   
-  cd $export_root/win32.wpf.x86/
-  zip -r $export_path/caleydo_$version_number"_win_vista_x86-32.zip" caleydo
+  #cd $export_root/win32.wpf.x86/
+  #zip -r $export_path/caleydo_$version_number"_win_vista_x86-32.zip" caleydo
 }
 
 print_help()
