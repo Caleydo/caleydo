@@ -11,6 +11,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GraphDrawingUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
+import org.caleydo.core.view.opengl.util.vislink.VisLinkAnimationStage;
 import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
 /**
  * Specialized connection line renderer for bucket view.
@@ -44,11 +45,12 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 		if (hashViewToCenterPoint == null)
 			return;
 		
-		ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews = new ArrayList<ArrayList<ArrayList<Vec3f>>>(4);
-		ArrayList<ArrayList<Vec3f>> connectionLinesActiveView = new ArrayList<ArrayList<Vec3f>>();
-		ArrayList<ArrayList<Vec3f>> bundlingToCenterLinesActiveView = new ArrayList<ArrayList<Vec3f>>();
-		ArrayList<ArrayList<Vec3f>> bundlingToCenterLinesOtherViews = new ArrayList<ArrayList<Vec3f>>();
-		ArrayList<ArrayList<Vec3f>> connectionLinesOtherViews = new ArrayList<ArrayList<Vec3f>>();
+		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>(4);
+		
+		VisLinkAnimationStage connectionLinesActiveView = new VisLinkAnimationStage();
+		VisLinkAnimationStage bundlingToCenterLinesActiveView = new VisLinkAnimationStage();
+		VisLinkAnimationStage bundlingToCenterLinesOtherViews = new VisLinkAnimationStage(true);
+		VisLinkAnimationStage connectionLinesOtherViews = new VisLinkAnimationStage(true);
 		
 		
 
@@ -68,9 +70,9 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 			
 			for(Vec3f currentPoint : depthSort(pointsToDepthSort)) {
 				if(activeViewID != -1 && iKey == activeViewID)
-					connectionLinesActiveView.add( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
+					connectionLinesActiveView.addLine( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
 				else
-					connectionLinesOtherViews.add( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
+					connectionLinesOtherViews.addLine( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
 			}
 			
 //			renderLine(gl, vecViewBundlingPoint, vecCenter, 0, fArColor);
@@ -78,10 +80,10 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 			bundlingToCenter.add(vecViewBundlingPoint);
 			bundlingToCenter.add(vecCenter);
 			if(activeViewID != -1 && iKey == activeViewID) {
-				bundlingToCenterLinesActiveView.add(bundlingToCenter);
+				bundlingToCenterLinesActiveView.addLine(bundlingToCenter);
 			}
 			else {
-				bundlingToCenterLinesOtherViews.add(bundlingToCenter);
+				bundlingToCenterLinesOtherViews.addLine(bundlingToCenter);
 			}
 			
 		}

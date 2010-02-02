@@ -11,6 +11,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GraphDrawingUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
+import org.caleydo.core.view.opengl.util.vislink.VisLinkAnimationStage;
 import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
 
 /**
@@ -48,11 +49,10 @@ public class GLViewCenteredConnectionGraphDrawing
 		
 		Vec3f activeViewBundlingPoint = new Vec3f();
 		vecCenter = calculateCenter(hashViewToCenterPoint.values());
-		ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews = new ArrayList<ArrayList<ArrayList<Vec3f>>>(4);
-		ArrayList<ArrayList<Vec3f>> connectionLinesActiveView = new ArrayList<ArrayList<Vec3f>>();
-		ArrayList<ArrayList<Vec3f>> bundlingToCenterLinesActiveView = new ArrayList<ArrayList<Vec3f>>();
-//		ArrayList<ArrayList<Vec3f>> bundlingToCenterLinesOtherViews = new ArrayList<ArrayList<Vec3f>>();
-		ArrayList<ArrayList<Vec3f>> connectionLinesOtherViews = new ArrayList<ArrayList<Vec3f>>();
+		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>(3);
+		VisLinkAnimationStage connectionLinesActiveView = new VisLinkAnimationStage();
+		VisLinkAnimationStage bundlingToCenterLinesActiveView = new VisLinkAnimationStage();
+		VisLinkAnimationStage connectionLinesOtherViews = new VisLinkAnimationStage(true);
 		if(activeViewID > 0)
 			activeViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(activeViewID), vecCenter);
 		for (Integer iKey : keySet) {
@@ -70,14 +70,14 @@ public class GLViewCenteredConnectionGraphDrawing
 	
 			for(Vec3f currentPoint : depthSort(pointsToDepthSort)) {
 				if(activeViewID != -1 && iKey == activeViewID)
-					connectionLinesActiveView.add( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
+					connectionLinesActiveView.addLine( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
 				else
-					connectionLinesOtherViews.add( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
+					connectionLinesOtherViews.addLine( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ));
 			}
 			
 			//bundlingToCenterLinesOtherViews.add(createControlPoints(activeViewBundlingPoint, vecViewBundlingPoint, vecCenter));
 			if((activeViewID != iKey))
-				bundlingToCenterLinesActiveView.add(createControlPoints(vecViewBundlingPoint, activeViewBundlingPoint, vecCenter));
+				bundlingToCenterLinesActiveView.addLine(createControlPoints(vecViewBundlingPoint, activeViewBundlingPoint, vecCenter));
 
 		}
 		
@@ -190,6 +190,7 @@ public class GLViewCenteredConnectionGraphDrawing
 		}
 		return pointsList;
 	}
+	
 	protected ArrayList<ArrayList<ArrayList<Vec3f>>> calculateOptimalMultiplePoints(
 		ArrayList<ArrayList<Vec3f>> heatMapPoints, int heatMapID,
 		ArrayList<ArrayList<Vec3f>> parCoordsPoints, int parCoordID,
@@ -332,7 +333,6 @@ public class GLViewCenteredConnectionGraphDrawing
 				length += temp.length();
 		}
 		return length;
-		}
-
+	}
 
 }
