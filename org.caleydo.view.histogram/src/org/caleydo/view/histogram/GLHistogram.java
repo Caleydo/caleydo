@@ -4,7 +4,6 @@ import static org.caleydo.view.histogram.HistogramRenderStyle.SIDE_SPACING;
 
 import java.awt.Font;
 import java.awt.Point;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
@@ -19,6 +18,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
@@ -398,7 +398,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 	}
 
 	private void renderCaption(GL gl, float normalizedValue) {
-		DecimalFormat decimalFormat = new DecimalFormat("#####.##");
+	
 
 		if (getParentGLCanvas().getSize().getWidth() < 500)
 			return;
@@ -409,16 +409,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 
 		double correspondingValue = set.getRawForNormalized(normalizedValue);
 
-		if (Math.abs(correspondingValue) > 10000)
-			decimalFormat = new DecimalFormat("0.#E0");
-		else if (Math.abs(correspondingValue) > 100)
-			decimalFormat = new DecimalFormat("#####");
-		else if (Math.abs(correspondingValue) > 10)
-			decimalFormat = new DecimalFormat("#####.#");
-		else
-			decimalFormat = new DecimalFormat("#####.##");
-
-		String text = decimalFormat.format(correspondingValue);
+		String text = Formatter.formatNumber(correspondingValue);
 
 		textRenderer.draw3D(text, SIDE_SPACING + normalizedValue * fRenderWidth
 				+ HistogramRenderStyle.CAPTION_SPACING,

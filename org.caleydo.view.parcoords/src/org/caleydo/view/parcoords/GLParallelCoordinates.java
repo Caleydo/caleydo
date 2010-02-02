@@ -111,9 +111,6 @@ import org.caleydo.view.parcoords.listener.ResetAxisSpacingListener;
 import org.caleydo.view.parcoords.listener.UseRandomSamplingListener;
 import org.eclipse.jface.dialogs.MessageDialog;
 
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
-
 /**
  * This class is responsible for rendering the parallel coordinates
  * 

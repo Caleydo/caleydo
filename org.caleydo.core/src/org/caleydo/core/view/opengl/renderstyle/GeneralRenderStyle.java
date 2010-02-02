@@ -1,7 +1,5 @@
 package org.caleydo.core.view.opengl.renderstyle;
 
-import java.text.DecimalFormat;
-
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.SetMinViewSizeEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -69,8 +67,6 @@ public class GeneralRenderStyle {
 	protected static final float BUTTON_WIDTH = 0.018f;
 
 	protected IViewFrustum viewFrustum;
-
-	private static DecimalFormat decimalFormat;
 
 	protected int minViewWidth;
 	protected int minViewHeight;

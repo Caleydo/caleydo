@@ -50,9 +50,6 @@ import org.caleydo.view.radial.listener.GoBackInHistoryListener;
 import org.caleydo.view.radial.listener.GoForthInHistoryListener;
 import org.caleydo.view.radial.listener.SetMaxDisplayedHierarchyDepthListener;
 
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureCoords;
-
 /**
  * This class is responsible for rendering the radial hierarchy and receiving
  * user events and events from other views.

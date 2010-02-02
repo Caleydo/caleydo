@@ -2,7 +2,6 @@ package org.caleydo.rcp.wizard.project;
 
 import java.io.IOException;
 
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
