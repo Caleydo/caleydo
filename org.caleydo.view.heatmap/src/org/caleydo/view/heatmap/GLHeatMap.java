@@ -262,8 +262,6 @@ public class GLHeatMap extends AStorageBasedView {
 
 	@Override
 	public void display(GL gl) {
-//		processEvents();
-		// clipToFrustum(gl);
 
 		gl.glCallList(iGLDisplayListToCall);
 

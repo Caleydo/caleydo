@@ -410,12 +410,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	@Override
 	public void display(final GL gl) {
-
-		// if(storageVA.size() > 20)
-		// return;
-		//		
-		// processEvents();
-
 		if (bShowSelectionHeatMap) {
 
 			gl.glTranslatef(viewFrustum.getRight()

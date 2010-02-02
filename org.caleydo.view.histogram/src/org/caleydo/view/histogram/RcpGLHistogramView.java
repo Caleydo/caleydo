@@ -1,6 +1,5 @@
 package org.caleydo.view.histogram;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
@@ -13,6 +12,7 @@ import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.conversion.ConversionTools;
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.INewSetHandler;
@@ -173,8 +173,6 @@ public class RcpGLHistogramView extends ARcpGLViewPart
 
 		// FIXME this is all specific to gene expression
 
-		DecimalFormat decimalFormat;
-
 		int iNumberOfMarkerPoints = store
 				.getInt(PreferenceConstants.GENE_EXPRESSION_PREFIX
 						+ PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
@@ -191,17 +189,9 @@ public class RcpGLHistogramView extends ARcpGLViewPart
 			double correspondingValue = GeneralManager.get().getUseCase(
 					dataDomain).getSet().getRawForNormalized(normalizedValue);
 
-			if (Math.abs(correspondingValue) > 10000)
-				decimalFormat = new DecimalFormat("0.#E0");
-			else if (Math.abs(correspondingValue) > 100)
-				decimalFormat = new DecimalFormat("#####");
-			else if (Math.abs(correspondingValue) > 10)
-				decimalFormat = new DecimalFormat("#####.#");
-			else
-				decimalFormat = new DecimalFormat("#####.##");
 
 			labels.get(iCount - 1).setText(
-					decimalFormat.format(correspondingValue));
+					Formatter.formatNumber(correspondingValue));
 			int iColorMarkerPoint = (int) (100 * normalizedValue);
 
 			// Gradient label does not need the 0 point

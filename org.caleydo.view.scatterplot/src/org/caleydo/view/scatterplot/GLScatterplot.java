@@ -137,7 +137,7 @@ public class GLScatterplot extends AStorageBasedView {
 	public static int SELECTED_X_AXIS_2 = 2;
 	public static int SELECTED_Y_AXIS_2 = 3;
 	
-	public int MAX_AXES=10; 
+	public int MAX_AXES=39; 
 
 	// listeners
 

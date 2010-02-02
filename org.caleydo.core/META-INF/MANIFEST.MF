@@ -240,6 +240,7 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
  org.caleydo.core.util.collection,
  org.caleydo.core.util.conversion,
  org.caleydo.core.util.exception,
+ org.caleydo.core.util.format,
  org.caleydo.core.util.mapping;uses:="org.caleydo.core.manager",
  org.caleydo.core.util.mapping.color,
  org.caleydo.core.util.memento;uses:="org.caleydo.core.manager",
