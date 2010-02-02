@@ -88,7 +88,6 @@ public class GeneralRenderStyle {
 	 */
 	public GeneralRenderStyle(IViewFrustum viewFrustum) {
 		this();
-		decimalFormat = new DecimalFormat("#####.#");
 		this.viewFrustum = viewFrustum;
 		minViewWidth = 0;
 		minViewHeight = 0;
@@ -98,9 +97,6 @@ public class GeneralRenderStyle {
 
 	}
 
-	public static DecimalFormat getDecimalFormat() {
-		return decimalFormat;
-	}
 
 	public float getSmallFontScalingFactor() {
 		float fScaling = SMALL_FONT_SCALING_FACTOR;

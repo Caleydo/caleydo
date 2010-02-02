@@ -10,6 +10,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
@@ -84,14 +85,13 @@ public class GLColorMappingBarMiniView
 			// gl.glVertex3f(fXOrigin, fYCurrent, fZOrigin);
 
 			Rectangle2D tempRectangle =
-				textRenderer.getBounds(GeneralRenderStyle.getDecimalFormat().format(markerPoint.getValue()));
+				textRenderer.getBounds(Formatter.formatNumber(markerPoint.getValue()));
 			// float fBackPlaneWidth = (float) tempRectangle.getWidth()
 			// * renderStyle.getSmallFontScalingFactor();
 			float fYOffset = (float) tempRectangle.getHeight() * renderStyle.getSmallFontScalingFactor() / 2;
 
 			String infoToRender =
-				GeneralRenderStyle.getDecimalFormat().format(
-					geneExpressionSet.getRawForNormalized(markerPoint.getValue()));
+				Formatter.formatNumber(geneExpressionSet.getRawForNormalized(markerPoint.getValue()));
 			textRenderer.begin3DRendering();
 			textRenderer.draw3D(infoToRender, fXOrigin + fWidth / 3 + renderStyle.getSmallSpacing(),
 				fYCurrent - fYOffset, fZOrigin + 0.01f, renderStyle.getSmallFontScalingFactor());

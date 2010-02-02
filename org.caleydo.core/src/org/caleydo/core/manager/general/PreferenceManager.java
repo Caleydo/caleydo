@@ -116,10 +116,11 @@ public class PreferenceManager {
 		store.setDefault(PreferenceConstants.HM_NUM_SAMPLES_PER_TEXTURE, 500);
 		store.setDefault(PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP, 30);
 		store.setDefault(PreferenceConstants.HM_LIMIT_REMOTE_TO_CONTEXT, true);
-		store.setDefault(PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT, 1000);
+		store.setDefault(PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT, 400);
 		store.setDefault(PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT, true);
 		// store.setDefault(PreferenceConstants.XP_CLASSIC_STYLE_MODE, false);
 		store.setDefault(PreferenceConstants.DATA_FILTER_LEVEL, "only_context");
+		store.setDefault(PreferenceConstants.PERFORMANCE_LEVEL, "low");
 
 		store.setDefault(PreferenceConstants.VERSION, IGeneralManager.VERSION);
 		store.setDefault(PreferenceConstants.FIRST_START, true);

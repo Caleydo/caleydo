@@ -1,6 +1,5 @@
 package org.caleydo.view.parcoords;
 
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.getDecimalFormat;
 import static org.caleydo.view.parcoords.ParCoordsRenderStyle.ANGLUAR_LINE_WIDTH;
 import static org.caleydo.view.parcoords.ParCoordsRenderStyle.ANGULAR_COLOR;
 import static org.caleydo.view.parcoords.ParCoordsRenderStyle.ANGULAR_POLYGON_COLOR;
@@ -85,6 +84,7 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.usecase.EDataFilterLevel;
 import org.caleydo.core.manager.view.StandardTransformer;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -367,6 +367,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		}
 
 		pickingManager.handlePicking(this, gl);
+
 		handleUnselection();
 		if (bIsDisplayListDirtyLocal) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
@@ -734,7 +735,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			if (detailLevel.compareTo(EDetailLevel.LOW) < 1) {
 				renderPolylines(gl, ESelectionType.MOUSE_OVER);
 				renderPolylines(gl, ESelectionType.SELECTION);
-				// renderPolylines(gl, ESelectionType.DESELECTED);
+				renderPolylines(gl, ESelectionType.DESELECTED);
 				renderPolylines(gl, ESelectionType.NORMAL);
 			} else {
 				// renderPolylines(gl, ESelectionType.DESELECTED);
@@ -938,8 +939,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				if (bRenderingSelection) {
 					String sRawValue;
 					if (currentStorage instanceof INumericalStorage) {
-						sRawValue = getDecimalFormat()
-								.format(
+						sRawValue = 	Formatter.formatNumber(
 										currentStorage.getFloat(
 												EDataRepresentation.RAW,
 												iStorageIndex));
@@ -1084,14 +1084,14 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 											/ renderStyle.getAxisHeight());
 
 							Rectangle2D bounds = textRenderer.getScaledBounds(
-									gl, getDecimalFormat().format(fNumber),
+									gl, 	Formatter.formatNumber(fNumber),
 									renderStyle.getSmallFontScalingFactor(),
 									ParCoordsRenderStyle.MIN_NUMBER_TEXT_SIZE);
 							float fWidth = (float) bounds.getWidth();
 							float fHeightHalf = (float) bounds.getHeight() / 3.0f;
 
 							renderNumber(gl,
-									getDecimalFormat().format(fNumber),
+									Formatter.formatNumber(fNumber),
 									fXPosition - fWidth - AXIS_MARKER_WIDTH,
 									fCurrentHeight - fHeightHalf);
 						} else {
@@ -1733,7 +1733,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// }
 		}
 		if (bIsDraggingActive || bIsAngularBrushingActive) {
-			triggerSelectionUpdate();
+			// triggerSelectionUpdate();
 		}
 
 		// for (int iCurrent : hashDeselectedPolylines.keySet())

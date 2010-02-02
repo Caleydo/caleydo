@@ -23,6 +23,7 @@ public class GeneralPreferencePage
 
 	private RadioGroupFieldEditor dataFilterLevelFE;
 	private IntegerFieldEditor numRandomSamplesFE;
+	private RadioGroupFieldEditor performanceLevelFE;
 
 	public GeneralPreferencePage() {
 		super(GRID);
@@ -64,6 +65,14 @@ public class GeneralPreferencePage
 				"Number of Random Samples:", sampleComposite);
 		numRandomSamplesFE.loadDefault();
 		addField(numRandomSamplesFE);
+
+		// Composite sampleComposite = new Composite(mainComp, SWT.NULL);
+
+//		performanceLevelFE =
+//			new RadioGroupFieldEditor(PreferenceConstants.PERFORMANCE_LEVEL,
+//				"Choose the performance level for your computer", 1, new String[][] { { "High", "high" },
+//						{ "Low", "low" } }, mainComp);
+//		addField(performanceLevelFE);
 
 		// sampleGroup.pack();
 		// getFieldEditorParent().pack();

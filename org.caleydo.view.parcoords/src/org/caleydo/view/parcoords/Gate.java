@@ -1,6 +1,5 @@
 package org.caleydo.view.parcoords;
 
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.getDecimalFormat;
 import static org.caleydo.view.parcoords.ParCoordsRenderStyle.GATE_TIP_HEIGHT;
 import static org.caleydo.view.parcoords.ParCoordsRenderStyle.GATE_WIDTH;
 import static org.caleydo.view.parcoords.ParCoordsRenderStyle.GATE_Z;
@@ -12,6 +11,7 @@ import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -20,6 +20,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
  * Represents a gate for {@link GLParallelCoordinates}.
  * 
  * @author Christian Partl
+ * @author Alexander Lex
  */
 public class Gate extends AGate {
 
@@ -144,7 +145,7 @@ public class Gate extends AGate {
 				upperLeftCorner, 1, 1, 1, 1);
 
 		textRenderer.setColor(1, 1, 1, 1);
-		renderNumber(textRenderer, getDecimalFormat().format(upperValue),
+		renderNumber(textRenderer,	Formatter.formatNumber(upperValue),
 				currentPosition - 5 * GATE_WIDTH, unscaledTop + 0.02f);
 		gl.glPopName();
 
@@ -204,7 +205,7 @@ public class Gate extends AGate {
 				upperLeftCorner, 1, 1, 1, 1);
 
 		textRenderer.setColor(1, 1, 1, 1);
-		renderNumber(textRenderer, getDecimalFormat().format(lowerValue),
+		renderNumber(textRenderer,	Formatter.formatNumber(lowerValue),
 				currentPosition - 5 * GATE_WIDTH, bottom - menuHeight + 0.02f);
 		gl.glPopName();
 
@@ -230,7 +231,10 @@ public class Gate extends AGate {
 			String rawValue, float xOrigin, float yOrigin) {
 
 		textRenderer.begin3DRendering();
-		float scaling = 0.004f;
+		
+		float scaling = 0.0035f;
+		if(rawValue.length() > 4)
+			scaling = 0.003f;
 		textRenderer.draw3D(rawValue, xOrigin, yOrigin,
 				ParCoordsRenderStyle.TEXT_ON_LABEL_Z, scaling);
 		textRenderer.end3DRendering();

@@ -1,6 +1,6 @@
 package org.caleydo.view.parcoords;
 
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.getDecimalFormat;
+
 import static org.caleydo.view.parcoords.ParCoordsRenderStyle.GATE_TIP_HEIGHT;
 import static org.caleydo.view.parcoords.ParCoordsRenderStyle.GATE_WIDTH;
 import static org.caleydo.view.parcoords.ParCoordsRenderStyle.GATE_Z;
@@ -11,6 +11,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -132,7 +133,7 @@ public class NominalGate extends AGate {
 
 		textRenderer.setColor(1, 1, 1, 1);
 		// TODO insert correct text here
-		renderNumber(textRenderer, getDecimalFormat().format(top),
+		renderNumber(textRenderer,	Formatter.formatNumber(top),
 				currentPosition - 5 * GATE_WIDTH, unscaledTop + 0.02f);
 		gl.glPopName();
 
@@ -197,7 +198,7 @@ public class NominalGate extends AGate {
 
 		textRenderer.setColor(1, 1, 1, 1);
 		// TODO: insert correct text here
-		renderNumber(textRenderer, getDecimalFormat().format(bottom),
+		renderNumber(textRenderer,	Formatter.formatNumber(bottom),
 				currentPosition - 5 * GATE_WIDTH, unscaledBottom - menuHeight
 						+ 0.02f);
 		gl.glPopName();
