@@ -34,7 +34,7 @@ public class ExperimentClusterDataEventManager extends ADataEventManager {
 			PartialDisc pdSelected) {
 
 		ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
-		clearSelectionsEvent.setSender(this);
+		clearSelectionsEvent.setSender(radialHierarchy);
 		eventPublisher.triggerEvent(clearSelectionsEvent);
 
 		if (!pdSelected.hasChildren()) {

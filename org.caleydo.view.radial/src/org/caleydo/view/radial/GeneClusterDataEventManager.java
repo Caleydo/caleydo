@@ -21,9 +21,8 @@ import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
  * 
  * @author Christian Partl
  */
-public class GeneClusterDataEventManager extends ADataEventManager
-		implements
-			IClusterNodeEventReceiver {
+public class GeneClusterDataEventManager extends ADataEventManager implements
+		IClusterNodeEventReceiver {
 
 	ClusterNodeSelectionListener clusterNodeSelectionListener;
 
@@ -102,7 +101,9 @@ public class GeneClusterDataEventManager extends ADataEventManager
 			PartialDisc pdSelected) {
 
 		ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
-		clearSelectionsEvent.setSender(this);
+		// here we want to avoid circular events within the radial hierarchy,
+		// therefore we need to set the sender to be the RH
+		clearSelectionsEvent.setSender(radialHierarchy);
 		eventPublisher.triggerEvent(clearSelectionsEvent);
 
 		if (!pdSelected.hasChildren()) {

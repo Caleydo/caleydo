@@ -279,7 +279,7 @@ public class GLHeatMap extends AStorageBasedView {
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
 		if (contentSelectionManager.getNumberOfElements() == 0) {
-			renderSymbol(gl);
+			renderSymbol(gl, EIconTextures.HEAT_MAP_SYMBOL, 2);
 		} else {
 
 			float fSpacing = 0;
@@ -305,42 +305,8 @@ public class GLHeatMap extends AStorageBasedView {
 				gl.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight()
 						+ fSpacing, -vecTranslation.z());
 			}
-
-			// gl.glDisable(GL.GL_STENCIL_TEST);
 		}
 		gl.glEndList();
-	}
-
-	/**
-	 * Render the symbol of the view instead of the view
-	 * 
-	 * @param gl
-	 */
-	private void renderSymbol(GL gl) {
-		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
-		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-		Texture tempTexture = textureManager.getIconTexture(gl,
-				EIconTextures.HEAT_MAP_SYMBOL);
-		tempTexture.enable();
-		tempTexture.bind();
-
-		TextureCoords texCoords = tempTexture.getImageTexCoords();
-
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		gl.glColor4f(1f, 1, 1, 1f);
-		gl.glBegin(GL.GL_POLYGON);
-
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.01f);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fXButtonOrigin, 2 * fYButtonOrigin, 0.01f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fXButtonOrigin * 2, 2 * fYButtonOrigin, 0.01f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fXButtonOrigin * 2, fYButtonOrigin, 0.01f);
-		gl.glEnd();
-		gl.glPopAttrib();
-		tempTexture.disable();
 	}
 
 	public void renderHorizontally(boolean bRenderStorageHorizontally) {

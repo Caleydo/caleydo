@@ -719,7 +719,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		if (contentSelectionManager.getNumberOfElements() == 0) {
 			gl.glTranslatef(-fXDefaultTranslation - fXTranslation,
 					-fYTranslation, 0.0f);
-			renderSymbol(gl);
+			renderSymbol(gl, EIconTextures.PAR_COORDS_SYMBOL, 2);
 			gl.glTranslatef(+fXDefaultTranslation + fXTranslation,
 					fYTranslation, 0.0f);
 		} else {
@@ -1314,38 +1314,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			}
 			iCount++;
 		}
-	}
-
-	/**
-	 * Render the symbol of the view instead of the view
-	 * 
-	 * @param gl
-	 */
-	private void renderSymbol(GL gl) {
-		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
-		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-		Texture tempTexture = textureManager.getIconTexture(gl,
-				EIconTextures.PAR_COORDS_SYMBOL);
-		tempTexture.enable();
-		tempTexture.bind();
-
-		TextureCoords texCoords = tempTexture.getImageTexCoords();
-
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		gl.glColor4f(1f, 1, 1, 1f);
-		gl.glBegin(GL.GL_POLYGON);
-
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.02f);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fXButtonOrigin, 2 * fYButtonOrigin, 0.02f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fXButtonOrigin * 2, 2 * fYButtonOrigin, 0.02f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fXButtonOrigin * 2, fYButtonOrigin, 0.02f);
-		gl.glEnd();
-		gl.glPopAttrib();
-		tempTexture.disable();
 	}
 
 	/**

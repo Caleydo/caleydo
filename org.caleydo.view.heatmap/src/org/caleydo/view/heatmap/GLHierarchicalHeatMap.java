@@ -834,6 +834,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 					}
 				}
 				hasDataWindowChanged = true;
+				setDisplayListDirty();
 			}
 		}
 	}
@@ -857,6 +858,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType) {
 		super.replaceVirtualArray(idCategory, vaType);
 		hasDataWindowChanged = true;
+		setDisplayListDirty();
 	}
 
 	/**
@@ -2851,8 +2853,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		viewFrustum.setLeft(viewFrustum.getLeft() + 0.1f);
 		gl.glTranslatef(0.1f, 0.4f, 0);
 
-		if (hasDataWindowChanged)
-			setEmbeddedHeatMapData();
+
 
 		if (set.getClusteredTreeGenes() != null)
 			bRenderDendrogramBackgroundWhite = true;
@@ -2886,6 +2887,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		viewFrustum.setTop(viewFrustum.getTop() + 0.6f);
 		viewFrustum.setLeft(viewFrustum.getLeft() - 0.1f);
 
+		if (hasDataWindowChanged)
+			setEmbeddedHeatMapData();
+		
 		gl.glEndList();
 	}
 
@@ -3687,7 +3691,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			}
 		}
 		setDisplayListDirty();
-		hasDataWindowChanged = true;
 	}
 
 	/**
@@ -3736,8 +3739,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				iFirstSampleLevel2 = iNumberSample - iSamplesPerHeatmap;
 			}
 		}
-		setDisplayListDirty();
-		hasDataWindowChanged = true;
+//		setDisplayListDirty();
+//		hasDataWindowChanged = true;
 	}
 
 	/**
@@ -4643,6 +4646,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			case CLICKED:
 
 				pickingPointLevel1 = pick.getPickedPoint();
+				hasDataWindowChanged = true;
 				setDisplayListDirty();
 				break;
 			}
@@ -4653,6 +4657,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			switch (pickingMode) {
 			case CLICKED:
 				pickingPointLevel2 = pick.getPickedPoint();
+				hasDataWindowChanged = true;
 				setDisplayListDirty();
 				break;
 			}
