@@ -86,7 +86,6 @@ public class Application
 
 	public static ApplicationWorkbenchAdvisor applicationWorkbenchAdvisor;
 
-	public static boolean bIsWebstart = false;
 	public static boolean bDoExit = false;
 	public static boolean isStartedFromXML = false;
 
@@ -240,10 +239,7 @@ public class Application
 
 		if (sArParam != null) {
 			for (String element : sArParam) {
-				if (element.equals("webstart")) {
-					bIsWebstart = true;
-				}
-				else if (element.equals("no_pathways")) {
+				if (element.equals("no_pathways")) {
 					// bLoadPathwayData = false;
 					bOverrulePrefStoreLoadPathwayData = true;
 				}

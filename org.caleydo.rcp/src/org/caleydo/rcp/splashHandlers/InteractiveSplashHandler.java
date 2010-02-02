@@ -26,9 +26,9 @@ public class InteractiveSplashHandler
 		// Store the shell
 		super.init(splash);
 
-		// // TODO: remove this when webstart splash bug is solved
-		if (Application.bIsWebstart)
-			return;
+//		// // TODO: remove this when webstart splash bug is solved
+//		if (Application.bIsWebstart)
+//			return;
 
 		// Create UI
 		createUI();
@@ -122,13 +122,10 @@ public class InteractiveSplashHandler
 
 	@Override
 	public void dispose() {
-		if (!Application.bIsWebstart && !Application.bDoExit) {
-			// Application.startCaleydoCore();
+		if (!Application.bDoExit) {
 
 			// Start OpenGL rendering
 			GeneralManager.get().getViewGLCanvasManager().startAnimator();
-
 		}
-		// super.dispose();
 	}
 }
