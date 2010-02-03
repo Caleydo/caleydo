@@ -16,7 +16,6 @@ import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.view.IView;
@@ -24,6 +23,7 @@ import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
+import org.caleydo.rcp.Application;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
@@ -82,11 +82,8 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 		String viewType = serializedView.getViewType();
 		dataDomain = serializedView.getDataDomain();
 
-		// FIXME: when restructuring startup procedure
 		if (dataDomain == null) {
-			// FIXME: when finished view plugin reorganization
-			// dataDomain = Application.applicationMode.getDataDomain();
-			dataDomain = EDataDomain.GENETIC_DATA;
+			dataDomain = Application.applicationMode.getDataDomain();
 		}
 
 		IGeneralManager generalManager = GeneralManager.get();

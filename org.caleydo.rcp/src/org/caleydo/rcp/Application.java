@@ -66,9 +66,6 @@ public class Application
 	 */
 	public static final boolean LAZY_VIEW_LOADING = false;
 
-	/** Temporary solution to store data domain based on the gui dialog */
-	public static EDataDomain dataDomain;
-
 	private static String BOOTSTRAP_FILE_GENE_EXPRESSION_MODE =
 		"data/bootstrap/shared/webstart/bootstrap_webstart_gene_expression.xml";
 

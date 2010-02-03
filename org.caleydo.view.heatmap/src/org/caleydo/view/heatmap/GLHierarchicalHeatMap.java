@@ -96,9 +96,12 @@ import com.sun.opengl.util.texture.TextureIO;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class GLHierarchicalHeatMap extends AStorageBasedView implements
-		IGroupsActionHandler, IClusterNodeEventReceiver, INewGroupInfoHandler,
-		IGLRemoteRenderingView {
+public class GLHierarchicalHeatMap extends AStorageBasedView
+		implements
+			IGroupsActionHandler,
+			IClusterNodeEventReceiver,
+			INewGroupInfoHandler,
+			IGLRemoteRenderingView {
 
 	public final static String VIEW_ID = "org.caleydo.view.heatmap.hierarchical";
 
@@ -518,8 +521,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 					float[] fArMappingColor = colorMapper
 							.getColor(fLookupValue);
 
-					float[] fArRgba = { fArMappingColor[0], fArMappingColor[1],
-							fArMappingColor[2], fOpacity };
+					float[] fArRgba = {fArMappingColor[0], fArMappingColor[1],
+							fArMappingColor[2], fOpacity};
 
 					FbTemp.put(fArRgba);
 				}
@@ -594,8 +597,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 					float[] fArMappingColor = colorMapper
 							.getColor(fLookupValue);
 
-					float[] fArRgba = { fArMappingColor[0], fArMappingColor[1],
-							fArMappingColor[2], fOpacity };
+					float[] fArRgba = {fArMappingColor[0], fArMappingColor[1],
+							fArMappingColor[2], fOpacity};
 
 					FbTemp[iTextureCounter].put(fArRgba);
 				}
@@ -858,6 +861,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType) {
 		super.replaceVirtualArray(idCategory, vaType);
 		hasDataWindowChanged = true;
+		iPickedSampleLevel1 = 0;
 		setDisplayListDirty();
 	}
 
@@ -2853,8 +2857,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		viewFrustum.setLeft(viewFrustum.getLeft() + 0.1f);
 		gl.glTranslatef(0.1f, 0.4f, 0);
 
-
-
 		if (set.getClusteredTreeGenes() != null)
 			bRenderDendrogramBackgroundWhite = true;
 		else
@@ -2889,7 +2891,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		if (hasDataWindowChanged)
 			setEmbeddedHeatMapData();
-		
+
 		gl.glEndList();
 	}
 
@@ -3739,8 +3741,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				iFirstSampleLevel2 = iNumberSample - iSamplesPerHeatmap;
 			}
 		}
-//		setDisplayListDirty();
-//		hasDataWindowChanged = true;
+		// setDisplayListDirty();
+		// hasDataWindowChanged = true;
 	}
 
 	/**
@@ -4276,428 +4278,444 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		switch (ePickingType) {
 
-		// handling the groups/clusters of genes
-		case HIER_HEAT_MAP_GENES_GROUP:
-			switch (pickingMode) {
-			case RIGHT_CLICKED:
+			// handling the groups/clusters of genes
+			case HIER_HEAT_MAP_GENES_GROUP :
+				switch (pickingMode) {
+					case RIGHT_CLICKED :
 
-				boolean bEnableInterchange = false;
-				boolean bEnableMerge = false;
-				boolean bEnableExport = true;
-				int iNrSelectedGroups = 0;
+						boolean bEnableInterchange = false;
+						boolean bEnableMerge = false;
+						boolean bEnableExport = true;
+						int iNrSelectedGroups = 0;
 
-				IGroupList tempGroupList = contentVA.getGroupList();
+						IGroupList tempGroupList = contentVA.getGroupList();
 
-				for (Group group : tempGroupList) {
-					if (group.getSelectionType() == ESelectionType.SELECTION)
-						iNrSelectedGroups++;
+						for (Group group : tempGroupList) {
+							if (group.getSelectionType() == ESelectionType.SELECTION)
+								iNrSelectedGroups++;
+						}
+
+						if (iNrSelectedGroups >= 1)
+							bEnableExport = true;
+
+						if (iNrSelectedGroups >= 2) {
+
+							bEnableMerge = true;
+
+							if (iNrSelectedGroups == 2)
+								bEnableInterchange = true;
+						}
+
+						GroupContextMenuItemContainer groupContextMenuItemContainer = new GroupContextMenuItemContainer();
+						groupContextMenuItemContainer
+								.setContextMenuFlags(true, bEnableMerge,
+										bEnableInterchange, bEnableExport);
+						groupContextMenuItemContainer.setGenes(
+								EIDType.EXPRESSION_INDEX, contentVA
+										.getGeneIdsOfGroup(iExternalID));
+
+						contextMenu
+								.addItemContanier(groupContextMenuItemContainer);
+						contextMenu.setLocation(pick.getPickedPoint(),
+								getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+						contextMenu.setMasterGLView(this);
+
+						if (contentVA.getGroupList().get(iExternalID)
+								.getSelectionType() == ESelectionType.SELECTION)
+							break;
+						// else we want to go to clicked as well
+					case CLICKED :
+						contentVA.getGroupList().get(iExternalID)
+								.toggleSelectionType();
+						deactivateAllDraggingCursor();
+						bActivateDraggingGenes = true;
+
+						// ArrayList<Integer> temp =
+						// contentVA.getGeneIdsOfGroup( iExternalID);
+						// for (int i = 0; i < temp.size(); i++) {
+						// System.out.println(idMappingManager.getID(EIDType.EXPRESSION_INDEX,
+						// EIDType.GENE_SYMBOL, temp.get(i)));
+						// }
+
+						// ArrayList<Float> representatives =
+						// contentVA.getGroupList().determineRepresentativeElement(set,
+						// contentVA,
+						// storageVA, iExternalID, true);
+
+						// set node in tree selected
+						// if
+						// (contentVA.getGroupList().get(iExternalID).getClusterNode()
+						// != null) {
+						// contentVA.getGroupList().get(iExternalID).getClusterNode().toggleSelectionType();
+						// }
+
+						// System.out.println(contentVA.getGroupList().get(iExternalID).getIdxExample());
+						// System.out.println(idMappingManager.getID(EIDType.EXPRESSION_INDEX,
+						// EIDType.GENE_SYMBOL,
+						// contentVA.getGroupList().get(iExternalID).getIdxExample()));
+
+						setDisplayListDirty();
+						break;
+
+					case DRAGGED :
+						if (bActivateDraggingGenes == false)
+							return;
+						// drag&drop for groups
+						if (bDragDropGeneGroup == false) {
+							bDragDropGeneGroup = true;
+							bDragDropExpGroup = false;
+							iGeneGroupToDrag = iExternalID;
+						}
+
+						// group splitting
+						// if (bSplitGroupGene == false) {
+						// bSplitGroupGene = true;
+						// bSplitGroupExp = false;
+						// iGroupToSplit = iExternalID;
+						// DraggingPoint = pick.getPickedPoint();
+						// }
+						setDisplayListDirty();
+						break;
+
+					case MOUSE_OVER :
+						// System.out.print("genes group " + iExternalID);
+						// System.out.print(" number elements in group: ");
+						// System.out.println(contentVA.getGroupList().get(iExternalID)
+						// .getNrElements());
+						// setDisplayListDirty();
+						break;
 				}
+				break;
 
-				if (iNrSelectedGroups >= 1)
-					bEnableExport = true;
+			// handling the groups/clusters of experiments
+			case HIER_HEAT_MAP_EXPERIMENTS_GROUP :
+				switch (pickingMode) {
+					case RIGHT_CLICKED :
 
-				if (iNrSelectedGroups >= 2) {
+						boolean bEnableInterchange = false;
+						boolean bEnableMerge = false;
+						boolean bEnableExport = true;
+						int iNrSelectedGroups = 0;
 
-					bEnableMerge = true;
+						IGroupList tempGroupList = storageVA.getGroupList();
 
-					if (iNrSelectedGroups == 2)
-						bEnableInterchange = true;
+						for (Group group : tempGroupList) {
+							if (group.getSelectionType() == ESelectionType.SELECTION)
+								iNrSelectedGroups++;
+						}
+
+						if (iNrSelectedGroups >= 2) {
+
+							bEnableMerge = true;
+
+							if (iNrSelectedGroups == 2)
+								bEnableInterchange = true;
+						}
+						GroupContextMenuItemContainer groupContextMenuItemContainer = new GroupContextMenuItemContainer();
+						groupContextMenuItemContainer.setContextMenuFlags(
+								false, bEnableMerge, bEnableInterchange,
+								bEnableExport);
+
+						contextMenu
+								.addItemContanier(groupContextMenuItemContainer);
+						contextMenu.setLocation(pick.getPickedPoint(),
+								getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+						contextMenu.setMasterGLView(this);
+
+						if (storageVA.getGroupList().get(iExternalID)
+								.getSelectionType() == ESelectionType.SELECTION)
+							break;
+						// else we want to do clicked here as well
+					case CLICKED :
+						storageVA.getGroupList().get(iExternalID)
+								.toggleSelectionType();
+						deactivateAllDraggingCursor();
+						bActivateDraggingExperiments = true;
+
+						// ArrayList<Integer> temp =
+						// storageVA.getGeneIdsOfGroup( iExternalID);
+						// for (int i = 0; i < temp.size(); i++) {
+						// System.out.println(set.get(temp.get(i)).getLabel());
+						// }
+
+						// ArrayList<Float> representatives =
+						// contentVA.getGroupList().determineRepresentativeElement(set,
+						// contentVA,
+						// storageVA, iExternalID, false);
+
+						// set node in tree selected
+						// if
+						// (storageVA.getGroupList().get(iExternalID).getClusterNode()
+						// != null) {
+						// storageVA.getGroupList().get(iExternalID).getClusterNode().toggleSelectionType();
+						// }
+
+						// System.out.println(storageVA.getGroupList().get(iExternalID).getIdxExample());
+						// System.out.println(set.get(storageVA.getGroupList().get(iExternalID).getIdxExample())
+						// .getLabel());
+
+						setDisplayListDirty();
+						break;
+
+					case DRAGGED :
+						if (bActivateDraggingExperiments == false)
+							return;
+						// drag&drop for groups
+						if (bDragDropExpGroup == false) {
+							bDragDropExpGroup = true;
+							bDragDropGeneGroup = false;
+							iExpGroupToDrag = iExternalID;
+						}
+
+						// group splitting
+						// if (bSplitGroupExp == false) {
+						// bSplitGroupExp = true;
+						// bSplitGroupGene = false;
+						// iGroupToSplit = iExternalID;
+						// DraggingPoint = pick.getPickedPoint();
+						// }
+						setDisplayListDirty();
+						break;
 				}
-
-				GroupContextMenuItemContainer groupContextMenuItemContainer = new GroupContextMenuItemContainer();
-				groupContextMenuItemContainer.setContextMenuFlags(true,
-						bEnableMerge, bEnableInterchange, bEnableExport);
-				groupContextMenuItemContainer.setGenes(
-						EIDType.EXPRESSION_INDEX, contentVA
-								.getGeneIdsOfGroup(iExternalID));
-
-				contextMenu.addItemContanier(groupContextMenuItemContainer);
-				contextMenu.setLocation(pick.getPickedPoint(),
-						getParentGLCanvas().getWidth(), getParentGLCanvas()
-								.getHeight());
-				contextMenu.setMasterGLView(this);
-
-				if (contentVA.getGroupList().get(iExternalID)
-						.getSelectionType() == ESelectionType.SELECTION)
-					break;
-				// else we want to go to clicked as well
-			case CLICKED:
-				contentVA.getGroupList().get(iExternalID).toggleSelectionType();
-				deactivateAllDraggingCursor();
-				bActivateDraggingGenes = true;
-
-				// ArrayList<Integer> temp =
-				// contentVA.getGeneIdsOfGroup( iExternalID);
-				// for (int i = 0; i < temp.size(); i++) {
-				// System.out.println(idMappingManager.getID(EIDType.EXPRESSION_INDEX,
-				// EIDType.GENE_SYMBOL, temp.get(i)));
-				// }
-
-				// ArrayList<Float> representatives =
-				// contentVA.getGroupList().determineRepresentativeElement(set,
-				// contentVA,
-				// storageVA, iExternalID, true);
-
-				// set node in tree selected
-				// if
-				// (contentVA.getGroupList().get(iExternalID).getClusterNode()
-				// != null) {
-				// contentVA.getGroupList().get(iExternalID).getClusterNode().toggleSelectionType();
-				// }
-
-				// System.out.println(contentVA.getGroupList().get(iExternalID).getIdxExample());
-				// System.out.println(idMappingManager.getID(EIDType.EXPRESSION_INDEX,
-				// EIDType.GENE_SYMBOL,
-				// contentVA.getGroupList().get(iExternalID).getIdxExample()));
-
-				setDisplayListDirty();
 				break;
+			// handle click on button for setting EHM in focus
+			case HIER_HEAT_MAP_INFOCUS_SELECTION :
+				switch (pickingMode) {
 
-			case DRAGGED:
-				if (bActivateDraggingGenes == false)
-					return;
-				// drag&drop for groups
-				if (bDragDropGeneGroup == false) {
-					bDragDropGeneGroup = true;
-					bDragDropExpGroup = false;
-					iGeneGroupToDrag = iExternalID;
+					case CLICKED :
+
+						bIsHeatmapInFocus = bIsHeatmapInFocus == true
+								? false
+								: true;
+						glHeatMapView.setDisplayListDirty();
+						glGeneDendrogramView.setDisplayListDirty();
+						glExperimentDendrogramView.setRedrawDendrogram();
+						setDisplayListDirty();
+						break;
 				}
-
-				// group splitting
-				// if (bSplitGroupGene == false) {
-				// bSplitGroupGene = true;
-				// bSplitGroupExp = false;
-				// iGroupToSplit = iExternalID;
-				// DraggingPoint = pick.getPickedPoint();
-				// }
-				setDisplayListDirty();
 				break;
 
-			case MOUSE_OVER:
-				// System.out.print("genes group " + iExternalID);
-				// System.out.print(" number elements in group: ");
-				// System.out.println(contentVA.getGroupList().get(iExternalID)
-				// .getNrElements());
-				// setDisplayListDirty();
-				break;
-			}
-			break;
+			// handle click on button for setting experiment dendrogram active
+			case HIER_HEAT_MAP_ACTIVATE_STORAGE_DENDROGRAM :
+				switch (pickingMode) {
 
-		// handling the groups/clusters of experiments
-		case HIER_HEAT_MAP_EXPERIMENTS_GROUP:
-			switch (pickingMode) {
-			case RIGHT_CLICKED:
+					case CLICKED :
+						bExperimentDendrogramActive = bExperimentDendrogramActive == true
+								? false
+								: true;
 
-				boolean bEnableInterchange = false;
-				boolean bEnableMerge = false;
-				boolean bEnableExport = true;
-				int iNrSelectedGroups = 0;
+						if (bExperimentDendrogramActive == true) {
+							float highDendro = glExperimentDendrogramView
+									.getViewFrustum().getHeight();
 
-				IGroupList tempGroupList = storageVA.getGroupList();
+							if (highDendro > 0.5 && highDendro <= 1.5f)
+								renderStyle
+										.setHeightExperimentDendrogram(highDendro);
 
-				for (Group group : tempGroupList) {
-					if (group.getSelectionType() == ESelectionType.SELECTION)
-						iNrSelectedGroups++;
+							bExperimentDendrogramRenderCut = false;
+
+						} else {
+							float fPosCut = glExperimentDendrogramView
+									.getPositionOfCut();
+							float highDendro = glExperimentDendrogramView
+									.getViewFrustum().getHeight();
+							renderStyle
+									.setHeightExperimentDendrogram(highDendro
+											- fPosCut + 0.1f);
+							bExperimentDendrogramRenderCut = true;
+						}
+
+						glExperimentDendrogramView
+								.setRenderUntilCut(bGeneDendrogramRenderCut);
+						glExperimentDendrogramView.setDisplayListDirty();
+						glGeneDendrogramView.setRedrawDendrogram();
+						glHeatMapView.setDisplayListDirty();
+						setDisplayListDirty();
+						break;
 				}
+				break;
 
-				if (iNrSelectedGroups >= 2) {
+			// handle click on button for setting gene dendrogram active
+			case HIER_HEAT_MAP_ACTIVATE_HORIZONTAL_DENDROGRAM :
+				switch (pickingMode) {
 
-					bEnableMerge = true;
+					case CLICKED :
+						bGeneDendrogramActive = bGeneDendrogramActive == true
+								? false
+								: true;
 
-					if (iNrSelectedGroups == 2)
-						bEnableInterchange = true;
+						if (bGeneDendrogramActive == true) {
+							float widthDendro = glGeneDendrogramView
+									.getViewFrustum().getWidth();
+
+							if (widthDendro > 0.5 && widthDendro <= 1.7f)
+								renderStyle
+										.setWidthGeneDendrogram(widthDendro - 0.1f);
+
+							bGeneDendrogramRenderCut = false;
+						} else {
+							float temp = glGeneDendrogramView
+									.getPositionOfCut();
+							renderStyle.setWidthGeneDendrogram(temp);
+							bGeneDendrogramRenderCut = true;
+						}
+
+						glGeneDendrogramView
+								.setRenderUntilCut(bGeneDendrogramRenderCut);
+						glGeneDendrogramView.setDisplayListDirty();
+						glExperimentDendrogramView.setRedrawDendrogram();
+						glHeatMapView.setDisplayListDirty();
+						setDisplayListDirty();
+						break;
 				}
-				GroupContextMenuItemContainer groupContextMenuItemContainer = new GroupContextMenuItemContainer();
-				groupContextMenuItemContainer.setContextMenuFlags(false,
-						bEnableMerge, bEnableInterchange, bEnableExport);
-
-				contextMenu.addItemContanier(groupContextMenuItemContainer);
-				contextMenu.setLocation(pick.getPickedPoint(),
-						getParentGLCanvas().getWidth(), getParentGLCanvas()
-								.getHeight());
-				contextMenu.setMasterGLView(this);
-
-				if (storageVA.getGroupList().get(iExternalID)
-						.getSelectionType() == ESelectionType.SELECTION)
-					break;
-				// else we want to do clicked here as well
-			case CLICKED:
-				storageVA.getGroupList().get(iExternalID).toggleSelectionType();
-				deactivateAllDraggingCursor();
-				bActivateDraggingExperiments = true;
-
-				// ArrayList<Integer> temp =
-				// storageVA.getGeneIdsOfGroup( iExternalID);
-				// for (int i = 0; i < temp.size(); i++) {
-				// System.out.println(set.get(temp.get(i)).getLabel());
-				// }
-
-				// ArrayList<Float> representatives =
-				// contentVA.getGroupList().determineRepresentativeElement(set,
-				// contentVA,
-				// storageVA, iExternalID, false);
-
-				// set node in tree selected
-				// if
-				// (storageVA.getGroupList().get(iExternalID).getClusterNode()
-				// != null) {
-				// storageVA.getGroupList().get(iExternalID).getClusterNode().toggleSelectionType();
-				// }
-
-				// System.out.println(storageVA.getGroupList().get(iExternalID).getIdxExample());
-				// System.out.println(set.get(storageVA.getGroupList().get(iExternalID).getIdxExample())
-				// .getLabel());
-
-				setDisplayListDirty();
 				break;
 
-			case DRAGGED:
-				if (bActivateDraggingExperiments == false)
-					return;
-				// drag&drop for groups
-				if (bDragDropExpGroup == false) {
-					bDragDropExpGroup = true;
-					bDragDropGeneGroup = false;
-					iExpGroupToDrag = iExternalID;
+			// handle dragging cursor for first and last element of block in
+			// level 1
+			case HIER_HEAT_MAP_CURSOR_LEVEL1 :
+				switch (pickingMode) {
+					case CLICKED :
+						deactivateAllDraggingCursor();
+						bActivateDraggingLevel1 = true;
+						break;
+
+					case DRAGGED :
+						if (bDisableCursorDraggingLevel1)
+							return;
+						if (bActivateDraggingLevel1 == false)
+							return;
+						bIsDraggingActiveLevel1 = true;
+						bDisableBlockDraggingLevel1 = true;
+						iDraggedCursorLevel1 = iExternalID;
+						setDisplayListDirty();
+						break;
 				}
-
-				// group splitting
-				// if (bSplitGroupExp == false) {
-				// bSplitGroupExp = true;
-				// bSplitGroupGene = false;
-				// iGroupToSplit = iExternalID;
-				// DraggingPoint = pick.getPickedPoint();
-				// }
-				setDisplayListDirty();
 				break;
-			}
-			break;
-		// handle click on button for setting EHM in focus
-		case HIER_HEAT_MAP_INFOCUS_SELECTION:
-			switch (pickingMode) {
 
-			case CLICKED:
+			// handle dragging cursor for whole block in level 1
+			case HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL1 :
+				switch (pickingMode) {
+					case CLICKED :
+						deactivateAllDraggingCursor();
+						bActivateDraggingLevel1 = true;
+						break;
 
-				bIsHeatmapInFocus = bIsHeatmapInFocus == true ? false : true;
-				glHeatMapView.setDisplayListDirty();
-				glGeneDendrogramView.setDisplayListDirty();
-				glExperimentDendrogramView.setRedrawDendrogram();
-				setDisplayListDirty();
-				break;
-			}
-			break;
-
-		// handle click on button for setting experiment dendrogram active
-		case HIER_HEAT_MAP_ACTIVATE_STORAGE_DENDROGRAM:
-			switch (pickingMode) {
-
-			case CLICKED:
-				bExperimentDendrogramActive = bExperimentDendrogramActive == true ? false
-						: true;
-
-				if (bExperimentDendrogramActive == true) {
-					float highDendro = glExperimentDendrogramView
-							.getViewFrustum().getHeight();
-
-					if (highDendro > 0.5 && highDendro <= 1.5f)
-						renderStyle.setHeightExperimentDendrogram(highDendro);
-
-					bExperimentDendrogramRenderCut = false;
-
-				} else {
-					float fPosCut = glExperimentDendrogramView
-							.getPositionOfCut();
-					float highDendro = glExperimentDendrogramView
-							.getViewFrustum().getHeight();
-					renderStyle.setHeightExperimentDendrogram(highDendro
-							- fPosCut + 0.1f);
-					bExperimentDendrogramRenderCut = true;
+					case DRAGGED :
+						if (bDisableBlockDraggingLevel1)
+							return;
+						if (bActivateDraggingLevel1 == false)
+							return;
+						bIsDraggingWholeBlockLevel1 = true;
+						bDisableCursorDraggingLevel1 = true;
+						iDraggedCursorLevel1 = iExternalID;
+						setDisplayListDirty();
+						break;
 				}
-
-				glExperimentDendrogramView
-						.setRenderUntilCut(bGeneDendrogramRenderCut);
-				glExperimentDendrogramView.setDisplayListDirty();
-				glGeneDendrogramView.setRedrawDendrogram();
-				glHeatMapView.setDisplayListDirty();
-				setDisplayListDirty();
 				break;
-			}
-			break;
 
-		// handle click on button for setting gene dendrogram active
-		case HIER_HEAT_MAP_ACTIVATE_HORIZONTAL_DENDROGRAM:
-			switch (pickingMode) {
+			// handle dragging cursor for first and last element of block in
+			// level 2
+			case HIER_HEAT_MAP_CURSOR_LEVEL2 :
+				switch (pickingMode) {
+					case CLICKED :
+						deactivateAllDraggingCursor();
+						bActivateDraggingLevel2 = true;
+						break;
 
-			case CLICKED:
-				bGeneDendrogramActive = bGeneDendrogramActive == true ? false
-						: true;
-
-				if (bGeneDendrogramActive == true) {
-					float widthDendro = glGeneDendrogramView.getViewFrustum()
-							.getWidth();
-
-					if (widthDendro > 0.5 && widthDendro <= 1.7f)
-						renderStyle.setWidthGeneDendrogram(widthDendro - 0.1f);
-
-					bGeneDendrogramRenderCut = false;
-				} else {
-					float temp = glGeneDendrogramView.getPositionOfCut();
-					renderStyle.setWidthGeneDendrogram(temp);
-					bGeneDendrogramRenderCut = true;
+					case DRAGGED :
+						if (bDisableCursorDraggingLevel2)
+							return;
+						if (bActivateDraggingLevel2 == false)
+							return;
+						bIsDraggingActiveLevel2 = true;
+						bDisableBlockDraggingLevel2 = true;
+						iDraggedCursorLevel2 = iExternalID;
+						setDisplayListDirty();
+						break;
 				}
-
-				glGeneDendrogramView
-						.setRenderUntilCut(bGeneDendrogramRenderCut);
-				glGeneDendrogramView.setDisplayListDirty();
-				glExperimentDendrogramView.setRedrawDendrogram();
-				glHeatMapView.setDisplayListDirty();
-				setDisplayListDirty();
-				break;
-			}
-			break;
-
-		// handle dragging cursor for first and last element of block in level 1
-		case HIER_HEAT_MAP_CURSOR_LEVEL1:
-			switch (pickingMode) {
-			case CLICKED:
-				deactivateAllDraggingCursor();
-				bActivateDraggingLevel1 = true;
 				break;
 
-			case DRAGGED:
-				if (bDisableCursorDraggingLevel1)
-					return;
-				if (bActivateDraggingLevel1 == false)
-					return;
-				bIsDraggingActiveLevel1 = true;
-				bDisableBlockDraggingLevel1 = true;
-				iDraggedCursorLevel1 = iExternalID;
-				setDisplayListDirty();
-				break;
-			}
-			break;
+			// handle dragging cursor for whole block in level 2
+			case HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL2 :
+				switch (pickingMode) {
+					case CLICKED :
+						deactivateAllDraggingCursor();
+						bActivateDraggingLevel2 = true;
+						break;
 
-		// handle dragging cursor for whole block in level 1
-		case HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL1:
-			switch (pickingMode) {
-			case CLICKED:
-				deactivateAllDraggingCursor();
-				bActivateDraggingLevel1 = true;
-				break;
-
-			case DRAGGED:
-				if (bDisableBlockDraggingLevel1)
-					return;
-				if (bActivateDraggingLevel1 == false)
-					return;
-				bIsDraggingWholeBlockLevel1 = true;
-				bDisableCursorDraggingLevel1 = true;
-				iDraggedCursorLevel1 = iExternalID;
-				setDisplayListDirty();
-				break;
-			}
-			break;
-
-		// handle dragging cursor for first and last element of block in level 2
-		case HIER_HEAT_MAP_CURSOR_LEVEL2:
-			switch (pickingMode) {
-			case CLICKED:
-				deactivateAllDraggingCursor();
-				bActivateDraggingLevel2 = true;
+					case DRAGGED :
+						if (bDisableBlockDraggingLevel2)
+							return;
+						if (bActivateDraggingLevel2 == false)
+							return;
+						bIsDraggingWholeBlockLevel2 = true;
+						bDisableCursorDraggingLevel2 = true;
+						iDraggedCursorLevel2 = iExternalID;
+						setDisplayListDirty();
+						break;
+				}
 				break;
 
-			case DRAGGED:
-				if (bDisableCursorDraggingLevel2)
-					return;
-				if (bActivateDraggingLevel2 == false)
-					return;
-				bIsDraggingActiveLevel2 = true;
-				bDisableBlockDraggingLevel2 = true;
-				iDraggedCursorLevel2 = iExternalID;
-				setDisplayListDirty();
-				break;
-			}
-			break;
+			// handle click on level 1 (overview bar)
+			case HIER_HEAT_MAP_TEXTURE_SELECTION :
+				switch (pickingMode) {
+					case CLICKED :
 
-		// handle dragging cursor for whole block in level 2
-		case HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL2:
-			switch (pickingMode) {
-			case CLICKED:
-				deactivateAllDraggingCursor();
-				bActivateDraggingLevel2 = true;
+						pickingPointLevel1 = pick.getPickedPoint();
+						hasDataWindowChanged = true;
+						setDisplayListDirty();
+						break;
+				}
 				break;
 
-			case DRAGGED:
-				if (bDisableBlockDraggingLevel2)
-					return;
-				if (bActivateDraggingLevel2 == false)
-					return;
-				bIsDraggingWholeBlockLevel2 = true;
-				bDisableCursorDraggingLevel2 = true;
-				iDraggedCursorLevel2 = iExternalID;
-				setDisplayListDirty();
+			// handle click on level 2
+			case HIER_HEAT_MAP_FIELD_SELECTION :
+				switch (pickingMode) {
+					case CLICKED :
+						pickingPointLevel2 = pick.getPickedPoint();
+						hasDataWindowChanged = true;
+						setDisplayListDirty();
+						break;
+				}
 				break;
-			}
-			break;
 
-		// handle click on level 1 (overview bar)
-		case HIER_HEAT_MAP_TEXTURE_SELECTION:
-			switch (pickingMode) {
-			case CLICKED:
-
-				pickingPointLevel1 = pick.getPickedPoint();
-				hasDataWindowChanged = true;
-				setDisplayListDirty();
+			// handle click on level 3 (EHM)
+			case HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION :
+				switch (pickingMode) {
+					case RIGHT_CLICKED :
+						contextMenu.setLocation(pick.getPickedPoint(),
+								getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+						contextMenu.setMasterGLView(this);
+						break;
+				}
 				break;
-			}
-			break;
 
-		// handle click on level 2
-		case HIER_HEAT_MAP_FIELD_SELECTION:
-			switch (pickingMode) {
-			case CLICKED:
-				pickingPointLevel2 = pick.getPickedPoint();
-				hasDataWindowChanged = true;
-				setDisplayListDirty();
+			// handle click on gene dendrogram
+			case HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION :
+				switch (pickingMode) {
+					case RIGHT_CLICKED :
+						contextMenu.setLocation(pick.getPickedPoint(),
+								getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+						contextMenu.setMasterGLView(this);
+						break;
+				}
 				break;
-			}
-			break;
 
-		// handle click on level 3 (EHM)
-		case HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION:
-			switch (pickingMode) {
-			case RIGHT_CLICKED:
-				contextMenu.setLocation(pick.getPickedPoint(),
-						getParentGLCanvas().getWidth(), getParentGLCanvas()
-								.getHeight());
-				contextMenu.setMasterGLView(this);
+			// handle click on gene dendrogram
+			case HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION :
+				switch (pickingMode) {
+					case RIGHT_CLICKED :
+						contextMenu.setLocation(pick.getPickedPoint(),
+								getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+						contextMenu.setMasterGLView(this);
+						break;
+				}
 				break;
-			}
-			break;
-
-		// handle click on gene dendrogram
-		case HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION:
-			switch (pickingMode) {
-			case RIGHT_CLICKED:
-				contextMenu.setLocation(pick.getPickedPoint(),
-						getParentGLCanvas().getWidth(), getParentGLCanvas()
-								.getHeight());
-				contextMenu.setMasterGLView(this);
-				break;
-			}
-			break;
-
-		// handle click on gene dendrogram
-		case HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION:
-			switch (pickingMode) {
-			case RIGHT_CLICKED:
-				contextMenu.setLocation(pick.getPickedPoint(),
-						getParentGLCanvas().getWidth(), getParentGLCanvas()
-								.getHeight());
-				contextMenu.setMasterGLView(this);
-				break;
-			}
-			break;
 		}
 		// setDisplayListDirty();
 	}
@@ -5315,7 +5333,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		if (bGeneDendrogram) {
 			if (set.getClusteredTreeGenes() == null)
 				return;
-			bGeneDendrogramActive = bGeneDendrogramActive == true ? false
+			bGeneDendrogramActive = bGeneDendrogramActive == true
+					? false
 					: true;
 
 			if (bGeneDendrogramActive == true) {
@@ -5343,7 +5362,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		} else {
 			if (set.getClusteredTreeExps() == null)
 				return;
-			bExperimentDendrogramActive = bExperimentDendrogramActive == true ? false
+			bExperimentDendrogramActive = bExperimentDendrogramActive == true
+					? false
 					: true;
 
 			if (bExperimentDendrogramActive == true) {

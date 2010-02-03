@@ -1,4 +1,4 @@
-package org.caleydo.core.view.swt.tabular;
+package org.caleydo.rcp.dialog;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;

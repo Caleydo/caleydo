@@ -1,28 +1,24 @@
-package org.caleydo.rcp.view.rcp;
+package org.caleydo.view.tabular;
 
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.swt.tabular.SerializedTabularDataView;
-import org.caleydo.core.view.swt.tabular.TabularDataViewRep;
+import org.caleydo.rcp.Application;
+import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpTabularDataView extends CaleydoRCPViewPart {
 
-	public static final String ID = SerializedTabularDataView.GUI_ID;
-
-	private TabularDataViewRep tabularDataView;
+	private TabularDataView tabularDataView;
 
 	@Override
 	public void createPartControl(Composite parent) {
-		tabularDataView = (TabularDataViewRep) GeneralManager.get()
+		tabularDataView = (TabularDataView) GeneralManager.get()
 				.getViewGLCanvasManager().createView(
-						"org.caleydo.view.tabular", -1, "Tabular Data Viewer");
+						"org.caleydo.view.tabular", -1, "Tabular Data View");
 
-		// tabularDataView.setInputFile(GeneralManager.get().getGUIBridge()
-		// .getFileNameCurrentDataSet());
-
-		IUseCase useCase = GeneralManager.get().getUseCase(dataDomain);
+		IUseCase useCase = GeneralManager.get().getUseCase(Application.applicationMode.getDataDomain());
 		tabularDataView.setSet(useCase.getSet());
+		tabularDataView.setUseCase(useCase);
 		tabularDataView.initViewRCP(parent);
 		tabularDataView.drawView();
 
@@ -43,7 +39,7 @@ public class RcpTabularDataView extends CaleydoRCPViewPart {
 		super.dispose();
 	}
 
-	public TabularDataViewRep getTabularDataView() {
+	public TabularDataView getTabularDataView() {
 		return tabularDataView;
 	}
 }

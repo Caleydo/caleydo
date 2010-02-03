@@ -33,6 +33,7 @@ Export-Package: org.caleydo.rcp;
  org.caleydo.rcp.command.handler.help;uses:="org.eclipse.core.commands",
  org.caleydo.rcp.command.handler.view;uses:="org.eclipse.core.commands",
  org.caleydo.rcp.core.bridge;uses:="org.caleydo.core.bridge.gui,org.eclipse.swt.widgets",
+ org.caleydo.rcp.dialog,
  org.caleydo.rcp.dialog.cluster,
  org.caleydo.rcp.dialog.file,
  org.caleydo.rcp.image,

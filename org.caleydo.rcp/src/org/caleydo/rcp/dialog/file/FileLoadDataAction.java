@@ -15,8 +15,8 @@ import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
-import org.caleydo.core.view.swt.tabular.LabelEditorDialog;
 import org.caleydo.rcp.Application;
+import org.caleydo.rcp.dialog.LabelEditorDialog;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -118,10 +118,10 @@ public class FileLoadDataAction
 	private void createGUI() {
 		int numGridCols = 5;
 
-		if (Application.dataDomain != EDataDomain.GENETIC_DATA)
+		if (Application.applicationMode.getDataDomain() != EDataDomain.GENETIC_DATA)
 			numGridCols = 4;
 
-		loadDataParameters.setDataDomain(Application.dataDomain);
+		loadDataParameters.setDataDomain(Application.applicationMode.getDataDomain());
 
 		composite = new Composite(parentComposite, SWT.NONE);
 		GridLayout layout = new GridLayout(numGridCols, false);

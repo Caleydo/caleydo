@@ -2,13 +2,13 @@ package org.caleydo.rcp.dialog.cluster;
 
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
 import org.caleydo.core.util.clusterer.ETreeClustererAlgo;
 import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.rcp.Application;
 import org.caleydo.rcp.progress.ClusteringProgressBar;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -87,10 +87,8 @@ public class StartClusteringAction
 
 		this.parentComposite = parentComposite;
 
-		// Determine content label dynamically
-		// FIXME this is not generic
 		sArTypeOptions[0] =
-			GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getContentLabel(true, false);
+			GeneralManager.get().getUseCase(Application.applicationMode.getDataDomain()).getContentLabel(true, false);
 	}
 
 	@Override
@@ -540,17 +538,6 @@ public class StartClusteringAction
 			new ClusteringProgressBar(clusterState.getClustererAlgo(), clusterState.getClustererType());
 		progressBar.run();
 
-	}
-
-	/**
-	 * For testing purposes
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-
-		StartClusteringDialog dialog = new StartClusteringDialog(new Shell());
-		dialog.open();
 	}
 
 	@Override

@@ -261,8 +261,8 @@ public abstract class AUseCase
 	@Override
 	public void startClustering(ClusterState clusterState) {
 
-		if (!(this instanceof GeneticUseCase))
-			return;
+//		if (!(this instanceof GeneticUseCase))
+//			return;
 
 		clusterState.setContentVaId(mapVAIDs.get(clusterState.getContentVAType()));
 		clusterState.setStorageVaId(mapVAIDs.get(EVAType.STORAGE));

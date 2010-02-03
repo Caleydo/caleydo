@@ -1,4 +1,4 @@
-package org.caleydo.core.view.swt.tabular;
+package org.caleydo.view.tabular;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -44,6 +44,7 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
+import org.caleydo.rcp.dialog.LabelEditorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableCursor;
 import org.eclipse.swt.custom.TableEditor;
@@ -73,11 +74,13 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author Marc Streit
  */
-public class TabularDataViewRep
+public class TabularDataView
 	extends ASWTView
 	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ISelectionCommandHandler,
 	IViewCommandHandler, IView, ISWTView {
 
+	public final static String VIEW_ID = "org.caleydo.view.tabular";
+	
 	/**
 	 * This manager is responsible for the content in the storages (the indices)
 	 */
@@ -138,10 +141,12 @@ public class TabularDataViewRep
 	/**
 	 * Constructor.
 	 */
-	public TabularDataViewRep(final int iParentContainerId, final String sLabel) {
+	public TabularDataView(final int iParentContainerId, final String sLabel) {
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
 			EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 
+		this.viewType = VIEW_ID;
+		
 		contentSelectionManager = new SelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
 		storageSelectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
@@ -172,9 +177,8 @@ public class TabularDataViewRep
 			return;
 		}
 
-		useCase = GeneralManager.get().getUseCase(dataDomain);
+		dataDomain = useCase.getDataDomain();
 		contentVA = useCase.getVA(contentVAType);
-
 		storageVA = useCase.getVA(storageVAType);
 
 		contentSelectionManager.resetSelectionManager();

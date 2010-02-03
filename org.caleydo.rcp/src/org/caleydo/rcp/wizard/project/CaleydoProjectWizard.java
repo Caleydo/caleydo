@@ -94,7 +94,7 @@ public class CaleydoProjectWizard
 				Application.bDeleteRestoredWorkbenchState = true;
 			}
 			else if (appMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA) {
-				Application.dataDomain = EDataDomain.GENETIC_DATA;
+
 				useCase = new GeneticUseCase();
 				((GeneticUseCase) useCase).setOrganism(EOrganism.HOMO_SAPIENS);
 
@@ -111,7 +111,7 @@ public class CaleydoProjectWizard
 					sNewPathwayDataSources);
 			}
 			else if (appMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA) {
-				Application.dataDomain = EDataDomain.GENETIC_DATA;
+
 				useCase = new GeneticUseCase();
 				((GeneticUseCase) useCase).setOrganism(page.getOrganism());
 
@@ -133,7 +133,6 @@ public class CaleydoProjectWizard
 			}
 			else if (appMode == EApplicationMode.UNSPECIFIED_NEW_DATA) {
 				useCase = new UnspecifiedUseCase();
-				Application.dataDomain = EDataDomain.UNSPECIFIED;
 				Application.applicationMode = EApplicationMode.UNSPECIFIED_NEW_DATA;
 
 			}

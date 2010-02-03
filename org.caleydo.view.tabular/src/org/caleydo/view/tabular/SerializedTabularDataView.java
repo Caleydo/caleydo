@@ -1,4 +1,4 @@
-package org.caleydo.core.view.swt.tabular;
+package org.caleydo.view.tabular;
 
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;

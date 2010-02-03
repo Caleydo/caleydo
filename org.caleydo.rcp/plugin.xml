@@ -31,7 +31,7 @@
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.view.rcp.RcpCollabView"
             id="org.caleydo.rcp.views.swt.CollabView"
-            name="Testing">
+            name="Collaboration">
       </view>
       <view
             allowMultiple="false"

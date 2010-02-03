@@ -38,6 +38,7 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.rcp.Application;
 import org.caleydo.rcp.util.info.listener.InfoAreaUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -50,18 +51,14 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Info area that is located in the side-bar. It shows the current view and the
- * current selection (in a tree).
+ * Info area that is located in the side-bar. It shows the current view and the current selection (in a tree).
  * 
  * @author Marc Streit
  * @author Alexander Lex
  */
 public class InfoArea
-		implements
-			ISelectionUpdateHandler,
-			IVirtualArrayUpdateHandler,
-			ISelectionCommandHandler,
-			IViewCommandHandler {
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ISelectionCommandHandler,
+	IViewCommandHandler {
 
 	IGeneralManager generalManager = null;
 	IEventPublisher eventPublisher = null;
@@ -161,13 +158,13 @@ public class InfoArea
 		contentTree = new TreeItem(selectionTree, SWT.NONE);
 		contentTree.setExpanded(true);
 		contentTree.setData(-1);
+		contentTree.setText(GeneralManager.get().getUseCase(Application.applicationMode.getDataDomain())
+			.getContentLabel(true, true));
+
 		experimentTree = new TreeItem(selectionTree, SWT.NONE);
 		experimentTree.setExpanded(true);
 		experimentTree.setData(-1);
 		experimentTree.setText("Experiments");
-		// TODO we can not do this here without knowing which use case is active
-		// contentTree.setText(GeneralManager.get().getUseCase().getContentLabel(true,
-		// true));
 
 		// pathwayTree = new TreeItem(selectionTree, SWT.NONE);
 		// pathwayTree.setText("Pathways");
@@ -178,8 +175,8 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleSelectionUpdate(final ISelectionDelta selectionDelta,
-			final boolean scrollToSelection, final String info) {
+	public void handleSelectionUpdate(final ISelectionDelta selectionDelta, final boolean scrollToSelection,
+		final String info) {
 
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
@@ -194,10 +191,8 @@ public class InfoArea
 
 						// Flush old genes from this selection type
 						for (TreeItem item : contentTree.getItems()) {
-							if (item.getData("selection_type") == selectionItem
-									.getSelectionType()
-									|| ((Integer) item.getData()) == selectionItem
-											.getPrimaryID()) {
+							if (item.getData("selection_type") == selectionItem.getSelectionType()
+								|| ((Integer) item.getData()) == selectionItem.getPrimaryID()) {
 
 								item.dispose();
 							}
@@ -218,46 +213,26 @@ public class InfoArea
 						// }
 						// }
 						if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
-								|| selectionItem.getSelectionType() == ESelectionType.SELECTION) {
+							|| selectionItem.getSelectionType() == ESelectionType.SELECTION) {
 
 							Color color;
 							float[] fArColor = null;
 
 							if (selectionItem.getSelectionType() == ESelectionType.SELECTION) {
 								fArColor = GeneralRenderStyle.SELECTED_COLOR;
-							} else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER) {
+							}
+							else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER) {
 								fArColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 							}
 
-							color = new Color(parentComposite.getDisplay(),
-									(int) (fArColor[0] * 255),
-									(int) (fArColor[1] * 255),
-									(int) (fArColor[2] * 255));
+							color =
+								new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
+									(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
 
 							String sContentName = "";
-							if (generalManager
-									.getUseCase(EDataDomain.GENETIC_DATA) != null) {
+							if (generalManager.getUseCase(EDataDomain.GENETIC_DATA) != null) {
 
-								// Integer iRefSeq =
-								// idMappingManager.getID(EIDType.EXPRESSION_INDEX,
-								// EIDType.REFSEQ_MRNA_INT,
-								// selectionItem.getPrimaryID());
-								// String sRefSeqID =
-								// idMappingManager.getID(EIDType.REFSEQ_MRNA_INT,
-								// EIDType.REFSEQ_MRNA,
-								// iExpressionIndex);
-								//
-								// Integer iDavidID =
-								// idMappingManager.getID(EIDType.REFSEQ_MRNA_INT,
-								// EIDType.DAVID,
-								// iExpressionIndex);
-								//
-								// sContentName =
-								// idMappingManager.getID(EIDType.DAVID,
-								// EIDType.GENE_SYMBOL, iDavidID);
-
-								int iExpressionIndex = selectionItem
-										.getPrimaryID();
+								int iExpressionIndex = selectionItem.getPrimaryID();
 
 								// FIXME: Due to new mapping system, a mapping
 								// involving expression index can
@@ -267,13 +242,11 @@ public class InfoArea
 								// expression data.
 								// Possibly a different handling of the Set is
 								// required.
-								Set<String> setRefSeqIDs = idMappingManager
-										.getIDAsSet(EIDType.EXPRESSION_INDEX,
-												EIDType.REFSEQ_MRNA,
-												iExpressionIndex);
+								Set<String> setRefSeqIDs =
+									idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX,
+										EIDType.REFSEQ_MRNA, iExpressionIndex);
 								String sRefSeqID = null;
-								if ((setRefSeqIDs != null && !setRefSeqIDs
-										.isEmpty())) {
+								if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
 									sRefSeqID = (String) setRefSeqIDs.toArray()[0];
 								}
 
@@ -285,15 +258,12 @@ public class InfoArea
 								// expression data.
 								// Possibly a different handling of the Set is
 								// required.
-								Set<String> setGeneSymbols = idMappingManager
-										.getIDAsSet(EIDType.EXPRESSION_INDEX,
-												EIDType.GENE_SYMBOL,
-												iExpressionIndex);
+								Set<String> setGeneSymbols =
+									idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX,
+										EIDType.GENE_SYMBOL, iExpressionIndex);
 
-								if ((setGeneSymbols != null && !setGeneSymbols
-										.isEmpty())) {
-									sContentName = (String) setGeneSymbols
-											.toArray()[0];
+								if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
+									sContentName = (String) setGeneSymbols.toArray()[0];
 								}
 
 								// FIXME horizontal toolbar style support
@@ -308,11 +278,11 @@ public class InfoArea
 								// else {
 								sContentName = sContentName + "\n" + sRefSeqID;
 								// }
-							} else {
-								sContentName = idMappingManager.getID(
-										EIDType.EXPRESSION_INDEX,
-										EIDType.UNSPECIFIED, selectionItem
-												.getPrimaryID());
+							}
+							else {
+								sContentName =
+									idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED,
+										selectionItem.getPrimaryID());
 							}
 
 							if (sContentName == null) {
@@ -324,13 +294,13 @@ public class InfoArea
 							item.setText(sContentName);
 							item.setBackground(color);
 							item.setData(selectionItem.getPrimaryID());
-							item.setData("selection_type", selectionItem
-									.getSelectionType());
+							item.setData("selection_type", selectionItem.getSelectionType());
 
 							contentTree.setExpanded(true);
 						}
 					}
-				} else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
+				}
+				else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 					if (info != null) {
 						lblViewInfoContent.setText(info);
 					}
@@ -338,15 +308,13 @@ public class InfoArea
 					for (SelectionDeltaItem selectionItem : selectionDelta) {
 
 						if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
-								|| selectionItem.getSelectionType() == ESelectionType.SELECTION) {
+							|| selectionItem.getSelectionType() == ESelectionType.SELECTION) {
 
 							// Flush old experiments from this selection type
 							for (TreeItem item : experimentTree.getItems()) {
 								if (item.getData() == null
-										|| item.getData("selection_type") == selectionItem
-												.getSelectionType()
-										|| ((Integer) item.getData()) == selectionItem
-												.getPrimaryID()) {
+									|| item.getData("selection_type") == selectionItem.getSelectionType()
+									|| ((Integer) item.getData()) == selectionItem.getPrimaryID()) {
 									item.dispose();
 
 								}
@@ -357,21 +325,20 @@ public class InfoArea
 
 							if (selectionItem.getSelectionType() == ESelectionType.SELECTION) {
 								fArColor = GeneralRenderStyle.SELECTED_COLOR;
-							} else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER) {
+							}
+							else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER) {
 								fArColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 							}
 
-							color = new Color(parentComposite.getDisplay(),
-									(int) (fArColor[0] * 255),
-									(int) (fArColor[1] * 255),
-									(int) (fArColor[2] * 255));
+							color =
+								new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
+									(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
 
 							// Retrieve current set
 							// FIXME: This solution is not robust if new data
 							// are loaded -> REDESIGN
 
-							IUseCase useCase = GeneralManager.get().getUseCase(
-									EDataDomain.GENETIC_DATA);
+							IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
 							if (useCase != null) {
 
 								ISet set = useCase.getSet();
@@ -385,21 +352,18 @@ public class InfoArea
 								// // }
 								// }
 
-								TreeItem item = new TreeItem(experimentTree,
-										SWT.NONE);
+								TreeItem item = new TreeItem(experimentTree, SWT.NONE);
 
 								try {
-									item.setText(set.get(
-											selectionItem.getPrimaryID())
-											.getLabel());
-								} catch (IndexOutOfBoundsException e) {
+									item.setText(set.get(selectionItem.getPrimaryID()).getLabel());
+								}
+								catch (IndexOutOfBoundsException e) {
 									item.setText("ERROR");
 								}
 								item.setData(selectionItem.getPrimaryID());
 								// item.setData("mapping_type",
 								// EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX.toString());
-								item.setData("selection_type", selectionItem
-										.getSelectionType());
+								item.setData("selection_type", selectionItem.getSelectionType());
 								item.setBackground(color);
 
 								experimentTree.setExpanded(true);
@@ -437,8 +401,7 @@ public class InfoArea
 	// }
 
 	@Override
-	public void handleVirtualArrayUpdate(final IVirtualArrayDelta delta,
-			final String info) {
+	public void handleVirtualArrayUpdate(final IVirtualArrayDelta delta, final String info) {
 		if (delta.getIDType() != EIDType.REFSEQ_MRNA_INT)
 			return;
 
@@ -467,8 +430,7 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleSelectionCommand(EIDCategory category,
-			final SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(EIDCategory category, final SelectionCommand selectionCommand) {
 
 		if (parentComposite.isDisposed())
 			return;
@@ -478,15 +440,14 @@ public class InfoArea
 				ESelectionCommandType cmdType;
 
 				cmdType = selectionCommand.getSelectionCommandType();
-				if (cmdType == ESelectionCommandType.RESET
-						|| cmdType == ESelectionCommandType.CLEAR_ALL) {
+				if (cmdType == ESelectionCommandType.RESET || cmdType == ESelectionCommandType.CLEAR_ALL) {
 					selectionTree.removeAll();
-				} else if (cmdType == ESelectionCommandType.CLEAR) {
+				}
+				else if (cmdType == ESelectionCommandType.CLEAR) {
 					// Flush old items that become
 					// deselected/normal
 					for (TreeItem tmpItem : selectionTree.getItems()) {
-						if (tmpItem.getData("selection_type") == selectionCommand
-								.getSelectionType()) {
+						if (tmpItem.getData("selection_type") == selectionCommand.getSelectionType()) {
 							tmpItem.dispose();
 						}
 					}
@@ -517,8 +478,7 @@ public class InfoArea
 	}
 
 	/**
-	 * handling method for updates about the info text displayed in the this
-	 * info-area
+	 * handling method for updates about the info text displayed in the this info-area
 	 * 
 	 * @param info
 	 *            short-info of the sender to display
@@ -532,24 +492,21 @@ public class InfoArea
 	}
 
 	/**
-	 * Registers the listeners for this view to the event system. To release the
-	 * allocated resources unregisterEventListeners() has to be called.
+	 * Registers the listeners for this view to the event system. To release the allocated resources
+	 * unregisterEventListeners() has to be called.
 	 */
 	public void registerEventListeners() {
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class,
-				selectionUpdateListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
-		eventPublisher.addListener(VirtualArrayUpdateEvent.class,
-				virtualArrayUpdateListener);
+		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		eventPublisher.addListener(SelectionCommandEvent.class,
-				selectionCommandListener);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
@@ -557,18 +514,16 @@ public class InfoArea
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class,
-				clearSelectionsListener);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
 		infoAreaUpdateListener = new InfoAreaUpdateListener();
 		infoAreaUpdateListener.setHandler(this);
-		eventPublisher.addListener(InfoAreaUpdateEvent.class,
-				infoAreaUpdateListener);
+		eventPublisher.addListener(InfoAreaUpdateEvent.class, infoAreaUpdateListener);
 	}
 
 	/**
-	 * Unregisters the listeners for this view from the event system. To release
-	 * the allocated resources unregisterEventListenrs() has to be called.
+	 * Unregisters the listeners for this view from the event system. To release the allocated resources
+	 * unregisterEventListenrs() has to be called.
 	 */
 	public void unregisterEventListeners() {
 		if (selectionUpdateListener != null) {
@@ -602,9 +557,8 @@ public class InfoArea
 	}
 
 	@Override
-	public synchronized void queueEvent(
-			final AEventListener<? extends IListenerOwner> listener,
-			final AEvent event) {
+	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
+		final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				listener.handleEvent(event);
