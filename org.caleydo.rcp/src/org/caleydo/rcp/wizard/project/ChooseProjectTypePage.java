@@ -1,10 +1,14 @@
 package org.caleydo.rcp.wizard.project;
 
+import java.io.File;
 import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.util.Date;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
+import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
@@ -513,28 +517,51 @@ public class ChooseProjectTypePage
 		composite.setLayout(new GridLayout(2, false));
 
 		Button recentProject = new Button(composite, SWT.RADIO);
-		recentProject.setText("Open project from last session");
-		recentProject.setSelection(true);
 		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gd.horizontalSpan = 2;
 		recentProject.setLayoutData(gd);
-
+		
 		Button loadProject = new Button(composite, SWT.RADIO);
 		loadProject.setText("Specify project-file to load");
 		gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gd.horizontalSpan = 2;
 		loadProject.setLayoutData(gd);
-
+		
 		final Button chooseProjectFile = new Button(composite, SWT.CENTER);
 		chooseProjectFile.setEnabled(false);
 		chooseProjectFile.setText("Choose File");
-
+		
 		projectFileName = new Text(composite, SWT.BORDER);
 		projectFileName.setEnabled(false);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		projectFileName.setLayoutData(gd);
 		gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+		
+		String lastModifiedDate = "";
+		String text = "Open project from last session";
+		File recentProjectFile =
+			new File(ProjectSaver.RECENT_PROJECT_DIR_NAME + ProjectSaver.SET_DATA_FILE_NAME);
+		if (recentProjectFile.exists()) {
+			Date date = new Date(recentProjectFile.lastModified());
+			DateFormat dataformat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
+			lastModifiedDate = dataformat.format(date);
+			recentProject.setSelection(true);
+			projectLoadType = EProjectLoadType.RECENT;
+		}
+		else {
+			recentProject.setEnabled(false);
+			loadProject.setSelection(true);
 
+			projectLoadType = EProjectLoadType.SPECIFIED;
+			projectFileName.setEnabled(true);
+			chooseProjectFile.setEnabled(true);
+		}
+		
+		if (!lastModifiedDate.equals("")) {
+			text = text+ " (" +lastModifiedDate + ")"; 
+		}
+		
+		recentProject.setText(text);
 		recentProject.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

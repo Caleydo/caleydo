@@ -23,7 +23,6 @@ import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
-import org.caleydo.rcp.Application;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
@@ -83,7 +82,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 		dataDomain = serializedView.getDataDomain();
 
 		if (dataDomain == null) {
-			dataDomain = Application.applicationMode.getDataDomain();
+			dataDomain = generalManager.getMasterUseCase().getDataDomain();
 		}
 
 		IGeneralManager generalManager = GeneralManager.get();

@@ -52,6 +52,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.usecase.EDataFilterLevel;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.AffinityClusterer;
@@ -133,10 +134,9 @@ public class GLScatterplot extends AStorageBasedView {
 	public static int SELECTED_Y_AXIS = 1;
 	public static int SELECTED_X_AXIS_2 = 2;
 	public static int SELECTED_Y_AXIS_2 = 3;
-	
+
 	public static int MOUSEOVER_X_AXIS = -1;
 	public static int MOUSEOVER_Y_AXIS = -1;
-	
 
 	public int MAX_AXES = 39;
 
@@ -169,11 +169,11 @@ public class GLScatterplot extends AStorageBasedView {
 
 	// Textures
 	private int iSamplesPerTexture = 0; // TODO not used yet, remove completly
-										// probably
+	// probably
 	private final static int MAX_SAMPLES_PER_TEXTURE = 2000; // TODO not used
-																// yet, remove
-																// completly
-																// probably
+	// yet, remove
+	// completly
+	// probably
 	// array of textures for holding the data samples
 
 	private ArrayList<Texture> AlFullTextures = new ArrayList<Texture>();
@@ -248,11 +248,11 @@ public class GLScatterplot extends AStorageBasedView {
 		int debugsize1 = AlSelectionTextures.size();
 		int debugsize2 = AlFullTextures.size();
 
-		float[] fArRgbaWhite = { 1.0f, 1.0f, 1.0f, 1f }; // OPACY
+		float[] fArRgbaWhite = {1.0f, 1.0f, 1.0f, 1f}; // OPACY
 		float fOpacity = 1f;
 
-		float[] fSelectionColor = { 1.0f, 0.1f, 0.5f }; // Selection Color
-		float[] fBlackColor = { 0.0f, 0.0f, 0.0f }; // Black Color
+		float[] fSelectionColor = {1.0f, 0.1f, 0.5f}; // Selection Color
+		float[] fBlackColor = {0.0f, 0.0f, 0.0f}; // Black Color
 
 		int debugsize = 0;
 
@@ -265,7 +265,7 @@ public class GLScatterplot extends AStorageBasedView {
 
 		if (bIsSelection) {
 			fSelectionFaktor = 2.0f;
-			fArRgbaWhite = new float[] { 1.0f, 1.0f, 1.0f, 0f }; // OPACY
+			fArRgbaWhite = new float[]{1.0f, 1.0f, 1.0f, 0f}; // OPACY
 			selectionSet.clear();
 			selectionSet = elementSelectionManager
 					.getElements(ESelectionType.SELECTION);
@@ -327,19 +327,20 @@ public class GLScatterplot extends AStorageBasedView {
 				for (Integer i = 0; i < TextureSize; i++) {
 					FbTemp.put(fArRgbaWhite);
 				}
-				//if (iAxisX<=iAxisY) Hmmm, needs debugging
-				if (true)
-				{
+				// if (iAxisX<=iAxisY) Hmmm, needs debugging
+				if (true) {
 					for (Integer iContentIndex : selectionSet) {
-		
+
 						int current_SELECTED_X_AXIS = iAxisX;
 						int current_SELECTED_Y_AXIS = iAxisY;
-		
-						xnormalized = set.get(current_SELECTED_X_AXIS).getFloat(
-								EDataRepresentation.NORMALIZED, iContentIndex);
-						ynormalized = set.get(current_SELECTED_Y_AXIS).getFloat(
-								EDataRepresentation.NORMALIZED, iContentIndex);
-		
+
+						xnormalized = set.get(current_SELECTED_X_AXIS)
+								.getFloat(EDataRepresentation.NORMALIZED,
+										iContentIndex);
+						ynormalized = set.get(current_SELECTED_Y_AXIS)
+								.getFloat(EDataRepresentation.NORMALIZED,
+										iContentIndex);
+
 						ix = (int) Math.floor(xnormalized
 								* (double) (iTextureWidth - 1));
 						iy = ix
@@ -347,9 +348,9 @@ public class GLScatterplot extends AStorageBasedView {
 								* 4
 								+ (int) Math.floor(ynormalized
 										* (double) (iTextureHeight - 1)) * 4;
-		
+
 						float[] fArMappingColor = null;
-		
+
 						if (bIsSelection)
 							fArMappingColor = fSelectionColor;
 						else if (bUseColor)
@@ -357,21 +358,22 @@ public class GLScatterplot extends AStorageBasedView {
 									xnormalized, ynormalized));
 						else
 							fArMappingColor = fBlackColor;
-		
+
 						// float[] fArRgba = { fArMappingColor[0],
 						// fArMappingColor[1],
 						// fArMappingColor[2], fOpacity };
-		
+
 						if (iy >= TextureSize * 4 - 4) {
-							iy = 0; // TODO : DIRTY HACK CAUSE INIDICES ARE WRONG!
+							iy = 0; // TODO : DIRTY HACK CAUSE INIDICES ARE
+									// WRONG!
 						}
 						FbTemp.put(iy, fArMappingColor[0]);
 						FbTemp.put(iy + 1, fArMappingColor[1]);
 						FbTemp.put(iy + 2, fArMappingColor[2]);
 						FbTemp.put(iy + 3, fOpacity);
-		
+
 					}
-		
+
 					FbTemp.rewind();
 				}
 				TextureData texData = new TextureData(
@@ -400,11 +402,11 @@ public class GLScatterplot extends AStorageBasedView {
 		float fWidth;
 		fHeight = viewFrustum.getHeight();
 		fWidth = viewFrustum.getWidth();
-		
-		int iAddTextures=1;
-		
-		if (MOUSEOVER_X_AXIS>=0 && MOUSEOVER_Y_AXIS>0)
-			iAddTextures=4;
+
+		int iAddTextures = 1;
+
+		if (MOUSEOVER_X_AXIS >= 0 && MOUSEOVER_Y_AXIS > 0)
+			iAddTextures = 4;
 
 		float fStepY = fHeight / (float) (NR_TEXTURESY + iAddTextures);
 		float fStepX = fWidth / (float) (NR_TEXTURESX + iAddTextures);
@@ -421,23 +423,23 @@ public class GLScatterplot extends AStorageBasedView {
 
 		float z = 1f;
 
-		float[] fArMappingColor = GeneralRenderStyle.SELECTED_COLOR; 
-			//new float[] { 1.0f, 0.1f, 0.5f }; // Selection
-																	// Color
-				
+		float[] fArMappingColor = GeneralRenderStyle.SELECTED_COLOR;
+		// new float[] { 1.0f, 0.1f, 0.5f }; // Selection
+		// Color
+
 		DrawRectangularSelection(gl, fxOffset - fEdge, fyOffset - fEdge, z, // Z-Value
 				fStepX + 2 * fEdge, fStepY + 2 * fEdge, fArMappingColor);
-		if (MOUSEOVER_X_AXIS<0 && MOUSEOVER_Y_AXIS<0)
+		if (MOUSEOVER_X_AXIS < 0 && MOUSEOVER_Y_AXIS < 0)
 			return;
-		
+
 		fyOffset = fHeight;
 		fxOffset = fSpacerX;
 		fyOffset -= (fStepY + fSpacerY) * (float) (MOUSEOVER_Y_AXIS + 1);
 		fxOffset += (fStepX + fSpacerX) * (float) (MOUSEOVER_X_AXIS);
 		fArMappingColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
-		
+
 		DrawRectangularSelection(gl, fxOffset - fEdge, fyOffset - fEdge, z, // Z-Value
-		fStepX + 2 * fEdge, fStepY + 2 * fEdge, fArMappingColor);
+				fStepX + 2 * fEdge, fStepY + 2 * fEdge, fArMappingColor);
 
 	}
 
@@ -449,17 +451,14 @@ public class GLScatterplot extends AStorageBasedView {
 
 		int debugsize1 = AlSelectionTextures.size();
 		int debugsize2 = AlFullTextures.size();
-		
-		int iAddTextures=1;
-		
-		if (MOUSEOVER_X_AXIS>=0 && MOUSEOVER_Y_AXIS>=0)
-			iAddTextures=4;
-			
+
+		int iAddTextures = 1;
+
+		if (MOUSEOVER_X_AXIS >= 0 && MOUSEOVER_Y_AXIS >= 0)
+			iAddTextures = 4;
 
 		float fStepY = fHeight / (float) (NR_TEXTURESY + iAddTextures);
 		float fStepX = fWidth / (float) (NR_TEXTURESX + iAddTextures);
-		
-		
 
 		float fSpacerX = fStepX / (float) (NR_TEXTURESX + iAddTextures);
 		float fSpacerY = fStepY / (float) (NR_TEXTURESX + iAddTextures);
@@ -477,8 +476,8 @@ public class GLScatterplot extends AStorageBasedView {
 
 				// fStep = fHeightElem * iAlNumberSamples.get(iNrTextures - i -
 				// 1);
-				if (j==MOUSEOVER_Y_AXIS)
-					fyOffset -= (fStepY + fSpacerY)*iAddTextures;
+				if (j == MOUSEOVER_Y_AXIS)
+					fyOffset -= (fStepY + fSpacerY) * iAddTextures;
 				else
 					fyOffset -= fStepY + fSpacerY;
 
@@ -554,17 +553,17 @@ public class GLScatterplot extends AStorageBasedView {
 			}
 			// fyOffset =0;
 			fyOffset = fHeight;
-		//	if (i==MOUSEOVER_X_AXIS)
-		//		fxOffset += (fStepX + fSpacerX)*iAddTextures;
-		//	else
-				fxOffset += fStepX + fSpacerX;
+			// if (i==MOUSEOVER_X_AXIS)
+			// fxOffset += (fStepX + fSpacerX)*iAddTextures;
+			// else
+			fxOffset += fStepX + fSpacerX;
 		}
 	}
 
 	private void renderHistogram(GL gl, float x, float y, float lenght,
 			float height, int selected_Axis) {
 
-		float[] fArMappingColor = new float[] { 0.0f, 0.0f, 0.0f }; // black
+		float[] fArMappingColor = new float[]{0.0f, 0.0f, 0.0f}; // black
 
 		DrawRectangularSelection(gl, x, y, 0.f, // Z-Value
 				lenght, height, fArMappingColor);
@@ -722,7 +721,7 @@ public class GLScatterplot extends AStorageBasedView {
 						.convertWindowCoordinatesToWorldCoordinates(gl,
 								pDragEndPoint.x, pDragEndPoint.y);
 
-				float[] fArMappingColor = new float[] { 0.0f, 1.0f, 0.0f }; // green
+				float[] fArMappingColor = new float[]{0.0f, 1.0f, 0.0f}; // green
 
 				gl.glNewList(iGLDisplayListIndexBrush, GL.GL_COMPILE);
 				DrawRectangularSelection(
@@ -862,7 +861,7 @@ public class GLScatterplot extends AStorageBasedView {
 			if (bRenderMainView)
 				buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
 			if (bUpdateSelection)// && bRenderMatrix) TODO : Evaluate
-									// Performance here
+				// Performance here
 				initTextures(true);
 			bUpdateSelection = false;
 		}
@@ -1094,7 +1093,7 @@ public class GLScatterplot extends AStorageBasedView {
 		float x_2 = 0.0f;
 		float y_2 = 0.0f;
 		EScatterPointType tmpPointStyle = POINTSTYLE;
-		float[] fArMappingColor = { 0.0f, 0.0f, 0.0f }; // (black);
+		float[] fArMappingColor = {0.0f, 0.0f, 0.0f}; // (black);
 
 		if (detailLevel != EDetailLevel.HIGH) {
 			bRender2Axis = false;
@@ -1130,7 +1129,7 @@ public class GLScatterplot extends AStorageBasedView {
 						ynormalized));
 			EScatterPointType tmpPoint = POINTSTYLE;
 			if (bRender2Axis) {
-				fArMappingColor = new float[] { 1.0f, 0.0f, 0.0f };
+				fArMappingColor = new float[]{1.0f, 0.0f, 0.0f};
 				POINTSTYLE = EScatterPointType.POINT;
 			}
 
@@ -1145,7 +1144,7 @@ public class GLScatterplot extends AStorageBasedView {
 						EDataRepresentation.NORMALIZED, iContentIndex);
 				x_2 = xnormalized * XScale;
 				y_2 = ynormalized * YScale;
-				fArMappingColor = new float[] { 0.0f, 1.0f, 0.0f };
+				fArMappingColor = new float[]{0.0f, 1.0f, 0.0f};
 
 				DrawPointPrimitive(gl, x_2, y_2, 0.0f, // z
 						fArMappingColor, 1.0f,// fOpacity
@@ -1240,12 +1239,18 @@ public class GLScatterplot extends AStorageBasedView {
 		gl.glTranslatef(x, y, z);
 
 		String sLabel = "";
+		String genLabel = "";
+		if (useCase.getDataDomain() == EDataDomain.GENETIC_DATA) {
+			genLabel 		 = idMappingManager.getID(EIDType.EXPRESSION_INDEX,
+					EIDType.GENE_SYMBOL, iContentIndex);
+		
+			if (genLabel.equals(""))
+				genLabel = "Unkonwn Gene";				
+		}
+		else if (useCase.getDataDomain() == EDataDomain.UNSPECIFIED) {
+			genLabel = idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED, iContentIndex);
+		}
 
-		String genLabel = idMappingManager.getID(EIDType.EXPRESSION_INDEX,
-				EIDType.GENE_SYMBOL, iContentIndex);
-
-		if (genLabel.equals(""))
-			genLabel = "Unkonwn Gene";
 
 		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION,
 				iContentIndex))
@@ -1298,7 +1303,6 @@ public class GLScatterplot extends AStorageBasedView {
 		gl.glTranslatef(-x, -y, -z);
 
 	}
-
 	private boolean IsInSelectionRectangle(float x, float y) {
 		float XMin = Math.min(fRectangleDragStartPoint[0],
 				fRectangleDragEndPoint[0]);
@@ -1373,7 +1377,7 @@ public class GLScatterplot extends AStorageBasedView {
 		float y = 0.0f;
 		float z = 1.0f;
 
-		float[] fArMappingColor = new float[] { 1.0f, 0.1f, 0.5f };
+		float[] fArMappingColor = new float[]{1.0f, 0.1f, 0.5f};
 
 		for (int iContentIndex : selectionSet) {
 			float xnormalized = set.get(SELECTED_X_AXIS).getFloat(
@@ -1406,60 +1410,60 @@ public class GLScatterplot extends AStorageBasedView {
 
 		gl.glPushName(iPickingID);
 		switch (type) {
-		case BOX: {
-			gl.glBegin(GL.GL_POLYGON);
-			gl.glVertex3f(x - halfPoint, y - halfPoint, z);
-			gl.glVertex3f(x - halfPoint, y + halfPoint, z);
-			gl.glVertex3f(x + halfPoint, y + halfPoint, z);
-			gl.glVertex3f(x + halfPoint, y - halfPoint, z);
-			gl.glEnd();
-			break;
-		}
-		case POINT: {
-			gl.glPointSize(fullPoint * 50.0f);
-			gl.glBegin(GL.GL_POINTS);
-			gl.glVertex3f(x, y, z);
-			gl.glEnd();
-			break;
-		}
-		case CROSS: {
-			gl.glLineWidth(1.0f);
-			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(x - halfPoint, y - halfPoint, z);
-			gl.glVertex3f(x + halfPoint, y + halfPoint, z);
-			gl.glVertex3f(x - halfPoint, y + halfPoint, z);
-			gl.glVertex3f(x + halfPoint, y - halfPoint, z);
-			gl.glEnd();
-		}
-			break;
-		case CIRCLE: {
-			float angle;
-			float PI = (float) Math.PI;
-
-			gl.glLineWidth(1.0f);
-			gl.glBegin(GL.GL_LINE_LOOP);
-			for (int i = 0; i < 10; i++) {
-				angle = (i * 2 * PI) / 10;
-				gl.glVertex3f(x + (float) (Math.cos(angle) * fullPoint), y
-						+ (float) (Math.sin(angle) * fullPoint), z);
+			case BOX : {
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glVertex3f(x - halfPoint, y - halfPoint, z);
+				gl.glVertex3f(x - halfPoint, y + halfPoint, z);
+				gl.glVertex3f(x + halfPoint, y + halfPoint, z);
+				gl.glVertex3f(x + halfPoint, y - halfPoint, z);
+				gl.glEnd();
+				break;
 			}
-			gl.glEnd();
-		}
-			break;
-		case DISK: {
-			float angle;
-			float PI = (float) Math.PI;
-
-			gl.glBegin(GL.GL_POLYGON);
-			for (int i = 0; i < 10; i++) {
-				angle = (i * 2 * PI) / 10;
-				gl.glVertex3f(x + (float) (Math.cos(angle) * fullPoint), y
-						+ (float) (Math.sin(angle) * fullPoint), z);
+			case POINT : {
+				gl.glPointSize(fullPoint * 50.0f);
+				gl.glBegin(GL.GL_POINTS);
+				gl.glVertex3f(x, y, z);
+				gl.glEnd();
+				break;
 			}
-			gl.glEnd();
-		}
-			break;
-		default:
+			case CROSS : {
+				gl.glLineWidth(1.0f);
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(x - halfPoint, y - halfPoint, z);
+				gl.glVertex3f(x + halfPoint, y + halfPoint, z);
+				gl.glVertex3f(x - halfPoint, y + halfPoint, z);
+				gl.glVertex3f(x + halfPoint, y - halfPoint, z);
+				gl.glEnd();
+			}
+				break;
+			case CIRCLE : {
+				float angle;
+				float PI = (float) Math.PI;
+
+				gl.glLineWidth(1.0f);
+				gl.glBegin(GL.GL_LINE_LOOP);
+				for (int i = 0; i < 10; i++) {
+					angle = (i * 2 * PI) / 10;
+					gl.glVertex3f(x + (float) (Math.cos(angle) * fullPoint), y
+							+ (float) (Math.sin(angle) * fullPoint), z);
+				}
+				gl.glEnd();
+			}
+				break;
+			case DISK : {
+				float angle;
+				float PI = (float) Math.PI;
+
+				gl.glBegin(GL.GL_POLYGON);
+				for (int i = 0; i < 10; i++) {
+					angle = (i * 2 * PI) / 10;
+					gl.glVertex3f(x + (float) (Math.cos(angle) * fullPoint), y
+							+ (float) (Math.sin(angle) * fullPoint), z);
+				}
+				gl.glEnd();
+			}
+				break;
+			default :
 
 		}
 		gl.glPopName();
@@ -1484,22 +1488,22 @@ public class GLScatterplot extends AStorageBasedView {
 	public void togglePointType() {
 
 		switch (POINTSTYLE) {
-		case POINT:
-			POINTSTYLE = EScatterPointType.BOX;
-			break;
-		case BOX:
-			POINTSTYLE = EScatterPointType.CIRCLE;
-			break;
-		case CIRCLE:
-			POINTSTYLE = EScatterPointType.DISK;
-			break;
-		case DISK:
-			POINTSTYLE = EScatterPointType.CROSS;
-			break;
-		case CROSS:
-			POINTSTYLE = EScatterPointType.POINT;
-			break;
-		default:
+			case POINT :
+				POINTSTYLE = EScatterPointType.BOX;
+				break;
+			case BOX :
+				POINTSTYLE = EScatterPointType.CIRCLE;
+				break;
+			case CIRCLE :
+				POINTSTYLE = EScatterPointType.DISK;
+				break;
+			case DISK :
+				POINTSTYLE = EScatterPointType.CROSS;
+				break;
+			case CROSS :
+				POINTSTYLE = EScatterPointType.POINT;
+				break;
+			default :
 		}
 		bUpdateMainView = true;
 		setDisplayListDirty();
@@ -1687,71 +1691,67 @@ public class GLScatterplot extends AStorageBasedView {
 
 		ESelectionType eSelectionType;
 		switch (ePickingType) {
-		case SCATTER_POINT_SELECTION:		
-			iCurrentMouseOverElement = iExternalID;
-			switch (pickingMode) 
-			{
-	
-				case CLICKED:
-					eSelectionType = ESelectionType.SELECTION;
-					break;
-				case MOUSE_OVER:
-					eSelectionType = ESelectionType.MOUSE_OVER;
-					break;
-				case RIGHT_CLICKED:
-					eSelectionType = ESelectionType.DESELECTED;
-					break;
-				case DRAGGED:
-					eSelectionType = ESelectionType.SELECTION;
-					// break;
-				default:
-					return;
-				
-			}
-			createContentSelection(eSelectionType, iExternalID);			
-			break;
-		
-		case SCATTER_MATRIX_SELECTION:
-			iCurrentMouseOverElement = iExternalID;
-			switch (pickingMode) 
-			{
-				case CLICKED:
-					eSelectionType = ESelectionType.SELECTION;
-					break;
-				case MOUSE_OVER:
-					eSelectionType = ESelectionType.MOUSE_OVER;
-					break;
-				default:
-					return;
-			}
-			createStorageSelection(eSelectionType, iExternalID);
-			break;
+			case SCATTER_POINT_SELECTION :
+				iCurrentMouseOverElement = iExternalID;
+				switch (pickingMode) {
+
+					case CLICKED :
+						eSelectionType = ESelectionType.SELECTION;
+						break;
+					case MOUSE_OVER :
+						eSelectionType = ESelectionType.MOUSE_OVER;
+						break;
+					case RIGHT_CLICKED :
+						eSelectionType = ESelectionType.DESELECTED;
+						break;
+					case DRAGGED :
+						eSelectionType = ESelectionType.SELECTION;
+						// break;
+					default :
+						return;
+
+				}
+				createContentSelection(eSelectionType, iExternalID);
+				break;
+
+			case SCATTER_MATRIX_SELECTION :
+				iCurrentMouseOverElement = iExternalID;
+				switch (pickingMode) {
+					case CLICKED :
+						eSelectionType = ESelectionType.SELECTION;
+						break;
+					case MOUSE_OVER :
+						eSelectionType = ESelectionType.MOUSE_OVER;
+						break;
+					default :
+						return;
+				}
+				createStorageSelection(eSelectionType, iExternalID);
+				break;
 		}
 	}
 
 	private void createStorageSelection(ESelectionType selectionType,
-			int contentID) 
-	{
-		 
-	    if (selectionType == ESelectionType.SELECTION) {
-	    		    	
-	    	SELECTED_X_AXIS=contentID/NR_TEXTURESY;
-	    	SELECTED_Y_AXIS=contentID%NR_TEXTURESX;
-	    	bUpdateMainView = true;
+			int contentID) {
+
+		if (selectionType == ESelectionType.SELECTION) {
+
+			SELECTED_X_AXIS = contentID / NR_TEXTURESY;
+			SELECTED_Y_AXIS = contentID % NR_TEXTURESX;
+			bUpdateMainView = true;
 			selectNewAxes();
-			setDisplayListDirty();	    	
-	    }
-	    
-	    if (selectionType == ESelectionType.MOUSE_OVER) {
-	    	
-	    	MOUSEOVER_X_AXIS=contentID/NR_TEXTURESY;
-	    	MOUSEOVER_Y_AXIS=contentID%NR_TEXTURESX;
-	    	//TODO Update Selection Manager	    	
-	    }
-		
-		
+			setDisplayListDirty();
+		}
+
+		if (selectionType == ESelectionType.MOUSE_OVER) {
+
+			MOUSEOVER_X_AXIS = contentID / NR_TEXTURESY;
+			MOUSEOVER_Y_AXIS = contentID % NR_TEXTURESX;
+			// TODO Update Selection Manager
+		}
+
 	}
-	
+
 	private void createContentSelection(ESelectionType selectionType,
 			int contentID) {
 
@@ -2136,17 +2136,18 @@ public class GLScatterplot extends AStorageBasedView {
 		}
 
 		// Not used Anymore
-//		if (bRenderMainView && !bRenderMatrix) // MainView-> Matrix Mode
-//		{
-//			bRenderMainView = false;
-//			bRenderMatrix = true;
-//			bOnlyRenderHalfMatrix = false;
-//			return;
-//		}
-//
-//		if (!bRenderMainView && bRenderMatrix) // Matrix View -> Embedded View
-		
-		if (bRenderMainView && !bRenderMatrix) //MainView-> -> Embedded View
+		// if (bRenderMainView && !bRenderMatrix) // MainView-> Matrix Mode
+		// {
+		// bRenderMainView = false;
+		// bRenderMatrix = true;
+		// bOnlyRenderHalfMatrix = false;
+		// return;
+		// }
+		//
+		// if (!bRenderMainView && bRenderMatrix) // Matrix View -> Embedded
+		// View
+
+		if (bRenderMainView && !bRenderMatrix) // MainView-> -> Embedded View
 		{
 
 			bRenderMainView = true;

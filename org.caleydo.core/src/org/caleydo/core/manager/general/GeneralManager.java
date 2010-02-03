@@ -79,6 +79,12 @@ public class GeneralManager
 	 */
 	private EnumMap<EDataDomain, IUseCase> useCaseMap;
 
+	/**
+	 * The master use case of this analysis session.
+	 * @deprecated Will be replaced by new use case management / handling.
+	 */
+	private IUseCase masterUseCase;
+	
 	private boolean bIsWiiMode = false;
 
 	@Override
@@ -268,5 +274,20 @@ public class GeneralManager
 	@Override
 	public Collection<IUseCase> getAllUseCases() {
 		return useCaseMap.values();
+	}
+
+	@Override
+	public IUseCase getMasterUseCase() {
+		return masterUseCase;
+	}
+
+	@Override
+	public void setMasterUseCase(EDataDomain dataDomain) {
+		this.masterUseCase = getUseCase(dataDomain);
+	}
+
+	@Override
+	public void setMasterUseCase(IUseCase useCase) {
+		this.masterUseCase = useCase;
 	}
 }

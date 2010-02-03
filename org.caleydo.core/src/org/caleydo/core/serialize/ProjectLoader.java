@@ -74,6 +74,7 @@ public class ProjectLoader {
 
 			String setFileName = dirName + ProjectSaver.SET_DATA_FILE_NAME;
 			useCase.getLoadDataParameters().setFileName(setFileName);
+			GeneralManager.get().setMasterUseCase(useCase);
 
 			HashMap<EVAType, VirtualArray> virtualArrayMap = new HashMap<EVAType, VirtualArray>();
 			virtualArrayMap.put(EVAType.CONTENT, loadVirtualArray(unmarshaller, dirName, EVAType.CONTENT));

@@ -171,4 +171,26 @@ public interface IGeneralManager {
 	 * @return the {@link SerializationManager} of this caleydo application
 	 */
 	public SerializationManager getSerializationManager();
+
+	/**
+	 * Returns the dominant use case of this analysis session.
+	 * 
+	 * @deprecated Will be replaced by new use case management / handling.
+	 * @return the use case
+	 */
+	public IUseCase getMasterUseCase();
+
+	/**
+	 * Sets the dominant use case of this analysis session.
+	 * 
+	 * @deprecated Will be replaced by new use case management / handling.
+	 */
+	public void setMasterUseCase(EDataDomain dataDomain);
+
+	/**
+	 * Sets the dominant use case of this analysis session.
+	 * 
+	 * @deprecated Will be replaced by new use case management / handling.
+	 */
+	public void setMasterUseCase(IUseCase useCase);
 }

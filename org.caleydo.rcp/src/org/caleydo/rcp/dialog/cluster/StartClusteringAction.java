@@ -8,7 +8,6 @@ import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
 import org.caleydo.core.util.clusterer.ETreeClustererAlgo;
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.rcp.Application;
 import org.caleydo.rcp.progress.ClusteringProgressBar;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -88,7 +87,7 @@ public class StartClusteringAction
 		this.parentComposite = parentComposite;
 
 		sArTypeOptions[0] =
-			GeneralManager.get().getUseCase(Application.applicationMode.getDataDomain()).getContentLabel(true, false);
+			GeneralManager.get().getMasterUseCase().getContentLabel(true, false);
 	}
 
 	@Override

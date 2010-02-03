@@ -38,7 +38,6 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-import org.caleydo.rcp.Application;
 import org.caleydo.rcp.util.info.listener.InfoAreaUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -158,8 +157,7 @@ public class InfoArea
 		contentTree = new TreeItem(selectionTree, SWT.NONE);
 		contentTree.setExpanded(true);
 		contentTree.setData(-1);
-		contentTree.setText(GeneralManager.get().getUseCase(Application.applicationMode.getDataDomain())
-			.getContentLabel(true, true));
+		contentTree.setText(GeneralManager.get().getMasterUseCase().getContentLabel(true, true));
 
 		experimentTree = new TreeItem(selectionTree, SWT.NONE);
 		experimentTree.setExpanded(true);

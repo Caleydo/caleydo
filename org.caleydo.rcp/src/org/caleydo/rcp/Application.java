@@ -328,7 +328,7 @@ public class Application
 
 		if (applicationMode == EApplicationMode.COLLABORATION_CLIENT
 			|| applicationMode == EApplicationMode.PLEX_CLIENT) {
-			AUseCase useCase = initData.getUseCase();
+			IUseCase useCase = initData.getUseCase();
 			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
 			SetUtils.saveSetFile(loadDataParameters, initData.getSetFileContent());
 			if (initData.getGeneClusterTree() != null) {
@@ -340,6 +340,7 @@ public class Application
 			// TODO remove temporary files (after storage creation or on shutdown)
 
 			GeneralManager.get().addUseCase(useCase);
+			GeneralManager.get().setMasterUseCase(applicationMode.getDataDomain());
 
 			if (useCase instanceof GeneticUseCase)
 				triggerPathwayLoading();
@@ -349,13 +350,14 @@ public class Application
 
 			HashMap<EVAType, VirtualArray> virtualArrayMap = initData.getVirtualArrayMap();
 			for (Entry<EVAType, VirtualArray> entry : virtualArrayMap.entrySet()) {
-				useCase.setVirtualArray(entry.getKey(), entry.getValue());
+				((AUseCase) useCase).setVirtualArray(entry.getKey(), entry.getValue());
 			}
 			Application.initData = null;
 		}
-		else if (applicationMode == EApplicationMode.LOAD_PROJECT || applicationMode == EApplicationMode.SAMPLE_PROJECT) {
+		else if (applicationMode == EApplicationMode.LOAD_PROJECT
+			|| applicationMode == EApplicationMode.SAMPLE_PROJECT) {
 
-			AUseCase useCase = initData.getUseCase();
+			IUseCase useCase = initData.getUseCase();
 			GeneralManager.get().addUseCase(useCase);
 
 			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
@@ -364,15 +366,17 @@ public class Application
 
 			HashMap<EVAType, VirtualArray> virtualArrayMap = initData.getVirtualArrayMap();
 			for (Entry<EVAType, VirtualArray> entry : virtualArrayMap.entrySet()) {
-				useCase.setVirtualArray(entry.getKey(), entry.getValue());
+				((AUseCase) useCase).setVirtualArray(entry.getKey(), entry.getValue());
 			}
-			
+
 			if (useCase instanceof GeneticUseCase)
 				triggerPathwayLoading();
-			
+
 			Application.initData = null;
 		}
 		else if (applicationMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA) {
+
+			GeneralManager.get().setMasterUseCase(applicationMode.getDataDomain());
 
 			triggerPathwayLoading();
 
@@ -390,6 +394,8 @@ public class Application
 			// if (applicationMode.getDataDomain() == EDataDomain.GENETIC_DATA)
 			// triggerPathwayLoading();
 
+			GeneralManager.get().setMasterUseCase(applicationMode.getDataDomain());
+
 			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
 
 			if (Window.CANCEL == dataImportWizard.open()) {
@@ -402,9 +408,9 @@ public class Application
 		// nicest place to do this.
 		// This is only necessary if started from xml. Otherwise this is done in FileLoadDataAction
 		if (isStartedFromXML) {
-			for (IUseCase useCase : GeneralManager.get().getAllUseCases()) {
-				useCase.updateSetInViews();
-			}
+			IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
+			GeneralManager.get().setMasterUseCase(useCase);
+			useCase.updateSetInViews();
 		}
 
 		initializeColorMapping();
@@ -540,8 +546,8 @@ public class Application
 
 	private static void triggerPathwayLoading() {
 
-			// Trigger pathway loading
-			new PathwayLoadingProgressIndicatorAction().run(null);
+		// Trigger pathway loading
+		new PathwayLoadingProgressIndicatorAction().run(null);
 	}
 
 	// Deletes all files and subdirectories under dir.
