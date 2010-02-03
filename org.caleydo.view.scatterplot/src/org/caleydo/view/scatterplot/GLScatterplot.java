@@ -133,6 +133,10 @@ public class GLScatterplot extends AStorageBasedView {
 	public static int SELECTED_Y_AXIS = 1;
 	public static int SELECTED_X_AXIS_2 = 2;
 	public static int SELECTED_Y_AXIS_2 = 3;
+	
+	public static int MOUSEOVER_X_AXIS = -1;
+	public static int MOUSEOVER_Y_AXIS = -1;
+	
 
 	public int MAX_AXES = 39;
 
@@ -323,50 +327,53 @@ public class GLScatterplot extends AStorageBasedView {
 				for (Integer i = 0; i < TextureSize; i++) {
 					FbTemp.put(fArRgbaWhite);
 				}
-
-				for (Integer iContentIndex : selectionSet) {
-
-					int current_SELECTED_X_AXIS = iAxisX;
-					int current_SELECTED_Y_AXIS = iAxisY;
-
-					xnormalized = set.get(current_SELECTED_X_AXIS).getFloat(
-							EDataRepresentation.NORMALIZED, iContentIndex);
-					ynormalized = set.get(current_SELECTED_Y_AXIS).getFloat(
-							EDataRepresentation.NORMALIZED, iContentIndex);
-
-					ix = (int) Math.floor(xnormalized
-							* (double) (iTextureWidth - 1));
-					iy = ix
-							* (iTextureWidth)
-							* 4
-							+ (int) Math.floor(ynormalized
-									* (double) (iTextureHeight - 1)) * 4;
-
-					float[] fArMappingColor = null;
-
-					if (bIsSelection)
-						fArMappingColor = fSelectionColor;
-					else if (bUseColor)
-						fArMappingColor = colorMapper.getColor(Math.max(
-								xnormalized, ynormalized));
-					else
-						fArMappingColor = fBlackColor;
-
-					// float[] fArRgba = { fArMappingColor[0],
-					// fArMappingColor[1],
-					// fArMappingColor[2], fOpacity };
-
-					if (iy >= TextureSize * 4 - 4) {
-						iy = 0; // TODO : DIRTY HACK CAUSE INIDICES ARE WRONG!
+				//if (iAxisX<=iAxisY) Hmmm, needs debugging
+				if (true)
+				{
+					for (Integer iContentIndex : selectionSet) {
+		
+						int current_SELECTED_X_AXIS = iAxisX;
+						int current_SELECTED_Y_AXIS = iAxisY;
+		
+						xnormalized = set.get(current_SELECTED_X_AXIS).getFloat(
+								EDataRepresentation.NORMALIZED, iContentIndex);
+						ynormalized = set.get(current_SELECTED_Y_AXIS).getFloat(
+								EDataRepresentation.NORMALIZED, iContentIndex);
+		
+						ix = (int) Math.floor(xnormalized
+								* (double) (iTextureWidth - 1));
+						iy = ix
+								* (iTextureWidth)
+								* 4
+								+ (int) Math.floor(ynormalized
+										* (double) (iTextureHeight - 1)) * 4;
+		
+						float[] fArMappingColor = null;
+		
+						if (bIsSelection)
+							fArMappingColor = fSelectionColor;
+						else if (bUseColor)
+							fArMappingColor = colorMapper.getColor(Math.max(
+									xnormalized, ynormalized));
+						else
+							fArMappingColor = fBlackColor;
+		
+						// float[] fArRgba = { fArMappingColor[0],
+						// fArMappingColor[1],
+						// fArMappingColor[2], fOpacity };
+		
+						if (iy >= TextureSize * 4 - 4) {
+							iy = 0; // TODO : DIRTY HACK CAUSE INIDICES ARE WRONG!
+						}
+						FbTemp.put(iy, fArMappingColor[0]);
+						FbTemp.put(iy + 1, fArMappingColor[1]);
+						FbTemp.put(iy + 2, fArMappingColor[2]);
+						FbTemp.put(iy + 3, fOpacity);
+		
 					}
-					FbTemp.put(iy, fArMappingColor[0]);
-					FbTemp.put(iy + 1, fArMappingColor[1]);
-					FbTemp.put(iy + 2, fArMappingColor[2]);
-					FbTemp.put(iy + 3, fOpacity);
-
+		
+					FbTemp.rewind();
 				}
-
-				FbTemp.rewind();
 				TextureData texData = new TextureData(
 						GL.GL_RGBA /* internalFormat */,
 						iTextureWidth /* height */, iTextureHeight /* width */,
@@ -393,12 +400,17 @@ public class GLScatterplot extends AStorageBasedView {
 		float fWidth;
 		fHeight = viewFrustum.getHeight();
 		fWidth = viewFrustum.getWidth();
+		
+		int iAddTextures=1;
+		
+		if (MOUSEOVER_X_AXIS>=0 && MOUSEOVER_Y_AXIS>0)
+			iAddTextures=4;
 
-		float fStepY = fHeight / (float) (NR_TEXTURESY + 1);
-		float fStepX = fWidth / (float) (NR_TEXTURESX + 1);
+		float fStepY = fHeight / (float) (NR_TEXTURESY + iAddTextures);
+		float fStepX = fWidth / (float) (NR_TEXTURESX + iAddTextures);
 
-		float fSpacerX = fStepX / (float) (NR_TEXTURESX + 1);
-		float fSpacerY = fStepY / (float) (NR_TEXTURESX + 1);
+		float fSpacerX = fStepX / (float) (NR_TEXTURESX + iAddTextures);
+		float fSpacerY = fStepY / (float) (NR_TEXTURESX + iAddTextures);
 
 		float fyOffset = fHeight;
 		float fxOffset = fSpacerX;
@@ -409,10 +421,23 @@ public class GLScatterplot extends AStorageBasedView {
 
 		float z = 1f;
 
-		float[] fArMappingColor = new float[] { 1.0f, 0.1f, 0.5f }; // Selection
+		float[] fArMappingColor = GeneralRenderStyle.SELECTED_COLOR; 
+			//new float[] { 1.0f, 0.1f, 0.5f }; // Selection
 																	// Color
+				
 		DrawRectangularSelection(gl, fxOffset - fEdge, fyOffset - fEdge, z, // Z-Value
 				fStepX + 2 * fEdge, fStepY + 2 * fEdge, fArMappingColor);
+		if (MOUSEOVER_X_AXIS<0 && MOUSEOVER_Y_AXIS<0)
+			return;
+		
+		fyOffset = fHeight;
+		fxOffset = fSpacerX;
+		fyOffset -= (fStepY + fSpacerY) * (float) (MOUSEOVER_Y_AXIS + 1);
+		fxOffset += (fStepX + fSpacerX) * (float) (MOUSEOVER_X_AXIS);
+		fArMappingColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+		
+		DrawRectangularSelection(gl, fxOffset - fEdge, fyOffset - fEdge, z, // Z-Value
+		fStepX + 2 * fEdge, fStepY + 2 * fEdge, fArMappingColor);
 
 	}
 
@@ -424,12 +449,20 @@ public class GLScatterplot extends AStorageBasedView {
 
 		int debugsize1 = AlSelectionTextures.size();
 		int debugsize2 = AlFullTextures.size();
+		
+		int iAddTextures=1;
+		
+		if (MOUSEOVER_X_AXIS>=0 && MOUSEOVER_Y_AXIS>=0)
+			iAddTextures=4;
+			
 
-		float fStepY = fHeight / (float) (NR_TEXTURESY + 1);
-		float fStepX = fWidth / (float) (NR_TEXTURESX + 1);
+		float fStepY = fHeight / (float) (NR_TEXTURESY + iAddTextures);
+		float fStepX = fWidth / (float) (NR_TEXTURESX + iAddTextures);
+		
+		
 
-		float fSpacerX = fStepX / (float) (NR_TEXTURESX + 1);
-		float fSpacerY = fStepY / (float) (NR_TEXTURESX + 1);
+		float fSpacerX = fStepX / (float) (NR_TEXTURESX + iAddTextures);
+		float fSpacerY = fStepY / (float) (NR_TEXTURESX + iAddTextures);
 
 		float fyOffset = fHeight;
 		float fxOffset = fSpacerX;
@@ -444,7 +477,10 @@ public class GLScatterplot extends AStorageBasedView {
 
 				// fStep = fHeightElem * iAlNumberSamples.get(iNrTextures - i -
 				// 1);
-				fyOffset -= fStepY + fSpacerY;
+				if (j==MOUSEOVER_Y_AXIS)
+					fyOffset -= (fStepY + fSpacerY)*iAddTextures;
+				else
+					fyOffset -= fStepY + fSpacerY;
 
 				if (i > j && bOnlyRenderHalfMatrix) {
 					icounter++;
@@ -518,7 +554,10 @@ public class GLScatterplot extends AStorageBasedView {
 			}
 			// fyOffset =0;
 			fyOffset = fHeight;
-			fxOffset += fStepX + fSpacerX;
+		//	if (i==MOUSEOVER_X_AXIS)
+		//		fxOffset += (fStepX + fSpacerX)*iAddTextures;
+		//	else
+				fxOffset += fStepX + fSpacerX;
 		}
 	}
 
@@ -1693,10 +1732,24 @@ public class GLScatterplot extends AStorageBasedView {
 	private void createStorageSelection(ESelectionType selectionType,
 			int contentID) 
 	{
-		// TODO Add AxisSelection stuff 
-	//	if (selectionType == ESelectionType.SELECTION) {
+		 
+	    if (selectionType == ESelectionType.SELECTION) {
+	    		    	
+	    	SELECTED_X_AXIS=contentID/NR_TEXTURESY;
+	    	SELECTED_Y_AXIS=contentID%NR_TEXTURESX;
+	    	bUpdateMainView = true;
+			selectNewAxes();
+			setDisplayListDirty();	    	
+	    }
+	    
+	    if (selectionType == ESelectionType.MOUSE_OVER) {
+	    	
+	    	MOUSEOVER_X_AXIS=contentID/NR_TEXTURESY;
+	    	MOUSEOVER_Y_AXIS=contentID%NR_TEXTURESX;
+	    	//TODO Update Selection Manager	    	
+	    }
 		
-		selectNewAxes();
+		
 	}
 	
 	private void createContentSelection(ESelectionType selectionType,
@@ -2082,15 +2135,18 @@ public class GLScatterplot extends AStorageBasedView {
 			return;
 		}
 
-		if (bRenderMainView && !bRenderMatrix) // MainView-> Matrix Mode
-		{
-			bRenderMainView = false;
-			bRenderMatrix = true;
-			bOnlyRenderHalfMatrix = false;
-			return;
-		}
-
-		if (!bRenderMainView && bRenderMatrix) // Matrix View -> Embedded View
+		// Not used Anymore
+//		if (bRenderMainView && !bRenderMatrix) // MainView-> Matrix Mode
+//		{
+//			bRenderMainView = false;
+//			bRenderMatrix = true;
+//			bOnlyRenderHalfMatrix = false;
+//			return;
+//		}
+//
+//		if (!bRenderMainView && bRenderMatrix) // Matrix View -> Embedded View
+		
+		if (bRenderMainView && !bRenderMatrix) //MainView-> -> Embedded View
 		{
 
 			bRenderMainView = true;
