@@ -1,6 +1,7 @@
 package org.caleydo.rcp.perspective;
 
 import org.caleydo.rcp.Application;
+import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.toolbar.RcpToolBarView;
 import org.caleydo.rcp.view.rcp.RcpSelectionInfoView;
 import org.eclipse.swt.graphics.Rectangle;
@@ -38,11 +39,14 @@ public class GenomePerspective
 				layout.createFolder("topLeft", IPageLayout.LEFT, fRatio, IPageLayout.ID_EDITOR_AREA);
 			topLeft.addView(RcpToolBarView.ID);
 
-			IFolderLayout middleLeft = layout.createFolder("middleLeft", IPageLayout.BOTTOM, 0.5f, "topLeft");
-			middleLeft.addView(RcpSelectionInfoView.ID);
+			if (Application.applicationMode != EApplicationMode.NO_DATA) {
+				IFolderLayout middleLeft =
+					layout.createFolder("middleLeft", IPageLayout.BOTTOM, 0.5f, "topLeft");
+				middleLeft.addView(RcpSelectionInfoView.ID);
 
-			layout.addStandaloneView("org.caleydo.view.histogram", true, IPageLayout.BOTTOM, 0.7f,
-				"middleLeft");
+				layout.addStandaloneView("org.caleydo.view.histogram", true, IPageLayout.BOTTOM, 0.7f,
+					"middleLeft");
+			}
 			// IFolderLayout bottomLeft = layout.createFolder("bottomLeft", IPageLayout.BOTTOM, 0.45f,
 			// "middleLeft");
 			// bottomLeft.addPlaceholder(GLHistogramView.ID);
@@ -63,9 +67,10 @@ public class GenomePerspective
 				layout.createFolder("top", IPageLayout.TOP, fRatio, IPageLayout.ID_EDITOR_AREA);
 			topFolder.addView(RcpToolBarView.ID);
 
-			layout.addStandaloneView(RcpSelectionInfoView.ID, true, IPageLayout.RIGHT, 0.75f, "top");
-			layout.addStandaloneView("org.caleydo.view.histogram", true, IPageLayout.RIGHT, 0.8f, "top");
-
+			if (Application.applicationMode != EApplicationMode.NO_DATA) {
+				layout.addStandaloneView(RcpSelectionInfoView.ID, true, IPageLayout.RIGHT, 0.75f, "top");
+				layout.addStandaloneView("org.caleydo.view.histogram", true, IPageLayout.RIGHT, 0.8f, "top");
+			}
 			// IFolderLayout bottomFolder = layout.createFolder("bottom", IPageLayout.BOTTOM, 1 - fRatio,
 			// IPageLayout.ID_EDITOR_AREA);
 

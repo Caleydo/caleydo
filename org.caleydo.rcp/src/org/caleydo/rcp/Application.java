@@ -160,6 +160,13 @@ public class Application
 				Application.initData = GroupwareUtils.startPlexClient(serverAddress);
 				GeneralManager.get().addUseCase(Application.initData.getUseCase());
 			}
+			else if (startViews.size() == 1 && startViews.get(0).equals("org.caleydo.view.datawindows")) {
+				// do nothing - no data or use case are needed for eye tracker setup
+				applicationMode = EApplicationMode.NO_DATA;
+				IUseCase useCase = new UnspecifiedUseCase();
+				GeneralManager.get().addUseCase(useCase);
+				GeneralManager.get().setMasterUseCase(useCase);
+			}
 			else {
 				WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
 				projectWizardDialog.open();
@@ -169,33 +176,31 @@ public class Application
 				}
 			}
 
-			if (sCaleydoXMLfile.equals("")) {
+			switch (applicationMode) {
+				// case GENE_EXPRESSION_PATHWAY_VIEWER:
+				// sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
+				// break;
+				case GENE_EXPRESSION_SAMPLE_DATA:
+				case GENE_EXPRESSION_NEW_DATA:
+					sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
+					GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).setBootstrapFileName(
+						sCaleydoXMLfile);
+					break;
+				case UNSPECIFIED_NEW_DATA:
+				case NO_DATA:
+					// not necessary to load any mapping or XML files
+					sCaleydoXMLfile = "";
+					break;
+				case SAMPLE_PROJECT:
+				case LOAD_PROJECT:
+				case COLLABORATION_CLIENT:
+				case PLEX_CLIENT:
+					sCaleydoXMLfile =
+						GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getBootstrapFileName();
+					break;
 
-				switch (applicationMode) {
-					// case GENE_EXPRESSION_PATHWAY_VIEWER:
-					// sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
-					// break;
-					case GENE_EXPRESSION_SAMPLE_DATA:
-					case GENE_EXPRESSION_NEW_DATA:
-						sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
-						GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).setBootstrapFileName(
-							sCaleydoXMLfile);
-						break;
-					case UNSPECIFIED_NEW_DATA:
-						// not necessary to load any mapping or XML files
-						sCaleydoXMLfile = "";
-						break;
-					case SAMPLE_PROJECT:
-					case LOAD_PROJECT:
-					case COLLABORATION_CLIENT:
-					case PLEX_CLIENT:
-						sCaleydoXMLfile =
-							GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getBootstrapFileName();
-						break;
-
-					default:
-						throw new IllegalStateException("Unknown application mode " + applicationMode);
-				}
+				default:
+					throw new IllegalStateException("Unknown application mode " + applicationMode);
 			}
 		}
 		else {
@@ -390,9 +395,6 @@ public class Application
 		}
 		else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA || applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
 			&& (sCaleydoXMLfile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE) || sCaleydoXMLfile.equals(""))) {
-
-			// if (applicationMode.getDataDomain() == EDataDomain.GENETIC_DATA)
-			// triggerPathwayLoading();
 
 			GeneralManager.get().setMasterUseCase(applicationMode.getDataDomain());
 

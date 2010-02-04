@@ -22,7 +22,6 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
  * @author Hannes Plank
  * @author Marc Streit
  */
-@SuppressWarnings("unused")
 public class GLDataWindows extends AGLView {
 
 	public final static String VIEW_ID = "org.caleydo.view.datawindows";
@@ -73,8 +72,8 @@ public class GLDataWindows extends AGLView {
 		processEvents();
 		if (!isVisible())
 			return;
-		if (set == null)
-			return;
+//		if (set == null)
+//			return;
 	
 		if (bIsDisplayListDirtyLocal) {
 

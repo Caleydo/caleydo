@@ -170,9 +170,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart
 	}
 
 	private void updateColorLabel() {
-
-		// FIXME this is all specific to gene expression
-
+		
 		int iNumberOfMarkerPoints = store
 				.getInt(PreferenceConstants.GENE_EXPRESSION_PREFIX
 						+ PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
