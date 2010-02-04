@@ -311,7 +311,7 @@ public class PickingManager {
 
 		gl.glSelectBuffer(PICKING_BUFSIZE, pickingBuffer);
 		gl.glRenderMode(GL.GL_SELECT);
-
+		
 		gl.glInitNames();
 
 		gl.glMatrixMode(GL.GL_PROJECTION);

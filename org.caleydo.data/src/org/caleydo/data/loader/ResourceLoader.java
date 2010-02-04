@@ -1,7 +1,9 @@
 package org.caleydo.data.loader;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStream;
@@ -43,7 +45,7 @@ public class ResourceLoader {
 		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
 			inputSource = new InputSource(loadResourceAsInputStream(sFileName));
 		} else {
-			inputSource = new InputSource(new FileReader(new File(sFileName)));
+			inputSource = new InputSource(new BufferedInputStream(new FileInputStream(sFileName)));
 		}
 
 		return inputSource;
