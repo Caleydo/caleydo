@@ -816,7 +816,6 @@ public class GLScatterplot extends AStorageBasedView {
 				gl.glCallList(iGLDisplayListIndexBrush);
 				gl.glCallList(iGLDisplayListIndexCoord);
 				gl.glCallList(iGLDisplayListIndexMouseOver);
-
 			}
 			if (!bRender2Axis)
 				gl.glCallList(iGLDisplayListIndexSelection);

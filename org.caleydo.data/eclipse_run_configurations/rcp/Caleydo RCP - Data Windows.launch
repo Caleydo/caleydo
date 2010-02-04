@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.pde.ui.RuntimeWorkbench">
+<booleanAttribute key="append.args" value="true"/>
+<booleanAttribute key="askclear" value="false"/>
+<booleanAttribute key="automaticAdd" value="true"/>
+<booleanAttribute key="automaticValidate" value="true"/>
+<stringAttribute key="bootstrap" value=""/>
+<stringAttribute key="checked" value="[NONE]"/>
+<booleanAttribute key="clearConfig" value="false"/>
+<booleanAttribute key="clearws" value="true"/>
+<booleanAttribute key="clearwslog" value="false"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Caleydo RCP - Data Windows"/>
+<booleanAttribute key="default" value="true"/>
+<stringAttribute key="deselected_workspace_plugins" value="org.caleydo.view.pathway,org.caleydo.view.heatmap,org.caleydo.view.scatterplot,org.caleydo.view.dataflipper,org.caleydo.view.bookmarking,org.caleydo.view.browser,org.caleydo.view.pathwaybrowser,org.caleydo.view.bucket,org.caleydo.view.parcoords,org.caleydo.view.histogram,org.caleydo.view.grouper,org.caleydo.view.glyph,org.caleydo.view.tissue,org.caleydo.view.cell,org.caleydo.view.radial,org.caleydo.view.tissuebrowser"/>
+<booleanAttribute key="includeOptional" value="false"/>
+<stringAttribute key="location" value="${workspace_loc}/../runtime-org.caleydo.rcp.product"/>
+<booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.hyades.trace.ui.ATTR_DATA_COLLECTOR" value=""/>
+<stringAttribute key="org.eclipse.hyades.trace.ui.ATTR_DESTINATION_FILE" value=""/>
+<stringAttribute key="org.eclipse.hyades.trace.ui.ATTR_DESTINATION_MONITOR" value="DefaultMonitor"/>
+<stringAttribute key="org.eclipse.hyades.trace.ui.ATTR_DESTINATION_PROJECT" value="ProfileProject"/>
+<booleanAttribute key="org.eclipse.hyades.trace.ui.ATTR_PROFILE_TO_FILE" value="false"/>
+<stringAttribute key="org.eclipse.hyades.trace.ui.ATTR_PROFILING_SET" value="tptp-dummy-profiling-set-Caleydo RCP - Kashofer All HCC Data"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog&#13;&#10;data/bootstrap/shared/kashofer/hcc/all_hcc/rcp/bootstrap.xml datawindows no_pathways"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms512m -Xmx1024m -Dsun.java2d.opengl=true -Djava.util.logging.config.file=data/logging/logging.properties -Xss16384k"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:org.caleydo.data}"/>
+<stringAttribute key="pde.version" value="3.3"/>
+<stringAttribute key="product" value="org.caleydo.rcp.product"/>
+<stringAttribute key="productFile" value="/org.caleydo.rcp/org.caleydo.rcp.product"/>
+<booleanAttribute key="restart" value="false"/>
+<stringAttribute key="selected_target_plugins" value="org.eclipse.ui@default:default,org.eclipse.core.runtime@default:true,org.eclipse.core.runtime.compatibility.auth@default:default,org.eclipse.swt.gtk.linux.x86@default:false,org.eclipse.core.databinding.observable@default:default,org.eclipse.core.expressions@default:default,javax.servlet@default:default,com.ibm.icu@default:default,org.eclipse.equinox.app@default:default,org.eclipse.jface.databinding@default:default,org.eclipse.core.commands@default:default,org.eclipse.core.jobs@default:default,org.eclipse.core.databinding@default:default,org.eclipse.swt@default:default,org.eclipse.jface@default:default,org.eclipse.core.databinding.property@default:default,org.eclipse.core.runtime.compatibility.registry@default:false,org.eclipse.equinox.preferences@default:default,org.eclipse.help@default:default,org.eclipse.ui.views.log@default:default,org.eclipse.core.contenttype@default:default,org.eclipse.osgi.services@default:default,org.eclipse.osgi@-1:true,org.eclipse.equinox.common@2:true,org.eclipse.rcp@default:default,org.eclipse.ui.workbench@default:default,org.eclipse.equinox.registry@default:default"/>
+<stringAttribute key="selected_workspace_plugins" value="test@default:default,org.caleydo.data@default:default,org.caleydo.lib.jogl@default:default,org.caleydo.core@default:default,org.caleydo.util.graph@default:default,org.caleydo.util.gleem@default:default,org.caleydo.lib.core@default:default,org.caleydo.view.base@default:default,org.caleydo.rcp@default:default"/>
+<booleanAttribute key="show_selected_only" value="false"/>
+<booleanAttribute key="tracing" value="false"/>
+<booleanAttribute key="useDefaultConfig" value="true"/>
+<booleanAttribute key="useDefaultConfigArea" value="true"/>
+<booleanAttribute key="useProduct" value="true"/>
+<booleanAttribute key="usefeatures" value="false"/>
+</launchConfiguration>

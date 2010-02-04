@@ -17,3 +17,4 @@ Import-Package: com.sun.opengl.util.texture,
 Export-Package: org.caleydo.view.datawindows,
  org.caleydo.view.datawindows.command.handler
 Bundle-Vendor: Graz University of Technology
+Bundle-ActivationPolicy: lazy

@@ -16,7 +16,7 @@ public enum EStartViewType {
 			"org.caleydo.view.dendrogram.horizontal"), dendrogram_vertical(
 			"org.caleydo.view.dendrogram.vertical"), scatterplot(
 			"org.caleydo.view.scatterplot"), dataflipper(
-			"org.caleydo.view.dataflipper");
+			"org.caleydo.view.dataflipper"), datawindows("org.caleydo.view.datawindows");
 
 	private String viewID;
 

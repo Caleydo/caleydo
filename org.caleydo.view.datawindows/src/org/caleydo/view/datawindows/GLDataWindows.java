@@ -13,6 +13,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 
 /**
@@ -99,11 +100,19 @@ public class GLDataWindows extends AGLView {
 	public void display(GL gl) {
 		// processEvents();
 
-		// GLHelperFunctions.drawAxis(gl);
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		 GLHelperFunctions.drawAxis(gl);
+		 GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// gl.glEnable(GL.GL_DEPTH_TEST);
 		// clipToFrustum(gl);
 
+		 gl.glColor3f(1,0,0);
+		 gl.glBegin(GL.GL_POLYGON);
+		 gl.glVertex3f(-1, -1, 0);
+		 gl.glVertex3f(1, -1, 0);
+		 gl.glVertex3f(1, 1, 0);
+		 gl.glVertex3f(-1, 1, 0);		 
+		 gl.glEnd();
+		 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 		// if (!isRenderedRemote())
 		// contextMenu.render(gl, this);
