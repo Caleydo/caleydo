@@ -89,4 +89,14 @@ public class VirtualArrayDelta
 	public void append(VirtualArrayDelta delta) {
 		deltaItems.addAll(delta.deltaItems);
 	}
+
+	@Override
+	public String toString() {
+		String output = "";
+		for (VADeltaItem deltaItem : deltaItems) {
+			output = output + deltaItem;
+		}
+
+		return output;
+	}
 }

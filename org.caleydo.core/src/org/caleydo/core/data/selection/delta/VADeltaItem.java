@@ -293,6 +293,9 @@ public class VADeltaItem
 	public String toString() {
 		String message = vAOperation.toString();
 		switch (vAOperation) {
+			case MOVE:
+				message += " from: " + iIndex + " to: " + iTargetIndex;
+				break;
 			case REMOVE:
 				message += "; Index: " + iIndex;
 				break;

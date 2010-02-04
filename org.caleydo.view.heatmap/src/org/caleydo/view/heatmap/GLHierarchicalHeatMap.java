@@ -851,7 +851,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView
 		if (delta.getVAType() == storageVAType)
 			storageVA.setGroupList(null);
 
-		glHeatMapView.handleVirtualArrayUpdate(delta, getShortInfo());
+//		glHeatMapView.handleVirtualArrayUpdate(delta, getShortInfo());
 		bRedrawTextures = true;
 
 		setDisplayListDirty();

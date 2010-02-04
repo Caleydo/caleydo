@@ -461,7 +461,7 @@ public class Set
 	}
 
 	private void calculateGlobalExtrema() {
-		double dTemp = 0.0;
+		double dTemp = 1.0;
 		if (alStorages.get(0) instanceof INumericalStorage) {
 			for (IStorage storage : alStorages) {
 				INumericalStorage nStorage = (INumericalStorage) storage;

@@ -1283,6 +1283,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 					iPickingID = pickingManager.getPickingID(iUniqueID,
 							EPickingType.MOVE_AXIS, iCount);
 
+				
 					gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 					gl.glPushName(iPickingID);
 
@@ -2008,9 +2009,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				break;
 			}
 			break;
+			
 		case MOVE_AXIS:
 			switch (ePickingMode) {
-
 			case CLICKED:
 				bWasAxisMoved = true;
 				bWasAxisDraggedFirstTime = true;
@@ -2019,6 +2020,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			case MOUSE_OVER:
 				dropTexture = EIconTextures.DROP_MOVE;
 				iChangeDropOnAxisNumber = iExternalID;
+				setDisplayListDirty();
 				break;
 			}
 			break;

@@ -806,7 +806,7 @@ public class GLHeatMap extends AStorageBasedView {
 			fXPosition += fFieldWidth;
 
 			// render column captions
-			if (detailLevel == EDetailLevel.HIGH && storageVA.size() < 40) {
+			if (detailLevel == EDetailLevel.HIGH && storageVA.size() < 60) {
 				if (iCount == contentVA.size()) {
 					fYPosition = 0;
 
