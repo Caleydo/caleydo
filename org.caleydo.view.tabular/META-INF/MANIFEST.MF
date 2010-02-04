@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tabular View
 Bundle-SymbolicName: org.caleydo.view.tabular;singleton:=true
-Bundle-Version: 1.3
+Bundle-Version: 1.3.1
 Bundle-Activator: org.caleydo.view.tabular.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
