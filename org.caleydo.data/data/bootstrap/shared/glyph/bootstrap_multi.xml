@@ -10,7 +10,7 @@
 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_GLYPH_DEFINITIONS"  cmdId="" uniqueId="11332" label="load Glyph Definition" attrib1="data/clinical/settings_data.xml" />
 
 		<!-- Creating Data -->
-			<read-xml-file target="data/bootstrap/private/stefan/load_data.xml" />
+			<read-xml-file target="data/bootstrap/shared/glyph/load_data.xml" />
 
 
 		<!-- Window	10331 - 1st glyph window-->

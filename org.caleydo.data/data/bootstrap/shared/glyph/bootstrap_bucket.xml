@@ -9,7 +9,7 @@
 			<!-- read glyph definition to glyphManager -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_GLYPH_DEFINITIONS"  cmdId="" uniqueId="11332" label="load Glyph Definition" attrib1="data/clinical/settings_data.xml" />
 
-			<read-xml-file target="data/bootstrap/private/stefan/load_data.xml" />
+			<read-xml-file target="data/bootstrap/shared/glyph/load_data.xml" />
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_GLYPH"		cmdId="69994"	uniqueId="87401" parent="-1" label="Glyph"
 							gl_origin="0 0 0"

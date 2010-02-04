@@ -28,7 +28,7 @@
 					target="data/bootstrap/shared/kashofer/hcc/all_hcc/load_data.xml" />
 
 				<!-- Creating Data -->
-				<read-xml-file target="data/bootstrap/private/stefan/load_data.xml" />
+				<read-xml-file target="data/bootstrap/shared/glyph/load_data.xml" />
 
 				<!-- Setting paths -->
 				<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS"

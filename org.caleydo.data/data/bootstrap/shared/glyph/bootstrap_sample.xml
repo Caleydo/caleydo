@@ -7,7 +7,7 @@
     <CommandBuffer>  			
 	   			
 		<!-- Creating Data -->
-			<read-xml-file target="data/bootstrap/private/stefan/load_data.xml" />		   			
+			<read-xml-file target="data/bootstrap/shared/glyph/load_data.xml" />		   			
 	   			
 		<!-- Window	10331	-->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" label="Glyph" attrib1="ROW	HORIZONTAL"	/>	 
