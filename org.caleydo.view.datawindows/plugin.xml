@@ -6,10 +6,10 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.view.scatterplot.RcpGLScatterplotView"
-            icon="resources/icons/scatterplot.png"
-            id="org.caleydo.view.scatterplot"
-            name="Scatterplot">
+            class="org.caleydo.view.datawindows.RcpGLDataWindowsView"
+            icon="resources/icons/datawindows.png"
+            id="org.caleydo.view.datawindows"
+            name="Data Windows">
       </view>
    </extension>
    <extension
@@ -20,8 +20,8 @@
                id="org.caleydo.menu.view"
                label="View">
             <command
-                  commandId="org.caleydo.view.scatterplot.command.openscatterplot"
-                  icon="resources/icons/scatterplot.png"
+                  commandId="org.caleydo.view.datawindows.command.opendatawindows"
+                  icon="resources/icons/datawindows.png"
                   style="push">
             </command>
          </menu>
@@ -30,9 +30,9 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.scatterplot.command.handler.OpenScatterplotHandler"
-            id="org.caleydo.view.scatterplot.command.openscatterplot"
-            name="Scatterplot">
+            defaultHandler="org.caleydo.view.datawindows.command.handler.OpenDataWindowsHandler"
+            id="org.caleydo.view.datawindows.command.opendatawindows"
+            name="Data Windows">
       </command>
    </extension>
 
