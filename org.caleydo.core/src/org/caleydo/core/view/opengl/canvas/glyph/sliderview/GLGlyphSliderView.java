@@ -14,7 +14,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -305,10 +305,10 @@ public class GLGlyphSliderView
 					}
 
 					if (isselected) {
-						selectionManager.addToType(ESelectionType.SELECTION, g.getID());
+						selectionManager.addToType(SelectionType.SELECTION, g.getID());
 					}
 					else {
-						selectionManager.addToType(ESelectionType.DESELECTED, g.getID());
+						selectionManager.addToType(SelectionType.DESELECTED, g.getID());
 					}
 
 				}
@@ -317,7 +317,7 @@ public class GLGlyphSliderView
 					EIDType.EXPERIMENT_INDEX);
 
 				SelectionCommand command =
-					new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.SELECTION);
+					new SelectionCommand(ESelectionCommandType.CLEAR, SelectionType.SELECTION);
 				sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
 
 				ISelectionDelta selectionDelta = selectionManager.getDelta();
@@ -370,7 +370,7 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType eSelectionType) {
+	public int getNumberOfSelections(SelectionType SelectionType) {
 		throw new IllegalStateException("Not implemented yet. Do this now!");
 	}
 

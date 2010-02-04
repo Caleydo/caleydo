@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -47,8 +47,8 @@ public class GLCell extends AGLView {
 		// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
 		// initialize internal gene selection manager
-		ArrayList<ESelectionType> alSelectionType = new ArrayList<ESelectionType>();
-		for (ESelectionType selectionType : ESelectionType.values()) {
+		ArrayList<SelectionType> alSelectionType = new ArrayList<SelectionType>();
+		for (SelectionType selectionType : SelectionType.getDefaultTypes()) {
 			alSelectionType.add(selectionType);
 		}
 
@@ -140,8 +140,8 @@ public class GLCell extends AGLView {
 	// int iDavidID = 0;
 	//
 	// for (SelectionDeltaItem item : selectionDelta) {
-	// if (item.getSelectionType() != ESelectionType.MOUSE_OVER
-	// && item.getSelectionType() != ESelectionType.SELECTION) {
+	// if (item.getSelectionType() != SelectionType.MOUSE_OVER
+	// && item.getSelectionType() != SelectionType.SELECTION) {
 	// continue;
 	// }
 	//
@@ -227,7 +227,7 @@ public class GLCell extends AGLView {
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType selectionType) {
+	public int getNumberOfSelections(SelectionType selectionType) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

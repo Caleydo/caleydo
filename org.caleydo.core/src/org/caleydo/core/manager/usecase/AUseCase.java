@@ -203,9 +203,9 @@ public abstract class AUseCase
 
 		if (!mapVAIDs.isEmpty()) {
 
-			for (EVAType eSelectionType : EVAType.values()) {
-				if (mapVAIDs.containsKey(eSelectionType)) {
-					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
+			for (EVAType SelectionType : EVAType.values()) {
+				if (mapVAIDs.containsKey(SelectionType)) {
+					set.removeVirtualArray(mapVAIDs.get(SelectionType));
 				}
 			}
 

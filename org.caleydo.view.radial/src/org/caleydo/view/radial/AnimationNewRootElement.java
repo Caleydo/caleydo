@@ -4,7 +4,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 
@@ -97,7 +97,7 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	// navigationHistory.addNewHistoryEntry(dsNext, pdCurrentSelectedElement,
 	// pdCurrentSelectedElement,
 	// radialHierarchy.getMaxDisplayedHierarchyDepth());
-	// radialHierarchy.setNewSelection(ESelectionType.SELECTION,
+	// radialHierarchy.setNewSelection(SelectionType.SELECTION,
 	// pdCurrentSelectedElement,
 	// pdCurrentSelectedElement);
 	// radialHierarchy.setDisplayListDirty();
@@ -247,7 +247,7 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 			navigationHistory.addNewHistoryEntry(dsNext,
 					pdCurrentSelectedElement, pdCurrentSelectedElement,
 					radialHierarchy.getMaxDisplayedHierarchyDepth());
-			radialHierarchy.setNewSelection(ESelectionType.SELECTION,
+			radialHierarchy.setNewSelection(SelectionType.SELECTION,
 					pdCurrentSelectedElement);
 			radialHierarchy.setDisplayListDirty();
 
@@ -421,7 +421,7 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	// navigationHistory.addNewHistoryEntry(dsNext, pdCurrentSelectedElement,
 	// pdCurrentSelectedElement,
 	// radialHierarchy.getMaxDisplayedHierarchyDepth());
-	// radialHierarchy.setNewSelection(ESelectionType.SELECTION,
+	// radialHierarchy.setNewSelection(SelectionType.SELECTION,
 	// pdCurrentSelectedElement,
 	// pdCurrentSelectedElement);
 	// radialHierarchy.setDisplayListDirty();
@@ -631,7 +631,7 @@ public class AnimationNewRootElement extends ADrawingStateAnimation {
 	// navigationHistory.addNewHistoryEntry(dsNext, pdCurrentSelectedElement,
 	// pdCurrentSelectedElement,
 	// radialHierarchy.getMaxDisplayedHierarchyDepth());
-	// radialHierarchy.setNewSelection(ESelectionType.SELECTION,
+	// radialHierarchy.setNewSelection(SelectionType.SELECTION,
 	// pdCurrentSelectedElement,
 	// pdCurrentSelectedElement);
 	// radialHierarchy.setDisplayListDirty();

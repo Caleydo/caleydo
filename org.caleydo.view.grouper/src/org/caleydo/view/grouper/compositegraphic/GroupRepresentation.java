@@ -8,7 +8,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.view.grouper.GLGrouper;
@@ -331,11 +331,11 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	public void updateDrawingStrategies(SelectionManager selectionManager,
 			DrawingStrategyManager drawingStrategyManager) {
 
-		if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER, getID())) {
+		if (selectionManager.checkStatus(SelectionType.MOUSE_OVER, getID())) {
 			drawingStrategy = drawingStrategyManager
 					.getGroupDrawingStrategy(EGroupDrawingStrategyType.MOUSE_OVER);
 
-		} else if (selectionManager.checkStatus(ESelectionType.SELECTION,
+		} else if (selectionManager.checkStatus(SelectionType.SELECTION,
 				getID())) {
 			drawingStrategy = drawingStrategyManager
 					.getGroupDrawingStrategy(EGroupDrawingStrategyType.SELECTION);
@@ -366,7 +366,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	}
 
 	@Override
-	public void setSelectionType(ESelectionType selectionType,
+	public void setSelectionType(SelectionType selectionType,
 			SelectionManager selectionManager) {
 		selectionManager.addToType(selectionType, getID());
 		for (ICompositeGraphic child : alChildren) {

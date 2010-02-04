@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
@@ -24,7 +24,7 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 
 	private int iDisplayedHierarchyDepth;
 	private PartialDisc pdCurrentMouseOverElement;
-	private ESelectionType parentIndicatorType;
+	private SelectionType parentIndicatorType;
 
 	/**
 	 * Constructor.
@@ -73,15 +73,15 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 		SelectionManager selectionManager = radialHierarchy
 				.getSelectionManager();
 		Set<Integer> setSelection = selectionManager
-				.getElements(ESelectionType.SELECTION);
+				.getElements(SelectionType.SELECTION);
 		Set<Integer> setMouseOver = selectionManager
-				.getElements(ESelectionType.MOUSE_OVER);
+				.getElements(SelectionType.MOUSE_OVER);
 
 		pdCurrentRootElement.setPDDrawingStrategyChildren(dsDefault,
 				iDisplayedHierarchyDepth);
 
-		HashMap<PartialDisc, ESelectionType> mapSelectedElements = new HashMap<PartialDisc, ESelectionType>();
-		HashMap<PartialDisc, ESelectionType> mapChildIndictatorElements = new HashMap<PartialDisc, ESelectionType>();
+		HashMap<PartialDisc, SelectionType> mapSelectedElements = new HashMap<PartialDisc, SelectionType>();
+		HashMap<PartialDisc, SelectionType> mapChildIndictatorElements = new HashMap<PartialDisc, SelectionType>();
 
 		boolean bIsNewSelection = radialHierarchy.isNewSelection();
 
@@ -121,7 +121,7 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 							pdCurrentRootElement, pdCurrentRootElement,
 							iMaxDisplayedHierarchyDepth);
 					mapSelectedElements.put(pdSelected,
-							ESelectionType.SELECTION);
+							SelectionType.SELECTION);
 					pdCurrentMouseOverElement = pdSelected;
 					continue;
 				}
@@ -132,12 +132,12 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 
 				if (pdIndicated == pdSelected) {
 					mapSelectedElements.put(pdSelected,
-							ESelectionType.SELECTION);
+							SelectionType.SELECTION);
 				} else if (pdIndicated == null) {
-					parentIndicatorType = ESelectionType.SELECTION;
+					parentIndicatorType = SelectionType.SELECTION;
 				} else {
 					mapChildIndictatorElements.put(pdIndicated,
-							ESelectionType.SELECTION);
+							SelectionType.SELECTION);
 				}
 
 			}
@@ -151,7 +151,7 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 					if (pdMouseOver.isCurrentlyDisplayed(pdCurrentRootElement,
 							iDisplayedHierarchyDepth)) {
 						mapSelectedElements.put(pdMouseOver,
-								ESelectionType.MOUSE_OVER);
+								SelectionType.MOUSE_OVER);
 						pdCurrentMouseOverElement = pdMouseOver;
 						continue;
 					}
@@ -164,14 +164,14 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 				if (pdIndicated == pdMouseOver) {
 					if (!mapSelectedElements.containsKey(pdMouseOver))
 						mapSelectedElements.put(pdMouseOver,
-								ESelectionType.MOUSE_OVER);
+								SelectionType.MOUSE_OVER);
 				} else if (pdIndicated == null) {
-					if (parentIndicatorType != ESelectionType.SELECTION)
-						parentIndicatorType = ESelectionType.MOUSE_OVER;
+					if (parentIndicatorType != SelectionType.SELECTION)
+						parentIndicatorType = SelectionType.MOUSE_OVER;
 				} else {
 					if (!mapChildIndictatorElements.containsKey(pdIndicated))
 						mapChildIndictatorElements.put(pdIndicated,
-								ESelectionType.MOUSE_OVER);
+								SelectionType.MOUSE_OVER);
 				}
 			}
 		}
@@ -180,11 +180,11 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 			PDDrawingStrategySelected dsCurrent = (PDDrawingStrategySelected) drawingStrategyManager
 					.createDrawingStrategy(EPDDrawingStrategyType.SELECTED);
 
-			if (mapSelectedElements.get(pdSelected) == ESelectionType.SELECTION) {
+			if (mapSelectedElements.get(pdSelected) == SelectionType.SELECTION) {
 				dsCurrent.setBorderColor(GeneralRenderStyle.SELECTED_COLOR);
 			}
 			if (mapChildIndictatorElements.containsKey(pdSelected)) {
-				if (mapChildIndictatorElements.get(pdSelected) == ESelectionType.SELECTION) {
+				if (mapChildIndictatorElements.get(pdSelected) == SelectionType.SELECTION) {
 					dsCurrent
 							.setChildIndicatorColor(GeneralRenderStyle.SELECTED_COLOR);
 				} else {
@@ -204,7 +204,7 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 							.getDefaultDrawingStrategy()
 							.getDrawingStrategyType());
 
-			if (mapChildIndictatorElements.get(pdIndicated) == ESelectionType.SELECTION) {
+			if (mapChildIndictatorElements.get(pdIndicated) == SelectionType.SELECTION) {
 				dsCurrent
 						.setChildIndicatorColor(GeneralRenderStyle.SELECTED_COLOR);
 			} else {
@@ -229,7 +229,7 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 	public void draw(float fXCenter, float fYCenter, GL gl, GLU glu) {
 
 		HashMap<PartialDisc, PDDrawingStrategySelected> mapSelectedDrawingStrategies = new HashMap<PartialDisc, PDDrawingStrategySelected>();
-		parentIndicatorType = ESelectionType.NORMAL;
+		parentIndicatorType = SelectionType.NORMAL;
 
 		initDrawingStrategies(mapSelectedDrawingStrategies);
 
@@ -257,9 +257,9 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 			dsCurrent.drawPartialDisc(gl, glu, pdSelected);
 		}
 
-		if (parentIndicatorType != ESelectionType.NORMAL) {
+		if (parentIndicatorType != SelectionType.NORMAL) {
 			gl.glPushClientAttrib(GL.GL_COLOR_BUFFER_BIT);
-			if (parentIndicatorType == ESelectionType.SELECTION)
+			if (parentIndicatorType == SelectionType.SELECTION)
 				gl.glColor3fv(GeneralRenderStyle.SELECTED_COLOR, 0);
 			else
 				gl.glColor3fv(GeneralRenderStyle.MOUSE_OVER_COLOR, 0);
@@ -299,7 +299,7 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 			}
 			radialHierarchy.setDisplayListDirty();
 		} else {
-			radialHierarchy.setNewSelection(ESelectionType.SELECTION,
+			radialHierarchy.setNewSelection(SelectionType.SELECTION,
 					pdSelected);
 			radialHierarchy.setDisplayListDirty();
 		}
@@ -310,7 +310,7 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 	public void handleMouseOver(PartialDisc pdMouseOver) {
 
 		if (pdMouseOver != pdCurrentMouseOverElement) {
-			radialHierarchy.setNewSelection(ESelectionType.MOUSE_OVER,
+			radialHierarchy.setNewSelection(SelectionType.MOUSE_OVER,
 					pdMouseOver);
 			radialHierarchy.setDisplayListDirty();
 		}

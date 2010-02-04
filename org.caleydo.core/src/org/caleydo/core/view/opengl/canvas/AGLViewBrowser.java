@@ -13,7 +13,7 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -569,8 +569,8 @@ public abstract class AGLViewBrowser
 				fTextXPosition = 9.5f;
 			}
 
-			int iNumberOfGenesSelected = glView.getNumberOfSelections(ESelectionType.SELECTION);
-			int iNumberOfGenesMouseOver = glView.getNumberOfSelections(ESelectionType.MOUSE_OVER);
+			int iNumberOfGenesSelected = glView.getNumberOfSelections(SelectionType.SELECTION);
+			int iNumberOfGenesMouseOver = glView.getNumberOfSelections(SelectionType.MOUSE_OVER);
 
 			textRenderer.begin3DRendering();
 
@@ -1710,7 +1710,7 @@ public abstract class AGLViewBrowser
 	// }
 
 	@Override
-	public int getNumberOfSelections(ESelectionType eSelectionType) {
+	public int getNumberOfSelections(SelectionType SelectionType) {
 		return 0;
 	}
 

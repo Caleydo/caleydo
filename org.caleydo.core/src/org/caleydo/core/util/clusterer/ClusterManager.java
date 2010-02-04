@@ -3,7 +3,7 @@ package org.caleydo.core.util.clusterer;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
@@ -353,8 +353,8 @@ public class ClusterManager {
 			//
 			// }
 
-			// Group temp = new Group(iter, false, examples.get(cnt), representative, ESelectionType.NORMAL);
-			Group temp = new Group(iter, false, examples.get(cnt), ESelectionType.NORMAL);
+			// Group temp = new Group(iter, false, examples.get(cnt), representative, SelectionType.NORMAL);
+			Group temp = new Group(iter, false, examples.get(cnt), SelectionType.NORMAL);
 			groupList.append(temp);
 			cnt++;
 			iOffset += iter;

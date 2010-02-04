@@ -18,7 +18,7 @@ import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
@@ -153,7 +153,7 @@ public class GLPathwayContentCreator {
 		gl.glEndList();
 	}
 
-	public void performIdenticalNodeHighlighting(ESelectionType eSelectionType) {
+	public void performIdenticalNodeHighlighting(SelectionType SelectionType) {
 		if (internalSelectionManager == null)
 			return;
 
@@ -161,14 +161,14 @@ public class GLPathwayContentCreator {
 
 		ArrayList<Integer> iAlTmpSelectedGraphItemIds = new ArrayList<Integer>();
 		Set<Integer> tmpItemIDs;
-		tmpItemIDs = internalSelectionManager.getElements(eSelectionType);
+		tmpItemIDs = internalSelectionManager.getElements(SelectionType);
 
 		if (tmpItemIDs != null) {
 			iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
 		}
 
 		// tmpItemIDs =
-		// internalSelectionManager.getElements(ESelectionType.SELECTION);
+		// internalSelectionManager.getElements(SelectionType.SELECTION);
 		//
 		// if (tmpItemIDs != null)
 		// iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
@@ -194,7 +194,7 @@ public class GLPathwayContentCreator {
 					if (tmpItemIDs.contains(graphItemRep.getId())) {
 						continue;
 					}
-					internalSelectionManager.addToType(eSelectionType,
+					internalSelectionManager.addToType(SelectionType,
 							graphItemRep.getId());
 					for (int iConnectionID : internalSelectionManager
 							.getConnectionForElementID(iAlTmpSelectedGraphItemIds
@@ -232,7 +232,7 @@ public class GLPathwayContentCreator {
 		List<IGraphItem> lGraphItems = new ArrayList<IGraphItem>();
 
 		int iTmpDepth = 0;
-		ESelectionType tmpType;
+		SelectionType tmpType;
 
 		for (int iDepthIndex = 0; iDepthIndex < lDepthSearchResult.size(); iDepthIndex++) {
 			lGraphItems = lDepthSearchResult.get(iDepthIndex);
@@ -242,18 +242,20 @@ public class GLPathwayContentCreator {
 				if (lGraphItems.get(iItemIndex) instanceof PathwayVertexGraphItemRep) {
 					iTmpDepth = (iDepthIndex + 1) / 2;
 
-					if (iTmpDepth == 1) {
-						tmpType = ESelectionType.NEIGHBORHOOD_1;
-					} else if (iTmpDepth == 2) {
-						tmpType = ESelectionType.NEIGHBORHOOD_2;
-					} else if (iTmpDepth == 3) {
-						tmpType = ESelectionType.NEIGHBORHOOD_3;
-					} else
-						throw new IllegalStateException(
-								"Neighborhood depth greater than 3 is not supported!");
-
-					internalSelectionManager.addToType(tmpType, lGraphItems
-							.get(iItemIndex).getId());
+					// FIXME - this needs to be adapted to the new selection
+					// types when re-activating the neighborhoods
+					// if (iTmpDepth == 1) {
+					// tmpType = SelectionType.NEIGHBORHOOD_1;
+					// } else if (iTmpDepth == 2) {
+					// tmpType = SelectionType.NEIGHBORHOOD_2;
+					// } else if (iTmpDepth == 3) {
+					// tmpType = SelectionType.NEIGHBORHOOD_3;
+					// } else
+					// throw new IllegalStateException(
+					// "Neighborhood depth greater than 3 is not supported!");
+					//
+					// internalSelectionManager.addToType(tmpType, lGraphItems
+					// .get(iItemIndex).getId());
 
 				} else {
 					iArSelectedEdgeRepId.add(lGraphItems.get(iItemIndex)
@@ -476,18 +478,18 @@ public class GLPathwayContentCreator {
 
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
-			tmpNodeColor = new float[]{0f, 0f, 0f, 0.25f};
+			tmpNodeColor = new float[] { 0f, 0f, 0f, 0.25f };
 			gl.glColor4fv(tmpNodeColor, 0);
 			fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);
 
 			// Handle selection highlighting of element
-			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
+			if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
 					vertexRep.getId())) {
 				tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 				gl.glColor4fv(tmpNodeColor, 0);
 				fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
 			} else if (internalSelectionManager.checkStatus(
-					ESelectionType.SELECTION, vertexRep.getId())) {
+					SelectionType.SELECTION, vertexRep.getId())) {
 				tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
 				gl.glColor4fv(tmpNodeColor, 0);
 				fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
@@ -505,14 +507,14 @@ public class GLPathwayContentCreator {
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
 			// Handle selection highlighting of element
-			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
+			if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
 					vertexRep.getId())) {
 				tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 
 				gl.glColor4fv(tmpNodeColor, 0);
 				gl.glCallList(iHighlightedCompoundNodeDisplayListId);
 			} else if (internalSelectionManager.checkStatus(
-					ESelectionType.SELECTION, vertexRep.getId())) {
+					SelectionType.SELECTION, vertexRep.getId())) {
 				tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
 
 				gl.glColor4fv(tmpNodeColor, 0);
@@ -580,7 +582,7 @@ public class GLPathwayContentCreator {
 
 						// Handle selection highlighting of element
 						if (internalSelectionManager.checkStatus(
-								ESelectionType.MOUSE_OVER, vertexRep.getId())) {
+								SelectionType.MOUSE_OVER, vertexRep.getId())) {
 							tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 							gl.glLineWidth(3);
 							gl.glColor4fv(tmpNodeColor, 0);
@@ -596,7 +598,7 @@ public class GLPathwayContentCreator {
 							}
 							gl.glEnd();
 						} else if (internalSelectionManager.checkStatus(
-								ESelectionType.SELECTION, vertexRep.getId())) {
+								SelectionType.SELECTION, vertexRep.getId())) {
 							tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
 							gl.glLineWidth(3);
 							gl.glColor4fv(tmpNodeColor, 0);
@@ -617,18 +619,18 @@ public class GLPathwayContentCreator {
 			} else {
 				// Handle selection highlighting of element
 				if (internalSelectionManager.checkStatus(
-						ESelectionType.MOUSE_OVER, vertexRep.getId())) {
+						SelectionType.MOUSE_OVER, vertexRep.getId())) {
 					tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 				} else if (internalSelectionManager.checkStatus(
-						ESelectionType.SELECTION, vertexRep.getId())) {
+						SelectionType.SELECTION, vertexRep.getId())) {
 					tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
 				} else if (internalSelectionManager.checkStatus(
-						ESelectionType.NORMAL, vertexRep.getId())) {
+						SelectionType.NORMAL, vertexRep.getId())) {
 					tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
 				}
 
 				else {
-					tmpNodeColor = new float[]{0, 0, 0, 0};
+					tmpNodeColor = new float[] { 0, 0, 0, 0 };
 				}
 
 				gl.glColor4fv(tmpNodeColor, 0);
@@ -644,7 +646,7 @@ public class GLPathwayContentCreator {
 				gl.glEnd();
 
 				if (!internalSelectionManager.checkStatus(
-						ESelectionType.DESELECTED, vertexRep.getId())) {
+						SelectionType.DESELECTED, vertexRep.getId())) {
 
 					// Transparent node for picking
 					gl.glColor4f(0, 0, 0, 0);
@@ -694,12 +696,12 @@ public class GLPathwayContentCreator {
 
 						// Handle selection highlighting of element
 						if (internalSelectionManager.checkStatus(
-								ESelectionType.MOUSE_OVER, vertexRep.getId())) {
+								SelectionType.MOUSE_OVER, vertexRep.getId())) {
 							tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
 						} else if (internalSelectionManager.checkStatus(
-								ESelectionType.SELECTION, vertexRep.getId())) {
+								SelectionType.SELECTION, vertexRep.getId())) {
 							tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
@@ -709,23 +711,23 @@ public class GLPathwayContentCreator {
 			} else {
 				// Handle selection highlighting of element
 				if (internalSelectionManager.checkStatus(
-						ESelectionType.MOUSE_OVER, vertexRep.getId())) {
+						SelectionType.MOUSE_OVER, vertexRep.getId())) {
 					tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 				} else if (internalSelectionManager.checkStatus(
-						ESelectionType.SELECTION, vertexRep.getId())) {
+						SelectionType.SELECTION, vertexRep.getId())) {
 					tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
 				} else if (internalSelectionManager.checkStatus(
-						ESelectionType.NORMAL, vertexRep.getId())) {
+						SelectionType.NORMAL, vertexRep.getId())) {
 					tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
 				} else {
-					tmpNodeColor = new float[]{0, 0, 0, 0};
+					tmpNodeColor = new float[] { 0, 0, 0, 0 };
 				}
 
 				gl.glColor4fv(tmpNodeColor, 0);
 				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
 
 				if (!internalSelectionManager.checkStatus(
-						ESelectionType.DESELECTED, vertexRep.getId())) {
+						SelectionType.DESELECTED, vertexRep.getId())) {
 
 					// Transparent node for picking
 					gl.glColor4f(0, 0, 0, 0);
@@ -735,45 +737,45 @@ public class GLPathwayContentCreator {
 
 			// // Handle selection highlighting of element
 			// if
-			// (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
+			// (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
 			// iVertexRepID)
 			// ||
-			// internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_1,
+			// internalSelectionManager.checkStatus(SelectionType.NEIGHBORHOOD_1,
 			// iVertexRepID)
 			// ||
-			// internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_2,
+			// internalSelectionManager.checkStatus(SelectionType.NEIGHBORHOOD_2,
 			// iVertexRepID)
 			// ||
-			// internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_3,
+			// internalSelectionManager.checkStatus(SelectionType.NEIGHBORHOOD_3,
 			// iVertexRepID)
-			// || internalSelectionManager.checkStatus(ESelectionType.SELECTION,
+			// || internalSelectionManager.checkStatus(SelectionType.SELECTION,
 			// iVertexRepID)) {
 			// if
-			// (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
+			// (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
 			// iVertexRepID)) {
 			// tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 			// }
 			// else if
-			// (internalSelectionManager.checkStatus(ESelectionType.SELECTION,
+			// (internalSelectionManager.checkStatus(SelectionType.SELECTION,
 			// iVertexRepID)) {
 			// tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
 			// }
 			// else if
-			// (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_1,
+			// (internalSelectionManager.checkStatus(SelectionType.NEIGHBORHOOD_1,
 			// iVertexRepID)) {
 			// gl.glEnable(GL.GL_LINE_STIPPLE);
 			// gl.glLineStipple(4, (short) 0xAAAA);
 			// tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(1);
 			// }
 			// else if
-			// (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_2,
+			// (internalSelectionManager.checkStatus(SelectionType.NEIGHBORHOOD_2,
 			// iVertexRepID)) {
 			// gl.glEnable(GL.GL_LINE_STIPPLE);
 			// gl.glLineStipple(2, (short) 0xAAAA);
 			// tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(2);
 			// }
 			// else if
-			// (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_3,
+			// (internalSelectionManager.checkStatus(SelectionType.NEIGHBORHOOD_3,
 			// iVertexRepID)) {
 			// gl.glEnable(GL.GL_LINE_STIPPLE);
 			// gl.glLineStipple(1, (short) 0xAAAA);
@@ -814,7 +816,7 @@ public class GLPathwayContentCreator {
 		else if (edgeRep instanceof PathwayRelationEdgeGraphItemRep) {
 			tmpColor = PathwayRenderStyle.RELATION_EDGE_COLOR;
 		} else {
-			tmpColor = new float[]{0, 0, 0, 0};
+			tmpColor = new float[] { 0, 0, 0, 0 };
 		}
 
 		gl.glLineWidth(4);
@@ -892,7 +894,7 @@ public class GLPathwayContentCreator {
 			} else {
 				// Check for multiple mapping
 				if (iSetRefSeq.size() > 1)
-					return new float[]{0, 1, 1};
+					return new float[] { 0, 1, 1 };
 
 				for (Object iRefSeqID : iSetRefSeq) {
 

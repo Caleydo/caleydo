@@ -21,7 +21,7 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -239,7 +239,7 @@ public class GLGlyph
 
 			if (ids != null)
 				for (int id : ids)
-					selectionManager.addToType(ESelectionType.SELECTION, id);
+					selectionManager.addToType(SelectionType.SELECTION, id);
 
 			bDrawConnectionRepLines = false;
 
@@ -927,9 +927,9 @@ public class GLGlyph
 
 					selectionManager.clearSelections();
 					if (oldMouseOverGlyphEntry != null)
-						selectionManager.addToType(ESelectionType.NORMAL, oldMouseOverGlyphEntry.getID());
+						selectionManager.addToType(SelectionType.NORMAL, oldMouseOverGlyphEntry.getID());
 
-					selectionManager.addToType(ESelectionType.MOUSE_OVER, iExternalID);
+					selectionManager.addToType(SelectionType.MOUSE_OVER, iExternalID);
 
 					oldMouseOverGlyphEntry = g;
 
@@ -943,7 +943,7 @@ public class GLGlyph
 						EIDType.EXPERIMENT_INDEX);
 
 					SelectionCommand command =
-						new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER);
+						new SelectionCommand(ESelectionCommandType.CLEAR, SelectionType.MOUSE_OVER);
 					sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
 
 					triggerSelectionUpdate();
@@ -979,10 +979,10 @@ public class GLGlyph
 			if (actualGlyph == null)
 				continue;
 
-			if (item.getSelectionType() == ESelectionType.DESELECTED && actualGlyph.isSelected())
+			if (item.getSelectionType() == SelectionType.DESELECTED && actualGlyph.isSelected())
 				actualGlyph.deSelect();
 
-			if (item.getSelectionType() == ESelectionType.SELECTION && !actualGlyph.isSelected())
+			if (item.getSelectionType() == SelectionType.SELECTION && !actualGlyph.isSelected())
 				actualGlyph.select();
 
 		}
@@ -1028,7 +1028,7 @@ public class GLGlyph
 			if (actualGlyph == null)
 				continue;
 
-			if (item.getSelectionType() != ESelectionType.MOUSE_OVER)
+			if (item.getSelectionType() != SelectionType.MOUSE_OVER)
 				continue;
 
 			vecGlyphPos = getGlyphPosition(actualGlyph);
@@ -1146,8 +1146,8 @@ public class GLGlyph
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType eSelectionType) {
-		return selectionManager.getElements(eSelectionType).size();
+	public int getNumberOfSelections(SelectionType SelectionType) {
+		return selectionManager.getElements(SelectionType).size();
 	}
 
 	@Override

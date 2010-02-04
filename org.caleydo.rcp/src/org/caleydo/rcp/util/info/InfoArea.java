@@ -6,7 +6,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -197,9 +197,9 @@ public class InfoArea
 						}
 
 						// if (selectionItem.getSelectionType() ==
-						// ESelectionType.NORMAL
+						// SelectionType.NORMAL
 						// || selectionItem.getSelectionType() ==
-						// ESelectionType.DESELECTED) {
+						// SelectionType.DESELECTED) {
 						// // Flush old items that become deselected/normal
 						// for (TreeItem tmpItem : selectionTree.getItems()) {
 						// if (tmpItem.getData() == null
@@ -210,16 +210,16 @@ public class InfoArea
 						// }
 						// }
 						// }
-						if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
-							|| selectionItem.getSelectionType() == ESelectionType.SELECTION) {
+						if (selectionItem.getSelectionType() == SelectionType.MOUSE_OVER
+							|| selectionItem.getSelectionType() == SelectionType.SELECTION) {
 
 							Color color;
 							float[] fArColor = null;
 
-							if (selectionItem.getSelectionType() == ESelectionType.SELECTION) {
+							if (selectionItem.getSelectionType() == SelectionType.SELECTION) {
 								fArColor = GeneralRenderStyle.SELECTED_COLOR;
 							}
-							else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER) {
+							else if (selectionItem.getSelectionType() == SelectionType.MOUSE_OVER) {
 								fArColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 							}
 
@@ -305,8 +305,8 @@ public class InfoArea
 
 					for (SelectionDeltaItem selectionItem : selectionDelta) {
 
-						if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
-							|| selectionItem.getSelectionType() == ESelectionType.SELECTION) {
+						if (selectionItem.getSelectionType() == SelectionType.MOUSE_OVER
+							|| selectionItem.getSelectionType() == SelectionType.SELECTION) {
 
 							// Flush old experiments from this selection type
 							for (TreeItem item : experimentTree.getItems()) {
@@ -321,10 +321,10 @@ public class InfoArea
 							Color color;
 							float[] fArColor = null;
 
-							if (selectionItem.getSelectionType() == ESelectionType.SELECTION) {
+							if (selectionItem.getSelectionType() == SelectionType.SELECTION) {
 								fArColor = GeneralRenderStyle.SELECTED_COLOR;
 							}
-							else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER) {
+							else if (selectionItem.getSelectionType() == SelectionType.MOUSE_OVER) {
 								fArColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 							}
 

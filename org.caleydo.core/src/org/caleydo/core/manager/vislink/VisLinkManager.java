@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -134,7 +134,7 @@ public class VisLinkManager
 			destId = (Integer) set.iterator().next();
 		}
 		SelectionDelta sd = new SelectionDelta(EIDType.EXPRESSION_INDEX);
-		SelectionDeltaItem sdi = sd.addSelection(destId, ESelectionType.MOUSE_OVER);
+		SelectionDeltaItem sdi = sd.addSelection(destId, SelectionType.MOUSE_OVER);
 		sdi.addConnectionID(885);
 		SelectionUpdateEvent sue = new SelectionUpdateEvent();
 		sue.setSelectionDelta(sd);
@@ -160,7 +160,7 @@ public class VisLinkManager
 
 		SelectionDeltaItem sdi = null;
 		for (SelectionDeltaItem s : selectionDelta.getAllItems()) {
-			if (s.getSelectionType() == ESelectionType.MOUSE_OVER) {
+			if (s.getSelectionType() == SelectionType.MOUSE_OVER) {
 				sdi = s;
 			}
 		}

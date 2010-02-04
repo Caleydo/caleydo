@@ -12,7 +12,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
@@ -371,16 +371,16 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 						if (groupRep != null) {
 							if (!bControlPressed
 									&& !selectionManager.checkStatus(
-											ESelectionType.SELECTION, groupRep
+											SelectionType.SELECTION, groupRep
 													.getID())) {
 								dragAndDropController.clearDraggables();
 								selectionManager
-										.clearSelection(ESelectionType.SELECTION);
+										.clearSelection(SelectionType.SELECTION);
 							}
 							groupRep.addAsDraggable(dragAndDropController);
 							dragAndDropController.startDragging();
 
-							groupRep.setSelectionType(ESelectionType.SELECTION,
+							groupRep.setSelectionType(SelectionType.SELECTION,
 									selectionManager);
 							rootGroup.updateDrawingStrategies(selectionManager,
 									drawingStrategyManager);
@@ -399,17 +399,17 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 						iDraggedOverCollapseButtonID = -1;
 						if (groupRep != null) {
 							if (selectionManager
-									.checkStatus(ESelectionType.MOUSE_OVER,
+									.checkStatus(SelectionType.MOUSE_OVER,
 											groupRep.getID())
 									|| selectionManager.checkStatus(
-											ESelectionType.SELECTION, groupRep
+											SelectionType.SELECTION, groupRep
 													.getID())) {
 								return;
 							}
 							selectionManager
-									.clearSelection(ESelectionType.MOUSE_OVER);
+									.clearSelection(SelectionType.MOUSE_OVER);
 							selectionManager
-									.addToType(ESelectionType.MOUSE_OVER,
+									.addToType(SelectionType.MOUSE_OVER,
 											groupRep.getID());
 							rootGroup.updateDrawingStrategies(selectionManager,
 									drawingStrategyManager);
@@ -419,12 +419,12 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 					case RIGHT_CLICKED :
 						if (groupRep != null) {
 							if (selectionManager.checkStatus(
-									ESelectionType.SELECTION, groupRep.getID())
+									SelectionType.SELECTION, groupRep.getID())
 									&& groupRep != rootGroup) {
 
 								Set<Integer> setSelectedGroups = new HashSet<Integer>(
 										selectionManager
-												.getElements(ESelectionType.SELECTION));
+												.getElements(SelectionType.SELECTION));
 
 								CreateGroupItem createGroupItem = new CreateGroupItem(
 										setSelectedGroups);
@@ -473,14 +473,14 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			//
 			// if (!bControlPressed
 			// && !selectionManager
-			// .checkStatus(ESelectionType.SELECTION, elementRep.getID())) {
+			// .checkStatus(SelectionType.SELECTION, elementRep.getID())) {
 			// dragAndDropController.clearDraggables();
-			// selectionManager.clearSelection(ESelectionType.SELECTION);
+			// selectionManager.clearSelection(SelectionType.SELECTION);
 			// }
 			// dragAndDropController.addDraggable(elementRep);
 			// dragAndDropController.startDragging();
 			//
-			// selectionManager.addToType(ESelectionType.SELECTION,
+			// selectionManager.addToType(SelectionType.SELECTION,
 			// elementRep.getID());
 			// rootGroup.updateDrawingStrategies(selectionManager,
 			// drawingStrategyManager);
@@ -490,14 +490,14 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			// case MOUSE_OVER:
 			// iDraggedOverCollapseButtonID = -1;
 			// if (elementRep != null) {
-			// if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER,
+			// if (selectionManager.checkStatus(SelectionType.MOUSE_OVER,
 			// elementRep.getID())
-			// || selectionManager.checkStatus(ESelectionType.SELECTION,
+			// || selectionManager.checkStatus(SelectionType.SELECTION,
 			// elementRep.getID())) {
 			// return;
 			// }
-			// selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
-			// selectionManager.addToType(ESelectionType.MOUSE_OVER,
+			// selectionManager.clearSelection(SelectionType.MOUSE_OVER);
+			// selectionManager.addToType(SelectionType.MOUSE_OVER,
 			// elementRep.getID());
 			// rootGroup.updateDrawingStrategies(selectionManager,
 			// drawingStrategyManager);
@@ -506,7 +506,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			// break;
 			// case RIGHT_CLICKED:
 			// if (elementRep != null) {
-			// if (selectionManager.checkStatus(ESelectionType.SELECTION,
+			// if (selectionManager.checkStatus(SelectionType.SELECTION,
 			// elementRep.getID())) {
 			// CreateGroupItem createGroupItem = new CreateGroupItem();
 			// contextMenu.addContextMenueItem(createGroupItem);
@@ -580,7 +580,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType selectionType) {
+	public int getNumberOfSelections(SelectionType selectionType) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

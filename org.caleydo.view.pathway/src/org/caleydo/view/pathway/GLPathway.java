@@ -16,7 +16,7 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -164,11 +164,6 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 		vecTranslation = new Vec3f(0, 0, 0);
 
 		// initialize internal gene selection manager
-		ArrayList<ESelectionType> alSelectionType = new ArrayList<ESelectionType>();
-		for (ESelectionType selectionType : ESelectionType.values()) {
-			alSelectionType.add(selectionType);
-		}
-
 		selectionManager = new SelectionManager.Builder(EIDType.PATHWAY_VERTEX)
 				.build();
 
@@ -367,7 +362,7 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 
 		if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 			for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
-				if (item.getSelectionType() == ESelectionType.MOUSE_OVER) {
+				if (item.getSelectionType() == SelectionType.MOUSE_OVER) {
 					iCurrentStorageIndex = item.getPrimaryID();
 					break;
 				}
@@ -381,8 +376,8 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 
 			int iPathwayHeight = pathway.getHeight();
 			for (SelectionDeltaItem item : resolvedDelta) {
-				if (item.getSelectionType() != ESelectionType.MOUSE_OVER
-						&& item.getSelectionType() != ESelectionType.SELECTION) {
+				if (item.getSelectionType() != SelectionType.MOUSE_OVER
+						&& item.getSelectionType() != SelectionType.SELECTION) {
 					continue;
 				}
 
@@ -663,22 +658,23 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 		switch (ePickingType) {
 		case PATHWAY_ELEMENT_SELECTION:
 
-			ESelectionType eSelectionType;
+			SelectionType selectionType;
 
 			PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager
 					.getPathwayItemManager().getItem(iExternalID);
 
 			setDisplayListDirty();
 
-			selectionManager.clearSelection(ESelectionType.NEIGHBORHOOD_1);
-			selectionManager.clearSelection(ESelectionType.NEIGHBORHOOD_2);
-			selectionManager.clearSelection(ESelectionType.NEIGHBORHOOD_3);
+			// TODO: reactivate for neighborhood
+			// selectionManager.clearSelection(SelectionType.NEIGHBORHOOD_1);
+			// selectionManager.clearSelection(SelectionType.NEIGHBORHOOD_2);
+			// selectionManager.clearSelection(SelectionType.NEIGHBORHOOD_3);
 
 			switch (pickingMode) {
 			case DOUBLE_CLICKED:
 				// same behavior as for single click except that
 				// pathways are also loaded
-				eSelectionType = ESelectionType.SELECTION;
+				selectionType = SelectionType.SELECTION;
 
 				// Load embedded pathway
 				if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map) {
@@ -713,13 +709,13 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 				break;
 
 			case CLICKED:
-				eSelectionType = ESelectionType.SELECTION;
+				selectionType = SelectionType.SELECTION;
 				break;
 			case MOUSE_OVER:
-				eSelectionType = ESelectionType.MOUSE_OVER;
+				selectionType = SelectionType.MOUSE_OVER;
 				break;
 			case RIGHT_CLICKED:
-				eSelectionType = ESelectionType.SELECTION;
+				selectionType = SelectionType.SELECTION;
 
 				if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map) {
 
@@ -755,14 +751,14 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 				return;
 			}
 
-			if (selectionManager.checkStatus(eSelectionType, iExternalID)) {
+			if (selectionManager.checkStatus(selectionType, iExternalID)) {
 				break;
 			}
 
-			selectionManager.clearSelection(eSelectionType);
+			selectionManager.clearSelection(selectionType);
 
 			// Add new vertex to internal selection manager
-			selectionManager.addToType(eSelectionType, tmpVertexGraphItemRep
+			selectionManager.addToType(selectionType, tmpVertexGraphItemRep
 					.getId());
 
 			int iConnectionID = generalManager.getIDManager().createID(
@@ -772,12 +768,12 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 			connectedElementRepresentationManager
 					.clear(EIDType.EXPRESSION_INDEX);
 			gLPathwayContentCreator
-					.performIdenticalNodeHighlighting(eSelectionType);
+					.performIdenticalNodeHighlighting(selectionType);
 
-			createConnectionLines(eSelectionType, iConnectionID);
+			createConnectionLines(selectionType, iConnectionID);
 
 			SelectionCommand command = new SelectionCommand(
-					ESelectionCommandType.CLEAR, eSelectionType);
+					ESelectionCommandType.CLEAR, selectionType);
 			sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 			ISelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager
@@ -793,7 +789,7 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 		}
 	}
 
-	private void createConnectionLines(ESelectionType eSelectionType,
+	private void createConnectionLines(SelectionType SelectionType,
 			int iConnectionID) {
 		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep;
 		int iPathwayHeight = pathway.getHeight();
@@ -804,7 +800,7 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 		// AGLViewBrowser)
 		// iViewID = glRemoteRenderingView.getID();
 
-		for (int iVertexRepID : selectionManager.getElements(eSelectionType)) {
+		for (int iVertexRepID : selectionManager.getElements(SelectionType)) {
 			tmpPathwayVertexGraphItemRep = generalManager
 					.getPathwayItemManager().getPathwayVertexRep(iVertexRepID);
 
@@ -909,8 +905,8 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType eSelectionType) {
-		return selectionManager.getElements(eSelectionType).size();
+	public int getNumberOfSelections(SelectionType SelectionType) {
+		return selectionManager.getElements(SelectionType).size();
 	}
 
 	@Override

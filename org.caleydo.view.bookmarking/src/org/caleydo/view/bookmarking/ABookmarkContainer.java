@@ -7,7 +7,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -168,10 +168,10 @@ abstract class ABookmarkContainer {
 
 			float[] highlightColor = null;
 
-			if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER, item
+			if (selectionManager.checkStatus(SelectionType.MOUSE_OVER, item
 					.getID())) {
 				highlightColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
-			} else if (selectionManager.checkStatus(ESelectionType.SELECTION,
+			} else if (selectionManager.checkStatus(SelectionType.SELECTION,
 					item.getID())) {
 				highlightColor = GeneralRenderStyle.SELECTED_COLOR;
 
@@ -215,20 +215,20 @@ abstract class ABookmarkContainer {
 	 */
 	void handleEvents(EPickingType ePickingType, EPickingMode pickingMode,
 			Integer iExternalID, Pick pick) {
-		ESelectionType selectionType;
+		SelectionType selectionType;
 		switch (ePickingType) {
 
 			case BOOKMARK_ELEMENT :
 
 				switch (pickingMode) {
 					case CLICKED :
-						selectionType = ESelectionType.SELECTION;
+						selectionType = SelectionType.SELECTION;
 						break;
 					case MOUSE_OVER :
-						selectionType = ESelectionType.MOUSE_OVER;
+						selectionType = SelectionType.MOUSE_OVER;
 						break;
 					case RIGHT_CLICKED :
-						selectionType = ESelectionType.SELECTION;
+						selectionType = SelectionType.SELECTION;
 
 						BookmarkContextMenuItemContainer bookmarkContextMenuItemContainer = new BookmarkContextMenuItemContainer();
 						bookmarkContextMenuItemContainer.setID(internalIDType,

@@ -17,7 +17,7 @@ import org.caleydo.core.data.collection.export.SetExporter;
 import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.GroupList;
@@ -604,14 +604,14 @@ public class Set
 		for (int i = 0; i < arGroupInfo.length; i++) {
 			Group group = null;
 			if (cluster != arGroupInfo[i]) {
-				group = new Group(cnt, false, 0, ESelectionType.NORMAL);
+				group = new Group(cnt, false, 0, SelectionType.NORMAL);
 				groupListTemp.append(group);
 				cluster++;
 				cnt = 0;
 			}
 			cnt++;
 			if (i == arGroupInfo.length - 1) {
-				group = new Group(cnt, false, 0, ESelectionType.NORMAL);
+				group = new Group(cnt, false, 0, SelectionType.NORMAL);
 				groupListTemp.append(group);
 			}
 		}

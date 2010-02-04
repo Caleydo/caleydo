@@ -32,7 +32,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -197,11 +197,11 @@ public class GLScatterplot extends AStorageBasedView {
 		super(glCanvas, sLabel, viewFrustum);
 		viewType = GLScatterplot.VIEW_ID;
 
-		// ArrayList<ESelectionType> alSelectionTypes = new
-		// ArrayList<ESelectionType>();
-		// alSelectionTypes.add(ESelectionType.NORMAL);
-		// alSelectionTypes.add(ESelectionType.MOUSE_OVER);
-		// alSelectionTypes.add(ESelectionType.SELECTION);
+		// ArrayList<SelectionType> alSelectionTypes = new
+		// ArrayList<SelectionType>();
+		// alSelectionTypes.add(SelectionType.NORMAL);
+		// alSelectionTypes.add(SelectionType.MOUSE_OVER);
+		// alSelectionTypes.add(SelectionType.SELECTION);
 
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
@@ -272,7 +272,7 @@ public class GLScatterplot extends AStorageBasedView {
 			fArRgbaWhite = new float[]{1.0f, 1.0f, 1.0f, 0f}; // OPACY
 			selectionSet.clear();
 			selectionSet = elementSelectionManager
-					.getElements(ESelectionType.SELECTION);
+					.getElements(SelectionType.SELECTION);
 			debugsize = selectionSet.size();
 		}
 		// else
@@ -1263,9 +1263,9 @@ public class GLScatterplot extends AStorageBasedView {
 
 		if (bRender2Axis)
 			if (elementSelectionManager
-					.getNumberOfElements(ESelectionType.SELECTION) > 0)
+					.getNumberOfElements(SelectionType.SELECTION) > 0)
 				selectionSet = elementSelectionManager
-						.getElements(ESelectionType.SELECTION);
+						.getElements(SelectionType.SELECTION);
 
 		for (Integer iContentIndex : selectionSet) {
 
@@ -1327,11 +1327,11 @@ public class GLScatterplot extends AStorageBasedView {
 	private void RenderMouseOver(GL gl) {
 
 		if (mouseoverSelectionManager
-				.getNumberOfElements(ESelectionType.MOUSE_OVER) == 0)
+				.getNumberOfElements(SelectionType.MOUSE_OVER) == 0)
 			return;
 
 		Set<Integer> mouseOver = mouseoverSelectionManager
-				.getElements(ESelectionType.MOUSE_OVER);
+				.getElements(SelectionType.MOUSE_OVER);
 		int iContentIndex = 0;
 		for (int i : mouseOver) {
 			iContentIndex = i;
@@ -1350,7 +1350,7 @@ public class GLScatterplot extends AStorageBasedView {
 		float y = ynormalized * YScale;
 		float[] fArMappingColor = colorMapper.getColor(Math.max(xnormalized,
 				ynormalized));
-		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION,
+		if (elementSelectionManager.checkStatus(SelectionType.SELECTION,
 				iContentIndex))
 			fArMappingColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 
@@ -1411,7 +1411,7 @@ public class GLScatterplot extends AStorageBasedView {
 		}
 
 
-		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION,
+		if (elementSelectionManager.checkStatus(SelectionType.SELECTION,
 				iContentIndex))
 			sLabel = "Selected Point ("
 					+ genLabel
@@ -1514,7 +1514,7 @@ public class GLScatterplot extends AStorageBasedView {
 			if (IsInSelectionRectangle(x, y)) {
 				if (!elementSelectionManager.checkStatus(iContentIndex))
 					elementSelectionManager.add(iContentIndex);
-				elementSelectionManager.addToType(ESelectionType.SELECTION,
+				elementSelectionManager.addToType(SelectionType.SELECTION,
 						iContentIndex);
 			}
 		}
@@ -1523,14 +1523,14 @@ public class GLScatterplot extends AStorageBasedView {
 	private void RenderSelection(GL gl) {
 
 		if (elementSelectionManager
-				.getNumberOfElements(ESelectionType.SELECTION) == 0)
+				.getNumberOfElements(SelectionType.SELECTION) == 0)
 			return;
 
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 
 		Set<Integer> selectionSet = elementSelectionManager
-				.getElements(ESelectionType.SELECTION);
+				.getElements(SelectionType.SELECTION);
 
 		float x = 0.0f;
 		float y = 0.0f;
@@ -1709,10 +1709,10 @@ public class GLScatterplot extends AStorageBasedView {
 
 	public void selectAxesfromExternal() {
 
-		if (axisSelectionManager.getNumberOfElements(ESelectionType.SELECTION) == 0) {
+		if (axisSelectionManager.getNumberOfElements(SelectionType.SELECTION) == 0) {
 
 			Set<Integer> axis = axisSelectionManager
-					.getElements(ESelectionType.SELECTION);
+					.getElements(SelectionType.SELECTION);
 
 			for (int i : axis) {
 				// TODO : If Multiple Selections or Scatterplots are Available.
@@ -1724,11 +1724,11 @@ public class GLScatterplot extends AStorageBasedView {
 		}
 
 		// TODO Remove l8ter, Mousover shouldnd select an Axis
-		if (axisSelectionManager.getNumberOfElements(ESelectionType.MOUSE_OVER) == 0)
+		if (axisSelectionManager.getNumberOfElements(SelectionType.MOUSE_OVER) == 0)
 			return;
 
 		Set<Integer> axis = axisSelectionManager
-				.getElements(ESelectionType.MOUSE_OVER);
+				.getElements(SelectionType.MOUSE_OVER);
 
 		for (int i : axis) {
 			// TODO : If Multiple Selections or Scatterplots are Available.
@@ -1741,11 +1741,11 @@ public class GLScatterplot extends AStorageBasedView {
 	}
 
 	public void selectNewAxes() {
-		axisSelectionManager.clearSelection(ESelectionType.SELECTION);
+		axisSelectionManager.clearSelection(SelectionType.SELECTION);
 
-		axisSelectionManager.addToType(ESelectionType.SELECTION,
+		axisSelectionManager.addToType(SelectionType.SELECTION,
 				SELECTED_X_AXIS);
-		axisSelectionManager.addToType(ESelectionType.SELECTION,
+		axisSelectionManager.addToType(SelectionType.SELECTION,
 				SELECTED_Y_AXIS);
 
 		ISelectionDelta selectionDelta = axisSelectionManager.getDelta();
@@ -1848,52 +1848,52 @@ public class GLScatterplot extends AStorageBasedView {
 		if (bRectangleSelection)
 			return;
 
-		ESelectionType eSelectionType;
+		SelectionType selectionType;
 		switch (ePickingType) {
 			case SCATTER_POINT_SELECTION :
 				iCurrentMouseOverElement = iExternalID;
 				switch (pickingMode) {
 
 					case CLICKED :
-						eSelectionType = ESelectionType.SELECTION;
+						selectionType = SelectionType.SELECTION;
 						break;
 					case MOUSE_OVER :
-						eSelectionType = ESelectionType.MOUSE_OVER;
+						selectionType = SelectionType.MOUSE_OVER;
 						break;
 					case RIGHT_CLICKED :
-						eSelectionType = ESelectionType.DESELECTED;
+						selectionType = SelectionType.DESELECTED;
 						break;
 					case DRAGGED :
-						eSelectionType = ESelectionType.SELECTION;
+						selectionType = SelectionType.SELECTION;
 						// break;
 					default :
 						return;
 
 				}
-				createContentSelection(eSelectionType, iExternalID);
+				createContentSelection(selectionType, iExternalID);
 				break;
 
 			case SCATTER_MATRIX_SELECTION :
 				iCurrentMouseOverElement = iExternalID;
 				switch (pickingMode) {
 					case CLICKED :
-						eSelectionType = ESelectionType.SELECTION;
+						selectionType = SelectionType.SELECTION;
 						break;
 					case MOUSE_OVER :
-						eSelectionType = ESelectionType.MOUSE_OVER;
+						selectionType = SelectionType.MOUSE_OVER;
 						break;
 					default :
 						return;
 				}
-				createStorageSelection(eSelectionType, iExternalID);
+				createStorageSelection(selectionType, iExternalID);
 				break;
 		}
 	}
 
-	private void createStorageSelection(ESelectionType selectionType,
+	private void createStorageSelection(SelectionType selectionType,
 			int contentID) {
 
-		if (selectionType == ESelectionType.SELECTION) {
+		if (selectionType == SelectionType.SELECTION) {
 
 			SELECTED_X_AXIS = contentID / NR_TEXTURESY;
 			SELECTED_Y_AXIS = contentID % NR_TEXTURESX;
@@ -1902,7 +1902,7 @@ public class GLScatterplot extends AStorageBasedView {
 			setDisplayListDirty();
 		}
 
-		if (selectionType == ESelectionType.MOUSE_OVER) {
+		if (selectionType == SelectionType.MOUSE_OVER) {
 
 			MOUSEOVER_X_AXIS = contentID / NR_TEXTURESY;
 			MOUSEOVER_Y_AXIS = contentID % NR_TEXTURESX;
@@ -1911,14 +1911,14 @@ public class GLScatterplot extends AStorageBasedView {
 
 	}
 
-	private void createContentSelection(ESelectionType selectionType,
+	private void createContentSelection(SelectionType selectionType,
 			int contentID) {
 
-		if (elementSelectionManager.checkStatus(ESelectionType.SELECTION,
+		if (elementSelectionManager.checkStatus(SelectionType.SELECTION,
 				contentID)) {
-			if (selectionType == ESelectionType.DESELECTED) {
+			if (selectionType == SelectionType.DESELECTED) {
 				elementSelectionManager.removeFromType(
-						ESelectionType.SELECTION, contentID);
+						SelectionType.SELECTION, contentID);
 				setDisplayListDirty();
 				bUpdateSelection = true;
 				return;
@@ -1931,7 +1931,7 @@ public class GLScatterplot extends AStorageBasedView {
 		mouseoverSelectionManager.clearSelection(selectionType);
 		elementSelectionManager.clearSelection(selectionType);
 
-		if (selectionType == ESelectionType.SELECTION) {
+		if (selectionType == SelectionType.SELECTION) {
 			// fDragStartPoint = new float[3];
 			// fDragEndPoint = new float[3];
 			if (!elementSelectionManager.checkStatus(contentID))
@@ -1943,7 +1943,7 @@ public class GLScatterplot extends AStorageBasedView {
 			// return;
 		}
 
-		if ((selectionType == ESelectionType.MOUSE_OVER))
+		if ((selectionType == SelectionType.MOUSE_OVER))
 		// && (!mouseoverSelectionManager.checkStatus(contentID)))
 		{
 			// mouseoverSelectionManager.resetSelectionManager(); // This may be
@@ -2102,7 +2102,7 @@ public class GLScatterplot extends AStorageBasedView {
 			float fYValue = renderStyle.getYCenter();
 
 			// Set<Integer> mouseOver =
-			// storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
+			// storageSelectionManager.getElements(SelectionType.MOUSE_OVER);
 			// for (int iLineIndex : mouseOver)
 			// {
 			// fYValue = storageVA.indexOf(iLineIndex) *

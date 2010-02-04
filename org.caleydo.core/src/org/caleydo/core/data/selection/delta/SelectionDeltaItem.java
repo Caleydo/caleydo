@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 
 /**
  * A SelectionDeltaItem represents one selection in the framework. It holds the id of the selected element,
- * the type of the selection as defined in {@link ESelectionType} and optionally an internal selection ID
+ * the type of the selection as defined in {@link SelectionType} and optionally an internal selection ID
  * 
  * @author Alexander
  */
@@ -18,7 +18,7 @@ public class SelectionDeltaItem
 	implements IDeltaItem {
 
 	private int primaryID = -1;
-	private ESelectionType selectionType;
+	private SelectionType selectionType;
 	private int secondaryID = -1;
 
 	private ArrayList<Integer> connectionIDs;
@@ -38,7 +38,7 @@ public class SelectionDeltaItem
 	 * @param selectionType
 	 *            the type of the selection
 	 */
-	public SelectionDeltaItem(int iSelectionID, ESelectionType selectionType) {
+	public SelectionDeltaItem(int iSelectionID, SelectionType selectionType) {
 		this.primaryID = iSelectionID;
 		this.selectionType = selectionType;
 		connectionIDs = new ArrayList<Integer>();
@@ -54,7 +54,7 @@ public class SelectionDeltaItem
 	 * @param secondaryID
 	 *            the internal id which maps to the selectionID
 	 */
-	public SelectionDeltaItem(int iSelectionID, ESelectionType selectionType, int iInternalID) {
+	public SelectionDeltaItem(int iSelectionID, SelectionType selectionType, int iInternalID) {
 		this(iSelectionID, selectionType);
 		this.secondaryID = iInternalID;
 		connectionIDs = new ArrayList<Integer>();
@@ -80,7 +80,7 @@ public class SelectionDeltaItem
 	 * 
 	 * @return the selection type
 	 */
-	public ESelectionType getSelectionType() {
+	public SelectionType getSelectionType() {
 		return selectionType;
 	}
 
@@ -113,7 +113,7 @@ public class SelectionDeltaItem
 	 * @param selectionType
 	 *            the selection type
 	 */
-	public void setSelectionType(ESelectionType selectionType) {
+	public void setSelectionType(SelectionType selectionType) {
 		this.selectionType = selectionType;
 	}
 

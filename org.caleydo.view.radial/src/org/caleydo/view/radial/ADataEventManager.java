@@ -1,6 +1,6 @@
 package org.caleydo.view.radial;
 
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -76,7 +76,7 @@ public abstract class ADataEventManager implements ISelectionUpdateHandler {
 	 *            Partial disc that has been selected.
 	 */
 	public abstract void triggerDataSelectionEvents(
-			ESelectionType selectionType, PartialDisc pdSelected);
+			SelectionType selectionType, PartialDisc pdSelected);
 
 	/**
 	 * Registers all data type specific event listeners.

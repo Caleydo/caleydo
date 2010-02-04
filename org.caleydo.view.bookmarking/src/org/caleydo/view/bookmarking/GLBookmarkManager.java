@@ -8,7 +8,7 @@ import java.util.HashMap;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -310,7 +310,7 @@ public class GLBookmarkManager extends AGLView
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType eSelectionType) {
+	public int getNumberOfSelections(SelectionType SelectionType) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

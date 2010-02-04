@@ -11,7 +11,7 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
@@ -128,10 +128,10 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 		viewType = VIEW_ID;
 
-		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
-		alSelectionTypes.add(ESelectionType.NORMAL);
-		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
-		alSelectionTypes.add(ESelectionType.SELECTION);
+		ArrayList<SelectionType> alSelectionTypes = new ArrayList<SelectionType>();
+		alSelectionTypes.add(SelectionType.NORMAL);
+		alSelectionTypes.add(SelectionType.MOUSE_OVER);
+		alSelectionTypes.add(SelectionType.SELECTION);
 
 		renderStyle = new RadialHierarchyRenderStyle(viewFrustum);
 		renderStyle.setMinViewDimensions(MIN_DISPLAY_WIDTH
@@ -273,7 +273,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 				.getCurrentDrawingState(), pdCurrentRootElement,
 				pdCurrentSelectedElement, iMaxDisplayedHierarchyDepth);
 
-		selectionManager.addToType(ESelectionType.SELECTION,
+		selectionManager.addToType(SelectionType.SELECTION,
 				pdCurrentRootElement.getElementID());
 
 		controlBox = new Rectangle(0, 0, 0.3f, 0.2f);
@@ -499,7 +499,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 					pdCurrentSelectedElement, iMaxDisplayedHierarchyDepth);
 			setDisplayListDirty();
 
-			setNewSelection(ESelectionType.SELECTION, pdCurrentSelectedElement);
+			setNewSelection(SelectionType.SELECTION, pdCurrentSelectedElement);
 		}
 	}
 
@@ -640,7 +640,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 		// ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
 		// event.setClusterNumber(1073741840);
-		// event.setSelectionType(ESelectionType.SELECTION);
+		// event.setSelectionType(SelectionType.SELECTION);
 		//		
 		// eventPublisher.triggerEvent(event);
 
@@ -793,7 +793,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	 * @param pdSelected
 	 *            Element that has been selected.
 	 */
-	public void setNewSelection(ESelectionType selectionType,
+	public void setNewSelection(SelectionType selectionType,
 			PartialDisc pdSelected) {
 
 		selectionManager.clearSelections();
@@ -801,7 +801,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 		dataEventManager.triggerDataSelectionEvents(selectionType, pdSelected);
 
-		if (selectionType == ESelectionType.SELECTION) {
+		if (selectionType == SelectionType.SELECTION) {
 			bIsNewSelection = true;
 		} else {
 			bIsNewSelection = false;
@@ -819,7 +819,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType selectionType) {
+	public int getNumberOfSelections(SelectionType selectionType) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -1101,7 +1101,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	public void handleKeyboardAlternativeDiscSelection() {
 
 		Set<Integer> setSelection = selectionManager
-				.getElements(ESelectionType.SELECTION);
+				.getElements(SelectionType.SELECTION);
 		PartialDisc pdCurrentMouseOverElement = null;
 		int iDisplayedHierarchyDepth = Math.min(iMaxDisplayedHierarchyDepth,
 				pdCurrentRootElement.getHierarchyDepth());
@@ -1119,7 +1119,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 		}
 
 		Set<Integer> setMouseOver = selectionManager
-				.getElements(ESelectionType.MOUSE_OVER);
+				.getElements(SelectionType.MOUSE_OVER);
 		if ((setMouseOver != null)) {
 			for (Integer elementID : setMouseOver) {
 				pdCurrentMouseOverElement = hashPartialDiscs.get(elementID);

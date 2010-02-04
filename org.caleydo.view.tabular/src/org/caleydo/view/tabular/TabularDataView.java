@@ -9,7 +9,7 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -227,7 +227,7 @@ public class TabularDataView extends ASWTView
 				// contentTable.indexOf(selectedItem);
 				// addRemoveIcon(iSelectedRowIndex);
 				// triggerContentSelectionEvent(iSelectedRowIndex,
-				// ESelectionType.SELECTION);
+				// SelectionType.SELECTION);
 
 			}
 		});
@@ -429,9 +429,9 @@ public class TabularDataView extends ASWTView
 				int iStorageIndex = storageVA.get(iColIndex);
 
 				triggerStorageSelectionEvent(iStorageIndex,
-						ESelectionType.SELECTION);
+						SelectionType.SELECTION);
 				triggerContentSelectionEvent(iRefSeqID,
-						ESelectionType.SELECTION);
+						SelectionType.SELECTION);
 
 				// addContentRemoveIcon(iRowIndex);
 				// addStorageRemoveIcon(iStorageIndex);
@@ -580,7 +580,7 @@ public class TabularDataView extends ASWTView
 				contentTable.deselectAll();
 
 				Iterator<Integer> iterContentIndex = contentSelectionManager
-						.getElements(ESelectionType.SELECTION).iterator();
+						.getElements(SelectionType.SELECTION).iterator();
 
 				// FIXME: currently we do not handle multiple selections (->
 				// replace if with while)
@@ -592,7 +592,7 @@ public class TabularDataView extends ASWTView
 				// FIXME: currently we do not handle multiple selections (->
 				// replace if with while)
 				Iterator<Integer> iterStorageIndex = storageSelectionManager
-						.getElements(ESelectionType.SELECTION).iterator();
+						.getElements(SelectionType.SELECTION).iterator();
 				while (iterStorageIndex.hasNext()) {
 					iColIndex = storageVA.indexOf(iterStorageIndex.next()) + 3;
 				}
@@ -604,12 +604,12 @@ public class TabularDataView extends ASWTView
 	}
 
 	private void triggerContentSelectionEvent(int iContentIndex,
-			ESelectionType eSelectionType) {
-		if (contentSelectionManager.checkStatus(eSelectionType, iContentIndex))
+			SelectionType SelectionType) {
+		if (contentSelectionManager.checkStatus(SelectionType, iContentIndex))
 			return;
 
-		contentSelectionManager.clearSelection(eSelectionType);
-		contentSelectionManager.addToType(eSelectionType, iContentIndex);
+		contentSelectionManager.clearSelection(SelectionType);
+		contentSelectionManager.addToType(SelectionType, iContentIndex);
 
 		if (dataDomain == EDataDomain.GENETIC_DATA) {
 			// Resolve multiple spotting on chip and add all to the
@@ -631,7 +631,7 @@ public class TabularDataView extends ASWTView
 				for (Object iExpressionIndex : idMappingManager
 						.<Integer, Object> getIDAsSet(EIDType.REFSEQ_MRNA_INT,
 								EIDType.EXPRESSION_INDEX, iRefSeqID)) {
-					contentSelectionManager.addToType(eSelectionType,
+					contentSelectionManager.addToType(SelectionType,
 							(Integer) iExpressionIndex);
 				}
 			}
@@ -640,7 +640,7 @@ public class TabularDataView extends ASWTView
 		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 
 		SelectionCommand command = new SelectionCommand(
-				ESelectionCommandType.CLEAR, eSelectionType);
+				ESelectionCommandType.CLEAR, SelectionType);
 		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -650,15 +650,15 @@ public class TabularDataView extends ASWTView
 	}
 
 	private void triggerStorageSelectionEvent(int iStorageIndex,
-			ESelectionType eSelectionType) {
-		if (storageSelectionManager.checkStatus(eSelectionType, iStorageIndex))
+			SelectionType SelectionType) {
+		if (storageSelectionManager.checkStatus(SelectionType, iStorageIndex))
 			return;
 
-		storageSelectionManager.clearSelection(eSelectionType);
-		storageSelectionManager.addToType(eSelectionType, iStorageIndex);
+		storageSelectionManager.clearSelection(SelectionType);
+		storageSelectionManager.addToType(SelectionType, iStorageIndex);
 
 		SelectionCommand command = new SelectionCommand(
-				ESelectionCommandType.CLEAR, eSelectionType);
+				ESelectionCommandType.CLEAR, SelectionType);
 		sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
 
 		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();

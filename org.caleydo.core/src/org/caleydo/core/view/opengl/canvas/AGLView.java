@@ -13,7 +13,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
@@ -711,7 +711,7 @@ public abstract class AGLView
 		}
 	}
 
-	public abstract int getNumberOfSelections(ESelectionType eSelectionType);
+	public abstract int getNumberOfSelections(SelectionType SelectionType);
 
 	public final float getAspectRatio() {
 		return fAspectRatio;

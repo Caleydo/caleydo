@@ -2,7 +2,6 @@ package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,7 +22,7 @@ import org.eclipse.core.runtime.Status;
 /**
  * <p>
  * Manages selections generically by storing them in hash maps. The manager can handle an arbitrary number of
- * selection types, which have to be defined in {@link ESelectionType} A normal type, by default NORMAL in the
+ * selection types, which have to be defined in {@link SelectionType} A normal type, by default NORMAL in the
  * aforementioned enum is considered to be the base type, where all elements are initially added to.
  * </p>
  * <p>
@@ -37,8 +36,8 @@ import org.eclipse.core.runtime.Status;
  * Consequently it can also merge external deltas into its own selection.
  * </p>
  * <p>
- * The manager can operate on a subset of the possible types in {@link ESelectionType}, by specifying a list
- * of allowed types in the {@link Builder}. When a selection delta is merged into the manager that contains
+ * The manager can operate on a subset of the possible types in {@link SelectionType}, by specifying a list of
+ * allowed types in the {@link Builder}. When a selection delta is merged into the manager that contains
  * values that are not specified in the list of allowed values, the selections are ignored
  * </p>
  * <p>
@@ -51,15 +50,15 @@ import org.eclipse.core.runtime.Status;
  */
 public class SelectionManager {
 
-	private EnumMap<ESelectionType, HashMap<Integer, Integer>> hashSelectionTypes;
+	private HashMap<SelectionType, HashMap<Integer, Integer>> hashSelectionTypes;
 
 	private HashMap<Integer, ArrayList<Integer>> hashConnectionToElementID;
 
-	private ESelectionType eNormalType;
+	private SelectionType normalType;
 
 	private EIDType iDType;
 
-	private ArrayList<ESelectionType> alSelectionTypes;
+	private ArrayList<SelectionType> alSelectionTypes;
 
 	private SelectionDelta selectionDelta;
 
@@ -74,8 +73,8 @@ public class SelectionManager {
 	 * @author Alexander Lex
 	 */
 	public static class Builder {
-		private ArrayList<ESelectionType> alSelectionTypes = null;
-		private ESelectionType normalType = ESelectionType.NORMAL;
+		private ArrayList<SelectionType> alSelectionTypes = null;
+		private SelectionType normalType = SelectionType.NORMAL;
 		private EIDType iDType = null;
 
 		/**
@@ -90,14 +89,14 @@ public class SelectionManager {
 		}
 
 		/**
-		 * Set a normal type. This is only necessary if it should differ from {@link ESelectionType#NORMAL},
+		 * Set a normal type. This is only necessary if it should differ from {@link SelectionType#NORMAL},
 		 * which is the default
 		 * 
 		 * @param normalType
 		 *            the normal type
 		 * @return the Builder, call another setter or build() when you're done
 		 */
-		public Builder normalType(ESelectionType normalType) {
+		public Builder normalType(SelectionType normalType) {
 			this.normalType = normalType;
 			return this;
 		}
@@ -109,7 +108,7 @@ public class SelectionManager {
 		 *            the list of selection types
 		 * @return the Builder, call another setter or build() when you're done
 		 */
-		public Builder selectionTypes(ArrayList<ESelectionType> alSelectionTypes) {
+		public Builder selectionTypes(ArrayList<SelectionType> alSelectionTypes) {
 			this.alSelectionTypes = alSelectionTypes;
 			return this;
 		}
@@ -131,22 +130,19 @@ public class SelectionManager {
 	 *            the builder
 	 */
 	private SelectionManager(Builder builder) {
-		this.eNormalType = builder.normalType;
+		this.normalType = builder.normalType;
 		this.iDType = builder.iDType;
 		if (builder.alSelectionTypes == null) {
-			alSelectionTypes = new ArrayList<ESelectionType>();
-			for (ESelectionType selectionType : ESelectionType.values()) {
-				alSelectionTypes.add(selectionType);
-			}
+			alSelectionTypes = new ArrayList<SelectionType>(SelectionType.getDefaultTypes());
 		}
 
-		hashSelectionTypes = new EnumMap<ESelectionType, HashMap<Integer, Integer>>(ESelectionType.class);
+		hashSelectionTypes = new HashMap<SelectionType, HashMap<Integer, Integer>>();
 		hashConnectionToElementID = new HashMap<Integer, ArrayList<Integer>>();
 
 		selectionDelta = new SelectionDelta(iDType);
 
-		for (ESelectionType eType : alSelectionTypes) {
-			hashSelectionTypes.put(eType, new HashMap<Integer, Integer>());
+		for (SelectionType selectionType : alSelectionTypes) {
+			hashSelectionTypes.put(selectionType, new HashMap<Integer, Integer>());
 		}
 
 	}
@@ -158,7 +154,7 @@ public class SelectionManager {
 	 * @param iElementID
 	 */
 	public void initialAdd(int iElementID) {
-		hashSelectionTypes.get(eNormalType).put(iElementID, 1);
+		hashSelectionTypes.get(normalType).put(iElementID, 1);
 	}
 
 	/**
@@ -168,7 +164,7 @@ public class SelectionManager {
 	 */
 	public void initialAdd(ArrayList<Integer> iAlElementIDs) {
 		for (Integer iElementID : iAlElementIDs) {
-			hashSelectionTypes.get(eNormalType).put(iElementID, 1);
+			hashSelectionTypes.get(normalType).put(iElementID, 1);
 		}
 	}
 
@@ -178,7 +174,7 @@ public class SelectionManager {
 	 * @param iElementID
 	 */
 	public void add(int iElementID) {
-		for (ESelectionType selectionType : alSelectionTypes) {
+		for (SelectionType selectionType : alSelectionTypes) {
 			if (checkStatus(selectionType, iElementID)) {
 				int iNumTimesAdded = hashSelectionTypes.get(selectionType).get(iElementID);
 				hashSelectionTypes.get(selectionType).put(iElementID, ++iNumTimesAdded);
@@ -196,7 +192,7 @@ public class SelectionManager {
 	 */
 	public void remove(int iElementID, boolean bWriteVA) {
 
-		for (ESelectionType selectionType : alSelectionTypes) {
+		for (SelectionType selectionType : alSelectionTypes) {
 			if (checkStatus(selectionType, iElementID)) {
 				int iNumTimesAdded = hashSelectionTypes.get(selectionType).get(iElementID) - 1;
 				if (iNumTimesAdded == 0) {
@@ -225,7 +221,7 @@ public class SelectionManager {
 	 *            the type of the selection which should be purged
 	 * @return a VirtualArrayDelta containing all the indices which should be removed
 	 */
-	public void removeElements(ESelectionType type) {
+	public void removeElements(SelectionType type) {
 		HashMap<Integer, Integer> elementMap = hashSelectionTypes.get(type);
 		Integer[] tempAr = new Integer[elementMap.size()];
 		tempAr = elementMap.keySet().toArray(tempAr);
@@ -261,7 +257,7 @@ public class SelectionManager {
 	 */
 	public void resetSelectionManager() {
 		hashSelectionTypes.clear();
-		for (ESelectionType eType : alSelectionTypes) {
+		for (SelectionType eType : alSelectionTypes) {
 			hashSelectionTypes.put(eType, new HashMap<Integer, Integer>());
 		}
 		if (virtualArray != null) {
@@ -276,11 +272,11 @@ public class SelectionManager {
 	 */
 	public void clearSelections() {
 		bIsDeltaWritingEnabled = false;
-		for (ESelectionType eType : alSelectionTypes) {
-			if (eType == eNormalType) {
+		for (SelectionType type : alSelectionTypes) {
+			if (type == normalType) {
 				continue;
 			}
-			clearSelection(eType);
+			clearSelection(type);
 		}
 		bIsDeltaWritingEnabled = true;
 		selectionDelta = new SelectionDelta(iDType);
@@ -293,23 +289,22 @@ public class SelectionManager {
 	 * @param sSelectionType
 	 *            the selection type to be cleared
 	 */
-	public void clearSelection(ESelectionType eSelectionType) {
-		if (eSelectionType == eNormalType)
+	public void clearSelection(SelectionType SelectionType) {
+		if (SelectionType == normalType)
 			throw new IllegalArgumentException(
 				"SelectionManager: cannot reset selections of normal selection");
 
 		// TODO the first condition should not be necessary, investigate
-		if (hashSelectionTypes.get(eSelectionType) == null
-			|| hashSelectionTypes.get(eSelectionType).isEmpty())
+		if (hashSelectionTypes.get(SelectionType) == null || hashSelectionTypes.get(SelectionType).isEmpty())
 			return;
 
-		for (int iSelectionID : hashSelectionTypes.get(eSelectionType).keySet()) {
-			selectionDelta.addSelection(iSelectionID, eNormalType);
+		for (int iSelectionID : hashSelectionTypes.get(SelectionType).keySet()) {
+			selectionDelta.addSelection(iSelectionID, normalType);
 			removeConnectionForElementID(iSelectionID);
 		}
 
-		hashSelectionTypes.get(eNormalType).putAll(hashSelectionTypes.get(eSelectionType));
-		hashSelectionTypes.get(eSelectionType).clear();
+		hashSelectionTypes.get(normalType).putAll(hashSelectionTypes.get(SelectionType));
+		hashSelectionTypes.get(SelectionType).clear();
 	}
 
 	/**
@@ -318,11 +313,11 @@ public class SelectionManager {
 	 * @param sSelectionType
 	 * @return the elements in the type. Null if the type does not exist yet.
 	 * @throws IllegalArgumentException
-	 *             when called with {@link ESelectionType#REMOVE} or {@link ESelectionType#ADD}
+	 *             when called with {@link SelectionType#REMOVE} or {@link SelectionType#ADD}
 	 */
-	public Set<Integer> getElements(ESelectionType eSelectionType) {
-		if (hashSelectionTypes.containsKey(eSelectionType))
-			return hashSelectionTypes.get(eSelectionType).keySet();
+	public Set<Integer> getElements(SelectionType SelectionType) {
+		if (hashSelectionTypes.containsKey(SelectionType))
+			return hashSelectionTypes.get(SelectionType).keySet();
 
 		return null;
 	}
@@ -351,12 +346,12 @@ public class SelectionManager {
 	 * @param iElementID
 	 *            the id of the element
 	 */
-	public void addToType(ESelectionType targetType, int iElementID) {
-		// check whether the type is storable
-		if (!isStorableType(targetType))
-			throw new IllegalArgumentException("Illegal selection type: " + targetType);
+	public void addToType(SelectionType targetType, int iElementID) {
+		if (!hashSelectionTypes.containsKey(targetType))
+			throw new IllegalArgumentException("The selection type " + targetType
+				+ " is not registered with this selection manager.");
 		// return if already in the target type
-		if (isStorableType(targetType) && hashSelectionTypes.get(targetType).containsKey(iElementID))
+		if (hashSelectionTypes.get(targetType).containsKey(iElementID))
 			return;
 
 		// if (!isConnectedType(targetType))
@@ -364,10 +359,11 @@ public class SelectionManager {
 		removeConnectionForElementID(iElementID);
 		// }
 
-		for (ESelectionType currentType : alSelectionTypes) {
+		for (SelectionType currentType : alSelectionTypes) {
 			// ignore if target == current, also MOUSE_OVEr does not override SELECTION
-			if (currentType == targetType || currentType == ESelectionType.SELECTION
-				&& targetType == ESelectionType.MOUSE_OVER) {
+			if (currentType == targetType
+				|| currentType == SelectionType.SELECTION
+				&& targetType == SelectionType.MOUSE_OVER) {
 				continue;
 			}
 
@@ -391,7 +387,7 @@ public class SelectionManager {
 	}
 
 	/**
-	 * Same as {@link #addToType(ESelectionType, int)} but for a list
+	 * Same as {@link #addToType(SelectionType, int)} but for a list
 	 * 
 	 * @param targetType
 	 *            the selection type the element should be added to
@@ -400,7 +396,7 @@ public class SelectionManager {
 	 * @throws IllegalArgumentException
 	 *             if the element is not in the selection manager
 	 */
-	public void addToType(ESelectionType targetType, Collection<Integer> idCollection) {
+	public void addToType(SelectionType targetType, Collection<Integer> idCollection) {
 		for (int value : idCollection) {
 			addToType(targetType, value);
 		}
@@ -410,20 +406,20 @@ public class SelectionManager {
 	 * Removes a element form a particular selection type and puts it into the normal type. Can not be called
 	 * on the normal type. Nothing happens if the element is not contained in the type
 	 * 
-	 * @param eSelectionType
+	 * @param SelectionType
 	 * @param iElementID
 	 * @throws IllegalArgumentException
 	 *             if called with the normal type, REMOVE or ADD
 	 */
-	public void removeFromType(ESelectionType eSelectionType, int iElementID) {
-		if (!isStorableType(eSelectionType) || eSelectionType == eNormalType)
+	public void removeFromType(SelectionType SelectionType, int iElementID) {
+		if (SelectionType == normalType)
 			throw new IllegalArgumentException(
 				"SelectionManager: cannot remove from normal or remove selection");
 
-		if (hashSelectionTypes.get(eSelectionType).containsKey(iElementID)) {
-			Integer iNumTimesAdded = hashSelectionTypes.get(eSelectionType).remove(iElementID);
-			hashSelectionTypes.get(eNormalType).put(iElementID, iNumTimesAdded);
-			selectionDelta.addSelection(iElementID, eNormalType);
+		if (hashSelectionTypes.get(SelectionType).containsKey(iElementID)) {
+			Integer iNumTimesAdded = hashSelectionTypes.get(SelectionType).remove(iElementID);
+			hashSelectionTypes.get(normalType).put(iElementID, iNumTimesAdded);
+			selectionDelta.addSelection(iElementID, normalType);
 		}
 	}
 
@@ -435,13 +431,9 @@ public class SelectionManager {
 	 * @param targetType
 	 *            the target type
 	 * @throws IllegalArgumentException
-	 *             when called with {@link ESelectionType#REMOVE}
+	 *             when called with {@link SelectionType#REMOVE}
 	 */
-	public void moveType(ESelectionType srcType, ESelectionType targetType) {
-		// storable types and remove are allowed here
-		if (!isStorableType(targetType) || !isStorableType(srcType))
-			throw new IllegalArgumentException("Illegal Type " + targetType + "for targetType");
-
+	public void moveType(SelectionType srcType, SelectionType targetType) {
 		HashMap<Integer, Integer> tempHash = hashSelectionTypes.remove(srcType);
 		for (Integer value : tempHash.keySet()) {
 			selectionDelta.addSelection(value, targetType);
@@ -459,7 +451,7 @@ public class SelectionManager {
 	 */
 	public int getNumberOfElements() {
 		int iNumElements = 0;
-		for (ESelectionType selectionType : hashSelectionTypes.keySet()) {
+		for (SelectionType selectionType : hashSelectionTypes.keySet()) {
 			iNumElements += hashSelectionTypes.get(selectionType).size();
 		}
 		return iNumElements;
@@ -468,28 +460,26 @@ public class SelectionManager {
 	/**
 	 * Get the number of elements in a particular selection
 	 * 
-	 * @param eSelectionType
+	 * @param SelectionType
 	 *            the selection type of interest
 	 * @return the number of element in this selection
 	 */
-	public int getNumberOfElements(ESelectionType eSelectionType) {
-		return hashSelectionTypes.get(eSelectionType).size();
+	public int getNumberOfElements(SelectionType SelectionType) {
+		return hashSelectionTypes.get(SelectionType).size();
 	}
 
 	/**
 	 * Check whether a element is in a particular selection
 	 * 
-	 * @param eSelectionType
+	 * @param SelectionType
 	 *            the suspected selection type
 	 * @param iElementID
 	 *            the id of the element
 	 * @return true if the type contains the element, else false, also false when called with REMOVE
 	 */
-	public boolean checkStatus(ESelectionType eSelectionType, int iElementID) {
-		if (!isStorableType(eSelectionType))
-			return false;
+	public boolean checkStatus(SelectionType SelectionType, int iElementID) {
 
-		if (hashSelectionTypes.get(eSelectionType).containsKey(iElementID))
+		if (hashSelectionTypes.get(SelectionType).containsKey(iElementID))
 			return true;
 
 		return false;
@@ -503,7 +493,7 @@ public class SelectionManager {
 	 * @return true if the element exists in the selection manager, else false
 	 */
 	public boolean checkStatus(int iElementID) {
-		for (ESelectionType type : alSelectionTypes) {
+		for (SelectionType type : alSelectionTypes) {
 			if (checkStatus(type, iElementID))
 				return true;
 		}
@@ -536,7 +526,7 @@ public class SelectionManager {
 	public SelectionDelta getCompleteDelta() {
 		SelectionDelta tempDelta = new SelectionDelta(iDType);
 		HashMap<Integer, Integer> tempHash;
-		for (ESelectionType selectionType : alSelectionTypes) {
+		for (SelectionType selectionType : alSelectionTypes) {
 			tempHash = hashSelectionTypes.get(selectionType);
 			for (Integer iElement : tempHash.keySet()) {
 				Integer iSelectionID = -1;
@@ -545,7 +535,7 @@ public class SelectionManager {
 
 				tempDelta.addSelection(iSelectionID, selectionType, iElement);
 				// connection ids
-				if (isConnectedType(selectionType)) {
+				if (selectionType.isConnected()) {
 					for (Integer iConnectionID : getConnectionForElementID(iElement)) {
 						tempDelta.addConnectionID(iSelectionID, iConnectionID);
 					}
@@ -571,8 +561,8 @@ public class SelectionManager {
 		}
 		VirtualArrayDelta tempDelta = new VirtualArrayDelta(virtualArray.getVAType(), idType);
 		HashMap<Integer, Integer> tempHash;
-		for (ESelectionType selectionType : alSelectionTypes) {
-			if (selectionType == ESelectionType.DESELECTED) {
+		for (SelectionType selectionType : alSelectionTypes) {
+			if (!selectionType.isVisible()) {
 				continue;
 			}
 			tempHash = hashSelectionTypes.get(selectionType);
@@ -628,7 +618,7 @@ public class SelectionManager {
 
 			addToType(item.getSelectionType(), iSelectionID);
 
-			if (isConnectedType(item.getSelectionType())) {
+			if (item.getSelectionType().isConnected()) {
 				for (Integer iConnectionID : item.getConnectionIDs()) {
 					addConnectionID(iConnectionID, iSelectionID);
 				}
@@ -673,22 +663,6 @@ public class SelectionManager {
 			}
 			virtualArray.setDelta(delta);
 		}
-	}
-
-	private boolean isStorableType(ESelectionType selectionType) {
-		for (ESelectionType validType : alSelectionTypes) {
-			if (validType == selectionType)
-				return true;
-		}
-
-		return false;
-	}
-
-	private boolean isConnectedType(ESelectionType selectionType) {
-		if (selectionType == ESelectionType.MOUSE_OVER || selectionType == ESelectionType.SELECTION)
-			return true;
-
-		return false;
 	}
 
 	/**
@@ -776,7 +750,7 @@ public class SelectionManager {
 	@Override
 	public String toString() {
 		String result = "IDType: " + iDType + " ";
-		for (ESelectionType selectionType : hashSelectionTypes.keySet()) {
+		for (SelectionType selectionType : hashSelectionTypes.keySet()) {
 			result = result + "[" + selectionType + ": " + hashSelectionTypes.get(selectionType).size() + "]";
 		}
 
@@ -784,14 +758,14 @@ public class SelectionManager {
 	}
 
 	/**
-	 * Returns the {@link ESelectionType} for a element ID or null, if element ID is not in the selection
+	 * Returns the {@link SelectionType} for a element ID or null, if element ID is not in the selection
 	 * manager
 	 * 
 	 * @param iElementID
 	 * @return selection type or NULL
 	 */
-	public ESelectionType getSelectionType(int iElementID) {
-		for (ESelectionType type : alSelectionTypes) {
+	public SelectionType getSelectionType(int iElementID) {
+		for (SelectionType type : alSelectionTypes) {
 			if (checkStatus(type, iElementID))
 				return type;
 		}

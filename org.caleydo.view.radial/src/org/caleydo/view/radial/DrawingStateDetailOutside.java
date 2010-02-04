@@ -7,7 +7,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
@@ -32,7 +32,7 @@ public class DrawingStateDetailOutside extends ADrawingState {
 	private int iDisplayedDetailViewDepth;
 	private int iDisplayedOverviewDepth;
 	private PartialDisc pdCurrentMouseOverElement;
-	private ESelectionType parentIndicatorType;
+	private SelectionType parentIndicatorType;
 
 	/**
 	 * Constructor.
@@ -81,15 +81,15 @@ public class DrawingStateDetailOutside extends ADrawingState {
 		SelectionManager selectionManager = radialHierarchy
 				.getSelectionManager();
 		Set<Integer> setSelection = selectionManager
-				.getElements(ESelectionType.SELECTION);
+				.getElements(SelectionType.SELECTION);
 		Set<Integer> setMouseOver = selectionManager
-				.getElements(ESelectionType.MOUSE_OVER);
+				.getElements(SelectionType.MOUSE_OVER);
 
 		pdCurrentRootElement.setPDDrawingStrategyChildren(dsDefault,
 				iDisplayedOverviewDepth);
 
-		HashMap<PartialDisc, ESelectionType> mapSelectedElements = new HashMap<PartialDisc, ESelectionType>();
-		HashMap<PartialDisc, ESelectionType> mapChildIndictatorElements = new HashMap<PartialDisc, ESelectionType>();
+		HashMap<PartialDisc, SelectionType> mapSelectedElements = new HashMap<PartialDisc, SelectionType>();
+		HashMap<PartialDisc, SelectionType> mapChildIndictatorElements = new HashMap<PartialDisc, SelectionType>();
 
 		boolean bIsNewSelection = radialHierarchy.isNewSelection();
 
@@ -120,12 +120,12 @@ public class DrawingStateDetailOutside extends ADrawingState {
 
 				if (pdIndicated == pdSelected) {
 					mapSelectedElements.put(pdSelected,
-							ESelectionType.SELECTION);
+							SelectionType.SELECTION);
 				} else if (pdIndicated == null) {
-					parentIndicatorType = ESelectionType.SELECTION;
+					parentIndicatorType = SelectionType.SELECTION;
 				} else {
 					mapChildIndictatorElements.put(pdIndicated,
-							ESelectionType.SELECTION);
+							SelectionType.SELECTION);
 				}
 
 			}
@@ -139,7 +139,7 @@ public class DrawingStateDetailOutside extends ADrawingState {
 					if (pdMouseOver.isCurrentlyDisplayed(pdCurrentRootElement,
 							iDisplayedOverviewDepth)) {
 						mapSelectedElements.put(pdMouseOver,
-								ESelectionType.MOUSE_OVER);
+								SelectionType.MOUSE_OVER);
 						pdCurrentMouseOverElement = pdMouseOver;
 						continue;
 					}
@@ -152,14 +152,14 @@ public class DrawingStateDetailOutside extends ADrawingState {
 				if (pdIndicated == pdMouseOver) {
 					if (!mapSelectedElements.containsKey(pdMouseOver))
 						mapSelectedElements.put(pdMouseOver,
-								ESelectionType.MOUSE_OVER);
+								SelectionType.MOUSE_OVER);
 				} else if (pdIndicated == null) {
-					if (parentIndicatorType != ESelectionType.SELECTION)
-						parentIndicatorType = ESelectionType.MOUSE_OVER;
+					if (parentIndicatorType != SelectionType.SELECTION)
+						parentIndicatorType = SelectionType.MOUSE_OVER;
 				} else {
 					if (!mapChildIndictatorElements.containsKey(pdIndicated))
 						mapChildIndictatorElements.put(pdIndicated,
-								ESelectionType.MOUSE_OVER);
+								SelectionType.MOUSE_OVER);
 				}
 			}
 		}
@@ -168,11 +168,11 @@ public class DrawingStateDetailOutside extends ADrawingState {
 			PDDrawingStrategySelected dsCurrent = (PDDrawingStrategySelected) drawingStrategyManager
 					.createDrawingStrategy(EPDDrawingStrategyType.SELECTED);
 
-			if (mapSelectedElements.get(pdSelected) == ESelectionType.SELECTION) {
+			if (mapSelectedElements.get(pdSelected) == SelectionType.SELECTION) {
 				dsCurrent.setBorderColor(GeneralRenderStyle.SELECTED_COLOR);
 			}
 			if (mapChildIndictatorElements.containsKey(pdSelected)) {
-				if (mapChildIndictatorElements.get(pdSelected) == ESelectionType.SELECTION) {
+				if (mapChildIndictatorElements.get(pdSelected) == SelectionType.SELECTION) {
 					dsCurrent
 							.setChildIndicatorColor(GeneralRenderStyle.SELECTED_COLOR);
 				} else {
@@ -192,7 +192,7 @@ public class DrawingStateDetailOutside extends ADrawingState {
 							.getDefaultDrawingStrategy()
 							.getDrawingStrategyType());
 
-			if (mapChildIndictatorElements.get(pdIndicated) == ESelectionType.SELECTION) {
+			if (mapChildIndictatorElements.get(pdIndicated) == SelectionType.SELECTION) {
 				dsCurrent
 						.setChildIndicatorColor(GeneralRenderStyle.SELECTED_COLOR);
 			} else {
@@ -266,7 +266,7 @@ public class DrawingStateDetailOutside extends ADrawingState {
 
 		HashMap<PartialDisc, APDDrawingStrategy> mapSelectedDrawingStrategies = new HashMap<PartialDisc, APDDrawingStrategy>();
 		HashMap<PartialDisc, APDDrawingStrategyChildIndicator> mapChildIndicatedStrategies = new HashMap<PartialDisc, APDDrawingStrategyChildIndicator>();
-		parentIndicatorType = ESelectionType.NORMAL;
+		parentIndicatorType = SelectionType.NORMAL;
 
 		boolean bContinueDrawing = initDrawingStrategies(
 				mapSelectedDrawingStrategies, mapChildIndicatedStrategies);
@@ -365,9 +365,9 @@ public class DrawingStateDetailOutside extends ADrawingState {
 			dsCurrent.drawPartialDisc(gl, glu, pdSelected);
 		}
 
-		if (parentIndicatorType != ESelectionType.NORMAL) {
+		if (parentIndicatorType != SelectionType.NORMAL) {
 			gl.glPushClientAttrib(GL.GL_COLOR_BUFFER_BIT);
-			if (parentIndicatorType == ESelectionType.SELECTION)
+			if (parentIndicatorType == SelectionType.SELECTION)
 				gl.glColor3fv(GeneralRenderStyle.SELECTED_COLOR, 0);
 			else
 				gl.glColor3fv(GeneralRenderStyle.MOUSE_OVER_COLOR, 0);
@@ -492,7 +492,7 @@ public class DrawingStateDetailOutside extends ADrawingState {
 
 			radialHierarchy.setDisplayListDirty();
 		} else {
-			radialHierarchy.setNewSelection(ESelectionType.SELECTION,
+			radialHierarchy.setNewSelection(SelectionType.SELECTION,
 					pdSelected);
 			radialHierarchy.setDisplayListDirty();
 		}
@@ -503,7 +503,7 @@ public class DrawingStateDetailOutside extends ADrawingState {
 	public void handleMouseOver(PartialDisc pdMouseOver) {
 
 		if (pdMouseOver != pdCurrentMouseOverElement) {
-			radialHierarchy.setNewSelection(ESelectionType.MOUSE_OVER,
+			radialHierarchy.setNewSelection(SelectionType.MOUSE_OVER,
 					pdMouseOver);
 			radialHierarchy.setDisplayListDirty();
 		}

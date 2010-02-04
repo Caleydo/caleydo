@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.IEventPublisher;
@@ -80,7 +80,7 @@ public class SearchViewMediator {
 		}
 
 		for (Integer expressionIndex : alExpressionIndex) {
-			delta.addSelection(expressionIndex, ESelectionType.SELECTION);
+			delta.addSelection(expressionIndex, SelectionType.SELECTION);
 		}
 
 		selectionUpdateEvent.setSelectionDelta((SelectionDelta) delta);

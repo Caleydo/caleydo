@@ -17,7 +17,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.manager.ICommandManager;
@@ -730,7 +730,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType eSelectionType) {
+	public int getNumberOfSelections(SelectionType SelectionType) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

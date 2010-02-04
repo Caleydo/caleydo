@@ -2,7 +2,7 @@ package org.caleydo.view.radial;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.event.view.radial.UpdateDepthSliderPositionEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 
@@ -127,7 +127,7 @@ public class NavigationHistory {
 
 		radialHierarchy.setDisplayListDirty();
 
-		radialHierarchy.setNewSelection(ESelectionType.SELECTION,
+		radialHierarchy.setNewSelection(SelectionType.SELECTION,
 				pdSelectedElement);
 	}
 

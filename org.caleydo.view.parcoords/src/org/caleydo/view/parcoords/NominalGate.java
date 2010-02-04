@@ -142,7 +142,7 @@ public class NominalGate extends AGate {
 		// // renderBoxedYValues(gl, fCurrentPosition, fTop,
 		// // getDecimalFormat().format(
 		// // set.getRawForNormalized(fTop / renderStyle.getAxisHeight())),
-		// // ESelectionType.NORMAL);
+		// // SelectionType.NORMAL);
 		// }
 		// else
 		// {

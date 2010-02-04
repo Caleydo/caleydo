@@ -135,7 +135,7 @@ public class GroupList
 	 */
 	private void init() {
 		// Group initialGroup = new Group(iAlVirtualArray.size());
-		Group initialGroup = new Group(0, false, 0, ESelectionType.NORMAL);
+		Group initialGroup = new Group(0, false, 0, SelectionType.NORMAL);
 		this.groups = new ArrayList<Group>();
 		groups.add(initialGroup);
 	}
@@ -221,8 +221,8 @@ public class GroupList
 		Group temp = groups.get(index1);
 		groups.set(index1, groups.get(index2));
 		groups.set(index2, temp);
-		groups.get(index1).setSelectionType(ESelectionType.NORMAL);
-		groups.get(index2).setSelectionType(ESelectionType.NORMAL);
+		groups.get(index1).setSelectionType(SelectionType.NORMAL);
+		groups.get(index2).setSelectionType(SelectionType.NORMAL);
 
 		return true;
 	}
@@ -271,7 +271,7 @@ public class GroupList
 
 		groups.remove(index2);
 		groups.get(index1).setNrElements(iNrElemG1 + iNrElemG2);
-		groups.get(index1).setSelectionType(ESelectionType.SELECTION);
+		groups.get(index1).setSelectionType(SelectionType.SELECTION);
 
 		return true;
 	}
@@ -307,10 +307,10 @@ public class GroupList
 		if (idx1 == iFirstIdx) {
 
 			int iNrElements = idx2 - idx1;
-			Group newGroup = new Group(iNrElements, false, 0, ESelectionType.NORMAL);
+			Group newGroup = new Group(iNrElements, false, 0, SelectionType.NORMAL);
 
 			groups.get(index).setCollapsed(false);
-			groups.get(index).setSelectionType(ESelectionType.NORMAL);
+			groups.get(index).setSelectionType(SelectionType.NORMAL);
 			groups.get(index).setNrElements(groups.get(index).getNrElements() - iNrElements);
 			groups.add(index, newGroup);
 
@@ -320,10 +320,10 @@ public class GroupList
 		// 1 new group
 		if (idx2 == iLastIdx) {
 			int iNrElements = idx2 - idx1;
-			Group newGroup = new Group(iNrElements, false, 0, ESelectionType.NORMAL);
+			Group newGroup = new Group(iNrElements, false, 0, SelectionType.NORMAL);
 
 			groups.get(index).setCollapsed(false);
-			groups.get(index).setSelectionType(ESelectionType.NORMAL);
+			groups.get(index).setSelectionType(SelectionType.NORMAL);
 			groups.get(index).setNrElements(groups.get(index).getNrElements() - iNrElements);
 			groups.add(index + 1, newGroup);
 
@@ -332,12 +332,12 @@ public class GroupList
 
 		// 2 new groups
 		int iNrElements2 = idx2 - idx1;
-		Group newGroup2 = new Group(iNrElements2, false, 0, ESelectionType.NORMAL);
+		Group newGroup2 = new Group(iNrElements2, false, 0, SelectionType.NORMAL);
 		int iNrElements3 = iLastIdx - idx2;
-		Group newGroup3 = new Group(iNrElements3, false, 0, ESelectionType.NORMAL);
+		Group newGroup3 = new Group(iNrElements3, false, 0, SelectionType.NORMAL);
 
 		groups.get(index).setCollapsed(false);
-		groups.get(index).setSelectionType(ESelectionType.NORMAL);
+		groups.get(index).setSelectionType(SelectionType.NORMAL);
 		groups.get(index).setNrElements(idx1 - iFirstIdx);
 		groups.add(index + 1, newGroup2);
 		groups.add(index + 2, newGroup3);

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 
 /**
  * Implementation of a node used in the cluster tree. Cluster node contains information needed in the
@@ -34,7 +34,7 @@ public class ClusterNode
 	@XmlElement
 	private Vec3f vPos;
 	@XmlElement
-	private ESelectionType eSelectionType;
+	private SelectionType SelectionType;
 	@XmlElement
 	private boolean bIsRootNode;
 	@XmlElement
@@ -58,7 +58,7 @@ public class ClusterNode
 		this.fCoefficient = fCoefficient;
 		this.iHierarchyDepth = iDepth;
 		this.bIsRootNode = bIsRootNode;
-		this.eSelectionType = ESelectionType.NORMAL;
+		this.SelectionType = SelectionType.NORMAL;
 		this.fAverageExpressionValue = 0f;
 		this.fStandardDeviation = 0f;
 	}
@@ -104,17 +104,17 @@ public class ClusterNode
 		return vPos;
 	}
 
-	public void setSelectionType(ESelectionType eSelectionType) {
-		this.eSelectionType = eSelectionType;
+	public void setSelectionType(SelectionType SelectionType) {
+		this.SelectionType = SelectionType;
 	}
 
-	public ESelectionType getSelectionType() {
-		return eSelectionType;
+	public SelectionType getSelectionType() {
+		return SelectionType;
 	}
 
-	public void toggleSelectionType() {
-		this.eSelectionType =
-			(eSelectionType == ESelectionType.SELECTION) ? ESelectionType.NORMAL : ESelectionType.SELECTION;
+	public void togglSelectionType() {
+		this.SelectionType =
+			(SelectionType == SelectionType.SELECTION) ? SelectionType.NORMAL : SelectionType.SELECTION;
 	}
 
 	public boolean isRootNode() {

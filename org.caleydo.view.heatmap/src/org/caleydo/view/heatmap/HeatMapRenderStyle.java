@@ -2,7 +2,7 @@ package org.caleydo.view.heatmap;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -127,9 +127,9 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 	 */
 	public void updateFieldSizesWithFish() {
 		int iNumberSelected = heatMap.getContentSelectionManager()
-				.getNumberOfElements(ESelectionType.MOUSE_OVER);
+				.getNumberOfElements(SelectionType.MOUSE_OVER);
 		iNumberSelected += heatMap.getContentSelectionManager()
-				.getNumberOfElements(ESelectionType.SELECTION);
+				.getNumberOfElements(SelectionType.SELECTION);
 
 		int iNumberTotal = heatMap.getContentVA().size();
 

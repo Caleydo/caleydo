@@ -20,7 +20,7 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -123,11 +123,11 @@ public class GLHeatMap extends AStorageBasedView {
 		super(glCanvas, sLabel, viewFrustum);
 		viewType = GLHeatMap.VIEW_ID;
 
-		// ArrayList<ESelectionType> alSelectionTypes = new
-		// ArrayList<ESelectionType>();
-		// alSelectionTypes.add(ESelectionType.NORMAL);
-		// alSelectionTypes.add(ESelectionType.MOUSE_OVER);
-		// alSelectionTypes.add(ESelectionType.SELECTION);
+		// ArrayList<SelectionType> alSelectionTypes = new
+		// ArrayList<SelectionType>();
+		// alSelectionTypes.add(SelectionType.NORMAL);
+		// alSelectionTypes.add(SelectionType.MOUSE_OVER);
+		// alSelectionTypes.add(SelectionType.SELECTION);
 
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
@@ -204,7 +204,7 @@ public class GLHeatMap extends AStorageBasedView {
 	@Override
 	public void displayLocal(GL gl) {
 		processEvents();
-		if(!isVisible())
+		if (!isVisible())
 			return;
 		if (set == null)
 			return;
@@ -291,8 +291,8 @@ public class GLHeatMap extends AStorageBasedView {
 
 			renderHeatMap(gl);
 
-			renderSelection(gl, ESelectionType.MOUSE_OVER);
-			renderSelection(gl, ESelectionType.SELECTION);
+			renderSelection(gl, SelectionType.MOUSE_OVER);
+			renderSelection(gl, SelectionType.SELECTION);
 
 			gl.glTranslatef(-fAnimationTranslation, 0.0f, 0.0f);
 
@@ -362,7 +362,7 @@ public class GLHeatMap extends AStorageBasedView {
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 
 	}
-	
+
 	@Override
 	public String getShortInfo() {
 
@@ -424,22 +424,22 @@ public class GLHeatMap extends AStorageBasedView {
 			return;
 		}
 
-		ESelectionType eSelectionType;
+		SelectionType selectionType;
 		switch (ePickingType) {
 		case HEAT_MAP_LINE_SELECTION:
 			iCurrentMouseOverElement = iExternalID;
 			switch (pickingMode) {
 
 			case CLICKED:
-				eSelectionType = ESelectionType.SELECTION;
+				selectionType = SelectionType.SELECTION;
 				break;
 			case MOUSE_OVER:
 
-				eSelectionType = ESelectionType.MOUSE_OVER;
+				selectionType = SelectionType.MOUSE_OVER;
 
 				break;
 			case RIGHT_CLICKED:
-				eSelectionType = ESelectionType.SELECTION;
+				selectionType = SelectionType.SELECTION;
 
 				// Prevent handling of non genetic data in context menu
 				if (generalManager.getUseCase(dataDomain).getDataDomain() != EDataDomain.GENETIC_DATA)
@@ -461,7 +461,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 			}
 
-			createContentSelection(eSelectionType, iExternalID);
+			createContentSelection(selectionType, iExternalID);
 
 			break;
 
@@ -469,10 +469,10 @@ public class GLHeatMap extends AStorageBasedView {
 
 			switch (pickingMode) {
 			case CLICKED:
-				eSelectionType = ESelectionType.SELECTION;
+				selectionType = SelectionType.SELECTION;
 				break;
 			case MOUSE_OVER:
-				eSelectionType = ESelectionType.MOUSE_OVER;
+				selectionType = SelectionType.MOUSE_OVER;
 				break;
 			case RIGHT_CLICKED:
 				if (!isRenderedRemote()) {
@@ -489,13 +489,13 @@ public class GLHeatMap extends AStorageBasedView {
 				return;
 			}
 
-			createStorageSelection(eSelectionType, iExternalID);
+			createStorageSelection(selectionType, iExternalID);
 
 			break;
 		}
 	}
 
-	private void createContentSelection(ESelectionType selectionType,
+	private void createContentSelection(SelectionType selectionType,
 			int contentID) {
 		if (contentSelectionManager.checkStatus(selectionType, contentID))
 			return;
@@ -503,11 +503,11 @@ public class GLHeatMap extends AStorageBasedView {
 		// check if the mouse-overed element is already selected, and if it is,
 		// whether mouse over is clear.
 		// If that all is true we don't need to do anything
-		if (selectionType == ESelectionType.MOUSE_OVER
-				&& contentSelectionManager.checkStatus(
-						ESelectionType.SELECTION, contentID)
-				&& contentSelectionManager.getElements(
-						ESelectionType.MOUSE_OVER).size() == 0)
+		if (selectionType == SelectionType.MOUSE_OVER
+				&& contentSelectionManager.checkStatus(SelectionType.SELECTION,
+						contentID)
+				&& contentSelectionManager
+						.getElements(SelectionType.MOUSE_OVER).size() == 0)
 			return;
 
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
@@ -529,7 +529,7 @@ public class GLHeatMap extends AStorageBasedView {
 				EManagedObjectType.CONNECTION);
 		// for (Object iExpressionIndex : idMappingManager.getMultiID(
 		// EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
-		// contentSelectionManager.addToType(eSelectionType, (Integer)
+		// contentSelectionManager.addToType(SelectionType, (Integer)
 		// iExpressionIndex);
 		// contentSelectionManager.addConnectionID(iMappingID, (Integer)
 		// iExpressionIndex);
@@ -542,7 +542,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 			// SelectionCommand command = new
 			// SelectionCommand(ESelectionCommandType.CLEAR,
-			// eSelectionType);
+			// SelectionType);
 			// sendSelectionCommandEvent(EIDType.REFSEQ_MRNA_INT, command);
 
 			handleConnectedElementRep(selectionDelta);
@@ -556,7 +556,7 @@ public class GLHeatMap extends AStorageBasedView {
 		setDisplayListDirty();
 	}
 
-	private void createStorageSelection(ESelectionType selectionType,
+	private void createStorageSelection(SelectionType selectionType,
 			int storageID) {
 		if (storageSelectionManager.checkStatus(selectionType, storageID))
 			return;
@@ -564,11 +564,11 @@ public class GLHeatMap extends AStorageBasedView {
 		// check if the mouse-overed element is already selected, and if it is,
 		// whether mouse over is clear.
 		// If that all is true we don't need to do anything
-		if (selectionType == ESelectionType.MOUSE_OVER
-				&& storageSelectionManager.checkStatus(
-						ESelectionType.SELECTION, storageID)
-				&& storageSelectionManager.getElements(
-						ESelectionType.MOUSE_OVER).size() == 0)
+		if (selectionType == SelectionType.MOUSE_OVER
+				&& storageSelectionManager.checkStatus(SelectionType.SELECTION,
+						storageID)
+				&& storageSelectionManager
+						.getElements(SelectionType.MOUSE_OVER).size() == 0)
 			return;
 
 		storageSelectionManager.clearSelection(selectionType);
@@ -578,7 +578,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 			// SelectionCommand command = new
 			// SelectionCommand(ESelectionCommandType.CLEAR,
-			// eSelectionType);
+			// SelectionType);
 			// sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
 
 			SelectionDelta selectionDelta = storageSelectionManager.getDelta();
@@ -599,7 +599,7 @@ public class GLHeatMap extends AStorageBasedView {
 				contentSelectionManager, isUp);
 		if (selectedElement < 0)
 			return;
-		createContentSelection(ESelectionType.MOUSE_OVER, selectedElement);
+		createContentSelection(SelectionType.MOUSE_OVER, selectedElement);
 	}
 
 	public void leftRightSelect(boolean isLeft) {
@@ -611,16 +611,16 @@ public class GLHeatMap extends AStorageBasedView {
 				storageSelectionManager, isLeft);
 		if (selectedElement < 0)
 			return;
-		createStorageSelection(ESelectionType.MOUSE_OVER, selectedElement);
+		createStorageSelection(SelectionType.MOUSE_OVER, selectedElement);
 	}
 
 	private int cursorSelect(IVirtualArray virtualArray,
 			SelectionManager selectionManager, boolean isUp) {
 
 		Set<Integer> elements = selectionManager
-				.getElements(ESelectionType.MOUSE_OVER);
+				.getElements(SelectionType.MOUSE_OVER);
 		if (elements.size() == 0) {
-			elements = selectionManager.getElements(ESelectionType.SELECTION);
+			elements = selectionManager.getElements(SelectionType.SELECTION);
 			if (elements.size() == 0)
 				return -1;
 		}
@@ -655,25 +655,25 @@ public class GLHeatMap extends AStorageBasedView {
 		// renderStyle.clearFieldWidths();
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(1,0.2f,0));
 		int iCount = 0;
-		ESelectionType currentType;
+		SelectionType currentType;
 		for (Integer iContentIndex : contentVA) {
 			iCount++;
 			// we treat normal and deselected the same atm
-			if (contentSelectionManager.checkStatus(ESelectionType.NORMAL,
+			if (contentSelectionManager.checkStatus(SelectionType.NORMAL,
 					iContentIndex)
 					|| contentSelectionManager.checkStatus(
-							ESelectionType.DESELECTED, iContentIndex)) {
+							SelectionType.DESELECTED, iContentIndex)) {
 				fFieldWidth = renderStyle.getNormalFieldWidth();
 				fFieldHeight = renderStyle.getFieldHeight();
-				currentType = ESelectionType.NORMAL;
+				currentType = SelectionType.NORMAL;
 
 			} else if (contentSelectionManager.checkStatus(
-					ESelectionType.SELECTION, iContentIndex)
+					SelectionType.SELECTION, iContentIndex)
 					|| contentSelectionManager.checkStatus(
-							ESelectionType.MOUSE_OVER, iContentIndex)) {
+							SelectionType.MOUSE_OVER, iContentIndex)) {
 				fFieldWidth = renderStyle.getSelectedFieldWidth();
 				fFieldHeight = renderStyle.getFieldHeight();
-				currentType = ESelectionType.SELECTION;
+				currentType = SelectionType.SELECTION;
 			} else {
 				continue;
 			}
@@ -779,8 +779,8 @@ public class GLHeatMap extends AStorageBasedView {
 						gl.glTranslatef(0, renderStyle
 								.getWidthClusterVisualization(), 0);
 
-					if (currentType == ESelectionType.SELECTION
-							|| currentType == ESelectionType.MOUSE_OVER) {
+					if (currentType == SelectionType.SELECTION
+							|| currentType == SelectionType.MOUSE_OVER) {
 						renderCaption(gl, sContent, fXPosition + fFieldWidth
 								/ 6 * 2.5f, fYPosition + 0.05f, 0,
 								fLineDegrees, fFontScaling);
@@ -833,7 +833,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	// public void selectElements() {
 	// ISelectionDelta delta =
-	// contentSelectionManager.selectNext(ESelectionType.MOUSE_OVER);
+	// contentSelectionManager.selectNext(SelectionType.MOUSE_OVER);
 	// if (delta == null)
 	// return;
 	// SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -860,7 +860,7 @@ public class GLHeatMap extends AStorageBasedView {
 				EDataRepresentation.NORMALIZED, iContentIndex);
 
 		float fOpacity = 0;
-		if (contentSelectionManager.checkStatus(ESelectionType.DESELECTED,
+		if (contentSelectionManager.checkStatus(SelectionType.DESELECTED,
 				iContentIndex)) {
 			fOpacity = 0.3f;
 		} else {
@@ -888,24 +888,21 @@ public class GLHeatMap extends AStorageBasedView {
 		gl.glPopName();
 	}
 
-	private void renderSelection(final GL gl, ESelectionType eSelectionType) {
+	private void renderSelection(final GL gl, SelectionType selectionType) {
 		// content selection
 
 		Set<Integer> selectedSet = contentSelectionManager
-				.getElements(eSelectionType);
+				.getElements(selectionType);
 		float fHeight = 0;
 		float fXPosition = 0;
 		float fYPosition = 0;
 
-		switch (eSelectionType) {
-		case SELECTION:
+		if (selectionType == SelectionType.SELECTION) {
 			gl.glColor4fv(SELECTED_COLOR, 0);
 			gl.glLineWidth(SELECTED_LINE_WIDTH);
-			break;
-		case MOUSE_OVER:
+		} else if (selectionType == SelectionType.MOUSE_OVER) {
 			gl.glColor4fv(MOUSE_OVER_COLOR, 0);
 			gl.glLineWidth(MOUSE_OVER_LINE_WIDTH);
-			break;
 		}
 
 		int iColumnIndex = 0;
@@ -946,7 +943,7 @@ public class GLHeatMap extends AStorageBasedView {
 		gl.glEnable(GL.GL_LINE_STIPPLE);
 		gl.glLineStipple(2, (short) 0xAAAA);
 
-		selectedSet = storageSelectionManager.getElements(eSelectionType);
+		selectedSet = storageSelectionManager.getElements(selectionType);
 		int iLineIndex = 0;
 		for (int iTempLine : storageVA) {
 			for (Integer iCurrentLine : selectedSet) {
@@ -989,10 +986,10 @@ public class GLHeatMap extends AStorageBasedView {
 
 		for (Integer iStorageIndex : contentVA) {
 			fAlXDistances.add(fDistance);
-			if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
+			if (contentSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
 					iStorageIndex)
 					|| contentSelectionManager.checkStatus(
-							ESelectionType.SELECTION, iStorageIndex)) {
+							SelectionType.SELECTION, iStorageIndex)) {
 				fDistance += renderStyle.getSelectedFieldWidth();
 			} else {
 				fDistance += renderStyle.getNormalFieldWidth();
@@ -1025,7 +1022,7 @@ public class GLHeatMap extends AStorageBasedView {
 			float fYValue = renderStyle.getYCenter();
 
 			// Set<Integer> mouseOver =
-			// storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
+			// storageSelectionManager.getElements(SelectionType.MOUSE_OVER);
 			// for (int iLineIndex : mouseOver)
 			// {
 			// fYValue = storageVA.indexOf(iLineIndex) *

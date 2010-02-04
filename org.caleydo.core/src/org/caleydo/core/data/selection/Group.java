@@ -16,7 +16,7 @@ public class Group {
 	 */
 	private int idxExample;
 
-	private ESelectionType selectionType;
+	private SelectionType selectionType;
 
 	/**
 	 * In case of groups determined in dendrogram view the corresponding node in the tree must be stored for
@@ -38,14 +38,14 @@ public class Group {
 	 * @param iNrElements
 	 * @param bCollapsed
 	 * @param iIdxExample
-	 * @param eSelectionType
+	 * @param SelectionType
 	 */
-	public Group(int iNrElements, boolean bCollapsed, int iIdxExample, ESelectionType eSelectionType) {
+	public Group(int iNrElements, boolean bCollapsed, int iIdxExample, SelectionType SelectionType) {
 		this.setNrElements(iNrElements);
 		this.setCollapsed(bCollapsed);
 		this.setIdxExample(iIdxExample);
 		this.setRepresentativeElement(fArRepresentativeElement);
-		this.setSelectionType(eSelectionType);
+		this.setSelectionType(SelectionType);
 	}
 
 	/**
@@ -54,15 +54,15 @@ public class Group {
 	 * @param iNrElements
 	 * @param bCollapsed
 	 * @param iIdxExample
-	 * @param eSelectionType
+	 * @param SelectionType
 	 * @param clusterNode
 	 */
-	public Group(int iNrElements, boolean bCollapsed, int iIdxExample, ESelectionType eSelectionType,
+	public Group(int iNrElements, boolean bCollapsed, int iIdxExample, SelectionType SelectionType,
 		ClusterNode clusterNode) {
 		this.setNrElements(iNrElements);
 		this.setCollapsed(bCollapsed);
 		this.setIdxExample(iIdxExample);
-		this.setSelectionType(eSelectionType);
+		this.setSelectionType(SelectionType);
 		this.setClusterNode(clusterNode);
 	}
 
@@ -73,15 +73,15 @@ public class Group {
 	 * @param bCollapsed
 	 * @param iIdxExample
 	 * @param fArRepresentativeElement
-	 * @param eSelectionType
+	 * @param SelectionType
 	 */
 	public Group(int iNrElements, boolean bCollapsed, int iIdxExample, float[] fArRepresentativeElement,
-		ESelectionType eSelectionType) {
+		SelectionType SelectionType) {
 		this.setNrElements(iNrElements);
 		this.setCollapsed(bCollapsed);
 		this.setIdxExample(iIdxExample);
 		this.setRepresentativeElement(fArRepresentativeElement);
-		this.setSelectionType(eSelectionType);
+		this.setSelectionType(SelectionType);
 	}
 
 	/**
@@ -91,16 +91,16 @@ public class Group {
 	 * @param bCollapsed
 	 * @param iIdxExample
 	 * @param fArRepresentativeElement
-	 * @param eSelectionType
+	 * @param SelectionType
 	 * @param clusterNode
 	 */
 	public Group(int iNrElements, boolean bCollapsed, int iIdxExample, float[] fArRepresentativeElement,
-		ESelectionType eSelectionType, ClusterNode clusterNode) {
+		SelectionType SelectionType, ClusterNode clusterNode) {
 		this.setNrElements(iNrElements);
 		this.setCollapsed(bCollapsed);
 		this.setIdxExample(iIdxExample);
 		this.setRepresentativeElement(fArRepresentativeElement);
-		this.setSelectionType(eSelectionType);
+		this.setSelectionType(SelectionType);
 		this.setClusterNode(clusterNode);
 	}
 
@@ -128,17 +128,17 @@ public class Group {
 		return idxExample;
 	}
 
-	public void setSelectionType(ESelectionType eSelectionType) {
-		this.selectionType = eSelectionType;
+	public void setSelectionType(SelectionType SelectionType) {
+		this.selectionType = SelectionType;
 	}
 
-	public ESelectionType getSelectionType() {
+	public SelectionType getSelectionType() {
 		return selectionType;
 	}
 
-	public void toggleSelectionType() {
+	public void togglSelectionType() {
 		this.selectionType =
-			(selectionType == ESelectionType.SELECTION) ? ESelectionType.NORMAL : ESelectionType.SELECTION;
+			(selectionType == SelectionType.SELECTION) ? SelectionType.NORMAL : SelectionType.SELECTION;
 	}
 
 	public void setClusterNode(ClusterNode clusterNode) {

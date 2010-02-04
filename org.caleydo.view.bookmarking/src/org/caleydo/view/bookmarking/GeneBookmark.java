@@ -51,21 +51,21 @@ class GeneBookmark extends ABookmark {
 	// // renderStyle.clearFieldWidths();
 	// // GLHelperFunctions.drawPointAt(gl, new Vec3f(1,0.2f,0));
 	// int iCount = 0;
-	// ESelectionType currentType;
+	// SelectionType currentType;
 	// for (Integer iContentIndex : contentVA) {
 	// iCount++;
 	// // we treat normal and deselected the same atm
 	//
-	// currentType = ESelectionType.NORMAL;
+	// currentType = SelectionType.NORMAL;
 	//
 	// // }
-	// // else if (contentSelectionManager.checkStatus(ESelectionType.SELECTION,
+	// // else if (contentSelectionManager.checkStatus(SelectionType.SELECTION,
 	// iContentIndex)
-	// // || contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
+	// // || contentSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
 	// iContentIndex)) {
 	// // fFieldWidth = renderStyle.getSelectedFieldWidth();
 	// // fFieldHeight = renderStyle.getFieldHeight();
-	// // currentType = ESelectionType.SELECTION;
+	// // currentType = SelectionType.SELECTION;
 	// // }
 	// // else {
 	// // continue;
@@ -77,7 +77,7 @@ class GeneBookmark extends ABookmark {
 	//
 	// for (Integer storageIndex : storageVA) {
 	//
-	// // if (currentType == ESelectionType.SELECTION) {
+	// // if (currentType == SelectionType.SELECTION) {
 	// // if (iCurrentMouseOverElement == iContentIndex) {
 	// // renderElement(gl, iStorageIndex, iContentIndex, fXPosition +
 	// fFieldWidth / 3,
@@ -134,7 +134,7 @@ class GeneBookmark extends ABookmark {
 	// if (sContent == null)
 	// sContent = "Unknown";
 
-	// if (currentType == ESelectionType.SELECTION) {
+	// if (currentType == SelectionType.SELECTION) {
 	// if (iCurrentMouseOverElement == iContentIndex) {
 	// iCurrentMouseOverElement = -1;
 	// float fTextScalingFactor = 0.0035f;
@@ -245,7 +245,7 @@ class GeneBookmark extends ABookmark {
 	// iContentIndex);
 	//
 	// float fOpacity = 0;
-	// if (contentSelectionManager.checkStatus(ESelectionType.DESELECTED,
+	// if (contentSelectionManager.checkStatus(SelectionType.DESELECTED,
 	// iContentIndex)) {
 	// fOpacity = 0.3f;
 	// }

@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "SelectionCommand")
 public class SelectionCommand {
 	private ESelectionCommandType eSelectionCommandType;
-	private ESelectionType eSelectionType;
+	private SelectionType selectionType;
 
 	/**
 	 * Default Constructor
@@ -22,7 +22,7 @@ public class SelectionCommand {
 
 	/**
 	 * Constructor that can be used for selection commands that don't depend on a particular
-	 * {@link ESelectionType} such as {@link ESelectionCommandType#CLEAR_ALL} or
+	 * {@link SelectionType} such as {@link ESelectionCommandType#CLEAR_ALL} or
 	 * {@link ESelectionCommandType#RESET}.
 	 * 
 	 * @param eSelectionCommandType
@@ -31,18 +31,18 @@ public class SelectionCommand {
 		this.eSelectionCommandType = eSelectionCommandType;
 	}
 
-	public SelectionCommand(ESelectionCommandType eSelectionCommandType, ESelectionType eSelectionType) {
+	public SelectionCommand(ESelectionCommandType eSelectionCommandType, SelectionType selectionType) {
 
 		this.eSelectionCommandType = eSelectionCommandType;
-		this.eSelectionType = eSelectionType;
+		this.selectionType = selectionType;
 	}
 
 	public ESelectionCommandType getSelectionCommandType() {
 		return eSelectionCommandType;
 	}
 
-	public ESelectionType getSelectionType() {
-		return eSelectionType;
+	public SelectionType getSelectionType() {
+		return selectionType;
 	}
 
 	public ESelectionCommandType getESelectionCommandType() {
@@ -53,12 +53,8 @@ public class SelectionCommand {
 		eSelectionCommandType = selectionCommandType;
 	}
 
-	public ESelectionType getESelectionType() {
-		return eSelectionType;
-	}
-
-	public void setESelectionType(ESelectionType selectionType) {
-		eSelectionType = selectionType;
+	public void setSelectionType(SelectionType selectionType) {
+		this.selectionType = selectionType;
 	}
 
 }

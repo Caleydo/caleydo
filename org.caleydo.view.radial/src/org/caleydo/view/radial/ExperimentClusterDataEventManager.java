@@ -3,7 +3,7 @@ package org.caleydo.view.radial;
 import java.util.Collection;
 
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -30,7 +30,7 @@ public class ExperimentClusterDataEventManager extends ADataEventManager {
 	}
 
 	@Override
-	public void triggerDataSelectionEvents(ESelectionType selectionType,
+	public void triggerDataSelectionEvents(SelectionType selectionType,
 			PartialDisc pdSelected) {
 
 		ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
@@ -69,7 +69,7 @@ public class ExperimentClusterDataEventManager extends ADataEventManager {
 				.getDrawingStrategyManager().getDefaultDrawingStrategy()
 				.getDrawingStrategyType());
 		event.setSenderRadialHierarchy(true);
-		event.setNewSelection(selectionType == ESelectionType.SELECTION);
+		event.setNewSelection(selectionType == SelectionType.SELECTION);
 		eventPublisher.triggerEvent(event);
 	}
 

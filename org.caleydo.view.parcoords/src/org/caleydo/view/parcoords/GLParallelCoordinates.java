@@ -48,7 +48,7 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
@@ -598,10 +598,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	public void saveSelection() {
 
-		// polylineSelectionManager.moveType(ESelectionType.DESELECTED,
-		// ESelectionType.REMOVE);
+		// polylineSelectionManager.moveType(SelectionType.DESELECTED,
+		// SelectionType.REMOVE);
 
-		polylineSelectionManager.removeElements(ESelectionType.DESELECTED);
+		polylineSelectionManager.removeElements(SelectionType.DESELECTED);
 		clearAllSelections();
 		setDisplayListDirty();
 
@@ -730,15 +730,15 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 			// FIXME if uses z buffer fighting to avoid artfacts when tiltet
 			if (detailLevel.compareTo(EDetailLevel.LOW) < 1) {
-				renderPolylines(gl, ESelectionType.MOUSE_OVER);
-				renderPolylines(gl, ESelectionType.SELECTION);
-				renderPolylines(gl, ESelectionType.DESELECTED);
-				renderPolylines(gl, ESelectionType.NORMAL);
+				renderPolylines(gl, SelectionType.MOUSE_OVER);
+				renderPolylines(gl, SelectionType.SELECTION);
+				renderPolylines(gl, SelectionType.DESELECTED);
+				renderPolylines(gl, SelectionType.NORMAL);
 			} else {
-				// renderPolylines(gl, ESelectionType.DESELECTED);
-				renderPolylines(gl, ESelectionType.NORMAL);
-				renderPolylines(gl, ESelectionType.MOUSE_OVER);
-				renderPolylines(gl, ESelectionType.SELECTION);
+				// renderPolylines(gl, SelectionType.DESELECTED);
+				renderPolylines(gl, SelectionType.NORMAL);
+				renderPolylines(gl, SelectionType.MOUSE_OVER);
+				renderPolylines(gl, SelectionType.SELECTION);
 			}
 
 			renderGates(gl);
@@ -779,28 +779,25 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	 *            the type of selection in the selection manager to render
 	 */
 	@SuppressWarnings("unchecked")
-	private void renderPolylines(GL gl, ESelectionType renderMode) {
+	private void renderPolylines(GL gl, SelectionType renderMode) {
 
 		Set<Integer> setDataToRender = null;
 		float fZDepth = 0f;
 
-		if (renderMode == ESelectionType.DESELECTED
-				|| renderMode == ESelectionType.NORMAL) {
+		if (renderMode == SelectionType.DESELECTED
+				|| renderMode == SelectionType.NORMAL) {
 			// iDisplayEveryNthPolyline = contentVA.size()
 			// / iNumberOfRandomElements;
 			iDisplayEveryNthPolyline = (polylineSelectionManager
 					.getNumberOfElements() - polylineSelectionManager
-					.getNumberOfElements(ESelectionType.DESELECTED))
+					.getNumberOfElements(SelectionType.DESELECTED))
 					/ iNumberOfRandomElements;
 			if (iDisplayEveryNthPolyline == 0) {
 				iDisplayEveryNthPolyline = 1;
 			}
 		}
-
-		switch (renderMode) {
-		case NORMAL:
-			setDataToRender = polylineSelectionManager.getElements(renderMode);
-
+		setDataToRender = polylineSelectionManager.getElements(renderMode);
+		if (renderMode == SelectionType.NORMAL) {
 			fZDepth = ParCoordsRenderStyle.POLYLINE_NORMAL_Z;
 
 			if (detailLevel.compareTo(EDetailLevel.LOW) < 1) {
@@ -825,36 +822,31 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 				gl.glLineWidth(ParCoordsRenderStyle.POLYLINE_LINE_WIDTH);
 			}
-			break;
-		case SELECTION:
-			setDataToRender = polylineSelectionManager.getElements(renderMode);
+		} else if (renderMode == SelectionType.SELECTION) {
 			gl.glColor4fv(POLYLINE_SELECTED_COLOR, 0);
 			gl.glLineWidth(SELECTED_POLYLINE_LINE_WIDTH);
 			fZDepth = ParCoordsRenderStyle.POLYLINE_SELECTED_Z;
-			break;
-		case MOUSE_OVER:
-			setDataToRender = polylineSelectionManager.getElements(renderMode);
+
+		} else if (renderMode == SelectionType.MOUSE_OVER) {
 			gl.glColor4fv(POLYLINE_MOUSE_OVER_COLOR, 0);
 			gl.glLineWidth(MOUSE_OVER_POLYLINE_LINE_WIDTH);
 			fZDepth = ParCoordsRenderStyle.POLYLINE_SELECTED_Z;
-			break;
-		case DESELECTED:
+
+		} else if (renderMode == SelectionType.DESELECTED) {
 			fZDepth = ParCoordsRenderStyle.POLYLINE_DESELECTED_Z;
-			setDataToRender = polylineSelectionManager.getElements(renderMode);
 			gl.glColor4fv(renderStyle
 					.getPolylineDeselectedOcclusionPrevColor(setDataToRender
 							.size()
 							/ iDisplayEveryNthPolyline), 0);
 			gl.glLineWidth(DESELECTED_POLYLINE_LINE_WIDTH);
-			break;
-		default:
-			setDataToRender = polylineSelectionManager
-					.getElements(ESelectionType.NORMAL);
+		} else {
+			fZDepth = ParCoordsRenderStyle.POLYLINE_NORMAL_Z;
+			gl.glColor4fv(renderMode.getColor(), 0);
 		}
 
 		boolean bRenderingSelection = false;
 
-		if ((renderMode == ESelectionType.SELECTION || renderMode == ESelectionType.MOUSE_OVER)
+		if ((renderMode == SelectionType.SELECTION || renderMode == SelectionType.MOUSE_OVER)
 				&& detailLevel == EDetailLevel.HIGH) {
 			bRenderingSelection = true;
 		}
@@ -864,14 +856,14 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		while (dataIterator.hasNext()) {
 			int iPolyLineID = dataIterator.next();
 			if (bUseRandomSampling
-					&& (renderMode == ESelectionType.DESELECTED || renderMode == ESelectionType.NORMAL)) {
+					&& (renderMode == SelectionType.DESELECTED || renderMode == SelectionType.NORMAL)) {
 				if (iPolyLineID % iDisplayEveryNthPolyline != 0) {
 					continue;
 					// if(!alUseInRandomSampling.get(set.getVA(iPolylineVAID).indexOf(iPolyLineID)))
 					// continue;
 				}
 			}
-			if (renderMode != ESelectionType.DESELECTED) {
+			if (renderMode != SelectionType.DESELECTED) {
 				gl.glPushName(pickingManager.getPickingID(iUniqueID,
 						EPickingType.POLYLINE_SELECTION, iPolyLineID));
 			}
@@ -936,10 +928,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				if (bRenderingSelection) {
 					String sRawValue;
 					if (currentStorage instanceof INumericalStorage) {
-						sRawValue = 	Formatter.formatNumber(
-										currentStorage.getFloat(
-												EDataRepresentation.RAW,
-												iStorageIndex));
+						sRawValue = Formatter.formatNumber(currentStorage
+								.getFloat(EDataRepresentation.RAW,
+										iStorageIndex));
 
 					} else if (currentStorage instanceof INominalStorage) {
 						sRawValue = ((INominalStorage<String>) currentStorage)
@@ -960,7 +951,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				gl.glEnd();
 			}
 
-			if (renderMode != ESelectionType.DESELECTED) {
+			if (renderMode != SelectionType.DESELECTED) {
 				gl.glPopName();
 			}
 		}
@@ -995,9 +986,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		// draw all Y-Axis
 		Set<Integer> selectedSet = axisSelectionManager
-				.getElements(ESelectionType.SELECTION);
+				.getElements(SelectionType.SELECTION);
 		Set<Integer> mouseOverSet = axisSelectionManager
-				.getElements(ESelectionType.MOUSE_OVER);
+				.getElements(SelectionType.MOUSE_OVER);
 
 		int iCount = 0;
 		while (iCount < iNumberAxis) {
@@ -1081,14 +1072,13 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 											/ renderStyle.getAxisHeight());
 
 							Rectangle2D bounds = textRenderer.getScaledBounds(
-									gl, 	Formatter.formatNumber(fNumber),
+									gl, Formatter.formatNumber(fNumber),
 									renderStyle.getSmallFontScalingFactor(),
 									ParCoordsRenderStyle.MIN_NUMBER_TEXT_SIZE);
 							float fWidth = (float) bounds.getWidth();
 							float fHeightHalf = (float) bounds.getHeight() / 3.0f;
 
-							renderNumber(gl,
-									Formatter.formatNumber(fNumber),
+							renderNumber(gl, Formatter.formatNumber(fNumber),
 									fXPosition - fWidth - AXIS_MARKER_WIDTH,
 									fCurrentHeight - fHeightHalf);
 						} else {
@@ -1283,7 +1273,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 					iPickingID = pickingManager.getPickingID(iUniqueID,
 							EPickingType.MOVE_AXIS, iCount);
 
-				
 					gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 					gl.glPushName(iPickingID);
 
@@ -1432,7 +1421,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	 * @param renderMode
 	 */
 	private void renderBoxedYValues(GL gl, float fXOrigin, float fYOrigin,
-			String sRawValue, ESelectionType renderMode) {
+			String sRawValue, SelectionType renderMode) {
 
 		float fScaling = renderStyle.getSmallFontScalingFactor();
 		if (isRenderedRemote())
@@ -1702,10 +1691,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		// HashMap<Integer, Boolean> hashDeselectedPolylines = new
 		// HashMap<Integer, Boolean>();
 
-		polylineSelectionManager.clearSelection(ESelectionType.DESELECTED);
+		polylineSelectionManager.clearSelection(SelectionType.DESELECTED);
 
 		for (ArrayList<Integer> alCurrent : hashIsGateBlocking.values()) {
-			polylineSelectionManager.addToType(ESelectionType.DESELECTED,
+			polylineSelectionManager.addToType(SelectionType.DESELECTED,
 					alCurrent);
 			// for (Integer iCurrent : alCurrent)
 			// {
@@ -1714,7 +1703,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		}
 
 		for (ArrayList<Integer> alCurrent : alIsAngleBlocking) {
-			polylineSelectionManager.addToType(ESelectionType.DESELECTED,
+			polylineSelectionManager.addToType(SelectionType.DESELECTED,
 					alCurrent);
 			// for (Integer iCurrent : alCurrent)
 			// {
@@ -1723,7 +1712,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		}
 
 		for (ArrayList<Integer> alCurrent : hashIsNANBlocking.values()) {
-			polylineSelectionManager.addToType(ESelectionType.DESELECTED,
+			polylineSelectionManager.addToType(SelectionType.DESELECTED,
 					alCurrent);
 			// for (Integer iCurrent : alCurrent)
 			// {
@@ -1736,9 +1725,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		// for (int iCurrent : hashDeselectedPolylines.keySet())
 		// {
-		// polylineSelectionManager.addToType(ESelectionType.DESELECTED,
+		// polylineSelectionManager.addToType(SelectionType.DESELECTED,
 		// alCurrent);
-		// polylineSelectionManager.addToType(ESelectionType.DESELECTED,
+		// polylineSelectionManager.addToType(SelectionType.DESELECTED,
 		// iCurrent);
 		// }
 	}
@@ -1764,7 +1753,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			return;
 		}
 
-		ESelectionType eSelectionType;
+		SelectionType selectionType;
 		switch (ePickingType) {
 		case PCS_VIEW_SELECTION:
 			break;
@@ -1772,7 +1761,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			switch (ePickingMode) {
 
 			case CLICKED:
-				eSelectionType = ESelectionType.SELECTION;
+				selectionType = SelectionType.SELECTION;
 				if (bAngularBrushingSelectPolyline) {
 					bAngularBrushingSelectPolyline = false;
 					bIsAngularBrushingActive = true;
@@ -1783,11 +1772,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 				break;
 			case MOUSE_OVER:
-				eSelectionType = ESelectionType.MOUSE_OVER;
+				selectionType = SelectionType.MOUSE_OVER;
 				break;
 
 			case RIGHT_CLICKED:
-				eSelectionType = ESelectionType.SELECTION;
+				selectionType = SelectionType.SELECTION;
 
 				// Prevent handling of non genetic data in context menu
 				if (dataDomain != EDataDomain.GENETIC_DATA)
@@ -1811,14 +1800,14 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 			}
 
-			if (polylineSelectionManager.checkStatus(eSelectionType,
-					iExternalID)) {
+			if (polylineSelectionManager
+					.checkStatus(selectionType, iExternalID)) {
 				break;
 			}
 
 			connectedElementRepresentationManager.clear(ePolylineDataType);
 
-			polylineSelectionManager.clearSelection(eSelectionType);
+			polylineSelectionManager.clearSelection(selectionType);
 
 			// TODO: Integrate multi spotting support again
 			// if (ePolylineDataType == EIDType.EXPRESSION_INDEX) {
@@ -1836,14 +1825,14 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// for (Object iExpressionIndex : idMappingManager.getMultiID(
 			// EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID))
 			// {
-			// polylineSelectionManager.addToType(eSelectionType, (Integer)
+			// polylineSelectionManager.addToType(SelectionType, (Integer)
 			// iExpressionIndex);
 			// polylineSelectionManager.addConnectionID(iConnectionID,
 			// (Integer) iExpressionIndex);
 			// }
 			// }
 			// else {
-			polylineSelectionManager.addToType(eSelectionType, iExternalID);
+			polylineSelectionManager.addToType(selectionType, iExternalID);
 			polylineSelectionManager.addConnectionID(generalManager
 					.getIDManager().createID(EManagedObjectType.CONNECTION),
 					iExternalID);
@@ -1856,7 +1845,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				//
 				// SelectionCommand command =
 				// new SelectionCommand(ESelectionCommandType.CLEAR,
-				// eSelectionType);
+				// SelectionType);
 				// // sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX,
 				// command);
 
@@ -1879,14 +1868,14 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 			switch (ePickingMode) {
 			case CLICKED:
-				eSelectionType = ESelectionType.SELECTION;
+				selectionType = SelectionType.SELECTION;
 				break;
 
 			case MOUSE_OVER:
-				eSelectionType = ESelectionType.MOUSE_OVER;
+				selectionType = SelectionType.MOUSE_OVER;
 				break;
 			case RIGHT_CLICKED:
-				eSelectionType = ESelectionType.SELECTION;
+				selectionType = SelectionType.SELECTION;
 				if (!isRenderedRemote()) {
 					contextMenu.setLocation(pick.getPickedPoint(),
 							getParentGLCanvas().getWidth(), getParentGLCanvas()
@@ -1903,8 +1892,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 			}
 
-			axisSelectionManager.clearSelection(eSelectionType);
-			axisSelectionManager.addToType(eSelectionType, iExternalID);
+			axisSelectionManager.clearSelection(selectionType);
+			axisSelectionManager.addToType(selectionType, iExternalID);
 
 			axisSelectionManager.addConnectionID(generalManager.getIDManager()
 					.createID(EManagedObjectType.CONNECTION), iExternalID);
@@ -1916,7 +1905,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// .getDelta(), null);
 
 			SelectionCommand command = new SelectionCommand(
-					ESelectionCommandType.CLEAR, eSelectionType);
+					ESelectionCommandType.CLEAR, selectionType);
 			sendSelectionCommandEvent(eAxisDataType, command);
 
 			ISelectionDelta selectionDelta = axisSelectionManager.getDelta();
@@ -2009,7 +1998,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				break;
 			}
 			break;
-			
+
 		case MOVE_AXIS:
 			switch (ePickingMode) {
 			case CLICKED:
@@ -2211,11 +2200,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	public String getShortInfo() {
 		String message;
 		int iNumLines = contentSelectionManager
-				.getNumberOfElements(ESelectionType.NORMAL)
+				.getNumberOfElements(SelectionType.NORMAL)
 				+ contentSelectionManager
-						.getNumberOfElements(ESelectionType.MOUSE_OVER)
+						.getNumberOfElements(SelectionType.MOUSE_OVER)
 				+ contentSelectionManager
-						.getNumberOfElements(ESelectionType.SELECTION);
+						.getNumberOfElements(SelectionType.SELECTION);
 		if (iDisplayEveryNthPolyline == 1) {
 			message = "Parallel Coordinates - " + iNumLines + " "
 					+ useCase.getContentLabel(false, true) + " / "
@@ -2886,7 +2875,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	@Override
 	public String toString() {
 		int iNumElements = (contentSelectionManager.getNumberOfElements() - contentSelectionManager
-				.getNumberOfElements(ESelectionType.DESELECTED));
+				.getNumberOfElements(SelectionType.DESELECTED));
 		String renderMode = "standalone";
 		if (isRenderedRemote())
 			renderMode = "remote";

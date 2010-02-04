@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.event.view.browser.EBrowserQueryType;
@@ -128,8 +128,8 @@ public class GenomeHTMLBrowser extends HTMLBrowser
 				// SelectionDeltaItem selectionItem;
 
 				for (SelectionDeltaItem selectionDeltaItem : selectionDelta) {
-					if (selectionDeltaItem.getSelectionType() == ESelectionType.MOUSE_OVER
-							|| selectionDeltaItem.getSelectionType() == ESelectionType.SELECTION) {
+					if (selectionDeltaItem.getSelectionType() == SelectionType.MOUSE_OVER
+							|| selectionDeltaItem.getSelectionType() == SelectionType.SELECTION) {
 
 						// Integer iRefSeqID =
 						// generalManager.getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,

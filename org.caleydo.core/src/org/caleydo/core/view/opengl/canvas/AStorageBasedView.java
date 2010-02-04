@@ -7,7 +7,7 @@ import javax.management.InvalidAttributeValueException;
 
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -472,9 +472,9 @@ public abstract class AStorageBasedView extends AGLView
 			if (selectionDelta.size() > 0) {
 				for (SelectionDeltaItem item : selectionDelta) {
 					// if (!(item.getSelectionType() ==
-					// ESelectionType.MOUSE_OVER
-					// || item.getSelectionType() == ESelectionType.SELECTION))
-					if (!(item.getSelectionType() == ESelectionType.MOUSE_OVER)) {
+					// SelectionType.MOUSE_OVER
+					// || item.getSelectionType() == SelectionType.SELECTION))
+					if (!(item.getSelectionType() == SelectionType.MOUSE_OVER)) {
 						continue;
 					}
 
@@ -589,8 +589,8 @@ public abstract class AStorageBasedView extends AGLView
 	public abstract boolean isInDefaultOrientation();
 
 	@Override
-	public int getNumberOfSelections(ESelectionType eSelectionType) {
-		return contentSelectionManager.getElements(eSelectionType).size();
+	public int getNumberOfSelections(SelectionType SelectionType) {
+		return contentSelectionManager.getElements(SelectionType).size();
 	}
 
 	@Override

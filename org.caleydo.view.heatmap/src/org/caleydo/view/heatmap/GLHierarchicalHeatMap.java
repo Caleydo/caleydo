@@ -28,7 +28,7 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.GroupList;
@@ -234,10 +234,10 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		super(glCanvas, sLabel, viewFrustum);
 		viewType = GLHierarchicalHeatMap.VIEW_ID;
 
-		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
-		alSelectionTypes.add(ESelectionType.NORMAL);
-		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
-		alSelectionTypes.add(ESelectionType.SELECTION);
+		ArrayList<SelectionType> alSelectionTypes = new ArrayList<SelectionType>();
+		alSelectionTypes.add(SelectionType.NORMAL);
+		alSelectionTypes.add(SelectionType.MOUSE_OVER);
+		alSelectionTypes.add(SelectionType.SELECTION);
 
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
@@ -506,7 +506,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			for (Integer iContentIndex : contentVA) {
 				for (Integer iStorageIndex : storageVA) {
 					if (contentSelectionManager.checkStatus(
-							ESelectionType.DESELECTED, iContentIndex)) {
+							SelectionType.DESELECTED, iContentIndex)) {
 						fOpacity = 0.3f;
 					} else {
 						fOpacity = 1.0f;
@@ -582,7 +582,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				iCount++;
 				for (Integer iStorageIndex : storageVA) {
 					if (contentSelectionManager.checkStatus(
-							ESelectionType.DESELECTED, iContentIndex)) {
+							SelectionType.DESELECTED, iContentIndex)) {
 						fOpacity = 0.3f;
 					} else {
 						fOpacity = 1.0f;
@@ -768,10 +768,10 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			Set<Integer> setMouseOverElements = new HashSet<Integer>();
 
 			setMouseOverElements.addAll(contentSelectionManager
-					.getElements(ESelectionType.MOUSE_OVER));
+					.getElements(SelectionType.MOUSE_OVER));
 
 			setMouseOverElements.addAll(contentSelectionManager
-					.getElements(ESelectionType.SELECTION));
+					.getElements(SelectionType.SELECTION));
 
 			for (Integer mouseOverElement : setMouseOverElements) {
 
@@ -1129,11 +1129,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			Texture tempTexture = null;
 
-			if (storageVA.getGroupList().get(i).getSelectionType() == ESelectionType.NORMAL) {
+			if (storageVA.getGroupList().get(i).getSelectionType() == SelectionType.NORMAL) {
 				tempTexture = textureManager.getIconTexture(gl,
 						EIconTextures.HEAT_MAP_GROUP_NORMAL);
 			}
-			if (storageVA.getGroupList().get(i).getSelectionType() == ESelectionType.SELECTION) {
+			if (storageVA.getGroupList().get(i).getSelectionType() == SelectionType.SELECTION) {
 				tempTexture = textureManager.getIconTexture(gl,
 						EIconTextures.HEAT_MAP_GROUP_SELECTED);
 			}
@@ -1213,11 +1213,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			Texture tempTexture = null;
 
-			if (storageVA.getGroupList().get(i).getSelectionType() == ESelectionType.NORMAL) {
+			if (storageVA.getGroupList().get(i).getSelectionType() == SelectionType.NORMAL) {
 				tempTexture = textureManager.getIconTexture(gl,
 						EIconTextures.HEAT_MAP_GROUP_NORMAL);
 			}
-			if (storageVA.getGroupList().get(i).getSelectionType() == ESelectionType.SELECTION) {
+			if (storageVA.getGroupList().get(i).getSelectionType() == SelectionType.SELECTION) {
 				tempTexture = textureManager.getIconTexture(gl,
 						EIconTextures.HEAT_MAP_GROUP_SELECTED);
 			}
@@ -1296,11 +1296,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			Texture tempTexture = null;
 
-			if (contentVA.getGroupList().get(i).getSelectionType() == ESelectionType.NORMAL) {
+			if (contentVA.getGroupList().get(i).getSelectionType() == SelectionType.NORMAL) {
 				tempTexture = textureManager.getIconTexture(gl,
 						EIconTextures.HEAT_MAP_GROUP_NORMAL);
 			}
-			if (contentVA.getGroupList().get(i).getSelectionType() == ESelectionType.SELECTION) {
+			if (contentVA.getGroupList().get(i).getSelectionType() == SelectionType.SELECTION) {
 				tempTexture = textureManager.getIconTexture(gl,
 						EIconTextures.HEAT_MAP_GROUP_SELECTED);
 			}
@@ -1392,12 +1392,12 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				Texture tempTexture = null;
 
 				if (contentVA.getGroupList().get(iIdxCluster)
-						.getSelectionType() == ESelectionType.NORMAL) {
+						.getSelectionType() == SelectionType.NORMAL) {
 					tempTexture = textureManager.getIconTexture(gl,
 							EIconTextures.HEAT_MAP_GROUP_NORMAL);
 				}
 				if (contentVA.getGroupList().get(iIdxCluster)
-						.getSelectionType() == ESelectionType.SELECTION) {
+						.getSelectionType() == SelectionType.SELECTION) {
 					tempTexture = textureManager.getIconTexture(gl,
 							EIconTextures.HEAT_MAP_GROUP_SELECTED);
 				}
@@ -1451,11 +1451,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 		Texture tempTexture = null;
 
-		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.NORMAL) {
+		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.NORMAL) {
 			tempTexture = textureManager.getIconTexture(gl,
 					EIconTextures.HEAT_MAP_GROUP_NORMAL);
 		}
-		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION) {
+		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
 			tempTexture = textureManager.getIconTexture(gl,
 					EIconTextures.HEAT_MAP_GROUP_SELECTED);
 		}
@@ -1535,12 +1535,12 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				Texture tempTexture = null;
 
 				if (contentVA.getGroupList().get(iIdxCluster)
-						.getSelectionType() == ESelectionType.NORMAL) {
+						.getSelectionType() == SelectionType.NORMAL) {
 					tempTexture = textureManager.getIconTexture(gl,
 							EIconTextures.HEAT_MAP_GROUP_NORMAL);
 				}
 				if (contentVA.getGroupList().get(iIdxCluster)
-						.getSelectionType() == ESelectionType.SELECTION) {
+						.getSelectionType() == SelectionType.SELECTION) {
 					tempTexture = textureManager.getIconTexture(gl,
 							EIconTextures.HEAT_MAP_GROUP_SELECTED);
 				}
@@ -1595,11 +1595,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 		Texture tempTexture = null;
 
-		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.NORMAL) {
+		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.NORMAL) {
 			tempTexture = textureManager.getIconTexture(gl,
 					EIconTextures.HEAT_MAP_GROUP_NORMAL);
 		}
-		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION) {
+		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
 			tempTexture = textureManager.getIconTexture(gl,
 					EIconTextures.HEAT_MAP_GROUP_SELECTED);
 		}
@@ -1766,9 +1766,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		float fHeightElem = fHeight / iNumberOfElements;
 
 		Set<Integer> setMouseOverElements = contentSelectionManager
-				.getElements(ESelectionType.MOUSE_OVER);
+				.getElements(SelectionType.MOUSE_OVER);
 		Set<Integer> setSelectedElements = contentSelectionManager
-				.getElements(ESelectionType.SELECTION);
+				.getElements(SelectionType.SELECTION);
 
 		gl.glLineWidth(2f);
 
@@ -2196,7 +2196,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		gl.glColor4fv(MOUSE_OVER_COLOR, 0);
 		Set<Integer> selectedSet = storageSelectionManager
-				.getElements(ESelectionType.MOUSE_OVER);
+				.getElements(SelectionType.MOUSE_OVER);
 		int iColumnIndex = 0;
 		for (int iTempLine : storageVA) {
 			for (Integer iCurrentLine : selectedSet) {
@@ -2217,7 +2217,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		gl.glColor4fv(SELECTED_COLOR, 0);
 		selectedSet = storageSelectionManager
-				.getElements(ESelectionType.SELECTION);
+				.getElements(SelectionType.SELECTION);
 		int iLineIndex = 0;
 		for (int iTempLine : storageVA) {
 			for (Integer iCurrentLine : selectedSet) {
@@ -2238,7 +2238,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		gl.glDisable(GL.GL_LINE_STIPPLE);
 
 		Set<Integer> setMouseOverElements = contentSelectionManager
-				.getElements(ESelectionType.MOUSE_OVER);
+				.getElements(SelectionType.MOUSE_OVER);
 		gl.glColor4fv(MOUSE_OVER_COLOR, 0);
 
 		for (Integer mouseOverElement : setMouseOverElements) {
@@ -2269,7 +2269,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		}
 
 		Set<Integer> setSelectedElements = contentSelectionManager
-				.getElements(ESelectionType.SELECTION);
+				.getElements(SelectionType.SELECTION);
 		gl.glColor4fv(SELECTED_COLOR, 0);
 
 		for (Integer iSelectedElement : setSelectedElements) {
@@ -3451,11 +3451,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		int iStorageIndex = 0;
 
 		Set<Integer> setMouseOverElements = contentSelectionManager
-				.getElements(ESelectionType.MOUSE_OVER);
+				.getElements(SelectionType.MOUSE_OVER);
 		Set<Integer> setSelectedElements = contentSelectionManager
-				.getElements(ESelectionType.SELECTION);
+				.getElements(SelectionType.SELECTION);
 		Set<Integer> setDeselectedElements = contentSelectionManager
-				.getElements(ESelectionType.DESELECTED);
+				.getElements(SelectionType.DESELECTED);
 
 		// every time we change the window of the embedded heat map we need to
 		// remove the previously used ids
@@ -3475,7 +3475,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			for (Integer iSelectedID : setMouseOverElements) {
 				if (iSelectedID == iContentIndex) {
 					selectionDelta.addSelection(iContentIndex,
-							ESelectionType.MOUSE_OVER);
+							SelectionType.MOUSE_OVER);
 					Collection<Integer> conenctionIDs = contentSelectionManager
 							.getConnectionForElementID(iContentIndex);
 
@@ -3488,7 +3488,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			for (Integer iSelectedID : setSelectedElements) {
 				if (iSelectedID == iContentIndex) {
 					selectionDelta.addSelection(iContentIndex,
-							ESelectionType.SELECTION);
+							SelectionType.SELECTION);
 					Collection<Integer> conenctionIDs = contentSelectionManager
 							.getConnectionForElementID(iContentIndex);
 
@@ -3500,7 +3500,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			for (Integer iSelectedID : setDeselectedElements) {
 				if (iSelectedID == iContentIndex)
 					selectionDelta.addSelection(iContentIndex,
-							ESelectionType.DESELECTED);
+							SelectionType.DESELECTED);
 			}
 		}
 
@@ -3519,9 +3519,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		IVirtualArray currentVirtualArrayEx = storageVA;
 
 		setMouseOverElements = storageSelectionManager
-				.getElements(ESelectionType.MOUSE_OVER);
+				.getElements(SelectionType.MOUSE_OVER);
 		setSelectedElements = storageSelectionManager
-				.getElements(ESelectionType.SELECTION);
+				.getElements(SelectionType.SELECTION);
 
 		for (int index = 0; index < currentVirtualArrayEx.size(); index++) {
 			iStorageIndex = currentVirtualArrayEx.get(index);
@@ -3532,14 +3532,14 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			for (Integer iSelectedID : setMouseOverElements) {
 				if (iSelectedID == iStorageIndex)
 					selectionDeltaEx.addSelection(iStorageIndex,
-							ESelectionType.MOUSE_OVER);
+							SelectionType.MOUSE_OVER);
 			}
 
 			// set elements selected in embedded heat Map
 			for (Integer iSelectedID : setSelectedElements) {
 				if (iSelectedID == iStorageIndex)
 					selectionDeltaEx.addSelection(iStorageIndex,
-							ESelectionType.SELECTION);
+							SelectionType.SELECTION);
 			}
 		}
 
@@ -4288,7 +4288,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				IGroupList tempGroupList = contentVA.getGroupList();
 
 				for (Group group : tempGroupList) {
-					if (group.getSelectionType() == ESelectionType.SELECTION)
+					if (group.getSelectionType() == SelectionType.SELECTION)
 						iNrSelectedGroups++;
 				}
 
@@ -4317,11 +4317,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				contextMenu.setMasterGLView(this);
 
 				if (contentVA.getGroupList().get(iExternalID)
-						.getSelectionType() == ESelectionType.SELECTION)
+						.getSelectionType() == SelectionType.SELECTION)
 					break;
 				// else we want to go to clicked as well
 			case CLICKED:
-				contentVA.getGroupList().get(iExternalID).toggleSelectionType();
+				contentVA.getGroupList().get(iExternalID).togglSelectionType();
 				deactivateAllDraggingCursor();
 				bActivateDraggingGenes = true;
 
@@ -4341,7 +4341,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				// if
 				// (contentVA.getGroupList().get(iExternalID).getClusterNode()
 				// != null) {
-				// contentVA.getGroupList().get(iExternalID).getClusterNode().toggleSelectionType();
+				// contentVA.getGroupList().get(iExternalID).getClusterNode().togglSelectionType();
 				// }
 
 				// System.out.println(contentVA.getGroupList().get(iExternalID).getIdxExample());
@@ -4395,7 +4395,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				IGroupList tempGroupList = storageVA.getGroupList();
 
 				for (Group group : tempGroupList) {
-					if (group.getSelectionType() == ESelectionType.SELECTION)
+					if (group.getSelectionType() == SelectionType.SELECTION)
 						iNrSelectedGroups++;
 				}
 
@@ -4417,11 +4417,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				contextMenu.setMasterGLView(this);
 
 				if (storageVA.getGroupList().get(iExternalID)
-						.getSelectionType() == ESelectionType.SELECTION)
+						.getSelectionType() == SelectionType.SELECTION)
 					break;
 				// else we want to do clicked here as well
 			case CLICKED:
-				storageVA.getGroupList().get(iExternalID).toggleSelectionType();
+				storageVA.getGroupList().get(iExternalID).togglSelectionType();
 				deactivateAllDraggingCursor();
 				bActivateDraggingExperiments = true;
 
@@ -4440,7 +4440,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				// if
 				// (storageVA.getGroupList().get(iExternalID).getClusterNode()
 				// != null) {
-				// storageVA.getGroupList().get(iExternalID).getClusterNode().toggleSelectionType();
+				// storageVA.getGroupList().get(iExternalID).getClusterNode().togglSelectionType();
 				// }
 
 				// System.out.println(storageVA.getGroupList().get(iExternalID).getIdxExample());
@@ -4735,13 +4735,13 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			IGroupList groupList = storageVA.getGroupList();
 
 			for (Group group : groupList)
-				group.setSelectionType(ESelectionType.NORMAL);
+				group.setSelectionType(SelectionType.NORMAL);
 		}
 		if (contentVA.getGroupList() != null) {
 			IGroupList groupList = contentVA.getGroupList();
 
 			for (Group group : groupList)
-				group.setSelectionType(ESelectionType.NORMAL);
+				group.setSelectionType(SelectionType.NORMAL);
 		}
 	}
 
@@ -4761,7 +4761,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		if (contentVA.getGroupList() == null) {
 			GroupList groupList = new GroupList(0);
 			Group group = new Group(contentVA.size(), false, 0,
-					ESelectionType.NORMAL);
+					SelectionType.NORMAL);
 			groupList.append(group);
 			contentVA.setGroupList(groupList);
 		}
@@ -4769,7 +4769,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		if (storageVA.getGroupList() == null) {
 			GroupList groupList = new GroupList(0);
 			Group group = new Group(storageVA.size(), false, 0,
-					ESelectionType.NORMAL);
+					SelectionType.NORMAL);
 			groupList.append(group);
 			storageVA.setGroupList(groupList);
 		}
@@ -4950,7 +4950,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			int groupCnt = 0;
 
 			for (Group iter : groupList) {
-				if (iter.getSelectionType() == ESelectionType.SELECTION)
+				if (iter.getSelectionType() == SelectionType.SELECTION)
 					genesToExport.addAll(contentVA.getGeneIdsOfGroup(groupCnt));
 				groupCnt++;
 			}
@@ -4960,7 +4960,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 				groupCnt = 0;
 				for (Group iter : groupList) {
-					if (iter.getSelectionType() == ESelectionType.SELECTION)
+					if (iter.getSelectionType() == SelectionType.SELECTION)
 						experimentsToExport.addAll(storageVA
 								.getGeneIdsOfGroup(groupCnt));
 					groupCnt++;
@@ -4976,7 +4976,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			int groupCnt = 0;
 
 			for (Group iter : groupList) {
-				if (iter.getSelectionType() == ESelectionType.SELECTION)
+				if (iter.getSelectionType() == SelectionType.SELECTION)
 					experimentsToExport.addAll(storageVA
 							.getGeneIdsOfGroup(groupCnt));
 				groupCnt++;
@@ -4987,7 +4987,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 				groupCnt = 0;
 				for (Group iter : groupList) {
-					if (iter.getSelectionType() == ESelectionType.SELECTION)
+					if (iter.getSelectionType() == SelectionType.SELECTION)
 						genesToExport.addAll(contentVA
 								.getGeneIdsOfGroup(groupCnt));
 					groupCnt++;
@@ -5047,7 +5047,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		}
 
 		for (Group iter : groupList) {
-			if (iter.getSelectionType() == ESelectionType.SELECTION)
+			if (iter.getSelectionType() == SelectionType.SELECTION)
 				selGroups.add(groupList.indexOf(iter));
 		}
 
@@ -5112,7 +5112,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		}
 
 		for (Group iter : groupList) {
-			if (iter.getSelectionType() == ESelectionType.SELECTION)
+			if (iter.getSelectionType() == SelectionType.SELECTION)
 				selGroups.add(groupList.indexOf(iter));
 		}
 

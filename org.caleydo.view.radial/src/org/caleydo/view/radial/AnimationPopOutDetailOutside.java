@@ -4,7 +4,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 
@@ -125,7 +125,7 @@ public class AnimationPopOutDetailOutside extends ADrawingStateAnimation {
 			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentRootElement,
 					pdCurrentSelectedElement, radialHierarchy
 							.getMaxDisplayedHierarchyDepth());
-			radialHierarchy.setNewSelection(ESelectionType.SELECTION,
+			radialHierarchy.setNewSelection(SelectionType.SELECTION,
 					pdCurrentSelectedElement);
 			radialHierarchy.setDisplayListDirty();
 		}

@@ -7,7 +7,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.view.grouper.draganddrop.DragAndDropController;
 import org.caleydo.view.grouper.draganddrop.IDraggable;
@@ -58,7 +58,7 @@ public interface ICompositeGraphic extends IDraggable {
 
 	public Vec3f getHierarchyPosition();
 
-	public void setSelectionType(ESelectionType selectionType,
+	public void setSelectionType(SelectionType selectionType,
 			SelectionManager selectionManager);
 
 	public void addAsDraggable(DragAndDropController dragAndDropController);

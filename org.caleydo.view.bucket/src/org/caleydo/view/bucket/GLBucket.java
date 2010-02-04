@@ -17,7 +17,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -707,9 +707,9 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 			}
 
 			int iNumberOfGenesSelected = glView
-					.getNumberOfSelections(ESelectionType.SELECTION);
+					.getNumberOfSelections(SelectionType.SELECTION);
 			int iNumberOfGenesMouseOver = glView
-					.getNumberOfSelections(ESelectionType.MOUSE_OVER);
+					.getNumberOfSelections(SelectionType.MOUSE_OVER);
 
 			textRenderer.begin3DRendering();
 
@@ -2803,7 +2803,7 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType eSelectionType) {
+	public int getNumberOfSelections(SelectionType SelectionType) {
 		return 0;
 	}
 

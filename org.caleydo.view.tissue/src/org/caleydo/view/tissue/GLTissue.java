@@ -2,12 +2,10 @@ package org.caleydo.view.tissue;
 
 import gleem.linalg.Vec3f;
 
-import java.util.ArrayList;
-
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -41,10 +39,7 @@ public class GLTissue extends AGLView {
 		viewType = VIEW_ID;
 
 		// initialize internal gene selection manager
-		ArrayList<ESelectionType> alSelectionType = new ArrayList<ESelectionType>();
-		for (ESelectionType selectionType : ESelectionType.values()) {
-			alSelectionType.add(selectionType);
-		}
+	
 	}
 
 	@Override
@@ -110,14 +105,14 @@ public class GLTissue extends AGLView {
 		float z = 0.005f;
 
 		// FIXME: after view plugin reorganization
-		// ESelectionType selectionType = ((GLTissueViewBrowser)
+		// SelectionType selectionType = ((GLTissueViewBrowser)
 		// glRemoteRenderingView)
 		// .getSelectionManager().getSelectionType(experimentIndex);
-		// if (selectionType == ESelectionType.SELECTION)
+		// if (selectionType == SelectionType.SELECTION)
 		// color = GeneralRenderStyle.SELECTED_COLOR;
-		// else if (selectionType == ESelectionType.MOUSE_OVER)
+		// else if (selectionType == SelectionType.MOUSE_OVER)
 		// color = GeneralRenderStyle.MOUSE_OVER_COLOR;
-		// else if (selectionType == ESelectionType.DESELECTED) {
+		// else if (selectionType == SelectionType.DESELECTED) {
 		// gl.glColor4f(1f, 1f, 1f, 0.7f);
 		// gl.glBegin(GL.GL_POLYGON);
 		// gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), z);
@@ -162,7 +157,7 @@ public class GLTissue extends AGLView {
 						// ((GLTissueViewBrowser)
 						// glRemoteRenderingView).getSelectionManager();
 						// selectionManager.clearSelections();
-						// selectionManager.addToType(ESelectionType.MOUSE_OVER,
+						// selectionManager.addToType(SelectionType.MOUSE_OVER,
 						// experimentIndex);
 						//
 						// SelectedElementRep selectedElementRep =
@@ -191,7 +186,7 @@ public class GLTissue extends AGLView {
 						//
 						// SelectionCommand command =
 						// new SelectionCommand(ESelectionCommandType.CLEAR,
-						// ESelectionType.MOUSE_OVER);
+						// SelectionType.MOUSE_OVER);
 						//
 						// SelectionCommandEvent event = new
 						// SelectionCommandEvent();
@@ -254,7 +249,7 @@ public class GLTissue extends AGLView {
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType selectionType) {
+	public int getNumberOfSelections(SelectionType selectionType) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

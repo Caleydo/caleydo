@@ -7,7 +7,7 @@ import java.util.Iterator;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 
 /**
  * HashMap based implementation of ISelectionDelta. Therefore all elements are unique and no ordering is
@@ -50,7 +50,7 @@ public class SelectionDelta
 	}
 
 	@Override
-	public SelectionDeltaItem addSelection(int iSelectionID, ESelectionType selectionType) {
+	public SelectionDeltaItem addSelection(int iSelectionID, SelectionType selectionType) {
 
 		SelectionDeltaItem item = new SelectionDeltaItem(iSelectionID, selectionType);
 		selectionItems.put(iSelectionID, item);
@@ -67,7 +67,7 @@ public class SelectionDelta
 	}
 
 	@Override
-	public SelectionDeltaItem addSelection(int selectionID, ESelectionType selectionType, int iSecondaryID) {
+	public SelectionDeltaItem addSelection(int selectionID, SelectionType selectionType, int iSecondaryID) {
 		SelectionDeltaItem item = new SelectionDeltaItem(selectionID, selectionType, iSecondaryID);
 		selectionItems.put(selectionID, item);
 		return item;

@@ -2,7 +2,7 @@ package org.caleydo.core.data.selection.delta;
 
 import java.util.Collection;
 
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 
 /**
  * Interface for Selection Deltas as they are being sent between views
@@ -20,7 +20,7 @@ public interface ISelectionDelta
 	 * @param selectionType
 	 *            the selection type
 	 */
-	public SelectionDeltaItem addSelection(int iSelectionID, ESelectionType selectionType);
+	public SelectionDeltaItem addSelection(int iSelectionID, SelectionType selectionType);
 
 	/**
 	 * Add a new selection to the delta, including the optional internal id
@@ -32,7 +32,7 @@ public interface ISelectionDelta
 	 * @param iInternalID
 	 *            the internal id
 	 */
-	public SelectionDeltaItem addSelection(int iSelectionID, ESelectionType selectionType, int iInternalID);
+	public SelectionDeltaItem addSelection(int iSelectionID, SelectionType selectionType, int iInternalID);
 
 	/**
 	 * Returns a deep copy of the selection delta

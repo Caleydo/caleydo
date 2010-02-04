@@ -19,7 +19,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.GroupList;
@@ -140,10 +140,10 @@ public class GLDendrogram extends AStorageBasedView
 
 		viewType = GLDendrogram.VIEW_ID;
 
-		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
-		alSelectionTypes.add(ESelectionType.NORMAL);
-		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
-		alSelectionTypes.add(ESelectionType.SELECTION);
+		ArrayList<SelectionType> alSelectionTypes = new ArrayList<SelectionType>();
+		alSelectionTypes.add(SelectionType.NORMAL);
+		alSelectionTypes.add(SelectionType.MOUSE_OVER);
+		alSelectionTypes.add(SelectionType.SELECTION);
 
 		renderStyle = new DendrogramRenderStyle(this, viewFrustum);
 
@@ -964,7 +964,7 @@ public class GLDendrogram extends AStorageBasedView
 	 */
 	private void renderSelections(final GL gl, ClusterNode currentNode) {
 
-		if (currentNode.getSelectionType() == ESelectionType.MOUSE_OVER) {
+		if (currentNode.getSelectionType() == SelectionType.MOUSE_OVER) {
 			gl.glColor4fv(MOUSE_OVER_COLOR, 0);
 
 			gl.glBegin(GL.GL_QUADS);
@@ -978,7 +978,7 @@ public class GLDendrogram extends AStorageBasedView
 					.getPos().y() + 0.025f, SELECTION_Z);
 			gl.glEnd();
 
-		} else if (currentNode.getSelectionType() == ESelectionType.SELECTION) {
+		} else if (currentNode.getSelectionType() == SelectionType.SELECTION) {
 			gl.glColor4fv(SELECTED_COLOR, 0);
 
 			gl.glBegin(GL.GL_QUADS);
@@ -1058,7 +1058,7 @@ public class GLDendrogram extends AStorageBasedView
 				if (bEnableDepthCheck && bRenderUntilCut == true) {
 					if (current.getPos().x() <= fPosCut) {
 						// if (current.getSelectionType() !=
-						// ESelectionType.DESELECTED) {
+						// SelectionType.DESELECTED) {
 						renderDendrogramGenes(gl, current, 1);
 						// renderDendrogramGenes(gl, current, 0.3f);
 						// gl.glColor4f(fArMappingColor[0], fArMappingColor[1],
@@ -1186,7 +1186,7 @@ public class GLDendrogram extends AStorageBasedView
 				if (bEnableDepthCheck && bRenderUntilCut == true) {
 					if (current.getPos().y() >= fPosCut) {
 						// if (current.getSelectionType() !=
-						// ESelectionType.DESELECTED) {
+						// SelectionType.DESELECTED) {
 						renderDendrogramExperiments(gl, current, 1f);
 						// renderDendrogramExperiments(gl, current, 0.3f);
 						// gl.glColor4f(fArMappingColor[0], fArMappingColor[1],
@@ -1393,7 +1393,7 @@ public class GLDendrogram extends AStorageBasedView
 
 			groupList = new GroupList(iAlClusterNodes.size());
 			Group temp = new Group(tree.getRoot().getNrElements(), false, 0,
-					ESelectionType.NORMAL, tree.getRoot());
+					SelectionType.NORMAL, tree.getRoot());
 
 			groupList.append(temp);
 
@@ -1434,9 +1434,9 @@ public class GLDendrogram extends AStorageBasedView
 		for (ClusterNode iter : iAlClusterNodes) {
 			// Group temp = new Group(iter.getNrElements(), false,
 			// currentVA.get(iExample),
-			// iter.getRepresentativeElement(), ESelectionType.NORMAL, iter);
+			// iter.getRepresentativeElement(), SelectionType.NORMAL, iter);
 			Group temp = new Group(iter.getNrElements(), false, currentVA
-					.indexOf(iExample), ESelectionType.NORMAL, iter);
+					.indexOf(iExample), SelectionType.NORMAL, iter);
 			groupList.append(temp);
 			cnt++;
 			iExample += iter.getNrElements();
@@ -1468,10 +1468,10 @@ public class GLDendrogram extends AStorageBasedView
 	 */
 	private void getNumberOfClustersRec(ClusterNode node) {
 
-		if (node.getSelectionType() == ESelectionType.NORMAL) {
+		if (node.getSelectionType() == SelectionType.NORMAL) {
 			if (tree.hasChildren(node)) {
 				for (ClusterNode current : tree.getChildren(node)) {
-					if (current.getSelectionType() == ESelectionType.DESELECTED) {
+					if (current.getSelectionType() == SelectionType.DESELECTED) {
 						// System.out.println("nr elements: " +
 						// current.getNrElements());
 						iAlClusterNodes.add(current);
@@ -1493,21 +1493,21 @@ public class GLDendrogram extends AStorageBasedView
 
 		if (bRenderGeneTree) {
 			if (node.getPos().x() < fPosCut) {
-				node.setSelectionType(ESelectionType.NORMAL);
+				node.setSelectionType(SelectionType.NORMAL);
 				if (node.getDepth() < iMaxDepth) {
 					iMaxDepth = node.getDepth();
 				}
 			} else {
-				node.setSelectionType(ESelectionType.DESELECTED);
+				node.setSelectionType(SelectionType.DESELECTED);
 			}
 		} else {
 			if (node.getPos().y() > fPosCut) {
-				node.setSelectionType(ESelectionType.NORMAL);
+				node.setSelectionType(SelectionType.NORMAL);
 				if (node.getDepth() < iMaxDepth) {
 					iMaxDepth = node.getDepth();
 				}
 			} else {
-				node.setSelectionType(ESelectionType.DESELECTED);
+				node.setSelectionType(SelectionType.DESELECTED);
 			}
 		}
 
@@ -1525,7 +1525,7 @@ public class GLDendrogram extends AStorageBasedView
 			return;
 		}
 
-		ESelectionType eSelectionType = ESelectionType.NORMAL;
+		SelectionType selectionType = SelectionType.NORMAL;
 
 		switch (ePickingType) {
 
@@ -1549,12 +1549,12 @@ public class GLDendrogram extends AStorageBasedView
 				switch (pickingMode) {
 
 					case CLICKED :
-						eSelectionType = ESelectionType.SELECTION;
+						selectionType = SelectionType.SELECTION;
 						break;
 					case DRAGGED :
 						break;
 					case MOUSE_OVER :
-						eSelectionType = ESelectionType.MOUSE_OVER;
+						selectionType = SelectionType.MOUSE_OVER;
 						break;
 					case RIGHT_CLICKED :
 
@@ -1583,21 +1583,21 @@ public class GLDendrogram extends AStorageBasedView
 						break;
 				}
 
-				if (eSelectionType != ESelectionType.NORMAL) {
+				if (selectionType != SelectionType.NORMAL) {
 
 					resetAllTreeSelections();
 
 					if (tree.getNodeByNumber(iExternalID) != null)
 						tree.getNodeByNumber(iExternalID).setSelectionType(
-								eSelectionType);
+								selectionType);
 
 					ISelectionDelta selectionDelta = null;
 					SelectionManager selectionManager = null;
 
 					selectionManager = contentSelectionManager;
 
-					selectionManager.clearSelection(eSelectionType);
-					selectionManager.addToType(eSelectionType, iExternalID);
+					selectionManager.clearSelection(selectionType);
+					selectionManager.addToType(selectionType, iExternalID);
 					selectionDelta = selectionManager.getDelta();
 
 					handleConnectedElementRep(selectionDelta);
@@ -1615,27 +1615,27 @@ public class GLDendrogram extends AStorageBasedView
 			case DENDROGRAM_GENE_NODE_SELECTION :
 				switch (pickingMode) {
 					case CLICKED :
-						eSelectionType = ESelectionType.SELECTION;
+						selectionType = SelectionType.SELECTION;
 						break;
 					case DRAGGED :
 						break;
 					case MOUSE_OVER :
-						eSelectionType = ESelectionType.MOUSE_OVER;
+						selectionType = SelectionType.MOUSE_OVER;
 						break;
 				}
-				if (eSelectionType != ESelectionType.NORMAL
+				if (selectionType != SelectionType.NORMAL
 						&& tree.getNodeByNumber(iExternalID) != null) {
 
 					resetAllTreeSelections();
 
 					tree.getNodeByNumber(iExternalID).setSelectionType(
-							eSelectionType);
+							selectionType);
 
 					ClusterNodeSelectionEvent clusterNodeEvent = new ClusterNodeSelectionEvent();
 					SelectionDelta selectionDeltaClusterNode = new SelectionDelta(
 							EIDType.CLUSTER_NUMBER);
 					selectionDeltaClusterNode.addSelection(iExternalID,
-							eSelectionType);
+							selectionType);
 					clusterNodeEvent
 							.setSelectionDelta(selectionDeltaClusterNode);
 					eventPublisher.triggerEvent(clusterNodeEvent);
@@ -1648,12 +1648,12 @@ public class GLDendrogram extends AStorageBasedView
 				switch (pickingMode) {
 
 					case CLICKED :
-						eSelectionType = ESelectionType.SELECTION;
+						selectionType = SelectionType.SELECTION;
 						break;
 					case DRAGGED :
 						break;
 					case MOUSE_OVER :
-						eSelectionType = ESelectionType.MOUSE_OVER;
+						selectionType = SelectionType.MOUSE_OVER;
 						break;
 					case RIGHT_CLICKED :
 						if (contentSelectionManager.checkStatus(iExternalID) == false
@@ -1676,21 +1676,21 @@ public class GLDendrogram extends AStorageBasedView
 						break;
 				}
 
-				if (eSelectionType != ESelectionType.NORMAL) {
+				if (selectionType != SelectionType.NORMAL) {
 
 					resetAllTreeSelections();
 
 					if (tree.getNodeByNumber(iExternalID) != null)
 						tree.getNodeByNumber(iExternalID).setSelectionType(
-								eSelectionType);
+								selectionType);
 
 					ISelectionDelta selectionDelta = null;
 					SelectionManager selectionManager = null;
 
 					selectionManager = storageSelectionManager;
 
-					selectionManager.clearSelection(eSelectionType);
-					selectionManager.addToType(eSelectionType, iExternalID);
+					selectionManager.clearSelection(selectionType);
+					selectionManager.addToType(selectionType, iExternalID);
 					selectionDelta = selectionManager.getDelta();
 
 					handleConnectedElementRep(selectionDelta);
@@ -1801,23 +1801,23 @@ public class GLDendrogram extends AStorageBasedView
 				resetAllTreeSelections();
 
 				Set<Integer> setMouseOverElements = contentSelectionManager
-						.getElements(ESelectionType.MOUSE_OVER);
+						.getElements(SelectionType.MOUSE_OVER);
 				for (Integer iSelectedID : setMouseOverElements) {
 
 					iIndex = iSelectedID;
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(
-								ESelectionType.MOUSE_OVER);
+								SelectionType.MOUSE_OVER);
 				}
 
 				Set<Integer> setSelectionElements = contentSelectionManager
-						.getElements(ESelectionType.SELECTION);
+						.getElements(SelectionType.SELECTION);
 				for (Integer iSelectedID : setSelectionElements) {
 
 					iIndex = iSelectedID;
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(
-								ESelectionType.SELECTION);
+								SelectionType.SELECTION);
 				}
 				// setDisplayListDirty();
 			}
@@ -1829,22 +1829,22 @@ public class GLDendrogram extends AStorageBasedView
 				resetAllTreeSelections();
 
 				Set<Integer> setMouseOverElements = storageSelectionManager
-						.getElements(ESelectionType.MOUSE_OVER);
+						.getElements(SelectionType.MOUSE_OVER);
 				for (Integer iSelectedID : setMouseOverElements) {
 
 					iIndex = iSelectedID;
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(
-								ESelectionType.MOUSE_OVER);
+								SelectionType.MOUSE_OVER);
 				}
 
 				Set<Integer> setSelectionElements = storageSelectionManager
-						.getElements(ESelectionType.SELECTION);
+						.getElements(SelectionType.SELECTION);
 				for (Integer iSelectedID : setSelectionElements) {
 					iIndex = iSelectedID;
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(
-								ESelectionType.SELECTION);
+								SelectionType.SELECTION);
 				}
 				// setDisplayListDirty();
 			}
@@ -1881,7 +1881,7 @@ public class GLDendrogram extends AStorageBasedView
 
 	/**
 	 * This function calls a recursive function which is responsible for setting
-	 * all nodes in the dendrogram to {@link EselectionType.NORMAL}
+	 * all nodes in the dendrogram to {@link SelectionType.NORMAL}
 	 */
 	private void resetAllTreeSelections() {
 		if (tree != null)
@@ -1896,7 +1896,7 @@ public class GLDendrogram extends AStorageBasedView
 	 */
 	private void resetAllTreeSelectionsRec(ClusterNode currentNode) {
 
-		currentNode.setSelectionType(ESelectionType.NORMAL);
+		currentNode.setSelectionType(SelectionType.NORMAL);
 
 		if (tree.hasChildren(currentNode)) {
 			for (ClusterNode current : tree.getChildren(currentNode)) {
