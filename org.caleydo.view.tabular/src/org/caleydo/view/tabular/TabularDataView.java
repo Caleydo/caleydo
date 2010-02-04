@@ -1,14 +1,16 @@
 package org.caleydo.view.tabular;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -71,6 +73,7 @@ public class TabularDataView extends ASWTView implements
 		ISelectionCommandHandler, IViewCommandHandler, IView, ISWTView {
 
 	public final static String VIEW_ID = "org.caleydo.view.tabular";
+	private final static int COLUMN_OFFSET = 3;
 
 	/**
 	 * This manager is responsible for the content in the storages (the indices)
@@ -209,7 +212,7 @@ public class TabularDataView extends ASWTView implements
 
 		// Clear table if not empty
 		contentTable.removeAll();
-		
+
 		contentTable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -394,14 +397,18 @@ public class TabularDataView extends ASWTView implements
 						+ " is not implemented in the tabular data viewer.");
 			}
 
+			int i = 3;
 			for (Integer iStorageIndex : storageVA) {
 				fValue = set.get(iStorageIndex).getFloat(
 						EDataRepresentation.RAW, iContentIndex);
 
-				item.setText(iStorageIndex + 3, Float.toString(fValue));
+				item.setText(i++, Float.toString(fValue));
 			}
 
 			index++;
+		}
+		for (TableColumn tempColumn : contentTable.getColumns()) {
+			tempColumn.pack();
 		}
 
 		contentTableCursor = new TableCursor(contentTable, SWT.NONE);
@@ -470,34 +477,73 @@ public class TabularDataView extends ASWTView implements
 	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
 		SelectionManager selectionManager;
 		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
-			selectionManager = storageSelectionManager;
-	          
-//			for (VADeltaItem deltaItem : delta.getAllItems()) {
-//				final int iVAIndex = deltaItem.getIndex();
-//
-//				if (deltaItem.getType() == EVAOperation.REMOVE) {
-//					composite.getDisplay().asyncExec(new Runnable() {
-//						public void run() {
-//							contentTable.getColumn(iVAIndex).dispose();
-//						}
-//					});
-//				}
-//			}
-			
-			selectionManager.setVADelta(delta);
-			
-			int[] orig = contentTable.getColumnOrder();
-			System.out.println("ORIG: "+orig);
-			
-			int[] columnOrder = new int[storageVA.size()+3];
-			columnOrder[0] = 0;
-			columnOrder[1] = 1;
-			columnOrder[2] = 2;
-			for (int i=3; i<storageVA.size()+3; i++)
-				columnOrder[i] = storageVA.get(i-3)+3;
-			
-			System.out.println("NEW: "+columnOrder);
-			contentTable.setColumnOrder(columnOrder);
+			storageSelectionManager.setVADelta(delta);
+
+			for (VADeltaItem deltaItem : delta.getAllItems()) {
+				final int iVAIndex = deltaItem.getIndex();
+
+				switch (deltaItem.getType()) {
+				case REMOVE:
+					composite.getDisplay().asyncExec(new Runnable() {
+						public void run() {
+							contentTable.getColumn(iVAIndex + 3).dispose();
+						}
+					});
+					break;
+				case ADD:
+					addColumn(deltaItem.getIndex() + COLUMN_OFFSET, deltaItem
+							.getPrimaryID());
+					break;
+				case COPY:
+					addColumn(deltaItem.getIndex() + 1 + COLUMN_OFFSET,
+							storageVA.get(deltaItem.getIndex()));
+
+					break;
+				case MOVE:
+					// case MOVE_LEFT:
+					// case MOVE_RIGHT:
+					int[] orig = contentTable.getColumnOrder();
+
+					System.out.println(Arrays.toString(orig));
+					ArrayList<Integer> ordered = new ArrayList<Integer>(
+							orig.length);
+
+					for (int index : orig) {
+						ordered.add(index);
+					}
+
+					Integer item = ordered.remove(deltaItem.getIndex()
+							+ COLUMN_OFFSET);
+					System.out.println(ordered);
+					ordered.add(deltaItem.getTargetIndex() + COLUMN_OFFSET,
+							item);
+					System.out.println(ordered);
+					for (int count = 0; count < ordered.size(); count++) {
+						orig[count] = ordered.get(count);
+					}
+
+					// order.
+
+					// // Integer iElement = virtualArray.remove(iSrcIndex);
+					// virtualArray.add(iTargetIndex, iElement);
+
+					// int[] columnOrder = new int[storageVA.size()
+					// + COLUMN_OFFSET];
+					// columnOrder[0] = 0;
+					// columnOrder[1] = 1;
+					// columnOrder[2] = 2;
+					// for (int i = COLUMN_OFFSET; i < storageVA.size()
+					// + COLUMN_OFFSET; i++)
+					// columnOrder[i] = storageVA.get(i - COLUMN_OFFSET)
+					// + COLUMN_OFFSET;
+					System.out.println(Arrays.toString(orig));
+					contentTable.setColumnOrder(orig);
+					break;
+				default:
+					throw new IllegalStateException(
+							"EVAOperation not implemented");
+				}
+			}
 
 		} else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT) {
 			delta = DeltaConverter
@@ -511,25 +557,46 @@ public class TabularDataView extends ASWTView implements
 			return;
 
 		// reactOnVAChanges(delta);
-		
-//		int[] columnOrder = contentTable.getColumnOrder();
-//        for (int i = 0; i < order.length / 2; i++) {
-//            int temp = order[i];
-//            order[i] = order[order.length - i - 1];
-//            order[order.length - i - 1] = temp;
-//          }
 
-//        int[] order = contentTable.getColumnOrder();
-//        for (int i = 0; i < order.length / 2; i++) {
-//          int temp = order[i];
-//          order[i] = order[order.length - i - 1];
-//          order[order.length - i - 1] = temp;
-//        }
-//        contentTable.setColumnOrder(order);
-		
-		//createPreviewTable();
-		//contentTable.pack();
-//		reactOnExternalSelection();
+		// int[] columnOrder = contentTable.getColumnOrder();
+		// for (int i = 0; i < order.length / 2; i++) {
+		// int temp = order[i];
+		// order[i] = order[order.length - i - 1];
+		// order[order.length - i - 1] = temp;
+		// }
+
+		// int[] order = contentTable.getColumnOrder();
+		// for (int i = 0; i < order.length / 2; i++) {
+		// int temp = order[i];
+		// order[i] = order[order.length - i - 1];
+		// order[order.length - i - 1] = temp;
+		// }
+		// contentTable.setColumnOrder(order);
+
+		// createPreviewTable();
+		// contentTable.pack();
+		// reactOnExternalSelection();
+	}
+
+	private void addColumn(final int index, final int storageNumber) {
+		composite.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				TableColumn column = new TableColumn(contentTable, SWT.NONE,
+						index);
+				IStorage storage = set.get(storageNumber);
+				column.setText(storage.getLabel());
+				TableItem[] items = contentTable.getItems();
+				for (int i = 0; i < items.length; i++) {
+					TableItem item = items[i];
+					float value = set.get(storageNumber).getFloat(
+							EDataRepresentation.RAW, contentVA.get(i));
+					item.setText(index, Float.toString(value));
+
+				}
+				column.pack();
+
+			}
+		});
 	}
 
 	/**
@@ -564,7 +631,8 @@ public class TabularDataView extends ASWTView implements
 					iColIndex = storageVA.indexOf(iterStorageIndex.next()) + 3;
 				}
 
-				contentTableCursor.setSelection(iRowIndex, contentTable.getColumnOrder()[iColIndex]);
+				contentTableCursor.setSelection(iRowIndex, contentTable
+						.getColumnOrder()[iColIndex]);
 			}
 		});
 	}
