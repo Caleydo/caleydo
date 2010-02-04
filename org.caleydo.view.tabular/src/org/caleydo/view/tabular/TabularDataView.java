@@ -209,7 +209,7 @@ public class TabularDataView extends ASWTView implements
 
 		// Clear table if not empty
 		contentTable.removeAll();
-
+		
 		contentTable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -471,7 +471,7 @@ public class TabularDataView extends ASWTView implements
 		SelectionManager selectionManager;
 		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 			selectionManager = storageSelectionManager;
-
+	          
 //			for (VADeltaItem deltaItem : delta.getAllItems()) {
 //				final int iVAIndex = deltaItem.getIndex();
 //
@@ -483,18 +483,52 @@ public class TabularDataView extends ASWTView implements
 //					});
 //				}
 //			}
+			
+			selectionManager.setVADelta(delta);
+			
+			int[] orig = contentTable.getColumnOrder();
+			System.out.println("ORIG: "+orig);
+			
+			int[] columnOrder = new int[storageVA.size()+3];
+			columnOrder[0] = 0;
+			columnOrder[1] = 1;
+			columnOrder[2] = 2;
+			for (int i=3; i<storageVA.size()+3; i++)
+				columnOrder[i] = storageVA.get(i-3)+3;
+			
+			System.out.println("NEW: "+columnOrder);
+			contentTable.setColumnOrder(columnOrder);
+
 		} else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT) {
 			delta = DeltaConverter
 					.convertDelta(EIDType.EXPRESSION_INDEX, delta);
 			selectionManager = contentSelectionManager;
+			selectionManager.setVADelta(delta);
 		} else if (delta.getIDType() == EIDType.EXPRESSION_INDEX) {
 			selectionManager = contentSelectionManager;
+			selectionManager.setVADelta(delta);
 		} else
 			return;
 
 		// reactOnVAChanges(delta);
-		selectionManager.setVADelta(delta);
-		createPreviewTable();
+		
+//		int[] columnOrder = contentTable.getColumnOrder();
+//        for (int i = 0; i < order.length / 2; i++) {
+//            int temp = order[i];
+//            order[i] = order[order.length - i - 1];
+//            order[order.length - i - 1] = temp;
+//          }
+
+//        int[] order = contentTable.getColumnOrder();
+//        for (int i = 0; i < order.length / 2; i++) {
+//          int temp = order[i];
+//          order[i] = order[order.length - i - 1];
+//          order[order.length - i - 1] = temp;
+//        }
+//        contentTable.setColumnOrder(order);
+		
+		//createPreviewTable();
+		//contentTable.pack();
 //		reactOnExternalSelection();
 	}
 
@@ -517,10 +551,8 @@ public class TabularDataView extends ASWTView implements
 
 				// FIXME: currently we do not handle multiple selections (->
 				// replace if with while)
-				int count = 0;
 				while (iterContentIndex.hasNext()) {
 					iRowIndex = contentVA.indexOf(iterContentIndex.next());
-					System.out.println("Row " + count++ + ": " + iRowIndex);
 					contentTable.select(iRowIndex);
 				}
 
@@ -530,10 +562,9 @@ public class TabularDataView extends ASWTView implements
 						.getElements(ESelectionType.SELECTION).iterator();
 				while (iterStorageIndex.hasNext()) {
 					iColIndex = storageVA.indexOf(iterStorageIndex.next()) + 3;
-					System.out.println("Col: " + (iColIndex - 3));
 				}
 
-				contentTableCursor.setSelection(iRowIndex, iColIndex);
+				contentTableCursor.setSelection(iRowIndex, contentTable.getColumnOrder()[iColIndex]);
 			}
 		});
 	}
