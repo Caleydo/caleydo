@@ -49,6 +49,11 @@ public class GLScatterPlotKeyListener extends GLKeyListener<GLScatterplot> {
 			return;
 		}
 		
+		if (event.character == 'z') {
+			glScatterplot.toggleMatrixZoom();
+			return;
+		}
+		
 		switch (event.keyCode) {
 			case SWT.ARROW_UP :
 				glScatterplot.upDownSelect(false);

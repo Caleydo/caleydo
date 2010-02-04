@@ -127,6 +127,7 @@ public class GLScatterplot extends AStorageBasedView {
 
 	private boolean bUseColor = true;
 	private boolean bOnlyRenderHalfMatrix = true;
+	private boolean bAllowMatrixZoom =true;
 
 	int iCurrentMouseOverElement = -1;
 
@@ -405,31 +406,89 @@ public class GLScatterplot extends AStorageBasedView {
 		float fWidth;
 		fHeight = viewFrustum.getHeight();
 		fWidth = viewFrustum.getWidth();
+		if(fWidth>fHeight) fWidth =fHeight;
 		
 		int iAddTextures=1;
 		
-		if (MOUSEOVER_X_AXIS>=0 && MOUSEOVER_Y_AXIS>0)
-			iAddTextures=5;
+		if(	bAllowMatrixZoom)
+			if (MOUSEOVER_X_AXIS>=0 && MOUSEOVER_Y_AXIS>0)
+				iAddTextures=5;
 
 		float fStepY = fHeight / (float) (NR_TEXTURESY + iAddTextures);
 		float fStepX = fWidth / (float) (NR_TEXTURESX + iAddTextures);
 
-		float fSpacerX = fStepX / (float) (NR_TEXTURESX + iAddTextures);
+		float fSpacerX = fStepX / (float) (NR_TEXTURESY + iAddTextures);
 		float fSpacerY = fStepY / (float) (NR_TEXTURESX + iAddTextures);
 
 		float fyOffset = fHeight;
 		float fxOffset = fSpacerX;
 		
-		
-		int iMOVERZOOMX=0;
-		int iMOVERZOOMY=0;
-		if (MOUSEOVER_X_AXIS>=0 && MOUSEOVER_Y_AXIS>=0)
+		int iZoomfactor=1;
+		float iMOVERZOOMX=0;
+		float iMOVERZOOMY=0;
+		if ((MOUSEOVER_X_AXIS>=0 && MOUSEOVER_Y_AXIS>=0) && (bAllowMatrixZoom))
 		{
-			if (MOUSEOVER_X_AXIS==SELECTED_X_AXIS)
+			
+			if ((MOUSEOVER_X_AXIS==SELECTED_X_AXIS+1))			
+				iMOVERZOOMX=0.5f;											
+			if ((MOUSEOVER_Y_AXIS==SELECTED_Y_AXIS+1))			
+				iMOVERZOOMY=0.5f;	
+			
+			if ((MOUSEOVER_X_AXIS==SELECTED_X_AXIS))			
+				iMOVERZOOMX=2.0f;	
+			if ((MOUSEOVER_Y_AXIS==SELECTED_Y_AXIS))			
+				iMOVERZOOMY=2.0f;
+						
+			if ((MOUSEOVER_X_AXIS==SELECTED_X_AXIS-1))			
+				iMOVERZOOMX=3.5f;	
+			if ((MOUSEOVER_Y_AXIS==SELECTED_Y_AXIS-1))			
+				iMOVERZOOMY=3.5f;
+			
+			if ((MOUSEOVER_X_AXIS<SELECTED_X_AXIS-1))			
+				iMOVERZOOMX=4;	
+			if ((MOUSEOVER_Y_AXIS<SELECTED_Y_AXIS-1))			
+				iMOVERZOOMY=4;
+			
+			if ((MOUSEOVER_X_AXIS==SELECTED_X_AXIS) && (MOUSEOVER_Y_AXIS==SELECTED_Y_AXIS+1))
+			{
+				iZoomfactor=2;
+				iMOVERZOOMX=1.5f;
+				iMOVERZOOMY=1;				
+			}
+			if ((MOUSEOVER_Y_AXIS==SELECTED_Y_AXIS) && (MOUSEOVER_X_AXIS==SELECTED_X_AXIS+1))
+			{
+				iZoomfactor=2;
+				iMOVERZOOMX=0f;
+				iMOVERZOOMY=2.5f;
+			}
+			if ((MOUSEOVER_X_AXIS==SELECTED_X_AXIS) && (MOUSEOVER_Y_AXIS==SELECTED_Y_AXIS-1))
+			{
+				iZoomfactor=2;
+				iMOVERZOOMX=1.5f;
+				iMOVERZOOMY=4;				
+			}
+			if ((MOUSEOVER_Y_AXIS==SELECTED_Y_AXIS) && (MOUSEOVER_X_AXIS==SELECTED_X_AXIS-1))
+			{
+				iZoomfactor=2;
+				iMOVERZOOMX=3f;
+				iMOVERZOOMY=2.5f;
+			}
+						
+				
+			if ((MOUSEOVER_X_AXIS==SELECTED_X_AXIS) && (MOUSEOVER_Y_AXIS==SELECTED_Y_AXIS))
+			{
 				iMOVERZOOMX=1;
+				iMOVERZOOMY=3;
+				if (MOUSEOVER_X_AXIS==0)
+					iMOVERZOOMX=0;
+				iZoomfactor=3;
+			}	
+			
+			//TODO add special cases when MO-Xaxis = zero and MOYAxis=MAx;
+				
 		}
 			
-		fyOffset -= (fStepY + fSpacerY) * (float) (SELECTED_Y_AXIS + 1);
+		fyOffset -= (fStepY + fSpacerY) * (float) (SELECTED_Y_AXIS + 1+iMOVERZOOMY);
 		fxOffset += (fStepX + fSpacerX) * (float) (SELECTED_X_AXIS+iMOVERZOOMX);
 
 		float fEdge = 0.01f;
@@ -441,20 +500,26 @@ public class GLScatterplot extends AStorageBasedView {
 																	// Color
 				
 		DrawRectangularSelection(gl, fxOffset - fEdge, fyOffset - fEdge, z, // Z-Value
-				fStepX + 2 * fEdge, fStepY + 2 * fEdge, fArMappingColor);
-		if (MOUSEOVER_X_AXIS<0 && MOUSEOVER_Y_AXIS<0)
+				fStepX*iZoomfactor + 2 * fEdge, fStepY*iZoomfactor + 2 * fEdge, fArMappingColor);
+		if ((MOUSEOVER_X_AXIS<0 && MOUSEOVER_Y_AXIS<0))
 			return;
 		
 		fyOffset = fHeight;
 		fxOffset = fSpacerX;
-		iMOVERZOOMX=1;
-		iMOVERZOOMY=4;
-		fyOffset -= (fStepY + fSpacerY) * (float) (MOUSEOVER_Y_AXIS +iMOVERZOOMY);
+		if(	bAllowMatrixZoom)
+		{
+			iMOVERZOOMX=1;
+			iMOVERZOOMY=3;
+			if (MOUSEOVER_X_AXIS==0)
+				iMOVERZOOMX=0;
+			iZoomfactor=3;
+		}
+		fyOffset -= (fStepY + fSpacerY) * (float) (MOUSEOVER_Y_AXIS +1+iMOVERZOOMY);
 		fxOffset += (fStepX + fSpacerX) * (float) (MOUSEOVER_X_AXIS+iMOVERZOOMX);
 		fArMappingColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 		
 		DrawRectangularSelection(gl, fxOffset - fEdge, fyOffset - fEdge, z, // Z-Value
-		fStepX*3 + 2 * fEdge, fStepY*3 + 2 * fEdge, fArMappingColor);
+		fStepX*iZoomfactor + 2 * fEdge, fStepY*iZoomfactor + 2 * fEdge, fArMappingColor);
 
 	}
 
@@ -463,22 +528,22 @@ public class GLScatterplot extends AStorageBasedView {
 		float fWidth;
 		fHeight = viewFrustum.getHeight();
 		fWidth = viewFrustum.getWidth();
+		if(fWidth>fHeight) fWidth =fHeight;
 
 		int debugsize1 = AlSelectionTextures.size();
 		int debugsize2 = AlFullTextures.size();
 		
 		int iAddTextures=1;
 		
-		if (MOUSEOVER_X_AXIS>=0 && MOUSEOVER_Y_AXIS>=0)
-			iAddTextures=5;
+		if(	bAllowMatrixZoom)
+			if (MOUSEOVER_X_AXIS>=0 && MOUSEOVER_Y_AXIS>=0)
+				iAddTextures=5;
 			
 
 		float fStepY = fHeight / (float) (NR_TEXTURESY + iAddTextures);
 		float fStepX = fWidth / (float) (NR_TEXTURESX + iAddTextures);
-		
-		
-
-		float fSpacerX = fStepX / (float) (NR_TEXTURESX + iAddTextures);
+				
+		float fSpacerX = fStepX / (float) (NR_TEXTURESY + iAddTextures);
 		float fSpacerY = fStepY / (float) (NR_TEXTURESX + iAddTextures);
 
 		float fyOffset = fHeight;
@@ -499,7 +564,8 @@ public class GLScatterplot extends AStorageBasedView {
 		for (int i = 0; i < NR_TEXTURESX; i++) {
 			for (int j = 0; j < NR_TEXTURESY; j++) {
 
-
+			if(	bAllowMatrixZoom)
+			{
 				iTextureMultiX=1;
 				iOffsetMultiX=1;
 				iTextureMultiY=1;
@@ -516,49 +582,39 @@ public class GLScatterplot extends AStorageBasedView {
 				if ((j==(MOUSEOVER_Y_AXIS-1)) || (j==(MOUSEOVER_Y_AXIS+1)))
 				{
 					iOffsetMultiY=iAddTextures-3;
-					fExtraOffsetY=(fStepY + fSpacerY)/4;
+					fExtraOffsetY=(fStepY + fSpacerY)/2;
 				}
 				
 				
 				if (i==MOUSEOVER_X_AXIS)
 				{				
-				//	iTextureMultiX=iAddTextures-2;
 					fExtraOffsetX=(fStepX + fSpacerX);
 					iOffsetMultiX=iAddTextures-2;
 					if ((j==(MOUSEOVER_Y_AXIS-1)) || (j==(MOUSEOVER_Y_AXIS+1)))
 					{
 						iTextureMultiX=iAddTextures-3;
 						iTextureMultiY=iAddTextures-3;	
-						fExtraOffsetX=(fStepX + fSpacerX)/4;
-						fExtraOffsetY=(fStepY + fSpacerY)/4;
+						fExtraOffsetX=(fStepX + fSpacerX)/2;						
+						fExtraOffsetY=0;
 					}
 					else iTextureMultiX=1;
 				}
-//				else
-//				{
-//					iTextureMultiX=1;
-//					iOffsetMultiX=1;
-//				}
+
 				
 				if (j==MOUSEOVER_Y_AXIS)
 				{					
-				//	iTextureMultiY=iAddTextures-2;
 					fExtraOffsetY=(fStepY + fSpacerY);
 					iOffsetMultiY=iAddTextures-2;
 					if ((i==(MOUSEOVER_X_AXIS-1)) || (i==(MOUSEOVER_X_AXIS+1)))
 					{
 						iTextureMultiY=iAddTextures-3;
 						iTextureMultiX=iAddTextures-3;
-						fExtraOffsetY=(fStepY + fSpacerY)/4;
-						fExtraOffsetX=(fStepX + fSpacerX)/4;
+						fExtraOffsetY=(fStepY + fSpacerY)/2;
+						fExtraOffsetX=0;
 					}
 					else iTextureMultiY=1;
 				}
-//				else 
-//				{
-//					iTextureMultiY=1;
-//					iOffsetMultiY=1;
-//				}
+
 				if ((i==MOUSEOVER_X_AXIS) && (j==MOUSEOVER_Y_AXIS))
 				{
 					iTextureMultiX=iAddTextures-2;
@@ -567,21 +623,12 @@ public class GLScatterplot extends AStorageBasedView {
 					fExtraOffsetY=0;
 				}
 					
-				if ((i==(MOUSEOVER_X_AXIS-1)) || (i==(MOUSEOVER_X_AXIS+1)))
-				{
+				if ((i==(MOUSEOVER_X_AXIS-1)) || (i==(MOUSEOVER_X_AXIS+1)))				
 					iOffsetMultiX=iAddTextures-3;		
-					//fExtraOffsetX=(fStepX + fSpacerX)/2;
-				}
-					
-				if ((j==(MOUSEOVER_Y_AXIS-1)) || (j==(MOUSEOVER_Y_AXIS+1)))
-				{
-					iOffsetMultiY=iAddTextures-3;
-					//fExtraOffsetY=(fStepY + fSpacerY)/2;
-				}
-					
-//					fyOffset -= (fStepY + fSpacerY)*iAddTextures;
-//				else
-					
+									
+				if ((j==(MOUSEOVER_Y_AXIS-1)) || (j==(MOUSEOVER_Y_AXIS+1)))				
+					iOffsetMultiY=iAddTextures-3;				
+			}	
 				fyOffset -= (fStepY + fSpacerY)*iOffsetMultiY;
 
 				if (i > j && bOnlyRenderHalfMatrix) {
@@ -836,7 +883,7 @@ public class GLScatterplot extends AStorageBasedView {
 
 				float[] fArMappingColor = new float[]{0.0f, 1.0f, 0.0f}; // green
 
-				gl.glNewList(iGLDisplayListIndexBrush, GL.GL_COMPILE);
+				//gl.glNewList(iGLDisplayListIndexBrush, GL.GL_COMPILE);
 				DrawRectangularSelection(
 						gl,
 						fRectangleDragStartPoint[0],
@@ -846,7 +893,7 @@ public class GLScatterplot extends AStorageBasedView {
 						fRectangleDragEndPoint[1] - fRectangleDragStartPoint[1],
 						fArMappingColor);
 
-				gl.glEndList();
+			//	gl.glEndList();
 			}
 			if (glMouseListener.wasMouseReleased() && bRectangleSelection) {
 				bRectangleSelection = false;
@@ -926,7 +973,7 @@ public class GLScatterplot extends AStorageBasedView {
 		if (bRenderMainView) {
 			gl.glCallList(iGLDisplayListToCall);
 			if (detailLevel == EDetailLevel.HIGH) {
-				gl.glCallList(iGLDisplayListIndexBrush);
+			//	gl.glCallList(iGLDisplayListIndexBrush);
 				gl.glCallList(iGLDisplayListIndexCoord);
 				gl.glCallList(iGLDisplayListIndexMouseOver);
 			}
@@ -2285,6 +2332,13 @@ public class GLScatterplot extends AStorageBasedView {
 		bUpdateFullTexures = true;
 		setDisplayListDirty();
 
+	}
+
+	public void toggleMatrixZoom() {
+		if (bAllowMatrixZoom)
+			bAllowMatrixZoom = false;
+		else
+			bAllowMatrixZoom = true;
 	}
 
 }
