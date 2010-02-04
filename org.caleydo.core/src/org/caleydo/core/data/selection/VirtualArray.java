@@ -405,4 +405,15 @@ public class VirtualArray
 		return "ID: " + getID() + ", Type: " + vaType + ", size: " + virtualArray.size() + ", hasGrouping: "
 			+ hasGrouping;
 	}
+
+	@Override
+	public int[] getArray() {
+
+		int[] intArray = new int[virtualArray.size()];
+		for (int i = 0; i<virtualArray.size(); i++) {
+			intArray[i] = virtualArray.get(i);
+		}
+		
+		return intArray;
+	}
 }

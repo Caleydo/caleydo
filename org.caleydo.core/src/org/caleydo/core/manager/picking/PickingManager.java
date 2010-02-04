@@ -190,7 +190,7 @@ public class PickingManager {
 	private int iIDCounter = 0;
 
 	private boolean bEnablePicking = true;
-
+	
 	/** The smallest z value of a pick */
 	private float fMinimumZValue;
 
@@ -329,7 +329,6 @@ public class PickingManager {
 		float fAspectRatio = (float) (viewport[3] - viewport[1]) / (float) (viewport[2] - viewport[0]);
 
 		IViewFrustum viewFrustum = glView.getViewFrustum();
-
 		viewFrustum.setProjectionMatrix(gl, fAspectRatio);
 
 		// gl.glMatrixMode(GL.GL_MODELVIEW);

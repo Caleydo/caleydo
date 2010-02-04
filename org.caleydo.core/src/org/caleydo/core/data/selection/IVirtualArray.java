@@ -253,5 +253,12 @@ public interface IVirtualArray
 	 * @param iUniqueID
 	 */
 	public void setID(int iUniqueID);
+	
+	/**
+	 * Returns an int array representation of the virtual array.
+	 * 
+	 * @return Int array VA representation
+	 */
+	public int[] getArray();
 
 }

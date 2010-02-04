@@ -12,8 +12,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 public class SerializedTabularDataView
 	extends ASerializedView {
 
-	public static final String GUI_ID = "org.caleydo.rcp.views.swt.TabularDataView";
-
 	public SerializedTabularDataView() {
 	}
 
@@ -28,7 +26,7 @@ public class SerializedTabularDataView
 
 	@Override
 	public String getViewType() {
-		return GUI_ID;
+		return TabularDataView.VIEW_ID;
 	}
 
 }
