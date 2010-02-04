@@ -269,10 +269,10 @@ public abstract class AGLView
 			float value = (float) frame.height / (float) frame.width * 8.0f;
 
 			// Special case for embedded heatmap in hierarchical heatmap
-			if (this.getViewType().equals("org.caleydo.view.heatmap.hierarchical"))
-				viewFrustum.setTop(5.51f);
-			else
-				viewFrustum.setTop(value);
+//			if (this.getViewType().equals("org.caleydo.view.heatmap.hierarchical"))
+//				viewFrustum.setTop(5.51f);
+//			else
+			viewFrustum.setTop(value);
 
 			viewFrustum.setRight(8);
 

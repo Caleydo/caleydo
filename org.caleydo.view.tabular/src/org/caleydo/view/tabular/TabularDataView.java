@@ -1,7 +1,6 @@
 package org.caleydo.view.tabular;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -68,9 +67,14 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author Marc Streit
  */
-public class TabularDataView extends ASWTView implements
-		ISelectionUpdateHandler, IVirtualArrayUpdateHandler,
-		ISelectionCommandHandler, IViewCommandHandler, IView, ISWTView {
+public class TabularDataView extends ASWTView
+		implements
+			ISelectionUpdateHandler,
+			IVirtualArrayUpdateHandler,
+			ISelectionCommandHandler,
+			IViewCommandHandler,
+			IView,
+			ISWTView {
 
 	public final static String VIEW_ID = "org.caleydo.view.tabular";
 	private final static int COLUMN_OFFSET = 3;
@@ -246,21 +250,22 @@ public class TabularDataView extends ASWTView implements
 						Listener textListener = new Listener() {
 							public void handleEvent(final Event e) {
 								switch (e.type) {
-								case SWT.FocusOut:
-									item.setText(column, text.getText());
-									text.dispose();
-									break;
-								case SWT.Traverse:
-									switch (e.detail) {
-									case SWT.TRAVERSE_RETURN:
+									case SWT.FocusOut :
 										item.setText(column, text.getText());
-
-										// FALL THROUGH
-									case SWT.TRAVERSE_ESCAPE:
 										text.dispose();
-										e.doit = false;
-									}
-									break;
+										break;
+									case SWT.Traverse :
+										switch (e.detail) {
+											case SWT.TRAVERSE_RETURN :
+												item.setText(column, text
+														.getText());
+
+												// FALL THROUGH
+											case SWT.TRAVERSE_ESCAPE :
+												text.dispose();
+												e.doit = false;
+										}
+										break;
 								}
 							}
 						};
@@ -483,65 +488,47 @@ public class TabularDataView extends ASWTView implements
 				final int iVAIndex = deltaItem.getIndex();
 
 				switch (deltaItem.getType()) {
-				case REMOVE:
-					composite.getDisplay().asyncExec(new Runnable() {
-						public void run() {
-							contentTable.getColumn(iVAIndex + 3).dispose();
+					case REMOVE :
+						composite.getDisplay().asyncExec(new Runnable() {
+							public void run() {
+								contentTable.getColumn(iVAIndex + 3).dispose();
+							}
+						});
+						break;
+					case ADD :
+						addColumn(deltaItem.getIndex() + COLUMN_OFFSET,
+								deltaItem.getPrimaryID());
+						break;
+					case COPY :
+						addColumn(deltaItem.getIndex() + 1 + COLUMN_OFFSET,
+								storageVA.get(deltaItem.getIndex()));
+
+						break;
+					case MOVE :
+						// case MOVE_LEFT:
+						// case MOVE_RIGHT:
+						int[] orig = contentTable.getColumnOrder();
+
+						ArrayList<Integer> ordered = new ArrayList<Integer>(
+								orig.length);
+
+						for (int index : orig) {
+							ordered.add(index);
 						}
-					});
-					break;
-				case ADD:
-					addColumn(deltaItem.getIndex() + COLUMN_OFFSET, deltaItem
-							.getPrimaryID());
-					break;
-				case COPY:
-					addColumn(deltaItem.getIndex() + 1 + COLUMN_OFFSET,
-							storageVA.get(deltaItem.getIndex()));
 
-					break;
-				case MOVE:
-					// case MOVE_LEFT:
-					// case MOVE_RIGHT:
-					int[] orig = contentTable.getColumnOrder();
+						Integer item = ordered.remove(deltaItem.getIndex()
+								+ COLUMN_OFFSET);
+						ordered.add(deltaItem.getTargetIndex() + COLUMN_OFFSET,
+								item);
+						for (int count = 0; count < ordered.size(); count++) {
+							orig[count] = ordered.get(count);
+						}
 
-					System.out.println(Arrays.toString(orig));
-					ArrayList<Integer> ordered = new ArrayList<Integer>(
-							orig.length);
-
-					for (int index : orig) {
-						ordered.add(index);
-					}
-
-					Integer item = ordered.remove(deltaItem.getIndex()
-							+ COLUMN_OFFSET);
-					System.out.println(ordered);
-					ordered.add(deltaItem.getTargetIndex() + COLUMN_OFFSET,
-							item);
-					System.out.println(ordered);
-					for (int count = 0; count < ordered.size(); count++) {
-						orig[count] = ordered.get(count);
-					}
-
-					// order.
-
-					// // Integer iElement = virtualArray.remove(iSrcIndex);
-					// virtualArray.add(iTargetIndex, iElement);
-
-					// int[] columnOrder = new int[storageVA.size()
-					// + COLUMN_OFFSET];
-					// columnOrder[0] = 0;
-					// columnOrder[1] = 1;
-					// columnOrder[2] = 2;
-					// for (int i = COLUMN_OFFSET; i < storageVA.size()
-					// + COLUMN_OFFSET; i++)
-					// columnOrder[i] = storageVA.get(i - COLUMN_OFFSET)
-					// + COLUMN_OFFSET;
-					System.out.println(Arrays.toString(orig));
-					contentTable.setColumnOrder(orig);
-					break;
-				default:
-					throw new IllegalStateException(
-							"EVAOperation not implemented");
+						contentTable.setColumnOrder(orig);
+						break;
+					default :
+						throw new IllegalStateException(
+								"EVAOperation not implemented");
 				}
 			}
 
@@ -555,27 +542,6 @@ public class TabularDataView extends ASWTView implements
 			selectionManager.setVADelta(delta);
 		} else
 			return;
-
-		// reactOnVAChanges(delta);
-
-		// int[] columnOrder = contentTable.getColumnOrder();
-		// for (int i = 0; i < order.length / 2; i++) {
-		// int temp = order[i];
-		// order[i] = order[order.length - i - 1];
-		// order[order.length - i - 1] = temp;
-		// }
-
-		// int[] order = contentTable.getColumnOrder();
-		// for (int i = 0; i < order.length / 2; i++) {
-		// int temp = order[i];
-		// order[i] = order[order.length - i - 1];
-		// order[order.length - i - 1] = temp;
-		// }
-		// contentTable.setColumnOrder(order);
-
-		// createPreviewTable();
-		// contentTable.pack();
-		// reactOnExternalSelection();
 	}
 
 	private void addColumn(final int index, final int storageNumber) {
