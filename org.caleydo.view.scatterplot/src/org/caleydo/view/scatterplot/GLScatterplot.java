@@ -142,7 +142,7 @@ public class GLScatterplot extends AStorageBasedView {
 	public static int MOUSEOVER_Y_AXIS = -1;
 	
 
-	public int MAX_AXES = 39;
+	public int MAX_AXES = 10;
 
 	// listeners
 
@@ -473,7 +473,9 @@ public class GLScatterplot extends AStorageBasedView {
 				iMOVERZOOMX=3f;
 				iMOVERZOOMY=2.5f;
 			}
-						
+			
+			if (MOUSEOVER_X_AXIS==0)
+				iMOVERZOOMX-=1;
 				
 			if ((MOUSEOVER_X_AXIS==SELECTED_X_AXIS) && (MOUSEOVER_Y_AXIS==SELECTED_Y_AXIS))
 			{
@@ -627,7 +629,9 @@ public class GLScatterplot extends AStorageBasedView {
 					iOffsetMultiX=iAddTextures-3;		
 									
 				if ((j==(MOUSEOVER_Y_AXIS-1)) || (j==(MOUSEOVER_Y_AXIS+1)))				
-					iOffsetMultiY=iAddTextures-3;				
+					iOffsetMultiY=iAddTextures-3;	
+				
+				
 			}	
 				fyOffset -= (fStepY + fSpacerY)*iOffsetMultiY;
 
@@ -720,13 +724,13 @@ public class GLScatterplot extends AStorageBasedView {
 		}
 	}
 
-	private void renderHistogram(GL gl, float x, float y, float lenght,
+	private void renderHistogram(GL gl, float x, float y, float width,
 			float height, int selected_Axis) {
 
 		float[] fArMappingColor = new float[]{0.0f, 0.0f, 0.0f}; // black
 
 		DrawRectangularSelection(gl, x, y, 0.f, // Z-Value
-				lenght, height, fArMappingColor);
+				width, height, fArMappingColor);
 
 		// TODO Replace following text with valid Histogramm
 
@@ -739,15 +743,18 @@ public class GLScatterplot extends AStorageBasedView {
 		Rectangle2D bounds = textRenderer.getScaledBounds(gl, sLabel, fScaling,
 				ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);
 
+		
+		float fRotation= 45;
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glTranslatef(x, y, 0);
+		gl.glRotatef(fRotation, 0, 0, 1);
 		textRenderer.begin3DRendering();
-		textRenderer.draw3D(gl, sLabel, x, y + (1 * height / 3),
+		textRenderer.draw3D(gl, sLabel, 0+width, 0 + (1 * height / 3),
 				ScatterPlotRenderStyle.TEXT_ON_LABEL_Z, fScaling,
-				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
-		textRenderer.draw3D(gl, "Histogram:", x, y + (2 * height / 3),
-				ScatterPlotRenderStyle.TEXT_ON_LABEL_Z, fScaling,
-				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
+				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);	
 		textRenderer.end3DRendering();
+		gl.glRotatef(-fRotation, 0, 0, 1);
+		gl.glTranslatef(-x,-y , 0);
 		gl.glPopAttrib();
 	}
 
