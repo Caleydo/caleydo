@@ -127,7 +127,7 @@ public class GLScatterplot extends AStorageBasedView {
 
 	private boolean bUseColor = true;
 	private boolean bOnlyRenderHalfMatrix = true;
-	private boolean bAllowMatrixZoom =true;
+	private boolean bAllowMatrixZoom =false;
 
 	int iCurrentMouseOverElement = -1;
 
@@ -142,7 +142,7 @@ public class GLScatterplot extends AStorageBasedView {
 	public static int MOUSEOVER_Y_AXIS = -1;
 	
 
-	public int MAX_AXES = 10;
+	public int MAX_AXES = 50;
 
 	// listeners
 
@@ -744,12 +744,13 @@ public class GLScatterplot extends AStorageBasedView {
 				ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);
 
 		
-		float fRotation= 45;
+		float fRotation= 25;
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		x=x+width*1.2f;
 		gl.glTranslatef(x, y, 0);
 		gl.glRotatef(fRotation, 0, 0, 1);
 		textRenderer.begin3DRendering();
-		textRenderer.draw3D(gl, sLabel, 0+width, 0 + (1 * height / 3),
+		textRenderer.draw3D(gl, sLabel, 0,0,//+ (1 * height / 3),
 				ScatterPlotRenderStyle.TEXT_ON_LABEL_Z, fScaling,
 				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);	
 		textRenderer.end3DRendering();
@@ -1121,10 +1122,23 @@ public class GLScatterplot extends AStorageBasedView {
 						- fWidth - AXIS_MARKER_WIDTH, fCurrentHeight
 						- fHeightHalf + XYAXISDISTANCE);
 
-				renderNumber(gl, Formatter.formatNumber(fNumber), fCurrentWidth
-						- fWidthHalf + XYAXISDISTANCE, fYPosition
-						- AXIS_MARKER_WIDTH - fHeight);
-
+				gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+				//float fRoationAngle= -1;
+				float x = fCurrentWidth- fWidthHalf + XYAXISDISTANCE;
+				float y =  fYPosition-AXIS_MARKER_WIDTH - fHeight;
+				//gl.glRotatef(fRoationAngle, 0, 0, 1);
+				renderNumber(gl, Formatter.formatNumber(fNumber), x,y);
+				//gl.glRotatef(-fRoationAngle, 0, 0, 1);
+				gl.glPopAttrib();
+				
+//				gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+//				float fRoationAngle= -45;
+//				gl.glRotatef(fRoationAngle, 0, 0, 1);
+//				renderNumber(gl, Formatter.formatNumber(fNumber), fCurrentWidth
+//						- fWidthHalf + XYAXISDISTANCE, fYPosition
+//						- AXIS_MARKER_WIDTH - fHeight);
+//				gl.glRotatef(-fRoationAngle, 0, 0, 1);
+//				gl.glPopAttrib();
 			}
 
 			gl.glColor4fv(X_AXIS_COLOR, 0);
@@ -1181,25 +1195,38 @@ public class GLScatterplot extends AStorageBasedView {
 		// // LABEL X
 
 		// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		gl.glTranslatef(renderStyle.getLAbelWidth(), XLABELDISTANCE, 0);
+		
+		
+		if(bRenderMatrix)
+			gl.glTranslatef(renderStyle.getLAbelWidth(), -2*XLABELDISTANCE, 0);
+		else
+			gl.glTranslatef(renderStyle.getLAbelWidth(), XLABELDISTANCE, 0);
+		
+		
 		gl.glRotatef(XLABELROTATIONNAGLE, 0, 0, 1);
 		textRenderer.begin3DRendering();
 		float fScaling = renderStyle.getSmallFontScalingFactor();
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
 
-		String sAxisLabel = "X-Achse: " + set.get(SELECTED_X_AXIS).getLabel();
+		String sAxisLabel = "X-Axis: " + set.get(SELECTED_X_AXIS).getLabel();
 		textRenderer.draw3D(gl, sAxisLabel, 0, 0, 0, fScaling,
 				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
 		textRenderer.end3DRendering();
 		gl.glRotatef(-XLABELROTATIONNAGLE, 0, 0, 1);
-		gl.glTranslatef(-renderStyle.getLAbelWidth(), -XLABELDISTANCE, 0);
+		if(bRenderMatrix)
+			gl.glTranslatef(-renderStyle.getLAbelWidth(), +2*XLABELDISTANCE, 0);
+		else 
+		 gl.glTranslatef(-renderStyle.getLAbelWidth(), -XLABELDISTANCE, 0);
 		// gl.glPopAttrib();
 
 		// LABEL Y
 
 		// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		gl.glTranslatef(YLABELDISTANCE, renderStyle.getLabelHeight(), 0);
+		if(bRenderMatrix)
+			gl.glTranslatef(-YLABELDISTANCE, renderStyle.getLabelHeight(), 0);
+		else
+			gl.glTranslatef(YLABELDISTANCE, renderStyle.getLabelHeight(), 0);
 		gl.glRotatef(YLABELROTATIONNAGLE, 0, 0, 1);
 
 		textRenderer.begin3DRendering();
@@ -1207,7 +1234,7 @@ public class GLScatterplot extends AStorageBasedView {
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
 
-		sAxisLabel = "Y-Achse: " + set.get(SELECTED_Y_AXIS).getLabel();
+		sAxisLabel = "Y-Axis: " + set.get(SELECTED_Y_AXIS).getLabel();
 
 		// sAxisLabel
 		// ="Y-Achse: "+set.get(2).getLabel()+" (O) / "+set.get(3).getLabel()+" (X)";
@@ -1218,23 +1245,28 @@ public class GLScatterplot extends AStorageBasedView {
 		// gl.glRotatef(-YLABELROTATIONNAGLE, 0, 0, 1);
 
 		gl.glRotatef(-YLABELROTATIONNAGLE, 0, 0, 1);
-		gl.glTranslatef(-YLABELDISTANCE, -renderStyle.getLabelHeight(), 0);
+		if(bRenderMatrix)
+			gl.glTranslatef(YLABELDISTANCE, -renderStyle.getLabelHeight(), 0);
+		else
+			gl.glTranslatef(-YLABELDISTANCE, -renderStyle.getLabelHeight(), 0);
 		// gl.glPopAttrib();
 
 	}
 
 	private void renderNumber(GL gl, String sRawValue, float fXOrigin,
 			float fYOrigin) {
+						
 		textRenderer.begin3DRendering();
 
 		float fScaling = renderStyle.getSmallFontScalingFactor();
 		if (isRenderedRemote())
-			fScaling *= 1.5f;
-
+			fScaling *= 1.5f;				
 		textRenderer.draw3D(gl, sRawValue, fXOrigin, fYOrigin,
 				ScatterPlotRenderStyle.TEXT_ON_LABEL_Z, fScaling,
-				ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);
+				ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);		
 		textRenderer.end3DRendering();
+		
+		
 	}
 
 	private String[] getAxisString() {
