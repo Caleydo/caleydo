@@ -15,6 +15,9 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -48,7 +51,8 @@ import org.eclipse.core.runtime.Status;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class SelectionManager {
+public class SelectionManager
+	implements IListenerOwner {
 
 	private HashMap<SelectionType, HashMap<Integer, Integer>> hashSelectionTypes;
 
@@ -65,6 +69,8 @@ public class SelectionManager {
 	private boolean bIsDeltaWritingEnabled = true;
 
 	private IVirtualArray virtualArray;
+
+	private AddSelectionTypeListener addSelectionTypeListener;
 
 	/**
 	 * Static Builder for GenericSelectionManager. Allows to handle various parameter configurations. Call new
@@ -144,6 +150,7 @@ public class SelectionManager {
 		for (SelectionType selectionType : alSelectionTypes) {
 			hashSelectionTypes.put(selectionType, new HashMap<Integer, Integer>());
 		}
+		registerEventListeners();
 
 	}
 
@@ -361,8 +368,7 @@ public class SelectionManager {
 
 		for (SelectionType currentType : alSelectionTypes) {
 			// ignore if target == current, also MOUSE_OVEr does not override SELECTION
-			if (currentType == targetType
-				|| currentType == SelectionType.SELECTION
+			if (currentType == targetType || currentType == SelectionType.SELECTION
 				&& targetType == SelectionType.MOUSE_OVER) {
 				continue;
 			}
@@ -770,5 +776,40 @@ public class SelectionManager {
 				return type;
 		}
 		return null;
+	}
+
+	/** Returns a list of all currently registered selection types */
+	public ArrayList<SelectionType> getSelectionTypes() {
+		return alSelectionTypes;
+	}
+
+	/**
+	 * TODO: check whether this is thread-save enough.
+	 */
+	@Override
+	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
+		listener.handleEvent(event);
+	}
+
+	public void registerEventListeners() {
+
+		addSelectionTypeListener = new AddSelectionTypeListener();
+
+		addSelectionTypeListener.setHandler(this);
+		GeneralManager.get().getEventPublisher().addListener(AddSelectionTypeEvent.class,
+			addSelectionTypeListener);
+
+	}
+
+	public void unregisterEventListeners() {
+		if (addSelectionTypeListener != null) {
+			GeneralManager.get().getEventPublisher().removeListener(addSelectionTypeListener);
+			addSelectionTypeListener = null;
+		}
+	}
+
+	public void addSelectionType(SelectionType selectionType) {
+		hashSelectionTypes.put(selectionType, new HashMap<Integer, Integer>());
+		alSelectionTypes.add(selectionType);
 	}
 }

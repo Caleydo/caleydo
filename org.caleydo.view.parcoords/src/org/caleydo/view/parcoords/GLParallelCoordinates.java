@@ -47,6 +47,7 @@ import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.AddSelectionTypeEvent;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -267,6 +268,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(
 			0, 0);
+
+	// FIXME: remove this after selection type tests
+	private SelectionType selectionTypeTest;
+	private boolean isFirstClicked = true;
 
 	/**
 	 * FIXME: remove after data flipper video
@@ -729,18 +734,24 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			renderCoordinateSystem(gl);
 
 			// FIXME if uses z buffer fighting to avoid artfacts when tiltet
-			if (detailLevel.compareTo(EDetailLevel.LOW) < 1) {
-				renderPolylines(gl, SelectionType.MOUSE_OVER);
-				renderPolylines(gl, SelectionType.SELECTION);
-				renderPolylines(gl, SelectionType.DESELECTED);
-				renderPolylines(gl, SelectionType.NORMAL);
-			} else {
-				// renderPolylines(gl, SelectionType.DESELECTED);
-				renderPolylines(gl, SelectionType.NORMAL);
-				renderPolylines(gl, SelectionType.MOUSE_OVER);
-				renderPolylines(gl, SelectionType.SELECTION);
-			}
+//			if (detailLevel.compareTo(EDetailLevel.LOW) < 1) {
+//				renderPolylines(gl, SelectionType.MOUSE_OVER);
+//				renderPolylines(gl, SelectionType.SELECTION);
+//				renderPolylines(gl, SelectionType.DESELECTED);
+//				renderPolylines(gl, SelectionType.NORMAL);
+//			} else {
+//				// renderPolylines(gl, SelectionType.DESELECTED);
+//				renderPolylines(gl, SelectionType.NORMAL);
+//				renderPolylines(gl, SelectionType.MOUSE_OVER);
+//				renderPolylines(gl, SelectionType.SELECTION);
+//
+//			}
 
+			for(SelectionType selectonType : polylineSelectionManager.getSelectionTypes())
+			{
+				renderPolylines(gl, selectonType);
+			}
+			
 			renderGates(gl);
 
 			// if (bShowSelectionHeatMap) {
@@ -842,6 +853,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		} else {
 			fZDepth = ParCoordsRenderStyle.POLYLINE_NORMAL_Z;
 			gl.glColor4fv(renderMode.getColor(), 0);
+			gl.glLineWidth(SELECTED_POLYLINE_LINE_WIDTH);
 		}
 
 		boolean bRenderingSelection = false;
@@ -1761,7 +1773,19 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			switch (ePickingMode) {
 
 			case CLICKED:
-				selectionType = SelectionType.SELECTION;
+				// FIXME remove this - selection type test
+				if (isFirstClicked) {
+					isFirstClicked = false;
+					AddSelectionTypeEvent event = new AddSelectionTypeEvent();
+					selectionTypeTest = new SelectionType();
+					selectionTypeTest.setType("PC_SELECTION_TEST");
+					selectionTypeTest.setColor(new float[] { 0, 1, 0, 1 });
+					event.addSelectionType(selectionTypeTest);
+					eventPublisher.triggerEvent(event);
+				}
+				selectionType = selectionTypeTest;
+				// end remove - put next line back
+				// selectionType = SelectionType.SELECTION;
 				if (bAngularBrushingSelectPolyline) {
 					bAngularBrushingSelectPolyline = false;
 					bIsAngularBrushingActive = true;
