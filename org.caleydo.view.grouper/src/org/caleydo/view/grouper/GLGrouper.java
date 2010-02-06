@@ -155,37 +155,37 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 				.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
 
 		rootGroup = new GroupRepresentation(new ClusterNode("root",
-				iLastUsedCompositeID++, 0, 0, true), renderStyle,
+				iLastUsedCompositeID++, 0, 0, true, -1), renderStyle,
 				groupDrawingStrategy, drawingStrategyManager, this, false);
 
 		GroupRepresentation group1 = new GroupRepresentation(new ClusterNode(
-				"group1", iLastUsedCompositeID++, 0, 0, false), renderStyle,
+				"group1", iLastUsedCompositeID++, 0, 0, false, -1), renderStyle,
 				groupDrawingStrategy, drawingStrategyManager, this, false);
 		GroupRepresentation group2 = new GroupRepresentation(new ClusterNode(
-				"group2", iLastUsedCompositeID++, 0, 0, false), renderStyle,
+				"group2", iLastUsedCompositeID++, 0, 0, false, -1), renderStyle,
 				groupDrawingStrategy, drawingStrategyManager, this, false);
 		GroupRepresentation group3 = new GroupRepresentation(new ClusterNode(
-				"group3", iLastUsedCompositeID++, 0, 0, false), renderStyle,
+				"group3", iLastUsedCompositeID++, 0, 0, false, -1), renderStyle,
 				groupDrawingStrategy, drawingStrategyManager, this, false);
 
 		GroupRepresentation element1 = new GroupRepresentation(new ClusterNode(
-				"one", iLastUsedCompositeID++, 0, 0, false), renderStyle,
+				"one", iLastUsedCompositeID++, 0, 0, false, -1), renderStyle,
 				groupDrawingStrategy, drawingStrategyManager, this, true);
 
 		GroupRepresentation element2 = new GroupRepresentation(new ClusterNode(
-				"two", iLastUsedCompositeID++, 0, 0, false), renderStyle,
+				"two", iLastUsedCompositeID++, 0, 0, false, -1), renderStyle,
 				groupDrawingStrategy, drawingStrategyManager, this, true);
 
 		GroupRepresentation element3 = new GroupRepresentation(new ClusterNode(
-				"three", iLastUsedCompositeID++, 0, 0, false), renderStyle,
+				"three", iLastUsedCompositeID++, 0, 0, false, -1), renderStyle,
 				groupDrawingStrategy, drawingStrategyManager, this, true);
 
 		GroupRepresentation element4 = new GroupRepresentation(new ClusterNode(
-				"four", iLastUsedCompositeID++, 0, 0, false), renderStyle,
+				"four", iLastUsedCompositeID++, 0, 0, false, -1), renderStyle,
 				groupDrawingStrategy, drawingStrategyManager, this, true);
 
 		GroupRepresentation element5 = new GroupRepresentation(new ClusterNode(
-				"five", iLastUsedCompositeID++, 0, 0, false), renderStyle,
+				"five", iLastUsedCompositeID++, 0, 0, false, -1), renderStyle,
 				groupDrawingStrategy, drawingStrategyManager, this, true);
 
 		// VAElementRepresentation element1 =
@@ -738,7 +738,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 
 		GroupRepresentation newGroup = new GroupRepresentation(new ClusterNode(
 				"group" + iLastUsedCompositeID, iLastUsedCompositeID++, 0, 0,
-				false), renderStyle, drawingStrategyManager
+				false, -1), renderStyle, drawingStrategyManager
 				.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL),
 				drawingStrategyManager, this, false);
 

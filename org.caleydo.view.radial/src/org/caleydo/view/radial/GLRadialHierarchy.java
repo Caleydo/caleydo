@@ -3,6 +3,7 @@ package org.caleydo.view.radial;
 import gleem.linalg.Vec2f;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -11,9 +12,9 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.radial.ChangeColorModeEvent;
 import org.caleydo.core.manager.event.view.radial.DetailOutsideEvent;
@@ -365,7 +366,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 			return;
 
 		pickingManager.handlePicking(this, gl);
-		setDisplayListDirty();
+		//setDisplayListDirty();
 		if (bIsDisplayListDirtyLocal && !bIsAnimationActive) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
@@ -1162,6 +1163,10 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 	public Rectangle getControlBox() {
 		return controlBox;
+	}
+	
+	public Collection<PartialDisc> getPartialDiscs() {
+		return hashPartialDiscs.values();
 	}
 
 }

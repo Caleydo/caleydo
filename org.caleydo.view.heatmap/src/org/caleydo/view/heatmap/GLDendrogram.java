@@ -66,9 +66,8 @@ import com.sun.opengl.util.texture.TextureCoords;
  * 
  * @author Bernhard Schlegl
  */
-public class GLDendrogram extends AStorageBasedView
-		implements
-			IClusterNodeEventReceiver {
+public class GLDendrogram extends AStorageBasedView implements
+		IClusterNodeEventReceiver {
 
 	public final static String VIEW_ID = "org.caleydo.view.dendrogram";
 
@@ -263,7 +262,7 @@ public class GLDendrogram extends AStorageBasedView
 
 	@Override
 	public void display(GL gl) {
-//		processEvents();
+		// processEvents();
 
 		if (bIsDraggingActive) {
 			handleDragging(gl);
@@ -1529,180 +1528,182 @@ public class GLDendrogram extends AStorageBasedView
 
 		switch (ePickingType) {
 
-			case DENDROGRAM_CUT_SELECTION :
+		case DENDROGRAM_CUT_SELECTION:
 
-				switch (pickingMode) {
+			switch (pickingMode) {
 
-					case CLICKED :
-						break;
-					case DRAGGED :
-						bIsDraggingActive = true;
-						setDisplayListDirty();
-						break;
-					case MOUSE_OVER :
-						break;
-				}
+			case CLICKED:
 				break;
+			case DRAGGED:
+				bIsDraggingActive = true;
+				setDisplayListDirty();
+				break;
+			case MOUSE_OVER:
+				break;
+			}
+			break;
 
-			case DENDROGRAM_GENE_LEAF_SELECTION :
+		case DENDROGRAM_GENE_LEAF_SELECTION:
 
-				switch (pickingMode) {
+			switch (pickingMode) {
 
-					case CLICKED :
-						selectionType = SelectionType.SELECTION;
-						break;
-					case DRAGGED :
-						break;
-					case MOUSE_OVER :
-						selectionType = SelectionType.MOUSE_OVER;
-						break;
-					case RIGHT_CLICKED :
+			case CLICKED:
+				selectionType = SelectionType.SELECTION;
+				break;
+			case DRAGGED:
+				break;
+			case MOUSE_OVER:
+				selectionType = SelectionType.MOUSE_OVER;
+				break;
+			case RIGHT_CLICKED:
 
-						if (contentSelectionManager.checkStatus(iExternalID) == false
-								&& storageSelectionManager
-										.checkStatus(iExternalID) == false)
-							break;
+				ClusterNode leafNode = tree.getNodeByNumber(iExternalID);
+				if (contentSelectionManager.checkStatus(leafNode.getLeaveID()) == false
+						&& storageSelectionManager.checkStatus(leafNode.getLeaveID()) == false)
+					break;
 
-						// Prevent handling of non genetic data in context menu
-						if (dataDomain != EDataDomain.GENETIC_DATA)
-							break;
+				// Prevent handling of non genetic data in context menu
+				if (dataDomain != EDataDomain.GENETIC_DATA)
+					break;
 
-						if (!isRenderedRemote()) {
-							contextMenu.setLocation(pick.getPickedPoint(),
-									getParentGLCanvas().getWidth(),
-									getParentGLCanvas().getHeight());
-							contextMenu.setMasterGLView(this);
-						}
-
-						GeneContextMenuItemContainer geneContextMenuItemContainer = new GeneContextMenuItemContainer();
-						geneContextMenuItemContainer.setID(
-								EIDType.EXPRESSION_INDEX, iExternalID);
-						contextMenu
-								.addItemContanier(geneContextMenuItemContainer);
-
-						break;
+				if (!isRenderedRemote()) {
+					contextMenu.setLocation(pick.getPickedPoint(),
+							getParentGLCanvas().getWidth(), getParentGLCanvas()
+									.getHeight());
+					contextMenu.setMasterGLView(this);
 				}
 
-				if (selectionType != SelectionType.NORMAL) {
-
-					resetAllTreeSelections();
-
-					if (tree.getNodeByNumber(iExternalID) != null)
-						tree.getNodeByNumber(iExternalID).setSelectionType(
-								selectionType);
-
-					ISelectionDelta selectionDelta = null;
-					SelectionManager selectionManager = null;
-
-					selectionManager = contentSelectionManager;
-
-					selectionManager.clearSelection(selectionType);
-					selectionManager.addToType(selectionType, iExternalID);
-					selectionDelta = selectionManager.getDelta();
-
-					handleConnectedElementRep(selectionDelta);
-					SelectionUpdateEvent event = new SelectionUpdateEvent();
-					event.setSender(this);
-					event.setSelectionDelta((SelectionDelta) selectionDelta);
-					event.setInfo(getShortInfo());
-					eventPublisher.triggerEvent(event);
-
-					setDisplayListDirty();
-				}
+				GeneContextMenuItemContainer geneContextMenuItemContainer = new GeneContextMenuItemContainer();
+				geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX,
+						leafNode.getLeaveID());
+				contextMenu.addItemContanier(geneContextMenuItemContainer);
 
 				break;
+			}
 
-			case DENDROGRAM_GENE_NODE_SELECTION :
-				switch (pickingMode) {
-					case CLICKED :
-						selectionType = SelectionType.SELECTION;
-						break;
-					case DRAGGED :
-						break;
-					case MOUSE_OVER :
-						selectionType = SelectionType.MOUSE_OVER;
-						break;
-				}
-				if (selectionType != SelectionType.NORMAL
-						&& tree.getNodeByNumber(iExternalID) != null) {
+			if (selectionType != SelectionType.NORMAL) {
 
-					resetAllTreeSelections();
+				resetAllTreeSelections();
 
+				if (tree.getNodeByNumber(iExternalID) != null)
 					tree.getNodeByNumber(iExternalID).setSelectionType(
 							selectionType);
 
-					ClusterNodeSelectionEvent clusterNodeEvent = new ClusterNodeSelectionEvent();
-					SelectionDelta selectionDeltaClusterNode = new SelectionDelta(
-							EIDType.CLUSTER_NUMBER);
-					selectionDeltaClusterNode.addSelection(iExternalID,
+				ISelectionDelta selectionDelta = null;
+				SelectionManager selectionManager = null;
+
+				selectionManager = contentSelectionManager;
+
+				selectionManager.clearSelection(selectionType);
+				selectionManager.addToType(selectionType, tree.getNodeByNumber(
+						iExternalID).getLeaveID());
+				selectionDelta = selectionManager.getDelta();
+
+				handleConnectedElementRep(selectionDelta);
+				SelectionUpdateEvent event = new SelectionUpdateEvent();
+				event.setSender(this);
+				event.setSelectionDelta((SelectionDelta) selectionDelta);
+				event.setInfo(getShortInfo());
+				eventPublisher.triggerEvent(event);
+
+				setDisplayListDirty();
+			}
+
+			break;
+
+		case DENDROGRAM_GENE_NODE_SELECTION:
+			switch (pickingMode) {
+			case CLICKED:
+				selectionType = SelectionType.SELECTION;
+				break;
+			case DRAGGED:
+				break;
+			case MOUSE_OVER:
+				selectionType = SelectionType.MOUSE_OVER;
+				break;
+			}
+			if (selectionType != SelectionType.NORMAL
+					&& tree.getNodeByNumber(iExternalID) != null) {
+
+				resetAllTreeSelections();
+
+				tree.getNodeByNumber(iExternalID).setSelectionType(
+						selectionType);
+
+				ClusterNodeSelectionEvent clusterNodeEvent = new ClusterNodeSelectionEvent();
+				SelectionDelta selectionDeltaClusterNode = new SelectionDelta(
+						EIDType.CLUSTER_NUMBER);
+				selectionDeltaClusterNode.addSelection(iExternalID,
+						selectionType);
+				clusterNodeEvent.setSelectionDelta(selectionDeltaClusterNode);
+				eventPublisher.triggerEvent(clusterNodeEvent);
+			}
+
+			break;
+
+		case DENDROGRAM_EXPERIMENT_LEAF_SELECTION:
+
+			switch (pickingMode) {
+
+			case CLICKED:
+				selectionType = SelectionType.SELECTION;
+				break;
+			case DRAGGED:
+				break;
+			case MOUSE_OVER:
+				selectionType = SelectionType.MOUSE_OVER;
+				break;
+			case RIGHT_CLICKED:
+				ClusterNode leafNode = tree.getNodeByNumber(iExternalID);
+
+				if (contentSelectionManager.checkStatus(leafNode.getLeaveID()) == false
+						&& storageSelectionManager.checkStatus(leafNode
+								.getLeaveID()) == false)
+					break;
+
+				if (!isRenderedRemote()) {
+					contextMenu.setLocation(pick.getPickedPoint(),
+							getParentGLCanvas().getWidth(), getParentGLCanvas()
+									.getHeight());
+					contextMenu.setMasterGLView(this);
+				}
+
+				ExperimentContextMenuItemContainer experimentContextMenuItemContainer = new ExperimentContextMenuItemContainer();
+				experimentContextMenuItemContainer.setID(leafNode.getLeaveID());
+				contextMenu
+						.addItemContanier(experimentContextMenuItemContainer);
+
+				break;
+			}
+
+			if (selectionType != SelectionType.NORMAL) {
+
+				resetAllTreeSelections();
+
+				if (tree.getNodeByNumber(iExternalID) != null)
+					tree.getNodeByNumber(iExternalID).setSelectionType(
 							selectionType);
-					clusterNodeEvent
-							.setSelectionDelta(selectionDeltaClusterNode);
-					eventPublisher.triggerEvent(clusterNodeEvent);
-				}
 
-				break;
+				ISelectionDelta selectionDelta = null;
+				SelectionManager selectionManager = null;
 
-			case DENDROGRAM_EXPERIMENT_LEAF_SELECTION :
+				selectionManager = storageSelectionManager;
 
-				switch (pickingMode) {
+				selectionManager.clearSelection(selectionType);
+				selectionManager.addToType(selectionType, tree.getNodeByNumber(
+						iExternalID).getLeaveID());
+				selectionDelta = selectionManager.getDelta();
 
-					case CLICKED :
-						selectionType = SelectionType.SELECTION;
-						break;
-					case DRAGGED :
-						break;
-					case MOUSE_OVER :
-						selectionType = SelectionType.MOUSE_OVER;
-						break;
-					case RIGHT_CLICKED :
-						if (contentSelectionManager.checkStatus(iExternalID) == false
-								&& storageSelectionManager
-										.checkStatus(iExternalID) == false)
-							break;
+				handleConnectedElementRep(selectionDelta);
+				SelectionUpdateEvent event = new SelectionUpdateEvent();
+				event.setSender(this);
+				event.setSelectionDelta((SelectionDelta) selectionDelta);
+				event.setInfo(getShortInfo());
+				eventPublisher.triggerEvent(event);
 
-						if (!isRenderedRemote()) {
-							contextMenu.setLocation(pick.getPickedPoint(),
-									getParentGLCanvas().getWidth(),
-									getParentGLCanvas().getHeight());
-							contextMenu.setMasterGLView(this);
-						}
-
-						ExperimentContextMenuItemContainer experimentContextMenuItemContainer = new ExperimentContextMenuItemContainer();
-						experimentContextMenuItemContainer.setID(iExternalID);
-						contextMenu
-								.addItemContanier(experimentContextMenuItemContainer);
-
-						break;
-				}
-
-				if (selectionType != SelectionType.NORMAL) {
-
-					resetAllTreeSelections();
-
-					if (tree.getNodeByNumber(iExternalID) != null)
-						tree.getNodeByNumber(iExternalID).setSelectionType(
-								selectionType);
-
-					ISelectionDelta selectionDelta = null;
-					SelectionManager selectionManager = null;
-
-					selectionManager = storageSelectionManager;
-
-					selectionManager.clearSelection(selectionType);
-					selectionManager.addToType(selectionType, iExternalID);
-					selectionDelta = selectionManager.getDelta();
-
-					handleConnectedElementRep(selectionDelta);
-					SelectionUpdateEvent event = new SelectionUpdateEvent();
-					event.setSender(this);
-					event.setSelectionDelta((SelectionDelta) selectionDelta);
-					event.setInfo(getShortInfo());
-					eventPublisher.triggerEvent(event);
-
-					setDisplayListDirty();
-				}
-				break;
+				setDisplayListDirty();
+			}
+			break;
 		}
 	}
 

@@ -497,7 +497,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		// TODO: COPIED CLUSTER NODE IS NOT IN TREE
 		ClusterNode copiedNode = new ClusterNode(clusterNode.getNodeName()
 				+ "_copy", iConsecutiveID[0], clusterNode.getCoefficient(),
-				clusterNode.getDepth(), false);
+				clusterNode.getDepth(), false, clusterNode.getLeaveID());
 		GroupRepresentation copy = new GroupRepresentation(copiedNode,
 				renderStyle, drawingStrategy, drawingStrategyManager,
 				glGrouper, bLeaf);

@@ -96,7 +96,7 @@ public class ClusterHelper {
 		ClusterNode node) {
 
 		if (tree.hasChildren(node) == false) {
-			indexes.add(node.getClusterNr());
+			indexes.add(node.getLeaveID());
 		}
 		else {
 			for (ClusterNode current : tree.getChildren(node)) {

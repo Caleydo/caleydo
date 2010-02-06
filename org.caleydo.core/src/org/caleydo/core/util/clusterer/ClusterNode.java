@@ -26,6 +26,8 @@ public class ClusterNode
 	@XmlElement
 	private int iClusterNr;
 	@XmlElement
+	private int iLeaveID;
+	@XmlElement
 	private float fCoefficient;
 	@XmlElement
 	private int iHierarchyDepth;
@@ -52,9 +54,10 @@ public class ClusterNode
 
 	}
 
-	public ClusterNode(String sNodeName, int iClusterNr, float fCoefficient, int iDepth, boolean bIsRootNode) {
+	public ClusterNode(String sNodeName, int iClusterNr, float fCoefficient, int iDepth, boolean bIsRootNode, int iLeaveID) {
 		this.sNodeName = sNodeName;
 		this.iClusterNr = iClusterNr;
+		this.iLeaveID = iLeaveID;
 		this.fCoefficient = fCoefficient;
 		this.iHierarchyDepth = iDepth;
 		this.bIsRootNode = bIsRootNode;
@@ -151,6 +154,10 @@ public class ClusterNode
 
 	public Vec3f getPosSubTree() {
 		return vPosSubTree;
+	}
+	
+	public int getLeaveID() {
+		return iLeaveID;
 	}
 
 	@Override
