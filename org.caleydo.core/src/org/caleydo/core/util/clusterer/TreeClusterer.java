@@ -349,7 +349,7 @@ public class TreeClusterer
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
 
-		determineExpressionValue(eClustererType);
+		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
 
 		ArrayList<Integer> alIndices = new ArrayList<Integer>();
 		alIndices = ClusterHelper.getGeneIdsOfNode(tree, tree.getRoot());
@@ -489,7 +489,8 @@ public class TreeClusterer
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
 
-		determineExpressionValue(eClustererType);
+		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
+//		determineExpressionValue(tree, eClustererType);
 
 		alIndices = ClusterHelper.getGeneIdsOfNode(tree, tree.getRoot());
 
@@ -516,10 +517,10 @@ public class TreeClusterer
 	 * 
 	 * @param eClustererType
 	 */
-	private void determineExpressionValue(EClustererType eClustererType) {
-
-		determineExpressionValueRec(tree.getRoot(), eClustererType);
-	}
+//	private void determineExpressionValue(Tree<ClusterNode> clusterTree, EClustererType eClustererType) {
+//
+//		determineExpressionValueRec(clusterTree, clusterTree.getRoot(), eClustererType);
+//	}
 
 	/**
 	 * Recursive function which determines the expression value in each node of the tree.
@@ -529,82 +530,82 @@ public class TreeClusterer
 	 *            current node
 	 * @return depth of the current node
 	 */
-	private float[] determineExpressionValueRec(ClusterNode node, EClustererType eClustererType) {
-
-		float[] fArExpressionValues;
-
-		if (tree.hasChildren(node)) {
-
-			int iNrNodes = tree.getChildren(node).size();
-			int iNrElements = 0;
-			float[][] fArTempValues;
-
-			if (eClustererType == EClustererType.GENE_CLUSTERING) {
-				IVirtualArray storageVA = set.getVA(iVAIdStorage);
-				iNrElements = storageVA.size();
-			}
-			else {
-				IVirtualArray contentVA = set.getVA(iVAIdContent);
-				iNrElements = contentVA.size();
-			}
-
-			fArTempValues = new float[iNrNodes][iNrElements];
-
-			int cnt = 0;
-
-			for (ClusterNode current : tree.getChildren(node)) {
-				fArTempValues[cnt] = determineExpressionValueRec(current, eClustererType);
-				cnt++;
-			}
-
-			fArExpressionValues = new float[iNrElements];
-
-			for (int i = 0; i < iNrElements; i++) {
-				float means = 0;
-
-				for (int nodes = 0; nodes < iNrNodes; nodes++) {
-					means += fArTempValues[nodes][i];
-				}
-				fArExpressionValues[i] = means / iNrNodes;
-			}
-		}
-		// no children --> leaf node
-		else {
-
-			if (eClustererType == EClustererType.GENE_CLUSTERING) {
-				IVirtualArray storageVA = set.getVA(iVAIdStorage);
-				fArExpressionValues = new float[storageVA.size()];
-
-				int isto = 0;
-				for (Integer iStorageIndex : storageVA) {
-					fArExpressionValues[isto] =
-						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, node.getLeaveID());
-					isto++;
-				}
-
-			}
-			else {
-				IVirtualArray contentVA = set.getVA(iVAIdContent);
-				fArExpressionValues = new float[contentVA.size()];
-
-				int icon = 0;
-				for (Integer iContentIndex : contentVA) {
-					fArExpressionValues[icon] =
-						set.get(node.getClusterNr()).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
-					icon++;
-				}
-			}
-		}
-		float averageExpressionvalue = ClusterHelper.arithmeticMean(fArExpressionValues);
-		float deviation = ClusterHelper.standardDeviation(fArExpressionValues, averageExpressionvalue);
-		node.setAverageExpressionValue(averageExpressionvalue);
-		// Setting an float array for the representative element in each node causes a very big xml-file when
-		// exporting the tree
-		// node.setRepresentativeElement(fArExpressionValues);
-		node.setStandardDeviation(deviation);
-
-		return fArExpressionValues;
-	}
+//	private float[] determineExpressionValueRec(Tree<ClusterNode> clusterTree, ClusterNode node, EClustererType eClustererType) {
+//
+//		float[] fArExpressionValues;
+//
+//		if (clusterTree.hasChildren(node)) {
+//
+//			int iNrNodes = clusterTree.getChildren(node).size();
+//			int iNrElements = 0;
+//			float[][] fArTempValues;
+//
+//			if (eClustererType == EClustererType.GENE_CLUSTERING) {
+//				IVirtualArray storageVA = set.getVA(iVAIdStorage);
+//				iNrElements = storageVA.size();
+//			}
+//			else {
+//				IVirtualArray contentVA = set.getVA(iVAIdContent);
+//				iNrElements = contentVA.size();
+//			}
+//
+//			fArTempValues = new float[iNrNodes][iNrElements];
+//
+//			int cnt = 0;
+//
+//			for (ClusterNode current : clusterTree.getChildren(node)) {
+//				fArTempValues[cnt] = determineExpressionValueRec(clusterTree, current, eClustererType);
+//				cnt++;
+//			}
+//
+//			fArExpressionValues = new float[iNrElements];
+//
+//			for (int i = 0; i < iNrElements; i++) {
+//				float means = 0;
+//
+//				for (int nodes = 0; nodes < iNrNodes; nodes++) {
+//					means += fArTempValues[nodes][i];
+//				}
+//				fArExpressionValues[i] = means / iNrNodes;
+//			}
+//		}
+//		// no children --> leaf node
+//		else {
+//
+//			if (eClustererType == EClustererType.GENE_CLUSTERING) {
+//				IVirtualArray storageVA = set.getVA(iVAIdStorage);
+//				fArExpressionValues = new float[storageVA.size()];
+//
+//				int isto = 0;
+//				for (Integer iStorageIndex : storageVA) {
+//					fArExpressionValues[isto] =
+//						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, node.getLeaveID());
+//					isto++;
+//				}
+//
+//			}
+//			else {
+//				IVirtualArray contentVA = set.getVA(iVAIdContent);
+//				fArExpressionValues = new float[contentVA.size()];
+//
+//				int icon = 0;
+//				for (Integer iContentIndex : contentVA) {
+//					fArExpressionValues[icon] =
+//						set.get(node.getLeaveID()).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+//					icon++;
+//				}
+//			}
+//		}
+//		float averageExpressionvalue = ClusterHelper.arithmeticMean(fArExpressionValues);
+//		float deviation = ClusterHelper.standardDeviation(fArExpressionValues, averageExpressionvalue);
+//		node.setAverageExpressionValue(averageExpressionvalue);
+//		// Setting an float array for the representative element in each node causes a very big xml-file when
+//		// exporting the tree
+//		// node.setRepresentativeElement(fArExpressionValues);
+//		node.setStandardDeviation(deviation);
+//
+//		return fArExpressionValues;
+//	}
 
 	/**
 	 * The pmlcluster routine performs clustering using pairwise maximum- (complete-) linking on the given
@@ -711,7 +712,8 @@ public class TreeClusterer
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
 
-		determineExpressionValue(eClustererType);
+		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
+//		determineExpressionValue(tree, eClustererType);
 
 		AlIndexes = ClusterHelper.getGeneIdsOfNode(tree, tree.getRoot());
 

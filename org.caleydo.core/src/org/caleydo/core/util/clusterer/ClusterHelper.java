@@ -6,7 +6,10 @@ import java.util.Arrays;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.EDataDomain;
 
 /**
  * Cluster helper provides methods needed in cluster algorithms such as median, arithmetic mean, etc.
@@ -162,6 +165,92 @@ public class ClusterHelper {
 		// System.out.println("iNrElements: " + iNrElements);
 		determineNrElementsRec(tree, tree.getRoot());
 	}
+	
+	
+	public static void determineExpressionValue(Tree<ClusterNode> tree, EClustererType eClustererType, ISet set) {
+
+		IVirtualArray storageVA = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getVA(EVAType.STORAGE);
+		IVirtualArray contentVA = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getVA(EVAType.CONTENT);
+		determineExpressionValueRec(tree, tree.getRoot(), eClustererType, set, storageVA.getID(), contentVA.getID());
+		
+	}
+	
+	private static float[] determineExpressionValueRec(Tree<ClusterNode> tree, ClusterNode node, EClustererType eClustererType, ISet set, int iVAIdStorage, int iVAIdContent) {
+
+		float[] fArExpressionValues;
+
+		if (tree.hasChildren(node)) {
+
+			int iNrNodes = tree.getChildren(node).size();
+			int iNrElements = 0;
+			float[][] fArTempValues;
+
+			if (eClustererType == EClustererType.GENE_CLUSTERING) {
+				IVirtualArray storageVA = set.getVA(iVAIdStorage);
+				iNrElements = storageVA.size();
+			}
+			else {
+				IVirtualArray contentVA = set.getVA(iVAIdContent);
+				iNrElements = contentVA.size();
+			}
+
+			fArTempValues = new float[iNrNodes][iNrElements];
+
+			int cnt = 0;
+
+			for (ClusterNode current : tree.getChildren(node)) {
+				fArTempValues[cnt] = determineExpressionValueRec(tree, current, eClustererType, set, iVAIdStorage, iVAIdContent);
+				cnt++;
+			}
+
+			fArExpressionValues = new float[iNrElements];
+
+			for (int i = 0; i < iNrElements; i++) {
+				float means = 0;
+
+				for (int nodes = 0; nodes < iNrNodes; nodes++) {
+					means += fArTempValues[nodes][i];
+				}
+				fArExpressionValues[i] = means / iNrNodes;
+			}
+		}
+		// no children --> leaf node
+		else {
+
+			if (eClustererType == EClustererType.GENE_CLUSTERING) {
+				IVirtualArray storageVA = set.getVA(iVAIdStorage);
+				fArExpressionValues = new float[storageVA.size()];
+
+				int isto = 0;
+				for (Integer iStorageIndex : storageVA) {
+					fArExpressionValues[isto] =
+						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, node.getLeaveID());
+					isto++;
+				}
+
+			}
+			else {
+				IVirtualArray contentVA = set.getVA(iVAIdContent);
+				fArExpressionValues = new float[contentVA.size()];
+
+				int icon = 0;
+				for (Integer iContentIndex : contentVA) {
+					fArExpressionValues[icon] =
+						set.get(node.getLeaveID()).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+					icon++;
+				}
+			}
+		}
+		float averageExpressionvalue = ClusterHelper.arithmeticMean(fArExpressionValues);
+		float deviation = ClusterHelper.standardDeviation(fArExpressionValues, averageExpressionvalue);
+		node.setAverageExpressionValue(averageExpressionvalue);
+		// Setting an float array for the representative element in each node causes a very big xml-file when
+		// exporting the tree
+		// node.setRepresentativeElement(fArExpressionValues);
+		node.setStandardDeviation(deviation);
+
+		return fArExpressionValues;
+	}
 
 	/**
 	 * Recursive function which determines the number of elements in each node of the tree.
@@ -181,6 +270,8 @@ public class ClusterHelper {
 			}
 
 			node.setNrElements(temp);
+		} else {
+			node.setNrElements(1);
 		}
 
 		return node.getNrElements();

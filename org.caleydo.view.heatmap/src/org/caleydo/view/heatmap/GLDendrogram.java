@@ -121,7 +121,7 @@ public class GLDendrogram extends AStorageBasedView implements
 
 	private int iGLDisplayListCutOffValue = 0;
 
-	private boolean bUseBlackColoring = false;
+	private boolean bUseBlackColoring = true;
 
 	/**
 	 * Constructor.

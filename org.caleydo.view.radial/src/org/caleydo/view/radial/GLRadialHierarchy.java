@@ -888,17 +888,16 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
 
-		// Tree<ClusterNode> tree = set.getClusteredTreeExps();
-		Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		 Tree<ClusterNode> tree = set.getClusteredTreeExps();
+		//Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		if (tree != null) {
 			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
 			alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
 			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
+//			initHierarchy(tree, EIDType.CLUSTER_NUMBER,
+//					new GeneClusterDataEventManager(this), alColorModes);
 			initHierarchy(tree, EIDType.CLUSTER_NUMBER,
-					new GeneClusterDataEventManager(this), alColorModes);
-			// initHierarchy(tree, EIDType.CLUSTER_NUMBER, new
-			// ExperimentClusterDataEventManager(this),
-			// alColorModes);
+					new ExperimentClusterDataEventManager(this), alColorModes);
 		}
 
 		SerializedRadialHierarchyView serializedView = (SerializedRadialHierarchyView) ser;
@@ -1076,14 +1075,18 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void handleUpdateView() {
-		Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		//Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		Tree<ClusterNode> tree = set.getClusteredTreeExps();
 		if (tree != null) {
 			if (pdRealRootElement == null) {
 				ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
 				alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
 				alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
-				initHierarchy(tree, EIDType.CLUSTER_NUMBER,
-						new GeneClusterDataEventManager(this), alColorModes);
+//				initHierarchy(tree, EIDType.CLUSTER_NUMBER,
+//						new GeneClusterDataEventManager(this), alColorModes);
+				initHierarchy(tree, EIDType.CLUSTER_NUMBER, new
+						 ExperimentClusterDataEventManager(this),
+						 alColorModes);
 			}
 		} else {
 			hashPartialDiscs.clear();

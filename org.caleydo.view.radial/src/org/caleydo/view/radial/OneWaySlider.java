@@ -87,9 +87,14 @@ public class OneWaySlider extends AGLGUIElement {
 		fSlidingElementHeight = Math.min(fHeight * 0.2f,
 				SLIDING_ELEMENT_MAX_HEIGHT);
 		fDownButtonHeight = Math.min(fHeight * 0.2f, DOWN_BUTTON_MAX_HEIGHT);
-		fDrawingStep = iValueStep
-				* ((fHeight - fSlidingElementHeight - fDownButtonHeight) / (iMaxValue
-						- iMinValue - 1));
+		if (iMaxValue - iMinValue - 1 == 0) {
+			fDrawingStep = iValueStep
+					* (fHeight - fSlidingElementHeight - fDownButtonHeight);
+		} else {
+			fDrawingStep = iValueStep
+					* ((fHeight - fSlidingElementHeight - fDownButtonHeight) / (iMaxValue
+							- iMinValue - 1));
+		}
 		fSlidingElementDrawingPosition = fDownButtonHeight + iSelectedValue
 				* fDrawingStep;
 
@@ -285,24 +290,24 @@ public class OneWaySlider extends AGLGUIElement {
 	public boolean handleSliderSelection(EPickingType pickingType) {
 
 		switch (pickingType) {
-			case RAD_HIERARCHY_SLIDER_BODY_SELECTION :
-				bIsBodySelected = true;
-				break;
+		case RAD_HIERARCHY_SLIDER_BODY_SELECTION:
+			bIsBodySelected = true;
+			break;
 
-			case RAD_HIERARCHY_SLIDER_BUTTON_SELECTION :
-				iSelectedValue -= iValueStep;
-				if (iSelectedValue < iMinValue) {
-					iSelectedValue = iMinValue;
-				}
+		case RAD_HIERARCHY_SLIDER_BUTTON_SELECTION:
+			iSelectedValue -= iValueStep;
+			if (iSelectedValue < iMinValue) {
+				iSelectedValue = iMinValue;
+			}
 
-				fSlidingElementDrawingPosition = fDownButtonHeight
-						+ (iSelectedValue * fDrawingStep);
-				return true;
+			fSlidingElementDrawingPosition = fDownButtonHeight
+					+ (iSelectedValue * fDrawingStep);
+			return true;
 
-			case RAD_HIERARCHY_SLIDER_SELECTION :
-				bIsDragging = true;
-				bIsDraggingFirstTime = true;
-				break;
+		case RAD_HIERARCHY_SLIDER_SELECTION:
+			bIsDragging = true;
+			bIsDraggingFirstTime = true;
+			break;
 		}
 
 		return false;
