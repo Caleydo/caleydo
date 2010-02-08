@@ -6,13 +6,13 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event that Resets all Selections in the Scatterplot.
+ * Event that Changes enables/disables the 2-Axis_mode in ScatterPlot.
  * 
  * @author Jürgen Pillhofer
  */
 @XmlRootElement
 @XmlType
-public class ResetScatterSelectionEvent
+public class Toggle2AxisEvent
 	extends AEvent {
 
 	@Override

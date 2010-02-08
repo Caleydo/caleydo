@@ -150,15 +150,21 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 
 	}
 
-	public float getLabelHeight() {
+	public float getLabelHeight(boolean b2Axis) {
 
-		return getRenderHeight() / 2;
+		if (b2Axis)
+			return getRenderHeight() / 3;
+		else 
+			return getRenderHeight() / 2;
 
 	}
 
-	public float getLAbelWidth() {
+	public float getLAbelWidth(boolean b2Axis) {
 
-		return getRenderWidth() / 2;
+		if (b2Axis)
+			return getRenderWidth() / 3;
+		else
+			return getRenderWidth() / 2;
 
 	}
 

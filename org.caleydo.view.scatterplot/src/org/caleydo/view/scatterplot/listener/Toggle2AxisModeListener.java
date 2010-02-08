@@ -2,7 +2,7 @@ package org.caleydo.view.scatterplot.listener;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.view.storagebased.ResetScatterSelectionEvent;
+import org.caleydo.core.manager.event.view.storagebased.ToggleColorModeEvent;
 import org.caleydo.view.scatterplot.GLScatterplot;
 
 /**
@@ -10,13 +10,13 @@ import org.caleydo.view.scatterplot.GLScatterplot;
  * 
  * @author Juergen Pillhofer
  */
-public class ResetSelectionListener extends AEventListener<GLScatterplot> {
+public class Toggle2AxisModeListener extends AEventListener<GLScatterplot> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if (event instanceof ResetScatterSelectionEvent) {
+		if (event instanceof ToggleColorModeEvent) {
 
-			handler.ResetSelection();
+			handler.toggleSpecialAxisMode();
 		}
 	}
 

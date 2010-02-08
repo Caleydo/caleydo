@@ -68,7 +68,7 @@ public class GLScatterPlotKeyListener extends GLKeyListener<GLScatterplot> {
 				glScatterplot.leftRightSelect(true);
 				break;
 			case SWT.HOME :
-				glScatterplot.ResetSelection();
+				glScatterplot.clearAllSelections();
 				break;
 		}
 

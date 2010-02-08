@@ -42,7 +42,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.storagebased.InitAxisComboEvent;
-import org.caleydo.core.manager.event.view.storagebased.ResetScatterSelectionEvent;
+import org.caleydo.core.manager.event.view.storagebased.SwitchMatrixViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SetPointSizeEvent;
 import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
@@ -75,7 +75,7 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.scatterplot.listener.GLScatterPlotKeyListener;
-import org.caleydo.view.scatterplot.listener.ResetSelectionListener;
+import org.caleydo.view.scatterplot.listener.ToggleMatrixViewListener;
 import org.caleydo.view.scatterplot.listener.SetPointSizeListener;
 import org.caleydo.view.scatterplot.listener.TogglePointTypeListener;
 import org.caleydo.view.scatterplot.listener.XAxisSelectorListener;
@@ -147,7 +147,7 @@ public class GLScatterplot extends AStorageBasedView {
 	// listeners
 
 	private TogglePointTypeListener togglePointTypeListener;
-	private ResetSelectionListener resetSelectionListener;
+	private ToggleMatrixViewListener resetSelectionListener;
 
 	private SetPointSizeListener setPointSizeListener;
 	private XAxisSelectorListener xAxisSelectorListener;
@@ -1123,12 +1123,14 @@ public class GLScatterplot extends AStorageBasedView {
 						- fHeightHalf + XYAXISDISTANCE);
 
 				gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-				//float fRoationAngle= -1;
+				float fRoationAngle= -45;
 				float x = fCurrentWidth- fWidthHalf + XYAXISDISTANCE;
-				float y =  fYPosition-AXIS_MARKER_WIDTH - fHeight;
-				//gl.glRotatef(fRoationAngle, 0, 0, 1);
-				renderNumber(gl, Formatter.formatNumber(fNumber), x,y);
-				//gl.glRotatef(-fRoationAngle, 0, 0, 1);
+				float y =  fYPosition+AXIS_MARKER_WIDTH - fHeight;
+				gl.glTranslatef(x,y, 0);
+				gl.glRotatef(fRoationAngle, 0, 0, 1);				
+				renderNumber(gl, Formatter.formatNumber(fNumber), 0,0);				
+				gl.glRotatef(-fRoationAngle, 0, 0, 1);
+				gl.glTranslatef(-x,-y, 0);
 				gl.glPopAttrib();
 				
 //				gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
@@ -1197,10 +1199,10 @@ public class GLScatterplot extends AStorageBasedView {
 		// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		
 		
-		if(bRenderMatrix)
-			gl.glTranslatef(renderStyle.getLAbelWidth(), -2*XLABELDISTANCE, 0);
-		else
-			gl.glTranslatef(renderStyle.getLAbelWidth(), XLABELDISTANCE, 0);
+//		if(bRenderMatrix)
+//			gl.glTranslatef(renderStyle.getLAbelWidth(), -5*XLABELDISTANCE, 0);
+//		else
+			gl.glTranslatef(renderStyle.getLAbelWidth(bRender2Axis), renderStyle.getAxisHeight()+1.3f*XYAXISDISTANCE, 0);
 		
 		
 		gl.glRotatef(XLABELROTATIONNAGLE, 0, 0, 1);
@@ -1210,23 +1212,24 @@ public class GLScatterplot extends AStorageBasedView {
 			fScaling *= 1.5f;
 
 		String sAxisLabel = "X-Axis: " + set.get(SELECTED_X_AXIS).getLabel();
+		if (bRender2Axis) sAxisLabel+=" / "+set.get(SELECTED_X_AXIS_2).getLabel();
 		textRenderer.draw3D(gl, sAxisLabel, 0, 0, 0, fScaling,
 				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
 		textRenderer.end3DRendering();
 		gl.glRotatef(-XLABELROTATIONNAGLE, 0, 0, 1);
-		if(bRenderMatrix)
-			gl.glTranslatef(-renderStyle.getLAbelWidth(), +2*XLABELDISTANCE, 0);
-		else 
-		 gl.glTranslatef(-renderStyle.getLAbelWidth(), -XLABELDISTANCE, 0);
+//		if(bRenderMatrix)
+//			gl.glTranslatef(-renderStyle.getLAbelWidth(), +5*XLABELDISTANCE, 0);
+//		else 
+		 gl.glTranslatef(-renderStyle.getLAbelWidth(bRender2Axis), -renderStyle.getAxisHeight()-1.3f*XYAXISDISTANCE, 0);
 		// gl.glPopAttrib();
 
 		// LABEL Y
 
 		// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		if(bRenderMatrix)
-			gl.glTranslatef(-YLABELDISTANCE, renderStyle.getLabelHeight(), 0);
-		else
-			gl.glTranslatef(YLABELDISTANCE, renderStyle.getLabelHeight(), 0);
+//		if(bRenderMatrix)
+//			gl.glTranslatef(-YLABELDISTANCE, renderStyle.getLabelHeight(), 0);
+//		else
+			gl.glTranslatef(renderStyle.getAxisWidth()+1.7f*XYAXISDISTANCE, renderStyle.getLabelHeight(bRender2Axis), 0);
 		gl.glRotatef(YLABELROTATIONNAGLE, 0, 0, 1);
 
 		textRenderer.begin3DRendering();
@@ -1235,6 +1238,7 @@ public class GLScatterplot extends AStorageBasedView {
 			fScaling *= 1.5f;
 
 		sAxisLabel = "Y-Axis: " + set.get(SELECTED_Y_AXIS).getLabel();
+		if (bRender2Axis) sAxisLabel+=" / "+set.get(SELECTED_Y_AXIS_2).getLabel();
 
 		// sAxisLabel
 		// ="Y-Achse: "+set.get(2).getLabel()+" (O) / "+set.get(3).getLabel()+" (X)";
@@ -1245,10 +1249,10 @@ public class GLScatterplot extends AStorageBasedView {
 		// gl.glRotatef(-YLABELROTATIONNAGLE, 0, 0, 1);
 
 		gl.glRotatef(-YLABELROTATIONNAGLE, 0, 0, 1);
-		if(bRenderMatrix)
-			gl.glTranslatef(YLABELDISTANCE, -renderStyle.getLabelHeight(), 0);
-		else
-			gl.glTranslatef(-YLABELDISTANCE, -renderStyle.getLabelHeight(), 0);
+//		if(bRenderMatrix)
+//			gl.glTranslatef(YLABELDISTANCE, -renderStyle.getLabelHeight(), 0);
+//		else
+			gl.glTranslatef(-renderStyle.getAxisWidth()-1.7f*XYAXISDISTANCE, -renderStyle.getLabelHeight(bRender2Axis), 0);
 		// gl.glPopAttrib();
 
 	}
@@ -1818,6 +1822,9 @@ public class GLScatterplot extends AStorageBasedView {
 		axisSelectionManager = storageSelectionManager;
 		axisSelectionManager.setVA(storageVA);
 
+	//	elementSelectionManager.resetSelectionManager();
+	//	axisSelectionManager.resetSelectionManager();
+		
 		// mouseoverSelectionManager.initialAdd(iAlElementIDs)
 		// mouseoverSelectionManager = contentSelectionManager;
 		// TODO: Thats just for testing!
@@ -2002,13 +2009,25 @@ public class GLScatterplot extends AStorageBasedView {
 		setDisplayListDirty();
 	}
 
-	public void ResetSelection() {
+//	public void ResetSelection() {
+//		elementSelectionManager.clearSelections();
+//		fRectangleDragStartPoint = new float[3];
+//		fRectangleDragEndPoint = new float[3];
+//		bUpdateSelection = true;
+//		setDisplayListDirty();
+//	}
+	
+	@Override
+	public void clearAllSelections() 
+	{
 		elementSelectionManager.clearSelections();
 		fRectangleDragStartPoint = new float[3];
 		fRectangleDragEndPoint = new float[3];
 		bUpdateSelection = true;
 		setDisplayListDirty();
+	
 	}
+	
 
 	@Override
 	protected void reactOnExternalSelection(boolean scrollToSelection) {
@@ -2184,9 +2203,9 @@ public class GLScatterplot extends AStorageBasedView {
 		eventPublisher.addListener(TogglePointTypeEvent.class,
 				togglePointTypeListener);
 
-		resetSelectionListener = new ResetSelectionListener();
+		resetSelectionListener = new ToggleMatrixViewListener();
 		resetSelectionListener.setHandler(this);
-		eventPublisher.addListener(ResetScatterSelectionEvent.class,
+		eventPublisher.addListener(SwitchMatrixViewEvent.class,
 				resetSelectionListener);
 
 		setPointSizeListener = new SetPointSizeListener();

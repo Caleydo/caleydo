@@ -8,7 +8,7 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class ScatterplotTestAction extends AToolBarAction
+public class TogglePointTypeAction extends AToolBarAction
 		implements
 			IToolBarItem {
 	public static final String TEXT = "Toggle Point Type";
@@ -17,7 +17,7 @@ public class ScatterplotTestAction extends AToolBarAction
 	/**
 	 * Constructor.
 	 */
-	public ScatterplotTestAction(int iViewID) {
+	public TogglePointTypeAction(int iViewID) {
 		super(iViewID);
 
 		setText(TEXT);

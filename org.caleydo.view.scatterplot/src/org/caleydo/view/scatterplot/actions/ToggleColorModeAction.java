@@ -1,6 +1,6 @@
 package org.caleydo.view.scatterplot.actions;
 
-import org.caleydo.core.manager.event.view.storagebased.ResetScatterSelectionEvent;
+import org.caleydo.core.manager.event.view.storagebased.ToggleColorModeEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
@@ -8,16 +8,16 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class ScatterplotResetSelectionAction extends AToolBarAction
+public class ToggleColorModeAction extends AToolBarAction
 		implements
 			IToolBarItem {
-	public static final String TEXT = "Reset Selections";
-	public static final String ICON = "resources/icons/view/storagebased/parcoords/reset_axis_spacing.png";
+	public static final String TEXT = "Enable/disable Colored Scatterplots";
+	public static final String ICON = "resources/icons/view/storagebased/parcoords/bookmark.png";
 
 	/**
 	 * Constructor.
 	 */
-	public ScatterplotResetSelectionAction(int iViewID) {
+	public ToggleColorModeAction(int iViewID) {
 		super(iViewID);
 
 		setText(TEXT);
@@ -31,6 +31,6 @@ public class ScatterplotResetSelectionAction extends AToolBarAction
 		super.run();
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
-				new ResetScatterSelectionEvent());
+				new ToggleColorModeEvent());
 	};
 }
