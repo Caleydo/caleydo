@@ -274,7 +274,6 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EIDCategory.EXPERIMENT, EVAType.STORAGE));
-		rootGroup.printTree();
 	}
 	
 	private void buildTreeFromGroupHierarchy(Tree<ClusterNode> tree,

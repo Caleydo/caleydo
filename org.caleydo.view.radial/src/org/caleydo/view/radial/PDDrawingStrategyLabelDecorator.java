@@ -144,12 +144,7 @@ public class PDDrawingStrategyLabelDecorator
 		expressionLine.addLabelItem(rightRectangleItem);
 
 		if (pdDiscToDraw.hasChildren()) {
-			TextItem id = new TextItem("ID: "
-					+ new Integer((int) pdDiscToDraw.getElementID()).toString());
-			LabelLine idLine = new LabelLine();
-			idLine.addLabelItem(id);
-			
-			
+					
 			TextItem numElementsItem = new TextItem("Elements: "
 					+ new Integer((int) pdDiscToDraw.getSize()).toString());
 			LabelLine numElementsLine = new LabelLine();
@@ -160,20 +155,14 @@ public class PDDrawingStrategyLabelDecorator
 			LabelLine hierarchyDepthLine = new LabelLine();
 			hierarchyDepthLine.addLabelItem(hierarchyDepthItem);
 
-			labelInfo.addLine(idLine);
 			labelInfo.addLine(numElementsLine);
 			labelInfo.addLine(hierarchyDepthLine);
 		} else {
-			TextItem id = new TextItem("ID: "
-					+ new Integer((int) pdDiscToDraw.getElementID()).toString());
-			LabelLine idLine = new LabelLine();
-			idLine.addLabelItem(id);
 			
 			TextItem nameItem = new TextItem(clusterNode.getNodeName());
 			LabelLine nameLine = new LabelLine();
 			nameLine.addLabelItem(nameItem);
 
-			labelInfo.addLine(idLine);
 			labelInfo.addLine(nameLine);
 		}
 
