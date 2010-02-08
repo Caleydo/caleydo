@@ -183,6 +183,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		}
 
 		glGrouper.setHierarchyChanged(true);
+		glGrouper.updateClusterTreeAccordingToGroupHierarchy();
 		glGrouper.setDisplayListDirty();
 	}
 
@@ -494,10 +495,16 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	@Override
 	public ICompositeGraphic createDeepCopyWithNewIDs(int[] iConsecutiveID) {
 
-		// TODO: COPIED CLUSTER NODE IS NOT IN TREE
-		ClusterNode copiedNode = new ClusterNode(clusterNode.getNodeName()
-				+ "_copy", iConsecutiveID[0], clusterNode.getCoefficient(),
-				clusterNode.getDepth(), false, clusterNode.getLeaveID());
+		ClusterNode copiedNode = null;
+		if (isLeaf()) {
+			copiedNode = new ClusterNode(clusterNode.getNodeName(),
+					iConsecutiveID[0], clusterNode.getCoefficient(),
+					clusterNode.getDepth(), false, clusterNode.getLeafID());
+		} else {
+			copiedNode = new ClusterNode(clusterNode.getNodeName() + "_copy",
+					iConsecutiveID[0], clusterNode.getCoefficient(),
+					clusterNode.getDepth(), false, clusterNode.getLeafID());
+		}
 		GroupRepresentation copy = new GroupRepresentation(copiedNode,
 				renderStyle, drawingStrategy, drawingStrategyManager,
 				glGrouper, bLeaf);
@@ -526,6 +533,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 
 	}
 
+	@Override
 	public boolean isLeaf() {
 		return bLeaf;
 	}
@@ -563,5 +571,9 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		for (ICompositeGraphic child : alChildren) {
 			child.printTree();
 		}
+	}
+
+	public ClusterNode getClusterNode() {
+		return clusterNode;
 	}
 }

@@ -1078,7 +1078,9 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 		//Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		Tree<ClusterNode> tree = set.getClusteredTreeExps();
 		if (tree != null) {
-			if (pdRealRootElement == null) {
+//			if (pdRealRootElement == null) {
+				if (dataEventManager != null)
+					dataEventManager.unregisterEventListeners();
 				ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
 				alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
 				alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
@@ -1087,7 +1089,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 				initHierarchy(tree, EIDType.CLUSTER_NUMBER, new
 						 ExperimentClusterDataEventManager(this),
 						 alColorModes);
-			}
+//			}
 		} else {
 			hashPartialDiscs.clear();
 			navigationHistory.reset();

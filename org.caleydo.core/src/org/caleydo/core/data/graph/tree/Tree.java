@@ -25,6 +25,8 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 
 	private HashMap<Integer, NodeType> hashNodes;
 
+	private HashMap<Integer, ArrayList<Integer>> hashLeafIDToNodeIDs;
+
 	private int iDepth;
 
 	private boolean bDepthFlag;
@@ -39,7 +41,7 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		hashNodes = new HashMap<Integer, NodeType>();
 		mNodeMap = new HashMap<NodeType, NodeInfo>();
 		mLayerMap = new HashMap<Integer, Integer>();
-
+		hashLeafIDToNodeIDs = new HashMap<Integer, ArrayList<Integer>>();
 	}
 
 	public void setHashMap(HashMap<Integer, NodeType> hashNodes) {
@@ -57,9 +59,19 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		setDepthFlag();
 
 		// TODO: this should be removed later on, only for testing purposes
-		if (rootNode instanceof ClusterNode)
-			hashNodes.put(((ClusterNode) rootNode).getClusterNr(), rootNode);
-
+		if (rootNode instanceof ClusterNode) {
+			ClusterNode clusterNode = (ClusterNode) rootNode;
+			hashNodes.put(clusterNode.getClusterNr(), rootNode);
+			if (hashLeafIDToNodeIDs.containsKey(clusterNode.getLeafID())) {
+				ArrayList<Integer> alNodeIDs = hashLeafIDToNodeIDs.get(clusterNode.getLeafID());
+				alNodeIDs.add(clusterNode.getClusterNr());
+			}
+			else {
+				ArrayList<Integer> alNodeIDs = new ArrayList<Integer>();
+				alNodeIDs.add(clusterNode.getClusterNr());
+				hashLeafIDToNodeIDs.put(clusterNode.getLeafID(), alNodeIDs);
+			}
+		}
 		// if (rootNode instanceof IDrawAbleNode)
 		// hashNodes.put(((IDrawAbleNode) rootNode).getID(), rootNode);
 	}
@@ -104,9 +116,19 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		// TODO: this should be removed later on, only for testing purposes
 		// TODO: isn't it better to use CompareAbleValue (and introduce an interface that implements
 		// .getID())???
-		if (childNode instanceof ClusterNode)
-			hashNodes.put(((ClusterNode) childNode).getClusterNr(), childNode);
-
+		if (childNode instanceof ClusterNode) {
+			ClusterNode clusterNode = (ClusterNode) childNode;
+			hashNodes.put(clusterNode.getClusterNr(), childNode);
+			if (hashLeafIDToNodeIDs.containsKey(clusterNode.getLeafID())) {
+				ArrayList<Integer> alNodeIDs = hashLeafIDToNodeIDs.get(clusterNode.getLeafID());
+				alNodeIDs.add(clusterNode.getClusterNr());
+			}
+			else {
+				ArrayList<Integer> alNodeIDs = new ArrayList<Integer>();
+				alNodeIDs.add(clusterNode.getClusterNr());
+				hashLeafIDToNodeIDs.put(clusterNode.getLeafID(), alNodeIDs);
+			}
+		}
 		// if (childNode instanceof IDrawAbleNode)
 		// hashNodes.put(((IDrawAbleNode) childNode).getID(), childNode);
 	}
@@ -124,8 +146,19 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 			addChild(parentNode, child);
 			// TODO: this should be removed later on, only for testing purposes
 			// isn't this done in addchild?
-			if (child instanceof ClusterNode)
-				hashNodes.put(((ClusterNode) child).getClusterNr(), child);
+			if (child instanceof ClusterNode) {
+				ClusterNode clusterNode = (ClusterNode) child;
+				hashNodes.put(clusterNode.getClusterNr(), child);
+				if (hashLeafIDToNodeIDs.containsKey(clusterNode.getLeafID())) {
+					ArrayList<Integer> alNodeIDs = hashLeafIDToNodeIDs.get(clusterNode.getLeafID());
+					alNodeIDs.add(clusterNode.getClusterNr());
+				}
+				else {
+					ArrayList<Integer> alNodeIDs = new ArrayList<Integer>();
+					alNodeIDs.add(clusterNode.getClusterNr());
+					hashLeafIDToNodeIDs.put(clusterNode.getLeafID(), alNodeIDs);
+				}
+			}
 		}
 	}
 
@@ -206,6 +239,10 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 
 	public NodeType getNodeByNumber(int iClusterNr) {
 		return hashNodes.get(iClusterNr);
+	}
+	
+	public ArrayList<Integer> getNodeIDsFromLeafID(int iLeafID) {
+		return hashLeafIDToNodeIDs.get(iLeafID);
 	}
 
 	/**

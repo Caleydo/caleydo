@@ -1558,8 +1558,8 @@ public class GLDendrogram extends AStorageBasedView implements
 			case RIGHT_CLICKED:
 
 				ClusterNode leafNode = tree.getNodeByNumber(iExternalID);
-				if (contentSelectionManager.checkStatus(leafNode.getLeaveID()) == false
-						&& storageSelectionManager.checkStatus(leafNode.getLeaveID()) == false)
+				if (contentSelectionManager.checkStatus(leafNode.getLeafID()) == false
+						&& storageSelectionManager.checkStatus(leafNode.getLeafID()) == false)
 					break;
 
 				// Prevent handling of non genetic data in context menu
@@ -1575,7 +1575,7 @@ public class GLDendrogram extends AStorageBasedView implements
 
 				GeneContextMenuItemContainer geneContextMenuItemContainer = new GeneContextMenuItemContainer();
 				geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX,
-						leafNode.getLeaveID());
+						leafNode.getLeafID());
 				contextMenu.addItemContanier(geneContextMenuItemContainer);
 
 				break;
@@ -1596,7 +1596,7 @@ public class GLDendrogram extends AStorageBasedView implements
 
 				selectionManager.clearSelection(selectionType);
 				selectionManager.addToType(selectionType, tree.getNodeByNumber(
-						iExternalID).getLeaveID());
+						iExternalID).getLeafID());
 				selectionDelta = selectionManager.getDelta();
 
 				handleConnectedElementRep(selectionDelta);
@@ -1656,9 +1656,9 @@ public class GLDendrogram extends AStorageBasedView implements
 			case RIGHT_CLICKED:
 				ClusterNode leafNode = tree.getNodeByNumber(iExternalID);
 
-				if (contentSelectionManager.checkStatus(leafNode.getLeaveID()) == false
+				if (contentSelectionManager.checkStatus(leafNode.getLeafID()) == false
 						&& storageSelectionManager.checkStatus(leafNode
-								.getLeaveID()) == false)
+								.getLeafID()) == false)
 					break;
 
 				if (!isRenderedRemote()) {
@@ -1669,7 +1669,7 @@ public class GLDendrogram extends AStorageBasedView implements
 				}
 
 				ExperimentContextMenuItemContainer experimentContextMenuItemContainer = new ExperimentContextMenuItemContainer();
-				experimentContextMenuItemContainer.setID(leafNode.getLeaveID());
+				experimentContextMenuItemContainer.setID(leafNode.getLeafID());
 				contextMenu
 						.addItemContanier(experimentContextMenuItemContainer);
 
@@ -1691,7 +1691,7 @@ public class GLDendrogram extends AStorageBasedView implements
 
 				selectionManager.clearSelection(selectionType);
 				selectionManager.addToType(selectionType, tree.getNodeByNumber(
-						iExternalID).getLeaveID());
+						iExternalID).getLeafID());
 				selectionDelta = selectionManager.getDelta();
 
 				handleConnectedElementRep(selectionDelta);
@@ -1806,9 +1806,13 @@ public class GLDendrogram extends AStorageBasedView implements
 				for (Integer iSelectedID : setMouseOverElements) {
 
 					iIndex = iSelectedID;
-					if (tree.getNodeByNumber(iIndex) != null)
-						tree.getNodeByNumber(iIndex).setSelectionType(
-								SelectionType.MOUSE_OVER);
+					ArrayList<Integer> alClusterNumbers = tree.getNodeIDsFromLeafID(iIndex);
+					if (alClusterNumbers != null) {
+						for(Integer clusterNumber : alClusterNumbers) {
+							tree.getNodeByNumber(clusterNumber).setSelectionType(
+									SelectionType.MOUSE_OVER);
+						}
+					}
 				}
 
 				Set<Integer> setSelectionElements = contentSelectionManager
@@ -1816,9 +1820,13 @@ public class GLDendrogram extends AStorageBasedView implements
 				for (Integer iSelectedID : setSelectionElements) {
 
 					iIndex = iSelectedID;
-					if (tree.getNodeByNumber(iIndex) != null)
-						tree.getNodeByNumber(iIndex).setSelectionType(
-								SelectionType.SELECTION);
+					ArrayList<Integer> alClusterNumbers = tree.getNodeIDsFromLeafID(iIndex);
+					if (alClusterNumbers != null) {
+						for(Integer clusterNumber : alClusterNumbers) {
+							tree.getNodeByNumber(clusterNumber).setSelectionType(
+									SelectionType.SELECTION);
+						}
+					}
 				}
 				// setDisplayListDirty();
 			}
@@ -1834,18 +1842,27 @@ public class GLDendrogram extends AStorageBasedView implements
 				for (Integer iSelectedID : setMouseOverElements) {
 
 					iIndex = iSelectedID;
-					if (tree.getNodeByNumber(iIndex) != null)
-						tree.getNodeByNumber(iIndex).setSelectionType(
-								SelectionType.MOUSE_OVER);
+					ArrayList<Integer> alClusterNumbers = tree.getNodeIDsFromLeafID(iIndex);
+					if (alClusterNumbers != null) {
+						for(Integer clusterNumber : alClusterNumbers) {
+							tree.getNodeByNumber(clusterNumber).setSelectionType(
+									SelectionType.MOUSE_OVER);
+						}
+					}
+					
 				}
 
 				Set<Integer> setSelectionElements = storageSelectionManager
 						.getElements(SelectionType.SELECTION);
 				for (Integer iSelectedID : setSelectionElements) {
 					iIndex = iSelectedID;
-					if (tree.getNodeByNumber(iIndex) != null)
-						tree.getNodeByNumber(iIndex).setSelectionType(
-								SelectionType.SELECTION);
+					ArrayList<Integer> alClusterNumbers = tree.getNodeIDsFromLeafID(iIndex);
+					if (alClusterNumbers != null) {
+						for(Integer clusterNumber : alClusterNumbers) {
+							tree.getNodeByNumber(clusterNumber).setSelectionType(
+									SelectionType.SELECTION);
+						}
+					}
 				}
 				// setDisplayListDirty();
 			}
@@ -1913,7 +1930,7 @@ public class GLDendrogram extends AStorageBasedView implements
 
 		if (selectionDelta.getIDType() == EIDType.CLUSTER_NUMBER) {
 			// cluster mouse over events only used for gene trees
-			if (tree != null && bRenderGeneTree) {
+			if (tree != null ) { //&& bRenderGeneTree
 				resetAllTreeSelections();
 
 				Collection<SelectionDeltaItem> deltaItems = selectionDelta

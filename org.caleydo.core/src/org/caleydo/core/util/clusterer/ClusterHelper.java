@@ -99,7 +99,7 @@ public class ClusterHelper {
 		ClusterNode node) {
 
 		if (tree.hasChildren(node) == false) {
-			indexes.add(node.getLeaveID());
+			indexes.add(node.getLeafID());
 		}
 		else {
 			for (ClusterNode current : tree.getChildren(node)) {
@@ -224,7 +224,7 @@ public class ClusterHelper {
 				int isto = 0;
 				for (Integer iStorageIndex : storageVA) {
 					fArExpressionValues[isto] =
-						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, node.getLeaveID());
+						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, node.getLeafID());
 					isto++;
 				}
 
@@ -236,7 +236,7 @@ public class ClusterHelper {
 				int icon = 0;
 				for (Integer iContentIndex : contentVA) {
 					fArExpressionValues[icon] =
-						set.get(node.getLeaveID()).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+						set.get(node.getLeafID()).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 					icon++;
 				}
 			}

@@ -85,5 +85,7 @@ public interface ICompositeGraphic extends IDraggable {
 	public ICompositeGraphic createDeepCopyWithNewIDs(int[] iConsecutiveID);
 
 	public void printTree();
+	
+	public boolean isLeaf();
 
 }

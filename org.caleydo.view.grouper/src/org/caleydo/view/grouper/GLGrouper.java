@@ -12,17 +12,21 @@ import java.util.Set;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.grouper.CopyGroupsEvent;
 import org.caleydo.core.manager.event.view.grouper.CreateGroupEvent;
 import org.caleydo.core.manager.event.view.grouper.DeleteGroupsEvent;
 import org.caleydo.core.manager.event.view.grouper.PasteGroupsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -164,7 +168,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		IGroupDrawingStrategy groupDrawingStrategy = drawingStrategyManager
 				.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
 		iLastUsedGroupID = 0;
-		// TODO: CLUSTERING COEFFITIENT IS NOT SET PROPERLY...
+
 		ClusterNode rootNode = new ClusterNode("Root", iLastUsedGroupID++,
 				0.0f, 0, true, -1);
 		experimentTree.setRootNode(rootNode);
@@ -241,6 +245,52 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			if (bHasChildren) {
 				buildGroupHierarchyFromTree(tree, child, groupRep);
 			}
+		}
+	}
+	
+	public void updateClusterTreeAccordingToGroupHierarchy() {
+		
+		Tree<ClusterNode> tree = new Tree<ClusterNode>();
+		tree.setRootNode(rootGroup.getClusterNode());
+		iLastUsedGroupID = 0;
+		rootGroup.getClusterNode().setClusterNr(iLastUsedGroupID++);
+		hashGroups.clear();
+		selectionManager.add(rootGroup.getID());
+		hashGroups.put(rootGroup.getID(), rootGroup);
+		
+		buildTreeFromGroupHierarchy(tree, rootGroup.getClusterNode(), rootGroup);
+		
+		ClusterHelper.determineNrElements(tree);
+		ClusterHelper.determineHierarchyDepth(tree);
+		ClusterHelper.determineExpressionValue(tree,
+				EClustererType.EXPERIMENTS_CLUSTERING, set);
+		set.setClusteredTreeExps(tree);
+		
+		ArrayList<Integer> alIndices = ClusterHelper.getGeneIdsOfNode(tree, tree.getRoot());
+		storageVA = new VirtualArray(EVAType.STORAGE, alIndices.size(), alIndices);
+		set.replaceVA(useCase.getVA(EVAType.STORAGE).getID(), storageVA);
+		
+		UpdateViewEvent event = new UpdateViewEvent();
+		event.setSender(this);
+		eventPublisher.triggerEvent(event);
+		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EIDCategory.EXPERIMENT, EVAType.STORAGE));
+		rootGroup.printTree();
+	}
+	
+	private void buildTreeFromGroupHierarchy(Tree<ClusterNode> tree,
+			ClusterNode parentNode, GroupRepresentation parentGroupRep) {
+		ArrayList<ICompositeGraphic> alChildren = parentGroupRep.getChildren();
+		
+		for(ICompositeGraphic child : alChildren) {
+			GroupRepresentation groupRep = (GroupRepresentation) child;
+			ClusterNode childNode = groupRep.getClusterNode();
+			childNode.setClusterNr(iLastUsedGroupID++);
+			tree.addChild(parentNode, childNode);
+			if(!child.isLeaf()) {
+				buildTreeFromGroupHierarchy(tree, childNode, groupRep);
+			}
+			selectionManager.add(groupRep.getID());
+			hashGroups.put(groupRep.getID(), groupRep);
 		}
 	}
 
@@ -872,6 +922,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		selectionManager.add(newGroup.getID());
 
 		bHierarchyChanged = true;
+		
+		updateClusterTreeAccordingToGroupHierarchy();
 		setDisplayListDirty();
 	}
 
@@ -938,6 +990,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		iLastUsedGroupID = iTempID[0] + 1;
 
 		bHierarchyChanged = true;
+		updateClusterTreeAccordingToGroupHierarchy();
 		setDisplayListDirty();
 	}
 
@@ -956,6 +1009,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		}
 
 		bHierarchyChanged = true;
+		updateClusterTreeAccordingToGroupHierarchy();
 		setDisplayListDirty();
 	}
 }
