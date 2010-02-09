@@ -703,14 +703,17 @@ public class GLScatterplot extends AStorageBasedView {
 					gl.glEnd();
 					gl.glPopName();
 					
-//					gl.glColor4f(1f, 0f, 0f, 1f);
-//					gl.glBegin(GL.GL_LINE_LOOP);
-//					
-//					gl.glVertex3f(fxOffset+fExtraOffsetX, fyOffset+fExtraOffsetY, z+1);					
-//					gl.glVertex3f(fxOffset+fExtraOffsetX, fyOffset + fStepY*iTextureMultiY+fExtraOffsetY, z+1);					
-//					gl.glVertex3f(fxOffset + fStepX*iTextureMultiX+fExtraOffsetX, fyOffset + fStepY*iTextureMultiY+fExtraOffsetY, z+1);					
-//					gl.glVertex3f(fxOffset + fStepX*iTextureMultiX+fExtraOffsetX, fyOffset+fExtraOffsetY, z+1);
-//					gl.glEnd();					
+					if (bIsSelection)
+					{
+						gl.glColor4f(1f, 0f, 0f, 1f);
+						gl.glBegin(GL.GL_LINE_LOOP);
+						
+						gl.glVertex3f(fxOffset+fExtraOffsetX, fyOffset+fExtraOffsetY, z+1);					
+						gl.glVertex3f(fxOffset+fExtraOffsetX, fyOffset + fStepY*iTextureMultiY+fExtraOffsetY, z+1);					
+						gl.glVertex3f(fxOffset + fStepX*iTextureMultiX+fExtraOffsetX, fyOffset + fStepY*iTextureMultiY+fExtraOffsetY, z+1);					
+						gl.glVertex3f(fxOffset + fStepX*iTextureMultiX+fExtraOffsetX, fyOffset+fExtraOffsetY, z+1);
+						gl.glEnd();
+					}
 					
 					if (bIsSelection)
 						AlSelectionTextures.get(icounter).disable();
