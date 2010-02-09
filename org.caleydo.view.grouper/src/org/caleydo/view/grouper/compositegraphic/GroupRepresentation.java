@@ -11,6 +11,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.view.opengl.util.AGLGUIElement;
 import org.caleydo.view.grouper.GLGrouper;
 import org.caleydo.view.grouper.GrouperRenderStyle;
 import org.caleydo.view.grouper.draganddrop.DragAndDropController;
@@ -224,6 +225,18 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	@Override
 	public float getHeight() {
 		return fHeight;
+	}
+	
+	public float getScaledHeight(int viewportWidth) {
+		if(drawingStrategy instanceof AGLGUIElement)
+			return ((AGLGUIElement)drawingStrategy).getScaledSizeOf(viewportWidth, fHeight);
+		return fHeight;
+	}
+	
+	public float getScaledWidth(int viewportWidth) {
+		if(drawingStrategy instanceof AGLGUIElement)
+			return ((AGLGUIElement)drawingStrategy).getScaledSizeOf(viewportWidth, fWidth);
+		return fWidth;
 	}
 
 	@Override

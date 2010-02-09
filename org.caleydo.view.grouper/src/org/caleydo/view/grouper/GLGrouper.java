@@ -186,7 +186,6 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			ClusterNode currentNode = new ClusterNode(nodeName,
 					iLastUsedGroupID++, 0.0f, 0, false, leafID);
 			experimentTree.addChild(rootNode, currentNode);
-		
 
 			GroupRepresentation groupRep = new GroupRepresentation(currentNode,
 					renderStyle, groupDrawingStrategy, drawingStrategyManager,
@@ -196,7 +195,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			hashGroups.put(groupRep.getID(), groupRep);
 			selectionManager.initialAdd(groupRep.getID());
 		}
-		
+
 		rootGroup.calculateHierarchyLevels(0);
 		ClusterHelper.determineNrElements(experimentTree);
 		ClusterHelper.determineHierarchyDepth(experimentTree);
@@ -247,9 +246,9 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			}
 		}
 	}
-	
+
 	public void updateClusterTreeAccordingToGroupHierarchy() {
-		
+
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
 		tree.setRootNode(rootGroup.getClusterNode());
 		iLastUsedGroupID = 0;
@@ -257,35 +256,38 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		hashGroups.clear();
 		selectionManager.add(rootGroup.getID());
 		hashGroups.put(rootGroup.getID(), rootGroup);
-		
+
 		buildTreeFromGroupHierarchy(tree, rootGroup.getClusterNode(), rootGroup);
-		
+
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
 		ClusterHelper.determineExpressionValue(tree,
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
 		set.setClusteredTreeExps(tree);
-		
-		ArrayList<Integer> alIndices = ClusterHelper.getGeneIdsOfNode(tree, tree.getRoot());
-		storageVA = new VirtualArray(EVAType.STORAGE, alIndices.size(), alIndices);
+
+		ArrayList<Integer> alIndices = ClusterHelper.getGeneIdsOfNode(tree,
+				tree.getRoot());
+		storageVA = new VirtualArray(EVAType.STORAGE, alIndices.size(),
+				alIndices);
 		set.replaceVA(useCase.getVA(EVAType.STORAGE).getID(), storageVA);
-		
+
 		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
-		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EIDCategory.EXPERIMENT, EVAType.STORAGE));
+		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(
+				EIDCategory.EXPERIMENT, EVAType.STORAGE));
 	}
-	
+
 	private void buildTreeFromGroupHierarchy(Tree<ClusterNode> tree,
 			ClusterNode parentNode, GroupRepresentation parentGroupRep) {
 		ArrayList<ICompositeGraphic> alChildren = parentGroupRep.getChildren();
-		
-		for(ICompositeGraphic child : alChildren) {
+
+		for (ICompositeGraphic child : alChildren) {
 			GroupRepresentation groupRep = (GroupRepresentation) child;
 			ClusterNode childNode = groupRep.getClusterNode();
 			childNode.setClusterNr(iLastUsedGroupID++);
 			tree.addChild(parentNode, childNode);
-			if(!child.isLeaf()) {
+			if (!child.isLeaf()) {
 				buildTreeFromGroupHierarchy(tree, childNode, groupRep);
 			}
 			selectionManager.add(groupRep.getID());
@@ -428,8 +430,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
+			buildDisplayList(gl, iGLDisplayListIndexLocal);
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
@@ -440,8 +442,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 	@Override
 	public void displayRemote(GL gl) {
 		if (bIsDisplayListDirtyRemote) {
-			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
+			buildDisplayList(gl, iGLDisplayListIndexRemote);
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
@@ -478,18 +480,40 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 
 		gl.glPopName();
 
-		Vec3f vecPosition = new Vec3f(viewFrustum.getWidth() / 2.0f,
-				viewFrustum.getHeight(), 0.001f);
+		Vec3f vecPosition = new Vec3f(0.0f, viewFrustum.getHeight(), 0.001f);
 		rootGroup.setPosition(vecPosition);
 		rootGroup.setHierarchyPosition(vecPosition);
+		
 		if (bHierarchyChanged) {
 			rootGroup.calculateHierarchyLevels(0);
 			rootGroup.calculateDrawingParameters(gl, textRenderer);
-			bHierarchyChanged = false;
+
+			
 			// rootGroup.printTree();
 			// System.out.println("==========================================");
 		}
 		rootGroup.draw(gl, textRenderer);
+		
+		if(bHierarchyChanged) {
+			float fHierarchyHeight = rootGroup.getScaledHeight(parentGLCanvas
+					.getWidth());
+			float fHierarchyWidth = rootGroup.getScaledWidth(parentGLCanvas
+					.getWidth());
+			int minViewportHeight = (int) (parentGLCanvas.getHeight()
+					/ viewFrustum.getHeight() * fHierarchyHeight) + 10;
+			int minViewportWidth = (int) (parentGLCanvas.getWidth()
+					/ viewFrustum.getWidth() * fHierarchyWidth) + 10;
+			renderStyle.setMinViewDimensions(minViewportWidth,
+					minViewportHeight, this);
+			bHierarchyChanged = false;
+			
+			
+			if(parentGLCanvas.getHeight() <= 0) {
+				//Draw again in next frame where the viewport size is hopefully correct
+				setDisplayListDirty();
+				bHierarchyChanged = true;
+			}
+		}
 
 		gl.glEndList();
 	}
@@ -921,7 +945,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		selectionManager.add(newGroup.getID());
 
 		bHierarchyChanged = true;
-		
+
 		updateClusterTreeAccordingToGroupHierarchy();
 		setDisplayListDirty();
 	}
