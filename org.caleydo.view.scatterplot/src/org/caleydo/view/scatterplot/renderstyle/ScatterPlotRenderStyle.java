@@ -49,11 +49,11 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 	public static final float AXIS_MARKER_WIDTH = 0.02f;
 
 	public static final int LABEL_TEXT_MIN_SIZE = 50;
+	private float fCenterXOffset=0;
+	private float fCenterYOffset=0;
+	public float fCenterCorrectionFacktor=0; 
 
 
-
-//	private float fRenderHeight = 0f;
-//	private float fRenderWith = 0f;
 	
 	private boolean bIsEmbedded=true;
 
@@ -65,8 +65,8 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 
 		super(viewFrustum);
 
-//		fRenderHeight=viewFrustum.getHeight();
-//		fRenderWith=viewFrustum.getWidth();	
+		fCenterXOffset=viewFrustum.getWidth() / 2;
+		fCenterYOffset=viewFrustum.getHeight() / 2;
 	}
 
 	
@@ -84,16 +84,43 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 		NR_TEXTURES=NR_TEXTURESX*NR_TEXTURESY;		
 	}
 	
+	public void setCenterOffsets()
+	{
+		
+		
+		fCenterXOffset=viewFrustum.getWidth()  / 2;
+		
+		
+		fCenterYOffset=viewFrustum.getHeight() / 2;
+		
+		float factor=1.0f;
+		
+		if(viewFrustum.getWidth()>viewFrustum.getHeight()) 
+			factor=  viewFrustum.getWidth()/viewFrustum.getHeight();
+		fCenterYOffset=fCenterYOffset/factor;
+		
+		
+		
+	}
+	
+	public float getCenterXOffset() {
+
+		return fCenterXOffset;
+	}
+
+	public float getCenterYOffset() {
+
+		return fCenterYOffset;
+	}
+		
+	public float getXCenter() {
+
+		return viewFrustum.getWidth() - fCenterXOffset;
+	}
 	
 	public float getYCenter() {
 
-		// TODO: this is only correct for 4 rows
-		return viewFrustum.getHeight() / 2;
-	}
-
-	public float getXCenter() {
-
-		return viewFrustum.getWidth() / 2;
+		return viewFrustum.getHeight() - fCenterYOffset;
 	}
 
 	public float getXSpacing() {
