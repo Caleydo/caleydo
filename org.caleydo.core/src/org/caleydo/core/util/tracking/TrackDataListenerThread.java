@@ -51,29 +51,37 @@ public class TrackDataListenerThread
 
 				serverSocket.receive(receivePacket);
 				String sentence = new String(receivePacket.getData());
-
+			   
+				//System.out.println("received data: "+sentence);
+				
 				if (!sentence.contains("ET_SPL"))
 					continue;
 
-				// System.out.println(sentence);
+				 //System.out.println(sentence);
 
 				StringTokenizer tokenizer = new StringTokenizer(sentence, " ");
 
 				tokenizer.nextToken();
-
+				
+				//added 9.2.2010
+				tokenizer.nextToken();
+				
 				int x = new Integer(tokenizer.nextToken());
 				int y = 0;
 				int diameter = 0;
 
 				if (TrackDataProvider.eTrackerMode == TrackDataProvider.ETrackerMode.RED) {
 
+					//added 9.2.2010
+					
 					tokenizer.nextToken();
 					y = new Integer(tokenizer.nextToken());
-					tokenizer.nextToken();
-					diameter = new Integer(tokenizer.nextToken());
+					//tokenizer.nextToken();
+					//diameter = new Integer(tokenizer.nextToken());
 				}
 				else if (TrackDataProvider.eTrackerMode == TrackDataProvider.ETrackerMode.SIMULATED_BY_MOUSE_MOVEMENT) {
-
+					
+					
 					y = new Integer(tokenizer.nextToken());
 					// String tmp = tokenizer.nextToken();
 					// tmp = tmp.substring(0, tmp.indexOf('\n'));
@@ -89,7 +97,9 @@ public class TrackDataListenerThread
 
 				if (TrackDataProvider.eTrackerMode == TrackDataProvider.ETrackerMode.RED
 					|| TrackDataProvider.eTrackerMode == TrackDataProvider.ETrackerMode.SIMULATED_BY_MOUSE_MOVEMENT) {
-
+					
+					
+					
 					eyePosInputQueue.add(new float[] { x, y });
 					if (eyePosInputQueue.size() > TrackDataProvider.POSITON_SMOOTH_RANGE) {
 						eyePosInputQueue.remove();

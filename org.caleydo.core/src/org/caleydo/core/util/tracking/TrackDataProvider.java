@@ -11,12 +11,13 @@ import java.util.Queue;
 
 public class TrackDataProvider {
 
-	public static final ETrackerMode eTrackerMode = ETrackerMode.SIMULATED_BY_MOUSE_MOVEMENT;
+	public static final ETrackerMode eTrackerMode = ETrackerMode.RED;
 
-	public static float POSITON_SMOOTH_RANGE = 20;
+	public static float POSITON_SMOOTH_RANGE = 5;
 	public static float DEPTH_SMOOTH_RANGE = 30;
 
-	public static String IP_TRACKER = "192.168.1.91";
+	public static String IP_TRACKER = "129.27.200.230";
+	//public static String IP_TRACKER = "192.168.1.91";
 	// public static String IP_TRACKER = "169.254.55.198";
 	// public static String IP_LOCAL = "169.254.7.200";
 
@@ -128,7 +129,8 @@ public class TrackDataProvider {
 		fArSmoothedPoint[0] /= POSITON_SMOOTH_RANGE;
 		fArSmoothedPoint[1] /= POSITON_SMOOTH_RANGE;
 
-		System.out.println("Eye position: " + fArSmoothedPoint[0] + " / " + fArSmoothedPoint[1]);
+		
+		//System.out.println("Eye position: " + fArSmoothedPoint[0] + " / " + fArSmoothedPoint[1]);
 
 		return fArSmoothedPoint;
 
