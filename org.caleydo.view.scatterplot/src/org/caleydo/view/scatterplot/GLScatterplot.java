@@ -45,9 +45,13 @@ import org.caleydo.core.manager.event.view.storagebased.InitAxisComboEvent;
 import org.caleydo.core.manager.event.view.storagebased.SwitchMatrixViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SetPointSizeEvent;
-import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
 import org.caleydo.core.manager.event.view.storagebased.XAxisSelectorEvent;
 import org.caleydo.core.manager.event.view.storagebased.YAxisSelectorEvent;
+import org.caleydo.core.manager.event.view.storagebased.Toggle2AxisEvent;
+import org.caleydo.core.manager.event.view.storagebased.ToggleColorModeEvent;
+import org.caleydo.core.manager.event.view.storagebased.ToggleMatrixZoomEvent;
+import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
+
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -76,8 +80,11 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.scatterplot.listener.GLScatterPlotKeyListener;
 import org.caleydo.view.scatterplot.listener.ToggleMatrixViewListener;
-import org.caleydo.view.scatterplot.listener.SetPointSizeListener;
 import org.caleydo.view.scatterplot.listener.TogglePointTypeListener;
+import org.caleydo.view.scatterplot.listener.Toggle2AxisModeListener;
+import org.caleydo.view.scatterplot.listener.ToggleColorModeListener;
+import org.caleydo.view.scatterplot.listener.ToggleMatrixZoomListener;
+import org.caleydo.view.scatterplot.listener.SetPointSizeListener;
 import org.caleydo.view.scatterplot.listener.XAxisSelectorListener;
 import org.caleydo.view.scatterplot.listener.YAxisSelectorListener;
 import org.caleydo.view.scatterplot.renderstyle.EScatterPointType;
@@ -144,11 +151,14 @@ public class GLScatterplot extends AStorageBasedView {
 
 	public int MAX_AXES = 50;
 
-	// listeners
+	// Listeners
 
 	private TogglePointTypeListener togglePointTypeListener;
-	private ToggleMatrixViewListener resetSelectionListener;
-
+	private ToggleMatrixViewListener toggleMatrixViewListener;	
+	private Toggle2AxisModeListener toggle2AxisModeListener;
+	private ToggleColorModeListener toggleColorModeListener;
+	private ToggleMatrixZoomListener toggleMatrixZoomListener;
+	
 	private SetPointSizeListener setPointSizeListener;
 	private XAxisSelectorListener xAxisSelectorListener;
 	private YAxisSelectorListener yAxisSelectorListener;
@@ -165,7 +175,7 @@ public class GLScatterplot extends AStorageBasedView {
 	private float[] fRectangleDragEndPoint = new float[3];
 	private boolean bRectangleSelection = false;
 
-	// DIsplaylists
+	// Displaylists
 	private int iGLDisplayListIndexBrush;
 	private int iGLDisplayListIndexCoord;
 	private int iGLDisplayListIndexMouseOver;
@@ -2203,11 +2213,27 @@ public class GLScatterplot extends AStorageBasedView {
 		eventPublisher.addListener(TogglePointTypeEvent.class,
 				togglePointTypeListener);
 
-		resetSelectionListener = new ToggleMatrixViewListener();
-		resetSelectionListener.setHandler(this);
+		toggleMatrixViewListener = new ToggleMatrixViewListener();
+		toggleMatrixViewListener.setHandler(this);
 		eventPublisher.addListener(SwitchMatrixViewEvent.class,
-				resetSelectionListener);
-
+				toggleMatrixViewListener);
+		
+		toggle2AxisModeListener = new Toggle2AxisModeListener();
+		toggle2AxisModeListener.setHandler(this);
+		eventPublisher.addListener(Toggle2AxisEvent.class,
+				toggle2AxisModeListener);
+		
+		toggleColorModeListener = new ToggleColorModeListener();
+		toggleColorModeListener.setHandler(this);
+		eventPublisher.addListener(ToggleColorModeEvent.class,
+				toggleColorModeListener);
+		
+		toggleMatrixZoomListener = new ToggleMatrixZoomListener();
+		toggleMatrixZoomListener.setHandler(this);
+		eventPublisher.addListener(ToggleMatrixZoomEvent.class,
+				toggleMatrixZoomListener);
+					
+		
 		setPointSizeListener = new SetPointSizeListener();
 		setPointSizeListener.setHandler(this);
 		eventPublisher.addListener(SetPointSizeEvent.class,
@@ -2234,9 +2260,24 @@ public class GLScatterplot extends AStorageBasedView {
 			togglePointTypeListener = null;
 		}
 
-		if (resetSelectionListener != null) {
-			eventPublisher.removeListener(resetSelectionListener);
-			resetSelectionListener = null;
+		if (toggleMatrixViewListener != null) {
+			eventPublisher.removeListener(toggleMatrixViewListener);
+			toggleMatrixViewListener = null;
+		}
+		
+		if (toggleMatrixZoomListener != null) {
+			eventPublisher.removeListener(toggleMatrixZoomListener);
+			toggleMatrixZoomListener = null;
+		}
+		
+		if (toggle2AxisModeListener != null) {
+			eventPublisher.removeListener(toggle2AxisModeListener);
+			toggle2AxisModeListener = null;
+		}
+		
+		if (toggleColorModeListener != null) {
+			eventPublisher.removeListener(toggleColorModeListener);
+			toggleColorModeListener = null;
 		}
 
 		if (setPointSizeListener != null) {
