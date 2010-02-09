@@ -2,8 +2,8 @@ package org.caleydo.view.datawindows;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -197,14 +197,14 @@ public class GLDataWindows extends AGLView {
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType eSelectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public void init(GL gl) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int getNumberOfSelections(SelectionType SelectionType) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
