@@ -103,7 +103,7 @@ import com.sun.opengl.util.texture.TextureIO;
  * @author Marc Streit
  * @author Juergen Pillhofer
  */
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
 public class GLScatterplot extends AStorageBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.scatterplot";
@@ -176,7 +176,8 @@ public class GLScatterplot extends AStorageBasedView {
 	private boolean bRectangleSelection = false;
 
 	// Displaylists
-	private int iGLDisplayListIndexBrush;
+	private int iGLDisplayListIndexMatrixFull;
+	private int iGLDisplayListIndexMatrixSelection;
 	private int iGLDisplayListIndexCoord;
 	private int iGLDisplayListIndexMouseOver;
 	private int iGLDisplayListIndexSelection;
@@ -796,11 +797,12 @@ public class GLScatterplot extends AStorageBasedView {
 		// }
 		// });
 
-		iGLDisplayListIndexLocal = gl.glGenLists(5);
-		iGLDisplayListIndexBrush = 2;
-		iGLDisplayListIndexCoord = 3;
-		iGLDisplayListIndexMouseOver = 4;
-		iGLDisplayListIndexSelection = 5;
+		iGLDisplayListIndexLocal = gl.glGenLists(6);		
+		iGLDisplayListIndexCoord = iGLDisplayListIndexLocal+1;
+		iGLDisplayListIndexMouseOver = iGLDisplayListIndexLocal+2;
+		iGLDisplayListIndexSelection = iGLDisplayListIndexLocal+3;
+		iGLDisplayListIndexMatrixFull = iGLDisplayListIndexLocal+4;
+		iGLDisplayListIndexMatrixSelection = iGLDisplayListIndexLocal+5;
 
 		// Register keyboard listener to GL canvas
 		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(
@@ -908,11 +910,11 @@ public class GLScatterplot extends AStorageBasedView {
 				bRectangleSelection = false;
 				setDisplayListDirty();
 				if (bRenderMatrix)
-					gl.glTranslatef(renderStyle.getXCenter(), renderStyle.getCenterYOffset(),0);
-				UpdateSelection();
+					gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle.getCenterYOffset(),0);				
+				UpdateSelection();				
 				if (bRenderMatrix)
-					gl.glTranslatef(-renderStyle.getXCenter(), -renderStyle.getCenterYOffset(),0);
-				gl.glDeleteLists(iGLDisplayListIndexBrush, 1);
+					gl.glTranslatef(-renderStyle.getCenterXOffset(), -renderStyle.getCenterYOffset(),0);
+				//gl.glDeleteLists(iGLDisplayListIndexBrush, 1);
 				bUpdateSelection = true;
 			}
 
@@ -1001,10 +1003,10 @@ public class GLScatterplot extends AStorageBasedView {
 		
 		if (bRenderMatrix)
 			//gl.glTranslatef(renderStyle.getXCenter(), renderStyle.getYCenter(),0);
-			gl.glTranslatef(renderStyle.getXCenter(), renderStyle.getCenterYOffset(),0);
+			gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle.getCenterYOffset(),0);
 		RenderSelection(gl);
 		if (bRenderMatrix)
-			gl.glTranslatef(-renderStyle.getXCenter(), -renderStyle.getCenterYOffset(), 0);
+			gl.glTranslatef(-renderStyle.getCenterXOffset(), -renderStyle.getCenterYOffset(), 0);
 		gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
 		gl.glEndList();
 	}
@@ -1037,20 +1039,20 @@ public class GLScatterplot extends AStorageBasedView {
 				gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
 				if (bRenderMatrix)
 
-					gl.glTranslatef(renderStyle.getXCenter(), renderStyle.getCenterYOffset(),0);
+					gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle.getCenterYOffset(),0);
 				renderCoordinateSystem(gl);
 				if (bRenderMatrix)
-					gl.glTranslatef(-renderStyle.getXCenter(), -renderStyle.getCenterYOffset(), 0);
+					gl.glTranslatef(-renderStyle.getCenterXOffset(), -renderStyle.getCenterYOffset(), 0);
 				gl.glEndList();
 			}
 
 			gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 			gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
 			if (bRenderMatrix)
-				gl.glTranslatef(renderStyle.getXCenter(), renderStyle.getCenterYOffset(),0);
+				gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle.getCenterYOffset(),0);
 			RenderScatterPoints(gl);
 			if (bRenderMatrix)
-				gl.glTranslatef(-renderStyle.getXCenter(), -renderStyle.getCenterYOffset(), 0);
+				gl.glTranslatef(-renderStyle.getCenterXOffset(), -renderStyle.getCenterYOffset(), 0);
 			gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
 			gl.glEndList();
 
@@ -1060,12 +1062,12 @@ public class GLScatterplot extends AStorageBasedView {
 		gl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
 		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
 		if (bRenderMatrix && bRenderMainView)
-			gl.glTranslatef(renderStyle.getXCenter(), renderStyle.getYCenter(),
-					0);
+			//gl.glTranslatef(renderStyle.getXCenter(), renderStyle.getYCenter(),0);
+			gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle.getCenterYOffset(),0);
 		RenderMouseOver(gl);
 		if (bRenderMatrix && bRenderMainView)
-			gl.glTranslatef(-renderStyle.getXCenter(), -renderStyle
-					.getYCenter(), 0);
+			//gl.glTranslatef(-renderStyle.getXCenter(), -renderStyle.getYCenter(), 0);
+			gl.glTranslatef(-renderStyle.getCenterXOffset(), -renderStyle.getCenterYOffset(), 0);
 		gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
 		gl.glEndList();
 
@@ -1511,8 +1513,8 @@ public class GLScatterplot extends AStorageBasedView {
 		y = y + XYAXISDISTANCE;
 
 		if (bRenderMatrix && bRenderMainView) {
-			x += renderStyle.getXCenter();
-			y += renderStyle.getYCenter();
+			x += renderStyle.getCenterXOffset();
+			y += renderStyle.getCenterYOffset();
 		}
 
 		if (x >= XMin && x <= XMax)
@@ -2411,9 +2413,20 @@ public class GLScatterplot extends AStorageBasedView {
 
 	public void toggleMatrixZoom() {
 		if (bAllowMatrixZoom)
+		{
 			bAllowMatrixZoom = false;
+			renderStyle.setIsMouseZoom(false);
+			bUpdateMainView = true;
+			setDisplayListDirty();
+		}
 		else
+		{
 			bAllowMatrixZoom = true;
+			renderStyle.setIsMouseZoom(true);
+			bUpdateMainView = true;
+			setDisplayListDirty();
+		}
+		renderStyle.setCenterOffsets();
 	}
 
 }

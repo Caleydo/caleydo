@@ -56,6 +56,7 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 
 	
 	private boolean bIsEmbedded=true;
+	private boolean bIsMouseZoom=false;
 
 
 	private float fSizeHeatmapArrow = 0.17f;
@@ -75,6 +76,13 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 		bIsEmbedded=value;
 	}
 	
+	public void setIsMouseZoom(boolean value)
+	{
+		bIsMouseZoom=value;
+	}
+	
+	
+	
 	
 
 	public void setTextureNr(int x,int y)
@@ -87,17 +95,27 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 	public void setCenterOffsets()
 	{
 		
+		float factor=1.0f;
 		
 		fCenterXOffset=viewFrustum.getWidth()  / 2;
-		
-		
 		fCenterYOffset=viewFrustum.getHeight() / 2;
 		
-		float factor=1.0f;
+		if(bIsMouseZoom) 
+		{
+			factor = (float)(NR_TEXTURESX+7) / (float)NR_TEXTURESX; 
+			if (fCenterXOffset>(fCenterYOffset*factor))
+				fCenterXOffset=fCenterYOffset*factor;
+			//TODO:this needs to be improved!
+			else
+				fCenterXOffset=fCenterXOffset*factor;
+		}
+		
+		
+		factor=1.0f;
 		
 		if(viewFrustum.getWidth()>viewFrustum.getHeight()) 
 			factor=  viewFrustum.getWidth()/viewFrustum.getHeight();
-		fCenterYOffset=fCenterYOffset/factor;
+		fCenterYOffset=fCenterYOffset/(factor);
 		
 		
 		
