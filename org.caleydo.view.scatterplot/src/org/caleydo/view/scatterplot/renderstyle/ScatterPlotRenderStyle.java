@@ -92,33 +92,14 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 		NR_TEXTURES=NR_TEXTURESX*NR_TEXTURESY;		
 	}
 	
-	public void setCenterOffsets()
-	{
-		
-		float factor=1.0f;
-		
-		fCenterXOffset=viewFrustum.getWidth()  / 2;
-		fCenterYOffset=viewFrustum.getHeight() / 2;
-		
-		if(bIsMouseZoom) 
-		{
-			factor = (float)(NR_TEXTURESX+7) / (float)NR_TEXTURESX; 
-			if (fCenterXOffset>(fCenterYOffset*factor))
-				fCenterXOffset=fCenterYOffset*factor;
-			//TODO:this needs to be improved!
-			else
-				fCenterXOffset=fCenterXOffset*factor;
-		}
-		
-		
-		factor=1.0f;
-		
-		if(viewFrustum.getWidth()>viewFrustum.getHeight()) 
-			factor=  viewFrustum.getWidth()/viewFrustum.getHeight();
-		fCenterYOffset=fCenterYOffset/(factor);
-		
-		
-		
+	
+	
+	public boolean setCenterOffsets(float x, float y)
+	{		
+		if(x==fCenterXOffset && y==fCenterYOffset) return false;		
+		fCenterXOffset=x;
+		fCenterYOffset=y;		
+		return true;
 	}
 	
 	public float getCenterXOffset() {

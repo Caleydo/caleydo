@@ -126,7 +126,7 @@ public class GLScatterplot extends AStorageBasedView {
 	private boolean bUpdateMainView = false;
 	private boolean bRender2Axis = false;
 	private boolean bRenderMatrix = true;
-	private boolean bRenderMainView = true;
+	//private boolean bRenderMainView = true; Not needed Anymore
 
 	private boolean bUpdateSelection = false;
 	// private boolean bUpdateSelectionTexures =false;
@@ -540,6 +540,9 @@ public class GLScatterplot extends AStorageBasedView {
 				iAddTextures=5;
 			
 
+		float fMaxX=0;
+		float fMaxY=0;
+		
 		float fStepY = fHeight / (float) (NR_TEXTURESY + iAddTextures);
 		float fStepX = fWidth / (float) (NR_TEXTURESX + iAddTextures);
 				
@@ -710,7 +713,21 @@ public class GLScatterplot extends AStorageBasedView {
 						AlFullTextures.get(icounter).disable();
 
 				} else if (!bIsSelection)
+				{
 					renderHistogram(gl, fxOffset+fExtraOffsetX, fyOffset+fExtraOffsetY, fStepX, fStepY, i);
+					
+					float tmpx=viewFrustum.getWidth()-(fxOffset+fExtraOffsetX+fStepX);
+					float tmpy=viewFrustum.getHeight()-(fyOffset+fExtraOffsetY+fStepY);
+					
+					if ((getSpace(tmpx, tmpy)>getSpace(fMaxX, fMaxY)) && getCorrelation(tmpx, tmpy))
+					{
+						fMaxX=tmpx;
+						fMaxY=tmpy;
+					}
+					
+					
+					
+				}
 				// fyOffset -= fStepY-fSpacerY;
 				// fyOffset += fStepY+fSpacerY;
 
@@ -723,9 +740,32 @@ public class GLScatterplot extends AStorageBasedView {
 		//		fxOffset += (fStepX + fSpacerX)*iAddTextures;
 		//	else
 				fxOffset += (fStepX + fSpacerX)*iOffsetMultiX;
-		}		
+		}
+		if (!bIsSelection)
+		{
+			if(renderStyle.setCenterOffsets(viewFrustum.getWidth()-fMaxX,viewFrustum.getHeight()-fMaxY))
+			{
+				//bUpdateMainView=true;
+				//setDisplayListDirty();
+			}
+		}
 	}
 
+	
+	private boolean getCorrelation(float x, float y)
+	{
+		float fCorrelation=1.3f;
+		if ((x/y)>fCorrelation) return false;
+		if ((y/x)>fCorrelation) return false;
+		
+		return true;
+	}
+	
+	private float getSpace(float x, float y)
+	{
+		return x*y;
+	}
+	
 	private void renderHistogram(GL gl, float x, float y, float width,
 			float height, int selected_Axis) {
 
@@ -873,7 +913,7 @@ public class GLScatterplot extends AStorageBasedView {
 
 		// if (alHits == null && alHits.size() == 0) {
 
-		if (detailLevel == EDetailLevel.HIGH && bRenderMainView) {
+		if (detailLevel == EDetailLevel.HIGH) {
 			GLMouseListener glMouseListener = getParentGLCanvas()
 					.getGLMouseListener();
 
@@ -972,25 +1012,28 @@ public class GLScatterplot extends AStorageBasedView {
 		// clipToFrustum(gl);
 
 		if (bRenderMatrix) {
-			renderTextures(gl, false, 0.0f); // All textures
-			renderTextures(gl, true, 0.0f); // Selection textures
+			//renderTextures(gl, false, 0.0f); // All textures
+			//renderTextures(gl, true, 0.0f); // Selection textures
 
+			gl.glCallList(iGLDisplayListIndexMatrixFull);
+			gl.glCallList(iGLDisplayListIndexMatrixSelection);
+									
 			renderMatrixSelection(gl,SELECTED_X_AXIS,SELECTED_Y_AXIS,false);
 			if(bRender2Axis) 
 				renderMatrixSelection(gl,SELECTED_X_AXIS_2,SELECTED_Y_AXIS_2,true);
 			// return;
 		}
 
-		if (bRenderMainView) {
-			gl.glCallList(iGLDisplayListToCall);
-			if (detailLevel == EDetailLevel.HIGH) {
-			//	gl.glCallList(iGLDisplayListIndexBrush);
-				gl.glCallList(iGLDisplayListIndexCoord);
-				gl.glCallList(iGLDisplayListIndexMouseOver);
-			}
-			if (!bRender2Axis)
-				gl.glCallList(iGLDisplayListIndexSelection);
+		
+		gl.glCallList(iGLDisplayListToCall);
+		if (detailLevel == EDetailLevel.HIGH) {
+		//	gl.glCallList(iGLDisplayListIndexBrush);
+			gl.glCallList(iGLDisplayListIndexCoord);
+			gl.glCallList(iGLDisplayListIndexMouseOver);
 		}
+		if (!bRender2Axis)
+			gl.glCallList(iGLDisplayListIndexSelection);
+		
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 		// if (!isRenderedRemote())
 		// contextMenu.render(gl, this);
@@ -1009,23 +1052,30 @@ public class GLScatterplot extends AStorageBasedView {
 			gl.glTranslatef(-renderStyle.getCenterXOffset(), -renderStyle.getCenterYOffset(), 0);
 		gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
 		gl.glEndList();
+		if (bRenderMatrix)
+		{
+			gl.glNewList(iGLDisplayListIndexMatrixSelection, GL.GL_COMPILE);
+			renderTextures(gl, true, 0.0f); // Selection textures
+			gl.glEndList();
+			
+		}
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 
 		if (bHasFrustumChanged) {
-			renderStyle.setCenterOffsets();
+			//renderStyle.setCenterOffsets();
 			bHasFrustumChanged = false;
 			bUpdateMainView = true;
 		}
 
 		if ((bUpdateMainView || bUpdateSelection)) {
 
-			if (bRenderMainView)
-				buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
+						
 			if (bUpdateSelection)// && bRenderMatrix) TODO : Evaluate
 				// Performance here
 				initTextures(true);
+			buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
 			bUpdateSelection = false;
 		}
 
@@ -1034,7 +1084,12 @@ public class GLScatterplot extends AStorageBasedView {
 			initTextures(false);
 		}
 
-		if (bUpdateMainView && bRenderMainView) {
+		if (bUpdateMainView) {
+			
+			gl.glNewList(iGLDisplayListIndexMatrixFull, GL.GL_COMPILE);
+			renderTextures(gl, false, 0.0f); // All textures
+			gl.glEndList();
+			
 			if (detailLevel == EDetailLevel.HIGH) {
 				gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
 				if (bRenderMatrix)
@@ -1061,11 +1116,11 @@ public class GLScatterplot extends AStorageBasedView {
 
 		gl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
 		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
-		if (bRenderMatrix && bRenderMainView)
+		if (bRenderMatrix)
 			//gl.glTranslatef(renderStyle.getXCenter(), renderStyle.getYCenter(),0);
 			gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle.getCenterYOffset(),0);
 		RenderMouseOver(gl);
-		if (bRenderMatrix && bRenderMainView)
+		if (bRenderMatrix)
 			//gl.glTranslatef(-renderStyle.getXCenter(), -renderStyle.getYCenter(), 0);
 			gl.glTranslatef(-renderStyle.getCenterXOffset(), -renderStyle.getCenterYOffset(), 0);
 		gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
@@ -1512,7 +1567,7 @@ public class GLScatterplot extends AStorageBasedView {
 		x = x + XYAXISDISTANCE;
 		y = y + XYAXISDISTANCE;
 
-		if (bRenderMatrix && bRenderMainView) {
+		if (bRenderMatrix) {
 			x += renderStyle.getCenterXOffset();
 			y += renderStyle.getCenterYOffset();
 		}
@@ -1937,8 +1992,19 @@ public class GLScatterplot extends AStorageBasedView {
 
 		if (selectionType == SelectionType.MOUSE_OVER) {
 
-			MOUSEOVER_X_AXIS = contentID / NR_TEXTURESY;
-			MOUSEOVER_Y_AXIS = contentID % NR_TEXTURESX;
+			int itmpX_Axis = contentID / NR_TEXTURESY;
+			int itmpY_Axis = contentID % NR_TEXTURESY;
+			
+			if ((itmpX_Axis == MOUSEOVER_X_AXIS) && (itmpY_Axis == MOUSEOVER_Y_AXIS))
+				return;
+			MOUSEOVER_X_AXIS = itmpX_Axis;
+			MOUSEOVER_Y_AXIS = itmpY_Axis;
+			
+			if(bRenderMatrix && bAllowMatrixZoom)
+			{
+				setDisplayListDirty();
+				bUpdateMainView=true;
+			}
 			// TODO Update Selection Manager
 		}
 
@@ -2360,10 +2426,10 @@ public class GLScatterplot extends AStorageBasedView {
 
 	public void toggleMatrixMode() {
 
-		renderStyle.setCenterOffsets();
-		if (bRenderMainView && bRenderMatrix) // embedded view->MainView
+		//renderStyle.setCenterOffsets();
+		if (bRenderMatrix) // embedded view->MainView
 		{
-			bRenderMainView = true;
+		//	bRenderMainView = true;
 			bRenderMatrix = false;
 			renderStyle.setIsEmbedded(false);
 			bUpdateMainView = true;
@@ -2383,10 +2449,10 @@ public class GLScatterplot extends AStorageBasedView {
 		// if (!bRenderMainView && bRenderMatrix) // Matrix View -> Embedded
 		// View
 
-		if (bRenderMainView && !bRenderMatrix) // MainView-> -> Embedded View
+		if (!bRenderMatrix) // MainView-> -> Embedded View
 		{
 
-			bRenderMainView = true;
+	//		bRenderMainView = true;
 			bRenderMatrix = true;
 			bOnlyRenderHalfMatrix = true;
 			renderStyle.setIsEmbedded(true);
@@ -2426,7 +2492,7 @@ public class GLScatterplot extends AStorageBasedView {
 			bUpdateMainView = true;
 			setDisplayListDirty();
 		}
-		renderStyle.setCenterOffsets();
+		//renderStyle.setCenterOffsets();
 	}
 
 }
