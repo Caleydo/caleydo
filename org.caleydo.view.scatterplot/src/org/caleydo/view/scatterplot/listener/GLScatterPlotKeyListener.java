@@ -18,9 +18,29 @@ public class GLScatterPlotKeyListener extends GLKeyListener<GLScatterplot> {
 	@Override
 	protected void handleKeyPressedEvent(KeyEvent event) {
 
-		// // if ctrl, alt, or shift is pressed do nothing --> HHM handles this
-		// events
-		// if (event.stateMask == SWT.CTRL || event.stateMask == SWT.ALT ||
+
+		if (event.stateMask == SWT.CTRL)
+		{
+			switch (event.keyCode) 
+			{
+				case SWT.ARROW_UP :
+					glScatterplot.upDownSelect2Axis(false);
+					break;
+				case SWT.ARROW_DOWN :
+					glScatterplot.upDownSelect2Axis(true);
+					break;
+				case SWT.ARROW_LEFT :
+					glScatterplot.leftRightSelect2Axis(false);
+					break;
+				case SWT.ARROW_RIGHT :
+					glScatterplot.leftRightSelect2Axis(true);
+					break;		
+			}
+			return;
+		}
+			
+			
+		// || event.stateMask == SWT.ALT ||
 		// event.stateMask == SWT.SHIFT)
 		// return;
 

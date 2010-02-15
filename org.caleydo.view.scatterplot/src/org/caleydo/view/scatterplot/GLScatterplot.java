@@ -103,7 +103,7 @@ import com.sun.opengl.util.texture.TextureIO;
  * @author Marc Streit
  * @author Juergen Pillhofer
  */
-//@SuppressWarnings("unused")
+@SuppressWarnings("unused")
 public class GLScatterplot extends AStorageBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.scatterplot";
@@ -260,7 +260,8 @@ public class GLScatterplot extends AStorageBasedView {
 		int debugsize2 = AlFullTextures.size();
 
 		float[] fArRgbaWhite = {1.0f, 1.0f, 1.0f, 1f}; // OPACY
-		float fOpacity = 1f;
+		float fBaseOpacity = 0.5f;
+		float fAddOpacity = 0.05f;
 
 		float[] fSelectionColor = {1.0f, 0.1f, 0.5f}; // Selection Color
 		float[] fBlackColor = {0.0f, 0.0f, 0.0f}; // Black Color
@@ -370,7 +371,23 @@ public class GLScatterplot extends AStorageBasedView {
 						FbTemp.put(iy, fArMappingColor[0]);
 						FbTemp.put(iy + 1, fArMappingColor[1]);
 						FbTemp.put(iy + 2, fArMappingColor[2]);
-						FbTemp.put(iy + 3, fOpacity);
+						
+						
+						// Density Plot:
+						
+						float fcurrentOpacity=FbTemp.get(iy + 3);
+						
+						if (fcurrentOpacity <fBaseOpacity)
+							fcurrentOpacity=fBaseOpacity;
+						else 
+							fcurrentOpacity+=fAddOpacity;
+							
+						if (fcurrentOpacity >=1)
+							fcurrentOpacity=1;
+																		
+						FbTemp.put(iy + 3, fcurrentOpacity);
+						
+						//FbTemp.put(iy + 3, fBaseOpacity);
 
 					}
 
@@ -1838,7 +1855,15 @@ public class GLScatterplot extends AStorageBasedView {
 				SELECTED_X_AXIS);
 		axisSelectionManager.addToType(SelectionType.SELECTION,
 				SELECTED_Y_AXIS);
-
+		
+		if(bRender2Axis)
+		{
+			axisSelectionManager.addToType(SelectionType.SELECTION,
+					SELECTED_X_AXIS_2);
+			axisSelectionManager.addToType(SelectionType.SELECTION,
+					SELECTED_Y_AXIS_2);
+		}
+				
 		ISelectionDelta selectionDelta = axisSelectionManager.getDelta();
 		handleConnectedElementRep(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -1848,6 +1873,24 @@ public class GLScatterplot extends AStorageBasedView {
 		eventPublisher.triggerEvent(event);
 	}
 
+	public void selectNewMouseOverAxis() {
+		axisSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
+
+		axisSelectionManager.addToType(SelectionType.MOUSE_OVER,
+				MOUSEOVER_X_AXIS);
+		axisSelectionManager.addToType(SelectionType.MOUSE_OVER,
+				MOUSEOVER_Y_AXIS);
+					
+		ISelectionDelta selectionDelta = axisSelectionManager.getDelta();
+		handleConnectedElementRep(selectionDelta);
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
+		event.setSelectionDelta((SelectionDelta) selectionDelta);
+		event.setInfo(getShortInfo());
+		eventPublisher.triggerEvent(event);
+	}
+	
+	
 	@Override
 	protected void initLists() {
 		if (contentVAType != EVAType.CONTENT_EMBEDDED_HM) {
@@ -1962,11 +2005,14 @@ public class GLScatterplot extends AStorageBasedView {
 				break;
 
 			case SCATTER_MATRIX_SELECTION :
-				iCurrentMouseOverElement = iExternalID;
+				iCurrentMouseOverElement = iExternalID;				
 				switch (pickingMode) {
 					case CLICKED :
 						selectionType = SelectionType.SELECTION;
 						break;
+					case RIGHT_CLICKED :
+						selectionType = SelectionType.DESELECTED;
+						break;						
 					case MOUSE_OVER :
 						selectionType = SelectionType.MOUSE_OVER;
 						break;
@@ -1988,8 +2034,21 @@ public class GLScatterplot extends AStorageBasedView {
 			bUpdateMainView = true;
 			selectNewAxes();
 			setDisplayListDirty();
+			return;
 		}
+		
+		if (selectionType == SelectionType.DESELECTED) {
 
+			if(!bRender2Axis)
+				return;
+			SELECTED_X_AXIS_2 = contentID / NR_TEXTURESY;
+			SELECTED_Y_AXIS_2 = contentID % NR_TEXTURESX;
+			bUpdateMainView = true;
+			selectNewAxes();
+			setDisplayListDirty();
+			return;
+		}
+		
 		if (selectionType == SelectionType.MOUSE_OVER) {
 
 			int itmpX_Axis = contentID / NR_TEXTURESY;
@@ -2005,7 +2064,8 @@ public class GLScatterplot extends AStorageBasedView {
 				setDisplayListDirty();
 				bUpdateMainView=true;
 			}
-			// TODO Update Selection Manager
+			//TODO : Major slowing, needs to be evaluated..
+			//selectNewMouseOverAxis();
 		}
 
 	}
@@ -2405,6 +2465,51 @@ public class GLScatterplot extends AStorageBasedView {
 		selectNewAxes();
 		setDisplayListDirty();
 	}
+	
+	public void upDownSelect2Axis(boolean bDownIsTrue) {
+		if (!bRender2Axis)
+			return;
+		
+		int tmpAxis = SELECTED_Y_AXIS_2;
+		if (bDownIsTrue)
+			tmpAxis++;
+		else
+			tmpAxis--;
+		if (tmpAxis == SELECTED_X_AXIS_2 && bOnlyRenderHalfMatrix)
+			return;
+		if (tmpAxis < 0)
+			tmpAxis = 0;
+		if ((tmpAxis + 1) > MAX_AXES)
+			tmpAxis = SELECTED_Y_AXIS_2;
+		SELECTED_Y_AXIS_2 = tmpAxis;
+		bUpdateMainView = true;
+		selectNewAxes();
+		setDisplayListDirty();
+	}
+
+	public void leftRightSelect2Axis(boolean bRightIsTrue) {
+		if (!bRender2Axis)
+			return;
+		
+		int tmpAxis = SELECTED_X_AXIS_2;
+		if (bRightIsTrue)
+			tmpAxis++;
+		else
+			tmpAxis--;
+		if (tmpAxis == SELECTED_Y_AXIS_2 && bOnlyRenderHalfMatrix)
+			return;
+
+		if (tmpAxis < 0)
+			tmpAxis = 0;
+		if ((tmpAxis + 1) > MAX_AXES)
+			tmpAxis = SELECTED_X_AXIS_2;
+		SELECTED_X_AXIS_2 = tmpAxis;
+		bUpdateMainView = true;
+		selectNewAxes();
+		setDisplayListDirty();
+	}
+	
+	
 
 	public void toggleSpecialAxisMode() {
 		if (bRender2Axis)
