@@ -67,14 +67,9 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author Marc Streit
  */
-public class TabularDataView extends ASWTView
-		implements
-			ISelectionUpdateHandler,
-			IVirtualArrayUpdateHandler,
-			ISelectionCommandHandler,
-			IViewCommandHandler,
-			IView,
-			ISWTView {
+public class TabularDataView extends ASWTView implements
+		ISelectionUpdateHandler, IVirtualArrayUpdateHandler,
+		ISelectionCommandHandler, IViewCommandHandler, IView, ISWTView {
 
 	public final static String VIEW_ID = "org.caleydo.view.tabular";
 	private final static int COLUMN_OFFSET = 3;
@@ -116,27 +111,17 @@ public class TabularDataView extends ASWTView
 	private IIDMappingManager idMappingManager;
 
 	private Composite composite;
-
-	// private Table labelTable;
 	private Table contentTable;
-	// private Table storageRemoverTable;
 
 	private TableCursor contentTableCursor;
+	
+	protected SelectionUpdateListener selectionUpdateListener;
+	protected VirtualArrayUpdateListener virtualArrayUpdateListener;
+	protected SelectionCommandListener selectionCommandListener;
 
-	// private Label lastRemoveContent;
-	// private Label lastRemoveStorage;
-
-	protected SelectionUpdateListener selectionUpdateListener = null;
-	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
-	protected SelectionCommandListener selectionCommandListener = null;
-
-	protected RedrawViewListener redrawViewListener = null;
-	protected ClearSelectionsListener clearSelectionsListener = null;
-	protected ReplaceVirtualArrayListener replaceVirtualArrayListener = null;
-
-	// private Table labelTable;
-
-	// private int[] iArCurrentColumnOrder;
+	protected RedrawViewListener redrawViewListener;
+	protected ClearSelectionsListener clearSelectionsListener;
+	protected ReplaceVirtualArrayListener replaceVirtualArrayListener;
 
 	/**
 	 * Constructor.
@@ -158,12 +143,12 @@ public class TabularDataView extends ASWTView
 	@Override
 	public void initViewSWTComposite(Composite parentComposite) {
 		composite = new Composite(parentComposite, SWT.NULL);
-		GridLayout layout = new GridLayout(2, false);
+		GridLayout layout = new GridLayout(1, false);
 		layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
 		composite.setLayout(layout);
 
 		initData();
-		createPreviewTable();
+		createTable();
 	}
 
 	@Override
@@ -204,7 +189,12 @@ public class TabularDataView extends ASWTView
 		// }
 	}
 
-	private void createPreviewTable() {
+	private void createTable() {
+
+		if (contentTable != null) {
+			contentTable.removeAll();
+			contentTable.dispose();
+		}
 
 		contentTable = new Table(composite, SWT.MULTI | SWT.BORDER
 				| SWT.FULL_SELECTION | SWT.VIRTUAL);
@@ -214,24 +204,6 @@ public class TabularDataView extends ASWTView
 		data.heightHint = 300;
 		data.widthHint = 700;
 		contentTable.setLayoutData(data);
-
-		// Clear table if not empty
-		contentTable.removeAll();
-
-		contentTable.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				super.widgetSelected(e);
-
-				// TableItem selectedItem = ((TableItem)e.item);
-				// final int iSelectedRowIndex =
-				// contentTable.indexOf(selectedItem);
-				// addRemoveIcon(iSelectedRowIndex);
-				// triggerContentSelectionEvent(iSelectedRowIndex,
-				// SelectionType.SELECTION);
-
-			}
-		});
 
 		contentTable.addListener(SWT.MouseDown, new Listener() {
 			public void handleEvent(Event event) {
@@ -251,22 +223,21 @@ public class TabularDataView extends ASWTView
 						Listener textListener = new Listener() {
 							public void handleEvent(final Event e) {
 								switch (e.type) {
-									case SWT.FocusOut :
+								case SWT.FocusOut:
+									item.setText(column, text.getText());
+									text.dispose();
+									break;
+								case SWT.Traverse:
+									switch (e.detail) {
+									case SWT.TRAVERSE_RETURN:
 										item.setText(column, text.getText());
-										text.dispose();
-										break;
-									case SWT.Traverse :
-										switch (e.detail) {
-											case SWT.TRAVERSE_RETURN :
-												item.setText(column, text
-														.getText());
 
-												// FALL THROUGH
-											case SWT.TRAVERSE_ESCAPE :
-												text.dispose();
-												e.doit = false;
-										}
-										break;
+										// FALL THROUGH
+									case SWT.TRAVERSE_ESCAPE:
+										text.dispose();
+										e.doit = false;
+									}
+									break;
 								}
 							}
 						};
@@ -293,6 +264,35 @@ public class TabularDataView extends ASWTView
 
 		TableColumn column;
 		TableItem item;
+		
+//		// Remove experiment context menu
+//		final Menu headerMenu = new Menu(composite.getShell(), SWT.POP_UP);
+//		MenuItem itemName = new MenuItem(headerMenu, SWT.NONE);
+//		itemName.setText("Remove experiment (column)");
+//		itemName.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				storageVA.remove(0);
+//				// axisSelectionManager.remove(iExternalID, false);
+//				// IVirtualArrayDelta vaDelta = new
+//				// VirtualArrayDelta(axisVAType,
+//				// EIDType.EXPERIMENT_INDEX);
+//				// vaDelta.add(VADeltaItem.remove(iExternalID));
+//				// sendVirtualArrayUpdateEvent(vaDelta);
+//			}
+//		});
+//		contentTable.addListener(SWT.MenuDetect, new Listener() {
+//			public void handleEvent(Event event) {
+//				// Point pt = Display.getCurrent().map(null, contentTable,
+//				// new Point(event.x, event.y));
+//				// Rectangle clientArea = contentTable.getClientArea();
+//				// boolean header = clientArea.y <= pt.y && pt.y < (clientArea.y
+//				// + contentTable.getHeaderHeight());
+//				// if (header)
+//				contentTable.setMenu(headerMenu);
+//			}
+//		});
+
 		float fValue;
 
 		column = new TableColumn(contentTable, SWT.NONE);
@@ -315,21 +315,21 @@ public class TabularDataView extends ASWTView
 			column.setWidth(200);
 
 			column = new TableColumn(contentTable, SWT.NONE);
-			column.setText("Not specified");
-			column.setWidth(0);
+			column.setText("");
+			column.setWidth(1);
 		} else {
 			throw new IllegalStateException("The data domain " + dataDomain
 					+ " is not implemented in the tabular data viewer.");
 		}
 
 		for (final Integer iStorageIndex : storageVA) {
-			column = new TableColumn(contentTable, SWT.NONE);
-			column.setText(set.get(iStorageIndex).getLabel());
-			column.setWidth(120);
-			column.setMoveable(true);
+			final TableColumn col = new TableColumn(contentTable, SWT.NONE);
+			col.setText(set.get(iStorageIndex).getLabel());
+			col.setWidth(120);
+			col.setMoveable(true);
 
-			column.addSelectionListener(new SelectionAdapter() {
-				// label changer
+			col.addSelectionListener(new SelectionAdapter() {
+				// Label changer
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					LabelEditorDialog dialog = new LabelEditorDialog(
@@ -339,7 +339,8 @@ public class TabularDataView extends ASWTView
 
 					if (sLabel != null && !sLabel.isEmpty()) {
 						set.get(iStorageIndex).setLabel(sLabel);
-						contentTable.getColumn(iStorageIndex).setText(sLabel);
+						contentTable.getColumn(iStorageIndex + 3).setText(
+								sLabel);
 						RedrawViewEvent event = new RedrawViewEvent();
 						event.setSender(this);
 						eventPublisher.triggerEvent(event);
@@ -394,9 +395,14 @@ public class TabularDataView extends ASWTView
 				}
 			} else if (dataDomain == EDataDomain.UNSPECIFIED) {
 
-				item.setText(1, (String) idMappingManager.getID(
+				String expressionLabel = (String) idMappingManager.getID(
 						EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED,
-						iContentIndex));
+						iContentIndex);
+
+				if (expressionLabel == null || expressionLabel.equals(""))
+					expressionLabel = "Unknown";
+
+				item.setText(1, expressionLabel);
 			} else {
 				throw new IllegalStateException("The use case type "
 						+ dataDomain
@@ -421,7 +427,7 @@ public class TabularDataView extends ASWTView
 		contentTableCursor.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				int iColIndex = contentTableCursor.getColumn();
+				int iColIndex = contentTableCursor.getColumn() - 3;
 				int iRowIndex = contentTable.indexOf(contentTableCursor
 						.getRow());
 				contentTable.setSelection(iRowIndex);
@@ -438,7 +444,8 @@ public class TabularDataView extends ASWTView
 				// addStorageRemoveIcon(iStorageIndex);
 			}
 		});
-		composite.redraw();
+
+		composite.layout();
 	}
 
 	@Override
@@ -489,47 +496,47 @@ public class TabularDataView extends ASWTView
 				final int iVAIndex = deltaItem.getIndex();
 
 				switch (deltaItem.getType()) {
-					case REMOVE :
-						composite.getDisplay().asyncExec(new Runnable() {
-							public void run() {
-								contentTable.getColumn(iVAIndex + 3).dispose();
-							}
-						});
-						break;
-					case ADD :
-						addColumn(deltaItem.getIndex() + COLUMN_OFFSET,
-								deltaItem.getPrimaryID());
-						break;
-					case COPY :
-						addColumn(deltaItem.getIndex() + 1 + COLUMN_OFFSET,
-								storageVA.get(deltaItem.getIndex()));
-
-						break;
-					case MOVE :
-						// case MOVE_LEFT:
-						// case MOVE_RIGHT:
-						int[] orig = contentTable.getColumnOrder();
-
-						ArrayList<Integer> ordered = new ArrayList<Integer>(
-								orig.length);
-
-						for (int index : orig) {
-							ordered.add(index);
+				case REMOVE:
+					composite.getDisplay().asyncExec(new Runnable() {
+						public void run() {
+							contentTable.getColumn(iVAIndex + 3).dispose();
 						}
+					});
+					break;
+				case ADD:
+					addColumn(deltaItem.getIndex() + COLUMN_OFFSET, deltaItem
+							.getPrimaryID());
+					break;
+				case COPY:
+					addColumn(deltaItem.getIndex() + 1 + COLUMN_OFFSET,
+							storageVA.get(deltaItem.getIndex()));
 
-						Integer item = ordered.remove(deltaItem.getIndex()
-								+ COLUMN_OFFSET);
-						ordered.add(deltaItem.getTargetIndex() + COLUMN_OFFSET,
-								item);
-						for (int count = 0; count < ordered.size(); count++) {
-							orig[count] = ordered.get(count);
-						}
+					break;
+				case MOVE:
+					// case MOVE_LEFT:
+					// case MOVE_RIGHT:
+					int[] orig = contentTable.getColumnOrder();
 
-						contentTable.setColumnOrder(orig);
-						break;
-					default :
-						throw new IllegalStateException(
-								"EVAOperation not implemented");
+					ArrayList<Integer> ordered = new ArrayList<Integer>(
+							orig.length);
+
+					for (int index : orig) {
+						ordered.add(index);
+					}
+
+					Integer item = ordered.remove(deltaItem.getIndex()
+							+ COLUMN_OFFSET);
+					ordered.add(deltaItem.getTargetIndex() + COLUMN_OFFSET,
+							item);
+					for (int count = 0; count < ordered.size(); count++) {
+						orig[count] = ordered.get(count);
+					}
+
+					contentTable.setColumnOrder(orig);
+					break;
+				default:
+					throw new IllegalStateException(
+							"EVAOperation not implemented");
 				}
 			}
 
@@ -669,99 +676,6 @@ public class TabularDataView extends ASWTView
 		eventPublisher.triggerEvent(event);
 	}
 
-	// private void addContentRemoveIcon(int iRowIndex) {
-	// final Label lblRemove = new Label(labelTable, SWT.CENTER);
-	// lblRemove.setBackground(lblRemove.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
-	// lblRemove.setImage(generalManager.getResourceLoader().getImage(lblRemove.getDisplay(),
-	// "resources/icons/view/tabular/remove.png"));
-	// lblRemove.setData(contentVA.get(iRowIndex));
-	//
-	// // Only one remove icon should be shown at a time
-	// if (lastRemoveContent != null) {
-	// lastRemoveContent.dispose();
-	// }
-	//
-	// lastRemoveContent = lblRemove;
-	//
-	// final TableEditor editor = new TableEditor(labelTable);
-	// editor.grabHorizontal = true;
-	// editor.setEditor(lblRemove, labelTable.getItem(iRowIndex), 0);
-	//
-	// lblRemove.addMouseListener(new MouseAdapter() {
-	// @Override
-	// public void mouseDown(MouseEvent e) {
-	// Integer iExpressionIndex = (Integer) lblRemove.getData();
-	//
-	// contentVA.remove(iExpressionIndex);
-	//
-	// IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EVAType.CONTENT,
-	// EIDType.EXPRESSION_INDEX);
-	// vaDelta.add(VADeltaItem.remove(iExpressionIndex));
-	// VirtualArrayUpdateEvent virtualArrayUpdateEvent = new
-	// VirtualArrayUpdateEvent();
-	// virtualArrayUpdateEvent.setSender(this);
-	// virtualArrayUpdateEvent.setVirtualArrayDelta((VirtualArrayDelta)
-	// vaDelta);
-	// virtualArrayUpdateEvent.setInfo(null);
-	// eventPublisher.triggerEvent(virtualArrayUpdateEvent);
-	//
-	// // Dispose the removed row
-	// TableItem item = (TableItem) e.widget.getData();
-	// editor.getEditor().dispose();
-	// editor.dispose();
-	// item.dispose();
-	// }
-	// });
-	// }
-
-	// private void addStorageRemoveIcon(int iStorageIndex) {
-	// final Label lblRemove = new Label(storageRemoverTable, SWT.CENTER);
-	// lblRemove.setBackground(lblRemove.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
-	// lblRemove.setImage(generalManager.getResourceLoader().getImage(lblRemove.getDisplay(),
-	// "resources/icons/view/tabular/remove.png"));
-	// lblRemove.setData(storageVA.get(iStorageIndex));
-	//
-	// // Only one remove icon should be shown at a time
-	// if (lastRemoveStorage != null) {
-	// lastRemoveStorage.dispose();
-	// }
-	//
-	// lastRemoveStorage = lblRemove;
-	//
-	// final TableEditor editor = new TableEditor(storageRemoverTable);
-	// editor.grabHorizontal = true;
-	// editor.setEditor(lblRemove, storageRemoverTable.getItem(0),
-	// iStorageIndex);
-	//
-	// lblRemove.addMouseListener(new MouseAdapter() {
-	// @Override
-	// public void mouseDown(MouseEvent e) {
-	// Integer iStorageIndex = (Integer) lblRemove.getData();
-	//
-	// storageVA.remove(iStorageIndex);
-	//
-	// IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EVAType.STORAGE,
-	// EIDType.EXPERIMENT_INDEX);
-	// vaDelta.add(VADeltaItem.remove(iStorageIndex));
-	// VirtualArrayUpdateEvent virtualArrayUpdateEvent = new
-	// VirtualArrayUpdateEvent();
-	// virtualArrayUpdateEvent.setSender(this);
-	// virtualArrayUpdateEvent.setVirtualArrayDelta((VirtualArrayDelta)
-	// vaDelta);
-	// virtualArrayUpdateEvent.setInfo(null);
-	// eventPublisher.triggerEvent(virtualArrayUpdateEvent);
-	//
-	// // Dispose the removed row
-	// editor.getEditor().dispose();
-	// editor.dispose();
-	// lblRemove.dispose();
-	//
-	// contentTable.getColumn(iStorageIndex).dispose();
-	// storageRemoverTable.getColumn(iStorageIndex).dispose();
-	// }
-	// });
-	// }
-
 	private void clearAllSelections() {
 		contentSelectionManager.clearSelections();
 		storageSelectionManager.clearSelections();
@@ -865,6 +779,7 @@ public class TabularDataView extends ASWTView
 			return;
 
 		initData();
+		createTable();
 	}
 
 }

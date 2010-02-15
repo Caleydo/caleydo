@@ -47,9 +47,9 @@ public class RcpGLHistogramView extends ARcpGLViewPart
 
 	private ArrayList<CLabel> labels;
 
-	protected RedrawViewListener redrawViewListener = null;
-	protected ClearSelectionsListener clearSelectionsListener = null;
-	protected NewSetListener newSetListener = null;
+	protected RedrawViewListener redrawViewListener;
+	protected ClearSelectionsListener clearSelectionsListener;
+	protected NewSetListener newSetListener;
 
 	protected Composite histoComposite;
 

@@ -99,12 +99,12 @@ public abstract class AStorageBasedView extends AGLView
 
 	protected int iNumberOfSamplesPerHeatmap = 100;
 
-	protected SelectionUpdateListener selectionUpdateListener = null;
-	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
-	protected SelectionCommandListener selectionCommandListener = null;
-	protected RedrawViewListener redrawViewListener = null;
-	protected ClearSelectionsListener clearSelectionsListener = null;
-	protected ReplaceVirtualArrayListener replaceVirtualArrayListener = null;
+	protected SelectionUpdateListener selectionUpdateListener;
+	protected VirtualArrayUpdateListener virtualArrayUpdateListener;
+	protected SelectionCommandListener selectionCommandListener;
+	protected RedrawViewListener redrawViewListener;
+	protected ClearSelectionsListener clearSelectionsListener;
+	protected ReplaceVirtualArrayListener replaceVirtualArrayListener;
 
 	/**
 	 * Constructor for storage based views
@@ -146,7 +146,7 @@ public abstract class AStorageBasedView extends AGLView
 			contentSelectionManager = new SelectionManager.Builder(
 					EIDType.EXPRESSION_INDEX).build();
 			storageSelectionManager = new SelectionManager.Builder(
-					EIDType.UNSPECIFIED).build();
+					EIDType.EXPERIMENT_INDEX).build();
 		} else {
 			throw new IllegalStateException(
 					"Don't know how to handle the data domain " + dataDomain
@@ -298,7 +298,7 @@ public abstract class AStorageBasedView extends AGLView
 			setDisplayListDirty();
 		}
 
-		// FIXME: this is not nice since we use expresison index for unspecified
+		// FIXME: this is not nice since we use expression index for unspecified
 		// data
 		else if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX
 				&& dataDomain == EDataDomain.UNSPECIFIED) {
@@ -310,7 +310,7 @@ public abstract class AStorageBasedView extends AGLView
 			setDisplayListDirty();
 		}
 
-		else if (selectionDelta.getIDType() == EIDType.UNSPECIFIED
+		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
 				&& dataDomain == EDataDomain.UNSPECIFIED) {
 
 			storageSelectionManager.setDelta(selectionDelta);

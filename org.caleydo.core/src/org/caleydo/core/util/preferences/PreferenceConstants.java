@@ -32,6 +32,8 @@ public class PreferenceConstants {
 
 	// TODO: make it specific for each pathway database + organism combination
 	public static final String LAST_PATHWAY_UPDATE = "lastPathwayDataUpdate";
+	
+	public static final String BROWSER_QUERY_DATABASE = "browserQueryDatabase";
 
 	// Color Mapping
 	public static final String GENE_EXPRESSION_PREFIX = EColorMappingType.GENE_EXPRESSION + "_";

@@ -124,8 +124,8 @@ public class GLGlyph
 
 	private int iFrameBufferObject = -1;
 
-	protected SelectionUpdateListener selectionUpdateListener = null;
-	protected SelectionCommandListener selectionCommandListener = null;
+	protected SelectionUpdateListener selectionUpdateListener;
+	protected SelectionCommandListener selectionCommandListener;
 
 	private RemoveUnselectedGlyphsListener removeUnselectedGlyphsListener;
 	private SetPositionModelListener setPositionModelListener;

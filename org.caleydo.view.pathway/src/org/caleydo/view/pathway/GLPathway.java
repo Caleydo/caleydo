@@ -121,24 +121,24 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 	// private int iHorizontalTextAlignment = SWT.CENTER;
 	// private int iVerticalTextAlignment = SWT.BOTTOM;
 
-	protected EnableTexturesListener enableTexturesListener = null;
-	protected DisableTexturesListener disableTexturesListener = null;
+	protected EnableTexturesListener enableTexturesListener;
+	protected DisableTexturesListener disableTexturesListener;
 
-	protected EnableGeneMappingListener enableGeneMappingListener = null;
-	protected DisableGeneMappingListener disableGeneMappingListener = null;
+	protected EnableGeneMappingListener enableGeneMappingListener;
+	protected DisableGeneMappingListener disableGeneMappingListener;
 
-	protected EnableNeighborhoodListener enableNeighborhoodListener = null;
-	protected DisableNeighborhoodListener disableNeighborhoodListener = null;
+	protected EnableNeighborhoodListener enableNeighborhoodListener;
+	protected DisableNeighborhoodListener disableNeighborhoodListener;
 
-	protected SelectionUpdateListener selectionUpdateListener = null;
-	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
+	protected SelectionUpdateListener selectionUpdateListener;
+	protected VirtualArrayUpdateListener virtualArrayUpdateListener;
 
-	protected ReplaceVirtualArrayListener replaceVirtualArrayListener = null;
+	protected ReplaceVirtualArrayListener replaceVirtualArrayListener;
 
-	protected RedrawViewListener redrawViewListener = null;
-	protected ClearSelectionsListener clearSelectionsListener = null;
+	protected RedrawViewListener redrawViewListener;
+	protected ClearSelectionsListener clearSelectionsListener;
 
-	protected SelectionCommandListener selectionCommandListener = null;
+	protected SelectionCommandListener selectionCommandListener;
 
 	/**
 	 * Constructor.

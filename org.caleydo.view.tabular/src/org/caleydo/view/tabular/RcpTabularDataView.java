@@ -36,6 +36,9 @@ public class RcpTabularDataView extends CaleydoRCPViewPart {
 	@Override
 	public void dispose() {
 		super.dispose();
+		tabularDataView.unregisterEventListeners();
+		GeneralManager.get().getViewGLCanvasManager().unregisterItem(
+				tabularDataView.getID());
 	}
 
 	public TabularDataView getTabularDataView() {

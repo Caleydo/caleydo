@@ -78,13 +78,13 @@ public class InfoArea
 
 	// private String shortInfo;
 
-	protected SelectionUpdateListener selectionUpdateListener = null;
-	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
-	protected SelectionCommandListener selectionCommandListener = null;
+	protected SelectionUpdateListener selectionUpdateListener;
+	protected VirtualArrayUpdateListener virtualArrayUpdateListener;
+	protected SelectionCommandListener selectionCommandListener;
 
-	protected RedrawViewListener redrawViewListener = null;
-	protected ClearSelectionsListener clearSelectionsListener = null;
-	protected InfoAreaUpdateListener infoAreaUpdateListener = null;
+	protected RedrawViewListener redrawViewListener;
+	protected ClearSelectionsListener clearSelectionsListener;
+	protected InfoAreaUpdateListener infoAreaUpdateListener;
 
 	/**
 	 * Constructor.
@@ -336,20 +336,10 @@ public class InfoArea
 							// FIXME: This solution is not robust if new data
 							// are loaded -> REDESIGN
 
-							IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
+							IUseCase useCase = GeneralManager.get().getMasterUseCase();
 							if (useCase != null) {
 
 								ISet set = useCase.getSet();
-								// int iSetCount = 0;
-								// for (ISet set : sets) {
-								// // if (set.getSetType() ==
-								// ESetType.GENE_EXPRESSION_DATA) {
-								// // iSetCount++;
-								// geneExpressionSet = set;
-								// break;
-								// // }
-								// }
-
 								TreeItem item = new TreeItem(experimentTree, SWT.NONE);
 
 								try {

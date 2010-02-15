@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.event.view.browser.EBrowserQueryType;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
@@ -131,6 +132,7 @@ public class PreferenceManager {
 			+ ";" + EPathwayDatabaseType.BIOCARTA.name());
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_APPLICATION_MODE, "SAMPLE_PROJECT");
 		store.setDefault(PreferenceConstants.USE_PROXY, false);
+		store.setDefault(PreferenceConstants.BROWSER_QUERY_DATABASE, EBrowserQueryType.GeneCards.name());
 
 		// visual links
 		store.setDefault(PreferenceConstants.VISUAL_LINKS_STYLE, 2);

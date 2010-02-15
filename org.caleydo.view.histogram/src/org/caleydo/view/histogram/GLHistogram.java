@@ -59,8 +59,8 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 	private float fColorPointPositionOffset = 0.0f;
 	private int iColorMappingPointMoved = -1;
 
-	protected RedrawViewListener redrawViewListener = null;
-	protected ClearSelectionsListener clearSelectionsListener = null;
+	protected RedrawViewListener redrawViewListener;
+	protected ClearSelectionsListener clearSelectionsListener;
 
 	private TextRenderer textRenderer;
 

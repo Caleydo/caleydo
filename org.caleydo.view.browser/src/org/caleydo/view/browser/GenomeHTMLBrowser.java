@@ -15,6 +15,7 @@ import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.eclipse.swt.SWT;
@@ -37,7 +38,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser
 
 	private ArrayList<Integer> iAlDavidID;
 
-	private EBrowserQueryType eBrowserQueryType = EBrowserQueryType.EntrezGene;
+	private EBrowserQueryType eBrowserQueryType = EBrowserQueryType.GeneCards;
 
 	protected ChangeQueryTypeListener changeQueryTypeListener;
 	protected SelectionUpdateListener selectionUpdateListener;
@@ -64,29 +65,58 @@ public class GenomeHTMLBrowser extends HTMLBrowser
 				SWT.READ_ONLY);
 
 		if (useCase instanceof GeneticUseCase) {
-			queryTypeCombo.add(EBrowserQueryType.EntrezGene.toString());
-			queryTypeCombo.add(EBrowserQueryType.PubMed.toString());
-			queryTypeCombo.add(EBrowserQueryType.GeneCards.toString());
+			
+			String storedDatabase = generalManager.getPreferenceStore().getString(PreferenceConstants.BROWSER_QUERY_DATABASE);
+//			if (storedDatabase == "")
+//				storedDatabase = "GeneCards";
+			eBrowserQueryType = EBrowserQueryType.valueOf(storedDatabase);	
+			
+			queryTypeCombo.add(EBrowserQueryType.EntrezGene.getTitle());
+			if (eBrowserQueryType == EBrowserQueryType.EntrezGene)
+				queryTypeCombo.select(0);
+			
+			queryTypeCombo.add(EBrowserQueryType.PubMed.getTitle());
+			if (eBrowserQueryType == EBrowserQueryType.PubMed)
+				queryTypeCombo.select(1);
+			
+			queryTypeCombo.add(EBrowserQueryType.GeneCards.getTitle());
+			if (eBrowserQueryType == EBrowserQueryType.GeneCards)
+				queryTypeCombo.select(2);
 
 			EOrganism organism = ((GeneticUseCase) useCase).getOrganism();
 			if (organism == EOrganism.HOMO_SAPIENS) {
 				queryTypeCombo.add(EBrowserQueryType.Ensembl_HomoSapiens
-						.toString());
+						.getTitle());
+				if (eBrowserQueryType == EBrowserQueryType.Ensembl_HomoSapiens)
+					queryTypeCombo.select(3);
+				
 				queryTypeCombo.add(EBrowserQueryType.KEGG_HomoSapiens
-						.toString());
+						.getTitle());
+				if (eBrowserQueryType == EBrowserQueryType.KEGG_HomoSapiens)
+					queryTypeCombo.select(4);
+				
 				queryTypeCombo.add(EBrowserQueryType.BioCarta_HomoSapiens
-						.toString());
+						.getTitle());
+				if (eBrowserQueryType == EBrowserQueryType.BioCarta_HomoSapiens)
+					queryTypeCombo.select(5);
+				
 			} else if (organism == EOrganism.MUS_MUSCULUS) {
 				queryTypeCombo.add(EBrowserQueryType.Ensembl_MusMusculus
-						.toString());
+						.getTitle());
+				if (eBrowserQueryType == EBrowserQueryType.Ensembl_MusMusculus)
+					queryTypeCombo.select(3);
+				
 				queryTypeCombo.add(EBrowserQueryType.KEGG_MusMusculus
-						.toString());
+						.getTitle());
+				if (eBrowserQueryType == EBrowserQueryType.KEGG_MusMusculus)
+					queryTypeCombo.select(4);
+				
 				queryTypeCombo.add(EBrowserQueryType.BioCarta_MusMusculus
-						.toString());
+						.getTitle());
+				if (eBrowserQueryType == EBrowserQueryType.BioCarta_MusMusculus)
+					queryTypeCombo.select(5);
 			}
 		}
-
-		queryTypeCombo.select(0);
 
 		queryTypeCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -216,6 +246,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser
 
 	public void changeQueryType(EBrowserQueryType eBrowserQueryType) {
 		this.eBrowserQueryType = eBrowserQueryType;
+		GeneralManager.get().getPreferenceStore().setValue(PreferenceConstants.BROWSER_QUERY_DATABASE, eBrowserQueryType.name());
 		if (!iAlDavidID.isEmpty()) {
 			String sURL = urlGenerator.createURL(eBrowserQueryType, iAlDavidID
 					.get(0));

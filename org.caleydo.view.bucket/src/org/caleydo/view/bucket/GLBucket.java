@@ -199,20 +199,20 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 	 */
 	protected RemoteRenderingTransformer selectionTransformer;
 
-	protected AddPathwayListener addPathwayListener = null;
-	protected LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
-	protected EnableGeneMappingListener enableGeneMappingListener = null;
-	protected DisableGeneMappingListener disableGeneMappingListener = null;
-	protected EnableTexturesListener enableTexturesListener = null;
-	protected DisableTexturesListener disableTexturesListener = null;
-	protected EnableNeighborhoodListener enableNeighborhoodListener = null;
-	protected DisableNeighborhoodListener disableNeighborhoodListener = null;
-	protected ToggleNavigationModeListener toggleNavigationModeListener = null;
-	protected ToggleZoomListener toggleZoomListener = null;
-	protected EnableConnectionLinesListener enableConnectionLinesListener = null;
-	protected DisableConnectionLinesListener disableConnectionLinesListener = null;
-	protected ResetViewListener resetViewListener = null;
-	protected SelectionUpdateListener selectionUpdateListener = null;
+	protected AddPathwayListener addPathwayListener;
+	protected LoadPathwaysByGeneListener loadPathwaysByGeneListener;
+	protected EnableGeneMappingListener enableGeneMappingListener;
+	protected DisableGeneMappingListener disableGeneMappingListener;
+	protected EnableTexturesListener enableTexturesListener;
+	protected DisableTexturesListener disableTexturesListener;
+	protected EnableNeighborhoodListener enableNeighborhoodListener;
+	protected DisableNeighborhoodListener disableNeighborhoodListener;
+	protected ToggleNavigationModeListener toggleNavigationModeListener;
+	protected ToggleZoomListener toggleZoomListener;
+	protected EnableConnectionLinesListener enableConnectionLinesListener;
+	protected DisableConnectionLinesListener disableConnectionLinesListener;
+	protected ResetViewListener resetViewListener;
+	protected SelectionUpdateListener selectionUpdateListener;
 
 	private Point upperLeftScreenPos = new Point(0, 0);
 

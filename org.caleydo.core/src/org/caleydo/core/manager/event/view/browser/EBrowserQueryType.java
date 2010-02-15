@@ -74,10 +74,4 @@ public enum EBrowserQueryType {
 	public String getTitle() {
 		return sTitle;
 	}
-
-	@Override
-	public String toString() {
-
-		return getTitle();
-	}
 }

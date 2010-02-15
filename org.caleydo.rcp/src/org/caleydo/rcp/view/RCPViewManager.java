@@ -20,7 +20,7 @@ public class RCPViewManager
 
 	private static RCPViewManager rcpViewManager = null;
 
-	private ActivateViewListener activateBucketViewListener = null;
+	private ActivateViewListener activateBucketViewListener;
 
 	/**
 	 * Constructor, only called internally
