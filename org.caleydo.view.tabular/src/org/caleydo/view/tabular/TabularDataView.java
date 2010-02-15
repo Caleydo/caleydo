@@ -189,18 +189,19 @@ public class TabularDataView extends ASWTView
 		contentSelectionManager.setVA(contentVA);
 		storageSelectionManager.setVA(storageVA);
 
-		int iNumberOfColumns = contentVA.size();
-		int iNumberOfRows = storageVA.size();
+		// int iNumberOfColumns = contentVA.size();
+		// int iNumberOfRows = storageVA.size();
 
-		for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++) {
-			storageSelectionManager.initialAdd(storageVA.get(iRowCount));
-
-		}
-
-		// this for loop executes one per axis
-		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++) {
-			contentSelectionManager.initialAdd(contentVA.get(iColumnCount));
-		}
+		// for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++) {
+		// storageSelectionManager.initialAdd(storageVA.get(iRowCount));
+		//
+		// }
+		//
+		// // this for loop executes one per axis
+		// for (int iColumnCount = 0; iColumnCount < iNumberOfColumns;
+		// iColumnCount++) {
+		// contentSelectionManager.initialAdd(contentVA.get(iColumnCount));
+		// }
 	}
 
 	private void createPreviewTable() {
