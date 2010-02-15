@@ -47,7 +47,7 @@ class GeneBookmarkContainer extends ABookmarkContainer {
 				throw new IllegalStateException("ID type unhandled");
 			GeneBookmark bookmark = new GeneBookmark(textRenderer, davidID);
 			bookmarkItems.add(bookmark);
-			selectionManager.add(davidID);
+//			selectionManager.add(davidID);
 		}
 
 	}

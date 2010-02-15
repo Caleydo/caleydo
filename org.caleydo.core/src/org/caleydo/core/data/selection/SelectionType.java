@@ -81,8 +81,7 @@ public class SelectionType {
 
 	@Override
 	public String toString() {
-		return "SelectionType [type=" + type + ", isVisible=" + isVisible + ", color="
-			+ Arrays.toString(color) + "]";
+		return type;
 	}
 
 	public static synchronized ArrayList<SelectionType> getDefaultTypes() {

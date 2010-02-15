@@ -3567,8 +3567,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		if (set.isExperimentClusterInfo())
 			storageVA.setGroupList(set.getGroupListExperiments());
 
-		contentSelectionManager.resetSelectionManager();
-		storageSelectionManager.resetSelectionManager();
+//		contentSelectionManager.resetSelectionManager();
+//		storageSelectionManager.resetSelectionManager();
 
 		contentSelectionManager.setVA(contentVA);
 		storageSelectionManager.setVA(storageVA);
@@ -3576,15 +3576,15 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		int iNumberOfColumns = contentVA.size();
 		int iNumberOfRows = storageVA.size();
 
-		for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++) {
-			storageSelectionManager.initialAdd(storageVA.get(iRowCount));
-
-		}
+//		for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++) {
+//			storageSelectionManager.initialAdd(storageVA.get(iRowCount));
+//
+//		}
 
 		// this for loop executes one per axis
-		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++) {
-			contentSelectionManager.initialAdd(contentVA.get(iColumnCount));
-		}
+//		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++) {
+//			contentSelectionManager.initialAdd(contentVA.get(iColumnCount));
+//		}
 
 		setDisplayListDirty();
 

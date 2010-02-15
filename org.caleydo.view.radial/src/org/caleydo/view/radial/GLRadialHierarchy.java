@@ -256,7 +256,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 				drawingStrategyManager.getDefaultDrawingStrategy());
 		partialDiscTree.setRootNode(pdRoot);
 		hashPartialDiscs.put(heRoot.getID(), pdRoot);
-		selectionManager.initialAdd(heRoot.getID());
+//		selectionManager.initialAdd(heRoot.getID());
 		buildTree(tree, heRoot, pdRoot);
 		pdRoot.calculateHierarchyLevels(0);
 		pdRoot.calculateLargestChildren();
@@ -319,7 +319,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 					alChildDiscs.add(pdCurrentChildDisc);
 					partialDiscTree.addChild(partialDisc, pdCurrentChildDisc);
 					hashPartialDiscs.put(heChild.getID(), pdCurrentChildDisc);
-					selectionManager.initialAdd(heChild.getID());
+//					selectionManager.initialAdd(heChild.getID());
 					buildTree(tree, heChild, pdCurrentChildDisc);
 				} catch (Exception e) {
 					e.printStackTrace();

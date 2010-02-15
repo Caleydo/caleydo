@@ -176,7 +176,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		rootGroup = new GroupRepresentation(rootNode, renderStyle,
 				groupDrawingStrategy, drawingStrategyManager, this, false);
 		hashGroups.put(rootGroup.getID(), rootGroup);
-		selectionManager.initialAdd(rootGroup.getID());
+//		selectionManager.initialAdd(rootGroup.getID());
 		ArrayList<Integer> indexList = storageVA.getIndexList();
 
 		for (Integer currentIndex : indexList) {
@@ -193,7 +193,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			rootGroup.add(groupRep);
 
 			hashGroups.put(groupRep.getID(), groupRep);
-			selectionManager.initialAdd(groupRep.getID());
+//			selectionManager.initialAdd(groupRep.getID());
 		}
 
 		rootGroup.calculateHierarchyLevels(0);
@@ -215,7 +215,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 						.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL),
 				drawingStrategyManager, this, !tree.hasChildren(rootNode));
 		hashGroups.put(rootGroup.getID(), rootGroup);
-		selectionManager.initialAdd(rootGroup.getID());
+//		selectionManager.initialAdd(rootGroup.getID());
 		iLastUsedGroupID = rootGroup.getID();
 
 		buildGroupHierarchyFromTree(tree, rootNode, rootGroup);
@@ -237,7 +237,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			parentGroupRep.add(groupRep);
 
 			hashGroups.put(groupRep.getID(), groupRep);
-			selectionManager.initialAdd(groupRep.getID());
+//			selectionManager.initialAdd(groupRep.getID());
 			if (groupRep.getID() > iLastUsedGroupID)
 				iLastUsedGroupID = groupRep.getID();
 
@@ -254,7 +254,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		iLastUsedGroupID = 0;
 		rootGroup.getClusterNode().setClusterNr(iLastUsedGroupID++);
 		hashGroups.clear();
-		selectionManager.add(rootGroup.getID());
+//		selectionManager.add(rootGroup.getID());
 		hashGroups.put(rootGroup.getID(), rootGroup);
 
 		buildTreeFromGroupHierarchy(tree, rootGroup.getClusterNode(), rootGroup);
@@ -290,7 +290,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			if (!child.isLeaf()) {
 				buildTreeFromGroupHierarchy(tree, childNode, groupRep);
 			}
-			selectionManager.add(groupRep.getID());
+//			selectionManager.add(groupRep.getID());
 			hashGroups.put(groupRep.getID(), groupRep);
 		}
 	}
@@ -374,15 +374,15 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		hashGroups.put(element4.getID(), element4);
 		hashGroups.put(element5.getID(), element5);
 
-		selectionManager.initialAdd(rootGroup.getID());
-		selectionManager.initialAdd(group1.getID());
-		selectionManager.initialAdd(group2.getID());
-		selectionManager.initialAdd(group3.getID());
-		selectionManager.initialAdd(element1.getID());
-		selectionManager.initialAdd(element2.getID());
-		selectionManager.initialAdd(element3.getID());
-		selectionManager.initialAdd(element4.getID());
-		selectionManager.initialAdd(element5.getID());
+//		selectionManager.initialAdd(rootGroup.getID());
+//		selectionManager.initialAdd(group1.getID());
+//		selectionManager.initialAdd(group2.getID());
+//		selectionManager.initialAdd(group3.getID());
+//		selectionManager.initialAdd(element1.getID());
+//		selectionManager.initialAdd(element2.getID());
+//		selectionManager.initialAdd(element3.getID());
+//		selectionManager.initialAdd(element4.getID());
+//		selectionManager.initialAdd(element5.getID());
 
 		rootGroup.calculateHierarchyLevels(0);
 	}
@@ -942,7 +942,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		newGroup.setParent(commonParent);
 
 		hashGroups.put(newGroup.getID(), newGroup);
-		selectionManager.add(newGroup.getID());
+//		selectionManager.add(newGroup.getID());
 
 		bHierarchyChanged = true;
 
@@ -988,7 +988,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 	}
 
 	public void addNewSelectionID(int iID) {
-		selectionManager.add(iID);
+//		selectionManager.add(iID);
 	}
 
 	public void copyGroups(Set<Integer> setGroupsToCopy) {

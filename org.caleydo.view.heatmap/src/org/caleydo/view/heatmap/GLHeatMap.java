@@ -275,7 +275,7 @@ public class GLHeatMap extends AStorageBasedView {
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-		if (contentSelectionManager.getNumberOfElements() == 0) {
+		if (contentVA.size() == 0) {
 			renderSymbol(gl, EIconTextures.HEAT_MAP_SYMBOL, 2);
 		} else {
 
@@ -344,15 +344,15 @@ public class GLHeatMap extends AStorageBasedView {
 		int iNumberOfColumns = contentVA.size();
 		int iNumberOfRows = storageVA.size();
 
-		for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++) {
-			storageSelectionManager.initialAdd(storageVA.get(iRowCount));
-
-		}
+		// for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++) {
+		// storageSelectionManager.initialAdd(storageVA.get(iRowCount));
+		// }
 
 		// this for loop executes one per axis
-		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++) {
-			contentSelectionManager.initialAdd(contentVA.get(iColumnCount));
-		}
+		// for (int iColumnCount = 0; iColumnCount < iNumberOfColumns;
+		// iColumnCount++) {
+		// contentSelectionManager.initialAdd(contentVA.get(iColumnCount));
+		// }
 
 		// FIXME: do we need to do this here?
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
@@ -514,9 +514,9 @@ public class GLHeatMap extends AStorageBasedView {
 
 		contentSelectionManager.clearSelection(selectionType);
 
-		SelectionCommand command = new SelectionCommand(
-				ESelectionCommandType.CLEAR, selectionType);
-		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+//		SelectionCommand command = new SelectionCommand(
+//				ESelectionCommandType.CLEAR, selectionType);
+//		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 		// TODO: Integrate multi spotting support again
 		// // Resolve multiple spotting on chip and add all to the
@@ -659,25 +659,21 @@ public class GLHeatMap extends AStorageBasedView {
 		for (Integer iContentIndex : contentVA) {
 			iCount++;
 			// we treat normal and deselected the same atm
-			if (contentSelectionManager.checkStatus(SelectionType.NORMAL,
-					iContentIndex)
-					|| contentSelectionManager.checkStatus(
-							SelectionType.DESELECTED, iContentIndex)) {
-				fFieldWidth = renderStyle.getNormalFieldWidth();
-				fFieldHeight = renderStyle.getFieldHeight();
-				currentType = SelectionType.NORMAL;
 
-			} else if (contentSelectionManager.checkStatus(
-					SelectionType.SELECTION, iContentIndex)
+			if (contentSelectionManager.checkStatus(SelectionType.SELECTION,
+					iContentIndex)
 					|| contentSelectionManager.checkStatus(
 							SelectionType.MOUSE_OVER, iContentIndex)) {
 				fFieldWidth = renderStyle.getSelectedFieldWidth();
 				fFieldHeight = renderStyle.getFieldHeight();
 				currentType = SelectionType.SELECTION;
 			} else {
-				continue;
-			}
 
+				fFieldWidth = renderStyle.getNormalFieldWidth();
+				fFieldHeight = renderStyle.getFieldHeight();
+				currentType = SelectionType.NORMAL;
+
+			}
 			fYPosition = 0;
 
 			for (Integer iStorageIndex : storageVA) {

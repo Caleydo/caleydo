@@ -50,15 +50,25 @@ public class SelectionDelta
 	}
 
 	@Override
-	public SelectionDeltaItem addSelection(int iSelectionID, SelectionType selectionType) {
+	public SelectionDeltaItem addSelection(int selectionID, SelectionType selectionType) {
 
-		SelectionDeltaItem item = new SelectionDeltaItem(iSelectionID, selectionType);
-		selectionItems.put(iSelectionID, item);
+		if (selectionType.equals(SelectionType.NORMAL)) {
+			throw new IllegalStateException("Cann not add a selection to NORMAL");
+		}
+		SelectionDeltaItem item = new SelectionDeltaItem(selectionID, selectionType);
+		selectionItems.put(selectionID, item);
 		return item;
 		// if (item != null)
 		// System.out.println("ID: " + iSelectionID + " Old: " +
 		// item.getSelectionType() + " New: " + selectionType);
 		//		
+	}
+
+	public SelectionDeltaItem removeSelection(int selectionID, SelectionType selectionType) {
+		SelectionDeltaItem item = new SelectionDeltaItem(selectionID, selectionType);
+		item.setRemove(true);
+		selectionItems.put(selectionID, item);
+		return item;
 	}
 
 	@Override

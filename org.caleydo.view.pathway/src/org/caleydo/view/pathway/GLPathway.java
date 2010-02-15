@@ -277,7 +277,7 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 			tmpPathwayVertexGraphItemRep = (PathwayVertexGraphItemRep) iterPathwayVertexGraphItem
 					.next();
 
-			selectionManager.initialAdd(tmpPathwayVertexGraphItemRep.getId());
+//			selectionManager.initialAdd(tmpPathwayVertexGraphItemRep.getId());
 		}
 
 		gLPathwayContentCreator.init(gl, selectionManager);
@@ -756,6 +756,9 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 			}
 
 			selectionManager.clearSelection(selectionType);
+//			SelectionCommand command = new SelectionCommand(
+//					ESelectionCommandType.CLEAR, selectionType);
+//			sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 			// Add new vertex to internal selection manager
 			selectionManager.addToType(selectionType, tmpVertexGraphItemRep
@@ -767,14 +770,12 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 					tmpVertexGraphItemRep.getId());
 			connectedElementRepresentationManager
 					.clear(EIDType.EXPRESSION_INDEX);
-			gLPathwayContentCreator
-					.performIdenticalNodeHighlighting(selectionType);
+//			gLPathwayContentCreator
+//					.performIdenticalNodeHighlighting(selectionType);
 
 			createConnectionLines(selectionType, iConnectionID);
 
-			SelectionCommand command = new SelectionCommand(
-					ESelectionCommandType.CLEAR, selectionType);
-			sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+		
 
 			ISelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager
 					.getDelta());

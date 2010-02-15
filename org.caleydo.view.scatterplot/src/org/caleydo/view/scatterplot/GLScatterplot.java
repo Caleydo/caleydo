@@ -8,12 +8,10 @@ import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.NR
 import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.NUMBER_AXIS_MARKERS;
 import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.POINTSIZE;
 import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.POINTSTYLE;
-import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.XLABELDISTANCE;
 import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.XLABELROTATIONNAGLE;
 import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.XYAXISDISTANCE;
 import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.X_AXIS_COLOR;
 import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.X_AXIS_LINE_WIDTH;
-import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.YLABELDISTANCE;
 import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.YLABELROTATIONNAGLE;
 import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.Y_AXIS_COLOR;
 import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.Y_AXIS_LINE_WIDTH;
@@ -24,6 +22,7 @@ import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
@@ -32,26 +31,25 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.storagebased.InitAxisComboEvent;
-import org.caleydo.core.manager.event.view.storagebased.SwitchMatrixViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SetPointSizeEvent;
-import org.caleydo.core.manager.event.view.storagebased.XAxisSelectorEvent;
-import org.caleydo.core.manager.event.view.storagebased.YAxisSelectorEvent;
+import org.caleydo.core.manager.event.view.storagebased.SwitchMatrixViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.Toggle2AxisEvent;
 import org.caleydo.core.manager.event.view.storagebased.ToggleColorModeEvent;
 import org.caleydo.core.manager.event.view.storagebased.ToggleMatrixZoomEvent;
 import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
-
+import org.caleydo.core.manager.event.view.storagebased.XAxisSelectorEvent;
+import org.caleydo.core.manager.event.view.storagebased.YAxisSelectorEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -79,12 +77,12 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.scatterplot.listener.GLScatterPlotKeyListener;
-import org.caleydo.view.scatterplot.listener.ToggleMatrixViewListener;
-import org.caleydo.view.scatterplot.listener.TogglePointTypeListener;
+import org.caleydo.view.scatterplot.listener.SetPointSizeListener;
 import org.caleydo.view.scatterplot.listener.Toggle2AxisModeListener;
 import org.caleydo.view.scatterplot.listener.ToggleColorModeListener;
+import org.caleydo.view.scatterplot.listener.ToggleMatrixViewListener;
 import org.caleydo.view.scatterplot.listener.ToggleMatrixZoomListener;
-import org.caleydo.view.scatterplot.listener.SetPointSizeListener;
+import org.caleydo.view.scatterplot.listener.TogglePointTypeListener;
 import org.caleydo.view.scatterplot.listener.XAxisSelectorListener;
 import org.caleydo.view.scatterplot.listener.YAxisSelectorListener;
 import org.caleydo.view.scatterplot.renderstyle.EScatterPointType;
@@ -268,7 +266,8 @@ public class GLScatterplot extends AStorageBasedView {
 
 		int debugsize = 0;
 
-		Set<Integer> selectionSet = elementSelectionManager.getAllElements();
+		Collection<Integer> selectionSet = contentVA.getIndexList();
+//		Set<Integer> selectionSet = elementSelectionManager.getAllElements();
 		debugsize = selectionSet.size();
 
 
@@ -276,7 +275,6 @@ public class GLScatterplot extends AStorageBasedView {
 		if (bIsSelection) {
 			fSelectionFaktor = 2.0f;
 			fArRgbaWhite = new float[]{1.0f, 1.0f, 1.0f, 0f}; // OPACY
-			selectionSet.clear();
 			selectionSet = elementSelectionManager
 					.getElements(SelectionType.SELECTION);
 			debugsize = selectionSet.size();
@@ -1349,8 +1347,7 @@ public class GLScatterplot extends AStorageBasedView {
 	}
 
 	private void RenderScatterPoints(GL gl) {
-
-		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
+	float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 		float x = 0.0f;
 		float y = 0.0f;
@@ -1367,7 +1364,8 @@ public class GLScatterplot extends AStorageBasedView {
 			POINTSTYLE = EScatterPointType.POINT;
 		}
 
-		Set<Integer> selectionSet = elementSelectionManager.getAllElements();
+//		contentVA = useCase.getVA(EVAType.CONTENT);
+		Collection<Integer> selectionSet = contentVA.getIndexList();
 
 		if (bRender2Axis)
 			if (elementSelectionManager
@@ -1620,8 +1618,8 @@ public class GLScatterplot extends AStorageBasedView {
 			y = ynormalized * YScale;
 
 			if (IsInSelectionRectangle(x, y)) {
-				if (!elementSelectionManager.checkStatus(iContentIndex))
-					elementSelectionManager.add(iContentIndex);
+//				if (!elementSelectionManager.checkStatus(iContentIndex))
+//					elementSelectionManager.add(iContentIndex);
 				elementSelectionManager.addToType(SelectionType.SELECTION,
 						iContentIndex);
 			}
@@ -2093,8 +2091,8 @@ public class GLScatterplot extends AStorageBasedView {
 		if (selectionType == SelectionType.SELECTION) {
 			// fDragStartPoint = new float[3];
 			// fDragEndPoint = new float[3];
-			if (!elementSelectionManager.checkStatus(contentID))
-				elementSelectionManager.add(contentID);
+//			if (!elementSelectionManager.checkStatus(contentID))
+//				elementSelectionManager.add(contentID);
 
 			elementSelectionManager.addToType(selectionType, contentID);
 
@@ -2107,7 +2105,7 @@ public class GLScatterplot extends AStorageBasedView {
 		{
 			// mouseoverSelectionManager.resetSelectionManager(); // This may be
 			// not necessary;
-			mouseoverSelectionManager.add(contentID);
+//			mouseoverSelectionManager.add(contentID);
 			mouseoverSelectionManager.addToType(selectionType, contentID);
 		}
 
@@ -2178,33 +2176,33 @@ public class GLScatterplot extends AStorageBasedView {
 
 		super.handleVirtualArrayUpdate(delta, info);
 
-		if (delta.getVAType() == EVAType.CONTENT_CONTEXT
-				&& contentVAType == EVAType.CONTENT_CONTEXT) {
-			if (contentVA.size() == 0)
-				return;
-			// FIXME: this is only proof of concept - use the cluster manager
-			// instead of affinity directly
-			// long original = System.currentTimeMillis();
-			// System.out.println("beginning clustering");
-			AffinityClusterer clusterer = new AffinityClusterer(contentVA
-					.size());
-			ClusterState state = new ClusterState(
-					EClustererAlgo.AFFINITY_PROPAGATION,
-					EClustererType.GENE_CLUSTERING,
-					EDistanceMeasure.EUCLIDEAN_DISTANCE);
-			int contentVAID = contentVA.getID();
-			state.setContentVaId(contentVA.getID());
-			state.setStorageVaId(storageVA.getID());
-			state.setAffinityPropClusterFactorGenes(4.0f);
-			IVirtualArray tempVA = clusterer.getSortedVA(set, state, 0, 2);
-
-			contentVA = tempVA;
-			contentSelectionManager.setVA(contentVA);
-			contentVA.setID(contentVAID);
-			// long result = System.currentTimeMillis() - original;
-			// System.out.println("Clustering took in ms: " + result);
-
-		}
+//		if (delta.getVAType() == EVAType.CONTENT_CONTEXT
+//				&& contentVAType == EVAType.CONTENT_CONTEXT) {
+//			if (contentVA.size() == 0)
+//				return;
+//			// FIXME: this is only proof of concept - use the cluster manager
+//			// instead of affinity directly
+//			// long original = System.currentTimeMillis();
+//			// System.out.println("beginning clustering");
+//			AffinityClusterer clusterer = new AffinityClusterer(contentVA
+//					.size());
+//			ClusterState state = new ClusterState(
+//					EClustererAlgo.AFFINITY_PROPAGATION,
+//					EClustererType.GENE_CLUSTERING,
+//					EDistanceMeasure.EUCLIDEAN_DISTANCE);
+//			int contentVAID = contentVA.getID();
+//			state.setContentVaId(contentVA.getID());
+//			state.setStorageVaId(storageVA.getID());
+//			state.setAffinityPropClusterFactorGenes(4.0f);
+//			IVirtualArray tempVA = clusterer.getSortedVA(set, state, 0, 2);
+//
+//			contentVA = tempVA;
+//			contentSelectionManager.setVA(contentVA);
+//			contentVA.setID(contentVAID);
+//			// long result = System.currentTimeMillis() - original;
+//			// System.out.println("Clustering took in ms: " + result);
+//
+//		}
 	}
 
 	@Override

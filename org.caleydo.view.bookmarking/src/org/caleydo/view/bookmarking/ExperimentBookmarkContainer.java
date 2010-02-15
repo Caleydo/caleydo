@@ -36,7 +36,7 @@ class ExperimentBookmarkContainer extends ABookmarkContainer {
 			ExperimentBookmark bookmark = new ExperimentBookmark(textRenderer,
 					id);
 			bookmarkItems.add(bookmark);
-			selectionManager.add(id);
+//			selectionManager.add(id);
 		}
 
 	}

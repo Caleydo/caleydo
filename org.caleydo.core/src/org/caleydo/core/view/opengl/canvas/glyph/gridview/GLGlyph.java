@@ -287,8 +287,8 @@ public class GLGlyph
 		{ // load ids to the selection manager
 			selectionManager.resetSelectionManager();
 
-			ArrayList<Integer> tmpExtID = new ArrayList<Integer>(gman.getGlyphs().keySet());
-			selectionManager.initialAdd(tmpExtID);
+//			ArrayList<Integer> tmpExtID = new ArrayList<Integer>(gman.getGlyphs().keySet());
+//			selectionManager.initialAdd(tmpExtID);
 		}
 
 		grid_.selectAll();

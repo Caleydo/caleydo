@@ -1,6 +1,7 @@
 package org.caleydo.view.pathway;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -18,8 +19,8 @@ import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -153,7 +154,7 @@ public class GLPathwayContentCreator {
 		gl.glEndList();
 	}
 
-	public void performIdenticalNodeHighlighting(SelectionType SelectionType) {
+	public void performIdenticalNodeHighlighting(SelectionType selectionType) {
 		if (internalSelectionManager == null)
 			return;
 
@@ -161,7 +162,7 @@ public class GLPathwayContentCreator {
 
 		ArrayList<Integer> iAlTmpSelectedGraphItemIds = new ArrayList<Integer>();
 		Set<Integer> tmpItemIDs;
-		tmpItemIDs = internalSelectionManager.getElements(SelectionType);
+		tmpItemIDs = internalSelectionManager.getElements(selectionType);
 
 		if (tmpItemIDs != null) {
 			iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
@@ -177,7 +178,7 @@ public class GLPathwayContentCreator {
 			return;
 
 		// Copy selection IDs to array list object
-		for (int iItemIndex = 0; iItemIndex < iAlTmpSelectedGraphItemIds.size(); iItemIndex++) {
+		for (Integer graphItemID : iAlTmpSelectedGraphItemIds) {
 			if (!bEnableIdenticalNodeHighlighting) {
 				continue;
 			}
@@ -185,26 +186,31 @@ public class GLPathwayContentCreator {
 			// // Perform identical node highlighting only on nodes with depth 0
 			// if (iAlTmpSelectedGraphItemDepth.get(iItemIndex) != 0)
 			// continue;
+
+			List<IGraphItem> items = ((IGraphItem) generalManager
+					.getPathwayItemManager().getItem(graphItemID))
+					.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT);
 			for (IGraphItem graphItem : ((IGraphItem) generalManager
-					.getPathwayItemManager().getItem(
-							iAlTmpSelectedGraphItemIds.get(iItemIndex)))
+					.getPathwayItemManager().getItem(graphItemID))
 					.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
+				List<IGraphItem> items2 = graphItem
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
 				for (IGraphItem graphItemRep : graphItem
 						.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
 					if (tmpItemIDs.contains(graphItemRep.getId())) {
 						continue;
 					}
-					internalSelectionManager.addToType(SelectionType,
+					internalSelectionManager.addToType(selectionType,
 							graphItemRep.getId());
-					for (int iConnectionID : internalSelectionManager
-							.getConnectionForElementID(iAlTmpSelectedGraphItemIds
-									.get(iItemIndex))) {
-						internalSelectionManager.addConnectionID(iConnectionID,
-								graphItemRep.getId());
-					}
-					if (bEnableNeighborhood) {
-						performNeighborhoodAlgorithm(graphItemRep);
-					}
+
+					// for (int iConnectionID : internalSelectionManager
+					// .getConnectionForElementID(graphItemID)) {
+					// internalSelectionManager.addConnectionID(iConnectionID,
+					// graphItemRep.getId());
+					// }
+					// if (bEnableNeighborhood) {
+					// performNeighborhoodAlgorithm(graphItemRep);
+					// }
 				}
 			}
 		}
@@ -624,13 +630,14 @@ public class GLPathwayContentCreator {
 				} else if (internalSelectionManager.checkStatus(
 						SelectionType.SELECTION, vertexRep.getId())) {
 					tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
-				} else if (internalSelectionManager.checkStatus(
-						SelectionType.NORMAL, vertexRep.getId())) {
-					tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
 				}
-
+				// else if (internalSelectionManager.checkStatus(
+				// SelectionType.NORMAL, vertexRep.getId())) {
+				// tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
+				// }
 				else {
-					tmpNodeColor = new float[] { 0, 0, 0, 0 };
+					tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
+					// tmpNodeColor = new float[] { 0, 0, 0, 0 };
 				}
 
 				gl.glColor4fv(tmpNodeColor, 0);

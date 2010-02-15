@@ -20,6 +20,7 @@ public class SelectionDeltaItem
 	private int primaryID = -1;
 	private SelectionType selectionType;
 	private int secondaryID = -1;
+	private boolean remove = false;
 
 	private ArrayList<Integer> connectionIDs;
 
@@ -33,13 +34,13 @@ public class SelectionDeltaItem
 	/**
 	 * Constructor
 	 * 
-	 * @param primaryID
+	 * @param selectionID
 	 *            the id of the selected element
 	 * @param selectionType
 	 *            the type of the selection
 	 */
-	public SelectionDeltaItem(int iSelectionID, SelectionType selectionType) {
-		this.primaryID = iSelectionID;
+	public SelectionDeltaItem(int selectionID, SelectionType selectionType) {
+		this.primaryID = selectionID;
 		this.selectionType = selectionType;
 		connectionIDs = new ArrayList<Integer>();
 	}
@@ -47,16 +48,16 @@ public class SelectionDeltaItem
 	/**
 	 * Constructor. This constructor allows to specify the optional internal id in the selection
 	 * 
-	 * @param primaryID
+	 * @param selectionID
 	 *            the id of the selected element
 	 * @param selectionType
 	 *            the type of the selection
-	 * @param secondaryID
+	 * @param internalID
 	 *            the internal id which maps to the selectionID
 	 */
-	public SelectionDeltaItem(int iSelectionID, SelectionType selectionType, int iInternalID) {
-		this(iSelectionID, selectionType);
-		this.secondaryID = iInternalID;
+	public SelectionDeltaItem(int selectionID, SelectionType selectionType, int internalID) {
+		this(selectionID, selectionType);
+		this.secondaryID = internalID;
 		connectionIDs = new ArrayList<Integer>();
 	}
 
@@ -138,9 +139,17 @@ public class SelectionDeltaItem
 		this.secondaryID = iSecondaryID;
 	}
 
+	public void setRemove(boolean remove) {
+		this.remove = remove;
+	}
+
+	public boolean isRemove() {
+		return remove;
+	}
+
 	@Override
 	public String toString() {
-		return "[Pri: " + primaryID + " Type: " + selectionType + "]";
+		return "[Pri: " + primaryID + " Type: " + selectionType + " Remove: "+ remove + "]";
 	}
 
 }

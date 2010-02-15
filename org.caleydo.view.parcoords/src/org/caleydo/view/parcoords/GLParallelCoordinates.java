@@ -30,6 +30,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -49,13 +50,13 @@ import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.AddSelectionTypeEvent;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
@@ -719,7 +720,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-		if (contentSelectionManager.getNumberOfElements() == 0) {
+		if (contentVA.size() == 0) {
 			gl.glTranslatef(-fXDefaultTranslation - fXTranslation,
 					-fYTranslation, 0.0f);
 			renderSymbol(gl, EIconTextures.PAR_COORDS_SYMBOL, 2);
@@ -734,24 +735,24 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			renderCoordinateSystem(gl);
 
 			// FIXME if uses z buffer fighting to avoid artfacts when tiltet
-//			if (detailLevel.compareTo(EDetailLevel.LOW) < 1) {
-//				renderPolylines(gl, SelectionType.MOUSE_OVER);
-//				renderPolylines(gl, SelectionType.SELECTION);
-//				renderPolylines(gl, SelectionType.DESELECTED);
-//				renderPolylines(gl, SelectionType.NORMAL);
-//			} else {
-//				// renderPolylines(gl, SelectionType.DESELECTED);
-//				renderPolylines(gl, SelectionType.NORMAL);
-//				renderPolylines(gl, SelectionType.MOUSE_OVER);
-//				renderPolylines(gl, SelectionType.SELECTION);
-//
-//			}
+			// if (detailLevel.compareTo(EDetailLevel.LOW) < 1) {
+			// renderPolylines(gl, SelectionType.MOUSE_OVER);
+			// renderPolylines(gl, SelectionType.SELECTION);
+			// renderPolylines(gl, SelectionType.DESELECTED);
+			// renderPolylines(gl, SelectionType.NORMAL);
+			// } else {
+			// // renderPolylines(gl, SelectionType.DESELECTED);
+			// renderPolylines(gl, SelectionType.NORMAL);
+			// renderPolylines(gl, SelectionType.MOUSE_OVER);
+			// renderPolylines(gl, SelectionType.SELECTION);
+			//
+			// }
 
-			for(SelectionType selectonType : polylineSelectionManager.getSelectionTypes())
-			{
+			for (SelectionType selectonType : polylineSelectionManager
+					.getSelectionTypes()) {
 				renderPolylines(gl, selectonType);
 			}
-			
+
 			renderGates(gl);
 
 			// if (bShowSelectionHeatMap) {
@@ -792,7 +793,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	@SuppressWarnings("unchecked")
 	private void renderPolylines(GL gl, SelectionType renderMode) {
 
-		Set<Integer> setDataToRender = null;
+		Collection<Integer> setDataToRender = null;
 		float fZDepth = 0f;
 
 		if (renderMode == SelectionType.DESELECTED
@@ -807,7 +808,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				iDisplayEveryNthPolyline = 1;
 			}
 		}
-		setDataToRender = polylineSelectionManager.getElements(renderMode);
+		if (renderMode == SelectionType.NORMAL) {
+			setDataToRender = polylineVA.getIndexList();
+		} else {
+			setDataToRender = polylineSelectionManager.getElements(renderMode);
+		}
 		if (renderMode == SelectionType.NORMAL) {
 			fZDepth = ParCoordsRenderStyle.POLYLINE_NORMAL_Z;
 
@@ -1928,9 +1933,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// axisSelectionManager
 			// .getDelta(), null);
 
-			SelectionCommand command = new SelectionCommand(
-					ESelectionCommandType.CLEAR, selectionType);
-			sendSelectionCommandEvent(eAxisDataType, command);
+//			SelectionCommand command = new SelectionCommand(
+//					ESelectionCommandType.CLEAR, selectionType);
+//			sendSelectionCommandEvent(eAxisDataType, command);
 
 			ISelectionDelta selectionDelta = axisSelectionManager.getDelta();
 			if (eAxisDataType == EIDType.EXPRESSION_INDEX
