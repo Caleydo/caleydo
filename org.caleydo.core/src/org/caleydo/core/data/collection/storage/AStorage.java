@@ -25,7 +25,6 @@ public abstract class AStorage
 	extends AUniqueObject
 	implements IStorage {
 	protected EnumMap<EDataRepresentation, ICContainer> hashCContainers;
-	protected HashMap<Integer, IVirtualArray> hashVirtualArrays;
 
 	protected String sLabel;
 
@@ -44,7 +43,6 @@ public abstract class AStorage
 		GeneralManager.get().getStorageManager().registerItem(this);
 
 		hashCContainers = new EnumMap<EDataRepresentation, ICContainer>(EDataRepresentation.class);
-		hashVirtualArrays = new HashMap<Integer, IVirtualArray>();
 		sLabel = new String("Not specified");
 	}
 
@@ -111,19 +109,6 @@ public abstract class AStorage
 		return container.iterator();
 	}
 
-	@Override
-	public float getFloatVA(EDataRepresentation storageKind, int iIndex, int iUniqueID) {
-		return getFloat(storageKind, hashVirtualArrays.get(iUniqueID).get(iIndex));
-	}
-
-	@Override
-	public FloatCContainerIterator floatVAIterator(EDataRepresentation storageKind, int iUniqueID) {
-		if (!(hashCContainers.get(storageKind) instanceof FloatCContainer))
-			throw new IllegalArgumentException("Requested storage kind is not of type float");
-
-		FloatCContainer container = (FloatCContainer) hashCContainers.get(storageKind);
-		return container.iterator(hashVirtualArrays.get(iUniqueID));
-	}
 
 	@Override
 	public int getInt(EDataRepresentation storageKind, int iIndex) {
@@ -143,19 +128,7 @@ public abstract class AStorage
 		return container.iterator();
 	}
 
-	@Override
-	public int getIntVA(EDataRepresentation storageKind, int iIndex, int iUniqueID) {
-		return getInt(storageKind, hashVirtualArrays.get(iUniqueID).get(iIndex));
-	}
 
-	@Override
-	public IntCContainerIterator intVAIterator(EDataRepresentation storageKind, int iUniqueID) {
-		if (!(hashCContainers.get(storageKind) instanceof FloatCContainer))
-			throw new IllegalArgumentException("Requested storage kind is not of type float");
-
-		IntCContainer container = (IntCContainer) hashCContainers.get(storageKind);
-		return container.iterator(hashVirtualArrays.get(iUniqueID));
-	}
 
 	@Override
 	public Number get(EDataRepresentation storageKind, int iIndex) {
@@ -175,20 +148,7 @@ public abstract class AStorage
 		return container.iterator();
 	}
 
-	@Override
-	public Number getNumberVA(EDataRepresentation storageKind, int iIndex, int iUniqueID) {
-		int iContainerIndex = hashVirtualArrays.get(iUniqueID).get(iIndex);
-		return get(storageKind, iContainerIndex);
-	}
 
-	@Override
-	public Iterator<? extends Number> iteratorVA(EDataRepresentation storageKind, int iUniqueID) {
-		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer<?>))
-			throw new IllegalArgumentException("Requested storage kind is not a subtype of Number");
-
-		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers.get(storageKind);
-		return container.iterator();
-	}
 
 	@Override
 	public void setRawData(ArrayList<? super Number> alNumber) {
@@ -201,19 +161,6 @@ public abstract class AStorage
 		return hashCContainers.get(EDataRepresentation.RAW).size();
 	}
 
-	@Override
-	public void setVirtualArray(int iUniqueID, IVirtualArray virtualArray) {
-		hashVirtualArrays.put(iUniqueID, virtualArray);
-	}
 
-	@Override
-	public void removeVirtualArray(int iUniqueID) {
-		hashVirtualArrays.remove(iUniqueID);
-	}
-
-	@Override
-	public void resetVirtualArray(int uniqueID) {
-		hashVirtualArrays.get(iUniqueID).reset();
-	}
 
 }

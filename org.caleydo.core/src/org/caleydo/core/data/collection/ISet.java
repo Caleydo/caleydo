@@ -7,7 +7,7 @@ import javax.naming.OperationNotSupportedException;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
-import org.caleydo.core.data.collection.set.SetIterator;
+import org.caleydo.core.data.collection.set.StorageIterator;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.GroupList;
@@ -63,16 +63,6 @@ public interface ISet
 	 */
 	public IStorage get(int iIndex);
 
-	/**
-	 * Get the storage via the index in the virtual array
-	 * 
-	 * @param iUniqueID
-	 *            the unique id associated with the virtual array
-	 * @param iIndex
-	 *            the index in the virtual array
-	 * @return the storage
-	 */
-	public IStorage getStorageFromVA(int iUniqueID, int iIndex);
 
 	/**
 	 * Get an iterator that iterates over the storages considering the Virtual Array.
@@ -81,7 +71,7 @@ public interface ISet
 	 *            unique ID of the set virtula array
 	 * @return the set iterator
 	 */
-	public SetIterator VAIterator(int iUniqueID);
+	public StorageIterator VAIterator(int iUniqueID);
 
 	/**
 	 * Get the number of storages in a set
@@ -226,13 +216,7 @@ public interface ISet
 	 */
 	public void log2();
 
-	/**
-	 * Creates a default virtual array for the storages in the set. This means that each storages can be
-	 * referenced.
-	 * 
-	 * @return the unique id associated with the virtual array
-	 */
-	public int createVA(EVAType vaType);
+
 
 	/**
 	 * Creates a virtual array based on the list of indices supplied for the storages in the set, aka content
@@ -273,6 +257,25 @@ public interface ISet
 	 * @param virtualArray
 	 */
 	public void replaceVA(int iUniqueID, IVirtualArray virtualArray);
+	
+	
+	
+	/**
+	 * Deletes the virtual arrays associated with the unique id
+	 * 
+	 * @param iUniqueID
+	 *            the unique ID associated with the virtual array
+	 */
+	public void removeVirtualArray(int iUniqueID);
+
+	/**
+	 * Resets the virtual arrays to the original values
+	 * 
+	 * @param iUniqueID
+	 *            the unique ID associated with the virtual array
+	 */
+	public void resetVirtualArray(int iUniqueID);
+	
 
 	/**
 	 * Export a manipulated subset of the data to the destination specified in sFileName. Determine which view

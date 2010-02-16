@@ -60,8 +60,8 @@ public class Set
 
 	private boolean bIsNumerical;
 
+	private HashMap<Integer, IVirtualArray> hashContentVAs;
 	private HashMap<Integer, IVirtualArray> hashStorageVAs;
-	private HashMap<Integer, IVirtualArray> hashSetVAs;
 
 	// clustering stuff
 	private ArrayList<Integer> alClusterSizes = null;
@@ -83,8 +83,8 @@ public class Set
 		GeneralManager.get().getSetManager().registerItem(this);
 
 		alStorages = new ArrayList<IStorage>();
+		hashContentVAs = new HashMap<Integer, IVirtualArray>();
 		hashStorageVAs = new HashMap<Integer, IVirtualArray>();
-		hashSetVAs = new HashMap<Integer, IVirtualArray>();
 	}
 
 	@Override
@@ -123,14 +123,6 @@ public class Set
 			// iDepth = storage.size();
 		}
 		else {
-			// if (storage.size() != iColumnLength)
-			// throw new
-			// CaleydoRuntimeException("Storages must be of the same length",
-			// CaleydoRuntimeExceptionType.DATAHANDLING);
-			// if (rawDataType != storage.getRawDataType())
-			// throw new CaleydoRuntimeException(
-			// "Storages in a set must have the same raw data type",
-			// CaleydoRuntimeExceptionType.DATAHANDLING);
 			if (!bIsNumerical && storage instanceof INumericalStorage)
 				throw new IllegalArgumentException(
 					"All storages in a set must be of the same basic type (nunmerical or nominal)");
@@ -148,19 +140,8 @@ public class Set
 	}
 
 	@Override
-	public SetIterator VAIterator(int uniqueID) {
-		return new SetIterator(alStorages, hashSetVAs.get(iUniqueID));
-	}
-
-	@Override
-	public IStorage getStorageFromVA(int iUniqueID, int iIndex) {
-		if (hashSetVAs.containsKey(iUniqueID)) {
-			int iTmp = hashSetVAs.get(iUniqueID).get(iIndex);
-			return alStorages.get(iTmp);
-		}
-		else
-			throw new IllegalArgumentException("No such virtual array " + iUniqueID
-				+ " registered for storages");
+	public StorageIterator VAIterator(int uniqueID) {
+		return new StorageIterator(alStorages, hashStorageVAs.get(iUniqueID));
 	}
 
 	@Override
@@ -170,10 +151,10 @@ public class Set
 
 	@Override
 	public int sizeVA(int iUniqueID) {
-		if (hashSetVAs.containsKey(iUniqueID))
-			return hashSetVAs.get(iUniqueID).size();
-		else if (hashStorageVAs.containsKey(iUniqueID))
+		if (hashStorageVAs.containsKey(iUniqueID))
 			return hashStorageVAs.get(iUniqueID).size();
+		else if (hashContentVAs.containsKey(iUniqueID))
+			return hashContentVAs.get(iUniqueID).size();
 		else
 			throw new IllegalArgumentException("No such virtual array has been registered:" + iUniqueID);
 
@@ -277,7 +258,6 @@ public class Set
 			return result;
 		}
 		else if (externalDataRep == EExternalDataRepresentation.LOG2) {
-
 			return Math.pow(2, result);
 		}
 		else if (externalDataRep == EExternalDataRepresentation.LOG10) {
@@ -292,13 +272,7 @@ public class Set
 			throw new IllegalStateException(
 				"Can not produce normalized data on set level for inhomogenous sets. Access via storages");
 
-		// GeneralManager.get().getLogger().log(
-		// new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-		// "This method is untested - test when first used"));
-
 		double result;
-		// if (dRaw < getMin() || dRaw > getMax())
-		// throw new IllegalArgumentException("Value may not be smaller than min or larger than max");
 
 		if (externalDataRep == EExternalDataRepresentation.NORMAL) {
 			result = dRaw;
@@ -317,7 +291,6 @@ public class Set
 		result = (result - getMin()) / (getMax() - getMin());
 
 		return result;
-
 	}
 
 	@Override
@@ -377,19 +350,6 @@ public class Set
 	}
 
 	@Override
-	public int createVA(EVAType vaType) {
-		if (vaType == EVAType.STORAGE) {
-			VirtualArray virtualArray = new VirtualArray(vaType, size());
-			return createStorageVA(virtualArray);
-		}
-		else {
-			VirtualArray virtualArray = new VirtualArray(vaType, depth());
-			return createContentVA(virtualArray);
-		}
-
-	}
-
-	@Override
 	public int createVA(EVAType vaType, List<Integer> iAlSelections) {
 		if (vaType == EVAType.STORAGE) {
 			IVirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
@@ -402,9 +362,15 @@ public class Set
 
 	}
 
+	private int createContentVA(IVirtualArray virtualArray) {
+		int iUniqueID = virtualArray.getID();
+		hashContentVAs.put(iUniqueID, virtualArray);
+		return iUniqueID;
+	}
+
 	private int createStorageVA(IVirtualArray virtualArray) {
 		int iUniqueID = virtualArray.getID();
-		hashSetVAs.put(iUniqueID, virtualArray);
+		hashStorageVAs.put(iUniqueID, virtualArray);
 		return iUniqueID;
 	}
 
@@ -413,38 +379,35 @@ public class Set
 		VirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
 		int iUniqueID = virtualArray.getID();
 
-		hashSetVAs.put(iUniqueID, virtualArray);
+		hashStorageVAs.put(iUniqueID, virtualArray);
 
 		return iUniqueID;
 	}
 
 	@Override
 	public void resetVirtualArray(int iUniqueID) {
-		if (hashSetVAs.containsKey(iUniqueID)) {
-			hashSetVAs.get(iUniqueID).reset();
+		if (hashStorageVAs.containsKey(iUniqueID)) {
+			hashStorageVAs.get(iUniqueID).reset();
 			return;
 		}
 
-		if (hashStorageVAs.containsKey(iUniqueID)) {
-			hashStorageVAs.get(iUniqueID).reset();
+		if (hashContentVAs.containsKey(iUniqueID)) {
+			hashContentVAs.get(iUniqueID).reset();
 		}
 	}
 
 	@Override
 	public void removeVirtualArray(int iUniqueID) {
-		hashSetVAs.remove(iUniqueID);
-		for (IStorage storage : alStorages) {
-			storage.removeVirtualArray(iUniqueID);
-		}
 		hashStorageVAs.remove(iUniqueID);
+		hashContentVAs.remove(iUniqueID);
 	}
 
 	@Override
 	public IVirtualArray getVA(int iUniqueID) {
-		if (hashSetVAs.containsKey(iUniqueID))
-			return hashSetVAs.get(iUniqueID);
-		else if (hashStorageVAs.containsKey(iUniqueID))
+		if (hashStorageVAs.containsKey(iUniqueID))
 			return hashStorageVAs.get(iUniqueID);
+		else if (hashContentVAs.containsKey(iUniqueID))
+			return hashContentVAs.get(iUniqueID);
 		else
 			throw new IllegalArgumentException("No Virtual Array for the unique id: " + iUniqueID);
 	}
@@ -452,10 +415,10 @@ public class Set
 	@Override
 	public void replaceVA(int iUniqueID, IVirtualArray virtualArray) {
 		virtualArray.setID(iUniqueID);
-		if (hashSetVAs.containsKey(iUniqueID))
-			hashSetVAs.put(iUniqueID, virtualArray);
-		else if (hashStorageVAs.containsKey(iUniqueID))
+		if (hashStorageVAs.containsKey(iUniqueID))
 			hashStorageVAs.put(iUniqueID, virtualArray);
+		else if (hashContentVAs.containsKey(iUniqueID))
+			hashContentVAs.put(iUniqueID, virtualArray);
 		else
 			throw new IllegalArgumentException("No Virtual Array for the unique id: " + iUniqueID);
 	}
@@ -478,15 +441,6 @@ public class Set
 		else if (alStorages.get(0) instanceof INominalStorage<?>)
 			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
 				+ "on nominal data");
-	}
-
-	private int createContentVA(IVirtualArray virtualArray) {
-		int iUniqueID = virtualArray.getID();
-		hashStorageVAs.put(iUniqueID, virtualArray);
-		for (IStorage storage : alStorages) {
-			storage.setVirtualArray(iUniqueID, hashStorageVAs.get(iUniqueID));
-		}
-		return iUniqueID;
 	}
 
 	@Override

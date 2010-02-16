@@ -12,7 +12,7 @@ import org.caleydo.core.data.selection.VAIterator;
  * 
  * @author Alexander Lex
  */
-public class SetIterator
+public class StorageIterator
 	implements ListIterator<IStorage> {
 	private VAIterator vaIterator;
 	private ArrayList<IStorage> alStorages;
@@ -23,7 +23,7 @@ public class SetIterator
 	 * @param set
 	 * @param virtualArray
 	 */
-	public SetIterator(ArrayList<IStorage> alStorages, IVirtualArray virtualArray) {
+	public StorageIterator(ArrayList<IStorage> alStorages, IVirtualArray virtualArray) {
 		this.vaIterator = virtualArray.iterator();
 		this.alStorages = alStorages;
 	}
