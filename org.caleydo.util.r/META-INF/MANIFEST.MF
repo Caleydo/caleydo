@@ -4,10 +4,11 @@ Bundle-Name: R Statistics Plug-in
 Bundle-SymbolicName: org.caleydo.util.r;singleton:=true
 Bundle-Version: 1.3
 Bundle-NativeCode: 
- lib/r/linux/libjri.so
+ lib/linux/libjri.so
 Bundle-Vendor: Graz University of Technology
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-ClassPath: lib/JRI.jar
+Bundle-ClassPath: .,
+ lib/JRI.jar
 Export-Package: org.rosuda.JRI
 Require-Bundle: org.caleydo.core;bundle-version="1.3.1",
  org.eclipse.ui;bundle-version="3.5.1",

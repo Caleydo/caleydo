@@ -1,5 +1,10 @@
 package org.caleydo.util.r;
 
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.ccontainer.FloatCContainerIterator;
+import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
@@ -34,8 +39,8 @@ public class RStatisticsPerformer implements IStatisticsPerformer {
 
 		try {
 			REXP test;
-			int[] array = new int[]{5, 6, 7};
-			int[] array_2 = new int[]{1, 2, 3};
+			int[] array = new int[]{223 ,259,248,220,287,191,229,270,245,201};//5, 6, 7};
+			int[] array_2 = new int[]{220,244,243,211,299,170,210,276,252,189};//1, 2, 3};
 			engine.assign("my_array", array);
 			engine.assign("my_array_2", array_2);
 
@@ -47,5 +52,25 @@ public class RStatisticsPerformer implements IStatisticsPerformer {
 			System.out.println("EX:" + e);
 			e.printStackTrace();
 		}
+		
+		performStorageTest();
+	}
+	
+	private void performStorageTest() {
+		
+		// ISet set = GeneralManager.get().getMasterUseCase().getSet();
+		//		
+		// double[] array1 = new double[set.size()];
+		// double[] array2 = new double[set.size()];
+		//		
+		// for (IStorage storage : set) {
+		// storage.get(EDataRepresentation.NORMALIZED, iIndex);
+		// }
+		//		
+		// FloatCContainerIterator iter =
+		// set.get(0).floatIterator(EDataRepresentation.NORMALIZED);
+		// while(iter.hasNext()) {
+		//			
+		// }
 	}
 }

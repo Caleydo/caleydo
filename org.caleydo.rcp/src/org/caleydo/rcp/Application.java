@@ -136,7 +136,7 @@ public class Application
 
 		// Create Caleydo core
 		caleydoCoreBootloader = new CaleydoBootloader(rcpGuiBridge);
-
+		
 		parseApplicationArguments(map);
 
 		prefStore = GeneralManager.get().getPreferenceStore();
@@ -214,6 +214,9 @@ public class Application
 		if (bDeleteRestoredWorkbenchState) {
 			removeStoredWorkbenchState();
 		}
+				
+//		GeneralManager.get().getRStatisticsPerformer().init();
+//		GeneralManager.get().getRStatisticsPerformer().performTest();
 
 		try {
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
