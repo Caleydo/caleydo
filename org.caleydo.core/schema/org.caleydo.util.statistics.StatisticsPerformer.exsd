@@ -3,7 +3,7 @@
 <schema targetNamespace="org.caleydo.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.caleydo.core" id="org.caleydo.data.pathway.kegg.PathwayResourceLoader" name="PathwayResourceLoader"/>
+         <meta.schema plugin="org.caleydo.core" id="org.caleydo.util.statistics.StatisticsPerformer" name="StatisticsPerformer"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -44,7 +44,7 @@
       </complexType>
    </element>
 
-   <element name="PathwayResourceLoader">
+   <element name="StatisticsPerformer">
       <complexType>
          <attribute name="id" type="string" use="required">
             <annotation>
@@ -66,7 +66,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.caleydo.core.manager.specialized.genetic.pathway.IPathwayResourceLoader"/>
+                  <meta.attribute kind="java" basedOn=":org.caleydo.core.util.statistics.IStatisticsPerformer"/>
                </appInfo>
             </annotation>
          </attribute>

@@ -246,6 +246,7 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
  org.caleydo.core.util.memento;uses:="org.caleydo.core.manager",
  org.caleydo.core.util.preferences,
  org.caleydo.core.util.sound,
+ org.caleydo.core.util.statistics,
  org.caleydo.core.util.system,
  org.caleydo.core.util.tracking,
  org.caleydo.core.view;

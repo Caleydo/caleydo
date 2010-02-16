@@ -97,7 +97,7 @@ public class RcpSearchView extends ViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-
+		
 		generalManager = GeneralManager.get();
 
 		idMappingManager = generalManager.getIDMappingManager();

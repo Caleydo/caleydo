@@ -214,6 +214,10 @@ public class PathwayManager
 	@Override
 	public void createPathwayResourceLoader(EPathwayDatabaseType type) {
 
+
+		GeneralManager.get().getRStatisticsPerformer().init();
+		GeneralManager.get().getRStatisticsPerformer().performTest();
+		
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 
 		if (type == EPathwayDatabaseType.KEGG) {

@@ -25,15 +25,22 @@ import org.caleydo.core.manager.parser.XmlParserManager;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genetic.pathway.IPathwayResourceLoader;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;
+import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.core.util.tracking.TrackDataProvider;
 import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.data.loader.ResourceLoader;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.PreferenceStore;
@@ -48,7 +55,7 @@ public class GeneralManager
 	implements IGeneralManager {
 
 	public static final boolean IS_IN_RELEASE_MODE = true;
-	
+
 	/**
 	 * General manager as a singleton
 	 */
@@ -73,6 +80,7 @@ public class GeneralManager
 	private TrackDataProvider trackDataProvider;
 	private IGroupwareManager groupwareManager;
 	private SerializationManager serializationManager;
+	private IStatisticsPerformer rStatisticsPerformer;
 
 	/**
 	 * The use case determines which kind of data is loaded in the views.
@@ -81,10 +89,11 @@ public class GeneralManager
 
 	/**
 	 * The master use case of this analysis session.
+	 * 
 	 * @deprecated Will be replaced by new use case management / handling.
 	 */
 	private IUseCase masterUseCase;
-	
+
 	private boolean bIsWiiMode = false;
 
 	@Override
@@ -244,6 +253,28 @@ public class GeneralManager
 	@Override
 	public TrackDataProvider getTrackDataProvider() {
 		return trackDataProvider;
+	}
+
+	@Override
+	public IStatisticsPerformer getRStatisticsPerformer() {
+
+		if (rStatisticsPerformer == null) {
+			// Lazy creation
+			IExtensionRegistry reg = Platform.getExtensionRegistry();
+
+			IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.util.statistics.StatisticsPerformer");
+			IExtension ext = ep.getExtension("org.caleydo.util.r.RStatisticsPerformer");
+			IConfigurationElement[] ce = ext.getConfigurationElements();
+
+			try {
+				rStatisticsPerformer = (IStatisticsPerformer) ce[0].createExecutableExtension("class");
+			}
+			catch (Exception ex) {
+				throw new RuntimeException("Could not instantiate R Statistics Peformer", ex);
+			}
+		}
+
+		return rStatisticsPerformer;
 	}
 
 	@Override

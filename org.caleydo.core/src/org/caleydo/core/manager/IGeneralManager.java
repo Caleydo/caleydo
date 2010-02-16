@@ -13,6 +13,7 @@ import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;
+import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.core.util.tracking.TrackDataProvider;
 import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.data.loader.ResourceLoader;
@@ -84,6 +85,8 @@ public interface IGeneralManager {
 	public GlyphManager getGlyphManager();
 
 	public IDCreator getIDManager();
+	
+	public IStatisticsPerformer getRStatisticsPerformer();
 
 	/**
 	 * Returns the logger.
