@@ -84,6 +84,6 @@ public class GenomePerspective
 			Application.openRCPViews(mainLayout);
 		}
 
-		// layout.addPlaceholder(LOG_VIEW, IPageLayout.BOTTOM, (float) 0.8, "right");
+		 layout.addPlaceholder("org.caleydo.view.grouper", IPageLayout.RIGHT, (float) 0.85, "folderLayoutRight");
 	}
 }
