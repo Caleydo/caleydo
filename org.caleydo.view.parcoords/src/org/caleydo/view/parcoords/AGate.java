@@ -1,6 +1,6 @@
 package org.caleydo.view.parcoords;
 
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.GATE_TIP_HEIGHT;
+import static org.caleydo.view.parcoords.PCRenderStyle.GATE_TIP_HEIGHT;
 
 import javax.media.opengl.GL;
 
@@ -19,7 +19,7 @@ public abstract class AGate extends AGLGUIElement {
 	protected float currentPosition;
 
 	protected ISet set;
-	protected ParCoordsRenderStyle renderStyle;
+	protected PCRenderStyle renderStyle;
 	protected float mouseTopSpacing;
 	protected float mouseBottomSpacing;
 	protected float top;

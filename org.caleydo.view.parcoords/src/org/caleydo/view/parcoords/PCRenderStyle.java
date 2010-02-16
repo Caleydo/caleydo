@@ -1,5 +1,8 @@
 package org.caleydo.view.parcoords;
 
+import java.util.HashMap;
+
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
@@ -9,7 +12,21 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
  * @author Alexander Lex
  */
 
-public class ParCoordsRenderStyle extends GeneralRenderStyle {
+public class PCRenderStyle extends GeneralRenderStyle {
+
+	public class PolyLineState {
+		float lineWidth;
+		float zDepth;
+		float[] color;
+
+		PolyLineState(float lineWidth, float zDepth, float[] color) {
+			this.lineWidth = lineWidth;
+			this.zDepth = zDepth;
+			this.color = color;
+		}
+	}
+
+	private HashMap<SelectionType, PolyLineState> hashSelectionTypeToPolylineState;
 
 	// Z Values
 	public static final float POLYLINE_NORMAL_Z = 0.001f;
@@ -22,8 +39,8 @@ public class ParCoordsRenderStyle extends GeneralRenderStyle {
 	public static final float LABEL_Z = 0.004f;
 	public static final float TEXT_ON_LABEL_Z = LABEL_Z + 0.0001f;
 
-	public static final float[] POLYLINE_NO_OCCLUSION_PREV_COLOR = {0.0f, 0.0f,
-			0.0f, 1.0f};
+	public static final float[] POLYLINE_NO_OCCLUSION_PREV_COLOR = { 0.0f,
+			0.0f, 0.0f, 1.0f };
 
 	public static final float[] POLYLINE_SELECTED_COLOR = SELECTED_COLOR; // {
 	// 0f,
@@ -34,14 +51,14 @@ public class ParCoordsRenderStyle extends GeneralRenderStyle {
 
 	public static final float SELECTED_POLYLINE_LINE_WIDTH = 4.0f;
 
-	public static final float[] POLYLINE_MOUSE_OVER_COLOR = {0.9f, 0.9f, 0.0f,
-			1.0f};
+	public static final float[] POLYLINE_MOUSE_OVER_COLOR = { 0.9f, 0.9f, 0.0f,
+			1.0f };
 
 	public static final float MOUSE_OVER_POLYLINE_LINE_WIDTH = 4.0f;
 
 	public static final float DESELECTED_POLYLINE_LINE_WIDTH = 1.0f;
 
-	public static final float[] Y_AXIS_COLOR = {0.0f, 0.0f, 1.0f, 1.0f};
+	public static final float[] Y_AXIS_COLOR = { 0.0f, 0.0f, 1.0f, 1.0f };
 
 	public static final float Y_AXIS_LINE_WIDTH = 1.0f;
 
@@ -53,18 +70,18 @@ public class ParCoordsRenderStyle extends GeneralRenderStyle {
 
 	public static final float Y_AXIS_MOUSE_OVER_LINE_WIDTH = 4.0f;
 
-	public static final float[] X_AXIS_COLOR = {0.0f, 0.0f, 1.0f, 1.0f};
+	public static final float[] X_AXIS_COLOR = { 0.0f, 0.0f, 1.0f, 1.0f };
 
 	public static final float X_AXIS_LINE_WIDTH = 3.0f;
 
-	public static final float[] CANVAS_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};
+	public static final float[] CANVAS_COLOR = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-	public static final float[] GATE_TIP_COLOR = {1f, 0.705f, 0f, 1.0f};
-	public static final float[] GATE_BODY_COLOR = {0.61f, 0.705f, 1.0f, 0.8f};
+	public static final float[] GATE_TIP_COLOR = { 1f, 0.705f, 0f, 1.0f };
+	public static final float[] GATE_BODY_COLOR = { 0.61f, 0.705f, 1.0f, 0.8f };
 
-	public static final float[] ANGULAR_COLOR = {0.17f, 0.45f, 0.84f, 1};
-	public static final float[] ANGULAR_POLYGON_COLOR = {0.17f, 0.45f, 0.84f,
-			0.4f};
+	public static final float[] ANGULAR_COLOR = { 0.17f, 0.45f, 0.84f, 1 };
+	public static final float[] ANGULAR_POLYGON_COLOR = { 0.17f, 0.45f, 0.84f,
+			0.4f };
 
 	public static final float ANGLUAR_LINE_WIDTH = 4;
 
@@ -76,9 +93,9 @@ public class ParCoordsRenderStyle extends GeneralRenderStyle {
 	public static final float NAN_Y_OFFSET = -0.08f;
 
 	// modifiable colors
-	protected float[] polylineOcclusionPrevColor = {0.0f, 0.0f, 0.0f, 1.0f};
+	protected float[] polylineOcclusionPrevColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 
-	protected float[] polylineDeselectedColor = {0.0f, 0.0f, 0.0f, 0.001f};
+	protected float[] polylineDeselectedColor = { 0.0f, 0.0f, 0.0f, 0.001f };
 
 	protected float fOcclusionPrevAlpha = 0.1f;
 
@@ -111,7 +128,7 @@ public class ParCoordsRenderStyle extends GeneralRenderStyle {
 
 	private static final float fMinAxisSpacingForText = 0.1f;
 
-	private static final float[] BACKGROUND_COLOR = {1, 1, 1, 1};
+	private static final float[] BACKGROUND_COLOR = { 1, 1, 1, 1 };
 
 	private static final float fXAxisOverlap = 0.1f;
 
@@ -120,6 +137,9 @@ public class ParCoordsRenderStyle extends GeneralRenderStyle {
 	public static final int MIN_AXIS_LABEL_TEXT_SIZE = 60;
 	public static final int MIN_NUMBER_TEXT_SIZE = 55;
 
+	public final PolyLineState normalState = new PolyLineState(
+			POLYLINE_LINE_WIDTH, POLYLINE_NORMAL_Z, getPolylineOcclusionPrevColor(1000));
+
 	private GLParallelCoordinates pcs;
 
 	/**
@@ -127,9 +147,11 @@ public class ParCoordsRenderStyle extends GeneralRenderStyle {
 	 * 
 	 * @param viewFrustum
 	 */
-	public ParCoordsRenderStyle(GLParallelCoordinates pcs,
-			IViewFrustum viewFrustum) {
+	public PCRenderStyle(GLParallelCoordinates pcs, IViewFrustum viewFrustum) {
 		super(viewFrustum);
+		hashSelectionTypeToPolylineState = new HashMap<SelectionType, PolyLineState>();
+		hashSelectionTypeToPolylineState.put(SelectionType.NORMAL, normalState);
+
 		this.pcs = pcs;
 	}
 
@@ -203,6 +225,18 @@ public class ParCoordsRenderStyle extends GeneralRenderStyle {
 	public float getAxisButtonYOffset() {
 
 		return AXIS_BUTTONS_Y_OFFSET * getScaling();
+	}
+
+	public PolyLineState getPolyLineState(SelectionType selectionType) {
+		if (hashSelectionTypeToPolylineState.containsKey(selectionType)) {
+			return hashSelectionTypeToPolylineState.get(selectionType);
+		} else {
+			PolyLineState newState = new PolyLineState(POLYLINE_LINE_WIDTH,
+					POLYLINE_NORMAL_Z, selectionType.getColor());
+			hashSelectionTypeToPolylineState.put(selectionType, newState);
+			return newState;
+		}
+
 	}
 
 	// public float getGateWidth()

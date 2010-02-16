@@ -324,7 +324,12 @@ public class IDMappingManager
 
 		if (source.equals(destination))
 			return true;
-		return (DijkstraShortestPath.findPathBetween(mappingGraph, source, destination) != null);
+		try {
+			return (DijkstraShortestPath.findPathBetween(mappingGraph, source, destination) != null);
+		}
+		catch (IllegalArgumentException e) {
+			return false;
+		}
 	}
 
 	@Override

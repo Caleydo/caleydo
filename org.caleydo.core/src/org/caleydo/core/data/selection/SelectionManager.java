@@ -52,7 +52,7 @@ import org.eclipse.core.runtime.Status;
  * @author Marc Streit
  */
 public class SelectionManager
-	implements IListenerOwner {
+	implements IListenerOwner, Cloneable {
 
 	private HashMap<SelectionType, HashMap<Integer, Integer>> hashSelectionTypes;
 
@@ -78,7 +78,6 @@ public class SelectionManager
 	 */
 	public static class Builder {
 		private ArrayList<SelectionType> alSelectionTypes = null;
-		private SelectionType normalType = SelectionType.NORMAL;
 		private EIDType iDType = null;
 
 		/**
@@ -92,18 +91,6 @@ public class SelectionManager
 			this.iDType = iDType;
 		}
 
-		/**
-		 * Set a normal type. This is only necessary if it should differ from {@link SelectionType#NORMAL},
-		 * which is the default
-		 * 
-		 * @param normalType
-		 *            the normal type
-		 * @return the Builder, call another setter or build() when you're done
-		 */
-		public Builder normalType(SelectionType normalType) {
-			this.normalType = normalType;
-			return this;
-		}
 
 		/**
 		 * Set a list of selection types if you don't want to (or can) handle all selection types in your view
@@ -150,6 +137,15 @@ public class SelectionManager
 		}
 		registerEventListeners();
 
+	}
+
+	/**
+	 * Returns the id type the storage is handling.
+	 * 
+	 * @return
+	 */
+	public EIDType getIDType() {
+		return iDType;
 	}
 
 /**
@@ -252,7 +248,7 @@ public class SelectionManager
 	 *            the currently active virtual array
 	 */
 	public void setVA(IVirtualArray virtualArray) {
-		resetSelectionManager();
+//		resetSelectionManager();
 		// initialAdd(virtualArray.getIndexList());
 		this.virtualArray = virtualArray;
 	}
@@ -546,6 +542,8 @@ public class SelectionManager
 		SelectionDelta tempDelta = new SelectionDelta(iDType);
 		HashMap<Integer, Integer> tempHash;
 		for (SelectionType selectionType : selectionTypes) {
+			if(selectionType == SelectionType.NORMAL)
+				continue;
 			tempHash = hashSelectionTypes.get(selectionType);
 			for (Integer iElement : tempHash.keySet()) {
 				Integer iSelectionID = -1;
@@ -690,7 +688,7 @@ public class SelectionManager
 	}
 
 	/**
-	 * Execeutes certain commands, as specified in a {@link SelectionCommand}. Typical examples are to clear a
+	 * Executes certain commands, as specified in a {@link SelectionCommand}. Typical examples are to clear a
 	 * particular selection.
 	 * 
 	 * @param selectionCommand
@@ -771,16 +769,6 @@ public class SelectionManager
 		}
 	}
 
-	@Override
-	public String toString() {
-		String result = "IDType: " + iDType + " ";
-		for (SelectionType selectionType : hashSelectionTypes.keySet()) {
-			result = result + "[" + selectionType + ": " + hashSelectionTypes.get(selectionType).size() + "]";
-		}
-
-		return result;
-	}
-
 	/**
 	 * Returns the {@link SelectionType} for a element ID or null, if element ID is not in the selection
 	 * manager
@@ -794,6 +782,8 @@ public class SelectionManager
 			if (checkStatus(type, elementID))
 				selectedTypes.add(type);
 		}
+		if(selectedTypes.isEmpty())
+			selectedTypes.add(SelectionType.NORMAL);
 		return selectedTypes;
 	}
 
@@ -835,5 +825,65 @@ public class SelectionManager
 	public void removeSelectionType(SelectionType selectionType) {
 		hashSelectionTypes.remove(selectionType);
 		selectionTypes.remove(selectionType);
+	}
+
+	@Override
+	public String toString() {
+		String result = "IDType: " + iDType + " ";
+		for (SelectionType selectionType : hashSelectionTypes.keySet()) {
+			result = result + "[" + selectionType + ": " + hashSelectionTypes.get(selectionType).size() + "]";
+		}
+
+		return result;
+	}
+
+	/**
+	 * <p>
+	 * Returns a semi-deep copy of the selection manager. That means that all containers have been cloned to
+	 * be modifiable without affecting the source manager, however the elements themselves such as Integers or
+	 * SelectionTypes are the same (this is necessary for SelectionTypes and should be fine for other values
+	 * since they are not changed).
+	 * </p>
+	 * <p>
+	 * Notice that the clone does not contain a virtual array! <b>It must be explicitly set by the
+	 * receiver.</b>
+	 * </p>
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public SelectionManager clone() {
+		SelectionManager clone;
+		try {
+			clone = (SelectionManager) super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+			throw new IllegalStateException("Cloning error for SelectionManager: " + e.getMessage());
+		}
+
+		clone.registerEventListeners();
+		// clone hashConnectionToElementID
+		clone.hashConnectionToElementID =
+			(HashMap<Integer, ArrayList<Integer>>) this.hashConnectionToElementID.clone();
+		for (Integer id : clone.hashConnectionToElementID.keySet()) {
+			clone.hashConnectionToElementID.put(id, (ArrayList<Integer>) this.hashConnectionToElementID.get(
+				id).clone());
+		}
+
+		// clone hashSelectionTypes
+		clone.hashSelectionTypes =
+			(HashMap<SelectionType, HashMap<Integer, Integer>>) this.hashSelectionTypes.clone();
+		for (SelectionType selectionType : clone.hashSelectionTypes.keySet()) {
+			clone.hashSelectionTypes.put(selectionType, (HashMap<Integer, Integer>) this.hashSelectionTypes
+				.get(selectionType).clone());
+		}
+
+		// clone selectionTypes
+		clone.selectionTypes = (ArrayList<SelectionType>) this.selectionTypes.clone();
+
+		// the selectionDelta is reset
+		clone.selectionDelta = new SelectionDelta(iDType);
+		// the virtual array needs to be set manually by the receiving instance
+		clone.virtualArray = null;
+		return clone;
 	}
 }

@@ -49,28 +49,24 @@ import org.eclipse.core.runtime.Status;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public abstract class AStorageBasedView extends AGLView
-		implements
-			ISelectionUpdateHandler,
-			IVirtualArrayUpdateHandler,
-			ISelectionCommandHandler,
-			IViewCommandHandler {
+public abstract class AStorageBasedView
+	extends AGLView
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ISelectionCommandHandler,
+	IViewCommandHandler {
 
 	// protected ArrayList<Boolean> alUseInRandomSampling;
 
 	protected ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 	/**
-	 * This manager is responsible for the content in the storages (the
-	 * indices). The contentSelectionManager is initialized when the useCase is
-	 * set ({@link #setUseCase(IUseCase)}).
+	 * This manager is responsible for the content in the storages (the indices). The contentSelectionManager
+	 * is initialized when the useCase is set ({@link #setUseCase(IUseCase)}).
 	 */
 	protected SelectionManager contentSelectionManager;
 
 	/**
-	 * This manager is responsible for the management of the storages in the
-	 * set. The storageSelectionManager is initialized when the useCase is set (
-	 * {@link #setUseCase(IUseCase)}).
+	 * This manager is responsible for the management of the storages in the set. The storageSelectionManager
+	 * is initialized when the useCase is set ( {@link #setUseCase(IUseCase)}).
 	 */
 	protected SelectionManager storageSelectionManager;
 
@@ -100,8 +96,8 @@ public abstract class AStorageBasedView extends AGLView
 	protected int iNumberOfSamplesPerHeatmap = 100;
 
 	protected SelectionUpdateListener selectionUpdateListener;
-	protected VirtualArrayUpdateListener virtualArrayUpdateListener;
 	protected SelectionCommandListener selectionCommandListener;
+	protected VirtualArrayUpdateListener virtualArrayUpdateListener;
 	protected RedrawViewListener redrawViewListener;
 	protected ClearSelectionsListener clearSelectionsListener;
 	protected ReplaceVirtualArrayListener replaceVirtualArrayListener;
@@ -113,16 +109,13 @@ public abstract class AStorageBasedView extends AGLView
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	protected AStorageBasedView(GLCaleydoCanvas glCanvas, final String sLabel,
-			final IViewFrustum viewFrustum) {
+	protected AStorageBasedView(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, true);
 
-		connectedElementRepresentationManager = generalManager
-				.getViewGLCanvasManager()
-				.getConnectedElementRepresentationManager();
+		connectedElementRepresentationManager =
+			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
-		textRenderer = new CaleydoTextRenderer(
-				new Font("Arial", Font.PLAIN, 24), false);
+		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 		// registerEventListeners();
 
 	}
@@ -132,33 +125,15 @@ public abstract class AStorageBasedView extends AGLView
 		this.useCase = useCase;
 		this.dataDomain = useCase.getDataDomain();
 
-		if (dataDomain == EDataDomain.GENETIC_DATA) {
-			contentSelectionManager = new SelectionManager.Builder(
-					EIDType.EXPRESSION_INDEX).build();
-			storageSelectionManager = new SelectionManager.Builder(
-					EIDType.EXPERIMENT_INDEX).build();
-		} else if (dataDomain == EDataDomain.CLINICAL_DATA) {
-			contentSelectionManager = new SelectionManager.Builder(
-					EIDType.EXPERIMENT_INDEX).build();
-			storageSelectionManager = new SelectionManager.Builder(
-					EIDType.EXPERIMENT_RECORD).build();
-		} else if (dataDomain == EDataDomain.UNSPECIFIED) {
-			contentSelectionManager = new SelectionManager.Builder(
-					EIDType.EXPRESSION_INDEX).build();
-			storageSelectionManager = new SelectionManager.Builder(
-					EIDType.EXPERIMENT_INDEX).build();
-		} else {
-			throw new IllegalStateException(
-					"Don't know how to handle the data domain " + dataDomain
-							+ " for assigning EIDTypes");
-		}
+		contentSelectionManager = useCase.getContentSelectionManager();
+		storageSelectionManager = useCase.getStorageSelectionManager();
 
 	}
 
 	/**
-	 * Toggle whether to render the complete dataset (with regards to the
-	 * filters though) or only contextual data This effectively means switching
-	 * between the {@link EVAType#CONTENT} and {@link EVAType#CONTENT_CONTEXT}
+	 * Toggle whether to render the complete dataset (with regards to the filters though) or only contextual
+	 * data This effectively means switching between the {@link EVAType#CONTENT} and
+	 * {@link EVAType#CONTENT_CONTEXT}
 	 */
 	public abstract void renderContext(boolean bRenderContext);
 
@@ -176,24 +151,24 @@ public abstract class AStorageBasedView extends AGLView
 
 		super.initData();
 
-		bRenderOnlyContext = (glRemoteRenderingView != null && glRemoteRenderingView
-				.getViewType().equals("org.caleydo.view.bucket"));
+		bRenderOnlyContext =
+			(glRemoteRenderingView != null && glRemoteRenderingView.getViewType().equals(
+				"org.caleydo.view.bucket"));
 
 		// TODO: do we need this here?
-		if (set == null) {
-			contentSelectionManager.resetSelectionManager();
-			storageSelectionManager.resetSelectionManager();
-			connectedElementRepresentationManager
-					.clear(EIDType.EXPRESSION_INDEX);
-			return;
-		}
+//		if (set == null) {
+//			contentSelectionManager.resetSelectionManager();
+//			storageSelectionManager.resetSelectionManager();
+//			connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
+//			return;
+//		}
 
 		initLists();
 	}
 
 	/**
-	 * Initializes a virtual array with all elements, according to the data
-	 * filters, as defined in {@link EDataFilterLevel}.
+	 * Initializes a virtual array with all elements, according to the data filters, as defined in
+	 * {@link EDataFilterLevel}.
 	 */
 	// protected final void initCompleteList() {
 	// // initialize virtual array that contains all (filtered) information
@@ -248,16 +223,13 @@ public abstract class AStorageBasedView extends AGLView
 	 * @param selectionDelta
 	 *            the selection delta which should be represented
 	 * @throws InvalidAttributeValueException
-	 *             when the selectionDelta does not contain a valid type for
-	 *             this view
+	 *             when the selectionDelta does not contain a valid type for this view
 	 */
-	protected abstract ArrayList<SelectedElementRep> createElementRep(
-			EIDType idType, int iStorageIndex)
-			throws InvalidAttributeValueException;
+	protected abstract ArrayList<SelectedElementRep> createElementRep(EIDType idType, int iStorageIndex)
+		throws InvalidAttributeValueException;
 
 	@Override
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		// generalManager.getLogger().log(
 		// Level.INFO,
 		// "Update called by " + eventTrigger.getClass().getSimpleName()
@@ -265,10 +237,9 @@ public abstract class AStorageBasedView extends AGLView
 
 		// Check for type that can be handled
 		if (selectionDelta.getIDType().getCategory() == EIDCategory.GENE
-				&& dataDomain == EDataDomain.GENETIC_DATA) {
+			&& dataDomain == EDataDomain.GENETIC_DATA) {
 			contentSelectionManager.setDelta(selectionDelta);
-			ISelectionDelta internalDelta = contentSelectionManager
-					.getCompleteDelta();
+			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
 			handleConnectedElementRep(internalDelta);
 			reactOnExternalSelection(scrollToSelection);
@@ -276,24 +247,22 @@ public abstract class AStorageBasedView extends AGLView
 		}
 
 		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
-				&& (dataDomain == EDataDomain.GENETIC_DATA)) {
+			&& (dataDomain == EDataDomain.GENETIC_DATA)) {
 			// generalManager.getIDMappingManager().getID(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX,
 			// key)(type)
 
 			storageSelectionManager.setDelta(selectionDelta);
-			handleConnectedElementRep(storageSelectionManager
-					.getCompleteDelta());
+			handleConnectedElementRep(storageSelectionManager.getCompleteDelta());
 			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
 		}
 
 		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
-				&& dataDomain == EDataDomain.CLINICAL_DATA) {
+			&& dataDomain == EDataDomain.CLINICAL_DATA) {
 
 			contentSelectionManager.setDelta(selectionDelta);
 
-			handleConnectedElementRep(contentSelectionManager
-					.getCompleteDelta());
+			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
 			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
 		}
@@ -301,21 +270,19 @@ public abstract class AStorageBasedView extends AGLView
 		// FIXME: this is not nice since we use expression index for unspecified
 		// data
 		else if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX
-				&& dataDomain == EDataDomain.UNSPECIFIED) {
+			&& dataDomain == EDataDomain.UNSPECIFIED) {
 
 			contentSelectionManager.setDelta(selectionDelta);
-			handleConnectedElementRep(contentSelectionManager
-					.getCompleteDelta());
+			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
 			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
 		}
 
 		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
-				&& dataDomain == EDataDomain.UNSPECIFIED) {
+			&& dataDomain == EDataDomain.UNSPECIFIED) {
 
 			storageSelectionManager.setDelta(selectionDelta);
-			handleConnectedElementRep(contentSelectionManager
-					.getCompleteDelta());
+			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
 			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
 		}
@@ -330,8 +297,7 @@ public abstract class AStorageBasedView extends AGLView
 		// + ", received in: " + this.getClass().getSimpleName());
 
 		// check whether the delta is actually of the correct VA Type
-		if (delta.getVAType() != contentVAType
-				&& delta.getVAType() != storageVAType)
+		if (delta.getVAType() != contentVAType && delta.getVAType() != storageVAType)
 			return;
 
 		// delete group info for according virtual array
@@ -348,14 +314,16 @@ public abstract class AStorageBasedView extends AGLView
 		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 			// ignore va changes of other VA types
 			selectionManager = storageSelectionManager;
-		} else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT) {
-			delta = DeltaConverter
-					.convertDelta(EIDType.EXPRESSION_INDEX, delta);
+		}
+		else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT) {
+			delta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, delta);
 
 			selectionManager = contentSelectionManager;
-		} else if (delta.getIDType() == EIDType.EXPRESSION_INDEX) {
+		}
+		else if (delta.getIDType() == EIDType.EXPRESSION_INDEX) {
 			selectionManager = contentSelectionManager;
-		} else
+		}
+		else
 			return;
 
 		reactOnVAChanges(delta);
@@ -366,16 +334,15 @@ public abstract class AStorageBasedView extends AGLView
 	}
 
 	/**
-	 * Is called any time a update is triggered externally. Should be
-	 * implemented by inheriting views.
+	 * Is called any time a update is triggered externally. Should be implemented by inheriting views.
 	 */
 	protected void reactOnExternalSelection(boolean scrollToSelection) {
 
 	}
 
 	/**
-	 * Is called any time a virtual array is changed. Can be implemented by
-	 * inheriting views if some action is necessary
+	 * Is called any time a virtual array is changed. Can be implemented by inheriting views if some action is
+	 * necessary
 	 * 
 	 * @param delta
 	 */
@@ -384,8 +351,8 @@ public abstract class AStorageBasedView extends AGLView
 	}
 
 	/**
-	 * This method is called when new elements are added from external - if you
-	 * need to react to it do it here, if not don't do anything.
+	 * This method is called when new elements are added from external - if you need to react to it do it
+	 * here, if not don't do anything.
 	 */
 	protected void initForAddedElements() {
 	}
@@ -446,8 +413,7 @@ public abstract class AStorageBasedView extends AGLView
 	}
 
 	@Override
-	public void handleSelectionCommand(EIDCategory category,
-			SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
 		if (category == EIDCategory.GENE)
 			contentSelectionManager.executeSelectionCommand(selectionCommand);
 		else
@@ -456,8 +422,7 @@ public abstract class AStorageBasedView extends AGLView
 	}
 
 	/**
-	 * Handles the creation of {@link SelectedElementRep} according to the data
-	 * in a selectionDelta
+	 * Handles the creation of {@link SelectedElementRep} according to the data in a selectionDelta
 	 * 
 	 * @param selectionDelta
 	 *            the selection data that should be handled
@@ -484,26 +449,26 @@ public abstract class AStorageBasedView extends AGLView
 						iID = item.getSecondaryID();
 						idType = EIDType.EXPRESSION_INDEX;
 
-					} else if (selectionDelta.getSecondaryIDType() == EIDType.EXPRESSION_INDEX) {
+					}
+					else if (selectionDelta.getSecondaryIDType() == EIDType.EXPRESSION_INDEX) {
 						iStorageIndex = item.getSecondaryID();
 
 						iID = item.getPrimaryID();
 						idType = EIDType.EXPRESSION_INDEX;
-					} else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
+					}
+					else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 						iID = item.getPrimaryID();
 						iStorageIndex = iID;
 						idType = EIDType.EXPERIMENT_INDEX;
-					} else
-						throw new InvalidAttributeValueException(
-								"Can not handle data type: "
-										+ selectionDelta.getIDType());
+					}
+					else
+						throw new InvalidAttributeValueException("Can not handle data type: "
+							+ selectionDelta.getIDType());
 
 					if (iStorageIndex == -1)
-						throw new IllegalArgumentException(
-								"No internal ID in selection delta");
+						throw new IllegalArgumentException("No internal ID in selection delta");
 
-					ArrayList<SelectedElementRep> alRep = createElementRep(
-							idType, iStorageIndex);
+					ArrayList<SelectedElementRep> alRep = createElementRep(idType, iStorageIndex);
 					if (alRep == null) {
 						continue;
 					}
@@ -513,21 +478,16 @@ public abstract class AStorageBasedView extends AGLView
 						}
 
 						for (Integer iConnectionID : item.getConnectionIDs()) {
-							connectedElementRepresentationManager.addSelection(
-									iConnectionID, rep);
+							connectedElementRepresentationManager.addSelection(iConnectionID, rep);
 						}
 					}
 				}
 			}
-		} catch (InvalidAttributeValueException e) {
-			generalManager
-					.getLogger()
-					.log(
-							new Status(
-									IStatus.WARNING,
-									IGeneralManager.PLUGIN_ID,
-									"Can not handle data type of update in selectionDelta",
-									e));
+		}
+		catch (InvalidAttributeValueException e) {
+			generalManager.getLogger().log(
+				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+					"Can not handle data type of update in selectionDelta", e));
 		}
 	}
 
@@ -555,15 +515,13 @@ public abstract class AStorageBasedView extends AGLView
 	}
 
 	/**
-	 * Set the number of samples which are shown in the view. The distribution
-	 * is purely random
+	 * Set the number of samples which are shown in the view. The distribution is purely random
 	 * 
 	 * @param iNumberOfRandomElements
 	 *            the number
 	 */
 	public final void setNumberOfSamplesToShow(int iNumberOfRandomElements) {
-		if (iNumberOfRandomElements != this.iNumberOfRandomElements
-				&& bUseRandomSampling) {
+		if (iNumberOfRandomElements != this.iNumberOfRandomElements && bUseRandomSampling) {
 			this.iNumberOfRandomElements = iNumberOfRandomElements;
 			initData();
 			return;
@@ -576,13 +534,12 @@ public abstract class AStorageBasedView extends AGLView
 	// public abstract void resetSelections();
 
 	/**
-	 * Causes the view to change its orientation, i.e. whether a gene (content)
-	 * is rendered horizontally (default) or vertically.
+	 * Causes the view to change its orientation, i.e. whether a gene (content) is rendered horizontally
+	 * (default) or vertically.
 	 * 
 	 * @param bDefaultOrientation
-	 *            true for the default orientation (where the content is
-	 *            horizontally) false for the alternate orientation (where the
-	 *            content is vertically)
+	 *            true for the default orientation (where the content is horizontally) false for the alternate
+	 *            orientation (where the content is vertically)
 	 */
 	public abstract void changeOrientation(boolean bDefaultOrientation);
 
@@ -598,18 +555,15 @@ public abstract class AStorageBasedView extends AGLView
 		super.registerEventListeners();
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class,
-				selectionUpdateListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
-		eventPublisher.addListener(VirtualArrayUpdateEvent.class,
-				virtualArrayUpdateListener);
+		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		eventPublisher.addListener(SelectionCommandEvent.class,
-				selectionCommandListener);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
@@ -617,13 +571,11 @@ public abstract class AStorageBasedView extends AGLView
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class,
-				clearSelectionsListener);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
 		replaceVirtualArrayListener = new ReplaceVirtualArrayListener();
 		replaceVirtualArrayListener.setHandler(this);
-		eventPublisher.addListener(ReplaceVirtualArrayEvent.class,
-				replaceVirtualArrayListener);
+		eventPublisher.addListener(ReplaceVirtualArrayEvent.class, replaceVirtualArrayListener);
 	}
 
 	@Override
@@ -633,14 +585,14 @@ public abstract class AStorageBasedView extends AGLView
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
 		}
-		if (virtualArrayUpdateListener != null) {
-			eventPublisher.removeListener(virtualArrayUpdateListener);
-			virtualArrayUpdateListener = null;
-		}
 		if (selectionCommandListener != null) {
 			eventPublisher.removeListener(selectionCommandListener);
 			selectionCommandListener = null;
 		}
+		if (virtualArrayUpdateListener != null) {
+			eventPublisher.removeListener(virtualArrayUpdateListener);
+			virtualArrayUpdateListener = null;
+		}	
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);
 			redrawViewListener = null;
@@ -662,28 +614,28 @@ public abstract class AStorageBasedView extends AGLView
 		if (primaryVAType == null)
 			return;
 
-		EVAType suggestedVAType = EVAType
-				.getVATypeForPrimaryVAType(primaryVAType);
+		EVAType suggestedVAType = EVAType.getVATypeForPrimaryVAType(primaryVAType);
 
-		if (vaType != suggestedVAType
-				|| vaType.getPrimaryVAType() != primaryVAType)
+		if (vaType != suggestedVAType || vaType.getPrimaryVAType() != primaryVAType)
 			return;
 
 		if (vaType == storageVAType) {
 			storageVA = useCase.getVA(vaType);
 			// storageSelectionManager.setVA(storageVA);
-		} else if (vaType == contentVAType) {
+		}
+		else if (vaType == contentVAType) {
 			contentVA = useCase.getVA(vaType);
 			// contentSelectionManager.setVA(contentVA);
-		} else
+		}
+		else
 			return;
 
 		initData();
 	}
 
 	/**
-	 * Manually set the vaType if you want to override the automatic setting
-	 * triggeret in {@link #init(javax.media.opengl.GL)}
+	 * Manually set the vaType if you want to override the automatic setting triggeret in
+	 * {@link #init(javax.media.opengl.GL)}
 	 * 
 	 * @param vaType
 	 */
@@ -692,8 +644,8 @@ public abstract class AStorageBasedView extends AGLView
 	}
 
 	/**
-	 * Manually set the vaType if you want to override the automatic setting
-	 * triggeret in {@link #init(javax.media.opengl.GL)}
+	 * Manually set the vaType if you want to override the automatic setting triggeret in
+	 * {@link #init(javax.media.opengl.GL)}
 	 * 
 	 * @param vaType
 	 */

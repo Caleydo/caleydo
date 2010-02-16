@@ -1,28 +1,28 @@
 package org.caleydo.view.parcoords;
 
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.ANGLUAR_LINE_WIDTH;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.ANGULAR_COLOR;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.ANGULAR_POLYGON_COLOR;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.AXIS_MARKER_WIDTH;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.AXIS_Z;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.LABEL_Z;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.NAN_Y_OFFSET;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.NUMBER_AXIS_MARKERS;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.SELECTED_POLYLINE_LINE_WIDTH;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.X_AXIS_COLOR;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.X_AXIS_LINE_WIDTH;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.Y_AXIS_COLOR;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.Y_AXIS_LOW;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_COLOR;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_LINE_WIDTH;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.Y_AXIS_SELECTED_COLOR;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH;
+import static org.caleydo.view.parcoords.PCRenderStyle.ANGLUAR_LINE_WIDTH;
+import static org.caleydo.view.parcoords.PCRenderStyle.ANGULAR_COLOR;
+import static org.caleydo.view.parcoords.PCRenderStyle.ANGULAR_POLYGON_COLOR;
+import static org.caleydo.view.parcoords.PCRenderStyle.AXIS_MARKER_WIDTH;
+import static org.caleydo.view.parcoords.PCRenderStyle.AXIS_Z;
+import static org.caleydo.view.parcoords.PCRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH;
+import static org.caleydo.view.parcoords.PCRenderStyle.LABEL_Z;
+import static org.caleydo.view.parcoords.PCRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH;
+import static org.caleydo.view.parcoords.PCRenderStyle.NAN_Y_OFFSET;
+import static org.caleydo.view.parcoords.PCRenderStyle.NUMBER_AXIS_MARKERS;
+import static org.caleydo.view.parcoords.PCRenderStyle.POLYLINE_MOUSE_OVER_COLOR;
+import static org.caleydo.view.parcoords.PCRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR;
+import static org.caleydo.view.parcoords.PCRenderStyle.POLYLINE_SELECTED_COLOR;
+import static org.caleydo.view.parcoords.PCRenderStyle.SELECTED_POLYLINE_LINE_WIDTH;
+import static org.caleydo.view.parcoords.PCRenderStyle.X_AXIS_COLOR;
+import static org.caleydo.view.parcoords.PCRenderStyle.X_AXIS_LINE_WIDTH;
+import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_COLOR;
+import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_LINE_WIDTH;
+import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_LOW;
+import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_MOUSE_OVER_COLOR;
+import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_MOUSE_OVER_LINE_WIDTH;
+import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_SELECTED_COLOR;
+import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
@@ -104,6 +104,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneConte
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.bookmarking.GLBookmarkManager;
+import org.caleydo.view.parcoords.PCRenderStyle.PolyLineState;
 import org.caleydo.view.parcoords.listener.AngularBrushingListener;
 import org.caleydo.view.parcoords.listener.ApplyCurrentSelectionToVirtualArrayListener;
 import org.caleydo.view.parcoords.listener.BookmarkButtonListener;
@@ -242,7 +243,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	private SelectionManager polylineSelectionManager;
 	private SelectionManager axisSelectionManager;
 
-	protected ParCoordsRenderStyle renderStyle;
+	protected PCRenderStyle renderStyle;
 
 	private int iDisplayEveryNthPolyline = 1;
 
@@ -288,7 +289,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		super(glCanvas, sLabel, viewFrustum);
 		viewType = GLParallelCoordinates.VIEW_ID;
 
-		renderStyle = new ParCoordsRenderStyle(this, viewFrustum);
+		renderStyle = new PCRenderStyle(this, viewFrustum);
 		super.renderStyle = this.renderStyle;
 
 		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
@@ -748,10 +749,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			//
 			// }
 
-			for (SelectionType selectonType : polylineSelectionManager
-					.getSelectionTypes()) {
-				renderPolylines(gl, selectonType);
-			}
+			renderPolylines(gl);
 
 			renderGates(gl);
 
@@ -785,191 +783,216 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	 * polylineSelectionManager and are of the selection type specified in
 	 * renderMode
 	 * 
+	 * FIXME this needs to be changed to iterate over the virtual array,
+	 * considering the deselected elements
+	 * 
 	 * @param gl
 	 *            the GL context
 	 * @param renderMode
 	 *            the type of selection in the selection manager to render
 	 */
 	@SuppressWarnings("unchecked")
-	private void renderPolylines(GL gl, SelectionType renderMode) {
+	private void renderPolylines(GL gl) {
 
-		Collection<Integer> setDataToRender = null;
 		float fZDepth = 0f;
 
-		if (renderMode == SelectionType.DESELECTED
-				|| renderMode == SelectionType.NORMAL) {
-			// iDisplayEveryNthPolyline = contentVA.size()
-			// / iNumberOfRandomElements;
-			iDisplayEveryNthPolyline = (polylineSelectionManager
-					.getNumberOfElements() - polylineSelectionManager
-					.getNumberOfElements(SelectionType.DESELECTED))
-					/ iNumberOfRandomElements;
-			if (iDisplayEveryNthPolyline == 0) {
-				iDisplayEveryNthPolyline = 1;
-			}
-		}
-		if (renderMode == SelectionType.NORMAL) {
-			setDataToRender = polylineVA.getIndexList();
-		} else {
-			setDataToRender = polylineSelectionManager.getElements(renderMode);
-		}
-		if (renderMode == SelectionType.NORMAL) {
-			fZDepth = ParCoordsRenderStyle.POLYLINE_NORMAL_Z;
-
-			if (detailLevel.compareTo(EDetailLevel.LOW) < 1) {
-				gl
-						.glColor4fv(
-								renderStyle
-										.getPolylineDeselectedOcclusionPrevColor(setDataToRender
-												.size()
-												/ iDisplayEveryNthPolyline), 0);
-				gl
-						.glLineWidth(ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH);
-
-			} else {
-				if (bPreventOcclusion) {
-					gl.glColor4fv(renderStyle
-							.getPolylineOcclusionPrevColor(setDataToRender
-									.size()
-									/ iDisplayEveryNthPolyline), 0);
-				} else {
-					gl.glColor4fv(POLYLINE_NO_OCCLUSION_PREV_COLOR, 0);
-				}
-
-				gl.glLineWidth(ParCoordsRenderStyle.POLYLINE_LINE_WIDTH);
-			}
-		} else if (renderMode == SelectionType.SELECTION) {
-			gl.glColor4fv(POLYLINE_SELECTED_COLOR, 0);
-			gl.glLineWidth(SELECTED_POLYLINE_LINE_WIDTH);
-			fZDepth = ParCoordsRenderStyle.POLYLINE_SELECTED_Z;
-
-		} else if (renderMode == SelectionType.MOUSE_OVER) {
-			gl.glColor4fv(POLYLINE_MOUSE_OVER_COLOR, 0);
-			gl.glLineWidth(MOUSE_OVER_POLYLINE_LINE_WIDTH);
-			fZDepth = ParCoordsRenderStyle.POLYLINE_SELECTED_Z;
-
-		} else if (renderMode == SelectionType.DESELECTED) {
-			fZDepth = ParCoordsRenderStyle.POLYLINE_DESELECTED_Z;
-			gl.glColor4fv(renderStyle
-					.getPolylineDeselectedOcclusionPrevColor(setDataToRender
-							.size()
-							/ iDisplayEveryNthPolyline), 0);
-			gl.glLineWidth(DESELECTED_POLYLINE_LINE_WIDTH);
-		} else {
-			fZDepth = ParCoordsRenderStyle.POLYLINE_NORMAL_Z;
-			gl.glColor4fv(renderMode.getColor(), 0);
-			gl.glLineWidth(SELECTED_POLYLINE_LINE_WIDTH * 4);
-		}
-
-		boolean bRenderingSelection = false;
-
-		if ((renderMode == SelectionType.SELECTION || renderMode == SelectionType.MOUSE_OVER)
-				&& detailLevel == EDetailLevel.HIGH) {
-			bRenderingSelection = true;
-		}
-
-		Iterator<Integer> dataIterator = setDataToRender.iterator();
+		// PolyLineState state;
+		// setDataToRender = polylineVA.getIndexList();
+		//
+		// if (renderMode == SelectionType.DESELECTED
+		// || renderMode == SelectionType.NORMAL) {
+		// // iDisplayEveryNthPolyline = contentVA.size()
+		// // / iNumberOfRandomElements;
+		// iDisplayEveryNthPolyline = (polylineSelectionManager
+		// .getNumberOfElements() - polylineSelectionManager
+		// .getNumberOfElements(SelectionType.DESELECTED))
+		// / iNumberOfRandomElements;
+		// if (iDisplayEveryNthPolyline == 0) {
+		// iDisplayEveryNthPolyline = 1;
+		// }
+		// }
+		// if (renderMode == SelectionType.NORMAL) {
+		// state = renderStyle.normalState;
+		// } else {
+		// setDataToRender = polylineSelectionManager.getElements(renderMode);
+		// }
+		// if (renderMode == SelectionType.NORMAL) {
+		// fZDepth = PCRenderStyle.POLYLINE_NORMAL_Z;
+		//
+		// if (detailLevel.compareTo(EDetailLevel.LOW) < 1) {
+		// gl
+		// .glColor4fv(
+		// renderStyle
+		// .getPolylineDeselectedOcclusionPrevColor(setDataToRender
+		// .size()
+		// / iDisplayEveryNthPolyline), 0);
+		// gl.glLineWidth(PCRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH);
+		//
+		// } else {
+		// if (bPreventOcclusion) {
+		// gl.glColor4fv(renderStyle
+		// .getPolylineOcclusionPrevColor(setDataToRender
+		// .size()
+		// / iDisplayEveryNthPolyline), 0);
+		// } else {
+		// gl.glColor4fv(POLYLINE_NO_OCCLUSION_PREV_COLOR, 0);
+		// }
+		//
+		// gl.glLineWidth(PCRenderStyle.POLYLINE_LINE_WIDTH);
+		// }
+		// } else if (renderMode == SelectionType.SELECTION) {
+		// gl.glColor4fv(POLYLINE_SELECTED_COLOR, 0);
+		// gl.glLineWidth(SELECTED_POLYLINE_LINE_WIDTH);
+		// fZDepth = PCRenderStyle.POLYLINE_SELECTED_Z;
+		//
+		// } else if (renderMode == SelectionType.MOUSE_OVER) {
+		// gl.glColor4fv(POLYLINE_MOUSE_OVER_COLOR, 0);
+		// gl.glLineWidth(MOUSE_OVER_POLYLINE_LINE_WIDTH);
+		// fZDepth = PCRenderStyle.POLYLINE_SELECTED_Z;
+		//
+		// } else if (renderMode == SelectionType.DESELECTED) {
+		// fZDepth = PCRenderStyle.POLYLINE_DESELECTED_Z;
+		// gl.glColor4fv(renderStyle
+		// .getPolylineDeselectedOcclusionPrevColor(setDataToRender
+		// .size()
+		// / iDisplayEveryNthPolyline), 0);
+		// gl.glLineWidth(DESELECTED_POLYLINE_LINE_WIDTH);
+		// } else {
+		// fZDepth = PCRenderStyle.POLYLINE_NORMAL_Z;
+		// gl.glColor4fv(renderMode.getColor(), 0);
+		// gl.glLineWidth(SELECTED_POLYLINE_LINE_WIDTH * 4);
+		// }
+		//
+		// boolean bRenderingSelection = false;
+		//
+		// if ((renderMode == SelectionType.SELECTION || renderMode ==
+		// SelectionType.MOUSE_OVER)
+		// && detailLevel == EDetailLevel.HIGH) {
+		// bRenderingSelection = true;
+		// }
+		boolean bRenderingSelection = true;
+		Iterator<Integer> dataIterator = polylineVA.iterator();
 		// this loop executes once per polyline
-		while (dataIterator.hasNext()) {
-			int iPolyLineID = dataIterator.next();
-			if (bUseRandomSampling
-					&& (renderMode == SelectionType.DESELECTED || renderMode == SelectionType.NORMAL)) {
-				if (iPolyLineID % iDisplayEveryNthPolyline != 0) {
+		for (Integer iPolyLineID : polylineVA) {
+
+			ArrayList<SelectionType> modes = polylineSelectionManager
+					.getSelectionTypes(iPolyLineID);
+			for (SelectionType renderMode : modes) {
+				if(!renderMode.isVisible())
 					continue;
-					// if(!alUseInRandomSampling.get(set.getVA(iPolylineVAID).indexOf(iPolyLineID)))
-					// continue;
+				PolyLineState renderState = renderStyle
+						.getPolyLineState(renderMode);
+				gl.glColor4fv(renderState.color, 0);
+				gl.glLineWidth(renderState.lineWidth);
+				fZDepth = renderState.zDepth;
+				if ((renderMode == SelectionType.SELECTION || renderMode == SelectionType.MOUSE_OVER)
+						&& detailLevel == EDetailLevel.HIGH) {
+					bRenderingSelection = true;
+				} else
+					bRenderingSelection = false;
+
+				if (bUseRandomSampling
+						&& (renderMode == SelectionType.DESELECTED || renderMode == SelectionType.NORMAL)) {
+					if (iPolyLineID % iDisplayEveryNthPolyline != 0) {
+						continue;
+						// if(!alUseInRandomSampling.get(set.getVA(iPolylineVAID).indexOf(iPolyLineID)))
+						// continue;
+					}
 				}
-			}
-			if (renderMode != SelectionType.DESELECTED) {
-				gl.glPushName(pickingManager.getPickingID(iUniqueID,
-						EPickingType.POLYLINE_SELECTION, iPolyLineID));
-			}
+				if (renderMode != SelectionType.DESELECTED) {
+					gl.glPushName(pickingManager.getPickingID(iUniqueID,
+							EPickingType.POLYLINE_SELECTION, iPolyLineID));
+				}
 
-			if (!bRenderingSelection) {
-				gl.glBegin(GL.GL_LINE_STRIP);
-			}
+				if (!bRenderingSelection) {
+					gl.glBegin(GL.GL_LINE_STRIP);
+				}
 
-			IStorage currentStorage = null;
+				IStorage currentStorage = null;
 
-			// decide on which storage to use when array is polyline
-			if (bRenderStorageHorizontally) {
-				int iWhichStorage = iPolyLineID;
-				// currentStorage = set.getStorageFromVA(iStorageVAID,
-				// iWhichStorage);
-				currentStorage = set.get(iWhichStorage);// ,
-				// iIndex)iStorageVAID,
-				// iWhichStorage);
-			}
-
-			float fPreviousXValue = 0;
-			float fPreviousYValue = 0;
-			float fCurrentXValue = 0;
-			float fCurrentYValue = 0;
-
-			// this loop executes once per axis
-			for (int iVertexCount = 0; iVertexCount < axisVA.size(); iVertexCount++) {
-				int iStorageIndex = 0;
-
-				// get the index if array as polyline
+				// decide on which storage to use when array is polyline
 				if (bRenderStorageHorizontally) {
-					iStorageIndex = contentVA.get(iVertexCount);
-				}
-				// get the storage and the storage index for the different cases
-				else {
-					currentStorage = set.get(storageVA.get(iVertexCount));
-					iStorageIndex = iPolyLineID;
+					int iWhichStorage = iPolyLineID;
+					// currentStorage = set.getStorageFromVA(iStorageVAID,
+					// iWhichStorage);
+					currentStorage = set.get(iWhichStorage);// ,
+					// iIndex)iStorageVAID,
+					// iWhichStorage);
 				}
 
-				fCurrentXValue = alAxisSpacing.get(iVertexCount);
-				fCurrentYValue = currentStorage.getFloat(
-						EDataRepresentation.NORMALIZED, iStorageIndex);
-				if (Float.isNaN(fCurrentYValue)) {
-					fCurrentYValue = NAN_Y_OFFSET / renderStyle.getAxisHeight();
-				}
-				if (iVertexCount != 0) {
-					if (bRenderingSelection) {
-						gl.glBegin(GL.GL_LINES);
+				float fPreviousXValue = 0;
+				float fPreviousYValue = 0;
+				float fCurrentXValue = 0;
+				float fCurrentYValue = 0;
+
+				// this loop executes once per axis
+				for (int iVertexCount = 0; iVertexCount < axisVA.size(); iVertexCount++) {
+					int iStorageIndex = 0;
+
+					// get the index if array as polyline
+					if (bRenderStorageHorizontally) {
+						iStorageIndex = contentVA.get(iVertexCount);
+					}
+					// get the storage and the storage index for the different
+					// cases
+					else {
+						currentStorage = set.get(storageVA.get(iVertexCount));
+						iStorageIndex = iPolyLineID;
 					}
 
-					gl.glVertex3f(fPreviousXValue, fPreviousYValue
-							* renderStyle.getAxisHeight(), fZDepth);
-					gl.glVertex3f(fCurrentXValue, fCurrentYValue
-							* renderStyle.getAxisHeight(), fZDepth);
+					fCurrentXValue = alAxisSpacing.get(iVertexCount);
+					fCurrentYValue = currentStorage.getFloat(
+							EDataRepresentation.NORMALIZED, iStorageIndex);
+					if (Float.isNaN(fCurrentYValue)) {
+						fCurrentYValue = NAN_Y_OFFSET
+								/ renderStyle.getAxisHeight();
+					}
+					if (iVertexCount != 0) {
+						if (bRenderingSelection) {
+							gl.glBegin(GL.GL_LINES);
+						}
 
-					if (bRenderingSelection) {
-						gl.glEnd();
+						gl.glVertex3f(fPreviousXValue, fPreviousYValue
+								* renderStyle.getAxisHeight(), fZDepth);
+						gl.glVertex3f(fCurrentXValue, fCurrentYValue
+								* renderStyle.getAxisHeight(), fZDepth);
+
+						if (bRenderingSelection) {
+							gl.glEnd();
+						}
+
 					}
 
+					if (bRenderingSelection) {
+						String sRawValue;
+						if (currentStorage instanceof INumericalStorage) {
+							sRawValue = Formatter.formatNumber(currentStorage
+									.getFloat(EDataRepresentation.RAW,
+											iStorageIndex));
+
+						} else if (currentStorage instanceof INominalStorage) {
+							sRawValue = ((INominalStorage<String>) currentStorage)
+									.getRaw(iStorageIndex);
+						} else
+							throw new IllegalStateException(
+									"Unknown Storage Type");
+
+						renderBoxedYValues(gl, fCurrentXValue, fCurrentYValue
+								* renderStyle.getAxisHeight(), sRawValue,
+								renderMode);
+					}
+
+					fPreviousXValue = fCurrentXValue;
+					fPreviousYValue = fCurrentYValue;
 				}
 
-				if (bRenderingSelection) {
-					String sRawValue;
-					if (currentStorage instanceof INumericalStorage) {
-						sRawValue = Formatter.formatNumber(currentStorage
-								.getFloat(EDataRepresentation.RAW,
-										iStorageIndex));
-
-					} else if (currentStorage instanceof INominalStorage) {
-						sRawValue = ((INominalStorage<String>) currentStorage)
-								.getRaw(iStorageIndex);
-					} else
-						throw new IllegalStateException("Unknown Storage Type");
-
-					renderBoxedYValues(gl, fCurrentXValue, fCurrentYValue
-							* renderStyle.getAxisHeight(), sRawValue,
-							renderMode);
+				if (!bRenderingSelection) {
+					gl.glEnd();
 				}
 
-				fPreviousXValue = fCurrentXValue;
-				fPreviousYValue = fCurrentYValue;
-			}
-
-			if (!bRenderingSelection) {
-				gl.glEnd();
-			}
-
-			if (renderMode != SelectionType.DESELECTED) {
-				gl.glPopName();
+				if (renderMode != SelectionType.DESELECTED) {
+					gl.glPopName();
+				}
 			}
 		}
 	}
@@ -1052,20 +1075,15 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				float fXButtonOrigin = alAxisSpacing.get(iCount);
 
 				Vec3f lowerLeftCorner = new Vec3f(fXButtonOrigin - 0.03f,
-						ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
-						ParCoordsRenderStyle.NAN_Z);
+						PCRenderStyle.NAN_Y_OFFSET - 0.03f, PCRenderStyle.NAN_Z);
 				Vec3f lowerRightCorner = new Vec3f(fXButtonOrigin + 0.03f,
-						ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
-						ParCoordsRenderStyle.NAN_Z);
+						PCRenderStyle.NAN_Y_OFFSET - 0.03f, PCRenderStyle.NAN_Z);
 				Vec3f upperRightCorner = new Vec3f(fXButtonOrigin + 0.03f,
-						ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
-						ParCoordsRenderStyle.NAN_Z);
+						PCRenderStyle.NAN_Y_OFFSET + 0.03f, PCRenderStyle.NAN_Z);
 				Vec3f upperLeftCorner = new Vec3f(fXButtonOrigin - 0.03f,
-						ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
-						ParCoordsRenderStyle.NAN_Z);
+						PCRenderStyle.NAN_Y_OFFSET + 0.03f, PCRenderStyle.NAN_Z);
 				Vec3f scalingPivot = new Vec3f(fXButtonOrigin,
-						ParCoordsRenderStyle.NAN_Y_OFFSET,
-						ParCoordsRenderStyle.NAN_Z);
+						PCRenderStyle.NAN_Y_OFFSET, PCRenderStyle.NAN_Z);
 
 				int iPickingID = pickingManager.getPickingID(iUniqueID,
 						EPickingType.REMOVE_NAN, axisVA.get(iCount));
@@ -1091,7 +1109,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 							Rectangle2D bounds = textRenderer.getScaledBounds(
 									gl, Formatter.formatNumber(fNumber),
 									renderStyle.getSmallFontScalingFactor(),
-									ParCoordsRenderStyle.MIN_NUMBER_TEXT_SIZE);
+									PCRenderStyle.MIN_NUMBER_TEXT_SIZE);
 							float fWidth = (float) bounds.getWidth();
 							float fHeightHalf = (float) bounds.getHeight() / 3.0f;
 
@@ -1153,7 +1171,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				if (isRenderedRemote())
 					fScaling *= 1.5f;
 				textRenderer.draw3D(gl, sAxisLabel, 0, 0, 0, fScaling,
-						ParCoordsRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
+						PCRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
 				textRenderer.end3DRendering();
 				gl.glRotatef(-25, 0, 0, 1);
 				gl.glTranslatef(-fXPosition,
@@ -1187,7 +1205,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				// render Buttons
 
 				iPickingID = -1;
-				float fYDropOrigin = -ParCoordsRenderStyle.AXIS_BUTTONS_Y_OFFSET;
+				float fYDropOrigin = -PCRenderStyle.AXIS_BUTTONS_Y_OFFSET;
 
 				gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -1360,7 +1378,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			return;
 
 		gl.glColor4f(0, 0, 0, 1f);
-		gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
+		gl.glLineWidth(PCRenderStyle.Y_AXIS_LINE_WIDTH);
 		// gl.glPushName(iPickingID);
 
 		float fXOrigin = -0.25f;
@@ -1408,7 +1426,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			Float fBottom = gate.getBottom();
 			Float fTop = gate.getTop();
 
-			gl.glColor4fv(ParCoordsRenderStyle.GATE_BODY_COLOR, 0);
+			gl.glColor4fv(PCRenderStyle.GATE_BODY_COLOR, 0);
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f(fXOrigin, fBottom, 0);
 			gl.glVertex3f(viewFrustum.getWidth() - 1, fBottom, 0);
@@ -1452,7 +1470,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		gl.glColor4fv(Y_AXIS_COLOR, 0);
 
 		Rectangle2D tempRectangle = textRenderer.getScaledBounds(gl, sRawValue,
-				fScaling, ParCoordsRenderStyle.MIN_NUMBER_TEXT_SIZE);
+				fScaling, PCRenderStyle.MIN_NUMBER_TEXT_SIZE);
 		float fSmallSpacing = renderStyle.getVerySmallSpacing();
 		float fBackPlaneWidth = (float) tempRectangle.getWidth();
 		float fBackPlaneHeight = (float) tempRectangle.getHeight();
@@ -1490,8 +1508,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			fScaling *= 1.5f;
 
 		textRenderer.draw3D(gl, sRawValue, fXOrigin, fYOrigin,
-				ParCoordsRenderStyle.TEXT_ON_LABEL_Z, fScaling,
-				ParCoordsRenderStyle.MIN_NUMBER_TEXT_SIZE);
+				PCRenderStyle.TEXT_ON_LABEL_Z, fScaling,
+				PCRenderStyle.MIN_NUMBER_TEXT_SIZE);
 		textRenderer.end3DRendering();
 	}
 
@@ -1933,9 +1951,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// axisSelectionManager
 			// .getDelta(), null);
 
-//			SelectionCommand command = new SelectionCommand(
-//					ESelectionCommandType.CLEAR, selectionType);
-//			sendSelectionCommandEvent(eAxisDataType, command);
+			// SelectionCommand command = new SelectionCommand(
+			// ESelectionCommandType.CLEAR, selectionType);
+			// sendSelectionCommandEvent(eAxisDataType, command);
 
 			ISelectionDelta selectionDelta = axisSelectionManager.getDelta();
 			if (eAxisDataType == EIDType.EXPRESSION_INDEX
@@ -2228,12 +2246,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	@Override
 	public String getShortInfo() {
 		String message;
-		int iNumLines = contentSelectionManager
-				.getNumberOfElements(SelectionType.NORMAL)
-				+ contentSelectionManager
-						.getNumberOfElements(SelectionType.MOUSE_OVER)
-				+ contentSelectionManager
-						.getNumberOfElements(SelectionType.SELECTION);
+		int iNumLines = contentVA.size();
 		if (iDisplayEveryNthPolyline == 1) {
 			message = "Parallel Coordinates - " + iNumLines + " "
 					+ useCase.getContentLabel(false, true) + " / "

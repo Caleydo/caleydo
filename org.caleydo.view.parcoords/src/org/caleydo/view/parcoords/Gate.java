@@ -1,8 +1,8 @@
 package org.caleydo.view.parcoords;
 
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.GATE_TIP_HEIGHT;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.GATE_WIDTH;
-import static org.caleydo.view.parcoords.ParCoordsRenderStyle.GATE_Z;
+import static org.caleydo.view.parcoords.PCRenderStyle.GATE_TIP_HEIGHT;
+import static org.caleydo.view.parcoords.PCRenderStyle.GATE_WIDTH;
+import static org.caleydo.view.parcoords.PCRenderStyle.GATE_Z;
 import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL;
@@ -47,7 +47,7 @@ public class Gate extends AGate {
 	 *            Render Style.
 	 */
 	public Gate(int gateID, int axisID, float lowerValue, float upperValue,
-			ISet set, ParCoordsRenderStyle renderStyle) {
+			ISet set, PCRenderStyle renderStyle) {
 		this.gateID = gateID;
 		this.axisID = axisID;
 		this.upperValue = upperValue;
@@ -165,9 +165,9 @@ public class Gate extends AGate {
 				EPickingType.GATE_BODY_SELECTION, gateID));
 
 		lowerLeftCorner.set(currentPosition - GATE_WIDTH, bottom
-				+ ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
+				+ PCRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
 		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom
-				+ ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
+				+ PCRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
 		upperRightCorner.set(currentPosition + GATE_WIDTH, unscaledTop
 				- GATE_TIP_HEIGHT, GATE_Z);
 		upperLeftCorner.set(currentPosition - GATE_WIDTH, unscaledTop
@@ -185,9 +185,9 @@ public class Gate extends AGate {
 		lowerLeftCorner.set(currentPosition - GATE_WIDTH, bottom, GATE_Z);
 		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom, GATE_Z);
 		upperRightCorner.set(currentPosition + GATE_WIDTH, bottom
-				+ ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
+				+ PCRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
 		upperLeftCorner.set(currentPosition - GATE_WIDTH, bottom
-				+ ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
+				+ PCRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
 
 		textureManager.renderTexture(gl, EIconTextures.GATE_BOTTOM,
 				lowerLeftCorner, lowerRightCorner, upperRightCorner,
@@ -236,7 +236,7 @@ public class Gate extends AGate {
 		if(rawValue.length() > 4)
 			scaling = 0.003f;
 		textRenderer.draw3D(rawValue, xOrigin, yOrigin,
-				ParCoordsRenderStyle.TEXT_ON_LABEL_Z, scaling);
+				PCRenderStyle.TEXT_ON_LABEL_Z, scaling);
 		textRenderer.end3DRendering();
 	}
 

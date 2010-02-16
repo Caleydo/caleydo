@@ -13,7 +13,9 @@ import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.AUseCase;
@@ -61,6 +63,8 @@ public class GeneticUseCase
 		possibleIDCategories = new HashMap<EIDCategory, String>();
 		possibleIDCategories.put(EIDCategory.GENE, EVAType.CONTENT_PRIMARY);
 		possibleIDCategories.put(EIDCategory.EXPERIMENT, EVAType.STORAGE_PRIMARY);
+		contentIDType = EIDType.EXPRESSION_INDEX;
+		storageIDType = EIDType.EXPERIMENT_INDEX;
 
 	}
 
@@ -171,4 +175,6 @@ public class GeneticUseCase
 
 		va.setDelta(vaDelta);
 	}
+
+
 }

@@ -7,6 +7,7 @@ import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterState;
 
@@ -127,5 +128,21 @@ public interface IUseCase {
 
 	/** Gets the name of the boots-trap xml-file this useCase was or should be loaded */
 	public void setBootstrapFileName(String bootstrapFileName);
+
+	/**
+	 * Returns a clone of the content selection manager. You have to set your virtual array manually. This is
+	 * the preferred way to initialize SelectionManagers.
+	 * 
+	 * @return a clone of the content selection manager
+	 */
+	public SelectionManager getContentSelectionManager();
+
+	/**
+	 * Returns a clone of the storage selection manager. You have to set your virtual array manually. This is
+	 * the preferred way to initialize SelectionManagers.
+	 * 
+	 * @return a clone of the storage selection manager
+	 */
+	public SelectionManager getStorageSelectionManager();
 
 }

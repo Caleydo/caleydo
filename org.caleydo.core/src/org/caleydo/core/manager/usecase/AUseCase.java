@@ -15,11 +15,16 @@ import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -28,13 +33,19 @@ import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayInUseCaseEvent;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.NewSetEvent;
+import org.caleydo.core.manager.event.view.SelectionCommandEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
@@ -50,9 +61,8 @@ import org.eclipse.swt.widgets.Shell;
 @XmlRootElement
 @XmlSeeAlso( { GeneticUseCase.class, ClinicalUseCase.class, UnspecifiedUseCase.class })
 public abstract class AUseCase
-	implements IVirtualArrayUpdateHandler, IUseCase, IListenerOwner {
-
-	private ISet oldSet;
+	implements IVirtualArrayUpdateHandler, ISelectionUpdateHandler, ISelectionCommandHandler, IUseCase,
+	IListenerOwner {
 
 	protected String contentLabelSingular = "<not specified>";
 	protected String contentLabelPlural = "<not specified>";
@@ -81,6 +91,8 @@ public abstract class AUseCase
 	/** central {@link IEventPublisher} to receive and send events */
 	private IEventPublisher eventPublisher;
 
+	protected SelectionUpdateListener selectionUpdateListener;
+	protected SelectionCommandListener selectionCommandListener;
 	private StartClusteringListener startClusteringListener;
 	private ReplaceVirtualArrayInUseCaseListener replaceVirtualArrayInUseCaseListener;
 	private VirtualArrayUpdateListener virtualArrayUpdateListener;
@@ -93,6 +105,12 @@ public abstract class AUseCase
 	 * VAType ({@link EVAType#getPrimaryVAType()} is associated for the ID Category
 	 */
 	protected HashMap<EIDCategory, String> possibleIDCategories;
+
+	protected EIDType contentIDType;
+	protected EIDType storageIDType;
+
+	protected SelectionManager contentSelectionManager;
+	protected SelectionManager storageSelectionManager;
 
 	public AUseCase() {
 		eventPublisher = GeneralManager.get().getEventPublisher();
@@ -133,12 +151,13 @@ public abstract class AUseCase
 			|| (set.getSetType() == ESetType.UNSPECIFIED && useCaseMode == EDataDomain.UNSPECIFIED)
 			|| (set.getSetType() == ESetType.GENE_EXPRESSION_DATA && useCaseMode == EDataDomain.PATHWAY_DATA)) {
 
-			oldSet = this.set;
+			ISet oldSet = this.set;
 			this.set = set;
 			if (oldSet != null) {
 				oldSet.destroy();
 				oldSet = null;
 			}
+
 		}
 		else {
 			throw new IllegalStateException("The Set " + set + " specified is not suited for the use case "
@@ -151,6 +170,7 @@ public abstract class AUseCase
 	public void updateSetInViews() {
 
 		initVAs();
+		initSelectionManagers();
 		NewSetEvent newSetEvent = new NewSetEvent();
 		newSetEvent.setSet((Set) set);
 		GeneralManager.get().getEventPublisher().triggerEvent(newSetEvent);
@@ -252,6 +272,11 @@ public abstract class AUseCase
 		mapVAIDs.put(EVAType.CONTENT, iVAID);
 	}
 
+	protected void initSelectionManagers() {
+		contentSelectionManager = new SelectionManager.Builder(contentIDType).build();
+		storageSelectionManager = new SelectionManager.Builder(storageIDType).build();
+	}
+
 	public IVirtualArray getVA(EVAType vaType) {
 		IVirtualArray va = set.getVA(mapVAIDs.get(vaType));
 		IVirtualArray vaCopy = va.clone();
@@ -261,8 +286,8 @@ public abstract class AUseCase
 	@Override
 	public void startClustering(ClusterState clusterState) {
 
-//		if (!(this instanceof GeneticUseCase))
-//			return;
+		// if (!(this instanceof GeneticUseCase))
+		// return;
 
 		clusterState.setContentVaId(mapVAIDs.get(clusterState.getContentVAType()));
 		clusterState.setStorageVaId(mapVAIDs.get(EVAType.STORAGE));
@@ -354,6 +379,14 @@ public abstract class AUseCase
 		// groupInterChangingActionListener.setHandler(this);
 		// eventPublisher.addListener(InterchangeGroupsEvent.class, groupInterChangingActionListener);
 
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+
+		selectionCommandListener = new SelectionCommandListener();
+		selectionCommandListener.setHandler(this);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
+
 		startClusteringListener = new StartClusteringListener();
 		startClusteringListener.setHandler(this);
 		eventPublisher.addListener(StartClusteringEvent.class, startClusteringListener);
@@ -371,14 +404,15 @@ public abstract class AUseCase
 	// TODO this is never called!
 	public void unregisterEventListeners() {
 
-		// if (groupMergingActionListener != null) {
-		// eventPublisher.removeListener(groupMergingActionListener);
-		// groupMergingActionListener = null;
-		// }
-		// if (groupInterChangingActionListener != null) {
-		// eventPublisher.removeListener(groupInterChangingActionListener);
-		// groupInterChangingActionListener = null;
-		// }
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
+		}
+
+		if (selectionCommandListener != null) {
+			eventPublisher.removeListener(selectionCommandListener);
+			selectionCommandListener = null;
+		}
 
 		if (startClusteringListener != null) {
 			eventPublisher.removeListener(startClusteringListener);
@@ -452,6 +486,31 @@ public abstract class AUseCase
 
 	public void setBootstrapFileName(String bootsTrapFileName) {
 		this.bootsTrapFileName = bootsTrapFileName;
+	}
+
+	public SelectionManager getContentSelectionManager() {
+		return contentSelectionManager.clone();
+	}
+
+	public SelectionManager getStorageSelectionManager() {
+		return storageSelectionManager.clone();
+	}
+
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+		IIDMappingManager mappingManager = GeneralManager.get().getIDMappingManager();
+		if (mappingManager.hasMapping(selectionDelta.getIDType(), contentSelectionManager.getIDType())) {
+			contentSelectionManager.setDelta(selectionDelta);
+		}
+		else if (mappingManager.hasMapping(selectionDelta.getIDType(), storageSelectionManager.getIDType())) {
+			storageSelectionManager.setDelta(selectionDelta);
+		}
+	}
+
+	@Override
+	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
