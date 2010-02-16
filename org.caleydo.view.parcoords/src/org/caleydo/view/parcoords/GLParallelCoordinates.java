@@ -48,7 +48,7 @@ import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.AddSelectionTypeEvent;
+import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.EVAType;
@@ -858,7 +858,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		} else {
 			fZDepth = ParCoordsRenderStyle.POLYLINE_NORMAL_Z;
 			gl.glColor4fv(renderMode.getColor(), 0);
-			gl.glLineWidth(SELECTED_POLYLINE_LINE_WIDTH);
+			gl.glLineWidth(SELECTED_POLYLINE_LINE_WIDTH * 4);
 		}
 
 		boolean bRenderingSelection = false;
@@ -1781,7 +1781,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				// FIXME remove this - selection type test
 				if (isFirstClicked) {
 					isFirstClicked = false;
-					AddSelectionTypeEvent event = new AddSelectionTypeEvent();
+					SelectionTypeEvent event = new SelectionTypeEvent();
 					selectionTypeTest = new SelectionType();
 					selectionTypeTest.setType("PC_SELECTION_TEST");
 					selectionTypeTest.setColor(new float[] { 0, 1, 0, 1 });

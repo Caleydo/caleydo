@@ -60,7 +60,7 @@ public class SelectionManager
 
 	private EIDType iDType;
 
-	private ArrayList<SelectionType> alSelectionTypes;
+	private ArrayList<SelectionType> selectionTypes;
 
 	private SelectionDelta selectionDelta;
 
@@ -68,7 +68,7 @@ public class SelectionManager
 
 	private IVirtualArray virtualArray;
 
-	private AddSelectionTypeListener addSelectionTypeListener;
+	private SelectionTypeListener addSelectionTypeListener;
 
 	/**
 	 * Static Builder for GenericSelectionManager. Allows to handle various parameter configurations. Call new
@@ -136,7 +136,7 @@ public class SelectionManager
 	private SelectionManager(Builder builder) {
 		this.iDType = builder.iDType;
 		if (builder.alSelectionTypes == null) {
-			alSelectionTypes = new ArrayList<SelectionType>(SelectionType.getDefaultTypes());
+			selectionTypes = new ArrayList<SelectionType>(SelectionType.getDefaultTypes());
 		}
 
 		hashSelectionTypes = new HashMap<SelectionType, HashMap<Integer, Integer>>();
@@ -144,7 +144,7 @@ public class SelectionManager
 
 		selectionDelta = new SelectionDelta(iDType);
 
-		for (SelectionType selectionType : alSelectionTypes) {
+		for (SelectionType selectionType : selectionTypes) {
 			if (selectionType != selectionType.NORMAL)
 				hashSelectionTypes.put(selectionType, new HashMap<Integer, Integer>());
 		}
@@ -197,7 +197,7 @@ public class SelectionManager
 	 */
 	public void remove(int iElementID, boolean bWriteVA) {
 
-		for (SelectionType selectionType : alSelectionTypes) {
+		for (SelectionType selectionType : selectionTypes) {
 			if (checkStatus(selectionType, iElementID)) {
 
 				int iNumTimesAdded = hashSelectionTypes.get(selectionType).get(iElementID) - 1;
@@ -263,7 +263,7 @@ public class SelectionManager
 	 */
 	public void resetSelectionManager() {
 		hashSelectionTypes.clear();
-		for (SelectionType eType : alSelectionTypes) {
+		for (SelectionType eType : selectionTypes) {
 			hashSelectionTypes.put(eType, new HashMap<Integer, Integer>());
 		}
 		if (virtualArray != null) {
@@ -278,7 +278,7 @@ public class SelectionManager
 	 */
 	public void clearSelections() {
 		bIsDeltaWritingEnabled = false;
-		for (SelectionType type : alSelectionTypes) {
+		for (SelectionType type : selectionTypes) {
 			if (type == SelectionType.NORMAL) {
 				continue;
 			}
@@ -497,11 +497,9 @@ public class SelectionManager
 
 		if (selectionType == SelectionType.NORMAL)
 			return false;
-		
 
 		if (hashSelectionTypes.get(selectionType).containsKey(iElementID))
 			return true;
-	
 
 		return false;
 	}
@@ -514,7 +512,7 @@ public class SelectionManager
 	 * @return true if the element exists in the selection manager, else false
 	 */
 	public boolean checkStatus(int iElementID) {
-		for (SelectionType type : alSelectionTypes) {
+		for (SelectionType type : selectionTypes) {
 			if (checkStatus(type, iElementID))
 				return true;
 		}
@@ -547,7 +545,7 @@ public class SelectionManager
 	public SelectionDelta getCompleteDelta() {
 		SelectionDelta tempDelta = new SelectionDelta(iDType);
 		HashMap<Integer, Integer> tempHash;
-		for (SelectionType selectionType : alSelectionTypes) {
+		for (SelectionType selectionType : selectionTypes) {
 			tempHash = hashSelectionTypes.get(selectionType);
 			for (Integer iElement : tempHash.keySet()) {
 				Integer iSelectionID = -1;
@@ -582,7 +580,7 @@ public class SelectionManager
 		}
 		VirtualArrayDelta tempDelta = new VirtualArrayDelta(virtualArray.getVAType(), idType);
 		HashMap<Integer, Integer> tempHash;
-		for (SelectionType selectionType : alSelectionTypes) {
+		for (SelectionType selectionType : selectionTypes) {
 			if (!selectionType.isVisible()) {
 				continue;
 			}
@@ -787,20 +785,21 @@ public class SelectionManager
 	 * Returns the {@link SelectionType} for a element ID or null, if element ID is not in the selection
 	 * manager
 	 * 
-	 * @param iElementID
+	 * @param elementID
 	 * @return selection type or NULL
 	 */
-	private SelectionType getSelectionType(int iElementID) {
-		for (SelectionType type : alSelectionTypes) {
-			if (checkStatus(type, iElementID))
-				return type;
+	public ArrayList<SelectionType> getSelectionTypes(int elementID) {
+		ArrayList<SelectionType> selectedTypes = new ArrayList<SelectionType>(2);
+		for (SelectionType type : selectionTypes) {
+			if (checkStatus(type, elementID))
+				selectedTypes.add(type);
 		}
-		return null;
+		return selectedTypes;
 	}
 
 	/** Returns a list of all currently registered selection types */
 	public ArrayList<SelectionType> getSelectionTypes() {
-		return alSelectionTypes;
+		return selectionTypes;
 	}
 
 	/**
@@ -813,10 +812,10 @@ public class SelectionManager
 
 	public void registerEventListeners() {
 
-		addSelectionTypeListener = new AddSelectionTypeListener();
+		addSelectionTypeListener = new SelectionTypeListener();
 
 		addSelectionTypeListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(AddSelectionTypeEvent.class,
+		GeneralManager.get().getEventPublisher().addListener(SelectionTypeEvent.class,
 			addSelectionTypeListener);
 
 	}
@@ -830,6 +829,11 @@ public class SelectionManager
 
 	public void addSelectionType(SelectionType selectionType) {
 		hashSelectionTypes.put(selectionType, new HashMap<Integer, Integer>());
-		alSelectionTypes.add(selectionType);
+		selectionTypes.add(selectionType);
+	}
+
+	public void removeSelectionType(SelectionType selectionType) {
+		hashSelectionTypes.remove(selectionType);
+		selectionTypes.remove(selectionType);
 	}
 }
