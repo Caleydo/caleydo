@@ -352,7 +352,7 @@ public class TreeClusterer
 		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
 
 		ArrayList<Integer> alIndices = new ArrayList<Integer>();
-		alIndices = ClusterHelper.getGeneIdsOfNode(tree, tree.getRoot());
+		alIndices =  tree.getRoot().getLeaveIds();
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
 			set.setClusteredTreeGenes(tree);
@@ -492,7 +492,7 @@ public class TreeClusterer
 		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
 //		determineExpressionValue(tree, eClustererType);
 
-		alIndices = ClusterHelper.getGeneIdsOfNode(tree, tree.getRoot());
+		alIndices = tree.getRoot().getLeaveIds();
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
 			set.setClusteredTreeGenes(tree);
@@ -715,7 +715,7 @@ public class TreeClusterer
 		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
 //		determineExpressionValue(tree, eClustererType);
 
-		AlIndexes = ClusterHelper.getGeneIdsOfNode(tree, tree.getRoot());
+		AlIndexes = tree.getRoot().getLeaveIds();
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
 			set.setClusteredTreeGenes(tree);

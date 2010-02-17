@@ -71,44 +71,6 @@ public class ClusterHelper {
 		return (float) Math.sqrt(standardDeviation / iCnt);
 	}
 
-	/**
-	 * Returns an array list with the indexes of the elements (gene/experiment) in the tree.
-	 * 
-	 * @param tree
-	 * @param currentnode
-	 * @return array list with ordered indexes of the clustered elements in the tree.
-	 */
-	public static ArrayList<Integer> getGeneIdsOfNode(Tree<ClusterNode> tree, ClusterNode currentnode) {
-
-		ArrayList<Integer> indexes = new ArrayList<Integer>();
-		traverse(tree, indexes, currentnode);
-
-		return indexes;
-	}
-
-	/**
-	 * Function traverses tree and returns an array list with indexes of the leaf nodes in correct order.
-	 * 
-	 * @param tree
-	 * @param indexes
-	 * @param node
-	 *            current node
-	 * @return
-	 */
-	private static ArrayList<Integer> traverse(Tree<ClusterNode> tree, ArrayList<Integer> indexes,
-		ClusterNode node) {
-
-		if (tree.hasChildren(node) == false) {
-			indexes.add(node.getLeafID());
-		}
-		else {
-			for (ClusterNode current : tree.getChildren(node)) {
-				traverse(tree, indexes, current);
-			}
-		}
-
-		return indexes;
-	}
 
 	/**
 	 * The function is responsible for calculating the hierarchy depth in each node of the tree. To handle

@@ -2,6 +2,7 @@ package org.caleydo.core.data.graph.tree;
 
 import java.util.ArrayList;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -38,6 +39,11 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 
 	protected String label;
 
+	/** if this node is a leaf, this id is >= 0 */
+	private int leafID = -1;
+
+	private ArrayList<Integer> leaveIDs;
+
 	public AHierarchyElement() {
 		iHierarchyLevel = 0;
 	}
@@ -48,10 +54,20 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 * @param tree
 	 *            Tree that represents the hierarchy.
 	 */
+	@SuppressWarnings("unchecked")
 	public AHierarchyElement(Tree<Node> tree) {
+		setNode((Node) this);
 		this.tree = tree;
 		iHierarchyLevel = 0;
 
+	}
+
+	public void setLeafID(int leafID) {
+		this.leafID = leafID;
+	}
+
+	public int getLeafID() {
+		return leafID;
 	}
 
 	@XmlTransient
@@ -77,6 +93,10 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 
 	public String getLabel() {
 		return label;
+	}
+
+	public ArrayList<Node> getChildren() {
+		return tree.getChildren(node);
 	}
 
 	// public float getSize() {
@@ -298,6 +318,34 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 */
 	public boolean hasChildren() {
 		return tree.hasChildren(node);
+	}
+
+	/**
+	 * Returns an array list with the indexes of the elements (gene/experiment) in the tree.
+	 * 
+	 * @param tree
+	 * @param node
+	 * @return array list with ordered indexes of the clustered elements in the tree.
+	 */
+	@XmlTransient
+	public ArrayList<Integer> getLeaveIds() {
+
+		if (!tree.isDirty() && leaveIDs != null)
+			return leaveIDs;
+		else {
+			leaveIDs = new ArrayList<Integer>();
+			ArrayList<Node> children = tree.getChildren(node);
+			if (children == null) {
+				leaveIDs.add(leafID);
+				return leaveIDs;
+			}
+			else {
+				for (Node child : children) {
+					leaveIDs.addAll(child.getLeaveIds());
+				}
+			}
+		}
+		return leaveIDs;
 	}
 
 }

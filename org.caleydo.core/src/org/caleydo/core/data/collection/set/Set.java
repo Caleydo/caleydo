@@ -17,16 +17,18 @@ import org.caleydo.core.data.collection.export.SetExporter;
 import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
@@ -514,9 +516,11 @@ public class Set
 
 			ClusterManager clusterManager = new ClusterManager(this);
 			return clusterManager.cluster(clusterState);
+		
 		}
 		else
 			return null;
+		
 	}
 
 	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes) {
@@ -652,8 +656,6 @@ public class Set
 	@Override
 	public void setClusteredTreeExps(Tree<ClusterNode> clusteredTreeExps) {
 		this.clusteredTreeExps = clusteredTreeExps;
-		clusteredTreeExps.getRoot();
-		
 	}
 
 	@Override
@@ -750,6 +752,39 @@ public class Set
 				throw new IllegalStateException("Conversion to data rep not implemented for data rep"
 					+ dataRepresentation);
 		}
+	}
+
+	public void createMetaSets() {
+		ClusterNode rootNode = clusteredTreeExps.getRoot();
+		rootNode.createMetaSets(this);
+		
+		
+		// test
+		ISet metaSet = rootNode.getChildren().get(0).getChildren().get(0).getMetaSet();
+		
+		IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
+		useCase.setSet(metaSet);
+		useCase.updateSetInViews();
+		// tree.get
+	}
+	
+	@Override
+	public ISet getShallowClone()
+	{
+		Set metaSet = new Set();
+		metaSet.setType = this.setType;
+		metaSet.bIsSetHomogeneous = this.bIsSetHomogeneous;
+		metaSet.externalDataRep = this.externalDataRep;
+		
+//		try {
+//			metaSet = (Set)super.clone();
+//		}
+//		catch (CloneNotSupportedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+		return metaSet;
 	}
 
 }

@@ -40,6 +40,11 @@ public interface ISet
 	 */
 	public ESetType getSetType();
 
+	
+	/**
+	 * add
+	 */
+	
 	/**
 	 * Add a storage based on its id. The storage has to be fully initialized with data
 	 * 
@@ -421,5 +426,11 @@ public interface ISet
 	 * garbage collector can handle it.
 	 */
 	public void destroy();
+	
+	/**
+	 * Returns a set with the 
+	 * @return
+	 */
+	public ISet getShallowClone();
 
 }

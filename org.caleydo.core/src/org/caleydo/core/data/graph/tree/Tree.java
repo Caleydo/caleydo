@@ -17,8 +17,10 @@ import org.jgrapht.graph.DefaultEdge;
  * @author Alexander Lex
  * @param <NodeType>
  */
-public class Tree<NodeType extends AHierarchyElement> {
+public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
+
+	
 	private NodeType rootNode;
 
 	DirectedGraph<NodeType, DefaultEdge> graph;
@@ -29,7 +31,7 @@ public class Tree<NodeType extends AHierarchyElement> {
 
 	private int iDepth;
 
-	private boolean bDepthFlag;
+	private boolean isDirty;
 
 	private HashMap<NodeType, NodeInfo> mNodeMap;
 
@@ -56,7 +58,7 @@ public class Tree<NodeType extends AHierarchyElement> {
 		mNodeMap.put(this.rootNode, info);
 
 		increaseNumberOfElementsInLayer(1);
-		setDepthFlag();
+		setDirty();
 
 		// TODO: this should be removed later on, only for testing purposes
 		if (rootNode instanceof ClusterNode) {
@@ -112,7 +114,7 @@ public class Tree<NodeType extends AHierarchyElement> {
 			if (tmpInfo != null)
 				tmpInfo.increaseNumberOfSiblings();
 		}
-		setDepthFlag();
+		setDirty();
 
 		// TODO: this should be removed later on, only for testing purposes
 		// TODO: isn't it better to use CompareAbleValue (and introduce an interface that implements
@@ -282,8 +284,8 @@ public class Tree<NodeType extends AHierarchyElement> {
 	 */
 	public int getDepth() {
 		// Update iDepth if tree has changed
-		if (isDepthFlagDirty()) {
-			resetDepthFlag();
+		if (isDirty()) {
+			setClean();
 			iDepth = determineDepth(rootNode);
 		}
 		return iDepth;
@@ -319,8 +321,8 @@ public class Tree<NodeType extends AHierarchyElement> {
 	 */
 	public int getDepth(NodeType node) {
 		// update whole tree depth informations if they are dirty
-		if (isDepthFlagDirty()) {
-			resetDepthFlag();
+		if (isDirty()) {
+			setClean();
 			iDepth = determineDepth(rootNode);
 		}
 		// return current depth
@@ -340,16 +342,16 @@ public class Tree<NodeType extends AHierarchyElement> {
 	 * The depth flag is a performance tool to avoid the recursive calculating of the getDepth() function when
 	 * depth is unmodified
 	 */
-	public void setDepthFlag() {
-		this.bDepthFlag = true;
+	public void setDirty() {
+		this.isDirty = true;
 	}
 
-	public void resetDepthFlag() {
-		this.bDepthFlag = false;
+	public void setClean() {
+		this.isDirty = false;
 	}
 
-	public boolean isDepthFlagDirty() {
-		return bDepthFlag;
+	public boolean isDirty() {
+		return isDirty;
 	}
 
 }

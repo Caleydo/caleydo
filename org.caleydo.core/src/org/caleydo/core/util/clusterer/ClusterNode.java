@@ -2,13 +2,17 @@ package org.caleydo.core.util.clusterer;
 
 import gleem.linalg.Vec3f;
 
+import java.util.ArrayList;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionType;
@@ -28,10 +32,7 @@ public class ClusterNode
 
 	@XmlAttribute
 	private String nodeName;
-	@XmlElement
-	private int iClusterNr;
-	@XmlElement
-	private int iLeafID;
+
 	@XmlElement
 	private float fCoefficient;
 	@XmlElement
@@ -52,20 +53,21 @@ public class ClusterNode
 	private boolean bIsPartOfSubTree = false;
 	private Vec3f vPosSubTree;
 
-
+	@XmlTransient
+	private ISet metaSet;
 
 	// @XmlElement
 	// private float[] fArRepresentativeElement;
 
-	public ClusterNode()
-	{}
-	
+	public ClusterNode() {
+	}
+
 	public ClusterNode(Tree<ClusterNode> tree, String sNodeName, int iClusterNr, float fCoefficient,
-		int iDepth, boolean bIsRootNode, int iLeaveID) {
+		int iDepth, boolean bIsRootNode, int leafID) {
 		super(tree);
 		this.nodeName = sNodeName;
 		this.id = iClusterNr;
-		this.iLeafID = iLeaveID;
+		super.setLeafID(leafID);
 		this.fCoefficient = fCoefficient;
 		this.iHierarchyDepth = iDepth;
 		this.bIsRootNode = bIsRootNode;
@@ -75,15 +77,32 @@ public class ClusterNode
 
 	}
 
-	public void createMetaSet() {
-
+	public void createMetaSets(ISet set) {
+		metaSet = set.getShallowClone();
+		metaSet.setLabel("MetaSet at " + nodeName);
+		ArrayList<Integer> storageIDs = this.getLeaveIds();
+		for (Integer storageID : storageIDs)
+			metaSet.addStorage(set.get(storageID));
+		
+		
+		
+		ArrayList<ClusterNode> children = tree.getChildren(this);
+		if(children != null)
+			for(ClusterNode child : children)
+			{
+				child.createMetaSets(set);
+			}
 	}
 
-	public void setNodeName(String nodeName)
+	public ISet getMetaSet()
 	{
-		this.nodeName = nodeName;
+		return metaSet;
 	}
 	
+	public void setNodeName(String nodeName) {
+		this.nodeName = nodeName;
+	}
+
 	public String getNodeName() {
 		return nodeName;
 	}
@@ -91,7 +110,6 @@ public class ClusterNode
 	public float getCoefficient() {
 		return fCoefficient;
 	}
-
 
 	@Override
 	public String toString() {
@@ -169,10 +187,6 @@ public class ClusterNode
 
 	public Vec3f getPosSubTree() {
 		return vPosSubTree;
-	}
-
-	public int getLeafID() {
-		return iLeafID;
 	}
 
 	// public void setRepresentativeElement(float[] fArRepresentativeElement) {

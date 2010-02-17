@@ -219,9 +219,14 @@ public abstract class AUseCase
 
 	private void initVAs() {
 
-		mapVAIDs = new EnumMap<EVAType, Integer>(EVAType.class);
-
-		if (!mapVAIDs.isEmpty()) {
+		if (mapVAIDs == null) {
+			mapVAIDs = new EnumMap<EVAType, Integer>(EVAType.class);
+		}
+		else if (set == null) {
+			mapVAIDs.clear();
+			return;
+		}
+		else if (!mapVAIDs.isEmpty()) {
 
 			for (EVAType SelectionType : EVAType.values()) {
 				if (mapVAIDs.containsKey(SelectionType)) {
@@ -232,13 +237,9 @@ public abstract class AUseCase
 			mapVAIDs.clear();
 		}
 
-		if (set == null) {
-			mapVAIDs.clear();
-			return;
-		}
-
 		// create VA with empty list
 		int iVAID = set.createVA(EVAType.CONTENT_CONTEXT, new ArrayList<Integer>());
+		System.out.println("sf");
 		mapVAIDs.put(EVAType.CONTENT_CONTEXT, iVAID);
 
 		iVAID = set.createVA(EVAType.CONTENT_EMBEDDED_HM, new ArrayList<Integer>());
@@ -306,6 +307,8 @@ public abstract class AUseCase
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EIDCategory.GENE, clusterState
 			.getContentVAType()));
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EIDCategory.EXPERIMENT, EVAType.STORAGE));
+		
+		((Set)set).createMetaSets();
 
 	}
 

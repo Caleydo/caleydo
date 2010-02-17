@@ -99,7 +99,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 
 	private TextRenderer textRenderer;
 	private SelectionManager selectionManager;
-	
+
 	private Tree<ClusterNode> tree;
 
 	/**
@@ -172,8 +172,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 				.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
 		iLastUsedGroupID = 0;
 
-		ClusterNode rootNode = new ClusterNode(tree, "Root", iLastUsedGroupID++,
-				0.0f, 0, true, -1);
+		ClusterNode rootNode = new ClusterNode(tree, "Root",
+				iLastUsedGroupID++, 0.0f, 0, true, -1);
 		tree.setRootNode(rootNode);
 
 		rootGroup = new GroupRepresentation(rootNode, renderStyle,
@@ -250,8 +250,6 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		}
 	}
 
-
-	
 	public void updateClusterTreeAccordingToGroupHierarchy() {
 		tree.setRootNode(rootGroup.getClusterNode());
 		iLastUsedGroupID = 0;
@@ -268,8 +266,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
 		set.setClusteredTreeExps(tree);
 
-		ArrayList<Integer> alIndices = ClusterHelper.getGeneIdsOfNode(tree,
-				tree.getRoot());
+		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
 		storageVA = new VirtualArray(EVAType.STORAGE, alIndices.size(),
 				alIndices);
 		set.replaceVA(useCase.getVA(EVAType.STORAGE).getID(), storageVA);
@@ -904,12 +901,10 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 	public void createNewGroup(Set<Integer> setContainedGroups) {
 
 		tree = new Tree<ClusterNode>();
-		GroupRepresentation newGroup = new GroupRepresentation(
-				new ClusterNode(tree, "group" + iLastUsedGroupID, iLastUsedGroupID++,
-						0, 0, false, -1),
-				renderStyle,
-				drawingStrategyManager
-						.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL),
+		GroupRepresentation newGroup = new GroupRepresentation(new ClusterNode(
+				tree, "group" + iLastUsedGroupID, iLastUsedGroupID++, 0, 0,
+				false, -1), renderStyle, drawingStrategyManager
+				.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL),
 				drawingStrategyManager, this, false);
 
 		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedTopElementCompositeList(setContainedGroups);
@@ -939,8 +934,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			int iTempID[] = { iLastUsedGroupID };
 			for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
 				iTempID[0]++;
-				ICompositeGraphic copy = composite
-						.createDeepCopyWithNewIDs(tree, iTempID);
+				ICompositeGraphic copy = composite.createDeepCopyWithNewIDs(
+						tree, iTempID);
 				copy.setParent(newGroup);
 				newGroup.add(copy);
 			}
@@ -1015,8 +1010,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		int iTempID[] = { iLastUsedGroupID };
 		for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
 			iTempID[0]++;
-			ICompositeGraphic copy = composite
-					.createDeepCopyWithNewIDs(tree, iTempID);
+			ICompositeGraphic copy = composite.createDeepCopyWithNewIDs(tree,
+					iTempID);
 			parent.add(copy);
 		}
 		iLastUsedGroupID = iTempID[0] + 1;
