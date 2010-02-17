@@ -74,6 +74,21 @@ public class GLScatterPlotKeyListener extends GLKeyListener<GLScatterplot> {
 			return;
 		}
 		
+		if (event.character == 'a') {
+			glScatterplot.addSelectionType();
+			return;
+		}
+		
+		if (event.character == 'r') {
+			glScatterplot.removeSelectionType();
+			return;
+		}
+		
+		
+		
+		
+		
+		
 		switch (event.keyCode) {
 			case SWT.ARROW_UP :
 				glScatterplot.upDownSelect(false);

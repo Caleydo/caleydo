@@ -37,6 +37,7 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -187,6 +188,10 @@ public class GLScatterplot extends AStorageBasedView {
 
 	private ArrayList<Texture> AlFullTextures = new ArrayList<Texture>();
 	private ArrayList<Texture> AlSelectionTextures = new ArrayList<Texture>();
+	
+	private ArrayList<SelectionType> AlSelectionTypes = new ArrayList<SelectionType>(); 
+	private SelectionType currentSelection = SelectionType.SELECTION; 
+	
 	private boolean bRedrawTextures = false;
 
 	/**
@@ -244,18 +249,14 @@ public class GLScatterplot extends AStorageBasedView {
 	 * 
 	 * @param gl
 	 */
-	private void initTextures(boolean bIsSelection) {
+	private void initTextures() {
 
-		// if (bIsSelection) return;
-
+	
 		int ix = 0;
 		int iy = 0;
 		float xnormalized = 0.0f;
 		float ynormalized = 0.0f;
 		float fSelectionFaktor = 1.0f;
-
-		int debugsize1 = AlSelectionTextures.size();
-		int debugsize2 = AlFullTextures.size();
 
 		float[] fArRgbaWhite = {1.0f, 1.0f, 1.0f, 1f}; // OPACY
 		float fBaseOpacity = 0.5f;
@@ -264,22 +265,8 @@ public class GLScatterplot extends AStorageBasedView {
 		float[] fSelectionColor = {1.0f, 0.1f, 0.5f}; // Selection Color
 		float[] fBlackColor = {0.0f, 0.0f, 0.0f}; // Black Color
 
-		int debugsize = 0;
-
 		Collection<Integer> selectionSet = contentVA.getIndexList();
-//		Set<Integer> selectionSet = elementSelectionManager.getAllElements();
-		debugsize = selectionSet.size();
-
-
-
-		if (bIsSelection) {
-			fSelectionFaktor = 2.0f;
-			fArRgbaWhite = new float[]{1.0f, 1.0f, 1.0f, 0f}; // OPACY
-			selectionSet = elementSelectionManager
-					.getElements(SelectionType.SELECTION);
-			debugsize = selectionSet.size();
-		}
-
+		
 		// TODO: Needs Evaluation
 		int StartindexX = 0; 
 		int StartindexY = 0;
@@ -294,17 +281,8 @@ public class GLScatterplot extends AStorageBasedView {
 			EndindexY = MAX_AXES - 1;
 			renderStyle.setTextureNr(NR_TEXTURESX, EndindexY - StartindexY + 1);
 		}
-
-		// if (bIsSelection) resetSelectionTextures();
-		// else resetFullTextures();
-
-		if (bIsSelection)
-			AlSelectionTextures.clear();
-		else
-			AlFullTextures.clear();
-
-		debugsize1 = AlSelectionTextures.size();
-		debugsize2 = AlFullTextures.size();
+	
+		AlFullTextures.clear();
 
 		float fGlobalTexturePointsX = iTextureSize / fSelectionFaktor;
 		float fGlobalTexturePointsY = iTextureSize / fSelectionFaktor;
@@ -315,8 +293,6 @@ public class GLScatterplot extends AStorageBasedView {
 		int TextureSize = iTextureWidth * iTextureHeight;
 
 		FloatBuffer FbTemp = BufferUtil.newFloatBuffer(TextureSize * 4);
-		// calculateTextures();
-		// AlTextures.clear();
 
 		Texture tempTextur;
 
@@ -326,7 +302,7 @@ public class GLScatterplot extends AStorageBasedView {
 				for (Integer i = 0; i < TextureSize; i++) {
 					FbTemp.put(fArRgbaWhite);
 				}
-				// if (iAxisX<=iAxisY) Hmmm, needs debugging
+				// if (iAxisX<=iAxisY) FIXME: Hmmm, needs debugging
 				if (true) {
 					for (Integer iContentIndex : selectionSet) {
 
@@ -350,17 +326,11 @@ public class GLScatterplot extends AStorageBasedView {
 
 						float[] fArMappingColor = null;
 
-						if (bIsSelection)
-							fArMappingColor = fSelectionColor;
-						else if (bUseColor)
+						if (bUseColor)
 							fArMappingColor = colorMapper.getColor(Math.max(
 									xnormalized, ynormalized));
 						else
 							fArMappingColor = fBlackColor;
-
-						// float[] fArRgba = { fArMappingColor[0],
-						// fArMappingColor[1],
-						// fArMappingColor[2], fOpacity };
 
 						if (iy >= TextureSize * 4 - 4) {
 							iy = 0; // TODO : DIRTY HACK CAUSE INIDICES ARE
@@ -369,8 +339,7 @@ public class GLScatterplot extends AStorageBasedView {
 						FbTemp.put(iy, fArMappingColor[0]);
 						FbTemp.put(iy + 1, fArMappingColor[1]);
 						FbTemp.put(iy + 2, fArMappingColor[2]);
-						
-						
+												
 						// Density Plot:
 						
 						float fcurrentOpacity=FbTemp.get(iy + 3);
@@ -401,14 +370,150 @@ public class GLScatterplot extends AStorageBasedView {
 
 				tempTextur = TextureIO.newTexture(0);
 				tempTextur.updateImage(texData);
-				if (bIsSelection)
-					AlSelectionTextures.add(tempTextur);
-				else
-					AlFullTextures.add(tempTextur);
+
+				AlFullTextures.add(tempTextur);
 			}
+		}		
+	}
+
+	
+	
+	/**
+	 * Init Selection textures, build array of textures used for holding the whole
+	 * examples
+	 * 
+	 * @param gl
+	 */
+	private void initSelectionTextures() {
+
+
+		int ix = 0;
+		int iy = 0;
+		float xnormalized = 0.0f;
+		float ynormalized = 0.0f;
+		float fSelectionFaktor = 1.0f;
+
+
+		float[] fArRgbaWhite = {1.0f, 1.0f, 1.0f, 1f}; // OPACY
+		float fBaseOpacity = 0.5f;
+		float fAddOpacity = 0.05f;
+		
+		float[] fBlackColor = {0.0f, 0.0f, 0.0f}; // Black Color				
+		fSelectionFaktor = 2.0f;
+		fArRgbaWhite = new float[]{1.0f, 1.0f, 1.0f, 0f}; // OPACY
+		
+
+		
+		// TODO: Needs Evaluation
+		int StartindexX = 0; 
+		int StartindexY = 0;
+		int EndindexX = StartindexX + NR_TEXTURESX - 1;
+		int EndindexY = StartindexY + NR_TEXTURESY - 1;
+
+		if (EndindexX >= MAX_AXES) {
+			EndindexX = MAX_AXES - 1;
+			renderStyle.setTextureNr(EndindexX - StartindexX + 1, NR_TEXTURESY);
 		}
-		debugsize1 = AlSelectionTextures.size();
-		debugsize2 = AlFullTextures.size();
+		if (EndindexY >= MAX_AXES) {
+			EndindexY = MAX_AXES - 1;
+			renderStyle.setTextureNr(NR_TEXTURESX, EndindexY - StartindexY + 1);
+		}
+		
+		AlSelectionTextures.clear();
+		
+		float fGlobalTexturePointsX = iTextureSize / fSelectionFaktor;
+		float fGlobalTexturePointsY = iTextureSize / fSelectionFaktor;
+
+		int iTextureWidth = (int) (fGlobalTexturePointsX / (double) NR_TEXTURESX);
+		int iTextureHeight = (int) (fGlobalTexturePointsY / (double) NR_TEXTURESY);
+
+		int TextureSize = iTextureWidth * iTextureHeight;
+
+		FloatBuffer FbTemp = BufferUtil.newFloatBuffer(TextureSize * 4);
+
+		Texture tempTextur;
+
+		for (Integer iAxisY = StartindexY; iAxisY <= EndindexY; iAxisY++) {
+			for (Integer iAxisX = StartindexX; iAxisX <= EndindexX; iAxisX++) {
+
+				for (Integer i = 0; i < TextureSize; i++) {
+					FbTemp.put(fArRgbaWhite);
+				}
+				// if (iAxisX<=iAxisY) FIXME: Hmmm, needs debugging
+				if (true) 
+				{
+					
+					for(SelectionType tmpSelectionType : AlSelectionTypes)
+					{
+						Collection<Integer> selectionSet = elementSelectionManager
+						.getElements(tmpSelectionType);
+					
+						for (Integer iContentIndex : selectionSet) 
+						{
+		
+							int current_SELECTED_X_AXIS = iAxisX;
+							int current_SELECTED_Y_AXIS = iAxisY;
+		
+							xnormalized = set.get(current_SELECTED_X_AXIS)
+									.getFloat(EDataRepresentation.NORMALIZED,
+											iContentIndex);
+							ynormalized = set.get(current_SELECTED_Y_AXIS)
+									.getFloat(EDataRepresentation.NORMALIZED,
+											iContentIndex);
+		
+							ix = (int) Math.floor(xnormalized
+									* (double) (iTextureWidth - 1));
+							iy = ix
+									* (iTextureWidth)
+									* 4
+									+ (int) Math.floor(ynormalized
+											* (double) (iTextureHeight - 1)) * 4;
+		
+							float[] fArMappingColor = tmpSelectionType.getColor();
+																															
+							if (iy >= TextureSize * 4 - 4) {
+								iy = 0; // TODO : DIRTY HACK CAUSE INIDICES ARE
+										// WRONG!
+							}
+							FbTemp.put(iy, fArMappingColor[0]);
+							FbTemp.put(iy + 1, fArMappingColor[1]);
+							FbTemp.put(iy + 2, fArMappingColor[2]);
+							
+							
+							// Density Plot:
+							
+							float fcurrentOpacity=FbTemp.get(iy + 3);
+							
+							if (fcurrentOpacity <fBaseOpacity)
+								fcurrentOpacity=fBaseOpacity;
+							else 
+								fcurrentOpacity+=fAddOpacity;
+								
+							if (fcurrentOpacity >=1)
+								fcurrentOpacity=1;
+																			
+							FbTemp.put(iy + 3, fcurrentOpacity);
+							
+							//FbTemp.put(iy + 3, fBaseOpacity);
+		
+						}
+					}
+					FbTemp.rewind();
+				}
+				TextureData texData = new TextureData(
+						GL.GL_RGBA /* internalFormat */,
+						iTextureWidth /* height */, iTextureHeight /* width */,
+						0 /* border */, GL.GL_RGBA /* pixelFormat */,
+						GL.GL_FLOAT /* pixelType */, false /* mipmap */,
+						false /* dataIsCompressed */,
+						true /* mustFlipVertically */, FbTemp, null);
+
+				tempTextur = TextureIO.newTexture(0);
+				tempTextur.updateImage(texData);				
+				AlSelectionTextures.add(tempTextur);
+				
+			}
+		}		
 	}
 
 	private void renderMatrixSelection(GL gl, int icurrent_X_AXIS,int icurrent_Y_AXIS, boolean bIsSecondAxis) {
@@ -835,8 +940,8 @@ public class GLScatterplot extends AStorageBasedView {
 		renderStyle.setTextureNr(100, 100);
 		resetFullTextures();
 		resetSelectionTextures();
-		initTextures(false);
-		initTextures(true);
+		initTextures();
+		initSelectionTextures();
 
 	}
 
@@ -1088,15 +1193,15 @@ public class GLScatterplot extends AStorageBasedView {
 
 						
 			if (bUpdateSelection)// && bRenderMatrix) TODO : Evaluate
-				// Performance here
-				initTextures(true);
+				// Performance here				
+				initSelectionTextures();
 			buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
 			bUpdateSelection = false;
 		}
 
 		if (bUpdateFullTexures) {
 			bUpdateFullTexures = false;
-			initTextures(false);
+			initTextures();
 		}
 
 		if (bUpdateMainView) {
@@ -1620,42 +1725,55 @@ public class GLScatterplot extends AStorageBasedView {
 			if (IsInSelectionRectangle(x, y)) {
 //				if (!elementSelectionManager.checkStatus(iContentIndex))
 //					elementSelectionManager.add(iContentIndex);
-				elementSelectionManager.addToType(SelectionType.SELECTION,
-						iContentIndex);
+//				elementSelectionManager.addToType(SelectionType.SELECTION,
+//						iContentIndex);
+				elementSelectionManager.addToType(currentSelection,
+						iContentIndex);				
 			}
 		}
 	}
 
 	private void RenderSelection(GL gl) {
 
-		if (elementSelectionManager
-				.getNumberOfElements(SelectionType.SELECTION) == 0)
-			return;
-
-		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
-		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
-
-		Set<Integer> selectionSet = elementSelectionManager
-				.getElements(SelectionType.SELECTION);
-
-		float x = 0.0f;
-		float y = 0.0f;
-		float z = 1.0f;
-
-		float[] fArMappingColor = new float[]{1.0f, 0.1f, 0.5f};
-
-		for (int iContentIndex : selectionSet) {
-			float xnormalized = set.get(SELECTED_X_AXIS).getFloat(
-					EDataRepresentation.NORMALIZED, iContentIndex);
-			float ynormalized = set.get(SELECTED_Y_AXIS).getFloat(
-					EDataRepresentation.NORMALIZED, iContentIndex);
-
-			x = xnormalized * XScale;
-			y = ynormalized * YScale;
-
-			DrawPointPrimitive(gl, x, y, z, // z
-					fArMappingColor, 1.0f,// fOpacity
-					iContentIndex, 1.0f); // scale
+						
+		for(SelectionType tmpSelectionType : AlSelectionTypes)
+		{
+							
+//			if (elementSelectionManager.getNumberOfElements(SelectionType.SELECTION) == 0)
+//				return;
+			if (elementSelectionManager.getNumberOfElements(tmpSelectionType) == 0)
+				continue;
+	
+			float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
+			float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
+	
+//			Set<Integer> selectionSet = elementSelectionManager
+//					.getElements(SelectionType.SELECTION);
+			
+			Set<Integer> selectionSet = elementSelectionManager
+				.getElements(tmpSelectionType);
+	
+			float x = 0.0f;
+			float y = 0.0f;
+			float z = 1.0f;
+	
+//			float[] fArMappingColor = new float[]{1.0f, 0.1f, 0.5f};
+			float[] fArMappingColor = tmpSelectionType.getColor();
+			
+	
+			for (int iContentIndex : selectionSet) {
+				float xnormalized = set.get(SELECTED_X_AXIS).getFloat(
+						EDataRepresentation.NORMALIZED, iContentIndex);
+				float ynormalized = set.get(SELECTED_Y_AXIS).getFloat(
+						EDataRepresentation.NORMALIZED, iContentIndex);
+	
+				x = xnormalized * XScale;
+				y = ynormalized * YScale;
+	
+				DrawPointPrimitive(gl, x, y, z, // z
+						fArMappingColor, 1.0f,// fOpacity
+						iContentIndex, 1.0f); // scale
+			}
 		}
 	}
 
@@ -1910,7 +2028,12 @@ public class GLScatterplot extends AStorageBasedView {
 
 		axisSelectionManager = storageSelectionManager;
 		axisSelectionManager.setVA(storageVA);
-	
+		
+		
+		AlSelectionTypes.clear();
+		AlSelectionTypes.add(SelectionType.SELECTION);
+		currentSelection = SelectionType.SELECTION;
+			
 	}
 
 	@Override
@@ -1967,6 +2090,48 @@ public class GLScatterplot extends AStorageBasedView {
 		return "TODO: ScatterploT Deatil Info";
 	}
 
+	
+	private float[] getSelectionColor(int color)
+	{
+		switch(color)
+		{
+			case 1 : return new float[] { 0, 0, 1, 1 };
+			case 2 : return new float[] { 0, 1, 0, 1 };
+			case 3 : return new float[] { 1, 1, 0, 1 };
+			case 4 : return new float[] { 0, 1, 1, 1 };
+			case 5 : return new float[] { 1, 0, 1, 1 };		
+			default : return new float[] { 0, 0, 0, 1 };
+		}
+		
+	}
+	
+	
+	public void addSelectionType()
+	{
+		int	iSlectionNr=AlSelectionTypes.size()+1;			
+		SelectionTypeEvent event = new SelectionTypeEvent();
+		currentSelection = new SelectionType();
+		currentSelection.setType("SCATTER_SELECTION_"+iSlectionNr);
+		currentSelection.setColor(getSelectionColor(iSlectionNr));
+		event.addSelectionType(currentSelection);
+		eventPublisher.triggerEvent(event);
+		
+		AlSelectionTypes.add(currentSelection);
+				
+	}
+	
+	public void removeSelectionType()
+	{
+		int	iSlectionNr=AlSelectionTypes.size();		
+		if (iSlectionNr==1) return; 					
+		AlSelectionTypes.remove(iSlectionNr-1);
+		currentSelection=AlSelectionTypes.get(iSlectionNr-2);
+		bUpdateSelection = true;									
+	}
+	
+	
+	
+	
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
@@ -1984,13 +2149,15 @@ public class GLScatterplot extends AStorageBasedView {
 				switch (pickingMode) {
 
 					case CLICKED :
-						selectionType = SelectionType.SELECTION;
+					//	selectionType = SelectionType.SELECTION;
+						selectionType = currentSelection;						
 						break;
 					case MOUSE_OVER :
 						selectionType = SelectionType.MOUSE_OVER;
 						break;
 					case RIGHT_CLICKED :
 						selectionType = SelectionType.DESELECTED;
+						// TODO Make this for current Selection..
 						break;
 					case DRAGGED :
 						selectionType = SelectionType.SELECTION;
@@ -2088,7 +2255,8 @@ public class GLScatterplot extends AStorageBasedView {
 		mouseoverSelectionManager.clearSelection(selectionType);
 		elementSelectionManager.clearSelection(selectionType);
 
-		if (selectionType == SelectionType.SELECTION) {
+		//if (selectionType == SelectionType.SELECTION) {
+		if (selectionType == currentSelection) {
 			// fDragStartPoint = new float[3];
 			// fDragEndPoint = new float[3];
 //			if (!elementSelectionManager.checkStatus(contentID))
@@ -2132,6 +2300,9 @@ public class GLScatterplot extends AStorageBasedView {
 	public void clearAllSelections() 
 	{
 		elementSelectionManager.clearSelections();
+		AlSelectionTypes.clear();
+		AlSelectionTypes.add(SelectionType.SELECTION);
+		currentSelection = SelectionType.SELECTION;
 		fRectangleDragStartPoint = new float[3];
 		fRectangleDragEndPoint = new float[3];
 		bUpdateSelection = true;
@@ -2176,33 +2347,6 @@ public class GLScatterplot extends AStorageBasedView {
 
 		super.handleVirtualArrayUpdate(delta, info);
 
-//		if (delta.getVAType() == EVAType.CONTENT_CONTEXT
-//				&& contentVAType == EVAType.CONTENT_CONTEXT) {
-//			if (contentVA.size() == 0)
-//				return;
-//			// FIXME: this is only proof of concept - use the cluster manager
-//			// instead of affinity directly
-//			// long original = System.currentTimeMillis();
-//			// System.out.println("beginning clustering");
-//			AffinityClusterer clusterer = new AffinityClusterer(contentVA
-//					.size());
-//			ClusterState state = new ClusterState(
-//					EClustererAlgo.AFFINITY_PROPAGATION,
-//					EClustererType.GENE_CLUSTERING,
-//					EDistanceMeasure.EUCLIDEAN_DISTANCE);
-//			int contentVAID = contentVA.getID();
-//			state.setContentVaId(contentVA.getID());
-//			state.setStorageVaId(storageVA.getID());
-//			state.setAffinityPropClusterFactorGenes(4.0f);
-//			IVirtualArray tempVA = clusterer.getSortedVA(set, state, 0, 2);
-//
-//			contentVA = tempVA;
-//			contentSelectionManager.setVA(contentVA);
-//			contentVA.setID(contentVAID);
-//			// long result = System.currentTimeMillis() - original;
-//			// System.out.println("Clustering took in ms: " + result);
-//
-//		}
 	}
 
 	@Override
