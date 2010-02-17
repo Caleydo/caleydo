@@ -7,8 +7,10 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.view.grouper.draganddrop.DragAndDropController;
 import org.caleydo.view.grouper.draganddrop.IDraggable;
 import org.caleydo.view.grouper.drawingstrategies.DrawingStrategyManager;
@@ -82,7 +84,7 @@ public interface ICompositeGraphic extends IDraggable {
 	public void replaceChild(ICompositeGraphic childToReplace,
 			ICompositeGraphic newChild);
 
-	public ICompositeGraphic createDeepCopyWithNewIDs(int[] iConsecutiveID);
+	public ICompositeGraphic createDeepCopyWithNewIDs(Tree<ClusterNode> tree, int[] iConsecutiveID);
 
 	public void printTree();
 	

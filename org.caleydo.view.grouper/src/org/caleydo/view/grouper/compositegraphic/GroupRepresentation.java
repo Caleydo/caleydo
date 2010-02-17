@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -295,7 +296,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 
 	@Override
 	public int getID() {
-		return clusterNode.getClusterNr();
+		return clusterNode.getID();
 	}
 
 	public ArrayList<ICompositeGraphic> getChildren() {
@@ -506,15 +507,15 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	}
 
 	@Override
-	public ICompositeGraphic createDeepCopyWithNewIDs(int[] iConsecutiveID) {
+	public ICompositeGraphic createDeepCopyWithNewIDs(Tree<ClusterNode> tree, int[] iConsecutiveID) {
 
 		ClusterNode copiedNode = null;
 		if (isLeaf()) {
-			copiedNode = new ClusterNode(clusterNode.getNodeName(),
+			copiedNode = new ClusterNode(tree, clusterNode.getNodeName(),
 					iConsecutiveID[0], clusterNode.getCoefficient(),
 					clusterNode.getDepth(), false, clusterNode.getLeafID());
 		} else {
-			copiedNode = new ClusterNode(clusterNode.getNodeName() + "_copy",
+			copiedNode = new ClusterNode(tree, clusterNode.getNodeName() + "_copy",
 					iConsecutiveID[0], clusterNode.getCoefficient(),
 					clusterNode.getDepth(), false, clusterNode.getLeafID());
 		}
@@ -524,7 +525,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		for (ICompositeGraphic child : alChildren) {
 			iConsecutiveID[0]++;
 			ICompositeGraphic copiedChild = child
-					.createDeepCopyWithNewIDs(iConsecutiveID);
+					.createDeepCopyWithNewIDs(tree, iConsecutiveID);
 			copy.add(copiedChild);
 		}
 

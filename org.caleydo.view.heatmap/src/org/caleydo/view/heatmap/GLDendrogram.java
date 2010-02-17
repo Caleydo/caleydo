@@ -19,13 +19,13 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -625,10 +625,10 @@ public class GLDendrogram extends AStorageBasedView implements
 				}
 			}
 		} else {
-			if (currentNode.getClusterNr() == from)
+			if (currentNode.getID() == from)
 				return true;
 
-			if (currentNode.getClusterNr() == to)
+			if (currentNode.getID() == to)
 				return false;
 		}
 		return boolVar;
@@ -792,7 +792,7 @@ public class GLDendrogram extends AStorageBasedView implements
 
 				gl.glPushName(pickingManager.getPickingID(iUniqueID,
 						EPickingType.DENDROGRAM_GENE_NODE_SELECTION,
-						currentNode.getClusterNr()));
+						currentNode.getID()));
 
 				// vertical line connecting all child nodes
 				gl.glBegin(GL.GL_LINES);
@@ -827,7 +827,7 @@ public class GLDendrogram extends AStorageBasedView implements
 		if (currentNode.isPartOfSubTree()) {
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode
-							.getClusterNr()));
+							.getID()));
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(currentNode.getPosSubTree().x() + fLevelWidthSubTree,
 					currentNode.getPosSubTree().y(), currentNode
@@ -1075,7 +1075,7 @@ public class GLDendrogram extends AStorageBasedView implements
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode
-							.getClusterNr()));
+							.getID()));
 
 			// vertical line connecting all child nodes
 			gl.glBegin(GL.GL_LINES);
@@ -1104,7 +1104,7 @@ public class GLDendrogram extends AStorageBasedView implements
 		} else {
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode
-							.getClusterNr()));
+							.getID()));
 
 			// horizontal line visualizing leaf nodes
 			gl.glBegin(GL.GL_LINES);
@@ -1202,7 +1202,7 @@ public class GLDendrogram extends AStorageBasedView implements
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.DENDROGRAM_EXPERIMENT_NODE_SELECTION,
-					currentNode.getClusterNr()));
+					currentNode.getID()));
 
 			// horizontal line connecting all child nodes
 			gl.glBegin(GL.GL_LINES);
@@ -1232,7 +1232,7 @@ public class GLDendrogram extends AStorageBasedView implements
 		} else {
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.DENDROGRAM_EXPERIMENT_LEAF_SELECTION,
-					currentNode.getClusterNr()));
+					currentNode.getID()));
 
 			// vertical line visualizing leaf nodes
 			gl.glBegin(GL.GL_LINES);

@@ -17,7 +17,7 @@ import org.jgrapht.graph.DefaultEdge;
  * @author Alexander Lex
  * @param <NodeType>
  */
-public class Tree<NodeType extends Comparable<NodeType>> {
+public class Tree<NodeType extends AHierarchyElement> {
 
 	private NodeType rootNode;
 
@@ -61,14 +61,14 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		// TODO: this should be removed later on, only for testing purposes
 		if (rootNode instanceof ClusterNode) {
 			ClusterNode clusterNode = (ClusterNode) rootNode;
-			hashNodes.put(clusterNode.getClusterNr(), rootNode);
+			hashNodes.put(clusterNode.getID(), rootNode);
 			if (hashLeafIDToNodeIDs.containsKey(clusterNode.getLeafID())) {
 				ArrayList<Integer> alNodeIDs = hashLeafIDToNodeIDs.get(clusterNode.getLeafID());
-				alNodeIDs.add(clusterNode.getClusterNr());
+				alNodeIDs.add(clusterNode.getID());
 			}
 			else {
 				ArrayList<Integer> alNodeIDs = new ArrayList<Integer>();
-				alNodeIDs.add(clusterNode.getClusterNr());
+				alNodeIDs.add(clusterNode.getID());
 				hashLeafIDToNodeIDs.put(clusterNode.getLeafID(), alNodeIDs);
 			}
 		}
@@ -109,7 +109,8 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 
 		for (NodeType tmpChild : getChildren(parentNode)) {
 			NodeInfo tmpInfo = mNodeMap.get(tmpChild);
-			tmpInfo.increaseNumberOfSiblings();
+			if (tmpInfo != null)
+				tmpInfo.increaseNumberOfSiblings();
 		}
 		setDepthFlag();
 
@@ -118,14 +119,14 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		// .getID())???
 		if (childNode instanceof ClusterNode) {
 			ClusterNode clusterNode = (ClusterNode) childNode;
-			hashNodes.put(clusterNode.getClusterNr(), childNode);
+			hashNodes.put(clusterNode.getID(), childNode);
 			if (hashLeafIDToNodeIDs.containsKey(clusterNode.getLeafID())) {
 				ArrayList<Integer> alNodeIDs = hashLeafIDToNodeIDs.get(clusterNode.getLeafID());
-				alNodeIDs.add(clusterNode.getClusterNr());
+				alNodeIDs.add(clusterNode.getID());
 			}
 			else {
 				ArrayList<Integer> alNodeIDs = new ArrayList<Integer>();
-				alNodeIDs.add(clusterNode.getClusterNr());
+				alNodeIDs.add(clusterNode.getID());
 				hashLeafIDToNodeIDs.put(clusterNode.getLeafID(), alNodeIDs);
 			}
 		}
@@ -148,14 +149,14 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 			// isn't this done in addchild?
 			if (child instanceof ClusterNode) {
 				ClusterNode clusterNode = (ClusterNode) child;
-				hashNodes.put(clusterNode.getClusterNr(), child);
+				hashNodes.put(clusterNode.getID(), child);
 				if (hashLeafIDToNodeIDs.containsKey(clusterNode.getLeafID())) {
 					ArrayList<Integer> alNodeIDs = hashLeafIDToNodeIDs.get(clusterNode.getLeafID());
-					alNodeIDs.add(clusterNode.getClusterNr());
+					alNodeIDs.add(clusterNode.getID());
 				}
 				else {
 					ArrayList<Integer> alNodeIDs = new ArrayList<Integer>();
-					alNodeIDs.add(clusterNode.getClusterNr());
+					alNodeIDs.add(clusterNode.getID());
 					hashLeafIDToNodeIDs.put(clusterNode.getLeafID(), alNodeIDs);
 				}
 			}
@@ -240,7 +241,7 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	public NodeType getNodeByNumber(int iClusterNr) {
 		return hashNodes.get(iClusterNr);
 	}
-	
+
 	public ArrayList<Integer> getNodeIDsFromLeafID(int iLeafID) {
 		return hashLeafIDToNodeIDs.get(iLeafID);
 	}

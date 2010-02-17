@@ -76,7 +76,7 @@ public class TreePorter {
 		for (ClusterNode node : treePorter.nodeSet) {
 			graph.addVertex(node);
 			hashClusterNodes.put(node.toString(), node);
-			hashClusterNr.put(node.getClusterNr(), node);
+			hashClusterNr.put(node.getID(), node);
 			if (node.isRootNode())
 				rootNode = node;
 		}

@@ -28,15 +28,15 @@ public class TreeTester {
 
 		tree = new Tree<DefaultNode>();
 		// tree.getRoot();
-		DefaultNode node = new DefaultNode("Root", 1);
+		DefaultNode node = new DefaultNode(tree, "Root", 1);
 		tree.setRootNode(node);
-		tree.addChild(node, new DefaultNode("Child1 l1", 1));
-		tree.addChild(node, new DefaultNode("Child2 l1", 3));
+		tree.addChild(node, new DefaultNode(tree, "Child1 l1", 1));
+		tree.addChild(node, new DefaultNode(tree, "Child2 l1", 3));
 
 		int iCount = 5;
 		for (DefaultNode tempNode : tree.getChildren(node)) {
-			tree.addChild(tempNode, new DefaultNode("Child3 l1", iCount--));
-			tree.addChild(tempNode, new DefaultNode("Child4 l1", iCount--));
+			tree.addChild(tempNode, new DefaultNode(tree, "Child3 l1", iCount--));
+			tree.addChild(tempNode, new DefaultNode(tree, "Child4 l1", iCount--));
 		}
 
 		System.out.println(tree.getGraph().toString());

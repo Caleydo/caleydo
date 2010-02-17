@@ -652,6 +652,8 @@ public class Set
 	@Override
 	public void setClusteredTreeExps(Tree<ClusterNode> clusteredTreeExps) {
 		this.clusteredTreeExps = clusteredTreeExps;
+		clusteredTreeExps.getRoot();
+		
 	}
 
 	@Override

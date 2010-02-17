@@ -132,7 +132,7 @@ public class SelectionManager
 		selectionDelta = new SelectionDelta(iDType);
 
 		for (SelectionType selectionType : selectionTypes) {
-			if (selectionType != selectionType.NORMAL)
+			if (selectionType != SelectionType.NORMAL)
 				hashSelectionTypes.put(selectionType, new HashMap<Integer, Integer>());
 		}
 		registerEventListeners();

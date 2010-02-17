@@ -8,10 +8,7 @@ package org.caleydo.core.util.clusterer;
 public interface IHierarchyData<E extends IHierarchyData<E>>
 	extends Comparable<E> {
 
-	/**
-	 * @return ID of the hierarchical data object.
-	 */
-	public int getID();
+	
 
 	/**
 	 * @return Size of the hierarchical data object.

@@ -342,7 +342,7 @@ public class TreeClusterer
 		// set cluster result in Set
 		tree = new Tree<ClusterNode>();
 
-		ClusterNode node = new ClusterNode("Root", getNodeCounter(), 0f, 0, true, -1);
+		ClusterNode node = new ClusterNode(tree, "Root", getNodeCounter(), 0f, 0, true, -1);
 		tree.setRootNode(node);
 		treeStructureToTree(node, result2, result2.length - 1, eClustererType);
 
@@ -482,7 +482,7 @@ public class TreeClusterer
 		// set cluster result in Set
 		tree = new Tree<ClusterNode>();
 
-		ClusterNode node = new ClusterNode("Root", getNodeCounter(), 0f, 0, true, -1);
+		ClusterNode node = new ClusterNode(tree, "Root", getNodeCounter(), 0f, 0, true, -1);
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
@@ -705,7 +705,7 @@ public class TreeClusterer
 		// set cluster result in Set
 		tree = new Tree<ClusterNode>();
 
-		ClusterNode node = new ClusterNode("Root", getNodeCounter(), 0f, 0, true, -1);
+		ClusterNode node = new ClusterNode(tree, "Root", getNodeCounter(), 0f, 0, true, -1);
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
@@ -859,7 +859,7 @@ public class TreeClusterer
 			String NodeName = getNodeName(eClustererType, treeStructure[index].getLeft());
 			int LeaveID = getNodeNr(eClustererType, treeStructure[index].getLeft());
 
-			left = new ClusterNode(NodeName, getNodeCounter(), treeStructure[index].getCorrelation(), 0, false, LeaveID);
+			left = new ClusterNode(tree, NodeName, getNodeCounter(), treeStructure[index].getCorrelation(), 0, false, LeaveID);
 
 			left.setNrElements(1);
 
@@ -870,7 +870,7 @@ public class TreeClusterer
 			int random = getNodeCounter();
 
 			left =
-				new ClusterNode("Node_" + (-(treeStructure[index].getLeft()) - 1), random,
+				new ClusterNode(tree, "Node_" + (-(treeStructure[index].getLeft()) - 1), random,
 					treeStructure[index].getCorrelation(), 0, false, -1);
 			tree.addChild(node, left);
 			treeStructureToTree(left, treeStructure, -(treeStructure[index].getLeft()) - 1, eClustererType);
@@ -881,7 +881,7 @@ public class TreeClusterer
 			String NodeName = getNodeName(eClustererType, treeStructure[index].getRight());
 			int LeaveID = getNodeNr(eClustererType, treeStructure[index].getRight());
 
-			right = new ClusterNode(NodeName, getNodeCounter(), treeStructure[index].getCorrelation(), 0, false, LeaveID);
+			right = new ClusterNode(tree, NodeName, getNodeCounter(), treeStructure[index].getCorrelation(), 0, false, LeaveID);
 
 			right.setNrElements(1);
 
@@ -892,7 +892,7 @@ public class TreeClusterer
 			int random = getNodeCounter();
 
 			right =
-				new ClusterNode("Node_" + (-(treeStructure[index].getRight()) - 1), random,
+				new ClusterNode(tree, "Node_" + (-(treeStructure[index].getRight()) - 1), random,
 					treeStructure[index].getCorrelation(), 0, false, -1);
 			tree.addChild(node, right);
 			treeStructureToTree(right, treeStructure, -(treeStructure[index].getRight()) - 1, eClustererType);

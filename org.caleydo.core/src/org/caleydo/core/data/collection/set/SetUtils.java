@@ -435,5 +435,11 @@ public class SetUtils {
 			}
 		}
 	}
+	
+	public static void createMetaSets(Tree<ClusterNode> tree, ISet set)
+	{
+		ClusterNode rootNode = tree.getRoot();
+//		tree.get
+	}
 
 }

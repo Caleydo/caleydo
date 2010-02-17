@@ -99,6 +99,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 
 	private TextRenderer textRenderer;
 	private SelectionManager selectionManager;
+	
+	private Tree<ClusterNode> tree;
 
 	/**
 	 * Constructor.
@@ -139,6 +141,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager,
 				iUniqueID, renderStyle);
 		if (set.getClusteredTreeExps() != null) {
+			tree = set.getClusteredTreeExps();
 			initHierarchy(set.getClusteredTreeExps());
 		} else {
 			createNewHierarchy();
@@ -164,28 +167,28 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 	}
 
 	private void createNewHierarchy() {
-		Tree<ClusterNode> experimentTree = new Tree<ClusterNode>();
+		Tree<ClusterNode> tree = new Tree<ClusterNode>();
 		IGroupDrawingStrategy groupDrawingStrategy = drawingStrategyManager
 				.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
 		iLastUsedGroupID = 0;
 
-		ClusterNode rootNode = new ClusterNode("Root", iLastUsedGroupID++,
+		ClusterNode rootNode = new ClusterNode(tree, "Root", iLastUsedGroupID++,
 				0.0f, 0, true, -1);
-		experimentTree.setRootNode(rootNode);
+		tree.setRootNode(rootNode);
 
 		rootGroup = new GroupRepresentation(rootNode, renderStyle,
 				groupDrawingStrategy, drawingStrategyManager, this, false);
 		hashGroups.put(rootGroup.getID(), rootGroup);
-//		selectionManager.initialAdd(rootGroup.getID());
+		// selectionManager.initialAdd(rootGroup.getID());
 		ArrayList<Integer> indexList = storageVA.getIndexList();
 
 		for (Integer currentIndex : indexList) {
 
 			String nodeName = set.get(currentIndex).getLabel();
 			int leafID = currentIndex;
-			ClusterNode currentNode = new ClusterNode(nodeName,
+			ClusterNode currentNode = new ClusterNode(tree, nodeName,
 					iLastUsedGroupID++, 0.0f, 0, false, leafID);
-			experimentTree.addChild(rootNode, currentNode);
+			tree.addChild(rootNode, currentNode);
 
 			GroupRepresentation groupRep = new GroupRepresentation(currentNode,
 					renderStyle, groupDrawingStrategy, drawingStrategyManager,
@@ -193,15 +196,15 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			rootGroup.add(groupRep);
 
 			hashGroups.put(groupRep.getID(), groupRep);
-//			selectionManager.initialAdd(groupRep.getID());
+			// selectionManager.initialAdd(groupRep.getID());
 		}
 
 		rootGroup.calculateHierarchyLevels(0);
-		ClusterHelper.determineNrElements(experimentTree);
-		ClusterHelper.determineHierarchyDepth(experimentTree);
-		ClusterHelper.determineExpressionValue(experimentTree,
+		ClusterHelper.determineNrElements(tree);
+		ClusterHelper.determineHierarchyDepth(tree);
+		ClusterHelper.determineExpressionValue(tree,
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
-		set.setClusteredTreeExps(experimentTree);
+		set.setClusteredTreeExps(tree);
 		// useCase.replaceVirtualArray(idCategory, vaType, virtualArray)
 	}
 
@@ -215,7 +218,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 						.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL),
 				drawingStrategyManager, this, !tree.hasChildren(rootNode));
 		hashGroups.put(rootGroup.getID(), rootGroup);
-//		selectionManager.initialAdd(rootGroup.getID());
+		// selectionManager.initialAdd(rootGroup.getID());
 		iLastUsedGroupID = rootGroup.getID();
 
 		buildGroupHierarchyFromTree(tree, rootNode, rootGroup);
@@ -237,7 +240,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			parentGroupRep.add(groupRep);
 
 			hashGroups.put(groupRep.getID(), groupRep);
-//			selectionManager.initialAdd(groupRep.getID());
+			// selectionManager.initialAdd(groupRep.getID());
 			if (groupRep.getID() > iLastUsedGroupID)
 				iLastUsedGroupID = groupRep.getID();
 
@@ -247,14 +250,14 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		}
 	}
 
-	public void updateClusterTreeAccordingToGroupHierarchy() {
 
-		Tree<ClusterNode> tree = new Tree<ClusterNode>();
+	
+	public void updateClusterTreeAccordingToGroupHierarchy() {
 		tree.setRootNode(rootGroup.getClusterNode());
 		iLastUsedGroupID = 0;
-		rootGroup.getClusterNode().setClusterNr(iLastUsedGroupID++);
+		rootGroup.getClusterNode().setID(iLastUsedGroupID++);
 		hashGroups.clear();
-//		selectionManager.add(rootGroup.getID());
+		// selectionManager.add(rootGroup.getID());
 		hashGroups.put(rootGroup.getID(), rootGroup);
 
 		buildTreeFromGroupHierarchy(tree, rootGroup.getClusterNode(), rootGroup);
@@ -285,106 +288,111 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		for (ICompositeGraphic child : alChildren) {
 			GroupRepresentation groupRep = (GroupRepresentation) child;
 			ClusterNode childNode = groupRep.getClusterNode();
-			childNode.setClusterNr(iLastUsedGroupID++);
+			childNode.setID(iLastUsedGroupID++);
 			tree.addChild(parentNode, childNode);
 			if (!child.isLeaf()) {
 				buildTreeFromGroupHierarchy(tree, childNode, groupRep);
 			}
-//			selectionManager.add(groupRep.getID());
+			// selectionManager.add(groupRep.getID());
 			hashGroups.put(groupRep.getID(), groupRep);
 		}
 	}
 
 	public void initTestHierarchy() {
 
-		IGroupDrawingStrategy groupDrawingStrategy = drawingStrategyManager
-				.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
-
-		rootGroup = new GroupRepresentation(new ClusterNode("root",
-				iLastUsedGroupID++, 0, 0, true, -1), renderStyle,
-				groupDrawingStrategy, drawingStrategyManager, this, false);
-
-		GroupRepresentation group1 = new GroupRepresentation(new ClusterNode(
-				"group1", iLastUsedGroupID++, 0, 0, false, -1), renderStyle,
-				groupDrawingStrategy, drawingStrategyManager, this, false);
-		GroupRepresentation group2 = new GroupRepresentation(new ClusterNode(
-				"group2", iLastUsedGroupID++, 0, 0, false, -1), renderStyle,
-				groupDrawingStrategy, drawingStrategyManager, this, false);
-		GroupRepresentation group3 = new GroupRepresentation(new ClusterNode(
-				"group3", iLastUsedGroupID++, 0, 0, false, -1), renderStyle,
-				groupDrawingStrategy, drawingStrategyManager, this, false);
-
-		GroupRepresentation element1 = new GroupRepresentation(new ClusterNode(
-				"one", iLastUsedGroupID++, 0, 0, false, -1), renderStyle,
-				groupDrawingStrategy, drawingStrategyManager, this, true);
-
-		GroupRepresentation element2 = new GroupRepresentation(new ClusterNode(
-				"two", iLastUsedGroupID++, 0, 0, false, -1), renderStyle,
-				groupDrawingStrategy, drawingStrategyManager, this, true);
-
-		GroupRepresentation element3 = new GroupRepresentation(new ClusterNode(
-				"three", iLastUsedGroupID++, 0, 0, false, -1), renderStyle,
-				groupDrawingStrategy, drawingStrategyManager, this, true);
-
-		GroupRepresentation element4 = new GroupRepresentation(new ClusterNode(
-				"four", iLastUsedGroupID++, 0, 0, false, -1), renderStyle,
-				groupDrawingStrategy, drawingStrategyManager, this, true);
-
-		GroupRepresentation element5 = new GroupRepresentation(new ClusterNode(
-				"five", iLastUsedGroupID++, 0, 0, false, -1), renderStyle,
-				groupDrawingStrategy, drawingStrategyManager, this, true);
-
-		// VAElementRepresentation element1 =
-		// new VAElementRepresentation(new ClusterNode("one",
-		// iLastUsedCompositeID++, 0, 0, false),
-		// elementDrawingStrategy, drawingStrategyManager, this);
-		// VAElementRepresentation element2 =
-		// new VAElementRepresentation(new ClusterNode("two",
-		// iLastUsedCompositeID++, 0, 0, false),
-		// elementDrawingStrategy, drawingStrategyManager, this);
-		// VAElementRepresentation element3 =
-		// new VAElementRepresentation(new ClusterNode("three",
-		// iLastUsedCompositeID++, 0, 0, false),
-		// elementDrawingStrategy, drawingStrategyManager, this);
-		// VAElementRepresentation element4 =
-		// new VAElementRepresentation(new ClusterNode("four",
-		// iLastUsedCompositeID++, 0, 0, false),
-		// elementDrawingStrategy, drawingStrategyManager, this);
-		// VAElementRepresentation element5 =
-		// new VAElementRepresentation(new ClusterNode("five",
-		// iLastUsedCompositeID++, 0, 0, false),
-		// elementDrawingStrategy, drawingStrategyManager, this);
-
-		rootGroup.add(group1);
-		rootGroup.add(element1);
-		rootGroup.add(group3);
-		group1.add(element2);
-		group1.add(group2);
-		group2.add(element3);
-		group2.add(element4);
-		group3.add(element5);
-
-		hashGroups.put(rootGroup.getID(), rootGroup);
-		hashGroups.put(group1.getID(), group1);
-		hashGroups.put(group2.getID(), group2);
-		hashGroups.put(group3.getID(), group3);
-		hashGroups.put(element1.getID(), element1);
-		hashGroups.put(element2.getID(), element2);
-		hashGroups.put(element3.getID(), element3);
-		hashGroups.put(element4.getID(), element4);
-		hashGroups.put(element5.getID(), element5);
-
-//		selectionManager.initialAdd(rootGroup.getID());
-//		selectionManager.initialAdd(group1.getID());
-//		selectionManager.initialAdd(group2.getID());
-//		selectionManager.initialAdd(group3.getID());
-//		selectionManager.initialAdd(element1.getID());
-//		selectionManager.initialAdd(element2.getID());
-//		selectionManager.initialAdd(element3.getID());
-//		selectionManager.initialAdd(element4.getID());
-//		selectionManager.initialAdd(element5.getID());
-
-		rootGroup.calculateHierarchyLevels(0);
+		// IGroupDrawingStrategy groupDrawingStrategy = drawingStrategyManager
+		// .getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
+		//
+		// rootGroup = new GroupRepresentation(new ClusterNode("root",
+		// iLastUsedGroupID++, 0, 0, true, -1), renderStyle,
+		// groupDrawingStrategy, drawingStrategyManager, this, false);
+		//
+		// GroupRepresentation group1 = new GroupRepresentation(new ClusterNode(
+		// "group1", iLastUsedGroupID++, 0, 0, false, -1), renderStyle,
+		// groupDrawingStrategy, drawingStrategyManager, this, false);
+		// GroupRepresentation group2 = new GroupRepresentation(new ClusterNode(
+		// "group2", iLastUsedGroupID++, 0, 0, false, -1), renderStyle,
+		// groupDrawingStrategy, drawingStrategyManager, this, false);
+		// GroupRepresentation group3 = new GroupRepresentation(new ClusterNode(
+		// "group3", iLastUsedGroupID++, 0, 0, false, -1), renderStyle,
+		// groupDrawingStrategy, drawingStrategyManager, this, false);
+		//
+		// GroupRepresentation element1 = new GroupRepresentation(new
+		// ClusterNode(
+		// "one", iLastUsedGroupID++, 0, 0, false, -1), renderStyle,
+		// groupDrawingStrategy, drawingStrategyManager, this, true);
+		//
+		// GroupRepresentation element2 = new GroupRepresentation(new
+		// ClusterNode(
+		// "two", iLastUsedGroupID++, 0, 0, false, -1), renderStyle,
+		// groupDrawingStrategy, drawingStrategyManager, this, true);
+		//
+		// GroupRepresentation element3 = new GroupRepresentation(new
+		// ClusterNode(
+		// "three", iLastUsedGroupID++, 0, 0, false, -1), renderStyle,
+		// groupDrawingStrategy, drawingStrategyManager, this, true);
+		//
+		// GroupRepresentation element4 = new GroupRepresentation(new
+		// ClusterNode(
+		// "four", iLastUsedGroupID++, 0, 0, false, -1), renderStyle,
+		// groupDrawingStrategy, drawingStrategyManager, this, true);
+		//
+		// GroupRepresentation element5 = new GroupRepresentation(new
+		// ClusterNode(
+		// "five", iLastUsedGroupID++, 0, 0, false, -1), renderStyle,
+		// groupDrawingStrategy, drawingStrategyManager, this, true);
+		//
+		// // VAElementRepresentation element1 =
+		// // new VAElementRepresentation(new ClusterNode("one",
+		// // iLastUsedCompositeID++, 0, 0, false),
+		// // elementDrawingStrategy, drawingStrategyManager, this);
+		// // VAElementRepresentation element2 =
+		// // new VAElementRepresentation(new ClusterNode("two",
+		// // iLastUsedCompositeID++, 0, 0, false),
+		// // elementDrawingStrategy, drawingStrategyManager, this);
+		// // VAElementRepresentation element3 =
+		// // new VAElementRepresentation(new ClusterNode("three",
+		// // iLastUsedCompositeID++, 0, 0, false),
+		// // elementDrawingStrategy, drawingStrategyManager, this);
+		// // VAElementRepresentation element4 =
+		// // new VAElementRepresentation(new ClusterNode("four",
+		// // iLastUsedCompositeID++, 0, 0, false),
+		// // elementDrawingStrategy, drawingStrategyManager, this);
+		// // VAElementRepresentation element5 =
+		// // new VAElementRepresentation(new ClusterNode("five",
+		// // iLastUsedCompositeID++, 0, 0, false),
+		// // elementDrawingStrategy, drawingStrategyManager, this);
+		//
+		// rootGroup.add(group1);
+		// rootGroup.add(element1);
+		// rootGroup.add(group3);
+		// group1.add(element2);
+		// group1.add(group2);
+		// group2.add(element3);
+		// group2.add(element4);
+		// group3.add(element5);
+		//
+		// hashGroups.put(rootGroup.getID(), rootGroup);
+		// hashGroups.put(group1.getID(), group1);
+		// hashGroups.put(group2.getID(), group2);
+		// hashGroups.put(group3.getID(), group3);
+		// hashGroups.put(element1.getID(), element1);
+		// hashGroups.put(element2.getID(), element2);
+		// hashGroups.put(element3.getID(), element3);
+		// hashGroups.put(element4.getID(), element4);
+		// hashGroups.put(element5.getID(), element5);
+		//
+		// // selectionManager.initialAdd(rootGroup.getID());
+		// // selectionManager.initialAdd(group1.getID());
+		// // selectionManager.initialAdd(group2.getID());
+		// // selectionManager.initialAdd(group3.getID());
+		// // selectionManager.initialAdd(element1.getID());
+		// // selectionManager.initialAdd(element2.getID());
+		// // selectionManager.initialAdd(element3.getID());
+		// // selectionManager.initialAdd(element4.getID());
+		// // selectionManager.initialAdd(element5.getID());
+		//
+		// rootGroup.calculateHierarchyLevels(0);
 	}
 
 	@Override
@@ -483,18 +491,17 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		Vec3f vecPosition = new Vec3f(0.0f, viewFrustum.getHeight(), 0.001f);
 		rootGroup.setPosition(vecPosition);
 		rootGroup.setHierarchyPosition(vecPosition);
-		
+
 		if (bHierarchyChanged) {
 			rootGroup.calculateHierarchyLevels(0);
 			rootGroup.calculateDrawingParameters(gl, textRenderer);
 
-			
 			// rootGroup.printTree();
 			// System.out.println("==========================================");
 		}
 		rootGroup.draw(gl, textRenderer);
-		
-		if(bHierarchyChanged) {
+
+		if (bHierarchyChanged) {
 			float fHierarchyHeight = rootGroup.getScaledHeight(parentGLCanvas
 					.getWidth());
 			float fHierarchyWidth = rootGroup.getScaledWidth(parentGLCanvas
@@ -506,10 +513,10 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			renderStyle.setMinViewDimensions(minViewportWidth,
 					minViewportHeight, this);
 			bHierarchyChanged = false;
-			
-			
-			if(parentGLCanvas.getHeight() <= 0) {
-				//Draw again in next frame where the viewport size is hopefully correct
+
+			if (parentGLCanvas.getHeight() <= 0) {
+				// Draw again in next frame where the viewport size is hopefully
+				// correct
 				setDisplayListDirty();
 				bHierarchyChanged = true;
 			}
@@ -896,8 +903,9 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 
 	public void createNewGroup(Set<Integer> setContainedGroups) {
 
+		tree = new Tree<ClusterNode>();
 		GroupRepresentation newGroup = new GroupRepresentation(
-				new ClusterNode("group" + iLastUsedGroupID, iLastUsedGroupID++,
+				new ClusterNode(tree, "group" + iLastUsedGroupID, iLastUsedGroupID++,
 						0, 0, false, -1),
 				renderStyle,
 				drawingStrategyManager
@@ -932,7 +940,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
 				iTempID[0]++;
 				ICompositeGraphic copy = composite
-						.createDeepCopyWithNewIDs(iTempID);
+						.createDeepCopyWithNewIDs(tree, iTempID);
 				copy.setParent(newGroup);
 				newGroup.add(copy);
 			}
@@ -942,7 +950,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		newGroup.setParent(commonParent);
 
 		hashGroups.put(newGroup.getID(), newGroup);
-//		selectionManager.add(newGroup.getID());
+		// selectionManager.add(newGroup.getID());
 
 		bHierarchyChanged = true;
 
@@ -988,7 +996,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 	}
 
 	public void addNewSelectionID(int iID) {
-//		selectionManager.add(iID);
+		// selectionManager.add(iID);
 	}
 
 	public void copyGroups(Set<Integer> setGroupsToCopy) {
@@ -996,6 +1004,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 	}
 
 	public void pasteGroups(int iParentGroupID) {
+		tree = new Tree<ClusterNode>();
 		GroupRepresentation parent = hashGroups.get(iParentGroupID);
 
 		if (parent == null || setCopiedGroups == null)
@@ -1007,7 +1016,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
 			iTempID[0]++;
 			ICompositeGraphic copy = composite
-					.createDeepCopyWithNewIDs(iTempID);
+					.createDeepCopyWithNewIDs(tree, iTempID);
 			parent.add(copy);
 		}
 		iLastUsedGroupID = iTempID[0] + 1;

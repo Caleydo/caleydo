@@ -8,6 +8,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.graph.tree.AHierarchyElement;
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionType;
 
 /**
@@ -15,14 +18,16 @@ import org.caleydo.core.data.selection.SelectionType;
  * dendrogram and the radial hierarchy view. Additionally cluster node implements {@link Comparable}.
  * 
  * @author Bernhard Schlegl
+ * @author Christian Partl
+ * @author Alexander Lex
  */
 @XmlRootElement(name = "node")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ClusterNode
-	implements IHierarchyData<ClusterNode> {
+	extends AHierarchyElement<ClusterNode> {
 
 	@XmlAttribute
-	private String sNodeName;
+	private String nodeName;
 	@XmlElement
 	private int iClusterNr;
 	@XmlElement
@@ -36,7 +41,7 @@ public class ClusterNode
 	@XmlElement
 	private Vec3f vPos;
 	@XmlElement
-	private SelectionType SelectionType;
+	private SelectionType selectionType;
 	@XmlElement
 	private boolean bIsRootNode;
 	@XmlElement
@@ -47,44 +52,50 @@ public class ClusterNode
 	private boolean bIsPartOfSubTree = false;
 	private Vec3f vPosSubTree;
 
+
+
 	// @XmlElement
 	// private float[] fArRepresentativeElement;
 
-	public ClusterNode() {
-
-	}
-
-	public ClusterNode(String sNodeName, int iClusterNr, float fCoefficient, int iDepth, boolean bIsRootNode, int iLeaveID) {
-		this.sNodeName = sNodeName;
-		this.iClusterNr = iClusterNr;
+	public ClusterNode()
+	{}
+	
+	public ClusterNode(Tree<ClusterNode> tree, String sNodeName, int iClusterNr, float fCoefficient,
+		int iDepth, boolean bIsRootNode, int iLeaveID) {
+		super(tree);
+		this.nodeName = sNodeName;
+		this.id = iClusterNr;
 		this.iLeafID = iLeaveID;
 		this.fCoefficient = fCoefficient;
 		this.iHierarchyDepth = iDepth;
 		this.bIsRootNode = bIsRootNode;
-		this.SelectionType = SelectionType.NORMAL;
+		this.selectionType = SelectionType.NORMAL;
 		this.fAverageExpressionValue = 0f;
 		this.fStandardDeviation = 0f;
+
 	}
 
+	public void createMetaSet() {
+
+	}
+
+	public void setNodeName(String nodeName)
+	{
+		this.nodeName = nodeName;
+	}
+	
 	public String getNodeName() {
-		return sNodeName;
+		return nodeName;
 	}
 
 	public float getCoefficient() {
 		return fCoefficient;
 	}
 
-	public int getClusterNr() {
-		return iClusterNr;
-	}
-	
-	public void setClusterNr(int iClusterNr) {
-		this.iClusterNr = iClusterNr;
-	}
 
 	@Override
 	public String toString() {
-		return sNodeName;
+		return nodeName;
 	}
 
 	public void setDepth(int iDepth) {
@@ -112,16 +123,16 @@ public class ClusterNode
 	}
 
 	public void setSelectionType(SelectionType SelectionType) {
-		this.SelectionType = SelectionType;
+		this.selectionType = SelectionType;
 	}
 
 	public SelectionType getSelectionType() {
-		return SelectionType;
+		return selectionType;
 	}
 
 	public void togglSelectionType() {
-		this.SelectionType =
-			(SelectionType == SelectionType.SELECTION) ? SelectionType.NORMAL : SelectionType.SELECTION;
+		this.selectionType =
+			(selectionType == SelectionType.SELECTION) ? SelectionType.NORMAL : SelectionType.SELECTION;
 	}
 
 	public boolean isRootNode() {
@@ -159,34 +170,9 @@ public class ClusterNode
 	public Vec3f getPosSubTree() {
 		return vPosSubTree;
 	}
-	
+
 	public int getLeafID() {
 		return iLeafID;
-	}
-
-	@Override
-	public String getLabel() {
-		return sNodeName;
-	}
-
-	@Override
-	public float getSize() {
-		return iNrElements;
-	}
-
-	@Override
-	public int getComparableValue() {
-		return iClusterNr;
-	}
-
-	@Override
-	public int getID() {
-		return iClusterNr;
-	}
-
-	@Override
-	public int compareTo(ClusterNode o) {
-		return iClusterNr - o.iClusterNr;
 	}
 
 	// public void setRepresentativeElement(float[] fArRepresentativeElement) {
