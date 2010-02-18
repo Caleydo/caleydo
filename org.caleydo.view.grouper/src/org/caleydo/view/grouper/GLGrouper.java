@@ -12,6 +12,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
@@ -33,9 +34,11 @@ import org.caleydo.core.manager.event.view.grouper.PasteGroupsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -290,13 +293,16 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		set = set.getStorageTree().getRoot().getMetaSet();
 		ClusterHelper.determineExpressionValue(tree,
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
+		tree.setDirty();
 		set.setStorageTree(tree);
+		ISet useCaseSet = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getSet();
+		useCaseSet.setStorageTree(tree);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
 		storageVA = new VirtualArray(EVAType.STORAGE, alIndices.size(),
 				alIndices);
 //		set.replaceVA(useCase.getVA(EVAType.STORAGE).getID(), storageVA);
-
+		
 		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
