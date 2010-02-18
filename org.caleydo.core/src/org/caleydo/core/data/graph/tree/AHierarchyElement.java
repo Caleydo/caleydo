@@ -338,7 +338,7 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 		}
 		else {
 			for (Node child : children) {
-				leaveIDs.addAll(child.getLeaveIds());
+				leaveIDs.addAll(child.calculateLeaveIDs());
 			}
 			return leaveIDs;
 		}
