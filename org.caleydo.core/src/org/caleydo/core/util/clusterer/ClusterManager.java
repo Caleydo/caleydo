@@ -150,7 +150,7 @@ public class ClusterManager {
 						if (tempVA != null) {
 							iAlVAs.set(0, tempVA);
 							setGroupList(tempVA, clusterState);
-							set.setClusteredTreeGenes(null);
+							set.setContentTree(null);
 						}
 
 					}
@@ -162,7 +162,7 @@ public class ClusterManager {
 						if (tempVA != null) {
 							iAlVAs.set(1, tempVA);
 							setGroupList(tempVA, clusterState);
-							set.setClusteredTreeExps(null);
+							set.setStorageTree(null);
 						}
 
 					}
@@ -176,7 +176,7 @@ public class ClusterManager {
 						if (tempVA != null) {
 							iAlVAs.set(1, tempVA);
 							setGroupList(tempVA, clusterState);
-							set.setClusteredTreeExps(null);
+							set.setStorageTree(null);
 
 							clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
 							clusterer =
@@ -187,7 +187,7 @@ public class ClusterManager {
 							if (tempVA != null) {
 								iAlVAs.set(0, tempVA);
 								setGroupList(tempVA, clusterState);
-								set.setClusteredTreeGenes(null);
+								set.setContentTree(null);
 							}
 						}
 					}
@@ -209,7 +209,7 @@ public class ClusterManager {
 					if (tempVA != null) {
 						iAlVAs.set(0, tempVA);
 						setGroupList(tempVA, clusterState);
-						set.setClusteredTreeGenes(null);
+						set.setContentTree(null);
 					}
 				}
 				else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
@@ -219,7 +219,7 @@ public class ClusterManager {
 					if (tempVA != null) {
 						iAlVAs.set(1, tempVA);
 						setGroupList(tempVA, clusterState);
-						set.setClusteredTreeExps(null);
+						set.setStorageTree(null);
 					}
 
 				}
@@ -231,7 +231,7 @@ public class ClusterManager {
 					if (tempVA != null) {
 						iAlVAs.set(1, tempVA);
 						setGroupList(tempVA, clusterState);
-						set.setClusteredTreeExps(null);
+						set.setStorageTree(null);
 
 						clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
 						tempVA = clusterer.getSortedVA(set, clusterState, 50, 1);
@@ -239,7 +239,7 @@ public class ClusterManager {
 						if (tempVA != null) {
 							iAlVAs.set(0, tempVA);
 							setGroupList(tempVA, clusterState);
-							set.setClusteredTreeGenes(null);
+							set.setContentTree(null);
 						}
 					}
 				}

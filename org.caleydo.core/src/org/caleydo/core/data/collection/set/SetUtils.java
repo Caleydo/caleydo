@@ -287,7 +287,7 @@ public class SetUtils {
 		String xml = null;
 
 		try {
-			xml = getTreeClusterXml(set.getClusteredTreeGenes());
+			xml = getTreeClusterXml(set.getContentTree());
 		}
 		catch (IOException ex) {
 			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
@@ -310,7 +310,7 @@ public class SetUtils {
 		String xml = null;
 
 		try {
-			xml = getTreeClusterXml(set.getClusteredTreeExps());
+			xml = getTreeClusterXml(set.getStorageTree());
 		}
 		catch (IOException ex) {
 			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
@@ -401,7 +401,7 @@ public class SetUtils {
 				Tree<ClusterNode> tree;
 				try {
 					tree = treePorter.importTree(geneTreeFileName);
-					set.setClusteredTreeGenes(tree);
+					set.setContentTree(tree);
 				}
 				catch (JAXBException e) {
 					e.printStackTrace();
@@ -424,7 +424,7 @@ public class SetUtils {
 				Tree<ClusterNode> tree;
 				try {
 					tree = treePorter.importTree(experimentsTreeFileName);
-					set.setClusteredTreeExps(tree);
+					set.setStorageTree(tree);
 				}
 				catch (JAXBException e) {
 					e.printStackTrace();

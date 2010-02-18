@@ -41,6 +41,7 @@ import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
+import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
@@ -307,9 +308,11 @@ public abstract class AUseCase
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EIDCategory.GENE, clusterState
 			.getContentVAType()));
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EIDCategory.EXPERIMENT, EVAType.STORAGE));
-		
-		((Set)set).createMetaSets();
 
+		if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING
+			|| clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
+			((Set) set).createMetaSets();
+		}
 	}
 
 	/**
@@ -336,9 +339,9 @@ public abstract class AUseCase
 
 		Tree<ClusterNode> tree = null;
 		if (vaType == EVAType.CONTENT)
-			tree = set.getClusteredTreeGenes();
+			tree = set.getContentTree();
 		else if (vaType == EVAType.STORAGE)
-			tree = set.getClusteredTreeExps();
+			tree = set.getStorageTree();
 
 		if (tree != null) {
 			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
@@ -352,9 +355,9 @@ public abstract class AUseCase
 				}
 			});
 			if (vaType == EVAType.CONTENT)
-				set.setClusteredTreeGenes(null);
+				set.setContentTree(null);
 			else if (vaType == EVAType.STORAGE)
-				set.setClusteredTreeExps(null);
+				set.setStorageTree(null);
 		}
 
 		virtualArray.setGroupList(null);

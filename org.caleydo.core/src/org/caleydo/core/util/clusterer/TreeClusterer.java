@@ -347,7 +347,7 @@ public class TreeClusterer
 		treeStructureToTree(node, result2, result2.length - 1, eClustererType);
 
 		ClusterHelper.determineNrElements(tree);
-		ClusterHelper.determineHierarchyDepth(tree);
+//		ClusterHelper.determineHierarchyDepth(tree);
 
 		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
 
@@ -355,9 +355,9 @@ public class TreeClusterer
 		alIndices =  tree.getRoot().getLeaveIds();
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			set.setClusteredTreeGenes(tree);
+			set.setContentTree(tree);
 		else
-			set.setClusteredTreeExps(tree);
+			set.setStorageTree(tree);
 
 		IVirtualArray virtualArray = null;
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
@@ -487,7 +487,7 @@ public class TreeClusterer
 		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
 		ClusterHelper.determineNrElements(tree);
-		ClusterHelper.determineHierarchyDepth(tree);
+//		ClusterHelper.determineHierarchyDepth(tree);
 
 		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
 //		determineExpressionValue(tree, eClustererType);
@@ -495,9 +495,9 @@ public class TreeClusterer
 		alIndices = tree.getRoot().getLeaveIds();
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			set.setClusteredTreeGenes(tree);
+			set.setContentTree(tree);
 		else
-			set.setClusteredTreeExps(tree);
+			set.setStorageTree(tree);
 
 		IVirtualArray virtualArray = null;
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
@@ -710,7 +710,7 @@ public class TreeClusterer
 		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
 		ClusterHelper.determineNrElements(tree);
-		ClusterHelper.determineHierarchyDepth(tree);
+//		ClusterHelper.determineHierarchyDepth(tree);
 
 		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
 //		determineExpressionValue(tree, eClustererType);
@@ -718,9 +718,9 @@ public class TreeClusterer
 		AlIndexes = tree.getRoot().getLeaveIds();
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			set.setClusteredTreeGenes(tree);
+			set.setContentTree(tree);
 		else
-			set.setClusteredTreeExps(tree);
+			set.setStorageTree(tree);
 
 		IVirtualArray virtualArray = null;
 		if (eClustererType == EClustererType.GENE_CLUSTERING)

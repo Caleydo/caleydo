@@ -140,9 +140,9 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		storageVA = useCase.getVA(EVAType.STORAGE);
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager,
 				iUniqueID, renderStyle);
-		if (set.getClusteredTreeExps() != null) {
-			tree = set.getClusteredTreeExps();
-			initHierarchy(set.getClusteredTreeExps());
+		if (set.getStorageTree() != null) {
+			tree = set.getStorageTree();
+			initHierarchy(set.getStorageTree());
 		} else {
 			createNewHierarchy();
 		}
@@ -201,10 +201,10 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 
 		rootGroup.calculateHierarchyLevels(0);
 		ClusterHelper.determineNrElements(tree);
-		ClusterHelper.determineHierarchyDepth(tree);
+//		ClusterHelper.determineHierarchyDepth(tree);
 		ClusterHelper.determineExpressionValue(tree,
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
-		set.setClusteredTreeExps(tree);
+		set.setStorageTree(tree);
 		// useCase.replaceVirtualArray(idCategory, vaType, virtualArray)
 	}
 
@@ -261,10 +261,10 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		buildTreeFromGroupHierarchy(tree, rootGroup.getClusterNode(), rootGroup);
 
 		ClusterHelper.determineNrElements(tree);
-		ClusterHelper.determineHierarchyDepth(tree);
+//		ClusterHelper.determineHierarchyDepth(tree);
 		ClusterHelper.determineExpressionValue(tree,
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
-		set.setClusteredTreeExps(tree);
+		set.setStorageTree(tree);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
 		storageVA = new VirtualArray(EVAType.STORAGE, alIndices.size(),

@@ -40,11 +40,10 @@ public interface ISet
 	 */
 	public ESetType getSetType();
 
-	
 	/**
 	 * add
 	 */
-	
+
 	/**
 	 * Add a storage based on its id. The storage has to be fully initialized with data
 	 * 
@@ -67,7 +66,6 @@ public interface ISet
 	 * @return
 	 */
 	public IStorage get(int iIndex);
-
 
 	/**
 	 * Get an iterator that iterates over the storages considering the Virtual Array.
@@ -221,8 +219,6 @@ public interface ISet
 	 */
 	public void log2();
 
-
-
 	/**
 	 * Creates a virtual array based on the list of indices supplied for the storages in the set, aka content
 	 * 
@@ -262,9 +258,7 @@ public interface ISet
 	 * @param virtualArray
 	 */
 	public void replaceVA(int iUniqueID, IVirtualArray virtualArray);
-	
-	
-	
+
 	/**
 	 * Deletes the virtual arrays associated with the unique id
 	 * 
@@ -280,7 +274,6 @@ public interface ISet
 	 *            the unique ID associated with the virtual array
 	 */
 	public void resetVirtualArray(int iUniqueID);
-	
 
 	/**
 	 * Export a manipulated subset of the data to the destination specified in sFileName. Determine which view
@@ -313,28 +306,44 @@ public interface ISet
 	 * 
 	 * @param Tree
 	 */
-	public void setClusteredTreeGenes(Tree<ClusterNode> clusteredTree);
+	public void setContentTree(Tree<ClusterNode> clusteredTree);
 
 	/**
 	 * Returns clustered Tree for genes
 	 * 
 	 * @return Tree
 	 */
-	public Tree<ClusterNode> getClusteredTreeGenes();
+	public Tree<ClusterNode> getContentTree();
 
 	/**
 	 * Sets clustered Tree for experiments
 	 * 
 	 * @param Tree
 	 */
-	public void setClusteredTreeExps(Tree<ClusterNode> clusteredTree);
+	public void setStorageTree(Tree<ClusterNode> clusteredTree);
 
 	/**
 	 * Returns clustered Tree for experiments
 	 * 
 	 * @return Tree
 	 */
-	public Tree<ClusterNode> getClusteredTreeExps();
+	public Tree<ClusterNode> getStorageTree();
+
+	/**
+	 * Set the root of the storage tree. This is only necessary if you want the root to be different from the
+	 * original root of the tree (which is typically the case in meta-sets)
+	 * 
+	 * @param storageTreeRoot
+	 *            the root node of the storage tree
+	 */
+	public void setStorageTreeRoot(ClusterNode storageTreeRoot);
+
+	/**
+	 * Returns the root node of the storage tree
+	 * 
+	 * @return
+	 */
+	public ClusterNode getStorageTreeRoot();
 
 	/**
 	 * Returns cluster sizes, determined by affinity clusterer
@@ -426,9 +435,10 @@ public interface ISet
 	 * garbage collector can handle it.
 	 */
 	public void destroy();
-	
+
 	/**
-	 * Returns a set with the 
+	 * Returns a set with the
+	 * 
 	 * @return
 	 */
 	public ISet getShallowClone();

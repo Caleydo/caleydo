@@ -80,6 +80,11 @@ public class ClusterNode
 	public void createMetaSets(ISet set) {
 		metaSet = set.getShallowClone();
 		metaSet.setLabel("MetaSet at " + nodeName);
+		metaSet.setContentTree(set.getContentTree());
+//		Tree<ClusterNode> subTree = tree.getSubTree();
+		
+		metaSet.setStorageTree(tree);
+		metaSet.setStorageTreeRoot(this);
 		ArrayList<Integer> storageIDs = this.getLeaveIds();
 		for (Integer storageID : storageIDs)
 			metaSet.addStorage(set.get(storageID));
@@ -114,14 +119,6 @@ public class ClusterNode
 	@Override
 	public String toString() {
 		return nodeName;
-	}
-
-	public void setDepth(int iDepth) {
-		this.iHierarchyDepth = iDepth;
-	}
-
-	public int getDepth() {
-		return iHierarchyDepth;
 	}
 
 	public void setNrElements(int iNrElements) {
@@ -188,6 +185,8 @@ public class ClusterNode
 	public Vec3f getPosSubTree() {
 		return vPosSubTree;
 	}
+	
+
 
 	// public void setRepresentativeElement(float[] fArRepresentativeElement) {
 	// this.fArRepresentativeElement = fArRepresentativeElement;

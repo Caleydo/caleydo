@@ -17,6 +17,7 @@ import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.EVAType;
@@ -83,7 +84,7 @@ public class GLDendrogram extends AStorageBasedView implements
 	/**
 	 * true for gene tree, false for experiment tree
 	 */
-	private boolean bRenderGeneTree;
+	private boolean bRenderContentTree;
 
 	private boolean bRenderUntilCut = false;
 
@@ -123,6 +124,8 @@ public class GLDendrogram extends AStorageBasedView implements
 
 	private boolean bUseBlackColoring = false;
 
+	private ClusterNode rootNode = null;
+
 	/**
 	 * Constructor.
 	 * 
@@ -149,7 +152,7 @@ public class GLDendrogram extends AStorageBasedView implements
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 
-		this.bRenderGeneTree = bRenderGeneTree;
+		this.bRenderContentTree = bRenderGeneTree;
 
 		fPosCut = 0f;
 		// if (bRenderGeneTree)
@@ -298,7 +301,7 @@ public class GLDendrogram extends AStorageBasedView implements
 	 *         false in case of no tree available.
 	 */
 	public boolean setInitialPositionOfCut() {
-		if (bRenderGeneTree)
+		if (bRenderContentTree)
 			fPosCut = viewFrustum.getWidth() / 4f;
 		else
 			fPosCut = viewFrustum.getHeight() - viewFrustum.getHeight() / 4f;
@@ -333,7 +336,7 @@ public class GLDendrogram extends AStorageBasedView implements
 
 		gl.glColor4f(1, 1, 1, 1);
 
-		if (bRenderGeneTree) {
+		if (bRenderContentTree) {
 			gl.glTranslatef(+fLevelWidth, 0, 0);
 			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -512,7 +515,7 @@ public class GLDendrogram extends AStorageBasedView implements
 		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
 		Texture tempTexture = null;
 
-		if (bRenderGeneTree)
+		if (bRenderContentTree)
 			tempTexture = textureManager.getIconTexture(gl,
 					EIconTextures.DENDROGRAM_HORIZONTAL_SYMBOL);
 		else
@@ -548,10 +551,10 @@ public class GLDendrogram extends AStorageBasedView implements
 	 */
 	private void determinePositions() {
 
-		if (bRenderGeneTree)
-			determinePosRecGenes(tree.getRoot());
+		if (bRenderContentTree)
+			determinePosRecGenes(rootNode);
 		else
-			determinePosRecExperiments(tree.getRoot());
+			determinePosRecExperiments(rootNode);
 
 	}
 
@@ -577,22 +580,22 @@ public class GLDendrogram extends AStorageBasedView implements
 		if (tree == null)
 			return;
 
-		determineNodesToRender(tree.getRoot(), fromIndex, toIndex, false);
-		removeWronglySelectedNodes(tree.getRoot());
+		determineNodesToRender(rootNode, fromIndex, toIndex, false);
+		removeWronglySelectedNodes(rootNode);
 		iMaxDepthSubTree = 0;
 		yPosInitSubTree = fHeight;
 		xGlobalMaxSubTree = fWidth;
 
-		determineMaxDepthSubTree(tree.getRoot());
+		// determineMaxDepthSubTree( rootNode);
 
 		fLevelWidthSubTree = fWidth / (iMaxDepthSubTree + 1);
 		fSampleHeightSubTree = fHeight / iNrLeafs;
 
-		determinePosRecSubTree(tree.getRoot());
+		determinePosRecSubTree(rootNode);
 
 		gl.glTranslatef(0, -fSampleHeightSubTree / 2, 0);
 		gl.glLineWidth(renderStyle.getDendrogramLineWidth());
-		renderSubTreeRec(gl, tree.getRoot());
+		renderSubTreeRec(gl, rootNode);
 		gl.glTranslatef(0, +fSampleHeightSubTree / 2, 0);
 	}
 
@@ -667,20 +670,20 @@ public class GLDendrogram extends AStorageBasedView implements
 	 * 
 	 * @param currentNode
 	 */
-	private void determineMaxDepthSubTree(ClusterNode currentNode) {
-
-		int temp = 0;
-		if (currentNode.isPartOfSubTree() == true) {
-			temp = currentNode.getDepth();
-			iMaxDepthSubTree = Math.max(iMaxDepthSubTree, temp);
-		}
-
-		if (tree.hasChildren(currentNode)) {
-			for (ClusterNode current : tree.getChildren(currentNode)) {
-				determineMaxDepthSubTree(current);
-			}
-		}
-	}
+	// private void determineMaxDepthSubTree(ClusterNode currentNode) {
+	//
+	// int temp = 0;
+	// if (currentNode.isPartOfSubTree() == true) {
+	// temp = currentNode.getDepth();
+	// iMaxDepthSubTree = Math.max(iMaxDepthSubTree, temp);
+	// }
+	//
+	// if (tree.hasChildren(currentNode)) {
+	// for (ClusterNode current : tree.getChildren(currentNode)) {
+	// determineMaxDepthSubTree(current);
+	// }
+	// }
+	// }
 
 	/**
 	 * Function calculates for each node (gene or entity) in the sub dendrogram
@@ -1261,16 +1264,18 @@ public class GLDendrogram extends AStorageBasedView implements
 
 			iAlClusterNodes.clear();
 
-			if (bRenderGeneTree == true) {
-				if (set.getClusteredTreeGenes() != null) {
-					tree = set.getClusteredTreeGenes();
+			if (bRenderContentTree == true) {
+				if (set.getContentTree() != null) {
+					tree = set.getContentTree();
 					groupList = new GroupList(1);
+					rootNode = tree.getRoot();
 				} else
 					renderSymbol(gl);
 			} else {
-				if (set.getClusteredTreeExps() != null) {
-					tree = set.getClusteredTreeExps();
+				if (set.getStorageTree() != null) {
+					tree = set.getStorageTree();
 					groupList = new GroupList(1);
+					rootNode = set.getStorageTreeRoot();
 				} else
 					renderSymbol(gl);
 			}
@@ -1278,19 +1283,19 @@ public class GLDendrogram extends AStorageBasedView implements
 
 		if (tree != null) {
 			if (bHasFrustumChanged || bRedrawDendrogram) {
-				if (bRenderGeneTree) {
+				if (bRenderContentTree) {
 					xGlobalMax = viewFrustum.getWidth();
 					fSampleHeight = viewFrustum.getHeight()
-							/ tree.getRoot().getNrElements();
+							/ rootNode.getNrElements();
 					fLevelWidth = (viewFrustum.getWidth() - 0.1f)
-							/ tree.getRoot().getDepth();
+							/ rootNode.getDepth();
 					yPosInit = viewFrustum.getHeight();
 				} else {
 					yGlobalMin = 0.0f;
 					fSampleWidth = viewFrustum.getWidth()
-							/ tree.getRoot().getNrElements();
+							/ rootNode.getNrElements();
 					fLevelHeight = (viewFrustum.getHeight() - 0.1f)
-							/ tree.getRoot().getDepth();
+							/ rootNode.getDepth();
 					xPosInit = 0.0f;
 				}
 				determinePositions();
@@ -1301,18 +1306,18 @@ public class GLDendrogram extends AStorageBasedView implements
 
 			gl.glLineWidth(renderStyle.getDendrogramLineWidth());
 
-			if (bRenderGeneTree) {
+			if (bRenderContentTree) {
 				gl.glTranslatef(0, -fSampleHeight / 2, 0);
-				renderDendrogramGenes(gl, tree.getRoot(), 1);
+				renderDendrogramGenes(gl, rootNode, 1);
 			} else {
 				gl.glTranslatef(fSampleWidth / 2, 0, 0);
-				renderDendrogramExperiments(gl, tree.getRoot(), 1);
+				renderDendrogramExperiments(gl, rootNode, 1);
 			}
 
 			if (bRenderUntilCut == false)
-				renderSelections(gl, tree.getRoot());
+				renderSelections(gl, rootNode);
 
-			if (bRenderGeneTree)
+			if (bRenderContentTree)
 
 				gl.glTranslatef(0, +fSampleHeight / 2, 0);
 			else
@@ -1346,7 +1351,7 @@ public class GLDendrogram extends AStorageBasedView implements
 		float fWidth = viewFrustum.getWidth();
 		float fHeight = viewFrustum.getHeight();
 
-		if (bRenderGeneTree) {
+		if (bRenderContentTree) {
 			if (fArTargetWorldCoordinates[0] > 0.1f
 					&& fArTargetWorldCoordinates[0] < fWidth)
 				fPosCut = fArTargetWorldCoordinates[0] - fLevelWidth;
@@ -1373,10 +1378,10 @@ public class GLDendrogram extends AStorageBasedView implements
 	private void determineSelectedNodes() {
 
 		iMaxDepth = Integer.MAX_VALUE;
-		determineSelectedNodesRec(tree.getRoot());
+		determineSelectedNodesRec(rootNode);
 
 		iAlClusterNodes.clear();
-		getNumberOfClustersRec(tree.getRoot());
+		getNumberOfClustersRec(rootNode);
 		buildNewGroupList();
 
 	}
@@ -1391,12 +1396,12 @@ public class GLDendrogram extends AStorageBasedView implements
 		if (iAlClusterNodes.size() < 1) {
 
 			groupList = new GroupList(iAlClusterNodes.size());
-			Group temp = new Group(tree.getRoot().getNrElements(), false, 0,
-					SelectionType.NORMAL, tree.getRoot());
+			Group temp = new Group(rootNode.getNrElements(), false, 0,
+					SelectionType.NORMAL, rootNode);
 
 			groupList.append(temp);
 
-			if (bRenderGeneTree) {
+			if (bRenderContentTree) {
 				NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
 				newGroupInfoEvent.setSender(this);
 				newGroupInfoEvent.setEVAType(EVAType.CONTENT);
@@ -1424,7 +1429,7 @@ public class GLDendrogram extends AStorageBasedView implements
 
 		IVirtualArray currentVA = null;
 
-		if (bRenderGeneTree) {
+		if (bRenderContentTree) {
 			currentVA = contentVA;
 		} else {
 			currentVA = storageVA;
@@ -1441,7 +1446,7 @@ public class GLDendrogram extends AStorageBasedView implements
 			iExample += iter.getNrElements();
 		}
 
-		if (bRenderGeneTree) {
+		if (bRenderContentTree) {
 			NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
 			newGroupInfoEvent.setSender(this);
 			newGroupInfoEvent.setEVAType(EVAType.CONTENT);
@@ -1490,7 +1495,7 @@ public class GLDendrogram extends AStorageBasedView implements
 	 */
 	private void determineSelectedNodesRec(ClusterNode node) {
 
-		if (bRenderGeneTree) {
+		if (bRenderContentTree) {
 			if (node.getPos().x() < fPosCut) {
 				node.setSelectionType(SelectionType.NORMAL);
 				if (node.getDepth() < iMaxDepth) {
@@ -1559,7 +1564,8 @@ public class GLDendrogram extends AStorageBasedView implements
 
 				ClusterNode leafNode = tree.getNodeByNumber(iExternalID);
 				if (contentSelectionManager.checkStatus(leafNode.getLeafID()) == false
-						&& storageSelectionManager.checkStatus(leafNode.getLeafID()) == false)
+						&& storageSelectionManager.checkStatus(leafNode
+								.getLeafID()) == false)
 					break;
 
 				// Prevent handling of non genetic data in context menu
@@ -1713,11 +1719,11 @@ public class GLDendrogram extends AStorageBasedView implements
 		if (tree == null)
 			return new String("Dendrogram - no tree available");
 
-		if (bRenderGeneTree)
-			return new String("Dendrogram - " + tree.getRoot().getNrElements()
+		if (bRenderContentTree)
+			return new String("Dendrogram - " + rootNode.getNrElements()
 					+ " genes");
 		else
-			return new String("Dendrogram - " + tree.getRoot().getNrElements()
+			return new String("Dendrogram - " + rootNode.getNrElements()
 					+ " experiments");
 	}
 
@@ -1732,10 +1738,10 @@ public class GLDendrogram extends AStorageBasedView implements
 		if (tree == null)
 			return new String("Dendrogram - no tree available");
 
-		return "Standalone " + ((bRenderGeneTree) ? "gene" : "experiment")
+		return "Standalone " + ((bRenderContentTree) ? "gene" : "experiment")
 				+ " dendrogram, rendered remote: " + isRenderedRemote()
-				+ ", Tree with: " + tree.getRoot().getNrElements()
-				+ ((bRenderGeneTree) ? " genes" : " experiments")
+				+ ", Tree with: " + rootNode.getNrElements()
+				+ ((bRenderContentTree) ? " genes" : " experiments")
 				+ ", remoteRenderer: " + getRemoteRenderingGLCanvas();
 	}
 
@@ -1749,7 +1755,7 @@ public class GLDendrogram extends AStorageBasedView implements
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		ASerializedView serializedForm;
-		if (bRenderGeneTree) {
+		if (bRenderContentTree) {
 			SerializedDendogramHorizontalView horizontal = new SerializedDendogramHorizontalView(
 					dataDomain);
 			serializedForm = horizontal;
@@ -1795,7 +1801,7 @@ public class GLDendrogram extends AStorageBasedView implements
 	@Override
 	protected void reactOnExternalSelection(boolean scrollToSelection) {
 
-		if (bRenderGeneTree == true) {
+		if (bRenderContentTree == true) {
 			if (tree != null) {
 				int iIndex;
 
@@ -1806,11 +1812,12 @@ public class GLDendrogram extends AStorageBasedView implements
 				for (Integer iSelectedID : setMouseOverElements) {
 
 					iIndex = iSelectedID;
-					ArrayList<Integer> alClusterNumbers = tree.getNodeIDsFromLeafID(iIndex);
+					ArrayList<Integer> alClusterNumbers = tree
+							.getNodeIDsFromLeafID(iIndex);
 					if (alClusterNumbers != null) {
-						for(Integer clusterNumber : alClusterNumbers) {
-							tree.getNodeByNumber(clusterNumber).setSelectionType(
-									SelectionType.MOUSE_OVER);
+						for (Integer clusterNumber : alClusterNumbers) {
+							tree.getNodeByNumber(clusterNumber)
+									.setSelectionType(SelectionType.MOUSE_OVER);
 						}
 					}
 				}
@@ -1820,11 +1827,12 @@ public class GLDendrogram extends AStorageBasedView implements
 				for (Integer iSelectedID : setSelectionElements) {
 
 					iIndex = iSelectedID;
-					ArrayList<Integer> alClusterNumbers = tree.getNodeIDsFromLeafID(iIndex);
+					ArrayList<Integer> alClusterNumbers = tree
+							.getNodeIDsFromLeafID(iIndex);
 					if (alClusterNumbers != null) {
-						for(Integer clusterNumber : alClusterNumbers) {
-							tree.getNodeByNumber(clusterNumber).setSelectionType(
-									SelectionType.SELECTION);
+						for (Integer clusterNumber : alClusterNumbers) {
+							tree.getNodeByNumber(clusterNumber)
+									.setSelectionType(SelectionType.SELECTION);
 						}
 					}
 				}
@@ -1842,25 +1850,27 @@ public class GLDendrogram extends AStorageBasedView implements
 				for (Integer iSelectedID : setMouseOverElements) {
 
 					iIndex = iSelectedID;
-					ArrayList<Integer> alClusterNumbers = tree.getNodeIDsFromLeafID(iIndex);
+					ArrayList<Integer> alClusterNumbers = tree
+							.getNodeIDsFromLeafID(iIndex);
 					if (alClusterNumbers != null) {
-						for(Integer clusterNumber : alClusterNumbers) {
-							tree.getNodeByNumber(clusterNumber).setSelectionType(
-									SelectionType.MOUSE_OVER);
+						for (Integer clusterNumber : alClusterNumbers) {
+							tree.getNodeByNumber(clusterNumber)
+									.setSelectionType(SelectionType.MOUSE_OVER);
 						}
 					}
-					
+
 				}
 
 				Set<Integer> setSelectionElements = storageSelectionManager
 						.getElements(SelectionType.SELECTION);
 				for (Integer iSelectedID : setSelectionElements) {
 					iIndex = iSelectedID;
-					ArrayList<Integer> alClusterNumbers = tree.getNodeIDsFromLeafID(iIndex);
+					ArrayList<Integer> alClusterNumbers = tree
+							.getNodeIDsFromLeafID(iIndex);
 					if (alClusterNumbers != null) {
-						for(Integer clusterNumber : alClusterNumbers) {
-							tree.getNodeByNumber(clusterNumber).setSelectionType(
-									SelectionType.SELECTION);
+						for (Integer clusterNumber : alClusterNumbers) {
+							tree.getNodeByNumber(clusterNumber)
+									.setSelectionType(SelectionType.SELECTION);
 						}
 					}
 				}
@@ -1903,7 +1913,7 @@ public class GLDendrogram extends AStorageBasedView implements
 	 */
 	private void resetAllTreeSelections() {
 		if (tree != null)
-			resetAllTreeSelectionsRec(tree.getRoot());
+			resetAllTreeSelectionsRec(rootNode);
 	}
 
 	/**
@@ -1930,7 +1940,7 @@ public class GLDendrogram extends AStorageBasedView implements
 
 		if (selectionDelta.getIDType() == EIDType.CLUSTER_NUMBER) {
 			// cluster mouse over events only used for gene trees
-			if (tree != null ) { //&& bRenderGeneTree
+			if (tree != null) { // && bRenderGeneTree
 				resetAllTreeSelections();
 
 				Collection<SelectionDeltaItem> deltaItems = selectionDelta
@@ -1962,5 +1972,12 @@ public class GLDendrogram extends AStorageBasedView implements
 	 */
 	public void toggleColoringScheme() {
 		bUseBlackColoring = bUseBlackColoring ? (false) : (true);
+	}
+
+	@Override
+	public void setSet(ISet set) {
+		super.setSet(set);
+		tree = null;
+		rootNode = null;
 	}
 }

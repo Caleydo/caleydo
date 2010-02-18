@@ -25,7 +25,7 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	/**
 	 * Specifies the depth of the sub-hierarchy with the current element as root node.
 	 */
-	protected int iHierarchyDepth;
+	protected int iHierarchyDepth = -1;
 	/**
 	 * Instance of the concrete type that is stored in the hierarchy. This element has to be set, otherwise
 	 * the methods provided by AHierarchyElement will not work.
@@ -293,12 +293,14 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	}
 
 	/**
-	 * Gets the hierarchy depth of the current element. Note that calculateHierarchyDepth must have been
-	 * called first for getting a proper value.
+	 * Gets the hierarchy depth of the current element.
 	 * 
 	 * @return Hierarchy depth of the current element.
 	 */
-	public int getHierarchyDepth() {
+	public int getDepth() {
+		if (iHierarchyDepth == -1 || tree.isDirty())
+			tree.makeClean();
+
 		return iHierarchyDepth;
 	}
 

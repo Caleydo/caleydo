@@ -134,13 +134,13 @@ public class ProjectSaver {
 			saveVirtualArray(marshaller, dirName, useCase, EVAType.STORAGE);
 
 			TreePorter treePorter = new TreePorter();
-			Tree<ClusterNode> geneTree = useCase.getSet().getClusteredTreeGenes();
+			Tree<ClusterNode> geneTree = useCase.getSet().getContentTree();
 			if (geneTree != null) {
 				treePorter.exportTree(dirName + GENE_TREE_FILE_NAME, geneTree);
 			}
 
 			treePorter = new TreePorter();
-			Tree<ClusterNode> expTree = useCase.getSet().getClusteredTreeExps();
+			Tree<ClusterNode> expTree = useCase.getSet().getStorageTree();
 			if (expTree != null) {
 				treePorter.exportTree(dirName + EXP_TREE_FILE_NAME, expTree);
 			}

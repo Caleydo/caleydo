@@ -240,7 +240,7 @@ public class HierarchicalClusterer
 		CNodeToTree(clusterNode, node, clusterState.getClustererType());
 
 		ClusterHelper.determineNrElements(tree);
-		ClusterHelper.determineHierarchyDepth(tree);
+//		ClusterHelper.determineHierarchyDepth(tree);
 
 		processEvents();
 		if (bClusteringCanceled) {
@@ -250,9 +250,9 @@ public class HierarchicalClusterer
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(90, false));
 
 		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-			set.setClusteredTreeGenes(tree);
+			set.setContentTree(tree);
 		else
-			set.setClusteredTreeExps(tree);
+			set.setStorageTree(tree);
 
 		// set.setAlClusterSizes(temp);
 		// set.setAlExamples(alExamples);

@@ -79,12 +79,12 @@ public class ClusterHelper {
 	 * @param tree
 	 *            the tree
 	 */
-	public static void determineHierarchyDepth(Tree<ClusterNode> tree) {
-		// int maxDepth = 0;
-		// maxDepth = determineHierarchyDepthRec(tree, tree.getRoot());
-		// System.out.println("maxDepth: " + maxDepth);
-		determineHierarchyDepthRec(tree, tree.getRoot());
-	}
+//	public static void determineHierarchyDepth(Tree<ClusterNode> tree) {
+//		// int maxDepth = 0;
+//		// maxDepth = determineHierarchyDepthRec(tree, tree.getRoot());
+//		// System.out.println("maxDepth: " + maxDepth);
+//		determineHierarchyDepthRec(tree, tree.getRoot());
+//	}
 
 	/**
 	 * Recursive function which determines the hierarchy depth in each node of the tree.
@@ -94,24 +94,24 @@ public class ClusterHelper {
 	 *            current node
 	 * @return depth of the current node
 	 */
-	private static int determineHierarchyDepthRec(Tree<ClusterNode> tree, ClusterNode node) {
-
-		if (tree.hasChildren(node)) {
-			int temp = node.getDepth();
-
-			for (ClusterNode current : tree.getChildren(node)) {
-				int iChildDepth = determineHierarchyDepthRec(tree, current);
-				if (temp <= iChildDepth)
-					temp = iChildDepth + 1;
-			}
-
-			node.setDepth(temp);
-		}
-		else
-			node.setDepth(1);
-
-		return node.getDepth();
-	}
+//	private static int determineHierarchyDepthRec(Tree<ClusterNode> tree, ClusterNode node) {
+//
+//		if (tree.hasChildren(node)) {
+//			int temp = node.getDepth();
+//
+//			for (ClusterNode current : tree.getChildren(node)) {
+//				int iChildDepth = determineHierarchyDepthRec(tree, current);
+//				if (temp <= iChildDepth)
+//					temp = iChildDepth + 1;
+//			}
+//
+//			node.setDepth(temp);
+//		}
+//		else
+//			node.setDepth(1);
+//
+//		return node.getDepth();
+//	}
 
 	/**
 	 * The function is responsible for calculating the number of elements in each node of the tree. To handle

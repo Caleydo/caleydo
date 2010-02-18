@@ -232,13 +232,13 @@ public class SetExporter {
 	public void exportTrees(ISet set, String directory) {
 		try {
 			// export gene cluster tree to own xml file
-			Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+			Tree<ClusterNode> tree = set.getContentTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
 				treePorter.exportTree(directory + "/horizontal_gene.xml", tree);
 			}
 			// export experiment cluster tree to own xml file
-			tree = set.getClusteredTreeExps();
+			tree = set.getStorageTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
 				treePorter.exportTree(directory + "/vertical_experiments.xml", tree);

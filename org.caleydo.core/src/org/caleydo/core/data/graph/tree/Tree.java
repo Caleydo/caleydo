@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.jgrapht.DirectedGraph;
+import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -19,8 +20,6 @@ import org.jgrapht.graph.DefaultEdge;
  */
 public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
-
-	
 	private NodeType rootNode;
 
 	DirectedGraph<NodeType, DefaultEdge> graph;
@@ -285,10 +284,14 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	public int getDepth() {
 		// Update iDepth if tree has changed
 		if (isDirty()) {
-			setClean();
-			iDepth = determineDepth(rootNode);
+			makeClean();
+			iDepth = rootNode.getDepth();
 		}
 		return iDepth;
+	}
+
+	private void reCalculateMetaInfo() {
+		rootNode.calculateHierarchyDepth();
 	}
 
 	/**
@@ -297,21 +300,21 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	 * @param node
 	 * @return
 	 */
-	private int determineDepth(NodeType node) {
-		NodeInfo info = mNodeMap.get(node);
-		int iDepth = 1;
-		if (hasChildren(node)) {
-			// Get Depth of all childs and update our depth to max. depth of childs + 1
-			for (NodeType currentNode : getChildren(node)) {
-				int iChildDepth = determineDepth(currentNode);
-				if (iDepth <= iChildDepth)
-					iDepth = iChildDepth + 1;
-			}
-		}
-		// store our Depth and return it, leaves would have depth = 1
-		info.setDepth(iDepth);
-		return iDepth;
-	}
+	// private int determineDepth(NodeType node) {
+	// NodeInfo info = mNodeMap.get(node);
+	// int iDepth = 1;
+	// if (hasChildren(node)) {
+	// // Get Depth of all childs and update our depth to max. depth of childs + 1
+	// for (NodeType currentNode : getChildren(node)) {
+	// int iChildDepth = determineDepth(currentNode);
+	// if (iDepth <= iChildDepth)
+	// iDepth = iChildDepth + 1;
+	// }
+	// }
+	// // store our Depth and return it, leaves would have depth = 1
+	// info.setDepth(iDepth);
+	// return iDepth;
+	// }
 
 	/**
 	 * Determine depth of a specific node.
@@ -319,14 +322,14 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	 * @param node
 	 * @return
 	 */
+	@Deprecated
 	public int getDepth(NodeType node) {
 		// update whole tree depth informations if they are dirty
 		if (isDirty()) {
-			setClean();
-			iDepth = determineDepth(rootNode);
+			makeClean();
 		}
 		// return current depth
-		return mNodeMap.get(node).getDepth();
+		return node.getDepth();
 	}
 
 	/**
@@ -346,12 +349,41 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 		this.isDirty = true;
 	}
 
-	public void setClean() {
+	public void makeClean() {
+		reCalculateMetaInfo();
 		this.isDirty = false;
 	}
 
 	public boolean isDirty() {
 		return isDirty;
 	}
+
+	/**
+	 * Recursively calculates the hierarchy depths of the elements of the sub-hierarchy using the current
+	 * element as root node.
+	 * 
+	 * @return HierarchyDepth of the current element.
+	 */
+	// private int calculateHierarchyDepth() {
+	//
+	// ArrayList<Node> alChildren = tree.getChildren(node);
+	// iHierarchyDepth = 1;
+	//
+	// if (alChildren == null) {
+	// return 1;
+	// }
+	//
+	// for (Node child : alChildren) {
+	// int iChildDepth = child.calculateHierarchyDepth();
+	// iHierarchyDepth = (iChildDepth >= iHierarchyDepth) ? iChildDepth + 1 : iHierarchyDepth;
+	// }
+	// return iHierarchyDepth;
+	// }
+
+	// public Tree<NodeType> getSubTree(NodeType newRoot)
+	// {
+	// Tree<NodeType> subTree = new Tree<NodeType>();
+	//		
+	// }
 
 }

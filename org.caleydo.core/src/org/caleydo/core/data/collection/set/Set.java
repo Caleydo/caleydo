@@ -68,12 +68,18 @@ public class Set
 	// clustering stuff
 	private ArrayList<Integer> alClusterSizes = null;
 	private ArrayList<Integer> alClusterExamples = null;
-	private Tree<ClusterNode> clusteredTreeGenes;
-	private Tree<ClusterNode> clusteredTreeExps;
+
 	private GroupList groupListGenes = new GroupList(0);
 	private GroupList groupListExperiments = new GroupList(0);
 	private boolean bGeneClusterInfo = false;
 	private boolean bExperimentClusterInfo = false;
+
+	/** Tree for content hierarchy */
+	private Tree<ClusterNode> contentTree;
+	/** Tree for storage hierarchy */
+	private Tree<ClusterNode> storageTree;
+	/** Root node for storage hierarchy which is only set in metaSets */
+	private ClusterNode storageTreeRoot = null;
 
 	private EExternalDataRepresentation externalDataRep;
 
@@ -516,11 +522,11 @@ public class Set
 
 			ClusterManager clusterManager = new ClusterManager(this);
 			return clusterManager.cluster(clusterState);
-		
+
 		}
 		else
 			return null;
-		
+
 	}
 
 	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes) {
@@ -644,23 +650,35 @@ public class Set
 	}
 
 	@Override
-	public void setClusteredTreeGenes(Tree<ClusterNode> clusteredTreeGenes) {
-		this.clusteredTreeGenes = clusteredTreeGenes;
+	public void setContentTree(Tree<ClusterNode> contentTree) {
+		this.contentTree = contentTree;
 	}
 
 	@Override
-	public Tree<ClusterNode> getClusteredTreeGenes() {
-		return clusteredTreeGenes;
+	public Tree<ClusterNode> getContentTree() {
+		return contentTree;
 	}
 
 	@Override
-	public void setClusteredTreeExps(Tree<ClusterNode> clusteredTreeExps) {
-		this.clusteredTreeExps = clusteredTreeExps;
+	public void setStorageTree(Tree<ClusterNode> storageTree) {
+		this.storageTree = storageTree;
 	}
 
 	@Override
-	public Tree<ClusterNode> getClusteredTreeExps() {
-		return clusteredTreeExps;
+	public Tree<ClusterNode> getStorageTree() {
+		return storageTree;
+	}
+
+	@Override
+	public ClusterNode getStorageTreeRoot() {
+		if (storageTreeRoot == null)
+			return storageTree.getRoot();
+		return storageTreeRoot;
+	}
+
+	@Override
+	public void setStorageTreeRoot(ClusterNode storageTreeRoot) {
+		this.storageTreeRoot = storageTreeRoot;
 	}
 
 	@Override
@@ -755,35 +773,33 @@ public class Set
 	}
 
 	public void createMetaSets() {
-		ClusterNode rootNode = clusteredTreeExps.getRoot();
+		ClusterNode rootNode = storageTree.getRoot();
 		rootNode.createMetaSets(this);
-		
-		
+
 		// test
 		ISet metaSet = rootNode.getChildren().get(0).getChildren().get(0).getMetaSet();
-		
+
 		IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
 		useCase.setSet(metaSet);
 		useCase.updateSetInViews();
 		// tree.get
 	}
-	
+
 	@Override
-	public ISet getShallowClone()
-	{
+	public ISet getShallowClone() {
 		Set metaSet = new Set();
 		metaSet.setType = this.setType;
 		metaSet.bIsSetHomogeneous = this.bIsSetHomogeneous;
 		metaSet.externalDataRep = this.externalDataRep;
-		
-//		try {
-//			metaSet = (Set)super.clone();
-//		}
-//		catch (CloneNotSupportedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
+
+		// try {
+		// metaSet = (Set)super.clone();
+		// }
+		// catch (CloneNotSupportedException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+
 		return metaSet;
 	}
 
