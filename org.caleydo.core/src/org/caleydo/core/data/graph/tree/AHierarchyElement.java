@@ -24,7 +24,7 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	/**
 	 * Specifies the depth of the sub-hierarchy with the current element as root node.
 	 */
-	protected int iHierarchyDepth = -1;
+	protected int hierarchyDepth = -1;
 	/**
 	 * Instance of the concrete type that is stored in the hierarchy. This element has to be set, otherwise
 	 * the methods provided by AHierarchyElement will not work.
@@ -34,9 +34,9 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 * Specifies the level of the hierarchy of the current element. To be clear: If the root node is on level
 	 * 0, its children are on level 1 and so on.
 	 */
-	protected int iHierarchyLevel = -1;
-	
-	protected int numberOfElements = -1;
+	protected int hierarchyLevel = -1;
+
+	protected int numberOfLeaves = -1;
 
 	protected String label;
 
@@ -46,7 +46,6 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	private ArrayList<Integer> leaveIDs;
 
 	public AHierarchyElement() {
-		iHierarchyLevel = 0;
 	}
 
 	/**
@@ -59,8 +58,16 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	public AHierarchyElement(Tree<Node> tree) {
 		setNode((Node) this);
 		this.tree = tree;
-		iHierarchyLevel = 0;
+	}
 
+	/**
+	 * Sets the instance of the concrete type that is stored in the hierarchy. If the instance is not set, the
+	 * methods of AHierarchyElement will not work.
+	 * 
+	 * @param node
+	 */
+	private void setNode(Node node) {
+		this.node = node;
 	}
 
 	public void setLeafID(int leafID) {
@@ -96,70 +103,59 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 		return label;
 	}
 
+	/**
+	 * Gets the parent of the current element.
+	 * 
+	 * @return Parent of the current element, null if the current element is the root node.
+	 */
+	public Node getParent() {
+		return tree.getParent(node);
+	}
+
+	/**
+	 * Returns whether the current element has children or not.
+	 * 
+	 * @return True if the current element has children, false otherwise.
+	 */
+	public boolean hasChildren() {
+		return tree.hasChildren(node);
+	}
+
+	/**
+	 * Returns the children of the node or null if the node is a leaf
+	 * 
+	 * @return a list of nodes which are the children or null
+	 */
 	public ArrayList<Node> getChildren() {
 		return tree.getChildren(node);
 	}
-	
-	public int getNrElements() {
+
+	/**
+	 * Returns the number of leaves that are children of this node (i.e. all leaves of this sub-tree)
+	 * 
+	 * @return
+	 */
+	public int getNrLeaves() {
 		return getLeaveIds().size();
 	}
-	
+
 	/**
-	 * @return Size of the hierarchical data object.
+	 * Returns the size of the hierarchical data object. The size by default is the number of leaves, however,
+	 * a sub-view could substitute this for another value (e.g. sum of file sizes)
+	 * 
+	 * @return
 	 */
-	public float getSize(){
-		
-		
-		return numberOfElements;
+	public float getSize() {
+		return numberOfLeaves;
 	}
 
-	// public float getSize() {
-	// return iNrElements;
-	// }
-
+	/**
+	 * A node is compared by the value returned by {@link #getComparableValue()}. By default (as long as
+	 * getComparableValue is not overriden) this is the ID.
+	 */
 	@Override
 	public int compareTo(Node node) {
-		return id - node.id;
-	}
-
-	/**
-	 * Sets the instance of the concrete type that is stored in the hierarchy. If the instance is not set, the
-	 * methods of AHierarchyElement will not work.
-	 * 
-	 * @param node
-	 */
-	protected void setNode(Node node) {
-		this.node = node;
-	}
-
-	/**
-	 * Recursively calculates the hierarchy levels of the elements of the sub-hierarchy using the current
-	 * element as root node.
-	 * 
-	 * @param iLevel
-	 *            Specifies the level of the root node.
-	 */
-	public void calculateHierarchyLevels(int iLevel) {
-		iHierarchyLevel = iLevel;
-		ArrayList<Node> alChildren = tree.getChildren(node);
-
-		if (alChildren == null) {
-			return;
-		}
-
-		for (Node child : alChildren) {
-			child.calculateHierarchyLevels(iLevel + 1);
-		}
-	}
-
-	/**
-	 * Gets the hierarchy level of the current element. Note that calculateHierarchyLevels must have been
-	 * called first to get the proper value.
-	 * 
-	 * @return The hierarchy level of the current element.
-	 */
-	public int getHierarchyLevel() {
-		return iHierarchyLevel;
+		return getComparableValue() - node.getComparableValue();
 	}
 
 	/**
@@ -285,25 +281,16 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	}
 
 	/**
-	 * Recursively calculates the hierarchy depths of the elements of the sub-hierarchy using the current
-	 * element as root node.
+	 * Gets the hierarchy level of the current element. Note that calculateHierarchyLevels must have been
+	 * called first to get the proper value.
 	 * 
-	 * @return HierarchyDepth of the current element.
+	 * @return The hierarchy level of the current element.
 	 */
-	public int calculateHierarchyDepth() {
+	public int getHierarchyLevel() {
+		if (hierarchyLevel == -1 || tree.isDirty())
+			tree.makeClean();
 
-		ArrayList<Node> alChildren = tree.getChildren(node);
-		iHierarchyDepth = 1;
-
-		if (alChildren == null) {
-			return 1;
-		}
-
-		for (Node child : alChildren) {
-			int iChildDepth = child.calculateHierarchyDepth();
-			iHierarchyDepth = (iChildDepth >= iHierarchyDepth) ? iChildDepth + 1 : iHierarchyDepth;
-		}
-		return iHierarchyDepth;
+		return hierarchyLevel;
 	}
 
 	/**
@@ -312,28 +299,10 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 * @return Hierarchy depth of the current element.
 	 */
 	public int getDepth() {
-		if (iHierarchyDepth == -1 || tree.isDirty())
+		if (hierarchyDepth == -1 || tree.isDirty())
 			tree.makeClean();
 
-		return iHierarchyDepth;
-	}
-
-	/**
-	 * Gets the parent of the current element.
-	 * 
-	 * @return Parent of the current element, null if the current element is the root node.
-	 */
-	public Node getParent() {
-		return tree.getParent(node);
-	}
-
-	/**
-	 * Returns whether the current element has children or not.
-	 * 
-	 * @return True if the current element has children, false otherwise.
-	 */
-	public boolean hasChildren() {
-		return tree.hasChildren(node);
+		return hierarchyDepth;
 	}
 
 	/**
@@ -345,30 +314,76 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 */
 	@XmlTransient
 	public ArrayList<Integer> getLeaveIds() {
-		//FIXME: Move into calculateMetaInfo of tree
-		if (!tree.isDirty() && leaveIDs != null)
-			return leaveIDs;
-		else {
-			leaveIDs = new ArrayList<Integer>();
-			ArrayList<Node> children = tree.getChildren(node);
-			if (children == null) {
-				leaveIDs.add(leafID);
-				return leaveIDs;
-			}
-			else {
-				for (Node child : children) {
-					leaveIDs.addAll(child.getLeaveIds());
-				}
-			}
-		}
+		if (leaveIDs == null || tree.isDirty())
+			tree.makeClean();
+
 		return leaveIDs;
 	}
-	
+
 	/**
-	 * @return Returns the same as getID but may be overridden in subclasses.
+	 * Returns the same as getID but may be overridden in subclasses.
+	 * 
+	 * @return a comparable ID
 	 */
 	public int getComparableValue() {
 		return getID();
+	}
+
+	ArrayList<Integer> calculateLeaveIDs() {
+		leaveIDs = new ArrayList<Integer>();
+		ArrayList<Node> children = tree.getChildren(node);
+		if (children == null) {
+			leaveIDs.add(leafID);
+			return leaveIDs;
+		}
+		else {
+			for (Node child : children) {
+				leaveIDs.addAll(child.getLeaveIds());
+			}
+			return leaveIDs;
+		}
+	}
+
+	/**
+	 * Recursively calculates the hierarchy depths of the elements of the sub-hierarchy using the current
+	 * element as root node.
+	 * 
+	 * @return HierarchyDepth of the current element.
+	 */
+	int calculateHierarchyDepth() {
+
+		ArrayList<Node> alChildren = tree.getChildren(node);
+		hierarchyDepth = 1;
+
+		if (alChildren == null) {
+			return 1;
+		}
+
+		for (Node child : alChildren) {
+			int childDepth = child.calculateHierarchyDepth();
+			hierarchyDepth = (childDepth >= hierarchyDepth) ? childDepth + 1 : hierarchyDepth;
+		}
+		return hierarchyDepth;
+	}
+
+	/**
+	 * Recursively calculates the hierarchy levels of the elements of the sub-hierarchy using the current
+	 * element as root node.
+	 * 
+	 * @param hierarchyLevel
+	 *            Specifies the level of the root node.
+	 */
+	void calculateHierarchyLevels(int hierarchyLevel) {
+		this.hierarchyLevel = hierarchyLevel;
+		ArrayList<Node> alChildren = tree.getChildren(node);
+
+		if (alChildren == null) {
+			return;
+		}
+
+		for (Node child : alChildren) {
+			child.calculateHierarchyLevels(hierarchyLevel + 1);
+		}
 	}
 
 }

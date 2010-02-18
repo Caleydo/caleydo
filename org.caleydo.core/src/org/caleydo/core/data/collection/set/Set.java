@@ -382,6 +382,15 @@ public class Set
 		return iUniqueID;
 	}
 
+	public IVirtualArray createCompleteStorageVA() {
+		ArrayList<Integer> storages = new ArrayList<Integer>();
+		for (int count = 0; count < alStorages.size(); count++) {
+			storages.add(count);
+		}
+		VirtualArray virtualArray = new VirtualArray(EVAType.STORAGE, size(), storages);
+		return virtualArray;
+	}
+
 	@SuppressWarnings("unused")
 	private int createStorageVA(EVAType vaType, ArrayList<Integer> iAlSelections) {
 		VirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
@@ -802,5 +811,6 @@ public class Set
 
 		return metaSet;
 	}
+
 
 }

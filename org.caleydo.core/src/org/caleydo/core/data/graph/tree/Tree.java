@@ -292,6 +292,8 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	private void reCalculateMetaInfo() {
 		rootNode.calculateHierarchyDepth();
+		rootNode.calculateLeaveIDs();
+		rootNode.calculateHierarchyLevels(0);
 	}
 
 	/**

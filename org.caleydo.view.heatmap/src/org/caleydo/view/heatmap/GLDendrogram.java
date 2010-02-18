@@ -1286,14 +1286,14 @@ public class GLDendrogram extends AStorageBasedView implements
 				if (bRenderContentTree) {
 					xGlobalMax = viewFrustum.getWidth();
 					fSampleHeight = viewFrustum.getHeight()
-							/ rootNode.getNrElements();
+							/ rootNode.getNrLeaves();
 					fLevelWidth = (viewFrustum.getWidth() - 0.1f)
 							/ rootNode.getDepth();
 					yPosInit = viewFrustum.getHeight();
 				} else {
 					yGlobalMin = 0.0f;
 					fSampleWidth = viewFrustum.getWidth()
-							/ rootNode.getNrElements();
+							/ rootNode.getNrLeaves();
 					fLevelHeight = (viewFrustum.getHeight() - 0.1f)
 							/ rootNode.getDepth();
 					xPosInit = 0.0f;
@@ -1396,7 +1396,7 @@ public class GLDendrogram extends AStorageBasedView implements
 		if (iAlClusterNodes.size() < 1) {
 
 			groupList = new GroupList(iAlClusterNodes.size());
-			Group temp = new Group(rootNode.getNrElements(), false, 0,
+			Group temp = new Group(rootNode.getNrLeaves(), false, 0,
 					SelectionType.NORMAL, rootNode);
 
 			groupList.append(temp);
@@ -1439,11 +1439,11 @@ public class GLDendrogram extends AStorageBasedView implements
 			// Group temp = new Group(iter.getNrElements(), false,
 			// currentVA.get(iExample),
 			// iter.getRepresentativeElement(), SelectionType.NORMAL, iter);
-			Group temp = new Group(iter.getNrElements(), false, currentVA
+			Group temp = new Group(iter.getNrLeaves(), false, currentVA
 					.indexOf(iExample), SelectionType.NORMAL, iter);
 			groupList.append(temp);
 			cnt++;
-			iExample += iter.getNrElements();
+			iExample += iter.getNrLeaves();
 		}
 
 		if (bRenderContentTree) {
@@ -1720,10 +1720,10 @@ public class GLDendrogram extends AStorageBasedView implements
 			return new String("Dendrogram - no tree available");
 
 		if (bRenderContentTree)
-			return new String("Dendrogram - " + rootNode.getNrElements()
+			return new String("Dendrogram - " + rootNode.getNrLeaves()
 					+ " genes");
 		else
-			return new String("Dendrogram - " + rootNode.getNrElements()
+			return new String("Dendrogram - " + rootNode.getNrLeaves()
 					+ " experiments");
 	}
 
@@ -1740,7 +1740,7 @@ public class GLDendrogram extends AStorageBasedView implements
 
 		return "Standalone " + ((bRenderContentTree) ? "gene" : "experiment")
 				+ " dendrogram, rendered remote: " + isRenderedRemote()
-				+ ", Tree with: " + rootNode.getNrElements()
+				+ ", Tree with: " + rootNode.getNrLeaves()
 				+ ((bRenderContentTree) ? " genes" : " experiments")
 				+ ", remoteRenderer: " + getRemoteRenderingGLCanvas();
 	}

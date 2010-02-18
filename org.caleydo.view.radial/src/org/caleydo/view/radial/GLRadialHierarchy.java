@@ -256,11 +256,9 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 				drawingStrategyManager.getDefaultDrawingStrategy());
 		partialDiscTree.setRootNode(pdRoot);
 		hashPartialDiscs.put(heRoot.getID(), pdRoot);
-//		selectionManager.initialAdd(heRoot.getID());
+		// selectionManager.initialAdd(heRoot.getID());
 		buildTree(tree, heRoot, pdRoot);
-		pdRoot.calculateHierarchyLevels(0);
 		pdRoot.calculateLargestChildren();
-		pdRoot.calculateHierarchyDepth();
 		iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
 
 		this.dataEventManager = dataEventManager;
@@ -307,7 +305,6 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	private <E extends AHierarchyElement<E>> void buildTree(Tree<E> tree,
 			E hierarchyElement, PartialDisc partialDisc) {
 
-
 		ArrayList<E> alChildNodes = tree.getChildren(hierarchyElement);
 		ArrayList<PartialDisc> alChildDiscs = new ArrayList<PartialDisc>();
 
@@ -320,7 +317,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 					alChildDiscs.add(pdCurrentChildDisc);
 					partialDiscTree.addChild(partialDisc, pdCurrentChildDisc);
 					hashPartialDiscs.put(heChild.getID(), pdCurrentChildDisc);
-//					selectionManager.initialAdd(heChild.getID());
+					// selectionManager.initialAdd(heChild.getID());
 					buildTree(tree, heChild, pdCurrentChildDisc);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -367,7 +364,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 			return;
 
 		pickingManager.handlePicking(this, gl);
-		//setDisplayListDirty();
+		// setDisplayListDirty();
 		if (bIsDisplayListDirtyLocal && !bIsAnimationActive) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
@@ -474,8 +471,6 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 			renderSymbol(gl, EIconTextures.RADIAL_SYMBOL, 0.5f);
 		}
 	}
-
-
 
 	/**
 	 * Updates the current root element according to the position of the upward
@@ -889,14 +884,14 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
 
-		 Tree<ClusterNode> tree = set.getStorageTree();
-		//Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		Tree<ClusterNode> tree = set.getStorageTree();
+		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		if (tree != null) {
 			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
 			alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
 			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
-//			initHierarchy(tree, EIDType.CLUSTER_NUMBER,
-//					new GeneClusterDataEventManager(this), alColorModes);
+			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
+			// new GeneClusterDataEventManager(this), alColorModes);
 			initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 					new ExperimentClusterDataEventManager(this), alColorModes);
 		}
@@ -1076,21 +1071,20 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void handleUpdateView() {
-		//Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		Tree<ClusterNode> tree = set.getStorageTree();
 		if (tree != null) {
-//			if (pdRealRootElement == null) {
-				if (dataEventManager != null)
-					dataEventManager.unregisterEventListeners();
-				ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
-				alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
-				alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
-//				initHierarchy(tree, EIDType.CLUSTER_NUMBER,
-//						new GeneClusterDataEventManager(this), alColorModes);
-				initHierarchy(tree, EIDType.CLUSTER_NUMBER, new
-						 ExperimentClusterDataEventManager(this),
-						 alColorModes);
-//			}
+			// if (pdRealRootElement == null) {
+			if (dataEventManager != null)
+				dataEventManager.unregisterEventListeners();
+			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
+			alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
+			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
+			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
+			// new GeneClusterDataEventManager(this), alColorModes);
+			initHierarchy(tree, EIDType.CLUSTER_NUMBER,
+					new ExperimentClusterDataEventManager(this), alColorModes);
+			// }
 		} else {
 			hashPartialDiscs.clear();
 			navigationHistory.reset();
@@ -1170,7 +1164,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	public Rectangle getControlBox() {
 		return controlBox;
 	}
-	
+
 	public Collection<PartialDisc> getPartialDiscs() {
 		return hashPartialDiscs.values();
 	}

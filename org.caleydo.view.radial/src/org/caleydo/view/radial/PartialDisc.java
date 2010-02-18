@@ -42,12 +42,12 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 			AHierarchyElement<?> hierarchyElement, APDDrawingStrategy drawingStrategy) {
 
 		super(partialDiscTree);
-		setNode(this);
+//		setNode(this);
 		this.fSize = hierarchyElement.getSize();
 		this.hierarchyElement = hierarchyElement;
 		this.drawingStrategy = drawingStrategy;
 		fCurrentStartAngle = 0;
-		iHierarchyDepth = -1;
+		hierarchyDepth = -1;
 	}
 
 	/**

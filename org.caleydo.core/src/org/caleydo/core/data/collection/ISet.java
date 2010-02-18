@@ -66,6 +66,7 @@ public interface ISet
 	 * @return
 	 */
 	public IStorage get(int iIndex);
+	
 
 	/**
 	 * Get an iterator that iterates over the storages considering the Virtual Array.
@@ -227,6 +228,13 @@ public interface ISet
 	 * @return the id of the newly created VA
 	 */
 	public int createVA(EVAType vaType, List<Integer> iAlSelections);
+	
+	/**
+	 * FIXME needs to be replaced after VA Management re-design.
+	 * @return
+	 */
+	public IVirtualArray createCompleteStorageVA();
+	
 
 	/**
 	 * Creates a default virtual array for the set
