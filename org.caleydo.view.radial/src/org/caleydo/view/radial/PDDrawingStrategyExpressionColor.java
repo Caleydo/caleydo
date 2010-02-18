@@ -3,11 +3,11 @@ package org.caleydo.view.radial;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
-import org.caleydo.core.util.clusterer.IHierarchyData;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -116,7 +116,7 @@ public class PDDrawingStrategyExpressionColor
 	public float[] getColor(PartialDisc disc) {
 		float fAverageExpressionValue;
 
-		IHierarchyData<?> hierarchyData = disc.getHierarchyData();
+		AHierarchyElement<?> hierarchyData = disc.getHierarchyData();
 		ClusterNode clusterNode = null;
 		if (hierarchyData instanceof ClusterNode) {
 			clusterNode = (ClusterNode) hierarchyData;

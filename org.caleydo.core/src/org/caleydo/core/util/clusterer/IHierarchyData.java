@@ -10,18 +10,20 @@ public interface IHierarchyData<E extends IHierarchyData<E>>
 
 	
 
-	/**
-	 * @return Size of the hierarchical data object.
-	 */
-	public float getSize();
+	
 
-	/**
-	 * @return Text describing the hierarchical data object.
-	 */
-	public String getLabel();
+//	/**
+//	 * @return Text describing the hierarchical data object.
+//	 */
+//	public String getLabel();
 
-	/**
-	 * @return Value that shall be used when comparing hierarchical data object.
-	 */
-	public int getComparableValue();
+//	/**
+//	 * @return Value that shall be used when comparing hierarchical data object.
+//	 */
+//	public int getComparableValue();
+	
+//	/**
+//	 * @return An ID that uniquely identifies the hierarchy data element.
+//	 */
+//	public Integer getID();
 }

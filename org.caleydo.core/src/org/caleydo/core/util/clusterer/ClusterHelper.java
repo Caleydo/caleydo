@@ -113,20 +113,20 @@ public class ClusterHelper {
 //		return node.getDepth();
 //	}
 
-	/**
-	 * The function is responsible for calculating the number of elements in each node of the tree. To handle
-	 * this an other recursive function which does the whole work is called.
-	 * 
-	 * @param tree
-	 *            the tree
-	 */
-	public static void determineNrElements(Tree<ClusterNode> tree) {
-
-		// int iNrElements = 0;
-		// iNrElements = determineNrElementsRec(tree, tree.getRoot());
-		// System.out.println("iNrElements: " + iNrElements);
-		determineNrElementsRec(tree, tree.getRoot());
-	}
+//	/**
+//	 * The function is responsible for calculating the number of elements in each node of the tree. To handle
+//	 * this an other recursive function which does the whole work is called.
+//	 * 
+//	 * @param tree
+//	 *            the tree
+//	 */
+//	public static void determineNrElements(Tree<ClusterNode> tree) {
+//
+//		// int iNrElements = 0;
+//		// iNrElements = determineNrElementsRec(tree, tree.getRoot());
+//		// System.out.println("iNrElements: " + iNrElements);
+//		determineNrElementsRec(tree, tree.getRoot());
+//	}
 	
 	
 	public static void determineExpressionValue(Tree<ClusterNode> tree, EClustererType eClustererType, ISet set) {
@@ -214,31 +214,31 @@ public class ClusterHelper {
 		return fArExpressionValues;
 	}
 
-	/**
-	 * Recursive function which determines the number of elements in each node of the tree.
-	 * 
-	 * @param tree
-	 * @param node
-	 *            current node
-	 * @return number of elements in the current node
-	 */
-	private static int determineNrElementsRec(Tree<ClusterNode> tree, ClusterNode node) {
-
-		if (tree.hasChildren(node)) {
-			int temp = 0;
-
-			for (ClusterNode current : tree.getChildren(node)) {
-				temp += determineNrElementsRec(tree, current);
-			}
-
-			node.setNrElements(temp);
-		} else {
-			node.setNrElements(1);
-		}
-
-		return node.getNrElements();
-
-	}
+//	/**
+//	 * Recursive function which determines the number of elements in each node of the tree.
+//	 * 
+//	 * @param tree
+//	 * @param node
+//	 *            current node
+//	 * @return number of elements in the current node
+//	 */
+//	private static int determineNrElementsRec(Tree<ClusterNode> tree, ClusterNode node) {
+//
+//		if (tree.hasChildren(node)) {
+//			int temp = 0;
+//
+//			for (ClusterNode current : tree.getChildren(node)) {
+//				temp += determineNrElementsRec(tree, current);
+//			}
+//
+//			node.setNrElements(temp);
+//		} else {
+//			node.setNrElements(1);
+//		}
+//
+//		return node.getNrElements();
+//
+//	}
 
 	/**
 	 * Function sorts clusters depending on their average value (in case of genes: expression value).

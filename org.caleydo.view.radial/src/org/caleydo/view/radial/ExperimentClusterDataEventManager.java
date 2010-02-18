@@ -2,9 +2,10 @@ package org.caleydo.view.radial;
 
 import java.util.Collection;
 
+import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -12,7 +13,8 @@ import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.clusterer.IHierarchyData;
+import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
+import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 
 /**
  * The ExperimentClusterDataEventManager is responsible for handling and
@@ -21,14 +23,13 @@ import org.caleydo.core.util.clusterer.IHierarchyData;
  * 
  * @author Christian Partl
  */
-public class ExperimentClusterDataEventManager extends ADataEventManager {
+public class ExperimentClusterDataEventManager extends ADataEventManager implements
+IClusterNodeEventReceiver {
+	
+	ClusterNodeSelectionListener clusterNodeSelectionListener;
 
 	public ExperimentClusterDataEventManager(GLRadialHierarchy radialHierarchy) {
 		super(radialHierarchy);
-	}
-
-	@Override
-	protected void registerDataSpecificEventListeners() {
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class ExperimentClusterDataEventManager extends ADataEventManager {
 		eventPublisher.triggerEvent(clearSelectionsEvent);
 
 		if (!pdSelected.hasChildren()) {
-			IHierarchyData<?> hierarchyData = pdSelected.getHierarchyData();
+			AHierarchyElement<?> hierarchyData = pdSelected.getHierarchyData();
 			ClusterNode clusterNode = null;
 
 			if (hierarchyData instanceof ClusterNode) {
@@ -84,7 +85,21 @@ public class ExperimentClusterDataEventManager extends ADataEventManager {
 	}
 
 	@Override
+	protected void registerDataSpecificEventListeners() {
+
+		clusterNodeSelectionListener = new ClusterNodeSelectionListener();
+		clusterNodeSelectionListener.setHandler(this);
+		eventPublisher.addListener(ClusterNodeSelectionEvent.class,
+				clusterNodeSelectionListener);
+	}
+
+	@Override
 	protected void unregisterDataSpecificEventListeners() {
+
+		if (clusterNodeSelectionListener != null) {
+			eventPublisher.removeListener(clusterNodeSelectionListener);
+			clusterNodeSelectionListener = null;
+		}
 	}
 
 	@Override
@@ -103,7 +118,7 @@ public class ExperimentClusterDataEventManager extends ADataEventManager {
 			// TODO: The performance of this approach is not good...
 			for (SelectionDeltaItem item : deltaItems) {
 				for (PartialDisc disc : partialDiscs) {
-					IHierarchyData<?> hierarchyData = disc.getHierarchyData();
+					AHierarchyElement<?> hierarchyData = disc.getHierarchyData();
 					ClusterNode clusterNode = null;
 
 					if (hierarchyData instanceof ClusterNode) {
@@ -111,7 +126,7 @@ public class ExperimentClusterDataEventManager extends ADataEventManager {
 
 						if (clusterNode.getLeafID() == item.getPrimaryID()) {
 							selectionManager.addToType(item.getSelectionType(),
-									clusterNode.getClusterNr());
+									clusterNode.getID());
 						}
 					}
 				}
@@ -121,6 +136,29 @@ public class ExperimentClusterDataEventManager extends ADataEventManager {
 			radialHierarchy.setDisplayListDirty();
 		}
 
+	}
+	
+	@Override
+	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
+		SelectionDelta selectionDelta = event.getSelectionDelta();
+
+		if (selectionDelta.getIDType() == EIDType.CLUSTER_NUMBER) {
+			if (event.isSenderRadialHierarchy()) {
+				radialHierarchy.setupDisplay(event.getDrawingStateType(), event
+						.getDefaultDrawingStrategyType(), event
+						.isNewSelection(), event.getRootElementID(), event
+						.getSelectedElementID(), event
+						.getRootElementStartAngle(), event
+						.getSelectedElementStartAngle(), event
+						.getMaxDisplayedHierarchyDepth());
+			}
+			SelectionManager selectionManager = radialHierarchy
+					.getSelectionManager();
+			selectionManager.clearSelections();
+			selectionManager.setDelta(selectionDelta);
+			radialHierarchy.setNewSelection(true);
+			radialHierarchy.setDisplayListDirty();
+		}
 	}
 
 }

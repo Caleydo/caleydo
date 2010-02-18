@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -31,7 +32,6 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
-import org.caleydo.core.util.clusterer.IHierarchyData;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -159,7 +159,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void init(GL gl) {
-		Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		Tree<ClusterNode> tree = set.getContentTree();
 		if (tree != null) {
 			// initHierarchy(tree);
 		} else {
@@ -238,7 +238,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	 * @param alColorModes
 	 *            List of drawing strategies that shall be used as color modes.
 	 */
-	public <E extends IHierarchyData<E>> void initHierarchy(Tree<E> tree,
+	public <E extends AHierarchyElement<E>> void initHierarchy(Tree<E> tree,
 			EIDType idType, ADataEventManager dataEventManager,
 			ArrayList<EPDDrawingStrategyType> alColorModes) {
 
@@ -281,7 +281,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 		upwardNavigationSlider = new OneWaySlider(new Vec2f(controlBox
 				.getMinX() + 0.1f, controlBox.getMinY() + 0.1f), 0.2f, 1f,
 				pdRealRootElement.getHierarchyLevel(), 1, 0, pdRealRootElement
-						.getHierarchyDepth() - 1);
+						.getDepth() - 1);
 		upwardNavigationSlider.setMinSize(80);
 
 	}
@@ -304,8 +304,9 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	 *            Initially this variable should be the root element of the
 	 *            partial disc tree.
 	 */
-	private <E extends IHierarchyData<E>> void buildTree(Tree<E> tree,
+	private <E extends AHierarchyElement<E>> void buildTree(Tree<E> tree,
 			E hierarchyElement, PartialDisc partialDisc) {
+
 
 		ArrayList<E> alChildNodes = tree.getChildren(hierarchyElement);
 		ArrayList<PartialDisc> alChildDiscs = new ArrayList<PartialDisc>();
@@ -888,7 +889,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
 
-		 Tree<ClusterNode> tree = set.getClusteredTreeExps();
+		 Tree<ClusterNode> tree = set.getStorageTree();
 		//Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		if (tree != null) {
 			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
@@ -1076,7 +1077,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	@Override
 	public void handleUpdateView() {
 		//Tree<ClusterNode> tree = set.getClusteredTreeGenes();
-		Tree<ClusterNode> tree = set.getClusteredTreeExps();
+		Tree<ClusterNode> tree = set.getStorageTree();
 		if (tree != null) {
 //			if (pdRealRootElement == null) {
 				if (dataEventManager != null)
@@ -1110,7 +1111,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 				.getElements(SelectionType.SELECTION);
 		PartialDisc pdCurrentMouseOverElement = null;
 		int iDisplayedHierarchyDepth = Math.min(iMaxDisplayedHierarchyDepth,
-				pdCurrentRootElement.getHierarchyDepth());
+				pdCurrentRootElement.getDepth());
 
 		if ((setSelection != null)) {
 			for (Integer elementID : setSelection) {

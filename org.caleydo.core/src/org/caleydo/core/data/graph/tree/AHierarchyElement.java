@@ -2,7 +2,6 @@ package org.caleydo.core.data.graph.tree;
 
 import java.util.ArrayList;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -35,7 +34,9 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 * Specifies the level of the hierarchy of the current element. To be clear: If the root node is on level
 	 * 0, its children are on level 1 and so on.
 	 */
-	protected int iHierarchyLevel;
+	protected int iHierarchyLevel = -1;
+	
+	protected int numberOfElements = -1;
 
 	protected String label;
 
@@ -97,6 +98,19 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 
 	public ArrayList<Node> getChildren() {
 		return tree.getChildren(node);
+	}
+	
+	public int getNrElements() {
+		return getLeaveIds().size();
+	}
+	
+	/**
+	 * @return Size of the hierarchical data object.
+	 */
+	public float getSize(){
+		
+		
+		return numberOfElements;
 	}
 
 	// public float getSize() {
@@ -331,7 +345,7 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 */
 	@XmlTransient
 	public ArrayList<Integer> getLeaveIds() {
-
+		//FIXME: Move into calculateMetaInfo of tree
 		if (!tree.isDirty() && leaveIDs != null)
 			return leaveIDs;
 		else {
@@ -348,6 +362,13 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 			}
 		}
 		return leaveIDs;
+	}
+	
+	/**
+	 * @return Returns the same as getID but may be overridden in subclasses.
+	 */
+	public int getComparableValue() {
+		return getID();
 	}
 
 }

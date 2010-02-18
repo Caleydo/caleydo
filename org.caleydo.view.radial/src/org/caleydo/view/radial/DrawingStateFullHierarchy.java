@@ -62,7 +62,7 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 		pdCurrentMouseOverElement = null;
 
 		iDisplayedHierarchyDepth = Math.min(iMaxDisplayedHierarchyDepth,
-				pdCurrentRootElement.getHierarchyDepth());
+				pdCurrentRootElement.getDepth());
 
 		DrawingStrategyManager drawingStrategyManager = radialHierarchy
 				.getDrawingStrategyManager();
@@ -112,7 +112,7 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 					}
 					iDisplayedHierarchyDepth = Math.min(
 							iMaxDisplayedHierarchyDepth, pdCurrentRootElement
-									.getHierarchyDepth());
+									.getDepth());
 
 					radialHierarchy.setCurrentRootElement(pdCurrentRootElement);
 					radialHierarchy

@@ -2,9 +2,10 @@ package org.caleydo.view.radial;
 
 import java.util.Collection;
 
+import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -12,7 +13,6 @@ import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.clusterer.IHierarchyData;
 import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 
@@ -65,14 +65,14 @@ public class GeneClusterDataEventManager extends ADataEventManager implements
 			//TODO: The performance of this approach is not good...
 			for (SelectionDeltaItem item : deltaItems) {
 				for(PartialDisc disc : partialDiscs) {
-					IHierarchyData<?> hierarchyData = disc.getHierarchyData();
+					AHierarchyElement<?> hierarchyData = disc.getHierarchyData();
 					ClusterNode clusterNode = null;
 					
 					if (hierarchyData instanceof ClusterNode) {
 						clusterNode = (ClusterNode) hierarchyData;
 						
 						if(clusterNode.getLeafID() == item.getPrimaryID()) {
-							selectionManager.addToType(item.getSelectionType(), clusterNode.getClusterNr());
+							selectionManager.addToType(item.getSelectionType(), clusterNode.getID());
 						}
 					}
 				}
@@ -118,7 +118,7 @@ public class GeneClusterDataEventManager extends ADataEventManager implements
 		eventPublisher.triggerEvent(clearSelectionsEvent);
 
 		if (!pdSelected.hasChildren()) {
-			IHierarchyData<?> hierarchyData = pdSelected.getHierarchyData();
+			AHierarchyElement<?> hierarchyData = pdSelected.getHierarchyData();
 			ClusterNode clusterNode = null;
 			
 			if (hierarchyData instanceof ClusterNode) {

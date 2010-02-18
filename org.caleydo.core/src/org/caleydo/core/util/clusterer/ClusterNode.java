@@ -12,7 +12,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionType;
@@ -28,7 +27,7 @@ import org.caleydo.core.data.selection.SelectionType;
 @XmlRootElement(name = "node")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ClusterNode
-	extends AHierarchyElement<ClusterNode> {
+	extends AHierarchyElement<ClusterNode> implements IHierarchyData<ClusterNode>{
 
 	@XmlAttribute
 	private String nodeName;
@@ -121,13 +120,13 @@ public class ClusterNode
 		return nodeName;
 	}
 
-	public void setNrElements(int iNrElements) {
-		this.iNrElements = iNrElements;
-	}
-
-	public int getNrElements() {
-		return iNrElements;
-	}
+//	public void setNrElements(int iNrElements) {
+//		this.iNrElements = iNrElements;
+//	}
+//
+//	public int getNrElements() {
+//		return iNrElements;
+//	}
 
 	public void setPos(Vec3f vPos) {
 		this.vPos = vPos;
@@ -186,7 +185,15 @@ public class ClusterNode
 		return vPosSubTree;
 	}
 	
+	@Override
+	public int getComparableValue() {
+		return id;
+	}
 
+	@Override
+	public float getSize() {
+		return iNrElements;
+	}
 
 	// public void setRepresentativeElement(float[] fArRepresentativeElement) {
 	// this.fArRepresentativeElement = fArRepresentativeElement;

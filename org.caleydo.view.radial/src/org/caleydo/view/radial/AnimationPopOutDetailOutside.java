@@ -155,7 +155,7 @@ public class AnimationPopOutDetailOutside extends ADrawingStateAnimation {
 		int iMaxDisplayedHierarchyDepth = radialHierarchy
 				.getMaxDisplayedHierarchyDepth();
 		int iCurrentSelectedElementHierarchyDepth = pdCurrentSelectedElement
-				.getHierarchyDepth();
+				.getDepth();
 		float fCurrentSelectedElementWidth = pdCurrentSelectedElement
 				.getCurrentWidth();
 		float fCurrentSelecedElementInnderRadius = pdCurrentSelectedElement
@@ -188,7 +188,7 @@ public class AnimationPopOutDetailOutside extends ADrawingStateAnimation {
 		float fOverviewScreenPercentage = 1.0f - (fDetailViewScreenPercentage
 				+ (1.0f - RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE) + RadialHierarchyRenderStyle.DETAIL_RADIUS_DELTA_SCREEN_PERCENTAGE);
 		iDisplayedOverviewDepth = Math.min(iMaxDisplayedHierarchyDepth,
-				pdCurrentRootElement.getHierarchyDepth());
+				pdCurrentRootElement.getDepth());
 
 		float fTotalOverviewWidth = Math.min(fXCenter
 				* fOverviewScreenPercentage, fYCenter

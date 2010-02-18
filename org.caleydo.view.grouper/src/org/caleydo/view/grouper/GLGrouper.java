@@ -4,6 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,13 +20,18 @@ import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.grouper.CopyGroupsEvent;
 import org.caleydo.core.manager.event.view.grouper.CreateGroupEvent;
 import org.caleydo.core.manager.event.view.grouper.DeleteGroupsEvent;
 import org.caleydo.core.manager.event.view.grouper.PasteGroupsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -39,8 +45,12 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
+import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
+import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CopyGroupsItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CreateGroupItem;
@@ -66,7 +76,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Christian Partl
  * @author Alexander Lex
  */
-public class GLGrouper extends AGLView implements IViewCommandHandler {
+public class GLGrouper extends AGLView implements IViewCommandHandler,
+		ISelectionUpdateHandler, IClusterNodeEventReceiver {
 
 	public final static String VIEW_ID = "org.caleydo.view.grouper";
 
@@ -79,6 +90,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 	private Integer iLastUsedGroupID;
 
 	private boolean bHierarchyChanged;
+	private boolean bPotentialNewSelection;
 
 	private GrouperRenderStyle renderStyle;
 	private HashMap<Integer, GroupRepresentation> hashGroups;
@@ -86,11 +98,14 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 	private Set<Integer> setCopiedGroups;
 
 	private GroupRepresentation rootGroup;
+	private GroupRepresentation potentialNewSelectedGroup;
 
 	private DrawingStrategyManager drawingStrategyManager = null;
 	private DragAndDropController dragAndDropController = null;
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
+	protected SelectionUpdateListener selectionUpdateListener = null;
+	protected ClusterNodeSelectionListener clusterNodeSelectionListener = null;
 
 	private CreateGroupEventListener createGroupEventListener = null;
 	private CopyGroupsEventListener copyGroupsEventListener = null;
@@ -131,6 +146,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		iDraggedOverCollapseButtonID = -1;
 		bHierarchyChanged = true;
 		iLastUsedGroupID = 0;
+		bPotentialNewSelection = false;
 		// registerEventListeners();
 	}
 
@@ -200,7 +216,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		}
 
 		rootGroup.calculateHierarchyLevels(0);
-		ClusterHelper.determineNrElements(tree);
+//		ClusterHelper.determineNrElements(tree);
 //		ClusterHelper.determineHierarchyDepth(tree);
 		ClusterHelper.determineExpressionValue(tree,
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
@@ -255,12 +271,18 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		iLastUsedGroupID = 0;
 		rootGroup.getClusterNode().setID(iLastUsedGroupID++);
 		hashGroups.clear();
-		// selectionManager.add(rootGroup.getID());
+
+
+		selectionManager.clearSelections();
+		if(rootGroup.getClusterNode().getSelectionType() != SelectionType.NORMAL) {
+			selectionManager.addToType(rootGroup.getClusterNode()
+					.getSelectionType(), rootGroup.getID());
+		}
 		hashGroups.put(rootGroup.getID(), rootGroup);
 
 		buildTreeFromGroupHierarchy(tree, rootGroup.getClusterNode(), rootGroup);
 
-		ClusterHelper.determineNrElements(tree);
+//		ClusterHelper.determineNrElements(tree);
 //		ClusterHelper.determineHierarchyDepth(tree);
 		ClusterHelper.determineExpressionValue(tree,
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
@@ -276,6 +298,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		eventPublisher.triggerEvent(event);
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(
 				EIDCategory.EXPERIMENT, EVAType.STORAGE));
+		triggerSelectionEvents();
 	}
 
 	private void buildTreeFromGroupHierarchy(Tree<ClusterNode> tree,
@@ -291,6 +314,10 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 				buildTreeFromGroupHierarchy(tree, childNode, groupRep);
 			}
 			// selectionManager.add(groupRep.getID());
+			if(groupRep.getClusterNode().getSelectionType() != SelectionType.NORMAL) {
+				selectionManager.addToType(groupRep.getClusterNode()
+						.getSelectionType(), groupRep.getID());
+			}
 			hashGroups.put(groupRep.getID(), groupRep);
 		}
 	}
@@ -461,6 +488,23 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		// processEvents();
 		gl.glCallList(iGLDisplayListToCall);
 
+		if (glMouseListener.wasMouseReleased()
+				&& !dragAndDropController.isDragging()
+				&& bPotentialNewSelection) {
+
+			bPotentialNewSelection = false;
+			dragAndDropController.clearDraggables();
+			selectionManager.clearSelection(SelectionType.SELECTION);
+
+			potentialNewSelectedGroup.addAsDraggable(dragAndDropController);
+
+			potentialNewSelectedGroup.setSelectionType(SelectionType.SELECTION,
+					selectionManager);
+			rootGroup.updateDrawingStrategies(selectionManager,
+					drawingStrategyManager);
+			triggerSelectionEvents();
+			setDisplayListDirty();
+		}
 		dragAndDropController.handleDragging(gl, glMouseListener);
 
 		if (!isRenderedRemote())
@@ -533,6 +577,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
+
 		switch (ePickingType) {
 
 		case GROUPER_GROUP_SELECTION:
@@ -548,20 +593,37 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 						selectionManager
 								.clearSelection(SelectionType.SELECTION);
 					}
+					if (!bControlPressed) {
+						potentialNewSelectedGroup = groupRep;
+						bPotentialNewSelection = true;
+					}
+					dragAndDropController.setDraggingStartPosition(glMouseListener);
 					groupRep.addAsDraggable(dragAndDropController);
-					dragAndDropController.startDragging();
 
 					groupRep.setSelectionType(SelectionType.SELECTION,
 							selectionManager);
 					rootGroup.updateDrawingStrategies(selectionManager,
 							drawingStrategyManager);
+					triggerSelectionEvents();
 					setDisplayListDirty();
 				}
 				break;
 			case DRAGGED:
 				iDraggedOverCollapseButtonID = -1;
-				if (groupRep != null) {
-					if (dragAndDropController.isDragging()) {
+				if (groupRep != null && dragAndDropController.hasDraggables()) {
+					if (!dragAndDropController.isDragging()) {
+						if (dragAndDropController.containsDraggable(groupRep)) {
+							bPotentialNewSelection = false;
+							dragAndDropController.startDragging();
+						}
+
+					}
+					if (groupRep.isLeaf()) {
+						GroupRepresentation parent = (GroupRepresentation) groupRep
+								.getParent();
+						if (parent != null)
+							dragAndDropController.setDropArea(parent);
+					} else {
 						dragAndDropController.setDropArea(groupRep);
 					}
 				}
@@ -580,11 +642,13 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 							groupRep.getID());
 					rootGroup.updateDrawingStrategies(selectionManager,
 							drawingStrategyManager);
+					triggerSelectionEvents();
 					setDisplayListDirty();
 				}
 				break;
 			case RIGHT_CLICKED:
 				if (groupRep != null) {
+					boolean bContextMenueItemsAvailable = false;
 					if (selectionManager.checkStatus(SelectionType.SELECTION,
 							groupRep.getID())
 							&& groupRep != rootGroup) {
@@ -604,16 +668,18 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 						DeleteGroupsItem deleteGroupsItem = new DeleteGroupsItem(
 								setSelectedGroups);
 						contextMenu.addContextMenueItem(deleteGroupsItem);
+						
+						bContextMenueItemsAvailable = true;
 
 					}
-					if (setCopiedGroups == null
-							|| !setCopiedGroups.contains(groupRep.getID())) {
+					if (setCopiedGroups != null && !setCopiedGroups.contains(groupRep.getID())) {
 						PasteGroupsItem pasteGroupItem = new PasteGroupsItem(
 								groupRep.getID());
 						contextMenu.addContextMenueItem(pasteGroupItem);
+						bContextMenueItemsAvailable = true;
 					}
 
-					if (!isRenderedRemote()) {
+					if (!isRenderedRemote() && bContextMenueItemsAvailable) {
 						contextMenu.setLocation(pick.getPickedPoint(),
 								getParentGLCanvas().getWidth(),
 								getParentGLCanvas().getHeight());
@@ -627,68 +693,6 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			}
 			break;
 
-		// case GROUPER_VA_ELEMENT_SELECTION:
-		// VAElementRepresentation elementRep =
-		// hashElements.get(iExternalID);
-		// switch (pickingMode) {
-		// case CLICKED:
-		// iDraggedOverCollapseButtonID = -1;
-		// if (elementRep != null) {
-		//
-		// if (!bControlPressed
-		// && !selectionManager
-		// .checkStatus(SelectionType.SELECTION, elementRep.getID())) {
-		// dragAndDropController.clearDraggables();
-		// selectionManager.clearSelection(SelectionType.SELECTION);
-		// }
-		// dragAndDropController.addDraggable(elementRep);
-		// dragAndDropController.startDragging();
-		//
-		// selectionManager.addToType(SelectionType.SELECTION,
-		// elementRep.getID());
-		// rootGroup.updateDrawingStrategies(selectionManager,
-		// drawingStrategyManager);
-		// setDisplayListDirty();
-		// }
-		// break;
-		// case MOUSE_OVER:
-		// iDraggedOverCollapseButtonID = -1;
-		// if (elementRep != null) {
-		// if (selectionManager.checkStatus(SelectionType.MOUSE_OVER,
-		// elementRep.getID())
-		// || selectionManager.checkStatus(SelectionType.SELECTION,
-		// elementRep.getID())) {
-		// return;
-		// }
-		// selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-		// selectionManager.addToType(SelectionType.MOUSE_OVER,
-		// elementRep.getID());
-		// rootGroup.updateDrawingStrategies(selectionManager,
-		// drawingStrategyManager);
-		// setDisplayListDirty();
-		// }
-		// break;
-		// case RIGHT_CLICKED:
-		// if (elementRep != null) {
-		// if (selectionManager.checkStatus(SelectionType.SELECTION,
-		// elementRep.getID())) {
-		// CreateGroupItem createGroupItem = new CreateGroupItem();
-		// contextMenu.addContextMenueItem(createGroupItem);
-		//
-		// if (!isRenderedRemote()) {
-		// contextMenu.setLocation(pick.getPickedPoint(),
-		// getParentGLCanvas()
-		// .getWidth(), getParentGLCanvas().getHeight());
-		// contextMenu.setMasterGLView(this);
-		// }
-		// }
-		// }
-		// break;
-		// default:
-		// return;
-		// }
-		// break;
-
 		case GROUPER_BACKGROUND_SELECTION:
 			switch (pickingMode) {
 			case CLICKED:
@@ -697,6 +701,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 				selectionManager.clearSelections();
 				rootGroup.updateDrawingStrategies(selectionManager,
 						drawingStrategyManager);
+				triggerSelectionEvents();
 				setDisplayListDirty();
 				break;
 			default:
@@ -735,6 +740,37 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 			}
 			break;
 		}
+	}
+
+	private void triggerSelectionEvents() {
+
+		// ClearSelectionsEvent clearSelectionsEvent = new
+		// ClearSelectionsEvent();
+		// clearSelectionsEvent.setSender(this);
+		// eventPublisher.triggerEvent(clearSelectionsEvent);
+
+		SelectionDelta clusterIDDelta = selectionManager.getDelta();
+
+		ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
+		event.setSender(this);
+		event.setSelectionDelta(clusterIDDelta);
+		eventPublisher.triggerEvent(event);
+
+		// SelectionDelta delta = new SelectionDelta(
+		// EIDType.EXPERIMENT_INDEX);
+		// for(SelectionDeltaItem item : clusterIDDelta.getAllItems()) {
+		// GroupRepresentation groupRep = hashGroups.get(item.getPrimaryID());
+		// if(groupRep != null && groupRep.isLeaf()) {
+		// ClusterNode clusterNode = groupRep.getClusterNode();
+		// delta.addSelection(clusterNode.getLeafID(), item.getSelectionType());
+		// }
+		// }
+		//		
+		// SelectionUpdateEvent selectionUpdateEvent = new
+		// SelectionUpdateEvent();
+		// selectionUpdateEvent.setSender(this);
+		// selectionUpdateEvent.setSelectionDelta(delta);
+		// eventPublisher.triggerEvent(selectionUpdateEvent);
 	}
 
 	@Override
@@ -815,6 +851,16 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		deleteGroupsEventListener.setHandler(this);
 		eventPublisher.addListener(DeleteGroupsEvent.class,
 				deleteGroupsEventListener);
+		
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class,
+				selectionUpdateListener);
+		
+		clusterNodeSelectionListener = new ClusterNodeSelectionListener();
+		clusterNodeSelectionListener.setHandler(this);
+		eventPublisher.addListener(ClusterNodeSelectionEvent.class,
+				clusterNodeSelectionListener);
 
 	}
 
@@ -844,6 +890,14 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		if (deleteGroupsEventListener != null) {
 			eventPublisher.removeListener(deleteGroupsEventListener);
 			deleteGroupsEventListener = null;
+		}
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
+		}
+		if (clusterNodeSelectionListener != null) {
+			eventPublisher.removeListener(clusterNodeSelectionListener);
+			clusterNodeSelectionListener = null;
 		}
 	}
 
@@ -1038,5 +1092,54 @@ public class GLGrouper extends AGLView implements IViewCommandHandler {
 		bHierarchyChanged = true;
 		updateClusterTreeAccordingToGroupHierarchy();
 		setDisplayListDirty();
+	}
+
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
+			boolean scrollToSelection, String info) {
+
+		if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {	
+			Collection<SelectionDeltaItem> deltaItems = selectionDelta
+					.getAllItems();
+			Tree<ClusterNode> experimentTree = set.getStorageTree();
+
+			if (experimentTree != null) {
+				selectionManager.clearSelections();
+				dragAndDropController.clearDraggables();
+				
+				for (SelectionDeltaItem item : deltaItems) {
+					ArrayList<Integer> alNodeIDs = experimentTree
+							.getNodeIDsFromLeafID(item.getPrimaryID());
+					
+					for(Integer nodeID : alNodeIDs) {
+						GroupRepresentation groupRep = hashGroups.get(nodeID);
+						if(item.getSelectionType() == SelectionType.SELECTION) {
+							groupRep.addAsDraggable(dragAndDropController);
+						}
+						groupRep.setSelectionType(item.getSelectionType(),
+								selectionManager);
+					}
+					rootGroup.updateDrawingStrategies(selectionManager,
+							drawingStrategyManager);
+				}
+				setDisplayListDirty();
+			}
+		}
+
+	}
+
+	@Override
+	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
+		SelectionDelta selectionDelta = event.getSelectionDelta();
+
+		if (selectionDelta.getIDType() == EIDType.CLUSTER_NUMBER) {
+
+			selectionManager.clearSelections();
+			selectionManager.setDelta(selectionDelta);
+			rootGroup.updateDrawingStrategies(selectionManager,
+					drawingStrategyManager);
+			setDisplayListDirty();
+		}
+		
 	}
 }

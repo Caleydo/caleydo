@@ -14,16 +14,15 @@ public class DragAndDropController {
 
 	private Set<IDraggable> setDraggables;
 	private IDropArea dropArea;
-	boolean bDragging;
-	boolean bDraggingFirstTime;
-	float fArDraggingStartMouseCoordinates[];
-	AGLView view;
+	private boolean bDragging;
+	private boolean bDraggingFirstTime;
+	private Point startDraggingWindowCoords;
+	private AGLView view;
 
 	public DragAndDropController(AGLView view) {
 		setDraggables = new HashSet<IDraggable>();
 		bDragging = false;
 		bDraggingFirstTime = false;
-		fArDraggingStartMouseCoordinates = new float[2];
 		this.view = view;
 	}
 
@@ -67,9 +66,13 @@ public class DragAndDropController {
 
 			for (IDraggable draggable : setDraggables) {
 				if (bDraggingFirstTime) {
+					float[] fArStartDraggingWorldCoordinates = GLCoordinateUtils
+							.convertWindowCoordinatesToWorldCoordinates(gl,
+									startDraggingWindowCoords.x,
+									startDraggingWindowCoords.y);
 					draggable.setDraggingStartPoint(
-							fArTargetWorldCoordinates[0],
-							fArTargetWorldCoordinates[1]);
+							fArStartDraggingWorldCoordinates[0],
+							fArStartDraggingWorldCoordinates[1]);
 				}
 				draggable.handleDragging(gl, fArTargetWorldCoordinates[0],
 						fArTargetWorldCoordinates[1]);
@@ -98,8 +101,15 @@ public class DragAndDropController {
 		return setDraggables;
 	}
 
-	public float[] getDraggingStartMouseCoordinates() {
-		return fArDraggingStartMouseCoordinates;
+	public boolean hasDraggables() {
+		return !setDraggables.isEmpty();
 	}
 
+	public boolean containsDraggable(IDraggable draggable) {
+		return setDraggables.contains(draggable);
+	}
+
+	public void setDraggingStartPosition(GLMouseListener glMouseListener) {
+		startDraggingWindowCoords = glMouseListener.getPickedPoint();
+	}
 }

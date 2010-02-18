@@ -345,18 +345,22 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	@Override
 	public void updateDrawingStrategies(SelectionManager selectionManager,
 			DrawingStrategyManager drawingStrategyManager) {
-
+		
+		
 		if (selectionManager.checkStatus(SelectionType.MOUSE_OVER, getID())) {
 			drawingStrategy = drawingStrategyManager
 					.getGroupDrawingStrategy(EGroupDrawingStrategyType.MOUSE_OVER);
+			clusterNode.setSelectionType(SelectionType.MOUSE_OVER);
 
 		} else if (selectionManager.checkStatus(SelectionType.SELECTION,
 				getID())) {
 			drawingStrategy = drawingStrategyManager
 					.getGroupDrawingStrategy(EGroupDrawingStrategyType.SELECTION);
+			clusterNode.setSelectionType(SelectionType.SELECTION);
 		} else {
 			drawingStrategy = drawingStrategyManager
 					.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
+			clusterNode.setSelectionType(SelectionType.NORMAL);
 		}
 
 		for (ICompositeGraphic child : alChildren) {
@@ -384,6 +388,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	public void setSelectionType(SelectionType selectionType,
 			SelectionManager selectionManager) {
 		selectionManager.addToType(selectionType, getID());
+		clusterNode.setSelectionType(selectionType);
 		for (ICompositeGraphic child : alChildren) {
 			child.setSelectionType(selectionType, selectionManager);
 		}

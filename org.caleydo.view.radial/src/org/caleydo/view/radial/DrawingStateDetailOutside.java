@@ -409,7 +409,7 @@ public class DrawingStateDetailOutside extends ADrawingState {
 
 		float fDetailViewScreenPercentage;
 		int iSelectedElementDepth = pdCurrentSelectedElement
-				.getHierarchyDepth();
+				.getDepth();
 		int iDepthToRoot = pdCurrentSelectedElement
 				.getParentPathLength(pdCurrentRootElement);
 
@@ -435,7 +435,7 @@ public class DrawingStateDetailOutside extends ADrawingState {
 		float fOverviewScreenPercentage = 1.0f - (fDetailViewScreenPercentage
 				+ (1.0f - RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE) + RadialHierarchyRenderStyle.DETAIL_RADIUS_DELTA_SCREEN_PERCENTAGE);
 		iDisplayedOverviewDepth = Math.min(iMaxDisplayedHierarchyDepth,
-				pdCurrentRootElement.getHierarchyDepth());
+				pdCurrentRootElement.getDepth());
 
 		float fTotalOverviewWidth = Math.min(fXCenter
 				* fOverviewScreenPercentage, fYCenter

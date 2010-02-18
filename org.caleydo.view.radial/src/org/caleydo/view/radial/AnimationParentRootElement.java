@@ -298,7 +298,7 @@ public class AnimationParentRootElement extends ADrawingStateAnimation {
 
 		int iDisplayedHierarchyDepth = Math.min(radialHierarchy
 				.getMaxDisplayedHierarchyDepth(), pdNewRootElement
-				.getHierarchyDepth());
+				.getDepth());
 
 		float fTargetWidth = Math.min(fXCenter
 				* RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE, fYCenter

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.util.clusterer.IHierarchyData;
 
 /**
  * This class represents a partial disc that corresponds to a cluster node in a
@@ -19,7 +19,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 
 	private float fSize;
 	private APDDrawingStrategy drawingStrategy;
-	private IHierarchyData<?> hierarchyData;
+	private AHierarchyElement<?> hierarchyElement;
 	private PartialDisc pdLargestChild;
 
 	private float fCurrentAngle;
@@ -39,12 +39,12 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	 *            Cluster node that the partial disc shall correspond to.
 	 */
 	public PartialDisc(Tree<PartialDisc> partialDiscTree,
-			IHierarchyData<?> hierarchyData, APDDrawingStrategy drawingStrategy) {
+			AHierarchyElement<?> hierarchyElement, APDDrawingStrategy drawingStrategy) {
 
 		super(partialDiscTree);
 		setNode(this);
-		this.fSize = hierarchyData.getSize();
-		this.hierarchyData = hierarchyData;
+		this.fSize = hierarchyElement.getSize();
+		this.hierarchyElement = hierarchyElement;
 		this.drawingStrategy = drawingStrategy;
 		fCurrentStartAngle = 0;
 		iHierarchyDepth = -1;
@@ -361,7 +361,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	private void setCurrentDisplayParameters(float fWidth, float fStartAngle,
 			float fAngle, float fInnerRadius, int iDepth) {
 		fCurrentAngle = fAngle;
-		iCurrentDepth = Math.min(iDepth, getHierarchyDepth());
+		iCurrentDepth = Math.min(iDepth, getDepth());
 		fCurrentInnerRadius = fInnerRadius;
 		fCurrentStartAngle = fStartAngle;
 		fCurrentWidth = fWidth;
@@ -372,7 +372,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	 *         ID of the hierarchy data object the partial disc represents.
 	 */
 	public int getElementID() {
-		return hierarchyData.getID();
+		return hierarchyElement.getID();
 	}
 
 	/**
@@ -505,8 +505,8 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 		return fCurrentInnerRadius;
 	}
 
-	public IHierarchyData<?> getHierarchyData() {
-		return hierarchyData;
+	public AHierarchyElement<?> getHierarchyData() {
+		return hierarchyElement;
 	}
 
 	/**
@@ -534,8 +534,8 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	@Override
 	public int compareTo(PartialDisc disc) {
 
-		return hierarchyData.getComparableValue()
-				- disc.hierarchyData.getComparableValue();
+		return hierarchyElement.getComparableValue()
+				- disc.hierarchyElement.getComparableValue();
 	}
 
 	/**

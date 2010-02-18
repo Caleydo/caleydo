@@ -3,9 +3,9 @@ package org.caleydo.view.radial;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
-import org.caleydo.core.util.clusterer.IHierarchyData;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -43,7 +43,7 @@ public class PDDrawingStrategyLabelDecorator
 		LabelInfo labelInfo = new LabelInfo(0, 0, 0, pdDiscToDraw
 				.getDrawingStrategyDepth());
 
-		IHierarchyData<?> hierarchyData = pdDiscToDraw.getHierarchyData();
+		AHierarchyElement<?> hierarchyData = pdDiscToDraw.getHierarchyData();
 		ClusterNode clusterNode = null;
 
 		if (hierarchyData instanceof ClusterNode) {
@@ -81,7 +81,7 @@ public class PDDrawingStrategyLabelDecorator
 		LabelInfo labelInfo = new LabelInfo(fSegmentXCenter, fSegmentYCenter,
 				fCenterRadius, pdDiscToDraw.getDrawingStrategyDepth());
 
-		IHierarchyData<?> hierarchyData = pdDiscToDraw.getHierarchyData();
+		AHierarchyElement<?> hierarchyData = pdDiscToDraw.getHierarchyData();
 		ClusterNode clusterNode = null;
 
 		if (hierarchyData instanceof ClusterNode) {
@@ -151,7 +151,7 @@ public class PDDrawingStrategyLabelDecorator
 			numElementsLine.addLabelItem(numElementsItem);
 
 			TextItem hierarchyDepthItem = new TextItem("Hierarchy Depth: "
-					+ pdDiscToDraw.getHierarchyDepth());
+					+ pdDiscToDraw.getDepth());
 			LabelLine hierarchyDepthLine = new LabelLine();
 			hierarchyDepthLine.addLabelItem(hierarchyDepthItem);
 
@@ -177,7 +177,7 @@ public class PDDrawingStrategyLabelDecorator
 	 * @param labelInfo
 	 *            LabelInfo object that shall contain the label data.
 	 */
-	private void setupDefaultLabel(IHierarchyData<?> hierarchyData,
+	private void setupDefaultLabel(AHierarchyElement<?> hierarchyData,
 			LabelInfo labelInfo) {
 
 		TextItem textItem = new TextItem(hierarchyData.getLabel());

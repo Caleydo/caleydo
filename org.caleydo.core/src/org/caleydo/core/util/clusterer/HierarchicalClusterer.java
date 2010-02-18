@@ -239,7 +239,7 @@ public class HierarchicalClusterer
 
 		CNodeToTree(clusterNode, node, clusterState.getClustererType());
 
-		ClusterHelper.determineNrElements(tree);
+//		ClusterHelper.determineNrElements(tree);
 //		ClusterHelper.determineHierarchyDepth(tree);
 
 		processEvents();
@@ -284,7 +284,7 @@ public class HierarchicalClusterer
 				clusterNr = currentNode.getClusterNum();
 
 				ClusterNode currentGraph = new ClusterNode(tree, "Node_" + clusterNr, clusterNr, 0f, 0, false, -1);
-				currentGraph.setNrElements(1);
+//				currentGraph.setNrElements(1);
 
 				tree.addChild(clusterNode, currentGraph);
 				CNodeToTree(currentGraph, currentNode, eClustererType);

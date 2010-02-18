@@ -346,7 +346,7 @@ public class TreeClusterer
 		tree.setRootNode(node);
 		treeStructureToTree(node, result2, result2.length - 1, eClustererType);
 
-		ClusterHelper.determineNrElements(tree);
+//		ClusterHelper.determineNrElements(tree);
 //		ClusterHelper.determineHierarchyDepth(tree);
 
 		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
@@ -486,7 +486,7 @@ public class TreeClusterer
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
-		ClusterHelper.determineNrElements(tree);
+//		ClusterHelper.determineNrElements(tree);
 //		ClusterHelper.determineHierarchyDepth(tree);
 
 		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
@@ -709,7 +709,7 @@ public class TreeClusterer
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
-		ClusterHelper.determineNrElements(tree);
+//		ClusterHelper.determineNrElements(tree);
 //		ClusterHelper.determineHierarchyDepth(tree);
 
 		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
@@ -861,7 +861,7 @@ public class TreeClusterer
 
 			left = new ClusterNode(tree, NodeName, getNodeCounter(), treeStructure[index].getCorrelation(), 0, false, LeaveID);
 
-			left.setNrElements(1);
+//			left.setNrElements(1);
 
 			tree.addChild(node, left);
 
@@ -883,7 +883,7 @@ public class TreeClusterer
 
 			right = new ClusterNode(tree, NodeName, getNodeCounter(), treeStructure[index].getCorrelation(), 0, false, LeaveID);
 
-			right.setNrElements(1);
+//			right.setNrElements(1);
 
 			tree.addChild(node, right);
 
