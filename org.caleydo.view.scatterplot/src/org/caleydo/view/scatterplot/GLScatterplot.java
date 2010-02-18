@@ -138,6 +138,12 @@ public class GLScatterplot extends AStorageBasedView {
 	int iCurrentMouseOverElement = -1;
 
 	
+	private float fTransformOldMinX=0.2f;
+	private float fTransformNewMinX=0.1f;
+        
+    private float fTransformOldMaxX=0.4f;
+    private float fTransformNewMaxX=0.6f;
+    
 
 	public static int SELECTED_X_AXIS = 0;
 	public static int SELECTED_Y_AXIS = 1;
@@ -191,6 +197,8 @@ public class GLScatterplot extends AStorageBasedView {
 	
 	private ArrayList<SelectionType> AlSelectionTypes = new ArrayList<SelectionType>(); 
 	private SelectionType currentSelection = SelectionType.SELECTION; 
+	private int iMaxSelections=5;
+	private boolean bMainViewZoom=false;
 	
 	private boolean bRedrawTextures = false;
 
@@ -1450,6 +1458,38 @@ public class GLScatterplot extends AStorageBasedView {
 		}
 		return tmpString;
 	}
+	
+	private float transformOnZoom(float x)
+	{
+	    if(!bMainViewZoom)
+	    	return x;
+	    
+	    
+	    if (x<fTransformOldMinX)
+	    {
+	    	float factor = fTransformOldMinX/fTransformNewMinX;
+	    	
+	    	return x/factor;
+	    }
+ 
+	    if (x>fTransformOldMaxX)
+	    {	    	
+	    	
+	    	float factor = (1-fTransformOldMaxX)/(1-fTransformNewMaxX);
+	    	return fTransformNewMaxX+(x-fTransformOldMaxX)/factor;
+	    }
+	    
+//		private float fTransformOldMinX=0.3f;
+//		private float fTransformNewMinX=0.1f;
+//	        
+//	    private float fTransformOldMaxX=0.4f;
+//	    private float fTransformNewMaxX=0.6f;
+
+	    float factor = (fTransformNewMaxX-fTransformNewMinX)/(fTransformOldMaxX-fTransformOldMinX);
+	    
+	    return (fTransformNewMinX)+(x-fTransformOldMinX)*factor;
+	}
+	
 
 	private void RenderScatterPoints(GL gl) {
 	float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
@@ -1492,7 +1532,8 @@ public class GLScatterplot extends AStorageBasedView {
 			ynormalized = set.get(SELECTED_Y_AXIS).getFloat(
 					EDataRepresentation.NORMALIZED, iContentIndex);
 
-			x = xnormalized * XScale;
+			//x = xnormalized * XScale;
+			x = transformOnZoom(xnormalized) * XScale;
 			y = ynormalized * YScale;
 			if (bUseColor)
 				fArMappingColor = colorMapper.getColor(Math.max(xnormalized,
@@ -2108,7 +2149,9 @@ public class GLScatterplot extends AStorageBasedView {
 	
 	public void addSelectionType()
 	{
-		int	iSlectionNr=AlSelectionTypes.size()+1;			
+		int	iSlectionNr=AlSelectionTypes.size()+1;
+		if (iSlectionNr>iMaxSelections)
+			return;
 		SelectionTypeEvent event = new SelectionTypeEvent();
 		currentSelection = new SelectionType();
 		currentSelection.setType("SCATTER_SELECTION_"+iSlectionNr);
@@ -2126,7 +2169,8 @@ public class GLScatterplot extends AStorageBasedView {
 		if (iSlectionNr==1) return; 					
 		AlSelectionTypes.remove(iSlectionNr-1);
 		currentSelection=AlSelectionTypes.get(iSlectionNr-2);
-		bUpdateSelection = true;									
+		bUpdateSelection = true;				
+		setDisplayListDirty();
 	}
 	
 	
@@ -2711,8 +2755,19 @@ public class GLScatterplot extends AStorageBasedView {
 
 	}
 
+	public void MainViewZoom() {
+
+		if (bMainViewZoom)
+			bMainViewZoom = false;
+		else
+			bMainViewZoom = true;
+
+		bUpdateMainView = true;		
+		setDisplayListDirty();
+	}
+	
+
 	public void toggleColorMode() {
-		// TODO Auto-generated method stub
 		if (bUseColor)
 			bUseColor = false;
 		else

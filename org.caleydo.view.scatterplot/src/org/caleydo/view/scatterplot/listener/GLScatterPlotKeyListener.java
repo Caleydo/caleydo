@@ -84,6 +84,13 @@ public class GLScatterPlotKeyListener extends GLKeyListener<GLScatterplot> {
 			return;
 		}
 		
+		if (event.character == 'o') {
+			glScatterplot.MainViewZoom();
+			return;
+		}
+		
+		
+		
 		
 		
 		
