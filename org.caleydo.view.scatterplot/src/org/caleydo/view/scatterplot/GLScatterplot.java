@@ -1300,7 +1300,12 @@ public class GLScatterplot extends AStorageBasedView {
 
 				gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 				float fRoationAngle= -45;
-				float x = fCurrentWidth- fWidthHalf + XYAXISDISTANCE;
+//				float x = fCurrentWidth- fWidthHalf + XYAXISDISTANCE;
+//				x=transformOnZoom(x,renderStyle.getAxisWidth(),XYAXISDISTANCE);
+				
+				float x = fCurrentWidth + XYAXISDISTANCE;
+				x=transformOnZoom(x,renderStyle.getAxisWidth(),XYAXISDISTANCE)- fWidthHalf;
+				
 				float y =  fYPosition+AXIS_MARKER_WIDTH - fHeight;
 				gl.glTranslatef(x,y, 0);
 				gl.glRotatef(fRoationAngle, 0, 0, 1);				
@@ -1321,9 +1326,12 @@ public class GLScatterplot extends AStorageBasedView {
 
 			gl.glColor4fv(X_AXIS_COLOR, 0);
 			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(fCurrentWidth + XYAXISDISTANCE, fYPosition
+			
+			float tmpx=fCurrentWidth + XYAXISDISTANCE;
+			tmpx=transformOnZoom(tmpx,renderStyle.getAxisWidth(),XYAXISDISTANCE);
+			gl.glVertex3f(tmpx, fYPosition
 					- AXIS_MARKER_WIDTH, AXIS_Z);
-			gl.glVertex3f(fCurrentWidth + XYAXISDISTANCE, fYPosition
+			gl.glVertex3f(tmpx, fYPosition
 					+ AXIS_MARKER_WIDTH, AXIS_Z);
 			gl.glEnd();
 
@@ -1459,16 +1467,29 @@ public class GLScatterplot extends AStorageBasedView {
 		return tmpString;
 	}
 	
+	
+	
+	private float transformOnZoom(float x,float fSize, float fOffset)
+	{
+		float tmp = (x-fOffset)/fSize; 		
+		return transformOnZoom(tmp)*fSize+fOffset;				
+	}
+	
+	private float transformOnZoom(float x,float fSize)
+	{
+		float tmp = x/fSize; 		
+		return transformOnZoom(tmp)*fSize;				
+	}
+	
+		
 	private float transformOnZoom(float x)
 	{
 	    if(!bMainViewZoom)
 	    	return x;
-	    
-	    
+	    	    
 	    if (x<fTransformOldMinX)
 	    {
-	    	float factor = fTransformOldMinX/fTransformNewMinX;
-	    	
+	    	float factor = fTransformOldMinX/fTransformNewMinX;	    	
 	    	return x/factor;
 	    }
  
@@ -1479,14 +1500,7 @@ public class GLScatterplot extends AStorageBasedView {
 	    	return fTransformNewMaxX+(x-fTransformOldMaxX)/factor;
 	    }
 	    
-//		private float fTransformOldMinX=0.3f;
-//		private float fTransformNewMinX=0.1f;
-//	        
-//	    private float fTransformOldMaxX=0.4f;
-//	    private float fTransformNewMaxX=0.6f;
-
-	    float factor = (fTransformNewMaxX-fTransformNewMinX)/(fTransformOldMaxX-fTransformOldMinX);
-	    
+	    float factor = (fTransformNewMaxX-fTransformNewMinX)/(fTransformOldMaxX-fTransformOldMinX);	    
 	    return (fTransformNewMinX)+(x-fTransformOldMinX)*factor;
 	}
 	
