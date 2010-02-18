@@ -644,6 +644,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		initContentVariables();
 
 		contentSelectionManager.setVA(contentVA);
+		// FIXME: for testing only:
+		contentSelectionManager.addTypeToDeltaBlacklist(SelectionType.MOUSE_OVER);
+		
 		storageSelectionManager.setVA(storageVA);
 
 		initGates();

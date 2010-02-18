@@ -36,7 +36,8 @@ public interface ISelectionDelta
 	public SelectionDeltaItem addSelection(int iSelectionID, SelectionType selectionType, int iInternalID);
 
 	/**
-	 * Removes a particular element from a selection type
+	 * Stores a selectionDeltaItem in the delta that triggers a removal of a particular element from a
+	 * selection type in the receiving selection manager
 	 * 
 	 * @param selectionID
 	 *            the element to be removed

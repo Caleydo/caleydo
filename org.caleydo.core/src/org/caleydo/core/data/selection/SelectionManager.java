@@ -55,6 +55,8 @@ public class SelectionManager
 	implements IListenerOwner, Cloneable {
 
 	private HashMap<SelectionType, HashMap<Integer, Integer>> hashSelectionTypes;
+	/** Selection types that should not be included in deltas have to be listed in this structure */
+	private HashMap<SelectionType, Boolean> deltaBlackList;
 
 	private HashMap<Integer, ArrayList<Integer>> hashConnectionToElementID;
 
@@ -90,7 +92,6 @@ public class SelectionManager
 		public Builder(EIDType iDType) {
 			this.iDType = iDType;
 		}
-
 
 		/**
 		 * Set a list of selection types if you don't want to (or can) handle all selection types in your view
@@ -128,6 +129,7 @@ public class SelectionManager
 
 		hashSelectionTypes = new HashMap<SelectionType, HashMap<Integer, Integer>>();
 		hashConnectionToElementID = new HashMap<Integer, ArrayList<Integer>>();
+		deltaBlackList = new HashMap<SelectionType, Boolean>(2);
 
 		selectionDelta = new SelectionDelta(iDType);
 
@@ -148,42 +150,24 @@ public class SelectionManager
 		return iDType;
 	}
 
-/**
-	 * Initialize by adding the elements one by one. No delta writing. Do this only in the initialization phase.
-	 * Use {@link #add(int) later.
-	 * 
-	 * @param iElementID
-	 */
-	// private void initialAdd(int iElementID) {
-	// hashSelectionTypes.get(normalType).put(iElementID, 1);
-	// }
-
 	/**
-	 * Initialize by adding the elements all at once. No delta writing.
+	 * <p>
+	 * Set a virtual array if the data you are managing with this selection manager is also managed by a
+	 * virtual array.
+	 * </p>
+	 * <p>
+	 * If you reset this virtual array at runtime the manager is completely resetted and reinitialized with
+	 * the data of the virtual array
+	 * </p>
 	 * 
-	 * @param iAlElementIDs
+	 * @param virtualArray
+	 *            the currently active virtual array
 	 */
-	// private void initialAdd(ArrayList<Integer> iAlElementIDs) {
-	// for (Integer iElementID : iAlElementIDs) {
-	// hashSelectionTypes.get(normalType).put(iElementID, 1);
-	// }
-	// }
-
-	/**
-	 * Use this to add elements at run-time
-	 * 
-	 * @param iElementID
-	 */
-	// private void add(int iElementID) {
-	// for (SelectionType selectionType : alSelectionTypes) {
-	// if (checkStatus(selectionType, iElementID)) {
-	// int iNumTimesAdded = hashSelectionTypes.get(selectionType).get(iElementID);
-	// hashSelectionTypes.get(selectionType).put(iElementID, ++iNumTimesAdded);
-	// return;
-	// }
-	// }
-	// initialAdd(iElementID);
-	// }
+	public void setVA(IVirtualArray virtualArray) {
+		// resetSelectionManager();
+		// initialAdd(virtualArray.getIndexList());
+		this.virtualArray = virtualArray;
+	}
 
 	/**
 	 * Removes a particular element from the selection manager, no matter what the type
@@ -210,8 +194,6 @@ public class SelectionManager
 				else {
 					hashSelectionTypes.get(selectionType).put(iElementID, iNumTimesAdded);
 				}
-				// since each element should exist only once we can break the loop here
-
 			}
 		}
 	}
@@ -231,26 +213,6 @@ public class SelectionManager
 		for (Integer element : tempAr) {
 			remove(element.intValue(), true);
 		}
-
-	}
-
-	/**
-	 * <p>
-	 * Set a virtual array if the data you are managing with this selection manager is also managed by a
-	 * virtual array.
-	 * </p>
-	 * <p>
-	 * If you reset this virtual array at runtime the manager is completely resetted and reinitialized with
-	 * the data of the virtual array
-	 * </p>
-	 * 
-	 * @param virtualArray
-	 *            the currently active virtual array
-	 */
-	public void setVA(IVirtualArray virtualArray) {
-//		resetSelectionManager();
-		// initialAdd(virtualArray.getIndexList());
-		this.virtualArray = virtualArray;
 	}
 
 	/**
@@ -301,7 +263,8 @@ public class SelectionManager
 			return;
 
 		for (int iSelectionID : hashSelectionTypes.get(selectionType).keySet()) {
-			selectionDelta.removeSelection(iSelectionID, selectionType);
+			if (!deltaBlackList.containsKey(selectionType))
+				selectionDelta.removeSelection(iSelectionID, selectionType);
 			removeConnectionForElementID(iSelectionID);
 		}
 
@@ -368,7 +331,7 @@ public class SelectionManager
 
 		hashSelectionTypes.get(targetType).put(iElementID, 1);
 
-		if (bIsDeltaWritingEnabled) {
+		if (bIsDeltaWritingEnabled && !deltaBlackList.containsKey(targetType)) {
 			selectionDelta.addSelection(iElementID, targetType);
 		}
 
@@ -431,12 +394,18 @@ public class SelectionManager
 		if (hashSelectionTypes.get(selectionType).containsKey(elementID)) {
 			Integer iNumTimesAdded = hashSelectionTypes.get(selectionType).remove(elementID);
 			// hashSelectionTypes.get(normalType).put(iElementID, iNumTimesAdded);
-			selectionDelta.removeSelection(elementID, selectionType);
+			if (!deltaBlackList.containsKey(selectionType))
+				selectionDelta.removeSelection(elementID, selectionType);
 		}
 	}
 
 	/**
+	 * <p>
 	 * Move all element from one type to another
+	 * </p>
+	 * <p>
+	 * FIXME: has not been used for a long time, check before using
+	 * </p>
 	 * 
 	 * @param srcType
 	 *            the source type
@@ -445,10 +414,12 @@ public class SelectionManager
 	 * @throws IllegalArgumentException
 	 *             when called with {@link SelectionType#REMOVE}
 	 */
+	@Deprecated
 	public void moveType(SelectionType srcType, SelectionType targetType) {
 		HashMap<Integer, Integer> tempHash = hashSelectionTypes.remove(srcType);
 		for (Integer value : tempHash.keySet()) {
-			selectionDelta.addSelection(value, targetType);
+			if (!deltaBlackList.containsKey(targetType))
+				selectionDelta.addSelection(value, targetType);
 		}
 
 		hashSelectionTypes.get(targetType).putAll(tempHash);
@@ -542,7 +513,7 @@ public class SelectionManager
 		SelectionDelta tempDelta = new SelectionDelta(iDType);
 		HashMap<Integer, Integer> tempHash;
 		for (SelectionType selectionType : selectionTypes) {
-			if(selectionType == SelectionType.NORMAL)
+			if (selectionType == SelectionType.NORMAL || deltaBlackList.containsKey(selectionType))
 				continue;
 			tempHash = hashSelectionTypes.get(selectionType);
 			for (Integer iElement : tempHash.keySet()) {
@@ -782,7 +753,7 @@ public class SelectionManager
 			if (checkStatus(type, elementID))
 				selectedTypes.add(type);
 		}
-		if(selectedTypes.isEmpty())
+		if (selectedTypes.isEmpty())
 			selectedTypes.add(SelectionType.NORMAL);
 		return selectedTypes;
 	}
@@ -790,6 +761,35 @@ public class SelectionManager
 	/** Returns a list of all currently registered selection types */
 	public ArrayList<SelectionType> getSelectionTypes() {
 		return selectionTypes;
+	}
+
+	/**
+	 * Adds a new, custom selection type to the selection manager. Should only be called via a
+	 * {@link SelectionTypeEvent}
+	 */
+	void addSelectionType(SelectionType selectionType) {
+		hashSelectionTypes.put(selectionType, new HashMap<Integer, Integer>());
+		selectionTypes.add(selectionType);
+	}
+
+	/**
+	 * Removes a custom selection type from the selection manager. Should only be called via a
+	 * {@link SelectionTypeEvent}
+	 */
+	void removeSelectionType(SelectionType selectionType) {
+		hashSelectionTypes.remove(selectionType);
+		selectionTypes.remove(selectionType);
+	}
+
+	/**
+	 * Add a type to the delta black list, which excludes all operations on the type from being written to a
+	 * delta
+	 * 
+	 * @param type
+	 *            the selection type which should not be written to deltas
+	 */
+	public void addTypeToDeltaBlacklist(SelectionType type) {
+		deltaBlackList.put(type, null);
 	}
 
 	/**
@@ -815,16 +815,6 @@ public class SelectionManager
 			GeneralManager.get().getEventPublisher().removeListener(addSelectionTypeListener);
 			addSelectionTypeListener = null;
 		}
-	}
-
-	public void addSelectionType(SelectionType selectionType) {
-		hashSelectionTypes.put(selectionType, new HashMap<Integer, Integer>());
-		selectionTypes.add(selectionType);
-	}
-
-	public void removeSelectionType(SelectionType selectionType) {
-		hashSelectionTypes.remove(selectionType);
-		selectionTypes.remove(selectionType);
 	}
 
 	@Override
@@ -876,6 +866,9 @@ public class SelectionManager
 			clone.hashSelectionTypes.put(selectionType, (HashMap<Integer, Integer>) this.hashSelectionTypes
 				.get(selectionType).clone());
 		}
+
+		// clone deltaBlackList
+		clone.deltaBlackList = (HashMap<SelectionType, Boolean>) this.deltaBlackList.clone();
 
 		// clone selectionTypes
 		clone.selectionTypes = (ArrayList<SelectionType>) this.selectionTypes.clone();

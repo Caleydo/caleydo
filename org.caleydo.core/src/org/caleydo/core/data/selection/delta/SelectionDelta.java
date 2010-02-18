@@ -64,6 +64,7 @@ public class SelectionDelta
 		//		
 	}
 
+	@Override
 	public SelectionDeltaItem removeSelection(int selectionID, SelectionType selectionType) {
 		SelectionDeltaItem item = new SelectionDeltaItem(selectionID, selectionType);
 		item.setRemove(true);
