@@ -383,9 +383,16 @@ public class Set
 	}
 
 	public IVirtualArray createCompleteStorageVA() {
-		ArrayList<Integer> storages = new ArrayList<Integer>();
-		for (int count = 0; count < alStorages.size(); count++) {
-			storages.add(count);
+
+		ArrayList<Integer> storages;
+		if (storageTree == null) {
+			storages = new ArrayList<Integer>();
+			for (int count = 0; count < alStorages.size(); count++) {
+				storages.add(count);
+			}
+		}
+		else {
+			storages = storageTreeRoot.getLeaveIds();
 		}
 		VirtualArray virtualArray = new VirtualArray(EVAType.STORAGE, size(), storages);
 		return virtualArray;
@@ -811,6 +818,5 @@ public class Set
 
 		return metaSet;
 	}
-
 
 }
