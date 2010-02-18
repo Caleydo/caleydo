@@ -23,7 +23,7 @@ import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
+import org.caleydo.core.manager.event.data.ReplaceVirtualArrayInUseCaseEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.grouper.CopyGroupsEvent;
@@ -157,6 +157,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager,
 				iUniqueID, renderStyle);
 		if (set.getStorageTree() != null) {
+			//FIXME: do that differently.
+			set = set.getStorageTree().getRoot().getMetaSet();
 			tree = set.getStorageTree();
 			initHierarchy(set.getStorageTree());
 		} else {
@@ -284,6 +286,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 
 //		ClusterHelper.determineNrElements(tree);
 //		ClusterHelper.determineHierarchyDepth(tree);
+		//FIXME: do that differently.
+		set = set.getStorageTree().getRoot().getMetaSet();
 		ClusterHelper.determineExpressionValue(tree,
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
 		set.setStorageTree(tree);
@@ -291,13 +295,13 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
 		storageVA = new VirtualArray(EVAType.STORAGE, alIndices.size(),
 				alIndices);
-		set.replaceVA(useCase.getVA(EVAType.STORAGE).getID(), storageVA);
+//		set.replaceVA(useCase.getVA(EVAType.STORAGE).getID(), storageVA);
 
 		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
-		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(
-				EIDCategory.EXPERIMENT, EVAType.STORAGE));
+		eventPublisher.triggerEvent(new ReplaceVirtualArrayInUseCaseEvent(
+				EIDCategory.EXPERIMENT, EVAType.STORAGE, (VirtualArray)storageVA));
 		triggerSelectionEvents();
 	}
 

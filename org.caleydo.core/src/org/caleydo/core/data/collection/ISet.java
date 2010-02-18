@@ -235,7 +235,11 @@ public interface ISet
 	 */
 	public IVirtualArray createCompleteStorageVA();
 	
-
+	/**
+	 * FIXME needs to be replaced after VA Management re-design.
+	 * @return
+	 */
+	public IVirtualArray createCompleteContentVA();
 	/**
 	 * Creates a default virtual array for the set
 	 * 

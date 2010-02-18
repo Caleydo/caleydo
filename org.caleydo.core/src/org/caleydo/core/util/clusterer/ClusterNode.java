@@ -36,8 +36,8 @@ public class ClusterNode
 	private float fCoefficient;
 	@XmlElement
 	private int iHierarchyDepth;
-	@XmlElement
-	private int iNrElements;
+//	@XmlElement
+//	private int iNrElements;
 	@XmlElement
 	private Vec3f vPos;
 	@XmlElement
@@ -190,10 +190,10 @@ public class ClusterNode
 		return id;
 	}
 
-	@Override
-	public float getSize() {
-		return iNrElements;
-	}
+//	@Override
+//	public float getSize() {
+//		return iNrElements;
+//	}
 
 	// public void setRepresentativeElement(float[] fArRepresentativeElement) {
 	// this.fArRepresentativeElement = fArRepresentativeElement;

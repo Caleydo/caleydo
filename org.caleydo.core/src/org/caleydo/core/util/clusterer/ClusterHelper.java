@@ -131,13 +131,12 @@ public class ClusterHelper {
 	
 	public static void determineExpressionValue(Tree<ClusterNode> tree, EClustererType eClustererType, ISet set) {
 
-		IVirtualArray storageVA = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getVA(EVAType.STORAGE);
+		IVirtualArray storageVA = set.createCompleteStorageVA();
 		IVirtualArray contentVA = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getVA(EVAType.CONTENT);
-		determineExpressionValueRec(tree, tree.getRoot(), eClustererType, set, storageVA.getID(), contentVA.getID());
-		
+		determineExpressionValueRec(tree, tree.getRoot(), eClustererType, set, storageVA, contentVA);
 	}
 	
-	private static float[] determineExpressionValueRec(Tree<ClusterNode> tree, ClusterNode node, EClustererType eClustererType, ISet set, int iVAIdStorage, int iVAIdContent) {
+	private static float[] determineExpressionValueRec(Tree<ClusterNode> tree, ClusterNode node, EClustererType eClustererType, ISet set, IVirtualArray storageVA, IVirtualArray contentVA) {
 
 		float[] fArExpressionValues;
 
@@ -148,11 +147,13 @@ public class ClusterHelper {
 			float[][] fArTempValues;
 
 			if (eClustererType == EClustererType.GENE_CLUSTERING) {
-				IVirtualArray storageVA = set.getVA(iVAIdStorage);
+//				IVirtualArray storageVA = set.getVA(iVAIdStorage);
+//				IVirtualArray storageVA = set.createCompleteStorageVA();
 				iNrElements = storageVA.size();
 			}
 			else {
-				IVirtualArray contentVA = set.getVA(iVAIdContent);
+//				IVirtualArray contentVA = set.getVA(iVAIdContent);
+//				IVirtualArray contentVA = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getVA(EVAType.CONTENT);
 				iNrElements = contentVA.size();
 			}
 
@@ -161,7 +162,7 @@ public class ClusterHelper {
 			int cnt = 0;
 
 			for (ClusterNode current : tree.getChildren(node)) {
-				fArTempValues[cnt] = determineExpressionValueRec(tree, current, eClustererType, set, iVAIdStorage, iVAIdContent);
+				fArTempValues[cnt] = determineExpressionValueRec(tree, current, eClustererType, set, storageVA, contentVA);
 				cnt++;
 			}
 
@@ -180,7 +181,8 @@ public class ClusterHelper {
 		else {
 
 			if (eClustererType == EClustererType.GENE_CLUSTERING) {
-				IVirtualArray storageVA = set.getVA(iVAIdStorage);
+//				IVirtualArray storageVA = set.getVA(iVAIdStorage);
+//				IVirtualArray storageVA = set.createCompleteStorageVA();
 				fArExpressionValues = new float[storageVA.size()];
 
 				int isto = 0;
@@ -192,7 +194,8 @@ public class ClusterHelper {
 
 			}
 			else {
-				IVirtualArray contentVA = set.getVA(iVAIdContent);
+//				IVirtualArray contentVA = set.getVA(iVAIdContent);
+//				IVirtualArray contentVA = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getVA(EVAType.CONTENT);
 				fArExpressionValues = new float[contentVA.size()];
 
 				int icon = 0;

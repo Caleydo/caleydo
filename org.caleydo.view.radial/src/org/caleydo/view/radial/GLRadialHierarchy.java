@@ -239,7 +239,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	 *            List of drawing strategies that shall be used as color modes.
 	 */
 	public <E extends AHierarchyElement<E>> void initHierarchy(Tree<E> tree,
-			EIDType idType, ADataEventManager dataEventManager,
+			E heRoot, EIDType idType, ADataEventManager dataEventManager,
 			ArrayList<EPDDrawingStrategyType> alColorModes) {
 
 		hashPartialDiscs.clear();
@@ -251,7 +251,6 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 		LabelManager.get().clearLabels();
 		drawingStrategyManager.init(pickingManager, iUniqueID, alColorModes);
 
-		E heRoot = tree.getRoot();
 		PartialDisc pdRoot = new PartialDisc(partialDiscTree, heRoot,
 				drawingStrategyManager.getDefaultDrawingStrategy());
 		partialDiscTree.setRootNode(pdRoot);
@@ -890,9 +889,11 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
 			alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
 			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
+
 			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 			// new GeneClusterDataEventManager(this), alColorModes);
-			initHierarchy(tree, EIDType.CLUSTER_NUMBER,
+			initHierarchy(tree, set.getStorageTreeRoot(),
+					EIDType.CLUSTER_NUMBER,
 					new ExperimentClusterDataEventManager(this), alColorModes);
 		}
 
@@ -1074,6 +1075,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		Tree<ClusterNode> tree = set.getStorageTree();
 		if (tree != null) {
+
 			// if (pdRealRootElement == null) {
 			if (dataEventManager != null)
 				dataEventManager.unregisterEventListeners();
@@ -1082,9 +1084,11 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
 			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 			// new GeneClusterDataEventManager(this), alColorModes);
-			initHierarchy(tree, EIDType.CLUSTER_NUMBER,
+			initHierarchy(tree, set.getStorageTreeRoot(),
+					EIDType.CLUSTER_NUMBER,
 					new ExperimentClusterDataEventManager(this), alColorModes);
 			// }
+
 		} else {
 			hashPartialDiscs.clear();
 			navigationHistory.reset();

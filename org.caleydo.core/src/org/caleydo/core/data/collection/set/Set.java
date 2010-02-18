@@ -398,6 +398,15 @@ public class Set
 		return virtualArray;
 	}
 
+	public IVirtualArray createCompleteContentVA() {
+		ArrayList<Integer> content = new ArrayList<Integer>();
+		for (int count = 0; count < alStorages.get(0).size(); count++) {
+			content.add(count);
+		}
+		VirtualArray virtualArray = new VirtualArray(EVAType.CONTENT, size(), content);
+		return virtualArray;
+	}
+	
 	@SuppressWarnings("unused")
 	private int createStorageVA(EVAType vaType, ArrayList<Integer> iAlSelections) {
 		VirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);

@@ -108,8 +108,10 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 * 
 	 * @return Parent of the current element, null if the current element is the root node.
 	 */
+
 	public Node getParent() {
 		return tree.getParent(node);
+
 	}
 
 	/**
@@ -146,7 +148,7 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 * @return
 	 */
 	public float getSize() {
-		return numberOfLeaves;
+		return getNrLeaves();
 	}
 
 	/**
