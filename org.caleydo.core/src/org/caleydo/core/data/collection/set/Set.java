@@ -1,6 +1,7 @@
 package org.caleydo.core.data.collection.set;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -385,7 +386,7 @@ public class Set
 	public IVirtualArray createCompleteStorageVA() {
 
 		ArrayList<Integer> storages;
-		if (storageTree == null) {
+		if (storageTree == null || !storageTreeRoot.isRootNode()) {
 			storages = new ArrayList<Integer>();
 			for (int count = 0; count < alStorages.size(); count++) {
 				storages.add(count);
@@ -393,6 +394,21 @@ public class Set
 		}
 		else {
 			storages = storageTreeRoot.getLeaveIds();
+//			if (!storageTreeRoot.isRootNode()) {
+//				Collections.min(storages);
+//				
+////				ArrayList<ClusterNode> siblings = storageTreeRoot.getParent().getChildren();
+////				int siblingsLeavesCount = 0;
+////				for (ClusterNode sibling : siblings) {
+////					if (sibling == storageTreeRoot)
+////						break;
+////					
+////					siblingsLeavesCount+=sibling.getNrLeaves();
+////				}
+////				
+////				for (Integer storageID : storages)
+////					storageID-=siblingsLeavesCount;
+			// }
 		}
 		VirtualArray virtualArray = new VirtualArray(EVAType.STORAGE, size(), storages);
 		return virtualArray;

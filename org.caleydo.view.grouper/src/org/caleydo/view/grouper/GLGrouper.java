@@ -55,6 +55,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CompareGroupsItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CopyGroupsItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CreateGroupItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DeleteGroupsItem;
@@ -679,6 +680,18 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 								setSelectedGroups);
 						contextMenu.addContextMenueItem(deleteGroupsItem);
 						
+						if (setSelectedGroups.size() == 2) {
+							
+							ArrayList<ISet> setsToCompare = new ArrayList<ISet>();
+							for (Integer groupID : setSelectedGroups) {
+								setsToCompare.add(hashGroups.get(groupID).getClusterNode().getMetaSet());
+							}
+							
+							CompareGroupsItem compareGroupsItem = new CompareGroupsItem(
+									setsToCompare);
+							contextMenu.addContextMenueItem(compareGroupsItem);							
+						}
+					
 						bContextMenueItemsAvailable = true;
 
 					}

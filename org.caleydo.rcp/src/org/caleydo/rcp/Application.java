@@ -214,9 +214,6 @@ public class Application
 		if (bDeleteRestoredWorkbenchState) {
 			removeStoredWorkbenchState();
 		}
-				
-//		GeneralManager.get().getRStatisticsPerformer().init();
-//		GeneralManager.get().getRStatisticsPerformer().performTest();
 
 		try {
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
