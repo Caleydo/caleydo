@@ -6,6 +6,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import javax.xml.bind.JAXBContext;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
 import Ice.Communicator;
+import VIS.AccessInformation;
 import VIS.Color4f;
 import VIS.Selection;
 import VIS.SelectionContainer;
@@ -25,21 +28,29 @@ import VIS.adapterName;
 import VIS.adapterPort;
 
 public class VisLinkManager implements InitializingBean, DisposableBean {
-
+	
 	ApplicationManager applicationManager;
 	
 	HashMap<Integer, BoundingBoxList> app2bbl;
 	
+	/** target applications for most recent reported selectionId */
+	private int[] targetApplicationIds;
+	
+	/** mouse pointer id that triggered the visual links as retrieved from deskotheque */
+	private int triggeringMousePointerId;
+
 	JAXBContext jaxbContext; 
 	
 	/** Ice communication object. */
 	private Communicator communicator;
 	
 	/** Proxy object of VisRenderer for remote method invocation. */
-	private VisRendererIPrx rendererPrx; 
-
+	private VisRendererIPrx rendererPrx;
+	
 	public VisLinkManager() {
 		app2bbl = new HashMap<Integer, BoundingBoxList>();
+		targetApplicationIds = new int[0];
+		triggeringMousePointerId = 0;
 	}
 	
 	public void reportSelection(String appName, String selectionId, String boundingBoxListXML) {
@@ -51,12 +62,18 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			boundingBoxListXML = null;
 		}
 		
+		app2bbl.clear();
 		if (boundingBoxListXML != null) {
 			BoundingBoxList bbl = createBoundingBoxList(boundingBoxListXML);
 			app2bbl.put(app.getId(), bbl);
 		}
 		
-		for (Application currentApp : applicationManager.getApplications().values()) {
+		AccessInformation accessInformation = rendererPrx.getAccessInformation(app.getId());
+		targetApplicationIds = accessInformation.applicationIds;
+		triggeringMousePointerId = accessInformation.pointerId;
+		
+		for (int appId : targetApplicationIds) {
+			Application currentApp = applicationManager.getApplicationsById().get(appId);
 			if (currentApp.getId() != app.getId() || boundingBoxListXML == null) {
 				currentApp.setSendId(selectionId);
 			}
@@ -116,7 +133,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 				wbb.getY(),
 				wbb.getWidth(),
 				wbb.getHeight(),
-				new Color4f(1.0f, 0.0f, 0.0f, 0.9f));
+				new Color4f(-1.0f, 0.0f, 0.0f, 0.9f));
 	}
 	
 	private BoundingBox getWindowBoundingBox(String xml) { 
@@ -155,12 +172,14 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	}
 	
 	public void checkRender() {
-		if (applicationManager.getApplications().size() == app2bbl.size()) {
-			System.out.println("VisLinkManager: start rendering vis links for #" + app2bbl.size() + " apps");
+		System.out.println("checkRender(): targetApplicationIds.length=" + targetApplicationIds.length);
+		System.out.println("checkRender(): app2bbl.size()=" + app2bbl.size());
+		if (app2bbl.size() >= (targetApplicationIds.length + 1)) {
+			System.out.println("VisLinkManager: start rendering vis links for #" + (targetApplicationIds.length + 1) + " apps");
 			renderVisualLinks(app2bbl);
 			app2bbl.clear();
 		} else {
-			System.out.println("waiting for more reports, " + app2bbl.size() + " / " + applicationManager.getApplications().size());
+			System.out.println("waiting for more reports, " + app2bbl.size() + " / " + (targetApplicationIds.length + 1));
 		}
 	}
 	
@@ -250,7 +269,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
         	ArrayList<Selection> selectionList = new ArrayList<Selection>();
     		for (BoundingBox bb : e.getValue().getList()) {
         		Selection selection = new Selection(bb.getX(), bb.getY(), bb.getWidth(), bb.getHeight(),
-        				new Color4f(1.0f, 0, 0, 0.5f), bb.isSource());
+        				new Color4f(-1.0f, 0, 0, 0), bb.isSource());
         		selectionList.add(selection);
     		}
     		selectionGroup.selections = selectionList.toArray(selectionGroup.selections);

@@ -6,10 +6,13 @@ public class ApplicationManager {
 
 	private HashMap<String, Application> applications;
 
-	private int idCounter = 0;
+	private HashMap<Integer, Application> applicationsById;
 	
+	private int idCounter = 0;
+
 	public ApplicationManager() {
 		applications = new HashMap<String, Application>();
+		applicationsById = new HashMap<Integer, Application>();
 	}
 	
 	public HashMap<String, Application> getApplications() {
@@ -20,9 +23,18 @@ public class ApplicationManager {
 		this.applications = applications;
 	}
 	
+	public HashMap<Integer, Application> getApplicationsById() {
+		return applicationsById;
+	}
+
+	public void setApplicationsById(HashMap<Integer, Application> applicationsById) {
+		this.applicationsById = applicationsById;
+	}
+
 	public void registerApplication(Application app) {
 		app.setId(idCounter++);
 		applications.put(app.getName(), app);
+		applicationsById.put(app.getId(), app);
 	}
 	
 }
