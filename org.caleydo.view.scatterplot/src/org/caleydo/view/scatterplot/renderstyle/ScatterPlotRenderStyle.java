@@ -2,6 +2,8 @@ package org.caleydo.view.scatterplot.renderstyle;
 
 //import java.util.HashMap;
 
+import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.XYAXISDISTANCE;
+
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.scatterplot.GLScatterplot;
@@ -22,7 +24,7 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 	public static final float X_AXIS_LINE_WIDTH = 2.0f;
 	public static final float[] Y_AXIS_COLOR = {0.0f, 0.0f, 0.0f, 1.0f};
 	public static final float Y_AXIS_LINE_WIDTH = 2.0f;
-	public static final float XYAXISDISTANCE = 0.2f;
+	public static float XYAXISDISTANCE = 0.2f;
 	public static final float AXIS_Z = 0.0f;
 	
 	public static int NR_TEXTURESX =5;
@@ -32,7 +34,7 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 	public static float POINTSIZE = 0.05f;
 
 	private int iPointSize = 1;
-	public static EScatterPointType POINTSTYLE = EScatterPointType.BOX;
+	public static EScatterPointType POINTSTYLE = EScatterPointType.CROSS;
 
 	public static final float XLABELROTATIONNAGLE = 0.0f;
 	public static final float YLABELROTATIONNAGLE = 90.0f;
@@ -74,6 +76,8 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 	public void setIsEmbedded(boolean value)
 	{
 		bIsEmbedded=value;
+		if (bIsEmbedded) XYAXISDISTANCE=0.1f;
+		else XYAXISDISTANCE=0.4f;
 	}
 	
 	public void setIsMouseZoom(boolean value)
@@ -81,7 +85,15 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 		bIsMouseZoom=value;
 	}
 	
+	public float transformNorm2GlobalX(float value)
+	{
+		return getAxisWidth()*value+XYAXISDISTANCE;		
+	}
 	
+	public float transformNorm2GlobalY(float value)
+	{
+		return getAxisHeight()*value+XYAXISDISTANCE;		
+	}
 	
 	
 

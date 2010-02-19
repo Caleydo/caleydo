@@ -1,5 +1,6 @@
 package org.caleydo.view.scatterplot;
 
+//import static org.caleydo.view.parcoords.PCRenderStyle.GATE_Z;
 import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.AXIS_MARKER_WIDTH;
 import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.AXIS_Z;
 import static org.caleydo.view.scatterplot.renderstyle.ScatterPlotRenderStyle.NR_TEXTURES;
@@ -77,6 +78,7 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.scatterplot.listener.GLScatterPlotKeyListener;
 import org.caleydo.view.scatterplot.listener.SetPointSizeListener;
 import org.caleydo.view.scatterplot.listener.Toggle2AxisModeListener;
@@ -134,6 +136,12 @@ public class GLScatterplot extends AStorageBasedView {
 	private boolean bUseColor = true;
 	private boolean bOnlyRenderHalfMatrix = true;
 	private boolean bAllowMatrixZoom =false;
+	private boolean bMainViewZoomDragged = false;
+	private boolean bMainViewZoom=false;	
+	private boolean bRedrawTextures = false;
+
+	
+	private GL opengl;
 
 	int iCurrentMouseOverElement = -1;
 
@@ -198,9 +206,6 @@ public class GLScatterplot extends AStorageBasedView {
 	private ArrayList<SelectionType> AlSelectionTypes = new ArrayList<SelectionType>(); 
 	private SelectionType currentSelection = SelectionType.SELECTION; 
 	private int iMaxSelections=5;
-	private boolean bMainViewZoom=false;
-	
-	private boolean bRedrawTextures = false;
 
 	/**
 	 * Constructor.
@@ -383,9 +388,7 @@ public class GLScatterplot extends AStorageBasedView {
 			}
 		}		
 	}
-
-	
-	
+		
 	/**
 	 * Init Selection textures, build array of textures used for holding the whole
 	 * examples
@@ -878,7 +881,6 @@ public class GLScatterplot extends AStorageBasedView {
 			}
 		}
 	}
-
 	
 	private boolean getCorrelation(float x, float y)
 	{
@@ -935,6 +937,7 @@ public class GLScatterplot extends AStorageBasedView {
 		renderStyle = new ScatterPlotRenderStyle(this, viewFrustum);
 
 		super.renderStyle = renderStyle;
+		opengl=gl;
 
 		InitAxisComboEvent initAxisComboEvent = new InitAxisComboEvent();
 		initAxisComboEvent.setSender(this);
@@ -1162,6 +1165,9 @@ public class GLScatterplot extends AStorageBasedView {
 		if (!bRender2Axis)
 			gl.glCallList(iGLDisplayListIndexSelection);
 		
+		if(bMainViewZoom)
+			renderMainViewZoomSelection(gl);
+		
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 		// if (!isRenderedRemote())
 		// contextMenu.render(gl, this);
@@ -1256,6 +1262,97 @@ public class GLScatterplot extends AStorageBasedView {
 
 	}
 
+	
+	private void renderMainViewZoomSelection(GL gl)
+	{				
+		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
+
+//		private float fTransformOldMinX=0.2f;
+		
+//		private float fTransformNewMinX=0.1f;
+//	        
+//	    private float fTransformOldMaxX=0.4f;
+//	    private float fTransformNewMaxX=0.6f;
+		
+		//Right Outer X
+		
+		float x=renderStyle.transformNorm2GlobalX(fTransformNewMinX);
+		float fIconwith=0.2f;
+		float y=XYAXISDISTANCE-fIconwith*2;
+		gl.glColor4fv(Y_AXIS_COLOR, 0);
+		gl.glBegin(GL.GL_LINES);
+
+		gl.glVertex3f(x, y, AXIS_Z);
+		gl.glVertex3f(x, renderStyle.getRenderHeight()- XYAXISDISTANCE, AXIS_Z);
+
+		gl.glEnd();						
+		
+		
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.SCATTER_MAIN_ZOOM, 1));
+		x=x-fIconwith;
+					
+		Vec3f lowerLeftCorner=new Vec3f(x,y,AXIS_Z);
+		Vec3f lowerRightCorner=new Vec3f(x+fIconwith,y,AXIS_Z);
+		Vec3f upperRightCorner=new Vec3f(x+fIconwith,y+fIconwith,AXIS_Z);
+		Vec3f upperLeftCorner=new Vec3f(x,y+fIconwith,AXIS_Z);
+				
+		textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
+			lowerLeftCorner, lowerRightCorner, upperRightCorner,
+			upperLeftCorner, 1, 1, 1, 1);
+		
+		
+		x=x+fIconwith;
+		lowerLeftCorner=new Vec3f(x,y,AXIS_Z);
+		lowerRightCorner=new Vec3f(x+fIconwith,y,AXIS_Z);
+		upperRightCorner=new Vec3f(x+fIconwith,y+fIconwith,AXIS_Z);
+		upperLeftCorner=new Vec3f(x,y+fIconwith,AXIS_Z);
+		
+				
+		textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+				lowerLeftCorner, lowerRightCorner, upperRightCorner,
+				upperLeftCorner, 1, 1, 1, 1);
+		gl.glPopName();
+		
+		//Left Outer X
+		x=renderStyle.transformNorm2GlobalX(fTransformNewMaxX);
+
+		gl.glColor4fv(Y_AXIS_COLOR, 0);
+		gl.glBegin(GL.GL_LINES);
+
+		gl.glVertex3f(x, y, AXIS_Z);
+		gl.glVertex3f(x, renderStyle.getRenderHeight()- XYAXISDISTANCE, AXIS_Z);
+
+		gl.glEnd();						
+									
+		lowerLeftCorner=new Vec3f(x,y,AXIS_Z);
+		lowerRightCorner=new Vec3f(x+fIconwith,y,AXIS_Z);
+		upperRightCorner=new Vec3f(x+fIconwith,y+fIconwith,AXIS_Z);
+		upperLeftCorner=new Vec3f(x,y+fIconwith,AXIS_Z);
+		
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.SCATTER_MAIN_ZOOM, 2));
+
+		textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+			lowerLeftCorner, lowerRightCorner, upperRightCorner,
+			upperLeftCorner, 1, 1, 1, 1);
+		gl.glPopName();
+		
+		x=x-fIconwith;
+		
+		lowerLeftCorner=new Vec3f(x,y,AXIS_Z);
+		lowerRightCorner=new Vec3f(x+fIconwith,y,AXIS_Z);
+		upperRightCorner=new Vec3f(x+fIconwith,y+fIconwith,AXIS_Z);
+		upperLeftCorner=new Vec3f(x,y+fIconwith,AXIS_Z);
+		
+		textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
+				lowerLeftCorner, lowerRightCorner, upperRightCorner,
+				upperLeftCorner, 1, 1, 1, 1);
+			gl.glPopName();
+		
+						
+	}
+	
 	/**
 	 * Render the coordinate system of the Scatterplot
 	 * 
@@ -1264,10 +1361,8 @@ public class GLScatterplot extends AStorageBasedView {
 	 *            the gl context
 	 * 
 	 */
-	private void renderCoordinateSystem(GL gl) {
-
-		textRenderer.setColor(0, 0, 0, 1);
-
+	private void renderCoordinateSystem(GL gl) {		
+		textRenderer.setColor(0, 0, 0, 1);		
 		// Markers On Axis
 		float fXPosition = XYAXISDISTANCE;
 		float fYPosition = XYAXISDISTANCE;
@@ -1466,9 +1561,7 @@ public class GLScatterplot extends AStorageBasedView {
 		}
 		return tmpString;
 	}
-	
-	
-	
+		
 	private float transformOnZoom(float x,float fSize, float fOffset)
 	{
 		float tmp = (x-fOffset)/fSize; 		
@@ -1480,8 +1573,7 @@ public class GLScatterplot extends AStorageBasedView {
 		float tmp = x/fSize; 		
 		return transformOnZoom(tmp)*fSize;				
 	}
-	
-		
+			
 	private float transformOnZoom(float x)
 	{
 	    if(!bMainViewZoom)
@@ -1504,7 +1596,6 @@ public class GLScatterplot extends AStorageBasedView {
 	    return (fTransformNewMinX)+(x-fTransformOldMinX)*factor;
 	}
 	
-
 	private void RenderScatterPoints(GL gl) {
 	float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
@@ -1526,6 +1617,7 @@ public class GLScatterplot extends AStorageBasedView {
 //		contentVA = useCase.getVA(EVAType.CONTENT);
 		Collection<Integer> selectionSet = contentVA.getIndexList();
 
+		//FIXME:Use Current Selection
 		if (bRender2Axis)
 			if (elementSelectionManager
 					.getNumberOfElements(SelectionType.SELECTION) > 0)
@@ -1567,7 +1659,8 @@ public class GLScatterplot extends AStorageBasedView {
 						EDataRepresentation.NORMALIZED, iContentIndex);
 				ynormalized = set.get(SELECTED_Y_AXIS_2).getFloat(
 						EDataRepresentation.NORMALIZED, iContentIndex);
-				x_2 = xnormalized * XScale;
+				//x_2 = xnormalized * XScale;
+				x_2 = transformOnZoom(xnormalized) * XScale;
 				y_2 = ynormalized * YScale;
 				fArMappingColor = new float[]{0.0f, 1.0f, 0.0f};
 
@@ -1612,7 +1705,8 @@ public class GLScatterplot extends AStorageBasedView {
 		float ynormalized = set.get(SELECTED_Y_AXIS).getFloat(
 				EDataRepresentation.NORMALIZED, iContentIndex);
 
-		float x = xnormalized * XScale;
+		float x = transformOnZoom(xnormalized) * XScale;
+		
 		float y = ynormalized * YScale;
 		float[] fArMappingColor = colorMapper.getColor(Math.max(xnormalized,
 				ynormalized));
@@ -1728,6 +1822,7 @@ public class GLScatterplot extends AStorageBasedView {
 		gl.glTranslatef(-x, -y, -z);
 
 	}
+	
 	private boolean IsInSelectionRectangle(float x, float y) {
 		float XMin = Math.min(fRectangleDragStartPoint[0],
 				fRectangleDragEndPoint[0]);
@@ -1774,7 +1869,8 @@ public class GLScatterplot extends AStorageBasedView {
 			float ynormalized = set.get(SELECTED_Y_AXIS).getFloat(
 					EDataRepresentation.NORMALIZED, iContentIndex);
 
-			x = xnormalized * XScale;
+			//x = xnormalized * XScale;
+			x = transformOnZoom(xnormalized) * XScale;
 			y = ynormalized * YScale;
 
 			if (IsInSelectionRectangle(x, y)) {
@@ -1789,7 +1885,6 @@ public class GLScatterplot extends AStorageBasedView {
 	}
 
 	private void RenderSelection(GL gl) {
-
 						
 		for(SelectionType tmpSelectionType : AlSelectionTypes)
 		{
@@ -1822,7 +1917,8 @@ public class GLScatterplot extends AStorageBasedView {
 				float ynormalized = set.get(SELECTED_Y_AXIS).getFloat(
 						EDataRepresentation.NORMALIZED, iContentIndex);
 	
-				x = xnormalized * XScale;
+				//x = xnormalized * XScale;
+				x = transformOnZoom(xnormalized) * XScale;
 				y = ynormalized * YScale;
 	
 				DrawPointPrimitive(gl, x, y, z, // z
@@ -1979,12 +2075,12 @@ public class GLScatterplot extends AStorageBasedView {
 	// tempTexture.disable();
 	// }
 
-	public void renderHorizontally(boolean bRenderStorageHorizontally) {
-
-		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
-		// renderStyle.setBRenderStorageHorizontally(bRenderStorageHorizontally);
-		setDisplayListDirty();
-	}
+//	public void renderHorizontally(boolean bRenderStorageHorizontally) {
+//
+//		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
+//		// renderStyle.setBRenderStorageHorizontally(bRenderStorageHorizontally);
+//		setDisplayListDirty();
+//	}
 
 	public void selectAxesfromExternal() {
 
@@ -2144,7 +2240,6 @@ public class GLScatterplot extends AStorageBasedView {
 		// return sInfoText.toString();
 		return "TODO: ScatterploT Deatil Info";
 	}
-
 	
 	private float[] getSelectionColor(int color)
 	{
@@ -2159,8 +2254,7 @@ public class GLScatterplot extends AStorageBasedView {
 		}
 		
 	}
-	
-	
+		
 	public void addSelectionType()
 	{
 		int	iSlectionNr=AlSelectionTypes.size()+1;
@@ -2187,9 +2281,7 @@ public class GLScatterplot extends AStorageBasedView {
 		setDisplayListDirty();
 	}
 	
-	
-	
-	
+		
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
@@ -2219,7 +2311,7 @@ public class GLScatterplot extends AStorageBasedView {
 						break;
 					case DRAGGED :
 						selectionType = SelectionType.SELECTION;
-						// break;
+						break;
 					default :
 						return;
 
@@ -2244,9 +2336,75 @@ public class GLScatterplot extends AStorageBasedView {
 				}
 				createStorageSelection(selectionType, iExternalID);
 				break;
+			case SCATTER_MAIN_ZOOM :
+				switch (pickingMode) {
+				case CLICKED :
+					if(!bMainViewZoomDragged)  
+						bMainViewZoomDragged=true;
+					else 
+					{
+						bMainViewZoomDragged=false;
+						setDisplayListDirty();
+						bUpdateMainView=true;						
+					}	
+					break;
+				case MOUSE_OVER : 
+					if(bMainViewZoomDragged)
+						handleMainViewZoom(iExternalID);
+					break;			
+				
+					
+				default :
+					return;
+			}
+			
+			break;
 		}
+			
+		
 	}
 
+	private void handleMainViewZoom(int contentID) {
+
+//		private float fTransformOldMinX=0.2f;
+//		private float fTransformNewMinX=0.1f;
+//	        
+//	    private float fTransformOldMaxX=0.4f;
+//	    private float fTransformNewMaxX=0.6f;
+		
+		GLMouseListener glMouseListener = getParentGLCanvas()
+		.getGLMouseListener();
+
+	
+	
+//		bRectangleSelection = true;
+	
+		Point pDragEndPoint = glMouseListener.getPickedPoint();
+		
+	
+
+		float[] DragEndPoint = GLCoordinateUtils
+				.convertWindowCoordinatesToWorldCoordinates(opengl,
+						pDragEndPoint.x, pDragEndPoint.y);
+	
+
+		float x=(DragEndPoint[0]-XYAXISDISTANCE)/renderStyle.getAxisWidth();
+		
+		switch (contentID)
+		{
+			case 1:
+				if(x>=0 && x<=fTransformOldMinX) 
+					fTransformNewMinX=x;				
+				break;
+			case 2:
+				if(x>=fTransformOldMaxX && x<=1)
+					fTransformNewMaxX=x;
+				break;
+			default:
+		}
+		
+	}
+	
 	private void createStorageSelection(SelectionType selectionType,
 			int contentID) {
 
@@ -2409,7 +2567,7 @@ public class GLScatterplot extends AStorageBasedView {
 
 	@Override
 	public void changeOrientation(boolean defaultOrientation) {
-		renderHorizontally(defaultOrientation);
+	//	renderHorizontally(defaultOrientation);
 	}
 
 	@Override
@@ -2709,8 +2867,6 @@ public class GLScatterplot extends AStorageBasedView {
 		setDisplayListDirty();
 	}
 	
-	
-
 	public void toggleSpecialAxisMode() {
 		if (bRender2Axis)
 			bRender2Axis = false;
@@ -2731,10 +2887,10 @@ public class GLScatterplot extends AStorageBasedView {
 
 	public void toggleMatrixMode() {
 
-		//renderStyle.setCenterOffsets();
+		
 		if (bRenderMatrix) // embedded view->MainView
 		{
-		//	bRenderMainView = true;
+		    //bRenderMainView = true;
 			bRenderMatrix = false;
 			renderStyle.setIsEmbedded(false);
 			bUpdateMainView = true;
@@ -2766,7 +2922,6 @@ public class GLScatterplot extends AStorageBasedView {
 
 			return;
 		}
-
 	}
 
 	public void MainViewZoom() {
@@ -2780,7 +2935,6 @@ public class GLScatterplot extends AStorageBasedView {
 		setDisplayListDirty();
 	}
 	
-
 	public void toggleColorMode() {
 		if (bUseColor)
 			bUseColor = false;
@@ -2807,8 +2961,7 @@ public class GLScatterplot extends AStorageBasedView {
 			renderStyle.setIsMouseZoom(true);
 			bUpdateMainView = true;
 			setDisplayListDirty();
-		}
-		//renderStyle.setCenterOffsets();
+		}		
 	}
 
 }
