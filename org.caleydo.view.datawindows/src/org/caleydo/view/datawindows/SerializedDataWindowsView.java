@@ -1,12 +1,21 @@
 package org.caleydo.view.datawindows;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.view.heatmap.SerializedHeatMapView;
+import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
+
 
 /**
  * Serialized form of a scatterplot-view.
@@ -17,6 +26,9 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 @XmlType
 public class SerializedDataWindowsView extends ASerializedView {
 
+	
+	private List<ASerializedView> testViews;
+	
 	/**
 	 * Default constructor with default initialization
 	 */
@@ -25,6 +37,15 @@ public class SerializedDataWindowsView extends ASerializedView {
 
 	public SerializedDataWindowsView(EDataDomain dataDomain) {
 		super(dataDomain);
+		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>();
+		SerializedHeatMapView heatMap = new SerializedHeatMapView(
+				dataDomain);
+		remoteViews.add(heatMap);
+		SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView(
+				dataDomain);
+		remoteViews.add(parCoords);
+		setTestViews(remoteViews);
+		
 	}
 
 	@Override
@@ -37,5 +58,9 @@ public class SerializedDataWindowsView extends ASerializedView {
 	@Override
 	public String getViewType() {
 		return GLDataWindows.VIEW_ID;
+	}
+	
+	public void setTestViews(List<ASerializedView> TestViews) {
+		this.testViews = TestViews;
 	}
 }
