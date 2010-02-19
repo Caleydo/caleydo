@@ -87,11 +87,11 @@ public class Application
 	public static boolean isStartedFromXML = false;
 
 	// The command line arguments overrules the preference store
-	// public static boolean bLoadPathwayDataKeggHomoSapiens = true;
+	public static boolean bLoadPathwayData = false;
 	// public static boolean bLoadPathwayDataKeggMusMusculus = true;
 	// public static boolean bLoadPathwayDataBiocartaHomoSapiens = true;
 	// public static boolean bLoadPathwayDataBiocartaMusMusculus = true;
-	public static boolean bOverrulePrefStoreLoadPathwayData = false;
+	// public static boolean bOverrulePrefStoreLoadPathwayData = false;
 	public static boolean bIsWindowsOS = false;
 	public static boolean bIsInterentConnectionOK = false;
 	public static boolean bDeleteRestoredWorkbenchState = false;
@@ -242,12 +242,10 @@ public class Application
 		if (sArParam != null) {
 			for (String element : sArParam) {
 				if (element.equals("no_pathways")) {
-					// bLoadPathwayData = false;
-					bOverrulePrefStoreLoadPathwayData = true;
+					 bLoadPathwayData = false;
 				}
 				else if (element.equals("load_pathways")) {
-					// bLoadPathwayData = true;
-					bOverrulePrefStoreLoadPathwayData = true;
+					 bLoadPathwayData = true;
 				}
 				else if (element.startsWith("plexclient")) {
 					if (sCaleydoXMLfile != null && !sCaleydoXMLfile.isEmpty()) {
@@ -329,6 +327,9 @@ public class Application
 		caleydoCoreBootloader.setXmlFileName(sCaleydoXMLfile);
 		caleydoCoreBootloader.start();
 
+		if (bLoadPathwayData == true)
+			triggerPathwayLoading();
+		
 		Shell shell = new Shell();
 
 		if (applicationMode == EApplicationMode.COLLABORATION_CLIENT

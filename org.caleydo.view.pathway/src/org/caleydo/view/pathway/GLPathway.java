@@ -241,10 +241,10 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 
 	@Override
 	public void displayRemote(final GL gl) {
-		// Check if pathway exists or if it is already loaded
-		// FIXME: not good because check in every rendered frame
-		if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
-			return;
+//		// Check if pathway exists or if it is already loaded
+//		// FIXME: not good because check in every rendered frame
+//		if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
+//			return;
 
 		if (bIsDisplayListDirtyRemote) {
 			rebuildPathwayDisplayList(gl, iGLDisplayListIndexRemote);

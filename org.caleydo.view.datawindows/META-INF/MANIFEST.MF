@@ -8,12 +8,16 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.caleydo.core;bundle-version="1.3.0",
  org.caleydo.lib.jogl;bundle-version="1.2.0",
- org.caleydo.rcp;bundle-version="1.3.0"
+ org.caleydo.rcp;bundle-version="1.3.0",
+ org.caleydo.util.gleem
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: com.sun.opengl.util.texture,
  gleem.linalg,
  javax.media.opengl,
- org.caleydo.data.loader
+ org.caleydo.data.loader,
+ org.caleydo.view.heatmap,
+ org.caleydo.view.parcoords,
+ org.caleydo.view.pathway
 Export-Package: org.caleydo.view.datawindows,
  org.caleydo.view.datawindows.command.handler
 Bundle-Vendor: Graz University of Technology

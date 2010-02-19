@@ -13,8 +13,8 @@ import org.eclipse.swt.widgets.Shell;
 
 public class RcpGLDataWindowsView extends ARcpGLViewPart {
 
-	// FIXME: check if it is ok to overwrite
-	private EDataDomain dataDomain;
+//	// FIXME: check if it is ok to overwrite
+//	private EDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -27,18 +27,6 @@ public class RcpGLDataWindowsView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		IUseCase usecase = GeneralManager.get().getUseCase(dataDomain);
-		if (usecase != null && usecase instanceof GeneticUseCase
-				&& ((GeneticUseCase) usecase).isPathwayViewerMode()) {
-			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
-			alert
-					.setMessage("Cannot create scatterplot in pathway viewer mode!");
-			alert.open();
-
-			dispose();
-			return;
-		}
-
 		createGLCanvas();
 		createGLView(initSerializedView, glCanvas.getID());
 	}
@@ -46,7 +34,7 @@ public class RcpGLDataWindowsView extends ARcpGLViewPart {
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedDataWindowsView serializedView = new SerializedDataWindowsView(
-				dataDomain);
+				GeneralManager.get().getMasterUseCase().getDataDomain());
 		return serializedView;
 	}
 

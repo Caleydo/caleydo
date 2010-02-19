@@ -3,6 +3,7 @@ package org.caleydo.util.r;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.event.AEvent;
@@ -12,6 +13,7 @@ import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.util.r.listener.CompareGroupsEventListener;
+import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
 
@@ -89,7 +91,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		
 		ISet set1 = setsToCompare.get(0);
 		ISet set2 = setsToCompare.get(1);
-		
+	
 		for (int contentIndex = 0; contentIndex < set1.get(0).size(); contentIndex++) {
 			
 			IVirtualArray storageVA1 = set1.createCompleteStorageVA();
@@ -112,8 +114,12 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 			engine.assign("set_2", compareVec2);
 			
 			REXP compareResult = engine.eval("t.test(set_1,set_2)");
-			System.out.println("T-Test result: " + compareResult);
+			
+			//System.out.println("T-Test result: " + compareResult);
+			System.out.println("P-value: "+compareResult.asVector().get(2));
 		}
+		
+		System.out.println("Finished");
 	}
 
 	@Override

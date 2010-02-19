@@ -3,18 +3,16 @@ package org.caleydo.view.datawindows;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.view.heatmap.SerializedHeatMapView;
-import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
+import org.caleydo.view.pathway.SerializedPathwayView;
 
 
 /**
@@ -38,12 +36,17 @@ public class SerializedDataWindowsView extends ASerializedView {
 	public SerializedDataWindowsView(EDataDomain dataDomain) {
 		super(dataDomain);
 		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>();
-		SerializedHeatMapView heatMap = new SerializedHeatMapView(
-				dataDomain);
-		remoteViews.add(heatMap);
-		SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView(
-				dataDomain);
-		remoteViews.add(parCoords);
+//		SerializedHeatMapView heatMap = new SerializedHeatMapView(
+//				dataDomain);
+//		remoteViews.add(heatMap);
+//		SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView(
+//				dataDomain);
+//		remoteViews.add(parCoords);
+		
+		SerializedPathwayView pathway = new SerializedPathwayView(dataDomain);
+		pathway.setPathwayID(GeneralManager.get().getPathwayManager().searchPathwayByName("TGF-beta signaling pathway", EPathwayDatabaseType.KEGG).getID());
+		remoteViews.add(pathway);
+		
 		setTestViews(remoteViews);
 		
 	}
@@ -54,6 +57,8 @@ public class SerializedDataWindowsView extends ASerializedView {
 				0, 8, 0, 8, -20, 20);
 		return viewFrustum;
 	}
+	
+	
 
 	@Override
 	public String getViewType() {
@@ -62,5 +67,9 @@ public class SerializedDataWindowsView extends ASerializedView {
 	
 	public void setTestViews(List<ASerializedView> TestViews) {
 		this.testViews = TestViews;
+	}
+	
+	public List<ASerializedView> getTestViews() {
+		return testViews;
 	}
 }

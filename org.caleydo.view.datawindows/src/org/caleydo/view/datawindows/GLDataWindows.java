@@ -1,15 +1,19 @@
 package org.caleydo.view.datawindows;
 
+import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+import gleem.linalg.open.Transform;
 
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.Random;
+import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -20,8 +24,11 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.view.pathway.GLPathway;
+import org.caleydo.view.pathway.SerializedPathwayView;
 
 /**
  * Rendering the Datawindow
@@ -34,30 +41,23 @@ public class GLDataWindows extends AGLView {
 
 	public final static String VIEW_ID = "org.caleydo.view.datawindows";
 
-	
-	private int numberOfSquares = 30;
-	  
-	 
-	private float[] squarePositionX;
-	private float[] squarePositionY;
-	private float[] squareSizes;
-	private boolean[] squareChecked;
-	private float squareBaseSize;
-	
-	
-	private float mouseCoordX=0;
-	private float mouseCoordY=0;
-	
+	private float mouseCoordX = 0;
+	private float mouseCoordY = 0;
+
 	private Point mousePoint;
 	int viewport[] = new int[4];
- 
-    private float canvasWidth=5;
-    private float canvasHeight=5;
-    
-    private TrackDataProvider tracker;
+
+	private float canvasWidth = 5;
+	private float canvasHeight = 5;
+
+	private TrackDataProvider tracker;
 	private float[] receivedEyeData;
-    
-	
+
+	private ArrayList<AGLView> containedGLViews;
+	private ArrayList<ASerializedView> newViews;
+
+	private RemoteLevel testLevel;
+
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(
 			0, 0);
 	/**
@@ -72,57 +72,24 @@ public class GLDataWindows extends AGLView {
 
 		super(glCanvas, sLabel, viewFrustum, true);
 		viewType = GLDataWindows.VIEW_ID;
-		
-		
+
+		containedGLViews = new ArrayList<AGLView>();
+		newViews = new ArrayList<ASerializedView>();
+
 		this.tracker = new TrackDataProvider();
-		
+
 		tracker.startTracking();
-		
-		//setting square data: 
-		squarePositionX = new float[numberOfSquares];
-		squarePositionY = new float[numberOfSquares];
-		squareSizes = new float[numberOfSquares];
-		squareChecked= new boolean[numberOfSquares];
-		 
-		//Point pt = new Point(0, 0);
-		Random r = new Random();
-		squareBaseSize =  canvasHeight/20;
-		float relX;
-		float relY;
-		float dist;
-		for(int i=0;i < numberOfSquares;i++){
-			
-			squarePositionX[i] = r.nextFloat() * canvasWidth;
-			squarePositionY[i] = r.nextFloat() * canvasHeight;
-			
-			squareSizes[i] = squareBaseSize;
-			squareChecked[i]=false;
-			for(int backcounter=0; backcounter < i; backcounter++){
-				relX = Math.abs(squarePositionX[backcounter]-squarePositionX[i]);
-				relY = Math.abs(squarePositionY[backcounter]-squarePositionY[i]);
-		        dist = (float) Math.sqrt(relX*relX+relY*relY);
-		        
-				
-				if(dist < squareBaseSize*3) {
-		        	i = i-1;
-		        	break;
-		        }				
-			}
-			
-		}		
-		
-	
-		getParentGLCanvas().getParentComposite().getDisplay().asyncExec(
-				new Runnable() {
-					@Override
-					public void run() {
-						upperLeftScreenPos = getParentGLCanvas()
-								.getParentComposite().toDisplay(1, 1);
-					}
-				});
-		
-		
-		
+
+		testLevel = new RemoteLevel(1, "testview", testLevel, testLevel);
+
+		Transform transform = new Transform();
+		transform.setTranslation(new Vec3f(0, 0, 0));
+		transform.setScale(new Vec3f(0.5f, 0.5f, 1));
+		testLevel.getElementByPositionIndex(0).setTransform(transform);
+
+		// ASerializedView serView = getSerializableRepresentation();
+		// newViews.add(serView);
+
 	}
 
 	@Override
@@ -145,22 +112,23 @@ public class GLDataWindows extends AGLView {
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
-	init(gl);
+		init(gl);
 	}
 
 	@Override
 	public void setDetailLevel(EDetailLevel detailLevel) {
-			super.setDetailLevel(detailLevel);
+		super.setDetailLevel(detailLevel);
 	}
 
-@Override
+	@Override
 	public void displayLocal(GL gl) {
 		processEvents();
-		if (!isVisible())
-			return;
-		if (set == null)
-			return;
-	
+
+		// if (!isVisible())
+		// return;
+		// if (set == null)
+		// return;
+
 		if (bIsDisplayListDirtyLocal) {
 
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
@@ -176,137 +144,83 @@ public class GLDataWindows extends AGLView {
 			renderBusyMode(gl);
 
 	}
-@Override
+	@Override
 	public void displayRemote(GL gl) {
+		display(gl);
 	}
 
-	
 	@Override
 	public void display(GL gl) {
 		// processEvents();
-		
-		
+
 		// GLHelperFunctions.drawAxis(gl);
-		 //GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// gl.glEnable(GL.GL_DEPTH_TEST);
 		// clipToFrustum(gl);
-		 
-		 
-            gl.glMatrixMode(GL.GL_PROJECTION);
-			gl.glLoadIdentity();
-			
-			gl.glOrtho(0.0f, canvasWidth, canvasHeight, 0.0f, -1.0f, 1.0f);
 
-			gl.glMatrixMode(GL.GL_MODELVIEW);
-			gl.glLoadIdentity();
-		 
-	
-		if (glMouseListener.getPickedPoint() != null) {
-			mousePoint = glMouseListener.getPickedPoint();
+		// gl.glMatrixMode(GL.GL_PROJECTION);
+		// gl.glLoadIdentity();
+		//
+		// gl.glOrtho(0.0f, canvasWidth, canvasHeight, 0.0f, -1.0f, 1.0f);
+		//
+		// gl.glMatrixMode(GL.GL_MODELVIEW);
+		// gl.glLoadIdentity();
+		//
+		// if (glMouseListener.getPickedPoint() != null) {
+		// mousePoint = glMouseListener.getPickedPoint();
+		//
+		// gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+		// double factorX = (double) canvasWidth / (double) viewport[2];
+		// double factorY = (double) canvasHeight / (double) viewport[3];
+		//
+		// mouseCoordX = (float) (mousePoint.getX() * factorX);
+		// mouseCoordY = (float) (mousePoint.getY() * factorY);
+		//
+		// }
+		//
+		// receivedEyeData = tracker.getEyeTrackData();
+		//
+		// int offsetX = upperLeftScreenPos.x;
+		// int offsetY = upperLeftScreenPos.y;
+		//
+		// receivedEyeData[0] = receivedEyeData[0] - (float) offsetX;
+		// receivedEyeData[1] = receivedEyeData[1] - (float) offsetY;
+		//
+		// // System.out.println("Eye position korrigiert: " +
+		// receivedEyeData[0]
+		// // + " / " + receivedEyeData[1]);
+		// float factorX = canvasWidth / (float) viewport[2];
+		// float factorY = canvasHeight / (float) viewport[3];
+		//
+		// // visualisation of the eyecursor
+		// gl.glBegin(GL.GL_LINE);
+		// gl.glVertex3f(receivedEyeData[0] * factorX, receivedEyeData[1]
+		// * factorY, 0);
+		// gl.glVertex3f(2, 2, 0);
+		// gl.glEnd();
 
-			gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-			double factorX = (double) canvasWidth / (double) viewport[2];
-			double factorY = (double) canvasHeight / (double) viewport[3];
+		initNewView(gl);
 
-			mouseCoordX = (float) (mousePoint.getX() * factorX);
-			mouseCoordY = (float) (mousePoint.getY() * factorY);
-			
-		}
+		renderRemoteLevel(gl, testLevel);
 
-		
-		float helpX;
-		float helpY;
+		// if (!containedGLViews.isEmpty()) {
+		//
+		// containedGLViews.get(0).displayRemote(gl);
+		// // renderRemoteLevelElement(gl,
+		// // testLevel.getElementByPositionIndex(0));
+		//
+		// gl.glBegin(GL.GL_LINE);
+		// gl.glVertex3f(1, 2, 0);
+		// gl.glVertex3f(2, 2, 0);
+		// gl.glEnd();
+		// }
 
-		for (int i = 0; i < numberOfSquares; i++) {
-
-			helpX = (float) squarePositionX[i];
-			helpY = (float) squarePositionY[i];
-
-			if (squareChecked[i]) {
-				gl.glColor3f(0.6f, 0, 0);
-			} else {
-				gl.glColor3f(1, 0, 0);
-			}
-
-			gl.glBegin(GL.GL_POLYGON);
-			gl.glVertex3f(helpX - (squareSizes[i] / 2), helpY
-					- (squareSizes[i] / 2), 0);
-			gl.glVertex3f(helpX + (squareSizes[i] / 2), helpY
-					- (squareSizes[i] / 2), 0);
-			gl.glVertex3f(helpX + (squareSizes[i] / 2), helpY
-					+ (squareSizes[i] / 2), 0);
-			gl.glVertex3f(helpX - (squareSizes[i] / 2), helpY
-					+ (squareSizes[i] / 2), 0);
-			gl.glEnd();
-
-		}
-		 
-		
-		//Collision detection (cheap & dirty)
-		for (int i = 0; i < numberOfSquares; i++) {
-			helpX = (float) squarePositionX[i];
-			helpY = (float) squarePositionY[i];
-			
-			//reset the size of the squares
-			squareSizes[i] = squareBaseSize;
-			
-			if ((mouseCoordX > (helpX - (squareSizes[i] / 2)))
-			&& (mouseCoordY > (helpY - (squareSizes[i] / 2)))
-			&& (mouseCoordX < (helpX + (squareSizes[i] / 2)))
-			&& (mouseCoordY < (helpY + (squareSizes[i] / 2)))
-			) {
-				
-				squareSizes[i]=squareBaseSize*2;
-				squareChecked[i]=true;
-				
-			}
-
-		}
-		
-		Rectangle screenRect = getParentGLCanvas().getBounds();
-		
-	
-		 
-		 
-		 
-		 
-		
-		
-		receivedEyeData = tracker.getEyeTrackData();
-		
-		System.out.println("Eye position: " +receivedEyeData[0] + " / " + receivedEyeData[1]);
-		
-		
-		int offsetX=upperLeftScreenPos.x;
-		int offsetY=upperLeftScreenPos.y;
-		
-		
-		
-		receivedEyeData[0]=receivedEyeData[0]-(float)offsetX;
-		receivedEyeData[1]=receivedEyeData[1]-(float)offsetY;
-
-		System.out.println("Eye position korrigiert: " +receivedEyeData[0] + " / " + receivedEyeData[1]);
-		
-		GLHelperFunctions.drawPointAt(gl, new Vec3f(receivedEyeData[0] / screenRect.width *5f,
-				 (receivedEyeData[1] / screenRect.height) * 5f , 0.01f));
-				
-		
-		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-		
-		float factorX =  canvasWidth /  (float)viewport[2];
-		float factorY = canvasHeight / (float)viewport[3];
-
-
-		gl.glBegin(GL.GL_LINE);
-		gl.glVertex3f( receivedEyeData[0]*factorX,receivedEyeData[1]*factorY, 0);
-		gl.glVertex3f(2, 2, 0);
-		gl.glEnd();
-		 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 		// if (!isRenderedRemote())
 		// contextMenu.render(gl, this);
 	}
-private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
+
+	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 
 		if (bHasFrustumChanged) {
 			bHasFrustumChanged = false;
@@ -314,6 +228,48 @@ private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 		gl.glEndList();
+	}
+
+	private void renderRemoteLevel(final GL gl, final RemoteLevel level) {
+		for (RemoteLevelElement element : level.getAllElements()) {
+			renderRemoteLevelElement(gl, element, level);
+		}
+	}
+
+	private void renderRemoteLevelElement(final GL gl,
+			RemoteLevelElement element, RemoteLevel level) {
+
+		AGLView glView = element.getGLView();
+
+		if (glView == null) {
+			return;
+		}
+
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.VIEW_SELECTION, glView.getID()));
+
+		gl.glPushMatrix();
+
+		Transform transform = element.getTransform();
+		Vec3f translation = transform.getTranslation();
+		Rotf rot = transform.getRotation();
+		Vec3f scale = transform.getScale();
+		Vec3f axis = new Vec3f();
+		float fAngle = rot.get(axis);
+
+		gl.glTranslatef(translation.x(), translation.y(), translation.z());
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(),
+				axis.z());
+		gl.glScalef(scale.x(), scale.y(), scale.z());
+
+		glView.displayRemote(gl);
+
+		gl.glPopMatrix();
+
+		gl.glPopName();
+		gl.glPopName();
 	}
 
 	@Override
@@ -350,6 +306,17 @@ private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 		SerializedDataWindowsView serializedForm = new SerializedDataWindowsView(
 				dataDomain);
 		serializedForm.setViewID(this.getID());
+
+		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>(
+				testLevel.getAllElements().size());
+		for (RemoteLevelElement rle : testLevel.getAllElements()) {
+			if (rle.getGLView() != null) {
+				AGLView remoteView = rle.getGLView();
+				remoteViews.add(remoteView.getSerializableRepresentation());
+			}
+		}
+		serializedForm.setTestViews(remoteViews);
+
 		return serializedForm;
 	}
 
@@ -360,7 +327,6 @@ private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 				+ storageVA.size() + ", contentVAType: " + contentVAType
 				+ ", remoteRenderer:" + getRemoteRenderingGLCanvas();
 	}
-
 
 	@Override
 	public void registerEventListeners() {
@@ -376,24 +342,75 @@ private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 	@Override
 	public void broadcastElements(EVAOperation type) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void clearAllSelections() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void init(GL gl) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public int getNumberOfSelections(SelectionType SelectionType) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	private void initNewView(GL gl) {
+		if (!newViews.isEmpty()) {
+			ASerializedView serView = newViews.remove(0);
+			AGLView view = createView(gl, serView);
+			containedGLViews.add(view);
+			testLevel.getNextFree().setGLView(view);
+		}
+	}
+
+	@Override
+	public void initFromSerializableRepresentation(ASerializedView ser) {
+
+		SerializedDataWindowsView serializedView = (SerializedDataWindowsView) ser;
+
+		for (ASerializedView remoteSerializedView : serializedView
+				.getTestViews()) {
+			newViews.add(remoteSerializedView);
+		}
+
+		setDisplayListDirty();
+	}
+
+	private AGLView createView(GL gl, ASerializedView serView) {
+
+		ICommandManager cm = generalManager.getCommandManager();
+		CmdCreateView cmdView = (CmdCreateView) cm
+				.createCommandByType(ECommandType.CREATE_GL_VIEW);
+		cmdView.setViewID(serView.getViewType());
+		cmdView.setAttributesFromSerializedForm(serView);
+		cmdView.doCommand();
+
+		AGLView glView = cmdView.getCreatedObject();
+		glView.setUseCase(useCase);
+		// glView.setRemoteRenderingGLView(this);
+		glView.setSet(set);
+
+		if (glView instanceof GLPathway) {
+			GLPathway glPathway = (GLPathway) glView;
+
+			glPathway.setPathway(((SerializedPathwayView) serView)
+					.getPathwayID());
+			glPathway.enablePathwayTextures(true);
+			glPathway.enableNeighborhood(false);
+			glPathway.enableGeneMapping(false);
+		}
+
+		glView.initRemote(gl, this, glMouseListener, null);
+
+		return glView;
 	}
 }
