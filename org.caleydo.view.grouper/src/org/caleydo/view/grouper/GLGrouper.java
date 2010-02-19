@@ -20,6 +20,7 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -119,6 +120,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 	private TextRenderer textRenderer;
 	private SelectionManager selectionManager;
 
+	private SelectionType selectionTypeClicked;
+
 	private Tree<ClusterNode> tree;
 
 	/**
@@ -137,9 +140,16 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		hashGroups = new HashMap<Integer, GroupRepresentation>();
 
 		dragAndDropController = new DragAndDropController(this);
+		selectionTypeClicked = new SelectionType("Clicked", new float[] { 1.0f,
+				0.0f, 1.0f, 0.0f }, true, false, 1.0f);
+
 		// TODO:if this should be general, use dynamic idType
 		selectionManager = new SelectionManager.Builder(EIDType.CLUSTER_NUMBER)
 				.build();
+		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
+				selectionTypeClicked);
+		eventPublisher.triggerEvent(selectionTypeEvent);
+		selectionManager.addTypeToDeltaBlacklist(selectionTypeClicked);
 
 		renderStyle = new GrouperRenderStyle(this, viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32),
@@ -161,7 +171,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager,
 				iUniqueID, renderStyle);
 		if (set.getStorageTree() != null) {
-			//FIXME: do that differently.
+			// FIXME: do that differently.
 			set = set.getStorageTree().getRoot().getMetaSet();
 			tree = set.getStorageTree();
 			initHierarchy(set.getStorageTree());
@@ -222,8 +232,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		}
 
 		rootGroup.calculateHierarchyLevels(0);
-//		ClusterHelper.determineNrElements(tree);
-//		ClusterHelper.determineHierarchyDepth(tree);
+		// ClusterHelper.determineNrElements(tree);
+		// ClusterHelper.determineHierarchyDepth(tree);
 		ClusterHelper.determineExpressionValue(tree,
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
 		set.setStorageTree(tree);
@@ -278,37 +288,40 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		rootGroup.getClusterNode().setID(iLastUsedGroupID++);
 		hashGroups.clear();
 
-
 		selectionManager.clearSelections();
-		if(rootGroup.getClusterNode().getSelectionType() != SelectionType.NORMAL) {
-			selectionManager.addToType(rootGroup.getClusterNode()
-					.getSelectionType(), rootGroup.getID());
+		Set<SelectionType> selectionTypes = rootGroup.getSelectionTypes();
+		for (SelectionType selectionType : selectionTypes) {
+			if (selectionType != SelectionType.NORMAL)
+				selectionManager.addToType(selectionType, rootGroup.getID());
 		}
+
 		hashGroups.put(rootGroup.getID(), rootGroup);
 
 		buildTreeFromGroupHierarchy(tree, rootGroup.getClusterNode(), rootGroup);
 
-//		ClusterHelper.determineNrElements(tree);
-//		ClusterHelper.determineHierarchyDepth(tree);
-		//FIXME: do that differently.
+		// ClusterHelper.determineNrElements(tree);
+		// ClusterHelper.determineHierarchyDepth(tree);
+		// FIXME: do that differently.
 		set = set.getStorageTree().getRoot().getMetaSet();
 		ClusterHelper.determineExpressionValue(tree,
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
 		tree.setDirty();
 		set.setStorageTree(tree);
-		ISet useCaseSet = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getSet();
+		ISet useCaseSet = GeneralManager.get().getUseCase(
+				EDataDomain.GENETIC_DATA).getSet();
 		useCaseSet.setStorageTree(tree);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
 		storageVA = new VirtualArray(EVAType.STORAGE, alIndices.size(),
 				alIndices);
-//		set.replaceVA(useCase.getVA(EVAType.STORAGE).getID(), storageVA);
-		
+		// set.replaceVA(useCase.getVA(EVAType.STORAGE).getID(), storageVA);
+
 		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayInUseCaseEvent(
-				EIDCategory.EXPERIMENT, EVAType.STORAGE, (VirtualArray)storageVA));
+				EIDCategory.EXPERIMENT, EVAType.STORAGE,
+				(VirtualArray) storageVA));
 		triggerSelectionEvents();
 	}
 
@@ -325,9 +338,10 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 				buildTreeFromGroupHierarchy(tree, childNode, groupRep);
 			}
 			// selectionManager.add(groupRep.getID());
-			if(groupRep.getClusterNode().getSelectionType() != SelectionType.NORMAL) {
-				selectionManager.addToType(groupRep.getClusterNode()
-						.getSelectionType(), groupRep.getID());
+			Set<SelectionType> selectionTypes = groupRep.getSelectionTypes();
+			for (SelectionType selectionType : selectionTypes) {
+				if (selectionType != SelectionType.NORMAL)
+					selectionManager.addToType(selectionType, groupRep.getID());
 			}
 			hashGroups.put(groupRep.getID(), groupRep);
 		}
@@ -509,10 +523,12 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 
 			potentialNewSelectedGroup.addAsDraggable(dragAndDropController);
 
-			potentialNewSelectedGroup.setSelectionType(SelectionType.SELECTION,
-					selectionManager);
-			rootGroup.updateDrawingStrategies(selectionManager,
-					drawingStrategyManager);
+			potentialNewSelectedGroup.setSelectionTypeRec(
+					SelectionType.SELECTION, selectionManager);
+			selectionManager.addToType(selectionTypeClicked,
+					potentialNewSelectedGroup.getID());
+			rootGroup
+					.updateSelections(selectionManager, drawingStrategyManager);
 			triggerSelectionEvents();
 			setDisplayListDirty();
 		}
@@ -603,17 +619,21 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 						dragAndDropController.clearDraggables();
 						selectionManager
 								.clearSelection(SelectionType.SELECTION);
+						selectionManager.clearSelection(selectionTypeClicked);
 					}
 					if (!bControlPressed) {
 						potentialNewSelectedGroup = groupRep;
 						bPotentialNewSelection = true;
 					}
-					dragAndDropController.setDraggingStartPosition(glMouseListener);
+					dragAndDropController
+							.setDraggingStartPosition(glMouseListener);
 					groupRep.addAsDraggable(dragAndDropController);
 
-					groupRep.setSelectionType(SelectionType.SELECTION,
+					groupRep.setSelectionTypeRec(SelectionType.SELECTION,
 							selectionManager);
-					rootGroup.updateDrawingStrategies(selectionManager,
+					selectionManager.addToType(selectionTypeClicked, groupRep
+							.getID());
+					rootGroup.updateSelections(selectionManager,
 							drawingStrategyManager);
 					triggerSelectionEvents();
 					setDisplayListDirty();
@@ -651,7 +671,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 					selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 					selectionManager.addToType(SelectionType.MOUSE_OVER,
 							groupRep.getID());
-					rootGroup.updateDrawingStrategies(selectionManager,
+					rootGroup.updateSelections(selectionManager,
 							drawingStrategyManager);
 					triggerSelectionEvents();
 					setDisplayListDirty();
@@ -663,6 +683,18 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 					if (selectionManager.checkStatus(SelectionType.SELECTION,
 							groupRep.getID())
 							&& groupRep != rootGroup) {
+
+						// groupRep.addAsDraggable(dragAndDropController);
+						//
+						// groupRep.setSelectionTypeRec(SelectionType.SELECTION,
+						// selectionManager);
+						// selectionManager.addToType(selectionTypeClicked,
+						// groupRep
+						// .getID());
+						// rootGroup.updateSelections(selectionManager,
+						// drawingStrategyManager);
+						// triggerSelectionEvents();
+						// setDisplayListDirty();
 
 						Set<Integer> setSelectedGroups = new HashSet<Integer>(
 								selectionManager
@@ -679,23 +711,30 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 						DeleteGroupsItem deleteGroupsItem = new DeleteGroupsItem(
 								setSelectedGroups);
 						contextMenu.addContextMenueItem(deleteGroupsItem);
-						
-						if (setSelectedGroups.size() == 2) {
-							
+
+						Set<Integer> setClickedGroups = new HashSet<Integer>(
+								selectionManager
+										.getElements(selectionTypeClicked));
+
+						if (setClickedGroups.size() == 2) {
+
 							ArrayList<ISet> setsToCompare = new ArrayList<ISet>();
-							for (Integer groupID : setSelectedGroups) {
-								setsToCompare.add(hashGroups.get(groupID).getClusterNode().getMetaSet());
+							for (Integer groupID : setClickedGroups) {
+								setsToCompare.add(hashGroups.get(groupID)
+										.getClusterNode().getMetaSet());
 							}
-							
+
 							CompareGroupsItem compareGroupsItem = new CompareGroupsItem(
 									setsToCompare);
-							contextMenu.addContextMenueItem(compareGroupsItem);							
+							contextMenu.addContextMenueItem(compareGroupsItem);
 						}
-					
+
 						bContextMenueItemsAvailable = true;
 
 					}
-					if (setCopiedGroups != null && !setCopiedGroups.contains(groupRep.getID())) {
+					if (setCopiedGroups != null
+							&& !setCopiedGroups.contains(groupRep.getID())
+							&& !groupRep.isLeaf()) {
 						PasteGroupsItem pasteGroupItem = new PasteGroupsItem(
 								groupRep.getID());
 						contextMenu.addContextMenueItem(pasteGroupItem);
@@ -722,7 +761,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 				iDraggedOverCollapseButtonID = -1;
 				dragAndDropController.clearDraggables();
 				selectionManager.clearSelections();
-				rootGroup.updateDrawingStrategies(selectionManager,
+				rootGroup.updateSelections(selectionManager,
 						drawingStrategyManager);
 				triggerSelectionEvents();
 				setDisplayListDirty();
@@ -874,12 +913,12 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		deleteGroupsEventListener.setHandler(this);
 		eventPublisher.addListener(DeleteGroupsEvent.class,
 				deleteGroupsEventListener);
-		
+
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class,
 				selectionUpdateListener);
-		
+
 		clusterNodeSelectionListener = new ClusterNodeSelectionListener();
 		clusterNodeSelectionListener.setHandler(this);
 		eventPublisher.addListener(ClusterNodeSelectionEvent.class,
@@ -1079,7 +1118,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		tree = new Tree<ClusterNode>();
 		GroupRepresentation parent = hashGroups.get(iParentGroupID);
 
-		if (parent == null || setCopiedGroups == null)
+		if (parent == null || setCopiedGroups == null || parent.isLeaf())
 			return;
 
 		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedTopElementCompositeList(setCopiedGroups);
@@ -1121,7 +1160,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 
-		if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {	
+		if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 			Collection<SelectionDeltaItem> deltaItems = selectionDelta
 					.getAllItems();
 			Tree<ClusterNode> experimentTree = set.getStorageTree();
@@ -1129,20 +1168,20 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 			if (experimentTree != null) {
 				selectionManager.clearSelections();
 				dragAndDropController.clearDraggables();
-				
+
 				for (SelectionDeltaItem item : deltaItems) {
 					ArrayList<Integer> alNodeIDs = experimentTree
 							.getNodeIDsFromLeafID(item.getPrimaryID());
-					
-					for(Integer nodeID : alNodeIDs) {
+
+					for (Integer nodeID : alNodeIDs) {
 						GroupRepresentation groupRep = hashGroups.get(nodeID);
-						if(item.getSelectionType() == SelectionType.SELECTION) {
+						if (item.getSelectionType() == SelectionType.SELECTION) {
 							groupRep.addAsDraggable(dragAndDropController);
 						}
-						groupRep.setSelectionType(item.getSelectionType(),
+						groupRep.setSelectionTypeRec(item.getSelectionType(),
 								selectionManager);
 					}
-					rootGroup.updateDrawingStrategies(selectionManager,
+					rootGroup.updateSelections(selectionManager,
 							drawingStrategyManager);
 				}
 				setDisplayListDirty();
@@ -1159,10 +1198,10 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 
 			selectionManager.clearSelections();
 			selectionManager.setDelta(selectionDelta);
-			rootGroup.updateDrawingStrategies(selectionManager,
-					drawingStrategyManager);
+			rootGroup
+					.updateSelections(selectionManager, drawingStrategyManager);
 			setDisplayListDirty();
 		}
-		
+
 	}
 }

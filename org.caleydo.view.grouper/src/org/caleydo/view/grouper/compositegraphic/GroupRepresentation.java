@@ -3,6 +3,7 @@ package org.caleydo.view.grouper.compositegraphic;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,6 +42,8 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	private int iHierarchyLevel;
 	private boolean bCollapsed;
 	private boolean bLeaf;
+	private Set<SelectionType> selectionTypes;
+
 	private ClusterNode clusterNode;
 	private GrouperRenderStyle renderStyle;
 	private IGroupDrawingStrategy drawingStrategy;
@@ -56,6 +59,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		alDropPositions = new ArrayList<Float>();
 		vecPosition = new Vec3f();
 		bCollapsed = false;
+		selectionTypes = new HashSet<SelectionType>();
 		this.clusterNode = clusterNode;
 		this.renderStyle = renderStyle;
 		this.drawingStrategy = drawingStrategy;
@@ -227,16 +231,18 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	public float getHeight() {
 		return fHeight;
 	}
-	
+
 	public float getScaledHeight(int viewportWidth) {
-		if(drawingStrategy instanceof AGLGUIElement)
-			return ((AGLGUIElement)drawingStrategy).getScaledSizeOf(viewportWidth, fHeight);
+		if (drawingStrategy instanceof AGLGUIElement)
+			return ((AGLGUIElement) drawingStrategy).getScaledSizeOf(
+					viewportWidth, fHeight);
 		return fHeight;
 	}
-	
+
 	public float getScaledWidth(int viewportWidth) {
-		if(drawingStrategy instanceof AGLGUIElement)
-			return ((AGLGUIElement)drawingStrategy).getScaledSizeOf(viewportWidth, fWidth);
+		if (drawingStrategy instanceof AGLGUIElement)
+			return ((AGLGUIElement) drawingStrategy).getScaledSizeOf(
+					viewportWidth, fWidth);
 		return fWidth;
 	}
 
@@ -343,29 +349,33 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	}
 
 	@Override
-	public void updateDrawingStrategies(SelectionManager selectionManager,
+	public void updateSelections(SelectionManager selectionManager,
 			DrawingStrategyManager drawingStrategyManager) {
-		
-		
-		if (selectionManager.checkStatus(SelectionType.MOUSE_OVER, getID())) {
-			drawingStrategy = drawingStrategyManager
-					.getGroupDrawingStrategy(EGroupDrawingStrategyType.MOUSE_OVER);
-			clusterNode.setSelectionType(SelectionType.MOUSE_OVER);
 
-		} else if (selectionManager.checkStatus(SelectionType.SELECTION,
-				getID())) {
-			drawingStrategy = drawingStrategyManager
-					.getGroupDrawingStrategy(EGroupDrawingStrategyType.SELECTION);
-			clusterNode.setSelectionType(SelectionType.SELECTION);
+		Collection<SelectionType> selectionTypes = selectionManager
+				.getSelectionTypes(getID());
+		this.selectionTypes.clear();
+		if (selectionTypes != null) {
+			this.selectionTypes.addAll(selectionTypes);
+
+			if (selectionManager.checkStatus(SelectionType.MOUSE_OVER, getID())) {
+				drawingStrategy = drawingStrategyManager
+						.getGroupDrawingStrategy(EGroupDrawingStrategyType.MOUSE_OVER);
+			} else if (selectionManager.checkStatus(SelectionType.SELECTION,
+					getID())) {
+				drawingStrategy = drawingStrategyManager
+						.getGroupDrawingStrategy(EGroupDrawingStrategyType.SELECTION);
+			} else {
+				drawingStrategy = drawingStrategyManager
+						.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
+			}
 		} else {
 			drawingStrategy = drawingStrategyManager
 					.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
-			clusterNode.setSelectionType(SelectionType.NORMAL);
 		}
 
 		for (ICompositeGraphic child : alChildren) {
-			child.updateDrawingStrategies(selectionManager,
-					drawingStrategyManager);
+			child.updateSelections(selectionManager, drawingStrategyManager);
 		}
 
 	}
@@ -385,12 +395,12 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	}
 
 	@Override
-	public void setSelectionType(SelectionType selectionType,
+	public void setSelectionTypeRec(SelectionType selectionType,
 			SelectionManager selectionManager) {
 		selectionManager.addToType(selectionType, getID());
 		clusterNode.setSelectionType(selectionType);
 		for (ICompositeGraphic child : alChildren) {
-			child.setSelectionType(selectionType, selectionManager);
+			child.setSelectionTypeRec(selectionType, selectionManager);
 		}
 	}
 
@@ -474,6 +484,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		copy.bCollapsed = bCollapsed;
 		copy.iHierarchyLevel = iHierarchyLevel;
 		copy.parent = parent;
+		copy.addSelectionTypes(selectionTypes);
 
 		glGrouper.addGroupRepresentation(copy.getID(), copy);
 
@@ -512,7 +523,8 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	}
 
 	@Override
-	public ICompositeGraphic createDeepCopyWithNewIDs(Tree<ClusterNode> tree, int[] iConsecutiveID) {
+	public ICompositeGraphic createDeepCopyWithNewIDs(Tree<ClusterNode> tree,
+			int[] iConsecutiveID) {
 
 		ClusterNode copiedNode = null;
 		if (isLeaf()) {
@@ -520,17 +532,18 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 					iConsecutiveID[0], clusterNode.getCoefficient(),
 					clusterNode.getDepth(), false, clusterNode.getLeafID());
 		} else {
-			copiedNode = new ClusterNode(tree, clusterNode.getNodeName() + "_copy",
-					iConsecutiveID[0], clusterNode.getCoefficient(),
+			copiedNode = new ClusterNode(tree, clusterNode.getNodeName()
+					+ "_copy", iConsecutiveID[0], clusterNode.getCoefficient(),
 					clusterNode.getDepth(), false, clusterNode.getLeafID());
 		}
 		GroupRepresentation copy = new GroupRepresentation(copiedNode,
 				renderStyle, drawingStrategy, drawingStrategyManager,
 				glGrouper, bLeaf);
+		copy.addSelectionTypes(selectionTypes);
 		for (ICompositeGraphic child : alChildren) {
 			iConsecutiveID[0]++;
-			ICompositeGraphic copiedChild = child
-					.createDeepCopyWithNewIDs(tree, iConsecutiveID);
+			ICompositeGraphic copiedChild = child.createDeepCopyWithNewIDs(
+					tree, iConsecutiveID);
 			copy.add(copiedChild);
 		}
 
@@ -594,5 +607,13 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 
 	public ClusterNode getClusterNode() {
 		return clusterNode;
+	}
+
+	public Set<SelectionType> getSelectionTypes() {
+		return selectionTypes;
+	}
+	
+	private void addSelectionTypes(Set<SelectionType> selectionTypes) {
+		this.selectionTypes.addAll(selectionTypes);
 	}
 }

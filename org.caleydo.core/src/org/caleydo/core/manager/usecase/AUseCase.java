@@ -354,10 +354,10 @@ public abstract class AUseCase
 					messageBox.open();
 				}
 			});
-//			if (vaType == EVAType.CONTENT)
-//				set.setContentTree(null);
-//			else if (vaType == EVAType.STORAGE)
-//				set.setStorageTree(null);
+			if (vaType == EVAType.CONTENT)
+				set.setContentTree(null);
+			else if (vaType == EVAType.STORAGE)
+				set.setStorageTree(null);
 		}
 
 		virtualArray.setGroupList(null);

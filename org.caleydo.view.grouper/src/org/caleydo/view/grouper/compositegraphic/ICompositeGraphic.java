@@ -53,14 +53,14 @@ public interface ICompositeGraphic extends IDraggable {
 
 	public boolean hasParent(IDraggable parent);
 
-	public void updateDrawingStrategies(SelectionManager selectionManager,
+	public void updateSelections(SelectionManager selectionManager,
 			DrawingStrategyManager drawingStrategyManager);
 
 	public void setHierarchyPosition(Vec3f vecHierarchyPosition);
 
 	public Vec3f getHierarchyPosition();
 
-	public void setSelectionType(SelectionType selectionType,
+	public void setSelectionTypeRec(SelectionType selectionType,
 			SelectionManager selectionManager);
 
 	public void addAsDraggable(DragAndDropController dragAndDropController);
