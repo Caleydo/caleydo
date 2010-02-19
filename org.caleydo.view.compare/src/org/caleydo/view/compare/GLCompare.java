@@ -1,21 +1,30 @@
 package org.caleydo.view.compare;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.media.opengl.GL;
 
+import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.view.heatmap.GLHeatMap;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -26,12 +35,14 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLCompare extends AGLView implements IViewCommandHandler {
+public class GLCompare extends AGLView implements IViewCommandHandler, IGLRemoteRenderingView {
 
 	public final static String VIEW_ID = "org.caleydo.view.compare";
 
 	private TextRenderer textRenderer;
 	private SelectionManager selectionManager;
+	
+	private GLHeatMap glHeatMapView;
 
 	/**
 	 * Constructor.
@@ -49,7 +60,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void init(GL gl) {
-
+		createHeatMap();
+		glHeatMapView.initRemote(gl, this, glMouseListener, null);
 	}
 
 	@Override
@@ -87,6 +99,38 @@ public class GLCompare extends AGLView implements IViewCommandHandler {
 	public void initData() {
 		super.initData();
 	}
+	
+	
+	/**
+	 * Create embedded heat map
+	 * 
+	 * @param
+	 */
+	private void createHeatMap() {
+		CmdCreateView cmdView = (CmdCreateView) generalManager
+				.getCommandManager().createCommandByType(
+						ECommandType.CREATE_GL_VIEW);
+		cmdView.setViewID(GLHeatMap.VIEW_ID);
+
+		float fHeatMapHeight = viewFrustum.getHeight();
+		float fHeatMapWidth = viewFrustum.getWidth();
+
+		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0,
+				fHeatMapHeight, 0, fHeatMapWidth, -20, 20, -1);
+
+		cmdView.doCommand();
+
+		glHeatMapView = (GLHeatMap) cmdView.getCreatedObject();
+		glHeatMapView.setUseCase(useCase);
+		glHeatMapView.setRemoteRenderingGLView(this);
+
+		glHeatMapView.setDataDomain(dataDomain);
+		glHeatMapView.setSet(set);
+//		glHeatMapView.setContentVAType(EVAType.CONTENT_EMBEDDED_HM);
+		glHeatMapView.initData();
+
+	}
+	
 
 	@Override
 	public void setDetailLevel(EDetailLevel detailLevel) {
@@ -96,6 +140,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler {
 	@Override
 	public void displayLocal(GL gl) {
 		processEvents();
+		if (glHeatMapView != null)
+			glHeatMapView.processEvents();
 		if (!isVisible())
 			return;
 		pickingManager.handlePicking(this, gl);
@@ -103,6 +149,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler {
 		if (bIsDisplayListDirtyLocal) {
 			bIsDisplayListDirtyLocal = false;
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
+			glHeatMapView.setDisplayListDirty();
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
@@ -126,6 +173,14 @@ public class GLCompare extends AGLView implements IViewCommandHandler {
 	public void display(GL gl) {
 		// processEvents();
 		gl.glCallList(iGLDisplayListToCall);
+		
+		glHeatMapView.getViewFrustum().setTop(viewFrustum.getTop()/2.0f);
+		glHeatMapView.getViewFrustum().setRight(viewFrustum.getRight()/2.0f);
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.COMPARE_EMBEDDED_VIEW_SELECTION,
+				glHeatMapView.getID()));
+		glHeatMapView.displayRemote(gl);
+		gl.glPopName();
 
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
@@ -147,6 +202,17 @@ public class GLCompare extends AGLView implements IViewCommandHandler {
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
+		}
+		
+		switch(ePickingType) {
+		case COMPARE_EMBEDDED_VIEW_SELECTION:
+			if(pickingMode == EPickingMode.RIGHT_CLICKED) {
+				contextMenu.setLocation(pick.getPickedPoint(),
+						getParentGLCanvas().getWidth(), getParentGLCanvas()
+								.getHeight());
+				contextMenu.setMasterGLView(this);
+			}
+			break;
 		}
 	}
 
@@ -207,4 +273,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler {
 		super.unregisterEventListeners();
 	
 	}
+
+	@Override
+	public List<AGLView> getRemoteRenderedViews() {
+		//TODO: Do it differently?
+		return new ArrayList<AGLView>();
+	}
+	
 }
