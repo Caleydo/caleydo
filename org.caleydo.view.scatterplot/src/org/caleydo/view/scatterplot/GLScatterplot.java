@@ -144,6 +144,7 @@ public class GLScatterplot extends AStorageBasedView {
 	private GL opengl;
 
 	int iCurrentMouseOverElement = -1;
+	int iCurrentDragZoom=-1;
 
 	
 	private float fTransformOldMinX=0.2f;
@@ -1044,11 +1045,59 @@ public class GLScatterplot extends AStorageBasedView {
 
 		// if (alHits == null && alHits.size() == 0) {
 
-		if (detailLevel == EDetailLevel.HIGH) {
+		if (detailLevel == EDetailLevel.HIGH) 
+		{
 			GLMouseListener glMouseListener = getParentGLCanvas()
 					.getGLMouseListener();
 
-			if (glMouseListener.wasMouseDragged() && (!bRender2Axis)) {
+			
+			
+
+//			private float fTransformOldMinX=0.2f;
+//			private float fTransformNewMinX=0.1f;
+//		        
+//		    private float fTransformOldMaxX=0.4f;
+//		    private float fTransformNewMaxX=0.6f;
+			
+	
+		
+		
+//			bRectangleSelection = true;
+
+			
+			if (bMainViewZoomDragged )
+			{
+				Point pCurrentMousePoint = glMouseListener.getPickedPoint();
+				
+				float[] fCurrentMousePoint = GLCoordinateUtils
+						.convertWindowCoordinatesToWorldCoordinates(opengl,
+								pCurrentMousePoint.x, pCurrentMousePoint.y);
+			
+	
+				float x=(fCurrentMousePoint [0]-XYAXISDISTANCE)/renderStyle.getAxisWidth();
+				
+				switch (iCurrentDragZoom)
+				{
+					case 1:
+						if(x>=0 && x<=fTransformOldMinX) 
+							fTransformNewMinX=x;
+						else 
+							if (x<0) fTransformNewMinX=0;
+							else fTransformNewMinX=fTransformOldMinX;
+						break;
+					case 2:
+						if(x>=fTransformOldMaxX && x<=1)
+							fTransformNewMaxX=x;
+						else 
+							if (x>1) fTransformNewMaxX =1;
+							else fTransformNewMaxX=fTransformOldMaxX;
+						break;
+					default:
+				}
+			}
+			
+			if (glMouseListener.wasMouseDragged() && (!bRender2Axis)) 
+			{
 
 				bRectangleSelection = true;
 
@@ -1261,11 +1310,14 @@ public class GLScatterplot extends AStorageBasedView {
 		gl.glEndList();
 
 	}
-
 	
 	private void renderMainViewZoomSelection(GL gl)
 	{				
 		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
+		
+	
+//		float delta=0.01f;
+
 
 //		private float fTransformOldMinX=0.2f;
 		
@@ -1297,9 +1349,15 @@ public class GLScatterplot extends AStorageBasedView {
 		Vec3f upperRightCorner=new Vec3f(x+fIconwith,y+fIconwith,AXIS_Z);
 		Vec3f upperLeftCorner=new Vec3f(x,y+fIconwith,AXIS_Z);
 				
-		textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
-			lowerLeftCorner, lowerRightCorner, upperRightCorner,
-			upperLeftCorner, 1, 1, 1, 1);
+		if(fTransformNewMinX>0)
+			if (bMainViewZoomDragged && iCurrentDragZoom==1)
+				textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
+				lowerLeftCorner, lowerRightCorner, upperRightCorner,
+				upperLeftCorner, 1,0,0,1);
+			else 
+				textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
+						lowerLeftCorner, lowerRightCorner, upperRightCorner,
+						upperLeftCorner, 1,1,1,1);
 		
 		
 		x=x+fIconwith;
@@ -1308,10 +1366,15 @@ public class GLScatterplot extends AStorageBasedView {
 		upperRightCorner=new Vec3f(x+fIconwith,y+fIconwith,AXIS_Z);
 		upperLeftCorner=new Vec3f(x,y+fIconwith,AXIS_Z);
 		
-				
-		textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
-				lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, 1, 1, 1, 1);
+		if(fTransformNewMinX<fTransformOldMinX)
+			if (bMainViewZoomDragged && iCurrentDragZoom==1)	
+				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+						lowerLeftCorner, lowerRightCorner, upperRightCorner,
+						upperLeftCorner, 1, 0, 0, 1);
+			else 
+				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+						lowerLeftCorner, lowerRightCorner, upperRightCorner,
+						upperLeftCorner, 1, 1, 1, 1);
 		gl.glPopName();
 		
 		//Left Outer X
@@ -1333,11 +1396,16 @@ public class GLScatterplot extends AStorageBasedView {
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.SCATTER_MAIN_ZOOM, 2));
 
-		textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
-			lowerLeftCorner, lowerRightCorner, upperRightCorner,
-			upperLeftCorner, 1, 1, 1, 1);
-		gl.glPopName();
-		
+		if(fTransformNewMaxX<1)
+			if (bMainViewZoomDragged && iCurrentDragZoom==2)	
+				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+					lowerLeftCorner, lowerRightCorner, upperRightCorner,
+					upperLeftCorner, 1, 0, 0, 1);
+			else
+				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+						lowerLeftCorner, lowerRightCorner, upperRightCorner,
+						upperLeftCorner, 1, 1, 1, 1);
+				
 		x=x-fIconwith;
 		
 		lowerLeftCorner=new Vec3f(x,y,AXIS_Z);
@@ -1345,12 +1413,54 @@ public class GLScatterplot extends AStorageBasedView {
 		upperRightCorner=new Vec3f(x+fIconwith,y+fIconwith,AXIS_Z);
 		upperLeftCorner=new Vec3f(x,y+fIconwith,AXIS_Z);
 		
-		textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
-				lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, 1, 1, 1, 1);
-			gl.glPopName();
+		if(fTransformNewMaxX>fTransformOldMaxX)
+			if (bMainViewZoomDragged && iCurrentDragZoom==2)	
+				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+						lowerLeftCorner, lowerRightCorner, upperRightCorner,
+						upperLeftCorner, 1, 0, 0, 1);
+			else
+				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+						lowerLeftCorner, lowerRightCorner, upperRightCorner,
+						upperLeftCorner, 1, 1, 1, 1);
+		gl.glPopName();
 		
-						
+		
+		
+		if (bMainViewZoomDragged)
+		{
+			float x1=renderStyle.transformNorm2GlobalX(fTransformNewMinX);
+			float x2=renderStyle.transformNorm2GlobalX(fTransformNewMaxX);
+			float y1=XYAXISDISTANCE;
+			float y2=renderStyle.getRenderHeight()- XYAXISDISTANCE;
+			gl.glColor4f(0,1,0, 0.1f);
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glVertex3f(x1, y1, AXIS_Z);
+			gl.glVertex3f(x2, y1, AXIS_Z);
+			gl.glVertex3f(x2, y2, AXIS_Z);
+			gl.glVertex3f(x1, y2, AXIS_Z);
+			gl.glEnd();
+			
+			x1=renderStyle.transformNorm2GlobalX(fTransformOldMinX);
+			x2=renderStyle.transformNorm2GlobalX(fTransformOldMaxX);
+			
+			gl.glColor4f(1,0,0, 0.1f);
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glVertex3f(x1, y1, AXIS_Z);
+			gl.glVertex3f(x2, y1, AXIS_Z);
+			gl.glVertex3f(x2, y2, AXIS_Z);
+			gl.glVertex3f(x1, y2, AXIS_Z);
+			gl.glEnd();
+			
+			
+			
+			
+			gl.glColor4fv(Y_AXIS_COLOR, 1);
+			
+			
+			
+			
+			
+		}
 	}
 	
 	/**
@@ -2289,12 +2399,16 @@ public class GLScatterplot extends AStorageBasedView {
 			return;
 		}
 
+		
+		
 		if (bRectangleSelection)
 			return;
 
 		SelectionType selectionType;
 		switch (ePickingType) {
 			case SCATTER_POINT_SELECTION :
+				if(bMainViewZoomDragged)
+					return;
 				iCurrentMouseOverElement = iExternalID;
 				switch (pickingMode) {
 
@@ -2339,19 +2453,23 @@ public class GLScatterplot extends AStorageBasedView {
 			case SCATTER_MAIN_ZOOM :
 				switch (pickingMode) {
 				case CLICKED :
-					if(!bMainViewZoomDragged)  
+					if(!bMainViewZoomDragged) 
+					{
 						bMainViewZoomDragged=true;
+						iCurrentDragZoom =iExternalID;
+					}
 					else 
 					{
 						bMainViewZoomDragged=false;
+						iCurrentDragZoom=-1;
 						setDisplayListDirty();
 						bUpdateMainView=true;						
 					}	
 					break;
-				case MOUSE_OVER : 
-					if(bMainViewZoomDragged)
-						handleMainViewZoom(iExternalID);
-					break;			
+//				case MOUSE_OVER : 
+//					if(bMainViewZoomDragged)
+//						handleMainViewZoom(iExternalID);
+//					break;			
 				
 					
 				default :
@@ -2365,43 +2483,8 @@ public class GLScatterplot extends AStorageBasedView {
 	}
 
 	private void handleMainViewZoom(int contentID) {
-
-//		private float fTransformOldMinX=0.2f;
-//		private float fTransformNewMinX=0.1f;
-//	        
-//	    private float fTransformOldMaxX=0.4f;
-//	    private float fTransformNewMaxX=0.6f;
 		
-		GLMouseListener glMouseListener = getParentGLCanvas()
-		.getGLMouseListener();
 
-	
-	
-//		bRectangleSelection = true;
-	
-		Point pDragEndPoint = glMouseListener.getPickedPoint();
-		
-	
-
-		float[] DragEndPoint = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(opengl,
-						pDragEndPoint.x, pDragEndPoint.y);
-	
-
-		float x=(DragEndPoint[0]-XYAXISDISTANCE)/renderStyle.getAxisWidth();
-		
-		switch (contentID)
-		{
-			case 1:
-				if(x>=0 && x<=fTransformOldMinX) 
-					fTransformNewMinX=x;				
-				break;
-			case 2:
-				if(x>=fTransformOldMaxX && x<=1)
-					fTransformNewMaxX=x;
-				break;
-			default:
-		}
 		
 	}
 	
