@@ -168,7 +168,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 		if (glRemoteRenderingView.getViewType().equals(
 				"org.caleydo.view.bucket"))
-			renderStyle.disableFishEye();
+			renderStyle.setUseFishEye(false);
 
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
@@ -187,6 +187,7 @@ public class GLHeatMap extends AStorageBasedView {
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
 		selectionTransformer = new StandardTransformer(iUniqueID);
+		
 		init(gl);
 	}
 
@@ -355,7 +356,7 @@ public class GLHeatMap extends AStorageBasedView {
 		// FIXME: do we need to do this here?
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
 		if (getRemoteRenderingGLCanvas() instanceof GLHierarchicalHeatMap)
-			renderStyle.disableFishEye();
+			renderStyle.setUseFishEye(false);
 
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 
@@ -1190,5 +1191,9 @@ public class GLHeatMap extends AStorageBasedView {
 	public void destroy() {
 		selectionTransformer.destroy();
 		super.destroy();
+	}
+	
+	public void useFishEye(boolean useFishEye) {
+		renderStyle.setUseFishEye(useFishEye);
 	}
 }

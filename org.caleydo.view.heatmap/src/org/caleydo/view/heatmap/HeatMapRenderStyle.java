@@ -57,8 +57,8 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 
 	private boolean useFishEye = true;
 
-	public void disableFishEye() {
-		useFishEye = false;
+	public void setUseFishEye(boolean useFishEye) {
+		this.useFishEye = useFishEye;
 	}
 
 	public HeatMapRenderStyle(GLHeatMap heatMap, IViewFrustum viewFrustum) {

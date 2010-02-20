@@ -1,16 +1,25 @@
 package org.caleydo.view.compare;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.EVAType;
+import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.selection.delta.VADeltaItem;
+import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -35,13 +44,14 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLCompare extends AGLView implements IViewCommandHandler, IGLRemoteRenderingView {
+public class GLCompare extends AGLView implements IViewCommandHandler,
+		IGLRemoteRenderingView {
 
 	public final static String VIEW_ID = "org.caleydo.view.compare";
 
 	private TextRenderer textRenderer;
 	private SelectionManager selectionManager;
-	
+
 	private GLHeatMap glHeatMapView;
 
 	/**
@@ -60,8 +70,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler, IGLRemote
 
 	@Override
 	public void init(GL gl) {
+		contentVA = useCase.getVA(EVAType.CONTENT);
+		storageVA = useCase.getVA(EVAType.STORAGE);
 		createHeatMap();
 		glHeatMapView.initRemote(gl, this, glMouseListener, null);
+		glHeatMapView.useFishEye(false);
 	}
 
 	@Override
@@ -99,8 +112,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler, IGLRemote
 	public void initData() {
 		super.initData();
 	}
-	
-	
+
 	/**
 	 * Create embedded heat map
 	 * 
@@ -126,11 +138,34 @@ public class GLCompare extends AGLView implements IViewCommandHandler, IGLRemote
 
 		glHeatMapView.setDataDomain(dataDomain);
 		glHeatMapView.setSet(set);
-//		glHeatMapView.setContentVAType(EVAType.CONTENT_EMBEDDED_HM);
+	    glHeatMapView.setContentVAType(EVAType.CONTENT_EMBEDDED_HM);
 		glHeatMapView.initData();
+		glHeatMapView.setDetailLevel(EDetailLevel.MEDIUM);
+		setEmbeddedHeatMapData();
+	}
+
+	private void setEmbeddedHeatMapData() {
+
+		// TODO: Is this really necessary?
+		glHeatMapView.resetView();
+		IVirtualArrayDelta delta = new VirtualArrayDelta(EVAType.CONTENT_EMBEDDED_HM,
+				EIDType.EXPRESSION_INDEX);
+
+		for (int i = 0; i < 10; i++) {
+			if (i >= contentVA.size())
+				break;
+
+			int contentIndex = contentVA.get(i);
+			delta.add(VADeltaItem.append(contentIndex));
+		}
+		for (int i = 10; i < contentVA.size(); i++) {
+			int contentIndex = contentVA.get(i);
+			delta.add(VADeltaItem.removeElement(contentIndex));
+		}
+		
+		glHeatMapView.handleVirtualArrayUpdate(delta, getShortInfo());
 
 	}
-	
 
 	@Override
 	public void setDetailLevel(EDetailLevel detailLevel) {
@@ -173,12 +208,12 @@ public class GLCompare extends AGLView implements IViewCommandHandler, IGLRemote
 	public void display(GL gl) {
 		// processEvents();
 		gl.glCallList(iGLDisplayListToCall);
-		
-		glHeatMapView.getViewFrustum().setTop(viewFrustum.getTop()/2.0f);
-		glHeatMapView.getViewFrustum().setRight(viewFrustum.getRight()/2.0f);
+
+		glHeatMapView.getViewFrustum().setTop(viewFrustum.getTop() / 2.0f);
+		glHeatMapView.getViewFrustum().setRight(viewFrustum.getRight() / 2.0f);
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.COMPARE_EMBEDDED_VIEW_SELECTION,
-				glHeatMapView.getID()));
+				EPickingType.COMPARE_EMBEDDED_VIEW_SELECTION, glHeatMapView
+						.getID()));
 		glHeatMapView.displayRemote(gl);
 		gl.glPopName();
 
@@ -203,10 +238,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler, IGLRemote
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
-		
-		switch(ePickingType) {
+
+		switch (ePickingType) {
 		case COMPARE_EMBEDDED_VIEW_SELECTION:
-			if(pickingMode == EPickingMode.RIGHT_CLICKED) {
+			if (pickingMode == EPickingMode.RIGHT_CLICKED) {
 				contextMenu.setLocation(pick.getPickedPoint(),
 						getParentGLCanvas().getWidth(), getParentGLCanvas()
 								.getHeight());
@@ -271,13 +306,13 @@ public class GLCompare extends AGLView implements IViewCommandHandler, IGLRemote
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
-	
+
 	}
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
-		//TODO: Do it differently?
+		// TODO: Do it differently?
 		return new ArrayList<AGLView>();
 	}
-	
+
 }
