@@ -13,10 +13,10 @@ import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 /**
  * This class provides higher level features to VisLinks such as halo and animation. To provide this features,
  * more context is needed than a single line. This class needs to know all connection lines that should be
- * displayed on the screen.
- * The member animationStages contains all animation stages (collection of lines that should be drawn at the same time).
- * If one wants to draw all lines at the same time, only one stage is needed. Otherwise, the lines of stage n would be drawn after 
- * stage n-1 has finished (all lines are completely drawn).
+ * displayed on the screen. The member animationStages contains all animation stages (collection of lines that
+ * should be drawn at the same time). If one wants to draw all lines at the same time, only one stage is
+ * needed. Otherwise, the lines of stage n would be drawn after stage n-1 has finished (all lines are
+ * completely drawn).
  * 
  * @author Oliver Pimas
  * @version 2009-10-21
@@ -24,7 +24,7 @@ import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 
 public class VisLinkScene {
 
-//	ArrayList<ArrayList<ArrayList<Vec3f>>> animationStages;
+	// ArrayList<ArrayList<ArrayList<Vec3f>>> animationStages;
 	ArrayList<VisLinkAnimationStage> animationStages;
 	private static boolean animationFinished = false;
 

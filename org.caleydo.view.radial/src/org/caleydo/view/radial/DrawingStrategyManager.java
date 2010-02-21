@@ -75,21 +75,20 @@ public final class DrawingStrategyManager {
 	public APDDrawingStrategy createDrawingStrategy(
 			EPDDrawingStrategyType eDrawingStrategyType) {
 		switch (eDrawingStrategyType) {
-			case RAINBOW_COLOR :
-				return new PDDrawingStrategyRainbow(pickingManager, iViewID);
-			case SELECTED :
-				return new PDDrawingStrategySelected(pickingManager, iViewID);
-			case FIXED_COLOR :
-				return new PDDrawingStrategyFixedColor(pickingManager, iViewID);
-			case LABEL_DECORATOR :
-				return new PDDrawingStrategyLabelDecorator();
-			case EXPRESSION_COLOR :
-				return new PDDrawingStrategyExpressionColor(pickingManager,
-						iViewID);
-			case INVISIBLE :
-				return new PDDrawingStrategyInvisible(pickingManager, iViewID);
-			default :
-				return null;
+		case RAINBOW_COLOR:
+			return new PDDrawingStrategyRainbow(pickingManager, iViewID);
+		case SELECTED:
+			return new PDDrawingStrategySelected(pickingManager, iViewID);
+		case FIXED_COLOR:
+			return new PDDrawingStrategyFixedColor(pickingManager, iViewID);
+		case LABEL_DECORATOR:
+			return new PDDrawingStrategyLabelDecorator();
+		case EXPRESSION_COLOR:
+			return new PDDrawingStrategyExpressionColor(pickingManager, iViewID);
+		case INVISIBLE:
+			return new PDDrawingStrategyInvisible(pickingManager, iViewID);
+		default:
+			return null;
 		}
 	}
 

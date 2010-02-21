@@ -3,7 +3,7 @@ package org.caleydo.core.data.selection;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 
 /**
  * A Virtual Array provides an association between a modifiable index in the virtual arrays and the static
@@ -12,10 +12,10 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
  * 
  * @author Alexander Lex
  */
-public interface IVirtualArray
+public interface IVirtualArray<ConcreteType extends IVirtualArray<ConcreteType, VAType, VADelta, GroupType>, VAType extends IVAType, VADelta extends VirtualArrayDelta<?, VAType>, GroupType extends GroupList<?, ?, ?>>
 	extends Iterable<Integer>, IUniqueObject, Cloneable {
 
-	public EVAType getVAType();
+	public VAType getVAType();
 
 	/**
 	 * Returns an Iterator<Integer> of type VAIterator, which allows to iterate over the virtual array
@@ -147,10 +147,10 @@ public interface IVirtualArray
 	 */
 	public Integer size();
 
-	/**
-	 * Reset the virtual array to the indices in the managed data entity
-	 */
-	public void reset();
+	// /**
+	// * Reset the virtual array to the indices in the managed data entity
+	// */
+	// public void reset();
 
 	/**
 	 * Reset the virtual array to contain no elements
@@ -192,7 +192,7 @@ public interface IVirtualArray
 	 * 
 	 * @param delta
 	 */
-	public void setDelta(IVirtualArrayDelta delta);
+	public void setDelta(VADelta delta);
 
 	/**
 	 * Checks whether and how often an element is contained in the virtual array. Returns the number of
@@ -203,15 +203,6 @@ public interface IVirtualArray
 	 * @return the number of occurences
 	 */
 	public int containsElement(int iElement);
-
-	/**
-	 * Generates a new group list with only one group which contains all elements in the virtual array. If a
-	 * list already exists it will be overwritten. Returns the new group list or null if no group list can be
-	 * generated.
-	 * 
-	 * @return the new group list
-	 */
-	public IGroupList newGroupList();
 
 	/**
 	 * Returns the group list. If no group list exits null will be returned.
@@ -238,14 +229,14 @@ public interface IVirtualArray
 	 *            new group list
 	 * @return true if operation executed correctly otherwise false
 	 */
-	public boolean setGroupList(GroupList groupList);
+	public boolean setGroupList(GroupType groupList);
 
 	/**
 	 * Produces a clone of the virtual array
 	 * 
 	 * @return
 	 */
-	public IVirtualArray clone();
+	public ConcreteType clone();
 
 	/**
 	 * Replace the internally created ID with the specified. Used when this VA replaces another VA
@@ -253,7 +244,7 @@ public interface IVirtualArray
 	 * @param iUniqueID
 	 */
 	public void setID(int iUniqueID);
-	
+
 	/**
 	 * Returns an int array representation of the virtual array.
 	 * 

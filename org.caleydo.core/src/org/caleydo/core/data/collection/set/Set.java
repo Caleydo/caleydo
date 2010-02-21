@@ -1,10 +1,8 @@
 package org.caleydo.core.data.collection.set;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
@@ -18,12 +16,15 @@ import org.caleydo.core.data.collection.export.SetExporter;
 import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.EVAType;
+import org.caleydo.core.data.selection.ContentGroupList;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.GroupList;
-import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.data.selection.StorageGroupList;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.data.IStorageManager;
@@ -32,7 +33,10 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.ClusterState;
+import org.caleydo.core.util.clusterer.ContentClusterResult;
+import org.caleydo.core.util.clusterer.StorageClusterResult;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -47,7 +51,7 @@ public class Set
 
 	private ESetType setType;
 
-	private ArrayList<IStorage> alStorages;
+	private HashMap<Integer, IStorage> hashStorages;
 
 	private String sLabel;
 
@@ -63,15 +67,17 @@ public class Set
 
 	private boolean bIsNumerical;
 
-	private HashMap<Integer, IVirtualArray> hashContentVAs;
-	private HashMap<Integer, IVirtualArray> hashStorageVAs;
+	private HashMap<ContentVAType, ContentVirtualArray> hashContentVAs;
+	private HashMap<StorageVAType, StorageVirtualArray> hashStorageVAs;
+
+	private StorageVirtualArray defaultStorageVA;
 
 	// clustering stuff
 	private ArrayList<Integer> alClusterSizes = null;
 	private ArrayList<Integer> alClusterExamples = null;
 
-	private GroupList groupListGenes = new GroupList(0);
-	private GroupList groupListExperiments = new GroupList(0);
+	private ContentGroupList contentGroupList = new ContentGroupList();
+	private StorageGroupList storageGroupList = new StorageGroupList();
 	private boolean bGeneClusterInfo = false;
 	private boolean bExperimentClusterInfo = false;
 
@@ -91,9 +97,11 @@ public class Set
 
 		GeneralManager.get().getSetManager().registerItem(this);
 
-		alStorages = new ArrayList<IStorage>();
-		hashContentVAs = new HashMap<Integer, IVirtualArray>();
-		hashStorageVAs = new HashMap<Integer, IVirtualArray>();
+		hashStorages = new HashMap<Integer, IStorage>();
+
+		hashContentVAs = new HashMap<ContentVAType, ContentVirtualArray>();
+		hashStorageVAs = new HashMap<StorageVAType, StorageVirtualArray>(3);
+		defaultStorageVA = new StorageVirtualArray(StorageVAType.STORAGE);
 	}
 
 	@Override
@@ -118,7 +126,7 @@ public class Set
 
 	@Override
 	public void addStorage(IStorage storage) {
-		if (alStorages.isEmpty()) {
+		if (hashStorages.isEmpty()) {
 			// iColumnLength = storage.size();
 			// rawDataType = storage.getRawDataType();
 			if (storage instanceof INumericalStorage) {
@@ -140,22 +148,18 @@ public class Set
 			// if (iDepth != storage.size())
 			// throw new IllegalArgumentException("All storages in a set must be of the same length");
 		}
-		alStorages.add(storage);
+		hashStorages.put(storage.getID(), storage);
+		defaultStorageVA.append(storage.getID());
 	}
 
 	@Override
 	public IStorage get(int iIndex) {
-		return alStorages.get(iIndex);
-	}
-
-	@Override
-	public StorageIterator VAIterator(int uniqueID) {
-		return new StorageIterator(alStorages, hashStorageVAs.get(iUniqueID));
+		return hashStorages.get(iIndex);
 	}
 
 	@Override
 	public int size() {
-		return alStorages.size();
+		return hashStorages.size();
 	}
 
 	@Override
@@ -172,7 +176,7 @@ public class Set
 	@Override
 	public int depth() {
 		if (iDepth == 0) {
-			for (IStorage storage : alStorages) {
+			for (IStorage storage : hashStorages.values()) {
 				if (iDepth == 0)
 					iDepth = storage.size();
 				else {
@@ -187,14 +191,14 @@ public class Set
 
 	private void normalize() {
 		bIsSetHomogeneous = false;
-		for (IStorage storage : alStorages) {
+		for (IStorage storage : hashStorages.values()) {
 			storage.normalize();
 		}
 	}
 
 	private void normalizeGlobally() {
 		bIsSetHomogeneous = true;
-		for (IStorage storage : alStorages) {
+		for (IStorage storage : hashStorages.values()) {
 			if (storage instanceof INumericalStorage) {
 				INumericalStorage nStorage = (INumericalStorage) storage;
 
@@ -219,7 +223,7 @@ public class Set
 
 	@Override
 	public Iterator<IStorage> iterator() {
-		return alStorages.iterator();
+		return new StorageIterator(hashStorages, hashStorageVAs.get(iUniqueID));
 	}
 
 	@Override
@@ -304,7 +308,7 @@ public class Set
 
 	@Override
 	public void log10() {
-		for (IStorage storage : alStorages) {
+		for (IStorage storage : hashStorages.values()) {
 			if (storage instanceof INumericalStorage) {
 				INumericalStorage nStorage = (INumericalStorage) storage;
 				nStorage.log10();
@@ -318,7 +322,7 @@ public class Set
 	@Override
 	public void log2() {
 
-		for (IStorage storage : alStorages) {
+		for (IStorage storage : hashStorages.values()) {
 			if (storage instanceof INumericalStorage) {
 				INumericalStorage nStorage = (INumericalStorage) storage;
 				nStorage.log2();
@@ -338,7 +342,7 @@ public class Set
 		Histogram histogram = new Histogram();
 
 		boolean bIsFirstLoop = true;
-		for (IStorage storage : alStorages) {
+		for (IStorage storage : hashStorages.values()) {
 			INumericalStorage nStorage = (INumericalStorage) storage;
 			Histogram storageHistogram = nStorage.getHistogram();
 
@@ -358,124 +362,148 @@ public class Set
 		return histogram;
 	}
 
+	// @Override
+	// public int createVA(VAType vaType, List<Integer> iAlSelections) {
+	// if (vaType == VAType.STORAGE) {
+	// IVirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
+	// return createStorageVA(virtualArray);
+	// }
+	// else {
+	// IVirtualArray va = new VirtualArray(vaType, depth(), iAlSelections);
+	// return createContentVA(va);
+	// }
+	//
+	// }
+
 	@Override
-	public int createVA(EVAType vaType, List<Integer> iAlSelections) {
-		if (vaType == EVAType.STORAGE) {
-			IVirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
-			return createStorageVA(virtualArray);
+	public StorageVirtualArray getStorageVA(StorageVAType vaType) {
+		StorageVirtualArray va = hashStorageVAs.get(vaType);
+		if (va == null) {
+			va = defaultStorageVA.clone();
+			hashStorageVAs.put(vaType, va);
 		}
-		else {
-			IVirtualArray va = new VirtualArray(vaType, depth(), iAlSelections);
-			return createContentVA(va);
+		return va;
+	}
+
+	@Override
+	public ContentVirtualArray getContentVA(ContentVAType vaType) {
+		ContentVirtualArray va = hashContentVAs.get(vaType);
+		if (va == null) {
+			va = createContentVA(vaType);
+			hashContentVAs.put(vaType, va);
 		}
+		return va;
 
 	}
 
-	private int createContentVA(IVirtualArray virtualArray) {
-		int iUniqueID = virtualArray.getID();
-		hashContentVAs.put(iUniqueID, virtualArray);
-		return iUniqueID;
-	}
+	private ContentVirtualArray createContentVA(ContentVAType vaType) {
+		ContentVirtualArray va = new ContentVirtualArray(vaType);
+		if (!vaType.isEmptyByDefault())
 
-	private int createStorageVA(IVirtualArray virtualArray) {
-		int iUniqueID = virtualArray.getID();
-		hashStorageVAs.put(iUniqueID, virtualArray);
-		return iUniqueID;
-	}
+		{
 
-	public IVirtualArray createCompleteStorageVA() {
-
-		ArrayList<Integer> storages;
-		if (storageTree == null || !storageTreeRoot.isRootNode()) {
-			storages = new ArrayList<Integer>();
-			for (int count = 0; count < alStorages.size(); count++) {
-				storages.add(count);
+			for (int count = 0; count < iDepth; count++) {
+				va.append(count);
 			}
 		}
-		else {
-			storages = storageTreeRoot.getLeaveIds();
-//			if (!storageTreeRoot.isRootNode()) {
-//				Collections.min(storages);
-//				
-////				ArrayList<ClusterNode> siblings = storageTreeRoot.getParent().getChildren();
-////				int siblingsLeavesCount = 0;
-////				for (ClusterNode sibling : siblings) {
-////					if (sibling == storageTreeRoot)
-////						break;
-////					
-////					siblingsLeavesCount+=sibling.getNrLeaves();
-////				}
-////				
-////				for (Integer storageID : storages)
-////					storageID-=siblingsLeavesCount;
-			// }
-		}
-		VirtualArray virtualArray = new VirtualArray(EVAType.STORAGE, size(), storages);
-		return virtualArray;
+		return va;
+
 	}
 
-	public IVirtualArray createCompleteContentVA() {
-		ArrayList<Integer> content = new ArrayList<Integer>();
-		for (int count = 0; count < alStorages.get(0).size(); count++) {
-			content.add(count);
-		}
-		VirtualArray virtualArray = new VirtualArray(EVAType.CONTENT, size(), content);
-		return virtualArray;
-	}
-	
+	// private int createStorageVA(IVirtualArray virtualArray) {
+	// int iUniqueID = virtualArray.getID();
+	// hashStorageVAs.put(iUniqueID, virtualArray);
+	// return iUniqueID;
+	// }
+
+	// public IVirtualArray createCompleteStorageVA() {
+	//
+	// ArrayList<Integer> storages;
+	// if (storageTree == null || !storageTreeRoot.isRootNode()) {
+	// storages = new ArrayList<Integer>();
+	// for (int count = 0; count < hashStorages.size(); count++) {
+	// storages.add(count);
+	// }
+	// }
+	// else {
+	// storages = storageTreeRoot.getLeaveIds();
+	// // if (!storageTreeRoot.isRootNode()) {
+	// // Collections.min(storages);
+	// //
+	// // // ArrayList<ClusterNode> siblings = storageTreeRoot.getParent().getChildren();
+	// // // int siblingsLeavesCount = 0;
+	// // // for (ClusterNode sibling : siblings) {
+	// // // if (sibling == storageTreeRoot)
+	// // // break;
+	// // //
+	// // // siblingsLeavesCount+=sibling.getNrLeaves();
+	// // // }
+	// // //
+	// // // for (Integer storageID : storages)
+	// // // storageID-=siblingsLeavesCount;
+	// // }
+	// }
+	// VirtualArray virtualArray = new VirtualArray(VAType.STORAGE, size(), storages);
+	// return virtualArray;
+	// }
+
+	// public IVirtualArray createCompleteContentVA() {
+	// ArrayList<Integer> content = new ArrayList<Integer>();
+	// for (int count = 0; count < hashStorages.get(0).size(); count++) {
+	// content.add(count);
+	// }
+	// VirtualArray virtualArray = new VirtualArray(VAType.CONTENT, size(), content);
+	// return virtualArray;
+	// }
+
 	@SuppressWarnings("unused")
-	private int createStorageVA(EVAType vaType, ArrayList<Integer> iAlSelections) {
-		VirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
-		int iUniqueID = virtualArray.getID();
-
-		hashStorageVAs.put(iUniqueID, virtualArray);
-
-		return iUniqueID;
+	// private int createStorageVA(VAType vaType, ArrayList<Integer> iAlSelections) {
+	// VirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
+	// int iUniqueID = virtualArray.getID();
+	//
+	// hashStorageVAs.put(iUniqueID, virtualArray);
+	//
+	// return iUniqueID;
+	// }
+	// @Override
+	// public void resetVirtualArray(int iUniqueID) {
+	// if (hashStorageVAs.containsKey(iUniqueID)) {
+	// hashStorageVAs.get(iUniqueID).reset();
+	// return;
+	// }
+	//
+	// if (hashContentVAs.containsKey(iUniqueID)) {
+	// hashContentVAs.get(iUniqueID).reset();
+	// }
+	// }
+	// @Override
+	// public void removeVirtualArray(int iUniqueID) {
+	// hashStorageVAs.remove(iUniqueID);
+	// hashContentVAs.remove(iUniqueID);
+	// }
+	// @Override
+	// public IVirtualArray getVA(int iUniqueID) {
+	// if (hashStorageVAs.containsKey(iUniqueID))
+	// return hashStorageVAs.get(iUniqueID);
+	// else if (hashContentVAs.containsKey(iUniqueID))
+	// return hashContentVAs.get(iUniqueID);
+	// else
+	// throw new IllegalArgumentException("No Virtual Array for the unique id: " + iUniqueID);
+	// }
+	@Override
+	public void setContentVA(ContentVAType vaType, ContentVirtualArray virtualArray) {
+		hashContentVAs.put(vaType, virtualArray);
 	}
 
-	@Override
-	public void resetVirtualArray(int iUniqueID) {
-		if (hashStorageVAs.containsKey(iUniqueID)) {
-			hashStorageVAs.get(iUniqueID).reset();
-			return;
-		}
-
-		if (hashContentVAs.containsKey(iUniqueID)) {
-			hashContentVAs.get(iUniqueID).reset();
-		}
-	}
-
-	@Override
-	public void removeVirtualArray(int iUniqueID) {
-		hashStorageVAs.remove(iUniqueID);
-		hashContentVAs.remove(iUniqueID);
-	}
-
-	@Override
-	public IVirtualArray getVA(int iUniqueID) {
-		if (hashStorageVAs.containsKey(iUniqueID))
-			return hashStorageVAs.get(iUniqueID);
-		else if (hashContentVAs.containsKey(iUniqueID))
-			return hashContentVAs.get(iUniqueID);
-		else
-			throw new IllegalArgumentException("No Virtual Array for the unique id: " + iUniqueID);
-	}
-
-	@Override
-	public void replaceVA(int iUniqueID, IVirtualArray virtualArray) {
-		virtualArray.setID(iUniqueID);
-		if (hashStorageVAs.containsKey(iUniqueID))
-			hashStorageVAs.put(iUniqueID, virtualArray);
-		else if (hashContentVAs.containsKey(iUniqueID))
-			hashContentVAs.put(iUniqueID, virtualArray);
-		else
-			throw new IllegalArgumentException("No Virtual Array for the unique id: " + iUniqueID);
+	public void setStorageVA(StorageVAType vaType, StorageVirtualArray virtualArray) {
+		hashStorageVAs.put(vaType, virtualArray);
 	}
 
 	private void calculateGlobalExtrema() {
 		double dTemp = 1.0;
-		if (alStorages.get(0) instanceof INumericalStorage) {
-			for (IStorage storage : alStorages) {
+
+		if (bIsNumerical) {
+			for (IStorage storage : hashStorages.values()) {
 				INumericalStorage nStorage = (INumericalStorage) storage;
 				dTemp = nStorage.getMin();
 				if (!bArtificialMin && dTemp < dMin) {
@@ -487,7 +515,7 @@ public class Set
 				}
 			}
 		}
-		else if (alStorages.get(0) instanceof INominalStorage<?>)
+		else if (hashStorages.get(0) instanceof INominalStorage<?>)
 			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
 				+ "on nominal data");
 	}
@@ -501,7 +529,7 @@ public class Set
 
 		this.externalDataRep = externalDataRep;
 
-		for (IStorage storage : alStorages) {
+		for (IStorage storage : hashStorages.values()) {
 			if (storage instanceof INumericalStorage) {
 				((INumericalStorage) storage).setExternalDataRepresentation(externalDataRep);
 			}
@@ -557,16 +585,39 @@ public class Set
 	}
 
 	@Override
-	public ArrayList<IVirtualArray> cluster(ClusterState clusterState) {
+	public void cluster(ClusterState clusterState) {
+
+		// TODO set cluter VAs here
 
 		if (bIsNumerical == true && bIsSetHomogeneous == true) {
 
+			ContentVAType contentVAType = clusterState.getContentVAType();
+			if (contentVAType != null)
+				clusterState.setContentVA(hashContentVAs.get(contentVAType));
+
+			StorageVAType storageVAType = clusterState.getStorageVAType();
+			if (storageVAType != null)
+				clusterState.setStorageVA(hashStorageVAs.get(storageVAType));
 			ClusterManager clusterManager = new ClusterManager(this);
-			return clusterManager.cluster(clusterState);
+			ClusterResult result = clusterManager.cluster(clusterState);
+
+			ContentClusterResult contentResult = result.getContentResult();
+			if (contentResult != null) {
+				hashContentVAs.put(clusterState.getContentVAType(), contentResult.getContentVA());
+				contentTree = contentResult.getContentTree();
+				alClusterExamples = contentResult.getContentSampleElements();
+				alClusterSizes = contentResult.getContentClusterSizes();
+			}
+			StorageClusterResult storageResult = result.getStorageResult();
+			if (storageResult != null) {
+				hashStorageVAs.put(clusterState.getStorageVAType(), storageResult.getStorageVA());
+				storageTree = storageResult.getStorageTree();
+				// FIXME - what about the rest?
+			}
 
 		}
 		else
-			return null;
+			throw new IllegalStateException("Cannot cluster a non-numerical or non-homogeneous Set");
 
 	}
 
@@ -596,11 +647,11 @@ public class Set
 		GroupList groupListTemp = null;
 
 		if (bGeneGroupInfo) {
-			groupListTemp = groupListGenes;
+			groupListTemp = contentGroupList;
 			bGeneClusterInfo = true;
 		}
 		else {
-			groupListTemp = groupListExperiments;
+			groupListTemp = storageGroupList;
 			bExperimentClusterInfo = true;
 		}
 
@@ -630,10 +681,10 @@ public class Set
 		GroupList groupListTemp = null;
 
 		if (bGeneGroupInfo) {
-			groupListTemp = groupListGenes;
+			groupListTemp = contentGroupList;
 		}
 		else {
-			groupListTemp = groupListExperiments;
+			groupListTemp = storageGroupList;
 		}
 
 		groupListTemp.get(group).setIdxExample(0);
@@ -658,14 +709,14 @@ public class Set
 	}
 
 	@Override
-	public void setGroupListGenes(GroupList groupList) {
-		groupListGenes = groupList;
+	public void setContentGroupList(ContentGroupList groupList) {
+		contentGroupList = groupList;
 		bGeneClusterInfo = true;
 	}
 
 	@Override
-	public void setGroupListExperiments(GroupList groupList) {
-		groupListExperiments = groupList;
+	public void setStorageGroupList(StorageGroupList groupList) {
+		storageGroupList = groupList;
 		bExperimentClusterInfo = true;
 
 	}
@@ -681,13 +732,13 @@ public class Set
 	}
 
 	@Override
-	public GroupList getGroupListGenes() {
-		return this.groupListGenes;
+	public ContentGroupList getContentGroupList() {
+		return this.contentGroupList;
 	}
 
 	@Override
-	public GroupList getGroupListExperiments() {
-		return this.groupListExperiments;
+	public StorageGroupList getStorageGroupList() {
+		return this.storageGroupList;
 	}
 
 	@Override
@@ -726,8 +777,8 @@ public class Set
 	public void destroy() {
 		IGeneralManager gm = GeneralManager.get();
 		IStorageManager sm = gm.getStorageManager();
-		for (IStorage storage : alStorages) {
-			sm.unregisterItem(storage.getID());
+		for (Integer storageID : hashStorages.keySet()) {
+			sm.unregisterItem(storageID);
 		}
 		gm.getSetManager().unregisterItem(iUniqueID);
 		// clearing the VAs. This should not be necessary since they should be destroyed automatically.
@@ -742,7 +793,7 @@ public class Set
 
 	@Override
 	public String toString() {
-		return "Set " + getLabel() + " of type " + setType + " with " + alStorages.size() + " storages.";
+		return "Set " + getLabel() + " of type " + setType + " with " + hashStorages.size() + " storages.";
 	}
 
 	@Override

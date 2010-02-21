@@ -43,15 +43,14 @@ public class RcpGLBucketView extends ARcpGLViewPart {
 
 		for (Integer iContainedViewID : iAlContainedViewIDs) {
 			glRemoteView.removeView(GeneralManager.get()
-					.getViewGLCanvasManager().getGLView(
-							iContainedViewID));
+					.getViewGLCanvasManager().getGLView(iContainedViewID));
 		}
 
 		super.dispose();
 
 		GeneralManager.get().getViewGLCanvasManager()
-				.getConnectedElementRepresentationManager()
-				.clearByView(view.getID());
+				.getConnectedElementRepresentationManager().clearByView(
+						view.getID());
 
 		GeneralManager.get().getPathwayManager().resetPathwayVisiblityState();
 	}

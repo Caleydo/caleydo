@@ -9,8 +9,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
  * 
  * @author Werner Puff
  */
-public class SerializedTabularDataView
-	extends ASerializedView {
+public class SerializedTabularDataView extends ASerializedView {
 
 	public SerializedTabularDataView() {
 	}

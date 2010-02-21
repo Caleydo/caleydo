@@ -100,7 +100,9 @@ public class ZipUtils {
 		tempDirFile.mkdir();
 
 		try {
-			ZipInputStream zis = new ZipInputStream(GeneralManager.get().getResourceLoader().getInputSource(fileName).getByteStream());		
+			ZipInputStream zis =
+				new ZipInputStream(GeneralManager.get().getResourceLoader().getInputSource(fileName)
+					.getByteStream());
 			unzipToDirectory(zis, dirName);
 		}
 		catch (Exception ex) {

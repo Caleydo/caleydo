@@ -75,8 +75,6 @@ public interface IStorage
 	 */
 	public FloatCContainerIterator floatIterator(EDataRepresentation storageKind);
 
-
-
 	/**
 	 * Returns a float value from a storage of which the kind has to be specified Use iterator when you want
 	 * to iterate over the whole field, it has better performance
@@ -97,7 +95,6 @@ public interface IStorage
 	 */
 	public IntCContainerIterator intIterator(EDataRepresentation storageKind);
 
-
 	/**
 	 * Returns a value of the type Number, from the representation chosen in storageKind, at the index
 	 * specified in iIndex
@@ -116,7 +113,6 @@ public interface IStorage
 	 * @return the iterator
 	 */
 	public Iterator<? extends Number> iterator(EDataRepresentation storageKind);
-
 
 	/**
 	 * Brings any dataset into a format between 0 and 1. This is used for drawing. Works for nominal and

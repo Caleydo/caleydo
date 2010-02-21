@@ -25,9 +25,8 @@ import org.eclipse.swt.widgets.Display;
  * 
  * @author Marc Streit
  */
-public class PathwaySearchBox extends ControlContribution
-		implements
-			IToolBarItem {
+public class PathwaySearchBox extends ControlContribution implements
+		IToolBarItem {
 
 	public static final int TOOLBAR_WIDTH = 173;
 
@@ -48,7 +47,7 @@ public class PathwaySearchBox extends ControlContribution
 
 		final SearchBox pathwaySearchBox = new SearchBox(parent, SWT.BORDER);
 
-		String items[] = {"No pathways available!"};
+		String items[] = { "No pathways available!" };
 		pathwaySearchBox.setItems(items);
 		pathwaySearchBox.setTextLimit(21);
 

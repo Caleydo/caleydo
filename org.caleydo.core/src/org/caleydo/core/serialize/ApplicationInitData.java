@@ -6,8 +6,10 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.selection.EVAType;
-import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.usecase.AUseCase;
 
 /**
@@ -33,7 +35,8 @@ public class ApplicationInitData {
 	private String experimentClusterTree;
 
 	/** virtual arrays of this application stored in relation with their their-key */
-	private HashMap<EVAType, VirtualArray> virtualArrayMap;
+	private HashMap<ContentVAType, ContentVirtualArray> contentVAMap;
+	private HashMap<StorageVAType, StorageVirtualArray> storageVAMap;
 
 	/** list of views in use, not used to sync remote clients */
 	private List<String> viewIDs;
@@ -54,12 +57,20 @@ public class ApplicationInitData {
 		this.setFileContent = setFileContent;
 	}
 
-	public HashMap<EVAType, VirtualArray> getVirtualArrayMap() {
-		return virtualArrayMap;
+	public HashMap<ContentVAType, ContentVirtualArray> getContentVAMap() {
+		return contentVAMap;
 	}
 
-	public void setVirtualArrayMap(HashMap<EVAType, VirtualArray> virtualArrayMap) {
-		this.virtualArrayMap = virtualArrayMap;
+	public void setContentVAMap(HashMap<ContentVAType, ContentVirtualArray> contentVAMap) {
+		this.contentVAMap = contentVAMap;
+	}
+
+	public HashMap<StorageVAType, StorageVirtualArray> getStorageVAMap() {
+		return storageVAMap;
+	}
+
+	public void setStorageVAMap(HashMap<StorageVAType, StorageVirtualArray> storageVAMap) {
+		this.storageVAMap = storageVAMap;
 	}
 
 	public List<String> getViewIDs() {

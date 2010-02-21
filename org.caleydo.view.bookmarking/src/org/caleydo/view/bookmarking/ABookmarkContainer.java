@@ -7,9 +7,9 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.VABasedSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
@@ -57,7 +57,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * 
  * @author Alexander Lex
  */
-abstract class ABookmarkContainer {
+abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionManager<?, ?, ?, ?>> {
 
 	/** The category of the container */
 	EIDCategory category;
@@ -84,7 +84,7 @@ abstract class ABookmarkContainer {
 	 * selected in the bookmark list. It is a member of the abstract base class,
 	 * but has to be created by the implementing instance.
 	 */
-	SelectionManager selectionManager;
+	SelectionManagerType selectionManager;
 
 	/**
 	 * The creating and managing instance of this class. We need access to it
@@ -218,58 +218,56 @@ abstract class ABookmarkContainer {
 		SelectionType selectionType;
 		switch (ePickingType) {
 
-			case BOOKMARK_ELEMENT :
+		case BOOKMARK_ELEMENT:
 
-				switch (pickingMode) {
-					case CLICKED :
-						selectionType = SelectionType.SELECTION;
-						break;
-					case MOUSE_OVER :
-						selectionType = SelectionType.MOUSE_OVER;
-						break;
-					case RIGHT_CLICKED :
-						selectionType = SelectionType.SELECTION;
+			switch (pickingMode) {
+			case CLICKED:
+				selectionType = SelectionType.SELECTION;
+				break;
+			case MOUSE_OVER:
+				selectionType = SelectionType.MOUSE_OVER;
+				break;
+			case RIGHT_CLICKED:
+				selectionType = SelectionType.SELECTION;
 
-						BookmarkContextMenuItemContainer bookmarkContextMenuItemContainer = new BookmarkContextMenuItemContainer();
-						bookmarkContextMenuItemContainer.setID(internalIDType,
-								iExternalID);
-						ContextMenu contextMenu = manager.getContextMenu();
-						contextMenu
-								.addItemContanier(bookmarkContextMenuItemContainer);
+				BookmarkContextMenuItemContainer bookmarkContextMenuItemContainer = new BookmarkContextMenuItemContainer();
+				bookmarkContextMenuItemContainer.setID(internalIDType,
+						iExternalID);
+				ContextMenu contextMenu = manager.getContextMenu();
+				contextMenu.addItemContanier(bookmarkContextMenuItemContainer);
 
-						if (manager.isRenderedRemote()) {
-							contextMenu.setLocation(pick.getPickedPoint(),
-									manager.getParentGLCanvas().getWidth(),
-									manager.getParentGLCanvas().getHeight());
-							contextMenu.setMasterGLView(manager);
-						}
-						break;
-
-					default :
-						return;
+				if (manager.isRenderedRemote()) {
+					contextMenu.setLocation(pick.getPickedPoint(), manager
+							.getParentGLCanvas().getWidth(), manager
+							.getParentGLCanvas().getHeight());
+					contextMenu.setMasterGLView(manager);
 				}
-				selectionManager.clearSelection(selectionType);
-				selectionManager.addToType(selectionType, iExternalID);
-
-				SelectionCommand command = new SelectionCommand(
-						ESelectionCommandType.CLEAR, selectionType);
-				SelectionCommandEvent commandEvent = new SelectionCommandEvent();
-				commandEvent.setSender(this);
-				commandEvent.setCategory(category);
-				commandEvent.setSelectionCommand(command);
-				GeneralManager.get().getEventPublisher().triggerEvent(
-						commandEvent);
-
-				ISelectionDelta selectionDelta = selectionManager.getDelta();
-				SelectionUpdateEvent event = new SelectionUpdateEvent();
-				event.setSender(this);
-				event.setSelectionDelta((SelectionDelta) selectionDelta);
-				GeneralManager.get().getEventPublisher().triggerEvent(event);
 				break;
 
-			case BOOKMARK_CONTAINER_HEADING :
+			default:
+				return;
+			}
+			selectionManager.clearSelection(selectionType);
+			selectionManager.addToType(selectionType, iExternalID);
 
-				break;
+			SelectionCommand command = new SelectionCommand(
+					ESelectionCommandType.CLEAR, selectionType);
+			SelectionCommandEvent commandEvent = new SelectionCommandEvent();
+			commandEvent.setSender(this);
+			commandEvent.setCategory(category);
+			commandEvent.setSelectionCommand(command);
+			GeneralManager.get().getEventPublisher().triggerEvent(commandEvent);
+
+			ISelectionDelta selectionDelta = selectionManager.getDelta();
+			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSender(this);
+			event.setSelectionDelta((SelectionDelta) selectionDelta);
+			GeneralManager.get().getEventPublisher().triggerEvent(event);
+			break;
+
+		case BOOKMARK_CONTAINER_HEADING:
+
+			break;
 		}
 
 	}

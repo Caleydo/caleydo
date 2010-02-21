@@ -8,11 +8,11 @@ import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.ToolBarContainer;
 import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
 import org.caleydo.view.scatterplot.GLScatterplot;
-import org.caleydo.view.scatterplot.actions.ToggleMatrixViewAction;
-import org.caleydo.view.scatterplot.actions.TogglePointTypeAction;
-import org.caleydo.view.scatterplot.actions.ToggleMatrixZoomAction;
-import org.caleydo.view.scatterplot.actions.ToggleColorModeAction;
 import org.caleydo.view.scatterplot.actions.Toggle2AxisModeAction;
+import org.caleydo.view.scatterplot.actions.ToggleColorModeAction;
+import org.caleydo.view.scatterplot.actions.ToggleMatrixViewAction;
+import org.caleydo.view.scatterplot.actions.ToggleMatrixZoomAction;
+import org.caleydo.view.scatterplot.actions.TogglePointTypeAction;
 
 /**
  * ToolBarContent implementation for scatterplot specific toolbar items.
@@ -49,39 +49,32 @@ public class ScatterplotToolBarContent extends AToolBarContent {
 		IToolBarItem testAction = new TogglePointTypeAction(targetViewID);
 		actionList.add(testAction);
 
-		IToolBarItem toggleMatrix = new ToggleMatrixViewAction(
-				targetViewID);
+		IToolBarItem toggleMatrix = new ToggleMatrixViewAction(targetViewID);
 		actionList.add(toggleMatrix);
 
-		IToolBarItem toggleColor = new ToggleColorModeAction(
-				targetViewID);
+		IToolBarItem toggleColor = new ToggleColorModeAction(targetViewID);
 		actionList.add(toggleColor);
-		
-		IToolBarItem toggleMatrixZoom = new ToggleMatrixZoomAction(
-				targetViewID);
+
+		IToolBarItem toggleMatrixZoom = new ToggleMatrixZoomAction(targetViewID);
 		actionList.add(toggleMatrixZoom);
-		
-		IToolBarItem toggle2AxisMode = new Toggle2AxisModeAction(
-				targetViewID);
+
+		IToolBarItem toggle2AxisMode = new Toggle2AxisModeAction(targetViewID);
 		actionList.add(toggle2AxisMode);
-		
-		
-		
-		
+
 		if (pointSizeSlider == null) {
 			pointSizeSlider = new PointSizeSlider("", 0);
 		}
 		actionList.add(pointSizeSlider);
 
-//		if (xAxisSelector == null) {
-//			xAxisSelector = new XAxisSelector("", 0);
-//		}
-//		actionList.add(xAxisSelector);
-//
-//		if (yAxisSelector == null) {
-//			yAxisSelector = new YAxisSelector("", 0);
-//		}
-//		actionList.add(yAxisSelector);
+		// if (xAxisSelector == null) {
+		// xAxisSelector = new XAxisSelector("", 0);
+		// }
+		// actionList.add(xAxisSelector);
+		//
+		// if (yAxisSelector == null) {
+		// yAxisSelector = new YAxisSelector("", 0);
+		// }
+		// actionList.add(yAxisSelector);
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);

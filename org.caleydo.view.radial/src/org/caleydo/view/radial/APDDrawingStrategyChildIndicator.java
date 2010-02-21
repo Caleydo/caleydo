@@ -13,9 +13,8 @@ import org.caleydo.core.manager.picking.PickingManager;
  * 
  * @author Christian Partl
  */
-public abstract class APDDrawingStrategyChildIndicator
-		extends
-			APDDrawingStrategy {
+public abstract class APDDrawingStrategyChildIndicator extends
+		APDDrawingStrategy {
 	private static final float MAX_TRIANGLE_FITTING_TEST_ANGLE = 45.0f;
 
 	private float[] fArChildIndicatorColor;

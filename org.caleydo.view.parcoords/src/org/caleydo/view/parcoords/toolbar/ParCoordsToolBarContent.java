@@ -9,7 +9,6 @@ import org.caleydo.rcp.view.toolbar.ToolBarContainer;
 import org.caleydo.rcp.view.toolbar.action.storagebased.PropagateSelectionsAction;
 import org.caleydo.rcp.view.toolbar.action.storagebased.ResetViewAction;
 import org.caleydo.rcp.view.toolbar.action.storagebased.parcoords.AngularBrushingAction;
-import org.caleydo.rcp.view.toolbar.action.storagebased.parcoords.ChangeOrientationAction;
 import org.caleydo.rcp.view.toolbar.action.storagebased.parcoords.ResetAxisSpacingAction;
 import org.caleydo.rcp.view.toolbar.action.storagebased.parcoords.SaveSelectionsAction;
 import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
@@ -49,9 +48,6 @@ public class ParCoordsToolBarContent extends AToolBarContent {
 		// IAction occlusionPreventionAction = new
 		// OcclusionPreventionAction(iViewID);
 		// alToolbar.add(occlusionPreventionAction);
-		IToolBarItem switchAxesToPolylinesAction = new ChangeOrientationAction(
-				targetViewID);
-		actionList.add(switchAxesToPolylinesAction);
 
 		IToolBarItem resetAxisSpacing = new ResetAxisSpacingAction(targetViewID);
 		actionList.add(resetAxisSpacing);

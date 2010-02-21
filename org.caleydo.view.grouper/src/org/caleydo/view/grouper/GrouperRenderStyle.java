@@ -20,8 +20,8 @@ public class GrouperRenderStyle extends GeneralRenderStyle {
 
 	public static final float TEXT_SCALING = 0.004f;
 	public static final float TEXT_SPACING = 0.02f;
-	public static final float[] TEXT_COLOR = {0.0f, 0.0f, 0.0f, 1f};
-	public static final float[] TEXT_BG_COLOR = {0.5f, 0.5f, 0.5f, 1f};
+	public static final float[] TEXT_COLOR = { 0.0f, 0.0f, 0.0f, 1f };
+	public static final float[] TEXT_BG_COLOR = { 0.5f, 0.5f, 0.5f, 1f };
 
 	private ArrayList<float[]> alGroupLevelColors;
 

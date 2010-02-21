@@ -8,16 +8,14 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class OpenTabularDataHandler
-	extends AbstractHandler
-	implements IHandler {
+public class OpenTabularDataHandler extends AbstractHandler implements IHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(TabularDataView.VIEW_ID);
-		}
-		catch (PartInitException e) {
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
+					.showView(TabularDataView.VIEW_ID);
+		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
 

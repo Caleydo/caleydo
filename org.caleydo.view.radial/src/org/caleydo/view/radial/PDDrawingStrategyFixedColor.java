@@ -14,9 +14,8 @@ import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
  * @author Christian Partl
  */
 
-public class PDDrawingStrategyFixedColor
-		extends
-			APDDrawingStrategyChildIndicator {
+public class PDDrawingStrategyFixedColor extends
+		APDDrawingStrategyChildIndicator {
 
 	private float fFillColorR;
 	private float fFillColorG;
@@ -168,7 +167,7 @@ public class PDDrawingStrategyFixedColor
 	@Override
 	public float[] getColor(PartialDisc disc) {
 
-		return new float[]{fFillColorR, fFillColorG, fFillColorB, fFillAlpha};
+		return new float[] { fFillColorR, fFillColorG, fFillColorB, fFillAlpha };
 	}
 
 }

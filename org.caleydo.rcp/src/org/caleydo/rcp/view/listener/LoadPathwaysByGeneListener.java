@@ -12,30 +12,27 @@ import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-public class LoadPathwaysByGeneListener extends ARemoteRenderingListener {
+public class LoadPathwaysByGeneListener
+	extends ARemoteRenderingListener {
 
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof LoadPathwaysByGeneEvent) {
 			LoadPathwaysByGeneEvent loadEvent = (LoadPathwaysByGeneEvent) event;
 
-			if (loadEvent.getIdType() == EIDType.DAVID
-					|| loadEvent.getIdType() == EIDType.REFSEQ_MRNA_INT) {
-				Set<PathwayGraph> pathwayGraphs = GeneticIDMappingHelper.get()
-						.getPathwayGraphsByGeneID(loadEvent.getIdType(),
-								loadEvent.getGeneID());
+			if (loadEvent.getIdType() == EIDType.DAVID || loadEvent.getIdType() == EIDType.REFSEQ_MRNA_INT) {
+				Set<PathwayGraph> pathwayGraphs =
+					GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(loadEvent.getIdType(),
+						loadEvent.getGeneID());
 				if (pathwayGraphs == null) {
-					GeneralManager
-							.get()
-							.getLogger()
-							.log(
-									new Status(IStatus.WARNING,
-											IGeneralManager.PLUGIN_ID,
-											"No mapping found for Gene ID to pathway graphs."));
+					GeneralManager.get().getLogger().log(
+						new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+							"No mapping found for Gene ID to pathway graphs."));
 					return;
 				}
 				handler.loadDependentPathways(pathwayGraphs);
-			} else
+			}
+			else
 				throw new IllegalStateException("Not implemented!");
 		}
 	}

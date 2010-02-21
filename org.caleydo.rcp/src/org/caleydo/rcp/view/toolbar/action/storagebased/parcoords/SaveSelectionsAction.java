@@ -8,9 +8,9 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class SaveSelectionsAction extends AToolBarAction
-		implements
-			IToolBarItem {
+public class SaveSelectionsAction
+	extends AToolBarAction
+	implements IToolBarItem {
 	public static final String TEXT = "Save Selections";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/save_selections.png";
 
@@ -22,8 +22,8 @@ public class SaveSelectionsAction extends AToolBarAction
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override

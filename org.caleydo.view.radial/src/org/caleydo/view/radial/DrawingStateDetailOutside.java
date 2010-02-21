@@ -7,8 +7,8 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -119,8 +119,8 @@ public class DrawingStateDetailOutside extends ADrawingState {
 								pdCurrentRootElement, iDisplayedOverviewDepth);
 
 				if (pdIndicated == pdSelected) {
-					mapSelectedElements.put(pdSelected,
-							SelectionType.SELECTION);
+					mapSelectedElements
+							.put(pdSelected, SelectionType.SELECTION);
 				} else if (pdIndicated == null) {
 					parentIndicatorType = SelectionType.SELECTION;
 				} else {
@@ -408,8 +408,7 @@ public class DrawingStateDetailOutside extends ADrawingState {
 				.getMaxDisplayedHierarchyDepth();
 
 		float fDetailViewScreenPercentage;
-		int iSelectedElementDepth = pdCurrentSelectedElement
-				.getDepth();
+		int iSelectedElementDepth = pdCurrentSelectedElement.getDepth();
 		int iDepthToRoot = pdCurrentSelectedElement
 				.getParentPathLength(pdCurrentRootElement);
 
@@ -492,8 +491,8 @@ public class DrawingStateDetailOutside extends ADrawingState {
 
 			radialHierarchy.setDisplayListDirty();
 		} else {
-			radialHierarchy.setNewSelection(SelectionType.SELECTION,
-					pdSelected);
+			radialHierarchy
+					.setNewSelection(SelectionType.SELECTION, pdSelected);
 			radialHierarchy.setDisplayListDirty();
 		}
 

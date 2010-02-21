@@ -8,9 +8,8 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class OpenClinicalParCoordsHandler extends AbstractHandler
-		implements
-			IHandler {
+public class OpenClinicalParCoordsHandler extends AbstractHandler implements
+		IHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {

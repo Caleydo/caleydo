@@ -168,7 +168,7 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 		float fConnectionPointY = ((float) Math.sin(fStartAngleRadiants) * fInnerRadius)
 				+ fHierarchyCenterY;
 
-		return new float[]{fConnectionPointX, fConnectionPointY,
-				fHierarchyCenterZ};
+		return new float[] { fConnectionPointX, fConnectionPointY,
+				fHierarchyCenterZ };
 	}
 }

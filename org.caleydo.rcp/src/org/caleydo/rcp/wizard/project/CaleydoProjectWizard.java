@@ -79,9 +79,10 @@ public class CaleydoProjectWizard
 			IUseCase useCase;
 			EApplicationMode appMode = page.getApplicationMode();
 			if (appMode == EApplicationMode.SAMPLE_PROJECT) {
-				
-				GeneralManager.get().getLogger().log(new Status(IStatus.INFO, Activator.PLUGIN_ID, "Load sample project"));
-				
+
+				GeneralManager.get().getLogger().log(
+					new Status(IStatus.INFO, Activator.PLUGIN_ID, "Load sample project"));
+
 				ProjectLoader loader = new ProjectLoader();
 
 				Application.initData = loader.load(SAMPLE_PROJECT_LOCATION);
@@ -137,8 +138,9 @@ public class CaleydoProjectWizard
 			}
 			else if (appMode == EApplicationMode.LOAD_PROJECT) {
 
-				GeneralManager.get().getLogger().log(new Status(IStatus.INFO, Activator.PLUGIN_ID, "Load existing project."));
-				
+				GeneralManager.get().getLogger().log(
+					new Status(IStatus.INFO, Activator.PLUGIN_ID, "Load existing project."));
+
 				ProjectLoader loader = new ProjectLoader();
 				if (page.getProjectLoadType() == ChooseProjectTypePage.EProjectLoadType.RECENT) {
 					Application.initData = loader.loadRecent();

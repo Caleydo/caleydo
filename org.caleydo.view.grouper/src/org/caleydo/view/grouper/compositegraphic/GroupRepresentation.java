@@ -10,8 +10,8 @@ import java.util.Set;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
 import org.caleydo.view.grouper.GLGrouper;
@@ -612,7 +612,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	public Set<SelectionType> getSelectionTypes() {
 		return selectionTypes;
 	}
-	
+
 	private void addSelectionTypes(Set<SelectionType> selectionTypes) {
 		this.selectionTypes.addAll(selectionTypes);
 	}

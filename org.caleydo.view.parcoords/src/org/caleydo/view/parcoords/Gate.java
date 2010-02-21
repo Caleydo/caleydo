@@ -145,7 +145,7 @@ public class Gate extends AGate {
 				upperLeftCorner, 1, 1, 1, 1);
 
 		textRenderer.setColor(1, 1, 1, 1);
-		renderNumber(textRenderer,	Formatter.formatNumber(upperValue),
+		renderNumber(textRenderer, Formatter.formatNumber(upperValue),
 				currentPosition - 5 * GATE_WIDTH, unscaledTop + 0.02f);
 		gl.glPopName();
 
@@ -205,7 +205,7 @@ public class Gate extends AGate {
 				upperLeftCorner, 1, 1, 1, 1);
 
 		textRenderer.setColor(1, 1, 1, 1);
-		renderNumber(textRenderer,	Formatter.formatNumber(lowerValue),
+		renderNumber(textRenderer, Formatter.formatNumber(lowerValue),
 				currentPosition - 5 * GATE_WIDTH, bottom - menuHeight + 0.02f);
 		gl.glPopName();
 
@@ -231,9 +231,9 @@ public class Gate extends AGate {
 			String rawValue, float xOrigin, float yOrigin) {
 
 		textRenderer.begin3DRendering();
-		
+
 		float scaling = 0.0035f;
-		if(rawValue.length() > 4)
+		if (rawValue.length() > 4)
 			scaling = 0.003f;
 		textRenderer.draw3D(rawValue, xOrigin, yOrigin,
 				PCRenderStyle.TEXT_ON_LABEL_Z, scaling);

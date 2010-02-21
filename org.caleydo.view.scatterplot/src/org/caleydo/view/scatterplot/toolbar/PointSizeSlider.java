@@ -22,10 +22,8 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Juergen Pillhofer
  */
-public class PointSizeSlider extends ControlContribution
-		implements
-			IToolBarItem,
-			IListenerOwner {
+public class PointSizeSlider extends ControlContribution implements
+		IToolBarItem, IListenerOwner {
 
 	private Listener listener;
 	// private UpdateDepthSliderPositionListener updateSliderPositionListener;

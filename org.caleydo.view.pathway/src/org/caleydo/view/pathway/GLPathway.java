@@ -15,21 +15,19 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
-import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
@@ -39,9 +37,9 @@ import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
+import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -55,15 +53,14 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
+import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.core.view.opengl.canvas.listener.ReplaceVirtualArrayListener;
+import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -87,8 +84,7 @@ import org.eclipse.core.runtime.Status;
  * @author Alexander Lex
  */
 public class GLPathway extends AGLView implements ISelectionUpdateHandler,
-		IVirtualArrayUpdateHandler, IViewCommandHandler,
-		ISelectionCommandHandler {
+		IViewCommandHandler, ISelectionCommandHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.pathway";
 
@@ -130,9 +126,9 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 	protected DisableNeighborhoodListener disableNeighborhoodListener;
 
 	protected SelectionUpdateListener selectionUpdateListener;
-	protected VirtualArrayUpdateListener virtualArrayUpdateListener;
+	protected ContentVAUpdateListener virtualArrayUpdateListener;
 
-	protected ReplaceVirtualArrayListener replaceVirtualArrayListener;
+	protected ReplaceContentVAListener replaceVirtualArrayListener;
 
 	protected RedrawViewListener redrawViewListener;
 	protected ClearSelectionsListener clearSelectionsListener;
@@ -163,8 +159,7 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 		vecTranslation = new Vec3f(0, 0, 0);
 
 		// initialize internal gene selection manager
-		selectionManager = new SelectionManager.Builder(EIDType.PATHWAY_VERTEX)
-				.build();
+		selectionManager = new SelectionManager(EIDType.PATHWAY_VERTEX);
 
 		// textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 24),
 		// false);
@@ -241,10 +236,10 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 
 	@Override
 	public void displayRemote(final GL gl) {
-//		// Check if pathway exists or if it is already loaded
-//		// FIXME: not good because check in every rendered frame
-//		if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
-//			return;
+		// // Check if pathway exists or if it is already loaded
+		// // FIXME: not good because check in every rendered frame
+		// if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
+		// return;
 
 		if (bIsDisplayListDirtyRemote) {
 			rebuildPathwayDisplayList(gl, iGLDisplayListIndexRemote);
@@ -276,7 +271,7 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 			tmpPathwayVertexGraphItemRep = (PathwayVertexGraphItemRep) iterPathwayVertexGraphItem
 					.next();
 
-//			selectionManager.initialAdd(tmpPathwayVertexGraphItemRep.getId());
+			// selectionManager.initialAdd(tmpPathwayVertexGraphItemRep.getId());
 		}
 
 		gLPathwayContentCreator.init(gl, selectionManager);
@@ -755,9 +750,9 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 			}
 
 			selectionManager.clearSelection(selectionType);
-//			SelectionCommand command = new SelectionCommand(
-//					ESelectionCommandType.CLEAR, selectionType);
-//			sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+			// SelectionCommand command = new SelectionCommand(
+			// ESelectionCommandType.CLEAR, selectionType);
+			// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 			// Add new vertex to internal selection manager
 			selectionManager.addToType(selectionType, tmpVertexGraphItemRep
@@ -769,12 +764,10 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 					tmpVertexGraphItemRep.getId());
 			connectedElementRepresentationManager
 					.clear(EIDType.EXPRESSION_INDEX);
-//			gLPathwayContentCreator
-//					.performIdenticalNodeHighlighting(selectionType);
+			// gLPathwayContentCreator
+			// .performIdenticalNodeHighlighting(selectionType);
 
 			createConnectionLines(selectionType, iConnectionID);
-
-		
 
 			ISelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager
 					.getDelta());
@@ -827,8 +820,8 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 	@Override
 	public void broadcastElements(EVAOperation type) {
 
-		IVirtualArrayDelta delta = new VirtualArrayDelta(
-				EVAType.CONTENT_CONTEXT, EIDType.REFSEQ_MRNA_INT);
+		ContentVADelta delta = new ContentVADelta(
+				ContentVAType.CONTENT_CONTEXT, EIDType.REFSEQ_MRNA_INT);
 		IIDMappingManager idMappingManager = generalManager
 				.getIDMappingManager();
 
@@ -867,9 +860,9 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 			}
 		}
 
-		VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
+		ContentVAUpdateEvent virtualArrayUpdateEvent = new ContentVAUpdateEvent();
 		virtualArrayUpdateEvent.setSender(this);
-		virtualArrayUpdateEvent.setVirtualArrayDelta((VirtualArrayDelta) delta);
+		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
 		virtualArrayUpdateEvent.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
 	}
@@ -926,13 +919,6 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 	}
 
 	@Override
-	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
-		selectionManager.setVADelta(delta);
-		// reactOnExternalSelection();
-		setDisplayListDirty();
-	}
-
-	@Override
 	public void destroy() {
 		generalManager.getPathwayManager().setPathwayVisibilityState(pathway,
 				false);
@@ -984,10 +970,10 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 		eventPublisher.addListener(SelectionUpdateEvent.class,
 				selectionUpdateListener);
 
-		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
-		virtualArrayUpdateListener.setHandler(this);
-		eventPublisher.addListener(VirtualArrayUpdateEvent.class,
-				virtualArrayUpdateListener);
+		// virtualArrayUpdateListener = new ContentVAUpdateListener();
+		// virtualArrayUpdateListener.setHandler(this);
+		// eventPublisher.addListener(VirtualArrayUpdateEvent.class,
+		// virtualArrayUpdateListener);
 
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
@@ -1003,10 +989,10 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 		eventPublisher.addListener(SelectionCommandEvent.class,
 				selectionCommandListener);
 
-		replaceVirtualArrayListener = new ReplaceVirtualArrayListener();
-		replaceVirtualArrayListener.setHandler(this);
-		eventPublisher.addListener(ReplaceVirtualArrayEvent.class,
-				replaceVirtualArrayListener);
+		// replaceVirtualArrayListener = new ReplaceContentVAListener();
+		// replaceVirtualArrayListener.setHandler(this);
+		// eventPublisher.addListener(ReplaceVAEvent.class,
+		// replaceVirtualArrayListener);
 	}
 
 	@Override
@@ -1076,12 +1062,6 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 			SelectionCommand selectionCommand) {
 		if (EIDCategory.GENE == category)
 			selectionManager.executeSelectionCommand(selectionCommand);
-
-	}
-
-	@Override
-	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType) {
-		// TODO Auto-generated method stub
 
 	}
 

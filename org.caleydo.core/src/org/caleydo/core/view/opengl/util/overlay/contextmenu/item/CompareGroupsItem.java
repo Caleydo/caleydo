@@ -12,10 +12,10 @@ public class CompareGroupsItem
 
 	public CompareGroupsItem(ArrayList<ISet> setsToCompare) {
 		super();
-		
+
 		// Trigger lazy plugin loading and creation of statistics performer
 		GeneralManager.get().getRStatisticsPerformer();
-		
+
 		setText("Compare Groups");
 		CompareGroupsEvent event = new CompareGroupsEvent(setsToCompare);
 		event.setSender(this);

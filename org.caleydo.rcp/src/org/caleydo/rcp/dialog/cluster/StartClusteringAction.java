@@ -1,5 +1,7 @@
 package org.caleydo.rcp.dialog.cluster;
 
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterState;
@@ -86,8 +88,7 @@ public class StartClusteringAction
 
 		this.parentComposite = parentComposite;
 
-		sArTypeOptions[0] =
-			GeneralManager.get().getMasterUseCase().getContentLabel(true, false);
+		sArTypeOptions[0] = GeneralManager.get().getMasterUseCase().getContentLabel(true, false);
 	}
 
 	@Override
@@ -516,10 +517,6 @@ public class StartClusteringAction
 			clusterState.setDistanceMeasure(EDistanceMeasure.CHEBYSHEV_DISTANCE);
 		else if (distmeasure.equals(sArDistOptions[3]))
 			clusterState.setDistanceMeasure(EDistanceMeasure.PEARSON_CORRELATION);
-		// else if (distmeasure.equals(sArDistOptionsWeka[1]))
-		// clusterState.setDistanceMeasure(EDistanceMeasure.MANHATTAHN_DISTANCE);
-		// else if (distmeasure.equals(sArDistOptionsWeka[2]))
-		// clusterState.setDistanceMeasure(EDistanceMeasure.CHEBYSHEV_DISTANCE_WEKA);
 
 		if (treeClusterAlgo.equals(sArTreeClusterer[0]))
 			clusterState.setTreeClustererAlgo(ETreeClustererAlgo.COMPLETE_LINKAGE);
@@ -532,6 +529,10 @@ public class StartClusteringAction
 		clusterState.setAffinityPropClusterFactorExperiments(fclusterFactorExperiments);
 		clusterState.setKMeansClusterCntGenes(iClusterCntGenes);
 		clusterState.setKMeansClusterCntExperiments(iClusterCntExperiments);
+
+		// by default we use the main VAs for clustering
+		clusterState.setContentVAType(ContentVAType.getPrimaryVAType());
+		clusterState.setStorageVAType(StorageVAType.getPrimaryVAType());
 
 		ClusteringProgressBar progressBar =
 			new ClusteringProgressBar(clusterState.getClustererAlgo(), clusterState.getClustererType());

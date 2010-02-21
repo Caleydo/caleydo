@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
-import org.caleydo.core.manager.event.view.group.ExportGroupsEvent;
+import org.caleydo.core.manager.event.view.group.ExportContentGroupsEvent;
+import org.caleydo.core.manager.event.view.group.ExportStorageGroupsEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -30,9 +31,15 @@ public class ExportClustersItem
 	 */
 	public void setGeneExperimentFlag(boolean bGeneGroup) {
 
-		ExportGroupsEvent exportGroupEvent = new ExportGroupsEvent();
-		exportGroupEvent.setSender(this);
-		exportGroupEvent.setGeneExperimentFlag(bGeneGroup);
-		registerEvent(exportGroupEvent);
+		if (bGeneGroup) {
+			ExportContentGroupsEvent exportGroupEvent = new ExportContentGroupsEvent();
+			exportGroupEvent.setSender(this);
+			registerEvent(exportGroupEvent);
+		}
+		else {
+			ExportStorageGroupsEvent exportGroupEvent = new ExportStorageGroupsEvent();
+			exportGroupEvent.setSender(this);
+			registerEvent(exportGroupEvent);
+		}
 	}
 }

@@ -12,7 +12,9 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-public class EnterViewNameAction extends AToolBarAction implements IToolBarItem {
+public class EnterViewNameAction
+	extends AToolBarAction
+	implements IToolBarItem {
 
 	public static final String TEXT = "Enter a name for this view";
 	public static final String ICON = "resources/icons/view/glyph/glyph_rename.png";
@@ -22,8 +24,8 @@ public class EnterViewNameAction extends AToolBarAction implements IToolBarItem 
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
@@ -32,8 +34,7 @@ public class EnterViewNameAction extends AToolBarAction implements IToolBarItem 
 
 		GLGlyph glyphview = null;
 
-		for (AGLView view : GeneralManager.get().getViewGLCanvasManager()
-				.getAllGLViews()) {
+		for (AGLView view : GeneralManager.get().getViewGLCanvasManager().getAllGLViews()) {
 			if (view instanceof GLGlyph) {
 				if (view.getID() == iViewID) {
 					glyphview = (GLGlyph) view;
@@ -43,7 +44,7 @@ public class EnterViewNameAction extends AToolBarAction implements IToolBarItem 
 
 		if (glyphview == null)
 			throw new IllegalStateException(
-					"Clinical Data Export in Toolbar wants to export a view witch doesn't exist");
+				"Clinical Data Export in Toolbar wants to export a view witch doesn't exist");
 
 		String oldname = glyphview.getPersonalName();
 
@@ -53,7 +54,7 @@ public class EnterViewNameAction extends AToolBarAction implements IToolBarItem 
 
 		if (newname != null) {
 			GeneralManager.get().getEventPublisher().triggerEvent(
-					new GlyphChangePersonalNameEvent(iViewID, newname));
+				new GlyphChangePersonalNameEvent(iViewID, newname));
 
 		}
 	};

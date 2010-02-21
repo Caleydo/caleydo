@@ -37,11 +37,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
-public class RcpGLHistogramView extends ARcpGLViewPart
-		implements
-			IViewCommandHandler,
-			IListenerOwner,
-			INewSetHandler {
+public class RcpGLHistogramView extends ARcpGLViewPart implements
+		IViewCommandHandler, IListenerOwner, INewSetHandler {
 
 	private CLabel colorMappingPreviewLabel;
 
@@ -170,7 +167,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart
 	}
 
 	private void updateColorLabel() {
-		
+
 		int iNumberOfMarkerPoints = store
 				.getInt(PreferenceConstants.GENE_EXPRESSION_PREFIX
 						+ PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
@@ -186,7 +183,6 @@ public class RcpGLHistogramView extends ARcpGLViewPart
 
 			double correspondingValue = GeneralManager.get().getUseCase(
 					dataDomain).getSet().getRawForNormalized(normalizedValue);
-
 
 			labels.get(iCount - 1).setText(
 					Formatter.formatNumber(correspondingValue));

@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.EVAType;
+import org.caleydo.core.data.selection.IVAType;
 import org.caleydo.core.util.collection.UniqueList;
 
 /**
@@ -16,8 +16,8 @@ import org.caleydo.core.util.collection.UniqueList;
  * @author Alexander Lex
  */
 @XmlType
-public class VirtualArrayDelta
-	implements IVirtualArrayDelta {
+public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<ConcreteType, VAType>, VAType extends IVAType>
+	implements IDelta<VADeltaItem> {
 
 	@XmlElement
 	private UniqueList<VADeltaItem> deltaItems;
@@ -29,31 +29,46 @@ public class VirtualArrayDelta
 	private EIDType secondaryIDType;
 
 	@XmlElement
-	private EVAType vaType;
+	private VAType vaType;
 
 	public VirtualArrayDelta() {
 		deltaItems = new UniqueList<VADeltaItem>();
 	}
 
-	public VirtualArrayDelta(EVAType vaType, EIDType idType) {
+	public VirtualArrayDelta(VAType vaType, EIDType idType) {
 		this.vaType = vaType;
 		this.idType = idType;
 		deltaItems = new UniqueList<VADeltaItem>();
 	}
 
-	public VirtualArrayDelta(EVAType vaType, EIDType idType, EIDType secondaryIDType) {
+	public VirtualArrayDelta(VAType vaType, EIDType idType, EIDType secondaryIDType) {
 		this(vaType, idType);
 		this.secondaryIDType = secondaryIDType;
 	}
 
-	@Override
-	public EVAType getVAType() {
+	public abstract ConcreteType getInstance();
+
+	/**
+	 * Returns the type of the virtual array as specified in {@link VAType}
+	 * 
+	 * @return
+	 */
+	public VAType getVAType() {
 		return vaType;
 	}
 
-	@Override
-	public void setVAType(EVAType vaType) {
+	/**
+	 * Set the type of the VA
+	 * 
+	 * @param vaType
+	 */
+	public void setVAType(VAType vaType) {
 		this.vaType = vaType;
+	}
+
+	@Override
+	public void setIDType(EIDType idType) {
+		this.idType = idType;
 	}
 
 	@Override
@@ -86,7 +101,7 @@ public class VirtualArrayDelta
 		return deltaItems.size();
 	}
 
-	public void append(VirtualArrayDelta delta) {
+	public void append(ConcreteType delta) {
 		deltaItems.addAll(delta.deltaItems);
 	}
 

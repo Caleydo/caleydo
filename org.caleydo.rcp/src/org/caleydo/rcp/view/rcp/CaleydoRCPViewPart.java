@@ -19,7 +19,8 @@ import org.eclipse.ui.part.ViewPart;
  * 
  * @author Marc Streit
  */
-public abstract class CaleydoRCPViewPart extends ViewPart {
+public abstract class CaleydoRCPViewPart
+	extends ViewPart {
 
 	protected static ArrayList<IAction> alToolbar;
 	// protected static ArrayList<IContributionItem> alToolbarContributions;
@@ -32,8 +33,7 @@ public abstract class CaleydoRCPViewPart extends ViewPart {
 	protected EDataDomain dataDomain;
 
 	/**
-	 * stores the attach status of the viewpart, true means within caleydo's
-	 * main window, false otherwise
+	 * stores the attach status of the viewpart, true means within caleydo's main window, false otherwise
 	 */
 	protected boolean attached;
 
@@ -48,8 +48,7 @@ public abstract class CaleydoRCPViewPart extends ViewPart {
 	}
 
 	/**
-	 * Generates and returns a list of all views, caleydo-view-parts and
-	 * gl-views, contained in this view.
+	 * Generates and returns a list of all views, caleydo-view-parts and gl-views, contained in this view.
 	 * 
 	 * @return list of all views contained in this view
 	 */

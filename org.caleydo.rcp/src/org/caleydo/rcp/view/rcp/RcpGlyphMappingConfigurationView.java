@@ -5,7 +5,8 @@ import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
-public class RcpGlyphMappingConfigurationView extends ViewPart {
+public class RcpGlyphMappingConfigurationView
+	extends ViewPart {
 	public static final String ID = "org.caleydo.rcp.views.swt.SWTGlyphMappingConfigurationView";
 
 	// private HTMLBrowserViewRep browserView;
@@ -13,10 +14,9 @@ public class RcpGlyphMappingConfigurationView extends ViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		GMCview = (GlyphMappingConfigurationViewRep) GeneralManager.get()
-				.getViewGLCanvasManager().createView(
-						"org.caleydo.view.glyph.mappingconfiguration", -1,
-						"Glyph Mapping Configuration");
+		GMCview =
+			(GlyphMappingConfigurationViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
+				"org.caleydo.view.glyph.mappingconfiguration", -1, "Glyph Mapping Configuration");
 
 		GMCview.initViewRCP(parent);
 		GMCview.drawView();
@@ -33,7 +33,6 @@ public class RcpGlyphMappingConfigurationView extends ViewPart {
 	public void dispose() {
 		super.dispose();
 
-		GeneralManager.get().getViewGLCanvasManager().unregisterItem(
-				GMCview.getID());
+		GeneralManager.get().getViewGLCanvasManager().unregisterItem(GMCview.getID());
 	}
 }

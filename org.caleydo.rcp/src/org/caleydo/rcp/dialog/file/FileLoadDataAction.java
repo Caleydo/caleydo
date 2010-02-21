@@ -111,7 +111,7 @@ public class FileLoadDataAction
 	public void run() {
 
 		createGUI();
-		
+
 	}
 
 	private void createGUI() {

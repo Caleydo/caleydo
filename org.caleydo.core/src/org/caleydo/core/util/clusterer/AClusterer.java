@@ -3,6 +3,8 @@ package org.caleydo.core.util.clusterer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -27,12 +29,23 @@ public abstract class AClusterer
 	protected int iProgressBarMultiplier;
 	protected int iProgressBarOffsetValue;
 
+	protected ContentVirtualArray contentVA;
+	protected StorageVirtualArray storageVA;
+
+	protected ClusterState clusterState;
+
 	public AClusterer() {
 		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 		clustererCanceledListener = new ClustererCanceledListener();
 		clustererCanceledListener.setHandler(this);
 		GeneralManager.get().getEventPublisher().addListener(ClustererCanceledEvent.class,
 			clustererCanceledListener);
+	}
+
+	public void setClusterState(ClusterState clusterState) {
+		this.clusterState = clusterState;
+		this.contentVA = clusterState.getContentVA();
+		this.storageVA = clusterState.getStorageVA();
 	}
 
 	/**

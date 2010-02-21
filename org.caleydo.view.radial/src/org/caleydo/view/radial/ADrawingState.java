@@ -14,8 +14,8 @@ import org.caleydo.core.util.clusterer.EDrawingStateType;
  * @author Christian Partl
  */
 @XmlType
-@XmlSeeAlso({DrawingStateDetailOutside.class, DrawingStateFullHierarchy.class,
-		ADrawingStateAnimation.class})
+@XmlSeeAlso( { DrawingStateDetailOutside.class,
+		DrawingStateFullHierarchy.class, ADrawingStateAnimation.class })
 public abstract class ADrawingState {
 
 	/**

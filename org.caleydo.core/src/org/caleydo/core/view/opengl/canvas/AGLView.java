@@ -13,10 +13,13 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -131,20 +134,20 @@ public abstract class AGLView
 	/**
 	 * The virtual array that manages the contents (the indices) in the storages
 	 */
-	protected IVirtualArray contentVA;
+	protected ContentVirtualArray contentVA;
 	/**
 	 * The type of the content VA
 	 */
-	protected EVAType contentVAType = EVAType.CONTENT;
+	protected ContentVAType contentVAType = ContentVAType.CONTENT;
 
 	/**
 	 * The id of the virtual array that manages the storage references in the set
 	 */
-	protected IVirtualArray storageVA;
+	protected StorageVirtualArray storageVA;
 	/**
 	 * The type of the storage VA
 	 */
-	protected EVAType storageVAType = EVAType.STORAGE;
+	protected StorageVAType storageVAType = StorageVAType.STORAGE;
 
 	/**
 	 * The context menu each view should implement. It has to be created in initLocal or is set via initRemote
@@ -269,9 +272,9 @@ public abstract class AGLView
 			float value = (float) frame.height / (float) frame.width * 8.0f;
 
 			// Special case for embedded heatmap in hierarchical heatmap
-//			if (this.getViewType().equals("org.caleydo.view.heatmap.hierarchical"))
-//				viewFrustum.setTop(5.51f);
-//			else
+			// if (this.getViewType().equals("org.caleydo.view.heatmap.hierarchical"))
+			// viewFrustum.setTop(5.51f);
+			// else
 			viewFrustum.setTop(value);
 
 			viewFrustum.setRight(8);
@@ -586,7 +589,7 @@ public abstract class AGLView
 	}
 
 	public final boolean rendersContextOnly() {
-		if (contentVAType == EVAType.CONTENT)
+		if (contentVAType == ContentVAType.CONTENT)
 			return false;
 		return true;
 	}

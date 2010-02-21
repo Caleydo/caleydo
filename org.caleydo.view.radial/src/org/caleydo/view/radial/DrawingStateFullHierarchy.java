@@ -6,8 +6,8 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -120,8 +120,8 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 					navigationHistory.addNewHistoryEntry(this,
 							pdCurrentRootElement, pdCurrentRootElement,
 							iMaxDisplayedHierarchyDepth);
-					mapSelectedElements.put(pdSelected,
-							SelectionType.SELECTION);
+					mapSelectedElements
+							.put(pdSelected, SelectionType.SELECTION);
 					pdCurrentMouseOverElement = pdSelected;
 					continue;
 				}
@@ -131,8 +131,8 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 								pdCurrentRootElement, iDisplayedHierarchyDepth);
 
 				if (pdIndicated == pdSelected) {
-					mapSelectedElements.put(pdSelected,
-							SelectionType.SELECTION);
+					mapSelectedElements
+							.put(pdSelected, SelectionType.SELECTION);
 				} else if (pdIndicated == null) {
 					parentIndicatorType = SelectionType.SELECTION;
 				} else {
@@ -299,8 +299,8 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 			}
 			radialHierarchy.setDisplayListDirty();
 		} else {
-			radialHierarchy.setNewSelection(SelectionType.SELECTION,
-					pdSelected);
+			radialHierarchy
+					.setNewSelection(SelectionType.SELECTION, pdSelected);
 			radialHierarchy.setDisplayListDirty();
 		}
 

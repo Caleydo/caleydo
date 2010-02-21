@@ -17,8 +17,7 @@ import org.caleydo.view.grouper.draganddrop.IDraggable;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement
-		implements
-			IGroupDrawingStrategy {
+		implements IGroupDrawingStrategy {
 
 	private static final String sTextForHeightCalculation = "Text without characters below the bottom textline";
 

@@ -190,7 +190,7 @@ public class PickingManager {
 	private int iIDCounter = 0;
 
 	private boolean bEnablePicking = true;
-	
+
 	/** The smallest z value of a pick */
 	private float fMinimumZValue;
 
@@ -311,7 +311,7 @@ public class PickingManager {
 
 		gl.glSelectBuffer(PICKING_BUFSIZE, pickingBuffer);
 		gl.glRenderMode(GL.GL_SELECT);
-		
+
 		gl.glInitNames();
 
 		gl.glMatrixMode(GL.GL_PROJECTION);

@@ -1,25 +1,20 @@
 package org.caleydo.view.compare;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.EVAType;
-import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.VABasedSelectionManager;
+import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
-import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -50,7 +45,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	public final static String VIEW_ID = "org.caleydo.view.compare";
 
 	private TextRenderer textRenderer;
-	private SelectionManager selectionManager;
+	private VABasedSelectionManager selectionManager;
 
 	private GLHeatMap glHeatMapView;
 
@@ -70,8 +65,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void init(GL gl) {
-		contentVA = useCase.getVA(EVAType.CONTENT);
-		storageVA = useCase.getVA(EVAType.STORAGE);
+		contentVA = useCase.getContentVA(ContentVAType.CONTENT);
+		storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
 		createHeatMap();
 		glHeatMapView.initRemote(gl, this, glMouseListener, null);
 		glHeatMapView.useFishEye(false);
@@ -138,7 +133,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		glHeatMapView.setDataDomain(dataDomain);
 		glHeatMapView.setSet(set);
-	    glHeatMapView.setContentVAType(EVAType.CONTENT_EMBEDDED_HM);
+		glHeatMapView.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
 		glHeatMapView.initData();
 		glHeatMapView.setDetailLevel(EDetailLevel.MEDIUM);
 		setEmbeddedHeatMapData();
@@ -148,8 +143,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		// TODO: Is this really necessary?
 		glHeatMapView.resetView();
-		IVirtualArrayDelta delta = new VirtualArrayDelta(EVAType.CONTENT_EMBEDDED_HM,
-				EIDType.EXPRESSION_INDEX);
+		ContentVADelta delta = new ContentVADelta(
+				ContentVAType.CONTENT_EMBEDDED_HM, EIDType.EXPRESSION_INDEX);
 
 		for (int i = 0; i < 10; i++) {
 			if (i >= contentVA.size())
@@ -162,9 +157,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			int contentIndex = contentVA.get(i);
 			delta.add(VADeltaItem.removeElement(contentIndex));
 		}
-		
-		glHeatMapView.handleVirtualArrayUpdate(delta, getShortInfo());
 
+		glHeatMapView.handleContentVAUpdate(delta, getShortInfo());
 	}
 
 	@Override

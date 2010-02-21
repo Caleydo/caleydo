@@ -16,9 +16,8 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
  * 
  * @author Christian Partl
  */
-public class PDDrawingStrategyLabelDecorator
-		extends
-			APDDrawingStrategyDecorator {
+public class PDDrawingStrategyLabelDecorator extends
+		APDDrawingStrategyDecorator {
 
 	/**
 	 * Constructor.
@@ -144,7 +143,7 @@ public class PDDrawingStrategyLabelDecorator
 		expressionLine.addLabelItem(rightRectangleItem);
 
 		if (pdDiscToDraw.hasChildren()) {
-					
+
 			TextItem numElementsItem = new TextItem("Elements: "
 					+ new Integer((int) pdDiscToDraw.getSize()).toString());
 			LabelLine numElementsLine = new LabelLine();
@@ -158,7 +157,7 @@ public class PDDrawingStrategyLabelDecorator
 			labelInfo.addLine(numElementsLine);
 			labelInfo.addLine(hierarchyDepthLine);
 		} else {
-			
+
 			TextItem nameItem = new TextItem(clusterNode.getNodeName());
 			LabelLine nameLine = new LabelLine();
 			nameLine.addLabelItem(nameItem);

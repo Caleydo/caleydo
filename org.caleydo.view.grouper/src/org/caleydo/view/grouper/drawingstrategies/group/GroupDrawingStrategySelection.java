@@ -10,9 +10,8 @@ import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
-public class GroupDrawingStrategySelection
-		extends
-			AGroupDrawingStrategyRectangular {
+public class GroupDrawingStrategySelection extends
+		AGroupDrawingStrategyRectangular {
 
 	private PickingManager pickingManager;
 	private GrouperRenderStyle renderStyle;

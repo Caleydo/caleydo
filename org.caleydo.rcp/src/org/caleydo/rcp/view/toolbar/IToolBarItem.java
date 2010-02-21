@@ -1,8 +1,8 @@
 package org.caleydo.rcp.view.toolbar;
 
 /**
- * Marker interface for toolbar items within caleydo to get IAction
- * implementations and ControlContributions into one superclass.
+ * Marker interface for toolbar items within caleydo to get IAction implementations and ControlContributions
+ * into one superclass.
  * 
  * @author Werner Puff
  */

@@ -1,6 +1,6 @@
 package org.caleydo.core.data.collection.set;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ListIterator;
 
 import org.caleydo.core.data.collection.IStorage;
@@ -15,7 +15,7 @@ import org.caleydo.core.data.selection.VAIterator;
 public class StorageIterator
 	implements ListIterator<IStorage> {
 	private VAIterator vaIterator;
-	private ArrayList<IStorage> alStorages;
+	private HashMap<Integer, IStorage> alStorages;
 
 	/**
 	 * Constructor
@@ -23,14 +23,14 @@ public class StorageIterator
 	 * @param set
 	 * @param virtualArray
 	 */
-	public StorageIterator(ArrayList<IStorage> alStorages, IVirtualArray virtualArray) {
+	public StorageIterator(HashMap<Integer, IStorage> alStorages, IVirtualArray virtualArray) {
 		this.vaIterator = virtualArray.iterator();
 		this.alStorages = alStorages;
 	}
 
 	@Override
 	public void add(IStorage storage) {
-		vaIterator.add(alStorages.indexOf(storage));
+		vaIterator.add(storage.getID());
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class StorageIterator
 
 	@Override
 	public void set(IStorage storage) {
-		vaIterator.set(alStorages.indexOf(storage));
+		vaIterator.set(storage.getID());
 	}
 
 }

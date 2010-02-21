@@ -39,13 +39,14 @@ public class ResourceLoader {
 
 	public InputSource getInputSource(String sFileName)
 			throws FileNotFoundException {
-		
+
 		InputSource inputSource;
 
 		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
 			inputSource = new InputSource(loadResourceAsInputStream(sFileName));
 		} else {
-			inputSource = new InputSource(new BufferedInputStream(new FileInputStream(sFileName)));
+			inputSource = new InputSource(new BufferedInputStream(
+					new FileInputStream(sFileName)));
 		}
 
 		return inputSource;

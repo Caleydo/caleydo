@@ -9,9 +9,8 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-public class OpenRadialHierarchyHandler extends AbstractHandler
-		implements
-			IHandler {
+public class OpenRadialHierarchyHandler extends AbstractHandler implements
+		IHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {

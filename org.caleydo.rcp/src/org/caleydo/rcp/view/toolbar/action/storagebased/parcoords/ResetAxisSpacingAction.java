@@ -13,9 +13,9 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Alexander
  */
-public class ResetAxisSpacingAction extends AToolBarAction
-		implements
-			IToolBarItem {
+public class ResetAxisSpacingAction
+	extends AToolBarAction
+	implements IToolBarItem {
 	public static final String TEXT = "Reset Axis Spacing";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/reset_axis_spacing.png";
 
@@ -27,15 +27,14 @@ public class ResetAxisSpacingAction extends AToolBarAction
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
 	public void run() {
 		super.run();
 
-		GeneralManager.get().getEventPublisher().triggerEvent(
-				new ResetAxisSpacingEvent());
+		GeneralManager.get().getEventPublisher().triggerEvent(new ResetAxisSpacingEvent());
 	};
 }

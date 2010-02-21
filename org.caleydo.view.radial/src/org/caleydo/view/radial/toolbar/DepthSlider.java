@@ -24,10 +24,8 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Christian Partl
  */
-public class DepthSlider extends ControlContribution
-		implements
-			IToolBarItem,
-			IListenerOwner {
+public class DepthSlider extends ControlContribution implements IToolBarItem,
+		IListenerOwner {
 
 	private Listener listener;
 	private UpdateDepthSliderPositionListener updateSliderPositionListener;

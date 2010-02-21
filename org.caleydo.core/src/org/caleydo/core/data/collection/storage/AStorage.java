@@ -2,7 +2,6 @@ package org.caleydo.core.data.collection.storage;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import org.caleydo.core.data.AUniqueObject;
@@ -13,7 +12,6 @@ import org.caleydo.core.data.collection.ccontainer.ICContainer;
 import org.caleydo.core.data.collection.ccontainer.IntCContainer;
 import org.caleydo.core.data.collection.ccontainer.IntCContainerIterator;
 import org.caleydo.core.data.collection.ccontainer.NumericalCContainer;
-import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.general.GeneralManager;
 
 /**
@@ -109,7 +107,6 @@ public abstract class AStorage
 		return container.iterator();
 	}
 
-
 	@Override
 	public int getInt(EDataRepresentation storageKind, int iIndex) {
 		if (!(hashCContainers.get(storageKind) instanceof IntCContainer))
@@ -127,8 +124,6 @@ public abstract class AStorage
 		IntCContainer container = (IntCContainer) hashCContainers.get(storageKind);
 		return container.iterator();
 	}
-
-
 
 	@Override
 	public Number get(EDataRepresentation storageKind, int iIndex) {
@@ -148,8 +143,6 @@ public abstract class AStorage
 		return container.iterator();
 	}
 
-
-
 	@Override
 	public void setRawData(ArrayList<? super Number> alNumber) {
 		// TODO Auto-generated method stub
@@ -160,7 +153,5 @@ public abstract class AStorage
 	public int size() {
 		return hashCContainers.get(EDataRepresentation.RAW).size();
 	}
-
-
 
 }

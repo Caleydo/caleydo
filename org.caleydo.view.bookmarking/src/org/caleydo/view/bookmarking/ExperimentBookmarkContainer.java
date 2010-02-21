@@ -2,8 +2,9 @@ package org.caleydo.view.bookmarking;
 
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.collection.UniqueList;
 
 /**
@@ -12,13 +13,15 @@ import org.caleydo.core.util.collection.UniqueList;
  * 
  * @author Alexander Lex
  */
-class ExperimentBookmarkContainer extends ABookmarkContainer {
+class ExperimentBookmarkContainer extends
+		ABookmarkContainer<StorageSelectionManager> {
 
 	ExperimentBookmarkContainer(GLBookmarkManager manager) {
 		super(manager, EIDCategory.EXPERIMENT, EIDType.EXPERIMENT_INDEX);
 		bookmarkItems = new UniqueList<ABookmark>();
 
-		selectionManager = new SelectionManager.Builder(internalIDType).build();
+		selectionManager = GeneralManager.get().getMasterUseCase()
+				.getStorageSelectionManager();
 
 	}
 
@@ -36,7 +39,7 @@ class ExperimentBookmarkContainer extends ABookmarkContainer {
 			ExperimentBookmark bookmark = new ExperimentBookmark(textRenderer,
 					id);
 			bookmarkItems.add(bookmark);
-//			selectionManager.add(id);
+			// selectionManager.add(id);
 		}
 
 	}

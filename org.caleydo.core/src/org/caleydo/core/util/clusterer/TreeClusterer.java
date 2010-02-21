@@ -9,8 +9,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -19,6 +17,7 @@ import org.caleydo.core.manager.general.GeneralManager;
  * Tree clusterer
  * 
  * @author Bernhard Schlegl
+ * @author Alexander Lex
  */
 public class TreeClusterer
 	extends AClusterer {
@@ -43,8 +42,6 @@ public class TreeClusterer
 	}
 
 	private ISet set = null;
-	private int iVAIdContent = 0;
-	private int iVAIdStorage = 0;
 
 	private float[][] similarities = null;
 
@@ -63,9 +60,18 @@ public class TreeClusterer
 	HashMap<String, Integer> hashedNodeNames = new HashMap<String, Integer>();
 	HashMap<String, Integer> duplicatedNodes = new HashMap<String, Integer>();
 
-	public TreeClusterer(int iNrSamples) {
+	@Override
+	public void setClusterState(ClusterState clusterState) {
+		super.setClusterState(clusterState);
 		try {
-			this.iNrSamples = iNrSamples;
+			if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+				this.iNrSamples = clusterState.getContentVA().size();
+			else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
+				this.iNrSamples = clusterState.getStorageVA().size();
+			else
+				throw new IllegalArgumentException("Can not handle cluster type "
+					+ clusterState.getClustererType());
+
 			this.similarities = new float[this.iNrSamples][this.iNrSamples];
 		}
 		catch (OutOfMemoryError e) {
@@ -81,9 +87,6 @@ public class TreeClusterer
 	 * @return in case of error a negative value will be returned.
 	 */
 	private int determineSimilarities(ISet set, EClustererType eClustererType) {
-
-		IVirtualArray contentVA = set.getVA(iVAIdContent);
-		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
 		IDistanceMeasure distanceMeasure;
 
@@ -279,7 +282,7 @@ public class TreeClusterer
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
-	private IVirtualArray pslcluster(EClustererType eClustererType) {
+	private TempResult pslcluster(EClustererType eClustererType) {
 
 		int nnodes = iNrSamples - 1;
 		int[] vector = new int[nnodes];
@@ -346,29 +349,31 @@ public class TreeClusterer
 		tree.setRootNode(node);
 		treeStructureToTree(node, result2, result2.length - 1, eClustererType);
 
-//		ClusterHelper.determineNrElements(tree);
-//		ClusterHelper.determineHierarchyDepth(tree);
+		// ClusterHelper.determineNrElements(tree);
+		// ClusterHelper.determineHierarchyDepth(tree);
 
 		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
 
-		ArrayList<Integer> alIndices = new ArrayList<Integer>();
-		alIndices =  tree.getRoot().getLeaveIds();
+		ArrayList<Integer> indices = new ArrayList<Integer>();
+		indices = tree.getRoot().getLeaveIds();
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
 			set.setContentTree(tree);
 		else
 			set.setStorageTree(tree);
 
-		IVirtualArray virtualArray = null;
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), alIndices);
-		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-			virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), alIndices);
+		// IVirtualArray virtualArray = null;
+		// if (eClustererType == EClustererType.GENE_CLUSTERING)
+		// virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), alIndices);
+		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+		// virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), alIndices);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
-		return virtualArray;
+		TempResult tempResult = new TempResult();
+		tempResult.indices = indices;
+		return tempResult;
 	}
 
 	/**
@@ -377,7 +382,7 @@ public class TreeClusterer
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
-	private IVirtualArray palcluster(EClustererType eClustererType) {
+	private TempResult palcluster(EClustererType eClustererType) {
 
 		int[] clusterid = new int[iNrSamples];
 		int[] number = new int[iNrSamples];
@@ -392,7 +397,7 @@ public class TreeClusterer
 
 		ClosestPair pair = null;
 
-		ArrayList<Integer> alIndices = new ArrayList<Integer>();
+		ArrayList<Integer> indices = new ArrayList<Integer>();
 
 		float[][] distmatrix;
 
@@ -486,29 +491,21 @@ public class TreeClusterer
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
-//		ClusterHelper.determineNrElements(tree);
-//		ClusterHelper.determineHierarchyDepth(tree);
+		// ClusterHelper.determineNrElements(tree);
+		// ClusterHelper.determineHierarchyDepth(tree);
 
 		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
-//		determineExpressionValue(tree, eClustererType);
+		// determineExpressionValue(tree, eClustererType);
 
-		alIndices = tree.getRoot().getLeaveIds();
-
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			set.setContentTree(tree);
-		else
-			set.setStorageTree(tree);
-
-		IVirtualArray virtualArray = null;
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), alIndices);
-		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-			virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), alIndices);
+		indices = tree.getRoot().getLeaveIds();
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
-		return virtualArray;
+		TempResult tempResult = new TempResult();
+		tempResult.indices = indices;
+		tempResult.tree = tree;
+		return tempResult;
 	}
 
 	/**
@@ -517,10 +514,10 @@ public class TreeClusterer
 	 * 
 	 * @param eClustererType
 	 */
-//	private void determineExpressionValue(Tree<ClusterNode> clusterTree, EClustererType eClustererType) {
-//
-//		determineExpressionValueRec(clusterTree, clusterTree.getRoot(), eClustererType);
-//	}
+	// private void determineExpressionValue(Tree<ClusterNode> clusterTree, EClustererType eClustererType) {
+	//
+	// determineExpressionValueRec(clusterTree, clusterTree.getRoot(), eClustererType);
+	// }
 
 	/**
 	 * Recursive function which determines the expression value in each node of the tree.
@@ -530,82 +527,83 @@ public class TreeClusterer
 	 *            current node
 	 * @return depth of the current node
 	 */
-//	private float[] determineExpressionValueRec(Tree<ClusterNode> clusterTree, ClusterNode node, EClustererType eClustererType) {
-//
-//		float[] fArExpressionValues;
-//
-//		if (clusterTree.hasChildren(node)) {
-//
-//			int iNrNodes = clusterTree.getChildren(node).size();
-//			int iNrElements = 0;
-//			float[][] fArTempValues;
-//
-//			if (eClustererType == EClustererType.GENE_CLUSTERING) {
-//				IVirtualArray storageVA = set.getVA(iVAIdStorage);
-//				iNrElements = storageVA.size();
-//			}
-//			else {
-//				IVirtualArray contentVA = set.getVA(iVAIdContent);
-//				iNrElements = contentVA.size();
-//			}
-//
-//			fArTempValues = new float[iNrNodes][iNrElements];
-//
-//			int cnt = 0;
-//
-//			for (ClusterNode current : clusterTree.getChildren(node)) {
-//				fArTempValues[cnt] = determineExpressionValueRec(clusterTree, current, eClustererType);
-//				cnt++;
-//			}
-//
-//			fArExpressionValues = new float[iNrElements];
-//
-//			for (int i = 0; i < iNrElements; i++) {
-//				float means = 0;
-//
-//				for (int nodes = 0; nodes < iNrNodes; nodes++) {
-//					means += fArTempValues[nodes][i];
-//				}
-//				fArExpressionValues[i] = means / iNrNodes;
-//			}
-//		}
-//		// no children --> leaf node
-//		else {
-//
-//			if (eClustererType == EClustererType.GENE_CLUSTERING) {
-//				IVirtualArray storageVA = set.getVA(iVAIdStorage);
-//				fArExpressionValues = new float[storageVA.size()];
-//
-//				int isto = 0;
-//				for (Integer iStorageIndex : storageVA) {
-//					fArExpressionValues[isto] =
-//						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, node.getLeaveID());
-//					isto++;
-//				}
-//
-//			}
-//			else {
-//				IVirtualArray contentVA = set.getVA(iVAIdContent);
-//				fArExpressionValues = new float[contentVA.size()];
-//
-//				int icon = 0;
-//				for (Integer iContentIndex : contentVA) {
-//					fArExpressionValues[icon] =
-//						set.get(node.getLeaveID()).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
-//					icon++;
-//				}
-//			}
-//		}
-//		float averageExpressionvalue = ClusterHelper.arithmeticMean(fArExpressionValues);
-//		float deviation = ClusterHelper.standardDeviation(fArExpressionValues, averageExpressionvalue);
-//		node.setAverageExpressionValue(averageExpressionvalue);
-//		// Setting an float array for the representative element in each node causes a very big xml-file when
-//		// exporting the tree
-//		// node.setRepresentativeElement(fArExpressionValues);
-//		node.setStandardDeviation(deviation);
-//
-//		return fArExpressionValues;
-//	}
+	// private float[] determineExpressionValueRec(Tree<ClusterNode> clusterTree, ClusterNode node,
+	// EClustererType eClustererType) {
+	//
+	// float[] fArExpressionValues;
+	//
+	// if (clusterTree.hasChildren(node)) {
+	//
+	// int iNrNodes = clusterTree.getChildren(node).size();
+	// int iNrElements = 0;
+	// float[][] fArTempValues;
+	//
+	// if (eClustererType == EClustererType.GENE_CLUSTERING) {
+	// IVirtualArray storageVA = set.getVA(iVAIdStorage);
+	// iNrElements = storageVA.size();
+	// }
+	// else {
+	// IVirtualArray contentVA = set.getVA(iVAIdContent);
+	// iNrElements = contentVA.size();
+	// }
+	//
+	// fArTempValues = new float[iNrNodes][iNrElements];
+	//
+	// int cnt = 0;
+	//
+	// for (ClusterNode current : clusterTree.getChildren(node)) {
+	// fArTempValues[cnt] = determineExpressionValueRec(clusterTree, current, eClustererType);
+	// cnt++;
+	// }
+	//
+	// fArExpressionValues = new float[iNrElements];
+	//
+	// for (int i = 0; i < iNrElements; i++) {
+	// float means = 0;
+	//
+	// for (int nodes = 0; nodes < iNrNodes; nodes++) {
+	// means += fArTempValues[nodes][i];
+	// }
+	// fArExpressionValues[i] = means / iNrNodes;
+	// }
+	// }
+	// // no children --> leaf node
+	// else {
+	//
+	// if (eClustererType == EClustererType.GENE_CLUSTERING) {
+	// IVirtualArray storageVA = set.getVA(iVAIdStorage);
+	// fArExpressionValues = new float[storageVA.size()];
+	//
+	// int isto = 0;
+	// for (Integer iStorageIndex : storageVA) {
+	// fArExpressionValues[isto] =
+	// set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, node.getLeaveID());
+	// isto++;
+	// }
+	//
+	// }
+	// else {
+	// IVirtualArray contentVA = set.getVA(iVAIdContent);
+	// fArExpressionValues = new float[contentVA.size()];
+	//
+	// int icon = 0;
+	// for (Integer iContentIndex : contentVA) {
+	// fArExpressionValues[icon] =
+	// set.get(node.getLeaveID()).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+	// icon++;
+	// }
+	// }
+	// }
+	// float averageExpressionvalue = ClusterHelper.arithmeticMean(fArExpressionValues);
+	// float deviation = ClusterHelper.standardDeviation(fArExpressionValues, averageExpressionvalue);
+	// node.setAverageExpressionValue(averageExpressionvalue);
+	// // Setting an float array for the representative element in each node causes a very big xml-file when
+	// // exporting the tree
+	// // node.setRepresentativeElement(fArExpressionValues);
+	// node.setStandardDeviation(deviation);
+	//
+	// return fArExpressionValues;
+	// }
 
 	/**
 	 * The pmlcluster routine performs clustering using pairwise maximum- (complete-) linking on the given
@@ -614,7 +612,7 @@ public class TreeClusterer
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
-	private IVirtualArray pmlcluster(EClustererType eClustererType) {
+	private TempResult pmlcluster(EClustererType eClustererType) {
 
 		int[] clusterid = new int[iNrSamples];
 		Node[] result = new Node[iNrSamples - 1];
@@ -624,7 +622,7 @@ public class TreeClusterer
 			clusterid[j] = j;
 
 		// Arraylist holding clustered indexes
-		ArrayList<Integer> AlIndexes = new ArrayList<Integer>();
+		ArrayList<Integer> indices = new ArrayList<Integer>();
 
 		int j;
 
@@ -709,29 +707,29 @@ public class TreeClusterer
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
-//		ClusterHelper.determineNrElements(tree);
-//		ClusterHelper.determineHierarchyDepth(tree);
+		// ClusterHelper.determineNrElements(tree);
+		// ClusterHelper.determineHierarchyDepth(tree);
 
 		ClusterHelper.determineExpressionValue(tree, eClustererType, set);
-//		determineExpressionValue(tree, eClustererType);
+		// determineExpressionValue(tree, eClustererType);
 
-		AlIndexes = tree.getRoot().getLeaveIds();
+		indices = tree.getRoot().getLeaveIds();
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			set.setContentTree(tree);
-		else
-			set.setStorageTree(tree);
+	
 
-		IVirtualArray virtualArray = null;
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), AlIndexes);
-		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-			virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), AlIndexes);
+		// IVirtualArray virtualArray = null;
+		// if (eClustererType == EClustererType.GENE_CLUSTERING)
+		// virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), indices);
+		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+		// virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), indices);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
-		return virtualArray;
+		TempResult tempResult = new TempResult();
+		tempResult.tree = tree;
+		tempResult.indices = indices;
+		return tempResult;
 	}
 
 	/**
@@ -747,9 +745,6 @@ public class TreeClusterer
 	 */
 	private String getNodeName(EClustererType eClustererType, int index) {
 		String nodeName = null;
-
-		IVirtualArray contentVA = set.getVA(iVAIdContent);
-		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
@@ -825,9 +820,6 @@ public class TreeClusterer
 
 		int nodeNr = 0;
 
-		IVirtualArray contentVA = set.getVA(iVAIdContent);
-		IVirtualArray storageVA = set.getVA(iVAIdStorage);
-
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 			nodeNr = contentVA.get(index);
 		}
@@ -859,9 +851,11 @@ public class TreeClusterer
 			String NodeName = getNodeName(eClustererType, treeStructure[index].getLeft());
 			int LeaveID = getNodeNr(eClustererType, treeStructure[index].getLeft());
 
-			left = new ClusterNode(tree, NodeName, getNodeCounter(), treeStructure[index].getCorrelation(), 0, false, LeaveID);
+			left =
+				new ClusterNode(tree, NodeName, getNodeCounter(), treeStructure[index].getCorrelation(), 0,
+					false, LeaveID);
 
-//			left.setNrElements(1);
+			// left.setNrElements(1);
 
 			tree.addChild(node, left);
 
@@ -881,9 +875,11 @@ public class TreeClusterer
 			String NodeName = getNodeName(eClustererType, treeStructure[index].getRight());
 			int LeaveID = getNodeNr(eClustererType, treeStructure[index].getRight());
 
-			right = new ClusterNode(tree, NodeName, getNodeCounter(), treeStructure[index].getCorrelation(), 0, false, LeaveID);
+			right =
+				new ClusterNode(tree, NodeName, getNodeCounter(), treeStructure[index].getCorrelation(), 0,
+					false, LeaveID);
 
-//			right.setNrElements(1);
+			// right.setNrElements(1);
 
 			tree.addChild(node, right);
 
@@ -901,16 +897,12 @@ public class TreeClusterer
 	}
 
 	@Override
-	public IVirtualArray getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
-
-		IVirtualArray virtualArray = null;
 
 		eDistanceMeasure = clusterState.getDistanceMeasure();
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
-		this.iVAIdContent = clusterState.getContentVaId();
-		this.iVAIdStorage = clusterState.getStorageVaId();
 
 		int iReturnValue = 0;
 
@@ -924,12 +916,11 @@ public class TreeClusterer
 		this.set = set;
 
 		if (clusterState.getTreeClustererAlgo() == ETreeClustererAlgo.COMPLETE_LINKAGE)
-			virtualArray = pmlcluster(clusterState.getClustererType());
+			return pmlcluster(clusterState.getClustererType());
 		else if (clusterState.getTreeClustererAlgo() == ETreeClustererAlgo.AVERAGE_LINKAGE)
-			virtualArray = palcluster(clusterState.getClustererType());
+			return palcluster(clusterState.getClustererType());
 		else
-			virtualArray = pslcluster(clusterState.getClustererType());
+			return pslcluster(clusterState.getClustererType());
 
-		return virtualArray;
 	}
 }

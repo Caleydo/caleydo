@@ -23,10 +23,8 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Juergen Pillhofer
  */
-public class XAxisSelector extends ControlContribution
-		implements
-			IToolBarItem,
-			IListenerOwner {
+public class XAxisSelector extends ControlContribution implements IToolBarItem,
+		IListenerOwner {
 
 	private InitXAxisComboListener initAxisComboListener;
 	private Combo combo;

@@ -58,8 +58,9 @@ public class SearchViewMediator {
 
 		ISelectionDelta delta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
 
-		Set<Integer> setExpIndex = GeneralManager.get().getIDMappingManager()
-				.getIDAsSet(EIDType.DAVID, EIDType.EXPRESSION_INDEX, davidID);
+		Set<Integer> setExpIndex =
+			GeneralManager.get().getIDMappingManager().getIDAsSet(EIDType.DAVID, EIDType.EXPRESSION_INDEX,
+				davidID);
 
 		ArrayList<Integer> alExpressionIndex = null;
 

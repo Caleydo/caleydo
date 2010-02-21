@@ -520,23 +520,23 @@ public class ChooseProjectTypePage
 		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gd.horizontalSpan = 2;
 		recentProject.setLayoutData(gd);
-		
+
 		Button loadProject = new Button(composite, SWT.RADIO);
 		loadProject.setText("Specify project-file to load");
 		gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gd.horizontalSpan = 2;
 		loadProject.setLayoutData(gd);
-		
+
 		final Button chooseProjectFile = new Button(composite, SWT.CENTER);
 		chooseProjectFile.setEnabled(false);
 		chooseProjectFile.setText("Choose File");
-		
+
 		projectFileName = new Text(composite, SWT.BORDER);
 		projectFileName.setEnabled(false);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		projectFileName.setLayoutData(gd);
 		gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
-		
+
 		String lastModifiedDate = "";
 		String text = "Open project from last session";
 		File recentProjectFile =
@@ -556,11 +556,11 @@ public class ChooseProjectTypePage
 			projectFileName.setEnabled(true);
 			chooseProjectFile.setEnabled(true);
 		}
-		
+
 		if (!lastModifiedDate.equals("")) {
-			text = text+ " (" +lastModifiedDate + ")"; 
+			text = text + " (" + lastModifiedDate + ")";
 		}
-		
+
 		recentProject.setText(text);
 		recentProject.addSelectionListener(new SelectionAdapter() {
 			@Override

@@ -30,9 +30,8 @@ import org.eclipse.swt.widgets.Display;
  * 
  * @author Marc Streit
  */
-public class GenomeHTMLBrowser extends HTMLBrowser
-		implements
-			ISelectionUpdateHandler {
+public class GenomeHTMLBrowser extends HTMLBrowser implements
+		ISelectionUpdateHandler {
 
 	private URLGenerator urlGenerator;
 
@@ -65,20 +64,21 @@ public class GenomeHTMLBrowser extends HTMLBrowser
 				SWT.READ_ONLY);
 
 		if (useCase instanceof GeneticUseCase) {
-			
-			String storedDatabase = generalManager.getPreferenceStore().getString(PreferenceConstants.BROWSER_QUERY_DATABASE);
-//			if (storedDatabase == "")
-//				storedDatabase = "GeneCards";
-			eBrowserQueryType = EBrowserQueryType.valueOf(storedDatabase);	
-			
+
+			String storedDatabase = generalManager.getPreferenceStore()
+					.getString(PreferenceConstants.BROWSER_QUERY_DATABASE);
+			// if (storedDatabase == "")
+			// storedDatabase = "GeneCards";
+			eBrowserQueryType = EBrowserQueryType.valueOf(storedDatabase);
+
 			queryTypeCombo.add(EBrowserQueryType.EntrezGene.getTitle());
 			if (eBrowserQueryType == EBrowserQueryType.EntrezGene)
 				queryTypeCombo.select(0);
-			
+
 			queryTypeCombo.add(EBrowserQueryType.PubMed.getTitle());
 			if (eBrowserQueryType == EBrowserQueryType.PubMed)
 				queryTypeCombo.select(1);
-			
+
 			queryTypeCombo.add(EBrowserQueryType.GeneCards.getTitle());
 			if (eBrowserQueryType == EBrowserQueryType.GeneCards)
 				queryTypeCombo.select(2);
@@ -89,28 +89,28 @@ public class GenomeHTMLBrowser extends HTMLBrowser
 						.getTitle());
 				if (eBrowserQueryType == EBrowserQueryType.Ensembl_HomoSapiens)
 					queryTypeCombo.select(3);
-				
+
 				queryTypeCombo.add(EBrowserQueryType.KEGG_HomoSapiens
 						.getTitle());
 				if (eBrowserQueryType == EBrowserQueryType.KEGG_HomoSapiens)
 					queryTypeCombo.select(4);
-				
+
 				queryTypeCombo.add(EBrowserQueryType.BioCarta_HomoSapiens
 						.getTitle());
 				if (eBrowserQueryType == EBrowserQueryType.BioCarta_HomoSapiens)
 					queryTypeCombo.select(5);
-				
+
 			} else if (organism == EOrganism.MUS_MUSCULUS) {
 				queryTypeCombo.add(EBrowserQueryType.Ensembl_MusMusculus
 						.getTitle());
 				if (eBrowserQueryType == EBrowserQueryType.Ensembl_MusMusculus)
 					queryTypeCombo.select(3);
-				
+
 				queryTypeCombo.add(EBrowserQueryType.KEGG_MusMusculus
 						.getTitle());
 				if (eBrowserQueryType == EBrowserQueryType.KEGG_MusMusculus)
 					queryTypeCombo.select(4);
-				
+
 				queryTypeCombo.add(EBrowserQueryType.BioCarta_MusMusculus
 						.getTitle());
 				if (eBrowserQueryType == EBrowserQueryType.BioCarta_MusMusculus)
@@ -246,7 +246,9 @@ public class GenomeHTMLBrowser extends HTMLBrowser
 
 	public void changeQueryType(EBrowserQueryType eBrowserQueryType) {
 		this.eBrowserQueryType = eBrowserQueryType;
-		GeneralManager.get().getPreferenceStore().setValue(PreferenceConstants.BROWSER_QUERY_DATABASE, eBrowserQueryType.name());
+		GeneralManager.get().getPreferenceStore().setValue(
+				PreferenceConstants.BROWSER_QUERY_DATABASE,
+				eBrowserQueryType.name());
 		if (!iAlDavidID.isEmpty()) {
 			String sURL = urlGenerator.createURL(eBrowserQueryType, iAlDavidID
 					.get(0));

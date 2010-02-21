@@ -8,7 +8,6 @@ import org.caleydo.core.manager.event.AEventListener;
  * @author Werner Puff
  */
 public abstract class ARemoteRenderingListener
-		extends
-			AEventListener<IRemoteRenderingHandler> {
+	extends AEventListener<IRemoteRenderingHandler> {
 
 }

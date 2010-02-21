@@ -85,7 +85,7 @@ public interface IGeneralManager {
 	public GlyphManager getGlyphManager();
 
 	public IDCreator getIDManager();
-	
+
 	public IStatisticsPerformer getRStatisticsPerformer();
 
 	/**
@@ -181,6 +181,7 @@ public interface IGeneralManager {
 	 * @deprecated Will be replaced by new use case management / handling.
 	 * @return the use case
 	 */
+	@Deprecated
 	public IUseCase getMasterUseCase();
 
 	/**
@@ -188,6 +189,7 @@ public interface IGeneralManager {
 	 * 
 	 * @deprecated Will be replaced by new use case management / handling.
 	 */
+	@Deprecated
 	public void setMasterUseCase(EDataDomain dataDomain);
 
 	/**
@@ -195,5 +197,6 @@ public interface IGeneralManager {
 	 * 
 	 * @deprecated Will be replaced by new use case management / handling.
 	 */
+	@Deprecated
 	public void setMasterUseCase(IUseCase useCase);
 }

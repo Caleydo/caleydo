@@ -26,9 +26,9 @@ public class InteractiveSplashHandler
 		// Store the shell
 		super.init(splash);
 
-//		// // TODO: remove this when webstart splash bug is solved
-//		if (Application.bIsWebstart)
-//			return;
+		// // // TODO: remove this when webstart splash bug is solved
+		// if (Application.bIsWebstart)
+		// return;
 
 		// Create UI
 		createUI();

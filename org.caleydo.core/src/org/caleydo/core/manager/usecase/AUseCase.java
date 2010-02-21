@@ -1,7 +1,6 @@
 package org.caleydo.core.manager.usecase;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -13,24 +12,25 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.Set;
-import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.EVAType;
-import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionManager;
-import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.data.selection.StorageSelectionManager;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
-import org.caleydo.core.manager.event.data.ReplaceVirtualArrayInUseCaseEvent;
+import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
+import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
+import org.caleydo.core.manager.event.data.ReplaceStorageVAEvent;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -39,15 +39,15 @@ import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
-import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererType;
+import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IStorageVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -62,8 +62,8 @@ import org.eclipse.swt.widgets.Shell;
 @XmlRootElement
 @XmlSeeAlso( { GeneticUseCase.class, ClinicalUseCase.class, UnspecifiedUseCase.class })
 public abstract class AUseCase
-	implements IVirtualArrayUpdateHandler, ISelectionUpdateHandler, ISelectionCommandHandler, IUseCase,
-	IListenerOwner {
+	implements IContentVAUpdateHandler, IStorageVAUpdateHandler, ISelectionUpdateHandler,
+	ISelectionCommandHandler, IUseCase, IListenerOwner {
 
 	protected String contentLabelSingular = "<not specified>";
 	protected String contentLabelPlural = "<not specified>";
@@ -76,9 +76,6 @@ public abstract class AUseCase
 	 * expression features are not available.
 	 */
 	protected EDataDomain useCaseMode = EDataDomain.UNSPECIFIED;
-
-	/** map selection type to unique id for virtual array */
-	protected EnumMap<EVAType, Integer> mapVAIDs;
 
 	/** The set which is currently loaded and used inside the views for this use case. */
 	protected ISet set;
@@ -95,23 +92,23 @@ public abstract class AUseCase
 	protected SelectionUpdateListener selectionUpdateListener;
 	protected SelectionCommandListener selectionCommandListener;
 	private StartClusteringListener startClusteringListener;
-	private ReplaceVirtualArrayInUseCaseListener replaceVirtualArrayInUseCaseListener;
-	private VirtualArrayUpdateListener virtualArrayUpdateListener;
+	private ReplaceContentVAInUseCaseListener replaceVirtualArrayInUseCaseListener;
+	private ContentVAUpdateListener virtualArrayUpdateListener;
 
 	/** Every use case needs to state all views that can visualize its data */
 	protected ArrayList<String> possibleViews;
 
 	/**
 	 * Every use case needs to state all ID Categories it can handle. The string must specify which primary
-	 * VAType ({@link EVAType#getPrimaryVAType()} is associated for the ID Category
+	 * VAType ({@link VAType#getPrimaryVAType()} is associated for the ID Category
 	 */
 	protected HashMap<EIDCategory, String> possibleIDCategories;
 
 	protected EIDType contentIDType;
 	protected EIDType storageIDType;
 
-	protected SelectionManager contentSelectionManager;
-	protected SelectionManager storageSelectionManager;
+	protected ContentSelectionManager contentSelectionManager;
+	protected StorageSelectionManager storageSelectionManager;
 
 	public AUseCase() {
 		eventPublisher = GeneralManager.get().getEventPublisher();
@@ -170,7 +167,7 @@ public abstract class AUseCase
 	@Override
 	public void updateSetInViews() {
 
-		initVAs();
+		initFullVA();
 		initSelectionManagers();
 		NewSetEvent newSetEvent = new NewSetEvent();
 		newSetEvent.setSet((Set) set);
@@ -218,70 +215,22 @@ public abstract class AUseCase
 		return sContentLabel;
 	}
 
-	private void initVAs() {
-
-		if (mapVAIDs == null) {
-			mapVAIDs = new EnumMap<EVAType, Integer>(EVAType.class);
-		}
-		else if (set == null) {
-			mapVAIDs.clear();
-			return;
-		}
-		else if (!mapVAIDs.isEmpty()) {
-
-			for (EVAType SelectionType : EVAType.values()) {
-				if (mapVAIDs.containsKey(SelectionType)) {
-					set.removeVirtualArray(mapVAIDs.get(SelectionType));
-				}
-			}
-
-			mapVAIDs.clear();
-		}
-
-		// create VA with empty list
-		int iVAID = set.createVA(EVAType.CONTENT_CONTEXT, new ArrayList<Integer>());
-		System.out.println("sf");
-		mapVAIDs.put(EVAType.CONTENT_CONTEXT, iVAID);
-
-		iVAID = set.createVA(EVAType.CONTENT_EMBEDDED_HM, new ArrayList<Integer>());
-		mapVAIDs.put(EVAType.CONTENT_EMBEDDED_HM, iVAID);
-
-		ArrayList<Integer> alTempList = new ArrayList<Integer>();
-
-		alTempList = new ArrayList<Integer>();
-
-		for (int iCount = 0; iCount < set.size(); iCount++) {
-			alTempList.add(iCount);
-		}
-
-		iVAID = set.createVA(EVAType.STORAGE, alTempList);
-		mapVAIDs.put(EVAType.STORAGE, iVAID);
-
-		initFullVA();
-	}
-
-	protected void initFullVA() {
-		// initialize virtual array that contains all (filtered) information
-		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
-
-		for (int iCount = 0; iCount < set.depth(); iCount++) {
-
-			alTempList.add(iCount);
-		}
-
-		// TODO: remove possible old virtual array
-		int iVAID = set.createVA(EVAType.CONTENT, alTempList);
-		mapVAIDs.put(EVAType.CONTENT, iVAID);
-	}
-
 	protected void initSelectionManagers() {
-		contentSelectionManager = new SelectionManager.Builder(contentIDType).build();
-		storageSelectionManager = new SelectionManager.Builder(storageIDType).build();
+		contentSelectionManager = new ContentSelectionManager(contentIDType);
+		storageSelectionManager = new StorageSelectionManager(storageIDType);
 	}
 
-	public IVirtualArray getVA(EVAType vaType) {
-		IVirtualArray va = set.getVA(mapVAIDs.get(vaType));
-		IVirtualArray vaCopy = va.clone();
+	@Override
+	public ContentVirtualArray getContentVA(ContentVAType vaType) {
+		ContentVirtualArray va = set.getContentVA(vaType);
+		ContentVirtualArray vaCopy = va.clone();
+		return vaCopy;
+	}
+
+	@Override
+	public StorageVirtualArray getStorageVA(StorageVAType vaType) {
+		StorageVirtualArray va = set.getStorageVA(vaType);
+		StorageVirtualArray vaCopy = va.clone();
 		return vaCopy;
 	}
 
@@ -291,23 +240,15 @@ public abstract class AUseCase
 		// if (!(this instanceof GeneticUseCase))
 		// return;
 
-		clusterState.setContentVaId(mapVAIDs.get(clusterState.getContentVAType()));
-		clusterState.setStorageVaId(mapVAIDs.get(EVAType.STORAGE));
-
-		ArrayList<IVirtualArray> iAlNewVAs = set.cluster(clusterState);
-
-		if (iAlNewVAs != null) {
-			set.replaceVA(mapVAIDs.get(clusterState.getContentVAType()), iAlNewVAs.get(0));
-			set.replaceVA(mapVAIDs.get(EVAType.STORAGE), iAlNewVAs.get(1));
-		}
+		set.cluster(clusterState);
 
 		// This should be done to avoid problems with group info in HHM
 		set.setGeneClusterInfoFlag(false);
 		set.setExperimentClusterInfoFlag(false);
 
-		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EIDCategory.GENE, clusterState
+		eventPublisher.triggerEvent(new ReplaceContentVAEvent(EIDCategory.GENE, clusterState
 			.getContentVAType()));
-		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EIDCategory.EXPERIMENT, EVAType.STORAGE));
+		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(EIDCategory.EXPERIMENT, StorageVAType.STORAGE));
 
 		if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING
 			|| clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
@@ -320,30 +261,28 @@ public abstract class AUseCase
 	 * from this class. Therefore it should not be called any time!
 	 */
 	@Override
-	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType) {
+	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType) {
 		throw new IllegalStateException("UseCases shouldn't react to this");
 
 	}
 
-	@Override
-	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType, IVirtualArray virtualArray) {
+	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType) {
+		throw new IllegalStateException("UseCases shouldn't react to this");
+	}
 
-		String idCategoryAsscoatedVAType = possibleIDCategories.get(idCategory);
-		if (idCategoryAsscoatedVAType == null)
-			return;
+	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType,
+		ContentVirtualArray virtualArray) {
 
-		if (!idCategoryAsscoatedVAType.equals(vaType.getPrimaryVAType()))
-			vaType = EVAType.getVATypeForPrimaryVAType(idCategoryAsscoatedVAType);
+//		String idCategoryAsscoatedVAType = possibleIDCategories.get(idCategory);
+//		if (idCategoryAsscoatedVAType == null)
+//			return;
 
-		set.replaceVA(mapVAIDs.get(vaType), virtualArray.clone());
+		// if (!idCategoryAsscoatedVAType.equals(vaType.getPrimaryVAType()))
+		// vaType = VAType.getVATypeForPrimaryVAType(idCategoryAsscoatedVAType);
 
-		Tree<ClusterNode> tree = null;
-		if (vaType == EVAType.CONTENT)
-			tree = set.getContentTree();
-		else if (vaType == EVAType.STORAGE)
-			tree = set.getStorageTree();
+		set.setContentVA(vaType, virtualArray.clone());
 
-		if (tree != null) {
+		if (set.getContentTree() != null) {
 			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
 				public void run() {
 					Shell shell = new Shell();
@@ -354,25 +293,45 @@ public abstract class AUseCase
 					messageBox.open();
 				}
 			});
-			if (vaType == EVAType.CONTENT)
-				set.setContentTree(null);
-			else if (vaType == EVAType.STORAGE)
-				set.setStorageTree(null);
+
+			set.setContentTree(null);
+
 		}
 
 		virtualArray.setGroupList(null);
 
-		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(idCategory, vaType));
+		eventPublisher.triggerEvent(new ReplaceContentVAEvent(idCategory, vaType));
 	}
 
-	public void setVirtualArray(EVAType vaType, IVirtualArray virtualArray) {
-		set.replaceVA(mapVAIDs.get(vaType), virtualArray);
-		mapVAIDs.put(vaType, virtualArray.getID());
+	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType,
+		StorageVirtualArray virtualArray) {
+
+		set.setStorageVA(vaType, virtualArray);
+		set.setStorageTree(null);
+
+		if (set.getStorageTree() != null) {
+			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					Shell shell = new Shell();
+					MessageBox messageBox = new MessageBox(shell, SWT.CANCEL);
+					messageBox.setText("Warning");
+					messageBox
+						.setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
+					messageBox.open();
+				}
+			});
+
+			set.setStorageTree(null);
+		}
+
 	}
 
-	@Override
-	public void handleVirtualArrayUpdate(IVirtualArrayDelta vaDelta, String info) {
+	public void setContentVirtualArray(ContentVAType vaType, ContentVirtualArray virtualArray) {
+		set.setContentVA(vaType, virtualArray);
+	}
 
+	public void setStorageVirtualArray(StorageVAType vaType, StorageVirtualArray virtualArray) {
+		set.setStorageVA(vaType, virtualArray);
 	}
 
 	public void registerEventListeners() {
@@ -397,12 +356,12 @@ public abstract class AUseCase
 		startClusteringListener.setHandler(this);
 		eventPublisher.addListener(StartClusteringEvent.class, startClusteringListener);
 
-		replaceVirtualArrayInUseCaseListener = new ReplaceVirtualArrayInUseCaseListener();
+		replaceVirtualArrayInUseCaseListener = new ReplaceContentVAInUseCaseListener();
 		replaceVirtualArrayInUseCaseListener.setHandler(this);
-		eventPublisher.addListener(ReplaceVirtualArrayInUseCaseEvent.class,
-			replaceVirtualArrayInUseCaseListener);
+		eventPublisher
+			.addListener(ReplaceContentVAInUseCaseEvent.class, replaceVirtualArrayInUseCaseListener);
 
-		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
+		virtualArrayUpdateListener = new ContentVAUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
 	}
@@ -446,10 +405,9 @@ public abstract class AUseCase
 
 	@Override
 	public void resetContextVA() {
-		int iUniqueID = mapVAIDs.get(EVAType.CONTENT_CONTEXT);
-		set.replaceVA(iUniqueID, new VirtualArray(EVAType.CONTENT_CONTEXT, set.depth(),
-			new ArrayList<Integer>()));
 
+		set.setContentVA(ContentVAType.CONTENT_CONTEXT,
+			new ContentVirtualArray(ContentVAType.CONTENT_CONTEXT));
 	}
 
 	public String getContentLabelSingular() {
@@ -494,11 +452,13 @@ public abstract class AUseCase
 		this.bootsTrapFileName = bootsTrapFileName;
 	}
 
-	public SelectionManager getContentSelectionManager() {
+	@Override
+	public ContentSelectionManager getContentSelectionManager() {
 		return contentSelectionManager.clone();
 	}
 
-	public SelectionManager getStorageSelectionManager() {
+	@Override
+	public StorageSelectionManager getStorageSelectionManager() {
 		return storageSelectionManager.clone();
 	}
 
@@ -516,6 +476,10 @@ public abstract class AUseCase
 	@Override
 	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
 		// TODO Auto-generated method stub
+
+	}
+
+	protected void initFullVA() {
 
 	}
 

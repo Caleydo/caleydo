@@ -1,6 +1,5 @@
 package org.caleydo.view.parcoords;
 
-
 import static org.caleydo.view.parcoords.PCRenderStyle.GATE_TIP_HEIGHT;
 import static org.caleydo.view.parcoords.PCRenderStyle.GATE_WIDTH;
 import static org.caleydo.view.parcoords.PCRenderStyle.GATE_Z;
@@ -133,8 +132,8 @@ public class NominalGate extends AGate {
 
 		textRenderer.setColor(1, 1, 1, 1);
 		// TODO insert correct text here
-		renderNumber(textRenderer,	Formatter.formatNumber(top),
-				currentPosition - 5 * GATE_WIDTH, unscaledTop + 0.02f);
+		renderNumber(textRenderer, Formatter.formatNumber(top), currentPosition
+				- 5 * GATE_WIDTH, unscaledTop + 0.02f);
 		gl.glPopName();
 
 		// if (set.isSetHomogeneous())
@@ -198,7 +197,7 @@ public class NominalGate extends AGate {
 
 		textRenderer.setColor(1, 1, 1, 1);
 		// TODO: insert correct text here
-		renderNumber(textRenderer,	Formatter.formatNumber(bottom),
+		renderNumber(textRenderer, Formatter.formatNumber(bottom),
 				currentPosition - 5 * GATE_WIDTH, unscaledBottom - menuHeight
 						+ 0.02f);
 		gl.glPopName();
@@ -280,22 +279,22 @@ public class NominalGate extends AGate {
 
 		switch (draggedObject) {
 
-			case GATE_TIP_SELECTION :
-				setTop(mousePositionY);
-				break;
+		case GATE_TIP_SELECTION:
+			setTop(mousePositionY);
+			break;
 
-			case GATE_BOTTOM_SELECTION :
-				setBottom(mousePositionY);
-				break;
+		case GATE_BOTTOM_SELECTION:
+			setBottom(mousePositionY);
+			break;
 
-			case GATE_BODY_SELECTION :
-				setBottom(mousePositionY - mouseBottomSpacing);
-				setTop(mousePositionY + mouseTopSpacing);
+		case GATE_BODY_SELECTION:
+			setBottom(mousePositionY - mouseBottomSpacing);
+			setTop(mousePositionY + mouseTopSpacing);
 
-				break;
+			break;
 
-			default :
-				return;
+		default:
+			return;
 		}
 
 		if (top > tipUpperLimit) {

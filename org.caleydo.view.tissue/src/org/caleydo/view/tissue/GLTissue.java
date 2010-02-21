@@ -39,7 +39,7 @@ public class GLTissue extends AGLView {
 		viewType = VIEW_ID;
 
 		// initialize internal gene selection manager
-	
+
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class GLTissue extends AGLView {
 
 	@Override
 	public void display(final GL gl) {
-//		processEvents();
+		// processEvents();
 		checkForHits(gl);
 		renderScene(gl);
 	}
@@ -148,69 +148,69 @@ public class GLTissue extends AGLView {
 		// }
 
 		switch (ePickingType) {
-			case TISSUE_SELECTION :
-				switch (pickingMode) {
-					case MOUSE_OVER : {
+		case TISSUE_SELECTION:
+			switch (pickingMode) {
+			case MOUSE_OVER: {
 
-						// FIXME: after view plugin reorganization
-						// SelectionManager selectionManager =
-						// ((GLTissueViewBrowser)
-						// glRemoteRenderingView).getSelectionManager();
-						// selectionManager.clearSelections();
-						// selectionManager.addToType(SelectionType.MOUSE_OVER,
-						// experimentIndex);
-						//
-						// SelectedElementRep selectedElementRep =
-						// new SelectedElementRep(EIDType.EXPERIMENT_INDEX,
-						// iUniqueID, 1f, 1f, 0);
-						//
-						// ConnectedElementRepresentationManager
-						// connectedElementRepresentationManager =
-						// generalManager.getViewGLCanvasManager()
-						// .getConnectedElementRepresentationManager();
-						// connectedElementRepresentationManager.clear(EIDType.EXPERIMENT_INDEX);
-						//
-						// int connectionID =
-						// generalManager.getIDManager().createID(EManagedObjectType.CONNECTION);
-						//
-						// selectionManager.addConnectionID(connectionID,
-						// experimentIndex);
-						//
-						// connectedElementRepresentationManager.addSelection(connectionID,
-						// selectedElementRep);
-						//
-						// //
-						// triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
-						// // axisSelectionManager
-						// // .getDelta(), null);
-						//
-						// SelectionCommand command =
-						// new SelectionCommand(ESelectionCommandType.CLEAR,
-						// SelectionType.MOUSE_OVER);
-						//
-						// SelectionCommandEvent event = new
-						// SelectionCommandEvent();
-						// event.setSender(this);
-						// event.setCategory(EIDCategory.EXPERIMENT);
-						// event.setSelectionCommand(command);
-						// eventPublisher.triggerEvent(event);
-						//
-						// ISelectionDelta selectionDelta =
-						// selectionManager.getDelta();
-						// // if (eAxisDataType == EIDType.EXPRESSION_INDEX
-						// // || eAxisDataType == EIDType.EXPERIMENT_INDEX) {
-						// // handleConnectedElementRep(selectionDelta);
-						// // }
-						// SelectionUpdateEvent selectionEvent = new
-						// SelectionUpdateEvent();
-						// selectionEvent.setSender(this);
-						// selectionEvent.setSelectionDelta((SelectionDelta)
-						// selectionDelta);
-						// eventPublisher.triggerEvent(selectionEvent);
+				// FIXME: after view plugin reorganization
+				// SelectionManager selectionManager =
+				// ((GLTissueViewBrowser)
+				// glRemoteRenderingView).getSelectionManager();
+				// selectionManager.clearSelections();
+				// selectionManager.addToType(SelectionType.MOUSE_OVER,
+				// experimentIndex);
+				//
+				// SelectedElementRep selectedElementRep =
+				// new SelectedElementRep(EIDType.EXPERIMENT_INDEX,
+				// iUniqueID, 1f, 1f, 0);
+				//
+				// ConnectedElementRepresentationManager
+				// connectedElementRepresentationManager =
+				// generalManager.getViewGLCanvasManager()
+				// .getConnectedElementRepresentationManager();
+				// connectedElementRepresentationManager.clear(EIDType.EXPERIMENT_INDEX);
+				//
+				// int connectionID =
+				// generalManager.getIDManager().createID(EManagedObjectType.CONNECTION);
+				//
+				// selectionManager.addConnectionID(connectionID,
+				// experimentIndex);
+				//
+				// connectedElementRepresentationManager.addSelection(connectionID,
+				// selectedElementRep);
+				//
+				// //
+				// triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
+				// // axisSelectionManager
+				// // .getDelta(), null);
+				//
+				// SelectionCommand command =
+				// new SelectionCommand(ESelectionCommandType.CLEAR,
+				// SelectionType.MOUSE_OVER);
+				//
+				// SelectionCommandEvent event = new
+				// SelectionCommandEvent();
+				// event.setSender(this);
+				// event.setCategory(EIDCategory.EXPERIMENT);
+				// event.setSelectionCommand(command);
+				// eventPublisher.triggerEvent(event);
+				//
+				// ISelectionDelta selectionDelta =
+				// selectionManager.getDelta();
+				// // if (eAxisDataType == EIDType.EXPRESSION_INDEX
+				// // || eAxisDataType == EIDType.EXPERIMENT_INDEX) {
+				// // handleConnectedElementRep(selectionDelta);
+				// // }
+				// SelectionUpdateEvent selectionEvent = new
+				// SelectionUpdateEvent();
+				// selectionEvent.setSender(this);
+				// selectionEvent.setSelectionDelta((SelectionDelta)
+				// selectionDelta);
+				// eventPublisher.triggerEvent(selectionEvent);
 
-						break;
-					}
-				}
+				break;
+			}
+			}
 		}
 	}
 

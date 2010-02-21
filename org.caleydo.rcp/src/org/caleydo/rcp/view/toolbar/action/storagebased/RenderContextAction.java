@@ -8,7 +8,9 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class RenderContextAction extends AToolBarAction implements IToolBarItem {
+public class RenderContextAction
+	extends AToolBarAction
+	implements IToolBarItem {
 	public static final String TEXT = "Render Context / Render All";
 	public static final String ICON = "resources/icons/view/storagebased/toggle_render_context.png";
 
@@ -19,14 +21,14 @@ public class RenderContextAction extends AToolBarAction implements IToolBarItem 
 	 */
 	public RenderContextAction(int iViewID) {
 		super(iViewID);
-		AStorageBasedView storageBasedView = (AStorageBasedView) GeneralManager
-				.get().getViewGLCanvasManager().getGLView(iViewID);
+		AStorageBasedView storageBasedView =
+			(AStorageBasedView) GeneralManager.get().getViewGLCanvasManager().getGLView(iViewID);
 		bEnable = storageBasedView.isRenderingOnlyContext();
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 
 		setChecked(bEnable);
 		// setEnabled(bEnable);

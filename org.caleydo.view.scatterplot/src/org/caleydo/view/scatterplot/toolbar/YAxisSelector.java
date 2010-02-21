@@ -23,10 +23,8 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Juergen Pillhofer
  */
-public class YAxisSelector extends ControlContribution
-		implements
-			IToolBarItem,
-			IListenerOwner {
+public class YAxisSelector extends ControlContribution implements IToolBarItem,
+		IListenerOwner {
 
 	private InitYAxisComboListener initAxisComboListener;
 	private Combo combo;

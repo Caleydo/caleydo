@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -51,20 +51,26 @@ public class AffinityClusterer
 
 	private int iNrSimilarities = 0;
 
-	private int iVAIdContent = 0;
-	private int iVAIdStorage = 0;
-
 	private ISet set;
 
-	public AffinityClusterer(int iNrSamples) {
+	public AffinityClusterer() {
+
+	}
+
+	@Override
+	public void setClusterState(ClusterState clusterState) {
+		super.setClusterState(clusterState);
+
 		try {
-			this.iNrSamples = iNrSamples;
+			if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+				this.iNrSamples = clusterState.getContentVA().size();
+			else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
+				this.iNrSamples = clusterState.getStorageVA().size();
+
 			this.iNrSimilarities = iNrSamples * iNrSamples;
 			this.s = new float[this.iNrSimilarities];
 			this.i = new int[this.iNrSimilarities];
 			this.k = new int[this.iNrSimilarities];
-			this.iVAIdContent = 0;
-			this.iVAIdStorage = 0;
 		}
 		catch (OutOfMemoryError e) {
 			throw new OutOfMemoryError();
@@ -80,8 +86,8 @@ public class AffinityClusterer
 	 */
 	private int determineSimilarities(ISet set, ClusterState clusterState) {
 
-		IVirtualArray contentVA = set.getVA(iVAIdContent);
-		IVirtualArray storageVA = set.getVA(iVAIdStorage);
+		ContentVirtualArray contentVA = clusterState.getContentVA();
+		StorageVirtualArray storageVA = clusterState.getStorageVA();
 
 		IDistanceMeasure distanceMeasure;
 
@@ -249,9 +255,9 @@ public class AffinityClusterer
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
-	private IVirtualArray affinityPropagation(EClustererType eClustererType) {
+	private TempResult affinityPropagation(EClustererType eClustererType) {
 		// Arraylist holding clustered indexes
-		ArrayList<Integer> alIndexes = new ArrayList<Integer>();
+		ArrayList<Integer> indices = new ArrayList<Integer>();
 		// Arraylist holding indices of examples (cluster centers)
 		ArrayList<Integer> alExamples = new ArrayList<Integer>();
 		// Arraylist holding number of elements per cluster
@@ -485,23 +491,25 @@ public class AffinityClusterer
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
-		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
+		ClusterHelper.sortClusters(set, contentVA, storageVA, alExamples, eClustererType);
 
-		alIndexes = getAl(alExamples, alClusterSizes, idxExamples, idx, eClustererType);
-
-		IVirtualArray virtualArray = null;
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), alIndexes);
-		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-			virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), alIndexes);
-
-		set.setAlClusterSizes(alClusterSizes);
-		set.setAlExamples(idxExamples);
+		indices = getAl(alExamples, alClusterSizes, idxExamples, idx, eClustererType);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
-		return virtualArray;
+		TempResult tempResult = new TempResult();
+		tempResult.clusterSizes = alClusterSizes;
+		tempResult.sampleElements = idxExamples;
+		tempResult.indices = indices;
+		return tempResult;
+
+		// IVirtualArray virtualArray = null;
+		// if (eClustererType == EClustererType.GENE_CLUSTERING)
+		// virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), indexes);
+		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+		// virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), indexes);
+
 	}
 
 	/**
@@ -524,10 +532,7 @@ public class AffinityClusterer
 	private ArrayList<Integer> getAl(ArrayList<Integer> alExamples, ArrayList<Integer> alClusterSizes,
 		ArrayList<Integer> idxExamples, int[] idx, EClustererType eClustererType) {
 
-		ArrayList<Integer> indexes = new ArrayList<Integer>();
-
-		IVirtualArray contentVA = set.getVA(iVAIdContent);
-		IVirtualArray storageVA = set.getVA(iVAIdStorage);
+		ArrayList<Integer> indices = new ArrayList<Integer>();
 
 		int counter = 0;
 		int idxCnt = 0;
@@ -539,7 +544,7 @@ public class AffinityClusterer
 			for (Integer example : alExamples) {
 				for (int index = 0; index < alIndexListContent.size(); index++) {
 					if (idx[index] == example) {
-						indexes.add(alIndexListContent.get(index));
+						indices.add(alIndexListContent.get(index));
 						alClusterSizes.set(counter, alClusterSizes.get(counter) + 1);
 					}
 					if (example == index) {
@@ -555,7 +560,7 @@ public class AffinityClusterer
 			for (Integer example : alExamples) {
 				for (int index = 0; index < alIndexListStorage.size(); index++) {
 					if (idx[index] == example) {
-						indexes.add(alIndexListStorage.get(index));
+						indices.add(alIndexListStorage.get(index));
 						alClusterSizes.set(counter, alClusterSizes.get(counter) + 1);
 					}
 					if (example == index) {
@@ -568,14 +573,12 @@ public class AffinityClusterer
 			}
 		}
 
-		return indexes;
+		return indices;
 	}
 
 	@Override
-	public IVirtualArray getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
-
-		IVirtualArray virtualArray = null;
 
 		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 			fClusterFactor = clusterState.getAffinityPropClusterFactorGenes();
@@ -584,8 +587,6 @@ public class AffinityClusterer
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
-		this.iVAIdContent = clusterState.getContentVaId();
-		this.iVAIdStorage = clusterState.getStorageVaId();
 
 		int iReturnValue = 0;
 
@@ -598,8 +599,7 @@ public class AffinityClusterer
 
 		this.set = set;
 
-		virtualArray = affinityPropagation(clusterState.getClustererType());
+		return affinityPropagation(clusterState.getClustererType());
 
-		return virtualArray;
 	}
 }

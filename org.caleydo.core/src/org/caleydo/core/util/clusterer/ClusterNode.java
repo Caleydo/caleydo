@@ -27,7 +27,8 @@ import org.caleydo.core.data.selection.SelectionType;
 @XmlRootElement(name = "node")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ClusterNode
-	extends AHierarchyElement<ClusterNode> implements IHierarchyData<ClusterNode>{
+	extends AHierarchyElement<ClusterNode>
+	implements IHierarchyData<ClusterNode> {
 
 	@XmlAttribute
 	private String nodeName;
@@ -36,8 +37,8 @@ public class ClusterNode
 	private float fCoefficient;
 	@XmlElement
 	private int iHierarchyDepth;
-//	@XmlElement
-//	private int iNrElements;
+	// @XmlElement
+	// private int iNrElements;
 	@XmlElement
 	private Vec3f vPos;
 	@XmlElement
@@ -80,29 +81,25 @@ public class ClusterNode
 		metaSet = set.getShallowClone();
 		metaSet.setLabel("MetaSet at " + nodeName);
 		metaSet.setContentTree(set.getContentTree());
-//		Tree<ClusterNode> subTree = tree.getSubTree();
-		
+		// Tree<ClusterNode> subTree = tree.getSubTree();
+
 		metaSet.setStorageTree(tree);
 		metaSet.setStorageTreeRoot(this);
 		ArrayList<Integer> storageIDs = this.getLeaveIds();
 		for (Integer storageID : storageIDs)
-			metaSet.addStorage(set.get(storageID));
-		
-		
-		
+			metaSet.addStorage(storageID);
+
 		ArrayList<ClusterNode> children = tree.getChildren(this);
-		if(children != null)
-			for(ClusterNode child : children)
-			{
+		if (children != null)
+			for (ClusterNode child : children) {
 				child.createMetaSets(set);
 			}
 	}
 
-	public ISet getMetaSet()
-	{
+	public ISet getMetaSet() {
 		return metaSet;
 	}
-	
+
 	public void setNodeName(String nodeName) {
 		this.nodeName = nodeName;
 	}
@@ -120,13 +117,13 @@ public class ClusterNode
 		return nodeName;
 	}
 
-//	public void setNrElements(int iNrElements) {
-//		this.iNrElements = iNrElements;
-//	}
-//
-//	public int getNrElements() {
-//		return iNrElements;
-//	}
+	// public void setNrElements(int iNrElements) {
+	// this.iNrElements = iNrElements;
+	// }
+	//
+	// public int getNrElements() {
+	// return iNrElements;
+	// }
 
 	public void setPos(Vec3f vPos) {
 		this.vPos = vPos;
@@ -184,16 +181,16 @@ public class ClusterNode
 	public Vec3f getPosSubTree() {
 		return vPosSubTree;
 	}
-	
+
 	@Override
 	public int getComparableValue() {
 		return id;
 	}
 
-//	@Override
-//	public float getSize() {
-//		return iNrElements;
-//	}
+	// @Override
+	// public float getSize() {
+	// return iNrElements;
+	// }
 
 	// public void setRepresentativeElement(float[] fArRepresentativeElement) {
 	// this.fArRepresentativeElement = fArRepresentativeElement;

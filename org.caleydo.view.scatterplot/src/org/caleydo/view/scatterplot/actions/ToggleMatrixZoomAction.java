@@ -8,9 +8,8 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class ToggleMatrixZoomAction extends AToolBarAction
-		implements
-			IToolBarItem {
+public class ToggleMatrixZoomAction extends AToolBarAction implements
+		IToolBarItem {
 	public static final String TEXT = "Toggle Matrix Zoom Mode";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/bookmark.png";
 

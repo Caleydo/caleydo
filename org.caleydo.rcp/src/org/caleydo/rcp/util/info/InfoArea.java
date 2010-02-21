@@ -5,12 +5,12 @@ import java.util.Set;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
@@ -29,14 +29,14 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
+import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.rcp.util.info.listener.InfoAreaUpdateListener;
 import org.eclipse.swt.SWT;
@@ -56,7 +56,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Alexander Lex
  */
 public class InfoArea
-	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ISelectionCommandHandler,
+	implements ISelectionUpdateHandler, IContentVAUpdateHandler, ISelectionCommandHandler,
 	IViewCommandHandler {
 
 	IGeneralManager generalManager = null;
@@ -79,7 +79,7 @@ public class InfoArea
 	// private String shortInfo;
 
 	protected SelectionUpdateListener selectionUpdateListener;
-	protected VirtualArrayUpdateListener virtualArrayUpdateListener;
+	protected ContentVAUpdateListener virtualArrayUpdateListener;
 	protected SelectionCommandListener selectionCommandListener;
 
 	protected RedrawViewListener redrawViewListener;
@@ -389,35 +389,6 @@ public class InfoArea
 	// }
 
 	@Override
-	public void handleVirtualArrayUpdate(final IVirtualArrayDelta delta, final String info) {
-		if (delta.getIDType() != EIDType.REFSEQ_MRNA_INT)
-			return;
-
-		if (parentComposite.isDisposed())
-			return;
-
-		if (info != null) {
-			parentComposite.getDisplay().asyncExec(new Runnable() {
-				public void run() {
-					lblViewInfoContent.setText(info);
-
-					// for (VADeltaItem item : delta) {
-					// if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
-					// // Flush old items that become deselected/normal
-					// for (TreeItem tmpItem : selectionTree.getItems()) {
-					// if (((Integer) tmpItem.getData()).intValue() ==
-					// item.getPrimaryID()) {
-					// tmpItem.dispose();
-					// }
-					// }
-					// }
-					// }
-				}
-			});
-		}
-	}
-
-	@Override
 	public void handleSelectionCommand(EIDCategory category, final SelectionCommand selectionCommand) {
 
 		if (parentComposite.isDisposed())
@@ -488,7 +459,7 @@ public class InfoArea
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
-		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
+		virtualArrayUpdateListener = new ContentVAUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
 
@@ -555,9 +526,37 @@ public class InfoArea
 	}
 
 	@Override
-	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType) {
-		// TODO Auto-generated method stub
+	public void handleContentVAUpdate(ContentVADelta vaDelta, final String info) {
+		if (vaDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
+			return;
 
+		if (parentComposite.isDisposed())
+			return;
+
+		if (info != null) {
+			parentComposite.getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					lblViewInfoContent.setText(info);
+
+					// for (VADeltaItem item : delta) {
+					// if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
+					// // Flush old items that become deselected/normal
+					// for (TreeItem tmpItem : selectionTree.getItems()) {
+					// if (((Integer) tmpItem.getData()).intValue() ==
+					// item.getPrimaryID()) {
+					// tmpItem.dispose();
+					// }
+					// }
+					// }
+					// }
+				}
+			});
+		}
+	}
+
+	@Override
+	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType) {
+		// TODO Auto-generated method stub
 	}
 
 }

@@ -93,7 +93,6 @@ public class GeneralRenderStyle {
 
 	}
 
-
 	public float getSmallFontScalingFactor() {
 		float fScaling = SMALL_FONT_SCALING_FACTOR;
 		return fScaling;

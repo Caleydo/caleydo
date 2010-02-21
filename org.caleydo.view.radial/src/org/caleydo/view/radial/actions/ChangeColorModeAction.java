@@ -8,9 +8,8 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class ChangeColorModeAction extends AToolBarAction
-		implements
-			IToolBarItem {
+public class ChangeColorModeAction extends AToolBarAction implements
+		IToolBarItem {
 
 	public static final String TEXT = "Change Color Mode";
 	public static final String ICON = "resources/icons/view/radial/radial_color_mapping.png";

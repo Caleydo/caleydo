@@ -50,7 +50,7 @@ public enum EIconTextures {
 
 	PATHWAY_SYMBOL("resources/icons/view/pathway/pathway128x128.png"),
 	PATHWAY_ICON("resources/icons/view/pathway/pathway.png"),
-	
+
 	RADIAL_SYMBOL("resources/icons/view/radial/radial.png"),
 
 	GLYPH_SYMBOL("resources/icons/view/glyph/glyph128x128.png"),

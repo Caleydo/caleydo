@@ -20,19 +20,22 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.EVAType;
+import org.caleydo.core.data.selection.ContentGroupList;
+import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.StorageGroupList;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.VABasedSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
-import org.caleydo.core.manager.event.view.storagebased.NewGroupInfoEvent;
+import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent;
+import org.caleydo.core.manager.event.view.storagebased.NewStorageGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -67,8 +70,8 @@ import com.sun.opengl.util.texture.TextureCoords;
  * 
  * @author Bernhard Schlegl
  */
-public class GLDendrogram extends AStorageBasedView implements
-		IClusterNodeEventReceiver {
+public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
+		AStorageBasedView implements IClusterNodeEventReceiver {
 
 	public final static String VIEW_ID = "org.caleydo.view.dendrogram";
 
@@ -79,7 +82,7 @@ public class GLDendrogram extends AStorageBasedView implements
 
 	// variables used to build a group list
 	private ArrayList<ClusterNode> iAlClusterNodes = new ArrayList<ClusterNode>();
-	private GroupList groupList = null;
+	private GroupType groupList = null;
 
 	/**
 	 * true for gene tree, false for experiment tree
@@ -1267,14 +1270,14 @@ public class GLDendrogram extends AStorageBasedView implements
 			if (bRenderContentTree == true) {
 				if (set.getContentTree() != null) {
 					tree = set.getContentTree();
-					groupList = new GroupList(1);
+					groupList = (GroupType) new ContentGroupList();
 					rootNode = tree.getRoot();
 				} else
 					renderSymbol(gl);
 			} else {
 				if (set.getStorageTree() != null) {
 					tree = set.getStorageTree();
-					groupList = new GroupList(1);
+					groupList = (GroupType) new StorageGroupList();
 					rootNode = set.getStorageTreeRoot();
 				} else
 					renderSymbol(gl);
@@ -1395,39 +1398,31 @@ public class GLDendrogram extends AStorageBasedView implements
 
 		if (iAlClusterNodes.size() < 1) {
 
-			groupList = new GroupList(iAlClusterNodes.size());
-			Group temp = new Group(rootNode.getNrLeaves(), false, 0,
-					SelectionType.NORMAL, rootNode);
-
-			groupList.append(temp);
-
 			if (bRenderContentTree) {
-				NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
-				newGroupInfoEvent.setSender(this);
-				newGroupInfoEvent.setEVAType(EVAType.CONTENT);
-				newGroupInfoEvent.setGroupList(groupList);
-				newGroupInfoEvent.setDeleteTree(false);
-				eventPublisher.triggerEvent(newGroupInfoEvent);
+				groupList = (GroupType) new ContentGroupList();
 			} else {
-				NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
-				newGroupInfoEvent.setSender(this);
-				newGroupInfoEvent.setEVAType(EVAType.STORAGE);
-				newGroupInfoEvent.setGroupList(groupList);
-				newGroupInfoEvent.setDeleteTree(false);
-				eventPublisher.triggerEvent(newGroupInfoEvent);
+				groupList = (GroupType) new StorageGroupList();
 			}
 
+			Group temp = new Group(rootNode.getNrLeaves(), false, 0,
+					SelectionType.NORMAL, rootNode);
+			groupList.append(temp);
+			triggerGroupListEvent();
 			return;
 		}
 
-		groupList = new GroupList(iAlClusterNodes.size());
+		if (bRenderContentTree) {
+			groupList = (GroupType) new ContentGroupList();
+		} else {
+			groupList = (GroupType) new StorageGroupList();
+		}
 
 		bEnableDepthCheck = true;
 
 		int cnt = 0;
 		int iExample = 0;
 
-		IVirtualArray currentVA = null;
+		IVirtualArray<?, ?, ?, ?> currentVA = null;
 
 		if (bRenderContentTree) {
 			currentVA = contentVA;
@@ -1446,18 +1441,22 @@ public class GLDendrogram extends AStorageBasedView implements
 			iExample += iter.getNrLeaves();
 		}
 
+		triggerGroupListEvent();
+	}
+
+	private void triggerGroupListEvent() {
 		if (bRenderContentTree) {
-			NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
+			NewContentGroupInfoEvent newGroupInfoEvent = new NewContentGroupInfoEvent();
 			newGroupInfoEvent.setSender(this);
-			newGroupInfoEvent.setEVAType(EVAType.CONTENT);
-			newGroupInfoEvent.setGroupList(groupList);
+			newGroupInfoEvent.setVAType(ContentVAType.CONTENT);
+			newGroupInfoEvent.setGroupList((ContentGroupList) groupList);
 			newGroupInfoEvent.setDeleteTree(false);
 			eventPublisher.triggerEvent(newGroupInfoEvent);
 		} else {
-			NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
+			NewStorageGroupInfoEvent newGroupInfoEvent = new NewStorageGroupInfoEvent();
 			newGroupInfoEvent.setSender(this);
-			newGroupInfoEvent.setEVAType(EVAType.STORAGE);
-			newGroupInfoEvent.setGroupList(groupList);
+			newGroupInfoEvent.setVAType(StorageVAType.STORAGE);
+			newGroupInfoEvent.setGroupList((StorageGroupList) groupList);
 			newGroupInfoEvent.setDeleteTree(false);
 			eventPublisher.triggerEvent(newGroupInfoEvent);
 		}
@@ -1596,7 +1595,7 @@ public class GLDendrogram extends AStorageBasedView implements
 							selectionType);
 
 				ISelectionDelta selectionDelta = null;
-				SelectionManager selectionManager = null;
+				VABasedSelectionManager selectionManager = null;
 
 				selectionManager = contentSelectionManager;
 
@@ -1691,7 +1690,7 @@ public class GLDendrogram extends AStorageBasedView implements
 							selectionType);
 
 				ISelectionDelta selectionDelta = null;
-				SelectionManager selectionManager = null;
+				VABasedSelectionManager selectionManager = null;
 
 				selectionManager = storageSelectionManager;
 
@@ -1769,10 +1768,6 @@ public class GLDendrogram extends AStorageBasedView implements
 	}
 
 	@Override
-	public void changeOrientation(boolean defaultOrientation) {
-	}
-
-	@Override
 	protected ArrayList<SelectedElementRep> createElementRep(EIDType idType,
 			int storageIndex) throws InvalidAttributeValueException {
 		return null;
@@ -1784,10 +1779,10 @@ public class GLDendrogram extends AStorageBasedView implements
 		// if (bRenderOnlyContext)
 		// contentVAType = EVAType.CONTENT_CONTEXT;
 		// else
-		contentVAType = EVAType.CONTENT;
+		contentVAType = ContentVAType.CONTENT;
 
-		contentVA = useCase.getVA(contentVAType);
-		storageVA = useCase.getVA(storageVAType);
+		contentVA = useCase.getContentVA(contentVAType);
+		storageVA = useCase.getStorageVA(storageVAType);
 
 		contentSelectionManager.setVA(contentVA);
 		storageSelectionManager.setVA(storageVA);
@@ -1877,16 +1872,6 @@ public class GLDendrogram extends AStorageBasedView implements
 				// setDisplayListDirty();
 			}
 		}
-	}
-
-	@Override
-	protected void reactOnVAChanges(IVirtualArrayDelta delta) {
-
-	}
-
-	@Override
-	public boolean isInDefaultOrientation() {
-		return false;
 	}
 
 	@Override

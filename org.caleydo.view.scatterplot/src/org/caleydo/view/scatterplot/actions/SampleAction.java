@@ -16,6 +16,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  */
 public class SampleAction implements IWorkbenchWindowActionDelegate {
 	private IWorkbenchWindow window;
+
 	/**
 	 * The constructor.
 	 */

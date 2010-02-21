@@ -19,13 +19,14 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.EVAType;
+import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.VABasedSelectionManager;
+import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -39,6 +40,8 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.StandardTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.AffinityClusterer;
+import org.caleydo.core.util.clusterer.ClusterManager;
+import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
@@ -143,8 +146,6 @@ public class GLHeatMap extends AStorageBasedView {
 
 	@Override
 	public void initLocal(GL gl) {
-		bRenderStorageHorizontally = false;
-
 		// Register keyboard listener to GL canvas
 		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(
 				new Runnable() {
@@ -179,15 +180,13 @@ public class GLHeatMap extends AStorageBasedView {
 					}
 				});
 
-		bRenderStorageHorizontally = false;
-
 		this.glMouseListener = glMouseListener;
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
 		selectionTransformer = new StandardTransformer(iUniqueID);
-		
+
 		init(gl);
 	}
 
@@ -279,12 +278,11 @@ public class GLHeatMap extends AStorageBasedView {
 		} else {
 
 			float fSpacing = 0;
-			if (!bRenderStorageHorizontally) {
-				gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight()
-						- fSpacing, vecTranslation.z());
-				gl.glRotatef(vecRotation.x(), vecRotation.y(), vecRotation.z(),
-						vecRotation.w());
-			}
+			// FIXME the whole heat map is turned the wrong way
+			gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight()
+					- fSpacing, vecTranslation.z());
+			gl.glRotatef(vecRotation.x(), vecRotation.y(), vecRotation.z(),
+					vecRotation.w());
 
 			gl.glTranslatef(fAnimationTranslation, 0.0f, 0.0f);
 
@@ -295,28 +293,16 @@ public class GLHeatMap extends AStorageBasedView {
 
 			gl.glTranslatef(-fAnimationTranslation, 0.0f, 0.0f);
 
-			if (!bRenderStorageHorizontally) {
-				gl.glRotatef(-vecRotation.x(), vecRotation.y(),
-						vecRotation.z(), vecRotation.w());
-				gl.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight()
-						+ fSpacing, -vecTranslation.z());
-			}
+			gl.glRotatef(-vecRotation.x(), vecRotation.y(), vecRotation.z(),
+					vecRotation.w());
+			gl.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight()
+					+ fSpacing, -vecTranslation.z());
+
 		}
 		gl.glEndList();
 	}
 
-	public void renderHorizontally(boolean bRenderStorageHorizontally) {
-
-		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
-		// renderStyle.setBRenderStorageHorizontally(bRenderStorageHorizontally);
-		setDisplayListDirty();
-	}
-
-	boolean renderStorageHorizontally() {
-		return bRenderStorageHorizontally;
-	}
-
-	SelectionManager getContentSelectionManager() {
+	ContentSelectionManager getContentSelectionManager() {
 		return contentSelectionManager;
 	}
 
@@ -324,34 +310,18 @@ public class GLHeatMap extends AStorageBasedView {
 	protected void initLists() {
 		// todo this is not nice here, we may need a more intelligent way to
 		// determine which to use
-		if (contentVAType != EVAType.CONTENT_EMBEDDED_HM) {
+		if (contentVAType != ContentVAType.CONTENT_EMBEDDED_HM) {
 			if (bRenderOnlyContext)
-				contentVAType = EVAType.CONTENT_CONTEXT;
+				contentVAType = ContentVAType.CONTENT_CONTEXT;
 			else
-				contentVAType = EVAType.CONTENT;
+				contentVAType = ContentVAType.CONTENT;
 		}
 
-		contentVA = useCase.getVA(contentVAType);
-		storageVA = useCase.getVA(storageVAType);
-
-		// contentSelectionManager.resetSelectionManager();
-		// storageSelectionManager.resetSelectionManager();
+		contentVA = useCase.getContentVA(contentVAType);
+		storageVA = useCase.getStorageVA(storageVAType);
 
 		contentSelectionManager.setVA(contentVA);
 		storageSelectionManager.setVA(storageVA);
-
-		int iNumberOfColumns = contentVA.size();
-		int iNumberOfRows = storageVA.size();
-
-		// for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++) {
-		// storageSelectionManager.initialAdd(storageVA.get(iRowCount));
-		// }
-
-		// this for loop executes one per axis
-		// for (int iColumnCount = 0; iColumnCount < iNumberOfColumns;
-		// iColumnCount++) {
-		// contentSelectionManager.initialAdd(contentVA.get(iColumnCount));
-		// }
 
 		// FIXME: do we need to do this here?
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
@@ -380,15 +350,9 @@ public class GLHeatMap extends AStorageBasedView {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Heat Map\n");
 
-		if (bRenderStorageHorizontally) {
-			sInfoText.append(contentVA.size() + " "
-					+ useCase.getContentLabel(false, true) + " in columns and "
-					+ storageVA.size() + " experiments in rows.\n");
-		} else {
-			sInfoText.append(contentVA.size() + " "
-					+ useCase.getContentLabel(true, true) + " in rows and "
-					+ storageVA.size() + " experiments in columns.\n");
-		}
+		sInfoText.append(contentVA.size() + " "
+				+ useCase.getContentLabel(true, true) + " in rows and "
+				+ storageVA.size() + " experiments in columns.\n");
 
 		if (bRenderOnlyContext) {
 			sInfoText.append("Showing only " + " "
@@ -513,9 +477,9 @@ public class GLHeatMap extends AStorageBasedView {
 
 		contentSelectionManager.clearSelection(selectionType);
 
-//		SelectionCommand command = new SelectionCommand(
-//				ESelectionCommandType.CLEAR, selectionType);
-//		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+		// SelectionCommand command = new SelectionCommand(
+		// ESelectionCommandType.CLEAR, selectionType);
+		// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 		// TODO: Integrate multi spotting support again
 		// // Resolve multiple spotting on chip and add all to the
@@ -614,7 +578,7 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	private int cursorSelect(IVirtualArray virtualArray,
-			SelectionManager selectionManager, boolean isUp) {
+			VABasedSelectionManager selectionManager, boolean isUp) {
 
 		Set<Integer> elements = selectionManager
 				.getElements(SelectionType.MOUSE_OVER);
@@ -688,13 +652,9 @@ public class GLHeatMap extends AStorageBasedView {
 
 			float fColumnDegrees = 0;
 			float fLineDegrees = 0;
-			if (bRenderStorageHorizontally) {
-				fColumnDegrees = 0;
-				fLineDegrees = 25;
-			} else {
-				fColumnDegrees = 60;
-				fLineDegrees = 90;
-			}
+
+			fColumnDegrees = 60;
+			fLineDegrees = 90;
 
 			// render line captions
 			if (fFieldWidth > 0.055f) {
@@ -1026,20 +986,14 @@ public class GLHeatMap extends AStorageBasedView {
 			// break;
 			// }
 
-			if (bRenderStorageHorizontally) {
-				elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX,
-						iUniqueID, fXValue + fAnimationTranslation, fYValue, 0);
+			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
+			Vec3f vecPoint = myRotf
+					.rotateVector(new Vec3f(fXValue, fYValue, 0));
+			vecPoint.setY(vecPoint.y() + vecTranslation.y());
+			elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX,
+					iUniqueID, vecPoint.x(), vecPoint.y()
+							- fAnimationTranslation, 0);
 
-			} else {
-				Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
-				Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue,
-						fYValue, 0));
-				vecPoint.setY(vecPoint.y() + vecTranslation.y());
-				elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX,
-						iUniqueID, vecPoint.x(), vecPoint.y()
-								- fAnimationTranslation, 0);
-
-			}
 			alElementReps.add(elementRep);
 		}
 		return alElementReps;
@@ -1075,9 +1029,9 @@ public class GLHeatMap extends AStorageBasedView {
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (this.bRenderOnlyContext) {
-			contentVA = useCase.getVA(EVAType.CONTENT_CONTEXT);
+			contentVA = useCase.getContentVA(ContentVAType.CONTENT_CONTEXT);
 		} else {
-			contentVA = useCase.getVA(EVAType.CONTENT);
+			contentVA = useCase.getContentVA(ContentVAType.CONTENT);
 		}
 
 		contentSelectionManager.setVA(contentVA);
@@ -1113,47 +1067,38 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	@Override
-	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
+	public void handleContentVAUpdate(ContentVADelta delta, String info) {
 
-		super.handleVirtualArrayUpdate(delta, info);
+		super.handleContentVAUpdate(delta, info);
 
-		if (delta.getVAType() == EVAType.CONTENT_CONTEXT
-				&& contentVAType == EVAType.CONTENT_CONTEXT) {
+		if (delta.getVAType() == ContentVAType.CONTENT_CONTEXT
+				&& contentVAType == ContentVAType.CONTENT_CONTEXT) {
 			if (contentVA.size() == 0)
 				return;
 			// FIXME: this is only proof of concept - use the cluster manager
 			// instead of affinity directly
 			// long original = System.currentTimeMillis();
 			// System.out.println("beginning clustering");
-			AffinityClusterer clusterer = new AffinityClusterer(contentVA
-					.size());
+			AffinityClusterer clusterer = new AffinityClusterer();
 			ClusterState state = new ClusterState(
 					EClustererAlgo.AFFINITY_PROPAGATION,
 					EClustererType.GENE_CLUSTERING,
 					EDistanceMeasure.EUCLIDEAN_DISTANCE);
 			int contentVAID = contentVA.getID();
-			state.setContentVaId(contentVA.getID());
-			state.setStorageVaId(storageVA.getID());
+			state.setContentVA(contentVA);
+			state.setStorageVA(storageVA);
 			state.setAffinityPropClusterFactorGenes(4.0f);
-			IVirtualArray tempVA = clusterer.getSortedVA(set, state, 0, 2);
 
-			contentVA = tempVA;
+			ClusterManager clusterManger = new ClusterManager(set);
+			ClusterResult result = clusterManger.cluster(state);
+
+			contentVA = result.getContentResult().getContentVA();
 			contentSelectionManager.setVA(contentVA);
 			contentVA.setID(contentVAID);
 			// long result = System.currentTimeMillis() - original;
 			// System.out.println("Clustering took in ms: " + result);
 
 		}
-	}
-
-	@Override
-	public void changeOrientation(boolean defaultOrientation) {
-		renderHorizontally(defaultOrientation);
-	}
-
-	@Override
-	public boolean isInDefaultOrientation() {
-		return bRenderStorageHorizontally;
 	}
 
 	@Override
@@ -1192,7 +1137,7 @@ public class GLHeatMap extends AStorageBasedView {
 		selectionTransformer.destroy();
 		super.destroy();
 	}
-	
+
 	public void useFishEye(boolean useFishEye) {
 		renderStyle.setUseFishEye(useFishEye);
 	}

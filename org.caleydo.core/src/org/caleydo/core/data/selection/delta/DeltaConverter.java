@@ -39,9 +39,13 @@ public class DeltaConverter {
 			newDelta = (T) new SelectionDelta(targetType, delta.getIDType());
 		}
 		else if (delta instanceof VirtualArrayDelta) {
-			newDelta =
-				(T) new VirtualArrayDelta(((VirtualArrayDelta) delta).getVAType(), targetType, delta
-					.getIDType());
+
+			VirtualArrayDelta vaDelta = (VirtualArrayDelta) delta;
+			VirtualArrayDelta newVADelta = vaDelta.getInstance();
+			newVADelta.setIDType(targetType);
+			newVADelta.setVAType(vaDelta.getVAType());
+			newDelta = (T) newVADelta;
+
 		}
 		else
 			throw new IllegalStateException(

@@ -8,7 +8,8 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class ChangeViewModeToRandomAction extends AToolBarAction {
+public class ChangeViewModeToRandomAction
+	extends AToolBarAction {
 	public static final String TEXT = "Switch View To Random";
 	public static final String ICON = "resources/icons/view/glyph/sort_random.png";
 
@@ -23,8 +24,8 @@ public class ChangeViewModeToRandomAction extends AToolBarAction {
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
@@ -32,15 +33,13 @@ public class ChangeViewModeToRandomAction extends AToolBarAction {
 		super.run();
 
 		if (parent != null) {
-			parent.setImageDescriptor(ImageDescriptor
-					.createFromImage(new ResourceLoader().getImage(PlatformUI
-							.getWorkbench().getDisplay(), ICON)));
+			parent.setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 		}
 
 		parent.getSecondaryAction().setAction(this);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
-				new SetPositionModelEvent(iViewID,
-						EPositionModel.DISPLAY_RANDOM));
+			new SetPositionModelEvent(iViewID, EPositionModel.DISPLAY_RANDOM));
 	};
 }

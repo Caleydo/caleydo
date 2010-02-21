@@ -13,8 +13,10 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.SetUtils;
-import org.caleydo.core.data.selection.EVAType;
-import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -290,13 +292,19 @@ public class Connection {
 		initData.setGeneClusterTree(SetUtils.getGeneClusterXml(set));
 		initData.setExperimentClusterTree(SetUtils.getExperimentClusterXml(set));
 
-		HashMap<EVAType, VirtualArray> virtualArrayMap = new HashMap<EVAType, VirtualArray>();
-		virtualArrayMap.put(EVAType.CONTENT, (VirtualArray) useCase.getVA(EVAType.CONTENT));
-		virtualArrayMap.put(EVAType.CONTENT_CONTEXT, (VirtualArray) useCase.getVA(EVAType.CONTENT_CONTEXT));
-		virtualArrayMap.put(EVAType.CONTENT_EMBEDDED_HM, (VirtualArray) useCase
-			.getVA(EVAType.CONTENT_EMBEDDED_HM));
-		virtualArrayMap.put(EVAType.STORAGE, (VirtualArray) useCase.getVA(EVAType.STORAGE));
-		initData.setVirtualArrayMap(virtualArrayMap);
+		HashMap<ContentVAType, ContentVirtualArray> contentVAMap =
+			new HashMap<ContentVAType, ContentVirtualArray>();
+		for (ContentVAType type : ContentVAType.getRegisteredVATypes()) {
+			contentVAMap.put(type, useCase.getContentVA(type));
+		}
+		initData.setContentVAMap(contentVAMap);
+
+		HashMap<StorageVAType, StorageVirtualArray> storageVAMap =
+			new HashMap<StorageVAType, StorageVirtualArray>();
+		for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
+			storageVAMap.put(type, useCase.getStorageVA(type));
+		}
+		initData.setStorageVAMap(storageVAMap);
 
 		NetworkUtils utils = networkManager.getNetworkUtils();
 		utils.writeHandshake(initData, outputStream);

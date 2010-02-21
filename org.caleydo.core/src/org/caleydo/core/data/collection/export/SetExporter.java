@@ -13,8 +13,10 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.EVAType;
-import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -84,10 +86,11 @@ public class SetExporter {
 			e.printStackTrace();
 		}
 	}
+
 	@SuppressWarnings("unused")
 	public void export(ISet set, String sFileName, EWhichViewToExport eWhichViewToExport) {
-		IVirtualArray contentVA = null;
-		IVirtualArray storageVA = null;
+		ContentVirtualArray contentVA = null;
+		StorageVirtualArray storageVA = null;
 
 		IUseCase useCase = GeneralManager.get().getUseCase(set.getSetType().getDataDomain());
 
@@ -96,12 +99,12 @@ public class SetExporter {
 
 		if (eWhichViewToExport == EWhichViewToExport.BUCKET) {
 
-			contentVA = useCase.getVA(EVAType.CONTENT_CONTEXT);
-			storageVA = useCase.getVA(EVAType.STORAGE);
+			contentVA = useCase.getContentVA(ContentVAType.CONTENT_CONTEXT);
+			storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
 		}
 		else if (eWhichViewToExport == EWhichViewToExport.WHOLE_DATA) {
-			contentVA = useCase.getVA(EVAType.CONTENT);
-			storageVA = useCase.getVA(EVAType.STORAGE);
+			contentVA = useCase.getContentVA(ContentVAType.CONTENT);
+			storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
 		}
 
 		if (contentVA == null || storageVA == null)
@@ -195,7 +198,7 @@ public class SetExporter {
 
 				cluster = 0;
 				cnt = -1;
-				
+
 				for (Integer iStorageIndex : storageVA) {
 					if (cnt == storageVA.getGroupList().get(cluster).getNrElements() - 1) {
 						offset = offset + storageVA.getGroupList().get(cluster).getNrElements();

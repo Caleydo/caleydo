@@ -19,9 +19,9 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * @author Alexander Lex
  * @deprecated STILL IN USE????
  */
+@Deprecated
 public class ParCoordsPreferencePage extends FieldEditorPreferencePage
-		implements
-			IWorkbenchPreferencePage {
+		implements IWorkbenchPreferencePage {
 
 	private IntegerFieldEditor numRandomSamplesFE;
 	private BooleanFieldEditor limitRemoteToContext;

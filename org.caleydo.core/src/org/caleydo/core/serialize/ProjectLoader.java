@@ -8,7 +8,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.caleydo.core.data.selection.EVAType;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -65,8 +68,9 @@ public class ProjectLoader {
 			Unmarshaller unmarshaller = projectContext.createUnmarshaller();
 			AUseCase useCase;
 			try {
-				useCase = (AUseCase) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader().getResource(
-					dirName + ProjectSaver.USECASE_FILE_NAME));
+				useCase =
+					(AUseCase) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader().getResource(
+						dirName + ProjectSaver.USECASE_FILE_NAME));
 			}
 			catch (FileNotFoundException e1) {
 				throw new IllegalStateException("Cannot load use case from project file");
@@ -76,18 +80,23 @@ public class ProjectLoader {
 			useCase.getLoadDataParameters().setFileName(setFileName);
 			GeneralManager.get().setMasterUseCase(useCase);
 
-			HashMap<EVAType, VirtualArray> virtualArrayMap = new HashMap<EVAType, VirtualArray>();
-			virtualArrayMap.put(EVAType.CONTENT, loadVirtualArray(unmarshaller, dirName, EVAType.CONTENT));
-			virtualArrayMap.put(EVAType.CONTENT_CONTEXT, loadVirtualArray(unmarshaller, dirName,
-				EVAType.CONTENT_CONTEXT));
-			virtualArrayMap.put(EVAType.CONTENT_EMBEDDED_HM, loadVirtualArray(unmarshaller, dirName,
-				EVAType.CONTENT_EMBEDDED_HM));
-			virtualArrayMap.put(EVAType.STORAGE, loadVirtualArray(unmarshaller, dirName, EVAType.STORAGE));
+			HashMap<ContentVAType, ContentVirtualArray> contentVAMap =
+				new HashMap<ContentVAType, ContentVirtualArray>(6);
+			for (ContentVAType type : ContentVAType.getRegisteredVATypes()) {
+				contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName, type));
+			}
 
+			HashMap<StorageVAType, StorageVirtualArray> storageVAMap =
+				new HashMap<StorageVAType, StorageVirtualArray>(2);
+
+			for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
+				storageVAMap.put(StorageVAType.STORAGE, loadStorageVirtualArray(unmarshaller, dirName, type));
+			}
 			ViewList loadViews = null;
 			try {
-				loadViews = (ViewList) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader().getResource(
-					dirName + ProjectSaver.VIEWS_FILE_NAME));
+				loadViews =
+					(ViewList) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader().getResource(
+						dirName + ProjectSaver.VIEWS_FILE_NAME));
 			}
 			catch (FileNotFoundException e) {
 				// do nothing - no view list available
@@ -95,7 +104,8 @@ public class ProjectLoader {
 
 			initData = new ApplicationInitData();
 			initData.setUseCase(useCase);
-			initData.setVirtualArrayMap(virtualArrayMap);
+			initData.setContentVAMap(contentVAMap);
+			initData.setStorageVAMap(storageVAMap);
 			if (loadViews != null) {
 				initData.setViews(loadViews.getViews());
 			}
@@ -124,10 +134,17 @@ public class ProjectLoader {
 	 * @throws JAXBException
 	 *             in case of a {@link JAXBException} while unmarshalling the xml file
 	 */
-	private VirtualArray loadVirtualArray(Unmarshaller unmarshaller, String dir, EVAType type)
-		throws JAXBException {
+	private ContentVirtualArray loadContentVirtualArray(Unmarshaller unmarshaller, String dir,
+		ContentVAType type) throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
-		VirtualArray va = (VirtualArray) unmarshaller.unmarshal(new File(fileName));
+		ContentVirtualArray va = (ContentVirtualArray) unmarshaller.unmarshal(new File(fileName));
+		return va;
+	}
+
+	private StorageVirtualArray loadStorageVirtualArray(Unmarshaller unmarshaller, String dir,
+		StorageVAType type) throws JAXBException {
+		String fileName = dir + "va_" + type.toString() + ".xml";
+		StorageVirtualArray va = (StorageVirtualArray) unmarshaller.unmarshal(new File(fileName));
 		return va;
 	}
 

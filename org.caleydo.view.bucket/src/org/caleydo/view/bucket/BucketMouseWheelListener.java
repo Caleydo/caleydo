@@ -17,10 +17,8 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
  * 
  * @author Marc Streit
  */
-public class BucketMouseWheelListener extends MouseAdapter
-		implements
-			MouseWheelListener,
-			MouseMotionListener {
+public class BucketMouseWheelListener extends MouseAdapter implements
+		MouseWheelListener, MouseMotionListener {
 
 	private GLBucket bucketGLEventListener;
 

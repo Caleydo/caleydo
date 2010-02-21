@@ -17,8 +17,8 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.ICommandManager;
@@ -372,7 +372,7 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 			glBookmarkContainer.processEvents();
 		if (!isVisible())
 			return;
-		
+
 		pickingManager.handlePicking(this, gl);
 
 		// if (bIsDisplayListDirtyLocal)

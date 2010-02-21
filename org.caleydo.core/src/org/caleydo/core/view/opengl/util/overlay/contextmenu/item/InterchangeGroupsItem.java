@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
-import org.caleydo.core.manager.event.view.group.InterchangeGroupsEvent;
+import org.caleydo.core.manager.event.view.group.InterchangeContentGroupsEvent;
+import org.caleydo.core.manager.event.view.group.InterchangeStorageGroupsEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -30,9 +31,15 @@ public class InterchangeGroupsItem
 	 */
 	public void setGeneExperimentFlag(boolean bGeneGroup) {
 
-		InterchangeGroupsEvent interchangeGroupsEvent = new InterchangeGroupsEvent();
-		interchangeGroupsEvent.setSender(this);
-		interchangeGroupsEvent.setGeneExperimentFlag(bGeneGroup);
-		registerEvent(interchangeGroupsEvent);
+		if (bGeneGroup) {
+			InterchangeContentGroupsEvent interchangeGroupsEvent = new InterchangeContentGroupsEvent();
+			interchangeGroupsEvent.setSender(this);
+			registerEvent(interchangeGroupsEvent);
+		}
+		else {
+			InterchangeStorageGroupsEvent interchangeGroupsEvent = new InterchangeStorageGroupsEvent();
+			interchangeGroupsEvent.setSender(this);
+			registerEvent(interchangeGroupsEvent);
+		}
 	}
 }

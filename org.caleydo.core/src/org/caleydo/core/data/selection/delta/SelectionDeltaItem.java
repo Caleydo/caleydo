@@ -149,7 +149,7 @@ public class SelectionDeltaItem
 
 	@Override
 	public String toString() {
-		return "[Pri: " + primaryID + " Type: " + selectionType + " Remove: "+ remove + "]";
+		return "[Pri: " + primaryID + " Type: " + selectionType + " Remove: " + remove + "]";
 	}
 
 }

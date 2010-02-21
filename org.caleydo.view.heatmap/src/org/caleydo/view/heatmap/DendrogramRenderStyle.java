@@ -22,9 +22,9 @@ public class DendrogramRenderStyle extends GeneralRenderStyle {
 	private float fDendrogramLineWidth = 0.1f;
 	private float fSizeDendrogramArrow = 0.17f;
 
-	GLDendrogram dendrogram;
+	GLDendrogram<?> dendrogram;
 
-	public DendrogramRenderStyle(GLDendrogram dendrogram,
+	public DendrogramRenderStyle(GLDendrogram<?> dendrogram,
 			IViewFrustum viewFrustum) {
 
 		super(viewFrustum);

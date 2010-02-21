@@ -34,11 +34,10 @@ public enum EApplicationMode {
 	PLEX_CLIENT(EDataDomain.UNSPECIFIED),
 
 	/**
-	 * Needed for starting caleydo without loading any data. 
-	 * For example needed for eye tracker test setup. 
+	 * Needed for starting caleydo without loading any data. For example needed for eye tracker test setup.
 	 */
 	NO_DATA(null),
-	
+
 	/**
 	 * specifies that the UseCase (including {@link Set} and {@link VirtualArray}) is loaded from the file
 	 * system

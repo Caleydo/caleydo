@@ -9,8 +9,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.AUniqueObject;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
+import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 
@@ -21,55 +21,51 @@ import org.caleydo.core.manager.id.EManagedObjectType;
  */
 @XmlType
 @XmlRootElement
-public class VirtualArray
+public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteType, VAType, VADelta, GroupType>, VAType extends IVAType, VADelta extends VirtualArrayDelta<?, VAType>, GroupType extends GroupList<GroupType, ConcreteType, VADelta>>
 	extends AUniqueObject
-	implements IVirtualArray {
+	implements IVirtualArray<ConcreteType, VAType, VADelta, GroupType> {
 
 	ArrayList<Integer> virtualArray;
 
-	GroupList groupList = null;
-
-	int length;
+	GroupType groupList = null;
 
 	/** Used to check whether elements to be removed are in descending order */
 	int lastRemovedIndex = -1;
 
-	EVAType vaType;
+	VAType vaType;
 
 	public VirtualArray() {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
+		this.virtualArray = new ArrayList<Integer>();
 	}
 
 	/**
-	 * Constructor. Pass the length of the managed collection
-	 * 
-	 * @param iLength
-	 *            the length of the managed collection
+	 * Constructor, creates an empty Virtual Array
 	 */
-	public VirtualArray(EVAType vaType, int iLength) {
+	public VirtualArray(VAType vaType) {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
 		this.vaType = vaType;
-		this.length = iLength;
-		init();
+		this.virtualArray = new ArrayList<Integer>();
+		// init();
 	}
+
+	public abstract ConcreteType getNewInstance();
 
 	/**
 	 * Constructor. Pass the length of the managed collection and a predefined array list of indices on the
 	 * collection. This will serve as the starting point for the virtual array.
 	 * 
-	 * @param iLength
-	 * @param iLVirtualArray
+	 * @param initialList
 	 */
-	public VirtualArray(EVAType vaType, int iLength, List<Integer> iLVirtualArray) {
+	public VirtualArray(VAType vaType, List<Integer> initialList) {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
 		this.vaType = vaType;
-		this.length = iLength;
 		this.virtualArray = new ArrayList<Integer>();
-		virtualArray.addAll(iLVirtualArray);
+		virtualArray.addAll(initialList);
 	}
 
 	@Override
-	public EVAType getVAType() {
+	public VAType getVAType() {
 		return vaType;
 	}
 
@@ -85,14 +81,7 @@ public class VirtualArray
 
 	@Override
 	public void append(Integer iNewElement) {
-		if (iNewElement < length) {
-			virtualArray.add(iNewElement);
-		}
-		else
-			throw new IllegalArgumentException("Tried to add an element (" + iNewElement
-				+ ") to a virtual array that is not within the " + "allowed range  (" + length
-				+ "), which is determined by the length of the collection"
-				+ "on which the virtual array is applied");
+		virtualArray.add(iNewElement);
 	}
 
 	@Override
@@ -107,26 +96,12 @@ public class VirtualArray
 
 	@Override
 	public void add(int iIndex, Integer iNewElement) {
-		if (iNewElement < length) {
-			virtualArray.add(iIndex, iNewElement);
-		}
-		else
-			throw new IllegalArgumentException(
-				"Tried to add a element to a virtual array that is not within the "
-					+ "allowed range (which is determined by the length of the collection "
-					+ "on which the virtual array is applied");
+		virtualArray.add(iIndex, iNewElement);
 	}
 
 	@Override
 	public void set(int iIndex, Integer iNewElement) {
-		if (iNewElement < length) {
-			virtualArray.set(iIndex, iNewElement);
-		}
-		else
-			throw new IllegalArgumentException(
-				"Tried to add a element to a virtual array that is not within the "
-					+ "allowed range (which is determined by the length of the collection "
-					+ "on which the virtual array is applied");
+		virtualArray.set(iIndex, iNewElement);
 	}
 
 	@Override
@@ -188,10 +163,10 @@ public class VirtualArray
 		return virtualArray.size();
 	}
 
-	@Override
-	public void reset() {
-		init();
-	}
+	// @Override
+	// public void reset() {
+	// init();
+	// }
 
 	@Override
 	public void clear() {
@@ -224,7 +199,7 @@ public class VirtualArray
 	}
 
 	@Override
-	public void setDelta(IVirtualArrayDelta delta) {
+	public void setDelta(VADelta delta) {
 		for (VADeltaItem item : delta) {
 			switch (item.getType()) {
 				case ADD:
@@ -280,16 +255,16 @@ public class VirtualArray
 	/**
 	 * Initialize Virtual Array
 	 */
-	private void init() {
-		virtualArray = new ArrayList<Integer>(length);
-
-		for (int iCount = 0; iCount < length; iCount++) {
-			virtualArray.add(iCount);
-		}
-	}
+	// private void init() {
+	// virtualArray = new ArrayList<Integer>();
+	//
+	// for (int iCount = 0; iCount < length; iCount++) {
+	// virtualArray.add(iCount);
+	// }
+	// }
 
 	@Override
-	public GroupList getGroupList() {
+	public GroupType getGroupList() {
 		return groupList;
 	}
 
@@ -322,16 +297,16 @@ public class VirtualArray
 		return alGeneIds;
 	}
 
+	// @Override
+	// public GroupType newGroupList() {
+	//
+	// this.groupList = new GroupList(this.size());
+	//
+	// return groupList;
+	// }
+
 	@Override
-	public GroupList newGroupList() {
-
-		this.groupList = new GroupList(this.size());
-
-		return groupList;
-	}
-
-	@Override
-	public boolean setGroupList(GroupList groupList) {
+	public boolean setGroupList(GroupType groupList) {
 
 		this.groupList = groupList;
 
@@ -340,19 +315,18 @@ public class VirtualArray
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public IVirtualArray clone() {
-		VirtualArray va;
+	public ConcreteType clone() {
+		ConcreteType va;
 		try {
-			va = (VirtualArray) super.clone();
+			va = (ConcreteType) super.clone();
 		}
 		catch (CloneNotSupportedException e) {
 			throw new IllegalStateException("Clone not supportet: " + e.getMessage());
 		}
 		// va.iUniqueID = (GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
-		va.length = length;
 		va.virtualArray = (ArrayList<Integer>) virtualArray.clone();
 		if (groupList != null)
-			va.setGroupList((GroupList) groupList.clone());
+			va.setGroupList(groupList.clone());
 		va.lastRemovedIndex = lastRemovedIndex;
 		return va;
 	}
@@ -371,14 +345,6 @@ public class VirtualArray
 		this.virtualArray = virtualArray;
 	}
 
-	public int getLength() {
-		return length;
-	}
-
-	public void setLength(int length) {
-		this.length = length;
-	}
-
 	public int getLastRemovedIndex() {
 		return lastRemovedIndex;
 	}
@@ -387,11 +353,11 @@ public class VirtualArray
 		this.lastRemovedIndex = lastRemovedIndex;
 	}
 
-	public EVAType getVaType() {
+	public VAType getVaType() {
 		return vaType;
 	}
 
-	public void setVaType(EVAType vaType) {
+	public void setVaType(VAType vaType) {
 		this.vaType = vaType;
 	}
 
@@ -410,10 +376,10 @@ public class VirtualArray
 	public int[] getArray() {
 
 		int[] intArray = new int[virtualArray.size()];
-		for (int i = 0; i<virtualArray.size(); i++) {
+		for (int i = 0; i < virtualArray.size(); i++) {
 			intArray[i] = virtualArray.get(i);
 		}
-		
+
 		return intArray;
 	}
 }

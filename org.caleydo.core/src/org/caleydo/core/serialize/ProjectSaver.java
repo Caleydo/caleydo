@@ -13,7 +13,10 @@ import javax.xml.bind.Marshaller;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
-import org.caleydo.core.data.selection.EVAType;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
@@ -115,8 +118,8 @@ public class ProjectSaver {
 		AUseCase useCase = (AUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
 		LoadDataParameters parameters = useCase.getLoadDataParameters();
 		try {
-			FileOperations.writeInputStreamToFile(dirName + SET_DATA_FILE_NAME, GeneralManager.get().getResourceLoader().getResource(
-				parameters.getFileName()));
+			FileOperations.writeInputStreamToFile(dirName + SET_DATA_FILE_NAME, GeneralManager.get()
+				.getResourceLoader().getResource(parameters.getFileName()));
 		}
 		catch (FileNotFoundException e) {
 			throw new IllegalStateException("Error saving project file", e);
@@ -128,11 +131,13 @@ public class ProjectSaver {
 		try {
 			Marshaller marshaller = projectContext.createMarshaller();
 
-			saveVirtualArray(marshaller, dirName, useCase, EVAType.CONTENT);
-			saveVirtualArray(marshaller, dirName, useCase, EVAType.CONTENT_CONTEXT);
-			saveVirtualArray(marshaller, dirName, useCase, EVAType.CONTENT_EMBEDDED_HM);
-			saveVirtualArray(marshaller, dirName, useCase, EVAType.STORAGE);
+			for (ContentVAType type : ContentVAType.getRegisteredVATypes()) {
+				saveContentVA(marshaller, dirName, useCase, type);
+			}
 
+			for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
+				saveStorageVA(marshaller, dirName, useCase, type);
+			}
 			TreePorter treePorter = new TreePorter();
 			Tree<ClusterNode> geneTree = useCase.getSet().getContentTree();
 			if (geneTree != null) {
@@ -221,10 +226,17 @@ public class ProjectSaver {
 	 * @param type
 	 *            type of the virtual array within the given {@link IUseCase}.
 	 */
-	private void saveVirtualArray(Marshaller marshaller, String dir, IUseCase useCase, EVAType type)
+	private void saveContentVA(Marshaller marshaller, String dir, IUseCase useCase, ContentVAType type)
 		throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
-		VirtualArray va = (VirtualArray) useCase.getVA(type);
+		ContentVirtualArray va = (ContentVirtualArray) useCase.getContentVA(type);
+		marshaller.marshal(va, new File(fileName));
+	}
+
+	private void saveStorageVA(Marshaller marshaller, String dir, IUseCase useCase, StorageVAType type)
+		throws JAXBException {
+		String fileName = dir + "va_" + type.toString() + ".xml";
+		StorageVirtualArray va = (StorageVirtualArray) useCase.getStorageVA(type);
 		marshaller.marshal(va, new File(fileName));
 	}
 

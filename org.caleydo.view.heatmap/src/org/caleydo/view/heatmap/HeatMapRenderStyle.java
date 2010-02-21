@@ -23,9 +23,9 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 	private static final float MAXIMUM_SELECTED_AREA_PERCENTAGE = 0.8f;
 	public static final int LABEL_TEXT_MIN_SIZE = 50;
 
-	public static final float[] BACKGROUND_COLOR = {0.8f, 0.8f, 0.8f, 1};
-	public static final float[] DRAGGING_CURSOR_COLOR = {0.2f, 0.2f, 0.2f, 1};
-	public static final float[] DENDROGRAM_BACKROUND = {0.5f, 0.5f, 0.5f, 1};
+	public static final float[] BACKGROUND_COLOR = { 0.8f, 0.8f, 0.8f, 1 };
+	public static final float[] DRAGGING_CURSOR_COLOR = { 0.2f, 0.2f, 0.2f, 1 };
+	public static final float[] DENDROGRAM_BACKROUND = { 0.5f, 0.5f, 0.5f, 1 };
 	public static final float CLUSTER_BORDERS_Z = 0.009f;
 	public static final float BUTTON_Z = 0.01f;
 	public static final float BACKGROUND_Z = -0.1f;
@@ -106,19 +106,18 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 	}
 
 	public void updateFieldSizesnofish() {
-		if (heatMap.renderStorageHorizontally()) {
-			fSelectedFieldWidth = getRenderWidth()
-					/ heatMap.getContentVA().size();
-			fNormalFieldWidth = fSelectedFieldWidth;
+		// if (heatMap.renderStorageHorizontally()) {
+		// fSelectedFieldWidth = getRenderWidth()
+		// / heatMap.getContentVA().size();
+		// fNormalFieldWidth = fSelectedFieldWidth;
+		//
+		// fFieldHeight = getRenderHeight() / heatMap.getStorageVA().size();
+		// } else {
+		fSelectedFieldWidth = getRenderHeight() / heatMap.getContentVA().size();
+		fNormalFieldWidth = fSelectedFieldWidth;
 
-			fFieldHeight = getRenderHeight() / heatMap.getStorageVA().size();
-		} else {
-			fSelectedFieldWidth = getRenderHeight()
-					/ heatMap.getContentVA().size();
-			fNormalFieldWidth = fSelectedFieldWidth;
-
-			fFieldHeight = getRenderWidth() / heatMap.getStorageVA().size();
-		}
+		fFieldHeight = getRenderWidth() / heatMap.getStorageVA().size();
+		// }
 	}
 
 	/**
@@ -139,30 +138,29 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 			fSelecteFieldWidthPercentage = 1.0f / iNumberSelected;
 		}
 
-		if (heatMap.renderStorageHorizontally()) {
+		// if (heatMap.renderStorageHorizontally()) {
+		//
+		// fSelectedFieldWidth = getRenderWidth()
+		// * MAXIMUM_SELECTED_AREA_PERCENTAGE
+		// * fSelecteFieldWidthPercentage;
+		//
+		// fNormalFieldWidth = (getRenderWidth() - iNumberSelected
+		// * fSelectedFieldWidth)
+		// / (iNumberTotal - iNumberSelected);
+		//
+		// fFieldHeight = getRenderHeight() / heatMap.getStorageVA().size();
+		// } else {
 
-			fSelectedFieldWidth = getRenderWidth()
-					* MAXIMUM_SELECTED_AREA_PERCENTAGE
-					* fSelecteFieldWidthPercentage;
-
-			fNormalFieldWidth = (getRenderWidth() - iNumberSelected
-					* fSelectedFieldWidth)
-					/ (iNumberTotal - iNumberSelected);
-
-			fFieldHeight = getRenderHeight() / heatMap.getStorageVA().size();
-		} else {
-
-			fSelectedFieldWidth = getRenderHeight()
-					* MAXIMUM_SELECTED_AREA_PERCENTAGE
-					* fSelecteFieldWidthPercentage;
-			fNormalFieldWidth = (getRenderHeight() - iNumberSelected
-					* fSelectedFieldWidth)
-					/ (iNumberTotal - iNumberSelected);
-		}
+		fSelectedFieldWidth = getRenderHeight()
+				* MAXIMUM_SELECTED_AREA_PERCENTAGE
+				* fSelecteFieldWidthPercentage;
+		fNormalFieldWidth = (getRenderHeight() - iNumberSelected
+				* fSelectedFieldWidth)
+				/ (iNumberTotal - iNumberSelected);
+		// }
 		fFieldHeight = getRenderWidth() / heatMap.getStorageVA().size();
 
-		fNormalFieldWidth = fNormalFieldWidth > fSelectedFieldWidth
-				? fSelectedFieldWidth
+		fNormalFieldWidth = fNormalFieldWidth > fSelectedFieldWidth ? fSelectedFieldWidth
 				: fNormalFieldWidth;
 	}
 

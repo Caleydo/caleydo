@@ -24,9 +24,8 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
  * 
  * @author Marc Streit
  */
-public class GLConnectionLineRendererDataFlipper
-		extends
-			AGLConnectionLineRenderer {
+public class GLConnectionLineRendererDataFlipper extends
+		AGLConnectionLineRenderer {
 
 	RemoteLevelElement focusElement;
 	ArrayList<RemoteLevelElement> stackElementsRight;
@@ -74,8 +73,7 @@ public class GLConnectionLineRendererDataFlipper
 								"Current ID Type does not match the selected elemen rep's");
 
 					AGLView glView = viewGLCanvasManager
-							.getGLView(selectedElementRep
-									.getSourceViewID());
+							.getGLView(selectedElementRep.getSourceViewID());
 
 					if (glView == null) {
 						// TODO: investigate! view must not be null here.
@@ -119,8 +117,8 @@ public class GLConnectionLineRendererDataFlipper
 								.get(stackElementsLeft.get(0).getGLView()
 										.getID())) {
 							renderLine(gl, sourceViewPoints.get(0),
-									targetViewPoints.get(0), 0, new float[]{1,
-											0, 0});
+									targetViewPoints.get(0), 0, new float[] {
+											1, 0, 0 });
 						}
 					}
 
@@ -132,8 +130,8 @@ public class GLConnectionLineRendererDataFlipper
 								.get(stackElementsRight.get(0).getGLView()
 										.getID())) {
 							renderLine(gl, sourceViewPoints.get(0),
-									targetViewPoints.get(0), 0, new float[]{1,
-											0, 0});
+									targetViewPoints.get(0), 0, new float[] {
+											1, 0, 0 });
 						}
 					}
 				}

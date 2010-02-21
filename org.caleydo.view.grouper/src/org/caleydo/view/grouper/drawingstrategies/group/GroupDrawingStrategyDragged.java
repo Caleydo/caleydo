@@ -9,9 +9,8 @@ import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
-public class GroupDrawingStrategyDragged
-		extends
-			AGroupDrawingStrategyRectangular {
+public class GroupDrawingStrategyDragged extends
+		AGroupDrawingStrategyRectangular {
 
 	private GrouperRenderStyle renderStyle;
 
@@ -33,7 +32,7 @@ public class GroupDrawingStrategyDragged
 
 		float fGroupColor[] = renderStyle
 				.getGroupColorForLevel(groupRepresentation.getHierarchyLevel());
-		float fColor[] = {fGroupColor[0], fGroupColor[1], fGroupColor[2], 0.5f};
+		float fColor[] = { fGroupColor[0], fGroupColor[1], fGroupColor[2], 0.5f };
 		drawDragged(gl, groupRepresentation, fMouseCoordinateX,
 				fMouseCoordinateY, fDraggingStartMouseCoordinateX,
 				fDraggingStartMouseCoordinateY, fColor);
@@ -45,9 +44,9 @@ public class GroupDrawingStrategyDragged
 			float fDraggingStartMouseCoordinateX,
 			float fDraggingStartMouseCoordinateY) {
 
-		float fColor[] = {GrouperRenderStyle.TEXT_BG_COLOR[0],
+		float fColor[] = { GrouperRenderStyle.TEXT_BG_COLOR[0],
 				GrouperRenderStyle.TEXT_BG_COLOR[1],
-				GrouperRenderStyle.TEXT_BG_COLOR[2], 0.5f};
+				GrouperRenderStyle.TEXT_BG_COLOR[2], 0.5f };
 		drawDragged(gl, groupRepresentation, fMouseCoordinateX,
 				fMouseCoordinateY, fDraggingStartMouseCoordinateX,
 				fDraggingStartMouseCoordinateY, fColor);

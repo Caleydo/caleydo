@@ -8,15 +8,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ESetType;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.EVAType;
-import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
@@ -61,10 +62,16 @@ public class GeneticUseCase
 		possibleViews.add("org.caleydo.view.heatmap.hierarchical");
 
 		possibleIDCategories = new HashMap<EIDCategory, String>();
-		possibleIDCategories.put(EIDCategory.GENE, EVAType.CONTENT_PRIMARY);
-		possibleIDCategories.put(EIDCategory.EXPERIMENT, EVAType.STORAGE_PRIMARY);
+		possibleIDCategories.put(EIDCategory.GENE, null);
+		possibleIDCategories.put(EIDCategory.EXPERIMENT, null);
 		contentIDType = EIDType.EXPRESSION_INDEX;
 		storageIDType = EIDType.EXPERIMENT_INDEX;
+
+	}
+
+	@Override
+	public void setSet(ISet set) {
+		super.setSet(set);
 
 	}
 
@@ -72,8 +79,9 @@ public class GeneticUseCase
 	 * Initializes a virtual array with all elements, according to the data filters, as defined in
 	 * {@link EDataFilterLevel}.
 	 */
+
 	@Override
-	protected final void initFullVA() {
+	protected void initFullVA() {
 
 		// TODO preferences seem not to be initialized here either in XML case
 		String sLevel =
@@ -139,10 +147,7 @@ public class GeneticUseCase
 			alTempList.add(iCount);
 		}
 
-		// TODO: remove possible old virtual array
-		int iVAID = set.createVA(EVAType.CONTENT, alTempList);
-		mapVAIDs.put(EVAType.CONTENT, iVAID);
-
+		set.setContentVA(ContentVAType.CONTENT, new ContentVirtualArray(ContentVAType.CONTENT, alTempList));
 	}
 
 	public boolean isPathwayViewerMode() {
@@ -162,19 +167,27 @@ public class GeneticUseCase
 	}
 
 	@Override
-	public void handleVirtualArrayUpdate(IVirtualArrayDelta vaDelta, String info) {
+	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
 		EIDCategory targetCategory = vaDelta.getIDType().getCategory();
-		if (!(targetCategory == EIDCategory.EXPERIMENT || targetCategory == EIDCategory.GENE))
+		if (targetCategory != EIDCategory.GENE)
 			return;
-
-		Integer vaID = mapVAIDs.get(vaDelta.getVAType());
 
 		if (targetCategory == EIDCategory.GENE && vaDelta.getIDType() != EIDType.EXPRESSION_INDEX)
 			vaDelta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, vaDelta);
-		IVirtualArray va = set.getVA(vaID);
+		ContentVirtualArray va = set.getContentVA(vaDelta.getVAType());
 
 		va.setDelta(vaDelta);
 	}
 
+	@Override
+	public void handleStorageVAUpdate(StorageVADelta vaDelta, String info) {
+		EIDCategory targetCategory = vaDelta.getIDType().getCategory();
+		if (targetCategory != EIDCategory.EXPERIMENT)
+			return;
+
+		StorageVirtualArray va = set.getStorageVA(vaDelta.getVAType());
+
+		va.setDelta(vaDelta);
+	}
 
 }

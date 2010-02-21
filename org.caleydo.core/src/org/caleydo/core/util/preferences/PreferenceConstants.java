@@ -32,7 +32,7 @@ public class PreferenceConstants {
 
 	// TODO: make it specific for each pathway database + organism combination
 	public static final String LAST_PATHWAY_UPDATE = "lastPathwayDataUpdate";
-	
+
 	public static final String BROWSER_QUERY_DATABASE = "browserQueryDatabase";
 
 	// Color Mapping
@@ -62,8 +62,8 @@ public class PreferenceConstants {
 	public static final String VISUAL_LINKS_COLOR = "visualLinksColor";
 	public static final String VISUAL_LINKS_ANIMATED_HALO = "visualLinksAnimatedHalo";
 
-//	@Deprecated
-//	public static final String XP_CLASSIC_STYLE_MODE = "enableXPClassicStyleMode";
+	// @Deprecated
+	// public static final String XP_CLASSIC_STYLE_MODE = "enableXPClassicStyleMode";
 
 	public static final String USE_PROXY = "useProxy";
 	public static final String PROXY_SERVER = "proxyServer";

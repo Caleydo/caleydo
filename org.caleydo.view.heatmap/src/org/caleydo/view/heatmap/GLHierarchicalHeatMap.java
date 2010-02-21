@@ -28,23 +28,29 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.EVAType;
+import org.caleydo.core.data.selection.ContentGroupList;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.Group;
-import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.IGroupList;
-import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.StorageGroupList;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
-import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
-import org.caleydo.core.manager.event.view.group.ExportGroupsEvent;
-import org.caleydo.core.manager.event.view.group.InterchangeGroupsEvent;
-import org.caleydo.core.manager.event.view.group.MergeGroupsEvent;
-import org.caleydo.core.manager.event.view.storagebased.NewGroupInfoEvent;
+import org.caleydo.core.manager.event.view.group.ExportContentGroupsEvent;
+import org.caleydo.core.manager.event.view.group.ExportStorageGroupsEvent;
+import org.caleydo.core.manager.event.view.group.InterchangeContentGroupsEvent;
+import org.caleydo.core.manager.event.view.group.InterchangeStorageGroupsEvent;
+import org.caleydo.core.manager.event.view.group.MergeContentGroupsEvent;
+import org.caleydo.core.manager.event.view.group.MergeStorageGroupsEvent;
+import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -66,18 +72,22 @@ import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
-import org.caleydo.core.view.opengl.canvas.remote.receiver.IGroupsActionHandler;
-import org.caleydo.core.view.opengl.canvas.remote.receiver.INewGroupInfoHandler;
+import org.caleydo.core.view.opengl.canvas.remote.receiver.IContentGroupsActionHandler;
+import org.caleydo.core.view.opengl.canvas.remote.receiver.INewContentGroupInfoHandler;
+import org.caleydo.core.view.opengl.canvas.remote.receiver.IStorageGroupsActionHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GroupContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.rcp.dialog.file.ExportDataDialog;
-import org.caleydo.rcp.view.listener.GroupExportingListener;
-import org.caleydo.rcp.view.listener.GroupInterChangingActionListener;
-import org.caleydo.rcp.view.listener.GroupMergingActionListener;
-import org.caleydo.rcp.view.listener.NewGroupInfoActionListener;
+import org.caleydo.rcp.view.listener.ContentGroupExportingListener;
+import org.caleydo.rcp.view.listener.ContentGroupInterChangingActionListener;
+import org.caleydo.rcp.view.listener.ContentGroupMergingActionListener;
+import org.caleydo.rcp.view.listener.NewContentGroupInfoActionListener;
+import org.caleydo.rcp.view.listener.StorageGroupExportingListener;
+import org.caleydo.rcp.view.listener.StorageGroupInterChangingActionListener;
+import org.caleydo.rcp.view.listener.StorageGroupMergingActionListener;
 import org.caleydo.view.heatmap.listener.GLHierarchicalHeatMapKeyListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
@@ -97,7 +107,8 @@ import com.sun.opengl.util.texture.TextureIO;
  * @author Alexander Lex
  */
 public class GLHierarchicalHeatMap extends AStorageBasedView implements
-		IGroupsActionHandler, IClusterNodeEventReceiver, INewGroupInfoHandler,
+		IContentGroupsActionHandler, IStorageGroupsActionHandler,
+		IClusterNodeEventReceiver, INewContentGroupInfoHandler,
 		IGLRemoteRenderingView {
 
 	public final static String VIEW_ID = "org.caleydo.view.heatmap.hierarchical";
@@ -160,11 +171,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	private boolean bIsHeatmapInFocus = false;
 
 	/** embedded dendrogram */
-	private GLDendrogram glGeneDendrogramView;
+	private GLDendrogram<ContentGroupList> glGeneDendrogramView;
 	private boolean bGeneDendrogramActive = false;
 	private boolean bGeneDendrogramRenderCut = false;
 	private boolean bFirstStartGeneDendrogram = true;
-	private GLDendrogram glExperimentDendrogramView;
+	private GLDendrogram<StorageGroupList> glExperimentDendrogramView;
 	private boolean bExperimentDendrogramActive = false;
 	private boolean bExperimentDendrogramRenderCut = false;
 	private boolean bFirstStartExperimentDendrogram = true;
@@ -207,12 +218,17 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	private int iGeneGroupToDrag = -1;
 	private boolean bActivateDraggingGenes = false;
 
-	private GroupExportingListener groupExportingListener;
-	private GroupInterChangingActionListener groupInterchangingListener;
-	private GroupMergingActionListener groupMergingListener;
+	private ContentGroupExportingListener contentGroupExportingListener;
+	private StorageGroupExportingListener storageGroupExportingListener;
+
+	private ContentGroupInterChangingActionListener contentGroupInterchangingListener;
+	private StorageGroupInterChangingActionListener storageGroupInterchangingListener;
+
+	private ContentGroupMergingActionListener contentGroupMergingListener;
+	private StorageGroupMergingActionListener storageGroupMergingListener;
 	private UpdateViewListener updateViewListener;
 	private ClusterNodeSelectionListener clusterNodeMouseOverListener;
-	private NewGroupInfoActionListener newGroupInfoActionListener;
+	private NewContentGroupInfoActionListener newGroupInfoActionListener;
 
 	private boolean bRenderDendrogramBackgroundWhite = false;
 
@@ -324,8 +340,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	@Override
 	public void initLocal(GL gl) {
 
-		bRenderStorageHorizontally = false;
-
 		// Register keyboard listener to GL canvas
 		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(
 				new Runnable() {
@@ -353,8 +367,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 								.addKeyListener(glKeyListener);
 					}
 				});
-
-		bRenderStorageHorizontally = false;
 
 		this.glMouseListener = glMouseListener;
 
@@ -650,7 +662,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		glHeatMapView.setDataDomain(dataDomain);
 		glHeatMapView.setUseCase(useCase);
 		glHeatMapView.setSet(set);
-		glHeatMapView.setContentVAType(EVAType.CONTENT_EMBEDDED_HM);
+		glHeatMapView.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
 		glHeatMapView.initData();
 
 	}
@@ -694,12 +706,12 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		glExperimentDendrogramView.setRemoteRenderingGLView(this);
 
 		glGeneDendrogramView.setSet(set);
-		glGeneDendrogramView.setContentVAType(EVAType.CONTENT);
+		glGeneDendrogramView.setContentVAType(ContentVAType.CONTENT);
 		glGeneDendrogramView.initData();
 		glGeneDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 
 		glExperimentDendrogramView.setSet(set);
-		glExperimentDendrogramView.setContentVAType(EVAType.CONTENT);
+		glExperimentDendrogramView.setContentVAType(ContentVAType.CONTENT);
 		glExperimentDendrogramView.initData();
 		glExperimentDendrogramView
 				.setRenderUntilCut(bExperimentDendrogramRenderCut);
@@ -840,10 +852,19 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	protected void reactOnVAChanges(IVirtualArrayDelta delta) {
+	protected void reactOnContentVAChanges(ContentVADelta delta) {
 
 		if (delta.getVAType() == contentVAType)
 			contentVA.setGroupList(null);
+
+		// glHeatMapView.handleVirtualArrayUpdate(delta, getShortInfo());
+		bRedrawTextures = true;
+
+		setDisplayListDirty();
+	}
+
+	@Override
+	protected void reactOnStorageVAChanges(StorageVADelta delta) {
 
 		if (delta.getVAType() == storageVAType)
 			storageVA.setGroupList(null);
@@ -855,8 +876,16 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType) {
-		super.replaceVirtualArray(idCategory, vaType);
+	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType) {
+		super.replaceContentVA(idCategory, vaType);
+		hasDataWindowChanged = true;
+		iPickedSampleLevel1 = 0;
+		setDisplayListDirty();
+	}
+
+	@Override
+	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType) {
+		super.replaceStorageVA(idCategory, vaType);
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
 		setDisplayListDirty();
@@ -1116,7 +1145,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		float fHeightClusterVisualization = renderStyle
 				.getWidthClusterVisualization();
 
-		IGroupList groupList = storageVA.getGroupList();
+		StorageGroupList groupList = storageVA.getGroupList();
 		int iNrClasses = groupList.size();
 
 		gl.glLineWidth(1f);
@@ -1200,7 +1229,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		else
 			fHeight = viewFrustum.getHeight();
 
-		IGroupList groupList = storageVA.getGroupList();
+		StorageGroupList groupList = storageVA.getGroupList();
 		int iNrClasses = groupList.size();
 
 		gl.glLineWidth(1f);
@@ -1279,7 +1308,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		float fWidthClusterVisualization = renderStyle
 				.getWidthClusterVisualization();
 
-		IGroupList groupList = contentVA.getGroupList();
+		ContentGroupList groupList = contentVA.getGroupList();
 
 		gl.glTranslatef(fWidthLevel1, 0, 0);
 
@@ -3440,11 +3469,10 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		}
 
 		glHeatMapView.resetView();
-		IVirtualArrayDelta delta = new VirtualArrayDelta(
-				EVAType.CONTENT_EMBEDDED_HM, eFieldDataType);
+		ContentVADelta embeddedDelta = new ContentVADelta(
+				ContentVAType.CONTENT_EMBEDDED_HM, eFieldDataType);
 		ISelectionDelta selectionDelta = new SelectionDelta(eFieldDataType);
 
-		IVirtualArray currentVirtualArray = contentVA;
 		int iIndex = 0;
 
 		int iContentIndex = 0;
@@ -3465,11 +3493,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		for (int index = 0; index < iSamplesPerHeatmap; index++) {
 			iIndex = iCount + index;
-			if (iIndex < currentVirtualArray.size()) {
-				iContentIndex = currentVirtualArray.get(iIndex);
+			if (iIndex < contentVA.size()) {
+				iContentIndex = contentVA.get(iIndex);
 			}
 
-			delta.add(VADeltaItem.append(iContentIndex));
+			embeddedDelta.add(VADeltaItem.append(iContentIndex));
 
 			// set elements mouse over in embedded heat Map
 			for (Integer iSelectedID : setMouseOverElements) {
@@ -3504,27 +3532,25 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			}
 		}
 
-		glHeatMapView.handleVirtualArrayUpdate(delta, getShortInfo());
+		glHeatMapView.handleContentVAUpdate(embeddedDelta, getShortInfo());
 		if (selectionDelta.size() > 0) {
 			glHeatMapView.handleSelectionUpdate(selectionDelta, true, null);
 		}
 
 		// selected experiments
 
-		IVirtualArrayDelta deltaExp = new VirtualArrayDelta(storageVAType,
+		StorageVADelta deltaExp = new StorageVADelta(storageVAType,
 				eExperimentDataType);
 		ISelectionDelta selectionDeltaEx = new SelectionDelta(
 				eExperimentDataType);
-
-		IVirtualArray currentVirtualArrayEx = storageVA;
 
 		setMouseOverElements = storageSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
 		setSelectedElements = storageSelectionManager
 				.getElements(SelectionType.SELECTION);
 
-		for (int index = 0; index < currentVirtualArrayEx.size(); index++) {
-			iStorageIndex = currentVirtualArrayEx.get(index);
+		for (int index = 0; index < storageVA.size(); index++) {
+			iStorageIndex = storageVA.get(index);
 
 			deltaExp.add(VADeltaItem.append(iStorageIndex));
 
@@ -3554,37 +3580,21 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	protected void initLists() {
 
 		if (bRenderOnlyContext)
-			contentVAType = EVAType.CONTENT_CONTEXT;
+			contentVAType = ContentVAType.CONTENT_CONTEXT;
 		else
-			contentVAType = EVAType.CONTENT;
+			contentVAType = ContentVAType.CONTENT;
 
-		contentVA = useCase.getVA(contentVAType);
-		storageVA = useCase.getVA(EVAType.STORAGE);
+		contentVA = useCase.getContentVA(contentVAType);
+		storageVA = useCase.getStorageVA(storageVAType);
 
 		// In case of importing group info
 		if (set.isGeneClusterInfo())
-			contentVA.setGroupList(set.getGroupListGenes());
+			contentVA.setGroupList(set.getContentGroupList());
 		if (set.isExperimentClusterInfo())
-			storageVA.setGroupList(set.getGroupListExperiments());
-
-//		contentSelectionManager.resetSelectionManager();
-//		storageSelectionManager.resetSelectionManager();
+			storageVA.setGroupList(set.getStorageGroupList());
 
 		contentSelectionManager.setVA(contentVA);
 		storageSelectionManager.setVA(storageVA);
-
-		int iNumberOfColumns = contentVA.size();
-		int iNumberOfRows = storageVA.size();
-
-//		for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++) {
-//			storageSelectionManager.initialAdd(storageVA.get(iRowCount));
-//
-//		}
-
-		// this for loop executes one per axis
-//		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++) {
-//			contentSelectionManager.initialAdd(contentVA.get(iColumnCount));
-//		}
 
 		setDisplayListDirty();
 
@@ -3611,15 +3621,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Hierarchical Heat Map\n");
 
-		if (bRenderStorageHorizontally) {
-			sInfoText.append(contentVA.size() + " "
-					+ useCase.getContentLabel(false, true) + " in columns and "
-					+ storageVA.size() + " experiments in rows.\n");
-		} else {
-			sInfoText.append(contentVA.size() + " "
-					+ useCase.getContentLabel(true, true) + " in rows and "
-					+ storageVA.size() + " experiments in columns.\n");
-		}
+		sInfoText.append(contentVA.size() + " "
+				+ useCase.getContentLabel(true, true) + " in rows and "
+				+ storageVA.size() + " experiments in columns.\n");
 
 		if (bRenderOnlyContext) {
 			sInfoText.append("Showing only " + " "
@@ -3773,7 +3777,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
 						currentPoint.y);
 
-		IGroupList groupList = storageVA.getGroupList();
+		StorageGroupList groupList = storageVA.getGroupList();
 
 		int iNrElementsInGroup = groupList.get(iExpGroupToDrag).getNrElements();
 		float currentWidth = fWidthSample * iNrElementsInGroup;
@@ -3860,7 +3864,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
 						currentPoint.y);
 
-		IGroupList groupList = contentVA.getGroupList();
+		ContentGroupList groupList = contentVA.getGroupList();
 
 		int iNrElementsInGroup = groupList.get(iGeneGroupToDrag)
 				.getNrElements();
@@ -4285,7 +4289,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				boolean bEnableExport = true;
 				int iNrSelectedGroups = 0;
 
-				IGroupList tempGroupList = contentVA.getGroupList();
+				ContentGroupList tempGroupList = contentVA.getGroupList();
 
 				for (Group group : tempGroupList) {
 					if (group.getSelectionType() == SelectionType.SELECTION)
@@ -4392,7 +4396,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				boolean bEnableExport = true;
 				int iNrSelectedGroups = 0;
 
-				IGroupList tempGroupList = storageVA.getGroupList();
+				StorageGroupList tempGroupList = storageVA.getGroupList();
 
 				for (Group group : tempGroupList) {
 					if (group.getSelectionType() == SelectionType.SELECTION)
@@ -4732,34 +4736,24 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		// group/cluster selections
 		if (storageVA.getGroupList() != null) {
-			IGroupList groupList = storageVA.getGroupList();
+			StorageGroupList groupList = storageVA.getGroupList();
 
 			for (Group group : groupList)
 				group.setSelectionType(SelectionType.NORMAL);
 		}
 		if (contentVA.getGroupList() != null) {
-			IGroupList groupList = contentVA.getGroupList();
+			ContentGroupList groupList = contentVA.getGroupList();
 
 			for (Group group : groupList)
 				group.setSelectionType(SelectionType.NORMAL);
 		}
-	}
-
-	@Override
-	public void changeOrientation(boolean defaultOrientation) {
-		// nothing to do
-	}
-
-	@Override
-	public boolean isInDefaultOrientation() {
-		return bRenderStorageHorizontally;
 	}
 
 	@SuppressWarnings("unused")
 	private void activateGroupHandling() {
 
 		if (contentVA.getGroupList() == null) {
-			GroupList groupList = new GroupList(0);
+			ContentGroupList groupList = new ContentGroupList();
 			Group group = new Group(contentVA.size(), false, 0,
 					SelectionType.NORMAL);
 			groupList.append(group);
@@ -4767,7 +4761,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		}
 
 		if (storageVA.getGroupList() == null) {
-			GroupList groupList = new GroupList(0);
+			StorageGroupList groupList = new StorageGroupList();
 			Group group = new Group(storageVA.size(), false, 0,
 					SelectionType.NORMAL);
 			groupList.append(group);
@@ -4939,105 +4933,12 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	public void handleExportGroups(boolean bGeneGroup) {
-
-		ArrayList<Integer> genesToExport = new ArrayList<Integer>();
-		ArrayList<Integer> experimentsToExport = new ArrayList<Integer>();
-
-		if (bGeneGroup) {
-			IGroupList groupList = contentVA.getGroupList();
-
-			int groupCnt = 0;
-
-			for (Group iter : groupList) {
-				if (iter.getSelectionType() == SelectionType.SELECTION)
-					genesToExport.addAll(contentVA.getGeneIdsOfGroup(groupCnt));
-				groupCnt++;
-			}
-
-			if (storageVA.getGroupList() != null) {
-				groupList = storageVA.getGroupList();
-
-				groupCnt = 0;
-				for (Group iter : groupList) {
-					if (iter.getSelectionType() == SelectionType.SELECTION)
-						experimentsToExport.addAll(storageVA
-								.getGeneIdsOfGroup(groupCnt));
-					groupCnt++;
-				}
-				if (experimentsToExport.size() == 0)
-					experimentsToExport = storageVA.getIndexList();
-
-			} else
-				experimentsToExport = storageVA.getIndexList();
-		} else {
-			IGroupList groupList = storageVA.getGroupList();
-
-			int groupCnt = 0;
-
-			for (Group iter : groupList) {
-				if (iter.getSelectionType() == SelectionType.SELECTION)
-					experimentsToExport.addAll(storageVA
-							.getGeneIdsOfGroup(groupCnt));
-				groupCnt++;
-			}
-
-			if (contentVA.getGroupList() != null) {
-				groupList = contentVA.getGroupList();
-
-				groupCnt = 0;
-				for (Group iter : groupList) {
-					if (iter.getSelectionType() == SelectionType.SELECTION)
-						genesToExport.addAll(contentVA
-								.getGeneIdsOfGroup(groupCnt));
-					groupCnt++;
-				}
-				if (genesToExport.size() == 0)
-					genesToExport = contentVA.getIndexList();
-
-			} else
-				genesToExport = contentVA.getIndexList();
-		}
-
-		// TODO: open a dialog to select a folder and file name
-		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new
-		// Runnable() {
-		// public void run() {
-		// }
-		// });
-		final ArrayList<Integer> finalGenesToExport = genesToExport;
-		final ArrayList<Integer> finaleExperimentsToExport = experimentsToExport;
-		getParentGLCanvas().getParentComposite().getDisplay().asyncExec(
-				new Runnable() {
-
-					@Override
-					public void run() {
-						ExportDataDialog exportDialog = new ExportDataDialog(
-								new Shell());
-
-						exportDialog.addGroupData(finalGenesToExport,
-								finaleExperimentsToExport);
-						exportDialog.open();
-						return;
-					}
-				});
-
-	}
-
-	@Override
-	public void handleInterchangeGroups(boolean bGeneGroup) {
-		IVirtualArray va;
+	public void handleInterchangeContentGroups() {
 		Tree<ClusterNode> tree = null;
 
-		if (bGeneGroup) {
-			va = contentVA;
-			tree = set.getContentTree();
-		} else {
-			va = storageVA;
-			tree = set.getStorageTree();
-		}
-
-		IGroupList groupList = va.getGroupList();
+		ContentVirtualArray va = contentVA;
+		tree = set.getContentTree();
+		ContentGroupList groupList = va.getGroupList();
 
 		ArrayList<Integer> selGroups = new ArrayList<Integer>();
 
@@ -5052,29 +4953,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		}
 
 		if (tree != null) {
+			warn();
+			bGeneDendrogramActive = false;
+			bGeneDendrogramRenderCut = false;
+			set.setContentTree(null);
 
-			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(
-					new Runnable() {
-						public void run() {
-							Shell shell = new Shell();
-							MessageBox messageBox = new MessageBox(shell,
-									SWT.CANCEL);
-							messageBox.setText("Warning");
-							messageBox
-									.setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
-							messageBox.open();
-						}
-					});
-
-			if (bGeneGroup) {
-				bGeneDendrogramActive = false;
-				bGeneDendrogramRenderCut = false;
-				set.setContentTree(null);
-			} else {
-				bExperimentDendrogramActive = false;
-				bExperimentDendrogramRenderCut = false;
-				set.setStorageTree(null);
-			}
 		}
 
 		// interchange
@@ -5089,96 +4972,54 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	}
 
-	@Override
-	public void handleMergeGroups(boolean bGeneGroup) {
-		IVirtualArray va;
-		Tree<ClusterNode> tree = null;
-
-		if (bGeneGroup) {
-			va = contentVA;
-			tree = set.getContentTree();
-		} else {
-			va = storageVA;
-			tree = set.getStorageTree();
-		}
-
-		IGroupList groupList = va.getGroupList();
-
-		ArrayList<Integer> selGroups = new ArrayList<Integer>();
-
-		if (groupList == null) {
-			System.out.println("No group assignment available!");
-			return;
-		}
-
-		for (Group iter : groupList) {
-			if (iter.getSelectionType() == SelectionType.SELECTION)
-				selGroups.add(groupList.indexOf(iter));
-		}
-
-		if (tree != null) {
-
-			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(
-					new Runnable() {
-						public void run() {
-							Shell shell = new Shell();
-							MessageBox messageBox = new MessageBox(shell,
-									SWT.CANCEL);
-							messageBox.setText("Warning");
-							messageBox
-									.setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
-							messageBox.open();
-						}
-					});
-
-			if (bGeneGroup) {
-				bGeneDendrogramActive = false;
-				bGeneDendrogramRenderCut = false;
-				set.setContentTree(null);
-			} else {
-				bExperimentDendrogramActive = false;
-				bExperimentDendrogramRenderCut = false;
-				set.setStorageTree(null);
-			}
-		}
-
-		// merge
-		while (selGroups.size() >= 2) {
-
-			int iLastSelected = selGroups.size() - 1;
-
-			// merge last and the one before last
-			if (groupList.merge(va, selGroups.get(iLastSelected - 1), selGroups
-					.get(iLastSelected)) == false) {
-				System.out.println("Problem during merge!!!");
-				return;
-			}
-			selGroups.remove(iLastSelected);
-		}
-
-		bRedrawTextures = true;
-
-		setDisplayListDirty();
+	private void warn() {
+		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(
+				new Runnable() {
+					public void run() {
+						Shell shell = new Shell();
+						MessageBox messageBox = new MessageBox(shell,
+								SWT.CANCEL);
+						messageBox.setText("Warning");
+						messageBox
+								.setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
+						messageBox.open();
+					}
+				});
 	}
 
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		groupExportingListener = new GroupExportingListener();
-		groupExportingListener.setHandler(this);
-		eventPublisher.addListener(ExportGroupsEvent.class,
-				groupExportingListener);
+		contentGroupExportingListener = new ContentGroupExportingListener();
+		contentGroupExportingListener.setHandler(this);
+		eventPublisher.addListener(ExportContentGroupsEvent.class,
+				contentGroupExportingListener);
 
-		groupInterchangingListener = new GroupInterChangingActionListener();
-		groupInterchangingListener.setHandler(this);
-		eventPublisher.addListener(InterchangeGroupsEvent.class,
-				groupInterchangingListener);
+		storageGroupExportingListener = new StorageGroupExportingListener();
+		storageGroupExportingListener.setHandler(this);
+		eventPublisher.addListener(ExportStorageGroupsEvent.class,
+				storageGroupExportingListener);
 
-		groupMergingListener = new GroupMergingActionListener();
-		groupMergingListener.setHandler(this);
-		eventPublisher
-				.addListener(MergeGroupsEvent.class, groupMergingListener);
+		contentGroupInterchangingListener = new ContentGroupInterChangingActionListener();
+		contentGroupInterchangingListener.setHandler(this);
+		eventPublisher.addListener(InterchangeContentGroupsEvent.class,
+				contentGroupInterchangingListener);
+
+		storageGroupInterchangingListener = new StorageGroupInterChangingActionListener();
+		storageGroupInterchangingListener.setHandler(this);
+		eventPublisher.addListener(InterchangeStorageGroupsEvent.class,
+				storageGroupInterchangingListener);
+
+		contentGroupMergingListener = new ContentGroupMergingActionListener();
+		contentGroupMergingListener.setHandler(this);
+		eventPublisher.addListener(MergeContentGroupsEvent.class,
+				contentGroupMergingListener);
+
+		storageGroupMergingListener = new StorageGroupMergingActionListener();
+		storageGroupMergingListener.setHandler(this);
+		eventPublisher.addListener(MergeStorageGroupsEvent.class,
+				storageGroupMergingListener);
 
 		updateViewListener = new UpdateViewListener();
 		updateViewListener.setHandler(this);
@@ -5189,9 +5030,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		eventPublisher.addListener(ClusterNodeSelectionEvent.class,
 				clusterNodeMouseOverListener);
 
-		newGroupInfoActionListener = new NewGroupInfoActionListener();
+		newGroupInfoActionListener = new NewContentGroupInfoActionListener();
 		newGroupInfoActionListener.setHandler(this);
-		eventPublisher.addListener(NewGroupInfoEvent.class,
+		eventPublisher.addListener(NewContentGroupInfoEvent.class,
 				newGroupInfoActionListener);
 
 	}
@@ -5200,17 +5041,29 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
-		if (groupExportingListener != null) {
-			eventPublisher.removeListener(groupExportingListener);
-			groupExportingListener = null;
+		if (contentGroupExportingListener != null) {
+			eventPublisher.removeListener(contentGroupExportingListener);
+			contentGroupExportingListener = null;
 		}
-		if (groupInterchangingListener != null) {
-			eventPublisher.removeListener(groupInterchangingListener);
-			groupInterchangingListener = null;
+		if (storageGroupExportingListener != null) {
+			eventPublisher.removeListener(storageGroupExportingListener);
+			storageGroupExportingListener = null;
 		}
-		if (groupMergingListener != null) {
-			eventPublisher.removeListener(groupMergingListener);
-			groupMergingListener = null;
+		if (contentGroupInterchangingListener != null) {
+			eventPublisher.removeListener(contentGroupInterchangingListener);
+			contentGroupInterchangingListener = null;
+		}
+		if (storageGroupInterchangingListener != null) {
+			eventPublisher.removeListener(storageGroupInterchangingListener);
+			storageGroupInterchangingListener = null;
+		}
+		if (contentGroupMergingListener != null) {
+			eventPublisher.removeListener(contentGroupMergingListener);
+			contentGroupMergingListener = null;
+		}
+		if (storageGroupMergingListener != null) {
+			eventPublisher.removeListener(storageGroupMergingListener);
+			storageGroupMergingListener = null;
 		}
 		if (updateViewListener != null) {
 			eventPublisher.removeListener(updateViewListener);
@@ -5469,48 +5322,30 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	public void handleNewGroupInfo(EVAType eVAType, GroupList groupList,
-			boolean bDeleteTree) {
+	public void handleNewContentGroupInfo(ContentVAType eVAType,
+			ContentGroupList groupList, boolean bDeleteTree) {
 
 		Tree<ClusterNode> tree = null;
 
 		if (eVAType == contentVA.getVAType()) {
 			contentVA.setGroupList(groupList);
 			tree = set.getContentTree();
-		} else if (eVAType == storageVA.getVAType()) {
-			storageVA.setGroupList(groupList);
-			tree = set.getStorageTree();
+		} else {
+			return;
 		}
 
 		// if hierarchical clusterer result available, discard tree
 		if (bDeleteTree && tree != null) {
-			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(
-					new Runnable() {
-						public void run() {
-							Shell shell = new Shell();
-							MessageBox messageBox = new MessageBox(shell,
-									SWT.CANCEL);
-							messageBox.setText("Warning");
-							messageBox
-									.setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
-							messageBox.open();
-						}
-					});
+			warn();
 
-			if (eVAType == contentVA.getVAType()) {
-				bGeneDendrogramActive = false;
-				bGeneDendrogramRenderCut = false;
-				set.setContentTree(null);
-			} else {
-				bExperimentDendrogramActive = false;
-				bExperimentDendrogramRenderCut = false;
-				set.setStorageTree(null);
-			}
+			bGeneDendrogramActive = false;
+			bGeneDendrogramRenderCut = false;
+			set.setContentTree(null);
+
 		}
 
 		updateLevels();
 		setDisplayListDirty();
-
 	}
 
 	@Override
@@ -5520,4 +5355,203 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		// return views;
 		return new ArrayList<AGLView>();
 	}
+
+	@Override
+	public void handleExportContentGroups() {
+
+		ArrayList<Integer> genesToExport = new ArrayList<Integer>();
+		ArrayList<Integer> experimentsToExport = new ArrayList<Integer>();
+
+		ContentGroupList groupList = contentVA.getGroupList();
+
+		int groupCnt = 0;
+
+		for (Group iter : groupList) {
+			if (iter.getSelectionType() == SelectionType.SELECTION)
+				genesToExport.addAll(contentVA.getGeneIdsOfGroup(groupCnt));
+			groupCnt++;
+		}
+
+		if (storageVA.getGroupList() != null) {
+			StorageGroupList storageGroupList = storageVA.getGroupList();
+
+			groupCnt = 0;
+			for (Group iter : storageGroupList) {
+				if (iter.getSelectionType() == SelectionType.SELECTION)
+					experimentsToExport.addAll(storageVA
+							.getGeneIdsOfGroup(groupCnt));
+				groupCnt++;
+			}
+			if (experimentsToExport.size() == 0)
+				experimentsToExport = storageVA.getIndexList();
+
+		} else
+			experimentsToExport = storageVA.getIndexList();
+
+		openExportDialog(genesToExport, experimentsToExport);
+
+	}
+
+	@Override
+	public void handleExportStorageGroups() {
+
+		ArrayList<Integer> genesToExport = new ArrayList<Integer>();
+		ArrayList<Integer> experimentsToExport = new ArrayList<Integer>();
+
+		StorageGroupList groupList = storageVA.getGroupList();
+
+		int groupCnt = 0;
+
+		for (Group iter : groupList) {
+			if (iter.getSelectionType() == SelectionType.SELECTION)
+				experimentsToExport.addAll(storageVA
+						.getGeneIdsOfGroup(groupCnt));
+			groupCnt++;
+		}
+
+		if (contentVA.getGroupList() != null) {
+			ContentGroupList contentGroupList = contentVA.getGroupList();
+
+			groupCnt = 0;
+			for (Group iter : contentGroupList) {
+				if (iter.getSelectionType() == SelectionType.SELECTION)
+					genesToExport.addAll(contentVA.getGeneIdsOfGroup(groupCnt));
+				groupCnt++;
+			}
+			if (genesToExport.size() == 0)
+				genesToExport = contentVA.getIndexList();
+
+		} else
+			genesToExport = contentVA.getIndexList();
+
+		openExportDialog(genesToExport, experimentsToExport);
+
+	}
+
+	private void openExportDialog(final ArrayList<Integer> genesToExport,
+			final ArrayList<Integer> experimentsToExport) {
+
+		getParentGLCanvas().getParentComposite().getDisplay().asyncExec(
+				new Runnable() {
+
+					@Override
+					public void run() {
+						ExportDataDialog exportDialog = new ExportDataDialog(
+								new Shell());
+
+						exportDialog.addGroupData(genesToExport,
+								experimentsToExport);
+						exportDialog.open();
+						return;
+					}
+				});
+	}
+
+	@Override
+	public void handleInterchangeStorageGroups() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void handleMergeContentGroups() {
+		ContentVirtualArray va;
+		Tree<ClusterNode> tree = null;
+
+		va = contentVA;
+		tree = set.getContentTree();
+
+		ContentGroupList groupList = va.getGroupList();
+
+		ArrayList<Integer> selGroups = new ArrayList<Integer>();
+
+		if (groupList == null) {
+			System.out.println("No group assignment available!");
+			return;
+		}
+
+		for (Group iter : groupList) {
+			if (iter.getSelectionType() == SelectionType.SELECTION)
+				selGroups.add(groupList.indexOf(iter));
+		}
+
+		if (tree != null) {
+
+			warn();
+
+			bGeneDendrogramActive = false;
+			bGeneDendrogramRenderCut = false;
+			set.setContentTree(null);
+
+		}
+
+		// merge
+		while (selGroups.size() >= 2) {
+
+			int iLastSelected = selGroups.size() - 1;
+
+			// merge last and the one before last
+			if (groupList.merge(va, selGroups.get(iLastSelected - 1), selGroups
+					.get(iLastSelected)) == false) {
+				System.out.println("Problem during merge!!!");
+				return;
+			}
+			selGroups.remove(iLastSelected);
+		}
+
+		bRedrawTextures = true;
+
+		setDisplayListDirty();
+	}
+
+	@Override
+	public void handleMergeStorageGroups() {
+		StorageVirtualArray va;
+		Tree<ClusterNode> tree = null;
+
+		va = storageVA;
+		tree = set.getStorageTree();
+
+		StorageGroupList groupList = va.getGroupList();
+
+		ArrayList<Integer> selGroups = new ArrayList<Integer>();
+
+		if (groupList == null) {
+			System.out.println("No group assignment available!");
+			return;
+		}
+
+		for (Group iter : groupList) {
+			if (iter.getSelectionType() == SelectionType.SELECTION)
+				selGroups.add(groupList.indexOf(iter));
+		}
+
+		if (tree != null) {
+
+			warn();
+
+			bExperimentDendrogramActive = false;
+			bExperimentDendrogramRenderCut = false;
+			set.setStorageTree(null);
+		}
+
+		// merge
+		while (selGroups.size() >= 2) {
+
+			int iLastSelected = selGroups.size() - 1;
+
+			// merge last and the one before last
+			if (groupList.merge(va, selGroups.get(iLastSelected - 1), selGroups
+					.get(iLastSelected)) == false) {
+				System.out.println("Problem during merge!!!");
+				return;
+			}
+			selGroups.remove(iLastSelected);
+		}
+
+		bRedrawTextures = true;
+
+		setDisplayListDirty();
+	}
+
 }

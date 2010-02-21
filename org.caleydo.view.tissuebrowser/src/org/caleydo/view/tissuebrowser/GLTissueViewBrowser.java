@@ -11,14 +11,14 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.EVAType;
-import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
-import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.IUseCase;
-import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
+import org.caleydo.core.manager.event.data.ReplaceVAEvent;
+import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -28,17 +28,16 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AGLViewBrowser;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.ReplaceVirtualArrayListener;
+import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.view.tissue.GLTissue;
 import org.caleydo.view.tissue.SerializedTissueView;
 
-public class GLTissueViewBrowser extends AGLViewBrowser
-		implements
-			IVirtualArrayUpdateHandler {
+public class GLTissueViewBrowser extends AGLViewBrowser implements
+		IContentVAUpdateHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.tissuebrowser";
 
@@ -46,11 +45,11 @@ public class GLTissueViewBrowser extends AGLViewBrowser
 
 	private HashMap<Integer, String> mapExperimentToTexturePath;
 
-	private SelectionManager experiementSelectionManager;
+	private ContentSelectionManager experiementSelectionManager;
 
 	private SelectionUpdateListener selectionUpdateListener;
-	private VirtualArrayUpdateListener virtualArrayUpdateListener;
-	private ReplaceVirtualArrayListener replaceVirtualArrayListener;
+	private ContentVAUpdateListener virtualArrayUpdateListener;
+	private ReplaceContentVAListener replaceVirtualArrayListener;
 
 	private EIDType primaryIDType = EIDType.EXPERIMENT_INDEX;
 
@@ -70,9 +69,8 @@ public class GLTissueViewBrowser extends AGLViewBrowser
 	public void setUseCase(IUseCase useCase) {
 		super.setUseCase(useCase);
 		contentVA = GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA)
-				.getVA(EVAType.CONTENT);
-		experiementSelectionManager = new SelectionManager.Builder(
-				primaryIDType).build();
+				.getContentVA(ContentVAType.CONTENT);
+		experiementSelectionManager = new ContentSelectionManager(primaryIDType);
 		experiementSelectionManager.setVA(contentVA);
 
 		addInitialViews();
@@ -283,14 +281,14 @@ public class GLTissueViewBrowser extends AGLViewBrowser
 		eventPublisher.addListener(SelectionUpdateEvent.class,
 				selectionUpdateListener);
 
-		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
+		virtualArrayUpdateListener = new ContentVAUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class,
 				virtualArrayUpdateListener);
 
-		replaceVirtualArrayListener = new ReplaceVirtualArrayListener();
+		replaceVirtualArrayListener = new ReplaceContentVAListener();
 		replaceVirtualArrayListener.setHandler(this);
-		eventPublisher.addListener(ReplaceVirtualArrayEvent.class,
+		eventPublisher.addListener(ReplaceVAEvent.class,
 				replaceVirtualArrayListener);
 
 	}
@@ -321,48 +319,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser
 
 	}
 
-	@Override
-	public void handleVirtualArrayUpdate(IVirtualArrayDelta vaDelta, String info) {
-		if (vaDelta.getIDType() == primaryIDType) {
-			experiementSelectionManager.setVADelta(vaDelta);
-		}
-	}
-
-	@Override
-	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType) {
-
-		if (idCategory != EIDCategory.EXPERIMENT)
-			return;
-
-		IUseCase clinicalUseCase = GeneralManager.get().getUseCase(
-				EDataDomain.CLINICAL_DATA);
-
-		String primaryVAType = clinicalUseCase
-				.getVATypeForIDCategory(idCategory);
-		if (primaryVAType == null)
-			return;
-
-		EVAType suggestedVAType = EVAType
-				.getVATypeForPrimaryVAType(primaryVAType);
-
-		if (vaType != suggestedVAType
-				|| vaType.getPrimaryVAType() != primaryVAType)
-			return;
-
-		if (vaType == storageVAType) {
-			storageVA = clinicalUseCase.getVA(vaType);
-			// storageSelectionManager.setVA(storageVA);
-		} else if (vaType == contentVAType) {
-			contentVA = clinicalUseCase.getVA(vaType);
-			// contentSelectionManager.setVA(contentVA);
-		} else
-			return;
-
-		initData();
-		updateViews();
-	}
-
-	public SelectionManager getSelectionManager() {
+	public ContentSelectionManager getSelectionManager() {
 		return experiementSelectionManager;
 	}
 
@@ -374,15 +331,41 @@ public class GLTissueViewBrowser extends AGLViewBrowser
 	protected void removeSelection(int iElementID) {
 
 		experiementSelectionManager.remove(iElementID, false);
-		IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EVAType.CONTENT,
+		ContentVADelta vaDelta = new ContentVADelta(ContentVAType.CONTENT,
 				EIDType.EXPERIMENT_INDEX);
 		vaDelta.add(VADeltaItem.removeElement(iElementID));
 
-		VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
+		ContentVAUpdateEvent virtualArrayUpdateEvent = new ContentVAUpdateEvent();
 		virtualArrayUpdateEvent.setSender(this);
-		virtualArrayUpdateEvent
-				.setVirtualArrayDelta((VirtualArrayDelta) vaDelta);
+		virtualArrayUpdateEvent.setVirtualArrayDelta(vaDelta);
 		virtualArrayUpdateEvent.setInfo(getShortInfo());
 		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
+	}
+
+	@Override
+	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
+		if (vaDelta.getIDType() == primaryIDType) {
+			experiementSelectionManager.setVADelta(vaDelta);
+		}
+	}
+
+	@Override
+	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType) {
+		if (idCategory != EIDCategory.EXPERIMENT)
+			return;
+
+		IUseCase clinicalUseCase = GeneralManager.get().getUseCase(
+				EDataDomain.CLINICAL_DATA);
+
+		String primaryVAType = clinicalUseCase
+				.getVATypeForIDCategory(idCategory);
+		if (primaryVAType == null)
+			return;
+
+		contentVA = clinicalUseCase.getContentVA(vaType);
+		// contentSelectionManager.setVA(contentVA);
+
+		initData();
+		updateViews();
 	}
 }

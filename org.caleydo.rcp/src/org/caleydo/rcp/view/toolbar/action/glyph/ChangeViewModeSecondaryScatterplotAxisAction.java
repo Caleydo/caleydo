@@ -16,8 +16,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 
 public class ChangeViewModeSecondaryScatterplotAxisAction
-		extends
-			AToolBarAction implements IMenuCreator {
+	extends AToolBarAction
+	implements IMenuCreator {
 	public static final String TEXT = "Switch Scatterplot Axis definition";
 	// public static final String ICON =
 	// "resources/icons/view/glyph/sort_scatterplot.png";
@@ -76,8 +76,8 @@ public class ChangeViewModeSecondaryScatterplotAxisAction
 		menu = new Menu(parent);
 
 		// get all combo box entrys
-		final HashMap<String, Integer> list = GeneralManager.get()
-				.getGlyphManager().getGlyphAttributeComboboxEntryList();
+		final HashMap<String, Integer> list =
+			GeneralManager.get().getGlyphManager().getGlyphAttributeComboboxEntryList();
 
 		ArrayList<String> names = new ArrayList<String>(list.keySet());
 		Collections.sort(names);
@@ -88,9 +88,8 @@ public class ChangeViewModeSecondaryScatterplotAxisAction
 				public void run() {
 
 					GeneralManager.get().getEventPublisher().triggerEvent(
-							new GlyphUpdatePositionModelEvent(iViewID,
-									EPositionModel.DISPLAY_SCATTERPLOT,
-									axisnum, list.get(name)));
+						new GlyphUpdatePositionModelEvent(iViewID, EPositionModel.DISPLAY_SCATTERPLOT,
+							axisnum, list.get(name)));
 				}
 			};
 			addActionToMenu(menu, axisAction);

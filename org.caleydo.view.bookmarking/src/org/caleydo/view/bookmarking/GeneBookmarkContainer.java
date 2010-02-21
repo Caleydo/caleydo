@@ -2,7 +2,7 @@ package org.caleydo.view.bookmarking;
 
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.collection.UniqueList;
@@ -16,7 +16,7 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
  * 
  * @author Alexander Lex
  */
-class GeneBookmarkContainer extends ABookmarkContainer {
+class GeneBookmarkContainer extends ABookmarkContainer<ContentSelectionManager> {
 
 	ColorMapping colorMapping;
 
@@ -27,7 +27,8 @@ class GeneBookmarkContainer extends ABookmarkContainer {
 		colorMapping = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 
-		selectionManager = new SelectionManager.Builder(EIDType.DAVID).build();
+		selectionManager = GeneralManager.get().getMasterUseCase()
+				.getContentSelectionManager();
 
 	}
 
@@ -47,7 +48,7 @@ class GeneBookmarkContainer extends ABookmarkContainer {
 				throw new IllegalStateException("ID type unhandled");
 			GeneBookmark bookmark = new GeneBookmark(textRenderer, davidID);
 			bookmarkItems.add(bookmark);
-//			selectionManager.add(davidID);
+			// selectionManager.add(davidID);
 		}
 
 	}

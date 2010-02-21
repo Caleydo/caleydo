@@ -11,9 +11,8 @@ import org.caleydo.view.radial.GLRadialHierarchy;
  * 
  * @author Christian
  */
-public class SetMaxDisplayedHierarchyDepthListener
-		extends
-			AEventListener<GLRadialHierarchy> {
+public class SetMaxDisplayedHierarchyDepthListener extends
+		AEventListener<GLRadialHierarchy> {
 
 	@Override
 	public void handleEvent(AEvent event) {

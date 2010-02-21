@@ -1,12 +1,9 @@
 package org.caleydo.core.util.clusterer;
 
-import java.util.ArrayList;
-
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.Group;
-import org.caleydo.core.data.selection.GroupList;
+import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.SWT;
@@ -39,218 +36,28 @@ public class ClusterManager {
 	 *            All information needed ba cluster algorithm
 	 * @return array list of {@link IVirtualArray}s including VAs for content and storage.
 	 */
-	public ArrayList<IVirtualArray> cluster(ClusterState clusterState) {
+	public ClusterResult cluster(ClusterState clusterState) {
 
-		ArrayList<IVirtualArray> iAlVAs = new ArrayList<IVirtualArray>();
-		iAlVAs.add(set.getVA(clusterState.getContentVaId()));
-		iAlVAs.add(set.getVA(clusterState.getStorageVaId()));
-
-		IVirtualArray tempVA = null;
-
-		AClusterer clusterer = null;
+		ClusterResult clusterResult = null;
 
 		switch (clusterState.getClustererAlgo()) {
 			case TREE_CLUSTERER:
-
-				clusterer = new TreeClusterer(0);
-
-				try {
-					if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
-						clusterer = new TreeClusterer(set.getVA(clusterState.getContentVaId()).size());
-
-						tempVA = clusterer.getSortedVA(set, clusterState, 0, 2);
-
-						if (tempVA != null)
-							iAlVAs.set(0, tempVA);
-
-					}
-					else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
-						clusterer = new TreeClusterer(set.getVA(clusterState.getStorageVaId()).size());
-
-						tempVA = clusterer.getSortedVA(set, clusterState, 0, 2);
-
-						if (tempVA != null)
-							iAlVAs.set(1, tempVA);
-
-					}
-					else if (clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
-
-						clusterer = new TreeClusterer(set.getVA(clusterState.getStorageVaId()).size());
-
-						clusterState.setClustererType(EClustererType.EXPERIMENTS_CLUSTERING);
-						tempVA = clusterer.getSortedVA(set, clusterState, 0, 1);
-
-						if (tempVA != null) {
-							iAlVAs.set(1, tempVA);
-
-							clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-							clusterer = new TreeClusterer(set.getVA(clusterState.getContentVaId()).size());
-
-							tempVA = clusterer.getSortedVA(set, clusterState, 50, 1);
-
-							if (tempVA != null)
-								iAlVAs.set(0, tempVA);
-						}
-					}
-				}
-				catch (OutOfMemoryError e) {
-
-				}
-
+				clusterResult = runClustering(new TreeClusterer(), clusterState);
 				break;
-
 			case COBWEB_CLUSTERER:
-
-				clusterer = new HierarchicalClusterer(0);
-
-				if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
-
-					tempVA = clusterer.getSortedVA(set, clusterState, 0, 2);
-
-					if (tempVA != null)
-						iAlVAs.set(0, tempVA);
-
-				}
-				else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
-
-					tempVA = clusterer.getSortedVA(set, clusterState, 0, 2);
-
-					if (tempVA != null)
-						iAlVAs.set(1, tempVA);
-
-				}
-				else if (clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
-
-					clusterState.setClustererType(EClustererType.EXPERIMENTS_CLUSTERING);
-					tempVA = clusterer.getSortedVA(set, clusterState, 0, 1);
-
-					if (tempVA != null) {
-						iAlVAs.set(1, tempVA);
-
-						clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-						tempVA = clusterer.getSortedVA(set, clusterState, 50, 1);
-
-						if (tempVA != null)
-							iAlVAs.set(0, tempVA);
-					}
-				}
-
+				clusterResult = runClustering(new HierarchicalClusterer(), clusterState);
 				break;
-
 			case AFFINITY_PROPAGATION:
-
-				clusterer = new AffinityClusterer(0);
-
-				try {
-					if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
-						clusterer = new AffinityClusterer(set.getVA(clusterState.getContentVaId()).size());
-
-						tempVA = clusterer.getSortedVA(set, clusterState, 0, 2);
-
-						if (tempVA != null) {
-							iAlVAs.set(0, tempVA);
-							setGroupList(tempVA, clusterState);
-							set.setContentTree(null);
-						}
-
-					}
-					else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
-						clusterer = new AffinityClusterer(set.getVA(clusterState.getStorageVaId()).size());
-
-						tempVA = clusterer.getSortedVA(set, clusterState, 0, 2);
-
-						if (tempVA != null) {
-							iAlVAs.set(1, tempVA);
-							setGroupList(tempVA, clusterState);
-							set.setStorageTree(null);
-						}
-
-					}
-					else if (clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
-
-						clusterer = new AffinityClusterer(set.getVA(clusterState.getStorageVaId()).size());
-
-						clusterState.setClustererType(EClustererType.EXPERIMENTS_CLUSTERING);
-						tempVA = clusterer.getSortedVA(set, clusterState, 0, 1);
-
-						if (tempVA != null) {
-							iAlVAs.set(1, tempVA);
-							setGroupList(tempVA, clusterState);
-							set.setStorageTree(null);
-
-							clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-							clusterer =
-								new AffinityClusterer(set.getVA(clusterState.getContentVaId()).size());
-
-							tempVA = clusterer.getSortedVA(set, clusterState, 50, 1);
-
-							if (tempVA != null) {
-								iAlVAs.set(0, tempVA);
-								setGroupList(tempVA, clusterState);
-								set.setContentTree(null);
-							}
-						}
-					}
-				}
-				catch (OutOfMemoryError e) {
-					clusterer.destroy();
-				}
-
+				clusterResult = runClustering(new AffinityClusterer(), clusterState);
 				break;
-
 			case KMEANS_CLUSTERER:
+				clusterResult = runClustering(new KMeansClusterer(), clusterState);
 
-				clusterer = new KMeansClusterer(0);
-
-				if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
-
-					tempVA = clusterer.getSortedVA(set, clusterState, 0, 2);
-
-					if (tempVA != null) {
-						iAlVAs.set(0, tempVA);
-						setGroupList(tempVA, clusterState);
-						set.setContentTree(null);
-					}
-				}
-				else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
-
-					tempVA = clusterer.getSortedVA(set, clusterState, 0, 2);
-
-					if (tempVA != null) {
-						iAlVAs.set(1, tempVA);
-						setGroupList(tempVA, clusterState);
-						set.setStorageTree(null);
-					}
-
-				}
-				else if (clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
-
-					clusterState.setClustererType(EClustererType.EXPERIMENTS_CLUSTERING);
-					tempVA = clusterer.getSortedVA(set, clusterState, 0, 1);
-
-					if (tempVA != null) {
-						iAlVAs.set(1, tempVA);
-						setGroupList(tempVA, clusterState);
-						set.setStorageTree(null);
-
-						clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-						tempVA = clusterer.getSortedVA(set, clusterState, 50, 1);
-
-						if (tempVA != null) {
-							iAlVAs.set(0, tempVA);
-							setGroupList(tempVA, clusterState);
-							set.setContentTree(null);
-						}
-					}
-				}
-				break;
 		}
-
-		clusterer.destroy();
 
 		GeneralManager.get().getEventPublisher().triggerEvent(new UpdateViewEvent());
 
-		if (tempVA == null) {
+		if (clusterResult == null) {
 
 			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
 				public void run() {
@@ -263,102 +70,62 @@ public class ClusterManager {
 			});
 
 		}
-		// if (tempVA == -2) {
-		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
-		// public void run() {
-		// Shell shell = new Shell();
-		// MessageBox messageBox = new MessageBox(shell, SWT.ERROR);
-		// messageBox.setText("Cancel");
-		// messageBox.setMessage("Clustering aborted by user!");
-		// messageBox.open();
-		// }
-		// });
-		// }
-		// if (tempVA == -3) {
-		//
-		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
-		// public void run() {
-		// Shell shell = new Shell();
-		// MessageBox messageBox = new MessageBox(shell, SWT.ERROR);
-		// messageBox.setText("Error");
-		// messageBox
-		// .setMessage("Algorithm did not converge! \n\nIn case of affinity propagation please try to use another cluster factor");
-		// messageBox.open();
-		// }
-		// });
-		//
-		// }
 
-		return iAlVAs;
+		return clusterResult;
 	}
 
-	/**
-	 * Function determines group information for virtual array. Used by affinity propagation and kMeans.
-	 * 
-	 * @param VAId
-	 *            Id of virtual array
-	 */
-	private void setGroupList(IVirtualArray virtualArray, ClusterState clusterState) {
+	private ClusterResult runClustering(AClusterer clusterer, ClusterState clusterState) {
+		ClusterResult result = new ClusterResult();
 
-		GroupList groupList = new GroupList(virtualArray.size());
+		try {
+			if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
+				runContentClustering(clusterer, clusterState, result, 0, 2);
+			}
+			else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
 
-		ArrayList<Integer> examples = set.getAlExamples();
-		int cnt = 0;
-		int iOffset = 0;
-		// float[] representative = null;
+				runStorageClustering(clusterer, clusterState, result, 0, 2);
+			}
+			else if (clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
 
-		for (Integer iter : set.getAlClusterSizes()) {
+				runContentClustering(clusterer, clusterState, result, 0, 1);
 
-			// determine representative element
-			// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
-			//
-			// IVirtualArray storageVA = set.getVA(clusterState.getStorageVaId());
-			// representative = new float[storageVA.size()];
-			//
-			// float[] fArExpressionValues = null;
-			// int counter = 0;
-			//
-			// for (Integer iStorageIndex : storageVA) {
-			// fArExpressionValues = new float[iter];
-			// for (int index = 0; index < iter; index++) {
-			//
-			// fArExpressionValues[index] +=
-			// set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
-			// virtualArray.get(iOffset + index));
-			// }
-			// representative[counter] = ClusterHelper.arithmeticMean(fArExpressionValues);
-			// counter++;
-			// }
-			//
-			// }
-			// else {
-			//
-			// IVirtualArray contentVA = set.getVA(clusterState.getContentVaId());
-			// representative = new float[contentVA.size()];
-			//
-			// float[] fArExpressionValues = null;
-			// int counter = 0;
-			//
-			// for (Integer iContentIndex : contentVA) {
-			// fArExpressionValues = new float[iter];
-			// for (int index = 0; index < iter; index++) {
-			//
-			// fArExpressionValues[index] +=
-			// set.get(virtualArray.get(iOffset + index)).getFloat(
-			// EDataRepresentation.NORMALIZED, iContentIndex);
-			// }
-			// representative[counter] = ClusterHelper.arithmeticMean(fArExpressionValues);
-			// counter++;
-			// }
-			//
-			// }
-
-			// Group temp = new Group(iter, false, examples.get(cnt), representative, SelectionType.NORMAL);
-			Group temp = new Group(iter, false, examples.get(cnt), SelectionType.NORMAL);
-			groupList.append(temp);
-			cnt++;
-			iOffset += iter;
+				if (result.storageResult.storageVA != null) {
+					runContentClustering(clusterer, clusterState, result, 50, 1);
+				}
+			}
+			clusterer.destroy();
+			result.finish();
+			return result;
 		}
-		virtualArray.setGroupList(groupList);
+		catch (OutOfMemoryError e) {
+			throw new IllegalStateException("Clusterer out of memory");
+		}
 	}
+
+	private void runContentClustering(AClusterer clusterer, ClusterState clusterState, ClusterResult result,
+		int progressBarOffset, int progressBarMulti) {
+
+		clusterer.setClusterState(clusterState);
+		TempResult tempResult = clusterer.getSortedVA(set, clusterState, progressBarOffset, progressBarMulti);
+		result.contentResult = new ContentClusterResult();
+		result.contentResult.contentVA =
+			new ContentVirtualArray(clusterState.getContentVAType(), tempResult.indices);
+		result.contentResult.contentClusterSizes = tempResult.clusterSizes;
+		result.contentResult.contentSampleElements = tempResult.sampleElements;
+		result.contentResult.contentTree = tempResult.tree;
+	}
+
+	private void runStorageClustering(AClusterer clusterer, ClusterState clusterState, ClusterResult result,
+		int progressBarOffset, int progressBarMulti) {
+		clusterer.setClusterState(clusterState);
+
+		TempResult tempResult = clusterer.getSortedVA(set, clusterState, progressBarOffset, progressBarMulti);
+		result.storageResult = new StorageClusterResult();
+		result.storageResult.storageVA =
+			new StorageVirtualArray(clusterState.getStorageVAType(), tempResult.indices);
+		result.storageResult.storageClusterSizes = tempResult.clusterSizes;
+		result.storageResult.storageSampleElements = tempResult.sampleElements;
+		result.storageResult.storageTree = tempResult.tree;
+	}
+
 }

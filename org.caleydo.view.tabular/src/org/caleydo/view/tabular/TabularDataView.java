@@ -8,19 +8,23 @@ import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.EVAType;
-import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.StorageSelectionManager;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
+import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
@@ -33,15 +37,16 @@ import org.caleydo.core.manager.usecase.EDataFilterLevel;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
+import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IStorageVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.core.view.opengl.canvas.listener.ReplaceVirtualArrayListener;
+import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
 import org.caleydo.rcp.dialog.LabelEditorDialog;
@@ -68,8 +73,9 @@ import org.eclipse.swt.widgets.Text;
  * @author Marc Streit
  */
 public class TabularDataView extends ASWTView implements
-		ISelectionUpdateHandler, IVirtualArrayUpdateHandler,
-		ISelectionCommandHandler, IViewCommandHandler, IView, ISWTView {
+		ISelectionUpdateHandler, IContentVAUpdateHandler,
+		IStorageVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler,
+		IView, ISWTView {
 
 	public final static String VIEW_ID = "org.caleydo.view.tabular";
 	private final static int COLUMN_OFFSET = 3;
@@ -77,31 +83,31 @@ public class TabularDataView extends ASWTView implements
 	/**
 	 * This manager is responsible for the content in the storages (the indices)
 	 */
-	protected SelectionManager contentSelectionManager;
+	protected ContentSelectionManager contentSelectionManager;
 
 	/**
 	 * This manager is responsible for the management of the storages in the set
 	 */
-	protected SelectionManager storageSelectionManager;
+	protected StorageSelectionManager storageSelectionManager;
 
 	/**
 	 * The virtual array that manages the contents (the indices) in the storages
 	 */
-	protected IVirtualArray contentVA;
+	protected ContentVirtualArray contentVA;
 
 	/**
 	 * The virtual array that manages the storage references in the set
 	 */
-	protected IVirtualArray storageVA;
+	protected StorageVirtualArray storageVA;
 	/**
 	 * The type of the content VA
 	 */
-	protected EVAType contentVAType = EVAType.CONTENT;
+	protected ContentVAType contentVAType = ContentVAType.CONTENT;
 
 	/**
 	 * The type of the storage VA
 	 */
-	protected EVAType storageVAType = EVAType.STORAGE;
+	protected StorageVAType storageVAType = StorageVAType.STORAGE;
 
 	/**
 	 * Define what level of filtering on the data should be applied
@@ -114,14 +120,14 @@ public class TabularDataView extends ASWTView implements
 	private Table contentTable;
 
 	private TableCursor contentTableCursor;
-	
+
 	protected SelectionUpdateListener selectionUpdateListener;
-	protected VirtualArrayUpdateListener virtualArrayUpdateListener;
+	protected ContentVAUpdateListener virtualArrayUpdateListener;
 	protected SelectionCommandListener selectionCommandListener;
 
 	protected RedrawViewListener redrawViewListener;
 	protected ClearSelectionsListener clearSelectionsListener;
-	protected ReplaceVirtualArrayListener replaceVirtualArrayListener;
+	protected ReplaceContentVAListener replaceVirtualArrayListener;
 
 	/**
 	 * Constructor.
@@ -132,10 +138,8 @@ public class TabularDataView extends ASWTView implements
 
 		this.viewType = VIEW_ID;
 
-		contentSelectionManager = new SelectionManager.Builder(
-				EIDType.EXPRESSION_INDEX).build();
-		storageSelectionManager = new SelectionManager.Builder(
-				EIDType.EXPERIMENT_INDEX).build();
+		contentSelectionManager = useCase.getContentSelectionManager();
+		storageSelectionManager = useCase.getStorageSelectionManager();
 
 		idMappingManager = generalManager.getIDMappingManager();
 	}
@@ -165,8 +169,8 @@ public class TabularDataView extends ASWTView implements
 		}
 
 		dataDomain = useCase.getDataDomain();
-		contentVA = useCase.getVA(contentVAType);
-		storageVA = useCase.getVA(storageVAType);
+		contentVA = useCase.getContentVA(contentVAType);
+		storageVA = useCase.getStorageVA(storageVAType);
 
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();
@@ -264,34 +268,34 @@ public class TabularDataView extends ASWTView implements
 
 		TableColumn column;
 		TableItem item;
-		
-//		// Remove experiment context menu
-//		final Menu headerMenu = new Menu(composite.getShell(), SWT.POP_UP);
-//		MenuItem itemName = new MenuItem(headerMenu, SWT.NONE);
-//		itemName.setText("Remove experiment (column)");
-//		itemName.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				storageVA.remove(0);
-//				// axisSelectionManager.remove(iExternalID, false);
-//				// IVirtualArrayDelta vaDelta = new
-//				// VirtualArrayDelta(axisVAType,
-//				// EIDType.EXPERIMENT_INDEX);
-//				// vaDelta.add(VADeltaItem.remove(iExternalID));
-//				// sendVirtualArrayUpdateEvent(vaDelta);
-//			}
-//		});
-//		contentTable.addListener(SWT.MenuDetect, new Listener() {
-//			public void handleEvent(Event event) {
-//				// Point pt = Display.getCurrent().map(null, contentTable,
-//				// new Point(event.x, event.y));
-//				// Rectangle clientArea = contentTable.getClientArea();
-//				// boolean header = clientArea.y <= pt.y && pt.y < (clientArea.y
-//				// + contentTable.getHeaderHeight());
-//				// if (header)
-//				contentTable.setMenu(headerMenu);
-//			}
-//		});
+
+		// // Remove experiment context menu
+		// final Menu headerMenu = new Menu(composite.getShell(), SWT.POP_UP);
+		// MenuItem itemName = new MenuItem(headerMenu, SWT.NONE);
+		// itemName.setText("Remove experiment (column)");
+		// itemName.addSelectionListener(new SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// storageVA.remove(0);
+		// // axisSelectionManager.remove(iExternalID, false);
+		// // IVirtualArrayDelta vaDelta = new
+		// // VirtualArrayDelta(axisVAType,
+		// // EIDType.EXPERIMENT_INDEX);
+		// // vaDelta.add(VADeltaItem.remove(iExternalID));
+		// // sendVirtualArrayUpdateEvent(vaDelta);
+		// }
+		// });
+		// contentTable.addListener(SWT.MenuDetect, new Listener() {
+		// public void handleEvent(Event event) {
+		// // Point pt = Display.getCurrent().map(null, contentTable,
+		// // new Point(event.x, event.y));
+		// // Rectangle clientArea = contentTable.getClientArea();
+		// // boolean header = clientArea.y <= pt.y && pt.y < (clientArea.y
+		// // + contentTable.getHeaderHeight());
+		// // if (header)
+		// contentTable.setMenu(headerMenu);
+		// }
+		// });
 
 		float fValue;
 
@@ -437,8 +441,7 @@ public class TabularDataView extends ASWTView implements
 
 				triggerStorageSelectionEvent(iStorageIndex,
 						SelectionType.SELECTION);
-				triggerContentSelectionEvent(iRefSeqID,
-						SelectionType.SELECTION);
+				triggerContentSelectionEvent(iRefSeqID, SelectionType.SELECTION);
 
 				// addContentRemoveIcon(iRowIndex);
 				// addStorageRemoveIcon(iStorageIndex);
@@ -484,72 +487,6 @@ public class TabularDataView extends ASWTView implements
 		}
 
 		reactOnExternalSelection();
-	}
-
-	@Override
-	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
-		SelectionManager selectionManager;
-		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
-			storageSelectionManager.setVADelta(delta);
-
-			for (VADeltaItem deltaItem : delta.getAllItems()) {
-				final int iVAIndex = deltaItem.getIndex();
-
-				switch (deltaItem.getType()) {
-				case REMOVE:
-					composite.getDisplay().asyncExec(new Runnable() {
-						public void run() {
-							contentTable.getColumn(iVAIndex + 3).dispose();
-						}
-					});
-					break;
-				case ADD:
-					addColumn(deltaItem.getIndex() + COLUMN_OFFSET, deltaItem
-							.getPrimaryID());
-					break;
-				case COPY:
-					addColumn(deltaItem.getIndex() + 1 + COLUMN_OFFSET,
-							storageVA.get(deltaItem.getIndex()));
-
-					break;
-				case MOVE:
-					// case MOVE_LEFT:
-					// case MOVE_RIGHT:
-					int[] orig = contentTable.getColumnOrder();
-
-					ArrayList<Integer> ordered = new ArrayList<Integer>(
-							orig.length);
-
-					for (int index : orig) {
-						ordered.add(index);
-					}
-
-					Integer item = ordered.remove(deltaItem.getIndex()
-							+ COLUMN_OFFSET);
-					ordered.add(deltaItem.getTargetIndex() + COLUMN_OFFSET,
-							item);
-					for (int count = 0; count < ordered.size(); count++) {
-						orig[count] = ordered.get(count);
-					}
-
-					contentTable.setColumnOrder(orig);
-					break;
-				default:
-					throw new IllegalStateException(
-							"EVAOperation not implemented");
-				}
-			}
-
-		} else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT) {
-			delta = DeltaConverter
-					.convertDelta(EIDType.EXPRESSION_INDEX, delta);
-			selectionManager = contentSelectionManager;
-			selectionManager.setVADelta(delta);
-		} else if (delta.getIDType() == EIDType.EXPRESSION_INDEX) {
-			selectionManager = contentSelectionManager;
-			selectionManager.setVADelta(delta);
-		} else
-			return;
 	}
 
 	private void addColumn(final int index, final int storageNumber) {
@@ -702,7 +639,7 @@ public class TabularDataView extends ASWTView implements
 		eventPublisher.addListener(SelectionUpdateEvent.class,
 				selectionUpdateListener);
 
-		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
+		virtualArrayUpdateListener = new ContentVAUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class,
 				virtualArrayUpdateListener);
@@ -721,9 +658,9 @@ public class TabularDataView extends ASWTView implements
 		eventPublisher.addListener(ClearSelectionsEvent.class,
 				clearSelectionsListener);
 
-		replaceVirtualArrayListener = new ReplaceVirtualArrayListener();
+		replaceVirtualArrayListener = new ReplaceContentVAListener();
 		replaceVirtualArrayListener.setHandler(this);
-		eventPublisher.addListener(ReplaceVirtualArrayEvent.class,
+		eventPublisher.addListener(ReplaceVAEvent.class,
 				replaceVirtualArrayListener);
 	}
 
@@ -758,28 +695,82 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType) {
+	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
+		if (vaDelta.getIDType() == EIDType.REFSEQ_MRNA_INT)
+			vaDelta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX,
+					vaDelta);
+		contentSelectionManager.setVADelta(vaDelta);
+	}
 
-		String primaryVAType = useCase.getVATypeForIDCategory(idCategory);
-		if (primaryVAType == null)
-			return;
+	@Override
+	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType) {
 
-		EVAType suggestedVAType = EVAType
-				.getVATypeForPrimaryVAType(primaryVAType);
-
-		if (vaType != suggestedVAType
-				|| vaType.getPrimaryVAType() != primaryVAType)
-			return;
-
-		if (vaType == storageVAType)
-			storageVA = useCase.getVA(vaType);
-		else if (vaType == contentVAType)
-			contentVA = useCase.getVA(vaType);
-		else
-			return;
+		contentVA = useCase.getContentVA(vaType);
 
 		initData();
 		createTable();
+
+	}
+
+	@Override
+	public void handleStorageVAUpdate(StorageVADelta vaDelta, String info) {
+		if (vaDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
+			storageSelectionManager.setVADelta(vaDelta);
+
+			for (VADeltaItem deltaItem : vaDelta.getAllItems()) {
+				final int iVAIndex = deltaItem.getIndex();
+
+				switch (deltaItem.getType()) {
+				case REMOVE:
+					composite.getDisplay().asyncExec(new Runnable() {
+						public void run() {
+							contentTable.getColumn(iVAIndex + 3).dispose();
+						}
+					});
+					break;
+				case ADD:
+					addColumn(deltaItem.getIndex() + COLUMN_OFFSET, deltaItem
+							.getPrimaryID());
+					break;
+				case COPY:
+					addColumn(deltaItem.getIndex() + 1 + COLUMN_OFFSET,
+							storageVA.get(deltaItem.getIndex()));
+
+					break;
+				case MOVE:
+					// case MOVE_LEFT:
+					// case MOVE_RIGHT:
+					int[] orig = contentTable.getColumnOrder();
+
+					ArrayList<Integer> ordered = new ArrayList<Integer>(
+							orig.length);
+
+					for (int index : orig) {
+						ordered.add(index);
+					}
+
+					Integer item = ordered.remove(deltaItem.getIndex()
+							+ COLUMN_OFFSET);
+					ordered.add(deltaItem.getTargetIndex() + COLUMN_OFFSET,
+							item);
+					for (int count = 0; count < ordered.size(); count++) {
+						orig[count] = ordered.get(count);
+					}
+
+					contentTable.setColumnOrder(orig);
+					break;
+				default:
+					throw new IllegalStateException(
+							"EVAOperation not implemented");
+				}
+			}
+
+		}
+	}
+
+	@Override
+	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType) {
+		storageVA = useCase.getStorageVA(vaType);
 	}
 
 }

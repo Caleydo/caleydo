@@ -233,8 +233,7 @@ public class LabelManager {
 			float fSegmentScalingFactor = LABEL_FONT_SCALING_FACTOR
 					* (((float) (iMaxSegmentDepth - 1) - (float) label
 							.getSegmentLabelDepth()) * LABEL_SEGMENT_DEPTH_SCALING_PERCENT);
-			fLabelScaling = (fSegmentScalingFactor > LABEL_FONT_SCALING_FACTOR)
-					? LABEL_MIN_FONT_SCALING_FACTOR
+			fLabelScaling = (fSegmentScalingFactor > LABEL_FONT_SCALING_FACTOR) ? LABEL_MIN_FONT_SCALING_FACTOR
 					: (LABEL_FONT_SCALING_FACTOR - fSegmentScalingFactor);
 		}
 

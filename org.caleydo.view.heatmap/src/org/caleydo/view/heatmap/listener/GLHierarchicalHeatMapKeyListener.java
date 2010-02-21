@@ -7,9 +7,8 @@ import org.caleydo.view.heatmap.GLHierarchicalHeatMap;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 
-public class GLHierarchicalHeatMapKeyListener
-		extends
-			GLKeyListener<GLHierarchicalHeatMap> {
+public class GLHierarchicalHeatMapKeyListener extends
+		GLKeyListener<GLHierarchicalHeatMap> {
 
 	private GLHierarchicalHeatMap glHierarchicalHeatMap;
 
@@ -44,40 +43,40 @@ public class GLHierarchicalHeatMapKeyListener
 		}
 
 		switch (keyEvent.keyCode) {
-			case SWT.ARROW_UP :
+		case SWT.ARROW_UP:
 
-				if (keyEvent.stateMask == SWT.CTRL) {
-					glHierarchicalHeatMap.handleArrowAndCtrlPressed(true);
-				} else if (keyEvent.stateMask == SWT.ALT) {
-					glHierarchicalHeatMap.handleArrowAndAltPressed(true);
-				} else {
-					glHierarchicalHeatMap.handleArrowPressed(true);
-				}
+			if (keyEvent.stateMask == SWT.CTRL) {
+				glHierarchicalHeatMap.handleArrowAndCtrlPressed(true);
+			} else if (keyEvent.stateMask == SWT.ALT) {
+				glHierarchicalHeatMap.handleArrowAndAltPressed(true);
+			} else {
+				glHierarchicalHeatMap.handleArrowPressed(true);
+			}
 
-				break;
-			case SWT.ARROW_DOWN :
+			break;
+		case SWT.ARROW_DOWN:
 
-				if (keyEvent.stateMask == SWT.CTRL) {
-					glHierarchicalHeatMap.handleArrowAndCtrlPressed(false);
-				} else if (keyEvent.stateMask == SWT.ALT) {
-					glHierarchicalHeatMap.handleArrowAndAltPressed(false);
-				} else {
-					glHierarchicalHeatMap.handleArrowPressed(false);
-				}
+			if (keyEvent.stateMask == SWT.CTRL) {
+				glHierarchicalHeatMap.handleArrowAndCtrlPressed(false);
+			} else if (keyEvent.stateMask == SWT.ALT) {
+				glHierarchicalHeatMap.handleArrowAndAltPressed(false);
+			} else {
+				glHierarchicalHeatMap.handleArrowPressed(false);
+			}
 
-				break;
-			case SWT.ARROW_LEFT :
+			break;
+		case SWT.ARROW_LEFT:
 
-				if (keyEvent.stateMask == SWT.SHIFT) {
-					glHierarchicalHeatMap.handleArrowAndShiftPressed(true);
-				}
-				break;
-			case SWT.ARROW_RIGHT :
+			if (keyEvent.stateMask == SWT.SHIFT) {
+				glHierarchicalHeatMap.handleArrowAndShiftPressed(true);
+			}
+			break;
+		case SWT.ARROW_RIGHT:
 
-				if (keyEvent.stateMask == SWT.SHIFT) {
-					glHierarchicalHeatMap.handleArrowAndShiftPressed(false);
-				}
-				break;
+			if (keyEvent.stateMask == SWT.SHIFT) {
+				glHierarchicalHeatMap.handleArrowAndShiftPressed(false);
+			}
+			break;
 		}
 	}
 

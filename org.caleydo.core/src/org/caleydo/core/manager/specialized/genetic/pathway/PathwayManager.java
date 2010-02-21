@@ -213,7 +213,7 @@ public class PathwayManager
 
 	@Override
 	public void createPathwayResourceLoader(EPathwayDatabaseType type) {
-		
+
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 
 		if (type == EPathwayDatabaseType.KEGG) {

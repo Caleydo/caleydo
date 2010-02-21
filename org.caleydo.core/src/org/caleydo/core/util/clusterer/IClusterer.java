@@ -1,7 +1,6 @@
 package org.caleydo.core.util.clusterer;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.event.IListenerOwner;
 
 /**
@@ -29,7 +28,7 @@ public interface IClusterer
 	 *            of normal clustering the value is 2.
 	 * @return Sorted VirtualArray.
 	 */
-	public IVirtualArray getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier);
 
 	public void cancel();

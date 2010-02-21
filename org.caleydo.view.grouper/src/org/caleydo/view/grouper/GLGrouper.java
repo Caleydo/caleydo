@@ -17,15 +17,15 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
-import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.event.data.ReplaceVirtualArrayInUseCaseEvent;
+import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.grouper.CopyGroupsEvent;
@@ -144,8 +144,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 				0.0f, 1.0f, 0.0f }, true, false, 1.0f);
 
 		// TODO:if this should be general, use dynamic idType
-		selectionManager = new SelectionManager.Builder(EIDType.CLUSTER_NUMBER)
-				.build();
+		selectionManager = new SelectionManager(EIDType.CLUSTER_NUMBER);
 		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
 				selectionTypeClicked);
 		eventPublisher.triggerEvent(selectionTypeEvent);
@@ -167,7 +166,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 	@Override
 	public void init(GL gl) {
 
-		storageVA = useCase.getVA(EVAType.STORAGE);
+		storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager,
 				iUniqueID, renderStyle);
 		if (set.getStorageTree() != null) {
@@ -312,16 +311,15 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		useCaseSet.setStorageTree(tree);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
-		storageVA = new VirtualArray(EVAType.STORAGE, alIndices.size(),
-				alIndices);
+		storageVA = new StorageVirtualArray(StorageVAType.STORAGE, alIndices);
 		// set.replaceVA(useCase.getVA(EVAType.STORAGE).getID(), storageVA);
 
 		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
-		eventPublisher.triggerEvent(new ReplaceVirtualArrayInUseCaseEvent(
-				EIDCategory.EXPERIMENT, EVAType.STORAGE,
-				(VirtualArray) storageVA));
+		eventPublisher.triggerEvent(new ReplaceStorageVAInUseCaseEvent(
+				EIDCategory.EXPERIMENT, StorageVAType.STORAGE, storageVA));
+
 		triggerSelectionEvents();
 	}
 

@@ -31,8 +31,8 @@ public class RTest {
 		 */
 		try {
 			REXP test;
-			int[] array = new int[]{5, 6, 7};
-			int[] array_2 = new int[]{1, 2, 3};
+			int[] array = new int[] { 5, 6, 7 };
+			int[] array_2 = new int[] { 1, 2, 3 };
 			re.assign("my_array", array);
 			re.assign("my_array_2", array_2);
 

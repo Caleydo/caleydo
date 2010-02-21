@@ -6,9 +6,9 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class OpenDataExportAction extends AToolBarAction
-		implements
-			IToolBarItem {
+public class OpenDataExportAction
+	extends AToolBarAction
+	implements IToolBarItem {
 
 	public static final String TEXT = "Open Glyph Data Export Tool";
 	public static final String ICON = "resources/icons/view/glyph/glyph_generate_report.png";
@@ -18,8 +18,8 @@ public class OpenDataExportAction extends AToolBarAction
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override

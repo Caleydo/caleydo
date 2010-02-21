@@ -7,13 +7,13 @@ import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.VABasedSelectionManager;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
  * A SelectionCommandEvent holds a {@link SelectionCommand} which is used to signal one of the actions defined
- * in {@link ESelectionCommandType} to a {@link SelectionManager}. Which particular selection manager the
- * command should be applied to is specified via the additional {@link EIDType}.
+ * in {@link ESelectionCommandType} to a {@link VABasedSelectionManager}. Which particular selection manager
+ * the command should be applied to is specified via the additional {@link EIDType}.
  * 
  * @author Werner Puff
  * @author Alexander Lex

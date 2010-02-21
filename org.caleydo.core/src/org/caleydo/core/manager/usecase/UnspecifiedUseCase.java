@@ -6,7 +6,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.selection.EVAType;
+import org.caleydo.core.data.selection.delta.ContentVADelta;
+import org.caleydo.core.data.selection.delta.StorageVADelta;
 
 /**
  * Use case for arbitrary data which is not further specified.
@@ -27,9 +28,21 @@ public class UnspecifiedUseCase
 		useCaseMode = EDataDomain.UNSPECIFIED;
 		contentLabelSingular = "entity";
 		contentLabelPlural = "entities";
-		
+
 		possibleIDCategories = new HashMap<EIDCategory, String>();
-		possibleIDCategories.put(EIDCategory.OTHER, EVAType.CONTENT_PRIMARY);
-		possibleIDCategories.put(EIDCategory.EXPERIMENT, EVAType.STORAGE_PRIMARY);
+		possibleIDCategories.put(EIDCategory.OTHER, null);
+		possibleIDCategories.put(EIDCategory.EXPERIMENT, null);
+	}
+
+	@Override
+	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void handleStorageVAUpdate(StorageVADelta vaDelta, String info) {
+		// TODO Auto-generated method stub
+
 	}
 }

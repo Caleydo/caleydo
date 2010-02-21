@@ -9,11 +9,8 @@ import java.util.Set;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.selection.delta.VADeltaItem;
-import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -29,9 +26,6 @@ import org.eclipse.core.runtime.Status;
  * aforementioned enum is considered to be the base type, where all elements are initially added to.
  * </p>
  * <p>
- * Use the Builder to create an instance and specify optional parameters.
- * </p>
- * <p>
  * The selection manager always keeps a {@link SelectionDelta}, which can be used to communicate changes in
  * the selection to other views. This is reset every time you call it's getter.
  * </p>
@@ -39,9 +33,8 @@ import org.eclipse.core.runtime.Status;
  * Consequently it can also merge external deltas into its own selection.
  * </p>
  * <p>
- * The manager can operate on a subset of the possible types in {@link SelectionType}, by specifying a list of
- * allowed types in the {@link Builder}. When a selection delta is merged into the manager that contains
- * values that are not specified in the list of allowed values, the selections are ignored
+ * When a selection delta is merged into the manager that contains values that are not specified in the list
+ * of allowed values, the selections are ignored
  * </p>
  * <p>
  * When using the manager on data that is also managed by a {@link IVirtualArray} set the currently active
@@ -54,78 +47,28 @@ import org.eclipse.core.runtime.Status;
 public class SelectionManager
 	implements IListenerOwner, Cloneable {
 
-	private HashMap<SelectionType, HashMap<Integer, Integer>> hashSelectionTypes;
+	protected HashMap<SelectionType, HashMap<Integer, Integer>> hashSelectionTypes;
 	/** Selection types that should not be included in deltas have to be listed in this structure */
 	private HashMap<SelectionType, Boolean> deltaBlackList;
 
 	private HashMap<Integer, ArrayList<Integer>> hashConnectionToElementID;
 
-	private EIDType iDType;
+	protected EIDType iDType;
 
-	private ArrayList<SelectionType> selectionTypes;
+	protected ArrayList<SelectionType> selectionTypes;
 
 	private SelectionDelta selectionDelta;
 
 	private boolean bIsDeltaWritingEnabled = true;
 
-	private IVirtualArray virtualArray;
-
 	private SelectionTypeListener addSelectionTypeListener;
 
 	/**
-	 * Static Builder for GenericSelectionManager. Allows to handle various parameter configurations. Call new
-	 * GenericSelectionManager.Builder(EIDType iDType).setOneVariabe().setOther().build()
-	 * 
-	 * @author Alexander Lex
-	 */
-	public static class Builder {
-		private ArrayList<SelectionType> alSelectionTypes = null;
-		private EIDType iDType = null;
-
-		/**
-		 * Constructor for Builder. Pass the ID type, of the type {@link EIDType}. The ID type is the type of
-		 * ID the view is working with
-		 * 
-		 * @param iDType
-		 *            the ID type
-		 */
-		public Builder(EIDType iDType) {
-			this.iDType = iDType;
-		}
-
-		/**
-		 * Set a list of selection types if you don't want to (or can) handle all selection types in your view
-		 * 
-		 * @param alSelectionTypes
-		 *            the list of selection types
-		 * @return the Builder, call another setter or build() when you're done
-		 */
-		public Builder selectionTypes(ArrayList<SelectionType> alSelectionTypes) {
-			this.alSelectionTypes = alSelectionTypes;
-			return this;
-		}
-
-		/**
-		 * Call this method when you're done initializing, it will return the actual selection manager
-		 * 
-		 * @return the selection manager
-		 */
-		public SelectionManager build() {
-			return new SelectionManager(this);
-		}
-	}
-
-	/**
 	 * Constructor
-	 * 
-	 * @param builder
-	 *            the builder
 	 */
-	private SelectionManager(Builder builder) {
-		this.iDType = builder.iDType;
-		if (builder.alSelectionTypes == null) {
-			selectionTypes = new ArrayList<SelectionType>(SelectionType.getDefaultTypes());
-		}
+	public SelectionManager(EIDType idType) {
+		this.iDType = idType;
+		selectionTypes = new ArrayList<SelectionType>(SelectionType.getDefaultTypes());
 
 		hashSelectionTypes = new HashMap<SelectionType, HashMap<Integer, Integer>>();
 		hashConnectionToElementID = new HashMap<Integer, ArrayList<Integer>>();
@@ -151,25 +94,6 @@ public class SelectionManager
 	}
 
 	/**
-	 * <p>
-	 * Set a virtual array if the data you are managing with this selection manager is also managed by a
-	 * virtual array.
-	 * </p>
-	 * <p>
-	 * If you reset this virtual array at runtime the manager is completely resetted and reinitialized with
-	 * the data of the virtual array
-	 * </p>
-	 * 
-	 * @param virtualArray
-	 *            the currently active virtual array
-	 */
-	public void setVA(IVirtualArray virtualArray) {
-		// resetSelectionManager();
-		// initialAdd(virtualArray.getIndexList());
-		this.virtualArray = virtualArray;
-	}
-
-	/**
 	 * Removes a particular element from the selection manager, no matter what the type
 	 * 
 	 * @param iElementID
@@ -183,13 +107,7 @@ public class SelectionManager
 				int iNumTimesAdded = hashSelectionTypes.get(selectionType).get(iElementID) - 1;
 				if (iNumTimesAdded == 0) {
 					hashSelectionTypes.get(selectionType).remove(iElementID);
-					if (bWriteVA) {
-						virtualArray.removeByElement(iElementID);
-						// for (Integer removedIndex : removedIndices) {
-						// vaDeltaItem = VADeltaItem.remove(removedIndex);
-						// vaDelta.add(vaDeltaItem);
-						// }
-					}
+
 				}
 				else {
 					hashSelectionTypes.get(selectionType).put(iElementID, iNumTimesAdded);
@@ -224,10 +142,7 @@ public class SelectionManager
 		for (SelectionType eType : selectionTypes) {
 			hashSelectionTypes.put(eType, new HashMap<Integer, Integer>());
 		}
-		if (virtualArray != null) {
-			// null here?
-			virtualArray.clear();
-		}
+
 		selectionDelta = new SelectionDelta(iDType);
 	}
 
@@ -537,36 +452,6 @@ public class SelectionManager
 	}
 
 	/**
-	 * Creates a delta for a virtual array containing all element of the manager intended for broadcasts. The
-	 * type of the delta is {@link EVAOperation#APPEND_UNIQUE}
-	 * 
-	 * @return the delta containing all elements
-	 */
-	public VirtualArrayDelta getBroadcastVADelta() {
-		EIDType idType = iDType;
-		if (idType == null) {
-			idType = iDType;
-		}
-		VirtualArrayDelta tempDelta = new VirtualArrayDelta(virtualArray.getVAType(), idType);
-		HashMap<Integer, Integer> tempHash;
-		for (SelectionType selectionType : selectionTypes) {
-			if (!selectionType.isVisible()) {
-				continue;
-			}
-			tempHash = hashSelectionTypes.get(selectionType);
-			for (Integer iElement : tempHash.keySet()) {
-				Integer iSelectionID = -1;
-
-				iSelectionID = iElement;
-				tempDelta.add(VADeltaItem.appendUnique(iSelectionID));
-
-			}
-		}
-
-		return tempDelta;
-	}
-
-	/**
 	 * <p>
 	 * Merge an external selection delta into the local selection, and return a possibly converted selection
 	 * </p>
@@ -620,42 +505,6 @@ public class SelectionManager
 
 		bIsDeltaWritingEnabled = true;
 
-	}
-
-	/**
-	 * Set a virtual array delta to reflect changes to be made due to VA operations in the selection manager.
-	 * When the virtual array is managed by the selection manager the delta is also applied to the virtual
-	 * array.
-	 * 
-	 * @param delta
-	 *            the delta containing the changes
-	 */
-	public void setVADelta(IVirtualArrayDelta delta) {
-		if (virtualArray == null)
-			return;
-		if (delta.getIDType() == iDType) {
-
-			for (VADeltaItem item : delta) {
-				// TODO mapping stuff
-				switch (item.getType()) {
-					// case ADD:
-					// add(item.getPrimaryID());
-					// break;
-					// case APPEND:
-					// case APPEND_UNIQUE:
-					// add(item.getPrimaryID());
-					// break;
-					case REMOVE_ELEMENT:
-						remove(item.getPrimaryID(), false);
-						break;
-					case REMOVE:
-						remove(virtualArray.get(item.getIndex()), false);
-						break;
-
-				}
-			}
-			virtualArray.setDelta(delta);
-		}
 	}
 
 	/**
@@ -876,7 +725,6 @@ public class SelectionManager
 		// the selectionDelta is reset
 		clone.selectionDelta = new SelectionDelta(iDType);
 		// the virtual array needs to be set manually by the receiving instance
-		clone.virtualArray = null;
 		return clone;
 	}
 }

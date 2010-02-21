@@ -7,8 +7,6 @@ import java.util.HashMap;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -33,17 +31,14 @@ public class KMeansClusterer
 
 	private int iNrCluster = 5;
 
-	private int iVAIdContent = 0;
-	private int iVAIdStorage = 0;
-
-	public KMeansClusterer(int iNrElements) {
+	public KMeansClusterer() {
 		clusterer = new SimpleKMeans();
 	}
 
-	private IVirtualArray cluster(ISet set, ClusterState clusterState) {
+	private TempResult cluster(ISet set, ClusterState clusterState) {
 
-		// Arraylist holding clustered indexes
-		ArrayList<Integer> indexes = new ArrayList<Integer>();
+		// Arraylist holding clustered indicess
+		ArrayList<Integer> indices = new ArrayList<Integer>();
 		// Arraylist holding # of elements per cluster
 		ArrayList<Integer> count = new ArrayList<Integer>();
 		// Arraylist holding indices of examples (cluster centers)
@@ -73,9 +68,6 @@ public class KMeansClusterer
 		StringBuffer buffer = new StringBuffer();
 
 		buffer.append("@relation test\n\n");
-
-		IVirtualArray contentVA = set.getVA(iVAIdContent);
-		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
 		int iPercentage = 1;
 
@@ -265,58 +257,63 @@ public class KMeansClusterer
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
-		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, clusterState
-			.getClustererType());
+		ClusterHelper.sortClusters(set, contentVA, storageVA, alExamples, clusterState.getClustererType());
 
-		IVirtualArray virualArray;
-		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-			virualArray = set.getVA(iVAIdContent);
-		else
-			virualArray = set.getVA(iVAIdStorage);
+		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
+			for (int cluster : alExamples) {
+				for (int i = 0; i < data.numInstances(); i++) {
+					if (ClusterAssignments[i] == hashExamples.get(cluster)) {
+						indices.add(contentVA.get(i));
+						count.set(hashExamples.get(cluster), count.get(hashExamples.get(cluster)) + 1);
+					}
+				}
+			}
+		}
+		else {
 
-		for (int cluster : alExamples) {
-			for (int i = 0; i < data.numInstances(); i++) {
-				if (ClusterAssignments[i] == hashExamples.get(cluster)) {
-					indexes.add(virualArray.get(i));
-					count.set(hashExamples.get(cluster), count.get(hashExamples.get(cluster)) + 1);
+			for (int cluster : alExamples) {
+				for (int i = 0; i < data.numInstances(); i++) {
+					if (ClusterAssignments[i] == hashExamples.get(cluster)) {
+						indices.add(storageVA.get(i));
+						count.set(hashExamples.get(cluster), count.get(hashExamples.get(cluster)) + 1);
+					}
 				}
 			}
 		}
 
-		IVirtualArray virtualArray = null;
-		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-			virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), indexes);
-		else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-			virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), indexes);
+		// IVirtualArray virtualArray = null;
+		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+		// virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), indices);
+		// else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
+		// virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), indices);
+
+		TempResult tempResult = new TempResult();
+		tempResult.indices = indices;
+		tempResult.clusterSizes = count;
+		tempResult.sampleElements = alExamples;
 
 		// set cluster result in Set
-		set.setAlClusterSizes(count);
-		set.setAlExamples(alExamples);
+		// set.setAlClusterSizes(count);
+		// set.setAlExamples(alExamples);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
-		return virtualArray;
+		return tempResult;
 	}
 
 	@Override
-	public IVirtualArray getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
-
-		IVirtualArray virtualArray = null;
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
-		this.iVAIdContent = clusterState.getContentVaId();
-		this.iVAIdStorage = clusterState.getStorageVaId();
 
 		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 			iNrCluster = clusterState.getKMeansClusterCntGenes();
 		else
 			iNrCluster = clusterState.getKMeansClusterCntExperiments();
 
-		virtualArray = cluster(set, clusterState);
-
-		return virtualArray;
+		return cluster(set, clusterState);
 	}
 }

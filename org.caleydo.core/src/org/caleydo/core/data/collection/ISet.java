@@ -1,17 +1,18 @@
 package org.caleydo.core.data.collection;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.naming.OperationNotSupportedException;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
-import org.caleydo.core.data.collection.set.StorageIterator;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.EVAType;
-import org.caleydo.core.data.selection.GroupList;
-import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.ContentGroupList;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.StorageGroupList;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
 
@@ -66,16 +67,6 @@ public interface ISet
 	 * @return
 	 */
 	public IStorage get(int iIndex);
-	
-
-	/**
-	 * Get an iterator that iterates over the storages considering the Virtual Array.
-	 * 
-	 * @param the
-	 *            unique ID of the set virtula array
-	 * @return the set iterator
-	 */
-	public StorageIterator VAIterator(int iUniqueID);
 
 	/**
 	 * Get the number of storages in a set
@@ -227,19 +218,24 @@ public interface ISet
 	 *            a list of indices
 	 * @return the id of the newly created VA
 	 */
-	public int createVA(EVAType vaType, List<Integer> iAlSelections);
-	
+	public StorageVirtualArray getStorageVA(StorageVAType vaType);
+
+	public ContentVirtualArray getContentVA(ContentVAType vaType);
+
 	/**
 	 * FIXME needs to be replaced after VA Management re-design.
+	 * 
 	 * @return
 	 */
-	public IVirtualArray createCompleteStorageVA();
-	
+	// public IVirtualArray createCompleteStorageVA();
+
 	/**
 	 * FIXME needs to be replaced after VA Management re-design.
+	 * 
 	 * @return
 	 */
-	public IVirtualArray createCompleteContentVA();
+	// public IVirtualArray createCompleteContentVA();
+
 	/**
 	 * Creates a default virtual array for the set
 	 * 
@@ -261,7 +257,7 @@ public interface ISet
 	 *            the unique id
 	 * @return the virtual array associated with the unique ID
 	 */
-	public IVirtualArray getVA(int iUniqueID);
+	// public IVirtualArray getVA(int iUniqueID);
 
 	/**
 	 * Replaces the virtual array associated with the unique ID with the one provided
@@ -269,7 +265,11 @@ public interface ISet
 	 * @param iUniqueID
 	 * @param virtualArray
 	 */
-	public void replaceVA(int iUniqueID, IVirtualArray virtualArray);
+	// public void replaceVA(int iUniqueID, IVirtualArray virtualArray);
+
+	public void setContentVA(ContentVAType vaType, ContentVirtualArray virtualArray);
+
+	public void setStorageVA(StorageVAType vaType, StorageVirtualArray virtualArray);
 
 	/**
 	 * Deletes the virtual arrays associated with the unique id
@@ -277,7 +277,7 @@ public interface ISet
 	 * @param iUniqueID
 	 *            the unique ID associated with the virtual array
 	 */
-	public void removeVirtualArray(int iUniqueID);
+	// public void removeVirtualArray(int iUniqueID);
 
 	/**
 	 * Resets the virtual arrays to the original values
@@ -285,7 +285,7 @@ public interface ISet
 	 * @param iUniqueID
 	 *            the unique ID associated with the virtual array
 	 */
-	public void resetVirtualArray(int iUniqueID);
+	// public void resetVirtualArray(int iUniqueID);
 
 	/**
 	 * Export a manipulated subset of the data to the destination specified in sFileName. Determine which view
@@ -311,7 +311,7 @@ public interface ISet
 	 * @param clusterState
 	 * @return ArrayList<IVirtualArray> Virtual arrays holding cluster result
 	 */
-	public ArrayList<IVirtualArray> cluster(ClusterState clusterState);
+	public void cluster(ClusterState clusterState);
 
 	/**
 	 * Sets clustered Tree for genes
@@ -409,13 +409,13 @@ public interface ISet
 
 	public void setExperimentClusterInfoFlag(boolean bExperimentClusterInfo);
 
-	public void setGroupListGenes(GroupList groupList);
+	public void setContentGroupList(ContentGroupList groupList);
 
-	public void setGroupListExperiments(GroupList groupList);
+	public void setStorageGroupList(StorageGroupList groupList);
 
-	public GroupList getGroupListGenes();
+	public ContentGroupList getContentGroupList();
 
-	public GroupList getGroupListExperiments();
+	public StorageGroupList getStorageGroupList();
 
 	/**
 	 * Flag determines if gene cluster information was imported or not.

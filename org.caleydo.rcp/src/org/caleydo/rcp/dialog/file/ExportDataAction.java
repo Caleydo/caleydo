@@ -74,8 +74,10 @@ public class ExportDataAction
 	/**
 	 * Add data for group exports.
 	 * 
-	 * @param genesToExport the list of genes to export
-	 * @param experimentsToExport the list of experiments to export
+	 * @param genesToExport
+	 *            the list of genes to export
+	 * @param experimentsToExport
+	 *            the list of experiments to export
 	 */
 	public void addGroupData(ArrayList<Integer> genesToExport, ArrayList<Integer> experimentsToExport) {
 		this.genesToExport = genesToExport;
@@ -178,9 +180,9 @@ public class ExportDataAction
 			else if (radios[1].getSelection()) {
 				set.export(sFileName, EWhichViewToExport.WHOLE_DATA);
 			}
-			 else if (radios[2].getSelection()) {
-				 set.exportGroups(sFileName, genesToExport, experimentsToExport);
-			 }
+			else if (radios[2].getSelection()) {
+				set.exportGroups(sFileName, genesToExport, experimentsToExport);
+			}
 
 		}
 

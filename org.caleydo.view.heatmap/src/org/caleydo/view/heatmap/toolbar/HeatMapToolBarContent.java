@@ -8,7 +8,6 @@ import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.ToolBarContainer;
 import org.caleydo.rcp.view.toolbar.action.storagebased.PropagateSelectionsAction;
 import org.caleydo.rcp.view.toolbar.action.storagebased.ResetViewAction;
-import org.caleydo.rcp.view.toolbar.action.storagebased.parcoords.ChangeOrientationAction;
 import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
 import org.caleydo.view.heatmap.GLHeatMap;
 
@@ -38,9 +37,7 @@ public class HeatMapToolBarContent extends AToolBarContent {
 		container.setToolBarItems(actionList);
 
 		int targetViewID = getTargetViewData().getViewID();
-		IToolBarItem switchAxesToPolylinesAction = new ChangeOrientationAction(
-				targetViewID);
-		actionList.add(switchAxesToPolylinesAction);
+
 		if (renderType == STANDARD_RENDERING) {
 			IToolBarItem resetViewAction = new ResetViewAction(targetViewID);
 			actionList.add(resetViewAction);

@@ -1,7 +1,6 @@
 package org.caleydo.view.pathway;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -194,7 +193,7 @@ public class GLPathwayContentCreator {
 					.getPathwayItemManager().getItem(graphItemID))
 					.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 				List<IGraphItem> items2 = graphItem
-				.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
+						.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
 				for (IGraphItem graphItemRep : graphItem
 						.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
 					if (tmpItemIDs.contains(graphItemRep.getId())) {

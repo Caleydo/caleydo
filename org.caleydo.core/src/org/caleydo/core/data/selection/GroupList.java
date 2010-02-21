@@ -7,12 +7,12 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 
 @XmlType
-public class GroupList
-	implements IGroupList {
+public abstract class GroupList<ConcreteType extends IGroupList<ConcreteType, VA, VADelta>, VA extends VirtualArray<?, ?, ?, ?>, VADelta extends VirtualArrayDelta<?, ?>>
+	implements IGroupList<ConcreteType, VA, VADelta> {
 
 	private ArrayList<Group> groups;
 
@@ -21,12 +21,6 @@ public class GroupList
 	 */
 	public GroupList() {
 		this.groups = new ArrayList<Group>();
-	}
-
-	public GroupList(int iNrElements) {
-		// Group initialGroup = new Group(iNrElements);
-		this.groups = new ArrayList<Group>();
-		// iAlGroup.add(initialGroup);
 	}
 
 	@Override
@@ -151,7 +145,7 @@ public class GroupList
 	}
 
 	@Override
-	public void setDelta(IVirtualArrayDelta delta) {
+	public void setDelta(VADelta delta) {
 		try {
 			throw new Exception("Not implemented yet!");
 		}
@@ -166,7 +160,7 @@ public class GroupList
 	}
 
 	@Override
-	public boolean interchange(IVirtualArray virtualArray, int index1, int index2) {
+	public boolean interchange(VA virtualArray, int index1, int index2) {
 
 		int iFirstIdxG1 = 0;
 		int iLastIdxG1 = 0;
@@ -228,7 +222,7 @@ public class GroupList
 	}
 
 	@Override
-	public boolean merge(IVirtualArray virtualArray, int index1, int index2) {
+	public boolean merge(VA virtualArray, int index1, int index2) {
 
 		// int iFirstIdxG1 = 0;
 		int iLastIdxG1 = 0;
@@ -346,7 +340,7 @@ public class GroupList
 	}
 
 	@Override
-	public boolean move(IVirtualArray virtualArray, int srcIndex, int targetIndex) {
+	public boolean move(VA virtualArray, int srcIndex, int targetIndex) {
 
 		int icurrentIdx = -1;
 
@@ -375,7 +369,7 @@ public class GroupList
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public IGroupList clone() {
+	public ConcreteType clone() {
 		GroupList groupList;
 		try {
 			groupList = (GroupList) super.clone();
@@ -384,7 +378,7 @@ public class GroupList
 			throw new IllegalStateException("Clone not supportet: " + e.getMessage());
 		}
 		groupList.groups = (ArrayList<Group>) groups.clone();
-		return groupList;
+		return (ConcreteType) groupList;
 	}
 
 	public ArrayList<Group> getGroups() {
@@ -412,8 +406,8 @@ public class GroupList
 
 	}
 
-	public ArrayList<Float> determineRepresentativeElement(ISet set, IVirtualArray contentVA,
-		IVirtualArray storageVA, int iGroupNr, boolean bGeneGroup) {
+	public ArrayList<Float> determineRepresentativeElement(ISet set, ContentVirtualArray contentVA,
+		StorageVirtualArray storageVA, int iGroupNr, boolean bGeneGroup) {
 
 		ArrayList<Float> representative = new ArrayList<Float>();
 

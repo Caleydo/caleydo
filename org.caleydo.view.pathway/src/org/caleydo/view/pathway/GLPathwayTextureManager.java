@@ -120,11 +120,13 @@ public class GLPathwayTextureManager {
 		}
 
 		gl.glBegin(GL.GL_LINE_STRIP);
-		gl.glVertex3f(0.0f, 0.0f, 0.0f);;
+		gl.glVertex3f(0.0f, 0.0f, 0.0f);
+		;
 		gl.glVertex3f(fTextureWidth, 0.0f, 0.0f);
 		gl.glVertex3f(fTextureWidth, fTextureHeight, 0.0f);
 		gl.glVertex3f(0.0f, fTextureHeight, 0.0f);
-		gl.glVertex3f(0.0f, 0.0f, 0.0f);;
+		gl.glVertex3f(0.0f, 0.0f, 0.0f);
+		;
 		gl.glEnd();
 
 		// gl.glPopName();

@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
 import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.selection.EVAType;
+import org.caleydo.core.data.selection.IVAType;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
@@ -14,7 +14,7 @@ import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
  * @author Werner Puff
  * @author Alexander Lex
  */
-public interface IVirtualArrayUpdateHandler
+public interface IVirtualArrayUpdateHandler<T extends IVirtualArrayDelta<?>>
 	extends IListenerOwner {
 
 	/**
@@ -26,7 +26,7 @@ public interface IVirtualArrayUpdateHandler
 	 * @param info
 	 *            info about the selection (e.g. the name of triggering view to display in the info-box)
 	 */
-	public void handleVirtualArrayUpdate(IVirtualArrayDelta vaDelta, String info);
+	public void handleVirtualArrayUpdate(T vaDelta, String info);
 
 	/**
 	 * Handler method to be called by the {@link ReplaceVirtualArrayListener} when a
@@ -35,6 +35,6 @@ public interface IVirtualArrayUpdateHandler
 	 * @param vaType
 	 *            the type of the VA which is updated
 	 */
-	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType);
+	public void replaceVirtualArray(EIDCategory idCategory, T vaType);
 
 }

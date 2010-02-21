@@ -25,18 +25,18 @@ public class GLHeatMapKeyListener extends GLKeyListener<GLHeatMap> {
 			return;
 
 		switch (event.keyCode) {
-			case SWT.ARROW_UP :
-				glHeatMap.upDownSelect(true);
-				break;
-			case SWT.ARROW_DOWN :
-				glHeatMap.upDownSelect(false);
-				break;
-			case SWT.ARROW_LEFT :
-				glHeatMap.leftRightSelect(true);
-				break;
-			case SWT.ARROW_RIGHT :
-				glHeatMap.leftRightSelect(false);
-				break;
+		case SWT.ARROW_UP:
+			glHeatMap.upDownSelect(true);
+			break;
+		case SWT.ARROW_DOWN:
+			glHeatMap.upDownSelect(false);
+			break;
+		case SWT.ARROW_LEFT:
+			glHeatMap.leftRightSelect(true);
+			break;
+		case SWT.ARROW_RIGHT:
+			glHeatMap.leftRightSelect(false);
+			break;
 		}
 
 	}

@@ -243,7 +243,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 			ArrayList<EPDDrawingStrategyType> alColorModes) {
 
 		hashPartialDiscs.clear();
-		selectionManager = new SelectionManager.Builder(idType).build();
+		selectionManager = new SelectionManager(idType);
 		partialDiscTree = new Tree<PartialDisc>();
 		navigationHistory.reset();
 		drawingController

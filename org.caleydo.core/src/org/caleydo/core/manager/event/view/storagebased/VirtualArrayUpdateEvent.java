@@ -14,20 +14,20 @@ import org.caleydo.core.manager.event.AEvent;
  */
 @XmlRootElement
 @XmlType
-public class VirtualArrayUpdateEvent
+public abstract class VirtualArrayUpdateEvent<T extends VirtualArrayDelta<?, ?>>
 	extends AEvent {
 
 	/** delta between old and new selection */
-	private VirtualArrayDelta virtualArrayDelta;
+	private T virtualArrayDelta;
 
 	/** additional information about the selection, e.g. to display in the info-box */
 	private String info;
 
-	public VirtualArrayDelta getVirtualArrayDelta() {
+	public T getVirtualArrayDelta() {
 		return virtualArrayDelta;
 	}
 
-	public void setVirtualArrayDelta(VirtualArrayDelta virtualArrayDelta) {
+	public void setVirtualArrayDelta(T virtualArrayDelta) {
 		this.virtualArrayDelta = virtualArrayDelta;
 	}
 

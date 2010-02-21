@@ -10,9 +10,8 @@ import org.caleydo.view.parcoords.GLParallelCoordinates;
  * 
  * @author Alexander Lex
  */
-public class AngularBrushingListener
-		extends
-			AEventListener<GLParallelCoordinates> {
+public class AngularBrushingListener extends
+		AEventListener<GLParallelCoordinates> {
 
 	@Override
 	public void handleEvent(AEvent event) {

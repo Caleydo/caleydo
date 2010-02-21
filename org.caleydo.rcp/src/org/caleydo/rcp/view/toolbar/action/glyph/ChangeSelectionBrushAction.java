@@ -11,18 +11,20 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.PlatformUI;
 
-public class ChangeSelectionBrushAction extends AToolBarAction
-		implements
-			IMenuCreator,
-			IToolBarItem {
+public class ChangeSelectionBrushAction
+	extends AToolBarAction
+	implements IMenuCreator, IToolBarItem {
 
 	public static final String TEXT_SELECTIONBRUSH_DISABLE = "disable selection brush";
 	public static final String TEXT_SELECTIONBRUSH_SELECT_ALL = "select all";
 	public static final String TEXT_SELECTIONBRUSH_DESELECT_ALL = "deselect all";
 
-	public static final String ICON_SELECTIONBRUSH_DISABLE = "resources/icons/view/glyph/selection_brush_hide.png";
-	public static final String ICON_SELECTIONBRUSH_SELECT_ALL = "resources/icons/view/glyph/selection_brush_all.png";
-	public static final String ICON_SELECTIONBRUSH_DESELECT_ALL = "resources/icons/view/glyph/selection_brush_none.png";
+	public static final String ICON_SELECTIONBRUSH_DISABLE =
+		"resources/icons/view/glyph/selection_brush_hide.png";
+	public static final String ICON_SELECTIONBRUSH_SELECT_ALL =
+		"resources/icons/view/glyph/selection_brush_all.png";
+	public static final String ICON_SELECTIONBRUSH_DESELECT_ALL =
+		"resources/icons/view/glyph/selection_brush_none.png";
 
 	public static final String TEXT_SELECTIONBRUSH_01 = "1";
 	public static final String TEXT_SELECTIONBRUSH_02 = "2";
@@ -46,9 +48,8 @@ public class ChangeSelectionBrushAction extends AToolBarAction
 
 		setText(TEXT_SELECTIONBRUSH_DISABLE);
 		setToolTipText(TEXT_SELECTIONBRUSH_DISABLE);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(),
-						ICON_SELECTIONBRUSH_DISABLE)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON_SELECTIONBRUSH_DISABLE)));
 
 		setMenuCreator(this);
 	}
@@ -77,23 +78,22 @@ public class ChangeSelectionBrushAction extends AToolBarAction
 
 		menu = new Menu(parent);
 
-		addActionToMenu(menu, new ChangeSelectionBrush(iViewID, this, 0,
-				TEXT_SELECTIONBRUSH_DISABLE, ICON_SELECTIONBRUSH_DISABLE));
+		addActionToMenu(menu, new ChangeSelectionBrush(iViewID, this, 0, TEXT_SELECTIONBRUSH_DISABLE,
+			ICON_SELECTIONBRUSH_DISABLE));
 
-		addActionToMenu(menu, new ChangeSelectionBrush(iViewID, this, -1,
-				TEXT_SELECTIONBRUSH_SELECT_ALL, ICON_SELECTIONBRUSH_SELECT_ALL));
-		addActionToMenu(menu, new ChangeSelectionBrush(iViewID, this, -2,
-				TEXT_SELECTIONBRUSH_DESELECT_ALL,
-				ICON_SELECTIONBRUSH_DESELECT_ALL));
+		addActionToMenu(menu, new ChangeSelectionBrush(iViewID, this, -1, TEXT_SELECTIONBRUSH_SELECT_ALL,
+			ICON_SELECTIONBRUSH_SELECT_ALL));
+		addActionToMenu(menu, new ChangeSelectionBrush(iViewID, this, -2, TEXT_SELECTIONBRUSH_DESELECT_ALL,
+			ICON_SELECTIONBRUSH_DESELECT_ALL));
 
-		addActionToMenu(menu, new ChangeSelectionBrush(iViewID, this, 1,
-				TEXT_SELECTIONBRUSH_01, ICON_SELECTIONBRUSH_01));
-		addActionToMenu(menu, new ChangeSelectionBrush(iViewID, this, 2,
-				TEXT_SELECTIONBRUSH_02, ICON_SELECTIONBRUSH_02));
-		addActionToMenu(menu, new ChangeSelectionBrush(iViewID, this, 3,
-				TEXT_SELECTIONBRUSH_03, ICON_SELECTIONBRUSH_03));
-		addActionToMenu(menu, new ChangeSelectionBrush(iViewID, this, 4,
-				TEXT_SELECTIONBRUSH_04, ICON_SELECTIONBRUSH_04));
+		addActionToMenu(menu, new ChangeSelectionBrush(iViewID, this, 1, TEXT_SELECTIONBRUSH_01,
+			ICON_SELECTIONBRUSH_01));
+		addActionToMenu(menu, new ChangeSelectionBrush(iViewID, this, 2, TEXT_SELECTIONBRUSH_02,
+			ICON_SELECTIONBRUSH_02));
+		addActionToMenu(menu, new ChangeSelectionBrush(iViewID, this, 3, TEXT_SELECTIONBRUSH_03,
+			ICON_SELECTIONBRUSH_03));
+		addActionToMenu(menu, new ChangeSelectionBrush(iViewID, this, 4, TEXT_SELECTIONBRUSH_04,
+			ICON_SELECTIONBRUSH_04));
 
 		return menu;
 	}

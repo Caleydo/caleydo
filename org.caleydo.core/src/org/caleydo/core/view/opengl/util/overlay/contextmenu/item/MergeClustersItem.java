@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
-import org.caleydo.core.manager.event.view.group.MergeGroupsEvent;
+import org.caleydo.core.manager.event.view.group.MergeContentGroupsEvent;
+import org.caleydo.core.manager.event.view.group.MergeStorageGroupsEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -29,10 +30,15 @@ public class MergeClustersItem
 	 *            if true gene groups will be handled, if false experiment groups
 	 */
 	public void setGeneExperimentFlag(boolean bGeneGroup) {
-
-		MergeGroupsEvent mergeGroupEvent = new MergeGroupsEvent();
-		mergeGroupEvent.setSender(this);
-		mergeGroupEvent.setGeneExperimentFlag(bGeneGroup);
-		registerEvent(mergeGroupEvent);
+		if (bGeneGroup) {
+			MergeContentGroupsEvent mergeGroupEvent = new MergeContentGroupsEvent();
+			mergeGroupEvent.setSender(this);
+			registerEvent(mergeGroupEvent);
+		}
+		else {
+			MergeStorageGroupsEvent mergeGroupEvent = new MergeStorageGroupsEvent();
+			mergeGroupEvent.setSender(this);
+			registerEvent(mergeGroupEvent);
+		}
 	}
 }

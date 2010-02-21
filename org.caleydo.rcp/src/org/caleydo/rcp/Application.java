@@ -12,8 +12,10 @@ import java.util.Map.Entry;
 import org.caleydo.core.application.core.CaleydoBootloader;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.SetUtils;
-import org.caleydo.core.data.selection.EVAType;
-import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -136,7 +138,7 @@ public class Application
 
 		// Create Caleydo core
 		caleydoCoreBootloader = new CaleydoBootloader(rcpGuiBridge);
-		
+
 		parseApplicationArguments(map);
 
 		prefStore = GeneralManager.get().getPreferenceStore();
@@ -242,10 +244,10 @@ public class Application
 		if (sArParam != null) {
 			for (String element : sArParam) {
 				if (element.equals("no_pathways")) {
-					 bLoadPathwayData = false;
+					bLoadPathwayData = false;
 				}
 				else if (element.equals("load_pathways")) {
-					 bLoadPathwayData = true;
+					bLoadPathwayData = true;
 				}
 				else if (element.startsWith("plexclient")) {
 					if (sCaleydoXMLfile != null && !sCaleydoXMLfile.isEmpty()) {
@@ -329,7 +331,7 @@ public class Application
 
 		if (bLoadPathwayData == true)
 			triggerPathwayLoading();
-		
+
 		Shell shell = new Shell();
 
 		if (applicationMode == EApplicationMode.COLLABORATION_CLIENT
@@ -354,10 +356,16 @@ public class Application
 			SetUtils.createStorages(loadDataParameters);
 			SetUtils.createData(useCase);
 
-			HashMap<EVAType, VirtualArray> virtualArrayMap = initData.getVirtualArrayMap();
-			for (Entry<EVAType, VirtualArray> entry : virtualArrayMap.entrySet()) {
-				((AUseCase) useCase).setVirtualArray(entry.getKey(), entry.getValue());
+			HashMap<ContentVAType, ContentVirtualArray> contentVAMap = initData.getContentVAMap();
+			for (Entry<ContentVAType, ContentVirtualArray> entry : contentVAMap.entrySet()) {
+				((AUseCase) useCase).setContentVirtualArray(entry.getKey(), entry.getValue());
 			}
+
+			HashMap<StorageVAType, StorageVirtualArray> storageVAMap = initData.getStorageVAMap();
+			for (Entry<StorageVAType, StorageVirtualArray> entry : storageVAMap.entrySet()) {
+				((AUseCase) useCase).setStorageVirtualArray(entry.getKey(), entry.getValue());
+			}
+
 			Application.initData = null;
 		}
 		else if (applicationMode == EApplicationMode.LOAD_PROJECT
@@ -370,9 +378,14 @@ public class Application
 			SetUtils.createStorages(loadDataParameters);
 			SetUtils.createData(useCase);
 
-			HashMap<EVAType, VirtualArray> virtualArrayMap = initData.getVirtualArrayMap();
-			for (Entry<EVAType, VirtualArray> entry : virtualArrayMap.entrySet()) {
-				((AUseCase) useCase).setVirtualArray(entry.getKey(), entry.getValue());
+			HashMap<ContentVAType, ContentVirtualArray> contentVAMap = initData.getContentVAMap();
+			for (Entry<ContentVAType, ContentVirtualArray> entry : contentVAMap.entrySet()) {
+				((AUseCase) useCase).setContentVirtualArray(entry.getKey(), entry.getValue());
+			}
+
+			HashMap<StorageVAType, StorageVirtualArray> storageVAMap = initData.getStorageVAMap();
+			for (Entry<StorageVAType, StorageVirtualArray> entry : storageVAMap.entrySet()) {
+				((AUseCase) useCase).setStorageVirtualArray(entry.getKey(), entry.getValue());
 			}
 
 			if (useCase instanceof GeneticUseCase)

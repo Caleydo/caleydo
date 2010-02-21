@@ -45,7 +45,7 @@ public class PDDrawingStrategyInvisible extends APDDrawingStrategy {
 
 	@Override
 	public float[] getColor(PartialDisc disc) {
-		return new float[]{1.0f, 1.0f, 1.0f, 0.0f};
+		return new float[] { 1.0f, 1.0f, 1.0f, 0.0f };
 	}
 
 }

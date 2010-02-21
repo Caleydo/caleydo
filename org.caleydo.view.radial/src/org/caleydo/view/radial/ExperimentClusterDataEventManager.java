@@ -23,9 +23,9 @@ import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
  * 
  * @author Christian Partl
  */
-public class ExperimentClusterDataEventManager extends ADataEventManager implements
-IClusterNodeEventReceiver {
-	
+public class ExperimentClusterDataEventManager extends ADataEventManager
+		implements IClusterNodeEventReceiver {
+
 	ClusterNodeSelectionListener clusterNodeSelectionListener;
 
 	public ExperimentClusterDataEventManager(GLRadialHierarchy radialHierarchy) {
@@ -59,20 +59,21 @@ IClusterNodeEventReceiver {
 		} else {
 			SelectionManager selectionManager = radialHierarchy
 					.getSelectionManager();
-	
+
 			ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
 			event.setSender(this);
 			event.setSelectionDelta(selectionManager.getDelta());
 			// Specific elements for other RadialHierarchy Views
-			event.setSelectedElementID(radialHierarchy.getCurrentSelectedElement()
-					.getElementID());
+			event.setSelectedElementID(radialHierarchy
+					.getCurrentSelectedElement().getElementID());
 			event.setSelectedElementStartAngle(radialHierarchy
 					.getCurrentSelectedElement().getCurrentStartAngle());
 			event.setRootElementID(radialHierarchy.getCurrentRootElement()
 					.getElementID());
-			event.setRootElementStartAngle(radialHierarchy.getCurrentRootElement()
-					.getCurrentStartAngle());
-			event.setDrawingStateType(radialHierarchy.getCurrentDrawingStateType());
+			event.setRootElementStartAngle(radialHierarchy
+					.getCurrentRootElement().getCurrentStartAngle());
+			event.setDrawingStateType(radialHierarchy
+					.getCurrentDrawingStateType());
 			event.setMaxDisplayedHierarchyDepth(radialHierarchy
 					.getMaxDisplayedHierarchyDepth());
 			event.setDefaultDrawingStrategyType(radialHierarchy
@@ -118,7 +119,8 @@ IClusterNodeEventReceiver {
 			// TODO: The performance of this approach is not good...
 			for (SelectionDeltaItem item : deltaItems) {
 				for (PartialDisc disc : partialDiscs) {
-					AHierarchyElement<?> hierarchyData = disc.getHierarchyData();
+					AHierarchyElement<?> hierarchyData = disc
+							.getHierarchyData();
 					ClusterNode clusterNode = null;
 
 					if (hierarchyData instanceof ClusterNode) {
@@ -137,7 +139,7 @@ IClusterNodeEventReceiver {
 		}
 
 	}
-	
+
 	@Override
 	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
 		SelectionDelta selectionDelta = event.getSelectionDelta();

@@ -19,9 +19,8 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
  * 
  * @author Christian Partl
  */
-public class PDDrawingStrategyExpressionColor
-		extends
-			APDDrawingStrategyChildIndicator {
+public class PDDrawingStrategyExpressionColor extends
+		APDDrawingStrategyChildIndicator {
 
 	/**
 	 * Constructor.
@@ -129,7 +128,7 @@ public class PDDrawingStrategyExpressionColor
 				EColorMappingType.GENE_EXPRESSION);
 		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue);
 
-		return new float[]{fArRGB[0], fArRGB[1], fArRGB[2], fTransparency};
+		return new float[] { fArRGB[0], fArRGB[1], fArRGB[2], fTransparency };
 	}
 
 }

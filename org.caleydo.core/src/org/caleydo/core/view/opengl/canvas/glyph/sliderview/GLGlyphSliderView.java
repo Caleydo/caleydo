@@ -14,10 +14,10 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -65,7 +65,7 @@ public class GLGlyphSliderView
 	private float fSliderHeight = 1.0f;
 	private int iMaxCols = 100000;
 
-	private SelectionManager selectionManager = null;
+	private StorageSelectionManager selectionManager = null;
 
 	/**
 	 * Constructor.
@@ -85,7 +85,7 @@ public class GLGlyphSliderView
 		alGlyphAttributeTypes = new ArrayList<GlyphAttributeType>();
 		alGridPosition = new ArrayList<Vec2f>();
 
-		selectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
+		selectionManager = useCase.getStorageSelectionManager();
 		viewType = VIEW_ID;
 	}
 
@@ -104,8 +104,8 @@ public class GLGlyphSliderView
 		{ // load ids to the selection manager
 			selectionManager.resetSelectionManager();
 
-//			ArrayList<Integer> tmpExtID = new ArrayList<Integer>(gman.getGlyphs().keySet());
-//			selectionManager.initialAdd(tmpExtID);
+			// ArrayList<Integer> tmpExtID = new ArrayList<Integer>(gman.getGlyphs().keySet());
+			// selectionManager.initialAdd(tmpExtID);
 		}
 
 		// build slider
@@ -211,7 +211,7 @@ public class GLGlyphSliderView
 	@Override
 	public void display(GL gl) {
 		// gl.glScalef(0.25f, 0.25f, 1f);
-//		processEvents();
+		// processEvents();
 		gl.glPushMatrix();
 
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);

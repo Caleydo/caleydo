@@ -98,8 +98,7 @@ public class RemoteRenderingToolBarContent extends AToolBarContent {
 		container.setTitle(PATHWAY_VIEW_TITLE);
 
 		container.setPathwayToolBarMediator(new PathwayToolBarMediator());
-		container
-				.setTargetViewData((SerializedBucketView) getTargetViewData());
+		container.setTargetViewData((SerializedBucketView) getTargetViewData());
 
 		return container;
 	}

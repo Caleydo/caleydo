@@ -13,8 +13,6 @@ import org.caleydo.rcp.view.toolbar.action.storagebased.RenderContextAction;
 import org.caleydo.rcp.view.toolbar.action.storagebased.ResetViewAction;
 import org.caleydo.rcp.view.toolbar.action.storagebased.UseRandomSamplingAction;
 import org.caleydo.rcp.view.toolbar.action.storagebased.parcoords.AngularBrushingAction;
-import org.caleydo.rcp.view.toolbar.action.storagebased.parcoords.ChangeOrientationAction;
-import org.caleydo.rcp.view.toolbar.action.storagebased.parcoords.OcclusionPreventionAction;
 import org.caleydo.rcp.view.toolbar.action.storagebased.parcoords.SaveSelectionsAction;
 import org.eclipse.jface.preference.PreferenceStore;
 
@@ -23,7 +21,8 @@ import org.eclipse.jface.preference.PreferenceStore;
  * 
  * @author Werner Puff
  */
-public class ClinicalParCoordsToolBarContent extends AToolBarContent {
+public class ClinicalParCoordsToolBarContent
+	extends AToolBarContent {
 
 	public static final String IMAGE_PATH = "resources/icons/view/storagebased/parcoords/parcoords.png";
 
@@ -45,35 +44,23 @@ public class ClinicalParCoordsToolBarContent extends AToolBarContent {
 
 		// all pc views
 		int targetViewID = getTargetViewData().getViewID();
-		IToolBarItem angularBrushingAction = new AngularBrushingAction(
-				targetViewID);
+		IToolBarItem angularBrushingAction = new AngularBrushingAction(targetViewID);
 		actionList.add(angularBrushingAction);
-		IToolBarItem occlusionPreventionAction = new OcclusionPreventionAction(
-				targetViewID);
-		actionList.add(occlusionPreventionAction);
-		IToolBarItem switchAxesToPolylinesAction = new ChangeOrientationAction(
-				targetViewID);
-		actionList.add(switchAxesToPolylinesAction);
-		IToolBarItem saveSelectionsAction = new SaveSelectionsAction(
-				targetViewID);
+		IToolBarItem saveSelectionsAction = new SaveSelectionsAction(targetViewID);
 		actionList.add(saveSelectionsAction);
 		IToolBarItem resetViewAction = new ResetViewAction(targetViewID);
 		actionList.add(resetViewAction);
-		IToolBarItem propagateSelectionAction = new PropagateSelectionsAction(
-				targetViewID);
+		IToolBarItem propagateSelectionAction = new PropagateSelectionsAction(targetViewID);
 		actionList.add(propagateSelectionAction);
 
 		PreferenceStore ps = GeneralManager.get().getPreferenceStore();
-		boolean limit = ps
-				.getBoolean(PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT);
+		boolean limit = ps.getBoolean(PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT);
 
 		// only if standalone or explicitly requested
 		if (renderType == STANDARD_RENDERING && !limit) {
-			IToolBarItem toggleRenderContextAction = new RenderContextAction(
-					targetViewID);
+			IToolBarItem toggleRenderContextAction = new RenderContextAction(targetViewID);
 			actionList.add(toggleRenderContextAction);
-			IToolBarItem useRandomSamplingAction = new UseRandomSamplingAction(
-					targetViewID);
+			IToolBarItem useRandomSamplingAction = new UseRandomSamplingAction(targetViewID);
 			actionList.add(useRandomSamplingAction);
 		}
 

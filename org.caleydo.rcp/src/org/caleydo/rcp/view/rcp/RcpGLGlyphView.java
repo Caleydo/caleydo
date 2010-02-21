@@ -6,7 +6,8 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
 import org.eclipse.swt.widgets.Composite;
 
-public class RcpGLGlyphView extends ARcpGLViewPart {
+public class RcpGLGlyphView
+	extends ARcpGLViewPart {
 
 	public static int viewCount = 0;
 
@@ -28,8 +29,7 @@ public class RcpGLGlyphView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedGlyphView serializedView = new SerializedGlyphView(
-				EDataDomain.CLINICAL_DATA);
+		SerializedGlyphView serializedView = new SerializedGlyphView(EDataDomain.CLINICAL_DATA);
 		return serializedView;
 	}
 

@@ -7,19 +7,23 @@ import javax.management.InvalidAttributeValueException;
 
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.EVAType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.StorageSelectionManager;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
-import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
+import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
+import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
@@ -30,15 +34,18 @@ import org.caleydo.core.manager.usecase.EDataFilterLevel;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
+import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IStorageVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.core.view.opengl.canvas.listener.ReplaceVirtualArrayListener;
+import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
+import org.caleydo.core.view.opengl.canvas.listener.ReplaceStorageVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.StorageVAUpdateListener;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -51,8 +58,8 @@ import org.eclipse.core.runtime.Status;
  */
 public abstract class AStorageBasedView
 	extends AGLView
-	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ISelectionCommandHandler,
-	IViewCommandHandler {
+	implements ISelectionUpdateHandler, IContentVAUpdateHandler, IStorageVAUpdateHandler,
+	ISelectionCommandHandler, IViewCommandHandler {
 
 	// protected ArrayList<Boolean> alUseInRandomSampling;
 
@@ -62,18 +69,13 @@ public abstract class AStorageBasedView
 	 * This manager is responsible for the content in the storages (the indices). The contentSelectionManager
 	 * is initialized when the useCase is set ({@link #setUseCase(IUseCase)}).
 	 */
-	protected SelectionManager contentSelectionManager;
+	protected ContentSelectionManager contentSelectionManager;
 
 	/**
 	 * This manager is responsible for the management of the storages in the set. The storageSelectionManager
 	 * is initialized when the useCase is set ( {@link #setUseCase(IUseCase)}).
 	 */
-	protected SelectionManager storageSelectionManager;
-
-	/**
-	 * flag whether one array should be a polyline or an axis
-	 */
-	protected boolean bRenderStorageHorizontally = false;
+	protected StorageSelectionManager storageSelectionManager;
 
 	/**
 	 * flag whether the whole data or the selection should be rendered
@@ -97,10 +99,14 @@ public abstract class AStorageBasedView
 
 	protected SelectionUpdateListener selectionUpdateListener;
 	protected SelectionCommandListener selectionCommandListener;
-	protected VirtualArrayUpdateListener virtualArrayUpdateListener;
+
 	protected RedrawViewListener redrawViewListener;
 	protected ClearSelectionsListener clearSelectionsListener;
-	protected ReplaceVirtualArrayListener replaceVirtualArrayListener;
+
+	protected ContentVAUpdateListener contentVAUpdateListener;
+	protected StorageVAUpdateListener storageVAUpdateListener;
+	protected ReplaceContentVAListener replaceContentVAListener;
+	protected ReplaceStorageVAListener replaceStorageVAListener;
 
 	/**
 	 * Constructor for storage based views
@@ -132,8 +138,8 @@ public abstract class AStorageBasedView
 
 	/**
 	 * Toggle whether to render the complete dataset (with regards to the filters though) or only contextual
-	 * data This effectively means switching between the {@link EVAType#CONTENT} and
-	 * {@link EVAType#CONTENT_CONTEXT}
+	 * data This effectively means switching between the {@link VAType#CONTENT} and
+	 * {@link VAType#CONTENT_CONTEXT}
 	 */
 	public abstract void renderContext(boolean bRenderContext);
 
@@ -156,12 +162,12 @@ public abstract class AStorageBasedView
 				"org.caleydo.view.bucket"));
 
 		// TODO: do we need this here?
-//		if (set == null) {
-//			contentSelectionManager.resetSelectionManager();
-//			storageSelectionManager.resetSelectionManager();
-//			connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
-//			return;
-//		}
+		// if (set == null) {
+		// contentSelectionManager.resetSelectionManager();
+		// storageSelectionManager.resetSelectionManager();
+		// connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
+		// return;
+		// }
 
 		initLists();
 	}
@@ -290,44 +296,28 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
+	public void handleContentVAUpdate(ContentVADelta delta, String info) {
 		// generalManager.getLogger().log(
 		// Level.INFO,
 		// "VA Update called by " + eventTrigger.getClass().getSimpleName()
 		// + ", received in: " + this.getClass().getSimpleName());
 
-		// check whether the delta is actually of the correct VA Type
-		if (delta.getVAType() != contentVAType && delta.getVAType() != storageVAType)
-			return;
+		contentVA.setGroupList(null);
 
-		// delete group info for according virtual array
-		if (delta.getVAType() == contentVAType) {
-			// set.setClusteredTreeGenes(null);
-			contentVA.setGroupList(null);
-		}
-		if (delta.getVAType() == storageVAType) {
-			// set.setClusteredTreeExps(null);
-			storageVA.setGroupList(null);
-		}
-
-		SelectionManager selectionManager;
-		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
-			// ignore va changes of other VA types
-			selectionManager = storageSelectionManager;
-		}
-		else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT) {
+		if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT)
 			delta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, delta);
 
-			selectionManager = contentSelectionManager;
-		}
-		else if (delta.getIDType() == EIDType.EXPRESSION_INDEX) {
-			selectionManager = contentSelectionManager;
-		}
-		else
-			return;
+		reactOnContentVAChanges(delta);
+		contentSelectionManager.setVADelta(delta);
 
-		reactOnVAChanges(delta);
-		selectionManager.setVADelta(delta);
+		// reactOnExternalSelection();
+		setDisplayListDirty();
+	}
+
+	public void handleStorageVAUpdate(StorageVADelta delta, String info) {
+		storageVA.setGroupList(null);
+		reactOnStorageVAChanges(delta);
+		storageSelectionManager.setVADelta(delta);
 
 		// reactOnExternalSelection();
 		setDisplayListDirty();
@@ -346,7 +336,11 @@ public abstract class AStorageBasedView
 	 * 
 	 * @param delta
 	 */
-	protected void reactOnVAChanges(IVirtualArrayDelta delta) {
+	protected void reactOnContentVAChanges(ContentVADelta delta) {
+
+	}
+
+	protected void reactOnStorageVAChanges(StorageVADelta delta) {
 
 	}
 
@@ -533,18 +527,6 @@ public abstract class AStorageBasedView
 
 	// public abstract void resetSelections();
 
-	/**
-	 * Causes the view to change its orientation, i.e. whether a gene (content) is rendered horizontally
-	 * (default) or vertically.
-	 * 
-	 * @param bDefaultOrientation
-	 *            true for the default orientation (where the content is horizontally) false for the alternate
-	 *            orientation (where the content is vertically)
-	 */
-	public abstract void changeOrientation(boolean bDefaultOrientation);
-
-	public abstract boolean isInDefaultOrientation();
-
 	@Override
 	public int getNumberOfSelections(SelectionType SelectionType) {
 		return contentSelectionManager.getElements(SelectionType).size();
@@ -557,9 +539,13 @@ public abstract class AStorageBasedView
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
-		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
-		virtualArrayUpdateListener.setHandler(this);
-		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
+		contentVAUpdateListener = new ContentVAUpdateListener();
+		contentVAUpdateListener.setHandler(this);
+		eventPublisher.addListener(VirtualArrayUpdateEvent.class, contentVAUpdateListener);
+
+		storageVAUpdateListener = new StorageVAUpdateListener();
+		storageVAUpdateListener.setHandler(this);
+		eventPublisher.addListener(VirtualArrayUpdateEvent.class, storageVAUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
@@ -573,9 +559,13 @@ public abstract class AStorageBasedView
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
-		replaceVirtualArrayListener = new ReplaceVirtualArrayListener();
-		replaceVirtualArrayListener.setHandler(this);
-		eventPublisher.addListener(ReplaceVirtualArrayEvent.class, replaceVirtualArrayListener);
+		replaceContentVAListener = new ReplaceContentVAListener();
+		replaceContentVAListener.setHandler(this);
+		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
+
+		replaceStorageVAListener = new ReplaceStorageVAListener();
+		replaceStorageVAListener.setHandler(this);
+		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceStorageVAListener);
 	}
 
 	@Override
@@ -589,10 +579,7 @@ public abstract class AStorageBasedView
 			eventPublisher.removeListener(selectionCommandListener);
 			selectionCommandListener = null;
 		}
-		if (virtualArrayUpdateListener != null) {
-			eventPublisher.removeListener(virtualArrayUpdateListener);
-			virtualArrayUpdateListener = null;
-		}	
+
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);
 			redrawViewListener = null;
@@ -602,33 +589,50 @@ public abstract class AStorageBasedView
 			clearSelectionsListener = null;
 		}
 
-		if (replaceVirtualArrayListener != null) {
-			eventPublisher.removeListener(replaceVirtualArrayListener);
-			replaceVirtualArrayListener = null;
+		if (contentVAUpdateListener != null) {
+			eventPublisher.removeListener(contentVAUpdateListener);
+			contentVAUpdateListener = null;
 		}
+
+		if (storageVAUpdateListener != null) {
+			eventPublisher.removeListener(storageVAUpdateListener);
+			storageVAUpdateListener = null;
+		}
+		if (replaceContentVAListener != null) {
+			eventPublisher.removeListener(replaceContentVAListener);
+			replaceContentVAListener = null;
+		}
+
+		if (replaceStorageVAListener != null) {
+			eventPublisher.removeListener(replaceStorageVAListener);
+			replaceStorageVAListener = null;
+		}
+
 	}
 
 	@Override
-	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType) {
-		String primaryVAType = useCase.getVATypeForIDCategory(idCategory);
-		if (primaryVAType == null)
+	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType) {
+//		String primaryVAType = useCase.getVATypeForIDCategory(idCategory);
+//		if (primaryVAType == null)
+//			return;
+
+		// ContentVAType suggestedVAType = ContentVAType.getVATypeForPrimaryVAType(primaryVAType);
+
+		if (this.contentVAType != vaType)
 			return;
 
-		EVAType suggestedVAType = EVAType.getVATypeForPrimaryVAType(primaryVAType);
+		contentVA = set.getContentVA(vaType);
+		// contentSelectionManager.setVA(contentVA);
 
-		if (vaType != suggestedVAType || vaType.getPrimaryVAType() != primaryVAType)
+		initData();
+	}
+
+	@Override
+	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType) {
+		if (vaType != storageVAType)
 			return;
 
-		if (vaType == storageVAType) {
-			storageVA = useCase.getVA(vaType);
-			// storageSelectionManager.setVA(storageVA);
-		}
-		else if (vaType == contentVAType) {
-			contentVA = useCase.getVA(vaType);
-			// contentSelectionManager.setVA(contentVA);
-		}
-		else
-			return;
+		storageVA = set.getStorageVA(vaType);
 
 		initData();
 	}
@@ -639,7 +643,7 @@ public abstract class AStorageBasedView
 	 * 
 	 * @param vaType
 	 */
-	public void setContentVAType(EVAType vaType) {
+	public void setContentVAType(ContentVAType vaType) {
 		this.contentVAType = vaType;
 	}
 
@@ -649,7 +653,7 @@ public abstract class AStorageBasedView
 	 * 
 	 * @param vaType
 	 */
-	public void setStorageVAType(EVAType vaType) {
+	public void setStorageVAType(StorageVAType vaType) {
 		this.storageVAType = vaType;
 	}
 

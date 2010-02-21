@@ -8,9 +8,8 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class TogglePointTypeAction extends AToolBarAction
-		implements
-			IToolBarItem {
+public class TogglePointTypeAction extends AToolBarAction implements
+		IToolBarItem {
 	public static final String TEXT = "Toggle Point Type";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/bookmark.png";
 

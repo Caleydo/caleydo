@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
@@ -171,7 +171,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void display(GL gl) {
-//		processEvents();
+		// processEvents();
 		if (bUpdateColorPointPosition || bUpdateLeftSpread
 				|| bUpdateRightSpread)
 			updateColorPointPosition(gl);
@@ -213,16 +213,16 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 			gl.glVertex3f(fSpacing * iCount + SIDE_SPACING, SIDE_SPACING, 0);
 			gl.glVertex3f(fSpacing * iCount + SIDE_SPACING, SIDE_SPACING
 					+ iValue * fOneHeightValue, 0);
-			gl.glColor3fv(colorMapping
-					.getColor(fContinuousColorRegion * (iCount+ 1)), 0);
+			gl.glColor3fv(colorMapping.getColor(fContinuousColorRegion
+					* (iCount + 1)), 0);
 			gl.glVertex3f(fSpacing * (iCount + 1) + SIDE_SPACING, SIDE_SPACING
 					+ iValue * fOneHeightValue, 0);
 			gl.glVertex3f(fSpacing * (iCount + 1) + SIDE_SPACING, SIDE_SPACING,
 					0);
 			gl.glEnd();
-			
+
 			gl.glBegin(GL.GL_LINE);
-			gl.glVertex3f(0,0,0);
+			gl.glVertex3f(0, 0, 0);
 			gl.glVertex3f(2, 2, 2);
 			gl.glEnd();
 
@@ -378,17 +378,19 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 			}
 
 			// the central line
-//			gl.glColor3f(0, 0, 1);
-//			if (!bIsFirstOrLast)
-//				gl.glPushName(iColorLinePickingID);
-//			gl.glBegin(GL.GL_LINES);
-//			gl.glVertex3f(SIDE_SPACING + markerPoint.getValue() * fRenderWidth,
-//					0, 0);
-//			gl.glVertex3f(SIDE_SPACING + markerPoint.getValue() * fRenderWidth,
-//					viewFrustum.getHeight(), 0);
-//			gl.glEnd();
-//			if (!bIsFirstOrLast)
-//				gl.glPopName();
+			// gl.glColor3f(0, 0, 1);
+			// if (!bIsFirstOrLast)
+			// gl.glPushName(iColorLinePickingID);
+			// gl.glBegin(GL.GL_LINES);
+			// gl.glVertex3f(SIDE_SPACING + markerPoint.getValue() *
+			// fRenderWidth,
+			// 0, 0);
+			// gl.glVertex3f(SIDE_SPACING + markerPoint.getValue() *
+			// fRenderWidth,
+			// viewFrustum.getHeight(), 0);
+			// gl.glEnd();
+			// if (!bIsFirstOrLast)
+			// gl.glPopName();
 
 			renderCaption(gl, markerPoint.getValue());
 
@@ -398,7 +400,6 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 	}
 
 	private void renderCaption(GL gl, float normalizedValue) {
-	
 
 		if (getParentGLCanvas().getSize().getWidth() < 500)
 			return;
@@ -549,50 +550,50 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 		}
 		switch (ePickingType) {
 
-			case HISTOGRAM_COLOR_LINE :
+		case HISTOGRAM_COLOR_LINE:
 
-				switch (pickingMode) {
-					case CLICKED :
-						bUpdateColorPointPosition = true;
-						bIsFirstTimeUpdateColor = true;
-						iColorMappingPointMoved = iExternalID;
-						break;
-					case MOUSE_OVER :
-
-						break;
-					default :
-						return;
-				}
-				setDisplayListDirty();
+			switch (pickingMode) {
+			case CLICKED:
+				bUpdateColorPointPosition = true;
+				bIsFirstTimeUpdateColor = true;
+				iColorMappingPointMoved = iExternalID;
 				break;
-			case HISTOGRAM_LEFT_SPREAD_COLOR_LINE :
-				switch (pickingMode) {
-					case CLICKED :
-						bUpdateLeftSpread = true;
-						iColorMappingPointMoved = iExternalID;
-						break;
-					case MOUSE_OVER :
+			case MOUSE_OVER:
 
-						break;
-					default :
-						return;
-				}
-				setDisplayListDirty();
 				break;
-			case HISTOGRAM_RIGHT_SPREAD_COLOR_LINE :
-				switch (pickingMode) {
-					case CLICKED :
-						bUpdateRightSpread = true;
-						iColorMappingPointMoved = iExternalID;
-						break;
-					case MOUSE_OVER :
+			default:
+				return;
+			}
+			setDisplayListDirty();
+			break;
+		case HISTOGRAM_LEFT_SPREAD_COLOR_LINE:
+			switch (pickingMode) {
+			case CLICKED:
+				bUpdateLeftSpread = true;
+				iColorMappingPointMoved = iExternalID;
+				break;
+			case MOUSE_OVER:
 
-						break;
-					default :
-						return;
-				}
-				setDisplayListDirty();
 				break;
+			default:
+				return;
+			}
+			setDisplayListDirty();
+			break;
+		case HISTOGRAM_RIGHT_SPREAD_COLOR_LINE:
+			switch (pickingMode) {
+			case CLICKED:
+				bUpdateRightSpread = true;
+				iColorMappingPointMoved = iExternalID;
+				break;
+			case MOUSE_OVER:
+
+				break;
+			default:
+				return;
+			}
+			setDisplayListDirty();
+			break;
 		}
 	}
 

@@ -38,7 +38,8 @@ import org.eclipse.ui.PartInitException;
  * @author Werner Puff
  * @author Alexander Lex
  */
-public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
+public abstract class ARcpGLViewPart
+	extends CaleydoRCPViewPart {
 
 	protected Frame frameGL;
 	protected GLCaleydoCanvas glCanvas;
@@ -55,9 +56,9 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	}
 
 	protected void createGLCanvas() {
-		CmdViewCreateRcpGLCanvas cmdCanvas = (CmdViewCreateRcpGLCanvas) GeneralManager
-				.get().getCommandManager().createCommandByType(
-						ECommandType.CREATE_VIEW_RCP_GLCANVAS);
+		CmdViewCreateRcpGLCanvas cmdCanvas =
+			(CmdViewCreateRcpGLCanvas) GeneralManager.get().getCommandManager().createCommandByType(
+				ECommandType.CREATE_VIEW_RCP_GLCANVAS);
 		cmdCanvas.setAttributes(-1, false, false, false);
 		cmdCanvas.doCommand();
 
@@ -66,8 +67,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	}
 
 	/**
-	 * This class creates the GL event listener contained in a RCP view for a
-	 * RCP view.
+	 * This class creates the GL event listener contained in a RCP view for a RCP view.
 	 * 
 	 * @param glViewType
 	 *            The type of view. See {@link ECommandType}
@@ -75,8 +75,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	 *            the id of canvas where you want to render
 	 * @return the ID of the view
 	 */
-	protected AGLView createGLView(ASerializedView serializedView,
-			int iParentCanvasID) {
+	protected AGLView createGLView(ASerializedView serializedView, int iParentCanvasID) {
 
 		String viewType = serializedView.getViewType();
 		dataDomain = serializedView.getDataDomain();
@@ -87,28 +86,27 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 
 		IGeneralManager generalManager = GeneralManager.get();
 
-		CmdCreateView cmdView = (CmdCreateView) generalManager
-				.getCommandManager().createCommandByType(
-						ECommandType.CREATE_GL_VIEW);
+		CmdCreateView cmdView =
+			(CmdCreateView) generalManager.getCommandManager().createCommandByType(
+				ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(viewType);
-		if (viewType.equals("org.caleydo.view.bucket")
-				|| viewType.equals("org.caleydo.view.dataflipper")) {
+		if (viewType.equals("org.caleydo.view.bucket") || viewType.equals("org.caleydo.view.dataflipper")) {
 
-			cmdView.setAttributes(dataDomain, EProjectionMode.PERSPECTIVE, -1f,
-					1f, -1f, 1f, 1.9f, 100, iParentCanvasID, 0, 0, -8, 0, 0, 0,
-					0);
+			cmdView.setAttributes(dataDomain, EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100,
+				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 			// cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -2f, 2f, -2f,
 			// 2f, 3.82f, 100, set,
 
-		} else if (viewType.equals("org.caleydo.view.glyph")) {
+		}
+		else if (viewType.equals("org.caleydo.view.glyph")) {
 
-			cmdView.setAttributes(dataDomain, EProjectionMode.PERSPECTIVE, -1f,
-					1f, -1f, 1f, 2.9f, 100, iParentCanvasID, 0, 0, -8, 0, 0, 0,
-					0);
-		} else {
+			cmdView.setAttributes(dataDomain, EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100,
+				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
+		}
+		else {
 
-			cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0,
-					8, 0, 8, -20, 20, iParentCanvasID);
+			cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20,
+				iParentCanvasID);
 
 		}
 
@@ -127,8 +125,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		minSizeComposite = new MinimumSizeComposite(parent, SWT.H_SCROLL
-				| SWT.V_SCROLL);
+		minSizeComposite = new MinimumSizeComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
 		// fillToolBar();
 		parentComposite = new Composite(minSizeComposite, SWT.EMBEDDED);
 		minSizeComposite.setContent(parentComposite);
@@ -146,25 +143,25 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 			viewXml = memento.getString("serialized");
 		}
 		if (viewXml != null) { // init view from memento
-			SerializationManager serializationManager = GeneralManager.get()
-					.getSerializationManager();
+			SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 			JAXBContext jaxbContext = serializationManager.getViewContext();
 			Unmarshaller unmarshaller;
 			try {
 				unmarshaller = jaxbContext.createUnmarshaller();
-			} catch (JAXBException ex) {
-				throw new RuntimeException("could not create xml unmarshaller",
-						ex);
+			}
+			catch (JAXBException ex) {
+				throw new RuntimeException("could not create xml unmarshaller", ex);
 			}
 
 			StringReader xmlInputReader = new StringReader(viewXml);
 			try {
-				initSerializedView = (ASerializedView) unmarshaller
-						.unmarshal(xmlInputReader);
-			} catch (JAXBException ex) {
+				initSerializedView = (ASerializedView) unmarshaller.unmarshal(xmlInputReader);
+			}
+			catch (JAXBException ex) {
 				throw new RuntimeException("could not deserialize view-xml", ex);
 			}
-		} else {
+		}
+		else {
 			initSerializedView = createDefaultSerializedView();
 
 			// // check if the view is within the list of stored views
@@ -184,26 +181,24 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	@Override
 	public void saveState(IMemento memento) {
 
-		SerializationManager serializationManager = GeneralManager.get()
-				.getSerializationManager();
+		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 		JAXBContext jaxbContext = serializationManager.getViewContext();
 		Marshaller marshaller = null;
 		try {
 			marshaller = jaxbContext.createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
-					Boolean.TRUE);
-		} catch (JAXBException ex) {
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		}
+		catch (JAXBException ex) {
 			throw new RuntimeException("could not create xml marshaller", ex);
 		}
 
 		StringWriter xmlOutputWriter = new StringWriter();
 		try {
-			marshaller.marshal(
-					((AGLView) view).getSerializableRepresentation(),
-					xmlOutputWriter);
+			marshaller.marshal(((AGLView) view).getSerializableRepresentation(), xmlOutputWriter);
 			String xmlOutput = xmlOutputWriter.getBuffer().toString();
 			memento.putString("serialized", xmlOutput);
-		} catch (JAXBException ex) {
+		}
+		catch (JAXBException ex) {
 			ex.printStackTrace();
 		}
 	}
@@ -233,8 +228,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	public void dispose() {
 		super.dispose();
 
-		GeneralManager.get().getViewGLCanvasManager().getGLView(view.getID())
-				.destroy();
+		GeneralManager.get().getViewGLCanvasManager().getGLView(view.getID()).destroy();
 	}
 
 	@Override
@@ -247,8 +241,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 		List<IView> views = new ArrayList<IView>();
 		views.add(getGLView());
 		if (getGLView() instanceof IGLRemoteRenderingView) {
-			for (AGLView view : ((IGLRemoteRenderingView) getGLView())
-					.getRemoteRenderedViews()) {
+			for (AGLView view : ((IGLRemoteRenderingView) getGLView()).getRemoteRenderedViews()) {
 				views.add(view);
 			}
 		}
@@ -265,8 +258,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	}
 
 	/**
-	 * Creates a default serialized form ({@link ASerializedView}) of the
-	 * contained gl-view
+	 * Creates a default serialized form ({@link ASerializedView}) of the contained gl-view
 	 * 
 	 * @return serialized form of the gl-view with default initialization
 	 */

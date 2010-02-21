@@ -17,9 +17,9 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.EVAType;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IUseCase;
@@ -247,7 +247,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	@Override
 	public void displayLocal(final GL gl) {
 		processEvents();
-		for(AGLView view : containedGLViews)
+		for (AGLView view : containedGLViews)
 			view.processEvents();
 		if (!isVisible())
 			return;
@@ -324,8 +324,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			return;
 		}
 
-		int vaSize = generalManager.getUseCase(EDataDomain.GENETIC_DATA).getVA(
-				EVAType.STORAGE).size();
+		int vaSize = generalManager.getUseCase(EDataDomain.GENETIC_DATA)
+				.getStorageVA(StorageVAType.STORAGE).size();
 		if (vaSize > 20)
 			isExperimentCountOK = false;
 		else

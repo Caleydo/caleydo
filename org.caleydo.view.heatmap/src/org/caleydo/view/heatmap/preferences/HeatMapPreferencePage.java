@@ -19,9 +19,9 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * @author Alexander Lex
  * @deprecated STILL IN USE?
  */
-public class HeatMapPreferencePage extends FieldEditorPreferencePage
-		implements
-			IWorkbenchPreferencePage {
+@Deprecated
+public class HeatMapPreferencePage extends FieldEditorPreferencePage implements
+		IWorkbenchPreferencePage {
 
 	private IntegerFieldEditor numRandomSamplesFE;
 	private IntegerFieldEditor numSamplesPerTexture;

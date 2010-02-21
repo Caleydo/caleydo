@@ -84,10 +84,11 @@ public interface ICompositeGraphic extends IDraggable {
 	public void replaceChild(ICompositeGraphic childToReplace,
 			ICompositeGraphic newChild);
 
-	public ICompositeGraphic createDeepCopyWithNewIDs(Tree<ClusterNode> tree, int[] iConsecutiveID);
+	public ICompositeGraphic createDeepCopyWithNewIDs(Tree<ClusterNode> tree,
+			int[] iConsecutiveID);
 
 	public void printTree();
-	
+
 	public boolean isLeaf();
 
 }

@@ -8,8 +8,6 @@ import java.util.Arrays;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -28,11 +26,11 @@ public class HierarchicalClusterer
 	private int iVAIdContent = 0;
 	private int iVAIdStorage = 0;
 
-	public HierarchicalClusterer(int iNrElements) {
+	public HierarchicalClusterer() {
 		clusterer = new Cobweb();
 	}
 
-	private IVirtualArray cluster(ISet set, ClusterState clusterState) {
+	private TempResult cluster(ISet set, ClusterState clusterState) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -40,9 +38,6 @@ public class HierarchicalClusterer
 		StringBuffer buffer = new StringBuffer();
 
 		buffer.append("@relation test\n\n");
-
-		IVirtualArray contentVA = set.getVA(iVAIdContent);
-		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
 		int iPercentage = 1;
 
@@ -226,11 +221,11 @@ public class HierarchicalClusterer
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(80, false));
 
-		IVirtualArray virtualArray = null;
-		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-			virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), indices);
-		else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-			virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), indices);
+		// IVirtualArray virtualArray = null;
+		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+		// virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), indices);
+		// else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
+		// virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), indices);
 
 		CNode node = clusterer.m_cobwebTree;
 
@@ -239,8 +234,8 @@ public class HierarchicalClusterer
 
 		CNodeToTree(clusterNode, node, clusterState.getClustererType());
 
-//		ClusterHelper.determineNrElements(tree);
-//		ClusterHelper.determineHierarchyDepth(tree);
+		// ClusterHelper.determineNrElements(tree);
+		// ClusterHelper.determineHierarchyDepth(tree);
 
 		processEvents();
 		if (bClusteringCanceled) {
@@ -249,18 +244,16 @@ public class HierarchicalClusterer
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(90, false));
 
-		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-			set.setContentTree(tree);
-		else
-			set.setStorageTree(tree);
-
 		// set.setAlClusterSizes(temp);
 		// set.setAlExamples(alExamples);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
-		return virtualArray;
+		TempResult tempResult = new TempResult();
+		tempResult.indices = indices;
+		tempResult.tree = tree;
+		return tempResult;
 	}
 
 	/**
@@ -283,8 +276,9 @@ public class HierarchicalClusterer
 				int clusterNr = 0;
 				clusterNr = currentNode.getClusterNum();
 
-				ClusterNode currentGraph = new ClusterNode(tree, "Node_" + clusterNr, clusterNr, 0f, 0, false, -1);
-//				currentGraph.setNrElements(1);
+				ClusterNode currentGraph =
+					new ClusterNode(tree, "Node_" + clusterNr, clusterNr, 0f, 0, false, -1);
+				// currentGraph.setNrElements(1);
 
 				tree.addChild(clusterNode, currentGraph);
 				CNodeToTree(currentGraph, currentNode, eClustererType);
@@ -293,20 +287,13 @@ public class HierarchicalClusterer
 	}
 
 	@Override
-	public IVirtualArray getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
-
-		IVirtualArray virtualArray = null;
-
-		this.iVAIdContent = clusterState.getContentVaId();
-		this.iVAIdStorage = clusterState.getStorageVaId();
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
-		virtualArray = cluster(set, clusterState);
-
-		return virtualArray;
+		return cluster(set, clusterState);
 	}
 
 }

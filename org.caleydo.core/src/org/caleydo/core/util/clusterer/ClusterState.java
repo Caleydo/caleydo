@@ -2,7 +2,10 @@ package org.caleydo.core.util.clusterer;
 
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.selection.EVAType;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 
 /**
  * Stores the cluster state which is determined in the {@link StartClusteringAction}. Depending on the
@@ -22,11 +25,11 @@ public class ClusterState {
 	private float affinityPropClusterFactorGenes;
 	private float affinityPropClusterFactorExperiments;
 
-	private EVAType contentVAType = EVAType.CONTENT;
-	// private EVAType storageVAType = EVAType.STORAGE;
+	private ContentVAType contentVAType = ContentVAType.CONTENT;
+	private StorageVAType storageVAType = StorageVAType.STORAGE;
 
-	private int contentVaId = 0;
-	private int storageVaId = 0;
+	private ContentVirtualArray contentVA;
+	private StorageVirtualArray storageVA;
 
 	public ClusterState() {
 
@@ -38,12 +41,36 @@ public class ClusterState {
 		this.setDistanceMeasure(dist);
 	}
 
-	public void setContentVAType(EVAType contentVAType) {
+	public void setContentVAType(ContentVAType contentVAType) {
 		this.contentVAType = contentVAType;
 	}
 
-	public EVAType getContentVAType() {
+	public ContentVAType getContentVAType() {
 		return contentVAType;
+	}
+
+	public void setStorageVAType(StorageVAType storageVAType) {
+		this.storageVAType = storageVAType;
+	}
+
+	public StorageVAType getStorageVAType() {
+		return storageVAType;
+	}
+
+	public void setContentVA(ContentVirtualArray contentVA) {
+		this.contentVA = contentVA;
+	}
+
+	public ContentVirtualArray getContentVA() {
+		return contentVA;
+	}
+
+	public void setStorageVA(StorageVirtualArray storageVA) {
+		this.storageVA = storageVA;
+	}
+
+	public StorageVirtualArray getStorageVA() {
+		return storageVA;
 	}
 
 	public void setClustererAlgo(EClustererAlgo eClustererAlgo) {
@@ -100,22 +127,6 @@ public class ClusterState {
 
 	public float getAffinityPropClusterFactorExperiments() {
 		return affinityPropClusterFactorExperiments;
-	}
-
-	public void setContentVaId(int iContentVaId) {
-		this.contentVaId = iContentVaId;
-	}
-
-	public int getContentVaId() {
-		return contentVaId;
-	}
-
-	public void setStorageVaId(int iStorageVaId) {
-		this.storageVaId = iStorageVaId;
-	}
-
-	public int getStorageVaId() {
-		return storageVaId;
 	}
 
 	public void setTreeClustererAlgo(ETreeClustererAlgo treeClustererAlgo) {

@@ -6,10 +6,10 @@ import java.util.Arrays;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.EVAType;
-import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 
 /**
  * Cluster helper provides methods needed in cluster algorithms such as median, arithmetic mean, etc.
@@ -71,7 +71,6 @@ public class ClusterHelper {
 		return (float) Math.sqrt(standardDeviation / iCnt);
 	}
 
-
 	/**
 	 * The function is responsible for calculating the hierarchy depth in each node of the tree. To handle
 	 * this an other recursive function which does the whole work is called.
@@ -79,12 +78,12 @@ public class ClusterHelper {
 	 * @param tree
 	 *            the tree
 	 */
-//	public static void determineHierarchyDepth(Tree<ClusterNode> tree) {
-//		// int maxDepth = 0;
-//		// maxDepth = determineHierarchyDepthRec(tree, tree.getRoot());
-//		// System.out.println("maxDepth: " + maxDepth);
-//		determineHierarchyDepthRec(tree, tree.getRoot());
-//	}
+	// public static void determineHierarchyDepth(Tree<ClusterNode> tree) {
+	// // int maxDepth = 0;
+	// // maxDepth = determineHierarchyDepthRec(tree, tree.getRoot());
+	// // System.out.println("maxDepth: " + maxDepth);
+	// determineHierarchyDepthRec(tree, tree.getRoot());
+	// }
 
 	/**
 	 * Recursive function which determines the hierarchy depth in each node of the tree.
@@ -94,49 +93,51 @@ public class ClusterHelper {
 	 *            current node
 	 * @return depth of the current node
 	 */
-//	private static int determineHierarchyDepthRec(Tree<ClusterNode> tree, ClusterNode node) {
-//
-//		if (tree.hasChildren(node)) {
-//			int temp = node.getDepth();
-//
-//			for (ClusterNode current : tree.getChildren(node)) {
-//				int iChildDepth = determineHierarchyDepthRec(tree, current);
-//				if (temp <= iChildDepth)
-//					temp = iChildDepth + 1;
-//			}
-//
-//			node.setDepth(temp);
-//		}
-//		else
-//			node.setDepth(1);
-//
-//		return node.getDepth();
-//	}
+	// private static int determineHierarchyDepthRec(Tree<ClusterNode> tree, ClusterNode node) {
+	//
+	// if (tree.hasChildren(node)) {
+	// int temp = node.getDepth();
+	//
+	// for (ClusterNode current : tree.getChildren(node)) {
+	// int iChildDepth = determineHierarchyDepthRec(tree, current);
+	// if (temp <= iChildDepth)
+	// temp = iChildDepth + 1;
+	// }
+	//
+	// node.setDepth(temp);
+	// }
+	// else
+	// node.setDepth(1);
+	//
+	// return node.getDepth();
+	// }
 
-//	/**
-//	 * The function is responsible for calculating the number of elements in each node of the tree. To handle
-//	 * this an other recursive function which does the whole work is called.
-//	 * 
-//	 * @param tree
-//	 *            the tree
-//	 */
-//	public static void determineNrElements(Tree<ClusterNode> tree) {
-//
-//		// int iNrElements = 0;
-//		// iNrElements = determineNrElementsRec(tree, tree.getRoot());
-//		// System.out.println("iNrElements: " + iNrElements);
-//		determineNrElementsRec(tree, tree.getRoot());
-//	}
-	
-	
-	public static void determineExpressionValue(Tree<ClusterNode> tree, EClustererType eClustererType, ISet set) {
+	// /**
+	// * The function is responsible for calculating the number of elements in each node of the tree. To
+	// handle
+	// * this an other recursive function which does the whole work is called.
+	// *
+	// * @param tree
+	// * the tree
+	// */
+	// public static void determineNrElements(Tree<ClusterNode> tree) {
+	//
+	// // int iNrElements = 0;
+	// // iNrElements = determineNrElementsRec(tree, tree.getRoot());
+	// // System.out.println("iNrElements: " + iNrElements);
+	// determineNrElementsRec(tree, tree.getRoot());
+	// }
 
-		IVirtualArray storageVA = set.createCompleteStorageVA();
-		IVirtualArray contentVA = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getVA(EVAType.CONTENT);
+	public static void determineExpressionValue(Tree<ClusterNode> tree, EClustererType eClustererType,
+		ISet set) {
+		// FIXME - direct references here - should be parameters
+		StorageVirtualArray storageVA = set.getStorageVA(StorageVAType.STORAGE);
+		ContentVirtualArray contentVA = set.getContentVA(ContentVAType.CONTENT);
 		determineExpressionValueRec(tree, tree.getRoot(), eClustererType, set, storageVA, contentVA);
 	}
-	
-	private static float[] determineExpressionValueRec(Tree<ClusterNode> tree, ClusterNode node, EClustererType eClustererType, ISet set, IVirtualArray storageVA, IVirtualArray contentVA) {
+
+	private static float[] determineExpressionValueRec(Tree<ClusterNode> tree, ClusterNode node,
+		EClustererType eClustererType, ISet set, StorageVirtualArray storageVA, ContentVirtualArray contentVA) {
 
 		float[] fArExpressionValues;
 
@@ -147,13 +148,14 @@ public class ClusterHelper {
 			float[][] fArTempValues;
 
 			if (eClustererType == EClustererType.GENE_CLUSTERING) {
-//				IVirtualArray storageVA = set.getVA(iVAIdStorage);
-//				IVirtualArray storageVA = set.createCompleteStorageVA();
+				// IVirtualArray storageVA = set.getVA(iVAIdStorage);
+				// IVirtualArray storageVA = set.createCompleteStorageVA();
 				iNrElements = storageVA.size();
 			}
 			else {
-//				IVirtualArray contentVA = set.getVA(iVAIdContent);
-//				IVirtualArray contentVA = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getVA(EVAType.CONTENT);
+				// IVirtualArray contentVA = set.getVA(iVAIdContent);
+				// IVirtualArray contentVA =
+				// GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getVA(EVAType.CONTENT);
 				iNrElements = contentVA.size();
 			}
 
@@ -162,7 +164,8 @@ public class ClusterHelper {
 			int cnt = 0;
 
 			for (ClusterNode current : tree.getChildren(node)) {
-				fArTempValues[cnt] = determineExpressionValueRec(tree, current, eClustererType, set, storageVA, contentVA);
+				fArTempValues[cnt] =
+					determineExpressionValueRec(tree, current, eClustererType, set, storageVA, contentVA);
 				cnt++;
 			}
 
@@ -181,8 +184,8 @@ public class ClusterHelper {
 		else {
 
 			if (eClustererType == EClustererType.GENE_CLUSTERING) {
-//				IVirtualArray storageVA = set.getVA(iVAIdStorage);
-//				IVirtualArray storageVA = set.createCompleteStorageVA();
+				// IVirtualArray storageVA = set.getVA(iVAIdStorage);
+				// IVirtualArray storageVA = set.createCompleteStorageVA();
 				fArExpressionValues = new float[storageVA.size()];
 
 				int isto = 0;
@@ -194,8 +197,9 @@ public class ClusterHelper {
 
 			}
 			else {
-//				IVirtualArray contentVA = set.getVA(iVAIdContent);
-//				IVirtualArray contentVA = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getVA(EVAType.CONTENT);
+				// IVirtualArray contentVA = set.getVA(iVAIdContent);
+				// IVirtualArray contentVA =
+				// GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getVA(EVAType.CONTENT);
 				fArExpressionValues = new float[contentVA.size()];
 
 				int icon = 0;
@@ -217,31 +221,31 @@ public class ClusterHelper {
 		return fArExpressionValues;
 	}
 
-//	/**
-//	 * Recursive function which determines the number of elements in each node of the tree.
-//	 * 
-//	 * @param tree
-//	 * @param node
-//	 *            current node
-//	 * @return number of elements in the current node
-//	 */
-//	private static int determineNrElementsRec(Tree<ClusterNode> tree, ClusterNode node) {
-//
-//		if (tree.hasChildren(node)) {
-//			int temp = 0;
-//
-//			for (ClusterNode current : tree.getChildren(node)) {
-//				temp += determineNrElementsRec(tree, current);
-//			}
-//
-//			node.setNrElements(temp);
-//		} else {
-//			node.setNrElements(1);
-//		}
-//
-//		return node.getNrElements();
-//
-//	}
+	// /**
+	// * Recursive function which determines the number of elements in each node of the tree.
+	// *
+	// * @param tree
+	// * @param node
+	// * current node
+	// * @return number of elements in the current node
+	// */
+	// private static int determineNrElementsRec(Tree<ClusterNode> tree, ClusterNode node) {
+	//
+	// if (tree.hasChildren(node)) {
+	// int temp = 0;
+	//
+	// for (ClusterNode current : tree.getChildren(node)) {
+	// temp += determineNrElementsRec(tree, current);
+	// }
+	//
+	// node.setNrElements(temp);
+	// } else {
+	// node.setNrElements(1);
+	// }
+	//
+	// return node.getNrElements();
+	//
+	// }
 
 	/**
 	 * Function sorts clusters depending on their average value (in case of genes: expression value).
@@ -252,15 +256,13 @@ public class ClusterHelper {
 	 * @param examples
 	 * @param eClustererType
 	 */
-	public static void sortClusters(ISet set, int iVAIdContent, int iVAIdStorage,
+	public static void sortClusters(ISet set, ContentVirtualArray contentVA, StorageVirtualArray storageVA,
 		ArrayList<Integer> examples, EClustererType eClustererType) {
 
 		int iNrExamples = examples.size();
 		float[] fColorSum = null;
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
-
-			IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
 			int icontent = 0;
 			fColorSum = new float[iNrExamples];
@@ -270,7 +272,7 @@ public class ClusterHelper {
 				for (Integer iStorageIndex : storageVA) {
 					float temp =
 						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
-							set.getVA(iVAIdContent).get(iContentIndex));
+							contentVA.get(iContentIndex));
 					if (Float.isNaN(temp))
 						fColorSum[icontent] += 0;
 					else
@@ -281,8 +283,6 @@ public class ClusterHelper {
 		}
 		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING) {
 
-			IVirtualArray contentVA = set.getVA(iVAIdContent);
-
 			int icontent = 0;
 			fColorSum = new float[iNrExamples];
 
@@ -290,8 +290,8 @@ public class ClusterHelper {
 
 				for (Integer iContentIndex : contentVA) {
 					float temp =
-						set.get(set.getVA(iVAIdStorage).get(iStorageIndex)).getFloat(
-							EDataRepresentation.NORMALIZED, iContentIndex);
+						set.get(storageVA.get(iStorageIndex)).getFloat(EDataRepresentation.NORMALIZED,
+							iContentIndex);
 					if (Float.isNaN(temp))
 						fColorSum[icontent] += 0;
 					else

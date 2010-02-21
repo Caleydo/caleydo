@@ -86,7 +86,7 @@ public abstract class AGLGUIElement {
 	public float getScaledSizeOf(GL gl, float value) {
 		return value * getScaling(gl);
 	}
-	
+
 	/**
 	 * Gets the size the specified value would have when scaling it. Note that the scaling is dependent on the
 	 * current window size and the minimum size of the gui element.
@@ -96,11 +96,11 @@ public abstract class AGLGUIElement {
 	 * @param value
 	 *            Value for which the scaled size shall be calculated.
 	 * @return Scaled value.
-	 */	
+	 */
 	public float getScaledSizeOf(int viewportWidth, float value) {
 		return value * getScaling(viewportWidth);
 	}
-	
+
 	private float getScaling(int viewportWidth) {
 		float referenceWidth = minSize * 10.0f;
 		float scaling = 1;

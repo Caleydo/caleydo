@@ -138,7 +138,8 @@ public class PCRenderStyle extends GeneralRenderStyle {
 	public static final int MIN_NUMBER_TEXT_SIZE = 55;
 
 	public final PolyLineState normalState = new PolyLineState(
-			POLYLINE_LINE_WIDTH, POLYLINE_NORMAL_Z, getPolylineOcclusionPrevColor(1000));
+			POLYLINE_LINE_WIDTH, POLYLINE_NORMAL_Z,
+			getPolylineOcclusionPrevColor(1000));
 
 	private GLParallelCoordinates pcs;
 

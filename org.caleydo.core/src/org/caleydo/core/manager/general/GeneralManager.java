@@ -25,8 +25,6 @@ import org.caleydo.core.manager.parser.XmlParserManager;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
-import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
-import org.caleydo.core.manager.specialized.genetic.pathway.IPathwayResourceLoader;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
@@ -92,6 +90,7 @@ public class GeneralManager
 	 * 
 	 * @deprecated Will be replaced by new use case management / handling.
 	 */
+	@Deprecated
 	private IUseCase masterUseCase;
 
 	private boolean bIsWiiMode = false;

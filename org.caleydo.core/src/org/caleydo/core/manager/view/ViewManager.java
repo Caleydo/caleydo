@@ -140,7 +140,7 @@ public class ViewManager
 				break;
 			}
 		}
-		
+
 		registerItem(view);
 
 		return view;

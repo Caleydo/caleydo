@@ -8,7 +8,8 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.selection.EVAType;
+import org.caleydo.core.data.selection.delta.ContentVADelta;
+import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 
@@ -35,13 +36,25 @@ public class ClinicalUseCase
 
 		possibleIDCategories = new HashMap<EIDCategory, String>();
 		// possibleIDCategories.put(EIDCategory., null);
-		possibleIDCategories.put(EIDCategory.EXPERIMENT, EVAType.CONTENT_PRIMARY);
+		possibleIDCategories.put(EIDCategory.EXPERIMENT, null);
 	}
 
 	@Override
 	public void setSet(ISet set) {
 
 		super.setSet(set);
+	}
+
+	@Override
+	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void handleStorageVAUpdate(StorageVADelta vaDelta, String info) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

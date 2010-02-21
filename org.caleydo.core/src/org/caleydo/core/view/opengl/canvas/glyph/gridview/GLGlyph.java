@@ -21,11 +21,11 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -108,7 +108,7 @@ public class GLGlyph
 
 	private GlyphManager gman = null;
 
-	private SelectionManager selectionManager = null;
+	private StorageSelectionManager selectionManager = null;
 
 	private GlyphEntry oldMouseOverGlyphEntry = null;
 
@@ -152,7 +152,7 @@ public class GLGlyph
 
 		gman = generalManager.getGlyphManager();
 
-		selectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
+		selectionManager = useCase.getStorageSelectionManager();
 
 	}
 
@@ -287,8 +287,8 @@ public class GLGlyph
 		{ // load ids to the selection manager
 			selectionManager.resetSelectionManager();
 
-//			ArrayList<Integer> tmpExtID = new ArrayList<Integer>(gman.getGlyphs().keySet());
-//			selectionManager.initialAdd(tmpExtID);
+			// ArrayList<Integer> tmpExtID = new ArrayList<Integer>(gman.getGlyphs().keySet());
+			// selectionManager.initialAdd(tmpExtID);
 		}
 
 		grid_.selectAll();
@@ -375,7 +375,7 @@ public class GLGlyph
 
 	@Override
 	public void display(GL gl) {
-//		processEvents();
+		// processEvents();
 		if (grid_ == null) {
 			renderSymbol(gl);
 			return;

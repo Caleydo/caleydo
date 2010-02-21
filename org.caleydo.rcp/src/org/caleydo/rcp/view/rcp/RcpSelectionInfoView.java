@@ -12,7 +12,8 @@ import org.eclipse.ui.part.ViewPart;
  * 
  * @author Marc Streit
  */
-public class RcpSelectionInfoView extends ViewPart {
+public class RcpSelectionInfoView
+	extends ViewPart {
 
 	public static final String ID = "org.caleydo.rcp.views.swt.SelectionInfoView";
 
@@ -33,7 +34,8 @@ public class RcpSelectionInfoView extends ViewPart {
 
 		if (bHorizontal) {
 			parentComposite.setLayout(new GridLayout(10, false));
-		} else {
+		}
+		else {
 			parentComposite.setLayout(new GridLayout(1, false));
 		}
 
@@ -55,11 +57,15 @@ public class RcpSelectionInfoView extends ViewPart {
 		GridLayout layout;
 		if (bHorizontal) {
 			layout = new GridLayout(2, false);
-		} else {
+		}
+		else {
 			layout = new GridLayout(1, false);
 		}
 
-		layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
+		layout.marginBottom =
+			layout.marginTop =
+				layout.marginLeft =
+					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
 		layout.marginHeight = layout.marginWidth = 0;
 
 		infoComposite.setLayout(layout);

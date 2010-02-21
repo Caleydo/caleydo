@@ -68,11 +68,11 @@ public class GeneralPreferencePage
 
 		// Composite sampleComposite = new Composite(mainComp, SWT.NULL);
 
-//		performanceLevelFE =
-//			new RadioGroupFieldEditor(PreferenceConstants.PERFORMANCE_LEVEL,
-//				"Choose the performance level for your computer", 1, new String[][] { { "High", "high" },
-//						{ "Low", "low" } }, mainComp);
-//		addField(performanceLevelFE);
+		// performanceLevelFE =
+		// new RadioGroupFieldEditor(PreferenceConstants.PERFORMANCE_LEVEL,
+		// "Choose the performance level for your computer", 1, new String[][] { { "High", "high" },
+		// { "Low", "low" } }, mainComp);
+		// addField(performanceLevelFE);
 
 		// sampleGroup.pack();
 		// getFieldEditorParent().pack();

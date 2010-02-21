@@ -15,10 +15,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.PlatformUI;
 
-public class ChangeViewModeAction extends AToolBarAction
-		implements
-			IMenuCreator,
-			IToolBarItem {
+public class ChangeViewModeAction
+	extends AToolBarAction
+	implements IMenuCreator, IToolBarItem {
 
 	private Menu menu;
 	private int iViewID;
@@ -60,15 +59,13 @@ public class ChangeViewModeAction extends AToolBarAction
 		if (type == EPositionModel.DISPLAY_SCATTERPLOT) {
 			usedText = ChangeViewModeToScatterplotAction.TEXT;
 			usedImage = ChangeViewModeToScatterplotAction.ICON;
-			cvm2a
-					.setAction(new ChangeViewModeToScatterplotAction(iViewID,
-							this));
+			cvm2a.setAction(new ChangeViewModeToScatterplotAction(iViewID, this));
 		}
 
 		setText(usedText);
 		setToolTipText(usedText);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), usedImage)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), usedImage)));
 
 		setMenuCreator(this);
 
@@ -81,8 +78,7 @@ public class ChangeViewModeAction extends AToolBarAction
 	private void setViewID(int id) {
 		this.iViewID = id;
 		glyphview = null;
-		for (AGLView l : GeneralManager.get().getViewGLCanvasManager()
-				.getAllGLViews()) {
+		for (AGLView l : GeneralManager.get().getViewGLCanvasManager().getAllGLViews()) {
 			if (l.getID() == iViewID && l instanceof GLGlyph) {
 				glyphview = (GLGlyph) l;
 			}
@@ -113,13 +109,10 @@ public class ChangeViewModeAction extends AToolBarAction
 		menu = new Menu(parent);
 
 		addActionToMenu(menu, new ChangeViewModeToCircleAction(iViewID, this));
-		addActionToMenu(menu,
-				new ChangeViewModeToPlusModelAction(iViewID, this));
+		addActionToMenu(menu, new ChangeViewModeToPlusModelAction(iViewID, this));
 		addActionToMenu(menu, new ChangeViewModeToRandomAction(iViewID, this));
-		addActionToMenu(menu,
-				new ChangeViewModeToRectangleAction(iViewID, this));
-		addActionToMenu(menu, new ChangeViewModeToScatterplotAction(iViewID,
-				this));
+		addActionToMenu(menu, new ChangeViewModeToRectangleAction(iViewID, this));
+		addActionToMenu(menu, new ChangeViewModeToScatterplotAction(iViewID, this));
 
 		return menu;
 	}

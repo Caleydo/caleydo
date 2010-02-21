@@ -8,9 +8,9 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class AngularBrushingAction extends AToolBarAction
-		implements
-			IToolBarItem {
+public class AngularBrushingAction
+	extends AToolBarAction
+	implements IToolBarItem {
 	public static final String TEXT = "Set angular brush";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/angular_brush.png";
 
@@ -22,14 +22,13 @@ public class AngularBrushingAction extends AToolBarAction
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
 	public void run() {
 		super.run();
-		GeneralManager.get().getEventPublisher().triggerEvent(
-				new AngularBrushingEvent());
+		GeneralManager.get().getEventPublisher().triggerEvent(new AngularBrushingEvent());
 	};
 }

@@ -7,7 +7,8 @@ import org.eclipse.swt.widgets.Group;
  * 
  * @author Werner Puff
  */
-public abstract class WidgetToolBarContainer extends ToolBarContainer {
+public abstract class WidgetToolBarContainer
+	extends ToolBarContainer {
 
 	/**
 	 * Adds the toolbar widgets to the given Group-composite

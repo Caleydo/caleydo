@@ -248,8 +248,7 @@ public class AnimationPopOutDetailOutside extends ADrawingStateAnimation {
 		while (fMidAngle < 0) {
 			fMidAngle += 360;
 		}
-		float fAngleToAdd = (fMidAngle > fCurrentSelectedElementStartAngle)
-				? -180
+		float fAngleToAdd = (fMidAngle > fCurrentSelectedElementStartAngle) ? -180
 				: 180;
 		float fCurrentSelectedElementTargetStartAngle = fMidAngle + fAngleToAdd;
 

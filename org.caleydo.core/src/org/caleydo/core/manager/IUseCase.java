@@ -1,13 +1,17 @@
 package org.caleydo.core.manager;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.selection.EVAType;
-import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.StorageSelectionManager;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterState;
 
@@ -27,7 +31,7 @@ public interface IUseCase {
 	public EDataDomain getDataDomain();
 
 	/**
-	 * Returns the Primary VA Type (see ({@link EVAType#getPrimaryVAType()}) for a ID category for this use
+	 * Returns the Primary VA Type (see ({@link VAType#getPrimaryVAType()}) for a ID category for this use
 	 * case, or null if the category is not supported at all.
 	 * 
 	 * @param idCategory
@@ -74,14 +78,22 @@ public interface IUseCase {
 	public String getContentLabel(boolean bUpperCase, boolean bPlural);
 
 	/**
-	 * Returns the ID of the virtual array associated with a particular type specified via the parameter for
-	 * the set associated with the use case.
+	 * Returns the virtual array for the type
 	 * 
 	 * @param vaType
 	 *            the type of VA requested
-	 * @return the ID of the VirtualArray
+	 * @return
 	 */
-	public IVirtualArray getVA(EVAType vaType);
+	public ContentVirtualArray getContentVA(ContentVAType vaType);
+
+	/**
+	 * Returns the virtual array for the type
+	 * 
+	 * @param vaType
+	 *            the type of VA requested
+	 * @return
+	 */
+	public StorageVirtualArray getStorageVA(StorageVAType vaType);
 
 	/**
 	 * Initiates clustering based on the parameters passed. Sends out an event to all affected views upon
@@ -113,7 +125,11 @@ public interface IUseCase {
 	 * @param virtualArray
 	 *            the new virtual array
 	 */
-	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType, IVirtualArray virtualArray);
+	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType,
+		StorageVirtualArray virtualArray);
+
+	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType,
+		ContentVirtualArray virtualArray);
 
 	/**
 	 * Sets the parameters for loading the data-{@link Set} contained in this use case
@@ -135,7 +151,7 @@ public interface IUseCase {
 	 * 
 	 * @return a clone of the content selection manager
 	 */
-	public SelectionManager getContentSelectionManager();
+	public ContentSelectionManager getContentSelectionManager();
 
 	/**
 	 * Returns a clone of the storage selection manager. You have to set your virtual array manually. This is
@@ -143,6 +159,6 @@ public interface IUseCase {
 	 * 
 	 * @return a clone of the storage selection manager
 	 */
-	public SelectionManager getStorageSelectionManager();
+	public StorageSelectionManager getStorageSelectionManager();
 
 }

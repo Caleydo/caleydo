@@ -7,7 +7,8 @@ import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class ChangeSelectionBrush extends AToolBarAction {
+public class ChangeSelectionBrush
+	extends AToolBarAction {
 
 	private Integer iBrushSize = 0;
 
@@ -19,17 +20,17 @@ public class ChangeSelectionBrush extends AToolBarAction {
 	/**
 	 * Constructor.
 	 */
-	public ChangeSelectionBrush(int iViewID, ChangeSelectionBrushAction parent,
-			int iBrushSize, String text, String iconresource) {
+	public ChangeSelectionBrush(int iViewID, ChangeSelectionBrushAction parent, int iBrushSize, String text,
+		String iconresource) {
 		super(iViewID);
 		this.parent = parent;
 
 		this.iBrushSize = iBrushSize;
 
 		this.sText = text;
-		this.idIcon = ImageDescriptor
-				.createFromImage(new ResourceLoader().getImage(PlatformUI
-						.getWorkbench().getDisplay(), iconresource));
+		this.idIcon =
+			ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench()
+				.getDisplay(), iconresource));
 
 		setText(text);
 		setToolTipText(sText);
@@ -46,6 +47,6 @@ public class ChangeSelectionBrush extends AToolBarAction {
 		}
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
-				new GlyphSelectionBrushEvent(iViewID, iBrushSize));
+			new GlyphSelectionBrushEvent(iViewID, iBrushSize));
 	};
 }

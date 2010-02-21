@@ -5,7 +5,8 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.util.r.RStatisticsPerformer;
 
-public class CompareGroupsEventListener extends AEventListener<RStatisticsPerformer> {
+public class CompareGroupsEventListener extends
+		AEventListener<RStatisticsPerformer> {
 
 	@Override
 	public void handleEvent(AEvent event) {

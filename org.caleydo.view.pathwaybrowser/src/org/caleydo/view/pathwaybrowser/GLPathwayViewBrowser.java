@@ -18,9 +18,8 @@ import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
 import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
 import org.caleydo.view.pathway.SerializedPathwayView;
 
-public class GLPathwayViewBrowser extends AGLViewBrowser
-		implements
-			IRemoteRenderingHandler {
+public class GLPathwayViewBrowser extends AGLViewBrowser implements
+		IRemoteRenderingHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.pathwaybrowser";
 

@@ -39,10 +39,11 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	 *            Cluster node that the partial disc shall correspond to.
 	 */
 	public PartialDisc(Tree<PartialDisc> partialDiscTree,
-			AHierarchyElement<?> hierarchyElement, APDDrawingStrategy drawingStrategy) {
+			AHierarchyElement<?> hierarchyElement,
+			APDDrawingStrategy drawingStrategy) {
 
 		super(partialDiscTree);
-//		setNode(this);
+		// setNode(this);
 		this.fSize = hierarchyElement.getSize();
 		this.hierarchyElement = hierarchyElement;
 		this.drawingStrategy = drawingStrategy;
@@ -378,6 +379,7 @@ public class PartialDisc extends AHierarchyElement<PartialDisc> {
 	/**
 	 * @return Size of the partial disc.
 	 */
+	@Override
 	public float getSize() {
 		return fSize;
 	}

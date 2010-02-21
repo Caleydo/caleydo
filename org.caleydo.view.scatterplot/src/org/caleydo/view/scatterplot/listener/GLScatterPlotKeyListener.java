@@ -18,28 +18,24 @@ public class GLScatterPlotKeyListener extends GLKeyListener<GLScatterplot> {
 	@Override
 	protected void handleKeyPressedEvent(KeyEvent event) {
 
-
-		if (event.stateMask == SWT.CTRL)
-		{
-			switch (event.keyCode) 
-			{
-				case SWT.ARROW_UP :
-					glScatterplot.upDownSelect2Axis(false);
-					break;
-				case SWT.ARROW_DOWN :
-					glScatterplot.upDownSelect2Axis(true);
-					break;
-				case SWT.ARROW_LEFT :
-					glScatterplot.leftRightSelect2Axis(false);
-					break;
-				case SWT.ARROW_RIGHT :
-					glScatterplot.leftRightSelect2Axis(true);
-					break;		
+		if (event.stateMask == SWT.CTRL) {
+			switch (event.keyCode) {
+			case SWT.ARROW_UP:
+				glScatterplot.upDownSelect2Axis(false);
+				break;
+			case SWT.ARROW_DOWN:
+				glScatterplot.upDownSelect2Axis(true);
+				break;
+			case SWT.ARROW_LEFT:
+				glScatterplot.leftRightSelect2Axis(false);
+				break;
+			case SWT.ARROW_RIGHT:
+				glScatterplot.leftRightSelect2Axis(true);
+				break;
 			}
 			return;
 		}
-			
-			
+
 		// || event.stateMask == SWT.ALT ||
 		// event.stateMask == SWT.SHIFT)
 		// return;
@@ -58,60 +54,53 @@ public class GLScatterPlotKeyListener extends GLKeyListener<GLScatterplot> {
 			glScatterplot.toggleDetailLevel();
 			return;
 		}
-		
+
 		if (event.character == 'm') {
 			glScatterplot.toggleMatrixMode();
 			return;
 		}
-		
+
 		if (event.character == 'c') {
 			glScatterplot.toggleColorMode();
 			return;
 		}
-		
+
 		if (event.character == 'z') {
 			glScatterplot.toggleMatrixZoom();
 			return;
 		}
-		
+
 		if (event.character == 'a') {
 			glScatterplot.addSelectionType();
 			return;
 		}
-		
+
 		if (event.character == 'r') {
 			glScatterplot.removeSelectionType();
 			return;
 		}
-		
+
 		if (event.character == 'o') {
 			glScatterplot.MainViewZoom();
 			return;
 		}
-		
-		
-		
-		
-		
-		
-		
-		
+
 		switch (event.keyCode) {
-			case SWT.ARROW_UP :
-				glScatterplot.upDownSelect(false);
-				break;
-			case SWT.ARROW_DOWN :
-				glScatterplot.upDownSelect(true);
-				break;
-			case SWT.ARROW_LEFT :
-				glScatterplot.leftRightSelect(false);
-				break;
-			case SWT.ARROW_RIGHT :
-				glScatterplot.leftRightSelect(true);
-				break;
-			case SWT.HOME :
-				glScatterplot.clearAllSelections();
-				break;
+		case SWT.ARROW_UP:
+			glScatterplot.upDownSelect(false);
+			break;
+		case SWT.ARROW_DOWN:
+			glScatterplot.upDownSelect(true);
+			break;
+		case SWT.ARROW_LEFT:
+			glScatterplot.leftRightSelect(false);
+			break;
+		case SWT.ARROW_RIGHT:
+			glScatterplot.leftRightSelect(true);
+			break;
+		case SWT.HOME:
+			glScatterplot.clearAllSelections();
+			break;
 		}
 
 	}
