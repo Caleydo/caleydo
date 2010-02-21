@@ -8,7 +8,7 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionType;
 
-public class ContentClusterResult {
+public class ContentData {
 	ContentVirtualArray contentVA;
 	/** indices of examples (cluster centers) */
 	ArrayList<Integer> contentSampleElements;
@@ -19,6 +19,23 @@ public class ContentClusterResult {
 
 	public ContentVirtualArray getContentVA() {
 		return contentVA;
+	}
+
+	public void setContentVA(ContentVirtualArray contentVA) {
+		this.contentVA = contentVA;
+
+	}
+
+	public ArrayList<Integer> getContentSampleElements() {
+		return contentSampleElements;
+	}
+
+	public ArrayList<Integer> getContentClusterSizes() {
+		return contentClusterSizes;
+	}
+
+	public Tree<ClusterNode> getContentTree() {
+		return contentTree;
 	}
 
 	void finish() {
@@ -37,15 +54,4 @@ public class ContentClusterResult {
 		}
 	}
 
-	public ArrayList<Integer> getContentSampleElements() {
-		return contentSampleElements;
-	}
-
-	public ArrayList<Integer> getContentClusterSizes() {
-		return contentClusterSizes;
-	}
-
-	public Tree<ClusterNode> getContentTree() {
-		return contentTree;
-	}
 }

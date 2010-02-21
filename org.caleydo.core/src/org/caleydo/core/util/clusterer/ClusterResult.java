@@ -2,8 +2,8 @@ package org.caleydo.core.util.clusterer;
 
 public class ClusterResult {
 
-	ContentClusterResult contentResult;
-	StorageClusterResult storageResult;
+	ContentData contentResult;
+	StorageData storageResult;
 
 	/**
 	 * Determines group information for virtual array. Used by affinity propagation and kMeans.
@@ -18,11 +18,11 @@ public class ClusterResult {
 			storageResult.finish();
 	}
 
-	public ContentClusterResult getContentResult() {
+	public ContentData getContentResult() {
 		return contentResult;
 	}
 
-	public StorageClusterResult getStorageResult() {
+	public StorageData getStorageResult() {
 		return storageResult;
 	}
 }

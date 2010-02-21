@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.ListIterator;
 
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.VAIterator;
 
 /**
@@ -23,7 +23,7 @@ public class StorageIterator
 	 * @param set
 	 * @param virtualArray
 	 */
-	public StorageIterator(HashMap<Integer, IStorage> alStorages, IVirtualArray virtualArray) {
+	public StorageIterator(HashMap<Integer, IStorage> alStorages, StorageVirtualArray virtualArray) {
 		this.vaIterator = virtualArray.iterator();
 		this.alStorages = alStorages;
 	}

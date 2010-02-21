@@ -8,7 +8,13 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageGroupList;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 
-public class StorageClusterResult {
+/**
+ * Class that summarizes all information around a storageVA and its tree. No field is initialized by default.
+ * 
+ * @author Alexander Lex
+ */
+public class StorageData
+	implements Cloneable {
 
 	StorageVirtualArray storageVA;
 
@@ -23,6 +29,10 @@ public class StorageClusterResult {
 		return storageVA;
 	}
 
+	public void setStorageVA(StorageVirtualArray storageVA) {
+		this.storageVA = storageVA;
+	}
+
 	public ArrayList<Integer> getStorageClusterSizes() {
 		return storageClusterSizes;
 	}
@@ -33,6 +43,10 @@ public class StorageClusterResult {
 
 	public Tree<ClusterNode> getStorageTree() {
 		return storageTree;
+	}
+
+	public void setStorageTree(Tree<ClusterNode> storageTree) {
+		this.storageTree = storageTree;
 	}
 
 	void finish() {
@@ -52,4 +66,24 @@ public class StorageClusterResult {
 		}
 	}
 
+	@Override
+	public StorageData clone() {
+		StorageData clone = null;
+		try {
+			clone = (StorageData) super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+			// TODO: handle exception
+		}
+		if (storageClusterSizes != null)
+			clone.storageClusterSizes = (ArrayList<Integer>) storageClusterSizes.clone();
+		if (storageSampleElements != null)
+			clone.storageSampleElements = (ArrayList<Integer>) storageSampleElements.clone();
+		clone.storageVA = storageVA.clone();
+		// FIXME this is a bad hack since it is not a clone
+		clone.storageTree = storageTree;
+
+		return clone;
+
+	}
 }

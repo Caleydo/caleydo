@@ -35,8 +35,8 @@ import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.clusterer.ContentClusterResult;
-import org.caleydo.core.util.clusterer.StorageClusterResult;
+import org.caleydo.core.util.clusterer.ContentData;
+import org.caleydo.core.util.clusterer.StorageData;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -67,10 +67,10 @@ public class Set
 
 	private boolean bIsNumerical;
 
-	private HashMap<ContentVAType, ContentVirtualArray> hashContentVAs;
-	private HashMap<StorageVAType, StorageVirtualArray> hashStorageVAs;
+	private HashMap<ContentVAType, ContentData> hashContentData;
+	private HashMap<StorageVAType, StorageData> hashStorageData;
 
-	private StorageVirtualArray defaultStorageVA;
+	private StorageData defaultStorageData;
 
 	// clustering stuff
 	private ArrayList<Integer> alClusterSizes = null;
@@ -99,9 +99,15 @@ public class Set
 
 		hashStorages = new HashMap<Integer, IStorage>();
 
-		hashContentVAs = new HashMap<ContentVAType, ContentVirtualArray>();
-		hashStorageVAs = new HashMap<StorageVAType, StorageVirtualArray>(3);
-		defaultStorageVA = new StorageVirtualArray(StorageVAType.STORAGE);
+		hashContentData = new HashMap<ContentVAType, ContentData>();
+		hashStorageData = new HashMap<StorageVAType, StorageData>(3);
+		defaultStorageData = new StorageData();
+		defaultStorageData.setStorageVA(new StorageVirtualArray(StorageVAType.STORAGE));
+		Tree<ClusterNode> tree = new Tree<ClusterNode>();
+		ClusterNode root = new ClusterNode(tree, "Root", 1, 0.0f, 0, true, -1);
+		tree.setRootNode(root);
+		defaultStorageData.setStorageTree(tree);
+
 	}
 
 	@Override
@@ -149,7 +155,12 @@ public class Set
 			// throw new IllegalArgumentException("All storages in a set must be of the same length");
 		}
 		hashStorages.put(storage.getID(), storage);
-		defaultStorageVA.append(storage.getID());
+		defaultStorageData.getStorageVA().append(storage.getID());
+		Tree<ClusterNode> tree = defaultStorageData.getStorageTree();
+		int id = defaultStorageData.getStorageVA().size();
+		ClusterNode node = new ClusterNode(tree, storage.getLabel(), id, 0.0f, 0, false, storage.getID());
+
+		defaultStorageData.getStorageTree().addChild(tree.getRoot(), node);
 	}
 
 	@Override
@@ -160,17 +171,6 @@ public class Set
 	@Override
 	public int size() {
 		return hashStorages.size();
-	}
-
-	@Override
-	public int sizeVA(int iUniqueID) {
-		if (hashStorageVAs.containsKey(iUniqueID))
-			return hashStorageVAs.get(iUniqueID).size();
-		else if (hashContentVAs.containsKey(iUniqueID))
-			return hashContentVAs.get(iUniqueID).size();
-		else
-			throw new IllegalArgumentException("No such virtual array has been registered:" + iUniqueID);
-
 	}
 
 	@Override
@@ -222,8 +222,8 @@ public class Set
 	}
 
 	@Override
-	public Iterator<IStorage> iterator() {
-		return new StorageIterator(hashStorages, hashStorageVAs.get(iUniqueID));
+	public Iterator<IStorage> iterator(StorageVAType type) {
+		return new StorageIterator(hashStorages, hashStorageData.get(type).getStorageVA());
 	}
 
 	@Override
@@ -377,36 +377,37 @@ public class Set
 
 	@Override
 	public StorageVirtualArray getStorageVA(StorageVAType vaType) {
-		StorageVirtualArray va = hashStorageVAs.get(vaType);
-		if (va == null) {
-			va = defaultStorageVA.clone();
-			hashStorageVAs.put(vaType, va);
+		StorageData storageData = hashStorageData.get(vaType);
+		if (storageData == null) {
+			storageData = defaultStorageData.clone();
+			hashStorageData.put(vaType, storageData);
 		}
-		return va;
+		return storageData.getStorageVA();
 	}
 
 	@Override
 	public ContentVirtualArray getContentVA(ContentVAType vaType) {
-		ContentVirtualArray va = hashContentVAs.get(vaType);
-		if (va == null) {
-			va = createContentVA(vaType);
-			hashContentVAs.put(vaType, va);
+
+		ContentData contentData = hashContentData.get(vaType);
+		if (contentData == null) {
+			contentData = createContentData(vaType);
+			hashContentData.put(vaType, contentData);
 		}
-		return va;
+		return contentData.getContentVA();
 
 	}
 
-	private ContentVirtualArray createContentVA(ContentVAType vaType) {
-		ContentVirtualArray va = new ContentVirtualArray(vaType);
-		if (!vaType.isEmptyByDefault())
+	private ContentData createContentData(ContentVAType vaType) {
+		ContentData contentData = new ContentData();
 
-		{
-
+		ContentVirtualArray contentVA = new ContentVirtualArray(vaType);
+		if (!vaType.isEmptyByDefault()) {
 			for (int count = 0; count < iDepth; count++) {
-				va.append(count);
+				contentVA.append(count);
 			}
 		}
-		return va;
+		contentData.setContentVA(contentVA);
+		return contentData;
 
 	}
 
@@ -492,11 +493,17 @@ public class Set
 	// }
 	@Override
 	public void setContentVA(ContentVAType vaType, ContentVirtualArray virtualArray) {
-		hashContentVAs.put(vaType, virtualArray);
+		ContentData contentData = hashContentData.get(vaType);
+		if (contentData == null)
+			contentData = createContentData(vaType);
+		hashContentData.put(vaType, contentData);
 	}
 
 	public void setStorageVA(StorageVAType vaType, StorageVirtualArray virtualArray) {
-		hashStorageVAs.put(vaType, virtualArray);
+		StorageData storageData = hashStorageData.get(vaType);
+		if (storageData == null)
+			storageData = defaultStorageData.clone();
+		hashStorageData.put(vaType, storageData);
 	}
 
 	private void calculateGlobalExtrema() {
@@ -593,24 +600,25 @@ public class Set
 
 			ContentVAType contentVAType = clusterState.getContentVAType();
 			if (contentVAType != null)
-				clusterState.setContentVA(hashContentVAs.get(contentVAType));
+				clusterState.setContentVA(hashContentData.get(contentVAType).getContentVA());
 
 			StorageVAType storageVAType = clusterState.getStorageVAType();
 			if (storageVAType != null)
-				clusterState.setStorageVA(hashStorageVAs.get(storageVAType));
+				clusterState.setStorageVA(hashStorageData.get(storageVAType).getStorageVA());
+
 			ClusterManager clusterManager = new ClusterManager(this);
 			ClusterResult result = clusterManager.cluster(clusterState);
 
-			ContentClusterResult contentResult = result.getContentResult();
+			ContentData contentResult = result.getContentResult();
 			if (contentResult != null) {
-				hashContentVAs.put(clusterState.getContentVAType(), contentResult.getContentVA());
+				hashContentData.put(clusterState.getContentVAType(), contentResult);
 				contentTree = contentResult.getContentTree();
 				alClusterExamples = contentResult.getContentSampleElements();
 				alClusterSizes = contentResult.getContentClusterSizes();
 			}
-			StorageClusterResult storageResult = result.getStorageResult();
+			StorageData storageResult = result.getStorageResult();
 			if (storageResult != null) {
-				hashStorageVAs.put(clusterState.getStorageVAType(), storageResult.getStorageVA());
+				hashStorageData.put(clusterState.getStorageVAType(), storageResult);
 				storageTree = storageResult.getStorageTree();
 				// FIXME - what about the rest?
 			}

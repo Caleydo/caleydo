@@ -1,6 +1,7 @@
 package org.caleydo.core.data.collection;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.naming.OperationNotSupportedException;
 
@@ -22,7 +23,7 @@ import org.caleydo.core.util.clusterer.ClusterState;
  * @author Alexander Lex
  */
 public interface ISet
-	extends IUniqueObject, Iterable<IStorage>, ICollection {
+	extends IUniqueObject, ICollection {
 
 	/**
 	 * Set the set type. Possible set types in ESetType.
@@ -74,15 +75,6 @@ public interface ISet
 	 * @return
 	 */
 	public int size();
-
-	/**
-	 * Return the size of the virtual array
-	 * 
-	 * @param iUniqueID
-	 *            the unique id associated with the virtual array
-	 * @return the number of sets in the virtual array
-	 */
-	public int sizeVA(int iUniqueID);
 
 	/**
 	 * Get the depth of the set, which is the length of the storages
@@ -221,6 +213,14 @@ public interface ISet
 	public StorageVirtualArray getStorageVA(StorageVAType vaType);
 
 	public ContentVirtualArray getContentVA(ContentVAType vaType);
+
+	/**
+	 * Iterate over the storages based on a virtual array
+	 * 
+	 * @param type
+	 * @return
+	 */
+	public Iterator<IStorage> iterator(StorageVAType type);
 
 	/**
 	 * FIXME needs to be replaced after VA Management re-design.

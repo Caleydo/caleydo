@@ -12,6 +12,8 @@ import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -57,7 +59,9 @@ public class GlyphDataLoader {
 		{ // convert values to dictionary indices
 			int counter = 0;
 			int pcounter = 0;
-			for (IStorage tmpStorage : glyphData) {
+			StorageVirtualArray storageVA = glyphData.getStorageVA(StorageVAType.STORAGE);
+			for (Integer storageID : storageVA) {
+				IStorage tmpStorage = glyphData.get(storageID);
 				GlyphAttributeType glyphAttributeType =
 					generalManager.getGlyphManager().getGlyphAttributeTypeWithExternalColumnNumber(counter);
 

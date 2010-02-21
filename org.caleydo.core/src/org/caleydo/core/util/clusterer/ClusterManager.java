@@ -107,7 +107,7 @@ public class ClusterManager {
 
 		clusterer.setClusterState(clusterState);
 		TempResult tempResult = clusterer.getSortedVA(set, clusterState, progressBarOffset, progressBarMulti);
-		result.contentResult = new ContentClusterResult();
+		result.contentResult = new ContentData();
 		result.contentResult.contentVA =
 			new ContentVirtualArray(clusterState.getContentVAType(), tempResult.indices);
 		result.contentResult.contentClusterSizes = tempResult.clusterSizes;
@@ -120,7 +120,7 @@ public class ClusterManager {
 		clusterer.setClusterState(clusterState);
 
 		TempResult tempResult = clusterer.getSortedVA(set, clusterState, progressBarOffset, progressBarMulti);
-		result.storageResult = new StorageClusterResult();
+		result.storageResult = new StorageData();
 		result.storageResult.storageVA =
 			new StorageVirtualArray(clusterState.getStorageVAType(), tempResult.indices);
 		result.storageResult.storageClusterSizes = tempResult.clusterSizes;
