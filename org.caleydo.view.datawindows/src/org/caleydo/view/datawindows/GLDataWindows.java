@@ -5,12 +5,16 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
+import org.caleydo.core.data.graph.tree.DefaultNode;
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.ICommandManager;
@@ -41,13 +45,13 @@ public class GLDataWindows extends AGLView {
 
 	public final static String VIEW_ID = "org.caleydo.view.datawindows";
 
-	private float mouseCoordX = 0;
-	private float mouseCoordY = 0;
+	private double mouseCoordX = 0;
+	private double mouseCoordY = 0;
 
-	private Point mousePoint;
+	private Point mousePoint = new Point(0,0);
 	int viewport[] = new int[4];
 
-	private float canvasWidth = 5;
+	private float canvasWidth = 7;
 	private float canvasHeight = 5;
 
 	private TrackDataProvider tracker;
@@ -58,6 +62,21 @@ public class GLDataWindows extends AGLView {
 
 	private RemoteLevel testLevel;
 
+// tree Test
+	Tree<DefaultNode> tree;
+	
+	
+	//properties of the circle
+	private double circleRadius=2;
+	
+	//Testdata for the circle:
+	private double [] testPointsX = new double[100];
+	private double [] testPointsY = new double[100];
+	
+	private double [] projectedTestPointsX = new double[100];
+	private double [] projectedTestPointsY = new double[100];
+	
+	
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(
 			0, 0);
 	/**
@@ -80,16 +99,24 @@ public class GLDataWindows extends AGLView {
 
 		tracker.startTracking();
 
-		testLevel = new RemoteLevel(1, "testview", testLevel, testLevel);
+		//remote test
+		//testLevel = new RemoteLevel(1, "testview", testLevel, testLevel);
+		//Transform transform = new Transform();
+		//transform.setTranslation(new Vec3f(0, 0, 0));
+		//transform.setScale(new Vec3f(0.5f, 0.5f, 1));
+		//testLevel.getElementByPositionIndex(0).setTransform(transform);
+        //end remote test
+		
 
-		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(0, 0, 0));
-		transform.setScale(new Vec3f(0.5f, 0.5f, 1));
-		testLevel.getElementByPositionIndex(0).setTransform(transform);
-
+		//debug
+		loadTree();
+		
+		
 		// ASerializedView serView = getSerializableRepresentation();
 		// newViews.add(serView);
 
+		
+		
 	}
 
 	@Override
@@ -158,23 +185,26 @@ public class GLDataWindows extends AGLView {
 		// gl.glEnable(GL.GL_DEPTH_TEST);
 		// clipToFrustum(gl);
 
-		// gl.glMatrixMode(GL.GL_PROJECTION);
-		// gl.glLoadIdentity();
+		 gl.glMatrixMode(GL.GL_PROJECTION);
+		 gl.glLoadIdentity();
 		//
-		// gl.glOrtho(0.0f, canvasWidth, canvasHeight, 0.0f, -1.0f, 1.0f);
+		 gl.glOrtho(0.0f, canvasWidth,canvasHeight, 0.0f, -1.0f, 1.0f);
 		//
-		// gl.glMatrixMode(GL.GL_MODELVIEW);
-		// gl.glLoadIdentity();
+		 gl.glMatrixMode(GL.GL_MODELVIEW);
+		 gl.glLoadIdentity();
 		//
-		// if (glMouseListener.getPickedPoint() != null) {
-		// mousePoint = glMouseListener.getPickedPoint();
-		//
-		// gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-		// double factorX = (double) canvasWidth / (double) viewport[2];
-		// double factorY = (double) canvasHeight / (double) viewport[3];
-		//
-		// mouseCoordX = (float) (mousePoint.getX() * factorX);
-		// mouseCoordY = (float) (mousePoint.getY() * factorY);
+		
+		 
+		 //System.out.println("mouseZeiger:"+mousePoint.getX()+"|"+mousePoint.getY());
+		 
+		 //
+		 gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+		 
+		 canvasWidth=canvasHeight*(float)viewport[2]/(float)viewport[3];
+		
+		 
+		
+		
 		//
 		// }
 		//
@@ -199,21 +229,30 @@ public class GLDataWindows extends AGLView {
 		// gl.glVertex3f(2, 2, 0);
 		// gl.glEnd();
 
-		initNewView(gl);
+		
+		//remote test
+		//initNewView(gl);
 
-		renderRemoteLevel(gl, testLevel);
+		//renderRemoteLevel(gl, testLevel);
 
+		//draws the Poincare disk
+		drawCircle(gl,circleRadius,(double)canvasWidth/2,(double)canvasHeight/2);
+		
+		drawTree(gl);
+		
+		
+
+		 if (glMouseListener.wasRightMouseButtonPressed()){
+			 drawCircle(gl,1,2.5f,2.5f);
+			 
+		 }
 		// if (!containedGLViews.isEmpty()) {
 		//
 		// containedGLViews.get(0).displayRemote(gl);
 		// // renderRemoteLevelElement(gl,
 		// // testLevel.getElementByPositionIndex(0));
 		//
-		// gl.glBegin(GL.GL_LINE);
-		// gl.glVertex3f(1, 2, 0);
-		// gl.glVertex3f(2, 2, 0);
-		// gl.glEnd();
-		// }
+		
 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 		// if (!isRenderedRemote())
@@ -412,5 +451,164 @@ public class GLDataWindows extends AGLView {
 		glView.initRemote(gl, this, glMouseListener, null);
 
 		return glView;
+	}
+	
+	private void loadTree() {
+
+		// generate test points for the circle
+		//Random r = new Random();
+	
+		Point tempPoint = new Point(0, 0);
+		Point nullPoint = new Point(0, 0);
+		Random r = new Random();
+		double tempX=0;
+		double tempY=0;
+		
+	
+		
+		for (int i = 0; i < 100; i++) {
+			
+			
+			tempX=r.nextDouble()*100-50;
+			tempY=r.nextDouble()*100-50;
+			System.out.println("Position temp:"+tempX+"|"+tempY);
+			
+			testPointsX[i] = tempX;
+            testPointsY[i] = tempY;
+            
+			
+			//testPoints.add(tempPoint);
+			
+			
+			
+			
+		}
+
+//		for (int i = 0; i < 100; i++) {
+//			tempPoint.setLocation(testPoints[i]);
+//			x=tempPoint.getX();
+//			y=tempPoint.getY();
+//		
+//		
+//			System.out.println("Position load:"+x+"|"+y);
+
+//		}
+		
+		
+		
+		// code from treetester:
+		
+		// tree = new Tree<DefaultNode>();
+
+		// DefaultNode node = new DefaultNode(tree, "Root", 1);
+		// tree.setRootNode(node);
+		// tree.addChild(node, new DefaultNode(tree, "Child1 l1", 1));
+		
+		// stürzt ab:
+		// tree.addChild(node, new DefaultNode(tree, "Child2 l1", 3));
+		//
+		// ArrayList<DefaultNode> tempNode = tree.getChildren(node);
+
+		// tree.addChild(tempNode.get(0), new DefaultNode(tree, "Child3 l1",
+		// 4));
+
+		// int iCount = 5;
+		// for (DefaultNode tempNode : tree.getChildren(node)) {
+		// tree.addChild(tempNode, new DefaultNode(tree, "Child3 l1",
+		// iCount--));
+		// tree.addChild(tempNode, new DefaultNode(tree, "Child4 l1",
+		// iCount--));
+		// }
+
+	}
+
+	private void drawTree(GL gl) {
+		projectTree();
+		
+		double x;
+		double y;
+	
+		for(int i=0; i<100;i++) {
+			x=projectedTestPointsX[i];
+			y=projectedTestPointsY[i];
+			drawCircle(gl,0.1f,x+canvasWidth/2,y+canvasHeight/2);
+		
+		}
+		
+		
+	}	
+	
+	private void drawCircle(GL gl,double radius,double k, double h) {
+	    //code from http://www.swiftless.com/tutorials/opengl/circle.html //20.2.2010
+		double circleX=0;
+		double circleY=0;
+		double i=0;
+		
+		
+		gl.glBegin(GL.GL_LINES);
+	    for (double counter = 0; counter < 360; counter++)
+	    {
+	    i=counter*Math.PI/180;
+	   
+	    circleX = radius * Math.cos(i);
+	    circleY = radius * Math.sin(i) ;
+	    gl.glVertex3d(circleX + k,circleY + h,0);
+	    
+	    circleX = radius * Math.cos(i + Math.PI/180) ;
+	    circleY = radius * Math.sin(i + Math.PI/180) ;
+	    gl.glVertex3d(circleX + k,circleY + h,0);
+	    }
+	    gl.glEnd();
+	}
+	
+	private void convertCoordinates() {
+		
+	}
+	
+	private void PicNode() {
+		
+	}
+	
+	private void translateTree(Point2D.Double translation) {
+		for(int i=0; i<100;i++) {
+			testPointsX[i] = testPointsX[i]+translation.getX();
+			testPointsY[i] = testPointsY[i]+translation.getY();
+		}
+	}
+	
+	private void drawLine() {
+	}
+	
+	private Point2D.Double projectPoint(Point2D.Double coordinate) {
+		
+		double coordinateLength = coordinate.getX()*coordinate.getX()+coordinate.getY()*coordinate.getY();
+		coordinateLength = Math.sqrt(coordinateLength);
+		
+		double radiussquare = circleRadius*circleRadius;
+		
+		double projectionFactor = (2*radiussquare)/(radiussquare+coordinateLength);
+		
+		//System.out.println("abstand projektion: "+projectionFactor*coordinateLength);
+		
+		coordinate.setLocation(coordinate.getX()*projectionFactor/7*2, coordinate.getY()*projectionFactor/7*2);
+		return coordinate;
+	}
+	
+	private void projectTree() {
+		Point2D.Double tempPoint=new Point2D.Double(0,0);
+	
+		double x=0;
+		double y=0;
+		for(int i=0; i<100;i++) {
+			
+			tempPoint.setLocation(testPointsX[i],testPointsY[i]);
+			
+			tempPoint = projectPoint(tempPoint);
+			projectedTestPointsX[i]=tempPoint.getX();
+			projectedTestPointsY[i]=tempPoint.getY();
+		}
+		
+		
+		
 	}
 }
