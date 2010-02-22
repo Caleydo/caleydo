@@ -5,21 +5,18 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.opengl.CmdCreateView;
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.VABasedSelectionManager;
-import org.caleydo.core.data.selection.delta.ContentVADelta;
-import org.caleydo.core.data.selection.delta.VADeltaItem;
+import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
+import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -28,7 +25,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
-import org.caleydo.view.heatmap.GLHeatMap;
+import org.caleydo.view.compare.listener.CompareGroupsEventListener;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -44,10 +41,14 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	public final static String VIEW_ID = "org.caleydo.view.compare";
 
+	private ArrayList<ISet> setsToCompare;
+
 	private TextRenderer textRenderer;
 	private VABasedSelectionManager selectionManager;
+	private HeatMapWrapper leftHeatMapWrapper;
+	private HeatMapWrapper rightHeatMapWrapper;
 
-	private GLHeatMap glHeatMapView;
+	private CompareGroupsEventListener compareGroupsEventListener;
 
 	/**
 	 * Constructor.
@@ -61,15 +62,21 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		super(glCanvas, sLabel, viewFrustum, true);
 
 		viewType = VIEW_ID;
+		setsToCompare = new ArrayList<ISet>();
 	}
 
 	@Override
 	public void init(GL gl) {
 		contentVA = useCase.getContentVA(ContentVAType.CONTENT);
 		storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
-		createHeatMap();
-		glHeatMapView.initRemote(gl, this, glMouseListener, null);
-		glHeatMapView.useFishEye(false);
+		leftHeatMapWrapper = new HeatMapWrapper();
+		rightHeatMapWrapper = new HeatMapWrapper();
+		leftHeatMapWrapper.init(gl, this, glMouseListener, null, useCase, this,
+				dataDomain);
+		rightHeatMapWrapper.init(gl, this, glMouseListener, null, useCase,
+				this, dataDomain);
+		leftHeatMapWrapper.setSet(set);
+		rightHeatMapWrapper.setSet(set);
 	}
 
 	@Override
@@ -108,58 +115,54 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		super.initData();
 	}
 
-	/**
-	 * Create embedded heat map
-	 * 
-	 * @param
-	 */
-	private void createHeatMap() {
-		CmdCreateView cmdView = (CmdCreateView) generalManager
-				.getCommandManager().createCommandByType(
-						ECommandType.CREATE_GL_VIEW);
-		cmdView.setViewID(GLHeatMap.VIEW_ID);
-
-		float fHeatMapHeight = viewFrustum.getHeight();
-		float fHeatMapWidth = viewFrustum.getWidth();
-
-		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0,
-				fHeatMapHeight, 0, fHeatMapWidth, -20, 20, -1);
-
-		cmdView.doCommand();
-
-		glHeatMapView = (GLHeatMap) cmdView.getCreatedObject();
-		glHeatMapView.setUseCase(useCase);
-		glHeatMapView.setRemoteRenderingGLView(this);
-
-		glHeatMapView.setDataDomain(dataDomain);
-		glHeatMapView.setSet(set);
-		glHeatMapView.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
-		glHeatMapView.initData();
-		glHeatMapView.setDetailLevel(EDetailLevel.MEDIUM);
-		setEmbeddedHeatMapData();
-	}
-
-	private void setEmbeddedHeatMapData() {
-
-		// TODO: Is this really necessary?
-		glHeatMapView.resetView();
-		ContentVADelta delta = new ContentVADelta(
-				ContentVAType.CONTENT_EMBEDDED_HM, EIDType.EXPRESSION_INDEX);
-
-		for (int i = 0; i < 10; i++) {
-			if (i >= contentVA.size())
-				break;
-
-			int contentIndex = contentVA.get(i);
-			delta.add(VADeltaItem.append(contentIndex));
-		}
-		for (int i = 10; i < contentVA.size(); i++) {
-			int contentIndex = contentVA.get(i);
-			delta.add(VADeltaItem.removeElement(contentIndex));
-		}
-
-		glHeatMapView.handleContentVAUpdate(delta, getShortInfo());
-	}
+	// /**
+	// * Create embedded heat map
+	// *
+	// * @param
+	// */
+	//
+	// <<<<<<< .mine
+	// =======
+	// float fHeatMapHeight = viewFrustum.getHeight();
+	// float fHeatMapWidth = viewFrustum.getWidth();
+	//
+	// cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0,
+	// fHeatMapHeight, 0, fHeatMapWidth, -20, 20, -1);
+	//
+	// cmdView.doCommand();
+	//
+	// glHeatMapView = (GLHeatMap) cmdView.getCreatedObject();
+	// glHeatMapView.setUseCase(useCase);
+	// glHeatMapView.setRemoteRenderingGLView(this);
+	//
+	// glHeatMapView.setDataDomain(dataDomain);
+	// glHeatMapView.setSet(set);
+	// glHeatMapView.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
+	// glHeatMapView.initData();
+	// glHeatMapView.setDetailLevel(EDetailLevel.MEDIUM);
+	// setEmbeddedHeatMapData();
+	// }
+	//
+	// private void setEmbeddedHeatMapData() {
+	//
+	// // TODO: Is this really necessary?
+	// glHeatMapView.resetView();
+	//		
+	//
+	// for (int i = 0; i < 10; i++) {
+	// if (i >= contentVA.size())
+	// break;
+	//
+	// int contentIndex = contentVA.get(i);
+	// delta.add(VADeltaItem.append(contentIndex));
+	// }
+	// for (int i = 10; i < contentVA.size(); i++) {
+	// int contentIndex = contentVA.get(i);
+	// delta.add(VADeltaItem.removeElement(contentIndex));
+	// }
+	//
+	// glHeatMapView.handleContentVAUpdate(delta, getShortInfo());
+	// }
 
 	@Override
 	public void setDetailLevel(EDetailLevel detailLevel) {
@@ -169,8 +172,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	@Override
 	public void displayLocal(GL gl) {
 		processEvents();
-		if (glHeatMapView != null)
-			glHeatMapView.processEvents();
+		leftHeatMapWrapper.processEvents();
+		rightHeatMapWrapper.processEvents();
 		if (!isVisible())
 			return;
 		pickingManager.handlePicking(this, gl);
@@ -178,7 +181,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		if (bIsDisplayListDirtyLocal) {
 			bIsDisplayListDirtyLocal = false;
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
-			glHeatMapView.setDisplayListDirty();
+			leftHeatMapWrapper.setDisplayListDirty();
+			rightHeatMapWrapper.setDisplayListDirty();
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
@@ -202,15 +206,13 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	public void display(GL gl) {
 		// processEvents();
 		gl.glCallList(iGLDisplayListToCall);
-
-		glHeatMapView.getViewFrustum().setTop(viewFrustum.getTop() / 2.0f);
-		glHeatMapView.getViewFrustum().setRight(viewFrustum.getRight() / 2.0f);
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.COMPARE_EMBEDDED_VIEW_SELECTION, glHeatMapView
-						.getID()));
-		glHeatMapView.displayRemote(gl);
-		gl.glPopName();
-
+		gl.glLoadIdentity();
+//		leftHeatMapWrapper.draw(gl, 0.0f, 0.0f, viewFrustum.getRight() / 3.0f,
+//				viewFrustum.getTop()/2.0f);
+		gl.glLoadIdentity();
+		rightHeatMapWrapper.draw(gl, 2.0f * viewFrustum.getRight() / 3.0f,
+				0.0f, viewFrustum.getRight() / 3.0f, viewFrustum.getTop()/2.0f);
+		gl.glLoadIdentity();
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
 	}
@@ -295,18 +297,37 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
+		compareGroupsEventListener = new CompareGroupsEventListener();
+		compareGroupsEventListener.setHandler(this);
+		eventPublisher.addListener(CompareGroupsEvent.class,
+				compareGroupsEventListener);
+
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
-
+		if (compareGroupsEventListener != null) {
+			eventPublisher.removeListener(compareGroupsEventListener);
+			compareGroupsEventListener = null;
+		}
 	}
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
 		// TODO: Do it differently?
 		return new ArrayList<AGLView>();
+	}
+
+	public void setGroupsToCompare(ArrayList<ISet> sets) {
+		setsToCompare.clear();
+		setsToCompare.addAll(sets);
+		if (sets.size() >= 2) {
+			leftHeatMapWrapper.setSet(setsToCompare.get(0));
+			rightHeatMapWrapper.setSet(setsToCompare.get(1));
+			setDisplayListDirty();
+		}
+
 	}
 
 }

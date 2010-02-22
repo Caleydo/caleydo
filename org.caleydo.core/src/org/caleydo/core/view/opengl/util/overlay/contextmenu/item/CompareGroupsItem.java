@@ -14,7 +14,7 @@ public class CompareGroupsItem
 		super();
 
 		// Trigger lazy plugin loading and creation of statistics performer
-		GeneralManager.get().getRStatisticsPerformer();
+//		GeneralManager.get().getRStatisticsPerformer();
 
 		setText("Compare Groups");
 		CompareGroupsEvent event = new CompareGroupsEvent(setsToCompare);
