@@ -78,12 +78,17 @@ public class VisualLinksPreferencePage
 		group.setText("Choose the desired highlighting-mode of visual links");
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		group.setLayout(new GridLayout(2, true));
-		
-		final Combo combo = new Combo(baseComposite, SWT.DROP_DOWN);
+
+		Group graphGroup = new Group(baseComposite, SWT.SHADOW_IN);
+		graphGroup.setText("Choose graph type of visual links");
+		graphGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		graphGroup.setLayout(new GridLayout(2, true));
+
+		final Combo combo = new Combo(graphGroup, SWT.DROP_DOWN);
 		combo.add("GLOBAL BUNDLING");
 		combo.add("VIEW CENTERED");
 		combo.add("CONSECUTIVE");
-		combo.setText("Choose Graph Type");
+		combo.setText(iCurrentlyUsedGraphType);
 		combo.addSelectionListener(new SelectionAdapter() {
 
 			@Override

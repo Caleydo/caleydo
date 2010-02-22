@@ -1866,6 +1866,15 @@ public class GLRemoteRendering
 				break;
 
 			case VIEW_SELECTION:
+				graphtype = GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.VISUAL_LINKS_TYPE);
+				if (graphtype.equals("GLOBAL_BUNDLING"))
+						glConnectionLineRenderer = new GLGlobalBundlingPointConnectionGraphDrawing(focusLevel, stackLevel);
+				else if (graphtype.equals("VIEW_CENTERED"))
+						glConnectionLineRenderer = new GLViewCenteredConnectionGraphDrawing(focusLevel, stackLevel);
+				else if (graphtype.equals("CONSECUTIVE"))
+						glConnectionLineRenderer = new GLConsecutiveConnectionGraphDrawing(focusLevel, stackLevel);
+				
+				
 				switch (pickingMode) {
 					case MOUSE_OVER:
 
@@ -2127,7 +2136,6 @@ public class GLRemoteRendering
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 			parentGLCanvas.addMouseListener(bucketMouseWheelListener);
 
-			System.out.println(graphtype);
 			if (graphtype.equals("GLOBAL_BUNDLING"))
 					glConnectionLineRenderer = new GLGlobalBundlingPointConnectionGraphDrawing(focusLevel, stackLevel);
 			else if (graphtype.equals("VIEW_CENTERED"))

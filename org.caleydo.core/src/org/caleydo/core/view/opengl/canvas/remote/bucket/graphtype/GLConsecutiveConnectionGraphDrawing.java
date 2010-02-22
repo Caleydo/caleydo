@@ -10,6 +10,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GraphDrawingUtils;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.vislink.VisLinkAnimationStage;
 import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
@@ -47,7 +48,7 @@ public class GLConsecutiveConnectionGraphDrawing
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
 		HashMap<Integer, VisLinkAnimationStage> connections = new HashMap<Integer, VisLinkAnimationStage>();
 		HashMap<Integer, Vec3f> bundlingPoints = new HashMap<Integer, Vec3f>();
-		hashViewToCenterPoint = getOptimalDynamicPoints(idType);
+	//	hashViewToCenterPoint = getOptimalDynamicPoints(idType);
 		if (hashViewToCenterPoint == null)
 			return;
 		
@@ -83,7 +84,7 @@ public class GLConsecutiveConnectionGraphDrawing
 		}
 		if (focusLevel.getElementByPositionIndex(0).getGLView() != null){
 			if (focusLevel.getElementByPositionIndex(0).getGLView().getID() == activeViewID){
-				renderFromCenter(gl, connections, bundlingPoints);
+				renderFromCenter(gl, connections, bundlingPoints, idType, hashViewToCenterPoint);
 				return;
 			}
 		}
@@ -97,10 +98,15 @@ public class GLConsecutiveConnectionGraphDrawing
 		}
 	}
 	
-	private void renderFromCenter(GL gl, HashMap<Integer, VisLinkAnimationStage> connections, HashMap<Integer, Vec3f> bundlingPoints){
-
+	private void renderFromCenter(GL gl, HashMap<Integer, VisLinkAnimationStage> connections, HashMap<Integer, Vec3f> bundlingPoints, EIDType idType, HashMap<Integer, Vec3f> hashViewToCenterPoint){
+		Integer heatMapID = getSpecialViewID(HEATMAP);
+		boolean isHeatMap = false;
+		if (focusLevel.getElementByPositionIndex(0).getGLView() instanceof GLHeatMap)
+			isHeatMap = true;
+		
 		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>(4);
 		ArrayList<Integer> ids = new ArrayList<Integer>();
+
 		for (int stackCount = 0; stackCount < stackLevel.getCapacity(); stackCount++) {
 			if(stackLevel.getElementByPositionIndex(stackCount).getGLView() != null){
 				int id = stackLevel.getElementByPositionIndex(stackCount).getGLView().getID();
@@ -123,17 +129,45 @@ public class GLConsecutiveConnectionGraphDrawing
 		else if (ids.size() == 1){
 			int remoteId = ids.get(0);
 			VisLinkAnimationStage bundlingLine = new VisLinkAnimationStage();
-			bundlingLine.addLine(createControlPoints(bundlingPoints.get(remoteId), bundlingPoints.get(activeViewID), vecCenter));
-			connectionLinesAllViews.add(connections.get(activeViewID));
-			connectionLinesAllViews.add(bundlingLine);
-			connectionLinesAllViews.add(connections.get(remoteId));
+			if (!isHeatMap){
+				bundlingLine.addLine(createControlPoints(bundlingPoints.get(remoteId), bundlingPoints.get(activeViewID), vecCenter));
+				connectionLinesAllViews.add(connections.get(activeViewID));
+				connectionLinesAllViews.add(bundlingLine);
+				connectionLinesAllViews.add(connections.get(remoteId));
+			}
+			else{
+				bundlingLine.addLine(createControlPoints(bundlingPoints.get(remoteId), bundlingPoints.get(activeViewID), vecCenter));
+				VisLinkAnimationStage tempLine =  bestheatMapPoint(bundlingPoints, remoteId, idType, hashViewToCenterPoint);
+				connectionLinesAllViews.add(tempLine);
+				//connectionLinesAllViews.add(connections.get(activeViewID));
+				connectionLinesAllViews.add(bundlingLine);
+				connectionLinesAllViews.add(connections.get(remoteId));
+
+			}
 		}
 	
 		
 		VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
 		visLinkScene.renderLines(gl);
 	}
-	
+
+	private VisLinkAnimationStage bestheatMapPoint(HashMap<Integer, Vec3f> bundlingPoints, int remoteID, EIDType idType, HashMap<Integer, Vec3f> hashViewToCenterPoint) {
+
+		VisLinkAnimationStage bestHeatMapLine = new VisLinkAnimationStage();
+		float minPath = Float.MAX_VALUE;
+		Vec3f optimalPoint = new Vec3f();
+		for (int count = 0; count < hashIDTypeToViewToPointLists.get(idType).get(activeViewID).size(); count++){
+			Vec3f temp = hashIDTypeToViewToPointLists.get(idType).get(activeViewID).get(count).get(0);
+			Vec3f path = temp.minus(bundlingPoints.get(remoteID)); 
+			if (path.length() < minPath){
+				minPath = path.length();
+				optimalPoint = temp; 
+			}
+		}
+		bestHeatMapLine.addLine(createControlPoints(optimalPoint, bundlingPoints.get(activeViewID), hashIDTypeToViewToPointLists.get(idType).get(activeViewID).get(0).get(0)));
+		return bestHeatMapLine;
+	}
+
 	private void renderFromStackLevel(GL gl, HashMap<Integer, VisLinkAnimationStage> connections, HashMap<Integer, Vec3f> bundlingPoints){
 		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>(4);
 		ArrayList<Integer> ids = new ArrayList<Integer>();
@@ -218,8 +252,10 @@ public class GLConsecutiveConnectionGraphDrawing
 							currentPath = calculateCurrentPathLengthDynamicPointCentered(hashViewToCenterPoint, heatMapList.get(0));
 						else if (parCoordID == activeViewID)
 							currentPath = calculateCurrentPathLengthDynamicPointCentered(hashViewToCenterPoint, parCoordsList.get(0));
-						else {
+						else{
 							Vec3f centerActiveView = hashViewToCenterPoint.get(activeViewID);
+							if (centerActiveView == null)
+								return null;
 							Vec3f heatMapTemp = centerActiveView.minus(heatMapList.get(0));
 							Vec3f parCoordTemp = centerActiveView.minus(parCoordsList.get(0));
 							currentPath = heatMapTemp.length() + parCoordTemp.length();

@@ -69,15 +69,22 @@ public class GLViewCenteredConnectionGraphDrawing
 			}
 	
 			for(Vec3f currentPoint : depthSort(pointsToDepthSort)) {
-				if(activeViewID != -1 && iKey == activeViewID)
-					connectionLinesActiveView.addLine( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
-				else
-					connectionLinesOtherViews.addLine( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ));
+				if(activeViewID != -1 && iKey == activeViewID){
+					if (hashIDTypeToViewToPointLists.get(idType).get(iKey).size() >= 1)
+						connectionLinesActiveView.addLine( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
+				}
+				else{
+					if (hashIDTypeToViewToPointLists.get(idType).get(iKey).size() > 1)
+						connectionLinesOtherViews.addLine( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ));
+				}
 			}
 			
 			//bundlingToCenterLinesOtherViews.add(createControlPoints(activeViewBundlingPoint, vecViewBundlingPoint, vecCenter));
 			if((activeViewID != iKey))
-				bundlingToCenterLinesActiveView.addLine(createControlPoints(vecViewBundlingPoint, activeViewBundlingPoint, vecCenter));
+				if (hashIDTypeToViewToPointLists.get(idType).get(iKey).size() == 1)
+					bundlingToCenterLinesActiveView.addLine(createControlPoints(hashViewToCenterPoint.get(iKey), activeViewBundlingPoint, vecCenter));
+				else
+					bundlingToCenterLinesActiveView.addLine(createControlPoints(vecViewBundlingPoint, activeViewBundlingPoint, vecCenter));
 
 		}
 		
