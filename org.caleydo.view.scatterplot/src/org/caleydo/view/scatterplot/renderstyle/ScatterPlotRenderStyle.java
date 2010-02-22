@@ -72,7 +72,7 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 		if (bIsEmbedded)
 			XYAXISDISTANCE = 0.1f;
 		else
-			XYAXISDISTANCE = 0.4f;
+			XYAXISDISTANCE = 0.5f;
 	}
 
 	public void setIsMouseZoom(boolean value) {
