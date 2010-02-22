@@ -416,7 +416,7 @@ public class Set
 
 		ContentVirtualArray contentVA = new ContentVirtualArray(vaType);
 		if (!vaType.isEmptyByDefault()) {
-			for (int count = 0; count < iDepth; count++) {
+			for (int count = 0; count < depth(); count++) {
 				contentVA.append(count);
 			}
 		}
