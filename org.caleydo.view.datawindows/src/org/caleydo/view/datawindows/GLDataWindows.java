@@ -502,7 +502,7 @@ public class GLDataWindows extends AGLView {
 
 		 DefaultNode node = new DefaultNode(tree, "Root", 1);
 		 tree.setRootNode(node);
-		 tree.addChild(node, new DefaultNode(tree, "Child1 l1", 1));
+		 tree.addChild(node, new DefaultNode(tree, "Child1 l1", 2));
 
 		// stürzt ab:
 		 tree.addChild(node, new DefaultNode(tree, "Child2 l1", 3));
