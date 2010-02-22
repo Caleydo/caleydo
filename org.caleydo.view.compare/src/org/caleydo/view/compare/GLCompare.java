@@ -24,6 +24,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.compare.listener.CompareGroupsEventListener;
 
@@ -44,7 +45,6 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	private ArrayList<ISet> setsToCompare;
 
 	private TextRenderer textRenderer;
-	private VABasedSelectionManager selectionManager;
 	private HeatMapWrapper leftHeatMapWrapper;
 	private HeatMapWrapper rightHeatMapWrapper;
 
@@ -206,13 +206,17 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	public void display(GL gl) {
 		// processEvents();
 		gl.glCallList(iGLDisplayListToCall);
-		gl.glLoadIdentity();
-//		leftHeatMapWrapper.draw(gl, 0.0f, 0.0f, viewFrustum.getRight() / 3.0f,
-//				viewFrustum.getTop()/2.0f);
-		gl.glLoadIdentity();
+//		gl.glPushMatrix();
+//		gl.glLoadIdentity();
+		leftHeatMapWrapper.draw(gl, 0.0f, 0.0f, viewFrustum.getRight() / 3.0f,
+				viewFrustum.getTop()/2.0f);
+//		GLHelperFunctions.drawPointAt(gl,viewFrustum.getRight() / 3.0f, viewFrustum.getTop()/2.0f, 0);
+//		gl.glLoadIdentity();
 		rightHeatMapWrapper.draw(gl, 2.0f * viewFrustum.getRight() / 3.0f,
 				0.0f, viewFrustum.getRight() / 3.0f, viewFrustum.getTop()/2.0f);
-		gl.glLoadIdentity();
+		
+//		GLHelperFunctions.drawPointAt(gl, 2.0f * viewFrustum.getRight() / 3.0f, 0, 0);
+//		gl.glLoadIdentity();
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
 	}

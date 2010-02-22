@@ -23,6 +23,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.heatmap.GLHeatMap;
 
@@ -115,11 +116,14 @@ public class HeatMapWrapper {
 
 	public void draw(GL gl, float positionX, float positionY, float width,
 			float height) {
+		GLHelperFunctions.drawPointAt(gl, positionX + width, positionY + height, 0);
+		gl.glTranslatef(positionX, positionY, 0);
 		heatMap.getViewFrustum().setLeft(positionX);
 		heatMap.getViewFrustum().setBottom(positionY);
 		heatMap.getViewFrustum().setRight(positionX + width);
 		heatMap.getViewFrustum().setTop(positionY + height);
 		heatMap.displayRemote(gl);
+		gl.glTranslatef(-positionX, -positionY, 0);
 	}
 
 	public void processEvents() {
