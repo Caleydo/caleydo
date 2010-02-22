@@ -497,15 +497,15 @@ public class GLDataWindows extends AGLView {
 		
 		
 		// code from treetester:
-		
-		// tree = new Tree<DefaultNode>();
 
-		// DefaultNode node = new DefaultNode(tree, "Root", 1);
-		// tree.setRootNode(node);
-		// tree.addChild(node, new DefaultNode(tree, "Child1 l1", 1));
-		
+		 tree = new Tree<DefaultNode>();
+
+		 DefaultNode node = new DefaultNode(tree, "Root", 1);
+		 tree.setRootNode(node);
+		 tree.addChild(node, new DefaultNode(tree, "Child1 l1", 1));
+
 		// stürzt ab:
-		// tree.addChild(node, new DefaultNode(tree, "Child2 l1", 3));
+		 tree.addChild(node, new DefaultNode(tree, "Child2 l1", 3));
 		//
 		// ArrayList<DefaultNode> tempNode = tree.getChildren(node);
 
