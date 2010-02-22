@@ -6,6 +6,8 @@ import java.util.List;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.SetComparer;
+import org.caleydo.core.data.collection.set.SetRelations;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -16,6 +18,10 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.clusterer.ClusterState;
+import org.caleydo.core.util.clusterer.EClustererAlgo;
+import org.caleydo.core.util.clusterer.EClustererType;
+import org.caleydo.core.util.clusterer.EDistanceMeasure;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -25,7 +31,6 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.compare.listener.CompareGroupsEventListener;
-import org.caleydo.view.heatmap.HeatMapUtil;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
@@ -77,8 +82,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 				dataDomain);
 		rightHeatMapWrapper.init(gl, this, glMouseListener, null, useCase,
 				this, dataDomain);
-//		overviewTextures = HeatMapUtil.createHeatMapTextures(set, contentVA,
-//				storageVA, useCase.getContentSelectionManager());
+		// overviewTextures = HeatMapUtil.createHeatMapTextures(set, contentVA,
+		// storageVA, useCase.getContentSelectionManager());
 		leftHeatMapWrapper.setSet(set);
 		rightHeatMapWrapper.setSet(set);
 	}
@@ -223,8 +228,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-//		HeatMapUtil.renderHeatmapTextures(gl, overviewTextures, viewFrustum
-//				.getHeight(), viewFrustum.getWidth() / 2.0f);
+		// HeatMapUtil.renderHeatmapTextures(gl, overviewTextures, viewFrustum
+		// .getHeight(), viewFrustum.getWidth() / 2.0f);
 		gl.glEndList();
 	}
 
@@ -327,9 +332,24 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	public void setGroupsToCompare(ArrayList<ISet> sets) {
 		setsToCompare.clear();
 		setsToCompare.addAll(sets);
+
+		ClusterState clusterState = new ClusterState();
+		clusterState.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
+		clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
+		clusterState.setAffinityPropClusterFactorGenes(5);
+		clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+
+		for (ISet set : sets) {
+			set.cluster(clusterState);
+		}
+
 		if (sets.size() >= 2) {
-			leftHeatMapWrapper.setSet(setsToCompare.get(0));
-			rightHeatMapWrapper.setSet(setsToCompare.get(1));
+			ISet setLeft = setsToCompare.get(0);
+			ISet setRight = setsToCompare.get(1);
+			SetRelations relations = SetComparer.compareSets(setLeft, setRight);
+
+			leftHeatMapWrapper.setSet(setLeft);
+			rightHeatMapWrapper.setSet(setRight);
 			setDisplayListDirty();
 		}
 

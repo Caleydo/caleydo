@@ -1,6 +1,7 @@
 package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,6 +27,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	implements IVirtualArray<ConcreteType, VAType, VADelta, GroupType> {
 
 	ArrayList<Integer> virtualArray;
+	HashMap<Integer, ArrayList<Integer>> hashIDToIndex;
+	boolean isHashIDToIndexDirty = true;
 
 	GroupType groupList = null;
 
@@ -81,11 +84,13 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	@Override
 	public void append(Integer iNewElement) {
+		isHashIDToIndexDirty = true;
 		virtualArray.add(iNewElement);
 	}
 
 	@Override
 	public boolean appendUnique(Integer iNewElement) {
+		isHashIDToIndexDirty = true;
 		if (indexOf(iNewElement) != -1)
 			return false;
 
@@ -96,27 +101,32 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	@Override
 	public void add(int iIndex, Integer iNewElement) {
+		isHashIDToIndexDirty = true;
 		virtualArray.add(iIndex, iNewElement);
 	}
 
 	@Override
 	public void set(int iIndex, Integer iNewElement) {
+		isHashIDToIndexDirty = true;
 		virtualArray.set(iIndex, iNewElement);
 	}
 
 	@Override
 	public void copy(int iIndex) {
+		isHashIDToIndexDirty = true;
 		virtualArray.add(iIndex + 1, virtualArray.get(iIndex));
 	}
 
 	@Override
 	public void move(int iSrcIndex, int iTargetIndex) {
+		isHashIDToIndexDirty = true;
 		Integer iElement = virtualArray.remove(iSrcIndex);
 		virtualArray.add(iTargetIndex, iElement);
 	}
 
 	@Override
 	public void moveLeft(int iIndex) {
+		isHashIDToIndexDirty = true;
 		if (iIndex == 0)
 			return;
 		int iTemp = virtualArray.get(iIndex - 1);
@@ -126,6 +136,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	@Override
 	public void moveRight(int iIndex) {
+		isHashIDToIndexDirty = true;
 		if (iIndex == size() - 1)
 			return;
 		int iTemp = virtualArray.get(iIndex + 1);
@@ -135,7 +146,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	@Override
 	public Integer remove(int iIndex) {
-
+		isHashIDToIndexDirty = true;
 		// if(groupList != null){
 		// groupList.removeElementOfVA(iIndex);
 		// }
@@ -145,7 +156,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	@Override
 	public void removeByElement(int iElement) {
-
+		isHashIDToIndexDirty = true;
 		// if(groupList != null){
 		// groupList.removeElementOfVA(virtualArray.indexOf(iElement));
 		// }
@@ -170,27 +181,50 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	@Override
 	public void clear() {
+		isHashIDToIndexDirty = true;
 		virtualArray.clear();
 	}
 
 	@Override
 	public int indexOf(int iElement) {
+		if (isHashIDToIndexDirty)
+			buildIDMap();
 		// System.out.println("Costly indexof operation on a va of size: " + size());
-		return virtualArray.indexOf(iElement);
+		ArrayList<Integer> results = hashIDToIndex.get(iElement);
+		if (results != null)
+			return results.get(0);
+		else
+			return -1;
+	}
+
+	private void buildIDMap() {
+		isHashIDToIndexDirty = false;
+		if (hashIDToIndex == null)
+			hashIDToIndex = new HashMap<Integer, ArrayList<Integer>>((int) (virtualArray.size() * 1.5));
+		else
+			hashIDToIndex.clear();
+
+		int indexCount = 0;
+		for (Integer id : virtualArray) {
+			ArrayList<Integer> indexList = hashIDToIndex.get(id);
+			if (indexList == null)
+				indexList = new ArrayList<Integer>(3);
+			indexList.add(indexCount++);
+
+			hashIDToIndex.put(id, indexList);
+		}
 	}
 
 	@Override
 	public ArrayList<Integer> indicesOf(int iElement) {
-		ArrayList<Integer> alIndices = new ArrayList<Integer>();
-		int iCount = 0;
-		for (Integer iCompareElement : virtualArray) {
-			if (iCompareElement == iElement) {
-				alIndices.add(iCount);
-			}
-			iCount++;
-		}
+		if (isHashIDToIndexDirty)
+			buildIDMap();
+		ArrayList<Integer> list = hashIDToIndex.get(iElement);
+		if (list != null)
+			return list;
+		else
+			return new ArrayList<Integer>(1);
 
-		return alIndices;
 	}
 
 	@Override

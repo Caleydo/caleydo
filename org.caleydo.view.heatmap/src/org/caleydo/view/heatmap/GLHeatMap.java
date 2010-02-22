@@ -17,10 +17,12 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ESetType;
+import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
@@ -310,7 +312,13 @@ public class GLHeatMap extends AStorageBasedView {
 	protected void initLists() {
 		// todo this is not nice here, we may need a more intelligent way to
 		// determine which to use
-		if (contentVAType != ContentVAType.CONTENT_EMBEDDED_HM) {
+		
+		if (contentVAType == ContentVAType.CONTENT_EMBEDDED_HM) 
+		{
+		set.setContentVA(contentVAType, new ContentVirtualArray(contentVAType));	
+		}
+			else
+		{
 			if (bRenderOnlyContext)
 				contentVAType = ContentVAType.CONTENT_CONTEXT;
 			else
@@ -811,7 +819,8 @@ public class GLHeatMap extends AStorageBasedView {
 			final float fYPosition, final float fFieldWidth,
 			final float fFieldHeight) {
 
-		float fLookupValue = set.get(iStorageIndex).getFloat(
+		IStorage storage = set.get(iStorageIndex);
+		float fLookupValue = storage.getFloat(
 				EDataRepresentation.NORMALIZED, iContentIndex);
 
 		float fOpacity = 0;

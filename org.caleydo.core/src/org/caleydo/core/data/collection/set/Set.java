@@ -61,13 +61,13 @@ public class Set
 	private boolean bArtificialMax = false;
 	private double dMax = Double.MIN_VALUE;
 
-	private int iDepth = 0;
+	protected int depth = 0;
 
 	private ERawDataType rawDataType;
 
 	private boolean bIsNumerical;
 
-	private HashMap<ContentVAType, ContentData> hashContentData;
+	protected HashMap<ContentVAType, ContentData> hashContentData;
 	protected HashMap<StorageVAType, StorageData> hashStorageData;
 
 	protected StorageData defaultStorageData;
@@ -114,6 +114,10 @@ public class Set
 		hashStorageData = new HashMap<StorageVAType, StorageData>(3);
 		defaultStorageData = new StorageData();
 		defaultStorageData.setStorageVA(new StorageVirtualArray(StorageVAType.STORAGE));
+	}
+
+	HashMap<ContentVAType, ContentData> getHashContentData() {
+		return hashContentData;
 	}
 
 	@Override
@@ -172,7 +176,7 @@ public class Set
 			node.createMetaSet(this);
 			tree.getRoot().createMetaSet(this);
 		}
-		
+
 		hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());
 
 	}
@@ -189,18 +193,18 @@ public class Set
 
 	@Override
 	public int depth() {
-		if (iDepth == 0) {
+		if (depth == 0) {
 			for (IStorage storage : hashStorages.values()) {
-				if (iDepth == 0)
-					iDepth = storage.size();
+				if (depth == 0)
+					depth = storage.size();
 				else {
-					if (iDepth != storage.size())
+					if (depth != storage.size())
 						throw new IllegalArgumentException("All storages in a set must be of the same length");
 				}
 
 			}
 		}
-		return iDepth;
+		return depth;
 	}
 
 	private void normalize() {
@@ -392,8 +396,7 @@ public class Set
 	@Override
 	public StorageVirtualArray getStorageVA(StorageVAType vaType) {
 		StorageData storageData = hashStorageData.get(vaType);
-		if (storageData == null)
-		{
+		if (storageData == null) {
 			hashStorageData.put(vaType, defaultStorageData.clone());
 		}
 		return storageData.getStorageVA();
@@ -471,7 +474,7 @@ public class Set
 	// return virtualArray;
 	// }
 
-//	@SuppressWarnings("unused")
+	// @SuppressWarnings("unused")
 	// private int createStorageVA(VAType vaType, ArrayList<Integer> iAlSelections) {
 	// VirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
 	// int iUniqueID = virtualArray.getID();
@@ -510,6 +513,7 @@ public class Set
 		ContentData contentData = hashContentData.get(vaType);
 		if (contentData == null)
 			contentData = createContentData(vaType);
+		contentData.setContentVA(virtualArray);
 		hashContentData.put(vaType, contentData);
 	}
 
@@ -588,11 +592,10 @@ public class Set
 		}
 	}
 
-	public EExternalDataRepresentation getExternalDataRep()
-	{
+	public EExternalDataRepresentation getExternalDataRep() {
 		return externalDataRep;
 	}
-	
+
 	@Override
 	public boolean isSetHomogeneous() {
 		return isSetHomogeneous;
@@ -619,7 +622,7 @@ public class Set
 
 			ContentVAType contentVAType = clusterState.getContentVAType();
 			if (contentVAType != null)
-				clusterState.setContentVA(hashContentData.get(contentVAType).getContentVA());
+				clusterState.setContentVA(getContentVA(contentVAType));
 
 			StorageVAType storageVAType = clusterState.getStorageVAType();
 			if (storageVAType != null)
@@ -892,11 +895,11 @@ public class Set
 		rootNode.createMetaSets(this);
 
 		// test
-		ISet metaSet = rootNode.getChildren().get(0).getChildren().get(0).getMetaSet();
-
-		IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
-		useCase.setSet(metaSet);
-		useCase.updateSetInViews();
+//		ISet metaSet = rootNode.getChildren().get(0).getChildren().get(0).getMetaSet();
+//
+//		IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
+//		useCase.setSet(metaSet);
+//		useCase.updateSetInViews();
 		// tree.get
 	}
 

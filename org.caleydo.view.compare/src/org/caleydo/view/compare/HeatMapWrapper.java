@@ -101,17 +101,17 @@ public class HeatMapWrapper {
 		ContentVADelta delta = new ContentVADelta(
 				ContentVAType.CONTENT_EMBEDDED_HM, EIDType.EXPRESSION_INDEX);
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < contentVA.size(); i++) {
 			if (i >= contentVA.size())
 				break;
 
 			int contentIndex = contentVA.get(i);
 			delta.add(VADeltaItem.append(contentIndex));
 		}
-		for (int i = 10; i < contentVA.size(); i++) {
-			int contentIndex = contentVA.get(i);
-			delta.add(VADeltaItem.removeElement(contentIndex));
-		}
+//		for (int i = 10; i < contentVA.size(); i++) {
+//			int contentIndex = contentVA.get(i);
+//			delta.add(VADeltaItem.removeElement(contentIndex));
+//		}
 
 		heatMap.handleContentVAUpdate(delta, "");
 

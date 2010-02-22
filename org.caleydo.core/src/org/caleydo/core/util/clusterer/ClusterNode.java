@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.MetaSet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionType;
@@ -91,7 +92,7 @@ public class ClusterNode
 	 * 
 	 * @param set
 	 */
-	public void createMetaSet(ISet set) {
+	public <SetType extends Set> void createMetaSet(SetType set) {
 		metaSet = new MetaSet(set, tree, this);
 
 		metaSet.setLabel("MetaSet at " + nodeName);
@@ -109,7 +110,7 @@ public class ClusterNode
 	 * 
 	 * @param set
 	 */
-	public void createMetaSets(ISet set) {
+	public <SetType extends Set> void createMetaSets(SetType set) {
 		createMetaSet(set);
 		ArrayList<ClusterNode> children = tree.getChildren(this);
 		if (children != null)
