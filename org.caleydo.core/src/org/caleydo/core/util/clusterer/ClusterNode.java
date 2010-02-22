@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.MetaSet;
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionType;
@@ -33,10 +34,6 @@ public class ClusterNode
 	@XmlAttribute
 	private String nodeName;
 
-	@XmlElement
-	private float fCoefficient;
-	@XmlElement
-	private int iHierarchyDepth;
 	// @XmlElement
 	// private int iNrElements;
 	@XmlElement
@@ -44,7 +41,7 @@ public class ClusterNode
 	@XmlElement
 	private SelectionType selectionType;
 	@XmlElement
-	private boolean bIsRootNode;
+	private boolean isRootNode;
 	@XmlElement
 	private float fAverageExpressionValue;
 	@XmlElement
@@ -54,7 +51,7 @@ public class ClusterNode
 	private Vec3f vPosSubTree;
 
 	@XmlTransient
-	private ISet metaSet;
+	private MetaSet metaSet;
 
 	// @XmlElement
 	// private float[] fArRepresentativeElement;
@@ -62,33 +59,58 @@ public class ClusterNode
 	public ClusterNode() {
 	}
 
-	public ClusterNode(Tree<ClusterNode> tree, String sNodeName, int iClusterNr, float fCoefficient,
-		int iDepth, boolean bIsRootNode, int leafID) {
+	/**
+	 * Constructor for a cluster node.
+	 * 
+	 * @param tree
+	 *            The tree the clusternode belongs to
+	 * @param nodeName
+	 *            the name of the node
+	 * @param clusterNr
+	 *            the id, the cluster number
+	 * @param isRootNode
+	 *            true if this is a root node
+	 * @param leafID
+	 *            the id of the leaf, or -1 if this is not a leaf
+	 */
+	public ClusterNode(Tree<ClusterNode> tree, String nodeName, int clusterNr, boolean isRootNode, int leafID) {
+
 		super(tree);
-		this.nodeName = sNodeName;
-		this.id = iClusterNr;
+		this.nodeName = nodeName;
+		this.id = clusterNr;
 		super.setLeafID(leafID);
-		this.fCoefficient = fCoefficient;
-		this.iHierarchyDepth = iDepth;
-		this.bIsRootNode = bIsRootNode;
+		this.isRootNode = isRootNode;
 		this.selectionType = SelectionType.NORMAL;
 		this.fAverageExpressionValue = 0f;
 		this.fStandardDeviation = 0f;
 
 	}
 
-	public void createMetaSets(ISet set) {
-		metaSet = set.getShallowClone();
+	/**
+	 * Creates a meta-set for this node
+	 * 
+	 * @param set
+	 */
+	public void createMetaSet(ISet set) {
+		metaSet = new MetaSet(set, tree, this);
+
 		metaSet.setLabel("MetaSet at " + nodeName);
+		
 		metaSet.setContentTree(set.getContentTree());
 		// Tree<ClusterNode> subTree = tree.getSubTree();
 
-		metaSet.setStorageTree(tree);
-		metaSet.setStorageTreeRoot(this);
 		ArrayList<Integer> storageIDs = this.getLeaveIds();
 		for (Integer storageID : storageIDs)
 			metaSet.addStorage(storageID);
+	}
 
+	/**
+	 * Creates meta-sets recursively for the whole sub-tree of this node
+	 * 
+	 * @param set
+	 */
+	public void createMetaSets(ISet set) {
+		createMetaSet(set);
 		ArrayList<ClusterNode> children = tree.getChildren(this);
 		if (children != null)
 			for (ClusterNode child : children) {
@@ -106,10 +128,6 @@ public class ClusterNode
 
 	public String getNodeName() {
 		return nodeName;
-	}
-
-	public float getCoefficient() {
-		return fCoefficient;
 	}
 
 	@Override
@@ -147,7 +165,7 @@ public class ClusterNode
 	}
 
 	public boolean isRootNode() {
-		return bIsRootNode;
+		return isRootNode;
 	}
 
 	public void setAverageExpressionValue(float fAverageExpressionValue) {

@@ -25,6 +25,9 @@ public class StorageData
 
 	Tree<ClusterNode> storageTree;
 
+	/** Root node for storage hierarchy which is only set in metaSets */
+	private ClusterNode storageTreeRoot = null;
+
 	public StorageVirtualArray getStorageVA() {
 		return storageVA;
 	}
@@ -47,6 +50,16 @@ public class StorageData
 
 	public void setStorageTree(Tree<ClusterNode> storageTree) {
 		this.storageTree = storageTree;
+	}
+
+	public ClusterNode getStorageTreeRoot() {
+		if (storageTreeRoot == null)
+			return storageTree.getRoot();
+		return storageTreeRoot;
+	}
+
+	public void setStorageTreeRoot(ClusterNode storageTreeRoot) {
+		this.storageTreeRoot = storageTreeRoot;
 	}
 
 	void finish() {

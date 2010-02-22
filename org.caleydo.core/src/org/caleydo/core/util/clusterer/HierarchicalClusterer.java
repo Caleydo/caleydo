@@ -229,7 +229,7 @@ public class HierarchicalClusterer
 
 		CNode node = clusterer.m_cobwebTree;
 
-		ClusterNode clusterNode = new ClusterNode(tree, "Root", 0, 0f, 0, true, -1);
+		ClusterNode clusterNode = new ClusterNode(tree, "Root", 0, true, -1);
 		tree.setRootNode(clusterNode);
 
 		CNodeToTree(clusterNode, node, clusterState.getClustererType());
@@ -277,7 +277,7 @@ public class HierarchicalClusterer
 				clusterNr = currentNode.getClusterNum();
 
 				ClusterNode currentGraph =
-					new ClusterNode(tree, "Node_" + clusterNr, clusterNr, 0f, 0, false, -1);
+					new ClusterNode(tree, "Node_" + clusterNr, clusterNr, false, -1);
 				// currentGraph.setNrElements(1);
 
 				tree.addChild(clusterNode, currentGraph);

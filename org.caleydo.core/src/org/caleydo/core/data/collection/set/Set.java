@@ -68,9 +68,9 @@ public class Set
 	private boolean bIsNumerical;
 
 	private HashMap<ContentVAType, ContentData> hashContentData;
-	private HashMap<StorageVAType, StorageData> hashStorageData;
+	protected HashMap<StorageVAType, StorageData> hashStorageData;
 
-	private StorageData defaultStorageData;
+	protected StorageData defaultStorageData;
 
 	// clustering stuff
 	private ArrayList<Integer> alClusterSizes = null;
@@ -84,30 +84,36 @@ public class Set
 	/** Tree for content hierarchy */
 	private Tree<ClusterNode> contentTree;
 	/** Tree for storage hierarchy */
-	private Tree<ClusterNode> storageTree;
-	/** Root node for storage hierarchy which is only set in metaSets */
-	private ClusterNode storageTreeRoot = null;
 
-	private EExternalDataRepresentation externalDataRep;
+	protected EExternalDataRepresentation externalDataRep;
 
-	private boolean bIsSetHomogeneous = false;
+	protected boolean isSetHomogeneous = false;
 
+	/**
+	 * Constructor for the set. Creates and initializes members and registers the set whit the set manager.
+	 * Also creates a new default tree. This should not be called by implementing sub-classes.
+	 */
 	public Set() {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.SET));
-
 		GeneralManager.get().getSetManager().registerItem(this);
+		init();
+		Tree<ClusterNode> tree = new Tree<ClusterNode>();
+		ClusterNode root = new ClusterNode(tree, "Root", 1, true, -1);
+		tree.setRootNode(root);
+		defaultStorageData.setStorageTree(tree);
+		hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());
+	}
 
+	/**
+	 * Initialization of member variables. Safe to be called by sub-classes.
+	 */
+	protected void init() {
 		hashStorages = new HashMap<Integer, IStorage>();
 
 		hashContentData = new HashMap<ContentVAType, ContentData>();
 		hashStorageData = new HashMap<StorageVAType, StorageData>(3);
 		defaultStorageData = new StorageData();
 		defaultStorageData.setStorageVA(new StorageVirtualArray(StorageVAType.STORAGE));
-		Tree<ClusterNode> tree = new Tree<ClusterNode>();
-		ClusterNode root = new ClusterNode(tree, "Root", 1, 0.0f, 0, true, -1);
-		tree.setRootNode(root);
-		defaultStorageData.setStorageTree(tree);
-
 	}
 
 	@Override
@@ -156,11 +162,19 @@ public class Set
 		}
 		hashStorages.put(storage.getID(), storage);
 		defaultStorageData.getStorageVA().append(storage.getID());
-		Tree<ClusterNode> tree = defaultStorageData.getStorageTree();
-		int id = defaultStorageData.getStorageVA().size();
-		ClusterNode node = new ClusterNode(tree, storage.getLabel(), id, 0.0f, 0, false, storage.getID());
 
-		defaultStorageData.getStorageTree().addChild(tree.getRoot(), node);
+		// this needs only be done by the root set
+		if ((this.getClass().equals(Set.class))) {
+			Tree<ClusterNode> tree = defaultStorageData.getStorageTree();
+			int id = defaultStorageData.getStorageVA().size();
+			ClusterNode node = new ClusterNode(tree, storage.getLabel(), id, false, storage.getID());
+			defaultStorageData.getStorageTree().addChild(tree.getRoot(), node);
+			node.createMetaSet(this);
+			tree.getRoot().createMetaSet(this);
+		}
+		
+		hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());
+
 	}
 
 	@Override
@@ -190,14 +204,14 @@ public class Set
 	}
 
 	private void normalize() {
-		bIsSetHomogeneous = false;
+		isSetHomogeneous = false;
 		for (IStorage storage : hashStorages.values()) {
 			storage.normalize();
 		}
 	}
 
 	private void normalizeGlobally() {
-		bIsSetHomogeneous = true;
+		isSetHomogeneous = true;
 		for (IStorage storage : hashStorages.values()) {
 			if (storage instanceof INumericalStorage) {
 				INumericalStorage nStorage = (INumericalStorage) storage;
@@ -256,7 +270,7 @@ public class Set
 
 	@Override
 	public double getRawForNormalized(double dNormalized) {
-		if (!bIsSetHomogeneous)
+		if (!isSetHomogeneous)
 			throw new IllegalStateException(
 				"Can not produce raw data on set level for inhomogenous sets. Access via storages");
 
@@ -281,7 +295,7 @@ public class Set
 	}
 
 	public double getNormalizedForRaw(double dRaw) {
-		if (!bIsSetHomogeneous)
+		if (!isSetHomogeneous)
 			throw new IllegalStateException(
 				"Can not produce normalized data on set level for inhomogenous sets. Access via storages");
 
@@ -335,7 +349,7 @@ public class Set
 
 	@Override
 	public Histogram getHistogram() {
-		if (!bIsSetHomogeneous) {
+		if (!isSetHomogeneous) {
 			throw new UnsupportedOperationException(
 				"Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use storage based histograms instead!");
 		}
@@ -378,9 +392,9 @@ public class Set
 	@Override
 	public StorageVirtualArray getStorageVA(StorageVAType vaType) {
 		StorageData storageData = hashStorageData.get(vaType);
-		if (storageData == null) {
-			storageData = defaultStorageData.clone();
-			hashStorageData.put(vaType, storageData);
+		if (storageData == null)
+		{
+			hashStorageData.put(vaType, defaultStorageData.clone());
 		}
 		return storageData.getStorageVA();
 	}
@@ -457,7 +471,7 @@ public class Set
 	// return virtualArray;
 	// }
 
-	@SuppressWarnings("unused")
+//	@SuppressWarnings("unused")
 	// private int createStorageVA(VAType vaType, ArrayList<Integer> iAlSelections) {
 	// VirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
 	// int iUniqueID = virtualArray.getID();
@@ -530,7 +544,7 @@ public class Set
 	@Override
 	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep,
 		boolean bIsSetHomogeneous) {
-		this.bIsSetHomogeneous = bIsSetHomogeneous;
+		this.isSetHomogeneous = bIsSetHomogeneous;
 		if (externalDataRep == this.externalDataRep)
 			return;
 
@@ -574,9 +588,14 @@ public class Set
 		}
 	}
 
+	public EExternalDataRepresentation getExternalDataRep()
+	{
+		return externalDataRep;
+	}
+	
 	@Override
 	public boolean isSetHomogeneous() {
-		return bIsSetHomogeneous;
+		return isSetHomogeneous;
 	}
 
 	@Override
@@ -596,7 +615,7 @@ public class Set
 
 		// TODO set cluter VAs here
 
-		if (bIsNumerical == true && bIsSetHomogeneous == true) {
+		if (bIsNumerical == true && isSetHomogeneous == true) {
 
 			ContentVAType contentVAType = clusterState.getContentVAType();
 			if (contentVAType != null)
@@ -619,8 +638,6 @@ public class Set
 			StorageData storageResult = result.getStorageResult();
 			if (storageResult != null) {
 				hashStorageData.put(clusterState.getStorageVAType(), storageResult);
-				storageTree = storageResult.getStorageTree();
-				// FIXME - what about the rest?
 			}
 
 		}
@@ -761,24 +778,22 @@ public class Set
 
 	@Override
 	public void setStorageTree(Tree<ClusterNode> storageTree) {
-		this.storageTree = storageTree;
+		hashStorageData.get(StorageVAType.STORAGE).setStorageTree(storageTree);
 	}
 
 	@Override
 	public Tree<ClusterNode> getStorageTree() {
-		return storageTree;
+		return hashStorageData.get(StorageVAType.STORAGE).getStorageTree();
 	}
 
 	@Override
 	public ClusterNode getStorageTreeRoot() {
-		if (storageTreeRoot == null)
-			return storageTree.getRoot();
-		return storageTreeRoot;
+		return hashStorageData.get(StorageVAType.STORAGE).getStorageTreeRoot();
 	}
 
 	@Override
 	public void setStorageTreeRoot(ClusterNode storageTreeRoot) {
-		this.storageTreeRoot = storageTreeRoot;
+		hashStorageData.get(StorageVAType.STORAGE).setStorageTreeRoot(storageTreeRoot);
 	}
 
 	@Override
@@ -873,7 +888,7 @@ public class Set
 	}
 
 	public void createMetaSets() {
-		ClusterNode rootNode = storageTree.getRoot();
+		ClusterNode rootNode = hashStorageData.get(StorageVAType.STORAGE).getStorageTreeRoot();
 		rootNode.createMetaSets(this);
 
 		// test
@@ -889,7 +904,7 @@ public class Set
 	public ISet getShallowClone() {
 		Set metaSet = new Set();
 		metaSet.setType = this.setType;
-		metaSet.bIsSetHomogeneous = this.bIsSetHomogeneous;
+		metaSet.isSetHomogeneous = this.isSetHomogeneous;
 		metaSet.externalDataRep = this.externalDataRep;
 
 		// try {

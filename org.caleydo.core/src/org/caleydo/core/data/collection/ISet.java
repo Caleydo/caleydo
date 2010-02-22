@@ -182,6 +182,13 @@ public interface ISet
 		boolean bIsSetHomogeneous);
 
 	/**
+	 * Returns the current external data rep.
+	 * 
+	 * @return
+	 */
+	public EExternalDataRepresentation getExternalDataRep();
+
+	/**
 	 * Returns true if the set contains homgeneous data (data of the same kind, with one global minimum and
 	 * maximum), else false
 	 * 

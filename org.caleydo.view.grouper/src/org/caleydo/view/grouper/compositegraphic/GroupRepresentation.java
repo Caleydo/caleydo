@@ -529,12 +529,11 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		ClusterNode copiedNode = null;
 		if (isLeaf()) {
 			copiedNode = new ClusterNode(tree, clusterNode.getNodeName(),
-					iConsecutiveID[0], clusterNode.getCoefficient(),
-					clusterNode.getDepth(), false, clusterNode.getLeafID());
+					iConsecutiveID[0], false, clusterNode.getLeafID());
 		} else {
 			copiedNode = new ClusterNode(tree, clusterNode.getNodeName()
-					+ "_copy", iConsecutiveID[0], clusterNode.getCoefficient(),
-					clusterNode.getDepth(), false, clusterNode.getLeafID());
+					+ "_copy", iConsecutiveID[0], false, clusterNode
+					.getLeafID());
 		}
 		GroupRepresentation copy = new GroupRepresentation(copiedNode,
 				renderStyle, drawingStrategy, drawingStrategyManager,
