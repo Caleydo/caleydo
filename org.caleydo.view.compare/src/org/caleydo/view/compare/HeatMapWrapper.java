@@ -1,15 +1,15 @@
 package org.caleydo.view.compare;
 
+import java.util.ArrayList;
+
 import javax.media.opengl.GL;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
-import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
@@ -27,6 +27,8 @@ import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.heatmap.GLHeatMap;
 
+import com.sun.opengl.util.texture.Texture;
+
 public class HeatMapWrapper {
 
 	private GLHeatMap heatMap;
@@ -34,6 +36,7 @@ public class HeatMapWrapper {
 	private IGeneralManager generalManager;
 	private ContentVirtualArray contentVA;
 	private StorageVirtualArray storageVA;
+
 
 	// private Vec3f position;
 	// private float width;
@@ -65,7 +68,7 @@ public class HeatMapWrapper {
 		heatMap.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
 		heatMap.initData();
 		heatMap.setDetailLevel(EDetailLevel.MEDIUM);
-		
+
 	}
 
 	public void setSet(ISet set) {
@@ -73,8 +76,8 @@ public class HeatMapWrapper {
 		// FIXME: use va from set
 		ISet useCaseSet = generalManager.getUseCase(EDataDomain.GENETIC_DATA)
 				.getSet();
-		contentVA = useCaseSet.getContentVA(ContentVAType.CONTENT);
-		storageVA = useCaseSet.getStorageVA(StorageVAType.STORAGE);
+		contentVA = set.getContentVA(ContentVAType.CONTENT);
+		storageVA = set.getStorageVA(StorageVAType.STORAGE);
 		heatMap.setSet(set);
 
 		setEmbeddedHeatMapData();
@@ -116,7 +119,7 @@ public class HeatMapWrapper {
 
 	public void draw(GL gl, float positionX, float positionY, float width,
 			float height) {
-		GLHelperFunctions.drawPointAt(gl, positionX + width, positionY + height, 0);
+
 		gl.glTranslatef(positionX, positionY, 0);
 		heatMap.getViewFrustum().setLeft(positionX);
 		heatMap.getViewFrustum().setBottom(positionY);
