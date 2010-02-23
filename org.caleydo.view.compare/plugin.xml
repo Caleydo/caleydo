@@ -9,7 +9,7 @@
             class="org.caleydo.view.compare.RcpGLCompareView"
             icon="resources/icons/compare.png"
             id="org.caleydo.view.compare"
-            name="Grouper">
+            name="Compare">
       </view>
    </extension>
    <extension

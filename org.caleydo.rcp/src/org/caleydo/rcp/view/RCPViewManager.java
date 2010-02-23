@@ -3,6 +3,7 @@ package org.caleydo.rcp.view;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -20,7 +21,7 @@ public class RCPViewManager
 
 	private static RCPViewManager rcpViewManager = null;
 
-	private ActivateViewListener activateBucketViewListener;
+	private ActivateViewListener activateViewListener;
 
 	/**
 	 * Constructor, only called internally
@@ -46,12 +47,14 @@ public class RCPViewManager
 	 * unregisterEventListeners() has to be called.
 	 */
 	private void registerEventListeners() {
-		activateBucketViewListener = new ActivateViewListener();
-		activateBucketViewListener.setHandler(this);
+		activateViewListener = new ActivateViewListener();
+		activateViewListener.setHandler(this);
 		GeneralManager.get().getEventPublisher().addListener(LoadPathwayEvent.class,
-			activateBucketViewListener);
+			activateViewListener);
 		GeneralManager.get().getEventPublisher().addListener(LoadPathwaysByGeneEvent.class,
-			activateBucketViewListener);
+			activateViewListener);
+		GeneralManager.get().getEventPublisher().addListener(CompareGroupsEvent.class,
+			activateViewListener);		
 	}
 
 	/**
@@ -59,9 +62,9 @@ public class RCPViewManager
 	 * unregisterEventListenrs() has to be called.
 	 */
 	private void unregisterEventListeners() {
-		if (activateBucketViewListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(activateBucketViewListener);
-			activateBucketViewListener = null;
+		if (activateViewListener != null) {
+			GeneralManager.get().getEventPublisher().removeListener(activateViewListener);
+			activateViewListener = null;
 		}
 	}
 
@@ -74,7 +77,7 @@ public class RCPViewManager
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				activateBucketViewListener.handleEvent(event);
+				activateViewListener.handleEvent(event);
 			}
 		});
 	}

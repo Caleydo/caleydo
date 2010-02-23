@@ -259,7 +259,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		//ContentVirtualArray contentVARight = rightHeatMapWrapper.getContentVAsOfHeatMaps().get(0);
 		
 		gl.glColor3f(0,0,0);
-		gl.glLineWidth(1);
+		gl.glLineWidth(4);
 		//HashMap<Integer, Integer> relationLeftToRight = relations.getHashLeftToRight();
 		for (Integer contentID : contentVALeft) {		
 			
@@ -271,24 +271,18 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			
 			//int relationIndex = contentVALeftAll.indexOf(contentID);
 			Vec2f leftPos = leftHeatMapWrapper.getRightLinkPositionFromContentID(contentID);
-			float leftPosY = -1;
 			
-			if (leftPos != null)
-				leftPosY = leftPos.y();
-			else
+			if (leftPos == null)
 				continue;
 			
 			Vec2f rightPos = rightHeatMapWrapper.getRightLinkPositionFromContentID(contentID);
-			float rightPosY = -1;
 			
-			if (rightPos != null)
-				rightPosY = rightPos.y();
-			else
+			if (rightPos == null)
 				continue;
 			
 			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(3, viewFrustum.getHeight()-leftPosY, 0);
-			gl.glVertex3f(5f, viewFrustum.getHeight()-rightPosY, 0);			
+			gl.glVertex3f(leftPos.x(), viewFrustum.getHeight()-leftPos.y(), 0);
+			gl.glVertex3f(rightPos.x(), viewFrustum.getHeight()-rightPos.y(), 0);			
 			gl.glEnd();
 		}
 	}

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 
 public class CompareGroupsItem
