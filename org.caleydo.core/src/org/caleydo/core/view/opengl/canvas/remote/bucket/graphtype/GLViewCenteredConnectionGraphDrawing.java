@@ -49,6 +49,12 @@ public class GLViewCenteredConnectionGraphDrawing
 		
 		Vec3f activeViewBundlingPoint = new Vec3f();
 		vecCenter = calculateCenter(hashViewToCenterPoint.values());
+		
+		//maybe scaling??
+		Vec3f centerActiveView = hashViewToCenterPoint.get(activeViewID);
+		vecCenter = vecCenter.plus(centerActiveView);
+		vecCenter.scale(0.5f);
+		
 		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>(3);
 		VisLinkAnimationStage connectionLinesActiveView = new VisLinkAnimationStage();
 		VisLinkAnimationStage bundlingToCenterLinesActiveView = new VisLinkAnimationStage();
