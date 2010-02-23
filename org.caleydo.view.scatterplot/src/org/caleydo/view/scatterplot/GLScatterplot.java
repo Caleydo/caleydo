@@ -139,7 +139,6 @@ public class GLScatterplot extends AStorageBasedView {
 
 	private float fTransformOldMinX = 0.3f;
 	private float fTransformNewMinX = 0.3f;
-
 	private float fTransformOldMaxX = 0.4f;
 	private float fTransformNewMaxX = 0.4f;
 
@@ -1102,21 +1101,41 @@ public class GLScatterplot extends AStorageBasedView {
 						fTransformNewMaxX = fTransformOldMaxX;
 					break;
 				case 3:
-					if (x >= fTransformNewMinX && x <= fTransformOldMaxX)
+					if (x >= 0 && x <= fTransformOldMaxX)
 						fTransformOldMinX = x;
-					else if (x < fTransformNewMinX)
-						fTransformOldMinX = fTransformNewMinX;
+					else if (x < 0)
+						fTransformOldMinX = 0;
 					else
 						fTransformOldMinX = fTransformOldMaxX;
+					fTransformNewMinX=fTransformOldMinX;
 					break;
 				case 4:
-					if (x >= fTransformOldMinX && x <= fTransformNewMaxX)
+					if (x >= fTransformOldMinX && x <= 1)
 						fTransformOldMaxX = x;
 					else if (fTransformNewMaxX > 1)
-						fTransformOldMaxX = fTransformNewMaxX;
+						fTransformOldMaxX = 1;
 					else
 						fTransformOldMaxX = fTransformOldMinX;
-					break;
+						fTransformNewMaxX=fTransformOldMaxX;
+					break;	
+					
+					
+//				case 3:
+//					if (x >= fTransformNewMinX && x <= fTransformOldMaxX)
+//						fTransformOldMinX = x;
+//					else if (x < fTransformNewMinX)
+//						fTransformOldMinX = fTransformNewMinX;
+//					else
+//						fTransformOldMinX = fTransformOldMaxX;
+//					break;
+//				case 4:
+//					if (x >= fTransformOldMinX && x <= fTransformNewMaxX)
+//						fTransformOldMaxX = x;
+//					else if (fTransformNewMaxX > 1)
+//						fTransformOldMaxX = fTransformNewMaxX;
+//					else
+//						fTransformOldMaxX = fTransformOldMinX;
+//					break;
 				default:
 				}
 
@@ -1369,8 +1388,8 @@ public class GLScatterplot extends AStorageBasedView {
 		//
 
 		float x = renderStyle.transformNorm2GlobalX(fTransformNewMinX);
-		float fIconwith = 0.2f;
-		float y = XYAXISDISTANCE - fIconwith * 2.5f;
+		float fIconwith = 0.15f;
+		float y = XYAXISDISTANCE - fIconwith * 3f;
 		gl.glColor4fv(Y_AXIS_COLOR, 0);
 		gl.glBegin(GL.GL_LINES);
 
@@ -1440,11 +1459,11 @@ public class GLScatterplot extends AStorageBasedView {
 
 		if (fTransformNewMaxX < 1)
 			if (bMainViewZoomDragged && iCurrentDragZoom == 2)
-				textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
+				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
 						lowerLeftCorner, lowerRightCorner, upperRightCorner,
 						upperLeftCorner, 1, 0, 0, 1);
 			else
-				textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
+				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
 						lowerLeftCorner, lowerRightCorner, upperRightCorner,
 						upperLeftCorner, 1, 1, 1, 1);
 
@@ -1457,11 +1476,11 @@ public class GLScatterplot extends AStorageBasedView {
 
 		if (fTransformNewMaxX > fTransformOldMaxX)
 			if (bMainViewZoomDragged && iCurrentDragZoom == 2)
-				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+				textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
 						lowerLeftCorner, lowerRightCorner, upperRightCorner,
 						upperLeftCorner, 1, 0, 0, 1);
 			else
-				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+				textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
 						lowerLeftCorner, lowerRightCorner, upperRightCorner,
 						upperLeftCorner, 1, 1, 1, 1);
 		gl.glPopName();
@@ -1469,105 +1488,109 @@ public class GLScatterplot extends AStorageBasedView {
 		//
 		// Right Inner X
 		//
-
-		x = renderStyle.transformNorm2GlobalX(fTransformOldMinX);
-		fIconwith = 0.15f;
-		y = XYAXISDISTANCE - fIconwith * 2;
-		gl.glColor4fv(Y_AXIS_COLOR, 0);
-		gl.glBegin(GL.GL_LINES);
-
-		gl.glVertex3f(x, y, AXIS_Z);
-		gl
-				.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
-						AXIS_Z);
-		gl.glEnd();
-
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.SCATTER_MAIN_ZOOM, 3));
-		x = x - fIconwith;
-
-		lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-		lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-		upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-		upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-
-		if (fTransformOldMinX > fTransformNewMinX)
-			if (bMainViewZoomDragged && iCurrentDragZoom == 3)
-				textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
-						lowerLeftCorner, lowerRightCorner, upperRightCorner,
-						upperLeftCorner, 1, 0, 0, 1);
-			else
-				textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
-						lowerLeftCorner, lowerRightCorner, upperRightCorner,
-						upperLeftCorner, 1, 1, 1, 1);
-
-		x = x + fIconwith;
-		lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-		lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-		upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-		upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-
-		if (fTransformOldMinX < fTransformOldMaxX)
-			if (bMainViewZoomDragged && iCurrentDragZoom == 3)
-				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
-						lowerLeftCorner, lowerRightCorner, upperRightCorner,
-						upperLeftCorner, 1, 0, 0, 1);
-			else
-				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
-						lowerLeftCorner, lowerRightCorner, upperRightCorner,
-						upperLeftCorner, 1, 1, 1, 1);
-		gl.glPopName();
-
+		if(fTransformOldMinX==fTransformNewMinX)
+		{
+			x = renderStyle.transformNorm2GlobalX(fTransformOldMinX);
+			//fIconwith = 0.15f;
+			y = XYAXISDISTANCE - fIconwith * 2.2f;
+			gl.glColor4fv(Y_AXIS_COLOR, 0);
+			gl.glBegin(GL.GL_LINES);
+	
+			gl.glVertex3f(x, y, AXIS_Z);
+			gl
+					.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
+							AXIS_Z);
+			gl.glEnd();
+	
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					EPickingType.SCATTER_MAIN_ZOOM, 3));
+			x = x - fIconwith;
+	
+			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+	
+			if (fTransformOldMinX > 0)
+				if (bMainViewZoomDragged && iCurrentDragZoom == 3)
+					textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, 1, 0, 0, 1);
+				else
+					textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, 1, 0, 0, 0.6f);
+	
+			x = x + fIconwith;
+			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+	
+			if (fTransformOldMinX < fTransformOldMaxX)
+				if (bMainViewZoomDragged && iCurrentDragZoom == 3)
+					textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, 1, 0, 0, 1);
+				else
+					textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, 1, 0, 0, 0.6f);
+			gl.glPopName();
+		}
 		//
 		// Left Inner X
 		//
-		x = renderStyle.transformNorm2GlobalX(fTransformOldMaxX);
-
-		gl.glColor4fv(Y_AXIS_COLOR, 0);
-		gl.glBegin(GL.GL_LINES);
-
-		gl.glVertex3f(x, y, AXIS_Z);
-		gl
-				.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
-						AXIS_Z);
-		gl.glEnd();
-
-		lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-		lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-		upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-		upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.SCATTER_MAIN_ZOOM, 4));
-
-		if (fTransformOldMaxX < fTransformNewMaxX)
-			if (bMainViewZoomDragged && iCurrentDragZoom == 4)
-				textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
-						lowerLeftCorner, lowerRightCorner, upperRightCorner,
-						upperLeftCorner, 1, 0, 0, 1);
-			else
-				textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
-						lowerLeftCorner, lowerRightCorner, upperRightCorner,
-						upperLeftCorner, 1, 1, 1, 1);
-
-		x = x - fIconwith;
-
-		lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-		lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-		upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-		upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-
-		if (fTransformOldMaxX > fTransformOldMinX)
-			if (bMainViewZoomDragged && iCurrentDragZoom == 4)
-				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
-						lowerLeftCorner, lowerRightCorner, upperRightCorner,
-						upperLeftCorner, 1, 0, 0, 1);
-			else
-				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
-						lowerLeftCorner, lowerRightCorner, upperRightCorner,
-						upperLeftCorner, 1, 1, 1, 1);
-		gl.glPopName();
-
+		if(fTransformOldMaxX==fTransformNewMaxX)
+		{
+			x = renderStyle.transformNorm2GlobalX(fTransformOldMaxX);
+			y = XYAXISDISTANCE - fIconwith * 2.2f;
+	
+			gl.glColor4fv(Y_AXIS_COLOR, 0);
+			gl.glBegin(GL.GL_LINES);
+	
+			gl.glVertex3f(x, y, AXIS_Z);
+			gl
+					.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
+							AXIS_Z);
+			gl.glEnd();
+	
+			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+	
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					EPickingType.SCATTER_MAIN_ZOOM, 4));
+	
+			if (fTransformOldMaxX < 1)
+				if (bMainViewZoomDragged && iCurrentDragZoom == 4)
+					textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, 1, 0, 0, 1);
+				else
+					textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, 1, 1, 1, 1);
+	
+			x = x - fIconwith;
+	
+			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+	
+			if (fTransformOldMaxX > fTransformOldMinX)
+				if (bMainViewZoomDragged && iCurrentDragZoom == 4)
+					textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, 1, 0, 0, 1);
+				else
+					textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, 1, 1, 1, 1);
+			gl.glPopName();
+		}
 		// Show Selection Boxes
 
 		if (bMainViewZoomDragged) {
@@ -1626,6 +1649,7 @@ public class GLScatterplot extends AStorageBasedView {
 				// float max = (float) set.getMax();
 				// float min = (float) set.getMin();
 
+				//textRenderer.begin3DRendering();
 				Rectangle2D bounds = textRenderer.getScaledBounds(gl, Formatter
 						.formatNumber(fNumber), renderStyle
 						.getSmallFontScalingFactor(),
@@ -1634,6 +1658,7 @@ public class GLScatterplot extends AStorageBasedView {
 				float fHeight = (float) bounds.getHeight();
 				float fHeightHalf = fHeight / 2.0f;
 				float fWidthHalf = fWidth / 2.0f;
+				//textRenderer.endRendering();
 
 				renderNumber(gl, Formatter.formatNumber(fNumber), fXPosition
 						- fWidth - AXIS_MARKER_WIDTH, fCurrentHeight
@@ -3142,12 +3167,21 @@ public class GLScatterplot extends AStorageBasedView {
 	public void MainViewZoom() {
 
 		if (bMainViewZoom)
+		{
 			bMainViewZoom = false;
+			bUpdateMainView = true;
+			setDisplayListDirty();
+		}
 		else
+		{
+			fTransformOldMinX = 0.3f;
+			fTransformNewMinX = 0.3f;
+			fTransformOldMaxX = 0.4f;
+			fTransformNewMaxX = 0.4f;
 			bMainViewZoom = true;
+			
+		}
 
-		bUpdateMainView = true;
-		setDisplayListDirty();
 	}
 
 	public void toggleColorMode() {
