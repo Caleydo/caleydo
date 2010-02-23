@@ -28,6 +28,9 @@ public class GLConsecutiveConnectionGraphDrawing
 	
 	protected RemoteLevel focusLevel;
 	protected RemoteLevel stackLevel;
+	private boolean heatMapOnStackAndHasPredecessor = false;
+	private boolean heatMapOnStackAndHasSucessor = false;
+	private boolean parCoordsOnStack = false;
 
 	Vec3f vecCenter = new Vec3f();
 
@@ -50,11 +53,10 @@ public class GLConsecutiveConnectionGraphDrawing
 		HashMap<Integer, VisLinkAnimationStage> connections = new HashMap<Integer, VisLinkAnimationStage>();
 		HashMap<Integer, Vec3f> bundlingPoints = new HashMap<Integer, Vec3f>();
 		hashViewToCenterPoint = getOptimalDynamicPoints(idType);
+		int heatmapID = getSpecialViewID(HEATMAP);
 		if (hashViewToCenterPoint == null)
 			return;
-/*		for (Integer iKey : keySet)
-			hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists.get(idType).get(iKey)));
-*/	
+
 		vecCenter = calculateCenter(hashViewToCenterPoint.values());
 
 		for (Integer iKey : keySet) {
@@ -239,18 +241,24 @@ public class GLConsecutiveConnectionGraphDrawing
 		ArrayList<Vec3f> optimalParCoords = new ArrayList<Vec3f>();
 		boolean isHeatMap = false;
 		float minPath = Float.MAX_VALUE;
+		int predecessorID = -1;
+		int successorID = -1;
 		int nextView = -1;
 		float currentPath = -1;
 		for (int count = 0; count < stackLevel.getCapacity(); count++) {
 			if (stackLevel.getElementByPositionIndex(count).getGLView() != null){
 				nextView = stackLevel.getElementByPositionIndex(count).getGLView().getID();
-				if (stackLevel.getElementByPositionIndex(count).getGLView() instanceof GLHeatMap)
-					isHeatMap = true;
+				if (hashViewToCenterPoint.containsKey(nextView)){
+					if (stackLevel.getElementByPositionIndex(count).getGLView() instanceof GLHeatMap)
+						isHeatMap = true;
+					break;
+				}
 			}
 		}
+
 		if (!isHeatMap){
 			for (ArrayList<Vec3f> parCoordsList : parCoordsPoints) {
-				hashViewToCenterPoint.put(heatMapID, parCoordsList.get(0));
+				hashViewToCenterPoint.put(parCoordID, parCoordsList.get(0));
 				Vec3f remoteBundlingPoint = hashViewToCenterPoint.get(nextView);
 				Vec3f distanceVec = remoteBundlingPoint.minus(parCoordsList.get(0));
 				currentPath = distanceVec.length();
@@ -258,6 +266,48 @@ public class GLConsecutiveConnectionGraphDrawing
 					minPath = currentPath;
 					optimalParCoords = parCoordsList;
 				}
+			}
+			if (heatMapID != -1){
+				for (int count = 0; count < stackLevel.getCapacity(); count++){
+					if (stackLevel.getElementByPositionIndex(count).getGLView() instanceof GLHeatMap){
+						if (stackLevel.getElementByPositionIndex(count-1).getGLView() != null)
+							predecessorID = stackLevel.getElementByPositionIndex(count-1).getGLView().getID();
+						if (stackLevel.getElementByPositionIndex(count+1).getGLView() != null)
+							successorID = stackLevel.getElementByPositionIndex(count+1).getGLView().getID();
+						break;
+					}
+				}
+				if (hashViewToCenterPoint.containsKey(predecessorID)){
+					heatMapOnStackAndHasPredecessor = true;
+					minPath = Float.MAX_VALUE;
+					//getting optimal point to predecessor
+					for (ArrayList<Vec3f> heatMapList : heatMapPoints) {
+						hashViewToCenterPoint.put(heatMapID, heatMapList.get(0));
+						Vec3f remoteBundlingPoint = hashViewToCenterPoint.get(predecessorID);
+						Vec3f distanceVec = remoteBundlingPoint.minus(heatMapList.get(0));
+						currentPath = distanceVec.length();
+						if (currentPath < minPath){
+							minPath = currentPath;
+							optimalHeatMap.add(heatMapList.get(0));
+						}
+					}
+				}
+				if (hashViewToCenterPoint.containsKey(successorID)){
+					heatMapOnStackAndHasSucessor = true;
+					minPath = Float.MAX_VALUE;
+					//getting optimal point to successor
+					for (ArrayList<Vec3f> heatMapList : heatMapPoints) {
+						hashViewToCenterPoint.put(heatMapID, heatMapList.get(0));
+						Vec3f remoteBundlingPoint = hashViewToCenterPoint.get(successorID);
+						Vec3f distanceVec = remoteBundlingPoint.minus(heatMapList.get(0));
+						currentPath = distanceVec.length();
+						if (currentPath < minPath){
+							minPath = currentPath;
+							optimalHeatMap.add(heatMapList.get(0));
+						}
+					}
+				}
+	
 			}
 		}
 		else{
@@ -282,7 +332,7 @@ public class GLConsecutiveConnectionGraphDrawing
 
 	}
 	
-	/** calculates shorest distance between heatmap and one other view, if heatmap is in focus
+	/** calculates shortest distance between heatmap and one other view, if heatmap is in focus
 	 * 
 	 * @param hashViewToCenterPoint
 	 * @param heatMapPoints
