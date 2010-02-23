@@ -229,8 +229,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		leftHeatMapWrapper.drawLocalItems(gl);
-		rightHeatMapWrapper.drawLocalItems(gl);
+		leftHeatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
+				iUniqueID);
+		rightHeatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
+				iUniqueID);
 		gl.glEndList();
 	}
 

@@ -1,5 +1,7 @@
 package org.caleydo.view.heatmap;
 
+import gleem.linalg.Vec3f;
+
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
@@ -8,14 +10,19 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.texture.Texture;
@@ -207,6 +214,67 @@ public class HeatMapUtil {
 			gl.glEnd();
 			yOffset += textureDrawingHeight;
 			texture.disable();
+		}
+	}
+
+	public static void renderGroupBar(GL gl, ContentVirtualArray contentVA,
+			float totalHeight, float groupWidth, PickingManager pickingManager,
+			int viewID, EPickingType pickingType, TextureManager textureManager) {
+
+		ContentGroupList contentGroupList = contentVA.getGroupList();
+
+		// TODO: just for testing
+//		ContentGroupList contentGroupList = new ContentGroupList();
+//		Group temp = new Group(10, false, 0, SelectionType.NORMAL);
+//		contentGroupList.append(temp);
+//		temp = new Group(30, false, 0, SelectionType.NORMAL);
+//		contentGroupList.append(temp);
+//		temp = new Group(60, false, 0, SelectionType.NORMAL);
+//		contentGroupList.append(temp);
+//		temp = new Group(contentVA.size() - 100, false, 0, SelectionType.NORMAL);
+//		contentGroupList.append(temp);
+
+		if (contentGroupList != null) {
+			float sampleHeight = totalHeight / ((float) contentVA.size());
+			float groupPositionY = totalHeight;
+
+			gl.glColor4f(1, 1, 1, 1);
+			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+			int groupIndex = 0;
+			for (Group group : contentGroupList) {
+				int numSamplesGroup = group.getNrElements();
+				float groupHeight = numSamplesGroup * sampleHeight;
+
+				gl.glPushName(pickingManager.getPickingID(viewID, pickingType,
+						groupIndex));
+				Vec3f lowerLeftCorner = new Vec3f(0.0f, groupPositionY
+						- groupHeight, 0.0f);
+				Vec3f lowerRightCorner = new Vec3f(0.0f + groupWidth,
+						groupPositionY - groupHeight, 0.0f);
+				Vec3f upperRightCorner = new Vec3f(0.0f + groupWidth,
+						groupPositionY, 0.0f);
+				Vec3f upperLeftCorner = new Vec3f(0.0f, groupPositionY, 0.0f);
+
+				textureManager.renderTexture(gl,
+						EIconTextures.HEAT_MAP_GROUP_NORMAL, lowerLeftCorner,
+						lowerRightCorner, upperRightCorner, upperLeftCorner, 1,
+						1, 1, 1);
+
+				gl.glPopName();
+				if (groupIndex < contentGroupList.size() - 1) {
+					gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+					gl.glColor4f(1, 1, 1, 1);
+					gl.glBegin(GL.GL_LINES);
+					gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(),
+							lowerLeftCorner.z());
+					gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y(),
+							lowerRightCorner.z());
+					gl.glEnd();
+				}
+
+				groupIndex++;
+				groupPositionY -= groupHeight;
+			}
 		}
 	}
 }

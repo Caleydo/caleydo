@@ -4,7 +4,9 @@ import gleem.linalg.Vec3f;
 
 public abstract class HeatMapLayout {
 
-	protected static float OVERVIEW_WIDTH_PORTION = 0.2f;
+	protected static float OVERVIEW_TOTAL_WIDTH_PORTION = 0.2f;
+	protected static float OVERVIEW_GROUP_WIDTH_PORTION = 0.05f;
+	protected static float OVERVIEW_HEATMAP_WIDTH_PORTION = 0.15f;
 	protected static float DETAIL_WIDTH_PORTION = 0.5f;
 	protected static float GAP_PORTION = 0.3f;
 
@@ -21,9 +23,10 @@ public abstract class HeatMapLayout {
 		this.totalWidth = totalWidth;
 	}
 
-	public float getOverviewWidth() {
-		return totalWidth * OVERVIEW_WIDTH_PORTION;
+	public float getTotalOverviewWidth() {
+		return totalWidth * OVERVIEW_TOTAL_WIDTH_PORTION;
 	}
+	
 
 	public float getGapWidth() {
 		return totalWidth * GAP_PORTION;
@@ -40,9 +43,22 @@ public abstract class HeatMapLayout {
 	public float getDetailHeight() {
 		return totalHeight;
 	}
+	
+	public float getOverviewGroupWidth() {
+		return totalWidth * OVERVIEW_GROUP_WIDTH_PORTION;
+	}
+	
+	public float getOverviewHeatmapWidth() {
+		return totalWidth * OVERVIEW_HEATMAP_WIDTH_PORTION;
+	}
 
 	public abstract Vec3f getOverviewPosition();
+	
+	public abstract Vec3f getOverviewGroupBarPosition();
+	
+	public abstract Vec3f getOverviewHeatMapPosition();
 
 	public abstract Vec3f getDetailPosition();
+	
 
 }

@@ -1,6 +1,5 @@
 package org.caleydo.view.compare;
 
-import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
@@ -19,6 +18,8 @@ import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -26,6 +27,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.HeatMapUtil;
 
@@ -121,14 +123,29 @@ public class HeatMapWrapper {
 
 	}
 
-	public void drawLocalItems(GL gl) {
-		Vec3f overviewPosition = layout.getOverviewPosition();
-		gl.glTranslatef(overviewPosition.x(), overviewPosition.y(),
-				overviewPosition.z());
-		HeatMapUtil.renderHeatmapTextures(gl, overviewTextures, layout
-				.getOverviewHeight(), layout.getOverviewWidth());
-		gl.glTranslatef(-overviewPosition.x(), -overviewPosition.y(),
-				-overviewPosition.z());
+	public void drawLocalItems(GL gl, TextureManager textureManager,
+			PickingManager pickingManager, int viewID) {
+
+		Vec3f overviewHeatMapPosition = layout.getOverviewHeatMapPosition();
+		float overviewHeight = layout.getOverviewHeight();
+
+		gl.glPushMatrix();
+		gl.glTranslatef(overviewHeatMapPosition.x(), overviewHeatMapPosition
+				.y(), overviewHeatMapPosition.z());
+		HeatMapUtil.renderHeatmapTextures(gl, overviewTextures, overviewHeight,
+				layout.getOverviewHeatmapWidth());
+		gl.glPopMatrix();
+
+		gl.glPushMatrix();
+		Vec3f overviewGroupsPosition = layout.getOverviewGroupBarPosition();
+		gl.glTranslatef(overviewGroupsPosition.x(), overviewGroupsPosition.y(),
+				overviewGroupsPosition.z());
+		
+		HeatMapUtil.renderGroupBar(gl, contentVA, layout.getOverviewHeight(),
+				layout.getOverviewGroupWidth(), pickingManager, viewID,
+				EPickingType.COMPARE_GROUP_SELECTION, textureManager);
+
+		gl.glPopMatrix();
 	}
 
 	public void drawRemoteItems(GL gl) {
@@ -145,7 +162,6 @@ public class HeatMapWrapper {
 		heatMap.displayRemote(gl);
 		gl.glTranslatef(-detailPosition.x(), -detailPosition.y(),
 				-detailPosition.z());
-		;
 	}
 
 	public void processEvents() {
