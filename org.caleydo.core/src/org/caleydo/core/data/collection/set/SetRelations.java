@@ -19,4 +19,19 @@ public class SetRelations {
 		hashRightToLeft = new HashMap<Integer, Integer>();
 	}
 	
+	public HashMap<Integer, Integer> getHashLeftToRight() {
+		return hashLeftToRight;
+	}
+	
+	public HashMap<Integer, Integer> getHashRightToLeft() {
+		return hashRightToLeft;
+	}
+	
+	public ISet getSetLeft() {
+		return setLeft;
+	}
+	
+	public ISet getSetRight() {
+		return setRight;
+	}
 }

@@ -1,6 +1,9 @@
 package org.caleydo.view.compare;
 
+import gleem.linalg.Vec2f;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.media.opengl.GL;
@@ -10,6 +13,7 @@ import org.caleydo.core.data.collection.set.SetComparer;
 import org.caleydo.core.data.collection.set.SetRelations;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageVAType;
@@ -49,14 +53,15 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	private ArrayList<ISet> setsToCompare;
 
 	private TextRenderer textRenderer;
-	private ContentSelectionManager contentSelectionManager;
 	private HeatMapLayoutLeft heatMapLayoutLeft;
 	private HeatMapLayoutRight heatMapLayoutRight;
 	private HeatMapWrapper leftHeatMapWrapper;
 	private HeatMapWrapper rightHeatMapWrapper;
 
 	private CompareGroupsEventListener compareGroupsEventListener;
-
+	
+	private SetRelations relations;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -74,8 +79,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void init(GL gl) {
-		contentVA = useCase.getContentVA(ContentVAType.CONTENT);
-		storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
+//		contentVA = useCase.getContentVA(ContentVAType.CONTENT);
+//		storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
 		heatMapLayoutLeft = new HeatMapLayoutLeft();
 		heatMapLayoutRight = new HeatMapLayoutRight();
 		leftHeatMapWrapper = new HeatMapWrapper(heatMapLayoutLeft);
@@ -223,6 +228,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		gl.glCallList(iGLDisplayListToCall);
 		leftHeatMapWrapper.drawRemoteItems(gl);
 		rightHeatMapWrapper.drawRemoteItems(gl);
+		renderRelations(gl);
+		
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
 	}
@@ -241,6 +248,51 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		return new String("");
 	}
 
+	private void renderRelations(GL gl) {
+		
+		if (relations == null)
+			return;
+	
+		//ContentVirtualArray contentVALeftAll = relations.getSetLeft().getContentVA(ContentVAType.CONTENT);
+		ContentSelectionManager contentSelectionManager = leftHeatMapWrapper.getContentSelectionManagersOfHeatMaps().get(0);
+		ContentVirtualArray contentVALeft = leftHeatMapWrapper.getContentVAsOfHeatMaps().get(0);
+		//ContentVirtualArray contentVARight = rightHeatMapWrapper.getContentVAsOfHeatMaps().get(0);
+		
+		gl.glColor3f(0,0,0);
+		gl.glLineWidth(1);
+		//HashMap<Integer, Integer> relationLeftToRight = relations.getHashLeftToRight();
+		for (Integer contentID : contentVALeft) {		
+			
+			//Integer contentID = contentVALeft.get(contentIndex);
+			
+			for (SelectionType type : contentSelectionManager.getSelectionTypes(contentID)) {
+				gl.glColor4fv(type.getColor(), 0);	
+			}	
+			
+			//int relationIndex = contentVALeftAll.indexOf(contentID);
+			Vec2f leftPos = leftHeatMapWrapper.getRightLinkPositionFromContentID(contentID);
+			float leftPosY = -1;
+			
+			if (leftPos != null)
+				leftPosY = leftPos.y();
+			else
+				continue;
+			
+			Vec2f rightPos = rightHeatMapWrapper.getRightLinkPositionFromContentID(contentID);
+			float rightPosY = -1;
+			
+			if (rightPos != null)
+				rightPosY = rightPos.y();
+			else
+				continue;
+			
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(3, viewFrustum.getHeight()-leftPosY, 0);
+			gl.glVertex3f(5f, viewFrustum.getHeight()-rightPosY, 0);			
+			gl.glEnd();
+		}
+	}
+	
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
@@ -349,7 +401,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		if (sets.size() >= 2) {
 			ISet setLeft = setsToCompare.get(0);
 			ISet setRight = setsToCompare.get(1);
-			SetRelations relations = SetComparer.compareSets(setLeft, setRight);
+			relations = SetComparer.compareSets(setLeft, setRight);
 
 			leftHeatMapWrapper.setSet(setLeft);
 			rightHeatMapWrapper.setSet(setRight);
