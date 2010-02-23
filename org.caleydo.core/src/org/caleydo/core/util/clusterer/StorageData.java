@@ -76,6 +76,7 @@ public class StorageData
 				cnt++;
 				iOffset += iter;
 			}
+			storageVA.setGroupList(storageGroupList);
 		}
 	}
 

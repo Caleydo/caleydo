@@ -8,6 +8,11 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionType;
 
+/**
+ * Fixme: consolidate this and StorageData
+ * 
+ * @author alexsb
+ */
 public class ContentData {
 	ContentVirtualArray contentVA;
 	/** indices of examples (cluster centers) */
@@ -43,14 +48,44 @@ public class ContentData {
 			ContentGroupList contentGroupList = new ContentGroupList();
 
 			int cnt = 0;
-			int iOffset = 0;
-			for (Integer iter : contentClusterSizes) {
+//			int iOffset = 0;
+			contentTree = new Tree<ClusterNode>();
+			int clusterNr = 0;
+			ClusterNode root = new ClusterNode(contentTree, "Root", clusterNr++, true, -1);
+			contentTree.setRootNode(root);
+			ClusterNode node;
+			int from = 0;
+			int to = 0;
+			for (Integer clusterSize : contentClusterSizes) {
 
-				Group temp = new Group(iter, false, contentSampleElements.get(cnt), SelectionType.NORMAL);
+				node = new ClusterNode(contentTree, "Group: " + clusterNr, clusterNr++, true, -1);
+				Group temp =
+					new Group(clusterSize, false, contentSampleElements.get(cnt), SelectionType.NORMAL, node);
+				contentTree.addChild(root, node);
 				contentGroupList.append(temp);
 				cnt++;
-				iOffset += iter;
+//				iOffset += iter;
+				to += clusterSize;
+				ClusterNode leaf;
+				for(int vaIndex = from; vaIndex < to; vaIndex++)
+				{
+					Integer contentID = contentVA.get(vaIndex);
+					leaf = new ClusterNode(contentTree, "Leaf: " + contentID, clusterNr++, true, contentID);
+					contentTree.addChild(node, leaf);							
+				}
+				from = to;
+				
+				
 			}
+			
+//			int vaIndex = 0;
+//			for(Integer contentID : contentVA)
+//			{
+//				
+//				contentGroupList.getGroupOfVAIndex(vaIndex);				
+//				
+//			}
+			contentVA.setGroupList(contentGroupList);
 		}
 	}
 

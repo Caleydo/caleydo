@@ -17,7 +17,7 @@ public abstract class GroupList<ConcreteType extends IGroupList<ConcreteType, VA
 	private ArrayList<Group> groups;
 
 	/**
-	 * default no-arg constructor to create an group list with no contained groups
+	 * default no-arg constructor to create a group list with no contained groups
 	 */
 	public GroupList() {
 		this.groups = new ArrayList<Group>();
@@ -443,5 +443,20 @@ public abstract class GroupList<ConcreteType extends IGroupList<ConcreteType, VA
 		}
 
 		return representative;
+	}
+	
+	public Group getGroupOfVAIndex(int index)
+	{
+		int from = 0;
+		int to = 0;
+		for(Group group : groups)
+		{
+			to += group.getNrElements();
+			if(index >= from && index <= to)
+				return group;
+			from = to;
+		}
+		return null;
+		
 	}
 }
