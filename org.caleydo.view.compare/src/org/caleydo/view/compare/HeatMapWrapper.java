@@ -46,6 +46,7 @@ public class HeatMapWrapper {
 	private VerticalSlider slider;
 	private ArrayList<ContentVirtualArray> heatMapVAs;
 	private int id;
+	private boolean useDetailView;
 
 	// private Vec3f position;
 	// private float width;
@@ -159,19 +160,21 @@ public class HeatMapWrapper {
 
 	public void drawRemoteItems(GL gl) {
 
-		Vec3f detailPosition = layout.getDetailPosition();
-		gl.glTranslatef(detailPosition.x(), detailPosition.y(), detailPosition
-				.z());
-		heatMap.getViewFrustum().setLeft(detailPosition.x());
-		heatMap.getViewFrustum().setBottom(detailPosition.y());
-		heatMap.getViewFrustum().setRight(
-				detailPosition.x() + layout.getDetailWidth());
-		heatMap.getViewFrustum().setTop(
-				detailPosition.y() + layout.getDetailHeight());
-		heatMap.displayRemote(gl);
-
-		gl.glTranslatef(-detailPosition.x(), -detailPosition.y(),
-				-detailPosition.z());
+		if(useDetailView) {
+			Vec3f detailPosition = layout.getDetailPosition();
+			gl.glTranslatef(detailPosition.x(), detailPosition.y(), detailPosition
+					.z());
+			heatMap.getViewFrustum().setLeft(detailPosition.x());
+			heatMap.getViewFrustum().setBottom(detailPosition.y());
+			heatMap.getViewFrustum().setRight(
+					detailPosition.x() + layout.getDetailWidth());
+			heatMap.getViewFrustum().setTop(
+					detailPosition.y() + layout.getDetailHeight());
+			heatMap.displayRemote(gl);
+	
+			gl.glTranslatef(-detailPosition.x(), -detailPosition.y(),
+					-detailPosition.z());
+		}
 
 		// ContentVirtualArray va = heatMapVAs.get(0);
 		//
@@ -230,6 +233,10 @@ public class HeatMapWrapper {
 
 	public int getID() {
 		return id;
+	}
+	
+	public void useDetailView(boolean useDetailView) {
+		this.useDetailView = useDetailView;
 	}
 
 }
