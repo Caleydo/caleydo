@@ -1,27 +1,61 @@
 package org.caleydo.view.datawindows;
 
+
+
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
+
+import javax.media.opengl.GL;
 
 import org.caleydo.core.data.graph.tree.DefaultNode;
 import org.caleydo.core.data.graph.tree.Tree;
 
 public class DataWindowsDisk extends PoincareDisk{
 
-	@SuppressWarnings("unused")
-	// muss wieder umgeändert werden:
-	private Tree<DefaultNode> tree;
+
+    //Tree<PoincareNode> tree;
+
+	
 	
 	public DataWindowsDisk(double diskRadius) {
 		super(diskRadius);
 		
 	}
 
-	public void drawTree(){
+	
+	
+	public void renderTree(GL gl, Point2D.Double offset){
+	
+		
+		
+		PoincareNode root=getTree().getRoot();
+		
+	    renderNode(root,gl);
+	  
 		
 	}
+
 	
-	public void drawNode(){
+	public boolean renderNode(PoincareNode node,GL gl){
+	   
+		drawNode(node, gl);
+		if (node.getChildren()==null){
+			return false;
+		}
 		
+		ArrayList<PoincareNode> children = node.getChildren();
+	    
+		
+	   for(int i=0; i<0; i++){
+		   renderNode(children.get(i),gl);
+	   }
+		
+	    return true;
+	}
+	
+    public void drawNode(PoincareNode node,GL gl){
+	  drawCircle(gl,0.05f,node.getProjectedPosition().getX()+2.5f,node.getProjectedPosition().getY()+2.5f);
+	 // System.out.println("node drawn at"+node.getProjectedPosition().getX()+2.5f+"|"+node.getProjectedPosition().getY()+2.5f);
 	}
 	
 	public void drawLine() {
@@ -31,27 +65,29 @@ public class DataWindowsDisk extends PoincareDisk{
 	public void drawBackground(){
 		
 	}
-
-	public void loadTree() {
-		// creating a tree for testing
-		System.out.println("loadTree Called");
-
-		//PoincareNode node = new PoincareNode(tree, "Root", 1);
-		DefaultNode node = new DefaultNode(tree, "Root",1);
 	
-		//stürzt ab:
+	private void drawCircle(GL gl,double radius,double k, double h) {
+	    //code from http://www.swiftless.com/tutorials/opengl/circle.html //20.2.2010
+		double circleX=0;
+		double circleY=0;
+		double i=0;
 		
-		//tree.setRootNode(node);
-//		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 1));
-//		tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
-//
-//		int iCount = 5;
-//		for (PoincareNode tempNode : tree.getChildren(node)) {
-//			tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-//					iCount--));
-//			tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
-//					iCount--));
-//		}
-
+		
+		gl.glBegin(GL.GL_LINES);
+	    for (double counter = 0; counter < 360; counter++)
+	    {
+	    i=counter*Math.PI/180;
+	   
+	    circleX = radius * Math.cos(i);
+	    circleY = radius * Math.sin(i) ;
+	    gl.glVertex3d(circleX + k,circleY + h,0);
+	    
+	    circleX = radius * Math.cos(i + Math.PI/180) ;
+	    circleY = radius * Math.sin(i + Math.PI/180) ;
+	    gl.glVertex3d(circleX + k,circleY + h,0);
+	    }
+	    gl.glEnd();
 	}
+	
+
 }
