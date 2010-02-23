@@ -37,7 +37,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	private int[] targetApplicationIds;
 	
 	/** mouse pointer id that triggered the visual links as retrieved from deskotheque */
-	private int triggeringMousePointerId;
+	private String triggeringMousePointerId;
 
 	JAXBContext jaxbContext; 
 	
@@ -50,7 +50,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	public VisLinkManager() {
 		app2bbl = new HashMap<Integer, BoundingBoxList>();
 		targetApplicationIds = new int[0];
-		triggeringMousePointerId = 0;
+		triggeringMousePointerId = null;
 	}
 	
 	public void reportSelection(String appName, String selectionId, String boundingBoxListXML) {
@@ -67,7 +67,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			BoundingBoxList bbl = createBoundingBoxList(boundingBoxListXML);
 			app2bbl.put(app.getId(), bbl);
 		}
-		
+
 		AccessInformation accessInformation = rendererPrx.getAccessInformation(app.getId());
 		targetApplicationIds = accessInformation.applicationIds;
 		triggeringMousePointerId = accessInformation.pointerId;

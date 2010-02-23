@@ -13,7 +13,7 @@ package VIS;
 
 public final class AccessInformation implements java.lang.Cloneable, java.io.Serializable
 {
-    public int pointerId;
+    public String pointerId;
 
     public int[] applicationIds;
 
@@ -21,7 +21,7 @@ public final class AccessInformation implements java.lang.Cloneable, java.io.Ser
     {
     }
 
-    public AccessInformation(int pointerId, int[] applicationIds)
+    public AccessInformation(String pointerId, int[] applicationIds)
     {
         this.pointerId = pointerId;
         this.applicationIds = applicationIds;
@@ -45,7 +45,7 @@ public final class AccessInformation implements java.lang.Cloneable, java.io.Ser
 
         if(_r != null)
         {
-            if(pointerId != _r.pointerId)
+            if(pointerId != _r.pointerId && pointerId != null && !pointerId.equals(_r.pointerId))
             {
                 return false;
             }
@@ -64,7 +64,10 @@ public final class AccessInformation implements java.lang.Cloneable, java.io.Ser
     hashCode()
     {
         int __h = 0;
-        __h = 5 * __h + pointerId;
+        if(pointerId != null)
+        {
+            __h = 5 * __h + pointerId.hashCode();
+        }
         if(applicationIds != null)
         {
             for(int __i0 = 0; __i0 < applicationIds.length; __i0++)
@@ -93,14 +96,14 @@ public final class AccessInformation implements java.lang.Cloneable, java.io.Ser
     public void
     __write(IceInternal.BasicStream __os)
     {
-        __os.writeInt(pointerId);
+        __os.writeString(pointerId);
         ApplicationIdListHelper.write(__os, applicationIds);
     }
 
     public void
     __read(IceInternal.BasicStream __is)
     {
-        pointerId = __is.readInt();
+        pointerId = __is.readString();
         applicationIds = ApplicationIdListHelper.read(__is);
     }
 }

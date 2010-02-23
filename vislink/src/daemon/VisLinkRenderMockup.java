@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Shell;
 import Ice.Communicator;
 import Ice.Current;
 import Ice.ObjectAdapter;
+import VIS.AccessInformation;
 import VIS.Selection;
 import VIS.SelectionContainer;
 import VIS.SelectionGroup;
@@ -213,6 +214,12 @@ public class VisLinkRenderMockup extends _VisRendererIDisp implements Runnable {
 		public String hostName;
 		public String serverName;
 		public String endPoint;
+	}
+
+	public AccessInformation getAccessInformation(int sourceApplicationId,
+			Current current) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
