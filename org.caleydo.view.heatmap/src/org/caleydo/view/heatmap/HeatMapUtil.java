@@ -15,6 +15,7 @@ import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.texture.Texture;
@@ -59,13 +60,12 @@ public class HeatMapUtil {
 
 			for (Integer storageIndex : storageVA) {
 
-				float fOpacity = 0;
+				float fOpacity = 1.0f;
 
-				if (contentSelectionManager.checkStatus(
-						SelectionType.DESELECTED, contentIndex)) {
+				if (contentSelectionManager != null
+						&& contentSelectionManager.checkStatus(
+								SelectionType.DESELECTED, contentIndex)) {
 					fOpacity = 0.3f;
-				} else {
-					fOpacity = 1.0f;
 				}
 				IStorage storage = set.get(storageIndex);
 				float fLookupValue = storage.getFloat(
@@ -178,6 +178,8 @@ public class HeatMapUtil {
 		float elementHeight = height / numElements;
 
 		float textureDrawingHeight = 0;
+
+		gl.glColor4f(1.0f, 1.0f, 0.0f, 1.0f);
 
 		for (int i = 0; i < textures.size(); i++) {
 			Texture texture = textures.get(textures.size() - i - 1);

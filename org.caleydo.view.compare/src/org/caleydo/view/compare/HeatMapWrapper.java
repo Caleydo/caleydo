@@ -1,5 +1,8 @@
 package org.caleydo.view.compare;
 
+import gleem.linalg.Vec2f;
+import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
@@ -13,7 +16,6 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
-import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -23,9 +25,9 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.HeatMapUtil;
 
 import com.sun.opengl.util.texture.Texture;
 
@@ -36,15 +38,16 @@ public class HeatMapWrapper {
 	private IGeneralManager generalManager;
 	private ContentVirtualArray contentVA;
 	private StorageVirtualArray storageVA;
-
+	private ArrayList<Texture> overviewTextures;
+	private HeatMapLayout layout;
 
 	// private Vec3f position;
 	// private float width;
 	// private float height;
 
-	public HeatMapWrapper() {
+	public HeatMapWrapper(HeatMapLayout layout) {
 		generalManager = GeneralManager.get();
-
+		this.layout = layout;
 	}
 
 	private void createHeatMap(IUseCase useCase,
@@ -73,13 +76,11 @@ public class HeatMapWrapper {
 
 	public void setSet(ISet set) {
 		this.set = set;
-		// FIXME: use va from set
-		ISet useCaseSet = generalManager.getUseCase(EDataDomain.GENETIC_DATA)
-				.getSet();
 		contentVA = set.getContentVA(ContentVAType.CONTENT);
 		storageVA = set.getStorageVA(StorageVAType.STORAGE);
 		heatMap.setSet(set);
-
+		overviewTextures = HeatMapUtil.createHeatMapTextures(set, contentVA,
+				storageVA, null);
 		setEmbeddedHeatMapData();
 		heatMap.useFishEye(false);
 		heatMap.setDisplayListDirty();
@@ -100,33 +101,51 @@ public class HeatMapWrapper {
 		heatMap.resetView();
 		ContentVADelta delta = new ContentVADelta(
 				ContentVAType.CONTENT_EMBEDDED_HM, EIDType.EXPRESSION_INDEX);
+		ContentVirtualArray va = new ContentVirtualArray();
 
-		for (int i = 0; i < contentVA.size(); i++) {
+		for (int i = 0; i < 10; i++) {
 			if (i >= contentVA.size())
 				break;
 
 			int contentIndex = contentVA.get(i);
-			delta.add(VADeltaItem.append(contentIndex));
+			va.append(contentVA.get(i));
+			// delta.add(VADeltaItem.append(contentIndex));
 		}
-//		for (int i = 10; i < contentVA.size(); i++) {
-//			int contentIndex = contentVA.get(i);
-//			delta.add(VADeltaItem.removeElement(contentIndex));
-//		}
+		// for (int i = 10; i < contentVA.size(); i++) {
+		// int contentIndex = contentVA.get(i);
+		// delta.add(VADeltaItem.removeElement(contentIndex));
+		// }
 
-		heatMap.handleContentVAUpdate(delta, "");
+		// heatMap.handleContentVAUpdate(delta, "");
+		heatMap.setContentVA(va);
 
 	}
 
-	public void draw(GL gl, float positionX, float positionY, float width,
-			float height) {
+	public void drawLocalItems(GL gl) {
+		Vec3f overviewPosition = layout.getOverviewPosition();
+		gl.glTranslatef(overviewPosition.x(), overviewPosition.y(),
+				overviewPosition.z());
+		HeatMapUtil.renderHeatmapTextures(gl, overviewTextures, layout
+				.getOverviewHeight(), layout.getOverviewWidth());
+		gl.glTranslatef(-overviewPosition.x(), -overviewPosition.y(),
+				-overviewPosition.z());
+	}
 
-		gl.glTranslatef(positionX, positionY, 0);
-		heatMap.getViewFrustum().setLeft(positionX);
-		heatMap.getViewFrustum().setBottom(positionY);
-		heatMap.getViewFrustum().setRight(positionX + width);
-		heatMap.getViewFrustum().setTop(positionY + height);
+	public void drawRemoteItems(GL gl) {
+
+		Vec3f detailPosition = layout.getDetailPosition();
+		gl.glTranslatef(detailPosition.x(), detailPosition.y(), detailPosition
+				.z());
+		heatMap.getViewFrustum().setLeft(detailPosition.x());
+		heatMap.getViewFrustum().setBottom(detailPosition.y());
+		heatMap.getViewFrustum().setRight(
+				detailPosition.x() + layout.getDetailWidth());
+		heatMap.getViewFrustum().setTop(
+				detailPosition.y() + layout.getDetailHeight());
 		heatMap.displayRemote(gl);
-		gl.glTranslatef(-positionX, -positionY, 0);
+		gl.glTranslatef(-detailPosition.x(), -detailPosition.y(),
+				-detailPosition.z());
+		;
 	}
 
 	public void processEvents() {

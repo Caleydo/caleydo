@@ -33,7 +33,6 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.compare.listener.CompareGroupsEventListener;
 
 import com.sun.opengl.util.j2d.TextRenderer;
-import com.sun.opengl.util.texture.Texture;
 
 /**
  * The group assignment interface
@@ -51,9 +50,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	private TextRenderer textRenderer;
 	private ContentSelectionManager contentSelectionManager;
+	private HeatMapLayoutLeft heatMapLayoutLeft;
+	private HeatMapLayoutRight heatMapLayoutRight;
 	private HeatMapWrapper leftHeatMapWrapper;
 	private HeatMapWrapper rightHeatMapWrapper;
-	private ArrayList<Texture> overviewTextures;
 
 	private CompareGroupsEventListener compareGroupsEventListener;
 
@@ -76,14 +76,15 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	public void init(GL gl) {
 		contentVA = useCase.getContentVA(ContentVAType.CONTENT);
 		storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
-		leftHeatMapWrapper = new HeatMapWrapper();
-		rightHeatMapWrapper = new HeatMapWrapper();
+		heatMapLayoutLeft = new HeatMapLayoutLeft();
+		heatMapLayoutRight = new HeatMapLayoutRight();
+		leftHeatMapWrapper = new HeatMapWrapper(heatMapLayoutLeft);
+		rightHeatMapWrapper = new HeatMapWrapper(heatMapLayoutRight);
 		leftHeatMapWrapper.init(gl, this, glMouseListener, null, useCase, this,
 				dataDomain);
 		rightHeatMapWrapper.init(gl, this, glMouseListener, null, useCase,
 				this, dataDomain);
-		// overviewTextures = HeatMapUtil.createHeatMapTextures(set, contentVA,
-		// storageVA, useCase.getContentSelectionManager());
+
 		leftHeatMapWrapper.setSet(set);
 		rightHeatMapWrapper.setSet(set);
 	}
@@ -186,6 +187,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		if (!isVisible())
 			return;
 		pickingManager.handlePicking(this, gl);
+		heatMapLayoutLeft.setLayoutParameters(0.0f, 0.0f, viewFrustum.getTop(),
+				viewFrustum.getRight() / 3.0f);
+		heatMapLayoutRight.setLayoutParameters(
+				2.0f * viewFrustum.getRight() / 3.0f, 0.0f, viewFrustum
+						.getTop(), viewFrustum.getRight() / 3.0f);
 
 		if (bIsDisplayListDirtyLocal) {
 			bIsDisplayListDirtyLocal = false;
@@ -215,21 +221,16 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	public void display(GL gl) {
 		// processEvents();
 		gl.glCallList(iGLDisplayListToCall);
-
-		leftHeatMapWrapper.draw(gl, 0.0f, 0.0f, viewFrustum.getRight() / 3.0f,
-				viewFrustum.getTop());
-
-		rightHeatMapWrapper.draw(gl, 2.0f * viewFrustum.getRight() / 3.0f,
-				0.0f, viewFrustum.getRight() / 3.0f, viewFrustum.getTop());
-
+		leftHeatMapWrapper.drawRemoteItems(gl);
+		rightHeatMapWrapper.drawRemoteItems(gl);
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		// HeatMapUtil.renderHeatmapTextures(gl, overviewTextures, viewFrustum
-		// .getHeight(), viewFrustum.getWidth() / 2.0f);
+		leftHeatMapWrapper.drawLocalItems(gl);
+		rightHeatMapWrapper.drawLocalItems(gl);
 		gl.glEndList();
 	}
 

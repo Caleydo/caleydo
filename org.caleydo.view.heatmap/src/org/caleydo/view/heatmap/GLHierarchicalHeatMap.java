@@ -271,6 +271,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		createDendrogram();
 
 		glHeatMapView.initRemote(gl, this, glMouseListener, null);
+		glHeatMapView.useFishEye(false);
 		glGeneDendrogramView.initRemote(gl, this, glMouseListener, null);
 		glExperimentDendrogramView.initRemote(gl, this, glMouseListener, null);
 
@@ -3470,6 +3471,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		glHeatMapView.resetView();
 		ContentVADelta embeddedDelta = new ContentVADelta(
 				ContentVAType.CONTENT_EMBEDDED_HM, eFieldDataType);
+		ContentVirtualArray hmContentVa = new ContentVirtualArray();
 		ISelectionDelta selectionDelta = new SelectionDelta(eFieldDataType);
 
 		int iIndex = 0;
@@ -3495,8 +3497,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			if (iIndex < contentVA.size()) {
 				iContentIndex = contentVA.get(iIndex);
 			}
-
-			embeddedDelta.add(VADeltaItem.append(iContentIndex));
+			hmContentVa.append(iContentIndex);
+//			embeddedDelta.add(VADeltaItem.append(iContentIndex));
 
 			// set elements mouse over in embedded heat Map
 			for (Integer iSelectedID : setMouseOverElements) {
@@ -3531,7 +3533,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			}
 		}
 
-		glHeatMapView.handleContentVAUpdate(embeddedDelta, getShortInfo());
+//		glHeatMapView.handleContentVAUpdate(embeddedDelta, getShortInfo());
+		glHeatMapView.setContentVA(hmContentVa);
 		if (selectionDelta.size() > 0) {
 			glHeatMapView.handleSelectionUpdate(selectionDelta, true, null);
 		}

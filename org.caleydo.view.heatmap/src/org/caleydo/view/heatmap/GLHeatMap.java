@@ -1150,4 +1150,10 @@ public class GLHeatMap extends AStorageBasedView {
 	public void useFishEye(boolean useFishEye) {
 		renderStyle.setUseFishEye(useFishEye);
 	}
+	
+	public void setContentVA(ContentVirtualArray contentVA) {
+//		contentSelectionManager.setVA(contentVA);
+		this.contentVA = contentVA;
+		setDisplayListDirty();
+	}
 }
