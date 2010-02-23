@@ -185,4 +185,12 @@ public class FloatCContainer
 		}
 		return;
 	}
+
+	@Override
+	public String toString() {
+		String string = "[";
+		for (float value : fArContainer)
+			string += value + ", ";
+		return string;
+	}
 }

@@ -79,6 +79,8 @@ public class TreePorter {
 			hashClusterNr.put(node.getID(), node);
 			if (node.isRootNode())
 				rootNode = node;
+			node.setTree(tree);
+			node.setNode(node);
 		}
 
 		for (String[] edge : treePorter.edges) {
@@ -88,10 +90,16 @@ public class TreePorter {
 		tree.setHashMap(hashClusterNr);
 		tree.setRootNode(rootNode);
 		tree.setGraph(graph);
-//		org.caleydo.core.data.collection.set.Set set =
-//			(org.caleydo.core.data.collection.set.Set) GeneralManager.get().getMasterUseCase().getSet();
-//		tree.getRoot().createMetaSet(set);
 
+		return tree;
+	}
+
+	public Tree<ClusterNode> importStorageTree(String fileName) throws JAXBException, FileNotFoundException {
+		Tree<ClusterNode> tree = importTree(fileName);
+
+		org.caleydo.core.data.collection.set.Set set =
+			(org.caleydo.core.data.collection.set.Set) GeneralManager.get().getMasterUseCase().getSet();
+		tree.getRoot().createMetaSet(set);
 		return tree;
 	}
 

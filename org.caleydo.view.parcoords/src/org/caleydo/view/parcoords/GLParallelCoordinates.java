@@ -579,10 +579,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		initContentVariables();
 
 		contentSelectionManager.setVA(contentVA);
-		// FIXME: for testing only:
-		contentSelectionManager
-				.addTypeToDeltaBlacklist(SelectionType.MOUSE_OVER);
-
 		storageSelectionManager.setVA(storageVA);
 
 		initGates();
@@ -714,15 +710,17 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		//
 		// if (renderMode == SelectionType.DESELECTED
 		// || renderMode == SelectionType.NORMAL) {
+		
 		  iDisplayEveryNthPolyline = contentVA.size()
 		  / iNumberOfRandomElements;
+		  
 		// iDisplayEveryNthPolyline = (polylineSelectionManager
 		// .getNumberOfElements() - polylineSelectionManager
 		// .getNumberOfElements(SelectionType.DESELECTED))
 		// / iNumberOfRandomElements;
-		// if (iDisplayEveryNthPolyline == 0) {
-		// iDisplayEveryNthPolyline = 1;
-		// }
+		if (iDisplayEveryNthPolyline == 0) {
+			iDisplayEveryNthPolyline = 1;
+		}
 		// }
 		// if (renderMode == SelectionType.NORMAL) {
 		// state = renderStyle.normalState;

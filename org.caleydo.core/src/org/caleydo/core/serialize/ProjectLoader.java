@@ -82,16 +82,30 @@ public class ProjectLoader {
 
 			HashMap<ContentVAType, ContentVirtualArray> contentVAMap =
 				new HashMap<ContentVAType, ContentVirtualArray>(6);
-			for (ContentVAType type : ContentVAType.getRegisteredVATypes()) {
-				contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName, type));
-			}
+			ContentVAType tmpType = ContentVAType.CONTENT;
+			contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName, tmpType));
+			// tmpType = ContentVAType.CONTENT_CONTEXT;
+			// contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
+			// tmpType));
+			// tmpType = ContentVAType.CONTENT_EMBEDDED_HM;
+			// contentVAMap.put(ContentVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
+			// tmpType));
+			// FIXME: this should be done like this:
+			// for (ContentVAType type : ContentVAType.getRegisteredVATypes()) {
+			// contentVAMap.put(type, loadContentVirtualArray(unmarshaller, dirName, type));
+			// }
 
 			HashMap<StorageVAType, StorageVirtualArray> storageVAMap =
 				new HashMap<StorageVAType, StorageVirtualArray>(2);
 
-			for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
-				storageVAMap.put(StorageVAType.STORAGE, loadStorageVirtualArray(unmarshaller, dirName, type));
-			}
+			StorageVAType tempStorageType = StorageVAType.STORAGE;
+			storageVAMap
+				.put(tempStorageType, loadStorageVirtualArray(unmarshaller, dirName, tempStorageType));
+
+			// FIXME: this should be done like this:
+//			for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
+//				storageVAMap.put(type, loadStorageVirtualArray(unmarshaller, dirName, type));
+//			}
 			ViewList loadViews = null;
 			try {
 				loadViews =

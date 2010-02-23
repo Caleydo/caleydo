@@ -59,6 +59,8 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 		setNode((Node) this);
 		this.tree = tree;
 	}
+	
+	
 
 	/**
 	 * Sets the instance of the concrete type that is stored in the hierarchy. If the instance is not set, the
@@ -66,7 +68,7 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 * 
 	 * @param node
 	 */
-	private void setNode(Node node) {
+	public void setNode(Node node) {
 		this.node = node;
 	}
 

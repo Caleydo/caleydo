@@ -396,6 +396,7 @@ public class Set
 		StorageData storageData = hashStorageData.get(vaType);
 		if (storageData == null) {
 			hashStorageData.put(vaType, defaultStorageData.clone());
+			storageData = hashStorageData.get(vaType);
 		}
 		return storageData.getStorageVA();
 	}
@@ -893,11 +894,11 @@ public class Set
 		rootNode.createMetaSets(this);
 
 		// test
-//		ISet metaSet = rootNode.getChildren().get(0).getChildren().get(0).getMetaSet();
-//
-//		IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
-//		useCase.setSet(metaSet);
-//		useCase.updateSetInViews();
+		// ISet metaSet = rootNode.getChildren().get(0).getChildren().get(0).getMetaSet();
+		//
+		// IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
+		// useCase.setSet(metaSet);
+		// useCase.updateSetInViews();
 		// tree.get
 	}
 

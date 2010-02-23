@@ -423,7 +423,7 @@ public class SetUtils {
 				TreePorter treePorter = new TreePorter();
 				Tree<ClusterNode> tree;
 				try {
-					tree = treePorter.importTree(experimentsTreeFileName);
+					tree = treePorter.importStorageTree(experimentsTreeFileName);
 					set.setStorageTree(tree);
 				}
 				catch (JAXBException e) {
