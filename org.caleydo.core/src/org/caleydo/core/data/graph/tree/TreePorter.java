@@ -88,6 +88,9 @@ public class TreePorter {
 		tree.setHashMap(hashClusterNr);
 		tree.setRootNode(rootNode);
 		tree.setGraph(graph);
+//		org.caleydo.core.data.collection.set.Set set =
+//			(org.caleydo.core.data.collection.set.Set) GeneralManager.get().getMasterUseCase().getSet();
+//		tree.getRoot().createMetaSet(set);
 
 		return tree;
 	}

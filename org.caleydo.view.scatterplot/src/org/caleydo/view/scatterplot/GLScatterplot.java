@@ -31,14 +31,12 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
-import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.storagebased.InitAxisComboEvent;
@@ -167,12 +165,6 @@ public class GLScatterplot extends AStorageBasedView {
 	private XAxisSelectorListener xAxisSelectorListener;
 	private YAxisSelectorListener yAxisSelectorListener;
 
-	// Selections
-
-	private ContentSelectionManager elementSelectionManager;
-	//private ContentSelectionManager mouseoverSelectionManager;
-	private StorageSelectionManager axisSelectionManager;
-
 	// Brushes
 
 	private float[] fRectangleDragStartPoint = new float[3];
@@ -298,14 +290,12 @@ public class GLScatterplot extends AStorageBasedView {
 		FloatBuffer FbTemp = BufferUtil.newFloatBuffer(TextureSize * 4);
 
 		Texture tempTextur;
-		
-//		for(Integer storageID : storageVA)
-//		{
-//			float storage  = set.get(storageID);
-//		}
 
-			
-			
+		// for(Integer storageID : storageVA)
+		// {
+		// float storage = set.get(storageID);
+		// }
+
 		for (Integer iAxisY = StartindexY; iAxisY <= EndindexY; iAxisY++) {
 			for (Integer iAxisX = StartindexX; iAxisX <= EndindexX; iAxisX++) {
 
@@ -319,23 +309,25 @@ public class GLScatterplot extends AStorageBasedView {
 						int current_SELECTED_X_AXIS = iAxisX;
 						int current_SELECTED_Y_AXIS = iAxisY;
 
-						
-//						fYValue = set.get(storageVA.get(storageVA.size() - 1))
-//						.getFloat(EDataRepresentation.NORMALIZED, iAxisNumber);
-						
-						xnormalized = set.get(storageVA.get(current_SELECTED_X_AXIS))
+						// fYValue = set.get(storageVA.get(storageVA.size() -
+						// 1))
+						// .getFloat(EDataRepresentation.NORMALIZED,
+						// iAxisNumber);
+
+						xnormalized = set.get(
+								storageVA.get(current_SELECTED_X_AXIS))
 								.getFloat(EDataRepresentation.NORMALIZED,
 										iContentIndex);
-						ynormalized = set.get(storageVA.get(current_SELECTED_Y_AXIS))
+						ynormalized = set.get(
+								storageVA.get(current_SELECTED_Y_AXIS))
 								.getFloat(EDataRepresentation.NORMALIZED,
 										iContentIndex);
 
-//						
-//						ynormalized = set.get(current_SELECTED_Y_AXIS)
-//						.getFloat(EDataRepresentation.NORMALIZED,
-//								iContentIndex);
+						//						
+						// ynormalized = set.get(current_SELECTED_Y_AXIS)
+						// .getFloat(EDataRepresentation.NORMALIZED,
+						// iContentIndex);
 
-						
 						ix = (int) Math.floor(xnormalized
 								* (double) (iTextureWidth - 1));
 						iy = ix
@@ -457,7 +449,7 @@ public class GLScatterplot extends AStorageBasedView {
 				if (true) {
 
 					for (SelectionType tmpSelectionType : AlSelectionTypes) {
-						Collection<Integer> selectionSet = elementSelectionManager
+						Collection<Integer> selectionSet = contentSelectionManager
 								.getElements(tmpSelectionType);
 
 						for (Integer iContentIndex : selectionSet) {
@@ -465,19 +457,21 @@ public class GLScatterplot extends AStorageBasedView {
 							int current_SELECTED_X_AXIS = iAxisX;
 							int current_SELECTED_Y_AXIS = iAxisY;
 
-//							xnormalized = set.get(current_SELECTED_X_AXIS)
-//									.getFloat(EDataRepresentation.NORMALIZED,
-//											iContentIndex);
-//							ynormalized = set.get(current_SELECTED_Y_AXIS)
-//									.getFloat(EDataRepresentation.NORMALIZED,
-//											iContentIndex);
-//							
-							xnormalized = set.get(storageVA.get(current_SELECTED_X_AXIS))
-							.getFloat(EDataRepresentation.NORMALIZED,
-									iContentIndex);
-							ynormalized = set.get(storageVA.get(current_SELECTED_Y_AXIS))
-							.getFloat(EDataRepresentation.NORMALIZED,
-									iContentIndex);
+							// xnormalized = set.get(current_SELECTED_X_AXIS)
+							// .getFloat(EDataRepresentation.NORMALIZED,
+							// iContentIndex);
+							// ynormalized = set.get(current_SELECTED_Y_AXIS)
+							// .getFloat(EDataRepresentation.NORMALIZED,
+							// iContentIndex);
+							//							
+							xnormalized = set.get(
+									storageVA.get(current_SELECTED_X_AXIS))
+									.getFloat(EDataRepresentation.NORMALIZED,
+											iContentIndex);
+							ynormalized = set.get(
+									storageVA.get(current_SELECTED_Y_AXIS))
+									.getFloat(EDataRepresentation.NORMALIZED,
+											iContentIndex);
 
 							ix = (int) Math.floor(xnormalized
 									* (double) (iTextureWidth - 1));
@@ -928,8 +922,6 @@ public class GLScatterplot extends AStorageBasedView {
 		// TODO InsertHistogramm here
 
 		String sLabel = set.get(storageVA.get(selected_Axis)).getLabel();
-		
-		
 
 		float fScaling = renderStyle.getSmallFontScalingFactor() * 0.7f;
 		if (isRenderedRemote())
@@ -960,7 +952,6 @@ public class GLScatterplot extends AStorageBasedView {
 		renderStyle = new ScatterPlotRenderStyle(this, viewFrustum);
 
 		super.renderStyle = renderStyle;
-		
 
 		InitAxisComboEvent initAxisComboEvent = new InitAxisComboEvent();
 		initAxisComboEvent.setSender(this);
@@ -1010,8 +1001,8 @@ public class GLScatterplot extends AStorageBasedView {
 
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
-		
-		//TODO Remove, just for zoom testing
+
+		// TODO Remove, just for zoom testing
 		bRenderMatrix = false;
 		bOnlyRenderHalfMatrix = false;
 		renderStyle.setIsEmbedded(false);
@@ -1128,19 +1119,15 @@ public class GLScatterplot extends AStorageBasedView {
 					break;
 				default:
 				}
-				
-				if(glMouseListener.wasLeftMouseButtonPressed())
-				{
+
+				if (glMouseListener.wasLeftMouseButtonPressed()) {
 					bMainViewZoomDragged = false;
 					iCurrentDragZoom = -1;
 					setDisplayListDirty();
 					bUpdateMainView = true;
 				}
-				
-			}
-			
-			
 
+			}
 
 			if (glMouseListener.wasMouseDragged() && (!bRender2Axis)) {
 
@@ -1231,6 +1218,13 @@ public class GLScatterplot extends AStorageBasedView {
 
 	@Override
 	public void display(GL gl) {
+
+		// for (Integer storageID : storageVA)
+		// {
+		// set.get(storageID).get(EDataRepresentation.RAW, contentID);
+		// }
+		// storageSelectionManager.addToType(SelectionType.MOUSE_OVER,
+		// idCollection);
 		// processEvents();
 
 		// GLHelperFunctions.drawAxis(gl);
@@ -1370,11 +1364,10 @@ public class GLScatterplot extends AStorageBasedView {
 	private void renderMainViewZoomSelection(GL gl) {
 		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 
-	
 		//
 		// Right Outer X
 		//
-		
+
 		float x = renderStyle.transformNorm2GlobalX(fTransformNewMinX);
 		float fIconwith = 0.2f;
 		float y = XYAXISDISTANCE - fIconwith * 2.5f;
@@ -1382,7 +1375,8 @@ public class GLScatterplot extends AStorageBasedView {
 		gl.glBegin(GL.GL_LINES);
 
 		gl.glVertex3f(x, y, AXIS_Z);
-		gl.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
+		gl
+				.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
 						AXIS_Z);
 		gl.glEnd();
 
@@ -1431,7 +1425,8 @@ public class GLScatterplot extends AStorageBasedView {
 		gl.glBegin(GL.GL_LINES);
 
 		gl.glVertex3f(x, y, AXIS_Z);
-		gl.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
+		gl
+				.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
 						AXIS_Z);
 		gl.glEnd();
 
@@ -1470,12 +1465,11 @@ public class GLScatterplot extends AStorageBasedView {
 						lowerLeftCorner, lowerRightCorner, upperRightCorner,
 						upperLeftCorner, 1, 1, 1, 1);
 		gl.glPopName();
-		
 
 		//
 		// Right Inner X
 		//
-		
+
 		x = renderStyle.transformNorm2GlobalX(fTransformOldMinX);
 		fIconwith = 0.15f;
 		y = XYAXISDISTANCE - fIconwith * 2;
@@ -1483,7 +1477,8 @@ public class GLScatterplot extends AStorageBasedView {
 		gl.glBegin(GL.GL_LINES);
 
 		gl.glVertex3f(x, y, AXIS_Z);
-		gl.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
+		gl
+				.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
 						AXIS_Z);
 		gl.glEnd();
 
@@ -1532,7 +1527,8 @@ public class GLScatterplot extends AStorageBasedView {
 		gl.glBegin(GL.GL_LINES);
 
 		gl.glVertex3f(x, y, AXIS_Z);
-		gl.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
+		gl
+				.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
 						AXIS_Z);
 		gl.glEnd();
 
@@ -1571,8 +1567,7 @@ public class GLScatterplot extends AStorageBasedView {
 						lowerLeftCorner, lowerRightCorner, upperRightCorner,
 						upperLeftCorner, 1, 1, 1, 1);
 		gl.glPopName();
-		
-		
+
 		// Show Selection Boxes
 
 		if (bMainViewZoomDragged) {
@@ -1743,10 +1738,12 @@ public class GLScatterplot extends AStorageBasedView {
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
 
-		String sAxisLabel = "X-Axis: " + set.get(storageVA.get(SELECTED_X_AXIS)).getLabel();				
+		String sAxisLabel = "X-Axis: "
+				+ set.get(storageVA.get(SELECTED_X_AXIS)).getLabel();
 		if (bRender2Axis)
-			sAxisLabel += " / " + set.get(storageVA.get(SELECTED_X_AXIS_2)).getLabel();
-		
+			sAxisLabel += " / "
+					+ set.get(storageVA.get(SELECTED_X_AXIS_2)).getLabel();
+
 		textRenderer.draw3D(gl, sAxisLabel, 0, 0, 0, fScaling,
 				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
 		textRenderer.end3DRendering();
@@ -1773,10 +1770,12 @@ public class GLScatterplot extends AStorageBasedView {
 		fScaling = renderStyle.getSmallFontScalingFactor();
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
-						
-		sAxisLabel = "Y-Axis: " + set.get(storageVA.get(SELECTED_Y_AXIS)).getLabel();
+
+		sAxisLabel = "Y-Axis: "
+				+ set.get(storageVA.get(SELECTED_Y_AXIS)).getLabel();
 		if (bRender2Axis)
-			sAxisLabel += " / " + set.get(storageVA.get(SELECTED_Y_AXIS_2)).getLabel();
+			sAxisLabel += " / "
+					+ set.get(storageVA.get(SELECTED_Y_AXIS_2)).getLabel();
 
 		// sAxisLabel
 		// ="Y-Achse: "+set.get(2).getLabel()+" (O) / "+set.get(3).getLabel()+" (X)";
@@ -1875,9 +1874,9 @@ public class GLScatterplot extends AStorageBasedView {
 
 		// FIXME:Use Current Selection
 		if (bRender2Axis)
-			if (elementSelectionManager
+			if (contentSelectionManager
 					.getNumberOfElements(SelectionType.SELECTION) > 0)
-				selectionSet = elementSelectionManager
+				selectionSet = contentSelectionManager
 						.getElements(SelectionType.SELECTION);
 
 		for (Integer iContentIndex : selectionSet) {
@@ -1889,18 +1888,15 @@ public class GLScatterplot extends AStorageBasedView {
 				continue;
 			}
 
-//			xnormalized = set.get(SELECTED_X_AXIS).getFloat(
-//					EDataRepresentation.NORMALIZED, iContentIndex);
-//			ynormalized = set.get(SELECTED_Y_AXIS).getFloat(
-//					EDataRepresentation.NORMALIZED, iContentIndex);
-			
-			xnormalized = set.get(storageVA.get(SELECTED_X_AXIS))
-			.getFloat(EDataRepresentation.NORMALIZED,
-					iContentIndex);
-			ynormalized = set.get(storageVA.get(SELECTED_Y_AXIS))
-			.getFloat(EDataRepresentation.NORMALIZED,
-					iContentIndex);
-			
+			// xnormalized = set.get(SELECTED_X_AXIS).getFloat(
+			// EDataRepresentation.NORMALIZED, iContentIndex);
+			// ynormalized = set.get(SELECTED_Y_AXIS).getFloat(
+			// EDataRepresentation.NORMALIZED, iContentIndex);
+
+			xnormalized = set.get(storageVA.get(SELECTED_X_AXIS)).getFloat(
+					EDataRepresentation.NORMALIZED, iContentIndex);
+			ynormalized = set.get(storageVA.get(SELECTED_Y_AXIS)).getFloat(
+					EDataRepresentation.NORMALIZED, iContentIndex);
 
 			// x = xnormalized * XScale;
 			x = transformOnZoom(xnormalized) * XScale;
@@ -1919,16 +1915,16 @@ public class GLScatterplot extends AStorageBasedView {
 					iContentIndex, 1.0f); // scale
 
 			if (bRender2Axis) {
-//				xnormalized = set.get(SELECTED_X_AXIS_2).getFloat(
-//						EDataRepresentation.NORMALIZED, iContentIndex);
-//				ynormalized = set.get(SELECTED_Y_AXIS_2).getFloat(
-//						EDataRepresentation.NORMALIZED, iContentIndex);
-				xnormalized = set.get(storageVA.get(SELECTED_X_AXIS_2))
-				.getFloat(EDataRepresentation.NORMALIZED,
-						iContentIndex);
-				ynormalized = set.get(storageVA.get(SELECTED_Y_AXIS_2))
-				.getFloat(EDataRepresentation.NORMALIZED,
-						iContentIndex);
+				// xnormalized = set.get(SELECTED_X_AXIS_2).getFloat(
+				// EDataRepresentation.NORMALIZED, iContentIndex);
+				// ynormalized = set.get(SELECTED_Y_AXIS_2).getFloat(
+				// EDataRepresentation.NORMALIZED, iContentIndex);
+				xnormalized = set
+						.get(storageVA.get(SELECTED_X_AXIS_2))
+						.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+				ynormalized = set
+						.get(storageVA.get(SELECTED_Y_AXIS_2))
+						.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 				// x_2 = xnormalized * XScale;
 				x_2 = transformOnZoom(xnormalized) * XScale;
 				y_2 = ynormalized * YScale;
@@ -1955,11 +1951,11 @@ public class GLScatterplot extends AStorageBasedView {
 
 	private void RenderMouseOver(GL gl) {
 
-		if (elementSelectionManager
+		if (contentSelectionManager
 				.getNumberOfElements(SelectionType.MOUSE_OVER) == 0)
 			return;
 
-		Set<Integer> mouseOver = elementSelectionManager
+		Set<Integer> mouseOver = contentSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
 		int iContentIndex = 0;
 		for (int i : mouseOver) {
@@ -1970,24 +1966,22 @@ public class GLScatterplot extends AStorageBasedView {
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 
-//		float xnormalized = set.get(SELECTED_X_AXIS).getFloat(
-//				EDataRepresentation.NORMALIZED, iContentIndex);
-//		float ynormalized = set.get(SELECTED_Y_AXIS).getFloat(
-//				EDataRepresentation.NORMALIZED, iContentIndex);
-		
-		float xnormalized = set.get(storageVA.get(SELECTED_X_AXIS))
-		.getFloat(EDataRepresentation.NORMALIZED,
-				iContentIndex);
-		float ynormalized = set.get(storageVA.get(SELECTED_Y_AXIS))
-		.getFloat(EDataRepresentation.NORMALIZED,
-				iContentIndex);
+		// float xnormalized = set.get(SELECTED_X_AXIS).getFloat(
+		// EDataRepresentation.NORMALIZED, iContentIndex);
+		// float ynormalized = set.get(SELECTED_Y_AXIS).getFloat(
+		// EDataRepresentation.NORMALIZED, iContentIndex);
+
+		float xnormalized = set.get(storageVA.get(SELECTED_X_AXIS)).getFloat(
+				EDataRepresentation.NORMALIZED, iContentIndex);
+		float ynormalized = set.get(storageVA.get(SELECTED_Y_AXIS)).getFloat(
+				EDataRepresentation.NORMALIZED, iContentIndex);
 
 		float x = transformOnZoom(xnormalized) * XScale;
 
 		float y = ynormalized * YScale;
 		float[] fArMappingColor = colorMapper.getColor(Math.max(xnormalized,
 				ynormalized));
-		if (elementSelectionManager.checkStatus(SelectionType.SELECTION,
+		if (contentSelectionManager.checkStatus(SelectionType.SELECTION,
 				iContentIndex))
 			fArMappingColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 
@@ -2047,8 +2041,7 @@ public class GLScatterplot extends AStorageBasedView {
 					EIDType.UNSPECIFIED, iContentIndex);
 		}
 
-			
-		if (elementSelectionManager.checkStatus(SelectionType.SELECTION,
+		if (contentSelectionManager.checkStatus(SelectionType.SELECTION,
 				iContentIndex))
 			sLabel = "Selected Point ("
 					+ genLabel
@@ -2141,17 +2134,15 @@ public class GLScatterplot extends AStorageBasedView {
 				// TODO this shouldn't happen here.
 				continue;
 			}
-//			float xnormalized = set.get(SELECTED_X_AXIS).getFloat(
-//					EDataRepresentation.NORMALIZED, iContentIndex);
-//			float ynormalized = set.get(SELECTED_Y_AXIS).getFloat(
-//					EDataRepresentation.NORMALIZED, iContentIndex);
-			
+			// float xnormalized = set.get(SELECTED_X_AXIS).getFloat(
+			// EDataRepresentation.NORMALIZED, iContentIndex);
+			// float ynormalized = set.get(SELECTED_Y_AXIS).getFloat(
+			// EDataRepresentation.NORMALIZED, iContentIndex);
+
 			float xnormalized = set.get(storageVA.get(SELECTED_X_AXIS))
-			.getFloat(EDataRepresentation.NORMALIZED,
-					iContentIndex);
+					.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 			float ynormalized = set.get(storageVA.get(SELECTED_Y_AXIS))
-			.getFloat(EDataRepresentation.NORMALIZED,
-					iContentIndex);
+					.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
 			// x = xnormalized * XScale;
 			x = transformOnZoom(xnormalized) * XScale;
@@ -2162,11 +2153,11 @@ public class GLScatterplot extends AStorageBasedView {
 				// elementSelectionManager.add(iContentIndex);
 				// elementSelectionManager.addToType(SelectionType.SELECTION,
 				// iContentIndex);
-				elementSelectionManager.addToType(currentSelection,
+				contentSelectionManager.addToType(currentSelection,
 						iContentIndex);
-			}			
+			}
 		}
-		ISelectionDelta selectionDelta = elementSelectionManager.getDelta();
+		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 		handleConnectedElementRep(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
@@ -2183,7 +2174,7 @@ public class GLScatterplot extends AStorageBasedView {
 			// (elementSelectionManager.getNumberOfElements(SelectionType.SELECTION)
 			// == 0)
 			// return;
-			if (elementSelectionManager.getNumberOfElements(tmpSelectionType) == 0)
+			if (contentSelectionManager.getNumberOfElements(tmpSelectionType) == 0)
 				continue;
 
 			float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
@@ -2193,7 +2184,7 @@ public class GLScatterplot extends AStorageBasedView {
 			// Set<Integer> selectionSet = elementSelectionManager
 			// .getElements(SelectionType.SELECTION);
 
-			Set<Integer> selectionSet = elementSelectionManager
+			Set<Integer> selectionSet = contentSelectionManager
 					.getElements(tmpSelectionType);
 
 			float x = 0.0f;
@@ -2204,15 +2195,13 @@ public class GLScatterplot extends AStorageBasedView {
 			float[] fArMappingColor = tmpSelectionType.getColor();
 
 			for (int iContentIndex : selectionSet) {
-				
-								
-				float xnormalized = set.get(storageVA.get(SELECTED_X_AXIS))
-				.getFloat(EDataRepresentation.NORMALIZED,
-						iContentIndex);
-				float ynormalized = set.get(storageVA.get(SELECTED_Y_AXIS))
-				.getFloat(EDataRepresentation.NORMALIZED,
-						iContentIndex);
 
+				float xnormalized = set
+						.get(storageVA.get(SELECTED_X_AXIS))
+						.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+				float ynormalized = set
+						.get(storageVA.get(SELECTED_Y_AXIS))
+						.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
 				// x = xnormalized * XScale;
 				x = transformOnZoom(xnormalized) * XScale;
@@ -2381,9 +2370,10 @@ public class GLScatterplot extends AStorageBasedView {
 
 	public void selectAxesfromExternal() {
 
-		if (axisSelectionManager.getNumberOfElements(SelectionType.SELECTION) == 0) {
+		if (storageSelectionManager
+				.getNumberOfElements(SelectionType.SELECTION) == 0) {
 
-			Set<Integer> axis = axisSelectionManager
+			Set<Integer> axis = storageSelectionManager
 					.getElements(SelectionType.SELECTION);
 
 			for (int i : axis) {
@@ -2396,10 +2386,11 @@ public class GLScatterplot extends AStorageBasedView {
 		}
 
 		// TODO Remove l8ter, Mousover should not select an Axis
-		if (axisSelectionManager.getNumberOfElements(SelectionType.MOUSE_OVER) == 0)
+		if (storageSelectionManager
+				.getNumberOfElements(SelectionType.MOUSE_OVER) == 0)
 			return;
 
-		Set<Integer> axis = axisSelectionManager
+		Set<Integer> axis = storageSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
 
 		for (int i : axis) {
@@ -2413,21 +2404,21 @@ public class GLScatterplot extends AStorageBasedView {
 	}
 
 	public void selectNewAxes() {
-		axisSelectionManager.clearSelection(SelectionType.SELECTION);
+		storageSelectionManager.clearSelection(SelectionType.SELECTION);
 
-		axisSelectionManager
-				.addToType(SelectionType.SELECTION, SELECTED_X_AXIS);
-		axisSelectionManager
-				.addToType(SelectionType.SELECTION, SELECTED_Y_AXIS);
+		storageSelectionManager.addToType(SelectionType.SELECTION,
+				SELECTED_X_AXIS);
+		storageSelectionManager.addToType(SelectionType.SELECTION,
+				SELECTED_Y_AXIS);
 
 		if (bRender2Axis) {
-			axisSelectionManager.addToType(SelectionType.SELECTION,
+			storageSelectionManager.addToType(SelectionType.SELECTION,
 					SELECTED_X_AXIS_2);
-			axisSelectionManager.addToType(SelectionType.SELECTION,
+			storageSelectionManager.addToType(SelectionType.SELECTION,
 					SELECTED_Y_AXIS_2);
 		}
 
-		ISelectionDelta selectionDelta = axisSelectionManager.getDelta();
+		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
 		handleConnectedElementRep(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
@@ -2437,14 +2428,14 @@ public class GLScatterplot extends AStorageBasedView {
 	}
 
 	public void selectNewMouseOverAxis() {
-		axisSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
+		storageSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 
-		axisSelectionManager.addToType(SelectionType.MOUSE_OVER,
+		storageSelectionManager.addToType(SelectionType.MOUSE_OVER,
 				MOUSEOVER_X_AXIS);
-		axisSelectionManager.addToType(SelectionType.MOUSE_OVER,
+		storageSelectionManager.addToType(SelectionType.MOUSE_OVER,
 				MOUSEOVER_Y_AXIS);
 
-		ISelectionDelta selectionDelta = axisSelectionManager.getDelta();
+		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
 		handleConnectedElementRep(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
@@ -2466,18 +2457,17 @@ public class GLScatterplot extends AStorageBasedView {
 		storageVA = useCase.getStorageVA(storageVAType);
 
 		// mouseoverSelectionManager = storageSelectionManager;
-		//mouseoverSelectionManager = useCase.getContentSelectionManager();
-		elementSelectionManager = contentSelectionManager;
-		//mouseoverSelectionManager.setVA(contentVA);
-		elementSelectionManager.setVA(contentVA);
+		// mouseoverSelectionManager = useCase.getContentSelectionManager();
+		contentSelectionManager = contentSelectionManager;
+		// mouseoverSelectionManager.setVA(contentVA);
+		contentSelectionManager.setVA(contentVA);
 
-		axisSelectionManager = storageSelectionManager;
-		axisSelectionManager.setVA(storageVA);
+		storageSelectionManager.setVA(storageVA);
 
 		AlSelectionTypes.clear();
 		addSelectionType();
-		//AlSelectionTypes.add(SelectionType.SELECTION);
-		//currentSelection = SelectionType.SELECTION;
+		// AlSelectionTypes.add(SelectionType.SELECTION);
+		// currentSelection = SelectionType.SELECTION;
 
 	}
 
@@ -2592,7 +2582,7 @@ public class GLScatterplot extends AStorageBasedView {
 
 			case CLICKED:
 				selectionType = SelectionType.SELECTION;
-				//selectionType = currentSelection;
+				// selectionType = currentSelection;
 				break;
 			case MOUSE_OVER:
 				selectionType = SelectionType.MOUSE_OVER;
@@ -2703,10 +2693,10 @@ public class GLScatterplot extends AStorageBasedView {
 	private void createContentSelection(SelectionType selectionType,
 			int contentID) {
 
-		if (elementSelectionManager.checkStatus(SelectionType.SELECTION,
+		if (contentSelectionManager.checkStatus(SelectionType.SELECTION,
 				contentID)) {
 			if (selectionType == SelectionType.DESELECTED) {
-				elementSelectionManager.removeFromType(SelectionType.SELECTION,
+				contentSelectionManager.removeFromType(SelectionType.SELECTION,
 						contentID);
 				setDisplayListDirty();
 				bUpdateSelection = true;
@@ -2717,8 +2707,8 @@ public class GLScatterplot extends AStorageBasedView {
 		SelectionCommand command = new SelectionCommand(
 				ESelectionCommandType.CLEAR, selectionType);
 		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
-		//mouseoverSelectionManager.clearSelection(selectionType);
-		elementSelectionManager.clearSelection(selectionType);
+		// mouseoverSelectionManager.clearSelection(selectionType);
+		contentSelectionManager.clearSelection(selectionType);
 
 		// if (selectionType == SelectionType.SELECTION) {
 		if (selectionType == currentSelection) {
@@ -2727,7 +2717,7 @@ public class GLScatterplot extends AStorageBasedView {
 			// if (!elementSelectionManager.checkStatus(contentID))
 			// elementSelectionManager.add(contentID);
 
-			elementSelectionManager.addToType(selectionType, contentID);
+			contentSelectionManager.addToType(selectionType, contentID);
 
 			bUpdateSelection = true;
 			// return;
@@ -2739,17 +2729,18 @@ public class GLScatterplot extends AStorageBasedView {
 			// mouseoverSelectionManager.resetSelectionManager(); // This may be
 			// not necessary;
 			// mouseoverSelectionManager.add(contentID);
-		//	mouseoverSelectionManager.addToType(selectionType, contentID);
-			elementSelectionManager.addToType(selectionType, contentID);
+			// mouseoverSelectionManager.addToType(selectionType, contentID);
+			contentSelectionManager.addToType(selectionType, contentID);
 		}
 
-//		ISelectionDelta selectionDelta = mouseoverSelectionManager.getDelta();
-//		handleConnectedElementRep(selectionDelta);
-//		SelectionUpdateEvent event = new SelectionUpdateEvent();
-//		event.setSender(this);
-//		event.setSelectionDelta((SelectionDelta) selectionDelta);
-//		event.setInfo(getShortInfo());
-//		eventPublisher.triggerEvent(event);
+		// ISelectionDelta selectionDelta =
+		// mouseoverSelectionManager.getDelta();
+		// handleConnectedElementRep(selectionDelta);
+		// SelectionUpdateEvent event = new SelectionUpdateEvent();
+		// event.setSender(this);
+		// event.setSelectionDelta((SelectionDelta) selectionDelta);
+		// event.setInfo(getShortInfo());
+		// eventPublisher.triggerEvent(event);
 
 		setDisplayListDirty();
 	}
@@ -2764,11 +2755,11 @@ public class GLScatterplot extends AStorageBasedView {
 
 	@Override
 	public void clearAllSelections() {
-		elementSelectionManager.clearSelections();
+		contentSelectionManager.clearSelections();
 		AlSelectionTypes.clear();
 		addSelectionType();
-		//AlSelectionTypes.add(SelectionType.SELECTION);
-		//currentSelection = SelectionType.SELECTION;
+		// AlSelectionTypes.add(SelectionType.SELECTION);
+		// currentSelection = SelectionType.SELECTION;
 		fRectangleDragStartPoint = new float[3];
 		fRectangleDragEndPoint = new float[3];
 		bUpdateSelection = true;

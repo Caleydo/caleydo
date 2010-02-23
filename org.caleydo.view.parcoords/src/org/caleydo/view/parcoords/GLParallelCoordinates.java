@@ -714,8 +714,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		//
 		// if (renderMode == SelectionType.DESELECTED
 		// || renderMode == SelectionType.NORMAL) {
-		// // iDisplayEveryNthPolyline = contentVA.size()
-		// // / iNumberOfRandomElements;
+		  iDisplayEveryNthPolyline = contentVA.size()
+		  / iNumberOfRandomElements;
 		// iDisplayEveryNthPolyline = (polylineSelectionManager
 		// .getNumberOfElements() - polylineSelectionManager
 		// .getNumberOfElements(SelectionType.DESELECTED))
@@ -808,8 +808,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 						&& (renderMode == SelectionType.DESELECTED || renderMode == SelectionType.NORMAL)) {
 					if (iPolyLineID % iDisplayEveryNthPolyline != 0) {
 						continue;
-						// if(!alUseInRandomSampling.get(set.getVA(iPolylineVAID).indexOf(iPolyLineID)))
-						// continue;
+//						 if(!alUseInRandomSampling.get(contentVA.indexOf(iPolyLineID)))
+//						 continue;
 					}
 				}
 				if (renderMode != SelectionType.DESELECTED) {

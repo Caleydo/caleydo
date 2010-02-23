@@ -50,7 +50,6 @@ public class ClusterNode
 
 	private boolean bIsPartOfSubTree = false;
 	private Vec3f vPosSubTree;
-
 	@XmlTransient
 	private MetaSet metaSet;
 
@@ -96,7 +95,7 @@ public class ClusterNode
 		metaSet = new MetaSet(set, tree, this);
 
 		metaSet.setLabel("MetaSet at " + nodeName);
-		
+
 		metaSet.setContentTree(set.getContentTree());
 		// Tree<ClusterNode> subTree = tree.getSubTree();
 
