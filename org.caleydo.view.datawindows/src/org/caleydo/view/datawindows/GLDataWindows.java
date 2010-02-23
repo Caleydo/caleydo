@@ -63,9 +63,9 @@ public class GLDataWindows extends AGLView {
 
 	private RemoteLevel testLevel;
 
-// tree Test
+
 	Tree<DefaultNode> tree;
-	
+	private DataWindowsDisk disk;
 	
 	//properties of the circle
 	private double circleRadius=2;
@@ -111,6 +111,8 @@ public class GLDataWindows extends AGLView {
 
 		//debug
 		loadTree();
+	    disk = new DataWindowsDisk(2);
+		disk.loadTree();
 		
 		
 		// ASerializedView serView = getSerializableRepresentation();
@@ -239,9 +241,10 @@ public class GLDataWindows extends AGLView {
 		//draws the Poincare disk
 		drawCircle(gl,circleRadius,(double)canvasWidth/2,(double)canvasHeight/2);
 		
-		drawTree(gl);
+		//drawTree(gl);
 		
-		
+		disk.renderTree(gl,new Point2D.Double(0,0));
+	
 
 		 if (glMouseListener.wasRightMouseButtonPressed()){
 			 drawCircle(gl,1,2.5f,2.5f);
@@ -472,7 +475,7 @@ public class GLDataWindows extends AGLView {
 			
 			tempX=r.nextDouble()*100-50;
 			tempY=r.nextDouble()*100-50;
-			System.out.println("Position temp:"+tempX+"|"+tempY);
+			
 			
 			testPointsX[i] = tempX;
             testPointsY[i] = tempY;
@@ -485,41 +488,10 @@ public class GLDataWindows extends AGLView {
 			
 		}
 
-//		for (int i = 0; i < 100; i++) {
-//			tempPoint.setLocation(testPoints[i]);
-//			x=tempPoint.getX();
-//			y=tempPoint.getY();
-//		
-//		
-//			System.out.println("Position load:"+x+"|"+y);
 
-//		}
 		
 		
-		
-		// code from treetester:
 
-		// tree = new Tree<DefaultNode>();
-
-	//	 DefaultNode node = new DefaultNode(tree, "Root", 1);
-//		 tree.setRootNode(node);
-	//	 tree.addChild(node, new DefaultNode(tree, "Child1 l1", 1));
-
-		// stürzt ab:
-		// tree.addChild(node, new DefaultNode(tree, "Child2 l1", 3));
-		//
-		// ArrayList<DefaultNode> tempNode = tree.getChildren(node);
-
-		// tree.addChild(tempNode.get(0), new DefaultNode(tree, "Child3 l1",
-		// 4));
-
-		// int iCount = 5;
-		// for (DefaultNode tempNode : tree.getChildren(node)) {
-		// tree.addChild(tempNode, new DefaultNode(tree, "Child3 l1",
-		// iCount--));
-		// tree.addChild(tempNode, new DefaultNode(tree, "Child4 l1",
-		// iCount--));
-		// }
 
 	}
 
