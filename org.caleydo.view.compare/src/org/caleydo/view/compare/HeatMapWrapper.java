@@ -10,13 +10,11 @@ import javax.media.opengl.GL;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
-import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -29,6 +27,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.HeatMapUtil;
@@ -44,16 +43,20 @@ public class HeatMapWrapper {
 	private StorageVirtualArray storageVA;
 	private ArrayList<Texture> overviewTextures;
 	private HeatMapLayout layout;
+	private VerticalSlider slider;
 	private ArrayList<ContentVirtualArray> heatMapVAs;
+	private int id;
 
 	// private Vec3f position;
 	// private float width;
 	// private float height;
 
-	public HeatMapWrapper(HeatMapLayout layout) {
+	public HeatMapWrapper(int id, HeatMapLayout layout) {
 		generalManager = GeneralManager.get();
 		heatMapVAs = new ArrayList<ContentVirtualArray>();
+		slider = new VerticalSlider(layout);
 		this.layout = layout;
+		this.id = id;
 	}
 
 	private void createHeatMap(IUseCase useCase,
@@ -105,15 +108,13 @@ public class HeatMapWrapper {
 
 		// TODO: Is this really necessary?
 		heatMap.resetView();
-		ContentVADelta delta = new ContentVADelta(
-				ContentVAType.CONTENT_EMBEDDED_HM, EIDType.EXPRESSION_INDEX);
+		// ContentVADelta delta = new ContentVADelta(
+		// ContentVAType.CONTENT_EMBEDDED_HM, EIDType.EXPRESSION_INDEX);
 		ContentVirtualArray va = new ContentVirtualArray();
 
 		for (int i = 0; i < 10; i++) {
 			if (i >= contentVA.size())
 				break;
-
-			int contentIndex = contentVA.get(i);
 			va.append(contentVA.get(i));
 			// delta.add(VADeltaItem.append(contentIndex));
 		}
@@ -152,6 +153,8 @@ public class HeatMapWrapper {
 				EPickingType.COMPARE_GROUP_SELECTION, textureManager);
 
 		gl.glPopMatrix();
+
+		slider.draw(gl, pickingManager, textureManager, viewID, id);
 	}
 
 	public void drawRemoteItems(GL gl) {
@@ -170,14 +173,14 @@ public class HeatMapWrapper {
 		gl.glTranslatef(-detailPosition.x(), -detailPosition.y(),
 				-detailPosition.z());
 
-//		ContentVirtualArray va = heatMapVAs.get(0);
-//
-//		for (int i = 0; i < va.size(); i++) {
-//			Vec2f position = getLeftLinkPositionFromContentID(va.get(i));
-//			GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
-//			position = getRightLinkPositionFromContentID(va.get(i));
-//			GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
-//		}
+		// ContentVirtualArray va = heatMapVAs.get(0);
+		//
+		// for (int i = 0; i < va.size(); i++) {
+		// Vec2f position = getLeftLinkPositionFromContentID(va.get(i));
+		// GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
+		// position = getRightLinkPositionFromContentID(va.get(i));
+		// GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
+		// }
 	}
 
 	public void processEvents() {
@@ -218,11 +221,15 @@ public class HeatMapWrapper {
 	public ArrayList<ContentVirtualArray> getContentVAsOfHeatMaps() {
 		return heatMapVAs;
 	}
-	
+
 	public ArrayList<ContentSelectionManager> getContentSelectionManagersOfHeatMaps() {
 		ArrayList<ContentSelectionManager> contentSelectionManagers = new ArrayList<ContentSelectionManager>();
 		contentSelectionManagers.add(heatMap.getContentSelectionManager());
 		return contentSelectionManagers;
+	}
+
+	public int getID() {
+		return id;
 	}
 
 }

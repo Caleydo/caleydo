@@ -83,8 +83,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 //		storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
 		heatMapLayoutLeft = new HeatMapLayoutLeft();
 		heatMapLayoutRight = new HeatMapLayoutRight();
-		leftHeatMapWrapper = new HeatMapWrapper(heatMapLayoutLeft);
-		rightHeatMapWrapper = new HeatMapWrapper(heatMapLayoutRight);
+		leftHeatMapWrapper = new HeatMapWrapper(0, heatMapLayoutLeft);
+		rightHeatMapWrapper = new HeatMapWrapper(1, heatMapLayoutRight);
 		leftHeatMapWrapper.init(gl, this, glMouseListener, null, useCase, this,
 				dataDomain);
 		rightHeatMapWrapper.init(gl, this, glMouseListener, null, useCase,

@@ -45,11 +45,6 @@ public class HeatMapUtil {
 		ColorMapping colorMapping = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 
-		// iSamplesPerTexture = (int) Math.ceil((double) iTextureHeight
-		// / iNrTextures);
-
-		// FloatBuffer[] FbTemp = new FloatBuffer[iNrTextures];
-
 		int numSamplesProcessed = 0;
 		boolean isNewTexture = true;
 		FloatBuffer textureBuffer = null;
@@ -107,68 +102,6 @@ public class HeatMapUtil {
 		}
 
 		return textures;
-
-		// for (int itextures = 0; itextures < iNrTextures; itextures++) {
-		//
-		// if (itextures == iNrTextures - 1) {
-		// iAlNumberSamples.add(iTextureHeight - iSamplesPerTexture
-		// * itextures);
-		// FbTemp[itextures] = BufferUtil
-		// .newFloatBuffer((iTextureHeight - iSamplesPerTexture
-		// * itextures)
-		// * iTextureWidth * 4);
-		// } else {
-		// iAlNumberSamples.add(iSamplesPerTexture);
-		// FbTemp[itextures] = BufferUtil
-		// .newFloatBuffer(iSamplesPerTexture * iTextureWidth * 4);
-		// }
-		// }
-		//
-		// int iCount = 0;
-		// int iTextureCounter = 0;
-		//
-		// for (Integer iContentIndex : contentVA) {
-		// iCount++;
-		// for (Integer iStorageIndex : storageVA) {
-		// if (contentSelectionManager.checkStatus(
-		// SelectionType.DESELECTED, iContentIndex)) {
-		// fOpacity = 0.3f;
-		// } else {
-		// fOpacity = 1.0f;
-		// }
-		//
-		// fLookupValue = set.get(iStorageIndex).getFloat(
-		// EDataRepresentation.NORMALIZED, iContentIndex);
-		//
-		// float[] fArMappingColor = colorMapper.getColor(fLookupValue);
-		//
-		// float[] fArRgba = { fArMappingColor[0], fArMappingColor[1],
-		// fArMappingColor[2], fOpacity };
-		//
-		// FbTemp[iTextureCounter].put(fArRgba);
-		// }
-		// if (iCount >= iAlNumberSamples.get(iTextureCounter)) {
-		// FbTemp[iTextureCounter].rewind();
-		//
-		// TextureData texData = new TextureData(
-		// GL.GL_RGBA /* internalFormat */,
-		// iTextureWidth /* height */, iAlNumberSamples
-		// .get(iTextureCounter) /* width */,
-		// 0 /* border */, GL.GL_RGBA /* pixelFormat */,
-		// GL.GL_FLOAT /* pixelType */, false /* mipmap */,
-		// false /* dataIsCompressed */,
-		// false /* mustFlipVertically */, FbTemp[iTextureCounter],
-		// null);
-		//
-		// tempTextur = TextureIO.newTexture(0);
-		// tempTextur.updateImage(texData);
-		//
-		// AlTextures.add(tempTextur);
-		//
-		// iTextureCounter++;
-		// iCount = 0;
-		// }
-		// }
 	}
 
 	public static void renderHeatmapTextures(GL gl,
@@ -222,17 +155,6 @@ public class HeatMapUtil {
 			int viewID, EPickingType pickingType, TextureManager textureManager) {
 
 		ContentGroupList contentGroupList = contentVA.getGroupList();
-
-		// TODO: just for testing
-//		ContentGroupList contentGroupList = new ContentGroupList();
-//		Group temp = new Group(10, false, 0, SelectionType.NORMAL);
-//		contentGroupList.append(temp);
-//		temp = new Group(30, false, 0, SelectionType.NORMAL);
-//		contentGroupList.append(temp);
-//		temp = new Group(60, false, 0, SelectionType.NORMAL);
-//		contentGroupList.append(temp);
-//		temp = new Group(contentVA.size() - 100, false, 0, SelectionType.NORMAL);
-//		contentGroupList.append(temp);
 
 		if (contentGroupList != null) {
 			float sampleHeight = totalHeight / ((float) contentVA.size());

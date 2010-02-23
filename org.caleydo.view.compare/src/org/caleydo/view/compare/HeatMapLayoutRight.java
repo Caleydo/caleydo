@@ -27,4 +27,10 @@ public class HeatMapLayoutRight extends HeatMapLayout {
 				positionY, 0.0f);
 	}
 
+	@Override
+	public float getOverviewSliderPositionX() {
+		return positionX + getDetailWidth() + getGapWidth()
+				+ getOverviewHeatmapWidth() + getOverviewGroupWidth();
+	}
+
 }
