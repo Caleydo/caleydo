@@ -243,7 +243,7 @@ public class GLDataWindows extends AGLView {
 		
 		//drawTree(gl);
 		
-		disk.renderTree(gl,new Point2D.Double(0,0));
+		disk.renderTree(gl, canvasWidth, canvasHeight);
 	
 
 		 if (glMouseListener.wasRightMouseButtonPressed()){

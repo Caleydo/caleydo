@@ -3,11 +3,9 @@ package org.caleydo.view.datawindows;
 import java.awt.geom.Point2D;
 
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
-import org.caleydo.core.data.graph.tree.DefaultNode;
 import org.caleydo.core.data.graph.tree.Tree;
 
-
-public class PoincareNode extends AHierarchyElement<PoincareNode>{
+public class PoincareNode extends AHierarchyElement<PoincareNode> {
 
 	private double distanceFromOrigin;
 	private Point2D.Double position;
@@ -16,8 +14,9 @@ public class PoincareNode extends AHierarchyElement<PoincareNode>{
 	private boolean linked = false;
 	String nodeName;
 	int iComparableValue;
-	
-	public PoincareNode(Tree<PoincareNode> tree, String nodeName, int iComparableValue) {
+
+	public PoincareNode(Tree<PoincareNode> tree, String nodeName,
+			int iComparableValue) {
 		super(tree);
 		this.iComparableValue = iComparableValue;
 		this.nodeName = nodeName;
@@ -63,5 +62,5 @@ public class PoincareNode extends AHierarchyElement<PoincareNode>{
 	public PoincareNode getOpenLink() {
 		return openLink;
 	}
-	
+
 }
