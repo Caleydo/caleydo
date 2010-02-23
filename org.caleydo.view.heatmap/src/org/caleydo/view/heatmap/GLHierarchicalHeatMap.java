@@ -1384,7 +1384,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	 * @param gl
 	 */
 	private void renderClassAssignmentsGenesLevel2(final GL gl) {
-
+		// FIXME: Class assignments could be rendered using HeatMapUtil
 		if (contentVA.getGroupList() == null)
 			return;
 
@@ -3498,7 +3498,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				iContentIndex = contentVA.get(iIndex);
 			}
 			hmContentVa.append(iContentIndex);
-//			embeddedDelta.add(VADeltaItem.append(iContentIndex));
+			// embeddedDelta.add(VADeltaItem.append(iContentIndex));
 
 			// set elements mouse over in embedded heat Map
 			for (Integer iSelectedID : setMouseOverElements) {
@@ -3533,7 +3533,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			}
 		}
 
-//		glHeatMapView.handleContentVAUpdate(embeddedDelta, getShortInfo());
+		// glHeatMapView.handleContentVAUpdate(embeddedDelta, getShortInfo());
 		glHeatMapView.setContentVA(hmContentVa);
 		if (selectionDelta.size() > 0) {
 			glHeatMapView.handleSelectionUpdate(selectionDelta, true, null);

@@ -1,5 +1,6 @@
 package org.caleydo.view.compare;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
@@ -42,6 +44,7 @@ public class HeatMapWrapper {
 	private StorageVirtualArray storageVA;
 	private ArrayList<Texture> overviewTextures;
 	private HeatMapLayout layout;
+	private ArrayList<ContentVirtualArray> heatMapVAs;
 
 	// private Vec3f position;
 	// private float width;
@@ -49,6 +52,7 @@ public class HeatMapWrapper {
 
 	public HeatMapWrapper(HeatMapLayout layout) {
 		generalManager = GeneralManager.get();
+		heatMapVAs = new ArrayList<ContentVirtualArray>();
 		this.layout = layout;
 	}
 
@@ -113,6 +117,8 @@ public class HeatMapWrapper {
 			va.append(contentVA.get(i));
 			// delta.add(VADeltaItem.append(contentIndex));
 		}
+		heatMapVAs.clear();
+		heatMapVAs.add(va);
 		// for (int i = 10; i < contentVA.size(); i++) {
 		// int contentIndex = contentVA.get(i);
 		// delta.add(VADeltaItem.removeElement(contentIndex));
@@ -140,7 +146,7 @@ public class HeatMapWrapper {
 		Vec3f overviewGroupsPosition = layout.getOverviewGroupBarPosition();
 		gl.glTranslatef(overviewGroupsPosition.x(), overviewGroupsPosition.y(),
 				overviewGroupsPosition.z());
-		
+
 		HeatMapUtil.renderGroupBar(gl, contentVA, layout.getOverviewHeight(),
 				layout.getOverviewGroupWidth(), pickingManager, viewID,
 				EPickingType.COMPARE_GROUP_SELECTION, textureManager);
@@ -160,8 +166,18 @@ public class HeatMapWrapper {
 		heatMap.getViewFrustum().setTop(
 				detailPosition.y() + layout.getDetailHeight());
 		heatMap.displayRemote(gl);
+
 		gl.glTranslatef(-detailPosition.x(), -detailPosition.y(),
 				-detailPosition.z());
+
+//		ContentVirtualArray va = heatMapVAs.get(0);
+//
+//		for (int i = 0; i < va.size(); i++) {
+//			Vec2f position = getLeftLinkPositionFromContentID(va.get(i));
+//			GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
+//			position = getRightLinkPositionFromContentID(va.get(i));
+//			GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
+//		}
 	}
 
 	public void processEvents() {
@@ -170,6 +186,43 @@ public class HeatMapWrapper {
 
 	public void setDisplayListDirty() {
 		heatMap.setDisplayListDirty();
+	}
+
+	public Vec2f getLeftLinkPositionFromContentID(int contentID) {
+		ContentVirtualArray va = heatMapVAs.get(0);
+		int contentIndex = va.indexOf(contentID);
+
+		if (va.indexOf(contentID) == -1)
+			return null;
+
+		Vec3f detailPosition = layout.getDetailPosition();
+
+		return new Vec2f(detailPosition.x(), detailPosition.y()
+				+ heatMap.getYCoordinateByContentIndex(contentIndex));
+	}
+
+	public Vec2f getRightLinkPositionFromContentID(int contentID) {
+		ContentVirtualArray va = heatMapVAs.get(0);
+		int contentIndex = va.indexOf(contentID);
+
+		if (va.indexOf(contentID) == -1)
+			return null;
+
+		Vec3f detailPosition = layout.getDetailPosition();
+
+		return new Vec2f(detailPosition.x() + layout.getDetailWidth(),
+				detailPosition.y()
+						+ heatMap.getYCoordinateByContentIndex(contentIndex));
+	}
+
+	public ArrayList<ContentVirtualArray> getContentVAsOfHeatMaps() {
+		return heatMapVAs;
+	}
+	
+	public ArrayList<ContentSelectionManager> getContentSelectionManagersOfHeatMaps() {
+		ArrayList<ContentSelectionManager> contentSelectionManagers = new ArrayList<ContentSelectionManager>();
+		contentSelectionManagers.add(heatMap.getContentSelectionManager());
+		return contentSelectionManagers;
 	}
 
 }

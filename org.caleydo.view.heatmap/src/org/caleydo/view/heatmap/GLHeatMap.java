@@ -304,7 +304,7 @@ public class GLHeatMap extends AStorageBasedView {
 		gl.glEndList();
 	}
 
-	ContentSelectionManager getContentSelectionManager() {
+	public ContentSelectionManager getContentSelectionManager() {
 		return contentSelectionManager;
 	}
 
@@ -1006,6 +1006,21 @@ public class GLHeatMap extends AStorageBasedView {
 			alElementReps.add(elementRep);
 		}
 		return alElementReps;
+	}
+	
+	public float getYCoordinateByContentIndex(int contentIndex) {
+		
+		float fieldWidth = 0;
+		if (contentSelectionManager.checkStatus(SelectionType.SELECTION,
+				contentIndex)
+				|| contentSelectionManager.checkStatus(
+						SelectionType.MOUSE_OVER, contentIndex)) {
+			fieldWidth = renderStyle.getSelectedFieldWidth();
+		} else {
+			fieldWidth = renderStyle.getNormalFieldWidth();
+		}
+		
+		return fAlXDistances.get(contentIndex) + (fieldWidth / 2.0f);
 	}
 
 	private void doTranslation() {
