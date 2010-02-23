@@ -170,7 +170,7 @@ public class GLScatterplot extends AStorageBasedView {
 	// Selections
 
 	private ContentSelectionManager elementSelectionManager;
-	private ContentSelectionManager mouseoverSelectionManager;
+	//private ContentSelectionManager mouseoverSelectionManager;
 	private StorageSelectionManager axisSelectionManager;
 
 	// Brushes
@@ -976,6 +976,7 @@ public class GLScatterplot extends AStorageBasedView {
 		resetSelectionTextures();
 		initTextures();
 		initSelectionTextures();
+		selectAxesfromExternal();
 		opengl = gl;
 
 	}
@@ -1954,11 +1955,11 @@ public class GLScatterplot extends AStorageBasedView {
 
 	private void RenderMouseOver(GL gl) {
 
-		if (mouseoverSelectionManager
+		if (elementSelectionManager
 				.getNumberOfElements(SelectionType.MOUSE_OVER) == 0)
 			return;
 
-		Set<Integer> mouseOver = mouseoverSelectionManager
+		Set<Integer> mouseOver = elementSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
 		int iContentIndex = 0;
 		for (int i : mouseOver) {
@@ -2163,8 +2164,15 @@ public class GLScatterplot extends AStorageBasedView {
 				// iContentIndex);
 				elementSelectionManager.addToType(currentSelection,
 						iContentIndex);
-			}
+			}			
 		}
+		ISelectionDelta selectionDelta = elementSelectionManager.getDelta();
+		handleConnectedElementRep(selectionDelta);
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
+		event.setSelectionDelta((SelectionDelta) selectionDelta);
+		event.setInfo(getShortInfo());
+		eventPublisher.triggerEvent(event);
 	}
 
 	private void RenderSelection(GL gl) {
@@ -2458,17 +2466,18 @@ public class GLScatterplot extends AStorageBasedView {
 		storageVA = useCase.getStorageVA(storageVAType);
 
 		// mouseoverSelectionManager = storageSelectionManager;
-		mouseoverSelectionManager = useCase.getContentSelectionManager();
+		//mouseoverSelectionManager = useCase.getContentSelectionManager();
 		elementSelectionManager = contentSelectionManager;
-		mouseoverSelectionManager.setVA(contentVA);
+		//mouseoverSelectionManager.setVA(contentVA);
 		elementSelectionManager.setVA(contentVA);
 
 		axisSelectionManager = storageSelectionManager;
 		axisSelectionManager.setVA(storageVA);
 
 		AlSelectionTypes.clear();
-		AlSelectionTypes.add(SelectionType.SELECTION);
-		currentSelection = SelectionType.SELECTION;
+		addSelectionType();
+		//AlSelectionTypes.add(SelectionType.SELECTION);
+		//currentSelection = SelectionType.SELECTION;
 
 	}
 
@@ -2582,8 +2591,8 @@ public class GLScatterplot extends AStorageBasedView {
 			switch (pickingMode) {
 
 			case CLICKED:
-				// selectionType = SelectionType.SELECTION;
-				selectionType = currentSelection;
+				selectionType = SelectionType.SELECTION;
+				//selectionType = currentSelection;
 				break;
 			case MOUSE_OVER:
 				selectionType = SelectionType.MOUSE_OVER;
@@ -2708,7 +2717,7 @@ public class GLScatterplot extends AStorageBasedView {
 		SelectionCommand command = new SelectionCommand(
 				ESelectionCommandType.CLEAR, selectionType);
 		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
-		mouseoverSelectionManager.clearSelection(selectionType);
+		//mouseoverSelectionManager.clearSelection(selectionType);
 		elementSelectionManager.clearSelection(selectionType);
 
 		// if (selectionType == SelectionType.SELECTION) {
@@ -2731,6 +2740,7 @@ public class GLScatterplot extends AStorageBasedView {
 			// not necessary;
 			// mouseoverSelectionManager.add(contentID);
 		//	mouseoverSelectionManager.addToType(selectionType, contentID);
+			elementSelectionManager.addToType(selectionType, contentID);
 		}
 
 //		ISelectionDelta selectionDelta = mouseoverSelectionManager.getDelta();
@@ -2756,8 +2766,9 @@ public class GLScatterplot extends AStorageBasedView {
 	public void clearAllSelections() {
 		elementSelectionManager.clearSelections();
 		AlSelectionTypes.clear();
-		AlSelectionTypes.add(SelectionType.SELECTION);
-		currentSelection = SelectionType.SELECTION;
+		addSelectionType();
+		//AlSelectionTypes.add(SelectionType.SELECTION);
+		//currentSelection = SelectionType.SELECTION;
 		fRectangleDragStartPoint = new float[3];
 		fRectangleDragEndPoint = new float[3];
 		bUpdateSelection = true;
