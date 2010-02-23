@@ -187,7 +187,7 @@ public class SetUtils {
 	 * @param loadDataParameters
 	 *            definition how to load the set
 	 */
-	public static boolean createData(IUseCase useCase) {
+	public static ISet createData(IUseCase useCase) {
 
 		LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
 		ArrayList<Integer> iAlStorageId = loadDataParameters.getStorageIds();
@@ -219,7 +219,7 @@ public class SetUtils {
 
 		if (!cmdLoadCsv.isParsingOK()) {
 			// TODO: Clear created set and storages which are empty
-			return false;
+			return null;
 		}
 
 		CmdLoadFileLookupTable cmdLoadLookupTableFile =
@@ -246,7 +246,7 @@ public class SetUtils {
 
 		ISet set = useCase.getSet();
 
-		loadTrees(loadDataParameters, set);
+//		loadTrees(loadDataParameters, set);
 
 		if (loadDataParameters.isMinDefined()) {
 			set.setMin(loadDataParameters.getMin());
@@ -273,7 +273,7 @@ public class SetUtils {
 		// the views of the current use case can be updated.
 		useCase.updateSetInViews();
 
-		return true;
+		return set;
 	}
 
 	/**
@@ -388,7 +388,7 @@ public class SetUtils {
 		saveFile(data.getBytes(), expFile);
 	}
 
-	private static void loadTrees(LoadDataParameters loadDataParameters, ISet set) {
+	public static void loadTrees(LoadDataParameters loadDataParameters, ISet set) {
 		// import gene tree
 		String geneTreeFileName = loadDataParameters.getGeneTreeFileName();
 		if (geneTreeFileName != null) {

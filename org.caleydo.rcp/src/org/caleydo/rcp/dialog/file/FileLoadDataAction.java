@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.EStorageType;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.mapping.EIDCategory;
@@ -718,9 +719,12 @@ public class FileLoadDataAction
 		useCase.setLoadDataParameters(loadDataParameters);
 
 		if (success) {
-			success =
+			ISet set =
 				SetUtils.createData(GeneralManager.get().getUseCase(loadDataParameters.getDataDomain()));
+			if(set == null)
+				return false;
 		}
+		
 		return success;
 	}
 

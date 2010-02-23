@@ -24,10 +24,12 @@ public class MetaSet
 	public MetaSet(Set originalSet, Tree<ClusterNode> storageTree, ClusterNode storageTreeRoot) {
 		init();
 		this.setSetType(originalSet.getSetType());
-		this.isSetHomogeneous = originalSet.isSetHomogeneous();
+		// FIXME: this is not always true, but if we create the MetaSet from the serialization, we didn't
+		// check yet whether it was homogeneous
+		this.isSetHomogeneous = true;
 		this.externalDataRep = originalSet.getExternalDataRep();
 		this.hashContentData = (HashMap<ContentVAType, ContentData>) originalSet.hashContentData.clone();
-		
+
 		defaultStorageData.setStorageTree(storageTree);
 		defaultStorageData.setStorageTreeRoot(storageTreeRoot);
 		hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());

@@ -99,7 +99,7 @@ public class TreePorter {
 
 		org.caleydo.core.data.collection.set.Set set =
 			(org.caleydo.core.data.collection.set.Set) GeneralManager.get().getMasterUseCase().getSet();
-		tree.getRoot().createMetaSet(set);
+		tree.getRoot().createMetaSets(set);
 		return tree;
 	}
 

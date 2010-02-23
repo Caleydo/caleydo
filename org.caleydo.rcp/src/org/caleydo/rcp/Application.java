@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.selection.ContentVAType;
@@ -354,7 +355,7 @@ public class Application
 				triggerPathwayLoading();
 
 			SetUtils.createStorages(loadDataParameters);
-			SetUtils.createData(useCase);
+			ISet set = SetUtils.createData(useCase);
 
 			HashMap<ContentVAType, ContentVirtualArray> contentVAMap = initData.getContentVAMap();
 			for (Entry<ContentVAType, ContentVirtualArray> entry : contentVAMap.entrySet()) {
@@ -365,6 +366,9 @@ public class Application
 			for (Entry<StorageVAType, StorageVirtualArray> entry : storageVAMap.entrySet()) {
 				((AUseCase) useCase).setStorageVirtualArray(entry.getKey(), entry.getValue());
 			}
+
+			// we need the VAs to be available before the tree is initialized
+			SetUtils.loadTrees(loadDataParameters, set);
 
 			Application.initData = null;
 		}
@@ -376,7 +380,7 @@ public class Application
 
 			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
 			SetUtils.createStorages(loadDataParameters);
-			SetUtils.createData(useCase);
+			ISet set = SetUtils.createData(useCase);
 
 			HashMap<ContentVAType, ContentVirtualArray> contentVAMap = initData.getContentVAMap();
 			for (Entry<ContentVAType, ContentVirtualArray> entry : contentVAMap.entrySet()) {
@@ -387,6 +391,8 @@ public class Application
 			for (Entry<StorageVAType, StorageVirtualArray> entry : storageVAMap.entrySet()) {
 				((AUseCase) useCase).setStorageVirtualArray(entry.getKey(), entry.getValue());
 			}
+			// we need the VAs to be available before the tree is initialized
+			SetUtils.loadTrees(loadDataParameters, set);
 
 			if (useCase instanceof GeneticUseCase)
 				triggerPathwayLoading();
