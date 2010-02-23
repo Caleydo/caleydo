@@ -195,16 +195,16 @@ public class HeatMapWrapper {
 	}
 
 	public Vec2f getLeftLinkPositionFromContentID(int contentID) {
-		ContentVirtualArray va = heatMapVAs.get(0);
+		ContentVirtualArray va = set.getContentVA(ContentVAType.CONTENT);
 		int contentIndex = va.indexOf(contentID);
 
 		if (va.indexOf(contentID) == -1)
 			return null;
 
-		Vec3f detailPosition = layout.getDetailPosition();
+		Vec3f overviewPosition = layout.getOverviewPosition();
 
-		return new Vec2f(detailPosition.x(), detailPosition.y()
-				+ heatMap.getYCoordinateByContentIndex(contentIndex));
+		return new Vec2f(overviewPosition.x(), overviewPosition.y()
+				+layout.getOverviewHeight()/va.size()*contentIndex);
 	}
 
 	public Vec2f getRightLinkPositionFromContentID(int contentID) {

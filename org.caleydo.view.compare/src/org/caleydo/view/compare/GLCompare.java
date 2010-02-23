@@ -3,20 +3,16 @@ package org.caleydo.view.compare;
 import gleem.linalg.Vec2f;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.SetComparer;
-import org.caleydo.core.data.collection.set.SetRelations;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -36,8 +32,6 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.compare.listener.CompareGroupsEventListener;
 
-import com.sun.opengl.util.j2d.TextRenderer;
-
 /**
  * The group assignment interface
  * 
@@ -52,7 +46,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	private ArrayList<ISet> setsToCompare;
 
-	private TextRenderer textRenderer;
+	//private TextRenderer textRenderer;
 	private HeatMapLayoutLeft heatMapLayoutLeft;
 	private HeatMapLayoutRight heatMapLayoutRight;
 	private HeatMapWrapper leftHeatMapWrapper;
@@ -60,7 +54,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	private CompareGroupsEventListener compareGroupsEventListener;
 	
-	private SetRelations relations;
+	//private SetRelations relations;
 	
 	/**
 	 * Constructor.
@@ -228,7 +222,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		gl.glCallList(iGLDisplayListToCall);
 		leftHeatMapWrapper.drawRemoteItems(gl);
 		rightHeatMapWrapper.drawRemoteItems(gl);
-		renderRelations(gl);
+		//renderDetailRelations(gl);
+		renderOverviewRelations(gl);
 		
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
@@ -248,10 +243,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		return new String("");
 	}
 
-	private void renderRelations(GL gl) {
-		
-		if (relations == null)
-			return;
+	private void renderDetailRelations(GL gl) {
 	
 		//ContentVirtualArray contentVALeftAll = relations.getSetLeft().getContentVA(ContentVAType.CONTENT);
 		ContentSelectionManager contentSelectionManager = leftHeatMapWrapper.getContentSelectionManagersOfHeatMaps().get(0);
@@ -282,6 +274,43 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(leftPos.x(), viewFrustum.getHeight()-leftPos.y(), 0);
+			gl.glVertex3f(rightPos.x(), viewFrustum.getHeight()-rightPos.y(), 0);			
+			gl.glEnd();
+		}
+	}
+	
+	private void renderOverviewRelations(GL gl) {
+		
+		if (setsToCompare == null || setsToCompare.size() == 0)
+			return;
+		
+		//FIXME: Just for testing. 
+		leftHeatMapWrapper.useDetailView(false);
+		rightHeatMapWrapper.useDetailView(false);
+		
+		ContentSelectionManager contentSelectionManager = useCase.getContentSelectionManager();
+		ContentVirtualArray contentVALeft = setsToCompare.get(0).getContentVA(ContentVAType.CONTENT);		
+		
+		gl.glColor3f(0,0,0);
+		gl.glLineWidth(2);
+		for (Integer contentID : contentVALeft) {		
+			
+			for (SelectionType type : contentSelectionManager.getSelectionTypes(contentID)) {
+				gl.glColor4fv(type.getColor(), 0);	
+			}	
+
+			Vec2f leftPos = leftHeatMapWrapper.getLeftLinkPositionFromContentID(contentID);
+			
+			if (leftPos == null)
+				continue;
+			
+			Vec2f rightPos = rightHeatMapWrapper.getLeftLinkPositionFromContentID(contentID);
+			
+			if (rightPos == null)
+				continue;
+			
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(leftPos.x()+heatMapLayoutLeft.getOverviewGroupWidth()+heatMapLayoutLeft.getOverviewHeatmapWidth()+heatMapLayoutLeft.getOverviewSliderWidth(), viewFrustum.getHeight()-leftPos.y(), 0);
 			gl.glVertex3f(rightPos.x(), viewFrustum.getHeight()-rightPos.y(), 0);			
 			gl.glEnd();
 		}
@@ -388,6 +417,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		clusterState.setAffinityPropClusterFactorGenes(5);
 		clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 
+//		clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
+//		clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
+//		clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		
 		for (ISet set : sets) {
 			set.cluster(clusterState);
 		}
@@ -395,13 +428,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		if (sets.size() >= 2) {
 			ISet setLeft = setsToCompare.get(0);
 			ISet setRight = setsToCompare.get(1);
-			relations = SetComparer.compareSets(setLeft, setRight);
-
+//			relations = SetComparer.compareSets(setLeft, setRight);
+//
 			leftHeatMapWrapper.setSet(setLeft);
 			rightHeatMapWrapper.setSet(setRight);
 			setDisplayListDirty();
 		}
-
 	}
-
 }

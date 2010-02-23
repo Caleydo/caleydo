@@ -12,7 +12,5 @@ public class CompareGroupsEventListener extends AEventListener<GLCompare> {
 		if (event instanceof CompareGroupsEvent) {
 			handler.setGroupsToCompare(((CompareGroupsEvent) event).getSets());
 		}
-
 	}
-
 }
