@@ -89,7 +89,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.bookmarking.GLBookmarkManager;
@@ -1709,7 +1709,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				if (dataDomain != EDataDomain.GENETIC_DATA)
 					break;
 
-				GeneContextMenuItemContainer geneContextMenuItemContainer = new GeneContextMenuItemContainer();
+				ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
 				geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX,
 						iExternalID);
 				contextMenu.addItemContanier(geneContextMenuItemContainer);

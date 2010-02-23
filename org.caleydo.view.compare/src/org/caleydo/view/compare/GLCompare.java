@@ -8,15 +8,22 @@ import java.util.List;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.SelectionTypeEvent;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
@@ -29,6 +36,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.compare.listener.CompareGroupsEventListener;
 
@@ -39,23 +47,25 @@ import org.caleydo.view.compare.listener.CompareGroupsEventListener;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLCompare extends AGLView implements IViewCommandHandler,
-		IGLRemoteRenderingView {
+public class GLCompare extends AGLView
+		implements
+			IViewCommandHandler,
+			IGLRemoteRenderingView {
 
 	public final static String VIEW_ID = "org.caleydo.view.compare";
 
 	private ArrayList<ISet> setsToCompare;
 
-	//private TextRenderer textRenderer;
+	// private TextRenderer textRenderer;
 	private HeatMapLayoutLeft heatMapLayoutLeft;
 	private HeatMapLayoutRight heatMapLayoutRight;
 	private HeatMapWrapper leftHeatMapWrapper;
 	private HeatMapWrapper rightHeatMapWrapper;
 
 	private CompareGroupsEventListener compareGroupsEventListener;
-	
-	//private SetRelations relations;
-	
+
+	// private SetRelations relations;
+
 	/**
 	 * Constructor.
 	 * 
@@ -73,8 +83,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void init(GL gl) {
-//		contentVA = useCase.getContentVA(ContentVAType.CONTENT);
-//		storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
+		// contentVA = useCase.getContentVA(ContentVAType.CONTENT);
+		// storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
 		heatMapLayoutLeft = new HeatMapLayoutLeft();
 		heatMapLayoutRight = new HeatMapLayoutRight();
 		leftHeatMapWrapper = new HeatMapWrapper(0, heatMapLayoutLeft);
@@ -222,9 +232,9 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		gl.glCallList(iGLDisplayListToCall);
 		leftHeatMapWrapper.drawRemoteItems(gl);
 		rightHeatMapWrapper.drawRemoteItems(gl);
-		//renderDetailRelations(gl);
+		// renderDetailRelations(gl);
 		renderOverviewRelations(gl);
-		
+
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
 	}
@@ -244,78 +254,113 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	}
 
 	private void renderDetailRelations(GL gl) {
-	
-		//ContentVirtualArray contentVALeftAll = relations.getSetLeft().getContentVA(ContentVAType.CONTENT);
-		ContentSelectionManager contentSelectionManager = leftHeatMapWrapper.getContentSelectionManagersOfHeatMaps().get(0);
-		ContentVirtualArray contentVALeft = leftHeatMapWrapper.getContentVAsOfHeatMaps().get(0);
-		//ContentVirtualArray contentVARight = rightHeatMapWrapper.getContentVAsOfHeatMaps().get(0);
-		
-		gl.glColor3f(0,0,0);
+
+		// ContentVirtualArray contentVALeftAll =
+		// relations.getSetLeft().getContentVA(ContentVAType.CONTENT);
+		ContentSelectionManager contentSelectionManager = useCase
+				.getContentSelectionManager();
+		ContentVirtualArray contentVALeft = leftHeatMapWrapper
+				.getContentVAsOfHeatMaps().get(0);
+		// ContentVirtualArray contentVARight =
+		// rightHeatMapWrapper.getContentVAsOfHeatMaps().get(0);
+
+		gl.glColor3f(0, 0, 0);
 		gl.glLineWidth(4);
-		//HashMap<Integer, Integer> relationLeftToRight = relations.getHashLeftToRight();
-		for (Integer contentID : contentVALeft) {		
-			
-			//Integer contentID = contentVALeft.get(contentIndex);
-			
-			for (SelectionType type : contentSelectionManager.getSelectionTypes(contentID)) {
-				gl.glColor4fv(type.getColor(), 0);	
-			}	
-			
-			//int relationIndex = contentVALeftAll.indexOf(contentID);
-			Vec2f leftPos = leftHeatMapWrapper.getRightLinkPositionFromContentID(contentID);
-			
+		// HashMap<Integer, Integer> relationLeftToRight =
+		// relations.getHashLeftToRight();
+		for (Integer contentID : contentVALeft) {
+
+			// Integer contentID = contentVALeft.get(contentIndex);
+
+			for (SelectionType type : contentSelectionManager
+					.getSelectionTypes(contentID)) {
+				gl.glColor4fv(type.getColor(), 0);
+			}
+
+			// int relationIndex = contentVALeftAll.indexOf(contentID);
+			Vec2f leftPos = leftHeatMapWrapper
+					.getRightLinkPositionFromContentID(contentID);
+
 			if (leftPos == null)
 				continue;
-			
-			Vec2f rightPos = rightHeatMapWrapper.getRightLinkPositionFromContentID(contentID);
-			
+
+			Vec2f rightPos = rightHeatMapWrapper
+					.getRightLinkPositionFromContentID(contentID);
+
 			if (rightPos == null)
 				continue;
-			
+
 			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(leftPos.x(), viewFrustum.getHeight()-leftPos.y(), 0);
-			gl.glVertex3f(rightPos.x(), viewFrustum.getHeight()-rightPos.y(), 0);			
+			gl
+					.glVertex3f(leftPos.x(), viewFrustum.getHeight()
+							- leftPos.y(), 0);
+			gl.glVertex3f(rightPos.x(), viewFrustum.getHeight() - rightPos.y(),
+					0);
 			gl.glEnd();
 		}
 	}
-	
+
 	private void renderOverviewRelations(GL gl) {
-		
+
 		if (setsToCompare == null || setsToCompare.size() == 0)
 			return;
-		
-		//FIXME: Just for testing. 
+
+		// FIXME: Just for testing.
 		leftHeatMapWrapper.useDetailView(false);
 		rightHeatMapWrapper.useDetailView(false);
-		
-		ContentSelectionManager contentSelectionManager = useCase.getContentSelectionManager();
-		ContentVirtualArray contentVALeft = setsToCompare.get(0).getContentVA(ContentVAType.CONTENT);		
-		
-		gl.glColor3f(0,0,0);
-		gl.glLineWidth(2);
-		for (Integer contentID : contentVALeft) {		
-			
-			for (SelectionType type : contentSelectionManager.getSelectionTypes(contentID)) {
-				gl.glColor4fv(type.getColor(), 0);	
-			}	
 
-			Vec2f leftPos = leftHeatMapWrapper.getLeftLinkPositionFromContentID(contentID);
-			
+		ContentSelectionManager contentSelectionManager = useCase
+				.getContentSelectionManager();
+		ContentVirtualArray contentVALeft = setsToCompare.get(0).getContentVA(
+				ContentVAType.CONTENT);
+
+//		gl.glColor3f(0, 0, 0);
+		for (Integer contentID : contentVALeft) {
+
+			for (SelectionType type : contentSelectionManager
+					.getSelectionTypes(contentID)) {
+				gl.glColor4fv(type.getColor(), 0);
+
+				if (type == SelectionType.MOUSE_OVER
+						|| type == SelectionType.SELECTION) {
+					gl.glLineWidth(5);
+					break;
+				}
+				else {
+					gl.glLineWidth(1);
+				}
+			}
+
+			Vec2f leftPos = leftHeatMapWrapper
+					.getLeftLinkPositionFromContentID(contentID);
+
 			if (leftPos == null)
 				continue;
-			
-			Vec2f rightPos = rightHeatMapWrapper.getLeftLinkPositionFromContentID(contentID);
-			
+
+			Vec2f rightPos = rightHeatMapWrapper
+					.getLeftLinkPositionFromContentID(contentID);
+
 			if (rightPos == null)
 				continue;
-			
+
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					EPickingType.POLYLINE_SELECTION, contentID));
+
 			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(leftPos.x()+heatMapLayoutLeft.getOverviewGroupWidth()+heatMapLayoutLeft.getOverviewHeatmapWidth()+heatMapLayoutLeft.getOverviewSliderWidth(), viewFrustum.getHeight()-leftPos.y(), 0);
-			gl.glVertex3f(rightPos.x(), viewFrustum.getHeight()-rightPos.y(), 0);			
+			gl.glVertex3f(leftPos.x()
+					+ heatMapLayoutLeft.getOverviewGroupWidth()
+					+ heatMapLayoutLeft.getOverviewHeatmapWidth()
+					+ heatMapLayoutLeft.getOverviewSliderWidth(), viewFrustum
+					.getHeight()
+					- leftPos.y(), 0);
+			gl.glVertex3f(rightPos.x(), viewFrustum.getHeight() - rightPos.y(),
+					0);
 			gl.glEnd();
+
+			gl.glPopName();
 		}
 	}
-	
+
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
@@ -324,14 +369,62 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		}
 
 		switch (ePickingType) {
-		case COMPARE_EMBEDDED_VIEW_SELECTION:
-			if (pickingMode == EPickingMode.RIGHT_CLICKED) {
-				contextMenu.setLocation(pick.getPickedPoint(),
-						getParentGLCanvas().getWidth(), getParentGLCanvas()
-								.getHeight());
-				contextMenu.setMasterGLView(this);
-			}
-			break;
+			case COMPARE_EMBEDDED_VIEW_SELECTION :
+				if (pickingMode == EPickingMode.RIGHT_CLICKED) {
+					contextMenu.setLocation(pick.getPickedPoint(),
+							getParentGLCanvas().getWidth(), getParentGLCanvas()
+									.getHeight());
+					contextMenu.setMasterGLView(this);
+				}
+				break;
+			case POLYLINE_SELECTION :
+
+				SelectionType selectionType;
+				switch (pickingMode) {
+					case CLICKED :
+						selectionType = SelectionType.SELECTION;
+						break;
+					case MOUSE_OVER :
+						selectionType = SelectionType.MOUSE_OVER;
+						break;
+
+					case RIGHT_CLICKED :
+						selectionType = SelectionType.SELECTION;
+
+						ContentContextMenuItemContainer contentContextMenuItemContainer = new ContentContextMenuItemContainer();
+						contentContextMenuItemContainer.setID(
+								EIDType.EXPRESSION_INDEX, iExternalID);
+						contextMenu
+								.addItemContanier(contentContextMenuItemContainer);
+						break;
+
+					default :
+						return;
+
+				}
+
+				// FIXME: Check if is ok to share the content selection manager
+				// of the use case
+				ContentSelectionManager contentSelectionManager = useCase
+						.getContentSelectionManager();
+				if (contentSelectionManager.checkStatus(selectionType,
+						iExternalID)) {
+					break;
+				}
+
+				contentSelectionManager.clearSelection(selectionType);
+				contentSelectionManager.addToType(selectionType, iExternalID);
+
+				ISelectionDelta selectionDelta = contentSelectionManager
+						.getDelta();
+				SelectionUpdateEvent event = new SelectionUpdateEvent();
+				event.setSender(this);
+				event.setSelectionDelta((SelectionDelta) selectionDelta);
+				event.setInfo(getShortInfoLocal());
+				eventPublisher.triggerEvent(event);
+
+				setDisplayListDirty();
+				break;
 		}
 	}
 
@@ -417,10 +510,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		clusterState.setAffinityPropClusterFactorGenes(5);
 		clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 
-//		clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
-//		clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-//		clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		
+		// clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
+		// clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
+		// clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+
 		for (ISet set : sets) {
 			set.cluster(clusterState);
 		}
@@ -428,8 +521,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		if (sets.size() >= 2) {
 			ISet setLeft = setsToCompare.get(0);
 			ISet setRight = setsToCompare.get(1);
-//			relations = SetComparer.compareSets(setLeft, setRight);
-//
+			// relations = SetComparer.compareSets(setLeft, setRight);
+			//
 			leftHeatMapWrapper.setSet(setLeft);
 			rightHeatMapWrapper.setSet(setRight);
 			setDisplayListDirty();

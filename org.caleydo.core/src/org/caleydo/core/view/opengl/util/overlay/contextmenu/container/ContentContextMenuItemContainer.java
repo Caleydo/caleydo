@@ -14,13 +14,13 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.ShowPathwaysBy
  * 
  * @author Alexander Lex
  */
-public class GeneContextMenuItemContainer
+public class ContentContextMenuItemContainer
 	extends AItemContainer {
 
 	/**
 	 * Constructor.
 	 */
-	public GeneContextMenuItemContainer() {
+	public ContentContextMenuItemContainer() {
 		super();
 
 		if (GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA) == null)

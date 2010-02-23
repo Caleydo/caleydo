@@ -30,7 +30,7 @@ public class BookmarkContextMenuItemContainer
 	private void createMenuContent(EIDType idType, int id) {
 
 		if (idType.getCategory() == EIDCategory.GENE) {
-			GeneContextMenuItemContainer geneContainer = new GeneContextMenuItemContainer();
+			ContentContextMenuItemContainer geneContainer = new ContentContextMenuItemContainer();
 			geneContainer.setID(EIDType.DAVID, id);
 			addItemContainer(geneContainer);
 			addSeparator();

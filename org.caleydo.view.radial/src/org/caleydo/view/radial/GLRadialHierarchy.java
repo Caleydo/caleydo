@@ -41,7 +41,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DetailOutsideItem;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -534,7 +534,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 					if (dataDomain != EDataDomain.GENETIC_DATA)
 						break;
 					if (!pdPickedElement.hasChildren()) {
-						GeneContextMenuItemContainer geneContextMenuItemContainer = new GeneContextMenuItemContainer();
+						ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
 						geneContextMenuItemContainer.setID(
 								EIDType.EXPRESSION_INDEX, iExternalID);
 						contextMenu
