@@ -2,33 +2,51 @@ package org.caleydo.view.compare;
 
 import gleem.linalg.Vec3f;
 
+import java.awt.Point;
+
 import javax.media.opengl.GL;
 
+import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 public class VerticalSlider {
 
-	HeatMapLayout layout;
-	float positionX;
-	float positionY;
-	float bodyHeight;
+	private HeatMapLayout layout;
+	private float relativePositionY;
+	private float relativeSliderHeight;
+	private float sliderPositionY;
+	private float sliderHeight;
+	private float arrowHeight;
+	private float bodyHeight;
+	private boolean isBodyDragging;
+	private boolean isArrowUpDragging;
+	private boolean isArrowDownDragging;
+	private float draggingSpacing;
+	private boolean isDraggingFirstTime = true;
 
 	public VerticalSlider(HeatMapLayout layout) {
+		relativeSliderHeight = 0.25f;
+		relativePositionY = 0.75f;
 		this.layout = layout;
-		bodyHeight = (layout.getOverviewMaxSliderHeight() / 5.0f) * 0.5f;
 	}
 
 	public void draw(final GL gl, PickingManager pickingManager,
 			TextureManager textureManager, int viewID, int pickingID) {
 
-		bodyHeight = (layout.getOverviewMaxSliderHeight() / 5.0f) * 0.5f;
+		sliderHeight = relativeSliderHeight * layout.getOverviewHeight();
+		sliderPositionY = layout.getOverviewMinSliderPositionY()
+				+ relativePositionY * layout.getOverviewHeight();
+
 		float sliderWidth = layout.getOverviewSliderWidth();
-		float arrowHeight = sliderWidth;
+		arrowHeight = (2.0f * sliderWidth <= sliderHeight) ? sliderWidth
+				: sliderHeight / 2.0f;
+		bodyHeight = sliderHeight - 2.0f * arrowHeight;
 		float sliderPositionX = layout.getOverviewSliderPositionX();
-		float sliderPositionY = 0;
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
 				EPickingType.COMPARE_OVERVIEW_SLIDER_ARROW_DOWN_SELECTION,
@@ -83,5 +101,138 @@ public class VerticalSlider {
 				upperLeftCorner, 1, 1, 1, 1);
 		gl.glPopName();
 
+	}
+
+	public boolean handleDragging(GL gl, GLMouseListener glMouseListener) {
+
+		if (!isArrowDownDragging && !isArrowUpDragging && !isBodyDragging)
+			return false;
+
+		Point pickedPoint = glMouseListener.getPickedPoint();
+		float[] fArTargetWorldCoordinates = GLCoordinateUtils
+				.convertWindowCoordinatesToWorldCoordinates(gl, pickedPoint.x,
+						pickedPoint.y);
+
+		float pickedYCoordinate = fArTargetWorldCoordinates[1];
+
+		if (isDraggingFirstTime) {
+			isDraggingFirstTime = false;
+			if (isArrowUpDragging) {
+				draggingSpacing = pickedYCoordinate - (sliderPositionY
+						+ sliderHeight);
+			} else {
+				draggingSpacing = pickedYCoordinate - sliderPositionY;
+			}
+		}
+
+		if (isBodyDragging) {
+			handleBodyDragging(pickedYCoordinate);
+		} else if (isArrowDownDragging) {
+			handleArrowDownDragging(pickedYCoordinate);
+		} else {
+			handleArrowUpDragging(pickedYCoordinate);
+		}
+
+		if (glMouseListener.wasMouseReleased()) {
+			isBodyDragging = false;
+			isArrowUpDragging = false;
+			isArrowDownDragging = false;
+		}
+
+		return true;
+	}
+
+	private void handleBodyDragging(float pickedYCoordinate) {
+		float newSliderPositionY = pickedYCoordinate - draggingSpacing;
+		setSliderPositionY(newSliderPositionY);
+		setRelativeYPosition(getRelativeYCoordinate(sliderPositionY));
+	}
+
+	private void handleArrowUpDragging(float pickedYCoordinate) {
+
+		float newTopPositionY = pickedYCoordinate - draggingSpacing;
+		setSliderHeight(newTopPositionY - sliderPositionY);
+		setRelativeSliderHeight(getRelativeSize(sliderHeight));
+	}
+
+	private void handleArrowDownDragging(float pickedYCoordinate) {
+		float newSliderPositionY = pickedYCoordinate - draggingSpacing;
+		float sliderTopPositionY = sliderPositionY + sliderHeight;
+		if(newSliderPositionY > sliderTopPositionY - 2.0f * arrowHeight)
+			newSliderPositionY = sliderTopPositionY - 2.0f * arrowHeight;
+		setSliderPositionY(newSliderPositionY);
+		setSliderHeight(sliderTopPositionY - sliderPositionY);
+		relativeSliderHeight = getRelativeSize(sliderHeight);
+		setRelativeYPosition(getRelativeYCoordinate(sliderPositionY));
+	}
+
+	private void setSliderPositionY(float sliderPositionY) {
+		if (sliderPositionY > layout.getOverviewMaxSliderPositionY()) {
+			this.sliderPositionY = layout.getOverviewMaxSliderPositionY();
+		} else if (sliderPositionY < layout.getOverviewMinSliderPositionY()) {
+			this.sliderPositionY = layout.getOverviewMinSliderPositionY();
+		} else {
+			this.sliderPositionY = sliderPositionY;
+		}
+	}
+	
+	private void setSliderHeight(float sliderHeight) {
+		if(sliderHeight > layout.getOverviewMaxSliderHeight()) {
+			this.sliderHeight = layout.getOverviewMaxSliderHeight();
+		} else if(sliderHeight < 2.0f * arrowHeight) {
+			this.sliderHeight = 2.0f * arrowHeight;
+		} else {
+			this.sliderHeight = sliderHeight;
+		}
+	}
+
+	private float getRelativeSize(float absoluteSize) {
+		return absoluteSize / layout.getOverviewHeight();
+	}
+
+	private float getRelativeYCoordinate(float absoluteYCoordinate) {
+		return (absoluteYCoordinate - layout.getOverviewMinSliderPositionY())
+				/ layout.getOverviewHeight();
+	}
+
+	private void setRelativeSliderHeight(float relativeSliderHeight) {
+		if (relativePositionY + relativeSliderHeight > 1.0f) {
+			this.relativeSliderHeight = 1.0f - relativePositionY;
+		} else if (relativeSliderHeight < 2.0f * getRelativeSize(arrowHeight)) {
+			this.relativeSliderHeight = 2.0f * getRelativeSize(arrowHeight);
+		} else {
+			this.relativeSliderHeight = relativeSliderHeight;
+		}
+	}
+
+	private void setRelativeYPosition(float relativePositionY) {
+		if (relativePositionY + relativeSliderHeight > 1.0f) {
+			this.relativePositionY = 1.0f - relativeSliderHeight;
+		} else if (relativePositionY < 0.0f) {
+			this.relativePositionY = 0.0f;
+		} else {
+			this.relativePositionY = relativePositionY;
+		}
+	}
+
+	public void handleSliderSelection(EPickingType pickingType,
+			EPickingMode pickingMode) {
+
+		if (pickingMode != EPickingMode.CLICKED)
+			return;
+
+		switch (pickingType) {
+		case COMPARE_OVERVIEW_SLIDER_BODY_SELECTION:
+			isBodyDragging = true;
+			break;
+		case COMPARE_OVERVIEW_SLIDER_ARROW_UP_SELECTION:
+			isArrowUpDragging = true;
+			break;
+		case COMPARE_OVERVIEW_SLIDER_ARROW_DOWN_SELECTION:
+			isArrowDownDragging = true;
+			break;
+		}
+
+		isDraggingFirstTime = true;
 	}
 }

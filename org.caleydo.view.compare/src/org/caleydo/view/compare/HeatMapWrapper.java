@@ -18,6 +18,7 @@ import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
@@ -185,6 +186,10 @@ public class HeatMapWrapper {
 		// GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
 		// }
 	}
+	
+	public boolean handleDragging(GL gl, GLMouseListener glMouseListener) {
+		return slider.handleDragging(gl, glMouseListener);
+	}
 
 	public void processEvents() {
 		heatMap.processEvents();
@@ -239,4 +244,7 @@ public class HeatMapWrapper {
 		this.useDetailView = useDetailView;
 	}
 
+	public void handleOverviewSliderSelection(EPickingType pickingType, EPickingMode pickingMode) {
+		slider.handleSliderSelection(pickingType, pickingMode);
+	}
 }
