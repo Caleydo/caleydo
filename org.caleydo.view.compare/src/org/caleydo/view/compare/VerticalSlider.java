@@ -167,8 +167,8 @@ public class VerticalSlider {
 	}
 
 	private void setSliderPositionY(float sliderPositionY) {
-		if (sliderPositionY > layout.getOverviewMaxSliderPositionY()) {
-			this.sliderPositionY = layout.getOverviewMaxSliderPositionY();
+		if (sliderPositionY + sliderHeight > layout.getOverviewMaxSliderPositionY()) {
+			this.sliderPositionY = layout.getOverviewMaxSliderPositionY() - sliderHeight;
 		} else if (sliderPositionY < layout.getOverviewMinSliderPositionY()) {
 			this.sliderPositionY = layout.getOverviewMinSliderPositionY();
 		} else {
@@ -177,8 +177,8 @@ public class VerticalSlider {
 	}
 	
 	private void setSliderHeight(float sliderHeight) {
-		if(sliderHeight > layout.getOverviewMaxSliderHeight()) {
-			this.sliderHeight = layout.getOverviewMaxSliderHeight();
+		if(sliderHeight + sliderPositionY > layout.getOverviewMaxSliderPositionY()) {
+			this.sliderHeight = layout.getOverviewMaxSliderPositionY() - sliderPositionY;
 		} else if(sliderHeight < 2.0f * arrowHeight) {
 			this.sliderHeight = 2.0f * arrowHeight;
 		} else {
@@ -234,5 +234,13 @@ public class VerticalSlider {
 		}
 
 		isDraggingFirstTime = true;
+	}
+	
+	public float getSliderHeight() {
+		return sliderHeight;
+	}
+	
+	public float getSliderPositionY() {
+		return sliderPositionY;
 	}
 }

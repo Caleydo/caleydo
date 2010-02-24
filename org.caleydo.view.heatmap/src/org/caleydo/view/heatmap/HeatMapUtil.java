@@ -166,6 +166,8 @@ public class HeatMapUtil {
 			for (Group group : contentGroupList) {
 				int numSamplesGroup = group.getNrElements();
 				float groupHeight = numSamplesGroup * sampleHeight;
+				EIconTextures iconTextures = (group.getSelectionType() == SelectionType.SELECTION) ? EIconTextures.HEAT_MAP_GROUP_SELECTED
+						: EIconTextures.HEAT_MAP_GROUP_NORMAL;
 
 				gl.glPushName(pickingManager.getPickingID(viewID, pickingType,
 						groupIndex));
@@ -177,8 +179,7 @@ public class HeatMapUtil {
 						groupPositionY, 0.0f);
 				Vec3f upperLeftCorner = new Vec3f(0.0f, groupPositionY, 0.0f);
 
-				textureManager.renderTexture(gl,
-						EIconTextures.HEAT_MAP_GROUP_NORMAL, lowerLeftCorner,
+				textureManager.renderTexture(gl, iconTextures, lowerLeftCorner,
 						lowerRightCorner, upperRightCorner, upperLeftCorner, 1,
 						1, 1, 1);
 

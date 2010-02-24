@@ -10,9 +10,12 @@ import javax.media.opengl.GL;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.Group;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
@@ -22,29 +25,25 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.HeatMapUtil;
-
-import com.sun.opengl.util.texture.Texture;
 
 public class HeatMapWrapper {
 
 	private GLHeatMap heatMap;
+	private HeatMapOverview overview;
 	private ISet set;
 	private IGeneralManager generalManager;
 	private ContentVirtualArray contentVA;
 	private StorageVirtualArray storageVA;
-	private ArrayList<Texture> overviewTextures;
 	private HeatMapLayout layout;
-	private VerticalSlider slider;
 	private ArrayList<ContentVirtualArray> heatMapVAs;
 	private int id;
 	private boolean useDetailView;
@@ -56,7 +55,7 @@ public class HeatMapWrapper {
 	public HeatMapWrapper(int id, HeatMapLayout layout) {
 		generalManager = GeneralManager.get();
 		heatMapVAs = new ArrayList<ContentVirtualArray>();
-		slider = new VerticalSlider(layout);
+		overview = new HeatMapOverview(layout);
 		this.layout = layout;
 		this.id = id;
 	}
@@ -90,11 +89,30 @@ public class HeatMapWrapper {
 		contentVA = set.getContentVA(ContentVAType.CONTENT);
 		storageVA = set.getStorageVA(StorageVAType.STORAGE);
 		heatMap.setSet(set);
-		overviewTextures = HeatMapUtil.createHeatMapTextures(set, contentVA,
-				storageVA, null);
-		setEmbeddedHeatMapData();
+		setEmbeddedHeatMapData(0, 10);
 		heatMap.useFishEye(false);
 		heatMap.setDisplayListDirty();
+
+		overview.setSet(set);
+
+		// FIXME: Just for testing
+		if (contentVA.size() > 40) {
+			ContentGroupList groupList = new ContentGroupList();
+			contentVA.setGroupList(groupList);
+			Group temp = new Group(5, false, 0, SelectionType.NORMAL);
+			groupList.append(temp);
+			temp = new Group(10, false, 0, SelectionType.NORMAL);
+			groupList.append(temp);
+			temp = new Group(20, false, 0, SelectionType.NORMAL);
+			groupList.append(temp);
+			temp = new Group(15, false, 0, SelectionType.NORMAL);
+			groupList.append(temp);
+			temp = new Group(30, false, 0, SelectionType.NORMAL);
+			groupList.append(temp);
+			temp = new Group(contentVA.size() - 40, false, 0,
+					SelectionType.NORMAL);
+			groupList.append(temp);
+		}
 	}
 
 	public void init(GL gl, AGLView glParentView,
@@ -106,7 +124,8 @@ public class HeatMapWrapper {
 		heatMap.useFishEye(false);
 	}
 
-	private void setEmbeddedHeatMapData() {
+	private void setEmbeddedHeatMapData(int firstSampleIndex,
+			int lastSampleIndex) {
 
 		// TODO: Is this really necessary?
 		heatMap.resetView();
@@ -114,7 +133,7 @@ public class HeatMapWrapper {
 		// ContentVAType.CONTENT_EMBEDDED_HM, EIDType.EXPRESSION_INDEX);
 		ContentVirtualArray va = new ContentVirtualArray();
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = firstSampleIndex; i <= lastSampleIndex; i++) {
 			if (i >= contentVA.size())
 				break;
 			va.append(contentVA.get(i));
@@ -129,42 +148,22 @@ public class HeatMapWrapper {
 
 		// heatMap.handleContentVAUpdate(delta, "");
 		heatMap.setContentVA(va);
-
+		heatMap.useFishEye(false);
 	}
 
 	public void drawLocalItems(GL gl, TextureManager textureManager,
 			PickingManager pickingManager, int viewID) {
 
-		Vec3f overviewHeatMapPosition = layout.getOverviewHeatMapPosition();
-		float overviewHeight = layout.getOverviewHeight();
+		overview.draw(gl, textureManager, pickingManager, viewID, id);
 
-		gl.glPushMatrix();
-		gl.glTranslatef(overviewHeatMapPosition.x(), overviewHeatMapPosition
-				.y(), overviewHeatMapPosition.z());
-		HeatMapUtil.renderHeatmapTextures(gl, overviewTextures, overviewHeight,
-				layout.getOverviewHeatmapWidth());
-		gl.glPopMatrix();
-
-		gl.glPushMatrix();
-		Vec3f overviewGroupsPosition = layout.getOverviewGroupBarPosition();
-		gl.glTranslatef(overviewGroupsPosition.x(), overviewGroupsPosition.y(),
-				overviewGroupsPosition.z());
-
-		HeatMapUtil.renderGroupBar(gl, contentVA, layout.getOverviewHeight(),
-				layout.getOverviewGroupWidth(), pickingManager, viewID,
-				EPickingType.COMPARE_GROUP_SELECTION, textureManager);
-
-		gl.glPopMatrix();
-
-		slider.draw(gl, pickingManager, textureManager, viewID, id);
 	}
 
 	public void drawRemoteItems(GL gl) {
 
-		if(useDetailView) {
+		if (useDetailView) {
 			Vec3f detailPosition = layout.getDetailPosition();
-			gl.glTranslatef(detailPosition.x(), detailPosition.y(), detailPosition
-					.z());
+			gl.glTranslatef(detailPosition.x(), detailPosition.y(),
+					detailPosition.z());
 			heatMap.getViewFrustum().setLeft(detailPosition.x());
 			heatMap.getViewFrustum().setBottom(detailPosition.y());
 			heatMap.getViewFrustum().setRight(
@@ -172,7 +171,7 @@ public class HeatMapWrapper {
 			heatMap.getViewFrustum().setTop(
 					detailPosition.y() + layout.getDetailHeight());
 			heatMap.displayRemote(gl);
-	
+
 			gl.glTranslatef(-detailPosition.x(), -detailPosition.y(),
 					-detailPosition.z());
 		}
@@ -186,9 +185,18 @@ public class HeatMapWrapper {
 		// GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
 		// }
 	}
-	
+
 	public boolean handleDragging(GL gl, GLMouseListener glMouseListener) {
-		return slider.handleDragging(gl, glMouseListener);
+		if (overview.handleDragging(gl, glMouseListener)) {
+			ArrayList<Pair<Integer, Integer>> selectedGroupBounds = overview
+					.getSelectedGroupBounds();
+			if (selectedGroupBounds.size() > 0) {
+				setEmbeddedHeatMapData(selectedGroupBounds.get(0).getFirst(),
+						selectedGroupBounds.get(0).getSecond());
+			}
+			return true;
+		}
+		return false;
 	}
 
 	public void processEvents() {
@@ -209,7 +217,7 @@ public class HeatMapWrapper {
 		Vec3f overviewPosition = layout.getOverviewPosition();
 
 		return new Vec2f(overviewPosition.x(), overviewPosition.y()
-				+layout.getOverviewHeight()/va.size()*contentIndex);
+				+ layout.getOverviewHeight() / va.size() * contentIndex);
 	}
 
 	public Vec2f getRightLinkPositionFromContentID(int contentID) {
@@ -239,12 +247,13 @@ public class HeatMapWrapper {
 	public int getID() {
 		return id;
 	}
-	
+
 	public void useDetailView(boolean useDetailView) {
 		this.useDetailView = useDetailView;
 	}
 
-	public void handleOverviewSliderSelection(EPickingType pickingType, EPickingMode pickingMode) {
-		slider.handleSliderSelection(pickingType, pickingMode);
+	public void handleOverviewSliderSelection(EPickingType pickingType,
+			EPickingMode pickingMode) {
+		overview.handleSliderSelection(pickingType, pickingMode);
 	}
 }
