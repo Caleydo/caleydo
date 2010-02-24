@@ -367,6 +367,8 @@ public class GLDataWindows extends AGLView {
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
+			
+			
 			return;
 		}
 	}
@@ -543,7 +545,6 @@ public class GLDataWindows extends AGLView {
 		double circleX=0;
 		double circleY=0;
 		double i=0;
-		
 		
 		gl.glBegin(GL.GL_LINES);
 	    for (double counter = 0; counter < 360; counter++)
