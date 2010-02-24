@@ -69,12 +69,7 @@ public class GLConsecutiveConnectionGraphDrawing
 			
 
 			for (ArrayList<Vec3f> alCurrentPoints : hashIDTypeToViewToPointLists.get(idType).get(iKey)) {
-/*				if ((iKey == heatmapID) && (heatMapOnStackAndHasPredecessor && heatMapOnStackAndHasSucessor)){
-					pointsToDepthSort.add(alCurrentPoints.get(0));
-					pointsToDepthSort.add(alCurrentPoints.get(1));
-				}
-
-				else*/ if (alCurrentPoints.size() > 1) {
+				if (alCurrentPoints.size() > 1) {
 					renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
 				}
 				else
@@ -125,7 +120,6 @@ public class GLConsecutiveConnectionGraphDrawing
 			for (Integer currentID : ids) {
 				if (currentID == heatMapID){
 					if (heatMapOnStackAndHasPredecessor && heatMapOnStackAndHasSucessor){
-						
 					}
 					else if  (heatMapOnStackAndHasPredecessor || heatMapOnStackAndHasSucessor){
 						VisLinkAnimationStage bundlingLine = new VisLinkAnimationStage(true);
@@ -258,7 +252,8 @@ public class GLConsecutiveConnectionGraphDrawing
 	 */
 	private ArrayList<ArrayList<Vec3f>> getOptimalParCoordPointsCenter(HashMap<Integer, Vec3f> hashViewToCenterPoint, ArrayList<ArrayList<Vec3f>> heatMapPoints, int heatMapID, ArrayList<ArrayList<Vec3f>> parCoordsPoints, int parCoordID) {
 		ArrayList<ArrayList<Vec3f>> pointsList = new ArrayList<ArrayList<Vec3f>>();
-		ArrayList<Vec3f> optimalHeatMap = new ArrayList<Vec3f>();
+		ArrayList<Vec3f> optimalHeatMapPredecessor = new ArrayList<Vec3f>();
+		ArrayList<Vec3f> optimalHeatMapSucessor = new ArrayList<Vec3f>();
 		ArrayList<Vec3f> optimalParCoords = new ArrayList<Vec3f>();
 		boolean isHeatMap = false;
 		float minPath = Float.MAX_VALUE;
@@ -270,55 +265,64 @@ public class GLConsecutiveConnectionGraphDrawing
 		for (int count = 0; count < stackLevel.getCapacity(); count++) {
 			if (stackLevel.getElementByPositionIndex(count).getGLView() != null){
 				nextView = stackLevel.getElementByPositionIndex(count).getGLView().getID();
-					if (stackLevel.getElementByPositionIndex(count).getGLView() instanceof GLHeatMap)
-						isHeatMap = true;
+				if (stackLevel.getElementByPositionIndex(count).getGLView() instanceof GLHeatMap){
+					isHeatMap = true;
+					break;
+				}
+				else if (hashViewToCenterPoint.containsKey(nextView))
 					break;
 			}
 		}
 		//heatmap is first view to be visited, heatmap has no predecessor on the stack (only bundling to successor needed to be calculated)
 		if (isHeatMap) {
+			heatMapOnStackAndHasPredecessor = true;
 			for (int count = 0; count < stackLevel.getCapacity(); count++) {
 				if (stackLevel.getElementByPositionIndex(count).getGLView() instanceof GLHeatMap) {
-					if ((count < (stackLevel.getCapacity() - 1)) && count > 0) {
+					if (count < (stackLevel.getCapacity() - 1)) {
 						for (int reverseCount = (count +1); reverseCount < stackLevel.getCapacity(); reverseCount++){
 							if (stackLevel.getElementByPositionIndex(reverseCount).getGLView() != null){
 								successorID = stackLevel.getElementByPositionIndex(reverseCount).getGLView().getID();
+								heatMapOnStackAndHasSucessor = true;
 								break;
 							}
-						}
-					}
-					else if (count == 0){
-						for (int reverseCount = count+1; reverseCount < stackLevel.getCapacity(); reverseCount++){
-							if (stackLevel.getElementByPositionIndex(reverseCount).getGLView() != null){
-								successorID = stackLevel.getElementByPositionIndex(reverseCount).getGLView().getID();
-								break;
-							}
-						}
-					}
-				}
-				if (successorID > -1)
-					heatMapOnStackAndHasSucessor = true;
-				for (ArrayList<Vec3f> parCoordsList : parCoordsPoints) {
-					for (ArrayList<Vec3f> heatMapList : heatMapPoints) {
-						hashViewToCenterPoint.put(parCoordID, parCoordsList.get(0));
-						hashViewToCenterPoint.put(heatMapID, heatMapList.get(0));
-						Vec3f remoteBundlingPoint = heatMapList.get(0);
-						Vec3f distanceVec = remoteBundlingPoint.minus(parCoordsList.get(0));
-						currentPath = distanceVec.length();
-						if (currentPath < minPath) {
-							minPath = currentPath;
-							optimalHeatMap = heatMapList;
-							optimalParCoords = parCoordsList;
 						}
 					}
 				}
 			}
+			for (ArrayList<Vec3f> parCoordsList : parCoordsPoints) {
+				for (ArrayList<Vec3f> heatMapList : heatMapPoints) {
+					hashViewToCenterPoint.put(parCoordID, parCoordsList.get(0));
+					hashViewToCenterPoint.put(heatMapID, heatMapList.get(0));
+					Vec3f remoteBundlingPoint = heatMapList.get(0);
+					Vec3f distanceVec = remoteBundlingPoint.minus(parCoordsList.get(0));
+					currentPath = distanceVec.length();
+					if (currentPath < minPath) {
+						minPath = currentPath;
+						optimalHeatMapPredecessor = heatMapList;
+						optimalParCoords = parCoordsList;
+					}
+				}
+			}
+			if (heatMapOnStackAndHasSucessor){
+				for (ArrayList<Vec3f> heatMapList : heatMapPoints) {
+					hashViewToCenterPoint.put(heatMapID, heatMapList.get(0));
+					Vec3f remoteBundlingPoint = heatMapList.get(0);
+					Vec3f distanceVec = remoteBundlingPoint.minus(hashViewToCenterPoint.get(successorID));
+					currentPath = distanceVec.length();
+					if (currentPath < minPath) {
+						minPath = currentPath;
+						optimalHeatMapSucessor = heatMapList;
+					}
+				}
+			}
 		}
-		//the first view to be connected to is not the heatmap, so heatmap maybe has a successor and/or sucessor
-		else{
+		//the first view to be connected to is not the heatmap, so heatmap maybe has a predecessor and/or successor
+/*		else{
 			for (ArrayList<Vec3f> parCoordsList : parCoordsPoints) {
 				hashViewToCenterPoint.put(parCoordID, parCoordsList.get(0));
 				Vec3f remoteBundlingPoint = hashViewToCenterPoint.get(nextView);
+				if (remoteBundlingPoint == null)
+					return null;
 				Vec3f distanceVec = remoteBundlingPoint.minus(parCoordsList.get(0));
 				currentPath = distanceVec.length();
 				if (currentPath < minPath){
@@ -357,6 +361,7 @@ public class GLConsecutiveConnectionGraphDrawing
 				if (hashViewToCenterPoint.containsKey(predecessorID)){
 					heatMapOnStackAndHasPredecessor = true;
 					minPath = Float.MAX_VALUE;
+					Vec3f optimalPoint = new Vec3f();
 					//getting optimal point to predecessor
 					for (ArrayList<Vec3f> heatMapList : heatMapPoints) {
 						hashViewToCenterPoint.put(heatMapID, heatMapList.get(0));
@@ -365,13 +370,15 @@ public class GLConsecutiveConnectionGraphDrawing
 						currentPath = distanceVec.length();
 						if (currentPath < minPath){
 							minPath = currentPath;
-							optimalHeatMap.add(heatMapList.get(0));
+							 optimalPoint = heatMapList.get(0);
 						}
 					}
+					optimalHeatMap.add(optimalPoint);					
 				}
 				if (hashViewToCenterPoint.containsKey(successorID)){
 					heatMapOnStackAndHasSucessor = true;
 					minPath = Float.MAX_VALUE;
+					Vec3f optimalPoint = new Vec3f();
 					//getting optimal point to successor
 					for (ArrayList<Vec3f> heatMapList : heatMapPoints) {
 						hashViewToCenterPoint.put(heatMapID, heatMapList.get(0));
@@ -380,13 +387,17 @@ public class GLConsecutiveConnectionGraphDrawing
 						currentPath = distanceVec.length();
 						if (currentPath < minPath){
 							minPath = currentPath;
-							optimalHeatMap.add(heatMapList.get(0));
+							optimalPoint = heatMapList.get(0);
 						}
 					}
+					optimalHeatMap.add(optimalPoint);
 				}	
 			}
-		}
-		pointsList.add(optimalHeatMap);
+		}*/
+		if (heatMapOnStackAndHasPredecessor)
+			pointsList.add(optimalHeatMapPredecessor);
+		if (heatMapOnStackAndHasSucessor)
+			pointsList.add(optimalHeatMapSucessor);
 		pointsList.add(optimalParCoords);
 		return pointsList;
 
