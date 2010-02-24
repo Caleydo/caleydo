@@ -34,7 +34,10 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		drawNode(node, gl);
 		// System.out.println("Node wird dargestellt: " + node.nodeName);
-
+		
+	
+		
+		
 		if (node.getChildren() == null) {
 			return false;
 		}
@@ -46,7 +49,7 @@ public class DataWindowsDisk extends PoincareDisk {
 
 			// render the line:
 
-			drawLine(gl, node, children.get(i), 0);
+			drawLine(gl, node, children.get(i), 5);
 
 			renderNode(children.get(i), gl);
 		}
@@ -55,6 +58,9 @@ public class DataWindowsDisk extends PoincareDisk {
 	}
 
 	public void drawNode(PoincareNode node, GL gl) {
+		
+		
+		
 		drawCircle(gl, 0.05f, node.getProjectedPosition().getX()
 				+ (canvasWidth / 2), node.getProjectedPosition().getY()
 				+ canvasHeight / 2);
@@ -64,26 +70,36 @@ public class DataWindowsDisk extends PoincareDisk {
 	public void drawLine(GL gl, PoincareNode node1, PoincareNode node2,
 			int numberOfDetails) {
 
-		Point2D.Double startingPoint = node1.getPosition();
+	Point2D.Double startingPoint = node1.getPosition();
 		Point2D.Double endingPoint = node2.getPosition();
 		
-//		if(node1.getPosition().getX()==node1.getProjectedPosition().getX()){
-//			
-//			System.out.println("panic!!!:"+node1.nodeName);
-//		}
-//		else
-//		{
-//			System.out.println("keine panic!!!: "+node1.nodeName);
-//		}
+			
+		
+	
+		if(node1.getPosition().getX()==node1.getProjectedPosition().getX()){
+			
+			System.out.println("panic!!:"+node1.nodeName);
+		}
+		else
+		{
+			//System.out.println("keine panic!!: "+node1.nodeName);
+		}
+		
+		System.out.println("Posx: "+startingPoint.getX()+"|"+node1.getProjectedPosition().getX());
+		
+		
+		if(startingPoint.getX()==node1.getProjectedPosition().getX()){
+			//System.out.println("Panic!!!");
+		}
+			
 
-		gl.glBegin(GL.GL_LINES);
+
+		gl.glBegin(GL.GL_LINE_STRIP);
 		gl.glVertex3d(node1.getProjectedPosition().getX() + (canvasWidth / 2),
 				node1.getProjectedPosition().getY() + canvasHeight / 2, 0);
 
 		if (numberOfDetails != 0) {
-			// double lineLength = distancePoints(startingPoint,endingPoint);
 
-			// double relativeLineLenght = lineLength/(numberOfDetails+2);
 			Point2D.Double directionFactor = new Point2D.Double();
 			directionFactor.setLocation((endingPoint.getX() - startingPoint
 					.getX())
@@ -93,7 +109,7 @@ public class DataWindowsDisk extends PoincareDisk {
 
 			Point2D.Double tempLinePoint = new Point2D.Double();
 			tempLinePoint.setLocation(startingPoint);
-			Point2D.Double tempLinePoint2 = new Point2D.Double();
+			//Point2D.Double tempLinePoint2 = new Point2D.Double();
 			Point2D.Double projectedPoint;
 			System.out.println("startpunkt: " + startingPoint.getX() + "|"
 					+ startingPoint.getY());
@@ -103,16 +119,16 @@ public class DataWindowsDisk extends PoincareDisk {
 					+ directionFactor.getY());
 			
 			for (int i = 0; i < numberOfDetails; i++) {
+				Point2D.Double tempLinePoint2 = new Point2D.Double();
 				tempLinePoint2.setLocation(tempLinePoint.getX()
 						+ directionFactor.getX() * (i + 1), tempLinePoint
 						.getY()
 						+ directionFactor.getY() * (i + 1));
-				System.out.println("tempPunkt: " + tempLinePoint2.getX() + "|"
-						+ tempLinePoint2.getY());
-				projectedPoint = projectPoint(tempLinePoint2);
-				gl.glVertex3d(projectedPoint.getX() + (canvasWidth / 2),
-						projectedPoint.getY() + canvasHeight / 2, 0);
-
+			
+				
+				gl.glVertex3d(projectPoint(tempLinePoint2).getX() + (canvasWidth / 2),
+						projectPoint(tempLinePoint2).getY() + canvasHeight / 2, 0);
+				
 			}
 		}
 
@@ -132,7 +148,7 @@ public class DataWindowsDisk extends PoincareDisk {
 		double circleY = 0;
 		double i = 0;
 
-		gl.glBegin(GL.GL_LINES);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		for (double counter = 0; counter < 360; counter++) {
 			i = counter * Math.PI / 180;
 

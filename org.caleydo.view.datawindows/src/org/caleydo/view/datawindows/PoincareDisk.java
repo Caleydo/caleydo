@@ -67,9 +67,11 @@ public class PoincareDisk {
 
 	}
 
-	public Point2D.Double projectPoint(Point2D.Double coordinate) {
+	public Point2D.Double projectPoint(Point2D.Double point) {
 		radius = 2;
-
+		 Point2D.Double coordinate = new Point2D.Double();
+		 coordinate.setLocation(point);
+		 
 		double coordinateLength = coordinate.getX() * coordinate.getX()
 				+ coordinate.getY() * coordinate.getY();
 		coordinateLength = Math.sqrt(coordinateLength);
@@ -94,7 +96,7 @@ public class PoincareDisk {
 			
 			children.get(i).setProjectedPosition(
 					projectPoint(children.get(i).getPosition()));
-			System.out.println("name"+children.get(i).nodeName + "position vor projekt:" +children.get(i).getPosition().getX()+"|"+children.get(i).getPosition().getX());
+			
 			// recursion step
 			projectNode(children.get(i));
 		}
@@ -102,18 +104,9 @@ public class PoincareDisk {
 			System.out.println("Node projziert auf: "
 					+ children.get(i).getProjectedPosition().getX() + "|"
 					+ children.get(i).getProjectedPosition().getY());
-			PoincareNode node1 = children.get(i);
-			if(node1.getPosition().getX()==node1.getProjectedPosition().getX()){
-				
-				System.out.println("panic!!!:"+node1.nodeName);
-			}
-			else
-			{
-				System.out.println("keine panic!!!: "+node1.nodeName);
-			}
 		}
-		
 		return true;
+		
 	}
 
 	public void projectTree() {
