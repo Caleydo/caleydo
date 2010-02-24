@@ -36,6 +36,6 @@ public class SerializedScatterplotView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLScatterplot.VIEW_ID;
+		return GLScatterPlot.VIEW_ID;
 	}
 }

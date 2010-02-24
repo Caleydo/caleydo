@@ -52,7 +52,7 @@ public class RcpGLScatterplotView extends ARcpGLViewPart {
 
 	@Override
 	public String getViewGUIID() {
-		return GLScatterplot.VIEW_ID;
+		return GLScatterPlot.VIEW_ID;
 	}
 
 }

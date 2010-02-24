@@ -4,7 +4,7 @@ package org.caleydo.view.scatterplot.renderstyle;
 
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-import org.caleydo.view.scatterplot.GLScatterplot;
+import org.caleydo.view.scatterplot.GLScatterPlot;
 
 /**
  * ScatterPlot render styles
@@ -58,7 +58,7 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 
 	private float fSizeHeatmapArrow = 0.17f;
 
-	public ScatterPlotRenderStyle(GLScatterplot scatterPlot,
+	public ScatterPlotRenderStyle(GLScatterPlot scatterPlot,
 			IViewFrustum viewFrustum) {
 
 		super(viewFrustum);

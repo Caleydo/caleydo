@@ -7,7 +7,7 @@ import org.caleydo.rcp.view.toolbar.ActionToolBarContainer;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.ToolBarContainer;
 import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
-import org.caleydo.view.scatterplot.GLScatterplot;
+import org.caleydo.view.scatterplot.GLScatterPlot;
 import org.caleydo.view.scatterplot.actions.Toggle2AxisModeAction;
 import org.caleydo.view.scatterplot.actions.ToggleColorModeAction;
 import org.caleydo.view.scatterplot.actions.ToggleMatrixViewAction;
@@ -32,7 +32,7 @@ public class ScatterplotToolBarContent extends AToolBarContent {
 
 	@Override
 	public Class<?> getViewClass() {
-		return GLScatterplot.class;
+		return GLScatterPlot.class;
 	}
 
 	@Override

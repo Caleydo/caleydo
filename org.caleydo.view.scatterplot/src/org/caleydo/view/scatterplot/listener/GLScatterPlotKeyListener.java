@@ -2,15 +2,15 @@ package org.caleydo.view.scatterplot.listener;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
-import org.caleydo.view.scatterplot.GLScatterplot;
+import org.caleydo.view.scatterplot.GLScatterPlot;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 
-public class GLScatterPlotKeyListener extends GLKeyListener<GLScatterplot> {
+public class GLScatterPlotKeyListener extends GLKeyListener<GLScatterPlot> {
 
-	private GLScatterplot glScatterplot;
+	private GLScatterPlot glScatterplot;
 
-	public GLScatterPlotKeyListener(GLScatterplot glHeatMap) {
+	public GLScatterPlotKeyListener(GLScatterPlot glHeatMap) {
 
 		this.glScatterplot = glHeatMap;
 	}

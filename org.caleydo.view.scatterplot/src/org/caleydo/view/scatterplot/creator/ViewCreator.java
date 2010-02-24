@@ -5,7 +5,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.view.scatterplot.GLScatterplot;
+import org.caleydo.view.scatterplot.GLScatterPlot;
 import org.caleydo.view.scatterplot.SerializedScatterplotView;
 import org.caleydo.view.scatterplot.toolbar.ScatterplotToolBarContent;
 
@@ -19,7 +19,7 @@ public class ViewCreator extends AGLViewCreator {
 	public AGLView createGLView(GLCaleydoCanvas glCanvas, String label,
 			IViewFrustum viewFrustum) {
 
-		return new GLScatterplot(glCanvas, label, viewFrustum);
+		return new GLScatterPlot(glCanvas, label, viewFrustum);
 	}
 
 	@Override
