@@ -76,16 +76,9 @@ public class DataWindowsDisk extends PoincareDisk {
 			
 		
 	
-		if(node1.getPosition().getX()==node1.getProjectedPosition().getX()){
-			
-			System.out.println("panic!!:"+node1.nodeName);
-		}
-		else
-		{
-			//System.out.println("keine panic!!: "+node1.nodeName);
-		}
+	
 		
-		System.out.println("Posx: "+startingPoint.getX()+"|"+node1.getProjectedPosition().getX());
+		//System.out.println("Posx: "+startingPoint.getX()+"|"+node1.getProjectedPosition().getX());
 		
 		
 		if(startingPoint.getX()==node1.getProjectedPosition().getX()){
@@ -110,14 +103,14 @@ public class DataWindowsDisk extends PoincareDisk {
 			Point2D.Double tempLinePoint = new Point2D.Double();
 			tempLinePoint.setLocation(startingPoint);
 			//Point2D.Double tempLinePoint2 = new Point2D.Double();
-			Point2D.Double projectedPoint;
-			System.out.println("startpunkt: " + startingPoint.getX() + "|"
-					+ startingPoint.getY());
-			System.out.println("endpunkt: " + endingPoint.getX() + "|"
-					+ endingPoint.getY());
-			System.out.println("factor: " + directionFactor.getX() + "|"
-					+ directionFactor.getY());
-			
+		//	Point2D.Double projectedPoint;
+//			System.out.println("startpunkt: " + startingPoint.getX() + "|"
+//					+ startingPoint.getY());
+//			System.out.println("endpunkt: " + endingPoint.getX() + "|"
+//					+ endingPoint.getY());
+//			System.out.println("factor: " + directionFactor.getX() + "|"
+//					+ directionFactor.getY());
+//			
 			for (int i = 0; i < numberOfDetails; i++) {
 				Point2D.Double tempLinePoint2 = new Point2D.Double();
 				tempLinePoint2.setLocation(tempLinePoint.getX()

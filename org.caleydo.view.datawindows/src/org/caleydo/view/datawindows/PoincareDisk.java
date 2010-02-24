@@ -59,12 +59,70 @@ public class PoincareDisk {
 
 	}
 
-	public void translateTree() {
-
+	public void translateTree(Point2D.Double translationVector) {
+		PoincareNode root = tree.getRoot();
+		translateNode(root,translationVector);
+		projectTree();
+	}
+	
+	private boolean translateNode(PoincareNode node,Point2D.Double translationVector){
+		
+		node.setPosition(new Point2D.Double(node.getPosition().getX()+translationVector.getX(),node.getPosition().getY()+translationVector.getY()));
+		
+		if (tree.getChildren(node) == null) {
+			return false;
+		}
+		
+		System.out.println("scaliere Knoten: "+node.nodeName);
+		ArrayList<PoincareNode> children = tree.getChildren(node);
+		int numberOfChildren = children.size();
+		
+		
+		for (int i = 0; i < numberOfChildren; i++) {
+			
+			translateNode(children.get(i),translationVector);
+		}
+		return true;
 	}
 
 	public void scaleTree(double factor) {
-
+		PoincareNode root = tree.getRoot();
+		scaleNode(root,factor);
+		
+		projectTree();
+		
+		
+	}
+	
+	private boolean scaleNode(PoincareNode node,double factor){
+		if (tree.getChildren(node) == null) {
+			return false;
+		}
+		System.out.println("scaliere Knoten: "+node.nodeName);
+		ArrayList<PoincareNode> children = tree.getChildren(node);
+		int numberOfChildren = children.size();
+		
+		
+		for (int i = 0; i < numberOfChildren; i++) {
+			
+			children.get(i).setPosition(scalePoint(children.get(i).getPosition(),factor));
+			
+			
+			scaleNode(children.get(i),factor);
+		}
+		
+		
+		return true;
+		
+		
+	}
+	
+	private Point2D.Double scalePoint(Point2D.Double point,double factor)
+	{
+		Point2D.Double newPoint = new Point2D.Double(point.getX()*factor,point.getY()*factor);
+		
+		return newPoint;
+		
 	}
 
 	public Point2D.Double projectPoint(Point2D.Double point) {
@@ -111,7 +169,6 @@ public class PoincareDisk {
 
 	public void projectTree() {
 		if (dirtyTree) {
-
 			PoincareNode root = tree.getRoot();
 			Point2D.Double projectedPoint = new Point2D.Double(0, 0);
 			projectedPoint = projectPoint(root.getPosition());

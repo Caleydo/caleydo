@@ -76,7 +76,7 @@ public class GLDataWindows extends AGLView {
 	
 	private double [] projectedTestPointsX = new double[100];
 	private double [] projectedTestPointsY = new double[100];
-	
+	private boolean switch1=true;
 	
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(
 			0, 0);
@@ -113,7 +113,8 @@ public class GLDataWindows extends AGLView {
 		loadTree();
 	    disk = new DataWindowsDisk(2);
 		disk.loadTree();
-		
+		disk.scaleTree(0.9);
+		//disk.translateTree(new Point2D.Double(3,3));
 		
 		// ASerializedView serView = getSerializableRepresentation();
 		// newViews.add(serView);
@@ -243,13 +244,39 @@ public class GLDataWindows extends AGLView {
 		
 		//drawTree(gl);
 		
+		
 		disk.renderTree(gl, canvasWidth, canvasHeight);
 	
+		
+		
+		
+		if (glMouseListener.getPickedPoint() != null) {
+			mousePoint = glMouseListener.getPickedPoint();
 
+			gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+			double factorX = (double) canvasWidth / (double) viewport[2];
+			double factorY = (double) canvasHeight / (double) viewport[3];
+
+			mouseCoordX = (float) (mousePoint.getX() * factorX);
+			mouseCoordY = (float) (mousePoint.getY() * factorY);
+			
+			
+			
+		}
+		
+		
+		
+		
+	
 		 if (glMouseListener.wasRightMouseButtonPressed()){
-			 drawCircle(gl,1,2.5f,2.5f);
-			 
+
+			 disk.translateTree(new Point2D.Double(mouseCoordX-canvasWidth/2,mouseCoordY-canvasHeight/2));
 		 }
+		 if (glMouseListener.wasLeftMouseButtonPressed()){
+
+			 disk.translateTree(new Point2D.Double(-0.3,-0.3));
+		 }
+		 
 		// if (!containedGLViews.isEmpty()) {
 		//
 		// containedGLViews.get(0).displayRemote(gl);
