@@ -44,7 +44,7 @@ public class PoincareDisk {
 			PoincareNode tempNode2 = new PoincareNode(tree, "Child6 l1",
 					iCount--);
 			tree.addChild(tempNode, tempNode2);
-			PoincareNode tempNode3 = new PoincareNode(tree, "Child6 l1",
+			PoincareNode tempNode3 = new PoincareNode(tree, "Child7 l1",
 					iCount--);
 			tree.addChild(tempNode2, tempNode3);
 		}
@@ -52,7 +52,7 @@ public class PoincareDisk {
 		layoutTree();
 		scaleTree(treeScaleFactor);
 		projectTree();
-		
+
 	}
 
 	public void centerNode() {
@@ -61,75 +61,64 @@ public class PoincareDisk {
 
 	public void translateTree(Point2D.Double translationVector) {
 		PoincareNode root = tree.getRoot();
-		translateNode(root,translationVector);
+		translateNode(root, translationVector);
 		projectTree();
 	}
-	
-	private boolean translateNode(PoincareNode node,Point2D.Double translationVector){
-		
-		node.setPosition(new Point2D.Double(node.getPosition().getX()+translationVector.getX(),node.getPosition().getY()+translationVector.getY()));
-		
+
+	private boolean translateNode(PoincareNode node,
+			Point2D.Double translationVector) {
+
+		node.setPosition(new Point2D.Double(node.getPosition().getX()
+				+ translationVector.getX(), node.getPosition().getY()
+				+ translationVector.getY()));
+
 		if (tree.getChildren(node) == null) {
 			return false;
 		}
-		
-		System.out.println("scaliere Knoten: "+node.nodeName);
+
+		System.out.println("scaliere Knoten: " + node.nodeName);
 		ArrayList<PoincareNode> children = tree.getChildren(node);
 		int numberOfChildren = children.size();
-		
-		
+
 		for (int i = 0; i < numberOfChildren; i++) {
-			
-			translateNode(children.get(i),translationVector);
+
+			translateNode(children.get(i), translationVector);
 		}
 		return true;
 	}
 
 	public void scaleTree(double factor) {
 		PoincareNode root = tree.getRoot();
-		scaleNode(root,factor);
-		
+		scaleNode(root, factor);
 		projectTree();
-		
-		
 	}
-	
-	private boolean scaleNode(PoincareNode node,double factor){
+
+	private boolean scaleNode(PoincareNode node, double factor) {
 		if (tree.getChildren(node) == null) {
 			return false;
 		}
-		System.out.println("scaliere Knoten: "+node.nodeName);
+		System.out.println("scaliere Knoten: " + node.nodeName);
 		ArrayList<PoincareNode> children = tree.getChildren(node);
 		int numberOfChildren = children.size();
-		
-		
 		for (int i = 0; i < numberOfChildren; i++) {
-			
-			children.get(i).setPosition(scalePoint(children.get(i).getPosition(),factor));
-			
-			
-			scaleNode(children.get(i),factor);
+			children.get(i).setPosition(
+					scalePoint(children.get(i).getPosition(), factor));
+			// recursion step
+			scaleNode(children.get(i), factor);
 		}
-		
-		
 		return true;
-		
-		
 	}
-	
-	private Point2D.Double scalePoint(Point2D.Double point,double factor)
-	{
-		Point2D.Double newPoint = new Point2D.Double(point.getX()*factor,point.getY()*factor);
-		
+
+	private Point2D.Double scalePoint(Point2D.Double point, double factor) {
+		Point2D.Double newPoint = new Point2D.Double(point.getX() * factor,
+				point.getY() * factor);
 		return newPoint;
-		
 	}
 
 	public Point2D.Double projectPoint(Point2D.Double point) {
 		radius = 2;
-		 Point2D.Double coordinate = new Point2D.Double();
-		 coordinate.setLocation(point);
-		 
+		Point2D.Double coordinate = new Point2D.Double();
+		coordinate.setLocation(point);
 		double coordinateLength = coordinate.getX() * coordinate.getX()
 				+ coordinate.getY() * coordinate.getY();
 		coordinateLength = Math.sqrt(coordinateLength);
@@ -147,14 +136,11 @@ public class PoincareDisk {
 		if (tree.getChildren(parentNode) == null) {
 			return false;
 		}
-
 		ArrayList<PoincareNode> children = tree.getChildren(parentNode);
 		int numberOfChildren = children.size();
 		for (int i = 0; i < numberOfChildren; i++) {
-			
 			children.get(i).setProjectedPosition(
 					projectPoint(children.get(i).getPosition()));
-			
 			// recursion step
 			projectNode(children.get(i));
 		}
@@ -164,7 +150,7 @@ public class PoincareDisk {
 					+ children.get(i).getProjectedPosition().getY());
 		}
 		return true;
-		
+
 	}
 
 	public void projectTree() {
@@ -195,52 +181,56 @@ public class PoincareDisk {
 	// All angles are in radiant
 	private boolean layoutNode(PoincareNode parentNode, double angleOffset,
 			double angle) {
-		System.out.println("layoutNode " + parentNode.nodeName + " Called");
+		//System.out.println("layoutNode " + parentNode.nodeName + " Called");
 
 		if (tree.getChildren(parentNode) == null) {
-			System.out.println("no children");
+			//System.out.println("no children");
 			return false;
 		}
 
 		ArrayList<PoincareNode> children = tree.getChildren(parentNode);
 		int numberOfChildren = children.size();
-		double splitAngle = angle / (double) (numberOfChildren);
-		double absoluteAngle = angleOffset;
-		Point2D.Double newPoint = new Point2D.Double(0, 0);
+		
+		
+			double splitAngle = angle / (double) (numberOfChildren+2);
+		
+		
+			if (parentNode.iComparableValue == 1){
+				splitAngle = angle / (double) (numberOfChildren);
+			}
+			
+			
+			
+		double absoluteAngle = angleOffset-angle/2;
+	
 		Point2D.Double relativePoint = new Point2D.Double(0, 0);
-
+        System.out.println("number of children: " + numberOfChildren);
 		for (int i = 0; i < numberOfChildren; i++) {
-			newPoint = parentNode.getPosition();
+			absoluteAngle = absoluteAngle + splitAngle;
+			Point2D.Double newPoint = new Point2D.Double(parentNode.getPosition().getX(), parentNode.getPosition().getY());
+		
 			relativePoint = angleToCoordinate(absoluteAngle);
 			newPoint.setLocation(newPoint.getX() + relativePoint.getX(),
 					newPoint.getY() + relativePoint.getY());
 
 			children.get(i).setPosition(
-					new Point2D.Double(newPoint.getX() + relativePoint.getX(),
-							newPoint.getY() + relativePoint.getY()));
+					new Point2D.Double(newPoint.getX(),
+							newPoint.getY()));
 			System.out.println("Angle: " + absoluteAngle * 180 / Math.PI);
-			System.out.println("Node set to: "
-					+ children.get(i).getPosition().getX() + "|"
-					+ children.get(i).getPosition().getX());
-			// recursion step:
-			layoutNode(children.get(i), absoluteAngle, splitAngle);
-			absoluteAngle = absoluteAngle + splitAngle;
-		}
-
-		for (int i = 0; i < numberOfChildren; i++) {
-			// children.get(i).setPosition(new Point2D.Double((double)i,6));
-			System.out.println("Node is at: "
+			System.out.println("SplitAngle: " + splitAngle * 180 / Math.PI);
+			System.out.println("Node " +children.get(i).nodeName +" is set to: "
 					+ children.get(i).getPosition().getX() + "|"
 					+ children.get(i).getPosition().getY());
+			// recursion step:
+			layoutNode(children.get(i), absoluteAngle, splitAngle);
+			
 		}
-
 		return true;
 	}
 
 	private Point2D.Double angleToCoordinate(double angle) {
 		Point2D.Double coordinate = new Point2D.Double(0, 0);
 		coordinate.setLocation(Math.sin(angle), Math.cos(angle));
-
 		return coordinate;
 	}
 

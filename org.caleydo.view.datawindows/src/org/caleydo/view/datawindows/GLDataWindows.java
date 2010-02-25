@@ -64,19 +64,11 @@ public class GLDataWindows extends AGLView {
 	private RemoteLevel testLevel;
 
 
-	Tree<DefaultNode> tree;
+
 	private DataWindowsDisk disk;
 	
 	//properties of the circle
 	private double circleRadius=2;
-	
-	//Testdata for the circle:
-	private double [] testPointsX = new double[100];
-	private double [] testPointsY = new double[100];
-	
-	private double [] projectedTestPointsX = new double[100];
-	private double [] projectedTestPointsY = new double[100];
-	private boolean switch1=true;
 	
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(
 			0, 0);
@@ -96,9 +88,9 @@ public class GLDataWindows extends AGLView {
 		containedGLViews = new ArrayList<AGLView>();
 		newViews = new ArrayList<ASerializedView>();
 
-		this.tracker = new TrackDataProvider();
-
-		tracker.startTracking();
+		//preparing the eyetracker
+		//this.tracker = new TrackDataProvider();
+		//tracker.startTracking();
 
 		//remote test
 		//testLevel = new RemoteLevel(1, "testview", testLevel, testLevel);
@@ -110,10 +102,10 @@ public class GLDataWindows extends AGLView {
 		
 
 		//debug
-		loadTree();
+	
 	    disk = new DataWindowsDisk(2);
 		disk.loadTree();
-		disk.scaleTree(0.9);
+		disk.scaleTree(2);
 		//disk.translateTree(new Point2D.Double(3,3));
 		
 		// ASerializedView serView = getSerializableRepresentation();
@@ -238,11 +230,6 @@ public class GLDataWindows extends AGLView {
 		//initNewView(gl);
 
 		//renderRemoteLevel(gl, testLevel);
-
-		//draws the Poincare disk
-		drawCircle(gl,circleRadius,(double)canvasWidth/2,(double)canvasHeight/2);
-		
-		//drawTree(gl);
 		
 		
 		disk.renderTree(gl, canvasWidth, canvasHeight);
@@ -367,8 +354,6 @@ public class GLDataWindows extends AGLView {
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
-			
-			
 			return;
 		}
 	}
@@ -486,130 +471,4 @@ public class GLDataWindows extends AGLView {
 		return glView;
 	}
 	
-	private void loadTree() {
-
-		// generate test points for the circle
-		//Random r = new Random();
-	
-		Point tempPoint = new Point(0, 0);
-		Point nullPoint = new Point(0, 0);
-		Random r = new Random();
-		double tempX=0;
-		double tempY=0;
-		
-	
-		
-		for (int i = 0; i < 100; i++) {
-			
-			
-			tempX=r.nextDouble()*100-50;
-			tempY=r.nextDouble()*100-50;
-			
-			
-			testPointsX[i] = tempX;
-            testPointsY[i] = tempY;
-            
-			
-			//testPoints.add(tempPoint);
-			
-			
-			
-			
-		}
-
-
-		
-		
-
-
-	}
-
-	private void drawTree(GL gl) {
-		projectTree();
-		
-		double x;
-		double y;
-	
-		for(int i=0; i<100;i++) {
-			x=projectedTestPointsX[i];
-			y=projectedTestPointsY[i];
-			drawCircle(gl,0.1f,x+canvasWidth/2,y+canvasHeight/2);
-		
-		}
-		
-		
-	}	
-	
-	private void drawCircle(GL gl,double radius,double k, double h) {
-	    //code from http://www.swiftless.com/tutorials/opengl/circle.html //20.2.2010
-		double circleX=0;
-		double circleY=0;
-		double i=0;
-		
-		gl.glBegin(GL.GL_LINES);
-	    for (double counter = 0; counter < 360; counter++)
-	    {
-	    i=counter*Math.PI/180;
-	   
-	    circleX = radius * Math.cos(i);
-	    circleY = radius * Math.sin(i) ;
-	    gl.glVertex3d(circleX + k,circleY + h,0);
-	    
-	    circleX = radius * Math.cos(i + Math.PI/180) ;
-	    circleY = radius * Math.sin(i + Math.PI/180) ;
-	    gl.glVertex3d(circleX + k,circleY + h,0);
-	    }
-	    gl.glEnd();
-	}
-	
-	private void convertCoordinates() {
-		
-	}
-	
-	private void PicNode() {
-		
-	}
-	
-	private void translateTree(Point2D.Double translation) {
-		for(int i=0; i<100;i++) {
-			testPointsX[i] = testPointsX[i]+translation.getX();
-			testPointsY[i] = testPointsY[i]+translation.getY();
-		}
-	}
-	
-	private void drawLine() {
-	}
-	
-	private Point2D.Double projectPoint(Point2D.Double coordinate) {
-		
-		double coordinateLength = coordinate.getX()*coordinate.getX()+coordinate.getY()*coordinate.getY();
-		coordinateLength = Math.sqrt(coordinateLength);
-		
-		double radiussquare = circleRadius*circleRadius;
-		
-		double projectionFactor = (2*radiussquare)/(radiussquare+coordinateLength);
-		
-		//System.out.println("abstand projektion: "+projectionFactor*coordinateLength);
-		
-		coordinate.setLocation(coordinate.getX()*projectionFactor/7*2, coordinate.getY()*projectionFactor/7*2);
-		return coordinate;
-	}
-	
-	private void projectTree() {
-		Point2D.Double tempPoint=new Point2D.Double(0,0);
-	
-		double x=0;
-		double y=0;
-		for(int i=0; i<100;i++) {
-			
-			tempPoint.setLocation(testPointsX[i],testPointsY[i]);
-			
-			tempPoint = projectPoint(tempPoint);
-			projectedTestPointsX[i]=tempPoint.getX();
-			projectedTestPointsY[i]=tempPoint.getY();
-		}
-		
-		
-		
-	}
 }

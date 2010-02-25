@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.graph.tree.DefaultNode;
 import org.caleydo.core.data.graph.tree.Tree;
 
 public class DataWindowsDisk extends PoincareDisk {
@@ -13,31 +12,33 @@ public class DataWindowsDisk extends PoincareDisk {
 	// Tree<PoincareNode> tree;
 	private double canvasWidth;
 	private double canvasHeight;
+	private GL gl;
 
 	public DataWindowsDisk(double diskRadius) {
 		super(diskRadius);
 
 	}
 
-	public void renderTree(GL gl, float viewingWidth, float viewingHeight) {
-
-		canvasWidth = (double) viewingWidth;
-		canvasHeight = (double) viewingHeight;
-
+	public void renderTree(GL glHandle, double viewingWidth, double viewingHeight) {
+		 System.out.println("Baum wird gezeichnet: ");
+		gl = glHandle;
+		canvasWidth = viewingWidth;
+		canvasHeight = viewingHeight;
 		PoincareNode root = getTree().getRoot();
-
-		renderNode(root, gl);
+		renderNode(root);
 
 	}
 
-	public boolean renderNode(PoincareNode node, GL gl) {
+	public boolean renderNode(PoincareNode node) {
 
-		drawNode(node, gl);
-		// System.out.println("Node wird dargestellt: " + node.nodeName);
-		
-	
-		
-		
+		drawNode(node);
+		 System.out.println("Node wird dargestellt: " + node.nodeName);
+		 System.out.println("An Position: " + node.getPosition().getX()+ "|" + node.getPosition().getY());
+		 System.out.println("An projezierter Position: " + node.getProjectedPosition().getX()+ "|" + node.getProjectedPosition().getY());
+		 
+		 
+		 
+		 
 		if (node.getChildren() == null) {
 			return false;
 		}
@@ -48,51 +49,30 @@ public class DataWindowsDisk extends PoincareDisk {
 		for (int i = 0; i < numberOfChildren; i++) {
 
 			// render the line:
-
-			drawLine(gl, node, children.get(i), 5);
-
-			renderNode(children.get(i), gl);
+			drawLine(node, children.get(i), 5);
+			renderNode(children.get(i));
 		}
 
 		return true;
 	}
 
-	public void drawNode(PoincareNode node, GL gl) {
-		
-		
-		
-		drawCircle(gl, 0.05f, node.getProjectedPosition().getX()
+	public void drawNode(PoincareNode node) {
+		drawCircle(0.05f, node.getProjectedPosition().getX()
 				+ (canvasWidth / 2), node.getProjectedPosition().getY()
 				+ canvasHeight / 2);
-		// System.out.println("node drawn at"+node.getProjectedPosition().getX()+2.5f+"|"+node.getProjectedPosition().getY()+2.5f);
 	}
 
-	public void drawLine(GL gl, PoincareNode node1, PoincareNode node2,
+	public void drawLine(PoincareNode node1, PoincareNode node2,
 			int numberOfDetails) {
 
-	Point2D.Double startingPoint = node1.getPosition();
+		Point2D.Double startingPoint = node1.getPosition();
 		Point2D.Double endingPoint = node2.getPosition();
 		
-			
-		
-	
-	
-		
-		//System.out.println("Posx: "+startingPoint.getX()+"|"+node1.getProjectedPosition().getX());
-		
-		
-		if(startingPoint.getX()==node1.getProjectedPosition().getX()){
-			//System.out.println("Panic!!!");
-		}
-			
-
-
 		gl.glBegin(GL.GL_LINE_STRIP);
 		gl.glVertex3d(node1.getProjectedPosition().getX() + (canvasWidth / 2),
 				node1.getProjectedPosition().getY() + canvasHeight / 2, 0);
-
+		//draw the curve:
 		if (numberOfDetails != 0) {
-
 			Point2D.Double directionFactor = new Point2D.Double();
 			directionFactor.setLocation((endingPoint.getX() - startingPoint
 					.getX())
@@ -101,27 +81,19 @@ public class DataWindowsDisk extends PoincareDisk {
 							/ (numberOfDetails + 1));
 
 			Point2D.Double tempLinePoint = new Point2D.Double();
-			tempLinePoint.setLocation(startingPoint);
-			//Point2D.Double tempLinePoint2 = new Point2D.Double();
-		//	Point2D.Double projectedPoint;
-//			System.out.println("startpunkt: " + startingPoint.getX() + "|"
-//					+ startingPoint.getY());
-//			System.out.println("endpunkt: " + endingPoint.getX() + "|"
-//					+ endingPoint.getY());
-//			System.out.println("factor: " + directionFactor.getX() + "|"
-//					+ directionFactor.getY());
-//			
+			tempLinePoint.setLocation(startingPoint);	
 			for (int i = 0; i < numberOfDetails; i++) {
 				Point2D.Double tempLinePoint2 = new Point2D.Double();
 				tempLinePoint2.setLocation(tempLinePoint.getX()
 						+ directionFactor.getX() * (i + 1), tempLinePoint
 						.getY()
 						+ directionFactor.getY() * (i + 1));
-			
-				
-				gl.glVertex3d(projectPoint(tempLinePoint2).getX() + (canvasWidth / 2),
-						projectPoint(tempLinePoint2).getY() + canvasHeight / 2, 0);
-				
+
+				gl.glVertex3d(projectPoint(tempLinePoint2).getX()
+						+ (canvasWidth / 2), projectPoint(tempLinePoint2)
+						.getY()
+						+ canvasHeight / 2, 0);
+
 			}
 		}
 
@@ -134,7 +106,7 @@ public class DataWindowsDisk extends PoincareDisk {
 
 	}
 
-	private void drawCircle(GL gl, double radius, double k, double h) {
+	private void drawCircle(double radius, double k, double h) {
 		// code from http://www.swiftless.com/tutorials/opengl/circle.html
 		// //20.2.2010
 		double circleX = 0;
