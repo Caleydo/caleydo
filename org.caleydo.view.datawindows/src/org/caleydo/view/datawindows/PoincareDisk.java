@@ -29,24 +29,28 @@ public class PoincareDisk {
 		PoincareNode node = new PoincareNode(tree, "Root", 1);
 
 		tree.setRootNode(node);
+		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
+		tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
+		tree.addChild(node, new PoincareNode(tree, "Child3 l1", 5));
 		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 1));
 		tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
 		tree.addChild(node, new PoincareNode(tree, "Child3 l1", 5));
 
-		int iCount = 19;
+		int iCount = 344;
 		for (PoincareNode tempNode : tree.getChildren(node)) {
 			tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
 					iCount--));
 			tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
 					iCount--));
-			tree.addChild(tempNode, new PoincareNode(tree, "Child5 l1",
-					iCount--));
+			
+			
 			PoincareNode tempNode2 = new PoincareNode(tree, "Child6 l1",
 					iCount--);
 			tree.addChild(tempNode, tempNode2);
-			PoincareNode tempNode3 = new PoincareNode(tree, "Child7 l1",
-					iCount--);
-			tree.addChild(tempNode2, tempNode3);
+		
+			tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
+					iCount--));
+			
 		}
 
 		layoutTree();
@@ -202,12 +206,14 @@ public class PoincareDisk {
 			
 			
 		double absoluteAngle = angleOffset-angle/2;
-	
+	double length=1;
+	length=0.5/Math.sin(splitAngle/2);
+		
 		Point2D.Double relativePoint = new Point2D.Double(0, 0);
         System.out.println("number of children: " + numberOfChildren);
 		for (int i = 0; i < numberOfChildren; i++) {
 			absoluteAngle = absoluteAngle + splitAngle;
-			Point2D.Double newPoint = new Point2D.Double(parentNode.getPosition().getX(), parentNode.getPosition().getY());
+			Point2D.Double newPoint = new Point2D.Double(parentNode.getPosition().getX()*length, parentNode.getPosition().getY()*length);
 		
 			relativePoint = angleToCoordinate(absoluteAngle);
 			newPoint.setLocation(newPoint.getX() + relativePoint.getX(),

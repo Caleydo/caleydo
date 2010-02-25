@@ -32,6 +32,8 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.view.parcoords.PCRenderStyle;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
 
@@ -152,6 +154,8 @@ public class GLDataWindows extends AGLView {
 		// if (set == null)
 		// return;
 
+		pickingManager.handlePicking(this, gl);
+		
 		if (bIsDisplayListDirtyLocal) {
 
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
@@ -189,8 +193,32 @@ public class GLDataWindows extends AGLView {
 		 gl.glMatrixMode(GL.GL_MODELVIEW);
 		 gl.glLoadIdentity();
 		//
-		
 		 
+
+
+		
+		Vec3f lowerLeftCorner = new Vec3f(-1 + canvasWidth / 2, -1
+				+ canvasHeight / 2, 0);
+
+		Vec3f lowerRightCorner = new Vec3f(1 + canvasWidth / 2, -1
+				+ canvasHeight / 2, 0);
+		Vec3f upperRightCorner = new Vec3f(1 + canvasWidth / 2,
+				1 + canvasHeight / 2, 0);
+		Vec3f upperLeftCorner = new Vec3f(-1 + canvasWidth / 2,
+				1 + canvasHeight / 2, 0);
+		Vec3f scalingPivot = new Vec3f(1, 1, 0);
+
+		int iPickingID = pickingManager.getPickingID(iUniqueID,
+				EPickingType.REMOVE_NAN, 1);
+		
+		gl.glPushName(iPickingID);
+		//displaying test texture for picking
+		textureManager.renderGUITexture(gl, EIconTextures.PATHWAY_SYMBOL,
+				lowerLeftCorner, lowerRightCorner, upperRightCorner,
+				upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
+
+		gl.glPopName();
+			
 		 //System.out.println("mouseZeiger:"+mousePoint.getX()+"|"+mousePoint.getY());
 		 
 		 //
@@ -356,6 +384,22 @@ public class GLDataWindows extends AGLView {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
+		
+		SelectionType selectionType;
+		switch (ePickingType) {
+
+		case REMOVE_NAN:
+			switch (pickingMode) {
+
+			case CLICKED:
+				if (iExternalID==1)
+				{
+				disk.scaleTree(0.5);
+				System.out.println("CLICKED!!!");
+				}
+			}
+		}
+		
 	}
 
 	@Override

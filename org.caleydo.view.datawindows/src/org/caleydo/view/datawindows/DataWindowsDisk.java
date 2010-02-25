@@ -20,7 +20,7 @@ public class DataWindowsDisk extends PoincareDisk {
 	}
 
 	public void renderTree(GL glHandle, double viewingWidth, double viewingHeight) {
-		 System.out.println("Baum wird gezeichnet: ");
+//		 System.out.println("Baum wird gezeichnet: ");
 		gl = glHandle;
 		canvasWidth = viewingWidth;
 		canvasHeight = viewingHeight;
@@ -32,10 +32,10 @@ public class DataWindowsDisk extends PoincareDisk {
 	public boolean renderNode(PoincareNode node) {
 
 		drawNode(node);
-		 System.out.println("Node wird dargestellt: " + node.nodeName);
-		 System.out.println("An Position: " + node.getPosition().getX()+ "|" + node.getPosition().getY());
-		 System.out.println("An projezierter Position: " + node.getProjectedPosition().getX()+ "|" + node.getProjectedPosition().getY());
-		 
+//		 System.out.println("Node wird dargestellt: " + node.nodeName);
+//		 System.out.println("An Position: " + node.getPosition().getX()+ "|" + node.getPosition().getY());
+//		 System.out.println("An projezierter Position: " + node.getProjectedPosition().getX()+ "|" + node.getProjectedPosition().getY());
+//		 
 		 
 		 
 		 
@@ -49,7 +49,7 @@ public class DataWindowsDisk extends PoincareDisk {
 		for (int i = 0; i < numberOfChildren; i++) {
 
 			// render the line:
-			drawLine(node, children.get(i), 5);
+			drawLine(node, children.get(i), 15);
 			renderNode(children.get(i));
 		}
 
@@ -69,6 +69,9 @@ public class DataWindowsDisk extends PoincareDisk {
 		Point2D.Double endingPoint = node2.getPosition();
 		
 		gl.glBegin(GL.GL_LINE_STRIP);
+		gl.glColor3i(0, 0, 0);
+		gl.glLineWidth(10);
+		
 		gl.glVertex3d(node1.getProjectedPosition().getX() + (canvasWidth / 2),
 				node1.getProjectedPosition().getY() + canvasHeight / 2, 0);
 		//draw the curve:
