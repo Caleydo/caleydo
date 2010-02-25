@@ -96,9 +96,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		// storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
 		heatMapLayoutLeft = new HeatMapLayoutLeft();
 		heatMapLayoutRight = new HeatMapLayoutRight();
-		leftHeatMapWrapper = new HeatMapWrapper(0, heatMapLayoutLeft);
+		leftHeatMapWrapper = new HeatMapWrapper(0, heatMapLayoutLeft, this,
+				null, useCase, this, dataDomain);
 		hashHeatMapWrappers.put(0, leftHeatMapWrapper);
-		rightHeatMapWrapper = new HeatMapWrapper(1, heatMapLayoutRight);
+		rightHeatMapWrapper = new HeatMapWrapper(1, heatMapLayoutRight, this,
+				null, useCase, this, dataDomain);
 		hashHeatMapWrappers.put(1, rightHeatMapWrapper);
 		leftHeatMapWrapper.init(gl, this, glMouseListener, null, useCase, this,
 				dataDomain);
@@ -195,7 +197,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 				|| rightHeatMapWrapper.handleDragging(gl, glMouseListener)) {
 			setDisplayListDirty();
 		}
-		
+
 		gl.glCallList(iGLDisplayListToCall);
 		leftHeatMapWrapper.drawRemoteItems(gl);
 		rightHeatMapWrapper.drawRemoteItems(gl);
@@ -355,9 +357,9 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			node = tree.getNodeByNumber(nodeID);
 			pathToRoot = node.getParentPath(tree.getRoot());
 
-			// Remove last because it is root bundling 
-			pathToRoot.remove(pathToRoot.size()-1);
-			
+			// Remove last because it is root bundling
+			pathToRoot.remove(pathToRoot.size() - 1);
+
 			for (ClusterNode pathNode : pathToRoot) {
 				Vec3f nodePos = pathNode.getPos();
 				points.add(nodePos);
@@ -369,13 +371,13 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			node = tree.getNodeByNumber(nodeID);
 			pathToRoot = node.getParentPath(tree.getRoot());
 
-			// Remove last because it is root bundling 
-			pathToRoot.remove(pathToRoot.size()-1);
-			
+			// Remove last because it is root bundling
+			pathToRoot.remove(pathToRoot.size() - 1);
+
 			for (ClusterNode pathNode : pathToRoot) {
 				Vec3f nodePos = pathNode.getPos();
 				points.add(nodePos);
-				break; //FIXME: REMOVE BREAK
+				break; // FIXME: REMOVE BREAK
 			}
 
 			// Center point
@@ -413,7 +415,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		ClusterNode rootNode = tree.getRoot();
 
 		determineTreePositions(rootNode, tree);
-		//renderDendrogram(gl, rootNode, 1, tree, xPosInitLeft);
+		// renderDendrogram(gl, rootNode, 1, tree, xPosInitLeft);
 
 		// Right hierarchy
 		xPosInitRight = viewFrustum.getWidth()
@@ -425,7 +427,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		rootNode = tree.getRoot();
 
 		determineTreePositions(rootNode, tree);
-		//renderDendrogram(gl, rootNode, 1, tree, xPosInitRight);
+		// renderDendrogram(gl, rootNode, 1, tree, xPosInitRight);
 	}
 
 	private void renderDendrogram(final GL gl, ClusterNode currentNode,
@@ -608,6 +610,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		return pos;
 	}
+
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
@@ -676,7 +679,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			HeatMapWrapper heatMapWrapper = hashHeatMapWrappers
 					.get(iExternalID);
 			if (heatMapWrapper != null) {
-				heatMapWrapper.handleOverviewSliderSelection(ePickingType, pickingMode);
+				heatMapWrapper.handleOverviewSliderSelection(ePickingType,
+						pickingMode);
 			}
 			break;
 
@@ -760,14 +764,14 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		setsToCompare.addAll(sets);
 
 		ClusterState clusterState = new ClusterState();
-		 clusterState.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
-		 clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-		 clusterState.setAffinityPropClusterFactorGenes(5);
-		 clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		clusterState.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
+		clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
+		clusterState.setAffinityPropClusterFactorGenes(5);
+		clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 
-//		 clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
-//		 clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-//		 clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		// clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
+		// clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
+		// clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 
 		for (ISet set : sets) {
 			set.cluster(clusterState);

@@ -1,8 +1,8 @@
 package org.caleydo.view.compare;
 
-import java.util.ArrayList;
-
 import gleem.linalg.Vec3f;
+
+import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
@@ -32,12 +32,12 @@ public class HeatMapOverview {
 	private ISet set;
 	private ContentVirtualArray contentVA;
 	private StorageVirtualArray storageVA;
-	private ArrayList<Pair<Integer, Integer>> selectedGroupBounds;
+	private ArrayList<Pair<Integer, Pair<Integer, Integer>>> selectedGroups;
 
 	public HeatMapOverview(HeatMapLayout layout) {
 		this.layout = layout;
 		slider = new VerticalSlider(layout);
-		selectedGroupBounds = new ArrayList<Pair<Integer, Integer>>();
+		selectedGroups = new ArrayList<Pair<Integer, Pair<Integer, Integer>>>();
 	}
 
 	public void draw(GL gl, TextureManager textureManager,
@@ -88,20 +88,25 @@ public class HeatMapOverview {
 		ContentGroupList contentGroupList = contentVA.getGroupList();
 		int groupSampleStartIndex = 0;
 		int groupSampleEndIndex = 0;
-		selectedGroupBounds.clear();
+		int groupID = 0;
+		selectedGroups.clear();
 		for (Group group : contentGroupList) {
 			groupSampleEndIndex = groupSampleStartIndex + group.getNrElements()
 					- 1;
 			if (groupSampleStartIndex >= lowerBoundIndex
 					&& groupSampleEndIndex <= upperBoundIndex) {
 				group.setSelectionType(SelectionType.SELECTION);
-				selectedGroupBounds.add(new Pair<Integer, Integer>(
-						groupSampleStartIndex, groupSampleEndIndex));
+				Pair<Integer, Pair<Integer, Integer>> groupIDAndBounds = new Pair<Integer, Pair<Integer, Integer>>();
+				groupIDAndBounds.setFirst(groupID);
+				groupIDAndBounds.setSecond(new Pair<Integer, Integer>(groupSampleStartIndex,
+						groupSampleEndIndex));
+				selectedGroups.add(groupIDAndBounds);
 			} else {
 				group.setSelectionType(SelectionType.NORMAL);
 			}
-			
+
 			groupSampleStartIndex += group.getNrElements();
+			groupID++;
 		}
 	}
 
@@ -147,8 +152,8 @@ public class HeatMapOverview {
 		overviewTextures = HeatMapUtil.createHeatMapTextures(set, contentVA,
 				storageVA, null);
 	}
-	
-	public ArrayList<Pair<Integer, Integer>> getSelectedGroupBounds() {
-		return selectedGroupBounds;
+
+	public ArrayList<Pair<Integer, Pair<Integer, Integer>>> getSelectedGroups() {
+		return selectedGroups;
 	}
 }

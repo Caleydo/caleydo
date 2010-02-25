@@ -4,6 +4,7 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
@@ -37,7 +38,7 @@ import org.caleydo.view.heatmap.GLHeatMap;
 
 public class HeatMapWrapper {
 
-	private GLHeatMap heatMap;
+	// private GLHeatMap heatMap;
 	private HeatMapOverview overview;
 	private ISet set;
 	private IGeneralManager generalManager;
@@ -45,23 +46,35 @@ public class HeatMapWrapper {
 	private StorageVirtualArray storageVA;
 	private HeatMapLayout layout;
 	private ArrayList<ContentVirtualArray> heatMapVAs;
+	private HashMap<Integer, GLHeatMap> hashHeatMaps;
+	private ArrayList<Pair<Integer, Pair<Integer, Integer>>> selectedGroups;
 	private int id;
 	private boolean useDetailView;
 
-	// private Vec3f position;
-	// private float width;
-	// private float height;
+	private AGLView glParentView;
+	private GLInfoAreaManager infoAreaManager;
+	private IUseCase useCase;
+	private IGLRemoteRenderingView parentView;
+	private EDataDomain dataDomain;
 
-	public HeatMapWrapper(int id, HeatMapLayout layout) {
+	public HeatMapWrapper(int id, HeatMapLayout layout, AGLView glParentView,
+			GLInfoAreaManager infoAreaManager, IUseCase useCase,
+			IGLRemoteRenderingView parentView, EDataDomain dataDomain) {
 		generalManager = GeneralManager.get();
 		heatMapVAs = new ArrayList<ContentVirtualArray>();
 		overview = new HeatMapOverview(layout);
+		hashHeatMaps = new HashMap<Integer, GLHeatMap>();
+		selectedGroups = new ArrayList<Pair<Integer, Pair<Integer, Integer>>>();
 		this.layout = layout;
 		this.id = id;
+		this.glParentView = glParentView;
+		this.infoAreaManager = infoAreaManager;
+		this.useCase = useCase;
+		this.parentView = parentView;
+		this.dataDomain = dataDomain;
 	}
 
-	private void createHeatMap(IUseCase useCase,
-			IGLRemoteRenderingView parentView, EDataDomain dataDomain) {
+	private GLHeatMap createHeatMap(GL gl, GLMouseListener glMouseListener) {
 
 		CmdCreateView cmdView = (CmdCreateView) generalManager
 				.getCommandManager().createCommandByType(
@@ -73,30 +86,33 @@ public class HeatMapWrapper {
 
 		cmdView.doCommand();
 
-		heatMap = (GLHeatMap) cmdView.getCreatedObject();
+		GLHeatMap heatMap = (GLHeatMap) cmdView.getCreatedObject();
 		heatMap.setUseCase(useCase);
 		heatMap.setRemoteRenderingGLView(parentView);
-
+		heatMap.setSet(set);
 		heatMap.setDataDomain(dataDomain);
 		heatMap.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
 		heatMap.initData();
 		heatMap.setDetailLevel(EDetailLevel.MEDIUM);
+		heatMap.initRemote(gl, glParentView, glMouseListener, infoAreaManager);
+		heatMap.useFishEye(false);
 
+		return heatMap;
 	}
 
 	public void setSet(ISet set) {
 		this.set = set;
 		contentVA = set.getContentVA(ContentVAType.CONTENT);
 		storageVA = set.getStorageVA(StorageVAType.STORAGE);
-		heatMap.setSet(set);
-		setEmbeddedHeatMapData(0, 10);
-		heatMap.useFishEye(false);
-		heatMap.setDisplayListDirty();
+		hashHeatMaps.clear();
+
+		// heatMap.useFishEye(false);
+		// heatMap.setDisplayListDirty();
 
 		overview.setSet(set);
 
 		// FIXME: Just for testing
-		if (contentVA.size() > 40) {
+		if (contentVA.size() > 80) {
 			ContentGroupList groupList = new ContentGroupList();
 			contentVA.setGroupList(groupList);
 			Group temp = new Group(5, false, 0, SelectionType.NORMAL);
@@ -109,7 +125,7 @@ public class HeatMapWrapper {
 			groupList.append(temp);
 			temp = new Group(30, false, 0, SelectionType.NORMAL);
 			groupList.append(temp);
-			temp = new Group(contentVA.size() - 40, false, 0,
+			temp = new Group(contentVA.size() - 80, false, 0,
 					SelectionType.NORMAL);
 			groupList.append(temp);
 		}
@@ -119,34 +135,26 @@ public class HeatMapWrapper {
 			GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager,
 			IUseCase useCase, IGLRemoteRenderingView parentView,
 			EDataDomain dataDomain) {
-		createHeatMap(useCase, parentView, dataDomain);
-		heatMap.initRemote(gl, glParentView, glMouseListener, infoAreaManager);
-		heatMap.useFishEye(false);
+		// createHeatMap(useCase, parentView, dataDomain);
+
 	}
 
-	private void setEmbeddedHeatMapData(int firstSampleIndex,
-			int lastSampleIndex) {
+	private void setEmbeddedHeatMapData(GLHeatMap heatMap,
+			int firstSampleIndex, int lastSampleIndex) {
 
 		// TODO: Is this really necessary?
 		heatMap.resetView();
-		// ContentVADelta delta = new ContentVADelta(
-		// ContentVAType.CONTENT_EMBEDDED_HM, EIDType.EXPRESSION_INDEX);
 		ContentVirtualArray va = new ContentVirtualArray();
 
 		for (int i = firstSampleIndex; i <= lastSampleIndex; i++) {
 			if (i >= contentVA.size())
 				break;
 			va.append(contentVA.get(i));
-			// delta.add(VADeltaItem.append(contentIndex));
+
 		}
 		heatMapVAs.clear();
 		heatMapVAs.add(va);
-		// for (int i = 10; i < contentVA.size(); i++) {
-		// int contentIndex = contentVA.get(i);
-		// delta.add(VADeltaItem.removeElement(contentIndex));
-		// }
 
-		// heatMap.handleContentVAUpdate(delta, "");
 		heatMap.setContentVA(va);
 		heatMap.useFishEye(false);
 	}
@@ -160,21 +168,45 @@ public class HeatMapWrapper {
 
 	public void drawRemoteItems(GL gl) {
 
-		if (useDetailView) {
-			Vec3f detailPosition = layout.getDetailPosition();
-			gl.glTranslatef(detailPosition.x(), detailPosition.y(),
-					detailPosition.z());
+		// if (useDetailView) {
+		Vec3f detailPosition = layout.getDetailPosition();
+
+		float currentPositionY = detailPosition.y() + layout.getDetailHeight();
+		int numTotalSamples = 0;
+		for (Pair<Integer, Pair<Integer, Integer>> groupWithBounds : selectedGroups) {
+			int numSamplesInHeatMap = (groupWithBounds.getSecond().getSecond() - groupWithBounds
+					.getSecond().getFirst()) + 1;
+			numTotalSamples += numSamplesInHeatMap;
+		}
+
+		for (Pair<Integer, Pair<Integer, Integer>> groupWithBounds : selectedGroups) {
+
+			GLHeatMap heatMap = hashHeatMaps.get(groupWithBounds.getFirst());
+			if(heatMap == null)
+				continue;
+			int numSamplesInHeatMap = (groupWithBounds.getSecond().getSecond() - groupWithBounds
+					.getSecond().getFirst()) + 1;
+			float heatMapHeight = layout
+					.getDetailHeatMapHeight(numSamplesInHeatMap,
+							contentVA.size(), selectedGroups.size());
+
+			gl.glTranslatef(detailPosition.x(), currentPositionY
+					- heatMapHeight, detailPosition.z());
 			heatMap.getViewFrustum().setLeft(detailPosition.x());
-			heatMap.getViewFrustum().setBottom(detailPosition.y());
+			heatMap.getViewFrustum()
+					.setBottom(currentPositionY - heatMapHeight);
 			heatMap.getViewFrustum().setRight(
 					detailPosition.x() + layout.getDetailWidth());
-			heatMap.getViewFrustum().setTop(
-					detailPosition.y() + layout.getDetailHeight());
+			heatMap.getViewFrustum().setTop(currentPositionY);
 			heatMap.displayRemote(gl);
 
-			gl.glTranslatef(-detailPosition.x(), -detailPosition.y(),
-					-detailPosition.z());
+			gl.glTranslatef(-detailPosition.x(),
+					-(currentPositionY - heatMapHeight), -detailPosition.z());
+			currentPositionY -= (heatMapHeight + layout
+					.getDetailHeatMapGapHeight());
 		}
+
+		// }
 
 		// ContentVirtualArray va = heatMapVAs.get(0);
 		//
@@ -188,23 +220,50 @@ public class HeatMapWrapper {
 
 	public boolean handleDragging(GL gl, GLMouseListener glMouseListener) {
 		if (overview.handleDragging(gl, glMouseListener)) {
-			ArrayList<Pair<Integer, Integer>> selectedGroupBounds = overview
-					.getSelectedGroupBounds();
-			if (selectedGroupBounds.size() > 0) {
-				setEmbeddedHeatMapData(selectedGroupBounds.get(0).getFirst(),
-						selectedGroupBounds.get(0).getSecond());
+
+			selectedGroups = overview.getSelectedGroups();
+
+			for (Pair<Integer, Pair<Integer, Integer>> groupWithBounds : selectedGroups) {
+				if (!hashHeatMaps.containsKey(groupWithBounds.getFirst())) {
+					GLHeatMap heatMap = createHeatMap(gl, glMouseListener);
+					setEmbeddedHeatMapData(heatMap, groupWithBounds.getSecond()
+							.getFirst(), groupWithBounds.getSecond()
+							.getSecond());
+					heatMap.setDisplayListDirty();
+					hashHeatMaps.put(groupWithBounds.getFirst(), heatMap);
+				}
 			}
+			// if (selectedGroups.size() > 0) {
+			// setEmbeddedHeatMapData(selectedGroupBounds.get(0).getFirst(),
+			// selectedGroupBounds.get(0).getSecond());
+			// }
 			return true;
 		}
 		return false;
 	}
 
 	public void processEvents() {
-		heatMap.processEvents();
+		// FIXME
+		if (!selectedGroups.isEmpty()) {
+			GLHeatMap heatMap = hashHeatMaps.get(selectedGroups.get(0)
+					.getFirst());
+			if(heatMap != null) {
+				heatMap.processEvents();
+			}
+		}
 	}
 
 	public void setDisplayListDirty() {
-		heatMap.setDisplayListDirty();
+		// FIXME
+		if (!selectedGroups.isEmpty()) {
+			GLHeatMap heatMap = hashHeatMaps.get(selectedGroups.get(0)
+					.getFirst());
+
+			if(heatMap != null) {
+				heatMap.setDisplayListDirty();
+			}
+		}
+
 	}
 
 	public Vec2f getLeftLinkPositionFromContentID(int contentID) {
@@ -229,6 +288,12 @@ public class HeatMapWrapper {
 
 		Vec3f detailPosition = layout.getDetailPosition();
 
+		Integer groupID = getGroupIDFromContentIndex(contentIndex);
+		if (groupID == null)
+			return null;
+
+		GLHeatMap heatMap = hashHeatMaps.get(groupID);
+
 		return new Vec2f(detailPosition.x() + layout.getDetailWidth(),
 				detailPosition.y()
 						+ heatMap.getYCoordinateByContentIndex(contentIndex));
@@ -239,9 +304,24 @@ public class HeatMapWrapper {
 	}
 
 	public ArrayList<ContentSelectionManager> getContentSelectionManagersOfHeatMaps() {
+
 		ArrayList<ContentSelectionManager> contentSelectionManagers = new ArrayList<ContentSelectionManager>();
-		contentSelectionManagers.add(heatMap.getContentSelectionManager());
+		for (Pair<Integer, Pair<Integer, Integer>> groupWithBounds : selectedGroups) {
+			GLHeatMap heatMap = hashHeatMaps.get(groupWithBounds.getFirst());
+			contentSelectionManagers.add(heatMap.getContentSelectionManager());
+		}
+
 		return contentSelectionManagers;
+	}
+
+	private Integer getGroupIDFromContentIndex(int contentIndex) {
+		for (Pair<Integer, Pair<Integer, Integer>> groupWithBounds : selectedGroups) {
+			if (contentIndex >= groupWithBounds.getSecond().getFirst()
+					&& contentIndex <= groupWithBounds.getSecond().getSecond()) {
+				return groupWithBounds.getFirst();
+			}
+		}
+		return null;
 	}
 
 	public int getID() {
