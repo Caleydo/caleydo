@@ -11,19 +11,13 @@ import javax.media.opengl.GL;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
-import org.caleydo.core.data.selection.Group;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -115,23 +109,23 @@ public class HeatMapWrapper {
 		overview.setSet(set);
 
 		// FIXME: Just for testing
-		if (contentVA.size() > 80) {
-			ContentGroupList groupList = new ContentGroupList();
-			contentVA.setGroupList(groupList);
-			Group temp = new Group(5, false, 0, SelectionType.NORMAL);
-			groupList.append(temp);
-			temp = new Group(10, false, 0, SelectionType.NORMAL);
-			groupList.append(temp);
-			temp = new Group(20, false, 0, SelectionType.NORMAL);
-			groupList.append(temp);
-			temp = new Group(15, false, 0, SelectionType.NORMAL);
-			groupList.append(temp);
-			temp = new Group(30, false, 0, SelectionType.NORMAL);
-			groupList.append(temp);
-			temp = new Group(contentVA.size() - 80, false, 0,
-					SelectionType.NORMAL);
-			groupList.append(temp);
-		}
+//		if (contentVA.size() > 80) {
+//			ContentGroupList groupList = new ContentGroupList();
+//			contentVA.setGroupList(groupList);
+//			Group temp = new Group(5, false, 0, SelectionType.NORMAL);
+//			groupList.append(temp);
+//			temp = new Group(10, false, 0, SelectionType.NORMAL);
+//			groupList.append(temp);
+//			temp = new Group(20, false, 0, SelectionType.NORMAL);
+//			groupList.append(temp);
+//			temp = new Group(15, false, 0, SelectionType.NORMAL);
+//			groupList.append(temp);
+//			temp = new Group(30, false, 0, SelectionType.NORMAL);
+//			groupList.append(temp);
+//			temp = new Group(contentVA.size() - 80, false, 0,
+//					SelectionType.NORMAL);
+//			groupList.append(temp);
+//		}
 	}
 
 	public void init(GL gl, AGLView glParentView,
@@ -270,28 +264,29 @@ public class HeatMapWrapper {
 	}
 
 	public Vec2f getLeftLinkPositionFromContentID(int contentID) {
-		ContentVirtualArray va = set.getContentVA(ContentVAType.CONTENT);
-		int contentIndex = va.indexOf(contentID);
+		
+		int contentIndex = contentVA.indexOf(contentID);
 
-		if (va.indexOf(contentID) == -1)
+		if (contentVA.indexOf(contentID) == -1)
 			return null;
 
 		Vec3f overviewPosition = layout.getOverviewPosition();
 
 		return new Vec2f(overviewPosition.x(), overviewPosition.y()
-				+ layout.getOverviewHeight() / va.size() * contentIndex);
+				+ layout.getOverviewHeight() / contentVA.size() * contentIndex);
 	}
 
-	public Vec2f getRightLinkPositionFromContentID(int contentID) {
-		ContentVirtualArray va = heatMapVAs.get(0);
-		int contentIndex = va.indexOf(contentID);
+	public Vec2f getRightLinkPositionFromContentID(int contentID, ContentVirtualArray contentVA) {
 
-		if (va.indexOf(contentID) == -1)
+		int contentIndex = contentVA.indexOf(contentID);
+
+		if (contentVA.indexOf(contentID) == -1)
 			return null;
 
 		Vec3f detailPosition = layout.getDetailPosition();
 
-		Integer groupID = getGroupIDFromContentIndex(contentIndex);
+		// For the group check we need the index in the global content VA
+		Integer groupID = getGroupIDFromContentIndex(set.getContentVA(ContentVAType.getPrimaryVAType()).indexOf(contentID));
 		if (groupID == null)
 			return null;
 

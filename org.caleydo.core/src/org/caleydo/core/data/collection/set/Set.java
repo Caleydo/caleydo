@@ -615,17 +615,22 @@ public class Set
 	@Override
 	public void cluster(ClusterState clusterState) {
 
-		// TODO set cluter VAs here
+		// TODO set cluster VAs here
 
 		if (bIsNumerical == true && isSetHomogeneous == true) {
 
 			ContentVAType contentVAType = clusterState.getContentVAType();
-			if (contentVAType != null)
+			if (contentVAType != null) {
 				clusterState.setContentVA(getContentVA(contentVAType));
-
+				this.setContentGroupList(getContentVA(contentVAType).getGroupList());
+			}
+			
 			StorageVAType storageVAType = clusterState.getStorageVAType();
 			if (storageVAType != null)
+			{
 				clusterState.setStorageVA(hashStorageData.get(storageVAType).getStorageVA());
+				this.setStorageGroupList(getStorageVA(storageVAType).getGroupList());
+			}
 
 			ClusterManager clusterManager = new ClusterManager(this);
 			ClusterResult result = clusterManager.cluster(clusterState);
@@ -641,7 +646,6 @@ public class Set
 			if (storageResult != null) {
 				hashStorageData.put(clusterState.getStorageVAType(), storageResult);
 			}
-
 		}
 		else
 			throw new IllegalStateException("Cannot cluster a non-numerical or non-homogeneous Set");
