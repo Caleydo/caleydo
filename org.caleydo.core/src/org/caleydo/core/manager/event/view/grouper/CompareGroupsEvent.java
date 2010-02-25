@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.view.OpenViewEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 
 public class CompareGroupsEvent
 	extends AEvent {
@@ -11,6 +13,7 @@ public class CompareGroupsEvent
 	private ArrayList<ISet> setsToCompare;
 
 	public CompareGroupsEvent(ArrayList<ISet> setsToCompare) {
+				
 		this.setsToCompare = setsToCompare;
 	}
 

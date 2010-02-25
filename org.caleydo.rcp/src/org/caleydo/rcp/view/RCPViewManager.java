@@ -3,6 +3,7 @@ package org.caleydo.rcp.view;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.view.OpenViewEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
@@ -53,7 +54,7 @@ public class RCPViewManager
 			activateViewListener);
 		GeneralManager.get().getEventPublisher().addListener(LoadPathwaysByGeneEvent.class,
 			activateViewListener);
-		GeneralManager.get().getEventPublisher().addListener(CompareGroupsEvent.class,
+		GeneralManager.get().getEventPublisher().addListener(OpenViewEvent.class,
 			activateViewListener);		
 	}
 

@@ -1,6 +1,7 @@
 package org.caleydo.view.compare;
 
 import static org.caleydo.view.heatmap.DendrogramRenderStyle.DENDROGRAM_Z;
+import gleem.linalg.Line;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
@@ -42,6 +43,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
+import org.caleydo.core.view.opengl.util.vislink.VisLink;
 import org.caleydo.view.compare.listener.CompareGroupsEventListener;
 
 /**
@@ -216,7 +218,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		rightHeatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
 				iUniqueID);
 
-		// renderDetailRelations(gl);
+		//renderDetailRelations(gl);
 		// renderOverviewRelations(gl);
 
 		// renderTree(gl);
@@ -282,8 +284,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			return;
 
 		// FIXME: Just for testing.
-		leftHeatMapWrapper.useDetailView(false);
-		rightHeatMapWrapper.useDetailView(false);
+		// leftHeatMapWrapper.useDetailView(false);
+		// rightHeatMapWrapper.useDetailView(false);
 
 		float alpha = 0.3f;
 
@@ -391,6 +393,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 			NURBSCurve curve = new NURBSCurve(points, 30);
 			points = curve.getCurvePoints();
+			
+//			VisLink.renderLine(gl, controlPoints, offset, numberOfSegments, shadow)
 
 			gl.glBegin(GL.GL_LINE_STRIP);
 			for (int i = 0; i < points.size(); i++)
@@ -618,6 +622,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			return;
 		}
 
+		SelectionType selectionType = null;
+		
 		switch (ePickingType) {
 		case COMPARE_EMBEDDED_VIEW_SELECTION:
 			if (pickingMode == EPickingMode.RIGHT_CLICKED) {
@@ -629,7 +635,6 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			break;
 		case POLYLINE_SELECTION:
 
-			SelectionType selectionType;
 			switch (pickingMode) {
 			case CLICKED:
 				selectionType = SelectionType.SELECTION;
@@ -637,7 +642,6 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			case MOUSE_OVER:
 				selectionType = SelectionType.MOUSE_OVER;
 				break;
-
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
@@ -684,6 +688,19 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			}
 			break;
 
+		case COMPARE_GROUP_SELECTION:
+			switch (pickingMode) {
+			case CLICKED:
+				selectionType = SelectionType.SELECTION;
+				break;
+			case MOUSE_OVER:
+				selectionType = SelectionType.MOUSE_OVER;
+				break;
+			}		
+			
+//			leftHeatMapWrapper.handleGroupSelection(selectionType, iExternalID);
+			
+			break;
 		}
 	}
 

@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -7,16 +9,17 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
  * Abstract base class for items in the context menu. A item must be supplied with a string to display its
- * function in the context menu as well as with an event which can be triggered. The events are of type
+ * function in the context menu as well as with a list of event which can be triggered. The events are of type
  * {@link AEvent} and are published via the {@link EventPublisher}. Optionally an icon can be supplied.
  * 
  * @author Alexander Lex
+ * @author Marc Streit
  */
 public abstract class AContextMenuItem
 	implements IContextMenuEntry {
 	private String text;
 	private EIconTextures iconTexture;
-	private AEvent event;
+	private ArrayList<AEvent> events = new ArrayList<AEvent>();
 
 	private static final int MAX_TEXT_LENGTH = 25;
 
@@ -39,13 +42,13 @@ public abstract class AContextMenuItem
 
 	/**
 	 * Sets the event which is associated with the item. This event will be triggered when requested by the
-	 * context menue. It is mandatory to set an event.
+	 * context menu. It is mandatory to set an event.
 	 * 
 	 * @param event
 	 *            the event triggered when requested by the context menu
 	 */
 	public void registerEvent(AEvent event) {
-		this.event = event;
+		this.events.add(event);
 	}
 
 	/**
@@ -116,8 +119,11 @@ public abstract class AContextMenuItem
 	 * Triggers the supplied event via the event publishing system
 	 */
 	public void triggerEvent() {
-		if (event != null)
-			GeneralManager.get().getEventPublisher().triggerEvent(event);
+		if (events != null && events.size() > 0) {
+			for (AEvent event : events) {
+				GeneralManager.get().getEventPublisher().triggerEvent(event);
+			}
+		}
 	}
 
 }

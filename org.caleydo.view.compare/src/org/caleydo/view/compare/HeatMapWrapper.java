@@ -19,8 +19,11 @@ import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -336,4 +339,24 @@ public class HeatMapWrapper {
 			EPickingMode pickingMode) {
 		overview.handleSliderSelection(pickingType, pickingMode);
 	}
+
+//	public void handleGroupSelection(SelectionType selectionType,
+//			int groupIndex) {
+//
+//		ContentSelectionManager contentSelectionManager = heatMap.getContentSelectionManager();
+//		
+//		contentSelectionManager.clearSelection(selectionType);
+//		contentVA.getGroupList().get(groupIndex).setSelectionType(selectionType);
+//		ArrayList<Integer> groupElements = set.getContentTree().getNodeByNumber(groupIndex).getLeaveIds();
+//		
+//		contentSelectionManager.clearSelection(selectionType);
+//		contentSelectionManager.addToType(selectionType, groupElements);
+////
+//		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+//		SelectionUpdateEvent event = new SelectionUpdateEvent();
+//		event.setSender(this);
+//		event.setSelectionDelta((SelectionDelta) selectionDelta);
+//		//event.setInfo(getShortInfoLocal());
+//		GeneralManager.get().getEventPublisher().triggerEvent(event);
+//	}
 }
