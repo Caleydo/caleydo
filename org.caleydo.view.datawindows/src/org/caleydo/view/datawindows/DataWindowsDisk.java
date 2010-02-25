@@ -1,17 +1,22 @@
 package org.caleydo.view.datawindows;
 
+import gleem.linalg.Vec3f;
+
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 public class DataWindowsDisk extends PoincareDisk {
 
 	// Tree<PoincareNode> tree;
 	private double canvasWidth;
 	private double canvasHeight;
+	private TextureManager textureManager;
 	private GL gl;
 
 	public DataWindowsDisk(double diskRadius) {
@@ -19,9 +24,10 @@ public class DataWindowsDisk extends PoincareDisk {
 
 	}
 
-	public void renderTree(GL glHandle, double viewingWidth, double viewingHeight) {
+	public void renderTree(GL glHandle,TextureManager texManager, double viewingWidth, double viewingHeight) {
 //		 System.out.println("Baum wird gezeichnet: ");
 		gl = glHandle;
+		textureManager = texManager;
 		canvasWidth = viewingWidth;
 		canvasHeight = viewingHeight;
 		PoincareNode root = getTree().getRoot();
@@ -60,6 +66,18 @@ public class DataWindowsDisk extends PoincareDisk {
 		drawCircle(0.05f, node.getProjectedPosition().getX()
 				+ (canvasWidth / 2), node.getProjectedPosition().getY()
 				+ canvasHeight / 2);
+		double size = 0.1;
+
+		Vec3f lowerLeftCorner = new Vec3f((float)(-size +  node.getProjectedPosition().getX()+canvasWidth / 2), (float)(-size+ node.getProjectedPosition().getY()+canvasHeight / 2), 0);
+		Vec3f lowerRightCorner = new Vec3f((float)(size + node.getProjectedPosition().getX()+ canvasWidth / 2), (float)(-size+node.getProjectedPosition().getY()+ canvasHeight / 2), 0);
+		Vec3f upperRightCorner = new Vec3f((float)(size +  node.getProjectedPosition().getX()+canvasWidth / 2),(float)(	size + node.getProjectedPosition().getY()+canvasHeight / 2), 0);
+		Vec3f upperLeftCorner = new Vec3f((float)(-size +  node.getProjectedPosition().getX()+canvasWidth / 2),(float)(	size + node.getProjectedPosition().getY()+canvasHeight / 2), 0);
+		Vec3f scalingPivot = new Vec3f(1, 1, 0);
+		
+		textureManager.renderGUITexture(gl, EIconTextures.PATHWAY_SYMBOL,
+				lowerLeftCorner, lowerRightCorner, upperRightCorner,
+				upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
+		
 	}
 
 	public void drawLine(PoincareNode node1, PoincareNode node2,

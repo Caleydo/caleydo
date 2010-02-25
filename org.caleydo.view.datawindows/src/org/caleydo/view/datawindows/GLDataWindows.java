@@ -209,7 +209,7 @@ public class GLDataWindows extends AGLView {
 		Vec3f scalingPivot = new Vec3f(1, 1, 0);
 
 		int iPickingID = pickingManager.getPickingID(iUniqueID,
-				EPickingType.REMOVE_NAN, 1);
+				EPickingType.DATAW_NODE, 1);
 		
 		gl.glPushName(iPickingID);
 		//displaying test texture for picking
@@ -260,7 +260,7 @@ public class GLDataWindows extends AGLView {
 		//renderRemoteLevel(gl, testLevel);
 		
 		
-		disk.renderTree(gl, canvasWidth, canvasHeight);
+		disk.renderTree(gl, textureManager,canvasWidth, canvasHeight);
 	
 		
 		
@@ -388,7 +388,7 @@ public class GLDataWindows extends AGLView {
 		SelectionType selectionType;
 		switch (ePickingType) {
 
-		case REMOVE_NAN:
+		case DATAW_NODE:
 			switch (pickingMode) {
 
 			case CLICKED:

@@ -93,6 +93,7 @@ public class PoincareDisk {
 
 	public void scaleTree(double factor) {
 		PoincareNode root = tree.getRoot();
+		root.setPosition(scalePoint(root.getPosition(), factor));
 		scaleNode(root, factor);
 		projectTree();
 	}
@@ -101,7 +102,7 @@ public class PoincareDisk {
 		if (tree.getChildren(node) == null) {
 			return false;
 		}
-		System.out.println("scaliere Knoten: " + node.nodeName);
+		//System.out.println("scaliere Knoten: " + node.nodeName);
 		ArrayList<PoincareNode> children = tree.getChildren(node);
 		int numberOfChildren = children.size();
 		for (int i = 0; i < numberOfChildren; i++) {
