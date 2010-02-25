@@ -185,13 +185,13 @@ public class GLDataWindows extends AGLView {
 		// gl.glEnable(GL.GL_DEPTH_TEST);
 		// clipToFrustum(gl);
 
-		 gl.glMatrixMode(GL.GL_PROJECTION);
-		 gl.glLoadIdentity();
-		//
-		 gl.glOrtho(0.0f, canvasWidth,canvasHeight, 0.0f, -1.0f, 1.0f);
-		//
-		 gl.glMatrixMode(GL.GL_MODELVIEW);
-		 gl.glLoadIdentity();
+//		 gl.glMatrixMode(GL.GL_PROJECTION);
+//		 gl.glLoadIdentity();
+//		//
+//		 gl.glOrtho(0.0f, canvasWidth,canvasHeight, 0.0f, -1.0f, 1.0f);
+//		//
+//		 gl.glMatrixMode(GL.GL_MODELVIEW);
+//		 gl.glLoadIdentity();
 		//
 		 
 
@@ -222,10 +222,10 @@ public class GLDataWindows extends AGLView {
 		 //System.out.println("mouseZeiger:"+mousePoint.getX()+"|"+mousePoint.getY());
 		 
 		 //
-		 gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-		 
-		 canvasWidth=canvasHeight*(float)viewport[2]/(float)viewport[3];
-		
+//		 gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+//		 
+//		 canvasWidth=canvasHeight*(float)viewport[2]/(float)viewport[3];
+//		
 		 
 		
 		
