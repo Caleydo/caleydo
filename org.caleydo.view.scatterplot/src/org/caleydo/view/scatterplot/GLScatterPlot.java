@@ -186,7 +186,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	private int iGLDisplayListIndexSelection;
 
 	// Textures
-	private int iTextureSize = 200;
+	private int iTextureSize = 1000;
 
 	// array of textures for holding the data samples
 
@@ -267,7 +267,15 @@ public class GLScatterPlot extends AStorageBasedView {
 		float[] fSelectionColor = { 1.0f, 0.1f, 0.5f }; // Selection Color
 		float[] fBlackColor = { 0.0f, 0.0f, 0.0f }; // Black Color
 
-		Collection<Integer> selectionSet = contentVA.getIndexList();
+		 //Collection<Integer> selectionSet = contentVA.getIndexList();
+		 Collection<Integer> tmpSet = this.contentVA.getIndexList();
+		 Collection<Integer> selectionSet = new ArrayList<Integer>();
+		    for (Integer iContentIndex : tmpSet)
+		    {
+		      if (iContentIndex.intValue() % 6 != 0)
+		        continue;
+		      selectionSet.add(iContentIndex);
+		    }
 
 		// TODO: Needs Evaluation
 		int StartindexX = 0;
@@ -360,20 +368,20 @@ public class GLScatterPlot extends AStorageBasedView {
 						FbTemp.put(iy + 2, fArMappingColor[2]);
 
 						// Density Plot:
+//
+//						float fcurrentOpacity = FbTemp.get(iy + 3);
+//
+//						if (fcurrentOpacity < fBaseOpacity)
+//							fcurrentOpacity = fBaseOpacity;
+//						else
+//							fcurrentOpacity += fAddOpacity;
+//
+//						if (fcurrentOpacity >= 1)
+//							fcurrentOpacity = 1;
+//
+//						FbTemp.put(iy + 3, fcurrentOpacity);
 
-						float fcurrentOpacity = FbTemp.get(iy + 3);
-
-						if (fcurrentOpacity < fBaseOpacity)
-							fcurrentOpacity = fBaseOpacity;
-						else
-							fcurrentOpacity += fAddOpacity;
-
-						if (fcurrentOpacity >= 1)
-							fcurrentOpacity = 1;
-
-						FbTemp.put(iy + 3, fcurrentOpacity);
-
-						// FbTemp.put(iy + 3, fBaseOpacity);
+						FbTemp.put(iy + 3, 1);
 
 					}
 
@@ -536,373 +544,350 @@ public class GLScatterPlot extends AStorageBasedView {
 		}
 	}
 
-	private void renderMatrixSelection(GL gl, int icurrent_X_AXIS,
-			int icurrent_Y_AXIS, boolean bIsSecondAxis) {
+	private void renderMatrixSelection(GL gl, int icurrent_X_AXIS, int icurrent_Y_AXIS, boolean bIsSecondAxis)
+	  {
+	    float fHeight = this.viewFrustum.getHeight();
+	    float fWidth = this.viewFrustum.getWidth();
+	    if (fWidth > fHeight) {
+	      fWidth = fHeight;
+	    }
+	    int iAddTextures = 1;
+	
+	    int iCurrentAxisSelectionX = MOUSEOVER_X_AXIS;
+	    int iCurrentAxisSelectionY = MOUSEOVER_Y_AXIS;
+	
+	    if ((this.bAllowMatrixZoom) && 
+	      (iCurrentAxisSelectionX >= 0) && (iCurrentAxisSelectionY > 0)) {
+	      iAddTextures = 5;
+	    }
+	    float fStepY = fHeight / (ScatterPlotRenderStyle.NR_TEXTURESY + iAddTextures);
+	    float fStepX = fWidth / (ScatterPlotRenderStyle.NR_TEXTURESX + iAddTextures);
+	
+	    float fSpacerX = fStepX / (ScatterPlotRenderStyle.NR_TEXTURESY + iAddTextures);
+	    float fSpacerY = fStepY / (ScatterPlotRenderStyle.NR_TEXTURESX + iAddTextures);
+	
+	    float fyOffset = fHeight;
+	    float fxOffset = fSpacerX;
+	
+	    int iZoomfactor = 1;
+	    float iMOVERZOOMX = 0.0F;
+	    float iMOVERZOOMY = 0.0F;
+	    if ((iCurrentAxisSelectionX >= 0) && (iCurrentAxisSelectionY >= 0) && 
+	      (this.bAllowMatrixZoom))
+	    {
+	      if (iCurrentAxisSelectionX == icurrent_X_AXIS + 1)
+	        iMOVERZOOMX = 0.5F;
+	      if (iCurrentAxisSelectionY == icurrent_Y_AXIS + 1) {
+	        iMOVERZOOMY = 0.5F;
+	      }
+	      if (iCurrentAxisSelectionX == icurrent_X_AXIS)
+	        iMOVERZOOMX = 2.0F;
+	      if (iCurrentAxisSelectionY == icurrent_Y_AXIS) {
+	        iMOVERZOOMY = 2.0F;
+	      }
+	      if (iCurrentAxisSelectionX == icurrent_X_AXIS - 1)
+	        iMOVERZOOMX = 3.5F;
+	      if (iCurrentAxisSelectionY == icurrent_Y_AXIS - 1) {
+	        iMOVERZOOMY = 3.5F;
+	      }
+	      if (iCurrentAxisSelectionX < icurrent_X_AXIS - 1)
+	        iMOVERZOOMX = 4.0F;
+	      if (iCurrentAxisSelectionY < icurrent_Y_AXIS - 1) {
+	        iMOVERZOOMY = 4.0F;
+	      }
+	      if ((iCurrentAxisSelectionX == icurrent_X_AXIS) && 
+	        (iCurrentAxisSelectionY == icurrent_Y_AXIS + 1)) {
+	        iZoomfactor = 2;
+	        iMOVERZOOMX = 1.5F;
+	        iMOVERZOOMY = 1.0F;
+	      }
+	      if ((iCurrentAxisSelectionY == icurrent_Y_AXIS) && 
+	        (iCurrentAxisSelectionX == icurrent_X_AXIS + 1)) {
+	        iZoomfactor = 2;
+	        iMOVERZOOMX = 0.0F;
+	        iMOVERZOOMY = 2.5F;
+	      }
+	      if ((iCurrentAxisSelectionX == icurrent_X_AXIS) && 
+	        (iCurrentAxisSelectionY == icurrent_Y_AXIS - 1)) {
+	        iZoomfactor = 2;
+	        iMOVERZOOMX = 1.5F;
+	        iMOVERZOOMY = 4.0F;
+	      }
+	      if ((iCurrentAxisSelectionY == icurrent_Y_AXIS) && 
+	        (iCurrentAxisSelectionX == icurrent_X_AXIS - 1)) {
+	        iZoomfactor = 2;
+	        iMOVERZOOMX = 3.0F;
+	        iMOVERZOOMY = 2.5F;
+	      }
+	
+	      if (iCurrentAxisSelectionX == 0) {
+	        iMOVERZOOMX -= 1.0F;
+	      }
+	      if ((iCurrentAxisSelectionX == icurrent_X_AXIS) && 
+	        (iCurrentAxisSelectionY == icurrent_Y_AXIS)) {
+	        iMOVERZOOMX = 1.0F;
+	        iMOVERZOOMY = 3.0F;
+	        if (iCurrentAxisSelectionX == 0)
+	          iMOVERZOOMX = 0.0F;
+	        iZoomfactor = 3;
+	      }
+	
+	    }
+	
+	    fyOffset = fyOffset - ((fStepY + fSpacerY) * 
+	      (icurrent_Y_AXIS + 1 + iMOVERZOOMY));
+	
+	    fxOffset = fxOffset + (fStepX + fSpacerX) * 
+	      (icurrent_X_AXIS + iMOVERZOOMX);
+	
+	    float fEdge = 0.01F;
+	
+	    float z = 1.0F;
+	
+	    float[] fArMappingColor = GeneralRenderStyle.SELECTED_COLOR;
+	
+	    if (bIsSecondAxis) {
+	      fArMappingColor = new float[] { 0.1F, 0.6F, 0.1F };
+	    }
+	
+	    DrawRectangularSelection(gl, fxOffset - fEdge, fyOffset - fEdge, z, 
+	      fStepX * iZoomfactor + 2.0F * fEdge, fStepY * iZoomfactor + 2.0F * 
+	      fEdge, fArMappingColor);
+	    if (((iCurrentAxisSelectionX < 0) && (iCurrentAxisSelectionY < 0)) || (bIsSecondAxis)) {
+	      return;
+	    }
+	    fyOffset = fHeight;
+	    fxOffset = fSpacerX;
+	    if (this.bAllowMatrixZoom) {
+	      iMOVERZOOMX = 1.0F;
+	      iMOVERZOOMY = 3.0F;
+	      if (iCurrentAxisSelectionX == 0)
+	        iMOVERZOOMX = 0.0F;
+	      iZoomfactor = 3;
+	    }
+	
+	    fyOffset = fyOffset - ((fStepY + fSpacerY) * 
+	      (iCurrentAxisSelectionY + 1 + iMOVERZOOMY));
+	
+	    fxOffset = fxOffset + (fStepX + fSpacerX) * 
+	      (iCurrentAxisSelectionX + iMOVERZOOMX);
+	    fArMappingColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+	
+	    DrawRectangularSelection(gl, fxOffset - fEdge, fyOffset - fEdge, z, 
+	      fStepX * iZoomfactor + 2.0F * fEdge, fStepY * iZoomfactor + 2.0F * 
+	      fEdge, fArMappingColor);
+  }
 
-		float fHeight;
-		float fWidth;
-		fHeight = viewFrustum.getHeight();
-		fWidth = viewFrustum.getWidth();
-		if (fWidth > fHeight)
-			fWidth = fHeight;
-
-		int iAddTextures = 1;
-
-		if (bAllowMatrixZoom)
-			if (MOUSEOVER_X_AXIS >= 0 && MOUSEOVER_Y_AXIS > 0)
-				iAddTextures = 5;
-
-		float fStepY = fHeight / (float) (NR_TEXTURESY + iAddTextures);
-		float fStepX = fWidth / (float) (NR_TEXTURESX + iAddTextures);
-
-		float fSpacerX = fStepX / (float) (NR_TEXTURESY + iAddTextures);
-		float fSpacerY = fStepY / (float) (NR_TEXTURESX + iAddTextures);
-
-		float fyOffset = fHeight;
-		float fxOffset = fSpacerX;
-
-		int iZoomfactor = 1;
-		float iMOVERZOOMX = 0;
-		float iMOVERZOOMY = 0;
-		if ((MOUSEOVER_X_AXIS >= 0 && MOUSEOVER_Y_AXIS >= 0)
-				&& (bAllowMatrixZoom)) {
-
-			if ((MOUSEOVER_X_AXIS == icurrent_X_AXIS + 1))
-				iMOVERZOOMX = 0.5f;
-			if ((MOUSEOVER_Y_AXIS == icurrent_Y_AXIS + 1))
-				iMOVERZOOMY = 0.5f;
-
-			if ((MOUSEOVER_X_AXIS == icurrent_X_AXIS))
-				iMOVERZOOMX = 2.0f;
-			if ((MOUSEOVER_Y_AXIS == icurrent_Y_AXIS))
-				iMOVERZOOMY = 2.0f;
-
-			if ((MOUSEOVER_X_AXIS == icurrent_X_AXIS - 1))
-				iMOVERZOOMX = 3.5f;
-			if ((MOUSEOVER_Y_AXIS == icurrent_Y_AXIS - 1))
-				iMOVERZOOMY = 3.5f;
-
-			if ((MOUSEOVER_X_AXIS < icurrent_X_AXIS - 1))
-				iMOVERZOOMX = 4;
-			if ((MOUSEOVER_Y_AXIS < icurrent_Y_AXIS - 1))
-				iMOVERZOOMY = 4;
-
-			if ((MOUSEOVER_X_AXIS == icurrent_X_AXIS)
-					&& (MOUSEOVER_Y_AXIS == icurrent_Y_AXIS + 1)) {
-				iZoomfactor = 2;
-				iMOVERZOOMX = 1.5f;
-				iMOVERZOOMY = 1;
-			}
-			if ((MOUSEOVER_Y_AXIS == icurrent_Y_AXIS)
-					&& (MOUSEOVER_X_AXIS == icurrent_X_AXIS + 1)) {
-				iZoomfactor = 2;
-				iMOVERZOOMX = 0f;
-				iMOVERZOOMY = 2.5f;
-			}
-			if ((MOUSEOVER_X_AXIS == icurrent_X_AXIS)
-					&& (MOUSEOVER_Y_AXIS == icurrent_Y_AXIS - 1)) {
-				iZoomfactor = 2;
-				iMOVERZOOMX = 1.5f;
-				iMOVERZOOMY = 4;
-			}
-			if ((MOUSEOVER_Y_AXIS == icurrent_Y_AXIS)
-					&& (MOUSEOVER_X_AXIS == icurrent_X_AXIS - 1)) {
-				iZoomfactor = 2;
-				iMOVERZOOMX = 3f;
-				iMOVERZOOMY = 2.5f;
-			}
-
-			if (MOUSEOVER_X_AXIS == 0)
-				iMOVERZOOMX -= 1;
-
-			if ((MOUSEOVER_X_AXIS == icurrent_X_AXIS)
-					&& (MOUSEOVER_Y_AXIS == icurrent_Y_AXIS)) {
-				iMOVERZOOMX = 1;
-				iMOVERZOOMY = 3;
-				if (MOUSEOVER_X_AXIS == 0)
-					iMOVERZOOMX = 0;
-				iZoomfactor = 3;
-			}
-
-			// TODO add special cases when MO-Xaxis = zero and MOYAxis=MAx;
-
-		}
-
-		fyOffset -= (fStepY + fSpacerY)
-				* (float) (icurrent_Y_AXIS + 1 + iMOVERZOOMY);
-		fxOffset += (fStepX + fSpacerX)
-				* (float) (icurrent_X_AXIS + iMOVERZOOMX);
-
-		float fEdge = 0.01f;
-
-		float z = 1f;
-
-		float[] fArMappingColor = GeneralRenderStyle.SELECTED_COLOR;
-		// new float[] { 1.0f, 0.1f, 0.5f }; // Selection// Color
-
-		if (bIsSecondAxis)
-			fArMappingColor = new float[] { 0.1f, 0.6f, 0.1f }; // Selection//
-		// Color
-
-		DrawRectangularSelection(gl, fxOffset - fEdge, fyOffset - fEdge, z, // Z-Value
-				fStepX * iZoomfactor + 2 * fEdge, fStepY * iZoomfactor + 2
-						* fEdge, fArMappingColor);
-		if ((MOUSEOVER_X_AXIS < 0 && MOUSEOVER_Y_AXIS < 0) || bIsSecondAxis)
-			return;
-
-		fyOffset = fHeight;
-		fxOffset = fSpacerX;
-		if (bAllowMatrixZoom) {
-			iMOVERZOOMX = 1;
-			iMOVERZOOMY = 3;
-			if (MOUSEOVER_X_AXIS == 0)
-				iMOVERZOOMX = 0;
-			iZoomfactor = 3;
-		}
-		fyOffset -= (fStepY + fSpacerY)
-				* (float) (MOUSEOVER_Y_AXIS + 1 + iMOVERZOOMY);
-		fxOffset += (fStepX + fSpacerX)
-				* (float) (MOUSEOVER_X_AXIS + iMOVERZOOMX);
-		fArMappingColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
-
-		DrawRectangularSelection(gl, fxOffset - fEdge, fyOffset - fEdge, z, // Z-Value
-				fStepX * iZoomfactor + 2 * fEdge, fStepY * iZoomfactor + 2
-						* fEdge, fArMappingColor);
-
-	}
-
-	private void renderTextures(GL gl, boolean bIsSelection, float z) {
-		float fHeight;
-		float fWidth;
-		fHeight = viewFrustum.getHeight();
-		fWidth = viewFrustum.getWidth();
-		if (fWidth > fHeight)
-			fWidth = fHeight;
-
-		int debugsize1 = AlSelectionTextures.size();
-		int debugsize2 = AlFullTextures.size();
-
-		int iAddTextures = 1;
-
-		if (bAllowMatrixZoom)
-			if (MOUSEOVER_X_AXIS >= 0 && MOUSEOVER_Y_AXIS >= 0)
-				iAddTextures = 5;
-
-		float fMaxX = 0;
-		float fMaxY = 0;
-
-		float fStepY = fHeight / (float) (NR_TEXTURESY + iAddTextures);
-		float fStepX = fWidth / (float) (NR_TEXTURESX + iAddTextures);
-
-		float fSpacerX = fStepX / (float) (NR_TEXTURESY + iAddTextures);
-		float fSpacerY = fStepY / (float) (NR_TEXTURESX + iAddTextures);
-
-		float fyOffset = fHeight;
-		float fxOffset = fSpacerX;
-
-		int icounter = 0;
-
-		// gl.glEnable(GL.GL_DEPTH_TEST);
-		// gl.glDepthFunc(GL.GL_LESS);
-
-		int iTextureMultiX = 1;
-		int iTextureMultiY = 1;
-		int iOffsetMultiX = 1;
-		int iOffsetMultiY = 1;
-		float fExtraOffsetX = 0;
-		float fExtraOffsetY = 0;
-
-		for (int i = 0; i < NR_TEXTURESX; i++) {
-			for (int j = 0; j < NR_TEXTURESY; j++) {
-
-				if (bAllowMatrixZoom) {
-					iTextureMultiX = 1;
-					iOffsetMultiX = 1;
-					iTextureMultiY = 1;
-					iOffsetMultiY = 1;
-					fExtraOffsetX = 0;
-					fExtraOffsetY = 0;
-
-					if ((i == (MOUSEOVER_X_AXIS - 1))
-							|| (i == (MOUSEOVER_X_AXIS + 1))) {
-						iOffsetMultiX = iAddTextures - 3;
-						fExtraOffsetX = (fStepX + fSpacerX) / 2;
-					}
-
-					if ((j == (MOUSEOVER_Y_AXIS - 1))
-							|| (j == (MOUSEOVER_Y_AXIS + 1))) {
-						iOffsetMultiY = iAddTextures - 3;
-						fExtraOffsetY = (fStepY + fSpacerY) / 2;
-					}
-
-					if (i == MOUSEOVER_X_AXIS) {
-						fExtraOffsetX = (fStepX + fSpacerX);
-						iOffsetMultiX = iAddTextures - 2;
-						if ((j == (MOUSEOVER_Y_AXIS - 1))
-								|| (j == (MOUSEOVER_Y_AXIS + 1))) {
-							iTextureMultiX = iAddTextures - 3;
-							iTextureMultiY = iAddTextures - 3;
-							fExtraOffsetX = (fStepX + fSpacerX) / 2;
-							fExtraOffsetY = 0;
-						} else
-							iTextureMultiX = 1;
-					}
-
-					if (j == MOUSEOVER_Y_AXIS) {
-						fExtraOffsetY = (fStepY + fSpacerY);
-						iOffsetMultiY = iAddTextures - 2;
-						if ((i == (MOUSEOVER_X_AXIS - 1))
-								|| (i == (MOUSEOVER_X_AXIS + 1))) {
-							iTextureMultiY = iAddTextures - 3;
-							iTextureMultiX = iAddTextures - 3;
-							fExtraOffsetY = (fStepY + fSpacerY) / 2;
-							fExtraOffsetX = 0;
-						} else
-							iTextureMultiY = 1;
-					}
-
-					if ((i == MOUSEOVER_X_AXIS) && (j == MOUSEOVER_Y_AXIS)) {
-						iTextureMultiX = iAddTextures - 2;
-						iTextureMultiY = iAddTextures - 2;
-						fExtraOffsetX = 0;
-						fExtraOffsetY = 0;
-					}
-
-					if ((i == (MOUSEOVER_X_AXIS - 1))
-							|| (i == (MOUSEOVER_X_AXIS + 1)))
-						iOffsetMultiX = iAddTextures - 3;
-
-					if ((j == (MOUSEOVER_Y_AXIS - 1))
-							|| (j == (MOUSEOVER_Y_AXIS + 1)))
-						iOffsetMultiY = iAddTextures - 3;
-
-				}
-				fyOffset -= (fStepY + fSpacerY) * iOffsetMultiY;
-
-				if (i > j && bOnlyRenderHalfMatrix) {
-					icounter++;
-					continue;
-				}
-				// AlTextures.get(NR_TEXTURES - icounter - 1).enable();
-				// AlTextures.get(NR_TEXTURES - icounter - 1).bind();
-
-				if (i != j) {
-					gl.glColor4f(1f, 1f, 1f, 1f);
-					if (bIsSelection) {
-						AlSelectionTextures.get(icounter).enable();
-						AlSelectionTextures.get(icounter).bind();
-					} else {
-						AlFullTextures.get(icounter).enable();
-						AlFullTextures.get(icounter).bind();
-					}
-					gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S,
-							GL.GL_CLAMP);
-					gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T,
-							GL.GL_CLAMP);
-					gl.glTexParameteri(GL.GL_TEXTURE_2D,
-							GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
-					gl.glTexParameteri(GL.GL_TEXTURE_2D,
-							GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
-					TextureCoords texCoords = null;
-					// if(bIsSelection)
-					// texCoords = AlSelectionTextures.get(NR_TEXTURES - i - 1)
-					// .getImageTexCoords();
-					// else
-					// texCoords = AlFullTextures.get(NR_TEXTURES - i - 1)
-					// .getImageTexCoords();
-
-					if (bIsSelection)
-						texCoords = AlSelectionTextures.get(icounter)
-								.getImageTexCoords();
-					else
-						texCoords = AlFullTextures.get(icounter)
-								.getImageTexCoords();
-
-					// gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					// EPickingType.SCATTER_MATRIX_SELECTION, NR_TEXTURES
-					// - i));
-
-					gl.glPushName(pickingManager.getPickingID(iUniqueID,
-							EPickingType.SCATTER_MATRIX_SELECTION, icounter));
-
-					gl.glBegin(GL.GL_QUADS);
-					gl.glTexCoord2d(texCoords.left(), texCoords.top());
-					gl.glVertex3f(fxOffset + fExtraOffsetX, fyOffset
-							+ fExtraOffsetY, z);
-					gl.glTexCoord2d(texCoords.left(), texCoords.bottom());
-					gl.glVertex3f(fxOffset + fExtraOffsetX, fyOffset + fStepY
-							* iTextureMultiY + fExtraOffsetY, z);
-					gl.glTexCoord2d(texCoords.right(), texCoords.bottom());
-					gl.glVertex3f(fxOffset + fStepX * iTextureMultiX
-							+ fExtraOffsetX, fyOffset + fStepY * iTextureMultiY
-							+ fExtraOffsetY, z);
-					gl.glTexCoord2d(texCoords.right(), texCoords.top());
-					gl.glVertex3f(fxOffset + fStepX * iTextureMultiX
-							+ fExtraOffsetX, fyOffset + fExtraOffsetY, z);
-					gl.glEnd();
-					gl.glPopName();
-
-					if (!bIsSelection) {
-						gl.glLineWidth(0.05f);
-						gl.glColor4f(0f, 0f, 0f, 1f);
-						gl.glBegin(GL.GL_LINE_LOOP);
-
-						gl.glVertex3f(fxOffset + fExtraOffsetX, fyOffset
-								+ fExtraOffsetY, z + 1);
-						gl.glVertex3f(fxOffset + fExtraOffsetX, fyOffset
-								+ fStepY * iTextureMultiY + fExtraOffsetY,
-								z + 1);
-						gl.glVertex3f(fxOffset + fStepX * iTextureMultiX
-								+ fExtraOffsetX, fyOffset + fStepY
-								* iTextureMultiY + fExtraOffsetY, z + 1);
-						gl.glVertex3f(fxOffset + fStepX * iTextureMultiX
-								+ fExtraOffsetX, fyOffset + fExtraOffsetY,
-								z + 1);
-						gl.glEnd();
-					}
-
-					if (bIsSelection)
-						AlSelectionTextures.get(icounter).disable();
-					else
-						AlFullTextures.get(icounter).disable();
-
-				} else if (!bIsSelection) {
-					renderHistogram(gl, fxOffset + fExtraOffsetX, fyOffset
-							+ fExtraOffsetY, fStepX, fStepY, i);
-
-					float tmpx = viewFrustum.getWidth()
-							- (fxOffset + fExtraOffsetX + fStepX);
-					float tmpy = viewFrustum.getHeight()
-							- (fyOffset + fExtraOffsetY + fStepY);
-
-					if ((getSpace(tmpx, tmpy) > getSpace(fMaxX, fMaxY))
-							&& getCorrelation(tmpx, tmpy)) {
-						fMaxX = tmpx;
-						fMaxY = tmpy;
-					}
-
-				}
-				// fyOffset -= fStepY-fSpacerY;
-				// fyOffset += fStepY+fSpacerY;
-
-				// AlTextures.get(NR_TEXTURES - icounter - 1).disable();
-				icounter++;
-			}
-			// fyOffset =0;
-			fyOffset = fHeight;
-			// if (i==MOUSEOVER_X_AXIS)
-			// fxOffset += (fStepX + fSpacerX)*iAddTextures;
-			// else
-			fxOffset += (fStepX + fSpacerX) * iOffsetMultiX;
-		}
-		if (!bIsSelection) {
-			if (renderStyle.setCenterOffsets(viewFrustum.getWidth() - fMaxX,
-					viewFrustum.getHeight() - fMaxY)) {
-				// bUpdateMainView=true;
-				// setDisplayListDirty();
-			}
-		}
-	}
+  private void renderTextures(GL gl, boolean bIsSelection, float z)
+  {
+	    float fHeight = this.viewFrustum.getHeight();
+	    float fWidth = this.viewFrustum.getWidth();
+	    if (fWidth > fHeight) {
+	      fWidth = fHeight;
+	    }
+	    int debugsize1 = this.AlSelectionTextures.size();
+	    int debugsize2 = this.AlFullTextures.size();
+	
+	    int iAddTextures = 1;
+	    int iCurrentAxisSelectionX = MOUSEOVER_X_AXIS;
+	    int iCurrentAxisSelectionY = MOUSEOVER_Y_AXIS;
+	
+	    if ((this.bAllowMatrixZoom) && 
+	      (iCurrentAxisSelectionX >= 0) && (iCurrentAxisSelectionY >= 0)) {
+	      iAddTextures = 5;
+	    }
+	    float fMaxX = 0.0F;
+	    float fMaxY = 0.0F;
+	
+	    float fStepY = fHeight / (ScatterPlotRenderStyle.NR_TEXTURESY + iAddTextures);
+	    float fStepX = fWidth / (ScatterPlotRenderStyle.NR_TEXTURESX + iAddTextures);
+	
+	    float fSpacerX = fStepX / (ScatterPlotRenderStyle.NR_TEXTURESY + iAddTextures);
+	    float fSpacerY = fStepY / (ScatterPlotRenderStyle.NR_TEXTURESX + iAddTextures);
+	
+	    float fyOffset = fHeight;
+	    float fxOffset = fSpacerX;
+	
+	    int icounter = 0;
+	
+	    int iTextureMultiX = 1;
+	    int iTextureMultiY = 1;
+	    int iOffsetMultiX = 1;
+	    int iOffsetMultiY = 1;
+	    float fExtraOffsetX = 0.0F;
+	    float fExtraOffsetY = 0.0F;
+	
+	    for (int i = 0; i < ScatterPlotRenderStyle.NR_TEXTURESX; ++i) {
+	      for (int j = 0; j < ScatterPlotRenderStyle.NR_TEXTURESY; ++j)
+	      {
+	        if (this.bAllowMatrixZoom) {
+	          iTextureMultiX = 1;
+	          iOffsetMultiX = 1;
+	          iTextureMultiY = 1;
+	          iOffsetMultiY = 1;
+	          fExtraOffsetX = 0.0F;
+	          fExtraOffsetY = 0.0F;
+	
+	          if ((i == iCurrentAxisSelectionX - 1) || 
+	            (i == iCurrentAxisSelectionX + 1)) {
+	            iOffsetMultiX = iAddTextures - 3;
+	            fExtraOffsetX = (fStepX + fSpacerX) / 2.0F;
+	          }
+	
+	          if ((j == iCurrentAxisSelectionY - 1) || 
+	            (j == iCurrentAxisSelectionY + 1)) {
+	            iOffsetMultiY = iAddTextures - 3;
+	            fExtraOffsetY = (fStepY + fSpacerY) / 2.0F;
+	          }
+	
+	          if (i == iCurrentAxisSelectionX) {
+	            fExtraOffsetX = fStepX + fSpacerX;
+	            iOffsetMultiX = iAddTextures - 2;
+	            if ((j == iCurrentAxisSelectionY - 1) || 
+	              (j == iCurrentAxisSelectionY + 1)) {
+	              iTextureMultiX = iAddTextures - 3;
+	              iTextureMultiY = iAddTextures - 3;
+	              fExtraOffsetX = (fStepX + fSpacerX) / 2.0F;
+	              fExtraOffsetY = 0.0F;
+	            } else {
+	              iTextureMultiX = 1;
+	            }
+	          }
+	          if (j == iCurrentAxisSelectionY) {
+	            fExtraOffsetY = fStepY + fSpacerY;
+	            iOffsetMultiY = iAddTextures - 2;
+	            if ((i == iCurrentAxisSelectionX - 1) || 
+	              (i == iCurrentAxisSelectionX + 1)) {
+	              iTextureMultiY = iAddTextures - 3;
+	              iTextureMultiX = iAddTextures - 3;
+	              fExtraOffsetY = (fStepY + fSpacerY) / 2.0F;
+	              fExtraOffsetX = 0.0F;
+	            } else {
+	              iTextureMultiY = 1;
+	            }
+	          }
+	          if ((i == iCurrentAxisSelectionX) && (j == iCurrentAxisSelectionY)) {
+	            iTextureMultiX = iAddTextures - 2;
+	            iTextureMultiY = iAddTextures - 2;
+	            fExtraOffsetX = 0.0F;
+	            fExtraOffsetY = 0.0F;
+	          }
+	
+	          if ((i == iCurrentAxisSelectionX - 1) || 
+	            (i == iCurrentAxisSelectionX + 1)) {
+	            iOffsetMultiX = iAddTextures - 3;
+	          }
+	          if ((j == iCurrentAxisSelectionY - 1) || 
+	            (j == iCurrentAxisSelectionY + 1)) {
+	            iOffsetMultiY = iAddTextures - 3;
+	          }
+	        }
+	        fyOffset -= (fStepY + fSpacerY) * iOffsetMultiY;
+	
+	        if ((i > j) && (this.bOnlyRenderHalfMatrix)) {
+	          ++icounter;
+	        }
+	        else
+	        {
+	          if (i != j) {
+	            gl.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+	            if (bIsSelection) {
+	              ((Texture)this.AlSelectionTextures.get(icounter)).enable();
+	              ((Texture)this.AlSelectionTextures.get(icounter)).bind();
+	            } else {
+	              ((Texture)this.AlFullTextures.get(icounter)).enable();
+	              ((Texture)this.AlFullTextures.get(icounter)).bind();
+	            }
+	            gl.glTexParameteri(3553, 10242, 
+	              10496);
+	            gl.glTexParameteri(3553, 10243, 
+	              10496);
+	            gl.glTexParameteri(3553, 
+	              10240, 9728);
+	            gl.glTexParameteri(3553, 
+	              10241, 9728);
+	            TextureCoords texCoords = null;
+	
+	            if (bIsSelection)
+	              texCoords = ((Texture)this.AlSelectionTextures.get(icounter))
+	                .getImageTexCoords();
+	            else {
+	              texCoords = ((Texture)this.AlFullTextures.get(icounter))
+	                .getImageTexCoords();
+	            }
+	
+	            gl.glPushName(this.pickingManager.getPickingID(this.iUniqueID, 
+	              EPickingType.SCATTER_MATRIX_SELECTION, icounter));
+	
+	            gl.glBegin(7);
+	            gl.glTexCoord2d(texCoords.left(), texCoords.top());
+	            gl.glVertex3f(fxOffset + fExtraOffsetX, fyOffset + 
+	              fExtraOffsetY, z);
+	            gl.glTexCoord2d(texCoords.left(), texCoords.bottom());
+	            gl.glVertex3f(fxOffset + fExtraOffsetX, fyOffset + fStepY * 
+	              iTextureMultiY + fExtraOffsetY, z);
+	            gl.glTexCoord2d(texCoords.right(), texCoords.bottom());
+	            gl.glVertex3f(fxOffset + fStepX * iTextureMultiX + 
+	              fExtraOffsetX, fyOffset + fStepY * iTextureMultiY + 
+	              fExtraOffsetY, z);
+	            gl.glTexCoord2d(texCoords.right(), texCoords.top());
+	            gl.glVertex3f(fxOffset + fStepX * iTextureMultiX + 
+	              fExtraOffsetX, fyOffset + fExtraOffsetY, z);
+	            gl.glEnd();
+	            gl.glPopName();
+	
+	            if (!(bIsSelection)) {
+	              gl.glLineWidth(0.05F);
+	              gl.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
+	              gl.glBegin(2);
+	
+	              gl.glVertex3f(fxOffset + fExtraOffsetX, fyOffset + 
+	                fExtraOffsetY, z + 1.0F);
+	              gl.glVertex3f(fxOffset + fExtraOffsetX, fyOffset + 
+	                fStepY * iTextureMultiY + fExtraOffsetY, 
+	                z + 1.0F);
+	              gl.glVertex3f(fxOffset + fStepX * iTextureMultiX + 
+	                fExtraOffsetX, fyOffset + fStepY * 
+	                iTextureMultiY + fExtraOffsetY, z + 1.0F);
+	              gl.glVertex3f(fxOffset + fStepX * iTextureMultiX + 
+	                fExtraOffsetX, fyOffset + fExtraOffsetY, 
+	                z + 1.0F);
+	              gl.glEnd();
+	            }
+	
+	            if (bIsSelection)
+	              ((Texture)this.AlSelectionTextures.get(icounter)).disable();
+	            else
+	              ((Texture)this.AlFullTextures.get(icounter)).disable();
+	          }
+	          else if (!(bIsSelection)) {
+	            renderHistogram(gl, fxOffset + fExtraOffsetX, fyOffset + 
+	              fExtraOffsetY, fStepX, fStepY, i);
+	
+	            float tmpx = this.viewFrustum.getWidth() - (
+	              fxOffset + fExtraOffsetX + fStepX);
+	            float tmpy = this.viewFrustum.getHeight() - (
+	              fyOffset + fExtraOffsetY + fStepY);
+	
+	            if ((getSpace(tmpx, tmpy) > getSpace(fMaxX, fMaxY)) && 
+	              (getCorrelation(tmpx, tmpy))) {
+	              fMaxX = tmpx;
+	              fMaxY = tmpy;
+	            }
+	
+	          }
+	
+	          ++icounter;
+	        }
+	      }
+	      fyOffset = fHeight;
+	
+	      fxOffset += (fStepX + fSpacerX) * iOffsetMultiX;
+    }
+    if (!(bIsSelection))
+      this.renderStyle.setCenterOffsets(this.viewFrustum.getWidth() - fMaxX, 
+        this.viewFrustum.getHeight() - fMaxY);
+  }
 
 	private boolean getCorrelation(float x, float y) {
 		float fCorrelation = 1.3f;
@@ -1238,6 +1223,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		if (!bRender2Axis)
 			gl.glCallList(iGLDisplayListIndexSelection);
 
+		
 		if (bMainViewZoom)
 		{
 			if (bRenderMatrix)
@@ -1307,6 +1293,17 @@ public class GLScatterPlot extends AStorageBasedView {
 			bUpdateFullTexures = false;
 			initTextures();
 		}
+		
+		if (this.bRedrawTextures)
+	    {
+	      this.bRedrawTextures = false;
+	      gl.glNewList(this.iGLDisplayListIndexMatrixFull, 4864);
+	      renderTextures(gl, false, 0.0F);
+	      gl.glEndList();
+	      gl.glNewList(this.iGLDisplayListIndexMatrixSelection, 4864);
+	      renderTextures(gl, true, 0.0F);
+	      gl.glEndList();
+	    }
 
 		if (bUpdateMainView) {
 
@@ -2154,7 +2151,15 @@ public class GLScatterPlot extends AStorageBasedView {
 		}
 
 		// contentVA = useCase.getVA(EVAType.CONTENT);
-		Collection<Integer> selectionSet = contentVA.getIndexList();
+		//Collection<Integer> selectionSet = contentVA.getIndexList();
+		 Collection<Integer> tmpSet = this.contentVA.getIndexList();
+		 Collection<Integer> selectionSet = new ArrayList<Integer>();
+		    for (Integer iContentIndex : tmpSet)
+		    {
+		      if (iContentIndex.intValue() % 6 != 0)
+		        continue;
+		      selectionSet.add(iContentIndex);
+		    }
 
 		// FIXME:Use Current Selection
 		if (bRender2Axis)
@@ -3358,43 +3363,99 @@ public class GLScatterPlot extends AStorageBasedView {
 		}
 	}
 
-	public void upDownSelect(boolean bDownIsTrue) {
+	public void upDownMouse(boolean bDownIsTrue)
+	  {
+	    int tmpAxis = MOUSEOVER_Y_AXIS;
+	    if (bDownIsTrue)
+	      ++tmpAxis;
+	    else
+	      --tmpAxis;
+	    if ((tmpAxis == MOUSEOVER_X_AXIS) && (this.bOnlyRenderHalfMatrix))
+	      return;
+	    if (tmpAxis < 0)
+	      tmpAxis = 0;
+	    if (tmpAxis + 1 > this.MAX_AXES)
+	      tmpAxis = MOUSEOVER_Y_AXIS;
+	    MOUSEOVER_Y_AXIS = tmpAxis;
 
-		int tmpAxis = SELECTED_Y_AXIS;
-		if (bDownIsTrue)
-			tmpAxis++;
-		else
-			tmpAxis--;
-		if (tmpAxis == SELECTED_X_AXIS && bOnlyRenderHalfMatrix)
-			return;
-		if (tmpAxis < 0)
-			tmpAxis = 0;
-		if ((tmpAxis + 1) > MAX_AXES)
-			tmpAxis = SELECTED_Y_AXIS;
-		SELECTED_Y_AXIS = tmpAxis;
-		bUpdateMainView = true;
-		selectNewAxes();
-		setDisplayListDirty();
-	}
+	    if (!(this.bAllowMatrixZoom))
+	      return;
+	    this.bRedrawTextures = true;
+	    setDisplayListDirty();
+	  }
 
-	public void leftRightSelect(boolean bRightIsTrue) {
-		int tmpAxis = SELECTED_X_AXIS;
-		if (bRightIsTrue)
-			tmpAxis++;
-		else
-			tmpAxis--;
-		if (tmpAxis == SELECTED_Y_AXIS && bOnlyRenderHalfMatrix)
-			return;
+	  public void upDownSelect(boolean bDownIsTrue)
+	  {
+	    if (this.bRenderMatrix)
+	    {
+	      upDownMouse(bDownIsTrue);
+	      return;
+	    }
+	    int tmpAxis = SELECTED_Y_AXIS;
+	    if (bDownIsTrue)
+	      ++tmpAxis;
+	    else
+	      --tmpAxis;
+	    if ((tmpAxis == SELECTED_X_AXIS) && (this.bOnlyRenderHalfMatrix))
+	      return;
+	    if (tmpAxis < 0)
+	      tmpAxis = 0;
+	    if (tmpAxis + 1 > this.MAX_AXES) {
+	      tmpAxis = SELECTED_Y_AXIS;
+	    }
+	    SELECTED_Y_AXIS = tmpAxis;
+	    selectNewAxes();
 
-		if (tmpAxis < 0)
-			tmpAxis = 0;
-		if ((tmpAxis + 1) > MAX_AXES)
-			tmpAxis = SELECTED_X_AXIS;
-		SELECTED_X_AXIS = tmpAxis;
-		bUpdateMainView = true;
-		selectNewAxes();
-		setDisplayListDirty();
-	}
+	    this.bUpdateMainView = true;
+	    setDisplayListDirty();
+	  }
+
+	  public void leftRightMouse(boolean bRightIsTrue)
+	  {
+	    int tmpAxis = MOUSEOVER_X_AXIS;
+	    if (bRightIsTrue)
+	      ++tmpAxis;
+	    else
+	      --tmpAxis;
+	    if ((tmpAxis == MOUSEOVER_Y_AXIS) && (this.bOnlyRenderHalfMatrix)) {
+	      return;
+	    }
+	    if (tmpAxis < 0)
+	      tmpAxis = 0;
+	    if (tmpAxis + 1 > this.MAX_AXES)
+	      tmpAxis = MOUSEOVER_X_AXIS;
+	    MOUSEOVER_X_AXIS = tmpAxis;
+
+	    if (!(this.bAllowMatrixZoom))
+	      return;
+	    this.bRedrawTextures = true;
+	    setDisplayListDirty();
+	  }
+
+	  public void leftRightSelect(boolean bRightIsTrue)
+	  {
+	    if (this.bRenderMatrix)
+	    {
+	      leftRightMouse(bRightIsTrue);
+	      return;
+	    }
+	    int tmpAxis = SELECTED_X_AXIS;
+	    if (bRightIsTrue)
+	      ++tmpAxis;
+	    else
+	      --tmpAxis;
+	    if ((tmpAxis == SELECTED_Y_AXIS) && (this.bOnlyRenderHalfMatrix)) {
+	      return;
+	    }
+	    if (tmpAxis < 0)
+	      tmpAxis = 0;
+	    if (tmpAxis + 1 > this.MAX_AXES)
+	      tmpAxis = SELECTED_X_AXIS;
+	    SELECTED_X_AXIS = tmpAxis;
+	    selectNewAxes();
+	    this.bUpdateMainView = true;
+	    setDisplayListDirty();
+	  }
 
 	public void upDownSelect2Axis(boolean bDownIsTrue) {
 		if (!bRender2Axis)
@@ -3438,6 +3499,16 @@ public class GLScatterPlot extends AStorageBasedView {
 		selectNewAxes();
 		setDisplayListDirty();
 	}
+	
+	  public void confirmCurrentSelection()
+	  {
+	    SELECTED_X_AXIS = MOUSEOVER_X_AXIS;
+	    SELECTED_Y_AXIS = MOUSEOVER_Y_AXIS;
+	    selectNewAxes();
+	    this.bUpdateMainView = true;
+	    setDisplayListDirty();
+	  }
+	
 
 	public void toggleSpecialAxisMode() {
 		if (bRender2Axis)
@@ -3509,6 +3580,12 @@ public class GLScatterPlot extends AStorageBasedView {
 			fTransformNewMinX = 0.3f;
 			fTransformOldMaxX = 0.4f;
 			fTransformNewMaxX = 0.4f;
+			
+			fTransformOldMinY = 0.3f;
+			fTransformNewMinY = 0.3f;
+			fTransformOldMaxY = 0.4f;
+			fTransformNewMaxY = 0.4f;
+			
 			bMainViewZoom = true;
 			
 		}
