@@ -11,9 +11,12 @@ import javax.media.opengl.GL;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.Group;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
@@ -47,6 +50,7 @@ public class HeatMapWrapper {
 	private ArrayList<Pair<Integer, Pair<Integer, Integer>>> selectedGroups;
 	private int id;
 	private boolean useDetailView;
+	private boolean haveGroupsChanged;
 
 	private AGLView glParentView;
 	private GLInfoAreaManager infoAreaManager;
@@ -109,23 +113,23 @@ public class HeatMapWrapper {
 		overview.setSet(set);
 
 		// FIXME: Just for testing
-//		if (contentVA.size() > 80) {
-//			ContentGroupList groupList = new ContentGroupList();
-//			contentVA.setGroupList(groupList);
-//			Group temp = new Group(5, false, 0, SelectionType.NORMAL);
-//			groupList.append(temp);
-//			temp = new Group(10, false, 0, SelectionType.NORMAL);
-//			groupList.append(temp);
-//			temp = new Group(20, false, 0, SelectionType.NORMAL);
-//			groupList.append(temp);
-//			temp = new Group(15, false, 0, SelectionType.NORMAL);
-//			groupList.append(temp);
-//			temp = new Group(30, false, 0, SelectionType.NORMAL);
-//			groupList.append(temp);
-//			temp = new Group(contentVA.size() - 80, false, 0,
-//					SelectionType.NORMAL);
-//			groupList.append(temp);
-//		}
+		if (contentVA.size() > 80 && contentVA.getGroupList() == null) {
+			ContentGroupList groupList = new ContentGroupList();
+			contentVA.setGroupList(groupList);
+			Group temp = new Group(5, false, 0, SelectionType.NORMAL);
+			groupList.append(temp);
+			temp = new Group(10, false, 0, SelectionType.NORMAL);
+			groupList.append(temp);
+			temp = new Group(20, false, 0, SelectionType.NORMAL);
+			groupList.append(temp);
+			temp = new Group(15, false, 0, SelectionType.NORMAL);
+			groupList.append(temp);
+			temp = new Group(30, false, 0, SelectionType.NORMAL);
+			groupList.append(temp);
+			temp = new Group(contentVA.size() - 80, false, 0,
+					SelectionType.NORMAL);
+			groupList.append(temp);
+		}
 	}
 
 	public void init(GL gl, AGLView glParentView,
@@ -179,13 +183,13 @@ public class HeatMapWrapper {
 		for (Pair<Integer, Pair<Integer, Integer>> groupWithBounds : selectedGroups) {
 
 			GLHeatMap heatMap = hashHeatMaps.get(groupWithBounds.getFirst());
-			if(heatMap == null)
+			if (heatMap == null)
 				continue;
 			int numSamplesInHeatMap = (groupWithBounds.getSecond().getSecond() - groupWithBounds
 					.getSecond().getFirst()) + 1;
 			float heatMapHeight = layout
 					.getDetailHeatMapHeight(numSamplesInHeatMap,
-							contentVA.size(), selectedGroups.size());
+							numTotalSamples, selectedGroups.size());
 
 			gl.glTranslatef(detailPosition.x(), currentPositionY
 					- heatMapHeight, detailPosition.z());
@@ -195,6 +199,10 @@ public class HeatMapWrapper {
 			heatMap.getViewFrustum().setRight(
 					detailPosition.x() + layout.getDetailWidth());
 			heatMap.getViewFrustum().setTop(currentPositionY);
+			// if(haveGroupsChanged) {
+			// heatMap.setDisplayListDirty();
+			// haveGroupsChanged = false;
+			// }
 			heatMap.displayRemote(gl);
 
 			gl.glTranslatef(-detailPosition.x(),
@@ -226,9 +234,12 @@ public class HeatMapWrapper {
 					setEmbeddedHeatMapData(heatMap, groupWithBounds.getSecond()
 							.getFirst(), groupWithBounds.getSecond()
 							.getSecond());
-					heatMap.setDisplayListDirty();
+
 					hashHeatMaps.put(groupWithBounds.getFirst(), heatMap);
 				}
+				GLHeatMap heatMap = hashHeatMaps
+						.get(groupWithBounds.getFirst());
+				heatMap.setDisplayListDirty();
 			}
 			// if (selectedGroups.size() > 0) {
 			// setEmbeddedHeatMapData(selectedGroupBounds.get(0).getFirst(),
@@ -240,23 +251,21 @@ public class HeatMapWrapper {
 	}
 
 	public void processEvents() {
-		// FIXME
-		if (!selectedGroups.isEmpty()) {
-			GLHeatMap heatMap = hashHeatMaps.get(selectedGroups.get(0)
-					.getFirst());
-			if(heatMap != null) {
+
+		for (Pair<Integer, Pair<Integer, Integer>> groupWithBounds : selectedGroups) {
+			GLHeatMap heatMap = hashHeatMaps.get(groupWithBounds.getFirst());
+			if (heatMap != null) {
 				heatMap.processEvents();
 			}
 		}
 	}
 
 	public void setDisplayListDirty() {
-		// FIXME
-		if (!selectedGroups.isEmpty()) {
-			GLHeatMap heatMap = hashHeatMaps.get(selectedGroups.get(0)
-					.getFirst());
+		
+		for (Pair<Integer, Pair<Integer, Integer>> groupWithBounds : selectedGroups) {
+			GLHeatMap heatMap = hashHeatMaps.get(groupWithBounds.getFirst());
 
-			if(heatMap != null) {
+			if (heatMap != null) {
 				heatMap.setDisplayListDirty();
 			}
 		}
@@ -264,7 +273,7 @@ public class HeatMapWrapper {
 	}
 
 	public Vec2f getLeftLinkPositionFromContentID(int contentID) {
-		
+
 		int contentIndex = contentVA.indexOf(contentID);
 
 		if (contentVA.indexOf(contentID) == -1)
@@ -276,7 +285,8 @@ public class HeatMapWrapper {
 				+ layout.getOverviewHeight() / contentVA.size() * contentIndex);
 	}
 
-	public Vec2f getRightLinkPositionFromContentID(int contentID, ContentVirtualArray contentVA) {
+	public Vec2f getRightLinkPositionFromContentID(int contentID,
+			ContentVirtualArray contentVA) {
 
 		int contentIndex = contentVA.indexOf(contentID);
 
@@ -286,11 +296,14 @@ public class HeatMapWrapper {
 		Vec3f detailPosition = layout.getDetailPosition();
 
 		// For the group check we need the index in the global content VA
-		Integer groupID = getGroupIDFromContentIndex(set.getContentVA(ContentVAType.getPrimaryVAType()).indexOf(contentID));
+		Integer groupID = getGroupIDFromContentIndex(set.getContentVA(
+				ContentVAType.getPrimaryVAType()).indexOf(contentID));
 		if (groupID == null)
 			return null;
 
 		GLHeatMap heatMap = hashHeatMaps.get(groupID);
+		if(heatMap == null)
+			return null;
 
 		return new Vec2f(detailPosition.x() + layout.getDetailWidth(),
 				detailPosition.y()
@@ -335,23 +348,25 @@ public class HeatMapWrapper {
 		overview.handleSliderSelection(pickingType, pickingMode);
 	}
 
-//	public void handleGroupSelection(SelectionType selectionType,
-//			int groupIndex) {
-//
-//		ContentSelectionManager contentSelectionManager = heatMap.getContentSelectionManager();
-//		
-//		contentSelectionManager.clearSelection(selectionType);
-//		contentVA.getGroupList().get(groupIndex).setSelectionType(selectionType);
-//		ArrayList<Integer> groupElements = set.getContentTree().getNodeByNumber(groupIndex).getLeaveIds();
-//		
-//		contentSelectionManager.clearSelection(selectionType);
-//		contentSelectionManager.addToType(selectionType, groupElements);
-////
-//		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
-//		SelectionUpdateEvent event = new SelectionUpdateEvent();
-//		event.setSender(this);
-//		event.setSelectionDelta((SelectionDelta) selectionDelta);
-//		//event.setInfo(getShortInfoLocal());
-//		GeneralManager.get().getEventPublisher().triggerEvent(event);
-//	}
+	// public void handleGroupSelection(SelectionType selectionType,
+	// int groupIndex) {
+	//
+	// ContentSelectionManager contentSelectionManager =
+	// heatMap.getContentSelectionManager();
+	//		
+	// contentSelectionManager.clearSelection(selectionType);
+	// contentVA.getGroupList().get(groupIndex).setSelectionType(selectionType);
+	// ArrayList<Integer> groupElements =
+	// set.getContentTree().getNodeByNumber(groupIndex).getLeaveIds();
+	//		
+	// contentSelectionManager.clearSelection(selectionType);
+	// contentSelectionManager.addToType(selectionType, groupElements);
+	// //
+	// ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+	// SelectionUpdateEvent event = new SelectionUpdateEvent();
+	// event.setSender(this);
+	// event.setSelectionDelta((SelectionDelta) selectionDelta);
+	// //event.setInfo(getShortInfoLocal());
+	// GeneralManager.get().getEventPublisher().triggerEvent(event);
+	// }
 }
