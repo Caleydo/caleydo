@@ -34,6 +34,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.heatmap.GLHeatMap;
 
 public class HeatMapWrapper {
@@ -165,6 +166,7 @@ public class HeatMapWrapper {
 
 		overview.draw(gl, textureManager, pickingManager, viewID, id);
 
+		// drawVisLinksBetweenOverviewAndDetail(gl);
 	}
 
 	public void drawRemoteItems(GL gl) {
@@ -261,7 +263,7 @@ public class HeatMapWrapper {
 	}
 
 	public void setDisplayListDirty() {
-		
+
 		for (Pair<Integer, Pair<Integer, Integer>> groupWithBounds : selectedGroups) {
 			GLHeatMap heatMap = hashHeatMaps.get(groupWithBounds.getFirst());
 
@@ -286,23 +288,23 @@ public class HeatMapWrapper {
 	}
 
 	public Vec2f getRightLinkPositionFromContentID(int contentID,
-			ContentVirtualArray contentVA) {
+			ContentVirtualArray contentVALocal) {
 
-		int contentIndex = contentVA.indexOf(contentID);
+		int contentIndex = contentVALocal.indexOf(contentID);
 
-		if (contentVA.indexOf(contentID) == -1)
+		if (contentVALocal.indexOf(contentID) == -1)
 			return null;
 
 		Vec3f detailPosition = layout.getDetailPosition();
 
 		// For the group check we need the index in the global content VA
-		Integer groupID = getGroupIDFromContentIndex(set.getContentVA(
-				ContentVAType.getPrimaryVAType()).indexOf(contentID));
+		Integer groupID = getGroupIDFromContentIndex(contentVA
+				.indexOf(contentID));
 		if (groupID == null)
 			return null;
 
 		GLHeatMap heatMap = hashHeatMaps.get(groupID);
-		if(heatMap == null)
+		if (heatMap == null)
 			return null;
 
 		return new Vec2f(detailPosition.x() + layout.getDetailWidth(),

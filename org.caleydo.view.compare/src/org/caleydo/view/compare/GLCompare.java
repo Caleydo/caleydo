@@ -205,7 +205,6 @@ public class GLCompare extends AGLView
 
 		// renderTree(gl);
 		// renderOverviewRelations(gl);
-		renderDetailRelations(gl);
 
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
@@ -217,11 +216,16 @@ public class GLCompare extends AGLView
 				iUniqueID);
 		rightHeatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
 				iUniqueID);
-
-		// renderDetailRelations(gl);
+		
 		renderTree(gl);
-		// renderOverviewRelations(gl);
+		
+		renderOverviewToDetailRelations(gl);
 
+		renderDetailRelations(gl);
+
+		if (leftHeatMapWrapper.getContentVAsOfHeatMaps().size() == 0)
+			renderOverviewRelations(gl);		
+		
 		gl.glEndList();
 	}
 
@@ -240,8 +244,8 @@ public class GLCompare extends AGLView
 		ContentSelectionManager contentSelectionManager = useCase
 				.getContentSelectionManager();
 
-		gl.glColor3f(0,1,0);
-		
+		gl.glColor3f(0, 1, 0);
+
 		// Iterate over all detail content VAs on the left
 		for (ContentVirtualArray contentVA : leftHeatMapWrapper
 				.getContentVAsOfHeatMaps()) {
@@ -270,8 +274,17 @@ public class GLCompare extends AGLView
 				if (leftPos == null)
 					continue;
 
-				Vec2f rightPos = rightHeatMapWrapper
-						.getLeftLinkPositionFromContentID(contentID);
+				Vec2f rightPos = null;
+				for (ContentVirtualArray rightVA : rightHeatMapWrapper
+						.getContentVAsOfHeatMaps()) {
+
+						rightPos = rightHeatMapWrapper
+								.getRightLinkPositionFromContentID(
+										contentID, rightVA);
+
+						if (rightPos != null)
+							break;
+				}
 
 				if (rightPos == null)
 					continue;
@@ -280,45 +293,42 @@ public class GLCompare extends AGLView
 						EPickingType.POLYLINE_SELECTION, contentID));
 
 				ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-				points.add(new Vec3f(leftPos.x()
-						+ heatMapLayoutLeft.getOverviewGroupWidth()
-						+ heatMapLayoutLeft.getOverviewHeatmapWidth()
-						+ heatMapLayoutLeft.getOverviewSliderWidth(),
-						viewFrustum.getHeight() - leftPos.y(), 0));
+				points.add(new Vec3f(leftPos.x(), viewFrustum.getHeight()
+						- leftPos.y(), 0));
 
-//				Tree<ClusterNode> tree;
-//				int nodeID;
-//				ClusterNode node;
-//				ArrayList<ClusterNode> pathToRoot;
-//
-//				// Add spline points for left hierarchy
-//				tree = setsToCompare.get(0).getContentTree();
-//				nodeID = tree.getNodeIDsFromLeafID(contentID).get(0);
-//				node = tree.getNodeByNumber(nodeID);
-//				pathToRoot = node.getParentPath(tree.getRoot());
-//
-//				// Remove last because it is root bundling
-//				pathToRoot.remove(pathToRoot.size() - 1);
-//
-//				for (ClusterNode pathNode : pathToRoot) {
-//					Vec3f nodePos = pathNode.getPos();
-//					points.add(nodePos);
-//				}
-//
-//				// Add spline points for right hierarchy
-//				tree = setsToCompare.get(1).getContentTree();
-//				nodeID = tree.getNodeIDsFromLeafID(contentID).get(0);
-//				node = tree.getNodeByNumber(nodeID);
-//				pathToRoot = node.getParentPath(tree.getRoot());
-//
-//				// Remove last because it is root bundling
-//				pathToRoot.remove(pathToRoot.size() - 1);
-//
-//				for (ClusterNode pathNode : pathToRoot) {
-//					Vec3f nodePos = pathNode.getPos();
-//					points.add(nodePos);
-//					break; // FIXME: REMOVE BREAK
-//				}
+				// Tree<ClusterNode> tree;
+				// int nodeID;
+				// ClusterNode node;
+				// ArrayList<ClusterNode> pathToRoot;
+				//
+				// // Add spline points for left hierarchy
+				// tree = setsToCompare.get(0).getContentTree();
+				// nodeID = tree.getNodeIDsFromLeafID(contentID).get(0);
+				// node = tree.getNodeByNumber(nodeID);
+				// pathToRoot = node.getParentPath(tree.getRoot());
+				//
+				// // Remove last because it is root bundling
+				// pathToRoot.remove(pathToRoot.size() - 1);
+				//
+				// for (ClusterNode pathNode : pathToRoot) {
+				// Vec3f nodePos = pathNode.getPos();
+				// points.add(nodePos);
+				// }
+				//
+				// // Add spline points for right hierarchy
+				// tree = setsToCompare.get(1).getContentTree();
+				// nodeID = tree.getNodeIDsFromLeafID(contentID).get(0);
+				// node = tree.getNodeByNumber(nodeID);
+				// pathToRoot = node.getParentPath(tree.getRoot());
+				//
+				// // Remove last because it is root bundling
+				// pathToRoot.remove(pathToRoot.size() - 1);
+				//
+				// for (ClusterNode pathNode : pathToRoot) {
+				// Vec3f nodePos = pathNode.getPos();
+				// points.add(nodePos);
+				// break; // FIXME: REMOVE BREAK
+				// }
 
 				points.add(new Vec3f(rightPos.x(), viewFrustum.getHeight()
 						- rightPos.y(), 0));
@@ -336,7 +346,6 @@ public class GLCompare extends AGLView
 		}
 
 	}
-
 	private void renderOverviewRelations(GL gl) {
 
 		if (setsToCompare == null || setsToCompare.size() == 0)
@@ -462,6 +471,82 @@ public class GLCompare extends AGLView
 			gl.glEnd();
 
 			gl.glPopName();
+		}
+	}
+
+	private void renderOverviewToDetailRelations(GL gl) {
+		gl.glColor3f(0, 0, 0);
+		gl.glLineWidth(1);
+		for (ContentVirtualArray va : leftHeatMapWrapper
+				.getContentVAsOfHeatMaps()) {
+
+			for (Integer contentID : va) {
+
+				Vec2f leftPos = leftHeatMapWrapper
+						.getLeftLinkPositionFromContentID(contentID);
+				if (leftPos == null)
+					continue;
+
+				Vec2f rightPos = leftHeatMapWrapper
+						.getRightLinkPositionFromContentID(contentID, va);
+				if (rightPos == null)
+					continue;
+
+				ArrayList<Vec3f> points = new ArrayList<Vec3f>();
+				points.add(new Vec3f(heatMapLayoutLeft
+						.getOverviewHeatMapPosition().x()
+						+ heatMapLayoutLeft.getOverviewHeatmapWidth()
+						+ leftPos.x(), heatMapLayoutLeft.getOverviewHeight()
+						- leftPos.y(), 0));
+
+				points.add(new Vec3f(rightPos.x(), heatMapLayoutLeft
+						.getDetailHeight()
+						- rightPos.y(), 0));
+
+				NURBSCurve curve = new NURBSCurve(points, 30);
+				points = curve.getCurvePoints();
+
+				gl.glBegin(GL.GL_LINE_STRIP);
+				for (int i = 0; i < points.size(); i++)
+					gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0);
+				gl.glEnd();
+			}
+		}
+
+		gl.glColor3f(0, 0, 0);
+		gl.glLineWidth(1);
+		for (ContentVirtualArray va : rightHeatMapWrapper
+				.getContentVAsOfHeatMaps()) {
+
+			for (Integer contentID : va) {
+
+				Vec2f leftPos = rightHeatMapWrapper
+						.getLeftLinkPositionFromContentID(contentID);
+				if (leftPos == null)
+					continue;
+
+				Vec2f rightPos = rightHeatMapWrapper
+						.getRightLinkPositionFromContentID(contentID, va);
+				if (rightPos == null)
+					continue;
+
+				ArrayList<Vec3f> points = new ArrayList<Vec3f>();
+				points.add(new Vec3f(leftPos.x(), heatMapLayoutRight
+						.getOverviewHeight()
+						- leftPos.y(), 0));
+
+				points.add(new Vec3f(rightPos.x(), heatMapLayoutRight
+						.getDetailHeight()
+						- rightPos.y(), 0));
+
+				NURBSCurve curve = new NURBSCurve(points, 30);
+				points = curve.getCurvePoints();
+
+				gl.glBegin(GL.GL_LINE_STRIP);
+				for (int i = 0; i < points.size(); i++)
+					gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0);
+				gl.glEnd();
+			}
 		}
 	}
 
