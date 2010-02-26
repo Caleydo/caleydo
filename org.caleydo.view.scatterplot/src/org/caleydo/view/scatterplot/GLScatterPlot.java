@@ -134,6 +134,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	private GL opengl;
 
+	// Just a test;
 	int iCurrentMouseOverElement = -1;
 	int iCurrentDragZoom = -1;
 
