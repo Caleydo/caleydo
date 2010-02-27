@@ -32,12 +32,12 @@ public class HeatMapOverview {
 	private ISet set;
 	private ContentVirtualArray contentVA;
 	private StorageVirtualArray storageVA;
-	private ArrayList<Pair<Integer, Pair<Integer, Integer>>> selectedGroups;
+	private ArrayList<GroupInfo> selectedGroups;
 
 	public HeatMapOverview(HeatMapLayout layout) {
 		this.layout = layout;
 		slider = new VerticalSlider(layout);
-		selectedGroups = new ArrayList<Pair<Integer, Pair<Integer, Integer>>>();
+		selectedGroups = new ArrayList<GroupInfo>();
 	}
 
 	public void draw(GL gl, TextureManager textureManager,
@@ -88,7 +88,7 @@ public class HeatMapOverview {
 		ContentGroupList contentGroupList = contentVA.getGroupList();
 		int groupSampleStartIndex = 0;
 		int groupSampleEndIndex = 0;
-		int groupID = 0;
+		int groupIndex = 0;
 		selectedGroups.clear();
 		for (Group group : contentGroupList) {
 			groupSampleEndIndex = groupSampleStartIndex + group.getNrElements()
@@ -96,17 +96,13 @@ public class HeatMapOverview {
 			if (groupSampleStartIndex >= lowerBoundIndex
 					&& groupSampleEndIndex <= upperBoundIndex) {
 				group.setSelectionType(SelectionType.SELECTION);
-				Pair<Integer, Pair<Integer, Integer>> groupIDAndBounds = new Pair<Integer, Pair<Integer, Integer>>();
-				groupIDAndBounds.setFirst(groupID);
-				groupIDAndBounds.setSecond(new Pair<Integer, Integer>(groupSampleStartIndex,
-						groupSampleEndIndex));
-				selectedGroups.add(groupIDAndBounds);
+				selectedGroups.add(new GroupInfo(group, groupIndex, groupSampleStartIndex));
 			} else {
 				group.setSelectionType(SelectionType.NORMAL);
 			}
 
 			groupSampleStartIndex += group.getNrElements();
-			groupID++;
+			groupIndex++;
 		}
 	}
 
@@ -153,7 +149,7 @@ public class HeatMapOverview {
 				storageVA, null);
 	}
 
-	public ArrayList<Pair<Integer, Pair<Integer, Integer>>> getSelectedGroups() {
+	public ArrayList<GroupInfo> getSelectedGroups() {
 		return selectedGroups;
 	}
 }

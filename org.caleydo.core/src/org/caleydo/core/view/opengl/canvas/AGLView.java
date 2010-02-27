@@ -720,7 +720,7 @@ public abstract class AGLView
 		return fAspectRatio;
 	}
 
-	public final IVirtualArray getContentVA() {
+	public ContentVirtualArray getContentVA() {
 		return contentVA;
 	}
 

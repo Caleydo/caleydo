@@ -185,8 +185,6 @@ public class HeatMapUtil {
 
 				gl.glPopName();
 				if (groupIndex < contentGroupList.size() - 1) {
-					gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-					gl.glColor4f(1, 1, 1, 1);
 					gl.glBegin(GL.GL_LINES);
 					gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(),
 							lowerLeftCorner.z());

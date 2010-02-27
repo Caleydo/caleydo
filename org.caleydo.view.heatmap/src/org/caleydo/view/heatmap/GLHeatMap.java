@@ -30,6 +30,7 @@ import org.caleydo.core.data.selection.VABasedSelectionManager;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -98,8 +99,12 @@ public class GLHeatMap extends AStorageBasedView {
 	private ArrayList<Float> fAlXDistances;
 
 	boolean bUseDetailLevel = true;
+	
+	private boolean sendClearSelectionsEvent = false;
 
 	int iCurrentMouseOverElement = -1;
+	
+	int numSentClearSelectionEvents = 0;
 
 	/**
 	 * Determines whether a bigger space between heat map and caption is needed
@@ -222,6 +227,7 @@ public class GLHeatMap extends AStorageBasedView {
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		display(gl);
+		numSentClearSelectionEvents = 0;
 		checkForHits(gl);
 
 		ConnectedElementRepresentationManager cerm = GeneralManager.get()
@@ -252,6 +258,7 @@ public class GLHeatMap extends AStorageBasedView {
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
 		display(gl);
+		numSentClearSelectionEvents = 0;
 		checkForHits(gl);
 
 		// glMouseListener.resetEvents();
@@ -515,6 +522,13 @@ public class GLHeatMap extends AStorageBasedView {
 			// SelectionCommand(ESelectionCommandType.CLEAR,
 			// SelectionType);
 			// sendSelectionCommandEvent(EIDType.REFSEQ_MRNA_INT, command);
+			
+			if(sendClearSelectionsEvent && numSentClearSelectionEvents == 0) {
+				ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
+				clearSelectionsEvent.setSender(this);
+				eventPublisher.triggerEvent(clearSelectionsEvent);
+				numSentClearSelectionEvents++;
+			} 
 
 			handleConnectedElementRep(selectionDelta);
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -522,6 +536,8 @@ public class GLHeatMap extends AStorageBasedView {
 			event.setSelectionDelta(selectionDelta);
 			event.setInfo(getShortInfoLocal());
 			eventPublisher.triggerEvent(event);
+			
+			
 		}
 
 		setDisplayListDirty();
@@ -551,6 +567,13 @@ public class GLHeatMap extends AStorageBasedView {
 			// SelectionCommand(ESelectionCommandType.CLEAR,
 			// SelectionType);
 			// sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
+			
+			if(sendClearSelectionsEvent && numSentClearSelectionEvents == 0) {
+				ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
+				clearSelectionsEvent.setSender(this);
+				eventPublisher.triggerEvent(clearSelectionsEvent);
+				numSentClearSelectionEvents++;
+			}
 
 			SelectionDelta selectionDelta = storageSelectionManager.getDelta();
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -1170,5 +1193,13 @@ public class GLHeatMap extends AStorageBasedView {
 //		contentSelectionManager.setVA(contentVA);
 		this.contentVA = contentVA;
 		setDisplayListDirty();
+	}
+	
+	public boolean isSendClearSelectionsEvent() {
+		return sendClearSelectionsEvent;
+	}
+
+	public void setSendClearSelectionsEvent(boolean sendClearSelectionsEvent) {
+		this.sendClearSelectionsEvent = sendClearSelectionsEvent;
 	}
 }
