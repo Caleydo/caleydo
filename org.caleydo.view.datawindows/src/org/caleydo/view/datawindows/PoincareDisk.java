@@ -7,17 +7,27 @@ import org.caleydo.core.data.graph.tree.Tree;
 
 public class PoincareDisk {
 
-	private double radius;
+	public double radius;
 	private Tree<PoincareNode> tree;
 	private double treeScaleFactor = 1;
 	private boolean dirtyTree = true;
+	private int treeNodeCounter;
+	protected double nodeSize;
+	protected double lineWidth;
+	protected double absoluteScalation;
+	protected Point2D.Double absolutePosition;
 
 	public PoincareDisk(double diskRadius) {
 		radius = diskRadius;
+		nodeSize = 0.1;
+		lineWidth = 0.01;
+		absoluteScalation = 1;
+		absolutePosition = new Point2D.Double(0, 0);
 	}
 
 	public Tree<PoincareNode> getTree() {
 		return tree;
+
 	}
 
 	public void loadTree() {
@@ -42,15 +52,14 @@ public class PoincareDisk {
 					iCount--));
 			tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
 					iCount--));
-			
-			
+
 			PoincareNode tempNode2 = new PoincareNode(tree, "Child6 l1",
 					iCount--);
 			tree.addChild(tempNode, tempNode2);
-		
+
 			tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
 					iCount--));
-			
+
 		}
 
 		layoutTree();
@@ -59,11 +68,15 @@ public class PoincareDisk {
 
 	}
 
-	public void centerNode() {
+	public void centerNode(PoincareNode node) {
+		translateTree(new Point2D.Double(node.getPosition().getX() * -1, node
+				.getPosition().getY()
+				* -1));
 
 	}
 
 	public void translateTree(Point2D.Double translationVector) {
+		System.out.println("transform tree;"+translationVector.getX()+"|"+translationVector.getY());
 		PoincareNode root = tree.getRoot();
 		translateNode(root, translationVector);
 		projectTree();
@@ -71,6 +84,9 @@ public class PoincareDisk {
 
 	private boolean translateNode(PoincareNode node,
 			Point2D.Double translationVector) {
+		absolutePosition.setLocation(absolutePosition.getX()
+				+ translationVector.getX(), absolutePosition.getY()
+				+ translationVector.getY());
 
 		node.setPosition(new Point2D.Double(node.getPosition().getX()
 				+ translationVector.getX(), node.getPosition().getY()
@@ -80,7 +96,6 @@ public class PoincareDisk {
 			return false;
 		}
 
-		System.out.println("scaliere Knoten: " + node.nodeName);
 		ArrayList<PoincareNode> children = tree.getChildren(node);
 		int numberOfChildren = children.size();
 
@@ -92,6 +107,9 @@ public class PoincareDisk {
 	}
 
 	public void scaleTree(double factor) {
+		absoluteScalation = absoluteScalation * factor;
+
+		nodeSize = nodeSize * factor;
 		PoincareNode root = tree.getRoot();
 		root.setPosition(scalePoint(root.getPosition(), factor));
 		scaleNode(root, factor);
@@ -102,7 +120,7 @@ public class PoincareDisk {
 		if (tree.getChildren(node) == null) {
 			return false;
 		}
-		//System.out.println("scaliere Knoten: " + node.nodeName);
+		// System.out.println("scaliere Knoten: " + node.nodeName);
 		ArrayList<PoincareNode> children = tree.getChildren(node);
 		int numberOfChildren = children.size();
 		for (int i = 0; i < numberOfChildren; i++) {
@@ -121,7 +139,7 @@ public class PoincareDisk {
 	}
 
 	public Point2D.Double projectPoint(Point2D.Double point) {
-		radius = 2;
+		// radius = 2;
 		Point2D.Double coordinate = new Point2D.Double();
 		coordinate.setLocation(point);
 		double coordinateLength = coordinate.getX() * coordinate.getX()
@@ -137,22 +155,27 @@ public class PoincareDisk {
 	}
 
 	protected boolean projectNode(PoincareNode parentNode) {
+		double distance = distanceFromOrigin(parentNode.getPosition());
+
+		parentNode.setDistanceFromOrigin(distance);
 
 		if (tree.getChildren(parentNode) == null) {
 			return false;
 		}
+
 		ArrayList<PoincareNode> children = tree.getChildren(parentNode);
 		int numberOfChildren = children.size();
 		for (int i = 0; i < numberOfChildren; i++) {
 			children.get(i).setProjectedPosition(
 					projectPoint(children.get(i).getPosition()));
+
 			// recursion step
 			projectNode(children.get(i));
 		}
 		for (int i = 0; i < numberOfChildren; i++) {
-			System.out.println("Node projziert auf: "
-					+ children.get(i).getProjectedPosition().getX() + "|"
-					+ children.get(i).getProjectedPosition().getY());
+			//System.out.println("Node projziert auf: "
+					//+ children.get(i).getProjectedPosition().getX() + "|"
+				//	+ children.get(i).getProjectedPosition().getY());
 		}
 		return true;
 
@@ -177,6 +200,8 @@ public class PoincareDisk {
 		PoincareNode root = tree.getRoot();
 		root.setPosition(new Point2D.Double(0, 0));
 		root.setDistanceFromOrigin(0);
+		treeNodeCounter = 1;
+		root.iComparableValue = treeNodeCounter;
 		layoutNode(root, 0, 2 * Math.PI);
 
 	}
@@ -186,51 +211,50 @@ public class PoincareDisk {
 	// All angles are in radiant
 	private boolean layoutNode(PoincareNode parentNode, double angleOffset,
 			double angle) {
-		//System.out.println("layoutNode " + parentNode.nodeName + " Called");
+		// System.out.println("layoutNode " + parentNode.nodeName + " Called");
 
 		if (tree.getChildren(parentNode) == null) {
-			//System.out.println("no children");
+			// System.out.println("no children");
 			return false;
 		}
 
 		ArrayList<PoincareNode> children = tree.getChildren(parentNode);
 		int numberOfChildren = children.size();
-		
-		
-			double splitAngle = angle / (double) (numberOfChildren+2);
-		
-		
-			if (parentNode.iComparableValue == 1){
-				splitAngle = angle / (double) (numberOfChildren);
-			}
-			
-			
-			
-		double absoluteAngle = angleOffset-angle/2;
-	double length=1;
-	length=0.5/Math.sin(splitAngle/2);
-		
+		double splitAngle = angle / (double) (numberOfChildren + 2);
+
+		if (parentNode.iComparableValue == 1) {
+			splitAngle = angle / (double) (numberOfChildren);
+		}
+
+		double absoluteAngle = angleOffset - angle / 2;
+		double length = 1;
+		// length = 0.5 / Math.sin(splitAngle / 2);
+
 		Point2D.Double relativePoint = new Point2D.Double(0, 0);
-        System.out.println("number of children: " + numberOfChildren);
+		System.out.println("number of children: " + numberOfChildren);
 		for (int i = 0; i < numberOfChildren; i++) {
 			absoluteAngle = absoluteAngle + splitAngle;
-			Point2D.Double newPoint = new Point2D.Double(parentNode.getPosition().getX()*length, parentNode.getPosition().getY()*length);
-		
+			Point2D.Double newPoint = new Point2D.Double(parentNode
+					.getPosition().getX()
+					* length, parentNode.getPosition().getY() * length);
+
 			relativePoint = angleToCoordinate(absoluteAngle);
 			newPoint.setLocation(newPoint.getX() + relativePoint.getX(),
 					newPoint.getY() + relativePoint.getY());
 
 			children.get(i).setPosition(
-					new Point2D.Double(newPoint.getX(),
-							newPoint.getY()));
+					new Point2D.Double(newPoint.getX(), newPoint.getY()));
 			System.out.println("Angle: " + absoluteAngle * 180 / Math.PI);
 			System.out.println("SplitAngle: " + splitAngle * 180 / Math.PI);
-			System.out.println("Node " +children.get(i).nodeName +" is set to: "
-					+ children.get(i).getPosition().getX() + "|"
-					+ children.get(i).getPosition().getY());
+			System.out.println("Node " + children.get(i).nodeName
+					+ " is set to: " + children.get(i).getPosition().getX()
+					+ "|" + children.get(i).getPosition().getY());
 			// recursion step:
+			treeNodeCounter++;
+			children.get(i).iComparableValue = treeNodeCounter;
+
 			layoutNode(children.get(i), absoluteAngle, splitAngle);
-			
+
 		}
 		return true;
 	}
@@ -254,5 +278,49 @@ public class PoincareDisk {
 				.getY()
 				- point2.getY());
 		return distanceFromOrigin(relativePosition);
+	}
+
+	public PoincareNode getNodeByCompareableValue(int value) {
+		PoincareNode root = tree.getRoot();
+
+		PoincareNode result = compareValueNode(root, value);
+		return result;
+	}
+
+	private PoincareNode compareValueNode(PoincareNode node, int value) {
+		if (node.iComparableValue == value) {
+			return node;
+		}
+
+		if (tree.getChildren(node) == null) {
+			return null;
+		}
+
+		ArrayList<PoincareNode> children = tree.getChildren(node);
+		int numberOfChildren = children.size();
+		PoincareNode tempNode;
+		for (int i = 0; i < numberOfChildren; i++) {
+
+			tempNode = compareValueNode(node.getChildren().get(i), value);
+			if (tempNode != null) {
+				return tempNode;
+			}
+
+		}
+		return null;
+	}
+
+	public void clearHighlightedNodes() {
+		PoincareNode tempNode;
+		System.out.println("call clear" + tree.getNumberOfNodes());
+		for (int i = 1; i <= tree.getNumberOfNodes(); i++) {
+			System.out.println("untersuche: " + i);
+			tempNode = getNodeByCompareableValue(i);
+			if (tempNode != null) {
+				getNodeByCompareableValue(i).highLighted = false;
+				System.out.println("knoten: " + tempNode.nodeName);
+			}
+
+		}
 	}
 }

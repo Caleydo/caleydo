@@ -36,6 +36,8 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.parcoords.PCRenderStyle;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
+import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
+import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 
 /**
  * Rendering the Datawindow
@@ -51,7 +53,7 @@ public class GLDataWindows extends AGLView {
 	private double mouseCoordX = 0;
 	private double mouseCoordY = 0;
 
-	private Point mousePoint = new Point(0,0);
+	private Point mousePoint = new Point(0, 0);
 	int viewport[] = new int[4];
 
 	private float canvasWidth = 7;
@@ -65,15 +67,16 @@ public class GLDataWindows extends AGLView {
 
 	private RemoteLevel testLevel;
 
-
+	private ArrayList<nodeSlerp> arSlerpActions;
 
 	private DataWindowsDisk disk;
-	
-	//properties of the circle
-	private double circleRadius=2;
-	
+
+	// properties of the circle
+	private double circleRadius = 2;
+
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(
 			0, 0);
+
 	/**
 	 * Constructor.
 	 * 
@@ -90,31 +93,31 @@ public class GLDataWindows extends AGLView {
 		containedGLViews = new ArrayList<AGLView>();
 		newViews = new ArrayList<ASerializedView>();
 
-		//preparing the eyetracker
-		//this.tracker = new TrackDataProvider();
-		//tracker.startTracking();
+		// preparing the eyetracker
+		// this.tracker = new TrackDataProvider();
+		// tracker.startTracking();
 
-		//remote test
-		//testLevel = new RemoteLevel(1, "testview", testLevel, testLevel);
-		//Transform transform = new Transform();
-		//transform.setTranslation(new Vec3f(0, 0, 0));
-		//transform.setScale(new Vec3f(0.5f, 0.5f, 1));
-		//testLevel.getElementByPositionIndex(0).setTransform(transform);
-        //end remote test
-		
+		// remote test
+		// testLevel = new RemoteLevel(1, "testview", testLevel, testLevel);
+		// Transform transform = new Transform();
+		// transform.setTranslation(new Vec3f(0, 0, 0));
+		// transform.setScale(new Vec3f(0.5f, 0.5f, 1));
+		// testLevel.getElementByPositionIndex(0).setTransform(transform);
+		// end remote test
 
-		//debug
-	
-	    disk = new DataWindowsDisk(2);
+		// debug
+
+		disk = new DataWindowsDisk(2);
 		disk.loadTree();
-		disk.scaleTree(2);
-		//disk.translateTree(new Point2D.Double(3,3));
-		
+		disk.scaleTree(3);
+
+		arSlerpActions = new ArrayList<nodeSlerp>();
+
+		// disk.translateTree(new Point2D.Double(3,3));
+
 		// ASerializedView serView = getSerializableRepresentation();
 		// newViews.add(serView);
 
-		
-		
 	}
 
 	@Override
@@ -155,7 +158,7 @@ public class GLDataWindows extends AGLView {
 		// return;
 
 		pickingManager.handlePicking(this, gl);
-		
+
 		if (bIsDisplayListDirtyLocal) {
 
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
@@ -171,6 +174,7 @@ public class GLDataWindows extends AGLView {
 			renderBusyMode(gl);
 
 	}
+
 	@Override
 	public void displayRemote(GL gl) {
 		display(gl);
@@ -179,56 +183,29 @@ public class GLDataWindows extends AGLView {
 	@Override
 	public void display(GL gl) {
 		// processEvents();
-
+		
 		// GLHelperFunctions.drawAxis(gl);
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// gl.glEnable(GL.GL_DEPTH_TEST);
 		// clipToFrustum(gl);
 
-//		 gl.glMatrixMode(GL.GL_PROJECTION);
-//		 gl.glLoadIdentity();
-//		//
-//		 gl.glOrtho(0.0f, canvasWidth,canvasHeight, 0.0f, -1.0f, 1.0f);
-//		//
-//		 gl.glMatrixMode(GL.GL_MODELVIEW);
-//		 gl.glLoadIdentity();
+		// gl.glMatrixMode(GL.GL_PROJECTION);
+		// gl.glLoadIdentity();
+		// //
+		// gl.glOrtho(0.0f, canvasWidth,canvasHeight, 0.0f, -1.0f, 1.0f);
+		// //
+		// gl.glMatrixMode(GL.GL_MODELVIEW);
+		// gl.glLoadIdentity();
 		//
-		 
+	
+		// System.out.println("mouseZeiger:"+mousePoint.getX()+"|"+mousePoint.getY());
 
+		//
+		// gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+		//		 
+		// canvasWidth=canvasHeight*(float)viewport[2]/(float)viewport[3];
+		//		
 
-		
-		Vec3f lowerLeftCorner = new Vec3f(-1 + canvasWidth / 2, -1
-				+ canvasHeight / 2, 0);
-
-		Vec3f lowerRightCorner = new Vec3f(1 + canvasWidth / 2, -1
-				+ canvasHeight / 2, 0);
-		Vec3f upperRightCorner = new Vec3f(1 + canvasWidth / 2,
-				1 + canvasHeight / 2, 0);
-		Vec3f upperLeftCorner = new Vec3f(-1 + canvasWidth / 2,
-				1 + canvasHeight / 2, 0);
-		Vec3f scalingPivot = new Vec3f(1, 1, 0);
-
-		int iPickingID = pickingManager.getPickingID(iUniqueID,
-				EPickingType.DATAW_NODE, 1);
-		
-		gl.glPushName(iPickingID);
-		//displaying test texture for picking
-		textureManager.renderGUITexture(gl, EIconTextures.PATHWAY_SYMBOL,
-				lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
-
-		gl.glPopName();
-			
-		 //System.out.println("mouseZeiger:"+mousePoint.getX()+"|"+mousePoint.getY());
-		 
-		 //
-//		 gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-//		 
-//		 canvasWidth=canvasHeight*(float)viewport[2]/(float)viewport[3];
-//		
-		 
-		
-		
 		//
 		// }
 		//
@@ -253,18 +230,19 @@ public class GLDataWindows extends AGLView {
 		// gl.glVertex3f(2, 2, 0);
 		// gl.glEnd();
 
-		
-		//remote test
-		//initNewView(gl);
+		// remote test
+		// initNewView(gl);
 
-		//renderRemoteLevel(gl, testLevel);
-		
-		
-		disk.renderTree(gl, textureManager,canvasWidth, canvasHeight);
+		// renderRemoteLevel(gl, testLevel);
+
+		gl.glLineWidth(3);
 	
 		
-		
-		
+		doSlerpActions();
+
+		disk.renderTree(gl, textureManager, pickingManager, iUniqueID,
+				(double) canvasWidth, (double) canvasHeight);
+
 		if (glMouseListener.getPickedPoint() != null) {
 			mousePoint = glMouseListener.getPickedPoint();
 
@@ -274,31 +252,26 @@ public class GLDataWindows extends AGLView {
 
 			mouseCoordX = (float) (mousePoint.getX() * factorX);
 			mouseCoordY = (float) (mousePoint.getY() * factorY);
-			
-			
-			
+
 		}
-		
-		
-		
-		
-	
-		 if (glMouseListener.wasRightMouseButtonPressed()){
 
-			 disk.translateTree(new Point2D.Double(mouseCoordX-canvasWidth/2,mouseCoordY-canvasHeight/2));
-		 }
-		 if (glMouseListener.wasLeftMouseButtonPressed()){
+		if (glMouseListener.wasRightMouseButtonPressed()) {
 
-			 disk.translateTree(new Point2D.Double(-0.3,-0.3));
-		 }
-		 
+			disk.translateTree(new Point2D.Double(
+					mouseCoordX - canvasWidth / 2, mouseCoordY - canvasHeight
+							/ 2));
+		}
+		if (glMouseListener.wasLeftMouseButtonPressed()) {
+			disk.scaleTree(0.9);
+			// disk.translateTree(new Point2D.Double(-0.3,-0.3));
+		}
+
 		// if (!containedGLViews.isEmpty()) {
 		//
 		// containedGLViews.get(0).displayRemote(gl);
 		// // renderRemoteLevelElement(gl,
 		// // testLevel.getElementByPositionIndex(0));
 		//
-		
 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 		// if (!isRenderedRemote())
@@ -384,7 +357,7 @@ public class GLDataWindows extends AGLView {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
-		
+
 		SelectionType selectionType;
 		switch (ePickingType) {
 
@@ -392,14 +365,21 @@ public class GLDataWindows extends AGLView {
 			switch (pickingMode) {
 
 			case CLICKED:
-				if (iExternalID==1)
-				{
-				disk.scaleTree(0.5);
-				System.out.println("CLICKED!!!");
-				}
+				// disk.centerNode(disk.getNodeByCompareableValue(iExternalID));
+			
+				
+				arSlerpActions.add(new nodeSlerp(10, disk
+						.getNodeByCompareableValue(iExternalID).getPosition(),
+						new Point2D.Double(0, 0)));
+				
+
+				//disk.clearHighlightedNodes();
+			//	disk.mouseOverNode(iExternalID);
+			
 			}
+
 		}
-		
+
 	}
 
 	@Override
@@ -514,5 +494,20 @@ public class GLDataWindows extends AGLView {
 
 		return glView;
 	}
-	
+
+	private void doSlerpActions() {
+		if (arSlerpActions.isEmpty()) {
+			return;
+		}
+
+		nodeSlerp singleSlerp = arSlerpActions.get(0);
+		if (singleSlerp.doASlerp() == true) {
+			disk.translateTree(singleSlerp.returnPoint);
+		} else {
+			System.out.println("slerp stopped");
+			arSlerpActions.remove(0);
+		}
+
+	}
+
 }

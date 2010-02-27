@@ -12,15 +12,24 @@ public class PoincareNode extends AHierarchyElement<PoincareNode> {
 	private Point2D.Double projectedPosition;
 	private PoincareNode openLink;
 	private boolean linked = false;
+	private int levelOfDetail = 0;
+	
+	
+	
 	String nodeName;
 	int iComparableValue;
+	public boolean highLighted=false;
 
 	public PoincareNode(Tree<PoincareNode> tree, String nodeName,
 			int iComparableValue) {
 		super(tree);
+		
 		this.iComparableValue = iComparableValue;
 		this.nodeName = nodeName;
 		this.id = iComparableValue;
+		
+		
+		                             
 	}
 
 	public void setLinked(boolean linked) {
@@ -61,6 +70,14 @@ public class PoincareNode extends AHierarchyElement<PoincareNode> {
 
 	public PoincareNode getOpenLink() {
 		return openLink;
+	}
+
+	public void setLevelOfDetail(int levelOfDetail) {
+		this.levelOfDetail = levelOfDetail;
+	}
+
+	public int getLevelOfDetail() {
+		return levelOfDetail;
 	}
 
 }
