@@ -13,6 +13,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.tree.DefaultNode;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -21,6 +22,7 @@ import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.specialized.genetic.pathway.PathwayManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.tracking.TrackDataProvider;
@@ -74,6 +76,8 @@ public class GLDataWindows extends AGLView {
 	// properties of the circle
 	private double circleRadius = 2;
 
+	
+	
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(
 			0, 0);
 
@@ -107,10 +111,19 @@ public class GLDataWindows extends AGLView {
 
 		// debug
 
+		PathwayManager path;
+
 		disk = new DataWindowsDisk(2);
 		disk.loadTree();
-		disk.scaleTree(3);
+		disk.scaleTree(3,1);
 
+	
+	
+		
+	
+		
+		
+		
 		arSlerpActions = new ArrayList<nodeSlerp>();
 
 		// disk.translateTree(new Point2D.Double(3,3));
@@ -235,14 +248,14 @@ public class GLDataWindows extends AGLView {
 
 		// renderRemoteLevel(gl, testLevel);
 
-		gl.glLineWidth(3);
 	
-		
+	
 		doSlerpActions();
 
 		disk.renderTree(gl, textureManager, pickingManager, iUniqueID,
 				(double) canvasWidth, (double) canvasHeight);
-
+		
+		
 		if (glMouseListener.getPickedPoint() != null) {
 			mousePoint = glMouseListener.getPickedPoint();
 
@@ -255,17 +268,7 @@ public class GLDataWindows extends AGLView {
 
 		}
 
-		if (glMouseListener.wasRightMouseButtonPressed()) {
-
-			disk.translateTree(new Point2D.Double(
-					mouseCoordX - canvasWidth / 2, mouseCoordY - canvasHeight
-							/ 2));
-		}
-		if (glMouseListener.wasLeftMouseButtonPressed()) {
-			disk.scaleTree(0.9);
-			// disk.translateTree(new Point2D.Double(-0.3,-0.3));
-		}
-
+		
 		// if (!containedGLViews.isEmpty()) {
 		//
 		// containedGLViews.get(0).displayRemote(gl);
@@ -366,15 +369,11 @@ public class GLDataWindows extends AGLView {
 
 			case CLICKED:
 				// disk.centerNode(disk.getNodeByCompareableValue(iExternalID));
-			
+				
 				
 				arSlerpActions.add(new nodeSlerp(10, disk
 						.getNodeByCompareableValue(iExternalID).getPosition(),
 						new Point2D.Double(0, 0)));
-				
-
-				//disk.clearHighlightedNodes();
-			//	disk.mouseOverNode(iExternalID);
 			
 			}
 
@@ -504,9 +503,11 @@ public class GLDataWindows extends AGLView {
 		if (singleSlerp.doASlerp() == true) {
 			disk.translateTree(singleSlerp.returnPoint);
 		} else {
-			System.out.println("slerp stopped");
 			arSlerpActions.remove(0);
+		//    disk.zoomTree(1);
+			
 		}
+		
 
 	}
 

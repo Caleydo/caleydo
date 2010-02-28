@@ -15,8 +15,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 
-import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
-import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
@@ -30,13 +29,7 @@ public class DataWindowsDisk extends PoincareDisk {
 	private GL gl;
 	int iUniqueID;
 	private double[] levelOfDetailLimits;
-
-	private static final int SLERP_RANGE = 1000;
-	private static final int SLERP_SPEED = 1400;
-	
-	private ArrayList<nodeSlerp> arSlerpActions;
-
-
+	private double lineFactor = 700;
 
 	public DataWindowsDisk(double diskRadius) {
 		super(diskRadius);
@@ -45,12 +38,11 @@ public class DataWindowsDisk extends PoincareDisk {
 		// display views
 		levelOfDetailLimits[0] = diskRadius * 1.5;
 		// display icons
-		levelOfDetailLimits[1] = diskRadius * 20;
+		levelOfDetailLimits[1] = diskRadius * 10;
 		// display only lines
 		levelOfDetailLimits[2] = diskRadius * 100;
-
 		
-		arSlerpActions = new ArrayList<nodeSlerp>();
+
 		
 	}
 
@@ -109,49 +101,37 @@ public class DataWindowsDisk extends PoincareDisk {
 
 	public boolean renderNode(PoincareNode node) {
 
-		// System.out.println("detail: " +
-		// distanceToDetaillevel(node.getDistanceFromOrigin()));
-		// System.out.println("distance: " + node.getDistanceFromOrigin());
-
-		// node.getPosition().getY());
-		// System.out.println("An projezierter Position: " +
-		// node.getProjectedPosition().getX()+ "|" +
-		// node.getProjectedPosition().getY());
-		//		 
-
 		if (node.getChildren() != null) {
-
 			ArrayList<PoincareNode> children = node.getChildren();
 			int numberOfChildren = children.size();
-
 			for (int i = 0; i < numberOfChildren; i++) {
-
 				// render the line:
-				if (distanceToDetaillevel(node.getDistanceFromOrigin()) <= 3) {
+				if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 1) {
+					
 					drawLine(node, children.get(i), 6);
 				}
+				if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 2) {
+					
+					drawLine(node, children.get(i), 3);
+				}
+				if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 3) {
+					
+					drawLine(node, children.get(i), 2);
+				}
 				renderNode(children.get(i));
-
 			}
-
 		}
-
 		if (distanceToDetaillevel(node.getDistanceFromOrigin()) <= 2) {
 			drawNode(node);
 		}
-
 		return true;
 	}
 
 	public void drawNode(PoincareNode node) {
 
-		// drawCircle(0.05f, node.getProjectedPosition().getX()
-		// + (canvasWidth / 2), node.getProjectedPosition().getY()
-		// + canvasHeight / 2);
-
-		double size = this.distancePoints(node.getProjectedPosition(), this
+		double size = distancePoints(node.getProjectedPosition(), this
 				.projectPoint(new Point2D.Double(node.getPosition().getX()
-						+ nodeSize, node.getPosition().getY() + nodeSize)));
+						+ nodeSize/2, node.getPosition().getY() + nodeSize/2)))*2;
 
 		// if (node.highLighted==true){
 		// size=size*2;
@@ -202,7 +182,7 @@ public class DataWindowsDisk extends PoincareDisk {
 				projectPoint(new Point2D.Double(node1.getPosition().getX()
 						+ lineWidth, node1.getPosition().getY() + lineWidth)));
 
-		width = width * 700;
+		width = width * lineFactor;
 
 		gl.glLineWidth((float) width);
 
@@ -291,6 +271,5 @@ public class DataWindowsDisk extends PoincareDisk {
 		}
 		gl.glEnd();
 	}
-	
 
 }

@@ -46,29 +46,21 @@ public class nodeSlerp {
 		
 		tempVector = new Point2D.Double(actualPoint.getX() - startPoint.getX(),
 				actualPoint.getY() - startPoint.getY());
-		
-	
 		actualLength = Math.sqrt(tempVector.getX() * tempVector.getX()
 				+ tempVector.getY() * tempVector.getY());
 		
-
 		if( actualLength>=length){
 			return false;
 		}
-		//speed=100;
-		System.out.println("actualLength: "+ actualLength);
-		System.out.println("length: "+ length);
-		System.out.println("startpoint:"+startPoint.getX()+"|"+startPoint.getY());
-		
 		
 		slerpFactor = speed *  time.deltaT();
 		
-		System.out.println("slerpfac: "+ slerpFactor);
+		
 			actualPoint.setLocation(actualPoint.getX()+directionVector.getX()*slerpFactor, 
 					actualPoint.getY()+directionVector.getY()*slerpFactor);
 		returnPoint.setLocation(directionVector.getX()*slerpFactor, 
 				directionVector.getY()*slerpFactor);
-		System.out.println("returnPoint:"+returnPoint.getX()+"|"+returnPoint.getY());
+		
 		return true;
 		
 		
