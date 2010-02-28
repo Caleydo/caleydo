@@ -187,9 +187,9 @@ public class HeatMapUtil {
 				if (groupIndex < contentGroupList.size() - 1) {
 					gl.glBegin(GL.GL_LINES);
 					gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(),
-							lowerLeftCorner.z());
+							1.0f);
 					gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y(),
-							lowerRightCorner.z());
+							1.0f);
 					gl.glEnd();
 				}
 

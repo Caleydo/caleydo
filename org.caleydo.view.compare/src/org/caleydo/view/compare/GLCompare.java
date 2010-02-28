@@ -192,15 +192,22 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	@Override
 	public void display(GL gl) {
 		// processEvents();
-		if (leftHeatMapWrapper.handleDragging(gl, glMouseListener)
-				|| rightHeatMapWrapper.handleDragging(gl, glMouseListener)) {
+		if (leftHeatMapWrapper.handleDragging(gl, glMouseListener)) {
+			rightHeatMapWrapper.selectGroupsFromContentVAList(gl,
+					glMouseListener, leftHeatMapWrapper
+							.getContentVAsOfHeatMaps());
+			setDisplayListDirty();
+		} else if (rightHeatMapWrapper.handleDragging(gl, glMouseListener)) {
+			leftHeatMapWrapper.selectGroupsFromContentVAList(gl,
+					glMouseListener, rightHeatMapWrapper
+							.getContentVAsOfHeatMaps());
 			setDisplayListDirty();
 		}
 
 		gl.glCallList(iGLDisplayListToCall);
+
 		leftHeatMapWrapper.drawRemoteItems(gl);
 		rightHeatMapWrapper.drawRemoteItems(gl);
-
 		// renderTree(gl);
 		// renderOverviewRelations(gl);
 
@@ -214,16 +221,16 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 				iUniqueID);
 		rightHeatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
 				iUniqueID);
-		
+
 		renderTree(gl);
-		
+
 		renderOverviewToDetailRelations(gl);
 
 		renderDetailRelations(gl);
 
 		if (leftHeatMapWrapper.getContentVAsOfHeatMaps().size() == 0)
-			renderOverviewRelations(gl);		
-		
+			renderOverviewRelations(gl);
+
 		gl.glEndList();
 	}
 
@@ -276,12 +283,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 				for (ContentVirtualArray rightVA : rightHeatMapWrapper
 						.getContentVAsOfHeatMaps()) {
 
-						rightPos = rightHeatMapWrapper
-								.getLeftDetailLinkPositionFromContentID(
-										contentID);
+					rightPos = rightHeatMapWrapper
+							.getLeftDetailLinkPositionFromContentID(contentID);
 
-						if (rightPos != null)
-							break;
+					if (rightPos != null)
+						break;
 				}
 
 				if (rightPos == null)
@@ -342,6 +348,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		}
 
 	}
+
 	private void renderOverviewRelations(GL gl) {
 
 		if (setsToCompare == null || setsToCompare.size() == 0)

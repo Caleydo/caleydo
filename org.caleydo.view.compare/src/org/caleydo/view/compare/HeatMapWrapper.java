@@ -11,9 +11,11 @@ import javax.media.opengl.GL;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
@@ -231,8 +233,7 @@ public class HeatMapWrapper {
 			numTotalSamples += numSamplesInHeatMap;
 		}
 		Vec3f detailPosition = layout.getDetailPosition();
-		float currentPositionY = detailPosition.y()
-		+ layout.getDetailHeight();
+		float currentPositionY = detailPosition.y() + layout.getDetailHeight();
 
 		for (GroupInfo groupInfo : selectedGroups) {
 
@@ -429,6 +430,59 @@ public class HeatMapWrapper {
 	public void handleOverviewSliderSelection(EPickingType pickingType,
 			EPickingMode pickingMode) {
 		overview.handleSliderSelection(pickingType, pickingMode);
+	}
+
+	public void selectGroupsFromContentVAList(GL gl,
+			GLMouseListener glMouseListener,
+			ArrayList<ContentVirtualArray> contentVAs) {
+
+		selectedGroups.clear();
+
+		ContentGroupList contentGroupList = contentVA.getGroupList();
+
+		int groupSampleStartIndex = 0;
+		int groupSampleEndIndex = 0;
+		int groupIndex = 0;
+		boolean groupAdded = false;
+		for (Group group : contentGroupList) {
+			groupSampleEndIndex = groupSampleStartIndex + group.getNrElements()
+					- 1;
+			group.setSelectionType(SelectionType.NORMAL);
+			for (ContentVirtualArray va : contentVAs) {
+				for (Integer contentID : va) {
+					int contentIndex = contentVA.indexOf(contentID);
+					if (contentIndex == -1)
+						continue;
+
+					if (groupSampleStartIndex <= contentIndex
+							&& groupSampleEndIndex >= contentIndex) {
+						selectedGroups.add(new GroupInfo(group, groupIndex,
+								groupSampleStartIndex));
+						group.setSelectionType(SelectionType.SELECTION);
+						groupAdded = true;
+						break;
+					}
+				}
+				if (groupAdded)
+					break;
+			}
+
+			groupSampleStartIndex += group.getNrElements();
+			groupIndex++;
+			groupAdded = false;
+		}
+
+		for (GroupInfo groupInfo : selectedGroups) {
+			if (!hashHeatMaps.containsKey(groupInfo.getGroupIndex())) {
+				GLHeatMap heatMap = createHeatMap(gl, glMouseListener);
+				setEmbeddedHeatMapData(heatMap, groupInfo.getLowerBoundIndex(),
+						groupInfo.getUpperBoundIndex());
+
+				hashHeatMaps.put(groupInfo.getGroupIndex(), heatMap);
+			}
+			GLHeatMap heatMap = hashHeatMaps.get(groupInfo.getGroupIndex());
+			heatMap.setDisplayListDirty();
+		}
 	}
 
 	public void handleGroupSelection(SelectionType selectionType, int groupIndex) {
