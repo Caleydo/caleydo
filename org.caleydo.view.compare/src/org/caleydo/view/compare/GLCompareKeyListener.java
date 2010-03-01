@@ -1,29 +1,29 @@
-package org.caleydo.view.grouper;
+package org.caleydo.view.compare;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 
-public class GLGrouperKeyListener extends GLKeyListener<GLGrouper> {
+public class GLCompareKeyListener extends GLKeyListener<GLCompare> {
 
-	private GLGrouper glGrouper;
+	private GLCompare glCompare;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param glGrouper
+	 * @param glCompare
 	 *            Instance of the grouper that should handle the keyboard
 	 *            events.
 	 */
-	public GLGrouperKeyListener(GLGrouper glGrouper) {
-		this.glGrouper = glGrouper;
+	public GLCompareKeyListener(GLCompare glCompare) {
+		this.glCompare = glCompare;
 	}
 
 	@Override
 	protected void handleKeyPressedEvent(KeyEvent event) {
 		if (event.keyCode == SWT.CONTROL) {
-			glGrouper.setControlPressed(true);
+			glCompare.setControlPressed(true);
 		}
 
 	}
@@ -37,7 +37,7 @@ public class GLGrouperKeyListener extends GLKeyListener<GLGrouper> {
 	@Override
 	protected void handleKeyReleasedEvent(KeyEvent event) {
 		if (event.keyCode == SWT.CONTROL) {
-			glGrouper.setControlPressed(false);
+			glCompare.setControlPressed(false);
 		}
 	}
 

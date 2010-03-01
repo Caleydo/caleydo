@@ -60,7 +60,7 @@ public class HeatMapOverview {
 
 		HeatMapUtil.renderGroupBar(gl, contentVA, layout.getOverviewHeight(),
 				layout.getOverviewGroupWidth(), pickingManager, viewID,
-				EPickingType.COMPARE_GROUP_SELECTION, textureManager);
+				layout.getGroupPickingType(), textureManager);
 
 		gl.glPopMatrix();
 

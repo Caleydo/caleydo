@@ -46,7 +46,21 @@ public class HeatMapWrapper {
 	private HeatMapLayout layout;
 	private HashMap<Integer, GLHeatMap> hashHeatMaps;
 	private HashMap<Integer, Vec3f> hashHeatMapPositions;
+
+	/**
+	 * Groups that have been selected and which are guaranteed to correspond to
+	 * a fully initialized heatmap
+	 */
 	private ArrayList<GroupInfo> selectedGroups;
+
+	/**
+	 * Groups that shall become selected
+	 */
+
+	/**
+	 * indicates if new groups shall become selected
+	 */
+	private boolean isNewSelection;
 	private int id;
 	private boolean useDetailView;
 
@@ -71,6 +85,7 @@ public class HeatMapWrapper {
 		this.useCase = useCase;
 		this.parentView = parentView;
 		this.dataDomain = dataDomain;
+		isNewSelection = false;
 	}
 
 	private GLHeatMap createHeatMap(GL gl, GLMouseListener glMouseListener) {
@@ -136,7 +151,29 @@ public class HeatMapWrapper {
 			GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager,
 			IUseCase useCase, IGLRemoteRenderingView parentView,
 			EDataDomain dataDomain) {
-		// createHeatMap(useCase, parentView, dataDomain);
+
+		ContentGroupList contentGroupList = contentVA.getGroupList();
+		hashHeatMaps.clear();
+		selectedGroups.clear();
+
+		if (contentGroupList == null)
+			return;
+
+		int groupSampleStartIndex = 0;
+		int groupSampleEndIndex = 0;
+		int groupIndex = 0;
+		for (Group group : contentGroupList) {
+			groupSampleEndIndex = groupSampleStartIndex + group.getNrElements()
+					- 1;
+			group.setSelectionType(SelectionType.NORMAL);
+			GLHeatMap heatMap = createHeatMap(gl, glMouseListener);
+			setEmbeddedHeatMapData(heatMap, groupSampleStartIndex,
+					groupSampleEndIndex);
+
+			hashHeatMaps.put(groupIndex, heatMap);
+			groupSampleStartIndex += group.getNrElements();
+			groupIndex++;
+		}
 
 	}
 
@@ -158,23 +195,66 @@ public class HeatMapWrapper {
 		heatMap.useFishEye(false);
 	}
 
-	public void drawLocalItems(GL gl, TextureManager textureManager,
-			PickingManager pickingManager, int viewID) {
-
-		overview.draw(gl, textureManager, pickingManager, viewID, id);
-
+	public void calculateDrawingParameters() {
 		calculateHeatMapPositions();
-		// drawVisLinksBetweenOverviewAndDetail(gl);
-	}
 
-	public void drawRemoteItems(GL gl) {
-
-		// if (useDetailView) {
 		int numTotalSamples = 0;
 
 		for (GroupInfo groupInfo : selectedGroups) {
 			int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
 			numTotalSamples += numSamplesInHeatMap;
+		}
+
+		for (GroupInfo groupInfo : selectedGroups) {
+
+			GLHeatMap heatMap = hashHeatMaps.get(groupInfo.getGroupIndex());
+			if (heatMap == null)
+				continue;
+			int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
+			float heatMapHeight = layout
+					.getDetailHeatMapHeight(numSamplesInHeatMap,
+							numTotalSamples, selectedGroups.size());
+			Vec3f heatMapPosition = hashHeatMapPositions.get(groupInfo
+					.getGroupIndex());
+
+			heatMap.getViewFrustum().setLeft(heatMapPosition.x());
+			heatMap.getViewFrustum().setBottom(
+					heatMapPosition.y() - heatMapHeight);
+			heatMap.getViewFrustum().setRight(
+					heatMapPosition.x() + layout.getDetailWidth());
+			heatMap.getViewFrustum().setTop(heatMapPosition.y());
+
+		}
+	}
+
+	public void drawLocalItems(GL gl, TextureManager textureManager,
+			PickingManager pickingManager, GLMouseListener glMouseListener,
+			int viewID) {
+
+		overview.draw(gl, textureManager, pickingManager, viewID, id);
+
+		// calculateHeatMapPositions();
+		// drawVisLinksBetweenOverviewAndDetail(gl);
+	}
+
+	public void drawRemoteItems(GL gl, GLMouseListener glMouseListener) {
+
+		// if (useDetailView) {
+
+		int numTotalSamples = 0;
+
+		for (GroupInfo groupInfo : selectedGroups) {
+			int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
+			numTotalSamples += numSamplesInHeatMap;
+
+			// if (!hashHeatMaps.containsKey(groupInfo.getGroupIndex())) {
+			// GLHeatMap heatMap = createHeatMap(gl, glMouseListener);
+			// setEmbeddedHeatMapData(heatMap, groupInfo.getLowerBoundIndex(),
+			// groupInfo.getUpperBoundIndex());
+			//
+			// hashHeatMaps.put(groupInfo.getGroupIndex(), heatMap);
+			// }
+
 		}
 
 		calculateHeatMapPositions();
@@ -203,6 +283,10 @@ public class HeatMapWrapper {
 			// heatMap.setDisplayListDirty();
 			// haveGroupsChanged = false;
 			// }
+			if (isNewSelection) {
+				heatMap.setDisplayListDirty();
+			}
+
 			heatMap.displayRemote(gl);
 
 			gl.glTranslatef(-heatMapPosition.x(), -heatMapPosition.y(),
@@ -220,6 +304,8 @@ public class HeatMapWrapper {
 			// .drawPointAt(gl, position.x(), position.y(), 1);
 			// }
 		}
+
+		isNewSelection = false;
 
 	}
 
@@ -255,24 +341,25 @@ public class HeatMapWrapper {
 	public boolean handleDragging(GL gl, GLMouseListener glMouseListener) {
 		if (overview.handleDragging(gl, glMouseListener)) {
 
-			selectedGroups = overview.getSelectedGroups();
-
-			for (GroupInfo groupInfo : selectedGroups) {
-				if (!hashHeatMaps.containsKey(groupInfo.getGroupIndex())) {
-					GLHeatMap heatMap = createHeatMap(gl, glMouseListener);
-					setEmbeddedHeatMapData(heatMap, groupInfo
-							.getLowerBoundIndex(), groupInfo
-							.getUpperBoundIndex());
-
-					hashHeatMaps.put(groupInfo.getGroupIndex(), heatMap);
-				}
-				GLHeatMap heatMap = hashHeatMaps.get(groupInfo.getGroupIndex());
-				heatMap.setDisplayListDirty();
+			ArrayList<GroupInfo> newGroups = overview.getSelectedGroups();
+			if (newGroups.size() != selectedGroups.size()) {
+				isNewSelection = true;
 			}
-			// if (selectedGroups.size() > 0) {
-			// setEmbeddedHeatMapData(selectedGroupBounds.get(0).getFirst(),
-			// selectedGroupBounds.get(0).getSecond());
-			// }
+
+			if (!isNewSelection) {
+				for (int i = 0; i < newGroups.size(); i++) {
+					if (newGroups.get(i).getGroupIndex() != selectedGroups.get(
+							i).getGroupIndex()) {
+						isNewSelection = true;
+					}
+				}
+			}
+
+			if (isNewSelection) {
+				selectedGroups.clear();
+				selectedGroups.addAll(newGroups);
+			}
+
 			return true;
 		}
 		return false;
@@ -370,6 +457,8 @@ public class HeatMapWrapper {
 		int contentIndex = heatMap.getContentVA().indexOf(contentID);
 		if (contentIndex == -1)
 			return null;
+
+		// calculateHeatMapPositions();
 
 		Vec3f heatMapPosition = hashHeatMapPositions.get(groupIndex);
 
@@ -472,27 +561,76 @@ public class HeatMapWrapper {
 			groupAdded = false;
 		}
 
-		for (GroupInfo groupInfo : selectedGroups) {
-			if (!hashHeatMaps.containsKey(groupInfo.getGroupIndex())) {
-				GLHeatMap heatMap = createHeatMap(gl, glMouseListener);
-				setEmbeddedHeatMapData(heatMap, groupInfo.getLowerBoundIndex(),
-						groupInfo.getUpperBoundIndex());
-
-				hashHeatMaps.put(groupInfo.getGroupIndex(), heatMap);
-			}
-			GLHeatMap heatMap = hashHeatMaps.get(groupInfo.getGroupIndex());
-			heatMap.setDisplayListDirty();
-		}
+		// for (GroupInfo groupInfo : selectedGroups) {
+		// if (!hashHeatMaps.containsKey(groupInfo.getGroupIndex())) {
+		// GLHeatMap heatMap = createHeatMap(gl, glMouseListener);
+		// setEmbeddedHeatMapData(heatMap, groupInfo.getLowerBoundIndex(),
+		// groupInfo.getUpperBoundIndex());
+		//
+		// hashHeatMaps.put(groupInfo.getGroupIndex(), heatMap);
+		// }
+		// GLHeatMap heatMap = hashHeatMaps.get(groupInfo.getGroupIndex());
+		// heatMap.setDisplayListDirty();
+		// }
 	}
 
-	public void handleGroupSelection(SelectionType selectionType, int groupIndex) {
+	public void handleGroupSelection(SelectionType selectionType,
+			int groupIndex, boolean isControlPressed) {
+
+		if (selectionType != SelectionType.SELECTION)
+			return;
+
+		for (GroupInfo groupInfo : selectedGroups) {
+			if (groupInfo.getGroupIndex() == groupIndex && isControlPressed) {
+
+				groupInfo.getGroup().setSelectionType(SelectionType.NORMAL);
+				selectedGroups.remove(groupInfo);
+
+				isNewSelection = true;
+				return;
+			}
+		}
+
+		ContentGroupList contentGroupList = contentVA.getGroupList();
+		ArrayList<GroupInfo> tempGroupList = new ArrayList<GroupInfo>();
+
+		if (isControlPressed) {
+			tempGroupList.addAll(selectedGroups);
+		}
+		selectedGroups.clear();
+
+		int groupSampleStartIndex = 0;
+		// int groupSampleEndIndex = 0;
+		int currentGroupIndex = 0;
+		for (Group group : contentGroupList) {
+			// groupSampleEndIndex = groupSampleStartIndex +
+			// group.getNrElements()
+			// - 1;
+			if (!tempGroupList.isEmpty()
+					&& tempGroupList.get(0).getGroupIndex() == currentGroupIndex) {
+				selectedGroups.add(tempGroupList.get(0));
+				tempGroupList.remove(0);
+			} else if (currentGroupIndex == groupIndex) {
+				group.setSelectionType(selectionType);
+				selectedGroups.add(new GroupInfo(group, groupIndex,
+						groupSampleStartIndex));
+
+			} else {
+				group.setSelectionType(SelectionType.NORMAL);
+			}
+			groupSampleStartIndex += group.getNrElements();
+			currentGroupIndex++;
+		}
+
+		isNewSelection = true;
+
+		glParentView.setDisplayListDirty();
 
 		// ContentSelectionManager contentSelectionManager = heatMap
 		// .getContentSelectionManager();
 		//
 		// contentSelectionManager.clearSelection(selectionType);
-		// Group selectedGroup = contentVA.getGroupList().get(groupIndex);
-		// selectedGroup.setSelectionType(selectionType);
+		//
 		// ArrayList<Integer> groupElements = set.getContentTree()
 		// .getNodeByNumber(selectedGroup.getClusterNode().getID())
 		// .getLeaveIds();
@@ -506,5 +644,9 @@ public class HeatMapWrapper {
 		// event.setSelectionDelta((SelectionDelta) selectionDelta);
 		// // event.setInfo(getShortInfoLocal());
 		// GeneralManager.get().getEventPublisher().triggerEvent(event);
+	}
+
+	public boolean isNewSelection() {
+		return isNewSelection;
 	}
 }

@@ -1,5 +1,7 @@
 package org.caleydo.view.compare;
 
+import org.caleydo.core.manager.picking.EPickingType;
+
 import gleem.linalg.Vec3f;
 
 public abstract class HeatMapLayout {
@@ -91,5 +93,7 @@ public abstract class HeatMapLayout {
 	public abstract Vec3f getDetailPosition();
 
 	public abstract float getOverviewSliderPositionX();
+	
+	public abstract EPickingType getGroupPickingType();
 
 }

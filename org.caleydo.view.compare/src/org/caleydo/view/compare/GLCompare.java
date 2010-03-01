@@ -71,6 +71,9 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	float yPosInitRight = 0;
 	float xPosInitRight = 0;
 
+	private boolean areNewSetsAvailable;
+	private boolean isControlPressed;
+
 	// private SetRelations relations;
 
 	/**
@@ -87,6 +90,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		viewType = VIEW_ID;
 		setsToCompare = new ArrayList<ISet>();
 		hashHeatMapWrappers = new HashMap<Integer, HeatMapWrapper>();
+		glKeyListener = new GLCompareKeyListener(this);
+		isControlPressed = false;
 	}
 
 	@Override
@@ -101,13 +106,16 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		rightHeatMapWrapper = new HeatMapWrapper(1, heatMapLayoutRight, this,
 				null, useCase, this, dataDomain);
 		hashHeatMapWrappers.put(1, rightHeatMapWrapper);
+
+		leftHeatMapWrapper.setSet(set);
+		rightHeatMapWrapper.setSet(set);
+
 		leftHeatMapWrapper.init(gl, this, glMouseListener, null, useCase, this,
 				dataDomain);
 		rightHeatMapWrapper.init(gl, this, glMouseListener, null, useCase,
 				this, dataDomain);
 
-		leftHeatMapWrapper.setSet(set);
-		rightHeatMapWrapper.setSet(set);
+		areNewSetsAvailable = false;
 	}
 
 	@Override
@@ -115,6 +123,15 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+		
+		// Register keyboard listener to GL canvas
+		parentGLCanvas.getParentComposite().getDisplay().asyncExec(
+				new Runnable() {
+					public void run() {
+						parentGLCanvas.getParentComposite().addKeyListener(
+								glKeyListener);
+					}
+				});
 
 		init(gl);
 	}
@@ -153,6 +170,15 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void displayLocal(GL gl) {
+
+		if (areNewSetsAvailable) {
+			leftHeatMapWrapper.init(gl, this, glMouseListener, null, useCase,
+					this, dataDomain);
+			rightHeatMapWrapper.init(gl, this, glMouseListener, null, useCase,
+					this, dataDomain);
+			areNewSetsAvailable = false;
+		}
+
 		processEvents();
 		leftHeatMapWrapper.processEvents();
 		rightHeatMapWrapper.processEvents();
@@ -164,6 +190,9 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		heatMapLayoutRight.setLayoutParameters(
 				2.0f * viewFrustum.getRight() / 3.0f, 0.0f, viewFrustum
 						.getTop(), viewFrustum.getRight() / 3.0f);
+
+		leftHeatMapWrapper.calculateDrawingParameters();
+		rightHeatMapWrapper.calculateDrawingParameters();
 
 		if (bIsDisplayListDirtyLocal) {
 			bIsDisplayListDirtyLocal = false;
@@ -192,12 +221,17 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	@Override
 	public void display(GL gl) {
 		// processEvents();
-		if (leftHeatMapWrapper.handleDragging(gl, glMouseListener)) {
+		if (leftHeatMapWrapper.handleDragging(gl, glMouseListener)
+				|| rightHeatMapWrapper.handleDragging(gl, glMouseListener)) {
+			setDisplayListDirty();
+		}
+
+		if (leftHeatMapWrapper.isNewSelection()) {
 			rightHeatMapWrapper.selectGroupsFromContentVAList(gl,
 					glMouseListener, leftHeatMapWrapper
 							.getContentVAsOfHeatMaps());
 			setDisplayListDirty();
-		} else if (rightHeatMapWrapper.handleDragging(gl, glMouseListener)) {
+		} else if (rightHeatMapWrapper.isNewSelection()) {
 			leftHeatMapWrapper.selectGroupsFromContentVAList(gl,
 					glMouseListener, rightHeatMapWrapper
 							.getContentVAsOfHeatMaps());
@@ -206,8 +240,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		gl.glCallList(iGLDisplayListToCall);
 
-		leftHeatMapWrapper.drawRemoteItems(gl);
-		rightHeatMapWrapper.drawRemoteItems(gl);
+		leftHeatMapWrapper.drawRemoteItems(gl, glMouseListener);
+		rightHeatMapWrapper.drawRemoteItems(gl, glMouseListener);
 		// renderTree(gl);
 		// renderOverviewRelations(gl);
 
@@ -218,9 +252,9 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 		leftHeatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
-				iUniqueID);
+				glMouseListener, iUniqueID);
 		rightHeatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
-				iUniqueID);
+				glMouseListener, iUniqueID);
 
 		renderTree(gl);
 
@@ -820,7 +854,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			}
 			break;
 
-		case COMPARE_GROUP_SELECTION:
+		case COMPARE_LEFT_GROUP_SELECTION:
 			switch (pickingMode) {
 			case CLICKED:
 				selectionType = SelectionType.SELECTION;
@@ -830,9 +864,22 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 				break;
 			}
 
-			// leftHeatMapWrapper.handleGroupSelection(selectionType,
-			// iExternalID);
+			leftHeatMapWrapper.handleGroupSelection(selectionType, iExternalID,
+					isControlPressed);
+			break;
 
+		case COMPARE_RIGHT_GROUP_SELECTION:
+			switch (pickingMode) {
+			case CLICKED:
+				selectionType = SelectionType.SELECTION;
+				break;
+			case MOUSE_OVER:
+				selectionType = SelectionType.MOUSE_OVER;
+				break;
+			}
+
+			rightHeatMapWrapper.handleGroupSelection(selectionType,
+					iExternalID, isControlPressed);
 			break;
 		}
 	}
@@ -934,7 +981,17 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			//
 			leftHeatMapWrapper.setSet(setLeft);
 			rightHeatMapWrapper.setSet(setRight);
+			areNewSetsAvailable = true;
 			setDisplayListDirty();
 		}
+
+	}
+
+	public boolean isControlPressed() {
+		return isControlPressed;
+	}
+
+	public void setControlPressed(boolean isControlPressed) {
+		this.isControlPressed = isControlPressed;
 	}
 }

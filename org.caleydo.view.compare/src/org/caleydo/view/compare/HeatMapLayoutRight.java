@@ -1,5 +1,7 @@
 package org.caleydo.view.compare;
 
+import org.caleydo.core.manager.picking.EPickingType;
+
 import gleem.linalg.Vec3f;
 
 public class HeatMapLayoutRight extends HeatMapLayout {
@@ -31,6 +33,11 @@ public class HeatMapLayoutRight extends HeatMapLayout {
 	public float getOverviewSliderPositionX() {
 		return positionX + getDetailWidth() + getGapWidth()
 				+ getOverviewHeatmapWidth() + getOverviewGroupWidth();
+	}
+
+	@Override
+	public EPickingType getGroupPickingType() {
+		return EPickingType.COMPARE_RIGHT_GROUP_SELECTION;
 	}
 
 }

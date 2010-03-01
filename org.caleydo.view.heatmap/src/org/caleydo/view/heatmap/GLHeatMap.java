@@ -1033,17 +1033,10 @@ public class GLHeatMap extends AStorageBasedView {
 	
 	public float getYCoordinateByContentIndex(int contentIndex) {
 		
-		float fieldWidth = 0;
-		if (contentSelectionManager.checkStatus(SelectionType.SELECTION,
-				contentIndex)
-				|| contentSelectionManager.checkStatus(
-						SelectionType.MOUSE_OVER, contentIndex)) {
-			fieldWidth = renderStyle.getSelectedFieldWidth();
-		} else {
-			fieldWidth = renderStyle.getNormalFieldWidth();
-		}
+		renderStyle.updateFieldSizes();
+		float fieldWidth = renderStyle.getNormalFieldWidth();
 		
-		return fAlXDistances.get(contentIndex) + (fieldWidth / 2.0f);
+		return fieldWidth * contentIndex + (fieldWidth / 2.0f);
 	}
 
 	private void doTranslation() {
