@@ -49,6 +49,7 @@ import org.caleydo.core.manager.event.view.storagebased.ToggleMatrixZoomEvent;
 import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
 import org.caleydo.core.manager.event.view.storagebased.XAxisSelectorEvent;
 import org.caleydo.core.manager.event.view.storagebased.YAxisSelectorEvent;
+import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -60,6 +61,7 @@ import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
@@ -71,6 +73,7 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.view.scatterplot.listener.UseRandomSamplingListener;
 import org.caleydo.view.scatterplot.listener.GLScatterPlotKeyListener;
 import org.caleydo.view.scatterplot.listener.SetPointSizeListener;
 import org.caleydo.view.scatterplot.listener.Toggle2AxisModeListener;
@@ -167,6 +170,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	private Toggle2AxisModeListener toggle2AxisModeListener;
 	private ToggleColorModeListener toggleColorModeListener;
 	private ToggleMatrixZoomListener toggleMatrixZoomListener;
+	private UseRandomSamplingListener useRandomSamplingListener;
 
 	private SetPointSizeListener setPointSizeListener;
 	private XAxisSelectorListener xAxisSelectorListener;
@@ -196,6 +200,8 @@ public class GLScatterPlot extends AStorageBasedView {
 	private ArrayList<SelectionType> AlSelectionTypes = new ArrayList<SelectionType>();
 	private SelectionType currentSelection = SelectionType.SELECTION;
 	private int iMaxSelections = 5;
+	
+	private int iDisplayEveryNthPoint = 1;
 
 	/**
 	 * Constructor.
@@ -222,6 +228,10 @@ public class GLScatterPlot extends AStorageBasedView {
 		fAlXDistances = new ArrayList<Float>();
 
 		glKeyListener = new GLScatterPlotKeyListener(this);
+		
+		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt(
+				PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT);
+
 	}
 
 	private void resetFullTextures() {
@@ -2144,6 +2154,12 @@ public class GLScatterPlot extends AStorageBasedView {
 		float y_2 = 0.0f;
 		EScatterPointType tmpPointStyle = POINTSTYLE;
 		float[] fArMappingColor = { 0.0f, 0.0f, 0.0f }; // (black);
+		
+		 iDisplayEveryNthPoint = contentVA.size()
+		  / iNumberOfRandomElements;
+		  
+		if (iDisplayEveryNthPoint == 0) 
+			iDisplayEveryNthPoint = 1;
 
 		if (detailLevel != EDetailLevel.HIGH) {
 			bRender2Axis = false;
@@ -2155,9 +2171,10 @@ public class GLScatterPlot extends AStorageBasedView {
 		 Collection<Integer> tmpSet = this.contentVA.getIndexList();
 		 Collection<Integer> selectionSet = new ArrayList<Integer>();
 		    for (Integer iContentIndex : tmpSet)
-		    {
-		      if (iContentIndex.intValue() % 6 != 0)
-		        continue;
+		    {		      
+		    	if (bUseRandomSampling)		    	  
+		    		  if (iContentIndex % iDisplayEveryNthPoint != 0) 
+							continue;		        
 		      selectionSet.add(iContentIndex);
 		    }
 
@@ -2415,6 +2432,11 @@ public class GLScatterPlot extends AStorageBasedView {
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 		float x = 0.0f;
 		float y = 0.0f;
+		iDisplayEveryNthPoint = contentVA.size()
+		  / iNumberOfRandomElements;
+		  
+		if (iDisplayEveryNthPoint == 0) 
+			iDisplayEveryNthPoint = 1;
 
 		for (Integer iContentIndex : contentVA) {
 
@@ -2424,8 +2446,11 @@ public class GLScatterPlot extends AStorageBasedView {
 				// TODO this shouldn't happen here.
 				continue;
 			}
-		
-
+							
+	    	if (bUseRandomSampling)		    	  
+	    		  if (iContentIndex % iDisplayEveryNthPoint != 0) 
+						continue;		        
+		   				    											
 			float xnormalized = set.get(storageVA.get(SELECTED_X_AXIS))
 					.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 			float ynormalized = set.get(storageVA.get(SELECTED_Y_AXIS))
@@ -2840,9 +2865,24 @@ public class GLScatterPlot extends AStorageBasedView {
 			return "Scatterplot - 0 " + useCase.getContentLabel(false, true)
 					+ " / 0 experiments";
 
-		return "Scatterplot - " + contentVA.size() + " "
-				+ useCase.getContentLabel(false, true) + " / "
-				+ storageVA.size() + " experiments";
+//		return "Scatterplot - " + contentVA.size() + " "
+//				+ useCase.getContentLabel(false, true) + " / "
+//				+ storageVA.size() + " experiments";
+		
+		String tmpstring;
+		int iPointNr = contentVA.size();
+		
+		if (iDisplayEveryNthPoint == 1) {
+			tmpstring = "Scatterplot - " + iPointNr + " "
+					+ useCase.getContentLabel(false, true) + " / "
+					+ storageVA.size() + " experiments";
+		} else {
+			tmpstring = "Scatterplot - " + iPointNr
+					/ iDisplayEveryNthPoint + " out of " + iPointNr + " "
+					+ useCase.getContentLabel(false, true) + " / \n "
+					+ storageVA.size() + " experiments";
+		}
+		return tmpstring;
 	}
 
 	@Override
@@ -3286,6 +3326,11 @@ public class GLScatterPlot extends AStorageBasedView {
 		yAxisSelectorListener.setHandler(this);
 		eventPublisher.addListener(YAxisSelectorEvent.class,
 				yAxisSelectorListener);
+		
+		useRandomSamplingListener = new UseRandomSamplingListener();
+		useRandomSamplingListener.setHandler(this);
+		eventPublisher.addListener(UseRandomSamplingEvent.class,
+				useRandomSamplingListener);
 
 	}
 
