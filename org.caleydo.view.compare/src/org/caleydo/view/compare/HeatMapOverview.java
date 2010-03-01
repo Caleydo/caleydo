@@ -107,8 +107,9 @@ public class HeatMapOverview {
 	}
 
 	private Pair<Integer, Integer> getBoundaryIndicesOfElementsInFocus() {
+		
+		float sliderBottomPositionY = slider.getSliderBottomPositionY();
 		float sliderHeight = slider.getSliderHeight();
-		float sliderBottomPositionY = slider.getSliderPositionY();
 		float sliderTopPositionY = sliderBottomPositionY + sliderHeight;
 		float overviewHeight = layout.getOverviewHeight();
 		float sampleHeight = overviewHeight / ((float) contentVA.size());
