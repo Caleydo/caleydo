@@ -11,6 +11,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
@@ -19,8 +20,14 @@ import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -29,13 +36,15 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.heatmap.GLHeatMap;
 
-public class HeatMapWrapper {
+public class HeatMapWrapper implements ISelectionUpdateHandler {
 
 	// private GLHeatMap heatMap;
 	private HeatMapOverview overview;
@@ -46,20 +55,7 @@ public class HeatMapWrapper {
 	private HeatMapLayout layout;
 	private HashMap<Integer, GLHeatMap> hashHeatMaps;
 	private HashMap<Integer, Vec3f> hashHeatMapPositions;
-
-	/**
-	 * Groups that have been selected and which are guaranteed to correspond to
-	 * a fully initialized heatmap
-	 */
 	private ArrayList<GroupInfo> selectedGroups;
-
-	/**
-	 * Groups that shall become selected
-	 */
-
-	/**
-	 * indicates if new groups shall become selected
-	 */
 	private boolean isNewSelection;
 	private int id;
 	private boolean useDetailView;
@@ -69,6 +65,10 @@ public class HeatMapWrapper {
 	private IUseCase useCase;
 	private IGLRemoteRenderingView parentView;
 	private EDataDomain dataDomain;
+
+	private SelectionUpdateListener selectionUpdateListener;
+	private IEventPublisher eventPublisher;
+	private ContentSelectionManager contentSelectionManager;
 
 	public HeatMapWrapper(int id, HeatMapLayout layout, AGLView glParentView,
 			GLInfoAreaManager infoAreaManager, IUseCase useCase,
@@ -86,6 +86,9 @@ public class HeatMapWrapper {
 		this.parentView = parentView;
 		this.dataDomain = dataDomain;
 		isNewSelection = false;
+		eventPublisher = GeneralManager.get().getEventPublisher();
+		contentSelectionManager = new ContentSelectionManager(
+				EIDType.EXPRESSION_INDEX);
 	}
 
 	private GLHeatMap createHeatMap(GL gl, GLMouseListener glMouseListener) {
@@ -121,6 +124,8 @@ public class HeatMapWrapper {
 		storageVA = set.getStorageVA(StorageVAType.STORAGE);
 		hashHeatMaps.clear();
 		selectedGroups.clear();
+		contentSelectionManager.clearSelections();
+		contentSelectionManager.setVA(contentVA);
 
 		// heatMap.useFishEye(false);
 		// heatMap.setDisplayListDirty();
@@ -231,7 +236,8 @@ public class HeatMapWrapper {
 			PickingManager pickingManager, GLMouseListener glMouseListener,
 			int viewID) {
 
-		overview.draw(gl, textureManager, pickingManager, viewID, id);
+		overview.draw(gl, textureManager, pickingManager,
+				contentSelectionManager, viewID, id);
 
 		// calculateHeatMapPositions();
 		// drawVisLinksBetweenOverviewAndDetail(gl);
@@ -395,12 +401,14 @@ public class HeatMapWrapper {
 			return null;
 
 		Vec3f overviewPosition = layout.getOverviewPosition();
+		float sampleHeight = layout.getOverviewHeight() / contentVA.size();
+		
 
 		return new Vec2f(
 				overviewPosition.x(),
 				overviewPosition.y()
 						+ layout.getOverviewHeight()
-						- (layout.getOverviewHeight() / contentVA.size() * contentIndex));
+						- ((sampleHeight * contentIndex) + sampleHeight / 2.0f));
 	}
 
 	public Vec2f getRightOverviewLinkPositionFromContentID(int contentID) {
@@ -411,12 +419,13 @@ public class HeatMapWrapper {
 			return null;
 
 		Vec3f overviewPosition = layout.getOverviewPosition();
+		float sampleHeight = layout.getOverviewHeight() / contentVA.size();
 
 		return new Vec2f(
 				overviewPosition.x() + layout.getTotalOverviewWidth(),
 				overviewPosition.y()
-						+ layout.getOverviewHeight()
-						- (layout.getOverviewHeight() / contentVA.size() * contentIndex));
+				+ layout.getOverviewHeight()
+				- ((sampleHeight * contentIndex) + sampleHeight / 2.0f));
 	}
 
 	public Vec2f getRightDetailLinkPositionFromContentID(int contentID) {
@@ -648,5 +657,46 @@ public class HeatMapWrapper {
 
 	public boolean isNewSelection() {
 		return isNewSelection;
+	}
+
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
+			boolean scrollToSelection, String info) {
+
+		if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
+			contentSelectionManager.setDelta(selectionDelta);
+			glParentView.setDisplayListDirty();
+		}
+
+	}
+
+	@Override
+	public void queueEvent(AEventListener<? extends IListenerOwner> listener,
+			AEvent event) {
+		glParentView.queueEvent(listener, event);
+
+	}
+
+	/**
+	 * Register all event listeners used by the HeatMapWrapper.
+	 */
+	public void registerEventListeners() {
+
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class,
+				selectionUpdateListener);
+	}
+
+	/**
+	 * Unregister all event listeners used by the HeatMapWrapper.
+	 */
+	public void unregisterEventListeners() {
+
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
+		}
+
 	}
 }

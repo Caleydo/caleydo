@@ -92,12 +92,14 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		hashHeatMapWrappers = new HashMap<Integer, HeatMapWrapper>();
 		glKeyListener = new GLCompareKeyListener(this);
 		isControlPressed = false;
+
 	}
 
 	@Override
 	public void init(GL gl) {
 		// contentVA = useCase.getContentVA(ContentVAType.CONTENT);
 		// storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
+
 		heatMapLayoutLeft = new HeatMapLayoutLeft();
 		heatMapLayoutRight = new HeatMapLayoutRight();
 		leftHeatMapWrapper = new HeatMapWrapper(0, heatMapLayoutLeft, this,
@@ -105,7 +107,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		hashHeatMapWrappers.put(0, leftHeatMapWrapper);
 		rightHeatMapWrapper = new HeatMapWrapper(1, heatMapLayoutRight, this,
 				null, useCase, this, dataDomain);
+
 		hashHeatMapWrappers.put(1, rightHeatMapWrapper);
+		
+		leftHeatMapWrapper.registerEventListeners();
+		rightHeatMapWrapper.registerEventListeners();
 
 		leftHeatMapWrapper.setSet(set);
 		rightHeatMapWrapper.setSet(set);
@@ -123,7 +129,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-		
+
 		// Register keyboard listener to GL canvas
 		parentGLCanvas.getParentComposite().getDisplay().asyncExec(
 				new Runnable() {
@@ -939,6 +945,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		eventPublisher.addListener(CompareGroupsEvent.class,
 				compareGroupsEventListener);
 
+		if (leftHeatMapWrapper != null)
+			leftHeatMapWrapper.registerEventListeners();
+		if (rightHeatMapWrapper != null)
+			rightHeatMapWrapper.registerEventListeners();
 	}
 
 	@Override
@@ -948,6 +958,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			eventPublisher.removeListener(compareGroupsEventListener);
 			compareGroupsEventListener = null;
 		}
+//		if (leftHeatMapWrapper != null)
+//			leftHeatMapWrapper.unregisterEventListeners();
+//		if (rightHeatMapWrapper != null)
+//			rightHeatMapWrapper.unregisterEventListeners();
 	}
 
 	@Override

@@ -523,12 +523,12 @@ public class GLHeatMap extends AStorageBasedView {
 			// SelectionType);
 			// sendSelectionCommandEvent(EIDType.REFSEQ_MRNA_INT, command);
 			
-			if(sendClearSelectionsEvent && numSentClearSelectionEvents == 0) {
-				ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
-				clearSelectionsEvent.setSender(this);
-				eventPublisher.triggerEvent(clearSelectionsEvent);
-				numSentClearSelectionEvents++;
-			} 
+//			if(sendClearSelectionsEvent && numSentClearSelectionEvents == 0) {
+//				ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
+//				clearSelectionsEvent.setSender(this);
+//				eventPublisher.triggerEvent(clearSelectionsEvent);
+//				numSentClearSelectionEvents++;
+//			} 
 
 			handleConnectedElementRep(selectionDelta);
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -568,12 +568,12 @@ public class GLHeatMap extends AStorageBasedView {
 			// SelectionType);
 			// sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
 			
-			if(sendClearSelectionsEvent && numSentClearSelectionEvents == 0) {
-				ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
-				clearSelectionsEvent.setSender(this);
-				eventPublisher.triggerEvent(clearSelectionsEvent);
-				numSentClearSelectionEvents++;
-			}
+//			if(sendClearSelectionsEvent && numSentClearSelectionEvents == 0) {
+//				ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
+//				clearSelectionsEvent.setSender(this);
+//				eventPublisher.triggerEvent(clearSelectionsEvent);
+//				numSentClearSelectionEvents++;
+//			}
 
 			SelectionDelta selectionDelta = storageSelectionManager.getDelta();
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
