@@ -111,17 +111,19 @@ public class GLDataWindows extends AGLView {
 
 		// debug
 
-		PathwayManager path;
+		
 
 		disk = new DataWindowsDisk(2);
 		disk.loadTree();
-		disk.scaleTree(3,1);
+		disk.scaleTree(0.5,1);
 
 	
 	
+		//nullpointer:
 		
+		
+	//Tree<ClusterNode> tree = set.getStorageTree();
 	
-		
 		
 		
 		arSlerpActions = new ArrayList<nodeSlerp>();
@@ -374,6 +376,7 @@ public class GLDataWindows extends AGLView {
 				arSlerpActions.add(new nodeSlerp(10, disk
 						.getNodeByCompareableValue(iExternalID).getPosition(),
 						new Point2D.Double(0, 0)));
+				disk.setCenteredNode(disk.getNodeByCompareableValue(iExternalID));
 			
 			}
 
@@ -501,10 +504,10 @@ public class GLDataWindows extends AGLView {
 
 		nodeSlerp singleSlerp = arSlerpActions.get(0);
 		if (singleSlerp.doASlerp() == true) {
-			disk.translateTree(singleSlerp.returnPoint);
+			disk.translateTreeMoebius(singleSlerp.returnPoint);
 		} else {
 			arSlerpActions.remove(0);
-		//    disk.zoomTree(1);
+		  //  disk.zoomTree(1);
 			
 		}
 		

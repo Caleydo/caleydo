@@ -28,7 +28,7 @@ public class PoincareNode extends AHierarchyElement<PoincareNode> {
 		this.nodeName = nodeName;
 		this.id = iComparableValue;
 		
-		
+		this.position = new Point2D.Double(0,0);
 		                             
 	}
 
