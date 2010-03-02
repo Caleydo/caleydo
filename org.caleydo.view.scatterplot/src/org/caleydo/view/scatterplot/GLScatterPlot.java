@@ -1006,7 +1006,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		// TODO Remove, just for zoom testing
 		bRenderMatrix = false;
-		bOnlyRenderHalfMatrix = false;
+		bOnlyRenderHalfMatrix = true;
 		renderStyle.setIsEmbedded(false);
 
 		// ScatterPlotRenderStyle.setTextureNr(NR_TEXTURESX,NR_TEXTURESY);
@@ -2335,19 +2335,22 @@ public class GLScatterPlot extends AStorageBasedView {
 		x = x + 0.1f;
 		gl.glTranslatef(x, y, z);
 
-		String sLabel = "";
-		String genLabel = "";
-		if (useCase.getDataDomain() == EDataDomain.GENETIC_DATA) {
+		String sLabel = null;
+		String genLabel = null;
+		if (useCase.getDataDomain() == EDataDomain.GENETIC_DATA) 
+		{
 			genLabel = idMappingManager.getID(EIDType.EXPRESSION_INDEX,
 					EIDType.GENE_SYMBOL, iContentIndex);
 
-			if (genLabel.equals(""))
-				genLabel = "Unkonwn Gene";
+			
 		} else if (useCase.getDataDomain() == EDataDomain.UNSPECIFIED) {
 			genLabel = idMappingManager.getID(EIDType.EXPRESSION_INDEX,
 					EIDType.UNSPECIFIED, iContentIndex);
 		}
 
+		if (genLabel== null || genLabel.equals(""))
+			genLabel = "Unkonwn Gene";
+		
 		if (contentSelectionManager.checkStatus(SelectionType.SELECTION,
 				iContentIndex))
 			sLabel = "Selected Point ("
@@ -2758,54 +2761,92 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	public void selectAxesfromExternal() {
 
-		if (storageSelectionManager
-				.getNumberOfElements(SelectionType.SELECTION) == 0) {
+		int iMouseOverSelections=storageSelectionManager
+		.getNumberOfElements(SelectionType.MOUSE_OVER);
+		
+		int iSelectionSelections=storageSelectionManager
+		.getNumberOfElements(SelectionType.SELECTION);
+		
+		if (iSelectionSelections>0) {
 
 			Set<Integer> axis = storageSelectionManager
 					.getElements(SelectionType.SELECTION);
 
+			int itmpAxis=SELECTED_X_AXIS;
+			int index = 0;
 			for (int i : axis) {
 				// TODO : If Multiple Selections or Scatterplots are Available.
 				// adjust this (take first 2 axis selections?)
-				SELECTED_X_AXIS = i;
+				SELECTED_X_AXIS = storageVA.indexOf(i);
+								
+				if(iSelectionSelections>0)
+					SELECTED_X_AXIS = storageVA.indexOf(i);
+				
+				if(SELECTED_X_AXIS >SELECTED_Y_AXIS)
+				{
+					SELECTED_X_AXIS=itmpAxis;
+					SELECTED_X_AXIS=SELECTED_Y_AXIS;
+					SELECTED_Y_AXIS=itmpAxis;
+				}
+				if(SELECTED_X_AXIS==SELECTED_Y_AXIS)
+					SELECTED_X_AXIS=itmpAxis;
+				
+				
 				bUpdateMainView = true;
 				break;
 			}
 		}
 
-		// TODO Remove l8ter, Mousover should not select an Axis
-		if (storageSelectionManager
-				.getNumberOfElements(SelectionType.MOUSE_OVER) == 0)
+
+		if (iMouseOverSelections==0)
 			return;
 
 		Set<Integer> axis = storageSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
 
+		
 		for (int i : axis) {
 			// TODO : If Multiple Selections or Scatterplots are Available.
 			// adjust this (take first 2 axis selections?)
-			SELECTED_Y_AXIS = i;
+			MOUSEOVER_X_AXIS = storageVA.indexOf(i);
 			bUpdateMainView = true;
 			break;
 		}
 
 	}
 
-	public void selectNewAxes() {
+	public void selectNewSelectionAxes() {
 		storageSelectionManager.clearSelection(SelectionType.SELECTION);
 
+		
 		storageSelectionManager.addToType(SelectionType.SELECTION,
-				SELECTED_X_AXIS);
+				storageVA.get(SELECTED_X_AXIS));
 		storageSelectionManager.addToType(SelectionType.SELECTION,
-				SELECTED_Y_AXIS);
+				storageVA.get(SELECTED_Y_AXIS));
 
 		if (bRender2Axis) {
 			storageSelectionManager.addToType(SelectionType.SELECTION,
-					SELECTED_X_AXIS_2);
+					storageVA.get(SELECTED_X_AXIS_2));
 			storageSelectionManager.addToType(SelectionType.SELECTION,
-					SELECTED_Y_AXIS_2);
+					storageVA.get(SELECTED_Y_AXIS_2));
 		}
+		
+		
+		
+		
+//		storageSelectionManager.addToType(SelectionType.SELECTION,
+//				SELECTED_X_AXIS);
+//		storageSelectionManager.addToType(SelectionType.SELECTION,
+//				SELECTED_Y_AXIS);
+//
+//		if (bRender2Axis) {
+//			storageSelectionManager.addToType(SelectionType.SELECTION,
+//					SELECTED_X_AXIS_2);
+//			storageSelectionManager.addToType(SelectionType.SELECTION,
+//					SELECTED_Y_AXIS_2);
+//		}
 
+		
 		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
 		handleConnectedElementRep(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -2815,14 +2856,14 @@ public class GLScatterPlot extends AStorageBasedView {
 		eventPublisher.triggerEvent(event);
 	}
 
-	public void selectNewMouseOverAxis() {
+	public void selectNewMouseOverAxes() {
 		storageSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
-
+		
 		storageSelectionManager.addToType(SelectionType.MOUSE_OVER,
-				MOUSEOVER_X_AXIS);
+				storageVA.get(MOUSEOVER_X_AXIS));
 		storageSelectionManager.addToType(SelectionType.MOUSE_OVER,
-				MOUSEOVER_Y_AXIS);
-
+				storageVA.get(MOUSEOVER_Y_AXIS));
+	
 		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
 		handleConnectedElementRep(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -2831,6 +2872,9 @@ public class GLScatterPlot extends AStorageBasedView {
 		event.setInfo(getShortInfo());
 		eventPublisher.triggerEvent(event);
 	}
+
+	
+	
 
 	@Override
 	protected void initLists() {
@@ -3053,7 +3097,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			SELECTED_X_AXIS = contentID / NR_TEXTURESY;
 			SELECTED_Y_AXIS = contentID % NR_TEXTURESX;
 			bUpdateMainView = true;
-			selectNewAxes();
+			selectNewSelectionAxes();
 			setDisplayListDirty();
 			return;
 		}
@@ -3065,7 +3109,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			SELECTED_X_AXIS_2 = contentID / NR_TEXTURESY;
 			SELECTED_Y_AXIS_2 = contentID % NR_TEXTURESX;
 			bUpdateMainView = true;
-			selectNewAxes();
+			selectNewSelectionAxes();
 			setDisplayListDirty();
 			return;
 		}
@@ -3080,13 +3124,14 @@ public class GLScatterPlot extends AStorageBasedView {
 				return;
 			MOUSEOVER_X_AXIS = itmpX_Axis;
 			MOUSEOVER_Y_AXIS = itmpY_Axis;
+			
+			 selectNewMouseOverAxes();
 
 			if (bRenderMatrix && bAllowMatrixZoom) {
 				setDisplayListDirty();
 				bUpdateMainView = true;
 			}
-			// TODO : Major slowing, needs to be evaluated..
-			// selectNewMouseOverAxis();
+		
 		}
 
 	}
@@ -3113,36 +3158,22 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		// if (selectionType == SelectionType.SELECTION) {
 		if (selectionType == currentSelection) {
-			// fDragStartPoint = new float[3];
-			// fDragEndPoint = new float[3];
-			// if (!elementSelectionManager.checkStatus(contentID))
-			// elementSelectionManager.add(contentID);
-
 			contentSelectionManager.addToType(selectionType, contentID);
-
 			bUpdateSelection = true;
 			// return;
 		}
 
 		if ((selectionType == SelectionType.MOUSE_OVER))
-		// && (!mouseoverSelectionManager.checkStatus(contentID)))
-		{
-			// mouseoverSelectionManager.resetSelectionManager(); // This may be
-			// not necessary;
-			// mouseoverSelectionManager.add(contentID);
-			// mouseoverSelectionManager.addToType(selectionType, contentID);
 			contentSelectionManager.addToType(selectionType, contentID);
-		}
 
-		// ISelectionDelta selectionDelta =
-		// mouseoverSelectionManager.getDelta();
-		// handleConnectedElementRep(selectionDelta);
-		// SelectionUpdateEvent event = new SelectionUpdateEvent();
-		// event.setSender(this);
-		// event.setSelectionDelta((SelectionDelta) selectionDelta);
-		// event.setInfo(getShortInfo());
-		// eventPublisher.triggerEvent(event);
 
+		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+		handleConnectedElementRep(selectionDelta);
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
+		event.setSelectionDelta((SelectionDelta) selectionDelta);
+		event.setInfo(getShortInfo());
+		eventPublisher.triggerEvent(event);
 		setDisplayListDirty();
 	}
 
@@ -3384,7 +3415,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		if (SELECTED_X_AXIS != iAxisIndex) {
 			SELECTED_X_AXIS = iAxisIndex;
 			bUpdateMainView = true;
-			selectNewAxes();
+			selectNewSelectionAxes();
 			setDisplayListDirty();
 		}
 
@@ -3394,7 +3425,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		if (SELECTED_Y_AXIS != iAxisIndex) {
 			SELECTED_Y_AXIS = iAxisIndex;
 			bUpdateMainView = true;
-			selectNewAxes();
+			selectNewSelectionAxes();
 			setDisplayListDirty();
 		}
 
@@ -3422,7 +3453,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	    if (tmpAxis + 1 > this.MAX_AXES)
 	      tmpAxis = MOUSEOVER_Y_AXIS;
 	    MOUSEOVER_Y_AXIS = tmpAxis;
-
+	    selectNewMouseOverAxes();
 	    if (!(this.bAllowMatrixZoom))
 	      return;
 	    this.bRedrawTextures = true;
@@ -3449,7 +3480,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	      tmpAxis = SELECTED_Y_AXIS;
 	    }
 	    SELECTED_Y_AXIS = tmpAxis;
-	    selectNewAxes();
+	    selectNewSelectionAxes();
 
 	    this.bUpdateMainView = true;
 	    setDisplayListDirty();
@@ -3470,7 +3501,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	    if (tmpAxis + 1 > this.MAX_AXES)
 	      tmpAxis = MOUSEOVER_X_AXIS;
 	    MOUSEOVER_X_AXIS = tmpAxis;
-
+	    selectNewMouseOverAxes();
 	    if (!(this.bAllowMatrixZoom))
 	      return;
 	    this.bRedrawTextures = true;
@@ -3497,7 +3528,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	    if (tmpAxis + 1 > this.MAX_AXES)
 	      tmpAxis = SELECTED_X_AXIS;
 	    SELECTED_X_AXIS = tmpAxis;
-	    selectNewAxes();
+	    selectNewSelectionAxes();
 	    this.bUpdateMainView = true;
 	    setDisplayListDirty();
 	  }
@@ -3519,7 +3550,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			tmpAxis = SELECTED_Y_AXIS_2;
 		SELECTED_Y_AXIS_2 = tmpAxis;
 		bUpdateMainView = true;
-		selectNewAxes();
+		selectNewSelectionAxes();
 		setDisplayListDirty();
 	}
 
@@ -3541,7 +3572,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			tmpAxis = SELECTED_X_AXIS_2;
 		SELECTED_X_AXIS_2 = tmpAxis;
 		bUpdateMainView = true;
-		selectNewAxes();
+		selectNewSelectionAxes();
 		setDisplayListDirty();
 	}
 	
@@ -3549,7 +3580,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	  {
 	    SELECTED_X_AXIS = MOUSEOVER_X_AXIS;
 	    SELECTED_Y_AXIS = MOUSEOVER_Y_AXIS;
-	    selectNewAxes();
+	    selectNewSelectionAxes();
 	    this.bUpdateMainView = true;
 	    setDisplayListDirty();
 	  }
