@@ -153,14 +153,15 @@ public class GLScatterPlot extends AStorageBasedView {
 	private float fTransformNewMaxY = 0.4f;
 
 	
-	
-	public static int SELECTED_X_AXIS = 0;
-	public static int SELECTED_Y_AXIS = 1;
-	public static int SELECTED_X_AXIS_2 = 2;
-	public static int SELECTED_Y_AXIS_2 = 3;
+				
+	public int iSelectedAxisIndexX = 0;
+	public int iSelectedAxisIndexY = 1;
+	public int iSelectedAxisIndexX2 = 2;
+	public int iSelectedAxisIndexY2 = 3;
 
-	public static int MOUSEOVER_X_AXIS = -1;
-	public static int MOUSEOVER_Y_AXIS = -1;
+	
+	public int iMouseOverAxisIndexX = -1;
+	public int iMouseOverAxisIndexY = -1;
 
 	public int MAX_AXES = 50;
 
@@ -564,8 +565,8 @@ public class GLScatterPlot extends AStorageBasedView {
 	    }
 	    int iAddTextures = 1;
 	
-	    int iCurrentAxisSelectionX = MOUSEOVER_X_AXIS;
-	    int iCurrentAxisSelectionY = MOUSEOVER_Y_AXIS;
+	    int iCurrentAxisSelectionX = iMouseOverAxisIndexX;
+	    int iCurrentAxisSelectionY = iMouseOverAxisIndexY;
 	
 	    if ((this.bAllowMatrixZoom) && 
 	      (iCurrentAxisSelectionX >= 0) && (iCurrentAxisSelectionY > 0)) {
@@ -661,7 +662,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	      fArMappingColor = new float[] { 0.1F, 0.6F, 0.1F };
 	    }
 	
-	    DrawRectangularSelection(gl, fxOffset - fEdge, fyOffset - fEdge, z, 
+	    renderRectangularSelection(gl, fxOffset - fEdge, fyOffset - fEdge, z, 
 	      fStepX * iZoomfactor + 2.0F * fEdge, fStepY * iZoomfactor + 2.0F * 
 	      fEdge, fArMappingColor);
 	    if (((iCurrentAxisSelectionX < 0) && (iCurrentAxisSelectionY < 0)) || (bIsSecondAxis)) {
@@ -684,7 +685,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	      (iCurrentAxisSelectionX + iMOVERZOOMX);
 	    fArMappingColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 	
-	    DrawRectangularSelection(gl, fxOffset - fEdge, fyOffset - fEdge, z, 
+	    renderRectangularSelection(gl, fxOffset - fEdge, fyOffset - fEdge, z, 
 	      fStepX * iZoomfactor + 2.0F * fEdge, fStepY * iZoomfactor + 2.0F * 
 	      fEdge, fArMappingColor);
   }
@@ -700,8 +701,8 @@ public class GLScatterPlot extends AStorageBasedView {
 	    int debugsize2 = this.AlFullTextures.size();
 	
 	    int iAddTextures = 1;
-	    int iCurrentAxisSelectionX = MOUSEOVER_X_AXIS;
-	    int iCurrentAxisSelectionY = MOUSEOVER_Y_AXIS;
+	    int iCurrentAxisSelectionX = iMouseOverAxisIndexX;
+	    int iCurrentAxisSelectionY = iMouseOverAxisIndexY;
 	
 	    if ((this.bAllowMatrixZoom) && 
 	      (iCurrentAxisSelectionX >= 0) && (iCurrentAxisSelectionY >= 0)) {
@@ -919,7 +920,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		float[] fArMappingColor = new float[] { 0.0f, 0.0f, 0.0f }; // black
 
-		DrawRectangularSelection(gl, x, y, 0.f, // Z-Value
+		renderRectangularSelection(gl, x, y, 0.f, // Z-Value
 				width, height, fArMappingColor);
 
 		// TODO InsertHistogramm here
@@ -963,8 +964,7 @@ public class GLScatterPlot extends AStorageBasedView {
 				initAxisComboEvent);
 		// detailLevel = EDetailLevel.LOW;
 		detailLevel = EDetailLevel.HIGH;
-		if (MAX_AXES > storageVA.size())
-			MAX_AXES = storageVA.size();
+		updateMaxAxis();
 		renderStyle.setTextureNr(100, 100);
 		resetFullTextures();
 		resetSelectionTextures();
@@ -975,6 +975,13 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	}
 
+	private void updateMaxAxis()
+	{
+		if (MAX_AXES > storageVA.size())
+			MAX_AXES = storageVA.size();
+		
+	}
+	
 	@Override
 	public void initLocal(GL gl) {
 
@@ -1126,7 +1133,7 @@ public class GLScatterPlot extends AStorageBasedView {
 				float[] fArMappingColor = new float[] { 0.0f, 1.0f, 0.0f }; // green
 
 				// gl.glNewList(iGLDisplayListIndexBrush, GL.GL_COMPILE);
-				DrawRectangularSelection(
+				renderRectangularSelection(
 						gl,
 						fRectangleDragStartPoint[0],
 						fRectangleDragStartPoint[1],
@@ -1143,7 +1150,7 @@ public class GLScatterPlot extends AStorageBasedView {
 				if (bRenderMatrix)
 					gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
 							.getCenterYOffset(), 0);
-				UpdateSelection();
+				updateSelection();
 				if (bRenderMatrix)
 					gl.glTranslatef(-renderStyle.getCenterXOffset(),
 							-renderStyle.getCenterYOffset(), 0);
@@ -1218,9 +1225,9 @@ public class GLScatterPlot extends AStorageBasedView {
 			gl.glCallList(iGLDisplayListIndexMatrixFull);
 			gl.glCallList(iGLDisplayListIndexMatrixSelection);
 
-			renderMatrixSelection(gl, SELECTED_X_AXIS, SELECTED_Y_AXIS, false);
+			renderMatrixSelection(gl, iSelectedAxisIndexX, iSelectedAxisIndexY, false);
 			if (bRender2Axis)
-				renderMatrixSelection(gl, SELECTED_X_AXIS_2, SELECTED_Y_AXIS_2,
+				renderMatrixSelection(gl, iSelectedAxisIndexX2, iSelectedAxisIndexY2,
 						true);
 			// return;
 		}
@@ -1269,7 +1276,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			// renderStyle.getYCenter(),0);
 			gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
 					.getCenterYOffset(), 0);
-		RenderSelection(gl);
+		renderSelectionPoints(gl);
 		if (bRenderMatrix)
 			gl.glTranslatef(-renderStyle.getCenterXOffset(), -renderStyle
 					.getCenterYOffset(), 0);
@@ -1340,7 +1347,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			if (bRenderMatrix)
 				gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
 						.getCenterYOffset(), 0);
-			RenderScatterPoints(gl);
+			renderScatterPoints(gl);
 			if (bRenderMatrix)
 				gl.glTranslatef(-renderStyle.getCenterXOffset(), -renderStyle
 						.getCenterYOffset(), 0);
@@ -1357,7 +1364,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			// renderStyle.getYCenter(),0);
 			gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
 					.getCenterYOffset(), 0);
-		RenderMouseOver(gl);
+		renderMouseOver(gl);
 		if (bRenderMatrix)
 			// gl.glTranslatef(-renderStyle.getXCenter(),
 			// -renderStyle.getYCenter(), 0);
@@ -2000,10 +2007,10 @@ public class GLScatterPlot extends AStorageBasedView {
 			fScaling *= 1.5f;
 
 		String sAxisLabel = "X-Axis: "
-				+ set.get(storageVA.get(SELECTED_X_AXIS)).getLabel();
+				+ set.get(storageVA.get(iSelectedAxisIndexX)).getLabel();
 		if (bRender2Axis)
 			sAxisLabel += " / "
-					+ set.get(storageVA.get(SELECTED_X_AXIS_2)).getLabel();
+					+ set.get(storageVA.get(iSelectedAxisIndexX2)).getLabel();
 
 		textRenderer.draw3D(gl, sAxisLabel, 0, 0, 0, fScaling,
 				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
@@ -2033,10 +2040,10 @@ public class GLScatterPlot extends AStorageBasedView {
 			fScaling *= 1.5f;
 
 		sAxisLabel = "Y-Axis: "
-				+ set.get(storageVA.get(SELECTED_Y_AXIS)).getLabel();
+				+ set.get(storageVA.get(iSelectedAxisIndexY)).getLabel();
 		if (bRender2Axis)
 			sAxisLabel += " / "
-					+ set.get(storageVA.get(SELECTED_Y_AXIS_2)).getLabel();
+					+ set.get(storageVA.get(iSelectedAxisIndexY2)).getLabel();
 
 		// sAxisLabel
 		// ="Y-Achse: "+set.get(2).getLabel()+" (O) / "+set.get(3).getLabel()+" (X)";
@@ -2143,7 +2150,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 	
 
-	private void RenderScatterPoints(GL gl) {
+	private void renderScatterPoints(GL gl) {
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 		float x = 0.0f;
@@ -2200,9 +2207,9 @@ public class GLScatterPlot extends AStorageBasedView {
 			// ynormalized = set.get(SELECTED_Y_AXIS).getFloat(
 			// EDataRepresentation.NORMALIZED, iContentIndex);
 
-			xnormalized = set.get(storageVA.get(SELECTED_X_AXIS)).getFloat(
+			xnormalized = set.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
 					EDataRepresentation.NORMALIZED, iContentIndex);
-			ynormalized = set.get(storageVA.get(SELECTED_Y_AXIS)).getFloat(
+			ynormalized = set.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
 					EDataRepresentation.NORMALIZED, iContentIndex);
 
 			// x = xnormalized * XScale;
@@ -2217,23 +2224,23 @@ public class GLScatterPlot extends AStorageBasedView {
 				POINTSTYLE = EScatterPointType.POINT;
 			}
 
-			DrawPointPrimitive(gl, x, y, 0.0f, // z
+			renderPointPrimitive(gl, x, y, 0.0f, // z
 					fArMappingColor, 1.0f,// fOpacity
 					iContentIndex, 1.0f); // scale
 
 			if (bRender2Axis) {			
 				xnormalized = set
-						.get(storageVA.get(SELECTED_X_AXIS_2))
+						.get(storageVA.get(iSelectedAxisIndexX2))
 						.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 				ynormalized = set
-						.get(storageVA.get(SELECTED_Y_AXIS_2))
+						.get(storageVA.get(iSelectedAxisIndexY2))
 						.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 				// x_2 = xnormalized * XScale;
 				x_2 = transformOnXZoom(xnormalized) * XScale;
 				y_2 = transformOnYZoom(ynormalized) * YScale;
 				fArMappingColor = new float[] { 0.0f, 1.0f, 0.0f };
 
-				DrawPointPrimitive(gl, x_2, y_2, 0.0f, // z
+				renderPointPrimitive(gl, x_2, y_2, 0.0f, // z
 						fArMappingColor, 1.0f,// fOpacity
 						iContentIndex, 1.0f); // scale
 
@@ -2257,7 +2264,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		POINTSTYLE = tmpPointStyle;
 	}
 
-	private void RenderMouseOver(GL gl) {
+	private void renderMouseOver(GL gl) {
 
 		if (contentSelectionManager
 				.getNumberOfElements(SelectionType.MOUSE_OVER) == 0)
@@ -2279,9 +2286,9 @@ public class GLScatterPlot extends AStorageBasedView {
 		// float ynormalized = set.get(SELECTED_Y_AXIS).getFloat(
 		// EDataRepresentation.NORMALIZED, iContentIndex);
 
-		float xnormalized = set.get(storageVA.get(SELECTED_X_AXIS)).getFloat(
+		float xnormalized = set.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
 				EDataRepresentation.NORMALIZED, iContentIndex);
-		float ynormalized = set.get(storageVA.get(SELECTED_Y_AXIS)).getFloat(
+		float ynormalized = set.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
 				EDataRepresentation.NORMALIZED, iContentIndex);
 
 		float x = transformOnXZoom(xnormalized) * XScale;
@@ -2319,15 +2326,15 @@ public class GLScatterPlot extends AStorageBasedView {
 				.glColor3f(fArMappingColor[0], fArMappingColor[1],
 						fArMappingColor[2]);
 
-		DrawPointPrimitive(gl, x, y, z, // z
+		renderPointPrimitive(gl, x, y, z, // z
 				fArMappingColor, 1.0f, iContentIndex, 2.0f); // fOpacity
 
-		DrawMouseOverLabel(gl, x, y, z, // z
+		renderMouseOverLabel(gl, x, y, z, // z
 				fArMappingColor, 1.0f, iContentIndex); // fOpacity
 
 	}
 
-	private void DrawMouseOverLabel(GL gl, float x, float y, float z,
+	private void renderMouseOverLabel(GL gl, float x, float y, float z,
 			float[] fArMappingColor, float fOpacity, int iContentIndex) {
 
 		textRenderer.setColor(0, 0, 0, 1);
@@ -2357,19 +2364,19 @@ public class GLScatterPlot extends AStorageBasedView {
 			sLabel = "Selected Point ("
 					+ genLabel
 					+ "):"
-					+ +set.get(storageVA.get(SELECTED_X_AXIS)).getFloat(
+					+ +set.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
 							EDataRepresentation.RAW, iContentIndex)
 					+ " / "
-					+ set.get(storageVA.get(SELECTED_Y_AXIS)).getFloat(
+					+ set.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
 							EDataRepresentation.RAW, iContentIndex);
 		else
 			sLabel = "Point ("
 					+ genLabel
 					+ "):"
-					+ +set.get(storageVA.get(SELECTED_X_AXIS)).getFloat(
+					+ +set.get(storageVA.get(iSelectedAxisIndexX)).getFloat(
 							EDataRepresentation.RAW, iContentIndex)
 					+ " / "
-					+ set.get(storageVA.get(SELECTED_Y_AXIS)).getFloat(
+					+ set.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
 							EDataRepresentation.RAW, iContentIndex);
 
 		// sLabel="Point :: ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890 //// ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890 //// ";
@@ -2404,7 +2411,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	}
 
-	private boolean IsInSelectionRectangle(float x, float y) {
+	private boolean isInSelectionRectangle(float x, float y) {
 		float XMin = Math.min(fRectangleDragStartPoint[0],
 				fRectangleDragEndPoint[0]);
 		float XMax = Math.max(fRectangleDragStartPoint[0],
@@ -2430,7 +2437,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		return false;
 	}
 
-	private void UpdateSelection() {
+	private void updateSelection() {
 
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
@@ -2455,16 +2462,16 @@ public class GLScatterPlot extends AStorageBasedView {
 	    		  if (iContentIndex % iDisplayEveryNthPoint != 0) 
 						continue;		        
 		   				    											
-			float xnormalized = set.get(storageVA.get(SELECTED_X_AXIS))
+			float xnormalized = set.get(storageVA.get(iSelectedAxisIndexX))
 					.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
-			float ynormalized = set.get(storageVA.get(SELECTED_Y_AXIS))
+			float ynormalized = set.get(storageVA.get(iSelectedAxisIndexY))
 					.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
 			// x = xnormalized * XScale;
 			x = transformOnXZoom(xnormalized) * XScale;
 			y = transformOnYZoom(ynormalized) * YScale;
 
-			if (IsInSelectionRectangle(x, y)) {
+			if (isInSelectionRectangle(x, y)) {
 				// if (!elementSelectionManager.checkStatus(iContentIndex))
 				// elementSelectionManager.add(iContentIndex);
 				// elementSelectionManager.addToType(SelectionType.SELECTION,
@@ -2482,7 +2489,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		eventPublisher.triggerEvent(event);
 	}
 
-	private void RenderSelection(GL gl) {
+	private void renderSelectionPoints(GL gl) {
 
 		for (SelectionType tmpSelectionType : AlSelectionTypes) {
 
@@ -2513,24 +2520,24 @@ public class GLScatterPlot extends AStorageBasedView {
 			for (int iContentIndex : selectionSet) {
 
 				float xnormalized = set
-						.get(storageVA.get(SELECTED_X_AXIS))
+						.get(storageVA.get(iSelectedAxisIndexX))
 						.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 				float ynormalized = set
-						.get(storageVA.get(SELECTED_Y_AXIS))
+						.get(storageVA.get(iSelectedAxisIndexY))
 						.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
 				// x = xnormalized * XScale;
 				x = transformOnXZoom(xnormalized) * XScale;
 				y = transformOnYZoom(ynormalized) * YScale;
 
-				DrawPointPrimitive(gl, x, y, z, // z
+				renderPointPrimitive(gl, x, y, z, // z
 						fArMappingColor, 1.0f,// fOpacity
 						iContentIndex, 1.0f); // scale
 			}
 		}
 	}
 
-	private void DrawPointPrimitive(GL gl, float x, float y, float z,
+	private void renderPointPrimitive(GL gl, float x, float y, float z,
 			float[] fArMappingColor, float fOpacity, int iContentIndex,
 			float scale) {
 
@@ -2605,7 +2612,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		gl.glPopName();
 	}
 
-	private void DrawRectangularSelection(GL gl, float x, float y, float z,
+	private void renderRectangularSelection(GL gl, float x, float y, float z,
 			float length, float height, float[] fArMappingColor) {
 
 		gl
@@ -2774,24 +2781,24 @@ public class GLScatterPlot extends AStorageBasedView {
 					.getElements(SelectionType.SELECTION);
 			
 			Iterator<Integer> axisIT = axisSet.iterator(); 									
-			int itmpAxis=SELECTED_X_AXIS;
+			int itmpAxis=iSelectedAxisIndexX;
 			
 			int i = axisIT.next();
-			SELECTED_X_AXIS = storageVA.indexOf(i);
+			iSelectedAxisIndexX = storageVA.indexOf(i);
 			if(axisIT.hasNext()) 
 			{
 				i = axisIT.next();
-				SELECTED_Y_AXIS = storageVA.indexOf(i);
+				iSelectedAxisIndexY = storageVA.indexOf(i);
 			}
 								
-			if(SELECTED_X_AXIS >SELECTED_Y_AXIS)
+			if(iSelectedAxisIndexX >iSelectedAxisIndexY)
 			{
-				itmpAxis=SELECTED_X_AXIS;
-				SELECTED_X_AXIS=SELECTED_Y_AXIS;
-				SELECTED_Y_AXIS=itmpAxis;
+				itmpAxis=iSelectedAxisIndexX;
+				iSelectedAxisIndexX=iSelectedAxisIndexY;
+				iSelectedAxisIndexY=itmpAxis;
 			}
-			if(SELECTED_X_AXIS==SELECTED_Y_AXIS)
-				SELECTED_X_AXIS=itmpAxis;
+			if(iSelectedAxisIndexX==iSelectedAxisIndexY)
+				iSelectedAxisIndexX=itmpAxis;
 						
 			bUpdateMainView = true;
 
@@ -2803,24 +2810,24 @@ public class GLScatterPlot extends AStorageBasedView {
 		Set<Integer> axisSet = storageSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
 		Iterator<Integer> axisIT = axisSet.iterator(); 									
-		int itmpAxis=MOUSEOVER_X_AXIS;
+		int itmpAxis=iMouseOverAxisIndexX;
 		
 		int i = axisIT.next();
-		MOUSEOVER_X_AXIS = storageVA.indexOf(i);
+		iMouseOverAxisIndexX = storageVA.indexOf(i);
 		if(axisIT.hasNext()) 
 		{
 			i = axisIT.next();
-			MOUSEOVER_Y_AXIS = storageVA.indexOf(i);
+			iMouseOverAxisIndexY = storageVA.indexOf(i);
 		}
 							
-		if(MOUSEOVER_X_AXIS >MOUSEOVER_Y_AXIS)
+		if(iMouseOverAxisIndexX >iMouseOverAxisIndexY)
 		{
-			itmpAxis=MOUSEOVER_X_AXIS;
-			MOUSEOVER_X_AXIS=MOUSEOVER_Y_AXIS;
-			MOUSEOVER_Y_AXIS=itmpAxis;
+			itmpAxis=iMouseOverAxisIndexX;
+			iMouseOverAxisIndexX=iMouseOverAxisIndexY;
+			iMouseOverAxisIndexY=itmpAxis;
 		}
-		if(MOUSEOVER_X_AXIS==MOUSEOVER_Y_AXIS)
-			MOUSEOVER_X_AXIS=itmpAxis;
+		if(iMouseOverAxisIndexX==iMouseOverAxisIndexY)
+			iMouseOverAxisIndexX=itmpAxis;
 
 	}
 
@@ -2829,15 +2836,15 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		
 		storageSelectionManager.addToType(SelectionType.SELECTION,
-				storageVA.get(SELECTED_X_AXIS));
+				storageVA.get(iSelectedAxisIndexX));
 		storageSelectionManager.addToType(SelectionType.SELECTION,
-				storageVA.get(SELECTED_Y_AXIS));
+				storageVA.get(iSelectedAxisIndexY));
 
 		if (bRender2Axis) {
 			storageSelectionManager.addToType(SelectionType.SELECTION,
-					storageVA.get(SELECTED_X_AXIS_2));
+					storageVA.get(iSelectedAxisIndexX2));
 			storageSelectionManager.addToType(SelectionType.SELECTION,
-					storageVA.get(SELECTED_Y_AXIS_2));
+					storageVA.get(iSelectedAxisIndexY2));
 		}
 		
 		
@@ -2869,9 +2876,9 @@ public class GLScatterPlot extends AStorageBasedView {
 		storageSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 		
 		storageSelectionManager.addToType(SelectionType.MOUSE_OVER,
-				storageVA.get(MOUSEOVER_X_AXIS));
+				storageVA.get(iMouseOverAxisIndexX));
 		storageSelectionManager.addToType(SelectionType.MOUSE_OVER,
-				storageVA.get(MOUSEOVER_Y_AXIS));
+				storageVA.get(iMouseOverAxisIndexY));
 	
 		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
 		handleConnectedElementRep(selectionDelta);
@@ -3103,8 +3110,8 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		if (selectionType == SelectionType.SELECTION) {
 
-			SELECTED_X_AXIS = contentID / NR_TEXTURESY;
-			SELECTED_Y_AXIS = contentID % NR_TEXTURESX;
+			iSelectedAxisIndexX = contentID / NR_TEXTURESY;
+			iSelectedAxisIndexY = contentID % NR_TEXTURESX;
 			bUpdateMainView = true;
 			selectNewSelectionAxes();
 			setDisplayListDirty();
@@ -3115,8 +3122,8 @@ public class GLScatterPlot extends AStorageBasedView {
 
 			if (!bRender2Axis)
 				return;
-			SELECTED_X_AXIS_2 = contentID / NR_TEXTURESY;
-			SELECTED_Y_AXIS_2 = contentID % NR_TEXTURESX;
+			iSelectedAxisIndexX2 = contentID / NR_TEXTURESY;
+			iSelectedAxisIndexY2 = contentID % NR_TEXTURESX;
 			bUpdateMainView = true;
 			selectNewSelectionAxes();
 			setDisplayListDirty();
@@ -3128,11 +3135,11 @@ public class GLScatterPlot extends AStorageBasedView {
 			int itmpX_Axis = contentID / NR_TEXTURESY;
 			int itmpY_Axis = contentID % NR_TEXTURESY;
 
-			if ((itmpX_Axis == MOUSEOVER_X_AXIS)
-					&& (itmpY_Axis == MOUSEOVER_Y_AXIS))
+			if ((itmpX_Axis == iMouseOverAxisIndexX)
+					&& (itmpY_Axis == iMouseOverAxisIndexY))
 				return;
-			MOUSEOVER_X_AXIS = itmpX_Axis;
-			MOUSEOVER_Y_AXIS = itmpY_Axis;
+			iMouseOverAxisIndexX = itmpX_Axis;
+			iMouseOverAxisIndexY = itmpY_Axis;
 			
 			 selectNewMouseOverAxes();
 
@@ -3421,8 +3428,8 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	public void setXAxis(int iAxisIndex) {
-		if (SELECTED_X_AXIS != iAxisIndex) {
-			SELECTED_X_AXIS = iAxisIndex;
+		if (iSelectedAxisIndexX != iAxisIndex) {
+			iSelectedAxisIndexX = iAxisIndex;
 			bUpdateMainView = true;
 			selectNewSelectionAxes();
 			setDisplayListDirty();
@@ -3431,8 +3438,8 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	public void setYAxis(int iAxisIndex) {
-		if (SELECTED_Y_AXIS != iAxisIndex) {
-			SELECTED_Y_AXIS = iAxisIndex;
+		if (iSelectedAxisIndexY != iAxisIndex) {
+			iSelectedAxisIndexY = iAxisIndex;
 			bUpdateMainView = true;
 			selectNewSelectionAxes();
 			setDisplayListDirty();
@@ -3450,18 +3457,19 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	public void upDownMouse(boolean bDownIsTrue)
 	  {
-	    int tmpAxis = MOUSEOVER_Y_AXIS;
+	    int tmpAxis = iMouseOverAxisIndexY;
 	    if (bDownIsTrue)
 	      ++tmpAxis;
 	    else
 	      --tmpAxis;
-	    if ((tmpAxis == MOUSEOVER_X_AXIS) && (this.bOnlyRenderHalfMatrix))
+	    if ((tmpAxis == iMouseOverAxisIndexX) && (this.bOnlyRenderHalfMatrix))
 	      return;
 	    if (tmpAxis < 0)
 	      tmpAxis = 0;
 	    if (tmpAxis + 1 > this.MAX_AXES)
-	      tmpAxis = MOUSEOVER_Y_AXIS;
-	    MOUSEOVER_Y_AXIS = tmpAxis;
+	      //tmpAxis = MOUSEOVER_Y_AXIS;
+	      tmpAxis = this.MAX_AXES-1;
+	    iMouseOverAxisIndexY = tmpAxis;
 	    selectNewMouseOverAxes();
 	    if (!(this.bAllowMatrixZoom))
 	      return;
@@ -3469,47 +3477,50 @@ public class GLScatterPlot extends AStorageBasedView {
 	    setDisplayListDirty();
 	  }
 
-	  public void upDownSelect(boolean bDownIsTrue)
+	 public void upDownSelect(boolean bDownIsTrue)
 	  {
+		updateMaxAxis();
 	    if (this.bRenderMatrix)
 	    {
 	      upDownMouse(bDownIsTrue);
 	      return;
 	    }
-	    int tmpAxis = SELECTED_Y_AXIS;
+	    int tmpAxis = iSelectedAxisIndexY;
 	    if (bDownIsTrue)
 	      ++tmpAxis;
 	    else
 	      --tmpAxis;
-	    if ((tmpAxis == SELECTED_X_AXIS) && (this.bOnlyRenderHalfMatrix))
+	    if ((tmpAxis == iSelectedAxisIndexX) && (this.bOnlyRenderHalfMatrix))
 	      return;
 	    if (tmpAxis < 0)
 	      tmpAxis = 0;
 	    if (tmpAxis + 1 > this.MAX_AXES) {
-	      tmpAxis = SELECTED_Y_AXIS;
+	      //tmpAxis = SELECTED_Y_AXIS;
+	    	tmpAxis = this.MAX_AXES-1;
 	    }
-	    SELECTED_Y_AXIS = tmpAxis;
+	    iSelectedAxisIndexY = tmpAxis;
 	    selectNewSelectionAxes();
 
 	    this.bUpdateMainView = true;
 	    setDisplayListDirty();
 	  }
 
-	  public void leftRightMouse(boolean bRightIsTrue)
+	 public void leftRightMouse(boolean bRightIsTrue)
 	  {
-	    int tmpAxis = MOUSEOVER_X_AXIS;
+	    int tmpAxis = iMouseOverAxisIndexX;
 	    if (bRightIsTrue)
 	      ++tmpAxis;
 	    else
 	      --tmpAxis;
-	    if ((tmpAxis == MOUSEOVER_Y_AXIS) && (this.bOnlyRenderHalfMatrix)) {
+	    if ((tmpAxis == iMouseOverAxisIndexY) && (this.bOnlyRenderHalfMatrix)) {
 	      return;
 	    }
 	    if (tmpAxis < 0)
 	      tmpAxis = 0;
 	    if (tmpAxis + 1 > this.MAX_AXES)
-	      tmpAxis = MOUSEOVER_X_AXIS;
-	    MOUSEOVER_X_AXIS = tmpAxis;
+	      //tmpAxis = MOUSEOVER_X_AXIS;
+	    	tmpAxis = this.MAX_AXES-1;
+	    iMouseOverAxisIndexX = tmpAxis;
 	    selectNewMouseOverAxes();
 	    if (!(this.bAllowMatrixZoom))
 	      return;
@@ -3517,26 +3528,28 @@ public class GLScatterPlot extends AStorageBasedView {
 	    setDisplayListDirty();
 	  }
 
-	  public void leftRightSelect(boolean bRightIsTrue)
+	 public void leftRightSelect(boolean bRightIsTrue)
 	  {
+		updateMaxAxis();
 	    if (this.bRenderMatrix)
 	    {
 	      leftRightMouse(bRightIsTrue);
 	      return;
 	    }
-	    int tmpAxis = SELECTED_X_AXIS;
+	    int tmpAxis = iSelectedAxisIndexX;
 	    if (bRightIsTrue)
 	      ++tmpAxis;
 	    else
 	      --tmpAxis;
-	    if ((tmpAxis == SELECTED_Y_AXIS) && (this.bOnlyRenderHalfMatrix)) {
+	    if ((tmpAxis == iSelectedAxisIndexY) && (this.bOnlyRenderHalfMatrix)) {
 	      return;
 	    }
 	    if (tmpAxis < 0)
 	      tmpAxis = 0;
 	    if (tmpAxis + 1 > this.MAX_AXES)
-	      tmpAxis = SELECTED_X_AXIS;
-	    SELECTED_X_AXIS = tmpAxis;
+	      //tmpAxis = SELECTED_X_AXIS;
+	    	tmpAxis = this.MAX_AXES-1;
+	    iSelectedAxisIndexX = tmpAxis;
 	    selectNewSelectionAxes();
 	    this.bUpdateMainView = true;
 	    setDisplayListDirty();
@@ -3545,19 +3558,20 @@ public class GLScatterPlot extends AStorageBasedView {
 	public void upDownSelect2Axis(boolean bDownIsTrue) {
 		if (!bRender2Axis)
 			return;
-
-		int tmpAxis = SELECTED_Y_AXIS_2;
+		updateMaxAxis();
+		int tmpAxis = iSelectedAxisIndexY2;
 		if (bDownIsTrue)
 			tmpAxis++;
 		else
 			tmpAxis--;
-		if (tmpAxis == SELECTED_X_AXIS_2 && bOnlyRenderHalfMatrix)
+		if (tmpAxis == iSelectedAxisIndexX2 && bOnlyRenderHalfMatrix)
 			return;
 		if (tmpAxis < 0)
 			tmpAxis = 0;
 		if ((tmpAxis + 1) > MAX_AXES)
-			tmpAxis = SELECTED_Y_AXIS_2;
-		SELECTED_Y_AXIS_2 = tmpAxis;
+			//tmpAxis = SELECTED_Y_AXIS_2;
+			tmpAxis = this.MAX_AXES-1;
+		iSelectedAxisIndexY2 = tmpAxis;
 		bUpdateMainView = true;
 		selectNewSelectionAxes();
 		setDisplayListDirty();
@@ -3566,35 +3580,35 @@ public class GLScatterPlot extends AStorageBasedView {
 	public void leftRightSelect2Axis(boolean bRightIsTrue) {
 		if (!bRender2Axis)
 			return;
-
-		int tmpAxis = SELECTED_X_AXIS_2;
+		updateMaxAxis();
+		int tmpAxis = iSelectedAxisIndexX2;
 		if (bRightIsTrue)
 			tmpAxis++;
 		else
 			tmpAxis--;
-		if (tmpAxis == SELECTED_Y_AXIS_2 && bOnlyRenderHalfMatrix)
+		if (tmpAxis == iSelectedAxisIndexY2 && bOnlyRenderHalfMatrix)
 			return;
 
 		if (tmpAxis < 0)
 			tmpAxis = 0;
 		if ((tmpAxis + 1) > MAX_AXES)
-			tmpAxis = SELECTED_X_AXIS_2;
-		SELECTED_X_AXIS_2 = tmpAxis;
+			//tmpAxis = SELECTED_X_AXIS_2;
+			tmpAxis = this.MAX_AXES-1;
+		iSelectedAxisIndexX2 = tmpAxis;
 		bUpdateMainView = true;
 		selectNewSelectionAxes();
 		setDisplayListDirty();
 	}
 	
-	  public void confirmCurrentSelection()
+	public void confirmCurrentSelection()
 	  {
-	    SELECTED_X_AXIS = MOUSEOVER_X_AXIS;
-	    SELECTED_Y_AXIS = MOUSEOVER_Y_AXIS;
+	    iSelectedAxisIndexX = iMouseOverAxisIndexX;
+	    iSelectedAxisIndexY = iMouseOverAxisIndexY;
 	    selectNewSelectionAxes();
 	    this.bUpdateMainView = true;
 	    setDisplayListDirty();
 	  }
 	
-
 	public void toggleSpecialAxisMode() {
 		if (bRender2Axis)
 			bRender2Axis = false;
@@ -3651,7 +3665,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		}
 	}
 
-	public void MainViewZoom() {
+	public void toggleMainViewZoom() {
 
 		if (bMainViewZoom)
 		{
