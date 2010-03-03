@@ -29,18 +29,19 @@ public class DataWindowsDisk extends PoincareDisk {
 	private GL gl;
 	int iUniqueID;
 	private double[] levelOfDetailLimits;
-	private double lineFactor = 700;
+	private double lineFactor = 80;
+	private double displayScaleFactor = 15;
 
 	public DataWindowsDisk(double diskRadius) {
 		super(diskRadius);
 		// Create the borders of the discrete DetailLevels:
 		this.levelOfDetailLimits = new double[3];
 		// display views
-		levelOfDetailLimits[0] = diskRadius * 1.5;
+		levelOfDetailLimits[0] = diskRadius * 0.5;
 		// display icons
-		levelOfDetailLimits[1] = diskRadius * 10;
+		levelOfDetailLimits[1] = diskRadius * 1.8;
 		// display only lines
-		levelOfDetailLimits[2] = diskRadius * 100;
+		levelOfDetailLimits[2] = diskRadius * 2;
 
 	}
 
@@ -52,15 +53,18 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		gl.glLineWidth(1);
 		double radius = projectPoint(
-				new Point2D.Double(levelOfDetailLimits[2], 2)).getX();
-		drawCircle(radius, canvasWidth / 2, canvasHeight / 2);
+				new Point2D.Double(levelOfDetailLimits[2], 0)).getX();
+		drawCircle(radius * displayScaleFactor, canvasWidth / 2,
+				canvasHeight / 2);
 
-		radius = projectPoint(new Point2D.Double(levelOfDetailLimits[1], 2))
+		radius = projectPoint(new Point2D.Double(levelOfDetailLimits[1], 0))
 				.getX();
-		drawCircle(radius, canvasWidth / 2, canvasHeight / 2);
-		radius = projectPoint(new Point2D.Double(levelOfDetailLimits[0], 2))
+		drawCircle(radius * displayScaleFactor, canvasWidth / 2,
+				canvasHeight / 2);
+		radius = projectPoint(new Point2D.Double(levelOfDetailLimits[0], 0))
 				.getX();
-		drawCircle(radius, canvasWidth / 2, canvasHeight / 2);
+		drawCircle(radius * displayScaleFactor, canvasWidth / 2,
+				canvasHeight / 2);
 
 	}
 
@@ -79,8 +83,10 @@ public class DataWindowsDisk extends PoincareDisk {
 	}
 
 	public void renderTree(GL glHandle, TextureManager texManager,
-			PickingManager pickManager, int iViewID, double viewingWidth,
+
+	PickingManager pickManager, int iViewID, double viewingWidth,
 			double viewingHeight) {
+
 		// System.out.println("Baum wird gezeichnet: ");
 		gl = glHandle;
 		pickingManager = pickManager;
@@ -89,11 +95,11 @@ public class DataWindowsDisk extends PoincareDisk {
 		canvasHeight = viewingHeight;
 		iUniqueID = iViewID;
 
-		displayDetailLevels();
+//		displayDetailLevels();
 
 		// drawBackground();
 		PoincareNode root = getTree().getRoot();
-		renderNode(root, 2);
+		renderNode(root, 1);
 
 	}
 
@@ -106,15 +112,15 @@ public class DataWindowsDisk extends PoincareDisk {
 				// render the line:
 				if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 1) {
 
-					drawLine(node, children.get(i), 6, mode);
+					drawLine(node, children.get(i), 12, mode);
 				}
 				if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 2) {
 
-					drawLine(node, children.get(i), 3, mode);
+					drawLine(node, children.get(i), 4, mode);
 				}
 				if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 3) {
 
-					drawLine(node, children.get(i), 2, mode);
+					drawLine(node, children.get(i), 3, mode);
 				}
 				renderNode(children.get(i), mode);
 			}
@@ -130,46 +136,51 @@ public class DataWindowsDisk extends PoincareDisk {
 		double size = distancePoints(node.getProjectedPosition(), this
 				.projectPoint(new Point2D.Double(node.getPosition().getX()
 						+ nodeSize / 2, node.getPosition().getY() + nodeSize
-						/ 2))) * 2;
-
-		// if (node.highLighted==true){
-		// size=size*2;
-		// }
+						/ 2)))
+				* displayScaleFactor / 2;
 
 		Vec3f lowerLeftCorner = new Vec3f(
-				(float) (-size + node.getProjectedPosition().getX() + canvasWidth / 2),
-				(float) (-size + node.getProjectedPosition().getY() + canvasHeight / 2),
-				0);
+				(float) (-size + node.getProjectedPosition().getX()
+						* displayScaleFactor + canvasWidth / 2), (float) (-size
+						+ node.getProjectedPosition().getY()
+						* displayScaleFactor + canvasHeight / 2), 0);
 		Vec3f lowerRightCorner = new Vec3f(
-				(float) (size + node.getProjectedPosition().getX() + canvasWidth / 2),
-				(float) (-size + node.getProjectedPosition().getY() + canvasHeight / 2),
-				0);
+				(float) (size + node.getProjectedPosition().getX()
+						* displayScaleFactor + canvasWidth / 2), (float) (-size
+						+ node.getProjectedPosition().getY()
+						* displayScaleFactor + canvasHeight / 2), 0);
 		Vec3f upperRightCorner = new Vec3f(
-				(float) (size + node.getProjectedPosition().getX() + canvasWidth / 2),
-				(float) (size + node.getProjectedPosition().getY() + canvasHeight / 2),
-				0);
+				(float) (size + node.getProjectedPosition().getX()
+						* displayScaleFactor + canvasWidth / 2), (float) (size
+						+ node.getProjectedPosition().getY()
+						* displayScaleFactor + canvasHeight / 2), 0);
 		Vec3f upperLeftCorner = new Vec3f(
-				(float) (-size + node.getProjectedPosition().getX() + canvasWidth / 2),
-				(float) (size + node.getProjectedPosition().getY() + canvasHeight / 2),
-				0);
+				(float) (-size + node.getProjectedPosition().getX()
+						* displayScaleFactor + canvasWidth / 2), (float) (size
+						+ node.getProjectedPosition().getY()
+						* displayScaleFactor + canvasHeight / 2), 0);
 
 		if (mode == 2) {
 			lowerLeftCorner = new Vec3f(
-					(float) (-size + node.getPosition().getX() + canvasWidth / 2),
-					(float) (-size + node.getPosition().getY() + canvasHeight / 2),
-					0);
+					(float) (-size + node.getPosition().getX()
+							* displayScaleFactor + canvasWidth / 2),
+					(float) (-size + node.getPosition().getY()
+							* displayScaleFactor + canvasHeight / 2), 0);
 			lowerRightCorner = new Vec3f(
-					(float) (size + node.getPosition().getX() + canvasWidth / 2),
-					(float) (-size + node.getPosition().getY() + canvasHeight / 2),
-					0);
+					(float) (size + node.getPosition().getX()
+							* displayScaleFactor + canvasWidth / 2),
+					(float) (-size + node.getPosition().getY()
+							* displayScaleFactor + canvasHeight / 2), 0);
 			upperRightCorner = new Vec3f(
-					(float) (size + node.getPosition().getX() + canvasWidth / 2),
-					(float) (size + node.getPosition().getY() + canvasHeight / 2),
-					0);
+					(float) (size + node.getPosition().getX()
+							* displayScaleFactor + canvasWidth / 2),
+					(float) (size + node.getPosition().getY()
+							* displayScaleFactor + canvasHeight / 2), 0);
 			upperLeftCorner = new Vec3f(
-					(float) (-size + node.getPosition().getX() + canvasWidth / 2),
-					(float) (size + node.getPosition().getY() + canvasHeight / 2),
-					0);
+					(float) (-size + node.getPosition().getX()
+							* displayScaleFactor + canvasWidth / 2),
+					(float) (size + node.getPosition().getY()
+							* displayScaleFactor + canvasHeight / 2), 0);
 		}
 
 		Vec3f scalingPivot = new Vec3f(1, 1, 0);
@@ -199,61 +210,99 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		double width = distancePoints(node1.getProjectedPosition(),
 				projectPoint(new Point2D.Double(node1.getPosition().getX()
-						+ lineWidth, node1.getPosition().getY() + lineWidth)));
-
-		width = width * lineFactor;
-
+						+ lineWidth, node1.getPosition().getY() + lineWidth)))
+				* lineFactor;
 		gl.glLineWidth((float) width);
 
-		gl.glBegin(GL.GL_LINE_STRIP);
+		
+			
+		
+		
+			// draw the curve:
 
-		gl.glColor3i(0, 0, 0);
-		if (mode == 1) {
-			gl.glVertex3d(node1.getProjectedPosition().getX()
-					+ (canvasWidth / 2), node1.getProjectedPosition().getY()
-					+ canvasHeight / 2, 0);
-		}
-		if (mode == 2) {
-			gl.glVertex3d(node1.getPosition().getX() + (canvasWidth / 2), node1
-					.getPosition().getY()
-					+ canvasHeight / 2, 0);
-		}
-		if (mode == 1) {
-		// draw the curve:
-		if (numberOfDetails != 0) {
-			Point2D.Double directionFactor = new Point2D.Double();
-			directionFactor.setLocation((endingPoint.getX() - startingPoint
-					.getX())
-					/ (numberOfDetails + 1),
-					(endingPoint.getY() - startingPoint.getY())
-							/ (numberOfDetails + 1));
+			if (numberOfDetails != 0) {
+				
+			
+//				gl.glVertex3d(node1.getProjectedPosition().getX()
+//						* displayScaleFactor + (canvasWidth / 2), node1
+//						.getProjectedPosition().getY()
+//						* displayScaleFactor + canvasHeight / 2, 0);
+				Point2D.Double lastPosition = new Point2D.Double(0,0);
+				
+				Point2D.Double directionFactor = new Point2D.Double();
+				directionFactor.setLocation((endingPoint.getX() - startingPoint
+						.getX())
+						/ (numberOfDetails + 1),
+						(endingPoint.getY() - startingPoint.getY())
+								/ (numberOfDetails + 1));
 
-			Point2D.Double tempLinePoint = new Point2D.Double();
-			tempLinePoint.setLocation(startingPoint);
-			for (int i = 0; i < numberOfDetails; i++) {
-				Point2D.Double tempLinePoint2 = new Point2D.Double();
-				tempLinePoint2.setLocation(tempLinePoint.getX()
-						+ directionFactor.getX() * (i + 1), tempLinePoint
-						.getY()
-						+ directionFactor.getY() * (i + 1));
+				Point2D.Double tempLinePoint = new Point2D.Double();
+				tempLinePoint.setLocation(startingPoint);
+				for (int i = 0; i <= numberOfDetails+1; i++) {
+					Point2D.Double tempLinePoint2 = new Point2D.Double();
+					tempLinePoint2.setLocation(tempLinePoint.getX()
+							+ directionFactor.getX() * (i ), tempLinePoint
+							.getY() + directionFactor.getY() * (i ));
 
-				gl.glVertex3d(projectPoint(tempLinePoint2).getX()
-						+ (canvasWidth / 2), projectPoint(tempLinePoint2)
-						.getY()
-						+ canvasHeight / 2, 0);
+					width = distancePoints(projectPoint(tempLinePoint2),
+							projectPoint(new Point2D.Double(tempLinePoint2.getX()
+									+ lineWidth,tempLinePoint2
+									.getY()	+ lineWidth)))* lineFactor*displayScaleFactor;
+				
+					
+					gl.glLineWidth((float) width);
 
+					if(i>0){
+						gl.glBegin(GL.GL_LINE_STRIP);
+
+						gl.glColor3i(0, 0, 0);
+						gl.glVertex3d(lastPosition.getX(),lastPosition.getY(), 0);
+					
+					lastPosition.setLocation(projectPoint(tempLinePoint2).getX()
+							* displayScaleFactor + (canvasWidth / 2),
+							projectPoint(tempLinePoint2).getY()
+									* displayScaleFactor + canvasHeight / 2);
+					
+					gl.glVertex3d(lastPosition.getX(),lastPosition.getY(), 0);
+					gl.glEnd();
+					
+					}
+					else{
+						lastPosition.setLocation(projectPoint(tempLinePoint2).getX()
+								* displayScaleFactor + (canvasWidth / 2),
+								projectPoint(tempLinePoint2).getY()
+										* displayScaleFactor + canvasHeight / 2);
+					}
+					
+				}
+			//	gl.glVertex3d(node2.getProjectedPosition().getX()
+				//		* displayScaleFactor + (canvasWidth / 2), node2
+					//	.getProjectedPosition().getY()
+						//* displayScaleFactor + canvasHeight / 2, 0);
+				
 			}
-		}
-		}
-		if (mode == 1) {
-		gl.glVertex3d(node2.getProjectedPosition().getX() + (canvasWidth / 2),
-				node2.getProjectedPosition().getY() + canvasHeight / 2, 0);
-		}
-		if (mode == 2) {
-			gl.glVertex3d(node2.getPosition().getX() + (canvasWidth / 2),
-					node2.getPosition().getY() + canvasHeight / 2, 0);
-		}
-		gl.glEnd();
+			else {
+				gl.glBegin(GL.GL_LINE);
+
+				gl.glColor3i(0, 0, 0);
+				gl.glVertex3d(node1.getProjectedPosition().getX()
+						* displayScaleFactor + (canvasWidth / 2), node1
+						.getProjectedPosition().getY()
+						* displayScaleFactor + canvasHeight / 2, 0);
+				
+				gl.glVertex3d(node2.getProjectedPosition().getX()
+						* displayScaleFactor + (canvasWidth / 2), node2
+						.getProjectedPosition().getY()
+						* displayScaleFactor + canvasHeight / 2, 0);
+				gl.glEnd();
+			}
+		
+		
+			
+		
+			
+		
+	
 	}
 
 	public void drawBackground() {

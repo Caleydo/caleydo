@@ -1,7 +1,6 @@
 package org.caleydo.view.datawindows;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.graph.tree.Tree;
@@ -18,7 +17,9 @@ public class PoincareDisk {
 	protected double absoluteScalation;
 	protected Point2D.Double absolutePosition;
 	private PoincareNode centeredNode;
+    private double layoutLenseFactor = 1.7;
 
+	
 	public PoincareDisk(double diskRadius) {
 		radius = diskRadius;
 		nodeSize = 0.1;
@@ -34,7 +35,6 @@ public class PoincareDisk {
 
 	public void loadTree() {
 		// creating a tree for testing
-		System.out.println("loadTree Called");
 
 		tree = new Tree<PoincareNode>();
 
@@ -51,7 +51,7 @@ public class PoincareDisk {
 		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
 		tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
 		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
-		tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
+	
 		int iCount = 344;
 		for (PoincareNode tempNode : tree.getChildren(node)) {
 			tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
@@ -99,8 +99,7 @@ public class PoincareDisk {
 	}
 
 	public void translateTreeMoebius(Point2D.Double translationVector) {
-		System.out.println("transform tree;" + translationVector.getX() + "|"
-				+ translationVector.getY());
+		
 		PoincareNode root = tree.getRoot();
 
 		double distance = this.distanceFromOrigin(translationVector);
@@ -143,8 +142,6 @@ public class PoincareDisk {
 	}
 
 	public void translateTree(Point2D.Double translationVector) {
-		System.out.println("transform tree;" + translationVector.getX() + "|"
-				+ translationVector.getY());
 		PoincareNode root = tree.getRoot();
 		translateNode(root, translationVector);
 		projectTree();
@@ -163,7 +160,6 @@ public class PoincareDisk {
 		if (tree.getChildren(node) == null) {
 			return false;
 		}
-
 		ArrayList<PoincareNode> children = tree.getChildren(node);
 		int numberOfChildren = children.size();
 
@@ -190,13 +186,10 @@ public class PoincareDisk {
 		if (tree.getChildren(node) == null) {
 			return false;
 		}
-		// System.out.println("scaliere Knoten: " + node.nodeName);
 		ArrayList<PoincareNode> children = tree.getChildren(node);
 		int numberOfChildren = children.size();
 		for (int i = 0; i < numberOfChildren; i++) {
-			children.get(i).setPosition(
-					scalePoint(children.get(i).getPosition(), factor));
-			// recursion step
+			 scalePoint(children.get(i).getPosition(), factor);
 			scaleNode(children.get(i), factor);
 		}
 		return true;
@@ -209,7 +202,6 @@ public class PoincareDisk {
 	}
 
 	public Point2D.Double projectPoint(Point2D.Double point) {
-		// radius = 2;
 		Point2D.Double coordinate = new Point2D.Double();
 		coordinate.setLocation(point);
 		double coordinateLength = coordinate.getX() * coordinate.getX()
@@ -241,11 +233,6 @@ public class PoincareDisk {
 
 			// recursion step
 			projectNode(children.get(i));
-		}
-		for (int i = 0; i < numberOfChildren; i++) {
-			// System.out.println("Node projziert auf: "
-			// + children.get(i).getProjectedPosition().getX() + "|"
-			// + children.get(i).getProjectedPosition().getY());
 		}
 		return true;
 
@@ -396,43 +383,6 @@ public class PoincareDisk {
 		}
 	}
 
-	public void zoomTree(int mode) {
-		// zoom in;
-		if (mode == 1) {
-
-			double distance = 10d;
-
-			// much possibilities for optimisation
-			int numberOfBrothers = this.getCenteredNode().getParent()
-					.getChildren().size();
-
-			if (numberOfBrothers >= 2) {
-				for (int i = 0; i < numberOfBrothers; i++) {
-					if (centeredNode.getComparableValue() != centeredNode
-							.getParent().getChildren().get(i)
-							.getComparableValue()) {
-
-						if (distanceFromOrigin(centeredNode.getParent()
-								.getChildren().get(i).getPosition()) < distance) {
-
-							distance = distanceFromOrigin(centeredNode
-									.getParent().getChildren().get(i)
-									.getPosition());
-						}
-					}
-				}
-
-			} else {
-
-			}
-			System.out.println("entfernung: " + distance);
-			if (distance < 1) {
-				scaleTree(1 / distance, 2);
-			}
-		} else {
-
-		}
-	}
 
 	public void setCenteredNode(PoincareNode centeredNode) {
 		this.centeredNode = centeredNode;
@@ -443,41 +393,8 @@ public class PoincareDisk {
 
 	}
 
-	// */
-	// moebiusTransformation: function(theta, c) {
-	// var num= this.add(c.scale(-1));
-	// var den= new Complex(1, 0).add(c.conjugate().prod(this).scale(-1));
-	// var numProd= den.conjugate();
-	// var denProd= den.prod(den.conjugate()).x;
-	// num= num.prod(numProd).scale(1 / denProd);
-	// return new Complex(num.x, num.y);
-	// },
-
 	public ComplexNumber moebiusTransformation(ComplexNumber point,
 			ComplexNumber translation) {
-		// System.out.println("moebius Transformation-----------");
-		// System.out.println("moebius angle:"+
-		// angle.getRealPart()+" "+angle.getImaginaryPart());
-		//				
-		// ComplexNumber num = new ComplexNumber();
-		// num.setValue(point);
-		// num = num.multiply(angle);
-		// num = num.add(translation);
-		//
-		// ComplexNumber num2 = new ComplexNumber();
-		// num2.setValue(translation);
-		// num2.setValue(num2.getRealPart(), num2.getImaginaryPart() * -1);
-		// num2 = num2.multiply(angle);
-		// System.out.println("moebius nenner multiplied: "+
-		// num2.getRealPart()+" "+num2.getImaginaryPart());
-		// num2 = num2.multiply(point);
-		// num2 = num2.add(new ComplexNumber(1, 0));
-		//
-		// System.out.println("moebius zahler: "+
-		// num.getRealPart()+" "+num.getImaginaryPart());
-		// System.out.println("moebius nenner: "+
-		// num2.getRealPart()+" "+num2.getImaginaryPart());
-		// return num.divide(num2);
 
 		ComplexNumber num = new ComplexNumber();
 		num.setValue(point);
@@ -488,17 +405,11 @@ public class PoincareDisk {
 		num2.setValue(num2.getRealPart(), num2.getImaginaryPart() * -1);
 		num2 = num2.multiply(point);
 		num2 = num2.add(new ComplexNumber(1, 0));
-
-		System.out.println("moebius zahler: " + num.getRealPart() + " "
-				+ num.getImaginaryPart());
-		System.out.println("moebius nenner: " + num2.getRealPart() + " "
-				+ num2.getImaginaryPart());
-
 		return num.divide(num2);
 	}
 
 	public void moebiusLayoutTree() {
-		System.out.println("layout moebius Tree Called");
+	
 		PoincareNode root = tree.getRoot();
 		root.setPosition(new Point2D.Double(0, 0));
 		root.setDistanceFromOrigin(0);
@@ -506,14 +417,12 @@ public class PoincareDisk {
 		root.iComparableValue = treeNodeCounter;
 		moebiusNodeLayout(root, 0, 2 * Math.PI);
 		centerNode(root);
-
 	}
 
 	public void moebiusNodeLayout(PoincareNode parentNode, double angleOffset,
 			double angle) {
 
 		if (tree.getChildren(parentNode) == null) {
-			// System.out.println("no children");
 			return;
 		}
 
@@ -527,9 +436,8 @@ public class PoincareDisk {
 
 		double absoluteAngle = angleOffset - angle / 2;
 		for (int i = 0; i < numberOfChildren; i++) {
-			// centerNodeMoebius(parentNode);
 			absoluteAngle = absoluteAngle + splitAngle;
-
+			
 			Point2D.Double newPoint = new Point2D.Double(parentNode
 					.getPosition().getX(), parentNode.getPosition().getY());
 
@@ -537,7 +445,7 @@ public class PoincareDisk {
 			relativePoint.setLocation(angleToCoordinate(absoluteAngle));
 
 			ComplexNumber relativeTargetPoint = new ComplexNumber(relativePoint
-					.getX()/10, relativePoint.getY()/10);
+					.getX()/layoutLenseFactor, relativePoint.getY()/layoutLenseFactor);
 
 			ComplexNumber startingPoint = new ComplexNumber(newPoint.getX(),
 					newPoint.getY());
@@ -547,9 +455,11 @@ public class PoincareDisk {
 			targetPoint.setValue(moebiusTransformation(startingPoint,
 					relativeTargetPoint));
 
+			
 			children.get(i).setPosition(
 					new Point2D.Double(targetPoint.getRealPart(), targetPoint
 							.getImaginaryPart()));
+			
 			
 			// System.out.println("Position neuer tansformierter Punkt: "
 			// + children.get(i).getPosition().getX() + " "
@@ -563,11 +473,8 @@ public class PoincareDisk {
 			// recursion step:
 			treeNodeCounter++;
 			children.get(i).iComparableValue = treeNodeCounter;
-			//if (treeNodeCounter < 7) {
-				moebiusNodeLayout(children.get(i), absoluteAngle, splitAngle);
-			//}
+			moebiusNodeLayout(children.get(i), absoluteAngle, splitAngle);
 		}
-
 		return;
 
 	}

@@ -74,7 +74,9 @@ public class GLDataWindows extends AGLView {
 	private DataWindowsDisk disk;
 
 	// properties of the circle
-	private double circleRadius = 2;
+	private double circleRadius = 0.5;
+	
+	private PoincareNode slerpedNode;
 
 	
 	
@@ -113,9 +115,9 @@ public class GLDataWindows extends AGLView {
 
 		
 
-		disk = new DataWindowsDisk(2);
+		disk = new DataWindowsDisk(circleRadius);
 		disk.loadTree();
-		
+		//disk.scaleTree(2,1);
 
 	
 	
@@ -365,7 +367,7 @@ public class GLDataWindows extends AGLView {
 
 		SelectionType selectionType;
 		switch (ePickingType) {
-
+ 
 		case DATAW_NODE:
 			switch (pickingMode) {
 
@@ -373,9 +375,11 @@ public class GLDataWindows extends AGLView {
 				// disk.centerNode(disk.getNodeByCompareableValue(iExternalID));
 				
 				
-				arSlerpActions.add(new nodeSlerp(10, disk
+				arSlerpActions.add(new nodeSlerp(4, disk
 						.getNodeByCompareableValue(iExternalID).getPosition(),
 						new Point2D.Double(0, 0)));
+				
+				slerpedNode = disk.getNodeByCompareableValue(iExternalID);
 				disk.setCenteredNode(disk.getNodeByCompareableValue(iExternalID));
 			
 			}
@@ -503,11 +507,10 @@ public class GLDataWindows extends AGLView {
 		}
 
 		nodeSlerp singleSlerp = arSlerpActions.get(0);
-		if (singleSlerp.doASlerp() == true) {
+		if (singleSlerp.doASlerp(slerpedNode.getPosition()) == true) {
 			disk.translateTreeMoebius(singleSlerp.returnPoint);
 		} else {
 			arSlerpActions.remove(0);
-		  //  disk.zoomTree(1);
 			
 		}
 		
