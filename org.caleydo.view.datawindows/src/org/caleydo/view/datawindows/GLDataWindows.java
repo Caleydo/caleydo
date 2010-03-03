@@ -115,7 +115,7 @@ public class GLDataWindows extends AGLView {
 
 		disk = new DataWindowsDisk(2);
 		disk.loadTree();
-		disk.scaleTree(0.5,1);
+		
 
 	
 	

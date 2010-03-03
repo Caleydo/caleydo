@@ -512,8 +512,6 @@ public class PoincareDisk {
 	public void moebiusNodeLayout(PoincareNode parentNode, double angleOffset,
 			double angle) {
 
-		// todo center the actual node
-
 		if (tree.getChildren(parentNode) == null) {
 			// System.out.println("no children");
 			return;
@@ -528,13 +526,6 @@ public class PoincareDisk {
 		}
 
 		double absoluteAngle = angleOffset - angle / 2;
-
-		// double length = 1;
-		// double length = 0.3 + Math.log((double) (children.size()));
-		// if(children.size()>=2){
-		// length =(nodeSize*3)/(Math.sin(splitAngle/2));
-		// }
-
 		for (int i = 0; i < numberOfChildren; i++) {
 			// centerNodeMoebius(parentNode);
 			absoluteAngle = absoluteAngle + splitAngle;
@@ -545,27 +536,21 @@ public class PoincareDisk {
 			Point2D.Double relativePoint = new Point2D.Double(0, 0);
 			relativePoint.setLocation(angleToCoordinate(absoluteAngle));
 
-			// newPoint.setLocation(newPoint.getX() + relativePoint.getX()
-			// * length, newPoint.getY() + relativePoint.getY() * length);
-
 			ComplexNumber relativeTargetPoint = new ComplexNumber(relativePoint
-					.getX(), relativePoint.getY());
+					.getX()/10, relativePoint.getY()/10);
 
 			ComplexNumber startingPoint = new ComplexNumber(newPoint.getX(),
 					newPoint.getY());
 
 			ComplexNumber targetPoint = new ComplexNumber(0, 0);
 
-			targetPoint.setValue(this.moebiusTransformation(startingPoint,
+			targetPoint.setValue(moebiusTransformation(startingPoint,
 					relativeTargetPoint));
-
-			// children.get(i).setPosition(
-			// new Point2D.Double(targetPoint.getRealPart(),
-			// targetPoint.getImaginaryPart()));
 
 			children.get(i).setPosition(
 					new Point2D.Double(targetPoint.getRealPart(), targetPoint
 							.getImaginaryPart()));
+			
 			// System.out.println("Position neuer tansformierter Punkt: "
 			// + children.get(i).getPosition().getX() + " "
 			// + children.get(i).getPosition().getY());

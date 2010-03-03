@@ -41,9 +41,7 @@ public class DataWindowsDisk extends PoincareDisk {
 		levelOfDetailLimits[1] = diskRadius * 10;
 		// display only lines
 		levelOfDetailLimits[2] = diskRadius * 100;
-		
 
-		
 	}
 
 	public void mouseOverNode(int nodeIndex) {
@@ -95,11 +93,11 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		// drawBackground();
 		PoincareNode root = getTree().getRoot();
-		renderNode(root);
+		renderNode(root, 2);
 
 	}
 
-	public boolean renderNode(PoincareNode node) {
+	public boolean renderNode(PoincareNode node, int mode) {
 
 		if (node.getChildren() != null) {
 			ArrayList<PoincareNode> children = node.getChildren();
@@ -107,31 +105,32 @@ public class DataWindowsDisk extends PoincareDisk {
 			for (int i = 0; i < numberOfChildren; i++) {
 				// render the line:
 				if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 1) {
-					
-					drawLine(node, children.get(i), 6);
+
+					drawLine(node, children.get(i), 6, mode);
 				}
 				if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 2) {
-					
-					drawLine(node, children.get(i), 3);
+
+					drawLine(node, children.get(i), 3, mode);
 				}
 				if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 3) {
-					
-					drawLine(node, children.get(i), 2);
+
+					drawLine(node, children.get(i), 2, mode);
 				}
-				renderNode(children.get(i));
+				renderNode(children.get(i), mode);
 			}
 		}
 		if (distanceToDetaillevel(node.getDistanceFromOrigin()) <= 2) {
-			drawNode(node);
+			drawNode(node, mode);
 		}
 		return true;
 	}
 
-	public void drawNode(PoincareNode node) {
+	public void drawNode(PoincareNode node, int mode) {
 
 		double size = distancePoints(node.getProjectedPosition(), this
 				.projectPoint(new Point2D.Double(node.getPosition().getX()
-						+ nodeSize/2, node.getPosition().getY() + nodeSize/2)))*2;
+						+ nodeSize / 2, node.getPosition().getY() + nodeSize
+						/ 2))) * 2;
 
 		// if (node.highLighted==true){
 		// size=size*2;
@@ -153,6 +152,26 @@ public class DataWindowsDisk extends PoincareDisk {
 				(float) (-size + node.getProjectedPosition().getX() + canvasWidth / 2),
 				(float) (size + node.getProjectedPosition().getY() + canvasHeight / 2),
 				0);
+
+		if (mode == 2) {
+			lowerLeftCorner = new Vec3f(
+					(float) (-size + node.getPosition().getX() + canvasWidth / 2),
+					(float) (-size + node.getPosition().getY() + canvasHeight / 2),
+					0);
+			lowerRightCorner = new Vec3f(
+					(float) (size + node.getPosition().getX() + canvasWidth / 2),
+					(float) (-size + node.getPosition().getY() + canvasHeight / 2),
+					0);
+			upperRightCorner = new Vec3f(
+					(float) (size + node.getPosition().getX() + canvasWidth / 2),
+					(float) (size + node.getPosition().getY() + canvasHeight / 2),
+					0);
+			upperLeftCorner = new Vec3f(
+					(float) (-size + node.getPosition().getX() + canvasWidth / 2),
+					(float) (size + node.getPosition().getY() + canvasHeight / 2),
+					0);
+		}
+
 		Vec3f scalingPivot = new Vec3f(1, 1, 0);
 
 		int iPickingID = pickingManager.getPickingID(iUniqueID,
@@ -173,7 +192,7 @@ public class DataWindowsDisk extends PoincareDisk {
 	}
 
 	public void drawLine(PoincareNode node1, PoincareNode node2,
-			int numberOfDetails) {
+			int numberOfDetails, int mode) {
 
 		Point2D.Double startingPoint = node1.getPosition();
 		Point2D.Double endingPoint = node2.getPosition();
@@ -189,9 +208,17 @@ public class DataWindowsDisk extends PoincareDisk {
 		gl.glBegin(GL.GL_LINE_STRIP);
 
 		gl.glColor3i(0, 0, 0);
-
-		gl.glVertex3d(node1.getProjectedPosition().getX() + (canvasWidth / 2),
-				node1.getProjectedPosition().getY() + canvasHeight / 2, 0);
+		if (mode == 1) {
+			gl.glVertex3d(node1.getProjectedPosition().getX()
+					+ (canvasWidth / 2), node1.getProjectedPosition().getY()
+					+ canvasHeight / 2, 0);
+		}
+		if (mode == 2) {
+			gl.glVertex3d(node1.getPosition().getX() + (canvasWidth / 2), node1
+					.getPosition().getY()
+					+ canvasHeight / 2, 0);
+		}
+		if (mode == 1) {
 		// draw the curve:
 		if (numberOfDetails != 0) {
 			Point2D.Double directionFactor = new Point2D.Double();
@@ -217,10 +244,15 @@ public class DataWindowsDisk extends PoincareDisk {
 
 			}
 		}
-
+		}
+		if (mode == 1) {
 		gl.glVertex3d(node2.getProjectedPosition().getX() + (canvasWidth / 2),
 				node2.getProjectedPosition().getY() + canvasHeight / 2, 0);
-
+		}
+		if (mode == 2) {
+			gl.glVertex3d(node2.getPosition().getX() + (canvasWidth / 2),
+					node2.getPosition().getY() + canvasHeight / 2, 0);
+		}
 		gl.glEnd();
 	}
 

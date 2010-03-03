@@ -116,7 +116,7 @@ class ComplexNumber {
     
     //added:
     public ComplexNumber multiply(ComplexNumber theNum){
-    	return new ComplexNumber(realPart*theNum.imagPart-imagPart*theNum.imagPart,
+    	return new ComplexNumber(realPart*theNum.realPart-imagPart*theNum.imagPart,
     			realPart*theNum.imagPart+imagPart*theNum.realPart);
     	
     }
