@@ -24,6 +24,7 @@ import java.awt.geom.Rectangle2D;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
@@ -2769,49 +2770,57 @@ public class GLScatterPlot extends AStorageBasedView {
 		
 		if (iSelectionSelections>0) {
 
-			Set<Integer> axis = storageSelectionManager
+			Set<Integer> axisSet = storageSelectionManager
 					.getElements(SelectionType.SELECTION);
-
+			
+			Iterator<Integer> axisIT = axisSet.iterator(); 									
 			int itmpAxis=SELECTED_X_AXIS;
-			int index = 0;
-			for (int i : axis) {
-				// TODO : If Multiple Selections or Scatterplots are Available.
-				// adjust this (take first 2 axis selections?)
-				SELECTED_X_AXIS = storageVA.indexOf(i);
-								
-				if(iSelectionSelections>0)
-					SELECTED_X_AXIS = storageVA.indexOf(i);
-				
-				if(SELECTED_X_AXIS >SELECTED_Y_AXIS)
-				{
-					SELECTED_X_AXIS=itmpAxis;
-					SELECTED_X_AXIS=SELECTED_Y_AXIS;
-					SELECTED_Y_AXIS=itmpAxis;
-				}
-				if(SELECTED_X_AXIS==SELECTED_Y_AXIS)
-					SELECTED_X_AXIS=itmpAxis;
-				
-				
-				bUpdateMainView = true;
-				break;
+			
+			int i = axisIT.next();
+			SELECTED_X_AXIS = storageVA.indexOf(i);
+			if(axisIT.hasNext()) 
+			{
+				i = axisIT.next();
+				SELECTED_Y_AXIS = storageVA.indexOf(i);
 			}
-		}
+								
+			if(SELECTED_X_AXIS >SELECTED_Y_AXIS)
+			{
+				itmpAxis=SELECTED_X_AXIS;
+				SELECTED_X_AXIS=SELECTED_Y_AXIS;
+				SELECTED_Y_AXIS=itmpAxis;
+			}
+			if(SELECTED_X_AXIS==SELECTED_Y_AXIS)
+				SELECTED_X_AXIS=itmpAxis;
+						
+			bUpdateMainView = true;
 
+		}
 
 		if (iMouseOverSelections==0)
 			return;
 
-		Set<Integer> axis = storageSelectionManager
+		Set<Integer> axisSet = storageSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
-
+		Iterator<Integer> axisIT = axisSet.iterator(); 									
+		int itmpAxis=MOUSEOVER_X_AXIS;
 		
-		for (int i : axis) {
-			// TODO : If Multiple Selections or Scatterplots are Available.
-			// adjust this (take first 2 axis selections?)
-			MOUSEOVER_X_AXIS = storageVA.indexOf(i);
-			bUpdateMainView = true;
-			break;
+		int i = axisIT.next();
+		MOUSEOVER_X_AXIS = storageVA.indexOf(i);
+		if(axisIT.hasNext()) 
+		{
+			i = axisIT.next();
+			MOUSEOVER_Y_AXIS = storageVA.indexOf(i);
 		}
+							
+		if(MOUSEOVER_X_AXIS >MOUSEOVER_Y_AXIS)
+		{
+			itmpAxis=MOUSEOVER_X_AXIS;
+			MOUSEOVER_X_AXIS=MOUSEOVER_Y_AXIS;
+			MOUSEOVER_Y_AXIS=itmpAxis;
+		}
+		if(MOUSEOVER_X_AXIS==MOUSEOVER_Y_AXIS)
+			MOUSEOVER_X_AXIS=itmpAxis;
 
 	}
 
