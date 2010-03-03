@@ -38,4 +38,9 @@ public class HeatMapLayoutLeft extends HeatMapLayout {
 		return EPickingType.COMPARE_LEFT_GROUP_SELECTION;
 	}
 
+	@Override
+	public EPickingType getHeatMapPickingType() {
+		return EPickingType.COMPARE_LEFT_EMBEDDED_VIEW_SELECTION;
+	}
+
 }

@@ -616,7 +616,7 @@ public class SelectionManager
 	 * Adds a new, custom selection type to the selection manager. Should only be called via a
 	 * {@link SelectionTypeEvent}
 	 */
-	void addSelectionType(SelectionType selectionType) {
+	public void addSelectionType(SelectionType selectionType) {
 		hashSelectionTypes.put(selectionType, new HashMap<Integer, Integer>());
 		selectionTypes.add(selectionType);
 	}

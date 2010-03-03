@@ -55,40 +55,7 @@ public class HeatMapOverview {
 				.y(), overviewHeatMapPosition.z());
 		HeatMapUtil.renderHeatmapTextures(gl, overviewTextures, overviewHeight,
 				layout.getOverviewHeatmapWidth());
-		float sampleHeight = overviewHeight / contentVA.size();
-		
-		Set<Integer> mouseOverElements = contentSelectionManager.getElements(SelectionType.MOUSE_OVER);
-		Set<Integer> selectedElements = contentSelectionManager.getElements(SelectionType.SELECTION);
-		
-		for(Integer mouseOverElement : mouseOverElements) {
-			int elementIndex = contentVA.indexOf(mouseOverElement);
-			
-			if(elementIndex != -1) {
-				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
-				gl.glBegin(GL.GL_LINE_LOOP);
-				gl.glVertex3f(0, overviewHeight - (elementIndex * sampleHeight), 0);
-				gl.glVertex3f(layout.getOverviewHeatmapWidth(), overviewHeight - (elementIndex * sampleHeight), 0);
-				gl.glVertex3f(layout.getOverviewHeatmapWidth(), overviewHeight - ((elementIndex + 1) * sampleHeight), 0);
-				gl.glVertex3f(0, overviewHeight - ((elementIndex + 1) * sampleHeight), 0);
-				gl.glEnd();
-			}
-
-//			selectedElements.remove(mouseOverElement);
-		}
-		
-		for(Integer selectedElement : selectedElements) {
-			int elementIndex = contentVA.indexOf(selectedElement);
-			
-			if(elementIndex != -1) {
-				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
-				gl.glBegin(GL.GL_LINE_LOOP);
-				gl.glVertex3f(0, overviewHeight - (elementIndex * sampleHeight), 0);
-				gl.glVertex3f(layout.getOverviewHeatmapWidth(), overviewHeight - (elementIndex * sampleHeight), 0);
-				gl.glVertex3f(layout.getOverviewHeatmapWidth(), overviewHeight - ((elementIndex + 1) * sampleHeight), 0);
-				gl.glVertex3f(0, overviewHeight - ((elementIndex + 1) * sampleHeight), 0);
-				gl.glEnd();
-			}
-		}
+		drawSelections(gl, contentSelectionManager);
 		
 		gl.glPopMatrix();
 
@@ -107,6 +74,56 @@ public class HeatMapOverview {
 				.draw(gl, pickingManager, textureManager, viewID,
 						sliderPickingID);
 
+	}
+
+	private void drawSelections(GL gl,
+			ContentSelectionManager contentSelectionManager) {
+		
+		float overviewHeight = layout.getOverviewHeight();
+		float sampleHeight = overviewHeight / contentVA.size();
+
+		Set<Integer> mouseOverElements = contentSelectionManager
+				.getElements(SelectionType.MOUSE_OVER);
+		Set<Integer> selectedElements = contentSelectionManager
+				.getElements(SelectionType.SELECTION);
+
+		for (Integer mouseOverElement : mouseOverElements) {
+			int elementIndex = contentVA.indexOf(mouseOverElement);
+
+			if (elementIndex != -1) {
+				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
+				gl.glBegin(GL.GL_LINE_LOOP);
+				gl.glVertex3f(0,
+						overviewHeight - (elementIndex * sampleHeight), 0);
+				gl.glVertex3f(layout.getOverviewHeatmapWidth(), overviewHeight
+						- (elementIndex * sampleHeight), 0);
+				gl.glVertex3f(layout.getOverviewHeatmapWidth(), overviewHeight
+						- ((elementIndex + 1) * sampleHeight), 0);
+				gl.glVertex3f(0, overviewHeight
+						- ((elementIndex + 1) * sampleHeight), 0);
+				gl.glEnd();
+			}
+
+			// selectedElements.remove(mouseOverElement);
+		}
+
+		for (Integer selectedElement : selectedElements) {
+			int elementIndex = contentVA.indexOf(selectedElement);
+
+			if (elementIndex != -1) {
+				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
+				gl.glBegin(GL.GL_LINE_LOOP);
+				gl.glVertex3f(0,
+						overviewHeight - (elementIndex * sampleHeight), 0);
+				gl.glVertex3f(layout.getOverviewHeatmapWidth(), overviewHeight
+						- (elementIndex * sampleHeight), 0);
+				gl.glVertex3f(layout.getOverviewHeatmapWidth(), overviewHeight
+						- ((elementIndex + 1) * sampleHeight), 0);
+				gl.glVertex3f(0, overviewHeight
+						- ((elementIndex + 1) * sampleHeight), 0);
+				gl.glEnd();
+			}
+		}
 	}
 
 	public boolean handleDragging(GL gl, GLMouseListener glMouseListener) {

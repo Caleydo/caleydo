@@ -171,7 +171,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 				iUniqueID, renderStyle);
 		if (set.getStorageTree() != null) {
 			// FIXME: do that differently.
-			set = set.getStorageTree().getRoot().getMetaSet();
+//			set = set.getStorageTree().getRoot().getMetaSet();
+			set = useCase.getSet();
 			tree = set.getStorageTree();
 			initHierarchy(set.getStorageTree());
 		} else {
@@ -282,7 +283,10 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 	}
 
 	public void updateClusterTreeAccordingToGroupHierarchy() {
-		tree.setRootNode(rootGroup.getClusterNode());
+		tree = new Tree<ClusterNode>();
+		ClusterNode rootNode = rootGroup.getClusterNode();
+		rootNode.setTree(tree);
+		tree.setRootNode(rootNode);
 		iLastUsedGroupID = 0;
 		rootGroup.getClusterNode().setID(iLastUsedGroupID++);
 		hashGroups.clear();
@@ -301,10 +305,12 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 		// FIXME: do that differently.
-		set = set.getStorageTree().getRoot().getMetaSet();
+//		set = set.getStorageTree().getRoot().getMetaSet();
+		set = useCase.getSet();
 		ClusterHelper.determineExpressionValue(tree,
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
 		tree.setDirty();
+		tree.getRoot().createMetaSets((org.caleydo.core.data.collection.set.Set)set);
 		set.setStorageTree(tree);
 		ISet useCaseSet = GeneralManager.get().getUseCase(
 				EDataDomain.GENETIC_DATA).getSet();
@@ -330,6 +336,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		for (ICompositeGraphic child : alChildren) {
 			GroupRepresentation groupRep = (GroupRepresentation) child;
 			ClusterNode childNode = groupRep.getClusterNode();
+			childNode.setTree(tree);
 			childNode.setID(iLastUsedGroupID++);
 			tree.addChild(parentNode, childNode);
 			if (!child.isLeaf()) {

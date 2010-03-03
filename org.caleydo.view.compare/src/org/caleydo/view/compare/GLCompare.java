@@ -18,7 +18,9 @@ import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
@@ -52,10 +54,8 @@ import org.caleydo.view.compare.listener.CompareGroupsEventListener;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLCompare extends AGLView
-		implements
-			IViewCommandHandler,
-			IGLRemoteRenderingView {
+public class GLCompare extends AGLView implements IViewCommandHandler,
+		IGLRemoteRenderingView {
 
 	public final static String VIEW_ID = "org.caleydo.view.compare";
 
@@ -67,6 +67,7 @@ public class GLCompare extends AGLView
 	private HeatMapLayoutRight heatMapLayoutRight;
 	private HeatMapWrapper leftHeatMapWrapper;
 	private HeatMapWrapper rightHeatMapWrapper;
+	private SelectionType activeHeatMapSelectionType;
 
 	private CompareGroupsEventListener compareGroupsEventListener;
 
@@ -111,11 +112,18 @@ public class GLCompare extends AGLView
 
 		heatMapLayoutLeft = new HeatMapLayoutLeft();
 		heatMapLayoutRight = new HeatMapLayoutRight();
+		activeHeatMapSelectionType = new SelectionType("ActiveHeatmap",
+				new float[] { 0.0f, 1.0f, 1.0f, 0.0f }, true, false, 0.9f);
+
+		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
+				activeHeatMapSelectionType);
+		eventPublisher.triggerEvent(selectionTypeEvent);
+
 		leftHeatMapWrapper = new HeatMapWrapper(0, heatMapLayoutLeft, this,
-				null, useCase, this, dataDomain);
+				null, useCase, this, dataDomain, activeHeatMapSelectionType);
 		hashHeatMapWrappers.put(0, leftHeatMapWrapper);
 		rightHeatMapWrapper = new HeatMapWrapper(1, heatMapLayoutRight, this,
-				null, useCase, this, dataDomain);
+				null, useCase, this, dataDomain, activeHeatMapSelectionType);
 
 		hashHeatMapWrappers.put(1, rightHeatMapWrapper);
 
@@ -255,8 +263,9 @@ public class GLCompare extends AGLView
 
 		gl.glCallList(iGLDisplayListToCall);
 
-		leftHeatMapWrapper.drawRemoteItems(gl, glMouseListener);
-		rightHeatMapWrapper.drawRemoteItems(gl, glMouseListener);
+		leftHeatMapWrapper.drawRemoteItems(gl, glMouseListener, pickingManager);
+		rightHeatMapWrapper
+				.drawRemoteItems(gl, glMouseListener, pickingManager);
 		// renderTree(gl);
 		// renderOverviewRelations(gl);
 
@@ -662,7 +671,7 @@ public class GLCompare extends AGLView
 
 		ContentSelectionManager contentSelectionManager = useCase
 				.getContentSelectionManager();
-		
+
 		// gl.glColor3f(0.5f, 0.5f, 0.5f);
 		gl.glColor3f(0, 0, 0);
 		for (Integer contentID : va) {
@@ -682,7 +691,7 @@ public class GLCompare extends AGLView
 					gl.glLineWidth(1);
 				}
 			}
-			
+
 			Vec2f leftPos;
 
 			if (heatMapWrapper == leftHeatMapWrapper)
@@ -968,99 +977,99 @@ public class GLCompare extends AGLView
 		SelectionType selectionType = null;
 
 		switch (ePickingType) {
-			case COMPARE_EMBEDDED_VIEW_SELECTION :
-				if (pickingMode == EPickingMode.RIGHT_CLICKED) {
-					contextMenu.setLocation(pick.getPickedPoint(),
-							getParentGLCanvas().getWidth(), getParentGLCanvas()
-									.getHeight());
-					contextMenu.setMasterGLView(this);
-				}
+		case COMPARE_LEFT_EMBEDDED_VIEW_SELECTION:
+			leftHeatMapWrapper.setHeatMapActive(iExternalID);
+			rightHeatMapWrapper.setHeatMapsInactive();
+
+			break;
+		case COMPARE_RIGHT_EMBEDDED_VIEW_SELECTION:
+			rightHeatMapWrapper.setHeatMapActive(iExternalID);
+			leftHeatMapWrapper.setHeatMapsInactive();
+			break;
+		case POLYLINE_SELECTION:
+
+			switch (pickingMode) {
+			case CLICKED:
+				selectionType = SelectionType.SELECTION;
 				break;
-			case POLYLINE_SELECTION :
+			case MOUSE_OVER:
+				selectionType = SelectionType.MOUSE_OVER;
+				break;
+			case RIGHT_CLICKED:
+				selectionType = SelectionType.SELECTION;
 
-				switch (pickingMode) {
-					case CLICKED :
-						selectionType = SelectionType.SELECTION;
-						break;
-					case MOUSE_OVER :
-						selectionType = SelectionType.MOUSE_OVER;
-						break;
-					case RIGHT_CLICKED :
-						selectionType = SelectionType.SELECTION;
-
-						ContentContextMenuItemContainer contentContextMenuItemContainer = new ContentContextMenuItemContainer();
-						contentContextMenuItemContainer.setID(
-								EIDType.EXPRESSION_INDEX, iExternalID);
-						contextMenu
-								.addItemContanier(contentContextMenuItemContainer);
-						break;
-
-					default :
-						return;
-
-				}
-
-				// FIXME: Check if is ok to share the content selection manager
-				// of the use case
-				ContentSelectionManager contentSelectionManager = useCase
-						.getContentSelectionManager();
-				if (contentSelectionManager.checkStatus(selectionType,
-						iExternalID)) {
-					break;
-				}
-
-				contentSelectionManager.clearSelection(selectionType);
-				contentSelectionManager.addToType(selectionType, iExternalID);
-
-				ISelectionDelta selectionDelta = contentSelectionManager
-						.getDelta();
-				SelectionUpdateEvent event = new SelectionUpdateEvent();
-				event.setSender(this);
-				event.setSelectionDelta((SelectionDelta) selectionDelta);
-				event.setInfo(getShortInfoLocal());
-				eventPublisher.triggerEvent(event);
-
-				setDisplayListDirty();
+				ContentContextMenuItemContainer contentContextMenuItemContainer = new ContentContextMenuItemContainer();
+				contentContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX,
+						iExternalID);
+				contextMenu.addItemContanier(contentContextMenuItemContainer);
 				break;
 
-			case COMPARE_OVERVIEW_SLIDER_ARROW_DOWN_SELECTION :
-			case COMPARE_OVERVIEW_SLIDER_ARROW_UP_SELECTION :
-			case COMPARE_OVERVIEW_SLIDER_BODY_SELECTION :
-				HeatMapWrapper heatMapWrapper = hashHeatMapWrappers
-						.get(iExternalID);
-				if (heatMapWrapper != null) {
-					heatMapWrapper.handleOverviewSliderSelection(ePickingType,
-							pickingMode);
-				}
+			default:
+				return;
+
+			}
+
+			// FIXME: Check if is ok to share the content selection manager
+			// of the use case
+			ContentSelectionManager contentSelectionManager = useCase
+					.getContentSelectionManager();
+			if (contentSelectionManager.checkStatus(selectionType, iExternalID)) {
 				break;
+			}
 
-			case COMPARE_LEFT_GROUP_SELECTION :
-				switch (pickingMode) {
-					case CLICKED :
-						selectionType = SelectionType.SELECTION;
-						break;
-					case MOUSE_OVER :
-						selectionType = SelectionType.MOUSE_OVER;
-						break;
-				}
+			contentSelectionManager.clearSelection(selectionType);
+			contentSelectionManager.addToType(selectionType, iExternalID);
 
-				leftHeatMapWrapper.handleGroupSelection(selectionType,
-						iExternalID, isControlPressed);
+			ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSender(this);
+			event.setSelectionDelta((SelectionDelta) selectionDelta);
+			event.setInfo(getShortInfoLocal());
+			eventPublisher.triggerEvent(event);
+
+			setDisplayListDirty();
+			break;
+
+		case COMPARE_OVERVIEW_SLIDER_ARROW_DOWN_SELECTION:
+		case COMPARE_OVERVIEW_SLIDER_ARROW_UP_SELECTION:
+		case COMPARE_OVERVIEW_SLIDER_BODY_SELECTION:
+			HeatMapWrapper heatMapWrapper = hashHeatMapWrappers
+					.get(iExternalID);
+			if (heatMapWrapper != null) {
+				heatMapWrapper.handleOverviewSliderSelection(ePickingType,
+						pickingMode);
+			}
+			break;
+
+		case COMPARE_LEFT_GROUP_SELECTION:
+			switch (pickingMode) {
+			case CLICKED:
+				selectionType = SelectionType.SELECTION;
 				break;
-
-			case COMPARE_RIGHT_GROUP_SELECTION :
-				switch (pickingMode) {
-					case CLICKED :
-						selectionType = SelectionType.SELECTION;
-						break;
-					case MOUSE_OVER :
-						selectionType = SelectionType.MOUSE_OVER;
-						break;
-				}
-
-				rightHeatMapWrapper.handleGroupSelection(selectionType,
-						iExternalID, isControlPressed);
+			case MOUSE_OVER:
+				selectionType = SelectionType.MOUSE_OVER;
 				break;
+			}
+
+			leftHeatMapWrapper.handleGroupSelection(selectionType, iExternalID,
+					isControlPressed);
+			rightHeatMapWrapper.setHeatMapsInactive();
+			break;
+
+		case COMPARE_RIGHT_GROUP_SELECTION:
+			switch (pickingMode) {
+			case CLICKED:
+				selectionType = SelectionType.SELECTION;
+				break;
+			case MOUSE_OVER:
+				selectionType = SelectionType.MOUSE_OVER;
+				break;
+			}
+
+			rightHeatMapWrapper.handleGroupSelection(selectionType,
+					iExternalID, isControlPressed);
+			leftHeatMapWrapper.setHeatMapsInactive();
+			break;
 		}
 	}
 

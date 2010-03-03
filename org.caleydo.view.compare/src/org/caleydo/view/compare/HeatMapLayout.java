@@ -95,5 +95,7 @@ public abstract class HeatMapLayout {
 	public abstract float getOverviewSliderPositionX();
 	
 	public abstract EPickingType getGroupPickingType();
+	
+	public abstract EPickingType getHeatMapPickingType();
 
 }
