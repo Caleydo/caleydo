@@ -67,9 +67,9 @@ public interface ICompositeGraphic extends IDraggable {
 
 	public void removeFromDraggables(DragAndDropController dragAndDropController);
 
-	public void getOrderedTopElementCompositeList(
-			Set<ICompositeGraphic> setComposites,
-			ArrayList<ICompositeGraphic> alComposites);
+	public void getOrderedCompositeList(Set<ICompositeGraphic> setComposites,
+			ArrayList<ICompositeGraphic> alComposites,
+			boolean topLevelElementsOnly);
 
 	public ICompositeGraphic getRoot();
 

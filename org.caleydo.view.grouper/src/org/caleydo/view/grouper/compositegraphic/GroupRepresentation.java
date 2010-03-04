@@ -160,8 +160,8 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		ArrayList<ICompositeGraphic> alCompositesToInsert = new ArrayList<ICompositeGraphic>();
 
 		ICompositeGraphic root = getRoot();
-		root.getOrderedTopElementCompositeList(setComposites,
-				alCompositesToInsert);
+		root.getOrderedCompositeList(setComposites,
+				alCompositesToInsert, true);
 
 		for (int i = alCompositesToInsert.size() - 1; i >= 0; i--) {
 			ICompositeGraphic composite = alCompositesToInsert.get(i);
@@ -434,29 +434,52 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		}
 	}
 
+	// @Override
+	// public void getOrderedTopElementCompositeList(
+	// Set<ICompositeGraphic> setComposites,
+	// ArrayList<ICompositeGraphic> alComposites) {
+	//
+	// if (alComposites == null || setComposites == null)
+	// return;
+	//
+	// for (ICompositeGraphic child : alChildren) {
+	//
+	// boolean bChildInList = false;
+	//
+	// for (ICompositeGraphic composite : setComposites) {
+	// if (child == composite) {
+	// alComposites.add(child);
+	// bChildInList = true;
+	// break;
+	// }
+	// }
+	//
+	// if (!bChildInList)
+	// child.getOrderedTopElementCompositeList(setComposites,
+	// alComposites);
+	// }
+	//
+	// }
+
 	@Override
-	public void getOrderedTopElementCompositeList(
-			Set<ICompositeGraphic> setComposites,
-			ArrayList<ICompositeGraphic> alComposites) {
+	public void getOrderedCompositeList(Set<ICompositeGraphic> setComposites,
+			ArrayList<ICompositeGraphic> alComposites,
+			boolean topLevelElementsOnly) {
 
 		if (alComposites == null || setComposites == null)
 			return;
 
-		for (ICompositeGraphic child : alChildren) {
-
-			boolean bChildInList = false;
-
-			for (ICompositeGraphic composite : setComposites) {
-				if (child == composite) {
-					alComposites.add(child);
-					bChildInList = true;
-					break;
-				}
+		for (ICompositeGraphic composite : setComposites) {
+			if (this == composite) {
+				alComposites.add(this);
+				if (topLevelElementsOnly)
+					return;
 			}
+		}
 
-			if (!bChildInList)
-				child.getOrderedTopElementCompositeList(setComposites,
-						alComposites);
+		for (ICompositeGraphic child : alChildren) {
+			child.getOrderedCompositeList(setComposites, alComposites,
+					topLevelElementsOnly);
 		}
 
 	}

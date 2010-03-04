@@ -171,7 +171,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 				iUniqueID, renderStyle);
 		if (set.getStorageTree() != null) {
 			// FIXME: do that differently.
-//			set = set.getStorageTree().getRoot().getMetaSet();
+			// set = set.getStorageTree().getRoot().getMetaSet();
 			set = useCase.getSet();
 			tree = set.getStorageTree();
 			initHierarchy(set.getStorageTree());
@@ -305,12 +305,13 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 		// FIXME: do that differently.
-//		set = set.getStorageTree().getRoot().getMetaSet();
+		// set = set.getStorageTree().getRoot().getMetaSet();
 		set = useCase.getSet();
 		ClusterHelper.determineExpressionValue(tree,
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
 		tree.setDirty();
-		tree.getRoot().createMetaSets((org.caleydo.core.data.collection.set.Set)set);
+		tree.getRoot().createMetaSets(
+				(org.caleydo.core.data.collection.set.Set) set);
 		set.setStorageTree(tree);
 		ISet useCaseSet = GeneralManager.get().getUseCase(
 				EDataDomain.GENETIC_DATA).getSet();
@@ -720,13 +721,16 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 						Set<Integer> setClickedGroups = new HashSet<Integer>(
 								selectionManager
 										.getElements(selectionTypeClicked));
+						ArrayList<ICompositeGraphic> orderedComposites = getOrderedCompositeList(
+								setClickedGroups, false);
 
-						if (setClickedGroups.size() == 2) {
+						if (orderedComposites.size() >= 2) {
 
 							ArrayList<ISet> setsToCompare = new ArrayList<ISet>();
-							for (Integer groupID : setClickedGroups) {
-								setsToCompare.add(hashGroups.get(groupID)
-										.getClusterNode().getMetaSet());
+							for (ICompositeGraphic composite : orderedComposites) {
+								setsToCompare
+										.add(((GroupRepresentation) composite)
+												.getClusterNode().getMetaSet());
 							}
 
 							CompareGroupsItem compareGroupsItem = new CompareGroupsItem(
@@ -1002,8 +1006,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 	// hashElements.remove(iID);
 	// }
 
-	private ArrayList<ICompositeGraphic> getOrderedTopElementCompositeList(
-			Set<Integer> setGroupIds) {
+	private ArrayList<ICompositeGraphic> getOrderedCompositeList(
+			Set<Integer> setGroupIds, boolean topLevelElementsOnly) {
 
 		Set<ICompositeGraphic> setComposites = new HashSet<ICompositeGraphic>();
 		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = new ArrayList<ICompositeGraphic>();
@@ -1013,8 +1017,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 				setComposites.add(hashGroups.get(id));
 		}
 
-		rootGroup.getOrderedTopElementCompositeList(setComposites,
-				alOrderedTopLevelComposites);
+		rootGroup.getOrderedCompositeList(setComposites,
+				alOrderedTopLevelComposites, topLevelElementsOnly);
 
 		return alOrderedTopLevelComposites;
 	}
@@ -1030,7 +1034,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 						.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL),
 				drawingStrategyManager, this, false);
 
-		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedTopElementCompositeList(setContainedGroups);
+		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedCompositeList(
+				setContainedGroups, true);
 
 		ICompositeGraphic commonParent = findCommonParent(alOrderedTopLevelComposites);
 
@@ -1128,7 +1133,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		if (parent == null || setCopiedGroups == null || parent.isLeaf())
 			return;
 
-		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedTopElementCompositeList(setCopiedGroups);
+		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedCompositeList(
+				setCopiedGroups, true);
 
 		int iTempID[] = { iLastUsedGroupID };
 		for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
@@ -1146,7 +1152,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 
 	public void deleteGroups(Set<Integer> setGroupsToDelete) {
 
-		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedTopElementCompositeList(setGroupsToDelete);
+		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedCompositeList(
+				setGroupsToDelete, true);
 
 		for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
 			ICompositeGraphic parent = composite.getParent();

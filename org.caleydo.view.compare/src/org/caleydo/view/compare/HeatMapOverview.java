@@ -129,9 +129,9 @@ public class HeatMapOverview {
 	public boolean handleDragging(GL gl, GLMouseListener glMouseListener) {
 
 		if (slider.handleDragging(gl, glMouseListener)) {
-			Pair<Integer, Integer> bounds = getBoundaryIndicesOfElementsInFocus();
-			selectGroupsAccordingToBoundIndices(bounds.getFirst(), bounds
-					.getSecond());
+//			Pair<Integer, Integer> bounds = getBoundaryIndicesOfElementsInFocus();
+//			selectGroupsAccordingToBoundIndices(bounds.getFirst(), bounds
+//					.getSecond());
 			return true;
 		}
 

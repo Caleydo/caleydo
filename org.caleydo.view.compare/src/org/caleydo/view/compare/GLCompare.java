@@ -971,14 +971,15 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		switch (ePickingType) {
 		case COMPARE_LEFT_EMBEDDED_VIEW_SELECTION:
-			leftHeatMapWrapper.setHeatMapActive(iExternalID);
 			rightHeatMapWrapper.setHeatMapsInactive();
-
+			leftHeatMapWrapper.setHeatMapActive(iExternalID);
 			break;
+			
 		case COMPARE_RIGHT_EMBEDDED_VIEW_SELECTION:
-			rightHeatMapWrapper.setHeatMapActive(iExternalID);
 			leftHeatMapWrapper.setHeatMapsInactive();
+			rightHeatMapWrapper.setHeatMapActive(iExternalID);
 			break;
+			
 		case POLYLINE_SELECTION:
 
 			switch (pickingMode) {

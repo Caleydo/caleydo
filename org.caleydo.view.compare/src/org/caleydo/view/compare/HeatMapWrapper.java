@@ -365,6 +365,7 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 			if (isNewSelection) {
 				selectedGroups.clear();
 				selectedGroups.addAll(newGroups);
+				setHeatMapsInactive();
 			}
 
 			return true;
