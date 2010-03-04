@@ -302,12 +302,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		if (setsToCompare == null || setsToCompare.size() == 0)
 			return;
 
-		float alpha = 0.3f;
+		float alpha = 0.6f;
 
 		ContentSelectionManager contentSelectionManager = useCase
 				.getContentSelectionManager();
-
-		gl.glColor3f(0, 1, 0);
 
 		// Iterate over all detail content VAs on the left
 		for (ContentVirtualArray contentVA : leftHeatMapWrapper
@@ -323,8 +321,9 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 					gl.glColor4fv(typeColor, 0);
 
 					if (type == SelectionType.MOUSE_OVER
-							|| type == SelectionType.SELECTION) {
-						gl.glLineWidth(5);
+							|| type == SelectionType.SELECTION
+						|| type == activeHeatMapSelectionType) {
+						gl.glLineWidth(3);
 						break;
 					} else {
 						gl.glLineWidth(1);
@@ -384,7 +383,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		// leftHeatMapWrapper.useDetailView(false);
 		// rightHeatMapWrapper.useDetailView(false);
 
-		float alpha = 0.3f;
+		float alpha = 0.6f;
 
 		ContentSelectionManager contentSelectionManager = useCase
 				.getContentSelectionManager();
@@ -402,11 +401,14 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 				gl.glColor4fv(typeColor, 0);
 
 				if (type == SelectionType.MOUSE_OVER
-						|| type == SelectionType.SELECTION) {
+						|| type == SelectionType.SELECTION
+						|| type == activeHeatMapSelectionType)
+				{
 					gl.glLineWidth(5);
 					break;
 				} else {
 					gl.glLineWidth(1);
+					break;
 				}
 			}
 
@@ -421,21 +423,6 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 			if (rightPos == null)
 				continue;
-
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.POLYLINE_SELECTION, contentID));
-
-			// gl.glBegin(GL.GL_LINES);
-			// gl.glVertex3f(leftPos.x()
-			// + heatMapLayoutLeft.getOverviewGroupWidth()
-			// + heatMapLayoutLeft.getOverviewHeatmapWidth()
-			// + heatMapLayoutLeft.getOverviewSliderWidth(), viewFrustum
-			// .getHeight()
-			// - leftPos.y(), 0);
-			// gl.glVertex3f(rightPos.x(), viewFrustum.getHeight() -
-			// rightPos.y(),
-			// 0);
-			// gl.glEnd();
 
 			ArrayList<Vec3f> points = new ArrayList<Vec3f>();
 			points.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
@@ -488,6 +475,9 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			// VisLink.renderLine(gl, controlPoints, offset, numberOfSegments,
 			// shadow)
 
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					EPickingType.POLYLINE_SELECTION, contentID));
+			
 			gl.glBegin(GL.GL_LINE_STRIP);
 			for (int i = 0; i < points.size(); i++)
 				gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0);
@@ -502,8 +492,6 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		sortedClustersXOffsetUp = new ArrayList<Pair<Float, Integer>>();
 		sortedClustersXOffsetDown = new ArrayList<Pair<Float, Integer>>();
 
-		gl.glLineWidth(1);
-
 		calculateClusterXOffset(leftHeatMapWrapper);
 
 		for (ContentVirtualArray va : leftHeatMapWrapper
@@ -514,7 +502,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			renderSplineRelation(gl, va, leftHeatMapWrapper);
 		}
 
-		calculateClusterXOffset(leftHeatMapWrapper);
+		calculateClusterXOffset(rightHeatMapWrapper);
 
 		for (ContentVirtualArray va : rightHeatMapWrapper
 				.getContentVAsOfHeatMaps()) {
@@ -530,7 +518,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		sortedClustersXOffsetUp.clear();
 		sortedClustersXOffsetDown.clear();
 
-		for (ContentVirtualArray va : leftHeatMapWrapper
+		for (ContentVirtualArray va : heatMapWrapper
 				.getContentVAsOfHeatMaps()) {
 
 			int contentID = va.get(0);
@@ -667,13 +655,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	private void renderSplineRelation(GL gl, ContentVirtualArray va,
 			HeatMapWrapper heatMapWrapper) {
 
-		float alpha = 0.3f;
+		float alpha = 0.6f;
 
 		ContentSelectionManager contentSelectionManager = useCase
 				.getContentSelectionManager();
 
-		// gl.glColor3f(0.5f, 0.5f, 0.5f);
-		gl.glColor3f(0, 0, 0);
 		for (Integer contentID : va) {
 
 			for (SelectionType type : contentSelectionManager
@@ -684,11 +670,13 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 				gl.glColor4fv(typeColor, 0);
 
 				if (type == SelectionType.MOUSE_OVER
-						|| type == SelectionType.SELECTION) {
-					gl.glLineWidth(5);
+						|| type == SelectionType.SELECTION
+						|| type == activeHeatMapSelectionType) {
+					gl.glLineWidth(3);
 					break;
 				} else {
 					gl.glLineWidth(1);
+					break;
 				}
 			}
 
@@ -744,16 +732,21 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			ArrayList<Vec3f> points = new ArrayList<Vec3f>();
 			points.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
 			points.add(new Vec3f(rightPos.x() + xOffset, leftPos.y(), 0));
-			points.add(new Vec3f(rightPos.x() + xOffset, rightPos.y(), 0));
+			points.add(new Vec3f(rightPos.x() + xOffset/1.5f, rightPos.y(), 0));
 			points.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
 
 			NURBSCurve curve = new NURBSCurve(points, 30);
 			points = curve.getCurvePoints();
 
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					EPickingType.POLYLINE_SELECTION, contentID));
+			
 			gl.glBegin(GL.GL_LINE_STRIP);
 			for (int i = 0; i < points.size(); i++)
 				gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0.001f);
 			gl.glEnd();
+			
+			gl.glPopName();
 		}
 	}
 

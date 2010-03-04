@@ -18,7 +18,6 @@ public class OpenViewEvent
 	/** serialized form of the view to create */
 	private String viewType;
 
-
 	@Override
 	public boolean checkIntegrity() {
 		if (viewType == null) {

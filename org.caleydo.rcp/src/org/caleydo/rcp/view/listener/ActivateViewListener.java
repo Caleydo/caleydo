@@ -3,7 +3,9 @@ package org.caleydo.rcp.view.listener;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.view.OpenCompareViewEvent;
 import org.caleydo.core.manager.event.view.OpenViewEvent;
+import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -21,6 +23,14 @@ public class ActivateViewListener
 			if (event instanceof LoadPathwayEvent || event instanceof LoadPathwaysByGeneEvent) {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
 					"org.caleydo.view.bucket");
+			}
+			else if (event instanceof OpenCompareViewEvent) {
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+					((OpenViewEvent) event).getViewType());
+				
+				CompareGroupsEvent compareGroupsEvent = new CompareGroupsEvent(((OpenCompareViewEvent)event).getSetsToCompare());
+				compareGroupsEvent.setSender(this);
+				GeneralManager.get().getEventPublisher().triggerEvent(compareGroupsEvent);
 			}
 			else if (event instanceof OpenViewEvent)
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
