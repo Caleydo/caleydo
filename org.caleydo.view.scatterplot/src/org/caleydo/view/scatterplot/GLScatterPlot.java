@@ -236,6 +236,907 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	}
 
+	
+	@Override
+	public void init(GL gl) {
+		// renderStyle = new GeneralRenderStyle(viewFrustum);
+		renderStyle = new ScatterPlotRenderStyle(this, viewFrustum);
+
+		super.renderStyle = renderStyle;
+
+		InitAxisComboEvent initAxisComboEvent = new InitAxisComboEvent();
+		initAxisComboEvent.setSender(this);
+		initAxisComboEvent.setAxisNames(this.getAxisString());
+		GeneralManager.get().getEventPublisher().triggerEvent(
+				initAxisComboEvent);
+		// detailLevel = EDetailLevel.LOW;
+		detailLevel = EDetailLevel.HIGH;
+		updateMaxAxis();
+		renderStyle.setTextureNr(100, 100);
+		resetFullTextures();
+		resetSelectionTextures();
+		initTextures();
+		initSelectionTextures();
+		selectAxesfromExternal();
+		opengl = gl;
+
+	}
+
+	private void updateMaxAxis()
+	{
+		if (MAX_AXES > storageVA.size())
+			MAX_AXES = storageVA.size();
+		
+	}
+	
+	@Override
+	public void initLocal(GL gl) {
+
+		// // Register keyboard listener to GL canvas
+		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new
+		// Runnable() {
+		// public void run() {
+		// parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+		// }
+		// });
+
+		iGLDisplayListIndexLocal = gl.glGenLists(6);
+		iGLDisplayListIndexCoord = iGLDisplayListIndexLocal + 1;
+		iGLDisplayListIndexMouseOver = iGLDisplayListIndexLocal + 2;
+		iGLDisplayListIndexSelection = iGLDisplayListIndexLocal + 3;
+		iGLDisplayListIndexMatrixFull = iGLDisplayListIndexLocal + 4;
+		iGLDisplayListIndexMatrixSelection = iGLDisplayListIndexLocal + 5;
+
+		// Register keyboard listener to GL canvas
+		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(
+				new Runnable() {
+					public void run() {
+						parentGLCanvas.getParentComposite().addKeyListener(
+								glKeyListener);
+					}
+				});
+
+		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+		init(gl);
+
+		// TODO Remove, just for zoom testing
+		bRenderMatrix = false;
+		bOnlyRenderHalfMatrix = true;
+		renderStyle.setIsEmbedded(false);
+
+		// ScatterPlotRenderStyle.setTextureNr(NR_TEXTURESX,NR_TEXTURESY);
+
+	}
+
+	@Override
+	public void initRemote(final GL gl, final AGLView glParentView,
+			final GLMouseListener glMouseListener,
+			GLInfoAreaManager infoAreaManager) {
+
+		// Register keyboard listener to GL canvas
+		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
+				.asyncExec(new Runnable() {
+					public void run() {
+						glParentView.getParentGLCanvas().getParentComposite()
+								.addKeyListener(glKeyListener);
+					}
+				});
+
+		this.glMouseListener = glMouseListener;
+
+		iGLDisplayListIndexRemote = gl.glGenLists(1);
+		iGLDisplayListToCall = iGLDisplayListIndexRemote;
+		init(gl);
+	}
+
+	@Override
+	public void setDetailLevel(EDetailLevel detailLevel) {
+		if (bUseDetailLevel) {
+			super.setDetailLevel(detailLevel);
+		}
+		// renderStyle.setDetailLevel(detailLevel);
+
+	}
+
+	@Override
+	public void displayLocal(GL gl) {
+		processEvents();
+		if (!isVisible())
+			return;
+		if (set == null)
+			return;
+		//
+		// if (bIsTranslationAnimationActive) {
+		// doTranslation();
+		// }
+
+		// pickingManager.getHits(this, EPickingType.SCATTER_POINT_SELECTION);
+
+		// ArrayList<Pick> alHits = null;
+		//
+		// alHits = pickingManager.getHits(iUniqueID,
+		// EPickingType.SCATTER_POINT_SELECTION);
+
+		// if (alHits == null && alHits.size() == 0) {
+
+		if (detailLevel == EDetailLevel.HIGH) {
+			GLMouseListener glMouseListener = getParentGLCanvas()
+					.getGLMouseListener();
+
+			// private float fTransformOldMinX=0.2f;
+			// private float fTransformNewMinX=0.1f;
+			//		        
+			// private float fTransformOldMaxX=0.4f;
+			// private float fTransformNewMaxX=0.6f;
+
+			// bRectangleSelection = true;
+
+			if (bMainViewZoomDragged) {
+				Point pCurrentMousePoint = glMouseListener.getPickedPoint();
+
+				float[] fCurrentMousePoint = GLCoordinateUtils
+						.convertWindowCoordinatesToWorldCoordinates(opengl,
+								pCurrentMousePoint.x, pCurrentMousePoint.y);
+
+				float x = (fCurrentMousePoint[0] - XYAXISDISTANCE);
+				float y = (fCurrentMousePoint[1] - XYAXISDISTANCE);
+						
+				if (bRenderMatrix) 
+				{
+					x -= renderStyle.getCenterXOffset();
+					y -= renderStyle.getCenterYOffset();
+				}
+				x=x / renderStyle.getAxisWidth();
+				y=y / renderStyle.getAxisHeight();
+				
+				handleMainZoomAxes(x, y);
+					
+					
+			
+				if (glMouseListener.wasLeftMouseButtonPressed()) {
+					bMainViewZoomDragged = false;
+					iCurrentDragZoom = -1;
+					setDisplayListDirty();
+					bUpdateMainView = true;
+				}
+
+			}
+
+			if (glMouseListener.wasMouseDragged() && (!bRender2Axis)) {
+
+				bRectangleSelection = true;
+
+				Point pDragEndPoint = glMouseListener.getPickedPoint();
+				Point pDragStartPoint = glMouseListener
+						.getPickedPointDragStart();
+
+				fRectangleDragStartPoint = GLCoordinateUtils
+						.convertWindowCoordinatesToWorldCoordinates(gl,
+								pDragStartPoint.x, pDragStartPoint.y);
+				fRectangleDragEndPoint = GLCoordinateUtils
+						.convertWindowCoordinatesToWorldCoordinates(gl,
+								pDragEndPoint.x, pDragEndPoint.y);
+
+				float[] fArMappingColor = new float[] { 0.0f, 1.0f, 0.0f }; // green
+
+				// gl.glNewList(iGLDisplayListIndexBrush, GL.GL_COMPILE);
+				renderRectangularSelection(
+						gl,
+						fRectangleDragStartPoint[0],
+						fRectangleDragStartPoint[1],
+						3.5f, // Z-Value
+						fRectangleDragEndPoint[0] - fRectangleDragStartPoint[0],
+						fRectangleDragEndPoint[1] - fRectangleDragStartPoint[1],
+						fArMappingColor);
+
+				// gl.glEndList();
+			}
+			if (glMouseListener.wasMouseReleased() && bRectangleSelection) {
+				bRectangleSelection = false;
+				setDisplayListDirty();
+				if (bRenderMatrix)
+					gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
+							.getCenterYOffset(), 0);
+				updateSelection();
+				if (bRenderMatrix)
+					gl.glTranslatef(-renderStyle.getCenterXOffset(),
+							-renderStyle.getCenterYOffset(), 0);
+				// gl.glDeleteLists(iGLDisplayListIndexBrush, 1);
+				bUpdateSelection = true;
+			}
+
+			pickingManager.handlePicking(this, gl);
+		}
+
+		if (bIsDisplayListDirtyLocal) {
+
+			buildDisplayList(gl, iGLDisplayListIndexLocal);
+			bIsDisplayListDirtyLocal = false;
+
+		}
+		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+
+		display(gl);
+		checkForHits(gl);
+
+		if (eBusyModeState != EBusyModeState.OFF)
+			renderBusyMode(gl);
+
+	}
+
+	@Override
+	public void displayRemote(GL gl) {
+
+		// if (set == null)
+		// return;
+		//
+		// // if (bIsTranslationAnimationActive) {
+		// // bIsDisplayListDirtyRemote = true;
+		// // doTranslation();
+		// // }
+		//
+		// if (bIsDisplayListDirtyRemote) {
+		// buildDisplayList(gl, iGLDisplayListIndexRemote);
+		// bIsDisplayListDirtyRemote = false;
+		// //
+		// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
+		// }
+		// iGLDisplayListToCall = iGLDisplayListIndexRemote;
+		//
+		// display(gl);
+		// checkForHits(gl);
+
+		// glMouseListener.resetEvents();
+	}
+
+	@Override
+	public void display(GL gl) {
+
+		// for (Integer storageID : storageVA)
+		// {
+		// set.get(storageID).get(EDataRepresentation.RAW, contentID);
+		// }
+		// storageSelectionManager.addToType(SelectionType.MOUSE_OVER,
+		// idCollection);
+		// processEvents();
+
+		// GLHelperFunctions.drawAxis(gl);
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		// gl.glEnable(GL.GL_DEPTH_TEST);
+		// clipToFrustum(gl);
+
+		if (bRenderMatrix) {
+			
+			gl.glCallList(iGLDisplayListIndexMatrixFull);
+			gl.glCallList(iGLDisplayListIndexMatrixSelection);
+
+			renderMatrixSelection(gl, iSelectedAxisIndexX, iSelectedAxisIndexY, false);
+			if (bRender2Axis)
+				renderMatrixSelection(gl, iSelectedAxisIndexX2, iSelectedAxisIndexY2,
+						true);
+			
+		}
+
+		gl.glCallList(iGLDisplayListToCall);
+		if (detailLevel == EDetailLevel.HIGH) {			
+			gl.glCallList(iGLDisplayListIndexCoord);
+			gl.glCallList(iGLDisplayListIndexMouseOver);
+		}
+		if (!bRender2Axis)
+			gl.glCallList(iGLDisplayListIndexSelection);
+
+		
+		if (bMainViewZoom)
+		{
+			if (bRenderMatrix)
+
+				gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
+						.getCenterYOffset(), 0);
+			renderMainViewZoomSelectionX(gl);
+			renderMainViewZoomSelectionY(gl);
+			renderMainViewZoomSelectionBoxes(gl);
+			renderCoordinateSystem(gl);
+			if (bRenderMatrix)
+				gl.glTranslatef(-renderStyle.getCenterXOffset(),
+						-renderStyle.getCenterYOffset(), 0);
+			
+			
+			
+			
+		}
+
+		// buildDisplayList(gl, iGLDisplayListIndexRemote);
+		// if (!isRenderedRemote())
+		// contextMenu.render(gl, this);
+	}
+
+	private void buildDisplayListSelection(final GL gl, int iGLDisplayListIndex) {
+
+		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
+
+		if (bRenderMatrix)
+			// gl.glTranslatef(renderStyle.getXCenter(),
+			// renderStyle.getYCenter(),0);
+			gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
+					.getCenterYOffset(), 0);
+		renderSelectionPoints(gl);
+		if (bRenderMatrix)
+			gl.glTranslatef(-renderStyle.getCenterXOffset(), -renderStyle
+					.getCenterYOffset(), 0);
+		gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
+		gl.glEndList();
+		if (bRenderMatrix) {
+			gl.glNewList(iGLDisplayListIndexMatrixSelection, GL.GL_COMPILE);
+			renderTextures(gl, true, ScatterPlotRenderStyle.MATRIX_FULLTEXTURES_Z); // Selection textures
+			gl.glEndList();
+
+		}
+	}
+
+	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
+
+		if (bHasFrustumChanged) {
+			// renderStyle.setCenterOffsets();
+			bHasFrustumChanged = false;
+			bUpdateMainView = true;
+		}
+
+		if ((bUpdateMainView || bUpdateSelection)) {
+
+			if (bUpdateSelection)// && bRenderMatrix) TODO : Evaluate
+				// Performance here
+				initSelectionTextures();
+			buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
+			bUpdateSelection = false;
+		}
+
+		if (bUpdateFullTexures) {
+			bUpdateFullTexures = false;
+			initTextures();
+		}
+		
+		if (this.bRedrawTextures)
+	    {
+	      this.bRedrawTextures = false;
+	      gl.glNewList(this.iGLDisplayListIndexMatrixFull, GL.GL_COMPILE);
+	      renderTextures(gl, false, ScatterPlotRenderStyle.MATRIX_FULLTEXTURES_Z);
+	      gl.glEndList();
+	      gl.glNewList(this.iGLDisplayListIndexMatrixSelection, GL.GL_COMPILE);
+	      renderTextures(gl, true, ScatterPlotRenderStyle.MATRIX_SELECTIONTEXTURES_Z);
+	      gl.glEndList();
+	    }
+
+		if (bUpdateMainView) {
+
+			gl.glNewList(iGLDisplayListIndexMatrixFull, GL.GL_COMPILE);
+			renderTextures(gl, false, ScatterPlotRenderStyle.MATRIX_FULLTEXTURES_Z); // All textures
+			gl.glEndList();
+
+			if (detailLevel == EDetailLevel.HIGH) {
+				gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
+				if (bRenderMatrix)
+
+					gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
+							.getCenterYOffset(), 0);
+				renderCoordinateSystem(gl);
+				if (bRenderMatrix)
+					gl.glTranslatef(-renderStyle.getCenterXOffset(),
+							-renderStyle.getCenterYOffset(), 0);
+				gl.glEndList();
+			}
+
+			gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+			gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
+			if (bRenderMatrix)
+				gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
+						.getCenterYOffset(), 0);
+			renderScatterPoints(gl);
+			if (bRenderMatrix)
+				gl.glTranslatef(-renderStyle.getCenterXOffset(), -renderStyle
+						.getCenterYOffset(), 0);
+			gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
+			gl.glEndList();
+
+			bUpdateMainView = false;
+		}
+
+		gl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
+		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
+		if (bRenderMatrix)
+			// gl.glTranslatef(renderStyle.getXCenter(),
+			// renderStyle.getYCenter(),0);
+			gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
+					.getCenterYOffset(), 0);
+		renderMouseOver(gl);
+		if (bRenderMatrix)
+			// gl.glTranslatef(-renderStyle.getXCenter(),
+			// -renderStyle.getYCenter(), 0);
+			gl.glTranslatef(-renderStyle.getCenterXOffset(), -renderStyle
+					.getCenterYOffset(), 0);
+		gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
+		gl.glEndList();
+
+	}
+
+	private void renderMainViewZoomSelectionX(GL gl) {
+		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
+
+		//
+		// Right Outer X
+		//
+
+		float x = renderStyle.transformNorm2GlobalX(fTransformNewMinX);
+		float fIconwith = 0.15f;
+		float y = XYAXISDISTANCE - fIconwith * 3f;
+		float alpha=1f;
+		gl.glColor4fv(Y_AXIS_COLOR, 0);
+		gl.glBegin(GL.GL_LINES);
+
+		gl.glVertex3f(x, y, AXIS_Z);
+		gl
+				.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
+						AXIS_Z);
+		gl.glEnd();
+
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.SCATTER_MAIN_ZOOM, 1));
+		x = x - fIconwith;
+
+		Vec3f lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+		Vec3f lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+		Vec3f upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+		Vec3f upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+
+		if (fTransformNewMinX > 0)
+		{
+			if (bMainViewZoomDragged && iCurrentDragZoom == 1)
+				alpha =1f;	
+			else alpha = 0.6f;
+			textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
+					lowerLeftCorner, lowerRightCorner, upperRightCorner,
+					upperLeftCorner, 1, 1, 1, alpha);
+		}
+		x = x + fIconwith;
+		lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+		lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+		upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+		upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+
+		if (fTransformNewMinX < fTransformOldMinX)
+		{
+			if (bMainViewZoomDragged && iCurrentDragZoom == 1)
+				alpha =1f;	
+			else alpha = 0.6f;			
+			textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+					lowerLeftCorner, lowerRightCorner, upperRightCorner,
+					upperLeftCorner, 1, 1, 1, alpha);
+		}
+		gl.glPopName();
+
+		//
+		// Left Outer X
+		//
+		x = renderStyle.transformNorm2GlobalX(fTransformNewMaxX);
+
+		gl.glColor4fv(Y_AXIS_COLOR, 0);
+		gl.glBegin(GL.GL_LINES);
+
+		gl.glVertex3f(x, y, AXIS_Z);
+		gl
+				.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
+						AXIS_Z);
+		gl.glEnd();
+
+		lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+		lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+		upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+		upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.SCATTER_MAIN_ZOOM, 2));
+
+		if (fTransformNewMaxX < 1)
+		{
+			if (bMainViewZoomDragged && iCurrentDragZoom == 2)
+				alpha =1f;	
+			else alpha = 0.6f;
+			textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+					lowerLeftCorner, lowerRightCorner, upperRightCorner,
+					upperLeftCorner, 1, 1, 1, alpha);
+		}
+		x = x - fIconwith;
+
+		lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+		lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+		upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+		upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+
+		if (fTransformNewMaxX > fTransformOldMaxX)
+		{
+			if (bMainViewZoomDragged && iCurrentDragZoom == 2)
+				alpha =1f;	
+			else alpha = 0.6f;
+			textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
+						lowerLeftCorner, lowerRightCorner, upperRightCorner,
+						upperLeftCorner, 1, 1, 1, alpha);
+		}
+		gl.glPopName();
+
+		//
+		// Right Inner X
+		//
+		if(fTransformOldMinX==fTransformNewMinX)
+		{
+			x = renderStyle.transformNorm2GlobalX(fTransformOldMinX);
+			//fIconwith = 0.15f;
+			y = XYAXISDISTANCE - fIconwith * 2.2f;
+			gl.glColor4fv(Y_AXIS_COLOR, 0);
+			gl.glBegin(GL.GL_LINES);
+	
+			gl.glVertex3f(x, y, AXIS_Z);
+			gl
+					.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
+							AXIS_Z);
+			gl.glEnd();
+	
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					EPickingType.SCATTER_MAIN_ZOOM, 3));
+			x = x - fIconwith;
+	
+			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+	
+			if (fTransformOldMinX > 0)
+			{
+				if (bMainViewZoomDragged && iCurrentDragZoom == 3)
+					alpha =1f;	
+				else alpha = 0.6f;
+				textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, 1, 0, 0, alpha);
+			}
+			x = x + fIconwith;
+			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+	
+			if (fTransformOldMinX < fTransformOldMaxX)
+			{
+				if (bMainViewZoomDragged && iCurrentDragZoom == 3)
+					alpha =1f;	
+				else alpha = 0.6f;
+				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, 1, 0, 0, alpha);
+			}
+			gl.glPopName();
+		}
+		//
+		// Left Inner X
+		//
+		if(fTransformOldMaxX==fTransformNewMaxX)
+		{
+			x = renderStyle.transformNorm2GlobalX(fTransformOldMaxX);
+			y = XYAXISDISTANCE - fIconwith * 2.2f;
+	
+			gl.glColor4fv(Y_AXIS_COLOR, 0);
+			gl.glBegin(GL.GL_LINES);
+	
+			gl.glVertex3f(x, y, AXIS_Z);
+			gl
+					.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
+							AXIS_Z);
+			gl.glEnd();
+	
+			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+	
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					EPickingType.SCATTER_MAIN_ZOOM, 4));
+	
+			if (fTransformOldMaxX < 1)
+			{
+				if (bMainViewZoomDragged && iCurrentDragZoom == 4)
+					alpha =1f;	
+				else alpha = 0.6f;
+				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, 1, 0, 0, alpha);
+			}
+			x = x - fIconwith;
+	
+			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+	
+			if (fTransformOldMaxX > fTransformOldMinX)
+			{
+				if (bMainViewZoomDragged && iCurrentDragZoom == 4)
+					alpha =1f;	
+				else alpha = 0.6f;
+				textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, 1, 0, 0, alpha);
+			}
+			gl.glPopName();
+		}
+		
+	}
+
+	private void renderMainViewZoomSelectionY(GL gl) {
+		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
+
+		//
+		// Lower Outer Y
+		//
+		
+		float fIconwith = 0.15f;
+		float x = XYAXISDISTANCE - fIconwith * 3f;
+		float y = renderStyle.transformNorm2GlobalY(fTransformNewMinY);		
+		float alpha=1f;
+		
+		gl.glColor4fv(Y_AXIS_COLOR, 0);
+		gl.glBegin(GL.GL_LINES);
+		gl.glVertex3f(x, y, AXIS_Z);
+		gl.glVertex3f(renderStyle.getRenderWidth() - XYAXISDISTANCE, y,AXIS_Z);
+		gl.glEnd();
+
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.SCATTER_MAIN_ZOOM, 5));
+		y = y - fIconwith;
+
+		Vec3f lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+		Vec3f lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+		Vec3f upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+		Vec3f upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+
+		if (fTransformNewMinY > 0)
+		{
+			if (bMainViewZoomDragged && iCurrentDragZoom == 5)
+				alpha =1f;	
+			else alpha = 0.6f;
+			textureManager.renderTexture(gl, EIconTextures.ARROW_DOWN,
+					lowerLeftCorner, lowerRightCorner, upperRightCorner,
+					upperLeftCorner, 1, 1, 1, alpha);
+		}
+		y = y + fIconwith;
+		lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+		lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+		upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+		upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+
+		if (fTransformNewMinY < fTransformOldMinY)
+		{
+			if (bMainViewZoomDragged && iCurrentDragZoom == 5)
+				alpha =1f;	
+			else alpha = 0.6f;			
+			textureManager.renderTexture(gl, EIconTextures.ARROW_UP,
+					lowerLeftCorner, lowerRightCorner, upperRightCorner,
+					upperLeftCorner, 1, 1, 1, alpha);
+		}
+		gl.glPopName();
+
+		//
+		// Upper Outer Y
+		//
+		y = renderStyle.transformNorm2GlobalY(fTransformNewMaxY);
+
+		gl.glColor4fv(Y_AXIS_COLOR, 0);
+		gl.glBegin(GL.GL_LINES);
+		gl.glVertex3f(x, y, AXIS_Z);
+		gl.glVertex3f(renderStyle.getRenderWidth() - XYAXISDISTANCE, y,AXIS_Z);
+		gl.glEnd();
+
+		lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+		lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+		upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+		upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.SCATTER_MAIN_ZOOM, 6));
+
+		if (fTransformNewMaxY < 1)
+		{
+			if (bMainViewZoomDragged && iCurrentDragZoom == 6)
+				alpha =1f;	
+			else alpha = 0.6f;
+			textureManager.renderTexture(gl, EIconTextures.ARROW_UP,
+					lowerLeftCorner, lowerRightCorner, upperRightCorner,
+					upperLeftCorner, 1, 1, 1, alpha);
+		}
+		y = y - fIconwith;
+
+		lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+		lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+		upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+		upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+
+		if (fTransformNewMaxY > fTransformOldMaxY)
+		{
+			if (bMainViewZoomDragged && iCurrentDragZoom == 6)
+				alpha =1f;	
+			else alpha = 0.6f;
+			textureManager.renderTexture(gl, EIconTextures.ARROW_DOWN,
+						lowerLeftCorner, lowerRightCorner, upperRightCorner,
+						upperLeftCorner, 1, 1, 1, alpha);
+		}
+		gl.glPopName();
+
+		//
+		// Lower Inner Y
+		//
+		if(fTransformOldMinY==fTransformNewMinY)
+		{
+			
+			//fIconwith = 0.15f;
+			x = XYAXISDISTANCE - fIconwith * 2.2f;
+			y = renderStyle.transformNorm2GlobalY(fTransformOldMinY);
+					
+			gl.glColor4fv(Y_AXIS_COLOR, 0);
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(x, y, AXIS_Z);
+			gl.glVertex3f(renderStyle.getRenderWidth() - XYAXISDISTANCE, y,AXIS_Z);
+			gl.glEnd();
+	
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					EPickingType.SCATTER_MAIN_ZOOM, 7));
+			y = y - fIconwith;
+	
+			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+	
+			if (fTransformOldMinY > 0)
+			{
+				if (bMainViewZoomDragged && iCurrentDragZoom == 7)
+					alpha =1f;	
+				else alpha = 0.6f;
+				textureManager.renderTexture(gl, EIconTextures.ARROW_DOWN,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, 1, 0, 0, alpha);
+			}
+			y = y + fIconwith;
+			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+	
+			if (fTransformOldMinY < fTransformOldMaxY)
+			{
+				if (bMainViewZoomDragged && iCurrentDragZoom == 7)
+					alpha =1f;	
+				else alpha = 0.6f;
+				textureManager.renderTexture(gl, EIconTextures.ARROW_UP,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, 1, 0, 0, alpha);
+			}
+			gl.glPopName();
+		}
+		//
+		// Upper Inner X
+		//
+		if(fTransformOldMaxY==fTransformNewMaxY)
+		{
+			
+			
+			x = XYAXISDISTANCE - fIconwith * 2.2f;
+			y = renderStyle.transformNorm2GlobalY(fTransformOldMaxY);
+			
+			gl.glColor4fv(Y_AXIS_COLOR, 0);
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(x, y, AXIS_Z);
+			gl.glVertex3f(renderStyle.getRenderWidth() - XYAXISDISTANCE, y,AXIS_Z);
+			gl.glEnd();
+	
+	
+			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+	
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					EPickingType.SCATTER_MAIN_ZOOM, 8));
+	
+			if (fTransformOldMaxY < 1)
+			{
+				if (bMainViewZoomDragged && iCurrentDragZoom == 8)
+					alpha =1f;	
+				else alpha = 0.6f;
+				textureManager.renderTexture(gl, EIconTextures.ARROW_UP,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, 1, 0, 0, alpha);
+			}
+			y = y - fIconwith;
+	
+			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
+			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
+			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
+			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
+	
+			if (fTransformOldMaxY > fTransformOldMinY)
+			{
+				if (bMainViewZoomDragged && iCurrentDragZoom == 8)
+					alpha =1f;	
+				else alpha = 0.6f;
+				textureManager.renderTexture(gl, EIconTextures.ARROW_DOWN,
+							lowerLeftCorner, lowerRightCorner, upperRightCorner,
+							upperLeftCorner, 1, 0, 0, alpha);
+			}
+			gl.glPopName();
+		}
+		
+	}
+	
+	private void renderMainViewZoomSelectionBoxes(GL gl)
+	{
+		// Show Selection Boxes
+
+		if (!bMainViewZoomDragged)
+			return;
+		
+		float x1 = renderStyle.transformNorm2GlobalX(fTransformNewMinX);
+		float x2 = renderStyle.transformNorm2GlobalX(fTransformNewMaxX);
+		float y1 = XYAXISDISTANCE;
+		float y2 = renderStyle.getRenderHeight() - XYAXISDISTANCE;
+
+		gl.glColor4f(0, 1, 0, 0.1f);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(x1, y1, AXIS_Z);
+		gl.glVertex3f(x2, y1, AXIS_Z);
+		gl.glVertex3f(x2, y2, AXIS_Z);
+		gl.glVertex3f(x1, y2, AXIS_Z);
+		gl.glEnd();
+
+		x1 = renderStyle.transformNorm2GlobalX(fTransformOldMinX);
+		x2 = renderStyle.transformNorm2GlobalX(fTransformOldMaxX);
+
+		gl.glColor4f(1, 0, 0, 0.1f);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(x1, y1, AXIS_Z);
+		gl.glVertex3f(x2, y1, AXIS_Z);
+		gl.glVertex3f(x2, y2, AXIS_Z);
+		gl.glVertex3f(x1, y2, AXIS_Z);
+		gl.glEnd();
+
+		x1 = XYAXISDISTANCE;
+		x2 = renderStyle.getRenderWidth() - XYAXISDISTANCE;
+		y1 = renderStyle.transformNorm2GlobalY(fTransformNewMinY);
+		y2 = renderStyle.transformNorm2GlobalY(fTransformNewMaxY);
+		
+		gl.glColor4f(0, 1, 0, 0.1f);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(x1, y1, AXIS_Z);
+		gl.glVertex3f(x2, y1, AXIS_Z);
+		gl.glVertex3f(x2, y2, AXIS_Z);
+		gl.glVertex3f(x1, y2, AXIS_Z);
+		gl.glEnd();
+
+		y1 = renderStyle.transformNorm2GlobalY(fTransformOldMinY);
+		y2 = renderStyle.transformNorm2GlobalY(fTransformOldMaxY);
+		
+		gl.glColor4f(1, 0, 0, 0.1f);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(x1, y1, AXIS_Z);
+		gl.glVertex3f(x2, y1, AXIS_Z);
+		gl.glVertex3f(x2, y2, AXIS_Z);
+		gl.glVertex3f(x1, y2, AXIS_Z);
+		gl.glEnd();
+
+		
+		
+		
+	//	gl.glColor4fv(Y_AXIS_COLOR, 1);
+		
+	}
+	
 	private void resetFullTextures() {
 
 		AlFullTextures.clear();
@@ -654,7 +1555,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	
 	    float fEdge = 0.01F;
 	
-	    float z = 1.0F;
+	    float z = ScatterPlotRenderStyle.MATRIX_SELECTIONRECTANGLE_Z;
 	
 	    float[] fArMappingColor = GeneralRenderStyle.SELECTED_COLOR;
 	
@@ -881,8 +1782,8 @@ public class GLScatterPlot extends AStorageBasedView {
 	            float tmpy = this.viewFrustum.getHeight() - (
 	              fyOffset + fExtraOffsetY + fStepY);
 	
-	            if ((getSpace(tmpx, tmpy) > getSpace(fMaxX, fMaxY)) && 
-	              (getCorrelation(tmpx, tmpy))) {
+	            if ((ScatterPlotHelper.getSpace(tmpx, tmpy) > ScatterPlotHelper.getSpace(fMaxX, fMaxY)) && 
+	              (ScatterPlotHelper.getCorrelation(tmpx, tmpy))) {
 	              fMaxX = tmpx;
 	              fMaxY = tmpy;
 	            }
@@ -900,27 +1801,14 @@ public class GLScatterPlot extends AStorageBasedView {
       this.renderStyle.setCenterOffsets(this.viewFrustum.getWidth() - fMaxX, 
         this.viewFrustum.getHeight() - fMaxY);
   }
-
-	private boolean getCorrelation(float x, float y) {
-		float fCorrelation = 1.3f;
-		if ((x / y) > fCorrelation)
-			return false;
-		if ((y / x) > fCorrelation)
-			return false;
-
-		return true;
-	}
-
-	private float getSpace(float x, float y) {
-		return x * y;
-	}
+	
 
 	private void renderHistogram(GL gl, float x, float y, float width,
 			float height, int selected_Axis) {
 
 		float[] fArMappingColor = new float[] { 0.0f, 0.0f, 0.0f }; // black
 
-		renderRectangularSelection(gl, x, y, 0.f, // Z-Value
+		renderRectangularSelection(gl, x, y, ScatterPlotRenderStyle.MATRIX_HISTOGRAMM_Z, // Z-Value
 				width, height, fArMappingColor);
 
 		// TODO InsertHistogramm here
@@ -950,911 +1838,6 @@ public class GLScatterPlot extends AStorageBasedView {
 		gl.glPopAttrib();
 	}
 
-	@Override
-	public void init(GL gl) {
-		// renderStyle = new GeneralRenderStyle(viewFrustum);
-		renderStyle = new ScatterPlotRenderStyle(this, viewFrustum);
-
-		super.renderStyle = renderStyle;
-
-		InitAxisComboEvent initAxisComboEvent = new InitAxisComboEvent();
-		initAxisComboEvent.setSender(this);
-		initAxisComboEvent.setAxisNames(this.getAxisString());
-		GeneralManager.get().getEventPublisher().triggerEvent(
-				initAxisComboEvent);
-		// detailLevel = EDetailLevel.LOW;
-		detailLevel = EDetailLevel.HIGH;
-		updateMaxAxis();
-		renderStyle.setTextureNr(100, 100);
-		resetFullTextures();
-		resetSelectionTextures();
-		initTextures();
-		initSelectionTextures();
-		selectAxesfromExternal();
-		opengl = gl;
-
-	}
-
-	private void updateMaxAxis()
-	{
-		if (MAX_AXES > storageVA.size())
-			MAX_AXES = storageVA.size();
-		
-	}
-	
-	@Override
-	public void initLocal(GL gl) {
-
-		// // Register keyboard listener to GL canvas
-		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new
-		// Runnable() {
-		// public void run() {
-		// parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
-		// }
-		// });
-
-		iGLDisplayListIndexLocal = gl.glGenLists(6);
-		iGLDisplayListIndexCoord = iGLDisplayListIndexLocal + 1;
-		iGLDisplayListIndexMouseOver = iGLDisplayListIndexLocal + 2;
-		iGLDisplayListIndexSelection = iGLDisplayListIndexLocal + 3;
-		iGLDisplayListIndexMatrixFull = iGLDisplayListIndexLocal + 4;
-		iGLDisplayListIndexMatrixSelection = iGLDisplayListIndexLocal + 5;
-
-		// Register keyboard listener to GL canvas
-		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(
-				new Runnable() {
-					public void run() {
-						parentGLCanvas.getParentComposite().addKeyListener(
-								glKeyListener);
-					}
-				});
-
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-		init(gl);
-
-		// TODO Remove, just for zoom testing
-		bRenderMatrix = false;
-		bOnlyRenderHalfMatrix = true;
-		renderStyle.setIsEmbedded(false);
-
-		// ScatterPlotRenderStyle.setTextureNr(NR_TEXTURESX,NR_TEXTURESY);
-
-	}
-
-	@Override
-	public void initRemote(final GL gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener,
-			GLInfoAreaManager infoAreaManager) {
-
-		// Register keyboard listener to GL canvas
-		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
-				.asyncExec(new Runnable() {
-					public void run() {
-						glParentView.getParentGLCanvas().getParentComposite()
-								.addKeyListener(glKeyListener);
-					}
-				});
-
-		this.glMouseListener = glMouseListener;
-
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
-		init(gl);
-	}
-
-	@Override
-	public void setDetailLevel(EDetailLevel detailLevel) {
-		if (bUseDetailLevel) {
-			super.setDetailLevel(detailLevel);
-		}
-		// renderStyle.setDetailLevel(detailLevel);
-
-	}
-
-	@Override
-	public void displayLocal(GL gl) {
-		processEvents();
-		if (!isVisible())
-			return;
-		if (set == null)
-			return;
-		//
-		// if (bIsTranslationAnimationActive) {
-		// doTranslation();
-		// }
-
-		// pickingManager.getHits(this, EPickingType.SCATTER_POINT_SELECTION);
-
-		// ArrayList<Pick> alHits = null;
-		//
-		// alHits = pickingManager.getHits(iUniqueID,
-		// EPickingType.SCATTER_POINT_SELECTION);
-
-		// if (alHits == null && alHits.size() == 0) {
-
-		if (detailLevel == EDetailLevel.HIGH) {
-			GLMouseListener glMouseListener = getParentGLCanvas()
-					.getGLMouseListener();
-
-			// private float fTransformOldMinX=0.2f;
-			// private float fTransformNewMinX=0.1f;
-			//		        
-			// private float fTransformOldMaxX=0.4f;
-			// private float fTransformNewMaxX=0.6f;
-
-			// bRectangleSelection = true;
-
-			if (bMainViewZoomDragged) {
-				Point pCurrentMousePoint = glMouseListener.getPickedPoint();
-
-				float[] fCurrentMousePoint = GLCoordinateUtils
-						.convertWindowCoordinatesToWorldCoordinates(opengl,
-								pCurrentMousePoint.x, pCurrentMousePoint.y);
-
-				float x = (fCurrentMousePoint[0] - XYAXISDISTANCE);
-				float y = (fCurrentMousePoint[1] - XYAXISDISTANCE);
-						
-				if (bRenderMatrix) 
-				{
-					x -= renderStyle.getCenterXOffset();
-					y -= renderStyle.getCenterYOffset();
-				}
-				x=x / renderStyle.getAxisWidth();
-				y=y / renderStyle.getAxisHeight();
-				
-				handleMainZoomAxes(x, y);
-					
-					
-			
-				if (glMouseListener.wasLeftMouseButtonPressed()) {
-					bMainViewZoomDragged = false;
-					iCurrentDragZoom = -1;
-					setDisplayListDirty();
-					bUpdateMainView = true;
-				}
-
-			}
-
-			if (glMouseListener.wasMouseDragged() && (!bRender2Axis)) {
-
-				bRectangleSelection = true;
-
-				Point pDragEndPoint = glMouseListener.getPickedPoint();
-				Point pDragStartPoint = glMouseListener
-						.getPickedPointDragStart();
-
-				fRectangleDragStartPoint = GLCoordinateUtils
-						.convertWindowCoordinatesToWorldCoordinates(gl,
-								pDragStartPoint.x, pDragStartPoint.y);
-				fRectangleDragEndPoint = GLCoordinateUtils
-						.convertWindowCoordinatesToWorldCoordinates(gl,
-								pDragEndPoint.x, pDragEndPoint.y);
-
-				float[] fArMappingColor = new float[] { 0.0f, 1.0f, 0.0f }; // green
-
-				// gl.glNewList(iGLDisplayListIndexBrush, GL.GL_COMPILE);
-				renderRectangularSelection(
-						gl,
-						fRectangleDragStartPoint[0],
-						fRectangleDragStartPoint[1],
-						3.5f, // Z-Value
-						fRectangleDragEndPoint[0] - fRectangleDragStartPoint[0],
-						fRectangleDragEndPoint[1] - fRectangleDragStartPoint[1],
-						fArMappingColor);
-
-				// gl.glEndList();
-			}
-			if (glMouseListener.wasMouseReleased() && bRectangleSelection) {
-				bRectangleSelection = false;
-				setDisplayListDirty();
-				if (bRenderMatrix)
-					gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
-							.getCenterYOffset(), 0);
-				updateSelection();
-				if (bRenderMatrix)
-					gl.glTranslatef(-renderStyle.getCenterXOffset(),
-							-renderStyle.getCenterYOffset(), 0);
-				// gl.glDeleteLists(iGLDisplayListIndexBrush, 1);
-				bUpdateSelection = true;
-			}
-
-			pickingManager.handlePicking(this, gl);
-		}
-
-		if (bIsDisplayListDirtyLocal) {
-
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
-			bIsDisplayListDirtyLocal = false;
-
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
-		display(gl);
-		checkForHits(gl);
-
-		if (eBusyModeState != EBusyModeState.OFF)
-			renderBusyMode(gl);
-
-	}
-
-	@Override
-	public void displayRemote(GL gl) {
-
-		// if (set == null)
-		// return;
-		//
-		// // if (bIsTranslationAnimationActive) {
-		// // bIsDisplayListDirtyRemote = true;
-		// // doTranslation();
-		// // }
-		//
-		// if (bIsDisplayListDirtyRemote) {
-		// buildDisplayList(gl, iGLDisplayListIndexRemote);
-		// bIsDisplayListDirtyRemote = false;
-		// //
-		// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
-		// }
-		// iGLDisplayListToCall = iGLDisplayListIndexRemote;
-		//
-		// display(gl);
-		// checkForHits(gl);
-
-		// glMouseListener.resetEvents();
-	}
-
-	@Override
-	public void display(GL gl) {
-
-		// for (Integer storageID : storageVA)
-		// {
-		// set.get(storageID).get(EDataRepresentation.RAW, contentID);
-		// }
-		// storageSelectionManager.addToType(SelectionType.MOUSE_OVER,
-		// idCollection);
-		// processEvents();
-
-		// GLHelperFunctions.drawAxis(gl);
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-		// gl.glEnable(GL.GL_DEPTH_TEST);
-		// clipToFrustum(gl);
-
-		if (bRenderMatrix) {
-			// renderTextures(gl, false, 0.0f); // All textures
-			// renderTextures(gl, true, 0.0f); // Selection textures
-
-			gl.glCallList(iGLDisplayListIndexMatrixFull);
-			gl.glCallList(iGLDisplayListIndexMatrixSelection);
-
-			renderMatrixSelection(gl, iSelectedAxisIndexX, iSelectedAxisIndexY, false);
-			if (bRender2Axis)
-				renderMatrixSelection(gl, iSelectedAxisIndexX2, iSelectedAxisIndexY2,
-						true);
-			// return;
-		}
-
-		gl.glCallList(iGLDisplayListToCall);
-		if (detailLevel == EDetailLevel.HIGH) {
-			// gl.glCallList(iGLDisplayListIndexBrush);
-			gl.glCallList(iGLDisplayListIndexCoord);
-			gl.glCallList(iGLDisplayListIndexMouseOver);
-		}
-		if (!bRender2Axis)
-			gl.glCallList(iGLDisplayListIndexSelection);
-
-		
-		if (bMainViewZoom)
-		{
-			if (bRenderMatrix)
-
-				gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
-						.getCenterYOffset(), 0);
-			renderMainViewZoomSelectionX(gl);
-			renderMainViewZoomSelectionY(gl);
-			renderMainViewZoomSelectionBoxes(gl);
-			renderCoordinateSystem(gl);
-			if (bRenderMatrix)
-				gl.glTranslatef(-renderStyle.getCenterXOffset(),
-						-renderStyle.getCenterYOffset(), 0);
-			
-			
-			
-			
-		}
-
-		// buildDisplayList(gl, iGLDisplayListIndexRemote);
-		// if (!isRenderedRemote())
-		// contextMenu.render(gl, this);
-	}
-
-	private void buildDisplayListSelection(final GL gl, int iGLDisplayListIndex) {
-
-		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
-
-		if (bRenderMatrix)
-			// gl.glTranslatef(renderStyle.getXCenter(),
-			// renderStyle.getYCenter(),0);
-			gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
-					.getCenterYOffset(), 0);
-		renderSelectionPoints(gl);
-		if (bRenderMatrix)
-			gl.glTranslatef(-renderStyle.getCenterXOffset(), -renderStyle
-					.getCenterYOffset(), 0);
-		gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
-		gl.glEndList();
-		if (bRenderMatrix) {
-			gl.glNewList(iGLDisplayListIndexMatrixSelection, GL.GL_COMPILE);
-			renderTextures(gl, true, 0.0f); // Selection textures
-			gl.glEndList();
-
-		}
-	}
-
-	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
-
-		if (bHasFrustumChanged) {
-			// renderStyle.setCenterOffsets();
-			bHasFrustumChanged = false;
-			bUpdateMainView = true;
-		}
-
-		if ((bUpdateMainView || bUpdateSelection)) {
-
-			if (bUpdateSelection)// && bRenderMatrix) TODO : Evaluate
-				// Performance here
-				initSelectionTextures();
-			buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
-			bUpdateSelection = false;
-		}
-
-		if (bUpdateFullTexures) {
-			bUpdateFullTexures = false;
-			initTextures();
-		}
-		
-		if (this.bRedrawTextures)
-	    {
-	      this.bRedrawTextures = false;
-	      gl.glNewList(this.iGLDisplayListIndexMatrixFull, 4864);
-	      renderTextures(gl, false, 0.0F);
-	      gl.glEndList();
-	      gl.glNewList(this.iGLDisplayListIndexMatrixSelection, 4864);
-	      renderTextures(gl, true, 0.0F);
-	      gl.glEndList();
-	    }
-
-		if (bUpdateMainView) {
-
-			gl.glNewList(iGLDisplayListIndexMatrixFull, GL.GL_COMPILE);
-			renderTextures(gl, false, 0.0f); // All textures
-			gl.glEndList();
-
-			if (detailLevel == EDetailLevel.HIGH) {
-				gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
-				if (bRenderMatrix)
-
-					gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
-							.getCenterYOffset(), 0);
-				renderCoordinateSystem(gl);
-				if (bRenderMatrix)
-					gl.glTranslatef(-renderStyle.getCenterXOffset(),
-							-renderStyle.getCenterYOffset(), 0);
-				gl.glEndList();
-			}
-
-			gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-			gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
-			if (bRenderMatrix)
-				gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
-						.getCenterYOffset(), 0);
-			renderScatterPoints(gl);
-			if (bRenderMatrix)
-				gl.glTranslatef(-renderStyle.getCenterXOffset(), -renderStyle
-						.getCenterYOffset(), 0);
-			gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
-			gl.glEndList();
-
-			bUpdateMainView = false;
-		}
-
-		gl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
-		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
-		if (bRenderMatrix)
-			// gl.glTranslatef(renderStyle.getXCenter(),
-			// renderStyle.getYCenter(),0);
-			gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
-					.getCenterYOffset(), 0);
-		renderMouseOver(gl);
-		if (bRenderMatrix)
-			// gl.glTranslatef(-renderStyle.getXCenter(),
-			// -renderStyle.getYCenter(), 0);
-			gl.glTranslatef(-renderStyle.getCenterXOffset(), -renderStyle
-					.getCenterYOffset(), 0);
-		gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
-		gl.glEndList();
-
-	}
-
-	private void renderMainViewZoomSelectionX(GL gl) {
-		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
-
-		//
-		// Right Outer X
-		//
-
-		float x = renderStyle.transformNorm2GlobalX(fTransformNewMinX);
-		float fIconwith = 0.15f;
-		float y = XYAXISDISTANCE - fIconwith * 3f;
-		float alpha=1f;
-		gl.glColor4fv(Y_AXIS_COLOR, 0);
-		gl.glBegin(GL.GL_LINES);
-
-		gl.glVertex3f(x, y, AXIS_Z);
-		gl
-				.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
-						AXIS_Z);
-		gl.glEnd();
-
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.SCATTER_MAIN_ZOOM, 1));
-		x = x - fIconwith;
-
-		Vec3f lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-		Vec3f lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-		Vec3f upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-		Vec3f upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-
-		if (fTransformNewMinX > 0)
-		{
-			if (bMainViewZoomDragged && iCurrentDragZoom == 1)
-				alpha =1f;	
-			else alpha = 0.6f;
-			textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
-					lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, 1, 1, 1, alpha);
-		}
-		x = x + fIconwith;
-		lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-		lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-		upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-		upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-
-		if (fTransformNewMinX < fTransformOldMinX)
-		{
-			if (bMainViewZoomDragged && iCurrentDragZoom == 1)
-				alpha =1f;	
-			else alpha = 0.6f;			
-			textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
-					lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, 1, 1, 1, alpha);
-		}
-		gl.glPopName();
-
-		//
-		// Left Outer X
-		//
-		x = renderStyle.transformNorm2GlobalX(fTransformNewMaxX);
-
-		gl.glColor4fv(Y_AXIS_COLOR, 0);
-		gl.glBegin(GL.GL_LINES);
-
-		gl.glVertex3f(x, y, AXIS_Z);
-		gl
-				.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
-						AXIS_Z);
-		gl.glEnd();
-
-		lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-		lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-		upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-		upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.SCATTER_MAIN_ZOOM, 2));
-
-		if (fTransformNewMaxX < 1)
-		{
-			if (bMainViewZoomDragged && iCurrentDragZoom == 2)
-				alpha =1f;	
-			else alpha = 0.6f;
-			textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
-					lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, 1, 1, 1, alpha);
-		}
-		x = x - fIconwith;
-
-		lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-		lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-		upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-		upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-
-		if (fTransformNewMaxX > fTransformOldMaxX)
-		{
-			if (bMainViewZoomDragged && iCurrentDragZoom == 2)
-				alpha =1f;	
-			else alpha = 0.6f;
-			textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
-						lowerLeftCorner, lowerRightCorner, upperRightCorner,
-						upperLeftCorner, 1, 1, 1, alpha);
-		}
-		gl.glPopName();
-
-		//
-		// Right Inner X
-		//
-		if(fTransformOldMinX==fTransformNewMinX)
-		{
-			x = renderStyle.transformNorm2GlobalX(fTransformOldMinX);
-			//fIconwith = 0.15f;
-			y = XYAXISDISTANCE - fIconwith * 2.2f;
-			gl.glColor4fv(Y_AXIS_COLOR, 0);
-			gl.glBegin(GL.GL_LINES);
-	
-			gl.glVertex3f(x, y, AXIS_Z);
-			gl
-					.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
-							AXIS_Z);
-			gl.glEnd();
-	
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.SCATTER_MAIN_ZOOM, 3));
-			x = x - fIconwith;
-	
-			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-	
-			if (fTransformOldMinX > 0)
-			{
-				if (bMainViewZoomDragged && iCurrentDragZoom == 3)
-					alpha =1f;	
-				else alpha = 0.6f;
-				textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
-							lowerLeftCorner, lowerRightCorner, upperRightCorner,
-							upperLeftCorner, 1, 0, 0, alpha);
-			}
-			x = x + fIconwith;
-			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-	
-			if (fTransformOldMinX < fTransformOldMaxX)
-			{
-				if (bMainViewZoomDragged && iCurrentDragZoom == 3)
-					alpha =1f;	
-				else alpha = 0.6f;
-				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
-							lowerLeftCorner, lowerRightCorner, upperRightCorner,
-							upperLeftCorner, 1, 0, 0, alpha);
-			}
-			gl.glPopName();
-		}
-		//
-		// Left Inner X
-		//
-		if(fTransformOldMaxX==fTransformNewMaxX)
-		{
-			x = renderStyle.transformNorm2GlobalX(fTransformOldMaxX);
-			y = XYAXISDISTANCE - fIconwith * 2.2f;
-	
-			gl.glColor4fv(Y_AXIS_COLOR, 0);
-			gl.glBegin(GL.GL_LINES);
-	
-			gl.glVertex3f(x, y, AXIS_Z);
-			gl
-					.glVertex3f(x, renderStyle.getRenderHeight() - XYAXISDISTANCE,
-							AXIS_Z);
-			gl.glEnd();
-	
-			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-	
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.SCATTER_MAIN_ZOOM, 4));
-	
-			if (fTransformOldMaxX < 1)
-			{
-				if (bMainViewZoomDragged && iCurrentDragZoom == 4)
-					alpha =1f;	
-				else alpha = 0.6f;
-				textureManager.renderTexture(gl, EIconTextures.ARROW_RIGHT,
-							lowerLeftCorner, lowerRightCorner, upperRightCorner,
-							upperLeftCorner, 1, 0, 0, alpha);
-			}
-			x = x - fIconwith;
-	
-			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-	
-			if (fTransformOldMaxX > fTransformOldMinX)
-			{
-				if (bMainViewZoomDragged && iCurrentDragZoom == 4)
-					alpha =1f;	
-				else alpha = 0.6f;
-				textureManager.renderTexture(gl, EIconTextures.ARROW_LEFT,
-							lowerLeftCorner, lowerRightCorner, upperRightCorner,
-							upperLeftCorner, 1, 0, 0, alpha);
-			}
-			gl.glPopName();
-		}
-		
-	}
-
-
-	private void renderMainViewZoomSelectionY(GL gl) {
-		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
-
-		//
-		// Lower Outer Y
-		//
-		
-		float fIconwith = 0.15f;
-		float x = XYAXISDISTANCE - fIconwith * 3f;
-		float y = renderStyle.transformNorm2GlobalY(fTransformNewMinY);		
-		float alpha=1f;
-		
-		gl.glColor4fv(Y_AXIS_COLOR, 0);
-		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(x, y, AXIS_Z);
-		gl.glVertex3f(renderStyle.getRenderWidth() - XYAXISDISTANCE, y,AXIS_Z);
-		gl.glEnd();
-
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.SCATTER_MAIN_ZOOM, 5));
-		y = y - fIconwith;
-
-		Vec3f lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-		Vec3f lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-		Vec3f upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-		Vec3f upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-
-		if (fTransformNewMinY > 0)
-		{
-			if (bMainViewZoomDragged && iCurrentDragZoom == 5)
-				alpha =1f;	
-			else alpha = 0.6f;
-			textureManager.renderTexture(gl, EIconTextures.ARROW_DOWN,
-					lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, 1, 1, 1, alpha);
-		}
-		y = y + fIconwith;
-		lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-		lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-		upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-		upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-
-		if (fTransformNewMinY < fTransformOldMinY)
-		{
-			if (bMainViewZoomDragged && iCurrentDragZoom == 5)
-				alpha =1f;	
-			else alpha = 0.6f;			
-			textureManager.renderTexture(gl, EIconTextures.ARROW_UP,
-					lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, 1, 1, 1, alpha);
-		}
-		gl.glPopName();
-
-		//
-		// Upper Outer Y
-		//
-		y = renderStyle.transformNorm2GlobalY(fTransformNewMaxY);
-
-		gl.glColor4fv(Y_AXIS_COLOR, 0);
-		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(x, y, AXIS_Z);
-		gl.glVertex3f(renderStyle.getRenderWidth() - XYAXISDISTANCE, y,AXIS_Z);
-		gl.glEnd();
-
-		lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-		lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-		upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-		upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.SCATTER_MAIN_ZOOM, 6));
-
-		if (fTransformNewMaxY < 1)
-		{
-			if (bMainViewZoomDragged && iCurrentDragZoom == 6)
-				alpha =1f;	
-			else alpha = 0.6f;
-			textureManager.renderTexture(gl, EIconTextures.ARROW_UP,
-					lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, 1, 1, 1, alpha);
-		}
-		y = y - fIconwith;
-
-		lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-		lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-		upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-		upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-
-		if (fTransformNewMaxY > fTransformOldMaxY)
-		{
-			if (bMainViewZoomDragged && iCurrentDragZoom == 6)
-				alpha =1f;	
-			else alpha = 0.6f;
-			textureManager.renderTexture(gl, EIconTextures.ARROW_DOWN,
-						lowerLeftCorner, lowerRightCorner, upperRightCorner,
-						upperLeftCorner, 1, 1, 1, alpha);
-		}
-		gl.glPopName();
-
-		//
-		// Lower Inner Y
-		//
-		if(fTransformOldMinY==fTransformNewMinY)
-		{
-			
-			//fIconwith = 0.15f;
-			x = XYAXISDISTANCE - fIconwith * 2.2f;
-			y = renderStyle.transformNorm2GlobalY(fTransformOldMinY);
-					
-			gl.glColor4fv(Y_AXIS_COLOR, 0);
-			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(x, y, AXIS_Z);
-			gl.glVertex3f(renderStyle.getRenderWidth() - XYAXISDISTANCE, y,AXIS_Z);
-			gl.glEnd();
-	
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.SCATTER_MAIN_ZOOM, 7));
-			y = y - fIconwith;
-	
-			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-	
-			if (fTransformOldMinY > 0)
-			{
-				if (bMainViewZoomDragged && iCurrentDragZoom == 7)
-					alpha =1f;	
-				else alpha = 0.6f;
-				textureManager.renderTexture(gl, EIconTextures.ARROW_DOWN,
-							lowerLeftCorner, lowerRightCorner, upperRightCorner,
-							upperLeftCorner, 1, 0, 0, alpha);
-			}
-			y = y + fIconwith;
-			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-	
-			if (fTransformOldMinY < fTransformOldMaxY)
-			{
-				if (bMainViewZoomDragged && iCurrentDragZoom == 7)
-					alpha =1f;	
-				else alpha = 0.6f;
-				textureManager.renderTexture(gl, EIconTextures.ARROW_UP,
-							lowerLeftCorner, lowerRightCorner, upperRightCorner,
-							upperLeftCorner, 1, 0, 0, alpha);
-			}
-			gl.glPopName();
-		}
-		//
-		// Upper Inner X
-		//
-		if(fTransformOldMaxY==fTransformNewMaxY)
-		{
-			
-			
-			x = XYAXISDISTANCE - fIconwith * 2.2f;
-			y = renderStyle.transformNorm2GlobalY(fTransformOldMaxY);
-			
-			gl.glColor4fv(Y_AXIS_COLOR, 0);
-			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(x, y, AXIS_Z);
-			gl.glVertex3f(renderStyle.getRenderWidth() - XYAXISDISTANCE, y,AXIS_Z);
-			gl.glEnd();
-	
-	
-			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-	
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.SCATTER_MAIN_ZOOM, 8));
-	
-			if (fTransformOldMaxY < 1)
-			{
-				if (bMainViewZoomDragged && iCurrentDragZoom == 8)
-					alpha =1f;	
-				else alpha = 0.6f;
-				textureManager.renderTexture(gl, EIconTextures.ARROW_UP,
-							lowerLeftCorner, lowerRightCorner, upperRightCorner,
-							upperLeftCorner, 1, 0, 0, alpha);
-			}
-			y = y - fIconwith;
-	
-			lowerLeftCorner = new Vec3f(x, y, AXIS_Z);
-			lowerRightCorner = new Vec3f(x + fIconwith, y, AXIS_Z);
-			upperRightCorner = new Vec3f(x + fIconwith, y + fIconwith, AXIS_Z);
-			upperLeftCorner = new Vec3f(x, y + fIconwith, AXIS_Z);
-	
-			if (fTransformOldMaxY > fTransformOldMinY)
-			{
-				if (bMainViewZoomDragged && iCurrentDragZoom == 8)
-					alpha =1f;	
-				else alpha = 0.6f;
-				textureManager.renderTexture(gl, EIconTextures.ARROW_DOWN,
-							lowerLeftCorner, lowerRightCorner, upperRightCorner,
-							upperLeftCorner, 1, 0, 0, alpha);
-			}
-			gl.glPopName();
-		}
-		
-	}
-
-	
-	
-	private void renderMainViewZoomSelectionBoxes(GL gl)
-	{
-		// Show Selection Boxes
-
-		if (!bMainViewZoomDragged)
-			return;
-		
-		float x1 = renderStyle.transformNorm2GlobalX(fTransformNewMinX);
-		float x2 = renderStyle.transformNorm2GlobalX(fTransformNewMaxX);
-		float y1 = XYAXISDISTANCE;
-		float y2 = renderStyle.getRenderHeight() - XYAXISDISTANCE;
-
-		gl.glColor4f(0, 1, 0, 0.1f);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(x1, y1, AXIS_Z);
-		gl.glVertex3f(x2, y1, AXIS_Z);
-		gl.glVertex3f(x2, y2, AXIS_Z);
-		gl.glVertex3f(x1, y2, AXIS_Z);
-		gl.glEnd();
-
-		x1 = renderStyle.transformNorm2GlobalX(fTransformOldMinX);
-		x2 = renderStyle.transformNorm2GlobalX(fTransformOldMaxX);
-
-		gl.glColor4f(1, 0, 0, 0.1f);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(x1, y1, AXIS_Z);
-		gl.glVertex3f(x2, y1, AXIS_Z);
-		gl.glVertex3f(x2, y2, AXIS_Z);
-		gl.glVertex3f(x1, y2, AXIS_Z);
-		gl.glEnd();
-
-		x1 = XYAXISDISTANCE;
-		x2 = renderStyle.getRenderWidth() - XYAXISDISTANCE;
-		y1 = renderStyle.transformNorm2GlobalY(fTransformNewMinY);
-		y2 = renderStyle.transformNorm2GlobalY(fTransformNewMaxY);
-		
-		gl.glColor4f(0, 1, 0, 0.1f);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(x1, y1, AXIS_Z);
-		gl.glVertex3f(x2, y1, AXIS_Z);
-		gl.glVertex3f(x2, y2, AXIS_Z);
-		gl.glVertex3f(x1, y2, AXIS_Z);
-		gl.glEnd();
-
-		y1 = renderStyle.transformNorm2GlobalY(fTransformOldMinY);
-		y2 = renderStyle.transformNorm2GlobalY(fTransformOldMaxY);
-		
-		gl.glColor4f(1, 0, 0, 0.1f);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(x1, y1, AXIS_Z);
-		gl.glVertex3f(x2, y1, AXIS_Z);
-		gl.glVertex3f(x2, y2, AXIS_Z);
-		gl.glVertex3f(x1, y2, AXIS_Z);
-		gl.glEnd();
-
-		
-		
-		
-	//	gl.glColor4fv(Y_AXIS_COLOR, 1);
-		
-	}
 	
 	/**
 	 * Render the coordinate system of the Scatterplot
@@ -2077,79 +2060,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		textRenderer.end3DRendering();
 
 	}
-
-	private String[] getAxisString() {
-		String[] tmpString = new String[storageVA.size()];
-		int axisCount = 0;
-		for (Integer iStorageIndex : storageVA) {
-
-			tmpString[axisCount++] = set.get(iStorageIndex).getLabel();
-
-		}
-		return tmpString;
-	}
-
-	private float transformOnXZoom(float x, float fSize, float fOffset) {
-		float tmp = (x - fOffset) / fSize;
-		return transformOnXZoom(tmp) * fSize + fOffset;
-	}
-
-	private float transformOnXZoom(float x, float fSize) {
-		float tmp = x / fSize;
-		return transformOnXZoom(tmp) * fSize;
-	}
-
-	private float transformOnXZoom(float x) {
-		if (!bMainViewZoom)
-			return x;
-
-		if (x < fTransformOldMinX) {
-			float factor = fTransformOldMinX / fTransformNewMinX;
-			return x / factor;
-		}
-
-		if (x > fTransformOldMaxX) {
-
-			float factor = (1 - fTransformOldMaxX) / (1 - fTransformNewMaxX);
-			return fTransformNewMaxX + (x - fTransformOldMaxX) / factor;
-		}
-
-		float factor = (fTransformNewMaxX - fTransformNewMinX)
-				/ (fTransformOldMaxX - fTransformOldMinX);
-		return (fTransformNewMinX) + (x - fTransformOldMinX) * factor;
-	}
-	
-	private float transformOnYZoom(float y, float fSize, float fOffset) {
-		float tmp = (y - fOffset) / fSize;
-		return transformOnYZoom(tmp) * fSize + fOffset;
-	}
-
-	private float transformOnYZoom(float y, float fSize) {
-		float tmp = y / fSize;
-		return transformOnXZoom(tmp) * fSize;
-	}
-
-	private float transformOnYZoom(float y) {
-		if (!bMainViewZoom)
-			return y;
-
-		if (y < fTransformOldMinY) {
-			float factor = fTransformOldMinY / fTransformNewMinY;
-			return y / factor;
-		}
-
-		if (y > fTransformOldMaxY) {
-
-			float factor = (1 - fTransformOldMaxY) / (1 - fTransformNewMaxY);
-			return fTransformNewMaxY + (y - fTransformOldMaxY) / factor;
-		}
-
-		float factor = (fTransformNewMaxY - fTransformNewMinY)
-				/ (fTransformOldMaxY - fTransformOldMinY);
-		return (fTransformNewMinY) + (y - fTransformOldMinY) * factor;
-	}
-	
-
+		
 	private void renderScatterPoints(GL gl) {
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
@@ -2628,30 +2539,6 @@ public class GLScatterPlot extends AStorageBasedView {
 		gl.glEnd();
 	}
 
-	public void togglePointType() {
-
-		switch (POINTSTYLE) {
-		case POINT:
-			POINTSTYLE = EScatterPointType.BOX;
-			break;
-		case BOX:
-			POINTSTYLE = EScatterPointType.CIRCLE;
-			break;
-		case CIRCLE:
-			POINTSTYLE = EScatterPointType.DISK;
-			break;
-		case DISK:
-			POINTSTYLE = EScatterPointType.CROSS;
-			break;
-		case CROSS:
-			POINTSTYLE = EScatterPointType.POINT;
-			break;
-		default:
-		}
-		bUpdateMainView = true;
-		setDisplayListDirty();
-	}
-
 	private void handleMainZoomAxes(float x, float y)
 	{
 		switch (iCurrentDragZoom) {
@@ -2727,46 +2614,78 @@ public class GLScatterPlot extends AStorageBasedView {
 		}
 		
 	}
+		
+	private float transformOnXZoom(float x, float fSize, float fOffset) {
+		float tmp = (x - fOffset) / fSize;
+		return transformOnXZoom(tmp) * fSize + fOffset;
+	}
+
+	private float transformOnXZoom(float x, float fSize) {
+		float tmp = x / fSize;
+		return transformOnXZoom(tmp) * fSize;
+	}
+
+	private float transformOnXZoom(float x) {
+		if (!bMainViewZoom)
+			return x;
+
+		if (x < fTransformOldMinX) {
+			float factor = fTransformOldMinX / fTransformNewMinX;
+			return x / factor;
+		}
+
+		if (x > fTransformOldMaxX) {
+
+			float factor = (1 - fTransformOldMaxX) / (1 - fTransformNewMaxX);
+			return fTransformNewMaxX + (x - fTransformOldMaxX) / factor;
+		}
+
+		float factor = (fTransformNewMaxX - fTransformNewMinX)
+				/ (fTransformOldMaxX - fTransformOldMinX);
+		return (fTransformNewMinX) + (x - fTransformOldMinX) * factor;
+	}
 	
-	/**
-	 * Render the symbol of the view instead of the view
-	 * 
-	 * @param gl
-	 */
-	// private void renderSymbol(GL gl) {
-	// float fXButtonOrigin = 0.33f * renderStyle.getScaling();
-	// float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-	// Texture tempTexture = textureManager.getIconTexture(gl,
-	// EIconTextures.HEAT_MAP_SYMBOL);
-	// tempTexture.enable();
-	// tempTexture.bind();
-	//
-	// TextureCoords texCoords = tempTexture.getImageTexCoords();
-	//
-	// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-	// gl.glColor4f(1f, 1, 1, 1f);
-	// gl.glBegin(GL.GL_POLYGON);
-	//
-	// gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-	// gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.01f);
-	// gl.glTexCoord2f(texCoords.left(), texCoords.top());
-	// gl.glVertex3f(fXButtonOrigin, 2 * fYButtonOrigin, 0.01f);
-	// gl.glTexCoord2f(texCoords.right(), texCoords.top());
-	// gl.glVertex3f(fXButtonOrigin * 2, 2 * fYButtonOrigin, 0.01f);
-	// gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-	// gl.glVertex3f(fXButtonOrigin * 2, fYButtonOrigin, 0.01f);
-	// gl.glEnd();
-	// gl.glPopAttrib();
-	// tempTexture.disable();
-	// }
+	private float transformOnYZoom(float y, float fSize, float fOffset) {
+		float tmp = (y - fOffset) / fSize;
+		return transformOnYZoom(tmp) * fSize + fOffset;
+	}
 
-	// public void renderHorizontally(boolean bRenderStorageHorizontally) {
-	//
-	// this.bRenderStorageHorizontally = bRenderStorageHorizontally;
-	// // renderStyle.setBRenderStorageHorizontally(bRenderStorageHorizontally);
-	// setDisplayListDirty();
-	// }
+	private float transformOnYZoom(float y, float fSize) {
+		float tmp = y / fSize;
+		return transformOnXZoom(tmp) * fSize;
+	}
 
+	private float transformOnYZoom(float y) {
+		if (!bMainViewZoom)
+			return y;
+
+		if (y < fTransformOldMinY) {
+			float factor = fTransformOldMinY / fTransformNewMinY;
+			return y / factor;
+		}
+
+		if (y > fTransformOldMaxY) {
+
+			float factor = (1 - fTransformOldMaxY) / (1 - fTransformNewMaxY);
+			return fTransformNewMaxY + (y - fTransformOldMaxY) / factor;
+		}
+
+		float factor = (fTransformNewMaxY - fTransformNewMinY)
+				/ (fTransformOldMaxY - fTransformOldMinY);
+		return (fTransformNewMinY) + (y - fTransformOldMinY) * factor;
+	}
+		
+	private String[] getAxisString() {
+		String[] tmpString = new String[storageVA.size()];
+		int axisCount = 0;
+		for (Integer iStorageIndex : storageVA) {
+
+			tmpString[axisCount++] = set.get(iStorageIndex).getLabel();
+
+		}
+		return tmpString;
+	}
+	
 	public void selectAxesfromExternal() {
 
 		int iMouseOverSelections=storageSelectionManager
@@ -2889,9 +2808,6 @@ public class GLScatterPlot extends AStorageBasedView {
 		eventPublisher.triggerEvent(event);
 	}
 
-	
-	
-
 	@Override
 	protected void initLists() {
 		if (contentVAType != ContentVAType.CONTENT_EMBEDDED_HM) {
@@ -2981,25 +2897,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		// return sInfoText.toString();
 		return "TODO: ScatterploT Deatil Info";
 	}
-
-	private float[] getSelectionColor(int color) {
-		switch (color) {
-		case 1:
-			return new float[] { 0, 0, 1, 1 };
-		case 2:
-			return new float[] { 0, 1, 0, 1 };
-		case 3:
-			return new float[] { 1, 1, 0, 1 };
-		case 4:
-			return new float[] { 0, 1, 1, 1 };
-		case 5:
-			return new float[] { 1, 0, 1, 1 };
-		default:
-			return new float[] { 0, 0, 0, 1 };
-		}
-
-	}
-
+	
 	public void addSelectionType() {
 		int iSlectionNr = AlSelectionTypes.size() + 1;
 		if (iSlectionNr > iMaxSelections)
@@ -3007,7 +2905,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		SelectionTypeEvent event = new SelectionTypeEvent();
 		currentSelection = new SelectionType();
 		currentSelection.setType("SCATTER_SELECTION_" + iSlectionNr);
-		currentSelection.setColor(getSelectionColor(iSlectionNr));
+		currentSelection.setColor(ScatterPlotHelper.getSelectionColor(iSlectionNr));
 		event.addSelectionType(currentSelection);
 		eventPublisher.triggerEvent(event);
 
@@ -3102,8 +3000,6 @@ public class GLScatterPlot extends AStorageBasedView {
 		}
 
 	}
-
-	
 
 	private void createStorageSelection(SelectionType selectionType,
 			int contentID) {
@@ -3705,16 +3601,38 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	public void toggleMatrixZoom() {
 		if (bAllowMatrixZoom) {
-			bAllowMatrixZoom = false;
-			renderStyle.setIsMouseZoom(false);
+			bAllowMatrixZoom = false;			
 			bUpdateMainView = true;
 			setDisplayListDirty();
 		} else {
-			bAllowMatrixZoom = true;
-			renderStyle.setIsMouseZoom(true);
+			bAllowMatrixZoom = true;			
 			bUpdateMainView = true;
 			setDisplayListDirty();
 		}
+	}
+	
+	public void togglePointType() {
+
+		switch (POINTSTYLE) {
+		case POINT:
+			POINTSTYLE = EScatterPointType.BOX;
+			break;
+		case BOX:
+			POINTSTYLE = EScatterPointType.CIRCLE;
+			break;
+		case CIRCLE:
+			POINTSTYLE = EScatterPointType.DISK;
+			break;
+		case DISK:
+			POINTSTYLE = EScatterPointType.CROSS;
+			break;
+		case CROSS:
+			POINTSTYLE = EScatterPointType.POINT;
+			break;
+		default:
+		}
+		bUpdateMainView = true;
+		setDisplayListDirty();
 	}
 
 }
