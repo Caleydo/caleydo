@@ -41,23 +41,30 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 
 	public static final int NUMBER_AXIS_MARKERS = 19;
 
-	public static final int MIN_AXIS_LABEL_TEXT_SIZE = 60;
-	public static final int MIN_NUMBER_TEXT_SIZE = 55;
+	public static final int MIN_AXIS_LABEL_TEXT_SIZE = 5;//60;
+	public static final int MIN_NUMBER_TEXT_SIZE = 5;//55;
+	public static final int LABEL_TEXT_MIN_SIZE = 5;//50;
 
 	public static final float AXIS_Z = 0.0f;
-	public static final float LABEL_Z = 0.004f;
-	public static final float TEXT_ON_LABEL_Z = 0.007f;
-	public static final float MATRIX_SELECTIONRECTANGLE_Z = 0.005f;
-	public static final float MATRIX_SELECTIONTEXTURES_Z = 0.004f;
+	public static final float SCATTERPOINT_Z = 0.001f;
+	public static final float SELECTION_Z = 0.002f;
+	public static final float TWOAXISLINE_Z = 0.003f;
 	public static final float MATRIX_FULLTEXTURES_Z = 0.003f;
+	public static final float LABEL_Z = 0.005f;
+	public static final float MATRIX_SELECTIONTEXTURES_Z = 0.004f;
+	public static final float MATRIX_SELECTIONRECTANGLE_Z = 0.005f;
 	public static final float MATRIX_HISTOGRAMM_Z=0.006f;
-	public static final float SELECTION_Z = 0.003f;
-	public static final float SCATTERPOINT_Z = 0.002f;
+	public static final float HIGHLIGHTED_SCATTERPOINT_Z=0.006f;
+	public static final float TEXT_ON_LABEL_Z = 0.007f;				
+	public static final float MAINVIEW_ZOOM_Z=0.008f;
+	public static final float SELECTION_RECTANGLE_Z=0.009f;
+	
+	
 	
 	
 	public static final float AXIS_MARKER_WIDTH = 0.02f;
 
-	public static final int LABEL_TEXT_MIN_SIZE = 50;
+	
 	private float fCenterXOffset = 0;
 	private float fCenterYOffset = 0;
 	public float fCenterCorrectionFacktor = 0;
