@@ -395,7 +395,7 @@ public abstract class GraphDrawingUtils
 				}
 			}		
 		}
-		return -1;
+		return 0;
 	}
 	
 	
