@@ -184,10 +184,12 @@ function scrollMap() {
 }
 function windowChanged() {
 	if (localSelectionId != null && localSelectionId.length > 0) {
-		findAddress(localSelectionId, windowChangedCallback);
+		sendWindowChanged(); 
+		//findAddress(localSelectionId, windowChangedCallback);
 	} else {
+		sendWindowChanged(); 
 		// clearVisualLinks();
-		findAddress(localSelectionId, windowChangedCallback);
+		//findAddress(localSelectionId, windowChangedCallback);
 	}
 }
 
@@ -234,6 +236,15 @@ function lookupCallback(response) {
 		var xml = generateBoundingBoxXML(pos, true);
         sendVisLinkSelection(address, xml);
     }
+}
+
+function sendWindowChanged() {
+	var requrl = "http://localhost:8080/visdaemon/reportWindowChange?name=googlemaps";
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("GET", requrl, false);
+	xhttp.send("");
+	xmlDoc = xhttp.responseXML;
 }
 
 function sendVisLinkSelection(id, xml) {

@@ -10,6 +10,16 @@ function selectVisLink() {
 	reportVisLinks(selectionId);
 }
 
+function reportWindowChange() {
+	var	requrl = "http://localhost:8080/visdaemon/reportWindowChange";
+	requrl += "?name=" + window.visLinkAppName;
+	
+	var	xhttp =	new	XMLHttpRequest();
+	xhttp.open("GET", requrl, false);
+	xhttp.send("");
+	xmlDoc = xhttp.responseXML;
+}
+
 function reportVisLinks(selectionId) {
 	var	doc	= content.document;
 	var	bbs	= searchDocument(doc, selectionId);

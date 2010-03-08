@@ -2,6 +2,9 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean name="userManager" class="daemon.UserManager">
+	</bean>
 
 	<bean name="applicationManager" class="daemon.ApplicationManager">
 	</bean>
@@ -9,6 +12,9 @@
 	<bean name="visLinkManager" class="daemon.VisLinkManager">
 		<property name="applicationManager">
 			<ref bean="applicationManager" />
+		</property>
+		<property name="userManager">
+			<ref bean="userManager" />
 		</property>
 	</bean>
 

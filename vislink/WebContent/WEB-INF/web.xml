@@ -30,6 +30,12 @@
 	</servlet>
 	<servlet>
 		<description></description>
+		<display-name>reportWindowChange</display-name>
+		<servlet-name>reportWindowChange</servlet-name>
+		<servlet-class>daemon.ReportWindowChange</servlet-class>
+	</servlet>
+	<servlet>
+		<description></description>
 		<display-name>reportVisualLinks</display-name>
 		<servlet-name>reportVisualLinks</servlet-name>
 		<servlet-class>daemon.ReportVisualLinks</servlet-class>
@@ -67,6 +73,10 @@
 	<servlet-mapping>
 		<servlet-name>reportVisualLinks</servlet-name>
 		<url-pattern>/reportVisualLinks</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>reportWindowChange</servlet-name>
+		<url-pattern>/reportWindowChange</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>clearVisualLinks</servlet-name>
