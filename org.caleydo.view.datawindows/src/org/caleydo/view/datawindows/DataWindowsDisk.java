@@ -21,7 +21,6 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 public class DataWindowsDisk extends PoincareDisk {
 
-	// Tree<PoincareNode> tree;
 	private double canvasWidth;
 	private double canvasHeight;
 	private TextureManager textureManager;
@@ -83,11 +82,9 @@ public class DataWindowsDisk extends PoincareDisk {
 	}
 
 	public void renderTree(GL glHandle, TextureManager texManager,
-
-	PickingManager pickManager, int iViewID, double viewingWidth,
+			PickingManager pickManager, int iViewID, double viewingWidth,
 			double viewingHeight) {
 
-		// System.out.println("Baum wird gezeichnet: ");
 		gl = glHandle;
 		pickingManager = pickManager;
 		textureManager = texManager;
@@ -95,7 +92,7 @@ public class DataWindowsDisk extends PoincareDisk {
 		canvasHeight = viewingHeight;
 		iUniqueID = iViewID;
 
-//		displayDetailLevels();
+		displayDetailLevels();
 
 		// drawBackground();
 		PoincareNode root = getTree().getRoot();
@@ -109,22 +106,20 @@ public class DataWindowsDisk extends PoincareDisk {
 			ArrayList<PoincareNode> children = node.getChildren();
 			int numberOfChildren = children.size();
 			for (int i = 0; i < numberOfChildren; i++) {
-				// render the line:
+				// render the lines:
 				if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 1) {
-
 					drawLine(node, children.get(i), 12, mode);
 				}
 				if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 2) {
-
 					drawLine(node, children.get(i), 4, mode);
 				}
 				if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 3) {
-
 					drawLine(node, children.get(i), 3, mode);
 				}
 				renderNode(children.get(i), mode);
 			}
 		}
+		// there is nothing drawn beyond detail level 3
 		if (distanceToDetaillevel(node.getDistanceFromOrigin()) <= 2) {
 			drawNode(node, mode);
 		}
@@ -133,10 +128,12 @@ public class DataWindowsDisk extends PoincareDisk {
 
 	public void drawNode(PoincareNode node, int mode) {
 
-		double size = distancePoints(node.getProjectedPosition(), this
-				.projectPoint(new Point2D.Double(node.getPosition().getX()
-						+ nodeSize / 2, node.getPosition().getY() + nodeSize
-						/ 2)))
+		// for a realistic size, the size is a projected offset of the current
+		// point
+		double size = distancePoints(node.getProjectedPosition(),
+				projectPoint(new Point2D.Double(node.getPosition().getX()
+						- (nodeSize / 2), node.getPosition().getY() - (nodeSize
+						/ 2))))
 				* displayScaleFactor / 2;
 
 		Vec3f lowerLeftCorner = new Vec3f(
@@ -159,7 +156,7 @@ public class DataWindowsDisk extends PoincareDisk {
 						* displayScaleFactor + canvasWidth / 2), (float) (size
 						+ node.getProjectedPosition().getY()
 						* displayScaleFactor + canvasHeight / 2), 0);
-
+//if there is no projection on the poincare disk
 		if (mode == 2) {
 			lowerLeftCorner = new Vec3f(
 					(float) (-size + node.getPosition().getX()
@@ -189,7 +186,7 @@ public class DataWindowsDisk extends PoincareDisk {
 				EPickingType.DATAW_NODE, node.iComparableValue);
 
 		gl.glPushName(iPickingID);
-
+//different textures for different detail levels
 		if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 2) {
 			textureManager.renderGUITexture(gl, EIconTextures.PATHWAY_ICON,
 					lowerLeftCorner, lowerRightCorner, upperRightCorner,
@@ -214,120 +211,83 @@ public class DataWindowsDisk extends PoincareDisk {
 				* lineFactor;
 		gl.glLineWidth((float) width);
 
-		
-			
-		
-		
-			// draw the curve:
+		// draw the curve:
+		if (numberOfDetails != 0) {
 
-			if (numberOfDetails != 0) {
-				
-			
-//				gl.glVertex3d(node1.getProjectedPosition().getX()
-//						* displayScaleFactor + (canvasWidth / 2), node1
-//						.getProjectedPosition().getY()
-//						* displayScaleFactor + canvasHeight / 2, 0);
-				Point2D.Double lastPosition = new Point2D.Double(0,0);
-				
-				Point2D.Double directionFactor = new Point2D.Double();
-				directionFactor.setLocation((endingPoint.getX() - startingPoint
-						.getX())
-						/ (numberOfDetails + 1),
-						(endingPoint.getY() - startingPoint.getY())
-								/ (numberOfDetails + 1));
+			// gl.glVertex3d(node1.getProjectedPosition().getX()
+			// * displayScaleFactor + (canvasWidth / 2), node1
+			// .getProjectedPosition().getY()
+			// * displayScaleFactor + canvasHeight / 2, 0);
+			Point2D.Double lastPosition = new Point2D.Double(0, 0);
 
-				Point2D.Double tempLinePoint = new Point2D.Double();
-				tempLinePoint.setLocation(startingPoint);
-				for (int i = 0; i <= numberOfDetails+1; i++) {
-					Point2D.Double tempLinePoint2 = new Point2D.Double();
-					tempLinePoint2.setLocation(tempLinePoint.getX()
-							+ directionFactor.getX() * (i ), tempLinePoint
-							.getY() + directionFactor.getY() * (i ));
+			Point2D.Double directionFactor = new Point2D.Double();
+			directionFactor.setLocation((endingPoint.getX() - startingPoint
+					.getX())
+					/ (numberOfDetails + 1),
+					(endingPoint.getY() - startingPoint.getY())
+							/ (numberOfDetails + 1));
 
-					width = distancePoints(projectPoint(tempLinePoint2),
-							projectPoint(new Point2D.Double(tempLinePoint2.getX()
-									+ lineWidth,tempLinePoint2
-									.getY()	+ lineWidth)))* lineFactor*displayScaleFactor;
-				
-					
-					gl.glLineWidth((float) width);
+			Point2D.Double tempLinePoint = new Point2D.Double();
+			tempLinePoint.setLocation(startingPoint);
+			for (int i = 0; i <= numberOfDetails + 1; i++) {
+				Point2D.Double tempLinePoint2 = new Point2D.Double();
+				tempLinePoint2.setLocation(tempLinePoint.getX()
+						+ directionFactor.getX() * (i), tempLinePoint.getY()
+						+ directionFactor.getY() * (i));
 
-					if(i>0){
-						gl.glBegin(GL.GL_LINE_STRIP);
+				width = distancePoints(
+						projectPoint(tempLinePoint2),
+						projectPoint(new Point2D.Double(tempLinePoint2.getX()
+								+ lineWidth, tempLinePoint2.getY() + lineWidth)))
+						* lineFactor * displayScaleFactor;
 
-						gl.glColor3i(0, 0, 0);
-						gl.glVertex3d(lastPosition.getX(),lastPosition.getY(), 0);
-					
-					lastPosition.setLocation(projectPoint(tempLinePoint2).getX()
+				gl.glLineWidth((float) width);
+
+				if (i > 0) {
+					gl.glBegin(GL.GL_LINE_STRIP);
+
+					gl.glColor3i(0, 0, 0);
+					gl.glVertex3d(lastPosition.getX(), lastPosition.getY(), 0);
+
+					lastPosition.setLocation(projectPoint(tempLinePoint2)
+							.getX()
 							* displayScaleFactor + (canvasWidth / 2),
 							projectPoint(tempLinePoint2).getY()
 									* displayScaleFactor + canvasHeight / 2);
-					
-					gl.glVertex3d(lastPosition.getX(),lastPosition.getY(), 0);
-					gl.glEnd();
-					
-					}
-					else{
-						lastPosition.setLocation(projectPoint(tempLinePoint2).getX()
-								* displayScaleFactor + (canvasWidth / 2),
-								projectPoint(tempLinePoint2).getY()
-										* displayScaleFactor + canvasHeight / 2);
-					}
-					
-				}
-			//	gl.glVertex3d(node2.getProjectedPosition().getX()
-				//		* displayScaleFactor + (canvasWidth / 2), node2
-					//	.getProjectedPosition().getY()
-						//* displayScaleFactor + canvasHeight / 2, 0);
-				
-			}
-			else {
-				gl.glBegin(GL.GL_LINE);
 
-				gl.glColor3i(0, 0, 0);
-				gl.glVertex3d(node1.getProjectedPosition().getX()
-						* displayScaleFactor + (canvasWidth / 2), node1
-						.getProjectedPosition().getY()
-						* displayScaleFactor + canvasHeight / 2, 0);
-				
-				gl.glVertex3d(node2.getProjectedPosition().getX()
-						* displayScaleFactor + (canvasWidth / 2), node2
-						.getProjectedPosition().getY()
-						* displayScaleFactor + canvasHeight / 2, 0);
-				gl.glEnd();
+					gl.glVertex3d(lastPosition.getX(), lastPosition.getY(), 0);
+					gl.glEnd();
+
+				} else {
+					lastPosition.setLocation(projectPoint(tempLinePoint2)
+							.getX()
+							* displayScaleFactor + (canvasWidth / 2),
+							projectPoint(tempLinePoint2).getY()
+									* displayScaleFactor + canvasHeight / 2);
+				}
 			}
-		
-		
-			
-		
-			
-		
-	
+
+		} else {
+			gl.glBegin(GL.GL_LINE);
+
+			gl.glColor3i(0, 0, 0);
+			gl.glVertex3d(node1.getProjectedPosition().getX()
+					* displayScaleFactor + (canvasWidth / 2), node1
+					.getProjectedPosition().getY()
+					* displayScaleFactor + canvasHeight / 2, 0);
+
+			gl.glVertex3d(node2.getProjectedPosition().getX()
+					* displayScaleFactor + (canvasWidth / 2), node2
+					.getProjectedPosition().getY()
+					* displayScaleFactor + canvasHeight / 2, 0);
+			gl.glEnd();
+		}
+
 	}
 
 	public void drawBackground() {
 
-		double size = 3;
-
-		Vec3f lowerLeftCorner = new Vec3f((float) (-size + canvasWidth / 2),
-				(float) (-size + canvasHeight / 2), 0);
-		Vec3f lowerRightCorner = new Vec3f((float) (size + canvasWidth / 2),
-				(float) (-size + canvasHeight / 2), 0);
-		Vec3f upperRightCorner = new Vec3f((float) (size + canvasWidth / 2),
-				(float) (size + canvasHeight / 2), 0);
-		Vec3f upperLeftCorner = new Vec3f((float) (-size + canvasWidth / 2),
-				(float) (size + canvasHeight / 2), 0);
-		Vec3f scalingPivot = new Vec3f(1, 1, 0);
-
-		int iPickingID = pickingManager.getPickingID(iUniqueID,
-				EPickingType.DATAW_NODE, 666);
-
-		gl.glPushName(iPickingID);
-		textureManager.renderGUITexture(gl, EIconTextures.GATE_BODY,
-				lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
-
-		gl.glPopName();
+	
 	}
 
 	private void drawCircle(double radius, double k, double h) {

@@ -372,8 +372,6 @@ public class GLDataWindows extends AGLView {
 			switch (pickingMode) {
 
 			case CLICKED:
-				// disk.centerNode(disk.getNodeByCompareableValue(iExternalID));
-				
 				
 				arSlerpActions.add(new nodeSlerp(4, disk
 						.getNodeByCompareableValue(iExternalID).getPosition(),
