@@ -1,10 +1,26 @@
 package org.caleydo.view.compare;
 
-import org.caleydo.core.manager.picking.EPickingType;
-
 import gleem.linalg.Vec3f;
 
+import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.view.compare.rendercommand.ERenderCommandType;
+import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
+
 public class HeatMapLayoutLeft extends HeatMapLayout {
+
+	public HeatMapLayoutLeft(RenderCommandFactory renderCommandFactory) {
+		super(renderCommandFactory);
+
+		localRenderCommands.add(renderCommandFactory
+				.getRenderCommand(ERenderCommandType.OVERVIEW_GROUP_BAR));
+		localRenderCommands.add(renderCommandFactory
+				.getRenderCommand(ERenderCommandType.OVERVIEW_HEATMAP));
+		localRenderCommands.add(renderCommandFactory
+				.getRenderCommand(ERenderCommandType.OVERVIEW_SLIDER));
+
+		remoteRenderCommands.add(renderCommandFactory
+				.getRenderCommand(ERenderCommandType.DETAIL_HEATMAPS));
+	}
 
 	@Override
 	public Vec3f getDetailPosition() {
@@ -42,5 +58,6 @@ public class HeatMapLayoutLeft extends HeatMapLayout {
 	public EPickingType getHeatMapPickingType() {
 		return EPickingType.COMPARE_LEFT_EMBEDDED_VIEW_SELECTION;
 	}
+
 
 }

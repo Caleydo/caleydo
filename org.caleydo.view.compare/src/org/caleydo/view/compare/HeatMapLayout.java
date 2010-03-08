@@ -1,8 +1,12 @@
 package org.caleydo.view.compare;
 
-import org.caleydo.core.manager.picking.EPickingType;
-
 import gleem.linalg.Vec3f;
+
+import java.util.ArrayList;
+
+import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
+import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 
 public abstract class HeatMapLayout {
 
@@ -19,6 +23,16 @@ public abstract class HeatMapLayout {
 	protected float totalHeight;
 	protected float positionX;
 	protected float positionY;
+	
+	protected RenderCommandFactory renderCommandFactory;
+	protected ArrayList<IHeatMapRenderCommand> localRenderCommands;
+	protected ArrayList<IHeatMapRenderCommand> remoteRenderCommands;
+	
+	public HeatMapLayout(RenderCommandFactory renderCommandFactory) {
+		this.renderCommandFactory = renderCommandFactory;
+		localRenderCommands = new ArrayList<IHeatMapRenderCommand>();
+		remoteRenderCommands = new ArrayList<IHeatMapRenderCommand>();
+	}
 
 	public void setLayoutParameters(float positionX, float positionY,
 			float totalHeight, float totalWidth) {
@@ -97,5 +111,12 @@ public abstract class HeatMapLayout {
 	public abstract EPickingType getGroupPickingType();
 	
 	public abstract EPickingType getHeatMapPickingType();
+	
+	public ArrayList<IHeatMapRenderCommand> getRenderCommandsOfLocalItems() {
+		return localRenderCommands;
+	}
 
+	public ArrayList<IHeatMapRenderCommand> getRenderCommandsOfRemoteItems() {
+		return remoteRenderCommands;
+	}
 }

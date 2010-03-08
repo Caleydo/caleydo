@@ -18,7 +18,6 @@ import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -46,6 +45,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentCo
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.compare.listener.CompareGroupsEventListener;
+import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 
 /**
  * The group assignment interface
@@ -68,6 +68,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	private HeatMapWrapper leftHeatMapWrapper;
 	private HeatMapWrapper rightHeatMapWrapper;
 	private SelectionType activeHeatMapSelectionType;
+	private RenderCommandFactory renderCommandFactory;
 
 	private CompareGroupsEventListener compareGroupsEventListener;
 
@@ -102,7 +103,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		hashHeatMapWrappers = new HashMap<Integer, HeatMapWrapper>();
 		glKeyListener = new GLCompareKeyListener(this);
 		isControlPressed = false;
-
+		renderCommandFactory = new RenderCommandFactory(iUniqueID, pickingManager, textureManager);
 	}
 
 	@Override
@@ -110,8 +111,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		// contentVA = useCase.getContentVA(ContentVAType.CONTENT);
 		// storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
 
-		heatMapLayoutLeft = new HeatMapLayoutLeft();
-		heatMapLayoutRight = new HeatMapLayoutRight();
+		heatMapLayoutLeft = new HeatMapLayoutLeft(renderCommandFactory);
+		heatMapLayoutRight = new HeatMapLayoutRight(renderCommandFactory);
 		activeHeatMapSelectionType = new SelectionType("ActiveHeatmap",
 				new float[] { 0.0f, 1.0f, 1.0f, 0.0f }, true, false, 0.9f);
 

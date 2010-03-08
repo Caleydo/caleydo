@@ -42,6 +42,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
 import org.caleydo.view.heatmap.GLHeatMap;
 
 public class HeatMapWrapper implements ISelectionUpdateHandler {
@@ -74,14 +75,15 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 
 	public HeatMapWrapper(int id, HeatMapLayout layout, AGLView glParentView,
 			GLInfoAreaManager infoAreaManager, IUseCase useCase,
-			IGLRemoteRenderingView parentView, EDataDomain dataDomain, SelectionType activeHeatMapSelectionType) {
-		
+			IGLRemoteRenderingView parentView, EDataDomain dataDomain,
+			SelectionType activeHeatMapSelectionType) {
+
 		generalManager = GeneralManager.get();
 		overview = new HeatMapOverview(layout);
 		hashHeatMaps = new HashMap<Integer, GLHeatMap>();
 		hashHeatMapPositions = new HashMap<Integer, Vec3f>();
 		selectedGroups = new ArrayList<GroupInfo>();
-		
+
 		this.layout = layout;
 		this.id = id;
 		this.glParentView = glParentView;
@@ -90,11 +92,11 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 		this.parentView = parentView;
 		this.dataDomain = dataDomain;
 		this.activeHeatMapSelectionType = activeHeatMapSelectionType;
-		
+
 		isNewSelection = false;
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		contentSelectionManager = useCase.getContentSelectionManager();
-//		contentSelectionManager.addTypeToDeltaBlacklist(activeHeatMapSelectionType);
+		// contentSelectionManager.addTypeToDeltaBlacklist(activeHeatMapSelectionType);
 		activeHeatMapID = -1;
 	}
 
@@ -120,11 +122,12 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 		heatMap.setDetailLevel(EDetailLevel.MEDIUM);
 		heatMap.initRemote(gl, glParentView, glMouseListener, infoAreaManager);
 		heatMap.setSendClearSelectionsEvent(true);
-//		ContentSelectionManager hmContentSelectionManager = heatMap.getContentSelectionManager();
-//		hmContentSelectionManager.addSelectionType(activeHeatMapSelectionType);
-//		hmContentSelectionManager.addTypeToDeltaBlacklist(activeHeatMapSelectionType);
+		// ContentSelectionManager hmContentSelectionManager =
+		// heatMap.getContentSelectionManager();
+		// hmContentSelectionManager.addSelectionType(activeHeatMapSelectionType);
+		// hmContentSelectionManager.addTypeToDeltaBlacklist(activeHeatMapSelectionType);
 		heatMap.useFishEye(false);
-		
+
 		return heatMap;
 	}
 
@@ -233,11 +236,11 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 					.getGroupIndex());
 
 			heatMap.getViewFrustum().setLeft(heatMapPosition.x());
-			heatMap.getViewFrustum().setBottom(
-					heatMapPosition.y() - heatMapHeight);
+			heatMap.getViewFrustum().setBottom(heatMapPosition.y());
 			heatMap.getViewFrustum().setRight(
 					heatMapPosition.x() + layout.getDetailWidth());
-			heatMap.getViewFrustum().setTop(heatMapPosition.y());
+			heatMap.getViewFrustum()
+					.setTop(heatMapPosition.y() + heatMapHeight);
 
 		}
 	}
@@ -246,8 +249,15 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 			PickingManager pickingManager, GLMouseListener glMouseListener,
 			int viewID) {
 
-		overview.draw(gl, textureManager, pickingManager,
-				contentSelectionManager, viewID, id);
+		ArrayList<IHeatMapRenderCommand> renderCommands = layout
+				.getRenderCommandsOfLocalItems();
+
+		for (IHeatMapRenderCommand renderCommand : renderCommands) {
+			renderCommand.render(gl, this);
+		}
+
+		// overview.draw(gl, textureManager, pickingManager,
+		// contentSelectionManager, viewID, id);
 
 		// calculateHeatMapPositions();
 		// drawVisLinksBetweenOverviewAndDetail(gl);
@@ -258,65 +268,72 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 
 		// if (useDetailView) {
 
-		int numTotalSamples = 0;
+		// int numTotalSamples = 0;
+		//
+		// for (GroupInfo groupInfo : selectedGroups) {
+		// int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
+		// numTotalSamples += numSamplesInHeatMap;
+		// }
+		//
+		// calculateHeatMapPositions();
+		//
+		// for (GroupInfo groupInfo : selectedGroups) {
+		//
+		// GLHeatMap heatMap = hashHeatMaps.get(groupInfo.getGroupIndex());
+		// if (heatMap == null)
+		// continue;
+		// int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
+		// float heatMapHeight = layout
+		// .getDetailHeatMapHeight(numSamplesInHeatMap,
+		// numTotalSamples, selectedGroups.size());
+		// Vec3f heatMapPosition = hashHeatMapPositions.get(groupInfo
+		// .getGroupIndex());
+		//
+		// gl.glTranslatef(heatMapPosition.x(), heatMapPosition.y(),
+		// heatMapPosition.z());
+		// heatMap.getViewFrustum().setLeft(heatMapPosition.x());
+		// heatMap.getViewFrustum().setBottom(heatMapPosition.y());
+		// heatMap.getViewFrustum().setRight(
+		// heatMapPosition.x() + layout.getDetailWidth());
+		// heatMap.getViewFrustum()
+		// .setTop(heatMapPosition.y() + heatMapHeight);
+		//
+		// if (isNewSelection) {
+		// heatMap.setDisplayListDirty();
+		// }
+		// gl.glPushName(pickingManager.getPickingID(glParentView.getID(),
+		// layout.getHeatMapPickingType(), groupInfo.getGroupIndex()));
+		// heatMap.displayRemote(gl);
+		// gl.glPopName();
+		//
+		// gl.glTranslatef(-heatMapPosition.x(), -heatMapPosition.y(),
+		// -heatMapPosition.z());
+		//
+		// // ContentVirtualArray va = heatMap.getContentVA();
+		// //
+		// // for (int i = 0; i < va.size(); i++) {
+		// // // Vec2f position = getLeftLinkPositionFromContentID(va.get(i));
+		// // // GLHelperFunctions.drawPointAt(gl, position.x(), position.y(),
+		// // // 1);v
+		// // Vec2f position = getLeftDetailLinkPositionFromContentID(va
+		// // .get(i));
+		// // GLHelperFunctions
+		// // .drawPointAt(gl, position.x(), position.y(), 1);
+		// // }
+		// }
 
-		for (GroupInfo groupInfo : selectedGroups) {
-			int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
-			numTotalSamples += numSamplesInHeatMap;
-		}
+		ArrayList<IHeatMapRenderCommand> renderCommands = layout
+				.getRenderCommandsOfRemoteItems();
 
-		calculateHeatMapPositions();
-
-		for (GroupInfo groupInfo : selectedGroups) {
-
-			GLHeatMap heatMap = hashHeatMaps.get(groupInfo.getGroupIndex());
-			if (heatMap == null)
-				continue;
-			int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
-			float heatMapHeight = layout
-					.getDetailHeatMapHeight(numSamplesInHeatMap,
-							numTotalSamples, selectedGroups.size());
-			Vec3f heatMapPosition = hashHeatMapPositions.get(groupInfo
-					.getGroupIndex());
-
-			gl.glTranslatef(heatMapPosition.x(), heatMapPosition.y(),
-					heatMapPosition.z());
-			heatMap.getViewFrustum().setLeft(heatMapPosition.x());
-			heatMap.getViewFrustum().setBottom(
-					heatMapPosition.y() - heatMapHeight);
-			heatMap.getViewFrustum().setRight(
-					heatMapPosition.x() + layout.getDetailWidth());
-			heatMap.getViewFrustum().setTop(heatMapPosition.y());
-
-			if (isNewSelection) {
-				heatMap.setDisplayListDirty();
-			}
-			gl.glPushName(pickingManager.getPickingID(glParentView.getID(),
-					layout.getHeatMapPickingType(), groupInfo.getGroupIndex()));
-			heatMap.displayRemote(gl);
-			gl.glPopName();
-
-			gl.glTranslatef(-heatMapPosition.x(), -heatMapPosition.y(),
-					-heatMapPosition.z());
-
-			// ContentVirtualArray va = heatMap.getContentVA();
-			//
-			// for (int i = 0; i < va.size(); i++) {
-			// // Vec2f position = getLeftLinkPositionFromContentID(va.get(i));
-			// // GLHelperFunctions.drawPointAt(gl, position.x(), position.y(),
-			// // 1);v
-			// Vec2f position = getLeftDetailLinkPositionFromContentID(va
-			// .get(i));
-			// GLHelperFunctions
-			// .drawPointAt(gl, position.x(), position.y(), 1);
-			// }
+		for (IHeatMapRenderCommand renderCommand : renderCommands) {
+			renderCommand.render(gl, this);
 		}
 
 		isNewSelection = false;
 
 	}
 
-	private void calculateHeatMapPositions() {
+	public void calculateHeatMapPositions() {
 
 		hashHeatMapPositions.clear();
 
@@ -591,7 +608,7 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 
 				groupInfo.getGroup().setSelectionType(SelectionType.NORMAL);
 				selectedGroups.remove(groupInfo);
-				if(activeHeatMapID == groupIndex)
+				if (activeHeatMapID == groupIndex)
 					setHeatMapsInactive();
 
 				isNewSelection = true;
@@ -604,7 +621,7 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 
 		if (isControlPressed) {
 			tempGroupList.addAll(selectedGroups);
-		} else if(activeHeatMapID != groupIndex) {
+		} else if (activeHeatMapID != groupIndex) {
 			setHeatMapsInactive();
 		}
 		selectedGroups.clear();
@@ -699,46 +716,82 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 			selectionUpdateListener = null;
 		}
 	}
-	
+
 	public void setHeatMapActive(int groupIndex) {
-		if(activeHeatMapID == groupIndex)
+		if (activeHeatMapID == groupIndex)
 			return;
-		
-		
-		if(activeHeatMapID != -1) {
+
+		if (activeHeatMapID != -1) {
 			GLHeatMap heatMap = hashHeatMaps.get(activeHeatMapID);
-			ContentSelectionManager hmContentSelectionManager = heatMap.getContentSelectionManager();
-			for(Integer elementID : heatMap.getContentVA()) {
-				hmContentSelectionManager.removeFromType(activeHeatMapSelectionType, elementID);
+			ContentSelectionManager hmContentSelectionManager = heatMap
+					.getContentSelectionManager();
+			for (Integer elementID : heatMap.getContentVA()) {
+				hmContentSelectionManager.removeFromType(
+						activeHeatMapSelectionType, elementID);
 			}
 			SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
-			selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager.getDelta());
+			selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager
+					.getDelta());
 			eventPublisher.triggerEvent(selectionUpdateEvent);
 		}
-		
+
 		GLHeatMap heatMap = hashHeatMaps.get(groupIndex);
-		ContentSelectionManager hmContentSelectionManager = heatMap.getContentSelectionManager();
-		hmContentSelectionManager.addToType(activeHeatMapSelectionType, heatMap.getContentVA().getVirtualArray());
+		ContentSelectionManager hmContentSelectionManager = heatMap
+				.getContentSelectionManager();
+		hmContentSelectionManager.addToType(activeHeatMapSelectionType, heatMap
+				.getContentVA().getVirtualArray());
 		activeHeatMapID = groupIndex;
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
-		selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager.getDelta());
+		selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager
+				.getDelta());
 		eventPublisher.triggerEvent(selectionUpdateEvent);
 	}
-	
+
 	public void setHeatMapsInactive() {
-		if(activeHeatMapID == -1)
+		if (activeHeatMapID == -1)
 			return;
-		
+
 		GLHeatMap heatMap = hashHeatMaps.get(activeHeatMapID);
-		ContentSelectionManager hmContentSelectionManager = heatMap.getContentSelectionManager();
-		for(Integer elementID : heatMap.getContentVA()) {
-			hmContentSelectionManager.removeFromType(activeHeatMapSelectionType, elementID);
+		ContentSelectionManager hmContentSelectionManager = heatMap
+				.getContentSelectionManager();
+		for (Integer elementID : heatMap.getContentVA()) {
+			hmContentSelectionManager.removeFromType(
+					activeHeatMapSelectionType, elementID);
 		}
-		
+
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
-		selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager.getDelta());
+		selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager
+				.getDelta());
 		eventPublisher.triggerEvent(selectionUpdateEvent);
-		
+
 		activeHeatMapID = -1;
+	}
+
+	public HeatMapLayout getLayout() {
+		return layout;
+	}
+
+	public HeatMapOverview getOverview() {
+		return overview;
+	}
+
+	public ContentSelectionManager getContentSelectionManager() {
+		return contentSelectionManager;
+	}
+
+	public ContentVirtualArray getContentVA() {
+		return contentVA;
+	}
+
+	public ArrayList<GroupInfo> getSelectedGroups() {
+		return selectedGroups;
+	}
+
+	public GLHeatMap getHeatMap(int id) {
+		return hashHeatMaps.get(id);
+	}
+
+	public Vec3f getHeatMapPosition(int id) {
+		return hashHeatMapPositions.get(id);
 	}
 }
