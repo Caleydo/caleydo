@@ -41,9 +41,9 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 
 	public static final int NUMBER_AXIS_MARKERS = 19;
 
-	public static final int MIN_AXIS_LABEL_TEXT_SIZE = 5;//60;
-	public static final int MIN_NUMBER_TEXT_SIZE = 5;//55;
-	public static final int LABEL_TEXT_MIN_SIZE = 5;//50;
+	public static final int MIN_AXIS_LABEL_TEXT_SIZE = 60;
+	public static final int MIN_NUMBER_TEXT_SIZE = 55;
+	public static final int LABEL_TEXT_MIN_SIZE = 50;
 
 	public static final float AXIS_Z = 0.0f;
 	public static final float SCATTERPOINT_Z = 0.001f;

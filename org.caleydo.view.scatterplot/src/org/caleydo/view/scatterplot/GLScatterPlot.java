@@ -107,6 +107,10 @@ import com.sun.opengl.util.texture.TextureIO;
  * @author Juergen Pillhofer
  */
 //@SuppressWarnings("unused")
+/**
+ * @author Aldi
+ *
+ */
 public class GLScatterPlot extends AStorageBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.scatterplot";
@@ -124,6 +128,9 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	private ArrayList<Float> fAlXDistances;
 
+	
+	// toggleable features
+	
 	boolean bUseDetailLevel = true;
 
 	private boolean bUpdateMainView = false;
@@ -145,7 +152,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	private GL opengl;
 
-	// Just a test;
+
 	int iCurrentMouseOverElement = -1;
 	int iCurrentDragZoom = -1;
 
@@ -170,7 +177,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	public int iMouseOverAxisIndexX = -1;
 	public int iMouseOverAxisIndexY = -1;
 
-	public int MAX_AXES = 50;
+	public int MAX_AXES = 11;
 
 	// Listeners
 
@@ -251,13 +258,6 @@ public class GLScatterPlot extends AStorageBasedView {
 		renderStyle = new ScatterPlotRenderStyle(this, viewFrustum);
 
 		super.renderStyle = renderStyle;
-
-//		InitAxisComboEvent initAxisComboEvent = new InitAxisComboEvent();
-//		initAxisComboEvent.setSender(this);
-//		initAxisComboEvent.setAxisNames(this.getAxisString());
-//		GeneralManager.get().getEventPublisher().triggerEvent(
-//				initAxisComboEvent);
-//		// detailLevel = EDetailLevel.LOW;
 		detailLevel = EDetailLevel.HIGH;
 		updateMaxAxis();
 		renderStyle.setTextureNr(iMaxTextures, iMaxTextures);
@@ -265,17 +265,17 @@ public class GLScatterPlot extends AStorageBasedView {
 		resetSelectionTextures();
 		initTextures();
 		initSelectionTextures();
-		selectAxesfromExternal();
+		selectAxesfromExternal();		
+		clearAllSelections();	
+		opengl=gl;
 		
-
-		clearAllSelections();
-		//AlSelectionTypes.add(currentSelection);
-		//addSelectionType();
-		
-		opengl = gl;
 
 	}
 
+	
+	/**
+	 * Aligns the dimension of the Scatter-Matrix With the Storage-Size  
+	 */
 	private void updateMaxAxis()
 	{
 		if (MAX_AXES > storageVA.size())
@@ -346,9 +346,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
-		}
-		// renderStyle.setDetailLevel(detailLevel);
-
+		}	
 	}
 
 	@Override
@@ -359,37 +357,17 @@ public class GLScatterPlot extends AStorageBasedView {
 		if (set == null)
 			return;
 		
-		//
-		// if (bIsTranslationAnimationActive) {
-		// doTranslation();
-		// }
-
-		// pickingManager.getHits(this, EPickingType.SCATTER_POINT_SELECTION);
-
-		// ArrayList<Pick> alHits = null;
-		//
-		// alHits = pickingManager.getHits(iUniqueID,
-		// EPickingType.SCATTER_POINT_SELECTION);
-
-		// if (alHits == null && alHits.size() == 0) {
-
+		
 		if (detailLevel == EDetailLevel.HIGH) {
 			GLMouseListener glMouseListener = getParentGLCanvas()
 					.getGLMouseListener();
-
-			// private float fTransformOldMinX=0.2f;
-			// private float fTransformNewMinX=0.1f;
-			//		        
-			// private float fTransformOldMaxX=0.4f;
-			// private float fTransformNewMaxX=0.6f;
-
-			// bRectangleSelection = true;
+		
 
 			if (bMainViewZoomDragged) {
 				Point pCurrentMousePoint = glMouseListener.getPickedPoint();
 
 				float[] fCurrentMousePoint = GLCoordinateUtils
-						.convertWindowCoordinatesToWorldCoordinates(opengl,
+						.convertWindowCoordinatesToWorldCoordinates(gl,
 								pCurrentMousePoint.x, pCurrentMousePoint.y);
 
 				float x = (fCurrentMousePoint[0] - XYAXISDISTANCE);
@@ -433,17 +411,15 @@ public class GLScatterPlot extends AStorageBasedView {
 
 				float[] fArMappingColor = new float[] { 0.0f, 1.0f, 0.0f }; // green
 
-				// gl.glNewList(iGLDisplayListIndexBrush, GL.GL_COMPILE);
 				renderRectangularSelection(
 						gl,
 						fRectangleDragStartPoint[0],
 						fRectangleDragStartPoint[1],
-						3.5f, // Z-Value
+						ScatterPlotRenderStyle.SELECTION_RECTANGLE_Z, // Z-Value
 						fRectangleDragEndPoint[0] - fRectangleDragStartPoint[0],
 						fRectangleDragEndPoint[1] - fRectangleDragStartPoint[1],
 						fArMappingColor);
 
-				// gl.glEndList();
 			}
 			if (glMouseListener.wasMouseReleased() && bRectangleSelection) {
 				bRectangleSelection = false;
@@ -546,13 +522,36 @@ public class GLScatterPlot extends AStorageBasedView {
 
 				gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
 						.getCenterYOffset(), 0);
+			
+			
+			
+			
+			
+			renderCoordinateSystem(gl);		
+			gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
+			renderScatterPoints(gl);
+			renderSelectionPoints(gl);
+			renderMouseOver(gl);
+			gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
+			
 			renderMainViewZoomSelectionX(gl);
 			renderMainViewZoomSelectionY(gl);
 			renderMainViewZoomSelectionBoxes(gl);
-			renderCoordinateSystem(gl);
+			
 			if (bRenderMatrix)
 				gl.glTranslatef(-renderStyle.getCenterXOffset(),
 						-renderStyle.getCenterYOffset(), 0);
+			
+			
+		
+			
+			
+			
+			
+
+
+			
+			
 			
 			
 			
@@ -626,18 +625,18 @@ public class GLScatterPlot extends AStorageBasedView {
 			renderTextures(gl, false, ScatterPlotRenderStyle.MATRIX_FULLTEXTURES_Z); // All textures
 			gl.glEndList();
 
-			if (detailLevel == EDetailLevel.HIGH) {
-				gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
-				if (bRenderMatrix)
+			
+			gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
+			if (bRenderMatrix)
 
-					gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
-							.getCenterYOffset(), 0);
-				renderCoordinateSystem(gl);
-				if (bRenderMatrix)
-					gl.glTranslatef(-renderStyle.getCenterXOffset(),
-							-renderStyle.getCenterYOffset(), 0);
-				gl.glEndList();
-			}
+				gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
+						.getCenterYOffset(), 0);
+			renderCoordinateSystem(gl);
+			if (bRenderMatrix)
+				gl.glTranslatef(-renderStyle.getCenterXOffset(),
+						-renderStyle.getCenterYOffset(), 0);
+			gl.glEndList();
+			
 
 			gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 			gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
@@ -1194,10 +1193,24 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		 //Collection<Integer> selectionSet = contentVA.getIndexList();
 		 Collection<Integer> tmpSet = this.contentVA.getIndexList();
+		 
+		 iDisplayEveryNthPoint = contentVA.size()
+		  / iNumberOfRandomElements;
+		  
+		if (iDisplayEveryNthPoint == 0) 
+			iDisplayEveryNthPoint = 1;
+		
+		int actualPointsSkipped=iDisplayEveryNthPoint;
+		//TODO
+		
+		float fGlobalTexturePointsX = iTextureSize / fSelectionFaktor;
+		float fGlobalTexturePointsY = iTextureSize / fSelectionFaktor;
+		 
+		 
 		 Collection<Integer> selectionSet = new ArrayList<Integer>();
 		    for (Integer iContentIndex : tmpSet)
 		    {
-		      if (iContentIndex.intValue() % 6 != 0)
+		      if (iContentIndex.intValue() % actualPointsSkipped != 0)
 		        continue;
 		      selectionSet.add(iContentIndex);
 		    }
@@ -1219,8 +1232,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		AlFullTextures.clear();
 
-		float fGlobalTexturePointsX = iTextureSize / fSelectionFaktor;
-		float fGlobalTexturePointsY = iTextureSize / fSelectionFaktor;
+	
 
 		int iTextureWidth = (int) (fGlobalTexturePointsX / (double) NR_TEXTURESX);
 		int iTextureHeight = (int) (fGlobalTexturePointsY / (double) NR_TEXTURESY);
@@ -1798,6 +1810,16 @@ public class GLScatterPlot extends AStorageBasedView {
   }
 	
 
+  	
+  
+	/**
+	 * @param gl
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @param selected_Axis
+	 */
 	private void renderHistogram(GL gl, float x, float y, float width,
 			float height, int selected_Axis) {
 
@@ -1810,17 +1832,18 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		String sLabel = set.get(storageVA.get(selected_Axis)).getLabel();
 
-		float fScaling = renderStyle.getSmallFontScalingFactor() * 0.7f;
+		float fScaling = renderStyle.getSmallFontScalingFactor() * 0.9f;
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
 
 //		Rectangle2D bounds = textRenderer.getScaledBounds(gl, sLabel, fScaling,
 //				ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);
 
-		float fRotation = 25;
+		float fRotation = 45;
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		x = x + width * 1.2f;
-		gl.glTranslatef(x, y, 0);
+		float tmpx = x + width + width /4;
+		float tmpy = y + height / 6;
+		gl.glTranslatef(tmpx, tmpy, 0);
 		gl.glRotatef(fRotation, 0, 0, 1);
 		textRenderer.begin3DRendering();
 		textRenderer.draw3D(gl, sLabel, 0,
@@ -1829,8 +1852,32 @@ public class GLScatterPlot extends AStorageBasedView {
 				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
 		textRenderer.end3DRendering();
 		gl.glRotatef(-fRotation, 0, 0, 1);
-		gl.glTranslatef(-x, -y, 0);
+		gl.glTranslatef(-tmpx, -tmpy, 0);
 		gl.glPopAttrib();
+		
+		
+		gl.glLineWidth(0.1f);
+		
+		tmpx = x + width + width /6f;
+		tmpy = y + (height /6);// +(float)bounds.getHeight()/2f;
+		
+		if (selected_Axis>0) 
+		{
+			gl.glBegin(GL.GL_LINES);			
+			gl.glVertex3f(x+width, tmpy, ScatterPlotRenderStyle.MATRIX_HISTOGRAMM_Z);
+			gl.glVertex3f(tmpx, tmpy, ScatterPlotRenderStyle.MATRIX_HISTOGRAMM_Z);
+			gl.glEnd();
+		}
+		
+		if (selected_Axis<MAX_AXES-1) 
+		{
+			gl.glBegin(GL.GL_LINES);			
+			gl.glVertex3f(x+width, y-(height /10f), ScatterPlotRenderStyle.MATRIX_HISTOGRAMM_Z);
+			gl.glVertex3f(tmpx, tmpy, ScatterPlotRenderStyle.MATRIX_HISTOGRAMM_Z);
+			gl.glEnd();
+		}
+		
+	
 	}
 
 	
@@ -2286,9 +2333,7 @@ public class GLScatterPlot extends AStorageBasedView {
 					+ " / "
 					+ set.get(storageVA.get(iSelectedAxisIndexY)).getFloat(
 							EDataRepresentation.RAW, iContentIndex);
-
-		// sLabel="Point :: ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890 //// ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890 //// ";
-
+	
 		float fScaling = renderStyle.getSmallFontScalingFactor();
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
@@ -2372,15 +2417,10 @@ public class GLScatterPlot extends AStorageBasedView {
 			float ynormalized = set.get(storageVA.get(iSelectedAxisIndexY))
 					.getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
-			// x = xnormalized * XScale;
 			x = transformOnXZoom(xnormalized) * XScale;
 			y = transformOnYZoom(ynormalized) * YScale;
 
-			if (isInSelectionRectangle(x, y)) {
-				// if (!elementSelectionManager.checkStatus(iContentIndex))
-				// elementSelectionManager.add(iContentIndex);
-				// elementSelectionManager.addToType(SelectionType.SELECTION,
-				// iContentIndex);
+			if (isInSelectionRectangle(x, y)) {			
 				contentSelectionManager.addToType(currentSelection,
 						iContentIndex);
 			}
@@ -2525,11 +2565,10 @@ public class GLScatterPlot extends AStorageBasedView {
 						fArMappingColor[2]);
 		gl.glLineWidth(2.0f);
 		gl.glBegin(GL.GL_LINE_LOOP);
-		// gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(x, y, ScatterPlotRenderStyle.SELECTION_RECTANGLE_Z);
-		gl.glVertex3f(x, y + height, ScatterPlotRenderStyle.SELECTION_RECTANGLE_Z);
-		gl.glVertex3f(x + length, y + height, ScatterPlotRenderStyle.SELECTION_RECTANGLE_Z);
-		gl.glVertex3f(x + length, y, ScatterPlotRenderStyle.SELECTION_RECTANGLE_Z);
+		gl.glVertex3f(x, y, z);
+		gl.glVertex3f(x, y + height, z);
+		gl.glVertex3f(x + length, y + height, z);
+		gl.glVertex3f(x + length, y, z);
 		gl.glEnd();
 	}
 
@@ -2972,6 +3011,15 @@ public class GLScatterPlot extends AStorageBasedView {
 				if (!bMainViewZoomDragged) {
 					bMainViewZoomDragged = true;
 					iCurrentDragZoom = iExternalID;
+					opengl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
+					opengl.glEndList();
+					opengl.glNewList(iGLDisplayListIndexLocal, GL.GL_COMPILE);
+					opengl.glEndList();
+					opengl.glNewList(iGLDisplayListIndexSelection, GL.GL_COMPILE);
+					opengl.glEndList();
+					opengl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
+					opengl.glEndList();
+					
 				}
 				break;
 			// case MOUSE_OVER :
