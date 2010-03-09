@@ -185,7 +185,7 @@ public final class _VisRendererIDelM extends Ice._ObjectDelM implements _VisRend
     }
 
     public void
-    renderAllLinks(SelectionGroup[] selections, java.util.Map<String, String> __ctx)
+    renderAllLinks(SelectionReport selections, java.util.Map<String, String> __ctx)
         throws IceInternal.LocalExceptionWrapper
     {
         IceInternal.Outgoing __og = __handler.getOutgoing("renderAllLinks", Ice.OperationMode.Normal, __ctx);
@@ -194,7 +194,7 @@ public final class _VisRendererIDelM extends Ice._ObjectDelM implements _VisRend
             try
             {
                 IceInternal.BasicStream __os = __og.os();
-                SelectionGroupListHelper.write(__os, selections);
+                selections.__write(__os);
             }
             catch(Ice.LocalException __ex)
             {

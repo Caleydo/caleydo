@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import VIS.Color4f;
 import VIS.SelectionContainer;
 import VIS.SelectionGroup;
+import VIS.SelectionReport;
 import VIS.VisRendererIPrx;
 import VIS.VisRendererIPrxHelper;
 import VIS.adapterName;
@@ -143,7 +144,10 @@ public class RenderManager {
 		System.out.println("renderLinks"); 
 		if(this.rendererPrx != null){
 			System.out.println("Send data to renderer"); 
-			this.rendererPrx.renderAllLinks(selections); 
+			SelectionReport report = new SelectionReport(); 
+			report.pointerId = ""; 
+			report.selectionGroups = selections; 
+			this.rendererPrx.renderAllLinks(report); 
 		}
 	}
 	

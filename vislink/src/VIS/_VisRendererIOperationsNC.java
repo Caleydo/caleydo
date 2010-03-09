@@ -23,7 +23,7 @@ public interface _VisRendererIOperationsNC
 
     void renderLinks(SelectionGroup selections);
 
-    void renderAllLinks(SelectionGroup[] selections);
+    void renderAllLinks(SelectionReport selections);
 
     void clearSelections();
 

@@ -16,6 +16,7 @@ import VIS.AccessInformation;
 import VIS.Selection;
 import VIS.SelectionContainer;
 import VIS.SelectionGroup;
+import VIS.SelectionReport;
 import VIS._VisRendererIDisp;
 import VIS.adapterName;
 import VIS.adapterPort;
@@ -161,8 +162,9 @@ public class VisLinkRenderMockup extends _VisRendererIDisp implements Runnable {
 		return true;
 	}
 
-	public void renderAllLinks(SelectionGroup[] selectionGroups, Current current) {
+	public void renderAllLinks(SelectionReport report, Current current) {
 		BoundingBoxList bbl = new BoundingBoxList();
+		SelectionGroup[] selectionGroups = report.selectionGroups; 
 		for (SelectionGroup selectionGroup : selectionGroups) {
 			for (Selection selection : selectionGroup.selections) {
 				BoundingBox bb = new BoundingBox(selection.x, selection.y, selection.w, selection.h);

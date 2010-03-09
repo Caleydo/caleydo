@@ -25,8 +25,8 @@ public class Application {
 	/** bounding boxes of contained windows */
 	private List<BoundingBox> windows;
 
-	/** id to send */
-	private String sendId;
+//	/** id to send */
+//	private String sendId;
 	
 	public Application() {
 		name = null;
@@ -67,15 +67,15 @@ public class Application {
 		this.date = date;
 	}
 
-	public String fetchSendId() {
-		String id = sendId;
-		sendId = null;
-		return id;
-	}
-
-	public void setSendId(String sendId) {
-		this.sendId = sendId;
-	}
+//	public String fetchSendId() {
+//		String id = sendId;
+//		sendId = null;
+//		return id;
+//	}
+//
+//	public void setSendId(String sendId) {
+//		this.sendId = sendId;
+//	}
 
 	@Override
 	public String toString() {

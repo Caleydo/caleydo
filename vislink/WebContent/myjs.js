@@ -67,6 +67,7 @@ function register()	{
 	if (window.visLinkAppName == null) {
 		window.visLinkAppName =	"firefox-" + (new Date()).getTime();
 	}
+	window.lastPointerID = null; 
 
 	var win = content.document.defaultView;
 	var x = win.screenX + (win.outerWidth - win.innerWidth) / 2;
@@ -180,7 +181,13 @@ function getId() {
 		return null;
 	}
 
+	var pointers = xmlDoc.getElementsByTagName("pointer"); 
 	var	ids	= xmlDoc.getElementsByTagName("id");
+	if(pointers.length > 0){
+		if(pointers[0].childNodes[0] != null){
+			window.lastPointerID = pointers[0].childNodes[0].nodeValue; 
+		}
+	}
 	if (ids.length > 0)	{
 		if (ids[0].childNodes[0] !=	null) {
 			return ids[0].childNodes[0].nodeValue;
@@ -302,6 +309,7 @@ function generateBoundingBoxesXML(bbs, source) {
 function sendBoundingBoxes(xml)	{
 	var	requrl = "http://localhost:8080/visdaemon/reportVisualLinks"
 	requrl += "?name=" + window.visLinkAppName;
+	requrl += "&pointer=" + window.lastPointerID; 
 	requrl += "&xml=" +	xml;
 	
 	var	xhttp =	new	XMLHttpRequest();

@@ -220,7 +220,7 @@ public final class _VisRendererIDelD extends Ice._ObjectDelD implements _VisRend
     }
 
     public void
-    renderAllLinks(final SelectionGroup[] selections, java.util.Map<String, String> __ctx)
+    renderAllLinks(final SelectionReport selections, java.util.Map<String, String> __ctx)
         throws IceInternal.LocalExceptionWrapper
     {
         final Ice.Current __current = new Ice.Current();

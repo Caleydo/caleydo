@@ -28,7 +28,7 @@ public interface _VisRendererIDel extends Ice._ObjectDel
     void renderLinks(SelectionGroup selections, java.util.Map<String, String> __ctx)
         throws IceInternal.LocalExceptionWrapper;
 
-    void renderAllLinks(SelectionGroup[] selections, java.util.Map<String, String> __ctx)
+    void renderAllLinks(SelectionReport selections, java.util.Map<String, String> __ctx)
         throws IceInternal.LocalExceptionWrapper;
 
     void clearSelections(java.util.Map<String, String> __ctx)

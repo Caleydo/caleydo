@@ -8,6 +8,9 @@
 
 	<bean name="applicationManager" class="daemon.ApplicationManager">
 	</bean>
+	
+	<bean name="selectionManager" class="daemon.SelectionManager">
+	</bean>
 
 	<bean name="visLinkManager" class="daemon.VisLinkManager">
 		<property name="applicationManager">
@@ -15,6 +18,9 @@
 		</property>
 		<property name="userManager">
 			<ref bean="userManager" />
+		</property>
+		<property name="selectionManager">
+			<ref bean="selectionManager" />
 		</property>
 	</bean>
 

@@ -23,7 +23,7 @@ public interface _VisRendererIOperations
 
     void renderLinks(SelectionGroup selections, Ice.Current __current);
 
-    void renderAllLinks(SelectionGroup[] selections, Ice.Current __current);
+    void renderAllLinks(SelectionReport selections, Ice.Current __current);
 
     void clearSelections(Ice.Current __current);
 

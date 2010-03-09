@@ -93,7 +93,7 @@ public abstract class _VisRendererIDisp extends Ice.ObjectImpl implements VisRen
     }
 
     public final void
-    renderAllLinks(SelectionGroup[] selections)
+    renderAllLinks(SelectionReport selections)
     {
         renderAllLinks(selections, null);
     }
@@ -196,8 +196,9 @@ public abstract class _VisRendererIDisp extends Ice.ObjectImpl implements VisRen
         __checkMode(Ice.OperationMode.Normal, __current.mode);
         IceInternal.BasicStream __is = __inS.is();
         __is.startReadEncaps();
-        SelectionGroup[] selections;
-        selections = SelectionGroupListHelper.read(__is);
+        SelectionReport selections;
+        selections = new SelectionReport();
+        selections.__read(__is);
         __is.endReadEncaps();
         __obj.renderAllLinks(selections, __current);
         return Ice.DispatchStatus.DispatchOK;

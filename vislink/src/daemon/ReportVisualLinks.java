@@ -55,9 +55,13 @@ public class ReportVisualLinks extends HttpServlet {
 		
 		String xml = (String) request.getParameter("xml");
 		String appName = request.getParameter("name");
+		String pointerID = request.getParameter("pointer"); 
+		
+		System.out.println("Report visual links: name="+appName+", pointer="+pointerID+"xml..."); 
+		
 		VisLinkManager visLinkManager = (VisLinkManager) getApplicationContext().getBean("visLinkManager");
 		
-		visLinkManager.reportVisualLinks(appName, xml);
+		visLinkManager.reportVisualLinks(appName, pointerID, xml);
 		
 		String returnXml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" +
 				"<reportVisualLinks>" + 

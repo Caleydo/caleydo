@@ -21,6 +21,7 @@ import VIS.Color4f;
 import VIS.Selection;
 import VIS.SelectionContainer;
 import VIS.SelectionGroup;
+import VIS.SelectionReport;
 import VIS.VisRendererIPrx;
 import VIS.VisRendererIPrxHelper;
 import VIS.adapterName;
@@ -32,16 +33,18 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	
 	UserManager userManager; 
 	
-	HashMap<Integer, BoundingBoxList> app2bbl;
+	SelectionManager selectionManager; 
 	
-	/** target applications for most recent reported selectionId */
-	private int[] targetApplicationIds;
-	
-	/** number of target applications required for rendering */
-	int numApps; 
-	
-	/** mouse pointer id that triggered the visual links as retrieved from deskotheque */
-	private String triggeringMousePointerId;
+//	HashMap<Integer, BoundingBoxList> app2bbl;
+//	
+//	/** target applications for most recent reported selectionId */
+//	private int[] targetApplicationIds;
+//	
+//	/** number of target applications required for rendering */
+//	int numApps; 
+//	
+//	/** mouse pointer id that triggered the visual links as retrieved from deskotheque */
+//	private String triggeringMousePointerId;
 
 	JAXBContext jaxbContext; 
 	
@@ -52,10 +55,10 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	private VisRendererIPrx rendererPrx;
 	
 	public VisLinkManager() {
-		app2bbl = new HashMap<Integer, BoundingBoxList>();
-		targetApplicationIds = new int[0];
-		triggeringMousePointerId = null;
-		this.numApps = 0; 
+//		app2bbl = new HashMap<Integer, BoundingBoxList>();
+//		targetApplicationIds = new int[0];
+//		triggeringMousePointerId = null;
+//		this.numApps = 0; 
 	}
 	
 	public void reportWindowChange(String appName) {
@@ -64,50 +67,52 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		Application app = applicationManager.getApplications().get(appName);
 		
 		// clear previous selections
-		app2bbl.clear(); 
+//		app2bbl.clear(); 
 		
 		// find the mouse pointer that has triggered the window change 
 		AccessInformation accessInformation = rendererPrx.getAccessInformation(app.getId());
-		targetApplicationIds = accessInformation.applicationIds;
-		triggeringMousePointerId = accessInformation.pointerId;
+		int[] targetApplicationIds = accessInformation.applicationIds;
+		String pointerID = accessInformation.pointerId;
 		
-		// we need to wait for both, the source window and the target windows 
-		this.numApps = this.targetApplicationIds.length + 1; 
+//		// we need to wait for both, the source window and the target windows 
+//		this.numApps = this.targetApplicationIds.length + 1; 
 		
 		// check out whether we need to redraw links for that user 
-		User user = this.userManager.getUser(triggeringMousePointerId); 
+		User user = this.userManager.getUser(pointerID); 
 		if(user.isActive()){
 			String selectionId = user.getPrevSelectionID(); 
-			System.out.println("User changing window content (" + triggeringMousePointerId 
+			System.out.println("User changing window content (" + pointerID 
 					+ ") had previous selection id " + selectionId); 
 			// new settings for the active user 
 			user.setNewSelection(selectionId, app); 
 			
 			// request visual links for source window 
-			app.setSendId(selectionId); 
+			//app.setSendId(selectionId); 
+			this.selectionManager.addSelection(app, selectionId, pointerID); 
 			
 			// request visual links for target window 
 			for (int appId : targetApplicationIds) {
 				Application currentApp = applicationManager.getApplicationsById().get(appId);
-				currentApp.setSendId(selectionId);
+				//currentApp.setSendId(selectionId);
+				this.selectionManager.addSelection(currentApp, selectionId, pointerID); 
 			}
 			
-			checkRender();
+			checkRender(pointerID);
 		}
 		
 		// now get all users that might be affected by the change in window content 
 		List<User> userList = this.userManager.getAffectedUsers(app); 
-		System.out.println(userList.size() + " other users were affected by this operation"); 
+		System.out.println(userList.size() + " users were affected by this operation"); 
 		for ( User otherUser : userList ){
 			
 			// only treat other users, not invoking user here
 			if(user != otherUser){
 				
 				// clear previous selections 
-				app2bbl.clear(); 
+//				app2bbl.clear(); 
 			
 				// set current mouse pointer id 
-				this.triggeringMousePointerId = otherUser.getPointerID(); 
+				pointerID = otherUser.getPointerID(); 
 
 				// get previous selection id 
 				String selectionId = otherUser.getPrevSelectionID(); 
@@ -117,12 +122,13 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 				// request visual links for all windows associated with the user 
 				List<Application> appList = otherUser.getAllPrevApps(); 
 				// we need to wait for all user's applications 
-				this.numApps = appList.size(); 
+//				this.numApps = appList.size(); 
 				for( Application userApp : appList ){
-					userApp.setSendId(selectionId); 
+					//userApp.setSendId(selectionId); 
+					this.selectionManager.addSelection(userApp, selectionId, pointerID); 
 				}
 
-				checkRender();
+				checkRender(pointerID);
 			
 			}
 		}
@@ -134,50 +140,76 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		
 		Application app = applicationManager.getApplications().get(appName);
 		
+		
 		if (boundingBoxListXML != null && boundingBoxListXML.isEmpty()) {
 			boundingBoxListXML = null;
 		}
 		
-		app2bbl.clear();
+		AccessInformation accessInformation = rendererPrx.getAccessInformation(app.getId());
+		int[] targetApplicationIds = accessInformation.applicationIds;
+		String pointerID = accessInformation.pointerId;
+		
+		this.selectionManager.addSelection(app, selectionId, pointerID); 
+		
+		UserSelection selection = this.selectionManager.getSelection(app, pointerID); 
+		
+//		app2bbl.clear();
 		if (boundingBoxListXML != null) {
 			BoundingBoxList bbl = createBoundingBoxList(boundingBoxListXML);
-			app2bbl.put(app.getId(), bbl);
+			selection.setBoundingBoxList(bbl); 
+			//app2bbl.put(app.getId(), bbl);
 		}
-
-		AccessInformation accessInformation = rendererPrx.getAccessInformation(app.getId());
-		targetApplicationIds = accessInformation.applicationIds;
-		triggeringMousePointerId = accessInformation.pointerId;
+		selection.setReported(); 
 		
 		// we need to wait for all target applications for rendering 
-		this.numApps = this.targetApplicationIds.length + 1; 
+//		this.numApps = this.targetApplicationIds.length + 1; 
 		
 		// multi-user management: get / create user and store selection ID / source app 
-		System.out.println("Get user with pointer ID: " + triggeringMousePointerId);
-		User user = this.userManager.getUser(triggeringMousePointerId); 		
+		System.out.println("Get user with pointer ID: " + pointerID);
+		User user = this.userManager.getUser(pointerID); 		
 		user.setNewSelection(selectionId, app); 
+		//this.selectionManager.addSelection(app, selectionId, pointerID); 
 		
 		for (int appId : targetApplicationIds) {
 			Application currentApp = applicationManager.getApplicationsById().get(appId);
 			if (currentApp.getId() != app.getId() || boundingBoxListXML == null) {
-				currentApp.setSendId(selectionId);
+				//currentApp.setSendId(selectionId);
+				this.selectionManager.addSelection(currentApp, selectionId, pointerID); 
 			}
 		}
 		
-		checkRender();
+		checkRender(pointerID);
 	}
 
-	public void reportVisualLinks(String appName, String boundingBoxListXML) {
-		System.out.println("VisLinkManager: reportVisualLinks, appName=" + appName + ", xml=" + boundingBoxListXML);
+	public void reportVisualLinks(String appName, String pointerID, String boundingBoxListXML) {
+		System.out.println("VisLinkManager: reportVisualLinks, appName=" + appName + " pointerID=" + pointerID + ", xml=" + boundingBoxListXML);
+		
 		Application app = applicationManager.getApplications().get(appName);
+		
+		if(app == null || pointerID == null){
+			System.out.println("\n ERROR: application or pointerID is null!\n"); 
+			return; 
+		}
+		
+		UserSelection selection = selectionManager.getSelection(app, pointerID); 
+		
+		if(selection == null){
+			System.out.println("\n ERROR: no selection registered for appName=" + appName + ", pointerID=" + pointerID + "\n");
+			return; 
+		}
+		
 		BoundingBoxList bbl = createBoundingBoxList(boundingBoxListXML);
 		
 		// multi-user handling: save target application, if applicable
 		if(bbl.getList().size() > 0){
-			this.userManager.getUser(triggeringMousePointerId).addPrevTargetApp(app); 
+			System.out.println("reportVisualLinks(): add target application " + appName +" for " + pointerID); 
+			this.userManager.getUser(pointerID).addPrevTargetApp(app); 
 		}
 		
-		app2bbl.put(app.getId(), bbl);
-		checkRender();
+		selection.setBoundingBoxList(bbl); 
+		selection.setReported(); 
+		//app2bbl.put(app.getId(), bbl);
+		checkRender(pointerID);
 	}
 
 	public void registerApplication(String appName, String xml) {
@@ -241,10 +273,10 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		return bb;
 	}
 
-	public String retrieveSelectionId(String appName) {
-		Application app = applicationManager.getApplications().get(appName);
-		return app.fetchSendId();
-	}
+//	public String retrieveSelectionId(String appName) {
+//		Application app = applicationManager.getApplications().get(appName);
+//		return app.fetchSendId();
+//	}
     
 	private BoundingBoxList createBoundingBoxList(String boundingBoxListXML) {
 		BoundingBoxList bbl = null;
@@ -261,15 +293,24 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		return bbl;
 	}
 	
-	public void checkRender() {
-		System.out.println("checkRender(): numTargetApplications=" + (this.numApps - 1));
-		System.out.println("checkRender(): app2bbl.size()=" + app2bbl.size());
-		if (app2bbl.size() >= (this.numApps)) {
-			System.out.println("VisLinkManager: start rendering vis links for #" + (this.numApps) + " apps");
-			renderVisualLinks(app2bbl);
-			app2bbl.clear();
+	public void checkRender(String pointerID) {
+		int numSelections = this.selectionManager.getNumUserSelections(pointerID); 
+		int numMissingSelections = this.selectionManager.getNumMissingReports(pointerID); 
+		
+		System.out.println("checkRender(): checking rendering for pointer " + pointerID); 
+		System.out.println("checkRender(): numTargetApplications=" + (numSelections - 1));
+		System.out.println("checkRender(): numBoundingBoxes=" + numSelections); 
+		//System.out.println("checkRender(): app2bbl.size()=" + app2bbl.size());
+		//if (app2bbl.size() >= (this.numApps)) {
+		
+		if(numMissingSelections == 0){
+			System.out.println("VisLinkManager: start rendering vis links for #" + numSelections + " apps");
+			renderVisualLinks(this.selectionManager.getBoundingBoxList(pointerID), pointerID); 
+			this.selectionManager.clearUserSelections(pointerID); 
+			//renderVisualLinks(app2bbl);
+			//app2bbl.clear();
 		} else {
-			System.out.println("waiting for more reports, " + app2bbl.size() + " / " + (this.numApps));
+			System.out.println("waiting for more reports, " + (numSelections - numMissingSelections) + " / " + numSelections);
 		}
 	}
 	
@@ -287,6 +328,14 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 
 	public void setUserManager(UserManager userManager) {
 		this.userManager = userManager;
+	}
+	
+	public SelectionManager getSelectionManager() {
+		return this.selectionManager;
+	}
+
+	public void setSelectionManager(SelectionManager selectionManager) {
+		this.selectionManager = selectionManager;
 	}
 
     
@@ -353,19 +402,19 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		}
 	}
 
-    private void renderVisualLinks(HashMap<Integer, BoundingBoxList> app2bbs) {
+    private void renderVisualLinks(HashMap<Integer, BoundingBoxList> app2bbs, String pointerID) {
 //		visLinks.drawVisualLinks(list);
-    	renderWithIce(app2bbs);
+    	renderWithIce(app2bbs, pointerID);
     }
     
-    private void renderWithIce(HashMap<Integer, BoundingBoxList> app2bbs) {
+    private void renderWithIce(HashMap<Integer, BoundingBoxList> app2bbs, String pointerID) {
     	ArrayList<SelectionGroup> selectionGroupList = new ArrayList<SelectionGroup>();
     	
     	for (Entry<Integer, BoundingBoxList> e : app2bbs.entrySet()) {
         	SelectionGroup selectionGroup = new SelectionGroup();
         	
         	// check whether this is the source selection group 
-        	User user = this.userManager.getUser(triggeringMousePointerId); 
+        	User user = this.userManager.getUser(pointerID); 
         	int srcAppID = -1; 
         	if(user.getPrevSrcApp() != null){
         		srcAppID = user.getPrevSrcApp().getId(); 
@@ -389,7 +438,10 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 
     	SelectionGroup[] groups  = new SelectionGroup[selectionGroupList.size()];
     	selectionGroupList.toArray(groups);
-    	rendererPrx.renderAllLinks(groups);
+    	SelectionReport report = new SelectionReport();
+    	report.pointerId = pointerID; 
+    	report.selectionGroups = groups; 
+    	rendererPrx.renderAllLinks(report);
     }
 
 	public void afterPropertiesSet() throws Exception {

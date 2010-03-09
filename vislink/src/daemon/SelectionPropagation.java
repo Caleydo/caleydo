@@ -43,20 +43,33 @@ public class SelectionPropagation extends HttpServlet {
 		response.setContentType("text/xml");
 		PrintWriter out = response.getWriter();
 		
-		VisLinkManager visLinkManager = (VisLinkManager) getApplicationContext().getBean("visLinkManager");
+		//VisLinkManager visLinkManager = (VisLinkManager) getApplicationContext().getBean("visLinkManager");
+		SelectionManager selectionManager = (SelectionManager) getApplicationContext().getBean("selectionManager");
 		String appName = request.getParameter("name");
-		String filter = visLinkManager.retrieveSelectionId(appName);
+//		if(appName == "googlemaps"){
+//			System.out.println("Propagation: " + appName); 
+//		}
+		
+		//String filter = visLinkManager.retrieveSelectionId(appName);
+		String selectionID = selectionManager.getSelectionIDFilter(appName); 
+		String pointerID = selectionManager.getPointerIDFilter(appName); 
 		
 		String empty = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" +
 			"<vislink>" + 
 			"</vislink>";
 
-		if (filter != null) {
-			getServletContext().setAttribute("recentFilter", filter);
+		if (selectionID != null && pointerID != null) {
+			
+			System.out.println("Not empty: selectionID=" + selectionID + " - pointerID=" + pointerID); 
+			
+			// what's that??
+			getServletContext().setAttribute("recentFilter", selectionID);
+			
 			String xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" +
 					"<vislink>" + 
 					"	<element>" +
-					"		<id>" + filter + "</id>" +
+					"		<id>" + selectionID + "</id>" +
+					"		<pointer>" + pointerID + "</pointer>" +
 					"	</element>" +
 					"</vislink>";
 			out.print(xml);

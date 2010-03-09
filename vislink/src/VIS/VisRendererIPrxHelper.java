@@ -182,20 +182,20 @@ public final class VisRendererIPrxHelper extends Ice.ObjectPrxHelperBase impleme
     }
 
     public void
-    renderAllLinks(SelectionGroup[] selections)
+    renderAllLinks(SelectionReport selections)
     {
         renderAllLinks(selections, null, false);
     }
 
     public void
-    renderAllLinks(SelectionGroup[] selections, java.util.Map<String, String> __ctx)
+    renderAllLinks(SelectionReport selections, java.util.Map<String, String> __ctx)
     {
         renderAllLinks(selections, __ctx, true);
     }
 
     @SuppressWarnings("unchecked")
     private void
-    renderAllLinks(SelectionGroup[] selections, java.util.Map<String, String> __ctx, boolean __explicitCtx)
+    renderAllLinks(SelectionReport selections, java.util.Map<String, String> __ctx, boolean __explicitCtx)
     {
         if(__explicitCtx && __ctx == null)
         {

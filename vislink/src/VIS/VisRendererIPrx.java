@@ -28,8 +28,8 @@ public interface VisRendererIPrx extends Ice.ObjectPrx
     public void renderLinks(SelectionGroup selections);
     public void renderLinks(SelectionGroup selections, java.util.Map<String, String> __ctx);
 
-    public void renderAllLinks(SelectionGroup[] selections);
-    public void renderAllLinks(SelectionGroup[] selections, java.util.Map<String, String> __ctx);
+    public void renderAllLinks(SelectionReport selections);
+    public void renderAllLinks(SelectionReport selections, java.util.Map<String, String> __ctx);
 
     public void clearSelections();
     public void clearSelections(java.util.Map<String, String> __ctx);

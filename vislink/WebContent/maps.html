@@ -24,6 +24,8 @@ var map;
 var geocoder;
 var localSelectionId = null;
 var remoteScroll = false;
+var lastPointerID = null; 
+var counter = 0; 
 
 GSearch.setOnLoadCallback(LoadMapSearchControl);
 
@@ -80,7 +82,7 @@ function generateBoundingBoxXML(pos, source) {
 
 function sendBoundingBoxes(pos) {
     var xml = generateBoundingBoxXML(pos, false);
-    var requrl = "http://localhost:8080/visdaemon/reportVisualLinks?name=googlemaps&xml=" + xml;
+    var requrl = "http://localhost:8080/visdaemon/reportVisualLinks?name=googlemaps&pointer="+lastPointerID+"&xml=" + xml;
     
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("GET", requrl, false);
@@ -141,6 +143,10 @@ function getId() {
 	xhttp.send("");
 	xmlDoc = xhttp.responseXML;
 	var ids = xmlDoc.getElementsByTagName("id");
+	var pointers = xmlDoc.getElementsByTagName("pointer"); 
+	if(pointers.length > 0){
+		lastPointerID = pointers[0].childNodes[0].nodeValue; 
+	}
 	if (ids.length > 0) {
 		return ids[0].childNodes[0].nodeValue;
 	} else {
