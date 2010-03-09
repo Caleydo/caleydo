@@ -794,4 +794,8 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 	public Vec3f getHeatMapPosition(int id) {
 		return hashHeatMapPositions.get(id);
 	}
+	
+	public String getCaption() {
+		return set.getLabel();
+	}
 }

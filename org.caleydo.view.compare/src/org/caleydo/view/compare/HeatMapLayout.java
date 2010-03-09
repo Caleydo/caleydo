@@ -17,7 +17,13 @@ public abstract class HeatMapLayout {
 
 	protected static float DETAIL_WIDTH_PORTION = 0.5f;
 	protected static float DETAIL_HEATMAP_GAP_PORTION = 0.02f;
-	protected static float GAP_PORTION = 0.25f;
+	protected static float OVERVIEW_TO_DETAIL_GAP_PORTION = 0.25f;
+	
+	protected static float CAPTION_LABEL_HEIGHT_PORTION = 0.03f;
+	protected static float CAPTION_LABEL_HORIZONTAL_SPACING_PORTION = 0.03f;
+	protected static float CAPTION_LABEL_VERTICAL_SPACING_PORTION = 0.01f;
+	protected static float OVERVIEW_HEIGHT_PORTION = 0.95f;
+	protected static float DETAIL_HEIGHT_PORTION = 0.95f;
 
 	protected float totalWidth;
 	protected float totalHeight;
@@ -47,7 +53,7 @@ public abstract class HeatMapLayout {
 	}
 
 	public float getGapWidth() {
-		return totalWidth * GAP_PORTION;
+		return totalWidth * OVERVIEW_TO_DETAIL_GAP_PORTION;
 	}
 
 	public float getDetailWidth() {
@@ -55,11 +61,11 @@ public abstract class HeatMapLayout {
 	}
 
 	public float getOverviewHeight() {
-		return totalHeight;
+		return totalHeight * OVERVIEW_HEIGHT_PORTION;
 	}
 
 	public float getDetailHeight() {
-		return totalHeight;
+		return totalHeight * DETAIL_HEIGHT_PORTION;
 	}
 
 	public float getOverviewGroupWidth() {
@@ -79,7 +85,7 @@ public abstract class HeatMapLayout {
 	}
 
 	public float getOverviewMaxSliderPositionY() {
-		return positionY + totalHeight;
+		return positionY + getOverviewHeight();
 	}
 
 	public float getOverviewMinSliderPositionY() {
@@ -97,7 +103,23 @@ public abstract class HeatMapLayout {
 	public float getDetailHeatMapGapHeight() {
 		return getDetailHeight() * DETAIL_HEATMAP_GAP_PORTION;
 	}
+	
+	public float getCaptionLabelWidth() {
+		return totalWidth;
+	}
+	
+	public float getCaptionLabelHeight() {
+		return totalHeight * CAPTION_LABEL_HEIGHT_PORTION;
+	}
+	
+	public float getCaptionLabelHorizontalSpacing() {
+		return totalWidth * CAPTION_LABEL_HORIZONTAL_SPACING_PORTION;
+	}
 
+	public float getCaptionLabelVerticalSpacing() {
+		return totalHeight * CAPTION_LABEL_VERTICAL_SPACING_PORTION;
+	}
+	
 	public abstract Vec3f getOverviewPosition();
 
 	public abstract Vec3f getOverviewGroupBarPosition();
@@ -111,6 +133,8 @@ public abstract class HeatMapLayout {
 	public abstract EPickingType getGroupPickingType();
 	
 	public abstract EPickingType getHeatMapPickingType();
+	
+	public abstract Vec3f getCaptionLabelPosition(float textWidth);
 	
 	public ArrayList<IHeatMapRenderCommand> getRenderCommandsOfLocalItems() {
 		return localRenderCommands;

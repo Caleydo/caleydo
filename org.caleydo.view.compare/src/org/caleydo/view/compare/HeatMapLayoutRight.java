@@ -10,13 +10,15 @@ public class HeatMapLayoutRight extends HeatMapLayout {
 
 	public HeatMapLayoutRight(RenderCommandFactory renderCommandFactory) {
 		super(renderCommandFactory);
-		
+
 		localRenderCommands.add(renderCommandFactory
 				.getRenderCommand(ERenderCommandType.OVERVIEW_GROUP_BAR));
 		localRenderCommands.add(renderCommandFactory
 				.getRenderCommand(ERenderCommandType.OVERVIEW_HEATMAP));
 		localRenderCommands.add(renderCommandFactory
 				.getRenderCommand(ERenderCommandType.OVERVIEW_SLIDER));
+		localRenderCommands.add(renderCommandFactory
+				.getRenderCommand(ERenderCommandType.CAPTION_LABEL));
 
 		remoteRenderCommands.add(renderCommandFactory
 				.getRenderCommand(ERenderCommandType.DETAIL_HEATMAPS));
@@ -59,6 +61,13 @@ public class HeatMapLayoutRight extends HeatMapLayout {
 	@Override
 	public EPickingType getHeatMapPickingType() {
 		return EPickingType.COMPARE_RIGHT_EMBEDDED_VIEW_SELECTION;
+	}
+
+	@Override
+	public Vec3f getCaptionLabelPosition(float textWidth) {
+		return new Vec3f(positionX + totalWidth - textWidth
+				- getCaptionLabelHorizontalSpacing(), positionY
+				+ getOverviewHeight() + getCaptionLabelVerticalSpacing(), 0.0f);
 	}
 
 }
