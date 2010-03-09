@@ -50,33 +50,44 @@ public class SelectionPropagation extends HttpServlet {
 //			System.out.println("Propagation: " + appName); 
 //		}
 		
-		//String filter = visLinkManager.retrieveSelectionId(appName);
-		String selectionID = selectionManager.getSelectionIDFilter(appName); 
-		String pointerID = selectionManager.getPointerIDFilter(appName); 
-		
 		String empty = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" +
-			"<vislink>" + 
-			"</vislink>";
+		"<vislink>" + 
+		"</vislink>";
+		
+		//String filter = visLinkManager.retrieveSelectionId(appName);
+		UserSelection selection = selectionManager.getUnreportedSelection(appName); 
+		
+		if(selection != null){
+			String selectionID = selection.getSelectionID(); 
+			String pointerID = selection.getPointerID(); 
+			//		String selectionID = selectionManager.getSelectionIDFilter(appName); 
+			//		String pointerID = selectionManager.getPointerIDFilter(appName); 
 
-		if (selectionID != null && pointerID != null) {
-			
-			System.out.println("Not empty: selectionID=" + selectionID + " - pointerID=" + pointerID); 
-			
-			// what's that??
-			getServletContext().setAttribute("recentFilter", selectionID);
-			
-			String xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" +
-					"<vislink>" + 
-					"	<element>" +
-					"		<id>" + selectionID + "</id>" +
-					"		<pointer>" + pointerID + "</pointer>" +
-					"	</element>" +
-					"</vislink>";
-			out.print(xml);
-			System.out.println("sending to " + appName + ", xml=" + xml);
-		} else {
-			out.println(empty);
-			// System.out.println("sending empty links to " + appName);
+
+
+			if (selectionID != null && pointerID != null) {
+
+				System.out.println("Not empty: selectionID=" + selectionID + " - pointerID=" + pointerID); 
+
+				// what's that??
+				getServletContext().setAttribute("recentFilter", selectionID);
+
+				String xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" +
+				"<vislink>" + 
+				"	<element>" +
+				"		<id>" + selectionID + "</id>" +
+				"		<pointer>" + pointerID + "</pointer>" +
+				"	</element>" +
+				"</vislink>";
+				out.print(xml);
+				System.out.println("sending to " + appName + ", xml=" + xml);
+			} else {
+				out.println(empty);
+				// System.out.println("sending empty links to " + appName);
+			}
+		}
+		else{
+			out.println(empty); 
 		}
 	}
 

@@ -136,7 +136,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	}
 	
 	public void reportSelection(String appName, String selectionId, String boundingBoxListXML) {
-		System.out.println("VisLinkManager: reportVisualLinks, appName=" + appName + ", selId=" + selectionId + ", xml=" + boundingBoxListXML);
+		System.out.println("VisLinkManager: reportSelection, appName=" + appName + ", selId=" + selectionId + ", xml=" + boundingBoxListXML);
 		
 		Application app = applicationManager.getApplications().get(appName);
 		
@@ -192,6 +192,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		}
 		
 		UserSelection selection = selectionManager.getSelection(app, pointerID); 
+		selection.setReported(); 
 		
 		if(selection == null){
 			System.out.println("\n ERROR: no selection registered for appName=" + appName + ", pointerID=" + pointerID + "\n");
@@ -207,7 +208,6 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		}
 		
 		selection.setBoundingBoxList(bbl); 
-		selection.setReported(); 
 		//app2bbl.put(app.getId(), bbl);
 		checkRender(pointerID);
 	}

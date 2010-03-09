@@ -17,6 +17,12 @@ public class SelectionManager {
 	
 	public void addSelection(Application app, String selectionID, String pointerID){
 		UserSelection selection = new UserSelection(app, selectionID, pointerID); 
+		UserSelection existingSelection = this.getSelection(app, pointerID); 
+		if(existingSelection != null){
+			System.out.println("Existing selection: " + existingSelection); 
+			//existingSelection.setReported(); 
+			this.selections.remove(existingSelection); 
+		}
 		this.selections.add(selection); 
 		System.out.println("Added new user selection: " + selection.toString()); 
 	}
@@ -41,7 +47,7 @@ public class SelectionManager {
 		if(selection == null){
 			return null; 
 		}
-		System.out.println("Sending unreported selection ID"); 
+		System.out.println("Sending unreported selection ID "+selection.getSelectionID() + " to app " + appName); 
 		return selection.getSelectionID(); 
 	}
 	
@@ -50,7 +56,7 @@ public class SelectionManager {
 		if(selection == null){
 			return null; 
 		}
-		System.out.println("Sending unreported pointer ID"); 
+		System.out.println("Sending unreported pointer ID "+selection.getPointerID() + " to app " + appName); 
 		return selection.getPointerID(); 
 	}
 	

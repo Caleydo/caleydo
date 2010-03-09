@@ -36,6 +36,16 @@ function reportVisLinks(selectionId) {
 	xmlDoc = xhttp.responseXML;
 }
 
+function reportWindowChanged(){
+	var	requrl = "http://localhost:8080/visdaemon/reportWindowChange";
+	requrl += "?name=" + window.visLinkAppName;
+
+	var	xhttp =	new	XMLHttpRequest();
+	xhttp.open("GET", requrl, false);
+	xhttp.send("");
+	xmlDoc = xhttp.responseXML;
+}
+
 function startVisLinks() {
 	// alert("startVisLinks");
 	stopped = false;
@@ -49,10 +59,12 @@ function startVisLinks() {
 
 function windowChanged() {
 	if (window.localSelectionId != null) {
-		reportVisLinks(window.localSelectionId);
+		reportWindowChanged(); 
+		//reportVisLinks(window.localSelectionId);
 	} else {
+		reportWindowChanged(); 
 //		clearVisualLinks();
-		reportVisLinks(window.localSelectionId);
+		//reportVisLinks(window.localSelectionId);
 	}
 }
 

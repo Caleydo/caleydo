@@ -235,8 +235,10 @@ function lookupCallback(response) {
 		var accuracy = place.AddressDetails.Accuracy; 
 		var point = new GLatLng(place.Point.coordinates[1], place.Point.coordinates[0]); 
         var center = document.getElementById("center").checked;
-		remoteScroll = true;
-		map.setCenter(point, Math.round(2 + accuracy * 14/9));
+        if(center){
+			remoteScroll = true;
+			map.setCenter(point, Math.round(2 + accuracy * 14/9));
+        }
 		var pos = getScreenCoords(point); 
 
 		var xml = generateBoundingBoxXML(pos, true);
