@@ -16,7 +16,6 @@ public class nodeSlerp {
 	private Point2D.Double actualPoint;
 	private double slerpFactor = 0;
 	private Time time;
-	private int readyFlag = 0;
 	private double acceleration = 0;
 	private double normedStatus = 0;
 	private double dLength = 0;
@@ -26,6 +25,8 @@ public class nodeSlerp {
 			Point2D.Double targettingPoint) {
 		startPoint = startingPoint;
 		targetPoint = targettingPoint;
+		
+		//System.out.println("slerp target:"+targetPoint.getX()+"|"+targetPoint.getY());
 		speed = v;
 		time = new SystemTime();
 		((SystemTime) time).rebase();
@@ -51,8 +52,10 @@ public class nodeSlerp {
 		normedStatus = distanceToTarget / length;
 		// do an accelerated movement, because of a lack of precision caused
 		// by the moebius transformation
-		acceleration = -1 * ((normedStatus - 1) * (normedStatus - 1)) + 1;
-		slerpFactor = speed * time.deltaT() * acceleration;
+		//acceleration = -1 * ((normedStatus - 1) * (normedStatus - 1)) + 1;
+		slerpFactor = speed * time.deltaT();//* acceleration;
+		
+		
 		Point2D.Double tempVector = new Point2D.Double(0,0);
 		
 		tempVector.setLocation(actualPoint.getX() - startPoint.getX(),
@@ -64,8 +67,15 @@ public class nodeSlerp {
 		distanceToTarget = Math.sqrt(tempVector.getX() * tempVector.getX()
 				+ tempVector.getY() * tempVector.getY());
 
+		System.out.println("distance slerp:"+distanceToTarget);
+		System.out.println("target:"+targetPoint.getX()+"|"+targetPoint.getY());
+		System.out.println("slerpfactor:"+slerpFactor);
+		
+		
 		if (distanceToTarget <= slerpFactor) {
-			readyFlag = 1;
+			
+			
+			
 			return false;
 		}
 

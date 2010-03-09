@@ -55,11 +55,10 @@ public class GLDataWindows extends AGLView {
 	private double mouseCoordX = 0;
 	private double mouseCoordY = 0;
 
-	private Point mousePoint = new Point(0, 0);
-	int viewport[] = new int[4];
+	private double viewport[] = new double[16];
 
-	private float canvasWidth = 7;
-	private float canvasHeight = 5;
+	private float canvasWidth;
+	private float canvasHeight;
 
 	private TrackDataProvider tracker;
 	private float[] receivedEyeData;
@@ -74,12 +73,12 @@ public class GLDataWindows extends AGLView {
 	private DataWindowsDisk disk;
 
 	// properties of the circle
-	private double circleRadius = 0.5;
-	
+	// private double circleRadius = 0.5;
+
 	private PoincareNode slerpedNode;
 
-	
-	
+	private boolean manualPickFlag = true;
+
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(
 			0, 0);
 
@@ -113,21 +112,14 @@ public class GLDataWindows extends AGLView {
 
 		// debug
 
-		
-
-		disk = new DataWindowsDisk(circleRadius);
+		disk = new DataWindowsDisk();
 		disk.loadTree();
-		//disk.scaleTree(2,1);
+		// disk.scaleTree(2,1);
 
-	
-	
-		//nullpointer:
-		
-		
-	//Tree<ClusterNode> tree = set.getStorageTree();
-	
-		
-		
+		// nullpointer:
+
+		// Tree<ClusterNode> tree = set.getStorageTree();
+
 		arSlerpActions = new ArrayList<nodeSlerp>();
 
 		// disk.translateTree(new Point2D.Double(3,3));
@@ -171,10 +163,13 @@ public class GLDataWindows extends AGLView {
 
 		// if (!isVisible())
 		// return;
-		// if (set == null)
+		gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, viewport, 0);
+
+		canvasWidth = 2 / (float) viewport[0];
+		canvasHeight = 2 / (float) viewport[5];// if (set == null)
 		// return;
 
-		pickingManager.handlePicking(this, gl);
+	
 
 		if (bIsDisplayListDirtyLocal) {
 
@@ -183,10 +178,17 @@ public class GLDataWindows extends AGLView {
 
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
-		display(gl);
+		
+		//pickingManager.handlePicking(this, gl);
+		
 		checkForHits(gl);
-
+		display(gl);
+		
+		
+		
+		
+		
+		
 		if (eBusyModeState != EBusyModeState.OFF)
 			renderBusyMode(gl);
 
@@ -200,7 +202,7 @@ public class GLDataWindows extends AGLView {
 	@Override
 	public void display(GL gl) {
 		// processEvents();
-		
+
 		// GLHelperFunctions.drawAxis(gl);
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// gl.glEnable(GL.GL_DEPTH_TEST);
@@ -214,13 +216,17 @@ public class GLDataWindows extends AGLView {
 		// gl.glMatrixMode(GL.GL_MODELVIEW);
 		// gl.glLoadIdentity();
 		//
-	
+
 		// System.out.println("mouseZeiger:"+mousePoint.getX()+"|"+mousePoint.getY());
 
 		//
+
 		// gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
 		//		 
-		// canvasWidth=canvasHeight*(float)viewport[2]/(float)viewport[3];
+
+		// System.out.println("viewport: " +canvasWidth + "|"+canvasHeight);
+		// canvasWidth=7;
+		// canvasHeight=5;
 		//		
 
 		//
@@ -252,27 +258,56 @@ public class GLDataWindows extends AGLView {
 
 		// renderRemoteLevel(gl, testLevel);
 
-	
-	
 		doSlerpActions();
 
 		disk.renderTree(gl, textureManager, pickingManager, iUniqueID,
 				(double) canvasWidth, (double) canvasHeight);
+
+		//		
+		
+		if (glMouseListener.wasLeftMouseButtonPressed()){
+			
 		
 		
 		if (glMouseListener.getPickedPoint() != null) {
-			mousePoint = glMouseListener.getPickedPoint();
+			
+			System.out.println("leftmouse");
+			if (manualPickFlag == true) {
+				Point mousePoint = new Point(0, 0);
+				mousePoint = glMouseListener.getPickedPoint();
+				int[] viewport = new int[4];
 
-			gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-			double factorX = (double) canvasWidth / (double) viewport[2];
-			double factorY = (double) canvasHeight / (double) viewport[3];
+				gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+				double factorX = (double) canvasWidth
+						/ (double) viewport[2];
+				double factorY = (double) canvasHeight
+						/ (double) viewport[3];
 
-			mouseCoordX = (float) (mousePoint.getX() * factorX);
-			mouseCoordY = (float) (mousePoint.getY() * factorY);
+				mouseCoordX = (double) (mousePoint.getX() * factorX);
+				mouseCoordY = (double) (mousePoint.getY() * factorY);
 
-		}
+				PoincareNode selectedNode;
+				selectedNode = disk
+						.processEyeTrackerAction(new Point2D.Double(
+								mouseCoordX, mouseCoordY),arSlerpActions);
+				if (selectedNode != null) {
+					System.out.println("nodeSelected:"
+							+ selectedNode.iComparableValue);
 
-		
+					
+					//arSlerpActions.add(new nodeSlerp(4, selectedNode.getPosition(),
+						//	new Point2D.Double(0, 0)));
+
+					slerpedNode = selectedNode;
+					disk.setCenteredNode(selectedNode);
+					
+					
+					
+				}
+			}
+			}
+	}
+
 		// if (!containedGLViews.isEmpty()) {
 		//
 		// containedGLViews.get(0).displayRemote(gl);
@@ -283,7 +318,7 @@ public class GLDataWindows extends AGLView {
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 		// if (!isRenderedRemote())
 		// contextMenu.render(gl, this);
-	}
+}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 
@@ -367,19 +402,20 @@ public class GLDataWindows extends AGLView {
 
 		SelectionType selectionType;
 		switch (ePickingType) {
- 
+
 		case DATAW_NODE:
 			switch (pickingMode) {
 
 			case CLICKED:
-				
+
 				arSlerpActions.add(new nodeSlerp(4, disk
 						.getNodeByCompareableValue(iExternalID).getPosition(),
 						new Point2D.Double(0, 0)));
-				
+
 				slerpedNode = disk.getNodeByCompareableValue(iExternalID);
-				disk.setCenteredNode(disk.getNodeByCompareableValue(iExternalID));
-			
+				disk.setCenteredNode(disk
+						.getNodeByCompareableValue(iExternalID));
+
 			}
 
 		}
@@ -509,9 +545,8 @@ public class GLDataWindows extends AGLView {
 			disk.translateTreeMoebius(singleSlerp.returnPoint);
 		} else {
 			arSlerpActions.remove(0);
-			
+
 		}
-		
 
 	}
 
