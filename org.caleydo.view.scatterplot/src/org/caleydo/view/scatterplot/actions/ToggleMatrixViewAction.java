@@ -10,7 +10,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class ToggleMatrixViewAction extends AToolBarAction implements
 		IToolBarItem {
-	public static final String TEXT = "Switch between Matrix/MainView";
+	public static final String TEXT = "Switch between Matrix View/ Main View (m)";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/reset_axis_spacing.png";
 
 	/**

@@ -10,7 +10,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class Toggle2AxisModeAction extends AToolBarAction implements
 		IToolBarItem {
-	public static final String TEXT = "Enable/Disable 2x2 Axis Mode";
+	public static final String TEXT = "Enable/Disable 2x2 Axis Mode (b)";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/bookmark.png";
 
 	/**

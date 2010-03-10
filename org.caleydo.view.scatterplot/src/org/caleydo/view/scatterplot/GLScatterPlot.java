@@ -52,6 +52,7 @@ import org.caleydo.core.manager.event.view.storagebased.SwitchMatrixViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.Toggle2AxisEvent;
 import org.caleydo.core.manager.event.view.storagebased.ToggleColorModeEvent;
 import org.caleydo.core.manager.event.view.storagebased.ToggleMatrixZoomEvent;
+import org.caleydo.core.manager.event.view.storagebased.ToggleMainViewZoomEvent;
 import org.caleydo.core.manager.event.view.storagebased.TogglePointTypeEvent;
 import org.caleydo.core.manager.event.view.storagebased.XAxisSelectorEvent;
 import org.caleydo.core.manager.event.view.storagebased.YAxisSelectorEvent;
@@ -87,6 +88,7 @@ import org.caleydo.view.scatterplot.listener.Toggle2AxisModeListener;
 import org.caleydo.view.scatterplot.listener.ToggleColorModeListener;
 import org.caleydo.view.scatterplot.listener.ToggleMatrixViewListener;
 import org.caleydo.view.scatterplot.listener.ToggleMatrixZoomListener;
+import org.caleydo.view.scatterplot.listener.ToggleMainViewZoomListener;
 import org.caleydo.view.scatterplot.listener.TogglePointTypeListener;
 import org.caleydo.view.scatterplot.listener.XAxisSelectorListener;
 import org.caleydo.view.scatterplot.listener.YAxisSelectorListener;
@@ -186,6 +188,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	private Toggle2AxisModeListener toggle2AxisModeListener;
 	private ToggleColorModeListener toggleColorModeListener;
 	private ToggleMatrixZoomListener toggleMatrixZoomListener;
+	private ToggleMainViewZoomListener toggleMainViewZoomListener;
 	private UseRandomSamplingListener useRandomSamplingListener;
 
 	private SetPointSizeListener setPointSizeListener;
@@ -523,11 +526,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 				gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
 						.getCenterYOffset(), 0);
-			
-			
-			
-			
-			
+		
 			renderCoordinateSystem(gl);		
 			gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
 			renderScatterPoints(gl);
@@ -542,21 +541,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			if (bRenderMatrix)
 				gl.glTranslatef(-renderStyle.getCenterXOffset(),
 						-renderStyle.getCenterYOffset(), 0);
-			
-			
 		
-			
-			
-			
-			
-
-
-			
-			
-			
-			
-			
-			
 		}
 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
@@ -566,6 +551,13 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	private void buildDisplayListSelection(final GL gl, int iGLDisplayListIndex) {
 
+	
+		if (bRenderMatrix) {
+			gl.glNewList(iGLDisplayListIndexMatrixSelection, GL.GL_COMPILE);
+			renderTextures(gl, true, ScatterPlotRenderStyle.MATRIX_SELECTIONTEXTURES_Z); // Selection textures
+			gl.glEndList();
+
+		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 		gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
 
@@ -580,12 +572,6 @@ public class GLScatterPlot extends AStorageBasedView {
 					.getCenterYOffset(), 0);
 		gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
 		gl.glEndList();
-		if (bRenderMatrix) {
-			gl.glNewList(iGLDisplayListIndexMatrixSelection, GL.GL_COMPILE);
-			renderTextures(gl, true, ScatterPlotRenderStyle.MATRIX_FULLTEXTURES_Z); // Selection textures
-			gl.glEndList();
-
-		}
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
@@ -593,19 +579,13 @@ public class GLScatterPlot extends AStorageBasedView {
 		if (bHasFrustumChanged) {
 			// renderStyle.setCenterOffsets();
 			bHasFrustumChanged = false;
-			bUpdateMainView = true;
+			
+			this.bRedrawTextures = true;
+			this.bUpdateMainView = true;
+			this.bUpdateSelection =true;
 		}
 
-		if ((bUpdateMainView || bUpdateSelection)) {
-
-			if (bUpdateSelectionTexures)
-			{
-				initSelectionTextures();
-				bUpdateSelectionTexures=false;
-			}
-			buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
-			bUpdateSelection = false;
-		}
+	
 
 		if (bUpdateFullTexures) {
 			bUpdateFullTexures = false;
@@ -622,6 +602,17 @@ public class GLScatterPlot extends AStorageBasedView {
 	      renderTextures(gl, true, ScatterPlotRenderStyle.MATRIX_SELECTIONTEXTURES_Z);
 	      gl.glEndList();
 	    }
+		
+		if ((bUpdateMainView || bUpdateSelection)) {
+
+			if (bUpdateSelectionTexures)
+			{
+				initSelectionTextures();
+				bUpdateSelectionTexures=false;
+			}
+			buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
+			bUpdateSelection = false;
+		}
 
 		if (bUpdateMainView) {
 
@@ -675,6 +666,11 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	}
 
+	/**
+	 * render the Selection Axes and Icons for the MainView Zoom Feature on the X-Axis
+	 * 
+	 * @param gl
+	 */
 	private void renderMainViewZoomSelectionX(GL gl) {
 		
 		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
@@ -886,6 +882,11 @@ public class GLScatterPlot extends AStorageBasedView {
 		
 	}
 
+	/**
+	 * render the Selection Axes and Icons for the MainView Zoom Feature on the Y-Axis
+	 * 
+	 * @param gl
+	 */
 	private void renderMainViewZoomSelectionY(GL gl) {
 		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 
@@ -1091,6 +1092,11 @@ public class GLScatterPlot extends AStorageBasedView {
 		
 	}
 	
+	/**
+	 * render the Selection Boxes for the MainView Zoom Feature 
+	 * 
+	 * @param gl
+	 */
 	private void renderMainViewZoomSelectionBoxes(GL gl)
 	{
 		// Show Selection Boxes
@@ -1176,8 +1182,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	/**
-	 * Init textures, build array of textures used for holding the whole
-	 * examples
+	 * Init textures, build array of base textures used for the Scatterplot Matrix
 	 * 
 	 * @param gl
 	 */
@@ -1346,8 +1351,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	/**
-	 * Init Selection textures, build array of textures used for holding the
-	 * whole examples
+	 * Init Selection textures, build array of textures used for Scatterplot Matrix
 	 * 
 	 * @param gl
 	 */
@@ -1482,6 +1486,14 @@ public class GLScatterPlot extends AStorageBasedView {
 		}
 	}
 
+	/**
+	 * render the Sletion Rectangles for the Scatter-Matrix
+	 * 
+	 * @param gl
+	 * @param icurrent_X_AXIS
+	 * @param icurrent_Y_AXIS
+	 * @param bIsSecondAxis
+	 */
 	private void renderMatrixSelection(GL gl, int icurrent_X_AXIS, int icurrent_Y_AXIS, boolean bIsSecondAxis)
 	  {
 	    float fHeight = this.viewFrustum.getHeight();
@@ -1616,7 +1628,15 @@ public class GLScatterPlot extends AStorageBasedView {
 	      fEdge, fArMappingColor);
   }
 
-  private void renderTextures(GL gl, boolean bIsSelection, float z)
+  /**
+   * render the Textures build in initTextures; 
+   * if  bIsSelection = true, render the SelectionTextures, else the base textures
+   * 
+ * @param gl
+ * @param bIsSelection
+ * @param z
+ */
+private void renderTextures(GL gl, boolean bIsSelection, float z)
   {
 	    float fHeight = this.viewFrustum.getHeight();
 	    float fWidth = this.viewFrustum.getWidth();
@@ -1830,6 +1850,8 @@ public class GLScatterPlot extends AStorageBasedView {
   	
   
 	/**
+	 * Render the Histogram and the labels for the given Axis
+	 * 
 	 * @param gl
 	 * @param x
 	 * @param y
@@ -1849,7 +1871,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		String sLabel = set.get(storageVA.get(selected_Axis)).getLabel();
 
-		float fScaling = renderStyle.getSmallFontScalingFactor() * 0.9f;
+		float fScaling = renderStyle.getSmallFontScalingFactor() * 0.7f;
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
 
@@ -1862,6 +1884,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		float tmpy = y + height / 6;
 		gl.glTranslatef(tmpx, tmpy, 0);
 		gl.glRotatef(fRotation, 0, 0, 1);
+		textRenderer.setColor(0, 0, 0, 1);
 		textRenderer.begin3DRendering();
 		textRenderer.draw3D(gl, sLabel, 0,
 				0,// + (1 * height / 3),
@@ -2122,6 +2145,11 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	}
 		
+	/**
+	 * render the MainView
+	 * 
+	 * @param gl
+	 */
 	private void renderScatterPoints(GL gl) {
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
@@ -2227,6 +2255,11 @@ public class GLScatterPlot extends AStorageBasedView {
 		POINTSTYLE = tmpPointStyle;
 	}
 
+	/**
+	 * render the Mouseover in the Mainview
+	 * 
+	 * @param gl
+	 */
 	private void renderMouseOver(GL gl) {
 
 		if (contentSelectionManager
@@ -2294,6 +2327,16 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	}
 
+	/**
+	 * render the Mouseover_Label in the Mainview, called by renderMouseOver(GL gl)
+	 * 
+	 * @param gl
+	 * @param x
+	 * @param y
+	 * @param fArMappingColor
+	 * @param fOpacity
+	 * @param iContentIndex
+	 */
 	private void renderMouseOverLabel(GL gl, float x, float y,
 			float[] fArMappingColor, float fOpacity, int iContentIndex) {
 
@@ -2381,6 +2424,15 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	}
 
+	
+	/**
+	 * Evaluates which Scatterpoint is in the Selection rectangle
+	 * called by updateSelection()
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	private boolean isInSelectionRectangle(float x, float y) {
 		float XMin = Math.min(fRectangleDragStartPoint[0],
 				fRectangleDragEndPoint[0]);
@@ -2407,6 +2459,14 @@ public class GLScatterPlot extends AStorageBasedView {
 		return false;
 	}
 
+	/**
+	 * Evaluates which Scatterpoints are in the Selection rectangle
+	 * 
+	 */
+	
+	/**
+	 * 
+	 */
 	private void updateSelection() {
 
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
@@ -2451,6 +2511,11 @@ public class GLScatterPlot extends AStorageBasedView {
 		eventPublisher.triggerEvent(event);
 	}
 
+	/**
+	 * Render The Selections in the MainView
+	 * 
+	 * @param gl
+	 */
 	private void renderSelectionPoints(GL gl) {
 
 		for (SelectionType tmpSelectionType : AlSelectionTypes) {
@@ -2589,6 +2654,12 @@ public class GLScatterPlot extends AStorageBasedView {
 		gl.glEnd();
 	}
 
+	/**
+	 * Updates the the MAinView Zoom Window borders, when a MainZoom-Selector-Axis is dragged;
+	 * 
+	 * @param x
+	 * @param y
+	 */
 	private void handleMainZoomAxes(float x, float y)
 	{
 		switch (iCurrentDragZoom) {
@@ -2665,6 +2736,14 @@ public class GLScatterPlot extends AStorageBasedView {
 		
 	}
 		
+	/**
+	 * Transfer-function for Zoom on X-Axis
+	 * 
+	 * @param x
+	 * @param fSize
+	 * @param fOffset
+	 * @return
+	 */
 	private float transformOnXZoom(float x, float fSize, float fOffset) {
 		float tmp = (x - fOffset) / fSize;
 		return transformOnXZoom(tmp) * fSize + fOffset;
@@ -2675,6 +2754,12 @@ public class GLScatterPlot extends AStorageBasedView {
 //		return transformOnXZoom(tmp) * fSize;
 //	}
 
+	/**
+	 * Transfer-function for Zoom  on X-Axis
+	 * 
+	 * @param x
+	 * @return
+	 */
 	private float transformOnXZoom(float x) {
 		if (!bMainViewZoom)
 			return x;
@@ -2695,6 +2780,14 @@ public class GLScatterPlot extends AStorageBasedView {
 		return (fTransformNewMinX) + (x - fTransformOldMinX) * factor;
 	}
 	
+	/**
+	 * Transfer-function for Zoom  on Y-Axis
+	 * 
+	 * @param y
+	 * @param fSize
+	 * @param fOffset
+	 * @return
+	 */
 	private float transformOnYZoom(float y, float fSize, float fOffset) {
 		float tmp = (y - fOffset) / fSize;
 		return transformOnYZoom(tmp) * fSize + fOffset;
@@ -2705,6 +2798,12 @@ public class GLScatterPlot extends AStorageBasedView {
 //		return transformOnXZoom(tmp) * fSize;
 //	}
 
+	/**
+	 * Transfer-function for Zoom  on Y-Axis
+	 * 
+	 * @param y
+	 * @return
+	 */
 	private float transformOnYZoom(float y) {
 		if (!bMainViewZoom)
 			return y;
@@ -3094,11 +3193,11 @@ public class GLScatterPlot extends AStorageBasedView {
 			
 			 selectNewMouseOverAxes();
 
-			if (bRenderMatrix && bAllowMatrixZoom) {
-				bUpdateMainView = true;
-				this.bUpdateSelection =true;				
-				setDisplayListDirty();
-				
+			if (bRenderMatrix && bAllowMatrixZoom) {						
+				 this.bRedrawTextures = true;
+				 this.bUpdateMainView = true;
+				 this.bUpdateSelection =true;
+				 setDisplayListDirty();								
 			}
 		
 		}
@@ -3348,6 +3447,11 @@ public class GLScatterPlot extends AStorageBasedView {
 		toggleMatrixZoomListener.setHandler(this);
 		eventPublisher.addListener(ToggleMatrixZoomEvent.class,
 				toggleMatrixZoomListener);
+		
+		toggleMainViewZoomListener = new ToggleMainViewZoomListener();
+		toggleMainViewZoomListener.setHandler(this);
+		eventPublisher.addListener(ToggleMainViewZoomEvent.class,
+				toggleMainViewZoomListener);
 
 		setPointSizeListener = new SetPointSizeListener();
 		setPointSizeListener.setHandler(this);
@@ -3385,6 +3489,11 @@ public class GLScatterPlot extends AStorageBasedView {
 			toggleMatrixViewListener = null;
 		}
 
+		if (toggleMainViewZoomListener != null) {
+			eventPublisher.removeListener(toggleMainViewZoomListener);
+			toggleMainViewZoomListener = null;
+		}
+						
 		if (toggleMatrixZoomListener != null) {
 			eventPublisher.removeListener(toggleMatrixZoomListener);
 			toggleMatrixZoomListener = null;

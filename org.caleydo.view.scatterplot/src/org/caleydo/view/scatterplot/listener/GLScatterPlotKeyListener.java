@@ -65,7 +65,7 @@ public class GLScatterPlotKeyListener extends GLKeyListener<GLScatterPlot> {
 			return;
 		}
 
-		if (event.character == 'z') {
+		if (event.character == 'o') {
 			glScatterplot.toggleMatrixZoom();
 			return;
 		}
@@ -80,7 +80,7 @@ public class GLScatterPlotKeyListener extends GLKeyListener<GLScatterPlot> {
 			return;
 		}
 
-		if (event.character == 'o') {
+		if (event.character == 'z') {
 			glScatterplot.toggleMainViewZoom();
 			return;
 		}

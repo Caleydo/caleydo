@@ -12,6 +12,7 @@ import org.caleydo.view.scatterplot.actions.Toggle2AxisModeAction;
 import org.caleydo.view.scatterplot.actions.ToggleColorModeAction;
 import org.caleydo.view.scatterplot.actions.ToggleMatrixViewAction;
 import org.caleydo.view.scatterplot.actions.ToggleMatrixZoomAction;
+import org.caleydo.view.scatterplot.actions.ToggleMainViewZoomAction;
 import org.caleydo.view.scatterplot.actions.TogglePointTypeAction;
 
 /**
@@ -27,8 +28,8 @@ public class ScatterplotToolBarContent extends AToolBarContent {
 	public static final String VIEW_TITLE = "Scatterplot";
 
 	private IToolBarItem pointSizeSlider;
-	private IToolBarItem xAxisSelector;
-	private IToolBarItem yAxisSelector;
+//	private IToolBarItem xAxisSelector;
+//	private IToolBarItem yAxisSelector;
 
 	@Override
 	public Class<?> getViewClass() {
@@ -57,6 +58,9 @@ public class ScatterplotToolBarContent extends AToolBarContent {
 
 		IToolBarItem toggleMatrixZoom = new ToggleMatrixZoomAction(targetViewID);
 		actionList.add(toggleMatrixZoom);
+		
+		IToolBarItem toggleMainViewZoom = new ToggleMainViewZoomAction(targetViewID);
+		actionList.add(toggleMainViewZoom);
 
 		IToolBarItem toggle2AxisMode = new Toggle2AxisModeAction(targetViewID);
 		actionList.add(toggle2AxisMode);
