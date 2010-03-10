@@ -31,6 +31,7 @@ public class DataWindowsDisk extends PoincareDisk {
 	private double displayScaleFactor = 10;
 	private double eyeTrackerBorder;
 	private double eyeTrackerPrecision;
+	private double lineFactor=0;
 
 	public DataWindowsDisk() {
 		super();
@@ -45,7 +46,7 @@ public class DataWindowsDisk extends PoincareDisk {
 		levelOfDetailLimits[2] = 1;
 		eyeTrackerBorder = 0.8;
 		eyeTrackerPrecision = 0.1;
-
+		lineFactor=40;
 	}
 
 	public void mouseOverNode(int nodeIndex) {
@@ -228,70 +229,16 @@ public class DataWindowsDisk extends PoincareDisk {
 			int numberOfDetails, int mode) {
 
 		Point2D.Double startingPoint = node1.getPosition();
-		// Point2D.Double endingPoint = node2.getPosition();
-
-		double width = this.getMetric(startingPoint, lineWidth);
+		
+		
+		double width =  this.getMetric(startingPoint, lineWidth)*lineFactor;
+		
 		gl.glLineWidth((float) width);
-
-		// draw the curve:
-		// if (numberOfDetails != 0) {
-		//
-		// // gl.glVertex3d(node1.getProjectedPosition().getX()
-		// // * displayScaleFactor + (canvasWidth / 2), node1
-		// // .getProjectedPosition().getY()
-		// // * displayScaleFactor + canvasHeight / 2, 0);
-		// Point2D.Double lastPosition = new Point2D.Double(0, 0);
-		//
-		// Point2D.Double directionFactor = new Point2D.Double();
-		// directionFactor.setLocation((endingPoint.getX() - startingPoint
-		// .getX())
-		// / (numberOfDetails + 1),
-		// (endingPoint.getY() - startingPoint.getY())
-		// / (numberOfDetails + 1));
-		//
-		// Point2D.Double tempLinePoint = new Point2D.Double();
-		// tempLinePoint.setLocation(startingPoint);
-		// for (int i = 0; i <= numberOfDetails + 1; i++) {
-		// Point2D.Double tempLinePoint2 = new Point2D.Double();
-		// tempLinePoint2.setLocation(tempLinePoint.getX()
-		// + directionFactor.getX() * (i), tempLinePoint.getY()
-		// + directionFactor.getY() * (i));
-		//
-		// width = distancePoints(
-		// projectPoint(tempLinePoint2),
-		// projectPoint(new Point2D.Double(tempLinePoint2.getX()
-		// + lineWidth, tempLinePoint2.getY() + lineWidth)))
-		// * lineFactor * displayScaleFactor;
-		//
-		// gl.glLineWidth((float) width);
-		//
-		// if (i > 0) {
-		// gl.glBegin(GL.GL_LINE_STRIP);
-		//
-		// gl.glColor3i(0, 0, 0);
-		// gl.glVertex3d(lastPosition.getX(), lastPosition.getY(), 0);
-		//
-		// lastPosition.setLocation(projectPoint(tempLinePoint2)
-		// .getX()
-		// * displayScaleFactor + (canvasWidth / 2),
-		// projectPoint(tempLinePoint2).getY()
-		// * displayScaleFactor + canvasHeight / 2);
-		//
-		// gl.glVertex3d(lastPosition.getX(), lastPosition.getY(), 0);
-		// gl.glEnd();
-		//
-		// } else {
-		// lastPosition.setLocation(projectPoint(tempLinePoint2)
-		// .getX()
-		// * displayScaleFactor + (canvasWidth / 2),
-		// projectPoint(tempLinePoint2).getY()
-		// * displayScaleFactor + canvasHeight / 2);
-		// }
-		// }
-
-		// } else {
-		gl.glBegin(GL.GL_LINE);
-
+		gl.glBegin(GL.GL_LINE_STRIP);
+		
+		
+		
+		
 		gl.glColor3i(0, 0, 0);
 		gl.glVertex3d(node1.getPosition().getX() * displayScaleFactor
 				+ (canvasWidth / 2), node1.getPosition().getY()
