@@ -9,7 +9,7 @@ public class PoincareNode extends AHierarchyElement<PoincareNode> {
 
 	private double distanceFromOrigin;
 	private Point2D.Double position;
-	private Point2D.Double projectedPosition;
+	private Point2D.Double zoomedPosition;
 	private PoincareNode openLink;
 	private boolean linked = false;
 	private int levelOfDetail = 0;
@@ -56,14 +56,6 @@ public class PoincareNode extends AHierarchyElement<PoincareNode> {
 		return position;
 	}
 
-	public void setProjectedPosition(Point2D.Double projectedPosition) {
-		this.projectedPosition = projectedPosition;
-	}
-
-	public Point2D.Double getProjectedPosition() {
-		return projectedPosition;
-	}
-
 	public void setOpenLink(PoincareNode openLink) {
 		this.openLink = openLink;
 	}
@@ -78,6 +70,14 @@ public class PoincareNode extends AHierarchyElement<PoincareNode> {
 
 	public int getLevelOfDetail() {
 		return levelOfDetail;
+	}
+
+	public void setZoomedPosition(Point2D.Double zoomedPosition) {
+		this.zoomedPosition = zoomedPosition;
+	}
+
+	public Point2D.Double getZoomedPosition() {
+		return zoomedPosition;
 	}
 
 }

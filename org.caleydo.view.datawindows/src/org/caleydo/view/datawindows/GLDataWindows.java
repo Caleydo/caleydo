@@ -78,6 +78,8 @@ public class GLDataWindows extends AGLView {
 	private PoincareNode slerpedNode;
 
 	private boolean manualPickFlag = true;
+	
+	private double diskZoomIntensity=1;
 
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(
 			0, 0);
@@ -114,6 +116,7 @@ public class GLDataWindows extends AGLView {
 
 		disk = new DataWindowsDisk();
 		disk.loadTree();
+		disk.zoomTree(1);
 		// disk.scaleTree(2,1);
 
 		// nullpointer:
@@ -259,11 +262,17 @@ public class GLDataWindows extends AGLView {
 		// renderRemoteLevel(gl, testLevel);
 
 		doSlerpActions();
-
+		disk.zoomTree(diskZoomIntensity);
 		disk.renderTree(gl, textureManager, pickingManager, iUniqueID,
 				(double) canvasWidth, (double) canvasHeight);
 
 		//		
+		
+		
+		if (glMouseListener.wasRightMouseButtonPressed()){
+			diskZoomIntensity=1.5;
+		
+		}
 		
 		if (glMouseListener.wasLeftMouseButtonPressed()){
 			

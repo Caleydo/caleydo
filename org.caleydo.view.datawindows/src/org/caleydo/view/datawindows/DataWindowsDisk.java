@@ -140,55 +140,13 @@ public class DataWindowsDisk extends PoincareDisk {
 	public void drawNode(PoincareNode node, int mode) {
 
 		// for a realistic size, the size is a projected offset of the current
-		// point
-		// double modLength=distanceFromOrigin(node.getPosition());
-		//		
-		//		
-		// Point2D.Double pointA=new Point2D.Double(modLength,modLength);
-		// Point2D.Double pointB=new
-		// Point2D.Double(modLength+nodeSize,modLength+nodeSize);
-		//		
-		// pointA=this.projectPoint(pointA);
-		// pointB=this.projectPoint(pointB);
-		//		
-		// double size=distancePoints(pointA,pointB);
-
 		double size = getMetric(node.getPosition(), nodeSize);
 
 		if (node.highLighted == true) {
 			size = size * 1.5;
 		}
 
-		// double size = distancePoints(node.getProjectedPosition(),
-		// projectPoint(new Point2D.Double(node.getPosition().getX()
-		// - (nodeSize / 2), node.getPosition().getY() - (nodeSize
-		// / 2))))
-		// * displayScaleFactor / 2;
-
-		//
-		// Vec3f lowerLeftCorner = new Vec3f(
-		// (float) (-size + node.getProjectedPosition().getX()
-		// * displayScaleFactor + canvasWidth / 2), (float) (-size
-		// + node.getProjectedPosition().getY()
-		// * displayScaleFactor + canvasHeight / 2), 0);
-		// Vec3f lowerRightCorner = new Vec3f(
-		// (float) (size + node.getProjectedPosition().getX()
-		// * displayScaleFactor + canvasWidth / 2), (float) (-size
-		// + node.getProjectedPosition().getY()
-		// * displayScaleFactor + canvasHeight / 2), 0);
-		// Vec3f upperRightCorner = new Vec3f(
-		// (float) (size + node.getProjectedPosition().getX()
-		// * displayScaleFactor + canvasWidth / 2), (float) (size
-		// + node.getProjectedPosition().getY()
-		// * displayScaleFactor + canvasHeight / 2), 0);
-		// Vec3f upperLeftCorner = new Vec3f(
-		// (float) (-size + node.getProjectedPosition().getX()
-		// * displayScaleFactor + canvasWidth / 2), (float) (size
-		// + node.getProjectedPosition().getY()
-		// * displayScaleFactor + canvasHeight / 2), 0);
-
-		// if there is no projection on the poincare disk
-
+		//if (mode==1){
 		Vec3f lowerLeftCorner = new Vec3f(
 				(float) (-size + node.getPosition().getX() * displayScaleFactor + canvasWidth / 2),
 				(float) (-size + node.getPosition().getY() * displayScaleFactor + canvasHeight / 2),
@@ -205,9 +163,29 @@ public class DataWindowsDisk extends PoincareDisk {
 				(float) (-size + node.getPosition().getX() * displayScaleFactor + canvasWidth / 2),
 				(float) (size + node.getPosition().getY() * displayScaleFactor + canvasHeight / 2),
 				0);
-
 		Vec3f scalingPivot = new Vec3f(1, 1, 0);
-
+		
+		if (mode==2){
+			 lowerLeftCorner = new Vec3f(
+					(float) (-size + node.getZoomedPosition().getX() * displayScaleFactor + canvasWidth / 2),
+					(float) (-size + node.getZoomedPosition().getY() * displayScaleFactor + canvasHeight / 2),
+					0);
+			 lowerRightCorner = new Vec3f(
+					(float) (size + node.getZoomedPosition().getX() * displayScaleFactor + canvasWidth / 2),
+					(float) (-size + node.getZoomedPosition().getY() * displayScaleFactor + canvasHeight / 2),
+					0);
+			 upperRightCorner = new Vec3f(
+					(float) (size + node.getZoomedPosition().getX() * displayScaleFactor + canvasWidth / 2),
+					(float) (size + node.getZoomedPosition().getY() * displayScaleFactor + canvasHeight / 2),
+					0);
+			 upperLeftCorner = new Vec3f(
+					(float) (-size + node.getZoomedPosition().getX() * displayScaleFactor + canvasWidth / 2),
+					(float) (size + node.getZoomedPosition().getY() * displayScaleFactor + canvasHeight / 2),
+					0);
+			 scalingPivot = new Vec3f(1, 1, 0);
+		}
+		
+		
 		int iPickingID = pickingManager.getPickingID(iUniqueID,
 				EPickingType.DATAW_NODE, node.iComparableValue);
 

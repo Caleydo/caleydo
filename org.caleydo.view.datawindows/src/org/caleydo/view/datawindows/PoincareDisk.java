@@ -273,67 +273,46 @@ public class PoincareDisk {
 	// return newPoint;
 	// }
 
-	// public Point2D.Double projectPoint(Point2D.Double point) {
-	// Point2D.Double coordinate = new Point2D.Double();
-	// coordinate.setLocation(point);
-	// double coordinateLength = coordinate.getX() * coordinate.getX()
-	// + coordinate.getY() * coordinate.getY();
-	//		
-	//		
-	// // coordinateLength = Math.sqrt(coordinateLength);
-	//	
-	//		
-	//		
-	// //for speedup, the radius of the disk is everytime 1
-	// //double radiussquare = radius * radius;
-	// //double projectionFactor =1;
-	// // double projectionFactor =2-coordinateLength;// 2 / (1 +
-	// coordinateLength);
-	//
-	// double projectionFactor = 2 / (1 + coordinateLength);
-	// //double projectionFactor =coordinateLength*coordinateLength;
-	//		
-	// //System.out.println(coordinateLength);
-	// //projectionFactor = projectionFactor + (1-coordinateLength);
-	//		
-	// //todo find the real factor
-	// coordinate.setLocation(coordinate.getX() * projectionFactor ,
-	// coordinate.getY() * projectionFactor );
-	//		
-	//		
-	//		
-	// return coordinate;
-	// }
-	//
-	// protected boolean projectNode(PoincareNode parentNode) {
-	// double distance = distanceFromOrigin(parentNode.getPosition());
-	// parentNode.setDistanceFromOrigin(distance);
-	// if (tree.getChildren(parentNode) == null) {
-	// return false;
-	// }
-	//
-	// ArrayList<PoincareNode> children = tree.getChildren(parentNode);
-	// int numberOfChildren = children.size();
-	// for (int i = 0; i < numberOfChildren; i++) {
-	// children.get(i).setProjectedPosition(
-	// projectPoint(children.get(i).getPosition()));
-	// // recursion step
-	// projectNode(children.get(i));
-	// }
-	// return true;
-	//
-	// }
-	//
-	// public void projectTree() {
-	// if (dirtyTree) {
-	// PoincareNode root = tree.getRoot();
-	// Point2D.Double projectedPoint = new Point2D.Double(0, 0);
-	// //start recursive algorithm
-	// projectedPoint = projectPoint(root.getPosition());
-	// root.setProjectedPosition(projectedPoint);
-	// projectNode(root);
-	// }
-	// }
+	public Point2D.Double zoomPoint(Point2D.Double point, double intensity) {
+
+		Point2D.Double coordinate = new Point2D.Double();
+		
+	
+		
+		coordinate.setLocation(point.getX()*intensity,point.getY()*intensity);
+		return coordinate;
+	}
+
+	protected boolean zoomNode(PoincareNode parentNode, double intensity) {
+		double distance = distanceFromOrigin(parentNode.getPosition());
+		parentNode.setDistanceFromOrigin(distance);
+		if (tree.getChildren(parentNode) == null) {
+			return false;
+		}
+
+		ArrayList<PoincareNode> children = tree.getChildren(parentNode);
+		int numberOfChildren = children.size();
+		for (int i = 0; i < numberOfChildren; i++) {
+			children.get(i).setZoomedPosition(
+					zoomPoint(children.get(i).getPosition(), intensity));
+
+			// recursion step
+			zoomNode(children.get(i), intensity);
+		}
+		return true;
+
+	}
+
+	public void zoomTree(double intensity) {
+
+		PoincareNode root = tree.getRoot();
+		Point2D.Double projectedPoint = new Point2D.Double(0, 0);
+		// start recursive algorithm
+		projectedPoint = zoomPoint(root.getPosition(), intensity);
+		root.setZoomedPosition(projectedPoint);
+		zoomNode(root, intensity);
+
+	}
 
 	public void calculateLinePoints() {
 
@@ -649,14 +628,14 @@ public class PoincareDisk {
 
 		if (area != 0) {
 			while (this.getNodeByCompareableValue(counter) != null) {
-				
+
 				// calculating the distance to the coordinate:
 				distance = distancePoints(getNodeByCompareableValue(counter)
 						.getPosition(), coordinate);
-		
+
 				if (distance <= area) {
 					if (distance <= bestDistance) {
-				
+
 						bestDistance = distance;
 						bestNode = getNodeByCompareableValue(counter);
 					}
@@ -666,23 +645,21 @@ public class PoincareDisk {
 		} else {
 			double nodeRadius;
 			while (this.getNodeByCompareableValue(counter) != null) {
-				
-				
-				
+
 				distance = distancePoints(getNodeByCompareableValue(counter)
 						.getPosition(), coordinate);
-				
+
 				nodeRadius = getMetric(getNodeByCompareableValue(counter)
 						.getPosition(), nodeSize);
-		
+
 				if (distance <= nodeRadius) {
-					
-						bestDistance = distance;
-						bestNode = getNodeByCompareableValue(counter);
-					
+
+					bestDistance = distance;
+					bestNode = getNodeByCompareableValue(counter);
+
 					break;
 				}
-				counter++;				
+				counter++;
 			}
 		}
 
