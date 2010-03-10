@@ -139,7 +139,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 
 	private boolean bUpdateSelection = false;
-	// private boolean bUpdateSelectionTexures =false;
+	private boolean bUpdateSelectionTexures =false;
 	private boolean bUpdateFullTexures = false;
 
 	private boolean bUseColor = true;
@@ -177,7 +177,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	public int iMouseOverAxisIndexX = -1;
 	public int iMouseOverAxisIndexY = -1;
 
-	public int MAX_AXES = 11;
+	public int MAX_AXES=ScatterPlotRenderStyle.NUMBER_OF_INITIAL_AXES;
 
 	// Listeners
 
@@ -207,7 +207,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	// Textures
 	private int iTextureSize = 1000;
-	private int iMaxTextures = 100;
+	private int iSamplefaktor=4;
 
 	// array of textures for holding the data samples
 
@@ -260,7 +260,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		super.renderStyle = renderStyle;
 		detailLevel = EDetailLevel.HIGH;
 		updateMaxAxis();
-		renderStyle.setTextureNr(iMaxTextures, iMaxTextures);
+		renderStyle.setTextureNr(MAX_AXES, MAX_AXES);
 		resetFullTextures();
 		resetSelectionTextures();
 		initTextures();
@@ -433,6 +433,7 @@ public class GLScatterPlot extends AStorageBasedView {
 							-renderStyle.getCenterYOffset(), 0);
 				// gl.glDeleteLists(iGLDisplayListIndexBrush, 1);
 				bUpdateSelection = true;
+				bUpdateSelectionTexures =true;
 			}
 
 			pickingManager.handlePicking(this, gl);
@@ -597,8 +598,11 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		if ((bUpdateMainView || bUpdateSelection)) {
 
-			if (bUpdateSelection)
+			if (bUpdateSelectionTexures)
+			{
 				initSelectionTextures();
+				bUpdateSelectionTexures=false;
+			}
 			buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
 			bUpdateSelection = false;
 		}
@@ -1183,7 +1187,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		int iy = 0;
 		float xnormalized = 0.0f;
 		float ynormalized = 0.0f;
-		float fSelectionFaktor = 1.0f;
+
 
 		float[] fArRgbaWhite = { 1.0f, 1.0f, 1.0f, 1f }; // OPACY
 		float fBaseOpacity = 0.5f;
@@ -1192,28 +1196,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		float[] fBlackColor = { 0.0f, 0.0f, 0.0f }; // Black Color
 
 		 //Collection<Integer> selectionSet = contentVA.getIndexList();
-		 Collection<Integer> tmpSet = this.contentVA.getIndexList();
-		 
-		 iDisplayEveryNthPoint = contentVA.size()
-		  / iNumberOfRandomElements;
-		  
-		if (iDisplayEveryNthPoint == 0) 
-			iDisplayEveryNthPoint = 1;
 		
-		int actualPointsSkipped=iDisplayEveryNthPoint;
-		//TODO
-		
-		float fGlobalTexturePointsX = iTextureSize / fSelectionFaktor;
-		float fGlobalTexturePointsY = iTextureSize / fSelectionFaktor;
-		 
-		 
-		 Collection<Integer> selectionSet = new ArrayList<Integer>();
-		    for (Integer iContentIndex : tmpSet)
-		    {
-		      if (iContentIndex.intValue() % actualPointsSkipped != 0)
-		        continue;
-		      selectionSet.add(iContentIndex);
-		    }
 
 		//updateMaxAxis();
 		int StartindexX = 0;
@@ -1231,7 +1214,10 @@ public class GLScatterPlot extends AStorageBasedView {
 		}
 
 		AlFullTextures.clear();
-
+		
+		
+		float fGlobalTexturePointsX = iTextureSize ;
+		float fGlobalTexturePointsY = iTextureSize ;
 	
 
 		int iTextureWidth = (int) (fGlobalTexturePointsX / (double) NR_TEXTURESX);
@@ -1243,6 +1229,35 @@ public class GLScatterPlot extends AStorageBasedView {
 		FloatBuffer FbTemp = BufferUtil.newFloatBuffer(TextureSize * 4);
 
 		Texture tempTextur;
+		
+		Collection<Integer> tmpSet = this.contentVA.getIndexList();
+		 
+		int iNumberOfActuelelements=iNumberOfRandomElements;
+		int iActualPointsSkipped=1;
+		
+		 iDisplayEveryNthPoint = contentVA.size()
+		  / iNumberOfRandomElements;
+		  		 		 
+		if (iDisplayEveryNthPoint == 0)
+		{
+			iDisplayEveryNthPoint = 1;
+			iNumberOfActuelelements=contentVA.size();
+		}
+		
+		if(iNumberOfActuelelements*iSamplefaktor>TextureSize)
+			iActualPointsSkipped=(iNumberOfActuelelements*iSamplefaktor) / TextureSize;
+		
+		if(iDisplayEveryNthPoint>iActualPointsSkipped) iActualPointsSkipped=iDisplayEveryNthPoint;
+		
+		 
+		 
+		 Collection<Integer> selectionSet = new ArrayList<Integer>();
+		    for (Integer iContentIndex : tmpSet)
+		    {
+		      if (iContentIndex.intValue() % iActualPointsSkipped != 0)
+		        continue;
+		      selectionSet.add(iContentIndex);
+		    }
 
 
 		for (Integer iAxisY = StartindexY; iAxisY <= EndindexY; iAxisY++) {
@@ -1381,6 +1396,8 @@ public class GLScatterPlot extends AStorageBasedView {
 		FloatBuffer FbTemp = BufferUtil.newFloatBuffer(TextureSize * 4);
 
 		Texture tempTextur;
+		
+						
 
 		for (Integer iAxisY = StartindexY; iAxisY <= EndindexY; iAxisY++) {
 			for (Integer iAxisX = StartindexX; iAxisX <= EndindexX; iAxisX++) {
@@ -2947,6 +2964,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		AlSelectionTypes.remove(iSlectionNr - 1);
 		currentSelection = AlSelectionTypes.get(iSlectionNr - 2);
 		bUpdateSelection = true;
+		bUpdateSelectionTexures = true;
 		setDisplayListDirty();
 	}
 
@@ -3044,6 +3062,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			iSelectedAxisIndexX = contentID / NR_TEXTURESY;
 			iSelectedAxisIndexY = contentID % NR_TEXTURESX;
 			bUpdateMainView = true;
+			this.bUpdateSelection =true;
 			selectNewSelectionAxes();
 			setDisplayListDirty();
 			return;
@@ -3056,6 +3075,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			iSelectedAxisIndexX2 = contentID / NR_TEXTURESY;
 			iSelectedAxisIndexY2 = contentID % NR_TEXTURESX;
 			bUpdateMainView = true;
+			this.bUpdateSelection =true;
 			selectNewSelectionAxes();
 			setDisplayListDirty();
 			return;
@@ -3075,8 +3095,10 @@ public class GLScatterPlot extends AStorageBasedView {
 			 selectNewMouseOverAxes();
 
 			if (bRenderMatrix && bAllowMatrixZoom) {
-				setDisplayListDirty();
 				bUpdateMainView = true;
+				this.bUpdateSelection =true;				
+				setDisplayListDirty();
+				
 			}
 		
 		}
@@ -3144,6 +3166,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		fRectangleDragStartPoint = new float[3];
 		fRectangleDragEndPoint = new float[3];
 		bUpdateSelection = true;
+		bUpdateSelectionTexures = true;
 		setDisplayListDirty();
 
 	}
@@ -3152,6 +3175,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	protected void reactOnExternalSelection(boolean scrollToSelection) {
 		selectAxesfromExternal();
 		bUpdateSelection = true;
+		bUpdateSelectionTexures=true;
 		setDisplayListDirty();
 		// UpdateMouseOverfromExternal();
 	}
@@ -3161,6 +3185,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		contentSelectionManager.setVADelta(delta);
 		bUpdateSelection = true;
+		bUpdateSelectionTexures=true;
 		setDisplayListDirty();
 
 	}
@@ -3170,7 +3195,7 @@ public class GLScatterPlot extends AStorageBasedView {
 		
 		storageSelectionManager.setVADelta(delta);
 		updateMaxAxis();
-		renderStyle.setTextureNr(iMaxTextures, iMaxTextures);
+		renderStyle.setTextureNr(MAX_AXES, MAX_AXES);
 		resetFullTextures();
 		resetSelectionTextures();
 		initTextures();
@@ -3213,6 +3238,16 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	@Override
 	public void handleUpdateView() {
+		setDisplayListDirty();
+	}
+	
+	@Override
+	public void handleRedrawView() {
+		if(bUseColor)
+		{
+		bUpdateMainView = true;
+		bUpdateFullTexures = true;
+		}
 		setDisplayListDirty();
 	}
 
@@ -3429,6 +3464,8 @@ public class GLScatterPlot extends AStorageBasedView {
 	    if (!(this.bAllowMatrixZoom))
 	      return;
 	    this.bRedrawTextures = true;
+	    this.bUpdateMainView = true;
+	    this.bUpdateSelection =true;
 	    setDisplayListDirty();
 	  }
 
@@ -3480,6 +3517,8 @@ public class GLScatterPlot extends AStorageBasedView {
 	    if (!(this.bAllowMatrixZoom))
 	      return;
 	    this.bRedrawTextures = true;
+	    this.bUpdateMainView = true;
+	    this.bUpdateSelection =true;
 	    setDisplayListDirty();
 	  }
 
@@ -3506,7 +3545,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	    	tmpAxis = this.MAX_AXES-1;
 	    iSelectedAxisIndexX = tmpAxis;
 	    selectNewSelectionAxes();
-	    this.bUpdateMainView = true;
+	    this.bUpdateMainView = true;	    
 	    setDisplayListDirty();
 	  }
 
@@ -3527,7 +3566,8 @@ public class GLScatterPlot extends AStorageBasedView {
 			//tmpAxis = SELECTED_Y_AXIS_2;
 			tmpAxis = this.MAX_AXES-1;
 		iSelectedAxisIndexY2 = tmpAxis;
-		bUpdateMainView = true;
+		bUpdateMainView = true;		
+	    this.bUpdateSelection =true;
 		selectNewSelectionAxes();
 		setDisplayListDirty();
 	}
@@ -3551,6 +3591,7 @@ public class GLScatterPlot extends AStorageBasedView {
 			tmpAxis = this.MAX_AXES-1;
 		iSelectedAxisIndexX2 = tmpAxis;
 		bUpdateMainView = true;
+		this.bUpdateSelection =true;
 		selectNewSelectionAxes();
 		setDisplayListDirty();
 	}
@@ -3561,6 +3602,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	    iSelectedAxisIndexY = iMouseOverAxisIndexY;
 	    selectNewSelectionAxes();
 	    this.bUpdateMainView = true;
+	    this.bUpdateSelection =true;
 	    setDisplayListDirty();
 	  }
 	

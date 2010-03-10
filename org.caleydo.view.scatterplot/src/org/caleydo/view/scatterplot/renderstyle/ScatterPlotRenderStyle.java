@@ -40,6 +40,7 @@ public class ScatterPlotRenderStyle extends GeneralRenderStyle {
 	public static final float YLABELDISTANCE = 0.10f;
 
 	public static final int NUMBER_AXIS_MARKERS = 19;
+	public static final int NUMBER_OF_INITIAL_AXES = 9;
 
 	public static final int MIN_AXIS_LABEL_TEXT_SIZE = 60;
 	public static final int MIN_NUMBER_TEXT_SIZE = 55;
