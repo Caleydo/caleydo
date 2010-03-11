@@ -56,6 +56,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CompareGroupsItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CopyGroupsItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CreateGroupItem;
@@ -64,7 +65,6 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.PasteGroupsIte
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 import org.caleydo.view.grouper.compositegraphic.ICompositeGraphic;
-import org.caleydo.view.grouper.draganddrop.DragAndDropController;
 import org.caleydo.view.grouper.drawingstrategies.DrawingStrategyManager;
 import org.caleydo.view.grouper.drawingstrategies.group.EGroupDrawingStrategyType;
 import org.caleydo.view.grouper.drawingstrategies.group.IGroupDrawingStrategy;

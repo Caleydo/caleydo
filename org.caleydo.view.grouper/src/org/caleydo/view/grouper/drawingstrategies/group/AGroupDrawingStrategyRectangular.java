@@ -9,10 +9,10 @@ import java.util.Set;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
+import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.view.grouper.GrouperRenderStyle;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 import org.caleydo.view.grouper.compositegraphic.ICompositeGraphic;
-import org.caleydo.view.grouper.draganddrop.IDraggable;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 

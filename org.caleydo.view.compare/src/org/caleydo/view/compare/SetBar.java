@@ -7,10 +7,16 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.AGLGUIElement;
+import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 
-public class SetBar {
+import com.sun.opengl.util.j2d.TextRenderer;
+
+public class SetBar extends AGLGUIElement {
 
 	private ArrayList<ISet> sets;
 	private ArrayList<SetBarItem> items;
@@ -18,31 +24,45 @@ public class SetBar {
 	private float height;
 	private float width;
 	private PickingManager pickingManager;
+	private TextRenderer textRenderer;
+	private DragAndDropController dragAndDropController;
+	private GLMouseListener glMouseListener;
+	private SetBarItem currentMouseOverItem;
 	private int viewID;
-	
-	public SetBar(int viewID, PickingManager pickingManager) {
+	private AGLView view;
+
+	public SetBar(int viewID, PickingManager pickingManager,
+			TextRenderer textRenderer,
+			DragAndDropController dragAndDropController,
+			GLMouseListener glMouseListener, AGLView view) {
 		this.viewID = viewID;
 		this.pickingManager = pickingManager;
+		this.textRenderer = textRenderer;
+		this.dragAndDropController = dragAndDropController;
+		this.glMouseListener = glMouseListener;
+		this.view = view;
 		items = new ArrayList<SetBarItem>();
 		sets = new ArrayList<ISet>();
+		setMinSize(60);
 	}
-	
+
 	public void render(GL gl) {
-		for(SetBarItem item : items) {
+		for (SetBarItem item : items) {
 			item.render(gl);
 		}
 	}
-	
+
 	public Vec3f getPosition() {
 		return position;
 	}
 
 	public void setPosition(Vec3f position) {
 		this.position = position;
-		
+
 		float currentPositionX = position.x();
-		for(SetBarItem item : items) {
-			item.setPosition(new Vec3f(currentPositionX, position.y(), position.z()));
+		for (SetBarItem item : items) {
+			item.setPosition(new Vec3f(currentPositionX, position.y(), position
+					.z()));
 			currentPositionX += item.getWidth();
 		}
 	}
@@ -51,10 +71,10 @@ public class SetBar {
 		return height;
 	}
 
-	public void setHeight(float height) {
-		this.height = height;
-		for(SetBarItem item : items) {
-			item.setHeight(height);
+	public void setHeight(GL gl, float height) {
+		this.height = getScaledSizeOf(gl, height, false);
+		for (SetBarItem item : items) {
+			item.setHeight(this.height);
 		}
 	}
 
@@ -65,8 +85,12 @@ public class SetBar {
 	public void setWidth(float width) {
 		this.width = width;
 		float itemWidth = width / (float) items.size();
-		for(SetBarItem item : items) {
+		float currentPositionX = position.x();
+		for (SetBarItem item : items) {
 			item.setWidth(itemWidth);
+			item.setPosition(new Vec3f(currentPositionX, position.y(), position
+					.z()));
+			currentPositionX += item.getWidth();
 		}
 	}
 
@@ -74,19 +98,78 @@ public class SetBar {
 		this.sets.clear();
 		this.sets.addAll(sets);
 		items.clear();
-		
+		currentMouseOverItem = null;
+
 		float itemWidth = width / (float) sets.size();
 		int itemID = 0;
 		float currentPositionX = position.x();
-		
-		for(ISet set : sets) {
-			SetBarItem item = new SetBarItem(itemID, viewID, pickingManager);
+
+		for (ISet set : sets) {
+			SetBarItem item = new SetBarItem(itemID, viewID, pickingManager,
+					textRenderer, this);
 			item.setSet(set);
 			item.setHeight(height);
 			item.setWidth(itemWidth);
-			item.setPosition(new Vec3f(currentPositionX, position.y(), position.z()));
+			item.setPosition(new Vec3f(currentPositionX, position.y(), position
+					.z()));
+			items.add(item);
 			currentPositionX += item.getWidth();
 			itemID++;
 		}
+	}
+
+	public void handleSetBarItemSelection(int itemID, EPickingMode pickingMode) {
+
+		SetBarItem item = items.get(itemID);
+
+		if (item == null)
+			return;
+
+		switch (pickingMode) {
+		case CLICKED:
+			dragAndDropController.clearDraggables();
+			dragAndDropController.setDraggingStartPosition(glMouseListener);
+			dragAndDropController.addDraggable(item);
+			dragAndDropController.startDragging();
+			break;
+		case MOUSE_OVER:
+			if (item == currentMouseOverItem)
+				return;
+
+			item.setSelectionStatus(SetBarItem.SELECTION_STATUS_MOUSE_OVER);
+			if (currentMouseOverItem != null)
+				currentMouseOverItem
+						.setSelectionStatus(SetBarItem.SELECTION_STATUS_NORMAL);
+			currentMouseOverItem = item;
+			view.setDisplayListDirty();
+
+			break;
+		case RIGHT_CLICKED:
+			break;
+		case DRAGGED:
+			if (dragAndDropController.hasDraggables()) {
+				if (!dragAndDropController.isDragging()) {
+
+				}
+				dragAndDropController.setDropArea(item);
+			}
+			break;
+		}
+	}
+	
+	public void moveItem(SetBarItem itemToMove, int newIndex) {
+		if(itemToMove.getID() < newIndex)
+			newIndex--;
+		items.remove(itemToMove.getID());
+		
+		items.add(newIndex, itemToMove);
+		
+		int itemID = 0;
+		for(SetBarItem item : items) {
+			item.setID(itemID);
+			itemID++;
+		}
+		
+		view.setDisplayListDirty();
 	}
 }

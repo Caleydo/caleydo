@@ -1,4 +1,4 @@
-package org.caleydo.view.grouper.draganddrop;
+package org.caleydo.core.view.opengl.util.draganddrop;
 
 import java.awt.Point;
 import java.util.HashSet;
@@ -12,32 +12,32 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
 public class DragAndDropController {
 
-	private Set<IDraggable> setDraggables;
+	private Set<IDraggable> draggables;
 	private IDropArea dropArea;
-	private boolean bDragging;
-	private boolean bDraggingFirstTime;
+	private boolean isDragging;
+	private boolean isDraggingFirstTime;
 	private Point startDraggingWindowCoords;
 	private AGLView view;
 
 	public DragAndDropController(AGLView view) {
-		setDraggables = new HashSet<IDraggable>();
-		bDragging = false;
-		bDraggingFirstTime = false;
+		draggables = new HashSet<IDraggable>();
+		isDragging = false;
+		isDraggingFirstTime = false;
 		this.view = view;
 	}
 
 	public void addDraggable(IDraggable draggable) {
 		if (draggable != null)
-			setDraggables.add(draggable);
+			draggables.add(draggable);
 	}
 
 	public void removeDraggable(IDraggable draggable) {
-		setDraggables.remove(draggable);
+		draggables.remove(draggable);
 	}
 
 	public void startDragging() {
-		bDragging = true;
-		bDraggingFirstTime = true;
+		isDragging = true;
+		isDraggingFirstTime = true;
 		dropArea = null;
 	}
 
@@ -46,12 +46,12 @@ public class DragAndDropController {
 	}
 
 	public void clearDraggables() {
-		setDraggables.clear();
+		draggables.clear();
 	}
 
 	public void handleDragging(GL gl, GLMouseListener glMouseListener) {
 
-		if (bDragging) {
+		if (isDragging) {
 			Point mouseWinCoords = glMouseListener.getPickedPoint();
 
 			float[] fArTargetWorldCoordinates = GLCoordinateUtils
@@ -59,13 +59,13 @@ public class DragAndDropController {
 							mouseWinCoords.x, mouseWinCoords.y);
 
 			if (dropArea != null) {
-				dropArea.handleDragOver(gl, setDraggables,
+				dropArea.handleDragOver(gl, draggables,
 						fArTargetWorldCoordinates[0],
 						fArTargetWorldCoordinates[1]);
 			}
 
-			for (IDraggable draggable : setDraggables) {
-				if (bDraggingFirstTime) {
+			for (IDraggable draggable : draggables) {
+				if (isDraggingFirstTime) {
 					float[] fArStartDraggingWorldCoordinates = GLCoordinateUtils
 							.convertWindowCoordinatesToWorldCoordinates(gl,
 									startDraggingWindowCoords.x,
@@ -79,9 +79,9 @@ public class DragAndDropController {
 			}
 
 			if (glMouseListener.wasMouseReleased()) {
-				bDragging = false;
+				isDragging = false;
 				if (dropArea != null) {
-					dropArea.handleDrop(gl, setDraggables,
+					dropArea.handleDrop(gl, draggables,
 							fArTargetWorldCoordinates[0],
 							fArTargetWorldCoordinates[1], this);
 
@@ -89,24 +89,24 @@ public class DragAndDropController {
 				view.setDisplayListDirty();
 			}
 
-			bDraggingFirstTime = false;
+			isDraggingFirstTime = false;
 		}
 	}
 
 	public boolean isDragging() {
-		return bDragging;
+		return isDragging;
 	}
 
 	public Set<IDraggable> getDraggables() {
-		return setDraggables;
+		return draggables;
 	}
 
 	public boolean hasDraggables() {
-		return !setDraggables.isEmpty();
+		return !draggables.isEmpty();
 	}
 
 	public boolean containsDraggable(IDraggable draggable) {
-		return setDraggables.contains(draggable);
+		return draggables.contains(draggable);
 	}
 
 	public void setDraggingStartPosition(GLMouseListener glMouseListener) {

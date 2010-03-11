@@ -34,7 +34,7 @@ public abstract class AGLGUIElement {
 	 */
 	public void beginGUIElement(GL gl, Vec3f scalingPivot) {
 
-		float scaling = getScaling(gl);
+		float scaling = getScaling(gl, true);
 
 		gl.glPushMatrix();
 
@@ -84,7 +84,24 @@ public abstract class AGLGUIElement {
 	 * @return Scaled value.
 	 */
 	public float getScaledSizeOf(GL gl, float value) {
-		return value * getScaling(gl);
+		return value * getScaling(gl, true);
+	}
+	
+	/**
+	 * Gets the size the specified value would have when scaling it. Note that the scaling is dependent on the
+	 * current window size and the minimum size of the gui element.
+	 * 
+	 * @param gl
+	 *            GL context.
+	 * @param value
+	 *            Value for which the scaled size shall be calculated.
+	 * @param useWidthAsReference
+	 *            Determines whether the scaling us calculated relative to the width of height of the
+	 *            viewport.            
+	 * @return Scaled value.
+	 */
+	public float getScaledSizeOf(GL gl, float value, boolean useWidthAsReference) {
+		return value * getScaling(gl, false);
 	}
 
 	/**
@@ -122,7 +139,7 @@ public abstract class AGLGUIElement {
 	 * @return Scaled value.
 	 */
 	public float getUnscaledSizeOf(GL gl, float value) {
-		return value / getScaling(gl);
+		return value / getScaling(gl, true);
 	}
 
 	/**
@@ -131,18 +148,27 @@ public abstract class AGLGUIElement {
 	 * 
 	 * @param gl
 	 *            GL context.
+	 * @param useWidthAsReference
+	 *            Determines whether the scaling us calculated relative to the width of height of the
+	 *            viewport.
 	 * @return Current scaling.
 	 */
-	private float getScaling(GL gl) {
+	private float getScaling(GL gl, boolean useWidthAsReference) {
 		IntBuffer buffer = BufferUtil.newIntBuffer(4);
 		gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
-		int currentWidth = buffer.get(2);
+		int currentSize = 0;
+		if (useWidthAsReference) {
+			currentSize = buffer.get(2);
+		}
+		else {
+			currentSize = buffer.get(3);
+		}
 
-		float referenceWidth = minSize * 10.0f;
+		float referenceSize = minSize * 10.0f;
 		float scaling = 1;
 
-		if (referenceWidth > currentWidth)
-			scaling = referenceWidth / currentWidth;
+		if (referenceSize > currentSize)
+			scaling = referenceSize / currentSize;
 
 		return scaling;
 	}
@@ -161,7 +187,7 @@ public abstract class AGLGUIElement {
 	 */
 	public Vec3f getScaledPosition(GL gl, Vec3f position, Vec3f scalingPivot) {
 
-		float scaling = getScaling(gl);
+		float scaling = getScaling(gl, true);
 
 		return new Vec3f(((position.x() - scalingPivot.x()) * scaling) + scalingPivot.x(),
 			((position.y() - scalingPivot.y()) * scaling) + scalingPivot.y(), ((position.z() - scalingPivot
@@ -182,7 +208,7 @@ public abstract class AGLGUIElement {
 	 */
 	public float getScaledCoordinate(GL gl, float coordinate, float scalingPivotCoordinate) {
 
-		float scaling = getScaling(gl);
+		float scaling = getScaling(gl, true);
 
 		return ((coordinate - scalingPivotCoordinate) * scaling) + scalingPivotCoordinate;
 	}
@@ -201,7 +227,7 @@ public abstract class AGLGUIElement {
 	 */
 	public Vec3f getRealPositionFromScaledPosition(GL gl, Vec3f scaledPosition, Vec3f scalingPivot) {
 
-		float scaling = getScaling(gl);
+		float scaling = getScaling(gl, true);
 
 		return new Vec3f(((scaledPosition.x() - scalingPivot.x()) / scaling) + scalingPivot.x(),
 			((scaledPosition.y() - scalingPivot.y()) / scaling) + scalingPivot.y(),
@@ -222,7 +248,7 @@ public abstract class AGLGUIElement {
 	public float getRealCoordinateFromScaledCoordinate(GL gl, float scaledCoordinate,
 		float scalingPivotCoordinate) {
 
-		float scaling = getScaling(gl);
+		float scaling = getScaling(gl, true);
 		return ((scaledCoordinate - scalingPivotCoordinate) / scaling) + scalingPivotCoordinate;
 	}
 

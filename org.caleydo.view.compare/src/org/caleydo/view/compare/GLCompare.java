@@ -42,6 +42,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
@@ -61,6 +62,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		IGLRemoteRenderingView {
 
 	public final static String VIEW_ID = "org.caleydo.view.compare";
+	public final static float SET_BAR_HEIGHT_PORTION = 0.05f;
+	public final static float HEAT_MAP_WRAPPER_HEIGHT_PORTION = 0.95f;
 
 	private ArrayList<ISet> setsToCompare;
 	private HashMap<Integer, HeatMapWrapper> hashHeatMapWrappers;
@@ -70,6 +73,9 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	private HeatMapLayoutRight heatMapLayoutRight;
 	private HeatMapWrapper leftHeatMapWrapper;
 	private HeatMapWrapper rightHeatMapWrapper;
+	private SetBar setBar;
+	private DragAndDropController dragAndDropController;
+
 	private SelectionType activeHeatMapSelectionType;
 	private RenderCommandFactory renderCommandFactory;
 
@@ -108,8 +114,12 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		isControlPressed = false;
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32),
 				true, true);
+		dragAndDropController = new DragAndDropController(this);
 		renderCommandFactory = new RenderCommandFactory(iUniqueID,
 				pickingManager, textureManager, textRenderer);
+		setBar = new SetBar(iUniqueID, pickingManager, textRenderer,
+				dragAndDropController, glMouseListener, this);
+		setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.0f));
 
 	}
 
@@ -216,11 +226,20 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		if (!isVisible())
 			return;
 		pickingManager.handlePicking(this, gl);
-		heatMapLayoutLeft.setLayoutParameters(0.0f, 0.0f, viewFrustum.getTop(),
+
+		setBar.setHeight(gl, SET_BAR_HEIGHT_PORTION * viewFrustum.getHeight());
+		// The setBar is an AGLGUIElement, therefore the above assignment is not
+		// necessarily applied
+		float setBarHeight = setBar.getHeight();
+		float heatMapWrapperPosY = setBar.getPosition().y() + setBarHeight;
+
+		heatMapLayoutLeft.setLayoutParameters(0.0f, heatMapWrapperPosY,
+				viewFrustum.getHeight() - setBarHeight,
 				viewFrustum.getRight() / 3.0f);
 		heatMapLayoutRight.setLayoutParameters(
-				2.0f * viewFrustum.getRight() / 3.0f, 0.0f, viewFrustum
-						.getTop(), viewFrustum.getRight() / 3.0f);
+				2.0f * viewFrustum.getRight() / 3.0f, heatMapWrapperPosY,
+				viewFrustum.getHeight() - setBarHeight,
+				viewFrustum.getRight() / 3.0f);
 
 		leftHeatMapWrapper.calculateDrawingParameters();
 		rightHeatMapWrapper.calculateDrawingParameters();
@@ -271,6 +290,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		gl.glCallList(iGLDisplayListToCall);
 
+		dragAndDropController.handleDragging(gl, glMouseListener);
+
 		leftHeatMapWrapper.drawRemoteItems(gl, glMouseListener, pickingManager);
 		rightHeatMapWrapper
 				.drawRemoteItems(gl, glMouseListener, pickingManager);
@@ -287,6 +308,9 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 				glMouseListener, iUniqueID);
 		rightHeatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
 				glMouseListener, iUniqueID);
+
+		setBar.setWidth(viewFrustum.getWidth());
+		setBar.render(gl);
 
 		renderTree(gl);
 
@@ -321,7 +345,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 			for (Integer contentID : contentVA) {
 
-				float positionZ = 0.0f; 
+				float positionZ = 0.0f;
 				for (SelectionType type : contentSelectionManager
 						.getSelectionTypes(contentID)) {
 
@@ -375,7 +399,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 				gl.glBegin(GL.GL_LINE_STRIP);
 				for (int i = 0; i < points.size(); i++)
-					gl.glVertex3f(points.get(i).x(), points.get(i).y(), positionZ);
+					gl.glVertex3f(points.get(i).x(), points.get(i).y(),
+							positionZ);
 				gl.glEnd();
 
 				gl.glPopName();
@@ -402,7 +427,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		// gl.glColor3f(0, 0, 0);
 		for (Integer contentID : contentVALeft) {
-			
+
 			float positionZ = 0.0f;
 
 			for (SelectionType type : contentSelectionManager
@@ -672,7 +697,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 				.getContentSelectionManager();
 
 		for (Integer contentID : va) {
-			
+
 			float positionZ = 0.0f;
 
 			for (SelectionType type : contentSelectionManager
@@ -775,7 +800,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		xPosInitLeft = heatMapLayoutLeft.getOverviewHeatmapWidth()
 				+ heatMapLayoutLeft.getOverviewGroupWidth()
 				+ heatMapLayoutLeft.getOverviewSliderWidth();
-		yPosInitLeft = heatMapLayoutLeft.getOverviewHeight();
+		yPosInitLeft = heatMapLayoutLeft.getOverviewPosition().y()
+				+ heatMapLayoutLeft.getOverviewHeight();
 		Tree<ClusterNode> tree = setsToCompare.get(0).getContentTree();
 		ClusterNode rootNode = tree.getRoot();
 
@@ -784,10 +810,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		// Right hierarchy
 		xPosInitRight = viewFrustum.getWidth()
-				- heatMapLayoutLeft.getOverviewHeatmapWidth()
-				- heatMapLayoutLeft.getOverviewGroupWidth()
-				- heatMapLayoutLeft.getOverviewSliderWidth();
-		yPosInitRight = heatMapLayoutRight.getOverviewHeight();
+				- heatMapLayoutRight.getOverviewHeatmapWidth()
+				- heatMapLayoutRight.getOverviewGroupWidth()
+				- heatMapLayoutRight.getOverviewSliderWidth();
+		yPosInitRight = heatMapLayoutRight.getOverviewPosition().y()
+				+ heatMapLayoutRight.getOverviewHeight();
 		tree = setsToCompare.get(1).getContentTree();
 		rootNode = tree.getRoot();
 
@@ -1080,7 +1107,12 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 					iExternalID, isControlPressed);
 			leftHeatMapWrapper.setHeatMapsInactive();
 			break;
+
+		case COMPARE_SET_BAR_ITEM_SELECTION:
+			setBar.handleSetBarItemSelection(iExternalID, pickingMode);
+			break;
 		}
+
 	}
 
 	@Override
@@ -1189,6 +1221,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			leftHeatMapWrapper.setSet(setLeft);
 			rightHeatMapWrapper.setSet(setRight);
 			areNewSetsAvailable = true;
+			setBar.setSets(setsToCompare);
+
 			setDisplayListDirty();
 		}
 

@@ -11,8 +11,8 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.view.grouper.draganddrop.DragAndDropController;
-import org.caleydo.view.grouper.draganddrop.IDraggable;
+import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.view.grouper.drawingstrategies.DrawingStrategyManager;
 
 import com.sun.opengl.util.j2d.TextRenderer;
