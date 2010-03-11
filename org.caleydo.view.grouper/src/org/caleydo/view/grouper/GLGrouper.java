@@ -535,7 +535,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 						bPotentialNewSelection = true;
 					}
 					dragAndDropController
-							.setDraggingStartPosition(glMouseListener);
+							.setDraggingStartPosition(pick.getPickedPoint());
 					groupRep.addAsDraggable(dragAndDropController);
 
 					groupRep.setSelectionTypeRec(SelectionType.SELECTION,

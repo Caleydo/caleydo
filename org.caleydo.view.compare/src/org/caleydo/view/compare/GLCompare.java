@@ -23,6 +23,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.manager.event.view.compare.DuplicateSetBarItemEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -47,6 +48,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentCo
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.compare.listener.CompareGroupsEventListener;
+import org.caleydo.view.compare.listener.DuplicateSetBarItemEventListener;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -80,6 +82,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	private RenderCommandFactory renderCommandFactory;
 
 	private CompareGroupsEventListener compareGroupsEventListener;
+	private DuplicateSetBarItemEventListener duplicateSetBarItemEventListener;
 
 	float yPosInitLeft = 0;
 	float xPosInitLeft = 0;
@@ -118,7 +121,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		renderCommandFactory = new RenderCommandFactory(iUniqueID,
 				pickingManager, textureManager, textRenderer);
 		setBar = new SetBar(iUniqueID, pickingManager, textRenderer,
-				dragAndDropController, glMouseListener, this);
+				dragAndDropController, glMouseListener, this, contextMenu);
 		setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.0f));
 
 	}
@@ -1109,7 +1112,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			break;
 
 		case COMPARE_SET_BAR_ITEM_SELECTION:
-			setBar.handleSetBarItemSelection(iExternalID, pickingMode);
+			setBar.handleSetBarItemSelection(iExternalID, pickingMode, pick);
 			break;
 		}
 
@@ -1170,6 +1173,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		eventPublisher.addListener(CompareGroupsEvent.class,
 				compareGroupsEventListener);
 
+		duplicateSetBarItemEventListener = new DuplicateSetBarItemEventListener();
+		duplicateSetBarItemEventListener.setHandler(this);
+		eventPublisher.addListener(DuplicateSetBarItemEvent.class,
+				duplicateSetBarItemEventListener);
+
 		if (leftHeatMapWrapper != null)
 			leftHeatMapWrapper.registerEventListeners();
 		if (rightHeatMapWrapper != null)
@@ -1183,10 +1191,14 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			eventPublisher.removeListener(compareGroupsEventListener);
 			compareGroupsEventListener = null;
 		}
-		// if (leftHeatMapWrapper != null)
-		// leftHeatMapWrapper.unregisterEventListeners();
-		// if (rightHeatMapWrapper != null)
-		// rightHeatMapWrapper.unregisterEventListeners();
+		if (duplicateSetBarItemEventListener != null) {
+			eventPublisher.removeListener(duplicateSetBarItemEventListener);
+			duplicateSetBarItemEventListener = null;
+		}
+		if (leftHeatMapWrapper != null)
+			leftHeatMapWrapper.unregisterEventListeners();
+		if (rightHeatMapWrapper != null)
+			rightHeatMapWrapper.unregisterEventListeners();
 	}
 
 	@Override
@@ -1234,5 +1246,9 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	public void setControlPressed(boolean isControlPressed) {
 		this.isControlPressed = isControlPressed;
+	}
+
+	public void handleDuplicateSetBarItem(int itemID) {
+		setBar.handleDuplicateSetBarItem(itemID);
 	}
 }

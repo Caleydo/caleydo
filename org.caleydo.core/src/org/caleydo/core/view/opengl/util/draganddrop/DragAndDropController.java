@@ -109,7 +109,7 @@ public class DragAndDropController {
 		return draggables.contains(draggable);
 	}
 
-	public void setDraggingStartPosition(GLMouseListener glMouseListener) {
-		startDraggingWindowCoords = glMouseListener.getPickedPoint();
+	public void setDraggingStartPosition(Point startPosition) {
+		startDraggingWindowCoords = startPosition;
 	}
 }
