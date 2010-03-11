@@ -277,7 +277,7 @@ public class PoincareDisk {
 
 		Point2D.Double coordinate = new Point2D.Double();
 		
-	
+	intensity = (1+intensity)-intensity*distanceFromOrigin(point);
 		
 		coordinate.setLocation(point.getX()*intensity,point.getY()*intensity);
 		return coordinate;
@@ -631,7 +631,7 @@ public class PoincareDisk {
 
 				// calculating the distance to the coordinate:
 				distance = distancePoints(getNodeByCompareableValue(counter)
-						.getPosition(), coordinate);
+						.getZoomedPosition(), coordinate);
 
 				if (distance <= area) {
 					if (distance <= bestDistance) {
@@ -647,7 +647,7 @@ public class PoincareDisk {
 			while (this.getNodeByCompareableValue(counter) != null) {
 
 				distance = distancePoints(getNodeByCompareableValue(counter)
-						.getPosition(), coordinate);
+						.getZoomedPosition(), coordinate);
 
 				nodeRadius = getMetric(getNodeByCompareableValue(counter)
 						.getPosition(), nodeSize);

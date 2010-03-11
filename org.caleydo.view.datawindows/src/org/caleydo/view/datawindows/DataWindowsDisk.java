@@ -218,12 +218,12 @@ public class DataWindowsDisk extends PoincareDisk {
 		
 		
 		gl.glColor3i(0, 0, 0);
-		gl.glVertex3d(node1.getPosition().getX() * displayScaleFactor
-				+ (canvasWidth / 2), node1.getPosition().getY()
+		gl.glVertex3d(node1.getZoomedPosition().getX() * displayScaleFactor
+				+ (canvasWidth / 2), node1.getZoomedPosition().getY()
 				* displayScaleFactor + canvasHeight / 2, 0);
 
-		gl.glVertex3d(node2.getPosition().getX() * displayScaleFactor
-				+ (canvasWidth / 2), node2.getPosition().getY()
+		gl.glVertex3d(node2.getZoomedPosition().getX() * displayScaleFactor
+				+ (canvasWidth / 2), node2.getZoomedPosition().getY()
 				* displayScaleFactor + canvasHeight / 2, 0);
 		gl.glEnd();
 	}
