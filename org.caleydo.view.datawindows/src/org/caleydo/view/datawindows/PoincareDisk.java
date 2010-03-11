@@ -172,19 +172,20 @@ public class PoincareDisk {
 
 		PoincareNode root = tree.getRoot();
 
-		double distance = this.distanceFromOrigin(translationVector);
-		distance = (double) Math.round(distance + 0.5);
+		//double distance = this.distanceFromOrigin(translationVector);
+		//distance = (double) Math.round(distance + 0.5);
 
-		Point2D.Double directionVector = new Point2D.Double(translationVector
-				.getX()
-				/ distance, translationVector.getY() / distance);
+		//Point2D.Double directionVector = new Point2D.Double(translationVector
+				//.getX()
+			//	/ distance, translationVector.getY() / distance);
 		// make more steps, because the moebius transformation can only be
 		// applied for
 		// distance < 1
-		for (int i = 0; i < (int) distance; i++) {
+		//for (int i = 0; i < (int) distance; i++) {
 			// start the recursive algorithm
-			translateNodeMoebius(root, directionVector);
-		}
+		
+			translateNodeMoebius(root, translationVector);
+		//}
 		// projectTree();
 	}
 
@@ -195,9 +196,14 @@ public class PoincareDisk {
 				.getPosition().getX(), node.getPosition().getY()),
 				new ComplexNumber(translationVector.getX(), translationVector
 						.getY()));
+		
 		Point2D.Double newPoint = new Point2D.Double(tempVector.getRealPart(),
 				tempVector.getImaginaryPart());
 		node.setPosition(newPoint);
+		
+	//	System.out.println("translation:");
+		//System.out.println(newPoint.getX()+"|"+newPoint.getY());
+		
 		node.setDistanceFromOrigin(this.distanceFromOrigin(newPoint));
 
 		if (tree.getChildren(node) == null) {
@@ -573,7 +579,7 @@ public class PoincareDisk {
 
 	}
 
-	// this method converts a real distance into a projected distance
+	// this method converts a real distance into a distance on the disk
 	public double getMetric(Point2D.Double position, double length) {
 
 		// double modLength=distanceFromOrigin(position);

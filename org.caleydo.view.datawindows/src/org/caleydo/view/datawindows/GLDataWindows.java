@@ -78,8 +78,8 @@ public class GLDataWindows extends AGLView {
 	private PoincareNode slerpedNode;
 
 	private boolean manualPickFlag = true;
-	
-	private double diskZoomIntensity=0;
+
+	private double diskZoomIntensity = 0;
 
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(
 			0, 0);
@@ -172,8 +172,6 @@ public class GLDataWindows extends AGLView {
 		canvasHeight = 2 / (float) viewport[5];// if (set == null)
 		// return;
 
-	
-
 		if (bIsDisplayListDirtyLocal) {
 
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
@@ -181,17 +179,12 @@ public class GLDataWindows extends AGLView {
 
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-		
-		//pickingManager.handlePicking(this, gl);
-		
+
+		// pickingManager.handlePicking(this, gl);
+
 		checkForHits(gl);
 		display(gl);
-		
-		
-		
-		
-		
-		
+
 		if (eBusyModeState != EBusyModeState.OFF)
 			renderBusyMode(gl);
 
@@ -267,55 +260,51 @@ public class GLDataWindows extends AGLView {
 				(double) canvasWidth, (double) canvasHeight);
 
 		//		
-		
-		
-		if (glMouseListener.wasRightMouseButtonPressed()){
-			diskZoomIntensity=1;
-		
+
+		if (glMouseListener.wasRightMouseButtonPressed()) {
+			diskZoomIntensity = -1;
+
 		}
-		
-		if (glMouseListener.wasLeftMouseButtonPressed()){
-			diskZoomIntensity=0;
-		
-		
-		if (glMouseListener.getPickedPoint() != null) {
-			
-			System.out.println("leftmouse");
-			if (manualPickFlag == true) {
-				Point mousePoint = new Point(0, 0);
-				mousePoint = glMouseListener.getPickedPoint();
-				int[] viewport = new int[4];
 
-				gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-				double factorX = (double) canvasWidth
-						/ (double) viewport[2];
-				double factorY = (double) canvasHeight
-						/ (double) viewport[3];
+		if (glMouseListener.wasLeftMouseButtonPressed()) {
+			diskZoomIntensity = 0;
 
-				mouseCoordX = (double) (mousePoint.getX() * factorX);
-				mouseCoordY = (double) (mousePoint.getY() * factorY);
+			if (glMouseListener.getPickedPoint() != null) {
 
-				PoincareNode selectedNode;
-				selectedNode = disk
-						.processEyeTrackerAction(new Point2D.Double(
-								mouseCoordX, mouseCoordY),arSlerpActions);
-				if (selectedNode != null) {
-					System.out.println("nodeSelected:"
-							+ selectedNode.iComparableValue);
+				System.out.println("leftmouse");
+				if (manualPickFlag == true) {
+					Point mousePoint = new Point(0, 0);
+					mousePoint = glMouseListener.getPickedPoint();
+					int[] viewport = new int[4];
 
-					
-					//arSlerpActions.add(new nodeSlerp(4, selectedNode.getPosition(),
-						//	new Point2D.Double(0, 0)));
+					gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+					double factorX = (double) canvasWidth
+							/ (double) viewport[2];
+					double factorY = (double) canvasHeight
+							/ (double) viewport[3];
 
-					slerpedNode = selectedNode;
-					disk.setCenteredNode(selectedNode);
-					
-					
-					
+					mouseCoordX = (double) (mousePoint.getX() * factorX);
+					mouseCoordY = (double) (mousePoint.getY() * factorY);
+
+					PoincareNode selectedNode;
+					selectedNode = disk.processEyeTrackerAction(
+							new Point2D.Double(mouseCoordX, mouseCoordY),
+							arSlerpActions);
+					if (selectedNode != null) {
+						System.out.println("nodeSelected:"
+								+ selectedNode.iComparableValue);
+
+						// arSlerpActions.add(new nodeSlerp(4,
+						// selectedNode.getPosition(),
+						// new Point2D.Double(0, 0)));
+
+						slerpedNode = selectedNode;
+						disk.setCenteredNode(selectedNode);
+
+					}
 				}
 			}
-			}
-	}
+		}
 
 		// if (!containedGLViews.isEmpty()) {
 		//
@@ -327,7 +316,7 @@ public class GLDataWindows extends AGLView {
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 		// if (!isRenderedRemote())
 		// contextMenu.render(gl, this);
-}
+	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 
@@ -551,8 +540,11 @@ public class GLDataWindows extends AGLView {
 
 		nodeSlerp singleSlerp = arSlerpActions.get(0);
 		if (singleSlerp.doASlerp(slerpedNode.getPosition()) == true) {
+		
 			disk.translateTreeMoebius(singleSlerp.returnPoint);
 		} else {
+			
+			disk.translateTreeMoebius(singleSlerp.returnPoint);
 			arSlerpActions.remove(0);
 
 		}

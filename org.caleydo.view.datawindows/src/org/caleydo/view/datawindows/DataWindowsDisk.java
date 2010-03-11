@@ -290,11 +290,11 @@ public class DataWindowsDisk extends PoincareDisk {
 						+ "|" + returnNode.getPosition().getY()
 						* eyeTrackerBorder);
 				
+				Point2D.Double eV=getEV(returnNode.getPosition());
+				double overlaping=0.1;
+				
 				 arSlerpActions.add(new nodeSlerp(4, returnNode.getPosition(),
-				 new Point2D.Double(returnNode.getPosition().getX()
-				 * eyeTrackerBorder, returnNode.getPosition()
-				 .getY()
-				 * eyeTrackerBorder)));
+				 new Point2D.Double(eV.getX()*(eyeTrackerBorder-overlaping),eV.getY()*(eyeTrackerBorder-overlaping))));
 
 				
 
