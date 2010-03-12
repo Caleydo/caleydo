@@ -31,9 +31,10 @@ public class DataWindowsDisk extends PoincareDisk {
 	private double displayScaleFactor = 10;
 	private double eyeTrackerBorder;
 	private double eyeTrackerPrecision;
-	private double lineFactor=0;
+	private double lineFactor = 0;
+	private GLDataWindows dataWindow;
 
-	public DataWindowsDisk() {
+	public DataWindowsDisk(GLDataWindows master) {
 		super();
 
 		// Create the borders of the discrete DetailLevels:
@@ -46,7 +47,8 @@ public class DataWindowsDisk extends PoincareDisk {
 		levelOfDetailLimits[2] = 1;
 		eyeTrackerBorder = 0.8;
 		eyeTrackerPrecision = 0.1;
-		lineFactor=40;
+		lineFactor = 40;
+		dataWindow = master;
 	}
 
 	public void mouseOverNode(int nodeIndex) {
@@ -71,8 +73,6 @@ public class DataWindowsDisk extends PoincareDisk {
 		drawCircle(levelOfDetailLimits[0] * displayScaleFactor,
 				canvasWidth / 2, canvasHeight / 2);
 
-	
-
 	}
 
 	private int distanceToDetaillevel(double distance) {
@@ -95,6 +95,9 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		gl = glHandle;
 
+		
+		//dataWindow.drawRemoteView(gl, new Point2D.Double(2,1), 0.1);
+		
 		displayScaleFactor = viewingHeight / 2;
 
 		pickingManager = pickManager;
@@ -146,7 +149,7 @@ public class DataWindowsDisk extends PoincareDisk {
 			size = size * 1.5;
 		}
 
-		//if (mode==1){
+		// if (mode==1){
 		Vec3f lowerLeftCorner = new Vec3f(
 				(float) (-size + node.getPosition().getX() * displayScaleFactor + canvasWidth / 2),
 				(float) (-size + node.getPosition().getY() * displayScaleFactor + canvasHeight / 2),
@@ -164,28 +167,31 @@ public class DataWindowsDisk extends PoincareDisk {
 				(float) (size + node.getPosition().getY() * displayScaleFactor + canvasHeight / 2),
 				0);
 		Vec3f scalingPivot = new Vec3f(1, 1, 0);
-		
-		if (mode==2){
-			 lowerLeftCorner = new Vec3f(
-					(float) (-size + node.getZoomedPosition().getX() * displayScaleFactor + canvasWidth / 2),
-					(float) (-size + node.getZoomedPosition().getY() * displayScaleFactor + canvasHeight / 2),
-					0);
-			 lowerRightCorner = new Vec3f(
-					(float) (size + node.getZoomedPosition().getX() * displayScaleFactor + canvasWidth / 2),
-					(float) (-size + node.getZoomedPosition().getY() * displayScaleFactor + canvasHeight / 2),
-					0);
-			 upperRightCorner = new Vec3f(
-					(float) (size + node.getZoomedPosition().getX() * displayScaleFactor + canvasWidth / 2),
-					(float) (size + node.getZoomedPosition().getY() * displayScaleFactor + canvasHeight / 2),
-					0);
-			 upperLeftCorner = new Vec3f(
-					(float) (-size + node.getZoomedPosition().getX() * displayScaleFactor + canvasWidth / 2),
-					(float) (size + node.getZoomedPosition().getY() * displayScaleFactor + canvasHeight / 2),
-					0);
-			 scalingPivot = new Vec3f(1, 1, 0);
+
+		if (mode == 2) {
+			lowerLeftCorner = new Vec3f(
+					(float) (-size + node.getZoomedPosition().getX()
+							* displayScaleFactor + canvasWidth / 2),
+					(float) (-size + node.getZoomedPosition().getY()
+							* displayScaleFactor + canvasHeight / 2), 0);
+			lowerRightCorner = new Vec3f(
+					(float) (size + node.getZoomedPosition().getX()
+							* displayScaleFactor + canvasWidth / 2),
+					(float) (-size + node.getZoomedPosition().getY()
+							* displayScaleFactor + canvasHeight / 2), 0);
+			upperRightCorner = new Vec3f(
+					(float) (size + node.getZoomedPosition().getX()
+							* displayScaleFactor + canvasWidth / 2),
+					(float) (size + node.getZoomedPosition().getY()
+							* displayScaleFactor + canvasHeight / 2), 0);
+			upperLeftCorner = new Vec3f(
+					(float) (-size + node.getZoomedPosition().getX()
+							* displayScaleFactor + canvasWidth / 2),
+					(float) (size + node.getZoomedPosition().getY()
+							* displayScaleFactor + canvasHeight / 2), 0);
+			scalingPivot = new Vec3f(1, 1, 0);
 		}
-		
-		
+
 		int iPickingID = pickingManager.getPickingID(iUniqueID,
 				EPickingType.DATAW_NODE, node.iComparableValue);
 
@@ -195,28 +201,36 @@ public class DataWindowsDisk extends PoincareDisk {
 			textureManager.renderGUITexture(gl, EIconTextures.PATHWAY_ICON,
 					lowerLeftCorner, lowerRightCorner, upperRightCorner,
 					upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
+			
 		} else {
-			textureManager.renderGUITexture(gl, EIconTextures.PATHWAY_SYMBOL,
-					lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
+		//	textureManager.renderGUITexture(gl, EIconTextures.PATHWAY_SYMBOL,
+		//			lowerLeftCorner, lowerRightCorner, upperRightCorner,
+			//		upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
+			
+			dataWindow.drawRemoteView(gl, new Point2D.Double(-size+ node.getZoomedPosition().getX()
+					* displayScaleFactor + canvasWidth / 2,-size+node.getZoomedPosition().getY()
+					* displayScaleFactor + canvasHeight / 2), size/4);
+			
+			
 		}
 		gl.glPopName();
+	
+		
+		
 	}
+	
+	
 
 	public void drawLine(PoincareNode node1, PoincareNode node2,
 			int numberOfDetails, int mode) {
 
 		Point2D.Double startingPoint = node1.getPosition();
-		
-		
-		double width =  this.getMetric(startingPoint, lineWidth)*lineFactor;
-		
+
+		double width = this.getMetric(startingPoint, lineWidth) * lineFactor;
+
 		gl.glLineWidth((float) width);
 		gl.glBegin(GL.GL_LINE_STRIP);
-		
-		
-		
-		
+
 		gl.glColor3i(0, 0, 0);
 		gl.glVertex3d(node1.getZoomedPosition().getX() * displayScaleFactor
 				+ (canvasWidth / 2), node1.getZoomedPosition().getY()
@@ -284,22 +298,22 @@ public class DataWindowsDisk extends PoincareDisk {
 					eyeTrackerPrecision);
 
 			if (returnNode != null) {
-				
+
 				System.out.println("slerp target:"
 						+ returnNode.getPosition().getX() * eyeTrackerBorder
 						+ "|" + returnNode.getPosition().getY()
 						* eyeTrackerBorder);
-				
-				Point2D.Double eV=getEV(returnNode.getPosition());
-				double overlaping=0.1;
-				
-				 arSlerpActions.add(new nodeSlerp(4, returnNode.getPosition(),
-				 new Point2D.Double(eV.getX()*(eyeTrackerBorder-overlaping),eV.getY()*(eyeTrackerBorder-overlaping))));
 
-				
+				Point2D.Double eV = getEV(returnNode.getPosition());
+				double overlaping = 0.1;
 
-//				arSlerpActions.add(new nodeSlerp(4, returnNode.getPosition(),
-//						new Point2D.Double(0.5, 0.5)));
+				arSlerpActions.add(new nodeSlerp(4, returnNode.getPosition(),
+						new Point2D.Double(eV.getX()
+								* (eyeTrackerBorder - overlaping), eV.getY()
+								* (eyeTrackerBorder - overlaping))));
+
+				// arSlerpActions.add(new nodeSlerp(4, returnNode.getPosition(),
+				// new Point2D.Double(0.5, 0.5)));
 
 			}
 

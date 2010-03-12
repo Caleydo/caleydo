@@ -105,27 +105,25 @@ public class GLDataWindows extends AGLView {
 		// tracker.startTracking();
 
 		// remote test
-		// testLevel = new RemoteLevel(1, "testview", testLevel, testLevel);
-		// Transform transform = new Transform();
-		// transform.setTranslation(new Vec3f(0, 0, 0));
-		// transform.setScale(new Vec3f(0.5f, 0.5f, 1));
-		// testLevel.getElementByPositionIndex(0).setTransform(transform);
-		// end remote test
+		 testLevel = new RemoteLevel(1, "testview", testLevel, testLevel);
+		 Transform transform = new Transform();
+		 transform.setTranslation(new Vec3f(0, 0, 0));
+		 transform.setScale(new Vec3f(0.5f, 0.5f, 1));
+		 testLevel.getElementByPositionIndex(0).setTransform(transform);
+		 
 
 		// debug
 
-		disk = new DataWindowsDisk();
+		disk = new DataWindowsDisk(this);
 		disk.loadTree();
 		disk.zoomTree(0);
-		// disk.scaleTree(2,1);
+
 
 		// nullpointer:
 
 		// Tree<ClusterNode> tree = set.getStorageTree();
 
 		arSlerpActions = new ArrayList<nodeSlerp>();
-
-		// disk.translateTree(new Point2D.Double(3,3));
 
 		// ASerializedView serView = getSerializableRepresentation();
 		// newViews.add(serView);
@@ -250,9 +248,7 @@ public class GLDataWindows extends AGLView {
 		// gl.glEnd();
 
 		// remote test
-		// initNewView(gl);
-
-		// renderRemoteLevel(gl, testLevel);
+		
 
 		doSlerpActions();
 		disk.zoomTree(diskZoomIntensity);
@@ -549,6 +545,19 @@ public class GLDataWindows extends AGLView {
 
 		}
 
+	}
+	
+	public void drawRemoteView(GL gl,Point2D.Double position, double size){
+		
+		 initNewView(gl);
+		 Transform transform = new Transform();
+		 transform.setTranslation(new Vec3f((float) position.getX(), (float) position.getY(), 0));
+		 transform.setScale(new Vec3f((float)size, (float)size, 1));
+		 testLevel.getElementByPositionIndex(0).setTransform(transform);
+		 
+		 renderRemoteLevel(gl, testLevel);
+		
+		
 	}
 
 }
