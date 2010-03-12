@@ -7,14 +7,8 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-//import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.manager.picking.PickingManager; //import org.caleydo.core.manager.ICommandManager;
-//import org.caleydo.core.manager.picking.EPickingMode;
-//import org.caleydo.core.manager.picking.EPickingType;
-//import org.caleydo.core.manager.picking.Pick;
-//
-//import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
@@ -32,9 +26,9 @@ public class DataWindowsDisk extends PoincareDisk {
 	private double eyeTrackerBorder;
 	private double eyeTrackerPrecision;
 	private double lineFactor = 0;
-	private GLDataWindows dataWindow;
+	private GLHyperbolic hyperbolic;
 
-	public DataWindowsDisk(GLDataWindows master) {
+	public DataWindowsDisk(GLHyperbolic master) {
 		super();
 
 		// Create the borders of the discrete DetailLevels:
@@ -48,7 +42,7 @@ public class DataWindowsDisk extends PoincareDisk {
 		eyeTrackerBorder = 0.8;
 		eyeTrackerPrecision = 0.1;
 		lineFactor = 40;
-		dataWindow = master;
+		hyperbolic = master;
 	}
 
 	public void mouseOverNode(int nodeIndex) {
@@ -95,9 +89,8 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		gl = glHandle;
 
-		
-		//dataWindow.drawRemoteView(gl, new Point2D.Double(2,1), 0.1);
-		
+		// dataWindow.drawRemoteView(gl, new Point2D.Double(2,1), 0.1);
+
 		displayScaleFactor = viewingHeight / 2;
 
 		pickingManager = pickManager;
@@ -201,25 +194,21 @@ public class DataWindowsDisk extends PoincareDisk {
 			textureManager.renderGUITexture(gl, EIconTextures.PATHWAY_ICON,
 					lowerLeftCorner, lowerRightCorner, upperRightCorner,
 					upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
-			
+
 		} else {
-		//	textureManager.renderGUITexture(gl, EIconTextures.PATHWAY_SYMBOL,
-		//			lowerLeftCorner, lowerRightCorner, upperRightCorner,
-			//		upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
-			
-			dataWindow.drawRemoteView(gl, new Point2D.Double(-size+ node.getZoomedPosition().getX()
-					* displayScaleFactor + canvasWidth / 2,-size+node.getZoomedPosition().getY()
-					* displayScaleFactor + canvasHeight / 2), size/4);
-			
-			
+			// textureManager.renderGUITexture(gl, EIconTextures.PATHWAY_SYMBOL,
+			// lowerLeftCorner, lowerRightCorner, upperRightCorner,
+			// upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
+
+			hyperbolic.drawRemoteView(gl, node, new Point2D.Double(-size
+					+ node.getZoomedPosition().getX() * displayScaleFactor
+					+ canvasWidth / 2, -size + node.getZoomedPosition().getY()
+					* displayScaleFactor + canvasHeight / 2), size / 4);
+
 		}
 		gl.glPopName();
-	
-		
-		
+
 	}
-	
-	
 
 	public void drawLine(PoincareNode node1, PoincareNode node2,
 			int numberOfDetails, int mode) {
@@ -272,7 +261,7 @@ public class DataWindowsDisk extends PoincareDisk {
 	}
 
 	public PoincareNode processEyeTrackerAction(Point2D.Double eyePosition,
-			ArrayList<nodeSlerp> arSlerpActions) {
+			ArrayList<NodeSlerp> arSlerpActions) {
 		Point2D.Double offsetFromMiddle = new Point2D.Double();
 		offsetFromMiddle.setLocation((eyePosition.getX() - canvasWidth / 2)
 				/ displayScaleFactor, (eyePosition.getY() - canvasHeight / 2)
@@ -288,7 +277,7 @@ public class DataWindowsDisk extends PoincareDisk {
 			returnNode = findNodeByCoordinate(offsetFromMiddle, 0);
 
 			if (returnNode != null) {
-				arSlerpActions.add(new nodeSlerp(4, returnNode.getPosition(),
+				arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
 						new Point2D.Double(0, 0)));
 			}
 
@@ -307,7 +296,7 @@ public class DataWindowsDisk extends PoincareDisk {
 				Point2D.Double eV = getEV(returnNode.getPosition());
 				double overlaping = 0.1;
 
-				arSlerpActions.add(new nodeSlerp(4, returnNode.getPosition(),
+				arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
 						new Point2D.Double(eV.getX()
 								* (eyeTrackerBorder - overlaping), eV.getY()
 								* (eyeTrackerBorder - overlaping))));

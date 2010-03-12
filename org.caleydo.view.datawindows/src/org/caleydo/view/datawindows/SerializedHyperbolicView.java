@@ -8,22 +8,24 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
+
 /**
- * Serialized form of a data windows view.
+ * Serialized form of a hyperbolic-view.
  * 
  * @author Marc Streit
  */
 @XmlRootElement
 @XmlType
-public class SerializedDataWindowsView extends ASerializedView {
+public class SerializedHyperbolicView extends ASerializedView {
 
+	
 	/**
 	 * Default constructor with default initialization
 	 */
-	public SerializedDataWindowsView() {
+	public SerializedHyperbolicView() {
 	}
 
-	public SerializedDataWindowsView(EDataDomain dataDomain) {
+	public SerializedHyperbolicView(EDataDomain dataDomain) {
 		super(dataDomain);
 	}
 
@@ -33,9 +35,11 @@ public class SerializedDataWindowsView extends ASerializedView {
 				0, 8, 0, 8, -20, 20);
 		return viewFrustum;
 	}
+	
+	
 
 	@Override
 	public String getViewType() {
-		return GLDataWindows.VIEW_ID;
+		return GLHyperbolic.VIEW_ID;
 	}
 }

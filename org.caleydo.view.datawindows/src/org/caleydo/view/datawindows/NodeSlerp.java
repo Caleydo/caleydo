@@ -6,7 +6,7 @@ import org.caleydo.core.util.system.Time;
 
 import java.awt.geom.Point2D;
 
-public class nodeSlerp {
+public class NodeSlerp {
 	public Point2D.Double startPoint;
 	public Point2D.Double targetPoint;
 	private Point2D.Double directionVector;
@@ -23,7 +23,7 @@ public class nodeSlerp {
 	private DataWindowsDisk dummyDisk;
 	private PoincareNode dummyNode;
 
-	public nodeSlerp(double v, Point2D.Double startingPoint,
+	public NodeSlerp(double v, Point2D.Double startingPoint,
 			Point2D.Double targettingPoint) {
 		startPoint = startingPoint;
 		targetPoint = targettingPoint;

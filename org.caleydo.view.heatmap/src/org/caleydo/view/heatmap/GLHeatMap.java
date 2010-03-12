@@ -173,7 +173,7 @@ public class GLHeatMap extends AStorageBasedView {
 			final GLMouseListener glMouseListener,
 			GLInfoAreaManager infoAreaManager) {
 
-		if (glRemoteRenderingView.getViewType().equals(
+		if (glRemoteRenderingView != null && glRemoteRenderingView.getViewType().equals(
 				"org.caleydo.view.bucket"))
 			renderStyle.setUseFishEye(false);
 

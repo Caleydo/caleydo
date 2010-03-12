@@ -29,124 +29,130 @@ public class PoincareDisk {
 
 	}
 
-	public void loadTree() {
+	public void loadTree(Tree<PoincareNode> tree) {
+		
+		this.tree = tree;
+		centeredNode = tree.getRoot();
+		
 		// creating a tree for testing
-		tree = new Tree<PoincareNode>();
+//		tree = new Tree<PoincareNode>();
+//
+//		ViewHyperbolicNode node = new ViewHyperbolicNode(tree, nodeName, iComparableValue, glView);
+//		
+//		PoincareNode node = new PoincareNode(tree, "Root", 1);
+//		centeredNode = node;
+//
+//		tree.setRootNode(node);
+//		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
+//		tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
+//		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
+//		tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
+//		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
 
-		PoincareNode node = new PoincareNode(tree, "Root", 1);
-		centeredNode = node;
-
-		tree.setRootNode(node);
-		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
-		tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
-		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
-		tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
-		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
-
-		int iCount = 3344;
-		for (PoincareNode tempNode : tree.getChildren(node)) {
-
-			PoincareNode tempNode22 = new PoincareNode(tree, "Child6 l1",
-					iCount--);
-			tree.addChild(tempNode, tempNode22);
-
-			tree.addChild(tempNode22, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			tree.addChild(tempNode22, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-
-			PoincareNode tempNode433 = new PoincareNode(tree, "Child6 l1",
-					iCount--);
-			tree.addChild(tempNode22, tempNode433);
-			tree.addChild(tempNode433, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			tree.addChild(tempNode433, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-
-			PoincareNode tempNode33 = new PoincareNode(tree, "Child6 l1",
-					iCount--);
-			tree.addChild(tempNode22, tempNode33);
-			tree.addChild(tempNode33, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			tree.addChild(tempNode33, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-
-			tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-					iCount--));
-			tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
-					iCount--));
-			tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-					iCount--));
-			tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
-					iCount--));
-			tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-					iCount--));
-			tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
-					iCount--));
-			tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-					iCount--));
-
-			PoincareNode tempNode2 = new PoincareNode(tree, "Child6 l1",
-					iCount--);
-			tree.addChild(tempNode, tempNode2);
-
-			tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			PoincareNode tempNode3 = new PoincareNode(tree, "Child6 l1",
-					iCount--);
-			tree.addChild(tempNode2, tempNode3);
-			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			PoincareNode tempNode34 = new PoincareNode(tree, "Child6 l1",
-					iCount--);
-			tree.addChild(tempNode3, tempNode34);
-			tree.addChild(tempNode34, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			tree.addChild(tempNode34, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			PoincareNode tempNode344 = new PoincareNode(tree, "Child6 l1",
-					iCount--);
-			tree.addChild(tempNode34, tempNode344);
-			tree.addChild(tempNode344, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			tree.addChild(tempNode344, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			PoincareNode tempNode3444 = new PoincareNode(tree, "Child6 l1",
-					iCount--);
-			tree.addChild(tempNode344, tempNode3444);
-			tree.addChild(tempNode3444, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			tree.addChild(tempNode3444, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			PoincareNode tempNode34444 = new PoincareNode(tree, "Child6 l1",
-					iCount--);
-			tree.addChild(tempNode3444, tempNode34444);
-			tree.addChild(tempNode34444, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			tree.addChild(tempNode34444, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			PoincareNode tempNode344444 = new PoincareNode(tree, "Child6 l1",
-					iCount--);
-			tree.addChild(tempNode34444, tempNode344444);
-			tree.addChild(tempNode344444, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-			tree.addChild(tempNode344444, new PoincareNode(tree, "Child7 l1",
-					iCount--));
-		}
+//		int iCount = 3344;
+//		for (PoincareNode tempNode : tree.getChildren(node)) {
+//
+//			PoincareNode tempNode22 = new PoincareNode(tree, "Child6 l1",
+//					iCount--);
+//			tree.addChild(tempNode, tempNode22);
+//
+//			tree.addChild(tempNode22, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			tree.addChild(tempNode22, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//
+//			PoincareNode tempNode433 = new PoincareNode(tree, "Child6 l1",
+//					iCount--);
+//			tree.addChild(tempNode22, tempNode433);
+//			tree.addChild(tempNode433, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			tree.addChild(tempNode433, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//
+//			PoincareNode tempNode33 = new PoincareNode(tree, "Child6 l1",
+//					iCount--);
+//			tree.addChild(tempNode22, tempNode33);
+//			tree.addChild(tempNode33, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			tree.addChild(tempNode33, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//
+//			tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
+//					iCount--));
+//			tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
+//					iCount--));
+//			tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
+//					iCount--));
+//			tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
+//					iCount--));
+//			tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
+//					iCount--));
+//			tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
+//					iCount--));
+//			tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
+//					iCount--));
+//
+//			PoincareNode tempNode2 = new PoincareNode(tree, "Child6 l1",
+//					iCount--);
+//			tree.addChild(tempNode, tempNode2);
+//
+//			tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			PoincareNode tempNode3 = new PoincareNode(tree, "Child6 l1",
+//					iCount--);
+//			tree.addChild(tempNode2, tempNode3);
+//			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			PoincareNode tempNode34 = new PoincareNode(tree, "Child6 l1",
+//					iCount--);
+//			tree.addChild(tempNode3, tempNode34);
+//			tree.addChild(tempNode34, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			tree.addChild(tempNode34, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			PoincareNode tempNode344 = new PoincareNode(tree, "Child6 l1",
+//					iCount--);
+//			tree.addChild(tempNode34, tempNode344);
+//			tree.addChild(tempNode344, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			tree.addChild(tempNode344, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			PoincareNode tempNode3444 = new PoincareNode(tree, "Child6 l1",
+//					iCount--);
+//			tree.addChild(tempNode344, tempNode3444);
+//			tree.addChild(tempNode3444, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			tree.addChild(tempNode3444, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			PoincareNode tempNode34444 = new PoincareNode(tree, "Child6 l1",
+//					iCount--);
+//			tree.addChild(tempNode3444, tempNode34444);
+//			tree.addChild(tempNode34444, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			tree.addChild(tempNode34444, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			PoincareNode tempNode344444 = new PoincareNode(tree, "Child6 l1",
+//					iCount--);
+//			tree.addChild(tempNode34444, tempNode344444);
+//			tree.addChild(tempNode344444, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//			tree.addChild(tempNode344444, new PoincareNode(tree, "Child7 l1",
+//					iCount--));
+//		}
 
 		// layoutTree();
 		moebiusLayoutTree();

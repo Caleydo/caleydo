@@ -1,7 +1,8 @@
 package org.caleydo.view.datawindows;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.view.datawindows.creator.ViewCreator;
+import org.caleydo.view.datawindows.creator.ViewCreatorDataWindows;
+import org.caleydo.view.datawindows.creator.ViewCreatorHyperbolic;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -35,7 +36,10 @@ public class Activator extends AbstractUIPlugin {
 		plugin = this;
 
 		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
-				new ViewCreator(PLUGIN_ID));
+				new ViewCreatorDataWindows(PLUGIN_ID));
+		
+		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
+				new ViewCreatorHyperbolic("org.caleydo.view.hyperbolic"));
 	}
 
 	/*

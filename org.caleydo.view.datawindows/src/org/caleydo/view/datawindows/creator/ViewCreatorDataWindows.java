@@ -8,9 +8,9 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.view.datawindows.GLDataWindows;
 import org.caleydo.view.datawindows.SerializedDataWindowsView;
 
-public class ViewCreator extends AGLViewCreator {
+public class ViewCreatorDataWindows extends AGLViewCreator {
 
-	public ViewCreator(String viewType) {
+	public ViewCreatorDataWindows(String viewType) {
 		super(viewType);
 	}
 

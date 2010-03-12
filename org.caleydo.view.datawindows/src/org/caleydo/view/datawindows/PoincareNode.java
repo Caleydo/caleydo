@@ -14,8 +14,6 @@ public class PoincareNode extends AHierarchyElement<PoincareNode> {
 	private boolean linked = false;
 	private int levelOfDetail = 0;
 	
-	
-	
 	String nodeName;
 	int iComparableValue;
 	public boolean highLighted=false;
