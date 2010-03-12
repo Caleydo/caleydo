@@ -20,6 +20,7 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 //import java.awt.Font;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.nio.FloatBuffer;
@@ -80,6 +81,7 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 //import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.scatterplot.listener.UseRandomSamplingListener;
 import org.caleydo.view.scatterplot.listener.GLScatterPlotKeyListener;
@@ -297,17 +299,27 @@ public class GLScatterPlot extends AStorageBasedView {
 					}
 				});
 
-		init(gl);
+		
 		
 
-		iGLDisplayListIndexLocal = gl.glGenLists(7);
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-		iGLDisplayListIndexCoord = iGLDisplayListIndexLocal + 1;
-		iGLDisplayListIndexMouseOver = iGLDisplayListIndexLocal + 2;
-		iGLDisplayListIndexSelection = iGLDisplayListIndexLocal + 3;
-		iGLDisplayListIndexMatrixFull = iGLDisplayListIndexLocal + 4;
-		iGLDisplayListIndexMatrixSelection = iGLDisplayListIndexLocal + 5;
+//		iGLDisplayListIndexLocal = gl.glGenLists(2);
+//		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+//		iGLDisplayListIndexCoord = iGLDisplayListIndexLocal + 1;
+//		iGLDisplayListIndexMouseOver = iGLDisplayListIndexLocal + 2;
+//		iGLDisplayListIndexSelection = iGLDisplayListIndexLocal + 3;
+//		iGLDisplayListIndexMatrixFull = iGLDisplayListIndexLocal + 4;
+//		iGLDisplayListIndexMatrixSelection = iGLDisplayListIndexLocal + 5;
 
+		
+		iGLDisplayListIndexLocal = gl.glGenLists(1);
+		//iGLDisplayListToCall = iGLDisplayListIndexLocal;
+		iGLDisplayListIndexCoord = gl.glGenLists(1);
+		iGLDisplayListIndexMouseOver = gl.glGenLists(1);
+		iGLDisplayListIndexSelection = gl.glGenLists(1);
+		iGLDisplayListIndexMatrixFull = gl.glGenLists(1);
+		iGLDisplayListIndexMatrixSelection = gl.glGenLists(1);
+		
+		init(gl);
 	
 
 		
@@ -375,16 +387,18 @@ public class GLScatterPlot extends AStorageBasedView {
 	@Override
 	public void displayLocal(GL gl) {
 		processEvents();
-		
-		textRenderer.setColor(0, 0, 0, 1);
-		renderNumber(gl, "ScatterPlot View 1.0", 0, 0);
-		
-		
+					
 		if (!isVisible())
 			return;
 		if (set == null)
 			return;
+	
 		
+		
+//		textRenderer.dispose();
+//		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
+//		textRenderer.setColor(0, 0, 0, 1);
+//		renderNumber(gl, "ScatterPlot View 1.0", 0, 0);
 		
 		if (detailLevel == EDetailLevel.HIGH) {
 			GLMouseListener glMouseListener = getParentGLCanvas()
@@ -1907,11 +1921,13 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
 
-//		Rectangle2D bounds = textRenderer.getScaledBounds(gl, sLabel, fScaling,
-//				ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);
+		textRenderer.dispose();
+		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
+		Rectangle2D bounds = textRenderer.getScaledBounds(gl, sLabel, fScaling,
+				ScatterPlotRenderStyle.MIN_NUMBER_TEXT_SIZE);
 
 		float fRotation = 45;
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		//gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		float tmpx = x + width + width /4;
 		float tmpy = y + height / 6;
 		gl.glTranslatef(tmpx, tmpy, 0);
@@ -1925,7 +1941,7 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 		textRenderer.end3DRendering();
 		gl.glRotatef(-fRotation, 0, 0, 1);
 		gl.glTranslatef(-tmpx, -tmpy, 0);
-		gl.glPopAttrib();
+		//gl.glPopAttrib();
 		
 		
 		gl.glLineWidth(0.1f);
@@ -1962,6 +1978,9 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 	 * 
 	 */
 	private void renderCoordinateSystem(GL gl) {
+		
+		textRenderer.dispose();
+		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 		textRenderer.setColor(0, 0, 0, 1);
 		// Markers On Axis
 		
@@ -2372,6 +2391,8 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 	private void renderMouseOverLabel(GL gl, float x, float y,
 			float[] fArMappingColor, float fOpacity, int iContentIndex) {
 
+		textRenderer.dispose();
+		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 		textRenderer.setColor(0, 0, 0, 1);
 
 
@@ -3282,7 +3303,8 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 
 	@Override
 	public void clearAllSelections() {
-		contentSelectionManager.clearSelections();
+		contentSelectionManager.clearSelections();		
+		storageSelectionManager.clearSelections();
 		AlSelectionTypes.clear();		
 		AlSelectionTypes.add(SelectionType.SELECTION);		
 		addSelectionType();
