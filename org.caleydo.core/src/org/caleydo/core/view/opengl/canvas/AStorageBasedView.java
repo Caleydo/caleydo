@@ -23,12 +23,12 @@ import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
-import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
+import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.usecase.EDataFilterLevel;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
@@ -541,11 +541,11 @@ public abstract class AStorageBasedView
 
 		contentVAUpdateListener = new ContentVAUpdateListener();
 		contentVAUpdateListener.setHandler(this);
-		eventPublisher.addListener(VirtualArrayUpdateEvent.class, contentVAUpdateListener);
+		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
 
 		storageVAUpdateListener = new StorageVAUpdateListener();
 		storageVAUpdateListener.setHandler(this);
-		eventPublisher.addListener(VirtualArrayUpdateEvent.class, storageVAUpdateListener);
+		eventPublisher.addListener(StorageVAUpdateEvent.class, storageVAUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
