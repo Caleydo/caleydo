@@ -6,7 +6,7 @@ import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 
 import gleem.linalg.Vec3f;
 
-public class HeatMapLayoutRight extends HeatMapLayout {
+public class HeatMapLayoutRight extends AHeatMapLayout {
 
 	public HeatMapLayoutRight(RenderCommandFactory renderCommandFactory) {
 		super(renderCommandFactory);

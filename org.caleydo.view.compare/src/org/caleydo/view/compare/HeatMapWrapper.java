@@ -53,7 +53,7 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 	private IGeneralManager generalManager;
 	private ContentVirtualArray contentVA;
 	private StorageVirtualArray storageVA;
-	private HeatMapLayout layout;
+	private AHeatMapLayout layout;
 	private HashMap<Integer, GLHeatMap> hashHeatMaps;
 	private HashMap<Integer, Vec3f> hashHeatMapPositions;
 	private ArrayList<GroupInfo> selectedGroups;
@@ -73,7 +73,7 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 	private ContentSelectionManager contentSelectionManager;
 	private SelectionType activeHeatMapSelectionType;
 
-	public HeatMapWrapper(int id, HeatMapLayout layout, AGLView glParentView,
+	public HeatMapWrapper(int id, AHeatMapLayout layout, AGLView glParentView,
 			GLInfoAreaManager infoAreaManager, IUseCase useCase,
 			IGLRemoteRenderingView parentView, EDataDomain dataDomain,
 			SelectionType activeHeatMapSelectionType) {
@@ -771,7 +771,7 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 		activeHeatMapID = -1;
 	}
 
-	public HeatMapLayout getLayout() {
+	public AHeatMapLayout getLayout() {
 		return layout;
 	}
 

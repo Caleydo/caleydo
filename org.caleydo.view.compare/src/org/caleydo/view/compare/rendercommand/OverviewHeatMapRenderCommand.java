@@ -10,7 +10,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.view.compare.HeatMapLayout;
+import org.caleydo.view.compare.AHeatMapLayout;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.heatmap.HeatMapUtil;
 
@@ -21,7 +21,7 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 	@Override
 	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
 		
-		HeatMapLayout layout = heatMapWrapper.getLayout();
+		AHeatMapLayout layout = heatMapWrapper.getLayout();
 		Vec3f overviewHeatMapPosition = layout.getOverviewHeatMapPosition();
 		float overviewHeight = layout.getOverviewHeight();
 		ArrayList<Texture> overviewTextures = heatMapWrapper.getOverview()
@@ -42,7 +42,7 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 
 	}
 
-	private void drawSelections(GL gl, HeatMapLayout layout,
+	private void drawSelections(GL gl, AHeatMapLayout layout,
 			ContentSelectionManager contentSelectionManager,
 			ContentVirtualArray contentVA) {
 
@@ -75,7 +75,7 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 		// }
 	}
 
-	private void drawSelectionsOfType(GL gl, HeatMapLayout layout,
+	private void drawSelectionsOfType(GL gl, AHeatMapLayout layout,
 			ContentVirtualArray contentVA, Set<Integer> selectedElements,
 			SelectionType selectionType) {
 

@@ -16,7 +16,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 public class VerticalSlider {
 
-	private HeatMapLayout layout;
+	private AHeatMapLayout layout;
 	private float relativeBottomPositionY;
 	private float relativeTopPositionY;
 //	private float relativeSliderHeight;
@@ -30,7 +30,7 @@ public class VerticalSlider {
 	private float draggingSpacing;
 	private boolean isDraggingFirstTime = true;
 
-	public VerticalSlider(HeatMapLayout layout) {
+	public VerticalSlider(AHeatMapLayout layout) {
 //		relativeSliderHeight = 0.25f;
 		relativeTopPositionY = 1.0f;
 		relativeBottomPositionY = 0.75f;

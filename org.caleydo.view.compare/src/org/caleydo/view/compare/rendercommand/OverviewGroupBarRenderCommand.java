@@ -7,7 +7,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.compare.HeatMapLayout;
+import org.caleydo.view.compare.AHeatMapLayout;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.heatmap.HeatMapUtil;
 
@@ -26,7 +26,7 @@ public class OverviewGroupBarRenderCommand implements IHeatMapRenderCommand {
 	@Override
 	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
 		
-		HeatMapLayout layout = heatMapWrapper.getLayout();
+		AHeatMapLayout layout = heatMapWrapper.getLayout();
 		ContentVirtualArray contentVA = heatMapWrapper.getOverview()
 		.getContentVA();
 		

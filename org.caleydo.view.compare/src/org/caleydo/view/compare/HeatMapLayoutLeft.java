@@ -6,7 +6,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.view.compare.rendercommand.ERenderCommandType;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 
-public class HeatMapLayoutLeft extends HeatMapLayout {
+public class HeatMapLayoutLeft extends AHeatMapLayout {
 
 	public HeatMapLayoutLeft(RenderCommandFactory renderCommandFactory) {
 		super(renderCommandFactory);

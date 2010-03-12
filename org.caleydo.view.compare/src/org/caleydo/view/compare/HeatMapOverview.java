@@ -28,7 +28,7 @@ import com.sun.opengl.util.texture.Texture;
 
 public class HeatMapOverview {
 
-	private HeatMapLayout layout;
+	private AHeatMapLayout layout;
 	private VerticalSlider slider;
 	private ArrayList<Texture> overviewTextures;
 	private ISet set;
@@ -36,7 +36,7 @@ public class HeatMapOverview {
 	private StorageVirtualArray storageVA;
 	private ArrayList<GroupInfo> selectedGroups;
 
-	public HeatMapOverview(HeatMapLayout layout) {
+	public HeatMapOverview(AHeatMapLayout layout) {
 		this.layout = layout;
 		slider = new VerticalSlider(layout);
 		selectedGroups = new ArrayList<GroupInfo>();

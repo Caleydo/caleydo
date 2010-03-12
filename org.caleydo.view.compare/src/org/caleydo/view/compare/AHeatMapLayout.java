@@ -8,7 +8,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 
-public abstract class HeatMapLayout {
+public abstract class AHeatMapLayout {
 
 	protected static float OVERVIEW_TOTAL_WIDTH_PORTION = 0.25f;
 	protected static float OVERVIEW_GROUP_WIDTH_PORTION = 0.04f;
@@ -34,7 +34,7 @@ public abstract class HeatMapLayout {
 	protected ArrayList<IHeatMapRenderCommand> localRenderCommands;
 	protected ArrayList<IHeatMapRenderCommand> remoteRenderCommands;
 	
-	public HeatMapLayout(RenderCommandFactory renderCommandFactory) {
+	public AHeatMapLayout(RenderCommandFactory renderCommandFactory) {
 		this.renderCommandFactory = renderCommandFactory;
 		localRenderCommands = new ArrayList<IHeatMapRenderCommand>();
 		remoteRenderCommands = new ArrayList<IHeatMapRenderCommand>();

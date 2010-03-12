@@ -6,7 +6,7 @@ import java.awt.geom.Rectangle2D;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.view.compare.HeatMapLayout;
+import org.caleydo.view.compare.AHeatMapLayout;
 import org.caleydo.view.compare.HeatMapWrapper;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -31,7 +31,7 @@ public class CaptionLabelRenderCommand implements IHeatMapRenderCommand {
 	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
 
 		String textToRender = heatMapWrapper.getCaption();
-		HeatMapLayout layout = heatMapWrapper.getLayout();
+		AHeatMapLayout layout = heatMapWrapper.getLayout();
 
 		Rectangle2D bounds = textRenderer.getBounds(textToRender);
 		float captionLabelHeight = layout.getCaptionLabelHeight();
@@ -66,7 +66,7 @@ public class CaptionLabelRenderCommand implements IHeatMapRenderCommand {
 	 *            Text the scaling shall be calculated for.
 	 * @return Scaling factor for the specified text.
 	 */
-	private float determineFontScaling(GL gl, String text, HeatMapLayout layout) {
+	private float determineFontScaling(GL gl, String text, AHeatMapLayout layout) {
 
 		float captionLabelHeight = layout.getCaptionLabelHeight();
 		float captionLabelWidth = layout.getCaptionLabelWidth();
