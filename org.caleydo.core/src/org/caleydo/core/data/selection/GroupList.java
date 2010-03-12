@@ -459,4 +459,9 @@ public abstract class GroupList<ConcreteType extends IGroupList<ConcreteType, VA
 		return null;
 		
 	}
+	
+	@Override
+	public String toString() {
+		return groups.toString();
+	}
 }

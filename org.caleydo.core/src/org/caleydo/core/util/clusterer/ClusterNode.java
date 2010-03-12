@@ -30,7 +30,7 @@ import org.caleydo.core.data.selection.SelectionType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ClusterNode
 	extends AHierarchyElement<ClusterNode>
-	implements IHierarchyData<ClusterNode> {
+	implements IHierarchyData<ClusterNode>, Comparable<ClusterNode> {
 
 	@XmlAttribute
 	private String nodeName;
@@ -217,4 +217,21 @@ public class ClusterNode
 	// public float[] getRepresentativeElement() {
 	// return fArRepresentativeElement;
 	// }
+	
+//	public void sortByGeneExpression()
+//	{
+//		ArrayList<ClusterNode> children = getChildren();
+//		
+//		
+//	}
+	
+	@Override
+	public int compareTo(ClusterNode node) {
+		if(fAverageExpressionValue < node.fAverageExpressionValue)
+			return 1;
+		else
+			return -1;
+//		return getComparableValue() - node.getComparableValue();
+	}
+	
 }

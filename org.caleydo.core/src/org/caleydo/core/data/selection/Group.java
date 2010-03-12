@@ -156,4 +156,9 @@ public class Group {
 	public float[] getRepresentativeElement() {
 		return fArRepresentativeElement;
 	}
+	
+	@Override
+	public String toString() {
+		return "NrElem.: " + nrElements;
+	}
 }

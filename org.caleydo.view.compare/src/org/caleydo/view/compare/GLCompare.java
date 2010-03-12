@@ -35,6 +35,7 @@ import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
+import org.caleydo.core.util.clusterer.ETreeClustererAlgo;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -1217,9 +1218,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		clusterState.setAffinityPropClusterFactorGenes(2);
 		clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 
-		// clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
-		// clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-		// clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+//		 clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
+//		 clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
+//		 clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+//		 clusterState.setTreeClustererAlgo(ETreeClustererAlgo.COMPLETE_LINKAGE);
 
 		for (ISet set : sets) {
 			set.cluster(clusterState);

@@ -198,6 +198,8 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 	private void setEmbeddedHeatMapData(GLHeatMap heatMap,
 			int firstSampleIndex, int lastSampleIndex) {
 
+		
+		// TODO: we need to do re-sorting here, this has to be called on the fly, and 
 		// TODO: Is this really necessary?
 		heatMap.resetView();
 		ContentVirtualArray va = new ContentVirtualArray();
@@ -548,6 +550,8 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 			GLMouseListener glMouseListener,
 			ArrayList<ContentVirtualArray> contentVAs) {
 
+		// TODO this is the place where we want to set the heat map content vas
+		
 		selectedGroups.clear();
 
 		ContentGroupList contentGroupList = contentVA.getGroupList();
