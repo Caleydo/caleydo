@@ -131,7 +131,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	private ArrayList<Float> fAlXDistances;
 
 	
-	// toggleable features
+	// toggleable feature flags
 	
 	boolean bUseDetailLevel = true;
 
@@ -151,12 +151,13 @@ public class GLScatterPlot extends AStorageBasedView {
 	private boolean bMainViewZoom = false;
 	private boolean bRedrawTextures = false;
 	private boolean bUseTextureOpacy = false;
+	private boolean bClearSomeDisplayLists = false;
 
-	private GL opengl;
+	
 
 
-	int iCurrentMouseOverElement = -1;
-	int iCurrentDragZoom = -1;
+	//private int iCurrentMouseOverElement = -1;
+	private int iCurrentDragZoom = -1;
 
 	private float fTransformOldMinX = 0.3f;
 	private float fTransformNewMinX = 0.3f;
@@ -170,16 +171,16 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	
 				
-	public int iSelectedAxisIndexX = 0;
-	public int iSelectedAxisIndexY = 1;
-	public int iSelectedAxisIndexX2 = 2;
-	public int iSelectedAxisIndexY2 = 3;
+	private int iSelectedAxisIndexX = 0;
+	private int iSelectedAxisIndexY = 1;
+	private int iSelectedAxisIndexX2 = 2;
+	private int iSelectedAxisIndexY2 = 3;
 
 	
-	public int iMouseOverAxisIndexX = -1;
-	public int iMouseOverAxisIndexY = -1;
+	private int iMouseOverAxisIndexX = -1;
+	private int iMouseOverAxisIndexY = -1;
 
-	public int MAX_AXES=ScatterPlotRenderStyle.NUMBER_OF_INITIAL_AXES;
+	private int MAX_AXES=ScatterPlotRenderStyle.NUMBER_OF_INITIAL_AXES;
 
 	// Listeners
 
@@ -270,9 +271,6 @@ public class GLScatterPlot extends AStorageBasedView {
 		initSelectionTextures();
 		selectAxesfromExternal();		
 		clearAllSelections();	
-		opengl=gl;
-		
-
 	}
 
 	
@@ -289,21 +287,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	@Override
 	public void initLocal(GL gl) {
 
-		// // Register keyboard listener to GL canvas
-		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new
-		// Runnable() {
-		// public void run() {
-		// parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
-		// }
-		// });
-
-		iGLDisplayListIndexLocal = gl.glGenLists(6);
-		iGLDisplayListIndexCoord = iGLDisplayListIndexLocal + 1;
-		iGLDisplayListIndexMouseOver = iGLDisplayListIndexLocal + 2;
-		iGLDisplayListIndexSelection = iGLDisplayListIndexLocal + 3;
-		iGLDisplayListIndexMatrixFull = iGLDisplayListIndexLocal + 4;
-		iGLDisplayListIndexMatrixSelection = iGLDisplayListIndexLocal + 5;
-
+		
 		// Register keyboard listener to GL canvas
 		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(
 				new Runnable() {
@@ -313,12 +297,48 @@ public class GLScatterPlot extends AStorageBasedView {
 					}
 				});
 
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
+		
 
+		iGLDisplayListIndexLocal = gl.glGenLists(7);
+		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+		iGLDisplayListIndexCoord = iGLDisplayListIndexLocal + 1;
+		iGLDisplayListIndexMouseOver = iGLDisplayListIndexLocal + 2;
+		iGLDisplayListIndexSelection = iGLDisplayListIndexLocal + 3;
+		iGLDisplayListIndexMatrixFull = iGLDisplayListIndexLocal + 4;
+		iGLDisplayListIndexMatrixSelection = iGLDisplayListIndexLocal + 5;
+
+	
+
+		
+		
+		
+		
+		
+		gl.glNewList(iGLDisplayListIndexLocal, GL.GL_COMPILE);
+		gl.glEndList();
+		gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
+		gl.glEndList();
+		gl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
+		gl.glEndList();
+		gl.glNewList(iGLDisplayListIndexSelection, GL.GL_COMPILE);
+		gl.glEndList();
+		gl.glNewList(iGLDisplayListIndexMatrixFull, GL.GL_COMPILE);
+		gl.glEndList();
+		gl.glNewList(iGLDisplayListIndexMatrixSelection, GL.GL_COMPILE);
+		gl.glEndList();
+		
+
+		
+		
+		
 		bRenderMatrix = true;
 		bOnlyRenderHalfMatrix = true;
 		renderStyle.setIsEmbedded(true);
+
+		
+		
+		
 		
 		// ScatterPlotRenderStyle.setTextureNr(NR_TEXTURESX,NR_TEXTURESY);
 
@@ -355,6 +375,11 @@ public class GLScatterPlot extends AStorageBasedView {
 	@Override
 	public void displayLocal(GL gl) {
 		processEvents();
+		
+		textRenderer.setColor(0, 0, 0, 1);
+		renderNumber(gl, "ScatterPlot View 1.0", 0, 0);
+		
+		
 		if (!isVisible())
 			return;
 		if (set == null)
@@ -367,6 +392,20 @@ public class GLScatterPlot extends AStorageBasedView {
 		
 
 			if (bMainViewZoomDragged) {
+				
+				if (bClearSomeDisplayLists) 
+				{
+					gl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
+					gl.glEndList();
+					gl.glNewList(iGLDisplayListIndexLocal, GL.GL_COMPILE);
+					gl.glEndList();
+					gl.glNewList(iGLDisplayListIndexSelection, GL.GL_COMPILE);
+					gl.glEndList();
+					gl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
+					gl.glEndList();
+					bClearSomeDisplayLists =false;
+				}
+				
 				Point pCurrentMousePoint = glMouseListener.getPickedPoint();
 
 				float[] fCurrentMousePoint = GLCoordinateUtils
@@ -486,19 +525,12 @@ public class GLScatterPlot extends AStorageBasedView {
 	@Override
 	public void display(GL gl) {
 
-		// for (Integer storageID : storageVA)
-		// {
-		// set.get(storageID).get(EDataRepresentation.RAW, contentID);
-		// }
-		// storageSelectionManager.addToType(SelectionType.MOUSE_OVER,
-		// idCollection);
-		// processEvents();
+	
+		//gl.glEnable(GL.GL_DEPTH_TEST);
+		//clipToFrustum(gl);
 
-		// GLHelperFunctions.drawAxis(gl);
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-		// gl.glEnable(GL.GL_DEPTH_TEST);
-		// clipToFrustum(gl);
-
+		
+		
 		if (bRenderMatrix) {
 			
 			gl.glCallList(iGLDisplayListIndexMatrixFull);
@@ -3082,7 +3114,7 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 		case SCATTER_POINT_SELECTION:
 			if (bMainViewZoomDragged)
 				return;
-			iCurrentMouseOverElement = iExternalID;
+			//iCurrentMouseOverElement = iExternalID;
 			switch (pickingMode) {
 
 			case CLICKED:
@@ -3106,7 +3138,7 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 			break;
 
 		case SCATTER_MATRIX_SELECTION:
-			iCurrentMouseOverElement = iExternalID;
+			//iCurrentMouseOverElement = iExternalID;
 			switch (pickingMode) {
 			case CLICKED:
 				selectionType = SelectionType.SELECTION;
@@ -3126,17 +3158,9 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 			switch (pickingMode) {
 			case CLICKED:
 				if (!bMainViewZoomDragged) {
-					bMainViewZoomDragged = true;
-					iCurrentDragZoom = iExternalID;
-					opengl.glNewList(iGLDisplayListIndexCoord, GL.GL_COMPILE);
-					opengl.glEndList();
-					opengl.glNewList(iGLDisplayListIndexLocal, GL.GL_COMPILE);
-					opengl.glEndList();
-					opengl.glNewList(iGLDisplayListIndexSelection, GL.GL_COMPILE);
-					opengl.glEndList();
-					opengl.glNewList(iGLDisplayListIndexMouseOver, GL.GL_COMPILE);
-					opengl.glEndList();
-					
+					bMainViewZoomDragged = true;					
+					iCurrentDragZoom = iExternalID;		
+					bClearSomeDisplayLists=true;
 				}
 				break;
 			// case MOUSE_OVER :
