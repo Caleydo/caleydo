@@ -12,10 +12,10 @@ import org.eclipse.ui.part.ViewPart;
  * 
  * @author Marc Streit
  */
-public class RcpSelectionInfoView
+public class RcpInfoAreaView
 	extends ViewPart {
 
-	public static final String ID = "org.caleydo.rcp.views.swt.SelectionInfoView";
+	public static final String ID = "org.caleydo.rcp.views.swt.InfoAreaView";
 
 	public static boolean bHorizontal = false;
 

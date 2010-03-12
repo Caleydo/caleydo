@@ -44,10 +44,18 @@
       <view
             allowMultiple="false"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.rcp.RcpSelectionInfoView"
+            class="org.caleydo.rcp.view.rcp.RcpInfoAreaView"
             icon="resources/icons/view/info.png"
-            id="org.caleydo.rcp.views.swt.SelectionInfoView"
+            id="org.caleydo.rcp.views.swt.InfoAreaView"
             name="Info">
+      </view>
+      <view
+            allowMultiple="false"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.rcp.RcpSelectionBrowserView"
+            icon="resources/icons/view/info.png"
+            id="org.caleydo.rcp.views.swt.SelectionBrowserView"
+            name="Selection Browser">
       </view>
    </extension>   
    
@@ -181,6 +189,11 @@
             id="org.caleydo.rcp.command.cluster"
             name="Cluster">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenSelectionBrowserHandler"
+            id="org.caleydo.rcp.command.openselectionbrowser"
+            name="Selection Browser">
+      </command>
       		
    </extension>
    <extension
@@ -251,6 +264,11 @@
          <menu
                id="org.caleydo.menu.view"
                label="View">
+            <command
+                  commandId="org.caleydo.rcp.command.openselectionbrowser"
+                  icon="resources/icons/view/info.png"
+                  style="push">
+            </command>
          </menu>
          <menu
                id="org.caleydo.menu.window"

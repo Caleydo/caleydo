@@ -3,7 +3,7 @@ package org.caleydo.rcp.perspective;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.toolbar.RcpToolBarView;
-import org.caleydo.rcp.view.rcp.RcpSelectionInfoView;
+import org.caleydo.rcp.view.rcp.RcpInfoAreaView;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IFolderLayout;
@@ -42,7 +42,7 @@ public class GenomePerspective
 			if (Application.applicationMode != EApplicationMode.NO_DATA) {
 				IFolderLayout middleLeft =
 					layout.createFolder("middleLeft", IPageLayout.BOTTOM, 0.5f, "topLeft");
-				middleLeft.addView(RcpSelectionInfoView.ID);
+				middleLeft.addView(RcpInfoAreaView.ID);
 
 				layout.addStandaloneView("org.caleydo.view.histogram", true, IPageLayout.BOTTOM, 0.7f,
 					"middleLeft");
@@ -68,7 +68,7 @@ public class GenomePerspective
 			topFolder.addView(RcpToolBarView.ID);
 
 			if (Application.applicationMode != EApplicationMode.NO_DATA) {
-				layout.addStandaloneView(RcpSelectionInfoView.ID, true, IPageLayout.RIGHT, 0.75f, "top");
+				layout.addStandaloneView(RcpInfoAreaView.ID, true, IPageLayout.RIGHT, 0.75f, "top");
 				layout.addStandaloneView("org.caleydo.view.histogram", true, IPageLayout.RIGHT, 0.8f, "top");
 			}
 			// IFolderLayout bottomFolder = layout.createFolder("bottom", IPageLayout.BOTTOM, 1 - fRatio,
