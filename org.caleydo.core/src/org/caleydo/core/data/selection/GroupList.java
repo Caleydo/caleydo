@@ -444,24 +444,32 @@ public abstract class GroupList<ConcreteType extends IGroupList<ConcreteType, VA
 
 		return representative;
 	}
-	
-	public Group getGroupOfVAIndex(int index)
-	{
+
+	public Group getGroupOfVAIndex(int index) {
 		int from = 0;
 		int to = 0;
-		for(Group group : groups)
-		{
+		for (Group group : groups) {
 			to += group.getNrElements();
-			if(index >= from && index <= to)
+			if (index >= from && index < to)
 				return group;
 			from = to;
 		}
 		return null;
-		
+
 	}
-	
+
 	@Override
 	public String toString() {
 		return groups.toString();
+	}
+
+	public void updateGroupInfo() {
+		int length = 0;
+		int index = 0;
+		for (Group group : groups) {
+			group.setStartIndex(length);
+			group.setGroupIndex(index++);
+			length += group.getNrElements();
+		}
 	}
 }

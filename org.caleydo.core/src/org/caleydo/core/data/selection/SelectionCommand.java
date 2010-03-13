@@ -29,6 +29,8 @@ public class SelectionCommand {
 	 * @param eSelectionCommandType
 	 */
 	public SelectionCommand(ESelectionCommandType eSelectionCommandType) {
+		if (eSelectionCommandType == ESelectionCommandType.CLEAR)
+			throw new IllegalArgumentException("Clear needs a second parameter, use other constructor");
 		this.eSelectionCommandType = eSelectionCommandType;
 	}
 

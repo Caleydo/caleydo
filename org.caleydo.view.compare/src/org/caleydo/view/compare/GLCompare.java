@@ -13,6 +13,8 @@ import java.util.List;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.SetComparer;
+import org.caleydo.core.data.collection.set.SetRelations;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
@@ -35,7 +37,6 @@ import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
-import org.caleydo.core.util.clusterer.ETreeClustererAlgo;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -84,6 +85,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	private CompareGroupsEventListener compareGroupsEventListener;
 	private DuplicateSetBarItemEventListener duplicateSetBarItemEventListener;
+	
+	private SetRelations relations;
 
 	float yPosInitLeft = 0;
 	float xPosInitLeft = 0;
@@ -281,14 +284,19 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		}
 
 		if (leftHeatMapWrapper.isNewSelection()) {
-			rightHeatMapWrapper.selectGroupsFromContentVAList(gl,
-					glMouseListener, leftHeatMapWrapper
-							.getContentVAsOfHeatMaps());
+//			rightHeatMapWrapper.selectGroupsFromContentVAList(gl,
+//					glMouseListener, leftHeatMapWrapper
+//							.getContentVAsOfHeatMaps());
+			
+			rightHeatMapWrapper.selectGroupsFromContentVAList(relations.getMapping(leftHeatMapWrapper.getSet()), leftHeatMapWrapper.getContentVAsOfHeatMaps());
 			setDisplayListDirty();
 		} else if (rightHeatMapWrapper.isNewSelection()) {
-			leftHeatMapWrapper.selectGroupsFromContentVAList(gl,
-					glMouseListener, rightHeatMapWrapper
-							.getContentVAsOfHeatMaps());
+			leftHeatMapWrapper.selectGroupsFromContentVAList(relations.getMapping(rightHeatMapWrapper.getSet()), rightHeatMapWrapper.getContentVAsOfHeatMaps());
+			
+
+			// leftHeatMapWrapper.selectGroupsFromContentVAList(gl,
+			// glMouseListener, rightHeatMapWrapper
+			// .getContentVAsOfHeatMaps());
 			setDisplayListDirty();
 		}
 
@@ -1218,10 +1226,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		clusterState.setAffinityPropClusterFactorGenes(2);
 		clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 
-//		 clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
-//		 clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-//		 clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-//		 clusterState.setTreeClustererAlgo(ETreeClustererAlgo.COMPLETE_LINKAGE);
+		// clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
+		// clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
+		// clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		// clusterState.setTreeClustererAlgo(ETreeClustererAlgo.COMPLETE_LINKAGE);
 
 		for (ISet set : sets) {
 			set.cluster(clusterState);
@@ -1230,10 +1238,13 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		if (sets.size() >= 2) {
 			ISet setLeft = setsToCompare.get(0);
 			ISet setRight = setsToCompare.get(1);
-			// relations = SetComparer.compareSets(setLeft, setRight);
+			relations = SetComparer.compareSets(setLeft, setRight);
+
 			//
 			leftHeatMapWrapper.setSet(setLeft);
+			leftHeatMapWrapper.setRelations(relations);
 			rightHeatMapWrapper.setSet(setRight);
+			rightHeatMapWrapper.setRelations(relations);
 			areNewSetsAvailable = true;
 			setBar.setSets(setsToCompare);
 

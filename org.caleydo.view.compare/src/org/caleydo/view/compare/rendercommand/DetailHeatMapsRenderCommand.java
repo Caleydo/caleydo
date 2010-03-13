@@ -2,13 +2,14 @@ package org.caleydo.view.compare.rendercommand;
 
 import gleem.linalg.Vec3f;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.view.compare.GroupInfo;
 import org.caleydo.view.compare.AHeatMapLayout;
+import org.caleydo.view.compare.GroupInfo;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.heatmap.GLHeatMap;
 
@@ -25,18 +26,18 @@ public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 	@Override
 	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
 		int numTotalSamples = 0;
-		ArrayList<GroupInfo> selectedGroups = heatMapWrapper
+		HashMap<Group, GroupInfo> selectedGroups = heatMapWrapper
 				.getSelectedGroups();
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
 
-		for (GroupInfo groupInfo : selectedGroups) {
+		for (GroupInfo groupInfo : selectedGroups.values()) {
 			int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
 			numTotalSamples += numSamplesInHeatMap;
 		}
 
 		heatMapWrapper.calculateHeatMapPositions();
 
-		for (GroupInfo groupInfo : selectedGroups) {
+		for (GroupInfo groupInfo : selectedGroups.values()) {
 
 			GLHeatMap heatMap = heatMapWrapper.getHeatMap(groupInfo
 					.getGroupIndex());

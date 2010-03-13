@@ -9,6 +9,16 @@ public class Group {
 	 */
 	private int nrElements;
 
+	/**
+	 * The virtual array index of the first element of the group
+	 */
+	private int startIndex;
+
+	/**
+	 * The index of the group in the group lst
+	 */
+	private int groupIndex;
+
 	private boolean collapsed;
 
 	/**
@@ -75,14 +85,14 @@ public class Group {
 	 * @param fArRepresentativeElement
 	 * @param SelectionType
 	 */
-	public Group(int iNrElements, boolean bCollapsed, int iIdxExample, float[] fArRepresentativeElement,
-		SelectionType SelectionType) {
-		this.setNrElements(iNrElements);
-		this.setCollapsed(bCollapsed);
-		this.setIdxExample(iIdxExample);
-		this.setRepresentativeElement(fArRepresentativeElement);
-		this.setSelectionType(SelectionType);
-	}
+	// public Group(int iNrElements, boolean bCollapsed, int iIdxExample, float[] fArRepresentativeElement,
+	// SelectionType SelectionType) {
+	// this.setNrElements(iNrElements);
+	// this.setCollapsed(bCollapsed);
+	// this.setIdxExample(iIdxExample);
+	// this.setRepresentativeElement(fArRepresentativeElement);
+	// this.setSelectionType(SelectionType);
+	// }
 
 	/**
 	 * Constructor with representative element and cluster node included
@@ -94,15 +104,15 @@ public class Group {
 	 * @param SelectionType
 	 * @param clusterNode
 	 */
-	public Group(int iNrElements, boolean bCollapsed, int iIdxExample, float[] fArRepresentativeElement,
-		SelectionType SelectionType, ClusterNode clusterNode) {
-		this.setNrElements(iNrElements);
-		this.setCollapsed(bCollapsed);
-		this.setIdxExample(iIdxExample);
-		this.setRepresentativeElement(fArRepresentativeElement);
-		this.setSelectionType(SelectionType);
-		this.setClusterNode(clusterNode);
-	}
+	// public Group(int iNrElements, boolean bCollapsed, int iIdxExample, float[] fArRepresentativeElement,
+	// SelectionType SelectionType, ClusterNode clusterNode) {
+	// this.setNrElements(iNrElements);
+	// this.setCollapsed(bCollapsed);
+	// this.setIdxExample(iIdxExample);
+	// this.setRepresentativeElement(fArRepresentativeElement);
+	// this.setSelectionType(SelectionType);
+	// this.setClusterNode(clusterNode);
+	// }
 
 	public void setNrElements(int iNrElements) {
 		this.nrElements = iNrElements;
@@ -110,6 +120,22 @@ public class Group {
 
 	public int getNrElements() {
 		return nrElements;
+	}
+
+	public int getGroupIndex() {
+		return groupIndex;
+	}
+
+	public void setGroupIndex(int groupIndex) {
+		this.groupIndex = groupIndex;
+	}
+
+	public int getStartIndex() {
+		return startIndex;
+	}
+
+	public void setStartIndex(int startIndex) {
+		this.startIndex = startIndex;
 	}
 
 	public void setCollapsed(boolean bCollapsed) {
@@ -156,7 +182,7 @@ public class Group {
 	public float[] getRepresentativeElement() {
 		return fArRepresentativeElement;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "NrElem.: " + nrElements;

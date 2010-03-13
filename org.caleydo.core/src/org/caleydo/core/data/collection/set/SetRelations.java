@@ -11,26 +11,42 @@ public class SetRelations {
 
 	HashMap<Integer, Integer> hashLeftToRight;
 	HashMap<Integer, Integer> hashRightToLeft;
+	HashMap<ISet, HashMap<Integer, Integer>> hashSetToRelations;
 
 	public SetRelations(ISet setLeft, ISet setRight) {
 		this.setLeft = setLeft;
 		this.setRight = setRight;
-		hashLeftToRight = new HashMap<Integer, Integer>();
-		hashRightToLeft = new HashMap<Integer, Integer>();
+		Integer size = (int) (setLeft.depth() * 1.5);
+		hashLeftToRight = new HashMap<Integer, Integer>(size);
+		hashRightToLeft = new HashMap<Integer, Integer>(size);
+		hashSetToRelations = new HashMap<ISet, HashMap<Integer, Integer>>(4);
+		hashSetToRelations.put(setLeft, hashLeftToRight);
+		hashSetToRelations.put(setRight, hashRightToLeft);
 	}
-	
-	public HashMap<Integer, Integer> getHashLeftToRight() {
-		return hashLeftToRight;
+
+	//
+	// public HashMap<Integer, Integer> getHashToRight() {
+	// return hashLeftToRight;
+	// }
+	//
+	/**
+	 * Returns the mapping from the supplied set to the related set
+	 * 
+	 * @param set
+	 *            the "from" set
+	 */
+	public HashMap<Integer, Integer> getMapping(ISet set) {
+		return hashSetToRelations.get(set);
 	}
-	
-	public HashMap<Integer, Integer> getHashRightToLeft() {
-		return hashRightToLeft;
+
+	public Integer getEquivalentID(ISet set, Integer id) {
+		return hashSetToRelations.get(set).get(id);
 	}
-	
+
 	public ISet getSetLeft() {
 		return setLeft;
 	}
-	
+
 	public ISet getSetRight() {
 		return setRight;
 	}
