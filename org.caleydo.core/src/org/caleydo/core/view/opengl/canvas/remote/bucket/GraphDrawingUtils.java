@@ -444,13 +444,11 @@ public abstract class GraphDrawingUtils
 				ArrayList<ArrayList<Vec3f>> tempArray = new ArrayList<ArrayList<Vec3f>>();
 				if ((pointsList.size() == 2) && (pointsList.get(1).size() == 0)){
 					tempArray.add(pointsList.get(0));
-					hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
 					hashIDTypeToViewToPointLists.get(idType).put(heatMapID, tempArray);
 					hashViewToCenterPoint.put(heatMapID, pointsList.get(0).get(0));
 				}
 				else if (pointsList.size() == 2){
 					tempArray.add(pointsList.get(0));
-					hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
 					hashIDTypeToViewToPointLists.get(idType).put(heatMapID, tempArray);
 					hashViewToCenterPoint.put(heatMapID, pointsList.get(0).get(0));
 					tempArray = new ArrayList<ArrayList<Vec3f>>();		
@@ -461,7 +459,6 @@ public abstract class GraphDrawingUtils
 				}
 				else {
 					tempArray.add(pointsList.get(0));
-					hashIDTypeToViewToPointLists.get(idType).remove(parCoordID);
 					hashIDTypeToViewToPointLists.get(idType).put(parCoordID, tempArray);
 					hashViewToCenterPoint.put(parCoordID, pointsList.get(0).get(0));
 					
@@ -469,20 +466,16 @@ public abstract class GraphDrawingUtils
 			}
 			else if (multiplePointsList.size() > 0){
 				if ((multiplePointsList.size() == 2) && (multiplePointsList.get(1).size() == 0)){
-					hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
 					hashIDTypeToViewToPointLists.get(idType).put(heatMapID, multiplePointsList.get(0));
 					hashViewToCenterPoint.put(heatMapID, calculateCenter(multiplePointsList.get(0)));
 				}
 				else if (multiplePointsList.size() == 2){
-					hashIDTypeToViewToPointLists.get(idType).remove(heatMapID);
 					hashIDTypeToViewToPointLists.get(idType).put(heatMapID, multiplePointsList.get(0));
 					hashViewToCenterPoint.put(heatMapID, calculateCenter(multiplePointsList.get(0)));
-					hashIDTypeToViewToPointLists.get(idType).remove(parCoordID);
 					hashIDTypeToViewToPointLists.get(idType).put(parCoordID, multiplePointsList.get(1));
 					hashViewToCenterPoint.put(parCoordID, calculateCenter(multiplePointsList.get(1)));
 				}
 				else {
-					hashIDTypeToViewToPointLists.get(idType).remove(parCoordID);
 					hashIDTypeToViewToPointLists.get(idType).put(parCoordID,multiplePointsList.get(0));
 					hashViewToCenterPoint.put(parCoordID, calculateCenter(multiplePointsList.get(0)));
 					
