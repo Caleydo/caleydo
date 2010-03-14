@@ -436,13 +436,8 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 		}
 
 	}
-
-	public Vec2f getLeftOverviewLinkPositionFromContentID(int contentID) {
-
-		int contentIndex = contentVA.indexOf(contentID);
-
-		if (contentVA.indexOf(contentID) == -1)
-			return null;
+	
+	public Vec2f getLeftOverviewLinkPositionFromIndex(int contentIndex) {
 
 		Vec3f overviewPosition = layout.getOverviewPosition();
 		float sampleHeight = layout.getOverviewHeight() / contentVA.size();
@@ -451,13 +446,18 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 				+ layout.getOverviewHeight()
 				- ((sampleHeight * contentIndex) + sampleHeight / 2.0f));
 	}
-
-	public Vec2f getRightOverviewLinkPositionFromContentID(int contentID) {
+	
+	public Vec2f getLeftOverviewLinkPositionFromContentID(int contentID) {
 
 		int contentIndex = contentVA.indexOf(contentID);
 
 		if (contentVA.indexOf(contentID) == -1)
 			return null;
+
+		return getLeftOverviewLinkPositionFromIndex(contentIndex);
+	}
+
+	public Vec2f getRightOverviewLinkPositionFromContentIndex(int contentIndex) {
 
 		Vec3f overviewPosition = layout.getOverviewPosition();
 		float sampleHeight = layout.getOverviewHeight() / contentVA.size();
@@ -465,6 +465,16 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 		return new Vec2f(overviewPosition.x() + layout.getTotalOverviewWidth(),
 				overviewPosition.y() + layout.getOverviewHeight()
 						- ((sampleHeight * contentIndex) + sampleHeight / 2.0f));
+	}
+	
+	public Vec2f getRightOverviewLinkPositionFromContentID(int contentID) {
+
+		int contentIndex = contentVA.indexOf(contentID);
+
+		if (contentVA.indexOf(contentID) == -1)
+			return null;
+		
+		return getRightOverviewLinkPositionFromContentIndex(contentIndex);
 	}
 
 	public Vec2f getRightDetailLinkPositionFromContentID(int contentID) {
@@ -545,7 +555,7 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 		return contentSelectionManagers;
 	}
 
-	private Group getGroupFromContentIndex(int contentIndex) {
+	public Group getGroupFromContentIndex(int contentIndex) {
 		for (Group group : selectedGroups.keySet()) {
 			if (contentIndex >= group.getStartIndex()
 					&& contentIndex <= group.getEndIndex()) {

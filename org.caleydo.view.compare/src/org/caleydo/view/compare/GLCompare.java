@@ -21,6 +21,7 @@ import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -636,17 +637,22 @@ public class GLCompare extends AGLView
 
 		gl.glColor3f(0.8f, 0.8f, 0.8f);
 
-		Integer firstContentID = va.get(0);
-		Integer lastContentID = va.get(va.size() - 1);
-
+		Integer firstDetailContentID = va.get(0);
+		Integer lastDetailContentID = va.get(va.size() - 1);
+		
 		Vec2f leftPos;
 
-		if (heatMapWrapper == leftHeatMapWrapper)
+		Group group = heatMapWrapper.getGroupFromContentIndex(heatMapWrapper.getContentVA().indexOf(firstDetailContentID));
+		int overviewFirstContentIndex = group.getStartIndex();
+		int overviewLastContentIndex = group.getEndIndex();
+		
+		if (heatMapWrapper == leftHeatMapWrapper)	
+			
 			leftPos = heatMapWrapper
-					.getRightOverviewLinkPositionFromContentID(firstContentID);
+					.getRightOverviewLinkPositionFromContentIndex(overviewFirstContentIndex);
 		else
 			leftPos = heatMapWrapper
-					.getLeftOverviewLinkPositionFromContentID(firstContentID);
+					.getLeftOverviewLinkPositionFromIndex(overviewFirstContentIndex);
 
 		if (leftPos == null)
 			return;
@@ -655,17 +661,17 @@ public class GLCompare extends AGLView
 
 		if (heatMapWrapper == leftHeatMapWrapper)
 			rightPos = heatMapWrapper
-					.getLeftDetailLinkPositionFromContentID(firstContentID);
+					.getLeftDetailLinkPositionFromContentID(firstDetailContentID);
 		else
 			rightPos = heatMapWrapper
-					.getRightDetailLinkPositionFromContentID(firstContentID);
+					.getRightDetailLinkPositionFromContentID(firstDetailContentID);
 
 		if (rightPos == null)
 			return;
 
 		if (xOffset == 0) {
 			for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetUp) {
-				if (firstContentID.equals(cluseterToXOffset.getSecond())) {
+				if (firstDetailContentID.equals(cluseterToXOffset.getSecond())) {
 					xOffset = (rightPos.x() - leftPos.x())
 							* -((float) sortedClustersXOffsetUp
 									.indexOf(cluseterToXOffset) + 1)
@@ -675,7 +681,7 @@ public class GLCompare extends AGLView
 			}
 
 			for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetDown) {
-				if (firstContentID.equals(cluseterToXOffset.getSecond())) {
+				if (firstDetailContentID.equals(cluseterToXOffset.getSecond())) {
 					xOffset = (rightPos.x() - leftPos.x())
 							* -((float) sortedClustersXOffsetDown
 									.indexOf(cluseterToXOffset) + 1)
@@ -708,27 +714,27 @@ public class GLCompare extends AGLView
 
 		if (heatMapWrapper == leftHeatMapWrapper)
 			leftPos = heatMapWrapper
-					.getRightOverviewLinkPositionFromContentID(lastContentID);
+					.getRightOverviewLinkPositionFromContentIndex(overviewLastContentIndex);
 		else
 			leftPos = heatMapWrapper
-					.getLeftOverviewLinkPositionFromContentID(lastContentID);
+					.getLeftOverviewLinkPositionFromIndex(overviewLastContentIndex);
 
 		if (leftPos == null)
 			return;
 
 		if (heatMapWrapper == leftHeatMapWrapper)
 			rightPos = heatMapWrapper
-					.getLeftDetailLinkPositionFromContentID(lastContentID);
+					.getLeftDetailLinkPositionFromContentID(lastDetailContentID);
 		else
 			rightPos = heatMapWrapper
-					.getRightDetailLinkPositionFromContentID(lastContentID);
+					.getRightDetailLinkPositionFromContentID(lastDetailContentID);
 
 		if (rightPos == null)
 			return;
 
 		if (xOffset == 0) {
 			for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetUp) {
-				if (lastContentID.equals(cluseterToXOffset.getSecond())) {
+				if (lastDetailContentID.equals(cluseterToXOffset.getSecond())) {
 					xOffset = (rightPos.x() - leftPos.x())
 							* -((float) sortedClustersXOffsetUp
 									.indexOf(cluseterToXOffset) + 1)
@@ -738,7 +744,7 @@ public class GLCompare extends AGLView
 			}
 
 			for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetDown) {
-				if (lastContentID.equals(cluseterToXOffset.getSecond())) {
+				if (lastDetailContentID.equals(cluseterToXOffset.getSecond())) {
 					xOffset = (rightPos.x() - leftPos.x())
 							* -((float) sortedClustersXOffsetDown
 									.indexOf(cluseterToXOffset) + 1)
