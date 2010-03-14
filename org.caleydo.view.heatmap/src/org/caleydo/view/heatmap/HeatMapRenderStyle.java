@@ -19,7 +19,7 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 
 	public static final float SELECTION_Z = 0.005f;
 
-	private static final float SELECTED_FIELD_WIDTH_PERCENTAGE = 0.1f;
+	private static final float SELECTED_FIELD_HEIGHT_PERCENTAGE = 0.1f;
 	private static final float MAXIMUM_SELECTED_AREA_PERCENTAGE = 0.8f;
 	public static final int LABEL_TEXT_MIN_SIZE = 50;
 
@@ -30,11 +30,11 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 	public static final float BUTTON_Z = 0.01f;
 	public static final float BACKGROUND_Z = -0.1f;
 
-	private float fSelectedFieldWidth = 1.0f;
+	private float selectedFieldHeight = 1.0f;
 
-	private float fNormalFieldWidth = 0f;
+	private float normalFieldHeight = 0f;
 
-	private float fFieldHeight = 0f;
+	private float fieldWidth = 0f;
 
 	private int iLevels = 1;
 
@@ -70,16 +70,16 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 		// alFieldWidths = new ArrayList<FieldWidthElement>();
 
 		// init fish eye
-		float fDelta = (fSelectedFieldWidth - fNormalFieldWidth)
+		float fDelta = (selectedFieldHeight - normalFieldHeight)
 				/ (iLevels + 1);
 		hashLevelToWidth = new HashMap<Integer, Float>();
-		hashLevelToWidth.put(iNotSelectedLevel, fNormalFieldWidth);
-		float fCurrentWidth = fNormalFieldWidth;
+		hashLevelToWidth.put(iNotSelectedLevel, normalFieldHeight);
+		float fCurrentWidth = normalFieldHeight;
 		for (int iCount = -iLevels; iCount <= iLevels; iCount++) {
 			if (iCount < 0) {
 				fCurrentWidth += fDelta;
 			} else if (iCount == 0) {
-				fCurrentWidth = fSelectedFieldWidth;
+				fCurrentWidth = selectedFieldHeight;
 			} else {
 				fCurrentWidth -= fDelta;
 			}
@@ -106,18 +106,12 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 	}
 
 	public void updateFieldSizesnofish() {
-		// if (heatMap.renderStorageHorizontally()) {
-		// fSelectedFieldWidth = getRenderWidth()
-		// / heatMap.getContentVA().size();
-		// fNormalFieldWidth = fSelectedFieldWidth;
-		//
-		// fFieldHeight = getRenderHeight() / heatMap.getStorageVA().size();
-		// } else {
-		fSelectedFieldWidth = getRenderHeight() / heatMap.getContentVA().size();
-		fNormalFieldWidth = fSelectedFieldWidth;
 
-		fFieldHeight = getRenderWidth() / heatMap.getStorageVA().size();
-		// }
+		selectedFieldHeight = getRenderHeight() / heatMap.getContentVA().size();
+		normalFieldHeight = selectedFieldHeight;
+
+		fieldWidth = getRenderWidth() / heatMap.getStorageVA().size();
+
 	}
 
 	/**
@@ -125,86 +119,67 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 	 * etc. Call this every time something has changed.
 	 */
 	public void updateFieldSizesWithFish() {
-		int iNumberSelected = heatMap.getContentSelectionManager()
+		int numberSelected = heatMap.getContentSelectionManager()
 				.getNumberOfElements(SelectionType.MOUSE_OVER);
-		iNumberSelected += heatMap.getContentSelectionManager()
+		numberSelected += heatMap.getContentSelectionManager()
 				.getNumberOfElements(SelectionType.SELECTION);
 
-		int iNumberTotal = heatMap.getContentVA().size();
+		int numberTotal = heatMap.getContentVA().size();
 
-		float fSelecteFieldWidthPercentage = SELECTED_FIELD_WIDTH_PERCENTAGE;
-		if (iNumberSelected > 0
-				&& SELECTED_FIELD_WIDTH_PERCENTAGE * iNumberSelected > 1) {
-			fSelecteFieldWidthPercentage = 1.0f / iNumberSelected;
+		float selecteFieldHeightPercentage = SELECTED_FIELD_HEIGHT_PERCENTAGE;
+		if (numberSelected > 0
+				&& SELECTED_FIELD_HEIGHT_PERCENTAGE * numberSelected > 1) {
+			selecteFieldHeightPercentage = 1.0f / numberSelected;
 		}
 
-		// if (heatMap.renderStorageHorizontally()) {
-		//
-		// fSelectedFieldWidth = getRenderWidth()
-		// * MAXIMUM_SELECTED_AREA_PERCENTAGE
-		// * fSelecteFieldWidthPercentage;
-		//
-		// fNormalFieldWidth = (getRenderWidth() - iNumberSelected
-		// * fSelectedFieldWidth)
-		// / (iNumberTotal - iNumberSelected);
-		//
-		// fFieldHeight = getRenderHeight() / heatMap.getStorageVA().size();
-		// } else {
-
-		fSelectedFieldWidth = getRenderHeight()
+		selectedFieldHeight = getRenderHeight()
 				* MAXIMUM_SELECTED_AREA_PERCENTAGE
-				* fSelecteFieldWidthPercentage;
-		fNormalFieldWidth = (getRenderHeight() - iNumberSelected
-				* fSelectedFieldWidth)
-				/ (iNumberTotal - iNumberSelected);
-		// }
-		fFieldHeight = getRenderWidth() / heatMap.getStorageVA().size();
+				* selecteFieldHeightPercentage;
+		normalFieldHeight = (getRenderHeight() - numberSelected
+				* selectedFieldHeight)
+				/ (numberTotal - numberSelected);
+		
+		
+		normalFieldHeight = normalFieldHeight > selectedFieldHeight ? selectedFieldHeight
+				: normalFieldHeight;
+		
+		fieldWidth = getRenderWidth() / heatMap.getStorageVA().size();
 
-		fNormalFieldWidth = fNormalFieldWidth > fSelectedFieldWidth ? fSelectedFieldWidth
-				: fNormalFieldWidth;
 	}
 
 	public float getHeightExperimentDendrogram() {
-
 		return fHeightExperimentDendrogram;
 	}
 
 	// function called by HHM to set height of experiment dendrogram
 	public void setHeightExperimentDendrogram(float fHeightExperimentDendrogram) {
-
 		this.fHeightExperimentDendrogram = fHeightExperimentDendrogram;
 	}
 
 	public float getWidthGeneDendrogram() {
-
 		return fWidthGeneDendrogram;
 	}
 
 	// function called by HHM to set width of gene dendrogram
 	public void setWidthGeneDendrogram(float fWidthGeneDendrogram) {
-
 		this.fWidthGeneDendrogram = fWidthGeneDendrogram;
 	}
 
 	public float getWidthClusterVisualization() {
-
 		return fWidthClusterVisualization;
 	}
 
 	public float getWidthLevel1() {
-
 		return fWidthLevel1;
 	}
 
 	public float getWidthLevel2() {
-
 		fWidthLevel2 = hierarchicalHeatMap.getViewFrustum().getWidth() / 5;
 
 		return fWidthLevel2;
 	}
 
 	public float getWidthLevel3() {
-
 		return fWidthLevel3;
 	}
 
@@ -214,17 +189,16 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 		this.fWidthLevel3 = fWidthLevel3;
 	}
 
-	public float getNormalFieldWidth() {
-
-		return fNormalFieldWidth;
+	public float getNormalFielHeight() {
+		return normalFieldHeight;
 	}
 
-	public float getSelectedFieldWidth() {
-		return fSelectedFieldWidth;
+	public float getSelectedFieldHeight() {
+		return selectedFieldHeight;
 	}
 
-	public float getFieldHeight() {
-		return fFieldHeight;
+	public float getFieldWidth() {
+		return fieldWidth;
 	}
 
 	public float getYCenter() {
