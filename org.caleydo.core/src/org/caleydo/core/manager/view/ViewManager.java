@@ -186,7 +186,10 @@ public class ViewManager
 			// TODO Write message that plugin is not available
 			e.printStackTrace();
 		}
-
+		catch (NullPointerException e) {
+			// TODO Write message that plugin is not available
+		}
+		
 		for (IViewCreator glViewCreator : glViewCreators) {
 
 			if (glViewCreator instanceof AGLViewCreator && glViewCreator.getViewType().equals(viewID)) {

@@ -19,6 +19,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.heatmap.HeatMapUtil;
 
@@ -68,6 +69,47 @@ public class HeatMapOverview {
 		// layout.getOverviewGroupWidth(), pickingManager, viewID, layout
 		// .getGroupPickingType(), textureManager);
 		//
+		// gl.glPopMatrix();
+
+		// HeatMapUtil.renderGroupBar(gl, contentVA, layout.getOverviewHeight(),
+		// layout.getOverviewGroupWidth(), pickingManager, viewID, layout
+		// .getGroupPickingType(), textureManager);
+		//
+		// //FIXME: remove this. the group borders need to be actually put in
+		// the heatmap texture
+		// // Render group borders over heatmap texture
+		// ContentGroupList contentGroupList = contentVA.getGroupList();
+		// boolean isLeft = true;
+		// if (layout.getOverviewHeatMapPosition().x() <
+		// layout.getDetailPosition().x())
+		// isLeft = false;
+		//		
+		// if (contentGroupList != null) {
+		// float sampleHeight = layout.getOverviewHeight() / ((float)
+		// contentVA.size());
+		// float groupPositionY = layout.getOverviewHeight();
+		//
+		// gl.glColor4f(1, 1, 1, 1);
+		// gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+		// int groupIndex = 0;
+		// for (Group group : contentGroupList) {
+		// int numSamplesGroup = group.getNrElements();
+		// float groupHeight = numSamplesGroup * sampleHeight;
+		// // gl.glLineWidth(1);
+		// gl.glBegin(GL.GL_LINE_LOOP);
+		// gl.glVertex3f(0, groupPositionY, 0.0f);
+		// if (isLeft)
+		// gl.glVertex3f(0-layout.getOverviewHeatmapWidth(), groupPositionY,
+		// 0.0f);
+		// else
+		// gl.glVertex3f(layout.getOverviewSliderWidth()+layout.getOverviewHeatmapWidth(),
+		// groupPositionY, 0.0f);
+		// gl.glEnd();
+		// groupIndex++;
+		// groupPositionY -= groupHeight;
+		// }
+		// }
+		//		
 		// gl.glPopMatrix();
 
 		// slider
