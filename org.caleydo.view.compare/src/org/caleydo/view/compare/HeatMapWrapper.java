@@ -239,16 +239,19 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 			numTotalSamples += numSamplesInHeatMap;
 		}
 
-		for (GroupInfo groupInfo : selectedGroups.values()) {
+		// for (Group group : contentVA.getGroupList()) {
+		for (Group group : selectedGroups.keySet()) {
 
-			GLHeatMap heatMap = hashHeatMaps.get(groupInfo.getGroupIndex());
+			if (!selectedGroups.containsKey(group))
+				continue;
+			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 			if (heatMap == null)
 				continue;
-			int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
+			int numSamplesInHeatMap = group.getNrElements();
 			float heatMapHeight = layout
 					.getDetailHeatMapHeight(numSamplesInHeatMap,
 							numTotalSamples, selectedGroups.size());
-			Vec3f heatMapPosition = hashHeatMapPositions.get(groupInfo
+			Vec3f heatMapPosition = hashHeatMapPositions.get(group
 					.getGroupIndex());
 
 			heatMap.getViewFrustum().setLeft(heatMapPosition.x());
@@ -361,16 +364,18 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 		Vec3f detailPosition = layout.getDetailPosition();
 		float currentPositionY = detailPosition.y() + layout.getDetailHeight();
 
-		for (GroupInfo groupInfo : selectedGroups.values()) {
+		for (Group group : contentVA.getGroupList()) {
 
-			GLHeatMap heatMap = hashHeatMaps.get(groupInfo.getGroupIndex());
+			if (!selectedGroups.containsKey(group))
+				continue;
+			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 			if (heatMap == null)
 				continue;
-			int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
+			int numSamplesInHeatMap = group.getNrElements();
 			float heatMapHeight = layout
 					.getDetailHeatMapHeight(numSamplesInHeatMap,
 							numTotalSamples, selectedGroups.size());
-			hashHeatMapPositions.put(groupInfo.getGroupIndex(), new Vec3f(
+			hashHeatMapPositions.put(group.getGroupIndex(), new Vec3f(
 					detailPosition.x(), currentPositionY - heatMapHeight,
 					detailPosition.z()));
 			currentPositionY -= (heatMapHeight + layout
@@ -382,20 +387,24 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 		if (overview.handleDragging(gl, glMouseListener)) {
 
 			HashMap<Group, GroupInfo> newGroups = overview.getSelectedGroups();
+
+			// first check the obvious = if we have changes here we don't need
+			// to check in detail
 			if (newGroups.size() != selectedGroups.size()) {
 				isNewSelection = true;
 			}
-
+			// now check in detail
 			if (!isNewSelection) {
-				for (int i = 0; i < newGroups.size(); i++) {
-					if (newGroups.get(i).getGroupIndex() != selectedGroups.get(
-							i).getGroupIndex()) {
+				for (Group newGroup : newGroups.keySet()) {
+					if (!selectedGroups.containsKey(newGroup)) {
 						isNewSelection = true;
+						break;
 					}
 				}
 			}
 
 			if (isNewSelection) {
+				clearDeselected();
 				selectedGroups.clear();
 				selectedGroups.putAll(newGroups);
 				setHeatMapsInactive();
@@ -692,27 +701,16 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 	public void handleGroupSelection(SelectionType selectionType,
 			int groupIndex, boolean isControlPressed) {
 
-	
-
 		if (selectionType != SelectionType.SELECTION)
 			return;
-		
-		
-		SelectionCommand selectionCommand = new SelectionCommand(
-				ESelectionCommandType.CLEAR, SelectionType.DESELECTED);
 
-		SelectionCommandEvent event = new SelectionCommandEvent();
-		event.setSelectionCommand(selectionCommand);
-		event.setCategory(EIDCategory.GENE);
-		event.setSender(this);
-		eventPublisher.triggerEvent(event);
-		
+		clearDeselected();
 
-		for (GroupInfo groupInfo : selectedGroups.values()) {
-			if (groupInfo.getGroupIndex() == groupIndex && isControlPressed) {
+		for (Group group : selectedGroups.keySet()) {
+			if (group.getGroupIndex() == groupIndex && isControlPressed) {
 
-				groupInfo.getGroup().setSelectionType(SelectionType.NORMAL);
-				selectedGroups.remove(groupInfo);
+				group.setSelectionType(SelectionType.NORMAL);
+				selectedGroups.remove(group);
 				if (activeHeatMapID == groupIndex)
 					setHeatMapsInactive();
 
@@ -722,6 +720,7 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 		}
 
 		ContentGroupList contentGroupList = contentVA.getGroupList();
+		contentGroupList.updateGroupInfo();
 
 		if (!isControlPressed) {
 			for (Group group : selectedGroups.keySet())
@@ -757,6 +756,17 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 		// event.setSelectionDelta((SelectionDelta) selectionDelta);
 		// // event.setInfo(getShortInfoLocal());
 		// GeneralManager.get().getEventPublisher().triggerEvent(event);
+	}
+
+	private void clearDeselected() {
+		SelectionCommand selectionCommand = new SelectionCommand(
+				ESelectionCommandType.CLEAR, SelectionType.DESELECTED);
+
+		SelectionCommandEvent event = new SelectionCommandEvent();
+		event.setSelectionCommand(selectionCommand);
+		event.setCategory(EIDCategory.GENE);
+		event.setSender(this);
+		eventPublisher.triggerEvent(event);
 	}
 
 	public boolean isNewSelection() {

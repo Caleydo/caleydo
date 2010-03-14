@@ -64,14 +64,18 @@ public class TreePorter {
 		TreePorter treePorter = null;
 		Unmarshaller unmarshaller;
 
-		HashMap<Integer, ClusterNode> hashClusterNr = new HashMap<Integer, ClusterNode>();
-		HashMap<String, ClusterNode> hashClusterNodes = new HashMap<String, ClusterNode>();
+		
 
 		jaxbContext = JAXBContext.newInstance(TreePorter.class);
 		unmarshaller = jaxbContext.createUnmarshaller();
 		treePorter =
 			(TreePorter) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
 				.getResource(fileName));
+		
+		int size = (int)(treePorter.nodeSet.size() * 1.5);
+		HashMap<Integer, ClusterNode> hashClusterNr = new HashMap<Integer, ClusterNode>(size);
+		HashMap<String, ClusterNode> hashClusterNodes = new HashMap<String, ClusterNode>(size);
+		HashMap<Integer, ArrayList<Integer>> hashLeafIDToNodeIDs = new HashMap<Integer, ArrayList<Integer>>(size);
 
 		for (ClusterNode node : treePorter.nodeSet) {
 			graph.addVertex(node);
@@ -81,6 +85,20 @@ public class TreePorter {
 				rootNode = node;
 			node.setTree(tree);
 			node.setNode(node);
+
+			// take care of hashing leaf ids to node ids
+			if (node.getLeafID() >= 0) {
+				if (hashLeafIDToNodeIDs.containsKey(node.getLeafID())) {
+					ArrayList<Integer> alNodeIDs = hashLeafIDToNodeIDs.get(node.getLeafID());
+					alNodeIDs.add(node.getID());
+				}
+				else {
+
+					ArrayList<Integer> alNodeIDs = new ArrayList<Integer>();
+					alNodeIDs.add(node.getID());
+					hashLeafIDToNodeIDs.put(node.getLeafID(), alNodeIDs);
+				}
+			}
 		}
 
 		for (String[] edge : treePorter.edges) {
@@ -90,6 +108,7 @@ public class TreePorter {
 		tree.setHashMap(hashClusterNr);
 		tree.setRootNode(rootNode);
 		tree.setGraph(graph);
+		tree.hashLeafIDToNodeIDs = hashLeafIDToNodeIDs;
 
 		return tree;
 	}

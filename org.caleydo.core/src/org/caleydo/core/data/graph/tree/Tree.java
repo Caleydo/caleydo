@@ -25,7 +25,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	private HashMap<Integer, NodeType> hashNodes;
 
-	private HashMap<Integer, ArrayList<Integer>> hashLeafIDToNodeIDs;
+	HashMap<Integer, ArrayList<Integer>> hashLeafIDToNodeIDs;
 
 	private int iDepth;
 
@@ -114,24 +114,18 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 		}
 		setDirty();
 
-		// TODO: this should be removed later on, only for testing purposes
-		// TODO: isn't it better to use CompareAbleValue (and introduce an interface that implements
-		// .getID())???
-		if (childNode instanceof ClusterNode) {
-			ClusterNode clusterNode = (ClusterNode) childNode;
-			hashNodes.put(clusterNode.getID(), childNode);
-			if (hashLeafIDToNodeIDs.containsKey(clusterNode.getLeafID())) {
-				ArrayList<Integer> alNodeIDs = hashLeafIDToNodeIDs.get(clusterNode.getLeafID());
-				alNodeIDs.add(clusterNode.getID());
+		hashNodes.put(childNode.getID(), childNode);
+		if (childNode.getLeafID() >= 0) {
+			if (hashLeafIDToNodeIDs.containsKey(childNode.getLeafID())) {
+				ArrayList<Integer> alNodeIDs = hashLeafIDToNodeIDs.get(childNode.getLeafID());
+				alNodeIDs.add(childNode.getID());
 			}
 			else {
 				ArrayList<Integer> alNodeIDs = new ArrayList<Integer>();
-				alNodeIDs.add(clusterNode.getID());
-				hashLeafIDToNodeIDs.put(clusterNode.getLeafID(), alNodeIDs);
+				alNodeIDs.add(childNode.getID());
+				hashLeafIDToNodeIDs.put(childNode.getLeafID(), alNodeIDs);
 			}
 		}
-		// if (childNode instanceof IDrawAbleNode)
-		// hashNodes.put(((IDrawAbleNode) childNode).getID(), childNode);
 	}
 
 	/**
@@ -145,21 +139,6 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	public void addChildren(NodeType parentNode, List<NodeType> children) {
 		for (NodeType child : children) {
 			addChild(parentNode, child);
-			// TODO: this should be removed later on, only for testing purposes
-			// isn't this done in addchild?
-			if (child instanceof ClusterNode) {
-				ClusterNode clusterNode = (ClusterNode) child;
-				hashNodes.put(clusterNode.getID(), child);
-				if (hashLeafIDToNodeIDs.containsKey(clusterNode.getLeafID())) {
-					ArrayList<Integer> alNodeIDs = hashLeafIDToNodeIDs.get(clusterNode.getLeafID());
-					alNodeIDs.add(clusterNode.getID());
-				}
-				else {
-					ArrayList<Integer> alNodeIDs = new ArrayList<Integer>();
-					alNodeIDs.add(clusterNode.getID());
-					hashLeafIDToNodeIDs.put(clusterNode.getLeafID(), alNodeIDs);
-				}
-			}
 		}
 	}
 
