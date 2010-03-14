@@ -234,8 +234,8 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 
 		int numTotalSamples = 0;
 
-		for (GroupInfo groupInfo : selectedGroups.values()) {
-			int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
+		for (Group group : selectedGroups.keySet()) {
+			int numSamplesInHeatMap = group.getNrElements();
 			numTotalSamples += numSamplesInHeatMap;
 		}
 
@@ -357,8 +357,8 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 		hashHeatMapPositions.clear();
 
 		int numTotalSamples = 0;
-		for (GroupInfo groupInfo : selectedGroups.values()) {
-			int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
+		for (Group group : selectedGroups.keySet()) {
+			int numSamplesInHeatMap = group.getNrElements();
 			numTotalSamples += numSamplesInHeatMap;
 		}
 		Vec3f detailPosition = layout.getDetailPosition();
@@ -417,8 +417,8 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 
 	public void processEvents() {
 
-		for (GroupInfo groupInfo : selectedGroups.values()) {
-			GLHeatMap heatMap = hashHeatMaps.get(groupInfo.getGroupIndex());
+		for (Group group : selectedGroups.keySet()) {
+			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 			if (heatMap != null) {
 				heatMap.processEvents();
 			}
@@ -427,8 +427,8 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 
 	public void setDisplayListDirty() {
 
-		for (GroupInfo groupInfo : selectedGroups.values()) {
-			GLHeatMap heatMap = hashHeatMaps.get(groupInfo.getGroupIndex());
+		for (Group group : selectedGroups.keySet()) {
+			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 
 			if (heatMap != null) {
 				heatMap.setDisplayListDirty();
@@ -491,12 +491,11 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 	private Float getDetailYCoordinateByContentID(int contentID) {
 
 		// For the group check we need the index in the global content VA
-		GroupInfo groupInfo = getGroupInfoFromContentIndex(contentVA
-				.indexOf(contentID));
-		if (groupInfo == null)
+		Group group = getGroupFromContentIndex(contentVA.indexOf(contentID));
+		if (group == null)
 			return null;
 
-		int groupIndex = groupInfo.getGroupIndex();
+		int groupIndex = group.getGroupIndex();
 
 		GLHeatMap heatMap = hashHeatMaps.get(groupIndex);
 		if (heatMap == null)
@@ -511,11 +510,11 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 		Vec3f heatMapPosition = hashHeatMapPositions.get(groupIndex);
 
 		int numTotalSamples = 0;
-		for (GroupInfo info : selectedGroups.values()) {
-			numTotalSamples += info.getGroup().getNrElements();
+		for (Group tempGroup : selectedGroups.keySet()) {
+			numTotalSamples += tempGroup.getNrElements();
 		}
 
-		int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
+		int numSamplesInHeatMap = group.getNrElements();
 		float heatMapHeight = layout.getDetailHeatMapHeight(
 				numSamplesInHeatMap, numTotalSamples, selectedGroups.size());
 
@@ -527,8 +526,8 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 	public ArrayList<ContentVirtualArray> getContentVAsOfHeatMaps() {
 		ArrayList<ContentVirtualArray> contentVAs = new ArrayList<ContentVirtualArray>();
 
-		for (GroupInfo groupInfo : selectedGroups.values()) {
-			GLHeatMap heatMap = hashHeatMaps.get(groupInfo.getGroupIndex());
+		for (Group group : selectedGroups.keySet()) {
+			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 			contentVAs.add(heatMap.getContentVA());
 		}
 
@@ -538,19 +537,19 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 	public ArrayList<ContentSelectionManager> getContentSelectionManagersOfHeatMaps() {
 
 		ArrayList<ContentSelectionManager> contentSelectionManagers = new ArrayList<ContentSelectionManager>();
-		for (GroupInfo groupInfo : selectedGroups.values()) {
-			GLHeatMap heatMap = hashHeatMaps.get(groupInfo.getGroupIndex());
+		for (Group group : selectedGroups.keySet()) {
+			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 			contentSelectionManagers.add(heatMap.getContentSelectionManager());
 		}
 
 		return contentSelectionManagers;
 	}
 
-	private GroupInfo getGroupInfoFromContentIndex(int contentIndex) {
-		for (GroupInfo groupInfo : selectedGroups.values()) {
-			if (contentIndex >= groupInfo.getLowerBoundIndex()
-					&& contentIndex <= groupInfo.getUpperBoundIndex()) {
-				return groupInfo;
+	private Group getGroupFromContentIndex(int contentIndex) {
+		for (Group group : selectedGroups.keySet()) {
+			if (contentIndex >= group.getStartIndex()
+					&& contentIndex <= group.getEndIndex()) {
+				return group;
 			}
 		}
 		return null;
@@ -652,8 +651,7 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 				GroupInfo currentInfo;
 
 				if (!selectedGroups.containsKey(selectedGroup)) {
-					currentInfo = new GroupInfo(selectedGroup, selectedGroup
-							.getGroupIndex(), selectedGroup.getStartIndex());
+					currentInfo = new GroupInfo();
 					selectedGroups.put(selectedGroup, currentInfo);
 				} else {
 					currentInfo = selectedGroups.get(selectedGroup);
@@ -730,8 +728,7 @@ public class HeatMapWrapper implements ISelectionUpdateHandler {
 		}
 
 		Group selectedGroup = contentGroupList.get(groupIndex);
-		selectedGroups.put(selectedGroup, new GroupInfo(selectedGroup,
-				selectedGroup.getGroupIndex(), selectedGroup.getStartIndex()));
+		selectedGroups.put(selectedGroup, new GroupInfo());
 		selectedGroup.setSelectionType(SelectionType.SELECTION);
 
 		isNewSelection = true;

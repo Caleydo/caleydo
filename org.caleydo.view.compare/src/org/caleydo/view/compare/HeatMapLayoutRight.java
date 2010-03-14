@@ -1,10 +1,10 @@
 package org.caleydo.view.compare;
 
+import gleem.linalg.Vec3f;
+
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.view.compare.rendercommand.ERenderCommandType;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
-
-import gleem.linalg.Vec3f;
 
 public class HeatMapLayoutRight extends AHeatMapLayout {
 

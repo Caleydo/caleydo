@@ -1,10 +1,10 @@
 package org.caleydo.view.datawindows;
 
+import java.awt.geom.Point2D;
+
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
-
-import java.awt.geom.Point2D;
 
 public class NodeSlerp {
 	public Point2D.Double startPoint;

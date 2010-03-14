@@ -76,44 +76,6 @@ public class Group {
 		this.setClusterNode(clusterNode);
 	}
 
-	/**
-	 * Constructor with representative element included
-	 * 
-	 * @param iNrElements
-	 * @param bCollapsed
-	 * @param iIdxExample
-	 * @param fArRepresentativeElement
-	 * @param SelectionType
-	 */
-	// public Group(int iNrElements, boolean bCollapsed, int iIdxExample, float[] fArRepresentativeElement,
-	// SelectionType SelectionType) {
-	// this.setNrElements(iNrElements);
-	// this.setCollapsed(bCollapsed);
-	// this.setIdxExample(iIdxExample);
-	// this.setRepresentativeElement(fArRepresentativeElement);
-	// this.setSelectionType(SelectionType);
-	// }
-
-	/**
-	 * Constructor with representative element and cluster node included
-	 * 
-	 * @param iNrElements
-	 * @param bCollapsed
-	 * @param iIdxExample
-	 * @param fArRepresentativeElement
-	 * @param SelectionType
-	 * @param clusterNode
-	 */
-	// public Group(int iNrElements, boolean bCollapsed, int iIdxExample, float[] fArRepresentativeElement,
-	// SelectionType SelectionType, ClusterNode clusterNode) {
-	// this.setNrElements(iNrElements);
-	// this.setCollapsed(bCollapsed);
-	// this.setIdxExample(iIdxExample);
-	// this.setRepresentativeElement(fArRepresentativeElement);
-	// this.setSelectionType(SelectionType);
-	// this.setClusterNode(clusterNode);
-	// }
-
 	public void setNrElements(int iNrElements) {
 		this.nrElements = iNrElements;
 	}
@@ -138,6 +100,11 @@ public class Group {
 		this.startIndex = startIndex;
 	}
 
+	public int getEndIndex()
+	{
+		return startIndex + nrElements -1;
+	}
+	
 	public void setCollapsed(boolean bCollapsed) {
 		this.collapsed = bCollapsed;
 	}

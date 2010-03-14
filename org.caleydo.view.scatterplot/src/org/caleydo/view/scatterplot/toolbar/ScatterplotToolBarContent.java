@@ -10,9 +10,9 @@ import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
 import org.caleydo.view.scatterplot.GLScatterPlot;
 import org.caleydo.view.scatterplot.actions.Toggle2AxisModeAction;
 import org.caleydo.view.scatterplot.actions.ToggleColorModeAction;
+import org.caleydo.view.scatterplot.actions.ToggleMainViewZoomAction;
 import org.caleydo.view.scatterplot.actions.ToggleMatrixViewAction;
 import org.caleydo.view.scatterplot.actions.ToggleMatrixZoomAction;
-import org.caleydo.view.scatterplot.actions.ToggleMainViewZoomAction;
 import org.caleydo.view.scatterplot.actions.TogglePointTypeAction;
 
 /**

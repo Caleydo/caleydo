@@ -19,7 +19,6 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.heatmap.HeatMapUtil;
 
@@ -194,8 +193,7 @@ public class HeatMapOverview {
 			if (groupSampleStartIndex >= lowerBoundIndex
 					&& groupSampleEndIndex <= upperBoundIndex) {
 				group.setSelectionType(SelectionType.SELECTION);
-				selectedGroups.put(group, new GroupInfo(group, groupIndex,
-						groupSampleStartIndex));
+				selectedGroups.put(group, new GroupInfo());
 			} else {
 				group.setSelectionType(SelectionType.NORMAL);
 			}

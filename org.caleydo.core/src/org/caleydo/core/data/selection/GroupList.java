@@ -463,6 +463,10 @@ public abstract class GroupList<ConcreteType extends IGroupList<ConcreteType, VA
 		return groups.toString();
 	}
 
+	/**
+	 * FIXME this should be integrated into the group list. We should not be required to call this explicitly
+	 */
+	@Deprecated
 	public void updateGroupInfo() {
 		int length = 0;
 		int index = 0;

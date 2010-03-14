@@ -30,24 +30,24 @@ public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 				.getSelectedGroups();
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
 
-		for (GroupInfo groupInfo : selectedGroups.values()) {
-			int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
+		for (Group group : selectedGroups.keySet()) {
+			int numSamplesInHeatMap = group.getNrElements();
 			numTotalSamples += numSamplesInHeatMap;
 		}
 
 		heatMapWrapper.calculateHeatMapPositions();
 
-		for (GroupInfo groupInfo : selectedGroups.values()) {
+		for (Group group : selectedGroups.keySet()) {
 
-			GLHeatMap heatMap = heatMapWrapper.getHeatMap(groupInfo
-					.getGroupIndex());
+			GLHeatMap heatMap = heatMapWrapper
+					.getHeatMap(group.getGroupIndex());
 			if (heatMap == null)
 				continue;
-			int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
+			int numSamplesInHeatMap = group.getNrElements();
 			float heatMapHeight = layout
 					.getDetailHeatMapHeight(numSamplesInHeatMap,
 							numTotalSamples, selectedGroups.size());
-			Vec3f heatMapPosition = heatMapWrapper.getHeatMapPosition(groupInfo
+			Vec3f heatMapPosition = heatMapWrapper.getHeatMapPosition(group
 					.getGroupIndex());
 
 			gl.glTranslatef(heatMapPosition.x(), heatMapPosition.y(),
@@ -63,7 +63,7 @@ public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 				heatMap.setDisplayListDirty();
 			}
 			gl.glPushName(pickingManager.getPickingID(viewID, layout
-					.getHeatMapPickingType(), groupInfo.getGroupIndex()));
+					.getHeatMapPickingType(), group.getGroupIndex()));
 			heatMap.displayRemote(gl);
 			gl.glPopName();
 
