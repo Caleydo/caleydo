@@ -1,31 +1,18 @@
 package org.caleydo.view.compare;
 
-import static org.caleydo.view.heatmap.DendrogramRenderStyle.DENDROGRAM_Z;
-import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.SetComparer;
-import org.caleydo.core.data.collection.set.SetRelations;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ContentSelectionManager;
-import org.caleydo.core.data.selection.ContentVAType;
-import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.compare.DuplicateSetBarItemEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -38,23 +25,19 @@ import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
-import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.compare.listener.CompareGroupsEventListener;
 import org.caleydo.view.compare.listener.DuplicateSetBarItemEventListener;
-import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
-import org.caleydo.view.compare.renderer.CompareConnectionBandRenderer;
-import org.caleydo.view.compare.renderer.ICompareConnectionRenderer;
+import org.caleydo.view.compare.state.CompareViewStateController;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -65,53 +48,21 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLCompare extends AGLView
-		implements
-			IViewCommandHandler,
-			IGLRemoteRenderingView {
+public class GLCompare extends AGLView implements IViewCommandHandler,
+		IGLRemoteRenderingView, ISelectionUpdateHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.compare";
-	public final static float SET_BAR_HEIGHT_PORTION = 0.05f;
-	public final static float HEAT_MAP_WRAPPER_HEIGHT_PORTION = 0.95f;
 
 	private ArrayList<ISet> setsToCompare;
-	private HashMap<Integer, HeatMapWrapper> hashHeatMapWrappers;
 
 	private TextRenderer textRenderer;
-	private HeatMapLayoutLeft heatMapLayoutLeft;
-	private HeatMapLayoutRight heatMapLayoutRight;
-	private HeatMapWrapper leftHeatMapWrapper;
-	private HeatMapWrapper rightHeatMapWrapper;
-	private SetBar setBar;
-	private DragAndDropController dragAndDropController;
-
-	private SelectionType activeHeatMapSelectionType;
-	private RenderCommandFactory renderCommandFactory;
+	private CompareViewStateController compareViewStateController;
 
 	private CompareGroupsEventListener compareGroupsEventListener;
 	private DuplicateSetBarItemEventListener duplicateSetBarItemEventListener;
+	private SelectionUpdateListener selectionUpdateListener;
 
-	private SetRelations relations;
-
-	float yPosInitLeft = 0;
-	float xPosInitLeft = 0;
-	float yPosInitRight = 0;
-	float xPosInitRight = 0;
-
-	private boolean areNewSetsAvailable;
 	private boolean isControlPressed;
-
-	private ArrayList<Pair<Float, Integer>> sortedClustersXOffsetUp;
-	private ArrayList<Pair<Float, Integer>> sortedClustersXOffsetDown;
-
-	private float xOffset = 0;
-
-	// private SetRelations relations;
-
-	// private Tess tesselation = new Tess();
-	private ICompareConnectionRenderer compareConnectionRenderer;
-
-	int dl;
 
 	/**
 	 * Constructor.
@@ -126,19 +77,10 @@ public class GLCompare extends AGLView
 
 		viewType = VIEW_ID;
 		setsToCompare = new ArrayList<ISet>();
-		hashHeatMapWrappers = new HashMap<Integer, HeatMapWrapper>();
 		glKeyListener = new GLCompareKeyListener(this);
 		isControlPressed = false;
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32),
 				true, true);
-		dragAndDropController = new DragAndDropController(this);
-		renderCommandFactory = new RenderCommandFactory(iUniqueID,
-				pickingManager, textureManager, textRenderer);
-		setBar = new SetBar(iUniqueID, pickingManager, textRenderer,
-				dragAndDropController, glMouseListener, this, contextMenu);
-		setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.0f));
-
-		compareConnectionRenderer = new CompareConnectionBandRenderer();
 
 	}
 
@@ -146,38 +88,11 @@ public class GLCompare extends AGLView
 	public void init(GL gl) {
 		// contentVA = useCase.getContentVA(ContentVAType.CONTENT);
 		// storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
+		compareViewStateController = new CompareViewStateController(this,
+				iUniqueID, textRenderer, textureManager, pickingManager,
+				glMouseListener, contextMenu, dataDomain, useCase);
 
-		heatMapLayoutLeft = new HeatMapLayoutLeft(renderCommandFactory);
-		heatMapLayoutRight = new HeatMapLayoutRight(renderCommandFactory);
-		activeHeatMapSelectionType = new SelectionType("ActiveHeatmap",
-				new float[]{0.0f, 1.0f, 1.0f, 0.0f}, true, false, 0.9f);
-
-		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
-				activeHeatMapSelectionType);
-		eventPublisher.triggerEvent(selectionTypeEvent);
-
-		leftHeatMapWrapper = new HeatMapWrapper(0, heatMapLayoutLeft, this,
-				null, useCase, this, dataDomain, activeHeatMapSelectionType);
-		hashHeatMapWrappers.put(0, leftHeatMapWrapper);
-		rightHeatMapWrapper = new HeatMapWrapper(1, heatMapLayoutRight, this,
-				null, useCase, this, dataDomain, activeHeatMapSelectionType);
-
-		hashHeatMapWrappers.put(1, rightHeatMapWrapper);
-
-		leftHeatMapWrapper.registerEventListeners();
-		rightHeatMapWrapper.registerEventListeners();
-
-		leftHeatMapWrapper.setSet(set);
-		rightHeatMapWrapper.setSet(set);
-
-		leftHeatMapWrapper.init(gl, this, glMouseListener, null, useCase, this,
-				dataDomain);
-		rightHeatMapWrapper.init(gl, this, glMouseListener, null, useCase,
-				this, dataDomain);
-
-		areNewSetsAvailable = false;
-
-		compareConnectionRenderer.init(gl);
+		compareViewStateController.init(gl);
 	}
 
 	@Override
@@ -233,43 +148,18 @@ public class GLCompare extends AGLView
 	@Override
 	public void displayLocal(GL gl) {
 
-		if (areNewSetsAvailable) {
-			leftHeatMapWrapper.init(gl, this, glMouseListener, null, useCase,
-					this, dataDomain);
-			rightHeatMapWrapper.init(gl, this, glMouseListener, null, useCase,
-					this, dataDomain);
-			areNewSetsAvailable = false;
-		}
-
 		processEvents();
-		leftHeatMapWrapper.processEvents();
-		rightHeatMapWrapper.processEvents();
+
+		compareViewStateController.executeDrawingPreprocessing(gl,
+				bIsDisplayListDirtyLocal);
+
 		if (!isVisible())
 			return;
 		pickingManager.handlePicking(this, gl);
 
-		setBar.setHeight(gl, SET_BAR_HEIGHT_PORTION * viewFrustum.getHeight());
-		// The setBar is an AGLGUIElement, therefore the above assignment is not
-		// necessarily applied
-		float setBarHeight = setBar.getHeight();
-		float heatMapWrapperPosY = setBar.getPosition().y() + setBarHeight;
-
-		heatMapLayoutLeft.setLayoutParameters(0.0f, heatMapWrapperPosY,
-				viewFrustum.getHeight() - setBarHeight,
-				viewFrustum.getRight() / 3.0f);
-		heatMapLayoutRight.setLayoutParameters(
-				2.0f * viewFrustum.getRight() / 3.0f, heatMapWrapperPosY,
-				viewFrustum.getHeight() - setBarHeight,
-				viewFrustum.getRight() / 3.0f);
-
-		leftHeatMapWrapper.calculateDrawingParameters();
-		rightHeatMapWrapper.calculateDrawingParameters();
-
 		if (bIsDisplayListDirtyLocal) {
 			bIsDisplayListDirtyLocal = false;
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
-			leftHeatMapWrapper.setDisplayListDirty();
-			rightHeatMapWrapper.setDisplayListDirty();
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
@@ -292,40 +182,10 @@ public class GLCompare extends AGLView
 	@Override
 	public void display(GL gl) {
 		// processEvents();
-		if (leftHeatMapWrapper.handleDragging(gl, glMouseListener)
-				|| rightHeatMapWrapper.handleDragging(gl, glMouseListener)) {
-			setDisplayListDirty();
-		}
 
-		if (leftHeatMapWrapper.isNewSelection()) {
-			// rightHeatMapWrapper.selectGroupsFromContentVAList(gl,
-			// glMouseListener, leftHeatMapWrapper
-			// .getContentVAsOfHeatMaps());
-
-			rightHeatMapWrapper.selectGroupsFromContentVAList(relations
-					.getMapping(leftHeatMapWrapper.getSet()),
-					leftHeatMapWrapper.getContentVAsOfHeatMaps());
-			setDisplayListDirty();
-		} else if (rightHeatMapWrapper.isNewSelection()) {
-			leftHeatMapWrapper.selectGroupsFromContentVAList(relations
-					.getMapping(rightHeatMapWrapper.getSet()),
-					rightHeatMapWrapper.getContentVAsOfHeatMaps());
-
-			// leftHeatMapWrapper.selectGroupsFromContentVAList(gl,
-			// glMouseListener, rightHeatMapWrapper
-			// .getContentVAsOfHeatMaps());
-			setDisplayListDirty();
-		}
+		compareViewStateController.drawActiveElements(gl);
 
 		gl.glCallList(iGLDisplayListToCall);
-
-		dragAndDropController.handleDragging(gl, glMouseListener);
-
-		leftHeatMapWrapper.drawRemoteItems(gl, glMouseListener, pickingManager);
-		rightHeatMapWrapper
-				.drawRemoteItems(gl, glMouseListener, pickingManager);
-		// renderTree(gl);
-		// renderOverviewRelations(gl);
 
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
@@ -333,22 +193,8 @@ public class GLCompare extends AGLView
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		leftHeatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
-				glMouseListener, iUniqueID);
-		rightHeatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
-				glMouseListener, iUniqueID);
 
-		setBar.setWidth(viewFrustum.getWidth());
-		setBar.render(gl);
-
-		renderTree(gl);
-
-		renderOverviewToDetailRelations(gl);
-
-		renderDetailRelations(gl);
-
-		if (leftHeatMapWrapper.getContentVAsOfHeatMaps().size() == 0)
-			renderOverviewRelations(gl);
+		compareViewStateController.drawDisplayListElements(gl);
 
 		gl.glEndList();
 	}
@@ -356,570 +202,6 @@ public class GLCompare extends AGLView
 	@Override
 	public String getDetailedInfo() {
 		return new String("");
-	}
-
-	private void renderDetailRelations(GL gl) {
-
-		if (setsToCompare == null || setsToCompare.size() == 0)
-			return;
-
-		float alpha = 0.6f;
-
-		ContentSelectionManager contentSelectionManager = useCase
-				.getContentSelectionManager();
-
-		// Iterate over all detail content VAs on the left
-		for (ContentVirtualArray contentVA : leftHeatMapWrapper
-				.getContentVAsOfHeatMaps()) {
-
-			for (Integer contentID : contentVA) {
-
-				float positionZ = 0.0f;
-				for (SelectionType type : contentSelectionManager
-						.getSelectionTypes(contentID)) {
-
-					float[] typeColor = type.getColor();
-					typeColor[3] = alpha;
-					gl.glColor4fv(typeColor, 0);
-					positionZ = type.getPriority();
-
-					if (type == SelectionType.MOUSE_OVER
-							|| type == SelectionType.SELECTION
-							|| type == activeHeatMapSelectionType) {
-						gl.glLineWidth(3);
-						break;
-					} else {
-						gl.glLineWidth(1);
-					}
-				}
-
-				Vec2f leftPos = leftHeatMapWrapper
-						.getRightDetailLinkPositionFromContentID(contentID);
-
-				if (leftPos == null)
-					continue;
-
-				Vec2f rightPos = null;
-				for (ContentVirtualArray rightVA : rightHeatMapWrapper
-						.getContentVAsOfHeatMaps()) {
-
-					rightPos = rightHeatMapWrapper
-							.getLeftDetailLinkPositionFromContentID(contentID);
-
-					if (rightPos != null)
-						break;
-				}
-
-				if (rightPos == null)
-					continue;
-
-				gl.glPushName(pickingManager.getPickingID(iUniqueID,
-						EPickingType.POLYLINE_SELECTION, contentID));
-				ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-				points.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
-				points.add(new Vec3f(leftPos.x() + (rightPos.x() - leftPos.x())
-						/ 2f, leftPos.y(), 0));
-				points.add(new Vec3f(leftPos.x() + (rightPos.x() - leftPos.x())
-						/ 2f, rightPos.y(), 0));
-				points.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
-
-				NURBSCurve curve = new NURBSCurve(points, 30);
-				points = curve.getCurvePoints();
-
-				gl.glBegin(GL.GL_LINE_STRIP);
-				for (int i = 0; i < points.size(); i++)
-					gl.glVertex3f(points.get(i).x(), points.get(i).y(),
-							positionZ);
-				gl.glEnd();
-
-				gl.glPopName();
-			}
-		}
-
-	}
-
-	private void renderOverviewRelations(GL gl) {
-
-		if (setsToCompare == null || setsToCompare.size() == 0)
-			return;
-
-		// FIXME: Just for testing.
-		// leftHeatMapWrapper.useDetailView(false);
-		// rightHeatMapWrapper.useDetailView(false);
-
-		float alpha = 0.6f;
-
-		ContentSelectionManager contentSelectionManager = useCase
-				.getContentSelectionManager();
-		ContentVirtualArray contentVALeft = setsToCompare.get(0).getContentVA(
-				ContentVAType.CONTENT);
-
-		// gl.glColor3f(0, 0, 0);
-		for (Integer contentID : contentVALeft) {
-
-			float positionZ = 0.0f;
-
-			for (SelectionType type : contentSelectionManager
-					.getSelectionTypes(contentID)) {
-
-				float[] typeColor = type.getColor();
-				typeColor[3] = alpha;
-				gl.glColor4fv(typeColor, 0);
-				positionZ = type.getPriority();
-
-				if (type == SelectionType.MOUSE_OVER
-						|| type == SelectionType.SELECTION
-						|| type == activeHeatMapSelectionType) {
-					gl.glLineWidth(5);
-					break;
-				} else {
-					gl.glLineWidth(1);
-					break;
-				}
-			}
-
-			Vec2f leftPos = leftHeatMapWrapper
-					.getRightOverviewLinkPositionFromContentID(contentID);
-
-			if (leftPos == null)
-				continue;
-
-			Vec2f rightPos = rightHeatMapWrapper
-					.getLeftOverviewLinkPositionFromContentID(contentID);
-
-			if (rightPos == null)
-				continue;
-
-			ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-			points.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
-
-			Tree<ClusterNode> tree;
-			int nodeID;
-			ClusterNode node;
-			ArrayList<ClusterNode> pathToRoot;
-
-			// Add spline points for left hierarchy
-			tree = setsToCompare.get(0).getContentTree();
-			nodeID = tree.getNodeIDsFromLeafID(contentID).get(0);
-			node = tree.getNodeByNumber(nodeID);
-			pathToRoot = node.getParentPath(tree.getRoot());
-
-			// Remove last because it is root bundling
-			pathToRoot.remove(pathToRoot.size() - 1);
-
-			for (ClusterNode pathNode : pathToRoot) {
-				Vec3f nodePos = pathNode.getPos();
-				points.add(nodePos);
-			}
-
-			// Add spline points for right hierarchy
-			tree = setsToCompare.get(1).getContentTree();
-			nodeID = tree.getNodeIDsFromLeafID(contentID).get(0);
-			node = tree.getNodeByNumber(nodeID);
-			pathToRoot = node.getParentPath(tree.getRoot());
-
-			// Remove last because it is root bundling
-			pathToRoot.remove(pathToRoot.size() - 1);
-
-			for (ClusterNode pathNode : pathToRoot) {
-				Vec3f nodePos = pathNode.getPos();
-				points.add(nodePos);
-				break; // FIXME: REMOVE BREAK
-			}
-
-			// Center point
-			// points.add(new Vec3f(viewFrustum.getWidth() / 2f, viewFrustum
-			// .getHeight() / 2f, 0));
-			// points.add(new Vec3f(2, 4, 0));
-			// points.add(new Vec3f(1,5,0));
-
-			points.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
-
-			NURBSCurve curve = new NURBSCurve(points, 30);
-			points = curve.getCurvePoints();
-
-			// VisLink.renderLine(gl, controlPoints, offset, numberOfSegments,
-			// shadow)
-
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.POLYLINE_SELECTION, contentID));
-
-			gl.glBegin(GL.GL_LINE_STRIP);
-			for (int i = 0; i < points.size(); i++)
-				gl.glVertex3f(points.get(i).x(), points.get(i).y(), positionZ);
-			gl.glEnd();
-
-			gl.glPopName();
-		}
-	}
-
-	private void renderOverviewToDetailRelations(GL gl) {
-
-		sortedClustersXOffsetUp = new ArrayList<Pair<Float, Integer>>();
-		sortedClustersXOffsetDown = new ArrayList<Pair<Float, Integer>>();
-
-		calculateClusterXOffset(leftHeatMapWrapper);
-
-		for (ContentVirtualArray va : leftHeatMapWrapper
-				.getContentVAsOfHeatMaps()) {
-
-			xOffset = 0;
-			renderSplineCluster(gl, va, leftHeatMapWrapper);
-			renderSplineRelation(gl, va, leftHeatMapWrapper);
-		}
-
-		calculateClusterXOffset(rightHeatMapWrapper);
-
-		for (ContentVirtualArray va : rightHeatMapWrapper
-				.getContentVAsOfHeatMaps()) {
-
-			xOffset = 0;
-			renderSplineCluster(gl, va, rightHeatMapWrapper);
-			renderSplineRelation(gl, va, rightHeatMapWrapper);
-		}
-	}
-
-	private void calculateClusterXOffset(HeatMapWrapper heatMapWrapper) {
-
-		sortedClustersXOffsetUp.clear();
-		sortedClustersXOffsetDown.clear();
-
-		for (ContentVirtualArray va : heatMapWrapper.getContentVAsOfHeatMaps()) {
-
-			int contentID = va.get(0);
-
-			// for (int contentID : va) {
-
-			Vec2f leftPos;
-
-			if (heatMapWrapper == leftHeatMapWrapper)
-				leftPos = heatMapWrapper
-						.getRightOverviewLinkPositionFromContentID(contentID);
-			else
-				leftPos = heatMapWrapper
-						.getLeftOverviewLinkPositionFromContentID(contentID);
-
-			if (leftPos == null)
-				return;
-
-			Vec2f rightPos;
-
-			if (heatMapWrapper == leftHeatMapWrapper)
-				rightPos = heatMapWrapper
-						.getLeftDetailLinkPositionFromContentID(contentID);
-			else
-				rightPos = heatMapWrapper
-						.getRightDetailLinkPositionFromContentID(contentID);
-
-			if (rightPos == null)
-				return;
-
-			Pair<Float, Integer> xDiffToContentID = new Pair<Float, Integer>();
-			float yDiff = rightPos.y() - leftPos.y();
-			xDiffToContentID.set(yDiff, contentID);
-
-			if (yDiff > 0)
-				sortedClustersXOffsetUp.add(xDiffToContentID);
-			else
-				sortedClustersXOffsetDown.add(xDiffToContentID);
-
-		}
-
-		// }
-
-		Collections.sort(sortedClustersXOffsetUp);
-		Collections.sort(sortedClustersXOffsetDown);
-		Collections.reverse(sortedClustersXOffsetDown);
-	}
-
-	private void renderSplineCluster(GL gl, ContentVirtualArray va,
-			HeatMapWrapper heatMapWrapper) {
-
-		gl.glColor3f(0.8f, 0.8f, 0.8f);
-
-		Integer firstDetailContentID = va.get(0);
-		Integer lastDetailContentID = va.get(va.size() - 1);
-		
-		Vec2f leftPos;
-
-		Group group = heatMapWrapper.getGroupFromContentIndex(heatMapWrapper.getContentVA().indexOf(firstDetailContentID));
-		int overviewFirstContentIndex = group.getStartIndex();
-		int overviewLastContentIndex = group.getEndIndex();
-		
-		if (heatMapWrapper == leftHeatMapWrapper)	
-			
-			leftPos = heatMapWrapper
-					.getRightOverviewLinkPositionFromContentIndex(overviewFirstContentIndex);
-		else
-			leftPos = heatMapWrapper
-					.getLeftOverviewLinkPositionFromIndex(overviewFirstContentIndex);
-
-		if (leftPos == null)
-			return;
-
-		Vec2f rightPos;
-
-		if (heatMapWrapper == leftHeatMapWrapper)
-			rightPos = heatMapWrapper
-					.getLeftDetailLinkPositionFromContentID(firstDetailContentID);
-		else
-			rightPos = heatMapWrapper
-					.getRightDetailLinkPositionFromContentID(firstDetailContentID);
-
-		if (rightPos == null)
-			return;
-
-		if (xOffset == 0) {
-			for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetUp) {
-				if (firstDetailContentID.equals(cluseterToXOffset.getSecond())) {
-					xOffset = (rightPos.x() - leftPos.x())
-							* -((float) sortedClustersXOffsetUp
-									.indexOf(cluseterToXOffset) + 1)
-							/ (sortedClustersXOffsetUp.size() + 1);
-					break;
-				}
-			}
-
-			for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetDown) {
-				if (firstDetailContentID.equals(cluseterToXOffset.getSecond())) {
-					xOffset = (rightPos.x() - leftPos.x())
-							* -((float) sortedClustersXOffsetDown
-									.indexOf(cluseterToXOffset) + 1)
-							/ (sortedClustersXOffsetDown.size() + 1);
-					break;
-				}
-			}
-		}
-
-		if (xOffset == 0)
-			return;
-
-		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
-		inputPoints.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
-		inputPoints.add(new Vec3f(rightPos.x() + xOffset, leftPos.y(), 0));
-		inputPoints.add(new Vec3f(rightPos.x() + xOffset / 1.5f, rightPos.y(),
-				0));
-		inputPoints.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
-
-		// ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
-		// inputPoints.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
-		// inputPoints.add(new Vec3f(leftPos.x() + (rightPos.x() - leftPos.x())
-		// / 2f, leftPos.y(), 0));
-		// inputPoints.add(new Vec3f(leftPos.x() + (rightPos.x() - leftPos.x())
-		// / 2f, rightPos.y(), 0));
-		// inputPoints.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
-
-		NURBSCurve curve = new NURBSCurve(inputPoints, 30);
-		ArrayList<Vec3f> outputPoints = curve.getCurvePoints();
-
-		if (heatMapWrapper == leftHeatMapWrapper)
-			leftPos = heatMapWrapper
-					.getRightOverviewLinkPositionFromContentIndex(overviewLastContentIndex);
-		else
-			leftPos = heatMapWrapper
-					.getLeftOverviewLinkPositionFromIndex(overviewLastContentIndex);
-
-		if (leftPos == null)
-			return;
-
-		if (heatMapWrapper == leftHeatMapWrapper)
-			rightPos = heatMapWrapper
-					.getLeftDetailLinkPositionFromContentID(lastDetailContentID);
-		else
-			rightPos = heatMapWrapper
-					.getRightDetailLinkPositionFromContentID(lastDetailContentID);
-
-		if (rightPos == null)
-			return;
-
-		if (xOffset == 0) {
-			for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetUp) {
-				if (lastDetailContentID.equals(cluseterToXOffset.getSecond())) {
-					xOffset = (rightPos.x() - leftPos.x())
-							* -((float) sortedClustersXOffsetUp
-									.indexOf(cluseterToXOffset) + 1)
-							/ (sortedClustersXOffsetUp.size() + 1);
-					break;
-				}
-			}
-
-			for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetDown) {
-				if (lastDetailContentID.equals(cluseterToXOffset.getSecond())) {
-					xOffset = (rightPos.x() - leftPos.x())
-							* -((float) sortedClustersXOffsetDown
-									.indexOf(cluseterToXOffset) + 1)
-							/ (sortedClustersXOffsetDown.size() + 1);
-					break;
-				}
-			}
-		}
-
-		if (xOffset == 0)
-			return;
-
-		inputPoints = new ArrayList<Vec3f>();
-		inputPoints.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
-		inputPoints.add(new Vec3f(rightPos.x() + xOffset, leftPos.y(), 0));
-		inputPoints.add(new Vec3f(rightPos.x() + xOffset / 1.5f, rightPos.y(),
-				0));
-		inputPoints.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
-
-		// inputPoints = new ArrayList<Vec3f>();
-		// inputPoints.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
-		// inputPoints.add(new Vec3f(leftPos.x() + (rightPos.x() - leftPos.x())
-		// / 2f, leftPos.y(), 0));
-		// inputPoints.add(new Vec3f(leftPos.x() + (rightPos.x() - leftPos.x())
-		// / 2f, rightPos.y(), 0));
-		// inputPoints.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
-
-		curve = new NURBSCurve(inputPoints, 30);
-		ArrayList<Vec3f> points = curve.getCurvePoints();
-
-		// Reverse point order
-		for (int i = points.size() - 1; i >= 0; i--) {
-			outputPoints.add(points.get(i));
-		}
-
-		gl.glColor3f(1, 0, 0);
-		compareConnectionRenderer.render(gl, outputPoints);
-
-		// gl.glBegin(GL.GL_POLYGON);
-		// for (int i = 0; i < outputPoints.size(); i++)
-		// gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), 0);
-		// gl.glEnd();
-	}
-	private void renderSplineRelation(GL gl, ContentVirtualArray va,
-			HeatMapWrapper heatMapWrapper) {
-
-		float alpha = 0.3f;
-
-		ContentSelectionManager contentSelectionManager = useCase
-				.getContentSelectionManager();
-
-		for (Integer contentID : va) {
-
-			float positionZ = 0.0f;
-
-			for (SelectionType type : contentSelectionManager
-					.getSelectionTypes(contentID)) {
-
-				float[] typeColor = type.getColor();
-				typeColor[3] = alpha;
-				gl.glColor4fv(typeColor, 0);
-				positionZ = type.getPriority();
-
-				if (type == SelectionType.MOUSE_OVER
-						|| type == SelectionType.SELECTION
-						|| type == activeHeatMapSelectionType) {
-					gl.glLineWidth(3);
-					break;
-				} else {
-					gl.glLineWidth(1);
-					break;
-				}
-			}
-
-			Vec2f leftPos;
-
-			if (heatMapWrapper == leftHeatMapWrapper)
-				leftPos = heatMapWrapper
-						.getRightOverviewLinkPositionFromContentID(contentID);
-			else
-				leftPos = heatMapWrapper
-						.getLeftOverviewLinkPositionFromContentID(contentID);
-
-			if (leftPos == null)
-				return;
-
-			Vec2f rightPos;
-
-			if (heatMapWrapper == leftHeatMapWrapper)
-				rightPos = heatMapWrapper
-						.getLeftDetailLinkPositionFromContentID(contentID);
-			else
-				rightPos = heatMapWrapper
-						.getRightDetailLinkPositionFromContentID(contentID);
-
-			if (rightPos == null)
-				return;
-
-			if (xOffset == 0) {
-				for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetUp) {
-					if (contentID.equals(cluseterToXOffset.getSecond())) {
-						xOffset = (rightPos.x() - leftPos.x())
-								* -((float) sortedClustersXOffsetUp
-										.indexOf(cluseterToXOffset) + 1)
-								/ (sortedClustersXOffsetUp.size() + 1);
-						break;
-					}
-				}
-
-				for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetDown) {
-					if (contentID.equals(cluseterToXOffset.getSecond())) {
-						xOffset = (rightPos.x() - leftPos.x())
-								* -((float) sortedClustersXOffsetDown
-										.indexOf(cluseterToXOffset) + 1)
-								/ (sortedClustersXOffsetDown.size() + 1);
-						break;
-					}
-				}
-			}
-
-			if (xOffset == 0)
-				continue;
-
-			ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-			points.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
-			points.add(new Vec3f(rightPos.x() + xOffset, leftPos.y(), 0));
-			points
-					.add(new Vec3f(rightPos.x() + xOffset / 1.5f, rightPos.y(),
-							0));
-			points.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
-
-			NURBSCurve curve = new NURBSCurve(points, 30);
-			points = curve.getCurvePoints();
-
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.POLYLINE_SELECTION, contentID));
-
-			gl.glBegin(GL.GL_LINE_STRIP);
-			for (int i = 0; i < points.size(); i++)
-				gl.glVertex3f(points.get(i).x(), points.get(i).y(), positionZ);
-			gl.glEnd();
-
-			gl.glPopName();
-		}
-	}
-
-	private void renderTree(GL gl) {
-
-		if (setsToCompare == null || setsToCompare.size() == 0)
-			return;
-
-		// Left hierarchy
-		xPosInitLeft = heatMapLayoutLeft.getOverviewHeatmapWidth()
-				+ heatMapLayoutLeft.getOverviewGroupWidth()
-				+ heatMapLayoutLeft.getOverviewSliderWidth();
-		yPosInitLeft = heatMapLayoutLeft.getOverviewPosition().y()
-				+ heatMapLayoutLeft.getOverviewHeight();
-		Tree<ClusterNode> tree = setsToCompare.get(0).getContentTree();
-		ClusterNode rootNode = tree.getRoot();
-
-		determineTreePositions(rootNode, tree);
-		// renderDendrogram(gl, rootNode, 1, tree, xPosInitLeft);
-
-		// Right hierarchy
-		xPosInitRight = viewFrustum.getWidth()
-				- heatMapLayoutRight.getOverviewHeatmapWidth()
-				- heatMapLayoutRight.getOverviewGroupWidth()
-				- heatMapLayoutRight.getOverviewSliderWidth();
-		yPosInitRight = heatMapLayoutRight.getOverviewPosition().y()
-				+ heatMapLayoutRight.getOverviewHeight();
-		tree = setsToCompare.get(1).getContentTree();
-		rootNode = tree.getRoot();
-
-		determineTreePositions(rootNode, tree);
-		// renderDendrogram(gl, rootNode, 1, tree, xPosInitRight);
 	}
 
 	private void renderDendrogram(final GL gl, ClusterNode currentNode,
@@ -1028,81 +310,7 @@ public class GLCompare extends AGLView
 
 	}
 
-	/**
-	 * Function calculates for each node (gene or entity) in the dendrogram
-	 * recursive the corresponding position inside the view frustum
-	 * 
-	 * @param currentNode
-	 *            current node for calculation
-	 * @return Vec3f position of the current node
-	 */
-	private Vec3f determineTreePositions(ClusterNode currentNode,
-			Tree<ClusterNode> tree) {
-
-		Vec3f pos = new Vec3f();
-
-		float levelWidth = (viewFrustum.getWidth() / 2f
-				- heatMapLayoutLeft.getOverviewSliderWidth()
-				- heatMapLayoutLeft.getOverviewSliderWidth() - heatMapLayoutLeft
-				.getOverviewHeatmapWidth())
-				/ tree.getRoot().getDepth();
-
-		float sampleHeight = heatMapLayoutLeft.getOverviewHeight()
-				/ tree.getRoot().getNrLeaves();
-
-		if (tree.hasChildren(currentNode)) {
-
-			ArrayList<ClusterNode> alChilds = tree.getChildren(currentNode);
-
-			int iNrChildsNode = alChilds.size();
-
-			Vec3f[] positions = new Vec3f[iNrChildsNode];
-
-			for (int i = 0; i < iNrChildsNode; i++) {
-
-				ClusterNode node = alChilds.get(i);
-				positions[i] = determineTreePositions(node, tree);
-			}
-
-			float fXmin = Float.MAX_VALUE;
-			float fYmax = Float.MIN_VALUE;
-			float fYmin = Float.MAX_VALUE;
-
-			for (Vec3f vec : positions) {
-				fXmin = Math.min(fXmin, vec.x());
-				fYmax = Math.max(fYmax, vec.y());
-				fYmin = Math.min(fYmin, vec.y());
-			}
-
-			if (tree == setsToCompare.get(0).getContentTree()) {
-				pos.setX(fXmin + levelWidth);
-			} else {
-				pos.setX(fXmin - levelWidth);
-			}
-
-			pos.setY(fYmin + (fYmax - fYmin) / 2);
-			pos.setZ(DENDROGRAM_Z);
-
-		} else {
-
-			if (tree == setsToCompare.get(0).getContentTree()) {
-				pos.setX(xPosInitLeft + levelWidth);
-				pos.setY(yPosInitLeft);
-				yPosInitLeft -= sampleHeight;
-			} else {
-				pos.setX(xPosInitRight - levelWidth);
-				pos.setY(yPosInitRight);
-				yPosInitRight -= sampleHeight;
-			}
-
-			pos.setZ(DENDROGRAM_Z);
-		}
-
-		currentNode.setPos(pos);
-
-		return pos;
-	}
-
+	
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
@@ -1110,114 +318,8 @@ public class GLCompare extends AGLView
 			return;
 		}
 
-		SelectionType selectionType = null;
-
-		switch (ePickingType) {
-			case COMPARE_LEFT_EMBEDDED_VIEW_SELECTION :
-				rightHeatMapWrapper.setHeatMapsInactive();
-				leftHeatMapWrapper.setHeatMapActive(iExternalID);
-				break;
-
-			case COMPARE_RIGHT_EMBEDDED_VIEW_SELECTION :
-				leftHeatMapWrapper.setHeatMapsInactive();
-				rightHeatMapWrapper.setHeatMapActive(iExternalID);
-				break;
-
-			case POLYLINE_SELECTION :
-
-				switch (pickingMode) {
-					case CLICKED :
-						selectionType = SelectionType.SELECTION;
-						break;
-					case MOUSE_OVER :
-						selectionType = SelectionType.MOUSE_OVER;
-						break;
-					case RIGHT_CLICKED :
-						selectionType = SelectionType.SELECTION;
-
-						ContentContextMenuItemContainer contentContextMenuItemContainer = new ContentContextMenuItemContainer();
-						contentContextMenuItemContainer.setID(
-								EIDType.EXPRESSION_INDEX, iExternalID);
-						contextMenu
-								.addItemContanier(contentContextMenuItemContainer);
-						break;
-
-					default :
-						return;
-
-				}
-
-				// FIXME: Check if is ok to share the content selection manager
-				// of the use case
-				ContentSelectionManager contentSelectionManager = useCase
-						.getContentSelectionManager();
-				if (contentSelectionManager.checkStatus(selectionType,
-						iExternalID)) {
-					break;
-				}
-
-				contentSelectionManager.clearSelection(selectionType);
-				contentSelectionManager.addToType(selectionType, iExternalID);
-
-				ISelectionDelta selectionDelta = contentSelectionManager
-						.getDelta();
-				SelectionUpdateEvent event = new SelectionUpdateEvent();
-				event.setSender(this);
-				event.setSelectionDelta((SelectionDelta) selectionDelta);
-				event.setInfo(getShortInfoLocal());
-				eventPublisher.triggerEvent(event);
-
-				setDisplayListDirty();
-				break;
-
-			case COMPARE_OVERVIEW_SLIDER_ARROW_DOWN_SELECTION :
-			case COMPARE_OVERVIEW_SLIDER_ARROW_UP_SELECTION :
-			case COMPARE_OVERVIEW_SLIDER_BODY_SELECTION :
-				HeatMapWrapper heatMapWrapper = hashHeatMapWrappers
-						.get(iExternalID);
-				if (heatMapWrapper != null) {
-					heatMapWrapper.handleOverviewSliderSelection(ePickingType,
-							pickingMode);
-				}
-				break;
-
-			case COMPARE_LEFT_GROUP_SELECTION :
-				switch (pickingMode) {
-					case CLICKED :
-						selectionType = SelectionType.SELECTION;
-						break;
-					case MOUSE_OVER :
-						selectionType = SelectionType.MOUSE_OVER;
-						break;
-				}
-
-				leftHeatMapWrapper.handleGroupSelection(selectionType,
-						iExternalID, isControlPressed);
-				rightHeatMapWrapper.setHeatMapsInactive();
-				break;
-
-			case COMPARE_RIGHT_GROUP_SELECTION :
-				switch (pickingMode) {
-					case CLICKED :
-						selectionType = SelectionType.SELECTION;
-						break;
-					case MOUSE_OVER :
-						selectionType = SelectionType.MOUSE_OVER;
-						break;
-				}
-
-				rightHeatMapWrapper.handleGroupSelection(selectionType,
-						iExternalID, isControlPressed);
-				leftHeatMapWrapper.setHeatMapsInactive();
-				break;
-
-			case COMPARE_SET_BAR_ITEM_SELECTION :
-				setBar
-						.handleSetBarItemSelection(iExternalID, pickingMode,
-								pick);
-				break;
-		}
-
+		compareViewStateController.handlePickingEvents(ePickingType,
+				pickingMode, iExternalID, pick, isControlPressed);
 	}
 
 	@Override
@@ -1280,10 +382,15 @@ public class GLCompare extends AGLView
 		eventPublisher.addListener(DuplicateSetBarItemEvent.class,
 				duplicateSetBarItemEventListener);
 
-		if (leftHeatMapWrapper != null)
-			leftHeatMapWrapper.registerEventListeners();
-		if (rightHeatMapWrapper != null)
-			rightHeatMapWrapper.registerEventListeners();
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class,
+				selectionUpdateListener);
+
+		// if (leftHeatMapWrapper != null)
+		// leftHeatMapWrapper.registerEventListeners();
+		// if (rightHeatMapWrapper != null)
+		// rightHeatMapWrapper.registerEventListeners();
 	}
 
 	@Override
@@ -1297,10 +404,11 @@ public class GLCompare extends AGLView
 			eventPublisher.removeListener(duplicateSetBarItemEventListener);
 			duplicateSetBarItemEventListener = null;
 		}
-		if (leftHeatMapWrapper != null)
-			leftHeatMapWrapper.unregisterEventListeners();
-		if (rightHeatMapWrapper != null)
-			rightHeatMapWrapper.unregisterEventListeners();
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
+		}
+
 	}
 
 	@Override
@@ -1328,22 +436,7 @@ public class GLCompare extends AGLView
 			set.cluster(clusterState);
 		}
 
-		if (sets.size() >= 2) {
-			ISet setLeft = setsToCompare.get(0);
-			ISet setRight = setsToCompare.get(1);
-			relations = SetComparer.compareSets(setLeft, setRight);
-
-			//
-			leftHeatMapWrapper.setSet(setLeft);
-			leftHeatMapWrapper.setRelations(relations);
-			rightHeatMapWrapper.setSet(setRight);
-			rightHeatMapWrapper.setRelations(relations);
-			areNewSetsAvailable = true;
-			setBar.setSets(setsToCompare);
-
-			setDisplayListDirty();
-		}
-
+		compareViewStateController.setSetsToCompare(sets);
 	}
 
 	public boolean isControlPressed() {
@@ -1355,6 +448,15 @@ public class GLCompare extends AGLView
 	}
 
 	public void handleDuplicateSetBarItem(int itemID) {
-		setBar.handleDuplicateSetBarItem(itemID);
+		compareViewStateController.duplicateSetBarItem(itemID);
+		// setBar.handleDuplicateSetBarItem(itemID);
+	}
+
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
+			boolean scrollToSelection, String info) {
+		compareViewStateController.handleSelectionUpdate(selectionDelta,
+				scrollToSelection, info);
+
 	}
 }

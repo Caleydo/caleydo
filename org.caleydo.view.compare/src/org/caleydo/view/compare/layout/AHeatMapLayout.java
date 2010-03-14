@@ -1,4 +1,4 @@
-package org.caleydo.view.compare;
+package org.caleydo.view.compare.layout;
 
 import gleem.linalg.Vec3f;
 

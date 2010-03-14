@@ -8,9 +8,9 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.view.compare.AHeatMapLayout;
 import org.caleydo.view.compare.GroupInfo;
 import org.caleydo.view.compare.HeatMapWrapper;
+import org.caleydo.view.compare.layout.AHeatMapLayout;
 import org.caleydo.view.heatmap.GLHeatMap;
 
 public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {

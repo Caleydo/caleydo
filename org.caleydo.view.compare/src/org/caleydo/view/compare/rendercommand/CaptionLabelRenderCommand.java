@@ -6,8 +6,8 @@ import java.awt.geom.Rectangle2D;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.view.compare.AHeatMapLayout;
 import org.caleydo.view.compare.HeatMapWrapper;
+import org.caleydo.view.compare.layout.AHeatMapLayout;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 

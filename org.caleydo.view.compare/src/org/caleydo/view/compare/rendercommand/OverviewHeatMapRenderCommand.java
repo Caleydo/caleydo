@@ -10,8 +10,8 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.view.compare.AHeatMapLayout;
 import org.caleydo.view.compare.HeatMapWrapper;
+import org.caleydo.view.compare.layout.AHeatMapLayout;
 import org.caleydo.view.heatmap.HeatMapUtil;
 
 import com.sun.opengl.util.texture.Texture;
