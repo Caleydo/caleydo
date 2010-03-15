@@ -1,5 +1,6 @@
 package org.caleydo.view.datawindows;
 
+
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
@@ -59,7 +60,7 @@ public class GLHyperbolic extends AGLView {
 
 	private ArrayList<NodeSlerp> arSlerpActions;
 
-	private DataWindowsDisk disk;
+	public DataWindowsDisk disk;
 
 	// properties of the circle
 	// private double circleRadius = 0.5;
@@ -68,7 +69,7 @@ public class GLHyperbolic extends AGLView {
 
 	private boolean manualPickFlag = true;
 
-	private double diskZoomIntensity = 0;
+	
 
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(
 			0, 0);
@@ -76,7 +77,10 @@ public class GLHyperbolic extends AGLView {
 	private Random randomGenerator = new Random(19580427);
 
 	private Tree<PoincareNode> tree;
-
+	public double diskZoomIntensity = 0;
+	
+	private DataWindowsMouseWheelListener mouseWheelListener ;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -105,6 +109,21 @@ public class GLHyperbolic extends AGLView {
 
 		disk = new DataWindowsDisk(this);
 
+		
+		
+//mouseWheelListener = new DataWindowsMouseWheelListener(this);
+		
+//parentGLCanvas.removeMouseWheelListener(glMouseListener);
+		//parentGLCanvas.removeMouseListener(glMouseListener);
+		// Register specialized bucket mouse wheel listener
+//parentGLCanvas.addMouseWheelListener(mouseWheelListener);
+	
+		
+		
+		//glMouseListener.addGLCanvas(this);
+		
+		
+		
 		// nullpointer:
 		// Tree<ClusterNode> tree = set.getStorageTree();
 
@@ -247,13 +266,12 @@ public class GLHyperbolic extends AGLView {
 
 		//		
 
-		if (glMouseListener.wasRightMouseButtonPressed()) {
-			diskZoomIntensity = -1;
-
-		}
+		
 
 		if (glMouseListener.wasLeftMouseButtonPressed()) {
-			diskZoomIntensity = 0;
+			
+		
+			
 
 			if (glMouseListener.getPickedPoint() != null) {
 
@@ -521,17 +539,19 @@ public class GLHyperbolic extends AGLView {
 		}
 
 		NodeSlerp singleSlerp = arSlerpActions.get(0);
-		if (singleSlerp.doASlerp(slerpedNode.getPosition()) == true) {
+		if (singleSlerp.doASlerp(slerpedNode.getZoomedPosition()) == true) {
 
 			disk.translateTreeMoebius(singleSlerp.returnPoint);
-		} else {
-
-			disk.translateTreeMoebius(singleSlerp.returnPoint);
-			arSlerpActions.remove(0);
-
 		}
+		else {
 
+			disk.translateTreeMoebius(singleSlerp.returnPoint);
+			disk.setCenteredNode(slerpedNode);
+			disk.centeredNodeSize=disk.findOptimalCenterNodeSize(disk.getCenteredNode(), 10);
+			arSlerpActions.remove(0);
+		}		
 	}
+		
 
 	public void drawRemoteView(GL gl, PoincareNode node, Point2D.Double position, double size) {
 
@@ -699,4 +719,6 @@ public class GLHyperbolic extends AGLView {
 
 		return (GLPathway)createView(gl, serPathway);
 	}
+	
+
 }

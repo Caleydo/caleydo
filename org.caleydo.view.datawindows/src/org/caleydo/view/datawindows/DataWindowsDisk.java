@@ -141,6 +141,10 @@ public class DataWindowsDisk extends PoincareDisk {
 		if (node.highLighted == true) {
 			size = size * 1.5;
 		}
+		
+		if (node==this.getCenteredNode()){
+			size=centeredNodeSize;
+		}
 
 		// if (mode==1){
 		Vec3f lowerLeftCorner = new Vec3f(
@@ -310,5 +314,7 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		return returnNode;
 	}
+	
+	
 
 }

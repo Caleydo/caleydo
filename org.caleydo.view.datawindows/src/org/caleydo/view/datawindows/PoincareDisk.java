@@ -15,6 +15,7 @@ public class PoincareDisk {
 	protected double lineWidth;
 	protected Point2D.Double absolutePosition;
 	private PoincareNode centeredNode;
+	public double centeredNodeSize=1;
 	private double layoutLenseFactor = 1.45;
 
 	public PoincareDisk() {
@@ -178,20 +179,20 @@ public class PoincareDisk {
 
 		PoincareNode root = tree.getRoot();
 
-		//double distance = this.distanceFromOrigin(translationVector);
-		//distance = (double) Math.round(distance + 0.5);
+		// double distance = this.distanceFromOrigin(translationVector);
+		// distance = (double) Math.round(distance + 0.5);
 
-		//Point2D.Double directionVector = new Point2D.Double(translationVector
-				//.getX()
-			//	/ distance, translationVector.getY() / distance);
+		// Point2D.Double directionVector = new Point2D.Double(translationVector
+		// .getX()
+		// / distance, translationVector.getY() / distance);
 		// make more steps, because the moebius transformation can only be
 		// applied for
 		// distance < 1
-		//for (int i = 0; i < (int) distance; i++) {
-			// start the recursive algorithm
-		
-			translateNodeMoebius(root, translationVector);
-		//}
+		// for (int i = 0; i < (int) distance; i++) {
+		// start the recursive algorithm
+
+		translateNodeMoebius(root, translationVector);
+		// }
 		// projectTree();
 	}
 
@@ -202,14 +203,14 @@ public class PoincareDisk {
 				.getPosition().getX(), node.getPosition().getY()),
 				new ComplexNumber(translationVector.getX(), translationVector
 						.getY()));
-		
+
 		Point2D.Double newPoint = new Point2D.Double(tempVector.getRealPart(),
 				tempVector.getImaginaryPart());
 		node.setPosition(newPoint);
-		
-	//	System.out.println("translation:");
-		//System.out.println(newPoint.getX()+"|"+newPoint.getY());
-		
+
+		// System.out.println("translation:");
+		// System.out.println(newPoint.getX()+"|"+newPoint.getY());
+
 		node.setDistanceFromOrigin(this.distanceFromOrigin(newPoint));
 
 		if (tree.getChildren(node) == null) {
@@ -288,10 +289,11 @@ public class PoincareDisk {
 	public Point2D.Double zoomPoint(Point2D.Double point, double intensity) {
 
 		Point2D.Double coordinate = new Point2D.Double();
-		
-	intensity = (1+intensity)-intensity*distanceFromOrigin(point);
-		
-		coordinate.setLocation(point.getX()*intensity,point.getY()*intensity);
+
+		intensity = (1 + intensity) - intensity * distanceFromOrigin(point);
+
+		coordinate.setLocation(point.getX() * intensity, point.getY()
+				* intensity);
 		return coordinate;
 	}
 
@@ -529,6 +531,7 @@ public class PoincareDisk {
 			//			
 
 			// complex numbers for the moebius transformation
+
 			ComplexNumber relativeTargetPoint = new ComplexNumber(relativePoint
 					.getX()
 					/ layoutLenseFactor, relativePoint.getY()
@@ -678,4 +681,48 @@ public class PoincareDisk {
 		return bestNode;
 	}
 
+	// the return value is normed on the unit disk
+	// the unit of the intend is procent of the resulting size
+	public double findOptimalCenterNodeSize(PoincareNode node, double intend) {
+		double currentDistance = 1;
+
+		// if (node.getTree().getRoot() != node) {
+		// currentDistance = this.distanceFromOrigin(node.getParent()
+		// .getPosition());
+		// }
+		//
+		// if (tree.getChildren(node) != null) {
+		// ArrayList<PoincareNode> children = tree.getChildren(node);
+		// int numberOfChildren = children.size();
+		// for (int i = 0; i < numberOfChildren; i++) {
+		// if (this.distanceFromOrigin(children.get(i).getPosition()) <
+		// currentDistance) {
+		// currentDistance = distanceFromOrigin(children.get(i)
+		// .getPosition());
+		// }
+		//
+		// }
+		// }
+
+		for (int i = 1;; i++) {
+
+			if (this.getNodeByCompareableValue(i) == null) {
+				break;
+			}
+			
+			if (this.distanceFromOrigin(this.getNodeByCompareableValue(i)
+					.getZoomedPosition()) < currentDistance) {
+				if (node!=this.getNodeByCompareableValue(i)){
+				currentDistance = distanceFromOrigin(this
+						.getNodeByCompareableValue(i).getZoomedPosition());
+				}
+			}
+
+		}
+
+		 //System.out.println("dist: "+ (currentDistance / 100) * (100 - intend));
+
+		return (currentDistance / 100) * (100 - intend) * 1.5;
+
+	}
 }

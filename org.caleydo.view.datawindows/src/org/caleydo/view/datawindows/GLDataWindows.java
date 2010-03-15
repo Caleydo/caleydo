@@ -1,8 +1,15 @@
 package org.caleydo.view.datawindows;
 
+
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
+
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.geom.Point2D;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,13 +65,15 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 	private ArrayList<NodeSlerp> arSlerpActions;
 
-	private DataWindowsDisk disk;
+	
+
+	private MouseWheelEvent mouse;
 
 	private PoincareNode slerpedNode;
 
 	private boolean manualPickFlag = true;
 
-	private double diskZoomIntensity = 0;
+	
 
 	private RemoteLevelElement remoteElementHyperbolic;
 	private RemoteLevelElement remoteElementHeatMap;
@@ -73,6 +82,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(
 			0, 0);
 
+	private ArrayList<AGLView> containedGLViews;
+	private ArrayList<ASerializedView> newViews;
 	/**
 	 * Constructor.
 	 * 
@@ -85,6 +96,14 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		super(glCanvas, sLabel, viewFrustum, true);
 		viewType = GLDataWindows.VIEW_ID;
+
+
+		containedGLViews = new ArrayList<AGLView>();
+		newViews = new ArrayList<ASerializedView>();
+		
+		
+		
+		//parentGLCanvas.addMouseListener(mouseWheelListener);
 
 		// preparing the eyetracker
 		// this.tracker = new TrackDataProvider();
@@ -137,7 +156,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
-		pickingManager.handlePicking(this, gl);
+		//pickingManager.handlePicking(this, gl);
 
 		checkForHits(gl);
 		display(gl);
@@ -157,8 +176,105 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		// doSlerpActions();
 		renderRemoteLevelElement(gl, remoteElementHyperbolic);
-		renderRemoteLevelElement(gl, remoteElementHeatMap);
-		renderRemoteLevelElement(gl, remoteElementParCoords);
+		//renderRemoteLevelElement(gl, remoteElementHeatMap);
+		//renderRemoteLevelElement(gl, remoteElementParCoords);
+
+
+		//
+		// }
+		//
+		// receivedEyeData = tracker.getEyeTrackData();
+		//
+		// int offsetX = upperLeftScreenPos.x;
+		// int offsetY = upperLeftScreenPos.y;
+		//
+		// receivedEyeData[0] = receivedEyeData[0] - (float) offsetX;
+		// receivedEyeData[1] = receivedEyeData[1] - (float) offsetY;
+		//
+		// // System.out.println("Eye position korrigiert: " +
+		// receivedEyeData[0]
+		// // + " / " + receivedEyeData[1]);
+		// float factorX = canvasWidth / (float) viewport[2];
+		// float factorY = canvasHeight / (float) viewport[3];
+		//
+		// // visualisation of the eyecursor
+		// gl.glBegin(GL.GL_LINE);
+		// gl.glVertex3f(receivedEyeData[0] * factorX, receivedEyeData[1]
+		// * factorY, 0);
+		// gl.glVertex3f(2, 2, 0);
+		// gl.glEnd();
+
+		// remote test
+		
+
+		//doSlerpActions();
+		//disk.zoomTree(diskZoomIntensity);
+		
+		
+	//	disk.renderTree(gl, textureManager, pickingManager, iUniqueID,
+		//		(double) canvasWidth, (double) canvasHeight);
+
+		//		
+		
+		
+		
+	
+	
+		
+		
+	
+		//mouseWheelListener.mouseWheelMoved();
+		
+//		if (glMouseListener.wasLeftMouseButtonPressed()) {
+//			
+//
+//			if (glMouseListener.getPickedPoint() != null) {
+//
+//				System.out.println("leftmouse");
+//				if (manualPickFlag == true) {
+//					Point mousePoint = new Point(0, 0);
+//					mousePoint = glMouseListener.getPickedPoint();
+//					int[] viewport = new int[4];
+//
+//					gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+//					double factorX = (double) canvasWidth
+//							/ (double) viewport[2];
+//					double factorY = (double) canvasHeight
+//							/ (double) viewport[3];
+//
+//					mouseCoordX = (double) (mousePoint.getX() * factorX);
+//					mouseCoordY = (double) (mousePoint.getY() * factorY);
+//					disk.setCenteredNode(null);
+//					PoincareNode selectedNode;
+//					selectedNode = disk.processEyeTrackerAction(
+//							new Point2D.Double(mouseCoordX, mouseCoordY),
+//							arSlerpActions);
+//					if (selectedNode != null) {
+//						System.out.println("nodeSelected:"
+//								+ selectedNode.iComparableValue);
+//
+//						// arSlerpActions.add(new nodeSlerp(4,
+//						// selectedNode.getPosition(),
+//						// new Point2D.Double(0, 0)));
+//
+//						slerpedNode = selectedNode;
+//						disk.setCenteredNode(selectedNode);
+//
+//					}
+//				}
+//			}
+//		}
+
+		// if (!containedGLViews.isEmpty()) {
+		//
+		// containedGLViews.get(0).displayRemote(gl);
+		// // renderRemoteLevelElement(gl,
+		// // testLevel.getElementByPositionIndex(0));
+		//
+
+		// buildDisplayList(gl, iGLDisplayListIndexRemote);
+		// if (!isRenderedRemote())
+		// contextMenu.render(gl, this);
 
 	}
 
@@ -239,6 +355,22 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		SelectionType selectionType;
 		switch (ePickingType) {
 
+
+//		case DATAW_NODE:
+//			switch (pickingMode) {
+//
+//			case CLICKED:
+//				
+//				arSlerpActions.add(new NodeSlerp(4, disk
+//						.getNodeByCompareableValue(iExternalID).getPosition(),
+//						new Point2D.Double(0, 0)));
+//
+//				slerpedNode = disk.getNodeByCompareableValue(iExternalID);
+//				disk.setCenteredNode(disk
+//						.getNodeByCompareableValue(iExternalID));
+//
+//			}
+
 		// case DATAW_NODE :
 		// switch (pickingMode) {
 		//
@@ -254,6 +386,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		// .getNodeByCompareableValue(iExternalID));
 		//
 		// }
+
 
 		}
 
@@ -387,22 +520,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		return glView;
 	}
 
-	private void doSlerpActions() {
-		if (arSlerpActions.isEmpty()) {
-			return;
-		}
-
-		NodeSlerp singleSlerp = arSlerpActions.get(0);
-		if (singleSlerp.doASlerp(slerpedNode.getPosition()) == true) {
-
-			disk.translateTreeMoebius(singleSlerp.returnPoint);
-		} else {
-
-			disk.translateTreeMoebius(singleSlerp.returnPoint);
-			arSlerpActions.remove(0);
-
-		}
-	}
+	
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
