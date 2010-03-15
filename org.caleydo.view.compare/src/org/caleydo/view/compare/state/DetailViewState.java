@@ -77,6 +77,7 @@ public class DetailViewState extends ACompareViewState {
 				useCase, dragAndDropController);
 		this.setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.0f));
 		compareConnectionRenderer = new CompareConnectionBandRenderer();
+		numSetsInFocus = 2;
 	}
 
 	@Override
@@ -825,8 +826,9 @@ public class DetailViewState extends ACompareViewState {
 	public void executeDrawingPreprocessing(GL gl, boolean isDisplayListDirty) {
 
 		IViewFrustum viewFrustum = view.getViewFrustum();
-		if(isDisplayListDirty)
-			setBar.setHeight(gl, SET_BAR_HEIGHT_PORTION * viewFrustum.getHeight());
+		if (isDisplayListDirty)
+			setBar.setHeight(gl, SET_BAR_HEIGHT_PORTION
+					* viewFrustum.getHeight());
 		// The setBar is an AGLGUIElement, therefore the above assignment is not
 		// necessarily applied
 		float setBarHeight = setBar.getHeight();
@@ -980,24 +982,8 @@ public class DetailViewState extends ACompareViewState {
 	@Override
 	public void setSetsToCompare(ArrayList<ISet> setsToCompare) {
 		this.setsToCompare = setsToCompare;
-		
-		setBar.setSets(setsToCompare);
 
-//		if (setsToCompare.size() >= 2) {
-//
-//			ISet setLeft = setsToCompare.get(0);
-//			ISet setRight = setsToCompare.get(1);
-//			relations = SetComparer.compareSets(setLeft, setRight);
-//
-//			heatMapWrappers.get(0).setSet(setLeft);
-//			heatMapWrappers.get(0).setRelations(relations);
-//			heatMapWrappers.get(1).setSet(setRight);
-//			heatMapWrappers.get(1).setRelations(relations);
-//			setsChanged = true;
-//			
-//
-//			view.setDisplayListDirty();
-//		}
+		setBar.setSets(setsToCompare);
 	}
 
 	@Override
@@ -1025,8 +1011,9 @@ public class DetailViewState extends ACompareViewState {
 	@Override
 	public void setSetsInFocus(ArrayList<ISet> setsInFocus) {
 		setsToCompare = setsInFocus;
-		
-		if (setsInFocus.size() >= 2) {
+
+		if (setsInFocus.size() >= getMinSetsInFocus()
+				&& setsInFocus.size() <= getMaxSetsInFocus()) {
 
 			ISet setLeft = setsInFocus.get(0);
 			ISet setRight = setsInFocus.get(1);
@@ -1040,6 +1027,16 @@ public class DetailViewState extends ACompareViewState {
 
 			view.setDisplayListDirty();
 		}
-		
+
+	}
+
+	@Override
+	public int getMaxSetsInFocus() {
+		return 3;
+	}
+
+	@Override
+	public int getMinSetsInFocus() {
+		return 2;
 	}
 }

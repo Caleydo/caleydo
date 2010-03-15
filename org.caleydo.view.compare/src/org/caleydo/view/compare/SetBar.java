@@ -123,12 +123,17 @@ public class SetBar extends AGLGUIElement {
 			itemID++;
 		}
 
-		selectionWindow.setLowestItemIndex(0);
-		selectionWindow.setNumSelectedItems(2);
-		selectionWindow.setMaxSelectedItems(2);
-		selectionWindow.setMinSelectedItems(2);
-
 		updateSelectedItems(selectionWindow.getSelectedItems());
+		
+		if(viewState != null) {
+			selectionWindow.setLowestItemIndex(0);
+			selectionWindow.setNumSelectedItems(Math.min(viewState
+					.getNumSetsInFocus(), items.size()));
+			selectionWindow.setMaxSelectedItems(viewState.getMaxSetsInFocus());
+			selectionWindow.setMinSelectedItems(viewState.getMinSetsInFocus());
+			
+			updateSelectedItems(selectionWindow.getSelectedItems());
+		}
 	}
 
 	public void handleSetBarItemSelection(int itemID, EPickingMode pickingMode,
@@ -211,6 +216,8 @@ public class SetBar extends AGLGUIElement {
 	}
 
 	public void handleDuplicateSetBarItem(int itemID) {
+		//FIXME: Is it necessary to clone the set?
+		
 		SetBarItem item = items.get(itemID);
 
 		SetBarItem clone = new SetBarItem(itemID, viewID, pickingManager,
@@ -264,6 +271,11 @@ public class SetBar extends AGLGUIElement {
 
 	public void setViewState(ACompareViewState viewState) {
 		this.viewState = viewState;
+		
+		selectionWindow.setLowestItemIndex(0);
+		selectionWindow.setNumSelectedItems(Math.min(viewState.getNumSetsInFocus(), items.size()));
+		selectionWindow.setMaxSelectedItems(viewState.getMaxSetsInFocus());
+		selectionWindow.setMinSelectedItems(viewState.getMinSetsInFocus());
 	}
 
 	private boolean isNewSelection(ArrayList<SetBarItem> oldSelection,

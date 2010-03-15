@@ -187,6 +187,7 @@ public class HeatMapWrapper {
 			return;
 		
 		ContentGroupList contentGroupList = contentVA.getGroupList();
+		//FIXME: Can we do this? Shall we do this in some other way?
 		for(GLHeatMap heatMap : hashHeatMaps.values()) {
 			heatMap.destroy();
 		}

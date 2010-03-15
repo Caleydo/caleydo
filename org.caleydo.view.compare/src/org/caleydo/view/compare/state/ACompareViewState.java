@@ -43,6 +43,7 @@ public abstract class ACompareViewState {
 	protected SetBar setBar;
 	protected ArrayList<HeatMapWrapper> heatMapWrappers;
 	protected ArrayList<AHeatMapLayout> layouts;
+	protected int numSetsInFocus;
 
 	protected boolean setsChanged;
 
@@ -96,5 +97,13 @@ public abstract class ACompareViewState {
 			boolean scrollToSelection, String info);
 	
 	public abstract void setSetsInFocus(ArrayList<ISet> setsInFocus);
+
+	public abstract int getMaxSetsInFocus();
+	
+	public abstract int getMinSetsInFocus();
+	
+	public int getNumSetsInFocus() {
+		return numSetsInFocus;
+	}
 
 }
