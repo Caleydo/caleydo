@@ -217,6 +217,9 @@ public class Application
 		if (bDeleteRestoredWorkbenchState) {
 			removeStoredWorkbenchState();
 		}
+		
+		// FIXME: just for testing
+//		GeneralManager.get().getRStatisticsPerformer();
 
 		try {
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();

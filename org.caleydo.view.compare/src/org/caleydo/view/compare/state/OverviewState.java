@@ -44,7 +44,7 @@ import org.caleydo.view.compare.renderer.ICompareConnectionRenderer;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 public class OverviewState extends ACompareViewState {
-	
+
 	private final static float SET_BAR_HEIGHT_PORTION = 0.1f;
 
 	private SetRelations relations;
@@ -52,15 +52,14 @@ public class OverviewState extends ACompareViewState {
 	float xPosInitLeft = 0;
 	float yPosInitRight = 0;
 	float xPosInitRight = 0;
-	
+
 	private ICompareConnectionRenderer compareConnectionRenderer;
-	
-	public OverviewState(GLCompare view, int viewID,
-			TextRenderer textRenderer, TextureManager textureManager,
-			PickingManager pickingManager, GLMouseListener glMouseListener,
-			SetBar setBar, RenderCommandFactory renderCommandFactory,
-			EDataDomain dataDomain, IUseCase useCase,
-			DragAndDropController dragAndDropController) {
+
+	public OverviewState(GLCompare view, int viewID, TextRenderer textRenderer,
+			TextureManager textureManager, PickingManager pickingManager,
+			GLMouseListener glMouseListener, SetBar setBar,
+			RenderCommandFactory renderCommandFactory, EDataDomain dataDomain,
+			IUseCase useCase, DragAndDropController dragAndDropController) {
 
 		super(view, viewID, textRenderer, textureManager, pickingManager,
 				glMouseListener, setBar, renderCommandFactory, dataDomain,
@@ -77,12 +76,12 @@ public class OverviewState extends ACompareViewState {
 		}
 
 		dragAndDropController.handleDragging(gl, glMouseListener);
-		
+
 	}
 
 	@Override
 	public void drawDisplayListElements(GL gl) {
-		
+
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
 					glMouseListener, viewID);
@@ -96,9 +95,9 @@ public class OverviewState extends ACompareViewState {
 		renderTree(gl);
 
 		renderOverviewRelations(gl);
-		
+
 	}
-	
+
 	private void renderTree(GL gl) {
 
 		if (setsToCompare == null || setsToCompare.size() == 0)
@@ -213,7 +212,7 @@ public class OverviewState extends ACompareViewState {
 
 		return pos;
 	}
-	
+
 	private void renderOverviewRelations(GL gl) {
 
 		if (setsToCompare == null || setsToCompare.size() == 0)
@@ -330,7 +329,7 @@ public class OverviewState extends ACompareViewState {
 
 	@Override
 	public void executeDrawingPreprocessing(GL gl, boolean isDisplayListDirty) {
-		
+
 		IViewFrustum viewFrustum = view.getViewFrustum();
 		if (isDisplayListDirty)
 			setBar.setHeight(gl, SET_BAR_HEIGHT_PORTION
@@ -376,67 +375,70 @@ public class OverviewState extends ACompareViewState {
 
 		switch (ePickingType) {
 
-		case POLYLINE_SELECTION:
+			case POLYLINE_SELECTION :
 
-			switch (pickingMode) {
-			case CLICKED:
-				selectionType = SelectionType.SELECTION;
+				switch (pickingMode) {
+					case CLICKED :
+						selectionType = SelectionType.SELECTION;
+						break;
+					case MOUSE_OVER :
+						selectionType = SelectionType.MOUSE_OVER;
+						break;
+					case RIGHT_CLICKED :
+						selectionType = SelectionType.SELECTION;
+
+						// ContentContextMenuItemContainer
+						// contentContextMenuItemContainer = new
+						// ContentContextMenuItemContainer();
+						// contentContextMenuItemContainer.setID(
+						// EIDType.EXPRESSION_INDEX, iExternalID);
+						// contextMenu
+						// .addItemContanier(contentContextMenuItemContainer);
+						break;
+
+					default :
+						return;
+
+				}
+
+				// FIXME: Check if is ok to share the content selection manager
+				// of the use case
+				ContentSelectionManager contentSelectionManager = useCase
+						.getContentSelectionManager();
+				if (contentSelectionManager.checkStatus(selectionType,
+						iExternalID)) {
+					break;
+				}
+
+				contentSelectionManager.clearSelection(selectionType);
+				contentSelectionManager.addToType(selectionType, iExternalID);
+
+				ISelectionDelta selectionDelta = contentSelectionManager
+						.getDelta();
+				SelectionUpdateEvent event = new SelectionUpdateEvent();
+				event.setSender(this);
+				event.setSelectionDelta((SelectionDelta) selectionDelta);
+				// event.setInfo(getShortInfoLocal());
+				eventPublisher.triggerEvent(event);
+
+				view.setDisplayListDirty();
 				break;
-			case MOUSE_OVER:
-				selectionType = SelectionType.MOUSE_OVER;
-				break;
-			case RIGHT_CLICKED:
-				selectionType = SelectionType.SELECTION;
 
-				// ContentContextMenuItemContainer
-				// contentContextMenuItemContainer = new
-				// ContentContextMenuItemContainer();
-				// contentContextMenuItemContainer.setID(
-				// EIDType.EXPRESSION_INDEX, iExternalID);
-				// contextMenu
-				// .addItemContanier(contentContextMenuItemContainer);
+			case COMPARE_SET_BAR_ITEM_SELECTION :
+				setBar
+						.handleSetBarItemSelection(iExternalID, pickingMode,
+								pick);
 				break;
 
-			default:
-				return;
-
-			}
-
-			// FIXME: Check if is ok to share the content selection manager
-			// of the use case
-			ContentSelectionManager contentSelectionManager = useCase
-					.getContentSelectionManager();
-			if (contentSelectionManager.checkStatus(selectionType, iExternalID)) {
+			case COMPARE_SET_BAR_SELECTION_WINDOW_SELECTION :
+				setBar.handleSetBarSelectionWindowSelection(iExternalID,
+						pickingMode, pick);
 				break;
-			}
-
-			contentSelectionManager.clearSelection(selectionType);
-			contentSelectionManager.addToType(selectionType, iExternalID);
-
-			ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
-			SelectionUpdateEvent event = new SelectionUpdateEvent();
-			event.setSender(this);
-			event.setSelectionDelta((SelectionDelta) selectionDelta);
-			// event.setInfo(getShortInfoLocal());
-			eventPublisher.triggerEvent(event);
-
-			view.setDisplayListDirty();
-			break;
-
-		case COMPARE_SET_BAR_ITEM_SELECTION:
-			setBar.handleSetBarItemSelection(iExternalID, pickingMode, pick);
-			break;
-
-		case COMPARE_SET_BAR_SELECTION_WINDOW_SELECTION:
-			setBar.handleSetBarSelectionWindowSelection(iExternalID,
-					pickingMode, pick);
-			break;
 		}
 	}
 
 	@Override
 	public void init(GL gl) {
-		
 
 		compareConnectionRenderer.init(gl);
 
@@ -444,13 +446,13 @@ public class OverviewState extends ACompareViewState {
 		// rightHeatMapWrapper.setSet(set);
 
 		setsChanged = false;
-		
+
 	}
 
 	@Override
 	public void setSetsToCompare(ArrayList<ISet> setsToCompare) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -461,14 +463,14 @@ public class OverviewState extends ACompareViewState {
 	@Override
 	public void duplicateSetBarItem(int itemID) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -476,10 +478,10 @@ public class OverviewState extends ACompareViewState {
 
 		if (setsInFocus.size() >= getMinSetsInFocus()
 				&& setsInFocus.size() <= getMaxSetsInFocus()) {
-			
+
 			setsToCompare = setsInFocus;
-			
-			if(layouts.isEmpty() || setsInFocus.size() != layouts.size()) {
+
+			if (layouts.isEmpty() || setsInFocus.size() != layouts.size()) {
 				layouts.clear();
 				layouts.add(new HeatMapLayoutLeft(renderCommandFactory));
 				layouts.add(new HeatMapLayoutRight(renderCommandFactory));
@@ -487,12 +489,12 @@ public class OverviewState extends ACompareViewState {
 				int heatMapWrapperID = 0;
 				for (ISet set : setsInFocus) {
 					AHeatMapLayout layout = null;
-					if(heatMapWrapperID == 0) {
+					if (heatMapWrapperID == 0) {
 						layout = new HeatMapLayoutLeft(renderCommandFactory);
 					}
 					HeatMapWrapper heatMapWrapper = new HeatMapWrapper(
-							heatMapWrapperID, layout, view, null, useCase, view,
-							dataDomain, null);
+							heatMapWrapperID, layout, view, null, useCase,
+							view, dataDomain, null);
 					heatMapWrappers.add(heatMapWrapper);
 					heatMapWrapperID++;
 				}
@@ -510,9 +512,13 @@ public class OverviewState extends ACompareViewState {
 
 			view.setDisplayListDirty();
 		}
-		
-		
-		
+
+	}
+
+	@Override
+	public void adjustPValue() {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override

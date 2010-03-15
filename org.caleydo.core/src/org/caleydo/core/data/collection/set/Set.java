@@ -86,6 +86,8 @@ public class Set
 	protected EExternalDataRepresentation externalDataRep;
 
 	protected boolean isSetHomogeneous = false;
+	
+	private StatisticsResult statisticsResult;
 
 	/**
 	 * Constructor for the set. Creates and initializes members and registers the set whit the set manager.
@@ -112,6 +114,7 @@ public class Set
 		hashStorageData = new HashMap<StorageVAType, StorageData>(3);
 		defaultStorageData = new StorageData();
 		defaultStorageData.setStorageVA(new StorageVirtualArray(StorageVAType.STORAGE));
+		statisticsResult = new StatisticsResult(this);
 	}
 
 	HashMap<ContentVAType, ContentData> getHashContentData() {
@@ -924,4 +927,11 @@ public class Set
 		return metaSet;
 	}
 
+	public StatisticsResult getStatisticsResult() {
+		return statisticsResult;
+	}
+	
+	public void setStatisticsResult(StatisticsResult statisticsResult) {
+		this.statisticsResult = statisticsResult;
+	}
 }

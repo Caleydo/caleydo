@@ -3,6 +3,7 @@ package org.caleydo.util.r;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
@@ -16,8 +17,10 @@ import org.caleydo.util.r.listener.CompareGroupsEventListener;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
 
-public class RStatisticsPerformer implements IStatisticsPerformer,
-		IListenerOwner {
+public class RStatisticsPerformer
+		implements
+			IStatisticsPerformer,
+			IListenerOwner {
 
 	private Rengine engine;
 
@@ -73,10 +76,10 @@ public class RStatisticsPerformer implements IStatisticsPerformer,
 
 		try {
 			REXP test;
-			int[] array = new int[] { 223, 259, 248, 220, 287, 191, 229, 270,
-					245, 201 };// 5, 6, 7};
-			int[] array_2 = new int[] { 220, 244, 243, 211, 299, 170, 210, 276,
-					252, 189 };// 1, 2, 3};
+			int[] array = new int[]{223, 259, 248, 220, 287, 191, 229, 270,
+					245, 201};// 5, 6, 7};
+			int[] array_2 = new int[]{220, 244, 243, 211, 299, 170, 210, 276,
+					252, 189};// 1, 2, 3};
 			engine.assign("my_array", array);
 			engine.assign("my_array_2", array_2);
 
@@ -90,45 +93,64 @@ public class RStatisticsPerformer implements IStatisticsPerformer,
 		}
 	}
 
-	public void compareSets(ArrayList<ISet> setsToCompare) {
+	public void twoSidedTTest(ArrayList<ISet> setsToCompare) {
 
-		ISet set1 = setsToCompare.get(0);
-		ISet set2 = setsToCompare.get(1);
+		// Perform t-test between all neighboring sets (A<->B<->C)
+		for (int setIndex = 0; setIndex < setsToCompare.size(); setIndex++) {
 
-		for (int contentIndex = 0; contentIndex < set1.get(0).size(); contentIndex++) {
+			if (setIndex + 1 == setsToCompare.size())
+				break;
 
-			StorageVirtualArray storageVA1 = set1
-					.getStorageVA(StorageVAType.STORAGE);
-			StorageVirtualArray storageVA2 = set2
-					.getStorageVA(StorageVAType.STORAGE);
+			ISet set1 = setsToCompare.get(setIndex);
+			ISet set2 = setsToCompare.get(setIndex + 1);
+			
+			ArrayList<Double> pValueVector = new ArrayList<Double>(); 
 
-			double[] compareVec1 = new double[storageVA1.size()];
-			double[] compareVec2 = new double[storageVA2.size()];
+			for (int contentIndex = 0; contentIndex < set1.get(
+					set1.getStorageVA(StorageVAType.STORAGE).get(0)).size(); contentIndex++) {
 
-			int storageCount = 0;
-			for (Integer storageIndex : storageVA1) {
-				compareVec1[storageCount++] = set1.get(storageIndex).getFloat(
-						EDataRepresentation.NORMALIZED, contentIndex);
+				StorageVirtualArray storageVA1 = set1
+						.getStorageVA(StorageVAType.STORAGE);
+				StorageVirtualArray storageVA2 = set2
+						.getStorageVA(StorageVAType.STORAGE);
+
+				double[] compareVec1 = new double[storageVA1.size()];
+				double[] compareVec2 = new double[storageVA2.size()];
+
+				int storageCount = 0;
+				for (Integer storageIndex : storageVA1) {
+					compareVec1[storageCount++] = set1.get(storageIndex)
+							.getFloat(EDataRepresentation.NORMALIZED,
+									contentIndex);
+				}
+
+				storageCount = 0;
+				for (Integer storageIndex : storageVA2) {
+					compareVec2[storageCount++] = set2.get(storageIndex)
+							.getFloat(EDataRepresentation.NORMALIZED,
+									contentIndex);
+				}
+
+				engine.assign("set_1", compareVec1);
+				engine.assign("set_2", compareVec2);
+
+				REXP compareResult = engine.eval("t.test(set_1,set_2)");
+
+				// System.out.println("T-Test result: " + compareResult);
+				
+				REXP pValue = (REXP)compareResult.asVector().get(2);
+				pValueVector.add(pValue.asDouble());
+//				System.out.println(pValue.asDouble());
+				
+				set1.getStatisticsResult().setCompareResultToSet(set2, pValueVector);
+				set2.getStatisticsResult().setCompareResultToSet(set1, pValueVector);	
 			}
-
-			storageCount = 0;
-			for (Integer storageIndex : storageVA2) {
-				compareVec2[storageCount++] = set2.get(storageIndex).getFloat(
-						EDataRepresentation.NORMALIZED, contentIndex);
-			}
-
-			engine.assign("set_1", compareVec1);
-			engine.assign("set_2", compareVec2);
-
-			REXP compareResult = engine.eval("t.test(set_1,set_2)");
-
-			// System.out.println("T-Test result: " + compareResult);
-			System.out.println("P-value: " + compareResult.asVector().get(2));
 		}
+		
+//		setsToCompare.get(0).getStatisticsResult().getVABasedOnCompareResult(setsToCompare.get(1), 0.9f);
 
 		System.out.println("Finished");
 	}
-
 	@Override
 	public synchronized void queueEvent(
 			AEventListener<? extends IListenerOwner> listener, AEvent event) {

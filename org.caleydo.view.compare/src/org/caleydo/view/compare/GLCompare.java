@@ -10,9 +10,14 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.manager.event.view.compare.AdjustPValueEvent;
 import org.caleydo.core.manager.event.view.compare.DuplicateSetBarItemEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -35,6 +40,7 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.view.compare.listener.AdjustPValueOfSetEventListener;
 import org.caleydo.view.compare.listener.CompareGroupsEventListener;
 import org.caleydo.view.compare.listener.DuplicateSetBarItemEventListener;
 import org.caleydo.view.compare.state.CompareViewStateController;
@@ -48,8 +54,11 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLCompare extends AGLView implements IViewCommandHandler,
-		IGLRemoteRenderingView, ISelectionUpdateHandler {
+public class GLCompare extends AGLView
+		implements
+			IViewCommandHandler,
+			IGLRemoteRenderingView,
+			ISelectionUpdateHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.compare";
 
@@ -61,6 +70,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	private CompareGroupsEventListener compareGroupsEventListener;
 	private DuplicateSetBarItemEventListener duplicateSetBarItemEventListener;
 	private SelectionUpdateListener selectionUpdateListener;
+	private AdjustPValueOfSetEventListener adjustPValueOfSetEventListener;
 
 	private boolean isControlPressed;
 
@@ -132,7 +142,6 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
-
 	}
 
 	@Override
@@ -310,7 +319,6 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	}
 
-	
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
@@ -387,6 +395,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		eventPublisher.addListener(SelectionUpdateEvent.class,
 				selectionUpdateListener);
 
+		adjustPValueOfSetEventListener = new AdjustPValueOfSetEventListener();
+		adjustPValueOfSetEventListener.setHandler(this);
+		eventPublisher.addListener(AdjustPValueEvent.class,
+				adjustPValueOfSetEventListener);
+
 		// if (leftHeatMapWrapper != null)
 		// leftHeatMapWrapper.registerEventListeners();
 		// if (rightHeatMapWrapper != null)
@@ -408,7 +421,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
 		}
-
+		if (adjustPValueOfSetEventListener != null) {
+			eventPublisher.removeListener(adjustPValueOfSetEventListener);
+			adjustPValueOfSetEventListener = null;
+		}
 	}
 
 	@Override
@@ -450,6 +466,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	public void handleDuplicateSetBarItem(int itemID) {
 		compareViewStateController.duplicateSetBarItem(itemID);
 		// setBar.handleDuplicateSetBarItem(itemID);
+	}
+
+	public void handleAdjustPValue() {
+
+		 compareViewStateController.handleAdjustPValue();
 	}
 
 	@Override

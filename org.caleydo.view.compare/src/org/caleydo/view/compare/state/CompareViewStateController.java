@@ -93,4 +93,8 @@ public class CompareViewStateController {
 				info);
 	}
 
+	public void handleAdjustPValue() {
+		
+		currentState.adjustPValue();
+	}
 }

@@ -97,6 +97,8 @@ public abstract class ACompareViewState {
 			boolean scrollToSelection, String info);
 	
 	public abstract void setSetsInFocus(ArrayList<ISet> setsInFocus);
+	
+	public abstract void adjustPValue();
 
 	public abstract int getMaxSetsInFocus();
 	

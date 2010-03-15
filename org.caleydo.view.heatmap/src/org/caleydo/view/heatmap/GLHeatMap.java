@@ -645,7 +645,7 @@ public class GLHeatMap extends AStorageBasedView {
 		// renderStyle.clearFieldWidths();
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(1,0.2f,0));
 		int iCount = 0;
-		GLHelperFunctions.drawPointAt(gl, fXPosition, fYPosition, 0);
+		// GLHelperFunctions.drawPointAt(gl, fXPosition, fYPosition, 0);
 		SelectionType currentType;
 		for (Integer iContentIndex : contentVA) {
 			iCount++;
