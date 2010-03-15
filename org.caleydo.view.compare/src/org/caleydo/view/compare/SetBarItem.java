@@ -24,7 +24,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 	private static final int SELECTION_STATUS_DRAGGED = 2;
 
 	private static final float HORIZONTAL_TEXT_PADDING_PORTION = 0.1f;
-	private static final float VERTICAL_TEXT_PADDING_PORTION = 0.6f;
+	private static final float VERTICAL_TEXT_PADDING_PORTION = 0.7f;
 	private static final String TEXT_FOR_HEIGHT_CALCULATION = "Text without characters below the bottom textline";
 
 	private ISet set;

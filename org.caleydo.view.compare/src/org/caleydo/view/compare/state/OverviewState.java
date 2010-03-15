@@ -94,4 +94,10 @@ public class OverviewState extends ACompareViewState {
 		
 	}
 
+	@Override
+	public void setSetsInFocus(ArrayList<ISet> setsInFocus) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

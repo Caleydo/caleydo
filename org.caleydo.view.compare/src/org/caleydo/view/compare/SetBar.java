@@ -16,10 +16,14 @@ import org.caleydo.core.view.opengl.util.AGLGUIElement;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DuplicateSetBarElementItem;
+import org.caleydo.view.compare.state.ACompareViewState;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
 public class SetBar extends AGLGUIElement {
+
+	private static final float ITEM_HEIGHT_PROTION = 0.7f;
+	private static final float SELECTION_WINDOW_HEIGHT_PROTION = 0.8f;
 
 	// private ArrayList<ISet> sets;
 	private ArrayList<SetBarItem> items;
@@ -34,6 +38,8 @@ public class SetBar extends AGLGUIElement {
 	private ContextMenu contextMenu;
 	private int viewID;
 	private AGLView view;
+	private SetBarSelectionWindow selectionWindow;
+	private ACompareViewState viewState;
 
 	public SetBar(int viewID, PickingManager pickingManager,
 			TextRenderer textRenderer,
@@ -48,6 +54,8 @@ public class SetBar extends AGLGUIElement {
 		this.view = view;
 		this.contextMenu = contextMenu;
 		items = new ArrayList<SetBarItem>();
+		selectionWindow = new SetBarSelectionWindow(0, viewID, this, items,
+				pickingManager);
 		// sets = new ArrayList<ISet>();
 		setMinSize(60);
 	}
@@ -56,6 +64,7 @@ public class SetBar extends AGLGUIElement {
 		for (SetBarItem item : items) {
 			item.render(gl);
 		}
+		selectionWindow.render(gl);
 	}
 
 	public Vec3f getPosition() {
@@ -74,9 +83,11 @@ public class SetBar extends AGLGUIElement {
 
 	public void setHeight(GL gl, float height) {
 		this.height = getScaledSizeOf(gl, height, false);
-		for (SetBarItem item : items) {
-			item.setHeight(this.height);
-		}
+		updateItemProperties();
+		selectionWindow
+				.setHeight(this.height * SELECTION_WINDOW_HEIGHT_PROTION);
+		selectionWindow.setPositionY(position.y()
+				+ ((1 - SELECTION_WINDOW_HEIGHT_PROTION) * this.height) / 2.0f);
 	}
 
 	public float getWidth() {
@@ -102,17 +113,26 @@ public class SetBar extends AGLGUIElement {
 			SetBarItem item = new SetBarItem(itemID, viewID, pickingManager,
 					textRenderer, this);
 			item.setSet(set);
-			item.setHeight(height);
+			item.setHeight(height * ITEM_HEIGHT_PROTION);
 			item.setWidth(itemWidth);
-			item.setPosition(new Vec3f(currentPositionX, position.y(), position
-					.z()));
+			item.setPosition(new Vec3f(currentPositionX, position.y()
+					+ ((1 - ITEM_HEIGHT_PROTION) * this.height) / 2.0f,
+					position.z()));
 			items.add(item);
 			currentPositionX += item.getWidth();
 			itemID++;
 		}
+
+		selectionWindow.setLowestItemIndex(0);
+		selectionWindow.setNumSelectedItems(2);
+		selectionWindow.setMaxSelectedItems(2);
+		selectionWindow.setMinSelectedItems(2);
+
+		updateSelectedItems(selectionWindow.getSelectedItems());
 	}
 
-	public void handleSetBarItemSelection(int itemID, EPickingMode pickingMode, Pick pick) {
+	public void handleSetBarItemSelection(int itemID, EPickingMode pickingMode,
+			Pick pick) {
 
 		SetBarItem item = items.get(itemID);
 
@@ -122,7 +142,8 @@ public class SetBar extends AGLGUIElement {
 		switch (pickingMode) {
 		case CLICKED:
 			dragAndDropController.clearDraggables();
-			dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
+			dragAndDropController.setDraggingStartPosition(pick
+					.getPickedPoint());
 			dragAndDropController.addDraggable(item);
 			dragAndDropController.startDragging();
 			break;
@@ -139,19 +160,31 @@ public class SetBar extends AGLGUIElement {
 
 			break;
 		case RIGHT_CLICKED:
-			contextMenu.addContextMenueItem(new DuplicateSetBarElementItem(itemID));
-			contextMenu.setLocation(pick.getPickedPoint(),
-					view.getParentGLCanvas().getWidth(),
-					view.getParentGLCanvas().getHeight());
+			contextMenu.addContextMenueItem(new DuplicateSetBarElementItem(
+					itemID));
+			contextMenu.setLocation(pick.getPickedPoint(), view
+					.getParentGLCanvas().getWidth(), view.getParentGLCanvas()
+					.getHeight());
 			contextMenu.setMasterGLView(view);
 			break;
 		case DRAGGED:
 			if (dragAndDropController.hasDraggables()) {
-				if (!dragAndDropController.isDragging()) {
-
-				}
 				dragAndDropController.setDropArea(item);
 			}
+			break;
+		}
+	}
+
+	public void handleSetBarSelectionWindowSelection(int itemID,
+			EPickingMode pickingMode, Pick pick) {
+
+		switch (pickingMode) {
+		case CLICKED:
+			dragAndDropController.clearDraggables();
+			dragAndDropController.setDraggingStartPosition(pick
+					.getPickedPoint());
+			dragAndDropController.addDraggable(selectionWindow);
+			dragAndDropController.startDragging();
 			break;
 		}
 	}
@@ -159,11 +192,20 @@ public class SetBar extends AGLGUIElement {
 	public void moveItem(SetBarItem itemToMove, int newIndex) {
 		if (itemToMove.getID() < newIndex)
 			newIndex--;
+
+		ArrayList<SetBarItem> oldSelection = selectionWindow.getSelectedItems();
+
 		items.remove(itemToMove.getID());
 
 		items.add(newIndex, itemToMove);
 
 		updateItemProperties();
+
+		ArrayList<SetBarItem> newSelection = selectionWindow.getSelectedItems();
+
+		if (isNewSelection(oldSelection, newSelection)) {
+			updateSelectedItems(newSelection);
+		}
 
 		view.setDisplayListDirty();
 	}
@@ -175,9 +217,17 @@ public class SetBar extends AGLGUIElement {
 				textRenderer, this);
 		clone.setSet(item.getSet());
 
+		ArrayList<SetBarItem> oldSelection = selectionWindow.getSelectedItems();
+
 		items.add(itemID, clone);
 
 		updateItemProperties();
+
+		ArrayList<SetBarItem> newSelection = selectionWindow.getSelectedItems();
+
+		if (isNewSelection(oldSelection, newSelection)) {
+			updateSelectedItems(newSelection);
+		}
 
 		view.setDisplayListDirty();
 	}
@@ -189,12 +239,45 @@ public class SetBar extends AGLGUIElement {
 		float currentPositionX = position.x();
 		for (SetBarItem item : items) {
 			item.setID(itemID);
-			item.setHeight(height);
+			item.setHeight(height * ITEM_HEIGHT_PROTION);
 			item.setWidth(itemWidth);
-			item.setPosition(new Vec3f(currentPositionX, position.y(), position
-					.z()));
+			item.setPosition(new Vec3f(currentPositionX, position.y()
+					+ ((1 - ITEM_HEIGHT_PROTION) * this.height) / 2.0f,
+					position.z()));
 			itemID++;
 			currentPositionX += itemWidth;
 		}
+	}
+
+	public void updateSelectedItems(ArrayList<SetBarItem> itemsInFocus) {
+		ArrayList<ISet> setsInFocus = new ArrayList<ISet>();
+
+		for (SetBarItem item : itemsInFocus) {
+			setsInFocus.add(item.getSet());
+		}
+		viewState.setSetsInFocus(setsInFocus);
+	}
+
+	public ACompareViewState getViewState() {
+		return viewState;
+	}
+
+	public void setViewState(ACompareViewState viewState) {
+		this.viewState = viewState;
+	}
+
+	private boolean isNewSelection(ArrayList<SetBarItem> oldSelection,
+			ArrayList<SetBarItem> newSelection) {
+		if (oldSelection.size() != newSelection.size())
+			return true;
+
+		for (SetBarItem oldSelectionItem : oldSelection) {
+			for (SetBarItem newSelectionItem : newSelection) {
+				if (oldSelectionItem != newSelectionItem)
+					return true;
+			}
+		}
+
+		return false;
 	}
 }

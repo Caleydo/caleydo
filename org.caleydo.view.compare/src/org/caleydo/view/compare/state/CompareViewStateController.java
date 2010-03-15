@@ -52,6 +52,7 @@ public class CompareViewStateController {
 				useCase, dragAndDropController));
 
 		currentState = hashStates.get(ECompareViewStateType.DETAIL_VIEW);
+		setBar.setViewState(currentState);
 
 	}
 

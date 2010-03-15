@@ -187,6 +187,9 @@ public class HeatMapWrapper {
 			return;
 		
 		ContentGroupList contentGroupList = contentVA.getGroupList();
+		for(GLHeatMap heatMap : hashHeatMaps.values()) {
+			heatMap.destroy();
+		}
 		hashHeatMaps.clear();
 		selectedGroups.clear();
 

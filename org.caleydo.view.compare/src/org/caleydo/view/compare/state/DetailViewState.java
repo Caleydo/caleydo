@@ -49,7 +49,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public class DetailViewState extends ACompareViewState {
 
-	private final static float SET_BAR_HEIGHT_PORTION = 0.05f;
+	private final static float SET_BAR_HEIGHT_PORTION = 0.1f;
 
 	private SelectionType activeHeatMapSelectionType;
 
@@ -97,7 +97,7 @@ public class DetailViewState extends ACompareViewState {
 					heatMapWrapperID, layout, view, null, useCase, view,
 					dataDomain, activeHeatMapSelectionType);
 			heatMapWrappers.add(heatMapWrapper);
-//			heatMapWrapper.registerEventListeners();
+			// heatMapWrapper.registerEventListeners();
 			heatMapWrapper.init(gl, glMouseListener, null, dataDomain);
 			heatMapWrapperID++;
 		}
@@ -133,8 +133,8 @@ public class DetailViewState extends ACompareViewState {
 				break;
 			}
 		}
-		
-		for(HeatMapWrapper heatMapWrapper : heatMapWrappers) {
+
+		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.drawRemoteItems(gl, glMouseListener, pickingManager);
 		}
 
@@ -825,8 +825,8 @@ public class DetailViewState extends ACompareViewState {
 	public void executeDrawingPreprocessing(GL gl, boolean isDisplayListDirty) {
 
 		IViewFrustum viewFrustum = view.getViewFrustum();
-
-		setBar.setHeight(gl, SET_BAR_HEIGHT_PORTION * viewFrustum.getHeight());
+		if(isDisplayListDirty)
+			setBar.setHeight(gl, SET_BAR_HEIGHT_PORTION * viewFrustum.getHeight());
 		// The setBar is an AGLGUIElement, therefore the above assignment is not
 		// necessarily applied
 		float setBarHeight = setBar.getHeight();
@@ -969,29 +969,35 @@ public class DetailViewState extends ACompareViewState {
 		case COMPARE_SET_BAR_ITEM_SELECTION:
 			setBar.handleSetBarItemSelection(iExternalID, pickingMode, pick);
 			break;
-		}
 
+		case COMPARE_SET_BAR_SELECTION_WINDOW_SELECTION:
+			setBar.handleSetBarSelectionWindowSelection(iExternalID,
+					pickingMode, pick);
+			break;
+		}
 	}
 
 	@Override
 	public void setSetsToCompare(ArrayList<ISet> setsToCompare) {
 		this.setsToCompare = setsToCompare;
+		
+		setBar.setSets(setsToCompare);
 
-		if (setsToCompare.size() >= 2) {
-
-			ISet setLeft = setsToCompare.get(0);
-			ISet setRight = setsToCompare.get(1);
-			relations = SetComparer.compareSets(setLeft, setRight);
-
-			heatMapWrappers.get(0).setSet(setLeft);
-			heatMapWrappers.get(0).setRelations(relations);
-			heatMapWrappers.get(1).setSet(setRight);
-			heatMapWrappers.get(1).setRelations(relations);
-			setsChanged = true;
-			setBar.setSets(setsToCompare);
-
-			view.setDisplayListDirty();
-		}
+//		if (setsToCompare.size() >= 2) {
+//
+//			ISet setLeft = setsToCompare.get(0);
+//			ISet setRight = setsToCompare.get(1);
+//			relations = SetComparer.compareSets(setLeft, setRight);
+//
+//			heatMapWrappers.get(0).setSet(setLeft);
+//			heatMapWrappers.get(0).setRelations(relations);
+//			heatMapWrappers.get(1).setSet(setRight);
+//			heatMapWrappers.get(1).setRelations(relations);
+//			setsChanged = true;
+//			
+//
+//			view.setDisplayListDirty();
+//		}
 	}
 
 	@Override
@@ -1014,5 +1020,26 @@ public class DetailViewState extends ACompareViewState {
 					scrollToSelection, info);
 		}
 
+	}
+
+	@Override
+	public void setSetsInFocus(ArrayList<ISet> setsInFocus) {
+		setsToCompare = setsInFocus;
+		
+		if (setsInFocus.size() >= 2) {
+
+			ISet setLeft = setsInFocus.get(0);
+			ISet setRight = setsInFocus.get(1);
+			relations = SetComparer.compareSets(setLeft, setRight);
+
+			heatMapWrappers.get(0).setSet(setLeft);
+			heatMapWrappers.get(0).setRelations(relations);
+			heatMapWrappers.get(1).setSet(setRight);
+			heatMapWrappers.get(1).setRelations(relations);
+			setsChanged = true;
+
+			view.setDisplayListDirty();
+		}
+		
 	}
 }

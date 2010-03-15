@@ -94,5 +94,7 @@ public abstract class ACompareViewState {
 	
 	public abstract void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info);
+	
+	public abstract void setSetsInFocus(ArrayList<ISet> setsInFocus);
 
 }
