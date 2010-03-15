@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
+import org.caleydo.core.data.collection.set.MetaSet;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.jface.action.Action;
@@ -174,6 +175,8 @@ public class ExportDataAction
 
 	public void execute() {
 		for (ISet set : GeneralManager.get().getSetManager().getAllItems()) {
+			if(set instanceof MetaSet)
+				continue;
 			if (radios[0].getSelection()) {
 				set.export(sFileName, EWhichViewToExport.BUCKET);
 			}
