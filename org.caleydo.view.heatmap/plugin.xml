@@ -6,13 +6,13 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.view.heatmap.RcpGLHeatMapView"
+            class="org.caleydo.view.heatmap.heatmap.RcpGLHeatMapView"
             icon="resources/icons/heatmap.png"
             id="org.caleydo.view.heatmap"
             name="Heat Map">
       </view>
       <view
-            class="org.caleydo.view.heatmap.RcpGLHierarchicalHeatMapView"
+            class="org.caleydo.view.heatmap.hierarchical.RcpGLHierarchicalHeatMapView"
             icon="resources/icons/heatmap.png"
             id="org.caleydo.view.heatmap.hierarchical"
             name="Hierarchical Heat Map"

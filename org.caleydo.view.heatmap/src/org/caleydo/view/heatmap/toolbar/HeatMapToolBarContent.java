@@ -9,7 +9,7 @@ import org.caleydo.rcp.view.toolbar.ToolBarContainer;
 import org.caleydo.rcp.view.toolbar.action.storagebased.PropagateSelectionsAction;
 import org.caleydo.rcp.view.toolbar.action.storagebased.ResetViewAction;
 import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
-import org.caleydo.view.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 /**
  * ToolBarContent implementation for heatmap specific toolbar items.

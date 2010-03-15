@@ -5,6 +5,7 @@ package org.caleydo.core.data;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public abstract class AUniqueObject
 	implements IUniqueObject {
@@ -59,13 +60,5 @@ public abstract class AUniqueObject
 		else {
 			return false;
 		}
-	}
-
-	public int getIUniqueID() {
-		return iUniqueID;
-	}
-
-	public void setIUniqueID(int uniqueID) {
-		iUniqueID = uniqueID;
 	}
 }

@@ -1,6 +1,6 @@
 package org.caleydo.view.compare.state;
 
-import static org.caleydo.view.heatmap.DendrogramRenderStyle.DENDROGRAM_Z;
+import static org.caleydo.view.heatmap.dendrogram.DendrogramRenderStyle.DENDROGRAM_Z;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
@@ -375,65 +375,61 @@ public class OverviewState extends ACompareViewState {
 
 		switch (ePickingType) {
 
-			case POLYLINE_SELECTION :
+		case POLYLINE_SELECTION:
 
-				switch (pickingMode) {
-					case CLICKED :
-						selectionType = SelectionType.SELECTION;
-						break;
-					case MOUSE_OVER :
-						selectionType = SelectionType.MOUSE_OVER;
-						break;
-					case RIGHT_CLICKED :
-						selectionType = SelectionType.SELECTION;
+			switch (pickingMode) {
+			case CLICKED:
+				selectionType = SelectionType.SELECTION;
+				break;
+			case MOUSE_OVER:
+				selectionType = SelectionType.MOUSE_OVER;
+				break;
+			case RIGHT_CLICKED:
+				selectionType = SelectionType.SELECTION;
 
-						// ContentContextMenuItemContainer
-						// contentContextMenuItemContainer = new
-						// ContentContextMenuItemContainer();
-						// contentContextMenuItemContainer.setID(
-						// EIDType.EXPRESSION_INDEX, iExternalID);
-						// contextMenu
-						// .addItemContanier(contentContextMenuItemContainer);
-						break;
-
-					default :
-						return;
-
-				}
-
-				// FIXME: Check if is ok to share the content selection manager
-				// of the use case
-				ContentSelectionManager contentSelectionManager = useCase
-						.getContentSelectionManager();
-				if (contentSelectionManager.checkStatus(selectionType,
-						iExternalID)) {
-					break;
-				}
-
-				contentSelectionManager.clearSelection(selectionType);
-				contentSelectionManager.addToType(selectionType, iExternalID);
-
-				ISelectionDelta selectionDelta = contentSelectionManager
-						.getDelta();
-				SelectionUpdateEvent event = new SelectionUpdateEvent();
-				event.setSender(this);
-				event.setSelectionDelta((SelectionDelta) selectionDelta);
-				// event.setInfo(getShortInfoLocal());
-				eventPublisher.triggerEvent(event);
-
-				view.setDisplayListDirty();
+				// ContentContextMenuItemContainer
+				// contentContextMenuItemContainer = new
+				// ContentContextMenuItemContainer();
+				// contentContextMenuItemContainer.setID(
+				// EIDType.EXPRESSION_INDEX, iExternalID);
+				// contextMenu
+				// .addItemContanier(contentContextMenuItemContainer);
 				break;
 
-			case COMPARE_SET_BAR_ITEM_SELECTION :
-				setBar
-						.handleSetBarItemSelection(iExternalID, pickingMode,
-								pick);
-				break;
+			default:
+				return;
 
-			case COMPARE_SET_BAR_SELECTION_WINDOW_SELECTION :
-				setBar.handleSetBarSelectionWindowSelection(iExternalID,
-						pickingMode, pick);
+			}
+
+			// FIXME: Check if is ok to share the content selection manager
+			// of the use case
+			ContentSelectionManager contentSelectionManager = useCase
+					.getContentSelectionManager();
+			if (contentSelectionManager.checkStatus(selectionType, iExternalID)) {
 				break;
+			}
+
+			contentSelectionManager.clearSelection(selectionType);
+			contentSelectionManager.addToType(selectionType, iExternalID);
+
+			ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSender(this);
+			event.setSelectionDelta((SelectionDelta) selectionDelta);
+			// event.setInfo(getShortInfoLocal());
+			eventPublisher.triggerEvent(event);
+
+			view.setDisplayListDirty();
+			break;
+
+		case COMPARE_SET_BAR_ITEM_SELECTION:
+			setBar.handleSetBarItemSelection(iExternalID, pickingMode, pick);
+			break;
+
+		case COMPARE_SET_BAR_SELECTION_WINDOW_SELECTION:
+			setBar.handleSetBarSelectionWindowSelection(iExternalID,
+					pickingMode, pick);
+			break;
 		}
 	}
 

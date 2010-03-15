@@ -3,6 +3,8 @@ package org.caleydo.view.compare.layout;
 import gleem.linalg.Vec3f;
 
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
 
 public class HeatMapLayoutOverviewMid extends AHeatMapLayoutOverview {
 
@@ -16,5 +18,7 @@ public class HeatMapLayoutOverviewMid extends AHeatMapLayoutOverview {
 				positionY + getOverviewHeight()
 						+ getCaptionLabelVerticalSpacing(), 0.0f);
 	}
+
+
 
 }

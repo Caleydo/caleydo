@@ -7,7 +7,7 @@ import org.caleydo.rcp.view.toolbar.ActionToolBarContainer;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.ToolBarContainer;
 import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
-import org.caleydo.view.heatmap.GLHierarchicalHeatMap;
+import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 
 /**
  * THIS IS DEAD AT THE MOMENT ToolBarContent implementation for heatmap specific

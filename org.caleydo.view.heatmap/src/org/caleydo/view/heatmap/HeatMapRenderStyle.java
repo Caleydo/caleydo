@@ -6,6 +6,8 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 
 /**
  * Heat Map render styles

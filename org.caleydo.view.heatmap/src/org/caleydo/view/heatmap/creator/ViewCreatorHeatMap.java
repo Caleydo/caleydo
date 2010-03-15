@@ -5,8 +5,8 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.view.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.SerializedHeatMapView;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
 import org.caleydo.view.heatmap.toolbar.HeatMapToolBarContent;
 
 public class ViewCreatorHeatMap extends AGLViewCreator {

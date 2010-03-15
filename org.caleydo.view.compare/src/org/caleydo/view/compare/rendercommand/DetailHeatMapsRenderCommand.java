@@ -11,7 +11,8 @@ import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.view.compare.GroupInfo;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
-import org.caleydo.view.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+
 
 public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 

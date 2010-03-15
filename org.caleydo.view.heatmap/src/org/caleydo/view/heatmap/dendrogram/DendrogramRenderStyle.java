@@ -1,4 +1,4 @@
-package org.caleydo.view.heatmap;
+package org.caleydo.view.heatmap.dendrogram;
 
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;

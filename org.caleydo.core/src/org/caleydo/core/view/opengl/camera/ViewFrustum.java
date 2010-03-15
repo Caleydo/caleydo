@@ -13,10 +13,10 @@ public class ViewFrustum
 	implements IViewFrustum {
 	private EProjectionMode eProjectionMode;
 
-	private float fLeft;
-	private float fRight;
-	private float fTop;
-	private float fBottom;
+	private float left;
+	private float right;
+	private float top;
+	private float bottom;
 	private float fNear;
 	private float fFar;
 
@@ -37,10 +37,10 @@ public class ViewFrustum
 		float fNear, float fFar) {
 		this.eProjectionMode = eProjectionMode;
 
-		this.fLeft = fLeft;
-		this.fRight = fRight;
-		this.fBottom = fBottom;
-		this.fTop = fTop;
+		this.left = fLeft;
+		this.right = fRight;
+		this.bottom = fBottom;
+		this.top = fTop;
 		this.fNear = fNear;
 		this.fFar = fFar;
 	}
@@ -57,71 +57,66 @@ public class ViewFrustum
 
 	@Override
 	public float getLeft() {
-
-		return fLeft;
+		return left;
 	}
 
 	@Override
 	public float getRight() {
-
-		return fRight;
+		return right;
 	}
 
 	@Override
 	public float getTop() {
-
-		return fTop;
+		return top;
 	}
 
 	@Override
 	public float getBottom() {
-		return fBottom;
+		return bottom;
 	}
 
 	@Override
 	public float getNear() {
-
 		return fNear;
 	}
 
 	@Override
 	public float getFar() {
-
 		return fFar;
 	}
 
 	@Override
 	public float getWidth() {
-		return fRight - fLeft;
+		return right - left;
 	}
 
 	@Override
 	public float getHeight() {
-		return fTop - fBottom;
+		return top - bottom;
 	}
 
 	@Override
 	public void setLeft(final float fLeft) {
 
-		this.fLeft = fLeft;
+		this.left = fLeft;
 	}
 
 	@Override
 	public void setRight(final float fRight) {
 
-		this.fRight = fRight;
+		this.right = fRight;
 	}
 
 	@Override
 	public void setTop(final float fTop) {
 
-		this.fTop = fTop;
+		this.top = fTop;
 	}
 
 	@Override
 	public void setBottom(final float fBottom) {
 
-		this.fBottom = fBottom;
+		this.bottom = fBottom;
 	}
 
 	@Override
@@ -145,19 +140,14 @@ public class ViewFrustum
 	public void setProjectionMatrix(GL gl, float fAspectRatio) {
 		// fAspectRatio = (float) height / (float) width;
 
-		float fLeft = getLeft();
-		float fRight = getRight();
-		float fBottom = getBottom();
-		float fTop = getTop();
-
 		if (bConsiderAspectRatio) {
 			if (fAspectRatio < 1.0f) {
-				fLeft /= fAspectRatio;
-				fRight /= fAspectRatio;
+				left /= fAspectRatio;
+				right /= fAspectRatio;
 			}
 			else {
-				fBottom *= fAspectRatio;
-				fTop *= fAspectRatio;
+				bottom *= fAspectRatio;
+				top *= fAspectRatio;
 			}
 
 			// System.out.println("Aspect ratio:" +fAspectRatio);
@@ -165,12 +155,17 @@ public class ViewFrustum
 		}
 
 		if (getProjectionMode().equals(EProjectionMode.ORTHOGRAPHIC)) {
-			gl.glOrtho(fLeft, fRight, fBottom, fTop, getNear(), getFar());
+			gl.glOrtho(left, right, bottom, top, getNear(), getFar());
 		}
 		else {
-			gl.glFrustum(fLeft, fRight, fBottom, fTop, getNear(), getFar());
+			gl.glFrustum(left, right, bottom, top, getNear(), getFar());
 		}
 
 		gl.glMatrixMode(GL.GL_MODELVIEW);
+	}
+
+	@Override
+	public String toString() {
+		return "[" + left + ", " + bottom + ", " + right + ", " + top + "]";
 	}
 }

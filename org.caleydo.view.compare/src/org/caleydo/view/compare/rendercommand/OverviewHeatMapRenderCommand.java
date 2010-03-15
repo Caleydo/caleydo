@@ -12,7 +12,7 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
-import org.caleydo.view.heatmap.HeatMapUtil;
+import org.caleydo.view.heatmap.hierarchical.HeatMapUtil;
 
 import com.sun.opengl.util.texture.Texture;
 

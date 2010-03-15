@@ -1,6 +1,6 @@
 package org.caleydo.view.heatmap.command.handler;
 
-import org.caleydo.view.heatmap.GLDendrogram;
+import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

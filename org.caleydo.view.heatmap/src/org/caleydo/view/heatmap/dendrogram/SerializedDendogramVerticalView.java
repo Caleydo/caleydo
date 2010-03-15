@@ -1,4 +1,4 @@
-package org.caleydo.view.heatmap;
+package org.caleydo.view.heatmap.dendrogram;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -15,17 +15,17 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
  */
 @XmlRootElement
 @XmlType
-public class SerializedDendogramHorizontalView extends ASerializedView {
+public class SerializedDendogramVerticalView extends ASerializedView {
 
-	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLDendrogramHorizontalView";
+	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLDendrogramVerticalView";
 
 	/**
 	 * Default constructor with default initialization
 	 */
-	public SerializedDendogramHorizontalView() {
+	public SerializedDendogramVerticalView() {
 	}
 
-	public SerializedDendogramHorizontalView(EDataDomain dataDomain) {
+	public SerializedDendogramVerticalView(EDataDomain dataDomain) {
 		super(dataDomain);
 	}
 

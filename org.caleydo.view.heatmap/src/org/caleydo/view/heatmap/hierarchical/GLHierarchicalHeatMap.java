@@ -1,4 +1,4 @@
-package org.caleydo.view.heatmap;
+package org.caleydo.view.heatmap.hierarchical;
 
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
@@ -87,6 +87,9 @@ import org.caleydo.rcp.view.listener.NewContentGroupInfoActionListener;
 import org.caleydo.rcp.view.listener.StorageGroupExportingListener;
 import org.caleydo.rcp.view.listener.StorageGroupInterChangingActionListener;
 import org.caleydo.rcp.view.listener.StorageGroupMergingActionListener;
+import org.caleydo.view.heatmap.HeatMapRenderStyle;
+import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.listener.GLHierarchicalHeatMapKeyListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;

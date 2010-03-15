@@ -1,4 +1,4 @@
-package org.caleydo.view.heatmap;
+package org.caleydo.view.heatmap.heatmap;
 
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -10,12 +10,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
+public class RcpGLHeatMapView extends ARcpGLViewPart {
 
 	/**
 	 * Constructor.
 	 */
-	public RcpGLHierarchicalHeatMapView() {
+	public RcpGLHeatMapView() {
 		super();
 	}
 
@@ -40,14 +40,14 @@ public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedHierarchicalHeatMapView serializedView = new SerializedHierarchicalHeatMapView(
+		SerializedHeatMapView serializedView = new SerializedHeatMapView(
 				dataDomain);
 		return serializedView;
 	}
 
 	@Override
 	public String getViewGUIID() {
-		return GLHierarchicalHeatMap.VIEW_ID;
+		return GLHeatMap.VIEW_ID;
 	}
 
 }

@@ -1,11 +1,11 @@
-package org.caleydo.view.heatmap;
+package org.caleydo.view.heatmap.dendrogram;
 
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
-import static org.caleydo.view.heatmap.DendrogramRenderStyle.CUT_OFF_Z;
-import static org.caleydo.view.heatmap.DendrogramRenderStyle.DENDROGRAM_Z;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.BUTTON_Z;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
+import static org.caleydo.view.heatmap.dendrogram.DendrogramRenderStyle.CUT_OFF_Z;
+import static org.caleydo.view.heatmap.dendrogram.DendrogramRenderStyle.DENDROGRAM_Z;
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
@@ -61,6 +61,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentCo
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;

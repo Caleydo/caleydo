@@ -10,13 +10,9 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.ContentSelectionManager;
-import org.caleydo.core.data.selection.ContentVAType;
-import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.compare.AdjustPValueEvent;
 import org.caleydo.core.manager.event.view.compare.DuplicateSetBarItemEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;

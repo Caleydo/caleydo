@@ -1,4 +1,4 @@
-package org.caleydo.view.heatmap;
+package org.caleydo.view.heatmap.dendrogram;
 
 import java.util.ArrayList;
 

@@ -5,8 +5,8 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.view.heatmap.GLDendrogram;
-import org.caleydo.view.heatmap.SerializedDendogramVerticalView;
+import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
+import org.caleydo.view.heatmap.dendrogram.SerializedDendogramVerticalView;
 
 public class ViewCreatorDendrogramVertical extends AGLViewCreator {
 

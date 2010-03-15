@@ -5,8 +5,8 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.view.heatmap.GLHierarchicalHeatMap;
-import org.caleydo.view.heatmap.SerializedHierarchicalHeatMapView;
+import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
+import org.caleydo.view.heatmap.hierarchical.SerializedHierarchicalHeatMapView;
 import org.caleydo.view.heatmap.toolbar.HierarchicalHeatMapToolBarContent;
 
 public class ViewCreatorHierarchicalHeatMap extends AGLViewCreator {

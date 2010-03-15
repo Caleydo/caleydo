@@ -1,10 +1,12 @@
 package org.caleydo.view.compare.layout;
 
+import gleem.linalg.Vec3f;
+
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.view.compare.rendercommand.ERenderCommandType;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
-
-import gleem.linalg.Vec3f;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
 
 public class HeatMapLayoutRight extends AHeatMapLayout {
 
@@ -70,4 +72,8 @@ public class HeatMapLayoutRight extends AHeatMapLayout {
 				+ getOverviewHeight() + getCaptionLabelVerticalSpacing(), 0.0f);
 	}
 
+	public void createDetailHeatMapTemplate(GLHeatMap heatMap) {
+		detailHeatMapTemplate = new ComparerDetailTemplate(heatMap, false);
+	}
+	
 }

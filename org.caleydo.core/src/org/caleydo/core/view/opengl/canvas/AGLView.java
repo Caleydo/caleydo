@@ -724,7 +724,7 @@ public abstract class AGLView
 		return contentVA;
 	}
 
-	public final IVirtualArray getStorageVA() {
+	public final StorageVirtualArray getStorageVA() {
 		return storageVA;
 	}
 

@@ -1,4 +1,4 @@
-package org.caleydo.view.heatmap;
+package org.caleydo.view.heatmap.hierarchical;
 
 import gleem.linalg.Vec3f;
 

@@ -59,7 +59,7 @@ import org.caleydo.rcp.view.listener.AddPathwayListener;
 import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
 import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
 import org.caleydo.view.bucket.GLBucket;
-import org.caleydo.view.heatmap.GLHierarchicalHeatMap;
+import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 import org.caleydo.view.parcoords.GLParallelCoordinates;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathwaybrowser.GLPathwayViewBrowser;

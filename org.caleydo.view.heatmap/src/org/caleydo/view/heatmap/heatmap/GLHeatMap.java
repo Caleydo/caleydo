@@ -1,14 +1,7 @@
-package org.caleydo.view.heatmap;
+package org.caleydo.view.heatmap.heatmap;
 
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_LINE_WIDTH;
-import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
-import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
-import gleem.linalg.Vec4f;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -16,9 +9,6 @@ import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.collection.ESetType;
-import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
@@ -26,6 +16,7 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.VABasedSelectionManager;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -36,6 +27,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.usecase.EDataFilterLevel;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
@@ -48,21 +40,21 @@ import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
-import org.caleydo.core.util.mapping.color.ColorMapping;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.view.heatmap.HeatMapRenderStyle;
+import org.caleydo.view.heatmap.heatmap.template.ARenderTemplate;
+import org.caleydo.view.heatmap.heatmap.template.ARenderTemplate;
+import org.caleydo.view.heatmap.heatmap.template.DefaultRenderTemplate;
+import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 import org.caleydo.view.heatmap.listener.GLHeatMapKeyListener;
 
 /**
@@ -75,9 +67,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.heatmap";
 
-	private HeatMapRenderStyle renderStyle;
-
-	private ColorMapping colorMapper;
+	HeatMapRenderStyle renderStyle;
 
 	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 	private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
@@ -96,7 +86,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	private SelectedElementRep elementRep;
 
-	private ArrayList<Float> yDistances;
+	ArrayList<Float> yDistances;
 
 	boolean bUseDetailLevel = true;
 
@@ -106,14 +96,16 @@ public class GLHeatMap extends AStorageBasedView {
 
 	int numSentClearSelectionEvents = 0;
 
+	private ARenderTemplate renderTemplate;
+
 	/**
 	 * Determines whether a bigger space between heat map and caption is needed
 	 * or not. If false no cluster info is available and therefore no additional
 	 * space is needed. Set by remote rendering view (HHM).
 	 */
-	private boolean bClusterVisualizationGenesActive = false;
+	boolean bClusterVisualizationGenesActive = false;
 
-	private boolean bClusterVisualizationExperimentsActive = false;
+	boolean bClusterVisualizationExperimentsActive = false;
 
 	/** Utility object for coordinate transformation and projection */
 	protected StandardTransformer selectionTransformer;
@@ -130,19 +122,19 @@ public class GLHeatMap extends AStorageBasedView {
 
 		super(glCanvas, sLabel, viewFrustum);
 		viewType = GLHeatMap.VIEW_ID;
-
-		colorMapper = ColorMappingManager.get().getColorMapping(
-				EColorMappingType.GENE_EXPRESSION);
-
 		yDistances = new ArrayList<Float>();
 
 		glKeyListener = new GLHeatMapKeyListener(this);
+
 	}
 
 	@Override
 	public void init(GL gl) {
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
 		super.renderStyle = renderStyle;
+
+		if (renderTemplate == null)
+			renderTemplate = new DefaultRenderTemplate(this);
 	}
 
 	@Override
@@ -239,7 +231,9 @@ public class GLHeatMap extends AStorageBasedView {
 	public void displayRemote(GL gl) {
 		if (set == null)
 			return;
-
+		// GLHelperFunctions.drawPointAt(gl, viewFrustum.getBottom(),
+		// viewFrustum
+		// .getLeft(), 0);
 		if (bIsTranslationAnimationActive) {
 			bIsDisplayListDirtyRemote = true;
 			doTranslation();
@@ -262,6 +256,8 @@ public class GLHeatMap extends AStorageBasedView {
 	@Override
 	public void display(GL gl) {
 
+		// GLHelperFunctions.drawPointAt(gl, 0, 0, 0);
+
 		gl.glCallList(iGLDisplayListToCall);
 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
@@ -283,24 +279,21 @@ public class GLHeatMap extends AStorageBasedView {
 
 			float fSpacing = 0;
 			// FIXME the whole heat map is turned the wrong way
-			gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight()
-					- fSpacing, vecTranslation.z());
+			// gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight()
+			// - fSpacing, vecTranslation.z());
 			// gl.glRotatef(vecRotation.x(), vecRotation.y(), vecRotation.z(),
 			// vecRotation.w());
 
-			gl.glTranslatef(fAnimationTranslation, 0.0f, 0.0f);
+			// gl.glTranslatef(fAnimationTranslation, 0.0f, 0.0f);
 
-			renderHeatMap(gl);
-
-			renderSelection(gl, SelectionType.MOUSE_OVER);
-			renderSelection(gl, SelectionType.SELECTION);
-
-			gl.glTranslatef(-fAnimationTranslation, 0.0f, 0.0f);
+			renderTemplate.render(gl);
+			//
+			// gl.glTranslatef(-fAnimationTranslation, 0.0f, 0.0f);
 
 			// gl.glRotatef(-vecRotation.x(), vecRotation.y(), vecRotation.z(),
 			// vecRotation.w());
-			gl.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight()
-					+ fSpacing, -vecTranslation.z());
+			// gl.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight()
+			// + fSpacing, -vecTranslation.z());
 
 		}
 		gl.glEndList();
@@ -308,6 +301,10 @@ public class GLHeatMap extends AStorageBasedView {
 
 	public ContentSelectionManager getContentSelectionManager() {
 		return contentSelectionManager;
+	}
+
+	public StorageSelectionManager getStorageSelectionManager() {
+		return storageSelectionManager;
 	}
 
 	@Override
@@ -485,10 +482,6 @@ public class GLHeatMap extends AStorageBasedView {
 
 		contentSelectionManager.clearSelection(selectionType);
 
-		// SelectionCommand command = new SelectionCommand(
-		// ESelectionCommandType.CLEAR, selectionType);
-		// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
-
 		// TODO: Integrate multi spotting support again
 		// // Resolve multiple spotting on chip and add all to the
 		// // selection manager.
@@ -510,20 +503,6 @@ public class GLHeatMap extends AStorageBasedView {
 
 		if (eFieldDataType == EIDType.EXPRESSION_INDEX) {
 			SelectionDelta selectionDelta = contentSelectionManager.getDelta();
-
-			// SelectionCommand command = new
-			// SelectionCommand(ESelectionCommandType.CLEAR,
-			// SelectionType);
-			// sendSelectionCommandEvent(EIDType.REFSEQ_MRNA_INT, command);
-
-			// if(sendClearSelectionsEvent && numSentClearSelectionEvents == 0)
-			// {
-			// ClearSelectionsEvent clearSelectionsEvent = new
-			// ClearSelectionsEvent();
-			// clearSelectionsEvent.setSender(this);
-			// eventPublisher.triggerEvent(clearSelectionsEvent);
-			// numSentClearSelectionEvents++;
-			// }
 
 			handleConnectedElementRep(selectionDelta);
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -556,20 +535,6 @@ public class GLHeatMap extends AStorageBasedView {
 		storageSelectionManager.addToType(selectionType, storageID);
 
 		if (eStorageDataType == EIDType.EXPERIMENT_INDEX) {
-
-			// SelectionCommand command = new
-			// SelectionCommand(ESelectionCommandType.CLEAR,
-			// SelectionType);
-			// sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
-
-			// if(sendClearSelectionsEvent && numSentClearSelectionEvents == 0)
-			// {
-			// ClearSelectionsEvent clearSelectionsEvent = new
-			// ClearSelectionsEvent();
-			// clearSelectionsEvent.setSender(this);
-			// eventPublisher.triggerEvent(clearSelectionsEvent);
-			// numSentClearSelectionEvents++;
-			// }
 
 			SelectionDelta selectionDelta = storageSelectionManager.getDelta();
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -635,294 +600,8 @@ public class GLHeatMap extends AStorageBasedView {
 		return -1;
 	}
 
-	private void renderHeatMap(final GL gl) {
-		yDistances.clear();
-		renderStyle.updateFieldSizes();
-		float fYPosition = 0;
-		float fXPosition = 0;
-		float fFieldHeight = 0;
-		float fFieldWidth = 0;
-		// renderStyle.clearFieldWidths();
-		// GLHelperFunctions.drawPointAt(gl, new Vec3f(1,0.2f,0));
-		int iCount = 0;
-		// GLHelperFunctions.drawPointAt(gl, fXPosition, fYPosition, 0);
-		SelectionType currentType;
-		for (Integer iContentIndex : contentVA) {
-			iCount++;
-			// we treat normal and deselected the same atm
-
-			if (contentSelectionManager.checkStatus(SelectionType.SELECTION,
-					iContentIndex)
-					|| contentSelectionManager.checkStatus(
-							SelectionType.MOUSE_OVER, iContentIndex)) {
-				fFieldHeight = renderStyle.getSelectedFieldHeight();
-				fFieldWidth = renderStyle.getFieldWidth();
-				currentType = SelectionType.SELECTION;
-			} else {
-
-				fFieldHeight = renderStyle.getNormalFielHeight();
-				fFieldWidth = renderStyle.getFieldWidth();
-				currentType = SelectionType.NORMAL;
-
-			}
-			fYPosition -= fFieldHeight;
-			fXPosition = 0;
-
-			for (Integer iStorageIndex : storageVA) {
-
-				renderElement(gl, iStorageIndex, iContentIndex, fYPosition,
-						fXPosition, fFieldHeight, fFieldWidth);
-
-				fXPosition += fFieldWidth;
-
-			}
-
-			float fFontScaling = 0;
-
-			float fColumnDegrees = 0;
-			float fLineDegrees = 0;
-
-			fColumnDegrees = 90;// 60;
-			fLineDegrees = 0;
-
-			// render line captions
-			if (fFieldHeight > 0.055f) {
-				boolean bRenderRefSeq = false;
-
-				fFontScaling = renderStyle.getSmallFontScalingFactor();
-
-				if (detailLevel == EDetailLevel.HIGH) {
-					// bRenderRefSeq = true;
-					String sContent = null;
-					String refSeq = null;
-
-					if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-
-						// FIXME: Due to new mapping system, a mapping involving
-						// expression index can return a set of values,
-						// depending on the IDType that has been specified when
-						// loading expression data. Possibly a different
-						// handling of the Set is required.
-						Set<String> setGeneSymbols = idMappingManager
-								.getIDAsSet(EIDType.EXPRESSION_INDEX,
-										EIDType.GENE_SYMBOL, iContentIndex);
-
-						if ((setGeneSymbols != null && !setGeneSymbols
-								.isEmpty())) {
-							sContent = (String) setGeneSymbols.toArray()[0];
-						}
-
-						if (sContent == null || sContent.equals(""))
-							sContent = "Unkonwn Gene";
-
-						// FIXME: Due to new mapping system, a mapping involving
-						// expression index can return a set of values,
-						// depending on the IDType that has been specified when
-						// loading expression data. Possibly a different
-						// handling of the Set is required.
-						Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(
-								EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA,
-								iContentIndex);
-
-						if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
-							refSeq = (String) setRefSeqIDs.toArray()[0];
-						}
-						// GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
-
-						if (bRenderRefSeq) {
-							sContent += " | ";
-							// Render heat map element name
-							sContent += refSeq;
-						}
-					} else if (set.getSetType() == ESetType.UNSPECIFIED) {
-						sContent = generalManager.getIDMappingManager().getID(
-								EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED,
-								iContentIndex);
-					} else {
-						throw new IllegalStateException("Label extraction for "
-								+ set.getSetType() + " not implemented yet!");
-					}
-
-					if (sContent == null)
-						sContent = "Unknown";
-
-					textRenderer.setColor(0, 0, 0, 1);
-
-					if (bClusterVisualizationGenesActive)
-						gl.glTranslatef(0, renderStyle
-								.getWidthClusterVisualization(), 0);
-
-					if (currentType == SelectionType.SELECTION
-							|| currentType == SelectionType.MOUSE_OVER) {
-						renderCaption(gl, sContent, fXPosition + 0.05f,
-								fYPosition + fFieldHeight / 6 * 2.5f, 0,
-								fLineDegrees, fFontScaling);
-						if (refSeq != null)
-							renderCaption(gl, refSeq, fXPosition + 0.05f,
-									fYPosition + fFieldHeight / 6 * 4.5f, 0,
-									fLineDegrees, fFontScaling);
-					} else {
-						renderCaption(gl, sContent, fXPosition + 0.05f,
-								fYPosition + fFieldHeight / 4, 0,
-								fLineDegrees, fFontScaling);
-					}
-
-					if (bClusterVisualizationGenesActive)
-						gl.glTranslatef(0, -renderStyle
-								.getWidthClusterVisualization(), 0);
-				}
-
-			}
-			// renderStyle.setXDistanceAt(contentVA.indexOf(iContentIndex),
-			// fXPosition);
-			yDistances.add(fYPosition);
-
-			// render column captions
-			if (detailLevel == EDetailLevel.HIGH && storageVA.size() < 60) {
-				if (iCount == contentVA.size()) {
-					fXPosition = 0;
-
-					if (bClusterVisualizationExperimentsActive)
-						gl.glTranslatef(+renderStyle
-								.getWidthClusterVisualization(), 0, 0);
-
-					for (Integer iStorageIndex : storageVA) {
-						textRenderer.setColor(0, 0, 0, 1);
-						renderCaption(gl, set.get(iStorageIndex).getLabel(),
-								fXPosition + fFieldWidth / 2,
-								fYPosition + 0.05f -0.5f, 0, fColumnDegrees,
-								renderStyle.getSmallFontScalingFactor());
-						fXPosition += fFieldWidth;
-					}
-
-					if (bClusterVisualizationExperimentsActive)
-						gl.glTranslatef(-renderStyle
-								.getWidthClusterVisualization(), 0, 0);
-				}
-			}
-		}
-	}
-
 	// renderElement(gl, iStorageIndex, iContentIndex, fYPosition,
 	// fXPosition, fFieldHeight, fFieldWidth);
-
-	private void renderElement(final GL gl, final int iStorageIndex,
-			final int iContentIndex, final float fYPosition,
-			final float fXPosition, final float fFieldHeight,
-			final float fFieldWidth) {
-
-		IStorage storage = set.get(iStorageIndex);
-		float fLookupValue = storage.getFloat(EDataRepresentation.NORMALIZED,
-				iContentIndex);
-
-		float fOpacity = 0;
-		if (contentSelectionManager.checkStatus(SelectionType.DESELECTED,
-				iContentIndex)) {
-			fOpacity = 0.3f;
-		} else {
-			fOpacity = 1.0f;
-		}
-
-		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
-
-		gl.glColor4f(fArMappingColor[0], fArMappingColor[1],
-				fArMappingColor[2], fOpacity);
-
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.HEAT_MAP_STORAGE_SELECTION, iStorageIndex));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.HEAT_MAP_LINE_SELECTION, iContentIndex));
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
-		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);
-		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition + fFieldHeight,
-				FIELD_Z);
-		gl.glVertex3f(fXPosition, fYPosition + fFieldHeight, FIELD_Z);
-		gl.glEnd();
-
-		gl.glPopName();
-		gl.glPopName();
-	}
-
-	private void renderSelection(final GL gl, SelectionType selectionType) {
-
-		// content selection
-		Set<Integer> selectedSet = contentSelectionManager
-				.getElements(selectionType);
-		float width = 0;
-		float yPosition = 0;
-		float xPosition = 0;
-
-		if (selectionType == SelectionType.SELECTION) {
-			gl.glColor4fv(SELECTED_COLOR, 0);
-			gl.glLineWidth(SELECTED_LINE_WIDTH);
-		} else if (selectionType == SelectionType.MOUSE_OVER) {
-			gl.glColor4fv(MOUSE_OVER_COLOR, 0);
-			gl.glLineWidth(MOUSE_OVER_LINE_WIDTH);
-		}
-
-		int lineIndex = 0;
-		for (int tempLine : contentVA) {
-			for (Integer currentLine : selectedSet) {
-				if (currentLine == tempLine) {
-					width = storageVA.size() * renderStyle.getFieldWidth();
-					yPosition = yDistances.get(lineIndex);
-					xPosition = 0;
-					gl.glPushName(pickingManager.getPickingID(iUniqueID,
-							EPickingType.HEAT_MAP_LINE_SELECTION, currentLine));
-
-					gl.glBegin(GL.GL_LINE_LOOP);
-					gl.glVertex3f(xPosition, yPosition, SELECTION_Z);
-					gl
-							.glVertex3f(xPosition, yPosition
-									+ renderStyle.getSelectedFieldHeight(),
-									SELECTION_Z);
-					gl
-							.glVertex3f(xPosition + width, yPosition
-									+ renderStyle.getSelectedFieldHeight(),
-									SELECTION_Z);
-					gl.glVertex3f(xPosition + width, yPosition, SELECTION_Z);
-					gl.glEnd();
-					gl.glPopName();
-				}
-			}
-			lineIndex++;
-		}
-
-		// storage selection
-		gl.glEnable(GL.GL_LINE_STIPPLE);
-		gl.glLineStipple(2, (short) 0xAAAA);
-
-		selectedSet = storageSelectionManager.getElements(selectionType);
-		int columnIndex = 0;
-		for (int tempColumn : storageVA) {
-			for (Integer selectedColumn : selectedSet) {
-				if (tempColumn == selectedColumn) {
-					// TODO we need indices of all elements
-
-					xPosition = columnIndex * renderStyle.getFieldWidth();
-
-					gl.glPushName(pickingManager.getPickingID(iUniqueID,
-							EPickingType.HEAT_MAP_STORAGE_SELECTION,
-							selectedColumn));
-
-					gl.glBegin(GL.GL_LINE_LOOP);
-					gl.glVertex3f(xPosition, -renderStyle.getRenderHeight(),
-							SELECTION_Z);
-					gl.glVertex3f(xPosition, 0, SELECTION_Z);
-					gl.glVertex3f(xPosition + renderStyle.getFieldWidth(), 0,
-							SELECTION_Z);
-					gl.glVertex3f(xPosition + renderStyle.getFieldWidth(),
-							-renderStyle.getRenderHeight(), SELECTION_Z);
-					gl.glEnd();
-					gl.glPopName();
-				}
-			}
-			columnIndex++;
-		}
-
-		gl.glDisable(GL.GL_LINE_STIPPLE);
-	}
 
 	@Override
 	protected void handleConnectedElementRep(ISelectionDelta selectionDelta) {
@@ -1044,31 +723,6 @@ public class GLHeatMap extends AStorageBasedView {
 
 	}
 
-	private void renderCaption(GL gl, String sLabel, float fXOrigin,
-			float fYOrigin, float fZOrigin, float fRotation, float fFontScaling) {
-		if (isRenderedRemote()
-				&& glRemoteRenderingView.getViewType().equals(
-						"org.caleydo.view.bucket"))
-			fFontScaling *= 1.5;
-		if (sLabel.length() > GeneralRenderStyle.NUM_CHAR_LIMIT + 1) {
-			sLabel = sLabel.substring(0, GeneralRenderStyle.NUM_CHAR_LIMIT - 2);
-			sLabel = sLabel + "..";
-		}
-
-		// textRenderer.setColor(0, 0, 0, 1);
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		gl.glTranslatef(fXOrigin, fYOrigin, fZOrigin);
-		gl.glRotatef(fRotation, 0, 0, 1);
-		textRenderer.begin3DRendering();
-		textRenderer.draw3D(gl, sLabel, 0, 0, 0, fFontScaling,
-				HeatMapRenderStyle.LABEL_TEXT_MIN_SIZE);
-		textRenderer.end3DRendering();
-		gl.glRotatef(-fRotation, 0, 0, 1);
-		gl.glTranslatef(-fXOrigin, -fYOrigin, -fZOrigin);
-		// textRenderer.begin3DRendering();
-		gl.glPopAttrib();
-	}
-
 	@Override
 	public void handleContentVAUpdate(ContentVADelta delta, String info) {
 
@@ -1157,5 +811,13 @@ public class GLHeatMap extends AStorageBasedView {
 
 	public void setSendClearSelectionsEvent(boolean sendClearSelectionsEvent) {
 		this.sendClearSelectionsEvent = sendClearSelectionsEvent;
+	}
+
+	PickingManager getPickingManager() {
+		return pickingManager;
+	}
+
+	public void setRenderTemplate(ARenderTemplate renderTemplate) {
+		this.renderTemplate = renderTemplate;
 	}
 }

@@ -31,9 +31,6 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -44,15 +41,13 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
 import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
-import org.caleydo.view.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class HeatMapWrapper {
 
@@ -129,6 +124,10 @@ public class HeatMapWrapper {
 		heatMap.setSet(set);
 		heatMap.setDataDomain(dataDomain);
 		heatMap.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
+
+		layout.createDetailHeatMapTemplate(heatMap);
+		heatMap.setRenderTemplate(layout.getHeatMapTemplate());
+
 		heatMap.initData();
 		heatMap.setDetailLevel(EDetailLevel.MEDIUM);
 		heatMap.initRemote(gl, glParentView, glMouseListener, infoAreaManager);
@@ -442,7 +441,7 @@ public class HeatMapWrapper {
 		}
 
 	}
-	
+
 	public Vec2f getLeftOverviewLinkPositionFromIndex(int contentIndex) {
 
 		Vec3f overviewPosition = layout.getOverviewPosition();
@@ -452,7 +451,7 @@ public class HeatMapWrapper {
 				+ layout.getOverviewHeight()
 				- ((sampleHeight * contentIndex) + sampleHeight / 2.0f));
 	}
-	
+
 	public Vec2f getLeftOverviewLinkPositionFromContentID(int contentID) {
 
 		int contentIndex = contentVA.indexOf(contentID);
@@ -472,14 +471,14 @@ public class HeatMapWrapper {
 				overviewPosition.y() + layout.getOverviewHeight()
 						- ((sampleHeight * contentIndex) + sampleHeight / 2.0f));
 	}
-	
+
 	public Vec2f getRightOverviewLinkPositionFromContentID(int contentID) {
 
 		int contentIndex = contentVA.indexOf(contentID);
 
 		if (contentVA.indexOf(contentID) == -1)
 			return null;
-		
+
 		return getRightOverviewLinkPositionFromContentIndex(contentIndex);
 	}
 
