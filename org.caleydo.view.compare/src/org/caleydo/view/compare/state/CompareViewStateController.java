@@ -1,5 +1,6 @@
 package org.caleydo.view.compare.state;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -45,15 +46,23 @@ public class CompareViewStateController {
 		hashStates.put(ECompareViewStateType.DETAIL_VIEW, new DetailViewState(
 				view, viewID, textRenderer, textureManager, pickingManager,
 				glMouseListener, setBar, renderCommandFactory, dataDomain,
-				useCase, dragAndDropController));
+				useCase, dragAndDropController, this));
 		hashStates.put(ECompareViewStateType.OVERVIEW, new OverviewState(view,
 				viewID, textRenderer, textureManager, pickingManager,
 				glMouseListener, setBar, renderCommandFactory, dataDomain,
-				useCase, dragAndDropController));
+				useCase, dragAndDropController, this));
 
-		currentState = hashStates.get(ECompareViewStateType.DETAIL_VIEW);
+		currentState = hashStates.get(ECompareViewStateType.OVERVIEW);
 		setBar.setViewState(currentState);
 
+	}
+	
+	public ACompareViewState getState(ECompareViewStateType stateType) {
+		return hashStates.get(stateType);
+	}
+	
+	public void setCurrentState(ECompareViewStateType stateType) {
+		currentState = hashStates.get(stateType);
 	}
 
 	public void init(GL gl) {
@@ -96,5 +105,9 @@ public class CompareViewStateController {
 	public void handleAdjustPValue() {
 		
 		currentState.adjustPValue();
+	}
+	
+	public void handleMouseWheel(GL gl, int amount, Point wheelPoint) {
+		currentState.handleMouseWheel(gl, amount, wheelPoint);
 	}
 }

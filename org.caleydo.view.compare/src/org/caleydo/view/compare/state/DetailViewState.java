@@ -3,6 +3,7 @@ package org.caleydo.view.compare.state;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -29,6 +30,7 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
@@ -67,11 +69,12 @@ public class DetailViewState extends ACompareViewState {
 			PickingManager pickingManager, GLMouseListener glMouseListener,
 			SetBar setBar, RenderCommandFactory renderCommandFactory,
 			EDataDomain dataDomain, IUseCase useCase,
-			DragAndDropController dragAndDropController) {
+			DragAndDropController dragAndDropController,
+			CompareViewStateController compareViewStateController) {
 
 		super(view, viewID, textRenderer, textureManager, pickingManager,
 				glMouseListener, setBar, renderCommandFactory, dataDomain,
-				useCase, dragAndDropController);
+				useCase, dragAndDropController, compareViewStateController);
 		this.setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.0f));
 		compareConnectionRenderer = new CompareConnectionBandRenderer();
 		numSetsInFocus = 2;
@@ -81,7 +84,7 @@ public class DetailViewState extends ACompareViewState {
 	public void init(GL gl) {
 
 		activeHeatMapSelectionType = new SelectionType("ActiveHeatmap",
-				new float[]{0.0f, 1.0f, 1.0f, 0.0f}, true, false, 0.9f);
+				new float[] { 0.0f, 1.0f, 1.0f, 0.0f }, true, false, 0.9f);
 
 		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
 				activeHeatMapSelectionType);
@@ -396,7 +399,8 @@ public class DetailViewState extends ACompareViewState {
 
 		float alpha = 0.2f;
 
-		ContentSelectionManager contentSelectionManager = heatMapWrapper.getContentSelectionManager();
+		ContentSelectionManager contentSelectionManager = heatMapWrapper
+				.getContentSelectionManager();
 
 		// Check if at least one element in the group is mouse over or selected
 		boolean isActive = false;
@@ -544,14 +548,13 @@ public class DetailViewState extends ACompareViewState {
 				.indexOf(contentID));
 		overviewContentIndex = overviewContentIndex - group.getStartIndex();
 
-		return (Math.abs(overviewContentIndex - detailContentIndex)) < 10
-				? false
+		return (Math.abs(overviewContentIndex - detailContentIndex)) < 10 ? false
 				: true;
 	}
 
 	private void renderDetailRelations(GL gl) {
 
-		if (setsToCompare == null || setsToCompare.size() == 0)
+		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
 
 		float alpha = 0.6f;
@@ -568,25 +571,25 @@ public class DetailViewState extends ACompareViewState {
 
 			for (Integer contentID : contentVA) {
 
-//				float positionZ = 0.0f;
-//				for (SelectionType type : contentSelectionManager
-//						.getSelectionTypes(contentID)) {
-//
-//					float[] typeColor = type.getColor();
-//					typeColor[3] = alpha;
-//					gl.glColor4fv(typeColor, 0);
-//					positionZ = type.getPriority();
-//
-//					if (type == SelectionType.MOUSE_OVER
-//							|| type == SelectionType.SELECTION
-//							|| type == activeHeatMapSelectionType) {
-//						gl.glLineWidth(3);
-//						break;
-//					} else {
-//						gl.glLineWidth(1);
-//					}
-//				}
-				
+				// float positionZ = 0.0f;
+				// for (SelectionType type : contentSelectionManager
+				// .getSelectionTypes(contentID)) {
+				//
+				// float[] typeColor = type.getColor();
+				// typeColor[3] = alpha;
+				// gl.glColor4fv(typeColor, 0);
+				// positionZ = type.getPriority();
+				//
+				// if (type == SelectionType.MOUSE_OVER
+				// || type == SelectionType.SELECTION
+				// || type == activeHeatMapSelectionType) {
+				// gl.glLineWidth(3);
+				// break;
+				// } else {
+				// gl.glLineWidth(1);
+				// }
+				// }
+
 				SelectionType type = contentSelectionManager.getSelectionTypes(
 						contentID).get(0);
 
@@ -604,7 +607,7 @@ public class DetailViewState extends ACompareViewState {
 				} else {
 					gl.glLineWidth(1);
 				}
-				
+
 				gl.glColor4fv(typeColor, 0);
 
 				Vec2f leftPos = leftHeatMapWrapper
@@ -812,7 +815,7 @@ public class DetailViewState extends ACompareViewState {
 		if (setsInFocus.size() >= getMinSetsInFocus()
 				&& setsInFocus.size() <= getMaxSetsInFocus()) {
 
-			setsToCompare = setsInFocus;
+			this.setsInFocus = setsInFocus;
 
 			if (layouts.isEmpty() || setsInFocus.size() != layouts.size()) {
 				layouts.clear();
@@ -856,6 +859,24 @@ public class DetailViewState extends ACompareViewState {
 			setsChanged = true;
 			numSetsInFocus = setsInFocus.size();
 
+			view.setDisplayListDirty();
+		}
+
+	}
+
+	@Override
+	public void handleMouseWheel(GL gl, int amount, Point wheelPoint) {
+		if (amount > 0) {
+			ACompareViewState overviewState = compareViewStateController.getState(ECompareViewStateType.OVERVIEW);
+			setBar.setViewState(overviewState);
+			setBar.adjustSelectionWindowSizeCentered(overviewState.getNumSetsInFocus());
+			setBar.setMaxSelectedItems(overviewState.getMaxSetsInFocus());
+			setBar.setMinSelectedItems(overviewState.getMinSetsInFocus());
+			overviewState.setSetsInFocus(setBar.getSetsInFocus());
+			if(!overviewState.isInitialized()) {
+				overviewState.init(gl);
+			}
+			compareViewStateController.setCurrentState(ECompareViewStateType.OVERVIEW);
 			view.setDisplayListDirty();
 		}
 

@@ -4,12 +4,12 @@ import static org.caleydo.view.heatmap.dendrogram.DendrogramRenderStyle.DENDROGR
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.SetComparer;
 import org.caleydo.core.data.collection.set.SetRelations;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ContentSelectionManager;
@@ -37,9 +37,6 @@ import org.caleydo.view.compare.GLCompare;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.SetBar;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
-import org.caleydo.view.compare.layout.HeatMapLayoutOverviewLeft;
-import org.caleydo.view.compare.layout.HeatMapLayoutOverviewMid;
-import org.caleydo.view.compare.layout.HeatMapLayoutOverviewRight;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -59,14 +56,16 @@ public abstract class ACompareViewState {
 	protected EDataDomain dataDomain;
 	protected IUseCase useCase;
 	protected DragAndDropController dragAndDropController;
+	protected CompareViewStateController compareViewStateController;
 
-	protected ArrayList<ISet> setsToCompare;
+	protected ArrayList<ISet> setsInFocus;
 	protected SetBar setBar;
 	protected ArrayList<HeatMapWrapper> heatMapWrappers;
 	protected ArrayList<AHeatMapLayout> layouts;
 	protected int numSetsInFocus;
 
 	protected boolean setsChanged;
+	protected boolean isInitialized;
 	protected SetRelations relations;
 
 	float yPosInitLeft = 0;
@@ -79,7 +78,8 @@ public abstract class ACompareViewState {
 			PickingManager pickingManager, GLMouseListener glMouseListener,
 			SetBar setBar, RenderCommandFactory renderCommandFactory,
 			EDataDomain dataDomain, IUseCase useCase,
-			DragAndDropController dragAndDropController) {
+			DragAndDropController dragAndDropController,
+			CompareViewStateController compareViewStateController) {
 		this.view = view;
 		this.viewID = viewID;
 		this.textRenderer = textRenderer;
@@ -91,8 +91,9 @@ public abstract class ACompareViewState {
 		this.dataDomain = dataDomain;
 		this.useCase = useCase;
 		this.dragAndDropController = dragAndDropController;
+		this.compareViewStateController = compareViewStateController;
 
-		setsToCompare = new ArrayList<ISet>();
+		setsInFocus = new ArrayList<ISet>();
 		heatMapWrappers = new ArrayList<HeatMapWrapper>();
 		layouts = new ArrayList<AHeatMapLayout>();
 
@@ -104,7 +105,7 @@ public abstract class ACompareViewState {
 	protected void renderTree(GL gl, HeatMapWrapper heatMapWrapperLeft,
 			HeatMapWrapper heatMapWrapperRight, float overviewDistance) {
 
-		if (setsToCompare == null || setsToCompare.size() == 0)
+		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
 
 		AHeatMapLayout heatMapLayoutLeft = heatMapWrapperLeft.getLayout();
@@ -218,7 +219,7 @@ public abstract class ACompareViewState {
 			HeatMapWrapper leftHeatMapWrapper,
 			HeatMapWrapper rightHeatMapWrapper) {
 
-		if (setsToCompare == null || setsToCompare.size() == 0)
+		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
 
 		// FIXME: Just for testing.
@@ -365,7 +366,6 @@ public abstract class ACompareViewState {
 		setsChanged = false;
 	}
 
-
 	public void setSetsToCompare(ArrayList<ISet> setsToCompare) {
 		setBar.setSets(setsToCompare);
 	}
@@ -437,10 +437,13 @@ public abstract class ACompareViewState {
 		handleStateSpecificPickingEvents(ePickingType, pickingMode,
 				iExternalID, pick, isControlPressed);
 	}
-	
 
 	public int getNumSetsInFocus() {
 		return numSetsInFocus;
+	}
+	
+	public boolean isInitialized() {
+		return isInitialized;
 	}
 
 	public abstract void init(GL gl);
@@ -465,7 +468,9 @@ public abstract class ACompareViewState {
 	public abstract int getMaxSetsInFocus();
 
 	public abstract int getMinSetsInFocus();
-	
+
 	public abstract void setSetsInFocus(ArrayList<ISet> setsInFocus);
+
+	public abstract void handleMouseWheel(GL gl, int amount, Point wheelPoint);
 
 }

@@ -37,7 +37,7 @@ public class SetBarSelectionWindow implements IDraggable {
 		this.items = items;
 		this.pickingManager = pickingManager;
 		numSelectedItems = 0;
-		lowestItemIndex = -1;
+		lowestItemIndex = 0;
 		maxSelectedItems = 0;
 		minSelectedItems = 0;
 	}
@@ -69,8 +69,8 @@ public class SetBarSelectionWindow implements IDraggable {
 				lowestItemPosition.z() + 0.1f);
 		gl.glVertex3f(lowestItemPosition.x() + width, positionY,
 				lowestItemPosition.z() + 0.1f);
-		gl.glVertex3f(lowestItemPosition.x() + width, positionY
-				+ height, lowestItemPosition.z() + 0.1f);
+		gl.glVertex3f(lowestItemPosition.x() + width, positionY + height,
+				lowestItemPosition.z() + 0.1f);
 		gl.glVertex3f(lowestItemPosition.x(), positionY + height,
 				lowestItemPosition.z() + 0.1f);
 		gl.glEnd();
@@ -129,12 +129,12 @@ public class SetBarSelectionWindow implements IDraggable {
 
 		if (newLowestItemIndex + numSelectedItems > items.size())
 			newLowestItemIndex = items.size() - numSelectedItems;
-		
-		if(newLowestItemIndex != lowestItemIndex) {
+
+		if (newLowestItemIndex != lowestItemIndex) {
 			lowestItemIndex = newLowestItemIndex;
 			itemAtDraggingPosition = items.get(lowestItemIndex
 					+ draggingIndexOffset);
-			
+
 			setBar.updateSelectedItems(getSelectedItems());
 		}
 	}
@@ -154,14 +154,37 @@ public class SetBarSelectionWindow implements IDraggable {
 		}
 		return null;
 	}
-	
+
 	public ArrayList<SetBarItem> getSelectedItems() {
 		ArrayList<SetBarItem> selectedItems = new ArrayList<SetBarItem>();
-		
-		for(int i = lowestItemIndex; i < lowestItemIndex + numSelectedItems; i++) {
+
+		for (int i = lowestItemIndex; i < lowestItemIndex + numSelectedItems; i++) {
 			selectedItems.add(items.get(i));
 		}
 		return selectedItems;
+	}
+
+	public void adjustWindowSizeCentered(int windowSize) {
+		
+		if(windowSize >= items.size()) {
+			numSelectedItems = items.size();
+			lowestItemIndex = 0;
+			return;
+		}
+		
+		int windowIndexOffsetLower = (int) Math.floor((double)windowSize / 2.0
+				- (double)numSelectedItems / 2.0);
+		
+		lowestItemIndex -= windowIndexOffsetLower;
+		numSelectedItems = windowSize;
+		
+		if(lowestItemIndex < 0) {
+			lowestItemIndex = 0;	
+		}	
+		
+		if(lowestItemIndex + numSelectedItems > items.size()) {
+			lowestItemIndex = items.size() - numSelectedItems;
+		}
 	}
 
 	public float getHeight() {

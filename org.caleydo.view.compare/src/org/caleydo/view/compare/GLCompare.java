@@ -3,6 +3,7 @@ package org.caleydo.view.compare;
 import gleem.linalg.Vec3f;
 
 import java.awt.Font;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,15 +51,11 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLCompare extends AGLView
-		implements
-			IViewCommandHandler,
-			IGLRemoteRenderingView,
-			ISelectionUpdateHandler {
+public class GLCompare extends AGLView implements IViewCommandHandler,
+		IGLRemoteRenderingView, ISelectionUpdateHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.compare";
 
-	private ArrayList<ISet> setsToCompare;
 
 	private TextRenderer textRenderer;
 	private CompareViewStateController compareViewStateController;
@@ -67,8 +64,13 @@ public class GLCompare extends AGLView
 	private DuplicateSetBarItemEventListener duplicateSetBarItemEventListener;
 	private SelectionUpdateListener selectionUpdateListener;
 	private AdjustPValueOfSetEventListener adjustPValueOfSetEventListener;
+	private CompareMouseWheelListener compareMouseWheelListener;
 
 	private boolean isControlPressed;
+	private boolean wasMouseWheeled;
+
+	private int wheelAmount;
+	private Point wheelPoint;
 
 	/**
 	 * Constructor.
@@ -82,11 +84,16 @@ public class GLCompare extends AGLView
 		super(glCanvas, sLabel, viewFrustum, true);
 
 		viewType = VIEW_ID;
-		setsToCompare = new ArrayList<ISet>();
 		glKeyListener = new GLCompareKeyListener(this);
 		isControlPressed = false;
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32),
 				true, true);
+		compareMouseWheelListener = new CompareMouseWheelListener(this);
+
+		// Unregister standard mouse wheel listener
+		parentGLCanvas.removeMouseWheelListener(glMouseListener);
+		// Register specialized compare mouse wheel listener
+		parentGLCanvas.addMouseWheelListener(compareMouseWheelListener);
 
 	}
 
@@ -154,6 +161,11 @@ public class GLCompare extends AGLView
 	public void displayLocal(GL gl) {
 
 		processEvents();
+		if (wasMouseWheeled) {
+			wasMouseWheeled = false;
+			compareViewStateController
+					.handleMouseWheel(gl, wheelAmount, wheelPoint);
+		}
 
 		compareViewStateController.executeDrawingPreprocessing(gl,
 				bIsDisplayListDirtyLocal);
@@ -430,8 +442,6 @@ public class GLCompare extends AGLView
 	}
 
 	public void setGroupsToCompare(ArrayList<ISet> sets) {
-		setsToCompare.clear();
-		setsToCompare.addAll(sets);
 
 		ClusterState clusterState = new ClusterState();
 		clusterState.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
@@ -466,7 +476,7 @@ public class GLCompare extends AGLView
 
 	public void handleAdjustPValue() {
 
-		 compareViewStateController.handleAdjustPValue();
+		compareViewStateController.handleAdjustPValue();
 	}
 
 	@Override
@@ -475,5 +485,11 @@ public class GLCompare extends AGLView
 		compareViewStateController.handleSelectionUpdate(selectionDelta,
 				scrollToSelection, info);
 
+	}
+
+	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
+		this.wheelAmount = wheelAmount;
+		this.wheelPoint = wheelPosition;
+		wasMouseWheeled = true;
 	}
 }

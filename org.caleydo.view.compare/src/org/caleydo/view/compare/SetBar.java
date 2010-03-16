@@ -123,14 +123,14 @@ public class SetBar extends AGLGUIElement {
 			currentPositionX += item.getWidth();
 			itemID++;
 		}
-		
-		if(viewState != null) {
+
+		if (viewState != null) {
 			selectionWindow.setLowestItemIndex(0);
 			selectionWindow.setNumSelectedItems(Math.min(viewState
 					.getNumSetsInFocus(), items.size()));
 			selectionWindow.setMaxSelectedItems(viewState.getMaxSetsInFocus());
 			selectionWindow.setMinSelectedItems(viewState.getMinSetsInFocus());
-			
+
 			updateSelectedItems(selectionWindow.getSelectedItems());
 		}
 	}
@@ -166,7 +166,7 @@ public class SetBar extends AGLGUIElement {
 		case RIGHT_CLICKED:
 			contextMenu.addContextMenueItem(new DuplicateSetBarElementItem(
 					itemID));
-			
+
 			contextMenu.addContextMenueItem(new AdjustPValueItem());
 			contextMenu.setLocation(pick.getPickedPoint(), view
 					.getParentGLCanvas().getWidth(), view.getParentGLCanvas()
@@ -217,8 +217,8 @@ public class SetBar extends AGLGUIElement {
 	}
 
 	public void handleDuplicateSetBarItem(int itemID) {
-		//FIXME: Is it necessary to clone the set?
-		
+		// FIXME: Is it necessary to clone the set?
+
 		SetBarItem item = items.get(itemID);
 
 		SetBarItem clone = new SetBarItem(itemID, viewID, pickingManager,
@@ -272,11 +272,14 @@ public class SetBar extends AGLGUIElement {
 
 	public void setViewState(ACompareViewState viewState) {
 		this.viewState = viewState;
-		
-		selectionWindow.setLowestItemIndex(0);
-		selectionWindow.setNumSelectedItems(Math.min(viewState.getNumSetsInFocus(), items.size()));
-		selectionWindow.setMaxSelectedItems(viewState.getMaxSetsInFocus());
-		selectionWindow.setMinSelectedItems(viewState.getMinSetsInFocus());
+	}
+
+	public void setMaxSelectedItems(int maxSelectedItems) {
+		selectionWindow.setMaxSelectedItems(maxSelectedItems);
+	}
+
+	public void setMinSelectedItems(int minSelectedItems) {
+		selectionWindow.setMinSelectedItems(minSelectedItems);
 	}
 
 	private boolean isNewSelection(ArrayList<SetBarItem> oldSelection,
@@ -292,5 +295,28 @@ public class SetBar extends AGLGUIElement {
 		}
 
 		return false;
+	}
+
+	public void increaseLowestItemIndex(int offset) {
+		selectionWindow.setLowestItemIndex(selectionWindow.getLowestItemIndex()
+				+ offset);
+	}
+
+	public void setWindowSize(int windowSize) {
+		selectionWindow.setNumSelectedItems(windowSize);
+	}
+
+	public void adjustSelectionWindowSizeCentered(int windowSize) {
+		selectionWindow.adjustWindowSizeCentered(windowSize);
+	}
+
+	public ArrayList<ISet> getSetsInFocus() {
+		ArrayList<ISet> setsInFocus = new ArrayList<ISet>();
+
+		for (SetBarItem item : selectionWindow.getSelectedItems()) {
+			setsInFocus.add(item.getSet());
+		}
+
+		return setsInFocus;
 	}
 }

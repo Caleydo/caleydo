@@ -2,6 +2,7 @@ package org.caleydo.view.compare.state;
 
 import gleem.linalg.Vec3f;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
@@ -17,6 +18,7 @@ import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.compare.GLCompare;
@@ -40,11 +42,12 @@ public class OverviewState extends ACompareViewState {
 			TextureManager textureManager, PickingManager pickingManager,
 			GLMouseListener glMouseListener, SetBar setBar,
 			RenderCommandFactory renderCommandFactory, EDataDomain dataDomain,
-			IUseCase useCase, DragAndDropController dragAndDropController) {
+			IUseCase useCase, DragAndDropController dragAndDropController,
+			CompareViewStateController compareViewStateController) {
 
 		super(view, viewID, textRenderer, textureManager, pickingManager,
 				glMouseListener, setBar, renderCommandFactory, dataDomain,
-				useCase, dragAndDropController);
+				useCase, dragAndDropController, compareViewStateController);
 		this.setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.0f));
 		compareConnectionRenderer = new CompareConnectionBandRenderer();
 		numSetsInFocus = 4;
@@ -107,10 +110,10 @@ public class OverviewState extends ACompareViewState {
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.handleSelectionUpdate(selectionDelta,
 					scrollToSelection, info);
-			heatMapWrapper.getOverview().updateHeatMapTextures(heatMapWrapper.getContentSelectionManager());
+			heatMapWrapper.getOverview().updateHeatMapTextures(
+					heatMapWrapper.getContentSelectionManager());
 		}
 	}
-
 
 	@Override
 	public void adjustPValue() {
@@ -132,18 +135,17 @@ public class OverviewState extends ACompareViewState {
 	public void handleStateSpecificPickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick,
 			boolean isControlPressed) {
-		//Nothing to do yet
 
 	}
-	
+
 	@Override
 	public void setSetsInFocus(ArrayList<ISet> setsInFocus) {
-		//FIXME: Maybe we can put this in the base class.
+		// FIXME: Maybe we can put this in the base class.
 
 		if (setsInFocus.size() >= getMinSetsInFocus()
 				&& setsInFocus.size() <= getMaxSetsInFocus()) {
 
-			setsToCompare = setsInFocus;
+			this.setsInFocus = setsInFocus;
 
 			if (layouts.isEmpty() || setsInFocus.size() != layouts.size()) {
 				layouts.clear();
@@ -187,6 +189,44 @@ public class OverviewState extends ACompareViewState {
 
 			view.setDisplayListDirty();
 		}
+	}
+
+	@Override
+	public void handleMouseWheel(GL gl, int amount, Point wheelPoint) {
+		if (amount < 0) {
+			ACompareViewState detailViewState = compareViewStateController
+					.getState(ECompareViewStateType.DETAIL_VIEW);
+
+			float[] wheelPointWorldCoordinates = GLCoordinateUtils
+					.convertWindowCoordinatesToWorldCoordinates(gl,
+							wheelPoint.x, wheelPoint.y);
+
+			int itemOffset = 0;
+			for (int i = 0; i < layouts.size() - 1; i++) {
+				if (wheelPointWorldCoordinates[0] >= layouts.get(i)
+						.getOverviewPosition().x()
+						&& wheelPointWorldCoordinates[0] <= layouts.get(i + 1)
+								.getOverviewPosition().x()
+								+ (layouts.get(i + 1).getTotalOverviewWidth() / 2.0f)) {
+					itemOffset = i;
+					break;
+				}
+			}
+
+			setBar.setViewState(detailViewState);
+			setBar.setMaxSelectedItems(detailViewState.getMaxSetsInFocus());
+			setBar.setMinSelectedItems(detailViewState.getMinSetsInFocus());
+			setBar.setWindowSize(detailViewState.getNumSetsInFocus());
+			setBar.increaseLowestItemIndex(itemOffset);
+			if(!detailViewState.isInitialized()) {
+				detailViewState.init(gl);
+			}
+			detailViewState.setSetsInFocus(setBar.getSetsInFocus());
+			compareViewStateController
+					.setCurrentState(ECompareViewStateType.DETAIL_VIEW);
+			view.setDisplayListDirty();
+		}
+
 	}
 
 }
