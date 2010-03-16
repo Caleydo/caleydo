@@ -68,6 +68,8 @@ public class SelectionType {
 	 */
 	public SelectionType(String type, float[] color, boolean isVisible, boolean isConnected, float priority) {
 		this.type = type;
+		if(color.length != 4)
+			throw new IllegalArgumentException("Color has to contain exactly 4 float values, but was: " + color);
 		this.color = color;
 		this.isVisible = isVisible;
 		this.isConnected = isConnected;

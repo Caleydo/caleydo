@@ -15,12 +15,14 @@ import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.compare.AdjustPValueEvent;
 import org.caleydo.core.manager.event.view.compare.DuplicateSetBarItemEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -46,6 +48,7 @@ import org.caleydo.view.compare.listener.AdjustPValueOfSetEventListener;
 import org.caleydo.view.compare.listener.CompareGroupsEventListener;
 import org.caleydo.view.compare.listener.DuplicateSetBarItemEventListener;
 import org.caleydo.view.compare.state.CompareViewStateController;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -82,6 +85,8 @@ public class GLCompare extends AGLView
 	private int wheelAmount;
 	private Point wheelPoint;
 
+
+
 	/**
 	 * Constructor.
 	 * 
@@ -104,6 +109,9 @@ public class GLCompare extends AGLView
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
 		// Register specialized compare mouse wheel listener
 		parentGLCanvas.addMouseWheelListener(compareMouseWheelListener);
+
+		SelectionTypeEvent event = new SelectionTypeEvent(GLHeatMap.SELECTION_HIDDEN);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 	}
 

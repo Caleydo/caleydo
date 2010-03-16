@@ -9,7 +9,8 @@ import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
 
 public class HeatMapLayoutDetailViewRight extends AHeatMapLayoutDetailView {
 
-	public HeatMapLayoutDetailViewRight(RenderCommandFactory renderCommandFactory) {
+	public HeatMapLayoutDetailViewRight(
+			RenderCommandFactory renderCommandFactory) {
 		super(renderCommandFactory);
 	}
 
@@ -58,9 +59,4 @@ public class HeatMapLayoutDetailViewRight extends AHeatMapLayoutDetailView {
 				- getCaptionLabelHorizontalSpacing(), positionY
 				+ getOverviewHeight() + getCaptionLabelVerticalSpacing(), 0.0f);
 	}
-
-	public void createDetailHeatMapTemplate(GLHeatMap heatMap) {
-		detailHeatMapTemplate = new ComparerDetailTemplate(false);
-	}
-	
 }

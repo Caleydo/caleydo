@@ -7,27 +7,26 @@ import java.util.ArrayList;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
-import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
 
 public abstract class AHeatMapLayout {
 
-//	protected static float OVERVIEW_TOTAL_WIDTH_PORTION = 0.25f;
-//	protected static float OVERVIEW_GROUP_WIDTH_PORTION = 0.04f;
-//	protected static float OVERVIEW_HEATMAP_WIDTH_PORTION = 0.15f;
-//	protected static float OVERVIEW_SLIDER_WIDTH_PORTION = 0.06f;
-//
-//	protected static float DETAIL_WIDTH_PORTION = 0.5f;
-//	protected static float DETAIL_HEATMAP_GAP_PORTION = 0.02f;
-//	protected static float OVERVIEW_TO_DETAIL_GAP_PORTION = 0.25f;
-//
-//	protected static float CAPTION_LABEL_HEIGHT_PORTION = 0.03f;
-//	protected static float CAPTION_LABEL_HORIZONTAL_SPACING_PORTION = 0.03f;
-//	protected static float CAPTION_LABEL_VERTICAL_SPACING_PORTION = 0.01f;
-//	protected static float OVERVIEW_HEIGHT_PORTION = 0.95f;
-//	protected static float DETAIL_HEIGHT_PORTION = 0.95f;
-//
-//	protected ComparerDetailTemplate detailHeatMapTemplate;
+	// protected static float OVERVIEW_TOTAL_WIDTH_PORTION = 0.25f;
+	// protected static float OVERVIEW_GROUP_WIDTH_PORTION = 0.04f;
+	// protected static float OVERVIEW_HEATMAP_WIDTH_PORTION = 0.15f;
+	// protected static float OVERVIEW_SLIDER_WIDTH_PORTION = 0.06f;
+	//
+	// protected static float DETAIL_WIDTH_PORTION = 0.5f;
+	// protected static float DETAIL_HEATMAP_GAP_PORTION = 0.02f;
+	// protected static float OVERVIEW_TO_DETAIL_GAP_PORTION = 0.25f;
+	//
+	// protected static float CAPTION_LABEL_HEIGHT_PORTION = 0.03f;
+	// protected static float CAPTION_LABEL_HORIZONTAL_SPACING_PORTION = 0.03f;
+	// protected static float CAPTION_LABEL_VERTICAL_SPACING_PORTION = 0.01f;
+	// protected static float OVERVIEW_HEIGHT_PORTION = 0.95f;
+	// protected static float DETAIL_HEIGHT_PORTION = 0.95f;
+	//
+	// protected ComparerDetailTemplate detailHeatMapTemplate;
 
 	protected float totalWidth;
 	protected float totalHeight;
@@ -37,8 +36,6 @@ public abstract class AHeatMapLayout {
 	protected RenderCommandFactory renderCommandFactory;
 	protected ArrayList<IHeatMapRenderCommand> localRenderCommands;
 	protected ArrayList<IHeatMapRenderCommand> remoteRenderCommands;
-
-	protected ComparerDetailTemplate detailHeatMapTemplate;
 
 	public AHeatMapLayout(RenderCommandFactory renderCommandFactory) {
 		this.renderCommandFactory = renderCommandFactory;
@@ -72,7 +69,7 @@ public abstract class AHeatMapLayout {
 
 	public abstract float getOverviewMaxSliderHeight();
 
-	public abstract  float getOverviewMaxSliderPositionY();
+	public abstract float getOverviewMaxSliderPositionY();
 
 	public abstract float getOverviewMinSliderPositionY();
 
@@ -87,7 +84,7 @@ public abstract class AHeatMapLayout {
 
 	public abstract float getCaptionLabelHorizontalSpacing();
 
-	public abstract float getCaptionLabelVerticalSpacing() ;
+	public abstract float getCaptionLabelVerticalSpacing();
 
 	public abstract Vec3f getOverviewPosition();
 
@@ -113,7 +110,4 @@ public abstract class AHeatMapLayout {
 		return remoteRenderCommands;
 	}
 
-	public ComparerDetailTemplate getHeatMapTemplate() {
-		return detailHeatMapTemplate;
-	}
 }

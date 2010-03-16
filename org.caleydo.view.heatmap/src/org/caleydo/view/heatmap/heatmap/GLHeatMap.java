@@ -65,6 +65,8 @@ import org.caleydo.view.heatmap.listener.GLHeatMapKeyListener;
 public class GLHeatMap extends AStorageBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.heatmap";
+	public static final SelectionType SELECTION_HIDDEN = new SelectionType(
+			"Hidden", new float[] { 0.3f, 0.3f, 0.3f, 1f }, true, false, 0);
 
 	HeatMapRenderStyle renderStyle;
 
@@ -95,6 +97,8 @@ public class GLHeatMap extends AStorageBasedView {
 
 	private TemplateRenderer templateRenderer;
 	private ATemplate template;
+
+	private boolean hideElements = false;
 
 	/**
 	 * Determines whether a bigger space between heat map and caption is needed
@@ -276,25 +280,7 @@ public class GLHeatMap extends AStorageBasedView {
 		if (contentVA.size() == 0) {
 			renderSymbol(gl, EIconTextures.HEAT_MAP_SYMBOL, 2);
 		} else {
-
-			float fSpacing = 0;
-			// FIXME the whole heat map is turned the wrong way
-			// gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight()
-			// - fSpacing, vecTranslation.z());
-			// gl.glRotatef(vecRotation.x(), vecRotation.y(), vecRotation.z(),
-			// vecRotation.w());
-
-			// gl.glTranslatef(fAnimationTranslation, 0.0f, 0.0f);
-
 			templateRenderer.render(gl);
-			//
-			// gl.glTranslatef(-fAnimationTranslation, 0.0f, 0.0f);
-
-			// gl.glRotatef(-vecRotation.x(), vecRotation.y(), vecRotation.z(),
-			// vecRotation.w());
-			// gl.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight()
-			// + fSpacing, -vecTranslation.z());
-
 		}
 		gl.glEndList();
 	}
@@ -394,6 +380,16 @@ public class GLHeatMap extends AStorageBasedView {
 
 		SelectionType selectionType;
 		switch (ePickingType) {
+		case HEAT_MAP_HIDE_HIDDEN_ELEMENTS:
+			if (pickingMode == EPickingMode.CLICKED)
+				if (hideElements)
+					hideElements = false;
+				else
+					hideElements = true;
+
+			break;
+		case HEAT_MAP_SHOW_CAPTIONS:
+			break;
 		case HEAT_MAP_LINE_SELECTION:
 			iCurrentMouseOverElement = iExternalID;
 			switch (pickingMode) {
@@ -460,6 +456,7 @@ public class GLHeatMap extends AStorageBasedView {
 			createStorageSelection(selectionType, iExternalID);
 
 			break;
+
 		}
 	}
 
@@ -819,5 +816,14 @@ public class GLHeatMap extends AStorageBasedView {
 
 	public void setRenderTemplate(ATemplate template) {
 		this.template = template;
+	}
+
+	/**
+	 * Chech wheter we should hide elements
+	 * 
+	 * @return
+	 */
+	public boolean isHideElements() {
+		return hideElements;
 	}
 }

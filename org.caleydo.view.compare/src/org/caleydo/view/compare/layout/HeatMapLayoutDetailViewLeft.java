@@ -58,8 +58,4 @@ public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
 						+ getCaptionLabelVerticalSpacing(), 0.0f);
 	}
 
-	public void createDetailHeatMapTemplate(GLHeatMap heatMap) {
-		detailHeatMapTemplate = new ComparerDetailTemplate(true);
-	}
-
 }

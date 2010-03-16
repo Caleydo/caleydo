@@ -2,7 +2,8 @@ package org.caleydo.view.heatmap.heatmap.template;
 
 class RenderParameters {
 
-	boolean useRenderer;
+	boolean scaleX = true;
+	boolean scaleY = true;
 	float transformX = 0;
 	float transformY = 0;
 	float transformScaledX = 0;
@@ -14,11 +15,22 @@ class RenderParameters {
 	float sizeScaledY = 0;
 
 	void calculateScales(float totalWidth, float totalHeight) {
-		sizeScaledX = sizeX * totalWidth;
-		sizeScaledY = sizeY * totalHeight;
-		transformScaledX = transformX * totalWidth;
-		transformScaledY = transformY * totalHeight;
+		if (scaleX) {
+			sizeScaledX = sizeX * totalWidth;
 
+			// transformScaledX = transformX * totalWidth;
+			// transformScaledY = transformY * totalHeight;
+		} else {
+			sizeScaledX = sizeX;
+
+			// transformScaledX = transformX * totalWidth;
+			// transformScaledY = transformY * totalHeight;
+
+		}
+		if (scaleY)
+			sizeScaledY = sizeY * totalHeight;
+		else
+			sizeScaledY = sizeY;
 	}
 
 }

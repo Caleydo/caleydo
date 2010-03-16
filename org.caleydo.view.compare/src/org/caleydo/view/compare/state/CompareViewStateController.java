@@ -110,7 +110,7 @@ public class CompareViewStateController {
 	}
 
 	public void handleAdjustPValue() {
-		
+
 		currentState.adjustPValue();
 	}
 	

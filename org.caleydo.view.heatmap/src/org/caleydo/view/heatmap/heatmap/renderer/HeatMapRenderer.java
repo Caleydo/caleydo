@@ -15,28 +15,15 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
-import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class HeatMapRenderer extends AContentRenderer {
 
-	// private ContentSelectionManager contentSelectionManager;
-	// private HeatMapRenderStyle renderStyle;
-	// private ContentVirtualArray contentVA;
-	//
-	// private StorageVirtualArray storageVA;
-	// private StorageSelectionManager storageSelectionManager;
-
 	private ColorMapping colorMapper;
-	// HeatMapRenderStyle renderStyle;
-
-
 
 	ArrayList<Float> yDistances;
 
@@ -57,7 +44,6 @@ public class HeatMapRenderer extends AContentRenderer {
 		float xPosition = 0;
 		float fieldHeight = 0;
 
-
 		// renderStyle.clearFieldWidths();
 		int iCount = 0;
 
@@ -71,6 +57,10 @@ public class HeatMapRenderer extends AContentRenderer {
 							SelectionType.MOUSE_OVER, iContentIndex)) {
 				fieldHeight = selectedFieldHeight;
 				// currentType = SelectionType.SELECTION;
+			} else if (heatMap.isHideElements()
+					&& heatMap.getContentSelectionManager().checkStatus(
+							GLHeatMap.SELECTION_HIDDEN, iContentIndex)) {
+				continue;
 			} else {
 
 				fieldHeight = normalFieldHeight;
@@ -152,30 +142,30 @@ public class HeatMapRenderer extends AContentRenderer {
 			gl.glLineWidth(MOUSE_OVER_LINE_WIDTH);
 		}
 
-		int lineIndex = 0;
-		for (int tempLine : heatMap.getContentVA()) {
-			for (Integer currentLine : selectedSet) {
-				if (currentLine == tempLine) {
-					width = heatMap.getStorageVA().size() * fieldWidth;
-					yPosition = yDistances.get(lineIndex);
-					xPosition = 0;
-					gl.glPushName(heatMap.getPickingManager().getPickingID(
-							heatMap.getID(),
-							EPickingType.HEAT_MAP_LINE_SELECTION, currentLine));
-
-					gl.glBegin(GL.GL_LINE_LOOP);
-					gl.glVertex3f(xPosition, yPosition, SELECTION_Z);
-					gl.glVertex3f(xPosition, yPosition + selectedFieldHeight,
-							SELECTION_Z);
-					gl.glVertex3f(xPosition + width, yPosition
-							+ selectedFieldHeight, SELECTION_Z);
-					gl.glVertex3f(xPosition + width, yPosition, SELECTION_Z);
-					gl.glEnd();
-					gl.glPopName();
-				}
-			}
-			lineIndex++;
-		}
+//		int lineIndex = 0;
+//		for (int tempLine : heatMap.getContentVA()) {
+//			for (Integer currentLine : selectedSet) {
+//				if (currentLine == tempLine) {
+//					width = heatMap.getStorageVA().size() * fieldWidth;
+//					yPosition = yDistances.get(lineIndex);
+//					xPosition = 0;
+//					gl.glPushName(heatMap.getPickingManager().getPickingID(
+//							heatMap.getID(),
+//							EPickingType.HEAT_MAP_LINE_SELECTION, currentLine));
+//
+//					gl.glBegin(GL.GL_LINE_LOOP);
+//					gl.glVertex3f(xPosition, yPosition, SELECTION_Z);
+//					gl.glVertex3f(xPosition, yPosition + selectedFieldHeight,
+//							SELECTION_Z);
+//					gl.glVertex3f(xPosition + width, yPosition
+//							+ selectedFieldHeight, SELECTION_Z);
+//					gl.glVertex3f(xPosition + width, yPosition, SELECTION_Z);
+//					gl.glEnd();
+//					gl.glPopName();
+//				}
+//			}
+//			lineIndex++;
+//		}
 
 		// storage selection
 		gl.glEnable(GL.GL_LINE_STIPPLE);

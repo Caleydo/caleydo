@@ -1,5 +1,10 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
+import org.caleydo.view.heatmap.heatmap.renderer.CaptionCageRenderer;
+import org.caleydo.view.heatmap.heatmap.renderer.ContentCaptionRenderer;
+import org.caleydo.view.heatmap.heatmap.renderer.DetailToolBar;
+import org.caleydo.view.heatmap.heatmap.renderer.HeatMapRenderer;
+
 public class ComparerDetailTemplate extends ATemplate {
 
 	private boolean isLeft = true;
@@ -10,35 +15,59 @@ public class ComparerDetailTemplate extends ATemplate {
 
 	@Override
 	public void setParameters() {
+
+		// verticalSpaceAllocations.clear();
+		Row hmRow = new Row();
 		// heat map
-		RenderParameters parameters = new RenderParameters();
-		parameters.sizeX = 0.7f;
-		parameters.sizeY = 1f;
-		if (isLeft)
-			parameters.transformX = 0.3f;
-		templateRenderer.heatMapParameters = parameters;
+		RenderParameters hm = new RenderParameters();
+		hm.sizeX = 0.7f;
+		hm.sizeY = 1f;
 
+		templateRenderer.addRenderer(new HeatMapRenderer(
+				templateRenderer.heatMap), hm);
+		// verticalSpaceAllocations.add(parameters);
+
+		RenderParameters caption;
 		// content captions
-		parameters = new RenderParameters();
-		parameters.sizeX = 0.29f;
-		parameters.sizeY = 1f;
-		if (isLeft)
-			parameters.transformX = templateRenderer.SPACING;
+		caption = new RenderParameters();
+		caption.sizeX = 0.29f;
+		caption.sizeY = 1f;
 
-		else
-			parameters.transformX = templateRenderer.heatMapParameters.sizeX
-					+ templateRenderer.SPACING;
-
-		templateRenderer.contentCaptionParameters = parameters;
+		templateRenderer.addRenderer(new ContentCaptionRenderer(
+				templateRenderer.heatMap), caption);
 
 		// content cage
-		parameters = new RenderParameters();
-		parameters.sizeX = 0.3f;
-		parameters.sizeY = 1f;
-		if (!isLeft)
-			parameters.transformX = templateRenderer.heatMapParameters.sizeX;
+		// RenderParameters cage;
+		// cage = new RenderParameters();
+		// cage.sizeX = 0.3f;
+		// cage.sizeY = 1f;
+		//
+		//
+		// templateRenderer.addRenderer(new CaptionCageRenderer(
+		// templateRenderer.heatMap), cage);
+		// hmRow.appendElement(parameters);
 
-		templateRenderer.captionCageParameters = parameters;
+		if (isLeft) {
+			hmRow.appendElement(caption);
+			hmRow.appendElement(hm);
+
+		} else {
+			hmRow.appendElement(hm);
+			hmRow.appendElement(caption);
+		}
+
+		RenderParameters toolBar;
+
+		toolBar = new RenderParameters();
+		toolBar.sizeX = 1f;
+		toolBar.sizeY = 0.1f;
+
+		toolBar.scaleY = false;
+
+		templateRenderer.addRenderer(
+				new DetailToolBar(templateRenderer.heatMap), toolBar);
+		add(hmRow);
+		add(toolBar);
 
 	}
 }

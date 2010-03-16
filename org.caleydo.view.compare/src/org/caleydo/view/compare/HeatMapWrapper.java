@@ -23,6 +23,7 @@ import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -32,6 +33,7 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
+import org.caleydo.core.manager.event.view.selection.AddSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -46,8 +48,10 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
+import org.caleydo.view.compare.layout.HeatMapLayoutDetailViewRight;
 import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
 
 public class HeatMapWrapper {
 
@@ -74,7 +78,7 @@ public class HeatMapWrapper {
 	private IGLRemoteRenderingView parentView;
 	private EDataDomain dataDomain;
 
-//	private SelectionUpdateListener selectionUpdateListener;
+	// private SelectionUpdateListener selectionUpdateListener;
 	private IEventPublisher eventPublisher;
 	private ContentSelectionManager contentSelectionManager;
 	private SelectionType activeHeatMapSelectionType;
@@ -123,7 +127,10 @@ public class HeatMapWrapper {
 		heatMap.setDataDomain(dataDomain);
 		heatMap.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
 
-		heatMap.setRenderTemplate(layout.getHeatMapTemplate());
+		if (layout instanceof HeatMapLayoutDetailViewRight)
+			heatMap.setRenderTemplate(new ComparerDetailTemplate(false));
+		else
+			heatMap.setRenderTemplate(new ComparerDetailTemplate(true));
 
 		heatMap.initData();
 		heatMap.setDetailLevel(EDetailLevel.MEDIUM);
@@ -179,12 +186,12 @@ public class HeatMapWrapper {
 	public void init(GL gl, GLMouseListener glMouseListener,
 			GLInfoAreaManager infoAreaManager, EDataDomain dataDomain) {
 
-		if(set == null) 
+		if (set == null)
 			return;
-		
+
 		ContentGroupList contentGroupList = contentVA.getGroupList();
-		//FIXME: Can we do this? Shall we do this in some other way?
-		for(GLHeatMap heatMap : hashHeatMaps.values()) {
+		// FIXME: Can we do this? Shall we do this in some other way?
+		for (GLHeatMap heatMap : hashHeatMaps.values()) {
 			heatMap.destroy();
 		}
 		hashHeatMaps.clear();
@@ -646,7 +653,6 @@ public class HeatMapWrapper {
 	// // }
 	// }
 
-
 	public void selectGroupsFromContentVAList(
 			HashMap<Integer, Integer> relationMap,
 			ArrayList<ContentVirtualArray> foreignContentVAs) {
@@ -695,10 +701,11 @@ public class HeatMapWrapper {
 
 			SelectionDelta contentSelectionDelta = new SelectionDelta(
 					EIDType.EXPRESSION_INDEX);
+
 			for (int contentIndex = nrGenes; contentIndex < contentVA.size(); contentIndex++) {
 				SelectionDeltaItem item = new SelectionDeltaItem();
 				item.setPrimaryID(contentVA.get(contentIndex));
-				item.setSelectionType(SelectionType.DESELECTED);
+				item.setSelectionType(GLHeatMap.SELECTION_HIDDEN);
 				contentSelectionDelta.add(item);
 			}
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -770,7 +777,7 @@ public class HeatMapWrapper {
 
 	private void clearDeselected() {
 		SelectionCommand selectionCommand = new SelectionCommand(
-				ESelectionCommandType.CLEAR, SelectionType.DESELECTED);
+				ESelectionCommandType.CLEAR, GLHeatMap.SELECTION_HIDDEN);
 
 		SelectionCommandEvent event = new SelectionCommandEvent();
 		event.setSelectionCommand(selectionCommand);
@@ -792,35 +799,36 @@ public class HeatMapWrapper {
 		}
 
 	}
-//
-//	@Override
-//	public void queueEvent(AEventListener<? extends IListenerOwner> listener,
-//			AEvent event) {
-//		glParentView.queueEvent(listener, event);
-//
-//	}
 
-//	/**
-//	 * Register all event listeners used by the HeatMapWrapper.
-//	 */
-//	public void registerEventListeners() {
-//
-//		selectionUpdateListener = new SelectionUpdateListener();
-//		selectionUpdateListener.setHandler(this);
-//		eventPublisher.addListener(SelectionUpdateEvent.class,
-//				selectionUpdateListener);
-//	}
-//
-//	/**
-//	 * Unregister all event listeners used by the HeatMapWrapper.
-//	 */
-//	public void unregisterEventListeners() {
-//
-//		if (selectionUpdateListener != null) {
-//			eventPublisher.removeListener(selectionUpdateListener);
-//			selectionUpdateListener = null;
-//		}
-//	}
+	//
+	// @Override
+	// public void queueEvent(AEventListener<? extends IListenerOwner> listener,
+	// AEvent event) {
+	// glParentView.queueEvent(listener, event);
+	//
+	// }
+
+	// /**
+	// * Register all event listeners used by the HeatMapWrapper.
+	// */
+	// public void registerEventListeners() {
+	//
+	// selectionUpdateListener = new SelectionUpdateListener();
+	// selectionUpdateListener.setHandler(this);
+	// eventPublisher.addListener(SelectionUpdateEvent.class,
+	// selectionUpdateListener);
+	// }
+	//
+	// /**
+	// * Unregister all event listeners used by the HeatMapWrapper.
+	// */
+	// public void unregisterEventListeners() {
+	//
+	// if (selectionUpdateListener != null) {
+	// eventPublisher.removeListener(selectionUpdateListener);
+	// selectionUpdateListener = null;
+	// }
+	// }
 
 	public void setHeatMapActive(int groupIndex) {
 		if (activeHeatMapID == groupIndex)
