@@ -109,6 +109,10 @@ public class DataWindowsDisk extends PoincareDisk {
 
 	public boolean renderNode(PoincareNode node, int mode) {
 
+		if( node.nonExistent==true){
+			return true;
+		}		
+		
 		if (node.getChildren() != null) {
 			ArrayList<PoincareNode> children = node.getChildren();
 			int numberOfChildren = children.size();
@@ -135,15 +139,20 @@ public class DataWindowsDisk extends PoincareDisk {
 
 	public void drawNode(PoincareNode node, int mode) {
 
+		
+		
 		// for a realistic size, the size is a projected offset of the current
 		double size = getMetric(node.getPosition(), nodeSize);
 
-		if (node.highLighted == true) {
-			size = size * 1.5;
-		}
-		
-		if (node==this.getCenteredNode()){
-			size=centeredNodeSize;
+		if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 1) {
+
+			if (node.highLighted == true) {
+				size = size * 1.5;
+			}
+
+			if (node == this.getCenteredNode()) {
+				size = centeredNodeSize;
+			}
 		}
 
 		// if (mode==1){
@@ -195,10 +204,15 @@ public class DataWindowsDisk extends PoincareDisk {
 		gl.glPushName(iPickingID);
 		// different textures for different detail levels
 		if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 2) {
+			float alpha=1;
+			if( node.markedToRemove==true){
+				alpha=0.7f;
+			}
 			textureManager.renderGUITexture(gl, EIconTextures.PATHWAY_ICON,
 					lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
-
+					upperLeftCorner, scalingPivot, 1, 1, 1, alpha, 100);
+			
+			
 		} else {
 			// textureManager.renderGUITexture(gl, EIconTextures.PATHWAY_SYMBOL,
 			// lowerLeftCorner, lowerRightCorner, upperRightCorner,
@@ -314,7 +328,5 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		return returnNode;
 	}
-	
-	
 
 }

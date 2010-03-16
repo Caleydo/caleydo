@@ -13,6 +13,8 @@ public class PoincareNode extends AHierarchyElement<PoincareNode> {
 	private PoincareNode openLink;
 	private boolean linked = false;
 	private int levelOfDetail = 0;
+	public boolean markedToRemove = false;
+	public boolean nonExistent = false;
 	
 	String nodeName;
 	int iComparableValue;

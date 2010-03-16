@@ -1,6 +1,5 @@
 package org.caleydo.view.datawindows;
 
-
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
@@ -69,8 +68,6 @@ public class GLHyperbolic extends AGLView {
 
 	private boolean manualPickFlag = true;
 
-	
-
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(
 			0, 0);
 
@@ -78,9 +75,9 @@ public class GLHyperbolic extends AGLView {
 
 	private Tree<PoincareNode> tree;
 	public double diskZoomIntensity = 0;
-	
-	private DataWindowsMouseWheelListener mouseWheelListener ;
-	
+
+	private DataWindowsMouseWheelListener mouseWheelListener;
+
 	/**
 	 * Constructor.
 	 * 
@@ -109,21 +106,16 @@ public class GLHyperbolic extends AGLView {
 
 		disk = new DataWindowsDisk(this);
 
+//		mouseWheelListener = new DataWindowsMouseWheelListener(this);
+
 		
+		// glCanvas.removeMouseWheelListener(glMouseListener);
 		
-//mouseWheelListener = new DataWindowsMouseWheelListener(this);
-		
-//parentGLCanvas.removeMouseWheelListener(glMouseListener);
-		//parentGLCanvas.removeMouseListener(glMouseListener);
-		// Register specialized bucket mouse wheel listener
-//parentGLCanvas.addMouseWheelListener(mouseWheelListener);
-	
-		
-		
+
+	//	glCanvas.addMouseWheelListener(mouseWheelListener);
+
 		//glMouseListener.addGLCanvas(this);
-		
-		
-		
+
 		// nullpointer:
 		// Tree<ClusterNode> tree = set.getStorageTree();
 
@@ -266,16 +258,10 @@ public class GLHyperbolic extends AGLView {
 
 		//		
 
-		
-
 		if (glMouseListener.wasLeftMouseButtonPressed()) {
-			
-		
-			
 
 			if (glMouseListener.getPickedPoint() != null) {
 
-				System.out.println("leftmouse");
 				if (manualPickFlag == true) {
 					Point mousePoint = new Point(0, 0);
 					mousePoint = glMouseListener.getPickedPoint();
@@ -295,15 +281,13 @@ public class GLHyperbolic extends AGLView {
 							new Point2D.Double(mouseCoordX, mouseCoordY),
 							arSlerpActions);
 					if (selectedNode != null) {
-						System.out.println("nodeSelected:"
-								+ selectedNode.iComparableValue);
-
+						disk.setCenteredNode(null);
 						// arSlerpActions.add(new nodeSlerp(4,
 						// selectedNode.getPosition(),
 						// new Point2D.Double(0, 0)));
 
 						slerpedNode = selectedNode;
-						disk.setCenteredNode(selectedNode);
+						// disk.setCenteredNode(selectedNode);
 
 					}
 				}
@@ -399,21 +383,18 @@ public class GLHyperbolic extends AGLView {
 		SelectionType selectionType;
 		switch (ePickingType) {
 
-			case DATAW_NODE :
-				switch (pickingMode) {
+		case DATAW_NODE:
+			switch (pickingMode) {
 
-					case CLICKED :
+			case CLICKED:
 
-						arSlerpActions.add(new NodeSlerp(4, disk
-								.getNodeByCompareableValue(iExternalID)
-								.getPosition(), new Point2D.Double(0, 0)));
+				arSlerpActions.add(new NodeSlerp(4, disk
+						.getNodeByCompareableValue(iExternalID).getPosition(),
+						new Point2D.Double(0, 0)));
 
-						slerpedNode = disk
-								.getNodeByCompareableValue(iExternalID);
-						disk.setCenteredNode(disk
-								.getNodeByCompareableValue(iExternalID));
+				slerpedNode = disk.getNodeByCompareableValue(iExternalID);
 
-				}
+			}
 
 		}
 
@@ -475,26 +456,27 @@ public class GLHyperbolic extends AGLView {
 		return 0;
 	}
 
-//	private void initNewView(GL gl) {
-//		// if (!newViews.isEmpty()) {
-//		// ASerializedView serView = newViews.remove(0);
-//		// AGLView view = createView(gl, serView);
-//		// containedGLViews.add(view);
-//		// testRemoteElement.setGLView(view);
-//		// }
-//
-//		SerializedPathwayView serTestPathway = new SerializedPathwayView(
-//				dataDomain);
-//		// serTestPathway.setPathwayID(generalManager.getPathwayManager().searchPathwayByName("TGF-beta signaling pathway",
-//		// EPathwayDatabaseType.KEGG).getID());
-//				.getPathwayManager().getAllItems().toArray()[randomGenerator
-//				.nextInt(generalManager.getPathwayManager().getAllItems()
-//						.size())])).getID());
-//
-//		AGLView view = createView(gl, serTestPathway);
-//		view.broadcastElements(EVAOperation.APPEND_UNIQUE);
-//		testRemoteElement.setGLView(view);
-//	}
+	// private void initNewView(GL gl) {
+	// // if (!newViews.isEmpty()) {
+	// // ASerializedView serView = newViews.remove(0);
+	// // AGLView view = createView(gl, serView);
+	// // containedGLViews.add(view);
+	// // testRemoteElement.setGLView(view);
+	// // }
+	//
+	// SerializedPathwayView serTestPathway = new SerializedPathwayView(
+	// dataDomain);
+	// //
+	// serTestPathway.setPathwayID(generalManager.getPathwayManager().searchPathwayByName("TGF-beta signaling pathway",
+	// // EPathwayDatabaseType.KEGG).getID());
+	// .getPathwayManager().getAllItems().toArray()[randomGenerator
+	// .nextInt(generalManager.getPathwayManager().getAllItems()
+	// .size())])).getID());
+	//
+	// AGLView view = createView(gl, serTestPathway);
+	// view.broadcastElements(EVAOperation.APPEND_UNIQUE);
+	// testRemoteElement.setGLView(view);
+	// }
 
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
@@ -542,18 +524,18 @@ public class GLHyperbolic extends AGLView {
 		if (singleSlerp.doASlerp(slerpedNode.getZoomedPosition()) == true) {
 
 			disk.translateTreeMoebius(singleSlerp.returnPoint);
-		}
-		else {
+		} else {
 
 			disk.translateTreeMoebius(singleSlerp.returnPoint);
 			disk.setCenteredNode(slerpedNode);
-			disk.centeredNodeSize=disk.findOptimalCenterNodeSize(disk.getCenteredNode(), 10);
+			disk.centeredNodeSize = disk.findOptimalCenterNodeSize(disk
+					.getCenteredNode(), 10);
 			arSlerpActions.remove(0);
-		}		
+		}
 	}
-		
 
-	public void drawRemoteView(GL gl, PoincareNode node, Point2D.Double position, double size) {
+	public void drawRemoteView(GL gl, PoincareNode node,
+			Point2D.Double position, double size) {
 
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f((float) position.getX(),
@@ -561,9 +543,9 @@ public class GLHyperbolic extends AGLView {
 		transform.setScale(new Vec3f((float) size, (float) size, 1));
 		testRemoteElement.setTransform(transform);
 
-//		initNewView(gl);
-		testRemoteElement.setGLView(((ViewHyperbolicNode)node).getGlView());
-		
+		// initNewView(gl);
+		testRemoteElement.setGLView(((ViewHyperbolicNode) node).getGlView());
+
 		renderRemoteLevelElement(gl, testRemoteElement);
 	}
 
@@ -573,31 +555,31 @@ public class GLHyperbolic extends AGLView {
 
 		GLPathway glPathwayView = createPathwayView(gl);
 		glPathwayView.broadcastElements(EVAOperation.APPEND_UNIQUE);
-		
-		ViewHyperbolicNode node = new ViewHyperbolicNode(tree, "pathway",
-				1, glPathwayView);
+
+		ViewHyperbolicNode node = new ViewHyperbolicNode(tree, "pathway", 1,
+				glPathwayView);
 
 		tree.setRootNode(node);
-		
-		for (int i=0; i<5; i++) {
-		
-			node =  new ViewHyperbolicNode(tree, "child_pathway",
-					3, createPathwayView(gl));
+
+		for (int i = 0; i < 5; i++) {
+
+			node = new ViewHyperbolicNode(tree, "child_pathway", 3,
+					createPathwayView(gl));
 			tree.addChild(tree.getRoot(), node);
-			
-			for (int j=0; j<5; j++) {
-				
-				ViewHyperbolicNode childNode =  new ViewHyperbolicNode(tree, "child_pathway",
-						3, createPathwayView(gl));
+
+			for (int j = 0; j < 5; j++) {
+
+				ViewHyperbolicNode childNode = new ViewHyperbolicNode(tree,
+						"child_pathway", 3, createPathwayView(gl));
 				tree.addChild(node, childNode);
 			}
 		}
-		
-//		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
-//		tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
-//		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
-//		tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
-//		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
+
+		// tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
+		// tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
+		// tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
+		// tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
+		// tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
 
 		// int iCount = 3344;
 		// for (PoincareNode tempNode : tree.getChildren(node)) {
@@ -707,9 +689,8 @@ public class GLHyperbolic extends AGLView {
 	}
 
 	private GLPathway createPathwayView(GL gl) {
-		
-		SerializedPathwayView serPathway = new SerializedPathwayView(
-				dataDomain);
+
+		SerializedPathwayView serPathway = new SerializedPathwayView(dataDomain);
 		// serTestPathway.setPathwayID(generalManager.getPathwayManager().searchPathwayByName("TGF-beta signaling pathway",
 		// EPathwayDatabaseType.KEGG).getID());
 		serPathway.setPathwayID(((PathwayGraph) (generalManager
@@ -717,8 +698,7 @@ public class GLHyperbolic extends AGLView {
 				.nextInt(generalManager.getPathwayManager().getAllItems()
 						.size())])).getID());
 
-		return (GLPathway)createView(gl, serPathway);
+		return (GLPathway) createView(gl, serPathway);
 	}
-	
 
 }
