@@ -140,10 +140,6 @@ public abstract class AHeatMapLayout {
 
 	public abstract Vec3f getCaptionLabelPosition(float textWidth);
 
-	public void createDetailHeatMapTemplate(GLHeatMap heatMap) {
-
-		detailHeatMapTemplate = new ComparerDetailTemplate(heatMap, true);
-	}
 
 	public ComparerDetailTemplate getHeatMapTemplate() {
 		return detailHeatMapTemplate;

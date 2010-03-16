@@ -1,6 +1,5 @@
 package org.caleydo.view.heatmap.heatmap;
 
-import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
@@ -51,9 +50,9 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.Experimen
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
-import org.caleydo.view.heatmap.heatmap.template.ARenderTemplate;
-import org.caleydo.view.heatmap.heatmap.template.ARenderTemplate;
-import org.caleydo.view.heatmap.heatmap.template.DefaultRenderTemplate;
+import org.caleydo.view.heatmap.heatmap.template.ATemplate;
+import org.caleydo.view.heatmap.heatmap.template.DefaultTemplate;
+import org.caleydo.view.heatmap.heatmap.template.TemplateRenderer;
 import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 import org.caleydo.view.heatmap.listener.GLHeatMapKeyListener;
 
@@ -86,8 +85,6 @@ public class GLHeatMap extends AStorageBasedView {
 
 	private SelectedElementRep elementRep;
 
-	ArrayList<Float> yDistances;
-
 	boolean bUseDetailLevel = true;
 
 	private boolean sendClearSelectionsEvent = false;
@@ -96,7 +93,8 @@ public class GLHeatMap extends AStorageBasedView {
 
 	int numSentClearSelectionEvents = 0;
 
-	private ARenderTemplate renderTemplate;
+	private TemplateRenderer templateRenderer;
+	private ATemplate template;
 
 	/**
 	 * Determines whether a bigger space between heat map and caption is needed
@@ -122,7 +120,6 @@ public class GLHeatMap extends AStorageBasedView {
 
 		super(glCanvas, sLabel, viewFrustum);
 		viewType = GLHeatMap.VIEW_ID;
-		yDistances = new ArrayList<Float>();
 
 		glKeyListener = new GLHeatMapKeyListener(this);
 
@@ -133,8 +130,11 @@ public class GLHeatMap extends AStorageBasedView {
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
 		super.renderStyle = renderStyle;
 
-		if (renderTemplate == null)
-			renderTemplate = new DefaultRenderTemplate(this);
+		templateRenderer = new TemplateRenderer(this);
+		if (template == null)
+			template = new DefaultTemplate();
+
+		templateRenderer.setTemplate(template);
 	}
 
 	@Override
@@ -286,7 +286,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 			// gl.glTranslatef(fAnimationTranslation, 0.0f, 0.0f);
 
-			renderTemplate.render(gl);
+			templateRenderer.render(gl);
 			//
 			// gl.glTranslatef(-fAnimationTranslation, 0.0f, 0.0f);
 
@@ -605,27 +605,27 @@ public class GLHeatMap extends AStorageBasedView {
 
 	@Override
 	protected void handleConnectedElementRep(ISelectionDelta selectionDelta) {
-		// FIXME: should not be necessary here, incor init.
-		if (renderStyle == null)
-			return;
-
-		renderStyle.updateFieldSizes();
-		yDistances.clear();
-		float fDistance = 0;
-
-		for (Integer iStorageIndex : contentVA) {
-			yDistances.add(fDistance);
-			if (contentSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
-					iStorageIndex)
-					|| contentSelectionManager.checkStatus(
-							SelectionType.SELECTION, iStorageIndex)) {
-				fDistance += renderStyle.getSelectedFieldHeight();
-			} else {
-				fDistance += renderStyle.getNormalFielHeight();
-			}
-
-		}
-		super.handleConnectedElementRep(selectionDelta);
+		// FIXME: re-design
+		// if (renderStyle == null)
+		// return;
+		//
+		// renderStyle.updateFieldSizes();
+		// yDistances.clear();
+		// float fDistance = 0;
+		//
+		// for (Integer iStorageIndex : contentVA) {
+		// yDistances.add(fDistance);
+		// if (contentSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
+		// iStorageIndex)
+		// || contentSelectionManager.checkStatus(
+		// SelectionType.SELECTION, iStorageIndex)) {
+		// fDistance += renderStyle.getSelectedFieldHeight();
+		// } else {
+		// fDistance += renderStyle.getNormalFielHeight();
+		// }
+		//
+		// }
+		// super.handleConnectedElementRep(selectionDelta);
 	}
 
 	@Override
@@ -635,41 +635,41 @@ public class GLHeatMap extends AStorageBasedView {
 		SelectedElementRep elementRep;
 		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(
 				4);
-
-		for (int iContentIndex : contentVA.indicesOf(iStorageIndex)) {
-			if (iContentIndex == -1) {
-				// throw new
-				// IllegalStateException("No such element in virtual array");
-				// TODO this shouldn't happen here.
-				continue;
-			}
-
-			float fXValue = yDistances.get(iContentIndex); // +
-			// renderStyle.getSelectedFieldWidth()
-			// / 2;
-			// float fYValue = 0;
-			float fYValue = renderStyle.getYCenter();
-
-			// Set<Integer> mouseOver =
-			// storageSelectionManager.getElements(SelectionType.MOUSE_OVER);
-			// for (int iLineIndex : mouseOver)
-			// {
-			// fYValue = storageVA.indexOf(iLineIndex) *
-			// renderStyle.getFieldHeight() +
-			// renderStyle.getFieldHeight()/2;
-			// break;
-			// }
-
-			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
-			Vec3f vecPoint = myRotf
-					.rotateVector(new Vec3f(fXValue, fYValue, 0));
-			vecPoint.setY(vecPoint.y() + vecTranslation.y());
-			elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX,
-					iUniqueID, vecPoint.x(), vecPoint.y()
-							- fAnimationTranslation, 0);
-
-			alElementReps.add(elementRep);
-		}
+		// FIXME: redesign
+		// for (int iContentIndex : contentVA.indicesOf(iStorageIndex)) {
+		// if (iContentIndex == -1) {
+		// // throw new
+		// // IllegalStateException("No such element in virtual array");
+		// // TODO this shouldn't happen here.
+		// continue;
+		// }
+		//
+		// float fXValue = yDistances.get(iContentIndex); // +
+		// // renderStyle.getSelectedFieldWidth()
+		// // / 2;
+		// // float fYValue = 0;
+		// float fYValue = renderStyle.getYCenter();
+		//
+		// // Set<Integer> mouseOver =
+		// // storageSelectionManager.getElements(SelectionType.MOUSE_OVER);
+		// // for (int iLineIndex : mouseOver)
+		// // {
+		// // fYValue = storageVA.indexOf(iLineIndex) *
+		// // renderStyle.getFieldHeight() +
+		// // renderStyle.getFieldHeight()/2;
+		// // break;
+		// // }
+		//
+		// Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
+		// Vec3f vecPoint = myRotf
+		// .rotateVector(new Vec3f(fXValue, fYValue, 0));
+		// vecPoint.setY(vecPoint.y() + vecTranslation.y());
+		// elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX,
+		// iUniqueID, vecPoint.x(), vecPoint.y()
+		// - fAnimationTranslation, 0);
+		//
+		// alElementReps.add(elementRep);
+		// }
 		return alElementReps;
 	}
 
@@ -813,11 +813,11 @@ public class GLHeatMap extends AStorageBasedView {
 		this.sendClearSelectionsEvent = sendClearSelectionsEvent;
 	}
 
-	PickingManager getPickingManager() {
+	public PickingManager getPickingManager() {
 		return pickingManager;
 	}
 
-	public void setRenderTemplate(ARenderTemplate renderTemplate) {
-		this.renderTemplate = renderTemplate;
+	public void setRenderTemplate(ATemplate template) {
+		this.template = template;
 	}
 }

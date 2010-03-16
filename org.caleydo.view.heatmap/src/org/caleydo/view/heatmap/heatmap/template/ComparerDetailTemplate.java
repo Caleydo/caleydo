@@ -1,74 +1,44 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
-import javax.media.opengl.GL;
-
-import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-
-public class ComparerDetailTemplate extends ARenderTemplate {
+public class ComparerDetailTemplate extends ATemplate {
 
 	private boolean isLeft = true;
 
-	public ComparerDetailTemplate(GLHeatMap heatMap, boolean isLeft) {
-		super(heatMap);
+	public ComparerDetailTemplate(boolean isLeft) {
 		this.isLeft = isLeft;
-		HEAT_MAP_X = 0.7f;
-		HEAT_MAP_Y = 1f;
-
-		useContentCaptions = true;
-		CONTENT_CAPTION_X = 0.29f;
-		CONTENT_CAPTION_Y = HEAT_MAP_Y;
-
-		useCaptionCage = true;
-		CAGE_X = 0.3f;
-		CAGE_Y = HEAT_MAP_Y;
-
-		initRenderers();
-
 	}
 
 	@Override
-	public void render(GL gl) {
-		// FIXME: this should be called externally
-		frustumChanged();
-
+	public void setParameters() {
+		// heat map
+		RenderParameters parameters = new RenderParameters();
+		parameters.sizeX = 0.7f;
+		parameters.sizeY = 1f;
 		if (isLeft)
-			renderLeft(gl);
+			parameters.transformX = 0.3f;
+		templateRenderer.heatMapParameters = parameters;
+
+		// content captions
+		parameters = new RenderParameters();
+		parameters.sizeX = 0.29f;
+		parameters.sizeY = 1f;
+		if (isLeft)
+			parameters.transformX = templateRenderer.SPACING;
+
 		else
-			renderRight(gl);
+			parameters.transformX = templateRenderer.heatMapParameters.sizeX
+					+ templateRenderer.SPACING;
 
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		templateRenderer.contentCaptionParameters = parameters;
 
-	}
+		// content cage
+		parameters = new RenderParameters();
+		parameters.sizeX = 0.3f;
+		parameters.sizeY = 1f;
+		if (!isLeft)
+			parameters.transformX = templateRenderer.heatMapParameters.sizeX;
 
-	private void renderLeft(GL gl) {
-
-		captionCageRenderer.renderCage(gl);
-
-		gl.glTranslatef(spacing, 0, 0);
-		contentCaptionRenderer.renderContentCaptions(gl);
-		gl.glTranslatef(-spacing, 0, 0);
-
-		gl.glTranslatef(cageX, 0, 0);
-		heatMapRenderer.renderHeatMap(gl);
-		heatMapRenderer.renderSelection(gl, SelectionType.MOUSE_OVER);
-		heatMapRenderer.renderSelection(gl, SelectionType.SELECTION);
-		gl.glTranslatef(-cageX, 0, 0);
+		templateRenderer.captionCageParameters = parameters;
 
 	}
-
-	private void renderRight(GL gl) {
-		heatMapRenderer.renderHeatMap(gl);
-		heatMapRenderer.renderSelection(gl, SelectionType.MOUSE_OVER);
-		heatMapRenderer.renderSelection(gl, SelectionType.SELECTION);
-
-		gl.glTranslatef(heatMapX + spacing, 0, 0);
-		contentCaptionRenderer.renderContentCaptions(gl);
-		gl.glTranslatef(-heatMapX - spacing, 0, 0);
-
-		gl.glTranslatef(heatMapX, 0, 0);
-		captionCageRenderer.renderCage(gl);
-		gl.glTranslatef(-heatMapX, 0, 0);
-	}
-
 }

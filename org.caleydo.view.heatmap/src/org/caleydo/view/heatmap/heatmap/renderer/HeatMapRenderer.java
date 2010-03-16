@@ -1,4 +1,4 @@
-package org.caleydo.view.heatmap.heatmap;
+package org.caleydo.view.heatmap.heatmap.renderer;
 
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_LINE_WIDTH;
@@ -7,6 +7,7 @@ import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECT
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import javax.media.opengl.GL;
@@ -14,14 +15,16 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
-public class HeatMapRenderer extends ARenderer {
+public class HeatMapRenderer extends AContentRenderer {
 
 	// private ContentSelectionManager contentSelectionManager;
 	// private HeatMapRenderStyle renderStyle;
@@ -29,53 +32,35 @@ public class HeatMapRenderer extends ARenderer {
 	//
 	// private StorageVirtualArray storageVA;
 	// private StorageSelectionManager storageSelectionManager;
-	GLHeatMap heatMap;
 
 	private ColorMapping colorMapper;
-	HeatMapRenderStyle renderStyle;
+	// HeatMapRenderStyle renderStyle;
 
-	float selectedFieldHeight;
-	float normalFieldHeight;
-	float fieldWidth;
+
+
+	ArrayList<Float> yDistances;
 
 	public HeatMapRenderer(GLHeatMap heatMap) {
-		this.heatMap = heatMap;
+		super(heatMap);
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 
-		this.renderStyle = heatMap.renderStyle;
-		// this.contentVA = contentVA;
-		// this.contentSelectionManager = contentSelectionManager;
-		// this.storageVA = storageVA;
-		// this.storageSelectionManager = storageSelectionManager;
-		// this.renderStyle = renderStyle;
-	}
-
-	@Override
-	public void setLimits(float x, float y) {
-		// TODO Auto-generated method stub
-		super.setLimits(x, y);
+		yDistances = new ArrayList<Float>();
 
 	}
 
-	public void setContentSpacing(ContentSpacing contentSpacing) {
-		fieldWidth = contentSpacing.getFieldWidth();
-		selectedFieldHeight = contentSpacing.getSelectedFieldHeight();
-		normalFieldHeight = contentSpacing.getNormalFieldHeight();
-	}
+	public void render(final GL gl) {
 
-	public void renderHeatMap(final GL gl) {
-
-		
-		heatMap.yDistances.clear();
-		renderStyle.updateFieldSizes();
+		yDistances.clear();
+		// renderStyle.updateFieldSizes();
 		float yPosition = y;
 		float xPosition = 0;
 		float fieldHeight = 0;
 
+
 		// renderStyle.clearFieldWidths();
 		int iCount = 0;
-	
+
 		for (Integer iContentIndex : heatMap.getContentVA()) {
 			iCount++;
 			// we treat normal and deselected the same atm
@@ -85,11 +70,11 @@ public class HeatMapRenderer extends ARenderer {
 					|| heatMap.getContentSelectionManager().checkStatus(
 							SelectionType.MOUSE_OVER, iContentIndex)) {
 				fieldHeight = selectedFieldHeight;
-//				currentType = SelectionType.SELECTION;
+				// currentType = SelectionType.SELECTION;
 			} else {
 
 				fieldHeight = normalFieldHeight;
-//				currentType = SelectionType.NORMAL;
+				// currentType = SelectionType.NORMAL;
 			}
 			yPosition -= fieldHeight;
 			xPosition = 0;
@@ -105,9 +90,11 @@ public class HeatMapRenderer extends ARenderer {
 
 			// renderStyle.setXDistanceAt(contentVA.indexOf(iContentIndex),
 			// fXPosition);
-			heatMap.yDistances.add(yPosition);
+			yDistances.add(yPosition);
 
 		}
+		renderSelection(gl, SelectionType.SELECTION);
+		renderSelection(gl, SelectionType.MOUSE_OVER);
 	}
 
 	private void renderElement(final GL gl, final int iStorageIndex,
@@ -169,9 +156,8 @@ public class HeatMapRenderer extends ARenderer {
 		for (int tempLine : heatMap.getContentVA()) {
 			for (Integer currentLine : selectedSet) {
 				if (currentLine == tempLine) {
-					width = heatMap.getStorageVA().size()
-							* fieldWidth;
-					yPosition = heatMap.yDistances.get(lineIndex);
+					width = heatMap.getStorageVA().size() * fieldWidth;
+					yPosition = yDistances.get(lineIndex);
 					xPosition = 0;
 					gl.glPushName(heatMap.getPickingManager().getPickingID(
 							heatMap.getID(),
@@ -179,14 +165,10 @@ public class HeatMapRenderer extends ARenderer {
 
 					gl.glBegin(GL.GL_LINE_LOOP);
 					gl.glVertex3f(xPosition, yPosition, SELECTION_Z);
-					gl
-							.glVertex3f(xPosition, yPosition
-									+ selectedFieldHeight,
-									SELECTION_Z);
-					gl
-							.glVertex3f(xPosition + width, yPosition
-									+ selectedFieldHeight,
-									SELECTION_Z);
+					gl.glVertex3f(xPosition, yPosition + selectedFieldHeight,
+							SELECTION_Z);
+					gl.glVertex3f(xPosition + width, yPosition
+							+ selectedFieldHeight, SELECTION_Z);
 					gl.glVertex3f(xPosition + width, yPosition, SELECTION_Z);
 					gl.glEnd();
 					gl.glPopName();
@@ -215,13 +197,10 @@ public class HeatMapRenderer extends ARenderer {
 							selectedColumn));
 
 					gl.glBegin(GL.GL_LINE_LOOP);
-					gl.glVertex3f(xPosition, y,
-							SELECTION_Z);
+					gl.glVertex3f(xPosition, y, SELECTION_Z);
 					gl.glVertex3f(xPosition, 0, SELECTION_Z);
-					gl.glVertex3f(xPosition + fieldWidth, 0,
-							SELECTION_Z);
-					gl.glVertex3f(xPosition + fieldWidth,
-							y, SELECTION_Z);
+					gl.glVertex3f(xPosition + fieldWidth, 0, SELECTION_Z);
+					gl.glVertex3f(xPosition + fieldWidth, y, SELECTION_Z);
 					gl.glEnd();
 					gl.glPopName();
 				}

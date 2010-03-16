@@ -24,6 +24,8 @@ public class HeatMapLayoutRight extends AHeatMapLayout {
 
 		remoteRenderCommands.add(renderCommandFactory
 				.getRenderCommand(ERenderCommandType.DETAIL_HEATMAPS));
+
+		detailHeatMapTemplate = new ComparerDetailTemplate(false);
 	}
 
 	@Override
@@ -72,8 +74,4 @@ public class HeatMapLayoutRight extends AHeatMapLayout {
 				+ getOverviewHeight() + getCaptionLabelVerticalSpacing(), 0.0f);
 	}
 
-	public void createDetailHeatMapTemplate(GLHeatMap heatMap) {
-		detailHeatMapTemplate = new ComparerDetailTemplate(heatMap, false);
-	}
-	
 }

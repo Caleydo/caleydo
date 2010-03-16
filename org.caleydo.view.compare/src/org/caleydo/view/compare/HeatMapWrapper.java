@@ -125,7 +125,6 @@ public class HeatMapWrapper {
 		heatMap.setDataDomain(dataDomain);
 		heatMap.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
 
-		layout.createDetailHeatMapTemplate(heatMap);
 		heatMap.setRenderTemplate(layout.getHeatMapTemplate());
 
 		heatMap.initData();

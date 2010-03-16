@@ -1,4 +1,4 @@
-package org.caleydo.view.heatmap.heatmap;
+package org.caleydo.view.heatmap.heatmap.renderer;
 
 import javax.media.opengl.GL;
 

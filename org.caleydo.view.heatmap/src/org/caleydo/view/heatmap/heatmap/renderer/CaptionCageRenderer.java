@@ -1,9 +1,10 @@
-package org.caleydo.view.heatmap.heatmap;
+package org.caleydo.view.heatmap.heatmap.renderer;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class CaptionCageRenderer extends AContentRenderer {
 
@@ -11,7 +12,7 @@ public class CaptionCageRenderer extends AContentRenderer {
 		super(heatMap);
 	}
 
-	public void renderCage(GL gl) {
+	public void render(GL gl) {
 
 		float yPosition = y;
 		float xPosition = 0;

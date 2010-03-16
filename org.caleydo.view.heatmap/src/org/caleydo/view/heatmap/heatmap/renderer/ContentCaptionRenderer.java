@@ -1,4 +1,4 @@
-package org.caleydo.view.heatmap.heatmap;
+package org.caleydo.view.heatmap.heatmap.renderer;
 
 import java.awt.Font;
 import java.util.Set;
@@ -14,6 +14,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class ContentCaptionRenderer extends AContentRenderer {
 
@@ -21,14 +22,12 @@ public class ContentCaptionRenderer extends AContentRenderer {
 
 	public ContentCaptionRenderer(GLHeatMap heatMap) {
 		super(heatMap);
-	
+
 		textRenderer = new CaleydoTextRenderer(
 				new Font("Arial", Font.PLAIN, 24), false);
 	}
 
-
-
-	public void renderContentCaptions(GL gl) {
+	public void render(GL gl) {
 
 		float yPosition = y;
 		float xPosition = 0;
@@ -72,7 +71,6 @@ public class ContentCaptionRenderer extends AContentRenderer {
 				isSelected = false;
 			}
 
-		
 			yPosition -= fieldHeight;
 
 			sContent = getID(iContentIndex, false);
