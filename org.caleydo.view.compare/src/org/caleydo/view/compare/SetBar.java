@@ -123,8 +123,6 @@ public class SetBar extends AGLGUIElement {
 			currentPositionX += item.getWidth();
 			itemID++;
 		}
-
-		updateSelectedItems(selectionWindow.getSelectedItems());
 		
 		if(viewState != null) {
 			selectionWindow.setLowestItemIndex(0);

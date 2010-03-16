@@ -121,19 +121,22 @@ public class SetBarSelectionWindow implements IDraggable {
 
 		int currentItemIndex = currentItem.getID();
 		int itemAtDraggingPositionIndex = itemAtDraggingPosition.getID();
-		lowestItemIndex = lowestItemIndex
+		int newLowestItemIndex = lowestItemIndex
 				+ (currentItemIndex - itemAtDraggingPositionIndex);
 
-		if (lowestItemIndex < 0)
-			lowestItemIndex = 0;
+		if (newLowestItemIndex < 0)
+			newLowestItemIndex = 0;
 
-		if (lowestItemIndex + numSelectedItems > items.size())
-			lowestItemIndex = items.size() - numSelectedItems;
-
-		itemAtDraggingPosition = items.get(lowestItemIndex
-				+ draggingIndexOffset);
+		if (newLowestItemIndex + numSelectedItems > items.size())
+			newLowestItemIndex = items.size() - numSelectedItems;
 		
-		setBar.updateSelectedItems(getSelectedItems());
+		if(newLowestItemIndex != lowestItemIndex) {
+			lowestItemIndex = newLowestItemIndex;
+			itemAtDraggingPosition = items.get(lowestItemIndex
+					+ draggingIndexOffset);
+			
+			setBar.updateSelectedItems(getSelectedItems());
+		}
 	}
 
 	@Override

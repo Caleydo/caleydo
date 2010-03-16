@@ -81,8 +81,7 @@ public class HeatMapWrapper {
 
 	public HeatMapWrapper(int id, AHeatMapLayout layout, AGLView glParentView,
 			GLInfoAreaManager infoAreaManager, IUseCase useCase,
-			IGLRemoteRenderingView parentView, EDataDomain dataDomain,
-			SelectionType activeHeatMapSelectionType) {
+			IGLRemoteRenderingView parentView, EDataDomain dataDomain) {
 
 		generalManager = GeneralManager.get();
 		overview = new HeatMapOverview(layout);
@@ -97,7 +96,6 @@ public class HeatMapWrapper {
 		this.useCase = useCase;
 		this.parentView = parentView;
 		this.dataDomain = dataDomain;
-		this.activeHeatMapSelectionType = activeHeatMapSelectionType;
 
 		isNewSelection = false;
 		eventPublisher = GeneralManager.get().getEventPublisher();
@@ -908,6 +906,15 @@ public class HeatMapWrapper {
 
 	public void setRelations(SetRelations relations) {
 		this.relations = relations;
+	}
+
+	public SelectionType getActiveHeatMapSelectionType() {
+		return activeHeatMapSelectionType;
+	}
+
+	public void setActiveHeatMapSelectionType(
+			SelectionType activeHeatMapSelectionType) {
+		this.activeHeatMapSelectionType = activeHeatMapSelectionType;
 	}
 
 }

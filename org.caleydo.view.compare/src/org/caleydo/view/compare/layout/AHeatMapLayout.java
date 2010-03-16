@@ -12,22 +12,22 @@ import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
 
 public abstract class AHeatMapLayout {
 
-	protected static float OVERVIEW_TOTAL_WIDTH_PORTION = 0.25f;
-	protected static float OVERVIEW_GROUP_WIDTH_PORTION = 0.04f;
-	protected static float OVERVIEW_HEATMAP_WIDTH_PORTION = 0.15f;
-	protected static float OVERVIEW_SLIDER_WIDTH_PORTION = 0.06f;
-
-	protected static float DETAIL_WIDTH_PORTION = 0.5f;
-	protected static float DETAIL_HEATMAP_GAP_PORTION = 0.02f;
-	protected static float OVERVIEW_TO_DETAIL_GAP_PORTION = 0.25f;
-
-	protected static float CAPTION_LABEL_HEIGHT_PORTION = 0.03f;
-	protected static float CAPTION_LABEL_HORIZONTAL_SPACING_PORTION = 0.03f;
-	protected static float CAPTION_LABEL_VERTICAL_SPACING_PORTION = 0.01f;
-	protected static float OVERVIEW_HEIGHT_PORTION = 0.95f;
-	protected static float DETAIL_HEIGHT_PORTION = 0.95f;
-
-	protected ComparerDetailTemplate detailHeatMapTemplate;
+//	protected static float OVERVIEW_TOTAL_WIDTH_PORTION = 0.25f;
+//	protected static float OVERVIEW_GROUP_WIDTH_PORTION = 0.04f;
+//	protected static float OVERVIEW_HEATMAP_WIDTH_PORTION = 0.15f;
+//	protected static float OVERVIEW_SLIDER_WIDTH_PORTION = 0.06f;
+//
+//	protected static float DETAIL_WIDTH_PORTION = 0.5f;
+//	protected static float DETAIL_HEATMAP_GAP_PORTION = 0.02f;
+//	protected static float OVERVIEW_TO_DETAIL_GAP_PORTION = 0.25f;
+//
+//	protected static float CAPTION_LABEL_HEIGHT_PORTION = 0.03f;
+//	protected static float CAPTION_LABEL_HORIZONTAL_SPACING_PORTION = 0.03f;
+//	protected static float CAPTION_LABEL_VERTICAL_SPACING_PORTION = 0.01f;
+//	protected static float OVERVIEW_HEIGHT_PORTION = 0.95f;
+//	protected static float DETAIL_HEIGHT_PORTION = 0.95f;
+//
+//	protected ComparerDetailTemplate detailHeatMapTemplate;
 
 	protected float totalWidth;
 	protected float totalHeight;
@@ -37,6 +37,8 @@ public abstract class AHeatMapLayout {
 	protected RenderCommandFactory renderCommandFactory;
 	protected ArrayList<IHeatMapRenderCommand> localRenderCommands;
 	protected ArrayList<IHeatMapRenderCommand> remoteRenderCommands;
+
+	protected ComparerDetailTemplate detailHeatMapTemplate;
 
 	public AHeatMapLayout(RenderCommandFactory renderCommandFactory) {
 		this.renderCommandFactory = renderCommandFactory;
@@ -52,77 +54,40 @@ public abstract class AHeatMapLayout {
 		this.totalWidth = totalWidth;
 	}
 
-	public float getTotalOverviewWidth() {
-		return totalWidth * OVERVIEW_TOTAL_WIDTH_PORTION;
-	}
+	public abstract float getTotalOverviewWidth();
 
-	public float getGapWidth() {
-		return totalWidth * OVERVIEW_TO_DETAIL_GAP_PORTION;
-	}
+	public abstract float getGapWidth();
 
-	public float getDetailWidth() {
-		return totalWidth * DETAIL_WIDTH_PORTION;
-	}
+	public abstract float getDetailWidth();
 
-	public float getOverviewHeight() {
-		return totalHeight * OVERVIEW_HEIGHT_PORTION;
-	}
+	public abstract float getOverviewHeight();
 
-	public float getDetailHeight() {
-		return totalHeight * DETAIL_HEIGHT_PORTION;
-	}
+	public abstract float getDetailHeight();
 
-	public float getOverviewGroupWidth() {
-		return totalWidth * OVERVIEW_GROUP_WIDTH_PORTION;
-	}
+	public abstract float getOverviewGroupWidth();
 
-	public float getOverviewHeatmapWidth() {
-		return totalWidth * OVERVIEW_HEATMAP_WIDTH_PORTION;
-	}
+	public abstract float getOverviewHeatmapWidth();
 
-	public float getOverviewSliderWidth() {
-		return totalWidth * OVERVIEW_SLIDER_WIDTH_PORTION;
-	}
+	public abstract float getOverviewSliderWidth();
 
-	public float getOverviewMaxSliderHeight() {
-		return totalHeight;
-	}
+	public abstract float getOverviewMaxSliderHeight();
 
-	public float getOverviewMaxSliderPositionY() {
-		return positionY + getOverviewHeight();
-	}
+	public abstract  float getOverviewMaxSliderPositionY();
 
-	public float getOverviewMinSliderPositionY() {
-		return positionY;
-	}
+	public abstract float getOverviewMinSliderPositionY();
 
-	public float getDetailHeatMapHeight(int numSamplesInHeatMap,
-			int numTotalSamples, int numHeatMaps) {
-		float spaceForHeatMaps = getDetailHeight()
-				- (getDetailHeight() * DETAIL_HEATMAP_GAP_PORTION * (numHeatMaps - 1));
-		return (spaceForHeatMaps / (float) numTotalSamples)
-				* (float) numSamplesInHeatMap;
-	}
+	public abstract float getDetailHeatMapHeight(int numSamplesInHeatMap,
+			int numTotalSamples, int numHeatMaps);
 
-	public float getDetailHeatMapGapHeight() {
-		return getDetailHeight() * DETAIL_HEATMAP_GAP_PORTION;
-	}
+	public abstract float getDetailHeatMapGapHeight();
 
-	public float getCaptionLabelWidth() {
-		return totalWidth;
-	}
+	public abstract float getCaptionLabelWidth();
 
-	public float getCaptionLabelHeight() {
-		return totalHeight * CAPTION_LABEL_HEIGHT_PORTION;
-	}
+	public abstract float getCaptionLabelHeight();
 
-	public float getCaptionLabelHorizontalSpacing() {
-		return totalWidth * CAPTION_LABEL_HORIZONTAL_SPACING_PORTION;
-	}
+	public abstract float getCaptionLabelHorizontalSpacing();
 
-	public float getCaptionLabelVerticalSpacing() {
-		return totalHeight * CAPTION_LABEL_VERTICAL_SPACING_PORTION;
-	}
+	public abstract float getCaptionLabelVerticalSpacing() ;
 
 	public abstract Vec3f getOverviewPosition();
 
@@ -140,16 +105,15 @@ public abstract class AHeatMapLayout {
 
 	public abstract Vec3f getCaptionLabelPosition(float textWidth);
 
-
-	public ComparerDetailTemplate getHeatMapTemplate() {
-		return detailHeatMapTemplate;
-	}
-
 	public ArrayList<IHeatMapRenderCommand> getRenderCommandsOfLocalItems() {
 		return localRenderCommands;
 	}
 
 	public ArrayList<IHeatMapRenderCommand> getRenderCommandsOfRemoteItems() {
 		return remoteRenderCommands;
+	}
+
+	public ComparerDetailTemplate getHeatMapTemplate() {
+		return detailHeatMapTemplate;
 	}
 }

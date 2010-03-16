@@ -3,27 +3,15 @@ package org.caleydo.view.compare.layout;
 import gleem.linalg.Vec3f;
 
 import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.view.compare.rendercommand.ERenderCommandType;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
 
-public class HeatMapLayoutLeft extends AHeatMapLayout {
+public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
 
-	public HeatMapLayoutLeft(RenderCommandFactory renderCommandFactory) {
+	public HeatMapLayoutDetailViewLeft(RenderCommandFactory renderCommandFactory) {
 		super(renderCommandFactory);
 
-		localRenderCommands.add(renderCommandFactory
-				.getRenderCommand(ERenderCommandType.OVERVIEW_GROUP_BAR));
-		localRenderCommands.add(renderCommandFactory
-				.getRenderCommand(ERenderCommandType.OVERVIEW_HEATMAP));
-		localRenderCommands.add(renderCommandFactory
-				.getRenderCommand(ERenderCommandType.OVERVIEW_SLIDER));
-		localRenderCommands.add(renderCommandFactory
-				.getRenderCommand(ERenderCommandType.CAPTION_LABEL));
-
-		remoteRenderCommands.add(renderCommandFactory
-				.getRenderCommand(ERenderCommandType.DETAIL_HEATMAPS));
-		detailHeatMapTemplate = new ComparerDetailTemplate(true);
 	}
 
 	@Override
@@ -68,6 +56,10 @@ public class HeatMapLayoutLeft extends AHeatMapLayout {
 		return new Vec3f(positionX + getCaptionLabelHorizontalSpacing(),
 				positionY + getOverviewHeight()
 						+ getCaptionLabelVerticalSpacing(), 0.0f);
+	}
+
+	public void createDetailHeatMapTemplate(GLHeatMap heatMap) {
+		detailHeatMapTemplate = new ComparerDetailTemplate(true);
 	}
 
 }
