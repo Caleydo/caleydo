@@ -105,18 +105,6 @@ public class TemplateRenderer {
 			renderer.render(gl);
 			gl.glTranslatef(-parameters.transformScaledX,
 					-parameters.transformScaledY, 0);
-
 		}
-
 	}
-
-	// private void renderTempalte(GL gl, ARenderer renderer,
-	// RenderParameters parameters) {
-	// gl.glTranslatef(parameters.transformScaledX,
-	// parameters.transformScaledY, 0);
-	// renderer.render(gl);
-	// gl.glTranslatef(-parameters.transformScaledX,
-	// -parameters.transformScaledY, 0);
-	// }
-
 }

@@ -653,6 +653,10 @@ public class HeatMapWrapper {
 	// // }
 	// }
 
+	/**
+	 * This is called in the passive heat map. The groups are selected and the
+	 * contentVAs are re-sorted to minimize crossings
+	 */
 	public void selectGroupsFromContentVAList(
 			HashMap<Integer, Integer> relationMap,
 			ArrayList<ContentVirtualArray> foreignContentVAs) {
@@ -690,29 +694,48 @@ public class HeatMapWrapper {
 			}
 		}
 
-		// Hide those that are not part of the other va
-		for (Entry<Group, GroupInfo> selectedEntry : selectedGroups.entrySet()) {
-			GLHeatMap heatMap = hashHeatMaps.get(selectedEntry.getKey()
-					.getGroupIndex());
+		// here we Hide those that are not part of the other va, and re-sort the
+		// source va
+		for (int groupIndex = groupList.size() - 1; groupIndex >= 0; groupIndex--) {
+			Group group = groupList.get(groupIndex);
+			if (selectedGroups.containsKey(group)) {
+				GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 
-			int nrGenes = selectedEntry.getValue().getContainedNrGenes();
+				int nrGenes = selectedGroups.get(group).getContainedNrGenes();
 
-			ContentVirtualArray contentVA = heatMap.getContentVA();
+				ContentVirtualArray contentVA = heatMap.getContentVA();
 
-			SelectionDelta contentSelectionDelta = new SelectionDelta(
-					EIDType.EXPRESSION_INDEX);
+				// re-sort the source virtual array to group genes according to
+				// vas in the destination (here)
+				for (ContentVirtualArray foreignVA : foreignContentVAs) {
+					Integer foreignContentLastOrdererIndex = 0;
+					for (int contentIndex = 0; contentIndex < nrGenes; contentIndex++) {
+						Integer contentID = contentVA.get(contentIndex);
+						int foreignIndex = foreignVA.indexOf(contentID);
+						if (foreignIndex != -1) {
+							foreignVA.move(foreignIndex,
+									foreignContentLastOrdererIndex++);
+						}
+					}
+				}
 
-			for (int contentIndex = nrGenes; contentIndex < contentVA.size(); contentIndex++) {
-				SelectionDeltaItem item = new SelectionDeltaItem();
-				item.setPrimaryID(contentVA.get(contentIndex));
-				item.setSelectionType(GLHeatMap.SELECTION_HIDDEN);
-				contentSelectionDelta.add(item);
+				// hide the elements not in the source vas
+				SelectionDelta contentSelectionDelta = new SelectionDelta(
+						EIDType.EXPRESSION_INDEX);
+
+				for (int contentIndex = nrGenes; contentIndex < contentVA
+						.size(); contentIndex++) {
+					SelectionDeltaItem item = new SelectionDeltaItem();
+					item.setPrimaryID(contentVA.get(contentIndex));
+					item.setSelectionType(GLHeatMap.SELECTION_HIDDEN);
+					contentSelectionDelta.add(item);
+				}
+				SelectionUpdateEvent event = new SelectionUpdateEvent();
+				event.setSender(this);
+				event.setSelectionDelta(contentSelectionDelta);
+
+				eventPublisher.triggerEvent(event);
 			}
-			SelectionUpdateEvent event = new SelectionUpdateEvent();
-			event.setSender(this);
-			event.setSelectionDelta(contentSelectionDelta);
-
-			eventPublisher.triggerEvent(event);
 		}
 	}
 
