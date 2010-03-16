@@ -250,9 +250,6 @@ public class Application
 				else if (element.equals("load_pathways")) {
 					bLoadPathwayData = true;
 				}
-				else if (element.equals("r_statistics")) {
-					GeneralManager.get().getRStatisticsPerformer();
-				}
 				else if (element.startsWith("plexclient")) {
 					if (sCaleydoXMLfile != null && !sCaleydoXMLfile.isEmpty()) {
 						throw new IllegalArgumentException(

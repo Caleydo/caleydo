@@ -48,10 +48,15 @@ public class StatisticsResult {
 		for (Integer contentIndex = 0; contentIndex < origVA.size(); contentIndex++) {
 			
 			Integer contentID = origVA.get(contentIndex);
-			if (compareResultVector.get(contentIndex) > cutOffPValue)
+			if (compareResultVector.get(contentIndex) < cutOffPValue)
 				filteredVA.appendUnique(contentID);
 		}
 		
 		return filteredVA;
+	}
+	
+	public Double getCompareResult(ISet compareSet, Integer contentID) {
+		
+		return hashSetToCompareResult.get(compareSet).get(contentID);
 	}
 }

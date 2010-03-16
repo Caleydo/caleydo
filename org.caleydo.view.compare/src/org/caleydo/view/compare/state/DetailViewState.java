@@ -12,9 +12,11 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.SetComparer;
 import org.caleydo.core.data.collection.set.SetRelations;
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.Group;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -30,7 +32,6 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
@@ -673,6 +674,23 @@ public class DetailViewState extends ACompareViewState {
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.handleSelectionUpdate(selectionDelta,
 					scrollToSelection, info);
+
+			// FIXME: Move to overview state when Christian has finished work on
+			// states
+			heatMapWrapper.getOverview().updateHeatMapTextures(
+					heatMapWrapper.getContentSelectionManager());
+		}
+	}
+	
+	@Override
+	public void handleSelectionCommand(EIDCategory category,
+			SelectionCommand selectionCommand) {
+		
+		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
+			if (category == heatMapWrapper.getContentSelectionManager().getIDType().getCategory())
+				heatMapWrapper.getContentSelectionManager().executeSelectionCommand(selectionCommand);
+			else
+				return;
 		}
 	}
 
@@ -715,8 +733,7 @@ public class DetailViewState extends ACompareViewState {
 		ContentVirtualArray pValueFilteredVA = heatMapWrappers.get(0).getSet()
 				.getStatisticsResult().getVABasedOnCompareResult(
 						heatMapWrappers.get(1).getSet(), pValue);
-		// ContentVirtualArray leftHeatMapContentVA =
-		// heatMapWrappers.get(0).getContentVA();
+
 		for (Integer contentID : heatMapWrappers.get(0).getContentVA()) {
 
 			if (pValueFilteredVA.containsElement(contentID) == 0)

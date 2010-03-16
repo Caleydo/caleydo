@@ -9,6 +9,8 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.SetComparer;
+import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -137,6 +139,18 @@ public class OverviewState extends ACompareViewState {
 			boolean isControlPressed) {
 
 	}
+	
+	@Override
+	public void handleSelectionCommand(EIDCategory category,
+			SelectionCommand selectionCommand) {
+
+		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
+			if (category == heatMapWrapper.getContentSelectionManager().getIDType().getCategory())
+				heatMapWrapper.getContentSelectionManager().executeSelectionCommand(selectionCommand);
+			else
+				return;
+		}
+	}
 
 	@Override
 	public void setSetsInFocus(ArrayList<ISet> setsInFocus) {
@@ -228,5 +242,4 @@ public class OverviewState extends ACompareViewState {
 		}
 
 	}
-
 }

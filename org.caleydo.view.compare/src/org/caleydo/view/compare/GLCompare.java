@@ -11,9 +11,12 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.compare.AdjustPValueEvent;
 import org.caleydo.core.manager.event.view.compare.DuplicateSetBarItemEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
@@ -31,8 +34,10 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -51,8 +56,12 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLCompare extends AGLView implements IViewCommandHandler,
-		IGLRemoteRenderingView, ISelectionUpdateHandler {
+public class GLCompare extends AGLView
+		implements
+			IViewCommandHandler,
+			IGLRemoteRenderingView,
+			ISelectionUpdateHandler,
+			ISelectionCommandHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.compare";
 
@@ -64,6 +73,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	private DuplicateSetBarItemEventListener duplicateSetBarItemEventListener;
 	private SelectionUpdateListener selectionUpdateListener;
 	private AdjustPValueOfSetEventListener adjustPValueOfSetEventListener;
+	private SelectionCommandListener selectionCommandListener;
 	private CompareMouseWheelListener compareMouseWheelListener;
 
 	private boolean isControlPressed;
@@ -407,6 +417,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		adjustPValueOfSetEventListener.setHandler(this);
 		eventPublisher.addListener(AdjustPValueEvent.class,
 				adjustPValueOfSetEventListener);
+		
+		selectionCommandListener = new SelectionCommandListener();
+		selectionCommandListener.setHandler(this);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		// if (leftHeatMapWrapper != null)
 		// leftHeatMapWrapper.registerEventListeners();
@@ -433,6 +447,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			eventPublisher.removeListener(adjustPValueOfSetEventListener);
 			adjustPValueOfSetEventListener = null;
 		}
+		if (selectionCommandListener != null) {
+			eventPublisher.removeListener(selectionCommandListener);
+			selectionCommandListener = null;
+		}
 	}
 
 	@Override
@@ -441,12 +459,12 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		return new ArrayList<AGLView>();
 	}
 
-	public void setGroupsToCompare(ArrayList<ISet> sets) {
+	public void setGroupsToCompare(final ArrayList<ISet> sets) {
 
 		ClusterState clusterState = new ClusterState();
 		clusterState.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
 		clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-		clusterState.setAffinityPropClusterFactorGenes(2);
+		clusterState.setAffinityPropClusterFactorGenes(3);
 		clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 
 		// clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
@@ -460,7 +478,6 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		compareViewStateController.setSetsToCompare(sets);
 	}
-
 	public boolean isControlPressed() {
 		return isControlPressed;
 	}
@@ -485,6 +502,12 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		compareViewStateController.handleSelectionUpdate(selectionDelta,
 				scrollToSelection, info);
 
+	}
+
+	@Override
+	public void handleSelectionCommand(EIDCategory category,
+			SelectionCommand selectionCommand) {
+		compareViewStateController.handleSelectionCommand(category, selectionCommand);
 	}
 
 	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {

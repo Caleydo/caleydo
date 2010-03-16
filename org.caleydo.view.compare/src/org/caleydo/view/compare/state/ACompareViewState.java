@@ -12,9 +12,11 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.SetRelations;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -463,13 +465,16 @@ public abstract class ACompareViewState {
 	public abstract void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info);
 
+	public abstract void handleSelectionCommand(EIDCategory category,
+			SelectionCommand selectionCommand);
+	
+	public abstract void setSetsInFocus(ArrayList<ISet> setsInFocus);
+
 	public abstract void adjustPValue();
 
 	public abstract int getMaxSetsInFocus();
 
 	public abstract int getMinSetsInFocus();
-
-	public abstract void setSetsInFocus(ArrayList<ISet> setsInFocus);
 
 	public abstract void handleMouseWheel(GL gl, int amount, Point wheelPoint);
 

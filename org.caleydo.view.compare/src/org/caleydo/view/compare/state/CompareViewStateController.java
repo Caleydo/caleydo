@@ -7,6 +7,8 @@ import java.util.HashMap;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -100,6 +102,11 @@ public class CompareViewStateController {
 			boolean scrollToSelection, String info) {
 		currentState.handleSelectionUpdate(selectionDelta, scrollToSelection,
 				info);
+	}
+	
+	public void handleSelectionCommand(EIDCategory category,
+			SelectionCommand selectionCommand) {
+		currentState.handleSelectionCommand(category, selectionCommand);
 	}
 
 	public void handleAdjustPValue() {

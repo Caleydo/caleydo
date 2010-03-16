@@ -155,6 +155,6 @@ public class RStatisticsPerformer
 	public synchronized void queueEvent(
 			AEventListener<? extends IListenerOwner> listener, AEvent event) {
 
-		compareGroupsEventListener.handleEvent(event);
+//		compareGroupsEventListener.handleEvent(event);
 	}
 }
