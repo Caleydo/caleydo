@@ -263,4 +263,9 @@ public class HeatMapOverview {
 	public VerticalSlider getOverviewSlider() {
 		return slider;
 	}
+	
+	public void updateHeatMapTextures(ContentSelectionManager contentSelectionManager) {
+		overviewTextures = HeatMapUtil.createHeatMapTextures(set, contentVA,
+				storageVA, contentSelectionManager);
+	}
 }

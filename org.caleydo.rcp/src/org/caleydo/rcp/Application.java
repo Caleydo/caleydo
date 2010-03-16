@@ -217,9 +217,6 @@ public class Application
 		if (bDeleteRestoredWorkbenchState) {
 			removeStoredWorkbenchState();
 		}
-		
-		// FIXME: just for testing
-//		GeneralManager.get().getRStatisticsPerformer();
 
 		try {
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
@@ -252,6 +249,9 @@ public class Application
 				}
 				else if (element.equals("load_pathways")) {
 					bLoadPathwayData = true;
+				}
+				else if (element.equals("r_statistics")) {
+					GeneralManager.get().getRStatisticsPerformer();
 				}
 				else if (element.startsWith("plexclient")) {
 					if (sCaleydoXMLfile != null && !sCaleydoXMLfile.isEmpty()) {

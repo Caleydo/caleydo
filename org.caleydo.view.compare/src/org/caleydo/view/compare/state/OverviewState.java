@@ -465,8 +465,10 @@ public class OverviewState extends ACompareViewState {
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
-		// TODO Auto-generated method stub
-
+		
+		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
+			heatMapWrapper.getOverview().updateHeatMapTextures(heatMapWrapper.getContentSelectionManager());
+		}
 	}
 
 	@Override
