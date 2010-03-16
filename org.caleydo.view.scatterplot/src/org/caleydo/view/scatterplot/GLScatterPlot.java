@@ -2567,11 +2567,13 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 	private void renderSelectionPoints(GL gl) {
 
 		for (SelectionType tmpSelectionType : AlSelectionTypes) {
-
-			// if
-			// (elementSelectionManager.getNumberOfElements(SelectionType.SELECTION)
-			// == 0)
-			// return;
+	//	ArrayList<SelectionType> sTypes = contentSelectionManager.getSelectionTypes();
+	//	for (SelectionType tmpSelectionType : sTypes) {
+		
+			
+			if (!tmpSelectionType.isVisible())
+				continue;
+			
 			if (contentSelectionManager.getNumberOfElements(tmpSelectionType) == 0)
 				continue;
 

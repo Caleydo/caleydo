@@ -530,6 +530,8 @@ public class InfoArea
 		if (vaDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
 			return;
 
+		
+		
 		if (parentComposite.isDisposed())
 			return;
 
