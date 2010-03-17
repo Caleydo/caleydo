@@ -22,6 +22,7 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.compare.GLCompare;
@@ -39,7 +40,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public class OverviewState extends ACompareViewState {
 
-	private static final float HEATMAP_WRAPPER_GAP_PORTION = 0.8f;
+	private static final float HEATMAP_WRAPPER_OVERVIEW_GAP_PORTION = 0.8f;
+	private static final float HEATMAP_WRAPPER_SPACE_PORTION = 0.7f;
 
 	private ICompareConnectionRenderer compareConnectionRenderer;
 
@@ -83,8 +85,9 @@ public class OverviewState extends ACompareViewState {
 		setBar.render(gl);
 
 		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
-			float heatMapWrapperGapWidth = HEATMAP_WRAPPER_GAP_PORTION
-			* viewFrustum.getWidth() / (float) (heatMapWrappers.size() - 1);
+			float heatMapWrapperGapWidth = HEATMAP_WRAPPER_OVERVIEW_GAP_PORTION
+					* viewFrustum.getWidth()
+					/ (float) (heatMapWrappers.size() - 1);
 			renderTree(gl, heatMapWrappers.get(i), heatMapWrappers.get(i + 1),
 					heatMapWrapperGapWidth);
 			renderOverviewRelations(gl, heatMapWrappers.get(i), heatMapWrappers
@@ -224,11 +227,19 @@ public class OverviewState extends ACompareViewState {
 
 			int itemOffset = 0;
 			for (int i = 0; i < layouts.size() - 1; i++) {
-				if (wheelPointWorldCoordinates[0] >= layouts.get(i)
-						.getOverviewPosition().x()
-						&& wheelPointWorldCoordinates[0] <= layouts.get(i + 1)
-								.getOverviewPosition().x()
-								+ (layouts.get(i + 1).getTotalOverviewWidth() / 2.0f)) {
+
+				if ((i == layouts.size() - 2)
+						&& (wheelPointWorldCoordinates[0] >= layouts.get(i)
+								.getPosition().x())) {
+					itemOffset = i;
+					break;
+				}
+
+				if ((wheelPointWorldCoordinates[0] >= layouts.get(i)
+						.getPosition().x())
+						&& (wheelPointWorldCoordinates[0] <= layouts.get(i + 1)
+								.getPosition().x()
+								+ (layouts.get(i + 1).getWidth() / 2.0f))) {
 					itemOffset = i;
 					break;
 				}
@@ -259,14 +270,16 @@ public class OverviewState extends ACompareViewState {
 
 		float heatMapWrapperPosX = 0.0f;
 
-		float spaceForHeatMapWrappers = (1.0f - HEATMAP_WRAPPER_GAP_PORTION)
+		float spaceForHeatMapWrapperOverviews = (1.0f - HEATMAP_WRAPPER_OVERVIEW_GAP_PORTION)
 				* viewFrustum.getWidth();
+		float heatMapWrapperWidth = HEATMAP_WRAPPER_SPACE_PORTION
+				* viewFrustum.getWidth() / (float) heatMapWrappers.size();
 		int numTotalExperiments = 0;
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			numTotalExperiments += heatMapWrapper.getSet().getStorageVA(
 					StorageVAType.STORAGE).size();
 		}
-		float heatMapWrapperGapWidth = HEATMAP_WRAPPER_GAP_PORTION
+		float heatMapWrapperGapWidth = (1 - HEATMAP_WRAPPER_SPACE_PORTION)
 				* viewFrustum.getWidth() / (float) (heatMapWrappers.size() - 1);
 
 		for (int i = 0; i < heatMapWrappers.size(); i++) {
@@ -274,12 +287,16 @@ public class OverviewState extends ACompareViewState {
 			AHeatMapLayout layout = layouts.get(i);
 			int numExperiments = heatMapWrapper.getSet().getStorageVA(
 					StorageVAType.STORAGE).size();
-			float heatMapWrapperWidth = (spaceForHeatMapWrappers / (float) numTotalExperiments)
-					* (float) numExperiments;
+			layout
+					.setTotalSpaceForAllHeatMapWrappers(spaceForHeatMapWrapperOverviews);
+			layout.setNumExperiments(numExperiments);
+			layout.setNumTotalExperiments(numTotalExperiments);
+
 			layout
 					.setLayoutParameters(heatMapWrapperPosX,
 							heatMapWrapperPosY, viewFrustum.getHeight()
 									- setBarHeight, heatMapWrapperWidth);
+
 			heatMapWrapperPosX += heatMapWrapperWidth + heatMapWrapperGapWidth;
 		}
 

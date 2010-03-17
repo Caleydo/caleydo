@@ -5,9 +5,9 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
-import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
 
 public abstract class AHeatMapLayout {
 
@@ -32,6 +32,9 @@ public abstract class AHeatMapLayout {
 	protected float totalHeight;
 	protected float positionX;
 	protected float positionY;
+	protected float totalSpaceForAllHeatMapWrappers;
+	protected int numExperiments;
+	protected int numTotalExperiments;
 
 	protected RenderCommandFactory renderCommandFactory;
 	protected ArrayList<IHeatMapRenderCommand> localRenderCommands;
@@ -41,6 +44,9 @@ public abstract class AHeatMapLayout {
 		this.renderCommandFactory = renderCommandFactory;
 		localRenderCommands = new ArrayList<IHeatMapRenderCommand>();
 		remoteRenderCommands = new ArrayList<IHeatMapRenderCommand>();
+		numTotalExperiments = 0;
+		numExperiments = 0;
+		totalSpaceForAllHeatMapWrappers = 0;
 	}
 
 	public void setLayoutParameters(float positionX, float positionY,
@@ -108,6 +114,31 @@ public abstract class AHeatMapLayout {
 
 	public ArrayList<IHeatMapRenderCommand> getRenderCommandsOfRemoteItems() {
 		return remoteRenderCommands;
+	}
+
+	public void setTotalSpaceForAllHeatMapWrappers(
+			float totalSpaceForAllHeatMapWrappers) {
+		this.totalSpaceForAllHeatMapWrappers = totalSpaceForAllHeatMapWrappers;
+	}
+
+	public void setNumExperiments(int numExperiments) {
+		this.numExperiments = numExperiments;
+	}
+
+	public void setNumTotalExperiments(int numTotalExperiments) {
+		this.numTotalExperiments = numTotalExperiments;
+	}
+
+	public Vec3f getPosition() {
+		return new Vec3f(positionX, positionY, 0);
+	}
+	
+	public float getWidth() {
+		return totalWidth;
+	}
+	
+	public float getHeight() {
+		return totalHeight;
 	}
 
 }

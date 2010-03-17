@@ -9,7 +9,7 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
 
 public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
-	
+
 	protected static float CAPTION_LABEL_HEIGHT_PORTION = 0.03f;
 	protected static float CAPTION_LABEL_HORIZONTAL_SPACING_PORTION = 0.03f;
 	protected static float CAPTION_LABEL_VERTICAL_SPACING_PORTION = 0.01f;
@@ -25,7 +25,7 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 
 	@Override
 	public Vec3f getDetailPosition() {
-		return new Vec3f(0,0,0);
+		return new Vec3f(0, 0, 0);
 	}
 
 	@Override
@@ -40,12 +40,7 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 
 	@Override
 	public Vec3f getOverviewGroupBarPosition() {
-		return new Vec3f(0,0,0);
-	}
-
-	@Override
-	public Vec3f getOverviewHeatMapPosition() {
-		return new Vec3f(positionX, positionY, 0.0f);
+		return new Vec3f(0, 0, 0);
 	}
 
 	@Override
@@ -59,7 +54,7 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 	}
 
 	public float getTotalOverviewWidth() {
-		return totalWidth;
+		return getOverviewHeatmapWidth();
 	}
 
 	public float getGapWidth() {
@@ -83,7 +78,13 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 	}
 
 	public float getOverviewHeatmapWidth() {
-		return totalWidth;
+		if(numTotalExperiments == 0)
+			return totalWidth;
+		float heatOverviewHeatMapWidth = (totalSpaceForAllHeatMapWrappers / (float) numTotalExperiments)
+				* (float) numExperiments;
+		if(heatOverviewHeatMapWidth > totalWidth || heatOverviewHeatMapWidth < 0)
+			return totalWidth;
+		return heatOverviewHeatMapWidth;
 	}
 
 	public float getOverviewSliderWidth() {
@@ -126,7 +127,7 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 	public float getCaptionLabelVerticalSpacing() {
 		return totalHeight * CAPTION_LABEL_VERTICAL_SPACING_PORTION;
 	}
-	
+
 	public void createDetailHeatMapTemplate(GLHeatMap heatMap) {
 	}
 

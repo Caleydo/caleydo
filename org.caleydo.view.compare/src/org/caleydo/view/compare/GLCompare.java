@@ -185,12 +185,12 @@ public class GLCompare extends AGLView
 					.handleMouseWheel(gl, wheelAmount, wheelPoint);
 		}
 
-		compareViewStateController.executeDrawingPreprocessing(gl,
-				bIsDisplayListDirtyLocal);
-
 		if (!isVisible())
 			return;
 		pickingManager.handlePicking(this, gl);
+		
+		compareViewStateController.executeDrawingPreprocessing(gl,
+				bIsDisplayListDirtyLocal);
 
 		if (bIsDisplayListDirtyLocal) {
 			bIsDisplayListDirtyLocal = false;

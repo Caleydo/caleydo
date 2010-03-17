@@ -17,6 +17,10 @@ public class HeatMapLayoutOverviewMid extends AHeatMapLayoutOverview {
 						+ getCaptionLabelVerticalSpacing(), 0.0f);
 	}
 
-
+	@Override
+	public Vec3f getOverviewHeatMapPosition() {
+		return new Vec3f(positionX + (totalWidth - getOverviewHeatmapWidth())
+				/ 2.0f, positionY, 0.0f);
+	}
 
 }

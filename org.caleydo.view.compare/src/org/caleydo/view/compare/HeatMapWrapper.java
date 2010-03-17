@@ -45,6 +45,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
@@ -359,6 +360,12 @@ public class HeatMapWrapper {
 
 		isNewSelection = false;
 
+//		Vec3f position = layout.getPosition();
+//		GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
+//
+//		GLHelperFunctions.drawPointAt(gl, position.x() + layout.getWidth(),
+//				position.y(), 1);
+
 	}
 
 	public void calculateHeatMapPositions() {
@@ -448,7 +455,7 @@ public class HeatMapWrapper {
 
 	public Vec2f getLeftOverviewLinkPositionFromIndex(int contentIndex) {
 
-		Vec3f overviewPosition = layout.getOverviewPosition();
+		Vec3f overviewPosition = layout.getOverviewHeatMapPosition();
 		float sampleHeight = layout.getOverviewHeight() / contentVA.size();
 
 		return new Vec2f(overviewPosition.x(), overviewPosition.y()
@@ -468,12 +475,13 @@ public class HeatMapWrapper {
 
 	public Vec2f getRightOverviewLinkPositionFromContentIndex(int contentIndex) {
 
-		Vec3f overviewPosition = layout.getOverviewPosition();
+		Vec3f overviewPosition = layout.getOverviewHeatMapPosition();
 		float sampleHeight = layout.getOverviewHeight() / contentVA.size();
 
-		return new Vec2f(overviewPosition.x() + layout.getTotalOverviewWidth(),
-				overviewPosition.y() + layout.getOverviewHeight()
-						- ((sampleHeight * contentIndex) + sampleHeight / 2.0f));
+		return new Vec2f(overviewPosition.x()
+				+ layout.getOverviewHeatmapWidth(), overviewPosition.y()
+				+ layout.getOverviewHeight()
+				- ((sampleHeight * contentIndex) + sampleHeight / 2.0f));
 	}
 
 	public Vec2f getRightOverviewLinkPositionFromContentID(int contentID) {
