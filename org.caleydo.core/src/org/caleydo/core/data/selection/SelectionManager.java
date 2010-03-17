@@ -380,6 +380,9 @@ public class SelectionManager
 		if (selectionType == SelectionType.NORMAL)
 			return false;
 
+		if(!hashSelectionTypes.containsKey(selectionType))
+			return false;
+		
 		if (hashSelectionTypes.get(selectionType).containsKey(iElementID))
 			return true;
 

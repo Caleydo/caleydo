@@ -1,5 +1,6 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.CaptionCageRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ContentCaptionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.DetailToolBar;
@@ -16,26 +17,29 @@ public class ComparerDetailTemplate extends ATemplate {
 	@Override
 	public void setParameters() {
 
-		// verticalSpaceAllocations.clear();
+		templateRenderer.clearRenderers();
+		verticalSpaceAllocations.clear();
 		Row hmRow = new Row();
 		// heat map
 		RenderParameters hm = new RenderParameters();
-		hm.sizeX = 0.7f;
+		hm.grabX = true;
 		hm.sizeY = 1f;
 
 		templateRenderer.addRenderer(new HeatMapRenderer(
 				templateRenderer.heatMap), hm);
 		// verticalSpaceAllocations.add(parameters);
 
-		RenderParameters caption;
-		// content captions
-		caption = new RenderParameters();
-		caption.sizeX = 0.29f;
-		caption.sizeY = 1f;
+		boolean renderCaptions = templateRenderer.heatMap.isShowCaptions();
+		RenderParameters caption = null;
+		if (renderCaptions) {
+			// content captions
+			caption = new RenderParameters();
+			caption.sizeX = 0.29f;
+			caption.sizeY = 1f;
 
-		templateRenderer.addRenderer(new ContentCaptionRenderer(
-				templateRenderer.heatMap), caption);
-
+			templateRenderer.addRenderer(new ContentCaptionRenderer(
+					templateRenderer.heatMap), caption);
+		}
 		// content cage
 		// RenderParameters cage;
 		// cage = new RenderParameters();
@@ -48,12 +52,14 @@ public class ComparerDetailTemplate extends ATemplate {
 		// hmRow.appendElement(parameters);
 
 		if (isLeft) {
-			hmRow.appendElement(caption);
+			if (renderCaptions)
+				hmRow.appendElement(caption);
 			hmRow.appendElement(hm);
 
 		} else {
 			hmRow.appendElement(hm);
-			hmRow.appendElement(caption);
+			if (renderCaptions)
+				hmRow.appendElement(caption);
 		}
 
 		RenderParameters toolBar;

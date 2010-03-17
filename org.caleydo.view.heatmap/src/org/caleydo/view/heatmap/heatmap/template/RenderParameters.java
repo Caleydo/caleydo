@@ -8,6 +8,11 @@ class RenderParameters {
 	float transformY = 0;
 	float transformScaledX = 0;
 	float transformScaledY = 0;
+
+	/** use the remaining space in X, invalidates sizeX */
+	boolean grabX = false;
+	/** use the remaining space in Y */
+	boolean grabY = false;
 	float sizeX = 0;
 	float sizeY = 0;
 

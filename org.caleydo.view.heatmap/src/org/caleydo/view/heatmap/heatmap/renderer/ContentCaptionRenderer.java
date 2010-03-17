@@ -64,7 +64,11 @@ public class ContentCaptionRenderer extends AContentRenderer {
 				fieldHeight = selectedFieldHeight;
 				currentType = SelectionType.SELECTION;
 				isSelected = true;
-			} else {
+			} else if (heatMap.isHideElements()
+					&& heatMap.getContentSelectionManager().checkStatus(
+							GLHeatMap.SELECTION_HIDDEN, iContentIndex)) {
+				continue;
+			}else {
 
 				fieldHeight = normalFieldHeight;
 				currentType = SelectionType.NORMAL;

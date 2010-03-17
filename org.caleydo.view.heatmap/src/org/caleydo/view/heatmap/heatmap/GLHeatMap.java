@@ -98,7 +98,10 @@ public class GLHeatMap extends AStorageBasedView {
 	private TemplateRenderer templateRenderer;
 	private ATemplate template;
 
-	private boolean hideElements = false;
+	/** hide elements with the state {@link #SELECTION_HIDDEN} if this is true */
+	private boolean hideElements = true;
+	/** try to show captions, if spacing allows it */
+	private boolean showCaptions = true;
 
 	/**
 	 * Determines whether a bigger space between heat map and caption is needed
@@ -380,16 +383,6 @@ public class GLHeatMap extends AStorageBasedView {
 
 		SelectionType selectionType;
 		switch (ePickingType) {
-		case HEAT_MAP_HIDE_HIDDEN_ELEMENTS:
-			if (pickingMode == EPickingMode.CLICKED)
-				if (hideElements)
-					hideElements = false;
-				else
-					hideElements = true;
-
-			break;
-		case HEAT_MAP_SHOW_CAPTIONS:
-			break;
 		case HEAT_MAP_LINE_SELECTION:
 			iCurrentMouseOverElement = iExternalID;
 			switch (pickingMode) {
@@ -457,6 +450,27 @@ public class GLHeatMap extends AStorageBasedView {
 
 			break;
 
+		case HEAT_MAP_HIDE_HIDDEN_ELEMENTS:
+			if (pickingMode == EPickingMode.CLICKED)
+				if (hideElements)
+					hideElements = false;
+				else
+					hideElements = true;
+
+			setDisplayListDirty();
+
+			break;
+		case HEAT_MAP_SHOW_CAPTIONS:
+
+			if (pickingMode == EPickingMode.CLICKED)
+				if (showCaptions)
+					showCaptions = false;
+				else
+					showCaptions = true;
+
+			template.recalculateSpacings();
+			setDisplayListDirty();
+			break;
 		}
 	}
 
@@ -672,6 +686,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	public float getYCoordinateByContentIndex(int contentIndex) {
 
+		// todo deliver the correct coordinates
 		renderStyle.updateFieldSizes();
 		float fieldWidth = renderStyle.getNormalFielHeight();
 
@@ -825,5 +840,14 @@ public class GLHeatMap extends AStorageBasedView {
 	 */
 	public boolean isHideElements() {
 		return hideElements;
+	}
+
+	/**
+	 * Check whether we should try to show captions
+	 * 
+	 * @return
+	 */
+	public boolean isShowCaptions() {
+		return showCaptions;
 	}
 }

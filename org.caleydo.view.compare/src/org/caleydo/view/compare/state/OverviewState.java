@@ -39,7 +39,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public class OverviewState extends ACompareViewState {
 
-	private static final float HEATMAP_WRAPPER_GAP_PORTION = 0.5f;
+	private static final float HEATMAP_WRAPPER_GAP_PORTION = 0.8f;
 
 	private ICompareConnectionRenderer compareConnectionRenderer;
 

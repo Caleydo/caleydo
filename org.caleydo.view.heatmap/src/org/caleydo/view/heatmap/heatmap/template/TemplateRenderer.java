@@ -45,6 +45,11 @@ public class TemplateRenderer {
 		renderers.add(new Pair<ARenderer, RenderParameters>(renderer,
 				parameters));
 	}
+	
+	public void clearRenderers()
+	{
+		renderers.clear();
+	}
 
 	public void frustumChanged() {
 
@@ -57,6 +62,7 @@ public class TemplateRenderer {
 		ContentSpacing contentSpacing = null;
 
 		template.calculateScales(totalWidth, totalHeight);
+		
 
 		for (Pair<ARenderer, RenderParameters> renderPair : renderers) {
 			RenderParameters parameters = renderPair.getSecond();

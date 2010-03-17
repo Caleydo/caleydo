@@ -60,6 +60,7 @@ public class HeatMapRenderer extends AContentRenderer {
 			} else if (heatMap.isHideElements()
 					&& heatMap.getContentSelectionManager().checkStatus(
 							GLHeatMap.SELECTION_HIDDEN, iContentIndex)) {
+				yDistances.add(yPosition);
 				continue;
 			} else {
 
@@ -142,30 +143,30 @@ public class HeatMapRenderer extends AContentRenderer {
 			gl.glLineWidth(MOUSE_OVER_LINE_WIDTH);
 		}
 
-//		int lineIndex = 0;
-//		for (int tempLine : heatMap.getContentVA()) {
-//			for (Integer currentLine : selectedSet) {
-//				if (currentLine == tempLine) {
-//					width = heatMap.getStorageVA().size() * fieldWidth;
-//					yPosition = yDistances.get(lineIndex);
-//					xPosition = 0;
-//					gl.glPushName(heatMap.getPickingManager().getPickingID(
-//							heatMap.getID(),
-//							EPickingType.HEAT_MAP_LINE_SELECTION, currentLine));
-//
-//					gl.glBegin(GL.GL_LINE_LOOP);
-//					gl.glVertex3f(xPosition, yPosition, SELECTION_Z);
-//					gl.glVertex3f(xPosition, yPosition + selectedFieldHeight,
-//							SELECTION_Z);
-//					gl.glVertex3f(xPosition + width, yPosition
-//							+ selectedFieldHeight, SELECTION_Z);
-//					gl.glVertex3f(xPosition + width, yPosition, SELECTION_Z);
-//					gl.glEnd();
-//					gl.glPopName();
-//				}
-//			}
-//			lineIndex++;
-//		}
+		int lineIndex = 0;
+		for (int tempLine : heatMap.getContentVA()) {
+			for (Integer currentLine : selectedSet) {
+				if (currentLine == tempLine) {
+					width = heatMap.getStorageVA().size() * fieldWidth;
+					yPosition = yDistances.get(lineIndex);
+					xPosition = 0;
+					gl.glPushName(heatMap.getPickingManager().getPickingID(
+							heatMap.getID(),
+							EPickingType.HEAT_MAP_LINE_SELECTION, currentLine));
+
+					gl.glBegin(GL.GL_LINE_LOOP);
+					gl.glVertex3f(xPosition, yPosition, SELECTION_Z);
+					gl.glVertex3f(xPosition, yPosition + selectedFieldHeight,
+							SELECTION_Z);
+					gl.glVertex3f(xPosition + width, yPosition
+							+ selectedFieldHeight, SELECTION_Z);
+					gl.glVertex3f(xPosition + width, yPosition, SELECTION_Z);
+					gl.glEnd();
+					gl.glPopName();
+				}
+			}
+			lineIndex++;
+		}
 
 		// storage selection
 		gl.glEnable(GL.GL_LINE_STIPPLE);

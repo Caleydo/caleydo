@@ -1,7 +1,6 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public abstract class ATemplate {
 
@@ -17,25 +16,50 @@ public abstract class ATemplate {
 		// horizontalElements = new ArrayList<RenderParameters>();
 	}
 
-	public abstract void setParameters();
-
-	public void setTemplateRenderer(TemplateRenderer templateRenderer) {
+	void setTemplateRenderer(TemplateRenderer templateRenderer) {
 		this.templateRenderer = templateRenderer;
 	}
 
-	public void calculateScales(float totalWidth, float totalHeight) {
+	abstract void setParameters();
+
+	void calculateScales(float totalWidth, float totalHeight) {
 
 		for (RenderParameters element : verticalSpaceAllocations) {
 			if (!element.scaleY)
 				totalHeight -= element.sizeY;
 		}
 
+		// take care of greedy elements in x and y
+		RenderParameters greedyVerticalElement = null;
+		float usedSizeY = 0;
+		for (RenderParameters parameter : verticalSpaceAllocations) {
+			if (parameter.grabY)
+				greedyVerticalElement = parameter;
+			else
+				usedSizeY += parameter.sizeY;
+
+			if (parameter instanceof Row) {
+				Row row = (Row) parameter;
+				float usedSizeX = 0;
+				RenderParameters greedyHorizontalElement = null;
+
+				for (RenderParameters rowElement : row) {
+					if (rowElement.grabX)
+						greedyHorizontalElement = rowElement;
+					else
+						usedSizeX += rowElement.sizeX;
+				}
+				if (greedyHorizontalElement != null)
+					greedyHorizontalElement.sizeX = 1 - usedSizeX;
+			}
+		}
+
+		// calculate the actual spacings and offsets
 		float yOffset = 0;
-//		Collections.reverse(verticalSpaceAllocations);
-		
-		for(int count = verticalSpaceAllocations.size() -1; count >= 0; count--)
-		{
-//		for (RenderParameters element : verticalSpaceAllocations) {
+		if (greedyVerticalElement != null)
+			greedyVerticalElement.sizeY = 1 - usedSizeY;
+
+		for (int count = verticalSpaceAllocations.size() - 1; count >= 0; count--) {
 			RenderParameters element = verticalSpaceAllocations.get(count);
 			element.transformScaledY = yOffset;
 			if (element instanceof Row) {
@@ -49,18 +73,17 @@ public abstract class ATemplate {
 					xOffset += rowElement.sizeScaledX;
 				}
 			}
-
 			element.calculateScales(totalWidth, totalHeight);
 			yOffset += element.sizeScaledY;
-			
 		}
-
 	}
-	
-	void add(RenderParameters element)
-	{
+
+	void add(RenderParameters element) {
 		verticalSpaceAllocations.add(element);
 	}
-	
-	
+
+	public void recalculateSpacings() {
+		setParameters();
+	}
+
 }
