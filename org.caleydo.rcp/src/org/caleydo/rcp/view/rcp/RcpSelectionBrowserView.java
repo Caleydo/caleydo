@@ -37,12 +37,6 @@ public class RcpSelectionBrowserView
 		
 		GridLayout layout;
 		layout = new GridLayout(1, false);
-//		if (bHorizontal) {
-//			layout = new GridLayout(2, false);
-//		}
-//		else {
-//			layout = new GridLayout(1, false);
-//		}
 
 		layout.marginBottom =
 			layout.marginTop =

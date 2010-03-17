@@ -1453,7 +1453,20 @@ public class GLScatterPlot extends AStorageBasedView {
 
 				if (true) {
 
-					for (SelectionType tmpSelectionType : AlSelectionTypes) {
+			//		for (SelectionType tmpSelectionType : AlSelectionTypes){
+					ArrayList<SelectionType> sTypes = contentSelectionManager.getSelectionTypes();
+					for (SelectionType tmpSelectionType : sTypes) {
+											
+						if (!tmpSelectionType.isVisible())
+							continue;
+
+						//if(tmpSelectionType!=SelectionType.NORMAL)
+						//FIXME: Draw normal Selection (investigate Bug)
+						if (SelectionType.isDefaultType(tmpSelectionType))
+							continue;
+					
+					
+					
 						Collection<Integer> selectionSet = contentSelectionManager
 								.getElements(tmpSelectionType);
 
@@ -2527,6 +2540,7 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 		if (iDisplayEveryNthPoint == 0) 
 			iDisplayEveryNthPoint = 1;
 
+		boolean doNewSelection=true;
 		for (Integer iContentIndex : contentVA) {
 
 			if (iContentIndex == -1) {
@@ -2545,7 +2559,13 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 			x = transformOnXZoom(xnormalized) * XScale;
 			y = transformOnYZoom(ynormalized) * YScale;
 
-			if (isInSelectionRectangle(x, y)) {			
+			if (isInSelectionRectangle(x, y)) {		
+				if(doNewSelection)
+				{
+					addSelectionType();
+					doNewSelection=false;
+				}
+				
 				contentSelectionManager.addToType(currentSelection,
 						iContentIndex);
 			}
@@ -2566,14 +2586,20 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 	 */
 	private void renderSelectionPoints(GL gl) {
 
-		for (SelectionType tmpSelectionType : AlSelectionTypes) {
-	//	ArrayList<SelectionType> sTypes = contentSelectionManager.getSelectionTypes();
-	//	for (SelectionType tmpSelectionType : sTypes) {
+	//	for (SelectionType tmpSelectionType : AlSelectionTypes) {
+		ArrayList<SelectionType> sTypes = contentSelectionManager.getSelectionTypes();
+		for (SelectionType tmpSelectionType : sTypes) {
 		
 			
 			if (!tmpSelectionType.isVisible())
 				continue;
-			
+
+			//if(tmpSelectionType!=SelectionType.NORMAL)
+			//FIXME: Draw normal Selection (investigate Bug)
+			if (SelectionType.isDefaultType(tmpSelectionType))
+				continue;
+				
+
 			if (contentSelectionManager.getNumberOfElements(tmpSelectionType) == 0)
 				continue;
 
@@ -3023,7 +3049,7 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 
 		storageSelectionManager.setVA(storageVA);
 		AlSelectionTypes.clear();
-		addSelectionType();
+		//addSelectionType();
 		// AlSelectionTypes.add(SelectionType.SELECTION);
 		// currentSelection = SelectionType.SELECTION;
 
@@ -3099,8 +3125,10 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 		currentSelection = new SelectionType();
 		currentSelection.setType("ScatterPlot Selection " + iSlectionNr);
 		currentSelection.setColor(ScatterPlotHelper.getSelectionColor(iSlectionNr));
-		event.addSelectionType(currentSelection);
+		event.addSelectionType(currentSelection);		
 		eventPublisher.triggerEvent(event);
+		
+		
 
 		AlSelectionTypes.add(currentSelection);
 
@@ -3108,10 +3136,29 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 
 	public void removeSelectionType() {
 		int iSlectionNr = AlSelectionTypes.size();
-		if (iSlectionNr == 2)
+		if (iSlectionNr == 1)
 			return;
+		contentSelectionManager.clearSelection(currentSelection);
+		
+		SelectionTypeEvent event = new SelectionTypeEvent();			
+		event.addSelectionType(currentSelection);
+		event.setRemove(true);
+		eventPublisher.triggerEvent(event);
+		
+		
+		
 		AlSelectionTypes.remove(iSlectionNr - 1);
 		currentSelection = AlSelectionTypes.get(iSlectionNr - 2);
+		
+		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+		handleConnectedElementRep(selectionDelta);
+		SelectionUpdateEvent event2 = new SelectionUpdateEvent();
+		event2.setSender(this);
+		event2.setSelectionDelta((SelectionDelta) selectionDelta);
+		event2.setInfo(getShortInfo());
+		eventPublisher.triggerEvent(event2);
+		
+		
 		bUpdateSelection = true;
 		bUpdateSelectionTexures = true;
 		setDisplayListDirty();
@@ -3300,7 +3347,7 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 
 	@Override
 	public void clearAllSelections() {
-		contentSelectionManager.clearSelections();		
+		
 		storageSelectionManager.clearSelections();
 		AlSelectionTypes.clear();		
 		AlSelectionTypes.add(SelectionType.SELECTION);		
