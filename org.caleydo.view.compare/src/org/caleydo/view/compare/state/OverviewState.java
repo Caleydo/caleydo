@@ -11,6 +11,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.SetComparer;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -37,6 +38,8 @@ import org.caleydo.view.compare.renderer.ICompareConnectionRenderer;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 public class OverviewState extends ACompareViewState {
+
+	private static final float HEATMAP_WRAPPER_GAP_PORTION = 0.5f;
 
 	private ICompareConnectionRenderer compareConnectionRenderer;
 
@@ -80,8 +83,10 @@ public class OverviewState extends ACompareViewState {
 		setBar.render(gl);
 
 		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
+			float heatMapWrapperGapWidth = HEATMAP_WRAPPER_GAP_PORTION
+			* viewFrustum.getWidth() / (float) (heatMapWrappers.size() - 1);
 			renderTree(gl, heatMapWrappers.get(i), heatMapWrappers.get(i + 1),
-					heatMapWrappers.get(i).getLayout().getTotalOverviewWidth());
+					heatMapWrapperGapWidth);
 			renderOverviewRelations(gl, heatMapWrappers.get(i), heatMapWrappers
 					.get(i + 1));
 		}
@@ -139,14 +144,16 @@ public class OverviewState extends ACompareViewState {
 			boolean isControlPressed) {
 
 	}
-	
+
 	@Override
 	public void handleSelectionCommand(EIDCategory category,
 			SelectionCommand selectionCommand) {
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-			if (category == heatMapWrapper.getContentSelectionManager().getIDType().getCategory())
-				heatMapWrapper.getContentSelectionManager().executeSelectionCommand(selectionCommand);
+			if (category == heatMapWrapper.getContentSelectionManager()
+					.getIDType().getCategory())
+				heatMapWrapper.getContentSelectionManager()
+						.executeSelectionCommand(selectionCommand);
 			else
 				return;
 		}
@@ -232,13 +239,48 @@ public class OverviewState extends ACompareViewState {
 			setBar.setMinSelectedItems(detailViewState.getMinSetsInFocus());
 			setBar.setWindowSize(detailViewState.getNumSetsInFocus());
 			setBar.increaseLowestItemIndex(itemOffset);
-			if(!detailViewState.isInitialized()) {
+			if (!detailViewState.isInitialized()) {
 				detailViewState.init(gl);
 			}
 			detailViewState.setSetsInFocus(setBar.getSetsInFocus());
 			compareViewStateController
 					.setCurrentState(ECompareViewStateType.DETAIL_VIEW);
 			view.setDisplayListDirty();
+		}
+
+	}
+
+	@Override
+	protected void setupLayouts() {
+
+		IViewFrustum viewFrustum = view.getViewFrustum();
+		float setBarHeight = setBar.getHeight();
+		float heatMapWrapperPosY = setBar.getPosition().y() + setBarHeight;
+
+		float heatMapWrapperPosX = 0.0f;
+
+		float spaceForHeatMapWrappers = (1.0f - HEATMAP_WRAPPER_GAP_PORTION)
+				* viewFrustum.getWidth();
+		int numTotalExperiments = 0;
+		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
+			numTotalExperiments += heatMapWrapper.getSet().getStorageVA(
+					StorageVAType.STORAGE).size();
+		}
+		float heatMapWrapperGapWidth = HEATMAP_WRAPPER_GAP_PORTION
+				* viewFrustum.getWidth() / (float) (heatMapWrappers.size() - 1);
+
+		for (int i = 0; i < heatMapWrappers.size(); i++) {
+			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
+			AHeatMapLayout layout = layouts.get(i);
+			int numExperiments = heatMapWrapper.getSet().getStorageVA(
+					StorageVAType.STORAGE).size();
+			float heatMapWrapperWidth = (spaceForHeatMapWrappers / (float) numTotalExperiments)
+					* (float) numExperiments;
+			layout
+					.setLayoutParameters(heatMapWrapperPosX,
+							heatMapWrapperPosY, viewFrustum.getHeight()
+									- setBarHeight, heatMapWrapperWidth);
+			heatMapWrapperPosX += heatMapWrapperWidth + heatMapWrapperGapWidth;
 		}
 
 	}

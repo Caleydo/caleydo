@@ -898,4 +898,25 @@ public class DetailViewState extends ACompareViewState {
 		}
 
 	}
+
+	@Override
+	protected void setupLayouts() {
+		
+		IViewFrustum viewFrustum = view.getViewFrustum();
+		float setBarHeight = setBar.getHeight();
+		float heatMapWrapperPosY = setBar.getPosition().y() + setBarHeight;
+
+		float heatMapWrapperPosX = 0.0f;
+		float heatMapWrapperWidth = viewFrustum.getRight()
+				/ (2.0f * (float) heatMapWrappers.size() - 1.0f);
+		for (AHeatMapLayout layout : layouts) {
+			layout
+					.setLayoutParameters(heatMapWrapperPosX,
+							heatMapWrapperPosY, viewFrustum.getHeight()
+									- setBarHeight, heatMapWrapperWidth);
+			heatMapWrapperPosX += heatMapWrapperWidth * 2.0f;
+		}
+
+		
+	}
 }

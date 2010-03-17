@@ -338,22 +338,8 @@ public abstract class ACompareViewState {
 		if (isDisplayListDirty)
 			setBar.setHeight(gl, SET_BAR_HEIGHT_PORTION
 					* viewFrustum.getHeight());
-		// The setBar is an AGLGUIElement, therefore the above assignment is not
-		// necessarily applied
-		float setBarHeight = setBar.getHeight();
-		float heatMapWrapperPosY = setBar.getPosition().y() + setBarHeight;
-
-		float heatMapWrapperPosX = 0.0f;
-		float heatMapWrapperWidth = viewFrustum.getRight()
-				/ (2.0f * (float) heatMapWrappers.size() - 1.0f);
-		for (AHeatMapLayout layout : layouts) {
-			layout
-					.setLayoutParameters(heatMapWrapperPosX,
-							heatMapWrapperPosY, viewFrustum.getHeight()
-									- setBarHeight, heatMapWrapperWidth);
-			heatMapWrapperPosX += heatMapWrapperWidth * 2.0f;
-		}
-
+		setupLayouts();
+		
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			if (setsChanged) {
 				heatMapWrapper.init(gl, glMouseListener, null, dataDomain);
@@ -477,5 +463,7 @@ public abstract class ACompareViewState {
 	public abstract int getMinSetsInFocus();
 
 	public abstract void handleMouseWheel(GL gl, int amount, Point wheelPoint);
+	
+	protected abstract void setupLayouts();
 
 }
