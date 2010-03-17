@@ -172,7 +172,7 @@ public class DetailViewState extends ACompareViewState {
 
 			xOffset = 0;
 			renderSplineCluster(gl, va, leftHeatMapWrapper);
-			renderSplineRelation(gl, va, leftHeatMapWrapper);
+//			renderSplineRelation(gl, va, leftHeatMapWrapper);
 		}
 
 		calculateClusterXOffset(rightHeatMapWrapper);
@@ -182,8 +182,81 @@ public class DetailViewState extends ACompareViewState {
 
 			xOffset = 0;
 			renderSplineCluster(gl, va, rightHeatMapWrapper);
-			renderSplineRelation(gl, va, rightHeatMapWrapper);
+//			renderSplineRelation(gl, va, rightHeatMapWrapper);
 		}
+	}
+
+	private void renderDetailBand(GL gl, int startContentID, int endContentID) {
+
+		HeatMapWrapper leftHeatMapWrapper = heatMapWrappers.get(0);
+		HeatMapWrapper rightHeatMapWrapper = heatMapWrappers.get(1);
+
+		Vec2f leftPos = leftHeatMapWrapper
+				.getRightDetailLinkPositionFromContentID(startContentID);
+		if (leftPos == null)
+			return;
+
+		Vec2f rightPos = rightHeatMapWrapper
+				.getLeftDetailLinkPositionFromContentID(startContentID);
+		if (rightPos == null)
+			return;
+
+		xOffset = -1.8f;// (rightPos.x() - leftPos.x()) / 2f;
+
+		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
+		inputPoints.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
+		inputPoints.add(new Vec3f(rightPos.x() + xOffset, leftPos.y(), 0));
+		inputPoints.add(new Vec3f(rightPos.x() + xOffset / 3f, rightPos.y(),
+				0));
+		inputPoints.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
+
+		NURBSCurve curve = new NURBSCurve(inputPoints, 30);
+		ArrayList<Vec3f> outputPoints = curve.getCurvePoints();
+
+		// Band border
+		gl.glLineWidth(2);
+		gl.glColor4f(0, 0, 0, 0.6f);
+		gl.glBegin(GL.GL_LINE_STRIP);
+		for (int i = 0; i < outputPoints.size(); i++)
+			gl
+					.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i)
+							.y(), .1f);
+		gl.glEnd();
+
+		leftPos = leftHeatMapWrapper
+				.getRightDetailLinkPositionFromContentID(endContentID);
+		if (leftPos == null)
+			return;
+
+		rightPos = rightHeatMapWrapper
+				.getLeftDetailLinkPositionFromContentID(endContentID);
+		if (rightPos == null)
+			return;
+
+		inputPoints = new ArrayList<Vec3f>();
+		inputPoints.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
+		inputPoints.add(new Vec3f(rightPos.x() + xOffset, leftPos.y(), 0));
+		inputPoints.add(new Vec3f(rightPos.x() + xOffset / 3f, rightPos.y(),
+				0));
+		inputPoints.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
+
+		curve = new NURBSCurve(inputPoints, 30);
+		ArrayList<Vec3f> points = curve.getCurvePoints();
+
+		// Reverse point order
+		for (int i = points.size() - 1; i >= 0; i--) {
+			outputPoints.add(points.get(i));
+		}
+
+		// Band border
+		gl.glLineWidth(2);
+		gl.glColor4f(0, 0, 0, 0.6f);
+		gl.glBegin(GL.GL_LINE_STRIP);
+		for (int i = 0; i < points.size(); i++)
+			gl.glVertex3f(points.get(i).x(), points.get(i).y(), .1f);
+		gl.glEnd();
+
+		compareConnectionRenderer.render(gl, outputPoints);
 	}
 
 	private void renderSplineCluster(GL gl, ContentVirtualArray va,
@@ -222,27 +295,32 @@ public class DetailViewState extends ACompareViewState {
 		if (rightPos == null)
 			return;
 
-		if (xOffset == 0) {
-			for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetUp) {
-				if (firstDetailContentID.equals(cluseterToXOffset.getSecond())) {
-					xOffset = (rightPos.x() - leftPos.x())
-							* -((float) sortedClustersXOffsetUp
-									.indexOf(cluseterToXOffset) + 1)
-							/ (sortedClustersXOffsetUp.size() + 1);
-					break;
-				}
-			}
-
-			for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetDown) {
-				if (firstDetailContentID.equals(cluseterToXOffset.getSecond())) {
-					xOffset = (rightPos.x() - leftPos.x())
-							* -((float) sortedClustersXOffsetDown
-									.indexOf(cluseterToXOffset) + 1)
-							/ (sortedClustersXOffsetDown.size() + 1);
-					break;
-				}
-			}
-		}
+		if (heatMapWrapper == heatMapWrappers.get(0))
+			xOffset = -0.5f;
+		else
+			xOffset = 0.5f;
+		
+//		if (xOffset == 0) {
+//			for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetUp) {
+//				if (firstDetailContentID.equals(cluseterToXOffset.getSecond())) {
+//					xOffset = (rightPos.x() - leftPos.x())
+//							* -((float) sortedClustersXOffsetUp
+//									.indexOf(cluseterToXOffset) + 1)
+//							/ (sortedClustersXOffsetUp.size() + 1);
+//					break;
+//				}
+//			}
+//
+//			for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetDown) {
+//				if (firstDetailContentID.equals(cluseterToXOffset.getSecond())) {
+//					xOffset = (rightPos.x() - leftPos.x())
+//							* -((float) sortedClustersXOffsetDown
+//									.indexOf(cluseterToXOffset) + 1)
+//							/ (sortedClustersXOffsetDown.size() + 1);
+//					break;
+//				}
+//			}
+//		}
 
 		if (xOffset == 0)
 			return;
@@ -250,7 +328,7 @@ public class DetailViewState extends ACompareViewState {
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
 		inputPoints.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
 		inputPoints.add(new Vec3f(rightPos.x() + xOffset, leftPos.y(), 0));
-		inputPoints.add(new Vec3f(rightPos.x() + xOffset / 1.5f, rightPos.y(),
+		inputPoints.add(new Vec3f(rightPos.x() + xOffset / 5f, rightPos.y(),
 				0));
 		inputPoints.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
 
@@ -287,27 +365,27 @@ public class DetailViewState extends ACompareViewState {
 		if (rightPos == null)
 			return;
 
-		if (xOffset == 0) {
-			for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetUp) {
-				if (lastDetailContentID.equals(cluseterToXOffset.getSecond())) {
-					xOffset = (rightPos.x() - leftPos.x())
-							* -((float) sortedClustersXOffsetUp
-									.indexOf(cluseterToXOffset) + 1)
-							/ (sortedClustersXOffsetUp.size() + 1);
-					break;
-				}
-			}
-
-			for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetDown) {
-				if (lastDetailContentID.equals(cluseterToXOffset.getSecond())) {
-					xOffset = (rightPos.x() - leftPos.x())
-							* -((float) sortedClustersXOffsetDown
-									.indexOf(cluseterToXOffset) + 1)
-							/ (sortedClustersXOffsetDown.size() + 1);
-					break;
-				}
-			}
-		}
+//		if (xOffset == 0) {
+//			for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetUp) {
+//				if (lastDetailContentID.equals(cluseterToXOffset.getSecond())) {
+//					xOffset = (rightPos.x() - leftPos.x())
+//							* -((float) sortedClustersXOffsetUp
+//									.indexOf(cluseterToXOffset) + 1)
+//							/ (sortedClustersXOffsetUp.size() + 1);
+//					break;
+//				}
+//			}
+//
+//			for (Pair<Float, Integer> cluseterToXOffset : sortedClustersXOffsetDown) {
+//				if (lastDetailContentID.equals(cluseterToXOffset.getSecond())) {
+//					xOffset = (rightPos.x() - leftPos.x())
+//							* -((float) sortedClustersXOffsetDown
+//									.indexOf(cluseterToXOffset) + 1)
+//							/ (sortedClustersXOffsetDown.size() + 1);
+//					break;
+//				}
+//			}
+//		}
 
 		if (xOffset == 0)
 			return;
@@ -315,7 +393,7 @@ public class DetailViewState extends ACompareViewState {
 		inputPoints = new ArrayList<Vec3f>();
 		inputPoints.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
 		inputPoints.add(new Vec3f(rightPos.x() + xOffset, leftPos.y(), 0));
-		inputPoints.add(new Vec3f(rightPos.x() + xOffset / 1.5f, rightPos.y(),
+		inputPoints.add(new Vec3f(rightPos.x() + xOffset / 5f, rightPos.y(),
 				0));
 		inputPoints.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
 
@@ -506,55 +584,71 @@ public class DetailViewState extends ACompareViewState {
 		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
 
-		HeatMapWrapper leftHeatMapWrapper = heatMapWrappers.get(0);
-		HeatMapWrapper rightHeatMapWrapper = heatMapWrappers.get(1);
+//		HeatMapWrapper leftHeatMapWrapper = heatMapWrappers.get(0);
+//		HeatMapWrapper rightHeatMapWrapper = heatMapWrappers.get(1);
 
-//		detailBands = new ArrayList<ArrayList<Integer>>();
-//		calculateDetailBands();
+		detailBands = new ArrayList<ArrayList<Integer>>();
+		calculateDetailBands();
 
-		// Iterate over all detail content VAs on the left
-		for (ContentVirtualArray contentVA : leftHeatMapWrapper
-				.getContentVAsOfHeatMaps()) {
+		for (ArrayList<Integer> detailBand : detailBands) {
 
-			for (Integer contentID : contentVA) {
+			if (detailBand.size() == 1)
+			{
+				renderSingleDetailRelation(gl, detailBand.get(0));
+			} else if (detailBand.size() >= 2) {
 
-				float positionZ = setRelationColor(gl, leftHeatMapWrapper,
-						contentID);
-
-				Vec2f leftPos = leftHeatMapWrapper
-						.getRightDetailLinkPositionFromContentID(contentID);
-
-				if (leftPos == null)
-					continue;
-
-				Vec2f rightPos = rightHeatMapWrapper
-						.getLeftDetailLinkPositionFromContentID(contentID);
-
-				if (rightPos == null)
-					continue;
-
-				gl.glPushName(pickingManager.getPickingID(viewID,
-						EPickingType.POLYLINE_SELECTION, contentID));
-				ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-				points.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
-				points.add(new Vec3f(leftPos.x() + (rightPos.x() - leftPos.x())
-						/ 2f, leftPos.y(), 0));
-				points.add(new Vec3f(leftPos.x() + (rightPos.x() - leftPos.x())
-						/ 2f, rightPos.y(), 0));
-				points.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
-
-				NURBSCurve curve = new NURBSCurve(points, 30);
-				points = curve.getCurvePoints();
-
-				gl.glBegin(GL.GL_LINE_STRIP);
-				for (int i = 0; i < points.size(); i++)
-					gl.glVertex3f(points.get(i).x(), points.get(i).y(),
-							positionZ);
-				gl.glEnd();
-
-				gl.glPopName();
+				renderDetailBand(gl, detailBand.get(0), detailBand.get(detailBand
+						.size() - 1));				
 			}
 		}
+
+//		// Iterate over all detail content VAs on the left
+//		for (ContentVirtualArray contentVA : leftHeatMapWrapper
+//				.getContentVAsOfHeatMaps()) {
+//
+//			for (Integer contentID : contentVA) {
+//
+//				renderSingleDetailRelation(gl, contentID);
+//			}
+//		}
+	}
+
+	private void renderSingleDetailRelation(GL gl, Integer contentID) {
+
+		float positionZ = setRelationColor(gl, heatMapWrappers.get(0),
+				contentID);
+
+		Vec2f leftPos = heatMapWrappers.get(0)
+				.getRightDetailLinkPositionFromContentID(contentID);
+
+		if (leftPos == null)
+			return;
+
+		Vec2f rightPos = heatMapWrappers.get(1)
+				.getLeftDetailLinkPositionFromContentID(contentID);
+
+		if (rightPos == null)
+			return;
+
+		gl.glPushName(pickingManager.getPickingID(viewID,
+				EPickingType.POLYLINE_SELECTION, contentID));
+		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
+		points.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
+		points.add(new Vec3f(leftPos.x() + (rightPos.x() - leftPos.x()) / 2f,
+				leftPos.y(), 0));
+		points.add(new Vec3f(leftPos.x() + (rightPos.x() - leftPos.x()) / 2f,
+				rightPos.y(), 0));
+		points.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
+
+		NURBSCurve curve = new NURBSCurve(points, 30);
+		points = curve.getCurvePoints();
+
+		gl.glBegin(GL.GL_LINE_STRIP);
+		for (int i = 0; i < points.size(); i++)
+			gl.glVertex3f(points.get(i).x(), points.get(i).y(), positionZ);
+		gl.glEnd();
+
+		gl.glPopName();
 	}
 
 	private void calculateDetailBands() {
@@ -562,40 +656,42 @@ public class DetailViewState extends ACompareViewState {
 		HeatMapWrapper leftHeatMapWrapper = heatMapWrappers.get(0);
 		HeatMapWrapper rightHeatMapWrapper = heatMapWrappers.get(1);
 
+		ArrayList<Integer> band = null;
+
 		// Iterate over all detail content VAs on the left
 		for (ContentVirtualArray leftContentVA : leftHeatMapWrapper
 				.getContentVAsOfHeatMaps()) {
 
-			for (int leftContentIndex = 0; leftContentIndex < leftContentVA
-					.size() - 1; leftContentIndex++) {
+			for (ContentVirtualArray rightContentVA : rightHeatMapWrapper
+					.getContentVAsOfHeatMaps()) {
 
-				int contentID = leftContentVA.get(leftContentIndex);
-				int nextContentID = leftContentVA.get(leftContentIndex + 1);
+				if (band == null || band.size() > 0) {
+					band = new ArrayList<Integer>();
+					detailBands.add(band);
+				}
 
-				for (ContentVirtualArray rightContentVA : rightHeatMapWrapper
-						.getContentVAsOfHeatMaps()) {
+				for (int leftContentIndex = 0; leftContentIndex < leftContentVA
+						.size() - 1; leftContentIndex++) {
+
+					int contentID = leftContentVA.get(leftContentIndex);
+					int nextContentID = leftContentVA.get(leftContentIndex + 1);
+
+					// if (band == null || band.size() > 0) {
+					// band = new ArrayList<Integer>();
+					// detailBands.add(band);
+					// }
 
 					if (rightContentVA.containsElement(contentID) == 0)
 						continue;
 
-					boolean newBand = true;
-					ArrayList<Integer> band = null;
-					if (newBand) {
-						band = new ArrayList<Integer>();
-						detailBands.add(band);
-						newBand = false;
-					}
-
-					if ((leftContentIndex - rightContentVA.indexOf(contentID)) == ((leftContentIndex + 1) - (rightContentVA
-							.indexOf(nextContentID) + 1))) {
+					if ((rightContentVA.indexOf(contentID)) == (rightContentVA
+							.indexOf(nextContentID) - 1)) {
 						band.add(contentID);
-					} else
-						newBand = true;
+					}
 				}
 			}
 		}
 	}
-
 	@Override
 	public ECompareViewStateType getStateType() {
 		return ECompareViewStateType.DETAIL_VIEW;
@@ -878,7 +974,7 @@ public class DetailViewState extends ACompareViewState {
 
 	@Override
 	protected void setupLayouts() {
-		
+
 		IViewFrustum viewFrustum = view.getViewFrustum();
 		float setBarHeight = setBar.getHeight();
 		float heatMapWrapperPosY = setBar.getPosition().y() + setBarHeight;
@@ -893,7 +989,5 @@ public class DetailViewState extends ACompareViewState {
 									- setBarHeight, heatMapWrapperWidth);
 			heatMapWrapperPosX += heatMapWrapperWidth * 2.0f;
 		}
-
-		
 	}
 }
