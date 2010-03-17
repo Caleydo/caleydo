@@ -4,8 +4,6 @@ import gleem.linalg.Vec3f;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
-import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
 
 public class HeatMapLayoutDetailViewRight extends AHeatMapLayoutDetailView {
 

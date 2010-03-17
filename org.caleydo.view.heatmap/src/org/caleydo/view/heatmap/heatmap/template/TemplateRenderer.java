@@ -5,14 +5,12 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.ContentSelectionManager;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.AContentRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ARenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ContentSpacing;
 import org.caleydo.view.heatmap.heatmap.renderer.HeatMapRenderer;
-import org.eclipse.core.runtime.Platform;
 
 public class TemplateRenderer {
 
@@ -76,12 +74,14 @@ public class TemplateRenderer {
 					ContentSelectionManager selectionManager = heatMap
 							.getContentSelectionManager();
 					if (heatMap.isHideElements()) {
-						for (int contentID : heatMap.getContentVA()) {
-							if (selectionManager.checkStatus(
-									GLHeatMap.SELECTION_HIDDEN, contentID))
-
-								contentElements--;
-						}
+						// for (int contentID : heatMap.getContentVA()) {
+						// if (selectionManager.checkStatus(
+						// GLHeatMap.SELECTION_HIDDEN, contentID))
+						//
+						// contentElements--;
+						// }
+						contentElements -= selectionManager
+								.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
 						// contentElements = totalElements
 						// - heatMap.getContentSelectionManager()
 						// .getNumberOfElements(
@@ -116,7 +116,6 @@ public class TemplateRenderer {
 		float sizeOverhead = 0;
 		float positionInHM = 0;
 		for (RenderParameters parameters : template.verticalSpaceAllocations) {
-			// RenderParameters parameters = renderPair.getSecond();
 			ARenderer renderer = parameters.renderer;
 
 			if (belowHM)
@@ -124,12 +123,10 @@ public class TemplateRenderer {
 
 			if (parameters instanceof Row) {
 				Row row = (Row) parameters;
-				// boolean hmInRow = false;
 
 				for (RenderParameters rowElements : row) {
 					renderer = rowElements.renderer;
 					if (renderer instanceof HeatMapRenderer) {
-						// hmInRow = true;
 						belowHM = true;
 						positionInHM = ((HeatMapRenderer) renderer)
 								.getYCoordinateByContentIndex(contentIndex);

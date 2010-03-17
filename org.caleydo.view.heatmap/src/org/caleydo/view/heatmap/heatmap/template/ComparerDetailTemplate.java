@@ -1,7 +1,5 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
-import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.renderer.CaptionCageRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ContentCaptionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.DetailToolBar;
 import org.caleydo.view.heatmap.heatmap.renderer.HeatMapRenderer;

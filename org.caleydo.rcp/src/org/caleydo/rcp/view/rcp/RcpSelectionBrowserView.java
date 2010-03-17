@@ -1,6 +1,5 @@
 package org.caleydo.rcp.view.rcp;
 
-import org.caleydo.rcp.util.info.InfoArea;
 import org.caleydo.rcp.util.selections.SelectionBrowser;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

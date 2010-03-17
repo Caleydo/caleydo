@@ -2,11 +2,9 @@ package org.caleydo.rcp.util.selections;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
-
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -14,7 +12,6 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
@@ -39,16 +36,16 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.rcp.util.info.listener.InfoAreaUpdateListener;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.ui.PlatformUI;
 
 /**

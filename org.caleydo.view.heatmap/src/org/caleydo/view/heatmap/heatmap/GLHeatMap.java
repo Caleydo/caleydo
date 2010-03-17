@@ -827,7 +827,7 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	public void setContentVA(ContentVirtualArray contentVA) {
-		// contentSelectionManager.setVA(contentVA);
+		contentSelectionManager.setVA(contentVA);
 		this.contentVA = contentVA;
 		setDisplayListDirty();
 	}

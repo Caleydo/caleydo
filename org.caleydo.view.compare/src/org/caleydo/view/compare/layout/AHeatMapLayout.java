@@ -5,7 +5,6 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 

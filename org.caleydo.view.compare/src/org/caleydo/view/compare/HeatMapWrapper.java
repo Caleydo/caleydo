@@ -5,7 +5,6 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import javax.media.opengl.GL;
 
@@ -23,7 +22,6 @@ import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -33,7 +31,6 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.event.view.selection.AddSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -45,7 +42,6 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
@@ -222,8 +218,6 @@ public class HeatMapWrapper {
 	private void setEmbeddedHeatMapData(GLHeatMap heatMap,
 			int firstSampleIndex, int lastSampleIndex) {
 
-		// TODO: we need to do re-sorting here, this has to be called on the
-		// fly, and
 		// TODO: Is this really necessary?
 		heatMap.resetView();
 		ContentVirtualArray va = new ContentVirtualArray();

@@ -16,7 +16,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
