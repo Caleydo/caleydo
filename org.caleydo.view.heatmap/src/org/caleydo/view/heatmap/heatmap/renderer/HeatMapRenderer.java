@@ -202,4 +202,12 @@ public class HeatMapRenderer extends AContentRenderer {
 		gl.glDisable(GL.GL_LINE_STIPPLE);
 	}
 
+	public float getYCoordinateByContentIndex(int contentIndex) {
+		if (!yDistances.isEmpty())
+			return y - yDistances.get(contentIndex) - normalFieldHeight / 2;
+		else {
+			return contentIndex * normalFieldHeight - normalFieldHeight / 2;
+		}
+	}
+
 }

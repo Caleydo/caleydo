@@ -1,7 +1,11 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
+import org.caleydo.view.heatmap.heatmap.renderer.ARenderer;
+
 class RenderParameters {
 
+	ARenderer renderer;
+	
 	boolean scaleX = true;
 	boolean scaleY = true;
 	float transformX = 0;

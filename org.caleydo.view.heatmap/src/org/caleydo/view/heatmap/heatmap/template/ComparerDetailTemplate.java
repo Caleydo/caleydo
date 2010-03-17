@@ -24,9 +24,9 @@ public class ComparerDetailTemplate extends ATemplate {
 		RenderParameters hm = new RenderParameters();
 		hm.grabX = true;
 		hm.sizeY = 1f;
+		hm.renderer = new HeatMapRenderer(templateRenderer.heatMap);
 
-		templateRenderer.addRenderer(new HeatMapRenderer(
-				templateRenderer.heatMap), hm);
+		templateRenderer.addRenderer(hm);
 		// verticalSpaceAllocations.add(parameters);
 
 		boolean renderCaptions = templateRenderer.heatMap.isShowCaptions();
@@ -36,9 +36,10 @@ public class ComparerDetailTemplate extends ATemplate {
 			caption = new RenderParameters();
 			caption.sizeX = 0.29f;
 			caption.sizeY = 1f;
+			caption.renderer = new ContentCaptionRenderer(
+					templateRenderer.heatMap);
 
-			templateRenderer.addRenderer(new ContentCaptionRenderer(
-					templateRenderer.heatMap), caption);
+			templateRenderer.addRenderer(caption);
 		}
 		// content cage
 		// RenderParameters cage;
@@ -70,8 +71,9 @@ public class ComparerDetailTemplate extends ATemplate {
 
 		toolBar.scaleY = false;
 
-		templateRenderer.addRenderer(
-				new DetailToolBar(templateRenderer.heatMap), toolBar);
+		toolBar.renderer = new DetailToolBar(templateRenderer.heatMap);
+
+		templateRenderer.addRenderer(toolBar);
 		add(hmRow);
 		add(toolBar);
 

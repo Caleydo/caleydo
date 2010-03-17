@@ -11,11 +11,12 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.AContentRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ARenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ContentSpacing;
+import org.caleydo.view.heatmap.heatmap.renderer.HeatMapRenderer;
 import org.eclipse.core.runtime.Platform;
 
 public class TemplateRenderer {
 
-	ArrayList<Pair<ARenderer, RenderParameters>> renderers;
+	ArrayList<RenderParameters> renderers;
 
 	protected float SPACING = 0.01f;
 
@@ -31,7 +32,7 @@ public class TemplateRenderer {
 	public TemplateRenderer(GLHeatMap heatMap) {
 
 		this.heatMap = heatMap;
-		renderers = new ArrayList<Pair<ARenderer, RenderParameters>>();
+		renderers = new ArrayList<RenderParameters>();
 	}
 
 	public void setTemplate(ATemplate template) {
@@ -41,13 +42,11 @@ public class TemplateRenderer {
 		template.setParameters();
 	}
 
-	public void addRenderer(ARenderer renderer, RenderParameters parameters) {
-		renderers.add(new Pair<ARenderer, RenderParameters>(renderer,
-				parameters));
+	public void addRenderer(RenderParameters parameters) {
+		renderers.add(parameters);
 	}
-	
-	public void clearRenderers()
-	{
+
+	public void clearRenderers() {
 		renderers.clear();
 	}
 
@@ -62,11 +61,10 @@ public class TemplateRenderer {
 		ContentSpacing contentSpacing = null;
 
 		template.calculateScales(totalWidth, totalHeight);
-		
 
-		for (Pair<ARenderer, RenderParameters> renderPair : renderers) {
-			RenderParameters parameters = renderPair.getSecond();
-			ARenderer renderer = renderPair.getFirst();
+		for (RenderParameters parameters : renderers) {
+
+			ARenderer renderer = parameters.renderer;
 
 			renderer.setLimits(parameters.sizeScaledX, parameters.sizeScaledY);
 			if (renderer instanceof AContentRenderer) {
@@ -103,14 +101,48 @@ public class TemplateRenderer {
 	public void render(GL gl) {
 		// FIXME: this should be called externally
 		frustumChanged();
-		for (Pair<ARenderer, RenderParameters> renderPair : renderers) {
-			RenderParameters parameters = renderPair.getSecond();
-			ARenderer renderer = renderPair.getFirst();
+		for (RenderParameters parameters : renderers) {
+			ARenderer renderer = parameters.renderer;
 			gl.glTranslatef(parameters.transformScaledX,
 					parameters.transformScaledY, 0);
 			renderer.render(gl);
 			gl.glTranslatef(-parameters.transformScaledX,
 					-parameters.transformScaledY, 0);
 		}
+	}
+
+	public Float getYCoordinateByContentIndex(int contentIndex) {
+		boolean belowHM = false;
+		float sizeOverhead = 0;
+		float positionInHM = 0;
+		for (RenderParameters parameters : template.verticalSpaceAllocations) {
+			// RenderParameters parameters = renderPair.getSecond();
+			ARenderer renderer = parameters.renderer;
+
+			if (belowHM)
+				sizeOverhead += parameters.sizeScaledY;
+
+			if (parameters instanceof Row) {
+				Row row = (Row) parameters;
+				// boolean hmInRow = false;
+
+				for (RenderParameters rowElements : row) {
+					renderer = rowElements.renderer;
+					if (renderer instanceof HeatMapRenderer) {
+						// hmInRow = true;
+						belowHM = true;
+						positionInHM = ((HeatMapRenderer) renderer)
+								.getYCoordinateByContentIndex(contentIndex);
+					}
+				}
+
+			}
+			if (renderer instanceof HeatMapRenderer) {
+				belowHM = true;
+				positionInHM = ((HeatMapRenderer) renderer)
+						.getYCoordinateByContentIndex(contentIndex);
+			}
+		}
+		return positionInHM;
 	}
 }

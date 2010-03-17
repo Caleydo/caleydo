@@ -360,11 +360,11 @@ public class HeatMapWrapper {
 
 		isNewSelection = false;
 
-//		Vec3f position = layout.getPosition();
-//		GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
-//
-//		GLHelperFunctions.drawPointAt(gl, position.x() + layout.getWidth(),
-//				position.y(), 1);
+		// Vec3f position = layout.getPosition();
+		// GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
+		//
+		// GLHelperFunctions.drawPointAt(gl, position.x() + layout.getWidth(),
+		// position.y(), 1);
 
 	}
 
@@ -545,9 +545,12 @@ public class HeatMapWrapper {
 		float heatMapHeight = layout.getDetailHeatMapHeight(
 				numSamplesInHeatMap, numTotalSamples, selectedGroups.size());
 
-		return heatMapPosition.y()
-				+ (heatMapHeight - heatMap
-						.getYCoordinateByContentIndex(contentIndex));
+		Float elementInHMPosition = heatMap
+				.getYCoordinateByContentIndex(contentIndex);
+		if (elementInHMPosition == null)
+			return null;
+		else
+			return heatMapPosition.y() + (heatMapHeight - elementInHMPosition);
 	}
 
 	public ArrayList<ContentVirtualArray> getContentVAsOfHeatMaps() {

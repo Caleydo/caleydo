@@ -684,13 +684,28 @@ public class GLHeatMap extends AStorageBasedView {
 		return alElementReps;
 	}
 
-	public float getYCoordinateByContentIndex(int contentIndex) {
+	/**
+	 * Returns the y coordinate of the elment rendered at contentIndex, or null
+	 * if the current element is hidden
+	 * 
+	 * @param contentIndex
+	 * @return
+	 */
+	public Float getYCoordinateByContentIndex(int contentIndex) {
 
-		// todo deliver the correct coordinates
-		renderStyle.updateFieldSizes();
-		float fieldWidth = renderStyle.getNormalFielHeight();
+		if(isHideElements())
+		{
+			Integer contentID = contentVA.get(contentIndex);
+			if(contentSelectionManager.checkStatus(SELECTION_HIDDEN, contentID))
+				return null;			
+		}
+		
+		return templateRenderer.getYCoordinateByContentIndex(contentIndex);
+		// TODO deliver the correct coordinates
+//		renderStyle.updateFieldSizes();
+//		float fieldWidth = renderStyle.getNormalFielHeight();
 
-		return fieldWidth * contentIndex + (fieldWidth / 2.0f);
+//		return fieldWidth * contentIndex + (fieldWidth / 2.0f);
 	}
 
 	private void doTranslation() {

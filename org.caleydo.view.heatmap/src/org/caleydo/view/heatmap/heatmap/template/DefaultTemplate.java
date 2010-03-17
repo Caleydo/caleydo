@@ -12,8 +12,8 @@ public class DefaultTemplate extends ATemplate {
 		RenderParameters parameters = new RenderParameters();
 		parameters.sizeX = 0.7f;
 		parameters.sizeY = 1f;
-		templateRenderer.addRenderer(new HeatMapRenderer(
-				templateRenderer.heatMap), parameters);
+		parameters.renderer = new HeatMapRenderer(templateRenderer.heatMap);
+		templateRenderer.addRenderer(parameters);
 
 		row.appendElement(parameters);
 
@@ -22,8 +22,10 @@ public class DefaultTemplate extends ATemplate {
 		parameters.sizeX = 0.29f;
 		parameters.sizeY = 1f;
 		parameters.transformX = 0.7f + templateRenderer.SPACING;
-		templateRenderer.addRenderer(new ContentCaptionRenderer(
-				templateRenderer.heatMap), parameters);
+		parameters.renderer = new ContentCaptionRenderer(
+				templateRenderer.heatMap);
+
+		templateRenderer.addRenderer(parameters);
 
 		row.appendElement(parameters);
 
