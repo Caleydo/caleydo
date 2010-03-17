@@ -11,6 +11,8 @@ public abstract class ATemplate {
 
 	protected TemplateRenderer templateRenderer;
 
+	private float yOverhead;
+
 	public ATemplate() {
 		verticalSpaceAllocations = new ArrayList<RenderParameters>();
 		// horizontalElements = new ArrayList<RenderParameters>();
@@ -58,6 +60,9 @@ public abstract class ATemplate {
 		float yOffset = 0;
 		if (greedyVerticalElement != null)
 			greedyVerticalElement.sizeY = 1 - usedSizeY;
+		
+		// here we assume that the greedy element is also the "central" one 
+		yOverhead = usedSizeY;
 
 		for (int count = verticalSpaceAllocations.size() - 1; count >= 0; count--) {
 			RenderParameters element = verticalSpaceAllocations.get(count);
@@ -84,6 +89,10 @@ public abstract class ATemplate {
 
 	public void recalculateSpacings() {
 		setParameters();
+	}
+
+	public float getYOverhead() {
+		return yOverhead;
 	}
 
 }

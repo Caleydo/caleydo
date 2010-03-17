@@ -862,8 +862,16 @@ public class HeatMapWrapper {
 		if (activeHeatMapID == groupIndex)
 			return;
 
+		// FIXME FIXME!!!!! we need to set heat maps inactive as well, this is
+		// just for now:
+		for (GLHeatMap heatMap : hashHeatMaps.values()) {
+			heatMap.setActive(false);
+		}
+
 		if (activeHeatMapID != -1) {
 			GLHeatMap heatMap = hashHeatMaps.get(activeHeatMapID);
+			// TODO: Note, here we set the heat map active.
+			heatMap.setActive(true);
 			ContentSelectionManager hmContentSelectionManager = heatMap
 					.getContentSelectionManager();
 			for (Integer elementID : heatMap.getContentVA()) {

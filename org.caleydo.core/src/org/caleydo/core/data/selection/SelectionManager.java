@@ -363,7 +363,11 @@ public class SelectionManager
 	 * @return the number of element in this selection
 	 */
 	public int getNumberOfElements(SelectionType SelectionType) {
-		return hashSelectionTypes.get(SelectionType).size();
+		HashMap<Integer, Integer> hashElements = hashSelectionTypes.get(SelectionType);
+		if (hashElements != null)
+			return hashElements.size();
+		else
+			return 0;
 	}
 
 	/**
@@ -380,9 +384,9 @@ public class SelectionManager
 		if (selectionType == SelectionType.NORMAL)
 			return false;
 
-		if(!hashSelectionTypes.containsKey(selectionType))
+		if (!hashSelectionTypes.containsKey(selectionType))
 			return false;
-		
+
 		if (hashSelectionTypes.get(selectionType).containsKey(iElementID))
 			return true;
 

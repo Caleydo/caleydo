@@ -114,6 +114,9 @@ public class GLHeatMap extends AStorageBasedView {
 
 	/** Utility object for coordinate transformation and projection */
 	protected StandardTransformer selectionTransformer;
+	
+	/** Signals that the heat map is currently active */
+	private boolean isActive = false;
 
 	/**
 	 * Constructor.
@@ -693,19 +696,19 @@ public class GLHeatMap extends AStorageBasedView {
 	 */
 	public Float getYCoordinateByContentIndex(int contentIndex) {
 
-		if(isHideElements())
-		{
+		if (isHideElements()) {
 			Integer contentID = contentVA.get(contentIndex);
-			if(contentSelectionManager.checkStatus(SELECTION_HIDDEN, contentID))
-				return null;			
+			if (contentSelectionManager
+					.checkStatus(SELECTION_HIDDEN, contentID))
+				return null;
 		}
-		
+
 		return templateRenderer.getYCoordinateByContentIndex(contentIndex);
 		// TODO deliver the correct coordinates
-//		renderStyle.updateFieldSizes();
-//		float fieldWidth = renderStyle.getNormalFielHeight();
+		// renderStyle.updateFieldSizes();
+		// float fieldWidth = renderStyle.getNormalFielHeight();
 
-//		return fieldWidth * contentIndex + (fieldWidth / 2.0f);
+		// return fieldWidth * contentIndex + (fieldWidth / 2.0f);
 	}
 
 	private void doTranslation() {
@@ -849,7 +852,7 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	/**
-	 * Chech wheter we should hide elements
+	 * Check whether we should hide elements
 	 * 
 	 * @return
 	 */
@@ -865,4 +868,57 @@ public class GLHeatMap extends AStorageBasedView {
 	public boolean isShowCaptions() {
 		return showCaptions;
 	}
+
+	/**
+	 * returns the number of elements currently visible in the heat map
+	 * 
+	 * @return
+	 */
+	public int getNumberOfVisibleElements() {
+		if (isHideElements())
+			return contentVA.size()
+					- contentSelectionManager
+							.getNumberOfElements(SELECTION_HIDDEN);
+		else
+			return contentVA.size();
+	}
+
+	/**
+	 * returns the overhead which the heat map needs additionally to the
+	 * elements
+	 * 
+	 * @return
+	 */
+	public float getRequiredOverheadSpacing() {
+		return template.getYOverhead();
+	}
+
+	public void setActive(boolean isActive)
+	{
+		this.isActive = isActive;
+	}
+	
+	/**
+	 * Returns true if a minimum spacing per element is required. This is
+	 * typically the case when captions are rendered.
+	 * 
+	 * @return
+	 */
+	public boolean isForceMinSpacing() {
+		if (isShowCaptions() && isActive)
+			return true;
+		return false;
+	}
+
+	/**
+	 * Returns the minimal spacing required when {@link #isForceMinSpacing()} is
+	 * true. This is typically the case when captions are rendered.
+	 * 
+	 * @return
+	 */
+	public float getMinSpacing() {
+		// FIXME: this is a "hausnummer"
+		return 0.1f;
+	}
+
 }
