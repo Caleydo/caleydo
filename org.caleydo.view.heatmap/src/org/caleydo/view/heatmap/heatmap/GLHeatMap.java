@@ -890,7 +890,11 @@ public class GLHeatMap extends AStorageBasedView {
 	 * @return
 	 */
 	public float getRequiredOverheadSpacing() {
-		return template.getYOverhead();
+		// return template.getYOverhead();
+		if (isActive)
+			return 0.1f;
+		else
+			return 0;
 	}
 
 	public void setActive(boolean isActive) {

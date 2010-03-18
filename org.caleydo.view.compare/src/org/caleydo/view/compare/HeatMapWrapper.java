@@ -238,9 +238,12 @@ public class HeatMapWrapper {
 
 		int numTotalSamples = 0;
 
+		float totalHeightOverhead = 0;
 		for (Group group : selectedGroups.keySet()) {
-			int numSamplesInHeatMap = group.getNrElements();
+			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+			int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
 			numTotalSamples += numSamplesInHeatMap;
+			totalHeightOverhead += heatMap.getRequiredOverheadSpacing();
 		}
 
 		// for (Group group : contentVA.getGroupList()) {
@@ -666,8 +669,19 @@ public class HeatMapWrapper {
 	// }
 
 	/**
-	 * This is called in the passive heat map. The groups are selected and the
-	 * contentVAs are re-sorted to minimize crossings
+	 * <p>
+	 * This method chooses which groups (and therefore heat maps) are to be
+	 * rendered at the passive side. It does so based on a virtualArray
+	 * containing all elements to be rendered.
+	 * </p>
+	 * <p>
+	 * This is called in the passive heat map.
+	 * </p>
+	 * <p>
+	 * It also re-sorts the passive group's virtual arrays to minimize crossings
+	 * and sets elements that are in a passive group but not in the supplied
+	 * virtual array to {@link GLHeatMap#SELECTION_HIDDEN} so that they can be
+	 * hidden on demand.
 	 */
 	public void selectGroupsFromContentVAList(
 			HashMap<Integer, Integer> relationMap,
@@ -879,8 +893,6 @@ public class HeatMapWrapper {
 
 		if (previouslyActiveHeatMapID != -1) {
 			GLHeatMap heatMap = hashHeatMaps.get(activeHeatMapID);
-			// TODO: Note, here we set the heat map active.
-			heatMap.setActive(true);
 			ContentSelectionManager hmContentSelectionManager = heatMap
 					.getContentSelectionManager();
 			for (Integer elementID : heatMap.getContentVA()) {
@@ -894,6 +906,7 @@ public class HeatMapWrapper {
 		}
 
 		GLHeatMap heatMap = hashHeatMaps.get(groupIndex);
+		heatMap.setActive(true);
 		ContentSelectionManager hmContentSelectionManager = heatMap
 				.getContentSelectionManager();
 		hmContentSelectionManager.addToType(activeHeatMapSelectionType, heatMap
