@@ -117,7 +117,10 @@ public enum EIconTextures {
 	CM_BIOCARTA("/resources/context_menu/biocarta.png"),
 	CM_KEGG("/resources/context_menu/kegg.png"),
 	CM_SCROLL_BUTTON("/resources/context_menu/scroll_button.png"),
-	CM_SCROLL_BUTTON_OVER("/resources/context_menu/scroll_button_over.png");
+	CM_SCROLL_BUTTON_OVER("/resources/context_menu/scroll_button_over.png"),
+	
+	COMPARER_SHOW_HIDDEN("/resources/icons/view/compare/show_hidden_elements.png"),
+	COMPARER_SHOW_CAPTIONS("/resources/icons/view/compare/show_captions.png");
 
 	private String sFileName;
 
