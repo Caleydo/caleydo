@@ -215,11 +215,15 @@ public class GLScatterPlot extends AStorageBasedView {
 	private ArrayList<Texture> AlFullTextures = new ArrayList<Texture>();
 	private ArrayList<Texture> AlSelectionTextures = new ArrayList<Texture>();
 
-	private ArrayList<SelectionType> AlSelectionTypes = new ArrayList<SelectionType>();
+	//private ArrayList<SelectionType> AlSelectionTypes = new ArrayList<SelectionType>();
 	private SelectionType currentSelection = SelectionType.SELECTION;
-	private int iMaxSelections = 5;
+	private final static String CUSTOM_SELECTION_NAME="SP Sel"; 
+	private int iMaxSelections = 10;
+	private int iCurrentSelectionNr=0;
 	
 	private int iDisplayEveryNthPoint = 1;
+	
+	
 
 	/**
 	 * Constructor.
@@ -1460,10 +1464,9 @@ public class GLScatterPlot extends AStorageBasedView {
 						if (!tmpSelectionType.isVisible())
 							continue;
 
-						//if(tmpSelectionType!=SelectionType.NORMAL)
-						//FIXME: Draw normal Selection (investigate Bug)
-						if (SelectionType.isDefaultType(tmpSelectionType))
-							continue;
+						if(tmpSelectionType!=SelectionType.SELECTION)
+							if (SelectionType.isDefaultType(tmpSelectionType))
+								continue;
 					
 					
 					
@@ -2594,11 +2597,10 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 			if (!tmpSelectionType.isVisible())
 				continue;
 
-			//if(tmpSelectionType!=SelectionType.NORMAL)
-			//FIXME: Draw normal Selection (investigate Bug)
-			if (SelectionType.isDefaultType(tmpSelectionType))
-				continue;
-				
+			if(tmpSelectionType!=SelectionType.SELECTION)		
+				if (SelectionType.isDefaultType(tmpSelectionType))
+					continue;
+					
 
 			if (contentSelectionManager.getNumberOfElements(tmpSelectionType) == 0)
 				continue;
@@ -3048,7 +3050,7 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 		contentSelectionManager.setVA(contentVA);
 
 		storageSelectionManager.setVA(storageVA);
-		AlSelectionTypes.clear();
+		//AlSelectionTypes.clear();
 		//addSelectionType();
 		// AlSelectionTypes.add(SelectionType.SELECTION);
 		// currentSelection = SelectionType.SELECTION;
@@ -3118,50 +3120,54 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 	}
 	
 	public void addSelectionType() {
-		int iSlectionNr = AlSelectionTypes.size();
-		if (iSlectionNr > iMaxSelections)
+		//int iSlectionNr = AlSelectionTypes.size();
+		iCurrentSelectionNr++;
+		if (iCurrentSelectionNr > iMaxSelections)
 			return;
 		SelectionTypeEvent event = new SelectionTypeEvent();
 		currentSelection = new SelectionType();
-		currentSelection.setType("ScatterPlot Selection " + iSlectionNr);
-		currentSelection.setColor(ScatterPlotHelper.getSelectionColor(iSlectionNr));
+		currentSelection.setType(CUSTOM_SELECTION_NAME+" " + iCurrentSelectionNr);
+		currentSelection.setColor(ScatterPlotHelper.getSelectionColor(iCurrentSelectionNr));
+		currentSelection.setPriority((float)iCurrentSelectionNr/100.0f);
 		event.addSelectionType(currentSelection);		
 		eventPublisher.triggerEvent(event);
 		
 		
 
-		AlSelectionTypes.add(currentSelection);
+	//	AlSelectionTypes.add(currentSelection);
 
 	}
 
 	public void removeSelectionType() {
-		int iSlectionNr = AlSelectionTypes.size();
-		if (iSlectionNr == 1)
-			return;
-		contentSelectionManager.clearSelection(currentSelection);
-		
-		SelectionTypeEvent event = new SelectionTypeEvent();			
-		event.addSelectionType(currentSelection);
-		event.setRemove(true);
-		eventPublisher.triggerEvent(event);
-		
-		
-		
-		AlSelectionTypes.remove(iSlectionNr - 1);
-		currentSelection = AlSelectionTypes.get(iSlectionNr - 2);
-		
-		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
-		handleConnectedElementRep(selectionDelta);
-		SelectionUpdateEvent event2 = new SelectionUpdateEvent();
-		event2.setSender(this);
-		event2.setSelectionDelta((SelectionDelta) selectionDelta);
-		event2.setInfo(getShortInfo());
-		eventPublisher.triggerEvent(event2);
-		
-		
-		bUpdateSelection = true;
-		bUpdateSelectionTexures = true;
-		setDisplayListDirty();
+		return;
+		//TODO:remove l8ter
+//		iCurrentSelectionNr--;
+//		if (iCurrentSelectionNr == 0)
+//			return;
+//		contentSelectionManager.clearSelection(currentSelection);
+//		
+//		SelectionTypeEvent event = new SelectionTypeEvent();			
+//		event.addSelectionType(currentSelection);
+//		event.setRemove(true);
+//		eventPublisher.triggerEvent(event);
+//		
+//		
+//		
+//		AlSelectionTypes.remove(iSlectionNr - 1);
+//		currentSelection = AlSelectionTypes.get(iSlectionNr - 2);
+//		
+//		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+//		handleConnectedElementRep(selectionDelta);
+//		SelectionUpdateEvent event2 = new SelectionUpdateEvent();
+//		event2.setSender(this);
+//		event2.setSelectionDelta((SelectionDelta) selectionDelta);
+//		event2.setInfo(getShortInfo());
+//		eventPublisher.triggerEvent(event2);
+//		
+//		
+//		bUpdateSelection = true;
+//		bUpdateSelectionTexures = true;
+//		setDisplayListDirty();
 	}
 
 	@Override
@@ -3345,13 +3351,52 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 	// setDisplayListDirty();
 	// }
 
+	
+	
+	
 	@Override
 	public void clearAllSelections() {
 		
 		storageSelectionManager.clearSelections();
-		AlSelectionTypes.clear();		
-		AlSelectionTypes.add(SelectionType.SELECTION);		
-		addSelectionType();
+		contentSelectionManager.clearSelections();
+		
+		ArrayList<SelectionType> sTypes = contentSelectionManager.getSelectionTypes(); 
+		
+		ArrayList<SelectionType> sTypestoRemove = new ArrayList<SelectionType>();
+		for (SelectionType tmpSelectionType : sTypes) 
+			{
+				String tmpstring="";
+				tmpstring=tmpSelectionType.toString();
+				if (tmpstring==null)
+					tmpstring="";
+				
+				if (!SelectionType.isDefaultType(tmpSelectionType) && tmpstring.startsWith(CUSTOM_SELECTION_NAME))
+					sTypestoRemove.add(tmpSelectionType);
+					
+			}
+		
+		
+		for (SelectionType tmpSelectionType : sTypestoRemove)
+		{
+			SelectionTypeEvent event = new SelectionTypeEvent();
+			event.addSelectionType(tmpSelectionType);
+			event.setRemove(true);
+			eventPublisher.triggerEvent(event);
+		}
+		iCurrentSelectionNr=0;
+	//	AlSelectionTypes.clear();		
+	//	AlSelectionTypes.add(SelectionType.SELECTION);		
+		//addSelectionType();
+		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+		handleConnectedElementRep(selectionDelta);
+		SelectionUpdateEvent event2 = new SelectionUpdateEvent();
+		event2.setSender(this);
+		event2.setSelectionDelta((SelectionDelta) selectionDelta);
+		event2.setInfo(getShortInfo());
+		eventPublisher.triggerEvent(event2);
+		
+		
+		
 		fRectangleDragStartPoint = new float[3];
 		fRectangleDragEndPoint = new float[3];
 		bUpdateSelection = true;

@@ -9,9 +9,12 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
@@ -88,25 +91,35 @@ public class SelectionBrowser
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 		
-		ContentVAType contentVAType = ContentVAType.CONTENT;				
-		IUseCase useCase = generalManager.getUseCase(EDataDomain.GENETIC_DATA);
 		
-		ContentVirtualArray contentVA= useCase.getContentVA(contentVAType);
-		contentSelectionManager = useCase.getContentSelectionManager();
-		contentSelectionManager.setVA(contentVA);
 		
-					
+		initContent();
 			
 		registerEventListeners();
 	}
 
+	private void initContent()
+	{
+		ContentVAType contentVAType = ContentVAType.CONTENT;				
+		IUseCase useCase = generalManager.getUseCase(EDataDomain.GENETIC_DATA);
+		contentSelectionManager = useCase.getContentSelectionManager();
+		
+		ContentVirtualArray contentVA= useCase.getContentVA(contentVAType);
+		
+		contentSelectionManager.setVA(contentVA);
+	
+		
+	}
+	
+	
+	
 	public Control createControl(final Composite parent) {
 
 		parentComposite = parent;
 		selectionTree = new Tree(parent, SWT.NULL  | SWT.MULTI );
 		
 		btnAdd = new Button(parent, SWT.WRAP);
-		btnAdd.setText("Add");
+		btnAdd.setText("Merge");
 		
 		btnSub = new Button(parent, SWT.WRAP);
 		btnSub.setText("Del");
@@ -125,11 +138,12 @@ public class SelectionBrowser
 		btnSub.addSelectionListener(new SelectionListener() {
 
 			 public void widgetSelected(SelectionEvent event) {
-		    	  lblTest.setText("Sub Clicked!");
+				 lblTest.setText("Del Clicked!");
+		    	  deleteSelections();
 		      }
 
-		      public void widgetDefaultSelected(SelectionEvent event) {
-		    	  lblTest.setText("Sub Default Clicked!");
+			public void widgetDefaultSelected(SelectionEvent event) {
+		    	  lblTest.setText("Del Default Clicked!");
 		      }
 		    });
 		
@@ -171,13 +185,44 @@ public class SelectionBrowser
 		contentTree = new TreeItem(selectionTree, SWT.NONE);
 		contentTree.setExpanded(true);
 		contentTree.setData(-1);
-		contentTree.setText("Content Selections");
-		
-		
-updateContentTree();
-		
+		contentTree.setText("Content Selections");				
+        updateContentTree();
+        
+        
+        
 		return parent;
 	}
+	
+	
+	
+	
+	  private void deleteSelections() {
+		  String tmpString ="Selections: ";
+		  initContent();
+		  //TreeItem[] aselection = selectionTree.getSelection();
+		  
+		  	for(TreeItem selection :  selectionTree.getSelection())
+		  	{
+		  		
+		  		SelectionType tmpSelectionType=(SelectionType)selection.getData();
+		  		tmpString+=tmpSelectionType.toString()+",";		  		
+		  		SelectionTypeEvent event = new SelectionTypeEvent();
+		  		event.addSelectionType(tmpSelectionType);
+		  		event.setRemove(true);
+		  		eventPublisher.triggerEvent(event);
+		  	}
+		  	
+		  	ISelectionDelta selectionDelta = contentSelectionManager.getDelta();			
+			SelectionUpdateEvent event2 = new SelectionUpdateEvent();
+			event2.setSender(this);
+			event2.setSelectionDelta((SelectionDelta) selectionDelta);			
+			eventPublisher.triggerEvent(event2);
+		  
+	        lblTest.setText(tmpString+" deleted");
+	        
+	        updateContentTree();
+		  
+	  }
 
 	private void updateContentTree(){
 		ArrayList<SelectionType> sTypes = contentSelectionManager.getSelectionTypes();
@@ -197,10 +242,10 @@ updateContentTree();
 			new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
 				(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
 
-		item.setText(tmpSelectionType.toString());
+		item.setText(tmpSelectionType.toString()+" ("+contentSelectionManager.getNumberOfElements(tmpSelectionType)+")");
 		item.setBackground(color);		
-		item.setData(tmpSelectionType.hashCode());
-		item.setData("selection_type", tmpSelectionType);
+		item.setData(tmpSelectionType);
+	//	item.setData("selection_type", tmpSelectionType);
 
 		contentTree.setExpanded(true);
 		
@@ -219,16 +264,18 @@ updateContentTree();
 		
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
-
+				//initContent();
 				updateContentTree();
+				
 //				String tmpString="";
 //				if (info != null) {
 //					
 //					Color color=null;
 //					for (SelectionDeltaItem selectionItem : selectionDelta) {
 //						
-//						SelectionType currentSelection =selectionItem.getSelectionType();
-//						
+//
+//					}
+////						
 //						int i=contentSelectionManager.getNumberOfElements(currentSelection);
 //						
 //						tmpString=currentSelection.toString()+"("+i+")";
@@ -384,6 +431,9 @@ updateContentTree();
 
 	@Override
 	public void handleContentVAUpdate(ContentVADelta vaDelta, final String info) {
+		initContent();
+		
+	
 	
 	}
 

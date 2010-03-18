@@ -16,10 +16,15 @@ public  class ScatterPlotHelper {
 		return true;
 	}
 	
-	public static float[] getSelectionColor(int color) {
+	public static float[] getSelectionColor(int iColorNr) {
+		
+		
+		int color =iColorNr % 6;
 		switch (color) {
+		case 0:
+			return new float[] { 1, 0, 0, 1 };
 		case 1:
-			return new float[] { 0, 0, 1, 1 };
+			return new float[] { 0.3f, 0.3f, 1, 1 };
 		case 2:
 			return new float[] { 0, 1, 0, 1 };
 		case 3:
