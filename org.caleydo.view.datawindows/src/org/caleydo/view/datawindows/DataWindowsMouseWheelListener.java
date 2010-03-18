@@ -17,10 +17,7 @@ public class DataWindowsMouseWheelListener extends MouseAdapter implements
 
 	public void mouseWheelMoved(MouseWheelEvent event) {
 
-		System.out.println("scroll:" + event.getWheelRotation());
 
-		// if (event.isControlDown() || event.isAltDown()) {
-		System.out.println("mouseWheel");
 		hyperbolic.diskZoomIntensity = hyperbolic.diskZoomIntensity
 				+ event.getWheelRotation() * wheelFactor;
 		hyperbolic.disk.zoomTree(hyperbolic.diskZoomIntensity);
@@ -34,8 +31,6 @@ public class DataWindowsMouseWheelListener extends MouseAdapter implements
 		if (hyperbolic.diskZoomIntensity > 1) {
 			hyperbolic.diskZoomIntensity = 1;
 		}
-
-		// }
 
 	}
 }

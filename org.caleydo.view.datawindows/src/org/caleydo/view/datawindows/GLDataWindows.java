@@ -243,8 +243,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 	
 		
-	
-		
 		
 		// transforming the Parcoord view:
 	    Transform transform3 = new Transform();

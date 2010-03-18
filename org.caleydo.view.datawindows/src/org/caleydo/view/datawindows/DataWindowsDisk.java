@@ -143,12 +143,10 @@ public class DataWindowsDisk extends PoincareDisk {
 	public void drawNode(PoincareNode node, int mode) {
 
 		
-		
 		// for a realistic size, the size is a projected offset of the current
 		double size = getMetric(node.getPosition(), nodeSize);
 
 		if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 1) {
-
 			if (node.highLighted == true) {
 				size = size * 1.5;
 			}

@@ -483,7 +483,7 @@ glHandle=gl;
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f((float) position.getX(),
 				(float) position.getY(), 0));
-		transform.setScale(new Vec3f((float) size, (float) size, 1));
+		transform.setScale(new Vec3f((float) size, (float) size*(canvasHeight/canvasWidth), 1));
 		testRemoteElement.setTransform(transform);
 
 		// initNewView(gl);
