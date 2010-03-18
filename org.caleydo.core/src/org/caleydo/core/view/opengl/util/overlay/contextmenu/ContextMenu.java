@@ -419,7 +419,6 @@ public class ContextMenu
 			textRenderer.begin3DRendering();
 			textRenderer.setColor(1, 1, 1, 1);
 			gl.glDisable(GL.GL_DEPTH_TEST);
-
 			textRenderer.draw3D(heading.getText(), xPosition, yPosition + SPACING, TEXT_Z, FONT_SCALING);
 			// textRenderer.flush();
 			textRenderer.end3DRendering();
@@ -510,17 +509,16 @@ public class ContextMenu
 		if (itemID == mouseOverElement || isSubElementSelected(item))
 			renderHighlighting(gl, subMenu, yPosition);
 
-		gl.glColor4f(1, 1, 1, 0);
+		gl.glColor4f(0, 0, 0, 0);
 
 		int iPickingID =
 			pickingManager.getPickingID(masterGLView.getID(), EPickingType.CONTEXT_MENU_SELECTION, itemID);
 		gl.glPushName(iPickingID);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(xPosition, yPosition - SPACING / 2, BUTTON_Z);
-		gl.glVertex3f(xPosition, yPosition + ITEM_HEIGHT - SPACING / 2, BUTTON_Z);
-		gl.glVertex3f(xPosition + subMenu.width - 2 * SPACING, yPosition + ITEM_HEIGHT - SPACING, BUTTON_Z);
-		gl.glVertex3f(xPosition + subMenu.width - 2 * SPACING, yPosition - SPACING / 2, BUTTON_Z);
-
+		gl.glVertex3f(xPosition, yPosition - SPACING / 2, BUTTON_Z*2);
+		gl.glVertex3f(xPosition, yPosition + ITEM_HEIGHT - SPACING / 2, BUTTON_Z*2);
+		gl.glVertex3f(xPosition + subMenu.width - 2 * SPACING, yPosition + ITEM_HEIGHT - SPACING, BUTTON_Z*2);
+		gl.glVertex3f(xPosition + subMenu.width - 2 * SPACING, yPosition - SPACING / 2, BUTTON_Z*2);
 		gl.glEnd();
 		gl.glPopName();
 
