@@ -557,10 +557,16 @@ public class HeatMapWrapper {
 
 		Float elementInHMPosition = heatMap
 				.getYCoordinateByContentIndex(contentIndex);
+		
+
 		if (elementInHMPosition == null)
 			return null;
 		else
+		{
+			heatMap
+			.getYCoordinateByContentIndex(contentIndex);
 			return heatMapPosition.y() + (heatMapHeight - elementInHMPosition);
+		}
 	}
 
 	public ArrayList<ContentVirtualArray> getContentVAsOfHeatMaps() {
@@ -700,8 +706,7 @@ public class HeatMapWrapper {
 	 * virtual array to {@link GLHeatMap#SELECTION_HIDDEN} so that they can be
 	 * hidden on demand.
 	 */
-	public void selectGroupsFromContentVAList(
-			HashMap<Integer, Integer> relationMap,
+	public void choosePassiveHeatMaps(HashMap<Integer, Integer> relationMap,
 			ArrayList<ContentVirtualArray> foreignContentVAs) {
 		ContentGroupList groupList = contentVA.getGroupList();
 		// FIXME we shouldn't do that here
@@ -779,6 +784,11 @@ public class HeatMapWrapper {
 
 				eventPublisher.triggerEvent(event);
 			}
+		}
+		for (Group group : selectedGroups.keySet()) {
+			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+		
+			heatMap.recalculateLayout();
 		}
 	}
 

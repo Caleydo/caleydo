@@ -111,7 +111,7 @@ public class DetailViewState extends ACompareViewState {
 			if (heatMapWrapper.isNewSelection()) {
 				for (HeatMapWrapper wrapper : heatMapWrappers) {
 					if (wrapper != heatMapWrapper) {
-						wrapper.selectGroupsFromContentVAList(relations
+						wrapper.choosePassiveHeatMaps(relations
 								.getMapping(heatMapWrapper.getSet()),
 								heatMapWrapper.getContentVAsOfHeatMaps());
 					}
@@ -133,7 +133,7 @@ public class DetailViewState extends ACompareViewState {
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
-					glMouseListener, viewID);
+					glMouseListener, viewID);		
 		}
 
 		IViewFrustum viewFrustum = view.getViewFrustum();

@@ -937,5 +937,10 @@ public class GLHeatMap extends AStorageBasedView {
 		// FIXME: this is a "hausnummer"
 		return 0.1f;
 	}
-
+	
+	public void recalculateLayout()
+	{
+		processEvents();
+		template.recalculateSpacings();
+	}
 }

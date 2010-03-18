@@ -59,15 +59,11 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLCompare extends AGLView
-		implements
-			IViewCommandHandler,
-			IGLRemoteRenderingView,
-			ISelectionUpdateHandler,
-			ISelectionCommandHandler {
+public class GLCompare extends AGLView implements IViewCommandHandler,
+		IGLRemoteRenderingView, ISelectionUpdateHandler,
+		ISelectionCommandHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.compare";
-
 
 	private TextRenderer textRenderer;
 	private CompareViewStateController compareViewStateController;
@@ -84,8 +80,6 @@ public class GLCompare extends AGLView
 
 	private int wheelAmount;
 	private Point wheelPoint;
-
-
 
 	/**
 	 * Constructor.
@@ -110,7 +104,8 @@ public class GLCompare extends AGLView
 		// Register specialized compare mouse wheel listener
 		parentGLCanvas.addMouseWheelListener(compareMouseWheelListener);
 
-		SelectionTypeEvent event = new SelectionTypeEvent(GLHeatMap.SELECTION_HIDDEN);
+		SelectionTypeEvent event = new SelectionTypeEvent(
+				GLHeatMap.SELECTION_HIDDEN);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 	}
@@ -181,37 +176,38 @@ public class GLCompare extends AGLView
 		processEvents();
 		if (wasMouseWheeled) {
 			wasMouseWheeled = false;
-			compareViewStateController
-					.handleMouseWheel(gl, wheelAmount, wheelPoint);
+			compareViewStateController.handleMouseWheel(gl, wheelAmount,
+					wheelPoint);
 		}
 
 		if (!isVisible())
 			return;
 		pickingManager.handlePicking(this, gl);
-		
+
 		compareViewStateController.executeDrawingPreprocessing(gl,
 				bIsDisplayListDirtyLocal);
 
-		if (bIsDisplayListDirtyLocal) {
-			bIsDisplayListDirtyLocal = false;
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+		// if (bIsDisplayListDirtyLocal) {
+		// bIsDisplayListDirtyLocal = false;
+		// buildDisplayList(gl, iGLDisplayListIndexLocal);
+		// }
+		// iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		display(gl);
-		checkForHits(gl);
+		// checkForHits(gl);
 	}
 
 	@Override
 	public void displayRemote(GL gl) {
-		if (bIsDisplayListDirtyRemote) {
-			bIsDisplayListDirtyRemote = false;
-			buildDisplayList(gl, iGLDisplayListIndexRemote);
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
+		// if (bIsDisplayListDirtyRemote) {
+		// bIsDisplayListDirtyRemote = false;
+		// buildDisplayList(gl, iGLDisplayListIndexRemote);
+		// }
+		// iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
-		display(gl);
-		checkForHits(gl);
+		throw new IllegalStateException("not in use");
+		// display(gl);
+
 	}
 
 	@Override
@@ -219,11 +215,19 @@ public class GLCompare extends AGLView
 		// processEvents();
 
 		compareViewStateController.drawActiveElements(gl);
+		
+		if (bIsDisplayListDirtyLocal) {
+			bIsDisplayListDirtyLocal = false;
+			buildDisplayList(gl, iGLDisplayListIndexLocal);
+			iGLDisplayListToCall = iGLDisplayListIndexLocal;
+		}
 
 		gl.glCallList(iGLDisplayListToCall);
 
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
+
+		checkForHits(gl);
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
@@ -425,10 +429,11 @@ public class GLCompare extends AGLView
 		adjustPValueOfSetEventListener.setHandler(this);
 		eventPublisher.addListener(AdjustPValueEvent.class,
 				adjustPValueOfSetEventListener);
-		
+
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
+		eventPublisher.addListener(SelectionCommandEvent.class,
+				selectionCommandListener);
 
 		// if (leftHeatMapWrapper != null)
 		// leftHeatMapWrapper.registerEventListeners();
@@ -486,6 +491,7 @@ public class GLCompare extends AGLView
 
 		compareViewStateController.setSetsToCompare(sets);
 	}
+
 	public boolean isControlPressed() {
 		return isControlPressed;
 	}
@@ -515,7 +521,8 @@ public class GLCompare extends AGLView
 	@Override
 	public void handleSelectionCommand(EIDCategory category,
 			SelectionCommand selectionCommand) {
-		compareViewStateController.handleSelectionCommand(category, selectionCommand);
+		compareViewStateController.handleSelectionCommand(category,
+				selectionCommand);
 	}
 
 	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {

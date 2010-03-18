@@ -107,6 +107,7 @@ public class TemplateRenderer {
 	}
 
 	public Float getYCoordinateByContentIndex(int contentIndex) {
+
 		boolean belowHM = false;
 		float sizeOverhead = 0;
 		float positionInHM = 0;
@@ -122,6 +123,7 @@ public class TemplateRenderer {
 				for (RenderParameters rowElements : row) {
 					renderer = rowElements.renderer;
 					if (renderer instanceof HeatMapRenderer) {
+
 						belowHM = true;
 						positionInHM = ((HeatMapRenderer) renderer)
 								.getYCoordinateByContentIndex(contentIndex);
@@ -139,6 +141,7 @@ public class TemplateRenderer {
 	}
 
 	public float getElementHeight(int contentID) {
+
 		if (heatMap.getContentSelectionManager().checkStatus(
 				SelectionType.MOUSE_OVER, contentID)
 				|| heatMap.getContentSelectionManager().checkStatus(
