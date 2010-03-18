@@ -984,7 +984,7 @@ public class HeatMapWrapper {
 	public HashMap<Group, GroupInfo> getSelectedGroups() {
 		return selectedGroups;
 	}
-
+	
 	public GLHeatMap getHeatMap(int id) {
 		return hashHeatMaps.get(id);
 	}
