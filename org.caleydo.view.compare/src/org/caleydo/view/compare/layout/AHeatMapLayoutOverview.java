@@ -78,11 +78,12 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 	}
 
 	public float getOverviewHeatmapWidth() {
-		if(numTotalExperiments == 0)
+		if (numTotalExperiments == 0)
 			return totalWidth;
 		float heatOverviewHeatMapWidth = (totalSpaceForAllHeatMapWrappers / (float) numTotalExperiments)
 				* (float) numExperiments;
-		if(heatOverviewHeatMapWidth > totalWidth || heatOverviewHeatMapWidth < 0)
+		if (heatOverviewHeatMapWidth > totalWidth
+				|| heatOverviewHeatMapWidth < 0)
 			return totalWidth;
 		return heatOverviewHeatMapWidth;
 	}
@@ -104,7 +105,8 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 	}
 
 	public float getDetailHeatMapHeight(int numSamplesInHeatMap,
-			int numTotalSamples, int numHeatMaps) {
+			int numTotalSamples, int numHeatMaps, float heatMapToolBarSize,
+			int numHeatMapToolBars, boolean hasCurrentHeatMapToolbar) {
 		return 0;
 	}
 

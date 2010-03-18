@@ -79,7 +79,8 @@ public abstract class AHeatMapLayout {
 	public abstract float getOverviewMinSliderPositionY();
 
 	public abstract float getDetailHeatMapHeight(int numSamplesInHeatMap,
-			int numTotalSamples, int numHeatMaps);
+			int numTotalSamples, int numHeatMaps, float heatMapToolBarSize,
+			int numHeatMapToolBars, boolean hasCurrentHeatMapToolbar);
 
 	public abstract float getDetailHeatMapGapHeight();
 

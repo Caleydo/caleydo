@@ -13,7 +13,6 @@ import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
-
 public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 
 	private PickingManager pickingManager;
@@ -32,8 +31,9 @@ public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
 
 		for (Group group : selectedGroups.keySet()) {
-			int numSamplesInHeatMap = group.getNrElements();
-			numTotalSamples += numSamplesInHeatMap;
+			GLHeatMap heatMap = heatMapWrapper
+					.getHeatMap(group.getGroupIndex());
+			numTotalSamples += heatMap.getNumberOfVisibleElements();
 		}
 
 		heatMapWrapper.calculateHeatMapPositions();
@@ -44,10 +44,14 @@ public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 					.getHeatMap(group.getGroupIndex());
 			if (heatMap == null)
 				continue;
-			int numSamplesInHeatMap = group.getNrElements();
-			float heatMapHeight = layout
-					.getDetailHeatMapHeight(numSamplesInHeatMap,
-							numTotalSamples, selectedGroups.size());
+			int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
+			
+			//FIXME: The heatmap overhead is not always present
+			float heatMapHeight = layout.getDetailHeatMapHeight(
+					numSamplesInHeatMap, numTotalSamples,
+					selectedGroups.size(),
+					heatMap.getRequiredOverheadSpacing(),
+					selectedGroups.size(), true);
 			Vec3f heatMapPosition = heatMapWrapper.getHeatMapPosition(group
 					.getGroupIndex());
 

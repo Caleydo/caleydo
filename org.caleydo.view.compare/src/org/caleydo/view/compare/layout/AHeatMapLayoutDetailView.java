@@ -4,7 +4,7 @@ import org.caleydo.view.compare.rendercommand.ERenderCommandType;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 
 public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
-	
+
 	protected static float OVERVIEW_TOTAL_WIDTH_PORTION = 0.25f;
 	protected static float OVERVIEW_GROUP_WIDTH_PORTION = 0.04f;
 	protected static float OVERVIEW_HEATMAP_WIDTH_PORTION = 0.15f;
@@ -88,11 +88,12 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 	}
 
 	public float getDetailHeatMapHeight(int numSamplesInHeatMap,
-			int numTotalSamples, int numHeatMaps) {
+			int numTotalSamples, int numHeatMaps, float heatMapToolBarSize,
+			int numHeatMapToolBars, boolean hasCurrentHeatMapToolbar) {
 		float spaceForHeatMaps = getDetailHeight()
 				- (getDetailHeight() * DETAIL_HEATMAP_GAP_PORTION * (numHeatMaps - 1));
-		return (spaceForHeatMaps / (float) numTotalSamples)
-				* (float) numSamplesInHeatMap;
+//		spaceForHeatMaps -= heatMapToolBarSize * numHeatMapToolBars;
+		return ((spaceForHeatMaps / (float) numTotalSamples) * (float) numSamplesInHeatMap);
 	}
 
 	public float getDetailHeatMapGapHeight() {
