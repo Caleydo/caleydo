@@ -5,6 +5,7 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 
@@ -34,6 +35,7 @@ public abstract class AHeatMapLayout {
 	protected float totalSpaceForAllHeatMapWrappers;
 	protected int numExperiments;
 	protected int numTotalExperiments;
+	protected HeatMapWrapper heatMapWrapper;
 
 	protected RenderCommandFactory renderCommandFactory;
 	protected ArrayList<IHeatMapRenderCommand> localRenderCommands;
@@ -55,6 +57,8 @@ public abstract class AHeatMapLayout {
 		this.totalHeight = totalHeight;
 		this.totalWidth = totalWidth;
 	}
+	
+	public abstract void calculateDrawingParameters();
 
 	public abstract float getTotalOverviewWidth();
 
@@ -78,9 +82,7 @@ public abstract class AHeatMapLayout {
 
 	public abstract float getOverviewMinSliderPositionY();
 
-	public abstract float getDetailHeatMapHeight(int numSamplesInHeatMap,
-			int numTotalSamples, int numHeatMaps, float currentHeatMapOverheadSize,
-			float totalHeatMapOverheadSize);
+	public abstract float getDetailHeatMapHeight(int heatMapID);
 
 	public abstract float getDetailHeatMapGapHeight();
 
@@ -107,6 +109,8 @@ public abstract class AHeatMapLayout {
 	public abstract EPickingType getHeatMapPickingType();
 
 	public abstract Vec3f getCaptionLabelPosition(float textWidth);
+	
+	public abstract Vec3f getDetailHeatMapPosition(int heatMapID);
 
 	public ArrayList<IHeatMapRenderCommand> getRenderCommandsOfLocalItems() {
 		return localRenderCommands;
@@ -132,13 +136,17 @@ public abstract class AHeatMapLayout {
 	public Vec3f getPosition() {
 		return new Vec3f(positionX, positionY, 0);
 	}
-	
+
 	public float getWidth() {
 		return totalWidth;
 	}
-	
+
 	public float getHeight() {
 		return totalHeight;
+	}
+	
+	public void setHeatMapWrapper(HeatMapWrapper heatMapWrapper) {
+		this.heatMapWrapper = heatMapWrapper;
 	}
 
 }

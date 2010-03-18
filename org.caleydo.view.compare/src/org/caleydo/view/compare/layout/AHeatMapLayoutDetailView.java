@@ -1,7 +1,15 @@
 package org.caleydo.view.compare.layout;
 
+import gleem.linalg.Vec3f;
+
+import java.util.HashMap;
+
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.Group;
+import org.caleydo.view.compare.GroupInfo;
 import org.caleydo.view.compare.rendercommand.ERenderCommandType;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 
@@ -20,6 +28,9 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 	protected static float OVERVIEW_HEIGHT_PORTION = 0.95f;
 	protected static float DETAIL_HEIGHT_PORTION = 0.95f;
 
+	private HashMap<Integer, Vec3f> hashHeatMapPositions;
+	private HashMap<Integer, Float> hashHeatMapHeights;
+
 	public AHeatMapLayoutDetailView(RenderCommandFactory renderCommandFactory) {
 		super(renderCommandFactory);
 		localRenderCommands.add(renderCommandFactory
@@ -33,6 +44,9 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 
 		remoteRenderCommands.add(renderCommandFactory
 				.getRenderCommand(ERenderCommandType.DETAIL_HEATMAPS));
+
+		hashHeatMapPositions = new HashMap<Integer, Vec3f>();
+		hashHeatMapHeights = new HashMap<Integer, Float>();
 	}
 
 	public void setLayoutParameters(float positionX, float positionY,
@@ -87,15 +101,73 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 		return positionY;
 	}
 
-	public float getDetailHeatMapHeight(int numSamplesInHeatMap,
-			int numTotalSamples, int numHeatMaps,
-			float currentHeatMapOverheadSize, float totalHeatMapOverheadSize) {
-		float spaceForHeatMaps = getDetailHeight()
-				- (getDetailHeight() * DETAIL_HEATMAP_GAP_PORTION * (numHeatMaps - 1));
-		spaceForHeatMaps -= totalHeatMapOverheadSize;
+	protected void calculateDetailHeatMapHeights() {
 
-		return ((spaceForHeatMaps / (float) numTotalSamples) * (float) numSamplesInHeatMap)
-				+ currentHeatMapOverheadSize;
+		hashHeatMapHeights.clear();
+
+		HashMap<Group, GroupInfo> selectedGroups = heatMapWrapper
+				.getSelectedGroups();
+		int numTotalSamples = 0;
+		int numTotalScalableSamples = 0;
+		float totalHeatMapOverheadSize = 0;
+		float totalMinSize = 0;
+
+		for (Group group : selectedGroups.keySet()) {
+			GLHeatMap heatMap = heatMapWrapper
+					.getHeatMap(group.getGroupIndex());
+			int numSamples = heatMap.getNumberOfVisibleElements();
+			numTotalSamples += numSamples;
+			totalHeatMapOverheadSize += heatMap.getRequiredOverheadSpacing();
+			if (heatMap.isForceMinSpacing()) {
+				totalMinSize += heatMap.getMinSpacing() * numSamples;
+			} else {
+				numTotalScalableSamples += numSamples;
+			}
+		}
+
+		for (Group group : selectedGroups.keySet()) {
+			GLHeatMap heatMap = heatMapWrapper
+					.getHeatMap(group.getGroupIndex());
+			int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
+			float currentHeatMapOverheadSize = heatMap
+					.getRequiredOverheadSpacing();
+
+			float spaceForHeatMaps = getDetailHeight()
+					- (getDetailHeight() * DETAIL_HEATMAP_GAP_PORTION * (selectedGroups
+							.size() - 1));
+			spaceForHeatMaps -= totalHeatMapOverheadSize;
+			float sampleHeight = (spaceForHeatMaps / (float) numTotalSamples);
+
+			if (totalMinSize < getDetailHeight()
+					&& sampleHeight < heatMap.getMinSpacing()) {
+				if (heatMap.isForceMinSpacing()) {
+					hashHeatMapHeights.put(group.getGroupIndex(),
+							numSamplesInHeatMap * heatMap.getMinSpacing()
+									+ currentHeatMapOverheadSize);
+					continue;
+				}
+			} else {
+
+				if (heatMap.isForceMinSpacing()) {
+					heatMap.setCaptionsImpossible(true);
+				}
+
+				totalMinSize = 0;
+				numTotalScalableSamples = numTotalSamples;
+			}
+
+			spaceForHeatMaps -= totalMinSize;
+
+			hashHeatMapHeights
+					.put(
+							group.getGroupIndex(),
+							((spaceForHeatMaps / (float) numTotalScalableSamples) * (float) numSamplesInHeatMap)
+									+ currentHeatMapOverheadSize);
+		}
+	}
+
+	public float getDetailHeatMapHeight(int heatMapID) {
+		return hashHeatMapHeights.get(heatMapID);
 	}
 
 	public float getDetailHeatMapGapHeight() {
@@ -118,4 +190,41 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 		return totalHeight * CAPTION_LABEL_VERTICAL_SPACING_PORTION;
 	}
 
+	protected void calculateHeatMapPositions() {
+
+		hashHeatMapPositions.clear();
+		HashMap<Group, GroupInfo> selectedGroups = heatMapWrapper
+				.getSelectedGroups();
+
+		Vec3f detailPosition = getDetailPosition();
+		float currentPositionY = detailPosition.y() + getDetailHeight();
+
+		for (Group group : heatMapWrapper.getSet().getContentVA(
+				ContentVAType.CONTENT).getGroupList()) {
+
+			if (!selectedGroups.containsKey(group))
+				continue;
+			GLHeatMap heatMap = heatMapWrapper
+					.getHeatMap(group.getGroupIndex());
+			if (heatMap == null)
+				continue;
+
+			float heatMapHeight = getDetailHeatMapHeight(group.getGroupIndex());
+			hashHeatMapPositions.put(group.getGroupIndex(), new Vec3f(
+					detailPosition.x(), currentPositionY - heatMapHeight,
+					detailPosition.z()));
+			currentPositionY -= (heatMapHeight + getDetailHeatMapGapHeight());
+		}
+	}
+
+	@Override
+	public Vec3f getDetailHeatMapPosition(int heatMapID) {
+		return hashHeatMapPositions.get(heatMapID);
+	}
+
+	@Override
+	public void calculateDrawingParameters() {
+		calculateDetailHeatMapHeights();
+		calculateHeatMapPositions();
+	}
 }

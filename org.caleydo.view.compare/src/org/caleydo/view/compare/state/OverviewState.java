@@ -286,6 +286,7 @@ public class OverviewState extends ACompareViewState {
 			AHeatMapLayout layout = layouts.get(i);
 			int numExperiments = heatMapWrapper.getSet().getStorageVA(
 					StorageVAType.STORAGE).size();
+			//TODO: Maybe get info in layout from heatmapwrapper
 			layout
 					.setTotalSpaceForAllHeatMapWrappers(spaceForHeatMapWrapperOverviews);
 			layout.setNumExperiments(numExperiments);
@@ -295,6 +296,7 @@ public class OverviewState extends ACompareViewState {
 					.setLayoutParameters(heatMapWrapperPosX,
 							heatMapWrapperPosY, viewFrustum.getHeight()
 									- setBarHeight, heatMapWrapperWidth);
+			layout.setHeatMapWrapper(heatMapWrapper);
 
 			heatMapWrapperPosX += heatMapWrapperWidth + heatMapWrapperGapWidth;
 		}

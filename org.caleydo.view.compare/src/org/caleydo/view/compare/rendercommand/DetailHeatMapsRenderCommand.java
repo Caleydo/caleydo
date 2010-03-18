@@ -25,20 +25,26 @@ public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 
 	@Override
 	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
-		int numTotalSamples = 0;
+//		int numTotalSamples = 0;
 		HashMap<Group, GroupInfo> selectedGroups = heatMapWrapper
 				.getSelectedGroups();
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
 
-		float totalHeatMapOverheadSize = 0;
-		for (Group group : selectedGroups.keySet()) {
-			GLHeatMap heatMap = heatMapWrapper
-					.getHeatMap(group.getGroupIndex());
-			numTotalSamples += heatMap.getNumberOfVisibleElements();
-			totalHeatMapOverheadSize += heatMap.getRequiredOverheadSpacing();
-		}
+//		float totalHeatMapOverheadSize = 0;
+//		float totalMinSize = 0;
+//		for (Group group : selectedGroups.keySet()) {
+//			GLHeatMap heatMap = heatMapWrapper
+//					.getHeatMap(group.getGroupIndex());
+//			numTotalSamples += heatMap.getNumberOfVisibleElements();
+//			totalHeatMapOverheadSize += heatMap.getRequiredOverheadSpacing();
+//			if (heatMap.isForceMinSpacing()) {
+//				totalMinSize += heatMap.getMinSpacing()
+//						* heatMap.getNumberOfVisibleElements();
+//			}
+//		}
 
-		heatMapWrapper.calculateHeatMapPositions();
+//		heatMapWrapper.calculateHeatMapPositions();
+		layout.calculateDrawingParameters();
 
 		for (Group group : selectedGroups.keySet()) {
 
@@ -46,14 +52,10 @@ public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 					.getHeatMap(group.getGroupIndex());
 			if (heatMap == null)
 				continue;
-			int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
+//			int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
 
-			// FIXME: The heatmap overhead is not always present
-			float heatMapHeight = layout.getDetailHeatMapHeight(
-					numSamplesInHeatMap, numTotalSamples,
-					selectedGroups.size(),
-					heatMap.getRequiredOverheadSpacing(),
-					totalHeatMapOverheadSize);
+			float heatMapHeight = layout.getDetailHeatMapHeight(group
+					.getGroupIndex());
 			Vec3f heatMapPosition = heatMapWrapper.getHeatMapPosition(group
 					.getGroupIndex());
 

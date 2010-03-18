@@ -935,12 +935,16 @@ public class GLHeatMap extends AStorageBasedView {
 	 */
 	public float getMinSpacing() {
 		// FIXME: this is a "hausnummer"
-		return 0.1f;
+		return 0.07f;
 	}
 	
 	public void recalculateLayout()
 	{
 		processEvents();
 		template.recalculateSpacings();
+	}
+	
+	public void setCaptionsImpossible(boolean areCaptionsPossible) {
+		//TODO:
 	}
 }

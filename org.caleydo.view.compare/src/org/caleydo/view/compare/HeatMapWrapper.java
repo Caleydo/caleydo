@@ -4,7 +4,6 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 import javax.media.opengl.GL;
@@ -62,7 +61,6 @@ public class HeatMapWrapper {
 	private StorageVirtualArray storageVA;
 	private AHeatMapLayout layout;
 	private HashMap<Integer, GLHeatMap> hashHeatMaps;
-	private HashMap<Integer, Vec3f> hashHeatMapPositions;
 	private HashMap<Group, GroupInfo> selectedGroups;
 	private boolean isNewSelection;
 	private int id;
@@ -88,7 +86,7 @@ public class HeatMapWrapper {
 		generalManager = GeneralManager.get();
 		overview = new HeatMapOverview(layout);
 		hashHeatMaps = new HashMap<Integer, GLHeatMap>();
-		hashHeatMapPositions = new HashMap<Integer, Vec3f>();
+		// hashHeatMapPositions = new HashMap<Integer, Vec3f>();
 		selectedGroups = new HashMap<Group, GroupInfo>();
 
 		this.layout = layout;
@@ -155,6 +153,10 @@ public class HeatMapWrapper {
 		selectedGroups.clear();
 		contentSelectionManager.clearSelections();
 		contentSelectionManager.setVA(contentVA);
+		
+		for (Group group : contentVA.getGroupList()) {
+			group.setSelectionType(SelectionType.NORMAL);
+		}
 
 		// heatMap.useFishEye(false);
 		// heatMap.setDisplayListDirty();
@@ -193,7 +195,7 @@ public class HeatMapWrapper {
 			heatMap.destroy();
 		}
 		hashHeatMaps.clear();
-		selectedGroups.clear();
+//		selectedGroups.clear();
 
 		if (contentGroupList == null)
 			return;
@@ -204,7 +206,6 @@ public class HeatMapWrapper {
 		for (Group group : contentGroupList) {
 			groupSampleEndIndex = groupSampleStartIndex + group.getNrElements()
 					- 1;
-			group.setSelectionType(SelectionType.NORMAL);
 			GLHeatMap heatMap = createHeatMap(gl, glMouseListener);
 			setEmbeddedHeatMapData(heatMap, groupSampleStartIndex,
 					groupSampleEndIndex);
@@ -235,17 +236,18 @@ public class HeatMapWrapper {
 	}
 
 	public void calculateDrawingParameters() {
-		calculateHeatMapPositions();
+		layout.calculateDrawingParameters();
+		// calculateHeatMapPositions();
 
-		int numTotalSamples = 0;
-
-		float totalHeatMapOverheadSize = 0;
-		for (Group group : selectedGroups.keySet()) {
-			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
-			int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
-			numTotalSamples += numSamplesInHeatMap;
-			totalHeatMapOverheadSize += heatMap.getRequiredOverheadSpacing();
-		}
+		// int numTotalSamples = 0;
+		//
+		// float totalHeatMapOverheadSize = 0;
+		// for (Group group : selectedGroups.keySet()) {
+		// GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+		// int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
+		// numTotalSamples += numSamplesInHeatMap;
+		// totalHeatMapOverheadSize += heatMap.getRequiredOverheadSpacing();
+		// }
 
 		// for (Group group : contentVA.getGroupList()) {
 		for (Group group : selectedGroups.keySet()) {
@@ -255,14 +257,13 @@ public class HeatMapWrapper {
 			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 			if (heatMap == null)
 				continue;
-			int numSamplesInHeatMap = group.getNrElements();
-			float heatMapHeight = layout.getDetailHeatMapHeight(
-					numSamplesInHeatMap, numTotalSamples,
-					selectedGroups.size(),
-					heatMap.getRequiredOverheadSpacing(),
-					totalHeatMapOverheadSize);
-			Vec3f heatMapPosition = hashHeatMapPositions.get(group
+			// int numSamplesInHeatMap = group.getNrElements();
+			float heatMapHeight = layout.getDetailHeatMapHeight(group
 					.getGroupIndex());
+			Vec3f heatMapPosition = layout.getDetailHeatMapPosition(group
+					.getGroupIndex());
+			// hashHeatMapPositions.get(group
+			// .getGroupIndex());
 
 			heatMap.getViewFrustum().setLeft(heatMapPosition.x());
 			heatMap.getViewFrustum().setBottom(heatMapPosition.y());
@@ -368,41 +369,38 @@ public class HeatMapWrapper {
 
 	}
 
-	public void calculateHeatMapPositions() {
-
-		hashHeatMapPositions.clear();
-
-		int numTotalSamples = 0;
-		float totalHeatMapOverheadSpacing = 0;
-		for (Group group : selectedGroups.keySet()) {
-			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
-			int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
-			numTotalSamples += numSamplesInHeatMap;
-			totalHeatMapOverheadSpacing += heatMap.getRequiredOverheadSpacing();
-		}
-		Vec3f detailPosition = layout.getDetailPosition();
-		float currentPositionY = detailPosition.y() + layout.getDetailHeight();
-
-		for (Group group : contentVA.getGroupList()) {
-
-			if (!selectedGroups.containsKey(group))
-				continue;
-			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
-			if (heatMap == null)
-				continue;
-			int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
-			float heatMapHeight = layout.getDetailHeatMapHeight(
-					numSamplesInHeatMap, numTotalSamples,
-					selectedGroups.size(),
-					heatMap.getRequiredOverheadSpacing(),
-					totalHeatMapOverheadSpacing);
-			hashHeatMapPositions.put(group.getGroupIndex(), new Vec3f(
-					detailPosition.x(), currentPositionY - heatMapHeight,
-					detailPosition.z()));
-			currentPositionY -= (heatMapHeight + layout
-					.getDetailHeatMapGapHeight());
-		}
-	}
+	// public void calculateHeatMapPositions() {
+	//
+	// hashHeatMapPositions.clear();
+	//
+	// int numTotalSamples = 0;
+	// float totalHeatMapOverheadSpacing = 0;
+	// for (Group group : selectedGroups.keySet()) {
+	// GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+	// int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
+	// numTotalSamples += numSamplesInHeatMap;
+	// totalHeatMapOverheadSpacing += heatMap.getRequiredOverheadSpacing();
+	// }
+	// Vec3f detailPosition = layout.getDetailPosition();
+	// float currentPositionY = detailPosition.y() + layout.getDetailHeight();
+	//
+	// for (Group group : contentVA.getGroupList()) {
+	//
+	// if (!selectedGroups.containsKey(group))
+	// continue;
+	// GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+	// if (heatMap == null)
+	// continue;
+	// int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
+	// float heatMapHeight = layout.getDetailHeatMapHeight(group
+	// .getGroupIndex(), this);
+	// hashHeatMapPositions.put(group.getGroupIndex(), new Vec3f(
+	// detailPosition.x(), currentPositionY - heatMapHeight,
+	// detailPosition.z()));
+	// currentPositionY -= (heatMapHeight + layout
+	// .getDetailHeatMapGapHeight());
+	// }
+	// }
 
 	public boolean handleDragging(GL gl, GLMouseListener glMouseListener) {
 		if (overview.handleDragging(gl, glMouseListener)) {
@@ -539,7 +537,9 @@ public class HeatMapWrapper {
 
 		// calculateHeatMapPositions();
 
-		Vec3f heatMapPosition = hashHeatMapPositions.get(groupIndex);
+		Vec3f heatMapPosition = layout.getDetailHeatMapPosition(group
+				.getGroupIndex());
+		// hashHeatMapPositions.get(groupIndex);
 
 		int numTotalSamples = 0;
 		float totalHeatMapOverheadSpacing = 0;
@@ -550,10 +550,7 @@ public class HeatMapWrapper {
 					.getRequiredOverheadSpacing();
 		}
 
-		float heatMapHeight = layout.getDetailHeatMapHeight(heatMap
-				.getNumberOfVisibleElements(), numTotalSamples, selectedGroups
-				.size(), heatMap.getRequiredOverheadSpacing(),
-				totalHeatMapOverheadSpacing);
+		float heatMapHeight = layout.getDetailHeatMapHeight(groupIndex);
 
 		Float elementInHMPosition = heatMap
 				.getYCoordinateByContentIndex(contentIndex);
@@ -573,6 +570,7 @@ public class HeatMapWrapper {
 		ArrayList<ContentVirtualArray> contentVAs = new ArrayList<ContentVirtualArray>();
 
 		for (Group group : selectedGroups.keySet()) {
+			
 			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 			contentVAs.add(heatMap.getContentVA());
 		}
@@ -581,7 +579,7 @@ public class HeatMapWrapper {
 	}
 
 	public ArrayList<GLHeatMap> getHeatMaps() {
-		
+
 		ArrayList<GLHeatMap> heatMaps = new ArrayList<GLHeatMap>();
 
 		for (Group group : selectedGroups.keySet()) {
@@ -590,7 +588,7 @@ public class HeatMapWrapper {
 		}
 		return heatMaps;
 	}
-	
+
 	public ArrayList<ContentSelectionManager> getContentSelectionManagersOfHeatMaps() {
 
 		ArrayList<ContentSelectionManager> contentSelectionManagers = new ArrayList<ContentSelectionManager>();
@@ -990,7 +988,8 @@ public class HeatMapWrapper {
 	}
 
 	public Vec3f getHeatMapPosition(int id) {
-		return hashHeatMapPositions.get(id);
+		return layout.getDetailHeatMapPosition(id);
+		// hashHeatMapPositions.get(id);
 	}
 
 	public String getCaption() {

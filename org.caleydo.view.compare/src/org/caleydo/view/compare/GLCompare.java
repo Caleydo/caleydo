@@ -186,6 +186,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		compareViewStateController.executeDrawingPreprocessing(gl,
 				bIsDisplayListDirtyLocal);
+		
+		
 
 		// if (bIsDisplayListDirtyLocal) {
 		// bIsDisplayListDirtyLocal = false;

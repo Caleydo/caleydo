@@ -52,6 +52,15 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 	public float getOverviewSliderPositionX() {
 		return 0;
 	}
+	
+	@Override
+	public Vec3f getDetailHeatMapPosition(int heatMapID) {
+		return new Vec3f(0, 0, 0);
+	}
+	
+	@Override
+	public void calculateDrawingParameters() {
+	}
 
 	public float getTotalOverviewWidth() {
 		return getOverviewHeatmapWidth();
@@ -104,9 +113,7 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 		return 0;
 	}
 
-	public float getDetailHeatMapHeight(int numSamplesInHeatMap,
-			int numTotalSamples, int numHeatMaps,
-			float currentHeatMapOverheadSize, float totalHeatMapOverheadSize) {
+	public float getDetailHeatMapHeight(int heatMapID) {
 		return 0;
 	}
 
