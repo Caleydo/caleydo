@@ -554,14 +554,11 @@ public class HeatMapWrapper {
 
 		Float elementInHMPosition = heatMap
 				.getYCoordinateByContentIndex(contentIndex);
-		
 
 		if (elementInHMPosition == null)
 			return null;
-		else
-		{
-			heatMap
-			.getYCoordinateByContentIndex(contentIndex);
+		else {
+			heatMap.getYCoordinateByContentIndex(contentIndex);
 			return heatMapPosition.y() + (heatMapHeight - elementInHMPosition);
 		}
 	}
@@ -785,7 +782,7 @@ public class HeatMapWrapper {
 		}
 		for (Group group : selectedGroups.keySet()) {
 			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
-		
+
 			heatMap.recalculateLayout();
 		}
 	}
@@ -982,7 +979,7 @@ public class HeatMapWrapper {
 	public HashMap<Group, GroupInfo> getSelectedGroups() {
 		return selectedGroups;
 	}
-	
+
 	public GLHeatMap getHeatMap(int id) {
 		return hashHeatMaps.get(id);
 	}
@@ -1007,6 +1004,16 @@ public class HeatMapWrapper {
 	public void setActiveHeatMapSelectionType(
 			SelectionType activeHeatMapSelectionType) {
 		this.activeHeatMapSelectionType = activeHeatMapSelectionType;
+	}
+
+	public GLHeatMap getHeatMapByContentID(int contentID) {
+		for (GLHeatMap tmpHeatMap : hashHeatMaps.values()) {
+			if (tmpHeatMap.getContentVA().containsElement(contentID) > 0) {
+				return tmpHeatMap;
+			}
+		}
+		
+		return null;
 	}
 
 }

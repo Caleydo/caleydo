@@ -200,9 +200,9 @@ public class DetailViewState extends ACompareViewState {
 		HeatMapWrapper rightHeatMapWrapper = heatMapWrappers.get(1);
 
 		float leftHeatMapElementOffset = detailBand.getLeftHeatMap()
-				.getElementHeight(startContentID) / 2f - 0.015f;
+				.getElementHeight(startContentID) / 2f - 0.01f;
 		float rightHeatMapElementOffset = detailBand.getRightHeatMap()
-				.getElementHeight(startContentID) / 2f - 0.015f;
+				.getElementHeight(startContentID) / 2f - 0.01f;
 
 		Vec2f leftPos = leftHeatMapWrapper
 				.getRightDetailLinkPositionFromContentID(startContentID);
@@ -277,23 +277,28 @@ public class DetailViewState extends ACompareViewState {
 		// band color
 		ContentSelectionManager contentSelectionManager = leftHeatMapWrapper
 				.getContentSelectionManager();
-		boolean highlight = false;
+		boolean activeBand = false;
+		boolean activeGroup = false;
 		for (Integer contentID : detailBand.getContentIDs()) {
 			SelectionType type = contentSelectionManager.getSelectionTypes(
 					contentID).get(0);
 
 			if (type == SelectionType.MOUSE_OVER) {
-				highlight = true;
+				activeBand = true;
 				break;
+			} 
+			if (rightHeatMapWrapper.getHeatMapByContentID(contentID).getContentVA().containsElement(contentID) > 0) {
+				activeGroup = true;
 			}
 		}
 
-		if (!highlight)
-			gl.glColor4f(0f, 0f, 0f, 0.4f);
-		else {
+		if (activeBand)
 			gl.glColor4f(0f, 0f, 0f, 0.7f);
-		}
-
+		else if (activeGroup)
+			gl.glColor4f(0f, 0f, 0f, 0.4f);			
+		else
+			gl.glColor4f(0f, 0f, 0f, 0.4f);
+	
 		compareConnectionRenderer.render(gl, outputPoints);
 	}
 
@@ -304,16 +309,10 @@ public class DetailViewState extends ACompareViewState {
 		Integer firstDetailContentID = va.get(0);
 		Integer lastDetailContentID = va.get(va.size() - 1);
 
-		GLHeatMap detailHeatMap = null;
-		for (GLHeatMap tmpHeatMap : heatMapWrapper.getHeatMaps()) {
-			if (tmpHeatMap.getContentVA().containsElement(firstDetailContentID) > 0) {
-				detailHeatMap = tmpHeatMap;
-				break;
-			}
-		}
-
+		GLHeatMap detailHeatMap = heatMapWrapper.getHeatMapByContentID(lastDetailContentID);
+		
 		float heatMapElementOffset = detailHeatMap
-				.getElementHeight(firstDetailContentID) / 2f - 0.005f;
+				.getElementHeight(firstDetailContentID) / 2f - 0f;
 
 		lastDetailContentID = detailHeatMap.getContentVA().get(
 				detailHeatMap.getNumberOfVisibleElements() - 1);
@@ -714,19 +713,29 @@ public class DetailViewState extends ACompareViewState {
 						bandContentIDs.add(nextContentID);
 					}
 				}
-
-				// Handle special case of single element heatmaps in detail
-				if (rightHeatMap.getNumberOfVisibleElements() == 1) {
-					bandContentIDs = new ArrayList<Integer>();
-					bandContentIDs.add(rightContentVA.get(0));
-					detailBand = new DetailBand();
-					detailBand.setContentIDs(bandContentIDs);
-					detailBand.setLeftHeatMap(leftHeatMap);
-					detailBand.setRightHeatMap(rightHeatMap);
-					detailBands.add(detailBand);
-				}
 			}
 		}
+		
+		// Handle special case of single element heatmaps in detail
+		ArrayList<DetailBand> singleElementDetailBands = new ArrayList<DetailBand>();
+		for (int contentID : leftHeatMapWrapper.getContentVA()) {
+			
+			for (DetailBand band : detailBands) {
+				
+				if (band.getContentIDs().contains(contentID))
+					continue;
+		
+				ArrayList<Integer> newBandContentIDs = new ArrayList<Integer>();
+				newBandContentIDs.add(contentID);
+				DetailBand newDetailBand = new DetailBand();
+				newDetailBand.setContentIDs(bandContentIDs);
+				newDetailBand.setLeftHeatMap(leftHeatMapWrapper.getHeatMapByContentID(contentID));
+				newDetailBand.setRightHeatMap(rightHeatMapWrapper.getHeatMapByContentID(contentID));
+				singleElementDetailBands.add(detailBand);
+				break;
+			}
+		}
+		detailBands.addAll(singleElementDetailBands);
 	}
 
 	@Override
