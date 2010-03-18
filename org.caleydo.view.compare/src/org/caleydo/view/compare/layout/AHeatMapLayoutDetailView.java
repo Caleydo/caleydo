@@ -88,14 +88,14 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 	}
 
 	public float getDetailHeatMapHeight(int numSamplesInHeatMap,
-			int numTotalSamples, int numHeatMaps, float heatMapToolBarSize,
-			int numHeatMapToolBars, boolean hasCurrentHeatMapToolbar) {
+			int numTotalSamples, int numHeatMaps,
+			float currentHeatMapOverheadSize, float totalHeatMapOverheadSize) {
 		float spaceForHeatMaps = getDetailHeight()
 				- (getDetailHeight() * DETAIL_HEATMAP_GAP_PORTION * (numHeatMaps - 1));
-		spaceForHeatMaps -= heatMapToolBarSize * numHeatMapToolBars;
+		spaceForHeatMaps -= totalHeatMapOverheadSize;
 
 		return ((spaceForHeatMaps / (float) numTotalSamples) * (float) numSamplesInHeatMap)
-				+ heatMapToolBarSize;
+				+ currentHeatMapOverheadSize;
 	}
 
 	public float getDetailHeatMapGapHeight() {

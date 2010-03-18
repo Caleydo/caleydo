@@ -239,12 +239,12 @@ public class HeatMapWrapper {
 
 		int numTotalSamples = 0;
 
-		float totalHeightOverhead = 0;
+		float totalHeatMapOverheadSize = 0;
 		for (Group group : selectedGroups.keySet()) {
 			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 			int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
 			numTotalSamples += numSamplesInHeatMap;
-			totalHeightOverhead += heatMap.getRequiredOverheadSpacing();
+			totalHeatMapOverheadSize += heatMap.getRequiredOverheadSpacing();
 		}
 
 		// for (Group group : contentVA.getGroupList()) {
@@ -260,7 +260,7 @@ public class HeatMapWrapper {
 					numSamplesInHeatMap, numTotalSamples,
 					selectedGroups.size(),
 					heatMap.getRequiredOverheadSpacing(),
-					selectedGroups.size(), true);
+					totalHeatMapOverheadSize);
 			Vec3f heatMapPosition = hashHeatMapPositions.get(group
 					.getGroupIndex());
 
@@ -373,10 +373,12 @@ public class HeatMapWrapper {
 		hashHeatMapPositions.clear();
 
 		int numTotalSamples = 0;
+		float totalHeatMapOverheadSpacing = 0;
 		for (Group group : selectedGroups.keySet()) {
 			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 			int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
 			numTotalSamples += numSamplesInHeatMap;
+			totalHeatMapOverheadSpacing += heatMap.getRequiredOverheadSpacing();
 		}
 		Vec3f detailPosition = layout.getDetailPosition();
 		float currentPositionY = detailPosition.y() + layout.getDetailHeight();
@@ -393,7 +395,7 @@ public class HeatMapWrapper {
 					numSamplesInHeatMap, numTotalSamples,
 					selectedGroups.size(),
 					heatMap.getRequiredOverheadSpacing(),
-					selectedGroups.size(), true);
+					totalHeatMapOverheadSpacing);
 			hashHeatMapPositions.put(group.getGroupIndex(), new Vec3f(
 					detailPosition.x(), currentPositionY - heatMapHeight,
 					detailPosition.z()));
@@ -540,15 +542,18 @@ public class HeatMapWrapper {
 		Vec3f heatMapPosition = hashHeatMapPositions.get(groupIndex);
 
 		int numTotalSamples = 0;
+		float totalHeatMapOverheadSpacing = 0;
 		for (Group tempGroup : selectedGroups.keySet()) {
 			GLHeatMap tempHeatMap = hashHeatMaps.get(tempGroup.getGroupIndex());
 			numTotalSamples += tempHeatMap.getNumberOfVisibleElements();
+			totalHeatMapOverheadSpacing += tempHeatMap
+					.getRequiredOverheadSpacing();
 		}
 
 		float heatMapHeight = layout.getDetailHeatMapHeight(heatMap
 				.getNumberOfVisibleElements(), numTotalSamples, selectedGroups
-				.size(), heatMap.getRequiredOverheadSpacing(), selectedGroups
-				.size(), true);
+				.size(), heatMap.getRequiredOverheadSpacing(),
+				totalHeatMapOverheadSpacing);
 
 		Float elementInHMPosition = heatMap
 				.getYCoordinateByContentIndex(contentIndex);

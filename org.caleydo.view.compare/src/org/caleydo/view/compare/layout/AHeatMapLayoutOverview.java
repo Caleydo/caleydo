@@ -105,8 +105,8 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 	}
 
 	public float getDetailHeatMapHeight(int numSamplesInHeatMap,
-			int numTotalSamples, int numHeatMaps, float heatMapToolBarSize,
-			int numHeatMapToolBars, boolean hasCurrentHeatMapToolbar) {
+			int numTotalSamples, int numHeatMaps,
+			float currentHeatMapOverheadSize, float totalHeatMapOverheadSize) {
 		return 0;
 	}
 

@@ -30,10 +30,12 @@ public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 				.getSelectedGroups();
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
 
+		float totalHeatMapOverheadSize = 0;
 		for (Group group : selectedGroups.keySet()) {
 			GLHeatMap heatMap = heatMapWrapper
 					.getHeatMap(group.getGroupIndex());
 			numTotalSamples += heatMap.getNumberOfVisibleElements();
+			totalHeatMapOverheadSize += heatMap.getRequiredOverheadSpacing();
 		}
 
 		heatMapWrapper.calculateHeatMapPositions();
@@ -45,13 +47,13 @@ public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 			if (heatMap == null)
 				continue;
 			int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
-			
-			//FIXME: The heatmap overhead is not always present
+
+			// FIXME: The heatmap overhead is not always present
 			float heatMapHeight = layout.getDetailHeatMapHeight(
 					numSamplesInHeatMap, numTotalSamples,
 					selectedGroups.size(),
 					heatMap.getRequiredOverheadSpacing(),
-					selectedGroups.size(), true);
+					totalHeatMapOverheadSize);
 			Vec3f heatMapPosition = heatMapWrapper.getHeatMapPosition(group
 					.getGroupIndex());
 
