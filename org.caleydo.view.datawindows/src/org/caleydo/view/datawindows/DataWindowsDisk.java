@@ -22,7 +22,8 @@ public class DataWindowsDisk extends PoincareDisk {
 	int iUniqueID;
 	private double[] levelOfDetailLimits;
 	// private double lineFactor = 80;
-	private double displayScaleFactor = 10;
+	private double displayScaleFactorX = 10;
+	private double displayScaleFactorY = 10;
 	private double eyeTrackerBorder;
 	private double eyeTrackerPrecision;
 	private double lineFactor = 0;
@@ -55,16 +56,17 @@ public class DataWindowsDisk extends PoincareDisk {
 		// double radius = projectPoint(
 		// new Point2D.Double(levelOfDetailLimits[2], 0)).getX();
 
-		drawCircle(levelOfDetailLimits[2] * displayScaleFactor,
+		drawCircle(levelOfDetailLimits[2] * displayScaleFactorX,
 				canvasWidth / 2, canvasHeight / 2);
 
 		// radius = projectPoint(new Point2D.Double(levelOfDetailLimits[1], 0))
 		// .getX();
-		drawCircle(levelOfDetailLimits[1] * displayScaleFactor,
+		drawCircle(levelOfDetailLimits[1] * displayScaleFactorX,
 				canvasWidth / 2, canvasHeight / 2);
 		// radius = projectPoint(new Point2D.Double(levelOfDetailLimits[0], 0))
 		// .getX();
-		drawCircle(levelOfDetailLimits[0] * displayScaleFactor,
+		drawCircle(levelOfDetailLimits[0] * displayScaleFactorX
+				,
 				canvasWidth / 2, canvasHeight / 2);
 
 	}
@@ -91,15 +93,16 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		// dataWindow.drawRemoteView(gl, new Point2D.Double(2,1), 0.1);
 
-		displayScaleFactor = viewingHeight / 2;
-
+		displayScaleFactorX = viewingWidth/2;
+		displayScaleFactorY = viewingHeight / 2;
+		
 		pickingManager = pickManager;
 		textureManager = texManager;
 		canvasWidth = viewingWidth;
 		canvasHeight = viewingHeight;
 		iUniqueID = iViewID;
 
-		displayDetailLevels();
+		//displayDetailLevels();
 
 		// drawBackground();
 		PoincareNode root = getTree().getRoot();
@@ -157,44 +160,44 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		// if (mode==1){
 		Vec3f lowerLeftCorner = new Vec3f(
-				(float) (-size + node.getPosition().getX() * displayScaleFactor + canvasWidth / 2),
-				(float) (-size + node.getPosition().getY() * displayScaleFactor + canvasHeight / 2),
+				(float) (-size + node.getPosition().getX() * displayScaleFactorX + canvasWidth / 2),
+				(float) (-size + node.getPosition().getY() * displayScaleFactorY + canvasHeight / 2),
 				0);
 		Vec3f lowerRightCorner = new Vec3f(
-				(float) (size + node.getPosition().getX() * displayScaleFactor + canvasWidth / 2),
-				(float) (-size + node.getPosition().getY() * displayScaleFactor + canvasHeight / 2),
+				(float) (size + node.getPosition().getX() * displayScaleFactorX + canvasWidth / 2),
+				(float) (-size + node.getPosition().getY() * displayScaleFactorY + canvasHeight / 2),
 				0);
 		Vec3f upperRightCorner = new Vec3f(
-				(float) (size + node.getPosition().getX() * displayScaleFactor + canvasWidth / 2),
-				(float) (size + node.getPosition().getY() * displayScaleFactor + canvasHeight / 2),
+				(float) (size + node.getPosition().getX() * displayScaleFactorX + canvasWidth / 2),
+				(float) (size + node.getPosition().getY() * displayScaleFactorY + canvasHeight / 2),
 				0);
 		Vec3f upperLeftCorner = new Vec3f(
-				(float) (-size + node.getPosition().getX() * displayScaleFactor + canvasWidth / 2),
-				(float) (size + node.getPosition().getY() * displayScaleFactor + canvasHeight / 2),
+				(float) (-size + node.getPosition().getX() * displayScaleFactorX + canvasWidth / 2),
+				(float) (size + node.getPosition().getY() * displayScaleFactorY + canvasHeight / 2),
 				0);
 		Vec3f scalingPivot = new Vec3f(1, 1, 0);
 
 		if (mode == 2) {
 			lowerLeftCorner = new Vec3f(
 					(float) (-size + node.getZoomedPosition().getX()
-							* displayScaleFactor + canvasWidth / 2),
+							* displayScaleFactorX + canvasWidth / 2),
 					(float) (-size + node.getZoomedPosition().getY()
-							* displayScaleFactor + canvasHeight / 2), 0);
+							* displayScaleFactorY + canvasHeight / 2), 0);
 			lowerRightCorner = new Vec3f(
 					(float) (size + node.getZoomedPosition().getX()
-							* displayScaleFactor + canvasWidth / 2),
+							* displayScaleFactorX + canvasWidth / 2),
 					(float) (-size + node.getZoomedPosition().getY()
-							* displayScaleFactor + canvasHeight / 2), 0);
+							* displayScaleFactorY + canvasHeight / 2), 0);
 			upperRightCorner = new Vec3f(
 					(float) (size + node.getZoomedPosition().getX()
-							* displayScaleFactor + canvasWidth / 2),
+							* displayScaleFactorX + canvasWidth / 2),
 					(float) (size + node.getZoomedPosition().getY()
-							* displayScaleFactor + canvasHeight / 2), 0);
+							* displayScaleFactorY + canvasHeight / 2), 0);
 			upperLeftCorner = new Vec3f(
 					(float) (-size + node.getZoomedPosition().getX()
-							* displayScaleFactor + canvasWidth / 2),
+							* displayScaleFactorX + canvasWidth / 2),
 					(float) (size + node.getZoomedPosition().getY()
-							* displayScaleFactor + canvasHeight / 2), 0);
+							* displayScaleFactorY + canvasHeight / 2), 0);
 			scalingPivot = new Vec3f(1, 1, 0);
 		}
 
@@ -219,9 +222,9 @@ public class DataWindowsDisk extends PoincareDisk {
 			// upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
 
 			hyperbolic.drawRemoteView(gl, node, new Point2D.Double(-size
-					+ node.getZoomedPosition().getX() * displayScaleFactor
+					+ node.getZoomedPosition().getX() * displayScaleFactorX
 					+ canvasWidth / 2, -size + node.getZoomedPosition().getY()
-					* displayScaleFactor + canvasHeight / 2), size / 4);
+					* displayScaleFactorY + canvasHeight / 2), size / 4);
 
 		}
 		gl.glPopName();
@@ -239,13 +242,13 @@ public class DataWindowsDisk extends PoincareDisk {
 		gl.glBegin(GL.GL_LINE_STRIP);
 
 		gl.glColor3i(0, 0, 0);
-		gl.glVertex3d(node1.getZoomedPosition().getX() * displayScaleFactor
+		gl.glVertex3d(node1.getZoomedPosition().getX() * displayScaleFactorX
 				+ (canvasWidth / 2), node1.getZoomedPosition().getY()
-				* displayScaleFactor + canvasHeight / 2, 0);
+				* displayScaleFactorY + canvasHeight / 2, 0);
 
-		gl.glVertex3d(node2.getZoomedPosition().getX() * displayScaleFactor
+		gl.glVertex3d(node2.getZoomedPosition().getX() * displayScaleFactorX
 				+ (canvasWidth / 2), node2.getZoomedPosition().getY()
-				* displayScaleFactor + canvasHeight / 2, 0);
+				* displayScaleFactorY + canvasHeight / 2, 0);
 		gl.glEnd();
 	}
 
@@ -255,7 +258,7 @@ public class DataWindowsDisk extends PoincareDisk {
 
 	}
 
-	private void drawCircle(double radius, double k, double h) {
+	public void drawCircle(double radius, double k, double h) {
 		// code from http://www.swiftless.com/tutorials/opengl/circle.html
 		// //20.2.2010
 		double circleX = 0;
@@ -282,13 +285,12 @@ public class DataWindowsDisk extends PoincareDisk {
 			ArrayList<NodeSlerp> arSlerpActions) {
 		Point2D.Double offsetFromMiddle = new Point2D.Double();
 		offsetFromMiddle.setLocation((eyePosition.getX() - canvasWidth / 2)
-				/ displayScaleFactor, (eyePosition.getY() - canvasHeight / 2)
-				/ -displayScaleFactor);
+				/ displayScaleFactorX, (eyePosition.getY() - canvasHeight / 2)
+				/ displayScaleFactorY);
 
 		PoincareNode returnNode;
 
-		System.out.println("click:" + offsetFromMiddle.getX() + " "
-				+ offsetFromMiddle.getY());
+	
 
 		if (this.distanceFromOrigin(offsetFromMiddle) < eyeTrackerBorder) {
 			System.out.println("inside of direct picking");

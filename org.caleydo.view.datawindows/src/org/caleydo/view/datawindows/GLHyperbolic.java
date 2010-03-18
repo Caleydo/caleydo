@@ -44,13 +44,10 @@ public class GLHyperbolic extends AGLView {
 
 	public final static String VIEW_ID = "org.caleydo.view.hyperbolic";
 
-	private double mouseCoordX = 0;
-	private double mouseCoordY = 0;
-
 	private double viewport[] = new double[16];
 
-	private float canvasWidth;
-	private float canvasHeight;
+	public float canvasWidth;
+	public float canvasHeight;
 
 	private TrackDataProvider tracker;
 	private float[] receivedEyeData;
@@ -76,7 +73,9 @@ public class GLHyperbolic extends AGLView {
 	private Tree<PoincareNode> tree;
 	public double diskZoomIntensity = 0;
 
-	private DataWindowsMouseWheelListener mouseWheelListener;
+	
+	
+	private GL glHandle;
 
 	/**
 	 * Constructor.
@@ -106,15 +105,7 @@ public class GLHyperbolic extends AGLView {
 
 		disk = new DataWindowsDisk(this);
 
-//		mouseWheelListener = new DataWindowsMouseWheelListener(this);
-
-		
-		// glCanvas.removeMouseWheelListener(glMouseListener);
-		
-
-	//	glCanvas.addMouseWheelListener(mouseWheelListener);
-
-		//glMouseListener.addGLCanvas(this);
+//		
 
 		// nullpointer:
 		// Tree<ClusterNode> tree = set.getStorageTree();
@@ -198,7 +189,7 @@ public class GLHyperbolic extends AGLView {
 
 	@Override
 	public void display(GL gl) {
-
+glHandle=gl;
 		// GLHelperFunctions.drawAxis(gl);
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// gl.glEnable(GL.GL_DEPTH_TEST);
@@ -213,19 +204,6 @@ public class GLHyperbolic extends AGLView {
 		// gl.glLoadIdentity();
 		//
 
-		// System.out.println("mouseZeiger:"+mousePoint.getX()+"|"+mousePoint.getY());
-
-		//
-
-		// gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-		//		 
-
-		// System.out.println("viewport: " +canvasWidth + "|"+canvasHeight);
-		// canvasWidth=7;
-		// canvasHeight=5;
-		//		
-
-		//
 		// }
 		//
 		// receivedEyeData = tracker.getEyeTrackData();
@@ -256,43 +234,8 @@ public class GLHyperbolic extends AGLView {
 		disk.renderTree(gl, textureManager, pickingManager, iUniqueID,
 				(double) canvasWidth, (double) canvasHeight);
 
-		//		
+		
 
-		if (glMouseListener.wasLeftMouseButtonPressed()) {
-
-			if (glMouseListener.getPickedPoint() != null) {
-
-				if (manualPickFlag == true) {
-					Point mousePoint = new Point(0, 0);
-					mousePoint = glMouseListener.getPickedPoint();
-					int[] viewport = new int[4];
-
-					gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-					double factorX = (double) canvasWidth
-							/ (double) viewport[2];
-					double factorY = (double) canvasHeight
-							/ (double) viewport[3];
-
-					mouseCoordX = (double) (mousePoint.getX() * factorX);
-					mouseCoordY = (double) (mousePoint.getY() * factorY);
-
-					PoincareNode selectedNode;
-					selectedNode = disk.processEyeTrackerAction(
-							new Point2D.Double(mouseCoordX, mouseCoordY),
-							arSlerpActions);
-					if (selectedNode != null) {
-						disk.setCenteredNode(null);
-						// arSlerpActions.add(new nodeSlerp(4,
-						// selectedNode.getPosition(),
-						// new Point2D.Double(0, 0)));
-
-						slerpedNode = selectedNode;
-						// disk.setCenteredNode(selectedNode);
-
-					}
-				}
-			}
-		}
 
 		// if (!containedGLViews.isEmpty()) {
 		//
@@ -515,7 +458,7 @@ public class GLHyperbolic extends AGLView {
 		return glView;
 	}
 
-	private void doSlerpActions() {
+	public void doSlerpActions() {
 		if (arSlerpActions.isEmpty()) {
 			return;
 		}
@@ -699,6 +642,48 @@ public class GLHyperbolic extends AGLView {
 						.size())])).getID());
 
 		return (GLPathway) createView(gl, serPathway);
+	}
+	
+	//called, if the user focuses a point on the display
+	public void setEyeTrackerAction(Point2D.Double mousePoint,Point2D.Double offset, Point2D.Double scalation)
+	{
+		if(glHandle!=null){
+		Point2D.Double mouseCoord = new Point2D.Double();
+		int[] viewport = new int[4];
+
+		glHandle.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+		double factorX = (double) canvasWidth
+				/ (double) viewport[2];
+		double factorY = (double) canvasHeight
+				/ (double) viewport[3];
+
+		mouseCoord.setLocation((mousePoint.getX() * factorX-offset.getX())/scalation.getX(),
+				(canvasHeight-mousePoint.getY() * factorY-offset.getY())/scalation.getY());
+
+		
+	
+		
+		PoincareNode selectedNode;
+		selectedNode = disk.processEyeTrackerAction(
+				new Point2D.Double(mouseCoord.getX(),mouseCoord.getY()),
+				arSlerpActions);
+		if (selectedNode != null) {
+			disk.setCenteredNode(null);
+			// arSlerpActions.add(new nodeSlerp(4,
+			// selectedNode.getPosition(),
+			// new Point2D.Double(0, 0)));
+
+			slerpedNode = selectedNode;
+			// disk.setCenteredNode(selectedNode);
+
+		}
+		}
+		
+	}
+	
+	public void setDimensions(Point2D.Double dimensions){
+		//canvasWidth=(float) dimensions.getX();
+		//canvasHeight=(float) dimensions.getY();
 	}
 
 }

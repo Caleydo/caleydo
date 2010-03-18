@@ -1,11 +1,15 @@
 package org.caleydo.view.datawindows;
 
-
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
+import java.awt.Point;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.geom.Point2D;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,25 +64,40 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 	private ArrayList<NodeSlerp> arSlerpActions;
 
-	
-
 	private MouseWheelEvent mouse;
 
 	private PoincareNode slerpedNode;
 
 	private boolean manualPickFlag = true;
 
-	
-
 	private RemoteLevelElement remoteElementHyperbolic;
 	private RemoteLevelElement remoteElementHeatMap;
 	private RemoteLevelElement remoteElementParCoords;
+
+	private GLHyperbolic directHyperbolicView;
+
+	// the location attributes of the views
+	private double viewSizeHyperbolic = 1;
+	private double viewSizeParCoord = 1;
+	private double viewSizeHeatMap = 1;
+
+	private Point2D.Double remoteHyperbolicPosition;
+	private Point2D.Double remoteHyperbolicScalation;
+	private Point2D.Double remoteHeatMapPosition;
+	private Point2D.Double remoteHeatMapScalation;
+	private Point2D.Double remoteParCoordPosition;
+	private Point2D.Double remoteParCoordScalation;
 
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(
 			0, 0);
 
 	private ArrayList<AGLView> containedGLViews;
 	private ArrayList<ASerializedView> newViews;
+	
+	private DataWindowsMouseWheelListener mouseWheelListener;
+
+	private GLCaleydoCanvas canvas;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -90,15 +109,19 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 			final IViewFrustum viewFrustum) {
 
 		super(glCanvas, sLabel, viewFrustum, true);
+		canvas = glCanvas;
 		viewType = GLDataWindows.VIEW_ID;
-
 
 		containedGLViews = new ArrayList<AGLView>();
 		newViews = new ArrayList<ASerializedView>();
-		
-		
-		
-		//parentGLCanvas.addMouseListener(mouseWheelListener);
+
+		remoteHyperbolicPosition = new Point2D.Double();
+		remoteHyperbolicScalation = new Point2D.Double();
+		remoteHeatMapPosition = new Point2D.Double();
+		remoteHeatMapScalation = new Point2D.Double();
+		remoteParCoordPosition = new Point2D.Double();
+		remoteParCoordScalation = new Point2D.Double();
+		// parentGLCanvas.addMouseListener(mouseWheelListener);
 
 		// preparing the eyetracker
 		// this.tracker = new TrackDataProvider();
@@ -106,6 +129,9 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		arSlerpActions = new ArrayList<NodeSlerp>();
 
+
+		
+		
 	}
 
 	@Override
@@ -138,6 +164,10 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	@Override
 	public void displayLocal(GL gl) {
 		processEvents();
+		gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, viewport, 0);
+
+		canvasWidth = 2 / (float) viewport[0];
+		canvasHeight = 2 / (float) viewport[5];// if (set == null)
 
 		remoteElementHeatMap.getGLView().processEvents();
 		remoteElementParCoords.getGLView().processEvents();
@@ -151,7 +181,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
-		//pickingManager.handlePicking(this, gl);
+		// pickingManager.handlePicking(this, gl);
 
 		checkForHits(gl);
 		display(gl);
@@ -169,11 +199,72 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	@Override
 	public void display(GL gl) {
 
+		// transforming the hyperbolic view:
+//		remoteHyperbolicScalation.setLocation(viewSizeHyperbolic / 2,
+//				viewSizeHyperbolic / 2 / fAspectRatio);
+//		remoteHyperbolicPosition.setLocation(0, canvasHeight / 2 - canvasHeight
+//				* remoteHyperbolicScalation.getY() / 2);
+
+		this.setViewPosition(remoteHyperbolicPosition,
+				remoteHyperbolicScalation, new Point2D.Double(0, canvasHeight
+						* viewSizeHyperbolic / 2 / fAspectRatio),
+				new Point2D.Double(canvasWidth * viewSizeHyperbolic / 2, 0));
+
+		
+		
+		Transform transform = new Transform();
+
+		transform.setTranslation(new Vec3f((float) remoteHyperbolicPosition
+				.getX(), (float) remoteHyperbolicPosition.getY(), 0));
+		transform.setScale(new Vec3f((float) remoteHyperbolicScalation.getX(),
+				(float) remoteHyperbolicScalation.getY(), 1));
+
+		remoteElementHyperbolic.setTransform(transform);
+
+		// transforming the heatmap view:
+//		remoteHeatMapScalation.setLocation(viewSizeHeatMap / 2, viewSizeHeatMap
+//				/ 2 / fAspectRatio);
+//		remoteHeatMapPosition.setLocation(0, canvasHeight / 2 - canvasHeight
+//				* remoteHeatMapScalation.getY() / 2);
+	    Transform transform2 = new Transform();
+	    
+	  
+	    
+		this.setViewPosition(remoteHeatMapPosition, remoteHeatMapScalation,
+				new Point2D.Double(canvasWidth * viewSizeHeatMap / 2,
+						canvasHeight * viewSizeHeatMap/2  ),
+				new Point2D.Double(canvasWidth * viewSizeHeatMap, 0));
+		
+		transform2.setTranslation(new Vec3f(
+				(float) remoteHeatMapPosition.getX(),
+				(float) remoteHeatMapPosition.getY(), 0));
+		transform2.setScale(new Vec3f((float) remoteHeatMapScalation.getX(),
+				(float) remoteHeatMapScalation.getY(), 1));
+
+	
+		
+	
+		
+		
+		// transforming the Parcoord view:
+	    Transform transform3 = new Transform();
+		this.setViewPosition(remoteParCoordPosition, remoteParCoordScalation,
+				new Point2D.Double(canvasWidth * viewSizeParCoord / 2,
+						canvasHeight * viewSizeParCoord ),
+				new Point2D.Double(canvasWidth * viewSizeParCoord, canvasHeight * viewSizeParCoord / 2));
+
+		transform3.setTranslation(new Vec3f(
+				(float) remoteParCoordPosition.getX(),
+				(float) remoteParCoordPosition.getY(), 0));
+		transform3.setScale(new Vec3f((float) remoteParCoordScalation.getX(),
+				(float) remoteParCoordScalation.getY(), 1));
+
+		remoteElementParCoords.setTransform(transform3);
+		
 		// doSlerpActions();
 		renderRemoteLevelElement(gl, remoteElementHyperbolic);
 		renderRemoteLevelElement(gl, remoteElementHeatMap);
-		renderRemoteLevelElement(gl, remoteElementParCoords);
-
+	   // renderRemoteLevelElement(gl, remoteElementParCoords);
 
 		//
 		// }
@@ -200,65 +291,35 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		// gl.glEnd();
 
 		// remote test
-		
 
-		//doSlerpActions();
-		//disk.zoomTree(diskZoomIntensity);
-		
-		
-	//	disk.renderTree(gl, textureManager, pickingManager, iUniqueID,
-		//		(double) canvasWidth, (double) canvasHeight);
+		// doSlerpActions();
+		// disk.zoomTree(diskZoomIntensity);
+
+		// disk.renderTree(gl, textureManager, pickingManager, iUniqueID,
+		// (double) canvasWidth, (double) canvasHeight);
 
 		//		
-		
-		
-		
-	
-	
-		
-		
-	
-		//mouseWheelListener.mouseWheelMoved();
-		
-//		if (glMouseListener.wasLeftMouseButtonPressed()) {
-//			
-//
-//			if (glMouseListener.getPickedPoint() != null) {
-//
-//				System.out.println("leftmouse");
-//				if (manualPickFlag == true) {
-//					Point mousePoint = new Point(0, 0);
-//					mousePoint = glMouseListener.getPickedPoint();
-//					int[] viewport = new int[4];
-//
-//					gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-//					double factorX = (double) canvasWidth
-//							/ (double) viewport[2];
-//					double factorY = (double) canvasHeight
-//							/ (double) viewport[3];
-//
-//					mouseCoordX = (double) (mousePoint.getX() * factorX);
-//					mouseCoordY = (double) (mousePoint.getY() * factorY);
-//					disk.setCenteredNode(null);
-//					PoincareNode selectedNode;
-//					selectedNode = disk.processEyeTrackerAction(
-//							new Point2D.Double(mouseCoordX, mouseCoordY),
-//							arSlerpActions);
-//					if (selectedNode != null) {
-//						System.out.println("nodeSelected:"
-//								+ selectedNode.iComparableValue);
-//
-//						// arSlerpActions.add(new nodeSlerp(4,
-//						// selectedNode.getPosition(),
-//						// new Point2D.Double(0, 0)));
-//
-//						slerpedNode = selectedNode;
-//						disk.setCenteredNode(selectedNode);
-//
-//					}
-//				}
-//			}
-//		}
+
+		// mouseWheelListener.mouseWheelMoved();
+		// simulating the eyetracker
+		if (glMouseListener.wasLeftMouseButtonPressed()) {
+
+			if (glMouseListener.getPickedPoint() != null) {
+
+				if (manualPickFlag == true) {
+					Point mousePoint = new Point(0, 0);
+					mousePoint = glMouseListener.getPickedPoint();
+
+					Point2D.Double mousePosition = new Point2D.Double();
+					mousePosition.setLocation(mousePoint.getX(), mousePoint
+							.getY());
+					directHyperbolicView
+							.setEyeTrackerAction(mousePosition,
+									remoteHyperbolicPosition,
+									remoteHyperbolicScalation);
+				}
+			}
+		}
 
 		// if (!containedGLViews.isEmpty()) {
 		//
@@ -350,21 +411,20 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		SelectionType selectionType;
 		switch (ePickingType) {
 
-
-//		case DATAW_NODE:
-//			switch (pickingMode) {
-//
-//			case CLICKED:
-//				
-//				arSlerpActions.add(new NodeSlerp(4, disk
-//						.getNodeByCompareableValue(iExternalID).getPosition(),
-//						new Point2D.Double(0, 0)));
-//
-//				slerpedNode = disk.getNodeByCompareableValue(iExternalID);
-//				disk.setCenteredNode(disk
-//						.getNodeByCompareableValue(iExternalID));
-//
-//			}
+		// case DATAW_NODE:
+		// switch (pickingMode) {
+		//
+		// case CLICKED:
+		//				
+		// arSlerpActions.add(new NodeSlerp(4, disk
+		// .getNodeByCompareableValue(iExternalID).getPosition(),
+		// new Point2D.Double(0, 0)));
+		//
+		// slerpedNode = disk.getNodeByCompareableValue(iExternalID);
+		// disk.setCenteredNode(disk
+		// .getNodeByCompareableValue(iExternalID));
+		//
+		// }
 
 		// case DATAW_NODE :
 		// switch (pickingMode) {
@@ -381,7 +441,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		// .getNodeByCompareableValue(iExternalID));
 		//
 		// }
-
 
 		}
 
@@ -462,14 +521,32 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		serView = new SerializedHyperbolicView();
 		serView.setDataDomain(EDataDomain.GENETIC_DATA);
 		view = createView(gl, serView);
+		directHyperbolicView = (GLHyperbolic) view;
 
-		transform = new Transform();
-		transform.setTranslation(new Vec3f(0, 0, 0));
-		transform.setScale(new Vec3f(1f, 1f, 1));
+		// transform = new Transform();
+		//		
+		// transform.setTranslation(new Vec3f((float) remoteHyperbolicPosition
+		// .getX(), (float) remoteHyperbolicPosition.getY(), 0));
+		// transform.setScale(new Vec3f((float)
+		// remoteHyperbolicScalation.getX(),
+		// (float) remoteHyperbolicScalation.getY(), 1));
 
 		remoteElementHyperbolic = new RemoteLevelElement(null);
 		remoteElementHyperbolic.setGLView(view);
-		remoteElementHyperbolic.setTransform(transform);
+		// remoteElementHyperbolic.setTransform(transform);
+		
+		
+		mouseWheelListener = new DataWindowsMouseWheelListener(this.directHyperbolicView);
+
+		
+		 canvas.removeMouseWheelListener(glMouseListener);
+		
+
+		canvas.addMouseWheelListener(mouseWheelListener);
+
+		glMouseListener.addGLCanvas(this);
+		
+		
 	}
 
 	@Override
@@ -515,12 +592,26 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		return glView;
 	}
 
-	
-
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
 		// TODO Auto-generated method stub
 		// FIXME
 		return new ArrayList<AGLView>();
+	}
+
+	// positionToSet, scalation are Call by Reference Arguments
+	public void setViewPosition(Point2D.Double positionToSet,
+			Point2D.Double scalation, Point2D.Double upLeftPoint,
+			Point2D.Double downRightPoint) {
+
+		double scaleX = (downRightPoint.getX() - upLeftPoint.getX())
+				/ (this.directHyperbolicView.canvasWidth);
+		double scaleY = ( upLeftPoint.getY()-downRightPoint.getY() )
+				/ (this.directHyperbolicView.canvasHeight);
+		scalation.setLocation(scaleX, scaleY);
+		
+		positionToSet.setLocation(new Point2D.Double(upLeftPoint.getX(), downRightPoint.getY()));
+		
+
 	}
 }
