@@ -103,6 +103,8 @@ public class GLHeatMap extends AStorageBasedView {
 	/** try to show captions, if spacing allows it */
 	private boolean showCaptions = false;
 
+	private boolean captionsImpossible = false;
+
 	/**
 	 * Determines whether a bigger space between heat map and caption is needed
 	 * or not. If false no cluster info is available and therefore no additional
@@ -468,8 +470,9 @@ public class GLHeatMap extends AStorageBasedView {
 			if (pickingMode == EPickingMode.CLICKED)
 				if (showCaptions)
 					showCaptions = false;
-				else
+				else {
 					showCaptions = true;
+				}
 
 			template.recalculateSpacings();
 			setDisplayListDirty();
@@ -688,7 +691,7 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	/**
-	 * Returns the y coordinate of the elment rendered at contentIndex, or null
+	 * Returns the y coordinate of the element rendered at contentIndex, or null
 	 * if the current element is hidden
 	 * 
 	 * @param contentIndex
@@ -702,13 +705,18 @@ public class GLHeatMap extends AStorageBasedView {
 					.checkStatus(SELECTION_HIDDEN, contentID))
 				return null;
 		}
-
 		return templateRenderer.getYCoordinateByContentIndex(contentIndex);
-		// TODO deliver the correct coordinates
-		// renderStyle.updateFieldSizes();
-		// float fieldWidth = renderStyle.getNormalFielHeight();
 
-		// return fieldWidth * contentIndex + (fieldWidth / 2.0f);
+	}
+
+	/**
+	 * Returns the x coordinate of the element rendered at storageIndex
+	 * 
+	 * @param storageIndex
+	 * @return
+	 */
+	public Float getXCoordinateByStorageIndex(int storageIndex) {
+		return templateRenderer.getXCoordinateByStorageIndex(storageIndex);
 	}
 
 	private void doTranslation() {
@@ -903,6 +911,10 @@ public class GLHeatMap extends AStorageBasedView {
 		setDisplayListDirty();
 	}
 
+	public boolean isActive() {
+		return isActive;
+	}
+
 	/**
 	 * Returns true if a minimum spacing per element is required. This is
 	 * typically the case when captions are rendered.
@@ -910,7 +922,7 @@ public class GLHeatMap extends AStorageBasedView {
 	 * @return
 	 */
 	public boolean isForceMinSpacing() {
-		if (isShowCaptions() && isActive)
+		if (isShowCaptions() || isActive)
 			return true;
 		return false;
 	}
@@ -926,6 +938,11 @@ public class GLHeatMap extends AStorageBasedView {
 	public float getElementHeight(int contentID) {
 		return templateRenderer.getElementHeight(contentID);
 	}
+	
+	public float getElementWidth(int storageID)
+	{
+		return templateRenderer.getElementWidth(storageID);
+	}
 
 	/**
 	 * Returns the minimal spacing required when {@link #isForceMinSpacing()} is
@@ -935,16 +952,20 @@ public class GLHeatMap extends AStorageBasedView {
 	 */
 	public float getMinSpacing() {
 		// FIXME: this is a "hausnummer"
-		return 0.07f;
+		return 0.06f;
 	}
-	
-	public void recalculateLayout()
-	{
+
+	public void recalculateLayout() {
 		processEvents();
 		template.recalculateSpacings();
 	}
-	
+
 	public void setCaptionsImpossible(boolean areCaptionsPossible) {
-		//TODO:
+		this.captionsImpossible = areCaptionsPossible;
 	}
+
+	public boolean isCaptionsImpossible() {
+		return captionsImpossible;
+	}
+
 }

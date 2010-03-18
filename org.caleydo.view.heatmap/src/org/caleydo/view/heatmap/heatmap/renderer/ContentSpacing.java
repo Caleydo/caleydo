@@ -1,9 +1,17 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
+import java.util.ArrayList;
+
 public class ContentSpacing {
 	float selectedFieldHeight;
 	float normalFieldHeight;
 	float fieldWidth;
+
+	ArrayList<Float> yDistances;
+
+	public ContentSpacing() {
+		yDistances = new ArrayList<Float>();
+	}
 
 	public void calculateContentSpacing(int contentElements,
 			int storageElements, float x, float y) {
@@ -24,4 +32,5 @@ public class ContentSpacing {
 	public float getFieldWidth() {
 		return fieldWidth;
 	}
+
 }

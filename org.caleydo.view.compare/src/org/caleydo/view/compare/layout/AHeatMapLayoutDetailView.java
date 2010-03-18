@@ -137,7 +137,7 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 							.size() - 1));
 			spaceForHeatMaps -= totalHeatMapOverheadSize;
 			float sampleHeight = (spaceForHeatMaps / (float) numTotalSamples);
-
+			heatMap.setCaptionsImpossible(false);
 			if (totalMinSize < getDetailHeight()
 					&& sampleHeight < heatMap.getMinSpacing()) {
 				if (heatMap.isForceMinSpacing()) {
@@ -148,7 +148,8 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 				}
 			} else {
 
-				if (heatMap.isForceMinSpacing()) {
+				if (sampleHeight < heatMap.getMinSpacing()
+						&& heatMap.isForceMinSpacing()) {
 					heatMap.setCaptionsImpossible(true);
 				}
 

@@ -1,6 +1,8 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
 import java.awt.Font;
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.util.Set;
 
 import javax.media.opengl.GL;
@@ -20,11 +22,15 @@ public class ContentCaptionRenderer extends AContentRenderer {
 
 	private CaleydoTextRenderer textRenderer;
 
+	float fFontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR / 1.2f;
+	int fontSize = 24;
+	float spacing = 0;
+
 	public ContentCaptionRenderer(GLHeatMap heatMap) {
 		super(heatMap);
 
-		textRenderer = new CaleydoTextRenderer(
-				new Font("Arial", Font.PLAIN, 24), false);
+		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN,
+				fontSize), false);
 	}
 
 	public void render(GL gl) {
@@ -34,7 +40,6 @@ public class ContentCaptionRenderer extends AContentRenderer {
 		float fieldHeight = 0;
 
 		SelectionType currentType;
-		float fFontScaling = 0;
 
 		float fColumnDegrees = 0;
 		float fLineDegrees = 0;
@@ -45,8 +50,6 @@ public class ContentCaptionRenderer extends AContentRenderer {
 		// render line captions
 		// if (nfieldHeight > 0.055f) {
 		boolean bRenderRefSeq = false;
-
-		fFontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
 		// bRenderRefSeq = true;
 		String sContent = null;
@@ -68,11 +71,16 @@ public class ContentCaptionRenderer extends AContentRenderer {
 					&& heatMap.getContentSelectionManager().checkStatus(
 							GLHeatMap.SELECTION_HIDDEN, iContentIndex)) {
 				continue;
-			}else {
+			} else {
 
 				fieldHeight = normalFieldHeight;
 				currentType = SelectionType.NORMAL;
 				isSelected = false;
+
+				if (heatMap.isCaptionsImpossible()) {
+					yPosition -= fieldHeight;
+					continue;
+				}
 			}
 
 			yPosition -= fieldHeight;
@@ -95,8 +103,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 			// renderCaption(gl, refSeq, 0, yPosition + fieldHeight / 6
 			// * 4.5f, 0, fLineDegrees, fFontScaling);
 			// } else {
-			renderCaption(gl, sContent, 0, yPosition + fieldHeight / 4, 0,
-					fLineDegrees, fFontScaling);
+			renderCaption(gl, sContent, 0, yPosition, 0, fFontScaling);
 			// }
 
 			// if (heatMap.bClusterVisualizationGenesActive)
@@ -161,29 +168,32 @@ public class ContentCaptionRenderer extends AContentRenderer {
 		return sContent;
 	}
 
-	private void renderCaption(GL gl, String sLabel, float fXOrigin,
-			float fYOrigin, float fZOrigin, float fRotation, float fFontScaling) {
-		// if (heatMap.isRenderedRemote()
-		// && heatMap.getRemoteRenderingGLCanvas().getViewType().equals(
-		// "org.caleydo.view.bucket"))
-		// fFontScaling *= 1.5;
+	private void renderCaption(GL gl, String sLabel, float xOrigin,
+			float yOrigin, float zOrigin, float fontScaling) {
+
 		if (sLabel.length() > GeneralRenderStyle.NUM_CHAR_LIMIT + 1) {
 			sLabel = sLabel.substring(0, GeneralRenderStyle.NUM_CHAR_LIMIT - 2);
 			sLabel = sLabel + "..";
 		}
+		//
+
+		float requiredSize = (float) textRenderer.getScaledBounds(gl, sLabel,
+				fontScaling, fontSize).getHeight();
+
+		spacing = (normalFieldHeight - requiredSize) / 2;
+		if (spacing < 0)
+			spacing = 0;
 
 		// textRenderer.setColor(0, 0, 0, 1);
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		gl.glTranslatef(fXOrigin, fYOrigin, fZOrigin);
-		gl.glRotatef(fRotation, 0, 0, 1);
+		gl.glTranslatef(xOrigin, yOrigin + spacing, zOrigin);
+
 		textRenderer.begin3DRendering();
-		textRenderer.draw3D(gl, sLabel, 0, 0, 0, fFontScaling,
+		textRenderer.draw3D(gl, sLabel, 0, 0, 0, fontScaling,
 				HeatMapRenderStyle.LABEL_TEXT_MIN_SIZE);
 		textRenderer.end3DRendering();
-		gl.glRotatef(-fRotation, 0, 0, 1);
-		gl.glTranslatef(-fXOrigin, -fYOrigin, -fZOrigin);
+		gl.glTranslatef(-xOrigin, -yOrigin - spacing, -zOrigin);
 		// textRenderer.begin3DRendering();
 		gl.glPopAttrib();
 	}
-
 }

@@ -28,6 +28,10 @@ public class TemplateRenderer {
 	float totalWidth;
 	float totalHeight;
 
+	private RenderParameters heatMapLayout;
+	// private float xOverheadToHeatMap;
+	// private float yOverheadToHeatMap;
+
 	ContentSpacing contentSpacing = null;
 
 	public TemplateRenderer(GLHeatMap heatMap) {
@@ -45,6 +49,10 @@ public class TemplateRenderer {
 
 	public void addRenderer(RenderParameters parameters) {
 		renderers.add(parameters);
+	}
+
+	public void addHeatMapLayout(RenderParameters heatMapLayout) {
+		this.heatMapLayout = heatMapLayout;
 	}
 
 	public void clearRenderers() {
@@ -107,37 +115,47 @@ public class TemplateRenderer {
 	}
 
 	public Float getYCoordinateByContentIndex(int contentIndex) {
-
-		boolean belowHM = false;
-		float sizeOverhead = 0;
-		float positionInHM = 0;
-		for (RenderParameters parameters : template.verticalSpaceAllocations) {
-			ARenderer renderer = parameters.renderer;
-
-			if (belowHM)
-				sizeOverhead += parameters.sizeScaledY;
-
-			if (parameters instanceof Row) {
-				Row row = (Row) parameters;
-
-				for (RenderParameters rowElements : row) {
-					renderer = rowElements.renderer;
-					if (renderer instanceof HeatMapRenderer) {
-
-						belowHM = true;
-						positionInHM = ((HeatMapRenderer) renderer)
-								.getYCoordinateByContentIndex(contentIndex);
-					}
-				}
-
-			}
-			if (renderer instanceof HeatMapRenderer) {
-				belowHM = true;
-				positionInHM = ((HeatMapRenderer) renderer)
+		return heatMapLayout.transformY
+				+ ((HeatMapRenderer) heatMapLayout.renderer)
 						.getYCoordinateByContentIndex(contentIndex);
-			}
-		}
-		return positionInHM;
+		// boolean belowHM = false;
+		// float sizeOverhead = 0;
+		// float positionInHM = 0;
+		// for (RenderParameters parameters : template.verticalSpaceAllocations)
+		// {
+		// ARenderer renderer = parameters.renderer;
+		//
+		// if (belowHM)
+		// sizeOverhead += parameters.sizeScaledY;
+		//
+		// if (parameters instanceof Row) {
+		// Row row = (Row) parameters;
+		//
+		// for (RenderParameters rowElements : row) {
+		// renderer = rowElements.renderer;
+		// if (renderer instanceof HeatMapRenderer) {
+		//
+		// belowHM = true;
+		// positionInHM = ((HeatMapRenderer) renderer)
+		// .getYCoordinateByContentIndex(contentIndex);
+		// }
+		// }
+		//
+		// }
+		// if (renderer instanceof HeatMapRenderer) {
+		// belowHM = true;
+		// positionInHM = ((HeatMapRenderer) renderer)
+		// .getYCoordinateByContentIndex(contentIndex);
+		// }
+		// }
+		// return positionInHM;
+	}
+
+	public Float getXCoordinateByStorageIndex(int storageIndex) {
+
+		return heatMapLayout.transformX
+				+ ((HeatMapRenderer) heatMapLayout.renderer)
+						.getXCoordinateByStorageIndex(storageIndex);
 	}
 
 	public float getElementHeight(int contentID) {
@@ -150,5 +168,9 @@ public class TemplateRenderer {
 			return contentSpacing.getSelectedFieldHeight();
 
 		return contentSpacing.getNormalFieldHeight();
+	}
+
+	public float getElementWidth(int storageID) {
+		return contentSpacing.getFieldWidth();
 	}
 }

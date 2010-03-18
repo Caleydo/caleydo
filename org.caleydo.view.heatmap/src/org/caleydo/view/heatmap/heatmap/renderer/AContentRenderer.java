@@ -4,6 +4,8 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public abstract class AContentRenderer extends ARenderer {
 
+	protected ContentSpacing contentSpacing;
+
 	protected float selectedFieldHeight;
 	protected float normalFieldHeight;
 	protected float fieldWidth;
@@ -15,6 +17,7 @@ public abstract class AContentRenderer extends ARenderer {
 	}
 
 	public void setContentSpacing(ContentSpacing contentSpacing) {
+		this.contentSpacing = contentSpacing;
 		fieldWidth = contentSpacing.getFieldWidth();
 		selectedFieldHeight = contentSpacing.getSelectedFieldHeight();
 		normalFieldHeight = contentSpacing.getNormalFieldHeight();

@@ -13,7 +13,7 @@ public abstract class ATemplate {
 
 	private float yOverhead;
 	private float heatMapElementHeight;
-	
+
 	protected boolean isActive;
 
 	public ATemplate() {
@@ -34,13 +34,14 @@ public abstract class ATemplate {
 				totalHeight -= element.sizeY;
 		}
 
+		Row greedyRow = null;
 		// take care of greedy elements in x and y
 		RenderParameters greedyVerticalElement = null;
 		float usedSizeY = 0;
 		for (RenderParameters parameter : verticalSpaceAllocations) {
 			if (parameter.grabY)
 				greedyVerticalElement = parameter;
-			else
+			else if (!parameter.isBackground)
 				usedSizeY += parameter.sizeY;
 
 			if (parameter instanceof Row) {
@@ -51,7 +52,7 @@ public abstract class ATemplate {
 				for (RenderParameters rowElement : row) {
 					if (rowElement.grabX)
 						greedyHorizontalElement = rowElement;
-					else
+					else if (!rowElement.isBackground)
 						usedSizeX += rowElement.sizeX;
 				}
 				if (greedyHorizontalElement != null)
@@ -63,8 +64,8 @@ public abstract class ATemplate {
 		float yOffset = 0;
 		if (greedyVerticalElement != null)
 			greedyVerticalElement.sizeY = 1 - usedSizeY;
-		
-		// here we assume that the greedy element is also the "central" one 
+
+		// here we assume that the greedy element is also the "central" one
 		yOverhead = usedSizeY;
 
 		for (int count = verticalSpaceAllocations.size() - 1; count >= 0; count--) {
@@ -75,15 +76,17 @@ public abstract class ATemplate {
 				Row row = (Row) element;
 				for (RenderParameters rowElement : row) {
 					row.sizeY = rowElement.sizeY;
-//					rowElement.sizeY = row.sizeY;
+					// rowElement.sizeY = row.sizeY;
 					rowElement.transformScaledX = xOffset;
 					rowElement.calculateScales(totalWidth, totalHeight);
 					rowElement.transformScaledY = row.transformScaledY;
-					xOffset += rowElement.sizeScaledX;
+					if (!rowElement.isBackground)
+						xOffset += rowElement.sizeScaledX;
 				}
 			}
 			element.calculateScales(totalWidth, totalHeight);
-			yOffset += element.sizeScaledY;
+			if (!element.isBackground)
+				yOffset += element.sizeScaledY;
 		}
 	}
 
@@ -98,13 +101,11 @@ public abstract class ATemplate {
 	public float getYOverhead() {
 		return yOverhead;
 	}
-	
-	public void setActive(boolean isActive)
-	{
-		if(this.isActive != isActive)
-		{
-		this.isActive = isActive;
-		recalculateSpacings();
+
+	public void setActive(boolean isActive) {
+		if (this.isActive != isActive) {
+			this.isActive = isActive;
+			recalculateSpacings();
 		}
 	}
 }

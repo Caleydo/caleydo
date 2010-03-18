@@ -5,9 +5,16 @@ import org.caleydo.view.heatmap.heatmap.renderer.ARenderer;
 class RenderParameters {
 
 	ARenderer renderer;
-	
+
 	boolean scaleX = true;
 	boolean scaleY = true;
+
+	/**
+	 * if true the element is rendered as bacground, i.e. that the size of it is
+	 * not included in the transform
+	 */
+	boolean isBackground = false;
+
 	float transformX = 0;
 	float transformY = 0;
 	float transformScaledX = 0;
