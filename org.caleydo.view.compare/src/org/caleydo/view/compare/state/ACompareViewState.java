@@ -317,10 +317,7 @@ public abstract class ACompareViewState {
 
 			NURBSCurve curve = new NURBSCurve(points, 30);
 			points = curve.getCurvePoints();
-
-			// VisLink.renderLine(gl, controlPoints, offset, numberOfSegments,
-			// shadow)
-
+			
 			gl.glPushName(pickingManager.getPickingID(viewID,
 					EPickingType.POLYLINE_SELECTION, contentID));
 

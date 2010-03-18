@@ -4,6 +4,7 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import javax.media.opengl.GL;
@@ -568,6 +569,17 @@ public class HeatMapWrapper {
 		return contentVAs;
 	}
 
+	public ArrayList<GLHeatMap> getHeatMaps() {
+		
+		ArrayList<GLHeatMap> heatMaps = new ArrayList<GLHeatMap>();
+
+		for (Group group : selectedGroups.keySet()) {
+			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+			heatMaps.add(heatMap);
+		}
+		return heatMaps;
+	}
+	
 	public ArrayList<ContentSelectionManager> getContentSelectionManagersOfHeatMaps() {
 
 		ArrayList<ContentSelectionManager> contentSelectionManagers = new ArrayList<ContentSelectionManager>();
