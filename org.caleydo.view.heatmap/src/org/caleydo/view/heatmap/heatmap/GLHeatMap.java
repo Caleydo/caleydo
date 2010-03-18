@@ -101,7 +101,7 @@ public class GLHeatMap extends AStorageBasedView {
 	/** hide elements with the state {@link #SELECTION_HIDDEN} if this is true */
 	private boolean hideElements = true;
 	/** try to show captions, if spacing allows it */
-	private boolean showCaptions = true;
+	private boolean showCaptions = false;
 
 	/**
 	 * Determines whether a bigger space between heat map and caption is needed
@@ -114,7 +114,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	/** Utility object for coordinate transformation and projection */
 	protected StandardTransformer selectionTransformer;
-	
+
 	/** Signals that the heat map is currently active */
 	private boolean isActive = false;
 
@@ -893,11 +893,12 @@ public class GLHeatMap extends AStorageBasedView {
 		return template.getYOverhead();
 	}
 
-	public void setActive(boolean isActive)
-	{
+	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+		template.setActive(isActive);
+		setDisplayListDirty();
 	}
-	
+
 	/**
 	 * Returns true if a minimum spacing per element is required. This is
 	 * typically the case when captions are rendered.
@@ -908,6 +909,18 @@ public class GLHeatMap extends AStorageBasedView {
 		if (isShowCaptions() && isActive)
 			return true;
 		return false;
+	}
+
+	/**
+	 * Returns the height of a particular element
+	 * 
+	 * @param contentID
+	 *            the id of the element - since they can be of different height
+	 *            due to the fish eye
+	 * @return the height of the element
+	 */
+	public float getElementHeight(int contentID) {
+		return templateRenderer.getElementHeight(contentID);
 	}
 
 	/**

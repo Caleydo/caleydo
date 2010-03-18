@@ -12,6 +12,9 @@ public abstract class ATemplate {
 	protected TemplateRenderer templateRenderer;
 
 	private float yOverhead;
+	private float heatMapElementHeight;
+	
+	protected boolean isActive;
 
 	public ATemplate() {
 		verticalSpaceAllocations = new ArrayList<RenderParameters>();
@@ -72,6 +75,7 @@ public abstract class ATemplate {
 				Row row = (Row) element;
 				for (RenderParameters rowElement : row) {
 					row.sizeY = rowElement.sizeY;
+//					rowElement.sizeY = row.sizeY;
 					rowElement.transformScaledX = xOffset;
 					rowElement.calculateScales(totalWidth, totalHeight);
 					rowElement.transformScaledY = row.transformScaledY;
@@ -94,5 +98,13 @@ public abstract class ATemplate {
 	public float getYOverhead() {
 		return yOverhead;
 	}
-
+	
+	public void setActive(boolean isActive)
+	{
+		if(this.isActive != isActive)
+		{
+		this.isActive = isActive;
+		recalculateSpacings();
+		}
+	}
 }

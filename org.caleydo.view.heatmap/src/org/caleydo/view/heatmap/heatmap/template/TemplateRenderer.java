@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.AContentRenderer;
@@ -26,6 +27,8 @@ public class TemplateRenderer {
 	GLHeatMap heatMap;
 	float totalWidth;
 	float totalHeight;
+
+	ContentSpacing contentSpacing = null;
 
 	public TemplateRenderer(GLHeatMap heatMap) {
 
@@ -56,7 +59,7 @@ public class TemplateRenderer {
 
 		spacing = totalHeight * SPACING;
 
-		ContentSpacing contentSpacing = null;
+		contentSpacing = null;
 
 		template.calculateScales(totalWidth, totalHeight);
 
@@ -74,23 +77,15 @@ public class TemplateRenderer {
 					ContentSelectionManager selectionManager = heatMap
 							.getContentSelectionManager();
 					if (heatMap.isHideElements()) {
-						// for (int contentID : heatMap.getContentVA()) {
-						// if (selectionManager.checkStatus(
-						// GLHeatMap.SELECTION_HIDDEN, contentID))
-						//
-						// contentElements--;
-						// }
+
 						contentElements -= selectionManager
 								.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
-						// contentElements = totalElements
-						// - heatMap.getContentSelectionManager()
-						// .getNumberOfElements(
-						// GLHeatMap.SELECTION_HIDDEN);
 					}
 
 					contentSpacing.calculateContentSpacing(contentElements,
 							heatMap.getStorageVA().size(),
 							parameters.sizeScaledX, parameters.sizeScaledY);
+
 				}
 				((AContentRenderer) renderer).setContentSpacing(contentSpacing);
 			}
@@ -141,5 +136,16 @@ public class TemplateRenderer {
 			}
 		}
 		return positionInHM;
+	}
+
+	public float getElementHeight(int contentID) {
+		if (heatMap.getContentSelectionManager().checkStatus(
+				SelectionType.MOUSE_OVER, contentID)
+				|| heatMap.getContentSelectionManager().checkStatus(
+						SelectionType.SELECTION, contentID))
+
+			return contentSpacing.getSelectedFieldHeight();
+
+		return contentSpacing.getNormalFieldHeight();
 	}
 }

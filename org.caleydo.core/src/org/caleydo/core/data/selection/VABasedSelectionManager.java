@@ -1,7 +1,7 @@
 package org.caleydo.core.data.selection;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
@@ -210,12 +210,22 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 	}
 
 	/**
-	 * Adds a selection to the target type. Since this selection manager uses a virtual array only elements
-	 * that are also contained in the virtual array are added.
+	 * Adds a selection to the target type.
 	 */
 	@Override
 	public void addToType(SelectionType targetType, int iElementID) {
-		if (virtualArray != null && virtualArray.containsElement(iElementID) != 0)
-			super.addToType(targetType, iElementID);
+		// if (virtualArray != null && virtualArray.containsElement(iElementID) != 0)
+		super.addToType(targetType, iElementID);
+	}
+
+	@Override
+	public int getNumberOfElements(SelectionType selectionType) {
+		int size = 0;
+		Set<Integer> elements = super.getElements(selectionType);
+		for (Integer element : elements) {
+			if (virtualArray.containsElement(element) != 0)
+				size++;
+		}
+		return size;
 	}
 }

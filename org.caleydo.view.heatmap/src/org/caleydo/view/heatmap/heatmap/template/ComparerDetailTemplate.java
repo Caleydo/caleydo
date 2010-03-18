@@ -18,6 +18,7 @@ public class ComparerDetailTemplate extends ATemplate {
 		templateRenderer.clearRenderers();
 		verticalSpaceAllocations.clear();
 		Row hmRow = new Row();
+		// hmRow.grabY = true;
 		// heat map
 		RenderParameters hm = new RenderParameters();
 		hm.grabX = true;
@@ -61,19 +62,22 @@ public class ComparerDetailTemplate extends ATemplate {
 				hmRow.appendElement(caption);
 		}
 
-		RenderParameters toolBar;
+		if (isActive) {
+			RenderParameters toolBar;
 
-		toolBar = new RenderParameters();
-		toolBar.sizeX = 1f;
-		toolBar.sizeY = 0.1f;
+			toolBar = new RenderParameters();
+			toolBar.sizeX = 1f;
+			toolBar.sizeY = 0.1f;
 
-		toolBar.scaleY = false;
+			toolBar.scaleY = false;
 
-		toolBar.renderer = new DetailToolBar(templateRenderer.heatMap);
+			toolBar.renderer = new DetailToolBar(templateRenderer.heatMap);
 
-		templateRenderer.addRenderer(toolBar);
-		add(hmRow);
-		add(toolBar);
+			templateRenderer.addRenderer(toolBar);
+			add(hmRow);
+			add(toolBar);
+		} else
+			add(hmRow);
 
 	}
 }

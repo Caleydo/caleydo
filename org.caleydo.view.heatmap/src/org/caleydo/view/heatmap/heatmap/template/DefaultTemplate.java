@@ -8,10 +8,11 @@ public class DefaultTemplate extends ATemplate {
 	@Override
 	public void setParameters() {
 		Row row = new Row();
+		row.sizeY = 1;
 		// heat map
 		RenderParameters parameters = new RenderParameters();
 		parameters.sizeX = 0.7f;
-		parameters.sizeY = 1f;
+		parameters.sizeY = 1;
 		parameters.renderer = new HeatMapRenderer(templateRenderer.heatMap);
 		templateRenderer.addRenderer(parameters);
 
