@@ -142,17 +142,19 @@ public class GLConsecutiveConnectionGraphDrawing
 	 */
 
 	private void renderFromCenter(GL gl, EIDType idType) {
-
-		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>(4);
+		heatmapPredecessor.clear();
+		heatmapSuccessor.clear();
+		parCoordsPredecessor.clear();
+		parCoordsSuccessor.clear();
+		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>();
 		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
 		ArrayList<ArrayList<Vec3f>> heatMapPoints = new ArrayList<ArrayList<Vec3f>>();
 		ArrayList<ArrayList<Vec3f>> parCoordsPoints = new ArrayList<ArrayList<Vec3f>>();
+		ArrayList<Integer> viewsToBeVisited = null;
 		int heatMapPredecessorID = -1;
 		int parCoordsPredecessorID = -1;
 		int heatMapSuccessorID = -1;
 		int parCoordsSucessorID = -1;
-		int[] parCoordIDs = { parCoordsPredecessorID, parCoordsSucessorID };
-		int[] heatMapIDs = { heatMapPredecessorID, heatMapSuccessorID };
 
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
 
@@ -168,16 +170,171 @@ public class GLConsecutiveConnectionGraphDrawing
 				hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists.get(idType).get(iKey)));
 		}
 
-		// getting ids of pre/suc of heatmap/parcoords
-		calculatePredecessorAndSuccessor(parCoordIDs, heatMapIDs, hashViewToCenterPoint);
-		heatMapPredecessorID = heatMapIDs[0];
-		heatMapSuccessorID = heatMapIDs[1];
-		parCoordsPredecessorID = parCoordIDs[0];
-		parCoordsSucessorID = parCoordIDs[1];
+		//getting list of views that belong to the current graph, sorted by sequence of visiting
+		viewsToBeVisited = getViewsOfCurrentPathStartingAtFocus(hashViewToCenterPoint);
+		heatMapPredecessorID = getPreviousView(viewsToBeVisited, heatMapID);
+		heatMapSuccessorID = getNext(viewsToBeVisited, heatMapID);
+		parCoordsPredecessorID = getPreviousView(viewsToBeVisited, parCoordID);
+		parCoordsSucessorID = getNext(viewsToBeVisited, parCoordID);
 
 		//calculating optimal points for heatmap and/or parCoords
 		getPointsFromHeatMapAndParCoordsWhenRenderingFromCenter(heatMapPredecessorID, heatMapSuccessorID, heatMapPoints, parCoordsPredecessorID, parCoordsSucessorID, parCoordsPoints, hashViewToCenterPoint);
+		
+		int positionOfGap = checkIfGapAvailableWhenRenderingFromCenter(viewsToBeVisited);
+		
+		ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
+		Vec3f vecViewBundlingPoint = null;
+		Vec3f controlPoint = null;
+		
+		for (Integer key : viewsToBeVisited) {
+			if (key != -1){	
+				if (key == heatMapID){
+					if (heatmapPredecessor.size() > 0){
+						VisLinkAnimationStage currentStage = new VisLinkAnimationStage();
+						
+						if (heatMapPredecessorID != parCoordID)
+							controlPoint = calculateControlPoint(heatmapPredecessor.get(0).get(0), hashViewToCenterPoint.get(heatMapPredecessorID));
+						else
+							controlPoint = calculateControlPoint(heatmapPredecessor.get(0).get(0), parCoordsSuccessor.get(0).get(0));
+						
+						vecViewBundlingPoint = calculateBundlingPoint(heatmapPredecessor.get(0).get(0), controlPoint);
+						for (ArrayList<Vec3f> alCurrentPoints : heatmapPredecessor) {
+							if (alCurrentPoints.size() > 1)
+								renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
+							else
+								pointsToDepthSort.add(alCurrentPoints.get(0));
+						}
+						for (Vec3f currentPoint : depthSort(pointsToDepthSort))
+							currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint, controlPoint));
 
+						if (heatmapPredecessor.size() >1)
+							connectionLinesAllViews.add(currentStage);
+						pointsToDepthSort.clear();
+						VisLinkAnimationStage bundling = new VisLinkAnimationStage();
+						if (heatMapPredecessorID != parCoordID)
+							bundling.addLine(createControlPoints(hashViewToCenterPoint.get(heatMapPredecessorID), heatmapPredecessor.get(0).get(0), controlPoint));
+						else
+							bundling.addLine(createControlPoints(parCoordsSuccessor.get(0).get(0), heatmapPredecessor.get(0).get(0), controlPoint));
+						connectionLinesAllViews.add(bundling);
+						
+					}
+					if (heatmapSuccessor.size() > 0){
+						VisLinkAnimationStage currentStage = new VisLinkAnimationStage();
+						if (heatMapSuccessorID != parCoordID)
+							controlPoint = calculateControlPoint(heatmapSuccessor.get(0).get(0), hashViewToCenterPoint.get(heatMapSuccessorID));
+						else
+							controlPoint = calculateControlPoint(heatmapSuccessor.get(0).get(0), parCoordsPredecessor.get(0).get(0));
+						vecViewBundlingPoint = calculateBundlingPoint(heatmapSuccessor.get(0).get(0), controlPoint);
+						for (ArrayList<Vec3f> alCurrentPoints : heatmapSuccessor) {
+							if (alCurrentPoints.size() > 1)
+								renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
+							else
+								pointsToDepthSort.add(alCurrentPoints.get(0));
+						}
+						for (Vec3f currentPoint : depthSort(pointsToDepthSort))
+							currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint, heatmapSuccessor.get(0).get(0)));
+
+						if (heatmapSuccessor.size() > 1)
+							connectionLinesAllViews.add(currentStage);
+						pointsToDepthSort.clear();
+					}
+
+				}
+				else if (key == parCoordID){
+					if (parCoordsPredecessor.size() > 0){
+						VisLinkAnimationStage currentStage = new VisLinkAnimationStage();
+						if (parCoordsPredecessorID != heatMapID)
+							controlPoint = calculateControlPoint(parCoordsPredecessor.get(0).get(0), hashViewToCenterPoint.get(parCoordsPredecessorID));
+						else
+							controlPoint = calculateControlPoint(parCoordsPredecessor.get(0).get(0), heatmapSuccessor.get(0).get(0));
+						vecViewBundlingPoint = calculateBundlingPoint(parCoordsPredecessor.get(0).get(0), controlPoint);
+						for (ArrayList<Vec3f> alCurrentPoints : parCoordsPredecessor) {
+							if (alCurrentPoints.size() > 1)
+								renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
+							else
+								pointsToDepthSort.add(alCurrentPoints.get(0));
+						}
+						for (Vec3f currentPoint : depthSort(pointsToDepthSort))
+								currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint, parCoordsPredecessor.get(0).get(0)));
+
+						if (parCoordsPredecessor.size() > 1)
+							connectionLinesAllViews.add(currentStage);
+						pointsToDepthSort.clear();
+						VisLinkAnimationStage bundling = new VisLinkAnimationStage();
+						if (parCoordsPredecessorID == heatMapID)
+							bundling.addLine(createControlPoints(heatmapSuccessor.get(0).get(0), parCoordsPredecessor.get(0).get(0), controlPoint));
+						else
+							bundling.addLine(createControlPoints(hashViewToCenterPoint.get(parCoordsPredecessorID), parCoordsPredecessor.get(0).get(0), controlPoint));
+						connectionLinesAllViews.add(bundling);
+					}
+					if (parCoordsSuccessor.size() > 0){
+						VisLinkAnimationStage currentStage = new VisLinkAnimationStage();
+						
+						if (parCoordsSucessorID != heatMapID)
+							controlPoint = calculateControlPoint(parCoordsSuccessor.get(0).get(0), hashViewToCenterPoint.get(parCoordsSucessorID));
+						else
+							controlPoint = calculateControlPoint(parCoordsSuccessor.get(0).get(0), heatmapPredecessor.get(0).get(0));
+						vecViewBundlingPoint = calculateBundlingPoint(parCoordsSuccessor.get(0).get(0), controlPoint);
+						
+						for (ArrayList<Vec3f> alCurrentPoints : parCoordsSuccessor) {
+							if (alCurrentPoints.size() > 1)
+								renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
+							else
+								pointsToDepthSort.add(alCurrentPoints.get(0));
+						}
+						for (Vec3f currentPoint : depthSort(pointsToDepthSort))
+							currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint, parCoordsSuccessor.get(0).get(0)));
+
+						if (parCoordsSuccessor.size() > 1)
+							connectionLinesAllViews.add(currentStage);
+						pointsToDepthSort.clear();
+					}
+				}
+				else{
+					VisLinkAnimationStage currentStage = new VisLinkAnimationStage();
+					if (key == parCoordsSucessorID)
+						controlPoint = calculateControlPoint(hashViewToCenterPoint.get(key), parCoordsSuccessor.get(0).get(0));
+					else if (key == heatMapSuccessorID)
+						controlPoint = calculateControlPoint(hashViewToCenterPoint.get(key), heatmapSuccessor.get(0).get(0));
+					else if (key == parCoordsPredecessorID)
+						controlPoint = calculateControlPoint(hashViewToCenterPoint.get(key), parCoordsPredecessor.get(0).get(0));
+					else if (key == heatMapPredecessorID)
+						controlPoint = calculateControlPoint(hashViewToCenterPoint.get(key), heatmapPredecessor.get(0).get(0));
+					
+					vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(key), controlPoint);
+					for (ArrayList<Vec3f> alCurrentPoints : hashIDTypeToViewToPointLists.get(idType).get(key)) {
+						if (alCurrentPoints.size() > 1)
+							renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
+						else
+							pointsToDepthSort.add(alCurrentPoints.get(0));
+					}
+					for (Vec3f currentPoint : depthSort(pointsToDepthSort))
+						currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(key)));
+
+					if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1)
+						connectionLinesAllViews.add(currentStage);
+					VisLinkAnimationStage bundling = new VisLinkAnimationStage();
+					if (key == heatMapSuccessorID){
+						if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1)
+							bundling.addLine(createControlPoints(heatmapSuccessor.get(0).get(0), vecViewBundlingPoint, controlPoint));
+						else
+							bundling.addLine(createControlPoints(heatmapSuccessor.get(0).get(0), hashViewToCenterPoint.get(key), controlPoint));
+					}
+					else if (key == parCoordsSucessorID)
+						if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1)
+							bundling.addLine(createControlPoints(parCoordsSuccessor.get(0).get(0), vecViewBundlingPoint, controlPoint));
+						else
+							bundling.addLine(createControlPoints(parCoordsSuccessor.get(0).get(0), hashViewToCenterPoint.get(key), controlPoint));
+					connectionLinesAllViews.add(bundling);
+					pointsToDepthSort.clear();
+
+				}
+			}
+		}
+		
+		
+		
+		/*
 		
 		
 		vecCenter = calculateCenter(hashViewToCenterPoint.values());
@@ -193,6 +350,7 @@ public class GLConsecutiveConnectionGraphDrawing
 				vecViewBundlingPoint = parCoordsPredecessor.get(0).get(0);
 			ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
 
+			
 			if (heatmapPredecessor.size() > 0) {
 				for (ArrayList<Vec3f> alCurrentPoints : heatmapPredecessor) {
 					if (alCurrentPoints.size() > 1)
@@ -539,6 +697,31 @@ public class GLConsecutiveConnectionGraphDrawing
 		visLinkScene.renderLines(gl);
 	}
 
+	private int checkIfGapAvailableWhenRenderingFromCenter(ArrayList<Integer> viewsToBeVisited) {
+		if (viewsToBeVisited.get(2) == -1 && viewsToBeVisited.get(1) != -1 && viewsToBeVisited.get(3) != -1)
+			return 2;
+		else if (viewsToBeVisited.get(3) == -1 && viewsToBeVisited.get(2) != -1 && viewsToBeVisited.get(4) != -1)
+			return 3;
+		return -1;
+	}
+
+	private ArrayList<Integer> getViewsOfCurrentPathStartingAtFocus(HashMap<Integer, Vec3f> hashViewToCenterPoint) {
+		ArrayList<Integer> getViewsOfCurrentPath = new ArrayList<Integer>();
+		getViewsOfCurrentPath.add(focusLevel.getElementByPositionIndex(0).getGLView().getID());
+		
+		for (int stackCount = 0; stackCount < stackLevel.getCapacity(); stackCount++){
+			if ((stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && hashViewToCenterPoint.containsKey(stackLevel.getElementByPositionIndex(stackCount).getGLView().getID())) || 
+				(stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && heatMapID == stackLevel.getElementByPositionIndex(stackCount).getGLView().getID()) ||
+				(stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && parCoordID == stackLevel.getElementByPositionIndex(stackCount).getGLView().getID())){
+					getViewsOfCurrentPath.add(stackLevel.getElementByPositionIndex(stackCount).getGLView().getID());
+			}
+			else
+				getViewsOfCurrentPath.add(-1);
+		}
+		
+		return getViewsOfCurrentPath;
+	}
+
 	private void getPointsFromHeatMapAndParCoordsWhenRenderingFromCenter(int heatMapPredecessorID, int heatMapSuccessorID,
 		ArrayList<ArrayList<Vec3f>> heatMapPoints, int parCoordsPredecessorID, int parCoordsSuccessorID,
 		ArrayList<ArrayList<Vec3f>> parCoordsPoints, HashMap<Integer, Vec3f> hashViewToCenterPoint) {
@@ -550,7 +733,7 @@ public class GLConsecutiveConnectionGraphDrawing
 
 		if (heatMapPredecessorID != -1){
 			if (heatMapPredecessorID == parCoordID)
-				getPointsIfOtherViewIsDynamicView(heatMapPoints, parCoordsPoints, HEATMAP, PREDECESSOR);
+				getPointsIfOtherViewIsDynamicView(parCoordsPoints, heatMapPoints, HEATMAP, PREDECESSOR);
 			else
 				getPointsIfNotOtherViewIsDynamicView(heatMapPredecessorID, heatMapPoints, hashViewToCenterPoint, HEATMAP, PREDECESSOR);
 		}
@@ -568,7 +751,7 @@ public class GLConsecutiveConnectionGraphDrawing
 		}
 		if (parCoordsSuccessorID != -1){
 			if (parCoordsSuccessorID == heatMapID)
-				getPointsIfOtherViewIsDynamicView(heatMapPoints, parCoordsPoints, PARCOORDS, SUCCESSOR);		
+				getPointsIfOtherViewIsDynamicView(parCoordsPoints, heatMapPoints, PARCOORDS, SUCCESSOR);		
 			else
 				getPointsIfNotOtherViewIsDynamicView(parCoordsSuccessorID, parCoordsPoints, hashViewToCenterPoint, PARCOORDS, SUCCESSOR);	
 		}
@@ -595,31 +778,39 @@ public class GLConsecutiveConnectionGraphDrawing
 			}
 		}
 		if (type == HEATMAP && nextOrPrevious == PREDECESSOR){
-			parCoordsSuccessor.add(optimalSuccessorPoints);
-			heatmapPredecessor.add(optimalPredecessorPoints);
+			if (!parCoordsSuccessor.contains(optimalSuccessorPoints))
+				parCoordsSuccessor.add(optimalSuccessorPoints);
+			if (!heatmapPredecessor.contains(optimalPredecessorPoints))
+				heatmapPredecessor.add(optimalPredecessorPoints);
 		}
 		else if (type == HEATMAP && nextOrPrevious == SUCCESSOR){
-			parCoordsPredecessor.add(optimalPredecessorPoints);
-			heatmapSuccessor.add(optimalSuccessorPoints);
+			if(!parCoordsPredecessor.contains(optimalPredecessorPoints))
+				parCoordsPredecessor.add(optimalPredecessorPoints);
+			if (!heatmapSuccessor.contains(optimalSuccessorPoints))
+				heatmapSuccessor.add(optimalSuccessorPoints);
 		}
 		else if (type == PARCOORDS && nextOrPrevious == PREDECESSOR){
-			heatmapSuccessor.add(optimalSuccessorPoints);
-			parCoordsPredecessor.add(optimalPredecessorPoints);
+			if(!heatmapSuccessor.contains(optimalSuccessorPoints))
+				heatmapSuccessor.add(optimalSuccessorPoints);
+			if(!parCoordsPredecessor.contains(optimalPredecessorPoints))
+				parCoordsPredecessor.add(optimalPredecessorPoints);
 		}
 		else if (type == PARCOORDS && nextOrPrevious == SUCCESSOR){
-			heatmapPredecessor.add(optimalPredecessorPoints);
-			parCoordsSuccessor.add(optimalSuccessorPoints);
+			if (!heatmapPredecessor.contains(optimalPredecessorPoints))
+				heatmapPredecessor.add(optimalPredecessorPoints);
+			if (!parCoordsSuccessor.contains(optimalSuccessorPoints))
+				parCoordsSuccessor.add(optimalSuccessorPoints);
 		}
 	}
 
-	private void getPointsIfNotOtherViewIsDynamicView(int predecessorID, ArrayList<ArrayList<Vec3f>> dynamicPointsList, HashMap<Integer, Vec3f> hashViewToCenterPoint, char type, int nextOrPrevious){
+	private void getPointsIfNotOtherViewIsDynamicView(int IDOfOtherView, ArrayList<ArrayList<Vec3f>> dynamicPointsList, HashMap<Integer, Vec3f> hashViewToCenterPoint, char type, int nextOrPrevious){
 		float currentPath = -1;
 		float minPath = Float.MAX_VALUE;
 		
 		ArrayList<Vec3f> optimalPoints = null;
 		for (ArrayList<Vec3f> dynamicPoints : dynamicPointsList) {
 			Vec3f predecessorPoint = dynamicPoints.get(0);
-			Vec3f distanceToPredecessor = predecessorPoint.minus(hashViewToCenterPoint.get(predecessorID));
+			Vec3f distanceToPredecessor = predecessorPoint.minus(hashViewToCenterPoint.get(IDOfOtherView));
 			currentPath = distanceToPredecessor.length();
 			if (currentPath < minPath) {
 				minPath = currentPath;
@@ -723,175 +914,6 @@ public class GLConsecutiveConnectionGraphDrawing
 		}
 
 	}*/
-
-	private void calculatePredecessorAndSuccessor(int[] parCoordIDs, int[] heatMapIDs,
-		HashMap<Integer, Vec3f> hashViewToCenterPoint) {
-
-		if (focusLevel.getElementByPositionIndex(0).getGLView() instanceof GLHeatMap) {
-			for (int stackCount = 0; stackCount < stackLevel.getCapacity(); stackCount++) {
-				// first element are parCoords
-				if (stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && stackLevel.getElementByPositionIndex(stackCount).getGLView().getID() == parCoordID) {
-					heatMapIDs[1] = parCoordID;
-					parCoordIDs[0] = heatMapID;
-					if (stackCount < stackLevel.getCapacity() - 2) {
-						for (int innerCount = stackCount + 1; innerCount < stackLevel.getCapacity(); innerCount++) {
-							if (stackLevel.getElementByPositionIndex(innerCount).getGLView() != null && hashViewToCenterPoint.containsKey(stackLevel.getElementByPositionIndex(innerCount).getGLView().getID())) {
-								if (innerCount - stackCount == 2)
-									gap = true;
-								parCoordIDs[1] = stackLevel.getElementByPositionIndex(innerCount).getGLView().getID();
-								break;
-							}
-						}
-					}
-					break;
-				}
-				// first element are not parCoords
-				else if (stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && hashViewToCenterPoint.containsKey(stackLevel.getElementByPositionIndex(stackCount).getGLView().getID())) {
-					heatMapIDs[1] = stackLevel.getElementByPositionIndex(stackCount).getGLView().getID();
-					// get pre and suc of parCoords if they are available
-					if (parCoordID != -1) {
-						for (int count = stackCount + 1; count < stackLevel.getCapacity(); count++) {
-							if (stackLevel.getElementByPositionIndex(count).getGLView() instanceof GLParallelCoordinates) {
-								for (int innerCount = count - 1; innerCount >= 0; innerCount--) {
-									if (stackLevel.getElementByPositionIndex(innerCount).getGLView() != null && hashViewToCenterPoint.containsKey(stackLevel.getElementByPositionIndex(innerCount).getGLView().getID())) {
-										parCoordIDs[0] = stackLevel.getElementByPositionIndex(innerCount).getGLView().getID();
-										break;
-									}
-								}
-								if (count < stackLevel.getCapacity() - 1) {
-									for (int innerCount = count++; innerCount < stackLevel.getCapacity(); innerCount++) {
-										if (stackLevel.getElementByPositionIndex(innerCount).getGLView() != null && hashViewToCenterPoint.containsKey(stackLevel.getElementByPositionIndex(innerCount).getGLView().getID())) {
-											parCoordIDs[1] = stackLevel.getElementByPositionIndex(innerCount).getGLView().getID();
-											break;
-										}
-									}
-									break;
-								}
-							}
-						}
-					}
-					break;
-				}
-			}
-		}
-		else if (focusLevel.getElementByPositionIndex(0).getGLView() instanceof GLParallelCoordinates) {
-			for (int stackCount = 0; stackCount < stackLevel.getCapacity(); stackCount++) {
-				if (stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && stackLevel.getElementByPositionIndex(stackCount).getGLView().getID() == heatMapID) {
-					parCoordIDs[1] = heatMapID;
-					heatMapIDs[0] = parCoordID;
-					if (stackCount < stackLevel.getCapacity() - 2) {
-						for (int innerCount = stackCount + 1; innerCount < stackLevel.getCapacity(); innerCount++) {
-							if (stackLevel.getElementByPositionIndex(innerCount).getGLView() != null && hashViewToCenterPoint.containsKey(stackLevel.getElementByPositionIndex(
-									innerCount).getGLView().getID())) {
-								if (innerCount - stackCount == 2)
-									gap = true;
-								heatMapIDs[1] =
-									stackLevel.getElementByPositionIndex(innerCount).getGLView().getID();
-								break;
-							}
-						}
-					}
-					break;
-				}
-				else if (stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && hashViewToCenterPoint.containsKey(stackLevel.getElementByPositionIndex(stackCount).getGLView().getID())) {
-					parCoordIDs[1] = stackLevel.getElementByPositionIndex(stackCount).getGLView().getID();
-
-
-					// get pre and suc of parCoords if they are available
-					if (heatMapID != -1) {
-						for (int count = stackCount + 1; count < stackLevel.getCapacity(); count++) {
-							if (stackLevel.getElementByPositionIndex(count).getGLView() instanceof GLHeatMap) {
-								for (int innerCount = count - 1; innerCount >= 0; innerCount--) {
-									if (stackLevel.getElementByPositionIndex(innerCount).getGLView() != null && hashViewToCenterPoint.containsKey(stackLevel.getElementByPositionIndex(innerCount).getGLView().getID())) {
-										heatMapIDs[0] = stackLevel.getElementByPositionIndex(innerCount).getGLView().getID();
-										break;
-									}
-								}
-								if (count < stackLevel.getCapacity() - 1) {
-									for (int innerCount = count++; innerCount < stackLevel.getCapacity(); innerCount++) {
-										if (stackLevel.getElementByPositionIndex(innerCount).getGLView() != null && hashViewToCenterPoint.containsKey(stackLevel.getElementByPositionIndex(innerCount).getGLView().getID())) {
-											heatMapIDs[1] = stackLevel.getElementByPositionIndex(innerCount).getGLView().getID();
-											break;
-										}
-									}
-									break;
-								}
-							}
-						}
-					}
-					break;
-				}
-			}
-		}
-		else{
-			if (heatMapID != -1){
-				if (stackLevel.getElementByPositionIndex(0).getGLView() instanceof GLHeatMap){
-					heatMapIDs[0] = focusLevel.getElementByPositionIndex(0).getGLView().getID();
-					for (int stackCount = 1; stackCount < stackLevel.getCapacity(); stackCount++){
-						if ((stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && hashViewToCenterPoint.containsKey(stackLevel.getElementByPositionIndex(stackCount).getGLView().getID())) || (stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && stackLevel.getElementByPositionIndex(stackCount).getGLView().getID() == parCoordID)){
-							heatMapIDs[1] = stackLevel.getElementByPositionIndex(stackCount).getGLView().getID();
-							break;
-						}
-					}
-				}
-				else{
-					for (int stackCount = 0; stackCount < stackLevel.getCapacity(); stackCount++){
-						if (stackLevel.getElementByPositionIndex(stackCount).getGLView() instanceof GLHeatMap){
-							//getting predecessor
-							for (int reverseCount = stackCount-1; reverseCount >= 0; reverseCount--){
-								if ((stackLevel.getElementByPositionIndex(reverseCount).getGLView() != null && hashViewToCenterPoint.containsKey(stackLevel.getElementByPositionIndex(reverseCount).getGLView().getID())) || (stackLevel.getElementByPositionIndex(reverseCount).getGLView() != null && parCoordID == stackLevel.getElementByPositionIndex(reverseCount).getGLView().getID())){
-									heatMapIDs[0] = stackLevel.getElementByPositionIndex(reverseCount).getGLView().getID();
-									break;
-								}
-							}
-							//getting successor
-							if (stackCount < stackLevel.getCapacity()-2){
-								for (int innerCount = stackCount+1; innerCount < stackLevel.getCapacity(); innerCount++){
-									if ((stackLevel.getElementByPositionIndex(innerCount).getGLView() != null && hashViewToCenterPoint.containsKey(stackLevel.getElementByPositionIndex(innerCount).getGLView().getID())) || (stackLevel.getElementByPositionIndex(innerCount).getGLView() != null && parCoordID == stackLevel.getElementByPositionIndex(innerCount).getGLView().getID())){
-										heatMapIDs[1] = stackLevel.getElementByPositionIndex(innerCount).getGLView().getID();
-										break;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			if (parCoordID != -1){
-				if (stackLevel.getElementByPositionIndex(0).getGLView() instanceof GLParallelCoordinates){
-					parCoordIDs[0] = focusLevel.getElementByPositionIndex(0).getGLView().getID();
-					for (int stackCount = 1; stackCount < stackLevel.getCapacity(); stackCount++){
-						if ((stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && hashViewToCenterPoint.containsKey(stackLevel.getElementByPositionIndex(stackCount).getGLView().getID())) || (stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && stackLevel.getElementByPositionIndex(stackCount).getGLView().getID() == heatMapID)){
-							parCoordIDs[1] = stackLevel.getElementByPositionIndex(stackCount).getGLView().getID();
-							break;
-						}
-					}
-				}
-				else{
-					for (int stackCount = 0; stackCount < stackLevel.getCapacity(); stackCount++){
-						if (stackLevel.getElementByPositionIndex(stackCount).getGLView() instanceof GLParallelCoordinates){
-							//getting predecessor
-							for (int reverseCount = stackCount-1; reverseCount >= 0; reverseCount--){
-								if ((stackLevel.getElementByPositionIndex(reverseCount).getGLView() != null && hashViewToCenterPoint.containsKey(stackLevel.getElementByPositionIndex(reverseCount).getGLView().getID())) || (stackLevel.getElementByPositionIndex(reverseCount).getGLView() != null && heatMapID == stackLevel.getElementByPositionIndex(reverseCount).getGLView().getID())){
-									parCoordIDs[0] = stackLevel.getElementByPositionIndex(reverseCount).getGLView().getID();
-									break;
-								}
-							}
-							//getting successor
-							if (stackCount < stackLevel.getCapacity()-2){
-								for (int innerCount = stackCount+1; innerCount < stackLevel.getCapacity(); innerCount++){
-									if ((stackLevel.getElementByPositionIndex(innerCount).getGLView() != null && hashViewToCenterPoint.containsKey(stackLevel.getElementByPositionIndex(innerCount).getGLView().getID())) || (stackLevel.getElementByPositionIndex(innerCount).getGLView() != null && heatMapID == stackLevel.getElementByPositionIndex(innerCount).getGLView().getID())){
-										parCoordIDs[1] = stackLevel.getElementByPositionIndex(innerCount).getGLView().getID();
-										break;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
 
 	/**
 	 * selects which lines have to be rendered if the only two views involved are the focus element and one
@@ -3321,5 +3343,33 @@ public class GLConsecutiveConnectionGraphDrawing
 		if (parCoordsOnStackAndHavePredecessor)
 			pointsList.add(parCoordsPredecessor);
 		return pointsList;
+	}
+
+	private int getNext(ArrayList<Integer> list, int iD){
+		int position = list.indexOf(iD);
+
+		if (position == list.size()-1)
+			return -1;
+		
+		while (position < list.size()-1){
+			if (list.get(position+1) != -1)
+				return list.get(position+1);
+			position++;
+		}
+		return -1;
+	}
+
+	private Integer getPreviousView(ArrayList<Integer> list, int iD){
+		int position = list.indexOf(iD);
+		if (position == 0)
+			return -1;
+		
+		while(position >0){
+			if (list.get(position-1) != -1)
+				return list.get(position-1);
+			position--;
+		}
+		return -1;
+
 	}
 }
