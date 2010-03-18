@@ -222,6 +222,8 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 	public int getNumberOfElements(SelectionType selectionType) {
 		int size = 0;
 		Set<Integer> elements = super.getElements(selectionType);
+		if (elements == null)
+			return 0;
 		for (Integer element : elements) {
 			if (virtualArray.containsElement(element) != 0)
 				size++;
