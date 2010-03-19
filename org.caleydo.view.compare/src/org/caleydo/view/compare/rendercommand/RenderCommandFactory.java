@@ -26,6 +26,9 @@ public class RenderCommandFactory {
 				new DetailHeatMapsRenderCommand(viewID, pickingManager));
 		hashRenderCommands.put(ERenderCommandType.CAPTION_LABEL,
 				new CaptionLabelRenderCommand(textRenderer));
+		hashRenderCommands.put(ERenderCommandType.DENDROGRAM_BUTTON,
+				new DendrogramButtonRenderCommand(viewID, pickingManager,
+						textureManager));
 	}
 
 	public IHeatMapRenderCommand getRenderCommand(

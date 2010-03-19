@@ -62,30 +62,37 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 	public void calculateDrawingParameters() {
 	}
 
+	@Override
 	public float getTotalOverviewWidth() {
 		return getOverviewHeatmapWidth();
 	}
 
+	@Override
 	public float getGapWidth() {
 		return 0;
 	}
 
+	@Override
 	public float getDetailWidth() {
 		return 0;
 	}
 
+	@Override
 	public float getOverviewHeight() {
 		return totalHeight * OVERVIEW_HEIGHT_PORTION;
 	}
 
+	@Override
 	public float getDetailHeight() {
 		return 0;
 	}
 
+	@Override
 	public float getOverviewGroupWidth() {
 		return 0;
 	}
 
+	@Override
 	public float getOverviewHeatmapWidth() {
 		if (numTotalExperiments == 0)
 			return totalWidth;
@@ -97,42 +104,52 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 		return heatOverviewHeatMapWidth;
 	}
 
+	@Override
 	public float getOverviewSliderWidth() {
 		return 0;
 	}
 
+	@Override
 	public float getOverviewMaxSliderHeight() {
 		return 0;
 	}
 
+	@Override
 	public float getOverviewMaxSliderPositionY() {
 		return 0;
 	}
 
+	@Override
 	public float getOverviewMinSliderPositionY() {
 		return 0;
 	}
 
+	@Override
 	public float getDetailHeatMapHeight(int heatMapID) {
 		return 0;
 	}
 
+	@Override
 	public float getDetailHeatMapGapHeight() {
 		return 0;
 	}
 
+	@Override
 	public float getCaptionLabelWidth() {
 		return totalWidth;
 	}
 
+	@Override
 	public float getCaptionLabelHeight() {
 		return totalHeight * CAPTION_LABEL_HEIGHT_PORTION;
 	}
 
+	@Override
 	public float getCaptionLabelHorizontalSpacing() {
 		return totalWidth * CAPTION_LABEL_HORIZONTAL_SPACING_PORTION;
 	}
 
+	@Override
 	public float getCaptionLabelVerticalSpacing() {
 		return totalHeight * CAPTION_LABEL_VERTICAL_SPACING_PORTION;
 	}
@@ -159,4 +176,18 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 		return 0;
 	}
 
+	@Override
+	public Vec3f getDendrogramLinePosition() {
+		return new Vec3f(0, 0, 0);
+	}
+	
+	@Override
+	public float getDendrogramLineHeight() {
+		return 0;
+	}
+	
+	@Override
+	public float getDendrogramLineWidth() {
+		return 0;
+	}
 }

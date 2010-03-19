@@ -1024,7 +1024,7 @@ public class DetailViewState extends ACompareViewState {
 		float heatMapWrapperPosY = setBar.getPosition().y() + setBarHeight;
 
 		float heatMapWrapperPosX = 0.0f;
-		float heatMapWrapperWidth = viewFrustum.getRight()
+		float heatMapWrapperWidth = viewFrustum.getWidth()
 				/ (2.0f * (float) heatMapWrappers.size() - 1.0f);
 		for (int i = 0; i < heatMapWrappers.size(); i++) {
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);

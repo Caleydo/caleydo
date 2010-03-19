@@ -117,6 +117,12 @@ public abstract class AHeatMapLayout {
 	public abstract float getDendrogramButtonHeight();
 	
 	public abstract float getDendrogramButtonWidth();
+	
+	public abstract Vec3f getDendrogramLinePosition();
+	
+	public abstract float getDendrogramLineHeight();
+	
+	public abstract float getDendrogramLineWidth();
 
 	public ArrayList<IHeatMapRenderCommand> getRenderCommandsOfLocalItems() {
 		return localRenderCommands;

@@ -13,20 +13,27 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 
-	protected static float OVERVIEW_TOTAL_WIDTH_PORTION = 0.25f;
-	protected static float OVERVIEW_GROUP_WIDTH_PORTION = 0.04f;
-	protected static float OVERVIEW_HEATMAP_WIDTH_PORTION = 0.15f;
-	protected static float OVERVIEW_SLIDER_WIDTH_PORTION = 0.06f;
+	protected static final float OVERVIEW_TOTAL_WIDTH_PORTION = 0.25f;
+	protected static final float OVERVIEW_GROUP_WIDTH_PORTION = 0.04f;
+	protected static final float OVERVIEW_HEATMAP_WIDTH_PORTION = 0.15f;
+	protected static final float OVERVIEW_SLIDER_WIDTH_PORTION = 0.06f;
 
-	protected static float DETAIL_WIDTH_PORTION = 0.5f;
-	protected static float DETAIL_HEATMAP_GAP_PORTION = 0.02f;
-	protected static float OVERVIEW_TO_DETAIL_GAP_PORTION = 0.25f;
+	protected static final float DETAIL_WIDTH_PORTION = 0.46f;
+	protected static final float DETAIL_HEATMAP_GAP_PORTION = 0.02f;
 
-	protected static float CAPTION_LABEL_HEIGHT_PORTION = 0.03f;
-	protected static float CAPTION_LABEL_HORIZONTAL_SPACING_PORTION = 0.03f;
-	protected static float CAPTION_LABEL_VERTICAL_SPACING_PORTION = 0.01f;
-	protected static float OVERVIEW_HEIGHT_PORTION = 0.95f;
-	protected static float DETAIL_HEIGHT_PORTION = 0.95f;
+	protected static final float OVERVIEW_TO_DETAIL_GAP_PORTION = 0.25f;
+
+	protected static final float DENDROGRAM_BUTTON_HEIGHT_PORTION = 0.05f;
+	protected static final float DENDROGRAM_BUTTON_WIDTH_PORTION = 0.1f;
+	protected static final float DENDROGRAM_LINE_WIDTH_PORTION = 0.02f;
+	protected static final float DENDROGRAM_LINE_SPACING_PORTION = 0.04f;
+
+	protected static final float CAPTION_LABEL_HEIGHT_PORTION = 0.03f;
+	protected static final float CAPTION_LABEL_WIDTH_PORTION = 0.92f;
+	protected static final float CAPTION_LABEL_HORIZONTAL_SPACING_PORTION = 0.03f;
+	protected static final float CAPTION_LABEL_VERTICAL_SPACING_PORTION = 0.01f;
+	protected static final float OVERVIEW_HEIGHT_PORTION = 0.95f;
+	protected static final float DETAIL_HEIGHT_PORTION = 0.95f;
 
 	private HashMap<Integer, Vec3f> hashHeatMapPositions;
 	private HashMap<Integer, Float> hashHeatMapHeights;
@@ -41,6 +48,8 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 				.getRenderCommand(ERenderCommandType.OVERVIEW_SLIDER));
 		localRenderCommands.add(renderCommandFactory
 				.getRenderCommand(ERenderCommandType.CAPTION_LABEL));
+		localRenderCommands.add(renderCommandFactory
+				.getRenderCommand(ERenderCommandType.DENDROGRAM_BUTTON));
 
 		remoteRenderCommands.add(renderCommandFactory
 				.getRenderCommand(ERenderCommandType.DETAIL_HEATMAPS));
@@ -206,7 +215,7 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 	}
 
 	public float getCaptionLabelWidth() {
-		return totalWidth;
+		return totalWidth * CAPTION_LABEL_WIDTH_PORTION;
 	}
 
 	public float getCaptionLabelHeight() {
@@ -260,17 +269,26 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 	}
 
 	@Override
-	public Vec3f getDendrogramButtonPosition() {
-		return new Vec3f(0, 0, 0);
-	}
-
-	@Override
 	public float getDendrogramButtonHeight() {
-		return 0;
+		return totalHeight * DENDROGRAM_BUTTON_HEIGHT_PORTION;
 	}
 
 	@Override
 	public float getDendrogramButtonWidth() {
-		return 0;
+		return totalWidth * DENDROGRAM_BUTTON_WIDTH_PORTION;
+	}
+	
+	@Override
+	public float getDendrogramLineHeight() {
+		return totalHeight;
+	}
+	
+	@Override
+	public float getDendrogramLineWidth() {
+		return totalWidth * DENDROGRAM_LINE_WIDTH_PORTION;
+	}
+	
+	public float getDendrogramLineSpacing() {
+		return totalWidth * DENDROGRAM_LINE_SPACING_PORTION;
 	}
 }

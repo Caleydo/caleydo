@@ -14,29 +14,32 @@ public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
 
 	@Override
 	public Vec3f getDetailPosition() {
-		return new Vec3f(positionX + getTotalOverviewWidth() + getGapWidth(),
-				positionY, 0.0f);
+		return new Vec3f(positionX + getDendrogramLineSpacing()
+				+ getTotalOverviewWidth() + getGapWidth(), positionY, 0.0f);
 	}
 
 	@Override
 	public Vec3f getOverviewPosition() {
-		return new Vec3f(positionX, positionY, 0.0f);
+		return new Vec3f(positionX + getDendrogramLineSpacing(), positionY,
+				0.0f);
 	}
 
 	@Override
 	public Vec3f getOverviewGroupBarPosition() {
-		return new Vec3f(positionX + getOverviewSliderWidth(), positionY, 0.0f);
+		return new Vec3f(positionX + getDendrogramLineSpacing()
+				+ getOverviewSliderWidth(), positionY, 0.0f);
 	}
 
 	@Override
 	public Vec3f getOverviewHeatMapPosition() {
-		return new Vec3f(positionX + getOverviewSliderWidth()
-				+ getOverviewGroupWidth(), positionY, 0.0f);
+		return new Vec3f(positionX + getDendrogramLineSpacing()
+				+ getOverviewSliderWidth() + getOverviewGroupWidth(),
+				positionY, 0.0f);
 	}
 
 	@Override
 	public float getOverviewSliderPositionX() {
-		return positionX;
+		return positionX + getDendrogramLineSpacing();
 	}
 
 	@Override
@@ -51,10 +54,21 @@ public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
 
 	@Override
 	public Vec3f getCaptionLabelPosition(float textWidth) {
-		return new Vec3f(positionX + getCaptionLabelHorizontalSpacing(),
-				positionY + getOverviewHeight()
-						+ getCaptionLabelVerticalSpacing(), 0.0f);
+		return new Vec3f(positionX + getDendrogramLineWidth()
+				+ getDendrogramButtonWidth()
+				+ getCaptionLabelHorizontalSpacing(), positionY
+				+ getOverviewHeight() + getCaptionLabelVerticalSpacing(), 0.0f);
 	}
-	
+
+	@Override
+	public Vec3f getDendrogramButtonPosition() {
+		return new Vec3f(positionX + getDendrogramLineWidth(), positionY
+				+ getOverviewHeight(), 0.0f);
+	}
+
+	@Override
+	public Vec3f getDendrogramLinePosition() {
+		return new Vec3f(positionX, positionY, 0.0f);
+	}
 
 }

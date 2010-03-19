@@ -42,6 +42,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
@@ -346,9 +347,7 @@ public class HeatMapWrapper {
 		// // // 1);v
 		// // Vec2f position = getLeftDetailLinkPositionFromContentID(va
 		// // .get(i));
-		// // GLHelperFunctions
-		// // .drawPointAt(gl, position.x(), position.y(), 1);
-		// // }
+		
 		// }
 
 		ArrayList<IHeatMapRenderCommand> renderCommands = layout
@@ -360,11 +359,13 @@ public class HeatMapWrapper {
 
 		isNewSelection = false;
 
-		// Vec3f position = layout.getPosition();
-		// GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
-		//
-		// GLHelperFunctions.drawPointAt(gl, position.x() + layout.getWidth(),
-		// position.y(), 1);
+//		 Vec3f position = layout.getPosition();
+//		 GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
+//		
+//		 GLHelperFunctions.drawPointAt(gl, position.x() + layout.getWidth(),
+//		 position.y(), 1);
+//		 
+//		 GLHelperFunctions.drawPointAt(gl, position.x() + (layout.getWidth() * 0.04f), position.y(), 1);
 
 	}
 
