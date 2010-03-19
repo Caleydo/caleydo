@@ -305,6 +305,7 @@ public class SelectionBrowser
 	public void handleSelectionUpdate(final ISelectionDelta selectionDelta, final boolean scrollToSelection,
 		final String info) {
 		
+		contentSelectionManager.setDelta(selectionDelta);
 		
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
