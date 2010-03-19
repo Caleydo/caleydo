@@ -19,6 +19,8 @@ public class StartClusteringEvent
 
 	private ClusterState ClusterState;
 
+	private Integer setID;
+	
 	/**
 	 * default no-arg constructor
 	 */
@@ -28,6 +30,19 @@ public class StartClusteringEvent
 
 	public StartClusteringEvent(ClusterState state) {
 		this.ClusterState = state;
+	}
+
+	public StartClusteringEvent(ClusterState state, Integer setID) {
+		this(state);
+		this.setID = setID;
+	}
+	
+	public void setSet(Integer setID) {
+		this.setID = setID;
+	}
+	
+	public Integer getSet() {
+		return setID;
 	}
 
 	public ClusterState getClusterState() {

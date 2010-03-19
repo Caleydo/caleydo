@@ -329,6 +329,8 @@ public class Application
 
 		caleydoCoreBootloader.setXmlFileName(sCaleydoXMLfile);
 		caleydoCoreBootloader.start();
+		
+		GeneralManager.get().getGUIBridge().init();
 
 		if (bLoadPathwayData == true)
 			triggerPathwayLoading();

@@ -1,8 +1,15 @@
 package org.caleydo.rcp.core.bridge;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.data.ClusterSetEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.rcp.action.toolbar.view.StartClusteringAction;
 import org.caleydo.rcp.command.handler.ExitHandler;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.core.commands.ExecutionException;
@@ -13,11 +20,25 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 public class RCPBridge
-	implements IGUIBridge {
+	implements IGUIBridge, IListenerOwner {
+	
 	private String sFileNameCurrentDataSet;
-
+	
+	private ClusterSetListener clusterSetListener;
+	
+	public RCPBridge() {
+		clusterSetListener = new ClusterSetListener();
+	}
+	
+	public void init() {
+		registerEventListeners();
+	}
+	
 	@Override
 	public void closeApplication() {
+
+		unregisterEventListeners();
+		
 		try {
 			new ExitHandler().execute(null);
 		}
@@ -26,6 +47,21 @@ public class RCPBridge
 		}
 	}
 
+	public void registerEventListeners() {
+
+		clusterSetListener.setHandler(this);
+		GeneralManager.get().getEventPublisher().addListener(ClusterSetEvent.class,
+			clusterSetListener);
+
+	}
+
+	public void unregisterEventListeners() {
+		if (clusterSetListener != null) {
+			GeneralManager.get().getEventPublisher().removeListener(clusterSetListener);
+			clusterSetListener = null;
+		}
+	}
+	
 	@Override
 	public void setShortInfo(String sMessage) {
 		// PlatformUI.getWorkbench().getActiveWorkbenchWindow();
@@ -78,5 +114,22 @@ public class RCPBridge
 
 			}
 		});
+	}
+
+	@Override
+	public void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			
+			@Override
+			public void run() {
+				listener.handleEvent(event);
+			}
+		});
+	}
+
+	public void clusterSet(ISet set) {
+		StartClusteringAction action = new StartClusteringAction();
+		action.setSet(set);
+		action.run();
 	}
 }
