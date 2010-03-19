@@ -41,7 +41,7 @@ public class StartClusteringEvent
 		this.setID = setID;
 	}
 	
-	public Integer getSet() {
+	public Integer getSetID() {
 		return setID;
 	}
 

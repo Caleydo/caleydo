@@ -7,6 +7,8 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ContentData;
 
@@ -23,6 +25,8 @@ public class MetaSet
 	@SuppressWarnings("unchecked")
 	public MetaSet(Set originalSet, Tree<ClusterNode> storageTree, ClusterNode storageTreeRoot) {
 		init();
+		
+		this.iUniqueID = GeneralManager.get().getIDManager().createID(EManagedObjectType.SET);
 		this.setSetType(originalSet.getSetType());
 		// FIXME: this is not always true, but if we create the MetaSet from the serialization, we didn't
 		// check yet whether it was homogeneous

@@ -214,7 +214,6 @@ public class HeatMapWrapper {
 			groupSampleStartIndex += group.getNrElements();
 			groupIndex++;
 		}
-
 	}
 
 	private void setEmbeddedHeatMapData(GLHeatMap heatMap,
@@ -868,38 +867,13 @@ public class HeatMapWrapper {
 			contentSelectionManager.setDelta(selectionDelta);
 			glParentView.setDisplayListDirty();
 		}
-
 	}
-
-	//
-	// @Override
-	// public void queueEvent(AEventListener<? extends IListenerOwner> listener,
-	// AEvent event) {
-	// glParentView.queueEvent(listener, event);
-	//
-	// }
-
-	// /**
-	// * Register all event listeners used by the HeatMapWrapper.
-	// */
-	// public void registerEventListeners() {
-	//
-	// selectionUpdateListener = new SelectionUpdateListener();
-	// selectionUpdateListener.setHandler(this);
-	// eventPublisher.addListener(SelectionUpdateEvent.class,
-	// selectionUpdateListener);
-	// }
-	//
-	// /**
-	// * Unregister all event listeners used by the HeatMapWrapper.
-	// */
-	// public void unregisterEventListeners() {
-	//
-	// if (selectionUpdateListener != null) {
-	// eventPublisher.removeListener(selectionUpdateListener);
-	// selectionUpdateListener = null;
-	// }
-	// }
+	
+	public void handleReplaceContentVA(EIDCategory idCategory,
+			ContentVAType vaType) {
+		
+		contentVA = set.getContentVA(vaType);
+	}
 
 	public void setHeatMapActive(int groupIndex) {
 		if (activeHeatMapID == groupIndex)
@@ -1015,5 +989,4 @@ public class HeatMapWrapper {
 		
 		return null;
 	}
-
 }

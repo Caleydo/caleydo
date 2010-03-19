@@ -3,6 +3,7 @@ package org.caleydo.core.manager.event.data;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.IVAType;
 import org.caleydo.core.data.selection.VirtualArray;
@@ -23,6 +24,8 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 	EIDCategory idCategory = null;
 	E virtualArray;
 	boolean usesVADirectly = false;
+	
+	int setID = -1;
 
 	/**
 	 * default no-arg constructor.
@@ -36,16 +39,18 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 	 * 
 	 * @param vaType
 	 */
-	public ReplaceVAEvent(EIDCategory idCategory, T vaType) {
+	public ReplaceVAEvent(ISet set, EIDCategory idCategory, T vaType) {
 		this.idCategory = idCategory;
 		this.vaType = vaType;
+		this.setID = set.getID();
 	}
 
-	public ReplaceVAEvent(EIDCategory idCategory, T vaType, E virtualArray) {
+	public ReplaceVAEvent(ISet set, EIDCategory idCategory, T vaType, E virtualArray) {
 		this.idCategory = idCategory;
 		this.vaType = vaType;
 		this.virtualArray = virtualArray;
 		usesVADirectly = true;
+		this.setID = set.getID();
 	}
 
 	/**
@@ -92,6 +97,9 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 			if (virtualArray == null)
 				return false;
 
+		if (setID == -1)
+			return false;
+		
 		return true;
 	}
 
@@ -111,4 +119,7 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 		this.virtualArray = virtualArray;
 	}
 
+	public int getSetID() {
+		return setID;
+	}
 }

@@ -324,7 +324,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
-		eventPublisher.triggerEvent(new ReplaceStorageVAInUseCaseEvent(
+		eventPublisher.triggerEvent(new ReplaceStorageVAInUseCaseEvent(set,
 				EIDCategory.EXPERIMENT, StorageVAType.STORAGE, storageVA));
 
 		triggerSelectionEvents();

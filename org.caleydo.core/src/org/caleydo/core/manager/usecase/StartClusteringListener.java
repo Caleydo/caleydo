@@ -12,7 +12,7 @@ public class StartClusteringListener
 		if (event instanceof StartClusteringEvent) {
 			StartClusteringEvent startClusteringEvent = (StartClusteringEvent) event;
 
-			handler.startClustering(startClusteringEvent.getClusterState());
+			handler.startClustering(startClusteringEvent.getSetID(), startClusteringEvent.getClusterState());
 		}
 	}
 

@@ -463,4 +463,10 @@ public abstract class ACompareViewState {
 	
 	protected abstract void setupLayouts();
 
+	public void handleReplaceContentVA(int setID, EIDCategory idCategory,
+			ContentVAType vaType) {
+		
+		// FIXME: we should not destroy all the heat map wrappers when a contentVA is handled
+		setSetsInFocus(setBar.getSetsInFocus());
+	}
 }

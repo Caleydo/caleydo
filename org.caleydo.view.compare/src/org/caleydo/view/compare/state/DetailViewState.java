@@ -13,6 +13,7 @@ import org.caleydo.core.data.collection.set.SetComparer;
 import org.caleydo.core.data.collection.set.SetRelations;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -171,7 +172,7 @@ public class DetailViewState extends ACompareViewState {
 			
 			boolean renderLine = false;
 			for (Integer contentID : heatMap.getContentVA()) {
-				if (activeBand.getContentIDs().contains(contentID)) {
+				if (activeBand != null && activeBand.getContentIDs().contains(contentID)) {
 					renderLine = true;
 					break;
 				}
@@ -584,7 +585,7 @@ public class DetailViewState extends ACompareViewState {
 
 	private void renderSingleDetailRelation(GL gl, Integer contentID) {
 
-		if (!activeBand.getContentIDs().contains(contentID))
+		if (activeBand != null && !activeBand.getContentIDs().contains(contentID))
 			return;
 		
 		float positionZ = setRelationColor(gl, heatMapWrappers.get(0),
@@ -989,7 +990,7 @@ public class DetailViewState extends ACompareViewState {
 		float alpha = 0.2f;
 		if (type == activeHeatMapSelectionType) {
 			gl.glLineWidth(2);
-			alpha = 0.2f;
+			alpha = 0.7f;
 			z = 0.4f;
 		} else if (type == SelectionType.MOUSE_OVER
 				|| type == SelectionType.SELECTION) {
@@ -1005,8 +1006,8 @@ public class DetailViewState extends ACompareViewState {
 			else
 				alpha = 0.3f;
 
-			alpha = 0.0f;
-			z = 0.2f;
+			alpha = 0.2f;
+			z = 0.4f;
 		}
 
 		typeColor[3] = alpha;

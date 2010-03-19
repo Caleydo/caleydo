@@ -39,6 +39,7 @@ import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
@@ -234,21 +235,29 @@ public abstract class AUseCase
 		return vaCopy;
 	}
 
+	
 	@Override
-	public void startClustering(ClusterState clusterState) {
-
-		// if (!(this instanceof GeneticUseCase))
-		// return;
-
+	public void startClustering(int setID, ClusterState clusterState) {
+		
+		ISet set = null;
+		if (this.set.getID() == setID)
+			set = this.set;
+		else
+			set = this.set.getStorageTreeRoot().getMetaSetFromSubTree(setID);
+		
+		//TODO: warning
+		if (set == null)
+			return;
+		
 		set.cluster(clusterState);
 
 		// This should be done to avoid problems with group info in HHM
 		set.setGeneClusterInfoFlag(false);
 		set.setExperimentClusterInfoFlag(false);
 
-		eventPublisher.triggerEvent(new ReplaceContentVAEvent(EIDCategory.GENE, clusterState
+		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, EIDCategory.GENE, clusterState
 			.getContentVAType()));
-		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(EIDCategory.EXPERIMENT, StorageVAType.STORAGE));
+		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(set, EIDCategory.EXPERIMENT, StorageVAType.STORAGE));
 
 		if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING
 			|| clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
@@ -256,12 +265,13 @@ public abstract class AUseCase
 		}
 	}
 
+
 	/**
 	 * This is the method which is used to synchronize the views with the Virtual Array, which is initiated
 	 * from this class. Therefore it should not be called any time!
 	 */
 	@Override
-	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType) {
+	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
 		throw new IllegalStateException("UseCases shouldn't react to this");
 
 	}
@@ -300,7 +310,7 @@ public abstract class AUseCase
 
 		virtualArray.setGroupList(null);
 
-		eventPublisher.triggerEvent(new ReplaceContentVAEvent(idCategory, vaType));
+		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, idCategory, vaType));
 	}
 
 	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType,

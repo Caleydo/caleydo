@@ -12,11 +12,14 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
+import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.compare.AdjustPValueEvent;
 import org.caleydo.core.manager.event.view.compare.DuplicateSetBarItemEvent;
@@ -36,9 +39,11 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -61,7 +66,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  */
 public class GLCompare extends AGLView implements IViewCommandHandler,
 		IGLRemoteRenderingView, ISelectionUpdateHandler,
-		ISelectionCommandHandler {
+		ISelectionCommandHandler, IContentVAUpdateHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.compare";
 
@@ -74,6 +79,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	private AdjustPValueOfSetEventListener adjustPValueOfSetEventListener;
 	private SelectionCommandListener selectionCommandListener;
 	private CompareMouseWheelListener compareMouseWheelListener;
+	private ReplaceContentVAListener replaceContentVAListener;
 
 	private boolean isControlPressed;
 	private boolean wasMouseWheeled;
@@ -437,12 +443,12 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		eventPublisher.addListener(SelectionCommandEvent.class,
 				selectionCommandListener);
 
-		// if (leftHeatMapWrapper != null)
-		// leftHeatMapWrapper.registerEventListeners();
-		// if (rightHeatMapWrapper != null)
-		// rightHeatMapWrapper.registerEventListeners();
+		replaceContentVAListener = new ReplaceContentVAListener();
+		replaceContentVAListener.setHandler(this);
+		eventPublisher.addListener(ReplaceContentVAEvent.class,
+				replaceContentVAListener);
 	}
-
+	
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
@@ -465,6 +471,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		if (selectionCommandListener != null) {
 			eventPublisher.removeListener(selectionCommandListener);
 			selectionCommandListener = null;
+		}
+		if (replaceContentVAListener != null) {
+			eventPublisher.removeListener(replaceContentVAListener);
+			replaceContentVAListener = null;
 		}
 	}
 
@@ -531,5 +541,15 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		this.wheelAmount = wheelAmount;
 		this.wheelPoint = wheelPosition;
 		wasMouseWheeled = true;
+	}
+
+	@Override
+	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
+		System.out.println("COMPARER IGNORES CONTENT VA UPDATE");
+	}
+
+	@Override
+	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
+		compareViewStateController.handleReplaceContentVA(setID, idCategory, vaType);
 	}
 }

@@ -3,6 +3,7 @@ package org.caleydo.core.manager.event.data;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
@@ -29,8 +30,8 @@ public class ReplaceStorageVAInUseCaseEvent
 		// nothing to initialize here
 	}
 
-	public ReplaceStorageVAInUseCaseEvent(EIDCategory idCategory, StorageVAType vaType,
+	public ReplaceStorageVAInUseCaseEvent(ISet set, EIDCategory idCategory, StorageVAType vaType,
 		StorageVirtualArray virtualArray) {
-		super(idCategory, vaType, virtualArray);
+		super(set, idCategory, vaType, virtualArray);
 	}
 }

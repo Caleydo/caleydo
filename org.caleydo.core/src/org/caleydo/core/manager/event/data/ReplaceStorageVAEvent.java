@@ -1,5 +1,6 @@
 package org.caleydo.core.manager.event.data;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
@@ -11,13 +12,13 @@ public class ReplaceStorageVAEvent
 		// nothing to initialize here
 	}
 
-	public ReplaceStorageVAEvent(EIDCategory idCategory, StorageVAType vaType) {
-		super(idCategory, vaType);
+	public ReplaceStorageVAEvent(ISet set, EIDCategory idCategory, StorageVAType vaType) {
+		super(set, idCategory, vaType);
 	}
 
-	public ReplaceStorageVAEvent(EIDCategory idCategory, StorageVAType vaType,
+	public ReplaceStorageVAEvent(ISet set, EIDCategory idCategory, StorageVAType vaType,
 		StorageVirtualArray virtualArray) {
-		super(idCategory, vaType, virtualArray);
+		super(set, idCategory, vaType, virtualArray);
 	}
 
 }

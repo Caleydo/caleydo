@@ -66,13 +66,13 @@ public class SetsPreFilterDialog
 			GeneralManager.get().getRStatisticsPerformer().twoSidedTTest(setsToCompare);
 		}
 		catch (Exception e) {
-			
+
 			GeneralManager.get().getLogger().log(
-				new Status(IStatus.WARNING, Activator.PLUGIN_ID, "R Statistics plugin could not be loaded. The p-Value based reduction will be skipped."));
+				new Status(IStatus.WARNING, Activator.PLUGIN_ID,
+					"R Statistics plugin could not be loaded. The p-Value based reduction will be skipped."));
 			triggerCompareGroupsEvent();
 			return;
 		}
-
 
 		Shell parent = getParent();
 		parent.setSize(600, 200);
@@ -84,11 +84,12 @@ public class SetsPreFilterDialog
 		final Slider slider = new Slider(shell, SWT.HORIZONTAL);
 
 		final Label label = new Label(shell, SWT.NULL);
-		label.setText("                                                                                                              ");
+		label
+			.setText("                                                                                                              ");
 
 		final Label pValLabel = new Label(shell, SWT.NULL);
 		pValLabel.setText("0.75");
-		
+
 		slider.setMinimum(0);
 		slider.setMaximum(110);
 		slider.setIncrement(1);
@@ -96,12 +97,12 @@ public class SetsPreFilterDialog
 		slider.setSelection(75);
 
 		slider.addMouseListener(new MouseListener() {
-			
+
 			@Override
 			public void mouseUp(MouseEvent e) {
 				pValue = (float) slider.getSelection() / 100f;
-				pValLabel.setText(""+pValue);
-				
+				pValLabel.setText("" + pValue);
+
 				ISet set1 = setsToCompare.get(0);
 				ISet set2 = setsToCompare.get(1);
 
@@ -109,37 +110,37 @@ public class SetsPreFilterDialog
 				label.setText("The current p-Value selection would reduce your dataset to "
 					+ pValueFilteredVA.size());
 			}
-			
+
 			@Override
 			public void mouseDown(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 		slider.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-//				pValue = (float) slider.getSelection() / 100f;
-//
-//				ISet set1 = setsToCompare.get(0);
-//				ISet set2 = setsToCompare.get(1);
-//
-//				pValueFilteredVA = set1.getStatisticsResult().getVABasedOnCompareResult(set2, pValue);
-//				label.setText("The current p-Value selection would reduce your dataset to "
-//					+ pValueFilteredVA.size());
+				// pValue = (float) slider.getSelection() / 100f;
+				//
+				// ISet set1 = setsToCompare.get(0);
+				// ISet set2 = setsToCompare.get(1);
+				//
+				// pValueFilteredVA = set1.getStatisticsResult().getVABasedOnCompareResult(set2, pValue);
+				// label.setText("The current p-Value selection would reduce your dataset to "
+				// + pValueFilteredVA.size());
 			}
 		});
 
 		final Button buttonOK = new Button(shell, SWT.PUSH);
 		buttonOK.setText("Ok");
-//		buttonOK.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+		// buttonOK.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
 		Button buttonCancel = new Button(shell, SWT.PUSH);
 		buttonCancel.setText("Cancel");
 		buttonOK.addListener(SWT.Selection, new Listener() {
@@ -150,7 +151,7 @@ public class SetsPreFilterDialog
 				triggerCompareGroupsEvent();
 			}
 		});
-	
+
 		buttonCancel.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				shell.dispose();
@@ -170,18 +171,15 @@ public class SetsPreFilterDialog
 
 	private void performReduction() {
 
-		// ISet set1 = setsToCompare.get(0);
-		// ISet set2 = setsToCompare.get(1);
-		//
-		// // ContentVirtualArray pValueFilteredVA = set1.getStatisticsResult()
-		// // .getVABasedOnCompareResult(set2,
-		// // pValue);
+		ReplaceContentVAInUseCaseEvent event = null;
 
-		ReplaceContentVAInUseCaseEvent event =
-			new ReplaceContentVAInUseCaseEvent(EIDCategory.GENE, ContentVAType.CONTENT, pValueFilteredVA);
-
-		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		for (ISet set : setsToCompare) {
+			event =
+				new ReplaceContentVAInUseCaseEvent(set, EIDCategory.GENE, ContentVAType.CONTENT,
+					pValueFilteredVA);
+			event.setSender(this);
+			GeneralManager.get().getEventPublisher().triggerEvent(event);
+		}
 	}
 
 	private void triggerCompareGroupsEvent() {

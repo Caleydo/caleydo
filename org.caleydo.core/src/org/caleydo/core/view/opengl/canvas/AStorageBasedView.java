@@ -611,7 +611,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType) {
+	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
 //		String primaryVAType = useCase.getVATypeForIDCategory(idCategory);
 //		if (primaryVAType == null)
 //			return;

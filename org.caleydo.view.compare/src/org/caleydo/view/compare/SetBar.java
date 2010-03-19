@@ -16,6 +16,7 @@ import org.caleydo.core.view.opengl.util.AGLGUIElement;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.AdjustPValueItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.ClusterSetItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DuplicateSetBarElementItem;
 import org.caleydo.view.compare.state.ACompareViewState;
 
@@ -166,7 +167,7 @@ public class SetBar extends AGLGUIElement {
 		case RIGHT_CLICKED:
 			contextMenu.addContextMenueItem(new DuplicateSetBarElementItem(
 					itemID));
-
+			contextMenu.addContextMenueItem(new ClusterSetItem(items.get(itemID).getSet()));
 			contextMenu.addContextMenueItem(new AdjustPValueItem());
 			contextMenu.setLocation(pick.getPickedPoint(), view
 					.getParentGLCanvas().getWidth(), view.getParentGLCanvas()

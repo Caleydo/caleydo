@@ -420,7 +420,7 @@ public class SelectionBrowser
 	}
 
 	@Override
-	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType) {
+	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
 		// nothing to do here
 	}
 

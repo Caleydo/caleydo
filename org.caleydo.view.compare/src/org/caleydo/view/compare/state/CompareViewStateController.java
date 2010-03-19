@@ -8,6 +8,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.IUseCase;
@@ -116,5 +117,10 @@ public class CompareViewStateController {
 	
 	public void handleMouseWheel(GL gl, int amount, Point wheelPoint) {
 		currentState.handleMouseWheel(gl, amount, wheelPoint);
+	}
+
+	public void handleReplaceContentVA(int setID, EIDCategory idCategory,
+			ContentVAType vaType) {
+		currentState.handleReplaceContentVA(setID, idCategory, vaType);
 	}
 }

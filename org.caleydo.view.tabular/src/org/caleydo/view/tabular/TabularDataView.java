@@ -703,7 +703,7 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType) {
+	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
 
 		contentVA = useCase.getContentVA(vaType);
 

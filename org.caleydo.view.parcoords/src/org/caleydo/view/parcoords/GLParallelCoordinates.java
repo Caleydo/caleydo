@@ -550,7 +550,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		contentVA.setGroupList(null);
 
 		// todo this doesn't work for turned stuff
-		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent(
+		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent(set, 
 				contentSelectionManager.getIDType().getCategory(),
 				contentVAType, contentVA);
 

@@ -557,7 +557,7 @@ public class InfoArea
 	}
 
 	@Override
-	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType) {
+	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
 		// TODO Auto-generated method stub
 	}
 

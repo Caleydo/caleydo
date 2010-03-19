@@ -99,9 +99,10 @@ public interface IUseCase {
 	 * Initiates clustering based on the parameters passed. Sends out an event to all affected views upon
 	 * positive completion to replace their VA.
 	 * 
+	 * @param setID ID of the set to cluster
 	 * @param clusterState
 	 */
-	public void startClustering(ClusterState clusterState);
+	public void startClustering(int setID, ClusterState clusterState);
 
 	/**
 	 * Resets the context VA to it's initial state

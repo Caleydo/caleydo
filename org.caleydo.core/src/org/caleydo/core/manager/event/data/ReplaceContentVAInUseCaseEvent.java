@@ -3,6 +3,7 @@ package org.caleydo.core.manager.event.data;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
@@ -29,8 +30,8 @@ public class ReplaceContentVAInUseCaseEvent
 		// nothing to initialize here
 	}
 
-	public ReplaceContentVAInUseCaseEvent(EIDCategory idCategory, ContentVAType vaType,
+	public ReplaceContentVAInUseCaseEvent(ISet set, EIDCategory idCategory, ContentVAType vaType,
 		ContentVirtualArray virtualArray) {
-		super(idCategory, vaType, virtualArray);
+		super(set, idCategory, vaType, virtualArray);
 	}
 }
