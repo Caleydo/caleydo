@@ -72,7 +72,7 @@ public class SelectionBrowser
 
 	
 	private Label lblTest;
-	private Button btnAdd;
+	private Button btnMerge;
 	private Button btnSub;;
 	private Composite parentComposite;
 
@@ -118,20 +118,23 @@ public class SelectionBrowser
 		parentComposite = parent;
 		selectionTree = new Tree(parent, SWT.NULL  | SWT.MULTI );
 		
-		btnAdd = new Button(parent, SWT.WRAP);
-		btnAdd.setText("Merge");
+	
+		
+		btnMerge = new Button(parent, SWT.WRAP);
+		btnMerge.setText("Merge");
 		
 		btnSub = new Button(parent, SWT.WRAP);
 		btnSub.setText("Del");
 		
-		btnAdd.addSelectionListener(new SelectionListener() {
+		btnMerge.addSelectionListener(new SelectionListener() {
 
 		      public void widgetSelected(SelectionEvent event) {
-		    	  lblTest.setText("Add Clicked!");
+		    	  lblTest.setText("Merge Clicked!");
+		    	  mergeSelections();
 		      }
 
 		      public void widgetDefaultSelected(SelectionEvent event) {
-		    	  lblTest.setText("Add Default Clicked!");
+		    	  lblTest.setText("Merge Default Clicked!");
 		      }
 		    });
 									
@@ -147,8 +150,6 @@ public class SelectionBrowser
 		      }
 		    });
 		
-		
-		
 		lblTest = new Label(parent, SWT.WRAP);
 		lblTest.setAlignment(SWT.CENTER);		
 		lblTest.setText("This is a Test");
@@ -163,10 +164,8 @@ public class SelectionBrowser
 		gridData.heightHint = 82;		
 
 		lblTest.setLayoutData(gridData);
-		
-		
-		
-		
+				
+				
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.minimumHeight = 62;
 		gridData.heightHint = 156;
@@ -197,7 +196,7 @@ public class SelectionBrowser
 	
 	
 	  private void deleteSelections() {
-		  String tmpString ="Selections: ";
+		  String tmpString ="Deletion: ";
 		  initContent();
 		  //TreeItem[] aselection = selectionTree.getSelection();
 		  
@@ -218,11 +217,56 @@ public class SelectionBrowser
 			event2.setSelectionDelta((SelectionDelta) selectionDelta);			
 			eventPublisher.triggerEvent(event2);
 		  
-	        lblTest.setText(tmpString+" deleted");
+	        lblTest.setText(tmpString+" deleted.");
 	        
 	        updateContentTree();
 		  
 	  }
+	  
+	  private void mergeSelections() {
+		  String tmpString ="Merging: ";
+		  initContent();
+		  //TreeItem[] aselection = selectionTree.getSelection();
+		  if ((selectionTree.getSelection().length)<2)
+		  {
+			  lblTest.setText(tmpString+"To few Selected items for merge operation.");
+			  return;
+		  }
+		  
+		  	boolean bIsFirst=true;
+		  	SelectionType firstSelectionType=SelectionType.SELECTION;
+		  
+		  	for(TreeItem selection :  selectionTree.getSelection())
+		  	{
+		  		if (bIsFirst)
+		  		{
+		  			bIsFirst=false;
+		  			firstSelectionType=(SelectionType)selection.getData();		  		
+		  		}
+		  		else
+		  		{
+			  		SelectionType tmpSelectionType=(SelectionType)selection.getData();
+			  		tmpString+=tmpSelectionType.toString()+",";
+			  		contentSelectionManager.moveType(tmpSelectionType, firstSelectionType);
+			  		
+			  		SelectionTypeEvent event = new SelectionTypeEvent();
+			  		event.addSelectionType(tmpSelectionType);
+			  		event.setRemove(true);
+			  		eventPublisher.triggerEvent(event);
+		  		}
+		  	}
+		  	
+		  	ISelectionDelta selectionDelta = contentSelectionManager.getDelta();			
+			SelectionUpdateEvent event2 = new SelectionUpdateEvent();
+			event2.setSender(this);
+			event2.setSelectionDelta((SelectionDelta) selectionDelta);			
+			eventPublisher.triggerEvent(event2);
+		  
+	        lblTest.setText(tmpString+" merged into "+firstSelectionType.toString()+".");
+	        
+	        updateContentTree();
+		  
+	  }  
 
 	private void updateContentTree(){
 		ArrayList<SelectionType> sTypes = contentSelectionManager.getSelectionTypes();

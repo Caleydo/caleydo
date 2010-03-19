@@ -24,7 +24,7 @@ public class RcpSelectionBrowserView
 	public void createPartControl(Composite parent) {
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
 		
-		parentComposite.setLayout(new GridLayout(10, false));
+		parentComposite.setLayout(new GridLayout(1, false));
 		
 		this.parentComposite = parentComposite;
 
