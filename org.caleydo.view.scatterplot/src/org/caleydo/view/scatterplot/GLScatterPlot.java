@@ -440,7 +440,8 @@ public class GLScatterPlot extends AStorageBasedView {
 					
 					
 			
-				if (glMouseListener.wasLeftMouseButtonPressed()) {
+				//if (glMouseListener.wasLeftMouseButtonPressed()) {
+				if (glMouseListener.wasMouseReleased()) {
 					bMainViewZoomDragged = false;
 					iCurrentDragZoom = -1;
 					setDisplayListDirty();
@@ -449,7 +450,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 			}
 
-			if (glMouseListener.wasMouseDragged() && (!bRender2Axis)) {
+			if (glMouseListener.wasMouseDragged() && (!bRender2Axis) && !bMainViewZoomDragged) {
 
 				bRectangleSelection = true;
 
@@ -572,13 +573,15 @@ public class GLScatterPlot extends AStorageBasedView {
 				gl.glTranslatef(renderStyle.getCenterXOffset(), renderStyle
 						.getCenterYOffset(), 0);
 		
-			renderCoordinateSystem(gl);		
-			gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
-			renderScatterPoints(gl);
-			renderSelectionPoints(gl);
-			renderMouseOver(gl);
-			gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
-			
+			if(bMainViewZoomDragged)
+			{
+				renderCoordinateSystem(gl);		
+				gl.glTranslatef(XYAXISDISTANCE, XYAXISDISTANCE, 0);
+				renderScatterPoints(gl);
+				renderSelectionPoints(gl);
+				renderMouseOver(gl);
+				gl.glTranslatef(-XYAXISDISTANCE, -XYAXISDISTANCE, 0);
+			}
 			renderMainViewZoomSelectionX(gl);
 			renderMainViewZoomSelectionY(gl);
 			renderMainViewZoomSelectionBoxes(gl);
@@ -2617,7 +2620,7 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 
 			float x = 0.0f;
 			float y = 0.0f;
-			float z = ScatterPlotRenderStyle.SELECTION_Z;
+			float z = ScatterPlotRenderStyle.SELECTION_Z+tmpSelectionType.getPriority();
 
 			// float[] fArMappingColor = new float[]{1.0f, 0.1f, 0.5f};
 			float[] fArMappingColor = tmpSelectionType.getColor();
@@ -3128,7 +3131,7 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 		currentSelection = new SelectionType();
 		currentSelection.setType(CUSTOM_SELECTION_NAME+" " + iCurrentSelectionNr);
 		currentSelection.setColor(ScatterPlotHelper.getSelectionColor(iCurrentSelectionNr));
-		currentSelection.setPriority((float)iCurrentSelectionNr/100.0f);
+		currentSelection.setPriority((float)iCurrentSelectionNr/10000.0f);
 		event.addSelectionType(currentSelection);		
 		eventPublisher.triggerEvent(event);
 		

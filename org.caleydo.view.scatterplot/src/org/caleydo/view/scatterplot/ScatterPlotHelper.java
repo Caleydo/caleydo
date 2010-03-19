@@ -19,23 +19,51 @@ public  class ScatterPlotHelper {
 	public static float[] getSelectionColor(int iColorNr) {
 		
 		
-		int color =iColorNr % 6;
+		int color =(iColorNr+7) % 10;
+		
+		float[] fArMappingColor = new float[] { 0F, 0F, 0F, 0F };
+		
 		switch (color) {
-		case 0:
-			return new float[] { 1, 0, 0, 1 };
 		case 1:
-			return new float[] { 0.3f, 0.3f, 1, 1 };
+			fArMappingColor = new float[] { 31, 120, 180, 1 };
+			break;
 		case 2:
-			return new float[] { 0, 1, 0, 1 };
+			fArMappingColor = new float[] { 178, 223, 138, 1 };
+			break;
 		case 3:
-			return new float[] { 1, 1, 0, 1 };
+			fArMappingColor = new float[] { 51, 160, 44, 1 };
+			break;
 		case 4:
-			return new float[] { 0, 1, 1, 1 };
+			fArMappingColor = new float[] { 251, 154, 153, 1 };
+			break;
 		case 5:
-			return new float[] { 1, 0, 1, 1 };
+			fArMappingColor = new float[] { 227, 26, 28, 1 };
+			break;
+		case 6:
+			fArMappingColor = new float[] { 166, 206, 227, 1 };
+			break;		
+		case 7:
+			fArMappingColor = new float[] { 253, 191, 111, 1 };
+			break;
+		case 8:
+			fArMappingColor = new float[] { 255, 127, 0, 1 };
+			break;
+		case 9:
+			fArMappingColor = new float[] { 202, 178, 214, 1 };
+			break;
+		case 0:
+			fArMappingColor = new float[] { 106, 61, 154, 1 };
+			break;
+			
 		default:
-			return new float[] { 0, 0, 0, 1 };
+			fArMappingColor = new float[] { 0, 0, 0, 1 };
 		}
+		
+		
+		for (int i=0;i<3;i++)				
+			fArMappingColor[i] = fArMappingColor[i]/255f;
+		
+		return fArMappingColor;
 
 	}
 
