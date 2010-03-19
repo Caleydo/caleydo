@@ -122,6 +122,28 @@ public class ClusterNode
 		return metaSet;
 	}
 
+	/**
+	 * Returns a metaset if this node or any of its sub-nodes contain the MetaSet specified by the ID
+	 * 
+	 * @param setID
+	 * @return
+	 */
+	public ISet getMetaSetFromSubTree(int setID) {
+
+		if (metaSet.getID() == setID)
+			return metaSet;
+		else if (!this.hasChildren())
+			return null;
+		else {
+			for (ClusterNode child : getChildren()) {
+				ISet tempSet = child.getMetaSetFromSubTree(setID);
+				if (tempSet != null)
+					return tempSet;
+			}
+			return null;
+		}
+	}
+
 	public void setNodeName(String nodeName) {
 		this.nodeName = nodeName;
 	}
@@ -217,21 +239,21 @@ public class ClusterNode
 	// public float[] getRepresentativeElement() {
 	// return fArRepresentativeElement;
 	// }
-	
-//	public void sortByGeneExpression()
-//	{
-//		ArrayList<ClusterNode> children = getChildren();
-//		
-//		
-//	}
-	
+
+	// public void sortByGeneExpression()
+	// {
+	// ArrayList<ClusterNode> children = getChildren();
+	//		
+	//		
+	// }
+
 	@Override
 	public int compareTo(ClusterNode node) {
-		if(fAverageExpressionValue < node.fAverageExpressionValue)
+		if (fAverageExpressionValue < node.fAverageExpressionValue)
 			return 1;
 		else
 			return -1;
-//		return getComparableValue() - node.getComparableValue();
+		// return getComparableValue() - node.getComparableValue();
 	}
-	
+
 }
