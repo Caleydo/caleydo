@@ -107,64 +107,94 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 
 		HashMap<Group, GroupInfo> selectedGroups = heatMapWrapper
 				.getSelectedGroups();
-		int numTotalSamples = 0;
-		int numTotalScalableSamples = 0;
+
+		/** all genes currently rendered */
+		int totalNumberOfElements = 0;
+		/**
+		 * all genes for which we would like to show text, i.e. that are in a
+		 * heat map that is either active or pinned
+		 */
+		int numberOfFocusElements = 0;
+		/**
+		 * the space the heat maps would like to have per element
+		 */
+		float requestedFocusSpacing = 0;
+
 		float totalHeatMapOverheadSize = 0;
-		float totalMinSize = 0;
 
 		for (Group group : selectedGroups.keySet()) {
 			GLHeatMap heatMap = heatMapWrapper
 					.getHeatMap(group.getGroupIndex());
-			int numSamples = heatMap.getNumberOfVisibleElements();
-			numTotalSamples += numSamples;
+			int numElements = heatMap.getNumberOfVisibleElements();
+			totalNumberOfElements += numElements;
 			totalHeatMapOverheadSize += heatMap.getRequiredOverheadSpacing();
 			if (heatMap.isForceMinSpacing()) {
-				totalMinSize += heatMap.getMinSpacing() * numSamples;
-			} else {
-				numTotalScalableSamples += numSamples;
+				numberOfFocusElements += numElements;
+				requestedFocusSpacing = heatMap.getMinSpacing();
 			}
+
+		}
+
+		/**
+		 * the space that the actual heat maps can use for rendering, i.e.
+		 * height - spacing between hms - overhead in hms - spacing on top and
+		 * bottom
+		 */
+		float availableSpaceForHeatMaps = getDetailHeight()
+				- (getDetailHeight() * DETAIL_HEATMAP_GAP_PORTION * (selectedGroups
+						.size() - 1)) - totalHeatMapOverheadSize;
+
+		/** the default spacing if no elements were in focus */
+		float defaultSpacing = availableSpaceForHeatMaps
+				/ (float) totalNumberOfElements;
+
+		/** the minimum spacing */
+		float minSpacing = defaultSpacing / 3.0f;
+
+		/** resulting spacing for one element in an active / pinned heat map */
+		float resultingFocusSpacing = 0;
+
+		/** resulting spacing for one element in an inactive heat map */
+		float resultingNormalSpacing = 0;
+
+		// the case where we have enough space for everything
+		if (numberOfFocusElements > 0) {
+			if (defaultSpacing > requestedFocusSpacing) {
+				resultingFocusSpacing = defaultSpacing;
+				resultingNormalSpacing = defaultSpacing;
+			} else if ((availableSpaceForHeatMaps - (numberOfFocusElements * requestedFocusSpacing))
+					/ (totalNumberOfElements - numberOfFocusElements) > minSpacing) {
+				resultingFocusSpacing = requestedFocusSpacing;
+				resultingNormalSpacing = (availableSpaceForHeatMaps - resultingFocusSpacing
+						* numberOfFocusElements)
+						/ (totalNumberOfElements - numberOfFocusElements);
+			} else {
+				resultingNormalSpacing = minSpacing;
+				resultingFocusSpacing = (availableSpaceForHeatMaps - (totalNumberOfElements - numberOfFocusElements)
+						* resultingNormalSpacing)
+						/ numberOfFocusElements;
+			}
+		} else {
+			resultingNormalSpacing = defaultSpacing;
 		}
 
 		for (Group group : selectedGroups.keySet()) {
 			GLHeatMap heatMap = heatMapWrapper
 					.getHeatMap(group.getGroupIndex());
-			int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
+			int numElements = heatMap.getNumberOfVisibleElements();
 			float currentHeatMapOverheadSize = heatMap
 					.getRequiredOverheadSpacing();
-
-			float spaceForHeatMaps = getDetailHeight()
-					- (getDetailHeight() * DETAIL_HEATMAP_GAP_PORTION * (selectedGroups
-							.size() - 1));
-			spaceForHeatMaps -= totalHeatMapOverheadSize;
-			float sampleHeight = (spaceForHeatMaps / (float) numTotalSamples);
-			heatMap.setCaptionsImpossible(false);
-			if (totalMinSize < getDetailHeight()
-					&& sampleHeight < heatMap.getMinSpacing()) {
-				if (heatMap.isForceMinSpacing()) {
-					hashHeatMapHeights.put(group.getGroupIndex(),
-							numSamplesInHeatMap * heatMap.getMinSpacing()
-									+ currentHeatMapOverheadSize);
-					continue;
-				}
+			if (heatMap.isForceMinSpacing()) {
+				hashHeatMapHeights.put(group.getGroupIndex(),
+						(resultingFocusSpacing * numElements)
+								+ currentHeatMapOverheadSize);
 			} else {
-
-				if (sampleHeight < heatMap.getMinSpacing()
-						&& heatMap.isForceMinSpacing()) {
-					heatMap.setCaptionsImpossible(true);
-				}
-
-				totalMinSize = 0;
-				numTotalScalableSamples = numTotalSamples;
+				hashHeatMapHeights.put(group.getGroupIndex(),
+						(resultingNormalSpacing * numElements)
+								+ currentHeatMapOverheadSize);
 			}
-
-			spaceForHeatMaps -= totalMinSize;
-
-			hashHeatMapHeights
-					.put(
-							group.getGroupIndex(),
-							((spaceForHeatMaps / (float) numTotalScalableSamples) * (float) numSamplesInHeatMap)
-									+ currentHeatMapOverheadSize);
 		}
+
 	}
 
 	public float getDetailHeatMapHeight(int heatMapID) {
@@ -227,5 +257,20 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 	public void calculateDrawingParameters() {
 		calculateDetailHeatMapHeights();
 		calculateHeatMapPositions();
+	}
+
+	@Override
+	public Vec3f getDendrogramButtonPosition() {
+		return new Vec3f(0, 0, 0);
+	}
+
+	@Override
+	public float getDendrogramButtonHeight() {
+		return 0;
+	}
+
+	@Override
+	public float getDendrogramButtonWidth() {
+		return 0;
 	}
 }

@@ -52,12 +52,12 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 	public float getOverviewSliderPositionX() {
 		return 0;
 	}
-	
+
 	@Override
 	public Vec3f getDetailHeatMapPosition(int heatMapID) {
 		return new Vec3f(0, 0, 0);
 	}
-	
+
 	@Override
 	public void calculateDrawingParameters() {
 	}
@@ -142,6 +142,21 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 
 	public ComparerDetailTemplate getHeatMapTemplate() {
 		return null;
+	}
+
+	@Override
+	public Vec3f getDendrogramButtonPosition() {
+		return new Vec3f(0, 0, 0);
+	}
+
+	@Override
+	public float getDendrogramButtonHeight() {
+		return 0;
+	}
+
+	@Override
+	public float getDendrogramButtonWidth() {
+		return 0;
 	}
 
 }

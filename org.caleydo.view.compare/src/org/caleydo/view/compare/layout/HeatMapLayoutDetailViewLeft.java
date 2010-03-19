@@ -55,5 +55,6 @@ public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
 				positionY + getOverviewHeight()
 						+ getCaptionLabelVerticalSpacing(), 0.0f);
 	}
+	
 
 }

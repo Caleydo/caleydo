@@ -111,6 +111,12 @@ public abstract class AHeatMapLayout {
 	public abstract Vec3f getCaptionLabelPosition(float textWidth);
 	
 	public abstract Vec3f getDetailHeatMapPosition(int heatMapID);
+	
+	public abstract Vec3f getDendrogramButtonPosition();
+	
+	public abstract float getDendrogramButtonHeight();
+	
+	public abstract float getDendrogramButtonWidth();
 
 	public ArrayList<IHeatMapRenderCommand> getRenderCommandsOfLocalItems() {
 		return localRenderCommands;
