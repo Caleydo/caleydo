@@ -3,6 +3,7 @@ package org.caleydo.view.compare;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
+import java.awt.event.FocusAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -154,7 +155,7 @@ public class HeatMapWrapper {
 		selectedGroups.clear();
 		contentSelectionManager.clearSelections();
 		contentSelectionManager.setVA(contentVA);
-		
+
 		for (Group group : contentVA.getGroupList()) {
 			group.setSelectionType(SelectionType.NORMAL);
 		}
@@ -196,7 +197,7 @@ public class HeatMapWrapper {
 			heatMap.destroy();
 		}
 		hashHeatMaps.clear();
-//		selectedGroups.clear();
+		// selectedGroups.clear();
 
 		if (contentGroupList == null)
 			return;
@@ -347,7 +348,7 @@ public class HeatMapWrapper {
 		// // // 1);v
 		// // Vec2f position = getLeftDetailLinkPositionFromContentID(va
 		// // .get(i));
-		
+
 		// }
 
 		ArrayList<IHeatMapRenderCommand> renderCommands = layout
@@ -359,13 +360,14 @@ public class HeatMapWrapper {
 
 		isNewSelection = false;
 
-//		 Vec3f position = layout.getPosition();
-//		 GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
-//		
-//		 GLHelperFunctions.drawPointAt(gl, position.x() + layout.getWidth(),
-//		 position.y(), 1);
-//		 
-//		 GLHelperFunctions.drawPointAt(gl, position.x() + (layout.getWidth() * 0.04f), position.y(), 1);
+		// Vec3f position = layout.getPosition();
+		// GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
+		//		
+		// GLHelperFunctions.drawPointAt(gl, position.x() + layout.getWidth(),
+		// position.y(), 1);
+		//		 
+		// GLHelperFunctions.drawPointAt(gl, position.x() + (layout.getWidth() *
+		// 0.04f), position.y(), 1);
 
 	}
 
@@ -566,12 +568,18 @@ public class HeatMapWrapper {
 	public ArrayList<ContentVirtualArray> getContentVAsOfHeatMaps() {
 		ArrayList<ContentVirtualArray> contentVAs = new ArrayList<ContentVirtualArray>();
 
-		for (Group group : selectedGroups.keySet()) {
-			
-			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
-			contentVAs.add(heatMap.getContentVA());
-		}
+		ContentGroupList groupList = contentVA.getGroupList();
+		for (int groupIndex = 0; groupIndex < groupList.size(); groupIndex++) {
+			Group group = groupList.get(groupIndex);
 
+			if (selectedGroups.containsKey(group)) {
+				// }
+				// for (Group group : selectedGroups.keySet()) {
+
+				GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+				contentVAs.add(heatMap.getContentVA());
+			}
+		}
 		return contentVAs;
 	}
 
@@ -709,7 +717,6 @@ public class HeatMapWrapper {
 
 		selectedGroups.clear();
 		for (ContentVirtualArray foreignVa : foreignContentVAs) {
-
 			for (Integer contentID : foreignVa) {
 				int vaIndex = contentVA.indexOf(contentID);
 				Group selectedGroup = groupList.getGroupOfVAIndex(vaIndex);
@@ -758,6 +765,29 @@ public class HeatMapWrapper {
 						if (foreignIndex != -1) {
 							foreignVA.move(foreignIndex,
 									foreignContentLastOrdererIndex++);
+						}
+					}
+
+					// for (int foreignIndex = foreignVA.size() -1; foreignIndex
+					// >= 0; foreignIndex--) {
+					// int contentIndex =
+					// contentVA.indexOf(foreignVA.get(foreignIndex));
+					// if (contentIndex != -1)
+					// contentVA.move(contentIndex, lastMovedIndex++);
+					// }
+
+				}
+
+				for (int foreignVAIndex = foreignContentVAs.size() - 1; foreignVAIndex >= 0; foreignVAIndex--) {
+					int lastMovedIndex = 0;
+					ContentVirtualArray foreignVA = foreignContentVAs
+							.get(foreignVAIndex);
+					for (int foreignID : foreignVA) {
+						int contentIndex = contentVA.indexOf(foreignID);
+						if (contentIndex != -1) {
+							contentVA.move(contentIndex, lastMovedIndex++);
+							if (contentIndex != lastMovedIndex - 1)
+								System.out.println("Sort");
 						}
 					}
 				}
@@ -869,10 +899,10 @@ public class HeatMapWrapper {
 			glParentView.setDisplayListDirty();
 		}
 	}
-	
+
 	public void handleReplaceContentVA(EIDCategory idCategory,
 			ContentVAType vaType) {
-		
+
 		contentVA = set.getContentVA(vaType);
 	}
 
@@ -987,7 +1017,7 @@ public class HeatMapWrapper {
 				return tmpHeatMap;
 			}
 		}
-		
+
 		return null;
 	}
 }
