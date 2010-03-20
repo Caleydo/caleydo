@@ -88,18 +88,20 @@ public class VisualLinksPreferencePage
 		combo.add("GLOBAL BUNDLING");
 		combo.add("VIEW CENTERED");
 		combo.add("CONSECUTIVE");
+		combo.add("THE RING");
 		combo.setText(iCurrentlyUsedGraphType);
 		combo.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (combo.getText().equals("GLOBAL BUNDLING")){
+				if (combo.getText().equals("GLOBAL BUNDLING"))
 					iCurrentlyUsedGraphType = "GLOBAL_BUNDLING";
-				}
 				else if (combo.getText().equals("VIEW CENTERED"))
 					iCurrentlyUsedGraphType = "VIEW_CENTERED";
 				else if (combo.getText().equals("CONSECUTIVE"))
 					iCurrentlyUsedGraphType = "CONSECUTIVE";
+				else if (combo.getText().equals("THE RING"))
+					iCurrentlyUsedGraphType = "THE_RING";
 			}
 		});
 		

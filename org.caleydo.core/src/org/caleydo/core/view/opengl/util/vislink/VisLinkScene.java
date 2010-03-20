@@ -32,8 +32,9 @@ public class VisLinkScene {
 	private static final float FULL_PERCENTAGE = 100;
 	private static final float SEGMENT_LENGTH = ConnectionLineRenderStyle.CONNECTION_LINE_SEGMENT_LENGTH;
 	private static int antiAliasingQuality = 5;
-
+	
 	private EVisLinkStyleType style;
+	private boolean animation = true;
 
 	/**
 	 * Constructor
@@ -76,7 +77,7 @@ public class VisLinkScene {
 			ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH = tempWidth;
 			callRenderAnimatedPolygonLine(gl);
 		}
-		else if (ConnectionLineRenderStyle.ANIMATION)
+		else if (ConnectionLineRenderStyle.ANIMATION && animation)
 			callRenderAnimatedPolygonLine(gl);
 		else
 			callRenderPolygonLine(gl);
@@ -351,5 +352,15 @@ public class VisLinkScene {
 	protected int numberOfStages() {
 		return animationStages.size() - 1;
 	}
+	
+	/**
+	 * Enable/disable animation for this VislinkScene
+	 * 
+	 * @param animation Boolean Value that indicates whether the vislink scene should be drawn animated or not
+	 */
+	public void setAnimation(boolean animation){
+		this.animation = animation;
+	}
+	
 
 }

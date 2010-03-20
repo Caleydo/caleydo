@@ -69,6 +69,7 @@ import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketLayoutRenderStyle
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.graphtype.GLConsecutiveConnectionGraphDrawing;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.graphtype.GLGlobalBundlingPointConnectionGraphDrawing;
+import org.caleydo.core.view.opengl.canvas.remote.bucket.graphtype.GLTheRingGraphDrawing;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.graphtype.GLViewCenteredConnectionGraphDrawing;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRendererJukebox;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.JukeboxLayoutRenderStyle;
@@ -282,6 +283,8 @@ public class GLRemoteRendering
 				glConnectionLineRenderer = new GLViewCenteredConnectionGraphDrawing(focusLevel, stackLevel);
 			else if (graphtype.equals("CONSECUTIVE"))
 					glConnectionLineRenderer = new GLConsecutiveConnectionGraphDrawing(focusLevel, stackLevel);
+			else if (graphtype.equals("THE_RING"))
+				glConnectionLineRenderer = new GLTheRingGraphDrawing(focusLevel, stackLevel);
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
 			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(focusLevel, stackLevel, poolLevel);
@@ -1873,6 +1876,8 @@ public class GLRemoteRendering
 						glConnectionLineRenderer = new GLViewCenteredConnectionGraphDrawing(focusLevel, stackLevel);
 				else if (graphtype.equals("CONSECUTIVE"))
 						glConnectionLineRenderer = new GLConsecutiveConnectionGraphDrawing(focusLevel, stackLevel);
+				else if (graphtype.equals("THE_RING"))
+					glConnectionLineRenderer = new GLTheRingGraphDrawing(focusLevel, stackLevel);
 				
 				
 				switch (pickingMode) {
