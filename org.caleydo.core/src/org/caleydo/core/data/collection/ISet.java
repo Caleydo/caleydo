@@ -8,6 +8,7 @@ import javax.naming.OperationNotSupportedException;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
 import org.caleydo.core.data.collection.set.StatisticsResult;
+import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
@@ -462,10 +463,21 @@ public interface ISet
 	 * @return
 	 */
 	public ISet getShallowClone();
-	
+
 	/**
 	 * Returns the statistics results. E.g. comparative t-test between sets.
+	 * 
 	 * @return the statistics result object containing all results.
 	 */
 	public StatisticsResult getStatisticsResult();
+
+	/**
+	 * Returns a storage containing the mean values of all the storages in the set. The mean storage contains
+	 * raw and normalized values. The mean is calculated based on the raw data, that means for calculating the
+	 * means possibly specified cut-off values are not considered, since cut-off values are meant for
+	 * visualization only.
+	 * 
+	 * @return the storage containing means for all content elements
+	 */
+	public NumericalStorage getMeanStorage();
 }

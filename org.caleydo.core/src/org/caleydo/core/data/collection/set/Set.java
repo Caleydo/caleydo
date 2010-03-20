@@ -14,7 +14,9 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.export.SetExporter;
 import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
+import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.ERawDataType;
+import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
@@ -68,6 +70,8 @@ public class Set
 	protected HashMap<ContentVAType, ContentData> hashContentData;
 	protected HashMap<StorageVAType, StorageData> hashStorageData;
 
+	protected NumericalStorage meanStorage;
+
 	protected StorageData defaultStorageData;
 
 	// clustering stuff
@@ -86,7 +90,7 @@ public class Set
 	protected EExternalDataRepresentation externalDataRep;
 
 	protected boolean isSetHomogeneous = false;
-	
+
 	private StatisticsResult statisticsResult;
 
 	/**
@@ -627,10 +631,9 @@ public class Set
 				clusterState.setContentVA(getContentVA(contentVAType));
 				this.setContentGroupList(getContentVA(contentVAType).getGroupList());
 			}
-			
+
 			StorageVAType storageVAType = clusterState.getStorageVAType();
-			if (storageVAType != null)
-			{
+			if (storageVAType != null) {
 				clusterState.setStorageVA(hashStorageData.get(storageVAType).getStorageVA());
 				this.setStorageGroupList(getStorageVA(storageVAType).getGroupList());
 			}
@@ -930,7 +933,31 @@ public class Set
 	public StatisticsResult getStatisticsResult() {
 		return statisticsResult;
 	}
-	
+
+	public NumericalStorage getMeanStorage() {
+		if (!bIsNumerical || !isSetHomogeneous)
+			throw new IllegalStateException(
+				"Can not provide a mean storage if set is not numerical (isNumerical: " + bIsNumerical
+					+ ") or not homgeneous (isHomogeneous: " + isSetHomogeneous + ")");
+		if (meanStorage == null) {
+			meanStorage = new NumericalStorage();
+			meanStorage.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL);
+
+			float[] meanValues = new float[depth()];
+			StorageVirtualArray storageVA = defaultStorageData.getStorageVA();
+			for (int contentCount = 0; contentCount < depth(); contentCount++) {
+				float sum = 0;
+				for (int storageID : storageVA) {
+					sum += get(storageID).getFloat(EDataRepresentation.RAW, contentCount);
+				}
+				meanValues[contentCount] = sum / size();
+			}
+			meanStorage.setRawData(meanValues);
+			meanStorage.normalize();
+		}
+		return meanStorage;
+	}
+
 	public void setStatisticsResult(StatisticsResult statisticsResult) {
 		this.statisticsResult = statisticsResult;
 	}
