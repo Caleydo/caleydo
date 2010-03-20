@@ -3,7 +3,6 @@ package org.caleydo.view.compare;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
-import java.awt.event.FocusAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -23,8 +22,6 @@ import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.StorageVAType;
-import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -43,12 +40,12 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
 import org.caleydo.view.compare.layout.HeatMapLayoutDetailViewRight;
 import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
+import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
 
@@ -60,14 +57,13 @@ public class HeatMapWrapper {
 
 	private IGeneralManager generalManager;
 	private ContentVirtualArray contentVA;
-	private StorageVirtualArray storageVA;
 	private AHeatMapLayout layout;
 	private HashMap<Integer, GLHeatMap> hashHeatMaps;
 	private HashMap<Group, GroupInfo> selectedGroups;
+	private GLDendrogram<ContentGroupList> dendrogram;
 	private boolean isNewSelection;
 	private int id;
 	private int activeHeatMapID;
-	private boolean useDetailView;
 	private SetRelations relations;
 
 	private AGLView glParentView;
@@ -143,6 +139,31 @@ public class HeatMapWrapper {
 		return heatMap;
 	}
 
+	private void createDendrogram(GL gl, GLMouseListener glMouseListener) {
+
+		CmdCreateView cmdView = (CmdCreateView) generalManager
+				.getCommandManager().createCommandByType(
+						ECommandType.CREATE_GL_VIEW);
+		cmdView.setViewID(GLDendrogram.VIEW_ID + ".horizontal");
+
+		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 50,
+				0, 50, -20, 20, -1);
+
+		cmdView.doCommand();
+
+		dendrogram = (GLDendrogram<ContentGroupList>) cmdView
+				.getCreatedObject();
+		dendrogram.setDataDomain(dataDomain);
+		dendrogram.setUseCase(useCase);
+		dendrogram.setRemoteRenderingGLView(parentView);
+		dendrogram.setSet(set);
+		dendrogram.setContentVAType(ContentVAType.CONTENT);
+		dendrogram.initData();
+		dendrogram.setRenderUntilCut(false);
+		dendrogram.initRemote(gl, glParentView, glMouseListener,
+				infoAreaManager);
+	}
+
 	public ISet getSet() {
 		return set;
 	}
@@ -150,7 +171,12 @@ public class HeatMapWrapper {
 	public void setSet(ISet set) {
 		this.set = set;
 		contentVA = set.getContentVA(ContentVAType.CONTENT);
-		storageVA = set.getStorageVA(StorageVAType.STORAGE);
+		
+		// FIXME: Can we do this? Shall we do this in some other way? Do it also
+		// with dendrogram.
+		for (GLHeatMap heatMap : hashHeatMaps.values()) {
+			heatMap.destroy();
+		}
 		hashHeatMaps.clear();
 		selectedGroups.clear();
 		contentSelectionManager.clearSelections();
@@ -192,10 +218,6 @@ public class HeatMapWrapper {
 			return;
 
 		ContentGroupList contentGroupList = contentVA.getGroupList();
-		// FIXME: Can we do this? Shall we do this in some other way?
-		for (GLHeatMap heatMap : hashHeatMaps.values()) {
-			heatMap.destroy();
-		}
 		hashHeatMaps.clear();
 		// selectedGroups.clear();
 
@@ -216,6 +238,9 @@ public class HeatMapWrapper {
 			groupSampleStartIndex += group.getNrElements();
 			groupIndex++;
 		}
+		
+		createDendrogram(gl, glMouseListener);
+
 	}
 
 	private void setEmbeddedHeatMapData(GLHeatMap heatMap,
@@ -360,14 +385,11 @@ public class HeatMapWrapper {
 
 		isNewSelection = false;
 
-		// Vec3f position = layout.getPosition();
-		// GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
-		//		
-		// GLHelperFunctions.drawPointAt(gl, position.x() + layout.getWidth(),
-		// position.y(), 1);
-		//		 
-		// GLHelperFunctions.drawPointAt(gl, position.x() + (layout.getWidth() *
-		// 0.04f), position.y(), 1);
+//		Vec3f position = layout.getDendrogramPosition();
+//		GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
+//
+//		GLHelperFunctions.drawPointAt(gl, position.x()
+//				+ layout.getDendrogramWidth(), position.y(), 1);
 
 	}
 
@@ -455,6 +477,8 @@ public class HeatMapWrapper {
 				heatMap.setDisplayListDirty();
 			}
 		}
+		
+		dendrogram.setRedrawDendrogram();
 
 	}
 
@@ -616,10 +640,6 @@ public class HeatMapWrapper {
 		return id;
 	}
 
-	public void useDetailView(boolean useDetailView) {
-		this.useDetailView = useDetailView;
-	}
-
 	public void handleOverviewSliderSelection(EPickingType pickingType,
 			EPickingMode pickingMode) {
 		overview.handleSliderSelection(pickingType, pickingMode);
@@ -702,17 +722,18 @@ public class HeatMapWrapper {
 
 				// here we re-sort the genes in the local va so that they are in
 				// the order of the foreign contentVAs
-//				for (int foreignVAIndex = foreignContentVAs.size() - 1; foreignVAIndex >= 0; foreignVAIndex--) {
-//					int lastMovedIndex = 0;
-//					ContentVirtualArray foreignVA = foreignContentVAs
-//							.get(foreignVAIndex);
-//					for (int foreignID : foreignVA) {
-//						int contentIndex = contentVA.indexOf(foreignID);
-//						if (contentIndex != -1) {
-//							contentVA.move(contentIndex, lastMovedIndex++);
-//						}
-//					}
-//				}
+				// for (int foreignVAIndex = foreignContentVAs.size() - 1;
+				// foreignVAIndex >= 0; foreignVAIndex--) {
+				// int lastMovedIndex = 0;
+				// ContentVirtualArray foreignVA = foreignContentVAs
+				// .get(foreignVAIndex);
+				// for (int foreignID : foreignVA) {
+				// int contentIndex = contentVA.indexOf(foreignID);
+				// if (contentIndex != -1) {
+				// contentVA.move(contentIndex, lastMovedIndex++);
+				// }
+				// }
+				// }
 
 				// hide the elements not in the source vas
 				SelectionDelta contentSelectionDelta = new SelectionDelta(
@@ -941,5 +962,9 @@ public class HeatMapWrapper {
 		}
 
 		return null;
+	}
+	
+	public GLDendrogram<ContentGroupList> getDendrogram() {
+		return dendrogram;
 	}
 }

@@ -12,6 +12,7 @@ public class DetailViewLayoutStateNormal extends ADetailViewLayoutState {
 	protected static final float OVERVIEW_GROUP_WIDTH_PORTION = 0.04f;
 	protected static final float OVERVIEW_HEATMAP_WIDTH_PORTION = 0.15f;
 	protected static final float OVERVIEW_SLIDER_WIDTH_PORTION = 0.06f;
+	protected static final float OVERVIEW_HEIGHT_PORTION = 0.95f;
 
 	protected static final float DETAIL_WIDTH_PORTION = 0.46f;
 
@@ -120,6 +121,16 @@ public class DetailViewLayoutStateNormal extends ADetailViewLayoutState {
 				.getRenderCommand(ERenderCommandType.DETAIL_HEATMAPS));
 
 		return remoteRenderCommands;
+	}
+	
+	@Override
+	public float getOverviewHeight() {
+		return totalHeight * OVERVIEW_HEIGHT_PORTION;
+	}
+
+	@Override
+	public float getDendrogramBottomSpacing() {
+		return 0;
 	}
 
 }

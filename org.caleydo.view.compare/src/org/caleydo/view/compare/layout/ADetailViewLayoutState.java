@@ -14,33 +14,31 @@ import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public abstract class ADetailViewLayoutState {
-	
+
 	protected static final float DETAIL_HEATMAP_GAP_PORTION = 0.02f;
 
 	protected static final float DENDROGRAM_BUTTON_HEIGHT_PORTION = 0.05f;
 
 	protected static final float CAPTION_LABEL_HEIGHT_PORTION = 0.03f;
 	protected static final float CAPTION_LABEL_VERTICAL_SPACING_PORTION = 0.01f;
-	protected static final float OVERVIEW_HEIGHT_PORTION = 0.95f;
 	protected static final float DETAIL_HEIGHT_PORTION = 0.95f;
-	
+
 	protected float totalWidth;
 	protected float totalHeight;
 	protected float positionX;
 	protected float positionY;
 	protected AHeatMapLayout layout;
-	
+
 	private HashMap<Integer, Vec3f> hashHeatMapPositions;
 	private HashMap<Integer, Float> hashHeatMapHeights;
-	
+
 	public ADetailViewLayoutState(AHeatMapLayout layout) {
 		this.layout = layout;
-		
+
 		hashHeatMapPositions = new HashMap<Integer, Vec3f>();
 		hashHeatMapHeights = new HashMap<Integer, Float>();
 	}
 
-	
 	public void setLayoutParameters(float positionX, float positionY,
 			float totalHeight, float totalWidth) {
 		this.positionX = positionX;
@@ -49,30 +47,26 @@ public abstract class ADetailViewLayoutState {
 		this.totalWidth = totalWidth;
 	}
 
-	public float getOverviewHeight() {
-		return totalHeight * OVERVIEW_HEIGHT_PORTION;
-	}
-
 	public float getDetailHeight() {
 		return totalHeight * DETAIL_HEIGHT_PORTION;
 	}
 
 	public float getOverviewMaxSliderHeight() {
-		return totalHeight;
+		return totalHeight - getDendrogramBottomSpacing();
 	}
 
 	public float getOverviewMaxSliderPositionY() {
-		return positionY + getOverviewHeight();
+		return positionY + getDendrogramBottomSpacing() + getOverviewHeight();
 	}
 
 	public float getOverviewMinSliderPositionY() {
-		return positionY;
+		return positionY + getDendrogramBottomSpacing();
 	}
 
 	protected void calculateDetailHeatMapHeights() {
 
 		hashHeatMapHeights.clear();
-		
+
 		HeatMapWrapper heatMapWrapper = layout.getHeatMapWrapper();
 		HashMap<Group, GroupInfo> selectedGroups = heatMapWrapper
 				.getSelectedGroups();
@@ -221,16 +215,18 @@ public abstract class ADetailViewLayoutState {
 
 	public float getDendrogramButtonHeight() {
 		return totalHeight * DENDROGRAM_BUTTON_HEIGHT_PORTION;
-	}	
+	}
 
 	public float getDendrogramLineHeight() {
 		return totalHeight;
 	}
-	
+
+	public abstract float getOverviewHeight();
+
 	public abstract float getTotalOverviewWidth();
-	
+
 	public abstract float getGapWidth();
-	
+
 	public abstract float getDetailWidth();
 
 	public abstract float getOverviewGroupWidth();
@@ -242,18 +238,22 @@ public abstract class ADetailViewLayoutState {
 	public abstract float getCaptionLabelWidth();
 
 	public abstract float getCaptionLabelHorizontalSpacing();
-	
+
 	public abstract float getDendrogramButtonWidth();
-	
+
 	public abstract float getDendrogramLineWidth();
-	
+
 	public abstract float getDendrogramLineSpacing();
-	
+
 	public abstract float getDendrogramHeight();
-	
+
 	public abstract float getDendrogramWidth();
-	
-	public abstract ArrayList<IHeatMapRenderCommand> getLocalRenderCommands(RenderCommandFactory renderCommandFactory);
-	
-	public abstract ArrayList<IHeatMapRenderCommand> getRemoteRenderCommands(RenderCommandFactory renderCommandFactory);
+
+	public abstract ArrayList<IHeatMapRenderCommand> getLocalRenderCommands(
+			RenderCommandFactory renderCommandFactory);
+
+	public abstract ArrayList<IHeatMapRenderCommand> getRemoteRenderCommands(
+			RenderCommandFactory renderCommandFactory);
+
+	public abstract float getDendrogramBottomSpacing();
 }

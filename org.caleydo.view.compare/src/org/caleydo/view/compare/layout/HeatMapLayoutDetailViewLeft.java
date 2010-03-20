@@ -20,21 +20,22 @@ public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
 
 	@Override
 	public Vec3f getOverviewPosition() {
-		return new Vec3f(positionX + getDendrogramLineSpacing(), positionY,
-				0.0f);
+		return new Vec3f(positionX + getDendrogramLineSpacing(), positionY
+				+ getDendrogramBottomSpacing(), 0.0f);
 	}
 
 	@Override
 	public Vec3f getOverviewGroupBarPosition() {
 		return new Vec3f(positionX + getDendrogramLineSpacing()
-				+ getOverviewSliderWidth(), positionY, 0.0f);
+				+ getOverviewSliderWidth(), positionY
+				+ getDendrogramBottomSpacing(), 0.0f);
 	}
 
 	@Override
 	public Vec3f getOverviewHeatMapPosition() {
 		return new Vec3f(positionX + getDendrogramLineSpacing()
-				+ getOverviewSliderWidth() + getOverviewGroupWidth(),
-				positionY, 0.0f);
+				+ getOverviewSliderWidth() + getOverviewGroupWidth(), positionY
+				+ getDendrogramBottomSpacing(), 0.0f);
 	}
 
 	@Override
@@ -60,23 +61,26 @@ public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
 
 		return new Vec3f(positionX + leftSpacing
 				+ getCaptionLabelHorizontalSpacing(), positionY
-				+ getOverviewHeight() + getCaptionLabelVerticalSpacing(), 0.0f);
+				+ getDendrogramBottomSpacing() + getOverviewHeight()
+				+ getCaptionLabelVerticalSpacing(), 0.0f);
 	}
 
 	@Override
 	public Vec3f getDendrogramButtonPosition() {
 		return new Vec3f(positionX + getDendrogramLineWidth(), positionY
-				+ getOverviewHeight(), 0.0f);
+				+ getDendrogramBottomSpacing() + getOverviewHeight(), 0.0f);
 	}
 
 	@Override
 	public Vec3f getDendrogramLinePosition() {
-		return new Vec3f(positionX, positionY, 0.0f);
+		return new Vec3f(positionX, positionY + getDendrogramBottomSpacing(),
+				0.0f);
 	}
 
 	@Override
 	public Vec3f getDendrogramPosition() {
-		return new Vec3f(positionX + getDendrogramLineWidth(), positionY, 0.0f);
+		return new Vec3f(positionX + getDendrogramLineWidth(), positionY
+				+ getDendrogramBottomSpacing(), 0.0f);
 	}
 
 }

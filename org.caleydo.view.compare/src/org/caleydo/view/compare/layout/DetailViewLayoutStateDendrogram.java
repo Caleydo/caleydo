@@ -11,23 +11,24 @@ public class DetailViewLayoutStateDendrogram extends ADetailViewLayoutState {
 	protected static final float OVERVIEW_TOTAL_WIDTH_PORTION = 0.12f;
 	protected static final float OVERVIEW_GROUP_WIDTH_PORTION = 0.03f;
 	protected static final float OVERVIEW_HEATMAP_WIDTH_PORTION = 0.09f;
+	protected static final float OVERVIEW_HEIGHT_PORTION = 0.91f;
 
 	protected static final float DETAIL_WIDTH_PORTION = 0.24f;
 
 	protected static final float OVERVIEW_TO_DETAIL_GAP_PORTION = 0.12f;
 
-//	protected static final float DENDROGRAM_BUTTON_WIDTH_PORTION = 0.1f;
+	// protected static final float DENDROGRAM_BUTTON_WIDTH_PORTION = 0.1f;
 	protected static final float DENDROGRAM_LINE_WIDTH_PORTION = 0.02f;
 	protected static final float DENDROGRAM_LINE_SPACING_PORTION = 0.52f;
-	protected static final float DENDROGRAM_HEIGHT_PORTION = 0.95f;
+	protected static final float DENDROGRAM_HEIGHT_PORTION = 0.91f;
 	protected static final float DENDROGRAM_WIDTH_PORTION = 0.5f;
+	protected static final float DENDROGRAM_BOTTOM_SPACING_PORTION = 0.04f;
 
 	protected static final float CAPTION_LABEL_WIDTH_PORTION = 0.5f;
 	protected static final float CAPTION_LABEL_HORIZONTAL_SPACING_PORTION = 0.03f;
 
-	
 	private float dendrogramButtonWidth = 1;
-	
+
 	public DetailViewLayoutStateDendrogram(AHeatMapLayout layout) {
 		super(layout);
 	}
@@ -49,7 +50,7 @@ public class DetailViewLayoutStateDendrogram extends ADetailViewLayoutState {
 
 	@Override
 	public float getDendrogramHeight() {
-		return 0;
+		return totalHeight * DENDROGRAM_HEIGHT_PORTION;
 	}
 
 	@Override
@@ -64,7 +65,7 @@ public class DetailViewLayoutStateDendrogram extends ADetailViewLayoutState {
 
 	@Override
 	public float getDendrogramWidth() {
-		return 0;
+		return totalWidth * DENDROGRAM_WIDTH_PORTION;
 	}
 
 	@Override
@@ -91,12 +92,12 @@ public class DetailViewLayoutStateDendrogram extends ADetailViewLayoutState {
 	public float getOverviewSliderWidth() {
 		return 0;
 	}
-	
+
 	@Override
 	public float getTotalOverviewWidth() {
 		return totalWidth * OVERVIEW_TOTAL_WIDTH_PORTION;
 	}
-	
+
 	@Override
 	public ArrayList<IHeatMapRenderCommand> getLocalRenderCommands(
 			RenderCommandFactory renderCommandFactory) {
@@ -120,12 +121,24 @@ public class DetailViewLayoutStateDendrogram extends ADetailViewLayoutState {
 
 		remoteRenderCommands.add(renderCommandFactory
 				.getRenderCommand(ERenderCommandType.DETAIL_HEATMAPS));
+		remoteRenderCommands.add(renderCommandFactory
+				.getRenderCommand(ERenderCommandType.DENDROGRAM));
 
 		return remoteRenderCommands;
 	}
-	
+
 	public void setDendrogramButtonWidth(float width) {
 		dendrogramButtonWidth = width;
+	}
+
+	@Override
+	public float getOverviewHeight() {
+		return totalHeight * OVERVIEW_HEIGHT_PORTION;
+	}
+
+	@Override
+	public float getDendrogramBottomSpacing() {
+		return totalHeight * DENDROGRAM_BOTTOM_SPACING_PORTION;
 	}
 
 }
