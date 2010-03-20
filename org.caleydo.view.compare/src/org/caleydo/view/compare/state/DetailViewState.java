@@ -13,7 +13,6 @@ import org.caleydo.core.data.collection.set.SetComparer;
 import org.caleydo.core.data.collection.set.SetRelations;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
-import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -69,6 +68,7 @@ public class DetailViewState extends ACompareViewState {
 
 	private ArrayList<DetailBand> detailBands;
 	private DetailBand activeBand;
+	private int indexOfHeatMapWrapperWithDendrogram;
 
 	public DetailViewState(GLCompare view, int viewID,
 			TextRenderer textRenderer, TextureManager textureManager,
@@ -84,6 +84,7 @@ public class DetailViewState extends ACompareViewState {
 		this.setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.0f));
 		compareConnectionRenderer = new CompareConnectionBandRenderer();
 		numSetsInFocus = 2;
+		indexOfHeatMapWrapperWithDendrogram = -1;
 	}
 
 	@Override
@@ -146,10 +147,12 @@ public class DetailViewState extends ACompareViewState {
 		setBar.setWidth(viewFrustum.getWidth());
 		setBar.render(gl);
 
+
 		renderOverviewToDetailRelations(gl);
 		renderDetailRelations(gl);
 
 		if (heatMapWrappers.get(0).getContentVAsOfHeatMaps().size() == 0) {
+			renderTree(gl, heatMapWrappers.get(0), heatMapWrappers.get(1));
 			renderOverviewRelations(gl, heatMapWrappers.get(0), heatMapWrappers
 					.get(1));
 		}
@@ -210,7 +213,7 @@ public class DetailViewState extends ACompareViewState {
 		if (rightPos == null)
 			return;
 
-		xOffset = -1.8f;// (rightPos.x() - leftPos.x()) / 2f;
+		xOffset =  -(rightPos.x() - leftPos.x()) / 1.5f;
 
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
 		inputPoints.add(new Vec3f(leftPos.x(), leftPos.y()
@@ -354,9 +357,9 @@ public class DetailViewState extends ACompareViewState {
 			return;
 
 		if (heatMapWrapper == heatMapWrappers.get(0))
-			xOffset = -0.5f;
+			xOffset = -Math.abs((rightPos.x() - leftPos.x()) / 1.3f);
 		else
-			xOffset = 0.5f;
+			xOffset = Math.abs((rightPos.x() - leftPos.x()) / 1.3f);
 
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
 		inputPoints.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
@@ -597,6 +600,11 @@ public class DetailViewState extends ACompareViewState {
 
 	private void renderSingleDetailRelation(GL gl, Integer contentID) {
 
+//		if (activeBand != null
+//				&& !activeBand.getContentIDs().contains(contentID))
+//			return;
+
+
 		float positionZ = setRelationColor(gl, heatMapWrappers.get(0),
 				contentID);
 
@@ -612,7 +620,7 @@ public class DetailViewState extends ACompareViewState {
 		if (rightPos == null)
 			return;
 
-		xOffset = -1.8f; // (rightPos.x() - leftPos.x()) / 2f
+		xOffset = -(rightPos.x() - leftPos.x()) / 1.5f;
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
 				EPickingType.POLYLINE_SELECTION, contentID));
@@ -908,10 +916,25 @@ public class DetailViewState extends ACompareViewState {
 				selectionType = SelectionType.MOUSE_OVER;
 				break;
 			}
-
 			rightHeatMapWrapper.handleGroupSelection(selectionType,
 					iExternalID, isControlPressed);
 			leftHeatMapWrapper.setHeatMapsInactive();
+			break;
+
+		case COMPARE_DENDROGRAM_BUTTON_SELECTION:
+			if (pickingMode == EPickingMode.CLICKED) {
+				if (indexOfHeatMapWrapperWithDendrogram == iExternalID) {
+					layouts.get(iExternalID).useDendrogram(false);
+					indexOfHeatMapWrapperWithDendrogram = -1;
+				} else {
+					for (AHeatMapLayout layout : layouts) {
+						layout.useDendrogram(false);
+					}
+					layouts.get(iExternalID).useDendrogram(true);
+					indexOfHeatMapWrapperWithDendrogram = iExternalID;
+				}
+				view.setDisplayListDirty();
+			}
 			break;
 		}
 
@@ -919,6 +942,8 @@ public class DetailViewState extends ACompareViewState {
 
 	@Override
 	public void setSetsInFocus(ArrayList<ISet> setsInFocus) {
+
+		indexOfHeatMapWrapperWithDendrogram = -1;
 
 		if (setsInFocus.size() >= getMinSetsInFocus()
 				&& setsInFocus.size() <= getMaxSetsInFocus()) {
@@ -1042,17 +1067,32 @@ public class DetailViewState extends ACompareViewState {
 		float heatMapWrapperPosY = setBar.getPosition().y() + setBarHeight;
 
 		float heatMapWrapperPosX = 0.0f;
-		float heatMapWrapperWidth = viewFrustum.getWidth()
-				/ (2.0f * (float) heatMapWrappers.size() - 1.0f);
+		float heatMapWrapperWidth = 0.0f;
+		float dendrogramHeatMapWrapperWidth = 0.7f * viewFrustum.getWidth();
+		if (indexOfHeatMapWrapperWithDendrogram != -1) {
+			heatMapWrapperWidth = (viewFrustum.getWidth() - dendrogramHeatMapWrapperWidth)
+					/ (2.0f * (float) heatMapWrappers.size() - 2.0f);
+		} else {
+			heatMapWrapperWidth = viewFrustum.getWidth()
+					/ (2.0f * (float) heatMapWrappers.size() - 1.0f);
+		}
 		for (int i = 0; i < heatMapWrappers.size(); i++) {
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
 			AHeatMapLayout layout = layouts.get(i);
-			layout
-					.setLayoutParameters(heatMapWrapperPosX,
-							heatMapWrapperPosY, viewFrustum.getHeight()
-									- setBarHeight, heatMapWrapperWidth);
+			if (i == indexOfHeatMapWrapperWithDendrogram) {
+				layout.setLayoutParameters(heatMapWrapperPosX,
+						heatMapWrapperPosY, viewFrustum.getHeight()
+								- setBarHeight, dendrogramHeatMapWrapperWidth);
+				heatMapWrapperPosX += dendrogramHeatMapWrapperWidth
+						+ heatMapWrapperWidth;
+			} else {
+				layout.setLayoutParameters(heatMapWrapperPosX,
+						heatMapWrapperPosY, viewFrustum.getHeight()
+								- setBarHeight, heatMapWrapperWidth);
+				heatMapWrapperPosX += heatMapWrapperWidth * 2.0f;
+			}
 			layout.setHeatMapWrapper(heatMapWrapper);
-			heatMapWrapperPosX += heatMapWrapperWidth * 2.0f;
+
 		}
 	}
 }

@@ -11,23 +11,6 @@ import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 
 public abstract class AHeatMapLayout {
 
-	// protected static float OVERVIEW_TOTAL_WIDTH_PORTION = 0.25f;
-	// protected static float OVERVIEW_GROUP_WIDTH_PORTION = 0.04f;
-	// protected static float OVERVIEW_HEATMAP_WIDTH_PORTION = 0.15f;
-	// protected static float OVERVIEW_SLIDER_WIDTH_PORTION = 0.06f;
-	//
-	// protected static float DETAIL_WIDTH_PORTION = 0.5f;
-	// protected static float DETAIL_HEATMAP_GAP_PORTION = 0.02f;
-	// protected static float OVERVIEW_TO_DETAIL_GAP_PORTION = 0.25f;
-	//
-	// protected static float CAPTION_LABEL_HEIGHT_PORTION = 0.03f;
-	// protected static float CAPTION_LABEL_HORIZONTAL_SPACING_PORTION = 0.03f;
-	// protected static float CAPTION_LABEL_VERTICAL_SPACING_PORTION = 0.01f;
-	// protected static float OVERVIEW_HEIGHT_PORTION = 0.95f;
-	// protected static float DETAIL_HEIGHT_PORTION = 0.95f;
-	//
-	// protected ComparerDetailTemplate detailHeatMapTemplate;
-
 	protected float totalWidth;
 	protected float totalHeight;
 	protected float positionX;
@@ -123,6 +106,16 @@ public abstract class AHeatMapLayout {
 	public abstract float getDendrogramLineHeight();
 	
 	public abstract float getDendrogramLineWidth();
+	
+	public abstract void useDendrogram(boolean useDendrogram);
+	
+	public abstract Vec3f getDendrogramPosition();
+	
+	public abstract float getDendrogramHeight();
+	
+	public abstract float getDendrogramWidth();
+	
+	public abstract boolean isDendrogramUsed();
 
 	public ArrayList<IHeatMapRenderCommand> getRenderCommandsOfLocalItems() {
 		return localRenderCommands;
@@ -159,6 +152,10 @@ public abstract class AHeatMapLayout {
 	
 	public void setHeatMapWrapper(HeatMapWrapper heatMapWrapper) {
 		this.heatMapWrapper = heatMapWrapper;
+	}
+
+	public HeatMapWrapper getHeatMapWrapper() {
+		return heatMapWrapper;
 	}
 
 }

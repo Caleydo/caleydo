@@ -70,4 +70,10 @@ public class HeatMapLayoutDetailViewMid extends AHeatMapLayoutDetailView {
 	public Vec3f getDendrogramLinePosition() {
 		return new Vec3f(positionX, positionY, 0.0f);
 	}
+
+	@Override
+	public Vec3f getDendrogramPosition() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

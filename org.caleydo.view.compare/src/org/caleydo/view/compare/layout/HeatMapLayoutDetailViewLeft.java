@@ -54,8 +54,11 @@ public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
 
 	@Override
 	public Vec3f getCaptionLabelPosition(float textWidth) {
-		return new Vec3f(positionX + getDendrogramLineWidth()
-				+ getDendrogramButtonWidth()
+
+		float leftSpacing = Math.max(getDendrogramLineWidth()
+				+ getDendrogramButtonWidth(), getDendrogramLineSpacing());
+
+		return new Vec3f(positionX + leftSpacing
 				+ getCaptionLabelHorizontalSpacing(), positionY
 				+ getOverviewHeight() + getCaptionLabelVerticalSpacing(), 0.0f);
 	}
@@ -69,6 +72,11 @@ public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
 	@Override
 	public Vec3f getDendrogramLinePosition() {
 		return new Vec3f(positionX, positionY, 0.0f);
+	}
+
+	@Override
+	public Vec3f getDendrogramPosition() {
+		return new Vec3f(positionX + getDendrogramLineWidth(), positionY, 0.0f);
 	}
 
 }

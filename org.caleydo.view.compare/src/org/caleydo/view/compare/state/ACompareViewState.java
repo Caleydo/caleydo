@@ -105,7 +105,7 @@ public abstract class ACompareViewState {
 	}
 
 	protected void renderTree(GL gl, HeatMapWrapper heatMapWrapperLeft,
-			HeatMapWrapper heatMapWrapperRight, float overviewDistance) {
+			HeatMapWrapper heatMapWrapperRight) {
 
 		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
@@ -117,17 +117,20 @@ public abstract class ACompareViewState {
 				+ heatMapLayoutLeft.getOverviewHeatmapWidth();
 		yPosInitLeft = heatMapLayoutLeft.getOverviewHeatMapPosition().y()
 				+ heatMapLayoutLeft.getOverviewHeight();
+		xPosInitRight = heatMapLayoutRight.getOverviewHeatMapPosition().x();
+		yPosInitRight = heatMapLayoutRight.getOverviewHeatMapPosition().y()
+				+ heatMapLayoutRight.getOverviewHeight();
 		Tree<ClusterNode> tree = heatMapWrapperLeft.getSet().getContentTree();
 		ClusterNode rootNode = tree.getRoot();
+		
+		float overviewDistance = xPosInitRight - xPosInitLeft;
 
 		determineTreePositions(rootNode, tree, heatMapWrapperLeft,
 				overviewDistance);
 		// renderDendrogram(gl, rootNode, 1, tree, xPosInitLeft);
 
 		// Right hierarchy
-		xPosInitRight = heatMapLayoutRight.getOverviewHeatMapPosition().x();
-		yPosInitRight = heatMapLayoutRight.getOverviewHeatMapPosition().y()
-				+ heatMapLayoutRight.getOverviewHeight();
+		
 		tree = heatMapWrapperRight.getSet().getContentTree();
 		rootNode = tree.getRoot();
 

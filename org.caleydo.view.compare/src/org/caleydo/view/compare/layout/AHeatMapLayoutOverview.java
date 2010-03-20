@@ -190,4 +190,29 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 	public float getDendrogramLineWidth() {
 		return 0;
 	}
+	
+	@Override
+	public void useDendrogram(boolean useDendrogram) {
+		
+	}
+	
+	@Override
+	public Vec3f getDendrogramPosition() {
+		return new Vec3f(0, 0, 0);
+	}
+	
+	@Override
+	public float getDendrogramHeight() {
+		return 0;
+	}
+	
+	@Override
+	public float getDendrogramWidth() {
+		return 0;
+	}
+	
+	@Override
+	public boolean isDendrogramUsed() {
+		return false;
+	}
 }

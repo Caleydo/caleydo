@@ -10,7 +10,6 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.SetComparer;
 import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -85,11 +84,7 @@ public class OverviewState extends ACompareViewState {
 		setBar.render(gl);
 
 		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
-			float heatMapWrapperGapWidth = HEATMAP_WRAPPER_OVERVIEW_GAP_PORTION
-					* viewFrustum.getWidth()
-					/ (float) (heatMapWrappers.size() - 1);
-			renderTree(gl, heatMapWrappers.get(i), heatMapWrappers.get(i + 1),
-					heatMapWrapperGapWidth);
+			renderTree(gl, heatMapWrappers.get(i), heatMapWrappers.get(i + 1));
 			renderOverviewRelations(gl, heatMapWrappers.get(i), heatMapWrappers
 					.get(i + 1));
 		}

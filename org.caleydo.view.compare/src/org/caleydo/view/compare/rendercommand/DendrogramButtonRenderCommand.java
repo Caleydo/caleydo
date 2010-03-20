@@ -10,6 +10,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
+import org.caleydo.view.compare.layout.HeatMapLayoutDetailViewLeft;
 import org.caleydo.view.compare.layout.HeatMapLayoutDetailViewRight;
 
 public class DendrogramButtonRenderCommand implements IHeatMapRenderCommand {
@@ -53,7 +54,11 @@ public class DendrogramButtonRenderCommand implements IHeatMapRenderCommand {
 				+ height, position.z());
 		Vec3f upperLeftCorner = new Vec3f(position.x(), position.y() + height,
 				position.z());
-		if (layout instanceof HeatMapLayoutDetailViewRight) {
+
+		if ((layout instanceof HeatMapLayoutDetailViewRight && !layout
+				.isDendrogramUsed())
+				|| (layout instanceof HeatMapLayoutDetailViewLeft && layout
+						.isDendrogramUsed())) {
 			textureManager.renderTexture(gl, EIconTextures.HEAT_MAP_ARROW,
 					upperLeftCorner, lowerLeftCorner, lowerRightCorner,
 					upperRightCorner, 1, 1, 1, 1);
@@ -61,11 +66,14 @@ public class DendrogramButtonRenderCommand implements IHeatMapRenderCommand {
 			textureManager.renderTexture(gl, EIconTextures.HEAT_MAP_ARROW,
 					lowerRightCorner, upperRightCorner, upperLeftCorner,
 					lowerLeftCorner, 1, 1, 1, 1);
-			linePosition.setX(linePosition.x()
-					+ layout.getDendrogramLineWidth());
 		}
 
 		gl.glPopName();
+
+		if (layout instanceof HeatMapLayoutDetailViewLeft) {
+			linePosition.setX(linePosition.x()
+					+ layout.getDendrogramLineWidth());
+		}
 
 		gl.glLineWidth(1f);
 		gl.glColor4f(1, 0, 0, 1);
