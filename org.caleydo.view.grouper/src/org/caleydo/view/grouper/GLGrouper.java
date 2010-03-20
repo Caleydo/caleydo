@@ -61,9 +61,9 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CompareGroupsI
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CopyGroupsItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CreateGroupItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DeleteGroupsItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.PasteGroupsItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.StatisticsFoldChangeReductionItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.StatisticsPValueReductionItem;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.PasteGroupsItem;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 import org.caleydo.view.grouper.compositegraphic.ICompositeGraphic;
@@ -642,37 +642,34 @@ public class GLGrouper extends AGLView
 								ArrayList<ICompositeGraphic> orderedComposites = getOrderedCompositeList(
 										setClickedGroups, false);
 
+								ArrayList<ISet> selectedSets = new ArrayList<ISet>();
+								for (ICompositeGraphic composite : orderedComposites) {
+									selectedSets
+											.add(((GroupRepresentation) composite)
+													.getClusterNode()
+													.getMetaSet());
+								}
+
+								// Lazy loading of R
+								GeneralManager.get().getRStatisticsPerformer();
+								
 								StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
-										((GroupRepresentation) orderedComposites
-												.get(0)).getClusterNode()
-												.getMetaSet());
+										selectedSets);
 								contextMenu
 										.addContextMenueItem(pValueReductionItem);
 
 								if (orderedComposites.size() == 2) {
 									StatisticsFoldChangeReductionItem foldChangeReductionItem = new StatisticsFoldChangeReductionItem(
-											((GroupRepresentation) orderedComposites
-													.get(0)).getClusterNode()
-													.getMetaSet(),
-											((GroupRepresentation) orderedComposites
-													.get(0)).getClusterNode()
-													.getMetaSet());
+											selectedSets.get(0), selectedSets
+													.get(1));
 									contextMenu
 											.addContextMenueItem(foldChangeReductionItem);
 								}
 
 								if (orderedComposites.size() >= 2) {
 
-									ArrayList<ISet> setsToCompare = new ArrayList<ISet>();
-									for (ICompositeGraphic composite : orderedComposites) {
-										setsToCompare
-												.add(((GroupRepresentation) composite)
-														.getClusterNode()
-														.getMetaSet());
-									}
-
 									CompareGroupsItem compareGroupsItem = new CompareGroupsItem(
-											setsToCompare);
+											selectedSets);
 									contextMenu
 											.addContextMenueItem(compareGroupsItem);
 								}

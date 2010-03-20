@@ -16,11 +16,14 @@ public class StatisticsResult {
 	
 	HashMap<ISet, ArrayList<Double>> setToTwoSidedTTestResult;
 	
+	double[] oneSidedTTestResult;
+	
 	HashMap<ISet,  double[]> setToFoldChangeResult;
 	
 	public StatisticsResult(ISet set) {
 		setToTwoSidedTTestResult = new HashMap<ISet, ArrayList<Double>>();
 		setToFoldChangeResult = new HashMap<ISet,  double[]>();
+		oneSidedTTestResult = new double[0];
 		this.set = set;
 	}
 	
@@ -37,6 +40,10 @@ public class StatisticsResult {
 	public Double getTwoSidedTTestResult(ISet compareSet, Integer contentID) {
 		
 		return setToTwoSidedTTestResult.get(compareSet).get(contentID);
+	}
+	
+	public void setOneSiddedTTestResult(double[] pValueVector) {
+		oneSidedTTestResult = pValueVector;
 	}
 	
 	public void setFoldChangeResult(ISet set,  double[] resultVector) {

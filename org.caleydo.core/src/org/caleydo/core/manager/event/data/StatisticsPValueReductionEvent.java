@@ -1,31 +1,33 @@
 package org.caleydo.core.manager.event.data;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.event.AEvent;
 
 public class StatisticsPValueReductionEvent
 	extends AEvent {
 
-	private ISet set;
-	
-	public StatisticsPValueReductionEvent(ISet set) {
-		this.set = set;
+	private ArrayList<ISet> sets;
+
+	public StatisticsPValueReductionEvent(ArrayList<ISet> sets) {
+		this.sets = sets;
 	}
-	
-	public void setSet(ISet set) {
-		this.set = set;
+
+	public void setSets(ArrayList<ISet> sets) {
+		this.sets = sets;
 	}
-	
-	public ISet getSet() {
-		return set;
+
+	public ArrayList<ISet> getSets() {
+		return sets;
 	}
-	
+
 	@Override
 	public boolean checkIntegrity() {
-		
-		if (set == null)
+
+		if (sets.size() == 0)
 			return false;
-		
+
 		return true;
 	}
 }

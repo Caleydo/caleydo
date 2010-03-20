@@ -5,15 +5,18 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
+import org.caleydo.core.manager.event.data.StatisticsFoldChangeReductionEvent;
+import org.caleydo.core.manager.event.data.StatisticsPValueReductionEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
-import org.caleydo.util.r.listener.CompareGroupsEventListener;
+import org.caleydo.util.r.listener.StatisticsFoldChangeReductionListener;
+import org.caleydo.util.r.listener.StatisticsPValueReductionListener;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
 
@@ -24,7 +27,9 @@ public class RStatisticsPerformer
 
 	private Rengine engine;
 
-	private CompareGroupsEventListener compareGroupsEventListener = null;
+//	private CompareGroupsEventListener compareGroupsEventListener = null;
+	private StatisticsPValueReductionListener statisticsPValueReductionListener = null;
+	private StatisticsFoldChangeReductionListener statisticsFoldChangeReductionListener = null;
 
 	public RStatisticsPerformer() {
 		init();
@@ -55,20 +60,42 @@ public class RStatisticsPerformer
 
 	private void registerEventListeners() {
 
-		compareGroupsEventListener = new CompareGroupsEventListener();
-		compareGroupsEventListener.setHandler(this);
+//		compareGroupsEventListener = new CompareGroupsEventListener();
+//		compareGroupsEventListener.setHandler(this);
+//		GeneralManager.get().getEventPublisher().addListener(
+//				CompareGroupsEvent.class, compareGroupsEventListener);
+
+		statisticsPValueReductionListener = new StatisticsPValueReductionListener();
+		statisticsPValueReductionListener.setHandler(this);
 		GeneralManager.get().getEventPublisher().addListener(
-				CompareGroupsEvent.class, compareGroupsEventListener);
+				StatisticsPValueReductionEvent.class, statisticsPValueReductionListener);
+		
+		statisticsFoldChangeReductionListener = new StatisticsFoldChangeReductionListener();
+		statisticsFoldChangeReductionListener.setHandler(this);
+		GeneralManager.get().getEventPublisher().addListener(
+				StatisticsFoldChangeReductionEvent.class, statisticsFoldChangeReductionListener);
 	}
 
 	// TODO: never called!
 	public void unregisterEventListeners() {
 
-		if (compareGroupsEventListener != null) {
+//		if (compareGroupsEventListener != null) {
+//			GeneralManager.get().getEventPublisher().removeListener(
+//					compareGroupsEventListener);
+//			compareGroupsEventListener = null;
+//		}
+		
+		if (statisticsPValueReductionListener != null) {
 			GeneralManager.get().getEventPublisher().removeListener(
-					compareGroupsEventListener);
-			compareGroupsEventListener = null;
+					statisticsPValueReductionListener);
+			statisticsPValueReductionListener = null;
 		}
+		
+		if (statisticsFoldChangeReductionListener != null) {
+			GeneralManager.get().getEventPublisher().removeListener(
+					statisticsFoldChangeReductionListener);
+			statisticsFoldChangeReductionListener = null;
+		}		
 	}
 
 	@Override
@@ -123,6 +150,38 @@ public class RStatisticsPerformer
 		set2.getStatisticsResult().setFoldChangeResult(set1, resultVec);
 	}
 
+	public void oneSidedTTest(ArrayList<ISet> sets) {
+
+		for (ISet set : sets) {
+			double[] pValueVector = new double[set.getContentVA(ContentVAType.CONTENT).size()];
+
+			for (int contentIndex = 0; contentIndex < set.get(
+					set.getStorageVA(StorageVAType.STORAGE).get(0)).size(); contentIndex++) {
+
+				StorageVirtualArray storageVA1 = set
+						.getStorageVA(StorageVAType.STORAGE);
+
+				double[] compareVec1 = new double[storageVA1.size()];
+
+				int storageCount = 0;
+				for (Integer storageIndex : storageVA1) {
+					compareVec1[storageCount++] = set.get(storageIndex)
+							.getFloat(EDataRepresentation.RAW, contentIndex);
+				}
+
+				engine.assign("set", compareVec1);
+
+				REXP compareResult = engine.eval("t.test(set)");
+
+				REXP pValue = (REXP) compareResult.asVector().get(2);
+				pValueVector[contentIndex] = pValue.asDouble();
+				// System.out.println(pValue.asDouble());
+			}
+			
+			set.getStatisticsResult().setOneSiddedTTestResult(pValueVector);
+		}
+	}
+	
 	public void twoSidedTTest(ArrayList<ISet> sets) {
 
 		// Perform t-test between all neighboring sets (A<->B<->C)
@@ -169,12 +228,12 @@ public class RStatisticsPerformer
 				REXP pValue = (REXP) compareResult.asVector().get(2);
 				pValueVector.add(pValue.asDouble());
 				// System.out.println(pValue.asDouble());
-
-				set1.getStatisticsResult().setTwoSiddedTTestResult(set2,
-						pValueVector);
-				set2.getStatisticsResult().setTwoSiddedTTestResult(set1,
-						pValueVector);
 			}
+			
+			set1.getStatisticsResult().setTwoSiddedTTestResult(set2,
+					pValueVector);
+			set2.getStatisticsResult().setTwoSiddedTTestResult(set1,
+					pValueVector);
 		}
 
 		// setsToCompare.get(0).getStatisticsResult().getVABasedOnCompareResult(setsToCompare.get(1),
@@ -186,6 +245,9 @@ public class RStatisticsPerformer
 	public synchronized void queueEvent(
 			AEventListener<? extends IListenerOwner> listener, AEvent event) {
 
-		// compareGroupsEventListener.handleEvent(event);
+		if (event instanceof StatisticsPValueReductionEvent)
+			statisticsPValueReductionListener.handleEvent(event);
+		else if (event instanceof StatisticsFoldChangeReductionEvent)
+			statisticsFoldChangeReductionListener.handleEvent(event);
 	}
 }

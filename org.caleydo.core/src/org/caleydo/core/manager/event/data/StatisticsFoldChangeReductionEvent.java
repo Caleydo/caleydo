@@ -11,6 +11,7 @@ public class StatisticsFoldChangeReductionEvent
 	
 	public StatisticsFoldChangeReductionEvent(ISet set1, ISet set2) {
 		this.set1 = set1;
+		this.set2 = set2;
 	}
 	
 	public void setSet1(ISet set1) {
