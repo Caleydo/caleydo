@@ -161,5 +161,10 @@ public interface IUseCase {
 	 * @return a clone of the storage selection manager
 	 */
 	public StorageSelectionManager getStorageSelectionManager();
+	
+	/**
+	 * Restore the original data. All applied filters are undone.
+	 */
+	public void restoreOriginalContentVA();
 
 }

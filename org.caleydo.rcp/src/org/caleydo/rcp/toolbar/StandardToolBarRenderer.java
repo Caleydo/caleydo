@@ -6,6 +6,7 @@ import java.util.List;
 import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
 import org.caleydo.rcp.action.toolbar.general.ImportDataAction;
 import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
+import org.caleydo.rcp.action.toolbar.general.RestoreOriginalDataAction;
 import org.caleydo.rcp.action.toolbar.general.SaveProjectAction;
 import org.caleydo.rcp.action.toolbar.view.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.StartClusteringAction;
@@ -64,14 +65,11 @@ public class StandardToolBarRenderer
 		toolBarManager.add(new ExportDataAction());
 		toolBarManager.add(new TakeSnapshotAction());
 
-		// if (GeneralManager.get().getUseCase().getApplicationMode() == EDataDomain.GENETIC_DATA) {
-
 		toolBarManager2.add(new StartClusteringAction());
-		// }
-
 		toolBarManager2.add(new OpenSearchViewAction());
 		toolBarManager2.add(new ClearSelectionsAction());
-
+		toolBarManager2.add(new RestoreOriginalDataAction());
+		
 		// toolBarManager2.add(new MagnifyingGlassAction());
 
 		toolBarManager.update(true);

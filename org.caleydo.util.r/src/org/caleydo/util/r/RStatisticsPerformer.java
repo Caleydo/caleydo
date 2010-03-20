@@ -3,8 +3,8 @@ package org.caleydo.util.r;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.event.AEvent;
@@ -15,6 +15,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.util.r.listener.CompareGroupsEventListener;
 import org.rosuda.JRI.REXP;
+import org.rosuda.JRI.RVector;
 import org.rosuda.JRI.Rengine;
 
 public class RStatisticsPerformer
@@ -93,18 +94,48 @@ public class RStatisticsPerformer
 		}
 	}
 
-	public void twoSidedTTest(ArrayList<ISet> setsToCompare) {
+	public void foldChange(ISet set1, ISet set2) {
+
+		NumericalStorage meanStorageVec1 = set1.getMeanStorage();
+		NumericalStorage meanStorageVec2 = set2.getMeanStorage();
+
+		double[] meanStorage1 = new double[meanStorageVec1.size()];
+		for (int contentIndex = 0; contentIndex < meanStorageVec1.size(); contentIndex++) {
+			meanStorage1[contentIndex] = meanStorageVec1.getFloat(
+					EDataRepresentation.RAW, contentIndex);
+		}
+
+		double[] meanStorage2 = new double[meanStorageVec2.size()];
+		for (int contentIndex = 0; contentIndex < meanStorageVec2.size(); contentIndex++) {
+			meanStorage2[contentIndex] = meanStorageVec2.getFloat(
+					EDataRepresentation.RAW, contentIndex);
+		}
+
+		engine.assign("set_1", meanStorage1);
+		engine.assign("set_2", meanStorage2);
+		//
+		engine.eval("library(\"gtools\")");
+		REXP foldChangeResult = engine.eval("foldchange(set_1,set_2)");
+		System.out.println("Fold change result: " + foldChangeResult);
+
+		double[] resultVec = foldChangeResult.asDoubleArray();
+
+		set1.getStatisticsResult().setFoldChangeResult(set2, resultVec);
+		set2.getStatisticsResult().setFoldChangeResult(set1, resultVec);
+	}
+
+	public void twoSidedTTest(ArrayList<ISet> sets) {
 
 		// Perform t-test between all neighboring sets (A<->B<->C)
-		for (int setIndex = 0; setIndex < setsToCompare.size(); setIndex++) {
+		for (int setIndex = 0; setIndex < sets.size(); setIndex++) {
 
-			if (setIndex + 1 == setsToCompare.size())
+			if (setIndex + 1 == sets.size())
 				break;
 
-			ISet set1 = setsToCompare.get(setIndex);
-			ISet set2 = setsToCompare.get(setIndex + 1);
-			
-			ArrayList<Double> pValueVector = new ArrayList<Double>(); 
+			ISet set1 = sets.get(setIndex);
+			ISet set2 = sets.get(setIndex + 1);
+
+			ArrayList<Double> pValueVector = new ArrayList<Double>();
 
 			for (int contentIndex = 0; contentIndex < set1.get(
 					set1.getStorageVA(StorageVAType.STORAGE).get(0)).size(); contentIndex++) {
@@ -120,15 +151,13 @@ public class RStatisticsPerformer
 				int storageCount = 0;
 				for (Integer storageIndex : storageVA1) {
 					compareVec1[storageCount++] = set1.get(storageIndex)
-							.getFloat(EDataRepresentation.NORMALIZED,
-									contentIndex);
+							.getFloat(EDataRepresentation.RAW, contentIndex);
 				}
 
 				storageCount = 0;
 				for (Integer storageIndex : storageVA2) {
 					compareVec2[storageCount++] = set2.get(storageIndex)
-							.getFloat(EDataRepresentation.NORMALIZED,
-									contentIndex);
+							.getFloat(EDataRepresentation.RAW, contentIndex);
 				}
 
 				engine.assign("set_1", compareVec1);
@@ -137,17 +166,20 @@ public class RStatisticsPerformer
 				REXP compareResult = engine.eval("t.test(set_1,set_2)");
 
 				// System.out.println("T-Test result: " + compareResult);
-				
-				REXP pValue = (REXP)compareResult.asVector().get(2);
+
+				REXP pValue = (REXP) compareResult.asVector().get(2);
 				pValueVector.add(pValue.asDouble());
-//				System.out.println(pValue.asDouble());
-				
-				set1.getStatisticsResult().setCompareResultToSet(set2, pValueVector);
-				set2.getStatisticsResult().setCompareResultToSet(set1, pValueVector);	
+				// System.out.println(pValue.asDouble());
+
+				set1.getStatisticsResult().setTwoSiddedTTestResult(set2,
+						pValueVector);
+				set2.getStatisticsResult().setTwoSiddedTTestResult(set1,
+						pValueVector);
 			}
 		}
-		
-//		setsToCompare.get(0).getStatisticsResult().getVABasedOnCompareResult(setsToCompare.get(1), 0.9f);
+
+		// setsToCompare.get(0).getStatisticsResult().getVABasedOnCompareResult(setsToCompare.get(1),
+		// 0.9f);
 
 		System.out.println("Finished");
 	}
@@ -155,6 +187,6 @@ public class RStatisticsPerformer
 	public synchronized void queueEvent(
 			AEventListener<? extends IListenerOwner> listener, AEvent event) {
 
-//		compareGroupsEventListener.handleEvent(event);
+		// compareGroupsEventListener.handleEvent(event);
 	}
 }

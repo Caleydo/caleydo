@@ -34,9 +34,9 @@ public class SetsPreFilterDialog
 
 	private ArrayList<ISet> setsToCompare;
 
-	private float pValue = 0;
+	private float foldchange = 0;
 
-	private ContentVirtualArray pValueFilteredVA;
+	private ContentVirtualArray foldChangeFilteredVA;
 
 	/**
 	 * @param parent
@@ -63,13 +63,15 @@ public class SetsPreFilterDialog
 	public void open() {
 
 		try {
-			GeneralManager.get().getRStatisticsPerformer().twoSidedTTest(setsToCompare);
+			GeneralManager.get().getRStatisticsPerformer().foldChange(setsToCompare.get(0), setsToCompare.get(1));
+			GeneralManager.get().getRStatisticsPerformer().foldChange(setsToCompare.get(2), setsToCompare.get(3));
+//			GeneralManager.get().getRStatisticsPerformer().twoSidedTTest(setsToCompare);
 		}
 		catch (Exception e) {
 
 			GeneralManager.get().getLogger().log(
 				new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-					"R Statistics plugin could not be loaded. The p-Value based reduction will be skipped."));
+					"R Statistics plugin could not be loaded. The statistics reduction will be skipped."));
 			triggerCompareGroupsEvent();
 			return;
 		}
@@ -77,7 +79,7 @@ public class SetsPreFilterDialog
 		Shell parent = getParent();
 		parent.setSize(600, 200);
 		final Shell shell = new Shell(parent, SWT.TITLE | SWT.BORDER | SWT.APPLICATION_MODAL);
-		shell.setText("p-Value Reduction");
+		shell.setText("Fold change reduction");
 
 		shell.setLayout(new RowLayout(SWT.VERTICAL));
 
@@ -87,28 +89,36 @@ public class SetsPreFilterDialog
 		label
 			.setText("                                                                                                              ");
 
-		final Label pValLabel = new Label(shell, SWT.NULL);
-		pValLabel.setText("0.75");
+		final Label foldChangeLabel = new Label(shell, SWT.NULL);
+		foldChangeLabel.setText("2");
 
 		slider.setMinimum(0);
-		slider.setMaximum(110);
-		slider.setIncrement(1);
+		slider.setMaximum(50);
+		slider.setIncrement(5);
 		slider.setPageIncrement(10);
-		slider.setSelection(75);
+		slider.setSelection(20);
 
 		slider.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseUp(MouseEvent e) {
-				pValue = (float) slider.getSelection() / 100f;
-				pValLabel.setText("" + pValue);
+				foldchange = (float) slider.getSelection() / 10f;
+				foldChangeLabel.setText("" + foldchange);
 
 				ISet set1 = setsToCompare.get(0);
 				ISet set2 = setsToCompare.get(1);
 
-				pValueFilteredVA = set1.getStatisticsResult().getVABasedOnCompareResult(set2, pValue);
-				label.setText("The current p-Value selection would reduce your dataset to "
-					+ pValueFilteredVA.size());
+				ContentVirtualArray foldChangeFilteredVA1 = set1.getStatisticsResult().getVABasedOnFoldChangeResult(set2, foldchange);
+				
+				ISet set3 = setsToCompare.get(2);
+				ISet set4 = setsToCompare.get(3);
+
+				ContentVirtualArray foldChangeFilteredVA2 = set3.getStatisticsResult().getVABasedOnFoldChangeResult(set4, foldchange);
+				
+				foldChangeFilteredVA = intersectContentVAs(foldChangeFilteredVA1, foldChangeFilteredVA2);
+				
+				label.setText("The fold change reduced results in a dataset of the size "
+					+ foldChangeFilteredVA.size());
 			}
 
 			@Override
@@ -176,7 +186,7 @@ public class SetsPreFilterDialog
 		for (ISet set : setsToCompare) {
 			event =
 				new ReplaceContentVAInUseCaseEvent(set, EIDCategory.GENE, ContentVAType.CONTENT,
-					pValueFilteredVA);
+					foldChangeFilteredVA);
 			event.setSender(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 		}
@@ -202,4 +212,15 @@ public class SetsPreFilterDialog
 	// Shell shell = new Shell();
 	// SetsPreFilterDialog dialog = new SetsPreFilterDialog(shell, null);
 	// }
+	
+	private ContentVirtualArray intersectContentVAs(ContentVirtualArray va1, ContentVirtualArray va2) {
+		
+		ContentVirtualArray filteredVA = new ContentVirtualArray(ContentVAType.CONTENT);	
+		for (int contentID : va1) {
+			if (va2.containsElement(contentID) > 0)
+				filteredVA.appendUnique(contentID);
+		}
+		
+		return filteredVA;
+	}
 }

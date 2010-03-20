@@ -10,4 +10,6 @@ public interface IStatisticsPerformer {
 	public void performTest();
 	
 	public void twoSidedTTest(ArrayList<ISet> setsToCompare);
+
+	public void foldChange(ISet set1, ISet set2);
 }

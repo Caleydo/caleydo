@@ -39,7 +39,6 @@ import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
-import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
@@ -235,20 +234,19 @@ public abstract class AUseCase
 		return vaCopy;
 	}
 
-	
 	@Override
 	public void startClustering(int setID, ClusterState clusterState) {
-		
+
 		ISet set = null;
 		if (this.set.getID() == setID)
 			set = this.set;
 		else
 			set = this.set.getStorageTreeRoot().getMetaSetFromSubTree(setID);
-		
-		//TODO: warning
+
+		// TODO: warning
 		if (set == null)
 			return;
-		
+
 		set.cluster(clusterState);
 
 		// This should be done to avoid problems with group info in HHM
@@ -257,14 +255,14 @@ public abstract class AUseCase
 
 		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, EIDCategory.GENE, clusterState
 			.getContentVAType()));
-		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(set, EIDCategory.EXPERIMENT, StorageVAType.STORAGE));
+		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(set, EIDCategory.EXPERIMENT,
+			StorageVAType.STORAGE));
 
 		if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING
 			|| clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
 			((Set) set).createMetaSets();
 		}
 	}
-
 
 	/**
 	 * This is the method which is used to synchronize the views with the Virtual Array, which is initiated
@@ -283,9 +281,9 @@ public abstract class AUseCase
 	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType,
 		ContentVirtualArray virtualArray) {
 
-//		String idCategoryAsscoatedVAType = possibleIDCategories.get(idCategory);
-//		if (idCategoryAsscoatedVAType == null)
-//			return;
+		// String idCategoryAsscoatedVAType = possibleIDCategories.get(idCategory);
+		// if (idCategoryAsscoatedVAType == null)
+		// return;
 
 		// if (!idCategoryAsscoatedVAType.equals(vaType.getPrimaryVAType()))
 		// vaType = VAType.getVATypeForPrimaryVAType(idCategoryAsscoatedVAType);
@@ -490,7 +488,18 @@ public abstract class AUseCase
 	}
 
 	protected void initFullVA() {
-
+		set.restoreOriginalContentVA();
 	}
 
+	@Override
+	public void restoreOriginalContentVA() {
+		initFullVA();
+
+		ReplaceContentVAEvent event =
+			new ReplaceContentVAEvent(set, contentSelectionManager.getIDType().getCategory(),
+				ContentVAType.CONTENT, set.getContentVA(ContentVAType.CONTENT));
+
+		event.setSender(this);
+		eventPublisher.triggerEvent(event);
+	}
 }

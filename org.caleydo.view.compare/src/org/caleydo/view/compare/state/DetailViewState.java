@@ -568,7 +568,7 @@ public class DetailViewState extends ACompareViewState {
 		for (DetailBand detailBand : detailBands) {
 			ArrayList<Integer> contentIDs = detailBand.getContentIDs();
 
-			if (contentIDs.size() == 0)
+			if (contentIDs.size() < 2)
 				continue;
 
 			renderDetailBand(gl, detailBand);
@@ -581,16 +581,21 @@ public class DetailViewState extends ACompareViewState {
 
 			for (Integer contentID : contentVA) {
 
-				renderSingleDetailRelation(gl, contentID);
+				if (activeBand != null
+						&& activeBand.getContentIDs().contains(contentID))
+					renderSingleDetailRelation(gl, contentID);
 			}
+		}
+		
+		// Render single lines
+		for (DetailBand detailBand : detailBands) {
+			
+			if(detailBand.getContentIDs().size() == 1)
+				renderSingleDetailRelation(gl, detailBand.getContentIDs().get(0));	
 		}
 	}
 
 	private void renderSingleDetailRelation(GL gl, Integer contentID) {
-
-		if (activeBand != null
-				&& !activeBand.getContentIDs().contains(contentID))
-			return;
 
 		float positionZ = setRelationColor(gl, heatMapWrappers.get(0),
 				contentID);
@@ -710,11 +715,23 @@ public class DetailViewState extends ACompareViewState {
 				}
 
 				for (int leftContentIndex = 0; leftContentIndex < leftContentVA
-						.size() - 1; leftContentIndex++) {
+						.size()-1; leftContentIndex++) {
 
 					int contentID = leftContentVA.get(leftContentIndex);
+				
+//					if (leftContentVA.size()-1 == leftContentIndex) {
+//						bandContentIDs = new ArrayList<Integer>();
+//						bandContentIDs.add(contentID);
+//						detailBand = new DetailBand();
+//						detailBand.setContentIDs(bandContentIDs);
+//						detailBand.setLeftHeatMap(leftHeatMap);
+//						detailBand.setRightHeatMap(rightHeatMap);
+//						detailBands.add(detailBand);
+//						break;
+//					}
+					
 					int nextContentID = leftContentVA.get(leftContentIndex + 1);
-
+					
 					if (rightContentVA.containsElement(contentID) == 0)
 						continue;
 
@@ -805,7 +822,7 @@ public class DetailViewState extends ACompareViewState {
 	private void performPValueAdjustment(float pValue) {
 
 		ContentVirtualArray pValueFilteredVA = heatMapWrappers.get(0).getSet()
-				.getStatisticsResult().getVABasedOnCompareResult(
+				.getStatisticsResult().getVABasedOnTwoSidedTTestResult(
 						heatMapWrappers.get(1).getSet(), pValue);
 
 		for (Integer contentID : heatMapWrappers.get(0).getContentVA()) {
@@ -992,8 +1009,8 @@ public class DetailViewState extends ACompareViewState {
 		float[] typeColor = type.getColor();
 		float alpha = 0.2f;
 		if (type == activeHeatMapSelectionType) {
-			gl.glLineWidth(2);
-			alpha = 0.7f;
+			gl.glLineWidth(1);
+			alpha = 0.4f;
 			z = 0.4f;
 		} else if (type == SelectionType.MOUSE_OVER
 				|| type == SelectionType.SELECTION) {
@@ -1002,15 +1019,13 @@ public class DetailViewState extends ACompareViewState {
 			z = 0.5f;
 		} else {
 			gl.glLineWidth(1);
-
-			if (isConnectionCrossing(contentID, heatMapWrapper.getContentVA(),
-					heatMapWrapper.getContentVA(), heatMapWrapper))
-				alpha = 0.5f;
-			else
-				alpha = 0.3f;
-
-			alpha = 0.2f;
+			alpha = 0.4f;
 			z = 0.4f;
+//			if (isConnectionCrossing(contentID, heatMapWrapper.getContentVA(),
+//					heatMapWrapper.getContentVA(), heatMapWrapper))
+//				alpha = 0.5f;
+//			else
+//				alpha = 0.3f;
 		}
 
 		typeColor[3] = alpha;

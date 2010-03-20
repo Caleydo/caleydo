@@ -433,6 +433,12 @@ public class Set
 		return contentData;
 
 	}
+	
+	@Override
+	public void restoreOriginalContentVA() {
+		ContentData contentData =  createContentData(ContentVAType.CONTENT);
+		hashContentData.put(ContentVAType.CONTENT, contentData);
+	}
 
 	// private int createStorageVA(IVirtualArray virtualArray) {
 	// int iUniqueID = virtualArray.getID();
@@ -953,7 +959,7 @@ public class Set
 				meanValues[contentCount] = sum / size();
 			}
 			meanStorage.setRawData(meanValues);
-			meanStorage.normalize();
+			//meanStorage.normalize();
 		}
 		return meanStorage;
 	}

@@ -8,6 +8,7 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
 import org.caleydo.rcp.action.toolbar.general.ImportDataAction;
 import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
+import org.caleydo.rcp.action.toolbar.general.RestoreOriginalDataAction;
 import org.caleydo.rcp.action.toolbar.general.SaveProjectAction;
 import org.caleydo.rcp.action.toolbar.view.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.StartClusteringAction;
@@ -77,6 +78,7 @@ public class WideScreenToolBarRenderer
 
 		toolBarManager2.add(new ClearSelectionsAction());
 		toolBarManager2.add(new StartClusteringAction());
+		toolBarManager2.add(new RestoreOriginalDataAction());
 
 		toolBarManager.update(true);
 

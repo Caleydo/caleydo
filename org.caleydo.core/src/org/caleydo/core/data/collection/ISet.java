@@ -480,4 +480,10 @@ public interface ISet
 	 * @return the storage containing means for all content elements
 	 */
 	public NumericalStorage getMeanStorage();
+	
+	
+	/**
+	 * Restores the original virtual array using the whole set data.
+	 */
+	public void restoreOriginalContentVA();
 }

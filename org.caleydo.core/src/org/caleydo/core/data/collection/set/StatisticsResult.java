@@ -14,36 +14,59 @@ public class StatisticsResult {
 	 */
 	ISet set;
 	
-	HashMap<ISet, ArrayList<Double>> hashSetToCompareResult;
+	HashMap<ISet, ArrayList<Double>> setToTwoSidedTTestResult;
+	
+	HashMap<ISet,  double[]> setToFoldChangeResult;
 	
 	public StatisticsResult(ISet set) {
-		hashSetToCompareResult = new HashMap<ISet, ArrayList<Double>>();
+		setToTwoSidedTTestResult = new HashMap<ISet, ArrayList<Double>>();
+		setToFoldChangeResult = new HashMap<ISet,  double[]>();
 		this.set = set;
 	}
 	
-	public void setCompareResultToSet(ISet set, ArrayList<Double> resultVector) {
+	public void setTwoSiddedTTestResult(ISet set, ArrayList<Double> resultVector) {
 		
-		hashSetToCompareResult.put(set, resultVector);
+		setToTwoSidedTTestResult.put(set, resultVector);
 	}
 	
-	public ArrayList<Double> getCompareResultToSet(ISet set) {
+	public ArrayList<Double> getTwoSidedTTestResult(ISet set) {
 		
-		return hashSetToCompareResult.get(set);
+		return setToTwoSidedTTestResult.get(set);
 	}
 	
+	public Double getTwoSidedTTestResult(ISet compareSet, Integer contentID) {
+		
+		return setToTwoSidedTTestResult.get(compareSet).get(contentID);
+	}
+	
+	public void setFoldChangeResult(ISet set,  double[] resultVector) {
+		
+		setToFoldChangeResult.put(set, resultVector);
+	}
+
+	public  double[] getFoldChangeResult(ISet set) {
+		
+		return setToFoldChangeResult.get(set);
+	}
+	
+//	public Double getFoldChangeResult(ISet set, Integer contentID) {
+//		
+//		return setToFoldChangeResult.get(set).get(contentID);
+//	}
+
 	/**
-	 * Calculate and return the content VA basing on a given cutoff p-value.
+	 * Calculate and return the content VA based on a given cutoff p-value.
 	 * 
-	 * @param compareSet The set for which the VA comparison result needs to be calculated.
+	 * @param set The set for which the VA comparison result needs to be calculated.
 	 * @param cutOffPValue A cutoff p-value between 0 and 1.
 	 * @return the content VA fulfilling the cutoff value.
 	 */
-	public ContentVirtualArray getVABasedOnCompareResult(ISet compareSet, float cutOffPValue) {
+	public ContentVirtualArray getVABasedOnTwoSidedTTestResult(ISet compareSet, float cutOffPValue) {
 		
 		ContentVirtualArray filteredVA = new ContentVirtualArray(ContentVAType.CONTENT);		
 		ContentVirtualArray origVA = compareSet.getContentVA(ContentVAType.CONTENT);
 	
-		ArrayList<Double> compareResultVector = hashSetToCompareResult.get(compareSet);
+		ArrayList<Double> compareResultVector = setToTwoSidedTTestResult.get(compareSet);
 		
 		for (Integer contentIndex = 0; contentIndex < origVA.size(); contentIndex++) {
 			
@@ -55,8 +78,27 @@ public class StatisticsResult {
 		return filteredVA;
 	}
 	
-	public Double getCompareResult(ISet compareSet, Integer contentID) {
+	/**
+	 * Calculate and return the content VA based on a given cutoff fold change.
+	 * 
+	 * @param set The set for which the VA comparison result needs to be calculated.
+	 * @param foldChange A cutoff foldChange value.
+	 * @return the content VA greater than the cutoff fold change value.
+	 */
+	public ContentVirtualArray getVABasedOnFoldChangeResult(ISet compareSet, float foldChange) {
 		
-		return hashSetToCompareResult.get(compareSet).get(contentID);
+		ContentVirtualArray filteredVA = new ContentVirtualArray(ContentVAType.CONTENT);		
+		ContentVirtualArray origVA = compareSet.getContentVA(ContentVAType.CONTENT);
+	
+		double[] resultVector = setToFoldChangeResult.get(compareSet);
+		
+		for (Integer contentIndex = 0; contentIndex < origVA.size(); contentIndex++) {
+			
+			Integer contentID = origVA.get(contentIndex);
+			if (resultVector[contentIndex] > foldChange)
+				filteredVA.appendUnique(contentID);
+		}
+		
+		return filteredVA;
 	}
 }
