@@ -25,7 +25,7 @@ public class HeatMapRenderer extends AContentRenderer {
 
 	public void render(final GL gl) {
 
-		contentSpacing.yDistances.clear();
+		contentSpacing.getYDistances().clear();
 		// renderStyle.updateFieldSizes();
 		float yPosition = y;
 		float xPosition = 0;
@@ -44,7 +44,7 @@ public class HeatMapRenderer extends AContentRenderer {
 			if (heatMap.isHideElements()
 					&& heatMap.getContentSelectionManager().checkStatus(
 							GLHeatMap.SELECTION_HIDDEN, contentID)) {
-				contentSpacing.yDistances.add(yPosition);
+				contentSpacing.getYDistances().add(yPosition);
 				continue;
 			}
 			// else if (heatMap.getContentSelectionManager().checkStatus(
@@ -73,7 +73,7 @@ public class HeatMapRenderer extends AContentRenderer {
 
 			// renderStyle.setXDistanceAt(contentVA.indexOf(iContentIndex),
 			// fXPosition);
-			contentSpacing.yDistances.add(yPosition);
+			contentSpacing.getYDistances().add(yPosition);
 
 		}
 	}
@@ -117,15 +117,11 @@ public class HeatMapRenderer extends AContentRenderer {
 	}
 
 	public float getYCoordinateByContentIndex(int contentIndex) {
-		if (!contentSpacing.yDistances.isEmpty()) {
-//			if (!heatMap.getContentSelectionManager().checkStatus(
-//					SelectionType.MOUSE_OVER, contentIndex))
-//				System.out.println("wu");
-			return y - contentSpacing.yDistances.get(contentIndex)
-					- contentSpacing.getFieldHeight(heatMap.getContentVA().get(contentIndex)) / 2;
-		} else {
-			return 0;
-		}
+
+		return y
+				- contentSpacing.getYDistances().get(contentIndex)
+				- contentSpacing.getFieldHeight(heatMap.getContentVA().get(
+						contentIndex)) / 2;
 	}
 
 	public float getXCoordinateByStorageIndex(int storageIndex) {

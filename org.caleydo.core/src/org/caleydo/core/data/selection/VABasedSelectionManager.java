@@ -1,6 +1,8 @@
 package org.caleydo.core.data.selection;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.EIDType;
@@ -229,5 +231,22 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 				size++;
 		}
 		return size;
+	}
+
+	/**
+	 * Return only those elements that are actually in this selection manager. FIXME: this is slow, need a
+	 * better solution
+	 */
+	@Override
+	public Set<Integer> getElements(SelectionType selectionType) {
+
+		Set<Integer> zoomedElements = super.getElements(selectionType);
+
+//		Iterator<Integer> elementIterator = zoomedElements.iterator();
+//		while (elementIterator.hasNext()) {
+//			if (virtualArray.containsElement(elementIterator.next()) == 0)
+//				elementIterator.remove();
+//		}
+		return zoomedElements;
 	}
 }

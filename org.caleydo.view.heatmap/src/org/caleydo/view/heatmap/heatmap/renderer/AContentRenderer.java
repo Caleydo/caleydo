@@ -1,6 +1,7 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.renderer.spacing.ContentSpacing;
 
 public abstract class AContentRenderer extends ARenderer {
 

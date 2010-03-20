@@ -9,8 +9,8 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.AContentRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ARenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.ContentSpacing;
 import org.caleydo.view.heatmap.heatmap.renderer.HeatMapRenderer;
+import org.caleydo.view.heatmap.heatmap.renderer.spacing.ContentSpacing;
 
 public class TemplateRenderer {
 

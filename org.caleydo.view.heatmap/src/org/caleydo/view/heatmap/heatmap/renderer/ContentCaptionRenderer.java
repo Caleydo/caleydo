@@ -86,7 +86,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 			if (fieldHeight < HeatMapRenderStyle.MIN_FIELD_HEIGHT_FOR_CAPTION)
 				continue;
 
-			yPosition = contentSpacing.yDistances.get(contentVA
+			yPosition = contentSpacing.getYDistances().get(contentVA
 					.indexOf(contentID));
 
 			textRenderer.setColor(0, 0, 0, 1);

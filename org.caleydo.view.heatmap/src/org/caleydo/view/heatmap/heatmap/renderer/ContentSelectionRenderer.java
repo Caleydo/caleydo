@@ -43,7 +43,7 @@ public class ContentSelectionRenderer extends AContentRenderer {
 					float fieldHeight = contentSpacing
 							.getFieldHeight(contentIndex);
 					// width = heatMap.getStorageVA().size() * fieldWidth;
-					yPosition = contentSpacing.yDistances.get(lineIndex);
+					yPosition = contentSpacing.getYDistances().get(lineIndex);
 					xPosition = 0;
 					gl.glPushName(heatMap.getPickingManager().getPickingID(
 							heatMap.getID(),

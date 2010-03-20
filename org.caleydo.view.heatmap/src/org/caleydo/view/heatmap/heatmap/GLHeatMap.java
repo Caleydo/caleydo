@@ -1,6 +1,8 @@
 package org.caleydo.view.heatmap.heatmap;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
@@ -376,6 +378,7 @@ public class GLHeatMap extends AStorageBasedView {
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
+				
 				// Prevent handling of non genetic data in context menu
 				if (generalManager.getUseCase(dataDomain).getDataDomain() != EDataDomain.GENETIC_DATA)
 					break;
@@ -395,7 +398,7 @@ public class GLHeatMap extends AStorageBasedView {
 				return;
 
 			}
-
+			setActive(true);
 			createContentSelection(selectionType, iExternalID);
 
 			break;
@@ -906,5 +909,33 @@ public class GLHeatMap extends AStorageBasedView {
 	public void recalculateLayout() {
 		processEvents();
 		template.recalculateSpacings();
+	}
+
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
+			boolean scrollToSelection, String info) {
+		super.handleSelectionUpdate(selectionDelta, scrollToSelection, info);
+
+		if (getZoomedElements().size() > 0)
+			this.setActive(true);
+		else
+			this.setActive(false);
+	}
+
+	public Set<Integer> getZoomedElements() {
+		Set<Integer> zoomedElements = new HashSet<Integer>(
+				contentSelectionManager.getElements(SelectionType.MOUSE_OVER));
+		zoomedElements.addAll(contentSelectionManager
+				.getElements(SelectionType.SELECTION));
+		Iterator<Integer> elementIterator = zoomedElements.iterator();
+		while (elementIterator.hasNext()) {
+			int contentID = elementIterator.next();
+			if (contentVA.containsElement(contentID) == 0)
+				elementIterator.remove();
+			else if (contentSelectionManager.checkStatus(SELECTION_HIDDEN,
+					contentID))
+				elementIterator.remove();
+		}
+		return zoomedElements;
 	}
 }
