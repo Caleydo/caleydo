@@ -702,17 +702,17 @@ public class HeatMapWrapper {
 
 				// here we re-sort the genes in the local va so that they are in
 				// the order of the foreign contentVAs
-				for (int foreignVAIndex = foreignContentVAs.size() - 1; foreignVAIndex >= 0; foreignVAIndex--) {
-					int lastMovedIndex = 0;
-					ContentVirtualArray foreignVA = foreignContentVAs
-							.get(foreignVAIndex);
-					for (int foreignID : foreignVA) {
-						int contentIndex = contentVA.indexOf(foreignID);
-						if (contentIndex != -1) {
-							contentVA.move(contentIndex, lastMovedIndex++);
-						}
-					}
-				}
+//				for (int foreignVAIndex = foreignContentVAs.size() - 1; foreignVAIndex >= 0; foreignVAIndex--) {
+//					int lastMovedIndex = 0;
+//					ContentVirtualArray foreignVA = foreignContentVAs
+//							.get(foreignVAIndex);
+//					for (int foreignID : foreignVA) {
+//						int contentIndex = contentVA.indexOf(foreignID);
+//						if (contentIndex != -1) {
+//							contentVA.move(contentIndex, lastMovedIndex++);
+//						}
+//					}
+//				}
 
 				// hide the elements not in the source vas
 				SelectionDelta contentSelectionDelta = new SelectionDelta(
