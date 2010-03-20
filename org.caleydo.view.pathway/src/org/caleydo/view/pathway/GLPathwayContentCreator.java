@@ -29,7 +29,6 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
@@ -490,12 +489,12 @@ public class GLPathwayContentCreator {
 			// Handle selection highlighting of element
 			if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
 					vertexRep.getId())) {
-				tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+				tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 				gl.glColor4fv(tmpNodeColor, 0);
 				fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
 			} else if (internalSelectionManager.checkStatus(
 					SelectionType.SELECTION, vertexRep.getId())) {
-				tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
+				tmpNodeColor = SelectionType.SELECTION.getColor();
 				gl.glColor4fv(tmpNodeColor, 0);
 				fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
 			}
@@ -514,13 +513,13 @@ public class GLPathwayContentCreator {
 			// Handle selection highlighting of element
 			if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
 					vertexRep.getId())) {
-				tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+				tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 
 				gl.glColor4fv(tmpNodeColor, 0);
 				gl.glCallList(iHighlightedCompoundNodeDisplayListId);
 			} else if (internalSelectionManager.checkStatus(
 					SelectionType.SELECTION, vertexRep.getId())) {
-				tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
+				tmpNodeColor = SelectionType.SELECTION.getColor();
 
 				gl.glColor4fv(tmpNodeColor, 0);
 				gl.glCallList(iHighlightedCompoundNodeDisplayListId);
@@ -588,7 +587,7 @@ public class GLPathwayContentCreator {
 						// Handle selection highlighting of element
 						if (internalSelectionManager.checkStatus(
 								SelectionType.MOUSE_OVER, vertexRep.getId())) {
-							tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+							tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 							gl.glLineWidth(3);
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glBegin(GL.GL_LINE_STRIP);
@@ -604,7 +603,7 @@ public class GLPathwayContentCreator {
 							gl.glEnd();
 						} else if (internalSelectionManager.checkStatus(
 								SelectionType.SELECTION, vertexRep.getId())) {
-							tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
+							tmpNodeColor = SelectionType.SELECTION.getColor();
 							gl.glLineWidth(3);
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glBegin(GL.GL_LINE_STRIP);
@@ -625,10 +624,10 @@ public class GLPathwayContentCreator {
 				// Handle selection highlighting of element
 				if (internalSelectionManager.checkStatus(
 						SelectionType.MOUSE_OVER, vertexRep.getId())) {
-					tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+					tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 				} else if (internalSelectionManager.checkStatus(
 						SelectionType.SELECTION, vertexRep.getId())) {
-					tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
+					tmpNodeColor = SelectionType.SELECTION.getColor();
 				}
 				// else if (internalSelectionManager.checkStatus(
 				// SelectionType.NORMAL, vertexRep.getId())) {
@@ -703,12 +702,12 @@ public class GLPathwayContentCreator {
 						// Handle selection highlighting of element
 						if (internalSelectionManager.checkStatus(
 								SelectionType.MOUSE_OVER, vertexRep.getId())) {
-							tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+							tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
 						} else if (internalSelectionManager.checkStatus(
 								SelectionType.SELECTION, vertexRep.getId())) {
-							tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
+							tmpNodeColor = SelectionType.SELECTION.getColor();
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
 						}
@@ -718,10 +717,10 @@ public class GLPathwayContentCreator {
 				// Handle selection highlighting of element
 				if (internalSelectionManager.checkStatus(
 						SelectionType.MOUSE_OVER, vertexRep.getId())) {
-					tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+					tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 				} else if (internalSelectionManager.checkStatus(
 						SelectionType.SELECTION, vertexRep.getId())) {
-					tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
+					tmpNodeColor = SelectionType.SELECTION.getColor();
 				} else if (internalSelectionManager.checkStatus(
 						SelectionType.NORMAL, vertexRep.getId())) {
 					tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;

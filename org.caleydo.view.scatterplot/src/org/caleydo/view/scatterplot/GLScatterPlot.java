@@ -72,7 +72,6 @@ import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -1654,7 +1653,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	
 	    float z = ScatterPlotRenderStyle.MATRIX_SELECTIONRECTANGLE_Z;
 	
-	    float[] fArMappingColor = GeneralRenderStyle.SELECTED_COLOR;
+	    float[] fArMappingColor = SelectionType.SELECTION.getColor();
 	
 	    if (bIsSecondAxis) {
 	      fArMappingColor = new float[] { 0.1F, 0.6F, 0.1F };
@@ -1681,7 +1680,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	
 	    fxOffset = fxOffset + (fStepX + fSpacerX) * 
 	      (iCurrentAxisSelectionX + iMOVERZOOMX);
-	    fArMappingColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+	    fArMappingColor = SelectionType.MOUSE_OVER.getColor();
 	
 	    renderRectangularSelection(gl, fxOffset - fEdge, fyOffset - fEdge, z, 
 	      fStepX * iZoomfactor + 2.0F * fEdge, fStepY * iZoomfactor + 2.0F * 
@@ -2356,7 +2355,7 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 				ynormalized));
 		if (contentSelectionManager.checkStatus(SelectionType.SELECTION,
 				iContentIndex))
-			fArMappingColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+			fArMappingColor = SelectionType.MOUSE_OVER.getColor();
 
 		float z = ScatterPlotRenderStyle.LABEL_Z;
 		float fullPoint = POINTSIZE * 2f;

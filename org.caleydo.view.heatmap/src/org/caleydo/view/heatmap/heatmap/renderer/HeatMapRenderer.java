@@ -1,14 +1,6 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_LINE_WIDTH;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
-import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
-
-import java.util.ArrayList;
-import java.util.Set;
 
 import javax.media.opengl.GL;
 
@@ -38,37 +30,41 @@ public class HeatMapRenderer extends AContentRenderer {
 		float yPosition = y;
 		float xPosition = 0;
 		float fieldHeight = 0;
+		float fieldWidth = contentSpacing.getFieldWidth();
 
 		// renderStyle.clearFieldWidths();
 		int iCount = 0;
 
-		for (Integer iContentIndex : heatMap.getContentVA()) {
+		for (Integer contentID : heatMap.getContentVA()) {
 			iCount++;
+			fieldHeight = contentSpacing.getFieldHeight(contentID);
+
 			// we treat normal and deselected the same atm
 
 			if (heatMap.isHideElements()
 					&& heatMap.getContentSelectionManager().checkStatus(
-							GLHeatMap.SELECTION_HIDDEN, iContentIndex)) {
+							GLHeatMap.SELECTION_HIDDEN, contentID)) {
 				contentSpacing.yDistances.add(yPosition);
 				continue;
-			} else if (heatMap.getContentSelectionManager().checkStatus(
-					SelectionType.SELECTION, iContentIndex)
-					|| heatMap.getContentSelectionManager().checkStatus(
-							SelectionType.MOUSE_OVER, iContentIndex)) {
-				fieldHeight = selectedFieldHeight;
-				// currentType = SelectionType.SELECTION;
-
-			} else {
-
-				fieldHeight = normalFieldHeight;
-				// currentType = SelectionType.NORMAL;
 			}
+			// else if (heatMap.getContentSelectionManager().checkStatus(
+			// SelectionType.SELECTION, iContentIndex)
+			// || heatMap.getContentSelectionManager().checkStatus(
+			// SelectionType.MOUSE_OVER, iContentIndex)) {
+			// fieldHeight = selectedFieldHeight;
+			// // currentType = SelectionType.SELECTION;
+			//
+			// } else {
+			//
+			// fieldHeight = normalFieldHeight;
+			// // currentType = SelectionType.NORMAL;
+			// }
 			yPosition -= fieldHeight;
 			xPosition = 0;
 
 			for (Integer iStorageIndex : heatMap.getStorageVA()) {
 
-				renderElement(gl, iStorageIndex, iContentIndex, yPosition,
+				renderElement(gl, iStorageIndex, contentID, yPosition,
 						xPosition, fieldHeight, fieldWidth);
 
 				xPosition += fieldWidth;
@@ -121,16 +117,19 @@ public class HeatMapRenderer extends AContentRenderer {
 	}
 
 	public float getYCoordinateByContentIndex(int contentIndex) {
-		if (!contentSpacing.yDistances.isEmpty())
+		if (!contentSpacing.yDistances.isEmpty()) {
+//			if (!heatMap.getContentSelectionManager().checkStatus(
+//					SelectionType.MOUSE_OVER, contentIndex))
+//				System.out.println("wu");
 			return y - contentSpacing.yDistances.get(contentIndex)
-					- normalFieldHeight / 2;
-		else {
-			return contentIndex * normalFieldHeight - normalFieldHeight / 2;
+					- contentSpacing.getFieldHeight(heatMap.getContentVA().get(contentIndex)) / 2;
+		} else {
+			return 0;
 		}
 	}
 
 	public float getXCoordinateByStorageIndex(int storageIndex) {
-		return fieldWidth * storageIndex;
+		return contentSpacing.getFieldWidth() * storageIndex;
 	}
 
 }

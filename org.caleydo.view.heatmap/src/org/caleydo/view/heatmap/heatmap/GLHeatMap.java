@@ -1,7 +1,5 @@
 package org.caleydo.view.heatmap.heatmap;
 
-import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -12,11 +10,12 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
-import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageSelectionManager;
-import org.caleydo.core.data.selection.VABasedSelectionManager;
+import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -72,16 +71,6 @@ public class GLHeatMap extends AStorageBasedView {
 
 	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 	private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
-
-	// private boolean bRenderHorizontally = false;
-
-	// private Vec4f vecRotation = new Vec4f(-90, 0, 0, 1);
-
-	private Vec3f vecTranslation;
-
-	private float fAnimationTranslation = 0;
-
-	private boolean bIsTranslationAnimationActive = false;
 
 	private float fAnimationTargetTranslation = 0;
 
@@ -201,8 +190,6 @@ public class GLHeatMap extends AStorageBasedView {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 		}
-		// renderStyle.setDetailLevel(detailLevel);
-		renderStyle.updateFieldSizes();
 	}
 
 	@Override
@@ -212,10 +199,6 @@ public class GLHeatMap extends AStorageBasedView {
 			return;
 		if (set == null)
 			return;
-
-		if (bIsTranslationAnimationActive) {
-			doTranslation();
-		}
 
 		pickingManager.handlePicking(this, gl);
 
@@ -243,13 +226,6 @@ public class GLHeatMap extends AStorageBasedView {
 	public void displayRemote(GL gl) {
 		if (set == null)
 			return;
-		// GLHelperFunctions.drawPointAt(gl, viewFrustum.getBottom(),
-		// viewFrustum
-		// .getLeft(), 0);
-		if (bIsTranslationAnimationActive) {
-			bIsDisplayListDirtyRemote = true;
-			doTranslation();
-		}
 
 		if (bIsDisplayListDirtyRemote) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
@@ -326,9 +302,6 @@ public class GLHeatMap extends AStorageBasedView {
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
 		if (getRemoteRenderingGLCanvas() instanceof GLHierarchicalHeatMap)
 			renderStyle.setUseFishEye(false);
-
-		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
-
 	}
 
 	@Override
@@ -563,7 +536,7 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	public void upDownSelect(boolean isUp) {
-		IVirtualArray virtualArray = contentVA;
+		ContentVirtualArray virtualArray = contentVA;
 		if (virtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for selectNext Operation");
@@ -575,7 +548,7 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	public void leftRightSelect(boolean isLeft) {
-		IVirtualArray virtualArray = storageVA;
+		StorageVirtualArray virtualArray = storageVA;
 		if (virtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for selectNext Operation");
@@ -586,8 +559,9 @@ public class GLHeatMap extends AStorageBasedView {
 		createStorageSelection(SelectionType.MOUSE_OVER, selectedElement);
 	}
 
-	private int cursorSelect(IVirtualArray virtualArray,
-			VABasedSelectionManager selectionManager, boolean isUp) {
+	private <VAType extends VirtualArray<?, ?, ?, ?>, SelectionManagerType extends SelectionManager> int cursorSelect(
+			VAType virtualArray, SelectionManagerType selectionManager,
+			boolean isUp) {
 
 		Set<Integer> elements = selectionManager
 				.getElements(SelectionType.MOUSE_OVER);
@@ -717,30 +691,6 @@ public class GLHeatMap extends AStorageBasedView {
 	 */
 	public Float getXCoordinateByStorageIndex(int storageIndex) {
 		return templateRenderer.getXCoordinateByStorageIndex(storageIndex);
-	}
-
-	private void doTranslation() {
-
-		float fDelta = 0;
-		if (fAnimationTargetTranslation < fAnimationTranslation - 0.5f) {
-
-			fDelta = -0.5f;
-
-		} else if (fAnimationTargetTranslation > fAnimationTranslation + 0.5f) {
-			fDelta = 0.5f;
-		} else {
-			fDelta = fAnimationTargetTranslation - fAnimationTranslation;
-			bIsTranslationAnimationActive = false;
-		}
-
-		if (elementRep != null) {
-			ArrayList<Vec3f> alPoints = elementRep.getPoints();
-			for (Vec3f currentPoint : alPoints) {
-				currentPoint.setY(currentPoint.y() - fDelta);
-			}
-		}
-
-		fAnimationTranslation += fDelta;
 	}
 
 	@Override
@@ -935,12 +885,11 @@ public class GLHeatMap extends AStorageBasedView {
 	 *            due to the fish eye
 	 * @return the height of the element
 	 */
-	public float getElementHeight(int contentID) {
+	public float getFieldHeight(int contentID) {
 		return templateRenderer.getElementHeight(contentID);
 	}
-	
-	public float getElementWidth(int storageID)
-	{
+
+	public float getFieldWidth(int storageID) {
 		return templateRenderer.getElementWidth(storageID);
 	}
 
@@ -951,21 +900,11 @@ public class GLHeatMap extends AStorageBasedView {
 	 * @return
 	 */
 	public float getMinSpacing() {
-		// FIXME: this is a "hausnummer"
-		return 0.06f;
+		return HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT;
 	}
 
 	public void recalculateLayout() {
 		processEvents();
 		template.recalculateSpacings();
 	}
-
-	public void setCaptionsImpossible(boolean areCaptionsPossible) {
-		this.captionsImpossible = areCaptionsPossible;
-	}
-
-	public boolean isCaptionsImpossible() {
-		return captionsImpossible;
-	}
-
 }

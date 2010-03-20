@@ -1,8 +1,6 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
 import java.awt.Font;
-import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 import java.util.Set;
 
 import javax.media.opengl.GL;
@@ -57,37 +55,39 @@ public class ContentCaptionRenderer extends AContentRenderer {
 
 		ContentVirtualArray contentVA = heatMap.getContentVA();
 
-		for (Integer iContentIndex : contentVA) {
+		for (Integer contentID : contentVA) {
 
 			boolean isSelected;
 			if (heatMap.isHideElements()
 					&& heatMap.getContentSelectionManager().checkStatus(
-							GLHeatMap.SELECTION_HIDDEN, iContentIndex)) {
+							GLHeatMap.SELECTION_HIDDEN, contentID)) {
 				continue;
-			} else if (heatMap.getContentSelectionManager().checkStatus(
-					SelectionType.SELECTION, iContentIndex)
-					|| heatMap.getContentSelectionManager().checkStatus(
-							SelectionType.MOUSE_OVER, iContentIndex)) {
-				fieldHeight = selectedFieldHeight;
-				currentType = SelectionType.SELECTION;
-				isSelected = true;
-			} else {
-
-				fieldHeight = normalFieldHeight;
-				currentType = SelectionType.NORMAL;
-				isSelected = false;
-
-				if (heatMap.isCaptionsImpossible()) {
-					yPosition -= fieldHeight;
-					continue;
-				}
 			}
+			// else if (heatMap.getContentSelectionManager().checkStatus(
+			// SelectionType.SELECTION, iContentIndex)
+			// || heatMap.getContentSelectionManager().checkStatus(
+			// SelectionType.MOUSE_OVER, iContentIndex)) {
+			// fieldHeight = selectedFieldHeight;
+			// currentType = SelectionType.SELECTION;
+			// isSelected = true;
+			// } else {
+			//
+			// fieldHeight = normalFieldHeight;
+			// currentType = SelectionType.NORMAL;
+			// isSelected = false;
+			//
+			// if (contentSpacing.isUseFishEye()) {
+			// yPosition -= fieldHeight;
+			// continue;
+			// }
+			// }
 
-			yPosition -= fieldHeight;
+			fieldHeight = contentSpacing.getFieldHeight(contentID);
+			if (fieldHeight < HeatMapRenderStyle.MIN_FIELD_HEIGHT_FOR_CAPTION)
+				continue;
 
-			sContent = getID(iContentIndex, false);
-			if (sContent == null)
-				sContent = "Unknown";
+			yPosition = contentSpacing.yDistances.get(contentVA
+					.indexOf(contentID));
 
 			textRenderer.setColor(0, 0, 0, 1);
 
@@ -103,7 +103,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 			// renderCaption(gl, refSeq, 0, yPosition + fieldHeight / 6
 			// * 4.5f, 0, fLineDegrees, fFontScaling);
 			// } else {
-			renderCaption(gl, sContent, 0, yPosition, 0, fFontScaling);
+			renderCaption(gl, contentID, 0, yPosition, 0, fFontScaling);
 			// }
 
 			// if (heatMap.bClusterVisualizationGenesActive)
@@ -113,7 +113,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 		}
 	}
 
-	private String getID(Integer iContentIndex, boolean beVerbose) {
+	private String getID(Integer contentID, boolean beVerbose) {
 		String sContent = "";
 
 		IIDMappingManager idMappingManager = GeneralManager.get()
@@ -127,8 +127,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 			// loading expression data. Possibly a different
 			// handling of the Set is required.
 			Set<String> setGeneSymbols = idMappingManager.getIDAsSet(
-					EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL,
-					iContentIndex);
+					EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, contentID);
 
 			if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
 				sContent = (String) setGeneSymbols.toArray()[0];
@@ -148,7 +147,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 			if (beVerbose) {
 				Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(
 						EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA,
-						iContentIndex);
+						contentID);
 
 				if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
 					String refSeq = (String) setRefSeqIDs.toArray()[0];
@@ -159,7 +158,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 			}
 		} else if (setType == ESetType.UNSPECIFIED) {
 			sContent = idMappingManager.getID(EIDType.EXPRESSION_INDEX,
-					EIDType.UNSPECIFIED, iContentIndex);
+					EIDType.UNSPECIFIED, contentID);
 		} else {
 			throw new IllegalStateException("Label extraction for " + setType
 					+ " not implemented yet!");
@@ -168,8 +167,12 @@ public class ContentCaptionRenderer extends AContentRenderer {
 		return sContent;
 	}
 
-	private void renderCaption(GL gl, String sLabel, float xOrigin,
+	private void renderCaption(GL gl, int contentIndex, float xOrigin,
 			float yOrigin, float zOrigin, float fontScaling) {
+
+		String sLabel = getID(contentIndex, false);
+		if (sLabel == null)
+			sLabel = "Unknown";
 
 		if (sLabel.length() > GeneralRenderStyle.NUM_CHAR_LIMIT + 1) {
 			sLabel = sLabel.substring(0, GeneralRenderStyle.NUM_CHAR_LIMIT - 2);
@@ -180,7 +183,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 		float requiredSize = (float) textRenderer.getScaledBounds(gl, sLabel,
 				fontScaling, fontSize).getHeight();
 
-		spacing = (normalFieldHeight - requiredSize) / 2;
+		spacing = (contentSpacing.getFieldHeight(contentIndex) - requiredSize) / 2;
 		if (spacing < 0)
 			spacing = 0;
 

@@ -1,8 +1,6 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_LINE_WIDTH;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 
@@ -30,10 +28,10 @@ public class StorageSelectionRenderer extends AContentRenderer {
 		float xPosition = 0;
 
 		if (selectionType == SelectionType.SELECTION) {
-			gl.glColor4fv(SELECTED_COLOR, 0);
+			gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 			gl.glLineWidth(SELECTED_LINE_WIDTH);
 		} else if (selectionType == SelectionType.MOUSE_OVER) {
-			gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+			gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 			gl.glLineWidth(MOUSE_OVER_LINE_WIDTH);
 		}
 
@@ -50,7 +48,7 @@ public class StorageSelectionRenderer extends AContentRenderer {
 				if (tempColumn == selectedColumn) {
 					// TODO we need indices of all elements
 
-					xPosition = columnIndex * fieldWidth;
+					xPosition = columnIndex * contentSpacing.getFieldWidth();
 
 					gl.glPushName(heatMap.getPickingManager().getPickingID(
 							heatMap.getID(),
@@ -60,8 +58,8 @@ public class StorageSelectionRenderer extends AContentRenderer {
 					gl.glBegin(GL.GL_LINE_LOOP);
 					gl.glVertex3f(xPosition, y, SELECTION_Z);
 					gl.glVertex3f(xPosition, 0, SELECTION_Z);
-					gl.glVertex3f(xPosition + fieldWidth, 0, SELECTION_Z);
-					gl.glVertex3f(xPosition + fieldWidth, y, SELECTION_Z);
+					gl.glVertex3f(xPosition + contentSpacing.getFieldWidth(), 0, SELECTION_Z);
+					gl.glVertex3f(xPosition + contentSpacing.getFieldWidth(), y, SELECTION_Z);
 					gl.glEnd();
 					gl.glPopName();
 				}

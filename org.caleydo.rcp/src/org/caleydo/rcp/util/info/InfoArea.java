@@ -37,7 +37,6 @@ import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.rcp.util.info.listener.InfoAreaUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -217,10 +216,10 @@ public class InfoArea
 							float[] fArColor = null;
 
 							if (selectionItem.getSelectionType() == SelectionType.SELECTION) {
-								fArColor = GeneralRenderStyle.SELECTED_COLOR;
+								fArColor = SelectionType.SELECTION.getColor();
 							}
 							else if (selectionItem.getSelectionType() == SelectionType.MOUSE_OVER) {
-								fArColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+								fArColor = SelectionType.MOUSE_OVER.getColor();
 							}
 
 							color =
@@ -322,10 +321,10 @@ public class InfoArea
 							float[] fArColor = null;
 
 							if (selectionItem.getSelectionType() == SelectionType.SELECTION) {
-								fArColor = GeneralRenderStyle.SELECTED_COLOR;
+								fArColor = SelectionType.SELECTION.getColor();
 							}
 							else if (selectionItem.getSelectionType() == SelectionType.MOUSE_OVER) {
-								fArColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+								fArColor = SelectionType.MOUSE_OVER.getColor();
 							}
 
 							color =

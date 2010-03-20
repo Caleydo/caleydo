@@ -749,7 +749,7 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 					gl.glTranslatef(2.5f, 0, 0);
 				}
 
-				gl.glColor4fv(GeneralRenderStyle.MOUSE_OVER_COLOR, 0);
+				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(10, 2.7f, 0f);
 				gl.glVertex3f(18, 2.7f, 0f);
@@ -776,7 +776,7 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 					gl.glTranslatef(2.5f, 0, 0);
 				}
 
-				gl.glColor4fv(GeneralRenderStyle.SELECTED_COLOR, 0);
+				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(10, 2.9f, 0f);
 				gl.glVertex3f(18, 2.9f, 0f);

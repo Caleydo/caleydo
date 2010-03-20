@@ -3,10 +3,10 @@ package org.caleydo.view.radial;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
  * PDDrawingStrategySelected is responsible for drawing partial discs which have
@@ -32,7 +32,7 @@ public class PDDrawingStrategySelected extends APDDrawingStrategyChildIndicator 
 	 */
 	public PDDrawingStrategySelected(PickingManager pickingManager, int iViewID) {
 		super(pickingManager, iViewID);
-		fArBorderColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+		fArBorderColor = SelectionType.MOUSE_OVER.getColor();
 	}
 
 	@Override

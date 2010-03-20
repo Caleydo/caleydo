@@ -908,38 +908,14 @@ public class Set
 	public void createMetaSets() {
 		ClusterNode rootNode = hashStorageData.get(StorageVAType.STORAGE).getStorageTreeRoot();
 		rootNode.createMetaSets(this);
-
-		// test
-		// ISet metaSet = rootNode.getChildren().get(0).getChildren().get(0).getMetaSet();
-		//
-		// IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
-		// useCase.setSet(metaSet);
-		// useCase.updateSetInViews();
-		// tree.get
 	}
 
 	@Override
-	public ISet getShallowClone() {
-		Set metaSet = new Set();
-		metaSet.setType = this.setType;
-		metaSet.isSetHomogeneous = this.isSetHomogeneous;
-		metaSet.externalDataRep = this.externalDataRep;
-
-		// try {
-		// metaSet = (Set)super.clone();
-		// }
-		// catch (CloneNotSupportedException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-
-		return metaSet;
-	}
-
 	public StatisticsResult getStatisticsResult() {
 		return statisticsResult;
 	}
 
+	@Override
 	public NumericalStorage getMeanStorage() {
 		if (!bIsNumerical || !isSetHomogeneous)
 			throw new IllegalStateException(

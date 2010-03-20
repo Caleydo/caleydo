@@ -170,10 +170,10 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 
 			if (selectionManager.checkStatus(SelectionType.MOUSE_OVER, item
 					.getID())) {
-				highlightColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+				highlightColor = SelectionType.MOUSE_OVER.getColor();
 			} else if (selectionManager.checkStatus(SelectionType.SELECTION,
 					item.getID())) {
-				highlightColor = GeneralRenderStyle.SELECTED_COLOR;
+				highlightColor = SelectionType.SELECTION.getColor();
 
 			}
 			int pickingID = pickingIDManager.getPickingID(this, item.getID());

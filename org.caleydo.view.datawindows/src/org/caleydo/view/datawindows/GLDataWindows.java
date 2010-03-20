@@ -5,11 +5,8 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
 import java.awt.Point;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
-
 import java.util.ArrayList;
 import java.util.List;
 

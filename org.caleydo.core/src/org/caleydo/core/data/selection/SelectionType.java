@@ -2,8 +2,6 @@ package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-
 /**
  * <p>
  * A SelectionType is an object associated with a particular set of elements. The members of the set typically
@@ -23,6 +21,8 @@ public class SelectionType {
 	private String type = "Not set";
 	/** the color the selection type should be rendered in */
 	private float[] color = new float[] { 0, 0, 0, 1 };
+
+	private int[] intColor = new int[] { 0, 0, 0 };
 	/** flag that determines whether an element of this selection type should be visible or not */
 	private boolean isVisible = true;
 	/** flag that determines whether connection lines should be drawn to this selection type or not */
@@ -36,9 +36,9 @@ public class SelectionType {
 	public static final SelectionType NORMAL =
 		new SelectionType("Normal", new float[] { 0, 0, 0, 1 }, true, false, 0);
 	public static final SelectionType MOUSE_OVER =
-		new SelectionType("MouseOver", GeneralRenderStyle.MOUSE_OVER_COLOR, true, true, 1);
+		new SelectionType("MouseOver", new int[] { 166, 206, 227 }, true, true, 1);
 	public static final SelectionType SELECTION =
-		new SelectionType("Selected", GeneralRenderStyle.SELECTED_COLOR, true, false, 0.99f);
+		new SelectionType("Selected", new int[] { 31, 120, 180 }, true, false, 0.99f);
 	public static final SelectionType DESELECTED =
 		new SelectionType("Deselected", new float[] { 0, 0, 0, 1 }, false, false, 0);
 
@@ -68,9 +68,37 @@ public class SelectionType {
 	 */
 	public SelectionType(String type, float[] color, boolean isVisible, boolean isConnected, float priority) {
 		this.type = type;
-		if(color.length != 4)
-			throw new IllegalArgumentException("Color has to contain exactly 4 float values, but was: " + color);
-		this.color = color;
+		setColor(color);
+		setIntColor(convertFloatColor(color));
+		this.isVisible = isVisible;
+		this.isConnected = isConnected;
+		checkPiority(priority);
+		this.priority = priority;
+	}
+
+	/**
+	 * Convenience constructor for batch initialization, same as
+	 * {@link #SelectionType(String, float[], boolean, boolean, float)} except for that the color space is
+	 * defined in integers (0-255) instead of floats and contains only 3 values. The float color space is
+	 * calculated automatically and the transparency is assumed to be 1. It is possible to use
+	 * 
+	 * @param type
+	 *            a name for the selection type, human readable
+	 * @param color
+	 *            the color the selection type should be rendered in in integers (0-255)
+	 * @param isVisible
+	 *            flag that determines whether an element of this selection type should be visible or not
+	 * @param isConnected
+	 *            flag that determines whether connection lines should be drawn to this selection type or not
+	 * @param priority
+	 *            a priority determining which selection type should be rendered on top in case of
+	 *            multi-selections. The valid range is 0-1 where {@link #NORMAL} has 0, {@link #MOUSE_OVER} 1
+	 *            and {@link #SELECTION} 0.99
+	 */
+	public SelectionType(String type, int[] intColor, boolean isVisible, boolean isConnected, float priority) {
+		this.type = type;
+		setIntColor(intColor);
+		setColor(convertIntColor(intColor));
 		this.isVisible = isVisible;
 		this.isConnected = isConnected;
 		checkPiority(priority);
@@ -112,7 +140,31 @@ public class SelectionType {
 	 *            the color
 	 */
 	public void setColor(float[] color) {
+		if (color.length != 4)
+			throw new IllegalArgumentException("Color has to contain exactly 4 float values, but was: "
+				+ color);
 		this.color = color;
+	}
+
+	/**
+	 * Returns the int color array of length 3 (0-255)
+	 * 
+	 * @return
+	 */
+	public int[] getIntColor() {
+		return intColor;
+	}
+
+	/**
+	 * Sets the int color for this selection type (0-255). Does not automatically calculate the float values;
+	 * 
+	 * @param intColor
+	 */
+	public void setIntColor(int[] intColor) {
+		if (intColor.length != 3)
+			throw new IllegalArgumentException("intColor has to contain exactly 3 int values, but was: "
+				+ intColor);
+		this.intColor = intColor;
 	}
 
 	/**
@@ -217,6 +269,23 @@ public class SelectionType {
 			return true;
 
 		return false;
+	}
+
+	private static int[] convertFloatColor(float[] color) {
+		int[] intColor = new int[3];
+		intColor[0] = (int) (color[0] * 255 / color[3]);
+		intColor[1] = (int) (color[0] * 255 / color[3]);
+		intColor[2] = (int) (color[0] * 255 / color[3]);
+		return intColor;
+	}
+
+	private static float[] convertIntColor(int[] intColor) {
+		float[] color = new float[4];
+		color[0] = ((float) intColor[0]) / 255;
+		color[1] = ((float) intColor[1]) / 255;
+		color[2] = ((float) intColor[2]) / 255;
+		color[3] = 1;
+		return color;
 	}
 
 }

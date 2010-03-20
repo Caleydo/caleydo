@@ -3,7 +3,6 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.ContentVirtualArray;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class CaptionCageRenderer extends AContentRenderer {
@@ -21,25 +20,27 @@ public class CaptionCageRenderer extends AContentRenderer {
 		gl.glColor3f(0.6f, 0.6f, 0.6f);
 		gl.glLineWidth(2);
 
-		if (!heatMap.isCaptionsImpossible()) {
+		if (!contentSpacing.isUseFishEye()) {
 
 			ContentVirtualArray contentVA = heatMap.getContentVA();
 
-			for (Integer iContentIndex : contentVA) {
+			for (Integer contentID : contentVA) {
 				if (heatMap.isHideElements()
 						&& heatMap.getContentSelectionManager().checkStatus(
-								GLHeatMap.SELECTION_HIDDEN, iContentIndex)) {
+								GLHeatMap.SELECTION_HIDDEN, contentID)) {
 					continue;
-				} else if (heatMap.getContentSelectionManager().checkStatus(
-						SelectionType.SELECTION, iContentIndex)
-						|| heatMap.getContentSelectionManager().checkStatus(
-								SelectionType.MOUSE_OVER, iContentIndex)) {
-					fieldHeight = selectedFieldHeight;
-
-				} else {
-
-					fieldHeight = normalFieldHeight;
 				}
+				// else if (heatMap.getContentSelectionManager().checkStatus(
+				// SelectionType.SELECTION, iContentIndex)
+				// || heatMap.getContentSelectionManager().checkStatus(
+				// SelectionType.MOUSE_OVER, iContentIndex)) {
+				// fieldHeight = selectedFieldHeight;
+				//
+				// } else {
+				//
+				// fieldHeight = normalFieldHeight;
+				// }
+				fieldHeight = contentSpacing.getFieldHeight(contentID);
 
 				gl.glBegin(GL.GL_LINE_STRIP);
 				gl.glVertex3f(xPosition, yPosition, 0);

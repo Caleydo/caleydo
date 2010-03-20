@@ -6,9 +6,9 @@ public abstract class AContentRenderer extends ARenderer {
 
 	protected ContentSpacing contentSpacing;
 
-	protected float selectedFieldHeight;
-	protected float normalFieldHeight;
-	protected float fieldWidth;
+//	protected float selectedFieldHeight;
+//	protected float normalFieldHeight;
+//	protected float fieldWidth;
 
 	protected GLHeatMap heatMap;
 
@@ -18,9 +18,9 @@ public abstract class AContentRenderer extends ARenderer {
 
 	public void setContentSpacing(ContentSpacing contentSpacing) {
 		this.contentSpacing = contentSpacing;
-		fieldWidth = contentSpacing.getFieldWidth();
-		selectedFieldHeight = contentSpacing.getSelectedFieldHeight();
-		normalFieldHeight = contentSpacing.getNormalFieldHeight();
+//		fieldWidth = contentSpacing.getFieldWidth();
+//		selectedFieldHeight = contentSpacing.getSelectedFieldHeight();
+//		normalFieldHeight = contentSpacing.getNormalFieldHeight();
 	}
 
 }

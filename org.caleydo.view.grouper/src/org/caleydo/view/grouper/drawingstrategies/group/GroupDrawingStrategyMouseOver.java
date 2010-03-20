@@ -2,9 +2,9 @@ package org.caleydo.view.grouper.drawingstrategies.group;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.grouper.GrouperRenderStyle;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 
@@ -39,7 +39,7 @@ public class GroupDrawingStrategyMouseOver extends
 
 		drawGroupRectangular(gl, groupRepresentation, textRenderer);
 
-		gl.glColor4fv(GeneralRenderStyle.MOUSE_OVER_COLOR, 0);
+		gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 		gl.glLineWidth(3.0f);
 
 		drawRectangularBorder(gl, groupRepresentation, textRenderer);
@@ -74,7 +74,7 @@ public class GroupDrawingStrategyMouseOver extends
 		drawLeafRectangular(gl, groupRepresentation, textRenderer);
 
 		gl.glLineWidth(3.0f);
-		gl.glColor4fv(GeneralRenderStyle.MOUSE_OVER_COLOR, 0);
+		gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 
 		drawRectangularBorder(gl, groupRepresentation, textRenderer);
 

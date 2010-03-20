@@ -199,9 +199,9 @@ public class DetailViewState extends ACompareViewState {
 		HeatMapWrapper rightHeatMapWrapper = heatMapWrappers.get(1);
 
 		float leftHeatMapElementOffset = detailBand.getLeftHeatMap()
-				.getElementHeight(startContentID) / 2f - 0.01f;
+				.getFieldHeight(startContentID) / 2f - 0.01f;
 		float rightHeatMapElementOffset = detailBand.getRightHeatMap()
-				.getElementHeight(startContentID) / 2f - 0.01f;
+				.getFieldHeight(startContentID) / 2f - 0.01f;
 
 		Vec2f leftPos = leftHeatMapWrapper
 				.getRightDetailLinkPositionFromContentID(startContentID);
@@ -318,7 +318,7 @@ public class DetailViewState extends ACompareViewState {
 				.getHeatMapByContentID(lastDetailContentID);
 
 		float heatMapElementOffset = detailHeatMap
-				.getElementHeight(firstDetailContentID) / 2f - 0f;
+				.getFieldHeight(firstDetailContentID) / 2f - 0f;
 
 		int numberOfVisibleLines = detailHeatMap.getNumberOfVisibleElements() - 1;
 		if (numberOfVisibleLines < 0)

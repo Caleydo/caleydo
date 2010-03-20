@@ -1,5 +1,6 @@
 package org.caleydo.view.pathway;
 
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
@@ -78,7 +79,7 @@ public class PathwayRenderStyle extends GeneralRenderStyle {
 		pathwayNodeShape = NodeShape.ROUNDRECTANGULAR;
 
 		neighborhoodNodeColorArray = new float[neighborhoodNodeColorArraysize][4];
-		neighborhoodNodeColorArray[0] = MOUSE_OVER_COLOR;
+		neighborhoodNodeColorArray[0] = SelectionType.MOUSE_OVER.getColor();
 		neighborhoodNodeColorArray[1] = new float[] { 0.2f, 0.2f, 1.0f };
 		neighborhoodNodeColorArray[2] = new float[] { 0.5f, 0.5f, 1.0f };
 		neighborhoodNodeColorArray[3] = new float[] { 0.8f, 0.8f, 1.0f };

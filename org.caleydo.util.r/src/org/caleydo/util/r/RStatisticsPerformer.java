@@ -15,7 +15,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.util.r.listener.CompareGroupsEventListener;
 import org.rosuda.JRI.REXP;
-import org.rosuda.JRI.RVector;
 import org.rosuda.JRI.Rengine;
 
 public class RStatisticsPerformer

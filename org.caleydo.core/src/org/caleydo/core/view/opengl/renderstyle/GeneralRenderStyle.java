@@ -28,14 +28,6 @@ public class GeneralRenderStyle {
 
 	public static final float MINIVEW_Z = 0.02f;
 
-	public static final float[] SELECTED_COLOR = { 1, 0, 1, 1 };
-	public static final Color SELECTED_COLOR_SWT = new Color(Display.getCurrent(), 255, 0, 255);
-	public static final java.awt.Color SELECTED_COLOR_AWT = new java.awt.Color(255, 0, 255);
-
-	public static final float[] MOUSE_OVER_COLOR = { 1, 1, 0, 1 };
-	public static final Color MOUSE_OVER_COLOR_SWT = new Color(Display.getCurrent(), 255, 255, 0);
-	public static final java.awt.Color MOUSE_OVER_COLOR_AWT = new java.awt.Color(255, 255, 0, 0);
-
 	private static final float[] BACKGROUND_COLOR = { 0.7f, 0.7f, 0.7f, 1f };
 
 	public static final float[] PANEL_BACKGROUN_COLOR = { 0.85f, 0.85f, 0.85f, 1f };
@@ -46,21 +38,11 @@ public class GeneralRenderStyle {
 
 	public static final float LOADING_BOX_HALF_HEIGHT = 0.3f;
 
-	public static final float SELECTION_BOX_WIDTH = 0.5f;
+	public static final float SELECTED_LINE_WIDTH = 2;
 
-	public static final float SELECTION_BOX_HEIGHT = 0.3f;
-
-	public static final float SELECTED_LINE_WIDTH = 3;
-
-	public static final float MOUSE_OVER_LINE_WIDTH = 3;
+	public static final float MOUSE_OVER_LINE_WIDTH = 2;
 
 	public static final int NUM_CHAR_LIMIT = 8;
-
-	// protected float fFrustumHeight = 0;
-	//
-	// protected float fFrustumWidth = 0;
-
-	// protected float fScaling = 1;
 
 	protected static final float BUTTONS_SPACING = 0.005f;
 
@@ -87,10 +69,6 @@ public class GeneralRenderStyle {
 		this.viewFrustum = viewFrustum;
 		minViewWidth = 0;
 		minViewHeight = 0;
-		// fFrustumWidth = viewFrustum.getRight() - viewFrustum.getLeft();
-		// fFrustumHeight = viewFrustum.getTop() - viewFrustum.getBottom();
-		// scaling is set to the smaller of the two
-
 	}
 
 	public float getSmallFontScalingFactor() {

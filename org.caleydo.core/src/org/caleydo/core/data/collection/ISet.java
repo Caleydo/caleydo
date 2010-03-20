@@ -458,13 +458,6 @@ public interface ISet
 	public void destroy();
 
 	/**
-	 * Returns a set with the
-	 * 
-	 * @return
-	 */
-	public ISet getShallowClone();
-
-	/**
 	 * Returns the statistics results. E.g. comparative t-test between sets.
 	 * 
 	 * @return the statistics result object containing all results.

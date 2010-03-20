@@ -1,7 +1,5 @@
 package org.caleydo.view.heatmap.hierarchical;
 
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.BACKGROUND_COLOR;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.BACKGROUND_Z;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.BUTTON_Z;
@@ -1755,7 +1753,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		gl.glLineWidth(2f);
 
-		gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+		gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(0, fPosCursorFirstElementLevel1, 0);
 		gl.glVertex3f(fWidthLevel1, fPosCursorFirstElementLevel1, 0);
@@ -1809,7 +1807,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			int index = contentVA.indexOf(mouseOverElement.intValue());
 
 			if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1) == false) {
-				gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(fWidthLevel1, fHeight - fHeightElem * index,
 						SELECTION_Z);
@@ -1824,7 +1822,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			int index = contentVA.indexOf(selectedElement.intValue());
 
 			if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1) == false) {
-				gl.glColor4fv(SELECTED_COLOR, 0);
+				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(fWidthLevel1, fHeight - fHeightElem * index,
 						SELECTION_Z);
@@ -2226,7 +2224,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		gl.glEnable(GL.GL_LINE_STIPPLE);
 		gl.glLineStipple(2, (short) 0xAAAA);
 
-		gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+		gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 		Set<Integer> selectedSet = storageSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
 		int iColumnIndex = 0;
@@ -2247,7 +2245,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			iColumnIndex++;
 		}
 
-		gl.glColor4fv(SELECTED_COLOR, 0);
+		gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 		selectedSet = storageSelectionManager
 				.getElements(SelectionType.SELECTION);
 		int iLineIndex = 0;
@@ -2271,7 +2269,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		Set<Integer> setMouseOverElements = contentSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
-		gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+		gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 
 		for (Integer mouseOverElement : setMouseOverElements) {
 
@@ -2302,7 +2300,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		Set<Integer> setSelectedElements = contentSelectionManager
 				.getElements(SelectionType.SELECTION);
-		gl.glColor4fv(SELECTED_COLOR, 0);
+		gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 
 		for (Integer iSelectedElement : setSelectedElements) {
 

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.ContentSelectionManager;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.AContentRenderer;
@@ -78,7 +77,7 @@ public class TemplateRenderer {
 			renderer.setLimits(parameters.sizeScaledX, parameters.sizeScaledY);
 			if (renderer instanceof AContentRenderer) {
 				if (contentSpacing == null) {
-					contentSpacing = new ContentSpacing();
+					contentSpacing = new ContentSpacing(heatMap);
 
 					int contentElements = heatMap.getContentVA().size();
 
@@ -118,37 +117,6 @@ public class TemplateRenderer {
 		return heatMapLayout.transformY
 				+ ((HeatMapRenderer) heatMapLayout.renderer)
 						.getYCoordinateByContentIndex(contentIndex);
-		// boolean belowHM = false;
-		// float sizeOverhead = 0;
-		// float positionInHM = 0;
-		// for (RenderParameters parameters : template.verticalSpaceAllocations)
-		// {
-		// ARenderer renderer = parameters.renderer;
-		//
-		// if (belowHM)
-		// sizeOverhead += parameters.sizeScaledY;
-		//
-		// if (parameters instanceof Row) {
-		// Row row = (Row) parameters;
-		//
-		// for (RenderParameters rowElements : row) {
-		// renderer = rowElements.renderer;
-		// if (renderer instanceof HeatMapRenderer) {
-		//
-		// belowHM = true;
-		// positionInHM = ((HeatMapRenderer) renderer)
-		// .getYCoordinateByContentIndex(contentIndex);
-		// }
-		// }
-		//
-		// }
-		// if (renderer instanceof HeatMapRenderer) {
-		// belowHM = true;
-		// positionInHM = ((HeatMapRenderer) renderer)
-		// .getYCoordinateByContentIndex(contentIndex);
-		// }
-		// }
-		// return positionInHM;
 	}
 
 	public Float getXCoordinateByStorageIndex(int storageIndex) {
@@ -159,15 +127,18 @@ public class TemplateRenderer {
 	}
 
 	public float getElementHeight(int contentID) {
-
-		if (heatMap.getContentSelectionManager().checkStatus(
-				SelectionType.MOUSE_OVER, contentID)
-				|| heatMap.getContentSelectionManager().checkStatus(
-						SelectionType.SELECTION, contentID))
-
-			return contentSpacing.getSelectedFieldHeight();
-
-		return contentSpacing.getNormalFieldHeight();
+//		int contentIndex = heatMap.getContentVA().indexOf(contentID);
+//		if (contentIndex < 0)
+//			return 0;
+		return contentSpacing.getFieldHeight(contentID);
+//		if (heatMap.getContentSelectionManager().checkStatus(
+//				SelectionType.MOUSE_OVER, contentID)
+//				|| heatMap.getContentSelectionManager().checkStatus(
+//						SelectionType.SELECTION, contentID))
+//
+//			return contentSpacing.getSelectedFieldHeight();
+//
+//		return contentSpacing.getNormalFieldHeight();
 	}
 
 	public float getElementWidth(int storageID) {

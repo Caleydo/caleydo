@@ -1,8 +1,6 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_LINE_WIDTH;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 
@@ -29,21 +27,21 @@ public class ContentSelectionRenderer extends AContentRenderer {
 		float yPosition = y;
 		float xPosition = 0;
 
-		if (selectionType == SelectionType.SELECTION) {
-			gl.glColor4fv(SELECTED_COLOR, 0);
-			gl.glLineWidth(SELECTED_LINE_WIDTH);
-		} else if (selectionType == SelectionType.MOUSE_OVER) {
-			gl.glColor4fv(MOUSE_OVER_COLOR, 0);
-			gl.glLineWidth(MOUSE_OVER_LINE_WIDTH);
-		}
 
+			gl.glColor4fv(selectionType.getColor(), 0);
+			gl.glLineWidth(SELECTED_LINE_WIDTH);
+		
 		int lineIndex = 0;
-		for (int tempLine : heatMap.getContentVA()) {
+		// FIXME this iterates over all elements but could do by only iterating
+		// of the selected elements
+		for (int contentIndex : heatMap.getContentVA()) {
 			if (heatMap.getContentSelectionManager().checkStatus(
-					GLHeatMap.SELECTION_HIDDEN, tempLine))
+					GLHeatMap.SELECTION_HIDDEN, contentIndex))
 				continue;
 			for (Integer currentLine : selectedSet) {
-				if (currentLine == tempLine) {
+				if (currentLine == contentIndex) {
+					float fieldHeight = contentSpacing
+							.getFieldHeight(contentIndex);
 					// width = heatMap.getStorageVA().size() * fieldWidth;
 					yPosition = contentSpacing.yDistances.get(lineIndex);
 					xPosition = 0;
@@ -53,10 +51,10 @@ public class ContentSelectionRenderer extends AContentRenderer {
 
 					gl.glBegin(GL.GL_LINE_LOOP);
 					gl.glVertex3f(xPosition, yPosition, SELECTION_Z);
-					gl.glVertex3f(xPosition, yPosition + selectedFieldHeight,
+					gl.glVertex3f(xPosition, yPosition + fieldHeight,
 							SELECTION_Z);
-					gl.glVertex3f(xPosition + width, yPosition
-							+ selectedFieldHeight, SELECTION_Z);
+					gl.glVertex3f(xPosition + width, yPosition + fieldHeight,
+							SELECTION_Z);
 					gl.glVertex3f(xPosition + width, yPosition, SELECTION_Z);
 					gl.glEnd();
 					gl.glPopName();

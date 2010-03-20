@@ -1,7 +1,5 @@
 package org.caleydo.view.heatmap.dendrogram;
 
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.BUTTON_Z;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 import static org.caleydo.view.heatmap.dendrogram.DendrogramRenderStyle.CUT_OFF_Z;
@@ -971,7 +969,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 	private void renderSelections(final GL gl, ClusterNode currentNode) {
 
 		if (currentNode.getSelectionType() == SelectionType.MOUSE_OVER) {
-			gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+			gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 
 			gl.glBegin(GL.GL_QUADS);
 			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode
@@ -985,7 +983,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 			gl.glEnd();
 
 		} else if (currentNode.getSelectionType() == SelectionType.SELECTION) {
-			gl.glColor4fv(SELECTED_COLOR, 0);
+			gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 
 			gl.glBegin(GL.GL_QUADS);
 			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode

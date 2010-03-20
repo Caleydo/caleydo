@@ -1,15 +1,11 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
-import java.awt.geom.Rectangle2D;
-
 import org.caleydo.view.heatmap.heatmap.renderer.CaptionCageRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.ContentCaptionRenderer;
+import org.caleydo.view.heatmap.heatmap.renderer.ContentSelectionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.DetailToolBar;
 import org.caleydo.view.heatmap.heatmap.renderer.HeatMapRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.ContentSelectionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.StorageSelectionRenderer;
-
-import com.sun.opengl.util.j2d.TextRenderer;
 
 public class ComparerDetailTemplate extends ATemplate {
 

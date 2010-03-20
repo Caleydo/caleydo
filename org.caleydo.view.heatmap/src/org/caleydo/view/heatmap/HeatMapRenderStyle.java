@@ -21,6 +21,9 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 
 	public static final float SELECTION_Z = 0.005f;
 
+	public static final float MIN_SELECTED_FIELD_HEIGHT = 0.07f;
+	public static final float MIN_FIELD_HEIGHT_FOR_CAPTION = 0.05f;
+
 	private static final float SELECTED_FIELD_HEIGHT_PERCENTAGE = 0.1f;
 	private static final float MAXIMUM_SELECTED_AREA_PERCENTAGE = 0.8f;
 	public static final int LABEL_TEXT_MIN_SIZE = 50;
@@ -100,21 +103,7 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 
 	}
 
-	public void updateFieldSizes() {
-		if (useFishEye)
-			updateFieldSizesWithFish();
-		else
-			updateFieldSizesnofish();
-	}
-
-	public void updateFieldSizesnofish() {
-
-		selectedFieldHeight = getRenderHeight() / heatMap.getContentVA().size();
-		normalFieldHeight = selectedFieldHeight;
-
-		fieldWidth = getRenderWidth() / heatMap.getStorageVA().size();
-
-	}
+	
 
 	/**
 	 * Initializes or updates field sizes based on selections, virtual arrays
@@ -140,11 +129,10 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 		normalFieldHeight = (getRenderHeight() - numberSelected
 				* selectedFieldHeight)
 				/ (numberTotal - numberSelected);
-		
-		
+
 		normalFieldHeight = normalFieldHeight > selectedFieldHeight ? selectedFieldHeight
 				: normalFieldHeight;
-		
+
 		fieldWidth = getRenderWidth() / heatMap.getStorageVA().size();
 
 	}
@@ -191,17 +179,6 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 		this.fWidthLevel3 = fWidthLevel3;
 	}
 
-	public float getNormalFielHeight() {
-		return normalFieldHeight;
-	}
-
-	public float getSelectedFieldHeight() {
-		return selectedFieldHeight;
-	}
-
-	public float getFieldWidth() {
-		return fieldWidth;
-	}
 
 	public float getYCenter() {
 
@@ -221,12 +198,6 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 	public float getYSpacing() {
 		return 0.3f;
 	}
-
-	// public void setBRenderStorageHorizontally(boolean
-	// bRenderStorageHorizontally)
-	// {
-	// this.bRenderStorageHorizontally = bRenderStorageHorizontally;
-	// }
 
 	private float getRenderWidth() {
 

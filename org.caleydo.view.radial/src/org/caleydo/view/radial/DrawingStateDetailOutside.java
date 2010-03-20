@@ -11,7 +11,6 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
  * This drawing state draws the full hierarchy at the center of the screen, just
@@ -169,15 +168,15 @@ public class DrawingStateDetailOutside extends ADrawingState {
 					.createDrawingStrategy(EPDDrawingStrategyType.SELECTED);
 
 			if (mapSelectedElements.get(pdSelected) == SelectionType.SELECTION) {
-				dsCurrent.setBorderColor(GeneralRenderStyle.SELECTED_COLOR);
+				dsCurrent.setBorderColor(SelectionType.SELECTION.getColor());
 			}
 			if (mapChildIndictatorElements.containsKey(pdSelected)) {
 				if (mapChildIndictatorElements.get(pdSelected) == SelectionType.SELECTION) {
 					dsCurrent
-							.setChildIndicatorColor(GeneralRenderStyle.SELECTED_COLOR);
+							.setChildIndicatorColor(SelectionType.SELECTION.getColor());
 				} else {
 					dsCurrent
-							.setChildIndicatorColor(GeneralRenderStyle.MOUSE_OVER_COLOR);
+							.setChildIndicatorColor(SelectionType.MOUSE_OVER.getColor());
 				}
 				mapChildIndictatorElements.remove(pdSelected);
 			}
@@ -194,10 +193,10 @@ public class DrawingStateDetailOutside extends ADrawingState {
 
 			if (mapChildIndictatorElements.get(pdIndicated) == SelectionType.SELECTION) {
 				dsCurrent
-						.setChildIndicatorColor(GeneralRenderStyle.SELECTED_COLOR);
+						.setChildIndicatorColor(SelectionType.SELECTION.getColor());
 			} else {
 				dsCurrent
-						.setChildIndicatorColor(GeneralRenderStyle.MOUSE_OVER_COLOR);
+						.setChildIndicatorColor(SelectionType.MOUSE_OVER.getColor());
 			}
 
 			pdIndicated.setPDDrawingStrategy(dsCurrent);
@@ -368,9 +367,9 @@ public class DrawingStateDetailOutside extends ADrawingState {
 		if (parentIndicatorType != SelectionType.NORMAL) {
 			gl.glPushClientAttrib(GL.GL_COLOR_BUFFER_BIT);
 			if (parentIndicatorType == SelectionType.SELECTION)
-				gl.glColor3fv(GeneralRenderStyle.SELECTED_COLOR, 0);
+				gl.glColor3fv(SelectionType.SELECTION.getColor(), 0);
 			else
-				gl.glColor3fv(GeneralRenderStyle.MOUSE_OVER_COLOR, 0);
+				gl.glColor3fv(SelectionType.MOUSE_OVER.getColor(), 0);
 			GLPrimitives.renderCircle(glu, fOverviewDiscWidth / 2.0f, 100);
 			GLPrimitives.renderCircleBorder(gl, glu, fOverviewDiscWidth / 2.0f,
 					100, 2);

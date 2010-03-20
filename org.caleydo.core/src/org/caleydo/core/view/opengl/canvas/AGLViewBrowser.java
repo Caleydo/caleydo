@@ -42,7 +42,6 @@ import org.caleydo.core.view.opengl.canvas.remote.GLConnectionLineRendererBucket
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.remote.list.ListLayoutRenderStyle;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
@@ -610,7 +609,7 @@ public abstract class AGLViewBrowser
 					gl.glTranslatef(2.5f, 0, 0);
 				}
 
-				gl.glColor4fv(GeneralRenderStyle.MOUSE_OVER_COLOR, 0);
+				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(10, 2.7f, 0f);
 				gl.glVertex3f(18, 2.7f, 0f);
@@ -637,7 +636,7 @@ public abstract class AGLViewBrowser
 					gl.glTranslatef(2.5f, 0, 0);
 				}
 
-				gl.glColor4fv(GeneralRenderStyle.SELECTED_COLOR, 0);
+				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(10, 2.9f, 0f);
 				gl.glVertex3f(18, 2.9f, 0f);

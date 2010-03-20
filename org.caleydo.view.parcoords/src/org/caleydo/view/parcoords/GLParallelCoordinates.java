@@ -13,9 +13,7 @@ import static org.caleydo.view.parcoords.PCRenderStyle.X_AXIS_LINE_WIDTH;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_COLOR;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_LINE_WIDTH;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_LOW;
-import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_MOUSE_OVER_COLOR;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_MOUSE_OVER_LINE_WIDTH;
-import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_SELECTED_COLOR;
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -550,8 +548,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		contentVA.setGroupList(null);
 
 		// todo this doesn't work for turned stuff
-		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent(set, 
-				contentSelectionManager.getIDType().getCategory(),
+		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent(
+				set, contentSelectionManager.getIDType().getCategory(),
 				contentVAType, contentVA);
 
 		event.setSender(this);
@@ -710,10 +708,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		//
 		// if (renderMode == SelectionType.DESELECTED
 		// || renderMode == SelectionType.NORMAL) {
-		
-		  iDisplayEveryNthPolyline = contentVA.size()
-		  / iNumberOfRandomElements;
-		  
+
+		iDisplayEveryNthPolyline = contentVA.size() / iNumberOfRandomElements;
+
 		// iDisplayEveryNthPolyline = (polylineSelectionManager
 		// .getNumberOfElements() - polylineSelectionManager
 		// .getNumberOfElements(SelectionType.DESELECTED))
@@ -806,8 +803,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 						&& (renderMode == SelectionType.DESELECTED || renderMode == SelectionType.NORMAL)) {
 					if (iPolyLineID % iDisplayEveryNthPolyline != 0) {
 						continue;
-//						 if(!alUseInRandomSampling.get(contentVA.indexOf(iPolyLineID)))
-//						 continue;
+						// if(!alUseInRandomSampling.get(contentVA.indexOf(iPolyLineID)))
+						// continue;
 					}
 				}
 				if (renderMode != SelectionType.DESELECTED) {
@@ -927,12 +924,12 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		while (iCount < iNumberAxis) {
 			float fXPosition = alAxisSpacing.get(iCount);
 			if (selectedSet.contains(storageVA.get(iCount))) {
-				gl.glColor4fv(Y_AXIS_SELECTED_COLOR, 0);
+				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 				gl.glLineWidth(Y_AXIS_SELECTED_LINE_WIDTH);
 				gl.glEnable(GL.GL_LINE_STIPPLE);
 				gl.glLineStipple(2, (short) 0xAAAA);
 			} else if (mouseOverSet.contains(storageVA.get(iCount))) {
-				gl.glColor4fv(Y_AXIS_MOUSE_OVER_COLOR, 0);
+				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 				gl.glLineWidth(Y_AXIS_MOUSE_OVER_LINE_WIDTH);
 				gl.glEnable(GL.GL_LINE_STIPPLE);
 				gl.glLineStipple(2, (short) 0xAAAA);

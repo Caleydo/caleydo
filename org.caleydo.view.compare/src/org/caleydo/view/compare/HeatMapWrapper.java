@@ -64,7 +64,6 @@ public class HeatMapWrapper {
 	private boolean isNewSelection;
 	private int id;
 	private int activeHeatMapID;
-	private SetRelations relations;
 
 	private AGLView glParentView;
 	private GLInfoAreaManager infoAreaManager;
@@ -584,7 +583,6 @@ public class HeatMapWrapper {
 		if (elementInHMPosition == null)
 			return null;
 		else {
-			heatMap.getYCoordinateByContentIndex(contentIndex);
 			return heatMapPosition.y() + (heatMapHeight - elementInHMPosition);
 		}
 	}
@@ -939,10 +937,6 @@ public class HeatMapWrapper {
 
 	public String getCaption() {
 		return set.getLabel();
-	}
-
-	public void setRelations(SetRelations relations) {
-		this.relations = relations;
 	}
 
 	public SelectionType getActiveHeatMapSelectionType() {
