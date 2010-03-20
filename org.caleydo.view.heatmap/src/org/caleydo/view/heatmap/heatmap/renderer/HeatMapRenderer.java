@@ -46,17 +46,18 @@ public class HeatMapRenderer extends AContentRenderer {
 			iCount++;
 			// we treat normal and deselected the same atm
 
-			if (heatMap.getContentSelectionManager().checkStatus(
+			if (heatMap.isHideElements()
+					&& heatMap.getContentSelectionManager().checkStatus(
+							GLHeatMap.SELECTION_HIDDEN, iContentIndex)) {
+				contentSpacing.yDistances.add(yPosition);
+				continue;
+			} else if (heatMap.getContentSelectionManager().checkStatus(
 					SelectionType.SELECTION, iContentIndex)
 					|| heatMap.getContentSelectionManager().checkStatus(
 							SelectionType.MOUSE_OVER, iContentIndex)) {
 				fieldHeight = selectedFieldHeight;
 				// currentType = SelectionType.SELECTION;
-			} else if (heatMap.isHideElements()
-					&& heatMap.getContentSelectionManager().checkStatus(
-							GLHeatMap.SELECTION_HIDDEN, iContentIndex)) {
-				contentSpacing.yDistances.add(yPosition);
-				continue;
+
 			} else {
 
 				fieldHeight = normalFieldHeight;

@@ -60,17 +60,17 @@ public class ContentCaptionRenderer extends AContentRenderer {
 		for (Integer iContentIndex : contentVA) {
 
 			boolean isSelected;
-			if (heatMap.getContentSelectionManager().checkStatus(
+			if (heatMap.isHideElements()
+					&& heatMap.getContentSelectionManager().checkStatus(
+							GLHeatMap.SELECTION_HIDDEN, iContentIndex)) {
+				continue;
+			} else if (heatMap.getContentSelectionManager().checkStatus(
 					SelectionType.SELECTION, iContentIndex)
 					|| heatMap.getContentSelectionManager().checkStatus(
 							SelectionType.MOUSE_OVER, iContentIndex)) {
 				fieldHeight = selectedFieldHeight;
 				currentType = SelectionType.SELECTION;
 				isSelected = true;
-			} else if (heatMap.isHideElements()
-					&& heatMap.getContentSelectionManager().checkStatus(
-							GLHeatMap.SELECTION_HIDDEN, iContentIndex)) {
-				continue;
 			} else {
 
 				fieldHeight = normalFieldHeight;

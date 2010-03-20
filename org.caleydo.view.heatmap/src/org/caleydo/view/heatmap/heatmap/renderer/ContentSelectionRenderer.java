@@ -39,6 +39,9 @@ public class ContentSelectionRenderer extends AContentRenderer {
 
 		int lineIndex = 0;
 		for (int tempLine : heatMap.getContentVA()) {
+			if (heatMap.getContentSelectionManager().checkStatus(
+					GLHeatMap.SELECTION_HIDDEN, tempLine))
+				continue;
 			for (Integer currentLine : selectedSet) {
 				if (currentLine == tempLine) {
 					// width = heatMap.getStorageVA().size() * fieldWidth;

@@ -21,22 +21,21 @@ public class CaptionCageRenderer extends AContentRenderer {
 		gl.glColor3f(0.6f, 0.6f, 0.6f);
 		gl.glLineWidth(2);
 
-		if (!heatMap.isCaptionsImpossible()) {		
+		if (!heatMap.isCaptionsImpossible()) {
 
 			ContentVirtualArray contentVA = heatMap.getContentVA();
 
 			for (Integer iContentIndex : contentVA) {
-
-				if (heatMap.getContentSelectionManager().checkStatus(
+				if (heatMap.isHideElements()
+						&& heatMap.getContentSelectionManager().checkStatus(
+								GLHeatMap.SELECTION_HIDDEN, iContentIndex)) {
+					continue;
+				} else if (heatMap.getContentSelectionManager().checkStatus(
 						SelectionType.SELECTION, iContentIndex)
 						|| heatMap.getContentSelectionManager().checkStatus(
 								SelectionType.MOUSE_OVER, iContentIndex)) {
 					fieldHeight = selectedFieldHeight;
 
-				} else if (heatMap.isHideElements()
-						&& heatMap.getContentSelectionManager().checkStatus(
-								GLHeatMap.SELECTION_HIDDEN, iContentIndex)) {
-					continue;
 				} else {
 
 					fieldHeight = normalFieldHeight;

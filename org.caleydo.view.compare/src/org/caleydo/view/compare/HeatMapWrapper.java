@@ -573,9 +573,6 @@ public class HeatMapWrapper {
 			Group group = groupList.get(groupIndex);
 
 			if (selectedGroups.containsKey(group)) {
-				// }
-				// for (Group group : selectedGroups.keySet()) {
-
 				GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 				contentVAs.add(heatMap.getContentVA());
 			}
@@ -627,72 +624,6 @@ public class HeatMapWrapper {
 			EPickingMode pickingMode) {
 		overview.handleSliderSelection(pickingType, pickingMode);
 	}
-
-	/**
-	 * 
-	 * @param gl
-	 * @param glMouseListener
-	 * @param foreignContentVAs
-	 *            The source virtual arrays of which we search the match
-	 */
-	// public void selectGroupsFromContentVAList(GL gl,
-	// GLMouseListener glMouseListener,
-	// ArrayList<ContentVirtualArray> contentVAs) {
-	//
-	// // TODO this is the place where we want to set the heat map content vas
-	//
-	// selectedGroups.clear();
-	//
-	// ContentGroupList contentGroupList = contentVA.getGroupList();
-	//
-	// int groupSampleStartIndex = 0;
-	// int groupSampleEndIndex = 0;
-	// int groupIndex = 0;
-	// boolean groupAdded = false;
-	// // for all groups in the current wrapper
-	// for (Group group : contentGroupList) {
-	// groupSampleEndIndex = groupSampleStartIndex + group.getNrElements()
-	// - 1;
-	// group.setSelectionType(SelectionType.NORMAL);
-	// // for all external clusters
-	// for (ContentVirtualArray va : contentVAs) {
-	// // for every element in this cluster
-	// for (Integer contentID : va) {
-	// int contentIndex = contentVA.indexOf(contentID);
-	// if (contentIndex == -1)
-	// continue;
-	//
-	// // we check whether the element is in this group
-	// if (groupSampleStartIndex <= contentIndex
-	// && groupSampleEndIndex >= contentIndex) {
-	// selectedGroups.put(group, new GroupInfo(group,
-	// groupIndex, groupSampleStartIndex));
-	// group.setSelectionType(SelectionType.SELECTION);
-	// groupAdded = true;
-	// break;
-	// }
-	// }
-	// if (groupAdded)
-	// break;
-	// }
-	//
-	// groupSampleStartIndex += group.getNrElements();
-	// groupIndex++;
-	// groupAdded = false;
-	// }
-	//
-	// // for (GroupInfo groupInfo : selectedGroups) {
-	// // if (!hashHeatMaps.containsKey(groupInfo.getGroupIndex())) {
-	// // GLHeatMap heatMap = createHeatMap(gl, glMouseListener);
-	// // setEmbeddedHeatMapData(heatMap, groupInfo.getLowerBoundIndex(),
-	// // groupInfo.getUpperBoundIndex());
-	// //
-	// // hashHeatMaps.put(groupInfo.getGroupIndex(), heatMap);
-	// // }
-	// // GLHeatMap heatMap = hashHeatMaps.get(groupInfo.getGroupIndex());
-	// // heatMap.setDisplayListDirty();
-	// // }
-	// }
 
 	/**
 	 * <p>
@@ -767,17 +698,10 @@ public class HeatMapWrapper {
 									foreignContentLastOrdererIndex++);
 						}
 					}
-
-					// for (int foreignIndex = foreignVA.size() -1; foreignIndex
-					// >= 0; foreignIndex--) {
-					// int contentIndex =
-					// contentVA.indexOf(foreignVA.get(foreignIndex));
-					// if (contentIndex != -1)
-					// contentVA.move(contentIndex, lastMovedIndex++);
-					// }
-
 				}
 
+				// here we re-sort the genes in the local va so that they are in
+				// the order of the foreign contentVAs
 				for (int foreignVAIndex = foreignContentVAs.size() - 1; foreignVAIndex >= 0; foreignVAIndex--) {
 					int lastMovedIndex = 0;
 					ContentVirtualArray foreignVA = foreignContentVAs
@@ -786,8 +710,6 @@ public class HeatMapWrapper {
 						int contentIndex = contentVA.indexOf(foreignID);
 						if (contentIndex != -1) {
 							contentVA.move(contentIndex, lastMovedIndex++);
-							if (contentIndex != lastMovedIndex - 1)
-								System.out.println("Sort");
 						}
 					}
 				}
