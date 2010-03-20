@@ -61,6 +61,8 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CompareGroupsI
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CopyGroupsItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.CreateGroupItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DeleteGroupsItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.StatisticsFoldChangeReductionItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.StatisticsPValueReductionItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.PasteGroupsItem;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
@@ -81,8 +83,11 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Christian Partl
  * @author Alexander Lex
  */
-public class GLGrouper extends AGLView implements IViewCommandHandler,
-		ISelectionUpdateHandler, IClusterNodeEventReceiver {
+public class GLGrouper extends AGLView
+		implements
+			IViewCommandHandler,
+			ISelectionUpdateHandler,
+			IClusterNodeEventReceiver {
 
 	public final static String VIEW_ID = "org.caleydo.view.grouper";
 
@@ -140,8 +145,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		hashGroups = new HashMap<Integer, GroupRepresentation>();
 
 		dragAndDropController = new DragAndDropController(this);
-		selectionTypeClicked = new SelectionType("Clicked", new float[] { 1.0f,
-				0.0f, 1.0f, 0.0f }, true, false, 1.0f);
+		selectionTypeClicked = new SelectionType("Clicked", new float[]{1.0f,
+				0.0f, 1.0f, 0.0f}, true, false, 1.0f);
 
 		// TODO:if this should be general, use dynamic idType
 		selectionManager = new SelectionManager(EIDType.CLUSTER_NUMBER);
@@ -516,206 +521,237 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 
 		switch (ePickingType) {
 
-		case GROUPER_GROUP_SELECTION:
-			GroupRepresentation groupRep = hashGroups.get(iExternalID);
-			switch (pickingMode) {
-			case CLICKED:
-				iDraggedOverCollapseButtonID = -1;
-				if (groupRep != null) {
-					if (!bControlPressed
-							&& !selectionManager.checkStatus(
-									SelectionType.SELECTION, groupRep.getID())) {
-						dragAndDropController.clearDraggables();
-						selectionManager
-								.clearSelection(SelectionType.SELECTION);
-						selectionManager.clearSelection(selectionTypeClicked);
-					}
-					if (!bControlPressed) {
-						potentialNewSelectedGroup = groupRep;
-						bPotentialNewSelection = true;
-					}
-					dragAndDropController
-							.setDraggingStartPosition(pick.getPickedPoint());
-					groupRep.addAsDraggable(dragAndDropController);
+			case GROUPER_GROUP_SELECTION :
+				GroupRepresentation groupRep = hashGroups.get(iExternalID);
+				switch (pickingMode) {
+					case CLICKED :
+						iDraggedOverCollapseButtonID = -1;
+						if (groupRep != null) {
+							if (!bControlPressed
+									&& !selectionManager.checkStatus(
+											SelectionType.SELECTION, groupRep
+													.getID())) {
+								dragAndDropController.clearDraggables();
+								selectionManager
+										.clearSelection(SelectionType.SELECTION);
+								selectionManager
+										.clearSelection(selectionTypeClicked);
+							}
+							if (!bControlPressed) {
+								potentialNewSelectedGroup = groupRep;
+								bPotentialNewSelection = true;
+							}
+							dragAndDropController.setDraggingStartPosition(pick
+									.getPickedPoint());
+							groupRep.addAsDraggable(dragAndDropController);
 
-					groupRep.setSelectionTypeRec(SelectionType.SELECTION,
-							selectionManager);
-					selectionManager.addToType(selectionTypeClicked, groupRep
-							.getID());
-					rootGroup.updateSelections(selectionManager,
-							drawingStrategyManager);
-					triggerSelectionEvents();
-					setDisplayListDirty();
-				}
-				break;
-			case DRAGGED:
-				iDraggedOverCollapseButtonID = -1;
-				if (groupRep != null && dragAndDropController.hasDraggables()) {
-					if (!dragAndDropController.isDragging()) {
-						if (dragAndDropController.containsDraggable(groupRep)) {
-							bPotentialNewSelection = false;
-							dragAndDropController.startDragging();
+							groupRep.setSelectionTypeRec(
+									SelectionType.SELECTION, selectionManager);
+							selectionManager.addToType(selectionTypeClicked,
+									groupRep.getID());
+							rootGroup.updateSelections(selectionManager,
+									drawingStrategyManager);
+							triggerSelectionEvents();
+							setDisplayListDirty();
 						}
+						break;
+					case DRAGGED :
+						iDraggedOverCollapseButtonID = -1;
+						if (groupRep != null
+								&& dragAndDropController.hasDraggables()) {
+							if (!dragAndDropController.isDragging()) {
+								if (dragAndDropController
+										.containsDraggable(groupRep)) {
+									bPotentialNewSelection = false;
+									dragAndDropController.startDragging();
+								}
 
-					}
-					if (groupRep.isLeaf()) {
-						GroupRepresentation parent = (GroupRepresentation) groupRep
-								.getParent();
-						if (parent != null)
-							dragAndDropController.setDropArea(parent);
-					} else {
-						dragAndDropController.setDropArea(groupRep);
-					}
-				}
-				break;
-			case MOUSE_OVER:
-				iDraggedOverCollapseButtonID = -1;
-				if (groupRep != null) {
-					if (selectionManager.checkStatus(SelectionType.MOUSE_OVER,
-							groupRep.getID())
-							|| selectionManager.checkStatus(
-									SelectionType.SELECTION, groupRep.getID())) {
-						return;
-					}
-					selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-					selectionManager.addToType(SelectionType.MOUSE_OVER,
-							groupRep.getID());
-					rootGroup.updateSelections(selectionManager,
-							drawingStrategyManager);
-					triggerSelectionEvents();
-					setDisplayListDirty();
-				}
-				break;
-			case RIGHT_CLICKED:
-				if (groupRep != null) {
-					boolean bContextMenueItemsAvailable = false;
-					if (selectionManager.checkStatus(SelectionType.SELECTION,
-							groupRep.getID())
-							&& groupRep != rootGroup) {
+							}
+							if (groupRep.isLeaf()) {
+								GroupRepresentation parent = (GroupRepresentation) groupRep
+										.getParent();
+								if (parent != null)
+									dragAndDropController.setDropArea(parent);
+							} else {
+								dragAndDropController.setDropArea(groupRep);
+							}
+						}
+						break;
+					case MOUSE_OVER :
+						iDraggedOverCollapseButtonID = -1;
+						if (groupRep != null) {
+							if (selectionManager.checkStatus(
+									SelectionType.MOUSE_OVER, groupRep.getID())
+									|| selectionManager.checkStatus(
+											SelectionType.SELECTION, groupRep
+													.getID())) {
+								return;
+							}
+							selectionManager
+									.clearSelection(SelectionType.MOUSE_OVER);
+							selectionManager.addToType(
+									SelectionType.MOUSE_OVER, groupRep.getID());
+							rootGroup.updateSelections(selectionManager,
+									drawingStrategyManager);
+							triggerSelectionEvents();
+							setDisplayListDirty();
+						}
+						break;
+					case RIGHT_CLICKED :
+						if (groupRep != null) {
+							boolean bContextMenueItemsAvailable = false;
+							if (selectionManager.checkStatus(
+									SelectionType.SELECTION, groupRep.getID())
+									&& groupRep != rootGroup) {
 
-						// groupRep.addAsDraggable(dragAndDropController);
-						//
-						// groupRep.setSelectionTypeRec(SelectionType.SELECTION,
-						// selectionManager);
-						// selectionManager.addToType(selectionTypeClicked,
-						// groupRep
-						// .getID());
-						// rootGroup.updateSelections(selectionManager,
-						// drawingStrategyManager);
-						// triggerSelectionEvents();
-						// setDisplayListDirty();
+								// groupRep.addAsDraggable(dragAndDropController);
+								//
+								// groupRep.setSelectionTypeRec(SelectionType.SELECTION,
+								// selectionManager);
+								// selectionManager.addToType(selectionTypeClicked,
+								// groupRep
+								// .getID());
+								// rootGroup.updateSelections(selectionManager,
+								// drawingStrategyManager);
+								// triggerSelectionEvents();
+								// setDisplayListDirty();
 
-						Set<Integer> setSelectedGroups = new HashSet<Integer>(
-								selectionManager
-										.getElements(SelectionType.SELECTION));
+								Set<Integer> setSelectedGroups = new HashSet<Integer>(
+										selectionManager
+												.getElements(SelectionType.SELECTION));
 
-						CreateGroupItem createGroupItem = new CreateGroupItem(
-								setSelectedGroups);
-						contextMenu.addContextMenueItem(createGroupItem);
+								CreateGroupItem createGroupItem = new CreateGroupItem(
+										setSelectedGroups);
+								contextMenu
+										.addContextMenueItem(createGroupItem);
 
-						CopyGroupsItem copyGroupsItem = new CopyGroupsItem(
-								setSelectedGroups);
-						contextMenu.addContextMenueItem(copyGroupsItem);
+								CopyGroupsItem copyGroupsItem = new CopyGroupsItem(
+										setSelectedGroups);
+								contextMenu.addContextMenueItem(copyGroupsItem);
 
-						DeleteGroupsItem deleteGroupsItem = new DeleteGroupsItem(
-								setSelectedGroups);
-						contextMenu.addContextMenueItem(deleteGroupsItem);
+								DeleteGroupsItem deleteGroupsItem = new DeleteGroupsItem(
+										setSelectedGroups);
+								contextMenu
+										.addContextMenueItem(deleteGroupsItem);
 
-						Set<Integer> setClickedGroups = new HashSet<Integer>(
-								selectionManager
-										.getElements(selectionTypeClicked));
-						ArrayList<ICompositeGraphic> orderedComposites = getOrderedCompositeList(
-								setClickedGroups, false);
+								contextMenu.addSeparator();
 
-						if (orderedComposites.size() >= 2) {
+								Set<Integer> setClickedGroups = new HashSet<Integer>(
+										selectionManager
+												.getElements(selectionTypeClicked));
+								ArrayList<ICompositeGraphic> orderedComposites = getOrderedCompositeList(
+										setClickedGroups, false);
 
-							ArrayList<ISet> setsToCompare = new ArrayList<ISet>();
-							for (ICompositeGraphic composite : orderedComposites) {
-								setsToCompare
-										.add(((GroupRepresentation) composite)
-												.getClusterNode().getMetaSet());
+								StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
+										((GroupRepresentation) orderedComposites
+												.get(0)).getClusterNode()
+												.getMetaSet());
+								contextMenu
+										.addContextMenueItem(pValueReductionItem);
+
+								if (orderedComposites.size() == 2) {
+									StatisticsFoldChangeReductionItem foldChangeReductionItem = new StatisticsFoldChangeReductionItem(
+											((GroupRepresentation) orderedComposites
+													.get(0)).getClusterNode()
+													.getMetaSet(),
+											((GroupRepresentation) orderedComposites
+													.get(0)).getClusterNode()
+													.getMetaSet());
+									contextMenu
+											.addContextMenueItem(foldChangeReductionItem);
+								}
+
+								if (orderedComposites.size() >= 2) {
+
+									ArrayList<ISet> setsToCompare = new ArrayList<ISet>();
+									for (ICompositeGraphic composite : orderedComposites) {
+										setsToCompare
+												.add(((GroupRepresentation) composite)
+														.getClusterNode()
+														.getMetaSet());
+									}
+
+									CompareGroupsItem compareGroupsItem = new CompareGroupsItem(
+											setsToCompare);
+									contextMenu
+											.addContextMenueItem(compareGroupsItem);
+								}
+
+								bContextMenueItemsAvailable = true;
+
+							}
+							if (setCopiedGroups != null
+									&& !setCopiedGroups.contains(groupRep
+											.getID()) && !groupRep.isLeaf()) {
+								PasteGroupsItem pasteGroupItem = new PasteGroupsItem(
+										groupRep.getID());
+								contextMenu.addContextMenueItem(pasteGroupItem);
+								bContextMenueItemsAvailable = true;
 							}
 
-							CompareGroupsItem compareGroupsItem = new CompareGroupsItem(
-									setsToCompare);
-							contextMenu.addContextMenueItem(compareGroupsItem);
+							if (!isRenderedRemote()
+									&& bContextMenueItemsAvailable) {
+								contextMenu.setLocation(pick.getPickedPoint(),
+										getParentGLCanvas().getWidth(),
+										getParentGLCanvas().getHeight());
+								contextMenu.setMasterGLView(this);
+							}
+
 						}
-
-						bContextMenueItemsAvailable = true;
-
-					}
-					if (setCopiedGroups != null
-							&& !setCopiedGroups.contains(groupRep.getID())
-							&& !groupRep.isLeaf()) {
-						PasteGroupsItem pasteGroupItem = new PasteGroupsItem(
-								groupRep.getID());
-						contextMenu.addContextMenueItem(pasteGroupItem);
-						bContextMenueItemsAvailable = true;
-					}
-
-					if (!isRenderedRemote() && bContextMenueItemsAvailable) {
-						contextMenu.setLocation(pick.getPickedPoint(),
-								getParentGLCanvas().getWidth(),
-								getParentGLCanvas().getHeight());
-						contextMenu.setMasterGLView(this);
-					}
-
-				}
-				break;
-			default:
-				return;
-			}
-			break;
-
-		case GROUPER_BACKGROUND_SELECTION:
-			switch (pickingMode) {
-			case CLICKED:
-				iDraggedOverCollapseButtonID = -1;
-				dragAndDropController.clearDraggables();
-				selectionManager.clearSelections();
-				rootGroup.updateSelections(selectionManager,
-						drawingStrategyManager);
-				triggerSelectionEvents();
-				setDisplayListDirty();
-				break;
-			default:
-				return;
-			}
-			break;
-
-		case GROUPER_COLLAPSE_BUTTON_SELECTION:
-			GroupRepresentation group = hashGroups.get(iExternalID);
-			switch (pickingMode) {
-			case CLICKED:
-				iDraggedOverCollapseButtonID = -1;
-				if (group != null) {
-					group.setCollapsed(!group.isCollapsed());
-					setDisplayListDirty();
-				}
-				break;
-			case DRAGGED:
-				if (group != null && group.isCollapsed()) {
-					double dCurrentTimeStamp = GregorianCalendar.getInstance()
-							.getTimeInMillis();
-
-					if (dCurrentTimeStamp - dCollapseButtonDragOverTime > 500
-							&& group.getID() == iDraggedOverCollapseButtonID) {
-						group.setCollapsed(false);
-						iDraggedOverCollapseButtonID = -1;
-						setDisplayListDirty();
+						break;
+					default :
 						return;
-					}
-					if (group.getID() != iDraggedOverCollapseButtonID)
-						dCollapseButtonDragOverTime = dCurrentTimeStamp;
-					iDraggedOverCollapseButtonID = group.getID();
 				}
-			default:
-				return;
-			}
-			break;
+				break;
+
+			case GROUPER_BACKGROUND_SELECTION :
+				switch (pickingMode) {
+					case CLICKED :
+						iDraggedOverCollapseButtonID = -1;
+						dragAndDropController.clearDraggables();
+						selectionManager.clearSelections();
+						rootGroup.updateSelections(selectionManager,
+								drawingStrategyManager);
+						triggerSelectionEvents();
+						setDisplayListDirty();
+						break;
+					default :
+						return;
+				}
+				break;
+
+			case GROUPER_COLLAPSE_BUTTON_SELECTION :
+				GroupRepresentation group = hashGroups.get(iExternalID);
+				switch (pickingMode) {
+					case CLICKED :
+						iDraggedOverCollapseButtonID = -1;
+						if (group != null) {
+							group.setCollapsed(!group.isCollapsed());
+							setDisplayListDirty();
+						}
+						break;
+					case DRAGGED :
+						if (group != null && group.isCollapsed()) {
+							double dCurrentTimeStamp = GregorianCalendar
+									.getInstance().getTimeInMillis();
+
+							if (dCurrentTimeStamp - dCollapseButtonDragOverTime > 500
+									&& group.getID() == iDraggedOverCollapseButtonID) {
+								group.setCollapsed(false);
+								iDraggedOverCollapseButtonID = -1;
+								setDisplayListDirty();
+								return;
+							}
+							if (group.getID() != iDraggedOverCollapseButtonID)
+								dCollapseButtonDragOverTime = dCurrentTimeStamp;
+							iDraggedOverCollapseButtonID = group.getID();
+						}
+					default :
+						return;
+				}
+				break;
 		}
 	}
-
 	private void triggerSelectionEvents() {
 
 		// ClearSelectionsEvent clearSelectionsEvent = new
@@ -962,7 +998,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 			}
 		} else {
 			commonParent.add(newGroup);
-			int iTempID[] = { iLastUsedGroupID };
+			int iTempID[] = {iLastUsedGroupID};
 			for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
 				iTempID[0]++;
 				ICompositeGraphic copy = composite.createDeepCopyWithNewIDs(
@@ -1039,7 +1075,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedCompositeList(
 				setCopiedGroups, true);
 
-		int iTempID[] = { iLastUsedGroupID };
+		int iTempID[] = {iLastUsedGroupID};
 		for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
 			iTempID[0]++;
 			ICompositeGraphic copy = composite.createDeepCopyWithNewIDs(tree,

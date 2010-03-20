@@ -8,7 +8,7 @@ public class AdjustPValueItem
 
 	public AdjustPValueItem() {
 		super();
-		setText("Adjust p-Value");
+		setText("Adjust P-Value");
 		AdjustPValueEvent event = new AdjustPValueEvent();
 		event.setSender(this);
 		registerEvent(event);
