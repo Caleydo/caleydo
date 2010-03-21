@@ -1,5 +1,7 @@
 package org.caleydo.rcp.core.bridge;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.event.AEvent;
@@ -127,9 +129,9 @@ public class RCPBridge
 		});
 	}
 
-	public void clusterSet(ISet set) {
+	public void clusterSet(ArrayList<ISet> sets) {
 		StartClusteringAction action = new StartClusteringAction();
-		action.setSet(set);
+		action.setSets(sets);
 		action.run();
 	}
 }

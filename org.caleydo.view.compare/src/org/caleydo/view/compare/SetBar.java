@@ -167,7 +167,9 @@ public class SetBar extends AGLGUIElement {
 		case RIGHT_CLICKED:
 			contextMenu.addContextMenueItem(new DuplicateSetBarElementItem(
 					itemID));
-			contextMenu.addContextMenueItem(new ClusterSetItem(items.get(itemID).getSet()));
+			ArrayList<ISet> sets = new ArrayList<ISet>();
+			sets.add(items.get(itemID).getSet());
+			contextMenu.addContextMenueItem(new ClusterSetItem(sets));
 			contextMenu.addContextMenueItem(new AdjustPValueItem());
 			contextMenu.setLocation(pick.getPickedPoint(), view
 					.getParentGLCanvas().getWidth(), view.getParentGLCanvas()

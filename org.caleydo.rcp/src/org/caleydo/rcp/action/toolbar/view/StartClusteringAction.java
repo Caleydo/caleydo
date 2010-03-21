@@ -1,5 +1,7 @@
 package org.caleydo.rcp.action.toolbar.view;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -19,7 +21,7 @@ public class StartClusteringAction
 	public static final String TEXT = "Clustering";
 	public static final String ICON = "resources/icons/view/storagebased/clustering.png";
 
-	private ISet set;
+	private ArrayList<ISet> sets;
 
 	/**
 	 * Constructor.
@@ -43,16 +45,16 @@ public class StartClusteringAction
 
 		StartClusteringEvent event = null;
 		// if (clusterState != null && set != null)
-		if (set == null)
-			set = GeneralManager.get().getMasterUseCase().getSet();
-		event = new StartClusteringEvent(clusterState, set.getID());
-		// else if (clusterState != null)
-		// event = new StartClusteringEvent(clusterState);
+		if (sets == null || sets.size() == 0)
+			sets.add(GeneralManager.get().getMasterUseCase().getSet());
 
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		for(ISet tmpSet : sets) {
+			event = new StartClusteringEvent(clusterState, tmpSet.getID());
+			GeneralManager.get().getEventPublisher().triggerEvent(event);			
+		}
 	}
 
-	public void setSet(ISet set) {
-		this.set = set;
+	public void setSets(ArrayList<ISet> sets) {
+		this.sets = sets;
 	}
 }

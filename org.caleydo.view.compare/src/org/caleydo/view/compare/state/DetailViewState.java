@@ -253,15 +253,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 			return;
 
 		inputPoints = new ArrayList<Vec3f>();
-		// inputPoints.add(new Vec3f(leftPos.x(), leftPos.y()
-		// - leftHeatMapElementOffset, 0));
-		// inputPoints.add(new Vec3f(rightPos.x() + xOffset, leftPos.y()
-		// - leftHeatMapElementOffset, 0));
-		// inputPoints.add(new Vec3f(rightPos.x() + xOffset / 3f, rightPos.y()
-		// - rightHeatMapElementOffset, 0));
-		// inputPoints.add(new Vec3f(rightPos.x(), rightPos.y()
-		// - rightHeatMapElementOffset, 0));
-
 		inputPoints.add(new Vec3f(leftPos.x(), leftPos.y()
 				- leftBottomHeatMapElementOffset, 0));
 		inputPoints.add(new Vec3f(rightPos.x() + xOffset, leftPos.y()

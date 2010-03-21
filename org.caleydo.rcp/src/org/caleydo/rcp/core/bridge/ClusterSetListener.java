@@ -11,7 +11,7 @@ public class ClusterSetListener extends AEventListener<RCPBridge> {
 
 		if (event instanceof ClusterSetEvent) {
 			ClusterSetEvent clusterSetEvent = (ClusterSetEvent) event;
-			handler.clusterSet(clusterSetEvent.getSet());
+			handler.clusterSet(clusterSetEvent.getSets());
 		}
 	}
 }

@@ -33,11 +33,6 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.clusterer.EClustererAlgo;
-import org.caleydo.core.util.clusterer.EClustererType;
-import org.caleydo.core.util.clusterer.EDistanceMeasure;
-import org.caleydo.core.util.clusterer.ETreeClustererAlgo;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -52,6 +47,7 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.rcp.action.toolbar.view.StartClusteringAction;
 import org.caleydo.view.compare.event.UseSortingEvent;
 import org.caleydo.view.compare.event.UseZoomEvent;
 import org.caleydo.view.compare.listener.AdjustPValueOfSetEventListener;
@@ -73,8 +69,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Marc Streit
  */
 public class GLCompare extends AGLView implements IViewCommandHandler,
-		IGLRemoteRenderingView, ISelectionUpdateHandler,
-		ISelectionCommandHandler, IContentVAUpdateHandler {
+		IGLRemoteRenderingView, ISelectionUpdateHandler, ISelectionCommandHandler,
+		IContentVAUpdateHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.compare";
 
@@ -112,8 +108,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		viewType = VIEW_ID;
 		glKeyListener = new GLCompareKeyListener(this);
 		isControlPressed = false;
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32),
-				true, true);
+		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32), true, true);
 		compareMouseWheelListener = new CompareMouseWheelListener(this);
 
 		// Unregister standard mouse wheel listener
@@ -121,8 +116,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		// Register specialized compare mouse wheel listener
 		parentGLCanvas.addMouseWheelListener(compareMouseWheelListener);
 
-		SelectionTypeEvent event = new SelectionTypeEvent(
-				GLHeatMap.SELECTION_HIDDEN);
+		SelectionTypeEvent event = new SelectionTypeEvent(GLHeatMap.SELECTION_HIDDEN);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 	}
@@ -131,9 +125,9 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	public void init(GL gl) {
 		// contentVA = useCase.getContentVA(ContentVAType.CONTENT);
 		// storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
-		compareViewStateController = new CompareViewStateController(this,
-				iUniqueID, textRenderer, textureManager, pickingManager,
-				glMouseListener, contextMenu, dataDomain, useCase);
+		compareViewStateController = new CompareViewStateController(this, iUniqueID,
+				textRenderer, textureManager, pickingManager, glMouseListener,
+				contextMenu, dataDomain, useCase);
 
 		compareViewStateController.init(gl);
 	}
@@ -145,25 +139,22 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		// Register keyboard listener to GL canvas
-		parentGLCanvas.getParentComposite().getDisplay().asyncExec(
-				new Runnable() {
-					public void run() {
-						parentGLCanvas.getParentComposite().addKeyListener(
-								glKeyListener);
-					}
-				});
+		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		init(gl);
 	}
 
 	@Override
 	public void initRemote(final GL gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener,
-			GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		// Register keyboard listener to GL canvas
-		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
-				.asyncExec(new Runnable() {
+		glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(
+				new Runnable() {
 					public void run() {
 						glParentView.getParentGLCanvas().getParentComposite()
 								.addKeyListener(glKeyListener);
@@ -193,8 +184,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		processEvents();
 		if (wasMouseWheeled) {
 			wasMouseWheeled = false;
-			compareViewStateController.handleMouseWheel(gl, wheelAmount,
-					wheelPoint);
+			compareViewStateController.handleMouseWheel(gl, wheelAmount, wheelPoint);
 		}
 
 		if (!isVisible())
@@ -260,8 +250,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		return new String("");
 	}
 
-	private void renderDendrogram(final GL gl, ClusterNode currentNode,
-			float fOpacity, Tree<ClusterNode> tree, float xPosInit) {
+	private void renderDendrogram(final GL gl, ClusterNode currentNode, float fOpacity,
+			Tree<ClusterNode> tree, float xPosInit) {
 
 		// float fLookupValue = currentNode.getAverageExpressionValue();
 		// float[] fArMappingColor = colorMapper.getColor(fLookupValue);
@@ -321,8 +311,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			fDiff = fTemp - xmin;
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode
-							.getID()));
+					EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode.getID()));
 
 			// vertical line connecting all child nodes
 			gl.glBegin(GL.GL_LINES);
@@ -343,25 +332,23 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		} else {
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode
-							.getID()));
+					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode.getID()));
 
 			// horizontal line visualizing leaf nodes
 			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(),
-					currentNode.getPos().z());
-			gl.glVertex3f(xPosInit, currentNode.getPos().y(), currentNode
+			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode
 					.getPos().z());
+			gl.glVertex3f(xPosInit, currentNode.getPos().y(), currentNode.getPos().z());
 			gl.glEnd();
 
 			gl.glPopName();
 		}
 
 		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(currentNode.getPos().x() - fDiff, currentNode.getPos()
-				.y(), currentNode.getPos().z());
-		gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(),
+		gl.glVertex3f(currentNode.getPos().x() - fDiff, currentNode.getPos().y(),
 				currentNode.getPos().z());
+		gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode
+				.getPos().z());
 		gl.glEnd();
 
 	}
@@ -373,8 +360,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			return;
 		}
 
-		compareViewStateController.handlePickingEvents(ePickingType,
-				pickingMode, iExternalID, pick, isControlPressed);
+		compareViewStateController.handlePickingEvents(ePickingType, pickingMode,
+				iExternalID, pick, isControlPressed);
 	}
 
 	@Override
@@ -418,8 +405,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedCompareView serializedForm = new SerializedCompareView(
-				dataDomain);
+		SerializedCompareView serializedForm = new SerializedCompareView(dataDomain);
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -429,8 +415,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		super.registerEventListeners();
 		compareGroupsEventListener = new CompareGroupsEventListener();
 		compareGroupsEventListener.setHandler(this);
-		eventPublisher.addListener(CompareGroupsEvent.class,
-				compareGroupsEventListener);
+		eventPublisher.addListener(CompareGroupsEvent.class, compareGroupsEventListener);
 
 		duplicateSetBarItemEventListener = new DuplicateSetBarItemEventListener();
 		duplicateSetBarItemEventListener.setHandler(this);
@@ -439,8 +424,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class,
-				selectionUpdateListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		adjustPValueOfSetEventListener = new AdjustPValueOfSetEventListener();
 		adjustPValueOfSetEventListener.setHandler(this);
@@ -449,13 +433,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		eventPublisher.addListener(SelectionCommandEvent.class,
-				selectionCommandListener);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		replaceContentVAListener = new ReplaceContentVAListener();
 		replaceContentVAListener.setHandler(this);
-		eventPublisher.addListener(ReplaceContentVAEvent.class,
-				replaceContentVAListener);
+		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
 
 		useSortingListener = new UseSortingListener();
 		useSortingListener.setHandler(this);
@@ -525,22 +507,41 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	public void setGroupsToCompare(final ArrayList<ISet> sets) {
 
-		ClusterState clusterState = new ClusterState();
+		// ClusterState clusterState = new ClusterState();
 
-//		clusterState.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
-//		clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-//		clusterState.setAffinityPropClusterFactorGenes(8);
-//		clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		// clusterState.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
+		// clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
+		// clusterState.setAffinityPropClusterFactorGenes(8);
+		// clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 
-		 clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
-		 clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-		 clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		 clusterState.setTreeClustererAlgo(ETreeClustererAlgo.COMPLETE_LINKAGE);
+		// clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
+		// clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
+		// clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		// clusterState.setTreeClustererAlgo(ETreeClustererAlgo.COMPLETE_LINKAGE);
 
-		for (ISet set : sets) {
-			set.cluster(clusterState);
+		// for (ISet set : sets) {
+		// set.cluster(clusterState);
+		// }
+
+		generalManager.getGUIBridge().getDisplay().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				StartClusteringAction startClusteringAction = new StartClusteringAction();
+				startClusteringAction.setSets(sets);
+				startClusteringAction.run();
+			}
+		});
+
+		while (sets.get(0).getContentVA(ContentVAType.CONTENT).getGroupList() == null) {
+
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-
 		compareViewStateController.setSetsToCompare(sets);
 	}
 
@@ -573,8 +574,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	@Override
 	public void handleSelectionCommand(EIDCategory category,
 			SelectionCommand selectionCommand) {
-		compareViewStateController.handleSelectionCommand(category,
-				selectionCommand);
+		compareViewStateController.handleSelectionCommand(category, selectionCommand);
 	}
 
 	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
@@ -589,10 +589,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void replaceContentVA(int setID, EIDCategory idCategory,
-			ContentVAType vaType) {
-		compareViewStateController.handleReplaceContentVA(setID, idCategory,
-				vaType);
+	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
+		compareViewStateController.handleReplaceContentVA(setID, idCategory, vaType);
 	}
 
 	public void setUseSorting(boolean useSorting) {
@@ -607,9 +605,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		compareViewStateController.setUseZoom(useZoom);
 	}
 
-	public void handleContentGroupListUpdate(int setID,
-			ContentGroupList contentGroupList) {
-		compareViewStateController.handleContentGroupListUpdate(setID,
-				contentGroupList);
+	public void handleContentGroupListUpdate(int setID, ContentGroupList contentGroupList) {
+		compareViewStateController.handleContentGroupListUpdate(setID, contentGroupList);
 	}
 }

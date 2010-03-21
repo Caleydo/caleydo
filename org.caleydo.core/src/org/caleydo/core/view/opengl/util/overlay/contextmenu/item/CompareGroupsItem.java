@@ -13,7 +13,7 @@ public class CompareGroupsItem
 		super();
 
 		setText("Compare Groups");
-		
+
 		OpenCompareViewEvent openViewEvent = new OpenCompareViewEvent();
 		openViewEvent.setViewType("org.caleydo.view.compare");
 		openViewEvent.setSender(this);
