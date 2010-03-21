@@ -89,6 +89,11 @@ public class ToolBarContentFactory {
 		info.viewType = "org.caleydo.view.scatterplot";
 		info.ignored = false;
 		toolBarInfos.put(info.viewType, info);
+		
+		 info = new ToolBarInfo();
+         info.viewType = "org.caleydo.view.compare";
+         info.ignored = false;
+         toolBarInfos.put(info.viewType, info);
 	}
 
 	/**

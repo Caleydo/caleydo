@@ -729,6 +729,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 						.size() - 1; leftContentIndex++) {
 
 					int contentID = leftContentVA.get(leftContentIndex);
+
 					int nextContentID = leftContentVA.get(leftContentIndex + 1);
 
 					if (rightContentVA.containsElement(contentID) == 0)
@@ -1066,6 +1067,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 		} else {
 			gl.glLineWidth(1);
 			alpha = 0.4f;
+
 			z = 0.2f;
 			// if (isConnectionCrossing(contentID,
 			// heatMapWrapper.getContentVA(),
@@ -1073,6 +1075,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 			// alpha = 0.5f;
 			// else
 			// alpha = 0.3f;
+
 		}
 
 		typeColor[3] = alpha;
@@ -1117,4 +1120,29 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 		}
 	}
+
+	@Override
+	public void setUseSorting(boolean useSorting) {
+		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
+			heatMapWrapper.setUseSorting(useSorting);
+			heatMapWrapper.setDisplayListDirty();
+		}
+	}
+
+	@Override
+	public void setUseZoom(boolean useZoom) {
+		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
+			heatMapWrapper.setUseZoom(useZoom);
+			heatMapWrapper.setDisplayListDirty();
+		}
+	}
+
+	@Override
+	public void setUseFishEye(boolean useFishEye) {
+		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
+			heatMapWrapper.setUseFishEye(useFishEye);
+			heatMapWrapper.setDisplayListDirty();
+		}
+	}
+
 }

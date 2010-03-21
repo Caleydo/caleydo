@@ -22,6 +22,9 @@ public class NewContentGroupInfoEvent
 	private boolean bDeleteTree = false;
 	private int setID;
 
+	public NewContentGroupInfoEvent() {
+	}
+
 	@Override
 	public boolean checkIntegrity() {
 

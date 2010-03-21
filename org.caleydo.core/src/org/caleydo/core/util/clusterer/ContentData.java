@@ -44,11 +44,12 @@ public class ContentData {
 	}
 
 	void finish() {
+		// calculate the group list based on contentClusterSizes (for example for affinity propagation
 		if (contentVA != null && contentClusterSizes != null && contentSampleElements != null) {
 			ContentGroupList contentGroupList = new ContentGroupList();
 
 			int cnt = 0;
-//			int iOffset = 0;
+			// int iOffset = 0;
 			contentTree = new Tree<ClusterNode>();
 			int clusterNr = 0;
 			ClusterNode root = new ClusterNode(contentTree, "Root", clusterNr++, true, -1);
@@ -64,28 +65,23 @@ public class ContentData {
 				contentTree.addChild(root, node);
 				contentGroupList.append(temp);
 				cnt++;
-//				iOffset += iter;
+				// iOffset += iter;
 				to += clusterSize;
 				ClusterNode leaf;
-				for(int vaIndex = from; vaIndex < to; vaIndex++)
-				{
+				for (int vaIndex = from; vaIndex < to; vaIndex++) {
 					Integer contentID = contentVA.get(vaIndex);
 					leaf = new ClusterNode(contentTree, "Leaf: " + contentID, clusterNr++, true, contentID);
-					contentTree.addChild(node, leaf);							
+					contentTree.addChild(node, leaf);
 				}
 				from = to;
-				
-				
+
 			}
-			
-//			int vaIndex = 0;
-//			for(Integer contentID : contentVA)
-//			{
-//				
-//				contentGroupList.getGroupOfVAIndex(vaIndex);				
-//				
-//			}
+
 			contentVA.setGroupList(contentGroupList);
+		}
+		// calculate the group list based on the tree's first level
+		else if (contentVA != null && contentTree != null) {
+			contentVA.buildNewGroupList(contentTree.getRoot().getChildren());
 		}
 	}
 

@@ -366,35 +366,35 @@ public interface ISet
 	 */
 	public ClusterNode getStorageTreeRoot();
 
-	/**
-	 * Returns cluster sizes, determined by affinity clusterer
-	 * 
-	 * @param
-	 * @return CNode
-	 */
-	public ArrayList<Integer> getAlClusterSizes();
+//	/**
+//	 * Returns cluster sizes, determined by affinity clusterer
+//	 * 
+//	 * @param
+//	 * @return CNode
+//	 */
+//	public ArrayList<Integer> getAlClusterSizes();
+//
+//	/**
+//	 * Sets cluster sizes, used by affinity clusterer
+//	 * 
+//	 * @param CNode
+//	 */
+//	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes);
 
-	/**
-	 * Sets cluster sizes, used by affinity clusterer
-	 * 
-	 * @param CNode
-	 */
-	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes);
-
-	/**
-	 * Returns cluster examples, determined by affinity clusterer
-	 * 
-	 * @param
-	 * @return CNode
-	 */
-	public ArrayList<Integer> getAlExamples();
-
-	/**
-	 * Sets cluster examples, used by affinity clusterer
-	 * 
-	 * @param CNode
-	 */
-	public void setAlExamples(ArrayList<Integer> alExamples);
+//	/**
+//	 * Returns cluster examples, determined by affinity clusterer
+//	 * 
+//	 * @param
+//	 * @return CNode
+//	 */
+//	public ArrayList<Integer> getAlExamples();
+//
+//	/**
+//	 * Sets cluster examples, used by affinity clusterer
+//	 * 
+//	 * @param CNode
+//	 */
+//	public void setAlExamples(ArrayList<Integer> alExamples);
 
 	/**
 	 * Sets imported group information

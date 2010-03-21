@@ -628,8 +628,6 @@ public class Set
 	@Override
 	public void cluster(ClusterState clusterState) {
 
-		// TODO set cluster VAs here
-
 		if (bIsNumerical == true && isSetHomogeneous == true) {
 
 			ContentVAType contentVAType = clusterState.getContentVAType();
@@ -664,23 +662,23 @@ public class Set
 
 	}
 
-	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes) {
-		this.alClusterSizes = alClusterSizes;
-	}
+//	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes) {
+//		this.alClusterSizes = alClusterSizes;
+//	}
 
-	public ArrayList<Integer> getAlClusterSizes() {
-		return alClusterSizes;
-	}
+//	public ArrayList<Integer> getAlClusterSizes() {
+//		return alClusterSizes;
+//	}
 
-	@Override
-	public ArrayList<Integer> getAlExamples() {
-		return alClusterExamples;
-	}
-
-	@Override
-	public void setAlExamples(ArrayList<Integer> alExamples) {
-		this.alClusterExamples = alExamples;
-	}
+//	@Override
+//	public ArrayList<Integer> getAlExamples() {
+//		return alClusterExamples;
+//	}
+//
+//	@Override
+//	public void setAlExamples(ArrayList<Integer> alExamples) {
+//		this.alClusterExamples = alExamples;
+//	}
 
 	@Override
 	public void setGroupNrInfo(int[] arGroupInfo, boolean bGeneGroupInfo) {

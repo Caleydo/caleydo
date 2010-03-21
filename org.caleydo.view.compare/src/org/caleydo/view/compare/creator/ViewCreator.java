@@ -7,6 +7,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.view.compare.GLCompare;
 import org.caleydo.view.compare.SerializedCompareView;
+import org.caleydo.view.compare.toolbar.CompareToolBarContent;
 
 public class ViewCreator extends AGLViewCreator {
 
@@ -25,5 +26,10 @@ public class ViewCreator extends AGLViewCreator {
 	public ASerializedView createSerializedView() {
 
 		return new SerializedCompareView();
+	}
+
+	@Override
+	public Object createToolBarContent() {
+		return new CompareToolBarContent();
 	}
 }

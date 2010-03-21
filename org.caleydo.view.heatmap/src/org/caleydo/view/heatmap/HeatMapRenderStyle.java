@@ -21,7 +21,7 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 
 	public static final float SELECTION_Z = 0.005f;
 
-	public static final float MIN_SELECTED_FIELD_HEIGHT = 0.15f;
+	public static final float MIN_SELECTED_FIELD_HEIGHT = 0.1f;
 	public static final float MIN_FIELD_HEIGHT_FOR_CAPTION = 0.05f;
 
 	private static final float SELECTED_FIELD_HEIGHT_PERCENTAGE = 0.1f;

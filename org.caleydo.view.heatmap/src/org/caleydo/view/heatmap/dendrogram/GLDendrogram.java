@@ -1394,6 +1394,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 	 * nodes in the dendrogram deselected depending on the current position of
 	 * the "cut off value"
 	 */
+	@SuppressWarnings("unchecked")
 	private void determineSelectedNodes() {
 
 		iMaxDepth = Integer.MAX_VALUE;
@@ -1401,63 +1402,13 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 
 		iAlClusterNodes.clear();
 		getNumberOfClustersRec(rootNode);
-		buildNewGroupList();
-
-	}
-
-	/**
-	 * Function which merges the clusters determined by the cut off value to
-	 * group lists used for rendering the clusters assignments in
-	 * {@link GLHierarchicalHeatMap}.
-	 */
-	private void buildNewGroupList() {
-
-		if (iAlClusterNodes.size() < 1) {
-
-			if (bRenderContentTree) {
-				groupList = (GroupType) new ContentGroupList();
-			} else {
-				groupList = (GroupType) new StorageGroupList();
-			}
-
-			Group temp = new Group(rootNode.getNrLeaves(), false, 0,
-					SelectionType.NORMAL, rootNode);
-			groupList.append(temp);
-			triggerGroupListEvent();
-			return;
-		}
-
-		if (bRenderContentTree) {
-			groupList = (GroupType) new ContentGroupList();
-		} else {
-			groupList = (GroupType) new StorageGroupList();
-		}
-
-		bEnableDepthCheck = true;
-
-		int cnt = 0;
-		int iExample = 0;
-
-		IVirtualArray<?, ?, ?, ?> currentVA = null;
-
-		if (bRenderContentTree) {
-			currentVA = contentVA;
-		} else {
-			currentVA = storageVA;
-		}
-
-		for (ClusterNode iter : iAlClusterNodes) {
-			// Group temp = new Group(iter.getNrElements(), false,
-			// currentVA.get(iExample),
-			// iter.getRepresentativeElement(), SelectionType.NORMAL, iter);
-			Group temp = new Group(iter.getNrLeaves(), false, currentVA
-					.indexOf(iExample), SelectionType.NORMAL, iter);
-			groupList.append(temp);
-			cnt++;
-			iExample += iter.getNrLeaves();
-		}
+		if (bRenderContentTree)
+			groupList = (GroupType)contentVA.buildNewGroupList(iAlClusterNodes);
+		else
+			groupList = (GroupType)storageVA.buildNewGroupList(iAlClusterNodes);
 
 		triggerGroupListEvent();
+
 	}
 
 	private void triggerGroupListEvent() {

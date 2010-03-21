@@ -908,12 +908,16 @@ public class TreeClusterer
 
 		this.set = set;
 
+		TempResult tempResult;
+
 		if (clusterState.getTreeClustererAlgo() == ETreeClustererAlgo.COMPLETE_LINKAGE)
-			return pmlcluster(clusterState.getClustererType());
+			tempResult = pmlcluster(clusterState.getClustererType());
 		else if (clusterState.getTreeClustererAlgo() == ETreeClustererAlgo.AVERAGE_LINKAGE)
-			return palcluster(clusterState.getClustererType());
+			tempResult = palcluster(clusterState.getClustererType());
 		else
-			return pslcluster(clusterState.getClustererType());
+			tempResult = pslcluster(clusterState.getClustererType());
+
+		return tempResult;
 
 	}
 }

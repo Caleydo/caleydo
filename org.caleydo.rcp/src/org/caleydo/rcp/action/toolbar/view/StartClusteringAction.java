@@ -18,7 +18,7 @@ public class StartClusteringAction
 
 	public static final String TEXT = "Clustering";
 	public static final String ICON = "resources/icons/view/storagebased/clustering.png";
-	
+
 	private ISet set;
 
 	/**
@@ -32,7 +32,7 @@ public class StartClusteringAction
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
 			.getWorkbench().getDisplay(), ICON)));
 	}
-	
+
 	@Override
 	public void run() {
 		super.run();
@@ -42,14 +42,15 @@ public class StartClusteringAction
 		ClusterState clusterState = dialog.getClusterState();
 
 		StartClusteringEvent event = null;
-		if (clusterState != null && set != null)
-			event = new StartClusteringEvent(clusterState, set.getID());	
-		else if (clusterState != null)
-			event = new StartClusteringEvent(clusterState);	
-		
+		// if (clusterState != null && set != null)
+		if (set == null)
+			set = GeneralManager.get().getMasterUseCase().getSet();
+		event = new StartClusteringEvent(clusterState, set.getID());
+		// else if (clusterState != null)
+		// event = new StartClusteringEvent(clusterState);
+
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
-	
 
 	public void setSet(ISet set) {
 		this.set = set;

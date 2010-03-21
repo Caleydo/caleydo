@@ -37,6 +37,7 @@ import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
+import org.caleydo.core.util.clusterer.ETreeClustererAlgo;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -51,10 +52,14 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.view.compare.event.UseSortingEvent;
+import org.caleydo.view.compare.event.UseZoomEvent;
 import org.caleydo.view.compare.listener.AdjustPValueOfSetEventListener;
 import org.caleydo.view.compare.listener.CompareGroupsEventListener;
 import org.caleydo.view.compare.listener.DuplicateSetBarItemEventListener;
 import org.caleydo.view.compare.listener.NewContentGroupInfoEventListener;
+import org.caleydo.view.compare.listener.UseSortingListener;
+import org.caleydo.view.compare.listener.UseZoomListener;
 import org.caleydo.view.compare.state.CompareViewStateController;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
@@ -83,6 +88,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	private SelectionCommandListener selectionCommandListener;
 	private CompareMouseWheelListener compareMouseWheelListener;
 	private ReplaceContentVAListener replaceContentVAListener;
+	private UseSortingListener useSortingListener;
+	private UseZoomListener useZoomListener;
 	private NewContentGroupInfoEventListener newContentGroupInfoEventListener;
 
 	private boolean isControlPressed;
@@ -450,10 +457,19 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		eventPublisher.addListener(ReplaceContentVAEvent.class,
 				replaceContentVAListener);
 
+		useSortingListener = new UseSortingListener();
+		useSortingListener.setHandler(this);
+		eventPublisher.addListener(UseSortingEvent.class, useSortingListener);
+
+		useZoomListener = new UseZoomListener();
+		useZoomListener.setHandler(this);
+		eventPublisher.addListener(UseZoomEvent.class, useZoomListener);
+
 		newContentGroupInfoEventListener = new NewContentGroupInfoEventListener();
 		newContentGroupInfoEventListener.setHandler(this);
 		eventPublisher.addListener(NewContentGroupInfoEvent.class,
 				newContentGroupInfoEventListener);
+
 	}
 
 	@Override
@@ -483,10 +499,22 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			eventPublisher.removeListener(replaceContentVAListener);
 			replaceContentVAListener = null;
 		}
+
+		if (useSortingListener != null) {
+			eventPublisher.removeListener(useSortingListener);
+			useSortingListener = null;
+		}
+
+		if (useZoomListener != null) {
+			eventPublisher.removeListener(useZoomListener);
+			useZoomListener = null;
+		}
+
 		if (newContentGroupInfoEventListener != null) {
 			eventPublisher.removeListener(newContentGroupInfoEventListener);
 			newContentGroupInfoEventListener = null;
 		}
+
 	}
 
 	@Override
@@ -498,15 +526,15 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	public void setGroupsToCompare(final ArrayList<ISet> sets) {
 
 		ClusterState clusterState = new ClusterState();
-		clusterState.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
-		clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-		clusterState.setAffinityPropClusterFactorGenes(5);
-		clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+//		clusterState.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
+//		clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
+//		clusterState.setAffinityPropClusterFactorGenes(5);
+//		clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 
-		// clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
-		// clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-		// clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		// clusterState.setTreeClustererAlgo(ETreeClustererAlgo.COMPLETE_LINKAGE);
+		 clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
+		 clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
+		 clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		 clusterState.setTreeClustererAlgo(ETreeClustererAlgo.COMPLETE_LINKAGE);
 
 		for (ISet set : sets) {
 			set.cluster(clusterState);
@@ -564,6 +592,18 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			ContentVAType vaType) {
 		compareViewStateController.handleReplaceContentVA(setID, idCategory,
 				vaType);
+	}
+
+	public void setUseSorting(boolean useSorting) {
+		compareViewStateController.setUseSorting(useSorting);
+	}
+
+	public void setUseFishEye(boolean useFishEye) {
+		compareViewStateController.setUseFishEye(useFishEye);
+	}
+
+	public void setUseZoom(boolean useZoom) {
+		compareViewStateController.setUseZoom(useZoom);
 	}
 
 	public void handleContentGroupListUpdate(int setID,

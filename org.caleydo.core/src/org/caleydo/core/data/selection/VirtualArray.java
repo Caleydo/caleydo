@@ -14,6 +14,7 @@ import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
  * Implementation of IVirtualArray
@@ -330,8 +331,6 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 		return alGeneIds;
 	}
-	
-
 
 	// @Override
 	// public GroupType newGroupList() {
@@ -417,5 +416,55 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		}
 
 		return intArray;
+	}
+
+	/**
+	 * Function which merges the clusters determined by the cut off value to group lists used for rendering
+	 * the clusters assignments in {@link GLHierarchicalHeatMap}.
+	 */
+	protected GroupList<GroupType, ConcreteType, VADelta> buildNewGroupList(
+		GroupList<GroupType, ConcreteType, VADelta> groupList, ArrayList<ClusterNode> iAlClusterNodes) {
+
+		// if (iAlClusterNodes.size() < 1) {
+		//
+		// Group temp = new Group(rootNode.getNrLeaves(), false, 0, SelectionType.NORMAL, rootNode);
+		// groupList.append(temp);
+		// triggerGroupListEvent();
+		// return;
+		// }
+		//
+		// if (bRenderContentTree) {
+		// groupList = (GroupType) new ContentGroupList();
+		// }
+		// else {
+		// groupList = (GroupType) new StorageGroupList();
+		// }
+		//
+		// bEnableDepthCheck = true;
+
+		int cnt = 0;
+		int iExample = 0;
+
+		// IVirtualArray<?, ?, ?, ?> currentVA = null;
+		//
+		// if (bRenderContentTree) {
+		// currentVA = contentVA;
+		// }
+		// else {
+		// currentVA = storageVA;
+		// }
+
+		for (ClusterNode iter : iAlClusterNodes) {
+			// Group temp = new Group(iter.getNrElements(), false,
+			// currentVA.get(iExample),
+			// iter.getRepresentativeElement(), SelectionType.NORMAL, iter);
+			Group temp =
+				new Group(iter.getNrLeaves(), false, this.indexOf(iExample), SelectionType.NORMAL, iter);
+			groupList.append(temp);
+			cnt++;
+			iExample += iter.getNrLeaves();
+		}
+		return groupList;
+		// triggerGroupListEvent();
 	}
 }

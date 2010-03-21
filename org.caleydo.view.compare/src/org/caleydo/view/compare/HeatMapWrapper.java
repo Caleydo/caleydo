@@ -48,6 +48,12 @@ import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
 
+/**
+ * 
+ * @author Christian Partl
+ * @author Alexander Lex
+ * 
+ */
 public class HeatMapWrapper {
 
 	private HeatMapOverview overview;
@@ -75,6 +81,10 @@ public class HeatMapWrapper {
 	private IEventPublisher eventPublisher;
 	private ContentSelectionManager contentSelectionManager;
 	private SelectionType activeHeatMapSelectionType;
+
+	private boolean useSorting = true;
+	private boolean useZoom = false;
+	private boolean useFishEye = false;
 
 	public HeatMapWrapper(int id, AHeatMapLayout layout, AGLView glParentView,
 			GLInfoAreaManager infoAreaManager, IUseCase useCase,
@@ -217,6 +227,10 @@ public class HeatMapWrapper {
 			groupSampleStartIndex += group.getNrElements();
 			groupIndex++;
 		}
+
+
+//		createDendrogram(gl, glMouseListener);
+
 
 		if (isNewSet) {
 			createDendrogram(gl, glMouseListener);
@@ -562,11 +576,12 @@ public class HeatMapWrapper {
 					currentInfo = selectedGroups.get(selectedGroup);
 
 				}
+
 				GLHeatMap heatMap = hashHeatMaps.get(selectedGroup
 						.getGroupIndex());
 				ContentVirtualArray heatMapVA = heatMap.getContentVA();
 				int index = heatMapVA.indexOf(contentID);
-				if (index >= 0)
+				if (useSorting && index >= 0)
 					heatMapVA.move(index, currentInfo.getContainedNrGenes());
 				else
 					System.out.println("Problem");
@@ -587,51 +602,39 @@ public class HeatMapWrapper {
 
 				ContentVirtualArray contentVA = heatMap.getContentVA();
 
-				// re-sort the source virtual array to group genes according to
-				// vas in the destination (here)
-				for (ContentVirtualArray foreignVA : foreignContentVAs) {
-					Integer foreignContentLastOrdererIndex = 0;
-					for (int contentIndex = 0; contentIndex < nrGenes; contentIndex++) {
-						Integer contentID = contentVA.get(contentIndex);
-						int foreignIndex = foreignVA.indexOf(contentID);
-						if (foreignIndex != -1) {
-							foreignVA.move(foreignIndex,
-									foreignContentLastOrdererIndex++);
+				if (useSorting) {
+					// re-sort the source virtual array to group genes according
+					// to
+					// vas in the destination (here)
+					for (ContentVirtualArray foreignVA : foreignContentVAs) {
+						Integer foreignContentLastOrdererIndex = 0;
+						for (int contentIndex = 0; contentIndex < nrGenes; contentIndex++) {
+							Integer contentID = contentVA.get(contentIndex);
+							int foreignIndex = foreignVA.indexOf(contentID);
+							if (foreignIndex != -1) {
+								foreignVA.move(foreignIndex,
+										foreignContentLastOrdererIndex++);
+							}
 						}
 					}
+
+					// hide the elements not in the source vas
+					SelectionDelta contentSelectionDelta = new SelectionDelta(
+							EIDType.EXPRESSION_INDEX);
+
+					for (int contentIndex = nrGenes; contentIndex < contentVA
+							.size(); contentIndex++) {
+						SelectionDeltaItem item = new SelectionDeltaItem();
+						item.setPrimaryID(contentVA.get(contentIndex));
+						item.setSelectionType(GLHeatMap.SELECTION_HIDDEN);
+						contentSelectionDelta.add(item);
+					}
+					SelectionUpdateEvent event = new SelectionUpdateEvent();
+					event.setSender(this);
+					event.setSelectionDelta(contentSelectionDelta);
+
+					eventPublisher.triggerEvent(event);
 				}
-
-				// here we re-sort the genes in the local va so that they are in
-				// the order of the foreign contentVAs
-				// for (int foreignVAIndex = foreignContentVAs.size() - 1;
-				// foreignVAIndex >= 0; foreignVAIndex--) {
-				// int lastMovedIndex = 0;
-				// ContentVirtualArray foreignVA = foreignContentVAs
-				// .get(foreignVAIndex);
-				// for (int foreignID : foreignVA) {
-				// int contentIndex = contentVA.indexOf(foreignID);
-				// if (contentIndex != -1) {
-				// contentVA.move(contentIndex, lastMovedIndex++);
-				// }
-				// }
-				// }
-
-				// hide the elements not in the source vas
-				SelectionDelta contentSelectionDelta = new SelectionDelta(
-						EIDType.EXPRESSION_INDEX);
-
-				for (int contentIndex = nrGenes; contentIndex < contentVA
-						.size(); contentIndex++) {
-					SelectionDeltaItem item = new SelectionDeltaItem();
-					item.setPrimaryID(contentVA.get(contentIndex));
-					item.setSelectionType(GLHeatMap.SELECTION_HIDDEN);
-					contentSelectionDelta.add(item);
-				}
-				SelectionUpdateEvent event = new SelectionUpdateEvent();
-				event.setSender(this);
-				event.setSelectionDelta(contentSelectionDelta);
-
-				eventPublisher.triggerEvent(event);
 			}
 		}
 		for (Group group : selectedGroups.keySet()) {
@@ -847,6 +850,20 @@ public class HeatMapWrapper {
 		return dendrogram;
 	}
 
+
+	public void setUseSorting(boolean useSorting) {
+		this.useSorting = useSorting;
+	}
+
+	public void setUseZoom(boolean useZoom) {
+		layout.setUseZoom(useZoom);
+	}
+
+	public void setUseFishEye(boolean useFishEye) {
+		this.useFishEye = useFishEye;
+	}
+
+
 	public void handleContentGroupListUpdate(ContentGroupList contentGroupList) {
 		selectedGroups.clear();
 		contentVA.setGroupList(contentGroupList);
@@ -865,4 +882,5 @@ public class HeatMapWrapper {
 	public boolean isInitialized() {
 		return isInitialized;
 	}
+
 }

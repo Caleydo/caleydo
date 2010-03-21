@@ -125,8 +125,23 @@ public class CompareViewStateController {
 		currentState.handleReplaceContentVA(setID, idCategory, vaType);
 	}
 
+	public void setUseSorting(boolean useSorting) {
+		currentState.setUseSorting(useSorting);
+	}
+
+	public void setUseZoom(boolean useZoom) {
+		currentState.setUseZoom(useZoom);
+	}
+
+	public void setUseFishEye(boolean useFishEye) {
+		currentState.setUseFishEye(useFishEye);
+	}
+
 	public void handleContentGroupListUpdate(int setID,
 			ContentGroupList contentGroupList) {
 		currentState.handleContentGroupListUpdate(setID, contentGroupList);
 	}
+	
+	
+
 }

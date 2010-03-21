@@ -43,7 +43,7 @@ import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
-public abstract class ACompareViewStateStatic extends ACompareViewState{
+public abstract class ACompareViewStateStatic extends ACompareViewState {
 
 	private final static float SET_BAR_HEIGHT_PORTION = 0.1f;
 
@@ -218,7 +218,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState{
 			pos.setZ(DENDROGRAM_Z);
 		}
 		hashNodePositions.put(currentNode, pos);
-//		currentNode.setPos(pos);
+		// currentNode.setPos(pos);
 
 		return pos;
 	}
@@ -294,7 +294,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState{
 			pathToRoot.remove(pathToRoot.size() - 1);
 
 			for (ClusterNode pathNode : pathToRoot) {
-//				Vec3f nodePos = pathNode.getPos();
+				// Vec3f nodePos = pathNode.getPos();
 				Vec3f nodePos = hashNodePositions.get(pathNode);
 				points.add(nodePos);
 			}
@@ -309,7 +309,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState{
 			pathToRoot.remove(pathToRoot.size() - 1);
 
 			for (ClusterNode pathNode : pathToRoot) {
-//				Vec3f nodePos = pathNode.getPos();
+				// Vec3f nodePos = pathNode.getPos();
 				Vec3f nodePos = hashNodePositions.get(pathNode);
 				points.add(nodePos);
 				break; // FIXME: REMOVE BREAK
@@ -458,36 +458,49 @@ public abstract class ACompareViewStateStatic extends ACompareViewState{
 		setSetsInFocus(setBar.getSetsInFocus());
 	}
 
-//	public abstract void init(GL gl);
-//
-//	public abstract void drawDisplayListElements(GL gl);
-//
-//	public abstract void drawActiveElements(GL gl);
-//
-//	public abstract void handleStateSpecificPickingEvents(
-//			EPickingType ePickingType, EPickingMode pickingMode,
-//			int iExternalID, Pick pick, boolean isControlPressed);
-//
-//	public abstract ECompareViewStateType getStateType();
-//
-//	public abstract void duplicateSetBarItem(int itemID);
-//
-//	public abstract void handleSelectionUpdate(ISelectionDelta selectionDelta,
-//			boolean scrollToSelection, String info);
-//
-//	public abstract void handleSelectionCommand(EIDCategory category,
-//			SelectionCommand selectionCommand);
-//
-//	public abstract void setSetsInFocus(ArrayList<ISet> setsInFocus);
-//
-//	public abstract void adjustPValue();
-//
-//	public abstract int getMaxSetsInFocus();
-//
-//	public abstract int getMinSetsInFocus();
-//
-//	public abstract void handleMouseWheel(GL gl, int amount, Point wheelPoint);
-//
-//	protected abstract void setupLayouts();
+	public void setUseSorting(boolean useSorting) {
+
+	}
+
+	public void setUseZoom(boolean useZoom) {
+
+	}
+
+	public void setUseFishEye(boolean useFishEye) {
+
+	}
+	// public abstract void init(GL gl);
+	//
+	// public abstract void drawDisplayListElements(GL gl);
+	//
+	// public abstract void drawActiveElements(GL gl);
+	//
+	// public abstract void handleStateSpecificPickingEvents(
+	// EPickingType ePickingType, EPickingMode pickingMode,
+	// int iExternalID, Pick pick, boolean isControlPressed);
+	//
+	// public abstract ECompareViewStateType getStateType();
+	//
+	// public abstract void duplicateSetBarItem(int itemID);
+	//
+	// public abstract void handleSelectionUpdate(ISelectionDelta
+	// selectionDelta,
+	// boolean scrollToSelection, String info);
+	//
+	// public abstract void handleSelectionCommand(EIDCategory category,
+	// SelectionCommand selectionCommand);
+	//
+	// public abstract void setSetsInFocus(ArrayList<ISet> setsInFocus);
+	//
+	// public abstract void adjustPValue();
+	//
+	// public abstract int getMaxSetsInFocus();
+	//
+	// public abstract int getMinSetsInFocus();
+	//
+	// public abstract void handleMouseWheel(GL gl, int amount, Point
+	// wheelPoint);
+	//
+	// protected abstract void setupLayouts();
 
 }

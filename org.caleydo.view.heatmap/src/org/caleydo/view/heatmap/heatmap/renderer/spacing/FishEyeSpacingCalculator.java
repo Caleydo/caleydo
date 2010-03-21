@@ -23,6 +23,8 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 	@Override
 	public void calculateFieldHeights() {
 
+		spread = (int)(y / (HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT *3));
+		
 		Set<Integer> zoomedElements = heatMap.getZoomedElements();
 		float baseSize = (y - (zoomedElements.size() * HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT));
 

@@ -8,6 +8,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
+import org.eclipse.swt.widgets.Layout;
 
 public abstract class AHeatMapLayout {
 
@@ -23,6 +24,7 @@ public abstract class AHeatMapLayout {
 	protected RenderCommandFactory renderCommandFactory;
 	protected ArrayList<IHeatMapRenderCommand> localRenderCommands;
 	protected ArrayList<IHeatMapRenderCommand> remoteRenderCommands;
+	private boolean useZoom;
 
 	public AHeatMapLayout(RenderCommandFactory renderCommandFactory) {
 		this.renderCommandFactory = renderCommandFactory;
@@ -40,7 +42,7 @@ public abstract class AHeatMapLayout {
 		this.totalHeight = totalHeight;
 		this.totalWidth = totalWidth;
 	}
-	
+
 	public abstract void calculateDrawingParameters();
 
 	public abstract float getTotalOverviewWidth();
@@ -92,29 +94,29 @@ public abstract class AHeatMapLayout {
 	public abstract EPickingType getHeatMapPickingType();
 
 	public abstract Vec3f getCaptionLabelPosition(float textWidth);
-	
+
 	public abstract Vec3f getDetailHeatMapPosition(int heatMapID);
-	
+
 	public abstract Vec3f getDendrogramButtonPosition();
-	
+
 	public abstract float getDendrogramButtonHeight();
-	
+
 	public abstract float getDendrogramButtonWidth();
-	
+
 	public abstract Vec3f getDendrogramLinePosition();
-	
+
 	public abstract float getDendrogramLineHeight();
-	
+
 	public abstract float getDendrogramLineWidth();
-	
+
 	public abstract void useDendrogram(boolean useDendrogram);
-	
+
 	public abstract Vec3f getDendrogramPosition();
-	
+
 	public abstract float getDendrogramHeight();
-	
+
 	public abstract float getDendrogramWidth();
-	
+
 	public abstract boolean isDendrogramUsed();
 
 	public ArrayList<IHeatMapRenderCommand> getRenderCommandsOfLocalItems() {
@@ -149,13 +151,27 @@ public abstract class AHeatMapLayout {
 	public float getHeight() {
 		return totalHeight;
 	}
-	
+
 	public void setHeatMapWrapper(HeatMapWrapper heatMapWrapper) {
 		this.heatMapWrapper = heatMapWrapper;
 	}
 
 	public HeatMapWrapper getHeatMapWrapper() {
 		return heatMapWrapper;
+	}
+
+	/**
+	 * @param useZoom
+	 */
+	public void setUseZoom(boolean useZoom) {
+		this.useZoom = useZoom;
+	}
+
+	/**
+	 * @return the useZoom
+	 */
+	public boolean isUseZoom() {
+		return useZoom;
 	}
 
 }

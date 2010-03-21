@@ -11,6 +11,7 @@ import org.caleydo.view.compare.GroupInfo;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
+import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public abstract class ADetailViewLayoutState {
@@ -112,7 +113,10 @@ public abstract class ADetailViewLayoutState {
 				/ (float) totalNumberOfElements;
 
 		/** the minimum spacing */
-		float minSpacing = defaultSpacing / 3.0f;
+		float minSpacing = defaultSpacing / 10.0f;
+
+		/** the minimum spacing for a whole heat map */
+		float hmMinSpacing = HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT * 1.5f;
 
 		/** resulting spacing for one element in an active / pinned heat map */
 		float resultingFocusSpacing = 0;
@@ -120,8 +124,31 @@ public abstract class ADetailViewLayoutState {
 		/** resulting spacing for one element in an inactive heat map */
 		float resultingNormalSpacing = 0;
 
-		// the case where we have enough space for everything
-		if (numberOfFocusElements > 0) {
+		// calculate remaining size after removing the elements which need extra
+		// space due to small heat map size
+		int overheadsGranted = 0;
+		int elementsInOverhead = 0;
+
+		for (Group group : selectedGroups.keySet()) {
+			GLHeatMap heatMap = heatMapWrapper
+					.getHeatMap(group.getGroupIndex());
+			int numElements = heatMap.getNumberOfVisibleElements();
+
+			if (numElements * defaultSpacing < hmMinSpacing) {
+				overheadsGranted++;
+				elementsInOverhead += numElements;
+			}
+		}
+
+		availableSpaceForHeatMaps -= hmMinSpacing * overheadsGranted
+				- (elementsInOverhead * defaultSpacing);
+
+		defaultSpacing = availableSpaceForHeatMaps
+				/ (float) (totalNumberOfElements);
+		minSpacing = defaultSpacing / 4;
+
+		if (layout.isUseZoom() && numberOfFocusElements > 0) {
+			// the case where we have enough space for everything
 			if (defaultSpacing > requestedFocusSpacing) {
 				resultingFocusSpacing = defaultSpacing;
 				resultingNormalSpacing = defaultSpacing;
@@ -137,7 +164,12 @@ public abstract class ADetailViewLayoutState {
 						* resultingNormalSpacing)
 						/ numberOfFocusElements;
 			}
-		} else {
+		}
+		// if(!layout.isUseZoom() && numberOfFocusElements > 0)
+		// {
+		// if(availableSpaceForHeatMaps > )
+		// }
+		else {
 			resultingNormalSpacing = defaultSpacing;
 		}
 
@@ -147,15 +179,20 @@ public abstract class ADetailViewLayoutState {
 			int numElements = heatMap.getNumberOfVisibleElements();
 			float currentHeatMapOverheadSize = heatMap
 					.getRequiredOverheadSpacing();
-			if (heatMap.isForceMinSpacing()) {
-				hashHeatMapHeights.put(group.getGroupIndex(),
-						(resultingFocusSpacing * numElements)
-								+ currentHeatMapOverheadSize);
+			float size = 0;
+			if (layout.isUseZoom() && heatMap.isForceMinSpacing()) {
+				size = (resultingFocusSpacing * numElements)
+						+ currentHeatMapOverheadSize;
 			} else {
-				hashHeatMapHeights.put(group.getGroupIndex(),
-						(resultingNormalSpacing * numElements)
-								+ currentHeatMapOverheadSize);
+				size = (resultingNormalSpacing * numElements)
+						+ currentHeatMapOverheadSize;
+
 			}
+
+			if (size - currentHeatMapOverheadSize < hmMinSpacing)
+				size = hmMinSpacing + currentHeatMapOverheadSize;
+
+			hashHeatMapHeights.put(group.getGroupIndex(), size);
 		}
 
 	}

@@ -17,7 +17,7 @@ import org.caleydo.core.util.clusterer.ClusterState;
 public class StartClusteringEvent
 	extends AEvent {
 
-	private ClusterState ClusterState;
+	private ClusterState clusterState;
 
 	private Integer setID;
 	
@@ -28,12 +28,12 @@ public class StartClusteringEvent
 		// nothing to initialize here
 	}
 
-	public StartClusteringEvent(ClusterState state) {
-		this.ClusterState = state;
-	}
+//	public StartClusteringEvent(ClusterState state) {
+//		this.ClusterState = state;
+//	}
 
 	public StartClusteringEvent(ClusterState state, Integer setID) {
-		this(state);
+		this.clusterState = state;
 		this.setID = setID;
 	}
 	
@@ -46,12 +46,12 @@ public class StartClusteringEvent
 	}
 
 	public ClusterState getClusterState() {
-		return ClusterState;
+		return clusterState;
 	}
 
 	@Override
 	public boolean checkIntegrity() {
-		if (ClusterState == null)
+		if (clusterState == null)
 			return false;
 		return true;
 	}
