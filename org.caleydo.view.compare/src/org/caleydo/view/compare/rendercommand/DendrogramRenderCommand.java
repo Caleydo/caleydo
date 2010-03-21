@@ -7,6 +7,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
+import org.caleydo.view.compare.layout.HeatMapLayoutDetailViewRight;
 import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
 
 public class DendrogramRenderCommand implements IHeatMapRenderCommand {
@@ -22,6 +23,10 @@ public class DendrogramRenderCommand implements IHeatMapRenderCommand {
 		GLDendrogram<ContentGroupList> dendrogram = heatMapWrapper
 				.getDendrogram();
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
+		
+		if(layout instanceof HeatMapLayoutDetailViewRight) {
+			dendrogram.setMirrored(true);
+		}
 
 		Vec3f dendrogramPosition = layout.getDendrogramPosition();
 

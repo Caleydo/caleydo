@@ -93,6 +93,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 	private boolean bIsDraggingActive = false;
 	private float fPosCut = 0.0f;
 
+	private boolean isMirrored = false;
+
 	// sub tree stuff
 	private float yPosInitSubTree = 0;
 	private float xGlobalMaxSubTree = 0;
@@ -339,6 +341,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 		gl.glColor4f(1, 1, 1, 1);
 
 		if (bRenderContentTree) {
+
 			gl.glTranslatef(+fLevelWidth, 0, 0);
 			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -1262,6 +1265,12 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
+		gl.glPushMatrix();
+		if (isMirrored) {
+			gl.glTranslatef(viewFrustum.getWidth(), 0, 0);
+			gl.glScalef(-1.0f, 1.0f, 1.0f);
+		}
+
 		if (tree == null) {
 
 			iAlClusterNodes.clear();
@@ -1333,6 +1342,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 		if (tree != null && bRenderUntilCut == false)
 			renderCut(gl);
 
+		gl.glPopMatrix();
 		gl.glEndList();
 
 	}
@@ -1355,8 +1365,15 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 
 		if (bRenderContentTree) {
 			if (fArTargetWorldCoordinates[0] > 0.1f
-					&& fArTargetWorldCoordinates[0] < fWidth)
-				fPosCut = fArTargetWorldCoordinates[0] - fLevelWidth;
+					&& fArTargetWorldCoordinates[0] < fWidth) {
+				if (isMirrored) {
+					fPosCut = -fArTargetWorldCoordinates[0]
+							+ (rootNode.getDepth() - 1) * fLevelWidth + 0.1f;
+				} else {
+					fPosCut = fArTargetWorldCoordinates[0] - fLevelWidth;
+				}
+
+			}
 		} else {
 			if (fArTargetWorldCoordinates[1] > -0.1f
 					&& fArTargetWorldCoordinates[1] < fHeight)
@@ -1964,5 +1981,13 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 		super.setSet(set);
 		tree = null;
 		rootNode = null;
+	}
+
+	public boolean isMirrored() {
+		return isMirrored;
+	}
+
+	public void setMirrored(boolean isMirrored) {
+		this.isMirrored = isMirrored;
 	}
 }
