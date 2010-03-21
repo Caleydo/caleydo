@@ -11,7 +11,6 @@ import javax.media.opengl.GL;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.SetRelations;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentGroupList;
@@ -51,7 +50,6 @@ import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
 
 public class HeatMapWrapper {
 
-	// private GLHeatMap heatMap;
 	private HeatMapOverview overview;
 	private ISet set;
 
@@ -62,6 +60,8 @@ public class HeatMapWrapper {
 	private HashMap<Group, GroupInfo> selectedGroups;
 	private GLDendrogram<ContentGroupList> dendrogram;
 	private boolean isNewSelection;
+	private boolean isInitialized;
+	private boolean isNewSet;
 	private int id;
 	private int activeHeatMapID;
 
@@ -129,10 +129,6 @@ public class HeatMapWrapper {
 		heatMap.setDetailLevel(EDetailLevel.MEDIUM);
 		heatMap.initRemote(gl, glParentView, glMouseListener, infoAreaManager);
 		heatMap.setSendClearSelectionsEvent(true);
-		// ContentSelectionManager hmContentSelectionManager =
-		// heatMap.getContentSelectionManager();
-		// hmContentSelectionManager.addSelectionType(activeHeatMapSelectionType);
-		// hmContentSelectionManager.addTypeToDeltaBlacklist(activeHeatMapSelectionType);
 		heatMap.useFishEye(false);
 
 		return heatMap;
@@ -170,7 +166,7 @@ public class HeatMapWrapper {
 	public void setSet(ISet set) {
 		this.set = set;
 		contentVA = set.getContentVA(ContentVAType.CONTENT);
-		
+
 		// FIXME: Can we do this? Shall we do this in some other way? Do it also
 		// with dendrogram.
 		for (GLHeatMap heatMap : hashHeatMaps.values()) {
@@ -189,25 +185,9 @@ public class HeatMapWrapper {
 		// heatMap.setDisplayListDirty();
 
 		overview.setSet(set);
-
-		// FIXME: Just for testing
-		// if (contentVA.size() > 80 && contentVA.getGroupList() == null) {
-		// ContentGroupList groupList = new ContentGroupList();
-		// contentVA.setGroupList(groupList);
-		// Group temp = new Group(5, false, 0, SelectionType.NORMAL);
-		// groupList.append(temp);
-		// temp = new Group(10, false, 0, SelectionType.NORMAL);
-		// groupList.append(temp);
-		// temp = new Group(20, false, 0, SelectionType.NORMAL);
-		// groupList.append(temp);
-		// temp = new Group(15, false, 0, SelectionType.NORMAL);
-		// groupList.append(temp);
-		// temp = new Group(30, false, 0, SelectionType.NORMAL);
-		// groupList.append(temp);
-		// temp = new Group(contentVA.size() - 80, false, 0,
-		// SelectionType.NORMAL);
-		// groupList.append(temp);
-		// }
+		isNewSet = true;
+		isInitialized = false;
+		activeHeatMapID = -1;
 	}
 
 	public void init(GL gl, GLMouseListener glMouseListener,
@@ -218,7 +198,7 @@ public class HeatMapWrapper {
 
 		ContentGroupList contentGroupList = contentVA.getGroupList();
 		hashHeatMaps.clear();
-		// selectedGroups.clear();
+//		selectedGroups.clear();
 
 		if (contentGroupList == null)
 			return;
@@ -237,9 +217,13 @@ public class HeatMapWrapper {
 			groupSampleStartIndex += group.getNrElements();
 			groupIndex++;
 		}
-		
-		createDendrogram(gl, glMouseListener);
 
+		if (isNewSet) {
+			createDendrogram(gl, glMouseListener);
+		}
+		isInitialized = true;
+		isNewSet = false;
+		clearDeselected();
 	}
 
 	private void setEmbeddedHeatMapData(GLHeatMap heatMap,
@@ -262,19 +246,7 @@ public class HeatMapWrapper {
 
 	public void calculateDrawingParameters() {
 		layout.calculateDrawingParameters();
-		// calculateHeatMapPositions();
 
-		// int numTotalSamples = 0;
-		//
-		// float totalHeatMapOverheadSize = 0;
-		// for (Group group : selectedGroups.keySet()) {
-		// GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
-		// int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
-		// numTotalSamples += numSamplesInHeatMap;
-		// totalHeatMapOverheadSize += heatMap.getRequiredOverheadSpacing();
-		// }
-
-		// for (Group group : contentVA.getGroupList()) {
 		for (Group group : selectedGroups.keySet()) {
 
 			if (!selectedGroups.containsKey(group))
@@ -282,13 +254,11 @@ public class HeatMapWrapper {
 			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 			if (heatMap == null)
 				continue;
-			// int numSamplesInHeatMap = group.getNrElements();
+
 			float heatMapHeight = layout.getDetailHeatMapHeight(group
 					.getGroupIndex());
 			Vec3f heatMapPosition = layout.getDetailHeatMapPosition(group
 					.getGroupIndex());
-			// hashHeatMapPositions.get(group
-			// .getGroupIndex());
 
 			heatMap.getViewFrustum().setLeft(heatMapPosition.x());
 			heatMap.getViewFrustum().setBottom(heatMapPosition.y());
@@ -321,60 +291,6 @@ public class HeatMapWrapper {
 	public void drawRemoteItems(GL gl, GLMouseListener glMouseListener,
 			PickingManager pickingManager) {
 
-		// if (useDetailView) {
-
-		// int numTotalSamples = 0;
-		//
-		// for (GroupInfo groupInfo : selectedGroups) {
-		// int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
-		// numTotalSamples += numSamplesInHeatMap;
-		// }
-		//
-		// calculateHeatMapPositions();
-		//
-		// for (GroupInfo groupInfo : selectedGroups) {
-		//
-		// GLHeatMap heatMap = hashHeatMaps.get(groupInfo.getGroupIndex());
-		// if (heatMap == null)
-		// continue;
-		// int numSamplesInHeatMap = groupInfo.getGroup().getNrElements();
-		// float heatMapHeight = layout
-		// .getDetailHeatMapHeight(numSamplesInHeatMap,
-		// numTotalSamples, selectedGroups.size());
-		// Vec3f heatMapPosition = hashHeatMapPositions.get(groupInfo
-		// .getGroupIndex());
-		//
-		// gl.glTranslatef(heatMapPosition.x(), heatMapPosition.y(),
-		// heatMapPosition.z());
-		// heatMap.getViewFrustum().setLeft(heatMapPosition.x());
-		// heatMap.getViewFrustum().setBottom(heatMapPosition.y());
-		// heatMap.getViewFrustum().setRight(
-		// heatMapPosition.x() + layout.getDetailWidth());
-		// heatMap.getViewFrustum()
-		// .setTop(heatMapPosition.y() + heatMapHeight);
-		//
-		// if (isNewSelection) {
-		// heatMap.setDisplayListDirty();
-		// }
-		// gl.glPushName(pickingManager.getPickingID(glParentView.getID(),
-		// layout.getHeatMapPickingType(), groupInfo.getGroupIndex()));
-		// heatMap.displayRemote(gl);
-		// gl.glPopName();
-		//
-		// gl.glTranslatef(-heatMapPosition.x(), -heatMapPosition.y(),
-		// -heatMapPosition.z());
-		//
-		// // ContentVirtualArray va = heatMap.getContentVA();
-		// //
-		// // for (int i = 0; i < va.size(); i++) {
-		// // // Vec2f position = getLeftLinkPositionFromContentID(va.get(i));
-		// // // GLHelperFunctions.drawPointAt(gl, position.x(), position.y(),
-		// // // 1);v
-		// // Vec2f position = getLeftDetailLinkPositionFromContentID(va
-		// // .get(i));
-
-		// }
-
 		ArrayList<IHeatMapRenderCommand> renderCommands = layout
 				.getRenderCommandsOfRemoteItems();
 
@@ -384,46 +300,13 @@ public class HeatMapWrapper {
 
 		isNewSelection = false;
 
-//		Vec3f position = layout.getDendrogramPosition();
-//		GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
-//
-//		GLHelperFunctions.drawPointAt(gl, position.x()
-//				+ layout.getDendrogramWidth(), position.y(), 1);
+		// Vec3f position = layout.getDendrogramPosition();
+		// GLHelperFunctions.drawPointAt(gl, position.x(), position.y(), 1);
+		//
+		// GLHelperFunctions.drawPointAt(gl, position.x()
+		// + layout.getDendrogramWidth(), position.y(), 1);
 
 	}
-
-	// public void calculateHeatMapPositions() {
-	//
-	// hashHeatMapPositions.clear();
-	//
-	// int numTotalSamples = 0;
-	// float totalHeatMapOverheadSpacing = 0;
-	// for (Group group : selectedGroups.keySet()) {
-	// GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
-	// int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
-	// numTotalSamples += numSamplesInHeatMap;
-	// totalHeatMapOverheadSpacing += heatMap.getRequiredOverheadSpacing();
-	// }
-	// Vec3f detailPosition = layout.getDetailPosition();
-	// float currentPositionY = detailPosition.y() + layout.getDetailHeight();
-	//
-	// for (Group group : contentVA.getGroupList()) {
-	//
-	// if (!selectedGroups.containsKey(group))
-	// continue;
-	// GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
-	// if (heatMap == null)
-	// continue;
-	// int numSamplesInHeatMap = heatMap.getNumberOfVisibleElements();
-	// float heatMapHeight = layout.getDetailHeatMapHeight(group
-	// .getGroupIndex(), this);
-	// hashHeatMapPositions.put(group.getGroupIndex(), new Vec3f(
-	// detailPosition.x(), currentPositionY - heatMapHeight,
-	// detailPosition.z()));
-	// currentPositionY -= (heatMapHeight + layout
-	// .getDetailHeatMapGapHeight());
-	// }
-	// }
 
 	public boolean handleDragging(GL gl, GLMouseListener glMouseListener) {
 		if (overview.handleDragging(gl, glMouseListener)) {
@@ -476,7 +359,7 @@ public class HeatMapWrapper {
 				heatMap.setDisplayListDirty();
 			}
 		}
-		
+
 		dendrogram.setRedrawDendrogram();
 
 	}
@@ -818,6 +701,8 @@ public class HeatMapWrapper {
 	}
 
 	private void clearDeselected() {
+		//FIXME: Events are too slow?
+		contentSelectionManager.clearSelection(GLHeatMap.SELECTION_HIDDEN);
 		SelectionCommand selectionCommand = new SelectionCommand(
 				ESelectionCommandType.CLEAR, GLHeatMap.SELECTION_HIDDEN);
 
@@ -855,9 +740,9 @@ public class HeatMapWrapper {
 		activeHeatMapID = groupIndex;
 		// FIXME FIXME!!!!! we need to set heat maps inactive as well, this is
 		// just for now:
-//		for (GLHeatMap heatMap : hashHeatMaps.values()) {
-//			heatMap.setActive(false);
-//		}
+		// for (GLHeatMap heatMap : hashHeatMaps.values()) {
+		// heatMap.setActive(false);
+		// }
 
 		if (previouslyActiveHeatMapID != -1) {
 			GLHeatMap heatMap = hashHeatMaps.get(activeHeatMapID);
@@ -874,7 +759,7 @@ public class HeatMapWrapper {
 		}
 
 		GLHeatMap heatMap = hashHeatMaps.get(groupIndex);
-//		heatMap.setActive(true);
+		// heatMap.setActive(true);
 		ContentSelectionManager hmContentSelectionManager = heatMap
 				.getContentSelectionManager();
 		hmContentSelectionManager.addToType(activeHeatMapSelectionType, heatMap
@@ -957,8 +842,27 @@ public class HeatMapWrapper {
 
 		return null;
 	}
-	
+
 	public GLDendrogram<ContentGroupList> getDendrogram() {
 		return dendrogram;
+	}
+
+	public void handleContentGroupListUpdate(ContentGroupList contentGroupList) {
+		selectedGroups.clear();
+		contentVA.setGroupList(contentGroupList);
+		contentGroupList.updateGroupInfo();
+		for(Group group : contentGroupList) {
+			group.setSelectionType(SelectionType.SELECTION);
+			selectedGroups.put(group, new GroupInfo());
+		}
+		setHeatMapsInactive();
+		clearDeselected();
+		
+		isInitialized = false;
+		isNewSelection = true;
+	}
+	
+	public boolean isInitialized() {
+		return isInitialized;
 	}
 }

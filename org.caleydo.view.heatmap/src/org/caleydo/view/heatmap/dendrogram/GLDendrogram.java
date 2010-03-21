@@ -1450,6 +1450,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 			newGroupInfoEvent.setVAType(ContentVAType.CONTENT);
 			newGroupInfoEvent.setGroupList((ContentGroupList) groupList);
 			newGroupInfoEvent.setDeleteTree(false);
+			newGroupInfoEvent.setSetID(set.getID());
 			eventPublisher.triggerEvent(newGroupInfoEvent);
 		} else {
 			NewStorageGroupInfoEvent newGroupInfoEvent = new NewStorageGroupInfoEvent();

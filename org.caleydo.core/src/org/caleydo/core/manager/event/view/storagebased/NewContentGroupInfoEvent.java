@@ -20,6 +20,7 @@ public class NewContentGroupInfoEvent
 	private ContentVAType vaType = null;
 	private ContentGroupList groupList = null;
 	private boolean bDeleteTree = false;
+	private int setID;
 
 	@Override
 	public boolean checkIntegrity() {
@@ -54,6 +55,14 @@ public class NewContentGroupInfoEvent
 
 	public boolean isDeleteTree() {
 		return bDeleteTree;
+	}
+
+	public int getSetID() {
+		return setID;
+	}
+
+	public void setSetID(int setID) {
+		this.setID = setID;
 	}
 
 }

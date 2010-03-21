@@ -1030,6 +1030,7 @@ public class DetailViewState extends ACompareViewState {
 			if (!overviewState.isInitialized()) {
 				overviewState.init(gl);
 			}
+			indexOfHeatMapWrapperWithDendrogram = -1;
 			compareViewStateController
 					.setCurrentState(ECompareViewStateType.OVERVIEW);
 			view.setDisplayListDirty();

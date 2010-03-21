@@ -8,6 +8,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -59,11 +60,11 @@ public class CompareViewStateController {
 		setBar.setViewState(currentState);
 
 	}
-	
+
 	public ACompareViewState getState(ECompareViewStateType stateType) {
 		return hashStates.get(stateType);
 	}
-	
+
 	public void setCurrentState(ECompareViewStateType stateType) {
 		currentState = hashStates.get(stateType);
 	}
@@ -104,7 +105,7 @@ public class CompareViewStateController {
 		currentState.handleSelectionUpdate(selectionDelta, scrollToSelection,
 				info);
 	}
-	
+
 	public void handleSelectionCommand(EIDCategory category,
 			SelectionCommand selectionCommand) {
 		currentState.handleSelectionCommand(category, selectionCommand);
@@ -114,7 +115,7 @@ public class CompareViewStateController {
 
 		currentState.adjustPValue();
 	}
-	
+
 	public void handleMouseWheel(GL gl, int amount, Point wheelPoint) {
 		currentState.handleMouseWheel(gl, amount, wheelPoint);
 	}
@@ -122,5 +123,10 @@ public class CompareViewStateController {
 	public void handleReplaceContentVA(int setID, EIDCategory idCategory,
 			ContentVAType vaType) {
 		currentState.handleReplaceContentVA(setID, idCategory, vaType);
+	}
+
+	public void handleContentGroupListUpdate(int setID,
+			ContentGroupList contentGroupList) {
+		currentState.handleContentGroupListUpdate(setID, contentGroupList);
 	}
 }

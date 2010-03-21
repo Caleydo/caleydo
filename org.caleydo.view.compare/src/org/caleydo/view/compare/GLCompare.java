@@ -12,6 +12,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -24,6 +25,7 @@ import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.compare.AdjustPValueEvent;
 import org.caleydo.core.manager.event.view.compare.DuplicateSetBarItemEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
+import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -52,6 +54,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.compare.listener.AdjustPValueOfSetEventListener;
 import org.caleydo.view.compare.listener.CompareGroupsEventListener;
 import org.caleydo.view.compare.listener.DuplicateSetBarItemEventListener;
+import org.caleydo.view.compare.listener.NewContentGroupInfoEventListener;
 import org.caleydo.view.compare.state.CompareViewStateController;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
@@ -80,6 +83,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	private SelectionCommandListener selectionCommandListener;
 	private CompareMouseWheelListener compareMouseWheelListener;
 	private ReplaceContentVAListener replaceContentVAListener;
+	private NewContentGroupInfoEventListener newContentGroupInfoEventListener;
 
 	private boolean isControlPressed;
 	private boolean wasMouseWheeled;
@@ -192,8 +196,6 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		compareViewStateController.executeDrawingPreprocessing(gl,
 				bIsDisplayListDirtyLocal);
-		
-		
 
 		// if (bIsDisplayListDirtyLocal) {
 		// bIsDisplayListDirtyLocal = false;
@@ -223,7 +225,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		// processEvents();
 
 		compareViewStateController.drawActiveElements(gl);
-		
+
 		if (bIsDisplayListDirtyLocal) {
 			bIsDisplayListDirtyLocal = false;
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
@@ -447,8 +449,13 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		replaceContentVAListener.setHandler(this);
 		eventPublisher.addListener(ReplaceContentVAEvent.class,
 				replaceContentVAListener);
+
+		newContentGroupInfoEventListener = new NewContentGroupInfoEventListener();
+		newContentGroupInfoEventListener.setHandler(this);
+		eventPublisher.addListener(NewContentGroupInfoEvent.class,
+				newContentGroupInfoEventListener);
 	}
-	
+
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
@@ -475,6 +482,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		if (replaceContentVAListener != null) {
 			eventPublisher.removeListener(replaceContentVAListener);
 			replaceContentVAListener = null;
+		}
+		if (newContentGroupInfoEventListener != null) {
+			eventPublisher.removeListener(newContentGroupInfoEventListener);
+			newContentGroupInfoEventListener = null;
 		}
 	}
 
@@ -549,7 +560,15 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
-		compareViewStateController.handleReplaceContentVA(setID, idCategory, vaType);
+	public void replaceContentVA(int setID, EIDCategory idCategory,
+			ContentVAType vaType) {
+		compareViewStateController.handleReplaceContentVA(setID, idCategory,
+				vaType);
+	}
+
+	public void handleContentGroupListUpdate(int setID,
+			ContentGroupList contentGroupList) {
+		compareViewStateController.handleContentGroupListUpdate(setID,
+				contentGroupList);
 	}
 }

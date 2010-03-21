@@ -6,6 +6,7 @@ import gleem.linalg.Vec3f;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
@@ -13,6 +14,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.SetRelations;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
@@ -59,6 +61,7 @@ public abstract class ACompareViewState {
 	protected IUseCase useCase;
 	protected DragAndDropController dragAndDropController;
 	protected CompareViewStateController compareViewStateController;
+	protected HashMap<ClusterNode, Vec3f> hashNodePositions;
 
 	protected ArrayList<ISet> setsInFocus;
 	protected SetBar setBar;
@@ -98,6 +101,7 @@ public abstract class ACompareViewState {
 		setsInFocus = new ArrayList<ISet>();
 		heatMapWrappers = new ArrayList<HeatMapWrapper>();
 		layouts = new ArrayList<AHeatMapLayout>();
+		hashNodePositions = new HashMap<ClusterNode, Vec3f>();
 
 		setsChanged = false;
 
@@ -109,6 +113,7 @@ public abstract class ACompareViewState {
 
 		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
+		hashNodePositions.clear();
 
 		AHeatMapLayout heatMapLayoutLeft = heatMapWrapperLeft.getLayout();
 		AHeatMapLayout heatMapLayoutRight = heatMapWrapperRight.getLayout();
@@ -122,7 +127,7 @@ public abstract class ACompareViewState {
 				+ heatMapLayoutRight.getOverviewHeight();
 		Tree<ClusterNode> tree = heatMapWrapperLeft.getSet().getContentTree();
 		ClusterNode rootNode = tree.getRoot();
-		
+
 		float overviewDistance = xPosInitRight - xPosInitLeft;
 
 		determineTreePositions(rootNode, tree, heatMapWrapperLeft,
@@ -130,7 +135,7 @@ public abstract class ACompareViewState {
 		// renderDendrogram(gl, rootNode, 1, tree, xPosInitLeft);
 
 		// Right hierarchy
-		
+
 		tree = heatMapWrapperRight.getSet().getContentTree();
 		rootNode = tree.getRoot();
 
@@ -214,8 +219,8 @@ public abstract class ACompareViewState {
 
 			pos.setZ(DENDROGRAM_Z);
 		}
-
-		currentNode.setPos(pos);
+		hashNodePositions.put(currentNode, pos);
+//		currentNode.setPos(pos);
 
 		return pos;
 	}
@@ -291,7 +296,8 @@ public abstract class ACompareViewState {
 			pathToRoot.remove(pathToRoot.size() - 1);
 
 			for (ClusterNode pathNode : pathToRoot) {
-				Vec3f nodePos = pathNode.getPos();
+//				Vec3f nodePos = pathNode.getPos();
+				Vec3f nodePos = hashNodePositions.get(pathNode);
 				points.add(nodePos);
 			}
 
@@ -305,7 +311,8 @@ public abstract class ACompareViewState {
 			pathToRoot.remove(pathToRoot.size() - 1);
 
 			for (ClusterNode pathNode : pathToRoot) {
-				Vec3f nodePos = pathNode.getPos();
+//				Vec3f nodePos = pathNode.getPos();
+				Vec3f nodePos = hashNodePositions.get(pathNode);
 				points.add(nodePos);
 				break; // FIXME: REMOVE BREAK
 			}
@@ -320,7 +327,7 @@ public abstract class ACompareViewState {
 
 			NURBSCurve curve = new NURBSCurve(points, 30);
 			points = curve.getCurvePoints();
-			
+
 			gl.glPushName(pickingManager.getPickingID(viewID,
 					EPickingType.POLYLINE_SELECTION, contentID));
 
@@ -339,9 +346,9 @@ public abstract class ACompareViewState {
 			setBar.setHeight(gl, SET_BAR_HEIGHT_PORTION
 					* viewFrustum.getHeight());
 		setupLayouts();
-		
+
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-			if (setsChanged) {
+			if (!heatMapWrapper.isInitialized()) {
 				heatMapWrapper.init(gl, glMouseListener, null, dataDomain);
 			}
 			heatMapWrapper.processEvents();
@@ -429,9 +436,28 @@ public abstract class ACompareViewState {
 	public int getNumSetsInFocus() {
 		return numSetsInFocus;
 	}
-	
+
 	public boolean isInitialized() {
 		return isInitialized;
+	}
+
+	public void handleContentGroupListUpdate(int setID,
+			ContentGroupList contentGroupList) {
+		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
+			if (heatMapWrapper.getSet().getID() == setID) {
+				heatMapWrapper.handleContentGroupListUpdate(contentGroupList);
+				view.setDisplayListDirty();
+				return;
+			}
+		}
+	}
+
+	public void handleReplaceContentVA(int setID, EIDCategory idCategory,
+			ContentVAType vaType) {
+
+		// FIXME: we should not destroy all the heat map wrappers when a
+		// contentVA is handled
+		setSetsInFocus(setBar.getSetsInFocus());
 	}
 
 	public abstract void init(GL gl);
@@ -453,7 +479,7 @@ public abstract class ACompareViewState {
 
 	public abstract void handleSelectionCommand(EIDCategory category,
 			SelectionCommand selectionCommand);
-	
+
 	public abstract void setSetsInFocus(ArrayList<ISet> setsInFocus);
 
 	public abstract void adjustPValue();
@@ -463,13 +489,7 @@ public abstract class ACompareViewState {
 	public abstract int getMinSetsInFocus();
 
 	public abstract void handleMouseWheel(GL gl, int amount, Point wheelPoint);
-	
+
 	protected abstract void setupLayouts();
 
-	public void handleReplaceContentVA(int setID, EIDCategory idCategory,
-			ContentVAType vaType) {
-		
-		// FIXME: we should not destroy all the heat map wrappers when a contentVA is handled
-		setSetsInFocus(setBar.getSetsInFocus());
-	}
 }
