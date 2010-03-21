@@ -650,6 +650,19 @@ public class GLGrouper extends AGLView
 													.getClusterNode()
 													.getMetaSet());
 								}
+
+								// Lazy loading of R
+//								GeneralManager.get().getRStatisticsPerformer();
+//								
+//								StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
+//										selectedSets);
+//								contextMenu
+//										.addContextMenueItem(pValueReductionItem);
+
+//								if (orderedComposites.size() == 2) {
+//									StatisticsFoldChangeReductionItem foldChangeReductionItem = new StatisticsFoldChangeReductionItem(
+//											selectedSets.get(0), selectedSets
+//													.get(1));
 								
 								if (Platform.getBundle("org.caleydo.util.r") != null)
 								{

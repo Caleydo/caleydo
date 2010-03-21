@@ -995,7 +995,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 	@Override
 	public void handleMouseWheel(GL gl, int amount, Point wheelPoint) {
 		if (amount > 0) {
-			ACompareViewStateStatic overviewState = compareViewStateController
+			ACompareViewState overviewState = compareViewStateController
 					.getState(ECompareViewStateType.OVERVIEW);
 			setBar.setViewState(overviewState);
 			setBar.adjustSelectionWindowSizeCentered(overviewState.getNumSetsInFocus());

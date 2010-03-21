@@ -35,7 +35,7 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 		gl.glTranslatef(overviewHeatMapPosition.x(), overviewHeatMapPosition
 				.y(), overviewHeatMapPosition.z());
 		HeatMapUtil.renderHeatmapTextures(gl, overviewTextures, overviewHeight,
-				layout.getOverviewHeatmapWidth());
+				layout.getOverviewHeatMapWidth());
 		drawSelections(gl, layout, contentSelectionManager, contentVA);
 
 		gl.glPopMatrix();
@@ -90,9 +90,9 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 				gl.glBegin(GL.GL_LINE_LOOP);
 				gl.glVertex3f(0,
 						overviewHeight - (elementIndex * sampleHeight), 0);
-				gl.glVertex3f(layout.getOverviewHeatmapWidth(), overviewHeight
+				gl.glVertex3f(layout.getOverviewHeatMapWidth(), overviewHeight
 						- (elementIndex * sampleHeight), 0);
-				gl.glVertex3f(layout.getOverviewHeatmapWidth(), overviewHeight
+				gl.glVertex3f(layout.getOverviewHeatMapWidth(), overviewHeight
 						- ((elementIndex + 1) * sampleHeight), 0);
 				gl.glVertex3f(0, overviewHeight
 						- ((elementIndex + 1) * sampleHeight), 0);

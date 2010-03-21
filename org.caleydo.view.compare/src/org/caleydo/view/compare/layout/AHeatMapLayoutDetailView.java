@@ -50,6 +50,7 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 		// hashHeatMapHeights = new HashMap<Integer, Float>();
 	}
 
+	@Override
 	public void setLayoutParameters(float positionX, float positionY,
 			float totalHeight, float totalWidth) {
 		this.positionX = positionX;
@@ -61,46 +62,57 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 						totalWidth);
 	}
 
-	public float getTotalOverviewWidth() {
+	@Override
+	public float getOverviewWidth() {
 		return state.getTotalOverviewWidth();
 	}
 
+	@Override
 	public float getGapWidth() {
 		return state.getGapWidth();
 	}
 
+	@Override
 	public float getDetailWidth() {
 		return state.getDetailWidth();
 	}
 
+	@Override
 	public float getOverviewHeight() {
 		return state.getOverviewHeight();
 	}
 
+	@Override
 	public float getDetailHeight() {
 		return state.getDetailHeight();
 	}
 
-	public float getOverviewGroupWidth() {
+	@Override
+	public float getOverviewGroupBarWidth() {
 		return state.getOverviewGroupWidth();
 	}
 
-	public float getOverviewHeatmapWidth() {
-		return state.getOverviewHeatmapWidth();
+	@Override
+	public float getOverviewHeatMapWidth() {
+		return state.getOverviewHeatMapWidth();
 	}
 
+	@Override
 	public float getOverviewSliderWidth() {
 		return state.getOverviewSliderWidth();
 	}
 
+	@Override
 	public float getOverviewMaxSliderHeight() {
 		return state.getOverviewMaxSliderHeight();
 	}
 
+	@Override
 	public float getOverviewMaxSliderPositionY() {
 		return state.getOverviewMaxSliderPositionY();
 	}
 
+	@Override
 	public float getOverviewMinSliderPositionY() {
 		return state.getOverviewMinSliderPositionY();
 	}
@@ -204,26 +216,31 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 	//
 	// }
 
+	@Override
 	public float getDetailHeatMapHeight(int heatMapID) {
 		return state.getDetailHeatMapHeight(heatMapID);
 	}
 
-	public float getDetailHeatMapGapHeight() {
-		return state.getDetailHeatMapGapHeight();
-	}
+//	public float getDetailHeatMapGapHeight() {
+//		return state.getDetailHeatMapGapHeight();
+//	}
 
+	@Override
 	public float getCaptionLabelWidth() {
 		return state.getCaptionLabelWidth();
 	}
 
+	@Override
 	public float getCaptionLabelHeight() {
 		return state.getCaptionLabelHeight();
 	}
 
+	@Override
 	public float getCaptionLabelHorizontalSpacing() {
 		return state.getCaptionLabelHorizontalSpacing();
 	}
 
+	@Override
 	public float getCaptionLabelVerticalSpacing() {
 		return state.getCaptionLabelVerticalSpacing();
 	}
@@ -315,10 +332,12 @@ public abstract class AHeatMapLayoutDetailView extends AHeatMapLayout {
 				.getRemoteRenderCommands(renderCommandFactory));
 	}
 
+	@Override
 	public float getDendrogramHeight() {
 		return state.getDendrogramHeight();
 	}
 
+	@Override
 	public float getDendrogramWidth() {
 		return state.getDendrogramWidth();
 	}

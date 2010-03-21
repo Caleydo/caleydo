@@ -10,7 +10,6 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.SetComparer;
 import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -214,8 +213,9 @@ public class OverviewState extends ACompareViewStateStatic {
 	@Override
 	public void handleMouseWheel(GL gl, int amount, Point wheelPoint) {
 		if (amount < 0) {
-			ACompareViewStateStatic detailViewState = compareViewStateController
-					.getState(ECompareViewStateType.DETAIL_VIEW);
+
+			OverviewToDetailTransition transition = (OverviewToDetailTransition) compareViewStateController
+					.getState(ECompareViewStateType.OVERVIEW_TO_DETAIL_TRANSITION);
 
 			float[] wheelPointWorldCoordinates = GLCoordinateUtils
 					.convertWindowCoordinatesToWorldCoordinates(gl,
@@ -240,18 +240,10 @@ public class OverviewState extends ACompareViewStateStatic {
 					break;
 				}
 			}
-
-			setBar.setViewState(detailViewState);
-			setBar.setMaxSelectedItems(detailViewState.getMaxSetsInFocus());
-			setBar.setMinSelectedItems(detailViewState.getMinSetsInFocus());
-			setBar.setWindowSize(detailViewState.getNumSetsInFocus());
-			setBar.increaseLowestItemIndex(itemOffset);
-			if (!detailViewState.isInitialized()) {
-				detailViewState.init(gl);
-			}
-			detailViewState.setSetsInFocus(setBar.getSetsInFocus());
 			compareViewStateController
-					.setCurrentState(ECompareViewStateType.DETAIL_VIEW);
+					.setCurrentState(ECompareViewStateType.OVERVIEW_TO_DETAIL_TRANSITION);
+
+			transition.initTransition(gl, itemOffset);
 			view.setDisplayListDirty();
 		}
 
@@ -283,7 +275,7 @@ public class OverviewState extends ACompareViewStateStatic {
 			AHeatMapLayout layout = layouts.get(i);
 			int numExperiments = heatMapWrapper.getSet().getStorageVA(
 					StorageVAType.STORAGE).size();
-			//TODO: Maybe get info in layout from heatmapwrapper
+			// TODO: Maybe get info in layout from heatmapwrapper
 			layout
 					.setTotalSpaceForAllHeatMapWrappers(spaceForHeatMapWrapperOverviews);
 			layout.setNumExperiments(numExperiments);

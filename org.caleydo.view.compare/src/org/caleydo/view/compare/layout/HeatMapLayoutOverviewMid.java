@@ -19,7 +19,7 @@ public class HeatMapLayoutOverviewMid extends AHeatMapLayoutOverview {
 
 	@Override
 	public Vec3f getOverviewHeatMapPosition() {
-		return new Vec3f(positionX + (totalWidth - getOverviewHeatmapWidth())
+		return new Vec3f(positionX + (totalWidth - getOverviewHeatMapWidth())
 				/ 2.0f, positionY, 0.0f);
 	}
 

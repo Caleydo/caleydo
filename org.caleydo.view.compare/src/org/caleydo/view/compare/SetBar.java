@@ -18,7 +18,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.AdjustPValueItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.ClusterSetItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DuplicateSetBarElementItem;
-import org.caleydo.view.compare.state.ACompareViewStateStatic;
+import org.caleydo.view.compare.state.ACompareViewState;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -41,7 +41,7 @@ public class SetBar extends AGLGUIElement {
 	private int viewID;
 	private AGLView view;
 	private SetBarSelectionWindow selectionWindow;
-	private ACompareViewStateStatic viewState;
+	private ACompareViewState viewState;
 
 	public SetBar(int viewID, PickingManager pickingManager,
 			TextRenderer textRenderer,
@@ -267,11 +267,11 @@ public class SetBar extends AGLGUIElement {
 		viewState.setSetsInFocus(setsInFocus);
 	}
 
-	public ACompareViewStateStatic getViewState() {
+	public ACompareViewState getViewState() {
 		return viewState;
 	}
 
-	public void setViewState(ACompareViewStateStatic viewState) {
+	public void setViewState(ACompareViewState viewState) {
 		this.viewState = viewState;
 	}
 

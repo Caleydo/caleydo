@@ -9,7 +9,7 @@ import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 public class DetailViewLayoutStateDendrogram extends ADetailViewLayoutState {
 
 	protected static final float OVERVIEW_TOTAL_WIDTH_PORTION = 0.12f;
-	protected static final float OVERVIEW_GROUP_WIDTH_PORTION = 0.03f;
+	protected static final float OVERVIEW_GROUP_BAR_WIDTH_PORTION = 0.03f;
 	protected static final float OVERVIEW_HEATMAP_WIDTH_PORTION = 0.09f;
 	protected static final float OVERVIEW_HEIGHT_PORTION = 0.91f;
 
@@ -80,11 +80,11 @@ public class DetailViewLayoutStateDendrogram extends ADetailViewLayoutState {
 
 	@Override
 	public float getOverviewGroupWidth() {
-		return totalWidth * OVERVIEW_GROUP_WIDTH_PORTION;
+		return totalWidth * OVERVIEW_GROUP_BAR_WIDTH_PORTION;
 	}
 
 	@Override
-	public float getOverviewHeatmapWidth() {
+	public float getOverviewHeatMapWidth() {
 		return totalWidth * OVERVIEW_HEATMAP_WIDTH_PORTION;
 	}
 

@@ -268,7 +268,7 @@ public abstract class ADetailViewLayoutState {
 
 	public abstract float getOverviewGroupWidth();
 
-	public abstract float getOverviewHeatmapWidth();
+	public abstract float getOverviewHeatMapWidth();
 
 	public abstract float getOverviewSliderWidth();
 

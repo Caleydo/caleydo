@@ -30,9 +30,9 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public class CompareViewStateController {
 
-	private HashMap<ECompareViewStateType, ACompareViewStateStatic> hashStates;
+	private HashMap<ECompareViewStateType, ACompareViewState> hashStates;
 
-	private ACompareViewStateStatic currentState;
+	private ACompareViewState currentState;
 
 	public CompareViewStateController(GLCompare view, int viewID,
 			TextRenderer textRenderer, TextureManager textureManager,
@@ -45,7 +45,7 @@ public class CompareViewStateController {
 		RenderCommandFactory renderCommandFactory = new RenderCommandFactory(
 				viewID, pickingManager, textureManager, textRenderer);
 
-		hashStates = new HashMap<ECompareViewStateType, ACompareViewStateStatic>();
+		hashStates = new HashMap<ECompareViewStateType, ACompareViewState>();
 
 		hashStates.put(ECompareViewStateType.DETAIL_VIEW, new DetailViewState(
 				view, viewID, textRenderer, textureManager, pickingManager,
@@ -55,13 +55,18 @@ public class CompareViewStateController {
 				viewID, textRenderer, textureManager, pickingManager,
 				glMouseListener, setBar, renderCommandFactory, dataDomain,
 				useCase, dragAndDropController, this));
+		hashStates.put(ECompareViewStateType.OVERVIEW_TO_DETAIL_TRANSITION,
+				new OverviewToDetailTransition(view, viewID, textRenderer,
+						textureManager, pickingManager, glMouseListener,
+						setBar, renderCommandFactory, dataDomain, useCase,
+						dragAndDropController, this));
 
 		currentState = hashStates.get(ECompareViewStateType.OVERVIEW);
 		setBar.setViewState(currentState);
 
 	}
 
-	public ACompareViewStateStatic getState(ECompareViewStateType stateType) {
+	public ACompareViewState getState(ECompareViewStateType stateType) {
 		return hashStates.get(stateType);
 	}
 

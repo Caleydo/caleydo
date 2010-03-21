@@ -45,7 +45,7 @@ public abstract class AHeatMapLayout {
 
 	public abstract void calculateDrawingParameters();
 
-	public abstract float getTotalOverviewWidth();
+	public abstract float getOverviewWidth();
 
 	public abstract float getGapWidth();
 
@@ -55,9 +55,9 @@ public abstract class AHeatMapLayout {
 
 	public abstract float getDetailHeight();
 
-	public abstract float getOverviewGroupWidth();
+	public abstract float getOverviewGroupBarWidth();
 
-	public abstract float getOverviewHeatmapWidth();
+	public abstract float getOverviewHeatMapWidth();
 
 	public abstract float getOverviewSliderWidth();
 
@@ -68,8 +68,6 @@ public abstract class AHeatMapLayout {
 	public abstract float getOverviewMinSliderPositionY();
 
 	public abstract float getDetailHeatMapHeight(int heatMapID);
-
-	public abstract float getDetailHeatMapGapHeight();
 
 	public abstract float getCaptionLabelWidth();
 

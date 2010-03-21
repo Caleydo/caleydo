@@ -2,11 +2,14 @@ package org.caleydo.view.compare.state;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.selection.ContentGroupList;
+import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.IUseCase;
@@ -26,6 +29,16 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public abstract class ACompareViewStateTransition extends ACompareViewState {
 
+	private double previousTimeStamp;
+	/**
+	 * Determines, whether the animation has been started or not.
+	 */
+	protected boolean animationStarted;
+	/**
+	 * Determines the duration of the animation.
+	 */
+	protected float animationDuration;
+
 	public ACompareViewStateTransition(GLCompare view, int viewID,
 			TextRenderer textRenderer, TextureManager textureManager,
 			PickingManager pickingManager, GLMouseListener glMouseListener,
@@ -33,13 +46,16 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 			EDataDomain dataDomain, IUseCase useCase,
 			DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
-
+		super(view, viewID, textRenderer, textureManager, pickingManager,
+				glMouseListener, setBar, renderCommandFactory, dataDomain,
+				useCase, dragAndDropController, compareViewStateController);
+		previousTimeStamp = 0;
+		animationStarted = false;
 	}
 
 	@Override
 	public void adjustPValue() {
 	}
-
 
 	@Override
 	public void duplicateSetBarItem(int itemID) {
@@ -57,8 +73,28 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
+	public int getNumSetsInFocus() {
+		return 0;
+	}
+
+	@Override
+	public void handleContentGroupListUpdate(int setID,
+			ContentGroupList contentGroupList) {
+	}
+
+	@Override
 	public void handleMouseWheel(GL gl, int amount, Point wheelPoint) {
-		
+	}
+
+	@Override
+	public void handlePickingEvents(EPickingType ePickingType,
+			EPickingMode pickingMode, int iExternalID, Pick pick,
+			boolean isControlPressed) {
+	}
+
+	@Override
+	public void handleReplaceContentVA(int setID, EIDCategory idCategory,
+			ContentVAType vaType) {
 	}
 
 	@Override
@@ -72,19 +108,43 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public void handleStateSpecificPickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick,
-			boolean isControlPressed) {
+	public void init(GL gl) {
+		isInitialized = true;
 	}
 
 	@Override
-	public void init(GL gl) {
-
+	public boolean isInitialized() {
+		return false;
 	}
 
 	@Override
 	public void setSetsInFocus(ArrayList<ISet> setsInFocus) {
 
 	}
+
+	@Override
+	public void setSetsToCompare(ArrayList<ISet> setsToCompare) {
+
+	}
+
+	@Override
+	public void setupLayouts() {
+		double currentTimeStamp = Calendar.getInstance().getTimeInMillis();
+
+		if (!animationStarted)
+			setupLayouts(0);
+		else {
+			double timePassed = (currentTimeStamp - previousTimeStamp) / 1000;
+			setupLayouts(timePassed);
+		}
+		previousTimeStamp = currentTimeStamp;
+	}
+
+	// protected abstract void drawActiveElements(GL gl, double timePassed);
+	//
+	// protected abstract void drawDisplayListElements(GL gl, double
+	// timePassed);
+
+	protected abstract void setupLayouts(double timePassed);
 
 }

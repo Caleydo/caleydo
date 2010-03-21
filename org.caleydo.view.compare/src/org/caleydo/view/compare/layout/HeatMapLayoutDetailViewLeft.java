@@ -15,7 +15,7 @@ public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
 	@Override
 	public Vec3f getDetailPosition() {
 		return new Vec3f(positionX + getDendrogramLineSpacing()
-				+ getTotalOverviewWidth() + getGapWidth(), positionY, 0.0f);
+				+ getOverviewWidth() + getGapWidth(), positionY, 0.0f);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class HeatMapLayoutDetailViewLeft extends AHeatMapLayoutDetailView {
 	@Override
 	public Vec3f getOverviewHeatMapPosition() {
 		return new Vec3f(positionX + getDendrogramLineSpacing()
-				+ getOverviewSliderWidth() + getOverviewGroupWidth(), positionY
+				+ getOverviewSliderWidth() + getOverviewGroupBarWidth(), positionY
 				+ getDendrogramBottomSpacing(), 0.0f);
 	}
 

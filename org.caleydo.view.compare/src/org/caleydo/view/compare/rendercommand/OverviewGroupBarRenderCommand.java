@@ -37,7 +37,7 @@ public class OverviewGroupBarRenderCommand implements IHeatMapRenderCommand {
 				overviewGroupsPosition.z());
 
 		HeatMapUtil.renderGroupBar(gl, contentVA, layout.getOverviewHeight(),
-				layout.getOverviewGroupWidth(), pickingManager, viewID, layout
+				layout.getOverviewGroupBarWidth(), pickingManager, viewID, layout
 						.getGroupPickingType(), textureManager);
 
 		gl.glPopMatrix();

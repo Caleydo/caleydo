@@ -63,8 +63,8 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 	}
 
 	@Override
-	public float getTotalOverviewWidth() {
-		return getOverviewHeatmapWidth();
+	public float getOverviewWidth() {
+		return getOverviewHeatMapWidth();
 	}
 
 	@Override
@@ -88,12 +88,12 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 	}
 
 	@Override
-	public float getOverviewGroupWidth() {
+	public float getOverviewGroupBarWidth() {
 		return 0;
 	}
 
 	@Override
-	public float getOverviewHeatmapWidth() {
+	public float getOverviewHeatMapWidth() {
 		if (numTotalExperiments == 0)
 			return totalWidth;
 		float heatOverviewHeatMapWidth = (totalSpaceForAllHeatMapWrappers / (float) numTotalExperiments)
@@ -126,11 +126,6 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 
 	@Override
 	public float getDetailHeatMapHeight(int heatMapID) {
-		return 0;
-	}
-
-	@Override
-	public float getDetailHeatMapGapHeight() {
 		return 0;
 	}
 

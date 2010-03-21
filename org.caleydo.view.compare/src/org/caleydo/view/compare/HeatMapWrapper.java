@@ -404,7 +404,7 @@ public class HeatMapWrapper {
 		float sampleHeight = layout.getOverviewHeight() / contentVA.size();
 
 		return new Vec2f(overviewPosition.x()
-				+ layout.getOverviewHeatmapWidth(), overviewPosition.y()
+				+ layout.getOverviewHeatMapWidth(), overviewPosition.y()
 				+ layout.getOverviewHeight()
 				- ((sampleHeight * contentIndex) + sampleHeight / 2.0f));
 	}
