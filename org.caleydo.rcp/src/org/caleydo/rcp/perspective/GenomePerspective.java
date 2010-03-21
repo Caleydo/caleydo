@@ -43,6 +43,7 @@ public class GenomePerspective
 				IFolderLayout middleLeft =
 					layout.createFolder("middleLeft", IPageLayout.BOTTOM, 0.5f, "topLeft");
 				middleLeft.addView(RcpInfoAreaView.ID);
+				middleLeft.addPlaceholder("org.caleydo.view.statistics");
 
 				layout.addStandaloneView("org.caleydo.view.histogram", true, IPageLayout.BOTTOM, 0.7f,
 					"middleLeft");

@@ -24,7 +24,7 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 	EIDCategory idCategory = null;
 	E virtualArray;
 	boolean usesVADirectly = false;
-	
+
 	int setID = -1;
 
 	/**
@@ -51,6 +51,20 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 		this.virtualArray = virtualArray;
 		usesVADirectly = true;
 		this.setID = set.getID();
+	}
+
+	/**
+	 * If no set is specified, the use case should send this to all suitable sets
+	 * 
+	 * @param idCategory
+	 * @param vaType
+	 * @param virtualArray
+	 */
+	protected ReplaceVAEvent(EIDCategory idCategory, T vaType, E virtualArray) {
+		this.idCategory = idCategory;
+		this.vaType = vaType;
+		this.virtualArray = virtualArray;
+		usesVADirectly = true;
 	}
 
 	/**
@@ -97,9 +111,6 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 			if (virtualArray == null)
 				return false;
 
-		if (setID == -1)
-			return false;
-		
 		return true;
 	}
 

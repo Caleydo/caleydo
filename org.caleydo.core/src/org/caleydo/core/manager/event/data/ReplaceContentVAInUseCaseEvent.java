@@ -34,4 +34,9 @@ public class ReplaceContentVAInUseCaseEvent
 		ContentVirtualArray virtualArray) {
 		super(set, idCategory, vaType, virtualArray);
 	}
+	
+	public ReplaceContentVAInUseCaseEvent(EIDCategory idCategory, ContentVAType vaType,
+		ContentVirtualArray virtualArray) {
+		super(idCategory, vaType, virtualArray);
+	}
 }

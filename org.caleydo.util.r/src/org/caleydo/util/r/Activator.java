@@ -1,5 +1,8 @@
 package org.caleydo.util.r;
 
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.util.r.view.StatisticsView;
+import org.caleydo.util.r.view.ViewCreator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -31,6 +34,9 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		
+		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
+				new ViewCreator(StatisticsView.VIEW_ID));
 	}
 
 	/*

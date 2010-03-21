@@ -16,9 +16,13 @@ public class ReplaceContentVAEvent
 		super(set, idCategory, vaType);
 	}
 
-	public ReplaceContentVAEvent(ISet set, EIDCategory idCategory, ContentVAType vaType,
+	protected ReplaceContentVAEvent(ISet set, EIDCategory idCategory, ContentVAType vaType,
 		ContentVirtualArray virtualArray) {
 		super(set, idCategory, vaType, virtualArray);
 	}
 
+	protected ReplaceContentVAEvent(EIDCategory idCategory, ContentVAType vaType,
+		ContentVirtualArray virtualArray) {
+		super(idCategory, vaType, virtualArray);
+	}
 }

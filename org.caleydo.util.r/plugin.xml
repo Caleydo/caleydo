@@ -10,4 +10,15 @@
           name="RStatisticsPeformer"
           class="org.caleydo.util.r.RStatisticsPerformer" />
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.util.r.view.RcpStatisticsView"
+            icon="resources/icons/statistics.png"
+            id="org.caleydo.view.statistics"
+            name="Statistics View">
+      </view>
+   </extension>
 </plugin>

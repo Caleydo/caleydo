@@ -28,6 +28,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
+import org.caleydo.core.manager.event.view.OpenViewEvent;
 import org.caleydo.core.manager.event.view.grouper.CopyGroupsEvent;
 import org.caleydo.core.manager.event.view.grouper.CreateGroupEvent;
 import org.caleydo.core.manager.event.view.grouper.DeleteGroupsEvent;
@@ -74,6 +75,8 @@ import org.caleydo.view.grouper.listener.CopyGroupsEventListener;
 import org.caleydo.view.grouper.listener.CreateGroupEventListener;
 import org.caleydo.view.grouper.listener.DeleteGroupsEventListener;
 import org.caleydo.view.grouper.listener.PasteGroupsEventListener;
+import org.eclipse.core.runtime.Platform;
+import org.osgi.framework.Bundle;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -615,7 +618,7 @@ public class GLGrouper extends AGLView
 								// drawingStrategyManager);
 								// triggerSelectionEvents();
 								// setDisplayListDirty();
-
+								
 								Set<Integer> setSelectedGroups = new HashSet<Integer>(
 										selectionManager
 												.getElements(SelectionType.SELECTION));
@@ -634,8 +637,6 @@ public class GLGrouper extends AGLView
 								contextMenu
 										.addContextMenueItem(deleteGroupsItem);
 
-								contextMenu.addSeparator();
-
 								Set<Integer> setClickedGroups = new HashSet<Integer>(
 										selectionManager
 												.getElements(selectionTypeClicked));
@@ -649,24 +650,37 @@ public class GLGrouper extends AGLView
 													.getClusterNode()
 													.getMetaSet());
 								}
-
-								// Lazy loading of R
-								GeneralManager.get().getRStatisticsPerformer();
 								
-								StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
-										selectedSets);
-								contextMenu
-										.addContextMenueItem(pValueReductionItem);
-
-								if (orderedComposites.size() == 2) {
-									StatisticsFoldChangeReductionItem foldChangeReductionItem = new StatisticsFoldChangeReductionItem(
-											selectedSets.get(0), selectedSets
-													.get(1));
+								if (Platform.getBundle("org.caleydo.util.r") != null)
+								{
+									
+									contextMenu.addSeparator();
+									
+									OpenViewEvent openViewEvent  = new OpenViewEvent();
+									openViewEvent.setViewType("org.caleydo.view.statistics");
+									openViewEvent.setSender(this);
+									GeneralManager.get().getEventPublisher().triggerEvent(openViewEvent);
+									
+									// Lazy loading of R
+									GeneralManager.get().getRStatisticsPerformer();
+									
+									StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
+											selectedSets);
 									contextMenu
-											.addContextMenueItem(foldChangeReductionItem);
-								}
+											.addContextMenueItem(pValueReductionItem);
+
+									if (orderedComposites.size() == 2) {
+										StatisticsFoldChangeReductionItem foldChangeReductionItem = new StatisticsFoldChangeReductionItem(
+												selectedSets.get(0), selectedSets
+														.get(1));
+										contextMenu
+												.addContextMenueItem(foldChangeReductionItem);
+									}
+								}						
 
 								if (orderedComposites.size() >= 2) {
+
+									contextMenu.addSeparator();
 
 									CompareGroupsItem compareGroupsItem = new CompareGroupsItem(
 											selectedSets);

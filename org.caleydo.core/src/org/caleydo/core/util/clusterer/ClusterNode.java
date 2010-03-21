@@ -144,6 +144,21 @@ public class ClusterNode
 		}
 	}
 
+	public ArrayList<ISet> getAllMetaSetsFromSubTree() {
+
+		ArrayList<ISet> allMetaSets = new ArrayList<ISet>();
+
+		allMetaSets.add(metaSet);
+
+		if (this.hasChildren()) {
+			for (ClusterNode child : getChildren()) {
+				allMetaSets.addAll(child.getAllMetaSetsFromSubTree());
+			}
+		}
+
+		return allMetaSets;
+	}
+
 	public void setNodeName(String nodeName) {
 		this.nodeName = nodeName;
 	}

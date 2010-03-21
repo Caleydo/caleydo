@@ -7,7 +7,7 @@ import javax.naming.OperationNotSupportedException;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
-import org.caleydo.core.data.collection.set.StatisticsResult;
+import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ContentGroupList;

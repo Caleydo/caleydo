@@ -274,13 +274,8 @@ public abstract class AUseCase
 
 	}
 
-	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType) {
-		throw new IllegalStateException("UseCases shouldn't react to this");
-	}
-
-	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType,
+	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType,
 		ContentVirtualArray virtualArray) {
-
 		// String idCategoryAsscoatedVAType = possibleIDCategories.get(idCategory);
 		// if (idCategoryAsscoatedVAType == null)
 		// return;
@@ -288,19 +283,27 @@ public abstract class AUseCase
 		// if (!idCategoryAsscoatedVAType.equals(vaType.getPrimaryVAType()))
 		// vaType = VAType.getVATypeForPrimaryVAType(idCategoryAsscoatedVAType);
 
+		ISet set;
+		if (setID == this.set.getID()) {
+			set = this.set;
+		}
+		else {
+			set = this.set.getStorageTree().getRoot().getMetaSetFromSubTree(setID);
+		}
+
 		set.setContentVA(vaType, virtualArray.clone());
 
 		if (set.getContentTree() != null) {
-			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
-				public void run() {
-					Shell shell = new Shell();
-					MessageBox messageBox = new MessageBox(shell, SWT.CANCEL);
-					messageBox.setText("Warning");
-					messageBox
-						.setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
-					messageBox.open();
-				}
-			});
+			// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+			// public void run() {
+			// Shell shell = new Shell();
+			// MessageBox messageBox = new MessageBox(shell, SWT.CANCEL);
+			// messageBox.setText("Warning");
+			// messageBox
+			// .setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
+			// messageBox.open();
+			// }
+			// });
 
 			set.setContentTree(null);
 
@@ -309,6 +312,21 @@ public abstract class AUseCase
 		virtualArray.setGroupList(null);
 
 		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, idCategory, vaType));
+	}
+
+	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType) {
+		throw new IllegalStateException("UseCases shouldn't react to this");
+	}
+
+	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType,
+		ContentVirtualArray virtualArray) {
+
+		replaceContentVA(set.getID(), idCategory, vaType, virtualArray);
+
+		for (ISet tmpSet : set.getStorageTree().getRoot().getAllMetaSetsFromSubTree()) {
+			tmpSet.setContentVA(vaType, virtualArray.clone());
+			eventPublisher.triggerEvent(new ReplaceContentVAEvent(tmpSet, idCategory, vaType));
+		}
 	}
 
 	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType,
@@ -497,9 +515,10 @@ public abstract class AUseCase
 
 		ReplaceContentVAEvent event =
 			new ReplaceContentVAEvent(set, contentSelectionManager.getIDType().getCategory(),
-				ContentVAType.CONTENT, set.getContentVA(ContentVAType.CONTENT));
+				ContentVAType.CONTENT);
 
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
+
 }

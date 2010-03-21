@@ -526,9 +526,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	public void setGroupsToCompare(final ArrayList<ISet> sets) {
 
 		ClusterState clusterState = new ClusterState();
+
 //		clusterState.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
 //		clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-//		clusterState.setAffinityPropClusterFactorGenes(5);
+//		clusterState.setAffinityPropClusterFactorGenes(8);
 //		clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 
 		 clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);

@@ -72,6 +72,7 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.data,
    org.caleydo.core.util.clusterer,
    org.caleydo.core.data.selection",
+ org.caleydo.core.data.collection.set.statistics,
  org.caleydo.core.data.collection.storage;
   uses:="org.caleydo.core.data.collection,
    org.caleydo.core.data.collection.ccontainer,

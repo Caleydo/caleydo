@@ -12,7 +12,10 @@ public class ReplaceContentVAInUseCaseListener
 		if (event instanceof ReplaceContentVAInUseCaseEvent) {
 			ReplaceContentVAInUseCaseEvent vaEvent = (ReplaceContentVAInUseCaseEvent) event;
 
-			handler.replaceContentVA(vaEvent.getIDCategory(), vaEvent.getVaType(), vaEvent.getVirtualArray());
+			if (vaEvent.getSetID() <= 0)
+				handler.replaceContentVA(vaEvent.getIDCategory(), vaEvent.getVaType(), vaEvent.getVirtualArray());
+			else
+				handler.replaceContentVA(vaEvent.getSetID(), vaEvent.getIDCategory(), vaEvent.getVaType(), vaEvent.getVirtualArray());
 		}
 
 	}

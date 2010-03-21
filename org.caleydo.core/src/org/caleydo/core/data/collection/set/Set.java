@@ -14,6 +14,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.export.SetExporter;
 import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
+import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
