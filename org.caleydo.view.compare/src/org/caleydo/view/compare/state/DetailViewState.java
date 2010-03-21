@@ -53,7 +53,7 @@ import org.eclipse.swt.widgets.Slider;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
-public class DetailViewState extends ACompareViewState {
+public class DetailViewState extends ACompareViewStateStatic {
 
 	private final static int NUMBER_OF_SPLINE_POINTS = 25;
 
@@ -210,9 +210,11 @@ public class DetailViewState extends ACompareViewState {
 		float leftBottomHeatMapElementOffset = detailBand.getLeftHeatMap()
 				.getFieldHeight(endContentID) / 2f - 0.01f;
 		float rightTopHeatMapElementOffset = detailBand.getRightHeatMap()
-				.getFieldHeight(startContentID) / 2f - 0.01f;;
+				.getFieldHeight(startContentID) / 2f - 0.01f;
+		;
 		float rightBottomHeatMapElementOffset = detailBand.getRightHeatMap()
-				.getFieldHeight(endContentID) / 2f - 0.01f;;
+				.getFieldHeight(endContentID) / 2f - 0.01f;
+		;
 
 		Vec2f leftPos = leftHeatMapWrapper
 				.getRightDetailLinkPositionFromContentID(startContentID);
@@ -736,13 +738,13 @@ public class DetailViewState extends ACompareViewState {
 							.indexOf(nextContentID) - 1)) {
 						bandContentIDs.add(contentID);
 						bandContentIDs.add(nextContentID);
-					}else
+					} else
 						bandContentIDs.add(contentID);
 				}
 			}
 		}
-		
-		for(Integer contentID : leftHeatMapWrapper.getContentVA()) {
+
+		for (Integer contentID : leftHeatMapWrapper.getContentVA()) {
 			boolean isInBand = false;
 			ArrayList<DetailBand> newBands = new ArrayList<DetailBand>();
 			for (DetailBand band : detailBands) {
@@ -751,7 +753,7 @@ public class DetailViewState extends ACompareViewState {
 					continue;
 				}
 			}
-			
+
 			if (!isInBand) {
 				bandContentIDs = new ArrayList<Integer>();
 				bandContentIDs.add(contentID);
@@ -1019,7 +1021,7 @@ public class DetailViewState extends ACompareViewState {
 	@Override
 	public void handleMouseWheel(GL gl, int amount, Point wheelPoint) {
 		if (amount > 0) {
-			ACompareViewState overviewState = compareViewStateController
+			ACompareViewStateStatic overviewState = compareViewStateController
 					.getState(ECompareViewStateType.OVERVIEW);
 			setBar.setViewState(overviewState);
 			setBar.adjustSelectionWindowSizeCentered(overviewState
@@ -1030,7 +1032,12 @@ public class DetailViewState extends ACompareViewState {
 			if (!overviewState.isInitialized()) {
 				overviewState.init(gl);
 			}
-			indexOfHeatMapWrapperWithDendrogram = -1;
+			if (indexOfHeatMapWrapperWithDendrogram != -1) {
+				layouts.get(indexOfHeatMapWrapperWithDendrogram).useDendrogram(
+						false);
+				indexOfHeatMapWrapperWithDendrogram = -1;
+			}
+
 			compareViewStateController
 					.setCurrentState(ECompareViewStateType.OVERVIEW);
 			view.setDisplayListDirty();

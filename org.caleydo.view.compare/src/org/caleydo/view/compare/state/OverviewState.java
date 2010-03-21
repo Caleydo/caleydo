@@ -38,7 +38,7 @@ import org.caleydo.view.compare.renderer.ICompareConnectionRenderer;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
-public class OverviewState extends ACompareViewState {
+public class OverviewState extends ACompareViewStateStatic {
 
 	private static final float HEATMAP_WRAPPER_OVERVIEW_GAP_PORTION = 0.8f;
 	private static final float HEATMAP_WRAPPER_SPACE_PORTION = 0.7f;
@@ -214,7 +214,7 @@ public class OverviewState extends ACompareViewState {
 	@Override
 	public void handleMouseWheel(GL gl, int amount, Point wheelPoint) {
 		if (amount < 0) {
-			ACompareViewState detailViewState = compareViewStateController
+			ACompareViewStateStatic detailViewState = compareViewStateController
 					.getState(ECompareViewStateType.DETAIL_VIEW);
 
 			float[] wheelPointWorldCoordinates = GLCoordinateUtils

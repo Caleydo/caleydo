@@ -30,9 +30,9 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public class CompareViewStateController {
 
-	private HashMap<ECompareViewStateType, ACompareViewState> hashStates;
+	private HashMap<ECompareViewStateType, ACompareViewStateStatic> hashStates;
 
-	private ACompareViewState currentState;
+	private ACompareViewStateStatic currentState;
 
 	public CompareViewStateController(GLCompare view, int viewID,
 			TextRenderer textRenderer, TextureManager textureManager,
@@ -45,7 +45,7 @@ public class CompareViewStateController {
 		RenderCommandFactory renderCommandFactory = new RenderCommandFactory(
 				viewID, pickingManager, textureManager, textRenderer);
 
-		hashStates = new HashMap<ECompareViewStateType, ACompareViewState>();
+		hashStates = new HashMap<ECompareViewStateType, ACompareViewStateStatic>();
 
 		hashStates.put(ECompareViewStateType.DETAIL_VIEW, new DetailViewState(
 				view, viewID, textRenderer, textureManager, pickingManager,
@@ -61,7 +61,7 @@ public class CompareViewStateController {
 
 	}
 
-	public ACompareViewState getState(ECompareViewStateType stateType) {
+	public ACompareViewStateStatic getState(ECompareViewStateType stateType) {
 		return hashStates.get(stateType);
 	}
 
