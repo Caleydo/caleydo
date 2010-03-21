@@ -138,7 +138,7 @@ public class DetailViewState extends ACompareViewState {
 			heatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
 					glMouseListener, viewID);
 		}
-
+		
 		IViewFrustum viewFrustum = view.getViewFrustum();
 
 		gl.glEnable(GL.GL_BLEND);
@@ -171,18 +171,24 @@ public class DetailViewState extends ACompareViewState {
 			HeatMapWrapper heatMapWrapper) {
 		for (GLHeatMap heatMap : heatMapWrapper.getHeatMaps()) {
 
-			renderOverviewToDetailBand(gl, heatMap, heatMapWrapper);
-
-			boolean renderLine = false;
+			// If at least one element in the band is in mouse_over state -> change
+			// band color
+			ContentSelectionManager contentSelectionManager = heatMapWrapper
+					.getContentSelectionManager();
+			boolean highlight = false;
 			for (Integer contentID : heatMap.getContentVA()) {
-				if (activeBand != null
-						&& activeBand.getContentIDs().contains(contentID)) {
-					renderLine = true;
+				SelectionType type = contentSelectionManager.getSelectionTypes(
+						contentID).get(0);
+
+				if (type == SelectionType.MOUSE_OVER) {
+					highlight = true;
 					break;
 				}
 			}
+			
+			renderOverviewToDetailBand(gl, heatMap, heatMapWrapper, highlight);
 
-			if (renderLine)
+			if (highlight)
 				renderSingleOverviewToDetailRelation(gl, heatMap,
 						heatMapWrapper);
 		}
@@ -308,7 +314,7 @@ public class DetailViewState extends ACompareViewState {
 	}
 
 	private void renderOverviewToDetailBand(GL gl, GLHeatMap heatMap,
-			HeatMapWrapper heatMapWrapper) {
+			HeatMapWrapper heatMapWrapper, boolean highlight) {
 
 		ContentVirtualArray va = heatMap.getContentVA();
 		Integer firstDetailContentID = va.get(0);
@@ -423,21 +429,6 @@ public class DetailViewState extends ACompareViewState {
 		for (int i = 0; i < points.size(); i++)
 			gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0f);
 		gl.glEnd();
-
-		// If at least one element in the band is in mouse_over state -> change
-		// band color
-		ContentSelectionManager contentSelectionManager = heatMapWrapper
-				.getContentSelectionManager();
-		boolean highlight = false;
-		for (Integer contentID : heatMap.getContentVA()) {
-			SelectionType type = contentSelectionManager.getSelectionTypes(
-					contentID).get(0);
-
-			if (type == SelectionType.MOUSE_OVER) {
-				highlight = true;
-				break;
-			}
-		}
 
 		if (!highlight)
 			gl.glColor4f(0f, 0f, 0f, 0.4f);
