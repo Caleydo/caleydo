@@ -2358,9 +2358,16 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 			fArMappingColor = SelectionType.MOUSE_OVER.getColor();
 
 		float z = ScatterPlotRenderStyle.LABEL_Z;
-		float fullPoint = POINTSIZE * 2f;
-		gl.glColor3f(1.0f, 1.0f, 0.0f);
+		float fullPoint = POINTSIZE * 1.5f;
+		
+		float[] fMoueseOverColor = SelectionType.MOUSE_OVER.getColor();
+		
+		gl.glColor3f(fMoueseOverColor[0], fMoueseOverColor[1],
+				fMoueseOverColor[2]);
 
+		
+
+		
 		float angle;
 		float PI = (float) Math.PI;
 
@@ -2372,22 +2379,20 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 		}
 		gl.glEnd();
 		
+		float fscale=1.4f;
+		if(POINTSTYLE==EScatterPointType.CIRCLE || POINTSTYLE==EScatterPointType.DISK)
+			fscale=0.7f;
+		renderPointPrimitive(gl, x, y, ScatterPlotRenderStyle.HIGHLIGHTED_SCATTERPOINT_Z, // z
+				fArMappingColor, 1.0f, iContentIndex, fscale); // fOpacity
+		
 		gl.glColor3f(0.0f, 0.0f, 0.0f);
 		gl.glPointSize(POINTSIZE * 50.0f);
 		gl.glBegin(GL.GL_POINTS);
 		gl.glVertex3f(x, y, ScatterPlotRenderStyle.HIGHLIGHTED_SCATTERPOINT_Z);
 		gl.glEnd();
 		
-
-		gl
-				.glColor3f(fArMappingColor[0], fArMappingColor[1],
-						fArMappingColor[2]);
-
-		renderPointPrimitive(gl, x, y, z, // z
-				fArMappingColor, 1.0f, iContentIndex, ScatterPlotRenderStyle.HIGHLIGHTED_SCATTERPOINT_Z); // fOpacity
-
 		renderMouseOverLabel(gl, x, y, // z
-				fArMappingColor, 1.0f, iContentIndex); // fOpacity
+				fMoueseOverColor, 1.0f, iContentIndex); // fOpacity
 
 	}
 
@@ -2402,14 +2407,17 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 	 * @param iContentIndex
 	 */
 	private void renderMouseOverLabel(GL gl, float x, float y,
-			float[] fArMappingColor, float fOpacity, int iContentIndex) {
+			float[] fMoueseOverColor, float fOpacity, int iContentIndex) {
 
 		textRenderer.dispose();
 		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 		textRenderer.setColor(0, 0, 0, 1);
 
 
-		x = x + 0.1f;
+		float fXtranslation=0.2f;
+		float fYtranslation=0.1f;
+		x = x + fXtranslation;
+		y = y + fYtranslation;
 		gl.glTranslatef(x, y, 0);
 
 		String sLabel = null;
@@ -2470,14 +2478,23 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 		float boxLengh = (float) bounds.getWidth() + 0.2f;
 		float boxHight = (float) bounds.getHeight();
 
-		gl.glColor3f(1.0f, 1.0f, 0.0f);
+		gl.glColor3f(fMoueseOverColor[0], fMoueseOverColor[1],
+				fMoueseOverColor[2]);
 		gl.glBegin(GL.GL_POLYGON);
+		
 		gl.glVertex3f(0.0f, -0.02f, ScatterPlotRenderStyle.LABEL_Z);
 		gl.glVertex3f(0.0f, boxHight, ScatterPlotRenderStyle.LABEL_Z);
 		gl.glVertex3f(boxLengh, boxHight, ScatterPlotRenderStyle.LABEL_Z);
 		gl.glVertex3f(boxLengh, -0.02f, ScatterPlotRenderStyle.LABEL_Z);
+				
 		gl.glEnd();
-
+		
+		gl.glBegin(GL.GL_TRIANGLES);
+		gl.glVertex3f(0.0f-fXtranslation, 0.0f-fYtranslation, ScatterPlotRenderStyle.LABEL_Z);
+		gl.glVertex3f(0.0f, -0.02f, ScatterPlotRenderStyle.LABEL_Z);
+		gl.glVertex3f(0.0f, boxHight, ScatterPlotRenderStyle.LABEL_Z);		
+		gl.glEnd();
+		
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		textRenderer.begin3DRendering();
 		textRenderer.draw3D(gl, sLabel, 0, 0,

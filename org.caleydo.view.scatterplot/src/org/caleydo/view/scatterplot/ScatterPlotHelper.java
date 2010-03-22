@@ -19,6 +19,10 @@ public  class ScatterPlotHelper {
 	public static float[] getSelectionColor(int iColorNr) {
 		
 		
+		float fBrighness=0.9f;
+		int iWhiteness = 20;
+		
+		
 		int color =(iColorNr+7) % 10;
 		
 		float[] fArMappingColor = new float[] { 0F, 0F, 0F, 0F };
@@ -60,9 +64,12 @@ public  class ScatterPlotHelper {
 		}
 		
 		
-		for (int i=0;i<3;i++)				
-			fArMappingColor[i] = fArMappingColor[i]/255f;
-		
+		for (int i=0;i<3;i++)
+		{
+			fArMappingColor[i] = fBrighness*((fArMappingColor[i]-iWhiteness)/255f);
+			if(fArMappingColor[i]>1) fArMappingColor[i]=1;
+			if(fArMappingColor[i]<0) fArMappingColor[i]=0;
+		}
 		return fArMappingColor;
 
 	}
