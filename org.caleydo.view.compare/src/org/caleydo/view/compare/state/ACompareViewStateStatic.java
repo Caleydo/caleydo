@@ -182,37 +182,16 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 	protected void renderOverviewRelations(GL gl, HeatMapWrapper leftHeatMapWrapper,
 			HeatMapWrapper rightHeatMapWrapper) {
 
+		boolean useDendrogramCutOff = false;
+		float dendrogramCutOff = 5;
+		
 		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
 
-//		float alpha = 0.6f;
-//
-//		ContentSelectionManager contentSelectionManager = useCase
-//				.getContentSelectionManager();
 		ContentVirtualArray contentVALeft = leftHeatMapWrapper.getSet().getContentVA(
 				ContentVAType.CONTENT);
 
 		for (Integer contentID : contentVALeft) {
-//
-//			float positionZ = 0.0f;
-//
-//			for (SelectionType type : contentSelectionManager
-//					.getSelectionTypes(contentID)) {
-//
-//				float[] typeColor = type.getColor();
-//				positionZ = type.getPriority();
-//
-//				if (type == SelectionType.MOUSE_OVER || type == SelectionType.SELECTION) {
-//					gl.glLineWidth(5);
-//					alpha = 1f;
-//				} else {
-//					gl.glLineWidth(1);
-//					alpha = 0.5f;
-//				}
-//
-//				typeColor[3] = alpha;
-//				gl.glColor4fv(typeColor, 0);
-//			}
 
 			float positionZ = setRelationColor(gl, leftHeatMapWrapper, contentID);
 			
@@ -244,11 +223,14 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 
 			// Remove last because it is root bundling
 			pathToRoot.remove(pathToRoot.size() - 1);
-			// pathToRoot.remove(0);
 
-			for (ClusterNode pathNode : pathToRoot) {
-				// Vec3f nodePos = pathNode.getPos();
-				Vec3f nodePos = pathNode.getPos();
+			for (int i = 0; i < pathToRoot.size() - 1; i++) {
+				
+				if (useDendrogramCutOff && i>dendrogramCutOff)
+					continue;
+				
+			// Vec3f nodePos = pathNode.getPos();
+				Vec3f nodePos = pathToRoot.get(i).getPos();
 				points.add(nodePos);
 			}
 
@@ -260,14 +242,16 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 
 			// Remove last because it is root bundling
 			pathToRoot.remove(pathToRoot.size() - 1);
-			// pathToRoot.remove(pathToRoot.size()-1);
 
 			for (int i = pathToRoot.size() - 1; i >= 0; i--) {
+				
+				if (useDendrogramCutOff && i>dendrogramCutOff)
+					continue;
+				
 				// Vec3f nodePos = pathNode.getPos();
 				ClusterNode pathNode = pathToRoot.get(i);
 				Vec3f nodePos = pathNode.getPos();
 				points.add(nodePos);
-				// break; // FIXME: REMOVE BREAK
 			}
 
 			// Center point

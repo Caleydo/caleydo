@@ -1460,7 +1460,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 	 * @param node
 	 *            current node
 	 */
-	private void determineSelectedNodesRec(ClusterNode node) {
+	public void determineSelectedNodesRec(ClusterNode node) {
 
 		if (bRenderContentTree) {
 			if (node.getPos().x() < fPosCut) {
