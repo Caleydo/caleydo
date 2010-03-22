@@ -1,6 +1,7 @@
 package org.caleydo.view.compare.state;
 
 import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -23,6 +24,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.compare.GLCompare;
 import org.caleydo.view.compare.SetBar;
+import org.caleydo.view.compare.layout.AHeatMapLayout;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -137,12 +139,34 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 			double timePassed = (currentTimeStamp - previousTimeStamp) / 1000;
 			setupLayouts(timePassed);
 		}
+		animationStarted = true;
 		previousTimeStamp = currentTimeStamp;
 	}
-	
+
 	@Override
 	public void handleDragging(GL gl) {
-		
+
+	}
+
+	/**
+	 * Determines the scaling of a specified text that is needed for this text
+	 * to fit into the label.
+	 * 
+	 * @param sText
+	 *            Text the scaling shall be calculated for.
+	 * @return Scaling factor for the specified text.
+	 */
+	protected float getCaptionLabelTextWidth(GL gl, String text, AHeatMapLayout layout) {
+
+		float captionLabelHeight = layout.getCaptionLabelHeight();
+		float captionLabelWidth = layout.getCaptionLabelWidth();
+
+		Rectangle2D bounds = textRenderer.getBounds(text);
+		float fScalingWidth = captionLabelWidth / (float) bounds.getWidth();
+		float fScalingHeight = captionLabelHeight / (float) bounds.getHeight();
+
+		return (float) (bounds.getWidth() * Math.min(fScalingHeight,
+				fScalingWidth));
 	}
 
 	// protected abstract void drawActiveElements(GL gl, double timePassed);

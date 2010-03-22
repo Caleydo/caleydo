@@ -882,5 +882,9 @@ public class HeatMapWrapper {
 	public boolean isInitialized() {
 		return isInitialized;
 	}
+	
+	public void setLayout(AHeatMapLayout layout) {
+		this.layout = layout;
+	}
 
 }

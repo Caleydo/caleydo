@@ -177,5 +177,13 @@ public abstract class ACompareViewState {
 	public void handleDragging(GL gl) {
 		dragAndDropController.handleDragging(gl, glMouseListener);
 	}
+	
+	protected ArrayList<HeatMapWrapper> getHeatMapWrappers() {
+		return heatMapWrappers;
+	}
+	
+	protected ArrayList<AHeatMapLayout> getLayouts() {
+		return layouts;
+	}
 }
 

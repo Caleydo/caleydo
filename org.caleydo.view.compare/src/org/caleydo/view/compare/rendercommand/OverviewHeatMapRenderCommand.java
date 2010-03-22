@@ -31,6 +31,9 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 		ContentVirtualArray contentVA = heatMapWrapper.getOverview()
 				.getContentVA();
 
+		if(overviewHeatMapPosition == null) {
+			int i = 0;
+		}
 		gl.glPushMatrix();
 		gl.glTranslatef(overviewHeatMapPosition.x(), overviewHeatMapPosition
 				.y(), overviewHeatMapPosition.z());

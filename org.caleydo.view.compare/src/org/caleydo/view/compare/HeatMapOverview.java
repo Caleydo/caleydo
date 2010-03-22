@@ -268,4 +268,8 @@ public class HeatMapOverview {
 		overviewTextures = HeatMapUtil.createHeatMapTextures(set, contentVA,
 				storageVA, contentSelectionManager);
 	}
+	
+	public void setLayout(AHeatMapLayout layout) {
+		this.layout = layout;
+	}
 }

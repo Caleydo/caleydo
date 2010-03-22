@@ -8,6 +8,8 @@ import javax.media.opengl.glu.GLU;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.view.opengl.util.animation.MovementValue;
+
 /**
  * ADrawingStateAnimation is the base class for all animations considering the
  * radial hierarchy. It stops the time between each frame and makes the time

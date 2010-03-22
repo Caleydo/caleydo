@@ -1,22 +1,21 @@
-package org.caleydo.view.radial;
+package org.caleydo.core.view.opengl.util.animation;
 
 /**
- * A MovementValue represents a value that reaches a target value over time with
- * a certain speed. It is intended to adjust properties of displayed objects
- * over time to make animations possible.
+ * A MovementValue represents a value that reaches a target value over time with a certain speed. It is
+ * intended to adjust properties of displayed objects over time to make animations possible.
  * 
  * @author Christian Partl
  */
 public class MovementValue {
 
 	/**
-	 * Criterion that a movement value has reached its target if the value is
-	 * greater or equal the target value.
+	 * Criterion that a movement value has reached its target if the value is greater or equal the target
+	 * value.
 	 */
 	public static final int CRITERION_GREATER_OR_EQUAL = 0;
 	/**
-	 * Criterion that a movement value has reached its target if the value is
-	 * smaller or equal the target value.
+	 * Criterion that a movement value has reached its target if the value is smaller or equal the target
+	 * value.
 	 */
 	public static final int CRITERION_SMALLER_OR_EQUAL = 1;
 
@@ -34,12 +33,28 @@ public class MovementValue {
 	 *            The target value the movement value should reach.
 	 * @param fSpeed
 	 *            The speed of the movement value in units/second.
-	 * @param iCreterionType
-	 *            Type of criterion which specifies when the target is counted
-	 *            as reached.
 	 */
-	public MovementValue(float fStartValue, float fTargetValue, float fSpeed,
-			int iCreterionType) {
+	public MovementValue(float fStartValue, float fTargetValue, float fSpeed) {
+		this.fMovementValue = fStartValue;
+		this.fTargetValue = fTargetValue;
+		this.fSpeed = fSpeed;
+		this.iCreterionType =
+			(fStartValue <= fTargetValue) ? CRITERION_GREATER_OR_EQUAL : CRITERION_SMALLER_OR_EQUAL;
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param fStartValue
+	 *            The start value of the movement value.
+	 * @param fTargetValue
+	 *            The target value the movement value should reach.
+	 * @param fSpeed
+	 *            The speed of the movement value in units/second.
+	 * @param iCreterionType
+	 *            Type of criterion which specifies when the target is counted as reached.
+	 */
+	public MovementValue(float fStartValue, float fTargetValue, float fSpeed, int iCreterionType) {
 		this.fMovementValue = fStartValue;
 		this.fTargetValue = fTargetValue;
 		this.fSpeed = fSpeed;
@@ -50,8 +65,7 @@ public class MovementValue {
 	 * Moves a movement value with its speed.
 	 * 
 	 * @param dTimePassed
-	 *            Time difference since the last call of move, i.e. the last
-	 *            frame.
+	 *            Time difference since the last call of move, i.e. the last frame.
 	 */
 	public void move(double dTimePassed) {
 		if (!isTargetValueReached())
@@ -62,8 +76,7 @@ public class MovementValue {
 	}
 
 	/**
-	 * @return True if the movement value has reached the target value, false
-	 *         otherwise.
+	 * @return True if the movement value has reached the target value, false otherwise.
 	 */
 	public boolean isTargetValueReached() {
 		if (iCreterionType == CRITERION_GREATER_OR_EQUAL) {
@@ -124,16 +137,14 @@ public class MovementValue {
 	}
 
 	/**
-	 * @return The criterion type which specifies when the target is counted as
-	 *         reached.
+	 * @return The criterion type which specifies when the target is counted as reached.
 	 */
 	public int getCreterionType() {
 		return iCreterionType;
 	}
 
 	/**
-	 * Sets the criterion type which specifies when the target is counted as
-	 * reached.
+	 * Sets the criterion type which specifies when the target is counted as reached.
 	 * 
 	 * @param iCreterionType
 	 *            Criterion type.
@@ -141,5 +152,6 @@ public class MovementValue {
 	public void setCreterionType(int iCreterionType) {
 		this.iCreterionType = iCreterionType;
 	}
+	
 
 }
