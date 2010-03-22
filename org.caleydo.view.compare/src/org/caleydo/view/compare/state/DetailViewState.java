@@ -58,7 +58,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 	// private ArrayList<Pair<Float, Integer>> sortedClustersXOffsetDown;
 
 	private ArrayList<DetailBand> detailBands;
-	private ArrayList<Integer> singleLines;
 	private DetailBand activeBand;
 	private int indexOfHeatMapWrapperWithDendrogram;
 
@@ -123,7 +122,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void drawDisplayListElements(GL gl) {
+	public void buildDisplayList(GL gl) {
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,

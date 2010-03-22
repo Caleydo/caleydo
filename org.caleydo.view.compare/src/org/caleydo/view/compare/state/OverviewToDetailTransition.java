@@ -47,7 +47,7 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 			AHeatMapLayout layout = sourceLayouts.get(i);
 			heatMapWrapper.setLayout(layout);
 		}
-
+		
 		compareViewStateController
 				.setCurrentState(ECompareViewStateType.DETAIL_VIEW);
 		view.setDisplayListDirty();

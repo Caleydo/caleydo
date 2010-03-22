@@ -88,7 +88,7 @@ public class CompareViewStateController {
 	}
 
 	public void drawDisplayListElements(GL gl) {
-		currentState.drawDisplayListElements(gl);
+		currentState.buildDisplayList(gl);
 	}
 
 	public void drawActiveElements(GL gl) {

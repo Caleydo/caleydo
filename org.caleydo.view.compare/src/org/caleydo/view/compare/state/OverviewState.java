@@ -71,7 +71,7 @@ public class OverviewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void drawDisplayListElements(GL gl) {
+	public void buildDisplayList(GL gl) {
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
@@ -86,7 +86,7 @@ public class OverviewState extends ACompareViewStateStatic {
 		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
 			renderTree(gl, heatMapWrappers.get(i), heatMapWrappers.get(i + 1));
 			renderOverviewRelations(gl, heatMapWrappers.get(i), heatMapWrappers
-					.get(i + 1));
+			.get(i + 1));
 		}
 	}
 

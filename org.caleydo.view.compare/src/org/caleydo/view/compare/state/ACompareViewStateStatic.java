@@ -5,6 +5,7 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 
@@ -48,16 +49,15 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 	float yPosInitRight = 0;
 	float xPosInitRight = 0;
 
-	public ACompareViewStateStatic(GLCompare view, int viewID,
-			TextRenderer textRenderer, TextureManager textureManager,
-			PickingManager pickingManager, GLMouseListener glMouseListener,
-			SetBar setBar, RenderCommandFactory renderCommandFactory,
-			EDataDomain dataDomain, IUseCase useCase,
-			DragAndDropController dragAndDropController,
+	public ACompareViewStateStatic(GLCompare view, int viewID, TextRenderer textRenderer,
+			TextureManager textureManager, PickingManager pickingManager,
+			GLMouseListener glMouseListener, SetBar setBar,
+			RenderCommandFactory renderCommandFactory, EDataDomain dataDomain,
+			IUseCase useCase, DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
 		super(view, viewID, textRenderer, textureManager, pickingManager,
-				glMouseListener, setBar, renderCommandFactory, dataDomain,
-				useCase, dragAndDropController, compareViewStateController);
+				glMouseListener, setBar, renderCommandFactory, dataDomain, useCase,
+				dragAndDropController, compareViewStateController);
 	}
 
 	protected void renderTree(GL gl, HeatMapWrapper heatMapWrapperLeft,
@@ -65,7 +65,6 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 
 		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
-		hashNodePositions.clear();
 
 		AHeatMapLayout heatMapLayoutLeft = heatMapWrapperLeft.getLayout();
 		AHeatMapLayout heatMapLayoutRight = heatMapWrapperRight.getLayout();
@@ -77,23 +76,21 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		xPosInitRight = heatMapLayoutRight.getOverviewHeatMapPosition().x();
 		yPosInitRight = heatMapLayoutRight.getOverviewHeatMapPosition().y()
 				+ heatMapLayoutRight.getOverviewHeight();
-		Tree<ClusterNode> tree = heatMapWrapperLeft.getSet().getContentTree();
-		ClusterNode rootNode = tree.getRoot();
 
 		float overviewDistance = xPosInitRight - xPosInitLeft;
 
-		determineTreePositions(rootNode, tree, heatMapWrapperLeft,
-				overviewDistance);
-		// renderDendrogram(gl, rootNode, 1, tree, xPosInitLeft);
+		// Left hierarchy
+		Tree<ClusterNode> tree = heatMapWrapperLeft.getSet().getContentTree();
+		ClusterNode rootNode = tree.getRoot();
+		determineTreePositions(rootNode, tree, heatMapWrapperLeft, overviewDistance, true);
+//		renderDendrogram(gl, rootNode, 1, tree, xPosInitLeft, true);
 
 		// Right hierarchy
-
 		tree = heatMapWrapperRight.getSet().getContentTree();
 		rootNode = tree.getRoot();
-
-		determineTreePositions(rootNode, tree, heatMapWrapperLeft,
-				overviewDistance);
-		// renderDendrogram(gl, rootNode, 1, tree, xPosInitRight);
+		determineTreePositions(rootNode, tree, heatMapWrapperRight, overviewDistance,
+				false);
+//		renderDendrogram(gl, rootNode, 1, tree, xPosInitRight, false);
 	}
 
 	/**
@@ -105,20 +102,15 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 	 * @return Vec3f position of the current node
 	 */
 	protected Vec3f determineTreePositions(ClusterNode currentNode,
-			Tree<ClusterNode> tree, HeatMapWrapper heatMapWrapperLeft,
-			float overviewGapWidth) {
+			Tree<ClusterNode> tree, HeatMapWrapper heatMapWrapper,
+			float overviewGapWidth, boolean isLeft) {
 
 		Vec3f pos = new Vec3f();
 
-		AHeatMapLayout heatMapLayoutLeft = heatMapWrapperLeft.getLayout();
+		AHeatMapLayout heatMapLayoutLeft = heatMapWrapper.getLayout();
 
-		// float levelWidth = (viewFrustum.getWidth() / 2f
-		// - heatMapLayoutLeft.getOverviewSliderWidth()
-		// - heatMapLayoutLeft.getOverviewSliderWidth() - heatMapLayoutLeft
-		// .getOverviewHeatmapWidth())
-		// / tree.getRoot().getDepth();
-		float levelWidth = (overviewGapWidth / 2.0f)
-				/ tree.getRoot().getDepth();
+		 // subtract -1 instead of -2 for full dendrograms including root
+		float levelWidth = (overviewGapWidth / 2.0f) / (tree.getRoot().getDepth()-2);
 
 		float sampleHeight = heatMapLayoutLeft.getOverviewHeight()
 				/ tree.getRoot().getNrLeaves();
@@ -134,68 +126,66 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			for (int i = 0; i < iNrChildsNode; i++) {
 
 				ClusterNode node = alChilds.get(i);
-				positions[i] = determineTreePositions(node, tree,
-						heatMapWrapperLeft, overviewGapWidth);
+				positions[i] = determineTreePositions(node, tree, heatMapWrapper,
+						overviewGapWidth, isLeft);
 			}
+			
+			if (currentNode != tree.getRoot())
+			{
+				float fXmin = Float.MAX_VALUE;
+				float fXmax = Float.MIN_VALUE;
+				float fYmax = Float.MIN_VALUE;
+				float fYmin = Float.MAX_VALUE;
 
-			float fXmin = Float.MAX_VALUE;
-			float fYmax = Float.MIN_VALUE;
-			float fYmin = Float.MAX_VALUE;
+				for (Vec3f vec : positions) {
+					fXmin = Math.min(fXmin, vec.x());
+					fXmax = Math.max(fXmax, vec.x());
+					fYmax = Math.max(fYmax, vec.y());
+					fYmin = Math.min(fYmin, vec.y());
+				}
 
-			for (Vec3f vec : positions) {
-				fXmin = Math.min(fXmin, vec.x());
-				fYmax = Math.max(fYmax, vec.y());
-				fYmin = Math.min(fYmin, vec.y());
+				if (isLeft) {
+					pos.setX(fXmax + levelWidth);
+				} else {
+					pos.setX(fXmin - levelWidth);
+				}
+
+				pos.setY(fYmin + (fYmax - fYmin) / 2);
+				pos.setZ(DENDROGRAM_Z);				
 			}
-
-			if (tree == heatMapWrapperLeft.getSet().getContentTree()) {
-				pos.setX(fXmin + levelWidth);
-			} else {
-				pos.setX(fXmin - levelWidth);
-			}
-
-			pos.setY(fYmin + (fYmax - fYmin) / 2);
-			pos.setZ(DENDROGRAM_Z);
-
 		} else {
 
-			if (tree == heatMapWrapperLeft.getSet().getContentTree()) {
-				pos.setX(xPosInitLeft + levelWidth);
+			if (isLeft) {
+				pos.setX(xPosInitLeft);
 				pos.setY(yPosInitLeft);
 				yPosInitLeft -= sampleHeight;
 			} else {
-				pos.setX(xPosInitRight - levelWidth);
+				pos.setX(xPosInitRight);
 				pos.setY(yPosInitRight);
 				yPosInitRight -= sampleHeight;
 			}
 
 			pos.setZ(DENDROGRAM_Z);
 		}
-		hashNodePositions.put(currentNode, pos);
-		// currentNode.setPos(pos);
+
+		currentNode.setPos(pos);
 
 		return pos;
 	}
 
-	protected void renderOverviewRelations(GL gl,
-			HeatMapWrapper leftHeatMapWrapper,
+	protected void renderOverviewRelations(GL gl, HeatMapWrapper leftHeatMapWrapper,
 			HeatMapWrapper rightHeatMapWrapper) {
 
 		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
 
-		// FIXME: Just for testing.
-		// leftHeatMapWrapper.useDetailView(false);
-		// rightHeatMapWrapper.useDetailView(false);
-
 		float alpha = 0.6f;
 
 		ContentSelectionManager contentSelectionManager = useCase
 				.getContentSelectionManager();
-		ContentVirtualArray contentVALeft = leftHeatMapWrapper.getSet()
-				.getContentVA(ContentVAType.CONTENT);
+		ContentVirtualArray contentVALeft = leftHeatMapWrapper.getSet().getContentVA(
+				ContentVAType.CONTENT);
 
-		// gl.glColor3f(0, 0, 0);
 		for (Integer contentID : contentVALeft) {
 
 			float positionZ = 0.0f;
@@ -208,8 +198,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 				gl.glColor4fv(typeColor, 0);
 				positionZ = type.getPriority();
 
-				if (type == SelectionType.MOUSE_OVER
-						|| type == SelectionType.SELECTION) {
+				if (type == SelectionType.MOUSE_OVER || type == SelectionType.SELECTION) {
 					gl.glLineWidth(5);
 					break;
 				} else {
@@ -231,7 +220,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 				continue;
 
 			ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-			points.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
+			points.add(new Vec3f(leftPos.x(), leftPos.y(), positionZ));
 
 			Tree<ClusterNode> tree;
 			int nodeID;
@@ -245,11 +234,12 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			pathToRoot = node.getParentPath(tree.getRoot());
 
 			// Remove last because it is root bundling
-			pathToRoot.remove(pathToRoot.size() - 1);
-
+			 pathToRoot.remove(pathToRoot.size() - 1);
+//			pathToRoot.remove(0);
+			
 			for (ClusterNode pathNode : pathToRoot) {
 				// Vec3f nodePos = pathNode.getPos();
-				Vec3f nodePos = hashNodePositions.get(pathNode);
+				Vec3f nodePos = pathNode.getPos();
 				points.add(nodePos);
 			}
 
@@ -260,13 +250,15 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			pathToRoot = node.getParentPath(tree.getRoot());
 
 			// Remove last because it is root bundling
-			pathToRoot.remove(pathToRoot.size() - 1);
+			 pathToRoot.remove(pathToRoot.size() - 1);
+			// pathToRoot.remove(pathToRoot.size()-1);
 
-			for (ClusterNode pathNode : pathToRoot) {
+			for (int i = pathToRoot.size() - 1; i > 0; i--) {
 				// Vec3f nodePos = pathNode.getPos();
-				Vec3f nodePos = hashNodePositions.get(pathNode);
+				ClusterNode pathNode = pathToRoot.get(i);
+				Vec3f nodePos = pathNode.getPos();
 				points.add(nodePos);
-				break; // FIXME: REMOVE BREAK
+				// break; // FIXME: REMOVE BREAK
 			}
 
 			// Center point
@@ -277,7 +269,10 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 
 			points.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
 
-			NURBSCurve curve = new NURBSCurve(points, 30);
+			if (points.size() == 0)
+				continue;
+
+			NURBSCurve curve = new NURBSCurve(points, 80);
 			points = curve.getCurvePoints();
 
 			gl.glPushName(pickingManager.getPickingID(viewID,
@@ -292,13 +287,110 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		}
 	}
 
+	private void renderDendrogram(final GL gl, ClusterNode currentNode, float fOpacity,
+			Tree<ClusterNode> tree, float xPosInit, boolean isLeft) {
+
+		// float fLookupValue = currentNode.getAverageExpressionValue();
+		// float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+
+		// if (bUseBlackColoring)
+		gl.glColor4f(0, 0, 0, 1);
+		// else
+		// gl.glColor4f(fArMappingColor[0], fArMappingColor[1],
+		// fArMappingColor[2], fOpacity);
+
+		float fDiff = 0;
+
+		float fTemp = currentNode.getPos().x();
+
+		List<ClusterNode> listGraph = null;
+
+		if (tree.hasChildren(currentNode)) {
+			listGraph = tree.getChildren(currentNode);
+
+			int iNrChildsNode = listGraph.size();
+
+			float xmin = Float.MAX_VALUE;
+			float xmax = Float.MIN_VALUE;
+			float ymax = Float.MIN_VALUE;
+			float ymin = Float.MAX_VALUE;
+
+			Vec3f[] tempPositions = new Vec3f[iNrChildsNode];
+			for (int i = 0; i < iNrChildsNode; i++) {
+
+				ClusterNode current = listGraph.get(i);
+
+				tempPositions[i] = new Vec3f();
+				tempPositions[i].setX(current.getPos().x());
+				tempPositions[i].setY(current.getPos().y());
+				tempPositions[i].setZ(current.getPos().z());
+
+				xmin = Math.min(xmin, current.getPos().x());
+				xmax = Math.max(xmax, current.getPos().x());
+				ymax = Math.max(ymax, current.getPos().y());
+				ymin = Math.min(ymin, current.getPos().y());
+
+				renderDendrogram(gl, current, 1, tree, xPosInit, isLeft);
+			}
+
+			float x = 0;
+			if (isLeft) {
+				fDiff = fTemp - xmax;
+				x = xmax;
+			} else {
+				fDiff = fTemp - xmin;
+				x = xmin;
+			}
+
+			gl.glPushName(pickingManager.getPickingID(this.viewID,
+					EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode.getID()));
+
+			// vertical line connecting all child nodes
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(x, ymin, currentNode.getPos().z());
+			gl.glVertex3f(x, ymax, currentNode.getPos().z());
+			gl.glEnd();
+
+			// horizontal lines connecting all children with their parent
+			for (int i = 0; i < iNrChildsNode; i++) {
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(x, tempPositions[i].y(), tempPositions[i].z());
+				gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(),
+						tempPositions[i].z());
+				gl.glEnd();
+			}
+
+			gl.glPopName();
+
+		} else {
+			gl.glPushName(pickingManager.getPickingID(this.viewID,
+					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode.getID()));
+
+			// horizontal line visualizing leaf nodes
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode
+					.getPos().z());
+			gl.glVertex3f(xPosInit, currentNode.getPos().y(), currentNode.getPos().z());
+			gl.glEnd();
+
+			gl.glPopName();
+		}
+
+		gl.glBegin(GL.GL_LINES);
+		gl.glVertex3f(currentNode.getPos().x() - fDiff, currentNode.getPos().y(),
+				currentNode.getPos().z());
+		gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode
+				.getPos().z());
+		gl.glEnd();
+
+	}
+
 	public void setSetsToCompare(ArrayList<ISet> setsToCompare) {
 		setBar.setSets(setsToCompare);
 	}
 
-	public void handlePickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick,
-			boolean isControlPressed) {
+	public void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode,
+			int iExternalID, Pick pick, boolean isControlPressed) {
 		SelectionType selectionType = null;
 
 		switch (ePickingType) {
@@ -355,13 +447,12 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			break;
 
 		case COMPARE_SET_BAR_SELECTION_WINDOW_SELECTION:
-			setBar.handleSetBarSelectionWindowSelection(iExternalID,
-					pickingMode, pick);
+			setBar.handleSetBarSelectionWindowSelection(iExternalID, pickingMode, pick);
 			break;
 		}
 
-		handleStateSpecificPickingEvents(ePickingType, pickingMode,
-				iExternalID, pick, isControlPressed);
+		handleStateSpecificPickingEvents(ePickingType, pickingMode, iExternalID, pick,
+				isControlPressed);
 	}
 
 	public int getNumSetsInFocus() {
@@ -372,8 +463,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		return isInitialized;
 	}
 
-	public void handleContentGroupListUpdate(int setID,
-			ContentGroupList contentGroupList) {
+	public void handleContentGroupListUpdate(int setID, ContentGroupList contentGroupList) {
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			if (heatMapWrapper.getSet().getID() == setID) {
 				heatMapWrapper.handleContentGroupListUpdate(contentGroupList);
@@ -391,12 +481,9 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		setSetsInFocus(setBar.getSetsInFocus());
 	}
 
+	public abstract void handleStateSpecificPickingEvents(EPickingType ePickingType,
+			EPickingMode pickingMode, int iExternalID, Pick pick, boolean isControlPressed);
 
-	public abstract void handleStateSpecificPickingEvents(
-			EPickingType ePickingType, EPickingMode pickingMode,
-			int iExternalID, Pick pick, boolean isControlPressed);
-
-	
 	// public abstract void init(GL gl);
 	//
 	// public abstract void drawDisplayListElements(GL gl);

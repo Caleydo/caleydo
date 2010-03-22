@@ -55,7 +55,7 @@ public abstract class ACompareViewState {
 	protected IUseCase useCase;
 	protected DragAndDropController dragAndDropController;
 	protected CompareViewStateController compareViewStateController;
-	protected HashMap<ClusterNode, Vec3f> hashNodePositions;
+//	protected HashMap<ClusterNode, Vec3f> hashNodePositions;
 
 	protected ArrayList<ISet> setsInFocus;
 	protected int numSetsInFocus;
@@ -87,7 +87,7 @@ public abstract class ACompareViewState {
 		layouts = new ArrayList<AHeatMapLayout>();
 		setsInFocus = new ArrayList<ISet>();
 
-		hashNodePositions = new HashMap<ClusterNode, Vec3f>();
+//		hashNodePositions = new HashMap<ClusterNode, Vec3f>();
 
 		setsChanged = false;
 
@@ -136,7 +136,7 @@ public abstract class ACompareViewState {
 
 	public abstract void init(GL gl);
 
-	public abstract void drawDisplayListElements(GL gl);
+	public abstract void buildDisplayList(GL gl);
 
 	public abstract void drawActiveElements(GL gl);
 

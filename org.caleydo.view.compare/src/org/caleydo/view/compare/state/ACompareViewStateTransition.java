@@ -94,7 +94,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public void drawDisplayListElements(GL gl) {
+	public void buildDisplayList(GL gl) {
 		if (animationStarted) {
 			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 				heatMapWrapper.drawLocalItems(gl, textureManager,
