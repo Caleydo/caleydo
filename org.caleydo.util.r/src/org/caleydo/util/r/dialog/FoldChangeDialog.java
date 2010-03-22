@@ -13,6 +13,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Dialog;
@@ -78,23 +80,45 @@ public class FoldChangeDialog extends Dialog {
 		final Label foldChangeLabel = new Label(shell, SWT.NULL);
 		foldChangeLabel.setText("" + initialFoldchange);
 
-	    final Button[] evaluatorRadio = new Button[3];
+		final Button[] evaluatorCheckBox = new Button[3];
 
-	    evaluatorRadio[0] = new Button(shell, SWT.RADIO);
-	    evaluatorRadio[0].setSelection(true);
-	    evaluatorRadio[0].setText("Greater");
+		evaluatorCheckBox[0] = new Button(shell, SWT.CHECK);
+		evaluatorCheckBox[0].setSelection(true);
+		evaluatorCheckBox[0].setText("Greater (up regulated)");
 
-	    evaluatorRadio[1] = new Button(shell, SWT.RADIO);
-	    evaluatorRadio[1].setText("Less");
+		evaluatorCheckBox[1] = new Button(shell, SWT.CHECK);
+		evaluatorCheckBox[1].setText("Less (down regulated)");
 
-	    evaluatorRadio[2] = new Button(shell, SWT.RADIO);
-	    evaluatorRadio[2].setText("Equal");
-		
+		evaluatorCheckBox[2] = new Button(shell, SWT.CHECK);
+		evaluatorCheckBox[2].setText("Equal");
+
+		evaluatorCheckBox[0].addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				evaluatorCheckBox[2].setSelection(false);
+			}
+		});
+
+		evaluatorCheckBox[1].addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				evaluatorCheckBox[2].setSelection(false);
+			}
+		});
+
+		evaluatorCheckBox[2].addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				evaluatorCheckBox[1].setSelection(false);
+				evaluatorCheckBox[0].setSelection(false);
+			}
+		});
+
 		slider.setMinimum(0);
 		slider.setMaximum(50);
 		slider.setIncrement(1);
 		slider.setPageIncrement(10);
-		slider.setSelection(initialFoldchange*10);
+		slider.setSelection(initialFoldchange * 10);
 
 		slider.addMouseListener(new MouseListener() {
 
@@ -103,18 +127,35 @@ public class FoldChangeDialog extends Dialog {
 				Double foldChangeRatio = slider.getSelection() / 10d;
 				foldChangeLabel.setText("" + foldChangeRatio);
 
-				FoldChangeEvaluator evaluator = null;
-				if (evaluatorRadio[0].getSelection() == true)
-					evaluator = FoldChangeEvaluator.GREATER;
-				else if (evaluatorRadio[1].getSelection() == true)
-					evaluator = FoldChangeEvaluator.LESS;					
-				else if (evaluatorRadio[1].getSelection() == true)
-					evaluator = FoldChangeEvaluator.SAME;			
-				
-				FoldChangeSettings foldChangeSettings = new FoldChangeSettings(foldChangeRatio, evaluator);
+				if (evaluatorCheckBox[0].getSelection() == true) {
+					FoldChangeSettings foldChangeSettings = new FoldChangeSettings(
+							foldChangeRatio, FoldChangeEvaluator.GREATER);
 
-				set1.getStatisticsResult().setFoldChangeSettings(set2, foldChangeSettings);
-				set2.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
+					set1.getStatisticsResult().setFoldChangeSettings(set2,
+							foldChangeSettings);
+					set2.getStatisticsResult().setFoldChangeSettings(set1,
+							foldChangeSettings);
+				}
+
+				if (evaluatorCheckBox[1].getSelection() == true) {
+					FoldChangeSettings foldChangeSettings = new FoldChangeSettings(
+							foldChangeRatio, FoldChangeEvaluator.LESS);
+
+					set1.getStatisticsResult().setFoldChangeSettings(set2,
+							foldChangeSettings);
+					set2.getStatisticsResult().setFoldChangeSettings(set1,
+							foldChangeSettings);
+				}
+
+				if (evaluatorCheckBox[2].getSelection() == true) {
+					FoldChangeSettings foldChangeSettings = new FoldChangeSettings(
+							foldChangeRatio, FoldChangeEvaluator.GREATER);
+
+					set1.getStatisticsResult().setFoldChangeSettings(set2,
+							foldChangeSettings);
+					set2.getStatisticsResult().setFoldChangeSettings(set1,
+							foldChangeSettings);
+				}
 
 				int reducedNumberOfElements = set1.getStatisticsResult()
 						.getElementNumberOfFoldChangeReduction(set2);
