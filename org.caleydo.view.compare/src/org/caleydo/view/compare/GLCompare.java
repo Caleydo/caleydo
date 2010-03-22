@@ -359,7 +359,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
-
+		contextMenu.setLocation(pick.getPickedPoint(),
+				getParentGLCanvas().getWidth(), getParentGLCanvas()
+						.getHeight());
+		contextMenu.setMasterGLView(this);
 		compareViewStateController.handlePickingEvents(ePickingType, pickingMode,
 				iExternalID, pick, isControlPressed);
 	}
