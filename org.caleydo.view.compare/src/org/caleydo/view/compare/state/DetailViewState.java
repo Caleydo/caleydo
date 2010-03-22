@@ -1103,6 +1103,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.setUseZoom(useZoom);
 			heatMapWrapper.setDisplayListDirty();
+			view.setDisplayListDirty();
 		}
 	}
 
@@ -1111,6 +1112,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.setUseFishEye(useFishEye);
 			heatMapWrapper.setDisplayListDirty();
+			view.setDisplayListDirty();
 		}
 	}
 

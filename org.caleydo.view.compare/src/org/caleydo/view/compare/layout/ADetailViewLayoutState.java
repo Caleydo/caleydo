@@ -16,7 +16,7 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public abstract class ADetailViewLayoutState {
 
-	protected static final float DETAIL_HEATMAP_SPACING_PORTION_DEFAULT = 0.02f;
+	protected static final float DETAIL_HEATMAP_SPACING_PORTION_DEFAULT = 0.01f;
 
 	protected static final float DENDROGRAM_BUTTON_HEIGHT_PORTION = 0.05f;
 
@@ -83,8 +83,11 @@ public abstract class ADetailViewLayoutState {
 		/**
 		 * the space the heat maps would like to have per element
 		 */
-		float requestedFocusSpacing = 0;
+		float requestedFocusSpacing = HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT;
 
+		/**
+		 * The overhead of all heat maps
+		 */
 		float totalHeatMapOverheadSize = 0;
 
 		for (Group group : selectedGroups.keySet()) {
@@ -104,7 +107,8 @@ public abstract class ADetailViewLayoutState {
 				* DETAIL_HEATMAP_SPACING_PORTION_DEFAULT
 				* (selectedGroups.size() - 1);
 
-		detailHeatMapSpacing = getDetailHeight() * DETAIL_HEATMAP_SPACING_PORTION_DEFAULT;
+		detailHeatMapSpacing = getDetailHeight()
+				* DETAIL_HEATMAP_SPACING_PORTION_DEFAULT;
 
 		/**
 		 * the space that the actual heat maps can use for rendering, i.e.
@@ -114,18 +118,9 @@ public abstract class ADetailViewLayoutState {
 		float availableSpaceForHeatMaps = getDetailHeight() - gapSpace
 				- totalHeatMapOverheadSize;
 
-//		if (availableSpaceForHeatMaps < 0) {
-//			availableSpaceForHeatMaps = (getDetailHeight() - totalHeatMapOverheadSize) * 0.7f;
-//			gapSpace = (getDetailHeight() - totalHeatMapOverheadSize) * 0.3f;
-//			detailHeatMapSpacing = gapSpace / (selectedGroups.size() - 1);
-//		}
-
 		/** the default spacing if no elements were in focus */
 		float defaultSpacing = availableSpaceForHeatMaps
-				/ (float) totalNumberOfElements;
-
-		/** the minimum spacing */
-		float minSpacing = defaultSpacing / 10.0f;
+				/ totalNumberOfElements;
 
 		/** the minimum spacing for a whole heat map */
 		float hmMinSpacing = HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT * 1.5f;
@@ -138,8 +133,9 @@ public abstract class ADetailViewLayoutState {
 
 		// calculate remaining size after removing the elements which need extra
 		// space due to small heat map size
-		int overheadsGranted = 0;
+		int minSizeGranted = 0;
 		int elementsInOverhead = 0;
+		int selectedElementsInOverhead = 0;
 
 		for (Group group : selectedGroups.keySet()) {
 			GLHeatMap heatMap = heatMapWrapper
@@ -147,42 +143,45 @@ public abstract class ADetailViewLayoutState {
 			int numElements = heatMap.getNumberOfVisibleElements();
 
 			if (numElements * defaultSpacing < hmMinSpacing) {
-				overheadsGranted++;
+				minSizeGranted++;
 				elementsInOverhead += numElements;
+				if (heatMap.isForceMinSpacing())
+					selectedElementsInOverhead += numElements;
 			}
 		}
 
-		availableSpaceForHeatMaps -= hmMinSpacing * overheadsGranted
-				- (elementsInOverhead * defaultSpacing);
+		// if we had a heat map which requires the min size we need to
+		// recalculate this stuff
+		if (minSizeGranted > 0) {
+			availableSpaceForHeatMaps -= hmMinSpacing * minSizeGranted;
 
-		defaultSpacing = availableSpaceForHeatMaps
-				/ (float) (totalNumberOfElements);
-		minSpacing = defaultSpacing / 4;
+			totalNumberOfElements -= elementsInOverhead;
+			numberOfFocusElements -= selectedElementsInOverhead;
 
+			defaultSpacing = availableSpaceForHeatMaps
+					/ (float) (totalNumberOfElements);
+		}
+
+		// if we use a zoom layout and we have focus elements
 		if (layout.isUseZoom() && numberOfFocusElements > 0) {
 			// the case where we have enough space for everything
 			if (defaultSpacing > requestedFocusSpacing) {
 				resultingFocusSpacing = defaultSpacing;
 				resultingNormalSpacing = defaultSpacing;
-			} else if ((availableSpaceForHeatMaps - (numberOfFocusElements * requestedFocusSpacing))
-					/ (totalNumberOfElements - numberOfFocusElements) > minSpacing) {
+			} else if ((availableSpaceForHeatMaps - (numberOfFocusElements * requestedFocusSpacing)) > availableSpaceForHeatMaps / 2) {
 				resultingFocusSpacing = requestedFocusSpacing;
 				resultingNormalSpacing = (availableSpaceForHeatMaps - resultingFocusSpacing
 						* numberOfFocusElements)
 						/ (totalNumberOfElements - numberOfFocusElements);
 			} else {
-				resultingNormalSpacing = minSpacing;
-				resultingFocusSpacing = (availableSpaceForHeatMaps - (totalNumberOfElements - numberOfFocusElements)
-						* resultingNormalSpacing)
+				resultingFocusSpacing = (availableSpaceForHeatMaps / 2)
 						/ numberOfFocusElements;
+				resultingNormalSpacing = (availableSpaceForHeatMaps / 2)
+						/ (totalNumberOfElements - numberOfFocusElements);
 			}
-		}
-		// if(!layout.isUseZoom() && numberOfFocusElements > 0)
-		// {
-		// if(availableSpaceForHeatMaps > )
-		// }
-		else {
+		} else {
 			resultingNormalSpacing = defaultSpacing;
+			resultingFocusSpacing = defaultSpacing;
 		}
 
 		for (Group group : selectedGroups.keySet()) {

@@ -42,6 +42,8 @@ public class UseSortingAction extends AToolBarAction implements IToolBarItem {
 			useSorting = false;
 		else
 			useSorting = true;
+		
+		super.setChecked(useSorting);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 				new UseSortingEvent(useSorting));

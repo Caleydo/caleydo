@@ -43,6 +43,7 @@ public class UseZoomAction extends AToolBarAction implements IToolBarItem {
 		else
 			useZoom = true;
 
+		super.setChecked(useZoom);
 		GeneralManager.get().getEventPublisher().triggerEvent(
 				new UseZoomEvent(useZoom));
 	};

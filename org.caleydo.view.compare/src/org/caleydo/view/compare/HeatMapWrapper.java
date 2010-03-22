@@ -856,7 +856,7 @@ public class HeatMapWrapper {
 	}
 
 	public void setUseZoom(boolean useZoom) {
-		layout.setUseZoom(useZoom);
+		layout.setUseZoom(useZoom);	
 	}
 
 	public void setUseFishEye(boolean useFishEye) {
