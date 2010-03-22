@@ -60,6 +60,11 @@ public class CompareViewStateController {
 						textureManager, pickingManager, glMouseListener,
 						setBar, renderCommandFactory, dataDomain, useCase,
 						dragAndDropController, this));
+		hashStates.put(ECompareViewStateType.DETAIL_TO_OVERVIEW_TRANSITION,
+				new DetailToOverviewTransition(view, viewID, textRenderer,
+						textureManager, pickingManager, glMouseListener,
+						setBar, renderCommandFactory, dataDomain, useCase,
+						dragAndDropController, this));
 
 		currentState = hashStates.get(ECompareViewStateType.OVERVIEW);
 		setBar.setViewState(currentState);

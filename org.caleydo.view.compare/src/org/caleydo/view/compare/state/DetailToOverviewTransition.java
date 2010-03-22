@@ -24,18 +24,17 @@ import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
-public class OverviewToDetailTransition extends ACompareViewStateTransition {
+public class DetailToOverviewTransition extends ACompareViewStateTransition {
 
-	private ArrayList<AHeatMapLayout> sourceLayouts;
+	private ArrayList<AHeatMapLayout> destinationLayouts;
 
-	public OverviewToDetailTransition(GLCompare view, int viewID,
+	public DetailToOverviewTransition(GLCompare view, int viewID,
 			TextRenderer textRenderer, TextureManager textureManager,
 			PickingManager pickingManager, GLMouseListener glMouseListener,
 			SetBar setBar, RenderCommandFactory renderCommandFactory,
 			EDataDomain dataDomain, IUseCase useCase,
 			DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
-		
 		super(view, viewID, textRenderer, textureManager, pickingManager,
 				glMouseListener, setBar, renderCommandFactory, dataDomain,
 				useCase, dragAndDropController, compareViewStateController);
@@ -50,7 +49,6 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 						pickingManager);
 			}
 		}
-
 	}
 
 	@Override
@@ -70,167 +68,166 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 				finish();
 			}
 		}
-
-		// for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
-		// renderTree(gl, heatMapWrappers.get(i), heatMapWrappers.get(i + 1));
-		// renderOverviewRelations(gl, heatMapWrappers.get(i), heatMapWrappers
-		// .get(i + 1));
-		// }
-
 	}
 
 	protected void finish() {
 		for (int i = 0; i < heatMapWrappers.size(); i++) {
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
-			AHeatMapLayout layout = sourceLayouts.get(i);
+			AHeatMapLayout layout = destinationLayouts.get(i);
 			heatMapWrapper.setLayout(layout);
 		}
 
 		compareViewStateController
-				.setCurrentState(ECompareViewStateType.DETAIL_VIEW);
+				.setCurrentState(ECompareViewStateType.OVERVIEW);
 		view.setDisplayListDirty();
 		animationStarted = false;
 	}
 
-	// FIXME: Use set later on instead of itemOffset
-	public void initTransition(GL gl, int itemOffset) {
+	@Override
+	public ECompareViewStateType getStateType() {
+		return ECompareViewStateType.DETAIL_TO_OVERVIEW_TRANSITION;
+	}
 
-		if (!isInitialized)
-			init(gl);
+	@Override
+	public void init(GL gl) {
+		isInitialized = true;
+
 		ACompareViewState overviewState = compareViewStateController
 				.getState(ECompareViewStateType.OVERVIEW);
 		ACompareViewState detailViewState = compareViewStateController
 				.getState(ECompareViewStateType.DETAIL_VIEW);
 
-		setBar.setViewState(detailViewState);
-		setBar.setMaxSelectedItems(detailViewState.getMaxSetsInFocus());
-		setBar.setMinSelectedItems(detailViewState.getMinSetsInFocus());
-		setBar.setWindowSize(detailViewState.getNumSetsInFocus());
-		setBar.increaseLowestItemIndex(itemOffset);
-		if (!detailViewState.isInitialized()) {
-			detailViewState.init(gl);
+		setBar.setViewState(overviewState);
+		setBar.adjustSelectionWindowSizeCentered(overviewState
+				.getNumSetsInFocus());
+		setBar.setMaxSelectedItems(overviewState.getMaxSetsInFocus());
+		setBar.setMinSelectedItems(overviewState.getMinSetsInFocus());
+		if (!overviewState.isInitialized()) {
+			overviewState.init(gl);
 		}
-		detailViewState.setSetsInFocus(setBar.getSetsInFocus());
-		detailViewState.setupLayouts();
+		overviewState.setSetsInFocus(setBar.getSetsInFocus());
 
 		heatMapWrappers = overviewState.getHeatMapWrappers();
+
+		ArrayList<HeatMapWrapper> sourceHeatMapWrappers = detailViewState
+				.getHeatMapWrappers();
+
+		int indexOffset = 0;
+
+		for (int i = 0; i < heatMapWrappers.size(); i++) {
+			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
+			if (heatMapWrapper.getSet().getID() == sourceHeatMapWrappers.get(0)
+					.getSet().getID()) {
+				indexOffset = i;
+				break;
+			}
+		}
+
 		layouts.clear();
 		captionPositions.clear();
 		captionTextDimensions.clear();
 		captionTextSpacing.clear();
 		heatMapDimensions.clear();
 		heatMapPositions.clear();
-		sourceLayouts = overviewState.getLayouts();
-		ArrayList<AHeatMapLayout> destinationLayouts = detailViewState
-				.getLayouts();
+
+		ArrayList<AHeatMapLayout> sourceLayouts = detailViewState.getLayouts();
+		destinationLayouts = overviewState.getLayouts();
 		ArrayList<AHeatMapLayout> focusLayouts = new ArrayList<AHeatMapLayout>();
-
-		for (int i = 0; i < destinationLayouts.size(); i++) {
-			AHeatMapLayout destLayout = destinationLayouts.get(i);
-			AHeatMapLayout srcLayout = sourceLayouts.get(itemOffset + i);
-			HeatMapLayoutConfigurable transitionLayout = new HeatMapLayoutConfigurable(
-					renderCommandFactory);
-			transitionLayout.setLocalRenderCommands(srcLayout
-					.getRenderCommandsOfLocalItems());
-			transitionLayout.setRemoteRenderCommands(srcLayout
-					.getRenderCommandsOfRemoteItems());
-			focusLayouts.add(transitionLayout);
-
-			createMovementValues(gl, itemOffset + i, srcLayout, destLayout);
-
-			if (i == 0) {
-				createOffsets(true, itemOffset + i);
-			} else if (i == destinationLayouts.size() - 1) {
-				createOffsets(false, itemOffset + i);
-			}
-		}
 
 		for (int i = 0; i < sourceLayouts.size(); i++) {
 			AHeatMapLayout srcLayout = sourceLayouts.get(i);
-			if (i < itemOffset) {
-				createMovementValuesTargetOffset(gl, i, srcLayout, true);
+			AHeatMapLayout destLayout = destinationLayouts.get(indexOffset + i);
+			HeatMapLayoutConfigurable transitionLayout = new HeatMapLayoutConfigurable(
+					renderCommandFactory);
+			transitionLayout.setLocalRenderCommands(destLayout
+					.getRenderCommandsOfLocalItems());
+			transitionLayout.setRemoteRenderCommands(destLayout
+					.getRenderCommandsOfRemoteItems());
+			focusLayouts.add(transitionLayout);
+
+			createMovementValues(gl, indexOffset + i, srcLayout, destLayout);
+
+			if (i == 0) {
+				createOffsets(true, indexOffset + i);
+			} else if (i == sourceLayouts.size() - 1) {
+				createOffsets(false, indexOffset + i);
+			}
+		}
+
+		for (int i = 0; i < destinationLayouts.size(); i++) {
+			AHeatMapLayout destLayout = destinationLayouts.get(i);
+			if (i < indexOffset) {
+				createMovementValuesSourceOffset(gl, i, destLayout, true);
 				HeatMapLayoutConfigurable transitionLayout = new HeatMapLayoutConfigurable(
 						renderCommandFactory);
-				transitionLayout.setLocalRenderCommands(srcLayout
+				transitionLayout.setLocalRenderCommands(destLayout
 						.getRenderCommandsOfLocalItems());
-				transitionLayout.setRemoteRenderCommands(srcLayout
+				transitionLayout.setRemoteRenderCommands(destLayout
 						.getRenderCommandsOfRemoteItems());
 				layouts.add(transitionLayout);
-			} else if (i > itemOffset + destinationLayouts.size() - 1) {
-				createMovementValuesTargetOffset(gl, i, srcLayout, false);
+			} else if (i > indexOffset + sourceLayouts.size() - 1) {
+				createMovementValuesSourceOffset(gl, i, destLayout, false);
 				HeatMapLayoutConfigurable transitionLayout = new HeatMapLayoutConfigurable(
 						renderCommandFactory);
-				transitionLayout.setLocalRenderCommands(srcLayout
+				transitionLayout.setLocalRenderCommands(destLayout
 						.getRenderCommandsOfLocalItems());
-				transitionLayout.setRemoteRenderCommands(srcLayout
+				transitionLayout.setRemoteRenderCommands(destLayout
 						.getRenderCommandsOfRemoteItems());
 				layouts.add(transitionLayout);
 			} else {
-				layouts.add(focusLayouts.get(i - itemOffset));
+				layouts.add(focusLayouts.get(i - indexOffset));
 			}
 			heatMapWrappers.get(i).setLayout(layouts.get(i));
 			layouts.get(i).setHeatMapWrapper(heatMapWrappers.get(i));
 		}
 		view.setDisplayListDirty();
-
 	}
 
-	@Override
-	public ECompareViewStateType getStateType() {
-		return ECompareViewStateType.OVERVIEW_TO_DETAIL_TRANSITION;
-	}
-
-
-	@Override
-	public void init(GL gl) {
-		isInitialized = true;
-		
-	}
-	
-	protected void createMovementValuesTargetOffset(GL gl, int id,
-			AHeatMapLayout srcLayout, boolean isLowerOffset) {
+	protected void createMovementValuesSourceOffset(GL gl, int id,
+			AHeatMapLayout destLayout, boolean isLowerOffset) {
 
 		int index = isLowerOffset ? 0 : 1;
 
 		HeatMapWrapper heatMapWrapper = heatMapWrappers.get(id);
 
 		float textWidth = getCaptionLabelTextWidth(gl, heatMapWrapper
-				.getCaption(), srcLayout);
-		Vec3f captionStartPosition = srcLayout
+				.getCaption(), destLayout);
+		Vec3f captionTargetPosition = destLayout
 				.getCaptionLabelPosition(textWidth);
-		Vec3f captionTargetPosition = new Vec3f(captionStartPosition.x()
-				+ captionPositionOffset[index].x(), captionStartPosition.y()
-				+ captionPositionOffset[index].y(), captionStartPosition.z()
-				+ captionPositionOffset[index].z());
+		Vec3f captionStartPosition = new Vec3f(captionTargetPosition.x()
+				- captionPositionOffset[index].x(), captionTargetPosition.y()
+				- captionPositionOffset[index].y(), captionTargetPosition.z()
+				- captionPositionOffset[index].z());
 
-		float captionStartWidth = srcLayout.getCaptionLabelWidth();
-		float captionStartHeight = srcLayout.getCaptionLabelHeight();
-		float captionTargetWidth = captionStartWidth
-				+ captionTextDimensionsOffset[index].x();
-		float captionTargetHeight = captionStartHeight
-				+ captionTextDimensionsOffset[index].y();
+		float captionTargetWidth = destLayout.getCaptionLabelWidth();
+		float captionTargetHeight = destLayout.getCaptionLabelHeight();
+		float captionStartWidth = captionTargetWidth
+				- captionTextDimensionsOffset[index].x();
+		float captionStartHeight = captionTargetHeight
+				- captionTextDimensionsOffset[index].y();
 
-		float captionStartSpacingX = srcLayout
+		float captionTargetSpacingX = destLayout
 				.getCaptionLabelHorizontalSpacing();
-		float captionStartSpacingY = srcLayout.getCaptionLabelVerticalSpacing();
-		float captionTargetSpacingX = captionStartSpacingX
-				+ captionTextSpacingOffset[index].x();
-		float captionTargetSpacingY = captionStartSpacingY
-				+ captionTextSpacingOffset[index].y();
+		float captionTargetSpacingY = destLayout
+				.getCaptionLabelVerticalSpacing();
+		float captionStartSpacingX = captionTargetSpacingX
+				- captionTextSpacingOffset[index].x();
+		float captionStartSpacingY = captionTargetSpacingY
+				- captionTextSpacingOffset[index].y();
 
-		Vec3f heatMapStartPosition = srcLayout.getOverviewHeatMapPosition();
-		Vec3f heatMapTargetPosition = new Vec3f(heatMapStartPosition.x()
-				+ heatMapPositionOffset[index].x(), heatMapStartPosition.y()
-				+ heatMapPositionOffset[index].y(), heatMapStartPosition.z()
-				+ heatMapPositionOffset[index].z());
+		Vec3f heatMapTargetPosition = destLayout.getOverviewHeatMapPosition();
+		Vec3f heatMapStartPosition = new Vec3f(heatMapTargetPosition.x()
+				- heatMapPositionOffset[index].x(), heatMapTargetPosition.y()
+				- heatMapPositionOffset[index].y(), heatMapTargetPosition.z()
+				- heatMapPositionOffset[index].z());
 
-		float heatMapStartWidth = srcLayout.getOverviewHeatMapWidth();
-		float heatMapStartHeight = srcLayout.getOverviewHeight();
-		float heatMapTargetWidth = heatMapStartWidth
-				+ heatMapDimensionsOffset[index].x();
-		float heatMapTargetHeight = heatMapStartHeight
-				+ heatMapDimensionsOffset[index].y();
-		
+		float heatMapTargetWidth = destLayout.getOverviewHeatMapWidth();
+		float heatMapTargetHeight = destLayout.getOverviewHeight();
+		float heatMapStartWidth = heatMapTargetWidth
+				- heatMapDimensionsOffset[index].x();
+		float heatMapStartHeight = heatMapTargetHeight
+				- heatMapDimensionsOffset[index].y();
+
 		MovementVector3 captionPosition = new MovementVector3(
 				captionStartPosition, captionTargetPosition, animationDuration);
 		captionPositions.put(id, captionPosition);

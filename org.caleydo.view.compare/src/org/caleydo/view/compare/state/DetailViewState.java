@@ -19,10 +19,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.IUseCase;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -44,12 +41,6 @@ import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 import org.caleydo.view.compare.renderer.CompareConnectionBandRenderer;
 import org.caleydo.view.compare.renderer.ICompareConnectionRenderer;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Slider;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -1030,17 +1021,10 @@ public class DetailViewState extends ACompareViewStateStatic {
 	@Override
 	public void handleMouseWheel(GL gl, int amount, Point wheelPoint) {
 		if (amount > 0) {
-			ACompareViewState overviewState = compareViewStateController
-					.getState(ECompareViewStateType.OVERVIEW);
-			setBar.setViewState(overviewState);
-			setBar.adjustSelectionWindowSizeCentered(overviewState
-					.getNumSetsInFocus());
-			setBar.setMaxSelectedItems(overviewState.getMaxSetsInFocus());
-			setBar.setMinSelectedItems(overviewState.getMinSetsInFocus());
-			overviewState.setSetsInFocus(setBar.getSetsInFocus());
-			if (!overviewState.isInitialized()) {
-				overviewState.init(gl);
-			}
+			
+			DetailToOverviewTransition transition = (DetailToOverviewTransition) compareViewStateController
+			.getState(ECompareViewStateType.DETAIL_TO_OVERVIEW_TRANSITION);
+			
 			if (indexOfHeatMapWrapperWithDendrogram != -1) {
 				layouts.get(indexOfHeatMapWrapperWithDendrogram).useDendrogram(
 						false);
@@ -1048,7 +1032,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 			}
 
 			compareViewStateController
-					.setCurrentState(ECompareViewStateType.OVERVIEW);
+					.setCurrentState(ECompareViewStateType.DETAIL_TO_OVERVIEW_TRANSITION);
+			transition.init(gl);
 			view.setDisplayListDirty();
 		}
 

@@ -56,7 +56,7 @@ public class OverviewState extends ACompareViewStateStatic {
 				useCase, dragAndDropController, compareViewStateController);
 		this.setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.0f));
 		compareConnectionRenderer = new CompareConnectionBandRenderer();
-		numSetsInFocus = 4;
+		numSetsInFocus = 5;
 	}
 
 	@Override
