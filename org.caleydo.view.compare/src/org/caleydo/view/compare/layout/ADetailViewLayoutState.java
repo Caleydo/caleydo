@@ -174,9 +174,9 @@ public abstract class ADetailViewLayoutState {
 						* numberOfFocusElements)
 						/ (totalNumberOfElements - numberOfFocusElements);
 			} else {
-				resultingFocusSpacing = (availableSpaceForHeatMaps / 2)
+				resultingFocusSpacing = (availableSpaceForHeatMaps / 3)
 						/ numberOfFocusElements;
-				resultingNormalSpacing = (availableSpaceForHeatMaps / 2)
+				resultingNormalSpacing = (availableSpaceForHeatMaps / 3 *2)
 						/ (totalNumberOfElements - numberOfFocusElements);
 			}
 		} else {

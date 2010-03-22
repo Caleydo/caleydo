@@ -2,6 +2,7 @@ package org.caleydo.core.manager.specialized.genetic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -12,6 +13,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVirtualArray;
@@ -146,9 +148,26 @@ public class GeneticUseCase
 
 			alTempList.add(iCount);
 		}
-
-		set.setContentVA(ContentVAType.CONTENT, new ContentVirtualArray(ContentVAType.CONTENT, alTempList));
+		ContentVirtualArray contentVA = new ContentVirtualArray(ContentVAType.CONTENT, alTempList);
+//		removeDuplicates(contentVA);
+		set.setContentVA(ContentVAType.CONTENT, contentVA);
 	}
+
+//	public ContentVirtualArray removeDuplicates(ContentVirtualArray contentVirtualArray) {
+//		Map<Object, Object> idMap =
+//			GeneralManager.get().getIDMappingManager().getMap(EMappingType.REFSEQ_MRNA_INT_2_DAVID);
+//		for (Object idObject : idMap.keySet()) {
+//			Integer id = (Integer) idObject;
+//			ArrayList<Integer> indices = contentVirtualArray.indicesOf(id);
+//			if (indices.size() > 1) {
+//				for (int count = 1; count < indices.size(); count++) {
+//					contentVirtualArray.remove(indices.get(count));
+//				}
+//			}
+//
+//		}
+//		return contentVirtualArray;
+//	}
 
 	public boolean isPathwayViewerMode() {
 		return pathwayViewerMode;

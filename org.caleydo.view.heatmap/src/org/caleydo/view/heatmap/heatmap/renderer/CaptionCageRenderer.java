@@ -18,9 +18,9 @@ public class CaptionCageRenderer extends AContentRenderer {
 		float fieldHeight = 0;
 
 		gl.glColor3f(0.6f, 0.6f, 0.6f);
-		gl.glLineWidth(2);
+		gl.glLineWidth(1);
 
-		if (!contentSpacing.isUseFishEye()) {
+//		if (!contentSpacing.isUseFishEye()) {
 
 			ContentVirtualArray contentVA = heatMap.getContentVA();
 
@@ -52,7 +52,7 @@ public class CaptionCageRenderer extends AContentRenderer {
 				yPosition -= fieldHeight;
 
 			}
-		}
+//		}
 		gl.glBegin(GL.GL_LINE_STRIP);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(x, 0, 0);

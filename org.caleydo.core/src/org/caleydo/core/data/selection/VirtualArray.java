@@ -192,8 +192,11 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 			buildIDMap();
 		// System.out.println("Costly indexof operation on a va of size: " + size());
 		ArrayList<Integer> results = hashIDToIndex.get(iElement);
-		if (results != null)
+		if (results != null) {
+			if (results.size() > 1)
+				System.out.println("Ignored multi-mapping");
 			return results.get(0);
+		}
 		else
 			return -1;
 	}
