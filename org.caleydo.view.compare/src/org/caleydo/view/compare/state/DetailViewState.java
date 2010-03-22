@@ -1024,12 +1024,9 @@ public class DetailViewState extends ACompareViewStateStatic {
 			
 			DetailToOverviewTransition transition = (DetailToOverviewTransition) compareViewStateController
 			.getState(ECompareViewStateType.DETAIL_TO_OVERVIEW_TRANSITION);
-			
-			if (indexOfHeatMapWrapperWithDendrogram != -1) {
-				layouts.get(indexOfHeatMapWrapperWithDendrogram).useDendrogram(
-						false);
-				indexOfHeatMapWrapperWithDendrogram = -1;
-			}
+
+			indexOfHeatMapWrapperWithDendrogram = -1;
+
 
 			compareViewStateController
 					.setCurrentState(ECompareViewStateType.DETAIL_TO_OVERVIEW_TRANSITION);

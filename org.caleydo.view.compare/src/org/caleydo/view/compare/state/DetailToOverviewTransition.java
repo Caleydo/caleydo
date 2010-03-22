@@ -9,7 +9,6 @@ import javax.media.opengl.GL;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.animation.MovementVector2;
 import org.caleydo.core.view.opengl.util.animation.MovementVector3;
@@ -42,34 +41,6 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 	}
 
 	@Override
-	public void drawActiveElements(GL gl) {
-		if (animationStarted) {
-			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-				heatMapWrapper.drawRemoteItems(gl, glMouseListener,
-						pickingManager);
-			}
-		}
-	}
-
-	@Override
-	public void drawDisplayListElements(GL gl) {
-		if (animationStarted) {
-			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-				heatMapWrapper.drawLocalItems(gl, textureManager,
-						pickingManager, glMouseListener, viewID);
-			}
-
-			IViewFrustum viewFrustum = view.getViewFrustum();
-
-			setBar.setWidth(viewFrustum.getWidth());
-			setBar.render(gl);
-
-			if (areTargetsReached()) {
-				finish();
-			}
-		}
-	}
-
 	protected void finish() {
 		for (int i = 0; i < heatMapWrappers.size(); i++) {
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
@@ -152,6 +123,7 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 			} else if (i == sourceLayouts.size() - 1) {
 				createOffsets(false, indexOffset + i);
 			}
+			srcLayout.useDendrogram(false);
 		}
 
 		for (int i = 0; i < destinationLayouts.size(); i++) {
@@ -180,6 +152,9 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 			heatMapWrappers.get(i).setLayout(layouts.get(i));
 			layouts.get(i).setHeatMapWrapper(heatMapWrappers.get(i));
 		}
+		
+		
+		
 		view.setDisplayListDirty();
 	}
 

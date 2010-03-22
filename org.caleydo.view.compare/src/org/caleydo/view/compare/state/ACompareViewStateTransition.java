@@ -23,6 +23,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.animation.MovementVector2;
 import org.caleydo.core.view.opengl.util.animation.MovementVector3;
@@ -80,6 +81,35 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 		heatMapPositions = new HashMap<Integer, MovementVector3>();
 		previousTimeStamp = 0;
 		animationStarted = false;
+	}
+	
+	@Override
+	public void drawActiveElements(GL gl) {
+		if (animationStarted) {
+			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
+				heatMapWrapper.drawRemoteItems(gl, glMouseListener,
+						pickingManager);
+			}
+		}
+	}
+
+	@Override
+	public void drawDisplayListElements(GL gl) {
+		if (animationStarted) {
+			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
+				heatMapWrapper.drawLocalItems(gl, textureManager,
+						pickingManager, glMouseListener, viewID);
+			}
+
+			IViewFrustum viewFrustum = view.getViewFrustum();
+
+			setBar.setWidth(viewFrustum.getWidth());
+			setBar.render(gl);
+
+			if (areTargetsReached()) {
+				finish();
+			}
+		}
 	}
 
 	@Override
@@ -315,6 +345,8 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 
 		view.setDisplayListDirty();
 	}
+	
+	protected abstract void finish();
 
 	// protected abstract void drawActiveElements(GL gl, double timePassed);
 	//

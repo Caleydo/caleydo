@@ -9,7 +9,6 @@ import javax.media.opengl.GL;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.animation.MovementVector2;
 import org.caleydo.core.view.opengl.util.animation.MovementVector3;
@@ -42,43 +41,6 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 		animationDuration = 0.5f;
 	}
 
-	@Override
-	public void drawActiveElements(GL gl) {
-		if (animationStarted) {
-			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-				heatMapWrapper.drawRemoteItems(gl, glMouseListener,
-						pickingManager);
-			}
-		}
-
-	}
-
-	@Override
-	public void drawDisplayListElements(GL gl) {
-		if (animationStarted) {
-			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-				heatMapWrapper.drawLocalItems(gl, textureManager,
-						pickingManager, glMouseListener, viewID);
-			}
-
-			IViewFrustum viewFrustum = view.getViewFrustum();
-
-			setBar.setWidth(viewFrustum.getWidth());
-			setBar.render(gl);
-
-			if (areTargetsReached()) {
-				finish();
-			}
-		}
-
-		// for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
-		// renderTree(gl, heatMapWrappers.get(i), heatMapWrappers.get(i + 1));
-		// renderOverviewRelations(gl, heatMapWrappers.get(i), heatMapWrappers
-		// .get(i + 1));
-		// }
-
-	}
-
 	protected void finish() {
 		for (int i = 0; i < heatMapWrappers.size(); i++) {
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
@@ -92,7 +54,7 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 		animationStarted = false;
 	}
 
-	// FIXME: Use set later on instead of itemOffset
+	// TODO: Use set later on instead of itemOffset
 	public void initTransition(GL gl, int itemOffset) {
 
 		if (!isInitialized)
