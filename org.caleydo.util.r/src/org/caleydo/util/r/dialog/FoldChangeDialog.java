@@ -74,15 +74,27 @@ public class FoldChangeDialog extends Dialog {
 		label
 				.setText("                                                                                                        ");
 
-		float initialFoldchange = 2;
+		int initialFoldchange = 2;
 		final Label foldChangeLabel = new Label(shell, SWT.NULL);
-		foldChangeLabel.setText("" + initialFoldchange * 2);
+		foldChangeLabel.setText("" + initialFoldchange);
 
+	    final Button[] evaluatorRadio = new Button[3];
+
+	    evaluatorRadio[0] = new Button(shell, SWT.RADIO);
+	    evaluatorRadio[0].setSelection(true);
+	    evaluatorRadio[0].setText("Greater");
+
+	    evaluatorRadio[1] = new Button(shell, SWT.RADIO);
+	    evaluatorRadio[1].setText("Less");
+
+	    evaluatorRadio[2] = new Button(shell, SWT.RADIO);
+	    evaluatorRadio[2].setText("Equal");
+		
 		slider.setMinimum(0);
 		slider.setMaximum(50);
 		slider.setIncrement(1);
 		slider.setPageIncrement(10);
-		slider.setSelection(20);
+		slider.setSelection(initialFoldchange*10);
 
 		slider.addMouseListener(new MouseListener() {
 
@@ -91,7 +103,15 @@ public class FoldChangeDialog extends Dialog {
 				Double foldChangeRatio = slider.getSelection() / 10d;
 				foldChangeLabel.setText("" + foldChangeRatio);
 
-				FoldChangeSettings foldChangeSettings = new FoldChangeSettings(foldChangeRatio, FoldChangeEvaluator.GREATER);
+				FoldChangeEvaluator evaluator = null;
+				if (evaluatorRadio[0].getSelection() == true)
+					evaluator = FoldChangeEvaluator.GREATER;
+				else if (evaluatorRadio[1].getSelection() == true)
+					evaluator = FoldChangeEvaluator.LESS;					
+				else if (evaluatorRadio[1].getSelection() == true)
+					evaluator = FoldChangeEvaluator.SAME;			
+				
+				FoldChangeSettings foldChangeSettings = new FoldChangeSettings(foldChangeRatio, evaluator);
 
 				set1.getStatisticsResult().setFoldChangeSettings(set2, foldChangeSettings);
 				set2.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
@@ -101,6 +121,7 @@ public class FoldChangeDialog extends Dialog {
 
 				label.setText("The fold change reduced results in a dataset of the size "
 						+ reducedNumberOfElements);
+				shell.layout();
 			}
 
 			@Override
