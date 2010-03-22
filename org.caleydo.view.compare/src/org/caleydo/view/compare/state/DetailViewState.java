@@ -127,7 +127,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 			heatMapWrapper.drawRemoteItems(gl, glMouseListener, pickingManager);
 		}
 
-		
 	}
 
 	@Override
@@ -190,7 +189,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 		}
 	}
 
-	private void renderDetailBand(GL gl, DetailBand detailBand) {
+	private void renderDetailBand(GL gl, DetailBand detailBand, boolean highlight) {
 
 		ArrayList<Integer> contentIDs = detailBand.getContentIDs();
 
@@ -208,7 +207,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 				startContentID) / 2f - 0.01f;
 		float rightBottomHeatMapElementOffset = detailBand.getRightHeatMap()
 				.getFieldHeight(endContentID) / 2f - 0.01f;
-	
+
 		Vec2f leftPos = leftHeatMapWrapper
 				.getRightDetailLinkPositionFromContentID(startContentID);
 		if (leftPos == null)
@@ -278,37 +277,17 @@ public class DetailViewState extends ACompareViewStateStatic {
 			gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0f);
 		gl.glEnd();
 
-		// If at least one element in the band is in mouse_over state -> change
-		// band color
-		ContentSelectionManager contentSelectionManager = leftHeatMapWrapper
-				.getContentSelectionManager();
-		boolean activeBand = false;
-		boolean activeGroup = false;
-		for (Integer contentID : detailBand.getContentIDs()) {
-			SelectionType type = contentSelectionManager.getSelectionTypes(contentID)
-					.get(0);
-
-			if (type == SelectionType.MOUSE_OVER) {
-				activeBand = true;
-				this.activeBand = detailBand;
-				break;
-			}
-			if (rightHeatMapWrapper.getHeatMapByContentID(contentID).getContentVA()
-					.containsElement(contentID) > 0) {
-				activeGroup = true;
-			}
-		}
-
-		if (activeBand) {
-			gl.glColor4f(0.3f, 0.3f, 0.3f, 1f);
+		if (highlight) {
+			gl.glColor4f(0.3f, 0.3f, 0.3f, 0.95f);
 
 			for (Vec3f point : outputPoints) {
 				point.setZ(0.3f);
 			}
-		} else if (activeGroup)
-			gl.glColor4f(0f, 0f, 0f, 0.4f);
+		}
+		// } else if (activeGroup)
+		// gl.glColor4f(0f, 0f, 0f, 0.4f);
 		else
-			gl.glColor4f(0f, 0f, 0f, 0.2f);
+			gl.glColor4f(0f, 0f, 0f, 0.4f);
 
 		compareConnectionRenderer.render(gl, outputPoints);
 	}
@@ -552,16 +531,27 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 		detailBands = new ArrayList<DetailBand>();
 		calculateDetailBands();
+		determineActiveBand();
 
 		for (DetailBand detailBand : detailBands) {
 			ArrayList<Integer> contentIDs = detailBand.getContentIDs();
 
-			if (contentIDs.size() < 2)
+			if (contentIDs.size() < 2 || detailBand == activeBand)
 				continue;
 
-			renderDetailBand(gl, detailBand);
+			renderDetailBand(gl, detailBand, false);
 		}
+		
+		if (activeBand != null)
+			renderDetailBand(gl, activeBand, true);
+		
+		// Render single lines
+		for (DetailBand detailBand : detailBands) {
 
+			if (detailBand.getContentIDs().size() == 1)
+				renderSingleDetailRelation(gl, detailBand.getContentIDs().get(0));
+		}
+		
 		// Iterate over all detail content VAs on the left
 		HeatMapWrapper leftHeatMapWrapper = heatMapWrappers.get(0);
 		for (ContentVirtualArray contentVA : leftHeatMapWrapper.getContentVAsOfHeatMaps()) {
@@ -573,12 +563,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 			}
 		}
 
-		// Render single lines
-		for (DetailBand detailBand : detailBands) {
-
-			if (detailBand.getContentIDs().size() == 1)
-				renderSingleDetailRelation(gl, detailBand.getContentIDs().get(0));
-		}
 	}
 
 	private void renderSingleDetailRelation(GL gl, Integer contentID) {
@@ -731,12 +715,40 @@ public class DetailViewState extends ACompareViewStateStatic {
 				bandContentIDs.add(contentID);
 				detailBand = new DetailBand();
 				detailBand.setContentIDs(bandContentIDs);
-				detailBand.setLeftHeatMap(null);
-				detailBand.setRightHeatMap(null);
+				detailBand.setLeftHeatMap(leftHeatMapWrapper.getHeatMapByContentID(contentID));
+				detailBand.setRightHeatMap(rightHeatMapWrapper.getHeatMapByContentID(contentID));
 				newBands.add(detailBand);
 			}
 
 			detailBands.addAll(newBands);
+		}
+	}
+
+	private void determineActiveBand() {
+
+		for (DetailBand detailBand : detailBands) {
+			// If at least one element in the band is in mouse_over state ->
+			// change
+			// band color
+			ContentSelectionManager contentSelectionManager = heatMapWrappers.get(0)
+					.getContentSelectionManager();
+//			boolean activeBand = false;
+//			boolean activeGroup = false;
+			for (Integer contentID : detailBand.getContentIDs()) {
+				SelectionType type = contentSelectionManager.getSelectionTypes(contentID)
+						.get(0);
+
+				if (type == SelectionType.MOUSE_OVER) {
+//					activeBand = true;
+					this.activeBand = detailBand;
+					return;
+				}
+				// if
+				// (rightHeatMapWrapper.getHeatMapByContentID(contentID).getContentVA()
+				// .containsElement(contentID) > 0) {
+				// activeGroup = true;
+				// }
+			}
 		}
 	}
 
