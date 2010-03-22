@@ -72,7 +72,10 @@ public class OverviewState extends ACompareViewStateStatic {
 
 	@Override
 	public void buildDisplayList(GL gl) {
-
+		
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
 					glMouseListener, viewID);

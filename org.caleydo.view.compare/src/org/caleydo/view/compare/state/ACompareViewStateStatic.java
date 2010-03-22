@@ -83,14 +83,14 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		Tree<ClusterNode> tree = heatMapWrapperLeft.getSet().getContentTree();
 		ClusterNode rootNode = tree.getRoot();
 		determineTreePositions(rootNode, tree, heatMapWrapperLeft, overviewDistance, true);
-//		renderDendrogram(gl, rootNode, 1, tree, xPosInitLeft, true);
+		// renderDendrogram(gl, rootNode, 1, tree, xPosInitLeft, true);
 
 		// Right hierarchy
 		tree = heatMapWrapperRight.getSet().getContentTree();
 		rootNode = tree.getRoot();
 		determineTreePositions(rootNode, tree, heatMapWrapperRight, overviewDistance,
 				false);
-//		renderDendrogram(gl, rootNode, 1, tree, xPosInitRight, false);
+		// renderDendrogram(gl, rootNode, 1, tree, xPosInitRight, false);
 	}
 
 	/**
@@ -109,8 +109,15 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 
 		AHeatMapLayout heatMapLayoutLeft = heatMapWrapper.getLayout();
 
-		 // subtract -1 instead of -2 for full dendrograms including root
-		float levelWidth = (overviewGapWidth / 2.0f) / (tree.getRoot().getDepth()-2);
+		float depthCorrection = 0;
+		if (tree.getDepth() > 2)
+			depthCorrection = 1;
+		else {
+			// subtract -1 instead of -2 for full dendrograms including root
+			depthCorrection = 2;
+		}
+		
+		float levelWidth = (overviewGapWidth / 2.0f) / (tree.getRoot().getDepth() - depthCorrection);
 
 		float sampleHeight = heatMapLayoutLeft.getOverviewHeight()
 				/ tree.getRoot().getNrLeaves();
@@ -129,9 +136,8 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 				positions[i] = determineTreePositions(node, tree, heatMapWrapper,
 						overviewGapWidth, isLeft);
 			}
-			
-			if (currentNode != tree.getRoot())
-			{
+
+			if (currentNode != tree.getRoot()) {
 				float fXmin = Float.MAX_VALUE;
 				float fXmax = Float.MIN_VALUE;
 				float fYmax = Float.MIN_VALUE;
@@ -151,7 +157,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 				}
 
 				pos.setY(fYmin + (fYmax - fYmin) / 2);
-				pos.setZ(DENDROGRAM_Z);				
+				pos.setZ(DENDROGRAM_Z);
 			}
 		} else {
 
@@ -194,17 +200,18 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 					.getSelectionTypes(contentID)) {
 
 				float[] typeColor = type.getColor();
-				typeColor[3] = alpha;
-				gl.glColor4fv(typeColor, 0);
 				positionZ = type.getPriority();
 
 				if (type == SelectionType.MOUSE_OVER || type == SelectionType.SELECTION) {
 					gl.glLineWidth(5);
-					break;
+					alpha = 1f;
 				} else {
 					gl.glLineWidth(1);
-					break;
+					alpha = 0.5f;
 				}
+
+				typeColor[3] = alpha;
+				gl.glColor4fv(typeColor, 0);
 			}
 
 			Vec2f leftPos = leftHeatMapWrapper
@@ -234,9 +241,9 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			pathToRoot = node.getParentPath(tree.getRoot());
 
 			// Remove last because it is root bundling
-			 pathToRoot.remove(pathToRoot.size() - 1);
-//			pathToRoot.remove(0);
-			
+			pathToRoot.remove(pathToRoot.size() - 1);
+			// pathToRoot.remove(0);
+
 			for (ClusterNode pathNode : pathToRoot) {
 				// Vec3f nodePos = pathNode.getPos();
 				Vec3f nodePos = pathNode.getPos();
@@ -250,10 +257,10 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			pathToRoot = node.getParentPath(tree.getRoot());
 
 			// Remove last because it is root bundling
-			 pathToRoot.remove(pathToRoot.size() - 1);
+			pathToRoot.remove(pathToRoot.size() - 1);
 			// pathToRoot.remove(pathToRoot.size()-1);
 
-			for (int i = pathToRoot.size() - 1; i > 0; i--) {
+			for (int i = pathToRoot.size() - 1; i >= 0; i--) {
 				// Vec3f nodePos = pathNode.getPos();
 				ClusterNode pathNode = pathToRoot.get(i);
 				Vec3f nodePos = pathNode.getPos();
