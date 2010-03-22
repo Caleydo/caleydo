@@ -95,6 +95,9 @@ public abstract class ACompareViewState {
 	}
 
 	public void executeDrawingPreprocessing(GL gl, boolean isDisplayListDirty) {
+		
+		handleDragging(gl);
+		
 		IViewFrustum viewFrustum = view.getViewFrustum();
 		if (isDisplayListDirty)
 			setBar.setHeight(gl, SET_BAR_HEIGHT_PORTION
@@ -169,6 +172,10 @@ public abstract class ACompareViewState {
 
 	public void setUseFishEye(boolean useFishEye) {
 
+	}
+	
+	public void handleDragging(GL gl) {
+		dragAndDropController.handleDragging(gl, glMouseListener);
 	}
 }
 

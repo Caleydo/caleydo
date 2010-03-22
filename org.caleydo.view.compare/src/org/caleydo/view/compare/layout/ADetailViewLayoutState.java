@@ -16,7 +16,7 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public abstract class ADetailViewLayoutState {
 
-	protected static final float DETAIL_HEATMAP_GAP_PORTION = 0.02f;
+	protected static final float DETAIL_HEATMAP_SPACING_PORTION_DEFAULT = 0.02f;
 
 	protected static final float DENDROGRAM_BUTTON_HEIGHT_PORTION = 0.05f;
 
@@ -28,6 +28,7 @@ public abstract class ADetailViewLayoutState {
 	protected float totalHeight;
 	protected float positionX;
 	protected float positionY;
+	protected float detailHeatMapSpacing;
 	protected AHeatMapLayout layout;
 
 	private HashMap<Integer, Vec3f> hashHeatMapPositions;
@@ -99,14 +100,25 @@ public abstract class ADetailViewLayoutState {
 
 		}
 
+		float gapSpace = getDetailHeight()
+				* DETAIL_HEATMAP_SPACING_PORTION_DEFAULT
+				* (selectedGroups.size() - 1);
+
+		detailHeatMapSpacing = getDetailHeight() * DETAIL_HEATMAP_SPACING_PORTION_DEFAULT;
+
 		/**
 		 * the space that the actual heat maps can use for rendering, i.e.
 		 * height - spacing between hms - overhead in hms - spacing on top and
 		 * bottom
 		 */
-		float availableSpaceForHeatMaps = getDetailHeight()
-				- (getDetailHeight() * DETAIL_HEATMAP_GAP_PORTION * (selectedGroups
-						.size() - 1)) - totalHeatMapOverheadSize;
+		float availableSpaceForHeatMaps = getDetailHeight() - gapSpace
+				- totalHeatMapOverheadSize;
+
+//		if (availableSpaceForHeatMaps < 0) {
+//			availableSpaceForHeatMaps = (getDetailHeight() - totalHeatMapOverheadSize) * 0.7f;
+//			gapSpace = (getDetailHeight() - totalHeatMapOverheadSize) * 0.3f;
+//			detailHeatMapSpacing = gapSpace / (selectedGroups.size() - 1);
+//		}
 
 		/** the default spacing if no elements were in focus */
 		float defaultSpacing = availableSpaceForHeatMaps
@@ -201,8 +213,8 @@ public abstract class ADetailViewLayoutState {
 		return hashHeatMapHeights.get(heatMapID);
 	}
 
-	public float getDetailHeatMapGapHeight() {
-		return getDetailHeight() * DETAIL_HEATMAP_GAP_PORTION;
+	protected float getDetailHeatMapGapHeight() {
+		return detailHeatMapSpacing;
 	}
 
 	public float getCaptionLabelHeight() {

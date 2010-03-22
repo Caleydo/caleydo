@@ -139,6 +139,11 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 		}
 		previousTimeStamp = currentTimeStamp;
 	}
+	
+	@Override
+	public void handleDragging(GL gl) {
+		
+	}
 
 	// protected abstract void drawActiveElements(GL gl, double timePassed);
 	//

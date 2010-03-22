@@ -127,7 +127,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 			heatMapWrapper.drawRemoteItems(gl, glMouseListener, pickingManager);
 		}
 
-		dragAndDropController.handleDragging(gl, glMouseListener);
+		
 	}
 
 	@Override
