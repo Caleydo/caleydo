@@ -281,7 +281,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 			gl.glColor4f(0.3f, 0.3f, 0.3f, 0.95f);
 
 			for (Vec3f point : outputPoints) {
-				point.setZ(0.3f);
+				point.setZ(0.2f);
 			}
 		}
 		// } else if (activeGroup)
