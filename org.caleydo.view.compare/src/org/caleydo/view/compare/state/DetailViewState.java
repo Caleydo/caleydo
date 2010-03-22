@@ -124,15 +124,16 @@ public class DetailViewState extends ACompareViewStateStatic {
 	@Override
 	public void buildDisplayList(GL gl) {
 
-		gl.glEnable(GL.GL_BLEND);
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-		
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
 					glMouseListener, viewID);
 		}
+
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		
 		IViewFrustum viewFrustum = view.getViewFrustum();
+
 		setBar.setWidth(viewFrustum.getWidth());
 		setBar.render(gl);
 
@@ -1032,44 +1033,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 			view.setDisplayListDirty();
 		}
 
-	}
-
-	private float setRelationColor(GL gl, HeatMapWrapper heatMapWrapper,
-			int contentID) {
-
-		SelectionType type = heatMapWrapper.getContentSelectionManager()
-				.getSelectionTypes(contentID).get(0);
-
-		float z = type.getPriority();
-		float[] typeColor = type.getColor();
-		float alpha = 0.2f;
-		if (type == activeHeatMapSelectionType) {
-			gl.glLineWidth(1);
-			alpha = 0.4f;
-			z = 0.4f;
-		} else if (type == SelectionType.MOUSE_OVER
-				|| type == SelectionType.SELECTION) {
-			gl.glLineWidth(2);
-			alpha = 1f;
-			z = 0.5f;
-		} else {
-			gl.glLineWidth(1);
-			alpha = 0.4f;
-
-			z = 0.2f;
-			// if (isConnectionCrossing(contentID,
-			// heatMapWrapper.getContentVA(),
-			// heatMapWrapper.getContentVA(), heatMapWrapper))
-			// alpha = 0.5f;
-			// else
-			// alpha = 0.3f;
-
-		}
-
-		typeColor[3] = alpha;
-		gl.glColor4fv(typeColor, 0);
-
-		return z;
 	}
 
 	@Override

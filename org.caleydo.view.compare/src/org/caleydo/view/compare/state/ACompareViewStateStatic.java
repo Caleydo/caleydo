@@ -185,35 +185,37 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
 
-		float alpha = 0.6f;
-
-		ContentSelectionManager contentSelectionManager = useCase
-				.getContentSelectionManager();
+//		float alpha = 0.6f;
+//
+//		ContentSelectionManager contentSelectionManager = useCase
+//				.getContentSelectionManager();
 		ContentVirtualArray contentVALeft = leftHeatMapWrapper.getSet().getContentVA(
 				ContentVAType.CONTENT);
 
 		for (Integer contentID : contentVALeft) {
+//
+//			float positionZ = 0.0f;
+//
+//			for (SelectionType type : contentSelectionManager
+//					.getSelectionTypes(contentID)) {
+//
+//				float[] typeColor = type.getColor();
+//				positionZ = type.getPriority();
+//
+//				if (type == SelectionType.MOUSE_OVER || type == SelectionType.SELECTION) {
+//					gl.glLineWidth(5);
+//					alpha = 1f;
+//				} else {
+//					gl.glLineWidth(1);
+//					alpha = 0.5f;
+//				}
+//
+//				typeColor[3] = alpha;
+//				gl.glColor4fv(typeColor, 0);
+//			}
 
-			float positionZ = 0.0f;
-
-			for (SelectionType type : contentSelectionManager
-					.getSelectionTypes(contentID)) {
-
-				float[] typeColor = type.getColor();
-				positionZ = type.getPriority();
-
-				if (type == SelectionType.MOUSE_OVER || type == SelectionType.SELECTION) {
-					gl.glLineWidth(5);
-					alpha = 1f;
-				} else {
-					gl.glLineWidth(1);
-					alpha = 0.5f;
-				}
-
-				typeColor[3] = alpha;
-				gl.glColor4fv(typeColor, 0);
-			}
-
+			float positionZ = setRelationColor(gl, leftHeatMapWrapper, contentID);
+			
 			Vec2f leftPos = leftHeatMapWrapper
 					.getRightOverviewLinkPositionFromContentID(contentID);
 

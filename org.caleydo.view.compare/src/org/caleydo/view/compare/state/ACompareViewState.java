@@ -13,6 +13,7 @@ import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IUseCase;
@@ -116,6 +117,43 @@ public abstract class ACompareViewState {
 		}
 
 		setsChanged = false;
+	}
+	
+	protected float setRelationColor(GL gl, HeatMapWrapper heatMapWrapper,
+			int contentID) {
+
+		SelectionType type = heatMapWrapper.getContentSelectionManager()
+				.getSelectionTypes(contentID).get(0);
+
+		float z = type.getPriority();
+		float[] typeColor = type.getColor();
+		float alpha = 0;
+//		if (type == activeHeatMapSelectionType) {
+//			gl.glLineWidth(1);
+//			alpha = 0.4f;
+//			z = 0.4f;
+//		} else 
+			if (type == SelectionType.MOUSE_OVER
+				|| type == SelectionType.SELECTION) {
+			gl.glLineWidth(2);
+			alpha = 1f;
+			z = 0.5f;
+		} else {
+			gl.glLineWidth(1);
+			alpha = 0.4f;
+			z = 0.4f;
+			// if (isConnectionCrossing(contentID,
+			// heatMapWrapper.getContentVA(),
+			// heatMapWrapper.getContentVA(), heatMapWrapper))
+			// alpha = 0.5f;
+			// else
+			// alpha = 0.3f;
+		}
+
+		typeColor[3] = alpha;
+		gl.glColor4fv(typeColor, 0);
+
+		return z;
 	}
 
 	public abstract void setSetsToCompare(ArrayList<ISet> setsToCompare);
