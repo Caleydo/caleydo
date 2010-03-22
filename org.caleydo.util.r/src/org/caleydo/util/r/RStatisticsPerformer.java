@@ -197,10 +197,17 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 				engine.assign("set", compareVec1);
 
 				REXP compareResult = engine.eval("t.test(set)");
-
-				REXP pValue = (REXP) compareResult.asVector().get(2);
-				pValueVector[contentIndex] = pValue.asDouble();
-				// System.out.println(pValue.asDouble());
+				
+				//System.out.println(compareVec1[0] + " " + compareVec1[1] + " " +compareVec1[2]);
+				
+				// If all values in the vector are the same R returns null
+				if (compareResult == null)
+					pValueVector[contentIndex] = 0;
+				else {
+					REXP pValue = (REXP) compareResult.asVector().get(2);
+					pValueVector[contentIndex] = pValue.asDouble();
+					// System.out.println(pValue.asDouble());					
+				}
 			}
 
 			set.getStatisticsResult().setOneSiddedTTestResult(pValueVector);
