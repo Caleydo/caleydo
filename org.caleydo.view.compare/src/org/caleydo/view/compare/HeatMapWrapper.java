@@ -63,7 +63,7 @@ public class HeatMapWrapper {
 	private ContentVirtualArray contentVA;
 	private AHeatMapLayout layout;
 	private HashMap<Integer, GLHeatMap> hashHeatMaps;
-	private HashMap<Group, GroupInfo> selectedGroups;
+	private HashMap<Group, Boolean> selectedGroups;
 	private GLDendrogram<ContentGroupList> dendrogram;
 	private boolean isNewSelection;
 	private boolean isInitialized;
@@ -94,7 +94,7 @@ public class HeatMapWrapper {
 		overview = new HeatMapOverview(layout);
 		hashHeatMaps = new HashMap<Integer, GLHeatMap>();
 		// hashHeatMapPositions = new HashMap<Integer, Vec3f>();
-		selectedGroups = new HashMap<Group, GroupInfo>();
+		selectedGroups = new HashMap<Group, Boolean>();
 
 		this.layout = layout;
 		this.id = id;
@@ -208,7 +208,7 @@ public class HeatMapWrapper {
 
 		ContentGroupList contentGroupList = contentVA.getGroupList();
 		hashHeatMaps.clear();
-//		selectedGroups.clear();
+		// selectedGroups.clear();
 
 		if (contentGroupList == null)
 			return;
@@ -228,9 +228,7 @@ public class HeatMapWrapper {
 			groupIndex++;
 		}
 
-
-//		createDendrogram(gl, glMouseListener);
-
+		// createDendrogram(gl, glMouseListener);
 
 		if (isNewSet) {
 			createDendrogram(gl, glMouseListener);
@@ -325,7 +323,7 @@ public class HeatMapWrapper {
 	public boolean handleDragging(GL gl, GLMouseListener glMouseListener) {
 		if (overview.handleDragging(gl, glMouseListener)) {
 
-			HashMap<Group, GroupInfo> newGroups = overview.getSelectedGroups();
+			HashMap<Group, Boolean> newGroups = overview.getSelectedGroups();
 
 			// first check the obvious = if we have changes here we don't need
 			// to check in detail
@@ -567,14 +565,9 @@ public class HeatMapWrapper {
 				int vaIndex = contentVA.indexOf(contentID);
 				Group selectedGroup = groupList.getGroupOfVAIndex(vaIndex);
 
-				GroupInfo currentInfo;
-
 				if (!selectedGroups.containsKey(selectedGroup)) {
-					currentInfo = new GroupInfo();
-					selectedGroups.put(selectedGroup, currentInfo);
-				} else {
-					currentInfo = selectedGroups.get(selectedGroup);
-
+					selectedGroups.put(selectedGroup, null);
+					selectedGroup.resetVisualGenesCounter();
 				}
 
 				GLHeatMap heatMap = hashHeatMaps.get(selectedGroup
@@ -582,14 +575,83 @@ public class HeatMapWrapper {
 				ContentVirtualArray heatMapVA = heatMap.getContentVA();
 				int index = heatMapVA.indexOf(contentID);
 				if (useSorting && index >= 0)
-					heatMapVA.move(index, currentInfo.getContainedNrGenes());
+					heatMapVA.move(index, selectedGroup.getContainedNrGenes());
 				else
 					System.out.println("Problem");
 
-				currentInfo.increaseContainedNumberOfGenesByOne();
+				selectedGroup.increaseContainedNumberOfGenesByOne();
 
 			}
 		}
+
+		sort(foreignContentVAs, true);
+
+		// here we Hide those that are not part of the other va, and re-sort the
+		// source va
+		// for (int groupIndex = groupList.size() - 1; groupIndex >= 0;
+		// groupIndex--) {
+		// Group group = groupList.get(groupIndex);
+		// if (selectedGroups.containsKey(group)) {
+		// GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+		//
+		// int nrGenes = group.getContainedNrGenes();
+		//
+		// ContentVirtualArray contentVA = heatMap.getContentVA();
+		//
+		// if (useSorting) {
+		// // re-sort the source virtual array to group genes according
+		// // to
+		// // vas in the destination (here)
+		// for (ContentVirtualArray foreignVA : foreignContentVAs) {
+		// Integer foreignContentLastOrdererIndex = 0;
+		// for (int contentIndex = 0; contentIndex < nrGenes; contentIndex++) {
+		// Integer contentID = contentVA.get(contentIndex);
+		// int foreignIndex = foreignVA.indexOf(contentID);
+		// if (foreignIndex != -1) {
+		// foreignVA.move(foreignIndex,
+		// foreignContentLastOrdererIndex++);
+		// }
+		// }
+		// }
+		//
+		// // hide the elements not in the source vas
+		// SelectionDelta contentSelectionDelta = new SelectionDelta(
+		// EIDType.EXPRESSION_INDEX);
+		//
+		// for (int contentIndex = nrGenes; contentIndex < contentVA
+		// .size(); contentIndex++) {
+		// SelectionDeltaItem item = new SelectionDeltaItem();
+		// item.setPrimaryID(contentVA.get(contentIndex));
+		// item.setSelectionType(GLHeatMap.SELECTION_HIDDEN);
+		// contentSelectionDelta.add(item);
+		// }
+		// SelectionUpdateEvent event = new SelectionUpdateEvent();
+		// event.setSender(this);
+		// event.setSelectionDelta(contentSelectionDelta);
+		//
+		// eventPublisher.triggerEvent(event);
+		// }
+		// }
+		// }
+		for (Group group : selectedGroups.keySet()) {
+			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+
+			heatMap.recalculateLayout();
+		}
+	}
+
+	/**
+	 * Sorts the content of the virtual arrays of this heat map wrapper
+	 * according to the occurences in the foreign VAs. The parameter specifies
+	 * whether elements should be hidden or not. If all elements occur in the
+	 * foreign VA the parameter has no effect but increased performance
+	 * 
+	 * @param foreignContentVAs
+	 * @param hideVisible
+	 */
+	public void sort(ArrayList<ContentVirtualArray> foreignContentVAs,
+			boolean hideVisible) {
+		ContentGroupList groupList = contentVA.getGroupList();
 
 		// here we Hide those that are not part of the other va, and re-sort the
 		// source va
@@ -598,7 +660,7 @@ public class HeatMapWrapper {
 			if (selectedGroups.containsKey(group)) {
 				GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 
-				int nrGenes = selectedGroups.get(group).getContainedNrGenes();
+				int nrGenes = group.getContainedNrGenes();
 
 				ContentVirtualArray contentVA = heatMap.getContentVA();
 
@@ -618,30 +680,33 @@ public class HeatMapWrapper {
 						}
 					}
 
-					// hide the elements not in the source vas
-					SelectionDelta contentSelectionDelta = new SelectionDelta(
-							EIDType.EXPRESSION_INDEX);
+					if (hideVisible) {
+						// hide the elements not in the source vas
+						SelectionDelta contentSelectionDelta = new SelectionDelta(
+								EIDType.EXPRESSION_INDEX);
 
-					for (int contentIndex = nrGenes; contentIndex < contentVA
-							.size(); contentIndex++) {
-						SelectionDeltaItem item = new SelectionDeltaItem();
-						item.setPrimaryID(contentVA.get(contentIndex));
-						item.setSelectionType(GLHeatMap.SELECTION_HIDDEN);
-						contentSelectionDelta.add(item);
+						for (int contentIndex = nrGenes; contentIndex < contentVA
+								.size(); contentIndex++) {
+							SelectionDeltaItem item = new SelectionDeltaItem();
+							item.setPrimaryID(contentVA.get(contentIndex));
+							item.setSelectionType(GLHeatMap.SELECTION_HIDDEN);
+							contentSelectionDelta.add(item);
+						}
+						SelectionUpdateEvent event = new SelectionUpdateEvent();
+						event.setSender(this);
+						event.setSelectionDelta(contentSelectionDelta);
+
+						eventPublisher.triggerEvent(event);
 					}
-					SelectionUpdateEvent event = new SelectionUpdateEvent();
-					event.setSender(this);
-					event.setSelectionDelta(contentSelectionDelta);
-
-					eventPublisher.triggerEvent(event);
 				}
 			}
 		}
-		for (Group group : selectedGroups.keySet()) {
-			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+		// for (Group group : selectedGroups.keySet()) {
+		// GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+		//
+		// heatMap.recalculateLayout();
+		// }
 
-			heatMap.recalculateLayout();
-		}
 	}
 
 	public void handleGroupSelection(SelectionType selectionType,
@@ -676,7 +741,7 @@ public class HeatMapWrapper {
 		}
 
 		Group selectedGroup = contentGroupList.get(groupIndex);
-		selectedGroups.put(selectedGroup, new GroupInfo());
+		selectedGroups.put(selectedGroup, null);
 		selectedGroup.setSelectionType(SelectionType.SELECTION);
 
 		isNewSelection = true;
@@ -704,7 +769,7 @@ public class HeatMapWrapper {
 	}
 
 	private void clearDeselected() {
-		//FIXME: Events are too slow?
+		// FIXME: Events are too slow?
 		contentSelectionManager.clearSelection(GLHeatMap.SELECTION_HIDDEN);
 		SelectionCommand selectionCommand = new SelectionCommand(
 				ESelectionCommandType.CLEAR, GLHeatMap.SELECTION_HIDDEN);
@@ -810,7 +875,7 @@ public class HeatMapWrapper {
 		return contentVA;
 	}
 
-	public HashMap<Group, GroupInfo> getSelectedGroups() {
+	public HashMap<Group, Boolean> getSelectedGroups() {
 		return selectedGroups;
 	}
 
@@ -850,39 +915,37 @@ public class HeatMapWrapper {
 		return dendrogram;
 	}
 
-
 	public void setUseSorting(boolean useSorting) {
 		this.useSorting = useSorting;
 	}
 
 	public void setUseZoom(boolean useZoom) {
-		layout.setUseZoom(useZoom);	
+		layout.setUseZoom(useZoom);
 	}
 
 	public void setUseFishEye(boolean useFishEye) {
 		this.useFishEye = useFishEye;
 	}
 
-
 	public void handleContentGroupListUpdate(ContentGroupList contentGroupList) {
 		selectedGroups.clear();
 		contentVA.setGroupList(contentGroupList);
 		contentGroupList.updateGroupInfo();
-		for(Group group : contentGroupList) {
+		for (Group group : contentGroupList) {
 			group.setSelectionType(SelectionType.SELECTION);
-			selectedGroups.put(group, new GroupInfo());
+			selectedGroups.put(group, null);
 		}
 		setHeatMapsInactive();
 		clearDeselected();
-		
+
 		isInitialized = false;
 		isNewSelection = true;
 	}
-	
+
 	public boolean isInitialized() {
 		return isInitialized;
 	}
-	
+
 	public void setLayout(AHeatMapLayout layout) {
 		this.layout = layout;
 	}

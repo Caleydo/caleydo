@@ -33,12 +33,12 @@ public class HeatMapOverview {
 	private ISet set;
 	private ContentVirtualArray contentVA;
 	private StorageVirtualArray storageVA;
-	private HashMap<Group, GroupInfo> selectedGroups;
+	private HashMap<Group, Boolean> selectedGroups;
 
 	public HeatMapOverview(AHeatMapLayout layout) {
 		this.layout = layout;
 		slider = new VerticalSlider(layout);
-		selectedGroups = new HashMap<Group, GroupInfo>();
+		selectedGroups = new HashMap<Group, Boolean>();
 	}
 
 	public void draw(GL gl, TextureManager textureManager,
@@ -194,7 +194,7 @@ public class HeatMapOverview {
 			if (groupSampleStartIndex >= lowerBoundIndex
 					&& groupSampleEndIndex <= upperBoundIndex) {
 				group.setSelectionType(SelectionType.SELECTION);
-				selectedGroups.put(group, new GroupInfo());
+				selectedGroups.put(group, null);
 			} else {
 				group.setSelectionType(SelectionType.NORMAL);
 			}
@@ -248,7 +248,7 @@ public class HeatMapOverview {
 				storageVA, null);
 	}
 
-	public HashMap<Group, GroupInfo> getSelectedGroups() {
+	public HashMap<Group, Boolean> getSelectedGroups() {
 		return selectedGroups;
 	}
 
@@ -263,12 +263,13 @@ public class HeatMapOverview {
 	public VerticalSlider getOverviewSlider() {
 		return slider;
 	}
-	
-	public void updateHeatMapTextures(ContentSelectionManager contentSelectionManager) {
+
+	public void updateHeatMapTextures(
+			ContentSelectionManager contentSelectionManager) {
 		overviewTextures = HeatMapUtil.createHeatMapTextures(set, contentVA,
 				storageVA, contentSelectionManager);
 	}
-	
+
 	public void setLayout(AHeatMapLayout layout) {
 		this.layout = layout;
 	}

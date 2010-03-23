@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.Group;
-import org.caleydo.view.compare.GroupInfo;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
@@ -70,7 +69,7 @@ public abstract class ADetailViewLayoutState {
 		hashHeatMapHeights.clear();
 
 		HeatMapWrapper heatMapWrapper = layout.getHeatMapWrapper();
-		HashMap<Group, GroupInfo> selectedGroups = heatMapWrapper
+		HashMap<Group, Boolean> selectedGroups = heatMapWrapper
 				.getSelectedGroups();
 
 		/** all genes currently rendered */
@@ -176,7 +175,7 @@ public abstract class ADetailViewLayoutState {
 			} else {
 				resultingFocusSpacing = (availableSpaceForHeatMaps / 3)
 						/ numberOfFocusElements;
-				resultingNormalSpacing = (availableSpaceForHeatMaps / 3 *2)
+				resultingNormalSpacing = (availableSpaceForHeatMaps / 3 * 2)
 						/ (totalNumberOfElements - numberOfFocusElements);
 			}
 		} else {
@@ -228,7 +227,7 @@ public abstract class ADetailViewLayoutState {
 
 		HeatMapWrapper heatMapWrapper = layout.getHeatMapWrapper();
 		hashHeatMapPositions.clear();
-		HashMap<Group, GroupInfo> selectedGroups = heatMapWrapper
+		HashMap<Group, Boolean> selectedGroups = heatMapWrapper
 				.getSelectedGroups();
 
 		Vec3f detailPosition = layout.getDetailPosition();

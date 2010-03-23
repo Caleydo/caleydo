@@ -8,7 +8,6 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.view.compare.GroupInfo;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -26,7 +25,7 @@ public class DetailHeatMapsRenderCommand implements IHeatMapRenderCommand {
 	@Override
 	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
 //		int numTotalSamples = 0;
-		HashMap<Group, GroupInfo> selectedGroups = heatMapWrapper
+		HashMap<Group, Boolean> selectedGroups = heatMapWrapper
 				.getSelectedGroups();
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
 

@@ -39,6 +39,8 @@ public class Group {
 	 */
 	private float[] fArRepresentativeElement;
 
+	private int visibleNrGenes = 0;
+
 	public Group() {
 	}
 
@@ -100,11 +102,10 @@ public class Group {
 		this.startIndex = startIndex;
 	}
 
-	public int getEndIndex()
-	{
-		return startIndex + nrElements -1;
+	public int getEndIndex() {
+		return startIndex + nrElements - 1;
 	}
-	
+
 	public void setCollapsed(boolean bCollapsed) {
 		this.collapsed = bCollapsed;
 	}
@@ -153,5 +154,17 @@ public class Group {
 	@Override
 	public String toString() {
 		return "NrElem.: " + nrElements;
+	}
+
+	public void increaseContainedNumberOfGenesByOne() {
+		visibleNrGenes++;
+	}
+
+	public int getContainedNrGenes() {
+		return visibleNrGenes;
+	}
+
+	public void resetVisualGenesCounter() {
+		visibleNrGenes = 0;
 	}
 }
