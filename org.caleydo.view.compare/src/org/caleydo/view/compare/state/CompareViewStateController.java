@@ -41,7 +41,8 @@ public class CompareViewStateController {
 		DragAndDropController dragAndDropController = new DragAndDropController(
 				view);
 		SetBar setBar = new SetBar(viewID, pickingManager, textRenderer,
-				dragAndDropController, glMouseListener, view, contextMenu);
+				dragAndDropController, glMouseListener, view, contextMenu,
+				textureManager);
 		RenderCommandFactory renderCommandFactory = new RenderCommandFactory(
 				viewID, pickingManager, textureManager, textRenderer);
 
@@ -151,7 +152,5 @@ public class CompareViewStateController {
 			ContentGroupList contentGroupList) {
 		currentState.handleContentGroupListUpdate(setID, contentGroupList);
 	}
-	
-	
 
 }

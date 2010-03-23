@@ -867,7 +867,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 	@Override
 	public int getMaxSetsInFocus() {
-		return 3;
+		return 2;
 	}
 
 	@Override

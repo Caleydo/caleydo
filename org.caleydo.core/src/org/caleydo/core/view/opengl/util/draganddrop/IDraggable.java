@@ -9,5 +9,8 @@ public interface IDraggable {
 
 	public void handleDragging(GL gl, float mouseCoordinateX,
 			float mouseCoordinateY);
+	
+	public void handleDrop(GL gl, float mouseCoordinateX,
+		float mouseCoordinateY);
 
 }

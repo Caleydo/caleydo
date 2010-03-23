@@ -160,8 +160,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		ArrayList<ICompositeGraphic> alCompositesToInsert = new ArrayList<ICompositeGraphic>();
 
 		ICompositeGraphic root = getRoot();
-		root.getOrderedCompositeList(setComposites,
-				alCompositesToInsert, true);
+		root.getOrderedCompositeList(setComposites, alCompositesToInsert, true);
 
 		for (int i = alCompositesToInsert.size() - 1; i >= 0; i--) {
 			ICompositeGraphic composite = alCompositesToInsert.get(i);
@@ -637,5 +636,9 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 
 	private void addSelectionTypes(Set<SelectionType> selectionTypes) {
 		this.selectionTypes.addAll(selectionTypes);
+	}
+
+	@Override
+	public void handleDrop(GL gl, float mouseCoordinateX, float mouseCoordinateY) {
 	}
 }

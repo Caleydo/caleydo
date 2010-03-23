@@ -24,7 +24,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 	public static final int SELECTION_STATUS_MOUSE_OVER = 1;
 	private static final int SELECTION_STATUS_DRAGGED = 2;
 
-	private static final float HORIZONTAL_SPACING = 0.05f;
+	private static final float HORIZONTAL_SPACING = 0.1f;
 	private static final float VERTICAL_SPACING = 0.1f;
 	private static final float HORIZONTAL_TEXT_PADDING_PORTION = 0.1f;
 	private static final float VERTICAL_TEXT_PADDING_PORTION = 0.7f;
@@ -286,6 +286,10 @@ public class SetBarItem implements IDraggable, IDropArea {
 
 	public void setID(int id) {
 		this.id = id;
+	}
+
+	@Override
+	public void handleDrop(GL gl, float mouseCoordinateX, float mouseCoordinateY) {
 	}
 
 }

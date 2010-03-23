@@ -8,6 +8,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.picking.EPickingMode;
+import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -18,6 +19,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.AdjustPValueItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.ClusterSetItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DuplicateSetBarElementItem;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.compare.state.ACompareViewState;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -34,6 +36,7 @@ public class SetBar extends AGLGUIElement {
 	private float width;
 	private PickingManager pickingManager;
 	private TextRenderer textRenderer;
+	private TextureManager textureManager;
 	private DragAndDropController dragAndDropController;
 	private GLMouseListener glMouseListener;
 	private SetBarItem currentMouseOverItem;
@@ -47,7 +50,7 @@ public class SetBar extends AGLGUIElement {
 			TextRenderer textRenderer,
 			DragAndDropController dragAndDropController,
 			GLMouseListener glMouseListener, AGLView view,
-			ContextMenu contextMenu) {
+			ContextMenu contextMenu, TextureManager textureManager) {
 		this.viewID = viewID;
 		this.pickingManager = pickingManager;
 		this.textRenderer = textRenderer;
@@ -55,18 +58,20 @@ public class SetBar extends AGLGUIElement {
 		this.glMouseListener = glMouseListener;
 		this.view = view;
 		this.contextMenu = contextMenu;
+		this.textureManager = textureManager;
 		items = new ArrayList<SetBarItem>();
 		selectionWindow = new SetBarSelectionWindow(0, viewID, this, items,
-				pickingManager);
+				pickingManager, textureManager, dragAndDropController);
 		// sets = new ArrayList<ISet>();
 		setMinSize(60);
 	}
 
 	public void render(GL gl) {
+		selectionWindow.render(gl);
 		for (SetBarItem item : items) {
 			item.render(gl);
 		}
-		selectionWindow.render(gl);
+		
 	}
 
 	public Vec3f getPosition() {
@@ -184,18 +189,11 @@ public class SetBar extends AGLGUIElement {
 		}
 	}
 
-	public void handleSetBarSelectionWindowSelection(int itemID,
-			EPickingMode pickingMode, Pick pick) {
+	public void handleSetBarSelectionWindowSelection(int externalID,
+			EPickingType pickingType, EPickingMode pickingMode, Pick pick) {
 
-		switch (pickingMode) {
-		case CLICKED:
-			dragAndDropController.clearDraggables();
-			dragAndDropController.setDraggingStartPosition(pick
-					.getPickedPoint());
-			dragAndDropController.addDraggable(selectionWindow);
-			dragAndDropController.startDragging();
-			break;
-		}
+		selectionWindow.handleSelection(externalID, pickingType, pickingMode,
+				pick);
 	}
 
 	public void moveItem(SetBarItem itemToMove, int newIndex) {

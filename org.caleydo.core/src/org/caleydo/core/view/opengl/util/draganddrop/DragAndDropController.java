@@ -80,6 +80,10 @@ public class DragAndDropController {
 
 			if (glMouseListener.wasMouseReleased()) {
 				isDragging = false;
+				for (IDraggable draggable : draggables) {
+					draggable.handleDrop(gl, fArTargetWorldCoordinates[0],
+							fArTargetWorldCoordinates[1]);
+				}
 				if (dropArea != null) {
 					dropArea.handleDrop(gl, draggables,
 							fArTargetWorldCoordinates[0],
