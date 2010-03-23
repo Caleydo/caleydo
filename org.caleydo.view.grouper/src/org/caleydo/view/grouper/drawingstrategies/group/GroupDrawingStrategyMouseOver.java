@@ -33,7 +33,7 @@ public class GroupDrawingStrategyMouseOver extends
 						.getID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT
 				| GL.GL_LINE_BIT);
-
+		
 		gl.glColor4fv(renderStyle.getGroupColorForLevel(groupRepresentation
 				.getHierarchyLevel()), 0);
 

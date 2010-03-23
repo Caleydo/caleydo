@@ -35,6 +35,8 @@ public class GroupDrawingStrategyNormal extends
 
 		gl.glColor4fv(renderStyle.getGroupColorForLevel(groupRepresentation
 				.getHierarchyLevel()), 0);
+		
+//		gl.glColor4f(0.74f, 0.11f, 0.18f, 0.2f);
 
 		drawGroupRectangular(gl, groupRepresentation, textRenderer);
 
@@ -64,7 +66,8 @@ public class GroupDrawingStrategyNormal extends
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT
 				| GL.GL_LINE_BIT);
 
-		gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);
+//		gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);
+		gl.glColor4f(0.6f, 0.6f, 0.6f, 1f);
 
 		drawLeafRectangular(gl, groupRepresentation, textRenderer);
 
