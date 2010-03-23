@@ -45,9 +45,6 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public class DetailViewState extends ACompareViewStateStatic {
 
-	private final static int NUMBER_OF_SPLINE_POINTS = 25;
-	private final static int NUMBER_OF_SPLINE_POINTS_SHORT = 8;
-
 	private SelectionType activeHeatMapSelectionType;
 
 	private float xOffset = 0;

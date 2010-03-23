@@ -1,6 +1,5 @@
 package org.caleydo.view.compare.state;
 
-import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
@@ -25,6 +24,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.compare.GLCompare;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.SetBar;
@@ -106,6 +106,8 @@ public class OverviewState extends ACompareViewStateStatic {
 	public void renderGroupBand(GL gl, HeatMapWrapper leftHeatMapWrapper,
 			HeatMapWrapper rightHeatMapWrapper) {
 
+		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
+		
 		ContentVirtualArray overview = leftHeatMapWrapper.getContentVA().clone();
 		ContentVirtualArray overviewRight = rightHeatMapWrapper.getContentVA().clone();
 
@@ -128,12 +130,6 @@ public class OverviewState extends ACompareViewStateStatic {
 				.getContentVAsOfHeatMaps(false)) {
 
 			// Is there a better way to find the y pos of the cluster beginning
-			// float minY = 0;
-			// for (Integer contentID : groupVA) {
-			// if (minY < overview.indexOf(contentID))
-			// minY = overview.indexOf(contentID);
-			// }
-
 			float groupTopY = 0;
 			for (Integer overviewContentID : overview) {
 				if (groupVA.containsElement(overviewContentID) == 0)
@@ -144,6 +140,8 @@ public class OverviewState extends ACompareViewStateStatic {
 			}
 
 			for (Integer contentID : groupVA) {
+
+				points.clear();
 				
 				float overviewX = leftHeatMapWrapper
 						.getRightOverviewLinkPositionFromContentID(contentID).x();
@@ -154,16 +152,14 @@ public class OverviewState extends ACompareViewStateStatic {
 						* sampleHeight;
 
 				setRelationColor(gl, leftHeatMapWrapper, contentID);
-				
-				gl.glPushName(pickingManager.getPickingID(viewID,
-						EPickingType.POLYLINE_SELECTION, contentID));
 
-				gl.glBegin(GL.GL_LINES);
-				gl.glVertex3f(overviewX, overviewY, 0);
-				gl.glVertex3f(overviewX + firstLevelOffset, sortedY, 0);
-				gl.glEnd();
+				points.add(new Vec3f(overviewX, overviewY, 0));
+				points.add(new Vec3f(overviewX + firstLevelOffset, sortedY, 0));				
 
-				gl.glPopName();
+//				gl.glBegin(GL.GL_LINES);
+//				gl.glVertex3f(overviewX, overviewY, 0);
+//				gl.glVertex3f(overviewX + firstLevelOffset, sortedY, 0);
+//				gl.glEnd();
 
 				ArrayList<ContentVirtualArray> rightContentVAs = rightHeatMapWrapper
 						.getContentVAsOfHeatMaps(false);
@@ -196,32 +192,39 @@ public class OverviewState extends ACompareViewStateStatic {
 							- rightContentVAs.get(rightClusterIndex).indexOf(contentID)
 							* sampleHeight;
 
-					gl.glPushName(pickingManager.getPickingID(viewID,
-							EPickingType.POLYLINE_SELECTION, contentID));
-
-					gl.glBegin(GL.GL_LINES);
-					gl.glVertex3f(overviewRightX, overviewRightY, 0);
-					gl.glVertex3f(overviewRightX - firstLevelOffset, sortedY, 0);
-					gl.glEnd();
-
-					gl.glBegin(GL.GL_LINES);
-					gl.glVertex3f(overviewX + firstLevelOffset, sortedY, 0);
-					gl.glVertex3f(overviewRightX - firstLevelOffset, sortedRightY, 0);
-					gl.glEnd();
-
-					gl.glPopName();
-
+					points.add(new Vec3f(overviewRightX - firstLevelOffset, sortedRightY, 0));
+					points.add(new Vec3f(overviewRightX, overviewRightY, 0));
+										
+//					gl.glPushName(pickingManager.getPickingID(viewID,
+//							EPickingType.POLYLINE_SELECTION, contentID));
+//
+//					gl.glBegin(GL.GL_LINES);
+//					gl.glVertex3f(overviewX + firstLevelOffset, sortedY, 0);
+//					gl.glVertex3f(overviewRightX - firstLevelOffset, sortedRightY, 0);
+//					gl.glEnd();
+//
+//					gl.glBegin(GL.GL_LINES);
+//					gl.glVertex3f(overviewRightX - firstLevelOffset, sortedRightY, 0);
+//					gl.glVertex3f(overviewRightX, overviewRightY, 0);
+//					gl.glEnd();
+//					
+//					gl.glPopMatrix();
 				}
-			}
-		}
+			
+				NURBSCurve curve = new NURBSCurve(points, NUMBER_OF_SPLINE_POINTS);
+				points = curve.getCurvePoints();
 
-		// for (ContentVirtualArray leftVA :
-		// leftHeatMapWrapper.getContentVAsOfHeatMaps(false)) {
-		//			
-		// for (Integer contentID : leftVA) {
-		//				
-		// }
-		// }
+				gl.glPushName(pickingManager.getPickingID(viewID,
+						EPickingType.POLYLINE_SELECTION, contentID));
+
+				gl.glBegin(GL.GL_LINE_STRIP);
+				for (int i = 0; i < points.size(); i++)
+					gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0);
+				gl.glEnd();
+
+				gl.glPopName();
+			}
+		}		
 	}
 
 	@Override

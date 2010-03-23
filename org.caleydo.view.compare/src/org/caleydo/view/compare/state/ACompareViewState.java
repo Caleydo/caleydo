@@ -42,6 +42,9 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public abstract class ACompareViewState {
 
+	protected final static int NUMBER_OF_SPLINE_POINTS = 25;
+	protected final static int NUMBER_OF_SPLINE_POINTS_SHORT = 8;
+	
 	protected final static float SET_BAR_HEIGHT_PORTION = 0.07f;
 
 	protected TextRenderer textRenderer;
