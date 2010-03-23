@@ -1,5 +1,6 @@
 package org.caleydo.view.compare.state;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
@@ -9,6 +10,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -51,8 +53,8 @@ public class OverviewState extends ACompareViewStateStatic {
 			CompareViewStateController compareViewStateController) {
 
 		super(view, viewID, textRenderer, textureManager, pickingManager,
-				glMouseListener, setBar, renderCommandFactory, dataDomain,
-				useCase, dragAndDropController, compareViewStateController);
+				glMouseListener, setBar, renderCommandFactory, dataDomain, useCase,
+				dragAndDropController, compareViewStateController);
 		this.setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.5f));
 		compareConnectionRenderer = new CompareConnectionBandRenderer();
 		numSetsInFocus = 4;
@@ -68,10 +70,10 @@ public class OverviewState extends ACompareViewStateStatic {
 
 	@Override
 	public void buildDisplayList(GL gl) {
-		
+
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-		
+
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
 					glMouseListener, viewID);
@@ -83,9 +85,13 @@ public class OverviewState extends ACompareViewStateStatic {
 		setBar.render(gl);
 
 		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
-			renderTree(gl, heatMapWrappers.get(i), heatMapWrappers.get(i + 1));
-			renderOverviewRelations(gl, heatMapWrappers.get(i), heatMapWrappers
-			.get(i + 1));
+			// renderTree(gl, heatMapWrappers.get(i), heatMapWrappers.get(i +
+			// 1));
+			// renderOverviewRelations(gl, heatMapWrappers.get(i),
+			// heatMapWrappers
+			// .get(i + 1));
+
+			renderGroupBand(gl, heatMapWrappers.get(i), heatMapWrappers.get(i + 1));
 		}
 	}
 
@@ -95,6 +101,127 @@ public class OverviewState extends ACompareViewStateStatic {
 		compareConnectionRenderer.init(gl);
 		setsChanged = false;
 
+	}
+
+	public void renderGroupBand(GL gl, HeatMapWrapper leftHeatMapWrapper,
+			HeatMapWrapper rightHeatMapWrapper) {
+
+		ContentVirtualArray overview = leftHeatMapWrapper.getContentVA().clone();
+		ContentVirtualArray overviewRight = rightHeatMapWrapper.getContentVA().clone();
+
+		float overviewDistance = rightHeatMapWrapper
+				.getLeftOverviewLinkPositionFromIndex(0).x()
+				- leftHeatMapWrapper.getLeftOverviewLinkPositionFromIndex(0).x();
+		float firstLevelOffset = overviewDistance / 5;
+
+		float sampleHeight = leftHeatMapWrapper.getLayout().getOverviewHeight()
+				/ overview.size();
+		float top = leftHeatMapWrapper.getLayout().getOverviewPosition().y()
+				+ leftHeatMapWrapper.getLayout().getOverviewHeight();
+
+		leftHeatMapWrapper.sort(rightHeatMapWrapper.getContentVAsOfHeatMaps(false),
+				false, false);
+		rightHeatMapWrapper.sort(leftHeatMapWrapper.getContentVAsOfHeatMaps(false),
+				false, false);
+
+		for (ContentVirtualArray groupVA : leftHeatMapWrapper
+				.getContentVAsOfHeatMaps(false)) {
+
+			// Is there a better way to find the y pos of the cluster beginning
+			// float minY = 0;
+			// for (Integer contentID : groupVA) {
+			// if (minY < overview.indexOf(contentID))
+			// minY = overview.indexOf(contentID);
+			// }
+
+			float groupTopY = 0;
+			for (Integer overviewContentID : overview) {
+				if (groupVA.containsElement(overviewContentID) == 0)
+					continue;
+
+				groupTopY = overview.indexOf(overviewContentID) * sampleHeight;
+				break;
+			}
+
+			for (Integer contentID : groupVA) {
+				
+				float overviewX = leftHeatMapWrapper
+						.getRightOverviewLinkPositionFromContentID(contentID).x();
+				float overviewY = leftHeatMapWrapper
+						.getRightOverviewLinkPositionFromContentID(contentID).y();
+
+				float sortedY = top - groupTopY - groupVA.indexOf(contentID)
+						* sampleHeight;
+
+				setRelationColor(gl, leftHeatMapWrapper, contentID);
+				
+				gl.glPushName(pickingManager.getPickingID(viewID,
+						EPickingType.POLYLINE_SELECTION, contentID));
+
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(overviewX, overviewY, 0);
+				gl.glVertex3f(overviewX + firstLevelOffset, sortedY, 0);
+				gl.glEnd();
+
+				gl.glPopName();
+
+				ArrayList<ContentVirtualArray> rightContentVAs = rightHeatMapWrapper
+						.getContentVAsOfHeatMaps(false);
+
+				for (int rightClusterIndex = 0; rightClusterIndex < rightContentVAs
+						.size(); rightClusterIndex++) {
+
+					if (rightContentVAs.get(rightClusterIndex).containsElement(contentID) == 0)
+						continue;
+
+					// Is there a better way to find the y pos of the cluster
+					// beginning
+					float rightGroupTopY = 0;
+					for (Integer overviewRightContentID : overviewRight) {
+						if (rightContentVAs.get(rightClusterIndex).containsElement(
+								overviewRightContentID) == 0)
+							continue;
+
+						rightGroupTopY = overviewRight.indexOf(overviewRightContentID)
+								* sampleHeight;
+						break;
+					}
+
+					float overviewRightX = rightHeatMapWrapper
+							.getLeftOverviewLinkPositionFromContentID(contentID).x();
+					float overviewRightY = rightHeatMapWrapper
+							.getLeftOverviewLinkPositionFromContentID(contentID).y();
+
+					float sortedRightY = top - rightGroupTopY
+							- rightContentVAs.get(rightClusterIndex).indexOf(contentID)
+							* sampleHeight;
+
+					gl.glPushName(pickingManager.getPickingID(viewID,
+							EPickingType.POLYLINE_SELECTION, contentID));
+
+					gl.glBegin(GL.GL_LINES);
+					gl.glVertex3f(overviewRightX, overviewRightY, 0);
+					gl.glVertex3f(overviewRightX - firstLevelOffset, sortedY, 0);
+					gl.glEnd();
+
+					gl.glBegin(GL.GL_LINES);
+					gl.glVertex3f(overviewX + firstLevelOffset, sortedY, 0);
+					gl.glVertex3f(overviewRightX - firstLevelOffset, sortedRightY, 0);
+					gl.glEnd();
+
+					gl.glPopName();
+
+				}
+			}
+		}
+
+		// for (ContentVirtualArray leftVA :
+		// leftHeatMapWrapper.getContentVAsOfHeatMaps(false)) {
+		//			
+		// for (Integer contentID : leftVA) {
+		//				
+		// }
+		// }
 	}
 
 	@Override
@@ -112,8 +239,7 @@ public class OverviewState extends ACompareViewStateStatic {
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-			heatMapWrapper.handleSelectionUpdate(selectionDelta,
-					scrollToSelection, info);
+			heatMapWrapper.handleSelectionUpdate(selectionDelta, scrollToSelection, info);
 			heatMapWrapper.getOverview().updateHeatMapTextures(
 					heatMapWrapper.getContentSelectionManager());
 		}
@@ -137,8 +263,7 @@ public class OverviewState extends ACompareViewStateStatic {
 
 	@Override
 	public void handleStateSpecificPickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick,
-			boolean isControlPressed) {
+			EPickingMode pickingMode, int iExternalID, Pick pick, boolean isControlPressed) {
 
 	}
 
@@ -147,10 +272,10 @@ public class OverviewState extends ACompareViewStateStatic {
 			SelectionCommand selectionCommand) {
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-			if (category == heatMapWrapper.getContentSelectionManager()
-					.getIDType().getCategory())
-				heatMapWrapper.getContentSelectionManager()
-						.executeSelectionCommand(selectionCommand);
+			if (category == heatMapWrapper.getContentSelectionManager().getIDType()
+					.getCategory())
+				heatMapWrapper.getContentSelectionManager().executeSelectionCommand(
+						selectionCommand);
 			else
 				return;
 		}
@@ -173,30 +298,26 @@ public class OverviewState extends ACompareViewStateStatic {
 				for (ISet set : setsInFocus) {
 					AHeatMapLayout layout = null;
 					if (heatMapWrapperID == 0) {
-						layout = new HeatMapLayoutOverviewLeft(
-								renderCommandFactory);
+						layout = new HeatMapLayoutOverviewLeft(renderCommandFactory);
 					} else if (heatMapWrapperID == setsInFocus.size() - 1) {
-						layout = new HeatMapLayoutOverviewRight(
-								renderCommandFactory);
+						layout = new HeatMapLayoutOverviewRight(renderCommandFactory);
 					} else {
-						layout = new HeatMapLayoutOverviewMid(
-								renderCommandFactory);
+						layout = new HeatMapLayoutOverviewMid(renderCommandFactory);
 					}
 
 					layouts.add(layout);
 
-					HeatMapWrapper heatMapWrapper = new HeatMapWrapper(
-							heatMapWrapperID, layout, view, null, useCase,
-							view, dataDomain);
+					HeatMapWrapper heatMapWrapper = new HeatMapWrapper(heatMapWrapperID,
+							layout, view, null, useCase, view, dataDomain);
 					heatMapWrappers.add(heatMapWrapper);
 					heatMapWrapperID++;
 				}
 			}
 
 			// FIXME: Use array of relations?
-//			ISet setLeft = setsInFocus.get(0);
-//			ISet setRight = setsInFocus.get(1);
-//			relations = SetComparer.compareSets(setLeft, setRight);
+			// ISet setLeft = setsInFocus.get(0);
+			// ISet setRight = setsInFocus.get(1);
+			// relations = SetComparer.compareSets(setLeft, setRight);
 
 			for (int i = 0; i < heatMapWrappers.size(); i++) {
 				HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
@@ -217,21 +338,20 @@ public class OverviewState extends ACompareViewStateStatic {
 					.getState(ECompareViewStateType.OVERVIEW_TO_DETAIL_TRANSITION);
 
 			float[] wheelPointWorldCoordinates = GLCoordinateUtils
-					.convertWindowCoordinatesToWorldCoordinates(gl,
-							wheelPoint.x, wheelPoint.y);
+					.convertWindowCoordinatesToWorldCoordinates(gl, wheelPoint.x,
+							wheelPoint.y);
 
 			int itemOffset = 0;
 			for (int i = 0; i < layouts.size() - 1; i++) {
 
 				if ((i == layouts.size() - 2)
-						&& (wheelPointWorldCoordinates[0] >= layouts.get(i)
-								.getPosition().x())) {
+						&& (wheelPointWorldCoordinates[0] >= layouts.get(i).getPosition()
+								.x())) {
 					itemOffset = i;
 					break;
 				}
 
-				if ((wheelPointWorldCoordinates[0] >= layouts.get(i)
-						.getPosition().x())
+				if ((wheelPointWorldCoordinates[0] >= layouts.get(i).getPosition().x())
 						&& (wheelPointWorldCoordinates[0] <= layouts.get(i + 1)
 								.getPosition().x()
 								+ (layouts.get(i + 1).getWidth() / 2.0f))) {
@@ -275,15 +395,12 @@ public class OverviewState extends ACompareViewStateStatic {
 			int numExperiments = heatMapWrapper.getSet().getStorageVA(
 					StorageVAType.STORAGE).size();
 			// TODO: Maybe get info in layout from heatmapwrapper
-			layout
-					.setTotalSpaceForAllHeatMapWrappers(spaceForHeatMapWrapperOverviews);
+			layout.setTotalSpaceForAllHeatMapWrappers(spaceForHeatMapWrapperOverviews);
 			layout.setNumExperiments(numExperiments);
 			layout.setNumTotalExperiments(numTotalExperiments);
 
-			layout
-					.setLayoutParameters(heatMapWrapperPosX,
-							heatMapWrapperPosY, viewFrustum.getHeight()
-									- setBarHeight, heatMapWrapperWidth);
+			layout.setLayoutParameters(heatMapWrapperPosX, heatMapWrapperPosY,
+					viewFrustum.getHeight() - setBarHeight, heatMapWrapperWidth);
 			layout.setHeatMapWrapper(heatMapWrapper);
 
 			heatMapWrapperPosX += heatMapWrapperWidth + heatMapWrapperGapWidth;

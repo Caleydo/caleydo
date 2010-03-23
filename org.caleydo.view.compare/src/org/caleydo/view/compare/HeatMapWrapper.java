@@ -589,7 +589,7 @@ public class HeatMapWrapper {
 			}
 		}
 
-		sort(foreignContentVAs, true);
+		sort(foreignContentVAs, true, true);
 
 		// here we Hide those that are not part of the other va, and re-sort the
 		// source va
@@ -655,14 +655,14 @@ public class HeatMapWrapper {
 	 * @param hideVisible
 	 */
 	public void sort(ArrayList<ContentVirtualArray> foreignContentVAs,
-			boolean hideVisible) {
+			boolean hideVisible, boolean considerSelectedGroups) {
 		ContentGroupList groupList = contentVA.getGroupList();
 
-		// here we Hide those that are not part of the other va, and re-sort the
+		// here we hide those that are not part of the other va, and re-sort the
 		// source va
 		for (int groupIndex = groupList.size() - 1; groupIndex >= 0; groupIndex--) {
 			Group group = groupList.get(groupIndex);
-			if (selectedGroups.containsKey(group)) {
+			if (!considerSelectedGroups || selectedGroups.containsKey(group)) {
 				GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 
 				int nrGenes = group.getContainedNrGenes();
