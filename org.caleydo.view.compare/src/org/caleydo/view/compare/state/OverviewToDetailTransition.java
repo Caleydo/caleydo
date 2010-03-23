@@ -106,8 +106,11 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 				createOffsets(false, itemOffset + i);
 			}
 		}
+		
+		setsInFocus.clear();
 
 		for (int i = 0; i < sourceLayouts.size(); i++) {
+
 			AHeatMapLayout srcLayout = sourceLayouts.get(i);
 			if (i < itemOffset) {
 				createMovementValuesTargetOffset(gl, i, srcLayout, true);
@@ -130,8 +133,10 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 			} else {
 				layouts.add(focusLayouts.get(i - itemOffset));
 			}
-			heatMapWrappers.get(i).setLayout(layouts.get(i));
-			layouts.get(i).setHeatMapWrapper(heatMapWrappers.get(i));
+			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
+			heatMapWrapper.setLayout(layouts.get(i));
+			layouts.get(i).setHeatMapWrapper(heatMapWrapper);
+			setsInFocus.add(heatMapWrapper.getSet());
 		}
 		view.setDisplayListDirty();
 

@@ -1,17 +1,21 @@
 package org.caleydo.view.compare.state;
 
+import static org.caleydo.view.heatmap.dendrogram.DendrogramRenderStyle.DENDROGRAM_Z;
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.SetRelations;
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -28,6 +32,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.compare.GLCompare;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.SetBar;
@@ -63,6 +68,13 @@ public abstract class ACompareViewState {
 
 	protected boolean setsChanged;
 	protected boolean isInitialized;
+	
+	protected SetRelations relations;
+
+	float yPosInitLeft = 0;
+	float xPosInitLeft = 0;
+	float yPosInitRight = 0;
+	float xPosInitRight = 0;
 
 	public ACompareViewState(GLCompare view, int viewID,
 			TextRenderer textRenderer, TextureManager textureManager,
@@ -115,6 +127,230 @@ public abstract class ACompareViewState {
 		}
 
 		setsChanged = false;
+	}
+	
+	protected void renderTree(GL gl, HeatMapWrapper heatMapWrapperLeft,
+			HeatMapWrapper heatMapWrapperRight) {
+
+		if (setsInFocus == null || setsInFocus.size() == 0)
+			return;
+
+		AHeatMapLayout heatMapLayoutLeft = heatMapWrapperLeft.getLayout();
+		AHeatMapLayout heatMapLayoutRight = heatMapWrapperRight.getLayout();
+
+		xPosInitLeft = heatMapLayoutLeft.getOverviewHeatMapPosition().x()
+				+ heatMapLayoutLeft.getOverviewHeatMapWidth();
+		yPosInitLeft = heatMapLayoutLeft.getOverviewHeatMapPosition().y()
+				+ heatMapLayoutLeft.getOverviewHeight();
+		xPosInitRight = heatMapLayoutRight.getOverviewHeatMapPosition().x();
+		yPosInitRight = heatMapLayoutRight.getOverviewHeatMapPosition().y()
+				+ heatMapLayoutRight.getOverviewHeight();
+
+		float overviewDistance = xPosInitRight - xPosInitLeft;
+
+		// Left hierarchy
+		Tree<ClusterNode> tree = heatMapWrapperLeft.getSet().getContentTree();
+		ClusterNode rootNode = tree.getRoot();
+		determineTreePositions(rootNode, tree, heatMapWrapperLeft,
+				overviewDistance, true);
+		// renderDendrogram(gl, rootNode, 1, tree, xPosInitLeft, true);
+
+		// Right hierarchy
+		tree = heatMapWrapperRight.getSet().getContentTree();
+		rootNode = tree.getRoot();
+		determineTreePositions(rootNode, tree, heatMapWrapperRight,
+				overviewDistance, false);
+		// renderDendrogram(gl, rootNode, 1, tree, xPosInitRight, false);
+	}
+
+	/**
+	 * Function calculates for each node (gene or entity) in the dendrogram
+	 * recursive the corresponding position inside the view frustum
+	 * 
+	 * @param currentNode
+	 *            current node for calculation
+	 * @return Vec3f position of the current node
+	 */
+	protected Vec3f determineTreePositions(ClusterNode currentNode,
+			Tree<ClusterNode> tree, HeatMapWrapper heatMapWrapper,
+			float overviewGapWidth, boolean isLeft) {
+
+		Vec3f pos = new Vec3f();
+
+		AHeatMapLayout heatMapLayoutLeft = heatMapWrapper.getLayout();
+
+		float depthCorrection = 0;
+		if (tree.getDepth() > 2)
+			depthCorrection = 1;
+		else {
+			// subtract -1 instead of -2 for full dendrograms including root
+			depthCorrection = 2;
+		}
+
+		float levelWidth = (overviewGapWidth / 2.0f)
+				/ (tree.getRoot().getDepth() - depthCorrection);
+
+		float sampleHeight = heatMapLayoutLeft.getOverviewHeight()
+				/ tree.getRoot().getNrLeaves();
+
+		if (tree.hasChildren(currentNode)) {
+
+			ArrayList<ClusterNode> alChilds = tree.getChildren(currentNode);
+
+			int iNrChildsNode = alChilds.size();
+
+			Vec3f[] positions = new Vec3f[iNrChildsNode];
+
+			for (int i = 0; i < iNrChildsNode; i++) {
+
+				ClusterNode node = alChilds.get(i);
+				positions[i] = determineTreePositions(node, tree,
+						heatMapWrapper, overviewGapWidth, isLeft);
+			}
+
+			if (currentNode != tree.getRoot()) {
+				float fXmin = Float.MAX_VALUE;
+				float fXmax = Float.MIN_VALUE;
+				float fYmax = Float.MIN_VALUE;
+				float fYmin = Float.MAX_VALUE;
+
+				for (Vec3f vec : positions) {
+					fXmin = Math.min(fXmin, vec.x());
+					fXmax = Math.max(fXmax, vec.x());
+					fYmax = Math.max(fYmax, vec.y());
+					fYmin = Math.min(fYmin, vec.y());
+				}
+
+				if (isLeft) {
+					pos.setX(fXmax + levelWidth);
+				} else {
+					pos.setX(fXmin - levelWidth);
+				}
+
+				pos.setY(fYmin + (fYmax - fYmin) / 2);
+				pos.setZ(DENDROGRAM_Z);
+			}
+		} else {
+
+			if (isLeft) {
+				pos.setX(xPosInitLeft);
+				pos.setY(yPosInitLeft);
+				yPosInitLeft -= sampleHeight;
+			} else {
+				pos.setX(xPosInitRight);
+				pos.setY(yPosInitRight);
+				yPosInitRight -= sampleHeight;
+			}
+
+			pos.setZ(DENDROGRAM_Z);
+		}
+
+		currentNode.setPos(pos);
+
+		return pos;
+	}
+
+	protected void renderOverviewRelations(GL gl,
+			HeatMapWrapper leftHeatMapWrapper,
+			HeatMapWrapper rightHeatMapWrapper) {
+
+		boolean useDendrogramCutOff = false;
+		float dendrogramCutOff = 5;
+
+		if (setsInFocus == null || setsInFocus.size() == 0)
+			return;
+
+		ContentVirtualArray contentVALeft = leftHeatMapWrapper.getSet()
+				.getContentVA(ContentVAType.CONTENT);
+
+		for (Integer contentID : contentVALeft) {
+
+			float positionZ = setRelationColor(gl, leftHeatMapWrapper,
+					contentID);
+
+			Vec2f leftPos = leftHeatMapWrapper
+					.getRightOverviewLinkPositionFromContentID(contentID);
+
+			if (leftPos == null)
+				continue;
+
+			Vec2f rightPos = rightHeatMapWrapper
+					.getLeftOverviewLinkPositionFromContentID(contentID);
+
+			if (rightPos == null)
+				continue;
+
+			ArrayList<Vec3f> points = new ArrayList<Vec3f>();
+			points.add(new Vec3f(leftPos.x(), leftPos.y(), positionZ));
+
+			Tree<ClusterNode> tree;
+			int nodeID;
+			ClusterNode node;
+			ArrayList<ClusterNode> pathToRoot;
+
+			// Add spline points for left hierarchy
+			tree = leftHeatMapWrapper.getSet().getContentTree();
+			nodeID = tree.getNodeIDsFromLeafID(contentID).get(0);
+			node = tree.getNodeByNumber(nodeID);
+			pathToRoot = node.getParentPath(tree.getRoot());
+
+			// Remove last because it is root bundling
+			pathToRoot.remove(pathToRoot.size() - 1);
+
+			for (int i = 0; i < pathToRoot.size() - 1; i++) {
+
+				if (useDendrogramCutOff && i > dendrogramCutOff)
+					continue;
+
+				// Vec3f nodePos = pathNode.getPos();
+				Vec3f nodePos = pathToRoot.get(i).getPos();
+				points.add(nodePos);
+			}
+
+			// Add spline points for right hierarchy
+			tree = rightHeatMapWrapper.getSet().getContentTree();
+			nodeID = tree.getNodeIDsFromLeafID(contentID).get(0);
+			node = tree.getNodeByNumber(nodeID);
+			pathToRoot = node.getParentPath(tree.getRoot());
+
+			// Remove last because it is root bundling
+			pathToRoot.remove(pathToRoot.size() - 1);
+
+			for (int i = pathToRoot.size() - 1; i >= 0; i--) {
+
+				if (useDendrogramCutOff && i > dendrogramCutOff)
+					continue;
+
+				// Vec3f nodePos = pathNode.getPos();
+				ClusterNode pathNode = pathToRoot.get(i);
+				Vec3f nodePos = pathNode.getPos();
+				points.add(nodePos);
+			}
+
+			// Center point
+			// points.add(new Vec3f(viewFrustum.getWidth() / 2f, viewFrustum
+			// .getHeight() / 2f, 0));
+			// points.add(new Vec3f(2, 4, 0));
+			// points.add(new Vec3f(1,5,0));
+
+			points.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
+
+			if (points.size() == 0)
+				continue;
+
+			NURBSCurve curve = new NURBSCurve(points, 80);
+			points = curve.getCurvePoints();
+
+			gl.glPushName(pickingManager.getPickingID(viewID,
+					EPickingType.POLYLINE_SELECTION, contentID));
+
+			gl.glBegin(GL.GL_LINE_STRIP);
+			for (int i = 0; i < points.size(); i++)
+				gl.glVertex3f(points.get(i).x(), points.get(i).y(), positionZ);
+			gl.glEnd();
+
+			gl.glPopName();
+		}
 	}
 
 	protected float setRelationColor(GL gl, HeatMapWrapper heatMapWrapper,

@@ -65,9 +65,6 @@ public class OverviewState extends ACompareViewStateStatic {
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.drawRemoteItems(gl, glMouseListener, pickingManager);
 		}
-
-//		dragAndDropController.handleDragging(gl, glMouseListener);
-
 	}
 
 	@Override
