@@ -970,9 +970,9 @@ public class DetailViewState extends ACompareViewStateStatic {
 			}
 
 			// FIXME: Use array of relations?
-			ISet setLeft = setsInFocus.get(0);
-			ISet setRight = setsInFocus.get(1);
-			relations = SetComparer.compareSets(setLeft, setRight);
+			//ISet setLeft = setsInFocus.get(0);
+			//ISet setRight = setsInFocus.get(1);
+			//relations = SetComparer.compareSets(setLeft, setRight);
 
 			for (int i = 0; i < heatMapWrappers.size(); i++) {
 				HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);

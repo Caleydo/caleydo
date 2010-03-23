@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.SetComparer;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.StorageVAType;
@@ -195,9 +194,9 @@ public class OverviewState extends ACompareViewStateStatic {
 			}
 
 			// FIXME: Use array of relations?
-			ISet setLeft = setsInFocus.get(0);
-			ISet setRight = setsInFocus.get(1);
-			relations = SetComparer.compareSets(setLeft, setRight);
+//			ISet setLeft = setsInFocus.get(0);
+//			ISet setRight = setsInFocus.get(1);
+//			relations = SetComparer.compareSets(setLeft, setRight);
 
 			for (int i = 0; i < heatMapWrappers.size(); i++) {
 				HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);

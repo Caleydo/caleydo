@@ -106,17 +106,15 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 			setBar.setWidth(viewFrustum.getWidth());
 			setBar.render(gl);
 			
-//			for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
-//				renderTree(gl, heatMapWrappers.get(i), heatMapWrappers.get(i + 1));
-//				renderOverviewRelations(gl, heatMapWrappers.get(i), heatMapWrappers
-//				.get(i + 1));
-//			}
+			for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
+				renderTree(gl, heatMapWrappers.get(i), heatMapWrappers.get(i + 1));
+				renderOverviewRelations(gl, heatMapWrappers.get(i), heatMapWrappers
+				.get(i + 1));
+			}
 
 			if (areTargetsReached()) {
 				finish();
 			}
-			
-			
 		}
 	}
 
