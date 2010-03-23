@@ -76,12 +76,11 @@ public abstract class ACompareViewState {
 	float yPosInitRight = 0;
 	float xPosInitRight = 0;
 
-	public ACompareViewState(GLCompare view, int viewID,
-			TextRenderer textRenderer, TextureManager textureManager,
-			PickingManager pickingManager, GLMouseListener glMouseListener,
-			SetBar setBar, RenderCommandFactory renderCommandFactory,
-			EDataDomain dataDomain, IUseCase useCase,
-			DragAndDropController dragAndDropController,
+	public ACompareViewState(GLCompare view, int viewID, TextRenderer textRenderer,
+			TextureManager textureManager, PickingManager pickingManager,
+			GLMouseListener glMouseListener, SetBar setBar,
+			RenderCommandFactory renderCommandFactory, EDataDomain dataDomain,
+			IUseCase useCase, DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
 		this.view = view;
 		this.viewID = viewID;
@@ -108,11 +107,12 @@ public abstract class ACompareViewState {
 	}
 
 	public void executeDrawingPreprocessing(GL gl, boolean isDisplayListDirty) {
+		
+		handleDragging(gl);
 
 		IViewFrustum viewFrustum = view.getViewFrustum();
 		if (isDisplayListDirty)
-			setBar.setHeight(gl, SET_BAR_HEIGHT_PORTION
-					* viewFrustum.getHeight());
+			setBar.setHeight(gl, SET_BAR_HEIGHT_PORTION * viewFrustum.getHeight());
 		setupLayouts();
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
@@ -128,7 +128,7 @@ public abstract class ACompareViewState {
 
 		setsChanged = false;
 	}
-	
+
 	protected void renderTree(GL gl, HeatMapWrapper heatMapWrapperLeft,
 			HeatMapWrapper heatMapWrapperRight) {
 
@@ -355,7 +355,7 @@ public abstract class ACompareViewState {
 
 	protected float setRelationColor(GL gl, HeatMapWrapper heatMapWrapper,
 			int contentID) {
-
+		
 		SelectionType type = heatMapWrapper.getContentSelectionManager()
 				.getSelectionTypes(contentID).get(0);
 
@@ -367,10 +367,14 @@ public abstract class ACompareViewState {
 		// alpha = 0.4f;
 		// z = 0.4f;
 		// } else
-		if (type == SelectionType.MOUSE_OVER || type == SelectionType.SELECTION) {
+		if (type == SelectionType.MOUSE_OVER) {
 			gl.glLineWidth(2);
 			alpha = 1f;
-			z = 0.5f;
+			z = 0.6f;
+		} else if (type == SelectionType.SELECTION) {
+			gl.glLineWidth(2);
+			alpha = 1f;
+			z = 0.6f;
 		} else {
 			gl.glLineWidth(1);
 			alpha = 0.4f;
@@ -392,8 +396,7 @@ public abstract class ACompareViewState {
 	public abstract void setSetsToCompare(ArrayList<ISet> setsToCompare);
 
 	public abstract void handlePickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick,
-			boolean isControlPressed);
+			EPickingMode pickingMode, int iExternalID, Pick pick, boolean isControlPressed);
 
 	public abstract int getNumSetsInFocus();
 
@@ -402,8 +405,8 @@ public abstract class ACompareViewState {
 	public abstract void handleContentGroupListUpdate(int setID,
 			ContentGroupList contentGroupList);
 
-	public abstract void handleReplaceContentVA(int setID,
-			EIDCategory idCategory, ContentVAType vaType);
+	public abstract void handleReplaceContentVA(int setID, EIDCategory idCategory,
+			ContentVAType vaType);
 
 	public abstract void init(GL gl);
 

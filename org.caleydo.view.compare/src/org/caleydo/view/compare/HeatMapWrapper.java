@@ -482,14 +482,19 @@ public class HeatMapWrapper {
 		}
 	}
 
-	public ArrayList<ContentVirtualArray> getContentVAsOfHeatMaps() {
+	/**
+	 * Creates and returns the content VAs of all groups.
+	 * @param considerSelectedGroups If true only VAs are added where the corresponding group is selected.
+	 * @return
+	 */
+	public ArrayList<ContentVirtualArray> getContentVAsOfHeatMaps(boolean considerSelectedGroups) {
 		ArrayList<ContentVirtualArray> contentVAs = new ArrayList<ContentVirtualArray>();
 
 		ContentGroupList groupList = contentVA.getGroupList();
 		for (int groupIndex = 0; groupIndex < groupList.size(); groupIndex++) {
 			Group group = groupList.get(groupIndex);
 
-			if (selectedGroups.containsKey(group)) {
+			if (!considerSelectedGroups || selectedGroups.containsKey(group)) {
 				GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 				contentVAs.add(heatMap.getContentVA());
 			}
@@ -553,8 +558,8 @@ public class HeatMapWrapper {
 	 * virtual array to {@link GLHeatMap#SELECTION_HIDDEN} so that they can be
 	 * hidden on demand.
 	 */
-	public void choosePassiveHeatMaps(HashMap<Integer, Integer> relationMap,
-			ArrayList<ContentVirtualArray> foreignContentVAs) {
+	public void choosePassiveHeatMaps(ArrayList<ContentVirtualArray> foreignContentVAs) {
+
 		ContentGroupList groupList = contentVA.getGroupList();
 		// FIXME we shouldn't do that here
 		groupList.updateGroupInfo();
