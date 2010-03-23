@@ -56,7 +56,7 @@ public abstract class ACompareViewState {
 	protected IUseCase useCase;
 	protected DragAndDropController dragAndDropController;
 	protected CompareViewStateController compareViewStateController;
-//	protected HashMap<ClusterNode, Vec3f> hashNodePositions;
+	// protected HashMap<ClusterNode, Vec3f> hashNodePositions;
 
 	protected ArrayList<ISet> setsInFocus;
 	protected int numSetsInFocus;
@@ -88,7 +88,7 @@ public abstract class ACompareViewState {
 		layouts = new ArrayList<AHeatMapLayout>();
 		setsInFocus = new ArrayList<ISet>();
 
-//		hashNodePositions = new HashMap<ClusterNode, Vec3f>();
+		// hashNodePositions = new HashMap<ClusterNode, Vec3f>();
 
 		setsChanged = false;
 
@@ -96,9 +96,7 @@ public abstract class ACompareViewState {
 	}
 
 	public void executeDrawingPreprocessing(GL gl, boolean isDisplayListDirty) {
-		
-		handleDragging(gl);
-		
+
 		IViewFrustum viewFrustum = view.getViewFrustum();
 		if (isDisplayListDirty)
 			setBar.setHeight(gl, SET_BAR_HEIGHT_PORTION
@@ -118,7 +116,7 @@ public abstract class ACompareViewState {
 
 		setsChanged = false;
 	}
-	
+
 	protected float setRelationColor(GL gl, HeatMapWrapper heatMapWrapper,
 			int contentID) {
 
@@ -128,13 +126,12 @@ public abstract class ACompareViewState {
 		float z = type.getPriority();
 		float[] typeColor = type.getColor();
 		float alpha = 0;
-//		if (type == activeHeatMapSelectionType) {
-//			gl.glLineWidth(1);
-//			alpha = 0.4f;
-//			z = 0.4f;
-//		} else 
-			if (type == SelectionType.MOUSE_OVER
-				|| type == SelectionType.SELECTION) {
+		// if (type == activeHeatMapSelectionType) {
+		// gl.glLineWidth(1);
+		// alpha = 0.4f;
+		// z = 0.4f;
+		// } else
+		if (type == SelectionType.MOUSE_OVER || type == SelectionType.SELECTION) {
 			gl.glLineWidth(2);
 			alpha = 1f;
 			z = 0.5f;
@@ -199,7 +196,7 @@ public abstract class ACompareViewState {
 	public abstract void handleMouseWheel(GL gl, int amount, Point wheelPoint);
 
 	protected abstract void setupLayouts();
-	
+
 	public void setUseSorting(boolean useSorting) {
 
 	}
@@ -211,17 +208,22 @@ public abstract class ACompareViewState {
 	public void setUseFishEye(boolean useFishEye) {
 
 	}
-	
+
+	/**
+	 * Handles the dragging of the current state. Call this after all rendering
+	 * of the state has finished.
+	 * 
+	 * @param gl GL context.
+	 */
 	public void handleDragging(GL gl) {
 		dragAndDropController.handleDragging(gl, glMouseListener);
 	}
-	
+
 	protected ArrayList<HeatMapWrapper> getHeatMapWrappers() {
 		return heatMapWrappers;
 	}
-	
+
 	protected ArrayList<AHeatMapLayout> getLayouts() {
 		return layouts;
 	}
 }
-

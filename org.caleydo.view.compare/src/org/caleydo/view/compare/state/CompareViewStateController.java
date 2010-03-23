@@ -153,4 +153,7 @@ public class CompareViewStateController {
 		currentState.handleContentGroupListUpdate(setID, contentGroupList);
 	}
 
+	public void handleDragging(GL gl) {
+		currentState.handleDragging(gl);
+	}
 }

@@ -230,6 +230,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		}
 
 		gl.glCallList(iGLDisplayListToCall);
+		
+		compareViewStateController.handleDragging(gl);
 
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);

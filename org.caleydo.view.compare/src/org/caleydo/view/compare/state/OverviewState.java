@@ -54,7 +54,7 @@ public class OverviewState extends ACompareViewStateStatic {
 		super(view, viewID, textRenderer, textureManager, pickingManager,
 				glMouseListener, setBar, renderCommandFactory, dataDomain,
 				useCase, dragAndDropController, compareViewStateController);
-		this.setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.0f));
+		this.setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.5f));
 		compareConnectionRenderer = new CompareConnectionBandRenderer();
 		numSetsInFocus = 4;
 	}

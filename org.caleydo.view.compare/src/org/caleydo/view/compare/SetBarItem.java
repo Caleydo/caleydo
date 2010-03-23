@@ -54,10 +54,11 @@ public class SetBarItem implements IDraggable, IDropArea {
 		hashSelectionColors = new HashMap<Integer, float[]>();
 		hashSelectionColors.put(SELECTION_STATUS_NORMAL, new float[] { 0.5f,
 				0.5f, 0.5f, 1.0f });
-		hashSelectionColors.put(SELECTION_STATUS_MOUSE_OVER,
-				SelectionType.MOUSE_OVER.getColor());
-		hashSelectionColors.put(SELECTION_STATUS_DRAGGED,
-				SelectionType.MOUSE_OVER.getColor());
+		float[] mouseOverColor = SelectionType.MOUSE_OVER.getColor();
+		hashSelectionColors.put(SELECTION_STATUS_MOUSE_OVER, mouseOverColor);
+		hashSelectionColors
+				.put(SELECTION_STATUS_DRAGGED, new float[] { mouseOverColor[0],
+						mouseOverColor[1], mouseOverColor[2], 0.5f });
 	}
 
 	public void render(GL gl) {
@@ -202,7 +203,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 		float draggedPositionY = mouseCoordinateY + draggingSpacingY;
 
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		renderItemBody(gl, SELECTION_STATUS_DRAGGED, draggedPositionX,
 				draggedPositionY, 1.0f);
 		gl.glEnd();
