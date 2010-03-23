@@ -1,7 +1,5 @@
 package org.caleydo.view.compare;
 
-import gleem.linalg.Vec3f;
-
 import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -10,7 +8,6 @@ import java.util.List;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
@@ -32,7 +29,6 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -203,6 +199,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		// iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		display(gl);
+		
+		
 		// checkForHits(gl);
 	}
 

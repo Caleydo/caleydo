@@ -75,13 +75,13 @@ public class DendrogramButtonRenderCommand implements IHeatMapRenderCommand {
 					+ layout.getDendrogramLineWidth());
 		}
 
-		gl.glLineWidth(1f);
-		gl.glColor4f(1, 0, 0, 1);
-		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(linePosition.x(), linePosition.y(), linePosition.z());
-		gl.glVertex3f(linePosition.x(), linePosition.y()
-				+ layout.getDendrogramLineHeight(), linePosition.z());
-		gl.glEnd();
+//		gl.glLineWidth(1f);
+//		gl.glColor4f(1, 0, 0, 1);
+//		gl.glBegin(GL.GL_LINES);
+//		gl.glVertex3f(linePosition.x(), linePosition.y(), linePosition.z());
+//		gl.glVertex3f(linePosition.x(), linePosition.y()
+//				+ layout.getDendrogramLineHeight(), linePosition.z());
+//		gl.glEnd();
 
 		gl.glPopAttrib();
 

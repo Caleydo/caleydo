@@ -38,7 +38,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public abstract class ACompareViewState {
 
-	protected final static float SET_BAR_HEIGHT_PORTION = 0.1f;
+	protected final static float SET_BAR_HEIGHT_PORTION = 0.07f;
 
 	protected TextRenderer textRenderer;
 	protected TextureManager textureManager;

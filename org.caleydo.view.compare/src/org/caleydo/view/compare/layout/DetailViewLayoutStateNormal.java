@@ -12,15 +12,15 @@ public class DetailViewLayoutStateNormal extends ADetailViewLayoutState {
 	protected static final float OVERVIEW_GROUP_BAR_WIDTH_PORTION = 0.04f;
 	protected static final float OVERVIEW_HEATMAP_WIDTH_PORTION = 0.15f;
 	protected static final float OVERVIEW_SLIDER_WIDTH_PORTION = 0.06f;
-	protected static final float OVERVIEW_HEIGHT_PORTION = 0.95f;
+	protected static final float OVERVIEW_HEIGHT_PORTION = 0.955f;
 
-	protected static final float DETAIL_WIDTH_PORTION = 0.46f;
+	protected static final float DETAIL_WIDTH_PORTION = 0.48f;
 
 	protected static final float OVERVIEW_TO_DETAIL_GAP_PORTION = 0.25f;
 
-	protected static final float DENDROGRAM_BUTTON_WIDTH_PORTION = 0.1f;
-	protected static final float DENDROGRAM_LINE_WIDTH_PORTION = 0.02f;
-	protected static final float DENDROGRAM_LINE_SPACING_PORTION = 0.04f;
+	protected static final float DENDROGRAM_BUTTON_WIDTH_PORTION = 0.06f;
+	protected static final float DENDROGRAM_LINE_WIDTH_PORTION = 0.01f;
+	protected static final float DENDROGRAM_LINE_SPACING_PORTION = 0.02f;
 
 	protected static final float CAPTION_LABEL_WIDTH_PORTION = 0.92f;
 	protected static final float CAPTION_LABEL_HORIZONTAL_SPACING_PORTION = 0.03f;

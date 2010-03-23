@@ -10,10 +10,10 @@ import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
 
 public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 
-	protected static float CAPTION_LABEL_HEIGHT_PORTION = 0.03f;
-	protected static float CAPTION_LABEL_HORIZONTAL_SPACING_PORTION = 0.03f;
-	protected static float CAPTION_LABEL_VERTICAL_SPACING_PORTION = 0.01f;
-	protected static float OVERVIEW_HEIGHT_PORTION = 0.95f;
+	protected static final float CAPTION_LABEL_HEIGHT_PORTION = 0.025f;
+	protected static final float CAPTION_LABEL_HORIZONTAL_SPACING_PORTION = 0.03f;
+	protected static final float CAPTION_LABEL_VERTICAL_SPACING_PORTION = 0.01f;
+	protected static final float OVERVIEW_HEIGHT_PORTION = 0.955f;
 
 	public AHeatMapLayoutOverview(RenderCommandFactory renderCommandFactory) {
 		super(renderCommandFactory);

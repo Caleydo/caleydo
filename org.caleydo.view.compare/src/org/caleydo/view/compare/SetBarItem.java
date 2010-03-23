@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -23,6 +24,8 @@ public class SetBarItem implements IDraggable, IDropArea {
 	public static final int SELECTION_STATUS_MOUSE_OVER = 1;
 	private static final int SELECTION_STATUS_DRAGGED = 2;
 
+	private static final float HORIZONTAL_SPACING = 0.05f;
+	private static final float VERTICAL_SPACING = 0.1f;
 	private static final float HORIZONTAL_TEXT_PADDING_PORTION = 0.1f;
 	private static final float VERTICAL_TEXT_PADDING_PORTION = 0.7f;
 	private static final String TEXT_FOR_HEIGHT_CALCULATION = "Text without characters below the bottom textline";
@@ -51,10 +54,10 @@ public class SetBarItem implements IDraggable, IDropArea {
 		hashSelectionColors = new HashMap<Integer, float[]>();
 		hashSelectionColors.put(SELECTION_STATUS_NORMAL, new float[] { 0.5f,
 				0.5f, 0.5f, 1.0f });
-		hashSelectionColors.put(SELECTION_STATUS_MOUSE_OVER, new float[] {
-				1.0f, 1.0f, 0.0f, 0.5f });
-		hashSelectionColors.put(SELECTION_STATUS_DRAGGED, new float[] { 1.0f,
-				1.0f, 0.0f, 0.5f });
+		hashSelectionColors.put(SELECTION_STATUS_MOUSE_OVER,
+				SelectionType.MOUSE_OVER.getColor());
+		hashSelectionColors.put(SELECTION_STATUS_DRAGGED,
+				SelectionType.MOUSE_OVER.getColor());
 	}
 
 	public void render(GL gl) {
@@ -82,14 +85,23 @@ public class SetBarItem implements IDraggable, IDropArea {
 	private void renderItemBody(GL gl, int selectionStatus, float positionX,
 			float positionY, float positionZ) {
 
+		float horizontalspacingWidth = width * HORIZONTAL_SPACING;
+		float bodyWidth = width - (2.0f * horizontalspacingWidth);
+		float verticalSpacingWidth = height * VERTICAL_SPACING;
+		float bodyHeight = height - (2.0f * verticalSpacingWidth);
+
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		gl.glColor4fv(hashSelectionColors.get(selectionStatus), 0);
 		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f(positionX, positionY, positionZ);
-		gl.glVertex3f(positionX + width, positionY, positionZ);
-		gl.glVertex3f(positionX + width, positionY + height, positionZ);
-		gl.glVertex3f(positionX, positionY + height, positionZ);
+		gl.glVertex3f(positionX + horizontalspacingWidth, positionY
+				+ verticalSpacingWidth, positionZ);
+		gl.glVertex3f(positionX + horizontalspacingWidth + bodyWidth, positionY
+				+ verticalSpacingWidth, positionZ);
+		gl.glVertex3f(positionX + horizontalspacingWidth + bodyWidth, positionY
+				+ verticalSpacingWidth + bodyHeight, positionZ);
+		gl.glVertex3f(positionX + horizontalspacingWidth, positionY
+				+ verticalSpacingWidth + bodyHeight, positionZ);
 		gl.glEnd();
 
 		gl.glPopAttrib();
@@ -237,7 +249,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 	public void handleDrop(GL gl, Set<IDraggable> draggables,
 			float mouseCoordinateX, float mouseCoordinateY,
 			DragAndDropController dragAndDropController) {
-		
+
 		if (draggables.size() != 1)
 			return;
 		IDraggable draggable = (IDraggable) draggables.toArray()[0];
@@ -257,9 +269,9 @@ public class SetBarItem implements IDraggable, IDropArea {
 			} else {
 				if (item.getID() == id + 1)
 					return;
-				
+
 				setBar.moveItem(item, id + 1);
-				
+
 			}
 		}
 	}
@@ -271,7 +283,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 	public int getID() {
 		return id;
 	}
-	
+
 	public void setID(int id) {
 		this.id = id;
 	}

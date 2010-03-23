@@ -11,17 +11,17 @@ public class DetailViewLayoutStateDendrogram extends ADetailViewLayoutState {
 	protected static final float OVERVIEW_TOTAL_WIDTH_PORTION = 0.12f;
 	protected static final float OVERVIEW_GROUP_BAR_WIDTH_PORTION = 0.03f;
 	protected static final float OVERVIEW_HEATMAP_WIDTH_PORTION = 0.09f;
-	protected static final float OVERVIEW_HEIGHT_PORTION = 0.91f;
+	protected static final float OVERVIEW_HEIGHT_PORTION = 0.915f;
 
 	protected static final float DETAIL_WIDTH_PORTION = 0.24f;
 
 	protected static final float OVERVIEW_TO_DETAIL_GAP_PORTION = 0.12f;
 
 	// protected static final float DENDROGRAM_BUTTON_WIDTH_PORTION = 0.1f;
-	protected static final float DENDROGRAM_LINE_WIDTH_PORTION = 0.02f;
-	protected static final float DENDROGRAM_LINE_SPACING_PORTION = 0.52f;
+	protected static final float DENDROGRAM_LINE_WIDTH_PORTION = 0.01f;
+	protected static final float DENDROGRAM_LINE_SPACING_PORTION = 0.51f;
 	protected static final float DENDROGRAM_HEIGHT_PORTION = 0.91f;
-	protected static final float DENDROGRAM_WIDTH_PORTION = 0.5f;
+	protected static final float DENDROGRAM_WIDTH_PORTION = 0.51f;
 	protected static final float DENDROGRAM_BOTTOM_SPACING_PORTION = 0.04f;
 
 	protected static final float CAPTION_LABEL_WIDTH_PORTION = 0.5f;

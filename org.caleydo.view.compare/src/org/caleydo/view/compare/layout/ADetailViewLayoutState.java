@@ -18,11 +18,11 @@ public abstract class ADetailViewLayoutState {
 
 	protected static final float DETAIL_HEATMAP_SPACING_PORTION_DEFAULT = 0.01f;
 
-	protected static final float DENDROGRAM_BUTTON_HEIGHT_PORTION = 0.05f;
+	protected static final float DENDROGRAM_BUTTON_HEIGHT_PORTION = 0.03f;
 
-	protected static final float CAPTION_LABEL_HEIGHT_PORTION = 0.03f;
+	protected static final float CAPTION_LABEL_HEIGHT_PORTION = 0.025f;
 	protected static final float CAPTION_LABEL_VERTICAL_SPACING_PORTION = 0.01f;
-	protected static final float DETAIL_HEIGHT_PORTION = 0.95f;
+	protected static final float DETAIL_HEIGHT_PORTION = 0.955f;
 
 	protected float totalWidth;
 	protected float totalHeight;
