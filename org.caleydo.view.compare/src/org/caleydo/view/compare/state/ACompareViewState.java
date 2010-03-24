@@ -2,13 +2,10 @@ package org.caleydo.view.compare.state;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDCategory;
@@ -39,7 +36,6 @@ import org.caleydo.view.compare.layout.AHeatMapLayout;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 import org.caleydo.view.compare.renderer.CompareConnectionBandRenderer;
 import org.caleydo.view.compare.renderer.ICompareConnectionRenderer;
-
 import com.sun.opengl.util.j2d.TextRenderer;
 
 public abstract class ACompareViewState {
@@ -215,13 +211,14 @@ public abstract class ACompareViewState {
 		Vec2f rightBottomPos = rightHeatMapWrapper
 				.getLeftDetailLinkPositionFromContentID(endContentID);
 
-		if (leftTopPos == null || leftBottomPos == null || rightTopPos == null || rightBottomPos == null)
+		if (leftTopPos == null || leftBottomPos == null || rightTopPos == null
+				|| rightBottomPos == null)
 			return;
-		
+
 		float spacing = 0.01f;
 		float leftTopHeatMapElementOffset = detailBand.getLeftHeatMap().getFieldHeight(
 				startContentID)
-				/ 2f - spacing;		
+				/ 2f - spacing;
 		float leftBottomHeatMapElementOffset = detailBand.getLeftHeatMap()
 				.getFieldHeight(endContentID)
 				/ 2f - spacing;
@@ -235,9 +232,9 @@ public abstract class ACompareViewState {
 		leftBottomPos.setY(leftBottomPos.y() - leftBottomHeatMapElementOffset);
 		rightTopPos.setY(rightTopPos.y() + rightTopHeatMapElementOffset);
 		rightBottomPos.setY(rightBottomPos.y() - rightBottomHeatMapElementOffset);
-		
+
 		// TODO integrate offset for band in Y
-		
+
 		renderSingleBand(gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos,
 				highlight);
 	}
@@ -267,7 +264,8 @@ public abstract class ACompareViewState {
 		inputPoints = new ArrayList<Vec3f>();
 		inputPoints.add(new Vec3f(leftBottomPos.x(), leftBottomPos.y(), 0));
 		inputPoints.add(new Vec3f(rightBottomPos.x() + xOffset, leftBottomPos.y(), 0));
-		inputPoints.add(new Vec3f(rightBottomPos.x() + xOffset / 3f, rightBottomPos.y(), 0));
+		inputPoints.add(new Vec3f(rightBottomPos.x() + xOffset / 3f, rightBottomPos.y(),
+				0));
 		inputPoints.add(new Vec3f(rightBottomPos.x(), rightBottomPos.y(), 0));
 
 		curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
@@ -504,10 +502,10 @@ public abstract class ACompareViewState {
 		float top = leftHeatMapWrapper.getLayout().getOverviewHeatMapPosition().y()
 				+ leftHeatMapWrapper.getLayout().getOverviewHeight();
 
-		rightHeatMapWrapper.sort(leftHeatMapWrapper.getContentVAsOfHeatMaps(false),
-				false, false);
-		leftHeatMapWrapper.sort(rightHeatMapWrapper.getContentVAsOfHeatMaps(false),
-				false, false);
+		rightHeatMapWrapper.choosePassiveHeatMaps(leftHeatMapWrapper
+				.getContentVAsOfHeatMaps(false), false, false);
+		leftHeatMapWrapper.choosePassiveHeatMaps(rightHeatMapWrapper
+				.getContentVAsOfHeatMaps(false), false, false);
 
 		for (ContentVirtualArray groupVA : leftHeatMapWrapper
 				.getContentVAsOfHeatMaps(false)) {

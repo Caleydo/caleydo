@@ -46,8 +46,10 @@ public class StartClusteringAction
 		StartClusteringEvent event = null;
 		// if (clusterState != null && set != null)
 		if (sets == null || sets.size() == 0)
+		{
+			sets = new ArrayList<ISet>();
 			sets.add(GeneralManager.get().getMasterUseCase().getSet());
-
+		}
 		for(ISet tmpSet : sets) {
 			event = new StartClusteringEvent(clusterState, tmpSet.getID());
 			GeneralManager.get().getEventPublisher().triggerEvent(event);			

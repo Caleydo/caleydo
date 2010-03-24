@@ -379,11 +379,15 @@ public class HeatMapLayoutConfigurable extends AHeatMapLayout {
 
 	@Override
 	public float getDetailHeatMapHeight(int heatMapID) {
+		if(hashHeatMapHeights == null)
+			return 0;
 		return hashHeatMapHeights.get(heatMapID);
 	}
 
 	@Override
 	public Vec3f getDetailHeatMapPosition(int heatMapID) {
+		if(hashHeatMapPositions == null)
+			return new Vec3f(0, 0, 0);
 		return hashHeatMapPositions.get(heatMapID);
 	}
 

@@ -561,7 +561,7 @@ public class HeatMapWrapper {
 	 * hidden on demand.
 	 */
 	public void choosePassiveHeatMaps(
-			ArrayList<ContentVirtualArray> foreignContentVAs) {
+			ArrayList<ContentVirtualArray> foreignContentVAs, boolean hideVisible, boolean considerSelectedGroups) {
 
 		ContentGroupList groupList = contentVA.getGroupList();
 		// FIXME we shouldn't do that here
@@ -592,7 +592,7 @@ public class HeatMapWrapper {
 			}
 		}
 
-		sort(foreignContentVAs, true, true);
+		sort(foreignContentVAs,considerSelectedGroups, hideVisible);
 
 		// here we Hide those that are not part of the other va, and re-sort the
 		// source va
@@ -657,10 +657,17 @@ public class HeatMapWrapper {
 	 * @param foreignContentVAs
 	 * @param hideVisible
 	 */
-	public void sort(ArrayList<ContentVirtualArray> foreignContentVAs,
+	private void sort(ArrayList<ContentVirtualArray> foreignContentVAs,
 			boolean hideVisible, boolean considerSelectedGroups) {
 		ContentGroupList groupList = contentVA.getGroupList();
 
+//		for (ContentVirtualArray foreignVa : foreignContentVAs) {
+//			for (Integer contentID : foreignVa) {
+//				int vaIndex = contentVA.indexOf(contentID);
+//				Group selectedGroup = groupList.getGroupOfVAIndex(vaIndex);
+//				gr
+//			}
+//		}
 		// here we hide those that are not part of the other va, and re-sort the
 		// source va
 		for (int groupIndex = groupList.size() - 1; groupIndex >= 0; groupIndex--) {

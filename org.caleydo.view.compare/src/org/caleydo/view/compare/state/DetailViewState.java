@@ -96,7 +96,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 				for (HeatMapWrapper wrapper : heatMapWrappers) {
 					if (wrapper != heatMapWrapper) {
 						wrapper.choosePassiveHeatMaps(heatMapWrapper
-								.getContentVAsOfHeatMaps(true));
+								.getContentVAsOfHeatMaps(true), true, true);
 					}
 				}
 				view.setDisplayListDirty();
