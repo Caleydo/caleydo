@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.SelectionType;
@@ -20,28 +21,33 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 
 	@Override
 	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
-		
+
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
-		Vec3f overviewHeatMapPosition = layout.getOverviewHeatMapPosition();
-		float overviewHeight = layout.getOverviewHeight();
-		ArrayList<Texture> overviewTextures = heatMapWrapper.getOverview()
-				.getHeatMapTextures();
+
 		ContentSelectionManager contentSelectionManager = heatMapWrapper
 				.getContentSelectionManager();
 		ContentVirtualArray contentVA = heatMapWrapper.getOverview()
 				.getContentVA();
+		ContentGroupList contentGroupList = contentVA.getGroupList();
 
-		if(overviewHeatMapPosition == null) {
-			int i = 0;
+		for (int i = 0; i < contentGroupList.size(); i++) {
+			Vec3f overviewHeatMapGroupPosition = layout
+					.getOverviewHeatMapGroupPosition(i);
+			float height = layout.getOverviewHeatMapGroupHeight(i);
+
+			gl.glPushMatrix();
+			gl.glTranslatef(overviewHeatMapGroupPosition.x(),
+					overviewHeatMapGroupPosition.y(),
+					overviewHeatMapGroupPosition.z());
+
+			ArrayList<Texture> overviewTextures = heatMapWrapper.getOverview()
+					.getClusterTextures(i);
+			HeatMapUtil.renderHeatmapTextures(gl, overviewTextures, height,
+					layout.getOverviewHeatMapWidth());
+			gl.glPopMatrix();
 		}
-		gl.glPushMatrix();
-		gl.glTranslatef(overviewHeatMapPosition.x(), overviewHeatMapPosition
-				.y(), overviewHeatMapPosition.z());
-		HeatMapUtil.renderHeatmapTextures(gl, overviewTextures, overviewHeight,
-				layout.getOverviewHeatMapWidth());
-		drawSelections(gl, layout, contentSelectionManager, contentVA);
 
-		gl.glPopMatrix();
+		drawSelections(gl, layout, contentSelectionManager, contentVA);
 
 	}
 
@@ -82,23 +88,29 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 			ContentVirtualArray contentVA, Set<Integer> selectedElements,
 			SelectionType selectionType) {
 
-		float overviewHeight = layout.getOverviewHeight();
-		float sampleHeight = overviewHeight / contentVA.size();
+		float sampleHeight = layout.getOverviewHeatMapSampleHeight();
+		float overviewHeatMapWidth = layout.getOverviewHeatMapWidth();
 
 		for (Integer selectedElement : selectedElements) {
-			int elementIndex = contentVA.indexOf(selectedElement);
+			int contentIndex = contentVA.indexOf(selectedElement);
 
-			if (elementIndex != -1) {
+			if (contentIndex != -1) {
+				float positionY = layout
+						.getOverviewHeatMapSamplePositionY(contentIndex);
+				Vec3f overviewHeatMapPosition = layout
+						.getOverviewHeatMapPosition();
 				gl.glColor4fv(selectionType.getColor(), 0);
 				gl.glBegin(GL.GL_LINE_LOOP);
-				gl.glVertex3f(0,
-						overviewHeight - (elementIndex * sampleHeight), 0);
-				gl.glVertex3f(layout.getOverviewHeatMapWidth(), overviewHeight
-						- (elementIndex * sampleHeight), 0);
-				gl.glVertex3f(layout.getOverviewHeatMapWidth(), overviewHeight
-						- ((elementIndex + 1) * sampleHeight), 0);
-				gl.glVertex3f(0, overviewHeight
-						- ((elementIndex + 1) * sampleHeight), 0);
+				gl.glVertex3f(overviewHeatMapPosition.x(), positionY,
+						overviewHeatMapPosition.z());
+				gl.glVertex3f(overviewHeatMapPosition.x()
+						+ overviewHeatMapWidth, positionY,
+						overviewHeatMapPosition.z());
+				gl.glVertex3f(overviewHeatMapPosition.x()
+						+ overviewHeatMapWidth, positionY + sampleHeight,
+						overviewHeatMapPosition.z());
+				gl.glVertex3f(overviewHeatMapPosition.x(), positionY
+						+ sampleHeight, overviewHeatMapPosition.z());
 				gl.glEnd();
 			}
 

@@ -44,7 +44,7 @@ public abstract class ACompareViewState {
 
 	protected final static int NUMBER_OF_SPLINE_POINTS = 25;
 	protected final static int NUMBER_OF_SPLINE_POINTS_SHORT = 8;
-	
+
 	protected final static float SET_BAR_HEIGHT_PORTION = 0.07f;
 
 	protected TextRenderer textRenderer;
@@ -75,19 +75,20 @@ public abstract class ACompareViewState {
 	float xPosInitLeft = 0;
 	float yPosInitRight = 0;
 	float xPosInitRight = 0;
-	
+
 	Tree<ClusterNode> leftTree;
 	Tree<ClusterNode> rightTree;
 
 	boolean renderPseudoHierarchy = false;
-	
+
 	boolean bandBundlingActive = false;
 
-	public ACompareViewState(GLCompare view, int viewID, TextRenderer textRenderer,
-			TextureManager textureManager, PickingManager pickingManager,
-			GLMouseListener glMouseListener, SetBar setBar,
-			RenderCommandFactory renderCommandFactory, EDataDomain dataDomain,
-			IUseCase useCase, DragAndDropController dragAndDropController,
+	public ACompareViewState(GLCompare view, int viewID,
+			TextRenderer textRenderer, TextureManager textureManager,
+			PickingManager pickingManager, GLMouseListener glMouseListener,
+			SetBar setBar, RenderCommandFactory renderCommandFactory,
+			EDataDomain dataDomain, IUseCase useCase,
+			DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
 		this.view = view;
 		this.viewID = viewID;
@@ -114,12 +115,13 @@ public abstract class ACompareViewState {
 	}
 
 	public void executeDrawingPreprocessing(GL gl, boolean isDisplayListDirty) {
-		
+
 		handleDragging(gl);
 
 		IViewFrustum viewFrustum = view.getViewFrustum();
 		if (isDisplayListDirty)
-			setBar.setHeight(gl, SET_BAR_HEIGHT_PORTION * viewFrustum.getHeight());
+			setBar.setHeight(gl, SET_BAR_HEIGHT_PORTION
+					* viewFrustum.getHeight());
 		setupLayouts();
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
@@ -140,7 +142,7 @@ public abstract class ACompareViewState {
 			HeatMapWrapper heatMapWrapperRight) {
 
 		renderPseudoHierarchy = false;
-		
+
 		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
 
@@ -160,15 +162,15 @@ public abstract class ACompareViewState {
 		if (!renderPseudoHierarchy) {
 			// Left hierarchy
 			leftTree = heatMapWrapperLeft.getSet().getContentTree();
-			determineTreePositions(leftTree.getRoot(), leftTree, heatMapWrapperLeft,
-					overviewDistance, true);
+			determineTreePositions(leftTree.getRoot(), leftTree,
+					heatMapWrapperLeft, overviewDistance, true);
 			// renderDendrogram(gl, leftTree.getRoot(), 1, leftTree,
 			// xPosInitLeft, true);
 
 			// Right hierarchy
 			rightTree = heatMapWrapperRight.getSet().getContentTree();
-			determineTreePositions(rightTree.getRoot(), rightTree, heatMapWrapperRight,
-					overviewDistance, false);
+			determineTreePositions(rightTree.getRoot(), rightTree,
+					heatMapWrapperRight, overviewDistance, false);
 			// renderDendrogram(gl, rightTree.getRoot(), 1, rightTree,
 			// xPosInitRight, false);
 
@@ -232,8 +234,8 @@ public abstract class ACompareViewState {
 			for (int i = 0; i < iNrChildsNode; i++) {
 
 				ClusterNode node = alChilds.get(i);
-				positions[i] = determineTreePositions(node, tree, heatMapWrapper,
-						overviewGapWidth, isLeft);
+				positions[i] = determineTreePositions(node, tree,
+						heatMapWrapper, overviewGapWidth, isLeft);
 			}
 
 			if (currentNode != tree.getRoot()) {
@@ -280,8 +282,9 @@ public abstract class ACompareViewState {
 	}
 
 	protected void determinePseudoTreePositions(Tree<ClusterNode> tree,
-			HeatMapWrapper leftHeatMapWrapper, HeatMapWrapper rightHeatMapWrapper,
-			float overviewGapWidth, boolean isLeft) {
+			HeatMapWrapper leftHeatMapWrapper,
+			HeatMapWrapper rightHeatMapWrapper, float overviewGapWidth,
+			boolean isLeft) {
 
 		float xPosInit = xPosInitRight;
 		if (isLeft)
@@ -295,14 +298,15 @@ public abstract class ACompareViewState {
 		for (ContentVirtualArray leftVA : leftHeatMapWrapper
 				.getContentVAsOfHeatMaps(false)) {
 
-			ClusterNode clusterNode = new ClusterNode(tree, "", nodeID++, false, -1);
+			ClusterNode clusterNode = new ClusterNode(tree, "", nodeID++,
+					false, -1);
 
 			// Calculate position of cluster
 			Vec2f clusterStartPos = leftHeatMapWrapper
 					.getLeftOverviewLinkPositionFromContentID(leftVA.get(0));
 			Vec2f clusterEndPos = leftHeatMapWrapper
-					.getLeftOverviewLinkPositionFromContentID(leftVA
-							.get(leftVA.size() - 1));
+					.getLeftOverviewLinkPositionFromContentID(leftVA.get(leftVA
+							.size() - 1));
 
 			float yPos = clusterStartPos.y()
 					+ ((clusterEndPos.y() - clusterStartPos.y()) / 2f);
@@ -327,10 +331,12 @@ public abstract class ACompareViewState {
 					if (rightVA.containsElement(contentID) == 0)
 						continue;
 
-					ClusterNode leaf = new ClusterNode(tree, "", nodeID++, false,
-							contentID);
-					leaf.setPos(new Vec3f(xPosInit, leftHeatMapWrapper
-							.getLeftOverviewLinkPositionFromContentID(contentID).y(), 0));
+					ClusterNode leaf = new ClusterNode(tree, "", nodeID++,
+							false, contentID);
+					leaf.setPos(new Vec3f(xPosInit,
+							leftHeatMapWrapper
+									.getLeftOverviewLinkPositionFromContentID(
+											contentID).y(), 0));
 
 					passiveBundlePointLeaves.add(leaf);
 				}
@@ -342,14 +348,15 @@ public abstract class ACompareViewState {
 
 			for (ArrayList<ClusterNode> passiveBundlePoint : passiveBundlePoints) {
 
-				ClusterNode passiveBundlePointNode = new ClusterNode(tree, "", nodeID++,
-						false, -1);
+				ClusterNode passiveBundlePointNode = new ClusterNode(tree, "",
+						nodeID++, false, -1);
 
 				xPos = xPosInit + levelWidth;
 				if (!isLeft)
 					xPos = xPosInit - levelWidth;
 
-				passiveBundlePointNode.setPos(new Vec3f(xPos, clusterStartPos.y()
+				passiveBundlePointNode.setPos(new Vec3f(xPos, clusterStartPos
+						.y()
 						+ passiveBundlePoints.indexOf(passiveBundlePoint)
 						* (clusterEndPos.y() - clusterStartPos.y())
 						/ (passiveBundlePoints.size()), 0));
@@ -366,55 +373,61 @@ public abstract class ACompareViewState {
 		}
 	}
 
-	
-	protected void renderOverviewRelations(GL gl, HeatMapWrapper leftHeatMapWrapper,
+	protected void renderOverviewRelations(GL gl,
+			HeatMapWrapper leftHeatMapWrapper,
 			HeatMapWrapper rightHeatMapWrapper) {
 
 		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
 
-//		ContentVirtualArray contentVALeft = leftHeatMapWrapper.getSet().getContentVA(
-//				ContentVAType.CONTENT);
-//
-//		for (Integer contentID : contentVALeft) {
-//			// renderSingleHierarchyRelation(gl, leftHeatMapWrapper,
-//			// rightHeatMapWrapper,
-//			// contentID);
-//
-//			renderStraightLineRelation(gl, leftHeatMapWrapper, rightHeatMapWrapper,
-//					contentID);
-//		}
-		
+		// ContentVirtualArray contentVALeft =
+		// leftHeatMapWrapper.getSet().getContentVA(
+		// ContentVAType.CONTENT);
+		//
+		// for (Integer contentID : contentVALeft) {
+		// // renderSingleHierarchyRelation(gl, leftHeatMapWrapper,
+		// // rightHeatMapWrapper,
+		// // contentID);
+		//
+		// renderStraightLineRelation(gl, leftHeatMapWrapper,
+		// rightHeatMapWrapper,
+		// contentID);
+		// }
+
 		renderGroupBand(gl, leftHeatMapWrapper, rightHeatMapWrapper);
 	}
-	
+
 	public void renderGroupBand(GL gl, HeatMapWrapper leftHeatMapWrapper,
 			HeatMapWrapper rightHeatMapWrapper) {
 
 		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-		
-		ContentVirtualArray overview = leftHeatMapWrapper.getContentVA().clone();
-		ContentVirtualArray overviewRight = rightHeatMapWrapper.getContentVA().clone();
+
+		ContentVirtualArray overview = leftHeatMapWrapper.getContentVA()
+				.clone();
+		ContentVirtualArray overviewRight = rightHeatMapWrapper.getContentVA()
+				.clone();
 
 		float overviewDistance = rightHeatMapWrapper
 				.getLeftOverviewLinkPositionFromIndex(0).x()
-				- leftHeatMapWrapper.getLeftOverviewLinkPositionFromIndex(0).x();
+				- leftHeatMapWrapper.getLeftOverviewLinkPositionFromIndex(0)
+						.x();
 		float firstLevelOffset = overviewDistance / 5;
 
-		float sampleHeight = leftHeatMapWrapper.getLayout().getOverviewHeight()
-				/ overview.size();
-		
+		float sampleHeight = leftHeatMapWrapper.getLayout()
+				.getOverviewHeatMapSampleHeight();
+
 		float sampleHeightIncludingSpacing = sampleHeight * 0.8f;
 		float groupPadding = 0;
 		float bundlingCorrectionOffsetX = overviewDistance / 18f;
-		
-		float top = leftHeatMapWrapper.getLayout().getOverviewHeatMapPosition().y()
+
+		float top = leftHeatMapWrapper.getLayout().getOverviewHeatMapPosition()
+				.y()
 				+ leftHeatMapWrapper.getLayout().getOverviewHeight();
 
-		leftHeatMapWrapper.sort(rightHeatMapWrapper.getContentVAsOfHeatMaps(false),
-				false, false);
-		rightHeatMapWrapper.sort(leftHeatMapWrapper.getContentVAsOfHeatMaps(false),
-				false, false);
+		leftHeatMapWrapper.sort(rightHeatMapWrapper
+				.getContentVAsOfHeatMaps(false), false, false);
+		rightHeatMapWrapper.sort(leftHeatMapWrapper
+				.getContentVAsOfHeatMaps(false), false, false);
 
 		for (ContentVirtualArray groupVA : leftHeatMapWrapper
 				.getContentVAsOfHeatMaps(false)) {
@@ -426,18 +439,21 @@ public abstract class ACompareViewState {
 					continue;
 
 				groupPadding = groupVA.size() * sampleHeight * 0.1f;
-				groupTopY = overview.indexOf(overviewContentID) * sampleHeight + groupPadding;
+				groupTopY = overview.indexOf(overviewContentID) * sampleHeight
+						+ groupPadding;
 				break;
 			}
 
 			for (Integer contentID : groupVA) {
 
 				points.clear();
-				
+
 				float overviewX = leftHeatMapWrapper
-						.getRightOverviewLinkPositionFromContentID(contentID).x();
+						.getRightOverviewLinkPositionFromContentID(contentID)
+						.x();
 				float overviewY = leftHeatMapWrapper
-						.getRightOverviewLinkPositionFromContentID(contentID).y();
+						.getRightOverviewLinkPositionFromContentID(contentID)
+						.y();
 
 				float sortedY = top - groupTopY - groupVA.indexOf(contentID)
 						* sampleHeightIncludingSpacing;
@@ -445,9 +461,11 @@ public abstract class ACompareViewState {
 				setRelationColor(gl, leftHeatMapWrapper, contentID);
 
 				points.add(new Vec3f(overviewX, overviewY, 0));
-				points.add(new Vec3f(overviewX + bundlingCorrectionOffsetX, overviewY, 0));
-				points.add(new Vec3f(overviewX + firstLevelOffset - bundlingCorrectionOffsetX, sortedY, 0));	
-				points.add(new Vec3f(overviewX + firstLevelOffset, sortedY, 0));	
+				points.add(new Vec3f(overviewX + bundlingCorrectionOffsetX,
+						overviewY, 0));
+				points.add(new Vec3f(overviewX + firstLevelOffset
+						- bundlingCorrectionOffsetX, sortedY, 0));
+				points.add(new Vec3f(overviewX + firstLevelOffset, sortedY, 0));
 
 				ArrayList<ContentVirtualArray> rightContentVAs = rightHeatMapWrapper
 						.getContentVAsOfHeatMaps(false);
@@ -455,8 +473,9 @@ public abstract class ACompareViewState {
 				for (int rightClusterIndex = 0; rightClusterIndex < rightContentVAs
 						.size(); rightClusterIndex++) {
 
-					ContentVirtualArray rightGroupVA = rightContentVAs.get(rightClusterIndex);
-					
+					ContentVirtualArray rightGroupVA = rightContentVAs
+							.get(rightClusterIndex);
+
 					if (rightGroupVA.containsElement(contentID) == 0)
 						continue;
 
@@ -464,38 +483,46 @@ public abstract class ACompareViewState {
 					// beginning
 					float rightGroupTopY = 0;
 					for (Integer overviewRightContentID : overviewRight) {
-						
-						if (rightGroupVA.containsElement(
-								overviewRightContentID) == 0)
+
+						if (rightGroupVA
+								.containsElement(overviewRightContentID) == 0)
 							continue;
 
-						groupPadding = rightGroupVA.size() * sampleHeight * 0.1f;
-						rightGroupTopY = overviewRight.indexOf(overviewRightContentID)
+						groupPadding = rightGroupVA.size() * sampleHeight
+								* 0.1f;
+						rightGroupTopY = overviewRight
+								.indexOf(overviewRightContentID)
 								* sampleHeight + groupPadding;
 						break;
 					}
 
 					float overviewRightX = rightHeatMapWrapper
-							.getLeftOverviewLinkPositionFromContentID(contentID).x();
+							.getLeftOverviewLinkPositionFromContentID(contentID)
+							.x();
 					float overviewRightY = rightHeatMapWrapper
-							.getLeftOverviewLinkPositionFromContentID(contentID).y();
+							.getLeftOverviewLinkPositionFromContentID(contentID)
+							.y();
 
 					float sortedRightY = top - rightGroupTopY
 							- rightGroupVA.indexOf(contentID)
 							* sampleHeightIncludingSpacing;
 
-					points.add(new Vec3f(overviewRightX - firstLevelOffset, sortedRightY, 0));
-					points.add(new Vec3f(overviewRightX - firstLevelOffset + bundlingCorrectionOffsetX, sortedRightY, 0));
-					points.add(new Vec3f(overviewRightX - bundlingCorrectionOffsetX, overviewRightY, 0));
-					points.add(new Vec3f(overviewRightX, overviewRightY, 0));					
+					points.add(new Vec3f(overviewRightX - firstLevelOffset,
+							sortedRightY, 0));
+					points.add(new Vec3f(overviewRightX - firstLevelOffset
+							+ bundlingCorrectionOffsetX, sortedRightY, 0));
+					points.add(new Vec3f(overviewRightX
+							- bundlingCorrectionOffsetX, overviewRightY, 0));
+					points.add(new Vec3f(overviewRightX, overviewRightY, 0));
 				}
-			
+
 				renderSingleCurve(gl, points, contentID);
 			}
-		}		
+		}
 	}
 
-	private void renderSingleHierarchyRelation(GL gl, HeatMapWrapper leftHeatMapWrapper,
+	private void renderSingleHierarchyRelation(GL gl,
+			HeatMapWrapper leftHeatMapWrapper,
 			HeatMapWrapper rightHeatMapWrapper, int contentID) {
 
 		boolean useDendrogramCutOff = false;
@@ -596,8 +623,9 @@ public abstract class ACompareViewState {
 
 	}
 
-	public void renderSingleCurve(GL gl, ArrayList<Vec3f> points, Integer contentID) {
-		
+	public void renderSingleCurve(GL gl, ArrayList<Vec3f> points,
+			Integer contentID) {
+
 		NURBSCurve curve = new NURBSCurve(points, NUMBER_OF_SPLINE_POINTS);
 		points = curve.getCurvePoints();
 
@@ -611,8 +639,9 @@ public abstract class ACompareViewState {
 
 		gl.glPopName();
 	}
-	
-	private void renderStraightLineRelation(GL gl, HeatMapWrapper leftHeatMapWrapper,
+
+	private void renderStraightLineRelation(GL gl,
+			HeatMapWrapper leftHeatMapWrapper,
 			HeatMapWrapper rightHeatMapWrapper, int contentID) {
 
 		float positionZ = setRelationColor(gl, leftHeatMapWrapper, contentID);
@@ -648,8 +677,9 @@ public abstract class ACompareViewState {
 
 	}
 
-	private void renderDendrogram(final GL gl, ClusterNode currentNode, float fOpacity,
-			Tree<ClusterNode> tree, float xPosInit, boolean isLeft) {
+	private void renderDendrogram(final GL gl, ClusterNode currentNode,
+			float fOpacity, Tree<ClusterNode> tree, float xPosInit,
+			boolean isLeft) {
 
 		// float fLookupValue = currentNode.getAverageExpressionValue();
 		// float[] fArMappingColor = colorMapper.getColor(fLookupValue);
@@ -708,7 +738,8 @@ public abstract class ACompareViewState {
 			}
 
 			gl.glPushName(pickingManager.getPickingID(this.viewID,
-					EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode.getID()));
+					EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode
+							.getID()));
 
 			// vertical line connecting all child nodes
 			gl.glBegin(GL.GL_LINES);
@@ -729,30 +760,32 @@ public abstract class ACompareViewState {
 
 		} else {
 			gl.glPushName(pickingManager.getPickingID(this.viewID,
-					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode.getID()));
+					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode
+							.getID()));
 
 			// horizontal line visualizing leaf nodes
 			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode
+			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(),
+					currentNode.getPos().z());
+			gl.glVertex3f(xPosInit, currentNode.getPos().y(), currentNode
 					.getPos().z());
-			gl.glVertex3f(xPosInit, currentNode.getPos().y(), currentNode.getPos().z());
 			gl.glEnd();
 
 			gl.glPopName();
 		}
 
 		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(currentNode.getPos().x() - fDiff, currentNode.getPos().y(),
+		gl.glVertex3f(currentNode.getPos().x() - fDiff, currentNode.getPos()
+				.y(), currentNode.getPos().z());
+		gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(),
 				currentNode.getPos().z());
-		gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode
-				.getPos().z());
 		gl.glEnd();
 
 	}
 
 	protected float setRelationColor(GL gl, HeatMapWrapper heatMapWrapper,
 			int contentID) {
-		
+
 		SelectionType type = heatMapWrapper.getContentSelectionManager()
 				.getSelectionTypes(contentID).get(0);
 
@@ -793,7 +826,8 @@ public abstract class ACompareViewState {
 	public abstract void setSetsToCompare(ArrayList<ISet> setsToCompare);
 
 	public abstract void handlePickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick, boolean isControlPressed);
+			EPickingMode pickingMode, int iExternalID, Pick pick,
+			boolean isControlPressed);
 
 	public abstract int getNumSetsInFocus();
 
@@ -802,8 +836,8 @@ public abstract class ACompareViewState {
 	public abstract void handleContentGroupListUpdate(int setID,
 			ContentGroupList contentGroupList);
 
-	public abstract void handleReplaceContentVA(int setID, EIDCategory idCategory,
-			ContentVAType vaType);
+	public abstract void handleReplaceContentVA(int setID,
+			EIDCategory idCategory, ContentVAType vaType);
 
 	public abstract void init(GL gl);
 
@@ -849,7 +883,8 @@ public abstract class ACompareViewState {
 	 * Handles the dragging of the current state. Call this after all rendering
 	 * of the state has finished.
 	 * 
-	 * @param gl GL context.
+	 * @param gl
+	 *            GL context.
 	 */
 	public void handleDragging(GL gl) {
 		dragAndDropController.handleDragging(gl, glMouseListener);

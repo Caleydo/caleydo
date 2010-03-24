@@ -19,7 +19,7 @@ public class DetailViewLayoutStateDendrogram extends ADetailViewLayoutState {
 
 	// protected static final float DENDROGRAM_BUTTON_WIDTH_PORTION = 0.1f;
 	protected static final float DENDROGRAM_LINE_WIDTH_PORTION = 0.01f;
-	protected static final float DENDROGRAM_LINE_SPACING_PORTION = 0.51f;
+	protected static final float DENDROGRAM_LINE_SPACING_PORTION = 0.52f;
 	protected static final float DENDROGRAM_HEIGHT_PORTION = 0.91f;
 	protected static final float DENDROGRAM_WIDTH_PORTION = 0.51f;
 	protected static final float DENDROGRAM_BOTTOM_SPACING_PORTION = 0.04f;

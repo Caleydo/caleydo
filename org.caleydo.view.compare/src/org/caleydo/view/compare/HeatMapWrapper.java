@@ -186,8 +186,9 @@ public class HeatMapWrapper {
 		selectedGroups.clear();
 		contentSelectionManager.clearSelections();
 		contentSelectionManager.setVA(contentVA);
-
-		for (Group group : contentVA.getGroupList()) {
+		ContentGroupList contentGroupList = contentVA.getGroupList();
+		contentGroupList.updateGroupInfo();
+		for (Group group : contentGroupList) {
 			group.setSelectionType(SelectionType.NORMAL);
 		}
 
@@ -379,11 +380,9 @@ public class HeatMapWrapper {
 	public Vec2f getLeftOverviewLinkPositionFromIndex(int contentIndex) {
 
 		Vec3f overviewPosition = layout.getOverviewHeatMapPosition();
-		float sampleHeight = layout.getOverviewHeight() / contentVA.size();
 
-		return new Vec2f(overviewPosition.x(), overviewPosition.y()
-				+ layout.getOverviewHeight()
-				- ((sampleHeight * contentIndex) + sampleHeight / 2.0f));
+		return new Vec2f(overviewPosition.x(), layout
+				.getOverviewHeatMapSamplePositionY(contentIndex));
 	}
 
 	public Vec2f getLeftOverviewLinkPositionFromContentID(int contentID) {
@@ -399,12 +398,10 @@ public class HeatMapWrapper {
 	public Vec2f getRightOverviewLinkPositionFromContentIndex(int contentIndex) {
 
 		Vec3f overviewPosition = layout.getOverviewHeatMapPosition();
-		float sampleHeight = layout.getOverviewHeight() / contentVA.size();
 
 		return new Vec2f(overviewPosition.x()
-				+ layout.getOverviewHeatMapWidth(), overviewPosition.y()
-				+ layout.getOverviewHeight()
-				- ((sampleHeight * contentIndex) + sampleHeight / 2.0f));
+				+ layout.getOverviewHeatMapWidth(), layout
+				.getOverviewHeatMapSamplePositionY(contentIndex));
 	}
 
 	public Vec2f getRightOverviewLinkPositionFromContentID(int contentID) {
@@ -441,7 +438,8 @@ public class HeatMapWrapper {
 	private Float getDetailYCoordinateByContentID(int contentID) {
 
 		// For the group check we need the index in the global content VA
-		Group group = getGroupFromContentIndex(contentVA.indexOf(contentID));
+		Group group = getSelectedGroupFromContentIndex(contentVA
+				.indexOf(contentID));
 		if (group == null)
 			return null;
 
@@ -484,10 +482,14 @@ public class HeatMapWrapper {
 
 	/**
 	 * Creates and returns the content VAs of all groups.
-	 * @param considerSelectedGroups If true only VAs are added where the corresponding group is selected.
+	 * 
+	 * @param considerSelectedGroups
+	 *            If true only VAs are added where the corresponding group is
+	 *            selected.
 	 * @return
 	 */
-	public ArrayList<ContentVirtualArray> getContentVAsOfHeatMaps(boolean considerSelectedGroups) {
+	public ArrayList<ContentVirtualArray> getContentVAsOfHeatMaps(
+			boolean considerSelectedGroups) {
 		ArrayList<ContentVirtualArray> contentVAs = new ArrayList<ContentVirtualArray>();
 
 		ContentGroupList groupList = contentVA.getGroupList();
@@ -524,7 +526,7 @@ public class HeatMapWrapper {
 		return contentSelectionManagers;
 	}
 
-	public Group getGroupFromContentIndex(int contentIndex) {
+	public Group getSelectedGroupFromContentIndex(int contentIndex) {
 		for (Group group : selectedGroups.keySet()) {
 			if (contentIndex >= group.getStartIndex()
 					&& contentIndex <= group.getEndIndex()) {
@@ -558,7 +560,8 @@ public class HeatMapWrapper {
 	 * virtual array to {@link GLHeatMap#SELECTION_HIDDEN} so that they can be
 	 * hidden on demand.
 	 */
-	public void choosePassiveHeatMaps(ArrayList<ContentVirtualArray> foreignContentVAs) {
+	public void choosePassiveHeatMaps(
+			ArrayList<ContentVirtualArray> foreignContentVAs) {
 
 		ContentGroupList groupList = contentVA.getGroupList();
 		// FIXME we shouldn't do that here
@@ -936,12 +939,15 @@ public class HeatMapWrapper {
 		selectedGroups.clear();
 		contentVA.setGroupList(contentGroupList);
 		contentGroupList.updateGroupInfo();
-		for (Group group : contentGroupList) {
+		for (int i = 0; i <= 10 && i < contentGroupList.size(); i++) {
+			Group group = contentGroupList.get(i);
 			group.setSelectionType(SelectionType.SELECTION);
 			selectedGroups.put(group, null);
 		}
 		setHeatMapsInactive();
 		clearDeselected();
+
+		overview.updateHeatMapTextures(contentSelectionManager);
 
 		isInitialized = false;
 		isNewSelection = true;
@@ -953,6 +959,10 @@ public class HeatMapWrapper {
 
 	public void setLayout(AHeatMapLayout layout) {
 		this.layout = layout;
+	}
+
+	public AGLView getView() {
+		return glParentView;
 	}
 
 }

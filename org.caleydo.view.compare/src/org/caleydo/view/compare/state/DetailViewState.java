@@ -306,7 +306,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 		Vec2f leftPos;
 
-		Group group = heatMapWrapper.getGroupFromContentIndex(heatMapWrapper
+		Group group = heatMapWrapper.getSelectedGroupFromContentIndex(heatMapWrapper
 				.getContentVA().indexOf(firstDetailContentID));
 		int overviewFirstContentIndex = group.getStartIndex();
 		int overviewLastContentIndex = group.getEndIndex();
@@ -468,7 +468,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 		int detailContentIndex = detailVA.indexOf(contentID);
 		int overviewContentIndex = overviewVA.indexOf(contentID);
-		Group group = heatMapWrapper.getGroupFromContentIndex(overviewVA
+		Group group = heatMapWrapper.getSelectedGroupFromContentIndex(overviewVA
 				.indexOf(contentID));
 		overviewContentIndex = overviewContentIndex - group.getStartIndex();
 

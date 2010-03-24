@@ -29,7 +29,7 @@ public class HeatMapOverview {
 
 	private AHeatMapLayout layout;
 	private VerticalSlider slider;
-	private ArrayList<Texture> overviewTextures;
+	private ArrayList<ArrayList<Texture>> overviewTextures;
 	private ISet set;
 	private ContentVirtualArray contentVA;
 	private StorageVirtualArray storageVA;
@@ -39,6 +39,7 @@ public class HeatMapOverview {
 		this.layout = layout;
 		slider = new VerticalSlider(layout);
 		selectedGroups = new HashMap<Group, Boolean>();
+		overviewTextures = new ArrayList<ArrayList<Texture>>();
 	}
 
 	public void draw(GL gl, TextureManager textureManager,
@@ -244,16 +245,16 @@ public class HeatMapOverview {
 		this.set = set;
 		contentVA = set.getContentVA(ContentVAType.CONTENT);
 		storageVA = set.getStorageVA(StorageVAType.STORAGE);
-		overviewTextures = HeatMapUtil.createHeatMapTextures(set, contentVA,
-				storageVA, null);
+		
+		updateHeatMapTextures(null);
 	}
 
 	public HashMap<Group, Boolean> getSelectedGroups() {
 		return selectedGroups;
 	}
 
-	public ArrayList<Texture> getHeatMapTextures() {
-		return overviewTextures;
+	public ArrayList<Texture> getClusterTextures(int index) {
+		return overviewTextures.get(index);
 	}
 
 	public ContentVirtualArray getContentVA() {
@@ -266,8 +267,19 @@ public class HeatMapOverview {
 
 	public void updateHeatMapTextures(
 			ContentSelectionManager contentSelectionManager) {
-		overviewTextures = HeatMapUtil.createHeatMapTextures(set, contentVA,
-				storageVA, contentSelectionManager);
+		overviewTextures.clear();
+		ContentGroupList groupList = contentVA.getGroupList();
+		for(Group group : groupList) {
+			ContentVirtualArray clusterVA = new ContentVirtualArray();
+
+			for (int i = group.getStartIndex(); i <= group.getEndIndex(); i++) {
+				if (i >= contentVA.size())
+					break;
+				clusterVA.append(contentVA.get(i));
+			}
+			overviewTextures.add(HeatMapUtil.createHeatMapTextures(set, clusterVA,
+					storageVA, contentSelectionManager));
+		}
 	}
 
 	public void setLayout(AHeatMapLayout layout) {
