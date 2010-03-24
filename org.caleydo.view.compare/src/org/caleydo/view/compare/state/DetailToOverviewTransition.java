@@ -149,8 +149,10 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 			} else {
 				layouts.add(focusLayouts.get(i - indexOffset));
 			}
-			heatMapWrappers.get(i).setLayout(layouts.get(i));
-			layouts.get(i).setHeatMapWrapper(heatMapWrappers.get(i));
+			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
+			heatMapWrapper.setLayout(layouts.get(i));
+			layouts.get(i).setHeatMapWrapper(heatMapWrapper);
+			setsInFocus.add(heatMapWrapper.getSet());
 		}
 		
 		
