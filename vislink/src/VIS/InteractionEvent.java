@@ -17,10 +17,12 @@ public class InteractionEvent extends Ice.ObjectImpl
     {
     }
 
-    public InteractionEvent(InteractionEventType eventType, String pointerId)
+    public InteractionEvent(InteractionEventType eventType, String pointerId, int pointerX, int pointerY)
     {
         this.eventType = eventType;
         this.pointerId = pointerId;
+        this.pointerX = pointerX;
+        this.pointerY = pointerY;
     }
 
     private static class __F implements Ice.ObjectFactory
@@ -100,6 +102,8 @@ public class InteractionEvent extends Ice.ObjectImpl
         __os.startWriteSlice();
         eventType.__write(__os);
         __os.writeString(pointerId);
+        __os.writeInt(pointerX);
+        __os.writeInt(pointerY);
         __os.endWriteSlice();
         super.__write(__os);
     }
@@ -114,6 +118,8 @@ public class InteractionEvent extends Ice.ObjectImpl
         __is.startReadSlice();
         eventType = InteractionEventType.__read(__is);
         pointerId = __is.readString();
+        pointerX = __is.readInt();
+        pointerY = __is.readInt();
         __is.endReadSlice();
         super.__read(__is, true);
     }
@@ -137,4 +143,8 @@ public class InteractionEvent extends Ice.ObjectImpl
     public InteractionEventType eventType;
 
     public String pointerId;
+
+    public int pointerX;
+
+    public int pointerY;
 }

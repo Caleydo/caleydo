@@ -18,10 +18,12 @@ public class MouseOverCollaboratorSelectionEvent extends InteractionEvent
         super();
     }
 
-    public MouseOverCollaboratorSelectionEvent(InteractionEventType eventType, String pointerId, String ownerPointerId)
+    public MouseOverCollaboratorSelectionEvent(InteractionEventType eventType, String pointerId, int pointerX, int pointerY, String ownerPointerId, AccessInformation pointerAccessInformation, int srcApp)
     {
-        super(eventType, pointerId);
+        super(eventType, pointerId, pointerX, pointerY);
         this.ownerPointerId = ownerPointerId;
+        this.pointerAccessInformation = pointerAccessInformation;
+        this.srcApp = srcApp;
     }
 
     private static class __F implements Ice.ObjectFactory
@@ -101,6 +103,8 @@ public class MouseOverCollaboratorSelectionEvent extends InteractionEvent
         __os.writeTypeId(ice_staticId());
         __os.startWriteSlice();
         __os.writeString(ownerPointerId);
+        pointerAccessInformation.__write(__os);
+        __os.writeInt(srcApp);
         __os.endWriteSlice();
         super.__write(__os);
     }
@@ -114,6 +118,9 @@ public class MouseOverCollaboratorSelectionEvent extends InteractionEvent
         }
         __is.startReadSlice();
         ownerPointerId = __is.readString();
+        pointerAccessInformation = new AccessInformation();
+        pointerAccessInformation.__read(__is);
+        srcApp = __is.readInt();
         __is.endReadSlice();
         super.__read(__is, true);
     }
@@ -135,4 +142,8 @@ public class MouseOverCollaboratorSelectionEvent extends InteractionEvent
     }
 
     public String ownerPointerId;
+
+    public AccessInformation pointerAccessInformation;
+
+    public int srcApp;
 }

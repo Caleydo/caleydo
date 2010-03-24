@@ -18,9 +18,9 @@ public class MouseOverSelectionEvent extends InteractionEvent
         super();
     }
 
-    public MouseOverSelectionEvent(InteractionEventType eventType, String pointerId, Selection selectionElement)
+    public MouseOverSelectionEvent(InteractionEventType eventType, String pointerId, int pointerX, int pointerY, Selection selectionElement)
     {
-        super(eventType, pointerId);
+        super(eventType, pointerId, pointerX, pointerY);
         this.selectionElement = selectionElement;
     }
 

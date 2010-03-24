@@ -11,6 +11,9 @@ public class UserSelection {
 	/** The associated user. */
 	private String pointerID; 
 	
+	/** Whether the selection is the source selection of the user. */
+	private boolean source; 
+	
 	/** The reported bounding box list. */
 	private BoundingBoxList bbl; 
 	
@@ -27,8 +30,17 @@ public class UserSelection {
 		this.reported = false; 
 		this.rendered = false; 
 		this.bbl = null; 
+		this.source = false; 
 	}
 	
+	public boolean isSource() {
+		return source;
+	}
+
+	public void setSource(boolean source) {
+		this.source = source;
+	}
+
 	public Application getApplication(){
 		return this.app; 
 	}

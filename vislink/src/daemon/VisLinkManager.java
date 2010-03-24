@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
 import java.util.Map.Entry;
 
 import javax.xml.bind.JAXBContext;
@@ -185,6 +186,80 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			}
 		}
 		
+		checkRender(pointerID);
+	}
+	
+	public void reportOneShot(User user, User owner, AccessInformation accessInformation, int srcAppID){
+		System.out.println("VisLinkManager: reportOneShot (user: " + user.getPointerID() + ", owner: " + owner.getPointerID() + ")"); 
+		
+		// check if the user currently has one-shot links on (only one set allowed at the moment)
+		if(user.getCurrentRenderType() == VisualLinksRenderType.RenderTypeOneShot){
+			System.out.println("User is currently having one-shot links --> ignoring..."); 
+			return; 
+		}
+		
+		// set the current render type 
+		user.setCurrentRenderType(VisualLinksRenderType.RenderTypeOneShot); 
+		
+		// retrieve selection ID of owner 
+		String selectionID = owner.getPrevSelectionID(); 
+		
+		// retrieve access information for user 
+		int[] targetApplicationIds = accessInformation.applicationIds; 
+		String pointerID = user.getPointerID(); 
+		
+		// push selections but do not save user selection 
+		for (int appId : targetApplicationIds) {
+			Application app = applicationManager.getApplicationsById().get(appId);
+			// check whether this is the source application
+			boolean isSource = false; 
+			if(appId == srcAppID){
+				System.out.println(app.getName() + " is source");
+				isSource = true; 
+			}
+			// TODO: have to do something with this information 
+			// add selection 
+			this.selectionManager.addSelection(app, selectionID, pointerID, isSource); 
+		}
+		
+		// generate timeout handling 
+		TimeoutEvent event = new OneShotTimeoutEvent(user); 
+		TimeoutHandler timeoutHandler = new TimeoutHandler(event, this); 
+		Timer timer = new Timer(); 
+		timer.schedule(timeoutHandler, OneShotTimeoutEvent.ONE_SHOT_DISPLAY_TIME); 
+		
+		checkRender(pointerID);
+	}
+	
+	public void releaseOneShot(User user){
+		System.out.println("VisLinkManager: releaseOneShot (user: " + user.getPointerID()); 
+		
+		// check which mode the user is currently in 
+		if(user.getCurrentRenderType() != VisualLinksRenderType.RenderTypeOneShot){
+			System.out.println("not rendering one-shot links --> ignoring ..."); 
+			return; 
+		}
+		
+		// reset state 
+		user.setCurrentRenderType(VisualLinksRenderType.RenderTypeNormal); 
+		
+		// restore previous selection ID 
+		String selectionID = user.getPrevSelectionID(); 
+		
+		// set current mouse pointer id 
+		String pointerID = user.getPointerID(); 
+
+
+		System.out.println("Affected user (" + user.getPointerID() 
+				+ ") had previous selection id " + selectionID); 
+
+		// request visual links for all windows associated with the user 
+		List<Application> appList = user.getAllPrevApps(); 
+		// we need to wait for all user's applications 
+		for( Application userApp : appList ){
+			this.selectionManager.addSelection(userApp, selectionID, pointerID); 
+		}
+
 		checkRender(pointerID);
 	}
 

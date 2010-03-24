@@ -33,6 +33,14 @@ public class VisLinkManagerIceInterface extends _VisManagerIDisp{
 
 	public void reportMouseOverCollaboratorSelectionEvent(MouseOverCollaboratorSelectionEvent event){
 		System.out.println("Receiving mouse over collaborator selection event for owner " + event.ownerPointerId); 
+		
+		// get involved users 
+		UserManager userManager = manager.getUserManager(); 
+		User user = userManager.getUser(event.pointerId); 
+		User owner = userManager.getUser(event.ownerPointerId); 
+		
+		// report one-shot request to visual links manager 
+		manager.reportOneShot(user, owner, event.pointerAccessInformation, event.srcApp); 
 	}
 
 

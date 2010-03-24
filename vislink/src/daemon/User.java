@@ -3,6 +3,8 @@ package daemon;
 import java.util.ArrayList;
 import java.util.List;
 
+import VIS.VisualLinksRenderType;
+
 public class User {
 	
 	/** Each user is uniquely associated with a pointer ID in Deskotheque. */
@@ -17,13 +19,25 @@ public class User {
 	/** The applications which have previously served as target for the user. */
 	private List<Application> prevTargetApps; 
 	
+	/** Describes how the visual links are currently rendered for the user. */
+	private VisualLinksRenderType currentRenderType; 
+	
 	public User(String pointerID){
 		this.pointerID = pointerID; 
 		this.prevSelectionID = ""; 
 		this.prevSrcApp = null; 
 		this.prevTargetApps = new ArrayList<Application>(); 
+		this.currentRenderType = VisualLinksRenderType.RenderTypeNormal; 
 	}
 	
+	public VisualLinksRenderType getCurrentRenderType() {
+		return currentRenderType;
+	}
+
+	public void setCurrentRenderType(VisualLinksRenderType currentRenderType) {
+		this.currentRenderType = currentRenderType;
+	}
+
 	public String getPointerID(){
 		return this.pointerID; 
 	}
