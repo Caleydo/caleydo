@@ -47,7 +47,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 	private SelectionType activeHeatMapSelectionType;
 
 	private float xOffset = 0;
-	private ICompareConnectionRenderer compareConnectionRenderer;
 
 	private ArrayList<DetailBand> detailBands;
 	private DetailBand activeBand;
@@ -65,7 +64,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 				glMouseListener, setBar, renderCommandFactory, dataDomain,
 				useCase, dragAndDropController, compareViewStateController);
 		this.setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.0f));
-		compareConnectionRenderer = new CompareConnectionBandRenderer();
 		numSetsInFocus = 2;
 		indexOfHeatMapWrapperWithDendrogram = -1;
 	}
@@ -129,7 +127,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 		setBar.render(gl);
 
 		if (heatMapWrappers.get(0).getSelectedGroups().isEmpty())
-			renderGroupBand(gl, heatMapWrappers.get(0), heatMapWrappers.get(1));
+			renderOverviewBundling(gl, heatMapWrappers.get(0), heatMapWrappers.get(1));
 		else {
 			renderOverviewToDetailRelations(gl);
 			renderDetailRelations(gl);
@@ -179,116 +177,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 				renderSingleOverviewToDetailRelation(gl, heatMap,
 						heatMapWrapper);
 		}
-	}
-
-	private void renderDetailBand(GL gl, DetailBand detailBand,
-			boolean highlight) {
-
-		float spacing = 0.01f;
-
-		ArrayList<Integer> contentIDs = detailBand.getContentIDs();
-
-		int startContentID = contentIDs.get(0);
-		int endContentID = contentIDs.get(contentIDs.size() - 1);
-
-		HeatMapWrapper leftHeatMapWrapper = heatMapWrappers.get(0);
-		HeatMapWrapper rightHeatMapWrapper = heatMapWrappers.get(1);
-
-		float leftTopHeatMapElementOffset = detailBand.getLeftHeatMap()
-				.getFieldHeight(startContentID)
-				/ 2f - spacing;
-		float leftBottomHeatMapElementOffset = detailBand.getLeftHeatMap()
-				.getFieldHeight(endContentID)
-				/ 2f - spacing;
-		float rightTopHeatMapElementOffset = detailBand.getRightHeatMap()
-				.getFieldHeight(startContentID)
-				/ 2f - spacing;
-		float rightBottomHeatMapElementOffset = detailBand.getRightHeatMap()
-				.getFieldHeight(endContentID)
-				/ 2f - spacing;
-
-		Vec2f leftPos = leftHeatMapWrapper
-				.getRightDetailLinkPositionFromContentID(startContentID);
-		if (leftPos == null)
-			return;
-
-		Vec2f rightPos = rightHeatMapWrapper
-				.getLeftDetailLinkPositionFromContentID(startContentID);
-		if (rightPos == null)
-			return;
-
-		xOffset = -(rightPos.x() - leftPos.x()) / 1.5f;
-
-		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
-		inputPoints.add(new Vec3f(leftPos.x(), leftPos.y()
-				+ leftTopHeatMapElementOffset, 0));
-		inputPoints.add(new Vec3f(rightPos.x() + xOffset, leftPos.y()
-				+ leftTopHeatMapElementOffset, 0));
-		inputPoints.add(new Vec3f(rightPos.x() + xOffset / 3f, rightPos.y()
-				+ rightTopHeatMapElementOffset, 0));
-		inputPoints.add(new Vec3f(rightPos.x(), rightPos.y()
-				+ rightTopHeatMapElementOffset, 0));
-
-		NURBSCurve curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
-		ArrayList<Vec3f> outputPoints = curve.getCurvePoints();
-
-		// Band border
-		gl.glLineWidth(2);
-		gl.glColor4f(0, 0, 0, 0.6f);
-		gl.glBegin(GL.GL_LINE_STRIP);
-		for (int i = 0; i < outputPoints.size(); i++)
-			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), 0f);
-		gl.glEnd();
-
-		leftPos = leftHeatMapWrapper
-				.getRightDetailLinkPositionFromContentID(endContentID);
-		if (leftPos == null)
-			return;
-
-		rightPos = rightHeatMapWrapper
-				.getLeftDetailLinkPositionFromContentID(endContentID);
-		if (rightPos == null)
-			return;
-
-		inputPoints = new ArrayList<Vec3f>();
-		inputPoints.add(new Vec3f(leftPos.x(), leftPos.y()
-				- leftBottomHeatMapElementOffset, 0));
-		inputPoints.add(new Vec3f(rightPos.x() + xOffset, leftPos.y()
-				- leftBottomHeatMapElementOffset, 0));
-		inputPoints.add(new Vec3f(rightPos.x() + xOffset / 3f, rightPos.y()
-				- rightBottomHeatMapElementOffset, 0));
-		inputPoints.add(new Vec3f(rightPos.x(), rightPos.y()
-				- rightBottomHeatMapElementOffset, 0));
-
-		curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
-		ArrayList<Vec3f> points = curve.getCurvePoints();
-
-		// Reverse point order
-		for (int i = points.size() - 1; i >= 0; i--) {
-			outputPoints.add(points.get(i));
-		}
-
-		// Band border
-		gl.glLineWidth(2);
-		gl.glColor4f(0, 0, 0, 0.6f);
-		gl.glBegin(GL.GL_LINE_STRIP);
-		for (int i = 0; i < points.size(); i++)
-			gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0f);
-		gl.glEnd();
-
-		if (highlight) {
-			gl.glColor4f(0.3f, 0.3f, 0.3f, 0.95f);
-
-			for (Vec3f point : outputPoints) {
-				point.setZ(0.2f);
-			}
-		}
-		// } else if (activeGroup)
-		// gl.glColor4f(0f, 0f, 0f, 0.4f);
-		else
-			gl.glColor4f(0f, 0f, 0f, 0.4f);
-
-		compareConnectionRenderer.render(gl, outputPoints);
 	}
 
 	private void renderOverviewToDetailBand(GL gl, GLHeatMap heatMap,
@@ -510,11 +398,11 @@ public class DetailViewState extends ACompareViewStateStatic {
 			if (contentIDs.size() < 2 || detailBand == activeBand)
 				continue;
 
-			renderDetailBand(gl, detailBand, false);
+			renderSingleDetailBand(gl, detailBand, false);
 		}
 
 		if (activeBand != null)
-			renderDetailBand(gl, activeBand, true);
+			renderSingleDetailBand(gl, activeBand, true);
 		// }
 
 		// Iterate over all detail content VAs on the left

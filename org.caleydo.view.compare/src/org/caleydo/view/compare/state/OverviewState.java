@@ -41,8 +41,6 @@ public class OverviewState extends ACompareViewStateStatic {
 	private static final float HEATMAP_WRAPPER_OVERVIEW_GAP_PORTION = 0.8f;
 	private static final float HEATMAP_WRAPPER_SPACE_PORTION = 0.7f;
 
-	private ICompareConnectionRenderer compareConnectionRenderer;
-
 	public OverviewState(GLCompare view, int viewID, TextRenderer textRenderer,
 			TextureManager textureManager, PickingManager pickingManager,
 			GLMouseListener glMouseListener, SetBar setBar,
@@ -54,7 +52,6 @@ public class OverviewState extends ACompareViewStateStatic {
 				glMouseListener, setBar, renderCommandFactory, dataDomain, useCase,
 				dragAndDropController, compareViewStateController);
 		this.setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.5f));
-		compareConnectionRenderer = new CompareConnectionBandRenderer();
 		numSetsInFocus = 4;
 	}
 
@@ -89,7 +86,7 @@ public class OverviewState extends ACompareViewStateStatic {
 			// heatMapWrappers
 			// .get(i + 1));
 
-			renderGroupBand(gl, heatMapWrappers.get(i), heatMapWrappers.get(i + 1));
+			renderOverviewBundling(gl, heatMapWrappers.get(i), heatMapWrappers.get(i + 1));
 		}
 	}
 
