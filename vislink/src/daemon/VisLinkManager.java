@@ -96,13 +96,13 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			
 			// request visual links for source window 
 			//app.setSendId(selectionId); 
-			this.selectionManager.addSelection(app, selectionId, pointerID); 
+			this.selectionManager.addSelection(app, selectionId, pointerID, true); 
 			
 			// request visual links for target window 
 			for (int appId : targetApplicationIds) {
 				Application currentApp = applicationManager.getApplicationsById().get(appId);
 				//currentApp.setSendId(selectionId);
-				this.selectionManager.addSelection(currentApp, selectionId, pointerID); 
+				this.selectionManager.addSelection(currentApp, selectionId, pointerID, false); 
 			}
 			
 			checkRender(pointerID);
@@ -132,8 +132,12 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 				// we need to wait for all user's applications 
 //				this.numApps = appList.size(); 
 				for( Application userApp : appList ){
+					boolean isSource = false; 
+					if(userApp == otherUser.getPrevSrcApp()){
+						isSource = true; 
+					}
 					//userApp.setSendId(selectionId); 
-					this.selectionManager.addSelection(userApp, selectionId, pointerID); 
+					this.selectionManager.addSelection(userApp, selectionId, pointerID, isSource); 
 				}
 
 				checkRender(pointerID);
@@ -157,7 +161,8 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		int[] targetApplicationIds = accessInformation.applicationIds;
 		String pointerID = accessInformation.pointerId;
 		
-		this.selectionManager.addSelection(app, selectionId, pointerID); 
+		// save selection as source selection 
+		this.selectionManager.addSelection(app, selectionId, pointerID, true); 
 		
 		UserSelection selection = this.selectionManager.getSelection(app, pointerID); 
 		
@@ -182,7 +187,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			Application currentApp = applicationManager.getApplicationsById().get(appId);
 			if (currentApp.getId() != app.getId() || boundingBoxListXML == null) {
 				//currentApp.setSendId(selectionId);
-				this.selectionManager.addSelection(currentApp, selectionId, pointerID); 
+				this.selectionManager.addSelection(currentApp, selectionId, pointerID, false); 
 			}
 		}
 		
@@ -257,7 +262,11 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		List<Application> appList = user.getAllPrevApps(); 
 		// we need to wait for all user's applications 
 		for( Application userApp : appList ){
-			this.selectionManager.addSelection(userApp, selectionID, pointerID); 
+			boolean isSource = false; 
+			if(userApp == user.getPrevSrcApp()){
+				isSource = true; 
+			}
+			this.selectionManager.addSelection(userApp, selectionID, pointerID, isSource); 
 		}
 
 		checkRender(pointerID);
@@ -287,7 +296,12 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		if(bbl.getList().size() > 0){
 			System.out.println("reportVisualLinks(): add target application " + appName +" for " + pointerID); 
 			this.userManager.getUser(pointerID).addPrevTargetApp(app); 
+			
+			// HACK: set source selection based on stored selection 
+			bbl.list.get(0).setSource(selection.isSource()); 
 		}
+		
+	
 		
 		selection.setBoundingBoxList(bbl); 
 		//app2bbl.put(app.getId(), bbl);
@@ -534,24 +548,25 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
     
     private void renderWithIce(HashMap<Integer, BoundingBoxList> app2bbs, String pointerID) {
     	ArrayList<SelectionGroup> selectionGroupList = new ArrayList<SelectionGroup>();
+    	User user = this.userManager.getUser(pointerID); 
     	
     	for (Entry<Integer, BoundingBoxList> e : app2bbs.entrySet()) {
         	SelectionGroup selectionGroup = new SelectionGroup();
         	
         	// check whether this is the source selection group 
-        	User user = this.userManager.getUser(pointerID); 
-        	int srcAppID = -1; 
-        	if(user.getPrevSrcApp() != null){
-        		srcAppID = user.getPrevSrcApp().getId(); 
-        	}
+        	
+//        	int srcAppID = -1; 
+//        	if(user.getPrevSrcApp() != null){
+//        		srcAppID = user.getPrevSrcApp().getId(); 
+//        	}
         	
         	selectionGroup.selections = new Selection[e.getValue().getList().size()];
         	ArrayList<Selection> selectionList = new ArrayList<Selection>();
     		for (BoundingBox bb : e.getValue().getList()) {
-    			// HACK! 
-    			if(e.getKey() == srcAppID){
-        			bb.setSource(true); 
-        		}
+//    			// HACK! 
+//    			if(e.getKey() == srcAppID){
+//        			bb.setSource(true); 
+//        		}
         		Selection selection = new Selection(bb.getX(), bb.getY(), bb.getWidth(), bb.getHeight(),
         				new Color4f(-1.0f, 0, 0, 0), bb.isSource());
         		selectionList.add(selection);
@@ -565,7 +580,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
     	selectionGroupList.toArray(groups);
     	SelectionReport report = new SelectionReport();
     	report.pointerId = pointerID; 
-    	report.renderType = VisualLinksRenderType.RenderTypeNormal; 
+    	report.renderType = user.getCurrentRenderType(); 
     	report.selectionGroups = groups; 
     	rendererPrx.renderAllLinks(report);
     }

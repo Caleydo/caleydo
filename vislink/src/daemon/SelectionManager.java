@@ -15,9 +15,9 @@ public class SelectionManager {
 	
 	/// GENERAL ACCESS 
 	
-	public void addSelection(Application app, String selectionID, String pointerID){
-		this.addSelection(app, selectionID, pointerID, false); 
-	}
+//	public void addSelection(Application app, String selectionID, String pointerID){
+//		this.addSelection(app, selectionID, pointerID, false); 
+//	}
 	
 	public void addSelection(Application app, String selectionID, String pointerID, boolean source){
 		UserSelection selection = new UserSelection(app, selectionID, pointerID); 
