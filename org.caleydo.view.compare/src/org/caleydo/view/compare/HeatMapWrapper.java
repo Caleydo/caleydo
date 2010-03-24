@@ -187,7 +187,14 @@ public class HeatMapWrapper {
 		contentSelectionManager.clearSelections();
 		contentSelectionManager.setVA(contentVA);
 		ContentGroupList contentGroupList = contentVA.getGroupList();
-		contentGroupList.updateGroupInfo();
+		
+		//FIXME
+		try {
+			contentGroupList.updateGroupInfo();
+		} catch (Exception e) {
+			System.out.println("NPE when trying to update group info in heatmap wrapper!!");
+		}
+		
 		for (Group group : contentGroupList) {
 			group.setSelectionType(SelectionType.NORMAL);
 		}
@@ -377,7 +384,7 @@ public class HeatMapWrapper {
 
 	}
 
-	public Vec2f getLeftOverviewLinkPositionFromIndex(int contentIndex) {
+	public Vec2f getLeftOverviewLinkPositionFromContentIndex(int contentIndex) {
 
 		Vec3f overviewPosition = layout.getOverviewHeatMapPosition();
 
@@ -392,7 +399,7 @@ public class HeatMapWrapper {
 		if (contentVA.indexOf(contentID) == -1)
 			return null;
 
-		return getLeftOverviewLinkPositionFromIndex(contentIndex);
+		return getLeftOverviewLinkPositionFromContentIndex(contentIndex);
 	}
 
 	public Vec2f getRightOverviewLinkPositionFromContentIndex(int contentIndex) {

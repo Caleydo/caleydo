@@ -86,7 +86,13 @@ public class OverviewState extends ACompareViewStateStatic {
 			// heatMapWrappers
 			// .get(i + 1));
 
-			renderOverviewBundling(gl, heatMapWrappers.get(i), heatMapWrappers.get(i + 1));
+			renderIndiviudalLineRelations(gl, heatMapWrappers.get(i), heatMapWrappers.get(i+1));
+			
+			if (bandBundlingActive) {
+				
+				renderBandRelations(gl, heatMapWrappers.get(i), true);
+				renderBandRelations(gl, heatMapWrappers.get(i+1), false);
+			}
 		}
 	}
 
