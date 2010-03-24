@@ -44,12 +44,14 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.rcp.action.toolbar.view.StartClusteringAction;
+import org.caleydo.view.compare.event.UseBandBundlingEvent;
 import org.caleydo.view.compare.event.UseSortingEvent;
 import org.caleydo.view.compare.event.UseZoomEvent;
 import org.caleydo.view.compare.listener.AdjustPValueOfSetEventListener;
 import org.caleydo.view.compare.listener.CompareGroupsEventListener;
 import org.caleydo.view.compare.listener.DuplicateSetBarItemEventListener;
 import org.caleydo.view.compare.listener.NewContentGroupInfoEventListener;
+import org.caleydo.view.compare.listener.UseBandBundlingListener;
 import org.caleydo.view.compare.listener.UseSortingListener;
 import org.caleydo.view.compare.listener.UseZoomListener;
 import org.caleydo.view.compare.state.CompareViewStateController;
@@ -82,6 +84,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	private ReplaceContentVAListener replaceContentVAListener;
 	private UseSortingListener useSortingListener;
 	private UseZoomListener useZoomListener;
+	private UseBandBundlingListener useBandBundlingListener;
 	private NewContentGroupInfoEventListener newContentGroupInfoEventListener;
 
 	private boolean isControlPressed;
@@ -350,6 +353,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		useZoomListener = new UseZoomListener();
 		useZoomListener.setHandler(this);
 		eventPublisher.addListener(UseZoomEvent.class, useZoomListener);
+		
+		useBandBundlingListener = new UseBandBundlingListener();
+		useBandBundlingListener.setHandler(this);
+		eventPublisher.addListener(UseBandBundlingEvent.class, useBandBundlingListener);
 
 		newContentGroupInfoEventListener = new NewContentGroupInfoEventListener();
 		newContentGroupInfoEventListener.setHandler(this);
@@ -396,6 +403,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			useZoomListener = null;
 		}
 
+		if (useBandBundlingListener != null) {
+			eventPublisher.removeListener(useBandBundlingListener);
+			useBandBundlingListener = null;
+		}
+		
 		if (newContentGroupInfoEventListener != null) {
 			eventPublisher.removeListener(newContentGroupInfoEventListener);
 			newContentGroupInfoEventListener = null;
@@ -511,5 +523,9 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	public void handleContentGroupListUpdate(int setID, ContentGroupList contentGroupList) {
 		compareViewStateController.handleContentGroupListUpdate(setID, contentGroupList);
+	}
+
+	public void setBandBundling(boolean bandBundlingActive) {
+		compareViewStateController.setBandBundling(bandBundlingActive);
 	}
 }

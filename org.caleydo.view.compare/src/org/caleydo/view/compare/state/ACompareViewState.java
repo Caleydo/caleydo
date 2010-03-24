@@ -80,6 +80,8 @@ public abstract class ACompareViewState {
 	Tree<ClusterNode> rightTree;
 
 	boolean renderPseudoHierarchy = false;
+	
+	boolean bandBundlingActive = false;
 
 	public ACompareViewState(GLCompare view, int viewID, TextRenderer textRenderer,
 			TextureManager textureManager, PickingManager pickingManager,
@@ -371,40 +373,126 @@ public abstract class ACompareViewState {
 		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
 
-		ContentVirtualArray contentVALeft = leftHeatMapWrapper.getSet().getContentVA(
-				ContentVAType.CONTENT);
+//		ContentVirtualArray contentVALeft = leftHeatMapWrapper.getSet().getContentVA(
+//				ContentVAType.CONTENT);
+//
+//		for (Integer contentID : contentVALeft) {
+//			// renderSingleHierarchyRelation(gl, leftHeatMapWrapper,
+//			// rightHeatMapWrapper,
+//			// contentID);
+//
+//			renderStraightLineRelation(gl, leftHeatMapWrapper, rightHeatMapWrapper,
+//					contentID);
+//		}
+		
+		renderGroupBand(gl, leftHeatMapWrapper, rightHeatMapWrapper);
+	}
+	
+	public void renderGroupBand(GL gl, HeatMapWrapper leftHeatMapWrapper,
+			HeatMapWrapper rightHeatMapWrapper) {
 
-		// ArrayList<Integer> selectionTypeSortedPoints = new
-		// ArrayList<Integer>();
-		// for (Integer contentID : contentVALeft) {
-		//
-		// if
-		// (leftHeatMapWrapper.getContentSelectionManager().getSelectionTypes(
-		// contentID).get(0) == SelectionType.MOUSE_OVER
-		// || leftHeatMapWrapper.getContentSelectionManager().getSelectionTypes(
-		// contentID).get(0) == SelectionType.SELECTION) {
-		// selectionTypeSortedPoints.add(0, contentID);
-		//
-		// } else {
-		// selectionTypeSortedPoints.add(contentID);
-		// }
-		// }
-		//		
-		// for (int index = selectionTypeSortedPoints.size() -1; index >= 0;
-		// index--) {
-		// renderSingleHierarchyRelation(gl, leftHeatMapWrapper,
-		// rightHeatMapWrapper,
-		// selectionTypeSortedPoints.get(index));
-		// }
+		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
+		
+		ContentVirtualArray overview = leftHeatMapWrapper.getContentVA().clone();
+		ContentVirtualArray overviewRight = rightHeatMapWrapper.getContentVA().clone();
 
-		for (Integer contentID : contentVALeft) {
-			// renderSingleHierarchyRelation(gl, leftHeatMapWrapper,
-			// rightHeatMapWrapper,
-			// contentID);
+		float overviewDistance = rightHeatMapWrapper
+				.getLeftOverviewLinkPositionFromIndex(0).x()
+				- leftHeatMapWrapper.getLeftOverviewLinkPositionFromIndex(0).x();
+		float firstLevelOffset = overviewDistance / 5;
 
-			renderStraightLineRelation(gl, leftHeatMapWrapper, rightHeatMapWrapper,
-					contentID);
-		}
+		float sampleHeight = leftHeatMapWrapper.getLayout().getOverviewHeight()
+				/ overview.size();
+		
+		float sampleHeightIncludingSpacing = sampleHeight * 0.8f;
+		float groupPadding = 0;
+		float bundlingCorrectionOffsetX = overviewDistance / 18f;
+		
+		float top = leftHeatMapWrapper.getLayout().getOverviewHeatMapPosition().y()
+				+ leftHeatMapWrapper.getLayout().getOverviewHeight();
+
+		leftHeatMapWrapper.sort(rightHeatMapWrapper.getContentVAsOfHeatMaps(false),
+				false, false);
+		rightHeatMapWrapper.sort(leftHeatMapWrapper.getContentVAsOfHeatMaps(false),
+				false, false);
+
+		for (ContentVirtualArray groupVA : leftHeatMapWrapper
+				.getContentVAsOfHeatMaps(false)) {
+
+			// Is there a better way to find the y pos of the cluster beginning
+			float groupTopY = 0;
+			for (Integer overviewContentID : overview) {
+				if (groupVA.containsElement(overviewContentID) == 0)
+					continue;
+
+				groupPadding = groupVA.size() * sampleHeight * 0.1f;
+				groupTopY = overview.indexOf(overviewContentID) * sampleHeight + groupPadding;
+				break;
+			}
+
+			for (Integer contentID : groupVA) {
+
+				points.clear();
+				
+				float overviewX = leftHeatMapWrapper
+						.getRightOverviewLinkPositionFromContentID(contentID).x();
+				float overviewY = leftHeatMapWrapper
+						.getRightOverviewLinkPositionFromContentID(contentID).y();
+
+				float sortedY = top - groupTopY - groupVA.indexOf(contentID)
+						* sampleHeightIncludingSpacing;
+
+				setRelationColor(gl, leftHeatMapWrapper, contentID);
+
+				points.add(new Vec3f(overviewX, overviewY, 0));
+				points.add(new Vec3f(overviewX + bundlingCorrectionOffsetX, overviewY, 0));
+				points.add(new Vec3f(overviewX + firstLevelOffset - bundlingCorrectionOffsetX, sortedY, 0));	
+				points.add(new Vec3f(overviewX + firstLevelOffset, sortedY, 0));	
+
+				ArrayList<ContentVirtualArray> rightContentVAs = rightHeatMapWrapper
+						.getContentVAsOfHeatMaps(false);
+
+				for (int rightClusterIndex = 0; rightClusterIndex < rightContentVAs
+						.size(); rightClusterIndex++) {
+
+					ContentVirtualArray rightGroupVA = rightContentVAs.get(rightClusterIndex);
+					
+					if (rightGroupVA.containsElement(contentID) == 0)
+						continue;
+
+					// Is there a better way to find the y pos of the cluster
+					// beginning
+					float rightGroupTopY = 0;
+					for (Integer overviewRightContentID : overviewRight) {
+						
+						if (rightGroupVA.containsElement(
+								overviewRightContentID) == 0)
+							continue;
+
+						groupPadding = rightGroupVA.size() * sampleHeight * 0.1f;
+						rightGroupTopY = overviewRight.indexOf(overviewRightContentID)
+								* sampleHeight + groupPadding;
+						break;
+					}
+
+					float overviewRightX = rightHeatMapWrapper
+							.getLeftOverviewLinkPositionFromContentID(contentID).x();
+					float overviewRightY = rightHeatMapWrapper
+							.getLeftOverviewLinkPositionFromContentID(contentID).y();
+
+					float sortedRightY = top - rightGroupTopY
+							- rightGroupVA.indexOf(contentID)
+							* sampleHeightIncludingSpacing;
+
+					points.add(new Vec3f(overviewRightX - firstLevelOffset, sortedRightY, 0));
+					points.add(new Vec3f(overviewRightX - firstLevelOffset + bundlingCorrectionOffsetX, sortedRightY, 0));
+					points.add(new Vec3f(overviewRightX - bundlingCorrectionOffsetX, overviewRightY, 0));
+					points.add(new Vec3f(overviewRightX, overviewRightY, 0));					
+				}
+			
+				renderSingleCurve(gl, points, contentID);
+			}
+		}		
 	}
 
 	private void renderSingleHierarchyRelation(GL gl, HeatMapWrapper leftHeatMapWrapper,
@@ -773,5 +861,9 @@ public abstract class ACompareViewState {
 
 	protected ArrayList<AHeatMapLayout> getLayouts() {
 		return layouts;
+	}
+
+	public void setBandBundling(boolean bandBundlingActive) {
+		this.bandBundlingActive = bandBundlingActive;
 	}
 }

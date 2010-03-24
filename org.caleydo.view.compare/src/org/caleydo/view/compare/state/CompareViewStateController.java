@@ -148,6 +148,10 @@ public class CompareViewStateController {
 		currentState.setUseFishEye(useFishEye);
 	}
 
+	public void setBandBundling(boolean bandBundlingActive) {
+		currentState.setBandBundling(bandBundlingActive);
+	}
+
 	public void handleContentGroupListUpdate(int setID,
 			ContentGroupList contentGroupList) {
 		currentState.handleContentGroupListUpdate(setID, contentGroupList);

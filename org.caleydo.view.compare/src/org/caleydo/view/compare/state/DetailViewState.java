@@ -97,7 +97,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 			if (heatMapWrapper.isNewSelection()) {
 				for (HeatMapWrapper wrapper : heatMapWrappers) {
 					if (wrapper != heatMapWrapper) {
-						wrapper.choosePassiveHeatMaps(heatMapWrapper.getContentVAsOfHeatMaps(true));
+						wrapper.choosePassiveHeatMaps(heatMapWrapper
+								.getContentVAsOfHeatMaps(true));
 					}
 				}
 				view.setDisplayListDirty();
@@ -129,12 +130,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 		renderOverviewToDetailRelations(gl);
 		renderDetailRelations(gl);
-
-		if (heatMapWrappers.get(0).getContentVAsOfHeatMaps(true).size() == 0) {
-			renderTree(gl, heatMapWrappers.get(0), heatMapWrappers.get(1));
-			renderOverviewRelations(gl, heatMapWrappers.get(0), heatMapWrappers.get(1));
-		}
-
 	}
 
 	private void renderOverviewToDetailRelations(GL gl) {
@@ -148,25 +143,32 @@ public class DetailViewState extends ACompareViewStateStatic {
 	private void renderOverviewToDetailRelations(GL gl, HeatMapWrapper heatMapWrapper) {
 		for (GLHeatMap heatMap : heatMapWrapper.getHeatMaps()) {
 
-			// If at least one element in the band is in mouse_over state ->
-			// change
-			// band color
-			ContentSelectionManager contentSelectionManager = heatMapWrapper
-					.getContentSelectionManager();
 			boolean highlight = false;
-			for (Integer contentID : heatMap.getContentVA()) {
-				SelectionType type = contentSelectionManager.getSelectionTypes(contentID)
-						.get(0);
 
-				if (type == SelectionType.MOUSE_OVER) {
-					highlight = true;
-					break;
+			// This method needs also to be called if we don't use band
+			// rendering
+			// Initialization of xOffset must be calculated anyway
+			renderOverviewToDetailBand(gl, heatMap, heatMapWrapper, highlight);
+
+			if (bandBundlingActive) {
+
+				// If at least one element in the band is in mouse_over state ->
+				// change
+				// band color
+				ContentSelectionManager contentSelectionManager = heatMapWrapper
+						.getContentSelectionManager();
+				for (Integer contentID : heatMap.getContentVA()) {
+					SelectionType type = contentSelectionManager.getSelectionTypes(
+							contentID).get(0);
+
+					if (type == SelectionType.MOUSE_OVER) {
+						highlight = true;
+						break;
+					}
 				}
 			}
 
-			renderOverviewToDetailBand(gl, heatMap, heatMapWrapper, highlight);
-
-			if (highlight)
+			if (!bandBundlingActive || highlight)
 				renderSingleOverviewToDetailRelation(gl, heatMap, heatMapWrapper);
 		}
 	}
@@ -332,6 +334,9 @@ public class DetailViewState extends ACompareViewStateStatic {
 		else
 			xOffset = Math.abs((rightPos.x() - leftPos.x()) / 1.3f);
 
+		if (!bandBundlingActive)
+			return;
+
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
 		inputPoints.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
 		inputPoints.add(new Vec3f(rightPos.x() + xOffset, leftPos.y(), 0));
@@ -471,37 +476,34 @@ public class DetailViewState extends ACompareViewStateStatic {
 		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
 
-		detailBands = new ArrayList<DetailBand>();
-		calculateDetailBands();
-		determineActiveBand();
+		if (bandBundlingActive) {
+			detailBands = new ArrayList<DetailBand>();
+			calculateDetailBands();
+			determineActiveBand();
 
-		for (DetailBand detailBand : detailBands) {
-			ArrayList<Integer> contentIDs = detailBand.getContentIDs();
+			for (DetailBand detailBand : detailBands) {
+				ArrayList<Integer> contentIDs = detailBand.getContentIDs();
 
-			if (contentIDs.size() < 2 || detailBand == activeBand)
-				continue;
+				if (contentIDs.size() < 2 || detailBand == activeBand)
+					continue;
 
-			renderDetailBand(gl, detailBand, false);
+				renderDetailBand(gl, detailBand, false);
+			}
+
+			if (activeBand != null)
+				renderDetailBand(gl, activeBand, true);
 		}
-
-		if (activeBand != null)
-			renderDetailBand(gl, activeBand, true);
-
-		// Render single lines
-//		for (DetailBand detailBand : detailBands) {
-//
-//			if (detailBand.getContentIDs().size() == 1)
-//				renderSingleDetailRelation(gl, detailBand.getContentIDs().get(0));
-//		}
 
 		// Iterate over all detail content VAs on the left
 		HeatMapWrapper leftHeatMapWrapper = heatMapWrappers.get(0);
-		for (ContentVirtualArray contentVA : leftHeatMapWrapper.getContentVAsOfHeatMaps(true)) {
+		for (ContentVirtualArray contentVA : leftHeatMapWrapper
+				.getContentVAsOfHeatMaps(true)) {
 
 			for (Integer contentID : contentVA) {
 
-				if (activeBand != null
-						&& activeBand.getContentIDs().contains(contentID))
+				if (!bandBundlingActive
+						|| (activeBand != null && activeBand.getContentIDs().contains(
+								contentID)))
 					renderSingleDetailRelation(gl, contentID);
 			}
 		}
@@ -621,8 +623,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 			// band color
 			ContentSelectionManager contentSelectionManager = heatMapWrappers.get(0)
 					.getContentSelectionManager();
-			// boolean activeBand = false;
-			// boolean activeGroup = false;
 			for (Integer contentID : detailBand.getContentIDs()) {
 				SelectionType type = contentSelectionManager.getSelectionTypes(contentID)
 						.get(0);
@@ -632,11 +632,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 					this.activeBand = detailBand;
 					return;
 				}
-				// if
-				// (rightHeatMapWrapper.getHeatMapByContentID(contentID).getContentVA()
-				// .containsElement(contentID) > 0) {
-				// activeGroup = true;
-				// }
 			}
 		}
 	}
@@ -862,9 +857,9 @@ public class DetailViewState extends ACompareViewStateStatic {
 			}
 
 			// FIXME: Use array of relations?
-			//ISet setLeft = setsInFocus.get(0);
-			//ISet setRight = setsInFocus.get(1);
-			//relations = SetComparer.compareSets(setLeft, setRight);
+			// ISet setLeft = setsInFocus.get(0);
+			// ISet setRight = setsInFocus.get(1);
+			// relations = SetComparer.compareSets(setLeft, setRight);
 
 			for (int i = 0; i < heatMapWrappers.size(); i++) {
 				HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
@@ -873,11 +868,14 @@ public class DetailViewState extends ACompareViewStateStatic {
 			setsChanged = true;
 			numSetsInFocus = setsInFocus.size();
 
-			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(0);
-			for (Group group : heatMapWrapper.getContentVA().getGroupList()) {
-				heatMapWrapper.handleGroupSelection(SelectionType.SELECTION, group
-						.getGroupIndex(), true);
-			}
+			// Select all groups in detail per default
+			// HeatMapWrapper heatMapWrapper = heatMapWrappers.get(0);
+			// for (Group group : heatMapWrapper.getContentVA().getGroupList())
+			// {
+			// heatMapWrapper.handleGroupSelection(SelectionType.SELECTION,
+			// group
+			// .getGroupIndex(), true);
+			// }
 
 			view.setDisplayListDirty();
 		}
