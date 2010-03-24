@@ -16,14 +16,17 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
 import Ice.Communicator;
+import Ice.ObjectAdapter;
 import VIS.AccessInformation;
 import VIS.Color4f;
 import VIS.Selection;
 import VIS.SelectionContainer;
 import VIS.SelectionGroup;
 import VIS.SelectionReport;
+import VIS.VisManagerIPrxHelper;
 import VIS.VisRendererIPrx;
 import VIS.VisRendererIPrxHelper;
+import VIS.VisualLinksRenderType;
 import VIS.adapterName;
 import VIS.adapterPort;
 
@@ -53,6 +56,10 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	
 	/** Proxy object of VisRenderer for remote method invocation. */
 	private VisRendererIPrx rendererPrx;
+	
+	/** Proxy object for VisRenderer to call VisLinkManager. */
+	private VisLinkManagerIceInterface iceInterface; 
+	
 	
 	public VisLinkManager() {
 //		app2bbl = new HashMap<Integer, BoundingBoxList>();
@@ -346,6 +353,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	public void connect() {
 		System.out.println("Connect to VisRenderer"); 
 		
+		// establish connection to renderer proxy 
 		if(rendererPrx == null) {
 
 			// init communication channel 
@@ -380,6 +388,48 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			}
 		} else {
 			System.out.println("Already established connection");
+		}
+		
+		// create manager ice interface 
+		if(rendererPrx != null){
+			
+			// create ice interface instance 
+			this.iceInterface = new VisLinkManagerIceInterface(this); 
+			
+			// set a default port to start with 
+			int managerPort = 8085; 
+			
+			// iterate until a free port was found 
+			ObjectAdapter adapter = null; 
+			while(adapter == null){
+				try{
+					adapter = this.communicator.createObjectAdapterWithEndpoints("VisManager", "default -p " + managerPort); 
+					System.out.println("Connected on port " + managerPort); 
+				}
+				catch (Ice.SocketException e){
+					System.out.println("Port " + managerPort + " already in use"); 
+				}
+				catch (Exception e){
+					System.out.println("General exception for interface on port " + managerPort); 
+				}
+				managerPort++; 
+			}
+			
+			// add interface to adapter and receive proxy
+			Ice.ObjectPrx objPrx = adapter.add(this.iceInterface, communicator.stringToIdentity("VisManagerI"));
+			
+			// cast proxy and save with interface class 
+			this.iceInterface.setProxy(VisManagerIPrxHelper.checkedCast(objPrx)); 
+			
+			// activate adapter
+			adapter.activate(); 
+			
+			// register interface proxy to renderer 
+			this.rendererPrx.registerManager(this.iceInterface.getProxy()); 
+
+		}
+		else{
+			System.out.println("Renderer proxy was not created"); 
 		}
 	}
 
@@ -440,6 +490,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
     	selectionGroupList.toArray(groups);
     	SelectionReport report = new SelectionReport();
     	report.pointerId = pointerID; 
+    	report.renderType = VisualLinksRenderType.RenderTypeNormal; 
     	report.selectionGroups = groups; 
     	rendererPrx.renderAllLinks(report);
     }

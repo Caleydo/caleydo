@@ -86,6 +86,18 @@ public abstract class _VisRendererIDisp extends Ice.ObjectImpl implements VisRen
         return getAccessInformation(sourceApplicationId, null);
     }
 
+    public final InteractionEvent[]
+    getInteractionEventQueue()
+    {
+        return getInteractionEventQueue(null);
+    }
+
+    public final void
+    registerManager(VisManagerIPrx manager)
+    {
+        registerManager(manager, null);
+    }
+
     public final boolean
     registerSelectionContainer(SelectionContainer container)
     {
@@ -114,6 +126,19 @@ public abstract class _VisRendererIDisp extends Ice.ObjectImpl implements VisRen
     updateSelectionContainer(SelectionContainer container)
     {
         return updateSelectionContainer(container, null);
+    }
+
+    public static Ice.DispatchStatus
+    ___registerManager(VisRendererI __obj, IceInternal.Incoming __inS, Ice.Current __current)
+    {
+        __checkMode(Ice.OperationMode.Normal, __current.mode);
+        IceInternal.BasicStream __is = __inS.is();
+        __is.startReadEncaps();
+        VisManagerIPrx manager;
+        manager = VisManagerIPrxHelper.__read(__is);
+        __is.endReadEncaps();
+        __obj.registerManager(manager, __current);
+        return Ice.DispatchStatus.DispatchOK;
     }
 
     public static Ice.DispatchStatus
@@ -222,15 +247,29 @@ public abstract class _VisRendererIDisp extends Ice.ObjectImpl implements VisRen
         return Ice.DispatchStatus.DispatchOK;
     }
 
+    public static Ice.DispatchStatus
+    ___getInteractionEventQueue(VisRendererI __obj, IceInternal.Incoming __inS, Ice.Current __current)
+    {
+        __checkMode(Ice.OperationMode.Normal, __current.mode);
+        __inS.is().skipEmptyEncaps();
+        IceInternal.BasicStream __os = __inS.os();
+        InteractionEvent[] __ret = __obj.getInteractionEventQueue(__current);
+        InteractionEventsHelper.write(__os, __ret);
+        __os.writePendingObjects();
+        return Ice.DispatchStatus.DispatchOK;
+    }
+
     private final static String[] __all =
     {
         "clearAll",
         "clearSelections",
         "getAccessInformation",
+        "getInteractionEventQueue",
         "ice_id",
         "ice_ids",
         "ice_isA",
         "ice_ping",
+        "registerManager",
         "registerSelectionContainer",
         "renderAllLinks",
         "renderLinks",
@@ -263,37 +302,45 @@ public abstract class _VisRendererIDisp extends Ice.ObjectImpl implements VisRen
             }
             case 3:
             {
-                return ___ice_id(this, in, __current);
+                return ___getInteractionEventQueue(this, in, __current);
             }
             case 4:
             {
-                return ___ice_ids(this, in, __current);
+                return ___ice_id(this, in, __current);
             }
             case 5:
             {
-                return ___ice_isA(this, in, __current);
+                return ___ice_ids(this, in, __current);
             }
             case 6:
             {
-                return ___ice_ping(this, in, __current);
+                return ___ice_isA(this, in, __current);
             }
             case 7:
             {
-                return ___registerSelectionContainer(this, in, __current);
+                return ___ice_ping(this, in, __current);
             }
             case 8:
             {
-                return ___renderAllLinks(this, in, __current);
+                return ___registerManager(this, in, __current);
             }
             case 9:
             {
-                return ___renderLinks(this, in, __current);
+                return ___registerSelectionContainer(this, in, __current);
             }
             case 10:
             {
-                return ___unregisterSelectionContainer(this, in, __current);
+                return ___renderAllLinks(this, in, __current);
             }
             case 11:
+            {
+                return ___renderLinks(this, in, __current);
+            }
+            case 12:
+            {
+                return ___unregisterSelectionContainer(this, in, __current);
+            }
+            case 13:
             {
                 return ___updateSelectionContainer(this, in, __current);
             }

@@ -13,6 +13,9 @@ package VIS;
 
 public interface _VisRendererIDel extends Ice._ObjectDel
 {
+    void registerManager(VisManagerIPrx manager, java.util.Map<String, String> __ctx)
+        throws IceInternal.LocalExceptionWrapper;
+
     boolean registerSelectionContainer(SelectionContainer container, java.util.Map<String, String> __ctx)
         throws IceInternal.LocalExceptionWrapper;
 
@@ -35,5 +38,8 @@ public interface _VisRendererIDel extends Ice._ObjectDel
         throws IceInternal.LocalExceptionWrapper;
 
     void clearAll(java.util.Map<String, String> __ctx)
+        throws IceInternal.LocalExceptionWrapper;
+
+    InteractionEvent[] getInteractionEventQueue(java.util.Map<String, String> __ctx)
         throws IceInternal.LocalExceptionWrapper;
 }

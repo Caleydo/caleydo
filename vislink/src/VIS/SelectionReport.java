@@ -15,15 +15,18 @@ public final class SelectionReport implements java.lang.Cloneable, java.io.Seria
 {
     public String pointerId;
 
+    public VisualLinksRenderType renderType;
+
     public SelectionGroup[] selectionGroups;
 
     public SelectionReport()
     {
     }
 
-    public SelectionReport(String pointerId, SelectionGroup[] selectionGroups)
+    public SelectionReport(String pointerId, VisualLinksRenderType renderType, SelectionGroup[] selectionGroups)
     {
         this.pointerId = pointerId;
+        this.renderType = renderType;
         this.selectionGroups = selectionGroups;
     }
 
@@ -49,6 +52,10 @@ public final class SelectionReport implements java.lang.Cloneable, java.io.Seria
             {
                 return false;
             }
+            if(renderType != _r.renderType && renderType != null && !renderType.equals(_r.renderType))
+            {
+                return false;
+            }
             if(!java.util.Arrays.equals(selectionGroups, _r.selectionGroups))
             {
                 return false;
@@ -67,6 +74,10 @@ public final class SelectionReport implements java.lang.Cloneable, java.io.Seria
         if(pointerId != null)
         {
             __h = 5 * __h + pointerId.hashCode();
+        }
+        if(renderType != null)
+        {
+            __h = 5 * __h + renderType.hashCode();
         }
         if(selectionGroups != null)
         {
@@ -100,6 +111,7 @@ public final class SelectionReport implements java.lang.Cloneable, java.io.Seria
     __write(IceInternal.BasicStream __os)
     {
         __os.writeString(pointerId);
+        renderType.__write(__os);
         SelectionGroupListHelper.write(__os, selectionGroups);
     }
 
@@ -107,6 +119,7 @@ public final class SelectionReport implements java.lang.Cloneable, java.io.Seria
     __read(IceInternal.BasicStream __is)
     {
         pointerId = __is.readString();
+        renderType = VisualLinksRenderType.__read(__is);
         selectionGroups = SelectionGroupListHelper.read(__is);
     }
 }

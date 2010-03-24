@@ -136,6 +136,92 @@ public final class _VisRendererIDelM extends Ice._ObjectDelM implements _VisRend
         }
     }
 
+    public InteractionEvent[]
+    getInteractionEventQueue(java.util.Map<String, String> __ctx)
+        throws IceInternal.LocalExceptionWrapper
+    {
+        IceInternal.Outgoing __og = __handler.getOutgoing("getInteractionEventQueue", Ice.OperationMode.Normal, __ctx);
+        try
+        {
+            boolean __ok = __og.invoke();
+            try
+            {
+                if(!__ok)
+                {
+                    try
+                    {
+                        __og.throwUserException();
+                    }
+                    catch(Ice.UserException __ex)
+                    {
+                        throw new Ice.UnknownUserException(__ex.ice_name());
+                    }
+                }
+                IceInternal.BasicStream __is = __og.is();
+                __is.startReadEncaps();
+                InteractionEvent[] __ret;
+                __ret = InteractionEventsHelper.read(__is);
+                __is.readPendingObjects();
+                __is.endReadEncaps();
+                return __ret;
+            }
+            catch(Ice.LocalException __ex)
+            {
+                throw new IceInternal.LocalExceptionWrapper(__ex, false);
+            }
+        }
+        finally
+        {
+            __handler.reclaimOutgoing(__og);
+        }
+    }
+
+    public void
+    registerManager(VisManagerIPrx manager, java.util.Map<String, String> __ctx)
+        throws IceInternal.LocalExceptionWrapper
+    {
+        IceInternal.Outgoing __og = __handler.getOutgoing("registerManager", Ice.OperationMode.Normal, __ctx);
+        try
+        {
+            try
+            {
+                IceInternal.BasicStream __os = __og.os();
+                VisManagerIPrxHelper.__write(__os, manager);
+            }
+            catch(Ice.LocalException __ex)
+            {
+                __og.abort(__ex);
+            }
+            boolean __ok = __og.invoke();
+            if(!__og.is().isEmpty())
+            {
+                try
+                {
+                    if(!__ok)
+                    {
+                        try
+                        {
+                            __og.throwUserException();
+                        }
+                        catch(Ice.UserException __ex)
+                        {
+                            throw new Ice.UnknownUserException(__ex.ice_name());
+                        }
+                    }
+                    __og.is().skipEmptyEncaps();
+                }
+                catch(Ice.LocalException __ex)
+                {
+                    throw new IceInternal.LocalExceptionWrapper(__ex, false);
+                }
+            }
+        }
+        finally
+        {
+            __handler.reclaimOutgoing(__og);
+        }
+    }
+
     public boolean
     registerSelectionContainer(SelectionContainer container, java.util.Map<String, String> __ctx)
         throws IceInternal.LocalExceptionWrapper

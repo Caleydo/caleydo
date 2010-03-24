@@ -13,6 +13,8 @@ package VIS;
 
 public interface _VisRendererIOperationsNC
 {
+    void registerManager(VisManagerIPrx manager);
+
     boolean registerSelectionContainer(SelectionContainer container);
 
     boolean updateSelectionContainer(SelectionContainer container);
@@ -28,4 +30,6 @@ public interface _VisRendererIOperationsNC
     void clearSelections();
 
     void clearAll();
+
+    InteractionEvent[] getInteractionEventQueue();
 }

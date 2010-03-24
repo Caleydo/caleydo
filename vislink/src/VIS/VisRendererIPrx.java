@@ -13,6 +13,9 @@ package VIS;
 
 public interface VisRendererIPrx extends Ice.ObjectPrx
 {
+    public void registerManager(VisManagerIPrx manager);
+    public void registerManager(VisManagerIPrx manager, java.util.Map<String, String> __ctx);
+
     public boolean registerSelectionContainer(SelectionContainer container);
     public boolean registerSelectionContainer(SelectionContainer container, java.util.Map<String, String> __ctx);
 
@@ -36,4 +39,7 @@ public interface VisRendererIPrx extends Ice.ObjectPrx
 
     public void clearAll();
     public void clearAll(java.util.Map<String, String> __ctx);
+
+    public InteractionEvent[] getInteractionEventQueue();
+    public InteractionEvent[] getInteractionEventQueue(java.util.Map<String, String> __ctx);
 }

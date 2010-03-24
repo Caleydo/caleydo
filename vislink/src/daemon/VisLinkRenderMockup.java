@@ -13,10 +13,12 @@ import Ice.Communicator;
 import Ice.Current;
 import Ice.ObjectAdapter;
 import VIS.AccessInformation;
+import VIS.InteractionEvent;
 import VIS.Selection;
 import VIS.SelectionContainer;
 import VIS.SelectionGroup;
 import VIS.SelectionReport;
+import VIS.VisManagerIPrx;
 import VIS._VisRendererIDisp;
 import VIS.adapterName;
 import VIS.adapterPort;
@@ -222,6 +224,16 @@ public class VisLinkRenderMockup extends _VisRendererIDisp implements Runnable {
 			Current current) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public InteractionEvent[] getInteractionEventQueue(Current current) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void registerManager(VisManagerIPrx manager, Current current) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -13,6 +13,8 @@ package VIS;
 
 public interface _VisRendererIOperations
 {
+    void registerManager(VisManagerIPrx manager, Ice.Current __current);
+
     boolean registerSelectionContainer(SelectionContainer container, Ice.Current __current);
 
     boolean updateSelectionContainer(SelectionContainer container, Ice.Current __current);
@@ -28,4 +30,6 @@ public interface _VisRendererIOperations
     void clearSelections(Ice.Current __current);
 
     void clearAll(Ice.Current __current);
+
+    InteractionEvent[] getInteractionEventQueue(Ice.Current __current);
 }

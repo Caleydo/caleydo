@@ -139,6 +139,90 @@ public final class VisRendererIPrxHelper extends Ice.ObjectPrxHelperBase impleme
         }
     }
 
+    public InteractionEvent[]
+    getInteractionEventQueue()
+    {
+        return getInteractionEventQueue(null, false);
+    }
+
+    public InteractionEvent[]
+    getInteractionEventQueue(java.util.Map<String, String> __ctx)
+    {
+        return getInteractionEventQueue(__ctx, true);
+    }
+
+    @SuppressWarnings("unchecked")
+    private InteractionEvent[]
+    getInteractionEventQueue(java.util.Map<String, String> __ctx, boolean __explicitCtx)
+    {
+        if(__explicitCtx && __ctx == null)
+        {
+            __ctx = _emptyContext;
+        }
+        int __cnt = 0;
+        while(true)
+        {
+            Ice._ObjectDel __delBase = null;
+            try
+            {
+                __checkTwowayOnly("getInteractionEventQueue");
+                __delBase = __getDelegate(false);
+                _VisRendererIDel __del = (_VisRendererIDel)__delBase;
+                return __del.getInteractionEventQueue(__ctx);
+            }
+            catch(IceInternal.LocalExceptionWrapper __ex)
+            {
+                __handleExceptionWrapper(__delBase, __ex, null);
+            }
+            catch(Ice.LocalException __ex)
+            {
+                __cnt = __handleException(__delBase, __ex, null, __cnt);
+            }
+        }
+    }
+
+    public void
+    registerManager(VisManagerIPrx manager)
+    {
+        registerManager(manager, null, false);
+    }
+
+    public void
+    registerManager(VisManagerIPrx manager, java.util.Map<String, String> __ctx)
+    {
+        registerManager(manager, __ctx, true);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void
+    registerManager(VisManagerIPrx manager, java.util.Map<String, String> __ctx, boolean __explicitCtx)
+    {
+        if(__explicitCtx && __ctx == null)
+        {
+            __ctx = _emptyContext;
+        }
+        int __cnt = 0;
+        while(true)
+        {
+            Ice._ObjectDel __delBase = null;
+            try
+            {
+                __delBase = __getDelegate(false);
+                _VisRendererIDel __del = (_VisRendererIDel)__delBase;
+                __del.registerManager(manager, __ctx);
+                return;
+            }
+            catch(IceInternal.LocalExceptionWrapper __ex)
+            {
+                __handleExceptionWrapper(__delBase, __ex, null);
+            }
+            catch(Ice.LocalException __ex)
+            {
+                __cnt = __handleException(__delBase, __ex, null, __cnt);
+            }
+        }
+    }
+
     public boolean
     registerSelectionContainer(SelectionContainer container)
     {
