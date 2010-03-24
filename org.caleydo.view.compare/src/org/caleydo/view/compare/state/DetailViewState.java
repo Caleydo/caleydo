@@ -128,8 +128,12 @@ public class DetailViewState extends ACompareViewStateStatic {
 		setBar.setWidth(viewFrustum.getWidth());
 		setBar.render(gl);
 
-		renderOverviewToDetailRelations(gl);
-		renderDetailRelations(gl);
+		if (heatMapWrappers.get(0).getSelectedGroups().isEmpty())
+			renderGroupBand(gl, heatMapWrappers.get(0), heatMapWrappers.get(1));
+		else {
+			renderOverviewToDetailRelations(gl);
+			renderDetailRelations(gl);			
+		}
 	}
 
 	private void renderOverviewToDetailRelations(GL gl) {
