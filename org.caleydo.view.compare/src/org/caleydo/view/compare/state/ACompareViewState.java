@@ -470,7 +470,6 @@ public abstract class ACompareViewState {
 
 		if (renderPseudoHierarchy)
 			pathToRoot.remove(1);
-		;
 
 		for (int i = pathToRoot.size() - 1; i >= 0; i--) {
 
@@ -509,6 +508,22 @@ public abstract class ACompareViewState {
 
 	}
 
+	public void renderSingleCurve(GL gl, ArrayList<Vec3f> points, Integer contentID) {
+		
+		NURBSCurve curve = new NURBSCurve(points, NUMBER_OF_SPLINE_POINTS);
+		points = curve.getCurvePoints();
+
+		gl.glPushName(pickingManager.getPickingID(viewID,
+				EPickingType.POLYLINE_SELECTION, contentID));
+
+		gl.glBegin(GL.GL_LINE_STRIP);
+		for (int i = 0; i < points.size(); i++)
+			gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0);
+		gl.glEnd();
+
+		gl.glPopName();
+	}
+	
 	private void renderStraightLineRelation(GL gl, HeatMapWrapper leftHeatMapWrapper,
 			HeatMapWrapper rightHeatMapWrapper, int contentID) {
 

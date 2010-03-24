@@ -118,6 +118,11 @@ public class OverviewState extends ACompareViewStateStatic {
 
 		float sampleHeight = leftHeatMapWrapper.getLayout().getOverviewHeight()
 				/ overview.size();
+		
+		float sampleHeightIncludingSpacing = sampleHeight * 0.8f;
+		float groupPadding = 0;
+		float bundlingCorrectionOffsetX = overviewDistance / 18f;
+		
 		float top = leftHeatMapWrapper.getLayout().getOverviewPosition().y()
 				+ leftHeatMapWrapper.getLayout().getOverviewHeight();
 
@@ -135,7 +140,8 @@ public class OverviewState extends ACompareViewStateStatic {
 				if (groupVA.containsElement(overviewContentID) == 0)
 					continue;
 
-				groupTopY = overview.indexOf(overviewContentID) * sampleHeight;
+				groupPadding = groupVA.size() * sampleHeight * 0.1f;
+				groupTopY = overview.indexOf(overviewContentID) * sampleHeight + groupPadding;
 				break;
 			}
 
@@ -149,17 +155,14 @@ public class OverviewState extends ACompareViewStateStatic {
 						.getRightOverviewLinkPositionFromContentID(contentID).y();
 
 				float sortedY = top - groupTopY - groupVA.indexOf(contentID)
-						* sampleHeight;
+						* sampleHeightIncludingSpacing;
 
 				setRelationColor(gl, leftHeatMapWrapper, contentID);
 
 				points.add(new Vec3f(overviewX, overviewY, 0));
-				points.add(new Vec3f(overviewX + firstLevelOffset, sortedY, 0));				
-
-//				gl.glBegin(GL.GL_LINES);
-//				gl.glVertex3f(overviewX, overviewY, 0);
-//				gl.glVertex3f(overviewX + firstLevelOffset, sortedY, 0);
-//				gl.glEnd();
+				points.add(new Vec3f(overviewX + bundlingCorrectionOffsetX, overviewY, 0));
+				points.add(new Vec3f(overviewX + firstLevelOffset - bundlingCorrectionOffsetX, sortedY, 0));	
+				points.add(new Vec3f(overviewX + firstLevelOffset, sortedY, 0));	
 
 				ArrayList<ContentVirtualArray> rightContentVAs = rightHeatMapWrapper
 						.getContentVAsOfHeatMaps(false);
@@ -167,19 +170,23 @@ public class OverviewState extends ACompareViewStateStatic {
 				for (int rightClusterIndex = 0; rightClusterIndex < rightContentVAs
 						.size(); rightClusterIndex++) {
 
-					if (rightContentVAs.get(rightClusterIndex).containsElement(contentID) == 0)
+					ContentVirtualArray rightGroupVA = rightContentVAs.get(rightClusterIndex);
+					
+					if (rightGroupVA.containsElement(contentID) == 0)
 						continue;
 
 					// Is there a better way to find the y pos of the cluster
 					// beginning
 					float rightGroupTopY = 0;
 					for (Integer overviewRightContentID : overviewRight) {
-						if (rightContentVAs.get(rightClusterIndex).containsElement(
+						
+						if (rightGroupVA.containsElement(
 								overviewRightContentID) == 0)
 							continue;
 
+						groupPadding = rightGroupVA.size() * sampleHeight * 0.1f;
 						rightGroupTopY = overviewRight.indexOf(overviewRightContentID)
-								* sampleHeight;
+								* sampleHeight + groupPadding;
 						break;
 					}
 
@@ -189,40 +196,16 @@ public class OverviewState extends ACompareViewStateStatic {
 							.getLeftOverviewLinkPositionFromContentID(contentID).y();
 
 					float sortedRightY = top - rightGroupTopY
-							- rightContentVAs.get(rightClusterIndex).indexOf(contentID)
-							* sampleHeight;
+							- rightGroupVA.indexOf(contentID)
+							* sampleHeightIncludingSpacing;
 
 					points.add(new Vec3f(overviewRightX - firstLevelOffset, sortedRightY, 0));
-					points.add(new Vec3f(overviewRightX, overviewRightY, 0));
-										
-//					gl.glPushName(pickingManager.getPickingID(viewID,
-//							EPickingType.POLYLINE_SELECTION, contentID));
-//
-//					gl.glBegin(GL.GL_LINES);
-//					gl.glVertex3f(overviewX + firstLevelOffset, sortedY, 0);
-//					gl.glVertex3f(overviewRightX - firstLevelOffset, sortedRightY, 0);
-//					gl.glEnd();
-//
-//					gl.glBegin(GL.GL_LINES);
-//					gl.glVertex3f(overviewRightX - firstLevelOffset, sortedRightY, 0);
-//					gl.glVertex3f(overviewRightX, overviewRightY, 0);
-//					gl.glEnd();
-//					
-//					gl.glPopMatrix();
+					points.add(new Vec3f(overviewRightX - firstLevelOffset + bundlingCorrectionOffsetX, sortedRightY, 0));
+					points.add(new Vec3f(overviewRightX - bundlingCorrectionOffsetX, overviewRightY, 0));
+					points.add(new Vec3f(overviewRightX, overviewRightY, 0));					
 				}
 			
-				NURBSCurve curve = new NURBSCurve(points, NUMBER_OF_SPLINE_POINTS);
-				points = curve.getCurvePoints();
-
-				gl.glPushName(pickingManager.getPickingID(viewID,
-						EPickingType.POLYLINE_SELECTION, contentID));
-
-				gl.glBegin(GL.GL_LINE_STRIP);
-				for (int i = 0; i < points.size(); i++)
-					gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0);
-				gl.glEnd();
-
-				gl.glPopName();
+				renderSingleCurve(gl, points, contentID);
 			}
 		}		
 	}
