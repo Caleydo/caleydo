@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.SetComparer;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVirtualArray;
@@ -54,16 +53,17 @@ public class DetailViewState extends ACompareViewStateStatic {
 	private DetailBand activeBand;
 	private int indexOfHeatMapWrapperWithDendrogram;
 
-	public DetailViewState(GLCompare view, int viewID, TextRenderer textRenderer,
-			TextureManager textureManager, PickingManager pickingManager,
-			GLMouseListener glMouseListener, SetBar setBar,
-			RenderCommandFactory renderCommandFactory, EDataDomain dataDomain,
-			IUseCase useCase, DragAndDropController dragAndDropController,
+	public DetailViewState(GLCompare view, int viewID,
+			TextRenderer textRenderer, TextureManager textureManager,
+			PickingManager pickingManager, GLMouseListener glMouseListener,
+			SetBar setBar, RenderCommandFactory renderCommandFactory,
+			EDataDomain dataDomain, IUseCase useCase,
+			DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
 
 		super(view, viewID, textRenderer, textureManager, pickingManager,
-				glMouseListener, setBar, renderCommandFactory, dataDomain, useCase,
-				dragAndDropController, compareViewStateController);
+				glMouseListener, setBar, renderCommandFactory, dataDomain,
+				useCase, dragAndDropController, compareViewStateController);
 		this.setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.0f));
 		compareConnectionRenderer = new CompareConnectionBandRenderer();
 		numSetsInFocus = 2;
@@ -73,8 +73,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 	@Override
 	public void init(GL gl) {
 
-		activeHeatMapSelectionType = new SelectionType("ActiveHeatmap", new float[] {
-				0.0f, 0.0f, 0.0f, 1.0f }, true, false, 1f);
+		activeHeatMapSelectionType = new SelectionType("ActiveHeatmap",
+				new float[] { 0.0f, 0.0f, 0.0f, 1.0f }, true, false, 1f);
 
 		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
 				activeHeatMapSelectionType);
@@ -132,7 +132,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 			renderGroupBand(gl, heatMapWrappers.get(0), heatMapWrappers.get(1));
 		else {
 			renderOverviewToDetailRelations(gl);
-			renderDetailRelations(gl);			
+			renderDetailRelations(gl);
 		}
 	}
 
@@ -144,40 +144,45 @@ public class DetailViewState extends ACompareViewStateStatic {
 		renderOverviewToDetailRelations(gl, rightHeatMapWrapper);
 	}
 
-	private void renderOverviewToDetailRelations(GL gl, HeatMapWrapper heatMapWrapper) {
+	private void renderOverviewToDetailRelations(GL gl,
+			HeatMapWrapper heatMapWrapper) {
+		
 		for (GLHeatMap heatMap : heatMapWrapper.getHeatMaps()) {
 
 			boolean highlight = false;
 
+			// if (bandBundlingActive) {
+
+			// If at least one element in the band is in mouse_over state ->
+			// change
+			// band color
+			ContentSelectionManager contentSelectionManager = heatMapWrapper
+					.getContentSelectionManager();
+			for (Integer contentID : heatMap.getContentVA()) {
+				SelectionType type = contentSelectionManager.getSelectionTypes(
+						contentID).get(0);
+
+				if (type == SelectionType.MOUSE_OVER) {
+					highlight = true;
+					break;
+				}
+			}
+			// }
+			
 			// This method needs also to be called if we don't use band
 			// rendering
 			// Initialization of xOffset must be calculated anyway
 			renderOverviewToDetailBand(gl, heatMap, heatMapWrapper, highlight);
 
-			if (bandBundlingActive) {
-
-				// If at least one element in the band is in mouse_over state ->
-				// change
-				// band color
-				ContentSelectionManager contentSelectionManager = heatMapWrapper
-						.getContentSelectionManager();
-				for (Integer contentID : heatMap.getContentVA()) {
-					SelectionType type = contentSelectionManager.getSelectionTypes(
-							contentID).get(0);
-
-					if (type == SelectionType.MOUSE_OVER) {
-						highlight = true;
-						break;
-					}
-				}
-			}
-
-			if (!bandBundlingActive || highlight)
-				renderSingleOverviewToDetailRelation(gl, heatMap, heatMapWrapper);
+			// if (!bandBundlingActive || highlight)
+			if (highlight)
+				renderSingleOverviewToDetailRelation(gl, heatMap,
+						heatMapWrapper);
 		}
 	}
 
-	private void renderDetailBand(GL gl, DetailBand detailBand, boolean highlight) {
+	private void renderDetailBand(GL gl, DetailBand detailBand,
+			boolean highlight) {
 
 		float spacing = 0.01f;
 
@@ -189,14 +194,14 @@ public class DetailViewState extends ACompareViewStateStatic {
 		HeatMapWrapper leftHeatMapWrapper = heatMapWrappers.get(0);
 		HeatMapWrapper rightHeatMapWrapper = heatMapWrappers.get(1);
 
-		float leftTopHeatMapElementOffset = detailBand.getLeftHeatMap().getFieldHeight(
-				startContentID)
+		float leftTopHeatMapElementOffset = detailBand.getLeftHeatMap()
+				.getFieldHeight(startContentID)
 				/ 2f - spacing;
 		float leftBottomHeatMapElementOffset = detailBand.getLeftHeatMap()
 				.getFieldHeight(endContentID)
 				/ 2f - spacing;
-		float rightTopHeatMapElementOffset = detailBand.getRightHeatMap().getFieldHeight(
-				startContentID)
+		float rightTopHeatMapElementOffset = detailBand.getRightHeatMap()
+				.getFieldHeight(startContentID)
 				/ 2f - spacing;
 		float rightBottomHeatMapElementOffset = detailBand.getRightHeatMap()
 				.getFieldHeight(endContentID)
@@ -215,8 +220,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 		xOffset = -(rightPos.x() - leftPos.x()) / 1.5f;
 
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
-		inputPoints.add(new Vec3f(leftPos.x(), leftPos.y() + leftTopHeatMapElementOffset,
-				0));
+		inputPoints.add(new Vec3f(leftPos.x(), leftPos.y()
+				+ leftTopHeatMapElementOffset, 0));
 		inputPoints.add(new Vec3f(rightPos.x() + xOffset, leftPos.y()
 				+ leftTopHeatMapElementOffset, 0));
 		inputPoints.add(new Vec3f(rightPos.x() + xOffset / 3f, rightPos.y()
@@ -296,18 +301,21 @@ public class DetailViewState extends ACompareViewStateStatic {
 		GLHeatMap detailHeatMap = heatMapWrapper
 				.getHeatMapByContentID(lastDetailContentID);
 
-		float heatMapElementOffset = detailHeatMap.getFieldHeight(firstDetailContentID) / 2f - 0f;
+		float heatMapElementOffset = detailHeatMap
+				.getFieldHeight(firstDetailContentID) / 2f - 0f;
 
 		int numberOfVisibleLines = detailHeatMap.getNumberOfVisibleElements() - 1;
 		if (numberOfVisibleLines < 0)
 			return;
 
-		lastDetailContentID = detailHeatMap.getContentVA().get(numberOfVisibleLines);
+		lastDetailContentID = detailHeatMap.getContentVA().get(
+				numberOfVisibleLines);
 
 		Vec2f leftPos;
 
-		Group group = heatMapWrapper.getSelectedGroupFromContentIndex(heatMapWrapper
-				.getContentVA().indexOf(firstDetailContentID));
+		Group group = heatMapWrapper
+				.getSelectedGroupFromContentIndex(heatMapWrapper.getContentVA()
+						.indexOf(firstDetailContentID));
 		int overviewFirstContentIndex = group.getStartIndex();
 		int overviewLastContentIndex = group.getEndIndex();
 
@@ -338,15 +346,16 @@ public class DetailViewState extends ACompareViewStateStatic {
 		else
 			xOffset = Math.abs((rightPos.x() - leftPos.x()) / 1.3f);
 
-		if (!bandBundlingActive)
-			return;
+//		if (!bandBundlingActive)
+//			return;
 
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
 		inputPoints.add(new Vec3f(leftPos.x(), leftPos.y(), 0));
 		inputPoints.add(new Vec3f(rightPos.x() + xOffset, leftPos.y(), 0));
 		inputPoints.add(new Vec3f(rightPos.x() + xOffset / 5f, rightPos.y()
 				+ heatMapElementOffset, 0));
-		inputPoints.add(new Vec3f(rightPos.x(), rightPos.y() + heatMapElementOffset, 0));
+		inputPoints.add(new Vec3f(rightPos.x(), rightPos.y()
+				+ heatMapElementOffset, 0));
 
 		NURBSCurve curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
 		ArrayList<Vec3f> outputPoints = curve.getCurvePoints();
@@ -384,7 +393,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 		inputPoints.add(new Vec3f(rightPos.x() + xOffset, leftPos.y(), 0));
 		inputPoints.add(new Vec3f(rightPos.x() + xOffset / 5f, rightPos.y()
 				- heatMapElementOffset, 0));
-		inputPoints.add(new Vec3f(rightPos.x(), rightPos.y() - heatMapElementOffset, 0));
+		inputPoints.add(new Vec3f(rightPos.x(), rightPos.y()
+				- heatMapElementOffset, 0));
 
 		curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
 		ArrayList<Vec3f> points = curve.getCurvePoints();
@@ -447,7 +457,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 			points.add(new Vec3f(rightPos.x() + xOffset / 5f, rightPos.y(), 0));
 			points.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
 
-			NURBSCurve curve = new NURBSCurve(points, NUMBER_OF_SPLINE_POINTS_SHORT);
+			NURBSCurve curve = new NURBSCurve(points,
+					NUMBER_OF_SPLINE_POINTS_SHORT);
 			points = curve.getCurvePoints();
 
 			gl.glPushName(pickingManager.getPickingID(viewID,
@@ -463,16 +474,18 @@ public class DetailViewState extends ACompareViewStateStatic {
 	}
 
 	// TODO: Refine crossing detection algorithm
-	public boolean isConnectionCrossing(int contentID, ContentVirtualArray overviewVA,
-			ContentVirtualArray detailVA, HeatMapWrapper heatMapWrapper) {
+	public boolean isConnectionCrossing(int contentID,
+			ContentVirtualArray overviewVA, ContentVirtualArray detailVA,
+			HeatMapWrapper heatMapWrapper) {
 
 		int detailContentIndex = detailVA.indexOf(contentID);
 		int overviewContentIndex = overviewVA.indexOf(contentID);
-		Group group = heatMapWrapper.getSelectedGroupFromContentIndex(overviewVA
-				.indexOf(contentID));
+		Group group = heatMapWrapper
+				.getSelectedGroupFromContentIndex(overviewVA.indexOf(contentID));
 		overviewContentIndex = overviewContentIndex - group.getStartIndex();
 
-		return (Math.abs(overviewContentIndex - detailContentIndex)) < 10 ? false : true;
+		return (Math.abs(overviewContentIndex - detailContentIndex)) < 10 ? false
+				: true;
 	}
 
 	private void renderDetailRelations(GL gl) {
@@ -480,23 +493,29 @@ public class DetailViewState extends ACompareViewStateStatic {
 		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
 
-		if (bandBundlingActive) {
-			detailBands = new ArrayList<DetailBand>();
-			calculateDetailBands();
-			determineActiveBand();
+		// if (bandBundlingActive) {
+		detailBands = new ArrayList<DetailBand>();
+		calculateDetailBands();
+		determineActiveBand();
 
-			for (DetailBand detailBand : detailBands) {
-				ArrayList<Integer> contentIDs = detailBand.getContentIDs();
+		for (DetailBand detailBand : detailBands) {
+			ArrayList<Integer> contentIDs = detailBand.getContentIDs();
 
-				if (contentIDs.size() < 2 || detailBand == activeBand)
-					continue;
-
-				renderDetailBand(gl, detailBand, false);
+			if (contentIDs.size() == 1)
+			{
+				renderSingleDetailRelation(gl, contentIDs.get(0));
+				continue;
 			}
+			
+			if (contentIDs.size() < 2 || detailBand == activeBand)
+				continue;
 
-			if (activeBand != null)
-				renderDetailBand(gl, activeBand, true);
+			renderDetailBand(gl, detailBand, false);
 		}
+
+		if (activeBand != null)
+			renderDetailBand(gl, activeBand, true);
+		// }
 
 		// Iterate over all detail content VAs on the left
 		HeatMapWrapper leftHeatMapWrapper = heatMapWrappers.get(0);
@@ -505,9 +524,9 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 			for (Integer contentID : contentVA) {
 
-				if (!bandBundlingActive
-						|| (activeBand != null && activeBand.getContentIDs().contains(
-								contentID)))
+				// if (!bandBundlingActive ||
+				if (activeBand != null
+						&& activeBand.getContentIDs().contains(contentID))
 					renderSingleDetailRelation(gl, contentID);
 			}
 		}
@@ -515,16 +534,17 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 	private void renderSingleDetailRelation(GL gl, Integer contentID) {
 
-		float positionZ = setRelationColor(gl, heatMapWrappers.get(0), contentID);
-
-		Vec2f leftPos = heatMapWrappers.get(0).getRightDetailLinkPositionFromContentID(
+		float positionZ = setRelationColor(gl, heatMapWrappers.get(0),
 				contentID);
+
+		Vec2f leftPos = heatMapWrappers.get(0)
+				.getRightDetailLinkPositionFromContentID(contentID);
 
 		if (leftPos == null)
 			return;
 
-		Vec2f rightPos = heatMapWrappers.get(1).getLeftDetailLinkPositionFromContentID(
-				contentID);
+		Vec2f rightPos = heatMapWrappers.get(1)
+				.getLeftDetailLinkPositionFromContentID(contentID);
 
 		if (rightPos == null)
 			return;
@@ -536,7 +556,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
 		points.add(new Vec3f(leftPos.x(), leftPos.y(), positionZ));
 		points.add(new Vec3f(rightPos.x() + xOffset, leftPos.y(), positionZ));
-		points.add(new Vec3f(rightPos.x() + xOffset / 3f, rightPos.y(), positionZ));
+		points.add(new Vec3f(rightPos.x() + xOffset / 3f, rightPos.y(),
+				positionZ));
 		points.add(new Vec3f(rightPos.x(), rightPos.y(), positionZ));
 
 		NURBSCurve curve = new NURBSCurve(points, NUMBER_OF_SPLINE_POINTS);
@@ -565,7 +586,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 			for (GLHeatMap rightHeatMap : rightHeatMapWrapper.getHeatMaps()) {
 
-				ContentVirtualArray rightContentVA = rightHeatMap.getContentVA();
+				ContentVirtualArray rightContentVA = rightHeatMap
+						.getContentVA();
 
 				bandContentIDs = new ArrayList<Integer>();
 				detailBand = new DetailBand();
@@ -574,7 +596,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 				detailBand.setRightHeatMap(rightHeatMap);
 				detailBands.add(detailBand);
 
-				for (int leftContentIndex = 0; leftContentIndex < leftContentVA.size() - 1; leftContentIndex++) {
+				for (int leftContentIndex = 0; leftContentIndex < leftContentVA
+						.size() - 1; leftContentIndex++) {
 
 					int contentID = leftContentVA.get(leftContentIndex);
 
@@ -625,11 +648,11 @@ public class DetailViewState extends ACompareViewStateStatic {
 			// If at least one element in the band is in mouse_over state ->
 			// change
 			// band color
-			ContentSelectionManager contentSelectionManager = heatMapWrappers.get(0)
-					.getContentSelectionManager();
+			ContentSelectionManager contentSelectionManager = heatMapWrappers
+					.get(0).getContentSelectionManager();
 			for (Integer contentID : detailBand.getContentIDs()) {
-				SelectionType type = contentSelectionManager.getSelectionTypes(contentID)
-						.get(0);
+				SelectionType type = contentSelectionManager.getSelectionTypes(
+						contentID).get(0);
 
 				if (type == SelectionType.MOUSE_OVER) {
 					// activeBand = true;
@@ -656,7 +679,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 			boolean scrollToSelection, String info) {
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-			heatMapWrapper.handleSelectionUpdate(selectionDelta, scrollToSelection, info);
+			heatMapWrapper.handleSelectionUpdate(selectionDelta,
+					scrollToSelection, info);
 
 			// FIXME: Move to overview state when Christian has finished work on
 			// states
@@ -670,10 +694,10 @@ public class DetailViewState extends ACompareViewStateStatic {
 			SelectionCommand selectionCommand) {
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-			if (category == heatMapWrapper.getContentSelectionManager().getIDType()
-					.getCategory())
-				heatMapWrapper.getContentSelectionManager().executeSelectionCommand(
-						selectionCommand);
+			if (category == heatMapWrapper.getContentSelectionManager()
+					.getIDType().getCategory())
+				heatMapWrapper.getContentSelectionManager()
+						.executeSelectionCommand(selectionCommand);
 			else
 				return;
 		}
@@ -749,7 +773,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 	@Override
 	public void handleStateSpecificPickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick, boolean isControlPressed) {
+			EPickingMode pickingMode, int iExternalID, Pick pick,
+			boolean isControlPressed) {
 
 		SelectionType selectionType = null;
 
@@ -772,7 +797,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 		case COMPARE_OVERVIEW_SLIDER_BODY_SELECTION:
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(iExternalID);
 			if (heatMapWrapper != null) {
-				heatMapWrapper.handleOverviewSliderSelection(ePickingType, pickingMode);
+				heatMapWrapper.handleOverviewSliderSelection(ePickingType,
+						pickingMode);
 			}
 			break;
 
@@ -800,8 +826,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 				selectionType = SelectionType.MOUSE_OVER;
 				break;
 			}
-			rightHeatMapWrapper.handleGroupSelection(selectionType, iExternalID,
-					isControlPressed);
+			rightHeatMapWrapper.handleGroupSelection(selectionType,
+					iExternalID, isControlPressed);
 			leftHeatMapWrapper.setHeatMapsInactive();
 			break;
 
@@ -842,17 +868,21 @@ public class DetailViewState extends ACompareViewStateStatic {
 				for (ISet set : setsInFocus) {
 					AHeatMapLayout layout = null;
 					if (heatMapWrapperID == 0) {
-						layout = new HeatMapLayoutDetailViewLeft(renderCommandFactory);
+						layout = new HeatMapLayoutDetailViewLeft(
+								renderCommandFactory);
 					} else if (heatMapWrapperID == setsInFocus.size() - 1) {
-						layout = new HeatMapLayoutDetailViewRight(renderCommandFactory);
+						layout = new HeatMapLayoutDetailViewRight(
+								renderCommandFactory);
 					} else {
-						layout = new HeatMapLayoutDetailViewMid(renderCommandFactory);
+						layout = new HeatMapLayoutDetailViewMid(
+								renderCommandFactory);
 					}
 
 					layouts.add(layout);
 
-					HeatMapWrapper heatMapWrapper = new HeatMapWrapper(heatMapWrapperID,
-							layout, view, null, useCase, view, dataDomain);
+					HeatMapWrapper heatMapWrapper = new HeatMapWrapper(
+							heatMapWrapperID, layout, view, null, useCase,
+							view, dataDomain);
 					heatMapWrapper
 							.setActiveHeatMapSelectionType(activeHeatMapSelectionType);
 					heatMapWrappers.add(heatMapWrapper);
@@ -924,13 +954,15 @@ public class DetailViewState extends ACompareViewStateStatic {
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
 			AHeatMapLayout layout = layouts.get(i);
 			if (i == indexOfHeatMapWrapperWithDendrogram) {
-				layout.setLayoutParameters(heatMapWrapperPosX, heatMapWrapperPosY,
-						viewFrustum.getHeight() - setBarHeight,
-						dendrogramHeatMapWrapperWidth);
-				heatMapWrapperPosX += dendrogramHeatMapWrapperWidth + heatMapWrapperWidth;
+				layout.setLayoutParameters(heatMapWrapperPosX,
+						heatMapWrapperPosY, viewFrustum.getHeight()
+								- setBarHeight, dendrogramHeatMapWrapperWidth);
+				heatMapWrapperPosX += dendrogramHeatMapWrapperWidth
+						+ heatMapWrapperWidth;
 			} else {
-				layout.setLayoutParameters(heatMapWrapperPosX, heatMapWrapperPosY,
-						viewFrustum.getHeight() - setBarHeight, heatMapWrapperWidth);
+				layout.setLayoutParameters(heatMapWrapperPosX,
+						heatMapWrapperPosY, viewFrustum.getHeight()
+								- setBarHeight, heatMapWrapperWidth);
 				heatMapWrapperPosX += heatMapWrapperWidth * 2.0f;
 			}
 			layout.setHeatMapWrapper(heatMapWrapper);

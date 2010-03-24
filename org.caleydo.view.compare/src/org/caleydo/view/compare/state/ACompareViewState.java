@@ -424,9 +424,9 @@ public abstract class ACompareViewState {
 				.y()
 				+ leftHeatMapWrapper.getLayout().getOverviewHeight();
 
-		leftHeatMapWrapper.sort(rightHeatMapWrapper
-				.getContentVAsOfHeatMaps(false), false, false);
 		rightHeatMapWrapper.sort(leftHeatMapWrapper
+				.getContentVAsOfHeatMaps(false), false, false);
+		leftHeatMapWrapper.sort(rightHeatMapWrapper
 				.getContentVAsOfHeatMaps(false), false, false);
 
 		for (ContentVirtualArray groupVA : leftHeatMapWrapper
