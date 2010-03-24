@@ -90,8 +90,9 @@ public class OverviewState extends ACompareViewStateStatic {
 			
 			if (bandBundlingActive) {
 				
-				renderBandRelations(gl, heatMapWrappers.get(i), true);
-				renderBandRelations(gl, heatMapWrappers.get(i+1), false);
+				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i), true);
+				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i+1), false);
+				renderDetailBandRelations(gl);
 			}
 		}
 	}
