@@ -73,21 +73,17 @@ public class OverviewState extends ACompareViewStateStatic {
 		}
 
 		IViewFrustum viewFrustum = view.getViewFrustum();
-
 		setBar.setWidth(viewFrustum.getWidth());
 		setBar.render(gl);
-
+		
 		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
-			// renderTree(gl, heatMapWrappers.get(i), heatMapWrappers.get(i +
-			// 1));
-			// renderOverviewRelations(gl, heatMapWrappers.get(i),
-			// heatMapWrappers
-			// .get(i + 1));
 
 			renderIndiviudalLineRelations(gl, heatMapWrappers.get(i), heatMapWrappers
 					.get(i + 1));
 
 			if (bandBundlingActive) {
+
+				calculateDetailBands(heatMapWrappers.get(0), heatMapWrappers.get(1), false);
 
 				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i), true);
 				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i + 1), false);

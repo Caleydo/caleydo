@@ -340,25 +340,20 @@ public abstract class ACompareViewState {
 	}
 
 	protected void calculateDetailBands(HeatMapWrapper leftHeatMapWrapper,
-			HeatMapWrapper rightHeatMapWrapper, boolean considerSelections) {
+			HeatMapWrapper rightHeatMapWrapper, boolean considerSelectedGroups) {
 
+		detailBands = new ArrayList<DetailBand>();
 		ArrayList<Integer> bandContentIDs = null;
 		DetailBand detailBand = null;
 
 		// Iterate over all detail content VAs on the left
-		for (GLHeatMap leftHeatMap : leftHeatMapWrapper.getHeatMaps(considerSelections)) {
+		for (ContentVirtualArray leftContentVA : leftHeatMapWrapper.getContentVAsOfHeatMaps(considerSelectedGroups)) {
 
-			ContentVirtualArray leftContentVA = leftHeatMap.getContentVA();
-
-			for (GLHeatMap rightHeatMap : rightHeatMapWrapper.getHeatMaps(considerSelections)) {
-
-				ContentVirtualArray rightContentVA = rightHeatMap.getContentVA();
+			for (ContentVirtualArray rightContentVA : rightHeatMapWrapper.getContentVAsOfHeatMaps(considerSelectedGroups)) {
 
 				bandContentIDs = new ArrayList<Integer>();
 				detailBand = new DetailBand();
 				detailBand.setContentIDs(bandContentIDs);
-				detailBand.setLeftHeatMap(leftHeatMap);
-				detailBand.setRightHeatMap(rightHeatMap);
 				detailBands.add(detailBand);
 
 				for (int leftContentIndex = 0; leftContentIndex < leftContentVA.size() - 1; leftContentIndex++) {
@@ -395,10 +390,6 @@ public abstract class ACompareViewState {
 				bandContentIDs.add(contentID);
 				detailBand = new DetailBand();
 				detailBand.setContentIDs(bandContentIDs);
-				detailBand.setLeftHeatMap(leftHeatMapWrapper
-						.getHeatMapByContentID(contentID));
-				detailBand.setRightHeatMap(rightHeatMapWrapper
-						.getHeatMapByContentID(contentID));
 				newBands.add(detailBand);
 			}
 
@@ -721,11 +712,6 @@ public abstract class ACompareViewState {
 	}
 
 	protected void renderDetailBandRelations(GL gl, HeatMapWrapper leftHeatMapWrapper, HeatMapWrapper rightHeatMapWrapper) {
-
-		// if (bandBundlingActive) {
-		detailBands = new ArrayList<DetailBand>();
-		calculateDetailBands(leftHeatMapWrapper, rightHeatMapWrapper, true);
-		// determineActiveBand();
 
 		for (DetailBand detailBand : detailBands) {
 			ArrayList<Integer> contentIDs = detailBand.getContentIDs();
@@ -1114,11 +1100,11 @@ public abstract class ACompareViewState {
 		float z = type.getPriority();
 		float[] typeColor = type.getColor();
 		float alpha = 0;
-		if (type == activeHeatMapSelectionType) {
-			gl.glLineWidth(1);
-			alpha = 0.4f;
-			z = 0.4f;
-		} else
+//		if (type == activeHeatMapSelectionType) {
+//			gl.glLineWidth(1);
+//			alpha = 0.4f;
+//			z = 0.4f;
+//		} else
 		if (type == SelectionType.MOUSE_OVER) {
 			gl.glLineWidth(2);
 			alpha = 1f;
@@ -1130,7 +1116,7 @@ public abstract class ACompareViewState {
 		} else {
 			gl.glLineWidth(1);
 			alpha = 0.4f;
-			z = 0.4f;
+			z = 0.6f;
 			// if (isConnectionCrossing(contentID,
 			// heatMapWrapper.getContentVA(),
 			// heatMapWrapper.getContentVA(), heatMapWrapper))

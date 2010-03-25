@@ -102,6 +102,10 @@ public class DetailViewState extends ACompareViewStateStatic {
 	@Override
 	public void buildDisplayList(GL gl) {
 
+		// The bands need to be created only once in the detail
+		if (detailBands == null)
+			calculateDetailBands(heatMapWrappers.get(0), heatMapWrappers.get(1), false);
+
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
 					glMouseListener, viewID);
@@ -369,11 +373,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 		if (setsInFocus == null || setsInFocus.size() == 0)
 			return;
 
-		// if (bandBundlingActive) {
-		detailBands = new ArrayList<DetailBand>();
-		calculateDetailBands(heatMapWrappers.get(0), heatMapWrappers.get(1), true);
-		determineActiveBand();
-
 		for (DetailBand detailBand : detailBands) {
 			ArrayList<Integer> contentIDs = detailBand.getContentIDs();
 
@@ -383,23 +382,18 @@ public class DetailViewState extends ACompareViewStateStatic {
 			renderSingleDetailBand(gl, detailBand, false);
 		}
 
-		if (activeBand != null)
+		determineActiveBand();
+		if (activeBand != null) {
 			renderSingleDetailBand(gl, activeBand, true);
-		// }
 
-		// Iterate over all detail content VAs on the left
-		HeatMapWrapper leftHeatMapWrapper = heatMapWrappers.get(0);
-		for (ContentVirtualArray contentVA : leftHeatMapWrapper
-				.getContentVAsOfHeatMaps(true)) {
+			// Render single detail lines for active band
+			for (Integer contentID : activeBand.getContentIDs()) {
 
-			for (Integer contentID : contentVA) {
-
-				// if (!bandBundlingActive ||
-				if (activeBand != null && activeBand.getContentIDs().contains(contentID))
-					renderSingleDetailRelation(gl, contentID);
+				renderSingleDetailRelation(gl, contentID);
 			}
 		}
 
+		// Render single lines which have no bundling
 		for (DetailBand detailBand : detailBands) {
 			if (detailBand.getContentIDs().size() == 1) {
 				renderSingleDetailRelation(gl, detailBand.getContentIDs().get(0));
@@ -460,17 +454,17 @@ public class DetailViewState extends ACompareViewStateStatic {
 			return;
 
 		float spacing = 0.01f;
-		float leftTopHeatMapElementOffset = detailBand.getLeftHeatMap().getFieldHeight(
-				startContentID)
+		float leftTopHeatMapElementOffset = leftHeatMapWrapper.getHeatMapByContentID(
+				startContentID).getFieldHeight(startContentID)
 				/ 2f - spacing;
-		float leftBottomHeatMapElementOffset = detailBand.getLeftHeatMap()
-				.getFieldHeight(endContentID)
+		float leftBottomHeatMapElementOffset = leftHeatMapWrapper.getHeatMapByContentID(
+				endContentID).getFieldHeight(endContentID)
 				/ 2f - spacing;
-		float rightTopHeatMapElementOffset = detailBand.getRightHeatMap().getFieldHeight(
-				startContentID)
+		float rightTopHeatMapElementOffset = rightHeatMapWrapper.getHeatMapByContentID(
+				endContentID).getFieldHeight(startContentID)
 				/ 2f - spacing;
-		float rightBottomHeatMapElementOffset = detailBand.getRightHeatMap()
-				.getFieldHeight(endContentID)
+		float rightBottomHeatMapElementOffset = rightHeatMapWrapper
+				.getHeatMapByContentID(endContentID).getFieldHeight(endContentID)
 				/ 2f - spacing;
 		leftTopPos.setY(leftTopPos.y() + leftTopHeatMapElementOffset);
 		leftBottomPos.setY(leftBottomPos.y() - leftBottomHeatMapElementOffset);
