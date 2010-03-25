@@ -109,8 +109,8 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 
 				calulateReduction();
 
-				if (reducedVA != null)
-					reducedNumberLabel.setText("# Genes: " + reducedVA.size());
+//				if (reducedVA != null)
+//					reducedNumberLabel.setText("# Genes: " + reducedVA.size());
 
 				composite.layout();
 			}
@@ -237,6 +237,11 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 				reducedVA.appendUnique(setsWithPerformedStatistics.get(0).getContentVA(
 						ContentVAType.CONTENT).get(contentIndex));
 		}
+		
+		if (reducedVA != null) {
+			reducedNumberLabel.setText("# Genes: " + reducedVA.size());
+			composite.layout();
+		}
 	}
 
 	private void performReduction() {
@@ -250,6 +255,8 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 		for (ISet set : setsWithPerformedStatistics) {
 			set.getStatisticsResult().clearStatisticsResults();
 		}
+		
+		calulateReduction();
 	}
 
 	public void triggerReplaceContentVAEvent(ContentVirtualArray newVA) {
@@ -263,9 +270,6 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 		setsWithPerformedStatistics.addAll(sets);
 
 		calulateReduction();
-		if (reducedVA != null) {
-			reducedNumberLabel.setText("# Genes: " + reducedVA.size());
-			composite.layout();
-		}
+
 	}
 }
