@@ -61,6 +61,10 @@ public class StatisticsResult {
 	public HashMap<ISet, Pair<double[], FoldChangeSettings>> getAllFoldChangeResults() {
 		return setToFoldChangeResult;
 	}
+	
+	public HashMap<ISet, ArrayList<Double>> getAllTwoSidedTTestResults() {
+		return setToTwoSidedTTestResult;
+	}
 
 	public Pair<double[], FoldChangeSettings> getFoldChangeResult(ISet set) {
 

@@ -46,7 +46,7 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 	private float pValueCutOff = 0.05f;
 
 	private ContentVirtualArray reducedVA;
-	
+
 	private Label reducedNumberLabel;
 
 	/**
@@ -90,10 +90,10 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 
 		final Label pValueLabel = new Label(composite, SWT.NULL);
 		pValueLabel.setText("p-Value: " + pValueCutOff);
-		
+
 		reducedNumberLabel = new Label(composite, SWT.NULL);
 		reducedNumberLabel.setText("");
-		
+
 		pValueSlider.setMinimum(0);
 		pValueSlider.setMaximum(110);
 		pValueSlider.setIncrement(10);
@@ -111,7 +111,7 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 
 				if (reducedVA != null)
 					reducedNumberLabel.setText("# Genes: " + reducedVA.size());
-				
+
 				composite.layout();
 			}
 		});
@@ -203,6 +203,17 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 					}
 				}
 
+				for (ISet twoSidedCompareSet : set.getStatisticsResult()
+						.getAllTwoSidedTTestResults().keySet()) {
+
+					ArrayList<Double> twoSidedTTestResult = set.getStatisticsResult()
+							.getTwoSidedTTestResult(twoSidedCompareSet);
+
+					if (twoSidedTTestResult != null
+							&& twoSidedTTestResult.get(contentIndex) > pValueCutOff)
+						resultValid = false;
+				}
+
 				double[] tTestResult = set.getStatisticsResult().getOneSidedTTestResult();
 				if (tTestResult != null && tTestResult[contentIndex] > pValueCutOff)
 					resultValid = false;
@@ -233,10 +244,10 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 
 	public void resultFinished(ArrayList<ISet> sets) {
 		setsWithPerformedStatistics.addAll(sets);
-		
+
 		calulateReduction();
 		if (reducedVA != null) {
-			reducedNumberLabel.setText("# Genes: " + reducedVA.size());			
+			reducedNumberLabel.setText("# Genes: " + reducedVA.size());
 			composite.layout();
 		}
 	}

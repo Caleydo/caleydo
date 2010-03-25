@@ -14,11 +14,13 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.StatisticsFoldChangeReductionEvent;
 import org.caleydo.core.manager.event.data.StatisticsPValueReductionEvent;
 import org.caleydo.core.manager.event.data.StatisticsResultFinishedEvent;
+import org.caleydo.core.manager.event.data.StatisticsTwoSidedTTestReductionEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.util.r.dialog.FoldChangeDialog;
 import org.caleydo.util.r.listener.StatisticsFoldChangeReductionListener;
 import org.caleydo.util.r.listener.StatisticsPValueReductionListener;
+import org.caleydo.util.r.listener.StatisticsTwoSidedTTestReductionListener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.rosuda.JRI.REXP;
@@ -31,6 +33,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 	// private CompareGroupsEventListener compareGroupsEventListener = null;
 	private StatisticsPValueReductionListener statisticsPValueReductionListener = null;
 	private StatisticsFoldChangeReductionListener statisticsFoldChangeReductionListener = null;
+	private StatisticsTwoSidedTTestReductionListener statisticsTwoSidedTTestReductionListener = null;
 
 	public RStatisticsPerformer() {
 
@@ -77,6 +80,13 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		GeneralManager.get().getEventPublisher().addListener(
 				StatisticsFoldChangeReductionEvent.class,
 				statisticsFoldChangeReductionListener);
+		
+		statisticsTwoSidedTTestReductionListener = new StatisticsTwoSidedTTestReductionListener();
+		statisticsTwoSidedTTestReductionListener.setHandler(this);
+		GeneralManager.get().getEventPublisher().addListener(
+				StatisticsTwoSidedTTestReductionEvent.class,
+				statisticsTwoSidedTTestReductionListener);
+		
 	}
 
 	// TODO: never called!
@@ -98,6 +108,12 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 			GeneralManager.get().getEventPublisher().removeListener(
 					statisticsFoldChangeReductionListener);
 			statisticsFoldChangeReductionListener = null;
+		}
+		
+		if (statisticsTwoSidedTTestReductionListener != null) {
+			GeneralManager.get().getEventPublisher().removeListener(
+					statisticsTwoSidedTTestReductionListener);
+			statisticsTwoSidedTTestReductionListener = null;
 		}
 	}
 
@@ -216,18 +232,20 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		StatisticsResultFinishedEvent event = new StatisticsResultFinishedEvent(sets);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		System.out.println("One-sided t-test finished");
 	}
 
 	public void twoSidedTTest(ArrayList<ISet> sets) {
-
+		
 		// Perform t-test between all neighboring sets (A<->B<->C)
-		for (int setIndex = 0; setIndex < sets.size(); setIndex++) {
+//		for (int setIndex = 0; setIndex < sets.size(); setIndex++) {
+//
+//			if (setIndex + 1 == sets.size())
+//				break;
 
-			if (setIndex + 1 == sets.size())
-				break;
-
-			ISet set1 = sets.get(setIndex);
-			ISet set2 = sets.get(setIndex + 1);
+			ISet set1 = sets.get(0);
+			ISet set2 = sets.get(1);
 
 			ArrayList<Double> pValueVector = new ArrayList<Double>();
 
@@ -266,12 +284,16 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 			set1.getStatisticsResult().setTwoSiddedTTestResult(set2, pValueVector);
 			set2.getStatisticsResult().setTwoSiddedTTestResult(set1, pValueVector);
-		}
+//		}
 
 		// setsToCompare.get(0).getStatisticsResult().getVABasedOnCompareResult(setsToCompare.get(1),
 		// 0.9f);
+		
+		StatisticsResultFinishedEvent event = new StatisticsResultFinishedEvent(sets);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
-		System.out.println("Finished");
+		System.out.println("Two-sided t-test finished");
 	}
 
 	@Override
@@ -282,6 +304,8 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 			statisticsPValueReductionListener.handleEvent(event);
 		else if (event instanceof StatisticsFoldChangeReductionEvent)
 			statisticsFoldChangeReductionListener.handleEvent(event);
+		else if (event instanceof StatisticsTwoSidedTTestReductionEvent)
+			statisticsTwoSidedTTestReductionListener.handleEvent(event);
 	}
 
 	public void handleFoldChangeEvent(final ISet set1, final ISet set2) {

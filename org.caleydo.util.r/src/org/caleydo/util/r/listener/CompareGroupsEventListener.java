@@ -13,7 +13,7 @@ public class CompareGroupsEventListener extends
 		CompareGroupsEvent compareGroupsEvent = null;
 		if (event instanceof CompareGroupsEvent) {
 			compareGroupsEvent = (CompareGroupsEvent) event;
-			handler.twoSidedTTest(compareGroupsEvent.getSets());
+//			handler.twoSidedTTest(compareGroupsEvent.getSets());
 		}
 	}
 }
