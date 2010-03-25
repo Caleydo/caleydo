@@ -18,7 +18,7 @@ public class RenderCommandFactory {
 				new OverviewGroupBarRenderCommand(viewID, pickingManager,
 						textureManager));
 		hashRenderCommands.put(ERenderCommandType.OVERVIEW_HEATMAP,
-				new OverviewHeatMapRenderCommand());
+				new OverviewHeatMapRenderCommand(viewID, pickingManager));
 		hashRenderCommands.put(ERenderCommandType.OVERVIEW_SLIDER,
 				new OverviewSliderRenderCommand(viewID, pickingManager,
 						textureManager));

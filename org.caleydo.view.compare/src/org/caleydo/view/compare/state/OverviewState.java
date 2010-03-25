@@ -47,8 +47,8 @@ public class OverviewState extends ACompareViewStateStatic {
 			CompareViewStateController compareViewStateController) {
 
 		super(view, viewID, textRenderer, textureManager, pickingManager,
-				glMouseListener, setBar, renderCommandFactory, dataDomain, useCase,
-				dragAndDropController, compareViewStateController);
+				glMouseListener, setBar, renderCommandFactory, dataDomain,
+				useCase, dragAndDropController, compareViewStateController);
 		this.setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.5f));
 		numSetsInFocus = 4;
 	}
@@ -84,12 +84,15 @@ public class OverviewState extends ACompareViewStateStatic {
 			// heatMapWrappers
 			// .get(i + 1));
 
-			renderIndiviudalLineRelations(gl, heatMapWrappers.get(i), heatMapWrappers.get(i+1));
-			
+			renderIndiviudalLineRelations(gl, heatMapWrappers.get(i),
+					heatMapWrappers.get(i + 1));
+
 			if (bandBundlingActive) {
-				
-				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i), true);
-				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i+1), false);
+
+				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i),
+						true);
+				renderOverviewToDetailBandRelations(gl, heatMapWrappers
+						.get(i + 1), false);
 				renderDetailBandRelations(gl, heatMapWrappers.get(i), heatMapWrappers.get(i+1));
 			}
 		}
@@ -102,7 +105,7 @@ public class OverviewState extends ACompareViewStateStatic {
 		setsChanged = false;
 
 	}
-	
+
 	@Override
 	public ECompareViewStateType getStateType() {
 		return ECompareViewStateType.OVERVIEW;
@@ -118,7 +121,8 @@ public class OverviewState extends ACompareViewStateStatic {
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-			heatMapWrapper.handleSelectionUpdate(selectionDelta, scrollToSelection, info);
+			heatMapWrapper.handleSelectionUpdate(selectionDelta,
+					scrollToSelection, info);
 			heatMapWrapper.getOverview().updateHeatMapTextures(
 					heatMapWrapper.getContentSelectionManager());
 		}
@@ -142,7 +146,34 @@ public class OverviewState extends ACompareViewStateStatic {
 
 	@Override
 	public void handleStateSpecificPickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick, boolean isControlPressed) {
+			EPickingMode pickingMode, int iExternalID, Pick pick,
+			boolean isControlPressed) {
+
+		switch (ePickingType) {
+		// FIXME: That way only the first 2 heatmapwrappers can be used
+		case COMPARE_LEFT_GROUP_SELECTION:
+			switch (pickingMode) {
+			case CLICKED:
+				for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
+					heatMapWrapper.setHeatMapsInactive();
+				}
+
+				heatMapWrappers.get(0).setHeatMapActive(iExternalID);
+				break;
+			}
+			break;
+
+		case COMPARE_RIGHT_GROUP_SELECTION:
+			switch (pickingMode) {
+			case CLICKED:
+				for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
+					heatMapWrapper.setHeatMapsInactive();
+				}
+
+				heatMapWrappers.get(1).setHeatMapActive(iExternalID);
+				break;
+			}
+		}
 
 	}
 
@@ -151,10 +182,10 @@ public class OverviewState extends ACompareViewStateStatic {
 			SelectionCommand selectionCommand) {
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-			if (category == heatMapWrapper.getContentSelectionManager().getIDType()
-					.getCategory())
-				heatMapWrapper.getContentSelectionManager().executeSelectionCommand(
-						selectionCommand);
+			if (category == heatMapWrapper.getContentSelectionManager()
+					.getIDType().getCategory())
+				heatMapWrapper.getContentSelectionManager()
+						.executeSelectionCommand(selectionCommand);
 			else
 				return;
 		}
@@ -177,17 +208,21 @@ public class OverviewState extends ACompareViewStateStatic {
 				for (ISet set : setsInFocus) {
 					AHeatMapLayout layout = null;
 					if (heatMapWrapperID == 0) {
-						layout = new HeatMapLayoutOverviewLeft(renderCommandFactory);
+						layout = new HeatMapLayoutOverviewLeft(
+								renderCommandFactory);
 					} else if (heatMapWrapperID == setsInFocus.size() - 1) {
-						layout = new HeatMapLayoutOverviewRight(renderCommandFactory);
+						layout = new HeatMapLayoutOverviewRight(
+								renderCommandFactory);
 					} else {
-						layout = new HeatMapLayoutOverviewMid(renderCommandFactory);
+						layout = new HeatMapLayoutOverviewMid(
+								renderCommandFactory);
 					}
 
 					layouts.add(layout);
 
-					HeatMapWrapper heatMapWrapper = new HeatMapWrapper(heatMapWrapperID,
-							layout, view, null, useCase, view, dataDomain);
+					HeatMapWrapper heatMapWrapper = new HeatMapWrapper(
+							heatMapWrapperID, layout, view, null, useCase,
+							view, dataDomain);
 					heatMapWrappers.add(heatMapWrapper);
 					heatMapWrapperID++;
 				}
@@ -217,20 +252,21 @@ public class OverviewState extends ACompareViewStateStatic {
 					.getState(ECompareViewStateType.OVERVIEW_TO_DETAIL_TRANSITION);
 
 			float[] wheelPointWorldCoordinates = GLCoordinateUtils
-					.convertWindowCoordinatesToWorldCoordinates(gl, wheelPoint.x,
-							wheelPoint.y);
+					.convertWindowCoordinatesToWorldCoordinates(gl,
+							wheelPoint.x, wheelPoint.y);
 
 			int itemOffset = 0;
 			for (int i = 0; i < layouts.size() - 1; i++) {
 
 				if ((i == layouts.size() - 2)
-						&& (wheelPointWorldCoordinates[0] >= layouts.get(i).getPosition()
-								.x())) {
+						&& (wheelPointWorldCoordinates[0] >= layouts.get(i)
+								.getPosition().x())) {
 					itemOffset = i;
 					break;
 				}
 
-				if ((wheelPointWorldCoordinates[0] >= layouts.get(i).getPosition().x())
+				if ((wheelPointWorldCoordinates[0] >= layouts.get(i)
+						.getPosition().x())
 						&& (wheelPointWorldCoordinates[0] <= layouts.get(i + 1)
 								.getPosition().x()
 								+ (layouts.get(i + 1).getWidth() / 2.0f))) {
@@ -274,12 +310,15 @@ public class OverviewState extends ACompareViewStateStatic {
 			int numExperiments = heatMapWrapper.getSet().getStorageVA(
 					StorageVAType.STORAGE).size();
 			// TODO: Maybe get info in layout from heatmapwrapper
-			layout.setTotalSpaceForAllHeatMapWrappers(spaceForHeatMapWrapperOverviews);
+			layout
+					.setTotalSpaceForAllHeatMapWrappers(spaceForHeatMapWrapperOverviews);
 			layout.setNumExperiments(numExperiments);
 			layout.setNumTotalExperiments(numTotalExperiments);
 
-			layout.setLayoutParameters(heatMapWrapperPosX, heatMapWrapperPosY,
-					viewFrustum.getHeight() - setBarHeight, heatMapWrapperWidth);
+			layout
+					.setLayoutParameters(heatMapWrapperPosX,
+							heatMapWrapperPosY, viewFrustum.getHeight()
+									- setBarHeight, heatMapWrapperWidth);
 			layout.setHeatMapWrapper(heatMapWrapper);
 
 			heatMapWrapperPosX += heatMapWrapperWidth + heatMapWrapperGapWidth;

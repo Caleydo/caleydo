@@ -11,6 +11,7 @@ import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
 import org.caleydo.view.heatmap.hierarchical.HeatMapUtil;
@@ -18,6 +19,15 @@ import org.caleydo.view.heatmap.hierarchical.HeatMapUtil;
 import com.sun.opengl.util.texture.Texture;
 
 public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
+
+	private PickingManager pickingManager;
+	private int viewID;
+
+	public OverviewHeatMapRenderCommand(int viewID,
+			PickingManager pickingManager) {
+		this.viewID = viewID;
+		this.pickingManager = pickingManager;
+	}
 
 	@Override
 	public void render(GL gl, HeatMapWrapper heatMapWrapper) {
@@ -35,6 +45,8 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 					.getOverviewHeatMapGroupPosition(i);
 			float height = layout.getOverviewHeatMapGroupHeight(i);
 
+			gl.glPushName(pickingManager.getPickingID(viewID, layout
+					.getGroupPickingType(), i));
 			gl.glPushMatrix();
 			gl.glTranslatef(overviewHeatMapGroupPosition.x(),
 					overviewHeatMapGroupPosition.y(),
@@ -45,6 +57,7 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 			HeatMapUtil.renderHeatmapTextures(gl, overviewTextures, height,
 					layout.getOverviewHeatMapWidth());
 			gl.glPopMatrix();
+			gl.glPopName();
 		}
 
 		drawSelections(gl, layout, contentSelectionManager, contentVA);
