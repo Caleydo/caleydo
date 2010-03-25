@@ -39,6 +39,9 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	
 	SelectionManager selectionManager; 
 	
+	// TODO: timeout handler for each user ! 
+	TimeoutHandler tmpTimeoutHandler; 
+	
 //	HashMap<Integer, BoundingBoxList> app2bbl;
 //	
 //	/** target applications for most recent reported selectionId */
@@ -67,6 +70,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 //		targetApplicationIds = new int[0];
 //		triggeringMousePointerId = null;
 //		this.numApps = 0; 
+		this.tmpTimeoutHandler = null; 
 	}
 	
 	public void reportWindowChange(String appName) {
@@ -197,6 +201,19 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	public void reportOneShot(User user, User owner, AccessInformation accessInformation, int srcAppID){
 		System.out.println("VisLinkManager: reportOneShot (user: " + user.getPointerID() + ", owner: " + owner.getPointerID() + ")"); 
 		
+		// generate timeout handling 
+		TimeoutEvent event = new OneShotTimeoutEvent(user); 
+		// TODO: we need a timeout handler for each user! 
+		if(this.tmpTimeoutHandler != null){
+			this.tmpTimeoutHandler.cancel(); 
+			this.tmpTimeoutHandler = null; 
+		}
+		this.tmpTimeoutHandler = new TimeoutHandler(event, this); 
+//		TimeoutHandler timeoutHandler = new TimeoutHandler(event, this); 
+		Timer timer = new Timer(); 
+		timer.schedule(this.tmpTimeoutHandler, OneShotTimeoutEvent.ONE_SHOT_DISPLAY_TIME); 
+//		this.tmpTimeoutHandler.startTimer(event, OneShotTimeoutEvent.ONE_SHOT_DISPLAY_TIME); 
+		
 		// check if the user currently has one-shot links on (only one set allowed at the moment)
 		if(user.getCurrentRenderType() == VisualLinksRenderType.RenderTypeOneShot){
 			System.out.println("User is currently having one-shot links --> ignoring..."); 
@@ -227,11 +244,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			this.selectionManager.addSelection(app, selectionID, pointerID, isSource); 
 		}
 		
-		// generate timeout handling 
-		TimeoutEvent event = new OneShotTimeoutEvent(user); 
-		TimeoutHandler timeoutHandler = new TimeoutHandler(event, this); 
-		Timer timer = new Timer(); 
-		timer.schedule(timeoutHandler, OneShotTimeoutEvent.ONE_SHOT_DISPLAY_TIME); 
+		
 		
 		checkRender(pointerID);
 	}
