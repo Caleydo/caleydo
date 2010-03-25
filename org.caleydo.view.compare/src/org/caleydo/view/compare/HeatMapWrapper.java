@@ -1,6 +1,5 @@
 package org.caleydo.view.compare;
 
-import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
@@ -385,15 +384,15 @@ public class HeatMapWrapper {
 
 	}
 
-	public Vec2f getLeftOverviewLinkPositionFromContentIndex(int contentIndex) {
+	public float[] getLeftOverviewLinkPositionFromContentIndex(int contentIndex) {
 
 		Vec3f overviewPosition = layout.getOverviewHeatMapPosition();
 
-		return new Vec2f(overviewPosition.x(), layout
-				.getOverviewHeatMapSamplePositionY(contentIndex));
+		return new float[]{overviewPosition.x(), layout
+				.getOverviewHeatMapSamplePositionY(contentIndex), 0};
 	}
 
-	public Vec2f getLeftOverviewLinkPositionFromContentID(int contentID) {
+	public float[] getLeftOverviewLinkPositionFromContentID(int contentID) {
 
 		int contentIndex = contentVA.indexOf(contentID);
 
@@ -403,16 +402,16 @@ public class HeatMapWrapper {
 		return getLeftOverviewLinkPositionFromContentIndex(contentIndex);
 	}
 
-	public Vec2f getRightOverviewLinkPositionFromContentIndex(int contentIndex) {
+	public float[] getRightOverviewLinkPositionFromContentIndex(int contentIndex) {
 
 		Vec3f overviewPosition = layout.getOverviewHeatMapPosition();
 
-		return new Vec2f(overviewPosition.x()
+		return new float[]{overviewPosition.x()
 				+ layout.getOverviewHeatMapWidth(), layout
-				.getOverviewHeatMapSamplePositionY(contentIndex));
+				.getOverviewHeatMapSamplePositionY(contentIndex), 0};
 	}
 
-	public Vec2f getRightOverviewLinkPositionFromContentID(int contentID) {
+	public float[] getRightOverviewLinkPositionFromContentID(int contentID) {
 
 		int contentIndex = contentVA.indexOf(contentID);
 
@@ -422,25 +421,25 @@ public class HeatMapWrapper {
 		return getRightOverviewLinkPositionFromContentIndex(contentIndex);
 	}
 
-	public Vec2f getRightDetailLinkPositionFromContentID(int contentID) {
+	public float[] getRightDetailLinkPositionFromContentID(int contentID) {
 
 		Float yCoordinate = getDetailYCoordinateByContentID(contentID);
 
 		if (yCoordinate == null)
 			return null;
 
-		return new Vec2f(layout.getDetailPosition().x()
-				+ layout.getDetailWidth(), yCoordinate);
+		return new float[]{layout.getDetailPosition().x()
+				+ layout.getDetailWidth(), yCoordinate, 0};
 	}
 
-	public Vec2f getLeftDetailLinkPositionFromContentID(int contentID) {
+	public float[] getLeftDetailLinkPositionFromContentID(int contentID) {
 
 		Float yCoordinate = getDetailYCoordinateByContentID(contentID);
 
 		if (yCoordinate == null)
 			return null;
 
-		return new Vec2f(layout.getDetailPosition().x(), yCoordinate);
+		return new float[]{layout.getDetailPosition().x(), yCoordinate, 0};
 	}
 
 	private Float getDetailYCoordinateByContentID(int contentID) {
