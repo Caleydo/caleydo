@@ -384,11 +384,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 		for (DetailBand detailBand : detailBands) {
 			ArrayList<Integer> contentIDs = detailBand.getContentIDs();
 
-			if (contentIDs.size() == 1) {
-				renderSingleDetailRelation(gl, contentIDs.get(0));
-				continue;
-			}
-
 			if (contentIDs.size() < 2 || detailBand == activeBand)
 				continue;
 
@@ -411,6 +406,30 @@ public class DetailViewState extends ACompareViewStateStatic {
 					renderSingleDetailRelation(gl, contentID);
 			}
 		}
+
+		for (DetailBand detailBand : detailBands) {
+			if (detailBand.getContentIDs().size() == 1) {
+				renderSingleDetailRelation(gl, detailBand.getContentIDs().get(0));
+				continue;
+			}
+		}
+	}
+	
+	protected void renderSingleDetailRelation(GL gl, Integer contentID) {
+
+		float positionZ = setRelationColor(gl, heatMapWrappers.get(0), contentID);
+
+		Vec2f tmpLeftPos = heatMapWrappers.get(0).getRightDetailLinkPositionFromContentID(
+				contentID);
+
+		Vec2f tmpRightPos = heatMapWrappers.get(1).getLeftDetailLinkPositionFromContentID(
+				contentID);
+
+		Vec3f leftPos = new Vec3f(tmpLeftPos.x(), tmpLeftPos.y(), positionZ);
+		Vec3f rightPos = new Vec3f(tmpRightPos.x(), tmpRightPos.y(), positionZ);
+		
+		renderSingleDetailRelation(gl, contentID, leftPos, rightPos);
+
 	}
 
 	protected void renderSingleDetailBand(GL gl, DetailBand detailBand, boolean highlight) {
@@ -466,43 +485,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 		renderSingleBand(gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos,
 				highlight);
-	}
-	
-	private void renderSingleDetailRelation(GL gl, Integer contentID) {
-
-		float positionZ = setRelationColor(gl, heatMapWrappers.get(0), contentID);
-
-		Vec2f leftPos = heatMapWrappers.get(0).getRightDetailLinkPositionFromContentID(
-				contentID);
-
-		if (leftPos == null)
-			return;
-
-		Vec2f rightPos = heatMapWrappers.get(1).getLeftDetailLinkPositionFromContentID(
-				contentID);
-
-		if (rightPos == null)
-			return;
-
-		xOffset = -(rightPos.x() - leftPos.x()) / 1.5f;
-
-		gl.glPushName(pickingManager.getPickingID(viewID,
-				EPickingType.POLYLINE_SELECTION, contentID));
-		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-		points.add(new Vec3f(leftPos.x(), leftPos.y(), positionZ));
-		points.add(new Vec3f(rightPos.x() + xOffset, leftPos.y(), positionZ));
-		points.add(new Vec3f(rightPos.x() + xOffset / 3f, rightPos.y(), positionZ));
-		points.add(new Vec3f(rightPos.x(), rightPos.y(), positionZ));
-
-		NURBSCurve curve = new NURBSCurve(points, NUMBER_OF_SPLINE_POINTS);
-		points = curve.getCurvePoints();
-
-		gl.glBegin(GL.GL_LINE_STRIP);
-		for (int i = 0; i < points.size(); i++)
-			gl.glVertex3f(points.get(i).x(), points.get(i).y(), positionZ);
-		gl.glEnd();
-
-		gl.glPopName();
 	}
 	
 	private void determineActiveBand() {

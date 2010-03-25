@@ -90,15 +90,15 @@ public abstract class ACompareViewState {
 
 	protected ICompareConnectionRenderer compareConnectionRenderer;
 
-//	HashMap<Integer, Vec3f> contentIDToLeftOverviewPoints;
+	// HashMap<Integer, Vec3f> contentIDToLeftOverviewPoints;
 	HashMap<Integer, Vec3f> contentIDToLeftDetailPoints;
-//	HashMap<Integer, Vec3f> contentIDToRightOverviewPoints;
+	// HashMap<Integer, Vec3f> contentIDToRightOverviewPoints;
 	HashMap<Integer, Vec3f> contentIDToRightDetailPoints;
 
 	float firstLevelOffset = 0;
 
 	ArrayList<DetailBand> detailBands;
-	
+
 	public ACompareViewState(GLCompare view, int viewID, TextRenderer textRenderer,
 			TextureManager textureManager, PickingManager pickingManager,
 			GLMouseListener glMouseListener, SetBar setBar,
@@ -128,9 +128,9 @@ public abstract class ACompareViewState {
 
 		compareConnectionRenderer = new CompareConnectionBandRenderer();
 
-//		contentIDToLeftOverviewPoints = new HashMap<Integer, Vec3f>();
+		// contentIDToLeftOverviewPoints = new HashMap<Integer, Vec3f>();
 		contentIDToLeftDetailPoints = new HashMap<Integer, Vec3f>();
-//		contentIDToRightOverviewPoints = new HashMap<Integer, Vec3f>();
+		// contentIDToRightOverviewPoints = new HashMap<Integer, Vec3f>();
 		contentIDToRightDetailPoints = new HashMap<Integer, Vec3f>();
 	}
 
@@ -218,36 +218,42 @@ public abstract class ACompareViewState {
 		Vec3f leftTopPos = contentIDToLeftDetailPoints.get(startContentID);
 		Vec3f rightTopPos = contentIDToRightDetailPoints.get(startContentID);
 
+		if (leftTopPos == null || rightTopPos == null)
+			return;
+
 		Vec3f leftBottomPos = contentIDToLeftDetailPoints.get(endContentID);
 		Vec3f rightBottomPos = contentIDToRightDetailPoints.get(endContentID);
-	
-		if (leftTopPos == null || leftBottomPos == null || rightTopPos == null
-				|| rightBottomPos == null)
+
+		if (leftBottomPos == null || rightBottomPos == null)
 			return;
-		
+
 		float bundlingOffsetX = 0.1f;
-		rightTopPos.setX(rightTopPos.x() + bundlingOffsetX); 
-		rightBottomPos.setX(rightBottomPos.x() + bundlingOffsetX); 
-		leftTopPos.setX(leftTopPos.x() - bundlingOffsetX); 
-		leftBottomPos.setX(leftBottomPos.x() - bundlingOffsetX); 
-		
-//		float spacing = 0.01f;
-//		float leftTopHeatMapElementOffset = detailBand.getLeftHeatMap().getFieldHeight(
-//				startContentID)
-//				/ 2f - spacing;
-//		float leftBottomHeatMapElementOffset = detailBand.getLeftHeatMap()
-//				.getFieldHeight(endContentID)
-//				/ 2f - spacing;
-//		float rightTopHeatMapElementOffset = detailBand.getRightHeatMap().getFieldHeight(
-//				startContentID)
-//				/ 2f - spacing;
-//		float rightBottomHeatMapElementOffset = detailBand.getRightHeatMap()
-//				.getFieldHeight(endContentID)
-//				/ 2f - spacing;
-//		leftTopPos.setY(leftTopPos.y() + leftTopHeatMapElementOffset);
-//		leftBottomPos.setY(leftBottomPos.y() - leftBottomHeatMapElementOffset);
-//		rightTopPos.setY(rightTopPos.y() + rightTopHeatMapElementOffset);
-//		rightBottomPos.setY(rightBottomPos.y() - rightBottomHeatMapElementOffset);
+		rightTopPos.setX(rightTopPos.x() + bundlingOffsetX);
+		rightBottomPos.setX(rightBottomPos.x() + bundlingOffsetX);
+		leftTopPos.setX(leftTopPos.x() - bundlingOffsetX);
+		leftBottomPos.setX(leftBottomPos.x() - bundlingOffsetX);
+
+		// float spacing = 0.01f;
+		// float leftTopHeatMapElementOffset =
+		// detailBand.getLeftHeatMap().getFieldHeight(
+		// startContentID)
+		// / 2f - spacing;
+		// float leftBottomHeatMapElementOffset = detailBand.getLeftHeatMap()
+		// .getFieldHeight(endContentID)
+		// / 2f - spacing;
+		// float rightTopHeatMapElementOffset =
+		// detailBand.getRightHeatMap().getFieldHeight(
+		// startContentID)
+		// / 2f - spacing;
+		// float rightBottomHeatMapElementOffset = detailBand.getRightHeatMap()
+		// .getFieldHeight(endContentID)
+		// / 2f - spacing;
+		// leftTopPos.setY(leftTopPos.y() + leftTopHeatMapElementOffset);
+		// leftBottomPos.setY(leftBottomPos.y() -
+		// leftBottomHeatMapElementOffset);
+		// rightTopPos.setY(rightTopPos.y() + rightTopHeatMapElementOffset);
+		// rightBottomPos.setY(rightBottomPos.y() -
+		// rightBottomHeatMapElementOffset);
 
 		// TODO integrate offset for band in Y
 
@@ -314,8 +320,9 @@ public abstract class ACompareViewState {
 
 		compareConnectionRenderer.render(gl, outputPoints);
 	}
-	
-	protected void calculateDetailBands(HeatMapWrapper leftHeatMapWrapper, HeatMapWrapper rightHeatMapWrapper) {
+
+	protected void calculateDetailBands(HeatMapWrapper leftHeatMapWrapper,
+			HeatMapWrapper rightHeatMapWrapper) {
 
 		ArrayList<Integer> bandContentIDs = null;
 		DetailBand detailBand = null;
@@ -380,7 +387,6 @@ public abstract class ACompareViewState {
 			detailBands.addAll(newBands);
 		}
 	}
-
 
 	/**
 	 * Function calculates for each node (gene or entity) in the dendrogram
@@ -566,8 +572,8 @@ public abstract class ACompareViewState {
 
 		contentIDToLeftDetailPoints.clear();
 		contentIDToRightDetailPoints.clear();
-//		contentIDToLeftOverviewPoints.clear();
-//		contentIDToRightOverviewPoints.clear();
+		// contentIDToLeftOverviewPoints.clear();
+		// contentIDToRightOverviewPoints.clear();
 
 		// TODO use point lists in overview for caluclation optimization
 
@@ -633,7 +639,8 @@ public abstract class ACompareViewState {
 				Vec3f leftOverviewPos = new Vec3f(overviewX, overviewY, 0);
 				Vec3f leftDetailPos = new Vec3f(overviewX + firstLevelOffset, sortedY, 0);
 
-//				contentIDToLeftOverviewPoints.put(contentID, leftOverviewPos);
+				// contentIDToLeftOverviewPoints.put(contentID,
+				// leftOverviewPos);
 				contentIDToLeftDetailPoints.put(contentID, leftDetailPos);
 
 				points.add(leftOverviewPos);
@@ -681,7 +688,8 @@ public abstract class ACompareViewState {
 					Vec3f rightOverviewPos = new Vec3f(overviewRightX, overviewRightY, 0);
 
 					contentIDToRightDetailPoints.put(contentID, rightDetailPos);
-//					contentIDToRightOverviewPoints.put(contentID, rightOverviewPos);
+					// contentIDToRightOverviewPoints.put(contentID,
+					// rightOverviewPos);
 
 					points.add(rightDetailPos);
 					points.add(new Vec3f(rightDetailPos.x() + bundlingCorrectionOffsetX,
@@ -702,58 +710,64 @@ public abstract class ACompareViewState {
 		// if (bandBundlingActive) {
 		detailBands = new ArrayList<DetailBand>();
 		calculateDetailBands(heatMapWrappers.get(0), heatMapWrappers.get(1));
-//		determineActiveBand();
+		// determineActiveBand();
 
 		for (DetailBand detailBand : detailBands) {
 			ArrayList<Integer> contentIDs = detailBand.getContentIDs();
 
-			if (contentIDs.size() == 0)
+			if (contentIDs.size() < 2)
 				continue;
-			
-			if (contentIDs.size() == 1) {
-//				renderSingleDetailRelation(gl, contentIDs.get(0));
-				continue;
-			}
 
-//			if (contentIDs.size() < 2 || detailBand == activeBand)
-//				continue;
+			// if (contentIDs.size() < 2 || detailBand == activeBand)
+			// continue;
 
 			renderSingleDetailBand(gl, detailBand, false);
 		}
 
-//		if (activeBand != null)
-//			renderSingleDetailBand(gl, activeBand, true);
-//		// }
-//
-//		// Iterate over all detail content VAs on the left
-//		HeatMapWrapper leftHeatMapWrapper = heatMapWrappers.get(0);
-//		for (ContentVirtualArray contentVA : leftHeatMapWrapper
-//				.getContentVAsOfHeatMaps(true)) {
-//
-//			for (Integer contentID : contentVA) {
-//
-//				// if (!bandBundlingActive ||
-//				if (activeBand != null && activeBand.getContentIDs().contains(contentID))
-//					renderSingleDetailRelation(gl, contentID);
-//			}
-//		}
+		// if (activeBand != null)
+		// renderSingleDetailBand(gl, activeBand, true);
+		// // }
+		//
+		// // Iterate over all detail content VAs on the left
+		// HeatMapWrapper leftHeatMapWrapper = heatMapWrappers.get(0);
+		// for (ContentVirtualArray contentVA : leftHeatMapWrapper
+		// .getContentVAsOfHeatMaps(true)) {
+		//
+		// for (Integer contentID : contentVA) {
+		//
+		// // if (!bandBundlingActive ||
+		// if (activeBand != null &&
+		// activeBand.getContentIDs().contains(contentID))
+		// renderSingleDetailRelation(gl, contentID);
+		// }
+		// }
+
+		for (DetailBand detailBand : detailBands) {
+			ArrayList<Integer> contentIDs = detailBand.getContentIDs();
+
+			if (contentIDs.size() == 1) {
+
+				int contentID = contentIDs.get(0);
+
+				Vec3f leftTopPos = contentIDToLeftDetailPoints.get(contentID);
+				Vec3f rightTopPos = contentIDToRightDetailPoints.get(contentID);
+
+				if (leftTopPos == null || rightTopPos == null)
+					return;
+
+				float bundlingOffsetX = 0.1f;
+				rightTopPos.setX(rightTopPos.x() + bundlingOffsetX);
+				leftTopPos.setX(leftTopPos.x() - bundlingOffsetX);
+				
+				renderSingleDetailRelation(gl, contentIDs.get(0), leftTopPos, rightTopPos);
+			}
+		}
 	}
-	
-	// TODO: check if we can replace also the method in detailViewState
-	private void renderSingleDetailRelation(GL gl, Integer contentID) {
 
-		float positionZ = setRelationColor(gl, heatMapWrappers.get(0), contentID);
+	protected void renderSingleDetailRelation(GL gl, int contentID, Vec3f leftPos,
+			Vec3f rightPos) {
 
-		Vec2f leftPos = heatMapWrappers.get(0).getRightDetailLinkPositionFromContentID(
-				contentID);
-
-		if (leftPos == null)
-			return;
-
-		Vec2f rightPos = heatMapWrappers.get(1).getLeftDetailLinkPositionFromContentID(
-				contentID);
-
-		if (rightPos == null)
+		if (leftPos == null || rightPos == null)
 			return;
 
 		float xOffset = -(rightPos.x() - leftPos.x()) / 1.5f;
@@ -761,28 +775,29 @@ public abstract class ACompareViewState {
 		gl.glPushName(pickingManager.getPickingID(viewID,
 				EPickingType.POLYLINE_SELECTION, contentID));
 		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-		points.add(new Vec3f(leftPos.x(), leftPos.y(), positionZ));
-		points.add(new Vec3f(rightPos.x() + xOffset, leftPos.y(), positionZ));
-		points.add(new Vec3f(rightPos.x() + xOffset / 3f, rightPos.y(), positionZ));
-		points.add(new Vec3f(rightPos.x(), rightPos.y(), positionZ));
+		points.add(leftPos);
+		points.add(new Vec3f(rightPos.x() + xOffset, leftPos.y(), leftPos.z()));
+		points.add(new Vec3f(rightPos.x() + xOffset / 3f, rightPos.y(), rightPos.z()));
+		points.add(rightPos);
 
 		NURBSCurve curve = new NURBSCurve(points, NUMBER_OF_SPLINE_POINTS);
 		points = curve.getCurvePoints();
 
 		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = 0; i < points.size(); i++)
-			gl.glVertex3f(points.get(i).x(), points.get(i).y(), positionZ);
+			gl.glVertex3f(points.get(i).x(), points.get(i).y(), points.get(i).y());
 		gl.glEnd();
 
 		gl.glPopName();
 	}
-	
-	
-	protected void renderOverviewToDetailBandRelations(GL gl, HeatMapWrapper heatMapWrapper, boolean isLeft) {
+
+	protected void renderOverviewToDetailBandRelations(GL gl,
+			HeatMapWrapper heatMapWrapper, boolean isLeft) {
 
 		float overviewX = 0;
 		if (isLeft)
-			overviewX = heatMapWrapper.getRightOverviewLinkPositionFromContentIndex(0).x();
+			overviewX = heatMapWrapper.getRightOverviewLinkPositionFromContentIndex(0)
+					.x();
 		else
 			overviewX = heatMapWrapper.getLeftOverviewLinkPositionFromContentIndex(0).x();
 
@@ -795,26 +810,27 @@ public abstract class ACompareViewState {
 
 			Vec3f leftTopPos = new Vec3f(overviewX, overviewFirstPosY, 0);
 			Vec3f leftBottomPos = new Vec3f(overviewX, overviewLastPosY, 0);
-			
-			ContentVirtualArray detailVA = heatMapWrapper.getHeatMapByContentID(va.get(group.getStartIndex())).getContentVA();
+
+			ContentVirtualArray detailVA = heatMapWrapper.getHeatMapByContentID(
+					va.get(group.getStartIndex())).getContentVA();
 			Vec3f rightTopPos = null;
 			Vec3f rightBottomPos = null;
 			float bundlingOffsetX = 0;
-			if (isLeft)
-			{
+			if (isLeft) {
 				// FIXME: think about besser solution than copying
 				rightTopPos = contentIDToLeftDetailPoints.get(detailVA.get(0)).copy();
-				rightBottomPos = contentIDToLeftDetailPoints.get(detailVA.get(detailVA.size()-1)).copy();
+				rightBottomPos = contentIDToLeftDetailPoints.get(
+						detailVA.get(detailVA.size() - 1)).copy();
 				bundlingOffsetX = 0.1f;
-			}
-			else {
+			} else {
 				rightTopPos = contentIDToRightDetailPoints.get(detailVA.get(0)).copy();
-				rightBottomPos = contentIDToRightDetailPoints.get(detailVA.get(detailVA.size()-1)).copy();
+				rightBottomPos = contentIDToRightDetailPoints.get(
+						detailVA.get(detailVA.size() - 1)).copy();
 				bundlingOffsetX = -0.1f;
 			}
-			rightTopPos.setX(rightTopPos.x() - bundlingOffsetX); 
-			rightBottomPos.setX(rightBottomPos.x() - bundlingOffsetX); 
-		
+			rightTopPos.setX(rightTopPos.x() - bundlingOffsetX);
+			rightBottomPos.setX(rightBottomPos.x() - bundlingOffsetX);
+
 			renderSingleBand(gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos,
 					false);
 		}
