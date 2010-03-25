@@ -19,6 +19,7 @@ public enum EIDType {
 	BIOCARTA_GENE_ID(EIDCategory.GENE, EStorageType.STRING, "BioCarta Gene ID", "biocarta geneid"),
 	DAVID(EIDCategory.GENE, EStorageType.INT, "David ID", "David ID"),
 	REFSEQ_MRNA(EIDCategory.GENE, EStorageType.STRING, "RefSeq MRNA ID", "refseq-mrna-id"),
+	ENSEMBL_GENE_ID(EIDCategory.GENE, EStorageType.STRING, "Ensembl Gene ID", "ensembl-gene-id"),
 	REFSEQ_MRNA_INT(
 		EIDCategory.GENE,
 		EStorageType.INT,
@@ -49,6 +50,7 @@ public enum EIDType {
 		"The other dimension to the experiment index, eg., gender, age etc."),
 
 	CELL_COMPONENT(EIDCategory.OTHER, EStorageType.STRING, "GO Cell Component", "The GO cell component"),
+	
 
 	CLUSTER_NUMBER(
 		EIDCategory.OTHER,

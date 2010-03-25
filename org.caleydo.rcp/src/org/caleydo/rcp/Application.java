@@ -199,7 +199,7 @@ public class Application
 				case COLLABORATION_CLIENT:
 				case PLEX_CLIENT:
 					sCaleydoXMLfile =
-						GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getBootstrapFileName();
+						GeneralManager.get().getMasterUseCase().getBootstrapFileName();
 					break;
 
 				default:

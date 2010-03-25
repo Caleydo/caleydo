@@ -39,6 +39,12 @@
 		   		attrib2="\t" 
 		   		attrib3="0 -1" />	
 		   		
+		   	 <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
+		   		detail="data/genome/mapping/david/ORGANISM_DAVID2ENSEMBL_GENE_ID.txt"	
+		   		attrib1="DAVID_2_ENSEMBL_GENE_ID REVERSE" 
+		   		attrib2="\t" 
+		   		attrib3="0 -1" />	
+		   		
 		    <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
 		   		detail="data/genome/mapping/ORGANISM_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt"	
 		   		attrib1="BIOCARTA_GENE_ID_2_REFSEQ_MRNA REVERSE LUT" 
