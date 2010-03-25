@@ -1154,13 +1154,11 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 			public void run() {
 				ChangeGroupNameDialog.run(GeneralManager.get().getGUIBridge()
 						.getDisplay(), groupRep);
-				String test = groupRep.getName();
-				System.out.println(test);
-
-				test = groupRep.getClusterNode().getLabel();
-				System.out.println(test);
+				groupRep.getClusterNode().getMetaSet().setLabel(groupRep.getClusterNode().getNodeName());
+				setDisplayListDirty();
 			}
 		});
 
+//		groupRep.getClusterNode().getMetaSet().setLabel(groupRep.getClusterNode().getNodeName());
 	}
 }

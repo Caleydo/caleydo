@@ -55,9 +55,8 @@ public class ChangeGroupNameDialog {
 			@Override
 			public void handleEvent(Event event) {
 				if (event.widget == okButton) {
-					groupRep.getClusterNode().setLabel("wuu");
 					groupRep.getClusterNode().setNodeName(text.getText());
-
+					groupRep.getClusterNode().setLabel(text.getText());
 				}
 				dialog.dispose();
 

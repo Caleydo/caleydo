@@ -954,6 +954,7 @@ public class HeatMapWrapper {
 
 	public void setUseSorting(boolean useSorting) {
 		this.useSorting = useSorting;
+		isInitialized = false;
 	}
 
 	public void setUseZoom(boolean useZoom) {
