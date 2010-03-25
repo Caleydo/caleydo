@@ -124,6 +124,17 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 				performReduction();
 			}
 		});
+		
+		final Button buttonClear = new Button(composite, SWT.PUSH);
+		buttonClear.setText("Clear Statistics Results");
+		buttonClear.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				clearStatisticsResults();
+				
+				calulateReduction();
+			}
+		});
 	}
 
 	@Override
@@ -232,7 +243,13 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 
 		if (reducedVA != null)
 			triggerReplaceContentVAEvent(reducedVA);
-
+	}
+	
+	private void clearStatisticsResults() {
+		
+		for (ISet set : setsWithPerformedStatistics) {
+			set.getStatisticsResult().clearStatisticsResults();
+		}
 	}
 
 	public void triggerReplaceContentVAEvent(ContentVirtualArray newVA) {

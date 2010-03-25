@@ -74,6 +74,12 @@ public class StatisticsResult {
 	public void setFoldChangeSettings(ISet set, FoldChangeSettings foldChangeSettings) {
 		setToFoldChangeResult.get(set).setSecond(foldChangeSettings);
 	}
+	
+	public void clearStatisticsResults() {
+		setToFoldChangeResult.clear();
+		setToTwoSidedTTestResult.clear();
+		oneSidedTTestResult = null;
+	}
 
 	// /**
 	// * Calculate and return the content VA based on a given cutoff p-value.
