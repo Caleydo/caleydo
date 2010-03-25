@@ -2,10 +2,10 @@ package org.caleydo.view.grouper.listener;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.view.grouper.CreateGroupEvent;
 import org.caleydo.view.grouper.GLGrouper;
+import org.caleydo.view.grouper.event.CreateGroupEvent;
 
-public class CreateGroupEventListener extends AEventListener<GLGrouper> {
+public class CreateGroupListener extends AEventListener<GLGrouper> {
 
 	@Override
 	public void handleEvent(AEvent event) {

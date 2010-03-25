@@ -1,9 +1,9 @@
-package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
+package org.caleydo.view.grouper.contextmenu;
 
 import java.util.Set;
 
-import org.caleydo.core.manager.event.view.grouper.CreateGroupEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
+import org.caleydo.view.grouper.event.CreateGroupEvent;
 
 public class CreateGroupItem
 	extends AContextMenuItem {

@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
 
@@ -28,6 +29,9 @@ public class UnspecifiedUseCase
 		useCaseMode = EDataDomain.UNSPECIFIED;
 		contentLabelSingular = "entity";
 		contentLabelPlural = "entities";
+
+		contentIDType = EIDType.UNSPECIFIED;
+		storageIDType = EIDType.EXPERIMENT_INDEX;
 
 		possibleIDCategories = new HashMap<EIDCategory, String>();
 		possibleIDCategories.put(EIDCategory.OTHER, null);

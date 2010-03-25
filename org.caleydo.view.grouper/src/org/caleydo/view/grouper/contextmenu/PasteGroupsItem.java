@@ -1,7 +1,7 @@
-package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
+package org.caleydo.view.grouper.contextmenu;
 
-import org.caleydo.core.manager.event.view.grouper.PasteGroupsEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
+import org.caleydo.view.grouper.event.PasteGroupsEvent;
 
 public class PasteGroupsItem
 	extends AContextMenuItem {

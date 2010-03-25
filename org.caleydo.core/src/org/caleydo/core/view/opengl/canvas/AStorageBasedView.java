@@ -455,6 +455,12 @@ public abstract class AStorageBasedView
 						iStorageIndex = iID;
 						idType = EIDType.EXPERIMENT_INDEX;
 					}
+					else if (selectionDelta.getSecondaryIDType() == EIDType.UNSPECIFIED) {
+						iStorageIndex = item.getSecondaryID();
+
+						iID = item.getPrimaryID();
+						idType = EIDType.UNSPECIFIED;
+					}
 					else
 						throw new InvalidAttributeValueException("Can not handle data type: "
 							+ selectionDelta.getIDType());
@@ -612,9 +618,9 @@ public abstract class AStorageBasedView
 
 	@Override
 	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
-//		String primaryVAType = useCase.getVATypeForIDCategory(idCategory);
-//		if (primaryVAType == null)
-//			return;
+		// String primaryVAType = useCase.getVATypeForIDCategory(idCategory);
+		// if (primaryVAType == null)
+		// return;
 
 		// ContentVAType suggestedVAType = ContentVAType.getVATypeForPrimaryVAType(primaryVAType);
 
