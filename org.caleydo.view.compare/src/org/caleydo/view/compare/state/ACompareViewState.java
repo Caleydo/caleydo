@@ -652,8 +652,7 @@ public abstract class ACompareViewState {
 				contentIDToLeftDetailPoints.put(contentID, leftDetailPos);
 
 				points.add(leftOverviewPos);
-				points
-						.add(new Vec3f(overviewX + bundlingCorrectionOffsetX, overviewY,
+				points.add(new Vec3f(overviewX + bundlingCorrectionOffsetX, overviewY,
 								0));
 				points.add(new Vec3f(leftDetailPos.x() - bundlingCorrectionOffsetX,
 						sortedY, 0));
@@ -699,15 +698,17 @@ public abstract class ACompareViewState {
 					// contentIDToRightOverviewPoints.put(contentID,
 					// rightOverviewPos);
 
+
+					float xOffset = -(rightDetailPos.x() - leftDetailPos.x()) / 1.5f;
+					points.add(new Vec3f(rightDetailPos.x() + xOffset, leftDetailPos.y(), 0));					
+					points.add(new Vec3f(rightDetailPos.x() + xOffset / 3, rightDetailPos.y(), 0));
 					points.add(rightDetailPos);
-					points.add(new Vec3f(rightDetailPos.x() + bundlingCorrectionOffsetX,
-							sortedRightY, 0));
-					points.add(new Vec3f(overviewRightX - bundlingCorrectionOffsetX,
-							overviewRightY, 0));
+					points.add(new Vec3f(rightDetailPos.x() + bundlingCorrectionOffsetX, sortedRightY, 0));
+					points.add(new Vec3f(overviewRightX - bundlingCorrectionOffsetX, overviewRightY, 0));
 					points.add(rightOverviewPos);
 				}
 
-				if (!bandBundlingActive)
+//				if (!bandBundlingActive)
 					renderSingleCurve(gl, points, contentID);
 			}
 		}
@@ -947,7 +948,7 @@ public abstract class ACompareViewState {
 
 	public void renderSingleCurve(GL gl, ArrayList<Vec3f> points, Integer contentID) {
 
-		NURBSCurve curve = new NURBSCurve(points, NUMBER_OF_SPLINE_POINTS);
+		NURBSCurve curve = new NURBSCurve(points, 40);
 		points = curve.getCurvePoints();
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
