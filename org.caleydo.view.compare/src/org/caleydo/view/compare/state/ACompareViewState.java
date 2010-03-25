@@ -233,6 +233,12 @@ public abstract class ACompareViewState {
 		leftTopPos.setX(leftTopPos.x() - bundlingOffsetX);
 		leftBottomPos.setX(leftBottomPos.x() - bundlingOffsetX);
 
+		float offsetY = 0.0025f;
+		leftTopPos.setY(leftTopPos.y() + offsetY);
+		rightTopPos.setY(rightTopPos.y() + offsetY);
+		leftBottomPos.setY(leftBottomPos.y() - offsetY);
+		rightBottomPos.setY(rightBottomPos.y() - offsetY);
+
 		// float spacing = 0.01f;
 		// float leftTopHeatMapElementOffset =
 		// detailBand.getLeftHeatMap().getFieldHeight(
@@ -276,11 +282,12 @@ public abstract class ACompareViewState {
 		ArrayList<Vec3f> outputPoints = curve.getCurvePoints();
 
 		// Band border
-		gl.glLineWidth(2);
+		gl.glLineWidth(1);
 		gl.glColor4f(0, 0, 0, 0.6f);
 		gl.glBegin(GL.GL_LINE_STRIP);
-		for (int i = 0; i < outputPoints.size(); i++)
+		for (int i = 0; i < outputPoints.size(); i++) {
 			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), 0f);
+		}
 		gl.glEnd();
 
 		inputPoints = new ArrayList<Vec3f>();
@@ -299,11 +306,12 @@ public abstract class ACompareViewState {
 		}
 
 		// Band border
-		gl.glLineWidth(2);
+		gl.glLineWidth(1);
 		gl.glColor4f(0, 0, 0, 0.6f);
 		gl.glBegin(GL.GL_LINE_STRIP);
-		for (int i = 0; i < points.size(); i++)
+		for (int i = 0; i < points.size(); i++) {
 			gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0f);
+		}
 		gl.glEnd();
 
 		if (highlight) {
@@ -585,7 +593,7 @@ public abstract class ACompareViewState {
 		float overviewDistance = rightHeatMapWrapper
 				.getLeftOverviewLinkPositionFromContentIndex(0).x()
 				- leftHeatMapWrapper.getLeftOverviewLinkPositionFromContentIndex(0).x();
-		firstLevelOffset = overviewDistance / 5;
+		firstLevelOffset = overviewDistance / 7;
 
 		float leftElementHeight = leftHeatMapWrapper.getLayout()
 				.getOverviewHeatMapSampleHeight();
@@ -758,7 +766,7 @@ public abstract class ACompareViewState {
 				float bundlingOffsetX = 0.1f;
 				rightTopPos.setX(rightTopPos.x() + bundlingOffsetX);
 				leftTopPos.setX(leftTopPos.x() - bundlingOffsetX);
-				
+
 				renderSingleDetailRelation(gl, contentIDs.get(0), leftTopPos, rightTopPos);
 			}
 		}

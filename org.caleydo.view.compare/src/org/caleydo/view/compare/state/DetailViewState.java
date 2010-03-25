@@ -425,6 +425,9 @@ public class DetailViewState extends ACompareViewStateStatic {
 		Vec2f tmpRightPos = heatMapWrappers.get(1).getLeftDetailLinkPositionFromContentID(
 				contentID);
 
+		if (tmpLeftPos == null || tmpRightPos == null)
+			return;
+		
 		Vec3f leftPos = new Vec3f(tmpLeftPos.x(), tmpLeftPos.y(), positionZ);
 		Vec3f rightPos = new Vec3f(tmpRightPos.x(), tmpRightPos.y(), positionZ);
 		
