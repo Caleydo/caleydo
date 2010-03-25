@@ -128,11 +128,12 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 			renderIndiviudalLineRelations(gl, heatMapWrappers.get(0), heatMapWrappers
 					.get(1));
-
-//			if (bandBundlingActive) {
-//				renderBandRelations(gl, heatMapWrappers.get(0), true);
-//				renderBandRelations(gl, heatMapWrappers.get(1), false);
-//			}
+			
+			if (bandBundlingActive) {		
+				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(0), true);
+				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(1), false);
+				renderDetailBandRelations(gl, heatMapWrappers.get(0), heatMapWrappers.get(1));
+			}
 		} else {
 			renderOverviewToDetailRelations(gl);
 			renderDetailRelations(gl);

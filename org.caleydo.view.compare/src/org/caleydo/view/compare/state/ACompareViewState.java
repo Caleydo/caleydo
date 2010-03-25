@@ -132,6 +132,8 @@ public abstract class ACompareViewState {
 		contentIDToLeftDetailPoints = new HashMap<Integer, Vec3f>();
 		// contentIDToRightOverviewPoints = new HashMap<Integer, Vec3f>();
 		contentIDToRightDetailPoints = new HashMap<Integer, Vec3f>();
+		
+//		bandBundlingActive = true;
 	}
 
 	public void executeDrawingPreprocessing(GL gl, boolean isDisplayListDirty) {
@@ -580,10 +582,6 @@ public abstract class ACompareViewState {
 
 		contentIDToLeftDetailPoints.clear();
 		contentIDToRightDetailPoints.clear();
-		// contentIDToLeftOverviewPoints.clear();
-		// contentIDToRightOverviewPoints.clear();
-
-		// TODO use point lists in overview for caluclation optimization
 
 		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
 
@@ -708,17 +706,17 @@ public abstract class ACompareViewState {
 					points.add(rightOverviewPos);
 				}
 
-//				if (!bandBundlingActive)
+				if (!bandBundlingActive)
 					renderSingleCurve(gl, points, contentID);
 			}
 		}
 	}
 
-	protected void renderDetailBandRelations(GL gl) {
+	protected void renderDetailBandRelations(GL gl, HeatMapWrapper leftHeatMapWrapper, HeatMapWrapper rightHeatMapWrapper) {
 
 		// if (bandBundlingActive) {
 		detailBands = new ArrayList<DetailBand>();
-		calculateDetailBands(heatMapWrappers.get(0), heatMapWrappers.get(1));
+		calculateDetailBands(leftHeatMapWrapper, rightHeatMapWrapper);
 		// determineActiveBand();
 
 		for (DetailBand detailBand : detailBands) {

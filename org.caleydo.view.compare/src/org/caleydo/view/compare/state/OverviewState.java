@@ -31,8 +31,6 @@ import org.caleydo.view.compare.layout.HeatMapLayoutOverviewLeft;
 import org.caleydo.view.compare.layout.HeatMapLayoutOverviewMid;
 import org.caleydo.view.compare.layout.HeatMapLayoutOverviewRight;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
-import org.caleydo.view.compare.renderer.CompareConnectionBandRenderer;
-import org.caleydo.view.compare.renderer.ICompareConnectionRenderer;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -92,7 +90,7 @@ public class OverviewState extends ACompareViewStateStatic {
 				
 				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i), true);
 				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i+1), false);
-				renderDetailBandRelations(gl);
+				renderDetailBandRelations(gl, heatMapWrappers.get(i), heatMapWrappers.get(i+1));
 			}
 		}
 	}

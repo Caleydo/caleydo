@@ -521,6 +521,16 @@ public class HeatMapWrapper {
 		}
 		return heatMaps;
 	}
+	
+//	public Collection<GLHeatMap> getHeatMaps() {
+//
+//		ArrayList<GLHeatMap> heatMaps = new ArrayList<GLHeatMap>();
+//		for (Group group : selectedGroups.keySet()) {
+//			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+//			heatMaps.add(heatMap);
+//		}
+//		return hashHeatMaps.values();
+//	}
 
 	public ArrayList<ContentSelectionManager> getContentSelectionManagersOfHeatMaps() {
 
