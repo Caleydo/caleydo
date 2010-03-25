@@ -115,7 +115,7 @@ public class ProjectSaver {
 		tempDirFile.mkdir();
 
 		// FIXME - this works only for genetic data now
-		AUseCase useCase = (AUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
+		AUseCase useCase = (AUseCase) GeneralManager.get().getMasterUseCase();
 		LoadDataParameters parameters = useCase.getLoadDataParameters();
 		try {
 			FileOperations.writeInputStreamToFile(dirName + SET_DATA_FILE_NAME, GeneralManager.get()

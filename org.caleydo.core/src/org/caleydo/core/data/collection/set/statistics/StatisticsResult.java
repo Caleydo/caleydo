@@ -147,7 +147,7 @@ public class StatisticsResult {
 			
 			switch (foldChangeEvaluator) {
 				case LESS:
-					if (resultVector[contentIndex] > foldChangeRatio)
+					if (resultVector[contentIndex] > -foldChangeRatio)
 						continue;
 					break;
 				case GREATER:

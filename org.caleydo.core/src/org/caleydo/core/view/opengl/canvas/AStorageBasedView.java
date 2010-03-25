@@ -455,8 +455,8 @@ public abstract class AStorageBasedView
 						iStorageIndex = iID;
 						idType = EIDType.EXPERIMENT_INDEX;
 					}
-					else if (selectionDelta.getSecondaryIDType() == EIDType.UNSPECIFIED) {
-						iStorageIndex = item.getSecondaryID();
+					else if (selectionDelta.getIDType() == EIDType.UNSPECIFIED) {
+						iStorageIndex = item.getPrimaryID();
 
 						iID = item.getPrimaryID();
 						idType = EIDType.UNSPECIFIED;

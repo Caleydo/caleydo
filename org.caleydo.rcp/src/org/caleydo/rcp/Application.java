@@ -198,8 +198,9 @@ public class Application
 				case LOAD_PROJECT:
 				case COLLABORATION_CLIENT:
 				case PLEX_CLIENT:
-					sCaleydoXMLfile =
-						GeneralManager.get().getMasterUseCase().getBootstrapFileName();
+
+					sCaleydoXMLfile = GeneralManager.get().getMasterUseCase().getBootstrapFileName();
+
 					break;
 
 				default:
@@ -329,7 +330,7 @@ public class Application
 
 		caleydoCoreBootloader.setXmlFileName(sCaleydoXMLfile);
 		caleydoCoreBootloader.start();
-		
+
 		GeneralManager.get().getGUIBridge().init();
 
 		if (bLoadPathwayData == true)
