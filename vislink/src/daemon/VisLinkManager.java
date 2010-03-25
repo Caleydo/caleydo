@@ -38,20 +38,6 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	UserManager userManager; 
 	
 	SelectionManager selectionManager; 
-	
-	// TODO: timeout handler for each user ! 
-	TimeoutHandler tmpTimeoutHandler; 
-	
-//	HashMap<Integer, BoundingBoxList> app2bbl;
-//	
-//	/** target applications for most recent reported selectionId */
-//	private int[] targetApplicationIds;
-//	
-//	/** number of target applications required for rendering */
-//	int numApps; 
-//	
-//	/** mouse pointer id that triggered the visual links as retrieved from deskotheque */
-//	private String triggeringMousePointerId;
 
 	JAXBContext jaxbContext; 
 	
@@ -66,28 +52,18 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	
 	
 	public VisLinkManager() {
-//		app2bbl = new HashMap<Integer, BoundingBoxList>();
-//		targetApplicationIds = new int[0];
-//		triggeringMousePointerId = null;
-//		this.numApps = 0; 
-		this.tmpTimeoutHandler = null; 
 	}
 	
 	public void reportWindowChange(String appName) {
 		System.out.println("VisLinkManager: reportWindowChange, appName=" + appName);
 		
 		Application app = applicationManager.getApplications().get(appName);
-		
-		// clear previous selections
-//		app2bbl.clear(); 
+
 		
 		// find the mouse pointer that has triggered the window change 
 		AccessInformation accessInformation = rendererPrx.getAccessInformation(app.getId());
 		int[] targetApplicationIds = accessInformation.applicationIds;
 		String pointerID = accessInformation.pointerId;
-		
-//		// we need to wait for both, the source window and the target windows 
-//		this.numApps = this.targetApplicationIds.length + 1; 
 		
 		// check out whether we need to redraw links for that user 
 		User user = this.userManager.getUser(pointerID); 
@@ -99,13 +75,11 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			user.setNewSelection(selectionId, app); 
 			
 			// request visual links for source window 
-			//app.setSendId(selectionId); 
 			this.selectionManager.addSelection(app, selectionId, pointerID, true); 
 			
 			// request visual links for target window 
 			for (int appId : targetApplicationIds) {
 				Application currentApp = applicationManager.getApplicationsById().get(appId);
-				//currentApp.setSendId(selectionId);
 				this.selectionManager.addSelection(currentApp, selectionId, pointerID, false); 
 			}
 			
@@ -119,9 +93,6 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			
 			// only treat other users, not invoking user here
 			if(user != otherUser){
-				
-				// clear previous selections 
-//				app2bbl.clear(); 
 			
 				// set current mouse pointer id 
 				pointerID = otherUser.getPointerID(); 
@@ -134,13 +105,11 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 				// request visual links for all windows associated with the user 
 				List<Application> appList = otherUser.getAllPrevApps(); 
 				// we need to wait for all user's applications 
-//				this.numApps = appList.size(); 
 				for( Application userApp : appList ){
 					boolean isSource = false; 
 					if(userApp == otherUser.getPrevSrcApp()){
 						isSource = true; 
 					}
-					//userApp.setSendId(selectionId); 
 					this.selectionManager.addSelection(userApp, selectionId, pointerID, isSource); 
 				}
 
@@ -170,27 +139,21 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		
 		UserSelection selection = this.selectionManager.getSelection(app, pointerID); 
 		
-//		app2bbl.clear();
 		if (boundingBoxListXML != null) {
 			BoundingBoxList bbl = createBoundingBoxList(boundingBoxListXML);
 			selection.setBoundingBoxList(bbl); 
-			//app2bbl.put(app.getId(), bbl);
 		}
 		selection.setReported(); 
-		
-		// we need to wait for all target applications for rendering 
-//		this.numApps = this.targetApplicationIds.length + 1; 
+
 		
 		// multi-user management: get / create user and store selection ID / source app 
 		System.out.println("Get user with pointer ID: " + pointerID);
 		User user = this.userManager.getUser(pointerID); 		
 		user.setNewSelection(selectionId, app); 
-		//this.selectionManager.addSelection(app, selectionId, pointerID); 
 		
 		for (int appId : targetApplicationIds) {
 			Application currentApp = applicationManager.getApplicationsById().get(appId);
 			if (currentApp.getId() != app.getId() || boundingBoxListXML == null) {
-				//currentApp.setSendId(selectionId);
 				this.selectionManager.addSelection(currentApp, selectionId, pointerID, false); 
 			}
 		}
@@ -203,16 +166,15 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		
 		// generate timeout handling 
 		TimeoutEvent event = new OneShotTimeoutEvent(user); 
-		// TODO: we need a timeout handler for each user! 
-		if(this.tmpTimeoutHandler != null){
-			this.tmpTimeoutHandler.cancel(); 
-			this.tmpTimeoutHandler = null; 
+		if(user.getTimeoutHandler() != null){
+			user.getTimeoutHandler().cancel(); 
+			user.setTimeoutHandler(null); 
 		}
-		this.tmpTimeoutHandler = new TimeoutHandler(event, this); 
-//		TimeoutHandler timeoutHandler = new TimeoutHandler(event, this); 
+		user.setTimeoutHandler(new TimeoutHandler(event, this)); 
+
 		Timer timer = new Timer(); 
-		timer.schedule(this.tmpTimeoutHandler, OneShotTimeoutEvent.ONE_SHOT_DISPLAY_TIME); 
-//		this.tmpTimeoutHandler.startTimer(event, OneShotTimeoutEvent.ONE_SHOT_DISPLAY_TIME); 
+		timer.schedule(user.getTimeoutHandler(), OneShotTimeoutEvent.ONE_SHOT_DISPLAY_TIME); 
+
 		
 		// check if the user currently has one-shot links on (only one set allowed at the moment)
 		if(user.getCurrentRenderType() == VisualLinksRenderType.RenderTypeOneShot){
@@ -239,7 +201,6 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 				System.out.println(app.getName() + " is source");
 				isSource = true; 
 			}
-			// TODO: have to do something with this information 
 			// add selection 
 			this.selectionManager.addSelection(app, selectionID, pointerID, isSource); 
 		}
@@ -317,7 +278,6 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	
 		
 		selection.setBoundingBoxList(bbl); 
-		//app2bbl.put(app.getId(), bbl);
 		checkRender(pointerID);
 	}
 
@@ -381,11 +341,6 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		}
 		return bb;
 	}
-
-//	public String retrieveSelectionId(String appName) {
-//		Application app = applicationManager.getApplications().get(appName);
-//		return app.fetchSendId();
-//	}
     
 	private BoundingBoxList createBoundingBoxList(String boundingBoxListXML) {
 		BoundingBoxList bbl = null;
@@ -409,15 +364,12 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		System.out.println("checkRender(): checking rendering for pointer " + pointerID); 
 		System.out.println("checkRender(): numTargetApplications=" + (numSelections - 1));
 		System.out.println("checkRender(): numBoundingBoxes=" + numSelections); 
-		//System.out.println("checkRender(): app2bbl.size()=" + app2bbl.size());
-		//if (app2bbl.size() >= (this.numApps)) {
+
 		
 		if(numMissingSelections == 0){
 			System.out.println("VisLinkManager: start rendering vis links for #" + numSelections + " apps");
 			renderVisualLinks(this.selectionManager.getBoundingBoxList(pointerID), pointerID); 
 			this.selectionManager.clearUserSelections(pointerID); 
-			//renderVisualLinks(app2bbl);
-			//app2bbl.clear();
 		} else {
 			System.out.println("waiting for more reports, " + (numSelections - numMissingSelections) + " / " + numSelections);
 		}
@@ -565,21 +517,11 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
     	
     	for (Entry<Integer, BoundingBoxList> e : app2bbs.entrySet()) {
         	SelectionGroup selectionGroup = new SelectionGroup();
-        	
-        	// check whether this is the source selection group 
-        	
-//        	int srcAppID = -1; 
-//        	if(user.getPrevSrcApp() != null){
-//        		srcAppID = user.getPrevSrcApp().getId(); 
-//        	}
+
         	
         	selectionGroup.selections = new Selection[e.getValue().getList().size()];
         	ArrayList<Selection> selectionList = new ArrayList<Selection>();
     		for (BoundingBox bb : e.getValue().getList()) {
-//    			// HACK! 
-//    			if(e.getKey() == srcAppID){
-//        			bb.setSource(true); 
-//        		}
         		Selection selection = new Selection(bb.getX(), bb.getY(), bb.getWidth(), bb.getHeight(),
         				new Color4f(-1.0f, 0, 0, 0), bb.isSource());
         		selectionList.add(selection);

@@ -22,14 +22,26 @@ public class User {
 	/** Describes how the visual links are currently rendered for the user. */
 	private VisualLinksRenderType currentRenderType; 
 	
+	/** Timeout handler for user-specific timers. */
+	private TimeoutHandler timeoutHandler; 
+	
 	public User(String pointerID){
 		this.pointerID = pointerID; 
 		this.prevSelectionID = ""; 
 		this.prevSrcApp = null; 
 		this.prevTargetApps = new ArrayList<Application>(); 
 		this.currentRenderType = VisualLinksRenderType.RenderTypeNormal; 
+		this.timeoutHandler = null; 
 	}
 	
+	public TimeoutHandler getTimeoutHandler() {
+		return timeoutHandler;
+	}
+
+	public void setTimeoutHandler(TimeoutHandler timeoutHandler) {
+		this.timeoutHandler = timeoutHandler;
+	}
+
 	public VisualLinksRenderType getCurrentRenderType() {
 		return currentRenderType;
 	}
