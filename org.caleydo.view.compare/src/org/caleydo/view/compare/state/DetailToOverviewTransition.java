@@ -114,6 +114,7 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 					.getRenderCommandsOfLocalItems());
 			transitionLayout.setRemoteRenderCommands(destLayout
 					.getRenderCommandsOfRemoteItems());
+			transitionLayout.setGroupPickingType(destLayout.getGroupPickingType());
 			focusLayouts.add(transitionLayout);
 
 			createMovementValues(gl, indexOffset + i, srcLayout, destLayout);
@@ -136,6 +137,7 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 						.getRenderCommandsOfLocalItems());
 				transitionLayout.setRemoteRenderCommands(destLayout
 						.getRenderCommandsOfRemoteItems());
+				transitionLayout.setGroupPickingType(destLayout.getGroupPickingType());
 				layouts.add(transitionLayout);
 			} else if (i > indexOffset + sourceLayouts.size() - 1) {
 				createMovementValuesSourceOffset(gl, i, destLayout, false);
@@ -145,6 +147,7 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 						.getRenderCommandsOfLocalItems());
 				transitionLayout.setRemoteRenderCommands(destLayout
 						.getRenderCommandsOfRemoteItems());
+				transitionLayout.setGroupPickingType(destLayout.getGroupPickingType());
 				layouts.add(transitionLayout);
 			} else {
 				layouts.add(focusLayouts.get(i - indexOffset));

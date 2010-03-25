@@ -19,6 +19,7 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IUseCase;
@@ -51,7 +52,10 @@ public abstract class ACompareViewState {
 	protected final static int NUMBER_OF_SPLINE_POINTS_SHORT = 8;
 
 	protected final static float SET_BAR_HEIGHT_PORTION = 0.07f;
-
+	
+	protected static SelectionType activeHeatMapSelectionType = new SelectionType("ActiveHeatmap", new float[] {
+			0.0f, 0.0f, 0.0f, 1.0f }, true, false, 1f);;
+	
 	protected TextRenderer textRenderer;
 	protected TextureManager textureManager;
 	protected PickingManager pickingManager;
@@ -134,6 +138,10 @@ public abstract class ACompareViewState {
 		contentIDToRightDetailPoints = new HashMap<Integer, Vec3f>();
 		
 //		bandBundlingActive = true;
+		
+		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
+				activeHeatMapSelectionType);
+		eventPublisher.triggerEvent(selectionTypeEvent);
 	}
 
 	public void executeDrawingPreprocessing(GL gl, boolean isDisplayListDirty) {
@@ -332,17 +340,17 @@ public abstract class ACompareViewState {
 	}
 
 	protected void calculateDetailBands(HeatMapWrapper leftHeatMapWrapper,
-			HeatMapWrapper rightHeatMapWrapper) {
+			HeatMapWrapper rightHeatMapWrapper, boolean considerSelections) {
 
 		ArrayList<Integer> bandContentIDs = null;
 		DetailBand detailBand = null;
 
 		// Iterate over all detail content VAs on the left
-		for (GLHeatMap leftHeatMap : leftHeatMapWrapper.getHeatMaps()) {
+		for (GLHeatMap leftHeatMap : leftHeatMapWrapper.getHeatMaps(considerSelections)) {
 
 			ContentVirtualArray leftContentVA = leftHeatMap.getContentVA();
 
-			for (GLHeatMap rightHeatMap : rightHeatMapWrapper.getHeatMaps()) {
+			for (GLHeatMap rightHeatMap : rightHeatMapWrapper.getHeatMaps(considerSelections)) {
 
 				ContentVirtualArray rightContentVA = rightHeatMap.getContentVA();
 
@@ -716,7 +724,7 @@ public abstract class ACompareViewState {
 
 		// if (bandBundlingActive) {
 		detailBands = new ArrayList<DetailBand>();
-		calculateDetailBands(leftHeatMapWrapper, rightHeatMapWrapper);
+		calculateDetailBands(leftHeatMapWrapper, rightHeatMapWrapper, true);
 		// determineActiveBand();
 
 		for (DetailBand detailBand : detailBands) {
@@ -1106,11 +1114,11 @@ public abstract class ACompareViewState {
 		float z = type.getPriority();
 		float[] typeColor = type.getColor();
 		float alpha = 0;
-		// if (type == activeHeatMapSelectionType) {
-		// gl.glLineWidth(1);
-		// alpha = 0.4f;
-		// z = 0.4f;
-		// } else
+		if (type == activeHeatMapSelectionType) {
+			gl.glLineWidth(1);
+			alpha = 0.4f;
+			z = 0.4f;
+		} else
 		if (type == SelectionType.MOUSE_OVER) {
 			gl.glLineWidth(2);
 			alpha = 1f;

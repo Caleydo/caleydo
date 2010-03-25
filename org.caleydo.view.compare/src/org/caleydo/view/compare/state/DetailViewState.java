@@ -44,8 +44,6 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public class DetailViewState extends ACompareViewStateStatic {
 
-	private SelectionType activeHeatMapSelectionType;
-
 	private float xOffset = 0;
 
 	private DetailBand activeBand;
@@ -68,13 +66,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 	@Override
 	public void init(GL gl) {
-
-		activeHeatMapSelectionType = new SelectionType("ActiveHeatmap", new float[] {
-				0.0f, 0.0f, 0.0f, 1.0f }, true, false, 1f);
-
-		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
-				activeHeatMapSelectionType);
-		eventPublisher.triggerEvent(selectionTypeEvent);
 
 		compareConnectionRenderer.init(gl);
 		setsChanged = false;
@@ -128,11 +119,12 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 			renderIndiviudalLineRelations(gl, heatMapWrappers.get(0), heatMapWrappers
 					.get(1));
-			
-			if (bandBundlingActive) {		
+
+			if (bandBundlingActive) {
 				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(0), true);
 				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(1), false);
-				renderDetailBandRelations(gl, heatMapWrappers.get(0), heatMapWrappers.get(1));
+				renderDetailBandRelations(gl, heatMapWrappers.get(0), heatMapWrappers
+						.get(1));
 			}
 		} else {
 			renderOverviewToDetailRelations(gl);
@@ -150,7 +142,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 	private void renderOverviewToDetailRelations(GL gl, HeatMapWrapper heatMapWrapper) {
 
-		for (GLHeatMap heatMap : heatMapWrapper.getHeatMaps()) {
+		for (GLHeatMap heatMap : heatMapWrapper.getHeatMaps(true)) {
 
 			boolean highlight = false;
 
@@ -379,7 +371,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 		// if (bandBundlingActive) {
 		detailBands = new ArrayList<DetailBand>();
-		calculateDetailBands(heatMapWrappers.get(0), heatMapWrappers.get(1));
+		calculateDetailBands(heatMapWrappers.get(0), heatMapWrappers.get(1), true);
 		determineActiveBand();
 
 		for (DetailBand detailBand : detailBands) {
@@ -415,23 +407,23 @@ public class DetailViewState extends ACompareViewStateStatic {
 			}
 		}
 	}
-	
+
 	protected void renderSingleDetailRelation(GL gl, Integer contentID) {
 
 		float positionZ = setRelationColor(gl, heatMapWrappers.get(0), contentID);
 
-		Vec2f tmpLeftPos = heatMapWrappers.get(0).getRightDetailLinkPositionFromContentID(
-				contentID);
+		Vec2f tmpLeftPos = heatMapWrappers.get(0)
+				.getRightDetailLinkPositionFromContentID(contentID);
 
-		Vec2f tmpRightPos = heatMapWrappers.get(1).getLeftDetailLinkPositionFromContentID(
-				contentID);
+		Vec2f tmpRightPos = heatMapWrappers.get(1)
+				.getLeftDetailLinkPositionFromContentID(contentID);
 
 		if (tmpLeftPos == null || tmpRightPos == null)
 			return;
-		
+
 		Vec3f leftPos = new Vec3f(tmpLeftPos.x(), tmpLeftPos.y(), positionZ);
 		Vec3f rightPos = new Vec3f(tmpRightPos.x(), tmpRightPos.y(), positionZ);
-		
+
 		renderSingleDetailRelation(gl, contentID, leftPos, rightPos);
 
 	}
@@ -490,7 +482,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 		renderSingleBand(gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos,
 				highlight);
 	}
-	
+
 	private void determineActiveBand() {
 
 		for (DetailBand detailBand : detailBands) {
