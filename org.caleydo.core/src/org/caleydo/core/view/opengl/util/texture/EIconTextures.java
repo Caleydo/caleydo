@@ -120,8 +120,11 @@ public enum EIconTextures {
 	CM_SCROLL_BUTTON_OVER("/resources/context_menu/scroll_button_over.png"),
 	
 	COMPARER_SHOW_HIDDEN("/resources/icons/view/compare/show_hidden_elements.png"),
-	COMPARER_SHOW_CAPTIONS("/resources/icons/view/compare/show_captions.png");
-
+	COMPARER_SHOW_CAPTIONS("/resources/icons/view/compare/show_captions.png"),
+	
+	GROUPER_COLLAPSE_PLUS("resources/icons/general/plus.png"),
+	GROUPER_COLLAPSE_MINUS("resources/icons/general/minus.png");
+	
 	private String sFileName;
 
 	EIconTextures(String sFileName) {
