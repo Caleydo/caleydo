@@ -92,7 +92,27 @@ public abstract class AHeatMapLayout {
 
 	public abstract float getOverviewSliderPositionX();
 
-	public abstract EPickingType getGroupPickingType();
+	public EPickingType getGroupPickingType() {
+		// FIXME: There is no other way to do that yet, but this is way too
+		// static
+		int heatMapID = heatMapWrapper.getID();
+		switch (heatMapID) {
+		case 0:
+			return EPickingType.COMPARE_GROUP_1_SELECTION;
+		case 1:
+			return EPickingType.COMPARE_GROUP_2_SELECTION;
+		case 2:
+			return EPickingType.COMPARE_GROUP_3_SELECTION;
+		case 3:
+			return EPickingType.COMPARE_GROUP_4_SELECTION;
+		case 4:
+			return EPickingType.COMPARE_GROUP_5_SELECTION;
+		case 5:
+			return EPickingType.COMPARE_GROUP_6_SELECTION;
+		default:
+			return null;
+		}
+	}
 
 	public abstract EPickingType getHeatMapPickingType();
 

@@ -46,10 +46,16 @@ public class CompareToolBarContent extends AToolBarContent {
 		UseZoomAction useZoomAction = new UseZoomAction(targetViewID);
 		useZoomAction.setUseZoom(false);
 		actionList.add(useZoomAction);
-		
-		UseBandBundlingAction useBandBundlingAction = new UseBandBundlingAction(targetViewID);
+
+		UseBandBundlingAction useBandBundlingAction = new UseBandBundlingAction(
+				targetViewID);
 		useBandBundlingAction.setBandBundling(false);
 		actionList.add(useBandBundlingAction);
+
+		CreateSelectionTypesAction createSelectionTypesAction = new CreateSelectionTypesAction(
+				targetViewID);
+		createSelectionTypesAction.setCreateSelectionTypes(false);
+		actionList.add(createSelectionTypesAction);
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);

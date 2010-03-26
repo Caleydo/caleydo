@@ -163,4 +163,10 @@ public class CompareViewStateController {
 	public void handleDragging(GL gl) {
 		currentState.handleDragging(gl);
 	}
+
+	public void setCreateSelectionTypes(boolean createSelectionTypes) {
+		for(ACompareViewState state : hashStates.values()) {
+			state.setCreateSelectionTypes(createSelectionTypes);
+		}
+	}
 }

@@ -20,6 +20,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.compare.AdjustPValueEvent;
+import org.caleydo.core.manager.event.view.compare.CreateSelectionTypesEvent;
 import org.caleydo.core.manager.event.view.compare.DuplicateSetBarItemEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent;
@@ -49,6 +50,7 @@ import org.caleydo.view.compare.event.UseSortingEvent;
 import org.caleydo.view.compare.event.UseZoomEvent;
 import org.caleydo.view.compare.listener.AdjustPValueOfSetEventListener;
 import org.caleydo.view.compare.listener.CompareGroupsEventListener;
+import org.caleydo.view.compare.listener.CreateSelectionTypesListener;
 import org.caleydo.view.compare.listener.DuplicateSetBarItemEventListener;
 import org.caleydo.view.compare.listener.NewContentGroupInfoEventListener;
 import org.caleydo.view.compare.listener.UseBandBundlingListener;
@@ -86,6 +88,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	private UseZoomListener useZoomListener;
 	private UseBandBundlingListener useBandBundlingListener;
 	private NewContentGroupInfoEventListener newContentGroupInfoEventListener;
+	private CreateSelectionTypesListener createSelectionTypesListener;
 
 	private boolean isControlPressed;
 	private boolean wasMouseWheeled;
@@ -362,6 +365,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		newContentGroupInfoEventListener.setHandler(this);
 		eventPublisher.addListener(NewContentGroupInfoEvent.class,
 				newContentGroupInfoEventListener);
+		
+		createSelectionTypesListener = new CreateSelectionTypesListener();
+		createSelectionTypesListener.setHandler(this);
+		eventPublisher.addListener(CreateSelectionTypesEvent.class,
+				createSelectionTypesListener);
 
 	}
 
@@ -411,6 +419,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		if (newContentGroupInfoEventListener != null) {
 			eventPublisher.removeListener(newContentGroupInfoEventListener);
 			newContentGroupInfoEventListener = null;
+		}
+		
+		if (createSelectionTypesListener != null) {
+			eventPublisher.removeListener(createSelectionTypesListener);
+			createSelectionTypesListener = null;
 		}
 
 	}
@@ -527,5 +540,9 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	public void setBandBundling(boolean bandBundlingActive) {
 		compareViewStateController.setBandBundling(bandBundlingActive);
+	}
+	
+	public void setCreateSelctionTypes(boolean createSelectionTypes) {
+		compareViewStateController.setCreateSelectionTypes(createSelectionTypes);
 	}
 }

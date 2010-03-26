@@ -2,7 +2,6 @@ package org.caleydo.view.compare.layout;
 
 import gleem.linalg.Vec3f;
 
-import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 
 public class HeatMapLayoutOverviewMid extends AHeatMapLayoutOverview {
@@ -24,8 +23,4 @@ public class HeatMapLayoutOverviewMid extends AHeatMapLayoutOverview {
 				/ 2.0f, positionY, 0.0f);
 	}
 
-	@Override
-	public EPickingType getGroupPickingType() {
-		return EPickingType.COMPARE_RIGHT_GROUP_SELECTION;
-	}
 }

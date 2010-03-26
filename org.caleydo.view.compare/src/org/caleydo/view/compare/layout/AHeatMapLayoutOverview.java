@@ -29,11 +29,6 @@ public abstract class AHeatMapLayoutOverview extends AHeatMapLayout {
 	}
 
 	@Override
-	public EPickingType getGroupPickingType() {
-		return null;
-	}
-
-	@Override
 	public EPickingType getHeatMapPickingType() {
 		return null;
 	}

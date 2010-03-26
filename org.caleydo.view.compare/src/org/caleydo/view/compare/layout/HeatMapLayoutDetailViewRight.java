@@ -43,11 +43,6 @@ public class HeatMapLayoutDetailViewRight extends AHeatMapLayoutDetailView {
 	}
 
 	@Override
-	public EPickingType getGroupPickingType() {
-		return EPickingType.COMPARE_RIGHT_GROUP_SELECTION;
-	}
-
-	@Override
 	public EPickingType getHeatMapPickingType() {
 		return EPickingType.COMPARE_RIGHT_EMBEDDED_VIEW_SELECTION;
 	}

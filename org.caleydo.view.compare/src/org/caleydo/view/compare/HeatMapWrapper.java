@@ -21,6 +21,7 @@ import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -39,6 +40,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.ColorUtil;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
@@ -55,6 +57,10 @@ import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
  * 
  */
 public class HeatMapWrapper {
+
+	private static final String SELECTION_TYPE_NAME = "Compare Type ";
+
+	private static int selectionTypeNumber = 0;
 
 	private HeatMapOverview overview;
 	private ISet set;
@@ -184,7 +190,8 @@ public class HeatMapWrapper {
 		}
 		hashHeatMaps.clear();
 		selectedGroups.clear();
-		contentSelectionManager.clearSelections();
+		contentSelectionManager = useCase.getContentSelectionManager();
+//		contentSelectionManager.clearSelections();
 		contentSelectionManager.setVA(contentVA);
 		ContentGroupList contentGroupList = contentVA.getGroupList();
 
@@ -618,7 +625,7 @@ public class HeatMapWrapper {
 			}
 		}
 
-		if(selectGroups) {
+		if (selectGroups) {
 			selectedGroups.clear();
 			selectedGroups.putAll(tempGroups);
 		}
@@ -755,7 +762,8 @@ public class HeatMapWrapper {
 	}
 
 	public void handleGroupSelection(SelectionType selectionType,
-			int groupIndex, boolean isControlPressed) {
+			int groupIndex, boolean isControlPressed,
+			boolean addNewSelectionType) {
 
 		if (selectionType != SelectionType.SELECTION)
 			return;
@@ -845,7 +853,7 @@ public class HeatMapWrapper {
 		contentVA = set.getContentVA(vaType);
 	}
 
-	public void setHeatMapActive(int groupIndex) {
+	public void setHeatMapActive(int groupIndex, boolean addToNewSelectionType) {
 		if (activeHeatMapID == groupIndex)
 			return;
 
@@ -872,22 +880,41 @@ public class HeatMapWrapper {
 		}
 
 		GLHeatMap heatMap = hashHeatMaps.get(groupIndex);
-		// heatMap.setActive(true);
+//		 heatMap.setActive(true);
 		ContentSelectionManager hmContentSelectionManager = heatMap
 				.getContentSelectionManager();
 		hmContentSelectionManager.addToType(activeHeatMapSelectionType, heatMap
 				.getContentVA().getVirtualArray());
-
+		
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 		selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager
 				.getDelta());
 		eventPublisher.triggerEvent(selectionUpdateEvent);
+
+		if (addToNewSelectionType) {
+
+			SelectionType selectionType = new SelectionType();
+			selectionType.setType(SELECTION_TYPE_NAME + selectionTypeNumber++);
+			selectionType.setPriority(0.8f + 0.0001f * selectionTypeNumber);
+			selectionType.setColor(ColorUtil.getColor(selectionTypeNumber));
+
+			SelectionTypeEvent event = new SelectionTypeEvent();
+			event.addSelectionType(selectionType);
+			eventPublisher.triggerEvent(event);
+			hmContentSelectionManager.addToType(selectionType, heatMap
+					.getContentVA().getVirtualArray());
+			selectionUpdateEvent = new SelectionUpdateEvent();
+			selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager
+					.getDelta());
+			eventPublisher.triggerEvent(selectionUpdateEvent);
+		}
+
 	}
 
 	public void setHeatMapsInactive() {
 		if (activeHeatMapID == -1)
 			return;
-
+		
 		GLHeatMap heatMap = hashHeatMaps.get(activeHeatMapID);
 		ContentSelectionManager hmContentSelectionManager = heatMap
 				.getContentSelectionManager();
