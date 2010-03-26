@@ -1,10 +1,18 @@
 package daemon;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import VIS.AccessInformation;
+import VIS.ApplicationAccessInfo;
+import VIS.UserWindowAccess;
 import VIS.VisualLinksRenderType;
 
+/**
+ * @author desko
+ *
+ */
 public class User {
 	
 	/** Each user is uniquely associated with a pointer ID in Deskotheque. */
@@ -17,7 +25,10 @@ public class User {
 	private Application prevSrcApp; 
 	
 	/** The applications which have previously served as target for the user. */
-	private List<Application> prevTargetApps; 
+	private List<Application> prevTargetApps;
+	
+	/** A list of access for all applications. */
+	private HashMap<Application, UserWindowAccess> appAccess; 
 	
 	/** Describes how the visual links are currently rendered for the user. */
 	private VisualLinksRenderType currentRenderType; 
@@ -30,6 +41,7 @@ public class User {
 		this.prevSelectionID = ""; 
 		this.prevSrcApp = null; 
 		this.prevTargetApps = new ArrayList<Application>(); 
+		this.appAccess = new HashMap<Application, UserWindowAccess>(); 
 		this.currentRenderType = VisualLinksRenderType.RenderTypeNormal; 
 		this.timeoutHandler = null; 
 	}
@@ -74,9 +86,38 @@ public class User {
 		return this.prevTargetApps; 
 	}
 	
+	public HashMap<Application, UserWindowAccess> getAppAccess(){
+		return this.appAccess; 
+	}
+	
 	public void addPrevTargetApp(Application targetApp){
 		if(!this.hasApplication(targetApp)){
 			this.prevTargetApps.add(targetApp); 
+		}
+	}
+	
+	/**
+	 * Sets the access properties of a certain application for this 
+	 * user - no matter if the user actually has links to this application 
+	 * or not. 
+	 * @param app The application to be set. 
+	 * @param access The access rights of the user for the application. 
+	 */
+	public void setAppAccess(Application app, UserWindowAccess access){
+		this.appAccess.put(app, access); 
+	}
+	
+	/**
+	 * Sets the access properties according to the properties received by 
+	 * Deskotheque via vis renderer. 
+	 * @param appManager The application manager to retrieve the Applications by ID. 
+	 * @param accessInfo The access information struct as delivered by Ice. 
+	 */
+	public void setAppAccess(ApplicationManager appManager, AccessInformation accessInfo){
+		for(ApplicationAccessInfo appAccess : accessInfo.applications){
+			int appID = appAccess.applicationID; 
+			Application app = appManager.getApplicationsById().get(appID); 
+			this.setAppAccess(app, appAccess.access); 
 		}
 	}
 	
@@ -122,6 +163,21 @@ public class User {
 		if(this.prevSrcApp == app) return true; 
 		for(int i = 0; i < this.prevTargetApps.size(); i++){
 			if(this.prevTargetApps.get(i) == app){
+				return true; 
+			}
+		}
+		return false; 
+	}
+	
+	/**
+	 * Checks if the given application contains link elements by the user 
+	 * and is accessible by the user. 
+	 * @param app The application containing links by the user and being accessible. 
+	 * @return Returns true if the given application is accessible. 
+	 */
+	public boolean hasApplicationAccessible(Application app){
+		if(this.hasApplication(app)){
+			if(this.appAccess.get(app) == UserWindowAccess.Accessible){
 				return true; 
 			}
 		}

@@ -42,7 +42,7 @@ public class UserManager {
 		List<User> usersList = new ArrayList<User>(); 
 		for (Entry<String, User> e : users.entrySet()) {
 			User user = e.getValue(); 
-			if(user.hasApplication(modifiedApp)){
+			if(user.hasApplicationAccessible(modifiedApp)){
 				usersList.add(user); 
 			}
 		}

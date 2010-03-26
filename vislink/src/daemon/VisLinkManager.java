@@ -19,6 +19,7 @@ import org.springframework.beans.factory.InitializingBean;
 import Ice.Communicator;
 import Ice.ObjectAdapter;
 import VIS.AccessInformation;
+import VIS.ApplicationAccessInfo;
 import VIS.Color4f;
 import VIS.Selection;
 import VIS.SelectionContainer;
@@ -62,11 +63,14 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		
 		// find the mouse pointer that has triggered the window change 
 		AccessInformation accessInformation = rendererPrx.getAccessInformation(app.getId());
-		int[] targetApplicationIds = accessInformation.applicationIds;
+		ApplicationAccessInfo[] targetApplicationIds = accessInformation.applications;
 		String pointerID = accessInformation.pointerId;
 		
 		// check out whether we need to redraw links for that user 
 		User user = this.userManager.getUser(pointerID); 
+		// save the access information for the user 
+		user.setAppAccess(this.applicationManager, accessInformation); 
+		
 		if(user.isActive()){
 			String selectionId = user.getPrevSelectionID(); 
 			System.out.println("User changing window content (" + pointerID 
@@ -78,8 +82,8 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			this.selectionManager.addSelection(app, selectionId, pointerID, true); 
 			
 			// request visual links for target window 
-			for (int appId : targetApplicationIds) {
-				Application currentApp = applicationManager.getApplicationsById().get(appId);
+			for (ApplicationAccessInfo appId : targetApplicationIds) {
+				Application currentApp = applicationManager.getApplicationsById().get(appId.applicationID);
 				this.selectionManager.addSelection(currentApp, selectionId, pointerID, false); 
 			}
 			
@@ -131,7 +135,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		}
 		
 		AccessInformation accessInformation = rendererPrx.getAccessInformation(app.getId());
-		int[] targetApplicationIds = accessInformation.applicationIds;
+		ApplicationAccessInfo[] targetApplicationIds = accessInformation.applications;
 		String pointerID = accessInformation.pointerId;
 		
 		// save selection as source selection 
@@ -148,11 +152,14 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		
 		// multi-user management: get / create user and store selection ID / source app 
 		System.out.println("Get user with pointer ID: " + pointerID);
-		User user = this.userManager.getUser(pointerID); 		
+		User user = this.userManager.getUser(pointerID); 
+		// save access information for user 
+		user.setAppAccess(this.applicationManager, accessInformation); 
+		// store new selection in source window 
 		user.setNewSelection(selectionId, app); 
 		
-		for (int appId : targetApplicationIds) {
-			Application currentApp = applicationManager.getApplicationsById().get(appId);
+		for (ApplicationAccessInfo appId : targetApplicationIds) {
+			Application currentApp = applicationManager.getApplicationsById().get(appId.applicationID);
 			if (currentApp.getId() != app.getId() || boundingBoxListXML == null) {
 				this.selectionManager.addSelection(currentApp, selectionId, pointerID, false); 
 			}
@@ -189,15 +196,18 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		String selectionID = owner.getPrevSelectionID(); 
 		
 		// retrieve access information for user 
-		int[] targetApplicationIds = accessInformation.applicationIds; 
+		ApplicationAccessInfo[] targetApplicationIds = accessInformation.applications; 
 		String pointerID = user.getPointerID(); 
 		
+		// save access information for user 
+		user.setAppAccess(this.applicationManager, accessInformation); 
+		
 		// push selections but do not save user selection 
-		for (int appId : targetApplicationIds) {
-			Application app = applicationManager.getApplicationsById().get(appId);
+		for (ApplicationAccessInfo appId : targetApplicationIds) {
+			Application app = applicationManager.getApplicationsById().get(appId.applicationID);
 			// check whether this is the source application
 			boolean isSource = false; 
-			if(appId == srcAppID){
+			if(appId.applicationID == srcAppID){
 				System.out.println(app.getName() + " is source");
 				isSource = true; 
 			}

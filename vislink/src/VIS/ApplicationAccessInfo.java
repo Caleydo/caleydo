@@ -11,20 +11,20 @@
 
 package VIS;
 
-public final class AccessInformation implements java.lang.Cloneable, java.io.Serializable
+public final class ApplicationAccessInfo implements java.lang.Cloneable, java.io.Serializable
 {
-    public String pointerId;
+    public UserWindowAccess access;
 
-    public ApplicationAccessInfo[] applications;
+    public int applicationID;
 
-    public AccessInformation()
+    public ApplicationAccessInfo()
     {
     }
 
-    public AccessInformation(String pointerId, ApplicationAccessInfo[] applications)
+    public ApplicationAccessInfo(UserWindowAccess access, int applicationID)
     {
-        this.pointerId = pointerId;
-        this.applications = applications;
+        this.access = access;
+        this.applicationID = applicationID;
     }
 
     public boolean
@@ -34,10 +34,10 @@ public final class AccessInformation implements java.lang.Cloneable, java.io.Ser
         {
             return true;
         }
-        AccessInformation _r = null;
+        ApplicationAccessInfo _r = null;
         try
         {
-            _r = (AccessInformation)rhs;
+            _r = (ApplicationAccessInfo)rhs;
         }
         catch(ClassCastException ex)
         {
@@ -45,11 +45,11 @@ public final class AccessInformation implements java.lang.Cloneable, java.io.Ser
 
         if(_r != null)
         {
-            if(pointerId != _r.pointerId && pointerId != null && !pointerId.equals(_r.pointerId))
+            if(access != _r.access && access != null && !access.equals(_r.access))
             {
                 return false;
             }
-            if(!java.util.Arrays.equals(applications, _r.applications))
+            if(applicationID != _r.applicationID)
             {
                 return false;
             }
@@ -64,20 +64,11 @@ public final class AccessInformation implements java.lang.Cloneable, java.io.Ser
     hashCode()
     {
         int __h = 0;
-        if(pointerId != null)
+        if(access != null)
         {
-            __h = 5 * __h + pointerId.hashCode();
+            __h = 5 * __h + access.hashCode();
         }
-        if(applications != null)
-        {
-            for(int __i0 = 0; __i0 < applications.length; __i0++)
-            {
-                if(applications[__i0] != null)
-                {
-                    __h = 5 * __h + applications[__i0].hashCode();
-                }
-            }
-        }
+        __h = 5 * __h + applicationID;
         return __h;
     }
 
@@ -99,14 +90,14 @@ public final class AccessInformation implements java.lang.Cloneable, java.io.Ser
     public void
     __write(IceInternal.BasicStream __os)
     {
-        __os.writeString(pointerId);
-        ApplicationAccessListHelper.write(__os, applications);
+        access.__write(__os);
+        __os.writeInt(applicationID);
     }
 
     public void
     __read(IceInternal.BasicStream __is)
     {
-        pointerId = __is.readString();
-        applications = ApplicationAccessListHelper.read(__is);
+        access = UserWindowAccess.__read(__is);
+        applicationID = __is.readInt();
     }
 }
