@@ -187,14 +187,15 @@ public class HeatMapWrapper {
 		contentSelectionManager.clearSelections();
 		contentSelectionManager.setVA(contentVA);
 		ContentGroupList contentGroupList = contentVA.getGroupList();
-		
-		//FIXME
+
+		// FIXME
 		try {
 			contentGroupList.updateGroupInfo();
 		} catch (Exception e) {
-			System.out.println("NPE when trying to update group info in heatmap wrapper!!");
+			System.out
+					.println("NPE when trying to update group info in heatmap wrapper!!");
 		}
-		
+
 		for (Group group : contentGroupList) {
 			group.setSelectionType(SelectionType.NORMAL);
 		}
@@ -388,8 +389,8 @@ public class HeatMapWrapper {
 
 		Vec3f overviewPosition = layout.getOverviewHeatMapPosition();
 
-		return new float[]{overviewPosition.x(), layout
-				.getOverviewHeatMapSamplePositionY(contentIndex), 0};
+		return new float[] { overviewPosition.x(),
+				layout.getOverviewHeatMapSamplePositionY(contentIndex), 0 };
 	}
 
 	public float[] getLeftOverviewLinkPositionFromContentID(int contentID) {
@@ -406,9 +407,9 @@ public class HeatMapWrapper {
 
 		Vec3f overviewPosition = layout.getOverviewHeatMapPosition();
 
-		return new float[]{overviewPosition.x()
-				+ layout.getOverviewHeatMapWidth(), layout
-				.getOverviewHeatMapSamplePositionY(contentIndex), 0};
+		return new float[] {
+				overviewPosition.x() + layout.getOverviewHeatMapWidth(),
+				layout.getOverviewHeatMapSamplePositionY(contentIndex), 0 };
 	}
 
 	public float[] getRightOverviewLinkPositionFromContentID(int contentID) {
@@ -428,8 +429,9 @@ public class HeatMapWrapper {
 		if (yCoordinate == null)
 			return null;
 
-		return new float[]{layout.getDetailPosition().x()
-				+ layout.getDetailWidth(), yCoordinate, 0};
+		return new float[] {
+				layout.getDetailPosition().x() + layout.getDetailWidth(),
+				yCoordinate, 0 };
 	}
 
 	public float[] getLeftDetailLinkPositionFromContentID(int contentID) {
@@ -439,7 +441,7 @@ public class HeatMapWrapper {
 		if (yCoordinate == null)
 			return null;
 
-		return new float[]{layout.getDetailPosition().x(), yCoordinate, 0};
+		return new float[] { layout.getDetailPosition().x(), yCoordinate, 0 };
 	}
 
 	private Float getDetailYCoordinateByContentID(int contentID) {
@@ -518,23 +520,23 @@ public class HeatMapWrapper {
 			for (Group group : selectedGroups.keySet()) {
 				GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
 				heatMaps.add(heatMap);
-			}			
+			}
 			return heatMaps;
-			
+
 		}
 
-		return hashHeatMaps.values(); 
+		return hashHeatMaps.values();
 	}
-	
-//	public Collection<GLHeatMap> getHeatMaps() {
-//
-//		ArrayList<GLHeatMap> heatMaps = new ArrayList<GLHeatMap>();
-//		for (Group group : selectedGroups.keySet()) {
-//			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
-//			heatMaps.add(heatMap);
-//		}
-//		return hashHeatMaps.values();
-//	}
+
+	// public Collection<GLHeatMap> getHeatMaps() {
+	//
+	// ArrayList<GLHeatMap> heatMaps = new ArrayList<GLHeatMap>();
+	// for (Group group : selectedGroups.keySet()) {
+	// GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
+	// heatMaps.add(heatMap);
+	// }
+	// return hashHeatMaps.values();
+	// }
 
 	public ArrayList<ContentSelectionManager> getContentSelectionManagersOfHeatMaps() {
 
@@ -582,20 +584,23 @@ public class HeatMapWrapper {
 	 * hidden on demand.
 	 */
 	public void choosePassiveHeatMaps(
-			ArrayList<ContentVirtualArray> foreignContentVAs, boolean hideVisible, boolean considerSelectedGroups) {
+			ArrayList<ContentVirtualArray> foreignContentVAs,
+			boolean hideVisible, boolean considerSelectedGroups,
+			boolean selectGroups) {
 
 		ContentGroupList groupList = contentVA.getGroupList();
 		// FIXME we shouldn't do that here
 		groupList.updateGroupInfo();
+		HashMap<Group, Boolean> tempGroups = new HashMap<Group, Boolean>();
 
-		selectedGroups.clear();
+		tempGroups.clear();
 		for (ContentVirtualArray foreignVa : foreignContentVAs) {
 			for (Integer contentID : foreignVa) {
 				int vaIndex = contentVA.indexOf(contentID);
 				Group selectedGroup = groupList.getGroupOfVAIndex(vaIndex);
 
-				if (!selectedGroups.containsKey(selectedGroup)) {
-					selectedGroups.put(selectedGroup, null);
+				if (!tempGroups.containsKey(selectedGroup)) {
+					tempGroups.put(selectedGroup, null);
 					selectedGroup.resetVisualGenesCounter();
 				}
 
@@ -613,7 +618,11 @@ public class HeatMapWrapper {
 			}
 		}
 
-		sort(foreignContentVAs,considerSelectedGroups, hideVisible);
+		if(selectGroups) {
+			selectedGroups.clear();
+			selectedGroups.putAll(tempGroups);
+		}
+		sort(foreignContentVAs, considerSelectedGroups, hideVisible);
 
 		// here we Hide those that are not part of the other va, and re-sort the
 		// source va
@@ -678,17 +687,17 @@ public class HeatMapWrapper {
 	 * @param foreignContentVAs
 	 * @param hideVisible
 	 */
-	private void sort(ArrayList<ContentVirtualArray> foreignContentVAs,
+	public void sort(ArrayList<ContentVirtualArray> foreignContentVAs,
 			boolean hideVisible, boolean considerSelectedGroups) {
 		ContentGroupList groupList = contentVA.getGroupList();
 
-//		for (ContentVirtualArray foreignVa : foreignContentVAs) {
-//			for (Integer contentID : foreignVa) {
-//				int vaIndex = contentVA.indexOf(contentID);
-//				Group selectedGroup = groupList.getGroupOfVAIndex(vaIndex);
-//				gr
-//			}
-//		}
+		// for (ContentVirtualArray foreignVa : foreignContentVAs) {
+		// for (Integer contentID : foreignVa) {
+		// int vaIndex = contentVA.indexOf(contentID);
+		// Group selectedGroup = groupList.getGroupOfVAIndex(vaIndex);
+		// gr
+		// }
+		// }
 		// here we hide those that are not part of the other va, and re-sort the
 		// source va
 		for (int groupIndex = groupList.size() - 1; groupIndex >= 0; groupIndex--) {

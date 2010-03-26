@@ -62,7 +62,7 @@ public class SetBarSelectionWindow implements IDraggable {
 	}
 
 	public void render(GL gl) {
-		renderWindow(gl, numSelectedItems, lowestItemIndex, 1, true, -0.1f);
+		renderWindow(gl, numSelectedItems, lowestItemIndex, 1, true, -0.002f);
 	}
 
 	private void renderWindow(GL gl, int numSelectedItems, int lowestItemIndex,
@@ -222,7 +222,7 @@ public class SetBarSelectionWindow implements IDraggable {
 
 		if (dragged) {
 			renderWindow(gl, numSelectedItemsDragging, lowestItemIndexDragging,
-					0.5f, false, -0.05f);
+					0.5f, false, -0.001f);
 		}
 	}
 

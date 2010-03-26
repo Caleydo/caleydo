@@ -1,7 +1,5 @@
 package org.caleydo.view.compare.state;
 
-import gleem.linalg.Vec3f;
-
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -54,7 +52,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 		super(view, viewID, textRenderer, textureManager, pickingManager,
 				glMouseListener, setBar, renderCommandFactory, dataDomain, useCase,
 				dragAndDropController, compareViewStateController);
-		this.setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.0f));
 		numSetsInFocus = 2;
 		indexOfHeatMapWrapperWithDendrogram = -1;
 	}
@@ -80,7 +77,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 				for (HeatMapWrapper wrapper : heatMapWrappers) {
 					if (wrapper != heatMapWrapper) {
 						wrapper.choosePassiveHeatMaps(heatMapWrapper
-								.getContentVAsOfHeatMaps(true), true, true);
+								.getContentVAsOfHeatMaps(true), true, true, true);
 					}
 				}
 				view.setDisplayListDirty();

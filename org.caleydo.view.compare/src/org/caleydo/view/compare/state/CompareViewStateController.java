@@ -1,5 +1,7 @@
 package org.caleydo.view.compare.state;
 
+import gleem.linalg.Vec3f;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +45,7 @@ public class CompareViewStateController {
 		SetBar setBar = new SetBar(viewID, pickingManager, textRenderer,
 				dragAndDropController, glMouseListener, view, contextMenu,
 				textureManager);
+		setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.01f));
 		RenderCommandFactory renderCommandFactory = new RenderCommandFactory(
 				viewID, pickingManager, textureManager, textRenderer);
 

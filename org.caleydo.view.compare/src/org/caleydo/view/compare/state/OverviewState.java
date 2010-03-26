@@ -1,7 +1,5 @@
 package org.caleydo.view.compare.state;
 
-import gleem.linalg.Vec3f;
-
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -49,7 +47,6 @@ public class OverviewState extends ACompareViewStateStatic {
 		super(view, viewID, textRenderer, textureManager, pickingManager,
 				glMouseListener, setBar, renderCommandFactory, dataDomain, useCase,
 				dragAndDropController, compareViewStateController);
-		this.setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.0f));
 		numSetsInFocus = 4;
 	}
 

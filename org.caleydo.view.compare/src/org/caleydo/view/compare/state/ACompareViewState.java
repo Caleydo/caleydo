@@ -141,7 +141,7 @@ public abstract class ACompareViewState {
 
 	public void executeDrawingPreprocessing(GL gl, boolean isDisplayListDirty) {
 
-		handleDragging(gl);
+//		handleDragging(gl);
 
 		IViewFrustum viewFrustum = view.getViewFrustum();
 		if (isDisplayListDirty)
@@ -367,9 +367,9 @@ public abstract class ACompareViewState {
 				+ leftHeatMapWrapper.getLayout().getOverviewHeight();
 
 		rightHeatMapWrapper.choosePassiveHeatMaps(leftHeatMapWrapper
-				.getContentVAsOfHeatMaps(false), false, false);
+				.getContentVAsOfHeatMaps(false), false, false, false);
 		leftHeatMapWrapper.choosePassiveHeatMaps(rightHeatMapWrapper
-				.getContentVAsOfHeatMaps(false), false, false);
+				.getContentVAsOfHeatMaps(false), false, false, false);
 
 		for (ContentVirtualArray groupVA : leftHeatMapWrapper
 				.getContentVAsOfHeatMaps(false)) {
