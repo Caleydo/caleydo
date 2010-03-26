@@ -138,6 +138,10 @@ public class CompareViewStateController {
 			ContentVAType vaType) {
 		currentState.handleReplaceContentVA(setID, idCategory, vaType);
 	}
+	
+	public void handleClearSelections() {
+		currentState.handleClearSelections();
+	}
 
 	public void setUseSorting(boolean useSorting) {
 		currentState.setUseSorting(useSorting);

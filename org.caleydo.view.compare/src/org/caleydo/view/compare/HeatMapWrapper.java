@@ -852,6 +852,13 @@ public class HeatMapWrapper {
 
 		contentVA = set.getContentVA(vaType);
 	}
+	
+	public void handleClearSelections() {
+		contentSelectionManager.clearSelections();
+		for (Group group : selectedGroups.keySet())
+			group.setSelectionType(SelectionType.NORMAL);
+		selectedGroups.clear();
+	}
 
 	public void setHeatMapActive(int groupIndex, boolean addToNewSelectionType) {
 		if (activeHeatMapID == groupIndex)

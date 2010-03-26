@@ -9,6 +9,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -18,6 +19,7 @@ import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
+import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.compare.AdjustPValueEvent;
 import org.caleydo.core.manager.event.view.compare.CreateSelectionTypesEvent;
@@ -34,6 +36,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -89,6 +92,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	private UseBandBundlingListener useBandBundlingListener;
 	private NewContentGroupInfoEventListener newContentGroupInfoEventListener;
 	private CreateSelectionTypesListener createSelectionTypesListener;
+	private ClearSelectionsListener clearSelectionsListener;
 
 	private boolean isControlPressed;
 	private boolean wasMouseWheeled;
@@ -191,13 +195,12 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		if (!isVisible())
 			return;
-		
+
 		compareViewStateController.executeDrawingPreprocessing(gl,
 				bIsDisplayListDirtyLocal);
-		
+
 		pickingManager.handlePicking(this, gl);
 
-		
 		// if (bIsDisplayListDirtyLocal) {
 		// bIsDisplayListDirtyLocal = false;
 		// buildDisplayList(gl, iGLDisplayListIndexLocal);
@@ -205,8 +208,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		// iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		display(gl);
-		
-		
+
 		// checkForHits(gl);
 	}
 
@@ -236,7 +238,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		}
 
 		gl.glCallList(iGLDisplayListToCall);
-		
+
 		compareViewStateController.handleDragging(gl);
 
 		if (!isRenderedRemote())
@@ -258,17 +260,14 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		return new String("");
 	}
 
-
-
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
-		contextMenu.setLocation(pick.getPickedPoint(),
-				getParentGLCanvas().getWidth(), getParentGLCanvas()
-						.getHeight());
+		contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+				getParentGLCanvas().getHeight());
 		contextMenu.setMasterGLView(this);
 		compareViewStateController.handlePickingEvents(ePickingType, pickingMode,
 				iExternalID, pick, isControlPressed);
@@ -310,7 +309,9 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void handleClearSelections() {
-		// nothing to do because histogram has no selections
+		
+		compareViewStateController.handleClearSelections();
+		setDisplayListDirty();
 	}
 
 	@Override
@@ -356,7 +357,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		useZoomListener = new UseZoomListener();
 		useZoomListener.setHandler(this);
 		eventPublisher.addListener(UseZoomEvent.class, useZoomListener);
-		
+
 		useBandBundlingListener = new UseBandBundlingListener();
 		useBandBundlingListener.setHandler(this);
 		eventPublisher.addListener(UseBandBundlingEvent.class, useBandBundlingListener);
@@ -365,11 +366,15 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		newContentGroupInfoEventListener.setHandler(this);
 		eventPublisher.addListener(NewContentGroupInfoEvent.class,
 				newContentGroupInfoEventListener);
-		
+
 		createSelectionTypesListener = new CreateSelectionTypesListener();
 		createSelectionTypesListener.setHandler(this);
 		eventPublisher.addListener(CreateSelectionTypesEvent.class,
 				createSelectionTypesListener);
+
+		clearSelectionsListener = new ClearSelectionsListener();
+		clearSelectionsListener.setHandler(this);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
 	}
 
@@ -392,10 +397,12 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			eventPublisher.removeListener(adjustPValueOfSetEventListener);
 			adjustPValueOfSetEventListener = null;
 		}
+
 		if (selectionCommandListener != null) {
 			eventPublisher.removeListener(selectionCommandListener);
 			selectionCommandListener = null;
 		}
+
 		if (replaceContentVAListener != null) {
 			eventPublisher.removeListener(replaceContentVAListener);
 			replaceContentVAListener = null;
@@ -415,17 +422,21 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 			eventPublisher.removeListener(useBandBundlingListener);
 			useBandBundlingListener = null;
 		}
-		
+
 		if (newContentGroupInfoEventListener != null) {
 			eventPublisher.removeListener(newContentGroupInfoEventListener);
 			newContentGroupInfoEventListener = null;
 		}
-		
+
 		if (createSelectionTypesListener != null) {
 			eventPublisher.removeListener(createSelectionTypesListener);
 			createSelectionTypesListener = null;
 		}
 
+		if (clearSelectionsListener != null) {
+			eventPublisher.removeListener(clearSelectionsListener);
+			clearSelectionsListener = null;
+		}
 	}
 
 	@Override
@@ -541,7 +552,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	public void setBandBundling(boolean bandBundlingActive) {
 		compareViewStateController.setBandBundling(bandBundlingActive);
 	}
-	
+
 	public void setCreateSelctionTypes(boolean createSelectionTypes) {
 		compareViewStateController.setCreateSelectionTypes(createSelectionTypes);
 	}
