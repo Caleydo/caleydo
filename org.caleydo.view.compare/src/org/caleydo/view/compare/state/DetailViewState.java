@@ -37,10 +37,10 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public class DetailViewState extends ACompareViewStateStatic {
 
-	private float xOffset = 0;
-
 	private DetailBand activeBand;
 	private int indexOfHeatMapWrapperWithDendrogram;
+	
+	private float bandPaddingY = 0.007f;
 
 	public DetailViewState(GLCompare view, int viewID, TextRenderer textRenderer,
 			TextureManager textureManager, PickingManager pickingManager,
@@ -225,7 +225,19 @@ public class DetailViewState extends ACompareViewStateStatic {
 			rightBottomPos = heatMapWrapper
 					.getRightDetailLinkPositionFromContentID(lastDetailContentID);
 
-		renderSingleBand(gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos, highlight);
+		float rightTopHeatMapElementOffset = heatMapWrapper.getHeatMapByContentID(
+				firstDetailContentID).getFieldHeight(firstDetailContentID)
+				/ 2f - bandPaddingY;
+		float rightBottomHeatMapElementOffset = heatMapWrapper
+				.getHeatMapByContentID(lastDetailContentID).getFieldHeight(lastDetailContentID)
+				/ 2f - bandPaddingY;
+
+		rightTopPos[1] = rightTopPos[1] + rightTopHeatMapElementOffset;
+		rightBottomPos[1] = rightBottomPos[1] - rightBottomHeatMapElementOffset;
+
+		float xOffset = (rightTopPos[0] - leftTopPos[0]) / 3f;
+		
+		renderSingleBand(gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos, highlight, xOffset);
 	}
 
 	private void renderSingleOverviewToDetailRelation(GL gl, GLHeatMap heatMap,
@@ -349,19 +361,18 @@ public class DetailViewState extends ACompareViewStateStatic {
 				|| rightBottomPos == null)
 			return;
 
-		float spacing = 0.01f;
 		float leftTopHeatMapElementOffset = leftHeatMapWrapper.getHeatMapByContentID(
 				startContentID).getFieldHeight(startContentID)
-				/ 2f - spacing;
+				/ 2f - bandPaddingY;
 		float leftBottomHeatMapElementOffset = leftHeatMapWrapper.getHeatMapByContentID(
 				endContentID).getFieldHeight(endContentID)
-				/ 2f - spacing;
+				/ 2f - bandPaddingY;
 		float rightTopHeatMapElementOffset = rightHeatMapWrapper.getHeatMapByContentID(
 				endContentID).getFieldHeight(startContentID)
-				/ 2f - spacing;
+				/ 2f - bandPaddingY;
 		float rightBottomHeatMapElementOffset = rightHeatMapWrapper
 				.getHeatMapByContentID(endContentID).getFieldHeight(endContentID)
-				/ 2f - spacing;
+				/ 2f - bandPaddingY;
 
 		leftTopPos[1] = leftTopPos[1] + leftTopHeatMapElementOffset;
 		leftBottomPos[1] = leftBottomPos[1] - leftBottomHeatMapElementOffset;
@@ -370,8 +381,10 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 		// TODO integrate offset for band in Y
 
+		float xOffset = (rightTopPos[0] - leftTopPos[0]) / 3f;
+		
 		renderSingleBand(gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos,
-				highlight);
+				highlight, xOffset);
 	}
 
 	private void determineActiveBand() {

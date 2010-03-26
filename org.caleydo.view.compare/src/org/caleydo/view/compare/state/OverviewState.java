@@ -80,9 +80,9 @@ public class OverviewState extends ACompareViewStateStatic {
 
 			if (bandBundlingActive) {
 
-				// TODO: if we put the heatmapwarpper combination with the calulcated detail bands in
+				// TODO: if we put the heatmapwarpper combination with the calculated detail bands in
 				// a hash map we have to calculate it only once!
-				calculateDetailBands(heatMapWrappers.get(0), heatMapWrappers.get(1), false);
+				calculateDetailBands(heatMapWrappers.get(i), heatMapWrappers.get(i+1), false);
 
 				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i), true);
 				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i + 1), false);

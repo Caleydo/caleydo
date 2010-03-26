@@ -141,7 +141,7 @@ public abstract class ACompareViewState {
 
 	public void executeDrawingPreprocessing(GL gl, boolean isDisplayListDirty) {
 
-//		handleDragging(gl);
+		// handleDragging(gl);
 
 		IViewFrustum viewFrustum = view.getViewFrustum();
 		if (isDisplayListDirty)
@@ -193,30 +193,23 @@ public abstract class ACompareViewState {
 		leftBottomPos[1] = leftBottomPos[1] - offsetY;
 		rightBottomPos[1] = rightBottomPos[1] - offsetY;
 
-		// TODO integrate offset for band in Y
-
+		float xOffset = (rightTopPos[0] - leftTopPos[0]) / 5f;
+		
 		renderSingleBand(gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos,
-				highlight);
+				highlight, xOffset);
 	}
 
 	protected void renderSingleBand(GL gl, float[] leftTopPos, float[] leftBottomPos,
-			float[] rightTopPos, float[] rightBottomPos, boolean highlight) {
+			float[] rightTopPos, float[] rightBottomPos, boolean highlight, float xOffset) {
 
 		if (leftTopPos == null || leftBottomPos == null || rightTopPos == null
 				|| rightBottomPos == null)
 			return;
 
-		float xOffset = -(rightTopPos[0] - leftTopPos[0]) / 1.5f;
-
-		// if (heatMapWrapper == heatMapWrappers.get(0))
-		// xOffset = -Math.abs((rightPos.x() - leftPos.x()) / 1.3f);
-		// else
-		// xOffset = Math.abs((rightPos.x() - leftPos.x()) / 1.3f);
-
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
-		inputPoints.add(new Vec3f(leftTopPos[0], leftTopPos[1], leftTopPos[2]));
-		inputPoints.add(new Vec3f(rightTopPos[0] + xOffset, leftTopPos[1], 0));
-		inputPoints.add(new Vec3f(rightTopPos[0] + xOffset / 3f, rightTopPos[1], 0));
+		inputPoints.add(new Vec3f(leftTopPos[0], leftTopPos[1], 0));
+		inputPoints.add(new Vec3f(leftTopPos[0] + xOffset, leftTopPos[1], 0));
+		inputPoints.add(new Vec3f(rightTopPos[0] - xOffset, rightTopPos[1], 0));
 		inputPoints.add(new Vec3f(rightTopPos[0], rightTopPos[1], rightTopPos[2]));
 
 		NURBSCurve curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
@@ -232,12 +225,10 @@ public abstract class ACompareViewState {
 		gl.glEnd();
 
 		inputPoints = new ArrayList<Vec3f>();
-		inputPoints.add(new Vec3f(leftBottomPos[0], leftBottomPos[1], leftBottomPos[2]));
-		inputPoints.add(new Vec3f(rightBottomPos[0] + xOffset, leftBottomPos[1], 0));
-		inputPoints
-				.add(new Vec3f(rightBottomPos[0] + xOffset / 3f, rightBottomPos[1], 0));
-		inputPoints
-				.add(new Vec3f(rightBottomPos[0], rightBottomPos[1], rightBottomPos[2]));
+		inputPoints.add(new Vec3f(leftBottomPos[0], leftBottomPos[1], 0));
+		inputPoints.add(new Vec3f(leftTopPos[0] + xOffset, leftBottomPos[1], 0));
+		inputPoints.add(new Vec3f(rightBottomPos[0] - xOffset, rightBottomPos[1], 0));
+		inputPoints.add(new Vec3f(rightBottomPos[0], rightBottomPos[1], 0));
 
 		curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
 		ArrayList<Vec3f> points = curve.getCurvePoints();
@@ -540,12 +531,12 @@ public abstract class ACompareViewState {
 		if (leftPos == null || rightPos == null)
 			return;
 
-		float xOffset = -(rightPos[0] - leftPos[0]) / 1.5f;
+		float xOffset = (rightPos[0] - leftPos[0]) / 3f;
 
 		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
 		points.add(new Vec3f(leftPos[0], leftPos[1], leftPos[2]));
-		points.add(new Vec3f(rightPos[0] + xOffset, leftPos[1], leftPos[2]));
-		points.add(new Vec3f(rightPos[0] + xOffset / 3f, rightPos[1], rightPos[2]));
+		points.add(new Vec3f(leftPos[0] + xOffset, leftPos[1], leftPos[2]));
+		points.add(new Vec3f(rightPos[0] - xOffset, rightPos[1], rightPos[2]));
 		points.add(new Vec3f(rightPos[0], rightPos[1], rightPos[2]));
 
 		renderSingleCurve(gl, points, contentID);
@@ -559,7 +550,7 @@ public abstract class ACompareViewState {
 			overviewX = heatMapWrapper.getRightOverviewLinkPositionFromContentIndex(0)[0];
 		else
 			overviewX = heatMapWrapper.getLeftOverviewLinkPositionFromContentIndex(0)[0];
-
+		
 		ContentVirtualArray va = heatMapWrapper.getContentVA();
 		for (Group group : va.getGroupList()) {
 			float overviewFirstPosY = heatMapWrapper.getLayout()
@@ -589,8 +580,10 @@ public abstract class ACompareViewState {
 			rightTopPos[0] = rightTopPos[0] - bundlingOffsetX;
 			rightBottomPos[0] = rightBottomPos[0] - bundlingOffsetX;
 
+			float xOffset = (rightTopPos[0] - leftTopPos[0]) / 5f;
+			
 			renderSingleBand(gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos,
-					false);
+					false, xOffset);
 		}
 	}
 
