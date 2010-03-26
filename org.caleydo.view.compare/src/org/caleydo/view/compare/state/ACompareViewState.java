@@ -735,42 +735,43 @@ public abstract class ACompareViewState {
 		this.bandBundlingActive = bandBundlingActive;
 	}
 
-	// private void renderStraightLineRelation(GL gl, HeatMapWrapper
-	// leftHeatMapWrapper,
-	// HeatMapWrapper rightHeatMapWrapper, int contentID) {
-	//
-	// float positionZ = setRelationColor(gl, leftHeatMapWrapper, contentID);
-	//
-	// Vec2f leftPos = leftHeatMapWrapper
-	// .getRightOverviewLinkPositionFromContentID(contentID);
-	//
-	// if (leftPos == null)
-	// return;
-	//
-	// Vec2f rightPos = rightHeatMapWrapper
-	// .getLeftOverviewLinkPositionFromContentID(contentID);
-	//
-	// if (rightPos == null)
-	// return;
-	//
-	// ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-	// points.add(new Vec3f(leftPos.x(), leftPos.y(), positionZ));
-	// points.add(new Vec3f(rightPos.x(), rightPos.y(), 0));
-	//
-	// if (points.size() == 0)
-	// return;
-	//
-	// gl.glPushName(pickingManager.getPickingID(viewID,
-	// EPickingType.POLYLINE_SELECTION, contentID));
-	//
-	// gl.glBegin(GL.GL_LINE_STRIP);
-	// for (int i = 0; i < points.size(); i++)
-	// gl.glVertex3f(points.get(i).x(), points.get(i).y(), positionZ);
-	// gl.glEnd();
-	//
-	// gl.glPopName();
-	//
-	// }
+	protected void renderStraightLineRelation(GL gl, HeatMapWrapper leftHeatMapWrapper,
+			HeatMapWrapper rightHeatMapWrapper) {
+
+		for (Integer contentID : leftHeatMapWrapper.getContentVA()) {
+		
+			float positionZ = setRelationColor(gl, leftHeatMapWrapper, contentID);
+
+			float[] leftPos = leftHeatMapWrapper
+					.getRightOverviewLinkPositionFromContentID(contentID);
+
+			if (leftPos == null)
+				return;
+
+			float[] rightPos = rightHeatMapWrapper
+					.getLeftOverviewLinkPositionFromContentID(contentID);
+
+			if (rightPos == null)
+				return;
+
+			ArrayList<Vec3f> points = new ArrayList<Vec3f>();
+			points.add(new Vec3f(leftPos[0], leftPos[1], positionZ));
+			points.add(new Vec3f(rightPos[0], rightPos[1], positionZ));
+
+			if (points.size() == 0)
+				return;
+
+			gl.glPushName(pickingManager.getPickingID(viewID,
+					EPickingType.POLYLINE_SELECTION, contentID));
+
+			gl.glBegin(GL.GL_LINE_STRIP);
+			for (int i = 0; i < points.size(); i++)
+				gl.glVertex3f(points.get(i).x(), points.get(i).y(), positionZ);
+			gl.glEnd();
+
+			gl.glPopName();
+		}
+	}
 
 	// private void renderDendrogram(final GL gl, ClusterNode currentNode, float
 	// fOpacity,

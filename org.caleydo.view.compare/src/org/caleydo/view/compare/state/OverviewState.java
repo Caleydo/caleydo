@@ -77,7 +77,7 @@ public class OverviewState extends ACompareViewStateStatic {
 
 			renderIndiviudalLineRelations(gl, heatMapWrappers.get(i), heatMapWrappers
 					.get(i + 1));
-
+			
 			if (bandBundlingActive) {
 
 				// TODO: if we put the heatmapwarpper combination with the calculated detail bands in
@@ -89,6 +89,8 @@ public class OverviewState extends ACompareViewStateStatic {
 				renderDetailBandRelations(gl, heatMapWrappers.get(i), heatMapWrappers
 						.get(i + 1));
 			}
+			
+//			renderStraightLineRelation(gl, heatMapWrappers.get(i), heatMapWrappers.get(i+1));
 		}
 	}
 
