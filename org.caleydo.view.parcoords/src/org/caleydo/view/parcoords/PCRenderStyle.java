@@ -18,20 +18,27 @@ public class PCRenderStyle extends GeneralRenderStyle {
 		float lineWidth;
 		float zDepth;
 		float[] color;
+		SelectionType selectionType;
 
-		PolyLineState(float lineWidth, float zDepth, float[] color) {
-			this.lineWidth = lineWidth;
-			this.zDepth = zDepth;
-			this.color = color;
+		PolyLineState(SelectionType selectionType, int nrElements) {
+			this.selectionType = selectionType;
+			this.lineWidth = selectionType.getLineWidth();
+			this.zDepth = POLYLINE_NORMAL_Z + selectionType.getPriority()
+					* (POLYLINE_SELECTED_Z - POLYLINE_NORMAL_Z);
+			this.color = selectionType.getColor();
+			updateOcclusionPrev(nrElements);
+		}
+
+		void updateOcclusionPrev(int nrElements) {
+			this.color[3] = getPolylineOcclusionPrevAlpha(nrElements);
 		}
 	}
 
 	private HashMap<SelectionType, PolyLineState> hashSelectionTypeToPolylineState;
 
 	// Z Values
-	public static final float POLYLINE_NORMAL_Z = 0.001f;
-	public static final float POLYLINE_SELECTED_Z = 0.002f;
-	public static final float POLYLINE_DESELECTED_Z = 0;
+	private static final float POLYLINE_NORMAL_Z = 0.001f;
+	private static final float POLYLINE_SELECTED_Z = 0.002f;
 	public static final float GATE_Z = 0.003f;
 	public static final float NAN_Z = 0.003f;
 
@@ -39,20 +46,9 @@ public class PCRenderStyle extends GeneralRenderStyle {
 	public static final float LABEL_Z = 0.004f;
 	public static final float TEXT_ON_LABEL_Z = LABEL_Z + 0.0001f;
 
-	public static final float[] POLYLINE_NO_OCCLUSION_PREV_COLOR = { 0.0f,
-			0.0f, 0.0f, 1.0f };
-
-
-	public static final float SELECTED_POLYLINE_LINE_WIDTH = 4.0f;
-
-	public static final float MOUSE_OVER_POLYLINE_LINE_WIDTH = 4.0f;
-
-	public static final float DESELECTED_POLYLINE_LINE_WIDTH = 1.0f;
-
 	public static final float[] Y_AXIS_COLOR = { 0.0f, 0.0f, 1.0f, 1.0f };
 
 	public static final float Y_AXIS_LINE_WIDTH = 1.0f;
-
 
 	public static final float Y_AXIS_SELECTED_LINE_WIDTH = 4.0f;
 
@@ -64,7 +60,6 @@ public class PCRenderStyle extends GeneralRenderStyle {
 
 	public static final float[] CANVAS_COLOR = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-	public static final float[] GATE_TIP_COLOR = { 1f, 0.705f, 0f, 1.0f };
 	public static final float[] GATE_BODY_COLOR = { 0.61f, 0.705f, 1.0f, 0.8f };
 
 	public static final float[] ANGULAR_COLOR = { 0.17f, 0.45f, 0.84f, 1 };
@@ -73,17 +68,9 @@ public class PCRenderStyle extends GeneralRenderStyle {
 
 	public static final float ANGLUAR_LINE_WIDTH = 4;
 
-	// Line widths
-	public static final float POLYLINE_LINE_WIDTH = 1.0f;
-
 	public static final int NUMBER_AXIS_MARKERS = 9;
 
 	public static final float NAN_Y_OFFSET = -0.08f;
-
-	// modifiable colors
-	protected float[] polylineOcclusionPrevColor = { 0.0f, 0.0f, 0.0f, 1.0f };
-
-	protected float[] polylineDeselectedColor = { 0.0f, 0.0f, 0.0f, 0.001f };
 
 	protected float fOcclusionPrevAlpha = 0.1f;
 
@@ -116,8 +103,6 @@ public class PCRenderStyle extends GeneralRenderStyle {
 
 	private static final float fMinAxisSpacingForText = 0.1f;
 
-	private static final float[] BACKGROUND_COLOR = { 1, 1, 1, 1 };
-
 	private static final float fXAxisOverlap = 0.1f;
 
 	// minimum text sizes
@@ -126,8 +111,7 @@ public class PCRenderStyle extends GeneralRenderStyle {
 	public static final int MIN_NUMBER_TEXT_SIZE = 55;
 
 	public final PolyLineState normalState = new PolyLineState(
-			POLYLINE_LINE_WIDTH, POLYLINE_NORMAL_Z,
-			getPolylineOcclusionPrevColor(1000));
+			SelectionType.NORMAL, (1000));
 
 	private GLParallelCoordinates pcs;
 
@@ -144,20 +128,11 @@ public class PCRenderStyle extends GeneralRenderStyle {
 		this.pcs = pcs;
 	}
 
-	public float[] getPolylineOcclusionPrevColor(int iNumberOfRenderedLines) {
+	private float getPolylineOcclusionPrevAlpha(int iNumberOfRenderedLines) {
 
 		fOcclusionPrevAlpha = (float) (6 / Math.sqrt(iNumberOfRenderedLines));
 
-		polylineOcclusionPrevColor[3] = fOcclusionPrevAlpha;
-
-		return polylineOcclusionPrevColor;
-	}
-
-	public float[] getPolylineDeselectedOcclusionPrevColor(
-			int iNumberOfRenderedLines) {
-		polylineDeselectedColor[3] = (float) (0.2 / Math
-				.sqrt(iNumberOfRenderedLines));
-		return polylineDeselectedColor;
+		return fOcclusionPrevAlpha;
 	}
 
 	public float getAxisSpacing(final int iNumberOfAxis) {
@@ -211,53 +186,20 @@ public class PCRenderStyle extends GeneralRenderStyle {
 		return COORDINATE_BOTTOM_SPACING * getScaling();
 	}
 
-	public float getAxisButtonYOffset() {
-
-		return AXIS_BUTTONS_Y_OFFSET * getScaling();
-	}
-
-	public PolyLineState getPolyLineState(SelectionType selectionType) {
+	public PolyLineState getPolyLineState(SelectionType selectionType,
+			int nrElements) {
 		if (hashSelectionTypeToPolylineState.containsKey(selectionType)) {
-			return hashSelectionTypeToPolylineState.get(selectionType);
+			PolyLineState state = hashSelectionTypeToPolylineState
+					.get(selectionType);
+			state.updateOcclusionPrev(nrElements);
+			return state;
 		} else {
-			PolyLineState newState = new PolyLineState(POLYLINE_LINE_WIDTH,
-					POLYLINE_NORMAL_Z, selectionType.getColor());
+			PolyLineState newState = new PolyLineState(selectionType,
+					nrElements);
 			hashSelectionTypeToPolylineState.put(selectionType, newState);
 			return newState;
 		}
-
 	}
-
-	// public float getGateWidth()
-	// {
-	//
-	// return GATE_WIDTH;
-	// }
-
-	// public float getGateYOffset()
-	// {
-	//
-	// return GATE_NEGATIVE_Y_OFFSET * getAxisHeight();
-	// }
-
-	// @Deprecated // not used anymore?
-	// public float getGateMinimumValue()
-	// {
-	// return NAN_Y_OFFSET * getAxisHeight();
-	// }
-
-	// @Deprecated
-	// public float getNaNYOffset()
-	// {
-	// return NAN_Y_OFFSET;
-	// }
-
-	// @Deprecated
-	// public float getGateTipHeight()
-	// {
-	//
-	// return GATE_TIP_HEIGHT;
-	// }
 
 	public float getAxisCaptionSpacing() {
 
@@ -270,13 +212,4 @@ public class PCRenderStyle extends GeneralRenderStyle {
 			return true;
 		return false;
 	}
-
-	@Override
-	public float[] getBackgroundColor() {
-		return BACKGROUND_COLOR;
-	}
-
-	// GATE_WIDTH = 0.015f;
-	// private static final float GATE_NEGATIVE_Y_OFFSET = -0.04f;
-	// private static final float GATE_TIP_HEIGHT
 }

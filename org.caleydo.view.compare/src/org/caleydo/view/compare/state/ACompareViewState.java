@@ -51,7 +51,7 @@ public abstract class ACompareViewState {
 	protected final static float SET_BAR_HEIGHT_PORTION = 0.07f;
 
 	protected static SelectionType activeHeatMapSelectionType = new SelectionType(
-			"ActiveHeatmap", new float[] { 0.0f, 0.0f, 0.0f, 1.0f }, true, false, 1f);;
+			"ActiveHeatmap", new float[] { 0.0f, 0.0f, 0.0f, 1.0f }, 1, true, false, 1f);;
 
 	protected TextRenderer textRenderer;
 	protected TextureManager textureManager;

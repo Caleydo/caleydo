@@ -67,7 +67,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.heatmap";
 	public static final SelectionType SELECTION_HIDDEN = new SelectionType(
-			"Hidden", new float[] { 0f, 0f, 0f, 1f }, true, false, 0.2f);
+			"Hidden", new float[] { 0f, 0f, 0f, 1f }, 1, false, false, 0.2f);
 
 	HeatMapRenderStyle renderStyle;
 

@@ -21,12 +21,14 @@ public class SelectionType {
 	private String type = "Not set";
 	/** the color the selection type should be rendered in */
 	private float[] color = new float[] { 0, 0, 0, 1 };
-
+	/** the color equivalent to float color in int space (0-255) */
 	private int[] intColor = new int[] { 0, 0, 0 };
 	/** flag that determines whether an element of this selection type should be visible or not */
 	private boolean isVisible = true;
 	/** flag that determines whether connection lines should be drawn to this selection type or not */
 	private boolean isConnected = false;
+	/** line rendering views should use this width for this selection type */
+	private int lineWidth = 1;
 	/**
 	 * a priority determining which selection type should be rendered on top in case of multi-selections. The
 	 * valid range is 0-1 where {@link #NORMAL} has 0, {@link #MOUSE_OVER} 1 and {@link #SELECTION} 0.99
@@ -34,13 +36,13 @@ public class SelectionType {
 	private float priority = 0.1f;
 
 	public static final SelectionType NORMAL =
-		new SelectionType("Normal", new float[] { 0, 0, 0, 1 }, true, false, 0);
+		new SelectionType("Normal", new float[] { 0, 0, 0, 1 }, 1, true, false, 0);
 	public static final SelectionType MOUSE_OVER =
-		new SelectionType("MouseOver", new int[] {116, 169, 207 }, true, true, 1);
+		new SelectionType("MouseOver", new int[] { 116, 169, 207 }, 3, true, true, 1);
 	public static final SelectionType SELECTION =
-		new SelectionType("Selected", new int[] {5, 112, 176}, true, false, 0.99f);
+		new SelectionType("Selected", new int[] { 5, 112, 176 }, 3, true, false, 0.99f);
 	public static final SelectionType DESELECTED =
-		new SelectionType("Deselected", new float[] { 0, 0, 0, 1 }, false, false, 0);
+		new SelectionType("Deselected", new float[] { 0, 0, 0, 1 }, 1, false, false, 0);
 
 	private static ArrayList<SelectionType> defaultTypes = new ArrayList<SelectionType>();
 
@@ -57,6 +59,8 @@ public class SelectionType {
 	 *            a name for the selection type, human readable
 	 * @param color
 	 *            the color the selection type should be rendered in
+	 * @param lineWidth
+	 *            the width of lines that should be used for this selection type in line rendering views
 	 * @param isVisible
 	 *            flag that determines whether an element of this selection type should be visible or not
 	 * @param isConnected
@@ -66,10 +70,12 @@ public class SelectionType {
 	 *            multi-selections. The valid range is 0-1 where {@link #NORMAL} has 0, {@link #MOUSE_OVER} 1
 	 *            and {@link #SELECTION} 0.99
 	 */
-	public SelectionType(String type, float[] color, boolean isVisible, boolean isConnected, float priority) {
+	public SelectionType(String type, float[] color, int lineWidth, boolean isVisible, boolean isConnected,
+		float priority) {
 		this.type = type;
 		setColor(color);
 		setIntColor(convertFloatColor(color));
+		this.lineWidth = lineWidth;
 		this.isVisible = isVisible;
 		this.isConnected = isConnected;
 		checkPiority(priority);
@@ -86,6 +92,8 @@ public class SelectionType {
 	 *            a name for the selection type, human readable
 	 * @param color
 	 *            the color the selection type should be rendered in in integers (0-255)
+	 * @param lineWidth
+	 *            the width of lines that should be used for this selection type in line rendering views
 	 * @param isVisible
 	 *            flag that determines whether an element of this selection type should be visible or not
 	 * @param isConnected
@@ -95,10 +103,12 @@ public class SelectionType {
 	 *            multi-selections. The valid range is 0-1 where {@link #NORMAL} has 0, {@link #MOUSE_OVER} 1
 	 *            and {@link #SELECTION} 0.99
 	 */
-	public SelectionType(String type, int[] intColor, boolean isVisible, boolean isConnected, float priority) {
+	public SelectionType(String type, int[] intColor, int lineWidth, boolean isVisible, boolean isConnected,
+		float priority) {
 		this.type = type;
 		setIntColor(intColor);
 		setColor(convertIntColor(intColor));
+		this.lineWidth = lineWidth;
 		this.isVisible = isVisible;
 		this.isConnected = isConnected;
 		checkPiority(priority);
@@ -165,6 +175,21 @@ public class SelectionType {
 			throw new IllegalArgumentException("intColor has to contain exactly 3 int values, but was: "
 				+ intColor);
 		this.intColor = intColor;
+	}
+
+	/**
+	 * @param lineWidth
+	 *            the the width of lines that should be used for this selection type in line rendering views
+	 */
+	public void setLineWidth(int lineWidth) {
+		this.lineWidth = lineWidth;
+	}
+
+	/**
+	 * @return the the width of lines that should be used for this selection type in line rendering views
+	 */
+	public int getLineWidth() {
+		return lineWidth;
 	}
 
 	/**

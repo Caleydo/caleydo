@@ -44,7 +44,6 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -642,43 +641,12 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 			renderCoordinateSystem(gl);
 
-			// FIXME if uses z buffer fighting to avoid artfacts when tiltet
-			// if (detailLevel.compareTo(EDetailLevel.LOW) < 1) {
-			// renderPolylines(gl, SelectionType.MOUSE_OVER);
-			// renderPolylines(gl, SelectionType.SELECTION);
-			// renderPolylines(gl, SelectionType.DESELECTED);
-			// renderPolylines(gl, SelectionType.NORMAL);
-			// } else {
-			// // renderPolylines(gl, SelectionType.DESELECTED);
-			// renderPolylines(gl, SelectionType.NORMAL);
-			// renderPolylines(gl, SelectionType.MOUSE_OVER);
-			// renderPolylines(gl, SelectionType.SELECTION);
-			//
-			// }
-
-			renderPolylines(gl);
-
+			for (SelectionType selectionType : contentSelectionManager
+					.getSelectionTypes()) {
+				if (selectionType.isVisible())
+					renderPolylines(gl, selectionType);
+			}
 			renderGates(gl);
-
-			// if (bShowSelectionHeatMap) {
-			//
-			// gl.glTranslatef(viewFrustum.getRight() -
-			// glSelectionHeatMap.getViewFrustum().getWidth(), 0,
-			// 0.002f);
-			// // gl.glTranslatef(1, 0, 0);
-			// int iPickingID =
-			// pickingManager.getPickingID(iUniqueID,
-			// EPickingType.PCS_VIEW_SELECTION,
-			// glSelectionHeatMap.getID());
-			// gl.glPushName(iPickingID);
-			// glSelectionHeatMap.displayRemote(gl);
-			//
-			// gl.glPopName();
-			// // gl.glTranslatef(-1, 0, 0);
-			// gl.glTranslatef(-viewFrustum.getRight() +
-			// glSelectionHeatMap.getViewFrustum().getWidth(), 0,
-			// -0.002f);
-			// }
 
 		}
 
@@ -699,191 +667,131 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	 *            the type of selection in the selection manager to render
 	 */
 	@SuppressWarnings("unchecked")
-	private void renderPolylines(GL gl) {
+	private void renderPolylines(GL gl, SelectionType renderMode) {
 
-		float fZDepth = 0f;
+		int nrVisibleLines;
 
-		// PolyLineState state;
-		// setDataToRender = polylineVA.getIndexList();
-		//
-		// if (renderMode == SelectionType.DESELECTED
-		// || renderMode == SelectionType.NORMAL) {
+		Iterable<Integer> lines;
+		if (renderMode == SelectionType.NORMAL) {
+			nrVisibleLines = contentVA.size()
+					- contentSelectionManager
+							.getNumberOfElements(SelectionType.DESELECTED);
+			lines = contentVA;
+		} else {
+			nrVisibleLines = contentSelectionManager
+					.getNumberOfElements(renderMode);
+			lines = contentSelectionManager.getElements(renderMode);
+		}
 
-		iDisplayEveryNthPolyline = contentVA.size() / iNumberOfRandomElements;
+		iDisplayEveryNthPolyline = (contentVA.size() - contentSelectionManager
+				.getNumberOfElements(SelectionType.DESELECTED))
+				/ iNumberOfRandomElements;
 
-		// iDisplayEveryNthPolyline = (polylineSelectionManager
-		// .getNumberOfElements() - polylineSelectionManager
-		// .getNumberOfElements(SelectionType.DESELECTED))
-		// / iNumberOfRandomElements;
 		if (iDisplayEveryNthPolyline == 0) {
 			iDisplayEveryNthPolyline = 1;
 		}
-		// }
-		// if (renderMode == SelectionType.NORMAL) {
-		// state = renderStyle.normalState;
-		// } else {
-		// setDataToRender = polylineSelectionManager.getElements(renderMode);
-		// }
-		// if (renderMode == SelectionType.NORMAL) {
-		// fZDepth = PCRenderStyle.POLYLINE_NORMAL_Z;
-		//
-		// if (detailLevel.compareTo(EDetailLevel.LOW) < 1) {
-		// gl
-		// .glColor4fv(
-		// renderStyle
-		// .getPolylineDeselectedOcclusionPrevColor(setDataToRender
-		// .size()
-		// / iDisplayEveryNthPolyline), 0);
-		// gl.glLineWidth(PCRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH);
-		//
-		// } else {
-		// if (bPreventOcclusion) {
-		// gl.glColor4fv(renderStyle
-		// .getPolylineOcclusionPrevColor(setDataToRender
-		// .size()
-		// / iDisplayEveryNthPolyline), 0);
-		// } else {
-		// gl.glColor4fv(POLYLINE_NO_OCCLUSION_PREV_COLOR, 0);
-		// }
-		//
-		// gl.glLineWidth(PCRenderStyle.POLYLINE_LINE_WIDTH);
-		// }
-		// } else if (renderMode == SelectionType.SELECTION) {
-		// gl.glColor4fv(POLYLINE_SELECTED_COLOR, 0);
-		// gl.glLineWidth(SELECTED_POLYLINE_LINE_WIDTH);
-		// fZDepth = PCRenderStyle.POLYLINE_SELECTED_Z;
-		//
-		// } else if (renderMode == SelectionType.MOUSE_OVER) {
-		// gl.glColor4fv(POLYLINE_MOUSE_OVER_COLOR, 0);
-		// gl.glLineWidth(MOUSE_OVER_POLYLINE_LINE_WIDTH);
-		// fZDepth = PCRenderStyle.POLYLINE_SELECTED_Z;
-		//
-		// } else if (renderMode == SelectionType.DESELECTED) {
-		// fZDepth = PCRenderStyle.POLYLINE_DESELECTED_Z;
-		// gl.glColor4fv(renderStyle
-		// .getPolylineDeselectedOcclusionPrevColor(setDataToRender
-		// .size()
-		// / iDisplayEveryNthPolyline), 0);
-		// gl.glLineWidth(DESELECTED_POLYLINE_LINE_WIDTH);
-		// } else {
-		// fZDepth = PCRenderStyle.POLYLINE_NORMAL_Z;
-		// gl.glColor4fv(renderMode.getColor(), 0);
-		// gl.glLineWidth(SELECTED_POLYLINE_LINE_WIDTH * 4);
-		// }
-		//
-		// boolean bRenderingSelection = false;
-		//
-		// if ((renderMode == SelectionType.SELECTION || renderMode ==
-		// SelectionType.MOUSE_OVER)
-		// && detailLevel == EDetailLevel.HIGH) {
-		// bRenderingSelection = true;
-		// }
+
+		PolyLineState renderState = renderStyle.getPolyLineState(renderMode,
+				nrVisibleLines / iDisplayEveryNthPolyline);
+
 		boolean bRenderingSelection = true;
-		Iterator<Integer> dataIterator = contentVA.iterator();
+
 		// this loop executes once per polyline
-		for (Integer iPolyLineID : contentVA) {
+		for (Integer polyLineID : lines) {
+			if (contentSelectionManager.checkStatus(SelectionType.DESELECTED,
+					polyLineID))
+				continue;
+			gl.glColor4fv(renderState.color, 0);
+			gl.glLineWidth(renderState.lineWidth);
+			if ((renderMode == SelectionType.SELECTION || renderMode == SelectionType.MOUSE_OVER)
+					&& detailLevel == EDetailLevel.HIGH) {
+				bRenderingSelection = true;
+			} else
+				bRenderingSelection = false;
 
-			ArrayList<SelectionType> modes = contentSelectionManager
-					.getSelectionTypes(iPolyLineID);
-			for (SelectionType renderMode : modes) {
-				if (!renderMode.isVisible())
+			if (bUseRandomSampling
+					&& (renderMode == SelectionType.DESELECTED || renderMode == SelectionType.NORMAL)) {
+				if (polyLineID % iDisplayEveryNthPolyline != 0) {
 					continue;
-				PolyLineState renderState = renderStyle
-						.getPolyLineState(renderMode);
-				gl.glColor4fv(renderState.color, 0);
-				gl.glLineWidth(renderState.lineWidth);
-				fZDepth = renderState.zDepth;
-				if ((renderMode == SelectionType.SELECTION || renderMode == SelectionType.MOUSE_OVER)
-						&& detailLevel == EDetailLevel.HIGH) {
-					bRenderingSelection = true;
-				} else
-					bRenderingSelection = false;
-
-				if (bUseRandomSampling
-						&& (renderMode == SelectionType.DESELECTED || renderMode == SelectionType.NORMAL)) {
-					if (iPolyLineID % iDisplayEveryNthPolyline != 0) {
-						continue;
-						// if(!alUseInRandomSampling.get(contentVA.indexOf(iPolyLineID)))
-						// continue;
-					}
-				}
-				if (renderMode != SelectionType.DESELECTED) {
-					gl.glPushName(pickingManager.getPickingID(iUniqueID,
-							EPickingType.POLYLINE_SELECTION, iPolyLineID));
-				}
-
-				if (!bRenderingSelection) {
-					gl.glBegin(GL.GL_LINE_STRIP);
-				}
-
-				IStorage currentStorage = null;
-
-				float fPreviousXValue = 0;
-				float fPreviousYValue = 0;
-				float fCurrentXValue = 0;
-				float fCurrentYValue = 0;
-
-				// this loop executes once per axis
-				for (int iVertexCount = 0; iVertexCount < storageVA.size(); iVertexCount++) {
-					int iStorageIndex = 0;
-
-					currentStorage = set.get(storageVA.get(iVertexCount));
-					iStorageIndex = iPolyLineID;
-
-					fCurrentXValue = alAxisSpacing.get(iVertexCount);
-					fCurrentYValue = currentStorage.getFloat(
-							EDataRepresentation.NORMALIZED, iStorageIndex);
-					if (Float.isNaN(fCurrentYValue)) {
-						fCurrentYValue = NAN_Y_OFFSET
-								/ renderStyle.getAxisHeight();
-					}
-					if (iVertexCount != 0) {
-						if (bRenderingSelection) {
-							gl.glBegin(GL.GL_LINES);
-						}
-
-						gl.glVertex3f(fPreviousXValue, fPreviousYValue
-								* renderStyle.getAxisHeight(), fZDepth);
-						gl.glVertex3f(fCurrentXValue, fCurrentYValue
-								* renderStyle.getAxisHeight(), fZDepth);
-
-						if (bRenderingSelection) {
-							gl.glEnd();
-						}
-
-					}
-
-					if (bRenderingSelection) {
-						String sRawValue;
-						if (currentStorage instanceof INumericalStorage) {
-							sRawValue = Formatter.formatNumber(currentStorage
-									.getFloat(EDataRepresentation.RAW,
-											iStorageIndex));
-
-						} else if (currentStorage instanceof INominalStorage) {
-							sRawValue = ((INominalStorage<String>) currentStorage)
-									.getRaw(iStorageIndex);
-						} else
-							throw new IllegalStateException(
-									"Unknown Storage Type");
-
-						renderBoxedYValues(gl, fCurrentXValue, fCurrentYValue
-								* renderStyle.getAxisHeight(), sRawValue,
-								renderMode);
-					}
-
-					fPreviousXValue = fCurrentXValue;
-					fPreviousYValue = fCurrentYValue;
-				}
-
-				if (!bRenderingSelection) {
-					gl.glEnd();
-				}
-
-				if (renderMode != SelectionType.DESELECTED) {
-					gl.glPopName();
+					// if(!alUseInRandomSampling.get(contentVA.indexOf(iPolyLineID)))
+					// continue;
 				}
 			}
+			if (renderMode != SelectionType.DESELECTED) {
+				gl.glPushName(pickingManager.getPickingID(iUniqueID,
+						EPickingType.POLYLINE_SELECTION, polyLineID));
+			}
+
+			if (!bRenderingSelection) {
+				gl.glBegin(GL.GL_LINE_STRIP);
+			}
+
+			IStorage currentStorage = null;
+
+			float fPreviousXValue = 0;
+			float fPreviousYValue = 0;
+			float fCurrentXValue = 0;
+			float fCurrentYValue = 0;
+
+			// this loop executes once per axis
+			for (int iVertexCount = 0; iVertexCount < storageVA.size(); iVertexCount++) {
+				int iStorageIndex = 0;
+
+				currentStorage = set.get(storageVA.get(iVertexCount));
+				iStorageIndex = polyLineID;
+
+				fCurrentXValue = alAxisSpacing.get(iVertexCount);
+				fCurrentYValue = currentStorage.getFloat(
+						EDataRepresentation.NORMALIZED, iStorageIndex);
+				if (Float.isNaN(fCurrentYValue)) {
+					fCurrentYValue = NAN_Y_OFFSET / renderStyle.getAxisHeight();
+				}
+				if (iVertexCount != 0) {
+					if (bRenderingSelection) {
+						gl.glBegin(GL.GL_LINES);
+					}
+
+					gl.glVertex3f(fPreviousXValue, fPreviousYValue
+							* renderStyle.getAxisHeight(), renderState.zDepth);
+					gl.glVertex3f(fCurrentXValue, fCurrentYValue
+							* renderStyle.getAxisHeight(), renderState.zDepth);
+
+					if (bRenderingSelection) {
+						gl.glEnd();
+					}
+
+				}
+
+				if (bRenderingSelection) {
+					String sRawValue;
+					if (currentStorage instanceof INumericalStorage) {
+						sRawValue = Formatter.formatNumber(currentStorage
+								.getFloat(EDataRepresentation.RAW,
+										iStorageIndex));
+
+					} else if (currentStorage instanceof INominalStorage) {
+						sRawValue = ((INominalStorage<String>) currentStorage)
+								.getRaw(iStorageIndex);
+					} else
+						throw new IllegalStateException("Unknown Storage Type");
+
+					renderBoxedYValues(gl, fCurrentXValue, fCurrentYValue
+							* renderStyle.getAxisHeight(), sRawValue,
+							renderMode);
+				}
+
+				fPreviousXValue = fCurrentXValue;
+				fPreviousYValue = fCurrentYValue;
+			}
+
+			if (!bRenderingSelection) {
+				gl.glEnd();
+			}
+
+			if (renderMode != SelectionType.DESELECTED) {
+				gl.glPopName();
+			}
+
 		}
 	}
 
@@ -1321,7 +1229,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			gl.glVertex3f(fXOrigin, fBottom, 0);
 			gl.glVertex3f(viewFrustum.getWidth() - 1, fBottom, 0);
 			gl.glVertex3f(viewFrustum.getWidth() - 1, fTop, 0);
-			// todo eurovis hacke
+			// TODO eurovis hacke
 			// gl.glVertex3f(viewFrustum.getWidth(), fBottom, 0);
 			// gl.glVertex3f(viewFrustum.getWidth(), fTop, 0);
 			//			
@@ -1673,19 +1581,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			switch (ePickingMode) {
 
 			case CLICKED:
-				// FIXME remove this - selection type test
-				if (isFirstClicked) {
-					isFirstClicked = false;
-					SelectionTypeEvent event = new SelectionTypeEvent();
-					selectionTypeTest = new SelectionType();
-					selectionTypeTest.setType("PC_SELECTION_TEST");
-					selectionTypeTest.setColor(new float[] { 0, 1, 0, 1 });
-					event.addSelectionType(selectionTypeTest);
-					eventPublisher.triggerEvent(event);
-				}
-				selectionType = selectionTypeTest;
-				// end remove - put next line back
-				// selectionType = SelectionType.SELECTION;
+				selectionType = SelectionType.SELECTION;
 				if (bAngularBrushingSelectPolyline) {
 					bAngularBrushingSelectPolyline = false;
 					bIsAngularBrushingActive = true;
