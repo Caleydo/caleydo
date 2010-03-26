@@ -45,6 +45,8 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 
 	private ArrayList<Integer> leaveIDs;
 
+	protected boolean useDefaultComparator = true;
+
 	public AHierarchyElement() {
 	}
 
@@ -59,8 +61,6 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 		setNode((Node) this);
 		this.tree = tree;
 	}
-	
-	
 
 	/**
 	 * Sets the instance of the concrete type that is stored in the hierarchy. If the instance is not set, the
@@ -388,6 +388,17 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 		for (Node child : alChildren) {
 			child.calculateHierarchyLevels(hierarchyLevel + 1);
 		}
+	}
+
+	/**
+	 * Choose whether comparisons should be based on the default comparator (the ID) or some custom comparator
+	 * defined in a sub-class
+	 * 
+	 * @param compareAverageExpressionValues
+	 *            if true expression values are used, else IDs
+	 */
+	public void setUseDefaultComparator(boolean useDefaultComparator) {
+		this.useDefaultComparator = useDefaultComparator;
 	}
 
 }

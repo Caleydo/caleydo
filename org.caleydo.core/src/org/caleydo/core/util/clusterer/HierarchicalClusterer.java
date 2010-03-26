@@ -23,9 +23,6 @@ public class HierarchicalClusterer
 
 	private Tree<ClusterNode> tree = new Tree<ClusterNode>();
 
-	private int iVAIdContent = 0;
-	private int iVAIdStorage = 0;
-
 	public HierarchicalClusterer() {
 		clusterer = new Cobweb();
 	}

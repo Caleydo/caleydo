@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
@@ -34,6 +37,9 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	private HashMap<NodeType, NodeInfo> mNodeMap;
 
 	private HashMap<Integer, Integer> mLayerMap;
+
+	@XmlElement
+	private boolean useDefaultComparator = true;
 
 	public Tree() {
 
@@ -126,6 +132,8 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 				hashLeafIDToNodeIDs.put(childNode.getLeafID(), alNodeIDs);
 			}
 		}
+
+		childNode.setUseDefaultComparator(useDefaultComparator);
 	}
 
 	/**
@@ -371,5 +379,9 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	// Tree<NodeType> subTree = new Tree<NodeType>();
 	//		
 	// }
+
+	public void setUseDefaultComparator(boolean useDefaultComparator) {
+		this.useDefaultComparator = useDefaultComparator;
+	}
 
 }

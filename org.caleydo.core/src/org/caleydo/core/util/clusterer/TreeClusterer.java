@@ -64,8 +64,11 @@ public class TreeClusterer
 	public void setClusterState(ClusterState clusterState) {
 		super.setClusterState(clusterState);
 		try {
-			if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+			tree = new Tree<ClusterNode>();
+			if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
+				tree.setUseDefaultComparator(false);
 				this.iNrSamples = clusterState.getContentVA().size();
+			}
 			else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
 				this.iNrSamples = clusterState.getStorageVA().size();
 			else
@@ -343,7 +346,6 @@ public class TreeClusterer
 			result2[i] = result[i];
 
 		// set cluster result in Set
-		tree = new Tree<ClusterNode>();
 
 		ClusterNode node = new ClusterNode(tree, "Root", getNodeCounter(), true, -1);
 		tree.setRootNode(node);
@@ -357,10 +359,10 @@ public class TreeClusterer
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 		indices = tree.getRoot().getLeaveIds();
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			set.setContentTree(tree);
-		else
-			set.setStorageTree(tree);
+		// if (eClustererType == EClustererType.GENE_CLUSTERING)
+		// set.setContentTree(tree);
+		// else
+		// set.setStorageTree(tree);
 
 		// IVirtualArray virtualArray = null;
 		// if (eClustererType == EClustererType.GENE_CLUSTERING)
@@ -485,7 +487,6 @@ public class TreeClusterer
 		}
 
 		// set cluster result in Set
-		tree = new Tree<ClusterNode>();
 
 		ClusterNode node = new ClusterNode(tree, "Root", getNodeCounter(), true, -1);
 		tree.setRootNode(node);
@@ -701,7 +702,6 @@ public class TreeClusterer
 		}
 
 		// set cluster result in Set
-		tree = new Tree<ClusterNode>();
 
 		ClusterNode node = new ClusterNode(tree, "Root", getNodeCounter(), true, -1);
 		tree.setRootNode(node);

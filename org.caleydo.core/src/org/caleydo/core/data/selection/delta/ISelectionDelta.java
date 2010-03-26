@@ -13,7 +13,7 @@ public interface ISelectionDelta
 	extends IDelta<SelectionDeltaItem> {
 
 	/**
-	 * Add a new selection to the delta
+	 * Add a new selection to the delta. Notice that a selection delta allows only unique ids.
 	 * 
 	 * @param iSelectionID
 	 *            the selection id

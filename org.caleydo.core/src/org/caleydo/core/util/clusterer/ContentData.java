@@ -51,6 +51,7 @@ public class ContentData {
 			int cnt = 0;
 			// int iOffset = 0;
 			contentTree = new Tree<ClusterNode>();
+			contentTree.setUseDefaultComparator(false);
 			int clusterNr = 0;
 			ClusterNode root = new ClusterNode(contentTree, "Root", clusterNr++, true, -1);
 			contentTree.setRootNode(root);

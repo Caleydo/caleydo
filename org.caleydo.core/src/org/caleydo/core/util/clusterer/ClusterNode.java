@@ -47,7 +47,7 @@ public class ClusterNode
 	private float fAverageExpressionValue;
 	@XmlElement
 	private float fStandardDeviation;
-
+	@XmlTransient
 	private boolean bIsPartOfSubTree = false;
 	private Vec3f vPosSubTree;
 	@XmlTransient
@@ -94,7 +94,7 @@ public class ClusterNode
 	public <SetType extends Set> void createMetaSet(SetType set) {
 		metaSet = new MetaSet(set, tree, this);
 
-		metaSet.setLabel("MetaSet at " + nodeName);
+		metaSet.setLabel(nodeName);
 
 		metaSet.setContentTree(set.getContentTree());
 		// Tree<ClusterNode> subTree = tree.getSubTree();
@@ -239,6 +239,7 @@ public class ClusterNode
 
 	@Override
 	public int getComparableValue() {
+
 		return id;
 	}
 
@@ -264,11 +265,12 @@ public class ClusterNode
 
 	@Override
 	public int compareTo(ClusterNode node) {
+		if (useDefaultComparator)
+			return super.compareTo(node);
+
 		if (fAverageExpressionValue < node.fAverageExpressionValue)
 			return 1;
 		else
 			return -1;
-		// return getComparableValue() - node.getComparableValue();
 	}
-
 }

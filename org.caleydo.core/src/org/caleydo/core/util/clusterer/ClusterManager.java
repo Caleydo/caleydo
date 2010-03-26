@@ -113,6 +113,7 @@ public class ClusterManager {
 		result.contentResult.contentClusterSizes = tempResult.clusterSizes;
 		result.contentResult.contentSampleElements = tempResult.sampleElements;
 		result.contentResult.contentTree = tempResult.tree;
+		result.contentResult.contentTree.setUseDefaultComparator(false);
 	}
 
 	private void runStorageClustering(AClusterer clusterer, ClusterState clusterState, ClusterResult result,

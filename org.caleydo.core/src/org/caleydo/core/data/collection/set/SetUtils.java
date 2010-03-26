@@ -246,7 +246,7 @@ public class SetUtils {
 
 		ISet set = useCase.getSet();
 
-//		loadTrees(loadDataParameters, set);
+		// loadTrees(loadDataParameters, set);
 
 		if (loadDataParameters.isMinDefined()) {
 			set.setMin(loadDataParameters.getMin());
@@ -400,7 +400,9 @@ public class SetUtils {
 				TreePorter treePorter = new TreePorter();
 				Tree<ClusterNode> tree;
 				try {
+					
 					tree = treePorter.importTree(geneTreeFileName);
+					tree.setUseDefaultComparator(false);
 					set.setContentTree(tree);
 				}
 				catch (JAXBException e) {
