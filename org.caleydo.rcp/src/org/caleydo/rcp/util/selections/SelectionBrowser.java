@@ -279,7 +279,7 @@ public class SelectionBrowser
 		for (SelectionType tmpSelectionType : sTypes) 
 		{
 								
-		if (SelectionType.isDefaultType(tmpSelectionType) || tmpSelectionType == SelectionType.DESELECTED)
+		if (SelectionType.isDefaultType(tmpSelectionType) || !tmpSelectionType.isManaged() )
 				continue;
 		
 		TreeItem item = new TreeItem(contentTree, SWT.NONE);

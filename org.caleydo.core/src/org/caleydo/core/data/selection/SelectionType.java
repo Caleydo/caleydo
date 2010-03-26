@@ -11,7 +11,23 @@ import java.util.ArrayList;
  * There are two types of Selection types: the default types ({@link #NORMAL}, {@link #MOUSE_OVER},
  * {@link #SELECTION} and {@link #DESELECTED}) as well as user-defined types.
  * </p>
- * TODO add info about user defined types
+ * <p>
+ * A Selection has the following properties, all of which have default values, so it is only necessary to
+ * define those values that are of interest:
+ * </p>
+ * <ul>
+ * <li><b>{@link #color}</b> either as and int[] or as a float[]. No matter which one is used the other is
+ * calculated.</li>
+ * <li><b>visibility</b> determines whether elements of this type should be visible</li>
+ * <li><b></b></li>
+ * <li><b>connectivity</b> determines whether an element should be connected via connection lines or not</li>
+ * <li><b>line width</b> provides the line width that should be used when line based visualizations are
+ * rendered</li>
+ * <li><b>priority</b> the priority is used to determine the Z value. The priority has to be between 0 and 1.
+ * Elements of higher priority are rendered further on top.</li>
+ * <li><b>is managed</b> selections can be managed via the RCP Selection Browser view. If a selection should
+ * be managed this way is determined by this flag.</li>
+ * </ul>
  * 
  * @author Alexander Lex
  */
@@ -34,6 +50,12 @@ public class SelectionType {
 	 * valid range is 0-1 where {@link #NORMAL} has 0, {@link #MOUSE_OVER} 1 and {@link #SELECTION} 0.99
 	 */
 	private float priority = 0.1f;
+
+	/**
+	 * flag that determines whether a particular selection type should be managed by the
+	 * {@link RcpSelectionBrowserView}
+	 */
+	private boolean isManaged = false;
 
 	public static final SelectionType NORMAL =
 		new SelectionType("Normal", new float[] { 0, 0, 0, 1 }, 1, true, false, 0);
@@ -290,7 +312,7 @@ public class SelectionType {
 	 */
 	public static boolean isDefaultType(SelectionType selectionType) {
 		if (NORMAL.equals(selectionType) || MOUSE_OVER.equals(selectionType)
-			|| SELECTION.equals(selectionType) || DESELECTED.equals(defaultTypes))
+			|| SELECTION.equals(selectionType) || DESELECTED.equals(selectionType))
 			return true;
 
 		return false;
@@ -311,6 +333,14 @@ public class SelectionType {
 		color[2] = ((float) intColor[2]) / 255;
 		color[3] = 1;
 		return color;
+	}
+
+	public void setManaged(boolean isManaged) {
+		this.isManaged = isManaged;
+	}
+
+	public boolean isManaged() {
+		return isManaged;
 	}
 
 }

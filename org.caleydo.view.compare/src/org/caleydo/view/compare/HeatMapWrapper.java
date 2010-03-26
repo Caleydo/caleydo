@@ -901,9 +901,10 @@ public class HeatMapWrapper {
 		if (addToNewSelectionType) {
 
 			SelectionType selectionType = new SelectionType();
-			selectionType.setType(SELECTION_TYPE_NAME + selectionTypeNumber++);
+			selectionType.setType(SELECTION_TYPE_NAME + selectionTypeNumber);
 			selectionType.setPriority(0.8f + 0.0001f * selectionTypeNumber);
-			selectionType.setColor(ColorUtil.getColor(selectionTypeNumber));
+			selectionType.setColor(ColorUtil.getColor(selectionTypeNumber++));
+			selectionType.setManaged(true);
 
 			SelectionTypeEvent event = new SelectionTypeEvent();
 			event.addSelectionType(selectionType);

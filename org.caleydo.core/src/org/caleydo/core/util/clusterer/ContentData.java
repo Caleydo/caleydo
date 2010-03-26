@@ -84,6 +84,7 @@ public class ContentData {
 		else if (contentVA != null && contentTree != null) {
 			contentVA.buildNewGroupList(contentTree.getRoot().getChildren());
 		}
+		contentTree.setUseDefaultComparator(false);
 	}
 
 }

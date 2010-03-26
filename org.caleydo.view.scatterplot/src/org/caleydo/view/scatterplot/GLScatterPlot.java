@@ -3148,6 +3148,7 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 		currentSelection.setType(CUSTOM_SELECTION_NAME+" " + iCurrentSelectionNr);
 		currentSelection.setColor(ScatterPlotHelper.getSelectionColor(iCurrentSelectionNr));
 		currentSelection.setPriority((float)iCurrentSelectionNr/10000.0f);
+		currentSelection.setManaged(true);
 		event.addSelectionType(currentSelection);		
 		eventPublisher.triggerEvent(event);
 		
