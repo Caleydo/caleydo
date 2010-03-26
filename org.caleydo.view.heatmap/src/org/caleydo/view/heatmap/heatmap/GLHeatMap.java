@@ -369,6 +369,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 			case CLICKED:
 				selectionType = SelectionType.SELECTION;
+				setActive(true);
 				break;
 			case MOUSE_OVER:
 
@@ -398,7 +399,7 @@ public class GLHeatMap extends AStorageBasedView {
 				return;
 
 			}
-			setActive(true);
+			
 			createContentSelection(selectionType, iExternalID);
 
 			break;
@@ -924,9 +925,9 @@ public class GLHeatMap extends AStorageBasedView {
 
 	public Set<Integer> getZoomedElements() {
 		Set<Integer> zoomedElements = new HashSet<Integer>(
-				contentSelectionManager.getElements(SelectionType.MOUSE_OVER));
-		zoomedElements.addAll(contentSelectionManager
-				.getElements(SelectionType.SELECTION));
+				contentSelectionManager.getElements(SelectionType.SELECTION));
+//		zoomedElements.addAll(contentSelectionManager
+//				.getElements(SelectionType.MOUSE_OVER));
 		Iterator<Integer> elementIterator = zoomedElements.iterator();
 		while (elementIterator.hasNext()) {
 			int contentID = elementIterator.next();

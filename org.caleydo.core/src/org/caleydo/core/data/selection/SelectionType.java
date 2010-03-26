@@ -36,9 +36,9 @@ public class SelectionType {
 	public static final SelectionType NORMAL =
 		new SelectionType("Normal", new float[] { 0, 0, 0, 1 }, true, false, 0);
 	public static final SelectionType MOUSE_OVER =
-		new SelectionType("MouseOver", new int[] { 166, 206, 227 }, true, true, 1);
+		new SelectionType("MouseOver", new int[] {116, 169, 207 }, true, true, 1);
 	public static final SelectionType SELECTION =
-		new SelectionType("Selected", new int[] { 31, 120, 180 }, true, false, 0.99f);
+		new SelectionType("Selected", new int[] {5, 112, 176}, true, false, 0.99f);
 	public static final SelectionType DESELECTED =
 		new SelectionType("Deselected", new float[] { 0, 0, 0, 1 }, false, false, 0);
 

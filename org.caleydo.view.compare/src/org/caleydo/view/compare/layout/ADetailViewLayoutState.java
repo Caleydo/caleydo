@@ -97,7 +97,7 @@ public abstract class ADetailViewLayoutState {
 			totalHeatMapOverheadSize += heatMap.getRequiredOverheadSpacing();
 			if (heatMap.isForceMinSpacing()) {
 				numberOfFocusElements += numElements;
-				requestedFocusSpacing = heatMap.getMinSpacing();
+				requestedFocusSpacing = HeatMapRenderStyle.MIN_FIELD_HEIGHT_FOR_CAPTION;
 			}
 
 		}
@@ -162,7 +162,8 @@ public abstract class ADetailViewLayoutState {
 		}
 
 		// if we use a zoom layout and we have focus elements
-		if (layout.isUseZoom() && numberOfFocusElements > 0) {
+		if (layout.isUseZoom() && numberOfFocusElements > 0
+				&& selectedGroups.size() > 1) {
 			// the case where we have enough space for everything
 			if (defaultSpacing > requestedFocusSpacing) {
 				resultingFocusSpacing = defaultSpacing;
@@ -173,10 +174,20 @@ public abstract class ADetailViewLayoutState {
 						* numberOfFocusElements)
 						/ (totalNumberOfElements - numberOfFocusElements);
 			} else {
-				resultingFocusSpacing = (availableSpaceForHeatMaps / 3)
+				// resultingFocusSpacing = (availableSpaceForHeatMaps / 3)
+				// / numberOfFocusElements;
+				// resultingNormalSpacing = (availableSpaceForHeatMaps / 3 * 2)
+				// / (totalNumberOfElements - numberOfFocusElements);
+//				resultingFocusSpacing = 2 * defaultSpacing;
+//				resultingNormalSpacing = (availableSpaceForHeatMaps - resultingFocusSpacing
+//						* numberOfFocusElements)
+//						/ totalNumberOfElements;
+				
+				int nrDefaultElements = totalNumberOfElements - numberOfFocusElements;
+				resultingNormalSpacing = defaultSpacing / 2;
+				resultingFocusSpacing = (availableSpaceForHeatMaps - resultingNormalSpacing
+						* nrDefaultElements)
 						/ numberOfFocusElements;
-				resultingNormalSpacing = (availableSpaceForHeatMaps / 3 * 2)
-						/ (totalNumberOfElements - numberOfFocusElements);
 			}
 		} else {
 			resultingNormalSpacing = defaultSpacing;
