@@ -1,13 +1,18 @@
 package org.caleydo.view.compare.state;
 
+import gleem.linalg.Vec3f;
+
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.IUseCase;
@@ -61,10 +66,10 @@ public class OverviewState extends ACompareViewStateStatic {
 	@Override
 	public void buildDisplayList(GL gl) {
 
-		if (isHeatMapWrapperDisplayListDirty || isHeatMapWrapperSelectionDisplayListDirty) {
+		if (isHeatMapWrapperDisplayListDirty) {
 			isHeatMapWrapperDisplayListDirty = false;
-			isHeatMapWrapperSelectionDisplayListDirty = false;
-			
+			// isHeatMapWrapperSelectionDisplayListDirty = false;
+
 			gl.glNewList(heatMapWrapperDisplayListIndex, GL.GL_COMPILE);
 
 			gl.glEnable(GL.GL_BLEND);
@@ -75,6 +80,7 @@ public class OverviewState extends ACompareViewStateStatic {
 						pickingManager, glMouseListener, viewID);
 			}
 
+			contentIDToIndividualLines.clear();
 			for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
 
 				renderIndiviudalLineRelations(gl, heatMapWrappers.get(i),
@@ -101,7 +107,16 @@ public class OverviewState extends ACompareViewStateStatic {
 			}
 			gl.glEndList();
 		}
-		
+
+		if (isHeatMapWrapperSelectionDisplayListDirty) {
+			isHeatMapWrapperSelectionDisplayListDirty = false;
+			gl
+					.glNewList(heatMapWrapperSelectionDisplayListIndex,
+							GL.GL_COMPILE);
+			renderSelections(gl);
+			gl.glEndList();
+		}
+
 		if (isSetBarDisplayListDirty) {
 			isSetBarDisplayListDirty = false;
 			gl.glNewList(setBarDisplayListIndex, GL.GL_COMPILE);
@@ -110,9 +125,16 @@ public class OverviewState extends ACompareViewStateStatic {
 			setBar.render(gl);
 			gl.glEndList();
 		}
-		
+
 		gl.glCallList(heatMapWrapperDisplayListIndex);
+		gl.glCallList(heatMapWrapperSelectionDisplayListIndex);
 		gl.glCallList(setBarDisplayListIndex);
+	}
+
+	@Override
+	protected void renderSelections(GL gl) {
+		renderOverviewLineSelections(gl);
+		renderHeatMapOverviewSelections(gl);
 	}
 
 	@Override
@@ -205,6 +227,11 @@ public class OverviewState extends ACompareViewStateStatic {
 
 			selectedHeatMapWrapper.setHeatMapActive(iExternalID,
 					createSelectionTypes);
+			if (createSelectionTypes) {
+				setHeatMapWrapperDisplayListDirty();
+			} else {
+				setHeatMapWrapperSelectionDisplayListDirty();
+			}
 		}
 
 	}
@@ -316,7 +343,7 @@ public class OverviewState extends ACompareViewStateStatic {
 					.setCurrentState(ECompareViewStateType.OVERVIEW_TO_DETAIL_TRANSITION);
 
 			transition.initTransition(gl, itemOffset);
-//			view.setDisplayListDirty();
+			// view.setDisplayListDirty();
 		}
 
 	}

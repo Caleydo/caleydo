@@ -59,7 +59,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 	@Override
 	public void init(GL gl) {
-		
+
 		setBarDisplayListIndex = gl.glGenLists(1);
 		heatMapWrapperDisplayListIndex = gl.glGenLists(1);
 		heatMapWrapperSelectionDisplayListIndex = gl.glGenLists(1);
@@ -102,10 +102,9 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 		// The bands need to be created only once in the detail
 		// if (detailBands == null)
-		if (isHeatMapWrapperDisplayListDirty
-				|| isHeatMapWrapperSelectionDisplayListDirty) {
+		if (isHeatMapWrapperDisplayListDirty) {
 			isHeatMapWrapperDisplayListDirty = false;
-			isHeatMapWrapperSelectionDisplayListDirty = false;
+//			isHeatMapWrapperSelectionDisplayListDirty = false;
 
 			gl.glNewList(heatMapWrapperDisplayListIndex, GL.GL_COMPILE);
 			calculateDetailBands(heatMapWrappers.get(0),
@@ -139,6 +138,15 @@ public class DetailViewState extends ACompareViewStateStatic {
 			gl.glEndList();
 		}
 
+		if (isHeatMapWrapperSelectionDisplayListDirty) {
+			isHeatMapWrapperSelectionDisplayListDirty = false;
+			gl
+					.glNewList(heatMapWrapperSelectionDisplayListIndex,
+							GL.GL_COMPILE);
+			renderSelections(gl);
+			gl.glEndList();
+		}
+
 		if (isSetBarDisplayListDirty) {
 			isSetBarDisplayListDirty = false;
 			gl.glNewList(setBarDisplayListIndex, GL.GL_COMPILE);
@@ -148,9 +156,19 @@ public class DetailViewState extends ACompareViewStateStatic {
 			setBar.render(gl);
 			gl.glEndList();
 		}
-		
+
 		gl.glCallList(heatMapWrapperDisplayListIndex);
+		gl.glCallList(heatMapWrapperSelectionDisplayListIndex);
 		gl.glCallList(setBarDisplayListIndex);
+	}
+
+	@Override
+	protected void renderSelections(GL gl) {
+		if (!bandBundlingActive
+				&& heatMapWrappers.get(0).getSelectedGroups().isEmpty()) {
+			renderOverviewLineSelections(gl);
+		}
+		renderHeatMapOverviewSelections(gl);
 	}
 
 	private void renderOverviewToDetailRelations(GL gl) {
@@ -298,7 +316,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 			if (leftPos == null || rightPos == null)
 				return;
 
-			float positionZ = setRelationColor(gl, heatMapWrapper, contentID);
+			float positionZ = setRelationColor(gl, heatMapWrapper, contentID,
+					true);
 			leftPos[2] = positionZ;
 			rightPos[2] = positionZ;
 
@@ -364,7 +383,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 	protected void renderSingleDetailToDetailRelation(GL gl, Integer contentID) {
 
 		float positionZ = setRelationColor(gl, heatMapWrappers.get(0),
-				contentID);
+				contentID, true);
 
 		float[] leftPos = heatMapWrappers.get(0)
 				.getRightDetailLinkPositionFromContentID(contentID);

@@ -848,7 +848,10 @@ public class HeatMapWrapper {
 		if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
 			contentSelectionManager.setDelta(selectionDelta);
 			// TODO: Maybe just set selection list dirty
-			state.setHeatMapWrapperDisplayListDirty();
+			if (selectedGroups.isEmpty())
+				state.setHeatMapWrapperSelectionDisplayListDirty();
+			else
+				state.setHeatMapWrapperDisplayListDirty();
 		}
 	}
 
