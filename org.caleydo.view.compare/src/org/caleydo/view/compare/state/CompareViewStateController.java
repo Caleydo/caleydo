@@ -172,4 +172,8 @@ public class CompareViewStateController {
 			state.setCreateSelectionTypes(createSelectionTypes);
 		}
 	}
+	
+	public void setHideHeatMapElements(boolean hideElements) {
+		currentState.setHeatMapWrapperDisplayListDirty();
+	}
 }

@@ -21,6 +21,7 @@ import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.manager.event.view.storagebased.HideHeatMapElementsEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -438,6 +439,10 @@ public class GLHeatMap extends AStorageBasedView {
 					hideElements = false;
 				else
 					hideElements = true;
+			
+			HideHeatMapElementsEvent event = new HideHeatMapElementsEvent(hideElements);
+			event.setSender(this);
+			eventPublisher.triggerEvent(event);
 
 			setDisplayListDirty();
 

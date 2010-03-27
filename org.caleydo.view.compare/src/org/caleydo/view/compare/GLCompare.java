@@ -9,7 +9,6 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -25,6 +24,7 @@ import org.caleydo.core.manager.event.view.compare.AdjustPValueEvent;
 import org.caleydo.core.manager.event.view.compare.CreateSelectionTypesEvent;
 import org.caleydo.core.manager.event.view.compare.DuplicateSetBarItemEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
+import org.caleydo.core.manager.event.view.storagebased.HideHeatMapElementsEvent;
 import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -55,6 +55,7 @@ import org.caleydo.view.compare.listener.AdjustPValueOfSetEventListener;
 import org.caleydo.view.compare.listener.CompareGroupsEventListener;
 import org.caleydo.view.compare.listener.CreateSelectionTypesListener;
 import org.caleydo.view.compare.listener.DuplicateSetBarItemEventListener;
+import org.caleydo.view.compare.listener.HideHeatMapElementsEventListener;
 import org.caleydo.view.compare.listener.NewContentGroupInfoEventListener;
 import org.caleydo.view.compare.listener.UseBandBundlingListener;
 import org.caleydo.view.compare.listener.UseSortingListener;
@@ -72,8 +73,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Marc Streit
  */
 public class GLCompare extends AGLView implements IViewCommandHandler,
-		IGLRemoteRenderingView, ISelectionUpdateHandler, ISelectionCommandHandler,
-		IContentVAUpdateHandler {
+		IGLRemoteRenderingView, ISelectionUpdateHandler,
+		ISelectionCommandHandler, IContentVAUpdateHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.compare";
 
@@ -93,6 +94,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	private NewContentGroupInfoEventListener newContentGroupInfoEventListener;
 	private CreateSelectionTypesListener createSelectionTypesListener;
 	private ClearSelectionsListener clearSelectionsListener;
+	private HideHeatMapElementsEventListener hideHeatMapElementsEventListener;
 
 	private boolean isControlPressed;
 	private boolean wasMouseWheeled;
@@ -114,7 +116,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		viewType = VIEW_ID;
 		glKeyListener = new GLCompareKeyListener(this);
 		isControlPressed = false;
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32), true, true);
+		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32),
+				true, true);
 		compareMouseWheelListener = new CompareMouseWheelListener(this);
 
 		// Unregister standard mouse wheel listener
@@ -122,7 +125,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		// Register specialized compare mouse wheel listener
 		parentGLCanvas.addMouseWheelListener(compareMouseWheelListener);
 
-		SelectionTypeEvent event = new SelectionTypeEvent(GLHeatMap.SELECTION_HIDDEN);
+		SelectionTypeEvent event = new SelectionTypeEvent(
+				GLHeatMap.SELECTION_HIDDEN);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 	}
@@ -131,9 +135,9 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	public void init(GL gl) {
 		// contentVA = useCase.getContentVA(ContentVAType.CONTENT);
 		// storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
-		compareViewStateController = new CompareViewStateController(this, iUniqueID,
-				textRenderer, textureManager, pickingManager, glMouseListener,
-				contextMenu, dataDomain, useCase);
+		compareViewStateController = new CompareViewStateController(this,
+				iUniqueID, textRenderer, textureManager, pickingManager,
+				glMouseListener, contextMenu, dataDomain, useCase);
 
 		compareViewStateController.init(gl);
 	}
@@ -145,22 +149,25 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		// Register keyboard listener to GL canvas
-		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
-			}
-		});
+		parentGLCanvas.getParentComposite().getDisplay().asyncExec(
+				new Runnable() {
+					public void run() {
+						parentGLCanvas.getParentComposite().addKeyListener(
+								glKeyListener);
+					}
+				});
 
 		init(gl);
 	}
 
 	@Override
 	public void initRemote(final GL gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener,
+			GLInfoAreaManager infoAreaManager) {
 
 		// Register keyboard listener to GL canvas
-		glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(
-				new Runnable() {
+		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
+				.asyncExec(new Runnable() {
 					public void run() {
 						glParentView.getParentGLCanvas().getParentComposite()
 								.addKeyListener(glKeyListener);
@@ -190,7 +197,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		processEvents();
 		if (wasMouseWheeled) {
 			wasMouseWheeled = false;
-			compareViewStateController.handleMouseWheel(gl, wheelAmount, wheelPoint);
+			compareViewStateController.handleMouseWheel(gl, wheelAmount,
+					wheelPoint);
 		}
 
 		if (!isVisible())
@@ -231,11 +239,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		compareViewStateController.drawActiveElements(gl);
 
-//		if (bIsDisplayListDirtyLocal) {
-			bIsDisplayListDirtyLocal = false;
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
-			iGLDisplayListToCall = iGLDisplayListIndexLocal;
-//		}
+		// if (bIsDisplayListDirtyLocal) {
+		bIsDisplayListDirtyLocal = false;
+		buildDisplayList(gl, iGLDisplayListIndexLocal);
+		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+		// }
 
 		gl.glCallList(iGLDisplayListToCall);
 
@@ -248,11 +256,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
-//		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		// gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
 		compareViewStateController.drawDisplayListElements(gl);
 
-//		gl.glEndList();
+		// gl.glEndList();
 	}
 
 	@Override
@@ -266,11 +274,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
-		contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
-				getParentGLCanvas().getHeight());
+		contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
+				.getWidth(), getParentGLCanvas().getHeight());
 		contextMenu.setMasterGLView(this);
-		compareViewStateController.handlePickingEvents(ePickingType, pickingMode,
-				iExternalID, pick, isControlPressed);
+		compareViewStateController.handlePickingEvents(ePickingType,
+				pickingMode, iExternalID, pick, isControlPressed);
 	}
 
 	@Override
@@ -309,14 +317,15 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void handleClearSelections() {
-		
+
 		compareViewStateController.handleClearSelections();
 		setDisplayListDirty();
 	}
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedCompareView serializedForm = new SerializedCompareView(dataDomain);
+		SerializedCompareView serializedForm = new SerializedCompareView(
+				dataDomain);
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -326,7 +335,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		super.registerEventListeners();
 		compareGroupsEventListener = new CompareGroupsEventListener();
 		compareGroupsEventListener.setHandler(this);
-		eventPublisher.addListener(CompareGroupsEvent.class, compareGroupsEventListener);
+		eventPublisher.addListener(CompareGroupsEvent.class,
+				compareGroupsEventListener);
 
 		duplicateSetBarItemEventListener = new DuplicateSetBarItemEventListener();
 		duplicateSetBarItemEventListener.setHandler(this);
@@ -335,7 +345,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class,
+				selectionUpdateListener);
 
 		adjustPValueOfSetEventListener = new AdjustPValueOfSetEventListener();
 		adjustPValueOfSetEventListener.setHandler(this);
@@ -344,11 +355,13 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
+		eventPublisher.addListener(SelectionCommandEvent.class,
+				selectionCommandListener);
 
 		replaceContentVAListener = new ReplaceContentVAListener();
 		replaceContentVAListener.setHandler(this);
-		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
+		eventPublisher.addListener(ReplaceContentVAEvent.class,
+				replaceContentVAListener);
 
 		useSortingListener = new UseSortingListener();
 		useSortingListener.setHandler(this);
@@ -360,7 +373,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		useBandBundlingListener = new UseBandBundlingListener();
 		useBandBundlingListener.setHandler(this);
-		eventPublisher.addListener(UseBandBundlingEvent.class, useBandBundlingListener);
+		eventPublisher.addListener(UseBandBundlingEvent.class,
+				useBandBundlingListener);
 
 		newContentGroupInfoEventListener = new NewContentGroupInfoEventListener();
 		newContentGroupInfoEventListener.setHandler(this);
@@ -374,7 +388,13 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+		eventPublisher.addListener(ClearSelectionsEvent.class,
+				clearSelectionsListener);
+
+		hideHeatMapElementsEventListener = new HideHeatMapElementsEventListener();
+		hideHeatMapElementsEventListener.setHandler(this);
+		eventPublisher.addListener(HideHeatMapElementsEvent.class,
+				hideHeatMapElementsEventListener);
 
 	}
 
@@ -436,6 +456,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		if (clearSelectionsListener != null) {
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
+		}
+
+		if (hideHeatMapElementsEventListener != null) {
+			eventPublisher.removeListener(hideHeatMapElementsEventListener);
+			hideHeatMapElementsEventListener = null;
 		}
 	}
 
@@ -514,7 +539,8 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	@Override
 	public void handleSelectionCommand(EIDCategory category,
 			SelectionCommand selectionCommand) {
-		compareViewStateController.handleSelectionCommand(category, selectionCommand);
+		compareViewStateController.handleSelectionCommand(category,
+				selectionCommand);
 	}
 
 	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
@@ -529,8 +555,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
-		compareViewStateController.handleReplaceContentVA(setID, idCategory, vaType);
+	public void replaceContentVA(int setID, EIDCategory idCategory,
+			ContentVAType vaType) {
+		compareViewStateController.handleReplaceContentVA(setID, idCategory,
+				vaType);
 	}
 
 	public void setUseSorting(boolean useSorting) {
@@ -545,8 +573,10 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		compareViewStateController.setUseZoom(useZoom);
 	}
 
-	public void handleContentGroupListUpdate(int setID, ContentGroupList contentGroupList) {
-		compareViewStateController.handleContentGroupListUpdate(setID, contentGroupList);
+	public void handleContentGroupListUpdate(int setID,
+			ContentGroupList contentGroupList) {
+		compareViewStateController.handleContentGroupListUpdate(setID,
+				contentGroupList);
 	}
 
 	public void setBandBundling(boolean bandBundlingActive) {
@@ -554,6 +584,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	}
 
 	public void setCreateSelctionTypes(boolean createSelectionTypes) {
-		compareViewStateController.setCreateSelectionTypes(createSelectionTypes);
+		compareViewStateController
+				.setCreateSelectionTypes(createSelectionTypes);
+	}
+	
+	public void setHideHeatMapElements(boolean hideElements) {
+		compareViewStateController.setHideHeatMapElements(hideElements);
 	}
 }
