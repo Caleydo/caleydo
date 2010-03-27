@@ -34,7 +34,7 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 			EDataDomain dataDomain, IUseCase useCase,
 			DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
-		
+
 		super(view, viewID, textRenderer, textureManager, pickingManager,
 				glMouseListener, setBar, renderCommandFactory, dataDomain,
 				useCase, dragAndDropController, compareViewStateController);
@@ -47,10 +47,12 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 			AHeatMapLayout layout = sourceLayouts.get(i);
 			heatMapWrapper.setLayout(layout);
 		}
-		
+
 		compareViewStateController
 				.setCurrentState(ECompareViewStateType.DETAIL_VIEW);
-		view.setDisplayListDirty();
+		ACompareViewState detailViewState = compareViewStateController
+				.getState(ECompareViewStateType.DETAIL_VIEW);
+		detailViewState.setAllDisplayListsDirty();
 		animationStarted = false;
 	}
 
@@ -96,7 +98,8 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 					.getRenderCommandsOfLocalItems());
 			transitionLayout.setRemoteRenderCommands(srcLayout
 					.getRenderCommandsOfRemoteItems());
-			transitionLayout.setGroupPickingType(srcLayout.getGroupPickingType());
+			transitionLayout.setGroupPickingType(srcLayout
+					.getGroupPickingType());
 			focusLayouts.add(transitionLayout);
 
 			createMovementValues(gl, itemOffset + i, srcLayout, destLayout);
@@ -107,7 +110,7 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 				createOffsets(false, itemOffset + i);
 			}
 		}
-		
+
 		setsInFocus.clear();
 
 		for (int i = 0; i < sourceLayouts.size(); i++) {
@@ -121,7 +124,8 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 						.getRenderCommandsOfLocalItems());
 				transitionLayout.setRemoteRenderCommands(srcLayout
 						.getRenderCommandsOfRemoteItems());
-				transitionLayout.setGroupPickingType(srcLayout.getGroupPickingType());
+				transitionLayout.setGroupPickingType(srcLayout
+						.getGroupPickingType());
 				layouts.add(transitionLayout);
 			} else if (i > itemOffset + destinationLayouts.size() - 1) {
 				createMovementValuesTargetOffset(gl, i, srcLayout, false);
@@ -131,7 +135,8 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 						.getRenderCommandsOfLocalItems());
 				transitionLayout.setRemoteRenderCommands(srcLayout
 						.getRenderCommandsOfRemoteItems());
-				transitionLayout.setGroupPickingType(srcLayout.getGroupPickingType());
+				transitionLayout.setGroupPickingType(srcLayout
+						.getGroupPickingType());
 				layouts.add(transitionLayout);
 			} else {
 				layouts.add(focusLayouts.get(i - itemOffset));
@@ -141,7 +146,7 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 			layouts.get(i).setHeatMapWrapper(heatMapWrapper);
 			setsInFocus.add(heatMapWrapper.getSet());
 		}
-		view.setDisplayListDirty();
+		setAllDisplayListsDirty();
 
 	}
 
@@ -150,13 +155,12 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 		return ECompareViewStateType.OVERVIEW_TO_DETAIL_TRANSITION;
 	}
 
-
 	@Override
 	public void init(GL gl) {
 		isInitialized = true;
-		
+
 	}
-	
+
 	protected void createMovementValuesTargetOffset(GL gl, int id,
 			AHeatMapLayout srcLayout, boolean isLowerOffset) {
 
@@ -200,7 +204,7 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 				+ heatMapDimensionsOffset[index].x();
 		float heatMapTargetHeight = heatMapStartHeight
 				+ heatMapDimensionsOffset[index].y();
-		
+
 		MovementVector3 captionPosition = new MovementVector3(
 				captionStartPosition, captionTargetPosition, animationDuration);
 		captionPositions.put(id, captionPosition);

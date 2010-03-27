@@ -166,7 +166,7 @@ public class SetBar extends AGLGUIElement {
 				currentMouseOverItem
 						.setSelectionStatus(SetBarItem.SELECTION_STATUS_NORMAL);
 			currentMouseOverItem = item;
-			view.setDisplayListDirty();
+			viewState.setSetBarDisplayListDirty();
 
 			break;
 		case RIGHT_CLICKED:
@@ -214,7 +214,7 @@ public class SetBar extends AGLGUIElement {
 			updateSelectedItems(newSelection);
 		}
 
-		view.setDisplayListDirty();
+		viewState.setSetBarDisplayListDirty();
 	}
 
 	public void handleDuplicateSetBarItem(int itemID) {
@@ -238,7 +238,7 @@ public class SetBar extends AGLGUIElement {
 			updateSelectedItems(newSelection);
 		}
 
-		view.setDisplayListDirty();
+		viewState.setSetBarDisplayListDirty();
 	}
 
 	private void updateItemProperties() {

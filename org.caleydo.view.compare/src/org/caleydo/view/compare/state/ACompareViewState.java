@@ -69,6 +69,14 @@ public abstract class ACompareViewState {
 	protected IUseCase useCase;
 	protected DragAndDropController dragAndDropController;
 	protected CompareViewStateController compareViewStateController;
+	protected int setBarDisplayListIndex;
+	protected int heatMapWrapperDisplayListIndex;
+	protected int heatMapWrapperSelectionDisplayListIndex;
+	
+	protected boolean isSetBarDisplayListDirty;
+	protected boolean isHeatMapWrapperDisplayListDirty;
+	protected boolean isHeatMapWrapperSelectionDisplayListDirty;
+	
 	// protected HashMap<ClusterNode, Vec3f> hashNodePositions;
 
 	protected ArrayList<ISet> setsInFocus;
@@ -139,6 +147,9 @@ public abstract class ACompareViewState {
 				activeHeatMapSelectionType);
 		eventPublisher.triggerEvent(selectionTypeEvent);
 		createSelectionTypes = false;
+		isSetBarDisplayListDirty = true;
+		isHeatMapWrapperDisplayListDirty = true;
+		isHeatMapWrapperSelectionDisplayListDirty = true;
 	}
 
 	public void executeDrawingPreprocessing(GL gl, boolean isDisplayListDirty) {
@@ -159,6 +170,10 @@ public abstract class ACompareViewState {
 			if (isDisplayListDirty) {
 				heatMapWrapper.setDisplayListDirty();
 			}
+		}
+		
+		if (isDisplayListDirty) {
+			setAllDisplayListsDirty();
 		}
 
 		setsChanged = false;
@@ -851,6 +866,25 @@ public abstract class ACompareViewState {
 
 			gl.glPopName();
 		}
+	}
+	
+	public void setSetBarDisplayListDirty() {
+		isSetBarDisplayListDirty = true;
+	}
+	
+	public void setHeatMapWrapperDisplayListDirty() {
+		isHeatMapWrapperDisplayListDirty = true;
+		isHeatMapWrapperSelectionDisplayListDirty = true;
+	}
+	
+	public void setHeatMapWrapperSelectionDisplayListDirty() {
+		isHeatMapWrapperSelectionDisplayListDirty = true;
+	}
+	
+	public void setAllDisplayListsDirty() {
+		isSetBarDisplayListDirty = true;
+		isHeatMapWrapperDisplayListDirty = true;
+		isHeatMapWrapperSelectionDisplayListDirty = true;
 	}
 
 	// private void renderDendrogram(final GL gl, ClusterNode currentNode, float

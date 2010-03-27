@@ -59,6 +59,10 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 	@Override
 	public void init(GL gl) {
+		
+		setBarDisplayListIndex = gl.glGenLists(1);
+		heatMapWrapperDisplayListIndex = gl.glGenLists(1);
+		heatMapWrapperSelectionDisplayListIndex = gl.glGenLists(1);
 
 		compareConnectionRenderer.init(gl);
 		setsChanged = false;
@@ -69,7 +73,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			if (heatMapWrapper.handleDragging(gl, glMouseListener)) {
-				view.setDisplayListDirty();
+				setHeatMapWrapperDisplayListDirty();
 			}
 		}
 
@@ -82,7 +86,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 								true);
 					}
 				}
-				view.setDisplayListDirty();
+				setHeatMapWrapperDisplayListDirty();
 				break;
 			}
 		}
@@ -98,39 +102,55 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 		// The bands need to be created only once in the detail
 		// if (detailBands == null)
-		calculateDetailBands(heatMapWrappers.get(0), heatMapWrappers.get(1),
-				false);
+		if (isHeatMapWrapperDisplayListDirty
+				|| isHeatMapWrapperSelectionDisplayListDirty) {
+			isHeatMapWrapperDisplayListDirty = false;
+			isHeatMapWrapperSelectionDisplayListDirty = false;
 
-		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-			heatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
-					glMouseListener, viewID);
-		}
+			gl.glNewList(heatMapWrapperDisplayListIndex, GL.GL_COMPILE);
+			calculateDetailBands(heatMapWrappers.get(0),
+					heatMapWrappers.get(1), false);
 
-		gl.glEnable(GL.GL_BLEND);
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-
-		IViewFrustum viewFrustum = view.getViewFrustum();
-
-		setBar.setWidth(viewFrustum.getWidth());
-		setBar.render(gl);
-
-		if (heatMapWrappers.get(0).getSelectedGroups().isEmpty()) {
-
-			renderIndiviudalLineRelations(gl, heatMapWrappers.get(0),
-					heatMapWrappers.get(1));
-
-			if (bandBundlingActive) {
-				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(0),
-						true);
-				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(1),
-						false);
-				renderDetailBandRelations(gl, heatMapWrappers.get(0),
-						heatMapWrappers.get(1));
+			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
+				heatMapWrapper.drawLocalItems(gl, textureManager,
+						pickingManager, glMouseListener, viewID);
 			}
-		} else {
-			renderOverviewToDetailRelations(gl);
-			renderDetailRelations(gl);
+
+			gl.glEnable(GL.GL_BLEND);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+
+			if (heatMapWrappers.get(0).getSelectedGroups().isEmpty()) {
+
+				renderIndiviudalLineRelations(gl, heatMapWrappers.get(0),
+						heatMapWrappers.get(1));
+
+				if (bandBundlingActive) {
+					renderOverviewToDetailBandRelations(gl, heatMapWrappers
+							.get(0), true);
+					renderOverviewToDetailBandRelations(gl, heatMapWrappers
+							.get(1), false);
+					renderDetailBandRelations(gl, heatMapWrappers.get(0),
+							heatMapWrappers.get(1));
+				}
+			} else {
+				renderOverviewToDetailRelations(gl);
+				renderDetailRelations(gl);
+			}
+			gl.glEndList();
 		}
+
+		if (isSetBarDisplayListDirty) {
+			isSetBarDisplayListDirty = false;
+			gl.glNewList(setBarDisplayListIndex, GL.GL_COMPILE);
+			IViewFrustum viewFrustum = view.getViewFrustum();
+
+			setBar.setWidth(viewFrustum.getWidth());
+			setBar.render(gl);
+			gl.glEndList();
+		}
+		
+		gl.glCallList(heatMapWrapperDisplayListIndex);
+		gl.glCallList(setBarDisplayListIndex);
 	}
 
 	private void renderOverviewToDetailRelations(GL gl) {
@@ -614,7 +634,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 					layouts.get(iExternalID).useDendrogram(true);
 					indexOfHeatMapWrapperWithDendrogram = iExternalID;
 				}
-				view.setDisplayListDirty();
+				setHeatMapWrapperDisplayListDirty();
 			}
 			break;
 		}
@@ -653,7 +673,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 					HeatMapWrapper heatMapWrapper = new HeatMapWrapper(
 							heatMapWrapperID, layout, view, null, useCase,
-							view, dataDomain);
+							view, dataDomain, this);
 					heatMapWrapper
 							.setActiveHeatMapSelectionType(activeHeatMapSelectionType);
 					heatMapWrappers.add(heatMapWrapper);
@@ -682,7 +702,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 			// .getGroupIndex(), true);
 			// }
 
-			view.setDisplayListDirty();
+			setHeatMapWrapperDisplayListDirty();
 		}
 
 	}
@@ -690,7 +710,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 	@Override
 	public void handleMouseWheel(GL gl, int amount, Point wheelPoint) {
 		if (amount > 0) {
-			
+
 			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 				heatMapWrapper.setHeatMapsInactive();
 			}
@@ -703,7 +723,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 			compareViewStateController
 					.setCurrentState(ECompareViewStateType.DETAIL_TO_OVERVIEW_TRANSITION);
 			transition.init(gl);
-			view.setDisplayListDirty();
+			// view.setDisplayListDirty();
 		}
 
 	}
@@ -749,7 +769,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 	public void setUseSorting(boolean useSorting) {
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.setUseSorting(useSorting);
-			heatMapWrapper.setDisplayListDirty();
+			// heatMapWrapper.setDisplayListDirty();
+			setHeatMapWrapperDisplayListDirty();
 		}
 	}
 
@@ -757,8 +778,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 	public void setUseZoom(boolean useZoom) {
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.setUseZoom(useZoom);
-			heatMapWrapper.setDisplayListDirty();
-			view.setDisplayListDirty();
+			// heatMapWrapper.setDisplayListDirty();
+			setHeatMapWrapperDisplayListDirty();
 		}
 	}
 
@@ -766,8 +787,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 	public void setUseFishEye(boolean useFishEye) {
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			heatMapWrapper.setUseFishEye(useFishEye);
-			heatMapWrapper.setDisplayListDirty();
-			view.setDisplayListDirty();
+			// heatMapWrapper.setDisplayListDirty();
+			setHeatMapWrapperDisplayListDirty();
 		}
 	}
 

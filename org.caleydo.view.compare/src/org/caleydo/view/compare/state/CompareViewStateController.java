@@ -72,7 +72,6 @@ public class CompareViewStateController {
 
 		currentState = hashStates.get(ECompareViewStateType.OVERVIEW);
 		setBar.setViewState(currentState);
-
 	}
 
 	public ACompareViewState getState(ECompareViewStateType stateType) {

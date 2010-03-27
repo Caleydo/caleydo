@@ -61,46 +61,66 @@ public class OverviewState extends ACompareViewStateStatic {
 	@Override
 	public void buildDisplayList(GL gl) {
 
-		gl.glEnable(GL.GL_BLEND);
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		if (isHeatMapWrapperDisplayListDirty || isHeatMapWrapperSelectionDisplayListDirty) {
+			isHeatMapWrapperDisplayListDirty = false;
+			isHeatMapWrapperSelectionDisplayListDirty = false;
+			
+			gl.glNewList(heatMapWrapperDisplayListIndex, GL.GL_COMPILE);
 
-		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-			heatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
-					glMouseListener, viewID);
-		}
+			gl.glEnable(GL.GL_BLEND);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
-		IViewFrustum viewFrustum = view.getViewFrustum();
-		setBar.setWidth(viewFrustum.getWidth());
-		setBar.render(gl);
-
-		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
-
-			renderIndiviudalLineRelations(gl, heatMapWrappers.get(i),
-					heatMapWrappers.get(i + 1));
-
-			if (bandBundlingActive) {
-
-				// TODO: if we put the heatmapwarpper combination with the
-				// calculated detail bands in
-				// a hash map we have to calculate it only once!
-				calculateDetailBands(heatMapWrappers.get(i), heatMapWrappers
-						.get(i + 1), false);
-
-				renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i),
-						true);
-				renderOverviewToDetailBandRelations(gl, heatMapWrappers
-						.get(i + 1), false);
-				renderDetailBandRelations(gl, heatMapWrappers.get(i),
-						heatMapWrappers.get(i + 1));
+			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
+				heatMapWrapper.drawLocalItems(gl, textureManager,
+						pickingManager, glMouseListener, viewID);
 			}
 
-			// renderStraightLineRelation(gl, heatMapWrappers.get(i),
-			// heatMapWrappers.get(i+1));
+			for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
+
+				renderIndiviudalLineRelations(gl, heatMapWrappers.get(i),
+						heatMapWrappers.get(i + 1));
+
+				if (bandBundlingActive) {
+
+					// TODO: if we put the heatmapwarpper combination with the
+					// calculated detail bands in
+					// a hash map we have to calculate it only once!
+					calculateDetailBands(heatMapWrappers.get(i),
+							heatMapWrappers.get(i + 1), false);
+
+					renderOverviewToDetailBandRelations(gl, heatMapWrappers
+							.get(i), true);
+					renderOverviewToDetailBandRelations(gl, heatMapWrappers
+							.get(i + 1), false);
+					renderDetailBandRelations(gl, heatMapWrappers.get(i),
+							heatMapWrappers.get(i + 1));
+				}
+
+				// renderStraightLineRelation(gl, heatMapWrappers.get(i),
+				// heatMapWrappers.get(i+1));
+			}
+			gl.glEndList();
 		}
+		
+		if (isSetBarDisplayListDirty) {
+			isSetBarDisplayListDirty = false;
+			gl.glNewList(setBarDisplayListIndex, GL.GL_COMPILE);
+			IViewFrustum viewFrustum = view.getViewFrustum();
+			setBar.setWidth(viewFrustum.getWidth());
+			setBar.render(gl);
+			gl.glEndList();
+		}
+		
+		gl.glCallList(heatMapWrapperDisplayListIndex);
+		gl.glCallList(setBarDisplayListIndex);
 	}
 
 	@Override
 	public void init(GL gl) {
+
+		setBarDisplayListIndex = gl.glGenLists(1);
+		heatMapWrapperDisplayListIndex = gl.glGenLists(1);
+		heatMapWrapperSelectionDisplayListIndex = gl.glGenLists(1);
 
 		compareConnectionRenderer.init(gl);
 		setsChanged = false;
@@ -234,7 +254,7 @@ public class OverviewState extends ACompareViewStateStatic {
 
 					HeatMapWrapper heatMapWrapper = new HeatMapWrapper(
 							heatMapWrapperID, layout, view, null, useCase,
-							view, dataDomain);
+							view, dataDomain, this);
 					heatMapWrapper
 							.setActiveHeatMapSelectionType(activeHeatMapSelectionType);
 					heatMapWrappers.add(heatMapWrapper);
@@ -254,7 +274,7 @@ public class OverviewState extends ACompareViewStateStatic {
 			setsChanged = true;
 			numSetsInFocus = setsInFocus.size();
 
-			view.setDisplayListDirty();
+			setHeatMapWrapperDisplayListDirty();
 		}
 	}
 
@@ -296,7 +316,7 @@ public class OverviewState extends ACompareViewStateStatic {
 					.setCurrentState(ECompareViewStateType.OVERVIEW_TO_DETAIL_TRANSITION);
 
 			transition.initTransition(gl, itemOffset);
-			view.setDisplayListDirty();
+//			view.setDisplayListDirty();
 		}
 
 	}

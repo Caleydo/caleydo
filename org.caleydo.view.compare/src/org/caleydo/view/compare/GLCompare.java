@@ -231,11 +231,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 
 		compareViewStateController.drawActiveElements(gl);
 
-		if (bIsDisplayListDirtyLocal) {
+//		if (bIsDisplayListDirtyLocal) {
 			bIsDisplayListDirtyLocal = false;
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			iGLDisplayListToCall = iGLDisplayListIndexLocal;
-		}
+//		}
 
 		gl.glCallList(iGLDisplayListToCall);
 
@@ -248,11 +248,11 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
-		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+//		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
 		compareViewStateController.drawDisplayListElements(gl);
 
-		gl.glEndList();
+//		gl.glEndList();
 	}
 
 	@Override

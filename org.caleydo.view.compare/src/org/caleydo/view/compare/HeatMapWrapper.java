@@ -46,6 +46,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
 import org.caleydo.view.compare.layout.HeatMapLayoutDetailViewRight;
 import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
+import org.caleydo.view.compare.state.ACompareViewState;
 import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
@@ -78,6 +79,7 @@ public class HeatMapWrapper {
 	private int activeHeatMapID;
 
 	private AGLView glParentView;
+	private ACompareViewState state;
 	private GLInfoAreaManager infoAreaManager;
 	private IUseCase useCase;
 	private IGLRemoteRenderingView parentView;
@@ -94,7 +96,8 @@ public class HeatMapWrapper {
 
 	public HeatMapWrapper(int id, AHeatMapLayout layout, AGLView glParentView,
 			GLInfoAreaManager infoAreaManager, IUseCase useCase,
-			IGLRemoteRenderingView parentView, EDataDomain dataDomain) {
+			IGLRemoteRenderingView parentView, EDataDomain dataDomain,
+			ACompareViewState state) {
 
 		generalManager = GeneralManager.get();
 		overview = new HeatMapOverview(layout);
@@ -109,6 +112,7 @@ public class HeatMapWrapper {
 		this.useCase = useCase;
 		this.parentView = parentView;
 		this.dataDomain = dataDomain;
+		this.state = state;
 
 		isNewSelection = false;
 		eventPublisher = GeneralManager.get().getEventPublisher();
@@ -191,7 +195,7 @@ public class HeatMapWrapper {
 		hashHeatMaps.clear();
 		selectedGroups.clear();
 		contentSelectionManager = useCase.getContentSelectionManager();
-//		contentSelectionManager.clearSelections();
+		// contentSelectionManager.clearSelections();
 		contentSelectionManager.setVA(contentVA);
 		ContentGroupList contentGroupList = contentVA.getGroupList();
 
@@ -799,7 +803,7 @@ public class HeatMapWrapper {
 
 		isNewSelection = true;
 
-		glParentView.setDisplayListDirty();
+		state.setHeatMapWrapperDisplayListDirty();
 
 		// ContentSelectionManager contentSelectionManager = heatMap
 		// .getContentSelectionManager();
@@ -843,7 +847,8 @@ public class HeatMapWrapper {
 
 		if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
 			contentSelectionManager.setDelta(selectionDelta);
-			glParentView.setDisplayListDirty();
+			// TODO: Maybe just set selection list dirty
+			state.setHeatMapWrapperDisplayListDirty();
 		}
 	}
 
@@ -852,7 +857,7 @@ public class HeatMapWrapper {
 
 		contentVA = set.getContentVA(vaType);
 	}
-	
+
 	public void handleClearSelections() {
 		contentSelectionManager.clearSelections();
 		for (Group group : selectedGroups.keySet())
@@ -887,12 +892,12 @@ public class HeatMapWrapper {
 		}
 
 		GLHeatMap heatMap = hashHeatMaps.get(groupIndex);
-//		 heatMap.setActive(true);
+		// heatMap.setActive(true);
 		ContentSelectionManager hmContentSelectionManager = heatMap
 				.getContentSelectionManager();
 		hmContentSelectionManager.addToType(activeHeatMapSelectionType, heatMap
 				.getContentVA().getVirtualArray());
-		
+
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 		selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager
 				.getDelta());
@@ -922,7 +927,7 @@ public class HeatMapWrapper {
 	public void setHeatMapsInactive() {
 		if (activeHeatMapID == -1)
 			return;
-		
+
 		GLHeatMap heatMap = hashHeatMaps.get(activeHeatMapID);
 		ContentSelectionManager hmContentSelectionManager = heatMap
 				.getContentSelectionManager();

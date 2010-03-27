@@ -47,10 +47,11 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 			AHeatMapLayout layout = destinationLayouts.get(i);
 			heatMapWrapper.setLayout(layout);
 		}
-
+		ACompareViewState overviewState = compareViewStateController
+				.getState(ECompareViewStateType.OVERVIEW);
+		overviewState.setAllDisplayListsDirty();
 		compareViewStateController
 				.setCurrentState(ECompareViewStateType.OVERVIEW);
-		view.setDisplayListDirty();
 		animationStarted = false;
 	}
 
@@ -114,7 +115,8 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 					.getRenderCommandsOfLocalItems());
 			transitionLayout.setRemoteRenderCommands(destLayout
 					.getRenderCommandsOfRemoteItems());
-			transitionLayout.setGroupPickingType(destLayout.getGroupPickingType());
+			transitionLayout.setGroupPickingType(destLayout
+					.getGroupPickingType());
 			focusLayouts.add(transitionLayout);
 
 			createMovementValues(gl, indexOffset + i, srcLayout, destLayout);
@@ -137,7 +139,8 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 						.getRenderCommandsOfLocalItems());
 				transitionLayout.setRemoteRenderCommands(destLayout
 						.getRenderCommandsOfRemoteItems());
-				transitionLayout.setGroupPickingType(destLayout.getGroupPickingType());
+				transitionLayout.setGroupPickingType(destLayout
+						.getGroupPickingType());
 				layouts.add(transitionLayout);
 			} else if (i > indexOffset + sourceLayouts.size() - 1) {
 				createMovementValuesSourceOffset(gl, i, destLayout, false);
@@ -147,7 +150,8 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 						.getRenderCommandsOfLocalItems());
 				transitionLayout.setRemoteRenderCommands(destLayout
 						.getRenderCommandsOfRemoteItems());
-				transitionLayout.setGroupPickingType(destLayout.getGroupPickingType());
+				transitionLayout.setGroupPickingType(destLayout
+						.getGroupPickingType());
 				layouts.add(transitionLayout);
 			} else {
 				layouts.add(focusLayouts.get(i - indexOffset));
@@ -157,10 +161,8 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 			layouts.get(i).setHeatMapWrapper(heatMapWrapper);
 			setsInFocus.add(heatMapWrapper.getSet());
 		}
-		
-		
-		
-		view.setDisplayListDirty();
+
+		setAllDisplayListsDirty();
 	}
 
 	protected void createMovementValuesSourceOffset(GL gl, int id,

@@ -354,7 +354,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 			transitionLayout.setOverviewHeight(heatMapDimensions.get(i).y());
 		}
 
-		view.setDisplayListDirty();
+		setHeatMapWrapperDisplayListDirty();
 	}
 	
 	protected abstract void finish();

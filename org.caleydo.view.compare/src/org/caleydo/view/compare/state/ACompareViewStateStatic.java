@@ -95,7 +95,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			// event.setInfo(getShortInfoLocal());
 			eventPublisher.triggerEvent(event);
 
-			view.setDisplayListDirty();
+			setHeatMapWrapperSelectionDisplayListDirty();
 			break;
 
 		case COMPARE_SET_BAR_ITEM_SELECTION:
@@ -126,7 +126,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			if (heatMapWrapper.getSet().getID() == setID) {
 				heatMapWrapper.handleContentGroupListUpdate(contentGroupList);
-				view.setDisplayListDirty();
+				setHeatMapWrapperDisplayListDirty();
 				return;
 			}
 		}
