@@ -34,26 +34,24 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public abstract class ACompareViewStateStatic extends ACompareViewState {
 
-	public ACompareViewStateStatic(GLCompare view, int viewID,
-			TextRenderer textRenderer, TextureManager textureManager,
-			PickingManager pickingManager, GLMouseListener glMouseListener,
-			SetBar setBar, RenderCommandFactory renderCommandFactory,
-			EDataDomain dataDomain, IUseCase useCase,
-			DragAndDropController dragAndDropController,
+	public ACompareViewStateStatic(GLCompare view, int viewID, TextRenderer textRenderer,
+			TextureManager textureManager, PickingManager pickingManager,
+			GLMouseListener glMouseListener, SetBar setBar,
+			RenderCommandFactory renderCommandFactory, EDataDomain dataDomain,
+			IUseCase useCase, DragAndDropController dragAndDropController,
 
 			CompareViewStateController compareViewStateController) {
 		super(view, viewID, textRenderer, textureManager, pickingManager,
-				glMouseListener, setBar, renderCommandFactory, dataDomain,
-				useCase, dragAndDropController, compareViewStateController);
+				glMouseListener, setBar, renderCommandFactory, dataDomain, useCase,
+				dragAndDropController, compareViewStateController);
 	}
 
 	public void setSetsToCompare(ArrayList<ISet> setsToCompare) {
 		setBar.setSets(setsToCompare);
 	}
 
-	public void handlePickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick,
-			boolean isControlPressed) {
+	public void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode,
+			int iExternalID, Pick pick, boolean isControlPressed) {
 		SelectionType selectionType = null;
 
 		switch (ePickingType) {
@@ -112,13 +110,13 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		case COMPARE_SELECTION_WINDOW_SELECTION:
 		case COMPARE_SELECTION_WINDOW_ARROW_LEFT_SELECTION:
 		case COMPARE_SELECTION_WINDOW_ARROW_RIGHT_SELECTION:
-			setBar.handleSetBarSelectionWindowSelection(iExternalID,
-					ePickingType, pickingMode, pick);
+			setBar.handleSetBarSelectionWindowSelection(iExternalID, ePickingType,
+					pickingMode, pick);
 			break;
 		}
 
-		handleStateSpecificPickingEvents(ePickingType, pickingMode,
-				iExternalID, pick, isControlPressed);
+		handleStateSpecificPickingEvents(ePickingType, pickingMode, iExternalID, pick,
+				isControlPressed);
 	}
 
 	public int getNumSetsInFocus() {
@@ -129,8 +127,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		return isInitialized;
 	}
 
-	public void handleContentGroupListUpdate(int setID,
-			ContentGroupList contentGroupList) {
+	public void handleContentGroupListUpdate(int setID, ContentGroupList contentGroupList) {
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			if (heatMapWrapper.getSet().getID() == setID) {
 				heatMapWrapper.handleContentGroupListUpdate(contentGroupList);
@@ -149,12 +146,21 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 	}
 
 	protected void renderOverviewLineSelections(GL gl) {
-		ContentSelectionManager contentSelectionManager = heatMapWrappers
-				.get(0).getContentSelectionManager();
+		ContentSelectionManager contentSelectionManager = heatMapWrappers.get(0)
+				.getContentSelectionManager();
+
 		ArrayList<SelectionType> selectionTypes = new ArrayList<SelectionType>();
+
 		selectionTypes.add(activeHeatMapSelectionType);
 		selectionTypes.add(SelectionType.MOUSE_OVER);
 		selectionTypes.add(SelectionType.SELECTION);
+
+		for (SelectionType selectionType : contentSelectionManager.getSelectionTypes()) {
+			if (selectionType.isManaged()) {
+				selectionTypes.add(selectionType);
+				break;
+			}
+		}
 
 		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
 
@@ -165,12 +171,12 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 				for (Integer contentID : contentSelectionManager
 						.getElements(selectionType)) {
 					gl.glPushAttrib(GL.GL_LINE_BIT);
-					setRelationColor(gl, heatMapWrappers.get(0), contentID,
-							true);
+					setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
 					HashMap<Integer, ArrayList<Vec3f>> map = contentIDToIndividualLines
 							.get(heatMapWrapper);
 					if (map != null) {
-						renderSingleCurve(gl, map.get(contentID), contentID);
+						renderSingleCurve(gl, map.get(contentID), contentID,
+								40 + (int) (20 * Math.random()));
 					}
 
 					gl.glPopAttrib();
@@ -181,7 +187,6 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 
 	protected abstract void renderSelections(GL gl);
 
-	public abstract void handleStateSpecificPickingEvents(
-			EPickingType ePickingType, EPickingMode pickingMode,
-			int iExternalID, Pick pick, boolean isControlPressed);
+	public abstract void handleStateSpecificPickingEvents(EPickingType ePickingType,
+			EPickingMode pickingMode, int iExternalID, Pick pick, boolean isControlPressed);
 }

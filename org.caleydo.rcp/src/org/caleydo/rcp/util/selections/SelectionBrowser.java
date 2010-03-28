@@ -327,7 +327,7 @@ public class SelectionBrowser
 
 	@Override
 	public void handleClearSelections() {
-
+		deleteSelections();
 	}
 
 	/**

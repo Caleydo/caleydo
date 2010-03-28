@@ -40,8 +40,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 	private DetailBand activeBand;
 	private int indexOfHeatMapWrapperWithDendrogram;
 
-	private float bandPaddingY = 0.007f;
-
 	public DetailViewState(GLCompare view, int viewID,
 			TextRenderer textRenderer, TextureManager textureManager,
 			PickingManager pickingManager, GLMouseListener glMouseListener,
@@ -124,6 +122,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 						heatMapWrappers.get(1));
 
 				if (bandBundlingActive) {
+					
 					renderOverviewToDetailBandRelations(gl, heatMapWrappers
 							.get(0), true);
 					renderOverviewToDetailBandRelations(gl, heatMapWrappers
@@ -393,63 +392,6 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 		renderSingleDetailRelation(gl, contentID, leftPos, rightPos);
 
-	}
-
-	protected void renderSingleDetailBand(GL gl, DetailBand detailBand,
-			boolean highlight) {
-
-		ArrayList<Integer> contentIDs = detailBand.getContentIDs();
-
-		int startContentID = contentIDs.get(0);
-		int endContentID = contentIDs.get(contentIDs.size() - 1);
-
-		HeatMapWrapper leftHeatMapWrapper = heatMapWrappers.get(0);
-		HeatMapWrapper rightHeatMapWrapper = heatMapWrappers.get(1);
-
-		float[] leftTopPos = leftHeatMapWrapper
-				.getRightDetailLinkPositionFromContentID(startContentID);
-
-		float[] rightTopPos = rightHeatMapWrapper
-				.getLeftDetailLinkPositionFromContentID(startContentID);
-
-		float[] leftBottomPos = leftHeatMapWrapper
-				.getRightDetailLinkPositionFromContentID(endContentID);
-
-		float[] rightBottomPos = rightHeatMapWrapper
-				.getLeftDetailLinkPositionFromContentID(endContentID);
-
-		if (leftTopPos == null || leftBottomPos == null || rightTopPos == null
-				|| rightBottomPos == null)
-			return;
-
-		float leftTopHeatMapElementOffset = leftHeatMapWrapper
-				.getHeatMapByContentID(startContentID).getFieldHeight(
-						startContentID)
-				/ 2f - bandPaddingY;
-		float leftBottomHeatMapElementOffset = leftHeatMapWrapper
-				.getHeatMapByContentID(endContentID).getFieldHeight(
-						endContentID)
-				/ 2f - bandPaddingY;
-		float rightTopHeatMapElementOffset = rightHeatMapWrapper
-				.getHeatMapByContentID(endContentID).getFieldHeight(
-						startContentID)
-				/ 2f - bandPaddingY;
-		float rightBottomHeatMapElementOffset = rightHeatMapWrapper
-				.getHeatMapByContentID(endContentID).getFieldHeight(
-						endContentID)
-				/ 2f - bandPaddingY;
-
-		leftTopPos[1] = leftTopPos[1] + leftTopHeatMapElementOffset;
-		leftBottomPos[1] = leftBottomPos[1] - leftBottomHeatMapElementOffset;
-		rightTopPos[1] = rightTopPos[1] + rightTopHeatMapElementOffset;
-		rightBottomPos[1] = rightBottomPos[1] - rightBottomHeatMapElementOffset;
-
-		// TODO integrate offset for band in Y
-
-		float xOffset = (rightTopPos[0] - leftTopPos[0]) / 3f;
-
-		renderSingleBand(gl, leftTopPos, leftBottomPos, rightTopPos,
-				rightBottomPos, highlight, xOffset);
 	}
 
 	private void determineActiveBand() {

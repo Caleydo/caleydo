@@ -31,9 +31,6 @@ public class RcpSelectionBrowserView
 		Composite infoComposite = new Composite(this.parentComposite, SWT.NULL);
 		infoComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
-		
-		
-		
 		GridLayout layout;
 		layout = new GridLayout(1, false);
 
@@ -54,9 +51,6 @@ public class RcpSelectionBrowserView
 	public void setFocus() {
 
 	}
-
-
-	
 
 	@Override
 	public void dispose() {
