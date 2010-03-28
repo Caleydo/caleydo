@@ -78,8 +78,9 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 				return;
 
 			}
-		
-			// FIXME: This is not ok! Probably this view should use its own selection manager
+
+			// FIXME: This is not ok! Probably this view should use its own
+			// selection manager
 			ContentSelectionManager contentSelectionManager = useCase
 					.getContentSelectionManager();
 			if (contentSelectionManager.checkStatus(selectionType, iExternalID)) {
@@ -96,17 +97,20 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			// event.setInfo(getShortInfoLocal());
 			eventPublisher.triggerEvent(event);
 
-//			SelectionCommandEvent selectionCommandEvent = new SelectionCommandEvent();
-//			selectionCommandEvent.setCategory(EIDCategory.GENE);
-//			selectionCommandEvent.setSelectionCommand(new SelectionCommand(ESelectionCommandType.CLEAR, selectionType));
-//			eventPublisher.triggerEvent(selectionCommandEvent);
-//			
-//			ISelectionDelta selectionDelta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
-//			selectionDelta.addSelection(iExternalID, selectionType);
-//			SelectionUpdateEvent event = new SelectionUpdateEvent();
-//			event.setSender(this);
-//			event.setSelectionDelta((SelectionDelta) selectionDelta);
-//			eventPublisher.triggerEvent(event);
+			// SelectionCommandEvent selectionCommandEvent = new
+			// SelectionCommandEvent();
+			// selectionCommandEvent.setCategory(EIDCategory.GENE);
+			// selectionCommandEvent.setSelectionCommand(new
+			// SelectionCommand(ESelectionCommandType.CLEAR, selectionType));
+			// eventPublisher.triggerEvent(selectionCommandEvent);
+			//			
+			// ISelectionDelta selectionDelta = new
+			// SelectionDelta(EIDType.EXPRESSION_INDEX);
+			// selectionDelta.addSelection(iExternalID, selectionType);
+			// SelectionUpdateEvent event = new SelectionUpdateEvent();
+			// event.setSender(this);
+			// event.setSelectionDelta((SelectionDelta) selectionDelta);
+			// eventPublisher.triggerEvent(event);
 
 			setHeatMapWrapperSelectionDisplayListDirty();
 			break;
@@ -116,35 +120,37 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			break;
 
 		case COMPARE_RIBBON_SELECTION:
-			
+
 			if (detailBands != null) {
-				
+
 				DetailBand activeDetailBand = null;
-				for (DetailBand detailBand : detailBands)
-				{
-					if (iExternalID == detailBand.getBandID())
-					{
+				for (DetailBand detailBand : detailBands) {
+					if (iExternalID == detailBand.getBandID()) {
 						activeDetailBand = detailBand;
 						break;
 					}
 				}
-				
+
 				if (activeDetailBand == null)
 					break;
-			
+
 				SelectionCommandEvent selectionCommandEvent = new SelectionCommandEvent();
 				selectionCommandEvent.setCategory(EIDCategory.GENE);
-				selectionCommandEvent.setSelectionCommand(new SelectionCommand(ESelectionCommandType.CLEAR, activeHeatMapSelectionType));
+				selectionCommandEvent.setSelectionCommand(new SelectionCommand(
+						ESelectionCommandType.CLEAR, ACTIVE_HEATMAP_SELECTION_TYPE));
 				eventPublisher.triggerEvent(selectionCommandEvent);
-				
-				ISelectionDelta bandSelectionDelta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
-				
-				for (Integer contentID : activeDetailBand.getContentIDs()) 
-					bandSelectionDelta.addSelection(contentID, activeHeatMapSelectionType);
-				
+
+				ISelectionDelta bandSelectionDelta = new SelectionDelta(
+						EIDType.EXPRESSION_INDEX);
+
+				for (Integer contentID : activeDetailBand.getContentIDs())
+					bandSelectionDelta
+							.addSelection(contentID, ACTIVE_HEATMAP_SELECTION_TYPE);
+
 				SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 				selectionUpdateEvent.setSender(this);
-				selectionUpdateEvent.setSelectionDelta((SelectionDelta) bandSelectionDelta);
+				selectionUpdateEvent
+						.setSelectionDelta((SelectionDelta) bandSelectionDelta);
 				eventPublisher.triggerEvent(selectionUpdateEvent);
 			}
 			break;
@@ -188,24 +194,68 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 	}
 
 	protected void renderOverviewLineSelections(GL gl) {
+//		ContentSelectionManager contentSelectionManager = heatMapWrappers.get(0)
+//				.getContentSelectionManager();
+//
+//		ArrayList<SelectionType> selectionTypes = new ArrayList<SelectionType>();
+//
+//		selectionTypes.add(SelectionType.MOUSE_OVER);
+//		selectionTypes.add(SelectionType.SELECTION);
+//		selectionTypes.add(activeHeatMapSelectionType);
+//
+//		for (SelectionType selectionType : contentSelectionManager.getSelectionTypes()) {
+//			if (selectionType.isManaged()) {
+//				selectionTypes.add(selectionType);
+//				break;
+//			}
+//		}
+//
+//		float z = 0;
+//		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
+//
+//			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
+//
+//			for (SelectionType selectionType : selectionTypes) {
+//
+//				for (Integer contentID : contentSelectionManager
+//						.getElements(selectionType)) {
+//
+//					gl.glPushAttrib(GL.GL_LINE_BIT);
+//
+//					gl.glPushName(pickingManager.getPickingID(viewID,
+//							EPickingType.POLYLINE_SELECTION, contentID));
+//
+//					z = setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
+//					HashMap<Integer, ArrayList<Vec3f>> map = contentIDToIndividualLines
+//							.get(heatMapWrapper);
+//					if (map != null) {
+//
+//						ArrayList<Vec3f> points = map.get(contentID);
+//						if (points == null)
+//							continue;
+//
+//						for (Vec3f point : points)
+//							point.setZ(z);
+//
+//						renderSingleCurve(gl, points, contentID, 40 + (int) (20 * Math
+//								.random()));
+//					}
+//
+//					gl.glPopName();
+//
+//					gl.glPopAttrib();
+//
+//				}
+//			}
+//		}
+
 		ContentSelectionManager contentSelectionManager = heatMapWrappers.get(0)
 				.getContentSelectionManager();
-
 		ArrayList<SelectionType> selectionTypes = new ArrayList<SelectionType>();
-
-
+		selectionTypes.add(ACTIVE_HEATMAP_SELECTION_TYPE);
 		selectionTypes.add(SelectionType.MOUSE_OVER);
 		selectionTypes.add(SelectionType.SELECTION);
-		selectionTypes.add(activeHeatMapSelectionType);
 
-		for (SelectionType selectionType : contentSelectionManager.getSelectionTypes()) {
-			if (selectionType.isManaged()) {
-				selectionTypes.add(selectionType);
-				break;
-			}
-		}
-
-		float z = 0;
 		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
 
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
@@ -213,30 +263,17 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			for (SelectionType selectionType : selectionTypes) {
 
 				for (Integer contentID : contentSelectionManager
-						.getElements(selectionType)) {	
-				
+						.getElements(selectionType)) {
 					gl.glPushAttrib(GL.GL_LINE_BIT);
-
-					gl.glPushName(pickingManager.getPickingID(viewID,
-							EPickingType.POLYLINE_SELECTION, contentID));
-					
-					z = setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
+					setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
 					HashMap<Integer, ArrayList<Vec3f>> map = contentIDToIndividualLines
 							.get(heatMapWrapper);
 					if (map != null) {
-						
-						ArrayList<Vec3f> points = map.get(contentID);
-						for (Vec3f point : points)
-							point.setZ(z);
-						
-						renderSingleCurve(gl, points, contentID,
+						renderSingleCurve(gl, map.get(contentID), contentID,
 								40 + (int) (20 * Math.random()));
 					}
-					
-					gl.glPopName();
 
 					gl.glPopAttrib();
-			
 				}
 			}
 		}

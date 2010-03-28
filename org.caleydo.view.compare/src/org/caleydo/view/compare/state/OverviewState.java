@@ -169,6 +169,8 @@ public class OverviewState extends ACompareViewStateStatic {
 			heatMapWrapper.getOverview().updateHeatMapTextures(
 					heatMapWrapper.getContentSelectionManager());
 		}
+		
+		setAllDisplayListsDirty();
 	}
 
 	@Override
@@ -248,6 +250,8 @@ public class OverviewState extends ACompareViewStateStatic {
 			else
 				return;
 		}
+		
+		setAllDisplayListsDirty();
 	}
 
 	@Override
@@ -282,8 +286,6 @@ public class OverviewState extends ACompareViewStateStatic {
 					HeatMapWrapper heatMapWrapper = new HeatMapWrapper(
 							heatMapWrapperID, layout, view, null, useCase,
 							view, dataDomain, this);
-					heatMapWrapper
-							.setActiveHeatMapSelectionType(activeHeatMapSelectionType);
 					heatMapWrappers.add(heatMapWrapper);
 					heatMapWrapperID++;
 				}

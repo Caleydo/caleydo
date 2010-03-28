@@ -132,7 +132,7 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
-				ACompareViewState.activeHeatMapSelectionType);
+				ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE);
 		eventPublisher.triggerEvent(selectionTypeEvent);
 	}
 

@@ -32,8 +32,6 @@ public class OverviewHeatMapRenderCommand implements IHeatMapRenderCommand {
 
 		AHeatMapLayout layout = heatMapWrapper.getLayout();
 
-		ContentSelectionManager contentSelectionManager = heatMapWrapper
-				.getContentSelectionManager();
 		ContentVirtualArray contentVA = heatMapWrapper.getOverview()
 				.getContentVA();
 		ContentGroupList contentGroupList = contentVA.getGroupList();

@@ -28,6 +28,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -88,7 +89,6 @@ public class HeatMapWrapper {
 	// private SelectionUpdateListener selectionUpdateListener;
 	private IEventPublisher eventPublisher;
 	private ContentSelectionManager contentSelectionManager;
-	private SelectionType activeHeatMapSelectionType;
 
 	private boolean useSorting = true;
 	private boolean useZoom = false;
@@ -871,14 +871,20 @@ public class HeatMapWrapper {
 	public void setHeatMapActive(int groupIndex, boolean addToNewSelectionType) {
 		if (activeHeatMapID == groupIndex)
 			return;
-
+		
+		SelectionCommandEvent selectionCommandEvent = new SelectionCommandEvent();
+		SelectionCommand clearSelectionCommand = new SelectionCommand(ESelectionCommandType.CLEAR, ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE);
+		selectionCommandEvent.setCategory(EIDCategory.GENE);
+		selectionCommandEvent.setSelectionCommand(clearSelectionCommand);
+		eventPublisher.triggerEvent(selectionCommandEvent);
+		
 		int previouslyActiveHeatMapID = activeHeatMapID;
 		activeHeatMapID = groupIndex;
 		// FIXME FIXME!!!!! we need to set heat maps inactive as well, this is
 		// just for now:
-		// for (GLHeatMap heatMap : hashHeatMaps.values()) {
-		// heatMap.setActive(false);
-		// }
+//		for (GLHeatMap heatMap : hashHeatMaps.values()) {
+//			heatMap.setActive(false);
+//		}
 
 		if (previouslyActiveHeatMapID != -1) {
 			GLHeatMap heatMap = hashHeatMaps.get(activeHeatMapID);
@@ -886,11 +892,12 @@ public class HeatMapWrapper {
 					.getContentSelectionManager();
 			for (Integer elementID : heatMap.getContentVA()) {
 				hmContentSelectionManager.removeFromType(
-						activeHeatMapSelectionType, elementID);
+						ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE, elementID);
 			}
 			SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 			selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager
 					.getDelta());
+			selectionUpdateEvent.setSender(heatMap);
 			eventPublisher.triggerEvent(selectionUpdateEvent);
 		}
 
@@ -898,12 +905,13 @@ public class HeatMapWrapper {
 		// heatMap.setActive(true);
 		ContentSelectionManager hmContentSelectionManager = heatMap
 				.getContentSelectionManager();
-		hmContentSelectionManager.addToType(activeHeatMapSelectionType, heatMap
+		hmContentSelectionManager.addToType(ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE, heatMap
 				.getContentVA().getVirtualArray());
 
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 		selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager
 				.getDelta());
+		selectionUpdateEvent.setSender(heatMap);
 		eventPublisher.triggerEvent(selectionUpdateEvent);
 
 		if (addToNewSelectionType) {
@@ -916,10 +924,12 @@ public class HeatMapWrapper {
 
 			SelectionTypeEvent event = new SelectionTypeEvent();
 			event.addSelectionType(selectionType);
+			event.setSender(heatMap);
 			eventPublisher.triggerEvent(event);
 			hmContentSelectionManager.addToType(selectionType, heatMap
 					.getContentVA().getVirtualArray());
 			selectionUpdateEvent = new SelectionUpdateEvent();
+			selectionUpdateEvent.setSender(heatMap);
 			selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager
 					.getDelta());
 			eventPublisher.triggerEvent(selectionUpdateEvent);
@@ -936,7 +946,7 @@ public class HeatMapWrapper {
 				.getContentSelectionManager();
 		for (Integer elementID : heatMap.getContentVA()) {
 			hmContentSelectionManager.removeFromType(
-					activeHeatMapSelectionType, elementID);
+					ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE, elementID);
 		}
 
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
@@ -978,15 +988,6 @@ public class HeatMapWrapper {
 
 	public String getCaption() {
 		return set.getLabel();
-	}
-
-	public SelectionType getActiveHeatMapSelectionType() {
-		return activeHeatMapSelectionType;
-	}
-
-	public void setActiveHeatMapSelectionType(
-			SelectionType activeHeatMapSelectionType) {
-		this.activeHeatMapSelectionType = activeHeatMapSelectionType;
 	}
 
 	public GLHeatMap getHeatMapByContentID(int contentID) {

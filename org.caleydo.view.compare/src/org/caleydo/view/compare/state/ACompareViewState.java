@@ -54,7 +54,7 @@ public abstract class ACompareViewState {
 
 	protected final static float Y_FAN_OUT_DETAIL_TO_DETAIL_FACTOR = 0.04f;
 
-	public final static SelectionType activeHeatMapSelectionType = new SelectionType(
+	public final static SelectionType ACTIVE_HEATMAP_SELECTION_TYPE = new SelectionType(
 			"ActiveHeatmap", new float[] { 0.0f, 0.0f, 0.0f, 1.0f }, 2, true, false, 0.8f);
 
 	protected static boolean bandBundlingActive = false;
@@ -708,25 +708,25 @@ public abstract class ACompareViewState {
 
 		boolean activeHeatMapSelectionTypePresent = false;
 
-		if (selectionTypes.contains(activeHeatMapSelectionType) && considerSelection) {
-			gl.glLineWidth(activeHeatMapSelectionType.getLineWidth());
+		if (selectionTypes.contains(ACTIVE_HEATMAP_SELECTION_TYPE) && considerSelection) {
+			gl.glLineWidth(ACTIVE_HEATMAP_SELECTION_TYPE.getLineWidth());
 			activeHeatMapSelectionTypePresent = true;
 		}
 
 		if (selectionTypes.contains(SelectionType.MOUSE_OVER) && considerSelection) {
 			gl.glLineWidth(SelectionType.MOUSE_OVER.getLineWidth());
 			alpha = 1f;
-			//z = 0.3f;
+			z = 0.3f;
 			type = SelectionType.MOUSE_OVER;
 		} else if (selectionTypes.contains(SelectionType.SELECTION) && considerSelection) {
 			gl.glLineWidth(SelectionType.SELECTION.getLineWidth());
 			alpha = 1f;
-			//z = 0.3f;
+			z = 0.3f;
 			type = SelectionType.SELECTION;
 		} else {
 			float maxPriority = 0;
 			for (SelectionType selectionType : selectionTypes) {
-				if (selectionType != activeHeatMapSelectionType
+				if (selectionType != ACTIVE_HEATMAP_SELECTION_TYPE
 						&& selectionType.getPriority() > maxPriority) {
 
 					if (!considerSelection
@@ -741,7 +741,7 @@ public abstract class ACompareViewState {
 				gl.glLineWidth(type.getLineWidth());
 
 			alpha = 0.4f;
-			//z = 0.2f;
+			z = 0.2f;
 		}
 
 		// TODO: investigate if this is always ok
