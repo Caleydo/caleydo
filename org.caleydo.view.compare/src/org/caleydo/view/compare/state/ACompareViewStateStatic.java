@@ -2,6 +2,7 @@ package org.caleydo.view.compare.state;
 
 import gleem.linalg.Vec3f;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -192,9 +193,10 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 
 		ArrayList<SelectionType> selectionTypes = new ArrayList<SelectionType>();
 
-		selectionTypes.add(activeHeatMapSelectionType);
+
 		selectionTypes.add(SelectionType.MOUSE_OVER);
 		selectionTypes.add(SelectionType.SELECTION);
+		selectionTypes.add(activeHeatMapSelectionType);
 
 		for (SelectionType selectionType : contentSelectionManager.getSelectionTypes()) {
 			if (selectionType.isManaged()) {
@@ -203,6 +205,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			}
 		}
 
+		float z = 0;
 		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
 
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
@@ -210,17 +213,30 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			for (SelectionType selectionType : selectionTypes) {
 
 				for (Integer contentID : contentSelectionManager
-						.getElements(selectionType)) {
+						.getElements(selectionType)) {	
+				
 					gl.glPushAttrib(GL.GL_LINE_BIT);
-					setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
+
+					gl.glPushName(pickingManager.getPickingID(viewID,
+							EPickingType.POLYLINE_SELECTION, contentID));
+					
+					z = setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
 					HashMap<Integer, ArrayList<Vec3f>> map = contentIDToIndividualLines
 							.get(heatMapWrapper);
 					if (map != null) {
-						renderSingleCurve(gl, map.get(contentID), contentID,
+						
+						ArrayList<Vec3f> points = map.get(contentID);
+						for (Vec3f point : points)
+							point.setZ(z);
+						
+						renderSingleCurve(gl, points, contentID,
 								40 + (int) (20 * Math.random()));
 					}
+					
+					gl.glPopName();
 
 					gl.glPopAttrib();
+			
 				}
 			}
 		}

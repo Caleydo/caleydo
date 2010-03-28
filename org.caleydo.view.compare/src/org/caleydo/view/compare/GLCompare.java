@@ -46,6 +46,7 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.overlay.AOverlayManager;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.rcp.action.toolbar.view.StartClusteringAction;
 import org.caleydo.view.compare.event.UseBandBundlingEvent;
@@ -60,6 +61,7 @@ import org.caleydo.view.compare.listener.NewContentGroupInfoEventListener;
 import org.caleydo.view.compare.listener.UseBandBundlingListener;
 import org.caleydo.view.compare.listener.UseSortingListener;
 import org.caleydo.view.compare.listener.UseZoomListener;
+import org.caleydo.view.compare.state.ACompareViewState;
 import org.caleydo.view.compare.state.CompareViewStateController;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
@@ -129,6 +131,9 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 				GLHeatMap.SELECTION_HIDDEN);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
+		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
+				ACompareViewState.activeHeatMapSelectionType);
+		eventPublisher.triggerEvent(selectionTypeEvent);
 	}
 
 	@Override

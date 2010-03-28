@@ -1,6 +1,7 @@
 package org.caleydo.view.compare.state;
 
 import java.awt.Point;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
@@ -102,8 +103,13 @@ public class DetailViewState extends ACompareViewStateStatic {
 		if (isHeatMapWrapperDisplayListDirty) {
 			isHeatMapWrapperDisplayListDirty = false;
 //			isHeatMapWrapperSelectionDisplayListDirty = false;
-
+			
+			// FIXME: Why can't this be? Heatmap wrappers should be initialized all the time?!
+			if (heatMapWrappers.size() < 2) 
+				return;
+			
 			gl.glNewList(heatMapWrapperDisplayListIndex, GL.GL_COMPILE);
+				
 			calculateDetailBands(heatMapWrappers.get(0),
 					heatMapWrappers.get(1), false);
 
@@ -130,8 +136,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 							heatMapWrappers.get(1));
 				}
 			} else {
-				renderOverviewToDetailRelations(gl);
 				renderDetailRelations(gl);
+				renderOverviewToDetailRelations(gl);
 			}
 			gl.glEndList();
 		}
@@ -162,8 +168,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 	@Override
 	protected void renderSelections(GL gl) {
-		if (!bandBundlingActive
-				&& heatMapWrappers.get(0).getSelectedGroups().isEmpty()) {
+		if (heatMapWrappers.get(0).getSelectedGroups().isEmpty()) {
 			renderOverviewLineSelections(gl);
 		}
 		renderHeatMapOverviewSelections(gl);
@@ -184,16 +189,14 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 			boolean highlight = false;
 
-			// If at least one element in the band is in mouse_over state ->
-			// change
-			// band color
+//			// If at least one element in the band is in mouse_over state ->
+//			// change
+//			// band color
 			ContentSelectionManager contentSelectionManager = heatMapWrapper
 					.getContentSelectionManager();
 			for (Integer contentID : heatMap.getContentVA()) {
-				SelectionType type = contentSelectionManager.getSelectionTypes(
-						contentID).get(0);
 
-				if (type == SelectionType.MOUSE_OVER) {
+				if (activeBand != null && activeBand.getContentIDs().contains(contentID)) {
 					highlight = true;
 					break;
 				}
@@ -395,6 +398,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 	private void determineActiveBand() {
 
+		activeBand = null;
 		for (DetailBand detailBand : detailBands) {
 			// If at least one element in the band is in mouse_over state ->
 			// change
@@ -402,11 +406,23 @@ public class DetailViewState extends ACompareViewStateStatic {
 			ContentSelectionManager contentSelectionManager = heatMapWrappers
 					.get(0).getContentSelectionManager();
 			for (Integer contentID : detailBand.getContentIDs()) {
-				SelectionType type = contentSelectionManager.getSelectionTypes(
-						contentID).get(0);
+				
+				boolean isActive = false;
+				for (SelectionType type : contentSelectionManager.getSelectionTypes(
+						contentID)) {
+					ArrayList<SelectionType> tmp = contentSelectionManager.getSelectionTypes(contentID);
+					
+					
+					if (type == SelectionType.MOUSE_OVER)
+						isActive = true;
+					
+					if (type.equals(GLHeatMap.SELECTION_HIDDEN)) {
+						isActive = false;
+						break;
+					}
+				}
 
-				if (type == SelectionType.MOUSE_OVER) {
-					// activeBand = true;
+				if (isActive) {
 					this.activeBand = detailBand;
 					return;
 				}
