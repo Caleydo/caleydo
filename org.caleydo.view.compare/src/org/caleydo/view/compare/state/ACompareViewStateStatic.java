@@ -9,13 +9,17 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ESelectionCommandType;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -67,23 +71,14 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 				break;
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
-
-				// ContentContextMenuItemContainer
-				// contentContextMenuItemContainer = new
-				// ContentContextMenuItemContainer();
-				// contentContextMenuItemContainer.setID(
-				// EIDType.EXPRESSION_INDEX, iExternalID);
-				// contextMenu
-				// .addItemContanier(contentContextMenuItemContainer);
 				break;
 
 			default:
 				return;
 
 			}
-
-			// FIXME: Check if is ok to share the content selection manager
-			// of the use case
+		
+			// FIXME: This is not ok! Probably this view should use its own selection manager
 			ContentSelectionManager contentSelectionManager = useCase
 					.getContentSelectionManager();
 			if (contentSelectionManager.checkStatus(selectionType, iExternalID)) {
@@ -100,11 +95,57 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			// event.setInfo(getShortInfoLocal());
 			eventPublisher.triggerEvent(event);
 
+//			SelectionCommandEvent selectionCommandEvent = new SelectionCommandEvent();
+//			selectionCommandEvent.setCategory(EIDCategory.GENE);
+//			selectionCommandEvent.setSelectionCommand(new SelectionCommand(ESelectionCommandType.CLEAR, selectionType));
+//			eventPublisher.triggerEvent(selectionCommandEvent);
+//			
+//			ISelectionDelta selectionDelta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
+//			selectionDelta.addSelection(iExternalID, selectionType);
+//			SelectionUpdateEvent event = new SelectionUpdateEvent();
+//			event.setSender(this);
+//			event.setSelectionDelta((SelectionDelta) selectionDelta);
+//			eventPublisher.triggerEvent(event);
+
 			setHeatMapWrapperSelectionDisplayListDirty();
 			break;
 
 		case COMPARE_SET_BAR_ITEM_SELECTION:
 			setBar.handleSetBarItemSelection(iExternalID, pickingMode, pick);
+			break;
+
+		case COMPARE_RIBBON_SELECTION:
+			
+			if (detailBands != null) {
+				
+				DetailBand activeDetailBand = null;
+				for (DetailBand detailBand : detailBands)
+				{
+					if (iExternalID == detailBand.getBandID())
+					{
+						activeDetailBand = detailBand;
+						break;
+					}
+				}
+				
+				if (activeDetailBand == null)
+					break;
+			
+				SelectionCommandEvent selectionCommandEvent = new SelectionCommandEvent();
+				selectionCommandEvent.setCategory(EIDCategory.GENE);
+				selectionCommandEvent.setSelectionCommand(new SelectionCommand(ESelectionCommandType.CLEAR, activeHeatMapSelectionType));
+				eventPublisher.triggerEvent(selectionCommandEvent);
+				
+				ISelectionDelta bandSelectionDelta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
+				
+				for (Integer contentID : activeDetailBand.getContentIDs()) 
+					bandSelectionDelta.addSelection(contentID, activeHeatMapSelectionType);
+				
+				SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
+				selectionUpdateEvent.setSender(this);
+				selectionUpdateEvent.setSelectionDelta((SelectionDelta) bandSelectionDelta);
+				eventPublisher.triggerEvent(selectionUpdateEvent);
+			}
 			break;
 
 		case COMPARE_SELECTION_WINDOW_SELECTION:

@@ -82,10 +82,12 @@ public class CompareConnectionBandRenderer
 			inputPoints[pointIndex][1] = points.get(pointIndex).y();
 			inputPoints[pointIndex][2] = points.get(pointIndex).z();
 		}
-
-		glu.gluTessProperty(tobj, //
-				GLU.GLU_TESS_WINDING_RULE, //
-				GLU.GLU_TESS_WINDING_POSITIVE);
+		gl.glShadeModel(GL.GL_SMOOTH);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+//		glu.gluTessProperty(tobj, //
+//				GLU.GLU_TESS_WINDING_RULE, //
+//				GLU.GLU_TESS_WINDING_POSITIVE);
 		glu.gluTessBeginPolygon(tobj, null);
 		glu.gluTessBeginContour(tobj);
 		

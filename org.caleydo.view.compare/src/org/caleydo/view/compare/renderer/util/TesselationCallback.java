@@ -29,8 +29,9 @@ public class TesselationCallback implements GLUtessellatorCallback {
 		double[] pointer;
 		if (vertexData instanceof double[]) {
 			pointer = (double[]) vertexData;
-//			if (pointer.length == 6)
-//				gl.glColor3f(0.8f,0.8f,0.8f);
+			// gl.glEnable(GL.GL_BLEND);
+			// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+			// gl.glColor4f(0f,0f,0f, 0.5f);
 //				gl.glColor3dv(pointer, 3);
 			gl.glVertex3dv(pointer, 0);
 		}

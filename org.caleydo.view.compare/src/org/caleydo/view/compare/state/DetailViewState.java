@@ -37,7 +37,6 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public class DetailViewState extends ACompareViewStateStatic {
 
-	private DetailBand activeBand;
 	private int indexOfHeatMapWrapperWithDendrogram;
 
 	public DetailViewState(GLCompare view, int viewID,
@@ -286,7 +285,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 		float xOffset = (rightTopPos[0] - leftTopPos[0]) / 3f;
 
 		renderSingleBand(gl, leftTopPos, leftBottomPos, rightTopPos,
-				rightBottomPos, highlight, xOffset);
+				rightBottomPos, highlight, xOffset, -1, false);
 	}
 
 	private void renderSingleOverviewToDetailRelation(GL gl, GLHeatMap heatMap,
