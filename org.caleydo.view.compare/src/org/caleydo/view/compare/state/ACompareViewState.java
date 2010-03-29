@@ -54,8 +54,10 @@ public abstract class ACompareViewState {
 
 	protected final static float Y_FAN_OUT_DETAIL_TO_DETAIL_FACTOR = 0.04f;
 
+//	public final static SelectionType ACTIVE_HEATMAP_SELECTION_TYPE = new SelectionType(
+//			"ActiveHeatmap", new int[] {  255, 127, 0 }, 2, true, false, 0.8f);
 	public final static SelectionType ACTIVE_HEATMAP_SELECTION_TYPE = new SelectionType(
-			"ActiveHeatmap", new float[] { 0.0f, 0.0f, 0.0f, 1.0f }, 2, true, false, 0.8f);
+			"ActiveHeatmap", new float[] {  0, 0, 0, 0.7f }, 2, true, false, 0.8f);
 
 	protected static boolean bandBundlingActive = false;
 
@@ -290,7 +292,7 @@ public abstract class ACompareViewState {
 
 		// Band border
 		gl.glLineWidth(1);
-		gl.glColor4f(0, 0, 0, 1f);
+		gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
 		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = 0; i < outputPoints.size(); i++) {
 			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), 0f);
@@ -322,9 +324,9 @@ public abstract class ACompareViewState {
 		gl.glEnd();
 
 		if (!highlight)
-			gl.glColor4f(0f, 0f, 0f, 0.4f);
+			gl.glColor4f(0f, 0f, 0f, 0.25f);
 		else
-			gl.glColor4f(0f, 0f, 0f, 0.7f);
+			gl.glColor4f(0f, 0f, 0f, 0.5f);
 
 		compareConnectionRenderer.render(gl, outputPoints);
 
@@ -584,7 +586,7 @@ public abstract class ACompareViewState {
 				if (leftTopPos == null || rightTopPos == null)
 					return;
 
-				gl.glColor3f(0, 0, 0);
+				gl.glColor4f(0f, 0, 0f, 0.5f);
 				// gl.glLineWidth(2);
 				renderSingleDetailRelation(gl, contentIDs.get(0), leftTopPos, rightTopPos);
 			}
@@ -711,6 +713,7 @@ public abstract class ACompareViewState {
 		if (selectionTypes.contains(ACTIVE_HEATMAP_SELECTION_TYPE) && considerSelection) {
 			gl.glLineWidth(ACTIVE_HEATMAP_SELECTION_TYPE.getLineWidth());
 			activeHeatMapSelectionTypePresent = true;
+			type = ACTIVE_HEATMAP_SELECTION_TYPE;
 		}
 
 		if (selectionTypes.contains(SelectionType.MOUSE_OVER) && considerSelection) {

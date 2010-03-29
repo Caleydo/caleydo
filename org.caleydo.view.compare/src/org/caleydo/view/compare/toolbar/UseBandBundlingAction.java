@@ -13,8 +13,8 @@ import org.eclipse.ui.PlatformUI;
  * 
  */
 public class UseBandBundlingAction extends AToolBarAction implements IToolBarItem {
-	public static final String TEXT = "Use band bundling";
-	public static final String ICON = "resources/icons/view/storagebased/parcoords/angular_brush.png";
+	public static final String TEXT = "Use ribbons";
+	public static final String ICON = "resources/icons/view/storagebased/parcoords/reset_axis_spacing.png";
 
 	private boolean renderBands = false;
 

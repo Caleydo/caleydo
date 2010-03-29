@@ -35,13 +35,13 @@ public class CompareToolBarContent extends AToolBarContent {
 
 		int targetViewID = getTargetViewData().getViewID();
 
-		UseSortingAction useSortingAction = new UseSortingAction(targetViewID);
-		useSortingAction.setSortingEnabled(true);
-		actionList.add(useSortingAction);
+//		UseSortingAction useSortingAction = new UseSortingAction(targetViewID);
+//		useSortingAction.setSortingEnabled(true);
+//		actionList.add(useSortingAction);
 
-		UseFishEyeAction useFishEyeAction = new UseFishEyeAction(targetViewID);
-		useFishEyeAction.setUseFishEye(true);
-		actionList.add(useFishEyeAction);
+//		UseFishEyeAction useFishEyeAction = new UseFishEyeAction(targetViewID);
+//		useFishEyeAction.setUseFishEye(true);
+//		actionList.add(useFishEyeAction);
 
 		UseZoomAction useZoomAction = new UseZoomAction(targetViewID);
 		useZoomAction.setUseZoom(false);

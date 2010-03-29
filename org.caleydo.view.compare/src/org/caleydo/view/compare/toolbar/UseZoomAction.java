@@ -14,7 +14,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class UseZoomAction extends AToolBarAction implements IToolBarItem {
 	public static final String TEXT = "Use heat map zoom";
-	public static final String ICON = "resources/icons/view/storagebased/parcoords/angular_brush.png";
+	public static final String ICON = "resources/icons/general/search.png";
 
 	private boolean useZoom = true;
 

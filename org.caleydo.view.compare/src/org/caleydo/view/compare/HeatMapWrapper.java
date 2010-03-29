@@ -872,11 +872,11 @@ public class HeatMapWrapper {
 		if (activeHeatMapID == groupIndex)
 			return;
 		
-		SelectionCommandEvent selectionCommandEvent = new SelectionCommandEvent();
-		SelectionCommand clearSelectionCommand = new SelectionCommand(ESelectionCommandType.CLEAR, ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE);
-		selectionCommandEvent.setCategory(EIDCategory.GENE);
-		selectionCommandEvent.setSelectionCommand(clearSelectionCommand);
-		eventPublisher.triggerEvent(selectionCommandEvent);
+//		SelectionCommandEvent selectionCommandEvent = new SelectionCommandEvent();
+//		SelectionCommand clearSelectionCommand = new SelectionCommand(ESelectionCommandType.CLEAR, ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE);
+//		selectionCommandEvent.setCategory(EIDCategory.GENE);
+//		selectionCommandEvent.setSelectionCommand(clearSelectionCommand);
+//		eventPublisher.triggerEvent(selectionCommandEvent);
 		
 		int previouslyActiveHeatMapID = activeHeatMapID;
 		activeHeatMapID = groupIndex;

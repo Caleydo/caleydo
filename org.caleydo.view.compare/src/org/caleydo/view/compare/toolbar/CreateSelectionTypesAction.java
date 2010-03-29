@@ -11,8 +11,8 @@ import org.eclipse.ui.PlatformUI;
 public class CreateSelectionTypesAction extends AToolBarAction implements
 		IToolBarItem {
 
-	public static final String TEXT = "Create selection types";
-	public static final String ICON = "resources/icons/view/storagebased/parcoords/angular_brush.png";
+	public static final String TEXT = "Brush with colors";
+	public static final String ICON = "resources/icons/view/storagebased/parcoords/occlusion_prevention.png";
 
 	private boolean createSelectionTypes = false;
 

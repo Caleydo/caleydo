@@ -194,68 +194,23 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 	}
 
 	protected void renderOverviewLineSelections(GL gl) {
-//		ContentSelectionManager contentSelectionManager = heatMapWrappers.get(0)
-//				.getContentSelectionManager();
-//
-//		ArrayList<SelectionType> selectionTypes = new ArrayList<SelectionType>();
-//
-//		selectionTypes.add(SelectionType.MOUSE_OVER);
-//		selectionTypes.add(SelectionType.SELECTION);
-//		selectionTypes.add(activeHeatMapSelectionType);
-//
-//		for (SelectionType selectionType : contentSelectionManager.getSelectionTypes()) {
-//			if (selectionType.isManaged()) {
-//				selectionTypes.add(selectionType);
-//				break;
-//			}
-//		}
-//
-//		float z = 0;
-//		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
-//
-//			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
-//
-//			for (SelectionType selectionType : selectionTypes) {
-//
-//				for (Integer contentID : contentSelectionManager
-//						.getElements(selectionType)) {
-//
-//					gl.glPushAttrib(GL.GL_LINE_BIT);
-//
-//					gl.glPushName(pickingManager.getPickingID(viewID,
-//							EPickingType.POLYLINE_SELECTION, contentID));
-//
-//					z = setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
-//					HashMap<Integer, ArrayList<Vec3f>> map = contentIDToIndividualLines
-//							.get(heatMapWrapper);
-//					if (map != null) {
-//
-//						ArrayList<Vec3f> points = map.get(contentID);
-//						if (points == null)
-//							continue;
-//
-//						for (Vec3f point : points)
-//							point.setZ(z);
-//
-//						renderSingleCurve(gl, points, contentID, 40 + (int) (20 * Math
-//								.random()));
-//					}
-//
-//					gl.glPopName();
-//
-//					gl.glPopAttrib();
-//
-//				}
-//			}
-//		}
-
 		ContentSelectionManager contentSelectionManager = heatMapWrappers.get(0)
 				.getContentSelectionManager();
+
 		ArrayList<SelectionType> selectionTypes = new ArrayList<SelectionType>();
-		selectionTypes.add(ACTIVE_HEATMAP_SELECTION_TYPE);
+
 		selectionTypes.add(SelectionType.MOUSE_OVER);
 		selectionTypes.add(SelectionType.SELECTION);
+		selectionTypes.add(ACTIVE_HEATMAP_SELECTION_TYPE);
 
+		for (SelectionType selectionType : contentSelectionManager.getSelectionTypes()) {
+			if (selectionType.isManaged()) {
+				selectionTypes.add(selectionType);
+				break;
+			}
+		}
+
+		float z = 0;
 		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
 
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
@@ -264,19 +219,64 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 
 				for (Integer contentID : contentSelectionManager
 						.getElements(selectionType)) {
+
 					gl.glPushAttrib(GL.GL_LINE_BIT);
-					setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
+
+					gl.glPushName(pickingManager.getPickingID(viewID,
+							EPickingType.POLYLINE_SELECTION, contentID));
+
+					z = setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
 					HashMap<Integer, ArrayList<Vec3f>> map = contentIDToIndividualLines
 							.get(heatMapWrapper);
 					if (map != null) {
-						renderSingleCurve(gl, map.get(contentID), contentID,
-								40 + (int) (20 * Math.random()));
+
+						ArrayList<Vec3f> points = map.get(contentID);
+						if (points == null)
+							continue;
+
+						for (Vec3f point : points)
+							point.setZ(z);
+
+						renderSingleCurve(gl, points, contentID, 40 + (int) (20 * Math
+								.random()));
 					}
 
+					gl.glPopName();
+
 					gl.glPopAttrib();
+
 				}
 			}
 		}
+
+//		ContentSelectionManager contentSelectionManager = heatMapWrappers.get(0)
+//				.getContentSelectionManager();
+//		ArrayList<SelectionType> selectionTypes = new ArrayList<SelectionType>();
+//		selectionTypes.add(ACTIVE_HEATMAP_SELECTION_TYPE);
+//		selectionTypes.add(SelectionType.MOUSE_OVER);
+//		selectionTypes.add(SelectionType.SELECTION);
+//
+//		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
+//
+//			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
+//
+//			for (SelectionType selectionType : selectionTypes) {
+//
+//				for (Integer contentID : contentSelectionManager
+//						.getElements(selectionType)) {
+//					gl.glPushAttrib(GL.GL_LINE_BIT);
+//					setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
+//					HashMap<Integer, ArrayList<Vec3f>> map = contentIDToIndividualLines
+//							.get(heatMapWrapper);
+//					if (map != null) {
+//						renderSingleCurve(gl, map.get(contentID), contentID,
+//								40 + (int) (20 * Math.random()));
+//					}
+//
+//					gl.glPopAttrib();
+//				}
+//			}
+//		}
 	}
 
 	protected abstract void renderSelections(GL gl);

@@ -99,6 +99,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 		// The bands need to be created only once in the detail
 		// if (detailBands == null)
 		if (isHeatMapWrapperDisplayListDirty) {
+//		if(true){
 			isHeatMapWrapperDisplayListDirty = false;
 			// isHeatMapWrapperSelectionDisplayListDirty = false;
 
