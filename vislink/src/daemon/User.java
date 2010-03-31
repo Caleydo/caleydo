@@ -204,7 +204,9 @@ public class User {
 	 */
 	public boolean hasApplicationAccessible(Application app){
 		if(this.hasApplication(app)){
+			System.out.println(this.toString() + " has app " + app.getName()); 
 			if(this.appAccess.get(app) == UserWindowAccess.Accessible){
+				System.out.println("(app is accessible)"); 
 				return true; 
 			}
 		}
@@ -222,6 +224,10 @@ public class User {
 			return false; 
 		}
 		return true; 
+	}
+	
+	public String toString(){
+		return "User " + this.pointerID; 
 	}
 
 }

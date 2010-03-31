@@ -106,18 +106,20 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 				System.out.println("Affected user (" + otherUser.getPointerID() 
 						+ ") had previous selection id " + selectionId); 
 
-				// request visual links for all windows associated with the user 
-				List<Application> appList = otherUser.getAllPrevApps(); 
-				// we need to wait for all user's applications 
-				for( Application userApp : appList ){
-					boolean isSource = false; 
-					if(userApp == otherUser.getPrevSrcApp()){
-						isSource = true; 
+				if(!selectionId.isEmpty()){
+					// request visual links for all windows associated with the user 
+					List<Application> appList = otherUser.getAllPrevApps(); 
+					// we need to wait for all user's applications 
+					for( Application userApp : appList ){
+						boolean isSource = false; 
+						if(userApp == otherUser.getPrevSrcApp()){
+							isSource = true; 
+						}
+						this.selectionManager.addSelection(userApp, selectionId, pointerID, isSource); 
 					}
-					this.selectionManager.addSelection(userApp, selectionId, pointerID, isSource); 
-				}
 
-				checkRender(pointerID);
+					checkRender(pointerID);
+				}
 			
 			}
 		}
@@ -241,19 +243,22 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 
 		System.out.println("Affected user (" + user.getPointerID() 
 				+ ") had previous selection id " + selectionID); 
+		
+		if(!selectionID.isEmpty()){
 
-		// request visual links for all windows associated with the user 
-		List<Application> appList = user.getAllPrevApps(); 
-		// we need to wait for all user's applications 
-		for( Application userApp : appList ){
-			boolean isSource = false; 
-			if(userApp == user.getPrevSrcApp()){
-				isSource = true; 
+			// request visual links for all windows associated with the user 
+			List<Application> appList = user.getAllPrevApps(); 
+			// we need to wait for all user's applications 
+			for( Application userApp : appList ){
+				boolean isSource = false; 
+				if(userApp == user.getPrevSrcApp()){
+					isSource = true; 
+				}
+				this.selectionManager.addSelection(userApp, selectionID, pointerID, isSource); 
 			}
-			this.selectionManager.addSelection(userApp, selectionID, pointerID, isSource); 
-		}
 
-		checkRender(pointerID);
+			checkRender(pointerID);
+		}
 	}
 
 	public void reportVisualLinks(String appName, String pointerID, String boundingBoxListXML) {
