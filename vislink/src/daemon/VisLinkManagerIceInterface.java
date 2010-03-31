@@ -3,6 +3,7 @@ package daemon;
 import Ice.Current;
 import VIS.InteractionEvent;
 import VIS.MouseOverCollaboratorSelectionEvent;
+import VIS.OneShotRequestEvent;
 import VIS.VisManagerIPrx;
 import VIS._VisManagerIDisp;
 
@@ -42,6 +43,20 @@ public class VisLinkManagerIceInterface extends _VisManagerIDisp{
 		// report one-shot request to visual links manager 
 		manager.reportOneShot(user, owner, event.pointerAccessInformation, event.srcApp); 
 	}
+	
+	public void reportOneShotRequestEvent(OneShotRequestEvent event){
+		System.out.println("Receiving one shot request event from pointer"+event.pointerId); 
+		
+		// get user
+		UserManager userManager = manager.getUserManager(); 
+		User user = userManager.getUser(event.pointerId); 
+		
+		// TODO: remove, this is just a test: 
+		ClipboardManager clipboard = new ClipboardManager(); 
+		String selection = clipboard.getSelection(); 
+		System.out.println("Selection: "+selection); 
+		// TODO: do something
+	}
 
 
 	public void reportEvent(InteractionEvent event, Current current) {
@@ -49,6 +64,9 @@ public class VisLinkManagerIceInterface extends _VisManagerIDisp{
 		switch(event.eventType){
 		case MouseOverCollaboratorSelection: 
 			this.reportMouseOverCollaboratorSelectionEvent((MouseOverCollaboratorSelectionEvent)event); 
+			break; 
+		case OneShotRequest:
+			this.reportOneShotRequestEvent((OneShotRequestEvent)event); 
 			break; 
 		default:
 			break; 

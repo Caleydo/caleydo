@@ -14,15 +14,17 @@ package VIS;
 public enum InteractionEventType implements java.io.Serializable
 {
     MouseOverSelection,
-    MouseOverCollaboratorSelection;
+    MouseOverCollaboratorSelection,
+    OneShotRequest;
 
     public static final int _MouseOverSelection = 0;
     public static final int _MouseOverCollaboratorSelection = 1;
+    public static final int _OneShotRequest = 2;
 
     public static InteractionEventType
     convert(int val)
     {
-        assert val >= 0 && val < 2;
+        assert val >= 0 && val < 3;
         return values()[val];
     }
 
@@ -54,7 +56,7 @@ public enum InteractionEventType implements java.io.Serializable
     public static InteractionEventType
     __read(IceInternal.BasicStream __is)
     {
-        int __v = __is.readByte(2);
+        int __v = __is.readByte(3);
         return InteractionEventType.convert(__v);
     }
 }
