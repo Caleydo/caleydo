@@ -87,7 +87,9 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			// request visual links for target window 
 			for (ApplicationAccessInfo appId : targetApplicationIds) {
 				Application currentApp = applicationManager.getApplicationsById().get(appId.applicationID);
-				this.selectionManager.addSelection(currentApp, selectionId, pointerID, false); 
+				if(!currentApp.isTemporary()){
+					this.selectionManager.addSelection(currentApp, selectionId, pointerID, false); 
+				}
 			}
 			
 			checkRender(pointerID);
@@ -165,8 +167,10 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		
 		for (ApplicationAccessInfo appId : targetApplicationIds) {
 			Application currentApp = applicationManager.getApplicationsById().get(appId.applicationID);
-			if (currentApp.getId() != app.getId() || boundingBoxListXML == null) {
-				this.selectionManager.addSelection(currentApp, selectionId, pointerID, false); 
+			if(!currentApp.isTemporary()){
+				if (currentApp.getId() != app.getId() || boundingBoxListXML == null) {
+					this.selectionManager.addSelection(currentApp, selectionId, pointerID, false); 
+				}
 			}
 		}
 		
@@ -232,14 +236,16 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		// push selections but do not save user selection 
 		for (ApplicationAccessInfo appId : targetApplicationIds) {
 			Application app = applicationManager.getApplicationsById().get(appId.applicationID);
-			// check whether this is the source application
-			boolean isSource = false; 
-			if(appId.applicationID == srcAppID){
-				System.out.println(app.getName() + " is source");
-				isSource = true; 
+			if(!app.isTemporary()){
+				// check whether this is the source application
+				boolean isSource = false; 
+				if(appId.applicationID == srcAppID){
+					System.out.println(app.getName() + " is source");
+					isSource = true; 
+				}
+				// add selection 
+				this.selectionManager.addSelection(app, selectionID, pointerID, isSource); 
 			}
-			// add selection 
-			this.selectionManager.addSelection(app, selectionID, pointerID, isSource); 
 		}
 		
 		
@@ -247,6 +253,8 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		checkRender(pointerID);
 	}
 	
+	
+
 	public void releaseOneShot(User user){
 		System.out.println("VisLinkManager: releaseOneShot (user: " + user.getPointerID()); 
 		
@@ -437,6 +445,10 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 
 	public void setSelectionManager(SelectionManager selectionManager) {
 		this.selectionManager = selectionManager;
+	}
+	
+	public ClipboardManager getClipboardManager() {
+		return clipboardManager;
 	}
 
     

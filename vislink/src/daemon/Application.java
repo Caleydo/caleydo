@@ -24,6 +24,9 @@ public class Application {
 	
 	/** bounding boxes of contained windows */
 	private List<BoundingBox> windows;
+	
+	/** whether the window is just a temporary container. */
+	private boolean temporary; 
 
 //	/** id to send */
 //	private String sendId;
@@ -31,6 +34,15 @@ public class Application {
 	public Application() {
 		name = null;
 		windows = new ArrayList<BoundingBox>();
+		temporary = false; 
+	}
+
+	public boolean isTemporary() {
+		return temporary;
+	}
+
+	public void setTemporary(boolean temporary) {
+		this.temporary = temporary;
 	}
 
 	public String getName() {
