@@ -49,6 +49,12 @@ public class UserManager {
 		return usersList; 
 	}
 	
+	public void clearApplicationFromUser(Application app){
+		for (Entry<String, User> e : users.entrySet()) {
+			User user = e.getValue(); 
+			user.removeApplication(app); 
+		}
+	}
 	
 
 }

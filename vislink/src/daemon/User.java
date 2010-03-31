@@ -3,6 +3,7 @@ package daemon;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import VIS.AccessInformation;
 import VIS.ApplicationAccessInfo;
@@ -96,6 +97,10 @@ public class User {
 		}
 	}
 	
+	public void removePrevTargetApp(Application targetApp){
+		this.prevTargetApps.remove(targetApp); 
+	}
+	
 	/**
 	 * Sets the access properties of a certain application for this 
 	 * user - no matter if the user actually has links to this application 
@@ -118,6 +123,28 @@ public class User {
 			int appID = appAccess.applicationID; 
 			Application app = appManager.getApplicationsById().get(appID); 
 			this.setAppAccess(app, appAccess.access); 
+		}
+	}
+	
+	public void removeApplication(Application app){
+		// first check whether the user has links in the application
+		if(this.hasApplication(app)){
+			System.out.println("User " + this.pointerID + " has application " + app.getName()); 
+			if(this.prevSrcApp == app){
+				System.out.println("is source --> clear all"); 
+				this.clearApplicationList(); 
+			}
+			else{
+				System.out.println("is target"); 
+				this.removePrevTargetApp(app); 
+			}
+		}
+		// now delete the access restrictions for the user 
+		for (Entry<Application, UserWindowAccess> e : this.appAccess.entrySet()) {
+			if(e.getKey() == app){
+				System.out.println("User "+this.pointerID+" has access "+e.getValue()+" for app "+app.getName()); 
+				this.appAccess.remove(e); 
+			}
 		}
 	}
 	

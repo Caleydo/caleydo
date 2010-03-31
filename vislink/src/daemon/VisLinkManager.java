@@ -417,6 +417,8 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	public void connect() {
 		System.out.println("Connect to VisRenderer"); 
 		
+		this.applicationManager.clearApplications(); 
+		
 		// establish connection to renderer proxy 
 		if(rendererPrx == null) {
 
@@ -569,10 +571,15 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
     }
 
 	public void unregisterApplication(String appName) {
+		// unregister from application list 
 		Application app = applicationManager.getApplications().remove(appName);
 		if (app != null) {
+			// unregister from renderer
 			rendererPrx.unregisterSelectionContainer(app.getId());
-			
+			// unregister selections
+			selectionManager.clearUnreportedSelections(app); 
+			// unregister from user
+			userManager.clearApplicationFromUser(app); 
 		}
 	}
 

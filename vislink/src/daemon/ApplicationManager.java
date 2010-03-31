@@ -37,4 +37,9 @@ public class ApplicationManager {
 		applicationsById.put(app.getId(), app);
 	}
 	
+	public void clearApplications() {
+		this.applications.clear(); 
+		this.applicationsById.clear(); 
+	}
+	
 }

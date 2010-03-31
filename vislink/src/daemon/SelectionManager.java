@@ -47,6 +47,17 @@ public class SelectionManager {
 		return null; 
 	}
 	
+	public void clearUnreportedSelections(Application app){
+		for ( UserSelection selection : selections ){
+			if(!selection.wasReported()){
+				if(selection.getApplication() == app){
+					System.out.println("Clearing unreported selection "+selection.toString()); 
+					this.selections.remove(selection); 
+				}
+			}
+		}
+	}
+	
 	public String getSelectionIDFilter(String appName){
 		UserSelection selection = this.getUnreportedSelection(appName); 
 		if(selection == null){
