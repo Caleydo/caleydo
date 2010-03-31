@@ -51,11 +51,8 @@ public class VisLinkManagerIceInterface extends _VisManagerIDisp{
 		UserManager userManager = manager.getUserManager(); 
 		User user = userManager.getUser(event.pointerId); 
 		
-		// TODO: remove, this is just a test: 
-		ClipboardManager clipboard = new ClipboardManager(); 
-		String selection = clipboard.getSelection(); 
-		System.out.println("Selection: "+selection); 
-		// TODO: do something
+		// report one-shot request to visual links manager
+		manager.reportOneShot(user, event.pointerAccessInformation); 
 	}
 
 

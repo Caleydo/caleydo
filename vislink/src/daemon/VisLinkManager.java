@@ -39,6 +39,8 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	UserManager userManager; 
 	
 	SelectionManager selectionManager; 
+	
+	ClipboardManager clipboardManager; 
 
 	JAXBContext jaxbContext; 
 	
@@ -53,6 +55,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	
 	
 	public VisLinkManager() {
+		this.clipboardManager = new ClipboardManager(); 
 	}
 	
 	public void reportWindowChange(String appName) {
@@ -170,8 +173,33 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		checkRender(pointerID);
 	}
 	
+	public void reportOneShot(User user, AccessInformation accessInformation){
+		System.out.println("VisLinkManager: reportOneShot (user: " + user.getPointerID() + ")"); 
+		
+		Application srcApp = user.getPrevSrcApp(); 
+		String selectionID = ""; 
+		if(srcApp == null){
+			System.out.println("User does not have any source window"); 
+		}
+		else{
+			selectionID = this.clipboardManager.getSelection(); 
+			System.out.println("Selection (clipboard): "+selectionID); 
+			if(!selectionID.isEmpty()){
+				int srcAppID = srcApp.getId(); 
+				this.reportOneShot(user, selectionID, accessInformation, srcAppID, OneShotTimeoutEvent.ONE_SHOT_LONG_DISPLAY_TIME); 
+			}
+		}
+	}
+	
 	public void reportOneShot(User user, User owner, AccessInformation accessInformation, int srcAppID){
-		System.out.println("VisLinkManager: reportOneShot (user: " + user.getPointerID() + ", owner: " + owner.getPointerID() + ")"); 
+		System.out.println("VisLinkManager: reportOneShot (user: " + user.getPointerID() + ", owner: " + owner.getPointerID() + ")");
+		
+		String selectionID = owner.getPrevSelectionID(); 
+		this.reportOneShot(user, selectionID, accessInformation, srcAppID, OneShotTimeoutEvent.ONE_SHOT_DISPLAY_TIME); 
+	}
+	
+	public void reportOneShot(User user, String selectionID, AccessInformation accessInformation, int srcAppID, int displayTime){
+		System.out.println("VisLinkManager: reportOneShot (user: " + user.getPointerID() + ", string: " + selectionID + ")"); 
 		
 		// generate timeout handling 
 		TimeoutEvent event = new OneShotTimeoutEvent(user); 
@@ -182,7 +210,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		user.setTimeoutHandler(new TimeoutHandler(event, this)); 
 
 		Timer timer = new Timer(); 
-		timer.schedule(user.getTimeoutHandler(), OneShotTimeoutEvent.ONE_SHOT_DISPLAY_TIME); 
+		timer.schedule(user.getTimeoutHandler(), displayTime); 
 
 		
 		// check if the user currently has one-shot links on (only one set allowed at the moment)
@@ -193,9 +221,6 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		
 		// set the current render type 
 		user.setCurrentRenderType(VisualLinksRenderType.RenderTypeOneShot); 
-		
-		// retrieve selection ID of owner 
-		String selectionID = owner.getPrevSelectionID(); 
 		
 		// retrieve access information for user 
 		ApplicationAccessInfo[] targetApplicationIds = accessInformation.applications; 
