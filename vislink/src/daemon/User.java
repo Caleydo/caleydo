@@ -109,6 +109,7 @@ public class User {
 	 * @param access The access rights of the user for the application. 
 	 */
 	public void setAppAccess(Application app, UserWindowAccess access){
+		System.out.println("\nSet access " + access + " for application " + app.getName() + " for user " + this.pointerID +"\n"); 
 		this.appAccess.put(app, access); 
 	}
 	
@@ -146,6 +147,23 @@ public class User {
 				this.appAccess.remove(e); 
 			}
 		}
+	}
+	
+	/**
+	 * Creates a list of target applications (accessible or not) 
+	 * by not considering the source application. 
+	 * @param srcApp Application not to be included in the list. 
+	 * @return A list of all applications except for srcApp. 
+	 */
+	public List<Application> getTargetApps(Application srcApp){
+		List<Application> apps = new ArrayList<Application>(); 
+		for (Entry<Application, UserWindowAccess> e : this.appAccess.entrySet()) {
+			if(e.getKey() != srcApp){
+				System.out.println("User "+this.pointerID+" has access "+e.getValue()+" for target app "+e.getKey().getName()); 
+				apps.add(e.getKey()); 
+			}
+		}
+		return apps; 
 	}
 	
 	/**
@@ -209,6 +227,14 @@ public class User {
 				System.out.println("(app is accessible)"); 
 				return true; 
 			}
+		}
+		return false; 
+	}
+	
+	public boolean isApplicationAccessible(Application app){
+		if(this.appAccess.get(app) == UserWindowAccess.Accessible){
+			System.out.println("App " + app.getName() + " is accessible for user " + this.pointerID); 
+			return true; 
 		}
 		return false; 
 	}

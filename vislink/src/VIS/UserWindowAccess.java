@@ -14,15 +14,17 @@ package VIS;
 public enum UserWindowAccess implements java.io.Serializable
 {
     Accessible,
-    NotAccessible;
+    NotAccessible,
+    Forbidden;
 
     public static final int _Accessible = 0;
     public static final int _NotAccessible = 1;
+    public static final int _Forbidden = 2;
 
     public static UserWindowAccess
     convert(int val)
     {
-        assert val >= 0 && val < 2;
+        assert val >= 0 && val < 3;
         return values()[val];
     }
 
@@ -54,7 +56,7 @@ public enum UserWindowAccess implements java.io.Serializable
     public static UserWindowAccess
     __read(IceInternal.BasicStream __is)
     {
-        int __v = __is.readByte(2);
+        int __v = __is.readByte(3);
         return UserWindowAccess.convert(__v);
     }
 }

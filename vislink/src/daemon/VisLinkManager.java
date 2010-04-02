@@ -66,7 +66,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		
 		// find the mouse pointer that has triggered the window change 
 		AccessInformation accessInformation = rendererPrx.getAccessInformation(app.getId());
-		ApplicationAccessInfo[] targetApplicationIds = accessInformation.applications;
+		//ApplicationAccessInfo[] targetApplicationIds = accessInformation.applications;
 		String pointerID = accessInformation.pointerId;
 		
 		// check out whether we need to redraw links for that user 
@@ -74,7 +74,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		// save the access information for the user 
 		user.setAppAccess(this.applicationManager, accessInformation); 
 		
-		if(user.isActive()){
+		if(user.isActive() && user.isApplicationAccessible(app)){
 			String selectionId = user.getPrevSelectionID(); 
 			System.out.println("User changing window content (" + pointerID 
 					+ ") had previous selection id " + selectionId); 
@@ -84,9 +84,13 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			// request visual links for source window 
 			this.selectionManager.addSelection(app, selectionId, pointerID, true); 
 			
+			// get all target apps 
+			List<Application> targetApps = user.getTargetApps(app); 
+			
 			// request visual links for target window 
-			for (ApplicationAccessInfo appId : targetApplicationIds) {
-				Application currentApp = applicationManager.getApplicationsById().get(appId.applicationID);
+//			for (ApplicationAccessInfo appId : targetApplicationIds) {
+//				Application currentApp = applicationManager.getApplicationsById().get(appId.applicationID);
+			for(Application currentApp : targetApps){
 				if(!currentApp.isTemporary()){
 					this.selectionManager.addSelection(currentApp, selectionId, pointerID, false); 
 				}
@@ -142,36 +146,44 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		}
 		
 		AccessInformation accessInformation = rendererPrx.getAccessInformation(app.getId());
-		ApplicationAccessInfo[] targetApplicationIds = accessInformation.applications;
+		//ApplicationAccessInfo[] targetApplicationIds = accessInformation.applications;
 		String pointerID = accessInformation.pointerId;
-		
-		// save selection as source selection 
-		this.selectionManager.addSelection(app, selectionId, pointerID, true); 
-		
-		UserSelection selection = this.selectionManager.getSelection(app, pointerID); 
-		
-		if (boundingBoxListXML != null) {
-			BoundingBoxList bbl = createBoundingBoxList(boundingBoxListXML);
-			selection.setBoundingBoxList(bbl); 
-		}
-		selection.setReported(); 
-
 		
 		// multi-user management: get / create user and store selection ID / source app 
 		System.out.println("Get user with pointer ID: " + pointerID);
 		User user = this.userManager.getUser(pointerID); 
 		// save access information for user 
-		user.setAppAccess(this.applicationManager, accessInformation); 
-		// store new selection in source window 
-		user.setNewSelection(selectionId, app); 
+		user.setAppAccess(this.applicationManager, accessInformation);
 		
-		for (ApplicationAccessInfo appId : targetApplicationIds) {
-			Application currentApp = applicationManager.getApplicationsById().get(appId.applicationID);
-			if(!currentApp.isTemporary()){
-				if (currentApp.getId() != app.getId() || boundingBoxListXML == null) {
-					this.selectionManager.addSelection(currentApp, selectionId, pointerID, false); 
+		// if the user's source window is not accessible for him, discard event
+		if(user.isApplicationAccessible(app)){
+		
+			// save selection as source selection 
+			this.selectionManager.addSelection(app, selectionId, pointerID, true); 
+			UserSelection selection = this.selectionManager.getSelection(app, pointerID); 
+
+			if (boundingBoxListXML != null) {
+				BoundingBoxList bbl = createBoundingBoxList(boundingBoxListXML);
+				selection.setBoundingBoxList(bbl); 
+			}
+			selection.setReported(); 
+
+			// store new selection in source window 
+			user.setNewSelection(selectionId, app); 
+			
+			// get the list of target apps
+			List<Application> targetApps = user.getTargetApps(app); 
+
+//			for (ApplicationAccessInfo appId : targetApplicationIds) {
+//				Application currentApp = applicationManager.getApplicationsById().get(appId.applicationID);
+			for(Application currentApp : targetApps){
+				if(!currentApp.isTemporary()){
+					if (currentApp.getId() != app.getId() || boundingBoxListXML == null) {
+						this.selectionManager.addSelection(currentApp, selectionId, pointerID, false); 
+					}
 				}
 			}
+		
 		}
 		
 		checkRender(pointerID);
