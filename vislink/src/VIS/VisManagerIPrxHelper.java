@@ -55,6 +55,29 @@ public final class VisManagerIPrxHelper extends Ice.ObjectPrxHelperBase implemen
         }
     }
 
+    public boolean
+    reportEvent_async(AMI_VisManagerI_reportEvent __cb, InteractionEvent event)
+    {
+        return reportEvent_async(__cb, event, null, false);
+    }
+
+    public boolean
+    reportEvent_async(AMI_VisManagerI_reportEvent __cb, InteractionEvent event, java.util.Map<String, String> __ctx)
+    {
+        return reportEvent_async(__cb, event, __ctx, true);
+    }
+
+    @SuppressWarnings("unchecked")
+    private boolean
+    reportEvent_async(AMI_VisManagerI_reportEvent __cb, InteractionEvent event, java.util.Map<String, String> __ctx, boolean __explicitCtx)
+    {
+        if(__explicitCtx &&  __ctx == null)
+        {
+            __ctx = _emptyContext;
+        }
+        return __cb.__invoke(this, __cb, event, __ctx);
+    }
+
     public static VisManagerIPrx
     checkedCast(Ice.ObjectPrx __obj)
     {

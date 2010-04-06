@@ -15,4 +15,7 @@ public interface VisManagerIPrx extends Ice.ObjectPrx
 {
     public void reportEvent(InteractionEvent event);
     public void reportEvent(InteractionEvent event, java.util.Map<String, String> __ctx);
+
+    public boolean reportEvent_async(AMI_VisManagerI_reportEvent __cb, InteractionEvent event);
+    public boolean reportEvent_async(AMI_VisManagerI_reportEvent __cb, InteractionEvent event, java.util.Map<String, String> __ctx);
 }

@@ -15,16 +15,18 @@ public enum InteractionEventType implements java.io.Serializable
 {
     MouseOverSelection,
     MouseOverCollaboratorSelection,
-    OneShotRequest;
+    OneShotRequest,
+    WindowLock;
 
     public static final int _MouseOverSelection = 0;
     public static final int _MouseOverCollaboratorSelection = 1;
     public static final int _OneShotRequest = 2;
+    public static final int _WindowLock = 3;
 
     public static InteractionEventType
     convert(int val)
     {
-        assert val >= 0 && val < 3;
+        assert val >= 0 && val < 4;
         return values()[val];
     }
 
@@ -56,7 +58,7 @@ public enum InteractionEventType implements java.io.Serializable
     public static InteractionEventType
     __read(IceInternal.BasicStream __is)
     {
-        int __v = __is.readByte(3);
+        int __v = __is.readByte(4);
         return InteractionEventType.convert(__v);
     }
 }
