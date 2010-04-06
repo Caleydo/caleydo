@@ -59,7 +59,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	}
 	
 	public void reportAccessChange(List<User> users){
-		System.out.println("VisLinkManager: reportAccessChange, affected users =" + users.size());
+		System.out.println("\nVisLinkManager: reportAccessChange, affected users =" + users.size());
 		
 		for(User user : users){
 			if(user.isActive()){
@@ -84,7 +84,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	}
 	
 	public void reportWindowChange(String appName) {
-		System.out.println("VisLinkManager: reportWindowChange, appName=" + appName);
+		System.out.println("\nVisLinkManager: reportWindowChange, appName=" + appName);
 		
 		Application app = applicationManager.getApplications().get(appName);
 
@@ -161,7 +161,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	}
 	
 	public void reportSelection(String appName, String selectionId, String boundingBoxListXML) {
-		System.out.println("VisLinkManager: reportSelection, appName=" + appName + ", selId=" + selectionId + ", xml=" + boundingBoxListXML);
+		System.out.println("\nVisLinkManager: reportSelection, appName=" + appName + ", selId=" + selectionId + ", xml=" + boundingBoxListXML);
 		
 		Application app = applicationManager.getApplications().get(appName);
 		
@@ -233,7 +233,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	}
 	
 	public void reportOneShot(User user, User owner, AccessInformation accessInformation, int srcAppID){
-		System.out.println("VisLinkManager: reportOneShot (user: " + user.getPointerID() + ", owner: " + owner.getPointerID() + ")");
+		System.out.println("\nVisLinkManager: reportOneShot (user: " + user.getPointerID() + ", owner: " + owner.getPointerID() + ")");
 		
 		String selectionID = owner.getPrevSelectionID(); 
 		this.reportOneShot(user, selectionID, accessInformation, srcAppID, OneShotTimeoutEvent.ONE_SHOT_DISPLAY_TIME); 
