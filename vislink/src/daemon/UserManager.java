@@ -49,6 +49,10 @@ public class UserManager {
 		return usersList; 
 	}
 	
+	public HashMap<String, User> getUsers() {
+		return users;
+	}
+
 	public void clearApplicationFromUser(Application app){
 		for (Entry<String, User> e : users.entrySet()) {
 			User user = e.getValue(); 

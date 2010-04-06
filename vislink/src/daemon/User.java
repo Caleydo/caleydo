@@ -239,6 +239,10 @@ public class User {
 		return false; 
 	}
 	
+	public UserWindowAccess getWindowAccess(Application app){
+		return this.appAccess.get(app); 
+	}
+	
 	/**
 	 * Checks if the user has ever contributed to the visual links application. 
 	 * Example: user scrolls the map --> map registers window movement --> Deskotheque 

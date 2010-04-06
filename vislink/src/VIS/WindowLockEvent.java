@@ -18,11 +18,11 @@ public class WindowLockEvent extends InteractionEvent
         super();
     }
 
-    public WindowLockEvent(InteractionEventType eventType, String pointerId, int pointerX, int pointerY, AccessInformation pointerAccessInformation, int appID)
+    public WindowLockEvent(InteractionEventType eventType, String pointerId, int pointerX, int pointerY, int appID, boolean locked)
     {
         super(eventType, pointerId, pointerX, pointerY);
-        this.pointerAccessInformation = pointerAccessInformation;
         this.appID = appID;
+        this.locked = locked;
     }
 
     private static class __F implements Ice.ObjectFactory
@@ -101,8 +101,8 @@ public class WindowLockEvent extends InteractionEvent
     {
         __os.writeTypeId(ice_staticId());
         __os.startWriteSlice();
-        pointerAccessInformation.__write(__os);
         __os.writeInt(appID);
+        __os.writeBool(locked);
         __os.endWriteSlice();
         super.__write(__os);
     }
@@ -115,9 +115,8 @@ public class WindowLockEvent extends InteractionEvent
             __is.readTypeId();
         }
         __is.startReadSlice();
-        pointerAccessInformation = new AccessInformation();
-        pointerAccessInformation.__read(__is);
         appID = __is.readInt();
+        locked = __is.readBool();
         __is.endReadSlice();
         super.__read(__is, true);
     }
@@ -138,7 +137,7 @@ public class WindowLockEvent extends InteractionEvent
         throw ex;
     }
 
-    public AccessInformation pointerAccessInformation;
-
     public int appID;
+
+    public boolean locked;
 }

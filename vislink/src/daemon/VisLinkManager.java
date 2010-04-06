@@ -58,6 +58,31 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		this.clipboardManager = new ClipboardManager(); 
 	}
 	
+	public void reportAccessChange(List<User> users){
+		System.out.println("VisLinkManager: reportAccessChange, affected users =" + users.size());
+		
+		for(User user : users){
+			if(user.isActive()){
+				String selectionID = user.getPrevSelectionID(); 
+				Application srcApp = user.getPrevSrcApp(); 
+				
+				user.setNewSelection(selectionID, srcApp); 
+				
+				List<Application> targetApps = user.getTargetApps(srcApp);
+				
+				this.selectionManager.addSelection(srcApp, selectionID, user.getPointerID(), true); 
+				
+				for(Application targetApp : targetApps){
+					if(user.isApplicationAccessible(targetApp) && !targetApp.isTemporary()){
+						this.selectionManager.addSelection(targetApp, selectionID, user.getPointerID(), false); 
+					}
+				}
+				
+				checkRender(user.getPointerID()); 
+			}
+		}
+	}
+	
 	public void reportWindowChange(String appName) {
 		System.out.println("VisLinkManager: reportWindowChange, appName=" + appName);
 		

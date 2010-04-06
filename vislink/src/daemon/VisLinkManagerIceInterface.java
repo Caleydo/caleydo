@@ -1,11 +1,18 @@
 package daemon;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+
 import Ice.Current;
 import VIS.InteractionEvent;
 import VIS.MouseOverCollaboratorSelectionEvent;
 import VIS.OneShotRequestEvent;
+import VIS.UserWindowAccess;
 import VIS.VisManagerIPrx;
 import VIS.VisualLinksRenderType;
+import VIS.WindowLockEvent;
 import VIS._VisManagerIDisp;
 
 public class VisLinkManagerIceInterface extends _VisManagerIDisp{
@@ -124,6 +131,56 @@ public class VisLinkManagerIceInterface extends _VisManagerIDisp{
 		// report one-shot request to visual links manager
 		//manager.reportOneShot(user, event.pointerAccessInformation); 
 	}
+	
+	public void reportWindowLockEvent(WindowLockEvent event){
+		System.out.println("Receiving window lock event from pointer"+event.pointerId); 
+		
+		// get user
+		UserManager userManager = manager.getUserManager(); 
+		User user = userManager.getUser(event.pointerId); 
+		
+		// get application 
+		ApplicationManager appManager = manager.getApplicationManager(); 
+		Application app = appManager.getApplicationsById().get(event.appID); 
+		
+		if(app != null){
+			
+			System.out.println("App "+app.getName()+" is locked" + event.locked); 
+			
+			// window access to be set 
+			// TODO: this is not correct, if the window is unaccessible 
+			// due to other reasons (e.g. private display) 
+			UserWindowAccess userAccess = UserWindowAccess.Accessible; 
+			if(event.locked){
+				userAccess = UserWindowAccess.NotAccessible; 
+			}
+			
+			// construct list of affected users 
+			List<User> affectedUsers = new ArrayList<User>(); 
+			
+			// set app inaccessible for all other users 
+			HashMap<String, User> users = userManager.getUsers(); 
+			for(Entry<String, User> userEntry : users.entrySet()){
+				User otherUser = userEntry.getValue(); 
+				if(otherUser != user){
+					UserWindowAccess prevAccess = otherUser.getWindowAccess(app); 
+					otherUser.setAppAccess(app, userAccess); 
+					if(prevAccess != userAccess){
+						System.out.println("User's "+user.getPointerID()+" access has changed to "+userAccess); 
+						affectedUsers.add(otherUser); 
+					}
+				}
+			}
+			
+			if(affectedUsers.size() > 0){
+				// trigger window change report
+				this.manager.reportAccessChange(affectedUsers); 
+			}
+		}
+		else{
+			System.out.println("Application with ID "+event.appID+" not found"); 
+		}
+	}
 
 
 	public void reportEvent(InteractionEvent event, Current current) {
@@ -134,6 +191,9 @@ public class VisLinkManagerIceInterface extends _VisManagerIDisp{
 			break; 
 		case OneShotRequest:
 			this.reportOneShotRequestEvent((OneShotRequestEvent)event); 
+			break; 
+		case WindowLock:
+			this.reportWindowLockEvent((WindowLockEvent)event); 
 			break; 
 		default:
 			break; 
