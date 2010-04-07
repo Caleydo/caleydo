@@ -138,7 +138,14 @@ public class ViewFrustum
 
 	@Override
 	public void setProjectionMatrix(GL gl, float fAspectRatio) {
-		// fAspectRatio = (float) height / (float) width;
+
+		// The member values must be copied to local values
+		// Only the local values are allowed to be written - otherwise we would mess up the frustum with the
+		// aspect ration calculation in every frame!
+		float left = getLeft();
+		float right = getRight();
+		float bottom = getBottom();
+		float top = getTop();
 
 		if (bConsiderAspectRatio) {
 			if (fAspectRatio < 1.0f) {

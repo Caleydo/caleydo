@@ -1968,58 +1968,58 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>();
 
-//		float fXValue = 0;
-//		float fYValue = 0;
+		float x = 0;
+		float y = 0;
 
-//		if (idType == EIDType.EXPERIMENT_INDEX) {
-//			for (int iAxisNumber : storageVA) {
-//
-//				fXValue = iAxisNumber
-//						* renderStyle.getAxisSpacing(storageVA.size());
-//				fXValue = fXValue + renderStyle.getXSpacing();
-//				fYValue = set.get(storageVA.get(storageVA.size() - 1))
-//						.getFloat(EDataRepresentation.NORMALIZED, iAxisNumber);
-//
-//				// fYValue = renderStyle.getBottomSpacing();
-//				alElementReps.add(new SelectedElementRep(idType, iUniqueID,
-//						fXValue, fYValue, 0.0f));
-//			}
-//		} else {
-//			// if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
-//			// fXValue = viewFrustum.getRight() - 0.2f;
-//			// else
-//			// fXValue = viewFrustum.getRight() - 0.4f;
-//
-//			if (renderConnectionsLeft) {
-//				fXValue = fXValue + renderStyle.getXSpacing();
-//				fYValue = set.get(storageVA.get(0)).getFloat(
-//						EDataRepresentation.NORMALIZED, iStorageIndex);
-//			} else {
-//				// if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
-//				// fXValue = viewFrustum.getRight() - 0.2f;
-//				// else
-//				fXValue = viewFrustum.getRight() - 0.4f;
-//				fYValue = set
-//						.get(storageVA.get(storageVA.size() - 1))
-//						.getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
-//			}
-//
-//			// // get the value on the leftmost axis
-//			// fYValue =
-//			// set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
-//			// iStorageIndex);
-//
-//			if (Float.isNaN(fYValue)) {
-//				fYValue = NAN_Y_OFFSET * renderStyle.getAxisHeight()
-//						+ renderStyle.getBottomSpacing();
-//			} else {
-//				fYValue = fYValue * renderStyle.getAxisHeight()
-//						+ renderStyle.getBottomSpacing();
-//			}
-//			alElementReps.add(new SelectedElementRep(idType, iUniqueID,
-//					fXValue, fYValue, 0.0f));
-//		}
-//
+		if (idType == EIDType.EXPERIMENT_INDEX) {
+			for (int iAxisNumber : storageVA) {
+
+				x = iAxisNumber
+						* renderStyle.getAxisSpacing(storageVA.size());
+				x = x + renderStyle.getXSpacing();
+				y = set.get(storageVA.get(storageVA.size() - 1))
+						.getFloat(EDataRepresentation.NORMALIZED, iAxisNumber);
+
+				// fYValue = renderStyle.getBottomSpacing();
+				alElementReps.add(new SelectedElementRep(idType, iUniqueID,
+						x, y, 0.0f));
+			}
+		} else {
+			// if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
+			// fXValue = viewFrustum.getRight() - 0.2f;
+			// else
+			// fXValue = viewFrustum.getRight() - 0.4f;
+
+			if (renderConnectionsLeft) {
+				x = x + renderStyle.getXSpacing();
+				y = set.get(storageVA.get(0)).getFloat(
+						EDataRepresentation.NORMALIZED, iStorageIndex);
+			} else {
+				// if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
+				// fXValue = viewFrustum.getRight() - 0.2f;
+				// else
+				x = viewFrustum.getRight() - 0.4f;
+				y = set
+						.get(storageVA.get(storageVA.size() - 1))
+						.getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
+			}
+
+			// // get the value on the leftmost axis
+			// fYValue =
+			// set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
+			// iStorageIndex);
+
+			if (Float.isNaN(y)) {
+				y = NAN_Y_OFFSET * renderStyle.getAxisHeight()
+						+ renderStyle.getBottomSpacing();
+			} else {
+				y = y * renderStyle.getAxisHeight()
+						+ renderStyle.getBottomSpacing();
+			}
+			alElementReps.add(new SelectedElementRep(idType, iUniqueID,
+					x, y, 0.0f));
+		}
+
 		return alElementReps;
 	}
 
