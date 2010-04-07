@@ -107,13 +107,44 @@ public class GLConsecutiveConnectionGraphDrawing
 	private void renderFromStack(GL gl, EIDType idType, HashMap<Integer, Vec3f> hashViewToCenterPoint,
 		ArrayList<Integer> viewsToBeVisited, ArrayList<ArrayList<Vec3f>> heatMapPoints, ArrayList<ArrayList<Vec3f>> parCoordsPoints) {
 		
-		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>();
-		int positionOfGap = checkIfGapAvailableWhenRenderingFromStack(viewsToBeVisited);
 		int heatMapPredecessorID = -1;
 		int parCoordsPredecessorID = -1;
 		int heatMapSuccessorID = -1;
 		int parCoordsSuccessorID = -1;
-		//TODO: render from stack
+		
+		if (gapSuccessorID == -1){
+			heatMapPredecessorID = getPreviousView(viewsToBeVisited, heatMapID);
+			heatMapSuccessorID = getNext(viewsToBeVisited, heatMapID);
+			parCoordsPredecessorID = getPreviousView(viewsToBeVisited, parCoordID);
+			parCoordsSuccessorID = getNext(viewsToBeVisited, parCoordID);
+		}
+		else{
+			if (heatMapID == activeViewID){
+				
+			}
+			else if (parCoordID == activeViewID){
+				
+			}
+			else{
+				
+			}
+		}
+		//TODO get IDs of dynamic views if gap is present
+		
+		
+		getPointsFromHeatMapAndParCoords(heatMapPredecessorID, heatMapSuccessorID, heatMapPoints, parCoordsPredecessorID, parCoordsSuccessorID, parCoordsPoints, hashViewToCenterPoint);
+
+		renderLinesFromStack(gl, idType, heatMapPredecessorID, heatMapSuccessorID, parCoordsPredecessorID, parCoordsSuccessorID, viewsToBeVisited, hashViewToCenterPoint);
+
+	}
+
+	private void renderLinesFromStack(GL gl, EIDType idType, int heatMapPredecessorID,
+		int heatMapSuccessorID, int parCoordsPredecessorID, int parCoordsSuccessorID,
+		ArrayList<Integer> viewsToBeVisited, HashMap<Integer, Vec3f> hashViewToCenterPoint) {
+		
+		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>();
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void renderFromCenter(GL gl, EIDType idType, HashMap<Integer, Vec3f> hashViewToCenterPoint,
@@ -135,14 +166,14 @@ public class GLConsecutiveConnectionGraphDrawing
 				heatMapPredecessorID = getNext(viewsToBeVisited, heatMapID);
 				heatMapSuccessorID = gapSuccessorID;
 				parCoordsPredecessorID = getPreviousView(viewsToBeVisited, parCoordID);
-				if(beforeGap(viewsToBeVisited, parCoordID))
+				if(beforeGap(parCoordID))
 					parCoordsSuccessorID = -1;
 				else
 					parCoordsSuccessorID = getNext(viewsToBeVisited, parCoordID);
 			}
 			else if (parCoordID == activeViewID){
 				heatMapPredecessorID = getPreviousView(viewsToBeVisited, heatMapID);
-				if (beforeGap(viewsToBeVisited, heatMapID))
+				if (beforeGap(heatMapID))
 					heatMapSuccessorID = -1;
 				else
 					heatMapSuccessorID = getNext(viewsToBeVisited, heatMapID);
@@ -150,7 +181,19 @@ public class GLConsecutiveConnectionGraphDrawing
 				parCoordsSuccessorID = gapSuccessorID;
 			}
 			else{
-				//TODO what if Pathway in focus
+				if (heatMapID != -1)
+					heatMapPredecessorID = viewsToBeVisited.get(0);
+				if (parCoordID != -1)
+					parCoordsPredecessorID = viewsToBeVisited.get(0);
+				
+				if (beforeGap(heatMapID))
+					heatMapSuccessorID = -1;
+				else
+					heatMapSuccessorID = getNext(viewsToBeVisited, heatMapID);
+				if (beforeGap(parCoordID))
+					parCoordsSuccessorID = -1;
+				else
+					parCoordsSuccessorID = getNext(viewsToBeVisited, parCoordID);
 			}
 		}
 		
@@ -161,7 +204,12 @@ public class GLConsecutiveConnectionGraphDrawing
 		
 	}
 
-	private boolean beforeGap(ArrayList<Integer> viewsToBeVisited, int iD) {
+	/** check if a chosen view is located "before" the gap
+	 * 
+	 * @param iD
+	 * @return true if view lies "before" the gap false otherwise
+	 */
+	private boolean beforeGap(int iD) {
 		int count = 0;
 		while (count < gapPosition){
 			if (allviews.get(count) == iD)
@@ -189,137 +237,113 @@ public class GLConsecutiveConnectionGraphDrawing
 		ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
 		Vec3f vecViewBundlingPoint = null;
 		Vec3f controlPoint = null;
+		Vec3f src = null;
+		if (activeViewID == heatMapID)
+			src = heatmapSuccessor.get(0).get(0);
+		else if (activeViewID == parCoordID)
+			src = parCoordsSuccessor.get(0).get(0);
+		else
+			src = hashViewToCenterPoint.get(activeViewID);
 		
 		for (Integer key : viewsToBeVisited) {
-			if (key != -1){	
-				if (key == heatMapID){
-					if (heatmapPredecessor.size() > 0){
-						VisLinkAnimationStage currentStage = new VisLinkAnimationStage();
-						
-						if (heatMapPredecessorID != parCoordID)
-							controlPoint = calculateControlPoint(heatmapPredecessor.get(0).get(0), hashViewToCenterPoint.get(heatMapPredecessorID));
-						else
-							controlPoint = calculateControlPoint(heatmapPredecessor.get(0).get(0), parCoordsSuccessor.get(0).get(0));
-						
+			if (key == heatMapID){
+				if (heatmapPredecessor.size() > 0){
+					VisLinkAnimationStage currentStage = new VisLinkAnimationStage();
+					
+					if (heatmapPredecessor.get(0).size() > 1){
+						controlPoint = calculateControlPoint(calculateCenter(heatmapPredecessor), src);
+						vecViewBundlingPoint = calculateBundlingPoint(calculateCenter(heatmapPredecessor), controlPoint);
+					}
+					else{
+						controlPoint = calculateControlPoint(heatmapPredecessor.get(0).get(0), src);
 						vecViewBundlingPoint = calculateBundlingPoint(heatmapPredecessor.get(0).get(0), controlPoint);
-						for (ArrayList<Vec3f> alCurrentPoints : heatmapPredecessor) {
-							if (alCurrentPoints.size() > 1)
-								renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
-							else
-								pointsToDepthSort.add(alCurrentPoints.get(0));
-						}
-						for (Vec3f currentPoint : depthSort(pointsToDepthSort))
-							currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint, controlPoint));
-
-						if (heatmapPredecessor.size() >1)
-							connectionLinesAllViews.add(currentStage);
-						pointsToDepthSort.clear();
-						VisLinkAnimationStage bundling = null;
-						if (heatMapPredecessorID == activeViewID && heatMapPredecessorID != parCoordID)
-							bundling = new VisLinkAnimationStage(true);
-						else
-							bundling = new VisLinkAnimationStage();
-						if (heatMapPredecessorID != parCoordID)
-							bundling.addLine(createControlPoints(hashViewToCenterPoint.get(heatMapPredecessorID), heatmapPredecessor.get(0).get(0), controlPoint));
-						else
-							bundling.addLine(createControlPoints(parCoordsSuccessor.get(0).get(0), heatmapPredecessor.get(0).get(0), controlPoint));
-						connectionLinesAllViews.add(bundling);
-						
-					}
-					if (heatmapSuccessor.size() > 0){
-						VisLinkAnimationStage currentStage = new VisLinkAnimationStage();
-						if (heatMapSuccessorID != parCoordID)
-							controlPoint = calculateControlPoint(heatmapSuccessor.get(0).get(0), hashViewToCenterPoint.get(heatMapSuccessorID));
-						else
-							controlPoint = calculateControlPoint(heatmapSuccessor.get(0).get(0), parCoordsPredecessor.get(0).get(0));
-						vecViewBundlingPoint = calculateBundlingPoint(heatmapSuccessor.get(0).get(0), controlPoint);
-						for (ArrayList<Vec3f> alCurrentPoints : heatmapSuccessor) {
-							if (alCurrentPoints.size() > 1)
-								renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
-							else
-								pointsToDepthSort.add(alCurrentPoints.get(0));
-						}
-						for (Vec3f currentPoint : depthSort(pointsToDepthSort))
-							currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint, heatmapSuccessor.get(0).get(0)));
-
-						if (heatmapSuccessor.size() > 1)
-							connectionLinesAllViews.add(currentStage);
-						pointsToDepthSort.clear();
-					}
-
-				}
-				else if (key == parCoordID){
-					if (parCoordsPredecessor.size() > 0){
-						VisLinkAnimationStage currentStage = new VisLinkAnimationStage();
-						if (parCoordsPredecessorID != heatMapID)
-							controlPoint = calculateControlPoint(parCoordsPredecessor.get(0).get(0), hashViewToCenterPoint.get(parCoordsPredecessorID));
-						else
-							controlPoint = calculateControlPoint(parCoordsPredecessor.get(0).get(0), heatmapSuccessor.get(0).get(0));
-						vecViewBundlingPoint = calculateBundlingPoint(parCoordsPredecessor.get(0).get(0), controlPoint);
-						for (ArrayList<Vec3f> alCurrentPoints : parCoordsPredecessor) {
-							if (alCurrentPoints.size() > 1)
-								renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
-							else
-								pointsToDepthSort.add(alCurrentPoints.get(0));
-						}
-						for (Vec3f currentPoint : depthSort(pointsToDepthSort))
-								currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint, parCoordsPredecessor.get(0).get(0)));
-
-						if (parCoordsPredecessor.size() > 1)
-							connectionLinesAllViews.add(currentStage);
-						pointsToDepthSort.clear();
-						VisLinkAnimationStage bundling = null;
-						if (parCoordsPredecessorID == activeViewID && parCoordsPredecessorID != heatMapID)
-							bundling = new VisLinkAnimationStage(true);
-						else
-							bundling = new VisLinkAnimationStage();
-						if (parCoordsPredecessorID == heatMapID)
-							bundling.addLine(createControlPoints(heatmapSuccessor.get(0).get(0), parCoordsPredecessor.get(0).get(0), controlPoint));
-						else
-							bundling.addLine(createControlPoints(hashViewToCenterPoint.get(parCoordsPredecessorID), parCoordsPredecessor.get(0).get(0), controlPoint));
-						connectionLinesAllViews.add(bundling);
-					}
-					if (parCoordsSuccessor.size() > 0){
-						VisLinkAnimationStage currentStage = new VisLinkAnimationStage();
-						
-						if (parCoordsSuccessorID != heatMapID && parCoordsSuccessorID != -1)
-							controlPoint = calculateControlPoint(parCoordsSuccessor.get(0).get(0), hashViewToCenterPoint.get(parCoordsSuccessorID));
-						else
-							controlPoint = calculateControlPoint(parCoordsSuccessor.get(0).get(0), heatmapPredecessor.get(0).get(0));
-						vecViewBundlingPoint = calculateBundlingPoint(parCoordsSuccessor.get(0).get(0), controlPoint);
-						
-						for (ArrayList<Vec3f> alCurrentPoints : parCoordsSuccessor) {
-							if (alCurrentPoints.size() > 1)
-								renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
-							else
-								pointsToDepthSort.add(alCurrentPoints.get(0));
-						}
-						for (Vec3f currentPoint : depthSort(pointsToDepthSort))
-							currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint, parCoordsSuccessor.get(0).get(0)));
-
-						if (parCoordsSuccessor.size() > 1)
-							connectionLinesAllViews.add(currentStage);
-						pointsToDepthSort.clear();
-					}
-				}
-				else{
-					VisLinkAnimationStage currentStage = null;
-					if (key == activeViewID)
-						currentStage = new VisLinkAnimationStage();
-					else
-						currentStage = new VisLinkAnimationStage(true);
-					if (key == parCoordsSuccessorID)
-						controlPoint = calculateControlPoint(hashViewToCenterPoint.get(key), parCoordsSuccessor.get(0).get(0));
-					else if (key == heatMapSuccessorID)
-						controlPoint = calculateControlPoint(hashViewToCenterPoint.get(key), heatmapSuccessor.get(0).get(0));
-					else if (key == parCoordsPredecessorID)
-						controlPoint = calculateControlPoint(hashViewToCenterPoint.get(key), parCoordsPredecessor.get(0).get(0));
-					else if (key == heatMapPredecessorID){
-						if (heatmapPredecessor.get(0) == null)
-							return;
-						controlPoint = calculateControlPoint(hashViewToCenterPoint.get(key), heatmapPredecessor.get(0).get(0));
 					}
 					
+					for (ArrayList<Vec3f> alCurrentPoints : heatmapPredecessor) {
+						if (alCurrentPoints.size() > 1)
+							renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
+						else
+							pointsToDepthSort.add(alCurrentPoints.get(0));
+					}
+					for (Vec3f currentPoint : depthSort(pointsToDepthSort))
+						currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint, controlPoint));
+
+					if (heatmapPredecessor.size() >1)
+						connectionLinesAllViews.add(currentStage);
+					pointsToDepthSort.clear();
+					VisLinkAnimationStage bundling = null;
+					if (heatMapPredecessorID == activeViewID && heatMapPredecessorID != parCoordID)
+						bundling = new VisLinkAnimationStage(true);
+					else
+						bundling = new VisLinkAnimationStage();
+
+					if (heatmapPredecessor.get(0).size() > 1)
+						bundling.addLine(createControlPoints(src, vecViewBundlingPoint, controlPoint));
+					else
+						bundling.addLine(createControlPoints(src, heatmapPredecessor.get(0).get(0), controlPoint));
+					connectionLinesAllViews.add(bundling);
+					
+				}
+				if (heatmapSuccessor.size() > 0){
+					if (heatmapSuccessor.get(0).size() > 1)
+						src = vecViewBundlingPoint;
+					else
+						src = heatmapSuccessor.get(0).get(0);
+				}
+			}
+			else if (key == parCoordID){
+				if (parCoordsPredecessor.size() > 0){
+					VisLinkAnimationStage currentStage = new VisLinkAnimationStage();
+
+					if (parCoordsPredecessor.get(0).size() > 1){
+						controlPoint = calculateControlPoint(calculateCenter(parCoordsPredecessor), src);
+						vecViewBundlingPoint = calculateBundlingPoint(calculateCenter(parCoordsPredecessor), controlPoint);
+					}
+					else{
+						controlPoint = calculateControlPoint(parCoordsPredecessor.get(0).get(0), src);
+						vecViewBundlingPoint = calculateBundlingPoint(parCoordsPredecessor.get(0).get(0), controlPoint);
+					}
+					
+					for (ArrayList<Vec3f> alCurrentPoints : parCoordsPredecessor) {
+						if (alCurrentPoints.size() > 1)
+							renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
+						else
+							pointsToDepthSort.add(alCurrentPoints.get(0));
+					}
+					for (Vec3f currentPoint : depthSort(pointsToDepthSort))
+							currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint, parCoordsPredecessor.get(0).get(0)));
+
+					if (parCoordsPredecessor.size() > 1)
+						connectionLinesAllViews.add(currentStage);
+					pointsToDepthSort.clear();
+					VisLinkAnimationStage bundling = null;
+					if (parCoordsPredecessorID == activeViewID && parCoordsPredecessorID != heatMapID)
+						bundling = new VisLinkAnimationStage(true);
+					else
+						bundling = new VisLinkAnimationStage();
+					if (parCoordsPredecessor.get(0).size() > 1)
+						bundling.addLine(createControlPoints(src, vecViewBundlingPoint, controlPoint));
+					else
+						bundling.addLine(createControlPoints(src, parCoordsPredecessor.get(0).get(0), controlPoint));
+					connectionLinesAllViews.add(bundling);
+				}
+				
+				if (parCoordsSuccessor.size() > 0){
+					if (parCoordsSuccessor.get(0).size() > 1)
+						src = vecViewBundlingPoint;
+					else
+						src = parCoordsSuccessor.get(0).get(0);
+				}
+			}
+			else{
+				VisLinkAnimationStage currentStage = null;
+				if (key == activeViewID)
+					currentStage = new VisLinkAnimationStage();
+				else
+					currentStage = new VisLinkAnimationStage(true);
+	
+				controlPoint = calculateControlPoint(hashViewToCenterPoint.get(key), src);
+								
 					vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(key), controlPoint);
 					for (ArrayList<Vec3f> alCurrentPoints : hashIDTypeToViewToPointLists.get(idType).get(key)) {
 						if (alCurrentPoints.size() > 1)
@@ -329,26 +353,32 @@ public class GLConsecutiveConnectionGraphDrawing
 					}
 					for (Vec3f currentPoint : depthSort(pointsToDepthSort))
 						currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(key)));
-
+		
 					if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1 && key == activeViewID)
 						connectionLinesAllViews.add(currentStage);
+				
+				if (key != activeViewID){
 					VisLinkAnimationStage bundling = new VisLinkAnimationStage();
-					if (key == heatMapSuccessorID){
-						if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1)
-							bundling.addLine(createControlPoints(vecViewBundlingPoint, heatmapSuccessor.get(0).get(0), controlPoint));
-						else
-							bundling.addLine(createControlPoints(hashViewToCenterPoint.get(key), heatmapSuccessor.get(0).get(0), controlPoint));
-					}
-					else if (key == parCoordsSuccessorID)
-						if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1)
-							bundling.addLine(createControlPoints(vecViewBundlingPoint, parCoordsSuccessor.get(0).get(0), controlPoint));
-						else
-							bundling.addLine(createControlPoints(hashViewToCenterPoint.get(key), parCoordsSuccessor.get(0).get(0), controlPoint));
+		
+					if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1)
+						bundling.addLine(createControlPoints(vecViewBundlingPoint, src, controlPoint));
+					else
+						bundling.addLine(createControlPoints(hashViewToCenterPoint.get(key), src, controlPoint));
+					
 					connectionLinesAllViews.add(bundling);
 					if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1)
 						connectionLinesAllViews.add(currentStage);
 					pointsToDepthSort.clear();
-
+					if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1)
+						src = calculateBundlingPoint(hashViewToCenterPoint.get(key), controlPoint);
+					else
+						src = hashViewToCenterPoint.get(key);
+				}
+				else{
+					if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1)
+						src = calculateBundlingPoint(hashViewToCenterPoint.get(key), controlPoint);
+					else
+						src = hashViewToCenterPoint.get(key);
 				}
 			}
 		}
@@ -394,10 +424,34 @@ public class GLConsecutiveConnectionGraphDrawing
 		}
 		if (focusLevel.getElementByPositionIndex(0).getGLView() != null)
 			viewsOfCurrentPath.add(1, focusLevel.getElementByPositionIndex(0).getGLView().getID());
+		if (viewsOfCurrentPath.size() == 4)
+			checkIfGapPresentRenderingFromStack(viewsOfCurrentPath);
 		return viewsOfCurrentPath;
 	}
 
 	
+	private void checkIfGapPresentRenderingFromStack(ArrayList<Integer> viewsOfCurrentPath) {
+		if (focusLevel.getElementByPositionIndex(0).getGLView() != null){
+			if (stackLevel.getElementByPositionIndex(0).getGLView() != null && stackLevel.getElementByPositionIndex(2).getGLView() != null && stackLevel.getElementByPositionIndex(1).getGLView() == null){
+				gapPosition = 1;
+				gapSuccessorID = stackLevel.getElementByPositionIndex(2).getGLView().getID();
+			}
+			else if (stackLevel.getElementByPositionIndex(1).getGLView() != null && stackLevel.getElementByPositionIndex(3).getGLView() != null && stackLevel.getElementByPositionIndex(2).getGLView() == null){
+				gapPosition = 2;
+				gapSuccessorID = stackLevel.getElementByPositionIndex(3).getGLView().getID();
+			}
+			else if (stackLevel.getElementByPositionIndex(2).getGLView() != null && stackLevel.getElementByPositionIndex(0).getGLView() != null && stackLevel.getElementByPositionIndex(3).getGLView() == null){
+				gapPosition = 3;
+				gapSuccessorID = stackLevel.getElementByPositionIndex(0).getGLView().getID();
+			}
+			else if (stackLevel.getElementByPositionIndex(3).getGLView() != null && stackLevel.getElementByPositionIndex(1).getGLView() != null && stackLevel.getElementByPositionIndex(0).getGLView() == null){
+				gapPosition = 0;
+				gapSuccessorID = stackLevel.getElementByPositionIndex(1).getGLView().getID();
+			}
+		}
+		
+	}
+
 	/** getting the IDs of the views which are involved in the current path when rendering the path from the focus
 	 * 
 	 * @param hashViewToCenterPoint list of center points of the views
@@ -422,7 +476,7 @@ public class GLConsecutiveConnectionGraphDrawing
 		}
 		
 		if (viewsOfCurrentPath.size() == 2)
-			checkIfGapPresent(allviews, notLoadedPosition);
+			checkIfGapPresentRenderingFromCenter(allviews, notLoadedPosition);
 		else if (viewsOfCurrentPath.size() == 3)
 			viewsOfCurrentPath = revertElements(viewsOfCurrentPath, notLoadedPosition.get(0));
 		
@@ -431,7 +485,7 @@ public class GLConsecutiveConnectionGraphDrawing
 		return viewsOfCurrentPath;
 	}
 
-	private void checkIfGapPresent(ArrayList<Integer> allviews, ArrayList<Integer> notLoadedPosition) {
+	private void checkIfGapPresentRenderingFromCenter(ArrayList<Integer> allviews, ArrayList<Integer> notLoadedPosition) {
 		if (notLoadedPosition.get(0) != (notLoadedPosition.get(1)-1))
 			if (notLoadedPosition.get(0) == 1){
 				gapSuccessorID = allviews.get(notLoadedPosition.get(0)+1);
@@ -520,7 +574,7 @@ public class GLConsecutiveConnectionGraphDrawing
 				
 		ArrayList<Vec3f> optimalPredecessorPoints = null;
 		ArrayList<Vec3f> optimalSuccessorPoints = null;
-
+		
 		for (ArrayList<Vec3f> successorPoints : successorPointsList) {
 			for (ArrayList<Vec3f> predecessorPoints : predecessorPointsList) {
 				Vec3f predecessorPoint = predecessorPoints.get(0);
