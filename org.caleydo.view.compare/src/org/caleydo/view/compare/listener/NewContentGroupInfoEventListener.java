@@ -4,9 +4,9 @@ import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent;
-import org.caleydo.view.compare.GLCompare;
+import org.caleydo.view.compare.GLMatchmaker;
 
-public class NewContentGroupInfoEventListener extends AEventListener<GLCompare> {
+public class NewContentGroupInfoEventListener extends AEventListener<GLMatchmaker> {
 
 	@Override
 	public void handleEvent(AEvent event) {

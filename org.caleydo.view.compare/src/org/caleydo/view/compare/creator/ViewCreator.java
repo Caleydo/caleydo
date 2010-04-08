@@ -5,7 +5,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.view.compare.GLCompare;
+import org.caleydo.view.compare.GLMatchmaker;
 import org.caleydo.view.compare.SerializedCompareView;
 import org.caleydo.view.compare.toolbar.CompareToolBarContent;
 
@@ -19,7 +19,7 @@ public class ViewCreator extends AGLViewCreator {
 	public AGLView createGLView(GLCaleydoCanvas glCanvas, String label,
 			IViewFrustum viewFrustum) {
 
-		return new GLCompare(glCanvas, label, viewFrustum);
+		return new GLMatchmaker(glCanvas, label, viewFrustum);
 	}
 
 	@Override

@@ -8,7 +8,6 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;

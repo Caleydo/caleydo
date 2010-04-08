@@ -19,7 +19,6 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IUseCase;
@@ -35,7 +34,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
-import org.caleydo.view.compare.GLCompare;
+import org.caleydo.view.compare.GLMatchmaker;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.SetBar;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
@@ -65,7 +64,7 @@ public abstract class ACompareViewState {
 	protected TextureManager textureManager;
 	protected PickingManager pickingManager;
 	protected GLMouseListener glMouseListener;
-	protected GLCompare view;
+	protected GLMatchmaker view;
 	protected int viewID;
 	protected SetBar setBar;
 	protected ArrayList<HeatMapWrapper> heatMapWrappers;
@@ -118,7 +117,7 @@ public abstract class ACompareViewState {
 
 	float bandPaddingY = 0.007f;
 
-	public ACompareViewState(GLCompare view, int viewID, TextRenderer textRenderer,
+	public ACompareViewState(GLMatchmaker view, int viewID, TextRenderer textRenderer,
 			TextureManager textureManager, PickingManager pickingManager,
 			GLMouseListener glMouseListener, SetBar setBar,
 			RenderCommandFactory renderCommandFactory, EDataDomain dataDomain,

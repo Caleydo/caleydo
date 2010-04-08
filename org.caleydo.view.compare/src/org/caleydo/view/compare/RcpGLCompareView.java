@@ -49,7 +49,7 @@ public class RcpGLCompareView extends ARcpGLViewPart {
 
 	@Override
 	public String getViewGUIID() {
-		return GLCompare.VIEW_ID;
+		return GLMatchmaker.VIEW_ID;
 	}
 
 }

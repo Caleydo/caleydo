@@ -30,7 +30,7 @@ public class SerializedCompareView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLCompare.VIEW_ID;
+		return GLMatchmaker.VIEW_ID;
 	}
 
 }

@@ -8,9 +8,9 @@ import java.awt.event.MouseWheelListener;
 public class CompareMouseWheelListener extends MouseAdapter implements
 		MouseWheelListener, MouseMotionListener {
 
-	private GLCompare glCompare;
+	private GLMatchmaker glCompare;
 
-	public CompareMouseWheelListener(GLCompare glCompare) {
+	public CompareMouseWheelListener(GLMatchmaker glCompare) {
 		this.glCompare = glCompare;
 	}
 

@@ -1,7 +1,6 @@
 package org.caleydo.view.compare.state;
 
 import java.awt.Point;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
@@ -24,7 +23,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.compare.GLCompare;
+import org.caleydo.view.compare.GLMatchmaker;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.SetBar;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
@@ -40,7 +39,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 	private int indexOfHeatMapWrapperWithDendrogram;
 
-	public DetailViewState(GLCompare view, int viewID, TextRenderer textRenderer,
+	public DetailViewState(GLMatchmaker view, int viewID, TextRenderer textRenderer,
 			TextureManager textureManager, PickingManager pickingManager,
 			GLMouseListener glMouseListener, SetBar setBar,
 			RenderCommandFactory renderCommandFactory, EDataDomain dataDomain,

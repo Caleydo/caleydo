@@ -46,7 +46,6 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.overlay.AOverlayManager;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.rcp.action.toolbar.view.StartClusteringAction;
 import org.caleydo.view.compare.event.UseBandBundlingEvent;
@@ -68,17 +67,17 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
- * The group assignment interface
+ * The matchmaker view for comparing clustered data sets.
  * 
  * @author Christian Partl
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLCompare extends AGLView implements IViewCommandHandler,
+public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		IGLRemoteRenderingView, ISelectionUpdateHandler,
 		ISelectionCommandHandler, IContentVAUpdateHandler {
 
-	public final static String VIEW_ID = "org.caleydo.view.compare";
+	public final static String VIEW_ID = "org.caleydo.view.matchmaker";
 
 	private TextRenderer textRenderer;
 	private CompareViewStateController compareViewStateController;
@@ -111,12 +110,12 @@ public class GLCompare extends AGLView implements IViewCommandHandler,
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLCompare(GLCaleydoCanvas glCanvas, final String sLabel,
+	public GLMatchmaker(GLCaleydoCanvas glCanvas, final String sLabel,
 			final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, true);
 
 		viewType = VIEW_ID;
-		glKeyListener = new GLCompareKeyListener(this);
+		glKeyListener = new GLMatchmakerKeyListener(this);
 		isControlPressed = false;
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32),
 				true, true);

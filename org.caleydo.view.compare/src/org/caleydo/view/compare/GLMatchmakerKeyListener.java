@@ -5,9 +5,9 @@ import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 
-public class GLCompareKeyListener extends GLKeyListener<GLCompare> {
+public class GLMatchmakerKeyListener extends GLKeyListener<GLMatchmaker> {
 
-	private GLCompare glCompare;
+	private GLMatchmaker glCompare;
 
 	/**
 	 * Constructor.
@@ -16,7 +16,7 @@ public class GLCompareKeyListener extends GLKeyListener<GLCompare> {
 	 *            Instance of the grouper that should handle the keyboard
 	 *            events.
 	 */
-	public GLCompareKeyListener(GLCompare glCompare) {
+	public GLMatchmakerKeyListener(GLMatchmaker glCompare) {
 		this.glCompare = glCompare;
 	}
 

@@ -7,7 +7,7 @@ import org.caleydo.rcp.view.toolbar.ActionToolBarContainer;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.ToolBarContainer;
 import org.caleydo.rcp.view.toolbar.content.AToolBarContent;
-import org.caleydo.view.compare.GLCompare;
+import org.caleydo.view.compare.GLMatchmaker;
 
 /**
  * ToolBarContent implementation for compare.
@@ -21,7 +21,7 @@ public class CompareToolBarContent extends AToolBarContent {
 
 	@Override
 	public Class<?> getViewClass() {
-		return GLCompare.class;
+		return GLMatchmaker.class;
 	}
 
 	@Override

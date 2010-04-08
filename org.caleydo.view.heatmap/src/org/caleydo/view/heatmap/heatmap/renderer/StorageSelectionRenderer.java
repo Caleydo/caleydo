@@ -9,7 +9,6 @@ import java.util.Set;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class StorageSelectionRenderer extends AContentRenderer {

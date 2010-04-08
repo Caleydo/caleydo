@@ -1,9 +1,5 @@
 package org.caleydo.view.heatmap.heatmap.renderer.spacing;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;

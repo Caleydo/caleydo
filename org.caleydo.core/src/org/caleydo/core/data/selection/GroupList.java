@@ -9,7 +9,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.util.clusterer.ClusterHelper;
-import org.caleydo.core.util.clusterer.ClusterNode;
 
 @XmlType
 public abstract class GroupList<ConcreteType extends IGroupList<ConcreteType, VA, VADelta>, VA extends VirtualArray<?, ?, ?, ?>, VADelta extends VirtualArrayDelta<?, ?>>

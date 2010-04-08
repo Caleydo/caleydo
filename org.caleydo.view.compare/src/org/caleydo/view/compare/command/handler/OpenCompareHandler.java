@@ -1,6 +1,6 @@
 package org.caleydo.view.compare.command.handler;
 
-import org.caleydo.view.compare.GLCompare;
+import org.caleydo.view.compare.GLMatchmaker;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -13,7 +13,7 @@ public class OpenCompareHandler extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-					.showView(GLCompare.VIEW_ID);
+					.showView(GLMatchmaker.VIEW_ID);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

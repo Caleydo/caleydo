@@ -1,18 +1,13 @@
 package org.caleydo.view.compare.state;
 
-import gleem.linalg.Vec3f;
-
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.IUseCase;
@@ -26,7 +21,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.compare.GLCompare;
+import org.caleydo.view.compare.GLMatchmaker;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.SetBar;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
@@ -42,7 +37,7 @@ public class OverviewState extends ACompareViewStateStatic {
 	private static final float HEATMAP_WRAPPER_OVERVIEW_GAP_PORTION = 0.8f;
 	private static final float HEATMAP_WRAPPER_SPACE_PORTION = 0.7f;
 
-	public OverviewState(GLCompare view, int viewID, TextRenderer textRenderer,
+	public OverviewState(GLMatchmaker view, int viewID, TextRenderer textRenderer,
 			TextureManager textureManager, PickingManager pickingManager,
 			GLMouseListener glMouseListener, SetBar setBar,
 			RenderCommandFactory renderCommandFactory, EDataDomain dataDomain,

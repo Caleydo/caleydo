@@ -13,21 +13,6 @@
       </view>
    </extension>
    <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            locationURI="menu:org.eclipse.ui.main.menu">
-         <menu
-               id="org.caleydo.menu.view"
-               label="View">
-            <command
-                  commandId="org.caleydo.view.compare.command.opencompare"
-                  icon="resources/icons/compare.png"
-                  style="push">
-            </command>
-         </menu>
-      </menuContribution>
-   </extension>
-   <extension
          point="org.eclipse.ui.commands">
       <command
             defaultHandler="org.caleydo.view.compare.command.handler.OpenCompareHandler"

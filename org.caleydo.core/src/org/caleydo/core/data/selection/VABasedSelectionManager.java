@@ -1,8 +1,6 @@
 package org.caleydo.core.data.selection;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.EIDType;

@@ -1,6 +1,5 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_LINE_WIDTH;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_LINE_WIDTH;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 

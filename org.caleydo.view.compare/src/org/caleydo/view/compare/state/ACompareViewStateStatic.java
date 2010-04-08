@@ -2,7 +2,6 @@ package org.caleydo.view.compare.state;
 
 import gleem.linalg.Vec3f;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,7 +29,7 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.compare.GLCompare;
+import org.caleydo.view.compare.GLMatchmaker;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.SetBar;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
@@ -39,7 +38,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public abstract class ACompareViewStateStatic extends ACompareViewState {
 
-	public ACompareViewStateStatic(GLCompare view, int viewID, TextRenderer textRenderer,
+	public ACompareViewStateStatic(GLMatchmaker view, int viewID, TextRenderer textRenderer,
 			TextureManager textureManager, PickingManager pickingManager,
 			GLMouseListener glMouseListener, SetBar setBar,
 			RenderCommandFactory renderCommandFactory, EDataDomain dataDomain,

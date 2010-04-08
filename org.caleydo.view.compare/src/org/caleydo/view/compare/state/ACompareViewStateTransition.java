@@ -29,7 +29,7 @@ import org.caleydo.core.view.opengl.util.animation.MovementVector2;
 import org.caleydo.core.view.opengl.util.animation.MovementVector3;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.compare.GLCompare;
+import org.caleydo.view.compare.GLMatchmaker;
 import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.SetBar;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
@@ -62,7 +62,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	protected Vec3f[] heatMapPositionOffset = { null, null };
 	protected Vec2f[] heatMapDimensionsOffset = { null, null };
 
-	public ACompareViewStateTransition(GLCompare view, int viewID,
+	public ACompareViewStateTransition(GLMatchmaker view, int viewID,
 			TextRenderer textRenderer, TextureManager textureManager,
 			PickingManager pickingManager, GLMouseListener glMouseListener,
 			SetBar setBar, RenderCommandFactory renderCommandFactory,
