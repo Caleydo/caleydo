@@ -125,10 +125,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		// tracker.startTracking();
 
 		arSlerpActions = new ArrayList<NodeSlerp>();
-
-
-		
-		
 	}
 
 	@Override
@@ -161,6 +157,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	@Override
 	public void displayLocal(GL gl) {
 		processEvents();
+		
 		gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, viewport, 0);
 
 		canvasWidth = 2 / (float) viewport[0];
@@ -178,10 +175,10 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
-		// pickingManager.handlePicking(this, gl);
+		pickingManager.handlePicking(this, gl);
 
-		checkForHits(gl);
 		display(gl);
+		checkForHits(gl);
 
 		if (eBusyModeState != EBusyModeState.OFF)
 			renderBusyMode(gl);

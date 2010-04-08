@@ -72,8 +72,6 @@ public class GLHyperbolic extends AGLView {
 	private Tree<PoincareNode> tree;
 	public double diskZoomIntensity = 0;
 
-	
-	
 	private GL glHandle;
 
 	/**
@@ -104,7 +102,7 @@ public class GLHyperbolic extends AGLView {
 
 		disk = new DataWindowsDisk(this);
 
-//		
+		//		
 
 		// nullpointer:
 		// Tree<ClusterNode> tree = set.getStorageTree();
@@ -128,8 +126,7 @@ public class GLHyperbolic extends AGLView {
 
 	@Override
 	public void initRemote(final GL gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener,
-			GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
 
@@ -164,10 +161,10 @@ public class GLHyperbolic extends AGLView {
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
-		// pickingManager.handlePicking(this, gl);
+		//pickingManager.handlePicking(this, gl);
 
-		checkForHits(gl);
 		display(gl);
+		checkForHits(gl);
 
 		if (eBusyModeState != EBusyModeState.OFF)
 			renderBusyMode(gl);
@@ -182,13 +179,13 @@ public class GLHyperbolic extends AGLView {
 		canvasWidth = 2 / (float) viewport[0];
 		canvasHeight = 2 / (float) viewport[5];// if (set == null)
 
-		checkForHits(gl);
 		display(gl);
+		checkForHits(gl);
 	}
 
 	@Override
 	public void display(GL gl) {
-glHandle=gl;
+		glHandle = gl;
 		// GLHelperFunctions.drawAxis(gl);
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// gl.glEnable(GL.GL_DEPTH_TEST);
@@ -233,9 +230,6 @@ glHandle=gl;
 		disk.renderTree(gl, textureManager, pickingManager, iUniqueID,
 				(double) canvasWidth, (double) canvasHeight);
 
-		
-
-
 		// if (!containedGLViews.isEmpty()) {
 		//
 		// containedGLViews.get(0).displayRemote(gl);
@@ -258,8 +252,7 @@ glHandle=gl;
 		gl.glEndList();
 	}
 
-	private void renderRemoteLevelElement(final GL gl,
-			RemoteLevelElement element) {
+	private void renderRemoteLevelElement(final GL gl, RemoteLevelElement element) {
 
 		AGLView glView = element.getGLView();
 
@@ -269,8 +262,8 @@ glHandle=gl;
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.VIEW_SELECTION, glView.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
+				glView.getID()));
 
 		gl.glPushMatrix();
 
@@ -282,8 +275,7 @@ glHandle=gl;
 		float fAngle = rot.get(axis);
 
 		gl.glTranslatef(translation.x(), translation.y(), translation.z());
-		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(),
-				axis.z());
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
 		glView.displayRemote(gl);
@@ -301,8 +293,8 @@ glHandle=gl;
 					+ " / 0 experiments";
 
 		return "Scatterplot - " + contentVA.size() + " "
-				+ useCase.getContentLabel(false, true) + " / "
-				+ storageVA.size() + " experiments";
+				+ useCase.getContentLabel(false, true) + " / " + storageVA.size()
+				+ " experiments";
 	}
 
 	@Override
@@ -330,9 +322,8 @@ glHandle=gl;
 
 			case CLICKED:
 
-				arSlerpActions.add(new NodeSlerp(4, disk
-						.getNodeByCompareableValue(iExternalID).getPosition(),
-						new Point2D.Double(0, 0)));
+				arSlerpActions.add(new NodeSlerp(4, disk.getNodeByCompareableValue(
+						iExternalID).getPosition(), new Point2D.Double(0, 0)));
 
 				slerpedNode = disk.getNodeByCompareableValue(iExternalID);
 
@@ -445,8 +436,7 @@ glHandle=gl;
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
 
-			glPathway.setPathway(((SerializedPathwayView) serView)
-					.getPathwayID());
+			glPathway.setPathway(((SerializedPathwayView) serView).getPathwayID());
 			glPathway.enablePathwayTextures(true);
 			glPathway.enableNeighborhood(false);
 			glPathway.enableGeneMapping(false);
@@ -470,19 +460,20 @@ glHandle=gl;
 
 			disk.translateTreeMoebius(singleSlerp.returnPoint);
 			disk.setCenteredNode(slerpedNode);
-			disk.centeredNodeSize = disk.findOptimalCenterNodeSize(disk
-					.getCenteredNode(), 10);
+			disk.centeredNodeSize = disk.findOptimalCenterNodeSize(
+					disk.getCenteredNode(), 10);
 			arSlerpActions.remove(0);
 		}
 	}
 
-	public void drawRemoteView(GL gl, PoincareNode node,
-			Point2D.Double position, double size) {
+	public void drawRemoteView(GL gl, PoincareNode node, Point2D.Double position,
+			double size) {
 
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f((float) position.getX(),
-				(float) position.getY(), 0));
-		transform.setScale(new Vec3f((float) size, (float) size*(canvasHeight/canvasWidth), 1));
+		transform.setTranslation(new Vec3f((float) position.getX(), (float) position
+				.getY(), 0));
+		transform.setScale(new Vec3f((float) size, (float) size
+				* (canvasHeight / canvasWidth), 1));
 		testRemoteElement.setTransform(transform);
 
 		// initNewView(gl);
@@ -505,8 +496,7 @@ glHandle=gl;
 
 		for (int i = 0; i < 5; i++) {
 
-			node = new ViewHyperbolicNode(tree, "child_pathway", 3,
-					createPathwayView(gl));
+			node = new ViewHyperbolicNode(tree, "child_pathway", 3, createPathwayView(gl));
 			tree.addChild(tree.getRoot(), node);
 
 			for (int j = 0; j < 5; j++) {
@@ -635,54 +625,49 @@ glHandle=gl;
 		SerializedPathwayView serPathway = new SerializedPathwayView(dataDomain);
 		// serTestPathway.setPathwayID(generalManager.getPathwayManager().searchPathwayByName("TGF-beta signaling pathway",
 		// EPathwayDatabaseType.KEGG).getID());
-		serPathway.setPathwayID(((PathwayGraph) (generalManager
-				.getPathwayManager().getAllItems().toArray()[randomGenerator
-				.nextInt(generalManager.getPathwayManager().getAllItems()
-						.size())])).getID());
+		serPathway.setPathwayID(((PathwayGraph) (generalManager.getPathwayManager()
+				.getAllItems().toArray()[randomGenerator.nextInt(generalManager
+				.getPathwayManager().getAllItems().size())])).getID());
 
 		return (GLPathway) createView(gl, serPathway);
 	}
-	
-	//called, if the user focuses a point on the display
-	public void setEyeTrackerAction(Point2D.Double mousePoint,Point2D.Double offset, Point2D.Double scalation)
-	{
-		if(glHandle!=null){
-		Point2D.Double mouseCoord = new Point2D.Double();
-		int[] viewport = new int[4];
 
-		glHandle.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-		double factorX = (double) canvasWidth
-				/ (double) viewport[2];
-		double factorY = (double) canvasHeight
-				/ (double) viewport[3];
+	// called, if the user focuses a point on the display
+	public void setEyeTrackerAction(Point2D.Double mousePoint, Point2D.Double offset,
+			Point2D.Double scalation) {
+		if (glHandle != null) {
+			Point2D.Double mouseCoord = new Point2D.Double();
+			int[] viewport = new int[4];
 
-		mouseCoord.setLocation((mousePoint.getX() * factorX-offset.getX())/scalation.getX(),
-				(canvasHeight-mousePoint.getY() * factorY-offset.getY())/scalation.getY());
+			glHandle.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+			double factorX = (double) canvasWidth / (double) viewport[2];
+			double factorY = (double) canvasHeight / (double) viewport[3];
 
-		
-	
-		
-		PoincareNode selectedNode;
-		selectedNode = disk.processEyeTrackerAction(
-				new Point2D.Double(mouseCoord.getX(),mouseCoord.getY()),
-				arSlerpActions);
-		if (selectedNode != null) {
-			disk.setCenteredNode(null);
-			// arSlerpActions.add(new nodeSlerp(4,
-			// selectedNode.getPosition(),
-			// new Point2D.Double(0, 0)));
+			mouseCoord.setLocation((mousePoint.getX() * factorX - offset.getX())
+					/ scalation.getX(),
+					(canvasHeight - mousePoint.getY() * factorY - offset.getY())
+							/ scalation.getY());
 
-			slerpedNode = selectedNode;
-			// disk.setCenteredNode(selectedNode);
+			PoincareNode selectedNode;
+			selectedNode = disk.processEyeTrackerAction(new Point2D.Double(mouseCoord
+					.getX(), mouseCoord.getY()), arSlerpActions);
+			if (selectedNode != null) {
+				disk.setCenteredNode(null);
+				// arSlerpActions.add(new nodeSlerp(4,
+				// selectedNode.getPosition(),
+				// new Point2D.Double(0, 0)));
 
+				slerpedNode = selectedNode;
+				// disk.setCenteredNode(selectedNode);
+
+			}
 		}
-		}
-		
+
 	}
-	
-	public void setDimensions(Point2D.Double dimensions){
-		//canvasWidth=(float) dimensions.getX();
-		//canvasHeight=(float) dimensions.getY();
+
+	public void setDimensions(Point2D.Double dimensions) {
+		// canvasWidth=(float) dimensions.getX();
+		// canvasHeight=(float) dimensions.getY();
 	}
 
 }
