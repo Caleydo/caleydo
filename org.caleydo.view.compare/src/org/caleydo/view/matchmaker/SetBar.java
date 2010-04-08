@@ -20,7 +20,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.AdjustPValueIt
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.ClusterSetItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DuplicateSetBarElementItem;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.compare.state.ACompareViewState;
+import org.caleydo.view.matchmaker.state.ACompareViewState;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 

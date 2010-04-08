@@ -1,7 +1,7 @@
 package org.caleydo.view.matchmaker;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.view.compare.creator.ViewCreator;
+import org.caleydo.view.matchmaker.creator.ViewCreator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 

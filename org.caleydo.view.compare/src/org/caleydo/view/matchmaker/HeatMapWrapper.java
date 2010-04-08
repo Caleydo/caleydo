@@ -43,13 +43,13 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.ColorUtil;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.compare.layout.AHeatMapLayout;
-import org.caleydo.view.compare.layout.HeatMapLayoutDetailViewRight;
-import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
-import org.caleydo.view.compare.state.ACompareViewState;
 import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.ComparerDetailTemplate;
+import org.caleydo.view.matchmaker.layout.AHeatMapLayout;
+import org.caleydo.view.matchmaker.layout.HeatMapLayoutDetailViewRight;
+import org.caleydo.view.matchmaker.rendercommand.IHeatMapRenderCommand;
+import org.caleydo.view.matchmaker.state.ACompareViewState;
 
 /**
  * 

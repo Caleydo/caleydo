@@ -20,8 +20,8 @@ import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.compare.layout.AHeatMapLayout;
 import org.caleydo.view.heatmap.hierarchical.HeatMapUtil;
+import org.caleydo.view.matchmaker.layout.AHeatMapLayout;
 
 import com.sun.opengl.util.texture.Texture;
 

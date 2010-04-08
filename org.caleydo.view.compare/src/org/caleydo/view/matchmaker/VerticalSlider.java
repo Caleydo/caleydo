@@ -13,7 +13,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.compare.layout.AHeatMapLayout;
+import org.caleydo.view.matchmaker.layout.AHeatMapLayout;
 
 public class VerticalSlider {
 
