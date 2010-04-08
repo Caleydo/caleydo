@@ -111,8 +111,10 @@ function findAddress(address, callback) {
 function vislinkAddressCallback(response) {
 	var pos = null; 
 	if(!response || response.Status.code != 200) {
-		alert("address not found"); 
+		//alert("address not found"); 
+		document.getElementById("errorMessage").innerHTML = " - [address not found]";
 	} else {
+		document.getElementById("errorMessage").innerHTML = ""; 
 		var place = response.Placemark[0]; 
 		var point = new GLatLng(place.Point.coordinates[1], place.Point.coordinates[0]); 
 		var accuracy = place.AddressDetails.Accuracy; 
@@ -312,11 +314,11 @@ function debug(s) {
 	</td>
 	<td width="20">&nbsp;</td>
 	<td>Received Selection:</td>
-	<td><span id="receivedId"></span></td>
+	<td><span id="receivedId"></span><span id="errorMessage"></span></td>
 </tr>
 <tr>
 	<td>
-		<input id="center" type="checkbox" checked="true" /> center map to external selection
+		<input id="center" type="checkbox" checked="false" /> center map to external selection
 	</td>
 	<td></td>
 	<td></td>
