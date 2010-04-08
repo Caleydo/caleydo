@@ -2,8 +2,8 @@ package org.caleydo.view.compare.listener;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.view.compare.CreateSelectionTypesEvent;
-import org.caleydo.view.compare.GLMatchmaker;
+import org.caleydo.core.manager.event.view.matchmaker.CreateSelectionTypesEvent;
+import org.caleydo.view.matchmaker.GLMatchmaker;
 
 public class CreateSelectionTypesListener extends AEventListener<GLMatchmaker> {
 

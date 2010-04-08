@@ -3,7 +3,7 @@ package org.caleydo.view.grouper.contextmenu;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.manager.event.view.OpenCompareViewEvent;
+import org.caleydo.core.manager.event.view.OpenMatchmakerViewEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 
 public class CompareGroupsItem
@@ -12,10 +12,10 @@ public class CompareGroupsItem
 	public CompareGroupsItem(ArrayList<ISet> setsToCompare) {
 		super();
 
-		setText("Compare Groups");
+		setText("Compare Groups in Matchmaker");
 
-		OpenCompareViewEvent openViewEvent = new OpenCompareViewEvent();
-		openViewEvent.setViewType("org.caleydo.view.compare");
+		OpenMatchmakerViewEvent openViewEvent = new OpenMatchmakerViewEvent();
+		openViewEvent.setViewType("org.caleydo.view.matchmaker");
 		openViewEvent.setSender(this);
 		openViewEvent.setSetsToCompare(setsToCompare);
 		registerEvent(openViewEvent);

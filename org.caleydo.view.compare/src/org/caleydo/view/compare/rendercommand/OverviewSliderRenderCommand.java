@@ -4,8 +4,8 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.compare.HeatMapWrapper;
-import org.caleydo.view.compare.VerticalSlider;
+import org.caleydo.view.matchmaker.HeatMapWrapper;
+import org.caleydo.view.matchmaker.VerticalSlider;
 
 public class OverviewSliderRenderCommand implements IHeatMapRenderCommand {
 

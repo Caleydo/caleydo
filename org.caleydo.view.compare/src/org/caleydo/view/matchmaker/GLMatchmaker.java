@@ -1,4 +1,4 @@
-package org.caleydo.view.compare;
+package org.caleydo.view.matchmaker;
 
 import java.awt.Font;
 import java.awt.Point;
@@ -20,10 +20,10 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.event.view.compare.AdjustPValueEvent;
-import org.caleydo.core.manager.event.view.compare.CreateSelectionTypesEvent;
-import org.caleydo.core.manager.event.view.compare.DuplicateSetBarItemEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
+import org.caleydo.core.manager.event.view.matchmaker.AdjustPValueEvent;
+import org.caleydo.core.manager.event.view.matchmaker.CreateSelectionTypesEvent;
+import org.caleydo.core.manager.event.view.matchmaker.DuplicateSetBarItemEvent;
 import org.caleydo.core.manager.event.view.storagebased.HideHeatMapElementsEvent;
 import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -476,41 +476,15 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 	public void setGroupsToCompare(final ArrayList<ISet> sets) {
 
-		// ClusterState clusterState = new ClusterState();
-
-		// clusterState.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
-		// clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-		// clusterState.setAffinityPropClusterFactorGenes(8);
-		// clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-
-		// clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
-		// clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-		// clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		// clusterState.setTreeClustererAlgo(ETreeClustererAlgo.COMPLETE_LINKAGE);
-
-		// for (ISet set : sets) {
-		// set.cluster(clusterState);
-		// }
-
-		generalManager.getGUIBridge().getDisplay().asyncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				StartClusteringAction startClusteringAction = new StartClusteringAction();
-				startClusteringAction.setSets(sets);
-				startClusteringAction.run();
-			}
-		});
-
-		while (sets.get(0).getContentVA(ContentVAType.CONTENT).getGroupList() == null) {
-
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		while (sets.get(0).getContentVA(ContentVAType.CONTENT).getGroupList() == null) {
+//
+//			try {
+//				Thread.sleep(500);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 		compareViewStateController.setSetsToCompare(sets);
 	}
 

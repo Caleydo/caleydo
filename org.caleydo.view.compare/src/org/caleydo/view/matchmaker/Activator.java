@@ -1,4 +1,4 @@
-package org.caleydo.view.compare;
+package org.caleydo.view.matchmaker;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.view.compare.creator.ViewCreator;

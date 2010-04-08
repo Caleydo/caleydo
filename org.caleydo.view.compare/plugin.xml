@@ -6,17 +6,17 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.view.compare.RcpGLCompareView"
+            class="org.caleydo.view.matchmaker.RcpGLMatchmakerView"
             icon="resources/icons/compare.png"
-            id="org.caleydo.view.compare"
-            name="Compare">
+            id="org.caleydo.view.matchmaker"
+            name="Matchmaker">
       </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.compare.command.handler.OpenCompareHandler"
-            id="org.caleydo.view.compare.command.opencompare"
+            defaultHandler="org.caleydo.view.matchmaker.command.handler.OpenCompareHandler"
+            id="org.caleydo.view.compare.command.openmatchmaker"
             name="Compare">
       </command>
    </extension>

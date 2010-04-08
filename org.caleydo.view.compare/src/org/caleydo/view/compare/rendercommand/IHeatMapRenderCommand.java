@@ -2,7 +2,7 @@ package org.caleydo.view.compare.rendercommand;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.view.compare.HeatMapWrapper;
+import org.caleydo.view.matchmaker.HeatMapWrapper;
 
 public interface IHeatMapRenderCommand {
 

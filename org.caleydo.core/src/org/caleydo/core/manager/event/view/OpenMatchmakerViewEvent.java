@@ -14,7 +14,7 @@ import org.caleydo.core.data.collection.ISet;
  */
 @XmlRootElement
 @XmlType
-public class OpenCompareViewEvent
+public class OpenMatchmakerViewEvent
 	extends OpenViewEvent {
 
 	ArrayList<ISet> setsToCompare;

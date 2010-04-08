@@ -1,4 +1,4 @@
-package org.caleydo.view.compare;
+package org.caleydo.view.matchmaker;
 
 import java.util.ArrayList;
 import java.util.HashMap;

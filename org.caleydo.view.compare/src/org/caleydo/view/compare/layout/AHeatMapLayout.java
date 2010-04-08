@@ -11,9 +11,9 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
+import org.caleydo.view.matchmaker.HeatMapWrapper;
 
 public abstract class AHeatMapLayout {
 

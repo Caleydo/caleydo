@@ -1,4 +1,4 @@
-package org.caleydo.view.compare;
+package org.caleydo.view.matchmaker;
 
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -11,12 +11,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-public class RcpGLCompareView extends ARcpGLViewPart {
+public class RcpGLMatchmakerView extends ARcpGLViewPart {
 
 	/**
 	 * Constructor.
 	 */
-	public RcpGLCompareView() {
+	public RcpGLMatchmakerView() {
 		super();
 	}
 

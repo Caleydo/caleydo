@@ -7,11 +7,11 @@ import java.util.HashMap;
 
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.Group;
-import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.rendercommand.IHeatMapRenderCommand;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.matchmaker.HeatMapWrapper;
 
 public abstract class ADetailViewLayoutState {
 

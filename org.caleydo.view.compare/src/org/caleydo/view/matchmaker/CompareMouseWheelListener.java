@@ -1,4 +1,4 @@
-package org.caleydo.view.compare;
+package org.caleydo.view.matchmaker;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionListener;

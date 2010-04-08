@@ -8,10 +8,10 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.compare.HeatMapWrapper;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
 import org.caleydo.view.compare.layout.HeatMapLayoutDetailViewLeft;
 import org.caleydo.view.compare.layout.HeatMapLayoutDetailViewRight;
+import org.caleydo.view.matchmaker.HeatMapWrapper;
 
 public class DendrogramButtonRenderCommand implements IHeatMapRenderCommand {
 

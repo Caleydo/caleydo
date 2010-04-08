@@ -14,12 +14,12 @@ import org.caleydo.core.view.opengl.util.animation.MovementVector2;
 import org.caleydo.core.view.opengl.util.animation.MovementVector3;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.compare.GLMatchmaker;
-import org.caleydo.view.compare.HeatMapWrapper;
-import org.caleydo.view.compare.SetBar;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
 import org.caleydo.view.compare.layout.HeatMapLayoutConfigurable;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
+import org.caleydo.view.matchmaker.GLMatchmaker;
+import org.caleydo.view.matchmaker.HeatMapWrapper;
+import org.caleydo.view.matchmaker.SetBar;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 

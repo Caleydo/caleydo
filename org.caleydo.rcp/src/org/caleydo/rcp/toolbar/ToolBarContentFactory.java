@@ -91,7 +91,7 @@ public class ToolBarContentFactory {
 		toolBarInfos.put(info.viewType, info);
 		
 		 info = new ToolBarInfo();
-         info.viewType = "org.caleydo.view.compare";
+         info.viewType = "org.caleydo.view.matchmaker";
          info.ignored = false;
          toolBarInfos.put(info.viewType, info);
 	}

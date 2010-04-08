@@ -1,4 +1,4 @@
-package org.caleydo.view.compare;
+package org.caleydo.view.matchmaker;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;

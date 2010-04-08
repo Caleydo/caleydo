@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.event.view.compare;
+package org.caleydo.core.manager.event.view.matchmaker;
 
 import org.caleydo.core.manager.event.AEvent;
 

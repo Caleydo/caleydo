@@ -5,9 +5,9 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.view.compare.GLMatchmaker;
-import org.caleydo.view.compare.SerializedCompareView;
 import org.caleydo.view.compare.toolbar.CompareToolBarContent;
+import org.caleydo.view.matchmaker.GLMatchmaker;
+import org.caleydo.view.matchmaker.SerializedCompareView;
 
 public class ViewCreator extends AGLViewCreator {
 

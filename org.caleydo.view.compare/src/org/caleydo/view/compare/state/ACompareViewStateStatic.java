@@ -29,10 +29,10 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.compare.GLMatchmaker;
-import org.caleydo.view.compare.HeatMapWrapper;
-import org.caleydo.view.compare.SetBar;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
+import org.caleydo.view.matchmaker.GLMatchmaker;
+import org.caleydo.view.matchmaker.HeatMapWrapper;
+import org.caleydo.view.matchmaker.SetBar;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 

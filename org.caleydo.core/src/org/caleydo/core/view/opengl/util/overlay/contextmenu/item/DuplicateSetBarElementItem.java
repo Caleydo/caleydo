@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
-import org.caleydo.core.manager.event.view.compare.DuplicateSetBarItemEvent;
+import org.caleydo.core.manager.event.view.matchmaker.DuplicateSetBarItemEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 
 public class DuplicateSetBarElementItem

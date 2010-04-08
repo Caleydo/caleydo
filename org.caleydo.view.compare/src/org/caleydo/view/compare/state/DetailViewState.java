@@ -23,15 +23,15 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.compare.GLMatchmaker;
-import org.caleydo.view.compare.HeatMapWrapper;
-import org.caleydo.view.compare.SetBar;
 import org.caleydo.view.compare.layout.AHeatMapLayout;
 import org.caleydo.view.compare.layout.HeatMapLayoutDetailViewLeft;
 import org.caleydo.view.compare.layout.HeatMapLayoutDetailViewMid;
 import org.caleydo.view.compare.layout.HeatMapLayoutDetailViewRight;
 import org.caleydo.view.compare.rendercommand.RenderCommandFactory;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.matchmaker.GLMatchmaker;
+import org.caleydo.view.matchmaker.HeatMapWrapper;
+import org.caleydo.view.matchmaker.SetBar;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
