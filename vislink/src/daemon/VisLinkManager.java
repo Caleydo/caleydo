@@ -650,6 +650,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
     }
 
 	public void unregisterApplication(String appName) {
+		System.out.println("\nUnregister "+appName); 
 		// unregister from application list 
 		Application app = applicationManager.getApplications().remove(appName);
 		if (app != null) {

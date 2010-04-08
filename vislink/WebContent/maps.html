@@ -26,6 +26,7 @@ var localSelectionId = null;
 var remoteScroll = false;
 var lastPointerID = null; 
 var counter = 0; 
+var stopped = true; 
 
 GSearch.setOnLoadCallback(LoadMapSearchControl);
 
@@ -49,9 +50,26 @@ function LoadMapSearchControl() {
     GEvent.addListener(map, "moveend", scrollMap);
     geocoder = new GClientGeocoder();
     
-   	register();
+   	//connect(); 
+}
+
+function connect(){
+	if (window.visLinkAppName == null) {
+		window.visLinkAppName =	"googlemaps-" + (new Date()).getTime();
+	}
+	register();
 	window.addEventListener('resize', resize, false);
+	window.addEventListener('unload', stopVisLinks, false);
 	setTimeout("triggerSearch()", 1000);
+	stopped = false; 
+}
+
+function stopVisLinks() {
+	alert("STOP"); 
+	stopped = true; 
+	window.removeEventListener('unload', stopVisLinks, false);
+	window.removeEventListener('resize', resize, false);
+	unregister();
 }
 
 function getScreenCoords(point) {
@@ -81,8 +99,9 @@ function generateBoundingBoxXML(pos, source) {
 }
 
 function sendBoundingBoxes(pos) {
+	if(stopped) return; 
     var xml = generateBoundingBoxXML(pos, false);
-    var requrl = "http://localhost:8080/visdaemon/reportVisualLinks?name=googlemaps&pointer="+lastPointerID+"&xml=" + xml;
+    var requrl = "http://localhost:8080/visdaemon/reportVisualLinks?name="+window.visLinkAppName+"&pointer="+lastPointerID+"&xml=" + xml;
     
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("GET", requrl, false);
@@ -129,6 +148,7 @@ function vislinkAddressCallback(response) {
 }
 
 function triggerSearch() {
+	if(stopped) return; 
 	validateWindowPosition();
 	var id = getId();
 	if (id != null) {
@@ -141,7 +161,7 @@ function triggerSearch() {
 
 function getId() {
 	var xhttp = new XMLHttpRequest();
-	xhttp.open("GET", "http://localhost:8080/visdaemon/propagation?name=googlemaps", false);
+	xhttp.open("GET", "http://localhost:8080/visdaemon/propagation?name="+window.visLinkAppName, false);
 	xhttp.send("");
 	xmlDoc = xhttp.responseXML;
 	var ids = xmlDoc.getElementsByTagName("id");
@@ -175,11 +195,25 @@ function register() {
 
 	try {
 		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "http://localhost:8080/visdaemon/register?name=googlemaps&xml=" + xml, false);
+		xhttp.open("GET", "http://localhost:8080/visdaemon/register?name="+window.visLinkAppName+"&xml=" + xml, false);
 		xhttp.send("");
 		xmlDoc = xhttp.responseXML;
 	} catch (err) {
 		alert("unexpected error: err");
+	}
+}
+
+function unregister() {
+	var	requrl = "http://localhost:8080/visdaemon/unregister";
+	requrl += "?name=" + window.visLinkAppName;
+	try {
+		var	xhttp =	new	XMLHttpRequest();
+		xhttp.open("GET", requrl, false);
+		xhttp.send("");
+		xmlDoc = xhttp.responseXML;
+	} catch (err) {
+		// vis link server no reachable, nothing to do
+		alert("Cannot disconnect"); 
 	}
 }
 
@@ -191,6 +225,7 @@ function scrollMap() {
 	windowChanged();
 }
 function windowChanged() {
+	if(stopped)return; 
 	if (localSelectionId != null && localSelectionId.length > 0) {
 		sendWindowChanged(); 
 		//findAddress(localSelectionId, windowChangedCallback);
@@ -249,7 +284,7 @@ function lookupCallback(response) {
 }
 
 function sendWindowChanged() {
-	var requrl = "http://localhost:8080/visdaemon/reportWindowChange?name=googlemaps";
+	var requrl = "http://localhost:8080/visdaemon/reportWindowChange?name="+window.visLinkAppName;
 
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("GET", requrl, false);
@@ -258,7 +293,8 @@ function sendWindowChanged() {
 }
 
 function sendVisLinkSelection(id, xml) {
-	var requrl = "http://localhost:8080/visdaemon/selection?name=googlemaps";
+	if(stopped) return; 
+	var requrl = "http://localhost:8080/visdaemon/selection?name="+window.visLinkAppName;
 	requrl += "&id=" + id;
 	requrl += "&xml=" + xml;
 
@@ -269,6 +305,7 @@ function sendVisLinkSelection(id, xml) {
 }
 
 function clearVisualLinks() {
+	if(stopped) return; 
 	var	requrl = "http://localhost:8080/visdaemon/clearVisualLinks";
 	requrl += "?name=" + window.visLinkAppName;
 
@@ -314,14 +351,19 @@ function debug(s) {
 	</td>
 	<td width="20">&nbsp;</td>
 	<td>Received Selection:</td>
-	<td><span id="receivedId"></span><span id="errorMessage"></span></td>
+	<td><span id="receivedId"></span><span id="errorMessage"></span>
+	</td>
 </tr>
+
 <tr>
 	<td>
-		<input id="center" type="checkbox" checked="false" /> center map to external selection
+		<input id="center" type="checkbox" /> center map to external selection 
+		
 	</td>
-	<td></td>
-	<td></td>
+	<td colspan="2">
+		<button onclick="connect()">Connect</button>
+		<button onclick="stopVisLinks()">Disconnect</button>
+	</td>
 	<td></td>
 </tr>
 </table>

@@ -144,7 +144,8 @@ public class User {
 		for (Entry<Application, UserWindowAccess> e : this.appAccess.entrySet()) {
 			if(e.getKey() == app){
 				System.out.println("User "+this.pointerID+" has access "+e.getValue()+" for app "+app.getName()); 
-				this.appAccess.remove(e); 
+				this.appAccess.remove(e.getKey()); 
+				System.out.println("Deleted app "+app.getName()+" from user "+this.pointerID); 
 			}
 		}
 	}
