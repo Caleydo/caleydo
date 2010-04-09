@@ -120,13 +120,15 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 
 		case COMPARE_RIBBON_SELECTION:
 
-			if (detailBands != null) {
+			if (leftHeatMapWrapperToDetailBands != null) {
 
 				DetailBand activeDetailBand = null;
-				for (DetailBand detailBand : detailBands) {
-					if (iExternalID == detailBand.getBandID()) {
-						activeDetailBand = detailBand;
-						break;
+				for (ArrayList<DetailBand> detailBands : leftHeatMapWrapperToDetailBands.values()) {
+					for (DetailBand detailBand : detailBands) {
+						if (iExternalID == detailBand.getBandID()) {
+							activeDetailBand = detailBand;
+							break;
+						}
 					}
 				}
 

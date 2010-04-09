@@ -2,6 +2,7 @@ package org.caleydo.view.matchmaker.state;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
@@ -98,7 +99,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 		// The bands need to be created only once in the detail
 		// if (detailBands == null)
 		if (isHeatMapWrapperDisplayListDirty) {
-//		if(true){
+			// if(true){
 			isHeatMapWrapperDisplayListDirty = false;
 			// isHeatMapWrapperSelectionDisplayListDirty = false;
 
@@ -109,6 +110,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 
 			gl.glNewList(heatMapWrapperDisplayListIndex, GL.GL_COMPILE);
 
+			leftHeatMapWrapperToDetailBands = new HashMap<HeatMapWrapper, ArrayList<DetailBand>>();
+			detailBandID = 0;
 			calculateDetailBands(heatMapWrappers.get(0), heatMapWrappers.get(1), false);
 
 			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
@@ -338,6 +341,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 			return;
 
 		determineActiveBand();
+		ArrayList<DetailBand> detailBands = leftHeatMapWrapperToDetailBands
+				.get(heatMapWrappers.get(0));
 		for (DetailBand detailBand : detailBands) {
 			ArrayList<Integer> contentIDs = detailBand.getContentIDs();
 
@@ -388,6 +393,8 @@ public class DetailViewState extends ACompareViewStateStatic {
 	private void determineActiveBand() {
 
 		activeBand = null;
+		ArrayList<DetailBand> detailBands = leftHeatMapWrapperToDetailBands
+				.get(heatMapWrappers.get(0));
 		for (DetailBand detailBand : detailBands) {
 			// If at least one element in the band is in mouse_over state ->
 			// change

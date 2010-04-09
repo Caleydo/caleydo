@@ -53,10 +53,11 @@ public abstract class ACompareViewState {
 
 	protected final static float Y_FAN_OUT_DETAIL_TO_DETAIL_FACTOR = 0.04f;
 
-//	public final static SelectionType ACTIVE_HEATMAP_SELECTION_TYPE = new SelectionType(
-//			"ActiveHeatmap", new int[] {  255, 127, 0 }, 2, true, false, 0.8f);
+	// public final static SelectionType ACTIVE_HEATMAP_SELECTION_TYPE = new
+	// SelectionType(
+	// "ActiveHeatmap", new int[] { 255, 127, 0 }, 2, true, false, 0.8f);
 	public final static SelectionType ACTIVE_HEATMAP_SELECTION_TYPE = new SelectionType(
-			"ActiveHeatmap", new float[] {  0, 0, 0, 0.7f }, 2, true, false, 0.8f);
+			"ActiveHeatmap", new float[] { 0, 0, 0, 0.7f }, 2, true, false, 0.8f);
 
 	protected static boolean bandBundlingActive = true;
 
@@ -111,8 +112,8 @@ public abstract class ACompareViewState {
 
 	float firstLevelOffset = 0;
 
-	ArrayList<DetailBand> detailBands;
-
+	HashMap<HeatMapWrapper, ArrayList<DetailBand>> leftHeatMapWrapperToDetailBands;
+	int detailBandID = 0;
 	DetailBand activeBand;
 
 	float bandPaddingY = 0.007f;
@@ -335,10 +336,11 @@ public abstract class ACompareViewState {
 	protected void calculateDetailBands(HeatMapWrapper leftHeatMapWrapper,
 			HeatMapWrapper rightHeatMapWrapper, boolean considerSelectedGroups) {
 
-		detailBands = new ArrayList<DetailBand>();
 		ArrayList<Integer> bandContentIDs = null;
 		DetailBand detailBand = null;
-		int bandID = 0;
+		ArrayList<DetailBand> detailBands = new ArrayList<DetailBand>();
+
+		leftHeatMapWrapperToDetailBands.put(leftHeatMapWrapper, detailBands);
 
 		// FIXME: why can we get a NPE here?
 		try {
@@ -352,7 +354,7 @@ public abstract class ACompareViewState {
 						.getContentVAsOfHeatMaps(considerSelectedGroups)) {
 
 					bandContentIDs = new ArrayList<Integer>();
-					detailBand = new DetailBand(bandID++);
+					detailBand = new DetailBand(detailBandID++);
 					detailBand.setContentIDs(bandContentIDs);
 					detailBands.add(detailBand);
 
@@ -563,6 +565,9 @@ public abstract class ACompareViewState {
 	protected void renderDetailBandRelations(GL gl, HeatMapWrapper leftHeatMapWrapper,
 			HeatMapWrapper rightHeatMapWrapper) {
 
+		// Find detail bands for heatmapwrapper
+		ArrayList<DetailBand> detailBands = leftHeatMapWrapperToDetailBands.get(leftHeatMapWrapper);
+		
 		for (DetailBand detailBand : detailBands) {
 			ArrayList<Integer> contentIDs = detailBand.getContentIDs();
 
@@ -700,12 +705,12 @@ public abstract class ACompareViewState {
 
 		// SelectionType type = heatMapWrapper.getContentSelectionManager()
 		// .getSelectionTypes(contentID).get(0);
-//		if(!considerSelection) {
-//			int i = 0;
-//		}
-//		if(contentID == 2223) {
-//			int i = 0;
-//		}
+		// if(!considerSelection) {
+		// int i = 0;
+		// }
+		// if(contentID == 2223) {
+		// int i = 0;
+		// }
 
 		SelectionType type = null;
 
@@ -754,7 +759,7 @@ public abstract class ACompareViewState {
 
 		// TODO: investigate if this is always ok
 		z = 1f;
-		
+
 		if (type == null) {
 			type = SelectionType.NORMAL;
 			if (!activeHeatMapSelectionTypePresent)

@@ -2,6 +2,7 @@ package org.caleydo.view.matchmaker.state;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
@@ -16,6 +17,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -79,6 +81,9 @@ public class OverviewState extends ACompareViewStateStatic {
 			}
 
 			contentIDToIndividualLines.clear();
+			leftHeatMapWrapperToDetailBands = new HashMap<HeatMapWrapper, ArrayList<DetailBand>>();
+			detailBandID = 0;
+			
 			for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
 
 				renderIndiviudalLineRelations(gl, heatMapWrappers.get(i), heatMapWrappers

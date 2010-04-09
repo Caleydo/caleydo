@@ -23,6 +23,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.animation.MovementVector2;
@@ -113,6 +114,9 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 //			}
 			
 			contentIDToIndividualLines.clear();
+			leftHeatMapWrapperToDetailBands = new HashMap<HeatMapWrapper, ArrayList<DetailBand>>();
+			detailBandID = 0;
+			
 			for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
 
 				renderIndiviudalLineRelations(gl, heatMapWrappers.get(i), heatMapWrappers

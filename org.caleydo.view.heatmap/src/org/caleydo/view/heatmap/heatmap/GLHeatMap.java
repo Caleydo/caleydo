@@ -660,9 +660,15 @@ public class GLHeatMap extends AStorageBasedView {
 				continue;
 			}
 
-			float fXValue = -viewFrustum.getHeight()
-					+ getYCoordinateByContentIndex(iContentIndex);// yDistances.get(iContentIndex);
-																		// // +
+			float fXValue = 0;
+			try {
+				fXValue = -viewFrustum.getHeight()
+				+ getYCoordinateByContentIndex(iContentIndex);
+			} catch (Exception e) {
+				// FIXME: why is the y position not initialized here?
+				// this should never happen :) please check.
+			}
+			
 			float fYValue = renderStyle.getYCenter();
 
 			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
