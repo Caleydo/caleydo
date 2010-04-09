@@ -114,38 +114,44 @@ public class GLConsecutiveConnectionGraphDrawing
 		
 		if (gapSuccessorID == -1){
 			heatMapPredecessorID = getPreviousView(viewsToBeVisited, heatMapID);
-			heatMapSuccessorID = getNext(viewsToBeVisited, heatMapID);
+			heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
 			parCoordsPredecessorID = getPreviousView(viewsToBeVisited, parCoordID);
-			parCoordsSuccessorID = getNext(viewsToBeVisited, parCoordID);
+			parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
 		}
 		else{
 			if (heatMapID == activeViewID){
-				
+				heatMapPredecessorID = viewsToBeVisited.get(viewsToBeVisited.size()-1);
+				heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
+				parCoordsPredecessorID = getPreviousView(viewsToBeVisited, parCoordID);
+				if (viewsToBeVisited.get(viewsToBeVisited.size()-1) == parCoordID)
+					parCoordsSuccessorID = -1;
+				else
+					parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
 			}
 			else if (parCoordID == activeViewID){
+				parCoordsPredecessorID = viewsToBeVisited.get(viewsToBeVisited.size()-1);
+				parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
+				heatMapPredecessorID = getPreviousView(viewsToBeVisited, heatMapID);
+				if (viewsToBeVisited.get(viewsToBeVisited.size()-1) == heatMapID)
+					heatMapSuccessorID = -1;
+				else
+					heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
 				
 			}
 			else{
-				
+				//TODO get IDs of dynamic views if gap is present and neither parCoords nor heatmap is the active view				
 			}
 		}
-		//TODO get IDs of dynamic views if gap is present
+
 		
-		
+		if (heatMapPoints.size() == 0 || parCoordsPoints.size() == 0)
+			return;
 		getPointsFromHeatMapAndParCoords(heatMapPredecessorID, heatMapSuccessorID, heatMapPoints, parCoordsPredecessorID, parCoordsSuccessorID, parCoordsPoints, hashViewToCenterPoint);
 
-		renderLinesFromStack(gl, idType, heatMapPredecessorID, heatMapSuccessorID, parCoordsPredecessorID, parCoordsSuccessorID, viewsToBeVisited, hashViewToCenterPoint);
+		renderLines(gl, idType, heatMapPredecessorID, heatMapSuccessorID, parCoordsPredecessorID, parCoordsSuccessorID, viewsToBeVisited, hashViewToCenterPoint);
 
 	}
 
-	private void renderLinesFromStack(GL gl, EIDType idType, int heatMapPredecessorID,
-		int heatMapSuccessorID, int parCoordsPredecessorID, int parCoordsSuccessorID,
-		ArrayList<Integer> viewsToBeVisited, HashMap<Integer, Vec3f> hashViewToCenterPoint) {
-		
-		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>();
-		// TODO Auto-generated method stub
-		
-	}
 
 	private void renderFromCenter(GL gl, EIDType idType, HashMap<Integer, Vec3f> hashViewToCenterPoint,
 		ArrayList<Integer> viewsToBeVisited, ArrayList<ArrayList<Vec3f>> heatMapPoints, ArrayList<ArrayList<Vec3f>> parCoordsPoints) {
@@ -157,27 +163,27 @@ public class GLConsecutiveConnectionGraphDrawing
 
 		if (gapSuccessorID == -1){
 			heatMapPredecessorID = getPreviousView(viewsToBeVisited, heatMapID);
-			heatMapSuccessorID = getNext(viewsToBeVisited, heatMapID);
+			heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
 			parCoordsPredecessorID = getPreviousView(viewsToBeVisited, parCoordID);
-			parCoordsSuccessorID = getNext(viewsToBeVisited, parCoordID);
+			parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
 		}
 		else{
 			if (heatMapID == activeViewID){
-				heatMapPredecessorID = getNext(viewsToBeVisited, heatMapID);
+				heatMapPredecessorID = getNextView(viewsToBeVisited, heatMapID);
 				heatMapSuccessorID = gapSuccessorID;
 				parCoordsPredecessorID = getPreviousView(viewsToBeVisited, parCoordID);
 				if(beforeGap(parCoordID))
 					parCoordsSuccessorID = -1;
 				else
-					parCoordsSuccessorID = getNext(viewsToBeVisited, parCoordID);
+					parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
 			}
 			else if (parCoordID == activeViewID){
 				heatMapPredecessorID = getPreviousView(viewsToBeVisited, heatMapID);
 				if (beforeGap(heatMapID))
 					heatMapSuccessorID = -1;
 				else
-					heatMapSuccessorID = getNext(viewsToBeVisited, heatMapID);
-				parCoordsPredecessorID = getNext(viewsToBeVisited, parCoordID);
+					heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
+				parCoordsPredecessorID = getNextView(viewsToBeVisited, parCoordID);
 				parCoordsSuccessorID = gapSuccessorID;
 			}
 			else{
@@ -189,18 +195,20 @@ public class GLConsecutiveConnectionGraphDrawing
 				if (beforeGap(heatMapID))
 					heatMapSuccessorID = -1;
 				else
-					heatMapSuccessorID = getNext(viewsToBeVisited, heatMapID);
+					heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
 				if (beforeGap(parCoordID))
 					parCoordsSuccessorID = -1;
 				else
-					parCoordsSuccessorID = getNext(viewsToBeVisited, parCoordID);
+					parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
 			}
 		}
 		
 		//calculating optimal points for heatmap and/or parCoords
+		if (heatMapPoints.size() == 0 || parCoordsPoints.size() == 0)
+			return;
 		getPointsFromHeatMapAndParCoords(heatMapPredecessorID, heatMapSuccessorID, heatMapPoints, parCoordsPredecessorID, parCoordsSuccessorID, parCoordsPoints, hashViewToCenterPoint);
 
-		renderLinesFromCenter(gl, idType, heatMapPredecessorID, heatMapSuccessorID, parCoordsPredecessorID, parCoordsSuccessorID, viewsToBeVisited, hashViewToCenterPoint);
+		renderLines(gl, idType, heatMapPredecessorID, heatMapSuccessorID, parCoordsPredecessorID, parCoordsSuccessorID, viewsToBeVisited, hashViewToCenterPoint);
 		
 	}
 
@@ -218,6 +226,7 @@ public class GLConsecutiveConnectionGraphDrawing
 		}	
 		return false;
 	}
+	
 
 	/** rendering lines when mouse is at focus level
 	 * 
@@ -230,7 +239,7 @@ public class GLConsecutiveConnectionGraphDrawing
 	 * @param viewsToBeVisited
 	 * @param hashViewToCenterPoint
 	 */
-	private void renderLinesFromCenter(GL gl, EIDType idType, int heatMapPredecessorID, int heatMapSuccessorID, int parCoordsPredecessorID, int parCoordsSuccessorID, ArrayList<Integer> viewsToBeVisited, HashMap<Integer, Vec3f> hashViewToCenterPoint) {
+	private void renderLines(GL gl, EIDType idType, int heatMapPredecessorID, int heatMapSuccessorID, int parCoordsPredecessorID, int parCoordsSuccessorID, ArrayList<Integer> viewsToBeVisited, HashMap<Integer, Vec3f> hashViewToCenterPoint) {
 		
 		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>();
 		
@@ -238,10 +247,16 @@ public class GLConsecutiveConnectionGraphDrawing
 		Vec3f vecViewBundlingPoint = null;
 		Vec3f controlPoint = null;
 		Vec3f src = null;
-		if (activeViewID == heatMapID)
+		if (activeViewID == heatMapID){
+			if (heatmapSuccessor.size() == 0)
+				return;
 			src = heatmapSuccessor.get(0).get(0);
-		else if (activeViewID == parCoordID)
+		}
+		else if (activeViewID == parCoordID){
+			if (parCoordsSuccessor.size() == 0)
+				return;
 			src = parCoordsSuccessor.get(0).get(0);
+		}
 		else
 			src = hashViewToCenterPoint.get(activeViewID);
 		
@@ -386,22 +401,6 @@ public class GLConsecutiveConnectionGraphDrawing
 		visLinkScene.renderLines(gl);
 	}
 
-	/** check if a "gap" exists if rendering from the stack
-	 * 
-	 * @param viewsToBeVisited list of views that belong to the current graph
-	 * @return int position where the gap lies, otherwise -1
-	 */
-	private int checkIfGapAvailableWhenRenderingFromStack(ArrayList<Integer> viewsToBeVisited) {
-		if (focusLevel.getElementByPositionIndex(0).getGLView() == null)
-			return -1;
-		if (viewsToBeVisited.size() != 4)
-			return -1;
-		for (Integer count : viewsToBeVisited) {
-			if (viewsToBeVisited.get(count) == -1)
-				return count;
-		}
-		return -1;
-	}
 	
 	/** getting the IDs of the views which are involved in the current path when rendering the path from the stack
 	 * 
@@ -626,6 +625,8 @@ public class GLConsecutiveConnectionGraphDrawing
 		float currentPath = -1;
 		float minPath = Float.MAX_VALUE;
 		
+		if (connectionPoint == null)
+			return;
 		ArrayList<Vec3f> optimalPoints = null;
 		for (ArrayList<Vec3f> dynamicPoints : dynamicPointsList) {
 			Vec3f predecessorPoint = dynamicPoints.get(0);
@@ -679,7 +680,7 @@ public class GLConsecutiveConnectionGraphDrawing
 	 * @param iD id of the view to which the successor should be found
 	 * @return ID of the succeeding view
 	 */
-	private int getNext(ArrayList<Integer> list, int iD){
+	private int getNextView(ArrayList<Integer> list, int iD){
 		int position = list.indexOf(iD);
 
 		if (position == list.size()-1)
