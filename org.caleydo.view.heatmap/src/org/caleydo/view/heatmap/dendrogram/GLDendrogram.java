@@ -1059,7 +1059,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 
 				bCutOffActive[i] = false;
 
-				if (bEnableDepthCheck && bRenderUntilCut == true) {
+				if (bRenderUntilCut) {
 					if (current.getPos().x() <= fPosCut) {
 						// if (current.getSelectionType() !=
 						// SelectionType.DESELECTED) {
@@ -1187,7 +1187,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 
 				bCutOffActive[i] = false;
 
-				if (bEnableDepthCheck && bRenderUntilCut == true) {
+				if (bRenderUntilCut) {
 					if (current.getPos().y() >= fPosCut) {
 						// if (current.getSelectionType() !=
 						// SelectionType.DESELECTED) {

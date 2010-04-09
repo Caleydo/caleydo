@@ -18,10 +18,7 @@ import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 public class VisLink {
 
 	private ArrayList<Vec3f> linePoints;
-
-	// private float width;
-	// private float[] color;
-
+	
 	/**
 	 * Constructor (for straight lines)
 	 * 
