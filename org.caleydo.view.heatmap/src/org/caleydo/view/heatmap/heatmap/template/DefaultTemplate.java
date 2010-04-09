@@ -20,6 +20,7 @@ public class DefaultTemplate extends ATemplate {
 		heatMapLayout.sizeY = 0.84f;
 		heatMapLayout.renderer = new HeatMapRenderer(templateRenderer.heatMap);
 		templateRenderer.addRenderer(heatMapLayout);
+		templateRenderer.addHeatMapLayout(heatMapLayout);
 
 		RenderParameters contentSelectionLayout = new RenderParameters();
 		contentSelectionLayout.isBackground = true;
