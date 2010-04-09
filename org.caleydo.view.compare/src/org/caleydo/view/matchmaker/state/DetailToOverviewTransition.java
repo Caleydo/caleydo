@@ -63,6 +63,7 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 	@Override
 	public void init(GL gl) {
 		isInitialized = true;
+		compareConnectionRenderer.init(gl);
 
 		ACompareViewState overviewState = compareViewStateController
 				.getState(ECompareViewStateType.OVERVIEW);

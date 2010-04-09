@@ -753,7 +753,7 @@ public abstract class AGLView
 
 		this.set = set;
 		initData();
-		// setDisplayListDirty();
+
 		// In GL views the new set is not immediately written to the set variable of AView.
 		// The new set is then assigned to the working set when the display list is dirty the next time.
 		// newSet = set;

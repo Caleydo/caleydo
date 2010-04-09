@@ -106,12 +106,33 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 			setBar.setWidth(viewFrustum.getWidth());
 			setBar.render(gl);
 			
+//			for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
+//
+//				renderIndiviudalLineRelations(gl, heatMapWrappers.get(i),
+//						heatMapWrappers.get(i + 1));
+//			}
+			
+			contentIDToIndividualLines.clear();
 			for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
 
-				renderIndiviudalLineRelations(gl, heatMapWrappers.get(i),
-						heatMapWrappers.get(i + 1));
+				renderIndiviudalLineRelations(gl, heatMapWrappers.get(i), heatMapWrappers
+						.get(i + 1));
+
+				if (bandBundlingActive) {
+
+					// TODO: if we put the heatmapwarpper combination with the
+					// calculated detail bands in
+					// a hash map we have to calculate it only once!
+					calculateDetailBands(heatMapWrappers.get(i), heatMapWrappers
+							.get(i + 1), false);
+
+					renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i), true);
+					renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i + 1),
+							false);
+					renderDetailBandRelations(gl, heatMapWrappers.get(i), heatMapWrappers
+							.get(i + 1));
+				}
 			}
-			
 
 			if (areTargetsReached()) {
 				finish();

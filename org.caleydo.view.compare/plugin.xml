@@ -12,13 +12,5 @@
             name="Matchmaker">
       </view>
    </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            defaultHandler="org.caleydo.view.matchmaker.command.handler.OpenCompareHandler"
-            id="org.caleydo.view.compare.command.openmatchmaker"
-            name="Compare">
-      </command>
-   </extension>
 
 </plugin>

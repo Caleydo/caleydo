@@ -58,7 +58,7 @@ public abstract class ACompareViewState {
 	public final static SelectionType ACTIVE_HEATMAP_SELECTION_TYPE = new SelectionType(
 			"ActiveHeatmap", new float[] {  0, 0, 0, 0.7f }, 2, true, false, 0.8f);
 
-	protected static boolean bandBundlingActive = false;
+	protected static boolean bandBundlingActive = true;
 
 	protected TextRenderer textRenderer;
 	protected TextureManager textureManager;

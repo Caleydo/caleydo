@@ -27,20 +27,6 @@ public class ActivateViewListener
 			}
 			else if (event instanceof OpenMatchmakerViewEvent) {
 
-				// SetsPreFilterDialog preFilter = new SetsPreFilterDialog(new Shell(),
-				// ((OpenCompareViewEvent)event).getSetsToCompare());
-				// preFilter.open();
-
-				GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						StartClusteringAction startClusteringAction = new StartClusteringAction();
-						startClusteringAction.setSets(((OpenMatchmakerViewEvent)event).getSetsToCompare());
-						startClusteringAction.run();
-					}
-				});
-				
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
 						"org.caleydo.view.matchmaker");
@@ -50,9 +36,20 @@ public class ActivateViewListener
 					e.printStackTrace();
 				}
 				
-//				CompareGroupsEvent compareGroupsEvent = new CompareGroupsEvent(((OpenMatchmakerViewEvent)event).getSetsToCompare());
-//				compareGroupsEvent.setSender(this);
-//				GeneralManager.get().getEventPublisher().triggerEvent(compareGroupsEvent);
+				CompareGroupsEvent compareGroupsEvent =
+					new CompareGroupsEvent(((OpenMatchmakerViewEvent) event).getSetsToCompare());
+				compareGroupsEvent.setSender(this);
+				GeneralManager.get().getEventPublisher().triggerEvent(compareGroupsEvent);
+				
+				GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						StartClusteringAction startClusteringAction = new StartClusteringAction();
+						startClusteringAction.setSets(((OpenMatchmakerViewEvent)event).getSetsToCompare());
+						startClusteringAction.run();
+					}
+				});
 
 			}
 			else if (event instanceof OpenViewEvent)

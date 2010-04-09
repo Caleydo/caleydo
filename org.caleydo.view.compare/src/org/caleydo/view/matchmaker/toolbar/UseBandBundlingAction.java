@@ -16,7 +16,7 @@ public class UseBandBundlingAction extends AToolBarAction implements IToolBarIte
 	public static final String TEXT = "Use ribbons";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/reset_axis_spacing.png";
 
-	private boolean renderBands = false;
+	private boolean renderBands = true;
 
 	/**
 	 * Constructor.

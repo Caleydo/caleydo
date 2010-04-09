@@ -158,7 +158,7 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 	@Override
 	public void init(GL gl) {
 		isInitialized = true;
-
+		compareConnectionRenderer.init(gl);
 	}
 
 	protected void createMovementValuesTargetOffset(GL gl, int id,
