@@ -9,6 +9,9 @@ public class DefaultTemplate extends ATemplate {
 
 	@Override
 	public void setParameters() {
+		
+		templateRenderer.clearRenderers();
+		
 		Row row = new Row();
 		row.sizeY = 1;
 		// heat map
