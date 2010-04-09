@@ -700,6 +700,12 @@ public abstract class ACompareViewState {
 
 		// SelectionType type = heatMapWrapper.getContentSelectionManager()
 		// .getSelectionTypes(contentID).get(0);
+//		if(!considerSelection) {
+//			int i = 0;
+//		}
+//		if(contentID == 2223) {
+//			int i = 0;
+//		}
 
 		SelectionType type = null;
 

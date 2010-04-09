@@ -122,12 +122,13 @@ public class HeatMapWrapper {
 
 	private GLHeatMap createHeatMap(GL gl, GLMouseListener glMouseListener) {
 
-		CmdCreateView cmdView = (CmdCreateView) generalManager.getCommandManager()
-				.createCommandByType(ECommandType.CREATE_GL_VIEW);
+		CmdCreateView cmdView = (CmdCreateView) generalManager
+				.getCommandManager().createCommandByType(
+						ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(GLHeatMap.VIEW_ID);
 
-		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 50, 0, 50,
-				-20, 20, -1);
+		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 50,
+				0, 50, -20, 20, -1);
 
 		cmdView.doCommand();
 
@@ -154,16 +155,18 @@ public class HeatMapWrapper {
 
 	private void createDendrogram(GL gl, GLMouseListener glMouseListener) {
 
-		CmdCreateView cmdView = (CmdCreateView) generalManager.getCommandManager()
-				.createCommandByType(ECommandType.CREATE_GL_VIEW);
+		CmdCreateView cmdView = (CmdCreateView) generalManager
+				.getCommandManager().createCommandByType(
+						ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(GLDendrogram.VIEW_ID + ".horizontal");
 
-		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 50, 0, 50,
-				-20, 20, -1);
+		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 50,
+				0, 50, -20, 20, -1);
 
 		cmdView.doCommand();
 
-		dendrogram = (GLDendrogram<ContentGroupList>) cmdView.getCreatedObject();
+		dendrogram = (GLDendrogram<ContentGroupList>) cmdView
+				.getCreatedObject();
 		dendrogram.setDataDomain(dataDomain);
 		dendrogram.setUseCase(useCase);
 		dendrogram.setRemoteRenderingGLView(parentView);
@@ -171,7 +174,8 @@ public class HeatMapWrapper {
 		dendrogram.setContentVAType(ContentVAType.CONTENT);
 		dendrogram.initData();
 		dendrogram.setRenderUntilCut(false);
-		dendrogram.initRemote(gl, glParentView, glMouseListener, infoAreaManager);
+		dendrogram.initRemote(gl, glParentView, glMouseListener,
+				infoAreaManager);
 	}
 
 	public ISet getSet() {
@@ -232,9 +236,11 @@ public class HeatMapWrapper {
 		int groupSampleEndIndex = 0;
 		int groupIndex = 0;
 		for (Group group : contentGroupList) {
-			groupSampleEndIndex = groupSampleStartIndex + group.getNrElements() - 1;
+			groupSampleEndIndex = groupSampleStartIndex + group.getNrElements()
+					- 1;
 			GLHeatMap heatMap = createHeatMap(gl, glMouseListener);
-			setEmbeddedHeatMapData(heatMap, groupSampleStartIndex, groupSampleEndIndex);
+			setEmbeddedHeatMapData(heatMap, groupSampleStartIndex,
+					groupSampleEndIndex);
 
 			hashHeatMaps.put(groupIndex, heatMap);
 			groupSampleStartIndex += group.getNrElements();
@@ -251,8 +257,8 @@ public class HeatMapWrapper {
 		clearDeselected();
 	}
 
-	private void setEmbeddedHeatMapData(GLHeatMap heatMap, int firstSampleIndex,
-			int lastSampleIndex) {
+	private void setEmbeddedHeatMapData(GLHeatMap heatMap,
+			int firstSampleIndex, int lastSampleIndex) {
 
 		// TODO: Is this really necessary?
 		heatMap.resetView();
@@ -280,21 +286,24 @@ public class HeatMapWrapper {
 			if (heatMap == null)
 				continue;
 
-			float heatMapHeight = layout.getDetailHeatMapHeight(group.getGroupIndex());
-			Vec3f heatMapPosition = layout
-					.getDetailHeatMapPosition(group.getGroupIndex());
+			float heatMapHeight = layout.getDetailHeatMapHeight(group
+					.getGroupIndex());
+			Vec3f heatMapPosition = layout.getDetailHeatMapPosition(group
+					.getGroupIndex());
 
 			heatMap.getViewFrustum().setLeft(heatMapPosition.x());
 			heatMap.getViewFrustum().setBottom(heatMapPosition.y());
 			heatMap.getViewFrustum().setRight(
 					heatMapPosition.x() + layout.getDetailWidth());
-			heatMap.getViewFrustum().setTop(heatMapPosition.y() + heatMapHeight);
+			heatMap.getViewFrustum()
+					.setTop(heatMapPosition.y() + heatMapHeight);
 
 		}
 	}
 
 	public void drawLocalItems(GL gl, TextureManager textureManager,
-			PickingManager pickingManager, GLMouseListener glMouseListener, int viewID) {
+			PickingManager pickingManager, GLMouseListener glMouseListener,
+			int viewID) {
 
 		ArrayList<IHeatMapRenderCommand> renderCommands = layout
 				.getRenderCommandsOfLocalItems();
@@ -364,11 +373,8 @@ public class HeatMapWrapper {
 
 	public void processEvents() {
 
-		for (Group group : selectedGroups.keySet()) {
-			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupIndex());
-			if (heatMap != null) {
-				heatMap.processEvents();
-			}
+		for (GLHeatMap heatMap : hashHeatMaps.values()) {
+			heatMap.processEvents();
 		}
 	}
 
@@ -408,7 +414,8 @@ public class HeatMapWrapper {
 
 		Vec3f overviewPosition = layout.getOverviewHeatMapPosition();
 
-		return new float[] { overviewPosition.x() + layout.getOverviewHeatMapWidth(),
+		return new float[] {
+				overviewPosition.x() + layout.getOverviewHeatMapWidth(),
 				layout.getOverviewHeatMapSamplePositionY(contentIndex), 0 };
 	}
 
@@ -429,7 +436,8 @@ public class HeatMapWrapper {
 		if (yCoordinate == null)
 			return null;
 
-		return new float[] { layout.getDetailPosition().x() + layout.getDetailWidth(),
+		return new float[] {
+				layout.getDetailPosition().x() + layout.getDetailWidth(),
 				yCoordinate, 0 };
 	}
 
@@ -446,7 +454,8 @@ public class HeatMapWrapper {
 	private Float getDetailYCoordinateByContentID(int contentID) {
 
 		// For the group check we need the index in the global content VA
-		Group group = getSelectedGroupFromContentIndex(contentVA.indexOf(contentID));
+		Group group = getSelectedGroupFromContentIndex(contentVA
+				.indexOf(contentID));
 		if (group == null)
 			return null;
 
@@ -462,7 +471,8 @@ public class HeatMapWrapper {
 
 		// calculateHeatMapPositions();
 
-		Vec3f heatMapPosition = layout.getDetailHeatMapPosition(group.getGroupIndex());
+		Vec3f heatMapPosition = layout.getDetailHeatMapPosition(group
+				.getGroupIndex());
 		// hashHeatMapPositions.get(groupIndex);
 
 		int numTotalSamples = 0;
@@ -470,12 +480,14 @@ public class HeatMapWrapper {
 		for (Group tempGroup : selectedGroups.keySet()) {
 			GLHeatMap tempHeatMap = hashHeatMaps.get(tempGroup.getGroupIndex());
 			numTotalSamples += tempHeatMap.getNumberOfVisibleElements();
-			totalHeatMapOverheadSpacing += tempHeatMap.getRequiredOverheadSpacing();
+			totalHeatMapOverheadSpacing += tempHeatMap
+					.getRequiredOverheadSpacing();
 		}
 
 		float heatMapHeight = layout.getDetailHeatMapHeight(groupIndex);
 
-		Float elementInHMPosition = heatMap.getYCoordinateByContentIndex(contentIndex);
+		Float elementInHMPosition = heatMap
+				.getYCoordinateByContentIndex(contentIndex);
 
 		if (elementInHMPosition == null)
 			return null;
@@ -578,8 +590,10 @@ public class HeatMapWrapper {
 	 * virtual array to {@link GLHeatMap#SELECTION_HIDDEN} so that they can be
 	 * hidden on demand.
 	 */
-	public void choosePassiveHeatMaps(ArrayList<ContentVirtualArray> foreignContentVAs,
-			boolean hideVisible, boolean considerSelectedGroups, boolean selectGroups) {
+	public void choosePassiveHeatMaps(
+			ArrayList<ContentVirtualArray> foreignContentVAs,
+			boolean hideVisible, boolean considerSelectedGroups,
+			boolean selectGroups) {
 
 		ContentGroupList groupList = contentVA.getGroupList();
 		// FIXME this isn't to nice
@@ -599,7 +613,8 @@ public class HeatMapWrapper {
 					selectedGroup.resetVisualGenesCounter();
 				}
 
-				GLHeatMap heatMap = hashHeatMaps.get(selectedGroup.getGroupIndex());
+				GLHeatMap heatMap = hashHeatMaps.get(selectedGroup
+						.getGroupIndex());
 				ContentVirtualArray heatMapVA = heatMap.getContentVA();
 				int index = heatMapVA.indexOf(contentID);
 				if (useSorting && index >= 0)
@@ -724,7 +739,8 @@ public class HeatMapWrapper {
 						SelectionDelta contentSelectionDelta = new SelectionDelta(
 								EIDType.EXPRESSION_INDEX);
 
-						for (int contentIndex = nrGenes; contentIndex < contentVA.size(); contentIndex++) {
+						for (int contentIndex = nrGenes; contentIndex < contentVA
+								.size(); contentIndex++) {
 							SelectionDeltaItem item = new SelectionDeltaItem();
 							item.setPrimaryID(contentVA.get(contentIndex));
 							item.setSelectionType(GLHeatMap.SELECTION_HIDDEN);
@@ -747,8 +763,9 @@ public class HeatMapWrapper {
 
 	}
 
-	public void handleGroupSelection(SelectionType selectionType, int groupIndex,
-			boolean isControlPressed, boolean addNewSelectionType) {
+	public void handleGroupSelection(SelectionType selectionType,
+			int groupIndex, boolean isControlPressed,
+			boolean addNewSelectionType) {
 
 		if (selectionType != SelectionType.SELECTION)
 			return;
@@ -836,7 +853,8 @@ public class HeatMapWrapper {
 		}
 	}
 
-	public void handleReplaceContentVA(EIDCategory idCategory, ContentVAType vaType) {
+	public void handleReplaceContentVA(EIDCategory idCategory,
+			ContentVAType vaType) {
 
 		contentVA = set.getContentVA(vaType);
 	}
@@ -851,45 +869,48 @@ public class HeatMapWrapper {
 	public void setHeatMapActive(int groupIndex, boolean addToNewSelectionType) {
 		if (activeHeatMapID == groupIndex)
 			return;
-		
-//		SelectionCommandEvent selectionCommandEvent = new SelectionCommandEvent();
-//		SelectionCommand clearSelectionCommand = new SelectionCommand(ESelectionCommandType.CLEAR, ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE);
-//		selectionCommandEvent.setCategory(EIDCategory.GENE);
-//		selectionCommandEvent.setSelectionCommand(clearSelectionCommand);
-//		eventPublisher.triggerEvent(selectionCommandEvent);
-		
+
+		// SelectionCommandEvent selectionCommandEvent = new
+		// SelectionCommandEvent();
+		// SelectionCommand clearSelectionCommand = new
+		// SelectionCommand(ESelectionCommandType.CLEAR,
+		// ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE);
+		// selectionCommandEvent.setCategory(EIDCategory.GENE);
+		// selectionCommandEvent.setSelectionCommand(clearSelectionCommand);
+		// eventPublisher.triggerEvent(selectionCommandEvent);
+
 		int previouslyActiveHeatMapID = activeHeatMapID;
 		activeHeatMapID = groupIndex;
 		// FIXME FIXME!!!!! we need to set heat maps inactive as well, this is
 		// just for now:
-//		for (GLHeatMap heatMap : hashHeatMaps.values()) {
-//			heatMap.setActive(false);
-//		}
+		// for (GLHeatMap heatMap : hashHeatMaps.values()) {
+		// heatMap.setActive(false);
+		// }
 
 		if (previouslyActiveHeatMapID != -1) {
 			GLHeatMap heatMap = hashHeatMaps.get(activeHeatMapID);
-			ContentSelectionManager hmContentSelectionManager = heatMap
-					.getContentSelectionManager();
 			for (Integer elementID : heatMap.getContentVA()) {
 
-				hmContentSelectionManager.removeFromType(
-						ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE, elementID);
+				contentSelectionManager.removeFromType(
+						ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE,
+						elementID);
 			}
 			SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
-			selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager.getDelta());
+			selectionUpdateEvent.setSelectionDelta(contentSelectionManager
+					.getDelta());
 			selectionUpdateEvent.setSender(heatMap);
 			eventPublisher.triggerEvent(selectionUpdateEvent);
 		}
 
 		GLHeatMap heatMap = hashHeatMaps.get(groupIndex);
 		// heatMap.setActive(true);
-		ContentSelectionManager hmContentSelectionManager = heatMap
-				.getContentSelectionManager();
-		hmContentSelectionManager.addToType(ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE, heatMap
-				.getContentVA().getVirtualArray());
+		contentSelectionManager.addToType(
+				ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE, heatMap
+						.getContentVA().getVirtualArray());
 
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
-		selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager.getDelta());
+		selectionUpdateEvent.setSelectionDelta(contentSelectionManager
+				.getDelta());
 		selectionUpdateEvent.setSender(heatMap);
 		eventPublisher.triggerEvent(selectionUpdateEvent);
 
@@ -905,12 +926,12 @@ public class HeatMapWrapper {
 			event.addSelectionType(selectionType);
 			event.setSender(heatMap);
 			eventPublisher.triggerEvent(event);
-			hmContentSelectionManager.addToType(selectionType, heatMap.getContentVA()
-					.getVirtualArray());
+			contentSelectionManager.addToType(selectionType, heatMap
+					.getContentVA().getVirtualArray());
 			selectionUpdateEvent = new SelectionUpdateEvent();
 
 			selectionUpdateEvent.setSender(heatMap);
-			selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager
+			selectionUpdateEvent.setSelectionDelta(contentSelectionManager
 					.getDelta());
 			eventPublisher.triggerEvent(selectionUpdateEvent);
 		}
@@ -918,22 +939,36 @@ public class HeatMapWrapper {
 	}
 
 	public void setHeatMapsInactive() {
-		if (activeHeatMapID == -1)
-			return;
 
-		GLHeatMap heatMap = hashHeatMaps.get(activeHeatMapID);
-		ContentSelectionManager hmContentSelectionManager = heatMap
-				.getContentSelectionManager();
-		for (Integer elementID : heatMap.getContentVA()) {
-			hmContentSelectionManager.removeFromType(
+		for (Integer elementID : contentVA) {
+			contentSelectionManager.removeFromType(
 					ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE, elementID);
 		}
 
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
-		selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager.getDelta());
+		selectionUpdateEvent.setSelectionDelta(contentSelectionManager
+				.getDelta());
 		eventPublisher.triggerEvent(selectionUpdateEvent);
 
 		activeHeatMapID = -1;
+
+		// if (activeHeatMapID == -1)
+		// return;
+		//
+		// GLHeatMap heatMap = hashHeatMaps.get(activeHeatMapID);
+		// ContentSelectionManager hmContentSelectionManager = heatMap
+		// .getContentSelectionManager();
+		// for (Integer elementID : heatMap.getContentVA()) {
+		// hmContentSelectionManager.removeFromType(
+		// ACompareViewState.ACTIVE_HEATMAP_SELECTION_TYPE, elementID);
+		// }
+		//
+		// SelectionUpdateEvent selectionUpdateEvent = new
+		// SelectionUpdateEvent();
+		// selectionUpdateEvent.setSelectionDelta(hmContentSelectionManager.getDelta());
+		// eventPublisher.triggerEvent(selectionUpdateEvent);
+		//
+		// activeHeatMapID = -1;
 	}
 
 	public AHeatMapLayout getLayout() {
@@ -968,7 +1003,6 @@ public class HeatMapWrapper {
 	public String getCaption() {
 		return set.getLabel();
 	}
-
 
 	public GLHeatMap getHeatMapByContentID(int contentID) {
 		for (GLHeatMap tmpHeatMap : hashHeatMaps.values()) {

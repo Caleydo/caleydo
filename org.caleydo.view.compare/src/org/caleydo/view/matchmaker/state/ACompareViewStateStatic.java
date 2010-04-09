@@ -202,12 +202,12 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		selectionTypes.add(SelectionType.SELECTION);
 		selectionTypes.add(ACTIVE_HEATMAP_SELECTION_TYPE);
 
-		for (SelectionType selectionType : contentSelectionManager.getSelectionTypes()) {
-			if (selectionType.isManaged()) {
-				selectionTypes.add(selectionType);
-				break;
-			}
-		}
+//		for (SelectionType selectionType : contentSelectionManager.getSelectionTypes()) {
+//			if (selectionType.isManaged()) {
+//				selectionTypes.add(selectionType);
+//				break;
+//			}
+//		}
 
 		float z = 0;
 		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
