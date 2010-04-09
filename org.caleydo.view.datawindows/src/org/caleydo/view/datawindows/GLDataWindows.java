@@ -30,6 +30,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
@@ -95,6 +96,9 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 	private GLCaleydoCanvas canvas;
 	
+	
+	private Point2D.Double layoutHotSpot;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -118,6 +122,15 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		remoteHeatMapScalation = new Point2D.Double();
 		remoteParCoordPosition = new Point2D.Double();
 		remoteParCoordScalation = new Point2D.Double();
+		
+		
+		remoteHyperbolicPosition.setLocation(0, 0);
+		
+		layoutHotSpot= new Point2D.Double();
+		
+		//remoteHyperbolicPosition.setLocation(0, canvasHeight / 2 - canvasHeight
+			//	* remoteHyperbolicScalation.getY() / 2);
+		
 		// parentGLCanvas.addMouseListener(mouseWheelListener);
 
 		// preparing the eyetracker
@@ -193,65 +206,112 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	@Override
 	public void display(GL gl) {
 
+		
+		layoutHotSpot.setLocation(canvasWidth/2,canvasHeight/2);
+		GLHelperFunctions.drawPointAt(gl,(float) layoutHotSpot.getX(), (float) layoutHotSpot.getY(), 1);
+		
+		
+		
 		// transforming the hyperbolic view:
-//		remoteHyperbolicScalation.setLocation(viewSizeHyperbolic / 2,
-//				viewSizeHyperbolic / 2 / fAspectRatio);
-//		remoteHyperbolicPosition.setLocation(0, canvasHeight / 2 - canvasHeight
-//				* remoteHyperbolicScalation.getY() / 2);
+		remoteHyperbolicScalation.setLocation(viewSizeHyperbolic / 2,
+				viewSizeHyperbolic / 2 / fAspectRatio);
+		
+		
 
 		this.setViewPosition(remoteHyperbolicPosition,
 				remoteHyperbolicScalation, new Point2D.Double(0, canvasHeight
 						* viewSizeHyperbolic / 2 / fAspectRatio),
 				new Point2D.Double(canvasWidth * viewSizeHyperbolic / 2, 0));
 
+		//System.out.println("remoteHyperbolic Position:"+remoteHyperbolicPosition.getX());
 		
+		
+		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		
 		Transform transform = new Transform();
 
-		transform.setTranslation(new Vec3f((float) remoteHyperbolicPosition
-				.getX(), (float) remoteHyperbolicPosition.getY(), 0));
-		transform.setScale(new Vec3f((float) remoteHyperbolicScalation.getX(),
-				(float) remoteHyperbolicScalation.getY(), 1));
+	//	transform.setTranslation(new Vec3f((float) remoteHyperbolicPosition
+		//		.getX(), (float) remoteHyperbolicPosition.getY(), 0));
+		
+		transform.setTranslation(new Vec3f((float)layoutHotSpot.getX(),(float)layoutHotSpot.getY(), 0));
+		
+		
 
-		remoteElementHyperbolic.setTransform(transform);
+	
+		//Vec3f scaleVector=remoteElementHyperbolic.getTransform().getScale();
+		//System.out.println("remoteHyperbolic Position:"+	(canvasWidth-layoutHotSpot.getX())/8);
+		
+		
+		transform.setScale(new Vec3f((float)  (canvasWidth-layoutHotSpot.getX())/8,
+				(float)(canvasHeight-layoutHotSpot.getY())/8,1));
+		
+		
+		
+		
+		
+		
+		
+		
+		remoteElementHeatMap.setTransform(transform);
+		
+		
+		
+		Transform transform2 = new Transform();
 
-		// transforming the heatmap view:
+		transform2.setScale(new Vec3f((float)  (canvasWidth-layoutHotSpot.getX())/8,
+				(float)1,1));
+		
+		transform2.setTranslation(new Vec3f(0,0, 0));
+		
+		
+		remoteElementHyperbolic.setTransform(transform2);
+		
+		
+		
+		
+		
+		//System.out.println("remoteHyperbolic Positionx:"+remoteElementHeatMap.getGLView().getViewFrustum().getHeight());
+		//System.out.println("remoteHyperbolic Posiy:"+remoteElementHeatMap.getGLView().getViewFrustum().getWidth());
+		//remoteElementHeatMap.getGLView().g
+		
+		//		
+//		// transforming the heatmap view:
 //		remoteHeatMapScalation.setLocation(viewSizeHeatMap / 2, viewSizeHeatMap
 //				/ 2 / fAspectRatio);
 //		remoteHeatMapPosition.setLocation(0, canvasHeight / 2 - canvasHeight
 //				* remoteHeatMapScalation.getY() / 2);
-	    Transform transform2 = new Transform();
-	    
-	  
-	    
-		this.setViewPosition(remoteHeatMapPosition, remoteHeatMapScalation,
-				new Point2D.Double(canvasWidth * viewSizeHeatMap / 2,
-						canvasHeight * viewSizeHeatMap/2  ),
-				new Point2D.Double(canvasWidth * viewSizeHeatMap, 0));
-		
-		transform2.setTranslation(new Vec3f(
-				(float) remoteHeatMapPosition.getX(),
-				(float) remoteHeatMapPosition.getY(), 0));
-		transform2.setScale(new Vec3f((float) remoteHeatMapScalation.getX(),
-				(float) remoteHeatMapScalation.getY(), 1));
-
-	
-		
-		
-		// transforming the Parcoord view:
-	    Transform transform3 = new Transform();
-		this.setViewPosition(remoteParCoordPosition, remoteParCoordScalation,
-				new Point2D.Double(canvasWidth * viewSizeParCoord / 2,
-						canvasHeight * viewSizeParCoord ),
-				new Point2D.Double(canvasWidth * viewSizeParCoord, canvasHeight * viewSizeParCoord / 2));
-
-		transform3.setTranslation(new Vec3f(
-				(float) remoteParCoordPosition.getX(),
-				(float) remoteParCoordPosition.getY(), 0));
-		transform3.setScale(new Vec3f((float) remoteParCoordScalation.getX(),
-				(float) remoteParCoordScalation.getY(), 1));
-
-		remoteElementParCoords.setTransform(transform3);
+//	    Transform transform2 = new Transform();
+//	    
+//	  
+//	    
+//		this.setViewPosition(remoteHeatMapPosition, remoteHeatMapScalation,
+//				new Point2D.Double(canvasWidth * viewSizeHeatMap / 2,
+//						canvasHeight * viewSizeHeatMap/2  ),
+//				new Point2D.Double(canvasWidth * viewSizeHeatMap, 0));
+//		
+//		transform2.setTranslation(new Vec3f(
+//				(float) remoteHeatMapPosition.getX(),
+//				(float) remoteHeatMapPosition.getY(), 0));
+//		transform2.setScale(new Vec3f((float) remoteHeatMapScalation.getX(),
+//				(float) remoteHeatMapScalation.getY(), 1));
+//
+//	
+//		
+//		
+//		// transforming the Parcoord view:
+//	    Transform transform3 = new Transform();
+//		this.setViewPosition(remoteParCoordPosition, remoteParCoordScalation,
+//				new Point2D.Double(canvasWidth * viewSizeParCoord / 2,
+//						canvasHeight * viewSizeParCoord ),
+//				new Point2D.Double(canvasWidth * viewSizeParCoord, canvasHeight * viewSizeParCoord / 2));
+//
+//		transform3.setTranslation(new Vec3f(
+//				(float) remoteParCoordPosition.getX(),
+//				(float) remoteParCoordPosition.getY(), 0));
+//		transform3.setScale(new Vec3f((float) remoteParCoordScalation.getX(),
+//				(float) remoteParCoordScalation.getY(), 1));
+//
+//		remoteElementParCoords.setTransform(transform3);
 		
 		// doSlerpActions();
 		renderRemoteLevelElement(gl, remoteElementHyperbolic);
@@ -493,7 +553,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		remoteElementHeatMap = new RemoteLevelElement(null);
 		remoteElementHeatMap.setGLView(view);
-		remoteElementHeatMap.setTransform(transform);
+	//	remoteElementHeatMap.setTransform(transform);
 
 		// Parallel coordinates
 		serView = new SerializedParallelCoordinatesView();
@@ -507,7 +567,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		remoteElementParCoords = new RemoteLevelElement(null);
 		remoteElementParCoords.setGLView(view);
-		remoteElementParCoords.setTransform(transform);
+		//remoteElementParCoords.setTransform(transform);
 
 		// Hyperbolic view
 		serView = new SerializedHyperbolicView();
@@ -515,9 +575,9 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		view = createView(gl, serView);
 		directHyperbolicView = (GLHyperbolic) view;
 
-		// transform = new Transform();
-		//		
-		// transform.setTranslation(new Vec3f((float) remoteHyperbolicPosition
+		 //transform = new Transform();
+				
+		//transform.setTranslation(new Vec3f((float) remoteHyperbolicPosition
 		// .getX(), (float) remoteHyperbolicPosition.getY(), 0));
 		// transform.setScale(new Vec3f((float)
 		// remoteHyperbolicScalation.getX(),
@@ -525,7 +585,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		remoteElementHyperbolic = new RemoteLevelElement(null);
 		remoteElementHyperbolic.setGLView(view);
-		// remoteElementHyperbolic.setTransform(transform);
+		 remoteElementHyperbolic.setTransform(transform);
 		
 		
 		mouseWheelListener = new DataWindowsMouseWheelListener(this.directHyperbolicView);
@@ -595,15 +655,15 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	public void setViewPosition(Point2D.Double positionToSet,
 			Point2D.Double scalation, Point2D.Double upLeftPoint,
 			Point2D.Double downRightPoint) {
-
-		double scaleX = (downRightPoint.getX() - upLeftPoint.getX())
-				/ (this.directHyperbolicView.canvasWidth);
-		double scaleY = ( upLeftPoint.getY()-downRightPoint.getY() )
-				/ (this.directHyperbolicView.canvasHeight);
-		scalation.setLocation(scaleX, scaleY);
-		
-		positionToSet.setLocation(new Point2D.Double(upLeftPoint.getX(), downRightPoint.getY()));
-		
+//
+//		double scaleX = (downRightPoint.getX() - upLeftPoint.getX())
+//				/ (this.directHyperbolicView.canvasWidth);
+//		double scaleY = ( upLeftPoint.getY()-downRightPoint.getY() )
+//				/ (this.directHyperbolicView.canvasHeight);
+//		scalation.setLocation(scaleX, scaleY);
+//		
+//		positionToSet.setLocation(new Point2D.Double(upLeftPoint.getX(), downRightPoint.getY()));
+//		
 
 	}
 }

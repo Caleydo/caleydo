@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.view.pathway.GLPathway;
@@ -175,7 +176,7 @@ public class GLHyperbolic extends AGLView {
 	public void displayRemote(GL gl) {
 
 		gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, viewport, 0);
-
+		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		canvasWidth = 2 / (float) viewport[0];
 		canvasHeight = 2 / (float) viewport[5];// if (set == null)
 
@@ -186,6 +187,9 @@ public class GLHyperbolic extends AGLView {
 	@Override
 	public void display(GL gl) {
 		glHandle = gl;
+
+
+
 		// GLHelperFunctions.drawAxis(gl);
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// gl.glEnable(GL.GL_DEPTH_TEST);
