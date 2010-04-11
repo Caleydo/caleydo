@@ -147,7 +147,7 @@ public class StatisticsResult {
 			
 			switch (foldChangeEvaluator) {
 				case LESS:
-					if (resultVector[contentIndex] > foldChangeRatio)
+					if (resultVector[contentIndex]*-1 < foldChangeRatio)
 						continue;
 					break;
 				case GREATER:
@@ -160,6 +160,7 @@ public class StatisticsResult {
 					break;
 			}
 			
+			System.out.println("Found valid gene fulfilling statistics criteria: " +compareSet +" "+contentIndex);
 			numberOfElements++;
 		}
 

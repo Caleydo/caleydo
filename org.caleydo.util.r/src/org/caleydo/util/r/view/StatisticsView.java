@@ -200,7 +200,7 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 							continue;
 						}
 					} else if (foldChangeSettings.getEvaluator() == FoldChangeEvaluator.LESS) {
-						if (foldChangeResult.getFirst()[contentIndex] > foldChangeSettings
+						if (foldChangeResult.getFirst()[contentIndex]*-1 < foldChangeSettings
 								.getRatio()) {
 							resultValid = false;
 							continue;
@@ -231,6 +231,8 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 
 				if (!resultValid)
 					continue;
+				else
+					System.out.println("Found valid gene fulfilling statistics criteria: " +set +" "+contentIndex);
 			}
 
 			if (resultValid)

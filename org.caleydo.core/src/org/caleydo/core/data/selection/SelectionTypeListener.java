@@ -16,5 +16,4 @@ public class SelectionTypeListener
 				handler.addSelectionType(typeEvent.getSelectionType());
 		}
 	}
-
 }

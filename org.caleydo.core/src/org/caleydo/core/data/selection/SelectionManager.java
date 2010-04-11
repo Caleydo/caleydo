@@ -15,6 +15,8 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.view.RemoveManagedSelectionTypesEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -62,6 +64,7 @@ public class SelectionManager
 	private boolean bIsDeltaWritingEnabled = true;
 
 	private SelectionTypeListener addSelectionTypeListener;
+	private RemoveManagedSelectionTypesListener removeManagedSelectionTypesListener;
 
 	/**
 	 * Constructor
@@ -638,6 +641,21 @@ public class SelectionManager
 	}
 
 	/**
+	 * Removes all managed selection types. These are for example newly created selection groups.
+	 */
+	public void removeMangagedSelectionTypes() {
+
+		for (int selectionTypeIndex = 0; selectionTypeIndex < selectionTypes.size(); selectionTypeIndex++) {
+			
+			SelectionType selectionType = selectionTypes.get(selectionTypeIndex);
+			if (selectionType.isManaged()) {
+				selectionTypes.remove(selectionType);
+				hashSelectionTypes.remove(selectionType);
+			}
+		}
+	}
+
+	/**
 	 * Add a type to the delta black list, which excludes all operations on the type from being written to a
 	 * delta
 	 * 
@@ -663,6 +681,12 @@ public class SelectionManager
 		addSelectionTypeListener.setHandler(this);
 		GeneralManager.get().getEventPublisher().addListener(SelectionTypeEvent.class,
 			addSelectionTypeListener);
+		
+		removeManagedSelectionTypesListener = new RemoveManagedSelectionTypesListener();
+
+		removeManagedSelectionTypesListener.setHandler(this);
+		GeneralManager.get().getEventPublisher().addListener(RemoveManagedSelectionTypesEvent.class,
+			removeManagedSelectionTypesListener);
 
 	}
 
@@ -670,6 +694,11 @@ public class SelectionManager
 		if (addSelectionTypeListener != null) {
 			GeneralManager.get().getEventPublisher().removeListener(addSelectionTypeListener);
 			addSelectionTypeListener = null;
+		}
+		
+		if (removeManagedSelectionTypesListener != null) {
+			GeneralManager.get().getEventPublisher().removeListener(removeManagedSelectionTypesListener);
+			removeManagedSelectionTypesListener = null;
 		}
 	}
 

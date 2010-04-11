@@ -144,9 +144,9 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 	public void foldChange(ISet set1, ISet set2) {
 
 		// Do nothing if the operations was already performed earlier
-		if (set1.getStatisticsResult().getFoldChangeResult(set2) != null
-				&& set2.getStatisticsResult().getFoldChangeResult(set1) != null)
-			return;
+//		if (set1.getStatisticsResult().getFoldChangeResult(set2) != null
+//				&& set2.getStatisticsResult().getFoldChangeResult(set1) != null)
+//			return;
 
 		NumericalStorage meanStorageVec1 = set1.getMeanStorage();
 		NumericalStorage meanStorageVec2 = set2.getMeanStorage();

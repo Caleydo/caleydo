@@ -1,6 +1,8 @@
 package org.caleydo.rcp.action.toolbar.view;
 
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.RemoveManagedSelectionTypesEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
@@ -29,5 +31,9 @@ public class ClearSelectionsAction
 		ClearSelectionsEvent event = new ClearSelectionsEvent();
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		RemoveManagedSelectionTypesEvent resetSelectionTypesEvent = new RemoveManagedSelectionTypesEvent();
+		resetSelectionTypesEvent.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(resetSelectionTypesEvent);
 	};
 }
