@@ -204,7 +204,8 @@ public abstract class AXmlParserManager
 				GeneralManager.get().getPathwayManager().getPathwayResourceLoader(EPathwayDatabaseType.KEGG)
 					.getInputSource(sFileName);
 		}
-		else if (sFileName.contains("h_") || sFileName.contains("h_")) {
+		else if (sFileName.contains("h_") || sFileName.contains("m_")) {
+
 			inputSource =
 				GeneralManager.get().getPathwayManager().getPathwayResourceLoader(
 					EPathwayDatabaseType.BIOCARTA).getInputSource(sFileName);

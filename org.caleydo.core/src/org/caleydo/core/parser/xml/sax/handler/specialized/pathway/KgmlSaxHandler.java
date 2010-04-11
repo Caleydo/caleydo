@@ -227,9 +227,15 @@ public class KgmlSaxHandler
 					continue;
 				}
 
-				iDavidId =
-					generalManager.getIDMappingManager().getID(EIDType.ENTREZ_GENE_ID, EIDType.DAVID,
-						Integer.valueOf(sTmpVertexName.substring(4)));
+				try {
+					iDavidId =
+						generalManager.getIDMappingManager().getID(EIDType.ENTREZ_GENE_ID, EIDType.DAVID,
+							Integer.valueOf(sTmpVertexName.substring(4)));					
+				}
+				catch (Exception e) {
+					// TODO: investigate!!
+					System.out.println("TODO: check why the parsing error occurs");
+				}
 
 				if (iDavidId == null) {
 					// TODO: what should we do in this case?

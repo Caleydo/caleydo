@@ -279,13 +279,19 @@ public class DetailViewState extends ACompareViewStateStatic {
 				lastDetailContentID).getFieldHeight(lastDetailContentID)
 				/ 2f - bandPaddingY;
 
-		rightTopPos[1] = rightTopPos[1] + rightTopHeatMapElementOffset;
-		rightBottomPos[1] = rightBottomPos[1] - rightBottomHeatMapElementOffset;
+		try {
 
-		float xOffset = (rightTopPos[0] - leftTopPos[0]) / 3f;
+			rightTopPos[1] = rightTopPos[1] + rightTopHeatMapElementOffset;
+			rightBottomPos[1] = rightBottomPos[1] - rightBottomHeatMapElementOffset;
 
-		renderSingleBand(gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos,
-				highlight, xOffset, -1, false);
+			float xOffset = (rightTopPos[0] - leftTopPos[0]) / 3f;
+
+			renderSingleBand(gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos,
+					highlight, xOffset, -1, false);
+		} catch (Exception e) {
+			System.out.println("TODO: investigate NPE");
+		}
+
 	}
 
 	private void renderSingleOverviewToDetailRelation(GL gl, GLHeatMap heatMap,

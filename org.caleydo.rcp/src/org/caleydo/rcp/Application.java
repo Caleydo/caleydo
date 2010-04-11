@@ -333,7 +333,7 @@ public class Application
 
 		GeneralManager.get().getGUIBridge().init();
 
-		if (bLoadPathwayData == true)
+		//if (bLoadPathwayData == true)
 			triggerPathwayLoading();
 
 		Shell shell = new Shell();
