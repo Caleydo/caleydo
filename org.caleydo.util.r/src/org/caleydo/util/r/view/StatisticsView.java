@@ -236,8 +236,7 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 			}
 
 			if (resultValid)
-				reducedVA.appendUnique(setsWithPerformedStatistics.get(0).getContentVA(
-						ContentVAType.CONTENT).get(contentIndex));
+				reducedVA.appendUnique(contentIndex);
 		}
 		
 		if (reducedVA != null) {
