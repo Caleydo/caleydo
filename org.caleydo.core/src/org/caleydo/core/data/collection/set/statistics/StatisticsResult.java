@@ -160,7 +160,7 @@ public class StatisticsResult {
 					break;
 			}
 			
-			System.out.println("Found valid gene fulfilling statistics criteria: " +compareSet +" "+contentIndex);
+			//System.out.println("Found valid gene fulfilling statistics criteria: " +compareSet +" "+contentIndex);
 			numberOfElements++;
 		}
 

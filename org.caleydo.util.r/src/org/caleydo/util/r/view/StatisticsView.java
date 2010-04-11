@@ -231,8 +231,8 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 
 				if (!resultValid)
 					continue;
-				else
-					System.out.println("Found valid gene fulfilling statistics criteria: " +set +" "+contentIndex);
+				// else
+				//	System.out.println("Found valid gene fulfilling statistics criteria: " +set +" "+contentIndex);
 			}
 
 			if (resultValid)
