@@ -76,15 +76,10 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 	// the location attributes of the views
 	private double viewSizeHyperbolic = 1;
-	private double viewSizeParCoord = 1;
-	private double viewSizeHeatMap = 1;
+
 
 	private Point2D.Double remoteHyperbolicPosition;
 	private Point2D.Double remoteHyperbolicScalation;
-	private Point2D.Double remoteHeatMapPosition;
-	private Point2D.Double remoteHeatMapScalation;
-	private Point2D.Double remoteParCoordPosition;
-	private Point2D.Double remoteParCoordScalation;
 
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(
 			0, 0);
@@ -97,7 +92,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	private GLCaleydoCanvas canvas;
 
 	private Point2D.Double layoutHotSpot;
-
+	private boolean hyperbolicViewSquared = true;
 	/**
 	 * Constructor.
 	 * 
@@ -117,10 +112,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		remoteHyperbolicPosition = new Point2D.Double();
 		remoteHyperbolicScalation = new Point2D.Double();
-		remoteHeatMapPosition = new Point2D.Double();
-		remoteHeatMapScalation = new Point2D.Double();
-		remoteParCoordPosition = new Point2D.Double();
-		remoteParCoordScalation = new Point2D.Double();
+	
 
 		remoteHyperbolicPosition.setLocation(0, 0);
 
@@ -224,9 +216,28 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 				(float) (canvasHeight - layoutHotSpot.getY()) / 8, 1));
 		remoteElementHeatMap.setTransform(transform);
 		Transform transform2 = new Transform();
-		transform2
-				.setScale(new Vec3f((float) (layoutHotSpot.getX()) / 8, 1, 1));
-		transform2.setTranslation(new Vec3f(0, 0, 0));
+		
+		if (hyperbolicViewSquared = true){
+			if (canvasHeight>layoutHotSpot.getX()){
+				transform2
+				.setScale(new Vec3f((float) (layoutHotSpot.getX()) / 8, (float) (layoutHotSpot.getX()) / canvasHeight, 1));
+				transform2.setTranslation(new Vec3f(0,(float) (canvasHeight-layoutHotSpot.getX())/2, 0));
+			System.out.println("test"+ (canvasHeight-layoutHotSpot.getX())/2);
+			}
+			else{
+				
+				transform2
+				.setScale(new Vec3f((float) (canvasHeight) / 8, 1, 1));
+				transform2.setTranslation(new Vec3f((float) (layoutHotSpot.getX()-canvasHeight)/2,0, 0));
+			}
+			
+			
+		}
+		else {
+			transform2
+			.setScale(new Vec3f((float) (layoutHotSpot.getX()) / 8, 1, 1));
+		}
+	
 
 		remoteElementHyperbolic.setTransform(transform2);
 		Transform transform3 = new Transform();

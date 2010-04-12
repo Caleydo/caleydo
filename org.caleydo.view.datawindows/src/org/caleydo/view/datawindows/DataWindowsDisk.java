@@ -28,6 +28,8 @@ public class DataWindowsDisk extends PoincareDisk {
 	private double eyeTrackerPrecision;
 	private double lineFactor = 0;
 	private GLHyperbolic hyperbolic;
+	
+	
 
 	public DataWindowsDisk(GLHyperbolic master) {
 		super();
