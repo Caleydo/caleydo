@@ -176,7 +176,7 @@ public class GLHyperbolic extends AGLView {
 	public void displayRemote(GL gl) {
 
 		gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, viewport, 0);
-		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		//GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		canvasWidth = 2 / (float) viewport[0];
 		canvasHeight = 2 / (float) viewport[5];// if (set == null)
 
@@ -473,11 +473,19 @@ public class GLHyperbolic extends AGLView {
 	public void drawRemoteView(GL gl, PoincareNode node, Point2D.Double position,
 			double size) {
 
+		 double yOffset= 0;//(size-(size*(canvasHeight / canvasWidth)))/2;
+		System.out.println("test:"+size);
+		
+	//	System.out.println("test2:"+testRemoteElement.getGLView().getViewFrustum().getHeight());
+		
+		
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f((float) position.getX(), (float) position
-				.getY(), 0));
 		transform.setScale(new Vec3f((float) size, (float) size
-				* (canvasHeight / canvasWidth), 1));
+				*(canvasHeight / canvasWidth)	, 1));
+		
+		transform.setTranslation(new Vec3f((float) position.getX(), (float) position
+				.getY()-(float)yOffset, 0));
+		
 		testRemoteElement.setTransform(transform);
 
 		// initNewView(gl);

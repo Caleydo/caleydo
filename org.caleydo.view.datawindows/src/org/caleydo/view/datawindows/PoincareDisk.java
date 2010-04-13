@@ -21,7 +21,7 @@ public class PoincareDisk {
 	public PoincareDisk() {
 		radius = 1;
 		nodeSize = 0.4;
-		lineWidth = 0.2;
+		lineWidth = 2;
 		absolutePosition = new Point2D.Double(0, 0);
 	}
 

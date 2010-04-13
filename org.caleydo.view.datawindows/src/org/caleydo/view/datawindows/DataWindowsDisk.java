@@ -158,6 +158,7 @@ public class DataWindowsDisk extends PoincareDisk {
 			}
 		}
 
+		
 		// if (mode==1){
 		Vec3f lowerLeftCorner = new Vec3f(
 				(float) (-size + node.getPosition().getX() * displayScaleFactorX + canvasWidth / 2),
@@ -223,7 +224,7 @@ public class DataWindowsDisk extends PoincareDisk {
 
 			hyperbolic.drawRemoteView(gl, node, new Point2D.Double(-size
 					+ node.getZoomedPosition().getX() * displayScaleFactorX
-					+ canvasWidth / 2, -size + node.getZoomedPosition().getY()
+					+ canvasWidth / 2, -size*(canvasHeight / canvasWidth) + node.getZoomedPosition().getY()
 					* displayScaleFactorY + canvasHeight / 2), size / 4);
 
 		}
@@ -236,9 +237,9 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		Point2D.Double startingPoint = node1.getPosition();
 
-		double width = this.getMetric(startingPoint, lineWidth) * lineFactor;
+	//	double width = this.getMetric(startingPoint, lineWidth) * lineFactor;
 
-		gl.glLineWidth((float) width);
+		gl.glLineWidth((float) lineWidth);
 		gl.glBegin(GL.GL_LINE_STRIP);
 
 		gl.glColor3i(0, 0, 0);

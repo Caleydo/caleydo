@@ -198,14 +198,14 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	public void display(GL gl) {
 
 		layoutHotSpot.setLocation(canvasWidth / 2 + 1, canvasHeight / 2);
-		GLHelperFunctions.drawPointAt(gl, (float) layoutHotSpot.getX(),
-				(float) layoutHotSpot.getY(), 1);
+		//GLHelperFunctions.drawPointAt(gl, (float) layoutHotSpot.getX(),
+			//	(float) layoutHotSpot.getY(), 1);
 
 		// transforming the hyperbolic view:
 		remoteHyperbolicScalation.setLocation(viewSizeHyperbolic / 2,
 				viewSizeHyperbolic / 2 / fAspectRatio);
 
-		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		//GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f((float) layoutHotSpot.getX(),
