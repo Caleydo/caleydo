@@ -58,9 +58,6 @@ public class GLHyperbolic extends AGLView {
 
 	public DataWindowsDisk disk;
 
-	// properties of the circle
-	// private double circleRadius = 0.5;
-
 	private PoincareNode slerpedNode;
 
 	private boolean manualPickFlag = true;
@@ -99,20 +96,8 @@ public class GLHyperbolic extends AGLView {
 		testRemoteElement = new RemoteLevelElement(null);
 		testRemoteElement.setTransform(transform);
 
-		// debug
-
 		disk = new DataWindowsDisk(this);
-
-		//		
-
-		// nullpointer:
-		// Tree<ClusterNode> tree = set.getStorageTree();
-
 		arSlerpActions = new ArrayList<NodeSlerp>();
-
-		// ASerializedView serView = getSerializableRepresentation();
-		// newViews.add(serView);
-
 	}
 
 	@Override
@@ -127,7 +112,8 @@ public class GLHyperbolic extends AGLView {
 
 	@Override
 	public void initRemote(final GL gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener,
+			GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
 
@@ -155,14 +141,12 @@ public class GLHyperbolic extends AGLView {
 		// return;
 
 		if (bIsDisplayListDirtyLocal) {
-
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
-
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
-		//pickingManager.handlePicking(this, gl);
+		// pickingManager.handlePicking(this, gl);
 
 		display(gl);
 		checkForHits(gl);
@@ -176,7 +160,6 @@ public class GLHyperbolic extends AGLView {
 	public void displayRemote(GL gl) {
 
 		gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, viewport, 0);
-		//GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		canvasWidth = 2 / (float) viewport[0];
 		canvasHeight = 2 / (float) viewport[5];// if (set == null)
 
@@ -188,24 +171,6 @@ public class GLHyperbolic extends AGLView {
 	public void display(GL gl) {
 		glHandle = gl;
 
-
-
-		// GLHelperFunctions.drawAxis(gl);
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-		// gl.glEnable(GL.GL_DEPTH_TEST);
-		// clipToFrustum(gl);
-
-		// gl.glMatrixMode(GL.GL_PROJECTION);
-		// gl.glLoadIdentity();
-		// //
-		// gl.glOrtho(0.0f, canvasWidth,canvasHeight, 0.0f, -1.0f, 1.0f);
-		// //
-		// gl.glMatrixMode(GL.GL_MODELVIEW);
-		// gl.glLoadIdentity();
-		//
-
-		// }
-		//
 		// receivedEyeData = tracker.getEyeTrackData();
 		//
 		// int offsetX = upperLeftScreenPos.x;
@@ -256,7 +221,8 @@ public class GLHyperbolic extends AGLView {
 		gl.glEndList();
 	}
 
-	private void renderRemoteLevelElement(final GL gl, RemoteLevelElement element) {
+	private void renderRemoteLevelElement(final GL gl,
+			RemoteLevelElement element) {
 
 		AGLView glView = element.getGLView();
 
@@ -266,8 +232,8 @@ public class GLHyperbolic extends AGLView {
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
-				glView.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.VIEW_SELECTION, glView.getID()));
 
 		gl.glPushMatrix();
 
@@ -279,13 +245,12 @@ public class GLHyperbolic extends AGLView {
 		float fAngle = rot.get(axis);
 
 		gl.glTranslatef(translation.x(), translation.y(), translation.z());
-		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(),
+				axis.z());
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
 		glView.displayRemote(gl);
-
 		gl.glPopMatrix();
-
 		gl.glPopName();
 		gl.glPopName();
 	}
@@ -297,8 +262,8 @@ public class GLHyperbolic extends AGLView {
 					+ " / 0 experiments";
 
 		return "Scatterplot - " + contentVA.size() + " "
-				+ useCase.getContentLabel(false, true) + " / " + storageVA.size()
-				+ " experiments";
+				+ useCase.getContentLabel(false, true) + " / "
+				+ storageVA.size() + " experiments";
 	}
 
 	@Override
@@ -326,8 +291,9 @@ public class GLHyperbolic extends AGLView {
 
 			case CLICKED:
 
-				arSlerpActions.add(new NodeSlerp(4, disk.getNodeByCompareableValue(
-						iExternalID).getPosition(), new Point2D.Double(0, 0)));
+				arSlerpActions.add(new NodeSlerp(4, disk
+						.getNodeByCompareableValue(iExternalID).getPosition(),
+						new Point2D.Double(0, 0)));
 
 				slerpedNode = disk.getNodeByCompareableValue(iExternalID);
 
@@ -440,7 +406,8 @@ public class GLHyperbolic extends AGLView {
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
 
-			glPathway.setPathway(((SerializedPathwayView) serView).getPathwayID());
+			glPathway.setPathway(((SerializedPathwayView) serView)
+					.getPathwayID());
 			glPathway.enablePathwayTextures(true);
 			glPathway.enableNeighborhood(false);
 			glPathway.enableGeneMapping(false);
@@ -464,28 +431,22 @@ public class GLHyperbolic extends AGLView {
 
 			disk.translateTreeMoebius(singleSlerp.returnPoint);
 			disk.setCenteredNode(slerpedNode);
-			disk.centeredNodeSize = disk.findOptimalCenterNodeSize(
-					disk.getCenteredNode(), 10);
+			disk.centeredNodeSize = disk.findOptimalCenterNodeSize(disk
+					.getCenteredNode(), 10);
 			arSlerpActions.remove(0);
 		}
 	}
 
-	public void drawRemoteView(GL gl, PoincareNode node, Point2D.Double position,
-			double size) {
+	public void drawRemoteView(GL gl, PoincareNode node,
+			Point2D.Double position, double size) {
 
-		 double yOffset= 0;//(size-(size*(canvasHeight / canvasWidth)))/2;
-		System.out.println("test:"+size);
-		
-	//	System.out.println("test2:"+testRemoteElement.getGLView().getViewFrustum().getHeight());
-		
-		
 		Transform transform = new Transform();
 		transform.setScale(new Vec3f((float) size, (float) size
-				*(canvasHeight / canvasWidth)	, 1));
-		
-		transform.setTranslation(new Vec3f((float) position.getX(), (float) position
-				.getY()-(float)yOffset, 0));
-		
+				* (canvasHeight / canvasWidth), 1));
+
+		transform.setTranslation(new Vec3f((float) position.getX(),
+				(float) position.getY(), 0));
+
 		testRemoteElement.setTransform(transform);
 
 		// initNewView(gl);
@@ -508,7 +469,8 @@ public class GLHyperbolic extends AGLView {
 
 		for (int i = 0; i < 5; i++) {
 
-			node = new ViewHyperbolicNode(tree, "child_pathway", 3, createPathwayView(gl));
+			node = new ViewHyperbolicNode(tree, "child_pathway", 3,
+					createPathwayView(gl));
 			tree.addChild(tree.getRoot(), node);
 
 			for (int j = 0; j < 5; j++) {
@@ -637,16 +599,17 @@ public class GLHyperbolic extends AGLView {
 		SerializedPathwayView serPathway = new SerializedPathwayView(dataDomain);
 		// serTestPathway.setPathwayID(generalManager.getPathwayManager().searchPathwayByName("TGF-beta signaling pathway",
 		// EPathwayDatabaseType.KEGG).getID());
-		serPathway.setPathwayID(((PathwayGraph) (generalManager.getPathwayManager()
-				.getAllItems().toArray()[randomGenerator.nextInt(generalManager
-				.getPathwayManager().getAllItems().size())])).getID());
+		serPathway.setPathwayID(((PathwayGraph) (generalManager
+				.getPathwayManager().getAllItems().toArray()[randomGenerator
+				.nextInt(generalManager.getPathwayManager().getAllItems()
+						.size())])).getID());
 
 		return (GLPathway) createView(gl, serPathway);
 	}
 
 	// called, if the user focuses a point on the display
-	public void setEyeTrackerAction(Point2D.Double mousePoint, Point2D.Double offset,
-			Point2D.Double scalation) {
+	public void setEyeTrackerAction(Point2D.Double mousePoint,
+			Point2D.Double offset, Point2D.Double scalation) {
 		if (glHandle != null) {
 			Point2D.Double mouseCoord = new Point2D.Double();
 			int[] viewport = new int[4];
@@ -655,14 +618,20 @@ public class GLHyperbolic extends AGLView {
 			double factorX = (double) canvasWidth / (double) viewport[2];
 			double factorY = (double) canvasHeight / (double) viewport[3];
 
-			mouseCoord.setLocation((mousePoint.getX() * factorX - offset.getX())
-					/ scalation.getX(),
-					(canvasHeight - mousePoint.getY() * factorY - offset.getY())
+			mouseCoord.setLocation(
+					(mousePoint.getX() * factorX - offset.getX())
+							/ scalation.getX(), (canvasHeight
+							- mousePoint.getY() * factorY - offset.getY())
 							/ scalation.getY());
 
+			// System.out.println("mousecoord"+mouseCoord.getX());
+			// System.out.println("eyeoff"+eyeTrackerOffset.getX());
+			// mouseCoord.setLocation(mouseCoord.getX()-
+			// eyeTrackerOffset.getX(),
+			// mouseCoord.getY() - eyeTrackerOffset.getY());
 			PoincareNode selectedNode;
-			selectedNode = disk.processEyeTrackerAction(new Point2D.Double(mouseCoord
-					.getX(), mouseCoord.getY()), arSlerpActions);
+			selectedNode = disk.processEyeTrackerAction(new Point2D.Double(
+					mouseCoord.getX(), mouseCoord.getY()), arSlerpActions);
 			if (selectedNode != null) {
 				disk.setCenteredNode(null);
 				// arSlerpActions.add(new nodeSlerp(4,
