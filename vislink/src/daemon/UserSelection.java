@@ -1,5 +1,7 @@
 package daemon;
 
+import java.util.Timer;
+
 public class UserSelection {
 	
 	/** The application of the user selection. */
@@ -23,7 +25,10 @@ public class UserSelection {
 	/** Whether this selection has been reported for rendering. */
 	private boolean rendered; 
 	
-	public UserSelection(Application app, String selectionID, String pointerID){
+	/** Handler for selections which have timed out (e.g. when application has been shut down). */
+	private TimeoutHandler timeoutHandler; 
+	
+	public UserSelection(Application app, String selectionID, String pointerID, VisLinkManager manager){
 		this.app = app; 
 		this.selectionID = selectionID; 
 		this.pointerID = pointerID; 
@@ -31,6 +36,11 @@ public class UserSelection {
 		this.rendered = false; 
 		this.bbl = null; 
 		this.source = false; 
+		// schedule timer 
+		TimeoutEvent timeoutEvent = new SelectionTimeoutEvent(this); 
+		this.timeoutHandler = new TimeoutHandler(timeoutEvent, manager); 
+		Timer timer = new Timer(); 
+		timer.schedule(this.timeoutHandler, SelectionTimeoutEvent.SELECTION_TIME); 
 	}
 	
 	public boolean isSource() {
@@ -69,8 +79,24 @@ public class UserSelection {
 		return this.rendered; 
 	}
 	
+	private void stopTimer(boolean canceled){
+		if(this.timeoutHandler != null){
+			// timer is still running and selection has been reported, 
+			// not canceled
+			if(this.timeoutHandler.cancel() && !canceled){
+				this.app.reportResponsive(); 
+			}
+			this.timeoutHandler = null; 
+		}
+	}
+	
+	public void cancel(){
+		this.stopTimer(true); 
+	}
+	
 	public void setReported(){
 		this.reported = true; 
+		this.stopTimer(false); 
 	}
 	
 	public void setRendered(){

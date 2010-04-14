@@ -2,7 +2,7 @@ package daemon;
 
 public class TimeoutEvent {
 	
-	public enum TimeoutEventType{ ONE_SHOT_TIMEOUT }; 
+	public enum TimeoutEventType{ ONE_SHOT_TIMEOUT, SELECTION_TIMEOUT }; 
 	
 	private TimeoutEventType eventType;
 

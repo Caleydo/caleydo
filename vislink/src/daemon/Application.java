@@ -27,6 +27,12 @@ public class Application {
 	
 	/** whether the window is just a temporary container. */
 	private boolean temporary; 
+	
+	/** counts the number of times the application has not responded. */
+	private int nonResponsiveCounter; 
+	
+	/** the maximum number of consequtive non responsive increments before the application gets unregistered. */
+	public final static int MAX_NON_RESPONSIVE = 3; 
 
 //	/** id to send */
 //	private String sendId;
@@ -35,6 +41,7 @@ public class Application {
 		name = null;
 		windows = new ArrayList<BoundingBox>();
 		temporary = false; 
+		nonResponsiveCounter = 0; 
 	}
 
 	public boolean isTemporary() {
@@ -88,6 +95,20 @@ public class Application {
 //	public void setSendId(String sendId) {
 //		this.sendId = sendId;
 //	}
+	
+	public void reportNonResponsive(){
+		this.nonResponsiveCounter++; 
+		System.out.println("\nNon responsive counter: "+this.nonResponsiveCounter+"("+this.toString()+")\n"); 
+	}
+	
+	public void reportResponsive(){
+		this.nonResponsiveCounter = 0; 
+		System.out.println("Application "+this.toString()+" responsive again"); 
+	}
+	
+	public boolean isResponsive(){
+		return (this.nonResponsiveCounter < MAX_NON_RESPONSIVE); 
+	}
 
 	@Override
 	public String toString() {

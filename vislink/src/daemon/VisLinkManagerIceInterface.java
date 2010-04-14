@@ -48,6 +48,9 @@ public class VisLinkManagerIceInterface extends _VisManagerIDisp{
 		User user = userManager.getUser(event.pointerId); 
 		User owner = userManager.getUser(event.ownerPointerId); 
 		
+		// log 
+		manager.log("HIJACK", user, null, "", owner, ""); 
+		
 		// report one-shot request to visual links manager 
 		manager.reportOneShot(user, owner, event.pointerAccessInformation, event.srcApp); 
 	}
@@ -67,6 +70,9 @@ public class VisLinkManagerIceInterface extends _VisManagerIDisp{
 			String selectionID = clipboard.getSelection(); 
 			System.out.println("Selection: "+selectionID); 
 			System.out.println("Access information: "+event.pointerAccessInformation); 
+			
+			// log 
+			manager.log("ONE_SHOT", user, null, selectionID, null, ""); 
 
 			// only proceed if a selection could be retrieved
 			if(!selectionID.isEmpty()){
@@ -98,7 +104,7 @@ public class VisLinkManagerIceInterface extends _VisManagerIDisp{
 				System.out.println("Application "+appName+" has id "+app.getId()); 
 				// create selection for the user 
 				SelectionManager selectionManager = manager.getSelectionManager(); 
-				selectionManager.addSelection(app, selectionID, event.pointerId, true); 
+				selectionManager.addSelection(app, selectionID, event.pointerId, true, manager); 
 				// retrieve selection and set reported 
 				UserSelection selection = selectionManager.getSelection(app, event.pointerId); 
 				if(selection == null){
@@ -154,6 +160,9 @@ public class VisLinkManagerIceInterface extends _VisManagerIDisp{
 			if(event.locked){
 				userAccess = UserWindowAccess.NotAccessible; 
 			}
+			
+			// log 
+			manager.log("WINDOW_LOCK", user, app, "", null, "access="+userAccess); 
 			
 			// construct list of affected users 
 			List<User> affectedUsers = new ArrayList<User>(); 

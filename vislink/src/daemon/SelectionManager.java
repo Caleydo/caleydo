@@ -19,13 +19,15 @@ public class SelectionManager {
 //		this.addSelection(app, selectionID, pointerID, false); 
 //	}
 	
-	public void addSelection(Application app, String selectionID, String pointerID, boolean source){
-		UserSelection selection = new UserSelection(app, selectionID, pointerID); 
+	public void addSelection(Application app, String selectionID, String pointerID, boolean source, VisLinkManager manager){
+		UserSelection selection = new UserSelection(app, selectionID, pointerID, manager); 
 		selection.setSource(source); 
 		UserSelection existingSelection = this.getSelection(app, pointerID); 
 		if(existingSelection != null){
 			System.out.println("Existing selection: " + existingSelection); 
 			//existingSelection.setReported(); 
+			// cancel timer
+			existingSelection.cancel(); 
 			this.selections.remove(existingSelection); 
 		}
 		this.selections.add(selection); 

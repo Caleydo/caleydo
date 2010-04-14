@@ -1,5 +1,6 @@
 package daemon;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -9,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.Map.Entry;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -53,6 +57,9 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 	/** Proxy object for VisRenderer to call VisLinkManager. */
 	private VisLinkManagerIceInterface iceInterface; 
 	
+	/** Logger. */
+	public static Logger logger;
+	
 	
 	public VisLinkManager() {
 		this.clipboardManager = new ClipboardManager(); 
@@ -70,11 +77,11 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 				
 				List<Application> targetApps = user.getTargetApps(srcApp);
 				
-				this.selectionManager.addSelection(srcApp, selectionID, user.getPointerID(), true); 
+				this.selectionManager.addSelection(srcApp, selectionID, user.getPointerID(), true, this); 
 				
 				for(Application targetApp : targetApps){
 					if(user.isApplicationAccessible(targetApp) && !targetApp.isTemporary()){
-						this.selectionManager.addSelection(targetApp, selectionID, user.getPointerID(), false); 
+						this.selectionManager.addSelection(targetApp, selectionID, user.getPointerID(), false, this); 
 					}
 				}
 				
@@ -96,6 +103,15 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		
 		// check out whether we need to redraw links for that user 
 		User user = this.userManager.getUser(pointerID); 
+		
+		if(user == null){
+			System.out.println("User with pointerID " + pointerID + " not found"); 
+			return; 
+		}
+		
+		// log 
+		this.log("WINDOW_CHANGE", user, app, "", null, "appInfo="+app.toString()); 
+		
 		// save the access information for the user 
 		user.setAppAccess(this.applicationManager, accessInformation); 
 		
@@ -107,7 +123,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			user.setNewSelection(selectionId, app); 
 			
 			// request visual links for source window 
-			this.selectionManager.addSelection(app, selectionId, pointerID, true); 
+			this.selectionManager.addSelection(app, selectionId, pointerID, true, this); 
 			
 			// get all target apps 
 			List<Application> targetApps = user.getTargetApps(app); 
@@ -117,7 +133,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 //				Application currentApp = applicationManager.getApplicationsById().get(appId.applicationID);
 			for(Application currentApp : targetApps){
 				if(!currentApp.isTemporary()){
-					this.selectionManager.addSelection(currentApp, selectionId, pointerID, false); 
+					this.selectionManager.addSelection(currentApp, selectionId, pointerID, false, this); 
 				}
 			}
 			
@@ -149,7 +165,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 						if(userApp == otherUser.getPrevSrcApp()){
 							isSource = true; 
 						}
-						this.selectionManager.addSelection(userApp, selectionId, pointerID, isSource); 
+						this.selectionManager.addSelection(userApp, selectionId, pointerID, isSource, this); 
 					}
 
 					checkRender(pointerID);
@@ -182,9 +198,12 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		
 		// if the user's source window is not accessible for him, discard event
 		if(user.isApplicationAccessible(app)){
+			
+			// log: 
+			this.log("SELECTION", user, app, selectionId, null, ""); 
 		
 			// save selection as source selection 
-			this.selectionManager.addSelection(app, selectionId, pointerID, true); 
+			this.selectionManager.addSelection(app, selectionId, pointerID, true, this); 
 			UserSelection selection = this.selectionManager.getSelection(app, pointerID); 
 
 			if (boundingBoxListXML != null) {
@@ -204,7 +223,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			for(Application currentApp : targetApps){
 				if(!currentApp.isTemporary()){
 					if (currentApp.getId() != app.getId() || boundingBoxListXML == null) {
-						this.selectionManager.addSelection(currentApp, selectionId, pointerID, false); 
+						this.selectionManager.addSelection(currentApp, selectionId, pointerID, false, this); 
 					}
 				}
 			}
@@ -281,7 +300,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 					isSource = true; 
 				}
 				// add selection 
-				this.selectionManager.addSelection(app, selectionID, pointerID, isSource); 
+				this.selectionManager.addSelection(app, selectionID, pointerID, isSource, this); 
 			}
 		}
 		
@@ -324,7 +343,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 				if(userApp == user.getPrevSrcApp()){
 					isSource = true; 
 				}
-				this.selectionManager.addSelection(userApp, selectionID, pointerID, isSource); 
+				this.selectionManager.addSelection(userApp, selectionID, pointerID, isSource, this); 
 			}
 
 			checkRender(pointerID);
@@ -442,6 +461,15 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		return bbl;
 	}
 	
+	public void checkApplications(){
+		for (Application app : applicationManager.getApplications().values()) {
+			if(!app.isResponsive()){
+				System.out.println("APPLICATION "+app.getName()+" is UNRESPONSIVE"); 
+				this.unregisterApplication(app.getName()); 
+			}
+		}
+	}
+	
 	public void checkRender(String pointerID) {
 		int numSelections = this.selectionManager.getNumUserSelections(pointerID); 
 		int numMissingSelections = this.selectionManager.getNumMissingReports(pointerID); 
@@ -455,6 +483,8 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			System.out.println("VisLinkManager: start rendering vis links for #" + numSelections + " apps");
 			renderVisualLinks(this.selectionManager.getBoundingBoxList(pointerID), pointerID); 
 			this.selectionManager.clearUserSelections(pointerID); 
+			// check if there are unresponsive applications and clean up
+			this.checkApplications(); 
 		} else {
 			System.out.println("waiting for more reports, " + (numSelections - numMissingSelections) + " / " + numSelections);
 		}
@@ -630,9 +660,65 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
     	report.selectionGroups = groups; 
     	rendererPrx.renderAllLinks(report);
     }
+    
+    public void initLogger(){
+    	
+    	try {
+    		// we want to log into a file and want to append to this file
+			FileHandler fileHandler = new FileHandler("VisualLinks.log", true);
+			// simple logger contains date and time --> sufficient
+			fileHandler.setFormatter(new SimpleFormatter()); 
+			// create the actual logger 
+			logger = Logger.getLogger("VisualLinks"); 
+			// add file handler
+			logger.addHandler(fileHandler); 
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    }
+    
+    /**
+     * Logs an event to the log file. 
+     * @param event The event identifier. 
+     * @param user The user invoking the event (can be null). 
+     * @param app The application affected (can be null). 
+     * @param selection The selection string (can be empty). 
+     * @param owner The owner of the affected application / selection (can be null). 
+     * @param info Additional information (can be empty). 
+     */
+    public void log(String event, User user, Application app, String selection, User owner, String info){
+    	String msg = event; 
+    	if(user != null){
+    		msg += " - pointer="+user.getPointerID(); 
+    	}
+    	if(app != null){
+    		msg += " - app="+app.getName(); 
+    	}
+    	if(!selection.isEmpty()){
+    		msg += " - selection="+selection; 
+    	}
+    	if(owner != null){
+    		msg += " - owner="+owner.getPointerID(); 
+    	}
+    	if(!info.isEmpty()){
+    		msg += " - "+info; 
+    	}
+    	log(msg); 
+    }
+    
+    
+    private void log(String msg){
+    	logger.info(msg); 
+    }
 
 	public void afterPropertiesSet() throws Exception {
 		System.out.println("VisLinkManager: connecting to renderer");
+		initLogger(); 
 		connect();
 		jaxbContext = JAXBContext.newInstance(BoundingBoxList.class, BoundingBox.class);
 	}
@@ -653,7 +739,9 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		System.out.println("\nUnregister "+appName); 
 		// unregister from application list 
 		Application app = applicationManager.getApplications().remove(appName);
+		applicationManager.getApplicationsById().remove(appName); 
 		if (app != null) {
+			System.out.println("Unregistering application "+app.toString()); 
 			// unregister from renderer
 			rendererPrx.unregisterSelectionContainer(app.getId());
 			// unregister selections
