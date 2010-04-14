@@ -26,7 +26,9 @@ public class simpleSlerp {
 		
 		if (state>=1){
 			state = 1;
+			System.out.println("slerp end");
 			return false;
+			
 		}
 		time.update();
 
