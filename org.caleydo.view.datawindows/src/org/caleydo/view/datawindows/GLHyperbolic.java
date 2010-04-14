@@ -56,6 +56,8 @@ public class GLHyperbolic extends AGLView {
 
 	private ArrayList<NodeSlerp> arSlerpActions;
 
+	
+
 	public DataWindowsDisk disk;
 
 	private PoincareNode slerpedNode;
@@ -69,6 +71,8 @@ public class GLHyperbolic extends AGLView {
 
 	private Tree<PoincareNode> tree;
 	public double diskZoomIntensity = 0;
+
+	
 
 	private GL glHandle;
 
@@ -98,6 +102,7 @@ public class GLHyperbolic extends AGLView {
 
 		disk = new DataWindowsDisk(this);
 		arSlerpActions = new ArrayList<NodeSlerp>();
+
 	}
 
 	@Override
@@ -419,22 +424,38 @@ public class GLHyperbolic extends AGLView {
 	}
 
 	public void doSlerpActions() {
-		if (arSlerpActions.isEmpty()) {
-			return;
+		if (arSlerpActions.isEmpty() == false) {
+
+			NodeSlerp singleSlerp = arSlerpActions.get(0);
+			if (singleSlerp.doASlerp(slerpedNode.getZoomedPosition()) == true) {
+
+				disk.translateTreeMoebius(singleSlerp.returnPoint);
+			} else {
+
+				disk.translateTreeMoebius(singleSlerp.returnPoint);
+				disk.setCenteredNode(slerpedNode);
+				disk.centeredNodeSize = disk.findOptimalCenterNodeSize(disk
+						.getCenteredNode(), 10);
+				arSlerpActions.remove(0);
+			}
 		}
+		
+		
+		
+		// initialize all surrounding views (todo)
+		// PoincareNode tempNode;
+		// for (int i = 0; i >= 0; i++) {
+		// tempNode = disk.getNodeByCompareableValue(i);
+		// if (tempNode == null) {
+		// break;
+		// }
+		//
+		// testRemoteElement.setGLView(((ViewHyperbolicNode) tempNode)
+		// .getGlView());
+		//		
+		//
+		// }
 
-		NodeSlerp singleSlerp = arSlerpActions.get(0);
-		if (singleSlerp.doASlerp(slerpedNode.getZoomedPosition()) == true) {
-
-			disk.translateTreeMoebius(singleSlerp.returnPoint);
-		} else {
-
-			disk.translateTreeMoebius(singleSlerp.returnPoint);
-			disk.setCenteredNode(slerpedNode);
-			disk.centeredNodeSize = disk.findOptimalCenterNodeSize(disk
-					.getCenteredNode(), 10);
-			arSlerpActions.remove(0);
-		}
 	}
 
 	public void drawRemoteView(GL gl, PoincareNode node,
@@ -624,11 +645,6 @@ public class GLHyperbolic extends AGLView {
 							- mousePoint.getY() * factorY - offset.getY())
 							/ scalation.getY());
 
-			// System.out.println("mousecoord"+mouseCoord.getX());
-			// System.out.println("eyeoff"+eyeTrackerOffset.getX());
-			// mouseCoord.setLocation(mouseCoord.getX()-
-			// eyeTrackerOffset.getX(),
-			// mouseCoord.getY() - eyeTrackerOffset.getY());
 			PoincareNode selectedNode;
 			selectedNode = disk.processEyeTrackerAction(new Point2D.Double(
 					mouseCoord.getX(), mouseCoord.getY()), arSlerpActions);
@@ -650,5 +666,7 @@ public class GLHyperbolic extends AGLView {
 		// canvasWidth=(float) dimensions.getX();
 		// canvasHeight=(float) dimensions.getY();
 	}
+
+	
 
 }

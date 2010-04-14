@@ -33,6 +33,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+
 import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
 import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
 import org.caleydo.view.pathway.GLPathway;
@@ -77,6 +78,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	// the location attributes of the views
 	private double viewSizeHyperbolic = 1;
 
+	private ArrayList<simpleSlerp> simpleSlerpActions;
+
 	private Point2D.Double remoteHyperbolicPosition;
 	private Point2D.Double remoteHyperbolicScalation;
 
@@ -91,14 +94,24 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	private GLCaleydoCanvas canvas;
 
 	private Point2D.Double layoutHotSpot;
+	private Point2D.Double defaultLayoutHotSpot;
 	private boolean hyperbolicViewSquared = true;
 
 	private Point2D.Double eyeTrackerOffset = new Point2D.Double(0, 0);
 
 	private Point mousePoint = new Point(0, 0);
 
+	private Point2D.Double viewSlerpTargetPoint;
+
+	private enum viewType {
+		HYPERBOLIC, PARCOORDS, HEATMAP;
+	}
+
+	private boolean layoutHotSpotInitSwitch = false;
+	private boolean testZoomViewEventSwitch = false;
+
 	/**
-	 * Constructor.
+	 * /** Constructor.
 	 * 
 	 * @param glCanvas
 	 * @param sLabel
@@ -118,7 +131,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		remoteHyperbolicScalation = new Point2D.Double();
 
 		remoteHyperbolicPosition.setLocation(0, 0);
-
+		defaultLayoutHotSpot = new Point2D.Double();
 		layoutHotSpot = new Point2D.Double();
 
 		// remoteHyperbolicPosition.setLocation(0, canvasHeight / 2 -
@@ -131,7 +144,9 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		// this.tracker = new TrackDataProvider();
 		// tracker.startTracking();
 
-		arSlerpActions = new ArrayList<NodeSlerp>();
+		viewSlerpTargetPoint = new Point2D.Double(0, 0);
+		//arSlerpActions = new ArrayList<NodeSlerp>();
+		simpleSlerpActions = new ArrayList<simpleSlerp>();
 	}
 
 	@Override
@@ -167,8 +182,15 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, viewport, 0);
 
-		canvasWidth = 2 / (float) viewport[0];
-		canvasHeight = 2 / (float) viewport[5];// if (set == null)
+		if (canvasWidth != (2 / (float) viewport[0])){
+			canvasWidth = 2 / (float) viewport[0];
+			layoutHotSpotInitSwitch=false;
+		}
+		if (canvasHeight != (2 / (float) viewport[5])){
+			canvasHeight = 2 / (float) viewport[5];
+			layoutHotSpotInitSwitch=false;
+		}
+		
 
 		remoteElementHeatMap.getGLView().processEvents();
 		remoteElementParCoords.getGLView().processEvents();
@@ -199,8 +221,14 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 	@Override
 	public void display(GL gl) {
+		doSlerpActions();
 
-		layoutHotSpot.setLocation(canvasWidth / 2 + 1, canvasHeight / 2);
+		if (layoutHotSpotInitSwitch == false) {
+			layoutHotSpot.setLocation(canvasWidth / 2 + 1, canvasHeight / 2);
+			layoutHotSpotInitSwitch = true;
+		}
+
+		defaultLayoutHotSpot.setLocation(canvasWidth / 2 + 1, canvasHeight / 2);
 		// GLHelperFunctions.drawPointAt(gl, (float) layoutHotSpot.getX(),
 		// (float) layoutHotSpot.getY(), 1);
 
@@ -256,7 +284,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		renderRemoteLevelElement(gl, remoteElementHyperbolic);
 		renderRemoteLevelElement(gl, remoteElementHeatMap);
-		renderRemoteLevelElement(gl, remoteElementParCoords);
+		// renderRemoteLevelElement(gl, remoteElementParCoords);
 
 		//
 		// }
@@ -294,6 +322,15 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		// mouseWheelListener.mouseWheelMoved();
 		// simulating the eyetracker
+		if (glMouseListener.wasRightMouseButtonPressed()) {
+
+			if (testZoomViewEventSwitch == false) {
+
+				this.focusViewEvent(1, 1, true);
+				testZoomViewEventSwitch = true;
+			}
+
+		}
 
 		if (glMouseListener.wasLeftMouseButtonPressed()) {
 
@@ -602,4 +639,61 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		return new ArrayList<AGLView>();
 	}
 
+	// Zooms the selected view
+	// @param zoomintentsity: 0 is standard, 1 is max
+	public void focusViewEvent(int view, float zoomIntensity, boolean inFocus) {
+		switch (view) {
+		case 1:
+			if (inFocus == true) {
+				viewSlerpTargetPoint.setLocation(canvasWidth, 0);
+				simpleSlerpActions.add(new simpleSlerp());
+
+			}
+		}
+	}
+
+	public void doSlerpActions() {
+		if (simpleSlerpActions.isEmpty() == false) {
+			simpleSlerp singleSlerp = simpleSlerpActions.get(0);
+			if (singleSlerp.doASlerp() == true) {
+				moveLayoutPoint(viewSlerpTargetPoint, singleSlerp.state);
+				System.out.println(singleSlerp.state);
+			} else {
+				moveLayoutPoint(viewSlerpTargetPoint, singleSlerp.state);
+				simpleSlerpActions.remove(0);
+
+			}
+		}
+	}
+
+	public void moveLayoutPoint(Point2D.Double targetPoint, double state) {
+		Point2D.Double relativePosition = new Point2D.Double();
+		relativePosition.setLocation(defaultLayoutHotSpot.getX()
+				- targetPoint.getX(), defaultLayoutHotSpot.getY()
+				- targetPoint.getY());
+		double distance = relativePosition.getX() * relativePosition.getX()
+				+ relativePosition.getY() * relativePosition.getY();
+		distance = Math.sqrt(distance);
+		distance = distance * state;
+
+		Point2D.Double vector = new Point2D.Double(targetPoint.getX()
+				- defaultLayoutHotSpot.getX(), targetPoint.getY()
+				- defaultLayoutHotSpot.getY());
+
+		if ((vector.getX() == 0) && (vector.getY() == 0)) {
+			return;
+		}
+
+		Point2D.Double eVector = new Point2D.Double();
+		eVector.setLocation(vector);
+		double length = vector.getX() * vector.getX() + vector.getY()
+				* vector.getY();
+		length = Math.sqrt(length);
+		eVector.setLocation(vector.getX() / length, vector.getY() / length);
+
+		layoutHotSpot.setLocation(defaultLayoutHotSpot.getX() + eVector.getX()
+				* distance, defaultLayoutHotSpot.getY() + eVector.getY()
+				* distance);
+
+	}
 }

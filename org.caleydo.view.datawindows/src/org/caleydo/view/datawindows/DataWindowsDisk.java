@@ -203,6 +203,7 @@ public class DataWindowsDisk extends PoincareDisk {
 					lowerLeftCorner, lowerRightCorner, upperRightCorner,
 					upperLeftCorner, scalingPivot, 1, 1, 1, alpha, 100);
 		} else {
+			
 			hyperbolic.drawRemoteView(gl, node, new Point2D.Double(-size
 					+ node.getZoomedPosition().getX() * displayScaleFactorX
 					+ canvasWidth / 2, -size * (canvasHeight / canvasWidth)
