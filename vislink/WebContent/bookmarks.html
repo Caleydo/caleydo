@@ -104,7 +104,7 @@ function register() {
 	requrl += "?name=" + window.visLinkAppName;
 	requrl += "&xml=" +	xml;
 
-	alert("register"); 
+	//alert("register"); 
 	
 	try {
 		var	xhttp =	new	XMLHttpRequest();
@@ -149,13 +149,13 @@ function triggerSearch() {
 	
 	// TODO: get(Test)Id(); 
 	var	id = getId();
-	debugOutput("ID: "+id); 
+	//debugOutput("ID: "+id); 
 	
 	if (stopped) return; // second check, because getId() might have lost connection to daemon
 	
 	// if a button with the given selection ID was found 
 	if (id != null)	{
-		debugOutput("---"); 
+		//debugOutput("---"); 
 		// in any case, write the current selection into the input field 
 		//setInputField(id); 
 		setInputId(window.lastPointerID, id); 
@@ -216,7 +216,7 @@ function getId() {
 			return ids[0].childNodes[0].nodeValue;
 		}
 	}
-	debugOutput("no id received"); 
+	//debugOutput("no id received"); 
 	return null;
 }
 
@@ -273,7 +273,7 @@ function reportVisLinks(selectionId, bb) {
 	requrl += "&xml=" +	xml;
 	
 	//alert(requrl); 
-	debugOutput(requrl); 
+	//debugOutput(requrl); 
 
 	var	xhttp =	new	XMLHttpRequest();
 	xhttp.open("GET", requrl, false);
@@ -287,7 +287,7 @@ function reportWindowChange() {
 	requrl += "?name=" + window.visLinkAppName;
 	
 	//alert(requrl); 
-	debugOutput(requrl); 
+	//debugOutput(requrl); 
 	
 	var	xhttp =	new	XMLHttpRequest();
 	xhttp.open("GET", requrl, false);
@@ -319,7 +319,7 @@ function sendBoundingBoxes(xml)	{
 	requrl += "&pointer=" + window.lastPointerID; 
 	requrl += "&xml=" +	xml;
 
-	debugOutput(requrl); 
+	//debugOutput(requrl); 
 	
 	try	{
 		var	xhttp =	new	XMLHttpRequest();
@@ -399,7 +399,7 @@ function findBoundingBox(obj) {
 
 	var	body = document.getElementsByTagName("body")[0];
 	var	win	= body.ownerDocument.defaultView;
-	var	yoffset	= win.outerHeight -	win.innerHeight	- 2;
+	var	yoffset	= win.outerHeight -	win.innerHeight	- 4;
 
 	var	ret	= null;
 	
@@ -410,7 +410,7 @@ function findBoundingBox(obj) {
 		ret.x =	finalleft;
 		ret.y =	finaltop;
 		ret.width =	w +	2;
-		ret.height = h + 2;
+		ret.height = h;
 		
 		//debugOutput("Bounding box: " + ret.x + ", " + ret.y + "  [" + ret.width + " x " + ret.height + "]"); 
 		
@@ -444,7 +444,7 @@ function getButtonBB(buttonName) {
 		bb = findBoundingBox(button); 
 	}
 	else{
-		debugOutput(buttonName + " not found"); 
+		//debugOutput(buttonName + " not found"); 
 	}
 	return bb; 
 }
@@ -464,7 +464,7 @@ function removeButton(buttonName){
 		var buttonField = document.getElementById(buttonName); 
 		var deleteButtonField = document.getElementById(buttonName+"-del"); 
 		
-		debugOutput("Remove button "+buttonName); 
+		//debugOutput("Remove button "+buttonName); 
 	
 		paragraph.removeChild(buttonField); 
 		paragraph.removeChild(deleteButtonField); 
@@ -607,7 +607,7 @@ function setInputId(pointer, id){
 		}
 	}
 	else{
-		debugOutput("Pointer is null"); 
+		//debugOutput("Pointer is null"); 
 	}
 }
 

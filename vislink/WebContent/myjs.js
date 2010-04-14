@@ -280,7 +280,7 @@ function findBoundingBox(doc, obj) {
 
 	var	body = doc.getElementsByTagName("body")[0];
 	var	win	= body.ownerDocument.defaultView;
-	var	yoffset	= win.outerHeight -	win.innerHeight	- 2;
+	var	yoffset	= win.outerHeight -	win.innerHeight	- 4;
 
 	var	ret	= null;
 	// check if	visible

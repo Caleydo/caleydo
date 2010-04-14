@@ -107,7 +107,10 @@ public class Application {
 	}
 	
 	public boolean isResponsive(){
-		return (this.nonResponsiveCounter < MAX_NON_RESPONSIVE); 
+		if(this.nonResponsiveCounter < MAX_NON_RESPONSIVE){
+			return true; 
+		}
+		return true; 
 	}
 
 	@Override

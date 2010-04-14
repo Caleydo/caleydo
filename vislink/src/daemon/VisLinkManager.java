@@ -477,7 +477,6 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		System.out.println("checkRender(): checking rendering for pointer " + pointerID); 
 		System.out.println("checkRender(): numTargetApplications=" + (numSelections - 1));
 		System.out.println("checkRender(): numBoundingBoxes=" + numSelections); 
-
 		
 		if(numMissingSelections == 0){
 			System.out.println("VisLinkManager: start rendering vis links for #" + numSelections + " apps");
@@ -485,6 +484,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			this.selectionManager.clearUserSelections(pointerID); 
 			// check if there are unresponsive applications and clean up
 			this.checkApplications(); 
+			
 		} else {
 			System.out.println("waiting for more reports, " + (numSelections - numMissingSelections) + " / " + numSelections);
 		}
