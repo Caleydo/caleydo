@@ -53,8 +53,14 @@ function startVisLinks() {
 		window.addEventListener('unload', stopVisLinks, false);
 		window.addEventListener('scroll', windowChanged, false);
 		window.addEventListener('resize', resize, false);
+		window.addEventListener("DOMContentLoaded", windowChanged, false); 
 		setTimeout("triggerSearch()", 500);
 	}
+}
+
+function pageLoaded(){
+	windowChanged(); 
+	
 }
 
 function windowChanged() {
