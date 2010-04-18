@@ -403,6 +403,7 @@ public class ContextMenu
 		}
 		else if (entry instanceof Separator) {
 
+			gl.glPushAttrib(GL.GL_LINE_BIT);
 			gl.glColor3f(1, 1, 1);
 			gl.glLineStipple(2, (short) 0xAAAA);
 			gl.glEnable(GL.GL_LINE_STIPPLE);
@@ -411,6 +412,7 @@ public class ContextMenu
 			gl.glVertex3f(subMenu.xOrigin + subMenu.width - 2 * SPACING, yPosition + ITEM_HEIGHT / 2,
 				BUTTON_Z);
 			gl.glEnd();
+			gl.glPopAttrib();
 
 		}
 		else if (entry instanceof Heading) {
