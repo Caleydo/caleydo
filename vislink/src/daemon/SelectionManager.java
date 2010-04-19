@@ -101,6 +101,41 @@ public class SelectionManager {
 		return userSelections; 
 	}
 	
+	/**
+	 * If, for any reason, the reported source application is invalid, this method chooses 
+	 * a suitable alternative source application from the user's current selections. 
+	 * @param user The user for which the new source selection has to be found. 
+	 * @return Returns true if a new selection was set to source and false if no alternative source 
+	 * selection was found. 
+	 */
+	public boolean setAnotherSourceApp(User user){
+		List<UserSelection> userSelections = this.getSelections(user.getPointerID()); 
+		for(UserSelection selection : userSelections){
+			// a source application has to be accessible
+			if(user.isApplicationAccessible(selection.getApplication())){
+				if(selection.wasReported()){
+					// if already reported, check if there are any selections 
+					if(selection.getBoundingBoxList() != null){
+						if(selection.getBoundingBoxList().getList().size() > 0){
+							System.out.println("Setting reported selection " + selection.toString() + " to source"); 
+							selection.setSource(true); 
+							// TODO: remove this unbelievable hack or move to UserSelection!
+							selection.getBoundingBoxList().getList().get(0).setSource(true); 
+							return true; 
+						}
+					}
+				}
+				else{
+					// if not reported yet, we just give it a try... 
+					System.out.println("Setting unreported selection " + selection.toString() + " to source"); 
+					selection.setSource(true); 
+					return true; 
+				}
+			}
+		}
+		return false; 
+	}
+	
 	public UserSelection getSelection(Application app, String pointerID){
 		for(UserSelection selection : this.selections){
 			if(app == selection.getApplication() && pointerID.equals(selection.getPointerID())){

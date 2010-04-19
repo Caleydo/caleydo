@@ -378,6 +378,21 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			// HACK: set source selection based on stored selection 
 			bbl.list.get(0).setSource(selection.isSource()); 
 		}
+		else{
+			// there are no regions found but the application is source --> find another one 
+			if(selection.isSource()){
+				System.out.println("Application " + appName + " has no selections but is source"); 
+				User user = this.userManager.getUser(pointerID); 
+				if(user != null){
+					// if no alternative source seleciton app could be found, clear the user's selections 
+					// (routing impossible) 
+					if(!selectionManager.setAnotherSourceApp(user)){
+						System.out.println("Set a new source app for user " + user.getPointerID()); 
+						selectionManager.clearUserSelections(user.getPointerID()); 
+					}
+				}
+			}
+		}
 		
 	
 		

@@ -105,7 +105,7 @@ public class UserSelection {
 	
 	public String toString(){
 		return "Selection app=" + this.app.getName() + ", pointerID=" + this.pointerID
-		+ ", selectionID: "+ this.selectionID +", reported=" + this.reported + ", rendered=" + this.rendered; 
+		+ ", selectionID: "+ this.selectionID +", reported=" + this.reported + ", rendered=" + this.rendered + ", source=" + this.source; 
 	}
 
 }
