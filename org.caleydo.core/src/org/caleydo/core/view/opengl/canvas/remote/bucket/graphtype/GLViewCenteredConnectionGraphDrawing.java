@@ -136,6 +136,8 @@ public class GLViewCenteredConnectionGraphDrawing
 							currentPath = calculateCurrentPathLengthDynamicPointCentered(hashViewToCenterPoint, parCoordsList.get(0));
 						else {
 							Vec3f centerActiveView = hashViewToCenterPoint.get(activeViewID);
+							if (centerActiveView == null)
+								return null;
 							Vec3f heatMapTemp = centerActiveView.minus(heatMapList.get(0));
 							Vec3f parCoordTemp = centerActiveView.minus(parCoordsList.get(0));
 							currentPath = heatMapTemp.length() + parCoordTemp.length();

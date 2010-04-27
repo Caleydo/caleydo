@@ -99,7 +99,6 @@ public class GLConsecutiveConnectionGraphDrawing
 				hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists.get(idType).get(iKey)));
 		}
 
-		//TODO rethink algorithm of view caching
 		//getting list of views that belong to the current graph, sorted by sequence of visiting
 		if (focusLevel.getElementByPositionIndex(0).getGLView() != null && focusLevel.getElementByPositionIndex(0).getGLView().getID() == activeViewID){
 			viewsToBeVisited = getViewsOfCurrentPathStartingAtFocus(hashViewToCenterPoint);
@@ -135,6 +134,8 @@ public class GLConsecutiveConnectionGraphDrawing
 			parCoordsPredecessorID = getPreviousView(viewsToBeVisited, parCoordID);
 			parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
 		}
+		
+		//TODO need to rethink this
 		else{
 			if (heatMapID == activeViewID){
 				heatMapPredecessorID = viewsToBeVisited.get(viewsToBeVisited.size()-1);
@@ -208,6 +209,7 @@ public class GLConsecutiveConnectionGraphDrawing
 		int heatMapSuccessorID = -1;
 		int parCoordsSuccessorID = -1;
 
+		//TODO need to rethink this
 		if (gapSuccessorID == -1){
 			heatMapPredecessorID = getPreviousView(viewsToBeVisited, heatMapID);
 			heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
@@ -257,16 +259,12 @@ public class GLConsecutiveConnectionGraphDrawing
 		}
 		
 		//calculating optimal points for heatmap and/or parCoords
-		if (heatMapPoints.size() == 0 || parCoordsPoints.size() == 0)
-			return;
-		
 		if (heatMapPoints.size() <= 6 && parCoordsPoints.size() <= 3)
 			getSinglePointsFromHeatMapAndParCoords(heatMapPredecessorID, heatMapSuccessorID, heatMapPoints, parCoordsPredecessorID, parCoordsSuccessorID, parCoordsPoints, hashViewToCenterPoint);
 		else
 			getMultiplePointsFromHeatMapAndParCoords(heatMapPredecessorID, heatMapSuccessorID, heatMapPoints, parCoordsPredecessorID, parCoordsSuccessorID, parCoordsPoints, hashViewToCenterPoint);
 		
 		renderLines(gl, idType, heatMapPredecessorID, heatMapSuccessorID, parCoordsPredecessorID, parCoordsSuccessorID, viewsToBeVisited, hashViewToCenterPoint);
-		
 	}
 
 
@@ -381,10 +379,10 @@ public class GLConsecutiveConnectionGraphDrawing
 					
 					// calculating bundling line
 					VisLinkAnimationStage bundling = null;
-				/*	if (heatMapPredecessorID == activeViewID && heatMapPredecessorID != parCoordID)
+					if (heatMapPredecessorID == activeViewID && heatMapPredecessorID != parCoordID)
 						bundling = new VisLinkAnimationStage(true);
-					else*/
-						bundling = new VisLinkAnimationStage(true);
+					else
+						bundling = new VisLinkAnimationStage();
 
 					if (heatmapPredecessor.size() > 1)
 						bundling.addLine(createControlPoints(src, vecViewBundlingPoint, controlPoint));
@@ -514,7 +512,7 @@ public class GLConsecutiveConnectionGraphDrawing
 	}
 
 	
-	/** this method is just a helper method if an error while parsing occurred and a view that has only one connection point thinks it has more than one point
+	/** this method is just a helper method if an error during parsing occurred and a view that has only one connection point thinks it has more than one point
 	 * 
 	 */
 	private void removeDuplicatePointEntries() {
@@ -570,10 +568,15 @@ public class GLConsecutiveConnectionGraphDrawing
 			if (stackElements.get(count).getGLView() != null)
 				viewsOfCurrentPath.add(stackElements.get(count).getGLView().getID());
 		}
-		if (focusLevel.getElementByPositionIndex(0).getGLView() != null)
+		if ((focusLevel.getElementByPositionIndex(0).getGLView() != null) && ((heatMapID == focusLevel.getElementByPositionIndex(0).getGLView().getID()) || (parCoordID == focusLevel.getElementByPositionIndex(0).getGLView().getID()) || (hashViewToCenterPoint.containsKey(focusLevel.getElementByPositionIndex(0).getGLView().getID())))){
 			viewsOfCurrentPath.add(1, focusLevel.getElementByPositionIndex(0).getGLView().getID());
-		if (viewsOfCurrentPath.size() == 4)
-			checkIfGapPresentRenderingFromStack(viewsOfCurrentPath);
+			if (viewsOfCurrentPath.size() == 4)
+				checkIfGapPresentRenderingFromStack(viewsOfCurrentPath);
+		}
+		else if (focusLevel.getElementByPositionIndex(0).getGLView() != null){
+			if (viewsOfCurrentPath.size() == 3)
+				checkIfGapPresentRenderingFromStack(viewsOfCurrentPath);
+		}
 		return viewsOfCurrentPath;
 	}
 
@@ -585,24 +588,31 @@ public class GLConsecutiveConnectionGraphDrawing
 	private void checkIfGapPresentRenderingFromStack(ArrayList<Integer> viewsOfCurrentPath) {
 		gapPosition = -1;
 		gapSuccessorID = -1;
-		/*if (focusLevel.getElementByPositionIndex(0).getGLView() != null){
-			if (stackLevel.getElementByPositionIndex(0).getGLView() != null && stackLevel.getElementByPositionIndex(2).getGLView() != null && stackLevel.getElementByPositionIndex(1).getGLView() == null){
+
+		if ((stackLevel.getElementByPositionIndex(0).getGLView() != null) && (stackLevel.getElementByPositionIndex(2).getGLView() != null)){ 
+			if (viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(0).getGLView().getID()) && viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(2).getGLView().getID()) && ((stackLevel.getElementByPositionIndex(1).getGLView() == null) || (!viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(1).getGLView().getID())))){
 				gapPosition = 1;
 				gapSuccessorID = stackLevel.getElementByPositionIndex(2).getGLView().getID();
 			}
-			else if (stackLevel.getElementByPositionIndex(1).getGLView() != null && stackLevel.getElementByPositionIndex(3).getGLView() != null && stackLevel.getElementByPositionIndex(2).getGLView() == null){
+		}
+		else if ((stackLevel.getElementByPositionIndex(1).getGLView() != null) && (stackLevel.getElementByPositionIndex(3).getGLView() != null)){ 
+			if (viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(1).getGLView().getID()) && viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(3).getGLView().getID()) && ((stackLevel.getElementByPositionIndex(2).getGLView() == null) || (!viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(2).getGLView().getID())))){
 				gapPosition = 2;
 				gapSuccessorID = stackLevel.getElementByPositionIndex(3).getGLView().getID();
 			}
-			else if (stackLevel.getElementByPositionIndex(2).getGLView() != null && stackLevel.getElementByPositionIndex(0).getGLView() != null && stackLevel.getElementByPositionIndex(3).getGLView() == null){
+		}
+		else if ((stackLevel.getElementByPositionIndex(2).getGLView() != null) && (stackLevel.getElementByPositionIndex(0).getGLView() != null)){ 
+			if (viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(2).getGLView().getID()) && viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(0).getGLView().getID()) &&  ((stackLevel.getElementByPositionIndex(3).getGLView() == null) || (!viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(3).getGLView().getID())))){
 				gapPosition = 3;
 				gapSuccessorID = stackLevel.getElementByPositionIndex(0).getGLView().getID();
 			}
-			else if (stackLevel.getElementByPositionIndex(3).getGLView() != null && stackLevel.getElementByPositionIndex(1).getGLView() != null && stackLevel.getElementByPositionIndex(0).getGLView() == null){
+		}
+		else if ((stackLevel.getElementByPositionIndex(3).getGLView() != null) && (stackLevel.getElementByPositionIndex(1).getGLView() != null)){ 
+			if (viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(3).getGLView().getID()) && viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(1).getGLView().getID()) && ((stackLevel.getElementByPositionIndex(0).getGLView() == null) || (!viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(0).getGLView().getID())))){
 				gapPosition = 0;
 				gapSuccessorID = stackLevel.getElementByPositionIndex(1).getGLView().getID();
 			}
-		}*/
+		}
 		
 	}
 
@@ -614,6 +624,7 @@ public class GLConsecutiveConnectionGraphDrawing
 	 */
 	private ArrayList<Integer> getViewsOfCurrentPathStartingAtFocus(HashMap<Integer, Vec3f> hashViewToCenterPoint) {
 		allviews.clear();
+		gapSuccessorID = -1;
 		ArrayList<Integer> viewsOfCurrentPath = new ArrayList<Integer>();
 		ArrayList<Integer> notLoadedPosition = new ArrayList<Integer>();
 		
@@ -646,7 +657,7 @@ public class GLConsecutiveConnectionGraphDrawing
 	 * @param notLoadedPosition bitmap that indicates which actually loaded views do not belong to the current connection graph
 	 */
 	private void checkIfGapPresentRenderingFromCenter(ArrayList<Integer> allviews, ArrayList<Integer> notLoadedPosition) {
-		if (notLoadedPosition.get(0) != (notLoadedPosition.get(1)-1))
+		if (notLoadedPosition.get(0) != (notLoadedPosition.get(1)-1)){
 			if (notLoadedPosition.get(0) == 1){
 				gapSuccessorID = allviews.get(notLoadedPosition.get(0)+1);
 				gapPosition = 1;
@@ -655,6 +666,7 @@ public class GLConsecutiveConnectionGraphDrawing
 				gapSuccessorID = allviews.get(notLoadedPosition.get(1)+1);
 				gapPosition = 2;
 			}
+		}
 	}
 	
 
@@ -664,7 +676,7 @@ public class GLConsecutiveConnectionGraphDrawing
 	 * @param nullElement position of the not loaded element 
 	 */
 	private ArrayList<Integer> revertElements(ArrayList<Integer> viewsOfCurrentPath, int nullElement) {
-		if (nullElement == 3)
+		if ((nullElement == 3) || (nullElement == 0))
 			return viewsOfCurrentPath;
 		ArrayList<Integer> views = new ArrayList<Integer>();
 		for (int count = nullElement-1; count >= 0; count--) {
