@@ -331,7 +331,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 			testZoomViewEventSwitch = true;
 			// }
 		}
-
+//
 		if (glMouseListener.wasLeftMouseButtonPressed()) {
 			System.out.println("triggered");
 			this.focusViewEvent(2, 0.5, false);
@@ -340,6 +340,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		// simulating the eyetracker
 		if (glMouseListener.wasLeftMouseButtonPressed()) {
+			
+			
 			testZoomViewEventSwitch = false;
 
 			if (glMouseListener.getPickedPoint() != null) {
