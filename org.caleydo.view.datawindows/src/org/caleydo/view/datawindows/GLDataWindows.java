@@ -204,9 +204,10 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
-		// pickingManager.handlePicking(this, gl);
 
 		display(gl);
+
+		 pickingManager.handlePicking(this, gl);
 		checkForHits(gl);
 
 		if (eBusyModeState != EBusyModeState.OFF)
@@ -285,7 +286,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		renderRemoteLevelElement(gl, remoteElementHyperbolic);
 		renderRemoteLevelElement(gl, remoteElementHeatMap);
-		// renderRemoteLevelElement(gl, remoteElementParCoords);
+		 renderRemoteLevelElement(gl, remoteElementParCoords);
 
 		//
 		// }
@@ -323,24 +324,23 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		// mouseWheelListener.mouseWheelMoved();
 		// testing the viewFocus
-		if (glMouseListener.wasRightMouseButtonPressed()) {
-
-			// if (testZoomViewEventSwitch == false) {
-
-			this.focusViewEvent(2, 0.75, true);
-			testZoomViewEventSwitch = true;
-			// }
-		}
+//		if (glMouseListener.wasRightMouseButtonPressed()) {
 //
-		if (glMouseListener.wasLeftMouseButtonPressed()) {
-			System.out.println("triggered");
-			this.focusViewEvent(2, 0.5, false);
-
-		}
+//			// if (testZoomViewEventSwitch == false) {
+//
+//			this.focusViewEvent(2, 0.75, true);
+//			testZoomViewEventSwitch = true;
+//			// }
+//		}
+////
+//		if (glMouseListener.wasLeftMouseButtonPressed()) {
+//			System.out.println("triggered");
+//			this.focusViewEvent(2, 0.5, false);
+//
+//		}
 
 		// simulating the eyetracker
 		if (glMouseListener.wasLeftMouseButtonPressed()) {
-			
 			
 			testZoomViewEventSwitch = false;
 

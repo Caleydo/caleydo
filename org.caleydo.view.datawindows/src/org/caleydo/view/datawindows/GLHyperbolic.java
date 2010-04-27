@@ -296,11 +296,11 @@ public class GLHyperbolic extends AGLView {
 
 			case CLICKED:
 
-				arSlerpActions.add(new NodeSlerp(4, disk
-						.getNodeByCompareableValue(iExternalID).getPosition(),
-						new Point2D.Double(0, 0)));
-
-				slerpedNode = disk.getNodeByCompareableValue(iExternalID);
+//				arSlerpActions.add(new NodeSlerp(4, disk
+//						.getNodeByCompareableValue(iExternalID).getPosition(),
+//						new Point2D.Double(0, 0)));
+//
+//				slerpedNode = disk.getNodeByCompareableValue(iExternalID);
 
 			}
 
