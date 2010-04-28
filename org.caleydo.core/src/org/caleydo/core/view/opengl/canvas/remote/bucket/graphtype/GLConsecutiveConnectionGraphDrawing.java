@@ -11,6 +11,8 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GraphDrawingUtils;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.parallelcoordinates.GLParallelCoordinates;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.vislink.VisLinkAnimationStage;
@@ -84,6 +86,11 @@ public class GLConsecutiveConnectionGraphDrawing
 		ArrayList<ArrayList<Vec3f>> parCoordsPoints = new ArrayList<ArrayList<Vec3f>>();
 		ArrayList<Integer> viewsToBeVisited = null;
 
+		//clean pointslist
+		for (Integer key : keySet) {
+			hashIDTypeToViewToPointLists.get(idType).put(key, removeDuplicates(hashIDTypeToViewToPointLists.get(idType).get(key)));
+		}
+		
 		
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
 
@@ -128,14 +135,13 @@ public class GLConsecutiveConnectionGraphDrawing
 		int heatMapSuccessorID = -1;
 		int parCoordsSuccessorID = -1;
 		
-		if (gapSuccessorID == -1){
+		
+		if (gapPosition == -1){
 			heatMapPredecessorID = getPreviousView(viewsToBeVisited, heatMapID);
 			heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
 			parCoordsPredecessorID = getPreviousView(viewsToBeVisited, parCoordID);
 			parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
-		}
-		
-		//TODO need to rethink this
+		}	
 		else{
 			if (heatMapID == activeViewID){
 				heatMapPredecessorID = viewsToBeVisited.get(viewsToBeVisited.size()-1);
@@ -157,30 +163,51 @@ public class GLConsecutiveConnectionGraphDrawing
 				
 			}
 			else{
-				if (viewsToBeVisited.get(viewsToBeVisited.indexOf(activeViewID)-1) == heatMapID){
-					heatMapSuccessorID = activeViewID;
+				if (gapPosition == 4){
+					if (heatMapID != -1)
+						heatMapPredecessorID = activeViewID;
 					if (parCoordID != -1)
 						parCoordsPredecessorID = activeViewID;
 				}
-				else if (viewsToBeVisited.get(viewsToBeVisited.indexOf(activeViewID)+1) == heatMapID){
-					heatMapPredecessorID = activeViewID;
-					if (parCoordID != -1)
-						parCoordsSuccessorID = activeViewID;
-				}
-				if (viewsToBeVisited.get(viewsToBeVisited.indexOf(activeViewID)-1) == parCoordID){
-					parCoordsSuccessorID = activeViewID;
-					if (heatMapID != -1)
+				else{
+					if (focusLevel.getElementByPositionIndex(0).getGLView() instanceof GLHeatMap){
 						heatMapPredecessorID = activeViewID;
-				}
-				else if (viewsToBeVisited.get(viewsToBeVisited.indexOf(activeViewID)+1) == parCoordID){
-					parCoordsPredecessorID = activeViewID;
-					if (heatMapID != -1)
-						heatMapSuccessorID = activeViewID;
-				}				
+						heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
+						if (parCoordID != -1){
+							parCoordsPredecessorID = heatMapID;
+							parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
+						}
+					}
+					else if (focusLevel.getElementByPositionIndex(0).getGLView() instanceof GLParallelCoordinates){
+						parCoordsPredecessorID = activeViewID;
+						parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
+						if (heatMapID != -1){
+							heatMapPredecessorID = parCoordID;
+							heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
+						}
+					}
+					else if (heatMapID != -1){
+						heatMapPredecessorID = focusLevel.getElementByPositionIndex(0).getGLView().getID();
+						heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
+						if (parCoordID != -1){
+							parCoordsPredecessorID = focusLevel.getElementByPositionIndex(0).getGLView().getID();
+							parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
+						}
+					}
+					else if (parCoordID != -1){
+						parCoordsPredecessorID = focusLevel.getElementByPositionIndex(0).getGLView().getID();
+						parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
+						if (heatMapID != -1){
+							heatMapPredecessorID = focusLevel.getElementByPositionIndex(0).getGLView().getID();
+							heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
+						}
+					}
+					
+				}					
 			}
 		}
 		
-		if (heatMapPoints.size() == 0 || parCoordsPoints.size() == 0)
+		if (heatMapPoints.size() == 0 && parCoordsPoints.size() == 0)
 			return;
 		
 		if (heatMapPoints.size() <= 6 && parCoordsPoints.size() <= 3)
@@ -209,7 +236,6 @@ public class GLConsecutiveConnectionGraphDrawing
 		int heatMapSuccessorID = -1;
 		int parCoordsSuccessorID = -1;
 
-		//TODO need to rethink this
 		if (gapSuccessorID == -1){
 			heatMapPredecessorID = getPreviousView(viewsToBeVisited, heatMapID);
 			heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
@@ -364,6 +390,7 @@ public class GLConsecutiveConnectionGraphDrawing
 					controlPoint = calculateControlPoint(calculateCenter(heatmapPredecessor), src);
 					if (controlPoint == null)
 						return;
+					
 					vecViewBundlingPoint = calculateBundlingPoint(calculateCenter(heatmapPredecessor), controlPoint);
 
 					
@@ -462,7 +489,8 @@ public class GLConsecutiveConnectionGraphDrawing
 					currentStage = new VisLinkAnimationStage(true);
 	
 				// calculating control point and local bundling point
-				controlPoint = calculateControlPoint(hashViewToCenterPoint.get(key), src);
+				if (key != activeViewID)
+					controlPoint = calculateControlPoint(hashViewToCenterPoint.get(key), src);
 				if (controlPoint == null)
 					return;
 				vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(key), controlPoint);
@@ -516,10 +544,10 @@ public class GLConsecutiveConnectionGraphDrawing
 	 * 
 	 */
 	private void removeDuplicatePointEntries() {
-		removeDuplicates(heatmapPredecessor);
-		removeDuplicates(heatmapSuccessor);
-		removeDuplicates(parCoordsPredecessor);
-		removeDuplicates(parCoordsSuccessor);
+		heatmapPredecessor = removeDuplicates(heatmapPredecessor);
+		heatmapSuccessor = removeDuplicates(heatmapSuccessor);
+		parCoordsPredecessor= removeDuplicates(parCoordsPredecessor);
+		parCoordsSuccessor = removeDuplicates(parCoordsSuccessor);
 	}
 
 
@@ -527,7 +555,7 @@ public class GLConsecutiveConnectionGraphDrawing
 	 * 
 	 * @param list the list where duplicates shall be removed
 	 */
-	private void removeDuplicates(ArrayList<ArrayList<Vec3f>> list) {
+	private ArrayList<ArrayList<Vec3f>> removeDuplicates(ArrayList<ArrayList<Vec3f>> list) {
 
 		int firstInd = 0;
 		while (firstInd < list.size() - 1){
@@ -542,6 +570,7 @@ public class GLConsecutiveConnectionGraphDrawing
 			}
 			firstInd++;
 		}
+		return list;
 	}
 
 
@@ -565,18 +594,21 @@ public class GLConsecutiveConnectionGraphDrawing
 				stackElements.add(tempElement);
 		}
 		for (int count = 0; count < stackElements.size(); count++) {
-			if (stackElements.get(count).getGLView() != null)
+			if (stackElements.get(count).getGLView() != null && ((stackElements.get(count).getGLView().getID() == parCoordID) || (stackElements.get(count).getGLView().getID() == heatMapID) || (hashViewToCenterPoint.containsKey(stackElements.get(count).getGLView().getID()))))
 				viewsOfCurrentPath.add(stackElements.get(count).getGLView().getID());
 		}
+		
+		
 		if ((focusLevel.getElementByPositionIndex(0).getGLView() != null) && ((heatMapID == focusLevel.getElementByPositionIndex(0).getGLView().getID()) || (parCoordID == focusLevel.getElementByPositionIndex(0).getGLView().getID()) || (hashViewToCenterPoint.containsKey(focusLevel.getElementByPositionIndex(0).getGLView().getID())))){
 			viewsOfCurrentPath.add(1, focusLevel.getElementByPositionIndex(0).getGLView().getID());
+			//check if gap if three stack elements and the focus element belong to the graph
 			if (viewsOfCurrentPath.size() == 4)
 				checkIfGapPresentRenderingFromStack(viewsOfCurrentPath);
 		}
-		else if (focusLevel.getElementByPositionIndex(0).getGLView() != null){
-			if (viewsOfCurrentPath.size() == 3)
-				checkIfGapPresentRenderingFromStack(viewsOfCurrentPath);
-		}
+		//check if gap if three stack elements and not the focus element belong to the graph
+		if (viewsOfCurrentPath.size() == 3)
+			checkIfGapPresentRenderingFromStack(viewsOfCurrentPath);
+		
 		return viewsOfCurrentPath;
 	}
 
@@ -588,32 +620,51 @@ public class GLConsecutiveConnectionGraphDrawing
 	private void checkIfGapPresentRenderingFromStack(ArrayList<Integer> viewsOfCurrentPath) {
 		gapPosition = -1;
 		gapSuccessorID = -1;
-
-		if ((stackLevel.getElementByPositionIndex(0).getGLView() != null) && (stackLevel.getElementByPositionIndex(2).getGLView() != null)){ 
-			if (viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(0).getGLView().getID()) && viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(2).getGLView().getID()) && ((stackLevel.getElementByPositionIndex(1).getGLView() == null) || (!viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(1).getGLView().getID())))){
-				gapPosition = 1;
-				gapSuccessorID = stackLevel.getElementByPositionIndex(2).getGLView().getID();
-			}
-		}
-		else if ((stackLevel.getElementByPositionIndex(1).getGLView() != null) && (stackLevel.getElementByPositionIndex(3).getGLView() != null)){ 
-			if (viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(1).getGLView().getID()) && viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(3).getGLView().getID()) && ((stackLevel.getElementByPositionIndex(2).getGLView() == null) || (!viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(2).getGLView().getID())))){
-				gapPosition = 2;
-				gapSuccessorID = stackLevel.getElementByPositionIndex(3).getGLView().getID();
-			}
-		}
-		else if ((stackLevel.getElementByPositionIndex(2).getGLView() != null) && (stackLevel.getElementByPositionIndex(0).getGLView() != null)){ 
-			if (viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(2).getGLView().getID()) && viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(0).getGLView().getID()) &&  ((stackLevel.getElementByPositionIndex(3).getGLView() == null) || (!viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(3).getGLView().getID())))){
-				gapPosition = 3;
-				gapSuccessorID = stackLevel.getElementByPositionIndex(0).getGLView().getID();
-			}
-		}
-		else if ((stackLevel.getElementByPositionIndex(3).getGLView() != null) && (stackLevel.getElementByPositionIndex(1).getGLView() != null)){ 
-			if (viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(3).getGLView().getID()) && viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(1).getGLView().getID()) && ((stackLevel.getElementByPositionIndex(0).getGLView() == null) || (!viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(0).getGLView().getID())))){
-				gapPosition = 0;
-				gapSuccessorID = stackLevel.getElementByPositionIndex(1).getGLView().getID();
+		int positionOfActiveView = -1;
+		
+		for (RemoteLevelElement stackElement : stackLevel.getAllElements()) {
+			if ((stackElement.getGLView() != null) && (stackElement.getGLView().getID() == activeViewID)){
+				positionOfActiveView = stackLevel.getPositionIndexByElementID(stackElement);
+				break;
 			}
 		}
 		
+		if (viewsOfCurrentPath.size() == 4){
+			if (positionOfActiveView == 0){
+				if ((stackLevel.getElementByPositionIndex(2).getGLView() == null) || !(viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(2).getGLView().getID())))
+					gapPosition = 2;
+			}
+			if (positionOfActiveView == 1){
+				if ((stackLevel.getElementByPositionIndex(3).getGLView() == null) || !(viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(3).getGLView().getID())))
+					gapPosition = 3;
+			}
+			if (positionOfActiveView == 2){
+				if ((stackLevel.getElementByPositionIndex(0).getGLView() == null) || !(viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(0).getGLView().getID())))
+					gapPosition = 0;
+			}
+			if (positionOfActiveView == 3){
+				if ((stackLevel.getElementByPositionIndex(1).getGLView() == null) || !(viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(1).getGLView().getID())))
+					gapPosition = 1;
+			}	
+		}
+		
+		else if (viewsOfCurrentPath.size() == 3){
+			if (focusLevel.getElementByPositionIndex(0).getGLView() == null)
+				return;
+
+			if (positionOfActiveView == 0 || positionOfActiveView == 2){
+				if ((stackLevel.getElementByPositionIndex(1).getGLView() != null) && (stackLevel.getElementByPositionIndex(3).getGLView() != null)){
+					if (viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(1).getGLView().getID()) && viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(3).getGLView().getID()))
+						gapPosition = 4;
+				}
+			}
+			else if (positionOfActiveView == 1 || positionOfActiveView == 3){
+				if ((stackLevel.getElementByPositionIndex(0).getGLView() != null) && (stackLevel.getElementByPositionIndex(2).getGLView() != null)){
+					if (viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(0).getGLView().getID()) && viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(2).getGLView().getID()))
+						gapPosition = 4;
+				}
+			}
+		}
 	}
 
 	
