@@ -54,26 +54,19 @@ public class GLConsecutiveConnectionGraphDrawing
 
 		this.focusLevel = focusLevel;
 		this.stackLevel = stackLevel;
-//		setControlPoints();
+		// setControlPoints();
 	}
 
-	
-	/** initializing the list of control points
-	 * 
+	/**
+	 * initializing the list of control points
 	 */
-/*	private void setControlPoints() {
-		controlPoints.add(new Vec3f(-2, -2, 0));
-		controlPoints.add(new Vec3f(-2, 2, 0));
-		controlPoints.add(new Vec3f(2, 2, 0));
-		controlPoints.add(new Vec3f(2, -2, 0));
-		controlPoints.add(new Vec3f(-2, 0, 0));
-		controlPoints.add(new Vec3f(0, 2, 0));
-		controlPoints.add(new Vec3f(2, 0, 0));
-		controlPoints.add(new Vec3f(0, -2, 0));
-		controlPoints.add(new Vec3f(0, 0, 0));
-	}
-*/
-	
+	/*
+	 * private void setControlPoints() { controlPoints.add(new Vec3f(-2, -2, 0)); controlPoints.add(new
+	 * Vec3f(-2, 2, 0)); controlPoints.add(new Vec3f(2, 2, 0)); controlPoints.add(new Vec3f(2, -2, 0));
+	 * controlPoints.add(new Vec3f(-2, 0, 0)); controlPoints.add(new Vec3f(0, 2, 0)); controlPoints.add(new
+	 * Vec3f(2, 0, 0)); controlPoints.add(new Vec3f(0, -2, 0)); controlPoints.add(new Vec3f(0, 0, 0)); }
+	 */
+
 	protected void renderLineBundling(final GL gl, EIDType idType, float[] fArColor) {
 
 		heatmapPredecessor.clear();
@@ -86,12 +79,12 @@ public class GLConsecutiveConnectionGraphDrawing
 		ArrayList<ArrayList<Vec3f>> parCoordsPoints = new ArrayList<ArrayList<Vec3f>>();
 		ArrayList<Integer> viewsToBeVisited = null;
 
-		//clean pointslist
+		// clean pointslist
 		for (Integer key : keySet) {
-			hashIDTypeToViewToPointLists.get(idType).put(key, removeDuplicates(hashIDTypeToViewToPointLists.get(idType).get(key)));
+			hashIDTypeToViewToPointLists.get(idType).put(key,
+				removeDuplicates(hashIDTypeToViewToPointLists.get(idType).get(key)));
 		}
-		
-		
+
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
 
 		int heatMapID = getSpecialViewID(HEATMAP);
@@ -103,159 +96,183 @@ public class GLConsecutiveConnectionGraphDrawing
 			else if (iKey.equals(parCoordID))
 				parCoordsPoints = hashIDTypeToViewToPointLists.get(idType).get(iKey);
 			else
-				hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists.get(idType).get(iKey)));
+				hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists.get(idType).get(
+					iKey)));
 		}
 
-		//getting list of views that belong to the current graph, sorted by sequence of visiting
-		if (focusLevel.getElementByPositionIndex(0).getGLView() != null && focusLevel.getElementByPositionIndex(0).getGLView().getID() == activeViewID){
+		// getting list of views that belong to the current graph, sorted by sequence of visiting
+		if (focusLevel.getElementByPositionIndex(0).getGLView() != null
+			&& focusLevel.getElementByPositionIndex(0).getGLView().getID() == activeViewID) {
 			viewsToBeVisited = getViewsOfCurrentPathStartingAtFocus(hashViewToCenterPoint);
-			renderFromCenter(gl, idType,  hashViewToCenterPoint, viewsToBeVisited, heatMapPoints, parCoordsPoints);
+			renderFromCenter(gl, idType, hashViewToCenterPoint, viewsToBeVisited, heatMapPoints,
+				parCoordsPoints);
 		}
-		else{
+		else {
 			viewsToBeVisited = getViewsOfCurrentPathStartingAtStack(hashViewToCenterPoint);
-			renderFromStack(gl, idType, hashViewToCenterPoint, viewsToBeVisited, heatMapPoints, parCoordsPoints);
-		}	
+			renderFromStack(gl, idType, hashViewToCenterPoint, viewsToBeVisited, heatMapPoints,
+				parCoordsPoints);
+		}
 	}
 
-	
-	/** rendering the connection graph if the active view is located at one of the four stack elements
+	/**
+	 * rendering the connection graph if the active view is located at one of the four stack elements
 	 * 
-	 * @param gl the GL object
-	 * @param idType type of genome data
-	 * @param hashViewToCenterPoint list of center points of views excluding heatmap and parcoords
-	 * @param viewsToBeVisited list the holds the views that belong to the current connection graph and in which order they have to be visited
-	 * @param heatMapPoints list of heatmap points from which the best points have to be chosen from
-	 * @param parCoordsPoints list of parcoord points from which the best points have to be chosen from
+	 * @param gl
+	 *            the GL object
+	 * @param idType
+	 *            type of genome data
+	 * @param hashViewToCenterPoint
+	 *            list of center points of views excluding heatmap and parcoords
+	 * @param viewsToBeVisited
+	 *            list the holds the views that belong to the current connection graph and in which order they
+	 *            have to be visited
+	 * @param heatMapPoints
+	 *            list of heatmap points from which the best points have to be chosen from
+	 * @param parCoordsPoints
+	 *            list of parcoord points from which the best points have to be chosen from
 	 */
 	private void renderFromStack(GL gl, EIDType idType, HashMap<Integer, Vec3f> hashViewToCenterPoint,
-		ArrayList<Integer> viewsToBeVisited, ArrayList<ArrayList<Vec3f>> heatMapPoints, ArrayList<ArrayList<Vec3f>> parCoordsPoints) {
-		
+		ArrayList<Integer> viewsToBeVisited, ArrayList<ArrayList<Vec3f>> heatMapPoints,
+		ArrayList<ArrayList<Vec3f>> parCoordsPoints) {
+
 		int heatMapPredecessorID = -1;
 		int parCoordsPredecessorID = -1;
 		int heatMapSuccessorID = -1;
 		int parCoordsSuccessorID = -1;
-		
-		
-		if (gapPosition == -1){
+
+		if (gapPosition == -1) {
 			heatMapPredecessorID = getPreviousView(viewsToBeVisited, heatMapID);
 			heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
 			parCoordsPredecessorID = getPreviousView(viewsToBeVisited, parCoordID);
 			parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
-		}	
-		else{
-			if (heatMapID == activeViewID){
-				heatMapPredecessorID = viewsToBeVisited.get(viewsToBeVisited.size()-1);
+		}
+		else {
+			if (heatMapID == activeViewID) {
+				heatMapPredecessorID = viewsToBeVisited.get(viewsToBeVisited.size() - 1);
 				heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
 				parCoordsPredecessorID = getPreviousView(viewsToBeVisited, parCoordID);
-				if (viewsToBeVisited.get(viewsToBeVisited.size()-1) == parCoordID)
+				if (viewsToBeVisited.get(viewsToBeVisited.size() - 1) == parCoordID)
 					parCoordsSuccessorID = -1;
 				else
 					parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
 			}
-			else if (parCoordID == activeViewID){
-				parCoordsPredecessorID = viewsToBeVisited.get(viewsToBeVisited.size()-1);
+			else if (parCoordID == activeViewID) {
+				parCoordsPredecessorID = viewsToBeVisited.get(viewsToBeVisited.size() - 1);
 				parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
 				heatMapPredecessorID = getPreviousView(viewsToBeVisited, heatMapID);
-				if (viewsToBeVisited.get(viewsToBeVisited.size()-1) == heatMapID)
+				if (viewsToBeVisited.get(viewsToBeVisited.size() - 1) == heatMapID)
 					heatMapSuccessorID = -1;
 				else
 					heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
-				
+
 			}
-			else{
-				if (gapPosition == 4){
+			else {
+				if (gapPosition == 4) {
 					if (heatMapID != -1)
 						heatMapPredecessorID = activeViewID;
 					if (parCoordID != -1)
 						parCoordsPredecessorID = activeViewID;
 				}
-				else{
-					if (focusLevel.getElementByPositionIndex(0).getGLView() instanceof GLHeatMap){
+				else {
+					if (focusLevel.getElementByPositionIndex(0).getGLView() instanceof GLHeatMap) {
 						heatMapPredecessorID = activeViewID;
 						heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
-						if (parCoordID != -1){
+						if (parCoordID != -1) {
 							parCoordsPredecessorID = heatMapID;
 							parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
 						}
 					}
-					else if (focusLevel.getElementByPositionIndex(0).getGLView() instanceof GLParallelCoordinates){
+					else if (focusLevel.getElementByPositionIndex(0).getGLView() instanceof GLParallelCoordinates) {
 						parCoordsPredecessorID = activeViewID;
 						parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
-						if (heatMapID != -1){
+						if (heatMapID != -1) {
 							heatMapPredecessorID = parCoordID;
 							heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
 						}
 					}
-					else if (heatMapID != -1){
+					else if (heatMapID != -1) {
 						heatMapPredecessorID = focusLevel.getElementByPositionIndex(0).getGLView().getID();
 						heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
-						if (parCoordID != -1){
-							parCoordsPredecessorID = focusLevel.getElementByPositionIndex(0).getGLView().getID();
+						if (parCoordID != -1) {
+							parCoordsPredecessorID =
+								focusLevel.getElementByPositionIndex(0).getGLView().getID();
 							parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
 						}
 					}
-					else if (parCoordID != -1){
+					else if (parCoordID != -1) {
 						parCoordsPredecessorID = focusLevel.getElementByPositionIndex(0).getGLView().getID();
 						parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
-						if (heatMapID != -1){
-							heatMapPredecessorID = focusLevel.getElementByPositionIndex(0).getGLView().getID();
+						if (heatMapID != -1) {
+							heatMapPredecessorID =
+								focusLevel.getElementByPositionIndex(0).getGLView().getID();
 							heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
 						}
 					}
-					
-				}					
+
+				}
 			}
 		}
-		
+
 		if (heatMapPoints.size() == 0 && parCoordsPoints.size() == 0)
 			return;
-		
+
 		if (heatMapPoints.size() <= 6 && parCoordsPoints.size() <= 3)
-			getSinglePointsFromHeatMapAndParCoords(heatMapPredecessorID, heatMapSuccessorID, heatMapPoints, parCoordsPredecessorID, parCoordsSuccessorID, parCoordsPoints, hashViewToCenterPoint);
+			getSinglePointsFromHeatMapAndParCoords(heatMapPredecessorID, heatMapSuccessorID, heatMapPoints,
+				parCoordsPredecessorID, parCoordsSuccessorID, parCoordsPoints, hashViewToCenterPoint);
 		else
-			getMultiplePointsFromHeatMapAndParCoords(heatMapPredecessorID, heatMapSuccessorID, heatMapPoints, parCoordsPredecessorID, parCoordsSuccessorID, parCoordsPoints, hashViewToCenterPoint);
-		
-		renderLines(gl, idType, heatMapPredecessorID, heatMapSuccessorID, parCoordsPredecessorID, parCoordsSuccessorID, viewsToBeVisited, hashViewToCenterPoint);
+			getMultiplePointsFromHeatMapAndParCoords(heatMapPredecessorID, heatMapSuccessorID, heatMapPoints,
+				parCoordsPredecessorID, parCoordsSuccessorID, parCoordsPoints, hashViewToCenterPoint);
+
+		renderLines(gl, idType, heatMapPredecessorID, heatMapSuccessorID, parCoordsPredecessorID,
+			parCoordsSuccessorID, viewsToBeVisited, hashViewToCenterPoint);
 	}
 
-	
-	/** rendering the connection graph if the active view is located at the focus level of the bucket
+	/**
+	 * rendering the connection graph if the active view is located at the focus level of the bucket
 	 * 
-	 * @param gl the GL object
-	 * @param idType type of genome data
-	 * @param hashViewToCenterPoint list of center points of views excluding heatmap and parcoords
-	 * @param viewsToBeVisited list the holds the views that belong to the current connection graph and in which order they have to be visited
-	 * @param heatMapPoints list of heatmap points from which the best points have to be chosen from
-	 * @param parCoordsPoints list of parcoord points from which the best points have to be chosen from
+	 * @param gl
+	 *            the GL object
+	 * @param idType
+	 *            type of genome data
+	 * @param hashViewToCenterPoint
+	 *            list of center points of views excluding heatmap and parcoords
+	 * @param viewsToBeVisited
+	 *            list the holds the views that belong to the current connection graph and in which order they
+	 *            have to be visited
+	 * @param heatMapPoints
+	 *            list of heatmap points from which the best points have to be chosen from
+	 * @param parCoordsPoints
+	 *            list of parcoord points from which the best points have to be chosen from
 	 */
 	private void renderFromCenter(GL gl, EIDType idType, HashMap<Integer, Vec3f> hashViewToCenterPoint,
-		ArrayList<Integer> viewsToBeVisited, ArrayList<ArrayList<Vec3f>> heatMapPoints, ArrayList<ArrayList<Vec3f>> parCoordsPoints) {
-		
+		ArrayList<Integer> viewsToBeVisited, ArrayList<ArrayList<Vec3f>> heatMapPoints,
+		ArrayList<ArrayList<Vec3f>> parCoordsPoints) {
+
 		int heatMapPredecessorID = -1;
 		int parCoordsPredecessorID = -1;
 		int heatMapSuccessorID = -1;
 		int parCoordsSuccessorID = -1;
 
-		if (gapSuccessorID == -1){
+		if (gapSuccessorID == -1) {
 			heatMapPredecessorID = getPreviousView(viewsToBeVisited, heatMapID);
 			heatMapSuccessorID = getNextView(viewsToBeVisited, heatMapID);
 			parCoordsPredecessorID = getPreviousView(viewsToBeVisited, parCoordID);
 			parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
 		}
-		else{
-			if (heatMapID == activeViewID){
+		else {
+			if (heatMapID == activeViewID) {
 				heatMapPredecessorID = getNextView(viewsToBeVisited, heatMapID);
 				heatMapSuccessorID = gapSuccessorID;
 				if (parCoordID == gapSuccessorID)
 					parCoordsPredecessorID = heatMapID;
 				else
 					parCoordsPredecessorID = getPreviousView(viewsToBeVisited, parCoordID);
-				if(beforeGap(parCoordID))
+				if (beforeGap(parCoordID))
 					parCoordsSuccessorID = -1;
 				else
 					parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
 			}
-			else if (parCoordID == activeViewID){
+			else if (parCoordID == activeViewID) {
 				if (gapSuccessorID == heatMapID)
 					heatMapPredecessorID = parCoordID;
 				else
@@ -267,12 +284,12 @@ public class GLConsecutiveConnectionGraphDrawing
 				parCoordsPredecessorID = getNextView(viewsToBeVisited, parCoordID);
 				parCoordsSuccessorID = gapSuccessorID;
 			}
-			else{
+			else {
 				if (heatMapID != -1)
 					heatMapPredecessorID = viewsToBeVisited.get(0);
 				if (parCoordID != -1)
 					parCoordsPredecessorID = viewsToBeVisited.get(0);
-				
+
 				if (beforeGap(heatMapID))
 					heatMapSuccessorID = -1;
 				else
@@ -283,34 +300,37 @@ public class GLConsecutiveConnectionGraphDrawing
 					parCoordsSuccessorID = getNextView(viewsToBeVisited, parCoordID);
 			}
 		}
-		
-		//calculating optimal points for heatmap and/or parCoords
+
+		// calculating optimal points for heatmap and/or parCoords
 		if (heatMapPoints.size() <= 6 && parCoordsPoints.size() <= 3)
-			getSinglePointsFromHeatMapAndParCoords(heatMapPredecessorID, heatMapSuccessorID, heatMapPoints, parCoordsPredecessorID, parCoordsSuccessorID, parCoordsPoints, hashViewToCenterPoint);
+			getSinglePointsFromHeatMapAndParCoords(heatMapPredecessorID, heatMapSuccessorID, heatMapPoints,
+				parCoordsPredecessorID, parCoordsSuccessorID, parCoordsPoints, hashViewToCenterPoint);
 		else
-			getMultiplePointsFromHeatMapAndParCoords(heatMapPredecessorID, heatMapSuccessorID, heatMapPoints, parCoordsPredecessorID, parCoordsSuccessorID, parCoordsPoints, hashViewToCenterPoint);
-		
-		renderLines(gl, idType, heatMapPredecessorID, heatMapSuccessorID, parCoordsPredecessorID, parCoordsSuccessorID, viewsToBeVisited, hashViewToCenterPoint);
+			getMultiplePointsFromHeatMapAndParCoords(heatMapPredecessorID, heatMapSuccessorID, heatMapPoints,
+				parCoordsPredecessorID, parCoordsSuccessorID, parCoordsPoints, hashViewToCenterPoint);
+
+		renderLines(gl, idType, heatMapPredecessorID, heatMapSuccessorID, parCoordsPredecessorID,
+			parCoordsSuccessorID, viewsToBeVisited, hashViewToCenterPoint);
 	}
 
-
-	/** check if a chosen view is located "before" the gap
+	/**
+	 * check if a chosen view is located "before" the gap
 	 * 
 	 * @param iD
 	 * @return true if view lies "before" the gap false otherwise
 	 */
 	private boolean beforeGap(int iD) {
 		int count = 0;
-		while (count < gapPosition){
+		while (count < gapPosition) {
 			if (allviews.get(count) == iD)
 				return true;
 			count++;
-		}	
+		}
 		return false;
 	}
-	
 
-	/** rendering lines when mouse is at focus level
+	/**
+	 * rendering lines
 	 * 
 	 * @param gl
 	 * @param idType
@@ -321,17 +341,18 @@ public class GLConsecutiveConnectionGraphDrawing
 	 * @param viewsToBeVisited
 	 * @param hashViewToCenterPoint
 	 */
-	private void renderLines(GL gl, EIDType idType, int heatMapPredecessorID, int heatMapSuccessorID, int parCoordsPredecessorID, int parCoordsSuccessorID, ArrayList<Integer> viewsToBeVisited, HashMap<Integer, Vec3f> hashViewToCenterPoint) {
-		//TODO remove bugs
+	private void renderLines(GL gl, EIDType idType, int heatMapPredecessorID, int heatMapSuccessorID,
+		int parCoordsPredecessorID, int parCoordsSuccessorID, ArrayList<Integer> viewsToBeVisited,
+		HashMap<Integer, Vec3f> hashViewToCenterPoint) {
+
+		// needed if the same point occurs more than once in the points list
 		removeDuplicatePointEntries();
-		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>();
-		
-		ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
+
 		Vec3f vecViewBundlingPoint = null;
 		Vec3f controlPoint = null;
 		Vec3f src = null;
-		
-		//getting second view ID for calculating control point needed to calculate the first src point
+
+		// getting second view ID for calculating control point needed to calculate the first src point
 		int secondID = -1;
 		Vec3f centerOfSecondView = null;
 		if (viewsToBeVisited.size() > 1)
@@ -344,8 +365,8 @@ public class GLConsecutiveConnectionGraphDrawing
 			centerOfSecondView = calculateCenter(parCoordsPredecessor);
 		else
 			centerOfSecondView = hashViewToCenterPoint.get(secondID);
-		
-		if (activeViewID == heatMapID){
+
+		if (activeViewID == heatMapID) {
 			if (heatmapSuccessor.size() == 0)
 				return;
 			controlPoint = calculateControlPoint(calculateCenter(heatmapSuccessor), centerOfSecondView);
@@ -356,7 +377,7 @@ public class GLConsecutiveConnectionGraphDrawing
 			else
 				src = calculateCenter(heatmapSuccessor);
 		}
-		else if (activeViewID == parCoordID){
+		else if (activeViewID == parCoordID) {
 			if (parCoordsSuccessor.size() == 0)
 				return;
 			controlPoint = calculateControlPoint(calculateCenter(parCoordsSuccessor), centerOfSecondView);
@@ -367,7 +388,7 @@ public class GLConsecutiveConnectionGraphDrawing
 			else
 				src = calculateCenter(parCoordsSuccessor);
 		}
-		else{
+		else {
 			controlPoint = calculateControlPoint(hashViewToCenterPoint.get(activeViewID), centerOfSecondView);
 			if (controlPoint == null)
 				return;
@@ -376,25 +397,66 @@ public class GLConsecutiveConnectionGraphDrawing
 			else
 				src = hashViewToCenterPoint.get(activeViewID);
 		}
-		
-		
+
+		if (gapPosition == -1)
+			renderLinesWithoutGap(gl, idType, hashViewToCenterPoint, viewsToBeVisited, heatMapPredecessorID,
+				parCoordsPredecessorID, src, vecViewBundlingPoint, controlPoint);
+		else
+			renderLinesWithGap();
+	}
+
+	// implement algorithm that handles connection line drawing when a gap has been found
+	private void renderLinesWithGap() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * rendering lines if no "gap" exists
+	 * 
+	 * @param gl
+	 *            the GL object
+	 * @param idType
+	 *            type of genome
+	 * @param hashViewToCenterPoint
+	 *            center points of views except parcoords and heatmap
+	 * @param viewsToBeVisited
+	 *            list of views that belong to the current connection graph, sorted by order of visiting
+	 * @param heatMapPredecessorID
+	 *            id of the heatmap predeceding view
+	 * @param parCoordsPredecessorID
+	 *            id of the parcoord predeceding view
+	 * @param src
+	 *            connection point of the first (starting) view
+	 * @param vecViewBundlingPoint
+	 *            bundling point of the first view
+	 * @param controlPoint
+	 *            control point needed for calculating the local lines of the first view
+	 */
+	private void renderLinesWithoutGap(GL gl, EIDType idType, HashMap<Integer, Vec3f> hashViewToCenterPoint,
+		ArrayList<Integer> viewsToBeVisited, int heatMapPredecessorID, int parCoordsPredecessorID, Vec3f src,
+		Vec3f vecViewBundlingPoint, Vec3f controlPoint) {
+		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>();
+
+		ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
+
 		for (Iterator<Integer> keySet = viewsToBeVisited.iterator(); keySet.hasNext();) {
 			int key = keySet.next();
-			
-			if (key == heatMapID){
-				if (heatmapPredecessor.size() > 0){
+
+			if (key == heatMapID) {
+				if (heatmapPredecessor.size() > 0) {
 					pointsToDepthSort.clear();
 					VisLinkAnimationStage currentStage = new VisLinkAnimationStage();
-					
-					//calculating control points and local bundling points
+
+					// calculating control points and local bundling points
 					controlPoint = calculateControlPoint(calculateCenter(heatmapPredecessor), src);
 					if (controlPoint == null)
 						return;
-					
-					vecViewBundlingPoint = calculateBundlingPoint(calculateCenter(heatmapPredecessor), controlPoint);
 
-					
-					//calculating points for local stage
+					vecViewBundlingPoint =
+						calculateBundlingPoint(calculateCenter(heatmapPredecessor), controlPoint);
+
+					// calculating points for local stage
 					for (ArrayList<Vec3f> alCurrentPoints : heatmapPredecessor) {
 						if (alCurrentPoints.size() > 1)
 							renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
@@ -402,11 +464,12 @@ public class GLConsecutiveConnectionGraphDrawing
 							pointsToDepthSort.add(alCurrentPoints.get(0));
 					}
 					for (Vec3f currentPoint : depthSort(pointsToDepthSort))
-						currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint, controlPoint));
-					
+						currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint,
+							controlPoint));
+
 					// calculating bundling line
 					VisLinkAnimationStage bundling = null;
-					if (heatMapPredecessorID == activeViewID && heatMapPredecessorID != parCoordID)
+					if (heatMapPredecessorID != parCoordID)
 						bundling = new VisLinkAnimationStage(true);
 					else
 						bundling = new VisLinkAnimationStage();
@@ -414,37 +477,38 @@ public class GLConsecutiveConnectionGraphDrawing
 					if (heatmapPredecessor.size() > 1)
 						bundling.addLine(createControlPoints(src, vecViewBundlingPoint, controlPoint));
 					else
-						bundling.addLine(createControlPoints(src, calculateCenter(heatmapPredecessor), controlPoint));
+						bundling.addLine(createControlPoints(src, calculateCenter(heatmapPredecessor),
+							controlPoint));
 					connectionLinesAllViews.add(bundling);
 
-					if (heatmapPredecessor.size() >1){
+					if (heatmapPredecessor.size() > 1) {
 						currentStage.setReverseLineDrawingDirection(true);
 						connectionLinesAllViews.add(currentStage);
 					}
-					
+
 				}
-				
-				//setting up src point for next view
-				if (heatmapSuccessor.size() > 0){
+
+				// setting up src point for next view
+				if (heatmapSuccessor.size() > 0) {
 					if (heatmapSuccessor.size() > 1)
-						src = calculateCenter(heatmapSuccessor);//vecViewBundlingPoint;
+						src = calculateCenter(heatmapSuccessor);
 					else
 						src = heatmapSuccessor.get(0).get(0);
 				}
 			}
-			else if (key == parCoordID){
-				if (parCoordsPredecessor.size() > 0){
+			else if (key == parCoordID) {
+				if (parCoordsPredecessor.size() > 0) {
 					pointsToDepthSort.clear();
 					VisLinkAnimationStage currentStage = new VisLinkAnimationStage();
-		
-					//calculating control points and local bundling points
+
+					// calculating control points and local bundling points
 					controlPoint = calculateControlPoint(calculateCenter(parCoordsPredecessor), src);
 					if (controlPoint == null)
 						return;
-					vecViewBundlingPoint = calculateBundlingPoint(calculateCenter(parCoordsPredecessor), controlPoint);
+					vecViewBundlingPoint =
+						calculateBundlingPoint(calculateCenter(parCoordsPredecessor), controlPoint);
 
-					
-					//calculating points for local stage					
+					// calculating points for local stage
 					for (ArrayList<Vec3f> alCurrentPoints : parCoordsPredecessor) {
 						if (alCurrentPoints.size() > 1)
 							renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
@@ -452,50 +516,51 @@ public class GLConsecutiveConnectionGraphDrawing
 							pointsToDepthSort.add(alCurrentPoints.get(0));
 					}
 					for (Vec3f currentPoint : depthSort(pointsToDepthSort))
-							currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint, controlPoint));
-					
-					if (parCoordsPredecessor.size() > 1){
+						currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint,
+							controlPoint));
+
+					if (parCoordsPredecessor.size() > 1) {
 						currentStage.setReverseLineDrawingDirection(true);
 						connectionLinesAllViews.add(currentStage);
 					}
 					// calculating bundling line
 					VisLinkAnimationStage bundling = null;
-					if (parCoordsPredecessorID == activeViewID && parCoordsPredecessorID != heatMapID)
+					if (parCoordsPredecessorID != heatMapID)
 						bundling = new VisLinkAnimationStage(true);
 					else
 						bundling = new VisLinkAnimationStage();
 					if (parCoordsPredecessor.size() > 1)
 						bundling.addLine(createControlPoints(src, vecViewBundlingPoint, controlPoint));
 					else
-						bundling.addLine(createControlPoints(src, calculateCenter(parCoordsPredecessor), controlPoint));
+						bundling.addLine(createControlPoints(src, calculateCenter(parCoordsPredecessor),
+							controlPoint));
 					connectionLinesAllViews.add(bundling);
 
 				}
-				
+
 				// setting up src point for next view
-				if (parCoordsSuccessor.size() > 0){
+				if (parCoordsSuccessor.size() > 0) {
 					if (parCoordsSuccessor.size() > 1)
 						src = calculateCenter(parCoordsSuccessor);
 					else
 						src = parCoordsSuccessor.get(0).get(0);
 				}
 			}
-			else{
+			else {
 				pointsToDepthSort.clear();
 				VisLinkAnimationStage currentStage = null;
 				if (key == activeViewID)
 					currentStage = new VisLinkAnimationStage();
 				else
 					currentStage = new VisLinkAnimationStage(true);
-	
+
 				// calculating control point and local bundling point
 				if (key != activeViewID)
 					controlPoint = calculateControlPoint(hashViewToCenterPoint.get(key), src);
 				if (controlPoint == null)
 					return;
 				vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(key), controlPoint);
-				
-				
+
 				// calculating points for local stage
 				for (ArrayList<Vec3f> alCurrentPoints : hashIDTypeToViewToPointLists.get(idType).get(key)) {
 					if (alCurrentPoints.size() > 1)
@@ -504,30 +569,32 @@ public class GLConsecutiveConnectionGraphDrawing
 						pointsToDepthSort.add(alCurrentPoints.get(0));
 				}
 				for (Vec3f currentPoint : depthSort(pointsToDepthSort))
-					currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(key)));
-	
+					currentStage.addLine(createControlPoints(vecViewBundlingPoint, currentPoint,
+						hashViewToCenterPoint.get(key)));
+
 				if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1 && key == activeViewID)
 					connectionLinesAllViews.add(currentStage);
-				
+
 				// calculating bundling line
-				if (key != activeViewID){
+				if (key != activeViewID) {
 					VisLinkAnimationStage bundling = new VisLinkAnimationStage();
-		
+
 					if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1)
 						bundling.addLine(createControlPoints(vecViewBundlingPoint, src, controlPoint));
 					else
-						bundling.addLine(createControlPoints(hashViewToCenterPoint.get(key), src, controlPoint));
-					
+						bundling.addLine(createControlPoints(hashViewToCenterPoint.get(key), src,
+							controlPoint));
+
 					connectionLinesAllViews.add(bundling);
-					
-					if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1){
+
+					if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1) {
 						connectionLinesAllViews.add(currentStage);
 						src = vecViewBundlingPoint;
 					}
 					else
 						src = hashViewToCenterPoint.get(key);
 				}
-				else{
+				else {
 					if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1)
 						src = vecViewBundlingPoint;
 					else
@@ -537,33 +604,36 @@ public class GLConsecutiveConnectionGraphDrawing
 		}
 		VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
 		visLinkScene.renderLines(gl);
+
 	}
 
-	
-	/** this method is just a helper method if an error during parsing occurred and a view that has only one connection point thinks it has more than one point
-	 * 
+	/**
+	 * this method is just a helper method if an error during parsing occurred and a view that has only one
+	 * connection point thinks it has more than one point
 	 */
 	private void removeDuplicatePointEntries() {
 		heatmapPredecessor = removeDuplicates(heatmapPredecessor);
 		heatmapSuccessor = removeDuplicates(heatmapSuccessor);
-		parCoordsPredecessor= removeDuplicates(parCoordsPredecessor);
+		parCoordsPredecessor = removeDuplicates(parCoordsPredecessor);
 		parCoordsSuccessor = removeDuplicates(parCoordsSuccessor);
 	}
 
-
-	/** methods that eliminates duplicate entries in the heatmap/parcoord predecessor/successor lists
+	/**
+	 * methods that eliminates duplicate entries in the heatmap/parcoord predecessor/successor lists
 	 * 
-	 * @param list the list where duplicates shall be removed
+	 * @param list
+	 *            the list where duplicates shall be removed
 	 */
 	private ArrayList<ArrayList<Vec3f>> removeDuplicates(ArrayList<ArrayList<Vec3f>> list) {
 
 		int firstInd = 0;
-		while (firstInd < list.size() - 1){
+		while (firstInd < list.size() - 1) {
 			Vec3f compared1 = list.get(firstInd).get(0);
-			int secondInd = firstInd +1;
-			while (secondInd < list.size()){
+			int secondInd = firstInd + 1;
+			while (secondInd < list.size()) {
 				Vec3f compared2 = list.get(secondInd).get(0);
-				if (compared1.x() == compared2.x() && compared1.y() == compared2.y() && compared1.z() == compared2.z())
+				if (compared1.x() == compared2.x() && compared1.y() == compared2.y()
+					&& compared1.z() == compared2.z())
 					list.remove(secondInd);
 				else
 					secondInd++;
@@ -573,120 +643,152 @@ public class GLConsecutiveConnectionGraphDrawing
 		return list;
 	}
 
-
-	/** getting the IDs of the views which are involved in the current path when rendering the path from the stack
+	/**
+	 * getting the IDs of the views which are involved in the current path when rendering the path from the
+	 * stack
 	 * 
-	 * @param hashViewToCenterPoint list of center points of the views
+	 * @param hashViewToCenterPoint
+	 *            list of center points of the views
 	 * @return list of IDs which belong to the current graph
 	 */
-	private ArrayList<Integer> getViewsOfCurrentPathStartingAtStack(HashMap<Integer, Vec3f> hashViewToCenterPoint) {
+	private ArrayList<Integer> getViewsOfCurrentPathStartingAtStack(
+		HashMap<Integer, Vec3f> hashViewToCenterPoint) {
 		ArrayList<Integer> viewsOfCurrentPath = new ArrayList<Integer>();
 
 		ArrayList<RemoteLevelElement> stackElements = new ArrayList<RemoteLevelElement>(4);
-		for (int count = 0 ; count < stackLevel.getCapacity(); count++)
+		for (int count = 0; count < stackLevel.getCapacity(); count++)
 			stackElements.add(stackLevel.getElementByPositionIndex(count));
-		
+
 		int stackCount = 0;
-		while (stackElements.get(stackCount).getGLView() != null && stackElements.get(stackCount).getGLView().getID() != activeViewID){
+		while (stackElements.get(stackCount).getGLView() != null
+			&& stackElements.get(stackCount).getGLView().getID() != activeViewID) {
 			RemoteLevelElement tempElement = stackElements.get(stackCount);
 			stackElements.remove(stackCount);
 			if (tempElement != null)
 				stackElements.add(tempElement);
 		}
 		for (int count = 0; count < stackElements.size(); count++) {
-			if (stackElements.get(count).getGLView() != null && ((stackElements.get(count).getGLView().getID() == parCoordID) || (stackElements.get(count).getGLView().getID() == heatMapID) || (hashViewToCenterPoint.containsKey(stackElements.get(count).getGLView().getID()))))
+			if (stackElements.get(count).getGLView() != null
+				&& ((stackElements.get(count).getGLView().getID() == parCoordID)
+					|| (stackElements.get(count).getGLView().getID() == heatMapID) || (hashViewToCenterPoint
+					.containsKey(stackElements.get(count).getGLView().getID()))))
 				viewsOfCurrentPath.add(stackElements.get(count).getGLView().getID());
 		}
-		
-		
-		if ((focusLevel.getElementByPositionIndex(0).getGLView() != null) && ((heatMapID == focusLevel.getElementByPositionIndex(0).getGLView().getID()) || (parCoordID == focusLevel.getElementByPositionIndex(0).getGLView().getID()) || (hashViewToCenterPoint.containsKey(focusLevel.getElementByPositionIndex(0).getGLView().getID())))){
+
+		if ((focusLevel.getElementByPositionIndex(0).getGLView() != null)
+			&& ((heatMapID == focusLevel.getElementByPositionIndex(0).getGLView().getID())
+				|| (parCoordID == focusLevel.getElementByPositionIndex(0).getGLView().getID()) || (hashViewToCenterPoint
+				.containsKey(focusLevel.getElementByPositionIndex(0).getGLView().getID())))) {
 			viewsOfCurrentPath.add(1, focusLevel.getElementByPositionIndex(0).getGLView().getID());
-			//check if gap if three stack elements and the focus element belong to the graph
+			// check if gap if three stack elements and the focus element belong to the graph
 			if (viewsOfCurrentPath.size() == 4)
 				checkIfGapPresentRenderingFromStack(viewsOfCurrentPath);
 		}
-		//check if gap if three stack elements and not the focus element belong to the graph
+		// check if gap if three stack elements and not the focus element belong to the graph
 		if (viewsOfCurrentPath.size() == 3)
 			checkIfGapPresentRenderingFromStack(viewsOfCurrentPath);
-		
+
 		return viewsOfCurrentPath;
 	}
 
-	
-	/** checks if a "gap" is there when rendering the graph from the stack
+	/**
+	 * checks if a "gap" is there when rendering the graph from the stack
 	 * 
-	 * @param viewsOfCurrentPath list of views that belong to the current graph
+	 * @param viewsOfCurrentPath
+	 *            list of views that belong to the current graph
 	 */
 	private void checkIfGapPresentRenderingFromStack(ArrayList<Integer> viewsOfCurrentPath) {
 		gapPosition = -1;
 		gapSuccessorID = -1;
 		int positionOfActiveView = -1;
-		
+
 		for (RemoteLevelElement stackElement : stackLevel.getAllElements()) {
-			if ((stackElement.getGLView() != null) && (stackElement.getGLView().getID() == activeViewID)){
+			if ((stackElement.getGLView() != null) && (stackElement.getGLView().getID() == activeViewID)) {
 				positionOfActiveView = stackLevel.getPositionIndexByElementID(stackElement);
 				break;
 			}
 		}
-		
-		if (viewsOfCurrentPath.size() == 4){
-			if (positionOfActiveView == 0){
-				if ((stackLevel.getElementByPositionIndex(2).getGLView() == null) || !(viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(2).getGLView().getID())))
+
+		if (viewsOfCurrentPath.size() == 4) {
+			if (positionOfActiveView == 0) {
+				if ((stackLevel.getElementByPositionIndex(2).getGLView() == null)
+					|| !(viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(2).getGLView()
+						.getID())))
 					gapPosition = 2;
 			}
-			if (positionOfActiveView == 1){
-				if ((stackLevel.getElementByPositionIndex(3).getGLView() == null) || !(viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(3).getGLView().getID())))
+			if (positionOfActiveView == 1) {
+				if ((stackLevel.getElementByPositionIndex(3).getGLView() == null)
+					|| !(viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(3).getGLView()
+						.getID())))
 					gapPosition = 3;
 			}
-			if (positionOfActiveView == 2){
-				if ((stackLevel.getElementByPositionIndex(0).getGLView() == null) || !(viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(0).getGLView().getID())))
+			if (positionOfActiveView == 2) {
+				if ((stackLevel.getElementByPositionIndex(0).getGLView() == null)
+					|| !(viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(0).getGLView()
+						.getID())))
 					gapPosition = 0;
 			}
-			if (positionOfActiveView == 3){
-				if ((stackLevel.getElementByPositionIndex(1).getGLView() == null) || !(viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(1).getGLView().getID())))
+			if (positionOfActiveView == 3) {
+				if ((stackLevel.getElementByPositionIndex(1).getGLView() == null)
+					|| !(viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(1).getGLView()
+						.getID())))
 					gapPosition = 1;
-			}	
+			}
 		}
-		
-		else if (viewsOfCurrentPath.size() == 3){
+
+		else if (viewsOfCurrentPath.size() == 3) {
 			if (focusLevel.getElementByPositionIndex(0).getGLView() == null)
 				return;
 
-			if (positionOfActiveView == 0 || positionOfActiveView == 2){
-				if ((stackLevel.getElementByPositionIndex(1).getGLView() != null) && (stackLevel.getElementByPositionIndex(3).getGLView() != null)){
-					if (viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(1).getGLView().getID()) && viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(3).getGLView().getID()))
+			if (positionOfActiveView == 0 || positionOfActiveView == 2) {
+				if ((stackLevel.getElementByPositionIndex(1).getGLView() != null)
+					&& (stackLevel.getElementByPositionIndex(3).getGLView() != null)) {
+					if (viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(1).getGLView()
+						.getID())
+						&& viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(3).getGLView()
+							.getID()))
 						gapPosition = 4;
 				}
 			}
-			else if (positionOfActiveView == 1 || positionOfActiveView == 3){
-				if ((stackLevel.getElementByPositionIndex(0).getGLView() != null) && (stackLevel.getElementByPositionIndex(2).getGLView() != null)){
-					if (viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(0).getGLView().getID()) && viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(2).getGLView().getID()))
+			else if (positionOfActiveView == 1 || positionOfActiveView == 3) {
+				if ((stackLevel.getElementByPositionIndex(0).getGLView() != null)
+					&& (stackLevel.getElementByPositionIndex(2).getGLView() != null)) {
+					if (viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(0).getGLView()
+						.getID())
+						&& viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(2).getGLView()
+							.getID()))
 						gapPosition = 4;
 				}
 			}
 		}
 	}
 
-	
-	/** getting the IDs of the views which are involved in the current path when rendering the path from the focus
+	/**
+	 * getting the IDs of the views which are involved in the current path when rendering the path from the
+	 * focus
 	 * 
-	 * @param hashViewToCenterPoint list of center points of the views
+	 * @param hashViewToCenterPoint
+	 *            list of center points of the views
 	 * @return list of IDs which belong to the current graph
 	 */
-	private ArrayList<Integer> getViewsOfCurrentPathStartingAtFocus(HashMap<Integer, Vec3f> hashViewToCenterPoint) {
+	private ArrayList<Integer> getViewsOfCurrentPathStartingAtFocus(
+		HashMap<Integer, Vec3f> hashViewToCenterPoint) {
 		allviews.clear();
 		gapSuccessorID = -1;
 		ArrayList<Integer> viewsOfCurrentPath = new ArrayList<Integer>();
 		ArrayList<Integer> notLoadedPosition = new ArrayList<Integer>();
-		
-		for (int stackCount = 0; stackCount < stackLevel.getCapacity(); stackCount++){
-			if ((stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && hashViewToCenterPoint.containsKey(stackLevel.getElementByPositionIndex(stackCount).getGLView().getID())) || 
-				(stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && heatMapID == stackLevel.getElementByPositionIndex(stackCount).getGLView().getID()) ||
-				(stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && parCoordID == stackLevel.getElementByPositionIndex(stackCount).getGLView().getID())){
+
+		for (int stackCount = 0; stackCount < stackLevel.getCapacity(); stackCount++) {
+			if ((stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && hashViewToCenterPoint
+				.containsKey(stackLevel.getElementByPositionIndex(stackCount).getGLView().getID()))
+				|| (stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && heatMapID == stackLevel
+					.getElementByPositionIndex(stackCount).getGLView().getID())
+				|| (stackLevel.getElementByPositionIndex(stackCount).getGLView() != null && parCoordID == stackLevel
+					.getElementByPositionIndex(stackCount).getGLView().getID())) {
 				viewsOfCurrentPath.add(stackLevel.getElementByPositionIndex(stackCount).getGLView().getID());
 				allviews.add(stackLevel.getElementByPositionIndex(stackCount).getGLView().getID());
 			}
-			else{
+			else {
 				notLoadedPosition.add(stackCount);
 				allviews.add(-1);
 			}
@@ -695,238 +797,292 @@ public class GLConsecutiveConnectionGraphDrawing
 			checkIfGapPresentRenderingFromCenter(allviews, notLoadedPosition);
 		else if (viewsOfCurrentPath.size() == 3)
 			viewsOfCurrentPath = revertElements(viewsOfCurrentPath, notLoadedPosition.get(0));
-		
+
 		viewsOfCurrentPath.add(0, focusLevel.getElementByPositionIndex(0).getGLView().getID());
-		
+
 		return viewsOfCurrentPath;
 	}
 
-	
-	/** checks if a "gap" is available when rendering from the focus
+	/**
+	 * checks if a "gap" is available when rendering from the focus
 	 * 
-	 * @param allviews list of view that are currently loaded
-	 * @param notLoadedPosition bitmap that indicates which actually loaded views do not belong to the current connection graph
+	 * @param allviews
+	 *            list of view that are currently loaded
+	 * @param notLoadedPosition
+	 *            bitmap that indicates which actually loaded views do not belong to the current connection
+	 *            graph
 	 */
-	private void checkIfGapPresentRenderingFromCenter(ArrayList<Integer> allviews, ArrayList<Integer> notLoadedPosition) {
-		if (notLoadedPosition.get(0) != (notLoadedPosition.get(1)-1)){
-			if (notLoadedPosition.get(0) == 1){
-				gapSuccessorID = allviews.get(notLoadedPosition.get(0)+1);
+	private void checkIfGapPresentRenderingFromCenter(ArrayList<Integer> allviews,
+		ArrayList<Integer> notLoadedPosition) {
+		if (notLoadedPosition.get(0) != (notLoadedPosition.get(1) - 1)) {
+			if (notLoadedPosition.get(0) == 1) {
+				gapSuccessorID = allviews.get(notLoadedPosition.get(0) + 1);
 				gapPosition = 1;
 			}
-			else{
-				gapSuccessorID = allviews.get(notLoadedPosition.get(1)+1);
+			else {
+				gapSuccessorID = allviews.get(notLoadedPosition.get(1) + 1);
 				gapPosition = 2;
 			}
 		}
 	}
-	
 
-	/** this method reverts the direction of the graph if three elements are loaded at stack level to avoid complex gap handling
+	/**
+	 * this method reverts the direction of the graph if three elements are loaded at stack level to avoid
+	 * complex gap handling
 	 * 
-	 * @param viewsOfCurrentPath views that belong to the current path
-	 * @param nullElement position of the not loaded element 
+	 * @param viewsOfCurrentPath
+	 *            views that belong to the current path
+	 * @param nullElement
+	 *            position of the not loaded element
 	 */
 	private ArrayList<Integer> revertElements(ArrayList<Integer> viewsOfCurrentPath, int nullElement) {
 		if ((nullElement == 3) || (nullElement == 0))
 			return viewsOfCurrentPath;
 		ArrayList<Integer> views = new ArrayList<Integer>();
-		for (int count = nullElement-1; count >= 0; count--) {
-			views.add(viewsOfCurrentPath.get(count));
+		for (int count = nullElement + 1; count < allviews.size(); count++) {
+			views.add(allviews.get(count));
 		}
-		for (int count = 3; count > nullElement; count--) {
-			views.add(viewsOfCurrentPath.get(count));
+		for (int count = 0; count < nullElement; count++) {
+			views.add(allviews.get(count));
 		}
 		return views;
-		
+
 	}
 
-	
-	/** getting the optimal points of the heatmap/parcoords view
+	/**
+	 * getting the optimal points of the heatmap/parcoords view
 	 * 
-	 * @param heatMapPredecessorID ID of the heatmap precedent view 
-	 * @param heatMapSuccessorID  ID of the heatmap succeeding view
-	 * @param heatMapPoints list of heatmap points
-	 * @param parCoordsPredecessorID  of the parcoord precedent view
-	 * @param parCoordsSuccessorID ID of the parcoord succeeding view
-	 * @param parCoordsPoints list of parcoord points
-	 * @param hashViewToCenterPoint center points of other views
+	 * @param heatMapPredecessorID
+	 *            ID of the heatmap precedent view
+	 * @param heatMapSuccessorID
+	 *            ID of the heatmap succeeding view
+	 * @param heatMapPoints
+	 *            list of heatmap points
+	 * @param parCoordsPredecessorID
+	 *            of the parcoord precedent view
+	 * @param parCoordsSuccessorID
+	 *            ID of the parcoord succeeding view
+	 * @param parCoordsPoints
+	 *            list of parcoord points
+	 * @param hashViewToCenterPoint
+	 *            center points of other views
 	 */
 	private void getSinglePointsFromHeatMapAndParCoords(int heatMapPredecessorID, int heatMapSuccessorID,
 		ArrayList<ArrayList<Vec3f>> heatMapPoints, int parCoordsPredecessorID, int parCoordsSuccessorID,
 		ArrayList<ArrayList<Vec3f>> parCoordsPoints, HashMap<Integer, Vec3f> hashViewToCenterPoint) {
-		
+
 		multiplePoints = false;
 		heatmapPredecessor.clear();
 		heatmapSuccessor.clear();
 		parCoordsPredecessor.clear();
 		parCoordsSuccessor.clear();
 
-		if (heatMapPredecessorID != -1){
+		if (heatMapPredecessorID != -1) {
 			heatmapPredecessor.clear();
 			if (heatMapPredecessorID == parCoordID)
 				getSinglePointsIfOtherViewIsDynamicView(parCoordsPoints, heatMapPoints, HEATMAP, PREDECESSOR);
 			else
-				getSinglePointsIfNotOtherViewIsDynamicView(heatMapPoints, hashViewToCenterPoint.get(heatMapPredecessorID), HEATMAP, PREDECESSOR);
+				getSinglePointsIfNotOtherViewIsDynamicView(heatMapPoints, hashViewToCenterPoint
+					.get(heatMapPredecessorID), HEATMAP, PREDECESSOR);
 		}
-		if (heatMapSuccessorID != -1){
+		if (heatMapSuccessorID != -1) {
 			heatmapSuccessor.clear();
 			if (heatMapSuccessorID == parCoordID)
-				getSinglePointsIfOtherViewIsDynamicView(heatMapPoints, parCoordsPoints, HEATMAP, SUCCESSOR);				
+				getSinglePointsIfOtherViewIsDynamicView(heatMapPoints, parCoordsPoints, HEATMAP, SUCCESSOR);
 			else
-				getSinglePointsIfNotOtherViewIsDynamicView(heatMapPoints, hashViewToCenterPoint.get(heatMapSuccessorID), HEATMAP, SUCCESSOR);		
+				getSinglePointsIfNotOtherViewIsDynamicView(heatMapPoints, hashViewToCenterPoint
+					.get(heatMapSuccessorID), HEATMAP, SUCCESSOR);
 		}
-		if (parCoordsPredecessorID != -1){
+		if (parCoordsPredecessorID != -1) {
 			parCoordsPredecessor.clear();
 			if (parCoordsPredecessorID == heatMapID)
-				getSinglePointsIfOtherViewIsDynamicView(heatMapPoints, parCoordsPoints, PARCOORDS, PREDECESSOR);
+				getSinglePointsIfOtherViewIsDynamicView(heatMapPoints, parCoordsPoints, PARCOORDS,
+					PREDECESSOR);
 			else
-				getSinglePointsIfNotOtherViewIsDynamicView(parCoordsPoints, hashViewToCenterPoint.get(parCoordsPredecessorID), PARCOORDS, PREDECESSOR);
+				getSinglePointsIfNotOtherViewIsDynamicView(parCoordsPoints, hashViewToCenterPoint
+					.get(parCoordsPredecessorID), PARCOORDS, PREDECESSOR);
 		}
-		if (parCoordsSuccessorID != -1){
+		if (parCoordsSuccessorID != -1) {
 			parCoordsSuccessor.clear();
 			if (parCoordsSuccessorID == heatMapID)
-				getSinglePointsIfOtherViewIsDynamicView(parCoordsPoints, heatMapPoints, PARCOORDS, SUCCESSOR);		
+				getSinglePointsIfOtherViewIsDynamicView(parCoordsPoints, heatMapPoints, PARCOORDS, SUCCESSOR);
 			else
-				getSinglePointsIfNotOtherViewIsDynamicView(parCoordsPoints, hashViewToCenterPoint.get(parCoordsSuccessorID), PARCOORDS, SUCCESSOR);	
+				getSinglePointsIfNotOtherViewIsDynamicView(parCoordsPoints, hashViewToCenterPoint
+					.get(parCoordsSuccessorID), PARCOORDS, SUCCESSOR);
 		}
 	}
-	
-	
-	/** getting the optimal points of heatmap/parcoords if multiple points have to be drawn
+
+	/**
+	 * getting the optimal points of heatmap/parcoords if multiple points have to be drawn
 	 * 
-	 * @param heatMapPredecessorID ID of the heatmap precedent view
-	 * @param heatMapSuccessorID ID of the heatmap succeeding view
-	 * @param heatMapPoints list of heatmap points from which the optimal points have to be choosen from
-	 * @param parCoordsPredecessorID ID of the parcoord precedent view
-	 * @param parCoordsSuccessorID ID of the parcoord succeeding view
-	 * @param parCoordsPoints list of parcoord points from which the optimal points have to be choosen from
-	 * @param hashViewToCenterPoint list of center points excluding heatmap and parcoords
+	 * @param heatMapPredecessorID
+	 *            ID of the heatmap precedent view
+	 * @param heatMapSuccessorID
+	 *            ID of the heatmap succeeding view
+	 * @param heatMapPoints
+	 *            list of heatmap points from which the optimal points have to be choosen from
+	 * @param parCoordsPredecessorID
+	 *            ID of the parcoord precedent view
+	 * @param parCoordsSuccessorID
+	 *            ID of the parcoord succeeding view
+	 * @param parCoordsPoints
+	 *            list of parcoord points from which the optimal points have to be choosen from
+	 * @param hashViewToCenterPoint
+	 *            list of center points excluding heatmap and parcoords
 	 */
 	private void getMultiplePointsFromHeatMapAndParCoords(int heatMapPredecessorID, int heatMapSuccessorID,
 		ArrayList<ArrayList<Vec3f>> heatMapPoints, int parCoordsPredecessorID, int parCoordsSuccessorID,
 		ArrayList<ArrayList<Vec3f>> parCoordsPoints, HashMap<Integer, Vec3f> hashViewToCenterPoint) {
 
 		multiplePoints = true;
-		
-		ArrayList<ArrayList<ArrayList<Vec3f>>> multipleHeatMapPoints = new ArrayList<ArrayList<ArrayList<Vec3f>>>();
-		ArrayList<ArrayList<ArrayList<Vec3f>>> multipleParCoordPoints = new ArrayList<ArrayList<ArrayList<Vec3f>>>();
+
+		ArrayList<ArrayList<ArrayList<Vec3f>>> multipleHeatMapPoints =
+			new ArrayList<ArrayList<ArrayList<Vec3f>>>();
+		ArrayList<ArrayList<ArrayList<Vec3f>>> multipleParCoordPoints =
+			new ArrayList<ArrayList<ArrayList<Vec3f>>>();
 		ArrayList<Vec3f> heatMapCenterPoints = new ArrayList<Vec3f>();
 		ArrayList<Vec3f> parCoordCenterPoints = new ArrayList<Vec3f>();
-		
+
 		for (int count = 0; count < 6; count++)
-			multipleHeatMapPoints .add(new ArrayList<ArrayList<Vec3f>>());
+			multipleHeatMapPoints.add(new ArrayList<ArrayList<Vec3f>>());
 		for (int count = 0; count < 3; count++)
 			multipleParCoordPoints.add(new ArrayList<ArrayList<Vec3f>>());
-		
+
 		for (int pointCount = 0; pointCount < heatMapPoints.size(); pointCount++)
-			multipleHeatMapPoints.get(pointCount%6).add(heatMapPoints.get(pointCount));
-		
+			multipleHeatMapPoints.get(pointCount % 6).add(heatMapPoints.get(pointCount));
+
 		for (int pointCount = 0; pointCount < parCoordsPoints.size(); pointCount++)
-			multipleParCoordPoints.get(pointCount%3).add(parCoordsPoints.get(pointCount));
+			multipleParCoordPoints.get(pointCount % 3).add(parCoordsPoints.get(pointCount));
 
 		for (int count = 0; count < multipleHeatMapPoints.size(); count++) {
 			heatMapCenterPoints.add(calculateCenter(multipleHeatMapPoints.get(count)));
 		}
-		
+
 		for (int count = 0; count < multipleParCoordPoints.size(); count++) {
 			parCoordCenterPoints.add(calculateCenter(multipleParCoordPoints.get(count)));
 		}
-		
-		
-		if (heatMapPredecessorID != -1){
+
+		if (heatMapPredecessorID != -1) {
 			if (heatMapPredecessorID == parCoordID)
-				getMultiplePointsIfOtherViewIsDynamicView(multipleParCoordPoints, parCoordCenterPoints, multipleHeatMapPoints, heatMapCenterPoints, HEATMAP, PREDECESSOR);
+				getMultiplePointsIfOtherViewIsDynamicView(multipleParCoordPoints, parCoordCenterPoints,
+					multipleHeatMapPoints, heatMapCenterPoints, HEATMAP, PREDECESSOR);
 			else
-				getMultiplePointsIfNotOtherViewIsDynamicView(multipleHeatMapPoints, heatMapCenterPoints, hashViewToCenterPoint.get(heatMapPredecessorID), HEATMAP, PREDECESSOR);
+				getMultiplePointsIfNotOtherViewIsDynamicView(multipleHeatMapPoints, heatMapCenterPoints,
+					hashViewToCenterPoint.get(heatMapPredecessorID), HEATMAP, PREDECESSOR);
 		}
-		if (heatMapSuccessorID != -1){
+		if (heatMapSuccessorID != -1) {
 			if (heatMapSuccessorID == parCoordID)
-				getMultiplePointsIfOtherViewIsDynamicView(multipleHeatMapPoints, heatMapCenterPoints, multipleParCoordPoints, parCoordCenterPoints, HEATMAP, SUCCESSOR);				
+				getMultiplePointsIfOtherViewIsDynamicView(multipleHeatMapPoints, heatMapCenterPoints,
+					multipleParCoordPoints, parCoordCenterPoints, HEATMAP, SUCCESSOR);
 			else
-				getMultiplePointsIfNotOtherViewIsDynamicView(multipleHeatMapPoints, heatMapCenterPoints, hashViewToCenterPoint.get(heatMapSuccessorID), HEATMAP, SUCCESSOR);		
+				getMultiplePointsIfNotOtherViewIsDynamicView(multipleHeatMapPoints, heatMapCenterPoints,
+					hashViewToCenterPoint.get(heatMapSuccessorID), HEATMAP, SUCCESSOR);
 		}
-		if (parCoordsPredecessorID != -1){
+		if (parCoordsPredecessorID != -1) {
 			if (parCoordsPredecessorID == heatMapID)
-				getMultiplePointsIfOtherViewIsDynamicView(multipleHeatMapPoints, heatMapCenterPoints, multipleParCoordPoints, parCoordCenterPoints, PARCOORDS, PREDECESSOR);
+				getMultiplePointsIfOtherViewIsDynamicView(multipleHeatMapPoints, heatMapCenterPoints,
+					multipleParCoordPoints, parCoordCenterPoints, PARCOORDS, PREDECESSOR);
 			else
-				getMultiplePointsIfNotOtherViewIsDynamicView(multipleParCoordPoints, parCoordCenterPoints, hashViewToCenterPoint.get(parCoordsPredecessorID), PARCOORDS, PREDECESSOR);
+				getMultiplePointsIfNotOtherViewIsDynamicView(multipleParCoordPoints, parCoordCenterPoints,
+					hashViewToCenterPoint.get(parCoordsPredecessorID), PARCOORDS, PREDECESSOR);
 		}
-		if (parCoordsSuccessorID != -1){
+		if (parCoordsSuccessorID != -1) {
 			if (parCoordsSuccessorID == heatMapID)
-				getMultiplePointsIfOtherViewIsDynamicView(multipleParCoordPoints, parCoordCenterPoints, multipleHeatMapPoints, heatMapCenterPoints, PARCOORDS, SUCCESSOR);		
+				getMultiplePointsIfOtherViewIsDynamicView(multipleParCoordPoints, parCoordCenterPoints,
+					multipleHeatMapPoints, heatMapCenterPoints, PARCOORDS, SUCCESSOR);
 			else
-				getMultiplePointsIfNotOtherViewIsDynamicView(multipleParCoordPoints, parCoordCenterPoints, hashViewToCenterPoint.get(parCoordsSuccessorID), PARCOORDS, SUCCESSOR);	
+				getMultiplePointsIfNotOtherViewIsDynamicView(multipleParCoordPoints, parCoordCenterPoints,
+					hashViewToCenterPoint.get(parCoordsSuccessorID), PARCOORDS, SUCCESSOR);
 		}
 
 	}
 
-	
-	/** calculates shortest path between heatmap and parcoords view when multiple points have to be calculated
+	/**
+	 * calculates shortest path between heatmap and parcoords view when multiple points have to be calculated
 	 * 
-	 * @param multiplePredecessorPointsList list of predecessor points
-	 * @param predecessorCenterPointsList contains the center points of the points list for simplifying the calculation of the shortest path
-	 * @param multipleSuccessorPointsList list of successor points
-	 * @param successorCenterPointsList contains the center points of the points list for simplifying the calculation of the shortest path
-	 * @param type type of the dynamic view (either HEATMAP or PARCOORDS)
-	 * @param nextOrPrevious indicates whether the remote view is predecessor or successor
+	 * @param multiplePredecessorPointsList
+	 *            list of predecessor points
+	 * @param predecessorCenterPointsList
+	 *            contains the center points of the points list for simplifying the calculation of the
+	 *            shortest path
+	 * @param multipleSuccessorPointsList
+	 *            list of successor points
+	 * @param successorCenterPointsList
+	 *            contains the center points of the points list for simplifying the calculation of the
+	 *            shortest path
+	 * @param type
+	 *            type of the dynamic view (either HEATMAP or PARCOORDS)
+	 * @param nextOrPrevious
+	 *            indicates whether the remote view is predecessor or successor
 	 */
-	
+
 	private void getMultiplePointsIfOtherViewIsDynamicView(
-		ArrayList<ArrayList<ArrayList<Vec3f>>> multiplePredecessorPointsList, ArrayList<Vec3f> predecessorCenterPointsList,
-		ArrayList<ArrayList<ArrayList<Vec3f>>> multipleSuccessorPointsList, ArrayList<Vec3f> successorCenterPointsList,
-		char type, int nextOrPrevious) {
+		ArrayList<ArrayList<ArrayList<Vec3f>>> multiplePredecessorPointsList,
+		ArrayList<Vec3f> predecessorCenterPointsList,
+		ArrayList<ArrayList<ArrayList<Vec3f>>> multipleSuccessorPointsList,
+		ArrayList<Vec3f> successorCenterPointsList, char type, int nextOrPrevious) {
 
 		float currentPath = -1;
 		float minPath = Float.MAX_VALUE;
-				
+
 		ArrayList<ArrayList<Vec3f>> optimalPredecessorPoints = null;
 		ArrayList<ArrayList<Vec3f>> optimalSuccessorPoints = null;
-		
+
 		for (Vec3f successorPoint : successorCenterPointsList) {
 			for (Vec3f predecessorPoint : predecessorCenterPointsList) {
 				Vec3f distanceToPredecessor = predecessorPoint.minus(successorPoint);
 				currentPath = distanceToPredecessor.length();
-				if (currentPath < minPath){
+				if (currentPath < minPath) {
 					minPath = currentPath;
-					optimalPredecessorPoints = multiplePredecessorPointsList.get(predecessorCenterPointsList.indexOf(predecessorPoint));
-					optimalSuccessorPoints = multipleSuccessorPointsList.get(successorCenterPointsList.indexOf(successorPoint));
+					optimalPredecessorPoints =
+						multiplePredecessorPointsList.get(predecessorCenterPointsList
+							.indexOf(predecessorPoint));
+					optimalSuccessorPoints =
+						multipleSuccessorPointsList.get(successorCenterPointsList.indexOf(successorPoint));
 				}
 			}
 		}
-		
-		if (type == HEATMAP && nextOrPrevious == PREDECESSOR){
+
+		if (type == HEATMAP && nextOrPrevious == PREDECESSOR) {
 			parCoordsSuccessor = optimalSuccessorPoints;
 			heatmapPredecessor = optimalPredecessorPoints;
 		}
-		else if (type == HEATMAP && nextOrPrevious == SUCCESSOR){
+		else if (type == HEATMAP && nextOrPrevious == SUCCESSOR) {
 			parCoordsPredecessor = optimalPredecessorPoints;
 			heatmapSuccessor = optimalSuccessorPoints;
 		}
-		else if (type == PARCOORDS && nextOrPrevious == PREDECESSOR){
+		else if (type == PARCOORDS && nextOrPrevious == PREDECESSOR) {
 			heatmapSuccessor = optimalSuccessorPoints;
 			parCoordsPredecessor = optimalPredecessorPoints;
 		}
-		else if (type == PARCOORDS && nextOrPrevious == SUCCESSOR){
+		else if (type == PARCOORDS && nextOrPrevious == SUCCESSOR) {
 			heatmapPredecessor = optimalPredecessorPoints;
 			parCoordsSuccessor = optimalSuccessorPoints;
 		}
 	}
 
-	
-	/** Calculates the shortest path between two views if one of them is either the heatmap view or the parcoords view and the views contain multiple point
+	/**
+	 * Calculates the shortest path between two views if one of them is either the heatmap view or the
+	 * parcoords view and the views contain multiple point
 	 * 
-	 * @param multipleDynamicPoints list of multiple points
-	 * @param dynamicCenterPointsList list of center of multiple points (used to simplify calculation of optimal points list)
-	 * @param connectionPoint point of reomte view
-	 * @param type type of dynamic view (either HEATMAP or PARCOORDS)
-	 * @param nextOrPrevious indicates if the remote view is successor or predecessor of the dynamic view
+	 * @param multipleDynamicPoints
+	 *            list of multiple points
+	 * @param dynamicCenterPointsList
+	 *            list of center of multiple points (used to simplify calculation of optimal points list)
+	 * @param connectionPoint
+	 *            point of reomte view
+	 * @param type
+	 *            type of dynamic view (either HEATMAP or PARCOORDS)
+	 * @param nextOrPrevious
+	 *            indicates if the remote view is successor or predecessor of the dynamic view
 	 */
-	private void getMultiplePointsIfNotOtherViewIsDynamicView(ArrayList<ArrayList<ArrayList<Vec3f>>> multipleDynamicPoints, ArrayList<Vec3f> dynamicCenterPointsList,
-		Vec3f connectionPoint, char type, int nextOrPrevious) {
-		
+	private void getMultiplePointsIfNotOtherViewIsDynamicView(
+		ArrayList<ArrayList<ArrayList<Vec3f>>> multipleDynamicPoints,
+		ArrayList<Vec3f> dynamicCenterPointsList, Vec3f connectionPoint, char type, int nextOrPrevious) {
+
 		float currentPath = -1;
 		float minPath = Float.MAX_VALUE;
-		
+
 		if (connectionPoint == null)
 			return;
 		ArrayList<ArrayList<Vec3f>> optimalPoints = null;
@@ -938,7 +1094,7 @@ public class GLConsecutiveConnectionGraphDrawing
 				optimalPoints = multipleDynamicPoints.get(dynamicCenterPointsList.indexOf(dynamicPoint));
 			}
 		}
-		
+
 		if (type == HEATMAP && nextOrPrevious == PREDECESSOR)
 			heatmapPredecessor = optimalPoints;
 		else if (type == HEATMAP && nextOrPrevious == SUCCESSOR)
@@ -946,75 +1102,88 @@ public class GLConsecutiveConnectionGraphDrawing
 		else if (type == PARCOORDS && nextOrPrevious == PREDECESSOR)
 			parCoordsPredecessor = optimalPoints;
 		else if (type == PARCOORDS && nextOrPrevious == SUCCESSOR)
-			parCoordsSuccessor = optimalPoints;	
+			parCoordsSuccessor = optimalPoints;
 	}
 
-	
-	/** calculates shortest path between heatmap and parcoords view
+	/**
+	 * calculates shortest path between heatmap and parcoords view
 	 * 
-	 * @param predecessorPointsList points list to choose the best point from
-	 * @param successorPointsList points list to choose the best point from
-	 * @param type type of dynamic view (either HEATMAP or PARCOORD)
-	 * @param nextOrPrevious indicates if the other involved view is the predecessor or successor of the heatmap/parcoords view
+	 * @param predecessorPointsList
+	 *            points list to choose the best point from
+	 * @param successorPointsList
+	 *            points list to choose the best point from
+	 * @param type
+	 *            type of dynamic view (either HEATMAP or PARCOORD)
+	 * @param nextOrPrevious
+	 *            indicates if the other involved view is the predecessor or successor of the
+	 *            heatmap/parcoords view
 	 */
-	private void getSinglePointsIfOtherViewIsDynamicView(ArrayList<ArrayList<Vec3f>> predecessorPointsList, ArrayList<ArrayList<Vec3f>> successorPointsList, char type, int nextOrPrevious) {
+	private void getSinglePointsIfOtherViewIsDynamicView(ArrayList<ArrayList<Vec3f>> predecessorPointsList,
+		ArrayList<ArrayList<Vec3f>> successorPointsList, char type, int nextOrPrevious) {
 		float currentPath = -1;
 		float minPath = Float.MAX_VALUE;
-				
+
 		ArrayList<Vec3f> optimalPredecessorPoints = null;
 		ArrayList<Vec3f> optimalSuccessorPoints = null;
-		
+
 		for (ArrayList<Vec3f> successorPoints : successorPointsList) {
 			for (ArrayList<Vec3f> predecessorPoints : predecessorPointsList) {
 				Vec3f predecessorPoint = predecessorPoints.get(0);
 				Vec3f successorPoint = successorPoints.get(0);
 				Vec3f distanceToPredecessor = predecessorPoint.minus(successorPoint);
 				currentPath = distanceToPredecessor.length();
-				if (currentPath < minPath){
+				if (currentPath < minPath) {
 					minPath = currentPath;
 					optimalPredecessorPoints = predecessorPoints;
 					optimalSuccessorPoints = successorPoints;
 				}
 			}
 		}
-		if (type == HEATMAP && nextOrPrevious == PREDECESSOR){
+		if (type == HEATMAP && nextOrPrevious == PREDECESSOR) {
 			if (!parCoordsSuccessor.contains(optimalSuccessorPoints))
 				parCoordsSuccessor.add(optimalSuccessorPoints);
 			if (!heatmapPredecessor.contains(optimalPredecessorPoints))
 				heatmapPredecessor.add(optimalPredecessorPoints);
 		}
-		else if (type == HEATMAP && nextOrPrevious == SUCCESSOR){
-			if(!parCoordsPredecessor.contains(optimalPredecessorPoints))
+		else if (type == HEATMAP && nextOrPrevious == SUCCESSOR) {
+			if (!parCoordsPredecessor.contains(optimalPredecessorPoints))
 				parCoordsPredecessor.add(optimalPredecessorPoints);
 			if (!heatmapSuccessor.contains(optimalSuccessorPoints))
 				heatmapSuccessor.add(optimalSuccessorPoints);
 		}
-		else if (type == PARCOORDS && nextOrPrevious == PREDECESSOR){
-			if(!heatmapSuccessor.contains(optimalSuccessorPoints))
+		else if (type == PARCOORDS && nextOrPrevious == PREDECESSOR) {
+			if (!heatmapSuccessor.contains(optimalSuccessorPoints))
 				heatmapSuccessor.add(optimalSuccessorPoints);
-			if(!parCoordsPredecessor.contains(optimalPredecessorPoints))
+			if (!parCoordsPredecessor.contains(optimalPredecessorPoints))
 				parCoordsPredecessor.add(optimalPredecessorPoints);
 		}
-		else if (type == PARCOORDS && nextOrPrevious == SUCCESSOR){
+		else if (type == PARCOORDS && nextOrPrevious == SUCCESSOR) {
 			if (!heatmapPredecessor.contains(optimalPredecessorPoints))
 				heatmapPredecessor.add(optimalPredecessorPoints);
 			if (!parCoordsSuccessor.contains(optimalSuccessorPoints))
 				parCoordsSuccessor.add(optimalSuccessorPoints);
 		}
 	}
-	
 
-	/** Calculates the shortest path between two views if one of them is either the heatmap view or the parcoords view 
+	/**
+	 * Calculates the shortest path between two views if one of them is either the heatmap view or the
+	 * parcoords view
 	 * 
-	 * @param dynamicPointsList set of points to choose the best from
-	 * @param connectionPoint connection point to which the parcoord/heatmap view should be connected to  
-	 * @param type type of dynamic view (either HEATMAP or PARCOORDS)
-	 * @param nextOrPrevious indicates if the other involved view is the predecessor or successor of the heatmap/parcoords view
+	 * @param dynamicPointsList
+	 *            set of points to choose the best from
+	 * @param connectionPoint
+	 *            connection point to which the parcoord/heatmap view should be connected to
+	 * @param type
+	 *            type of dynamic view (either HEATMAP or PARCOORDS)
+	 * @param nextOrPrevious
+	 *            indicates if the other involved view is the predecessor or successor of the
+	 *            heatmap/parcoords view
 	 */
-	private void getSinglePointsIfNotOtherViewIsDynamicView(ArrayList<ArrayList<Vec3f>> dynamicPointsList, Vec3f connectionPoint, char type, int nextOrPrevious){
+	private void getSinglePointsIfNotOtherViewIsDynamicView(ArrayList<ArrayList<Vec3f>> dynamicPointsList,
+		Vec3f connectionPoint, char type, int nextOrPrevious) {
 		float currentPath = -1;
 		float minPath = Float.MAX_VALUE;
-		
+
 		if (connectionPoint == null)
 			return;
 		ArrayList<Vec3f> optimalPoints = null;
@@ -1037,15 +1206,16 @@ public class GLConsecutiveConnectionGraphDrawing
 			parCoordsSuccessor.add(optimalPoints);
 	}
 
-	
-	/** Calculates the optimal control point for the curve between two given points
-	 * Algorithm: Calculate vector between src and dst
-	 * calculate center point between src and dst
-	 * take line whose direction is the normal vector of the focus plain (0,0,1)
-	 * calculate the point that lies 0.5 units of length closer to the focus plain
+	/**
+	 * Calculates the optimal control point for the curve between two given points Algorithm: Calculate vector
+	 * between src and dst calculate center point between src and dst take line whose direction is the normal
+	 * vector of the focus plain (0,0,1) calculate the point that lies 0.5 units of length closer to the focus
+	 * plain
 	 * 
-	 * @param src first point
-	 * @param dst second point
+	 * @param src
+	 *            first point
+	 * @param dst
+	 *            second point
 	 * @return control point for this connection line
 	 */
 	private Vec3f calculateControlPoint(Vec3f src, Vec3f dst) {
@@ -1054,80 +1224,73 @@ public class GLConsecutiveConnectionGraphDrawing
 		Vec3f centerPoint = src.minus(dst);
 		centerPoint.scale(0.5f);
 		centerPoint.add(dst);
-		
-		float zVal = (float)(centerPoint.z() * Math.sqrt(0.5));
+
+		float zVal = (float) (centerPoint.z() * Math.sqrt(0.5));
 		Vec3f controlPoint = centerPoint;
 		controlPoint.setZ(zVal);
 		return controlPoint;
-		
+
 		/*
-		Vec3f controlPoint = null;
-		if (src == dst)
-			return null;
-		Vec3f connectionVec = src.minus(dst);
-		connectionVec.scale(0.5f);
-		connectionVec = connectionVec.plus(src);
-		float minDistance = Float.MAX_VALUE;
-		float currentDistance = -1;
-		for (Vec3f element : controlPoints) {
-			Vec3f distance = connectionVec.minus(element);
-			currentDistance = distance.length();
-			if (currentDistance < minDistance){
-				minDistance = currentDistance;
-				controlPoint = element;
-			}
-		}
-		return controlPoint;*/
+		 * Vec3f controlPoint = null; if (src == dst) return null; Vec3f connectionVec = src.minus(dst);
+		 * connectionVec.scale(0.5f); connectionVec = connectionVec.plus(src); float minDistance =
+		 * Float.MAX_VALUE; float currentDistance = -1; for (Vec3f element : controlPoints) { Vec3f distance =
+		 * connectionVec.minus(element); currentDistance = distance.length(); if (currentDistance <
+		 * minDistance){ minDistance = currentDistance; controlPoint = element; } } return controlPoint;
+		 */
 	}
-	
-	
-	/** This method gets the successor of a given view
+
+	/**
+	 * This method gets the successor of a given view
 	 * 
-	 * @param list list containing all views
-	 * @param iD id of the view to which the successor should be found
+	 * @param list
+	 *            list containing all views
+	 * @param iD
+	 *            id of the view to which the successor should be found
 	 * @return ID of the succeeding view
 	 */
-	private int getNextView(ArrayList<Integer> list, int iD){
+	private int getNextView(ArrayList<Integer> list, int iD) {
 		int position = list.indexOf(iD);
 
-		if (position == list.size()-1)
+		if (position == list.size() - 1)
 			return -1;
 		else if (position == -1)
 			return -1;
-		
-		while (position < list.size()-1){
-			if (list.get(position+1) != -1)
-				return list.get(position+1);
+
+		while (position < list.size() - 1) {
+			if (list.get(position + 1) != -1)
+				return list.get(position + 1);
 			position++;
 		}
 		return -1;
 	}
 
-	
-	/** This method gets the predecessor of a given view
+	/**
+	 * This method gets the predecessor of a given view
 	 * 
-	 * @param list list containing all views
-	 * @param iD id of the view to which the predecessor should be found
+	 * @param list
+	 *            list containing all views
+	 * @param iD
+	 *            id of the view to which the predecessor should be found
 	 * @return ID of the precedent view
 	 */
-	private Integer getPreviousView(ArrayList<Integer> list, int iD){
+	private Integer getPreviousView(ArrayList<Integer> list, int iD) {
 		int position = list.indexOf(iD);
 		if (position == 0)
 			return -1;
 		else if (position == -1)
 			return -1;
-		
-		while(position >0){
-			if (list.get(position-1) != -1)
-				return list.get(position-1);
+
+		while (position > 0) {
+			if (list.get(position - 1) != -1)
+				return list.get(position - 1);
 			position--;
 		}
 		return -1;
 
 	}
 
-	
-	// this method is not needed for this kind of graph type cause optimal points are calculated in a different way
+	// this method is not needed for this kind of graph type cause optimal points are calculated in a
+	// different way
 	@Override
 	protected ArrayList<ArrayList<ArrayList<Vec3f>>> calculateOptimalMultiplePoints(
 		ArrayList<ArrayList<Vec3f>> heatMapPoints, int heatMapID,
@@ -1137,8 +1300,8 @@ public class GLConsecutiveConnectionGraphDrawing
 		return null;
 	}
 
-	
-	// this method is not needed for this kind of graph type cause optimal points are calculated in a different way
+	// this method is not needed for this kind of graph type cause optimal points are calculated in a
+	// different way
 	@Override
 	protected ArrayList<ArrayList<Vec3f>> calculateOptimalSinglePoints(
 		ArrayList<ArrayList<Vec3f>> heatMapPoints, int heatMapID,
