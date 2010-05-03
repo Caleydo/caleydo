@@ -490,14 +490,14 @@ public class GLHyperbolic extends AGLView {
 
 		for (int i = 0; i < 5; i++) {
 
-			node = new ViewHyperbolicNode(tree, "child_pathway", 3,
+			node = new ViewHyperbolicNode(tree, "child_pathway", i+1,
 					createPathwayView(gl));
 			tree.addChild(tree.getRoot(), node);
 
 			for (int j = 0; j < 5; j++) {
 
 				ViewHyperbolicNode childNode = new ViewHyperbolicNode(tree,
-						"child_pathway", 3, createPathwayView(gl));
+						"child_pathway", i+j+2, createPathwayView(gl));
 				tree.addChild(node, childNode);
 			}
 		}

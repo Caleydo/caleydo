@@ -179,21 +179,8 @@ public class PoincareDisk {
 
 		PoincareNode root = tree.getRoot();
 
-		// double distance = this.distanceFromOrigin(translationVector);
-		// distance = (double) Math.round(distance + 0.5);
-
-		// Point2D.Double directionVector = new Point2D.Double(translationVector
-		// .getX()
-		// / distance, translationVector.getY() / distance);
-		// make more steps, because the moebius transformation can only be
-		// applied for
-		// distance < 1
-		// for (int i = 0; i < (int) distance; i++) {
-		// start the recursive algorithm
 
 		translateNodeMoebius(root, translationVector);
-		// }
-		// projectTree();
 	}
 
 	private boolean translateNodeMoebius(PoincareNode node,
@@ -208,10 +195,7 @@ public class PoincareDisk {
 				tempVector.getImaginaryPart());
 		node.setPosition(newPoint);
 
-		// System.out.println("translation:");
-		// System.out.println(newPoint.getX()+"|"+newPoint.getY());
-
-		node.setDistanceFromOrigin(this.distanceFromOrigin(newPoint));
+	    node.setDistanceFromOrigin(this.distanceFromOrigin(newPoint));
 
 		if (tree.getChildren(node) == null) {
 			return false;
@@ -492,7 +476,7 @@ public class PoincareDisk {
 		root.setDistanceFromOrigin(0);
 		treeNodeCounter = 1;
 		root.iComparableValue = treeNodeCounter;
-		moebiusNodeLayout(root, 0, 2 * Math.PI);
+		moebiusNodeLayout(root, Math.PI/2,  Math.PI);
 	}
 
 	public void moebiusNodeLayout(PoincareNode parentNode, double angleOffset,

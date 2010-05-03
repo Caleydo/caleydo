@@ -95,7 +95,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 	private Point2D.Double layoutHotSpot;
 	private Point2D.Double defaultLayoutHotSpot;
-	private boolean hyperbolicViewSquared = true;
+	private boolean hyperbolicViewSquared = false;
 
 	private Point2D.Double eyeTrackerOffset = new Point2D.Double(0, 0);
 

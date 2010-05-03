@@ -26,6 +26,7 @@ public class DataWindowsDisk extends PoincareDisk {
 	private double eyeTrackerBorder;
 	private double eyeTrackerPrecision;
 	private GLHyperbolic hyperbolic;
+	private double radiussquare;
 
 	public DataWindowsDisk(GLHyperbolic master) {
 		super();
@@ -41,6 +42,9 @@ public class DataWindowsDisk extends PoincareDisk {
 		eyeTrackerBorder = 0.8;
 		eyeTrackerPrecision = 0.1;
 		hyperbolic = master;
+
+		radiussquare = radius * radius;
+
 	}
 
 	public void mouseOverNode(int nodeIndex) {
@@ -51,12 +55,12 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		gl.glLineWidth(1);
 
-		drawCircle(levelOfDetailLimits[2] * displayScaleFactorX,
-				canvasWidth / 2, canvasHeight / 2);
-		drawCircle(levelOfDetailLimits[1] * displayScaleFactorX,
-				canvasWidth / 2, canvasHeight / 2);
-		drawCircle(levelOfDetailLimits[0] * displayScaleFactorX,
-				canvasWidth / 2, canvasHeight / 2);
+		// drawCircle(levelOfDetailLimits[2] * displayScaleFactorX,
+		// canvasWidth / 2, canvasHeight / 2);
+		// drawCircle(levelOfDetailLimits[1] * displayScaleFactorX,
+		// canvasWidth / 2, canvasHeight / 2);
+		// drawCircle(levelOfDetailLimits[0] * displayScaleFactorX,
+		// canvasWidth / 2, canvasHeight / 2);
 	}
 
 	private int distanceToDetaillevel(double distance) {
@@ -90,7 +94,7 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		// displayDetailLevels();
 
-		// drawBackground();
+		drawBackground();
 		PoincareNode root = getTree().getRoot();
 		renderNode(root, 2);
 
@@ -142,52 +146,31 @@ public class DataWindowsDisk extends PoincareDisk {
 		}
 
 		Vec3f lowerLeftCorner = new Vec3f(
-				(float) (-size + node.getPosition().getX()
+				(float) (-size + node.getZoomedPosition().getX()
 						* displayScaleFactorX + canvasWidth / 2),
-				(float) (-size + node.getPosition().getY()
-						* displayScaleFactorY + canvasHeight / 2), 0);
+				(float) (-size * (canvasHeight / canvasWidth)
+						+ node.getZoomedPosition().getY() * displayScaleFactorY + canvasHeight / 2),
+				0);
 		Vec3f lowerRightCorner = new Vec3f(
-				(float) (size + node.getPosition().getX() * displayScaleFactorX + canvasWidth / 2),
-				(float) (-size + node.getPosition().getY()
-						* displayScaleFactorY + canvasHeight / 2), 0);
+				(float) (size + node.getZoomedPosition().getX()
+						* displayScaleFactorX + canvasWidth / 2),
+				(float) (-size * (canvasHeight / canvasWidth)
+						+ node.getZoomedPosition().getY() * displayScaleFactorY + canvasHeight / 2),
+				0);
 		Vec3f upperRightCorner = new Vec3f(
-				(float) (size + node.getPosition().getX() * displayScaleFactorX + canvasWidth / 2),
-				(float) (size + node.getPosition().getY() * displayScaleFactorY + canvasHeight / 2),
+				(float) (size + node.getZoomedPosition().getX()
+						* displayScaleFactorX + canvasWidth / 2),
+				(float) (size * (canvasHeight / canvasWidth)
+						+ node.getZoomedPosition().getY() * displayScaleFactorY + canvasHeight / 2),
 				0);
 		Vec3f upperLeftCorner = new Vec3f(
-				(float) (-size + node.getPosition().getX()
+				(float) (-size + node.getZoomedPosition().getX()
 						* displayScaleFactorX + canvasWidth / 2),
-				(float) (size + node.getPosition().getY() * displayScaleFactorY + canvasHeight / 2),
+				(float) (size * (canvasHeight / canvasWidth)
+						+ node.getZoomedPosition().getY() * displayScaleFactorY + canvasHeight / 2),
 				0);
-		Vec3f scalingPivot = new Vec3f(1, 1, 0);
 
-		if (mode == 2) {
-			lowerLeftCorner = new Vec3f(
-					(float) (-size + node.getZoomedPosition().getX()
-							* displayScaleFactorX + canvasWidth / 2),
-					(float) (-size * (canvasHeight / canvasWidth)
-							+ node.getZoomedPosition().getY()
-							* displayScaleFactorY + canvasHeight / 2), 0);
-			lowerRightCorner = new Vec3f(
-					(float) (size + node.getZoomedPosition().getX()
-							* displayScaleFactorX + canvasWidth / 2),
-					(float) (-size * (canvasHeight / canvasWidth)
-							+ node.getZoomedPosition().getY()
-							* displayScaleFactorY + canvasHeight / 2), 0);
-			upperRightCorner = new Vec3f(
-					(float) (size + node.getZoomedPosition().getX()
-							* displayScaleFactorX + canvasWidth / 2),
-					(float) (size * (canvasHeight / canvasWidth)
-							+ node.getZoomedPosition().getY()
-							* displayScaleFactorY + canvasHeight / 2), 0);
-			upperLeftCorner = new Vec3f(
-					(float) (-size + node.getZoomedPosition().getX()
-							* displayScaleFactorX + canvasWidth / 2),
-					(float) (size * (canvasHeight / canvasWidth)
-							+ node.getZoomedPosition().getY()
-							* displayScaleFactorY + canvasHeight / 2), 0);
-			scalingPivot = new Vec3f(1, 1, 0);
-		}
+		Vec3f scalingPivot = new Vec3f(1, 1, 0);
 
 		int iPickingID = pickingManager.getPickingID(iUniqueID,
 				EPickingType.DATAW_NODE, node.iComparableValue);
@@ -203,7 +186,7 @@ public class DataWindowsDisk extends PoincareDisk {
 					lowerLeftCorner, lowerRightCorner, upperRightCorner,
 					upperLeftCorner, scalingPivot, 1, 1, 1, alpha, 100);
 		} else {
-			
+
 			hyperbolic.drawRemoteView(gl, node, new Point2D.Double(-size
 					+ node.getZoomedPosition().getX() * displayScaleFactorX
 					+ canvasWidth / 2, -size * (canvasHeight / canvasWidth)
@@ -213,21 +196,73 @@ public class DataWindowsDisk extends PoincareDisk {
 		gl.glPopName();
 	}
 
+	public Point2D.Double projectPoint(Point2D.Double point, boolean direction) {
+
+		// if direction is true, the point will be projected, otherwise it will
+		// be unprojected
+
+		Point2D.Double coordinate = new Point2D.Double();
+		coordinate.setLocation(point);
+		double coordinateLength = coordinate.getX() * coordinate.getX()
+				+ coordinate.getY() * coordinate.getY();
+		double coordinateLength2;
+
+		coordinateLength = Math.sqrt(coordinateLength);
+		double projectionFactor = (2 * radiussquare)
+				/ (radiussquare + coordinateLength);
+		// if direction is true, the point will be projected, otherwise the
+		// point will be unprojected
+		if (direction == true) {
+			coordinate.setLocation(coordinate.getX() * projectionFactor,
+					coordinate.getY() * projectionFactor);
+		} else {
+			Point2D.Double testCoord = new Point2D.Double();
+			double error;
+			for (coordinateLength = 0; coordinateLength < 100; coordinateLength += 0.01) {
+
+				projectionFactor = (2 * radiussquare)
+						/ (radiussquare + coordinateLength);
+
+				coordinate.setLocation(point.getX() * projectionFactor, (point
+						.getY() * projectionFactor));
+
+				coordinateLength2 = coordinate.getX() * coordinate.getX()
+						+ coordinate.getY() * coordinate.getY();
+				coordinateLength2 = Math.sqrt(coordinateLength2);
+
+				projectionFactor = (2 * radiussquare)
+						/ (radiussquare + coordinateLength2);
+
+				testCoord.setLocation(coordinate.getX() * (projectionFactor),
+						(coordinate.getY() * (projectionFactor)));
+
+				error = distancePoints(testCoord, point);
+
+				if (error < 0.01) {
+
+					return coordinate;
+				}
+
+			}
+		}
+
+		return coordinate;
+	}
+
 	public void drawLine(PoincareNode node1, PoincareNode node2,
 			int numberOfDetails, int mode) {
 
 		if (numberOfDetails != 0) {
-			double length = this.distancePoints(node1.getPosition(), node2
-					.getPosition());
-			
-			Point2D.Double stepVector = new Point2D.Double();
-			Point2D.Double eV = new Point2D.Double();
-			// Point2D.Double actualPosition = new Point2D.Double();
 
-			ComplexNumber actualPositionComplex = new ComplexNumber();
-			ComplexNumber stepVectorComplex = new ComplexNumber();
-			actualPositionComplex.setValue(node1.getZoomedPosition().getX(),
-					node1.getZoomedPosition().getY());
+			// transfer the start and end point into real coordinates:
+			Point2D.Double startPoint = new Point2D.Double();
+			startPoint.setLocation(this.projectPoint(node1.getZoomedPosition(),
+					false));
+			Point2D.Double endPoint = new Point2D.Double();
+			endPoint
+					.setLocation(projectPoint(node2.getZoomedPosition(), false));
+			double length = this.distancePoints(startPoint, endPoint);
+
 			gl.glLineWidth((float) lineWidth);
 			gl.glBegin(GL.GL_LINE_STRIP);
 			gl.glColor3i(0, 0, 0);
@@ -236,31 +271,61 @@ public class DataWindowsDisk extends PoincareDisk {
 					.getZoomedPosition().getY()
 					* displayScaleFactorY + canvasHeight / 2, 0);
 
+			Point2D.Double eV = new Point2D.Double();
+			eV.setLocation(this.getEV(new Point2D.Double(endPoint.getX()
+					- startPoint.getX(), endPoint.getY() - startPoint.getY())));
+
+			Point2D.Double actPosition = new Point2D.Double();
+			actPosition.setLocation(startPoint);
+			Point2D.Double actProjectedPosition = new Point2D.Double();
+
 			for (int i = 0; i < numberOfDetails; i++) {
-				
-				eV.setLocation(this.getEV(new Point2D.Double(node2
-						.getZoomedPosition().getX()
-						- actualPositionComplex.getRealPart(), node2
-						.getZoomedPosition().getY()
-						- actualPositionComplex.getImaginaryPart())));
+				actPosition.setLocation(actPosition.getX() + eV.getX()
+						* (length / (double) numberOfDetails), actPosition
+						.getY()
+						+ eV.getY() * (length / (double) numberOfDetails));
+				actProjectedPosition = this.projectPoint(actPosition, true);
 
-				stepVector.setLocation(eV.getX() * length
-						/ (numberOfDetails), eV.getY() * length
-						/ (numberOfDetails));
-
-				stepVectorComplex.setValue(stepVector.getX(),stepVector.getY());
-				
-				actualPositionComplex = moebiusTransformation(
-						actualPositionComplex, stepVectorComplex);
-
-				//System.out.println("test"+stepVectorComplex.getRealPart());
-				
-				gl.glVertex3d(actualPositionComplex.getRealPart()
-						* displayScaleFactorX + (canvasWidth / 2),
-						actualPositionComplex.getImaginaryPart()
-								* displayScaleFactorY + canvasHeight / 2, 0);
-
+				gl.glLineWidth((float) lineWidth);
+				gl.glBegin(GL.GL_LINE_STRIP);
+				gl.glColor3i(0, 0, 0);
+				gl.glVertex3d(actProjectedPosition.getX() * displayScaleFactorX
+						+ (canvasWidth / 2), actProjectedPosition.getY()
+						* displayScaleFactorY + canvasHeight / 2, 0);
 			}
+
+			// double stepWidth=length/numberOfDetails;
+			//			
+			// while (length > 0.02) {
+			//
+			// eV.setLocation(this.getEV(new Point2D.Double(node2
+			// .getZoomedPosition().getX()
+			// - actualPositionComplex.getRealPart(), node2
+			// .getZoomedPosition().getY()
+			// - actualPositionComplex.getImaginaryPart())));
+			//
+			// stepVector.setLocation(eV.getX() * stepWidth,
+			// eV.getY() * stepWidth);
+			//
+			// stepVectorComplex
+			// .setValue(stepVector.getX(), stepVector.getY());
+			//
+			// actualPositionComplex = moebiusTransformation(
+			// actualPositionComplex, stepVectorComplex);
+			//
+			// // System.out.println("test"+stepVectorComplex.getRealPart());
+			// length = this.distancePoints(new Point2D.Double(
+			// actualPositionComplex.getRealPart(),
+			// actualPositionComplex.getImaginaryPart()), node2
+			// .getPosition());
+			//
+			// gl.glVertex3d(actualPositionComplex.getRealPart()
+			// * displayScaleFactorX + (canvasWidth / 2),
+			// actualPositionComplex.getImaginaryPart()
+			// * displayScaleFactorY + canvasHeight / 2, 0);
+			//
+			// }
+
 			gl.glVertex3d(node2.getZoomedPosition().getX()
 					* displayScaleFactorX + (canvasWidth / 2), node2
 					.getZoomedPosition().getY()
@@ -286,10 +351,12 @@ public class DataWindowsDisk extends PoincareDisk {
 	}
 
 	public void drawBackground() {
-
+		drawCircle(1 * this.displayScaleFactorX, 1 * this.displayScaleFactorY,
+				canvasWidth / 2, canvasHeight / 2);
 	}
 
-	public void drawCircle(double radius, double k, double h) {
+	public void drawCircle(double width, double height, double k, double h) {
+
 		// code from http://www.swiftless.com/tutorials/opengl/circle.html
 		// //20.2.2010
 		double circleX = 0;
@@ -301,12 +368,12 @@ public class DataWindowsDisk extends PoincareDisk {
 		for (double counter = 0; counter < 360; counter++) {
 			i = counter * Math.PI / 180;
 
-			circleX = radius * Math.cos(i);
-			circleY = radius * Math.sin(i);
+			circleX = width * Math.cos(i);
+			circleY = height * Math.sin(i);
 			gl.glVertex3d(circleX + k, circleY + h, 0);
 
-			circleX = radius * Math.cos(i + Math.PI / 180);
-			circleY = radius * Math.sin(i + Math.PI / 180);
+			circleX = width * Math.cos(i + Math.PI / 180);
+			circleY = height * Math.sin(i + Math.PI / 180);
 			gl.glVertex3d(circleX + k, circleY + h, 0);
 		}
 		gl.glEnd();
