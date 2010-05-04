@@ -495,15 +495,15 @@ public class PoincareDisk {
 		ArrayList<PoincareNode> children = tree.getChildren(parentNode);
 		int numberOfChildren = children.size();
 		double splitAngle = angle / (double) (numberOfChildren + 2);
-		double absoluteAngle=0;
+		double absoluteAngle = 0;
 		// if the node is root, the node are note competing each other
 		if (mode == 2) {
 			if (parentNode.iComparableValue == 1) {
-				
-				splitAngle = angle / (double) (numberOfChildren-1);
-				if(numberOfChildren==1)
+
+				splitAngle = angle / (double) (numberOfChildren - 1);
+				if (numberOfChildren == 1)
 					splitAngle = angle / 2;
-				
+
 				absoluteAngle = angleOffset - angle / 2;
 			}
 
@@ -768,30 +768,47 @@ public class PoincareDisk {
 
 	}
 
-	public void correctDiskRotation(PoincareNode currentNode) {
+	public double calculateCorrectDiskRotation(PoincareNode currentNode) {
+		if (currentNode != null) {
+			if (currentNode.getComparableValue() != 1) {
+				Point2D.Double currentPosition;
+				currentPosition = currentNode.getPosition();
+				// System.out.println("currentPos:" + currentPosition.getX() +
+				// " "
+				// + currentPosition.getY());
 
-		if (currentNode.getComparableValue() != 1) {
-			Point2D.Double currentPosition;
-			currentPosition = currentNode.getPosition();
-			System.out.println("currentPos:"+currentPosition.getX()+" "+currentPosition.getY());
-			
-			Point2D.Double parentPosition;
-			parentPosition = currentNode.getParent().getPosition();
-			System.out.println("ParentPos:"+parentPosition.getX()+" "+parentPosition.getY());
-			
-			
-			Point2D.Double relativePosition = new Point2D.Double();
-			relativePosition.setLocation(parentPosition.getX()
-					- currentPosition.getX(), parentPosition.getY()
-					- currentPosition.getY());
+				Point2D.Double parentPosition;
+				parentPosition = currentNode.getParent().getPosition();
+				// System.out.println("ParentPos:" + parentPosition.getX() + " "
+				// + parentPosition.getY());
 
-			Point2D.Double eV = this.getEV(relativePosition);
+				Point2D.Double relativePosition = new Point2D.Double();
+				relativePosition.setLocation(parentPosition.getX()
+						- currentPosition.getX(), parentPosition.getY()
+						- currentPosition.getY());
 
-			double angle = Math.atan2(eV.getY(), eV.getX());
+				Point2D.Double eV = this.getEV(relativePosition);
 
-			System.out.println(" angle:" + angle*180/Math.PI);
+				double angle = Math.atan2(eV.getY(), eV.getX());
 
-			this.rotateDisk(-angle+Math.PI);
+				// System.out.println(" angle:" + angle * 180 / Math.PI);
+
+				// this.rotateDisk(-angle+Math.PI);
+               
+				if(Math.abs(-angle + Math.PI)<Math.PI){
+					return -angle + Math.PI;
+					
+				}
+				else{
+					return -angle - Math.PI;
+				}
+				
+				
+				
+			}
+			// Todo: calculate Root
+
 		}
+		return 0;
 	}
 }

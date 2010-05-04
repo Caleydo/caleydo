@@ -56,8 +56,6 @@ public class GLHyperbolic extends AGLView {
 
 	private ArrayList<NodeSlerp> arSlerpActions;
 
-	
-
 	public DataWindowsDisk disk;
 
 	private PoincareNode slerpedNode;
@@ -72,9 +70,13 @@ public class GLHyperbolic extends AGLView {
 	private Tree<PoincareNode> tree;
 	public double diskZoomIntensity = 0;
 
-	
+	private ArrayList<simpleSlerp> simpleSlerpActions;
 
 	private GL glHandle;
+
+	private double currentAngleSlerpFactor;
+
+	private double previousSimpleSlerp;
 
 	/**
 	 * Constructor.
@@ -102,6 +104,7 @@ public class GLHyperbolic extends AGLView {
 
 		disk = new DataWindowsDisk(this);
 		arSlerpActions = new ArrayList<NodeSlerp>();
+		simpleSlerpActions = new ArrayList<simpleSlerp>();
 
 	}
 
@@ -214,6 +217,35 @@ public class GLHyperbolic extends AGLView {
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 		// if (!isRenderedRemote())
 		// contextMenu.render(gl, this);
+
+		if (glMouseListener.wasRightMouseButtonPressed()) {
+			//
+			// // if (testZoomViewEventSwitch == false) {
+			// directHyperbolicView.disk.rotateDisk(Math.PI/180);
+			
+
+			this.previousSimpleSlerp=0;
+			simpleSlerp actualSlerp=new simpleSlerp();
+			actualSlerp.endingCondition=disk.calculateCorrectDiskRotation(disk
+					.getCenteredNode());
+           actualSlerp.speed=10;			
+			simpleSlerpActions.add(actualSlerp);
+
+			// this.focusViewEvent(2, 0.75, true);
+			// testZoomViewEventSwitch = true;
+			// // }
+		}
+
+	}
+	
+	public void correctDiskAngle(){
+
+		this.previousSimpleSlerp=0;
+		simpleSlerp actualSlerp=new simpleSlerp();
+		actualSlerp.endingCondition=disk.calculateCorrectDiskRotation(disk
+				.getCenteredNode());
+       actualSlerp.speed=10;			
+		simpleSlerpActions.add(actualSlerp);
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
@@ -296,11 +328,11 @@ public class GLHyperbolic extends AGLView {
 
 			case CLICKED:
 
-//				arSlerpActions.add(new NodeSlerp(4, disk
-//						.getNodeByCompareableValue(iExternalID).getPosition(),
-//						new Point2D.Double(0, 0)));
-//
-//				slerpedNode = disk.getNodeByCompareableValue(iExternalID);
+				// arSlerpActions.add(new NodeSlerp(4, disk
+				// .getNodeByCompareableValue(iExternalID).getPosition(),
+				// new Point2D.Double(0, 0)));
+				//
+				// slerpedNode = disk.getNodeByCompareableValue(iExternalID);
 
 			}
 
@@ -424,6 +456,7 @@ public class GLHyperbolic extends AGLView {
 	}
 
 	public void doSlerpActions() {
+		// slerping the translation
 		if (arSlerpActions.isEmpty() == false) {
 
 			NodeSlerp singleSlerp = arSlerpActions.get(0);
@@ -436,25 +469,32 @@ public class GLHyperbolic extends AGLView {
 				disk.setCenteredNode(slerpedNode);
 				disk.centeredNodeSize = disk.findOptimalCenterNodeSize(disk
 						.getCenteredNode(), 10);
+				correctDiskAngle();
 				arSlerpActions.remove(0);
 			}
 		}
-		
-		
-		
-		// initialize all surrounding views (todo)
-		// PoincareNode tempNode;
-		// for (int i = 0; i >= 0; i++) {
-		// tempNode = disk.getNodeByCompareableValue(i);
-		// if (tempNode == null) {
-		// break;
-		// }
-		//
-		// testRemoteElement.setGLView(((ViewHyperbolicNode) tempNode)
-		// .getGlView());
-		//		
-		//
-		// }
+		// slerping the rotation
+
+		if (simpleSlerpActions.isEmpty() == false) {
+			simpleSlerp simpleSlerp = simpleSlerpActions.get(0);
+			if (simpleSlerp.doASlerp() == true) {
+				double relativeSimpleSlerpState = simpleSlerp.state
+						- previousSimpleSlerp;
+
+				disk.rotateDisk(simpleSlerp.state-this.previousSimpleSlerp);
+				
+			    this.previousSimpleSlerp=simpleSlerp.state;
+			    
+				this.previousSimpleSlerp = simpleSlerp.state;
+				System.out.println("simple rel State" + simpleSlerp.relativeState);
+				System.out.println("simple Slerp!!!" + simpleSlerp.state);
+			} else {
+				
+				disk.rotateDisk(simpleSlerp.state-this.previousSimpleSlerp);
+				simpleSlerpActions.clear();
+
+			}
+		}
 
 	}
 
@@ -490,14 +530,14 @@ public class GLHyperbolic extends AGLView {
 
 		for (int i = 0; i < 5; i++) {
 
-			node = new ViewHyperbolicNode(tree, "child_pathway", i+1,
+			node = new ViewHyperbolicNode(tree, "child_pathway", i + 1,
 					createPathwayView(gl));
 			tree.addChild(tree.getRoot(), node);
 
 			for (int j = 0; j < 5; j++) {
 
 				ViewHyperbolicNode childNode = new ViewHyperbolicNode(tree,
-						"child_pathway", i+j+2, createPathwayView(gl));
+						"child_pathway", i + j + 2, createPathwayView(gl));
 				tree.addChild(node, childNode);
 			}
 		}
@@ -657,8 +697,7 @@ public class GLHyperbolic extends AGLView {
 				slerpedNode = selectedNode;
 				// disk.setCenteredNode(selectedNode);
 
-			}
-			else{
+			} else {
 				disk.setCenteredNode(selectedNode);
 			}
 		}
@@ -669,7 +708,5 @@ public class GLHyperbolic extends AGLView {
 		// canvasWidth=(float) dimensions.getX();
 		// canvasHeight=(float) dimensions.getY();
 	}
-
-	
 
 }

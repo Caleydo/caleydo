@@ -327,8 +327,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		if (glMouseListener.wasRightMouseButtonPressed()) {
 //
 //			// if (testZoomViewEventSwitch == false) {
-//directHyperbolicView.disk.rotateDisk(Math.PI/180);
-directHyperbolicView.disk.correctDiskRotation(directHyperbolicView.disk.getCenteredNode());
+
 //			this.focusViewEvent(2, 0.75, true);
 //			testZoomViewEventSwitch = true;
 //			// }
@@ -359,7 +358,7 @@ directHyperbolicView.disk.correctDiskRotation(directHyperbolicView.disk.getCente
 					Point2D.Double mousePosition = new Point2D.Double();
 					mousePosition.setLocation(mousePoint.getX(), mousePoint
 							.getY());
-
+					
 					directHyperbolicView.setEyeTrackerAction(mousePosition,
 							new Point2D.Double((double) remoteElementHyperbolic
 									.getTransform().getTranslation().x(),
@@ -370,6 +369,7 @@ directHyperbolicView.disk.correctDiskRotation(directHyperbolicView.disk.getCente
 											.getTransform().getScale().x(),
 									(double) remoteElementHyperbolic
 											.getTransform().getScale().y()));
+					
 				}
 			}
 		}
@@ -716,6 +716,7 @@ directHyperbolicView.disk.correctDiskRotation(directHyperbolicView.disk.getCente
 			} else {
 				moveLayoutPoint(viewSlerpTargetPoint, viewSlerpStartPoint,
 						singleSlerp.state);
+				
 				simpleSlerpActions.clear();
 
 			}

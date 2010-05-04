@@ -386,9 +386,10 @@ public class DataWindowsDisk extends PoincareDisk {
 				/ displayScaleFactorX, (eyePosition.getY() - canvasHeight / 2)
 				/ displayScaleFactorY);
 
-		PoincareNode returnNode;
+		PoincareNode returnNode=null;
 
-		if (this.distanceFromOrigin(offsetFromMiddle) < eyeTrackerBorder) {
+		//comment in for eyetracker focus
+		//if (this.distanceFromOrigin(offsetFromMiddle) < eyeTrackerBorder) {
 			System.out.println("inside of direct picking");
 			returnNode = findNodeByCoordinate(offsetFromMiddle, 0);
 
@@ -397,31 +398,32 @@ public class DataWindowsDisk extends PoincareDisk {
 						new Point2D.Double(0, 0)));
 			}
 
-		} else {
-			System.out.println("outside of direct picking");
-			returnNode = findNodeByCoordinate(offsetFromMiddle,
-					eyeTrackerPrecision);
-
-			if (returnNode != null) {
-
-				System.out.println("slerp target:"
-						+ returnNode.getPosition().getX() * eyeTrackerBorder
-						+ "|" + returnNode.getPosition().getY()
-						* eyeTrackerBorder);
-
-				Point2D.Double eV = getEV(returnNode.getPosition());
-				double overlaping = 0.1;
-
-				arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
-						new Point2D.Double(eV.getX()
-								* (eyeTrackerBorder - overlaping), eV.getY()
-								* (eyeTrackerBorder - overlaping))));
-
-				// arSlerpActions.add(new nodeSlerp(4, returnNode.getPosition(),
-				// new Point2D.Double(0.5, 0.5)));
-			}
-
-		}
+//		} else {
+//			//focus far nodes with the eyetracker
+//			System.out.println("outside of direct picking");
+//			returnNode = findNodeByCoordinate(offsetFromMiddle,
+//					eyeTrackerPrecision);
+//
+//			if (returnNode != null) {
+//
+//				System.out.println("slerp target:"
+//						+ returnNode.getPosition().getX() * eyeTrackerBorder
+//						+ "|" + returnNode.getPosition().getY()
+//						* eyeTrackerBorder);
+//
+//				Point2D.Double eV = getEV(returnNode.getPosition());
+//				double overlaping = 0.1;
+//
+//				arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
+//						new Point2D.Double(eV.getX()
+//								* (eyeTrackerBorder - overlaping), eV.getY()
+//								* (eyeTrackerBorder - overlaping))));
+//
+//				// arSlerpActions.add(new nodeSlerp(4, returnNode.getPosition(),
+//				// new Point2D.Double(0.5, 0.5)));
+//			}
+//
+//		}
 
 		return returnNode;
 	}
