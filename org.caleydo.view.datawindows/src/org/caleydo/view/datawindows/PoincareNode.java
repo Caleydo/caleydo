@@ -10,11 +10,14 @@ public class PoincareNode extends AHierarchyElement<PoincareNode> {
 	private double distanceFromOrigin;
 	private Point2D.Double position;
 	private Point2D.Double zoomedPosition;
+	private double childrenAngleOffset;
 	private PoincareNode openLink;
 	private boolean linked = false;
 	private int levelOfDetail = 0;
+	
 	public boolean markedToRemove = false;
 	public boolean nonExistent = false;
+	
 	
 	String nodeName;
 	int iComparableValue;
@@ -78,6 +81,14 @@ public class PoincareNode extends AHierarchyElement<PoincareNode> {
 
 	public Point2D.Double getZoomedPosition() {
 		return zoomedPosition;
+	}
+
+	public void setChildrenAngleOffset(double childrenAngleOffset) {
+		this.childrenAngleOffset = childrenAngleOffset;
+	}
+
+	public double getChildrenAngleOffset() {
+		return childrenAngleOffset;
 	}
 
 }

@@ -285,8 +285,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		remoteElementParCoords.setTransform(transform3);
 
 		renderRemoteLevelElement(gl, remoteElementHyperbolic);
-		renderRemoteLevelElement(gl, remoteElementHeatMap);
-		 renderRemoteLevelElement(gl, remoteElementParCoords);
+		//renderRemoteLevelElement(gl, remoteElementHeatMap);
+		// renderRemoteLevelElement(gl, remoteElementParCoords);
 
 		//
 		// }
@@ -324,14 +324,15 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		// mouseWheelListener.mouseWheelMoved();
 		// testing the viewFocus
-//		if (glMouseListener.wasRightMouseButtonPressed()) {
+		if (glMouseListener.wasRightMouseButtonPressed()) {
 //
 //			// if (testZoomViewEventSwitch == false) {
-//
+//directHyperbolicView.disk.rotateDisk(Math.PI/180);
+directHyperbolicView.disk.correctDiskRotation(directHyperbolicView.disk.getCenteredNode());
 //			this.focusViewEvent(2, 0.75, true);
 //			testZoomViewEventSwitch = true;
 //			// }
-//		}
+		}
 ////
 //		if (glMouseListener.wasLeftMouseButtonPressed()) {
 //			System.out.println("triggered");

@@ -15,7 +15,7 @@ public class PoincareDisk {
 	protected double lineWidth;
 	protected Point2D.Double absolutePosition;
 	private PoincareNode centeredNode;
-	public double centeredNodeSize=1;
+	public double centeredNodeSize = 1;
 	private double layoutLenseFactor = 1.45;
 
 	public PoincareDisk() {
@@ -31,132 +31,133 @@ public class PoincareDisk {
 	}
 
 	public void loadTree(Tree<PoincareNode> tree) {
-		
+
 		this.tree = tree;
 		centeredNode = tree.getRoot();
-		
-		// creating a tree for testing
-//		tree = new Tree<PoincareNode>();
-//
-//		ViewHyperbolicNode node = new ViewHyperbolicNode(tree, nodeName, iComparableValue, glView);
-//		
-//		PoincareNode node = new PoincareNode(tree, "Root", 1);
-//		centeredNode = node;
-//
-//		tree.setRootNode(node);
-//		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
-//		tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
-//		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
-//		tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
-//		tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
 
-//		int iCount = 3344;
-//		for (PoincareNode tempNode : tree.getChildren(node)) {
-//
-//			PoincareNode tempNode22 = new PoincareNode(tree, "Child6 l1",
-//					iCount--);
-//			tree.addChild(tempNode, tempNode22);
-//
-//			tree.addChild(tempNode22, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			tree.addChild(tempNode22, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//
-//			PoincareNode tempNode433 = new PoincareNode(tree, "Child6 l1",
-//					iCount--);
-//			tree.addChild(tempNode22, tempNode433);
-//			tree.addChild(tempNode433, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			tree.addChild(tempNode433, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//
-//			PoincareNode tempNode33 = new PoincareNode(tree, "Child6 l1",
-//					iCount--);
-//			tree.addChild(tempNode22, tempNode33);
-//			tree.addChild(tempNode33, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			tree.addChild(tempNode33, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//
-//			tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-//					iCount--));
-//			tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
-//					iCount--));
-//			tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-//					iCount--));
-//			tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
-//					iCount--));
-//			tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-//					iCount--));
-//			tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
-//					iCount--));
-//			tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-//					iCount--));
-//
-//			PoincareNode tempNode2 = new PoincareNode(tree, "Child6 l1",
-//					iCount--);
-//			tree.addChild(tempNode, tempNode2);
-//
-//			tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			PoincareNode tempNode3 = new PoincareNode(tree, "Child6 l1",
-//					iCount--);
-//			tree.addChild(tempNode2, tempNode3);
-//			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			PoincareNode tempNode34 = new PoincareNode(tree, "Child6 l1",
-//					iCount--);
-//			tree.addChild(tempNode3, tempNode34);
-//			tree.addChild(tempNode34, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			tree.addChild(tempNode34, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			PoincareNode tempNode344 = new PoincareNode(tree, "Child6 l1",
-//					iCount--);
-//			tree.addChild(tempNode34, tempNode344);
-//			tree.addChild(tempNode344, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			tree.addChild(tempNode344, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			PoincareNode tempNode3444 = new PoincareNode(tree, "Child6 l1",
-//					iCount--);
-//			tree.addChild(tempNode344, tempNode3444);
-//			tree.addChild(tempNode3444, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			tree.addChild(tempNode3444, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			PoincareNode tempNode34444 = new PoincareNode(tree, "Child6 l1",
-//					iCount--);
-//			tree.addChild(tempNode3444, tempNode34444);
-//			tree.addChild(tempNode34444, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			tree.addChild(tempNode34444, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			PoincareNode tempNode344444 = new PoincareNode(tree, "Child6 l1",
-//					iCount--);
-//			tree.addChild(tempNode34444, tempNode344444);
-//			tree.addChild(tempNode344444, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//			tree.addChild(tempNode344444, new PoincareNode(tree, "Child7 l1",
-//					iCount--));
-//		}
+		// creating a tree for testing
+		// tree = new Tree<PoincareNode>();
+		//
+		// ViewHyperbolicNode node = new ViewHyperbolicNode(tree, nodeName,
+		// iComparableValue, glView);
+		//		
+		// PoincareNode node = new PoincareNode(tree, "Root", 1);
+		// centeredNode = node;
+		//
+		// tree.setRootNode(node);
+		// tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
+		// tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
+		// tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
+		// tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
+		// tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
+
+		// int iCount = 3344;
+		// for (PoincareNode tempNode : tree.getChildren(node)) {
+		//
+		// PoincareNode tempNode22 = new PoincareNode(tree, "Child6 l1",
+		// iCount--);
+		// tree.addChild(tempNode, tempNode22);
+		//
+		// tree.addChild(tempNode22, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// tree.addChild(tempNode22, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		//
+		// PoincareNode tempNode433 = new PoincareNode(tree, "Child6 l1",
+		// iCount--);
+		// tree.addChild(tempNode22, tempNode433);
+		// tree.addChild(tempNode433, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// tree.addChild(tempNode433, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		//
+		// PoincareNode tempNode33 = new PoincareNode(tree, "Child6 l1",
+		// iCount--);
+		// tree.addChild(tempNode22, tempNode33);
+		// tree.addChild(tempNode33, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// tree.addChild(tempNode33, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		//
+		// tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
+		// iCount--));
+		// tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
+		// iCount--));
+		// tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
+		// iCount--));
+		// tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
+		// iCount--));
+		// tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
+		// iCount--));
+		// tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
+		// iCount--));
+		// tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
+		// iCount--));
+		//
+		// PoincareNode tempNode2 = new PoincareNode(tree, "Child6 l1",
+		// iCount--);
+		// tree.addChild(tempNode, tempNode2);
+		//
+		// tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// PoincareNode tempNode3 = new PoincareNode(tree, "Child6 l1",
+		// iCount--);
+		// tree.addChild(tempNode2, tempNode3);
+		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// PoincareNode tempNode34 = new PoincareNode(tree, "Child6 l1",
+		// iCount--);
+		// tree.addChild(tempNode3, tempNode34);
+		// tree.addChild(tempNode34, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// tree.addChild(tempNode34, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// PoincareNode tempNode344 = new PoincareNode(tree, "Child6 l1",
+		// iCount--);
+		// tree.addChild(tempNode34, tempNode344);
+		// tree.addChild(tempNode344, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// tree.addChild(tempNode344, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// PoincareNode tempNode3444 = new PoincareNode(tree, "Child6 l1",
+		// iCount--);
+		// tree.addChild(tempNode344, tempNode3444);
+		// tree.addChild(tempNode3444, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// tree.addChild(tempNode3444, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// PoincareNode tempNode34444 = new PoincareNode(tree, "Child6 l1",
+		// iCount--);
+		// tree.addChild(tempNode3444, tempNode34444);
+		// tree.addChild(tempNode34444, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// tree.addChild(tempNode34444, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// PoincareNode tempNode344444 = new PoincareNode(tree, "Child6 l1",
+		// iCount--);
+		// tree.addChild(tempNode34444, tempNode344444);
+		// tree.addChild(tempNode344444, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// tree.addChild(tempNode344444, new PoincareNode(tree, "Child7 l1",
+		// iCount--));
+		// }
 
 		// layoutTree();
-		moebiusLayoutTree();
+		moebiusLayoutTree(2);
 		// scaleTree(treeScaleFactor, 1);
 		// projectTree();
 
@@ -179,7 +180,6 @@ public class PoincareDisk {
 
 		PoincareNode root = tree.getRoot();
 
-
 		translateNodeMoebius(root, translationVector);
 	}
 
@@ -195,7 +195,7 @@ public class PoincareDisk {
 				tempVector.getImaginaryPart());
 		node.setPosition(newPoint);
 
-	    node.setDistanceFromOrigin(this.distanceFromOrigin(newPoint));
+		node.setDistanceFromOrigin(this.distanceFromOrigin(newPoint));
 
 		if (tree.getChildren(node) == null) {
 			return false;
@@ -469,18 +469,24 @@ public class PoincareDisk {
 		return num.divide(num2);
 	}
 
-	public void moebiusLayoutTree() {
+	public void moebiusLayoutTree(int mode) {
+		// mode 1 = symmetric layout without angle correction marker
+		// mode 2 = root connection is on the left side
 
 		PoincareNode root = tree.getRoot();
 		root.setPosition(new Point2D.Double(0, 0));
 		root.setDistanceFromOrigin(0);
 		treeNodeCounter = 1;
 		root.iComparableValue = treeNodeCounter;
-		moebiusNodeLayout(root, Math.PI/2,  Math.PI);
+		root.setChildrenAngleOffset(0);
+		if (mode == 2)
+			moebiusNodeLayout(root, Math.PI / 2, Math.PI, mode);
+		if (mode == 1)
+			moebiusNodeLayout(root, 0, 0, mode);
 	}
 
 	public void moebiusNodeLayout(PoincareNode parentNode, double angleOffset,
-			double angle) {
+			double angle, int mode) {
 
 		if (tree.getChildren(parentNode) == null) {
 			return;
@@ -489,15 +495,32 @@ public class PoincareDisk {
 		ArrayList<PoincareNode> children = tree.getChildren(parentNode);
 		int numberOfChildren = children.size();
 		double splitAngle = angle / (double) (numberOfChildren + 2);
-
+		double absoluteAngle=0;
 		// if the node is root, the node are note competing each other
-		if (parentNode.iComparableValue == 1) {
-			splitAngle = angle / (double) (numberOfChildren);
+		if (mode == 2) {
+			if (parentNode.iComparableValue == 1) {
+				
+				splitAngle = angle / (double) (numberOfChildren-1);
+				if(numberOfChildren==1)
+					splitAngle = angle / 2;
+				
+				absoluteAngle = angleOffset - angle / 2;
+			}
+
+		} else {
+			if (parentNode.iComparableValue == 1) {
+				splitAngle = angle / (double) (numberOfChildren);
+				absoluteAngle = angleOffset - angle / 2;
+				absoluteAngle = absoluteAngle + splitAngle / 2;
+			}
 		}
 
-		double absoluteAngle = angleOffset - angle / 2;
-		for (int i = 0; i < numberOfChildren; i++) {
+		if (parentNode.iComparableValue != 1) {
+			absoluteAngle = angleOffset - angle / 2;
 			absoluteAngle = absoluteAngle + splitAngle;
+		}
+
+		for (int i = 0; i < numberOfChildren; i++) {
 
 			Point2D.Double newPoint = new Point2D.Double(parentNode
 					.getPosition().getX(), parentNode.getPosition().getY());
@@ -514,7 +537,7 @@ public class PoincareDisk {
 			// }
 			//			
 
-			// complex numbers for the moebius transformation
+			// complex numbers for the Moebius transformation
 
 			ComplexNumber relativeTargetPoint = new ComplexNumber(relativePoint
 					.getX()
@@ -528,18 +551,6 @@ public class PoincareDisk {
 
 			targetPoint.setValue(moebiusTransformation(startingPoint,
 					relativeTargetPoint));
-			// alternative version:
-
-			// targetPoint=targetPoint.subtract(startingPoint);
-			//			
-			// System.out.println("before multiply"+targetPoint.getImaginaryPart()+"|"+targetPoint.getRealPart());
-			//			
-			// targetPoint=targetPoint.multiply(new ComplexNumber(0.4,0));
-			//			
-			// System.out.println("after multiply"+targetPoint.getImaginaryPart()+"|"+targetPoint.getRealPart());
-			//
-			// targetPoint=targetPoint.add(startingPoint);
-			//			
 
 			// translation of the complex number position into a coordinate
 			newPoint = new Point2D.Double(targetPoint.getRealPart(),
@@ -549,10 +560,21 @@ public class PoincareDisk {
 			children.get(i).setDistanceFromOrigin(
 					this.distanceFromOrigin(newPoint));
 
+			// // calculating the real angle of the node
+			// Point2D.Double oldPosition;// =new Point2D.Double();
+			// oldPosition = children.get(i).getPosition();
+			//
+			// Point2D.Double oldPositionEV = this.getEV(oldPosition);
+			// children.get(i).setChildrenAngleOffset(
+			// Math.atan2(oldPositionEV.getY(), oldPositionEV.getX()));
+			//
+			// parentNode.setChildrenAngleOffset(angle);
+
 			treeNodeCounter++;
 			children.get(i).iComparableValue = treeNodeCounter;
 			// recursion step:
-			moebiusNodeLayout(children.get(i), absoluteAngle, splitAngle);
+			moebiusNodeLayout(children.get(i), absoluteAngle, splitAngle, mode);
+			absoluteAngle = absoluteAngle + splitAngle;
 		}
 		return;
 
@@ -689,24 +711,87 @@ public class PoincareDisk {
 		// }
 
 		for (int i = 1;; i++) {
-
 			if (this.getNodeByCompareableValue(i) == null) {
 				break;
 			}
-			
 			if (this.distanceFromOrigin(this.getNodeByCompareableValue(i)
 					.getZoomedPosition()) < currentDistance) {
-				if (node!=this.getNodeByCompareableValue(i)){
-				currentDistance = distanceFromOrigin(this
-						.getNodeByCompareableValue(i).getZoomedPosition());
+				if (node != this.getNodeByCompareableValue(i)) {
+					currentDistance = distanceFromOrigin(this
+							.getNodeByCompareableValue(i).getZoomedPosition());
 				}
 			}
-
 		}
-
-		 //System.out.println("dist: "+ (currentDistance / 100) * (100 - intend));
 
 		return (currentDistance / 100) * (100 - intend) * 1.5;
 
+	}
+
+	public void rotateDisk(double angle) {
+
+		PoincareNode root = tree.getRoot();
+
+		rotateNode(root, angle);
+	}
+
+	public void rotateNode(PoincareNode parentNode, double angle) {
+
+		Point2D.Double oldPosition;// =new Point2D.Double();
+		oldPosition = parentNode.getPosition();
+		double length = this.distanceFromOrigin(oldPosition);
+		double oldAngle;
+		Point2D.Double oldPositionEV = this.getEV(oldPosition);
+		oldAngle = Math.atan2(oldPositionEV.getY(), oldPositionEV.getX());
+		double newAngle = oldAngle + angle;
+		// System.out.println("angle:"+angle+" NewAngle:"+newAngle);
+
+		Point2D.Double newPosition = new Point2D.Double();
+		newPosition.setLocation(length * Math.cos(newAngle), length
+				* Math.sin(newAngle));
+
+		// System.out.println("newPosition:"+newPosition.getX()+" "+newPosition.getX());
+
+		parentNode.setPosition(newPosition);
+
+		if (tree.getChildren(parentNode) == null) {
+			return;
+
+		}
+
+		ArrayList<PoincareNode> children = tree.getChildren(parentNode);
+		int numberOfChildren = children.size();
+
+		for (int i = 0; i < numberOfChildren; i++) {
+
+			rotateNode(children.get(i), angle);
+		}
+
+	}
+
+	public void correctDiskRotation(PoincareNode currentNode) {
+
+		if (currentNode.getComparableValue() != 1) {
+			Point2D.Double currentPosition;
+			currentPosition = currentNode.getPosition();
+			System.out.println("currentPos:"+currentPosition.getX()+" "+currentPosition.getY());
+			
+			Point2D.Double parentPosition;
+			parentPosition = currentNode.getParent().getPosition();
+			System.out.println("ParentPos:"+parentPosition.getX()+" "+parentPosition.getY());
+			
+			
+			Point2D.Double relativePosition = new Point2D.Double();
+			relativePosition.setLocation(parentPosition.getX()
+					- currentPosition.getX(), parentPosition.getY()
+					- currentPosition.getY());
+
+			Point2D.Double eV = this.getEV(relativePosition);
+
+			double angle = Math.atan2(eV.getY(), eV.getX());
+
+			System.out.println(" angle:" + angle*180/Math.PI);
+
+			this.rotateDisk(-angle+Math.PI);
+		}
 	}
 }

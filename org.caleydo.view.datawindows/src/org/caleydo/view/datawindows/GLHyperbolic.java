@@ -658,6 +658,9 @@ public class GLHyperbolic extends AGLView {
 				// disk.setCenteredNode(selectedNode);
 
 			}
+			else{
+				disk.setCenteredNode(selectedNode);
+			}
 		}
 
 	}
