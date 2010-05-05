@@ -35,6 +35,7 @@ public abstract class GraphDrawingUtils
 
 	protected final static char HEATMAP = 1;
 	protected final static char PARCOORDS = 2;
+	protected final static char PATHWAY = 3;
 	protected Vec3f vecCenter = new Vec3f();
 	
 	protected RemoteLevel focusLevel;

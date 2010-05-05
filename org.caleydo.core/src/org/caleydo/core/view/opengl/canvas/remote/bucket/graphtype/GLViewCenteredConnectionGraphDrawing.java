@@ -155,10 +155,7 @@ public class GLViewCenteredConnectionGraphDrawing
 					Vec3f centerPoint = calculateCenter(hashViewToCenterPoint.values());
 					double currentPath = Double.MAX_VALUE;
 					if(heatMapID == activeViewID)
-					//TODO: Choose if global minimum or local minimum
 						currentPath = calculateCurrentPathLengthDynamicPointCentered(hashViewToCenterPoint, heatMapList.get(0));
-					/*Vec3f temp = centerPoint.minus(arrayList.get(0));
-					double currentPath = temp.length();*/
 					else{
 						Vec3f centerActiveView = hashViewToCenterPoint.get(activeViewID);
 						Vec3f temp = centerActiveView.minus(heatMapList.get(0));
@@ -183,10 +180,7 @@ public class GLViewCenteredConnectionGraphDrawing
 
 				double currentPath = Double.MAX_VALUE;
 				if(parCoordID == activeViewID)
-				//TODO: Choose if global minimum or local minimum
 					currentPath = calculateCurrentPathLengthDynamicPointCentered(hashViewToCenterPoint, parCoordsList.get(0));
-				/*Vec3f temp = centerPoint.minus(arrayList.get(0));
-				double currentPath = temp.length();*/
 				else{
 					Vec3f centerActiveView = hashViewToCenterPoint.get(activeViewID);
 					Vec3f temp = centerActiveView.minus(parCoordsList.get(0));
@@ -254,10 +248,7 @@ public class GLViewCenteredConnectionGraphDrawing
 					
 						double currentPath = Double.MAX_VALUE;
 						if(heatMapID == activeViewID)
-						//TODO: Choose if global minimum or local minimum
 							currentPath = calculateCurrentPathLengthDynamicPointCentered(hashViewToCenterPoint, heatMapCenterPoint);
-						/*Vec3f temp = centerPoint.minus(arrayList.get(0));
-						double currentPath = temp.length();*/
 						else if(parCoordID == activeViewID){
 							currentPath = calculateCurrentPathLengthDynamicPointCentered(hashViewToCenterPoint, parCoordCenterPoint);
 						}
@@ -281,10 +272,7 @@ public class GLViewCenteredConnectionGraphDrawing
 				
 					double currentPath = Double.MAX_VALUE;
 					if(heatMapID == activeViewID)
-					//TODO: Choose if global minimum or local minimum
 						currentPath = calculateCurrentPathLengthDynamicPointCentered(hashViewToCenterPoint, heatMapCenterPoint);
-					/*Vec3f temp = centerPoint.minus(arrayList.get(0));
-					double currentPath = temp.length();*/
 					else{
 						Vec3f centerActiveView = hashViewToCenterPoint.get(activeViewID);
 						Vec3f temp = centerActiveView.minus(heatMapCenterPoint);
@@ -310,10 +298,7 @@ public class GLViewCenteredConnectionGraphDrawing
 			
 				double currentPath = Double.MAX_VALUE;
 				if(parCoordID == activeViewID)
-				//TODO: Choose if global minimum or local minimum
 					currentPath = calculateCurrentPathLengthDynamicPointCentered(hashViewToCenterPoint, parCoordCenterPoint);
-				/*Vec3f temp = centerPoint.minus(arrayList.get(0));
-				double currentPath = temp.length();*/
 				else{
 					Vec3f centerActiveView = hashViewToCenterPoint.get(activeViewID);
 					Vec3f temp = centerActiveView.minus(parCoordCenterPoint);

@@ -146,10 +146,7 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 						hashViewToCenterPoint.put(parCoordID, parCoordCenterPoint);
 						Vec3f centerPoint = calculateCenter(hashViewToCenterPoint.values());
 					
-						//TODO: Choose if global minimum or local minimum
 						double currentPath = calculateCurrentPathLength(hashViewToCenterPoint, centerPoint);
-						/*Vec3f temp = centerPoint.minus(arrayList.get(0));
-						double currentPath = temp.length();*/
 					
 						if (currentPath < minPath){
 							minPath = currentPath;
@@ -163,10 +160,7 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 					hashViewToCenterPoint.put(heatMapID, heatMapCenterPoint);
 					Vec3f centerPoint = calculateCenter(hashViewToCenterPoint.values());
 				
-					//TODO: Choose if global minimum or local minimum
 					double currentPath = calculateCurrentPathLength(hashViewToCenterPoint, centerPoint);
-					/*Vec3f temp = centerPoint.minus(arrayList.get(0));
-					double currentPath = temp.length();*/
 				
 					if (currentPath < minPath){
 						minPath = currentPath;
@@ -186,10 +180,7 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 				hashViewToCenterPoint.put(parCoordID, parCoordCenterPoint);
 				Vec3f centerPoint = calculateCenter(hashViewToCenterPoint.values());
 			
-				//TODO: Choose if global minimum or local minimum
 				double currentPath = calculateCurrentPathLength(hashViewToCenterPoint, centerPoint);
-				/*Vec3f temp = centerPoint.minus(arrayList.get(0));
-				double currentPath = temp.length();*/
 			
 				if (currentPath < minPath){
 					minPath = currentPath;
@@ -230,10 +221,7 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 						hashViewToCenterPoint.put(parCoordID, parCoordsList.get(0));
 						Vec3f centerPoint = calculateCenter(hashViewToCenterPoint.values());
 					
-						//TODO: Choose if global minimum or local minimum
 						double currentPath = calculateCurrentPathLength(hashViewToCenterPoint, centerPoint);
-						/*Vec3f temp = centerPoint.minus(arrayList.get(0));
-						double currentPath = temp.length();*/
 					
 						if (currentPath < minPath){
 							minPath = currentPath;
@@ -247,10 +235,7 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 					hashViewToCenterPoint.put(heatMapID, heatMapList.get(0));
 					Vec3f centerPoint = calculateCenter(hashViewToCenterPoint.values());
 				
-					//TODO: Choose if global minimum or local minimum
 					double currentPath = calculateCurrentPathLength(hashViewToCenterPoint, centerPoint);
-					/*Vec3f temp = centerPoint.minus(arrayList.get(0));
-					double currentPath = temp.length();*/
 				
 					if (currentPath < minPath){
 						minPath = currentPath;
@@ -270,10 +255,7 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 				hashViewToCenterPoint.put(parCoordID, parCoordsList.get(0));
 				Vec3f centerPoint = calculateCenter(hashViewToCenterPoint.values());
 			
-				//TODO: Choose if global minimum or local minimum
 				double currentPath = calculateCurrentPathLength(hashViewToCenterPoint, centerPoint);
-				/*Vec3f temp = centerPoint.minus(arrayList.get(0));
-				double currentPath = temp.length();*/
 			
 				if (currentPath < minPath){
 					minPath = currentPath;
