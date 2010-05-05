@@ -497,25 +497,29 @@ public class PoincareDisk {
 		double splitAngle = angle / (double) (numberOfChildren + 2);
 		double absoluteAngle = 0;
 		// if the node is root, the node are note competing each other
-		if (mode == 2) {
-			if (parentNode.iComparableValue == 1) {
 
-				splitAngle = angle / (double) (numberOfChildren - 1);
-				if (numberOfChildren == 1)
-					splitAngle = angle / 2;
+		// if (mode == 2) {
+		if (parentNode.iComparableValue == 1) {
 
-				absoluteAngle = angleOffset - angle / 2;
-			}
+			splitAngle = angle / (double) (numberOfChildren);
+			if (numberOfChildren == 1)
+				splitAngle = angle / 2;
 
-		} else {
-			if (parentNode.iComparableValue == 1) {
-				splitAngle = angle / (double) (numberOfChildren);
-				absoluteAngle = angleOffset - angle / 2;
-				absoluteAngle = absoluteAngle + splitAngle / 2;
-			}
+			absoluteAngle = angleOffset - angle / 2;
+			absoluteAngle = absoluteAngle + splitAngle / 2;
 		}
 
+		// }
+		// else {
+		// if (parentNode.iComparableValue == 1) {
+		// splitAngle = angle / (double) (numberOfChildren);
+		// absoluteAngle = angleOffset - angle / 2;
+		// absoluteAngle = absoluteAngle + splitAngle / 2;
+		// }
+		// }
+
 		if (parentNode.iComparableValue != 1) {
+
 			absoluteAngle = angleOffset - angle / 2;
 			absoluteAngle = absoluteAngle + splitAngle;
 		}
@@ -769,16 +773,35 @@ public class PoincareDisk {
 	}
 
 	public double calculateCorrectDiskRotation(PoincareNode currentNode) {
+
 		if (currentNode != null) {
 			if (currentNode.getComparableValue() != 1) {
-				Point2D.Double currentPosition;
-				currentPosition = currentNode.getPosition();
-				// System.out.println("currentPos:" + currentPosition.getX() +
-				// " "
-				// + currentPosition.getY());
-
+				Point2D.Double currentPosition=new Point2D.Double();
+				currentPosition.setLocation(currentNode.getPosition());
 				Point2D.Double parentPosition;
 				parentPosition = currentNode.getParent().getPosition();
+
+//				if ((currentPosition.getX() != 0)
+//						&& (currentPosition.getY() != 0)) {
+//					ComplexNumber complexPosition = new ComplexNumber();
+//					ComplexNumber direction = new ComplexNumber();
+//					complexPosition.setValue(parentPosition.getX(),
+//							parentPosition.getY());
+//					direction.setValue(currentPosition.getX(),
+//							currentPosition.getY());
+//					System.out.println("old Position:" + parentPosition.getX()
+//							+ "|" + parentPosition.getY());
+//					complexPosition = this.moebiusTransformation(
+//							complexPosition, direction);
+//
+//					System.out.println("new Position:"
+//							+ complexPosition.getRealPart() + "|"
+//							+ complexPosition.getImaginaryPart());
+//
+//					currentPosition.setLocation(complexPosition.getRealPart(),
+//							complexPosition.getRealPart());
+//				}
+
 				// System.out.println("ParentPos:" + parentPosition.getX() + " "
 				// + parentPosition.getY());
 
@@ -791,23 +814,22 @@ public class PoincareDisk {
 
 				double angle = Math.atan2(eV.getY(), eV.getX());
 
-				// System.out.println(" angle:" + angle * 180 / Math.PI);
+				System.out.println(" angle:" + angle * 180 / Math.PI);
 
 				// this.rotateDisk(-angle+Math.PI);
-               
-				if(Math.abs(-angle + Math.PI)<Math.PI){
+
+				if (Math.abs(-angle + Math.PI) < Math.PI) {
 					return -angle + Math.PI;
-					
-				}
-				else{
+
+				} else {
 					return -angle - Math.PI;
 				}
-				
-				
-				
+
 			}
 			// Todo: calculate Root
-
+			System.out.println("root");
+		} else {
+			System.out.println("null");
 		}
 		return 0;
 	}
