@@ -35,6 +35,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 
 import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
+import org.caleydo.view.heatmap.hierarchical.SerializedHierarchicalHeatMapView;
 import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
@@ -53,10 +54,10 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	private double mouseCoordX = 0;
 	private double mouseCoordY = 0;
 
-	private double viewport[] = new double[16];
+//	private double viewport[] = new double[16];
 
-	private float canvasWidth;
-	private float canvasHeight;
+//	private float canvasWidth;
+//	private float canvasHeight;
 
 	private TrackDataProvider tracker;
 	private float[] receivedEyeData;
@@ -181,16 +182,16 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	public void displayLocal(GL gl) {
 		processEvents();
 
-		gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, viewport, 0);
+//		gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, viewport, 0);
 
-		if (canvasWidth != (2 / (float) viewport[0])) {
-			canvasWidth = 2 / (float) viewport[0];
-			layoutHotSpotInitSwitch = false;
-		}
-		if (canvasHeight != (2 / (float) viewport[5])) {
-			canvasHeight = 2 / (float) viewport[5];
-			layoutHotSpotInitSwitch = false;
-		}
+//		if (canvasWidth != (2 / (float) viewport[0])) {
+//			canvasWidth = 2 / (float) viewport[0];
+//			layoutHotSpotInitSwitch = false;
+//		}
+//		if (canvasHeight != (2 / (float) viewport[5])) {
+//			canvasHeight = 2 / (float) viewport[5];
+//			layoutHotSpotInitSwitch = false;
+//		}
 
 		remoteElementHeatMap.getGLView().processEvents();
 		remoteElementParCoords.getGLView().processEvents();
@@ -207,7 +208,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		display(gl);
 
-		 pickingManager.handlePicking(this, gl);
+		pickingManager.handlePicking(this, gl);
 		checkForHits(gl);
 
 		if (eBusyModeState != EBusyModeState.OFF)
@@ -218,12 +219,16 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	@Override
 	public void displayRemote(GL gl) {
 		display(gl);
+		checkForHits(gl);
 	}
 
 	@Override
 	public void display(GL gl) {
 		doSlerpActions();
 
+		float canvasWidth = viewFrustum.getWidth();
+		float canvasHeight = viewFrustum.getHeight();
+		
 		if (layoutHotSpotInitSwitch == false) {
 			layoutHotSpot.setLocation(canvasWidth / 2 + 1, canvasHeight / 2);
 			layoutHotSpotInitSwitch = true;
@@ -249,31 +254,31 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		remoteElementHeatMap.setTransform(transform);
 		Transform transform2 = new Transform();
 
-		if (hyperbolicViewSquared = true) {
-			if (canvasHeight > layoutHotSpot.getX()) {
+//		if (hyperbolicViewSquared = true) {
+//			if (canvasHeight > layoutHotSpot.getX()) {
 				transform2.setScale(new Vec3f(
-						(float) (layoutHotSpot.getX()) / 8,
-						(float) (layoutHotSpot.getX()) / canvasHeight, 1));
-				transform2.setTranslation(new Vec3f(0,
-						(float) (canvasHeight - layoutHotSpot.getX()) / 2, 0));
+						1 * 0.6f,//(float) (layoutHotSpot.getX()) / canvasWidth,
+						1*fAspectRatio,//(float) (layoutHotSpot.getY()) / canvasHeight, 
+						1));
+//				transform2.setTranslation(new Vec3f(0, 0, 0));
 
 				eyeTrackerOffset.setLocation(0, canvasHeight
 						- (layoutHotSpot.getX()) / 2);
-			} else {
+//			} else {
+//
+//				transform2
+//						.setScale(new Vec3f(1*0.6f, 1*fAspectRatio, 1));
+////				transform2.setTranslation(new Vec3f((float) (layoutHotSpot
+////						.getX() - canvasHeight) / 2, 0, 0));
+//
+//				eyeTrackerOffset.setLocation(
+//						(layoutHotSpot.getX() - canvasHeight) / 2, 0);
+//			}
 
-				transform2
-						.setScale(new Vec3f((float) (canvasHeight) / 8, 1, 1));
-				transform2.setTranslation(new Vec3f((float) (layoutHotSpot
-						.getX() - canvasHeight) / 2, 0, 0));
-
-				eyeTrackerOffset.setLocation(
-						(layoutHotSpot.getX() - canvasHeight) / 2, 0);
-			}
-
-		} else {
-			transform2.setScale(new Vec3f((float) (layoutHotSpot.getX()) / 8,
-					1, 1));
-		}
+//		} else {
+//			transform2.setScale(new Vec3f((float) (layoutHotSpot.getX()) / 8,
+//					1, 1));
+//		}
 
 		remoteElementHyperbolic.setTransform(transform2);
 		Transform transform3 = new Transform();
@@ -285,8 +290,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		remoteElementParCoords.setTransform(transform3);
 
 		renderRemoteLevelElement(gl, remoteElementHyperbolic);
-		//renderRemoteLevelElement(gl, remoteElementHeatMap);
-		// renderRemoteLevelElement(gl, remoteElementParCoords);
+		renderRemoteLevelElement(gl, remoteElementHeatMap);
+		renderRemoteLevelElement(gl, remoteElementParCoords);
 
 		//
 		// }
@@ -544,7 +549,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	public void init(GL gl) {
 
 		// Heat map
-		ASerializedView serView = new SerializedHeatMapView();
+		ASerializedView serView = new SerializedHeatMapView();//SerializedHierarchicalHeatMapView();//
 		serView.setDataDomain(EDataDomain.GENETIC_DATA);
 		AGLView view = createView(gl, serView);
 		((AStorageBasedView) view).renderContext(true);
@@ -660,7 +665,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 				viewSlerpStartPoint.setLocation(defaultLayoutHotSpot);
 				viewSlerpTargetPoint.setLocation(defaultLayoutHotSpot.getX()
-						+ (canvasWidth - defaultLayoutHotSpot.getX())
+						+ (viewFrustum.getWidth() - defaultLayoutHotSpot.getX())
 						* zoomIntensity, defaultLayoutHotSpot.getY());
 				simpleSlerpActions.add(new simpleSlerp());
 
@@ -695,7 +700,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 			if (inFocus == true) {
 				viewSlerpStartPoint.setLocation(defaultLayoutHotSpot);
 				viewSlerpTargetPoint.setLocation(defaultLayoutHotSpot.getX()
-						* (1-zoomIntensity),canvasHeight-( defaultLayoutHotSpot.getY()
+						* (1-zoomIntensity),viewFrustum.getHeight()-( defaultLayoutHotSpot.getY()
 						*(1- zoomIntensity)));
 				simpleSlerpActions.add(new simpleSlerp());
 			} else {
