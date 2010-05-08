@@ -495,12 +495,32 @@ public class GLConsecutiveConnectionGraphDrawing
 							connectionLinesAllViews.add(currentStage);
 						}
 						else{
-							//TODO parcoords are heatmap predecessor
-							//1. local predecessor lines
-							//2. bundling line
-							//3. local successor lines
-						}
+							
+							currentStage = renderLinesOfCurrentStage(gl, null, -1, vecViewBundlingPoint, controlPoint, HEATMAP, null);
+							currentStage.setReverseLineDrawingDirection(true);
+							// calculating bundling line
+							if (heatMapPredecessorID != parCoordID)
+								bundling = new VisLinkAnimationStage(true);
+							else
+								bundling = new VisLinkAnimationStage();							
+	
+							bundling.addLine(createControlPoints(src, vecViewBundlingPoint, controlPoint));
+							connectionLinesAllViews.add(currentStage);
+							
+							currentStage = new VisLinkAnimationStage();
+							ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
+							for (ArrayList<Vec3f> alCurrentPoints : parCoordsSuccessor) {
+								if (alCurrentPoints.size() > 1)
+									renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
+								else
+									pointsToDepthSort.add(alCurrentPoints.get(0));
+							}
+							for (Vec3f currentPoint : depthSort(pointsToDepthSort))
+								currentStage.addLine(createControlPoints(currentPoint, vecViewBundlingPoint, 
+									controlPoint));
+							connectionLinesAllViews.add(currentStage);
 
+						}
 					}
 					else{
 						// calculating bundling line
@@ -532,7 +552,7 @@ public class GLConsecutiveConnectionGraphDrawing
 					if (multiplePoints){
 						if (parCoordsPredecessorID != heatMapID){
 							currentStage = renderLinesOfCurrentStage(gl, null, -1, vecViewBundlingPoint, controlPoint, PARCOORDS, null);
-							
+
 							if (parCoordsPredecessorID != heatMapID)
 								bundling = new VisLinkAnimationStage(true);
 							else
@@ -543,7 +563,28 @@ public class GLConsecutiveConnectionGraphDrawing
 							connectionLinesAllViews.add(currentStage);
 						}
 						else{
-							//TODO heatmap is parcoord predecessor
+							currentStage = renderLinesOfCurrentStage(gl, null, -1, vecViewBundlingPoint, controlPoint, PARCOORDS, null);
+							currentStage.setReverseLineDrawingDirection(true);
+							if (parCoordsPredecessorID != heatMapID)
+								bundling = new VisLinkAnimationStage(true);
+							else
+								bundling = new VisLinkAnimationStage();
+							bundling.addLine(createControlPoints(src, vecViewBundlingPoint, controlPoint));	
+							connectionLinesAllViews.add(currentStage);
+
+							currentStage = new VisLinkAnimationStage();
+							ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
+							for (ArrayList<Vec3f> alCurrentPoints : heatmapSuccessor) {
+								if (alCurrentPoints.size() > 1)
+									renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
+								else
+									pointsToDepthSort.add(alCurrentPoints.get(0));
+							}
+							for (Vec3f currentPoint : depthSort(pointsToDepthSort))
+								currentStage.addLine(createControlPoints(currentPoint, vecViewBundlingPoint, 
+									controlPoint));
+							connectionLinesAllViews.add(currentStage);
+							
 						}
 
 					}
