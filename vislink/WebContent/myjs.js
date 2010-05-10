@@ -374,10 +374,25 @@ function findAreaBoundingBox(doc, img, areaCoords){
 		w = coords[2] - x; 
 		h = coords[3] - y; 
 	}
-	else{
-		// we do not handle polygons up to now... 
-		alert("Area has no circle or rectangular shape"); 
-	};}; 
+	else{if(coords.length > 4){
+		// more than 4 elements: polygon 
+		var minX = coords[0]; 
+		var minY = coords[1]; 
+		var maxX = coords[0]; 
+		var maxY = coords[1]; 
+		for(var i = 2; i <= coords.length; i=i+2){
+			var curX = coords[i]; 
+			var curY = coords[i+1]; 
+			if(curX < minX) minX = curX; 
+			if(curX > maxX) maxX = curX; 
+			if(curY < minY) minY = curY; 
+			if(curY > maxY) maxY = curY; 
+		}
+		x = minX; 
+		y = minY; 
+		w = maxX - minX; 
+		h = maxY - minY; 
+	};};}; // funny syntax.. 
 	
 	if(w < 10) w = 10; 
 	if(h < 10) h = 10; 
