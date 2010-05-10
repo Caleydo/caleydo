@@ -214,6 +214,62 @@ function getId() {
 	return null;
 }
 
+function getMapAssociatedImage(node){
+	// step through previous siblings and find image associated with map 
+	var sibling = node; 
+	while(sibling = sibling.previousSibling){
+		//alert(sibling.nodeName); 
+		if(sibling.nodeName == "IMG"){
+			return sibling; 
+		}
+	}
+}
+
+function searchAreaTitles(doc, id) {
+	// find are node which title contains id 
+	var	areanodes =	doc.evaluate("//area[contains(@title,'"+id+"')]", doc, null, XPathResult.ANY_TYPE, null);
+	
+	// copy found nodes to results array 
+	var	result = new Array();
+	try {  
+   		var thisNode = areanodes.iterateNext();  
+     
+   		while (thisNode) {  
+   		    //sourceString = thisNode.getAttribute('title'); 
+   		    //coordsString = thisNode.getAttribute('coords'); 
+     		//alert( sourceString + " - coords: " + coordsString + " - node name: " + thisNode.parentNode.nodeName );  
+     		result[result.length] =	thisNode;
+     		thisNode = areanodes.iterateNext();  
+   		}   
+ 	}  
+ 	catch (e) {  
+   		alert( 'Error: Document tree modified during iteration ' + e );  
+ 	} 
+ 	
+ // create bounding box array 
+	var	bbs	= new Array();
+	for(var	i=0; i<result.length; i++) {
+	
+		// find image associated with area element 
+		var	r =	result[i];
+		var img = getMapAssociatedImage(r.parentNode); 
+		if(img != null){
+			
+			// find bounding box by interpreting the area's coord attribute and the image outline 
+			var bb = findAreaBoundingBox(doc, img, r.getAttribute('coords')); 
+			//var	bb = findObjectBoundingBox(imgArray[0]);
+			if (bb != null)	{
+				bbs[bbs.length]	= bb;
+			}
+		}
+		
+	}
+	
+	//alert("area bounding boxes: " + bbs.length); 
+	
+	return bbs;
+}
+
 function searchDocument(doc, id) {
 	var	textnodes =	doc.evaluate("//body//*/text()", doc, null,	XPathResult.ANY_TYPE, null);
 	var	result = new Array();
@@ -269,7 +325,77 @@ function searchDocument(doc, id) {
 			}
 		}
 	}
+	
+	// find area bounding boxes 
+	var areaBBS = searchAreaTitles(doc, id); 
+	bbs = bbs.concat(areaBBS); 
+	
 	return bbs;
+}
+
+function findAreaBoundingBox(doc, img, areaCoords){
+
+	var coords = new Array(); 
+	
+	// parse the coords attribute, separated by comma
+	var sepIndex = areaCoords.indexOf(','); 
+	var counter = 0; 
+	while(sepIndex >= 0){
+		var numString = areaCoords; 
+		numString = numString.substring(0, sepIndex); 
+		coords[coords.length] = parseInt(numString); 
+		areaCoords = areaCoords.substring(sepIndex + 1, areaCoords.length); 
+		//alert("numString: " + numString + " - coords: " + areaCoords + " sepIndex: " + sepIndex + ", length: " + areaCoords.length);  
+		sepIndex = areaCoords.indexOf(','); 
+		counter = counter + 1; 
+	}
+	
+	// last element
+	coords[coords.length] = parseInt(areaCoords); 
+	
+	//alert(coords.length + " coords found - last: " + coords[coords.length-1]); 
+	
+	var x = 0; 
+	var y = 0; 
+	var w = 0; 
+	var h = 0; 
+	
+	if(coords.length == 3){
+		// 3 coords elements: circle: x, y, radius
+		x = coords[0]; 
+		y = coords[1]; 
+		w = coords[2]; 
+		h = coords[2]; 
+	}
+	else{if(coords.length == 4){
+		// 4 elements: rectangle: x1, y1, x2, y2 
+		x = coords[0]; 
+		y = coords[1]; 
+		w = coords[2] - x; 
+		h = coords[3] - y; 
+	}
+	else{
+		// we do not handle polygons up to now... 
+		alert("Area has no circle or rectangular shape"); 
+	};}; 
+	
+	if(w < 10) w = 10; 
+	if(h < 10) h = 10; 
+	
+	//alert("Area: " + x + ", " + y + ", " + w + ", " + h); 
+	
+	// find the image's bounding box 
+	ret = findBoundingBox(doc, img); 
+	
+	// add x, y to image bounding box and set to area's width / height 
+	ret.x += x; 
+	ret.y += y; 
+	ret.width = w; 
+	ret.height = h; 
+	
+	//alert("Area bounding box: " + ret.x + ", " + ret.y + "  [" + ret.width + " x " + ret.height + "]"); 
+	
+	return ret; 
 }
 
 function findBoundingBox(doc, obj) {
@@ -286,7 +412,8 @@ function findBoundingBox(doc, obj) {
 
 	var	body = doc.getElementsByTagName("body")[0];
 	var	win	= body.ownerDocument.defaultView;
-	var	yoffset	= win.outerHeight -	win.innerHeight	- 4;
+	// y offset is very OS / decorator specific
+	var	yoffset	= win.outerHeight -	win.innerHeight	- 2;
 
 	var	ret	= null;
 	// check if	visible

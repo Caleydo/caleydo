@@ -399,7 +399,7 @@ function findBoundingBox(obj) {
 
 	var	body = document.getElementsByTagName("body")[0];
 	var	win	= body.ownerDocument.defaultView;
-	var	yoffset	= win.outerHeight -	win.innerHeight	- 4;
+	var	yoffset	= win.outerHeight -	win.innerHeight + 1;
 
 	var	ret	= null;
 	
@@ -410,7 +410,7 @@ function findBoundingBox(obj) {
 		ret.x =	finalleft;
 		ret.y =	finaltop;
 		ret.width =	w +	2;
-		ret.height = h;
+		ret.height = h + 1;
 		
 		//debugOutput("Bounding box: " + ret.x + ", " + ret.y + "  [" + ret.width + " x " + ret.height + "]"); 
 		
