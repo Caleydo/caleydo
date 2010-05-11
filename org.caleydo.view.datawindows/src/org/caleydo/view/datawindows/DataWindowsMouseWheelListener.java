@@ -8,11 +8,11 @@ import java.awt.event.MouseWheelListener;
 public class DataWindowsMouseWheelListener extends MouseAdapter implements
 		MouseWheelListener, MouseMotionListener {
 	private GLHyperbolic hyperbolic;
-	private double wheelFactor;
+	private float wheelFactor;
 
 	public DataWindowsMouseWheelListener(GLHyperbolic master) {
 		hyperbolic = master;
-		wheelFactor = 0.2;
+		wheelFactor = 0.2f;
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent event) {

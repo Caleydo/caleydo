@@ -338,16 +338,51 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		// disk.renderTree(gl, textureManager, pickingManager, iUniqueID,
 		// (double) canvasWidth, (double) canvasHeight);
 
-		// //
-		// if (glMouseListener.wasLeftMouseButtonPressed()) {
-		// System.out.println("triggered");
-		// this.focusViewEvent(2, 0.5, false);
-		//
-		// }
 
-		// System.out.println("width"
-		// +
-		// this.remoteElementHyperbolic.getGLView().getParentGLCanvas().getWidth());
+		//		
+
+		// mouseWheelListener.mouseWheelMoved();
+		// testing the viewFocus
+		if (glMouseListener.wasRightMouseButtonPressed()) {
+			//
+			if (testZoomViewEventSwitch == false) {
+
+				this.focusViewEvent(2, 0.75, true);
+				testZoomViewEventSwitch = true;
+			}
+		}
+
+//		// simulating the eyetracker
+//		if (glMouseListener.wasLeftMouseButtonPressed()) {
+//
+//			testZoomViewEventSwitch = false;
+//
+//			if (glMouseListener.getPickedPoint() != null) {
+//
+//				if (manualPickFlag == true) {
+//
+//					mousePoint = glMouseListener.getPickedPoint();
+//					
+//					float[] mousePosition = new float[2];
+//					mousePosition[0] = (float) mousePoint.getX();
+//					mousePosition[1] = (float) mousePoint.getY();
+//
+//					float[] translation = new float[2];
+//					float[] scalation = new float[2];
+//					translation[0] = remoteElementHyperbolic.getTransform()
+//							.getTranslation().x();
+//					translation[1] = remoteElementHyperbolic.getTransform()
+//							.getTranslation().y();
+//					scalation[0] = remoteElementHyperbolic.getTransform()
+//							.getScale().x();
+//					scalation[1] = remoteElementHyperbolic.getTransform()
+//							.getScale().y();
+//					this.directHyperbolicView.setEyeTrackerAction(
+//							mousePosition, translation, scalation);
+//
+//				}
+//			}
+//		}
 
 		// GLHelperFunctions.drawPointAt(gl,(float)mousePoint.getX(),(float)
 		// mousePoint.getY(), 1);
@@ -448,27 +483,24 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 				if (glMouseListener.getPickedPoint() != null) {
 
 					if (manualPickFlag == true) {
-
 						mousePoint = glMouseListener.getPickedPoint();
-						// System.out.println("mouse:" + mousePoint.getX() + " "
-						// + mousePoint.getY());
-						//
-						// System.out.println("eyoff:" + eyeTrackerOffset.getX()
-						// +
-						// " "
-						// + eyeTrackerOffset.getY());
-						Point2D.Double mousePosition = new Point2D.Double();
-						mousePosition.setLocation(mousePoint.getX(), mousePoint.getY());
+						
+						float[] mousePosition = new float[2];
+						mousePosition[0] = (float) mousePoint.getX();
+						mousePosition[1] = (float) mousePoint.getY();
 
-						directHyperbolicView.setEyeTrackerAction(mousePosition,
-								new Point2D.Double((double) remoteElementHyperbolic
-										.getTransform().getTranslation().x(),
-										(double) remoteElementHyperbolic.getTransform()
-												.getTranslation().y()),
-								new Point2D.Double((double) remoteElementHyperbolic
-										.getTransform().getScale().x(),
-										(double) remoteElementHyperbolic.getTransform()
-												.getScale().y()));
+						float[] translation = new float[2];
+						float[] scalation = new float[2];
+						translation[0] = remoteElementHyperbolic.getTransform()
+								.getTranslation().x();
+						translation[1] = remoteElementHyperbolic.getTransform()
+								.getTranslation().y();
+						scalation[0] = remoteElementHyperbolic.getTransform()
+								.getScale().x();
+						scalation[1] = remoteElementHyperbolic.getTransform()
+								.getScale().y();
+						this.directHyperbolicView.setEyeTrackerAction(
+								mousePosition, translation, scalation);
 
 					}
 				}

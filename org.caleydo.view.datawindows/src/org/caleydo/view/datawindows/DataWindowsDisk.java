@@ -1,12 +1,8 @@
 package org.caleydo.view.datawindows;
 
 import gleem.linalg.Vec3f;
-
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -14,27 +10,27 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 public class DataWindowsDisk extends PoincareDisk {
 
-	private double canvasWidth;
-	private double canvasHeight;
+	private float canvasWidth;
+	private float canvasHeight;
 	private TextureManager textureManager;
 	PickingManager pickingManager;
 	private GL gl;
 	int iUniqueID;
-	private double[] levelOfDetailLimits;
-	private double displayScaleFactorX = 10;
-	private double displayScaleFactorY = 10;
+	private float[] levelOfDetailLimits;
+	private float displayScaleFactorX = 10;
+	private float displayScaleFactorY = 10;
 	private GLHyperbolic hyperbolic;
-	private double radiussquare;
+	private float radiussquare;
 
 	public DataWindowsDisk(GLHyperbolic master) {
 		super();
 
 		// Create the borders of the discrete DetailLevels:
-		this.levelOfDetailLimits = new double[3];
+		this.levelOfDetailLimits = new float[3];
 		// display views
-		levelOfDetailLimits[0] = 0.8;
+		levelOfDetailLimits[0] = 0.8f;
 		// display icons
-		levelOfDetailLimits[1] = 0.96;
+		levelOfDetailLimits[1] = 0.96f;
 		// display only lines
 		levelOfDetailLimits[2] = 1;
 
@@ -61,7 +57,7 @@ public class DataWindowsDisk extends PoincareDisk {
 	}
 
 	// returns the detail level of a given distance from the middle
-	private int distanceToDetaillevel(double distance) {
+	private int distanceToDetaillevel(float distance) {
 
 		if (distance <= levelOfDetailLimits[0]) {
 			return 1;
@@ -76,8 +72,8 @@ public class DataWindowsDisk extends PoincareDisk {
 	}
 
 	public void renderTree(GL gl, TextureManager texManager,
-			PickingManager pickManager, int iViewID, double viewingWidth,
-			double viewingHeight) {
+			PickingManager pickManager, int iViewID, float viewingWidth,
+			float viewingHeight) {
 
 		this.gl = gl;
 
@@ -135,11 +131,11 @@ public class DataWindowsDisk extends PoincareDisk {
 	public void drawNode(PoincareNode node, int mode) {
 
 		// for a realistic size, the size is a projected offset of the current
-		double size = getMetric(node.getPosition(), nodeSize);
+		float size = getMetric(node.getPosition(), nodeSize);
 
 		if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 1) {
 			if (node.highLighted == true) {
-				size = size * 1.5;
+				size = size * 1.5f;
 			}
 
 			if (node == this.getCenteredNode()) {
@@ -147,30 +143,22 @@ public class DataWindowsDisk extends PoincareDisk {
 			}
 		}
 
-		Vec3f lowerLeftCorner = new Vec3f(
-				(float) (-size + node.getZoomedPosition().getX()
-						* displayScaleFactorX + canvasWidth / 2),
-				(float) (-size * (canvasHeight / canvasWidth)
-						+ node.getZoomedPosition().getY() * displayScaleFactorY + canvasHeight / 2),
-				0);
-		Vec3f lowerRightCorner = new Vec3f(
-				(float) (size + node.getZoomedPosition().getX()
-						* displayScaleFactorX + canvasWidth / 2),
-				(float) (-size * (canvasHeight / canvasWidth)
-						+ node.getZoomedPosition().getY() * displayScaleFactorY + canvasHeight / 2),
-				0);
-		Vec3f upperRightCorner = new Vec3f(
-				(float) (size + node.getZoomedPosition().getX()
-						* displayScaleFactorX + canvasWidth / 2),
-				(float) (size * (canvasHeight / canvasWidth)
-						+ node.getZoomedPosition().getY() * displayScaleFactorY + canvasHeight / 2),
-				0);
-		Vec3f upperLeftCorner = new Vec3f(
-				(float) (-size + node.getZoomedPosition().getX()
-						* displayScaleFactorX + canvasWidth / 2),
-				(float) (size * (canvasHeight / canvasWidth)
-						+ node.getZoomedPosition().getY() * displayScaleFactorY + canvasHeight / 2),
-				0);
+		Vec3f lowerLeftCorner = new Vec3f((-size + node.getZoomedPosition()[0]
+				* displayScaleFactorX + canvasWidth / 2), (-size
+				* (canvasHeight / canvasWidth) + node.getZoomedPosition()[1]
+				* displayScaleFactorY + canvasHeight / 2), 0);
+		Vec3f lowerRightCorner = new Vec3f((size + node.getZoomedPosition()[0]
+				* displayScaleFactorX + canvasWidth / 2), (-size
+				* (canvasHeight / canvasWidth) + node.getZoomedPosition()[1]
+				* displayScaleFactorY + canvasHeight / 2), 0);
+		Vec3f upperRightCorner = new Vec3f((size + node.getZoomedPosition()[0]
+				* displayScaleFactorX + canvasWidth / 2), (size
+				* (canvasHeight / canvasWidth) + node.getZoomedPosition()[1]
+				* displayScaleFactorY + canvasHeight / 2), 0);
+		Vec3f upperLeftCorner = new Vec3f((-size + node.getZoomedPosition()[0]
+				* displayScaleFactorX + canvasWidth / 2), (size
+				* (canvasHeight / canvasWidth) + node.getZoomedPosition()[1]
+				* displayScaleFactorY + canvasHeight / 2), 0);
 
 		Vec3f scalingPivot = new Vec3f(1, 1, 0);
 
@@ -189,54 +177,58 @@ public class DataWindowsDisk extends PoincareDisk {
 					upperLeftCorner, scalingPivot, 1, 1, 1, alpha, 100);
 		} else {
 
-			hyperbolic.drawRemoteView(gl, node, new Point2D.Double(-size
-					+ node.getZoomedPosition().getX() * displayScaleFactorX
-					+ canvasWidth / 2, -size * (canvasHeight / canvasWidth)
-					+ node.getZoomedPosition().getY() * displayScaleFactorY
-					+ canvasHeight / 2), size / 4);
+			float[] position = new float[2];
+			position[0] = -size + node.getZoomedPosition()[0]
+					* displayScaleFactorX + canvasWidth / 2;
+			position[1] = -size * (canvasHeight / canvasWidth)
+					+ node.getZoomedPosition()[1] * displayScaleFactorY
+					+ canvasHeight / 2;
+
+			hyperbolic.drawRemoteView(gl, node, position, size / 4);
 		}
 		gl.glPopName();
 	}
 
-	public Point2D.Double projectPoint(Point2D.Double point, boolean direction) {
+	public float[] projectPoint(float[] point, boolean direction) {
 
 		// if direction is true, the point will be projected, otherwise it will
 		// be unprojected
 
-		Point2D.Double coordinate = new Point2D.Double();
-		coordinate.setLocation(point);
-		double coordinateLength = coordinate.getX() * coordinate.getX()
-				+ coordinate.getY() * coordinate.getY();
-		double coordinateLength2;
+		float[] coordinate = new float[2];
+		coordinate = point.clone();
 
-		coordinateLength = Math.sqrt(coordinateLength);
-		double projectionFactor = (2 * radiussquare)
+		float coordinateLength = coordinate[0] * coordinate[0] + coordinate[1]
+				* coordinate[1];
+		float coordinateLength2;
+
+		coordinateLength = (float) Math.sqrt((double) coordinateLength);
+		float projectionFactor = (2 * radiussquare)
 				/ (radiussquare + coordinateLength);
 		// if direction is true, the point will be projected, otherwise the
 		// point will be unprojected
 		if (direction == true) {
-			coordinate.setLocation(coordinate.getX() * projectionFactor,
-					coordinate.getY() * projectionFactor);
+			coordinate[0] = coordinate[0] * projectionFactor;
+			coordinate[1] = coordinate[1] * projectionFactor;
 		} else {
-			Point2D.Double testCoord = new Point2D.Double();
-			double error;
+			float[] testCoord = new float[2];
+			float error;
 			for (coordinateLength = 0; coordinateLength < 100; coordinateLength += 0.01) {
 
 				projectionFactor = (2 * radiussquare)
 						/ (radiussquare + coordinateLength);
 
-				coordinate.setLocation(point.getX() * projectionFactor, (point
-						.getY() * projectionFactor));
+				coordinate[0] = point[0] * projectionFactor;
+				coordinate[1] = point[1] * projectionFactor;
 
-				coordinateLength2 = coordinate.getX() * coordinate.getX()
-						+ coordinate.getY() * coordinate.getY();
-				coordinateLength2 = Math.sqrt(coordinateLength2);
+				coordinateLength2 = coordinate[0] * coordinate[0]
+						+ coordinate[1] * coordinate[1];
+				coordinateLength2 = (float) Math.sqrt(coordinateLength2);
 
 				projectionFactor = (2 * radiussquare)
 						/ (radiussquare + coordinateLength2);
 
-				testCoord.setLocation(coordinate.getX() * (projectionFactor),
-						(coordinate.getY() * (projectionFactor)));
+				testCoord[0] = coordinate[0] * projectionFactor;
+				testCoord[1] = coordinate[1] * projectionFactor;
 
 				error = distancePoints(testCoord, point);
 
@@ -257,96 +249,62 @@ public class DataWindowsDisk extends PoincareDisk {
 		if (numberOfDetails != 0) {
 
 			// transfer the start and end point into real coordinates:
-			Point2D.Double startPoint = new Point2D.Double();
-			startPoint.setLocation(this.projectPoint(node1.getZoomedPosition(),
-					false));
-			Point2D.Double endPoint = new Point2D.Double();
-			endPoint
-					.setLocation(projectPoint(node2.getZoomedPosition(), false));
-			double length = this.distancePoints(startPoint, endPoint);
+			float[] startPoint = new float[2];
+			startPoint = this.projectPoint(node1.getZoomedPosition(), false);
 
+			
+			float[] endPoint = new float[2];
+			endPoint = projectPoint(node2.getZoomedPosition(), false);
+			float length = this.distancePoints(startPoint, endPoint);
+			
 			gl.glLineWidth((float) lineWidth);
 			gl.glBegin(GL.GL_LINE_STRIP);
 			gl.glColor3i(0, 0, 0);
-			gl.glVertex3d(node1.getZoomedPosition().getX()
-					* displayScaleFactorX + (canvasWidth / 2), node1
-					.getZoomedPosition().getY()
+			gl.glVertex3d(node1.getZoomedPosition()[0] * displayScaleFactorX
+					+ (canvasWidth / 2), node1.getZoomedPosition()[1]
 					* displayScaleFactorY + canvasHeight / 2, 0);
 
-			Point2D.Double eV = new Point2D.Double();
-			eV.setLocation(this.getEV(new Point2D.Double(endPoint.getX()
-					- startPoint.getX(), endPoint.getY() - startPoint.getY())));
+			float[] eV = new float[2];
+			eV[0] = endPoint[0] - startPoint[0];
+			eV[1] = endPoint[1] - startPoint[1];
+			eV = getEV(eV);
 
-			Point2D.Double actPosition = new Point2D.Double();
-			actPosition.setLocation(startPoint);
-			Point2D.Double actProjectedPosition = new Point2D.Double();
+			float[] actPosition = new float[2];
+			actPosition = startPoint.clone();
+			float[] actProjectedPosition = new float[2];
 
 			for (int i = 0; i < numberOfDetails; i++) {
-				actPosition.setLocation(actPosition.getX() + eV.getX()
-						* (length / (double) numberOfDetails), actPosition
-						.getY()
-						+ eV.getY() * (length / (double) numberOfDetails));
+				actPosition[0] = actPosition[0] + eV[0]
+						* (length / (float) numberOfDetails);
+				actPosition[1] = actPosition[1] + eV[1]
+						* (length / (float) numberOfDetails);
+
 				actProjectedPosition = this.projectPoint(actPosition, true);
 
 				gl.glLineWidth((float) lineWidth);
 				gl.glBegin(GL.GL_LINE_STRIP);
 				gl.glColor3i(0, 0, 0);
-				gl.glVertex3d(actProjectedPosition.getX() * displayScaleFactorX
-						+ (canvasWidth / 2), actProjectedPosition.getY()
+				gl.glVertex3d(actProjectedPosition[0] * displayScaleFactorX
+						+ (canvasWidth / 2), actProjectedPosition[1]
 						* displayScaleFactorY + canvasHeight / 2, 0);
 			}
 
-			// double stepWidth=length/numberOfDetails;
-			//			
-			// while (length > 0.02) {
-			//
-			// eV.setLocation(this.getEV(new Point2D.Double(node2
-			// .getZoomedPosition().getX()
-			// - actualPositionComplex.getRealPart(), node2
-			// .getZoomedPosition().getY()
-			// - actualPositionComplex.getImaginaryPart())));
-			//
-			// stepVector.setLocation(eV.getX() * stepWidth,
-			// eV.getY() * stepWidth);
-			//
-			// stepVectorComplex
-			// .setValue(stepVector.getX(), stepVector.getY());
-			//
-			// actualPositionComplex = moebiusTransformation(
-			// actualPositionComplex, stepVectorComplex);
-			//
-			// // System.out.println("test"+stepVectorComplex.getRealPart());
-			// length = this.distancePoints(new Point2D.Double(
-			// actualPositionComplex.getRealPart(),
-			// actualPositionComplex.getImaginaryPart()), node2
-			// .getPosition());
-			//
-			// gl.glVertex3d(actualPositionComplex.getRealPart()
-			// * displayScaleFactorX + (canvasWidth / 2),
-			// actualPositionComplex.getImaginaryPart()
-			// * displayScaleFactorY + canvasHeight / 2, 0);
-			//
-			// }
-
-			gl.glVertex3d(node2.getZoomedPosition().getX()
-					* displayScaleFactorX + (canvasWidth / 2), node2
-					.getZoomedPosition().getY()
+			gl.glVertex3d(node2.getZoomedPosition()[0] * displayScaleFactorX
+					+ (canvasWidth / 2), node2.getZoomedPosition()[1]
 					* displayScaleFactorY + canvasHeight / 2, 0);
 			gl.glEnd();
 
-			// System.out.println("vector:" + stepVector.getX() + "|"
-			// + stepVector.getY());
+			// System.out.println("vector:" + stepVector[0] + "|"
+			// + stepVector[1]);
 		} else {
 			gl.glLineWidth((float) lineWidth);
 			gl.glBegin(GL.GL_LINE_STRIP);
 			gl.glColor3i(0, 0, 0);
-			gl.glVertex3d(node1.getZoomedPosition().getX()
-					* displayScaleFactorX + (canvasWidth / 2), node1
-					.getZoomedPosition().getY()
+			gl.glVertex3d(node1.getZoomedPosition()[0] * displayScaleFactorX
+					+ (canvasWidth / 2), node1.getZoomedPosition()[1]
 					* displayScaleFactorY + canvasHeight / 2, 0);
-			gl.glVertex3d(node2.getZoomedPosition().getX()
-					* displayScaleFactorX + (canvasWidth / 2), node2
-					.getZoomedPosition().getY()
+			gl.glVertex3d(node2.getZoomedPosition()[0] * displayScaleFactorX
+					+ (canvasWidth / 2), node2.getZoomedPosition()[1]
 					* displayScaleFactorY + canvasHeight / 2, 0);
 			gl.glEnd();
 		}
@@ -357,51 +315,55 @@ public class DataWindowsDisk extends PoincareDisk {
 				canvasWidth / 2, canvasHeight / 2);
 	}
 
-	public void drawCircle(double width, double height, double k, double h) {
+	public void drawCircle(float width, float height, float k, float h) {
 
 		// code from http://www.swiftless.com/tutorials/opengl/circle.html
 		// //20.2.2010
-		double circleX = 0;
-		double circleY = 0;
-		double i = 0;
+		float circleX = 0;
+		float circleY = 0;
+		float i = 0;
 
 		gl.glBegin(GL.GL_LINE_STRIP);
 		gl.glColor3f(0, 0, 0);
-		for (double counter = 0; counter < 360; counter++) {
-			i = counter * Math.PI / 180;
+		for (float counter = 0; counter < 360; counter++) {
+			i = counter * (float) Math.PI / 180;
 
-			circleX = width * Math.cos(i);
-			circleY = height * Math.sin(i);
+			circleX = width * (float) Math.cos(i);
+			circleY = height * (float) Math.sin(i);
 			gl.glVertex3d(circleX + k, circleY + h, 0);
 
-			circleX = width * Math.cos(i + Math.PI / 180);
-			circleY = height * Math.sin(i + Math.PI / 180);
+			circleX = width * (float) Math.cos(i + (float) Math.PI / 180);
+			circleY = height * (float) Math.sin(i + (float) Math.PI / 180);
 			gl.glVertex3d(circleX + k, circleY + h, 0);
 		}
 		gl.glEnd();
 	}
 
-	public PoincareNode processEyeTrackerAction(Point2D.Double normedEyePosition,
+	public PoincareNode processEyeTrackerAction(float[] normedEyePosition,
 			ArrayList<NodeSlerp> arSlerpActions) {
-		//Point2D.Double offsetFromMiddle = new Point2D.Double();
-		
-		
-//		offsetFromMiddle.setLocation((eyePosition.getX() - canvasWidth / 2)
-//				/ displayScaleFactorX, (eyePosition.getY() - canvasHeight / 2)
-//				/ displayScaleFactorY);
-//
-//		System.out.println("offset from Middle: " + offsetFromMiddle.getX()
-	//	+ "|" + offsetFromMiddle.getY());
+		// Point2D.float offsetFromMiddle = new Point2D.float();
+
+		// offsetFromMiddle.setLocation((eyePosition[0] - canvasWidth / 2)
+		// / displayScaleFactorX, (eyePosition[1] - canvasHeight / 2)
+		// / displayScaleFactorY);
+		//
+		// System.out.println("offset from Middle: " + offsetFromMiddle[0]
+		// + "|" + offsetFromMiddle[1]);
 		PoincareNode returnNode = null;
 
 		// comment in for eyetracker focus
 		// if (this.distanceFromOrigin(offsetFromMiddle) < eyeTrackerBorder) {
-		//System.out.println("inside of direct picking");
+		// System.out.println("inside of direct picking");
 		returnNode = findNodeByCoordinate(normedEyePosition, 0);
 
 		if (returnNode != null) {
+			float[] emptyPoint=new float[2];
+			emptyPoint[0]=0;
+			emptyPoint[1]=0;
+			System.out.println("position: "+returnNode.getPosition()[0]+"|"+returnNode.getPosition()[1]);
+			
 			arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
-					new Point2D.Double(0, 0)));
+					emptyPoint));
 		}
 
 		// } else {
@@ -413,20 +375,20 @@ public class DataWindowsDisk extends PoincareDisk {
 		// if (returnNode != null) {
 		//
 		// System.out.println("slerp target:"
-		// + returnNode.getPosition().getX() * eyeTrackerBorder
-		// + "|" + returnNode.getPosition().getY()
+		// + returnNode.getPosition()[0] * eyeTrackerBorder
+		// + "|" + returnNode.getPosition()[1]
 		// * eyeTrackerBorder);
 		//
-		// Point2D.Double eV = getEV(returnNode.getPosition());
-		// double overlaping = 0.1;
+		// Point2D.float eV = getEV(returnNode.getPosition());
+		// float overlaping = 0.1;
 		//
 		// arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
-		// new Point2D.Double(eV.getX()
-		// * (eyeTrackerBorder - overlaping), eV.getY()
+		// new Point2D.float(eV[0]
+		// * (eyeTrackerBorder - overlaping), eV[1]
 		// * (eyeTrackerBorder - overlaping))));
 		//
 		// // arSlerpActions.add(new nodeSlerp(4, returnNode.getPosition(),
-		// // new Point2D.Double(0.5, 0.5)));
+		// // new Point2D.float(0.5, 0.5)));
 		// }
 		//
 		// }

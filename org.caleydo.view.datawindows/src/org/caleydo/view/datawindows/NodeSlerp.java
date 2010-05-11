@@ -1,104 +1,97 @@
 package org.caleydo.view.datawindows;
 
-import java.awt.geom.Point2D;
-
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 
 public class NodeSlerp {
-	public Point2D.Double startPoint;
-	public Point2D.Double targetPoint;
-	private Point2D.Double directionVector;
-	private double length;
-	public double distanceToTarget;
-	public double speed;
-	public Point2D.Double returnPoint;
-	private Point2D.Double actualPoint;
-	private double slerpFactor = 0;
+	public float[] startPoint;
+	public float[] targetPoint;
+	private float[] directionVector;
+	private float length;
+	public float distanceToTarget;
+	public float speed;
+	public float[] returnPoint;
+	private float[] actualPoint;
+	private float slerpFactor = 0;
 	private Time time;
-	private double dLength = 0;
+	private float dLength = 0;
 	private DataWindowsDisk dummyDisk;
-	double precision = 0.01;
+	float precision = 0.01f;
 	int numberOfIterations = 1000;
-	
-	public NodeSlerp(double v, Point2D.Double startingPoint,
-			Point2D.Double targettingPoint) {
-		startPoint = startingPoint;
-		targetPoint = targettingPoint;
 
-
-		speed = v;
+	public NodeSlerp(float speed, float[] startPoint, float[] targetPoint) {
+		this.startPoint = startPoint;
+		this.targetPoint = targetPoint;
+		this.speed = speed;
 		time = new SystemTime();
 		((SystemTime) time).rebase();
 
 		// calculate the direction of the slerp
-		Point2D.Double tempVector;
-		tempVector = new Point2D.Double(targetPoint.getX() - startPoint.getX(),
-				targetPoint.getY() - startPoint.getY());
-		length = Math.sqrt(tempVector.getX() * tempVector.getX()
-				+ tempVector.getY() * tempVector.getY());
-		directionVector = new Point2D.Double(tempVector.getX() / length,
-				tempVector.getY() / length);
-		actualPoint = new Point2D.Double(0, 0);
-		returnPoint = new Point2D.Double(0, 0);
-		actualPoint.setLocation(startPoint);
+		float[] tempVector = new float[2];
+		tempVector[0] = targetPoint[0] - startPoint[0];
+		tempVector[1] = targetPoint[1] - startPoint[1];
+
+		length = (float) Math.sqrt(tempVector[0] * tempVector[0]
+				+ tempVector[1] * tempVector[1]);
+		directionVector = new float[2];
+		directionVector[0] = tempVector[0] / length;
+		directionVector[1] = tempVector[1] / length;
+		actualPoint = new float[2];
+		returnPoint = new float[2];
+		actualPoint = startPoint.clone();
 		time.update();
 		dummyDisk = new DataWindowsDisk(null);
 		Tree<PoincareNode> dummyTree = new Tree<PoincareNode>();
 		new PoincareNode(dummyTree, "dummyNode", 1);
 	}
 
-	public boolean doASlerp(Point2D.Double position) {
+	public boolean doASlerp(float[] position) {
 
-		actualPoint.setLocation(position);
+		actualPoint = position.clone();
 
 		// do an accelerated movement, because of a lack of precision caused
 		// by the moebius transformation
 		// acceleration = -1 * ((normedStatus - 1) * (normedStatus - 1)) + 1;
-		slerpFactor = speed * time.deltaT();// * acceleration;
+		slerpFactor = speed * (float) time.deltaT();// * acceleration;
 
-		Point2D.Double tempVector = new Point2D.Double(0, 0);
+		float[] tempVector = new float[2];
 
-		tempVector.setLocation(actualPoint.getX() - startPoint.getX(),
-				actualPoint.getY() - startPoint.getY());
+		tempVector[0] = actualPoint[0] - startPoint[0];
+		tempVector[1] = actualPoint[1] - startPoint[1];
 
 		// the distance to the target:
-		tempVector.setLocation(targetPoint.getX() - actualPoint.getX(),
-				targetPoint.getY() - actualPoint.getY());
-		distanceToTarget = Math.sqrt(tempVector.getX() * tempVector.getX()
-				+ tempVector.getY() * tempVector.getY());
+		tempVector[0] = targetPoint[0] - actualPoint[0];
+		tempVector[1] = targetPoint[1] - actualPoint[1];
+		distanceToTarget = (float) Math.sqrt(tempVector[0] * tempVector[0]
+				+ tempVector[1] * tempVector[1]);
 
 		if (distanceToTarget <= slerpFactor) {
 			slerpFactor = 0;
-			if ((targetPoint.getX() == 0) && (targetPoint.getY() == 0)) {
-				returnPoint.setLocation((position.getX()) * -1, (position
-						.getY())
-						* -1);
+			if ((targetPoint[0] == 0) && (targetPoint[1] == 0)) {
+				returnPoint[0] = (position[0]) * -1;
+				returnPoint[1] = (position[1]) * -1;
 				return false;
 			}
 
-			double oldDistanceToTarget = distanceToTarget;
-			Point2D.Double calcuatedPosition = new Point2D.Double();
+			float oldDistanceToTarget = distanceToTarget;
+			float[] calcuatedPosition = new float[2];
 			// the last slerp action should match the target exactly
 
+			tempVector[0] = targetPoint[0] - actualPoint[0];
+			tempVector[1] = targetPoint[1] - actualPoint[1];
 			
-
-			tempVector.setLocation(targetPoint.getX() - actualPoint.getX(),
-					targetPoint.getY() - actualPoint.getY());
-			oldDistanceToTarget = Math
-					.sqrt(tempVector.getX() * tempVector.getX()
-							+ tempVector.getY() * tempVector.getY());
+			oldDistanceToTarget = (float) Math.sqrt(tempVector[0]
+					* tempVector[0] + tempVector[1] * tempVector[1]);
 
 			for (int i = 0; i < numberOfIterations; i++) {
-				actualPoint.setLocation(position);
-				tempVector.setLocation(targetPoint.getX()
-						- calcuatedPosition.getX(), targetPoint.getY()
-						- calcuatedPosition.getY());
+				actualPoint = position.clone();
+
+				tempVector[0] = targetPoint[0] - calcuatedPosition[0];
+				tempVector[1] = targetPoint[1] - calcuatedPosition[1];
 				oldDistanceToTarget = distanceToTarget;
-				distanceToTarget = Math.sqrt(tempVector.getX()
-						* tempVector.getX() + tempVector.getY()
-						* tempVector.getY());
+				distanceToTarget = (float) Math.sqrt(tempVector[0]
+						* tempVector[0] + tempVector[1] * tempVector[1]);
 
 				// decide, if the last transformation was to much:
 
@@ -111,43 +104,41 @@ public class NodeSlerp {
 
 				slerpFactor = slerpFactor + precision;
 				ComplexNumber complexPoint = new ComplexNumber();
-				complexPoint.setValue(actualPoint.getX(), actualPoint.getY());
+				complexPoint.setValue(actualPoint[0], actualPoint[1]);
 
 				complexPoint = dummyDisk.moebiusTransformation(complexPoint,
-						new ComplexNumber(directionVector.getX() * slerpFactor,
-								directionVector.getY() * slerpFactor));
-				calcuatedPosition.setLocation(complexPoint.getRealPart(),
-						complexPoint.getImaginaryPart());
+						new ComplexNumber(directionVector[0] * slerpFactor,
+								directionVector[1] * slerpFactor));
+				calcuatedPosition[0] = (float) complexPoint.getRealPart();
+				calcuatedPosition[1] = (float) complexPoint.getImaginaryPart();
 
 			}
 
-			returnPoint.setLocation(directionVector.getX() * slerpFactor,
-					directionVector.getY() * slerpFactor);
+			returnPoint[0] = directionVector[0] * slerpFactor;
+			returnPoint[1] = directionVector[1] * slerpFactor;
 
 			ComplexNumber complexPoint = new ComplexNumber();
-			complexPoint.setValue(position.getX(), position.getY());
+			complexPoint.setValue(position[0], position[1]);
 			complexPoint = dummyDisk.moebiusTransformation(complexPoint,
-					new ComplexNumber(returnPoint.getX(), returnPoint.getY()));
-			calcuatedPosition.setLocation(complexPoint.getRealPart(),
-					complexPoint.getImaginaryPart());
+					new ComplexNumber(returnPoint[0], returnPoint[1]));
+			calcuatedPosition[0] = (float) complexPoint.getRealPart();
+			calcuatedPosition[1] = (float) complexPoint.getImaginaryPart();
 			return false;
 		}
 
-		tempVector.setLocation(targetPoint.getX() - actualPoint.getX(),
-				targetPoint.getY() - actualPoint.getY());
-		dLength = Math.sqrt(tempVector.getX() * tempVector.getX()
-				+ tempVector.getY() * tempVector.getY());
+		tempVector[0] = targetPoint[0] - actualPoint[0];
+		tempVector[1] = targetPoint[1] - actualPoint[1];
+		dLength = (float) Math.sqrt(tempVector[0] * tempVector[0]
+				+ tempVector[1] * tempVector[1]);
 
-		directionVector.setLocation(tempVector.getX() / dLength, tempVector
-				.getY()
-				/ dLength);
+		directionVector[0] = tempVector[0] / dLength;
+		directionVector[1] = tempVector[1] / dLength;
 
-		returnPoint.setLocation(directionVector.getX() * slerpFactor,
-				directionVector.getY() * slerpFactor);
+		returnPoint[0] = directionVector[0] * slerpFactor;
+		returnPoint[1] = directionVector[1] * slerpFactor;
 		time.update();
 
 		return true;
 
 	}
-
 }

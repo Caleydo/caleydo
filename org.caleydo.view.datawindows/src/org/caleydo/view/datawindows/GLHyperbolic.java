@@ -68,13 +68,13 @@ public class GLHyperbolic extends AGLView {
 	private Random randomGenerator = new Random(19580427);
 
 	private Tree<PoincareNode> tree;
-	public double diskZoomIntensity = 0;
+	public float diskZoomIntensity = 0;
 
 	private ArrayList<simpleSlerp> simpleSlerpActions;
 
-	private double currentAngleSlerpFactor;
+	private float currentAngleSlerpFactor;
 
-	private double previousSimpleSlerp;
+	private float previousSimpleSlerp;
 
 	/**
 	 * Constructor.
@@ -201,8 +201,12 @@ public class GLHyperbolic extends AGLView {
 
 		doSlerpActions();
 		disk.zoomTree(diskZoomIntensity);
-		disk.renderTree(gl, textureManager, pickingManager, iUniqueID,
-				(double) viewFrustum.getWidth(), (double) viewFrustum.getHeight());
+
+		disk
+				.renderTree(gl, textureManager, pickingManager, iUniqueID,
+						(float) viewFrustum.getWidth(), (float) viewFrustum
+								.getHeight());
+
 
 		// if (!containedGLViews.isEmpty()) {
 		//
@@ -482,23 +486,9 @@ public class GLHyperbolic extends AGLView {
 			simpleSlerp simpleSlerp = simpleSlerpActions.get(0);
 			if (simpleSlerp.doASlerp() == true) {
 				double relativeSimpleSlerpState = simpleSlerp.state - previousSimpleSlerp;
-
 				disk.rotateDisk(simpleSlerp.state - this.previousSimpleSlerp);
-
-				this.previousSimpleSlerp = simpleSlerp.state;
-
-				// simpleSlerp.endingCondition=simpleSlerp.state+disk.calculateCorrectDiskRotation(disk.getCenteredNode());
-
-				disk.rotateDisk(simpleSlerp.state - this.previousSimpleSlerp);
-
-				this.previousSimpleSlerp = simpleSlerp.state;
-
-				this.previousSimpleSlerp = simpleSlerp.state;
-				// System.out.println("simple rel State"
-				// + simpleSlerp.relativeState);
-				// System.out.println("simple Slerp!!!" + simpleSlerp.state);
+				this.previousSimpleSlerp = simpleSlerp.state;	
 			} else {
-
 				disk.rotateDisk(simpleSlerp.state - this.previousSimpleSlerp);
 				simpleSlerpActions.clear();
 
@@ -507,14 +497,18 @@ public class GLHyperbolic extends AGLView {
 
 	}
 
-	public void drawRemoteView(GL gl, PoincareNode node, Point2D.Double position,
-			double size) {
+
+	public void drawRemoteView(GL gl, PoincareNode node,
+			float[] position, float size) {
+
 
 		Transform transform = new Transform();
 		transform.setScale(new Vec3f((float) size, (float) size * fAspectRatio, 1));
 
-		transform.setTranslation(new Vec3f((float) position.getX(), (float) position
-				.getY(), 0));
+
+		transform.setTranslation(new Vec3f(position[0],
+				position[1], 0));
+
 
 		testRemoteElement.setTransform(transform);
 
@@ -679,24 +673,27 @@ public class GLHyperbolic extends AGLView {
 	}
 
 	// called, if the user focuses a point on the display
-	public void setEyeTrackerAction(Point2D.Double mousePoint, Point2D.Double offset,
-			Point2D.Double scalation) {
 
-		Point2D.Double mouseCoord = new Point2D.Double();
+	public void setEyeTrackerAction(float[] mousePoint, float[] offset,
+			float[] scalation) {
+		//if (this.get != null) {
+			float[] mouseCoord = new float[2];
 
-		// norming the mouseposition
-		double factorX = 1 / (double) (this.getParentGLCanvas().getWidth() * scalation
-				.getX());
-		double factorY = 1 / (double) (this.getParentGLCanvas().getHeight());
+			// norming the mouseposition
+			float factorX = 1 / (float) (this.getParentGLCanvas().getWidth() * scalation[0]);
+			float factorY = 1 / (float) (this.getParentGLCanvas().getHeight());
 
-		mouseCoord
-				.setLocation((mousePoint.getX() * factorX - offset.getX()) * 2 - 1,
-						((this.getParentGLCanvas().getHeight() - mousePoint.getY())
-								* factorY - offset.getY()) * 2 - 1);
+		
 
-		PoincareNode selectedNode;
-		selectedNode = disk.processEyeTrackerAction(new Point2D.Double(mouseCoord.getX(),
-				mouseCoord.getY()), arSlerpActions);
+			mouseCoord[0] = (mousePoint[0] * factorX - offset[0]) * 2 - 1;
+			mouseCoord[1] = ((this.getParentGLCanvas().getHeight() - mousePoint[1])
+					* factorY - offset[1]) * 2 - 1;
+
+	
+			PoincareNode selectedNode = disk.processEyeTrackerAction(mouseCoord.clone(),
+					arSlerpActions);
+
+	
 
 		if (selectedNode != null) {
 			disk.setCenteredNode(selectedNode);
@@ -704,9 +701,17 @@ public class GLHyperbolic extends AGLView {
 			slerpedNode = selectedNode;
 			// disk.setCenteredNode(selectedNode);
 
-		} else {
-			disk.setCenteredNode(null);
-		}
+
+			} else {
+				disk.setCenteredNode(null);
+			}
+
+			//correctDiskAngle();
+
+		//} else {
+			//disk.setCenteredNode(null);
+
+	//	}
 
 		correctDiskAngle();
 	}

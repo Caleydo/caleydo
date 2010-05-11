@@ -4,12 +4,12 @@ import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 
 public class simpleSlerp {
-	public double speed;
-	private double slerpFactor = 0;
+	public float speed;
+	private float slerpFactor = 0;
 	private Time time;
-	public double state = 0;
-	public double endingCondition;
-	public double relativeState=0;
+	public float state = 0;
+	public float endingCondition;
+	public float relativeState=0;
 
 	public simpleSlerp() {
 		time = new SystemTime();
@@ -24,7 +24,7 @@ public class simpleSlerp {
 
 		
 		
-		slerpFactor = speed * time.deltaT();
+		slerpFactor = speed * (float)time.deltaT();
 		
 		if (endingCondition >= 0) {
 			relativeState=state-relativeState;

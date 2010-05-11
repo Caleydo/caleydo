@@ -1,16 +1,15 @@
 package org.caleydo.view.datawindows;
 
-import java.awt.geom.Point2D;
 
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.Tree;
 
 public class PoincareNode extends AHierarchyElement<PoincareNode> {
 
-	private double distanceFromOrigin;
-	private Point2D.Double position;
-	private Point2D.Double zoomedPosition;
-	private double childrenAngleOffset;
+	private float distanceFromOrigin;
+	private float[] position;
+	private float[] zoomedPosition;
+	private float childrenAngleOffset;
 	private PoincareNode openLink;
 	private boolean linked = false;
 	private int levelOfDetail = 0;
@@ -31,7 +30,7 @@ public class PoincareNode extends AHierarchyElement<PoincareNode> {
 		this.nodeName = nodeName;
 		this.id = iComparableValue;
 		
-		this.position = new Point2D.Double(0,0);
+		this.position = new float[2];
 		                             
 	}
 
@@ -43,19 +42,19 @@ public class PoincareNode extends AHierarchyElement<PoincareNode> {
 		return linked;
 	}
 
-	public void setDistanceFromOrigin(double distanceFromOrigin) {
+	public void setDistanceFromOrigin(float distanceFromOrigin) {
 		this.distanceFromOrigin = distanceFromOrigin;
 	}
 
-	public double getDistanceFromOrigin() {
+	public float getDistanceFromOrigin() {
 		return distanceFromOrigin;
 	}
 
-	public void setPosition(Point2D.Double position) {
+	public void setPosition(float[] position) {
 		this.position = position;
 	}
 
-	public Point2D.Double getPosition() {
+	public float[] getPosition() {
 		return position;
 	}
 
@@ -75,19 +74,19 @@ public class PoincareNode extends AHierarchyElement<PoincareNode> {
 		return levelOfDetail;
 	}
 
-	public void setZoomedPosition(Point2D.Double zoomedPosition) {
+	public void setZoomedPosition(float[] zoomedPosition) {
 		this.zoomedPosition = zoomedPosition;
 	}
 
-	public Point2D.Double getZoomedPosition() {
+	public float[] getZoomedPosition() {
 		return zoomedPosition;
 	}
 
-	public void setChildrenAngleOffset(double childrenAngleOffset) {
+	public void setChildrenAngleOffset(float childrenAngleOffset) {
 		this.childrenAngleOffset = childrenAngleOffset;
 	}
 
-	public double getChildrenAngleOffset() {
+	public float getChildrenAngleOffset() {
 		return childrenAngleOffset;
 	}
 

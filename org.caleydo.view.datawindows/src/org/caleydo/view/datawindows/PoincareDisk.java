@@ -1,200 +1,74 @@
 package org.caleydo.view.datawindows;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.graph.tree.Tree;
 
 public class PoincareDisk {
 
-	public double radius;
+	public float radius;
 	private Tree<PoincareNode> tree;
-	// private boolean dirtyTree = true;
 	private int treeNodeCounter;
-	protected double nodeSize;
-	protected double lineWidth;
-	protected Point2D.Double absolutePosition;
+	protected float nodeSize;
+	protected float lineWidth;
+	protected float[] absolutePosition;
 	private PoincareNode centeredNode;
-	public double centeredNodeSize = 1;
-	private double layoutLenseFactor = 1.45;
+	public float centeredNodeSize = 1;
+	private float layoutLenseFactor = 1.45f;
 
 	public PoincareDisk() {
 		radius = 1;
-		nodeSize = 0.4;
+		nodeSize = 0.4f;
 		lineWidth = 2;
-		absolutePosition = new Point2D.Double(0, 0);
+		absolutePosition = new float[2];
 	}
 
 	public Tree<PoincareNode> getTree() {
 		return tree;
-
 	}
 
 	public void loadTree(Tree<PoincareNode> tree) {
 
 		this.tree = tree;
 		centeredNode = tree.getRoot();
-
-		// creating a tree for testing
-		// tree = new Tree<PoincareNode>();
-		//
-		// ViewHyperbolicNode node = new ViewHyperbolicNode(tree, nodeName,
-		// iComparableValue, glView);
-		//		
-		// PoincareNode node = new PoincareNode(tree, "Root", 1);
-		// centeredNode = node;
-		//
-		// tree.setRootNode(node);
-		// tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
-		// tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
-		// tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
-		// tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
-		// tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
-
-		// int iCount = 3344;
-		// for (PoincareNode tempNode : tree.getChildren(node)) {
-		//
-		// PoincareNode tempNode22 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode, tempNode22);
-		//
-		// tree.addChild(tempNode22, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode22, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		//
-		// PoincareNode tempNode433 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode22, tempNode433);
-		// tree.addChild(tempNode433, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode433, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		//
-		// PoincareNode tempNode33 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode22, tempNode33);
-		// tree.addChild(tempNode33, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode33, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		//
-		// tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-		// iCount--));
-		// tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
-		// iCount--));
-		// tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-		// iCount--));
-		// tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
-		// iCount--));
-		// tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-		// iCount--));
-		// tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
-		// iCount--));
-		// tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-		// iCount--));
-		//
-		// PoincareNode tempNode2 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode, tempNode2);
-		//
-		// tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// PoincareNode tempNode3 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode2, tempNode3);
-		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// PoincareNode tempNode34 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode3, tempNode34);
-		// tree.addChild(tempNode34, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode34, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// PoincareNode tempNode344 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode34, tempNode344);
-		// tree.addChild(tempNode344, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode344, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// PoincareNode tempNode3444 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode344, tempNode3444);
-		// tree.addChild(tempNode3444, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode3444, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// PoincareNode tempNode34444 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode3444, tempNode34444);
-		// tree.addChild(tempNode34444, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode34444, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// PoincareNode tempNode344444 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode34444, tempNode344444);
-		// tree.addChild(tempNode344444, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode344444, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// }
-
-		// layoutTree();
+		// applies the tree layout
 		moebiusLayoutTree(2);
-		// scaleTree(treeScaleFactor, 1);
-		// projectTree();
 
 	}
 
-	// public void centerNode(PoincareNode node) {
-	// translateTree(new Point2D.Double(node.getPosition().getX() * -1, node
-	// .getPosition().getY()
-	// * -1));
-	//
-	// }
-
+	// moves a node into the middle of the screen
 	public void centerNodeMoebius(PoincareNode node) {
-		translateTreeMoebius(new Point2D.Double(node.getPosition().getX() * -1,
-				node.getPosition().getY() * -1));
+
+		float[] translation = new float[2];
+		translation[0] = node.getPosition()[0] * -1;
+		translation[1] = node.getPosition()[1] * -1;
+
+		translateTreeMoebius(translation);
 
 	}
 
-	public void translateTreeMoebius(Point2D.Double translationVector) {
+	// translates the tree by a given vector
+	public void translateTreeMoebius(float[] translationVector) {
 
 		PoincareNode root = tree.getRoot();
-
 		translateNodeMoebius(root, translationVector);
 	}
 
+	// applies a moebiustransformation on an node calls this method for the
+	// children
 	private boolean translateNodeMoebius(PoincareNode node,
-			Point2D.Double translationVector) {
+			float[] translationVector) {
 		// do the transformation:
 		ComplexNumber tempVector = moebiusTransformation(new ComplexNumber(node
-				.getPosition().getX(), node.getPosition().getY()),
-				new ComplexNumber(translationVector.getX(), translationVector
-						.getY()));
+				.getPosition()[0], node.getPosition()[1]), new ComplexNumber(
+				translationVector[0], translationVector[1]));
 
-		Point2D.Double newPoint = new Point2D.Double(tempVector.getRealPart(),
-				tempVector.getImaginaryPart());
+		// converting the complex numbers into coordinates
+		float[] newPoint = new float[2];
+		newPoint[0] = (float) tempVector.getRealPart();
+		newPoint[1] = (float) tempVector.getImaginaryPart();
+
 		node.setPosition(newPoint);
-
 		node.setDistanceFromOrigin(this.distanceFromOrigin(newPoint));
 
 		if (tree.getChildren(node) == null) {
@@ -202,7 +76,7 @@ public class PoincareDisk {
 		}
 		ArrayList<PoincareNode> children = tree.getChildren(node);
 		int numberOfChildren = children.size();
-
+		// iterating the children of the node
 		for (int i = 0; i < numberOfChildren; i++) {
 			// recursion step
 			translateNodeMoebius(children.get(i), translationVector);
@@ -210,79 +84,20 @@ public class PoincareDisk {
 		return true;
 	}
 
-	// public void translateTree(Point2D.Double translationVector) {
-	// PoincareNode root = tree.getRoot();
-	// translateNode(root, translationVector);
-	// projectTree();
-	// }
+	public float[] zoomPoint(float[] point, float intensity) {
 
-	// private boolean translateNode(PoincareNode node,
-	// Point2D.Double translationVector) {
-	// absolutePosition.setLocation(absolutePosition.getX()
-	// + translationVector.getX(), absolutePosition.getY()
-	// + translationVector.getY());
-	//
-	// node.setPosition(new Point2D.Double(node.getPosition().getX()
-	// + translationVector.getX(), node.getPosition().getY()
-	// + translationVector.getY()));
-	//
-	// if (tree.getChildren(node) == null) {
-	// return false;
-	// }
-	// ArrayList<PoincareNode> children = tree.getChildren(node);
-	// int numberOfChildren = children.size();
-	//
-	// for (int i = 0; i < numberOfChildren; i++) {
-	//
-	// translateNode(children.get(i), translationVector);
-	// }
-	// return true;
-	// }
-
-	// public void scaleTree(double factor, int mode) {
-	// absoluteScalation = absoluteScalation * factor;
-	// if (mode == 1) {
-	// nodeSize = nodeSize * factor;
-	// }
-	//
-	// PoincareNode root = tree.getRoot();
-	// root.setPosition(scalePoint(root.getPosition(), factor));
-	// scaleNode(root, factor);
-	// projectTree();
-	// }
-	//
-	// private boolean scaleNode(PoincareNode node, double factor) {
-	// if (tree.getChildren(node) == null) {
-	// return false;
-	// }
-	// ArrayList<PoincareNode> children = tree.getChildren(node);
-	// int numberOfChildren = children.size();
-	// for (int i = 0; i < numberOfChildren; i++) {
-	// scalePoint(children.get(i).getPosition(), factor);
-	// scaleNode(children.get(i), factor);
-	// }
-	// return true;
-	// }
-
-	// private Point2D.Double scalePoint(Point2D.Double point, double factor) {
-	// Point2D.Double newPoint = new Point2D.Double(point.getX() * factor,
-	// point.getY() * factor);
-	// return newPoint;
-	// }
-
-	public Point2D.Double zoomPoint(Point2D.Double point, double intensity) {
-
-		Point2D.Double coordinate = new Point2D.Double();
-
+		float[] coordinate = new float[2];
 		intensity = (1 + intensity) - intensity * distanceFromOrigin(point);
 
-		coordinate.setLocation(point.getX() * intensity, point.getY()
-				* intensity);
+		coordinate[0] = point[0] * intensity;
+		coordinate[1] = point[1] * intensity;
 		return coordinate;
 	}
 
-	protected boolean zoomNode(PoincareNode parentNode, double intensity) {
-		double distance = distanceFromOrigin(parentNode.getPosition());
+	// zooms a node by an given intensity and calls this method for the nodes
+	// children
+	protected boolean zoomNode(PoincareNode parentNode, float intensity) {
+		float distance = distanceFromOrigin(parentNode.getPosition());
 		parentNode.setDistanceFromOrigin(distance);
 		if (tree.getChildren(parentNode) == null) {
 			return false;
@@ -290,124 +105,58 @@ public class PoincareDisk {
 
 		ArrayList<PoincareNode> children = tree.getChildren(parentNode);
 		int numberOfChildren = children.size();
+		// iterating the children
 		for (int i = 0; i < numberOfChildren; i++) {
 			children.get(i).setZoomedPosition(
 					zoomPoint(children.get(i).getPosition(), intensity));
-
 			// recursion step
 			zoomNode(children.get(i), intensity);
 		}
 		return true;
-
 	}
 
-	public void zoomTree(double intensity) {
-
+	public void zoomTree(float intensity) {
 		PoincareNode root = tree.getRoot();
-		Point2D.Double projectedPoint = new Point2D.Double(0, 0);
+		float[] projectedPoint = new float[2];
 		// start recursive algorithm
-		projectedPoint = zoomPoint(root.getPosition(), intensity);
+		projectedPoint = zoomPoint(root.getPosition(), intensity).clone();
 		root.setZoomedPosition(projectedPoint);
 		zoomNode(root, intensity);
-
 	}
 
-	public void calculateLinePoints() {
-
-	}
-
-	// public void layoutTree() {
-	// System.out.println("layoutTree Called");
-	// PoincareNode root = tree.getRoot();
-	// root.setPosition(new Point2D.Double(0, 0));
-	// root.setDistanceFromOrigin(0);
-	// treeNodeCounter = 1;
-	// root.iComparableValue = treeNodeCounter;
-	// //start recursive algorithm:
-	// layoutNode(root, 0, 2 * Math.PI);
-	// }
-
-	// The angleOffset is the starting angle of the available area
-	// angle is the length of the area
-	// All angles are in radiant
-	// private boolean layoutNode(PoincareNode parentNode, double angleOffset,
-	// double angle) {;
-	// if (tree.getChildren(parentNode) == null) {
-	// return false;
-	// }
-	//
-	// ArrayList<PoincareNode> children = tree.getChildren(parentNode);
-	// int numberOfChildren = children.size();
-	// double splitAngle = angle / (double) (numberOfChildren +2);
-	//
-	// //if the node is root, the node are note competing each other
-	// if (parentNode.iComparableValue == 1) {
-	// splitAngle = angle / (double) (numberOfChildren);
-	// }
-	//
-	// double absoluteAngle = angleOffset - angle / 2;
-	// double length = 0.3 + Math.log((double) (children.size()));
-	// if (children.size() >= 2) {
-	// length = (nodeSize * 3) / (Math.sin(splitAngle / 2));
-	// }
-	//
-	// Point2D.Double relativePoint = new Point2D.Double(0, 0);
-	// System.out.println("number of children: " + numberOfChildren);
-	// for (int i = 0; i < numberOfChildren; i++) {
-	// absoluteAngle = absoluteAngle + splitAngle;
-	//
-	// Point2D.Double newPoint = new Point2D.Double(parentNode
-	// .getPosition().getX(), parentNode.getPosition().getY());
-	//
-	// relativePoint = angleToCoordinate(absoluteAngle);
-	// newPoint.setLocation(newPoint.getX() + relativePoint.getX()
-	// * length, newPoint.getY() + relativePoint.getY() * length);
-	//
-	// children.get(i).setPosition(
-	// new Point2D.Double(newPoint.getX(), newPoint.getY()));
-	// System.out.println("Angle: " + absoluteAngle * 180 / Math.PI);
-	// System.out.println("SplitAngle: " + splitAngle * 180 / Math.PI);
-	// System.out.println("Node " + children.get(i).nodeName
-	// + " is set to: " + children.get(i).getPosition().getX()
-	// + "|" + children.get(i).getPosition().getY());
-	// // recursion step:
-	// treeNodeCounter++;
-	// children.get(i).iComparableValue = treeNodeCounter;
-	//
-	// layoutNode(children.get(i), absoluteAngle, splitAngle);
-	//
-	// }
-	// return true;
-	// }
-
-	private Point2D.Double angleToCoordinate(double angle) {
-		Point2D.Double coordinate = new Point2D.Double(0, 0);
-		coordinate.setLocation(Math.sin(angle), Math.cos(angle));
+	// converts an angle to an identity vector
+	private float[] angleToCoordinate(float angle) {
+		float[] coordinate = new float[2];
+		coordinate[0] = (float) Math.sin(angle);
+		coordinate[1] = (float) Math.cos(angle);
 		return coordinate;
 	}
 
-	public double distanceFromOrigin(Point2D.Double coordinate) {
-		double coordinateLength = coordinate.getX() * coordinate.getX()
-				+ coordinate.getY() * coordinate.getY();
-		coordinateLength = Math.sqrt(coordinateLength);
+	// returns the distance of a point from the origin
+	public float distanceFromOrigin(float[] coordinate) {
+		float coordinateLength = coordinate[0] * coordinate[0] + coordinate[1]
+				* coordinate[1];
+		coordinateLength = (float) Math.sqrt((double) coordinateLength);
 		return coordinateLength;
 	}
 
-	public double distancePoints(Point2D.Double point1, Point2D.Double point2) {
-		Point2D.Double relativePosition = new Point2D.Double();
-		relativePosition.setLocation(point1.getX() - point2.getX(), point1
-				.getY()
-				- point2.getY());
+	// returns the distance of two points
+	public float distancePoints(float[] point1, float[] point2) {
+		float[] relativePosition = new float[2];
+		relativePosition[0] = point1[0] - point2[0];
+		relativePosition[1] = point1[1] - point2[1];
 		return distanceFromOrigin(relativePosition);
 	}
 
+	// finds a node in the tree by the nodes comparable value
 	public PoincareNode getNodeByCompareableValue(int value) {
 		PoincareNode root = tree.getRoot();
-
 		PoincareNode result = compareValueNode(root, value);
 		return result;
 	}
 
+	// compares the targeted comparable value with a node and calls this method
+	// for the nodes children
 	private PoincareNode compareValueNode(PoincareNode node, int value) {
 		if (node.iComparableValue == value) {
 			return node;
@@ -421,12 +170,11 @@ public class PoincareDisk {
 		int numberOfChildren = children.size();
 		PoincareNode tempNode;
 		for (int i = 0; i < numberOfChildren; i++) {
-
+			// recursion step
 			tempNode = compareValueNode(node.getChildren().get(i), value);
 			if (tempNode != null) {
 				return tempNode;
 			}
-
 		}
 		return null;
 	}
@@ -454,6 +202,7 @@ public class PoincareDisk {
 
 	}
 
+	// calculates the moebiustransformation
 	public ComplexNumber moebiusTransformation(ComplexNumber point,
 			ComplexNumber translation) {
 
@@ -474,19 +223,23 @@ public class PoincareDisk {
 		// mode 2 = root connection is on the left side
 
 		PoincareNode root = tree.getRoot();
-		root.setPosition(new Point2D.Double(0, 0));
+		float[] nullPosition = new float[2];
+		nullPosition[0] = 0;
+		nullPosition[1] = 0;
+		root.setPosition(nullPosition);
 		root.setDistanceFromOrigin(0);
 		treeNodeCounter = 1;
 		root.iComparableValue = treeNodeCounter;
 		root.setChildrenAngleOffset(0);
 		if (mode == 2)
-			moebiusNodeLayout(root, Math.PI / 2, Math.PI, mode);
+			moebiusNodeLayout(root, (float) (Math.PI / 2), (float) Math.PI,
+					mode);
 		if (mode == 1)
 			moebiusNodeLayout(root, 0, 0, mode);
 	}
 
-	public void moebiusNodeLayout(PoincareNode parentNode, double angleOffset,
-			double angle, int mode) {
+	public void moebiusNodeLayout(PoincareNode parentNode, float angleOffset,
+			float angle, int mode) {
 
 		if (tree.getChildren(parentNode) == null) {
 			return;
@@ -494,85 +247,50 @@ public class PoincareDisk {
 
 		ArrayList<PoincareNode> children = tree.getChildren(parentNode);
 		int numberOfChildren = children.size();
-		double splitAngle = angle / (double) (numberOfChildren + 2);
-		double absoluteAngle = 0;
+		float splitAngle = angle / (float) (numberOfChildren + 2);
+		float absoluteAngle = 0;
 		// if the node is root, the node are note competing each other
 
-		// if (mode == 2) {
 		if (parentNode.iComparableValue == 1) {
-
-			splitAngle = angle / (double) (numberOfChildren);
-			if (numberOfChildren == 1)
+			splitAngle = angle / (float) (numberOfChildren);
+			if (numberOfChildren == 1) {
 				splitAngle = angle / 2;
-
+			}
 			absoluteAngle = angleOffset - angle / 2;
 			absoluteAngle = absoluteAngle + splitAngle / 2;
 		}
-
-		// }
-		// else {
-		// if (parentNode.iComparableValue == 1) {
-		// splitAngle = angle / (double) (numberOfChildren);
-		// absoluteAngle = angleOffset - angle / 2;
-		// absoluteAngle = absoluteAngle + splitAngle / 2;
-		// }
-		// }
-
 		if (parentNode.iComparableValue != 1) {
-
 			absoluteAngle = angleOffset - angle / 2;
 			absoluteAngle = absoluteAngle + splitAngle;
 		}
 
 		for (int i = 0; i < numberOfChildren; i++) {
 
-			Point2D.Double newPoint = new Point2D.Double(parentNode
-					.getPosition().getX(), parentNode.getPosition().getY());
+			float[] newPoint = new float[2];
+			newPoint[0] = parentNode.getPosition()[0];
+			newPoint[1] = parentNode.getPosition()[1];
 
-			Point2D.Double relativePoint = new Point2D.Double(0, 0);
-			relativePoint.setLocation(angleToCoordinate(absoluteAngle));
+			float[] relativePoint = new float[2];
+			relativePoint = angleToCoordinate(absoluteAngle).clone();
+			// converting to complex numbers for the Moebius transformation
+			ComplexNumber relativeTargetPoint = new ComplexNumber(
+					(double) relativePoint[0] / layoutLenseFactor,
+					(double) relativePoint[1] / layoutLenseFactor);
 
-			// double length = 1 + Math.log((double) (children.size()));
-			//			
-			// if (children.size() > 2) {
-			// //length = (nodeSize * 3) / (Math.sin(splitAngle / 2));
-			// layoutLenseFactor = 0.3 + Math.log((double) children.size());
-			//				
-			// }
-			//			
-
-			// complex numbers for the Moebius transformation
-
-			ComplexNumber relativeTargetPoint = new ComplexNumber(relativePoint
-					.getX()
-					/ layoutLenseFactor, relativePoint.getY()
-					/ layoutLenseFactor);
-
-			ComplexNumber startingPoint = new ComplexNumber(newPoint.getX(),
-					newPoint.getY());
+			ComplexNumber startingPoint = new ComplexNumber(newPoint[0],
+					newPoint[1]);
 
 			ComplexNumber targetPoint = new ComplexNumber(0, 0);
-
 			targetPoint.setValue(moebiusTransformation(startingPoint,
 					relativeTargetPoint));
 
 			// translation of the complex number position into a coordinate
-			newPoint = new Point2D.Double(targetPoint.getRealPart(),
-					targetPoint.getImaginaryPart());
+			newPoint[0] = (float) targetPoint.getRealPart();
+			newPoint[1] = (float) targetPoint.getImaginaryPart();
 
 			children.get(i).setPosition(newPoint);
 			children.get(i).setDistanceFromOrigin(
 					this.distanceFromOrigin(newPoint));
-
-			// // calculating the real angle of the node
-			// Point2D.Double oldPosition;// =new Point2D.Double();
-			// oldPosition = children.get(i).getPosition();
-			//
-			// Point2D.Double oldPositionEV = this.getEV(oldPosition);
-			// children.get(i).setChildrenAngleOffset(
-			// Math.atan2(oldPositionEV.getY(), oldPositionEV.getX()));
-			//
-			// parentNode.setChildrenAngleOffset(angle);
 
 			treeNodeCounter++;
 			children.get(i).iComparableValue = treeNodeCounter;
@@ -581,86 +299,61 @@ public class PoincareDisk {
 			absoluteAngle = absoluteAngle + splitAngle;
 		}
 		return;
-
 	}
 
-	public Point2D.Double getEV(Point2D.Double vector) {
-		if ((vector.getX() == 0) && (vector.getY() == 0)) {
-			return new Point2D.Double(1, 0);
+	// conversion of a vector into its normed form
+	public float[] getEV(float[] vector) {
+		if ((vector[0] == 0) && (vector[1] == 0)) {
+			float[] returnValue = new float[2];
+			returnValue[0] = 1;
+			returnValue[1] = 0;
+			return returnValue;
 		}
 
-		Point2D.Double eVector = new Point2D.Double();
-		eVector.setLocation(vector);
-		double length = distanceFromOrigin(vector);
-		eVector.setLocation(vector.getX() / length, vector.getY() / length);
-
+		float[] eVector = new float[2];
+		eVector = vector.clone();
+		float length = distanceFromOrigin(vector);
+		eVector[0] = vector[0] / length;
+		eVector[1] = vector[1] / length;
 		return eVector;
 
 	}
 
 	// this method converts a real distance into a distance on the disk
-	public double getMetric(Point2D.Double position, double length) {
-
-		// double modLength=distanceFromOrigin(position);
-		// normalizing the distance:
-		// double x=modLength/1.414213562;
-
-		// Point2D.Double newPoint = new Point2D.Double(x,x);
-
-		// Point2D.Double relativePoint = new Point2D.Double(length,length);
+	public float getMetric(float[] position, float length) {
 
 		ComplexNumber targetPoint = new ComplexNumber(0, 0);
 
-		Point2D.Double eVectorPos = getEV(position);
-
-		// System.out.println("position:"+position.getX()+"|"+position.getY());
-		// System.out.println("ev:"+eVectorPos.getX()+"|"+eVectorPos.getY());
-		// System.out.println("length:"+length);
-		// System.out.println("ev*length:"+eVectorPos.getX()*length+"|"+eVectorPos.getY()*length);
-
-		ComplexNumber relativeTargetPoint = new ComplexNumber(eVectorPos.getX()
-				* length, eVectorPos.getY() * length);
-
-		// ComplexNumber relativeTargetPoint = new ComplexNumber(length,
-		// length);
-
-		ComplexNumber startingPoint = new ComplexNumber(position.getX(),
-				position.getY());
-
+		float[] eVectorPos = getEV(position);
+		ComplexNumber relativeTargetPoint = new ComplexNumber(eVectorPos[0]
+				* length, eVectorPos[1] * length);
+		ComplexNumber startingPoint = new ComplexNumber(position[0],
+				position[1]);
 		targetPoint.setValue(moebiusTransformation(startingPoint,
 				relativeTargetPoint));
 
-		// System.out.println(distancePoints(newPoint,new
-		// Point2D.Double(targetPoint.getRealPart(),targetPoint.getImaginaryPart())));
-
-		// pointA=this.projectPoint(pointA);
-		// pointB=this.projectPoint(pointB);
-
-		return distancePoints(position, new Point2D.Double(targetPoint
-				.getRealPart(), targetPoint.getImaginaryPart()));
-
+		float[] returnValue = new float[2];
+		returnValue[0] = (float) targetPoint.getRealPart();
+		returnValue[1] = (float) targetPoint.getImaginaryPart();
+		return distancePoints(position, returnValue);
 	}
 
 	// this method is used to select a node without a picking manager
 	// argument area specifies the distance from a node which will be tolerated
-	public PoincareNode findNodeByCoordinate(Point2D.Double coordinate,
-			double area) {
+	public PoincareNode findNodeByCoordinate(float[] coordinate, float area) {
 
 		int counter = 1;
-		double distance;
-		double bestDistance = 10;
+		float distance;
+		float bestDistance = 10;
 		PoincareNode bestNode = null;
 
 		if (area != 0) {
 			while (this.getNodeByCompareableValue(counter) != null) {
-
 				// calculating the distance to the coordinate:
 				distance = distancePoints(getNodeByCompareableValue(counter)
 						.getZoomedPosition(), coordinate);
-
 				if (distance <= area) {
 					if (distance <= bestDistance) {
-
 						bestDistance = distance;
 						bestNode = getNodeByCompareableValue(counter);
 					}
@@ -668,51 +361,28 @@ public class PoincareDisk {
 				counter++;
 			}
 		} else {
-			double nodeRadius;
+			float nodeRadius;
 			while (this.getNodeByCompareableValue(counter) != null) {
 
 				distance = distancePoints(getNodeByCompareableValue(counter)
 						.getZoomedPosition(), coordinate);
-
 				nodeRadius = getMetric(getNodeByCompareableValue(counter)
 						.getPosition(), nodeSize);
-
 				if (distance <= nodeRadius) {
-
 					bestDistance = distance;
 					bestNode = getNodeByCompareableValue(counter);
-
 					break;
 				}
 				counter++;
 			}
 		}
-
 		return bestNode;
 	}
 
 	// the return value is normed on the unit disk
 	// the unit of the intend is procent of the resulting size
-	public double findOptimalCenterNodeSize(PoincareNode node, double intend) {
-		double currentDistance = 1;
-
-		// if (node.getTree().getRoot() != node) {
-		// currentDistance = this.distanceFromOrigin(node.getParent()
-		// .getPosition());
-		// }
-		//
-		// if (tree.getChildren(node) != null) {
-		// ArrayList<PoincareNode> children = tree.getChildren(node);
-		// int numberOfChildren = children.size();
-		// for (int i = 0; i < numberOfChildren; i++) {
-		// if (this.distanceFromOrigin(children.get(i).getPosition()) <
-		// currentDistance) {
-		// currentDistance = distanceFromOrigin(children.get(i)
-		// .getPosition());
-		// }
-		//
-		// }
-		// }
+	public float findOptimalCenterNodeSize(PoincareNode node, float intend) {
+		float currentDistance = 1;
 
 		for (int i = 1;; i++) {
 			if (this.getNodeByCompareableValue(i) == null) {
@@ -727,102 +397,65 @@ public class PoincareDisk {
 			}
 		}
 
-		return (currentDistance / 100) * (100 - intend) * 1.5;
-
+		return (currentDistance / 100) * (100 - intend) * 1.5f;
 	}
 
-	public void rotateDisk(double angle) {
-
+	public void rotateDisk(float angle) {
 		PoincareNode root = tree.getRoot();
-
 		rotateNode(root, angle);
 	}
 
-	public void rotateNode(PoincareNode parentNode, double angle) {
+	// rotates a node by a given angle around the origin
+	public void rotateNode(PoincareNode parentNode, float angle) {
 
-		Point2D.Double oldPosition;// =new Point2D.Double();
+		float[] oldPosition = new float[2];
 		oldPosition = parentNode.getPosition();
-		double length = this.distanceFromOrigin(oldPosition);
-		double oldAngle;
-		Point2D.Double oldPositionEV = this.getEV(oldPosition);
-		oldAngle = Math.atan2(oldPositionEV.getY(), oldPositionEV.getX());
-		double newAngle = oldAngle + angle;
-		// System.out.println("angle:"+angle+" NewAngle:"+newAngle);
+		float length = this.distanceFromOrigin(oldPosition);
+		float oldAngle;
+		float[] oldPositionEV = this.getEV(oldPosition);
+		oldAngle = (float) Math.atan2(oldPositionEV[1], oldPositionEV[0]);
+		float newAngle = oldAngle + angle;
 
-		Point2D.Double newPosition = new Point2D.Double();
-		newPosition.setLocation(length * Math.cos(newAngle), length
-				* Math.sin(newAngle));
-
-		// System.out.println("newPosition:"+newPosition.getX()+" "+newPosition.getX());
+		float[] newPosition = new float[2];
+		newPosition[0] = length * (float) Math.cos(newAngle);
+		newPosition[1] = length * (float) Math.sin(newAngle);
 
 		parentNode.setPosition(newPosition);
 
 		if (tree.getChildren(parentNode) == null) {
 			return;
-
 		}
 
 		ArrayList<PoincareNode> children = tree.getChildren(parentNode);
 		int numberOfChildren = children.size();
-
 		for (int i = 0; i < numberOfChildren; i++) {
-
 			rotateNode(children.get(i), angle);
 		}
-
 	}
 
-	public double calculateCorrectDiskRotation(PoincareNode currentNode) {
+	public float calculateCorrectDiskRotation(PoincareNode currentNode) {
 
 		if (currentNode != null) {
 			if (currentNode.getComparableValue() != 1) {
-				Point2D.Double currentPosition=new Point2D.Double();
-				currentPosition.setLocation(currentNode.getPosition());
-				Point2D.Double parentPosition;
-				parentPosition = currentNode.getParent().getPosition();
+				float[] currentPosition = new float[2];
+				currentPosition = currentNode.getPosition().clone();
+				float[] parentPosition;
+				parentPosition = currentNode.getParent().getPosition().clone();
 
-//				if ((currentPosition.getX() != 0)
-//						&& (currentPosition.getY() != 0)) {
-//					ComplexNumber complexPosition = new ComplexNumber();
-//					ComplexNumber direction = new ComplexNumber();
-//					complexPosition.setValue(parentPosition.getX(),
-//							parentPosition.getY());
-//					direction.setValue(currentPosition.getX(),
-//							currentPosition.getY());
-//					System.out.println("old Position:" + parentPosition.getX()
-//							+ "|" + parentPosition.getY());
-//					complexPosition = this.moebiusTransformation(
-//							complexPosition, direction);
-//
-//					System.out.println("new Position:"
-//							+ complexPosition.getRealPart() + "|"
-//							+ complexPosition.getImaginaryPart());
-//
-//					currentPosition.setLocation(complexPosition.getRealPart(),
-//							complexPosition.getRealPart());
-//				}
+				// System.out.println("ParentPos:" + parentPosition[0] + " "
+				// + parentPosition[1]);
 
-				// System.out.println("ParentPos:" + parentPosition.getX() + " "
-				// + parentPosition.getY());
+				float[] relativePosition = new float[2];
+				relativePosition[0] = parentPosition[0] - currentPosition[0];
+				relativePosition[1] = parentPosition[1] - currentPosition[1];
 
-				Point2D.Double relativePosition = new Point2D.Double();
-				relativePosition.setLocation(parentPosition.getX()
-						- currentPosition.getX(), parentPosition.getY()
-						- currentPosition.getY());
-
-				Point2D.Double eV = this.getEV(relativePosition);
-
-				double angle = Math.atan2(eV.getY(), eV.getX());
-
-				System.out.println(" angle:" + angle * 180 / Math.PI);
-
-				// this.rotateDisk(-angle+Math.PI);
+				float[] eV = getEV(relativePosition);
+				float angle = (float) Math.atan2(eV[1], eV[0]);
 
 				if (Math.abs(-angle + Math.PI) < Math.PI) {
-					return -angle + Math.PI;
-
+					return -angle + (float) Math.PI;
 				} else {
-					return -angle - Math.PI;
+					return -angle - (float) Math.PI;
 				}
 
 			}
