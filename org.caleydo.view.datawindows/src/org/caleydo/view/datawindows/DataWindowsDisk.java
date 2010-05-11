@@ -23,8 +23,6 @@ public class DataWindowsDisk extends PoincareDisk {
 	private double[] levelOfDetailLimits;
 	private double displayScaleFactorX = 10;
 	private double displayScaleFactorY = 10;
-	private double eyeTrackerBorder;
-	private double eyeTrackerPrecision;
 	private GLHyperbolic hyperbolic;
 	private double radiussquare;
 
@@ -39,8 +37,7 @@ public class DataWindowsDisk extends PoincareDisk {
 		levelOfDetailLimits[1] = 0.96;
 		// display only lines
 		levelOfDetailLimits[2] = 1;
-		eyeTrackerBorder = 0.8;
-		eyeTrackerPrecision = 0.1;
+
 		hyperbolic = master;
 
 		radiussquare = radius * radius;
@@ -63,6 +60,7 @@ public class DataWindowsDisk extends PoincareDisk {
 		// canvasWidth / 2, canvasHeight / 2);
 	}
 
+	// returns the detail level of a given distance from the middle
 	private int distanceToDetaillevel(double distance) {
 
 		if (distance <= levelOfDetailLimits[0]) {
@@ -77,11 +75,11 @@ public class DataWindowsDisk extends PoincareDisk {
 		return 0;
 	}
 
-	public void renderTree(GL glHandle, TextureManager texManager,
+	public void renderTree(GL gl, TextureManager texManager,
 			PickingManager pickManager, int iViewID, double viewingWidth,
 			double viewingHeight) {
 
-		gl = glHandle;
+		this.gl = gl;
 
 		displayScaleFactorX = viewingWidth / 2;
 		displayScaleFactorY = viewingHeight / 2;
@@ -96,10 +94,12 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		drawBackground();
 		PoincareNode root = getTree().getRoot();
-		renderNode(root, 2);
 
+		// start rendering the nodes of the tree recursively
+		renderNode(root, 2);
 	}
 
+	// renders a node, and calls this method for all children
 	public boolean renderNode(PoincareNode node, int mode) {
 
 		if (node.nonExistent == true) {
@@ -120,6 +120,7 @@ public class DataWindowsDisk extends PoincareDisk {
 				if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 3) {
 					drawLine(node, children.get(i), 10, mode);
 				}
+				// recursion step
 				renderNode(children.get(i), mode);
 			}
 		}
@@ -130,6 +131,7 @@ public class DataWindowsDisk extends PoincareDisk {
 		return true;
 	}
 
+	// draw the node to the display
 	public void drawNode(PoincareNode node, int mode) {
 
 		// for a realistic size, the size is a projected offset of the current
@@ -379,51 +381,55 @@ public class DataWindowsDisk extends PoincareDisk {
 		gl.glEnd();
 	}
 
-	public PoincareNode processEyeTrackerAction(Point2D.Double eyePosition,
+	public PoincareNode processEyeTrackerAction(Point2D.Double normedEyePosition,
 			ArrayList<NodeSlerp> arSlerpActions) {
-		Point2D.Double offsetFromMiddle = new Point2D.Double();
-		offsetFromMiddle.setLocation((eyePosition.getX() - canvasWidth / 2)
-				/ displayScaleFactorX, (eyePosition.getY() - canvasHeight / 2)
-				/ displayScaleFactorY);
+		//Point2D.Double offsetFromMiddle = new Point2D.Double();
+		
+		
+//		offsetFromMiddle.setLocation((eyePosition.getX() - canvasWidth / 2)
+//				/ displayScaleFactorX, (eyePosition.getY() - canvasHeight / 2)
+//				/ displayScaleFactorY);
+//
+//		System.out.println("offset from Middle: " + offsetFromMiddle.getX()
+	//	+ "|" + offsetFromMiddle.getY());
+		PoincareNode returnNode = null;
 
-		PoincareNode returnNode=null;
+		// comment in for eyetracker focus
+		// if (this.distanceFromOrigin(offsetFromMiddle) < eyeTrackerBorder) {
+		//System.out.println("inside of direct picking");
+		returnNode = findNodeByCoordinate(normedEyePosition, 0);
 
-		//comment in for eyetracker focus
-		//if (this.distanceFromOrigin(offsetFromMiddle) < eyeTrackerBorder) {
-			System.out.println("inside of direct picking");
-			returnNode = findNodeByCoordinate(offsetFromMiddle, 0);
+		if (returnNode != null) {
+			arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
+					new Point2D.Double(0, 0)));
+		}
 
-			if (returnNode != null) {
-				arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
-						new Point2D.Double(0, 0)));
-			}
-
-//		} else {
-//			//focus far nodes with the eyetracker
-//			System.out.println("outside of direct picking");
-//			returnNode = findNodeByCoordinate(offsetFromMiddle,
-//					eyeTrackerPrecision);
-//
-//			if (returnNode != null) {
-//
-//				System.out.println("slerp target:"
-//						+ returnNode.getPosition().getX() * eyeTrackerBorder
-//						+ "|" + returnNode.getPosition().getY()
-//						* eyeTrackerBorder);
-//
-//				Point2D.Double eV = getEV(returnNode.getPosition());
-//				double overlaping = 0.1;
-//
-//				arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
-//						new Point2D.Double(eV.getX()
-//								* (eyeTrackerBorder - overlaping), eV.getY()
-//								* (eyeTrackerBorder - overlaping))));
-//
-//				// arSlerpActions.add(new nodeSlerp(4, returnNode.getPosition(),
-//				// new Point2D.Double(0.5, 0.5)));
-//			}
-//
-//		}
+		// } else {
+		// //focus far nodes with the eyetracker
+		// System.out.println("outside of direct picking");
+		// returnNode = findNodeByCoordinate(offsetFromMiddle,
+		// eyeTrackerPrecision);
+		//
+		// if (returnNode != null) {
+		//
+		// System.out.println("slerp target:"
+		// + returnNode.getPosition().getX() * eyeTrackerBorder
+		// + "|" + returnNode.getPosition().getY()
+		// * eyeTrackerBorder);
+		//
+		// Point2D.Double eV = getEV(returnNode.getPosition());
+		// double overlaping = 0.1;
+		//
+		// arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
+		// new Point2D.Double(eV.getX()
+		// * (eyeTrackerBorder - overlaping), eV.getY()
+		// * (eyeTrackerBorder - overlaping))));
+		//
+		// // arSlerpActions.add(new nodeSlerp(4, returnNode.getPosition(),
+		// // new Point2D.Double(0.5, 0.5)));
+		// }
+		//
+		// }
 
 		return returnNode;
 	}

@@ -54,10 +54,10 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	private double mouseCoordX = 0;
 	private double mouseCoordY = 0;
 
-//	private double viewport[] = new double[16];
+	// private double viewport[] = new double[16];
 
-//	private float canvasWidth;
-//	private float canvasHeight;
+	// private float canvasWidth;
+	// private float canvasHeight;
 
 	private TrackDataProvider tracker;
 	private float[] receivedEyeData;
@@ -182,16 +182,16 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	public void displayLocal(GL gl) {
 		processEvents();
 
-//		gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, viewport, 0);
+		// gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, viewport, 0);
 
-//		if (canvasWidth != (2 / (float) viewport[0])) {
-//			canvasWidth = 2 / (float) viewport[0];
-//			layoutHotSpotInitSwitch = false;
-//		}
-//		if (canvasHeight != (2 / (float) viewport[5])) {
-//			canvasHeight = 2 / (float) viewport[5];
-//			layoutHotSpotInitSwitch = false;
-//		}
+		// if (canvasWidth != (2 / (float) viewport[0])) {
+		//canvasWidth = 2 / (float) viewport[0];
+		// layoutHotSpotInitSwitch = false;
+		// }
+		// if (canvasHeight != (2 / (float) viewport[5])) {
+		// canvasHeight = 2 / (float) viewport[5];
+		// layoutHotSpotInitSwitch = false;
+		// }
 
 		remoteElementHeatMap.getGLView().processEvents();
 		remoteElementParCoords.getGLView().processEvents();
@@ -204,7 +204,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
 
 		display(gl);
 
@@ -228,7 +227,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		float canvasWidth = viewFrustum.getWidth();
 		float canvasHeight = viewFrustum.getHeight();
-		
+
 		if (layoutHotSpotInitSwitch == false) {
 			layoutHotSpot.setLocation(canvasWidth / 2 + 1, canvasHeight / 2);
 			layoutHotSpotInitSwitch = true;
@@ -254,31 +253,32 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		remoteElementHeatMap.setTransform(transform);
 		Transform transform2 = new Transform();
 
-//		if (hyperbolicViewSquared = true) {
-//			if (canvasHeight > layoutHotSpot.getX()) {
-				transform2.setScale(new Vec3f(
-						1 * 0.6f,//(float) (layoutHotSpot.getX()) / canvasWidth,
-						1*fAspectRatio,//(float) (layoutHotSpot.getY()) / canvasHeight, 
-						1));
-//				transform2.setTranslation(new Vec3f(0, 0, 0));
+		// if (hyperbolicViewSquared = true) {
+		// if (canvasHeight > layoutHotSpot.getX()) {
+		transform2.setScale(new Vec3f(1 * 0.6f,// (float) (layoutHotSpot.getX())
+												// / canvasWidth,
+				1 * fAspectRatio,// (float) (layoutHotSpot.getY()) /
+									// canvasHeight,
+				1));
+		// transform2.setTranslation(new Vec3f(0, 0, 0));
 
-				eyeTrackerOffset.setLocation(0, canvasHeight
-						- (layoutHotSpot.getX()) / 2);
-//			} else {
-//
-//				transform2
-//						.setScale(new Vec3f(1*0.6f, 1*fAspectRatio, 1));
-////				transform2.setTranslation(new Vec3f((float) (layoutHotSpot
-////						.getX() - canvasHeight) / 2, 0, 0));
-//
-//				eyeTrackerOffset.setLocation(
-//						(layoutHotSpot.getX() - canvasHeight) / 2, 0);
-//			}
+		eyeTrackerOffset.setLocation(0, canvasHeight - (layoutHotSpot.getX())
+				/ 2);
+		// } else {
+		//
+		// transform2
+		// .setScale(new Vec3f(1*0.6f, 1*fAspectRatio, 1));
+		// // transform2.setTranslation(new Vec3f((float) (layoutHotSpot
+		// // .getX() - canvasHeight) / 2, 0, 0));
+		//
+		// eyeTrackerOffset.setLocation(
+		// (layoutHotSpot.getX() - canvasHeight) / 2, 0);
+		// }
 
-//		} else {
-//			transform2.setScale(new Vec3f((float) (layoutHotSpot.getX()) / 8,
-//					1, 1));
-//		}
+		// } else {
+		// transform2.setScale(new Vec3f((float) (layoutHotSpot.getX()) / 8,
+		// 1, 1));
+		// }
 
 		remoteElementHyperbolic.setTransform(transform2);
 		Transform transform3 = new Transform();
@@ -330,23 +330,26 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		// mouseWheelListener.mouseWheelMoved();
 		// testing the viewFocus
 		if (glMouseListener.wasRightMouseButtonPressed()) {
-//
-//			// if (testZoomViewEventSwitch == false) {
+			//
+			 if (testZoomViewEventSwitch == false) {
 
-//			this.focusViewEvent(2, 0.75, true);
-//			testZoomViewEventSwitch = true;
-//			// }
+			this.focusViewEvent(2, 0.75, true);
+			testZoomViewEventSwitch = true;
+			 }
 		}
-////
-//		if (glMouseListener.wasLeftMouseButtonPressed()) {
-//			System.out.println("triggered");
-//			this.focusViewEvent(2, 0.5, false);
-//
-//		}
+		// //
+		// if (glMouseListener.wasLeftMouseButtonPressed()) {
+		// System.out.println("triggered");
+		// this.focusViewEvent(2, 0.5, false);
+		//
+		// }
+
+//		System.out.println("width"
+//				+ this.remoteElementHyperbolic.getGLView().getParentGLCanvas().getWidth());
 
 		// simulating the eyetracker
 		if (glMouseListener.wasLeftMouseButtonPressed()) {
-			
+
 			testZoomViewEventSwitch = false;
 
 			if (glMouseListener.getPickedPoint() != null) {
@@ -363,6 +366,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 					Point2D.Double mousePosition = new Point2D.Double();
 					mousePosition.setLocation(mousePoint.getX(), mousePoint
 							.getY());
+
+					
 					
 					directHyperbolicView.setEyeTrackerAction(mousePosition,
 							new Point2D.Double((double) remoteElementHyperbolic
@@ -374,7 +379,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 											.getTransform().getScale().x(),
 									(double) remoteElementHyperbolic
 											.getTransform().getScale().y()));
-					
+
 				}
 			}
 		}
@@ -549,7 +554,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	public void init(GL gl) {
 
 		// Heat map
-		ASerializedView serView = new SerializedHeatMapView();//SerializedHierarchicalHeatMapView();//
+		ASerializedView serView = new SerializedHeatMapView();// SerializedHierarchicalHeatMapView();//
 		serView.setDataDomain(EDataDomain.GENETIC_DATA);
 		AGLView view = createView(gl, serView);
 		((AStorageBasedView) view).renderContext(true);
@@ -664,9 +669,12 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 			if (inFocus == true) {
 
 				viewSlerpStartPoint.setLocation(defaultLayoutHotSpot);
-				viewSlerpTargetPoint.setLocation(defaultLayoutHotSpot.getX()
-						+ (viewFrustum.getWidth() - defaultLayoutHotSpot.getX())
-						* zoomIntensity, defaultLayoutHotSpot.getY());
+				viewSlerpTargetPoint
+						.setLocation(
+								defaultLayoutHotSpot.getX()
+										+ (viewFrustum.getWidth() - defaultLayoutHotSpot
+												.getX()) * zoomIntensity,
+								defaultLayoutHotSpot.getY());
 				simpleSlerpActions.add(new simpleSlerp());
 
 			} else {
@@ -683,8 +691,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 				viewSlerpStartPoint.setLocation(defaultLayoutHotSpot);
 				System.out.println("layout Y: " + defaultLayoutHotSpot.getY());
 				viewSlerpTargetPoint.setLocation(defaultLayoutHotSpot.getX()
-						* (1-zoomIntensity), defaultLayoutHotSpot.getY()
-						*(1- zoomIntensity));
+						* (1 - zoomIntensity), defaultLayoutHotSpot.getY()
+						* (1 - zoomIntensity));
 
 				simpleSlerpActions.add(new simpleSlerp());
 				System.out.println("inside focus");
@@ -700,8 +708,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 			if (inFocus == true) {
 				viewSlerpStartPoint.setLocation(defaultLayoutHotSpot);
 				viewSlerpTargetPoint.setLocation(defaultLayoutHotSpot.getX()
-						* (1-zoomIntensity),viewFrustum.getHeight()-( defaultLayoutHotSpot.getY()
-						*(1- zoomIntensity)));
+						* (1 - zoomIntensity), viewFrustum.getHeight()
+						- (defaultLayoutHotSpot.getY() * (1 - zoomIntensity)));
 				simpleSlerpActions.add(new simpleSlerp());
 			} else {
 				viewSlerpStartPoint.setLocation(layoutHotSpot);
@@ -714,6 +722,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	public void doSlerpActions() {
 		if (simpleSlerpActions.isEmpty() == false) {
 			simpleSlerp singleSlerp = simpleSlerpActions.get(0);
+			
 			if (singleSlerp.doASlerp() == true) {
 				moveLayoutPoint(viewSlerpTargetPoint, viewSlerpStartPoint,
 						singleSlerp.state);
@@ -721,7 +730,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 			} else {
 				moveLayoutPoint(viewSlerpTargetPoint, viewSlerpStartPoint,
 						singleSlerp.state);
-				
+
 				simpleSlerpActions.clear();
 
 			}
