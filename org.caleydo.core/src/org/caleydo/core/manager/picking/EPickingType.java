@@ -7,6 +7,8 @@ package org.caleydo.core.manager.picking;
  * @author Alexander Lex
  */
 public enum EPickingType {
+	BACKGROUND,
+	BACKGROUND_HYPERBOLIC,
 	// bucket
 	BUCKET_MOVE_IN_ICON_SELECTION,
 	BUCKET_MOVE_OUT_ICON_SELECTION,
