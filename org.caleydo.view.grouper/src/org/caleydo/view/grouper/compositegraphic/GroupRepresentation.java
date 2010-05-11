@@ -192,6 +192,22 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		glGrouper.setDisplayListDirty();
 	}
 
+	/**
+	 * Returns the index of the drop position that is as close as possible to
+	 * the specified coordinates for the set of draggables.
+	 * 
+	 * @param gl
+	 *            GL context.
+	 * @param setDraggables
+	 *            Draggables that should be droppable at the drop position with
+	 *            the index returned by this method.
+	 * @param fMouseCoordinateX
+	 *            X coordinate of the mouse in world space.
+	 * @param fMouseCoordinateY
+	 *            Y coordinate of the mouse in world space.
+	 * @return Drop position index for the draggables, -1 if no drop position
+	 *         was found or is suitable.
+	 */
 	public int getDropPositionIndex(GL gl, Set<IDraggable> setDraggables,
 			float fMouseCoordinateX, float fMouseCoordinateY) {
 
@@ -231,13 +247,27 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		return fHeight;
 	}
 
-	public float getScaledHeight(int viewportWidth) {
+	/**
+	 * Gets the scaled height of the GroupRepresentation.
+	 * 
+	 * @param viewportHeight
+	 *            Width of the viewport.
+	 * @return Scaled height of the GroupRepresentation.
+	 */
+	public float getScaledHeight(int viewportHeight) {
 		if (drawingStrategy instanceof AGLGUIElement)
 			return ((AGLGUIElement) drawingStrategy).getScaledSizeOf(
-					viewportWidth, fHeight);
+					viewportHeight, fHeight);
 		return fHeight;
 	}
 
+	/**
+	 * Gets the scaled width of the GroupRepresentation.
+	 * 
+	 * @param viewportWidth
+	 *            Width of the viewport.
+	 * @return Scaled width of the GroupRepresentation.
+	 */
 	public float getScaledWidth(int viewportWidth) {
 		if (drawingStrategy instanceof AGLGUIElement)
 			return ((AGLGUIElement) drawingStrategy).getScaledSizeOf(
@@ -250,6 +280,14 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		return fWidth;
 	}
 
+	/**
+	 * Calculates parameters that are necessary for drawing.
+	 * 
+	 * @param gl
+	 *            GL Context.
+	 * @param textRenderer
+	 *            TextRenderer.
+	 */
 	public void calculateDrawingParameters(GL gl, TextRenderer textRenderer) {
 		drawingStrategy.calculateDrawingParameters(gl, textRenderer, this);
 	}
@@ -264,21 +302,26 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	}
 
 	@Override
-	public void setToMaxWidth(float fWidth, float fChildWidthOffseth) {
+	public void setToMaxWidth(float fWidth, float fChildWidthOffset) {
 
 		this.fWidth = fWidth;
 		for (ICompositeGraphic child : alChildren) {
-			child
-					.setToMaxWidth(fWidth - fChildWidthOffseth,
-							fChildWidthOffseth);
+			child.setToMaxWidth(fWidth - fChildWidthOffset, fChildWidthOffset);
 		}
 
 	}
 
+	/**
+	 * @return True, if the group is collapsed, false otherwise.
+	 */
 	public boolean isCollapsed() {
 		return bCollapsed;
 	}
 
+	/**
+	 * @param bCollapsed
+	 *            Determines whether the group shall be collapsed or not.
+	 */
 	public void setCollapsed(boolean bCollapsed) {
 		this.bCollapsed = bCollapsed;
 		glGrouper.setHierarchyChanged(true);
@@ -308,22 +351,36 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		return alChildren;
 	}
 
+	/**
+	 * @return List of Y coordinates of drop positions.
+	 */
 	public ArrayList<Float> getDropPositions() {
 		return alDropPositions;
 	}
 
+	@Override
 	public void setHeight(float fHeight) {
 		this.fHeight = fHeight;
 	}
 
+	@Override
 	public void setWidth(float fWidth) {
 		this.fWidth = fWidth;
 	}
 
+	/**
+	 * @return Current drawing strategy of the group.
+	 */
 	public IGroupDrawingStrategy getDrawingStrategy() {
 		return drawingStrategy;
 	}
 
+	/**
+	 * Sets the drawing strategy of the current group.
+	 * 
+	 * @param drawingStrategy
+	 *            Drawing strategy the group should use.
+	 */
 	public void setDrawingStrategy(IGroupDrawingStrategy drawingStrategy) {
 		this.drawingStrategy = drawingStrategy;
 	}
@@ -591,16 +648,20 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		return bLeaf;
 	}
 
+	/**
+	 * @param bLeaf
+	 *            Determines whether the group should be treated as leaf
+	 *            composite or not.
+	 */
 	public void setLeaf(boolean bLeaf) {
 		this.bLeaf = bLeaf;
 	}
 
+	/**
+	 * @return Gets the position where dragging of the group started.
+	 */
 	public Vec3f getDraggingStartPosition() {
 		return vecDraggingStartPosition;
-	}
-
-	public void setDraggingStartPosition(Vec3f vecDraggingStartPosition) {
-		this.vecDraggingStartPosition = vecDraggingStartPosition;
 	}
 
 	@Override
@@ -626,14 +687,26 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		}
 	}
 
+	/**
+	 * @return ClusterNode that corresponds to the GroupRepresentation.
+	 */
 	public ClusterNode getClusterNode() {
 		return clusterNode;
 	}
 
+	/**
+	 * @return All selection types of the group.
+	 */
 	public Set<SelectionType> getSelectionTypes() {
 		return selectionTypes;
 	}
 
+	/**
+	 * Adds the specified selection types to the group.
+	 * 
+	 * @param selectionTypes
+	 *            SelectionTypes that should be added.
+	 */
 	private void addSelectionTypes(Set<SelectionType> selectionTypes) {
 		this.selectionTypes.addAll(selectionTypes);
 	}

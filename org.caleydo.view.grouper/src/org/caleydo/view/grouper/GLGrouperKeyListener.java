@@ -5,6 +5,12 @@ import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 
+/**
+ * Keyboard listener for GLGrouper.
+ * 
+ * @author Christian
+ * 
+ */
 public class GLGrouperKeyListener extends GLKeyListener<GLGrouper> {
 
 	private GLGrouper glGrouper;

@@ -158,7 +158,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		eventPublisher.triggerEvent(selectionTypeEvent);
 		selectionManager.addTypeToDeltaBlacklist(selectionTypeClicked);
 
-		renderStyle = new GrouperRenderStyle(this, viewFrustum);
+		renderStyle = new GrouperRenderStyle(viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32),
 				true, true);
 
@@ -206,6 +206,9 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		init(gl);
 	}
 
+	/**
+	 * Creates a new shallow tree for cluster nodes and GroupRepresentations.
+	 */
 	private void createNewHierarchy() {
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
 		IGroupDrawingStrategy groupDrawingStrategy = drawingStrategyManager
@@ -248,6 +251,14 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		// useCase.replaceVirtualArray(idCategory, vaType, virtualArray)
 	}
 
+	/**
+	 * Creates a new composite GroupRepresentation tree according to the
+	 * specified cluster node tree.
+	 * 
+	 * @param tree
+	 *            Tree of cluster nodes that should be used to build a composite
+	 *            GroupRepresentation tree.
+	 */
 	private void initHierarchy(Tree<ClusterNode> tree) {
 
 		ClusterNode rootNode = tree.getRoot();
@@ -265,6 +276,20 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		rootGroup.calculateHierarchyLevels(0);
 	}
 
+	/**
+	 * Recursive method that builds the composite tree of GroupRepresentations.
+	 * Thereby each GroupRepresentation object corresponds to one ClusterNode of
+	 * the specified tree.
+	 * 
+	 * @param tree
+	 *            Tree of cluster nodes that should be used to build a composite
+	 *            GroupRepresentation tree.
+	 * @param currentNode
+	 *            Current Cluster node for which a GroupRepresentation will be
+	 *            created.
+	 * @param parentGroupRep
+	 *            Parent of the GroupRepresentation that will be created.
+	 */
 	private void buildGroupHierarchyFromTree(Tree<ClusterNode> tree,
 			ClusterNode currentNode, GroupRepresentation parentGroupRep) {
 
@@ -290,6 +315,10 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		}
 	}
 
+	/**
+	 * This method updates the cluster node tree in the set (from use case)
+	 * according to the structure of the composite GroupRepresentation tree.
+	 */
 	public void updateClusterTreeAccordingToGroupHierarchy() {
 		tree = new Tree<ClusterNode>();
 		ClusterNode rootNode = rootGroup.getClusterNode();
@@ -337,6 +366,19 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		triggerSelectionEvents();
 	}
 
+	/**
+	 * Recursive method that builds the a tree of ClusterNodes according to the
+	 * composite GroupRepresentation tree. Thereby each GroupRepresentation
+	 * object corresponds to one ClusterNode.
+	 * 
+	 * @param tree
+	 *            Tree of cluster nodes that shall recursively be built.
+	 * @param parentNode
+	 *            Parent of the cluster nodes that will be created in one step.
+	 * @param parentGroupRep
+	 *            Parent of the GroupRepresentation whose children will be used
+	 *            to create cluster nodes.
+	 */
 	private void buildTreeFromGroupHierarchy(Tree<ClusterNode> tree,
 			ClusterNode parentNode, GroupRepresentation parentGroupRep) {
 		ArrayList<ICompositeGraphic> alChildren = parentGroupRep.getChildren();
@@ -454,6 +496,15 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 			contextMenu.render(gl, this);
 	}
 
+	/**
+	 * Builds a display list of graphical elements that do not have to be
+	 * updated in every frame.
+	 * 
+	 * @param gl
+	 *            GL context.
+	 * @param iGLDisplayListIndex
+	 *            Index of display list.
+	 */
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
@@ -777,6 +828,9 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		}
 	}
 
+	/**
+	 * Triggers events for currently selected elements.
+	 */
 	private void triggerSelectionEvents() {
 
 		// ClearSelectionsEvent clearSelectionsEvent = new
@@ -942,22 +996,50 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		}
 	}
 
+	/**
+	 * @return True if the control key is pressed, false otherwise.
+	 */
 	public boolean isControlPressed() {
 		return bControlPressed;
 	}
 
+	/**
+	 * Sets whether the control key is pressed or not.
+	 * 
+	 * @param bControlPressed
+	 *            Specifies if the control key is pressed.
+	 */
 	public void setControlPressed(boolean bControlPressed) {
 		this.bControlPressed = bControlPressed;
 	}
 
+	/**
+	 * @return True if the hierarchy (composite GroupRepresentation tree) has
+	 *         changed, false otherwise.
+	 */
 	public boolean isHierarchyChanged() {
 		return bHierarchyChanged;
 	}
 
+	/**
+	 * Sets whether the hierarchy (composite GroupRepresentation tree) was
+	 * changed or not.
+	 * 
+	 * @param bHierarchyChanged
+	 *            Specifies if the hierarchy has changed.
+	 */
 	public void setHierarchyChanged(boolean bHierarchyChanged) {
 		this.bHierarchyChanged = bHierarchyChanged;
 	}
 
+	/**
+	 * Adds a GroupRepresentation object to the registered GroupRepresentations.
+	 * 
+	 * @param iID
+	 *            ID for the GroupRepresentation object.
+	 * @param groupRepresentation
+	 *            The GroupRepresentation object to be added.
+	 */
 	public void addGroupRepresentation(int iID,
 			GroupRepresentation groupRepresentation) {
 		hashGroups.put(iID, groupRepresentation);
@@ -968,6 +1050,12 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 	// hashElements.put(iID, elementRepresentation);
 	// }
 
+	/**
+	 * Removes/unregisters a GroupRepresentation object.
+	 * 
+	 * @param iID
+	 *            ID of the GroupRepresentation object that shall be removed.
+	 */
 	public void removeGroupRepresentation(int iID) {
 		hashGroups.remove(iID);
 	}
@@ -976,6 +1064,23 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 	// hashElements.remove(iID);
 	// }
 
+	/**
+	 * Returns the ordered list of composites that correspond to the specified
+	 * set of group IDs. The ordering is given by the appearance of the
+	 * composites in the tree, hence their visual appearance from top to bottom
+	 * of this view.
+	 * 
+	 * @param setGroupIds
+	 *            IDs of the composites that should be retrieved.
+	 * @param topLevelElementsOnly
+	 *            Specifies whether the list should only contain top level
+	 *            composites, i.e. if the specified set of ids contains
+	 *            composites with parent-child relation, this parameter
+	 *            determines if only the parents or parents and children should
+	 *            be added to the list.
+	 * @return The ordered list of composites that correspond to the specified
+	 *         set of group IDs
+	 */
 	private ArrayList<ICompositeGraphic> getOrderedCompositeList(
 			Set<Integer> setGroupIds, boolean topLevelElementsOnly) {
 
@@ -993,6 +1098,16 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		return alOrderedTopLevelComposites;
 	}
 
+	/**
+	 * Creates a new Group as child of the common parent of the specified
+	 * GroupRepresentations. If all of the specified GroupRepresentations have
+	 * the same parent, they will be the children of the newly created group,
+	 * otherwise the newly created group's children are copies of them.
+	 * 
+	 * @param setContainedGroups
+	 *            IDs of the GroupRepresentations a new parent shall be created
+	 *            for.
+	 */
 	public void createNewGroup(Set<Integer> setContainedGroups) {
 
 		tree = new Tree<ClusterNode>();
@@ -1016,6 +1131,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
 			if (composite.getParent() != commonParent) {
 				bSharedParent = false;
+				break;
 			}
 		}
 
@@ -1051,6 +1167,14 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		setDisplayListDirty();
 	}
 
+	/**
+	 * Finds the common parent of the specified composites, i.e. the first
+	 * composite that all composites have along their parent paths.
+	 * 
+	 * @param alComposites
+	 *            Composites whose common parent shall be found for.
+	 * @return The common parent if there exists one, null otherwise.
+	 */
 	private ICompositeGraphic findCommonParent(
 			ArrayList<ICompositeGraphic> alComposites) {
 
@@ -1092,10 +1216,22 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		// selectionManager.add(iID);
 	}
 
+	/**
+	 * Sets the groups that shall be copied to the specified set of groups.
+	 * 
+	 * @param setGroupsToCopy
+	 *            IDs of groups that shall be copied.
+	 */
 	public void copyGroups(Set<Integer> setGroupsToCopy) {
 		setCopiedGroups = setGroupsToCopy;
 	}
 
+	/**
+	 * Pastes copied groups as children of the specified group.
+	 * 
+	 * @param iParentGroupID
+	 *            ID of the group where the copied groups should be pasted in.
+	 */
 	public void pasteGroups(int iParentGroupID) {
 		tree = new Tree<ClusterNode>();
 		GroupRepresentation parent = hashGroups.get(iParentGroupID);
@@ -1120,6 +1256,12 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		setDisplayListDirty();
 	}
 
+	/**
+	 * Removes the specified groups from the composite GroupRepresentation tree.
+	 * 
+	 * @param setGroupsToDelete
+	 *            IDs of groups that should be deleted.
+	 */
 	public void deleteGroups(Set<Integer> setGroupsToDelete) {
 
 		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedCompositeList(
@@ -1189,6 +1331,12 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 
 	}
 
+	/**
+	 * Triggers a dialog to rename the specified group.
+	 * 
+	 * @param groupID
+	 *            ID of the group that shall be renamed.
+	 */
 	public void renameGroup(int groupID) {
 		final GroupRepresentation groupRep = hashGroups.get(groupID);
 		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(
