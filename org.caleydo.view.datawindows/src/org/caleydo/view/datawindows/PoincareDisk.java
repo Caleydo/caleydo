@@ -287,14 +287,14 @@ public class PoincareDisk {
 			// translation of the complex number position into a coordinate
 			newPoint[0] = (float) targetPoint.getRealPart();
 			newPoint[1] = (float) targetPoint.getImaginaryPart();
-       
+
 			children.get(i).setPosition(newPoint);
 			children.get(i).setDistanceFromOrigin(
 					this.distanceFromOrigin(newPoint));
 
 			treeNodeCounter++;
 			children.get(i).iComparableValue = treeNodeCounter;
-			System.out.println("node layout:"+ treeNodeCounter);
+			System.out.println("node layout:" + treeNodeCounter);
 			// recursion step:
 			moebiusNodeLayout(children.get(i), absoluteAngle, splitAngle, mode);
 			absoluteAngle = absoluteAngle + splitAngle;
@@ -478,6 +478,47 @@ public class PoincareDisk {
 			} else {
 				// Todo: calculate Root
 				System.out.println("vorsicht root");
+				float[] currentPosition = new float[2];
+				currentPosition = currentNode.getPosition().clone();
+				float[] childPosition;
+				// the first child of the root
+				childPosition = currentNode.getChildren().get(0).getPosition();
+
+				float[] relativePosition = new float[2];
+				relativePosition[0] = -currentPosition[0];
+				relativePosition[1] = -currentPosition[1];
+
+				currentPosition[0] = 0;
+				currentPosition[1] = 0;
+
+				ComplexNumber moebiusTransformation = new ComplexNumber();
+				ComplexNumber complexParentPosition = new ComplexNumber();
+
+				moebiusTransformation.setValue((double) relativePosition[0],
+						(double) relativePosition[1]);
+				complexParentPosition.setValue((double) childPosition[0],
+						(double) childPosition[1]);
+
+				complexParentPosition = this.moebiusTransformation(
+						complexParentPosition, moebiusTransformation);
+
+				relativePosition[0] = (float) complexParentPosition
+						.getRealPart();
+				relativePosition[1] = (float) complexParentPosition
+						.getImaginaryPart();
+
+				float[] eV = getEV(relativePosition);
+				float angle = (float) Math.atan2(eV[1], eV[0]);
+
+				float angleOffset = ((float) Math.PI / (float) currentNode
+						.getChildren().size()) / 2;
+				angle = angle + angleOffset + (float) Math.PI / 2;
+				if (Math.abs(-angle + Math.PI) < Math.PI) {
+					return -angle + (float) Math.PI;
+				} else {
+					return -angle - (float) Math.PI;
+				}
+
 			}
 		} else {
 			System.out.println("null");

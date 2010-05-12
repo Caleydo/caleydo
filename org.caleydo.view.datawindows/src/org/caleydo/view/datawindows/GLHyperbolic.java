@@ -680,21 +680,20 @@ public class GLHyperbolic extends AGLView {
 		//if (this.get != null) {
 			float[] mouseCoord = new float[2];
 
-			// norming the mouseposition
+			// normation of the mouseposition
 			float factorX = 1 / (float) (this.getParentGLCanvas().getWidth() * scalation[0]);
 			float factorY = 1 / (float) (this.getParentGLCanvas().getHeight());
-
-		
 
 			mouseCoord[0] = (mousePoint[0] * factorX - offset[0]) * 2 - 1;
 			mouseCoord[1] = ((this.getParentGLCanvas().getHeight() - mousePoint[1])
 					* factorY - offset[1]) * 2 - 1;
 
-	
 			PoincareNode selectedNode = disk.processEyeTrackerAction(mouseCoord.clone(),
 					arSlerpActions);
 
-	
+			if (selectedNode ==disk.getCenteredNode()) {
+				return;
+			}
 
 		if (selectedNode != null) {
 			disk.setCenteredNode(selectedNode);
@@ -707,19 +706,9 @@ public class GLHyperbolic extends AGLView {
 				disk.setCenteredNode(null);
 			}
 
-			//correctDiskAngle();
-
-		//} else {
-			//disk.setCenteredNode(null);
-
-	//	}
-
 		correctDiskAngle();
 	}
 
-	public void setDimensions(Point2D.Double dimensions) {
-		// canvasWidth=(float) dimensions.getX();
-		// canvasHeight=(float) dimensions.getY();
-	}
+
 
 }
