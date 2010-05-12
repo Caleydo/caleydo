@@ -327,29 +327,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		// disk.renderTree(gl, textureManager, pickingManager, iUniqueID,
 		// (double) canvasWidth, (double) canvasHeight);
 
-		//		
-
-		// mouseWheelListener.mouseWheelMoved();
-		// testing the viewFocus
-		if (glMouseListener.wasRightMouseButtonPressed()) {
-			//
-			
-			System.out.println("right click");
-			GLPathway glPathwayView = this.directHyperbolicView.createPathwayView(this.directHyperbolicView.glHandle);
-			glPathwayView.broadcastElements(EVAOperation.APPEND_UNIQUE);
-
-			ViewHyperbolicNode node = new ViewHyperbolicNode(this.directHyperbolicView.tree, "pathway", 1,
-					glPathwayView);
-			
-			this.directHyperbolicView.disk.insertNode(node, this.directHyperbolicView.disk.getCenteredNode());
-			
-//			if (testZoomViewEventSwitch == false) {
-//
-//				this.focusViewEvent(2, 0.75, true);
-//				testZoomViewEventSwitch = true;
-//			}
-		}
-
 		// // simulating the eyetracker
 		// if (glMouseListener.wasLeftMouseButtonPressed()) {
 		//
@@ -506,13 +483,24 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 				}
 
 				break;
+			case RIGHT_CLICKED:
+				
+				System.out.println("right click");
+				GLPathway glPathwayView = this.directHyperbolicView.createPathwayView(this.directHyperbolicView.glHandle);
+				glPathwayView.broadcastElements(EVAOperation.APPEND_UNIQUE);
+
+				ViewHyperbolicNode node = new ViewHyperbolicNode(this.directHyperbolicView.tree, "pathway", 1,
+						glPathwayView);
+				
+				this.directHyperbolicView.disk.insertNode(node, this.directHyperbolicView.disk.getCenteredNode());
+				break;
 			}
 			break;
 
 		case VIEW_SELECTION:
 			switch (pickingMode) {
 			case MOUSE_OVER:
-				this.focusViewEvent(iExternalID, 0.75, true);
+//				this.focusViewEvent(iExternalID, 0.75, true);
 				break;
 			case CLICKED:
 				break;
