@@ -67,7 +67,7 @@ public class GLHyperbolic extends AGLView {
 
 	private Random randomGenerator = new Random(19580427);
 
-	private Tree<PoincareNode> tree;
+	public Tree<PoincareNode> tree;
 	public float diskZoomIntensity = 0;
 
 	private ArrayList<simpleSlerp> simpleSlerpActions;
@@ -76,6 +76,7 @@ public class GLHyperbolic extends AGLView {
 
 	private float previousSimpleSlerp;
 
+	public GL glHandle;
 	/**
 	 * Constructor.
 	 * 
@@ -175,7 +176,7 @@ public class GLHyperbolic extends AGLView {
 
 	@Override
 	public void display(GL gl) {
-
+       this.glHandle=gl;
 		// receivedEyeData = tracker.getEyeTrackData();
 		//
 		// int offsetX = upperLeftScreenPos.x;
@@ -337,13 +338,13 @@ public class GLHyperbolic extends AGLView {
 				// // if (testZoomViewEventSwitch == false) {
 				// directHyperbolicView.disk.rotateDisk(Math.PI/180);
 
-				this.previousSimpleSlerp = 0;
-				simpleSlerp actualSlerp = new simpleSlerp();
-				actualSlerp.endingCondition = disk.calculateCorrectDiskRotation(disk
-						.getCenteredNode());
-				actualSlerp.speed = 10;
-
-				simpleSlerpActions.add(actualSlerp);
+//				this.previousSimpleSlerp = 0;
+//				simpleSlerp actualSlerp = new simpleSlerp();
+//				actualSlerp.endingCondition = disk
+//						.calculateCorrectDiskRotation(disk.getCenteredNode());
+//				actualSlerp.speed = 10;
+//
+//				simpleSlerpActions.add(actualSlerp);
 
 				// this.focusViewEvent(2, 0.75, true);
 				// testZoomViewEventSwitch = true;
@@ -660,7 +661,7 @@ public class GLHyperbolic extends AGLView {
 
 	}
 
-	private GLPathway createPathwayView(GL gl) {
+	public GLPathway createPathwayView(GL gl) {
 
 		SerializedPathwayView serPathway = new SerializedPathwayView(dataDomain);
 		// serTestPathway.setPathwayID(generalManager.getPathwayManager().searchPathwayByName("TGF-beta signaling pathway",

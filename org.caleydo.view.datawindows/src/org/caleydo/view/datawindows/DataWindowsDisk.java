@@ -395,5 +395,12 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		return returnNode;
 	}
+	
+	public void insertNode(PoincareNode node, PoincareNode parentNode){
+		this.getTree().addChild(parentNode, node);
+		this.moebiusLayoutTree(2);
+		
+		
+	}
 
 }

@@ -442,12 +442,28 @@ public class PoincareDisk {
 				float[] parentPosition;
 				parentPosition = currentNode.getParent().getPosition().clone();
 
-				// System.out.println("ParentPos:" + parentPosition[0] + " "
-				// + parentPosition[1]);
-
 				float[] relativePosition = new float[2];
-				relativePosition[0] = parentPosition[0] - currentPosition[0];
-				relativePosition[1] = parentPosition[1] - currentPosition[1];
+				relativePosition[0] =  - currentPosition[0];
+				relativePosition[1] =  - currentPosition[1];
+
+				currentPosition[0] = 0;
+				currentPosition[1] = 0;
+
+				ComplexNumber moebiusTransformation = new ComplexNumber();
+				ComplexNumber complexParentPosition = new ComplexNumber();
+
+				moebiusTransformation.setValue((double) relativePosition[0],
+						(double) relativePosition[1]);
+				complexParentPosition.setValue((double) parentPosition[0],
+						(double) parentPosition[1]);
+
+				complexParentPosition = this.moebiusTransformation(
+						complexParentPosition, moebiusTransformation);
+
+				relativePosition[0] = (float) complexParentPosition
+						.getRealPart();
+				relativePosition[1] = (float) complexParentPosition
+						.getImaginaryPart();
 
 				float[] eV = getEV(relativePosition);
 				float angle = (float) Math.atan2(eV[1], eV[0]);
