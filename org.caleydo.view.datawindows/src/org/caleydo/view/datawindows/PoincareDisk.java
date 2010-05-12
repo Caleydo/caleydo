@@ -287,13 +287,14 @@ public class PoincareDisk {
 			// translation of the complex number position into a coordinate
 			newPoint[0] = (float) targetPoint.getRealPart();
 			newPoint[1] = (float) targetPoint.getImaginaryPart();
-
+       
 			children.get(i).setPosition(newPoint);
 			children.get(i).setDistanceFromOrigin(
 					this.distanceFromOrigin(newPoint));
 
 			treeNodeCounter++;
 			children.get(i).iComparableValue = treeNodeCounter;
+			System.out.println("node layout:"+ treeNodeCounter);
 			// recursion step:
 			moebiusNodeLayout(children.get(i), absoluteAngle, splitAngle, mode);
 			absoluteAngle = absoluteAngle + splitAngle;
@@ -436,15 +437,15 @@ public class PoincareDisk {
 	public float calculateCorrectDiskRotation(PoincareNode currentNode) {
 
 		if (currentNode != null) {
-			if (currentNode.getComparableValue() != 1) {
+			if (currentNode.iComparableValue != 1) {
 				float[] currentPosition = new float[2];
 				currentPosition = currentNode.getPosition().clone();
 				float[] parentPosition;
 				parentPosition = currentNode.getParent().getPosition().clone();
 
 				float[] relativePosition = new float[2];
-				relativePosition[0] =  - currentPosition[0];
-				relativePosition[1] =  - currentPosition[1];
+				relativePosition[0] = -currentPosition[0];
+				relativePosition[1] = -currentPosition[1];
 
 				currentPosition[0] = 0;
 				currentPosition[1] = 0;
@@ -474,9 +475,10 @@ public class PoincareDisk {
 					return -angle - (float) Math.PI;
 				}
 
+			} else {
+				// Todo: calculate Root
+				System.out.println("vorsicht root");
 			}
-			// Todo: calculate Root
-			System.out.println("root");
 		} else {
 			System.out.println("null");
 		}
