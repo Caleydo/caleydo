@@ -17,6 +17,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.vislink.VisLinkAnimationStage;
 import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
 
+
 /**
  * Specialized connection line renderer for bucket view.
  * 
@@ -40,6 +41,7 @@ public class GLConsecutiveConnectionGraphDrawing
 	private int parCoordID = getSpecialViewID(PARCOORDS);
 	private int gapPosition = -1;
 	private int gapSuccessorID = -1;
+	private int gapPredecessorID = -1;
 	private boolean multiplePoints = false;
 	private boolean startingAtCenter = false;
 
@@ -442,229 +444,33 @@ public class GLConsecutiveConnectionGraphDrawing
 		int parCoordsPredecessorID, int parCoordsSuccessorID, Vec3f src, Vec3f controlPoint) {
 
 		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>();
+		gapPredecessorID = viewsToBeVisited.get(1);
+		Vec3f centerPoint = null;
 
-		Vec3f vecViewBundlingPoint = null;
-		VisLinkAnimationStage currentStage = null;
-		VisLinkAnimationStage bundling = null;
-
+			
 		// if rendering of graph starts at focus level
 		if (startingAtCenter) {
-			//TODO implementation of lines when a pathway is at focus level
-			for (int key : viewsToBeVisited) {
-				if (key == gapSuccessorID) {
-					if (key == parCoordID) {
-						if (multiplePoints)
-							src = calculateBundlingPoint(calculateCenter(heatmapSuccessor), controlPoint);
-						else
-							src = heatmapSuccessor.get(0).get(0);
-					}
-					else if (key == heatMapID) {
-						if (multiplePoints)
-							src = calculateBundlingPoint(calculateCenter(parCoordsSuccessor), controlPoint);
-						else
-							src = parCoordsSuccessor.get(0).get(0);
-					}
-					else {
-						if (activeViewID == heatMapID) {
-							if (multiplePoints)
-								src = calculateBundlingPoint(calculateCenter(heatmapSuccessor), controlPoint);
-							else
-								src = heatmapSuccessor.get(0).get(0);
-						}
-						else if (activeViewID == parCoordID) {
-							if (multiplePoints)
-								src =
-									calculateBundlingPoint(calculateCenter(parCoordsSuccessor), controlPoint);
-							else
-								src = parCoordsSuccessor.get(0).get(0);
-						}
-					}
-				}
-
-				if (key == parCoordID && heatMapID == activeViewID) {
-					if (parCoordsPredecessor.size() > 0) {
-						// calculating control points and local bundling points
-						controlPoint = calculateControlPoint(calculateCenter(parCoordsPredecessor), src);
-						if (controlPoint == null)
-							return;
-
-						vecViewBundlingPoint =
-							calculateBundlingPoint(calculateCenter(parCoordsPredecessor), controlPoint);
-
-						if (multiplePoints) {
-							if (parCoordsPredecessorID != heatMapID) {
-								currentStage =
-									renderLinesOfCurrentStage(gl, null, -1, vecViewBundlingPoint,
-										controlPoint, PARCOORDS, null);
-
-								if (parCoordsPredecessorID != heatMapID)
-									bundling = new VisLinkAnimationStage(true);
-								else
-									bundling = new VisLinkAnimationStage();
-								bundling
-									.addLine(createControlPoints(src, vecViewBundlingPoint, controlPoint));
-
-								connectionLinesAllViews.add(bundling);
-								connectionLinesAllViews.add(currentStage);
-							}
-							else {
-								currentStage =
-									renderLinesOfCurrentStage(gl, null, -1, vecViewBundlingPoint,
-										controlPoint, PARCOORDS, null);
-								currentStage.setReverseLineDrawingDirection(true);
-								if (parCoordsPredecessorID != heatMapID)
-									bundling = new VisLinkAnimationStage(true);
-								else
-									bundling = new VisLinkAnimationStage();
-								bundling
-									.addLine(createControlPoints(src, vecViewBundlingPoint, controlPoint));
-								connectionLinesAllViews.add(currentStage);
-
-								currentStage = new VisLinkAnimationStage();
-								ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
-								for (ArrayList<Vec3f> alCurrentPoints : heatmapSuccessor) {
-									if (alCurrentPoints.size() > 1)
-										renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
-									else
-										pointsToDepthSort.add(alCurrentPoints.get(0));
-								}
-								for (Vec3f currentPoint : depthSort(pointsToDepthSort))
-									currentStage.addLine(createControlPoints(currentPoint,
-										vecViewBundlingPoint, controlPoint));
-								connectionLinesAllViews.add(currentStage);
-
-							}
-						}
-						else {
-							// calculating bundling line
-							if (parCoordsPredecessorID != heatMapID)
-								bundling = new VisLinkAnimationStage(true);
-							else
-								bundling = new VisLinkAnimationStage();
-
-							bundling.addLine(createControlPoints(src, calculateCenter(parCoordsPredecessor),
-								controlPoint));
-							connectionLinesAllViews.add(bundling);
-						}
-						if (parCoordsSuccessor.size() > 0)
-							src = calculateCenter(parCoordsSuccessor);
-						else
-							src = calculateCenter(heatmapSuccessor);
-					}
-				}
-				else if (key == parCoordID && parCoordID == activeViewID) {
-					// HEATMAP needs to provide bundling points
-					if (parCoordsPredecessor.size() > 0)
-						src = calculateCenter(parCoordsPredecessor);
-				}
-
-				else if (key == heatMapID && parCoordID == activeViewID) {
-					if (heatmapPredecessor.size() > 0) {
-						// calculating control points and local bundling points
-						controlPoint = calculateControlPoint(calculateCenter(heatmapPredecessor), src);
-						if (controlPoint == null)
-							return;
-
-						vecViewBundlingPoint =
-							calculateBundlingPoint(calculateCenter(heatmapPredecessor), controlPoint);
-
-						if (multiplePoints) {
-							if (heatMapPredecessorID != parCoordID) {
-								currentStage =
-									renderLinesOfCurrentStage(gl, null, -1, vecViewBundlingPoint,
-										controlPoint, HEATMAP, null);
-
-								if (heatMapPredecessorID != parCoordID)
-									bundling = new VisLinkAnimationStage(true);
-								else
-									bundling = new VisLinkAnimationStage();
-								bundling
-									.addLine(createControlPoints(src, vecViewBundlingPoint, controlPoint));
-
-								connectionLinesAllViews.add(bundling);
-								connectionLinesAllViews.add(currentStage);
-							}
-							else {
-								currentStage =
-									renderLinesOfCurrentStage(gl, null, -1, vecViewBundlingPoint,
-										controlPoint, HEATMAP, null);
-								currentStage.setReverseLineDrawingDirection(true);
-								if (heatMapPredecessorID != parCoordID)
-									bundling = new VisLinkAnimationStage(true);
-								else
-									bundling = new VisLinkAnimationStage();
-								bundling
-									.addLine(createControlPoints(src, vecViewBundlingPoint, controlPoint));
-								connectionLinesAllViews.add(currentStage);
-
-								currentStage = new VisLinkAnimationStage();
-								ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
-								for (ArrayList<Vec3f> alCurrentPoints : parCoordsSuccessor) {
-									if (alCurrentPoints.size() > 1)
-										renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
-									else
-										pointsToDepthSort.add(alCurrentPoints.get(0));
-								}
-								for (Vec3f currentPoint : depthSort(pointsToDepthSort))
-									currentStage.addLine(createControlPoints(currentPoint,
-										vecViewBundlingPoint, controlPoint));
-								connectionLinesAllViews.add(currentStage);
-
-							}
-						}
-						else {
-							// calculating bundling line
-							if (heatMapPredecessorID != parCoordID)
-								bundling = new VisLinkAnimationStage(true);
-							else
-								bundling = new VisLinkAnimationStage();
-
-							bundling.addLine(createControlPoints(src, calculateCenter(heatmapPredecessor),
-								controlPoint));
-							connectionLinesAllViews.add(bundling);
-						}
-						if (heatmapSuccessor.size() > 0)
-							src = calculateCenter(heatmapSuccessor);
-						else
-							src = calculateCenter(parCoordsSuccessor);
-					}
-				}
-				else if (key == heatMapID && heatMapID == activeViewID) {
-					// HEATMAP needs to provide bundling points
-					if (heatmapPredecessor.size() > 0)
-						src = calculateCenter(heatmapPredecessor);
-				}
-
-				else {
-					controlPoint = calculateControlPoint(hashViewToCenterPoint.get(key), src);
-					if (controlPoint == null)
-						return;
-					vecViewBundlingPoint =
-						calculateBundlingPoint(hashViewToCenterPoint.get(key), controlPoint);
-
-					currentStage =
-						renderLinesOfCurrentStage(gl, idType, key, vecViewBundlingPoint, controlPoint,
-							PATHWAY, hashViewToCenterPoint);
-
-					// calculating bundling line
-					bundling = new VisLinkAnimationStage();
-					if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1)
-						bundling.addLine(createControlPoints(vecViewBundlingPoint, src, controlPoint));
-					else
-						bundling.addLine(createControlPoints(hashViewToCenterPoint.get(key), src,
-							controlPoint));
-
-					connectionLinesAllViews.add(bundling);
-
-					if (hashIDTypeToViewToPointLists.get(idType).get(key).size() > 1) {
-						currentStage.setReverseLineDrawingDirection(true);
-						connectionLinesAllViews.add(currentStage);
-						src = vecViewBundlingPoint;
-					}
-					else
-						src = hashViewToCenterPoint.get(key);
-				}
+			
+			//weighted center point if a pathway is on focus level
+			if ((activeViewID != parCoordID) && (activeViewID != heatMapID)){
+				centerPoint = getWeightedPointForCenteredPathway(hashViewToCenterPoint);
 			}
+			
+			//select case 
+			if (activeViewID == parCoordID){
+				if (heatMapID == gapPredecessorID)
+					connectionLinesAllViews = renderDynamicViewCentered(gl, idType, PARCOORDS, true, hashViewToCenterPoint, viewsToBeVisited, controlPoint);
+				else
+					connectionLinesAllViews = renderDynamicViewCentered(gl, idType, PARCOORDS, false, hashViewToCenterPoint, viewsToBeVisited, controlPoint);
+			}
+			else if(activeViewID == heatMapID){
+				if (parCoordID == gapPredecessorID)
+					connectionLinesAllViews = renderDynamicViewCentered(gl, idType, HEATMAP, true, hashViewToCenterPoint, viewsToBeVisited, controlPoint);
+				else
+					connectionLinesAllViews = renderDynamicViewCentered(gl, idType, HEATMAP, false, hashViewToCenterPoint, viewsToBeVisited, controlPoint);
+			}
+			else
+				connectionLinesAllViews = renderPathwayCentered(gl, idType, hashViewToCenterPoint, viewsToBeVisited, centerPoint);
 
 		}
 		// TODO algorithm if gap exists and rendering starts at stack
@@ -675,6 +481,325 @@ public class GLConsecutiveConnectionGraphDrawing
 		VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
 		visLinkScene.renderLines(gl);
 
+	}
+
+	
+	/** calculate weighted control point if pathway lies on focus
+	 * 
+	 * @param hashViewToCenterPoint
+	 * @return
+	 */
+	private Vec3f getWeightedPointForCenteredPathway(HashMap<Integer, Vec3f> hashViewToCenterPoint) {
+		Vec3f centerPoint = null;
+		ArrayList<Vec3f> heatMapPointsList = new ArrayList<Vec3f>();
+		ArrayList<Vec3f> parCoordsPointsList = new ArrayList<Vec3f>();
+		ArrayList<Vec3f> centerPathwayList = new ArrayList<Vec3f>();
+		Vec3f heatmapCenter = calculateCenter(heatmapPredecessor);
+		Vec3f parCoordsCenter = calculateCenter(parCoordsPredecessor);
+		heatMapPointsList.add(heatmapCenter);
+		parCoordsPointsList.add(parCoordsCenter);
+		centerPathwayList.add(hashViewToCenterPoint.get(activeViewID));
+		ArrayList<ArrayList<Vec3f>> pointsCollection = new ArrayList<ArrayList<Vec3f>>();
+		pointsCollection.add(heatMapPointsList);
+		pointsCollection.add(parCoordsPointsList);
+		pointsCollection.add(centerPathwayList);
+		centerPoint = calculateCenter(pointsCollection);
+		return centerPoint;
+	}
+	
+	
+	/** render lines if a gap occurs, a pathway is in focus and the vislink is rendered from the center
+	 * 
+	 * @param gl the gl object
+	 * @param idType type of genome
+	 * @param hashViewToCenterPoint list of center points except parcoords and heatmap
+	 * @param viewsToBeVisited list of views that belong to the graph sorted by order of visiting
+	 * @param centerPoint the weighted control point
+	 * @return the vislink container
+	 */
+	private ArrayList<VisLinkAnimationStage> renderPathwayCentered(GL gl, EIDType idType,
+		HashMap<Integer, Vec3f> hashViewToCenterPoint, ArrayList<Integer> viewsToBeVisited, Vec3f centerPoint) {
+
+		Vec3f connectionParCoordsPathway = null;
+		Vec3f connectionHeatMapPathway = null;
+		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>();
+		VisLinkAnimationStage currentStage = null;
+		VisLinkAnimationStage bundling = null;
+		
+		if (multiplePoints){
+			connectionParCoordsPathway = calculateBundlingPoint(calculateCenter(heatmapPredecessor), centerPoint);
+			connectionHeatMapPathway = calculateBundlingPoint(calculateCenter(parCoordsPredecessor), centerPoint);
+		}
+		else{
+			connectionParCoordsPathway = parCoordsPredecessor.get(0).get(0);
+			connectionHeatMapPathway = heatmapPredecessor.get(0).get(0);
+		}
+		Vec3f vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(activeViewID), centerPoint);
+		
+		currentStage =
+			renderLinesOfCurrentStage(gl, idType, activeViewID, vecViewBundlingPoint, centerPoint,
+				PATHWAY, hashViewToCenterPoint);
+		connectionLinesAllViews.add(currentStage);
+		currentStage = null;
+		
+		if (gapPredecessorID == parCoordID){
+			getLinesOfOtherDynamicViewPathWayCentered(gl, PARCOORDS, connectionParCoordsPathway, vecViewBundlingPoint, bundling, currentStage, connectionLinesAllViews, centerPoint);
+			getLinesOfOtherDynamicViewPathWayCentered(gl, HEATMAP, connectionHeatMapPathway, vecViewBundlingPoint, bundling, currentStage, connectionLinesAllViews, centerPoint);
+		}
+		else{
+			getLinesOfOtherDynamicViewPathWayCentered(gl, HEATMAP, connectionHeatMapPathway, vecViewBundlingPoint, bundling, currentStage, connectionLinesAllViews, centerPoint);
+			getLinesOfOtherDynamicViewPathWayCentered(gl, PARCOORDS, connectionParCoordsPathway, vecViewBundlingPoint, bundling, currentStage, connectionLinesAllViews, centerPoint);
+			
+		}
+
+		return connectionLinesAllViews;
+	}
+
+	
+	/** calcaulate vislinks of heatmap and parcoords if a pathway is in center, a gap exists and it is rendered from the center
+	 * 
+	 * @param gl the gl object
+	 * @param type type of the special view (either heatmap or parcoord)
+	 * @param connectionToPathway the local bundling point of the special view
+	 * @param pathwayBundling the bundling point of the centered pathway
+	 * @param bundling the bundling vislink between the special view and the centered pathway
+	 * @param currentStage the local vislink of the special view
+	 * @param connectionLinesAllViews the vislink container
+	 * @param centerPoint the weighted control point
+	 */
+	private void getLinesOfOtherDynamicViewPathWayCentered(GL gl, char type,
+		Vec3f connectionToPathway, Vec3f pathwayBundling, VisLinkAnimationStage bundling, VisLinkAnimationStage currentStage,
+		ArrayList<VisLinkAnimationStage> connectionLinesAllViews, Vec3f centerPoint) {
+		
+		
+		ArrayList<ArrayList<Vec3f>> pointsList = null;
+		if (type == PARCOORDS){
+			pointsList = parCoordsPredecessor;
+		}
+		else{
+			pointsList = heatmapPredecessor;
+		}
+		
+		if (pointsList.size() > 0) {
+			// calculating control points and local bundling points
+			Vec3f controlPoint = calculateControlPoint(connectionToPathway, pathwayBundling);
+			if (controlPoint == null)
+				return;
+
+			if (multiplePoints) {
+				if (type == PARCOORDS)
+					currentStage = renderLinesOfCurrentStage(gl, null, -1, connectionToPathway, controlPoint, HEATMAP, null);
+				else
+					currentStage = renderLinesOfCurrentStage(gl, null, -1, connectionToPathway, controlPoint, PARCOORDS, null);
+
+				bundling = new VisLinkAnimationStage();
+				bundling
+					.addLine(createControlPoints(connectionToPathway, pathwayBundling, controlPoint));
+				connectionLinesAllViews.add(bundling);
+				connectionLinesAllViews.add(currentStage);
+			}
+			else {
+				// calculating bundling line
+				bundling = new VisLinkAnimationStage();
+
+				bundling.addLine(createControlPoints(connectionToPathway, pathwayBundling,
+					controlPoint));
+				connectionLinesAllViews.add(bundling);
+			}
+		}
+		
+	}
+
+	
+	/** render lines if gap is available, it is rendered from the center and a special view lies at that center position
+	 * 
+	 * @param gl the gl object 
+	 * @param idType type of genome
+	 * @param type type of view that is in center
+	 * @param otherDynamicViewBeforeGap tells if the other dynamic view is before the gap
+	 * @param hashViewToCenterPoint list of center points
+	 * @param viewsToBeVisited list of views that belong to the current vislink
+	 * @param controlPoint the local control point
+	 * @return the vislink container
+	 */
+	private ArrayList<VisLinkAnimationStage> renderDynamicViewCentered(GL gl, EIDType idType, char type,
+		boolean otherDynamicViewBeforeGap, HashMap<Integer, Vec3f> hashViewToCenterPoint, ArrayList<Integer> viewsToBeVisited, Vec3f controlPoint) {
+		
+		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>();
+		VisLinkAnimationStage currentStage = null;
+		VisLinkAnimationStage bundling = null;
+
+		Vec3f connectionToOtherDynamic = null;
+		Vec3f connectionToPathway = null;
+		if (multiplePoints){
+			if (type == PARCOORDS && otherDynamicViewBeforeGap){
+				connectionToOtherDynamic = calculateBundlingPoint(calculateCenter(parCoordsPredecessor), controlPoint);
+				connectionToPathway = calculateBundlingPoint(calculateCenter(parCoordsSuccessor), controlPoint);
+			}
+			else if (type == PARCOORDS && !otherDynamicViewBeforeGap){
+				connectionToOtherDynamic = calculateBundlingPoint(calculateCenter(parCoordsSuccessor), controlPoint);
+				connectionToPathway = calculateBundlingPoint(calculateCenter(parCoordsPredecessor), controlPoint);
+			}
+			else if (type == HEATMAP && otherDynamicViewBeforeGap){
+				connectionToOtherDynamic = calculateBundlingPoint(calculateCenter(heatmapPredecessor), controlPoint);
+				connectionToPathway = calculateBundlingPoint(calculateCenter(heatmapSuccessor), controlPoint);
+			}
+			else{
+				connectionToOtherDynamic = calculateBundlingPoint(calculateCenter(heatmapSuccessor), controlPoint);
+				connectionToPathway = calculateBundlingPoint(calculateCenter(heatmapPredecessor), controlPoint);
+			}
+		}
+		else{
+			if (type == PARCOORDS && otherDynamicViewBeforeGap){
+				connectionToOtherDynamic = calculateCenter(parCoordsPredecessor);
+				connectionToPathway = parCoordsSuccessor.get(0).get(0);
+			}
+			else if (type == PARCOORDS && !otherDynamicViewBeforeGap){
+				connectionToOtherDynamic = calculateCenter(parCoordsSuccessor);
+				connectionToPathway = parCoordsPredecessor.get(0).get(0);
+			}
+			else if (type == HEATMAP && otherDynamicViewBeforeGap){
+				connectionToOtherDynamic = calculateCenter(heatmapPredecessor);
+				connectionToPathway = heatmapSuccessor.get(0).get(0);
+			}
+			else{
+				connectionToOtherDynamic = calculateCenter(heatmapSuccessor);
+				connectionToPathway = heatmapPredecessor.get(0).get(0);
+			}
+		}
+
+		if (otherDynamicViewBeforeGap){
+			if (type == PARCOORDS){
+				getlinesOfOtherDynamicView(gl, HEATMAP, connectionToOtherDynamic, bundling, currentStage, connectionLinesAllViews);
+				getLinesOfPathway(gl, idType, hashViewToCenterPoint, connectionToPathway, viewsToBeVisited.get(2), bundling, currentStage, connectionLinesAllViews);
+			}
+			else{
+				getlinesOfOtherDynamicView(gl, PARCOORDS, connectionToOtherDynamic, bundling, currentStage, connectionLinesAllViews);
+				getLinesOfPathway(gl, idType, hashViewToCenterPoint, connectionToPathway, viewsToBeVisited.get(2), bundling, currentStage, connectionLinesAllViews);
+			}
+		}
+		else{
+			if (type == PARCOORDS){
+				getLinesOfPathway(gl, idType, hashViewToCenterPoint, connectionToPathway, viewsToBeVisited.get(1), bundling, currentStage, connectionLinesAllViews);		
+				getlinesOfOtherDynamicView(gl, HEATMAP, connectionToOtherDynamic, bundling, currentStage, connectionLinesAllViews);
+			}
+			else{
+				getLinesOfPathway(gl, idType, hashViewToCenterPoint, connectionToPathway, viewsToBeVisited.get(1), bundling, currentStage, connectionLinesAllViews);		
+				getlinesOfOtherDynamicView(gl, PARCOORDS, connectionToOtherDynamic, bundling, currentStage, connectionLinesAllViews);
+			}
+		}
+		return connectionLinesAllViews;
+	}
+
+	
+	/** get lines of pathway if gap and pathway is on stack
+	 *  
+	 * @param gl the gl object
+	 * @param idType type of genome
+	 * @param hashViewToCenterPoint list of center points
+	 * @param connectionToPathway bundling point of center view
+	 * @param pathwayID id of current pathway
+	 * @param bundling bundling line between center view and current pathway
+	 * @param currentStage local lines of current pathway
+	 * @param connectionLinesAllViews the vislink container
+	 */
+	private void getLinesOfPathway(GL gl, EIDType idType, HashMap<Integer, Vec3f> hashViewToCenterPoint, Vec3f connectionToPathway, int pathwayID, VisLinkAnimationStage bundling,
+		VisLinkAnimationStage currentStage, ArrayList<VisLinkAnimationStage> connectionLinesAllViews) {
+
+		Vec3f controlPoint = calculateControlPoint(hashViewToCenterPoint.get(pathwayID), connectionToPathway);
+		if (controlPoint == null)
+			return;
+		Vec3f vecViewBundlingPoint =
+			calculateBundlingPoint(hashViewToCenterPoint.get(pathwayID), controlPoint);
+
+		currentStage =
+			renderLinesOfCurrentStage(gl, idType, pathwayID, vecViewBundlingPoint, controlPoint,
+				PATHWAY, hashViewToCenterPoint);
+
+		// calculating bundling line
+		bundling = new VisLinkAnimationStage();
+		if (hashIDTypeToViewToPointLists.get(idType).get(pathwayID).size() > 1)
+			bundling.addLine(createControlPoints(vecViewBundlingPoint, connectionToPathway, controlPoint));
+		else
+			bundling.addLine(createControlPoints(hashViewToCenterPoint.get(pathwayID), connectionToPathway,
+				controlPoint));
+
+		connectionLinesAllViews.add(bundling);
+
+		if (hashIDTypeToViewToPointLists.get(idType).get(pathwayID).size() > 1) {
+			currentStage.setReverseLineDrawingDirection(true);
+			connectionLinesAllViews.add(currentStage);
+			connectionToPathway = vecViewBundlingPoint;
+		}
+	}
+
+	
+	/** get lines if special view is in center, a gap exists and current special view is on stack
+	 * 
+	 * @param gl the gl object
+	 * @param type type of special view
+	 * @param connectionToOtherDynamic bundling point of centered view
+	 * @param bundling bundling line between center view and current view
+	 * @param currentStage local lines of current view
+	 * @param connectionLinesAllViews the vislink container
+	 */
+	private void getlinesOfOtherDynamicView(GL gl, char type, Vec3f connectionToOtherDynamic, VisLinkAnimationStage bundling,
+		VisLinkAnimationStage currentStage, ArrayList<VisLinkAnimationStage> connectionLinesAllViews) {
+		
+		ArrayList<ArrayList<Vec3f>> pointsList = null;
+		ArrayList<ArrayList<Vec3f>> reversePointsList = null;
+		if (type == PARCOORDS){
+			pointsList = parCoordsPredecessor;
+			reversePointsList = heatmapSuccessor;
+		}
+		else{
+			pointsList = heatmapPredecessor;
+			reversePointsList = parCoordsSuccessor;
+		}
+		
+		if (pointsList.size() > 0) {
+			// calculating control points and local bundling points
+			Vec3f controlPoint = calculateControlPoint(calculateCenter(pointsList), connectionToOtherDynamic);
+			if (controlPoint == null)
+				return;
+
+			Vec3f vecViewBundlingPoint =
+				calculateBundlingPoint(calculateCenter(pointsList), controlPoint);
+
+			if (multiplePoints) {
+				if (type == PARCOORDS)
+					currentStage = renderLinesOfCurrentStage(gl, null, -1, vecViewBundlingPoint, controlPoint, HEATMAP, null);
+				else
+					currentStage = renderLinesOfCurrentStage(gl, null, -1, vecViewBundlingPoint, controlPoint, PARCOORDS, null);
+				currentStage.setReverseLineDrawingDirection(true);
+
+				bundling = new VisLinkAnimationStage();
+				bundling
+					.addLine(createControlPoints(connectionToOtherDynamic, vecViewBundlingPoint, controlPoint));
+				connectionLinesAllViews.add(currentStage);
+
+				currentStage = new VisLinkAnimationStage();
+				ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
+				for (ArrayList<Vec3f> alCurrentPoints : reversePointsList) {
+					if (alCurrentPoints.size() > 1)
+						renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
+					else
+						pointsToDepthSort.add(alCurrentPoints.get(0));
+				}
+				for (Vec3f currentPoint : depthSort(pointsToDepthSort))
+					currentStage.addLine(createControlPoints(currentPoint,
+						vecViewBundlingPoint, controlPoint));
+				connectionLinesAllViews.add(currentStage);
+			}
+			else {
+				// calculating bundling line
+				bundling = new VisLinkAnimationStage();
+
+				bundling.addLine(createControlPoints(connectionToOtherDynamic, calculateCenter(pointsList),
+					controlPoint));
+				connectionLinesAllViews.add(bundling);
+			}
+		}
 	}
 
 	/**
