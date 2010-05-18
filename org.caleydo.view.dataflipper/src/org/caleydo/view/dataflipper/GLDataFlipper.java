@@ -359,15 +359,15 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// !renderPathwayViews))
 		// return;
 
-		if (glView instanceof GLGlyph
-				|| (glView instanceof GLParallelCoordinates && glView.getSet()
-						.getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
-						.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-						&& isExperimentCountOK && renderGeneticViews)
-				|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glView instanceof GLPathwayViewBrowser
-						&& isPathwayContentAvailable && renderPathwayViews)) {
+//		if (glView instanceof GLGlyph
+//				|| (glView instanceof GLParallelCoordinates && glView.getSet()
+//						.getSetType() != ESetType.GENE_EXPRESSION_DATA)
+//				|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
+//						.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+//						&& isExperimentCountOK && renderGeneticViews)
+//				|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
+//				|| (glView instanceof GLPathwayViewBrowser
+//						&& isPathwayContentAvailable && renderPathwayViews)) {
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
@@ -422,7 +422,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			gl.glPopName();
 			gl.glPopName();
 
-		}
+//		}
 	}
 
 	/**

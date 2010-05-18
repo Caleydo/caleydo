@@ -504,7 +504,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 			glPathway.enableGeneMapping(false);
 //			glPathway.setDetailLevel(EDetailLevel.VERY_LOW);
 			
-			glPathway.broadcastElements(EVAOperation.APPEND_UNIQUE);
+//			glPathway.broadcastElements(EVAOperation.APPEND_UNIQUE);
 		}
 
 		glView.initRemote(gl, this, glMouseListener, null);

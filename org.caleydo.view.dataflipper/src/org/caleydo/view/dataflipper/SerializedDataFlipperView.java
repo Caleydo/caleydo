@@ -48,25 +48,25 @@ public class SerializedDataFlipperView extends ASerializedView {
 		parCoords.setDataDomain(EDataDomain.GENETIC_DATA);
 		initialContainedViews.add(parCoords);
 
-		SerializedTissueViewBrowserView tissueViewBrowser = new SerializedTissueViewBrowserView();
-		tissueViewBrowser.setDataDomain(EDataDomain.TISSUE_DATA);
-		initialContainedViews.add(tissueViewBrowser);
+//		SerializedTissueViewBrowserView tissueViewBrowser = new SerializedTissueViewBrowserView();
+//		tissueViewBrowser.setDataDomain(EDataDomain.TISSUE_DATA);
+//		initialContainedViews.add(tissueViewBrowser);
 
 		SerializedHierarchicalHeatMapView heatMap = new SerializedHierarchicalHeatMapView();
 		heatMap.setDataDomain(EDataDomain.GENETIC_DATA);
 		initialContainedViews.add(heatMap);
 
-		parCoords = new SerializedParallelCoordinatesView();
-		parCoords.setDataDomain(EDataDomain.CLINICAL_DATA);
-		initialContainedViews.add(parCoords);
+//		parCoords = new SerializedParallelCoordinatesView();
+//		parCoords.setDataDomain(EDataDomain.CLINICAL_DATA);
+//		initialContainedViews.add(parCoords);
 
-		SerializedPathwayViewBrowserView pathwayViewBrowser = new SerializedPathwayViewBrowserView();
-		pathwayViewBrowser.setDataDomain(EDataDomain.PATHWAY_DATA);
-		initialContainedViews.add(pathwayViewBrowser);
+//		SerializedPathwayViewBrowserView pathwayViewBrowser = new SerializedPathwayViewBrowserView();
+//		pathwayViewBrowser.setDataDomain(EDataDomain.PATHWAY_DATA);
+//		initialContainedViews.add(pathwayViewBrowser);
 
-		SerializedGlyphView glyph = new SerializedGlyphView();
-		glyph.setDataDomain(EDataDomain.CLINICAL_DATA);
-		initialContainedViews.add(glyph);
+//		SerializedGlyphView glyph = new SerializedGlyphView();
+//		glyph.setDataDomain(EDataDomain.CLINICAL_DATA);
+//		initialContainedViews.add(glyph);
 	}
 
 	@Override

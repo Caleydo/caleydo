@@ -183,13 +183,11 @@ public class ViewManager
 				Platform.getBundle(viewID).start();
 		}
 		catch (BundleException e) {
-			// TODO Write message that plugin is not available
-			e.printStackTrace();
+			// this is ok if the view is a subview contained in an already loaded plugin
 		}
 		catch (NullPointerException e) {
-			// TODO Write message that plugin is not available
 		}
-		
+
 		for (IViewCreator glViewCreator : glViewCreators) {
 
 			if (glViewCreator instanceof AGLViewCreator && glViewCreator.getViewType().equals(viewID)) {
@@ -200,7 +198,8 @@ public class ViewManager
 		}
 
 		if (glView == null) {
-			throw new RuntimeException("Unable to create GL view because view plugin is not available!");
+			throw new RuntimeException(
+				"Unable to create GL view because the requested view plugin is not available: " + viewID);
 		}
 
 		registerGLEventListenerByGLCanvas(glCanvas, glView);

@@ -179,11 +179,6 @@ public abstract class AUseCase
 		// for (IView view : alView) {
 		// view.setSet(set);
 		//			
-		//
-		// if (view instanceof GLRemoteRendering) {
-		// glRemoteRenderingView = (GLRemoteRendering) view;
-		// }
-		// }
 
 		// TODO check
 		// oldSet.destroy();
@@ -490,6 +485,10 @@ public abstract class AUseCase
 
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+		
+		if (contentSelectionManager == null)
+			return;
+		
 		IIDMappingManager mappingManager = GeneralManager.get().getIDMappingManager();
 		if (mappingManager.hasMapping(selectionDelta.getIDType(), contentSelectionManager.getIDType())) {
 			contentSelectionManager.setDelta(selectionDelta);

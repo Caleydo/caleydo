@@ -106,7 +106,9 @@ public class GLConnectionLineRendererDataFlipper extends
 				}
 			}
 
-			if (viewToPointList.containsKey(focusElement.getGLView().getID())) {
+			if (focusElement == null || focusElement.getGLView() == null)
+				continue;
+			else if (viewToPointList.containsKey(focusElement.getGLView().getID())) {
 				for (ArrayList<Vec3f> sourceViewPoints : viewToPointList
 						.get(focusElement.getGLView().getID())) {
 					// Connect point in focus view with points in first view in
@@ -122,10 +124,13 @@ public class GLConnectionLineRendererDataFlipper extends
 						}
 					}
 
+					RemoteLevelElement rightElement = stackElementsRight.get(0);
+					if (rightElement == null || rightElement.getGLView() == null)
+						continue;
+					
 					// Connect point in focus view with points in first view in
 					// RIGHT stack
-					if (viewToPointList.containsKey(stackElementsRight.get(0)
-							.getGLView().getID())) {
+					if (viewToPointList.containsKey(rightElement.getGLView().getID())) {
 						for (ArrayList<Vec3f> targetViewPoints : viewToPointList
 								.get(stackElementsRight.get(0).getGLView()
 										.getID())) {

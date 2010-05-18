@@ -23,7 +23,7 @@
 				<!-- Creating Data -->
 				<read-xml-file
 					target="data/bootstrap/shared/asslaber/load_data_reduced.xml" />
-				<read-xml-file target="data/bootstrap/private/stefan/load_data.xml" />
+				<read-xml-file target="data/bootstrap/shared/glyph/load_data.xml" />
 
 			</CommandBuffer>
 

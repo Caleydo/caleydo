@@ -33,7 +33,11 @@ public class SlerpAction {
 		RemoteLevelElement destinationRemoteLevelElement) {
 		this.originRemoteLevelElement = originRemoteLevelElement;
 		this.destinationRemoteLevelElement = destinationRemoteLevelElement;
-		this.iElementID = originRemoteLevelElement.getGLView().getID();
+		
+		if (originRemoteLevelElement.getGLView() == null)
+			this.iElementID = -1;
+		else
+			this.iElementID = originRemoteLevelElement.getGLView().getID();
 	}
 
 	public void start() {
