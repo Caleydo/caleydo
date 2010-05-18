@@ -1916,7 +1916,7 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 	/**
 	 * Add pathway view. Also used when serialized pathways are loaded.
 	 * 
-	 * @param iPathwayIDToLoad
+	 * @param iPathwayID
 	 */
 	public void addPathwayView(final int iPathwayID) {
 

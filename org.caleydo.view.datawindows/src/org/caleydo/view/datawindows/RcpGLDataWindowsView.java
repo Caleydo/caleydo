@@ -7,9 +7,6 @@ import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLDataWindowsView extends ARcpGLViewPart {
 
-//	// FIXME: check if it is ok to overwrite
-//	private EDataDomain dataDomain;
-
 	/**
 	 * Constructor.
 	 */

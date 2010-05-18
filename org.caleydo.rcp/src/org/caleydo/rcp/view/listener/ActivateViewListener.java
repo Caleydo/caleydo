@@ -21,7 +21,9 @@ public class ActivateViewListener
 	public void handleEvent(final AEvent event) {
 
 		try {
-			if (event instanceof LoadPathwayEvent || event instanceof LoadPathwaysByGeneEvent) {
+			if ((event instanceof LoadPathwayEvent || event instanceof LoadPathwaysByGeneEvent)
+				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
+					"org.caleydo.view.datawindows") == null) {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
 					"org.caleydo.view.bucket");
 			}
@@ -35,18 +37,18 @@ public class ActivateViewListener
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 				CompareGroupsEvent compareGroupsEvent =
 					new CompareGroupsEvent(((OpenMatchmakerViewEvent) event).getSetsToCompare());
 				compareGroupsEvent.setSender(this);
 				GeneralManager.get().getEventPublisher().triggerEvent(compareGroupsEvent);
-				
+
 				GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
 
 					@Override
 					public void run() {
 						StartClusteringAction startClusteringAction = new StartClusteringAction();
-						startClusteringAction.setSets(((OpenMatchmakerViewEvent)event).getSetsToCompare());
+						startClusteringAction.setSets(((OpenMatchmakerViewEvent) event).getSetsToCompare());
 						startClusteringAction.run();
 					}
 				});

@@ -49,7 +49,7 @@ public class TesselationCallback implements GLUtessellatorCallback {
 	public void combine(double[] coords, Object[] data, //
 			float[] weight, Object[] outData) {
 		double[] vertex = new double[6];
-		int i;
+//		int i;
 
 		vertex[0] = coords[0];
 		vertex[1] = coords[1];

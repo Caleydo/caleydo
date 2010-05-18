@@ -126,8 +126,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		// canvasHeight
 		// * remoteHyperbolicScalation[1] / 2);
 
-		// parentGLCanvas.addMouseListener(mouseWheelListener);
-
 		// preparing the eyetracker
 		// this.tracker = new TrackDataProvider();
 		// tracker.startTracking();
@@ -453,46 +451,9 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 			switch (pickingMode) {
 
 			case CLICKED:
-				// simulating the eyetracker
-
-				testZoomViewEventSwitch = false;
-
-				if (glMouseListener.getPickedPoint() != null) {
-
-					if (manualPickFlag == true) {
-						mousePoint = glMouseListener.getPickedPoint();
-
-						float[] mousePosition = new float[2];
-						mousePosition[0] = (float) mousePoint.getX();
-						mousePosition[1] = (float) mousePoint.getY();
-
-						float[] translation = new float[2];
-						float[] scalation = new float[2];
-						translation[0] = remoteElementHyperbolic.getTransform()
-								.getTranslation().x();
-						translation[1] = remoteElementHyperbolic.getTransform()
-								.getTranslation().y();
-						scalation[0] = remoteElementHyperbolic.getTransform()
-								.getScale().x();
-						scalation[1] = remoteElementHyperbolic.getTransform()
-								.getScale().y();
-						this.directHyperbolicView.setEyeTrackerAction(
-								mousePosition, translation, scalation);
-
-					}
-				}
-
+				evaluateUserSelection();
 				break;
 			case RIGHT_CLICKED:
-				
-				System.out.println("right click");
-				GLPathway glPathwayView = this.directHyperbolicView.createPathwayView(this.directHyperbolicView.glHandle);
-				glPathwayView.broadcastElements(EVAOperation.APPEND_UNIQUE);
-
-				ViewHyperbolicNode node = new ViewHyperbolicNode(this.directHyperbolicView.tree, "pathway", 1,
-						glPathwayView);
-				
-				this.directHyperbolicView.disk.insertNode(node, this.directHyperbolicView.disk.getCenteredNode());
 				break;
 			}
 			break;
@@ -503,6 +464,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 //				this.focusViewEvent(iExternalID, 0.75, true);
 				break;
 			case CLICKED:
+				evaluateUserSelection();
 				break;
 			case RIGHT_CLICKED:
 				contextMenu.setLocation(pick.getPickedPoint(),
@@ -545,6 +507,37 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		//
 		// }
 
+		}
+
+	}
+	
+	private void evaluateUserSelection() {
+		// simulating the eyetracker
+
+		testZoomViewEventSwitch = false;
+
+		if (glMouseListener.getPickedPoint() != null) {
+
+			if (manualPickFlag == true) {
+				mousePoint = glMouseListener.getPickedPoint();
+
+				float[] mousePosition = new float[2];
+				mousePosition[0] = (float) mousePoint.getX();
+				mousePosition[1] = (float) mousePoint.getY();
+
+				float[] translation = new float[2];
+				float[] scalation = new float[2];
+				translation[0] = remoteElementHyperbolic.getTransform()
+						.getTranslation().x();
+				translation[1] = remoteElementHyperbolic.getTransform()
+						.getTranslation().y();
+				scalation[0] = remoteElementHyperbolic.getTransform()
+						.getScale().x();
+				scalation[1] = remoteElementHyperbolic.getTransform()
+						.getScale().y();
+				this.directHyperbolicView.setEyeTrackerAction(
+						mousePosition, translation, scalation);
+			}
 		}
 
 	}
