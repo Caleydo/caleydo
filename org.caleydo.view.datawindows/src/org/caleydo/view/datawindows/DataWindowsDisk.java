@@ -184,7 +184,7 @@ public class DataWindowsDisk extends PoincareDisk {
 					+ node.getZoomedPosition()[1] * displayScaleFactorY
 					+ canvasHeight / 2;
 
-			hyperbolic.drawRemoteView(gl, node, position, size / 4);
+			hyperbolic.drawRemoteView(gl, node, position, size /4);
 		}
 		gl.glPopName();
 	}

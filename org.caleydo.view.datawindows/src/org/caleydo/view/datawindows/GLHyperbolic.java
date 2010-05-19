@@ -57,7 +57,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	private TrackDataProvider tracker;
 	private float[] receivedEyeData;
 
-	private RemoteLevelElement testRemoteElement;
+	private RemoteLevelElement remoteNodeElement;
 
 	private ArrayList<NodeSlerp> arSlerpActions;
 
@@ -72,6 +72,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	private Random randomGenerator = new Random(19580427);
 
+	public boolean displayFullView;
+
 	public Tree<PoincareNode> tree;
 	public float diskZoomIntensity = 0;
 
@@ -83,9 +85,9 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	private AddPathwayListener addPathwayListener;
 	private LoadPathwaysByGeneListener loadPathwaysByGeneListener;
-	
+
 	private ArrayList<ASerializedView> newViews;
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -104,18 +106,21 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		// tracker.startTracking();
 
 		// remote test
-		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(0, 0, 0));
-		transform.setScale(new Vec3f(0.5f, 0.5f, 1));
-		testRemoteElement = new RemoteLevelElement(null);
-		testRemoteElement.setTransform(transform);
+		// Transform transform = new Transform();
+		// transform.setTranslation(new Vec3f(0, 0, 0));
+		// transform.setScale(new Vec3f(0.5f, 0.5f, 1));
+		remoteNodeElement = new RemoteLevelElement(null);
+		// testRemoteElement.setTransform(transform);
 
 		disk = new DataWindowsDisk(this);
 
 		arSlerpActions = new ArrayList<NodeSlerp>();
 		simpleSlerpActions = new ArrayList<simpleSlerp>();
-		
+
 		newViews = new ArrayList<ASerializedView>();
+
+		displayFullView = false;
+
 	}
 
 	@Override
@@ -130,7 +135,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	@Override
 	public void initRemote(final GL gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener,
+			GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
 
@@ -214,8 +220,10 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		initNewView(gl);
 		disk.zoomTree(diskZoomIntensity);
 
-		disk.renderTree(gl, textureManager, pickingManager, iUniqueID,
-				(float) viewFrustum.getWidth(), (float) viewFrustum.getHeight());
+		disk
+				.renderTree(gl, textureManager, pickingManager, iUniqueID,
+						(float) viewFrustum.getWidth(), (float) viewFrustum
+								.getHeight());
 
 		// if (!containedGLViews.isEmpty()) {
 		//
@@ -287,14 +295,16 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 			ASerializedView serView = newViews.remove(0);
 			AGLView view = createView(gl, serView);
-			
-			ViewHyperbolicNode node = new ViewHyperbolicNode(tree, view.getLabel(), 1, view);
-			disk.insertNode(node, disk.getCenteredNode());		
+
+			ViewHyperbolicNode node = new ViewHyperbolicNode(tree, view
+					.getLabel(), 1, view);
+			disk.insertNode(node, disk.getCenteredNode());
 
 		}
 	}
-	
-	private void renderRemoteLevelElement(final GL gl, RemoteLevelElement element) {
+
+	private void renderRemoteLevelElement(final GL gl,
+			RemoteLevelElement element) {
 
 		AGLView glView = element.getGLView();
 
@@ -304,8 +314,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
-				glView.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.VIEW_SELECTION, glView.getID()));
 
 		gl.glPushMatrix();
 
@@ -317,10 +327,12 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		float fAngle = rot.get(axis);
 
 		// Corrections in translation and scaling for magnifying embedded views
-		gl.glTranslatef(translation.x() - glView.getViewFrustum().getWidth() / 2f
-				* scale.x(), translation.y() - glView.getViewFrustum().getHeight() / 2f
-				* scale.y(), translation.z());
-		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
+		gl.glTranslatef(translation.x() - glView.getViewFrustum().getWidth()
+				/ 2f * scale.x(), translation.y()
+				- glView.getViewFrustum().getHeight() / 2f * scale.y(),
+				translation.z());
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(),
+				axis.z());
 		gl.glScalef(2 * scale.x(), 2 * scale.y(), scale.z());
 
 		glView.displayRemote(gl);
@@ -336,8 +348,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 					+ " / 0 experiments";
 
 		return "Scatterplot - " + contentVA.size() + " "
-				+ useCase.getContentLabel(false, true) + " / " + storageVA.size()
-				+ " experiments";
+				+ useCase.getContentLabel(false, true) + " / "
+				+ storageVA.size() + " experiments";
 	}
 
 	@Override
@@ -417,13 +429,13 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	@Override
 	public void registerEventListeners() {
-	
+
 		super.registerEventListeners();
-		
+
 		addPathwayListener = new AddPathwayListener();
 		addPathwayListener.setHandler(this);
 		eventPublisher.addListener(LoadPathwayEvent.class, addPathwayListener);
-		
+
 		loadPathwaysByGeneListener = new LoadPathwaysByGeneListener();
 		loadPathwaysByGeneListener.setHandler(this);
 		eventPublisher.addListener(LoadPathwaysByGeneEvent.class,
@@ -433,12 +445,12 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
-		
+
 		if (addPathwayListener != null) {
 			eventPublisher.removeListener(addPathwayListener);
 			addPathwayListener = null;
 		}
-		
+
 		if (loadPathwaysByGeneListener != null) {
 			eventPublisher.removeListener(loadPathwaysByGeneListener);
 			loadPathwaysByGeneListener = null;
@@ -498,13 +510,14 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
 
-			glPathway.setPathway(((SerializedPathwayView) serView).getPathwayID());
+			glPathway.setPathway(((SerializedPathwayView) serView)
+					.getPathwayID());
 			glPathway.enablePathwayTextures(true);
 			glPathway.enableNeighborhood(false);
 			glPathway.enableGeneMapping(false);
-//			glPathway.setDetailLevel(EDetailLevel.VERY_LOW);
-			
-//			glPathway.broadcastElements(EVAOperation.APPEND_UNIQUE);
+			// glPathway.setDetailLevel(EDetailLevel.VERY_LOW);
+
+			// glPathway.broadcastElements(EVAOperation.APPEND_UNIQUE);
 		}
 
 		glView.initRemote(gl, this, glMouseListener, null);
@@ -536,7 +549,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 			simpleSlerp simpleSlerp = simpleSlerpActions.get(0);
 			if (simpleSlerp.doASlerp() == true) {
-				double relativeSimpleSlerpState = simpleSlerp.state - previousSimpleSlerp;
+				double relativeSimpleSlerpState = simpleSlerp.state
+						- previousSimpleSlerp;
 				disk.rotateDisk(simpleSlerp.state - this.previousSimpleSlerp);
 				this.previousSimpleSlerp = simpleSlerp.state;
 			} else {
@@ -548,19 +562,34 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	}
 
-	public void drawRemoteView(GL gl, PoincareNode node, float[] position, float size) {
+	public void drawRemoteView(GL gl, PoincareNode node, float[] position,
+			float size) {
 
 		Transform transform = new Transform();
-		transform.setScale(new Vec3f((float) size, (float) size * fAspectRatio, 1));
+		transform.setScale(new Vec3f(size, size * fAspectRatio, 1));
 
 		transform.setTranslation(new Vec3f(position[0], position[1], 0));
 
-		testRemoteElement.setTransform(transform);
+		
 
-		// initNewView(gl);
-		testRemoteElement.setGLView(((ViewHyperbolicNode) node).getGlView());
+		if (this.displayFullView == true
+				&& (this.disk.getCenteredNode() == node)) {
+			transform.setScale(new Vec3f(0.6f, 0.5f, 1));
 
-		renderRemoteLevelElement(gl, testRemoteElement);
+			transform.setTranslation(new Vec3f(2, 2, 0));
+		}
+
+		remoteNodeElement.setTransform(transform);
+		remoteNodeElement.setGLView(((ViewHyperbolicNode) node).getGlView());
+
+		if (this.displayFullView == true
+				&& (this.disk.getCenteredNode() == node)) {
+			renderRemoteLevelElement(gl, remoteNodeElement);
+		}
+		if (this.displayFullView == false) {
+			renderRemoteLevelElement(gl, remoteNodeElement);
+		}
+
 	}
 
 	private void createPathwayTree(GL gl) {
@@ -575,7 +604,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		tree.setRootNode(node);
 
-		node = new ViewHyperbolicNode(tree, "child_pathway", 1, createPathwayView(gl));
+		node = new ViewHyperbolicNode(tree, "child_pathway", 1,
+				createPathwayView(gl));
 		tree.addChild(tree.getRoot(), node);
 
 		for (int i = 0; i < 5; i++) {
@@ -707,20 +737,22 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	@Deprecated
 	public GLPathway createPathwayView(GL gl) {
-		
+
 		SerializedPathwayView serPathway = new SerializedPathwayView(dataDomain);
 		// serTestPathway.setPathwayID(generalManager.getPathwayManager().searchPathwayByName("TGF-beta signaling pathway",
 		// EPathwayDatabaseType.KEGG).getID());
-		serPathway.setPathwayID(((PathwayGraph) (generalManager.getPathwayManager()
-				.getAllItems().toArray()[randomGenerator.nextInt(generalManager
-				.getPathwayManager().getAllItems().size())])).getID());
+		serPathway.setPathwayID(((PathwayGraph) (generalManager
+				.getPathwayManager().getAllItems().toArray()[randomGenerator
+				.nextInt(generalManager.getPathwayManager().getAllItems()
+						.size())])).getID());
 
 		return (GLPathway) createView(gl, serPathway);
 	}
 
 	// called, if the user focuses a point on the display
 
-	public void setEyeTrackerAction(float[] mousePoint, float[] offset, float[] scalation) {
+	public void setEyeTrackerAction(float[] mousePoint, float[] offset,
+			float[] scalation) {
 		// if (this.get != null) {
 		float[] mouseCoord = new float[2];
 
@@ -729,10 +761,11 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		float factorY = 1 / (float) (this.getParentGLCanvas().getHeight());
 
 		mouseCoord[0] = (mousePoint[0] * factorX - offset[0]) * 2 - 1;
-		mouseCoord[1] = ((this.getParentGLCanvas().getHeight() - mousePoint[1]) * factorY - offset[1]) * 2 - 1;
+		mouseCoord[1] = ((this.getParentGLCanvas().getHeight() - mousePoint[1])
+				* factorY - offset[1]) * 2 - 1;
 
-		PoincareNode selectedNode = disk.processEyeTrackerAction(mouseCoord.clone(),
-				arSlerpActions);
+		PoincareNode selectedNode = disk.processEyeTrackerAction(mouseCoord
+				.clone(), arSlerpActions);
 
 		if (selectedNode == disk.getCenteredNode()) {
 			return;
@@ -753,7 +786,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	@Override
 	public void addPathwayView(int iPathwayID) {
-		
+
 		if (!generalManager.getPathwayManager().isPathwayVisible(
 				generalManager.getPathwayManager().getItem(iPathwayID))) {
 			SerializedPathwayView serPathway = new SerializedPathwayView(
@@ -762,7 +795,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 			newViews.add(serPathway);
 		}
 	}
-	
+
 	@Override
 	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
 
@@ -774,37 +807,37 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	@Override
 	public void setConnectionLinesEnabled(boolean enabled) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setGeneMappingEnabled(boolean geneMappingEnabled) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setNeighborhoodEnabled(boolean neighborhoodEnabled) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setPathwayTexturesEnabled(boolean pathwayTexturesEnabled) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void toggleNavigationMode() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void toggleZoom() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

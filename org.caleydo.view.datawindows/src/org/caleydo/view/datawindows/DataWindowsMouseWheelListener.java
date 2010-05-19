@@ -9,10 +9,13 @@ public class DataWindowsMouseWheelListener extends MouseAdapter implements
 		MouseWheelListener, MouseMotionListener {
 	private GLHyperbolic hyperbolic;
 	private float wheelFactor;
+	private int numberOfScrollsToFullScreen;
+	private int numberOfScrollsUntilFullScreen;
 
 	public DataWindowsMouseWheelListener(GLHyperbolic master) {
 		hyperbolic = master;
 		wheelFactor = 0.2f;
+		this.numberOfScrollsToFullScreen=5;
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent event) {
@@ -25,11 +28,26 @@ public class DataWindowsMouseWheelListener extends MouseAdapter implements
 				.findOptimalCenterNodeSize(hyperbolic.disk.getCenteredNode(),
 						10);
 
+		if (hyperbolic.diskZoomIntensity < 1) {
+		    this.numberOfScrollsUntilFullScreen=this.numberOfScrollsToFullScreen;
+			if (hyperbolic.displayFullView=true){
+				hyperbolic.displayFullView=false;
+			}
+		}
+		
 		if (hyperbolic.diskZoomIntensity < -1) {
 			hyperbolic.diskZoomIntensity = -1;
+			if (hyperbolic.displayFullView=true){
+				hyperbolic.displayFullView=false;
+			}
 		}
 		if (hyperbolic.diskZoomIntensity > 1) {
 			hyperbolic.diskZoomIntensity = 1;
+			this.numberOfScrollsUntilFullScreen--;
+		
+		}
+		if(this.numberOfScrollsUntilFullScreen==0){
+			hyperbolic.displayFullView=true;
 		}
 
 	}
