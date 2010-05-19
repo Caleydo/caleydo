@@ -469,13 +469,30 @@ public class GLConsecutiveConnectionGraphDrawing
 				else
 					connectionLinesAllViews = renderDynamicViewCentered(gl, idType, HEATMAP, false, hashViewToCenterPoint, viewsToBeVisited, controlPoint);
 			}
+			
 			else
 				connectionLinesAllViews = renderPathwayCentered(gl, idType, hashViewToCenterPoint, viewsToBeVisited, centerPoint);
 
 		}
+		
 		// TODO algorithm if gap exists and rendering starts at stack
 		else {
-
+			if (viewsToBeVisited.size() == 3){
+				if (heatMapID == activeViewID){
+					connectionLinesAllViews = renderDyamicViewActive(gl, idType, HEATMAP, viewsToBeVisited, hashViewToCenterPoint, controlPoint);
+				}
+				else if (parCoordID == activeViewID){
+					connectionLinesAllViews = renderDyamicViewActive(gl, idType, PARCOORDS, viewsToBeVisited, hashViewToCenterPoint, controlPoint);
+				}
+				else{
+					//parcoords and heatmap connect to the pathway so a weighted bundling point is needed
+					controlPoint = getWeightedPointForCenteredPathway(hashViewToCenterPoint);
+					connectionLinesAllViews = renderPathWayActive(gl, idType, hashViewToCenterPoint, controlPoint);
+				}
+			}
+			else if (viewsToBeVisited.size() == 4){
+				//TODO gap on stack
+			}
 		}
 
 		VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
@@ -484,6 +501,110 @@ public class GLConsecutiveConnectionGraphDrawing
 	}
 
 	
+	private ArrayList<VisLinkAnimationStage> renderPathWayActive(GL gl, EIDType idType,
+		HashMap<Integer, Vec3f> hashViewToCenterPoint, Vec3f controlPoint) {
+		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>();
+
+		
+		if (gapSuccessorID == parCoordID){
+
+			//TODO HEATMAP first
+		}
+		else{
+			//TODO PARCOORDS first
+		}
+		return connectionLinesAllViews;
+	}
+
+	private ArrayList<VisLinkAnimationStage> renderDyamicViewActive(GL gl, EIDType idType, char type,
+		ArrayList<Integer> viewsToBeVisited, HashMap<Integer, Vec3f> hashViewToCenterPoint, Vec3f controlPoint) {
+		
+		VisLinkAnimationStage currentStage = null;
+		VisLinkAnimationStage bundling = null;
+		Vec3f connectionToOtherDynamic = null;
+		Vec3f connectionToPathway = null;
+
+		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>();
+		char specialViewType = 0;
+		
+		
+		//check where dynamic views lie 
+		if (parCoordID == gapSuccessorID){
+			specialViewType = PARCOORDS;
+			if (multiplePoints){
+				connectionToOtherDynamic = calculateBundlingPoint(calculateCenter(heatmapPredecessor), controlPoint);
+				connectionToPathway = calculateBundlingPoint(calculateCenter(heatmapSuccessor), controlPoint);
+			}
+			else{
+				connectionToOtherDynamic = heatmapPredecessor.get(0).get(0);
+				connectionToPathway = heatmapSuccessor.get(0).get(0);
+			}
+		}
+		else if (heatMapID == gapSuccessorID){
+			specialViewType = HEATMAP;
+			if (multiplePoints){
+				connectionToOtherDynamic = calculateBundlingPoint(calculateCenter(parCoordsPredecessor), controlPoint);
+				connectionToPathway = calculateBundlingPoint(calculateCenter(parCoordsSuccessor), controlPoint);
+			}
+			else{
+				connectionToOtherDynamic = parCoordsPredecessor.get(0).get(0);
+				connectionToPathway = parCoordsSuccessor.get(0).get(0);
+			}
+		}
+		else if (heatMapID == activeViewID){
+			specialViewType = PARCOORDS;
+			if (multiplePoints){
+				connectionToOtherDynamic = calculateBundlingPoint(calculateCenter(heatmapSuccessor), controlPoint);
+				connectionToPathway = calculateBundlingPoint(calculateCenter(heatmapPredecessor), controlPoint);
+			}
+			else{
+				connectionToOtherDynamic = heatmapSuccessor.get(0).get(0);
+				connectionToPathway = heatmapPredecessor.get(0).get(0);
+			}
+		}
+		else{
+			specialViewType = HEATMAP;
+			if (multiplePoints){
+				connectionToOtherDynamic = calculateBundlingPoint(calculateCenter(parCoordsSuccessor), controlPoint);
+				connectionToPathway = calculateBundlingPoint(calculateCenter(parCoordsPredecessor), controlPoint);
+			}
+			else{
+				connectionToOtherDynamic = parCoordsSuccessor.get(0).get(0);
+				connectionToPathway = parCoordsPredecessor.get(0).get(0);
+			}
+		}
+
+		if (parCoordID == gapSuccessorID || heatMapID == gapSuccessorID){
+			//TODO special view is drawn second
+			getLineOfPathwayActiveViewOnStack(gl, idType, hashViewToCenterPoint, connectionToPathway, bundling, currentStage, connectionLinesAllViews);
+			//getLinesOfPathway(gl, idType, hashViewToCenterPoint, connectionToPathway, viewsToBeVisited.get(2), bundling, currentStage, connectionLinesAllViews);
+			getlinesOfOtherDynamicViewActiveViewOnStack(gl, specialViewType, connectionToOtherDynamic, bundling, currentStage, connectionLinesAllViews);
+			//getlinesOfOtherDynamicView(gl, specialViewType, connectionToOtherDynamic, bundling, currentStage, connectionLinesAllViews);
+
+
+		}
+		else{
+			//TODO pathway connection is drawn second
+			//getlinesOfOtherDynamicView(gl, specialViewType, connectionToOtherDynamic, bundling, currentStage, connectionLinesAllViews);
+			getLineOfPathwayActiveViewOnStack(gl, idType, hashViewToCenterPoint, connectionToPathway, bundling, currentStage, connectionLinesAllViews);
+			//getLinesOfPathway(gl, idType, hashViewToCenterPoint, connectionToPathway, viewsToBeVisited.get(1), bundling, currentStage, connectionLinesAllViews);
+			getlinesOfOtherDynamicViewActiveViewOnStack(gl, specialViewType, connectionToOtherDynamic, bundling, currentStage, connectionLinesAllViews);
+		}
+		return connectionLinesAllViews;
+	}
+
+	private void getlinesOfOtherDynamicViewActiveViewOnStack(GL gl, char specialViewType,
+		Vec3f connectionToOtherDynamic, VisLinkAnimationStage bundling, VisLinkAnimationStage currentStage,
+		ArrayList<VisLinkAnimationStage> connectionLinesAllViews) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void getLineOfPathwayActiveViewOnStack(GL gl, EIDType idType, HashMap<Integer, Vec3f> hashViewToCenterPoint, Vec3f connectionToPathway, VisLinkAnimationStage bundling, VisLinkAnimationStage currentStage, ArrayList<VisLinkAnimationStage> connectionLinesAllViews) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/** calculate weighted control point if pathway lies on focus
 	 * 
 	 * @param hashViewToCenterPoint
@@ -1225,8 +1346,10 @@ public class GLConsecutiveConnectionGraphDrawing
 					if (viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(1).getGLView()
 						.getID())
 						&& viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(3).getGLView()
-							.getID()))
+							.getID())){
 						gapPosition = 4;
+						gapSuccessorID = stackLevel.getElementByPositionIndex(3).getGLView().getID();
+					}
 				}
 			}
 			else if (positionOfActiveView == 1 || positionOfActiveView == 3) {
@@ -1235,8 +1358,13 @@ public class GLConsecutiveConnectionGraphDrawing
 					if (viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(0).getGLView()
 						.getID())
 						&& viewsOfCurrentPath.contains(stackLevel.getElementByPositionIndex(2).getGLView()
-							.getID()))
+							.getID())){
 						gapPosition = 4;
+						if (positionOfActiveView == 1)
+							gapSuccessorID = stackLevel.getElementByPositionIndex(2).getGLView().getID(); 
+						else
+							gapSuccessorID = stackLevel.getElementByPositionIndex(0).getGLView().getID();
+					}
 				}
 			}
 		}
