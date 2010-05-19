@@ -30,6 +30,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.rcp.view.listener.AddPathwayListener;
@@ -193,6 +194,14 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	@Override
 	public void display(GL gl) {
 
+//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		
+//		GLHelperFunctions.drawPointAt(gl,new Vec3f(0,0,0));
+//		GLHelperFunctions.drawPointAt(gl,new Vec3f(4,4,0));
+//		GLHelperFunctions.drawPointAt(gl,new Vec3f(-2,-2,0));
+
+		
+		
 		// receivedEyeData = tracker.getEyeTrackData();
 		//
 		// int offsetX = upperLeftScreenPos.x;
@@ -515,9 +524,9 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 			glPathway.enablePathwayTextures(true);
 			glPathway.enableNeighborhood(false);
 			glPathway.enableGeneMapping(false);
-			// glPathway.setDetailLevel(EDetailLevel.VERY_LOW);
 
-			// glPathway.broadcastElements(EVAOperation.APPEND_UNIQUE);
+//			glPathway.setDetailLevel(EDetailLevel.VERY_LOW);	
+//			glPathway.broadcastbriElements(EVAOperation.APPEND_UNIQUE);
 		}
 
 		glView.initRemote(gl, this, glMouseListener, null);
@@ -570,11 +579,9 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		transform.setTranslation(new Vec3f(position[0], position[1], 0));
 
-		
-
 		if (this.displayFullView == true
 				&& (this.disk.getCenteredNode() == node)) {
-			transform.setScale(new Vec3f(0.6f, 0.5f, 1));
+			transform.setScale(new Vec3f(1f, 1f, 1));
 
 			transform.setTranslation(new Vec3f(2, 2, 0));
 		}

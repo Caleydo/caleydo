@@ -68,14 +68,14 @@ public class SerializedBucketView extends ASerializedView {
 			remoteViews.add(parCoords);
 		}
 
-		if (GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA) != null) {
-			SerializedGlyphView glyph1 = new SerializedGlyphView(
-					EDataDomain.CLINICAL_DATA);
-			remoteViews.add(glyph1);
-			SerializedGlyphView glyph2 = new SerializedGlyphView(
-					EDataDomain.CLINICAL_DATA);
-			remoteViews.add(glyph2);
-		}
+//		if (GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA) != null) {
+//			SerializedGlyphView glyph1 = new SerializedGlyphView(
+//					EDataDomain.CLINICAL_DATA);
+//			remoteViews.add(glyph1);
+//			SerializedGlyphView glyph2 = new SerializedGlyphView(
+//					EDataDomain.CLINICAL_DATA);
+//			remoteViews.add(glyph2);
+//		}
 
 		ArrayList<ASerializedView> focusLevel = new ArrayList<ASerializedView>();
 		if (remoteViews.size() > 0) {

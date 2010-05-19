@@ -60,9 +60,9 @@ public class SerializedDataFlipperView extends ASerializedView {
 //		parCoords.setDataDomain(EDataDomain.CLINICAL_DATA);
 //		initialContainedViews.add(parCoords);
 
-//		SerializedPathwayViewBrowserView pathwayViewBrowser = new SerializedPathwayViewBrowserView();
-//		pathwayViewBrowser.setDataDomain(EDataDomain.PATHWAY_DATA);
-//		initialContainedViews.add(pathwayViewBrowser);
+		SerializedPathwayViewBrowserView pathwayViewBrowser = new SerializedPathwayViewBrowserView();
+		pathwayViewBrowser.setDataDomain(EDataDomain.PATHWAY_DATA);
+		initialContainedViews.add(pathwayViewBrowser);
 
 //		SerializedGlyphView glyph = new SerializedGlyphView();
 //		glyph.setDataDomain(EDataDomain.CLINICAL_DATA);

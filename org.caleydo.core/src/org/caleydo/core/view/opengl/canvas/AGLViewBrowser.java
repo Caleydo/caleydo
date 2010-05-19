@@ -1588,7 +1588,7 @@ public abstract class AGLViewBrowser
 
 		if (focusLevel.hasFreePosition()) {
 			destination = focusLevel.getNextFree();
-			view.broadcastElements(EVAOperation.APPEND_UNIQUE);
+			//view.broadcastElements(EVAOperation.APPEND_UNIQUE);
 		}
 		// else if (stackLevel.hasFreePosition() && !(layoutRenderStyle
 		// instanceof ListLayoutRenderStyle)) {

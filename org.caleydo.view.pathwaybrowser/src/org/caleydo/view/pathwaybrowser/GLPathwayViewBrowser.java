@@ -8,6 +8,7 @@ import java.util.Set;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLViewBrowser;
@@ -30,20 +31,20 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 			IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum);
 
-		viewType = "org.caleydo.view.pathwaybrowser";
+		viewType = VIEW_ID;
 	}
 
 	@Override
 	protected void addInitialViews() {
 
-		// for (int pathwayIndex = 0; pathwayIndex < 5; pathwayIndex++) {
-		// SerializedPathwayView pathway = new SerializedPathwayView();
-		// pathway.setPathwayID(((PathwayGraph)
-		// GeneralManager.get().getPathwayManager().getAllItems()
-		// .toArray()[pathwayIndex]).getID());
-		// pathway.setDataDomain(EDataDomain.PATHWAY_DATA);
-		// newViews.add(pathway);
-		// }
+		 for (int pathwayIndex = 0; pathwayIndex < 5; pathwayIndex++) {
+		 SerializedPathwayView pathway = new SerializedPathwayView();
+		 pathway.setPathwayID(((PathwayGraph)
+		 GeneralManager.get().getPathwayManager().getAllItems()
+		 .toArray()[pathwayIndex]).getID());
+		 pathway.setDataDomain(EDataDomain.PATHWAY_DATA);
+		 newViews.add(pathway);
+		 }
 	}
 
 	@Override
