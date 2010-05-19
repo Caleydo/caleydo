@@ -69,7 +69,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 	private GLHyperbolic directHyperbolicView;
 
-	// the location attributes of the views
 	private float viewSizeHyperbolic = 1;
 
 	private ArrayList<simpleSlerp> simpleSlerpActions;
@@ -131,7 +130,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		// tracker.startTracking();
 		viewSlerpStartPoint = new float[2];
 		viewSlerpTargetPoint = new float[2];
-		// arSlerpActions = new ArrayList<NodeSlerp>();
 		simpleSlerpActions = new ArrayList<simpleSlerp>();
 	}
 

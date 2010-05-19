@@ -194,14 +194,12 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	@Override
 	public void display(GL gl) {
 
-//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-		
-//		GLHelperFunctions.drawPointAt(gl,new Vec3f(0,0,0));
-//		GLHelperFunctions.drawPointAt(gl,new Vec3f(4,4,0));
-//		GLHelperFunctions.drawPointAt(gl,new Vec3f(-2,-2,0));
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
-		
-		
+		// GLHelperFunctions.drawPointAt(gl,new Vec3f(0,0,0));
+		// GLHelperFunctions.drawPointAt(gl,new Vec3f(4,4,0));
+		// GLHelperFunctions.drawPointAt(gl,new Vec3f(-2,-2,0));
+
 		// receivedEyeData = tracker.getEyeTrackData();
 		//
 		// int offsetX = upperLeftScreenPos.x;
@@ -525,8 +523,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 			glPathway.enableNeighborhood(false);
 			glPathway.enableGeneMapping(false);
 
-//			glPathway.setDetailLevel(EDetailLevel.VERY_LOW);	
-//			glPathway.broadcastbriElements(EVAOperation.APPEND_UNIQUE);
+			// glPathway.setDetailLevel(EDetailLevel.VERY_LOW);
+			// glPathway.broadcastbriElements(EVAOperation.APPEND_UNIQUE);
 		}
 
 		glView.initRemote(gl, this, glMouseListener, null);
@@ -576,14 +574,16 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		Transform transform = new Transform();
 		transform.setScale(new Vec3f(size, size * fAspectRatio, 1));
-
 		transform.setTranslation(new Vec3f(position[0], position[1], 0));
 
 		if (this.displayFullView == true
 				&& (this.disk.getCenteredNode() == node)) {
-			transform.setScale(new Vec3f(1f, 1f, 1));
-
-			transform.setTranslation(new Vec3f(2, 2, 0));
+			transform.setScale(new Vec3f(8 * remoteNodeElement.getTransform()
+					.getScale().x(), 8
+					* remoteNodeElement.getTransform().getScale().y()
+					* fAspectRatio, 1));
+			transform.setTranslation(new Vec3f(viewFrustum.getWidth() / 2,
+					viewFrustum.getHeight() / 2, 0));
 		}
 
 		remoteNodeElement.setTransform(transform);
