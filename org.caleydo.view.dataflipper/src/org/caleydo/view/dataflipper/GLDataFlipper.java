@@ -666,20 +666,20 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		AGLView glEventListener = generalManager.getViewGLCanvasManager()
 				.getGLView(slerpAction.getElementId());
 
-		if (glEventListener instanceof GLGlyph
-				|| (glEventListener instanceof GLParallelCoordinates && glEventListener
-						.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
-						.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-						&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-				|| (glEventListener instanceof GLPathwayViewBrowser
-						&& isPathwayContentAvailable && renderPathwayViews)) {
+//		if (glEventListener instanceof GLGlyph
+//				|| (glEventListener instanceof GLParallelCoordinates && glEventListener
+//						.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+//				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
+//						.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+//						&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
+//				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
+//				|| (glEventListener instanceof GLPathwayViewBrowser
+//						&& isPathwayContentAvailable && renderPathwayViews)) {
 
 			renderBucketWall(gl, true);
 			generalManager.getViewGLCanvasManager().getGLView(iViewID)
 					.displayRemote(gl);
-		}
+//		}
 
 		gl.glPopMatrix();
 
