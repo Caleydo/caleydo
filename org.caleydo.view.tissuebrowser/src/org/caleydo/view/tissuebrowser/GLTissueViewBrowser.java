@@ -84,7 +84,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 		ISet geneticSet = generalManager.getUseCase(EDataDomain.GENETIC_DATA)
 				.getSet();
-		for (int experimentIndex = 0; experimentIndex < geneticSet.size(); experimentIndex++) {
+		for (int experimentIndex = 0; experimentIndex < 2; experimentIndex++) { //TODO: replace 2 with geneticSet.size()
 
 			generalManager.getViewGLCanvasManager().createGLView(
 					"org.caleydo.view.tissue", parentGLCanvas, "", viewFrustum);

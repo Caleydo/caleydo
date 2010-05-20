@@ -151,9 +151,6 @@ public class GLGlyph
 		renderStyle = new GlyphRenderStyle(viewFrustum);
 
 		gman = generalManager.getGlyphManager();
-
-		selectionManager = useCase.getStorageSelectionManager();
-
 	}
 
 	/**
@@ -275,6 +272,8 @@ public class GLGlyph
 
 		grid_ = new GLGlyphGrid(renderStyle, !this.isRenderedRemote());
 
+		selectionManager = useCase.getStorageSelectionManager();
+		
 		if (generalManager.getUseCase(EDataDomain.CLINICAL_DATA) != null)
 			set = generalManager.getUseCase(EDataDomain.CLINICAL_DATA).getSet();
 

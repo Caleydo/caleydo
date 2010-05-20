@@ -109,11 +109,13 @@ public class GLConnectionLineRendererDataFlipper extends
 			if (focusElement == null || focusElement.getGLView() == null)
 				continue;
 			else if (viewToPointList.containsKey(focusElement.getGLView().getID())) {
+				
 				for (ArrayList<Vec3f> sourceViewPoints : viewToPointList
 						.get(focusElement.getGLView().getID())) {
+					
 					// Connect point in focus view with points in first view in
 					// LEFT stack
-					if (viewToPointList.containsKey(stackElementsLeft.get(0)
+					if (stackElementsLeft.get(0).getGLView() != null && viewToPointList.containsKey(stackElementsLeft.get(0)
 							.getGLView().getID())) {
 						for (ArrayList<Vec3f> targetViewPoints : viewToPointList
 								.get(stackElementsLeft.get(0).getGLView()
@@ -130,7 +132,7 @@ public class GLConnectionLineRendererDataFlipper extends
 					
 					// Connect point in focus view with points in first view in
 					// RIGHT stack
-					if (viewToPointList.containsKey(rightElement.getGLView().getID())) {
+					if (stackElementsRight.get(0).getGLView() != null && viewToPointList.containsKey(rightElement.getGLView().getID())) {
 						for (ArrayList<Vec3f> targetViewPoints : viewToPointList
 								.get(stackElementsRight.get(0).getGLView()
 										.getID())) {
