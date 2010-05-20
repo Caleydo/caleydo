@@ -1,5 +1,7 @@
 package org.caleydo.view.tissue;
 
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.view.tissue.creator.ViewCreator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -9,7 +11,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.caleydo.view.cell";
+	public static final String PLUGIN_ID = "org.caleydo.view.tissue";
 
 	// The shared instance
 	private static Activator plugin;
@@ -32,8 +34,8 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		// GeneralManager.get().getViewGLCanvasManager().addGLViewCreator(
-		// new ViewCreator(SerializedScatterplotView.GUI_ID));
+		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
+				new ViewCreator(GLTissue.VIEW_ID));
 	}
 
 	/*

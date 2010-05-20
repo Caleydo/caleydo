@@ -48,21 +48,21 @@ public class SerializedDataFlipperView extends ASerializedView {
 		parCoords.setDataDomain(EDataDomain.GENETIC_DATA);
 		initialContainedViews.add(parCoords);
 
-//		SerializedTissueViewBrowserView tissueViewBrowser = new SerializedTissueViewBrowserView();
-//		tissueViewBrowser.setDataDomain(EDataDomain.TISSUE_DATA);
-//		initialContainedViews.add(tissueViewBrowser);
-
 		SerializedHierarchicalHeatMapView heatMap = new SerializedHierarchicalHeatMapView();
 		heatMap.setDataDomain(EDataDomain.GENETIC_DATA);
 		initialContainedViews.add(heatMap);
 
-//		parCoords = new SerializedParallelCoordinatesView();
-//		parCoords.setDataDomain(EDataDomain.CLINICAL_DATA);
-//		initialContainedViews.add(parCoords);
-
 		SerializedPathwayViewBrowserView pathwayViewBrowser = new SerializedPathwayViewBrowserView();
 		pathwayViewBrowser.setDataDomain(EDataDomain.PATHWAY_DATA);
 		initialContainedViews.add(pathwayViewBrowser);
+		
+		SerializedTissueViewBrowserView tissueViewBrowser = new SerializedTissueViewBrowserView();
+		tissueViewBrowser.setDataDomain(EDataDomain.TISSUE_DATA);
+		initialContainedViews.add(tissueViewBrowser);
+		
+//		parCoords = new SerializedParallelCoordinatesView();
+//		parCoords.setDataDomain(EDataDomain.CLINICAL_DATA);
+//		initialContainedViews.add(parCoords);
 
 //		SerializedGlyphView glyph = new SerializedGlyphView();
 //		glyph.setDataDomain(EDataDomain.CLINICAL_DATA);

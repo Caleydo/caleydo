@@ -11,7 +11,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
 import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
 import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
 

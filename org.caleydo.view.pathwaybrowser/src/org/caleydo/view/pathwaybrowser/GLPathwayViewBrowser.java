@@ -5,18 +5,23 @@ import gleem.linalg.open.Transform;
 
 import java.util.Set;
 
+import javax.media.opengl.GL;
+
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AGLViewBrowser;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.rcp.view.listener.AddPathwayListener;
 import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
 import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
+import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
 
 public class GLPathwayViewBrowser extends AGLViewBrowser implements
@@ -37,14 +42,24 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 	@Override
 	protected void addInitialViews() {
 
-		 for (int pathwayIndex = 0; pathwayIndex < 5; pathwayIndex++) {
-		 SerializedPathwayView pathway = new SerializedPathwayView();
-		 pathway.setPathwayID(((PathwayGraph)
-		 GeneralManager.get().getPathwayManager().getAllItems()
-		 .toArray()[pathwayIndex]).getID());
-		 pathway.setDataDomain(EDataDomain.PATHWAY_DATA);
-		 newViews.add(pathway);
-		 }
+		for (int pathwayIndex = 0; pathwayIndex < 5; pathwayIndex++) {
+			SerializedPathwayView pathway = new SerializedPathwayView();
+			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager()
+					.getAllItems().toArray()[pathwayIndex]).getID());
+			pathway.setDataDomain(EDataDomain.PATHWAY_DATA);
+			newViews.add(pathway);
+		}
+	}
+
+	@Override
+	protected AGLView createView(GL gl, ASerializedView serView) {
+
+		AGLView glView = super.createView(gl, serView);
+
+		GLPathway glPathway = (GLPathway) glView;
+		glPathway.setPathway(((SerializedPathwayView) serView).getPathwayID());
+
+		return glView;
 	}
 
 	@Override
@@ -77,13 +92,12 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(6.5f, fYAdd, 0));
-			transform.setScale(new Vec3f(fScalingFactorPoolLevel
-					* fSelectedScaling, fScalingFactorPoolLevel
-					* fSelectedScaling, fScalingFactorPoolLevel
-					* fSelectedScaling));
+			transform.setScale(new Vec3f(fScalingFactorPoolLevel * fSelectedScaling,
+					fScalingFactorPoolLevel * fSelectedScaling, fScalingFactorPoolLevel
+							* fSelectedScaling));
 
-			poolLevel.getElementByPositionIndex(iRemoteLevelElementIndex)
-					.setTransform(transform);
+			poolLevel.getElementByPositionIndex(iRemoteLevelElementIndex).setTransform(
+					transform);
 			iRemoteLevelElementIndex++;
 		}
 	}
@@ -97,8 +111,7 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 		transform.setScale(new Vec3f(fScalingFactorSelectionLevel,
 				fScalingFactorSelectionLevel, fScalingFactorSelectionLevel));
 
-		externalSelectionLevel.getElementByPositionIndex(0).setTransform(
-				transform);
+		externalSelectionLevel.getElementByPositionIndex(0).setTransform(transform);
 	}
 
 	@Override
@@ -118,8 +131,8 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 		float fScalingFactorSpawnLevel = 0.05f;
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(6.5f, 5, -0.2f));
-		transform.setScale(new Vec3f(fScalingFactorSpawnLevel,
-				fScalingFactorSpawnLevel, fScalingFactorSpawnLevel));
+		transform.setScale(new Vec3f(fScalingFactorSpawnLevel, fScalingFactorSpawnLevel,
+				fScalingFactorSpawnLevel));
 
 		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
 	}

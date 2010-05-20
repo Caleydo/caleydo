@@ -294,7 +294,7 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 	private void renderPathway(final GL gl, final PathwayGraph pathway) {
 		gl.glPushMatrix();
 //		GLHelperFunctions.drawPointAt(gl, new Vec3f(0,0,0));
-//		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
+		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
 		gl.glScalef(vecScaling.x(), vecScaling.y(), vecScaling.z());
 
 		if (bEnablePathwayTexture) {

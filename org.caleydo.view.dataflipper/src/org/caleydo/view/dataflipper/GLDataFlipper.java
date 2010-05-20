@@ -1715,15 +1715,15 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			// glEventListener.getSet().getSetType()
 			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
 
-			if (glView instanceof GLGlyph
-					|| (glView instanceof GLParallelCoordinates && glView
-							.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-					|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
-							.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-							&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-					|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
-					|| (glView instanceof GLPathwayViewBrowser
-							&& isPathwayContentAvailable && renderPathwayViews)) {
+//			if (glView instanceof GLGlyph
+//					|| (glView instanceof GLParallelCoordinates && glView
+//							.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+//					|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
+//							.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+//							&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
+//					|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
+//					|| (glView instanceof GLPathwayViewBrowser
+//							&& isPathwayContentAvailable && renderPathwayViews)) {
 
 				Transform transform;
 				Vec3f translation;
@@ -1747,7 +1747,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						+ 0.225f + 0.075f - fYCorrection,
 						-translation.z() - 0.001f);
 			}
-		}
+//		}
 
 		// Left first
 		element = stackElementsLeft.get(0);
@@ -1759,15 +1759,15 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			// glEventListener.getSet().getSetType()
 			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
 
-			if (glView instanceof GLGlyph
-					|| (glView instanceof GLParallelCoordinates && glView
-							.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-					|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
-							.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-							&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-					|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
-					|| (glView instanceof GLPathwayViewBrowser
-							&& isPathwayContentAvailable && renderPathwayViews)) {
+//			if (glView instanceof GLGlyph
+//					|| (glView instanceof GLParallelCoordinates && glView
+//							.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+//					|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
+//							.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+//							&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
+//					|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
+//					|| (glView instanceof GLPathwayViewBrowser
+//							&& isPathwayContentAvailable && renderPathwayViews)) {
 
 				gl.glTranslatef(-0.64f, -1.25f, 4.02f);
 				gl.glRotatef(90, 0, 0, 1);
@@ -1775,7 +1775,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				gl.glRotatef(-90, 0, 0, 1);
 				gl.glTranslatef(0.64f, 1.25f, -4.02f);
 			}
-		}
+//		}
 
 		// Left second
 		element = stackElementsLeft.get(1);
@@ -1785,15 +1785,15 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			// || (glEventListener instanceof GLParallelCoordinates &&
 			// glEventListener.getSet().getSetType()
 			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
-			if (glView instanceof GLGlyph
-					|| (glView instanceof GLParallelCoordinates && glView
-							.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-					|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
-							.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-							&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-					|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
-					|| (glView instanceof GLPathwayViewBrowser
-							&& isPathwayContentAvailable && renderPathwayViews)) {
+//			if (glView instanceof GLGlyph
+//					|| (glView instanceof GLParallelCoordinates && glView
+//							.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+//					|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
+//							.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+//							&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
+//					|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
+//					|| (glView instanceof GLPathwayViewBrowser
+//							&& isPathwayContentAvailable && renderPathwayViews)) {
 
 				gl.glTranslatef(-1.17f, -1.25f, 4.02f);
 				gl.glRotatef(90, 0, 0, 1);
@@ -1801,7 +1801,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				gl.glRotatef(-90, 0, 0, 1);
 				gl.glTranslatef(1.17f, 1.25f, -4.02f);
 			}
-		}
+//		}
 
 		// Right first
 		element = stackElementsRight.get(0);
@@ -1817,22 +1817,22 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			// glEventListener
 			// .getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
 			// && isTissueGuideActive)) {
-			if (glView instanceof GLGlyph
-					|| (glView instanceof GLParallelCoordinates && glView
-							.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-					|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
-							.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-							&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-					|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
-					|| (glView instanceof GLPathwayViewBrowser
-							&& isPathwayContentAvailable && renderPathwayViews)) {
+//			if (glView instanceof GLGlyph
+//					|| (glView instanceof GLParallelCoordinates && glView
+//							.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+//					|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
+//							.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+//							&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
+//					|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
+//					|| (glView instanceof GLPathwayViewBrowser
+//							&& isPathwayContentAvailable && renderPathwayViews)) {
 
 				gl.glTranslatef(0.65f, 2.08f, 4.02f);
 				gl.glRotatef(-90, 0, 0, 1);
 				renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
 				gl.glRotatef(90, 0, 0, 1);
 				gl.glTranslatef(-0.65f, -2.08f, -4.02f);
-			}
+//			}
 			// else if ((glEventListener instanceof GLTissueViewBrowser ||
 			// glEventListener instanceof
 			// GLPathwayViewBrowser
@@ -1865,22 +1865,22 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			// GLHierarchicalHeatMap)
 			// && isTissueGuideActive) {
 
-			if (glView instanceof GLGlyph
-					|| (glView instanceof GLParallelCoordinates && glView
-							.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-					|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
-							.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-							&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-					|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
-					|| (glView instanceof GLPathwayViewBrowser
-							&& isPathwayContentAvailable && renderPathwayViews)) {
+//			if (glView instanceof GLGlyph
+//					|| (glView instanceof GLParallelCoordinates && glView
+//							.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+//					|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
+//							.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+//							&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
+//					|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
+//					|| (glView instanceof GLPathwayViewBrowser
+//							&& isPathwayContentAvailable && renderPathwayViews)) {
 
 				gl.glTranslatef(1.1f, 2.08f, 4.02f);
 				gl.glRotatef(-90, 0, 0, 1);
 				renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
 				gl.glRotatef(90, 0, 0, 1);
 				gl.glTranslatef(-1.1f, -2.08f, -4.02f);
-			}
+//			}
 			// }
 			// else if ((glEventListener instanceof GLTissueViewBrowser
 			// || glEventListener instanceof GLParallelCoordinates ||

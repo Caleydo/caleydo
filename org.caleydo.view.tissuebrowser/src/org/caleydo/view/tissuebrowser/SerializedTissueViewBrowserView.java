@@ -12,7 +12,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
- * Serialized form of the data flipper view.
+ * Serialized form of the tissue browser view.
  * 
  * @author Marc Streit
  */

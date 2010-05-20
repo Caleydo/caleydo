@@ -16,8 +16,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 @XmlType
 public class SerializedTissueView extends ASerializedView {
 
-	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLTissueView";
-
 	private String texturePath;
 
 	private String label;
@@ -40,7 +38,7 @@ public class SerializedTissueView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GUI_ID;
+		return GLTissue.VIEW_ID;
 	}
 
 	public void setTexturePath(String texturePath) {

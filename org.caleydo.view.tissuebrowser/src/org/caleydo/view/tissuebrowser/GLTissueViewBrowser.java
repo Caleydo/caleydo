@@ -96,10 +96,14 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 			tissue.setDataDomain(EDataDomain.TISSUE_DATA);
 			tissue.setTexturePath(mapExperimentToTexturePath
 					.get(experimentIndex));
-			tissue.setLabel(geneticSet.get(experimentIndex).getLabel());
+			//tissue.setLabel(geneticSet.get(experimentIndex).getLabel());
 			tissue.setExperimentIndex(experimentIndex);
 
 			allTissueViews.add(tissue);
+		}
+		
+		for (SerializedTissueView serTissue : allTissueViews) {
+			newViews.add(serTissue);
 		}
 	}
 
