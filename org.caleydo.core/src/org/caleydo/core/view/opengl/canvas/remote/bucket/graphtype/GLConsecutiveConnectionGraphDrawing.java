@@ -27,8 +27,10 @@ import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
 public class GLConsecutiveConnectionGraphDrawing
 	extends GraphDrawingUtils {
 
-	final int PREDECESSOR = 0;
-	final int SUCCESSOR = 1;
+	private final int PREDECESSOR = 0;
+	private final int SUCCESSOR = 1;
+	private final int PARCOORDELEMENTS = 3;
+	private final int HEATMAPELEMENTS = 6;
 	protected RemoteLevel focusLevel;
 	protected RemoteLevel stackLevel;
 	ArrayList<Vec3f> controlPoints = new ArrayList<Vec3f>();
@@ -123,13 +125,38 @@ public class GLConsecutiveConnectionGraphDrawing
 	private ArrayList<ArrayList<Vec3f>> cleanUpPointsList(char type, ArrayList<ArrayList<Vec3f>> pointsList) {
 		ArrayList<ArrayList<Vec3f>> cleanPointsList = pointsList;
 
+//		ArrayList<DynamicViewPointContainer> pointContainer = new ArrayList<DynamicViewPointContainer>();
+		
 		int matches = 0;
 		int stepsize = 0;
 		if (type == PARCOORDS)
-			stepsize = 3;
+			stepsize = PARCOORDELEMENTS;
 		else
-			stepsize = 6;
-
+			stepsize = HEATMAPELEMENTS;
+/*
+		DynamicViewPointContainer points = new DynamicViewPointContainer();
+		int tcounter = 0;
+		for (int count = 0; count < pointsList.size(); count++){
+			points.addPoint(pointsList.get(count));
+			tcounter++;
+			if (tcounter == stepsize){
+				tcounter = 0;
+				pointContainer.add(points);
+				points = new DynamicViewPointContainer();
+			}
+		}
+		if (points.getPoints().size() != 0)
+			pointContainer.add(points);
+		
+		
+		for (int count = 0; count < pointContainer.size()-1; count++){
+			for (int innerCount = 1; innerCount < pointContainer.size(); innerCount++){
+				if (pointContainer.get(count).isEqual(pointContainer.get(innerCount)))
+					break;
+			}
+			cleanPointsList.addAll(pointContainer.get(count).getPoints());
+		}
+*/		
 		ArrayList<ArrayList<Vec3f>> firstTempArray = new ArrayList<ArrayList<Vec3f>>(stepsize);
 		ArrayList<ArrayList<Vec3f>> secondTempArray = new ArrayList<ArrayList<Vec3f>>(stepsize);
 		
@@ -522,7 +549,7 @@ public class GLConsecutiveConnectionGraphDrawing
 
 		}
 		
-		// TODO algorithm if gap exists and rendering starts at stack
+		// TODO algorithm if gap exists and rendering starts at stack and 3 stack elements plus gap exists
 		else {
 			if (viewsToBeVisited.size() == 3){
 				if (heatMapID == activeViewID){
@@ -558,20 +585,78 @@ public class GLConsecutiveConnectionGraphDrawing
 	 */
 	private ArrayList<VisLinkAnimationStage> renderPathWayActive(GL gl, EIDType idType,
 		HashMap<Integer, Vec3f> hashViewToCenterPoint, Vec3f controlPoint) {
+		VisLinkAnimationStage activeStage = null;
+		
 		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>();
-
+		Vec3f vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(activeViewID), controlPoint);
+		
+		activeStage =
+			renderLinesOfCurrentStage(gl, idType, activeViewID, vecViewBundlingPoint, controlPoint,
+				PATHWAY, hashViewToCenterPoint);
+		connectionLinesAllViews.add(activeStage);
 		
 		if (gapSuccessorID == parCoordID){
-
-			//TODO HEATMAP first
+			getlinesOfDynamicViewActiveViewOnStack(gl, PARCOORDS, vecViewBundlingPoint, controlPoint, connectionLinesAllViews);
+			getlinesOfDynamicViewActiveViewOnStack(gl, HEATMAP, vecViewBundlingPoint, controlPoint, connectionLinesAllViews);
 		}
 		else{
-			//TODO PARCOORDS first
+			getlinesOfDynamicViewActiveViewOnStack(gl, HEATMAP, vecViewBundlingPoint, controlPoint, connectionLinesAllViews);
+			getlinesOfDynamicViewActiveViewOnStack(gl, PARCOORDS, vecViewBundlingPoint, controlPoint, connectionLinesAllViews);
 		}
 		return connectionLinesAllViews;
 	}
 
 	
+	/** renderl lines if a gap exists, the graph is rendered starting at a stack level and a pathway is the active view
+	 * 
+	 * @param gl the gl object
+	 * @param specialViewType type of the special view (heatmap/parcoords)
+	 * @param connectToPoint bundling point of active view
+	 * @param controlPoint the global control point for calculating the curve
+	 * @param connectionLinesAllViews the vislink container
+	 */
+	private void getlinesOfDynamicViewActiveViewOnStack(GL gl, char specialViewType, Vec3f connectToPoint,
+		Vec3f controlPoint, ArrayList<VisLinkAnimationStage> connectionLinesAllViews) {
+		
+		VisLinkAnimationStage currentStage = null;
+		VisLinkAnimationStage bundling = null;
+		ArrayList<ArrayList<Vec3f>> pointsList = null;
+		if (controlPoint == null)
+			return;
+
+		if (specialViewType == PARCOORDS)
+			pointsList = heatmapPredecessor;
+		else
+			pointsList = parCoordsPredecessor;
+		
+		// calculating control points and local bundling points
+		Vec3f vecViewBundlingPoint = calculateBundlingPoint(calculateCenter(pointsList), controlPoint);
+
+		if (multiplePoints) {
+			if (specialViewType == PARCOORDS)
+				currentStage = renderLinesOfCurrentStage(gl, null, -1, vecViewBundlingPoint, controlPoint, HEATMAP, null);
+			else
+				currentStage = renderLinesOfCurrentStage(gl, null, -1, vecViewBundlingPoint, controlPoint, PARCOORDS, null);
+
+			bundling = new VisLinkAnimationStage(true);
+			bundling.addLine(createControlPoints(connectToPoint, vecViewBundlingPoint, controlPoint));
+			
+			
+			connectionLinesAllViews.add(bundling);
+			connectionLinesAllViews.add(currentStage);
+
+		}
+		else {
+			// calculating bundling line
+			bundling = new VisLinkAnimationStage(true);
+
+			bundling.addLine(createControlPoints(connectToPoint, calculateCenter(pointsList),
+				controlPoint));
+			connectionLinesAllViews.add(bundling);
+		}
+		
+	}
+
 	/** render vislink if rendered from the stack and a either heatmap or parcoord is the active view
 	 * 
 	 * @param gl the gl object
@@ -583,8 +668,6 @@ public class GLConsecutiveConnectionGraphDrawing
 	 */
 	private ArrayList<VisLinkAnimationStage> renderDyamicViewActive(GL gl, EIDType idType, ArrayList<Integer> viewsToBeVisited, HashMap<Integer, Vec3f> hashViewToCenterPoint, Vec3f controlPoint) {
 		
-		VisLinkAnimationStage currentStage = null;
-		VisLinkAnimationStage bundling = null;
 		Vec3f connectionToOtherDynamic = null;
 		Vec3f connectionToPathway = null;
 
@@ -640,12 +723,12 @@ public class GLConsecutiveConnectionGraphDrawing
 
 
 		if (parCoordID == gapSuccessorID || heatMapID == gapSuccessorID){
-			getLineOfPathwayActiveViewOnStack(gl, idType, viewsToBeVisited.get(2), hashViewToCenterPoint, connectionToPathway, bundling, currentStage, connectionLinesAllViews);
-			getlinesOfOtherDynamicViewActiveViewOnStack(gl, specialViewType, connectionToOtherDynamic, bundling, currentStage, connectionLinesAllViews);
+			getLineOfPathwayActiveViewOnStack(gl, idType, viewsToBeVisited.get(2), hashViewToCenterPoint, connectionToPathway, connectionLinesAllViews);
+			getlinesOfOtherDynamicViewActiveViewOnStack(gl, specialViewType, connectionToOtherDynamic, connectionLinesAllViews);
 		}
 		else{
-			getLineOfPathwayActiveViewOnStack(gl, idType, viewsToBeVisited.get(1), hashViewToCenterPoint, connectionToPathway, bundling, currentStage, connectionLinesAllViews);
-			getlinesOfOtherDynamicViewActiveViewOnStack(gl, specialViewType, connectionToOtherDynamic, bundling, currentStage, connectionLinesAllViews);
+			getLineOfPathwayActiveViewOnStack(gl, idType, viewsToBeVisited.get(1), hashViewToCenterPoint, connectionToPathway, connectionLinesAllViews);
+			getlinesOfOtherDynamicViewActiveViewOnStack(gl, specialViewType, connectionToOtherDynamic, connectionLinesAllViews);
 		}
 		return connectionLinesAllViews;
 	}
@@ -656,67 +739,61 @@ public class GLConsecutiveConnectionGraphDrawing
 	 * @param gl the gl object
 	 * @param specialViewType type of dynamic view (either heatmap or parcoord)
 	 * @param connectionToOtherDynamic bundling point
-	 * @param bundling bundling line
-	 * @param currentStage local lines of current view
 	 * @param connectionLinesAllViews the vislink container
+	 * @param isPathwayActive indicator if a pathway is the active view
 	 */
 	private void getlinesOfOtherDynamicViewActiveViewOnStack(GL gl, char specialViewType,
-		Vec3f connectionToOtherDynamic, VisLinkAnimationStage bundling, VisLinkAnimationStage currentStage,
-		ArrayList<VisLinkAnimationStage> connectionLinesAllViews) {
+		Vec3f connectionToOtherDynamic, ArrayList<VisLinkAnimationStage> connectionLinesAllViews) {
+		
+		VisLinkAnimationStage currentStage = null;
+		VisLinkAnimationStage bundling = null;
 		ArrayList<ArrayList<Vec3f>> pointsList = null;
 		if (gapSuccessorID == heatMapID || gapSuccessorID == parCoordID){
-			if (specialViewType == PARCOORDS){
+			if (specialViewType == PARCOORDS)
 				pointsList = heatmapSuccessor;
-			}
-			else{
+			else
 				pointsList = parCoordsSuccessor;
-			}
 		}
 		else{
-			if (specialViewType == PARCOORDS){
+			if (specialViewType == PARCOORDS)
 				pointsList = parCoordsPredecessor;
-			}
-			else{
+			else
 				pointsList = heatmapPredecessor;
-			}
 		}
 		
-		if (pointsList.size() > 0) {
-			// calculating control points and local bundling points
-			Vec3f controlPoint = calculateControlPoint(calculateCenter(pointsList), connectionToOtherDynamic);
-			if (controlPoint == null)
-				return;
+		// calculating control points and local bundling points
+		Vec3f controlPoint = calculateControlPoint(calculateCenter(pointsList), connectionToOtherDynamic);
+		if (controlPoint == null)
+			return;
 
-			Vec3f vecViewBundlingPoint =
-				calculateBundlingPoint(calculateCenter(pointsList), controlPoint);
+		Vec3f vecViewBundlingPoint =
+			calculateBundlingPoint(calculateCenter(pointsList), controlPoint);
 
-			if (multiplePoints) {
-				if (specialViewType == PARCOORDS)
-					currentStage = renderLinesOfCurrentStage(gl, null, -1, vecViewBundlingPoint, controlPoint, HEATMAP, null);
-				else
-					currentStage = renderLinesOfCurrentStage(gl, null, -1, vecViewBundlingPoint, controlPoint, PARCOORDS, null);
-				currentStage.setReverseLineDrawingDirection(true);
+		if (multiplePoints) {
+			if (specialViewType == PARCOORDS)
+				currentStage = renderLinesOfCurrentStage(gl, null, -1, vecViewBundlingPoint, controlPoint, HEATMAP, null);
+			else
+				currentStage = renderLinesOfCurrentStage(gl, null, -1, vecViewBundlingPoint, controlPoint, PARCOORDS, null);
+			currentStage.setReverseLineDrawingDirection(true);
 
-				bundling = new VisLinkAnimationStage(true);
-				bundling
-					.addLine(createControlPoints(connectionToOtherDynamic, vecViewBundlingPoint, controlPoint));
-				connectionLinesAllViews.add(currentStage);
-				bundling = new VisLinkAnimationStage(true);
+			bundling = new VisLinkAnimationStage(true);
+			bundling
+				.addLine(createControlPoints(connectionToOtherDynamic, vecViewBundlingPoint, controlPoint));
+			connectionLinesAllViews.add(currentStage);
+			bundling = new VisLinkAnimationStage(true);
 
-				bundling.addLine(createControlPoints(connectionToOtherDynamic, calculateCenter(pointsList),
-					controlPoint));
-				connectionLinesAllViews.add(bundling);
-			}
-			else {
-				// calculating bundling line
-				bundling = new VisLinkAnimationStage(true);
-
-				bundling.addLine(createControlPoints(connectionToOtherDynamic, calculateCenter(pointsList),
-					controlPoint));
-				connectionLinesAllViews.add(bundling);
-			}
+			bundling.addLine(createControlPoints(connectionToOtherDynamic, calculateCenter(pointsList),
+				controlPoint));
+			connectionLinesAllViews.add(bundling);
 		}
-		
+		else {
+			// calculating bundling line
+			bundling = new VisLinkAnimationStage(true);
+
+			bundling.addLine(createControlPoints(connectionToOtherDynamic, calculateCenter(pointsList),
+				controlPoint));
+			connectionLinesAllViews.add(bundling);
+		}
 	}
 
 	
@@ -727,11 +804,13 @@ public class GLConsecutiveConnectionGraphDrawing
 	 * @param pathwayID id of the current pathway
 	 * @param hashViewToCenterPoint list of center points
 	 * @param connectionToPathway bundlin point
-	 * @param bundling the bundling line
-	 * @param currentStage local lines of this pathway
 	 * @param connectionLinesAllViews the vislink container
 	 */
-	private void getLineOfPathwayActiveViewOnStack(GL gl, EIDType idType, Integer pathwayID, HashMap<Integer, Vec3f> hashViewToCenterPoint, Vec3f connectionToPathway, VisLinkAnimationStage bundling, VisLinkAnimationStage currentStage, ArrayList<VisLinkAnimationStage> connectionLinesAllViews) {
+	private void getLineOfPathwayActiveViewOnStack(GL gl, EIDType idType, Integer pathwayID, HashMap<Integer, Vec3f> hashViewToCenterPoint, Vec3f connectionToPathway, ArrayList<VisLinkAnimationStage> connectionLinesAllViews) {
+		
+		VisLinkAnimationStage currentStage = null;
+		VisLinkAnimationStage bundling = null;
+		
 		Vec3f controlPoint = calculateControlPoint(hashViewToCenterPoint.get(pathwayID), connectionToPathway);
 		if (controlPoint == null)
 			return;
@@ -2073,4 +2152,36 @@ public class GLConsecutiveConnectionGraphDrawing
 		HashMap<Integer, Vec3f> hashViewToCenterPoint) {
 		return null;
 	}
+	
+	/** helper class that acts as a container for heatmap/parcoord points for better handling
+	 * 
+	 * @author Michael Wittmayer
+	 *
+	 */
+	private class DynamicViewPointContainer{
+		private ArrayList<ArrayList<Vec3f>> pointContainer = new ArrayList<ArrayList<Vec3f>>();
+	
+		private void addPoint(ArrayList<Vec3f> point){
+			pointContainer.add(point);
+		}
+
+		private boolean isEqual(DynamicViewPointContainer pointListToCompare){
+			int nrMatches = 0;
+			for (int count = 0; count < pointContainer.size(); count++) {
+				if (pointContainer.get(count).get(0).x() == pointListToCompare.getPoints().get(count).get(0).x() &&
+					pointContainer.get(count).get(0).y() == pointListToCompare.getPoints().get(count).get(0).y() &&
+					pointContainer.get(count).get(0).z() == pointListToCompare.getPoints().get(count).get(0).z())
+					nrMatches++;
+			}
+			if (nrMatches == pointContainer.size())
+				return true;
+			else
+				return false;
+		}
+		
+		private ArrayList<ArrayList<Vec3f>> getPoints(){
+			return pointContainer;
+		}
+	}
 }
+
