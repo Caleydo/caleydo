@@ -548,16 +548,12 @@ public class GLConsecutiveConnectionGraphDrawing
 				connectionLinesAllViews = renderPathwayCentered(gl, idType, hashViewToCenterPoint, viewsToBeVisited, centerPoint);
 
 		}
-		
-		// TODO algorithm if gap exists and rendering starts at stack and 3 stack elements plus gap exists
 		else {
 			if (viewsToBeVisited.size() == 3){
-				if (heatMapID == activeViewID){
+				if (heatMapID == activeViewID)
 					connectionLinesAllViews = renderDyamicViewActive(gl, idType, viewsToBeVisited, hashViewToCenterPoint, controlPoint);
-				}
-				else if (parCoordID == activeViewID){
+				else if (parCoordID == activeViewID)
 					connectionLinesAllViews = renderDyamicViewActive(gl, idType, viewsToBeVisited, hashViewToCenterPoint, controlPoint);
-				}
 				else{
 					//parcoords and heatmap connect to the pathway so a weighted bundling point is needed
 					controlPoint = getWeightedPointForCenteredPathway(hashViewToCenterPoint);
@@ -565,7 +561,13 @@ public class GLConsecutiveConnectionGraphDrawing
 				}
 			}
 			else if (viewsToBeVisited.size() == 4){
-				//TODO gap on stack
+				int centerViewID = focusLevel.getElementByPositionIndex(0).getGLView().getID();
+				if (heatMapID == centerViewID)
+					connectionLinesAllViews = renderToTheMiddle(HEATMAP, gl, idType, viewsToBeVisited, hashViewToCenterPoint);
+				else if (parCoordID == centerViewID)
+					connectionLinesAllViews = renderToTheMiddle(PARCOORDS, gl, idType, viewsToBeVisited, hashViewToCenterPoint);
+				else
+					connectionLinesAllViews = renderToTheMiddle(PATHWAY, gl, idType, viewsToBeVisited, hashViewToCenterPoint);
 			}
 		}
 
@@ -574,7 +576,100 @@ public class GLConsecutiveConnectionGraphDrawing
 
 	}
 
-	
+	//TODO heatmap in center: heatmap pre/suc + parcoord pre connect to middle
+	//TODO parcoords in center: parcoords pre/suc + heatmap pre connect to middle
+	//TODO pathway in center --> global bundling routine
+	private ArrayList<VisLinkAnimationStage> renderToTheMiddle(char type, GL gl, EIDType idType,
+		ArrayList<Integer> viewsToBeVisited, HashMap<Integer, Vec3f> hashViewToCenterPoint) {
+
+		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>();
+		
+		
+		if (type == PATHWAY){
+			VisLinkAnimationStage connectionLinesActiveView = new VisLinkAnimationStage();
+			VisLinkAnimationStage bundlingToCenterLinesActiveView = new VisLinkAnimationStage();
+			VisLinkAnimationStage bundlingToCenterLinesOtherViews = new VisLinkAnimationStage(true);
+			VisLinkAnimationStage connectionLinesOtherViews = new VisLinkAnimationStage(true);
+			vecCenter = getWeightedPoint(hashViewToCenterPoint);
+			
+			for (Integer iKey : viewsToBeVisited) {
+				Vec3f vecViewBundlingPoint = null;
+				if (iKey == parCoordID)
+					vecViewBundlingPoint = calculateBundlingPoint(calculateCenter(parCoordsPredecessor), vecCenter);
+				else if (iKey == heatMapID)
+					vecViewBundlingPoint = calculateBundlingPoint(calculateCenter(heatmapPredecessor), vecCenter);
+				else
+					vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(iKey), vecCenter);
+				
+				ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
+
+				if (iKey == parCoordID){
+					for (ArrayList<Vec3f> alCurrentPoints : parCoordsPredecessor) {
+						if (alCurrentPoints.size() > 1) {
+							renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
+						}
+						else
+							pointsToDepthSort.add(alCurrentPoints.get(0));
+					}
+				}
+				else if (iKey == heatMapID){
+					for (ArrayList<Vec3f> alCurrentPoints : heatmapPredecessor) {
+						if (alCurrentPoints.size() > 1) {
+							renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
+						}
+						else
+							pointsToDepthSort.add(alCurrentPoints.get(0));
+					}
+				}
+				else{
+					for (ArrayList<Vec3f> alCurrentPoints : hashIDTypeToViewToPointLists.get(idType).get(iKey)) {
+						if (alCurrentPoints.size() > 1) {
+							renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
+						}
+						else
+							pointsToDepthSort.add(alCurrentPoints.get(0));
+					}
+				}
+
+				for(Vec3f currentPoint : depthSort(pointsToDepthSort)) {
+					if(activeViewID != -1 && iKey == activeViewID){
+						if (iKey == parCoordID)
+							connectionLinesActiveView.addLine( createControlPoints( vecViewBundlingPoint, currentPoint, calculateCenter(parCoordsPredecessor)) );
+						else if (iKey == heatMapID)
+							connectionLinesActiveView.addLine( createControlPoints( vecViewBundlingPoint, currentPoint, calculateCenter(heatmapPredecessor) ) );
+						else
+							connectionLinesActiveView.addLine( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );					
+					}
+					else{
+						if (iKey == parCoordID)
+							connectionLinesOtherViews.addLine( createControlPoints( vecViewBundlingPoint, currentPoint, calculateCenter(parCoordsPredecessor)) );
+						else if (iKey == heatMapID)
+							connectionLinesOtherViews.addLine( createControlPoints( vecViewBundlingPoint, currentPoint, calculateCenter(heatmapPredecessor) ) );
+						else
+							connectionLinesOtherViews.addLine( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
+					}
+				}
+
+				ArrayList<Vec3f> bundlingToCenter = new ArrayList<Vec3f>(2);
+				bundlingToCenter.add(vecViewBundlingPoint);
+				bundlingToCenter.add(vecCenter);
+				if(activeViewID != -1 && iKey == activeViewID) {
+					bundlingToCenterLinesActiveView.addLine(bundlingToCenter);
+				}
+				else {
+					bundlingToCenterLinesOtherViews.addLine(bundlingToCenter);
+				}
+				
+			}
+			
+			connectionLinesAllViews.add(connectionLinesActiveView);
+			connectionLinesAllViews.add(bundlingToCenterLinesActiveView);
+			connectionLinesAllViews.add(bundlingToCenterLinesOtherViews);
+			connectionLinesAllViews.add(connectionLinesOtherViews);
+		}
+		return connectionLinesAllViews;
+	}
+
 	/** render vislink if rendered from the stack and a pathway is the active view
 	 * 
 	 * @param gl the gl object
@@ -854,6 +949,26 @@ public class GLConsecutiveConnectionGraphDrawing
 		heatMapPointsList.add(heatmapCenter);
 		parCoordsPointsList.add(parCoordsCenter);
 		centerPathwayList.add(hashViewToCenterPoint.get(activeViewID));
+		ArrayList<ArrayList<Vec3f>> pointsCollection = new ArrayList<ArrayList<Vec3f>>();
+		pointsCollection.add(heatMapPointsList);
+		pointsCollection.add(parCoordsPointsList);
+		pointsCollection.add(centerPathwayList);
+		centerPoint = calculateCenter(pointsCollection);
+		return centerPoint;
+	}
+	
+	
+	private Vec3f getWeightedPoint(HashMap<Integer, Vec3f> hashViewToCenterPoint) {
+		Vec3f centerPoint = null;
+		ArrayList<Vec3f> heatMapPointsList = new ArrayList<Vec3f>();
+		ArrayList<Vec3f> parCoordsPointsList = new ArrayList<Vec3f>();
+		ArrayList<Vec3f> centerPathwayList = new ArrayList<Vec3f>();
+		Vec3f heatmapCenter = calculateCenter(heatmapPredecessor);
+		Vec3f parCoordsCenter = calculateCenter(parCoordsPredecessor);
+		heatMapPointsList.add(heatmapCenter);
+		parCoordsPointsList.add(parCoordsCenter);
+		for (Vec3f point : hashViewToCenterPoint.values())
+			centerPathwayList.add(point);
 		ArrayList<ArrayList<Vec3f>> pointsCollection = new ArrayList<ArrayList<Vec3f>>();
 		pointsCollection.add(heatMapPointsList);
 		pointsCollection.add(parCoordsPointsList);
