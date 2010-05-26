@@ -1,6 +1,6 @@
 package org.caleydo.util.r.view;
 
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;
@@ -15,7 +15,7 @@ public class RcpStatisticsView extends CaleydoRCPViewPart {
 				.getViewGLCanvasManager().createView(
 						StatisticsView.VIEW_ID, -1, "Statistics View");
 
-		IUseCase useCase = GeneralManager.get().getMasterUseCase();
+		IDataDomain useCase = GeneralManager.get().getMasterUseCase();
 		statisticsView.setSet(useCase.getSet());
 		statisticsView.setUseCase(useCase);
 		statisticsView.initViewRCP(parent);

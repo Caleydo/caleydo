@@ -4,15 +4,13 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.datadomain.UnspecifiedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.PathwayUseCase;
-import org.caleydo.core.manager.specialized.TissueUseCase;
 import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
-import org.caleydo.core.manager.usecase.DataDomainManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
-import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
@@ -21,7 +19,7 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
  * @author Alexander Lex
  */
 public class CmdDataCreateDataDomain
-	extends ACmdCreational<IUseCase> {
+	extends ACmdCreational<IDataDomain> {
 	private EDataDomain dataDomain;
 
 	/**
@@ -44,18 +42,18 @@ public class CmdDataCreateDataDomain
 		commandManager.runDoCommand(this);
 	}
 
-	private IUseCase createUseCase(EDataDomain dataDomain) {
+	private IDataDomain createUseCase(EDataDomain dataDomain) {
 		switch (dataDomain) {
 			case CLINICAL_DATA:
 				return new ClinicalUseCase();
 			case GENETIC_DATA:
-				return DataDomainManager.getInstance().createDataDomain(EDataDomain.GENETIC_DATA);
+				return DataDomainManager.getInstance().createDataDomain("org.caleydo.datadomain.genetic.GeneticDataDomain");
 			case TISSUE_DATA:
-				return new TissueUseCase();
+				return DataDomainManager.getInstance().createDataDomain("org.caleydo.datadomain.pathway.TissueDataDomain");
 			case PATHWAY_DATA:
-				return new PathwayUseCase();
+				return DataDomainManager.getInstance().createDataDomain("org.caleydo.datadomain.pathway.PathwayDataDomain");
 			case UNSPECIFIED:
-				return new UnspecifiedUseCase();
+				return new UnspecifiedDataDomain();
 			default:
 				throw new IllegalStateException("Unknow data domain type: " + dataDomain);
 		}

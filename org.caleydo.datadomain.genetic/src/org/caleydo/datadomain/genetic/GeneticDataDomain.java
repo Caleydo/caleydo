@@ -19,10 +19,10 @@ import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
+import org.caleydo.core.manager.datadomain.ADataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.AUseCase;
-import org.caleydo.core.manager.usecase.EDataDomain;
-import org.caleydo.core.manager.usecase.EDataFilterLevel;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 
 /**
@@ -33,8 +33,8 @@ import org.caleydo.core.util.preferences.PreferenceConstants;
  */
 @XmlType
 @XmlRootElement
-public class GeneticUseCase
-	extends AUseCase {
+public class GeneticDataDomain
+	extends ADataDomain {
 
 	/**
 	 * <code>TRUE</code>if only pathways can be displayed (no gene-expression data), <code>FALSE</code>
@@ -47,7 +47,7 @@ public class GeneticUseCase
 	/**
 	 * Constructor.
 	 */
-	public GeneticUseCase() {
+	public GeneticDataDomain() {
 
 		super();
 		pathwayViewerMode = false;

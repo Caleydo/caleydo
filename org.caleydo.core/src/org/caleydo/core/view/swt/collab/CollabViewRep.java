@@ -5,12 +5,12 @@ import java.util.Collection;
 import java.util.List;
 
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.net.Connection;
 import org.caleydo.core.net.ENetworkStatus;
 import org.caleydo.core.net.EventFilterBridge;

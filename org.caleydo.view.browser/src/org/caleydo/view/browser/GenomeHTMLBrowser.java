@@ -7,17 +7,17 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.event.view.browser.EBrowserQueryType;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.specialized.genetic.EOrganism;
-import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.manager.specialized.EOrganism;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.datadomain.genetic.GeneticUseCase;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -63,7 +63,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 		final Combo queryTypeCombo = new Combo(subContributionComposite,
 				SWT.READ_ONLY);
 
-		if (useCase instanceof GeneticUseCase) {
+		if (useCase instanceof GeneticDataDomain) {
 
 			String storedDatabase = generalManager.getPreferenceStore()
 					.getString(PreferenceConstants.BROWSER_QUERY_DATABASE);
@@ -83,7 +83,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 			if (eBrowserQueryType == EBrowserQueryType.GeneCards)
 				queryTypeCombo.select(2);
 
-			EOrganism organism = ((GeneticUseCase) useCase).getOrganism();
+			EOrganism organism = ((GeneticDataDomain) useCase).getOrganism();
 			if (organism == EOrganism.HOMO_SAPIENS) {
 				queryTypeCombo.add(EBrowserQueryType.Ensembl_HomoSapiens
 						.getTitle());

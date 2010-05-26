@@ -6,11 +6,11 @@ import java.util.Collection;
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.id.IDCreator;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
@@ -133,7 +133,7 @@ public interface IGeneralManager {
 	//
 	// public void setUseCase(IUseCase useCase);
 
-	public IUseCase getUseCase(EDataDomain useCaseType);
+	public IDataDomain getUseCase(EDataDomain useCaseType);
 
 	// /**
 	// * Returns all use cases that are currently registered.
@@ -142,14 +142,14 @@ public interface IGeneralManager {
 	// */
 	// public ClinicalUseCase getClinicalUseCase();
 
-	public Collection<IUseCase> getAllUseCases();
+	public Collection<IDataDomain> getAllUseCases();
 
 	/**
 	 * Set a different use case. The use case changes the behavior of the views and its loaded data.
 	 * 
 	 * @param useCase
 	 */
-	public void addUseCase(IUseCase useCase);
+	public void addUseCase(IDataDomain useCase);
 
 	/**
 	 * Obtains the {@link IGroupwareManager} responsible for communication purposes with other calyedo
@@ -182,7 +182,7 @@ public interface IGeneralManager {
 	 * @return the use case
 	 */
 	@Deprecated
-	public IUseCase getMasterUseCase();
+	public IDataDomain getMasterUseCase();
 
 	/**
 	 * Sets the dominant use case of this analysis session.
@@ -198,5 +198,5 @@ public interface IGeneralManager {
 	 * @deprecated Will be replaced by new use case management / handling.
 	 */
 	@Deprecated
-	public void setMasterUseCase(IUseCase useCase);
+	public void setMasterUseCase(IDataDomain useCase);
 }

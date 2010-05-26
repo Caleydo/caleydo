@@ -19,11 +19,11 @@ import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.datadomain.ADataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.AUseCase;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.core.view.IView;
@@ -82,7 +82,7 @@ public class ProjectSaver {
 	public void saveRecentProject() {
 		ZipUtils zipUtils = new ZipUtils();
 		// FIXME - this works only for genetic data now
-		IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
+		IDataDomain useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
 		if (useCase != null) {
 			if (!useCase.getLoadDataParameters().getFileName().startsWith(RECENT_PROJECT_DIR_NAME)) {
 				zipUtils.deleteDirectory(RECENT_PROJECT_DIR_NAME);
@@ -115,7 +115,7 @@ public class ProjectSaver {
 		tempDirFile.mkdir();
 
 		// FIXME - this works only for genetic data now
-		AUseCase useCase = (AUseCase) GeneralManager.get().getMasterUseCase();
+		ADataDomain useCase = (ADataDomain) GeneralManager.get().getMasterUseCase();
 		LoadDataParameters parameters = useCase.getLoadDataParameters();
 		try {
 			FileOperations.writeInputStreamToFile(dirName + SET_DATA_FILE_NAME, GeneralManager.get()
@@ -222,18 +222,18 @@ public class ProjectSaver {
 	 * @param dir
 	 *            directory to save the {@link VirtualArray} in.
 	 * @param useCase
-	 *            {@link IUseCase} to retrieve the {@link VirtualArray} from.
+	 *            {@link IDataDomain} to retrieve the {@link VirtualArray} from.
 	 * @param type
-	 *            type of the virtual array within the given {@link IUseCase}.
+	 *            type of the virtual array within the given {@link IDataDomain}.
 	 */
-	private void saveContentVA(Marshaller marshaller, String dir, IUseCase useCase, ContentVAType type)
+	private void saveContentVA(Marshaller marshaller, String dir, IDataDomain useCase, ContentVAType type)
 		throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
 		ContentVirtualArray va = (ContentVirtualArray) useCase.getContentVA(type);
 		marshaller.marshal(va, new File(fileName));
 	}
 
-	private void saveStorageVA(Marshaller marshaller, String dir, IUseCase useCase, StorageVAType type)
+	private void saveStorageVA(Marshaller marshaller, String dir, IDataDomain useCase, StorageVAType type)
 		throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
 		StorageVirtualArray va = (StorageVirtualArray) useCase.getStorageVA(type);

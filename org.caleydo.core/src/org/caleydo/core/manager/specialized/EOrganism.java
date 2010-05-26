@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.specialized.genetic;
+package org.caleydo.core.manager.specialized;
 
 /**
  * Organism on which an analysis bases. Currently we support homo sapiens (human) and mus musculus (mouse).

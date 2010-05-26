@@ -3,7 +3,7 @@ package org.caleydo.core.serialize;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**

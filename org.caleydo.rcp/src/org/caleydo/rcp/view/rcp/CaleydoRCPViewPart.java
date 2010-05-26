@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.IView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;

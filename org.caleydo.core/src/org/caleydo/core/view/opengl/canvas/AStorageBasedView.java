@@ -21,7 +21,9 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -29,8 +31,6 @@ import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
-import org.caleydo.core.manager.usecase.EDataDomain;
-import org.caleydo.core.manager.usecase.EDataFilterLevel;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
@@ -67,13 +67,13 @@ public abstract class AStorageBasedView
 
 	/**
 	 * This manager is responsible for the content in the storages (the indices). The contentSelectionManager
-	 * is initialized when the useCase is set ({@link #setUseCase(IUseCase)}).
+	 * is initialized when the useCase is set ({@link #setUseCase(IDataDomain)}).
 	 */
 	protected ContentSelectionManager contentSelectionManager;
 
 	/**
 	 * This manager is responsible for the management of the storages in the set. The storageSelectionManager
-	 * is initialized when the useCase is set ( {@link #setUseCase(IUseCase)}).
+	 * is initialized when the useCase is set ( {@link #setUseCase(IDataDomain)}).
 	 */
 	protected StorageSelectionManager storageSelectionManager;
 
@@ -127,7 +127,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void setUseCase(IUseCase useCase) {
+	public void setUseCase(IDataDomain useCase) {
 		this.useCase = useCase;
 		this.dataDomain = useCase.getDataDomain();
 

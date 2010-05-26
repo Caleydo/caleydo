@@ -6,7 +6,7 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.EOrganism;
+import org.caleydo.core.manager.specialized.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.util.preferences.PreferenceConstants;

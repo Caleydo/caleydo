@@ -1,7 +1,7 @@
 package org.caleydo.view.browser;
 
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.event.view.browser.EBrowserQueryType;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 

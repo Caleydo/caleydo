@@ -129,6 +129,7 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.data.collection,
    org.caleydo.core.manager,
    org.caleydo.core.manager.data",
+ org.caleydo.core.manager.datadomain;uses:="org.caleydo.core.data.collection,org.caleydo.core.manager,org.caleydo.core.view",
  org.caleydo.core.manager.event;uses:="org.caleydo.core.manager,org.caleydo.core.util.collection",
  org.caleydo.core.manager.event.data;uses:="org.caleydo.core.util.clusterer,org.caleydo.core.manager.event",
  org.caleydo.core.manager.event.view;
@@ -195,7 +196,6 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.manager,
    org.caleydo.core.parser.xml.sax.handler.specialized.pathway,
    org.caleydo.core.data.graph.pathway.item.vertex",
- org.caleydo.core.manager.usecase;uses:="org.caleydo.core.data.collection,org.caleydo.core.manager,org.caleydo.core.view",
  org.caleydo.core.manager.view;
   uses:="org.caleydo.core.manager.id,
    org.caleydo.core.view.opengl.camera,

@@ -1,10 +1,10 @@
 package org.caleydo.view.scatterplot;
 
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.datadomain.genetic.GeneticUseCase;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -27,9 +27,9 @@ public class RcpGLScatterplotView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		IUseCase usecase = GeneralManager.get().getUseCase(dataDomain);
-		if (usecase != null && usecase instanceof GeneticUseCase
-				&& ((GeneticUseCase) usecase).isPathwayViewerMode()) {
+		IDataDomain usecase = GeneralManager.get().getUseCase(dataDomain);
+		if (usecase != null && usecase instanceof GeneticDataDomain
+				&& ((GeneticDataDomain) usecase).isPathwayViewerMode()) {
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
 			alert
 					.setMessage("Cannot create scatterplot in pathway viewer mode!");

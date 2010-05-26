@@ -18,10 +18,10 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.datadomain.ADataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.AUseCase;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ApplicationInitData;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
@@ -284,7 +284,7 @@ public class Connection {
 		ApplicationInitData initData = new ApplicationInitData();
 
 		// FIXME this should work for more than one use case now
-		AUseCase useCase = (AUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
+		ADataDomain useCase = (ADataDomain) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
 		ISet set = useCase.getSet();
 
 		initData.setUseCase(useCase);

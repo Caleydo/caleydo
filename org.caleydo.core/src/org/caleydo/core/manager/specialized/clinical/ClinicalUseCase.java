@@ -11,8 +11,8 @@ import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
-import org.caleydo.core.manager.usecase.AUseCase;
-import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.manager.datadomain.ADataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 
 /**
  * TODO The use case for clinical input data.
@@ -22,7 +22,7 @@ import org.caleydo.core.manager.usecase.EDataDomain;
 @XmlType
 @XmlRootElement
 public class ClinicalUseCase
-	extends AUseCase {
+	extends ADataDomain {
 
 	/**
 	 * Constructor.

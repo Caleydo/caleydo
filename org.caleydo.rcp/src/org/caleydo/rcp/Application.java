@@ -18,11 +18,11 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.ADataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.datadomain.UnspecifiedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.AUseCase;
-import org.caleydo.core.manager.usecase.EDataDomain;
-import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
 import org.caleydo.core.net.GroupwareUtils;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -165,7 +165,7 @@ public class Application
 			else if (startViews.size() == 1 && startViews.get(0).equals("org.caleydo.view.datawindows")) {
 				// do nothing - no data or use case are needed for eye tracker setup
 				applicationMode = EApplicationMode.NO_DATA;
-				IUseCase useCase = new UnspecifiedUseCase();
+				IDataDomain useCase = new UnspecifiedDataDomain();
 				GeneralManager.get().addUseCase(useCase);
 				GeneralManager.get().setMasterUseCase(useCase);
 			}
@@ -339,7 +339,7 @@ public class Application
 
 		if (applicationMode == EApplicationMode.COLLABORATION_CLIENT
 			|| applicationMode == EApplicationMode.PLEX_CLIENT) {
-			IUseCase useCase = initData.getUseCase();
+			IDataDomain useCase = initData.getUseCase();
 			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
 			SetUtils.saveSetFile(loadDataParameters, initData.getSetFileContent());
 			if (initData.getGeneClusterTree() != null) {
@@ -358,12 +358,12 @@ public class Application
 
 			HashMap<ContentVAType, ContentVirtualArray> contentVAMap = initData.getContentVAMap();
 			for (Entry<ContentVAType, ContentVirtualArray> entry : contentVAMap.entrySet()) {
-				((AUseCase) useCase).setContentVirtualArray(entry.getKey(), entry.getValue());
+				((ADataDomain) useCase).setContentVirtualArray(entry.getKey(), entry.getValue());
 			}
 
 			HashMap<StorageVAType, StorageVirtualArray> storageVAMap = initData.getStorageVAMap();
 			for (Entry<StorageVAType, StorageVirtualArray> entry : storageVAMap.entrySet()) {
-				((AUseCase) useCase).setStorageVirtualArray(entry.getKey(), entry.getValue());
+				((ADataDomain) useCase).setStorageVirtualArray(entry.getKey(), entry.getValue());
 			}
 
 			// we need the VAs to be available before the tree is initialized
@@ -374,7 +374,7 @@ public class Application
 		else if (applicationMode == EApplicationMode.LOAD_PROJECT
 			|| applicationMode == EApplicationMode.SAMPLE_PROJECT) {
 
-			IUseCase useCase = initData.getUseCase();
+			IDataDomain useCase = initData.getUseCase();
 			GeneralManager.get().addUseCase(useCase);
 
 			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
@@ -383,18 +383,18 @@ public class Application
 
 			HashMap<ContentVAType, ContentVirtualArray> contentVAMap = initData.getContentVAMap();
 			for (Entry<ContentVAType, ContentVirtualArray> entry : contentVAMap.entrySet()) {
-				((AUseCase) useCase).setContentVirtualArray(entry.getKey(), entry.getValue());
+				((ADataDomain) useCase).setContentVirtualArray(entry.getKey(), entry.getValue());
 			}
 
 			HashMap<StorageVAType, StorageVirtualArray> storageVAMap = initData.getStorageVAMap();
 			for (Entry<StorageVAType, StorageVirtualArray> entry : storageVAMap.entrySet()) {
-				((AUseCase) useCase).setStorageVirtualArray(entry.getKey(), entry.getValue());
+				((ADataDomain) useCase).setStorageVirtualArray(entry.getKey(), entry.getValue());
 			}
 			// we need the VAs to be available before the tree is initialized
 			SetUtils.loadTrees(loadDataParameters, set);
 
-			// if (useCase instanceof GeneticUseCase)
-			// triggerPathwayLoading();
+			if (useCase.getDataDomain() == EDataDomain.GENETIC_DATA)
+				triggerPathwayLoading();
 
 			Application.initData = null;
 		}
@@ -429,7 +429,7 @@ public class Application
 		// nicest place to do this.
 		// This is only necessary if started from xml. Otherwise this is done in FileLoadDataAction
 		if (isStartedFromXML) {
-			IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
+			IDataDomain useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
 			GeneralManager.get().setMasterUseCase(useCase);
 			useCase.updateSetInViews();
 		}
@@ -500,12 +500,12 @@ public class Application
 	 * Adds the default start views. Used when no start views are defined with command line arguments.
 	 * 
 	 * @param useCase
-	 *            {@link IUseCase} to determine the correct default start views.
+	 *            {@link IDataDomain} to determine the correct default start views.
 	 */
 	private static void addDefaultStartViews(EDataDomain dataDomain) {
 		startViews.add(EStartViewType.browser.getViewID());
 
-		IUseCase useCase = GeneralManager.get().getUseCase(dataDomain);
+		IDataDomain useCase = GeneralManager.get().getUseCase(dataDomain);
 
 		// if ((useCase instanceof GeneticUseCase && !((GeneticUseCase) useCase).isPathwayViewerMode())
 		// || useCase instanceof UnspecifiedUseCase) {

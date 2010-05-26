@@ -15,7 +15,8 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -25,7 +26,6 @@ import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
@@ -93,7 +93,7 @@ public class SelectionBrowser
 
 	private void initContent() {
 		ContentVAType contentVAType = ContentVAType.CONTENT;
-		IUseCase useCase = generalManager.getUseCase(EDataDomain.GENETIC_DATA);
+		IDataDomain useCase = generalManager.getUseCase(EDataDomain.GENETIC_DATA);
 		contentSelectionManager = useCase.getContentSelectionManager();
 
 		ContentVirtualArray contentVA = useCase.getContentVA(contentVAType);

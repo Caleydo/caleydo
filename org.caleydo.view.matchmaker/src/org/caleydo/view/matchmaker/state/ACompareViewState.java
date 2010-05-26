@@ -21,13 +21,13 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -74,7 +74,7 @@ public abstract class ACompareViewState {
 	protected RenderCommandFactory renderCommandFactory;
 	protected IEventPublisher eventPublisher;
 	protected EDataDomain dataDomain;
-	protected IUseCase useCase;
+	protected IDataDomain useCase;
 	protected DragAndDropController dragAndDropController;
 	protected CompareViewStateController compareViewStateController;
 	protected int setBarDisplayListIndex;
@@ -122,7 +122,7 @@ public abstract class ACompareViewState {
 			TextureManager textureManager, PickingManager pickingManager,
 			GLMouseListener glMouseListener, SetBar setBar,
 			RenderCommandFactory renderCommandFactory, EDataDomain dataDomain,
-			IUseCase useCase, DragAndDropController dragAndDropController,
+			IDataDomain useCase, DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
 		this.view = view;
 		this.viewID = viewID;

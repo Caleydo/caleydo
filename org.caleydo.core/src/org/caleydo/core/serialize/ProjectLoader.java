@@ -14,8 +14,8 @@ import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.AUseCase;
 
 /**
  * Restores the state of the application from a given file.
@@ -66,10 +66,10 @@ public class ProjectLoader {
 
 		try {
 			Unmarshaller unmarshaller = projectContext.createUnmarshaller();
-			AUseCase useCase;
+			ADataDomain useCase;
 			try {
 				useCase =
-					(AUseCase) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader().getResource(
+					(ADataDomain) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader().getResource(
 						dirName + ProjectSaver.USECASE_FILE_NAME));
 			}
 			catch (FileNotFoundException e1) {

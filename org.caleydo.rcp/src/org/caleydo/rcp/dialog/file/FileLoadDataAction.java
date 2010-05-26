@@ -13,9 +13,9 @@ import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.rcp.dialog.LabelEditorDialog;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -715,7 +715,7 @@ public class FileLoadDataAction
 		}
 		readParameters();
 
-		IUseCase useCase = GeneralManager.get().getUseCase(loadDataParameters.getDataDomain());
+		IDataDomain useCase = GeneralManager.get().getUseCase(loadDataParameters.getDataDomain());
 		useCase.setLoadDataParameters(loadDataParameters);
 
 		if (success) {

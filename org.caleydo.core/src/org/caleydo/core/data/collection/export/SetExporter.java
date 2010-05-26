@@ -18,9 +18,9 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
@@ -92,7 +92,7 @@ public class SetExporter {
 		ContentVirtualArray contentVA = null;
 		StorageVirtualArray storageVA = null;
 
-		IUseCase useCase = GeneralManager.get().getUseCase(set.getSetType().getDataDomain());
+		IDataDomain useCase = GeneralManager.get().getUseCase(set.getSetType().getDataDomain());
 
 		if (useCase.getDataDomain() != EDataDomain.GENETIC_DATA)
 			return;

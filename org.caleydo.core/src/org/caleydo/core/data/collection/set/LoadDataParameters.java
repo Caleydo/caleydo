@@ -6,7 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 
 /**
  * Parameters to load the initial data-{@link Set}.

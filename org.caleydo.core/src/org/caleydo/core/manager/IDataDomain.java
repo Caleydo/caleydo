@@ -12,8 +12,8 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
-import org.caleydo.core.manager.specialized.genetic.EOrganism;
-import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.specialized.EOrganism;
 import org.caleydo.core.util.clusterer.ClusterState;
 
 /**
@@ -23,7 +23,7 @@ import org.caleydo.core.util.clusterer.ClusterState;
  * 
  * @author Marc Streit
  */
-public interface IUseCase {
+public interface IDataDomain {
 
 	/**
 	 * Returns whether the application can load and work with non further specified data (general use case) or

@@ -1,6 +1,6 @@
 package org.caleydo.view.tabular;
 
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;
@@ -15,7 +15,7 @@ public class RcpTabularDataView extends CaleydoRCPViewPart {
 				.getViewGLCanvasManager().createView(
 						"org.caleydo.view.tabular", -1, "Tabular Data View");
 
-		IUseCase useCase = GeneralManager.get().getMasterUseCase();
+		IDataDomain useCase = GeneralManager.get().getMasterUseCase();
 		tabularDataView.setSet(useCase.getSet());
 		tabularDataView.setUseCase(useCase);
 		tabularDataView.initViewRCP(parent);

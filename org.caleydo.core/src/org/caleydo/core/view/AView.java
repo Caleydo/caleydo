@@ -6,12 +6,12 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.canvas.listener.NewSetListener;
 import org.eclipse.swt.widgets.Composite;
 
@@ -40,7 +40,7 @@ public abstract class AView
 	/**
 	 * The use case which determines the use case specific behavior of the view.
 	 */
-	protected IUseCase useCase;
+	protected IDataDomain useCase;
 
 	/**
 	 * Data set which the view operates on.
@@ -114,7 +114,7 @@ public abstract class AView
 	}
 
 	@Override
-	public void setUseCase(IUseCase useCase) {
+	public void setUseCase(IDataDomain useCase) {
 		this.useCase = useCase;
 	}
 

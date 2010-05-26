@@ -10,9 +10,9 @@ import java.util.StringTokenizer;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.EOrganism;
-import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.manager.specialized.EOrganism;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 

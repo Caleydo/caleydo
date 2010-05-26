@@ -1,6 +1,6 @@
 package org.caleydo.core.data.mapping;
 
-import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 
 /**
  * <p>

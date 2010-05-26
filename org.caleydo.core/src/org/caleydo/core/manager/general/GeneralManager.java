@@ -9,7 +9,7 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.command.CommandManager;
@@ -17,6 +17,7 @@ import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.data.set.SetManager;
 import org.caleydo.core.manager.data.storage.StorageManager;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.caleydo.core.manager.id.IDCreator;
@@ -27,7 +28,6 @@ import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;
@@ -83,7 +83,7 @@ public class GeneralManager
 	/**
 	 * The use case determines which kind of data is loaded in the views.
 	 */
-	private EnumMap<EDataDomain, IUseCase> useCaseMap;
+	private EnumMap<EDataDomain, IDataDomain> useCaseMap;
 
 	/**
 	 * The master use case of this analysis session.
@@ -91,7 +91,7 @@ public class GeneralManager
 	 * @deprecated Will be replaced by new use case management / handling.
 	 */
 	@Deprecated
-	private IUseCase masterUseCase;
+	private IDataDomain masterUseCase;
 
 	private boolean bIsWiiMode = false;
 
@@ -135,7 +135,7 @@ public class GeneralManager
 		}
 
 		trackDataProvider = new TrackDataProvider();
-		useCaseMap = new EnumMap<EDataDomain, IUseCase>(EDataDomain.class);
+		useCaseMap = new EnumMap<EDataDomain, IDataDomain>(EDataDomain.class);
 	}
 
 	/**
@@ -277,12 +277,12 @@ public class GeneralManager
 	}
 
 	@Override
-	public void addUseCase(IUseCase useCase) {
+	public void addUseCase(IDataDomain useCase) {
 		useCaseMap.put(useCase.getDataDomain(), useCase);
 	}
 
 	@Override
-	public IUseCase getUseCase(EDataDomain useCaseType) {
+	public IDataDomain getUseCase(EDataDomain useCaseType) {
 		return useCaseMap.get(useCaseType);
 	}
 
@@ -302,12 +302,12 @@ public class GeneralManager
 	}
 
 	@Override
-	public Collection<IUseCase> getAllUseCases() {
+	public Collection<IDataDomain> getAllUseCases() {
 		return useCaseMap.values();
 	}
 
 	@Override
-	public IUseCase getMasterUseCase() {
+	public IDataDomain getMasterUseCase() {
 		return masterUseCase;
 	}
 
@@ -317,7 +317,7 @@ public class GeneralManager
 	}
 
 	@Override
-	public void setMasterUseCase(IUseCase useCase) {
+	public void setMasterUseCase(IDataDomain useCase) {
 		this.masterUseCase = useCase;
 	}
 }

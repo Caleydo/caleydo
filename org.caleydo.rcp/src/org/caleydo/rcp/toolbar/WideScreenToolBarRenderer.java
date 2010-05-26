@@ -3,8 +3,8 @@ package org.caleydo.rcp.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
 import org.caleydo.rcp.action.toolbar.general.ImportDataAction;
 import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;

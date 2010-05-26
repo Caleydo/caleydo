@@ -4,12 +4,12 @@ import java.io.IOException;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.datadomain.UnspecifiedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.EOrganism;
+import org.caleydo.core.manager.specialized.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
-import org.caleydo.core.manager.usecase.EDataDomain;
-import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
 import org.caleydo.core.net.StandardGroupwareManager;
 import org.caleydo.core.serialize.ProjectLoader;
 import org.caleydo.core.util.preferences.PreferenceConstants;
@@ -78,7 +78,7 @@ public class CaleydoProjectWizard
 
 			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_ORGANISM, page.getOrganism().name());
 
-			IUseCase useCase;
+			IDataDomain useCase;
 			EApplicationMode appMode = page.getApplicationMode();
 			if (appMode == EApplicationMode.SAMPLE_PROJECT) {
 
@@ -142,7 +142,7 @@ public class CaleydoProjectWizard
 
 			}
 			else if (appMode == EApplicationMode.UNSPECIFIED_NEW_DATA) {
-				useCase = new UnspecifiedUseCase();
+				useCase = new UnspecifiedDataDomain();
 				Application.applicationMode = EApplicationMode.UNSPECIFIED_NEW_DATA;
 
 			}

@@ -14,12 +14,12 @@ import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
@@ -39,7 +39,7 @@ public class CompareViewStateController {
 	public CompareViewStateController(GLMatchmaker view, int viewID,
 			TextRenderer textRenderer, TextureManager textureManager,
 			PickingManager pickingManager, GLMouseListener glMouseListener,
-			ContextMenu contextMenu, EDataDomain dataDomain, IUseCase useCase) {
+			ContextMenu contextMenu, EDataDomain dataDomain, IDataDomain useCase) {
 		DragAndDropController dragAndDropController = new DragAndDropController(
 				view);
 		SetBar setBar = new SetBar(viewID, pickingManager, textRenderer,

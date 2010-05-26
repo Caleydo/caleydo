@@ -1,6 +1,6 @@
 package org.caleydo.core.serialize;
 
-import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**

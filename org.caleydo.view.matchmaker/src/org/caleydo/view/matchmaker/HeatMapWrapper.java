@@ -27,14 +27,14 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -81,7 +81,7 @@ public class HeatMapWrapper {
 	private AGLView glParentView;
 	private ACompareViewState state;
 	private GLInfoAreaManager infoAreaManager;
-	private IUseCase useCase;
+	private IDataDomain useCase;
 	private IGLRemoteRenderingView parentView;
 	private EDataDomain dataDomain;
 
@@ -94,7 +94,7 @@ public class HeatMapWrapper {
 	private boolean useFishEye = false;
 
 	public HeatMapWrapper(int id, AHeatMapLayout layout, AGLView glParentView,
-			GLInfoAreaManager infoAreaManager, IUseCase useCase,
+			GLInfoAreaManager infoAreaManager, IDataDomain useCase,
 			IGLRemoteRenderingView parentView, EDataDomain dataDomain,
 			ACompareViewState state) {
 

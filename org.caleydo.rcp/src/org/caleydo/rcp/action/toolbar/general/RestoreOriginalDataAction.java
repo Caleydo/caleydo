@@ -1,6 +1,6 @@
 package org.caleydo.rcp.action.toolbar.general;
 
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
@@ -28,7 +28,7 @@ public class RestoreOriginalDataAction
 	public void run() {
 		super.run();
 
-		for (IUseCase useCase : GeneralManager.get().getAllUseCases()) {
+		for (IDataDomain useCase : GeneralManager.get().getAllUseCases()) {
 			useCase.restoreOriginalContentVA();
 		}
 	}

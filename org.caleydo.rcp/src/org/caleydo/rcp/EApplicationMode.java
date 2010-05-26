@@ -2,7 +2,7 @@ package org.caleydo.rcp;
 
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.selection.VirtualArray;
-import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 
 /**
  * the application mode tells the application how to start and which data-sets need to be loaded and how these

@@ -2,8 +2,8 @@ package org.caleydo.core.view;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.manager.IUseCase;
-import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.listener.INewSetHandler;
 
@@ -60,7 +60,7 @@ public interface IView
 	 * 
 	 * @param useCase
 	 */
-	public void setUseCase(IUseCase useCase);
+	public void setUseCase(IDataDomain useCase);
 
 	/**
 	 * Retrieves a serializeable representation of the view

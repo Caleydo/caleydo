@@ -14,6 +14,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
@@ -21,9 +22,11 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.datadomain.ADataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
@@ -31,9 +34,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.specialized.PathwayUseCase;
-import org.caleydo.core.manager.specialized.TissueUseCase;
-import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.manager.specialized.EOrganism;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.serialize.ASerializedView;
@@ -196,11 +197,24 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		glConnectionLineRenderer = new GLConnectionLineRendererDataFlipper(focusElement,
 				stackElementsLeft, stackElementsRight);
 
-		// FIXME: remove when alex is ready with use case changes
-		generalManager.addUseCase(new PathwayUseCase());
-		generalManager.addUseCase(new TissueUseCase());
-		generalManager.getUseCase(EDataDomain.PATHWAY_DATA).setSet(
-				generalManager.getUseCase(EDataDomain.GENETIC_DATA).getSet());
+		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(
+				ECommandType.CREATE_DATA_DOMAIN);
+		cmd.setAttributes(EDataDomain.PATHWAY_DATA);
+		cmd.doCommand();
+		ADataDomain pathwayDataDomain = (ADataDomain) cmd.getCreatedObject();
+		pathwayDataDomain.setOrganism(EOrganism.HOMO_SAPIENS);
+		//pathwayDataDomain.setSet(generalManager.getUseCase(EDataDomain.PATHWAY_DATA).getSet());
+		generalManager.addUseCase(pathwayDataDomain);
+		
+		cmd = new CmdDataCreateDataDomain(
+				ECommandType.CREATE_DATA_DOMAIN);
+		cmd.setAttributes(EDataDomain.TISSUE_DATA);
+		cmd.doCommand();
+		ADataDomain tissueDataDomain = (ADataDomain) cmd.getCreatedObject();
+		pathwayDataDomain.setOrganism(EOrganism.HOMO_SAPIENS);
+		//pathwayDataDomain.setSet(generalManager.getUseCase(EDataDomain.TISSUE_DATA).getSet());
+		generalManager.addUseCase(pathwayDataDomain);
+
 	}
 
 	@Override
@@ -942,7 +956,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	private void renderDataViewIcons(final GL gl, EDataDomain dataDomain) {
 
-		IUseCase useCase = GeneralManager.get().getUseCase(dataDomain);
+		IDataDomain useCase = GeneralManager.get().getUseCase(dataDomain);
 		ArrayList<String> possibleViews = useCase.getPossibleViews();
 
 		EIconTextures dataIcon = null;

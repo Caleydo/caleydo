@@ -24,10 +24,10 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.eclipse.core.runtime.IStatus;
@@ -50,7 +50,7 @@ public class SetUtils {
 	public static final String EXPERIMENT_FILE_PREFIX = "exptree";
 
 	/**
-	 * Loads the set-file as specified in the {@link IUseCase}'s {@link LoadDataParameters} and stores the
+	 * Loads the set-file as specified in the {@link IDataDomain}'s {@link LoadDataParameters} and stores the
 	 * raw-data in the useCase
 	 * 
 	 * @param useCase
@@ -187,7 +187,7 @@ public class SetUtils {
 	 * @param loadDataParameters
 	 *            definition how to load the set
 	 */
-	public static ISet createData(IUseCase useCase) {
+	public static ISet createData(IDataDomain useCase) {
 
 		LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
 		ArrayList<Integer> iAlStorageId = loadDataParameters.getStorageIds();

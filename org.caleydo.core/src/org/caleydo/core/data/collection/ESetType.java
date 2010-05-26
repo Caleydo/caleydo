@@ -1,6 +1,6 @@
 package org.caleydo.core.data.collection;
 
-import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 
 /**
  * Defines different types of sets.

@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.specialized;
+package org.caleydo.datadomain.tissue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,30 +10,30 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
-import org.caleydo.core.manager.usecase.AUseCase;
-import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.manager.datadomain.ADataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 
 /**
- * TODO The use case for pathway input data.
+ * TODO The use case for tissue input data.
  * 
  * @author Marc Streit
  */
 @XmlType
 @XmlRootElement
-public class PathwayUseCase
-	extends AUseCase {
+public class TissueDataDomain
+	extends ADataDomain {
 
 	/**
 	 * Constructor.
 	 */
-	public PathwayUseCase() {
-		useCaseMode = EDataDomain.PATHWAY_DATA;
+	public TissueDataDomain() {
+		useCaseMode = EDataDomain.TISSUE_DATA;
+
 		possibleViews = new ArrayList<String>();
-		possibleViews.add("org.caleydo.view.pathwaybrowser");
+		possibleViews.add("org.caleydo.view.tissuebrowser");
 
 		possibleIDCategories = new HashMap<EIDCategory, String>();
 		// possibleIDCategories.put(EIDCategory.GENE, null);
-		possibleIDCategories.put(EIDCategory.PATHWAY, null);
 	}
 
 	@Override

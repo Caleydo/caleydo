@@ -16,13 +16,13 @@ import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
-import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -66,7 +66,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	}
 
 	@Override
-	public void setUseCase(IUseCase useCase) {
+	public void setUseCase(IDataDomain useCase) {
 		super.setUseCase(useCase);
 		contentVA = GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA)
 				.getContentVA(ContentVAType.CONTENT);
@@ -358,7 +358,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		if (idCategory != EIDCategory.EXPERIMENT)
 			return;
 
-		IUseCase clinicalUseCase = GeneralManager.get().getUseCase(
+		IDataDomain clinicalUseCase = GeneralManager.get().getUseCase(
 				EDataDomain.CLINICAL_DATA);
 
 		String primaryVAType = clinicalUseCase
