@@ -10,7 +10,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.PathwayUseCase;
 import org.caleydo.core.manager.specialized.TissueUseCase;
 import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
-import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
+import org.caleydo.core.manager.usecase.DataDomainManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
 import org.caleydo.core.parser.parameter.IParameterHandler;
@@ -49,7 +49,7 @@ public class CmdDataCreateDataDomain
 			case CLINICAL_DATA:
 				return new ClinicalUseCase();
 			case GENETIC_DATA:
-				return new GeneticUseCase();
+				return DataDomainManager.getInstance().createDataDomain(EDataDomain.GENETIC_DATA);
 			case TISSUE_DATA:
 				return new TissueUseCase();
 			case PATHWAY_DATA:

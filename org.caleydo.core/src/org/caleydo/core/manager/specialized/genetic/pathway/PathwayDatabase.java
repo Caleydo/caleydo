@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
-import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 
 /**
@@ -51,8 +50,7 @@ public class PathwayDatabase
 		this.sImageMapPath = this.sImageMapPath.replace(CALEYDO_FOLDER_TEMPLATE, CALEYDO_FOLDER);
 
 		if (type == EPathwayDatabaseType.KEGG) {
-			EOrganism eOrganism =
-				((GeneticUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA)).getOrganism();
+			EOrganism eOrganism = GeneralManager.get().getMasterUseCase().getOrganism();
 
 			if (eOrganism == EOrganism.HOMO_SAPIENS) {
 				this.sImagePath += "hsa/";

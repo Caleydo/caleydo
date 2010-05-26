@@ -60,7 +60,12 @@ public class PathwayVertexGraphItemRep
 
 		if (sShapeType == null || sShapeType.isEmpty())
 			throw new IllegalArgumentException("Shape type for pathway element is not specified.");
-		shape = EPathwayVertexShape.valueOf(sShapeType);
+		try {
+			shape = EPathwayVertexShape.valueOf(sShapeType);
+		}
+		catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
 		this.sName = sName;
 		this.shWidth = shWidth;
 		this.shHeight = shHeight;

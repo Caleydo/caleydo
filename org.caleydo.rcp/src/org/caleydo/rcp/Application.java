@@ -20,7 +20,6 @@ import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
@@ -333,8 +332,8 @@ public class Application
 
 		GeneralManager.get().getGUIBridge().init();
 
-		//if (bLoadPathwayData == true)
-			triggerPathwayLoading();
+		// if (bLoadPathwayData == true)
+		triggerPathwayLoading();
 
 		Shell shell = new Shell();
 
@@ -353,9 +352,6 @@ public class Application
 
 			GeneralManager.get().addUseCase(useCase);
 			GeneralManager.get().setMasterUseCase(applicationMode.getDataDomain());
-
-			if (useCase instanceof GeneticUseCase)
-				triggerPathwayLoading();
 
 			SetUtils.createStorages(loadDataParameters);
 			ISet set = SetUtils.createData(useCase);
@@ -397,8 +393,8 @@ public class Application
 			// we need the VAs to be available before the tree is initialized
 			SetUtils.loadTrees(loadDataParameters, set);
 
-			if (useCase instanceof GeneticUseCase)
-				triggerPathwayLoading();
+			// if (useCase instanceof GeneticUseCase)
+			// triggerPathwayLoading();
 
 			Application.initData = null;
 		}
@@ -459,13 +455,6 @@ public class Application
 		if (startViews.isEmpty()) {
 			addDefaultStartViews(dataDomain);
 		}
-		else {
-
-			IUseCase useCase = GeneralManager.get().getUseCase(dataDomain);
-			if (dataDomain == EDataDomain.GENETIC_DATA && ((GeneticUseCase) useCase).isPathwayViewerMode()) {
-				applyPathwayViewerViewFilter();
-			}
-		}
 
 		initializedStartViews = new ArrayList<String>();
 		for (String viewID : startViews) {
@@ -518,30 +507,17 @@ public class Application
 
 		IUseCase useCase = GeneralManager.get().getUseCase(dataDomain);
 
-		if ((useCase instanceof GeneticUseCase && !((GeneticUseCase) useCase).isPathwayViewerMode())
-			|| useCase instanceof UnspecifiedUseCase) {
-			// alStartViews.add(EStartViewType.TABULAR);
-			startViews.add(EStartViewType.parcoords.getViewID());
-			startViews.add(EStartViewType.heatmap.getViewID());
-		}
+		// if ((useCase instanceof GeneticUseCase && !((GeneticUseCase) useCase).isPathwayViewerMode())
+		// || useCase instanceof UnspecifiedUseCase) {
+		// // alStartViews.add(EStartViewType.TABULAR);
+		// startViews.add(EStartViewType.parcoords.getViewID());
+		// startViews.add(EStartViewType.heatmap.getViewID());
+		// }
 
 		// Only show bucket when pathway data is loaded
 		if (GeneralManager.get().getPathwayManager().size() > 0) {
 			startViews.add(EStartViewType.bucket.getViewID());
 		}
-	}
-
-	/**
-	 * Filter all views except remote and browser in case of pathway viewer mode
-	 */
-	private static void applyPathwayViewerViewFilter() {
-		ArrayList<String> newStartViews = new ArrayList<String>();
-		for (String viewID : startViews) {
-			if (viewID.equals(EStartViewType.bucket.getViewID()) || viewID.equals("org.caleydo.view.browser")) {
-				newStartViews.add(viewID);
-			}
-		}
-		startViews = newStartViews;
 	}
 
 	public static boolean isInternetConnectionOK() {

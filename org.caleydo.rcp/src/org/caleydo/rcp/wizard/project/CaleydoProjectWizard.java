@@ -2,11 +2,13 @@ package org.caleydo.rcp.wizard.project;
 
 import java.io.IOException;
 
+import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
-import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
 import org.caleydo.core.net.StandardGroupwareManager;
 import org.caleydo.core.serialize.ProjectLoader;
@@ -95,8 +97,12 @@ public class CaleydoProjectWizard
 			}
 			else if (appMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA) {
 
-				useCase = new GeneticUseCase();
-				((GeneticUseCase) useCase).setOrganism(EOrganism.HOMO_SAPIENS);
+				CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
+				cmd.setAttributes(EDataDomain.GENETIC_DATA);
+				cmd.doCommand();
+				useCase = cmd.getCreatedObject();
+
+				useCase.setOrganism(EOrganism.HOMO_SAPIENS);
 
 				Application.applicationMode = appMode;
 
@@ -111,9 +117,12 @@ public class CaleydoProjectWizard
 					sNewPathwayDataSources);
 			}
 			else if (appMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA) {
+				CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
+				cmd.setAttributes(EDataDomain.GENETIC_DATA);
+				cmd.doCommand();
+				useCase = cmd.getCreatedObject();
 
-				useCase = new GeneticUseCase();
-				((GeneticUseCase) useCase).setOrganism(page.getOrganism());
+				useCase.setOrganism(page.getOrganism());
 
 				Application.applicationMode = appMode;
 

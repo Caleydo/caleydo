@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -37,8 +36,7 @@ import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
-import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
+import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
@@ -60,7 +58,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 @XmlType
 @XmlRootElement
-@XmlSeeAlso( { GeneticUseCase.class, ClinicalUseCase.class, UnspecifiedUseCase.class })
 public abstract class AUseCase
 	implements IContentVAUpdateHandler, IStorageVAUpdateHandler, ISelectionUpdateHandler,
 	ISelectionCommandHandler, IUseCase, IListenerOwner {
@@ -110,6 +107,12 @@ public abstract class AUseCase
 	protected ContentSelectionManager contentSelectionManager;
 	protected StorageSelectionManager storageSelectionManager;
 
+	
+	/**
+	 * Organism on which the genetic analysis data bases on.
+	 */
+	private EOrganism eOrganism = EOrganism.HOMO_SAPIENS;
+	
 	public AUseCase() {
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
@@ -519,5 +522,12 @@ public abstract class AUseCase
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
+	
+	public void setOrganism(EOrganism eOrganism) {
+		this.eOrganism = eOrganism;
+	}
 
+	public EOrganism getOrganism() {
+		return eOrganism;
+	}
 }

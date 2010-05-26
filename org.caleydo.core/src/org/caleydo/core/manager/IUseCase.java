@@ -12,6 +12,7 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterState;
 
@@ -166,5 +167,10 @@ public interface IUseCase {
 	 * Restore the original data. All applied filters are undone.
 	 */
 	public void restoreOriginalContentVA();
+	
+	public void setOrganism(EOrganism eOrganism);
+	
+
+	public EOrganism getOrganism();
 
 }
