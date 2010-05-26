@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.Histogram;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
@@ -86,8 +87,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 				.getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18),
-				true, true);
+		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
 		// registerEventListeners();
 	}
 
@@ -106,8 +106,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void initRemote(final GL gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener,
-			GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
 
@@ -172,8 +171,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 	@Override
 	public void display(GL gl) {
 		// processEvents();
-		if (bUpdateColorPointPosition || bUpdateLeftSpread
-				|| bUpdateRightSpread)
+		if (bUpdateColorPointPosition || bUpdateLeftSpread || bUpdateRightSpread)
 			updateColorPointPosition(gl);
 		// clipToFrustum(gl);
 		//
@@ -195,8 +193,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 	 */
 	private void renderHistogram(GL gl) {
 
-		float fSpacing = (viewFrustum.getWidth() - 2 * SIDE_SPACING)
-				/ histogram.size();
+		float fSpacing = (viewFrustum.getWidth() - 2 * SIDE_SPACING) / histogram.size();
 		float fContinuousColorRegion = 1.0f / histogram.size();
 
 		float fOneHeightValue = (viewFrustum.getHeight() - 2 * SIDE_SPACING)
@@ -205,20 +202,19 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 		int iCount = 0;
 
 		for (Integer iValue : histogram) {
-			gl.glColor3fv(colorMapping
-					.getColor(fContinuousColorRegion * iCount), 0);
+			gl.glColor3fv(colorMapping.getColor(fContinuousColorRegion * iCount), 0);
 			gl.glLineWidth(3.0f);
 			gl.glBegin(GL.GL_POLYGON);
 
 			gl.glVertex3f(fSpacing * iCount + SIDE_SPACING, SIDE_SPACING, 0);
-			gl.glVertex3f(fSpacing * iCount + SIDE_SPACING, SIDE_SPACING
-					+ iValue * fOneHeightValue, 0);
-			gl.glColor3fv(colorMapping.getColor(fContinuousColorRegion
-					* (iCount + 1)), 0);
-			gl.glVertex3f(fSpacing * (iCount + 1) + SIDE_SPACING, SIDE_SPACING
-					+ iValue * fOneHeightValue, 0);
-			gl.glVertex3f(fSpacing * (iCount + 1) + SIDE_SPACING, SIDE_SPACING,
-					0);
+			gl.glVertex3f(fSpacing * iCount + SIDE_SPACING, SIDE_SPACING + iValue
+					* fOneHeightValue, 0);
+			gl
+					.glColor3fv(colorMapping.getColor(fContinuousColorRegion
+							* (iCount + 1)), 0);
+			gl.glVertex3f(fSpacing * (iCount + 1) + SIDE_SPACING, SIDE_SPACING + iValue
+					* fOneHeightValue, 0);
+			gl.glVertex3f(fSpacing * (iCount + 1) + SIDE_SPACING, SIDE_SPACING, 0);
 			gl.glEnd();
 
 			gl.glBegin(GL.GL_LINE);
@@ -239,8 +235,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 	private void renderColorBars(GL gl) {
 
 		fRenderWidth = (viewFrustum.getWidth() - 2 * SIDE_SPACING);
-		ArrayList<ColorMarkerPoint> markerPoints = colorMapping
-				.getMarkerPoints();
+		ArrayList<ColorMarkerPoint> markerPoints = colorMapping.getMarkerPoints();
 
 		int iCount = 0;
 
@@ -256,30 +251,27 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 			if (markerPoint.hasLeftSpread()) {
 
 				float fLeftSpread = markerPoint.getLeftSpread();
-				int iLeftSpreadPickingID = pickingManager.getPickingID(
-						iUniqueID,
+				int iLeftSpreadPickingID = pickingManager.getPickingID(iUniqueID,
 						EPickingType.HISTOGRAM_LEFT_SPREAD_COLOR_LINE, iCount);
 
 				// the left polygon between the central line and the spread
-				gl.glColor4f(markerPoint.getColor()[0],
-						markerPoint.getColor()[1], markerPoint.getColor()[2],
-						0.3f);
+				gl.glColor4f(markerPoint.getColor()[0], markerPoint.getColor()[1],
+						markerPoint.getColor()[2], 0.3f);
 
-				float fLeft = SIDE_SPACING
-						+ (markerPoint.getValue() - fLeftSpread) * fRenderWidth;
-				float fRight = SIDE_SPACING + markerPoint.getValue()
+				float fLeft = SIDE_SPACING + (markerPoint.getValue() - fLeftSpread)
 						* fRenderWidth;
+				float fRight = SIDE_SPACING + markerPoint.getValue() * fRenderWidth;
 
 				// the right part which picks the central line
 				if (!bIsFirstOrLast)
 					gl.glPushName(iColorLinePickingID);
 				gl.glBegin(GL.GL_POLYGON);
-				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight),
-						SIDE_SPACING, -0.1f);
-				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight),
-						viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
-				gl.glVertex3f(fRight, viewFrustum.getHeight() - SIDE_SPACING,
+				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight), SIDE_SPACING,
 						-0.1f);
+				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight), viewFrustum
+						.getHeight()
+						- SIDE_SPACING, -0.1f);
+				gl.glVertex3f(fRight, viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
 				gl.glVertex3f(fRight, SIDE_SPACING, -0.001f);
 				gl.glEnd();
 				if (!bIsFirstOrLast)
@@ -289,12 +281,12 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 				gl.glPushName(iLeftSpreadPickingID);
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glVertex3f(fLeft, SIDE_SPACING, -0.1f);
-				gl.glVertex3f(fLeft, viewFrustum.getHeight() - SIDE_SPACING,
-						-0.1f);
-				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight),
-						viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
-				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight),
-						SIDE_SPACING, -0.001f);
+				gl.glVertex3f(fLeft, viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
+				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight), viewFrustum
+						.getHeight()
+						- SIDE_SPACING, -0.1f);
+				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight), SIDE_SPACING,
+						-0.001f);
 				gl.glEnd();
 				gl.glPopName();
 
@@ -302,12 +294,10 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 				gl.glColor3f(0, 0, 1);
 				gl.glPushName(iLeftSpreadPickingID);
 				gl.glBegin(GL.GL_LINES);
-				gl.glVertex3f(
-						SIDE_SPACING + (markerPoint.getValue() - fLeftSpread)
-								* fRenderWidth, 0, 0);
-				gl.glVertex3f(
-						SIDE_SPACING + (markerPoint.getValue() - fLeftSpread)
-								* fRenderWidth, viewFrustum.getHeight(), 0);
+				gl.glVertex3f(SIDE_SPACING + (markerPoint.getValue() - fLeftSpread)
+						* fRenderWidth, 0, 0);
+				gl.glVertex3f(SIDE_SPACING + (markerPoint.getValue() - fLeftSpread)
+						* fRenderWidth, viewFrustum.getHeight(), 0);
 				gl.glEnd();
 				gl.glPopName();
 				if (fLeftSpread > HistogramRenderStyle.SPREAD_CAPTION_THRESHOLD)
@@ -318,31 +308,27 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 			if (markerPoint.hasRightSpread()) {
 				float fRightSpread = markerPoint.getRightSpread();
 
-				float fLeft = SIDE_SPACING + markerPoint.getValue()
-						* fRenderWidth;
-				float fRight = SIDE_SPACING
-						+ (markerPoint.getValue() + fRightSpread)
+				float fLeft = SIDE_SPACING + markerPoint.getValue() * fRenderWidth;
+				float fRight = SIDE_SPACING + (markerPoint.getValue() + fRightSpread)
 						* fRenderWidth;
 
-				int iRightSpreadPickingID = pickingManager.getPickingID(
-						iUniqueID,
+				int iRightSpreadPickingID = pickingManager.getPickingID(iUniqueID,
 						EPickingType.HISTOGRAM_RIGHT_SPREAD_COLOR_LINE, iCount);
 
 				// the polygon between the central line and the right spread
 				// the first part which picks the central line
-				gl.glColor4f(markerPoint.getColor()[0],
-						markerPoint.getColor()[1], markerPoint.getColor()[2],
-						0.3f);
+				gl.glColor4f(markerPoint.getColor()[0], markerPoint.getColor()[1],
+						markerPoint.getColor()[2], 0.3f);
 				if (!bIsFirstOrLast)
 					gl.glPushName(iColorLinePickingID);
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glVertex3f(fLeft, SIDE_SPACING, -0.011f);
-				gl.glVertex3f(fLeft, viewFrustum.getHeight() - SIDE_SPACING,
+				gl.glVertex3f(fLeft, viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
+				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft), viewFrustum
+						.getHeight()
+						- SIDE_SPACING, -0.1f);
+				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft), SIDE_SPACING,
 						-0.1f);
-				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft),
-						viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
-				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft),
-						SIDE_SPACING, -0.1f);
 				gl.glEnd();
 				if (!bIsFirstOrLast)
 					gl.glPopName();
@@ -350,12 +336,12 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 				// the second part which picks the spread
 				gl.glPushName(iRightSpreadPickingID);
 				gl.glBegin(GL.GL_POLYGON);
-				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft),
-						SIDE_SPACING, -0.011f);
-				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft),
-						viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
-				gl.glVertex3f(fRight, viewFrustum.getHeight() - SIDE_SPACING,
-						-0.1f);
+				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft), SIDE_SPACING,
+						-0.011f);
+				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft), viewFrustum
+						.getHeight()
+						- SIDE_SPACING, -0.1f);
+				gl.glVertex3f(fRight, viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
 				gl.glVertex3f(fRight, SIDE_SPACING, -0.1f);
 				gl.glEnd();
 				gl.glPopName();
@@ -364,11 +350,9 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 				gl.glColor3f(0, 0, 1);
 				gl.glPushName(iRightSpreadPickingID);
 				gl.glBegin(GL.GL_LINES);
-				gl.glVertex3f(SIDE_SPACING
-						+ (markerPoint.getValue() + fRightSpread)
+				gl.glVertex3f(SIDE_SPACING + (markerPoint.getValue() + fRightSpread)
 						* fRenderWidth, 0, 0);
-				gl.glVertex3f(SIDE_SPACING
-						+ (markerPoint.getValue() + fRightSpread)
+				gl.glVertex3f(SIDE_SPACING + (markerPoint.getValue() + fRightSpread)
 						* fRenderWidth, viewFrustum.getHeight(), 0);
 				gl.glEnd();
 				gl.glPopName();
@@ -445,10 +429,8 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
 						currentPoint.y);
 
-		ArrayList<ColorMarkerPoint> markerPoints = colorMapping
-				.getMarkerPoints();
-		ColorMarkerPoint markerPoint = markerPoints
-				.get(iColorMappingPointMoved);
+		ArrayList<ColorMarkerPoint> markerPoints = colorMapping.getMarkerPoints();
+		ColorMarkerPoint markerPoint = markerPoints.get(iColorMappingPointMoved);
 
 		float fClickedPointX = fArTargetWorldCoordinates[0];
 
@@ -492,8 +474,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 		}
 
 		if (iColorMappingPointMoved < markerPoints.size() - 1) {
-			ColorMarkerPoint nextPoint = markerPoints
-					.get(iColorMappingPointMoved + 1);
+			ColorMarkerPoint nextPoint = markerPoints.get(iColorMappingPointMoved + 1);
 			float fLeftOfNext = nextPoint.getValue();
 
 			fLeftOfNext -= nextPoint.getLeftSpread();
@@ -502,8 +483,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 			if (bUpdateColorPointPosition) {
 				fCurrentRight += markerPoint.getRightSpread();
 				if (fCurrentRight >= fLeftOfNext - 0.01f)
-					fClickedPointX = fLeftOfNext - 0.01f
-							- markerPoint.getRightSpread();
+					fClickedPointX = fLeftOfNext - 0.01f - markerPoint.getRightSpread();
 			}
 			if (bUpdateRightSpread) {
 				if (fCurrentRight >= fLeftOfNext - 0.01f)
@@ -638,8 +618,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedHistogramView serializedForm = new SerializedHistogramView(
-				dataDomain);
+		SerializedHistogramView serializedForm = new SerializedHistogramView(dataDomain);
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -653,8 +632,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class,
-				clearSelectionsListener);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 	}
 
 	@Override
@@ -670,4 +648,13 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 		}
 	}
 
+	@Override
+	public void setSet(ISet set) {
+
+		// Ignore set update if the new set is not homogeneous
+		if (!set.isSetHomogeneous())
+			return;
+
+		super.setSet(set);
+	}
 }

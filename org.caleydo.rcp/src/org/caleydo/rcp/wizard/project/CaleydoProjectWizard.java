@@ -101,6 +101,7 @@ public class CaleydoProjectWizard
 				cmd.setAttributes(EDataDomain.GENETIC_DATA);
 				cmd.doCommand();
 				useCase = cmd.getCreatedObject();
+				GeneralManager.get().setMasterUseCase(useCase);
 
 				useCase.setOrganism(EOrganism.HOMO_SAPIENS);
 

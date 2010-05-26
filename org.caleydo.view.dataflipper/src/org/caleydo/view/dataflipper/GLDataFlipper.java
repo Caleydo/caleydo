@@ -146,8 +146,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 		// // parentGLCanvas.addMouseListener(bucketMouseWheelListener);
 
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24),
-				false);
+		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 		textureManager = new TextureManager();
 		arSlerpActions = new ArrayList<SlerpAction>();
 
@@ -173,8 +172,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		for (int iSideViewsIndex = 1; iSideViewsIndex <= MAX_SIDE_VIEWS; iSideViewsIndex++) {
 			RemoteLevelElement newElement = new RemoteLevelElement(null);
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(-2.1f - iSideViewsIndex / 1.8f
-					+ 1.5f, -1.25f + 1.5f, 4f));
+			transform.setTranslation(new Vec3f(-2.1f - iSideViewsIndex / 1.8f + 1.5f,
+					-1.25f + 1.5f, 4f));
 			transform.setScale(new Vec3f(1 / 2.4f, 1 / 2.4f, 1 / 2.4f));
 			transform.setRotation(new Rotf(new Vec3f(0, 1, 0), Vec3f
 					.convertGrad2Radiant(96)));
@@ -184,8 +183,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			newElement = new RemoteLevelElement(null);
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(
-					3.15f + iSideViewsIndex / 1.8f + 1.5f, -1.55f + 1.5f, -1f));
+			transform.setTranslation(new Vec3f(3.15f + iSideViewsIndex / 1.8f + 1.5f,
+					-1.55f + 1.5f, -1f));
 			transform.setScale(new Vec3f(1 / 1.95f, 1 / 1.95f, 1 / 2f));
 			transform.setRotation(new Rotf(new Vec3f(0, -1, 0), Vec3f
 					.convertGrad2Radiant(96)));
@@ -194,8 +193,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			RemoteElementManager.get().registerItem(newElement);
 		}
 
-		glConnectionLineRenderer = new GLConnectionLineRendererDataFlipper(
-				focusElement, stackElementsLeft, stackElementsRight);
+		glConnectionLineRenderer = new GLConnectionLineRendererDataFlipper(focusElement,
+				stackElementsLeft, stackElementsRight);
 
 		// FIXME: remove when alex is ready with use case changes
 		generalManager.addUseCase(new PathwayUseCase());
@@ -222,8 +221,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public void initRemote(final GL gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener,
-			GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		throw new IllegalStateException("Not implemented to be rendered remote");
 	}
@@ -262,8 +260,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		checkForHits(gl);
 
 		ConnectedElementRepresentationManager cerm = GeneralManager.get()
-				.getViewGLCanvasManager()
-				.getConnectedElementRepresentationManager();
+				.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		// gl.glCallList(iGLDisplayListIndexLocal);
@@ -292,7 +289,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		for (RemoteLevelElement element : stackElementsRight) {
 			renderRemoteLevelElement(gl, element);
 		}
-		// }
 
 		renderRemoteLevelElement(gl, focusElement);
 
@@ -316,16 +312,15 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glTranslatef(0, 0, -fZTranslation);
 	}
 
-	private void renderRemoteLevelElement(final GL gl,
-			RemoteLevelElement element) {
+	private void renderRemoteLevelElement(final GL gl, RemoteLevelElement element) {
 
 		AGLView glView = element.getGLView();
 		if (glView == null) {
 			return;
 		}
 
-		int vaSize = generalManager.getUseCase(EDataDomain.GENETIC_DATA)
-				.getStorageVA(StorageVAType.STORAGE).size();
+		int vaSize = generalManager.getUseCase(EDataDomain.GENETIC_DATA).getStorageVA(
+				StorageVAType.STORAGE).size();
 		if (vaSize > 20)
 			isExperimentCountOK = false;
 		else
@@ -359,70 +354,69 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// !renderPathwayViews))
 		// return;
 
-//		if (glView instanceof GLGlyph
-//				|| (glView instanceof GLParallelCoordinates && glView.getSet()
-//						.getSetType() != ESetType.GENE_EXPRESSION_DATA)
-//				|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
-//						.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-//						&& isExperimentCountOK && renderGeneticViews)
-//				|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
-//				|| (glView instanceof GLPathwayViewBrowser
-//						&& isPathwayContentAvailable && renderPathwayViews)) {
+		// if (glView instanceof GLGlyph
+		// || (glView instanceof GLParallelCoordinates && glView.getSet()
+		// .getSetType() != ESetType.GENE_EXPRESSION_DATA)
+		// || (((glView instanceof GLHierarchicalHeatMap || glView instanceof
+		// GLParallelCoordinates) && glView
+		// .getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+		// && isExperimentCountOK && renderGeneticViews)
+		// || (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
+		// || (glView instanceof GLPathwayViewBrowser
+		// && isPathwayContentAvailable && renderPathwayViews)) {
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.VIEW_SELECTION, glView.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
+				glView.getID()));
 
-			gl.glPushMatrix();
+		gl.glPushMatrix();
 
-			Transform transform = element.getTransform();
-			Vec3f translation = transform.getTranslation();
-			Rotf rot = transform.getRotation();
-			Vec3f scale = transform.getScale();
-			Vec3f axis = new Vec3f();
-			float fAngle = rot.get(axis);
+		Transform transform = element.getTransform();
+		Vec3f translation = transform.getTranslation();
+		Rotf rot = transform.getRotation();
+		Vec3f scale = transform.getScale();
+		Vec3f axis = new Vec3f();
+		float fAngle = rot.get(axis);
 
-			if (glView instanceof GLBucket) {
+		if (glView instanceof GLBucket) {
 
-				gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f,
-						translation.z());
-				gl.glScalef(scale.x(), scale.y(), scale.z());
-				renderBucketWall(gl, true);
-				gl.glScalef(1 / scale.x(), 1 / scale.y(), 1 / scale.z());
-				gl.glTranslatef(-translation.x() + 1.5f,
-						-translation.y() + 1.5f, -translation.z());
+			gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f, translation
+					.z());
+			gl.glScalef(scale.x(), scale.y(), scale.z());
+			renderBucketWall(gl, true);
+			gl.glScalef(1 / scale.x(), 1 / scale.y(), 1 / scale.z());
+			gl.glTranslatef(-translation.x() + 1.5f, -translation.y() + 1.5f,
+					-translation.z());
 
-				gl.glTranslatef(translation.x() + 0.14f,
-						translation.y() - 0.09f, translation.z() + 2);
-				gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis
-						.y(), axis.z());
-				gl.glScalef(scale.x(), scale.y(), scale.z());
-			} else {
-				gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f,
-						translation.z());
-				gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis
-						.y(), axis.z());
-				gl.glScalef(scale.x(), scale.y(), scale.z());
+			gl.glTranslatef(translation.x() + 0.14f, translation.y() - 0.09f, translation
+					.z() + 2);
+			gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
+			gl.glScalef(scale.x(), scale.y(), scale.z());
+		} else {
+			gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f, translation
+					.z());
+			gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
+			gl.glScalef(scale.x(), scale.y(), scale.z());
 
-				renderBucketWall(gl, true);
-			}
+			renderBucketWall(gl, true);
+		}
 
-			if ((stackElementsLeft.contains(element) || focusElement == element)
-					&& glView instanceof GLTissueViewBrowser)
-				((GLTissueViewBrowser) glView).setPoolSide(true);
-			else if (stackElementsRight.contains(element)
-					&& glView instanceof GLTissueViewBrowser)
-				((GLTissueViewBrowser) glView).setPoolSide(false);
+		if ((stackElementsLeft.contains(element) || focusElement == element)
+				&& glView instanceof GLTissueViewBrowser)
+			((GLTissueViewBrowser) glView).setPoolSide(true);
+		else if (stackElementsRight.contains(element)
+				&& glView instanceof GLTissueViewBrowser)
+			((GLTissueViewBrowser) glView).setPoolSide(false);
 
-			glView.displayRemote(gl);
+		glView.displayRemote(gl);
 
-			gl.glPopMatrix();
+		gl.glPopMatrix();
 
-			gl.glPopName();
-			gl.glPopName();
+		gl.glPopName();
+		gl.glPopName();
 
-//		}
+		// }
 	}
 
 	/**
@@ -456,8 +450,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 				if (newViews.size() % 2 == 0) {
 
-					Iterator<RemoteLevelElement> iter = stackElementsLeft
-							.iterator();
+					Iterator<RemoteLevelElement> iter = stackElementsLeft.iterator();
 					while (iter.hasNext()) {
 						RemoteLevelElement element = iter.next();
 						if (element.isFree()) {
@@ -468,8 +461,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						}
 					}
 				} else {
-					Iterator<RemoteLevelElement> iter = stackElementsRight
-							.iterator();
+					Iterator<RemoteLevelElement> iter = stackElementsRight.iterator();
 					while (iter.hasNext()) {
 						RemoteLevelElement element = iter.next();
 						if (element.isFree()) {
@@ -509,8 +501,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		viewActivationEvent.setViews(views);
 
-		IEventPublisher eventPublisher = GeneralManager.get()
-				.getEventPublisher();
+		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		eventPublisher.triggerEvent(viewActivationEvent);
 	}
 
@@ -610,11 +601,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			for (SlerpAction tmpSlerpAction : arSlerpActions) {
 				tmpSlerpAction.finished();
 
-				updateViewDetailLevels(tmpSlerpAction
-						.getDestinationRemoteLevelElement());
+				updateViewDetailLevels(tmpSlerpAction.getDestinationRemoteLevelElement());
 
-				AGLView glView = generalManager.getViewGLCanvasManager()
-						.getGLView(tmpSlerpAction.getElementId());
+				AGLView glView = generalManager.getViewGLCanvasManager().getGLView(
+						tmpSlerpAction.getElementId());
 
 				if (glView instanceof GLTissueViewBrowser)
 					((GLTissueViewBrowser) glView).setSlerpActive(false);
@@ -656,30 +646,32 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		Transform transform = slerpMod.interpolate(slerpAction
 				.getOriginRemoteLevelElement().getTransform(), slerpAction
-				.getDestinationRemoteLevelElement().getTransform(),
-				(float) iSlerpFactor / SLERP_RANGE);
+				.getDestinationRemoteLevelElement().getTransform(), (float) iSlerpFactor
+				/ SLERP_RANGE);
 
 		gl.glPushMatrix();
 
 		slerpMod.applySlerp(gl, transform, true, true);
 
-		AGLView glEventListener = generalManager.getViewGLCanvasManager()
-				.getGLView(slerpAction.getElementId());
+		AGLView glEventListener = generalManager.getViewGLCanvasManager().getGLView(
+				slerpAction.getElementId());
 
-//		if (glEventListener instanceof GLGlyph
-//				|| (glEventListener instanceof GLParallelCoordinates && glEventListener
-//						.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-//				|| (((glEventListener instanceof GLHierarchicalHeatMap || glEventListener instanceof GLParallelCoordinates) && glEventListener
-//						.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-//						&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-//				|| (glEventListener instanceof GLTissueViewBrowser && isTissueGuideActive)
-//				|| (glEventListener instanceof GLPathwayViewBrowser
-//						&& isPathwayContentAvailable && renderPathwayViews)) {
+		// if (glEventListener instanceof GLGlyph
+		// || (glEventListener instanceof GLParallelCoordinates &&
+		// glEventListener
+		// .getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+		// || (((glEventListener instanceof GLHierarchicalHeatMap ||
+		// glEventListener instanceof GLParallelCoordinates) && glEventListener
+		// .getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+		// && isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
+		// || (glEventListener instanceof GLTissueViewBrowser &&
+		// isTissueGuideActive)
+		// || (glEventListener instanceof GLPathwayViewBrowser
+		// && isPathwayContentAvailable && renderPathwayViews)) {
 
-			renderBucketWall(gl, true);
-			generalManager.getViewGLCanvasManager().getGLView(iViewID)
-					.displayRemote(gl);
-//		}
+		renderBucketWall(gl, true);
+		generalManager.getViewGLCanvasManager().getGLView(iViewID).displayRemote(gl);
+		// }
 
 		gl.glPopMatrix();
 
@@ -758,9 +750,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			case CLICKED:
 				break;
 			case RIGHT_CLICKED:
-				contextMenu.setLocation(pick.getPickedPoint(),
-						getParentGLCanvas().getWidth(), getParentGLCanvas()
-								.getHeight());
+				contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
+						.getWidth(), getParentGLCanvas().getHeight());
 				contextMenu.setMasterGLView(this);
 				break;
 
@@ -781,14 +772,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				// glConnectionLineRenderer.enableRendering(true);
 
 				arSlerpActions.clear();
-				lastPickedRemoteLevelElement = RemoteElementManager.get()
-						.getItem(iExternalID);
-				iLastPickedViewID = lastPickedRemoteLevelElement.getGLView()
-						.getID();
+				lastPickedRemoteLevelElement = RemoteElementManager.get().getItem(
+						iExternalID);
+				iLastPickedViewID = lastPickedRemoteLevelElement.getGLView().getID();
 				chainMove(lastPickedRemoteLevelElement);
 
-				AGLView pickedView = GeneralManager.get()
-						.getViewGLCanvasManager().getGLView(iLastPickedViewID);
+				AGLView pickedView = GeneralManager.get().getViewGLCanvasManager()
+						.getGLView(iLastPickedViewID);
 
 				if (pickedView instanceof GLTissueViewBrowser) {
 
@@ -808,12 +798,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				break;
 			case MOUSE_OVER:
 
-				RemoteLevelElement element = RemoteElementManager.get()
-						.getItem(iExternalID);
+				RemoteLevelElement element = RemoteElementManager.get().getItem(
+						iExternalID);
 				int pickID = element.getGLView().getID();
 
-				AGLView pickedView2 = GeneralManager.get()
-						.getViewGLCanvasManager().getGLView(pickID);
+				AGLView pickedView2 = GeneralManager.get().getViewGLCanvasManager()
+						.getGLView(pickID);
 
 				if (pickedView2 instanceof GLGlyph) {
 					isPatientAlternativeGuideActive = true;
@@ -845,9 +835,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			for (int iElementIndex = stackElementsLeft.size(); iElementIndex >= 0; iElementIndex--) {
 
 				if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
-					arSlerpActions.add(new SlerpAction(stackElementsLeft
-							.get(iElementIndex + 1), stackElementsLeft
-							.get(iElementIndex)));
+					arSlerpActions
+							.add(new SlerpAction(
+									stackElementsLeft.get(iElementIndex + 1),
+									stackElementsLeft.get(iElementIndex)));
 				}
 
 				if (iElementIndex == 0) {
@@ -856,11 +847,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				}
 			}
 
-			arSlerpActions.add(new SlerpAction(focusElement, stackElementsRight
-					.get(0)));
+			arSlerpActions.add(new SlerpAction(focusElement, stackElementsRight.get(0)));
 
-			for (int iElementIndex = 0; iElementIndex < stackElementsRight
-					.size(); iElementIndex++) {
+			for (int iElementIndex = 0; iElementIndex < stackElementsRight.size(); iElementIndex++) {
 
 				if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
 					// if (!remoteLevelElementsRight.get(iElementIndex +
@@ -875,8 +864,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// Chain slerping to the left
 		else if (stackElementsRight.contains(selectedElement)) {
 
-			for (int iElementIndex = 0; iElementIndex < stackElementsRight
-					.size(); iElementIndex++) {
+			for (int iElementIndex = 0; iElementIndex < stackElementsRight.size(); iElementIndex++) {
 
 				if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
 					arSlerpActions.add(new SlerpAction(stackElementsRight
@@ -890,18 +878,16 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				}
 			}
 
-			arSlerpActions.add(new SlerpAction(focusElement, stackElementsLeft
-					.get(0)));
+			arSlerpActions.add(new SlerpAction(focusElement, stackElementsLeft.get(0)));
 
-			for (int iElementIndex = 0; iElementIndex < stackElementsLeft
-					.size(); iElementIndex++) {
+			for (int iElementIndex = 0; iElementIndex < stackElementsLeft.size(); iElementIndex++) {
 
 				if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
 					// if (!remoteLevelElementsLeft.get(iElementIndex +
 					// 1).isFree()) {
-					arSlerpActions.add(new SlerpAction(stackElementsLeft
-							.get(iElementIndex), stackElementsLeft
-							.get(iElementIndex + 1)));
+					arSlerpActions
+							.add(new SlerpAction(stackElementsLeft.get(iElementIndex),
+									stackElementsLeft.get(iElementIndex + 1)));
 					// }
 				}
 			}
@@ -942,8 +928,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
-			int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
 
 		// AGLView glView = focusElement.getGLView();
@@ -981,46 +966,45 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glTranslatef(fXPos, -2.07f, 4);
 
 		// Data background
-		textureManager.renderTexture(gl,
-				EIconTextures.DATA_FLIPPER_DATA_ICON_BACKGROUND, new Vec3f(0,
-						0, 0), new Vec3f(0.51f, 0, 0),
-				new Vec3f(0.51f, 0.3f, 0), new Vec3f(0, 0.3f, 0), 1, 1, 1, 1);
+		textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_DATA_ICON_BACKGROUND,
+				new Vec3f(0, 0, 0), new Vec3f(0.51f, 0, 0), new Vec3f(0.51f, 0.3f, 0),
+				new Vec3f(0, 0.3f, 0), 1, 1, 1, 1);
 
 		gl.glTranslatef(0, 0.31f, 0);
 
 		// First view background
 		textureManager.renderTexture(gl,
-				EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED,
-				new Vec3f(fViewIconWidth, 0.0f, 0), new Vec3f(0.0f, 0.0f, 0),
-				new Vec3f(0.0f, fViewIconWidth, 0), new Vec3f(fViewIconWidth,
+				EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED, new Vec3f(
+						fViewIconWidth, 0.0f, 0), new Vec3f(0.0f, 0.0f, 0), new Vec3f(
+						0.0f, fViewIconWidth, 0), new Vec3f(fViewIconWidth,
 						fViewIconWidth, 0), 1, 1, 1, 1);
 
 		gl.glTranslatef(fViewIconWidth + 0.01f, 0, 0);
 
 		// Second view background
 		textureManager.renderTexture(gl,
-				EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE,
-				new Vec3f(fViewIconWidth, 0.0f, 0), new Vec3f(0.0f, 0.0f, 0),
-				new Vec3f(0.0f, fViewIconWidth, 0), new Vec3f(fViewIconWidth,
+				EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE, new Vec3f(
+						fViewIconWidth, 0.0f, 0), new Vec3f(0.0f, 0.0f, 0), new Vec3f(
+						0.0f, fViewIconWidth, 0), new Vec3f(fViewIconWidth,
 						fViewIconWidth, 0), 1, 1, 1, 1);
 
 		gl.glTranslatef(fViewIconWidth + 0.01f, 0, 0);
 
 		// Third view background
 		textureManager.renderTexture(gl,
-				EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE,
-				new Vec3f(fViewIconWidth, 0.0f, 0), new Vec3f(0.0f, 0.0f, 0),
-				new Vec3f(0.0f, fViewIconWidth, 0), new Vec3f(fViewIconWidth,
+				EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE, new Vec3f(
+						fViewIconWidth, 0.0f, 0), new Vec3f(0.0f, 0.0f, 0), new Vec3f(
+						0.0f, fViewIconWidth, 0), new Vec3f(fViewIconWidth,
 						fViewIconWidth, 0), 1, 1, 1, 1);
 
 		gl.glTranslatef(fViewIconWidth + 0.01f, 0, 0);
 
 		// Forth view background
 		textureManager.renderTexture(gl,
-				EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED,
-				new Vec3f(0, 0.0f, 0), new Vec3f(fViewIconWidth, 0.0f, 0),
-				new Vec3f(fViewIconWidth, fViewIconWidth, 0), new Vec3f(0,
-						fViewIconWidth, 0), 1, 1, 1, 1);
+				EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED, new Vec3f(0,
+						0.0f, 0), new Vec3f(fViewIconWidth, 0.0f, 0), new Vec3f(
+						fViewIconWidth, fViewIconWidth, 0), new Vec3f(0, fViewIconWidth,
+						0), 1, 1, 1, 1);
 		gl.glTranslatef(-3 * fViewIconWidth - 0.03f, -0.31f, 0);
 
 		float fGuidancePipeWidth = 0.02f;
@@ -1034,10 +1018,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		}
 
 		if (dataDomain != EDataDomain.PATHWAY_DATA) {
-			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f,
-					0.15f, 0.0f), new Vec3f(1.5f, 0.15f, 0.0f), new Vec3f(1.5f,
-					0.15f + fGuidancePipeWidth + 0.05f, 0.0f), new Vec3f(0.51f,
-					0.15f + fGuidancePipeWidth + 0.05f, 0.0f), 1, 1, 1, alpha);
+			textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.15f, 0.0f),
+					new Vec3f(1.5f, 0.15f, 0.0f), new Vec3f(1.5f,
+							0.15f + fGuidancePipeWidth + 0.05f, 0.0f), new Vec3f(0.51f,
+							0.15f + fGuidancePipeWidth + 0.05f, 0.0f), 1, 1, 1, alpha);
 		}
 
 		// if (isPatientAlternativeGuideActive && dataDomain ==
@@ -1082,8 +1066,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			else
 				iconTextureType = EIconTextures.LOCK;
 
-			RemoteLevelElement element = findElementContainingView(dataDomain,
-					viewType);
+			RemoteLevelElement element = findElementContainingView(dataDomain, viewType);
 			AGLView glView = null;
 			if (element != null) {
 				glView = element.getGLView();
@@ -1094,8 +1077,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				fIconBackgroundGray = 0.6f;
 			else {
 				if ((glView instanceof GLGlyph
-						|| (glView instanceof GLParallelCoordinates && glView
-								.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
+						|| (glView instanceof GLParallelCoordinates && glView.getSet()
+								.getSetType() != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
 					fIconBackgroundGray = 1f;
 				} else
 					fIconBackgroundGray = 0.6f;
@@ -1109,21 +1092,18 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			switch (viewIndex) {
 			case 0:
 				// Data icon
-				textureManager.renderTexture(gl, dataIcon, new Vec3f(0f, 0.02f,
-						0.01f), new Vec3f(0.5f, 0.02f, 0.01f), new Vec3f(0.5f,
-						0.28f, 0.01f), new Vec3f(0.0f, 0.28f, 0.01f), 1, 1, 1,
-						1);
+				textureManager.renderTexture(gl, dataIcon, new Vec3f(0f, 0.02f, 0.01f),
+						new Vec3f(0.5f, 0.02f, 0.01f), new Vec3f(0.5f, 0.28f, 0.01f),
+						new Vec3f(0.0f, 0.28f, 0.01f), 1, 1, 1, 1);
 
 				// First view icon
 				gl.glTranslatef(0, 0.31f, 0);
 				textureManager.renderTexture(gl, iconTextureType, new Vec3f(
-						fViewIconWidth - fIconPadding, fIconPadding, 0),
-						new Vec3f(fIconPadding, fIconPadding, 0),
-						new Vec3f(fIconPadding, fViewIconWidth - fIconPadding,
-								0), new Vec3f(fViewIconWidth - fIconPadding,
-								fViewIconWidth - fIconPadding, 0),
-						fIconBackgroundGray, fIconBackgroundGray,
-						fIconBackgroundGray, 1);
+						fViewIconWidth - fIconPadding, fIconPadding, 0), new Vec3f(
+						fIconPadding, fIconPadding, 0), new Vec3f(fIconPadding,
+						fViewIconWidth - fIconPadding, 0), new Vec3f(fViewIconWidth
+						- fIconPadding, fViewIconWidth - fIconPadding, 0),
+						fIconBackgroundGray, fIconBackgroundGray, fIconBackgroundGray, 1);
 				gl.glTranslatef(0, -0.31f, 0);
 
 				break;
@@ -1131,39 +1111,33 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				// Second view icon
 				gl.glTranslatef(0.13f, 0.31f, 0);
 				textureManager.renderTexture(gl, iconTextureType, new Vec3f(
-						fViewIconWidth - fIconPadding, fIconPadding, 0),
-						new Vec3f(fIconPadding, fIconPadding, 0),
-						new Vec3f(fIconPadding, fViewIconWidth - fIconPadding,
-								0), new Vec3f(fViewIconWidth - fIconPadding,
-								fViewIconWidth - fIconPadding, 0),
-						fIconBackgroundGray, fIconBackgroundGray,
-						fIconBackgroundGray, 1);
+						fViewIconWidth - fIconPadding, fIconPadding, 0), new Vec3f(
+						fIconPadding, fIconPadding, 0), new Vec3f(fIconPadding,
+						fViewIconWidth - fIconPadding, 0), new Vec3f(fViewIconWidth
+						- fIconPadding, fViewIconWidth - fIconPadding, 0),
+						fIconBackgroundGray, fIconBackgroundGray, fIconBackgroundGray, 1);
 				gl.glTranslatef(-0.13f, -0.31f, 0);
 				break;
 			case 2:
 				// Third view icon
 				gl.glTranslatef(0.26f, 0.31f, 0);
 				textureManager.renderTexture(gl, iconTextureType, new Vec3f(
-						fViewIconWidth - fIconPadding, fIconPadding, 0),
-						new Vec3f(fIconPadding, fIconPadding, 0),
-						new Vec3f(fIconPadding, fViewIconWidth - fIconPadding,
-								0), new Vec3f(fViewIconWidth - fIconPadding,
-								fViewIconWidth - fIconPadding, 0),
-						fIconBackgroundGray, fIconBackgroundGray,
-						fIconBackgroundGray, 1);
+						fViewIconWidth - fIconPadding, fIconPadding, 0), new Vec3f(
+						fIconPadding, fIconPadding, 0), new Vec3f(fIconPadding,
+						fViewIconWidth - fIconPadding, 0), new Vec3f(fViewIconWidth
+						- fIconPadding, fViewIconWidth - fIconPadding, 0),
+						fIconBackgroundGray, fIconBackgroundGray, fIconBackgroundGray, 1);
 				gl.glTranslatef(-0.26f, -0.31f, 0);
 				break;
 			case 3:
 				// Forth view icon
 				gl.glTranslatef(0.39f, 0.31f, 0);
 				textureManager.renderTexture(gl, iconTextureType, new Vec3f(
-						fViewIconWidth - fIconPadding, fIconPadding, 0),
-						new Vec3f(fIconPadding, fIconPadding, 0),
-						new Vec3f(fIconPadding, fViewIconWidth - fIconPadding,
-								0), new Vec3f(fViewIconWidth - fIconPadding,
-								fViewIconWidth - fIconPadding, 0),
-						fIconBackgroundGray, fIconBackgroundGray,
-						fIconBackgroundGray, 1);
+						fViewIconWidth - fIconPadding, fIconPadding, 0), new Vec3f(
+						fIconPadding, fIconPadding, 0), new Vec3f(fIconPadding,
+						fViewIconWidth - fIconPadding, 0), new Vec3f(fViewIconWidth
+						- fIconPadding, fViewIconWidth - fIconPadding, 0),
+						fIconBackgroundGray, fIconBackgroundGray, fIconBackgroundGray, 1);
 				gl.glTranslatef(-0.39f, -0.31f, 0);
 				break;
 			}
@@ -1172,8 +1146,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				gl.glPopName();
 
 			if (glView instanceof GLGlyph
-					|| (glView instanceof GLParallelCoordinates && glView
-							.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
+					|| (glView instanceof GLParallelCoordinates && glView.getSet()
+							.getSetType() != ESetType.GENE_EXPRESSION_DATA)
 					|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
 							.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
 							&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
@@ -1214,10 +1188,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 								0.47f + translation.y(), translation.z() * 0);
 						textureManager.renderTexture(gl,
 								EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-								new Vec3f(0.0f, 0.0f + fPipeWidth, 0.0f),
-								new Vec3f(fPipeWidth, 0.0f + fPipeWidth, 0.0f),
-								new Vec3f(fPipeWidth, 0.1f, 0.0f), new Vec3f(
-										0.0f, 0.1f, 0.0f), 1, 1, 1, 1);
+								new Vec3f(0.0f, 0.0f + fPipeWidth, 0.0f), new Vec3f(
+										fPipeWidth, 0.0f + fPipeWidth, 0.0f), new Vec3f(
+										fPipeWidth, 0.1f, 0.0f), new Vec3f(0.0f, 0.1f,
+										0.0f), 1, 1, 1, 1);
 						gl.glTranslatef(0, -0.2f, 0);
 
 						gl.glTranslatef(fXPos + 1.56f - translation.x(), -0.47f
@@ -1232,10 +1206,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 								0.34f + translation.y(), translation.z() * 0);
 						textureManager.renderTexture(gl,
 								EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-								new Vec3f(0.0f, 0.0f + fPipeWidth, 0.0f),
-								new Vec3f(fPipeWidth, 0.0f + fPipeWidth, 0.0f),
-								new Vec3f(fPipeWidth, 0.23f, 0.0f), new Vec3f(
-										0.0f, 0.23f, 0.0f), 1, 1, 1, 1);
+								new Vec3f(0.0f, 0.0f + fPipeWidth, 0.0f), new Vec3f(
+										fPipeWidth, 0.0f + fPipeWidth, 0.0f), new Vec3f(
+										fPipeWidth, 0.23f, 0.0f), new Vec3f(0.0f, 0.23f,
+										0.0f), 1, 1, 1, 1);
 						gl.glTranslatef(0, -0.2f, 0);
 
 						gl.glTranslatef(fXPos + 1.53f - translation.x(), -0.34f
@@ -1250,10 +1224,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 								0.76f + translation.y(), translation.z() * 0);
 						textureManager.renderTexture(gl,
 								EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-								new Vec3f(0.0f, 0.0f + fPipeWidth, 0.0f),
-								new Vec3f(fPipeWidth, 0.0f + fPipeWidth, 0.0f),
-								new Vec3f(fPipeWidth, 0.1f, 0.0f), new Vec3f(
-										0.0f, 0.1f, 0.0f), 1, 1, 1, 1);
+								new Vec3f(0.0f, 0.0f + fPipeWidth, 0.0f), new Vec3f(
+										fPipeWidth, 0.0f + fPipeWidth, 0.0f), new Vec3f(
+										fPipeWidth, 0.1f, 0.0f), new Vec3f(0.0f, 0.1f,
+										0.0f), 1, 1, 1, 1);
 						gl.glTranslatef(0, -0.2f, 0);
 
 						gl.glTranslatef(fXPos + 2.53f - translation.x(), -0.76f
@@ -1267,10 +1241,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 								0.64f + translation.y(), translation.z() * 0);
 						textureManager.renderTexture(gl,
 								EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-								new Vec3f(0.0f, 0.0f + fPipeWidth, 0.0f),
-								new Vec3f(fPipeWidth, 0.0f + fPipeWidth, 0.0f),
-								new Vec3f(fPipeWidth, 0.23f, 0.0f), new Vec3f(
-										0.0f, 0.23f, 0.0f), 1, 1, 1, 1);
+								new Vec3f(0.0f, 0.0f + fPipeWidth, 0.0f), new Vec3f(
+										fPipeWidth, 0.0f + fPipeWidth, 0.0f), new Vec3f(
+										fPipeWidth, 0.23f, 0.0f), new Vec3f(0.0f, 0.23f,
+										0.0f), 1, 1, 1, 1);
 						gl.glTranslatef(0, -0.2f, 0);
 
 						gl.glTranslatef(fXPos + 2.63f - translation.x(), -0.64f
@@ -1295,39 +1269,25 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 							if (element == focusElement) {
 
-								textureManager
-										.renderTexture(
-												gl,
-												EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-												new Vec3f(0.04f, 0.43f, 0.0f),
-												new Vec3f(0.04f + fPipeWidth,
-														0.43f, 0.0f),
-												new Vec3f(0.04f + fPipeWidth,
-														0.85f, 0.0f),
-												new Vec3f(0.04f, 0.85f, 0.0f),
-												1, 1, 1, 1);
+								textureManager.renderTexture(gl,
+										EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
+										new Vec3f(0.04f, 0.43f, 0.0f), new Vec3f(
+												0.04f + fPipeWidth, 0.43f, 0.0f),
+										new Vec3f(0.04f + fPipeWidth, 0.85f, 0.0f),
+										new Vec3f(0.04f, 0.85f, 0.0f), 1, 1, 1, 1);
 
 								// Special case when focus element is last
 								// view on the right stack
 								if (stackElementsRight.get(0).isFree()) {
-									textureManager
-											.renderTexture(
-													gl,
-													EIconTextures.DATA_FLIPPER_CONNECTION_CORNER,
-													new Vec3f(
-															0.04f - fPipeWidth,
-															0.85f, 0.0f),
-													new Vec3f(
-															0.04f + fPipeWidth,
-															0.85f, 0.0f),
-													new Vec3f(
-															0.04f + fPipeWidth,
-															0.85f + fPipeWidth + 0.05f,
-															0.0f),
-													new Vec3f(
-															0.04f - fPipeWidth,
-															0.85f + fPipeWidth + 0.05f,
-															0.0f), 1, 1, 1, 1);
+									textureManager.renderTexture(gl,
+											EIconTextures.DATA_FLIPPER_CONNECTION_CORNER,
+											new Vec3f(0.04f - fPipeWidth, 0.85f, 0.0f),
+											new Vec3f(0.04f + fPipeWidth, 0.85f, 0.0f),
+											new Vec3f(0.04f + fPipeWidth,
+													0.85f + fPipeWidth + 0.05f, 0.0f),
+											new Vec3f(0.04f - fPipeWidth,
+													0.85f + fPipeWidth + 0.05f, 0.0f), 1,
+											1, 1, 1);
 
 									textureManager
 											.renderTexture(
@@ -1335,17 +1295,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 													EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
 													new Vec3f(
 															fHorizontalConnStart - 0.4f,
-															0.85f + fPipeWidth,
-															0.0f),
-													new Vec3f(
-															0.04f - fPipeWidth,
-															0.85f + fPipeWidth,
-															0.0f),
-													new Vec3f(
-															0.04f - fPipeWidth,
+															0.85f + fPipeWidth, 0.0f),
+													new Vec3f(0.04f - fPipeWidth,
+															0.85f + fPipeWidth, 0.0f),
+													new Vec3f(0.04f - fPipeWidth,
 															0.85f + fPipeWidth + 0.05f,
-															0.0f),
-													new Vec3f(
+															0.0f), new Vec3f(
 															fHorizontalConnStart - 0.4f,
 															0.85f + fPipeWidth + 0.05f,
 															0.0f), 1, 1, 1, 1);
@@ -1357,16 +1312,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 											.renderTexture(
 													gl,
 													EIconTextures.DATA_FLIPPER_CONNECTION_CORNER,
-													new Vec3f(
-															0.04f + 2 * fPipeWidth,
-															0.85f, 0.0f),
-													new Vec3f(0.04f, 0.85f,
-															0.0f),
-													new Vec3f(
-															0.04f,
+													new Vec3f(0.04f + 2 * fPipeWidth,
+															0.85f, 0.0f), new Vec3f(
+															0.04f, 0.85f, 0.0f),
+													new Vec3f(0.04f,
 															0.85f + fPipeWidth + 0.05f,
-															0.0f),
-													new Vec3f(
+															0.0f), new Vec3f(
 															0.04f + 2 * fPipeWidth,
 															0.85f + fPipeWidth + 0.05f,
 															0.0f), 1, 1, 1, 1);
@@ -1377,36 +1328,25 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 													EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
 													new Vec3f(
 															fHorizontalConnStart + 0.9f,
-															0.85f + fPipeWidth,
-															0.0f),
-													new Vec3f(
-															0.04f + 2 * fPipeWidth,
-															0.85f + fPipeWidth,
-															0.0f),
-													new Vec3f(
-															0.04f + 2 * fPipeWidth,
+															0.85f + fPipeWidth, 0.0f),
+													new Vec3f(0.04f + 2 * fPipeWidth,
+															0.85f + fPipeWidth, 0.0f),
+													new Vec3f(0.04f + 2 * fPipeWidth,
 															0.85f + fPipeWidth + 0.05f,
-															0.0f),
-													new Vec3f(
+															0.0f), new Vec3f(
 															fHorizontalConnStart + 0.9f,
 															0.85f + fPipeWidth + 0.05f,
 															0.0f), 1, 1, 1, 1);
 								}
 							} else {
 								gl.glTranslatef(0.032f, 0.43f, 0);
-								textureManager
-										.renderTexture(
-												gl,
-												EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-												new Vec3f(0.0f, 0.0f, 0.0f),
-												new Vec3f(fPipeWidth, 0.0f,
-														0.0f), new Vec3f(
-														fPipeWidth, fPipeHeight
-																- fPipeWidth,
-														0.0f), new Vec3f(0.0f,
-														fPipeHeight
-																- fPipeWidth,
-														0.0f), 1, 1, 1, 1);
+								textureManager.renderTexture(gl,
+										EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
+										new Vec3f(0.0f, 0.0f, 0.0f), new Vec3f(
+												fPipeWidth, 0.0f, 0.0f), new Vec3f(
+												fPipeWidth, fPipeHeight - fPipeWidth,
+												0.0f), new Vec3f(0.0f, fPipeHeight
+												- fPipeWidth, 0.0f), 1, 1, 1, 1);
 								gl.glTranslatef(-0.032f, -0.43f, 0);
 
 								if (stackElementsLeft.contains(element))
@@ -1418,33 +1358,24 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						case 1:
 							if (element == focusElement) {
 
-								textureManager
-										.renderTexture(
-												gl,
-												EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-												new Vec3f(0.16f, 0.43f, 0.0f),
-												new Vec3f(0.16f + fPipeWidth,
-														0.43f, 0.0f),
-												new Vec3f(0.16f + fPipeWidth,
-														0.85f, 0.0f),
-												new Vec3f(0.16f, 0.85f, 0.0f),
-												1, 1, 1, 1);
+								textureManager.renderTexture(gl,
+										EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
+										new Vec3f(0.16f, 0.43f, 0.0f), new Vec3f(
+												0.16f + fPipeWidth, 0.43f, 0.0f),
+										new Vec3f(0.16f + fPipeWidth, 0.85f, 0.0f),
+										new Vec3f(0.16f, 0.85f, 0.0f), 1, 1, 1, 1);
 
 								if (!stackElementsRight.get(1).isFree()) {
 									textureManager
 											.renderTexture(
 													gl,
 													EIconTextures.DATA_FLIPPER_CONNECTION_CORNER,
-													new Vec3f(
-															0.16f + 2 * fPipeWidth,
-															0.85f, 0.0f),
-													new Vec3f(0.16f, 0.85f,
-															0.0f),
-													new Vec3f(
-															0.16f,
+													new Vec3f(0.16f + 2 * fPipeWidth,
+															0.85f, 0.0f), new Vec3f(
+															0.16f, 0.85f, 0.0f),
+													new Vec3f(0.16f,
 															0.85f + fPipeWidth + 0.05f,
-															0.0f),
-													new Vec3f(
+															0.0f), new Vec3f(
 															0.16f + 2 * fPipeWidth,
 															0.85f + fPipeWidth + 0.05f,
 															0.0f), 1, 1, 1, 1);
@@ -1455,36 +1386,27 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 													EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
 													new Vec3f(
 															fHorizontalConnStart + 0.9f,
-															0.85f + fPipeWidth,
-															0.0f),
+															0.85f + fPipeWidth, 0.0f),
 													new Vec3f(
 															0.04f + 2 * fPipeWidth + 0.1f,
-															0.85f + fPipeWidth,
-															0.0f),
+															0.85f + fPipeWidth, 0.0f),
 													new Vec3f(
 															0.04f + 2 * fPipeWidth + 0.1f,
 															0.85f + fPipeWidth + 0.05f,
-															0.0f),
-													new Vec3f(
+															0.0f), new Vec3f(
 															fHorizontalConnStart + 0.9f,
 															0.85f + fPipeWidth + 0.05f,
 															0.0f), 1, 1, 1, 1);
 								}
 							} else {
 								gl.glTranslatef(0.17f, 0.43f, 0);
-								textureManager
-										.renderTexture(
-												gl,
-												EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-												new Vec3f(0.0f, 0.0f, 0.0f),
-												new Vec3f(fPipeWidth, 0.0f,
-														0.0f), new Vec3f(
-														fPipeWidth, fPipeHeight
-																- fPipeWidth,
-														0.0f), new Vec3f(0.0f,
-														fPipeHeight
-																- fPipeWidth,
-														0.0f), 1, 1, 1, 1);
+								textureManager.renderTexture(gl,
+										EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
+										new Vec3f(0.0f, 0.0f, 0.0f), new Vec3f(
+												fPipeWidth, 0.0f, 0.0f), new Vec3f(
+												fPipeWidth, fPipeHeight - fPipeWidth,
+												0.0f), new Vec3f(0.0f, fPipeHeight
+												- fPipeWidth, 0.0f), 1, 1, 1, 1);
 
 								gl.glTranslatef(-0.17f, -0.43f, 0);
 
@@ -1504,100 +1426,58 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 						if (element != focusElement) {
 							if (fHorizontalConnStart < fHorizontalConnStop) {
-								textureManager
-										.renderTexture(
-												gl,
-												EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-												new Vec3f(fHorizontalConnStart
-														+ fPipeWidth,
-														fHorizontalConnHeight,
-														0.0f),
-												new Vec3f(fHorizontalConnStop
-														- fPipeWidth,
-														fHorizontalConnHeight,
-														0.0f),
-												new Vec3f(
-														fHorizontalConnStop
-																- fPipeWidth,
-														fHorizontalConnHeight + 0.05f,
-														0.0f),
-												new Vec3f(
-														fHorizontalConnStart
-																+ fPipeWidth,
-														fHorizontalConnHeight + 0.05f,
-														0.0f), 1, 1, 1, 1);
+								textureManager.renderTexture(gl,
+										EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
+										new Vec3f(fHorizontalConnStart + fPipeWidth,
+												fHorizontalConnHeight, 0.0f), new Vec3f(
+												fHorizontalConnStop - fPipeWidth,
+												fHorizontalConnHeight, 0.0f), new Vec3f(
+												fHorizontalConnStop - fPipeWidth,
+												fHorizontalConnHeight + 0.05f, 0.0f),
+										new Vec3f(fHorizontalConnStart + fPipeWidth,
+												fHorizontalConnHeight + 0.05f, 0.0f), 1,
+										1, 1, 1);
 							} else {
-								textureManager
-										.renderTexture(
-												gl,
-												EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
-												new Vec3f(fHorizontalConnStart
-														- fPipeWidth,
-														fHorizontalConnHeight,
-														0.0f),
-												new Vec3f(fHorizontalConnStop
-														+ fPipeWidth,
-														fHorizontalConnHeight,
-														0.0f),
-												new Vec3f(
-														fHorizontalConnStop
-																+ fPipeWidth,
-														fHorizontalConnHeight + 0.05f,
-														0.0f),
-												new Vec3f(
-														fHorizontalConnStart
-																- fPipeWidth,
-														fHorizontalConnHeight + 0.05f,
-														0.0f), 1, 1, 1, 1);
+								textureManager.renderTexture(gl,
+										EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT,
+										new Vec3f(fHorizontalConnStart - fPipeWidth,
+												fHorizontalConnHeight, 0.0f), new Vec3f(
+												fHorizontalConnStop + fPipeWidth,
+												fHorizontalConnHeight, 0.0f), new Vec3f(
+												fHorizontalConnStop + fPipeWidth,
+												fHorizontalConnHeight + 0.05f, 0.0f),
+										new Vec3f(fHorizontalConnStart - fPipeWidth,
+												fHorizontalConnHeight + 0.05f, 0.0f), 1,
+										1, 1, 1);
 							}
 
 							// ROUND CORNERS near views
 							if (fHorizontalConnStart > fHorizontalConnStop) {
-								textureManager
-										.renderTexture(
-												gl,
-												EIconTextures.DATA_FLIPPER_CONNECTION_CORNER,
-												new Vec3f(fHorizontalConnStart
-														- fPipeWidth,
-														fHorizontalConnHeight
-																+ fPipeWidth
-																+ 0.05f, 0.0f),
-												new Vec3f(fHorizontalConnStart
-														+ fPipeWidth,
-														fHorizontalConnHeight
-																+ fPipeWidth
-																+ 0.05f, 0.0f),
-												new Vec3f(fHorizontalConnStart
-														+ fPipeWidth,
-														fHorizontalConnHeight,
-														0.0f), new Vec3f(
-														fHorizontalConnStart
-																- fPipeWidth,
-														fHorizontalConnHeight,
-														0.0f), 1, 1, 1, 1);
+								textureManager.renderTexture(gl,
+										EIconTextures.DATA_FLIPPER_CONNECTION_CORNER,
+										new Vec3f(fHorizontalConnStart - fPipeWidth,
+												fHorizontalConnHeight + fPipeWidth
+														+ 0.05f, 0.0f), new Vec3f(
+												fHorizontalConnStart + fPipeWidth,
+												fHorizontalConnHeight + fPipeWidth
+														+ 0.05f, 0.0f), new Vec3f(
+												fHorizontalConnStart + fPipeWidth,
+												fHorizontalConnHeight, 0.0f), new Vec3f(
+												fHorizontalConnStart - fPipeWidth,
+												fHorizontalConnHeight, 0.0f), 1, 1, 1, 1);
 							} else {
-								textureManager
-										.renderTexture(
-												gl,
-												EIconTextures.DATA_FLIPPER_CONNECTION_CORNER,
-												new Vec3f(fHorizontalConnStart
-														+ fPipeWidth,
-														fHorizontalConnHeight
-																+ fPipeWidth
-																+ 0.05f, 0.0f),
-												new Vec3f(fHorizontalConnStart
-														- fPipeWidth,
-														fHorizontalConnHeight
-																+ fPipeWidth
-																+ 0.05f, 0.0f),
-												new Vec3f(fHorizontalConnStart
-														- fPipeWidth,
-														fHorizontalConnHeight,
-														0.0f), new Vec3f(
-														fHorizontalConnStart
-																+ fPipeWidth,
-														fHorizontalConnHeight,
-														0.0f), 1, 1, 1, 1);
+								textureManager.renderTexture(gl,
+										EIconTextures.DATA_FLIPPER_CONNECTION_CORNER,
+										new Vec3f(fHorizontalConnStart + fPipeWidth,
+												fHorizontalConnHeight + fPipeWidth
+														+ 0.05f, 0.0f), new Vec3f(
+												fHorizontalConnStart - fPipeWidth,
+												fHorizontalConnHeight + fPipeWidth
+														+ 0.05f, 0.0f), new Vec3f(
+												fHorizontalConnStart - fPipeWidth,
+												fHorizontalConnHeight, 0.0f), new Vec3f(
+												fHorizontalConnStart + fPipeWidth,
+												fHorizontalConnHeight, 0.0f), 1, 1, 1, 1);
 							}
 
 							// ROUND CORNERS near data sets
@@ -1609,21 +1489,16 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 												new Vec3f(fHorizontalConnStop
 														+ fPipeWidth,
 														fHorizontalConnHeight
-																- fPipeWidth,
-														0.0f),
+																- fPipeWidth, 0.0f),
 												new Vec3f(fHorizontalConnStop
 														- fPipeWidth,
 														fHorizontalConnHeight
-																- fPipeWidth,
-														0.0f),
-												new Vec3f(
-														fHorizontalConnStop
-																- fPipeWidth,
+																- fPipeWidth, 0.0f),
+												new Vec3f(fHorizontalConnStop
+														- fPipeWidth,
 														fHorizontalConnHeight + 0.05f,
-														0.0f),
-												new Vec3f(
-														fHorizontalConnStop
-																+ fPipeWidth,
+														0.0f), new Vec3f(
+														fHorizontalConnStop + fPipeWidth,
 														fHorizontalConnHeight + 0.05f,
 														0.0f), 1, 1, 1, 1);
 							} else {
@@ -1634,21 +1509,16 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 												new Vec3f(fHorizontalConnStop
 														- fPipeWidth,
 														fHorizontalConnHeight
-																- fPipeWidth,
-														0.0f),
+																- fPipeWidth, 0.0f),
 												new Vec3f(fHorizontalConnStop
 														+ fPipeWidth,
 														fHorizontalConnHeight
-																- fPipeWidth,
-														0.0f),
-												new Vec3f(
-														fHorizontalConnStop
-																+ fPipeWidth,
+																- fPipeWidth, 0.0f),
+												new Vec3f(fHorizontalConnStop
+														+ fPipeWidth,
 														fHorizontalConnHeight + 0.05f,
-														0.0f),
-												new Vec3f(
-														fHorizontalConnStop
-																- fPipeWidth,
+														0.0f), new Vec3f(
+														fHorizontalConnStop - fPipeWidth,
 														fHorizontalConnHeight + 0.05f,
 														0.0f), 1, 1, 1, 1);
 							}
@@ -1678,8 +1548,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// new Vec3f(0, 0.85f + fPipeWidth + 0.05f, 0.0f), 1, 1, 1, 1);
 	}
 
-	private RemoteLevelElement findElementContainingView(
-			EDataDomain dataDomain, String viewID) {
+	private RemoteLevelElement findElementContainingView(EDataDomain dataDomain,
+			String viewID) {
 
 		for (AGLView glView : containedGLViews) {
 			if (glView.getViewType().equals(viewID)
@@ -1710,143 +1580,61 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		AGLView glView = element.getGLView();
 		if (glView != null) {
 
-			// if ((glEventListener instanceof GLGlyph
-			// || (glEventListener instanceof GLParallelCoordinates &&
-			// glEventListener.getSet().getSetType()
-			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
+			Transform transform;
+			Vec3f translation;
+			// Vec3f scale;
 
-//			if (glView instanceof GLGlyph
-//					|| (glView instanceof GLParallelCoordinates && glView
-//							.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-//					|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
-//							.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-//							&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-//					|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
-//					|| (glView instanceof GLPathwayViewBrowser
-//							&& isPathwayContentAvailable && renderPathwayViews)) {
+			float fYCorrection = 0f;
 
-				Transform transform;
-				Vec3f translation;
-				// Vec3f scale;
+			transform = element.getTransform();
+			translation = transform.getTranslation();
+			// scale = transform.getScale();
 
-				float fYCorrection = 0f;
+			gl.glTranslatef(translation.x() - 1.5f, translation.y() - 0.225f - 0.075f
+					+ fYCorrection, translation.z() + 0.001f);
 
-				transform = element.getTransform();
-				translation = transform.getTranslation();
-				// scale = transform.getScale();
+			// gl.glScalef(scale.x() * 4, scale.y() * 4, 1);
+			renderNavigationHandleBar(gl, element, 3.2f, 0.075f, false, 2);
+			// gl.glScalef(1 / (scale.x() * 4), 1 / (scale.y() * 4), 1);
 
-				gl.glTranslatef(translation.x() - 1.5f, translation.y()
-						- 0.225f - 0.075f + fYCorrection,
-						translation.z() + 0.001f);
-
-				// gl.glScalef(scale.x() * 4, scale.y() * 4, 1);
-				renderNavigationHandleBar(gl, element, 3.2f, 0.075f, false, 2);
-				// gl.glScalef(1 / (scale.x() * 4), 1 / (scale.y() * 4), 1);
-
-				gl.glTranslatef(-translation.x() + 1.5f, -translation.y()
-						+ 0.225f + 0.075f - fYCorrection,
-						-translation.z() - 0.001f);
-			}
-//		}
+			gl.glTranslatef(-translation.x() + 1.5f, -translation.y() + 0.225f + 0.075f
+					- fYCorrection, -translation.z() - 0.001f);
+		}
 
 		// Left first
 		element = stackElementsLeft.get(0);
 		glView = element.getGLView();
 		if (glView != null) {
 
-			// if ((glEventListener instanceof GLGlyph
-			// || (glEventListener instanceof GLParallelCoordinates &&
-			// glEventListener.getSet().getSetType()
-			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
-
-//			if (glView instanceof GLGlyph
-//					|| (glView instanceof GLParallelCoordinates && glView
-//							.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-//					|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
-//							.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-//							&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-//					|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
-//					|| (glView instanceof GLPathwayViewBrowser
-//							&& isPathwayContentAvailable && renderPathwayViews)) {
-
-				gl.glTranslatef(-0.64f, -1.25f, 4.02f);
-				gl.glRotatef(90, 0, 0, 1);
-				renderNavigationHandleBar(gl, element, 3.33f, 0.075f, false, 2);
-				gl.glRotatef(-90, 0, 0, 1);
-				gl.glTranslatef(0.64f, 1.25f, -4.02f);
-			}
-//		}
+			gl.glTranslatef(-0.64f, -1.25f, 4.02f);
+			gl.glRotatef(90, 0, 0, 1);
+			renderNavigationHandleBar(gl, element, 3.33f, 0.075f, false, 2);
+			gl.glRotatef(-90, 0, 0, 1);
+			gl.glTranslatef(0.64f, 1.25f, -4.02f);
+		}
 
 		// Left second
 		element = stackElementsLeft.get(1);
 		glView = element.getGLView();
 		if (glView != null) {
-			// if ((glEventListener instanceof GLGlyph
-			// || (glEventListener instanceof GLParallelCoordinates &&
-			// glEventListener.getSet().getSetType()
-			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
-//			if (glView instanceof GLGlyph
-//					|| (glView instanceof GLParallelCoordinates && glView
-//							.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-//					|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
-//							.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-//							&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-//					|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
-//					|| (glView instanceof GLPathwayViewBrowser
-//							&& isPathwayContentAvailable && renderPathwayViews)) {
 
-				gl.glTranslatef(-1.17f, -1.25f, 4.02f);
-				gl.glRotatef(90, 0, 0, 1);
-				renderNavigationHandleBar(gl, element, 3.32f, 0.075f, false, 2);
-				gl.glRotatef(-90, 0, 0, 1);
-				gl.glTranslatef(1.17f, 1.25f, -4.02f);
-			}
-//		}
+			gl.glTranslatef(-1.17f, -1.25f, 4.02f);
+			gl.glRotatef(90, 0, 0, 1);
+			renderNavigationHandleBar(gl, element, 3.32f, 0.075f, false, 2);
+			gl.glRotatef(-90, 0, 0, 1);
+			gl.glTranslatef(1.17f, 1.25f, -4.02f);
+		}
 
 		// Right first
 		element = stackElementsRight.get(0);
 		glView = element.getGLView();
 		if (element.getGLView() != null) {
-			// if ((glEventListener instanceof GLGlyph
-			// || (glEventListener instanceof GLParallelCoordinates &&
-			// glEventListener.getSet().getSetType()
-			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
-			//
-			// if ((glEventListener instanceof GLGlyph || (glEventListener
-			// instanceof GLParallelCoordinates &&
-			// glEventListener
-			// .getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-			// && isTissueGuideActive)) {
-//			if (glView instanceof GLGlyph
-//					|| (glView instanceof GLParallelCoordinates && glView
-//							.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-//					|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
-//							.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-//							&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-//					|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
-//					|| (glView instanceof GLPathwayViewBrowser
-//							&& isPathwayContentAvailable && renderPathwayViews)) {
 
-				gl.glTranslatef(0.65f, 2.08f, 4.02f);
-				gl.glRotatef(-90, 0, 0, 1);
-				renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
-				gl.glRotatef(90, 0, 0, 1);
-				gl.glTranslatef(-0.65f, -2.08f, -4.02f);
-//			}
-			// else if ((glEventListener instanceof GLTissueViewBrowser ||
-			// glEventListener instanceof
-			// GLPathwayViewBrowser
-			// || glEventListener instanceof GLParallelCoordinates ||
-			// glEventListener instanceof
-			// GLHierarchicalHeatMap)
-			// && isTissueGuideActive) {
-			// gl.glTranslatef(0.65f, 2.08f, 4.02f);
-			// gl.glRotatef(-90, 0, 0, 1);
-			// renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
-			// gl.glRotatef(90, 0, 0, 1);
-			// gl.glTranslatef(-0.65f, -2.08f, -4.02f);
-			// }
-			// }
+			gl.glTranslatef(0.65f, 2.08f, 4.02f);
+			gl.glRotatef(-90, 0, 0, 1);
+			renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
+			gl.glRotatef(90, 0, 0, 1);
+			gl.glTranslatef(-0.65f, -2.08f, -4.02f);
 		}
 
 		// Right second
@@ -1854,45 +1642,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		glView = element.getGLView();
 
 		if (glView != null) {
-			// if ((glEventListener instanceof GLGlyph
-			// || (glEventListener instanceof GLParallelCoordinates &&
-			// glEventListener.getSet().getSetType()
-			// != ESetType.GENE_EXPRESSION_DATA) || isExperimentCountOK)) {
-			//
-			// if ((glEventListener instanceof GLTissueViewBrowser ||
-			// glEventListener instanceof
-			// GLParallelCoordinates || glEventListener instanceof
-			// GLHierarchicalHeatMap)
-			// && isTissueGuideActive) {
 
-//			if (glView instanceof GLGlyph
-//					|| (glView instanceof GLParallelCoordinates && glView
-//							.getSet().getSetType() != ESetType.GENE_EXPRESSION_DATA)
-//					|| (((glView instanceof GLHierarchicalHeatMap || glView instanceof GLParallelCoordinates) && glView
-//							.getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
-//							&& isExperimentCountOK && isTissueGuideActive && renderGeneticViews)
-//					|| (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
-//					|| (glView instanceof GLPathwayViewBrowser
-//							&& isPathwayContentAvailable && renderPathwayViews)) {
-
-				gl.glTranslatef(1.1f, 2.08f, 4.02f);
-				gl.glRotatef(-90, 0, 0, 1);
-				renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
-				gl.glRotatef(90, 0, 0, 1);
-				gl.glTranslatef(-1.1f, -2.08f, -4.02f);
-//			}
-			// }
-			// else if ((glEventListener instanceof GLTissueViewBrowser
-			// || glEventListener instanceof GLParallelCoordinates ||
-			// glEventListener instanceof
-			// GLHierarchicalHeatMap)
-			// && isTissueGuideActive) {
-			// gl.glTranslatef(1.1f, 2.08f, 4.02f);
-			// gl.glRotatef(-90, 0, 0, 1);
-			// renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
-			// gl.glRotatef(90, 0, 0, 1);
-			// gl.glTranslatef(-1.1f, -2.08f, -4.02f);
-			// }
+			gl.glTranslatef(1.1f, 2.08f, 4.02f);
+			gl.glRotatef(-90, 0, 0, 1);
+			renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
+			gl.glRotatef(90, 0, 0, 1);
+			gl.glTranslatef(-1.1f, -2.08f, -4.02f);
 		}
 	}
 
@@ -2038,25 +1793,21 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	// // }
 	// }
 
-	private void renderNavigationHandleBar(final GL gl,
-			RemoteLevelElement element, float fHandleWidth,
-			float fHandleHeight, boolean bUpsideDown, float fScalingFactor) {
+	private void renderNavigationHandleBar(final GL gl, RemoteLevelElement element,
+			float fHandleWidth, float fHandleHeight, boolean bUpsideDown,
+			float fScalingFactor) {
 
 		// Render icons
 		gl.glTranslatef(0, 2 + fHandleHeight, 0);
-		renderSingleHandle(gl, element.getID(),
-				EPickingType.BUCKET_DRAG_ICON_SELECTION,
-				EIconTextures.NAVIGATION_DRAG_VIEW, fHandleHeight,
-				fHandleHeight);
+		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION,
+				EIconTextures.NAVIGATION_DRAG_VIEW, fHandleHeight, fHandleHeight);
 		gl.glTranslatef(fHandleWidth - 2 * fHandleHeight, 0, 0);
 		if (bUpsideDown) {
 			gl.glRotatef(180, 1, 0, 0);
 			gl.glTranslatef(0, fHandleHeight, 0);
 		}
-		renderSingleHandle(gl, element.getID(),
-				EPickingType.BUCKET_LOCK_ICON_SELECTION,
-				EIconTextures.NAVIGATION_LOCK_VIEW, fHandleHeight,
-				fHandleHeight);
+		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_LOCK_ICON_SELECTION,
+				EIconTextures.NAVIGATION_LOCK_VIEW, fHandleHeight, fHandleHeight);
 		if (bUpsideDown) {
 			gl.glTranslatef(0, -fHandleHeight, 0);
 			gl.glRotatef(-180, 1, 0, 0);
@@ -2064,8 +1815,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glTranslatef(fHandleHeight, 0, 0);
 		renderSingleHandle(gl, element.getID(),
 				EPickingType.BUCKET_REMOVE_ICON_SELECTION,
-				EIconTextures.NAVIGATION_REMOVE_VIEW, fHandleHeight,
-				fHandleHeight);
+				EIconTextures.NAVIGATION_REMOVE_VIEW, fHandleHeight, fHandleHeight);
 		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
 		// Render background (also draggable)
@@ -2111,8 +1861,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	// FIXME: method copied from bucket
 	private void renderSingleHandle(final GL gl, int iRemoteLevelElementID,
-			EPickingType ePickingType, EIconTextures eIconTexture,
-			float fWidth, float fHeight) {
+			EPickingType ePickingType, EIconTextures eIconTexture, float fWidth,
+			float fHeight) {
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, ePickingType,
 				iRemoteLevelElementID));

@@ -23,8 +23,8 @@ public class DataDomainManager {
 	public AUseCase createDataDomain(EDataDomain dataDomainType) {
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 
-		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.datadomain.genetic");
-		IExtension ext = ep.getExtension("org.caleydo.datadomain.genetic.GeneticDataDomain");
+		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.datadomain.UseCase");
+		IExtension ext = ep.getExtension("org.caleydo.datadomain.genetic.GeneticUseCase");
 		IConfigurationElement[] ce = ext.getConfigurationElements();
 
 		try {

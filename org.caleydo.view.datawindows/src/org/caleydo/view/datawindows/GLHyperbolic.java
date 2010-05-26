@@ -334,13 +334,15 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		float fAngle = rot.get(axis);
 
 		// Corrections in translation and scaling for magnifying embedded views
-		gl.glTranslatef(translation.x() - glView.getViewFrustum().getWidth()
-				/ 2f * scale.x(), translation.y()
-				- glView.getViewFrustum().getHeight() / 2f * scale.y(),
+//		gl.glTranslatef(translation.x() - glView.getViewFrustum().getWidth()
+//				/ 2f * scale.x(), translation.y()
+//				- glView.getViewFrustum().getHeight() / 2f * scale.y(),
+//				translation.z());
+		gl.glTranslatef(translation.x(), translation.y(),
 				translation.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(),
 				axis.z());
-		gl.glScalef(2 * scale.x(), 2 * scale.y(), scale.z());
+		gl.glScalef(scale.x(), scale.y(), scale.z());
 
 		glView.displayRemote(gl);
 		gl.glPopMatrix();
@@ -575,6 +577,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		Transform transform = new Transform();
 		transform.setScale(new Vec3f(size, size * fAspectRatio, 1));
+		
 		transform.setTranslation(new Vec3f(position[0], position[1], 0));
 
 		remoteNodeElement.setGLView(((ViewHyperbolicNode) node).getGlView());
@@ -586,11 +589,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 			System.out.println("Breite Hyperbolic Viewfrustum:"+this.viewFrustum.getWidth());		
 			
-			
-			
 			transform.setScale(new Vec3f(1,1, 1));
-	
-
 			transform.setTranslation(new Vec3f(viewFrustum.getWidth() / 2,
 					viewFrustum.getHeight() / 2, 0));
 		}
