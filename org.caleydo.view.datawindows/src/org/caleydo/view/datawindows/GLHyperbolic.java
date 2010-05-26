@@ -383,6 +383,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 			switch (pickingMode) {
 			case RIGHT_CLICKED:
 
+				
 				// // if (testZoomViewEventSwitch == false) {
 				// directHyperbolicView.disk.rotateDisk(Math.PI/180);
 
@@ -576,26 +577,26 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		transform.setScale(new Vec3f(size, size * fAspectRatio, 1));
 		transform.setTranslation(new Vec3f(position[0], position[1], 0));
 
+		remoteNodeElement.setGLView(((ViewHyperbolicNode) node).getGlView());
+
 		if (this.displayFullView == true
 				&& (this.disk.getCenteredNode() == node)) {
-			transform.setScale(new Vec3f(8 * remoteNodeElement.getTransform()
-					.getScale().x(), 8
-					* remoteNodeElement.getTransform().getScale().y()
-					* fAspectRatio, 1));
+			System.out.println("Breite Node Viewfrustum:"
+					+ remoteNodeElement.getGLView().getViewFrustum().getWidth());
+
+			System.out.println("Breite Hyperbolic Viewfrustum:"+this.viewFrustum.getWidth());		
+			
+			
+			
+			transform.setScale(new Vec3f(1,1, 1));
+	
+
 			transform.setTranslation(new Vec3f(viewFrustum.getWidth() / 2,
 					viewFrustum.getHeight() / 2, 0));
 		}
 
 		remoteNodeElement.setTransform(transform);
-		remoteNodeElement.setGLView(((ViewHyperbolicNode) node).getGlView());
-
-		if (this.displayFullView == true
-				&& (this.disk.getCenteredNode() == node)) {
-			renderRemoteLevelElement(gl, remoteNodeElement);
-		}
-		if (this.displayFullView == false) {
-			renderRemoteLevelElement(gl, remoteNodeElement);
-		}
+		renderRemoteLevelElement(gl, remoteNodeElement);
 
 	}
 

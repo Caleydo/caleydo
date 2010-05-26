@@ -226,6 +226,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		float canvasWidth = viewFrustum.getWidth();
 		float canvasHeight = viewFrustum.getHeight();
 
+		//System.out.println(canvasWidth+"|"+canvasHeight);
 		if (layoutHotSpotInitSwitch == false) {
 			layoutHotSpot[0] = canvasWidth / 2 + 1;
 			layoutHotSpot[1] = canvasHeight / 2;
@@ -465,6 +466,10 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 				evaluateUserSelection();
 				break;
 			case RIGHT_CLICKED:
+				
+			
+
+				
 				contextMenu.setLocation(pick.getPickedPoint(),
 						getParentGLCanvas().getWidth(), getParentGLCanvas()
 								.getHeight());
