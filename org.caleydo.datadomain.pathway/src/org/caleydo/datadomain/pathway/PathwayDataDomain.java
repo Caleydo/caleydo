@@ -12,6 +12,7 @@ import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 
 /**
  * TODO The use case for pathway input data.
@@ -34,6 +35,9 @@ public class PathwayDataDomain
 		possibleIDCategories = new HashMap<EIDCategory, String>();
 		// possibleIDCategories.put(EIDCategory.GENE, null);
 		possibleIDCategories.put(EIDCategory.PATHWAY, null);
+		
+		// Trigger pathway loading
+		new PathwayLoadingProgressIndicatorAction().run(null);
 	}
 
 	@Override

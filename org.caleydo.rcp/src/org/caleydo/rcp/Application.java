@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
+import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.SetUtils;
@@ -332,9 +334,6 @@ public class Application
 
 		GeneralManager.get().getGUIBridge().init();
 
-		// if (bLoadPathwayData == true)
-		triggerPathwayLoading();
-
 		Shell shell = new Shell();
 
 		if (applicationMode == EApplicationMode.COLLABORATION_CLIENT
@@ -393,17 +392,18 @@ public class Application
 			// we need the VAs to be available before the tree is initialized
 			SetUtils.loadTrees(loadDataParameters, set);
 
-			if (useCase.getDataDomain() == EDataDomain.GENETIC_DATA)
-				triggerPathwayLoading();
-
 			Application.initData = null;
 		}
 		else if (applicationMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA) {
 
 			GeneralManager.get().setMasterUseCase(applicationMode.getDataDomain());
 
-			triggerPathwayLoading();
-
+			CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
+			cmd.setAttributes(EDataDomain.PATHWAY_DATA);
+			cmd.doCommand();
+//			useCase = cmd.getCreatedObject();
+			//TODO: register pathway data domain
+			
 			WizardDialog dataImportWizard =
 				new WizardDialog(shell, new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
 
@@ -417,6 +417,10 @@ public class Application
 
 			GeneralManager.get().setMasterUseCase(applicationMode.getDataDomain());
 
+			CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
+			cmd.setAttributes(EDataDomain.PATHWAY_DATA);
+			cmd.doCommand();
+			
 			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
 
 			if (Window.CANCEL == dataImportWizard.open()) {
@@ -543,12 +547,6 @@ public class Application
 		}
 
 		deleteDir(path.toFile());
-	}
-
-	private static void triggerPathwayLoading() {
-
-		// Trigger pathway loading
-		new PathwayLoadingProgressIndicatorAction().run(null);
 	}
 
 	// Deletes all files and subdirectories under dir.
