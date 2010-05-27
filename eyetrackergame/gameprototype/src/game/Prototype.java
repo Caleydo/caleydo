@@ -4,7 +4,6 @@ package game;
 import com.jme.app.SimpleGame;
 import com.jme.bounding.BoundingBox;
 import com.jme.bounding.BoundingSphere;
-import com.jme.input.AbsoluteMouse;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
@@ -12,12 +11,12 @@ import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
-import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Box;
 import com.jme.scene.shape.Sphere;
 import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.MaterialState.ColorMaterial;
+import game.TrackDataProvider;
 
 public class Prototype extends SimpleGame
 {
@@ -39,6 +38,9 @@ public class Prototype extends SimpleGame
 	private Vector3f tmpVec_ = new Vector3f();
 	private Vector2f tmpScreenPos_ = new Vector2f();
 	private Vector3f tmpWorldCoord_ = new Vector3f();
+	
+	private TrackDataProvider eyeTracker_;
+	private float[] eyePos_ = new float[] { 0f, 0f };
 	
 	@Override
 	protected void simpleInitGame() 
@@ -149,6 +151,10 @@ public class Prototype extends SimpleGame
 		KeyBindingManager.getKeyBindingManager().set("PLAYER_MOVE_LEFT", KeyInput.KEY_LEFT);
 		KeyBindingManager.getKeyBindingManager().set("PLAYER_MOVE", KeyInput.KEY_SPACE);
 		KeyBindingManager.getKeyBindingManager().set("RESTART", KeyInput.KEY_RETURN);
+		
+		//init eye tracker
+		eyeTracker_ = new TrackDataProvider();
+		
 
         // Make the object default colors shine through
         MaterialState ms = display.getRenderer().createMaterialState();
@@ -161,8 +167,14 @@ public class Prototype extends SimpleGame
 	protected void simpleUpdate()
 	{
 		//Handle Mouse
-		tmpScreenPos_.set(MouseInput.get().getXAbsolute(),MouseInput.get().getYAbsolute());
-		tmpWorldCoord_ = display.getWorldCoordinates(tmpScreenPos_, 0);		
+		//tmpScreenPos_.set(MouseInput.get().getXAbsolute(),MouseInput.get().getYAbsolute());
+		//tmpWorldCoord_ = display.getWorldCoordinates(tmpScreenPos_, 0);		
+		//mousePointer_.getLocalTranslation().x = tmpWorldCoord_.x;
+		//mousePointer_.getLocalTranslation().y = tmpWorldCoord_.y;
+		
+		//Handle Eye Input
+		eyePos_ = eyeTracker_.getEyeTrackData();
+		tmpScreenPos_.set(eyePos_[0], eyePos_[1]);
 		mousePointer_.getLocalTranslation().x = tmpWorldCoord_.x;
 		mousePointer_.getLocalTranslation().y = tmpWorldCoord_.y;
 		
