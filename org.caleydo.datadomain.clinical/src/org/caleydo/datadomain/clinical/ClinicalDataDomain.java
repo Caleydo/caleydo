@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.specialized.clinical;
+package org.caleydo.datadomain.clinical;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,13 +21,13 @@ import org.caleydo.core.manager.datadomain.EDataDomain;
  */
 @XmlType
 @XmlRootElement
-public class ClinicalUseCase
+public class ClinicalDataDomain
 	extends ADataDomain {
 
 	/**
 	 * Constructor.
 	 */
-	public ClinicalUseCase() {
+	public ClinicalDataDomain() {
 
 		useCaseMode = EDataDomain.CLINICAL_DATA;
 

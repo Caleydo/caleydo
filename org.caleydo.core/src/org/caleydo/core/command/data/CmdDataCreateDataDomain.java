@@ -10,7 +10,6 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.datadomain.UnspecifiedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
@@ -45,11 +44,11 @@ public class CmdDataCreateDataDomain
 	private IDataDomain createUseCase(EDataDomain dataDomain) {
 		switch (dataDomain) {
 			case CLINICAL_DATA:
-				return new ClinicalUseCase();
+				return DataDomainManager.getInstance().createDataDomain("org.caleydo.datadomain.clinical.ClinicalDataDomain");
 			case GENETIC_DATA:
 				return DataDomainManager.getInstance().createDataDomain("org.caleydo.datadomain.genetic.GeneticDataDomain");
 			case TISSUE_DATA:
-				return DataDomainManager.getInstance().createDataDomain("org.caleydo.datadomain.pathway.TissueDataDomain");
+				return DataDomainManager.getInstance().createDataDomain("org.caleydo.datadomain.tissue.TissueDataDomain");
 			case PATHWAY_DATA:
 				return DataDomainManager.getInstance().createDataDomain("org.caleydo.datadomain.pathway.PathwayDataDomain");
 			case UNSPECIFIED:
@@ -95,13 +94,7 @@ public class CmdDataCreateDataDomain
 		}
 
 		dataDomain = EDataDomain.valueOf(dataDomainString);
-		// for (EDataDomain domainCandidate : EDataDomain.values()) {
-		// // FIXME check whether toString is ok here, or whether we need the hand-coded values
-		// if (domainCandidate.toString().equals(dataDomainString)) {
-		// dataDomain = domainCandidate;
-		// break;
-		// }
-		// }
+
 	}
 
 	public void setAttributes(EDataDomain dataDomain) {

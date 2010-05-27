@@ -143,13 +143,6 @@ public class CommandManager
 			createdCommand.setParameterHandler(phAttributes);
 		}
 
-		// BUG! creating command is not executing command!
-		// //FIXME: should iterate over all undo/redo views.
-		// if (arUndoRedoViews.isEmpty() == false)
-		// {
-		// arUndoRedoViews.get(0).addCommand(createdCommand);
-		// }
-
 		return createdCommand;
 	}
 
