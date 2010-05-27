@@ -296,11 +296,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	@Override
 	public void displayLocal(final GL gl) {
-		processEvents();
+
 		if (glBookmarks != null)
 			glBookmarks.processEvents();
-		if (!isVisible())
-			return;
+
 		if (set == null)
 			return;
 

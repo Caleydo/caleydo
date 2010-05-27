@@ -200,9 +200,6 @@ public class GLBookmarkManager extends AGLView implements
 
 	@Override
 	protected void displayLocal(GL gl) {
-		processEvents();
-		if (!isVisible())
-			return;
 
 		pickingManager.handlePicking(this, gl);
 		display(gl);

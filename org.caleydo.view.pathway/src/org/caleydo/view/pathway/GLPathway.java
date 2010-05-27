@@ -214,9 +214,6 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 
 	@Override
 	public void displayLocal(final GL gl) {
-		processEvents();
-		if (!isVisible())
-			return;
 
 		// Check if pathway exists or if it's already loaded
 		// FIXME: not good because check in every rendered frame

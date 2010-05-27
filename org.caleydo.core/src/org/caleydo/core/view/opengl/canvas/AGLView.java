@@ -176,25 +176,12 @@ public abstract class AGLView
 		parentGLCanvas = glCanvas;
 
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null) {
-			// Register GL event listener view to GL canvas
-			// parentGLCanvas.addGLEventListener(this);
-
-			// generalManager.getViewGLCanvasManager().registerGLEventListenerByGLCanvasID(
-			// parentGLCanvas.getID(), this);
-
 			glMouseListener = parentGLCanvas.getGLMouseListener();
 		}
-		// // Frustum will only be remotely rendered by another view
-		// else
-		// {
-		// generalManager.getViewGLCanvasManager().registerGLEventListenerByGLCanvasID(-1,
-		// this);
-		// }
 
 		this.viewFrustum = viewFrustum;
 
-		viewCamera = new ViewCameraBase(iUniqueID); // FIXME: generate own ID
-		// for camera
+		viewCamera = new ViewCameraBase(iUniqueID);
 
 		pickingManager = generalManager.getViewGLCanvasManager().getPickingManager();
 		idMappingManager = generalManager.getIDMappingManager();
@@ -219,29 +206,28 @@ public abstract class AGLView
 	@Override
 	public final void display(GLAutoDrawable drawable) {
 		try {
+			processEvents();
+			if (!isVisible())
+				return;
+			
 			((GLEventListener) parentGLCanvas).display(drawable);
 
-			/** Read viewing parameters... */
 			final Vec3f rot_Vec3f = new Vec3f();
 			final Vec3f position = viewCamera.getCameraPosition();
-			final float w = viewCamera.getCameraRotationGrad(rot_Vec3f);
 
 			GL gl = drawable.getGL();
 
-			/** Translation */
 			gl.glTranslatef(position.x(), position.y(), position.z());
-
-			/** Rotation */
-			gl.glRotatef(w, rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
+			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
 
 			displayLocal(gl);
 
-			if (bShowMagnifyingGlass) {
-				if (magnifyingGlass == null) {
-					magnifyingGlass = new GLMagnifyingGlass();
-				}
-				magnifyingGlass.draw(gl, glMouseListener);
-			}
+			// if (bShowMagnifyingGlass) {
+			// if (magnifyingGlass == null) {
+			// magnifyingGlass = new GLMagnifyingGlass();
+			// }
+			// magnifyingGlass.draw(gl, glMouseListener);
+			// }
 		}
 		catch (RuntimeException exception) {
 			ExceptionHandler.get().handleViewException(exception, this);

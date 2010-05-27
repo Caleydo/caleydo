@@ -384,14 +384,9 @@ public class GLScatterPlot extends AStorageBasedView {
 
 	@Override
 	public void displayLocal(GL gl) {
-		processEvents();
-					
-		if (!isVisible())
-			return;
+
 		if (set == null)
 			return;
-	
-		
 		
 //		textRenderer.dispose();
 //		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);

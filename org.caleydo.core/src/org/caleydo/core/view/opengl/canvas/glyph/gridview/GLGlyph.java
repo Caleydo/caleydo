@@ -356,9 +356,7 @@ public class GLGlyph
 
 	@Override
 	public void displayLocal(GL gl) {
-		processEvents();
-		if (!isVisible())
-			return;
+
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);

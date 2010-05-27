@@ -196,9 +196,7 @@ public class GLHeatMap extends AStorageBasedView {
 
 	@Override
 	public void displayLocal(GL gl) {
-		processEvents();
-		if (!isVisible())
-			return;
+
 		if (set == null)
 			return;
 

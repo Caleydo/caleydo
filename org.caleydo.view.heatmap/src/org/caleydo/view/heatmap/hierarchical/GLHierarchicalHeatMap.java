@@ -611,7 +611,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 							iContentIndex)) {
 						fOpacity = 0.3f;
 					} else {
-						fOpacity = 1.0f;
+						fOpacity = 1.0f; 
 					}
 
 					fLookupValue = set.get(iStorageIndex).getFloat(
@@ -733,15 +733,14 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	@Override
 	public void displayLocal(GL gl) {
-		processEvents();
+
 		if (glExperimentDendrogramView != null)
 			glExperimentDendrogramView.processEvents();
 		if (glGeneDendrogramView != null)
 			glGeneDendrogramView.processEvents();
 		if (glHeatMapView != null)
 			glHeatMapView.processEvents();
-		if (!isVisible())
-			return;
+
 		if (set == null)
 			return;
 

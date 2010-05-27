@@ -227,9 +227,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 
 	@Override
 	public void displayLocal(GL gl) {
-		processEvents();
-		if (!isVisible())
-			return;
+
 		if (set == null)
 			return;
 

@@ -198,14 +198,10 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	@Override
 	public void displayLocal(GL gl) {
 
-		processEvents();
 		if (wasMouseWheeled) {
 			wasMouseWheeled = false;
 			compareViewStateController.handleMouseWheel(gl, wheelAmount, wheelPoint);
 		}
-
-		if (!isVisible())
-			return;
 
 		compareViewStateController.executeDrawingPreprocessing(gl,
 				bIsDisplayListDirtyLocal);

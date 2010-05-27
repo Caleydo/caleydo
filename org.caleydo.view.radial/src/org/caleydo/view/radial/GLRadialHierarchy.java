@@ -358,9 +358,6 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void displayLocal(GL gl) {
-		processEvents();
-		if (!isVisible())
-			return;
 
 		pickingManager.handlePicking(this, gl);
 		// setDisplayListDirty();

@@ -74,10 +74,7 @@ public class GLCell extends AGLView {
 
 	@Override
 	public void displayLocal(final GL gl) {
-		processEvents();
-		if (!isVisible())
-			return;
-		pickingManager.handlePicking(this, gl);
+
 		if (bIsDisplayListDirtyLocal) {
 			// rebuildPathwayDisplayList(gl);
 			bIsDisplayListDirtyLocal = false;

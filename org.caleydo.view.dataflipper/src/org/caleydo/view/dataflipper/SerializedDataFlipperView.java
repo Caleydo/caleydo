@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.manager.datadomain.EDataDomain;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
@@ -57,9 +56,6 @@ public class SerializedDataFlipperView extends ASerializedView {
 		SerializedHierarchicalHeatMapView heatMap = new SerializedHierarchicalHeatMapView();
 		heatMap.setDataDomain(EDataDomain.GENETIC_DATA);
 		initialContainedViews.add(heatMap);
-
-		// FIXME: this is not the right place to do
-		GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA).updateSetInViews();
 		
 		parCoords = new SerializedParallelCoordinatesView();
 		parCoords.setDataDomain(EDataDomain.CLINICAL_DATA);

@@ -154,10 +154,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	@Override
 	public void displayLocal(GL gl) {
-		processEvents();
 
-		// if (!isVisible())
-		// return;
 		// gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, viewport, 0);
 		//
 		// canvasWidth = 2 / (float) viewport[0];

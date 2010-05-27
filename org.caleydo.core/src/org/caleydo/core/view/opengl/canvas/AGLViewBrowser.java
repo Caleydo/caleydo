@@ -282,12 +282,9 @@ public abstract class AGLViewBrowser
 
 	@Override
 	public void displayLocal(final GL gl) {
-		processEvents();
+
 		for (AGLView view : containedGLViews)
 			view.processEvents();
-		if (!isVisible())
-			return;
-		pickingManager.handlePicking(this, gl);
 
 		// if (bIsDisplayListDirtyLocal)
 		// {
@@ -310,8 +307,7 @@ public abstract class AGLViewBrowser
 	public void displayRemote(final GL gl) {
 		for (AGLView view : containedGLViews)
 			view.processEvents();
-		if (!isVisible())
-			return;
+
 		display(gl);
 		checkForHits(gl);
 

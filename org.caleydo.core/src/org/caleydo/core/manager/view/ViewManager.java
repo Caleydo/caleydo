@@ -99,7 +99,7 @@ public class ViewManager
 
 	@Override
 	public void init() {
-		fpsAnimator = new FPSAnimator(null, 60);
+		fpsAnimator = new FPSAnimator(60);
 
 		displayLoopExecution = DisplayLoopExecution.get();
 		fpsAnimator.add(displayLoopExecution.getDisplayLoopCanvas());

@@ -439,9 +439,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void displayLocal(GL gl) {
-		processEvents();
-		if (!isVisible())
-			return;
+
 		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {

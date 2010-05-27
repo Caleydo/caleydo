@@ -66,7 +66,6 @@ import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathwaybrowser.GLPathwayViewBrowser;
 import org.caleydo.view.tissue.GLTissue;
 import org.caleydo.view.tissuebrowser.GLTissueViewBrowser;
-import org.eclipse.ui.internal.presentations.util.LeftToRightTabOrder;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
@@ -204,17 +203,16 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		cmd.doCommand();
 		ADataDomain pathwayDataDomain = (ADataDomain) cmd.getCreatedObject();
 		pathwayDataDomain.setOrganism(EOrganism.HOMO_SAPIENS);
-		//pathwayDataDomain.setSet(generalManager.getUseCase(EDataDomain.PATHWAY_DATA).getSet());
+		// pathwayDataDomain.setSet(generalManager.getUseCase(EDataDomain.PATHWAY_DATA).getSet());
 		generalManager.addUseCase(pathwayDataDomain);
-		
-		cmd = new CmdDataCreateDataDomain(
-				ECommandType.CREATE_DATA_DOMAIN);
+
+		cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
 		cmd.setAttributes(EDataDomain.TISSUE_DATA);
 		cmd.doCommand();
 		ADataDomain tissueDataDomain = (ADataDomain) cmd.getCreatedObject();
-		pathwayDataDomain.setOrganism(EOrganism.HOMO_SAPIENS);
-		//pathwayDataDomain.setSet(generalManager.getUseCase(EDataDomain.TISSUE_DATA).getSet());
-		generalManager.addUseCase(pathwayDataDomain);
+		tissueDataDomain.setOrganism(EOrganism.HOMO_SAPIENS);
+		// pathwayDataDomain.setSet(generalManager.getUseCase(EDataDomain.TISSUE_DATA).getSet());
+		generalManager.addUseCase(tissueDataDomain);
 
 	}
 
@@ -226,8 +224,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		remoteLevelElementWhiteList.add(focusElement);
 		remoteLevelElementWhiteList.add(stackElementsLeft.get(0));
 		remoteLevelElementWhiteList.add(stackElementsRight.get(0));
-		// remoteLevelElementWhiteList.add(stackElementsLeft.get(1));
-		// remoteLevelElementWhiteList.add(stackElementsRight.get(1));
 		selectionTransformer = new RemoteRenderingTransformer(iUniqueID,
 				remoteLevelElementWhiteList);
 
@@ -259,11 +255,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public void displayLocal(final GL gl) {
-		processEvents();
+
 		for (AGLView view : containedGLViews)
 			view.processEvents();
-		if (!isVisible())
-			return;
+
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
@@ -307,6 +302,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		renderRemoteLevelElement(gl, focusElement);
 
+		// if (focusZoom) {
+		renderHandles(gl);
 		renderDataViewIcons(gl, EDataDomain.CLINICAL_DATA);
 		renderDataViewIcons(gl, EDataDomain.TISSUE_DATA);
 		renderDataViewIcons(gl, EDataDomain.GENETIC_DATA);
@@ -339,6 +336,45 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		else
 			isExperimentCountOK = true;
 
+		// if (((glEventListener instanceof GLParallelCoordinates &&
+		// glEventListener.getSet().getSetType() ==
+		// ESetType.GENE_EXPRESSION_DATA)
+		// || glEventListener instanceof GLHierarchicalHeatMap
+		// || glEventListener instanceof GLTissueViewBrowser || (glEventListener
+		// instanceof
+		// GLPathwayViewBrowser && renderPathwayViews))
+		// && !isExperimentCountOK) {
+		// return;
+		// }
+		//
+		// if (((glEventListener instanceof GLParallelCoordinates &&
+		// glEventListener.getSet().getSetType() ==
+		// ESetType.GENE_EXPRESSION_DATA)
+		// || glEventListener instanceof GLHierarchicalHeatMap
+		// || glEventListener instanceof GLTissueViewBrowser || glEventListener
+		// instanceof
+		// GLPathwayViewBrowser)
+		// && !renderGeneticViews) {
+		// return;
+		// }
+		//
+		// if ((glEventListener instanceof GLPathwayViewBrowser &&
+		// !isPathwayContentAvailable)
+		// || (glEventListener instanceof GLPathwayViewBrowser &&
+		// !renderPathwayViews))
+		// return;
+
+		// if (glView instanceof GLGlyph
+		// || (glView instanceof GLParallelCoordinates && glView.getSet()
+		// .getSetType() != ESetType.GENE_EXPRESSION_DATA)
+		// || (((glView instanceof GLHierarchicalHeatMap || glView instanceof
+		// GLParallelCoordinates) && glView
+		// .getSet().getSetType() == ESetType.GENE_EXPRESSION_DATA)
+		// && isExperimentCountOK && renderGeneticViews)
+		// || (glView instanceof GLTissueViewBrowser && isTissueGuideActive)
+		// || (glView instanceof GLPathwayViewBrowser
+		// && isPathwayContentAvailable && renderPathwayViews)) {
+
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
@@ -353,37 +389,35 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		Vec3f axis = new Vec3f();
 		float fAngle = rot.get(axis);
 
-//		if (glView instanceof GLBucket) {
-//
-//			gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f, translation
-//					.z());
-//			gl.glScalef(scale.x(), scale.y(), scale.z());
-//			renderBucketWall(gl, true);
-//			gl.glScalef(1 / scale.x(), 1 / scale.y(), 1 / scale.z());
-//			gl.glTranslatef(-translation.x() + 1.5f, -translation.y() + 1.5f,
-//					-translation.z());
-//
-//			gl.glTranslatef(translation.x() + 0.14f, translation.y() - 0.09f, translation
-//					.z() + 2);
-//			gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
-//			gl.glScalef(scale.x(), scale.y(), scale.z());
-//		} else {
+		if (glView instanceof GLBucket) {
+
+			gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f, translation
+					.z());
+			gl.glScalef(scale.x(), scale.y(), scale.z());
+			renderBucketWall(gl, true);
+			gl.glScalef(1 / scale.x(), 1 / scale.y(), 1 / scale.z());
+			gl.glTranslatef(-translation.x() + 1.5f, -translation.y() + 1.5f,
+					-translation.z());
+
+			gl.glTranslatef(translation.x() + 0.14f, translation.y() - 0.09f, translation
+					.z() + 2);
+			gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
+			gl.glScalef(scale.x(), scale.y(), scale.z());
+		} else {
 			gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f, translation
 					.z());
 			gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 			gl.glScalef(scale.x(), scale.y(), scale.z());
 
-			renderHandles(gl, element);
 			renderBucketWall(gl, true);
-			
-//		}
+		}
 
-//		if ((stackElementsLeft.contains(element) || focusElement == element)
-//				&& glView instanceof GLTissueViewBrowser)
-//			((GLTissueViewBrowser) glView).setPoolSide(true);
-//		else if (stackElementsRight.contains(element)
-//				&& glView instanceof GLTissueViewBrowser)
-//			((GLTissueViewBrowser) glView).setPoolSide(false);
+		if ((stackElementsLeft.contains(element) || focusElement == element)
+				&& glView instanceof GLTissueViewBrowser)
+			((GLTissueViewBrowser) glView).setPoolSide(true);
+		else if (stackElementsRight.contains(element)
+				&& glView instanceof GLTissueViewBrowser)
+			((GLTissueViewBrowser) glView).setPoolSide(false);
 
 		glView.displayRemote(gl);
 
@@ -1000,30 +1034,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 							0.15f + fGuidancePipeWidth + 0.05f, 0.0f), 1, 1, 1, alpha);
 		}
 
-		// if (isPatientAlternativeGuideActive && dataDomain ==
-		// EDataDomain.CLINICAL_DATA) {
-		// textureManager.renderTexture(gl, connTexture, new Vec3f(0.52f, 0.05f,
-		// 0.02f), new Vec3f(1.5f,
-		// 0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f,
-		// 0.02f), new Vec3f(0.52f,
-		// 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
-		//
-		// gl.glTranslatef(1f, 0, 0);
-		// textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f,
-		// 0.02f), new Vec3f(1.5f,
-		// 0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f,
-		// 0.02f), new Vec3f(0.51f,
-		// 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);;
-		//
-		// gl.glTranslatef(0.5f, 0, 0);
-		// textureManager.renderTexture(gl, connTexture, new Vec3f(0.51f, 0.05f,
-		// 0.02f), new Vec3f(1.5f,
-		// 0.05f, 0.02f), new Vec3f(1.5f, 0.05f + fGuidancePipeWidth + 0.05f,
-		// 0.02f), new Vec3f(0.51f,
-		// 0.05f + fGuidancePipeWidth + 0.05f, 0.02f), 1, 1, 1, alpha);
-		// gl.glTranslatef(-1.5f, 0, 0);
-		// }
-
 		for (int viewIndex = 0; viewIndex < possibleViews.size(); viewIndex++) {
 
 			EIconTextures iconTextureType;
@@ -1549,89 +1559,92 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	// FIXME: method copied from bucket
-	private void renderHandles(final GL gl, RemoteLevelElement element) {
-	
-		if (element.getGLView() == null)
-			return;
-		
-		// Handle top
-		if (focusElement == element) {
-			renderNavigationHandleBar(gl, element, 8, 0.15f, false, 2);
-		}
-		else 
-			if (stackElementsLeft.contains(element)) {
+	private void renderHandles(final GL gl) {
+
+		// Bucket center (focus)
+		RemoteLevelElement element = focusElement;
+		AGLView glView = element.getGLView();
+		if (glView != null) {
+			Transform transform;
+			Vec3f translation;
+			float fYCorrection = 0f; 
+			transform = element.getTransform();
+			translation = transform.getTranslation();
+			gl.glTranslatef(translation.x() - 1.5f, translation.y() - 0.225f - 0.075f
+					+ fYCorrection, translation.z() + 0.001f);
+			renderNavigationHandleBar(gl, element, 3.2f, 0.075f, false, 2);
+			gl.glTranslatef(-translation.x() + 1.5f, -translation.y() + 0.225f + 0.075f
+					- fYCorrection, -translation.z() - 0.001f);
+		} 
+
+		// Left first
+		element = stackElementsLeft.get(0);
+		glView = element.getGLView();
+		if (glView != null) {
+
+			gl.glTranslatef(-0.64f, -1.25f, 4.02f);
 			gl.glRotatef(90, 0, 0, 1);
-
-			gl.glRotatef(-96, 1, 0, 0);
-			gl.glTranslatef(0,-8,0);
-			renderNavigationHandleBar(gl, element, 8, 0.15f, false, 2);
-			gl.glTranslatef(0,8,0);
-			gl.glRotatef(-96, -1, 0, 0);
-			
-			gl.glRotatef(90, 0, 0, -1);
+			renderNavigationHandleBar(gl, element, 3.33f, 0.075f, false, 2);
+			gl.glRotatef(-90, 0, 0, 1);
+			gl.glTranslatef(0.64f, 1.25f, -4.02f);
 		}
-//		else if (stackElementsRight.contains(element)) {
-//			gl.glRotatef(10, 0, 1, 0);
-//
-//			gl.glRotatef(-90, 0, 0, 1);
-//
-//			gl.glTranslatef(-8,0,0);
-//			renderNavigationHandleBar(gl, element, 8, 0.15f, false, 2);
-//			gl.glTranslatef(8,0,0);
-//			
-//			gl.glRotatef(-90, 0, 0, -1);
-//			gl.glRotatef(10, 0, -1, 0);
-//		}
-		
 
-//		// Left first
-//		element = stackElementsLeft.get(0);
-//		glView = element.getGLView();
-//		if (glView != null) {
-//
-//			gl.glTranslatef(-0.64f, -1.25f, 4.02f);
-//			gl.glRotatef(90, 0, 0, 1);
-//			renderNavigationHandleBar(gl, element, 3.33f, 0.075f, false, 2);
-//			gl.glRotatef(-90, 0, 0, 1);
-//			gl.glTranslatef(0.64f, 1.25f, -4.02f);
-//		}
-//
-//		// Left second
-//		element = stackElementsLeft.get(1);
-//		glView = element.getGLView();
-//		if (glView != null) {
-//
-//			gl.glTranslatef(-1.17f, -1.25f, 4.02f);
-//			gl.glRotatef(90, 0, 0, 1);
-//			renderNavigationHandleBar(gl, element, 3.32f, 0.075f, false, 2);
-//			gl.glRotatef(-90, 0, 0, 1);
-//			gl.glTranslatef(1.17f, 1.25f, -4.02f);
-//		}
-//
-//		// Right first
-//		element = stackElementsRight.get(0);
-//		glView = element.getGLView();
-//		if (element.getGLView() != null) {
-//
-//			gl.glTranslatef(0.65f, 2.08f, 4.02f);
-//			gl.glRotatef(-90, 0, 0, 1);
-//			renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
-//			gl.glRotatef(90, 0, 0, 1);
-//			gl.glTranslatef(-0.65f, -2.08f, -4.02f);
-//		}
-//
-//		// Right second
-//		element = stackElementsRight.get(1);
-//		glView = element.getGLView();
-//
-//		if (glView != null) {
-//
-//			gl.glTranslatef(1.1f, 2.08f, 4.02f);
-//			gl.glRotatef(-90, 0, 0, 1);
-//			renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
-//			gl.glRotatef(90, 0, 0, 1);
-//			gl.glTranslatef(-1.1f, -2.08f, -4.02f);
-//		}
+		// Left second
+		element = stackElementsLeft.get(1);
+		glView = element.getGLView();
+		if (glView != null) {
+
+			gl.glTranslatef(-1.17f, -1.25f, 4.02f);
+			gl.glRotatef(90, 0, 0, 1);
+			renderNavigationHandleBar(gl, element, 3.32f, 0.075f, false, 2);
+			gl.glRotatef(-90, 0, 0, 1);
+			gl.glTranslatef(1.17f, 1.25f, -4.02f);
+		}
+
+		// Left third
+		element = stackElementsLeft.get(2);
+		if (element.getGLView() != null) {
+
+			gl.glTranslatef(-1.73f, -1.25f, 4.02f);
+			gl.glRotatef(90, 0, 0, 1);
+			renderNavigationHandleBar(gl, element, 3.32f, 0.075f, false, 2);
+			gl.glRotatef(-90, 0, 0, 1);
+			gl.glTranslatef(1.73f, 1.25f, -4.02f);
+		}
+
+		// Right first
+		element = stackElementsRight.get(0);
+		glView = element.getGLView();
+		if (element.getGLView() != null) {
+
+			gl.glTranslatef(0.65f, 2.08f, 4.02f);
+			gl.glRotatef(-90, 0, 0, 1);
+			renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
+			gl.glRotatef(90, 0, 0, 1);
+			gl.glTranslatef(-0.65f, -2.08f, -4.02f);
+		}
+
+		// Right second
+		element = stackElementsRight.get(1);
+		if (element.getGLView() != null) {
+
+			gl.glTranslatef(1.1f, 2.08f, 4.02f);
+			gl.glRotatef(-90, 0, 0, 1);
+			renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
+			gl.glRotatef(90, 0, 0, 1);
+			gl.glTranslatef(-1.1f, -2.08f, -4.02f);
+		}
+
+		// Right thrid
+		element = stackElementsRight.get(2);
+		if (element.getGLView() != null) {
+
+			gl.glTranslatef(1.75f, 2.08f, 4.02f);
+			gl.glRotatef(-90, 0, 0, 1);
+			renderNavigationHandleBar(gl, element, 3.34f, 0.075f, false, 2);
+			gl.glRotatef(90, 0, 0, 1);
+			gl.glTranslatef(-1.75f, -2.08f, -4.02f);
+		}
 	}
 
 	// private void renderViewConnectionPipes(final GL gl, RemoteLevelElement
@@ -1649,141 +1662,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	//
 	// }
 
-	// FIXME: method copied from bucket
-	// private void renderViewTitleBar(final GL gl, RemoteLevelElement element,
-	// float fHandleWidth,
-	// float fHandleHeight, boolean bUpsideDown, float fScalingFactor,
-	// EOrientation eOrientation) {
-	//
-	// // if (eOrientation == EOrientation.LEFT) {
-	// // gl.glBegin(GL.GL_POLYGON);
-	// // gl.glVertex3f(-fHandleHeight, fHandleHeight, 0);
-	// // gl.glVertex3f(0, fHandleHeight, 0);
-	// // gl.glVertex3f(0, fHandleWidth - fHandleHeight, 0);
-	// // gl.glVertex3f(-fHandleHeight, fHandleWidth - fHandleHeight, 0);
-	// // gl.glEnd();
-	// //
-	// // // Render icons
-	// // gl.glTranslatef(-fHandleHeight, 0, 0);
-	// // renderSingleHandle(gl, element.getID(),
-	// EPickingType.BUCKET_DRAG_ICON_SELECTION,
-	// // EIconTextures.NAVIGATION_DRAG_VIEW, fHandleHeight, fHandleHeight,
-	// eOrientation);
-	// // gl.glTranslatef(0, fHandleWidth - fHandleWidth, 0);
-	// //// if (bUpsideDown) {
-	// //// gl.glRotatef(180, 1, 0, 0);
-	// //// gl.glTranslatef(0, fHandleHeight, 0);
-	// //// }
-	// //// renderSingleHandle(gl, element.getID(),
-	// EPickingType.BUCKET_LOCK_ICON_SELECTION,
-	// //// EIconTextures.NAVIGATION_LOCK_VIEW, fHandleHeight, fHandleHeight);
-	// //// if (bUpsideDown) {
-	// //// gl.glTranslatef(0, -fHandleHeight, 0);
-	// //// gl.glRotatef(-180, 1, 0, 0);
-	// //// }
-	// //// gl.glTranslatef(0, -fHandleWidth, 0);
-	// //// renderSingleHandle(gl, element.getID(),
-	// EPickingType.BUCKET_REMOVE_ICON_SELECTION,
-	// //// EIconTextures.NAVIGATION_REMOVE_VIEW, fHandleHeight, fHandleHeight);
-	// // gl.glTranslatef(fHandleHeight, -fHandleWidth + fHandleWidth, 0);
-	// //
-	// // }
-	//
-	// if (eOrientation == EOrientation.LEFT)
-	// gl.glRotatef(90, 0, 0, 1);
-	//		
-	// // Render icons
-	// // gl.glTranslatef(0, fHandleWidth + fHandleHeight, 0);
-	// // renderSingleHandle(gl, element.getID(),
-	// EPickingType.BUCKET_DRAG_ICON_SELECTION,
-	// // EIconTextures.NAVIGATION_DRAG_VIEW, fHandleHeight, fHandleHeight,
-	// eOrientation);
-	// // gl.glTranslatef(0, -fHandleWidth - fHandleHeight, 0);
-	// // gl.glTranslatef(fHandleWidth - 2 * fHandleHeight, 0, 0);
-	//		
-	// // if (bUpsideDown) {
-	// // gl.glRotatef(180, 1, 0, 0);
-	// // gl.glTranslatef(0, fHandleHeight, 0);
-	// // }
-	// // renderSingleHandle(gl, element.getID(),
-	// EPickingType.BUCKET_LOCK_ICON_SELECTION,
-	// // EIconTextures.NAVIGATION_LOCK_VIEW, fHandleHeight, fHandleHeight,
-	// eOrientation);
-	// // if (bUpsideDown) {
-	// // gl.glTranslatef(0, -fHandleHeight, 0);
-	// // gl.glRotatef(-180, 1, 0, 0);
-	// // }
-	// // gl.glTranslatef(fHandleHeight, 0, 0);
-	// // renderSingleHandle(gl, element.getID(),
-	// EPickingType.BUCKET_REMOVE_ICON_SELECTION,
-	// // EIconTextures.NAVIGATION_REMOVE_VIEW, fHandleHeight, fHandleHeight,
-	// eOrientation);
-	// // gl.glTranslatef(-fHandleWidth + fHandleHeight, -fHandleWidth -
-	// fHandleHeight, 0);
-	// //
-	// // // Render background (also draggable)
-	// //
-	// // gl.glPushName(pickingManager.getPickingID(iUniqueID,
-	// EPickingType.BUCKET_DRAG_ICON_SELECTION,
-	// element
-	// // .getID()));
-	// gl.glColor3f(0.25f, 0.25f, 0.25f);
-	// //
-	// //// if (eOrientation == EOrientation.TOP) {
-	// gl.glBegin(GL.GL_POLYGON);
-	// gl.glVertex3f(0 + fHandleHeight, fHandleWidth + fHandleHeight, 0);
-	// gl.glVertex3f(fHandleWidth - 2 * fHandleHeight, fHandleWidth +
-	// fHandleHeight, 0);
-	// gl.glVertex3f(fHandleWidth - 2 * fHandleHeight, fHandleWidth, 0);
-	// gl.glVertex3f(0 + fHandleHeight, fHandleWidth, 0);
-	// gl.glEnd();
-	// //// }
-	// // gl.glPopName();
-	// //
-	// if (eOrientation == EOrientation.LEFT)
-	// gl.glRotatef(-90, 0, 0, 1);
-	//
-	// //
-	// // // Render view information
-	// // String sText =
-	// //
-	// generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID())
-	// // .getShortInfo();
-	// //
-	// // int iMaxChars = 50;
-	// // if (sText.length() > iMaxChars) {
-	// // sText = sText.subSequence(0, iMaxChars - 3) + "...";
-	// // }
-	// //
-	// // float fTextScalingFactor = 0.0027f;
-	// //
-	// // if (bUpsideDown) {
-	// // gl.glRotatef(180, 1, 0, 0);
-	// // gl.glTranslatef(0, -4 - fHandleHeight, 0);
-	// // }
-	// //
-	// // textRenderer.setColor(0.7f, 0.7f, 0.7f, 1);
-	// // textRenderer.begin3DRendering();
-	// // textRenderer.draw3D(sText, fHandleWidth / fScalingFactor
-	// // - (float) textRenderer.getBounds(sText).getWidth() / 2f *
-	// fTextScalingFactor, fHandleWidth + .02f,
-	// // 0f, fTextScalingFactor);
-	// // textRenderer.end3DRendering();
-	// //
-	// // if (bUpsideDown) {
-	// // gl.glTranslatef(0, 4 + fHandleHeight, 0);
-	// // gl.glRotatef(-180, 1, 0, 0);
-	// // }
-	// }
-
 	private void renderNavigationHandleBar(final GL gl, RemoteLevelElement element,
 			float fHandleWidth, float fHandleHeight, boolean bUpsideDown,
 			float fScalingFactor) {
 
 		// Render icons
-		float viewHeight = element.getGLView().getViewFrustum().getHeight();
-		
-		gl.glTranslatef(0, viewHeight + fHandleHeight, 0);
+		gl.glTranslatef(0, 2 + fHandleHeight, 0);
 		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION,
 				EIconTextures.NAVIGATION_DRAG_VIEW, fHandleHeight, fHandleHeight);
 		gl.glTranslatef(fHandleWidth - 2 * fHandleHeight, 0, 0);
@@ -1801,17 +1685,17 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		renderSingleHandle(gl, element.getID(),
 				EPickingType.BUCKET_REMOVE_ICON_SELECTION,
 				EIconTextures.NAVIGATION_REMOVE_VIEW, fHandleHeight, fHandleHeight);
-		gl.glTranslatef(-fHandleWidth + fHandleHeight, -viewHeight - fHandleHeight, 0);
+		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
 		// Render background (also draggable)
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.BUCKET_DRAG_ICON_SELECTION, element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0 + fHandleHeight, viewHeight + fHandleHeight, 0);
-		gl.glVertex3f(fHandleWidth - 2 * fHandleHeight, viewHeight + fHandleHeight, 0);
-		gl.glVertex3f(fHandleWidth - 2 * fHandleHeight, viewHeight, 0);
-		gl.glVertex3f(0 + fHandleHeight, viewHeight, 0);
+		gl.glVertex3f(0 + fHandleHeight, 2 + fHandleHeight, 0);
+		gl.glVertex3f(fHandleWidth - 2 * fHandleHeight, 2 + fHandleHeight, 0);
+		gl.glVertex3f(fHandleWidth - 2 * fHandleHeight, 2, 0);
+		gl.glVertex3f(0 + fHandleHeight, 2, 0);
 		gl.glEnd();
 
 		gl.glPopName();
@@ -1824,18 +1708,18 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			sText = sText.subSequence(0, iMaxChars - 3) + "...";
 		}
 
-		float fTextScalingFactor = 0.0065f;
+		float fTextScalingFactor = 0.0027f;
 
 		if (bUpsideDown) {
 			gl.glRotatef(180, 1, 0, 0);
 			gl.glTranslatef(0, -4 - fHandleHeight, 0);
 		}
 
-		textRenderer.setColor(1f, 1f, 1f, 1);
+		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1);
 		textRenderer.begin3DRendering();
 		textRenderer.draw3D(sText, fHandleWidth / fScalingFactor
 				- (float) textRenderer.getBounds(sText).getWidth() / 2f
-				* fTextScalingFactor, viewHeight + .02f, 0f, fTextScalingFactor);
+				* fTextScalingFactor, 2.02f, 0f, fTextScalingFactor);
 		textRenderer.end3DRendering();
 
 		if (bUpsideDown) {
@@ -1892,6 +1776,20 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	public void renderBucketWall(final GL gl, boolean bRenderBorder) {
 
 		gl.glLineWidth(2);
+
+		// Highlight potential view drop destination
+		// if (dragAndDrop.isDragActionRunning() && element.getID() ==
+		// iMouseOverObjectID) {
+		// gl.glLineWidth(5);
+		// }
+		// gl.glColor4f(0.2f, 0.2f, 0.2f, 1);
+		// gl.glBegin(GL.GL_LINE_LOOP);
+		// gl.glVertex3f(0, 0, 0.01f);
+		// gl.glVertex3f(0, 8, 0.01f);
+		// gl.glVertex3f(8, 8, 0.01f);
+		// gl.glVertex3f(8, 0, 0.01f);
+		// gl.glEnd();
+		// }
 
 		// if (arSlerpActions.isEmpty()) {
 		gl.glColor4f(1f, 1f, 1f, 1.0f); // normal mode

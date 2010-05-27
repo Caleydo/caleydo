@@ -182,10 +182,6 @@ public class GLGlyphSliderView
 
 	@Override
 	public void displayLocal(GL gl) {
-		processEvents();
-		if (!isVisible())
-			return;
-		pickingManager.handlePicking(this, gl);
 
 		display(gl);
 		checkForHits(gl);
