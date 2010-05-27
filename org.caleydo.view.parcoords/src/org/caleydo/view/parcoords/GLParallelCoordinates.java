@@ -386,7 +386,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			handleTrackInput(gl);
 
 		// TODO another display list
-		clipToFrustum(gl);
+		//clipToFrustum(gl);
 
 		gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
 
