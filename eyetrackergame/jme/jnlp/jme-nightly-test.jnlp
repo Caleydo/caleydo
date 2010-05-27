@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+    codebase="http://www.jmonkeyengine.com/webstart/nightly/"
+    href="jme-nightly-test.jnlp">
+
+    <information>
+        <title>jME Tests - Nightly build (under development)</title>
+        <vendor>jME Development Team</vendor>
+        <homepage href="http://www.jmonkeyengine.com"/>
+        <icon href="jme_logo.jpg"/>
+        <description>jMonkey Engine Tests</description>
+        <description kind="short">jME provides a high performance scenegraph-based game engine.</description>
+        <offline-allowed/>
+    </information>
+
+    <security>
+        <all-permissions/>
+    </security>
+
+    <resources>
+        <j2se version="1.4+"/>
+        <jar href="jmetest.jar" main="true"/>
+        <jar href="jmetest-data.jar"/>
+        <extension href="jme-nightly.jnlp" name="jme-nightly"/>
+    </resources>
+
+    <application-desc main-class="jmetest.TestChooser"/>
+</jnlp>

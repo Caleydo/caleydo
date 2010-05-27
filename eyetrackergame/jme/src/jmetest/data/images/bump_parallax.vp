@@ -1,0 +1,59 @@
+!!ARBvp1.0
+
+PARAM mvi[4] = {state.matrix.modelview.inverse};
+PARAM mvit[4] = {state.matrix.modelview.invtrans};
+PARAM mvp[4] = {state.matrix.mvp};
+
+ATTRIB tangent = vertex.texcoord[1];
+ATTRIB binormal = vertex.texcoord[2];
+ATTRIB normal = vertex.normal;
+
+TEMP light0pos, light0vec;
+TEMP light1pos, light1vec;
+TEMP eyevec, eyevects;
+TEMP temp;
+
+# vector pointing to light0
+DP4 light0pos.x, mvi[0], state.light[0].position;
+DP4 light0pos.y, mvi[1], state.light[0].position;
+DP4 light0pos.z, mvi[2], state.light[0].position;
+DP4 light0pos.w, mvi[3], state.light[0].position;
+SUB light0vec, light0pos, vertex.position;
+
+# transform light0 vector into tangent space (DO NOT NORMALIZE)
+DP3 result.texcoord[1].x, light0vec, tangent;
+DP3 result.texcoord[1].y, light0vec, binormal;
+DP3 result.texcoord[1].z, light0vec, normal;
+MOV result.texcoord[1].w, 1.0;
+
+# vector pointing to light1
+DP4 light1pos.x, mvi[0], state.light[1].position;
+DP4 light1pos.y, mvi[1], state.light[1].position;
+DP4 light1pos.z, mvi[2], state.light[1].position;
+DP4 light1pos.w, mvi[3], state.light[1].position;
+SUB light1vec, light1pos, vertex.position;
+
+# transform light1 vector into tangent space (DO NOT NORMALIZE)
+DP3 result.texcoord[2].x, light1vec, tangent;
+DP3 result.texcoord[2].y, light1vec, binormal;
+DP3 result.texcoord[2].z, light1vec, normal;
+MOV result.texcoord[2].w, 1.0;
+
+# vector pointing to eye
+SUB eyevec, mvit[3], vertex.position;
+
+# transform eye vector into tangent space (DO NOT NORMALIZE)
+DP3 result.texcoord[3].x, eyevec, tangent;
+DP3 result.texcoord[3].y, eyevec, binormal;
+DP3 result.texcoord[3].z, eyevec, normal;
+MOV result.texcoord[3].w, 1.0;
+
+# regular output
+DP4 result.position.x, mvp[0], vertex.position;
+DP4 result.position.y, mvp[1], vertex.position;
+DP4 result.position.z, mvp[2], vertex.position;
+DP4 result.position.w, mvp[3], vertex.position;
+MOV result.color, vertex.color;
+MOV result.texcoord[0], vertex.texcoord[0];
+
+END

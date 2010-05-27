@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" 
+      codebase="http://captiveimagination.com/download/jme/nightly/"
+      href="jme.jnlp">
+     
+  <information>
+    <title>jME</title>
+    <vendor>Mojo Monkey Coding</vendor>
+    <homepage href="http://www.mojomonkeycoding.com"/>
+    <icon href="MissileAvatar.png"/>
+    <description>jMonkey Engine</description>
+    <description kind="short">jME provides a high performance scenegraph-based game engine.</description>
+    <offline-allowed/>
+  </information>
+  
+  <security>
+      <all-permissions/>
+  </security>
+
+  <resources>
+    <jar href="lwjgl.jar"/>
+    <jar href="jme.jar" />
+  </resources>
+    
+  <!-- Need to add the lwjgl resources for Linux and OSX -->
+  <resources os="Windows">
+  	<j2se version="1.4+"/>
+    <nativelib href = "lwjgl-windows.jar" />
+    <nativelib href = "openal-windows.jar" />
+    <nativelib href = "jinput-windows.jar" />
+  </resources>
+  <resources os="Linux" arch="i386">
+    <j2se version="1.4+"/>
+    <nativelib href = "lwjgl-linux.jar" />
+    <nativelib href = "openal-linux.jar" />
+    <nativelib href = "jinput-linux.jar" />
+  </resources>
+  <resources os="Mac OS">
+      <j2se version="1.4+"/>
+      <nativelib href="lwjgl-mac.jar"/>
+      <nativelib href="openal-mac.jar"/>
+      <nativelib href="jinput-mac.jar"/>
+  </resources>
+  
+  <component-desc/>
+</jnlp>

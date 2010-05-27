@@ -1,0 +1,31 @@
+!!VP1.0
+# c[0]-c[3] modelview projection matrix
+# c[4]-c[7] inverse modelview projection matrix
+# c[8] light position in object space
+
+# compute the vertex's position
+DP4 o[HPOS].x, c[0], v[OPOS];
+DP4 o[HPOS].y, c[1], v[OPOS];
+DP4 o[HPOS].z, c[2], v[OPOS];
+DP4 o[HPOS].w, c[3], v[OPOS];
+
+# output the color
+MOV o[COL0], v[COL0];
+
+# transform normal vector by the modelview matrix
+DP3 R0.x, v[NRML], c[4];
+DP3 R0.y, v[NRML], c[5];
+DP3 R0.z, v[NRML], c[6];
+
+# R1 = normalize R0
+DP3 R1.w, R0, R0;
+RSQ R1.w, R1.w;
+MUL R1.xyz, R0, R1.w;
+
+# calculate our shade value
+DP3 R2.x, R1, c[8];
+
+# use the shade value as our texture coordinate
+MOV o[TEX0].x, R2.x;
+
+END

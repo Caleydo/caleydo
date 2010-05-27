@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.0//EN" "http://www.web3d.org/specifications/x3d-3.0.dtd">
+<X3D profile='Immersive' >
+	<Scene>
+		<WorldInfo
+		 title='Bumpmap Test Scene'
+		 info='This Web3D Content was created MANUALLY!'/>
+		<Transform DEF='Box_Transform'>
+			<Shape DEF='Box_Shape'>
+				<Appearance DEF='Box_Appearance'>
+					<MultiTexture mode='DOTPRODUCT3 MODULATE'>
+					    <ImageTexture url='bumpmap.jpg'/>
+					    <ImageTexture url='stein.jpg'/>
+					</MultiTexture>
+					<!--
+				    <ImageTexture url='buildpoint.jpg'/>
+				    -->
+					<Material DEF='White' 
+					    ambientIntensity='0.800'
+					    shininess='0.200'
+					    diffuseColor='1 1 1'/>
+				</Appearance>
+				<IndexedFaceSet DEF="Box_IFS" 
+				    solid="false"
+				    creaseAngle="0.785" 
+				    coordIndex="0 1 2 3 -1
+				   				1 5 6 2 -1
+				   				5 4 7 6 -1
+				   				4 0 3 7 -1
+				   				3 2 6 7 -1
+				   				4 5 1 0" 
+				    texCoordIndex="0 1 2 3 -1
+				   				   0 1 2 3 -1
+				   				   0 1 2 3 -1
+				   				   0 1 2 3 -1
+				   				   0 1 2 3 -1
+				   				   0 1 2 3"
+					normalIndex="0 0 0 0 -1 
+				   				 1 1 1 1 -1 
+				   				 2 2 2 2 -1 
+				   				 3 3 3 3 -1 
+				   				 4 4 4 4 -1 
+				   				 5 5 5 5" 
+				   	colorIndex="1 1 0 0 -1
+				   				1 2 3 0 -1
+				   				2 2 3 3 -1
+				   				2 1 0 3 -1
+				   				0 0 3 3 -1
+				   				2 2 1 1"
+	   			 >
+					<Coordinate point="-5 -5  5
+				    				    5 -5  5
+				    				    5  5  5
+				    				   -5  5  5
+				    				   -5 -5 -5
+				    				    5 -5 -5
+				    				    5  5 -5
+				    				   -5  5 -5" />
+					<TextureCoordinate point="0 0 
+					   						  1 0 
+					   						  1 1 
+					   						  0 1" />
+					<Normal vector=" 0  0  1 
+					   				 1  0  0 
+					   				 0  0 -1 
+					   				-1  0  0 
+					   				 0  1  0 
+					   				 0 -1  0" />
+					<Color color="1 1 1 
+								  0 0 1 
+								  0 1 0
+								  1 0 0" />
+				</IndexedFaceSet>
+				<!-- <Box DEF='Box' size="10 10 10" solid="true" /> -->
+				<!-- <Sphere DEF='Sphere' radius="6" /> -->
+				<!-- <Cone DEF='Cone' height="10" bottomRadius="3" solid="false" /> --> 
+				<!-- <Cylinder DEF='Cylinder' height="10" radius="3" solid="false" /> -->
+			</Shape>
+			<!--
+			<Shape>
+			 	<LineSet DEF="Test_Lines" vertexCount="9">
+			 		<Coordinate point="-6  6  6 
+			 						   -6 -6  6
+			 						    6 -6 -6
+			 						    6  6 -6
+		 							   -6  6 -6
+			 						   -6 -6 -6
+			 						    6 -6  6
+			 						    6  6  6
+			 						   -6  6  6" />
+				    <Color color="0 0 1  
+				    			  0 1 0 
+				    			  1 0 0 
+				    			  0 0 1 
+				    			  0 1 0 
+				    			  1 0 0 
+				    			  0 0 1 
+				    			  0 1 0 
+				    			  1 0 0 " />
+			 	</LineSet>
+				<Appearance DEF='LS_Appearance'>
+				    <Material 
+				     ambientIntensity='0.200'
+					 shininess='0.200'
+					 diffuseColor='0 0 1'/>
+				</Appearance>
+			</Shape>
+			-->
+		</Transform>
+		<!-- 
+		<DirectionalLight direction="1 -1 0" />
+		<PointLight location="0 0 100" attenuation="0 0 0" />
+		<Transform translation="20 0 20" rotation="0 1 0 1.5707">
+			<SpotLight location="0 0 30" direction="0 0 -1" cutOffAngle="0.78" />
+		</Transform>
+		-->
+	</Scene>
+</X3D>
