@@ -63,7 +63,6 @@ import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.util.graph.EGraphItemKind;
@@ -252,12 +251,6 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 	public void display(final GL gl) {
 		// processEvents();
 		checkForHits(gl);
-		
-		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-		
-//		GLHelperFunctions.drawPointAt(gl,new Vec3f(0,0,0));
-//		GLHelperFunctions.drawPointAt(gl,new Vec3f(4,4,0));
-//		GLHelperFunctions.drawPointAt(gl,new Vec3f(-2,-2,0));
 
 		// TODO: also put this in global DL
 		renderPathway(gl, pathway);

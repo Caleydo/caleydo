@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
@@ -50,7 +51,9 @@ public class SerializedTissueViewBrowserView extends ASerializedView {
 
 	@Override
 	public ViewFrustum getViewFrustum() {
-		return null;
+		ViewFrustum viewFrustum = new ViewFrustum(EProjectionMode.ORTHOGRAPHIC,
+				-4, 4, -4, 4, -20, 20);
+		return viewFrustum;
 	}
 
 	@XmlElementWrapper

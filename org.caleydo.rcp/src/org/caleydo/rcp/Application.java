@@ -19,11 +19,10 @@ import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.EDataDomain;
-import org.caleydo.core.manager.datadomain.UnspecifiedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.net.GroupwareUtils;
 import org.caleydo.core.net.IGroupwareManager;
@@ -33,7 +32,6 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.core.bridge.RCPBridge;
-import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.caleydo.rcp.view.EStartViewType;
 import org.caleydo.rcp.view.RCPViewManager;
 import org.caleydo.rcp.wizard.firststart.InternetConfigurationWizard;
@@ -73,13 +71,6 @@ public class Application
 	private static String BOOTSTRAP_FILE_GENE_EXPRESSION_MODE =
 		"data/bootstrap/shared/webstart/bootstrap_webstart_gene_expression.xml";
 
-	// private static String BOOTSTRAP_FILE_SAMPLE_DATA_MODE =
-	// "data/bootstrap/shared/sample/bootstrap_gene_expression_sample.xml";
-
-	// @SuppressWarnings("unused")
-	// private static String BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE =
-	// "data/bootstrap/shared/webstart/bootstrap_webstart_pathway_viewer.xml";
-
 	private static String REAL_DATA_SAMPLE_FILE =
 		"data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
 
@@ -92,10 +83,6 @@ public class Application
 
 	// The command line arguments overrules the preference store
 	public static boolean bLoadPathwayData = false;
-	// public static boolean bLoadPathwayDataKeggMusMusculus = true;
-	// public static boolean bLoadPathwayDataBiocartaHomoSapiens = true;
-	// public static boolean bLoadPathwayDataBiocartaMusMusculus = true;
-	// public static boolean bOverrulePrefStoreLoadPathwayData = false;
 	public static boolean bIsWindowsOS = false;
 	public static boolean bIsInterentConnectionOK = false;
 	public static boolean bDeleteRestoredWorkbenchState = false;
@@ -164,13 +151,6 @@ public class Application
 				Application.initData = GroupwareUtils.startPlexClient(serverAddress);
 				GeneralManager.get().addUseCase(Application.initData.getUseCase());
 			}
-			else if (startViews.size() == 1 && startViews.get(0).equals("org.caleydo.view.datawindows")) {
-				// do nothing - no data or use case are needed for eye tracker setup
-				applicationMode = EApplicationMode.NO_DATA;
-				IDataDomain useCase = new UnspecifiedDataDomain();
-				GeneralManager.get().addUseCase(useCase);
-				GeneralManager.get().setMasterUseCase(useCase);
-			}
 			else {
 				WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
 				projectWizardDialog.open();
@@ -181,9 +161,6 @@ public class Application
 			}
 
 			switch (applicationMode) {
-				// case GENE_EXPRESSION_PATHWAY_VIEWER:
-				// sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
-				// break;
 				case GENE_EXPRESSION_SAMPLE_DATA:
 				case GENE_EXPRESSION_NEW_DATA:
 					sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
@@ -209,10 +186,6 @@ public class Application
 			}
 		}
 		else {
-			// Assuming that if an external XML file is provided, the genetic use case applies
-			// IUseCase useCase = new GeneticUseCase();
-			// useCase.setBootsTrapFileName(sCaleydoXMLfile);
-			// GeneralManager.get().addUseCase(useCase);
 			isStartedFromXML = true;
 		}
 
@@ -246,10 +219,7 @@ public class Application
 
 		if (sArParam != null) {
 			for (String element : sArParam) {
-				if (element.equals("no_pathways")) {
-					bLoadPathwayData = false;
-				}
-				else if (element.equals("load_pathways")) {
+				if (element.equals("load_pathways")) {
 					bLoadPathwayData = true;
 				}
 				else if (element.startsWith("plexclient")) {
@@ -429,6 +399,10 @@ public class Application
 			}
 		}
 
+		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
+		cmd.setAttributes(EDataDomain.PATHWAY_DATA);
+		cmd.doCommand();
+		
 		// TODO - this initializes the VA after the data is written correctly in the set - probably not the
 		// nicest place to do this.
 		// This is only necessary if started from xml. Otherwise this is done in FileLoadDataAction
