@@ -4,9 +4,8 @@ import java.io.IOException;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
+import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
-import org.caleydo.core.manager.datadomain.UnspecifiedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
@@ -78,7 +77,7 @@ public class CaleydoProjectWizard
 
 			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_ORGANISM, page.getOrganism().name());
 
-			IDataDomain useCase;
+			IDataDomain dataDomain;
 			EApplicationMode appMode = page.getApplicationMode();
 			if (appMode == EApplicationMode.SAMPLE_PROJECT) {
 
@@ -89,21 +88,21 @@ public class CaleydoProjectWizard
 
 				Application.initData = loader.load(SAMPLE_PROJECT_LOCATION);
 
-				useCase = Application.initData.getUseCase();
+				dataDomain = Application.initData.getDataDomain();
 				Application.startViews.clear();
 				Application.initializedStartViews = Application.initData.getViewIDs();
 				Application.applicationMode = EApplicationMode.SAMPLE_PROJECT;
 				Application.bDeleteRestoredWorkbenchState = true;
+
 			}
 			else if (appMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA) {
 
 				CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
-				cmd.setAttributes(EDataDomain.GENETIC_DATA);
+				cmd.setAttributes("org.caleydo.datadomain.genetic");
 				cmd.doCommand();
-				useCase = cmd.getCreatedObject();
-				GeneralManager.get().setMasterUseCase(useCase);
+				dataDomain = cmd.getCreatedObject();
 
-				useCase.setOrganism(EOrganism.HOMO_SAPIENS);
+				dataDomain.setOrganism(EOrganism.HOMO_SAPIENS);
 
 				Application.applicationMode = appMode;
 
@@ -116,22 +115,38 @@ public class CaleydoProjectWizard
 
 				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES,
 					sNewPathwayDataSources);
+
+				cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
+				cmd.setAttributes("org.caleydo.datadomain.pathway");
+				cmd.doCommand();
 			}
 			else if (appMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA) {
 				CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
-				cmd.setAttributes(EDataDomain.GENETIC_DATA);
+				cmd.setAttributes("org.caleydo.datadomain.genetic");
 				cmd.doCommand();
-				useCase = cmd.getCreatedObject();
+				dataDomain = cmd.getCreatedObject();
 
-				useCase.setOrganism(page.getOrganism());
+				dataDomain.setOrganism(page.getOrganism());
 
 				Application.applicationMode = appMode;
 
+				boolean loadPathways = false;
+
 				String sNewPathwayDataSources = "";
-				if (page.isKEGGPathwayDataLoadingRequested())
+				if (page.isKEGGPathwayDataLoadingRequested()) {
+					loadPathways = true;
 					sNewPathwayDataSources += EPathwayDatabaseType.KEGG.name() + ";";
-				if (page.isBioCartaPathwayLoadingRequested())
+				}
+				if (page.isBioCartaPathwayLoadingRequested()) {
+					loadPathways = true;
 					sNewPathwayDataSources += EPathwayDatabaseType.BIOCARTA.name() + ";";
+				}
+
+				if (loadPathways) {
+					cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
+					cmd.setAttributes("org.caleydo.datadomain.pathway");
+					cmd.doCommand();
+				}
 
 				if (sNewPathwayDataSources != prefStore
 					.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES))
@@ -142,7 +157,9 @@ public class CaleydoProjectWizard
 
 			}
 			else if (appMode == EApplicationMode.UNSPECIFIED_NEW_DATA) {
-				useCase = new UnspecifiedDataDomain();
+				CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
+				cmd.setAttributes("org.caleydo.datadomain.generic");
+				cmd.doCommand();
 				Application.applicationMode = EApplicationMode.UNSPECIFIED_NEW_DATA;
 
 			}
@@ -161,7 +178,7 @@ public class CaleydoProjectWizard
 				else {
 					throw new IllegalArgumentException("encoutnered unknown project-load-type");
 				}
-				useCase = Application.initData.getUseCase();
+				dataDomain = Application.initData.getDataDomain();
 				Application.startViews.clear();
 				Application.initializedStartViews = Application.initData.getViewIDs();
 				Application.applicationMode = EApplicationMode.LOAD_PROJECT;
@@ -173,7 +190,7 @@ public class CaleydoProjectWizard
 				groupwareManager.setServerAddress(page.getNetworkAddress());
 				groupwareManager.startClient();
 				Application.initData = groupwareManager.getInitData();
-				useCase = Application.initData.getUseCase();
+				dataDomain = Application.initData.getDataDomain();
 				Application.applicationMode = EApplicationMode.COLLABORATION_CLIENT;
 			}
 			else {
@@ -189,8 +206,6 @@ public class CaleydoProjectWizard
 			catch (IOException e) {
 				throw new IllegalStateException("Unable to save preference file.");
 			}
-
-			GeneralManager.get().addUseCase(useCase);
 
 			return true;
 		}

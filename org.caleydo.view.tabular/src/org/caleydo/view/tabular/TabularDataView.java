@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDCategory;
@@ -24,7 +25,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
@@ -72,10 +73,9 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author Marc Streit
  */
-public class TabularDataView extends ASWTView implements
-		ISelectionUpdateHandler, IContentVAUpdateHandler,
-		IStorageVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler,
-		IView, ISWTView {
+public class TabularDataView extends ASWTView implements ISelectionUpdateHandler,
+		IContentVAUpdateHandler, IStorageVAUpdateHandler, ISelectionCommandHandler,
+		IViewCommandHandler, IView, ISWTView {
 
 	public final static String VIEW_ID = "org.caleydo.view.tabular";
 	private final static int COLUMN_OFFSET = 3;
@@ -129,17 +129,21 @@ public class TabularDataView extends ASWTView implements
 	protected ClearSelectionsListener clearSelectionsListener;
 	protected ReplaceContentVAListener replaceVirtualArrayListener;
 
+	protected ISetBasedDataDomain dataDomain;
+
+	protected ISet set;
+
 	/**
 	 * Constructor.
 	 */
 	public TabularDataView(final int iParentContainerId, final String sLabel) {
-		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager()
-				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
+		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
+				EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 
 		this.viewType = VIEW_ID;
 
-		contentSelectionManager = useCase.getContentSelectionManager();
-		storageSelectionManager = useCase.getStorageSelectionManager();
+		contentSelectionManager = dataDomain.getContentSelectionManager();
+		storageSelectionManager = dataDomain.getStorageSelectionManager();
 
 		idMappingManager = generalManager.getIDMappingManager();
 	}
@@ -162,15 +166,16 @@ public class TabularDataView extends ASWTView implements
 
 	public void initData() {
 
+		set = dataDomain.getSet();
+
 		if (set == null) {
 			contentSelectionManager.resetSelectionManager();
 			storageSelectionManager.resetSelectionManager();
 			return;
 		}
 
-		dataDomain = useCase.getDataDomain();
-		contentVA = useCase.getContentVA(contentVAType);
-		storageVA = useCase.getStorageVA(storageVAType);
+		contentVA = dataDomain.getContentVA(contentVAType);
+		storageVA = dataDomain.getStorageVA(storageVAType);
 
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();
@@ -200,8 +205,8 @@ public class TabularDataView extends ASWTView implements
 			contentTable.dispose();
 		}
 
-		contentTable = new Table(composite, SWT.MULTI | SWT.BORDER
-				| SWT.FULL_SELECTION | SWT.VIRTUAL);
+		contentTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION
+				| SWT.VIRTUAL);
 		contentTable.setLinesVisible(true);
 		contentTable.setHeaderVisible(true);
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -218,8 +223,7 @@ public class TabularDataView extends ASWTView implements
 
 				boolean visible = false;
 				final TableItem item = contentTable.getItem(index);
-				for (int iColIndex = 1; iColIndex < contentTable
-						.getColumnCount(); iColIndex++) {
+				for (int iColIndex = 1; iColIndex < contentTable.getColumnCount(); iColIndex++) {
 					Rectangle rect = item.getBounds(iColIndex);
 					if (rect.contains(pt)) {
 						final int column = iColIndex;
@@ -303,7 +307,7 @@ public class TabularDataView extends ASWTView implements
 		column.setText("#");
 		column.setWidth(50);
 
-		if (dataDomain == EDataDomain.GENETIC_DATA) {
+		if (dataDomain.equals("org.caleydo.datadomain.genetic")) {
 
 			column = new TableColumn(contentTable, SWT.NONE);
 			column.setText("RefSeq ID");
@@ -312,7 +316,7 @@ public class TabularDataView extends ASWTView implements
 			column = new TableColumn(contentTable, SWT.NONE);
 			column.setText("Gene Symbol");
 			column.setWidth(110);
-		} else if (dataDomain == EDataDomain.UNSPECIFIED) {
+		} else if (dataDomain.equals("org.caleydo.datadomain.generic")) {
 
 			column = new TableColumn(contentTable, SWT.NONE);
 			column.setText("ID");
@@ -336,15 +340,12 @@ public class TabularDataView extends ASWTView implements
 				// Label changer
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					LabelEditorDialog dialog = new LabelEditorDialog(
-							new Shell());
-					String sLabel = dialog.open(set.get(iStorageIndex)
-							.getLabel());
+					LabelEditorDialog dialog = new LabelEditorDialog(new Shell());
+					String sLabel = dialog.open(set.get(iStorageIndex).getLabel());
 
 					if (sLabel != null && !sLabel.isEmpty()) {
 						set.get(iStorageIndex).setLabel(sLabel);
-						contentTable.getColumn(iStorageIndex + 3).setText(
-								sLabel);
+						contentTable.getColumn(iStorageIndex + 3).setText(sLabel);
 						RedrawViewEvent event = new RedrawViewEvent();
 						event.setSender(this);
 						eventPublisher.triggerEvent(event);
@@ -360,7 +361,7 @@ public class TabularDataView extends ASWTView implements
 			// item.setData(iContentIndex);
 			item.setText(0, Integer.toString(index));
 
-			if (dataDomain == EDataDomain.GENETIC_DATA) {
+			if (dataDomain.equals("org.caleydo.datadomain.genetic")) {
 				String sGeneSymbol = null;
 				String srefSeqID = null;
 
@@ -370,8 +371,7 @@ public class TabularDataView extends ASWTView implements
 				// loading expression data.
 				// Possibly a different handling of the Set is required.
 				Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(
-						EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA,
-						iContentIndex);
+						EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA, iContentIndex);
 
 				if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
 					srefSeqID = (String) setRefSeqIDs.toArray()[0];
@@ -385,8 +385,7 @@ public class TabularDataView extends ASWTView implements
 				// loading expression data.
 				// Possibly a different handling of the Set is required.
 				Set<String> setGeneSymbols = idMappingManager.getIDAsSet(
-						EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL,
-						iContentIndex);
+						EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, iContentIndex);
 
 				if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
 					sGeneSymbol = (String) setGeneSymbols.toArray()[0];
@@ -397,26 +396,24 @@ public class TabularDataView extends ASWTView implements
 				} else {
 					item.setText(2, "Unknown");
 				}
-			} else if (dataDomain == EDataDomain.UNSPECIFIED) {
+			} else if (dataDomain.equals("org.caleydo.datadomain.generic")) {
 
 				String expressionLabel = (String) idMappingManager.getID(
-						EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED,
-						iContentIndex);
+						EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED, iContentIndex);
 
 				if (expressionLabel == null || expressionLabel.equals(""))
 					expressionLabel = "Unknown";
 
 				item.setText(1, expressionLabel);
 			} else {
-				throw new IllegalStateException("The use case type "
-						+ dataDomain
+				throw new IllegalStateException("The use case type " + dataDomain
 						+ " is not implemented in the tabular data viewer.");
 			}
 
 			int i = 3;
 			for (Integer iStorageIndex : storageVA) {
-				fValue = set.get(iStorageIndex).getFloat(
-						EDataRepresentation.RAW, iContentIndex);
+				fValue = set.get(iStorageIndex).getFloat(EDataRepresentation.RAW,
+						iContentIndex);
 
 				item.setText(i++, Float.toString(fValue));
 			}
@@ -432,15 +429,13 @@ public class TabularDataView extends ASWTView implements
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int iColIndex = contentTableCursor.getColumn() - 3;
-				int iRowIndex = contentTable.indexOf(contentTableCursor
-						.getRow());
+				int iRowIndex = contentTable.indexOf(contentTableCursor.getRow());
 				contentTable.setSelection(iRowIndex);
 
 				int iRefSeqID = contentVA.get(iRowIndex);
 				int iStorageIndex = storageVA.get(iColIndex);
 
-				triggerStorageSelectionEvent(iStorageIndex,
-						SelectionType.SELECTION);
+				triggerStorageSelectionEvent(iStorageIndex, SelectionType.SELECTION);
 				triggerContentSelectionEvent(iRefSeqID, SelectionType.SELECTION);
 
 				// addContentRemoveIcon(iRowIndex);
@@ -492,8 +487,7 @@ public class TabularDataView extends ASWTView implements
 	private void addColumn(final int index, final int storageNumber) {
 		composite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				TableColumn column = new TableColumn(contentTable, SWT.NONE,
-						index);
+				TableColumn column = new TableColumn(contentTable, SWT.NONE, index);
 				IStorage storage = set.get(storageNumber);
 				column.setText(storage.getLabel());
 				TableItem[] items = contentTable.getItems();
@@ -524,8 +518,8 @@ public class TabularDataView extends ASWTView implements
 				int iColIndex = 0;
 				contentTable.deselectAll();
 
-				Iterator<Integer> iterContentIndex = contentSelectionManager
-						.getElements(SelectionType.SELECTION).iterator();
+				Iterator<Integer> iterContentIndex = contentSelectionManager.getElements(
+						SelectionType.SELECTION).iterator();
 
 				// FIXME: currently we do not handle multiple selections (->
 				// replace if with while)
@@ -536,14 +530,14 @@ public class TabularDataView extends ASWTView implements
 
 				// FIXME: currently we do not handle multiple selections (->
 				// replace if with while)
-				Iterator<Integer> iterStorageIndex = storageSelectionManager
-						.getElements(SelectionType.SELECTION).iterator();
+				Iterator<Integer> iterStorageIndex = storageSelectionManager.getElements(
+						SelectionType.SELECTION).iterator();
 				while (iterStorageIndex.hasNext()) {
 					iColIndex = storageVA.indexOf(iterStorageIndex.next()) + 3;
 				}
 
-				contentTableCursor.setSelection(iRowIndex, contentTable
-						.getColumnOrder()[iColIndex]);
+				contentTableCursor.setSelection(iRowIndex,
+						contentTable.getColumnOrder()[iColIndex]);
 			}
 		});
 	}
@@ -556,7 +550,7 @@ public class TabularDataView extends ASWTView implements
 		contentSelectionManager.clearSelection(SelectionType);
 		contentSelectionManager.addToType(SelectionType, iContentIndex);
 
-		if (dataDomain == EDataDomain.GENETIC_DATA) {
+		if (dataDomain.equals("org.caleydo.datadomain.genetic")) {
 			// Resolve multiple spotting on chip and add all to the
 			// selection manager.
 			Integer iRefSeqID = null;
@@ -566,8 +560,7 @@ public class TabularDataView extends ASWTView implements
 			// loading expression data.
 			// Possibly a different handling of the Set is required.
 			Set<Integer> setRefSeqIDs = idMappingManager.getIDAsSet(
-					EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT,
-					iContentIndex);
+					EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT, iContentIndex);
 
 			if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
 				iRefSeqID = (Integer) setRefSeqIDs.toArray()[0];
@@ -584,8 +577,8 @@ public class TabularDataView extends ASWTView implements
 
 		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 
-		SelectionCommand command = new SelectionCommand(
-				ESelectionCommandType.CLEAR, SelectionType);
+		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
+				SelectionType);
 		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -602,8 +595,8 @@ public class TabularDataView extends ASWTView implements
 		storageSelectionManager.clearSelection(SelectionType);
 		storageSelectionManager.addToType(SelectionType, iStorageIndex);
 
-		SelectionCommand command = new SelectionCommand(
-				ESelectionCommandType.CLEAR, SelectionType);
+		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
+				SelectionType);
 		sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
 
 		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
@@ -621,7 +614,7 @@ public class TabularDataView extends ASWTView implements
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedTabularDataView serializedForm = new SerializedTabularDataView(
-				dataDomain);
+				dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -636,8 +629,7 @@ public class TabularDataView extends ASWTView implements
 		super.registerEventListeners();
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class,
-				selectionUpdateListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		virtualArrayUpdateListener = new ContentVAUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
@@ -646,8 +638,7 @@ public class TabularDataView extends ASWTView implements
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		eventPublisher.addListener(SelectionCommandEvent.class,
-				selectionCommandListener);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
@@ -655,13 +646,11 @@ public class TabularDataView extends ASWTView implements
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class,
-				clearSelectionsListener);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
 		replaceVirtualArrayListener = new ReplaceContentVAListener();
 		replaceVirtualArrayListener.setHandler(this);
-		eventPublisher.addListener(ReplaceVAEvent.class,
-				replaceVirtualArrayListener);
+		eventPublisher.addListener(ReplaceVAEvent.class, replaceVirtualArrayListener);
 	}
 
 	@Override
@@ -697,15 +686,14 @@ public class TabularDataView extends ASWTView implements
 	@Override
 	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
 		if (vaDelta.getIDType() == EIDType.REFSEQ_MRNA_INT)
-			vaDelta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX,
-					vaDelta);
+			vaDelta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, vaDelta);
 		contentSelectionManager.setVADelta(vaDelta);
 	}
 
 	@Override
 	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
 
-		contentVA = useCase.getContentVA(vaType);
+		contentVA = dataDomain.getContentVA(vaType);
 
 		initData();
 		createTable();
@@ -733,8 +721,8 @@ public class TabularDataView extends ASWTView implements
 							.getPrimaryID());
 					break;
 				case COPY:
-					addColumn(deltaItem.getIndex() + 1 + COLUMN_OFFSET,
-							storageVA.get(deltaItem.getIndex()));
+					addColumn(deltaItem.getIndex() + 1 + COLUMN_OFFSET, storageVA
+							.get(deltaItem.getIndex()));
 
 					break;
 				case MOVE:
@@ -742,17 +730,14 @@ public class TabularDataView extends ASWTView implements
 					// case MOVE_RIGHT:
 					int[] orig = contentTable.getColumnOrder();
 
-					ArrayList<Integer> ordered = new ArrayList<Integer>(
-							orig.length);
+					ArrayList<Integer> ordered = new ArrayList<Integer>(orig.length);
 
 					for (int index : orig) {
 						ordered.add(index);
 					}
 
-					Integer item = ordered.remove(deltaItem.getIndex()
-							+ COLUMN_OFFSET);
-					ordered.add(deltaItem.getTargetIndex() + COLUMN_OFFSET,
-							item);
+					Integer item = ordered.remove(deltaItem.getIndex() + COLUMN_OFFSET);
+					ordered.add(deltaItem.getTargetIndex() + COLUMN_OFFSET, item);
 					for (int count = 0; count < ordered.size(); count++) {
 						orig[count] = ordered.get(count);
 					}
@@ -760,8 +745,7 @@ public class TabularDataView extends ASWTView implements
 					contentTable.setColumnOrder(orig);
 					break;
 				default:
-					throw new IllegalStateException(
-							"EVAOperation not implemented");
+					throw new IllegalStateException("EVAOperation not implemented");
 				}
 			}
 
@@ -770,7 +754,7 @@ public class TabularDataView extends ASWTView implements
 
 	@Override
 	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType) {
-		storageVA = useCase.getStorageVA(vaType);
+		storageVA = dataDomain.getStorageVA(vaType);
 	}
 
 }

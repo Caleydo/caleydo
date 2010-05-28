@@ -3,7 +3,6 @@ package org.caleydo.core.serialize;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
@@ -21,23 +20,23 @@ public abstract class ASerializedView {
 	public ASerializedView() {
 	}
 
-	public ASerializedView(EDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
+	public ASerializedView(String dataDomainType) {
+		this.dataDomainType = dataDomainType;
 	}
 
 	protected int viewID;
 
 	protected String viewGUIID;
 
-	protected EDataDomain dataDomain;
+	protected String dataDomainType;
 
 	/**
 	 * Sets the data domain associated with a view
 	 * 
 	 * @param dataDomain
 	 */
-	public void setDataDomain(EDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
+	public void setDataDomainType(String dataDomainType) {
+		this.dataDomainType = dataDomainType;
 	}
 
 	/**
@@ -45,8 +44,8 @@ public abstract class ASerializedView {
 	 * 
 	 * @return
 	 */
-	public EDataDomain getDataDomain() {
-		return dataDomain;
+	public String getDataDomainType() {
+		return dataDomainType;
 	}
 
 	/**

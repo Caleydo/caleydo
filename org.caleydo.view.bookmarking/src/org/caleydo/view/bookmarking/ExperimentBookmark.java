@@ -3,7 +3,6 @@ package org.caleydo.view.bookmarking;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 

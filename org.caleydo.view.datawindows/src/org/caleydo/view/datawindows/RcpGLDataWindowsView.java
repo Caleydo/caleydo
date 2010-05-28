@@ -24,8 +24,7 @@ public class RcpGLDataWindowsView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedDataWindowsView serializedView = new SerializedDataWindowsView(
-				GeneralManager.get().getMasterUseCase().getDataDomain());
+		SerializedDataWindowsView serializedView = new SerializedDataWindowsView(dataDomain.getDataDomainType());
 		return serializedView;
 	}
 

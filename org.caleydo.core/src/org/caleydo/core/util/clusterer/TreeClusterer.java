@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
@@ -745,7 +744,7 @@ public class TreeClusterer
 		String nodeName = null;
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
-			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+//			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
 
 				// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
 				// values, depending on the IDType that has been specified when loading expression data.
@@ -773,14 +772,14 @@ public class TreeClusterer
 
 				nodeName += " | ";
 				nodeName += (refSeq == null) ? ("Unknown") : (refSeq);
-			}
-			else if (set.getSetType() == ESetType.UNSPECIFIED) {
-				nodeName = "generalManager.getIDMappingManager().getID(" + contentVA.get(index) + " )";
-			}
-			else {
-				throw new IllegalStateException("Label extraction for " + set.getSetType()
-					+ " not implemented yet!");
-			}
+//			}
+//			else if (set.getSetType() == ESetType.UNSPECIFIED) {
+//				nodeName = generalManager.getIDMappingManager().getID( contentVA.get(index));
+//			}
+//			else {
+//				throw new IllegalStateException("Label extraction for " + set.getSetType()
+//					+ " not implemented yet!");
+//			}
 		}
 		else {
 			nodeName = set.get(storageVA.get(index)).getLabel();

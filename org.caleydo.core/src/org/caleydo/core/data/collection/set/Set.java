@@ -6,7 +6,6 @@ import java.util.Iterator;
 
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
@@ -29,7 +28,9 @@ import org.caleydo.core.data.selection.StorageGroupList;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.data.IStorageManager;
+import org.caleydo.core.manager.data.set.SetManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterManager;
@@ -49,8 +50,6 @@ import org.eclipse.core.runtime.Status;
 public class Set
 	extends AUniqueObject
 	implements ISet {
-
-	private ESetType setType;
 
 	private HashMap<Integer, IStorage> hashStorages;
 
@@ -75,10 +74,6 @@ public class Set
 
 	protected StorageData defaultStorageData;
 
-	// clustering stuff
-	private ArrayList<Integer> alClusterSizes = null;
-	private ArrayList<Integer> alClusterExamples = null;
-
 	private ContentGroupList contentGroupList = new ContentGroupList();
 	private StorageGroupList storageGroupList = new StorageGroupList();
 	private boolean bGeneClusterInfo = false;
@@ -94,27 +89,30 @@ public class Set
 
 	private StatisticsResult statisticsResult;
 
+	private ISetBasedDataDomain dataDomain;
+
 	/**
 	 * Constructor for the set. Creates and initializes members and registers the set whit the set manager.
 	 * Also creates a new default tree. This should not be called by implementing sub-classes.
 	 */
 	public Set() {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.SET));
-		GeneralManager.get().getSetManager().registerItem(this);
+		SetManager.getInstance().registerItem(this);
 		init();
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
 		ClusterNode root = new ClusterNode(tree, "Root", 1, true, -1);
 		tree.setRootNode(root);
 		defaultStorageData.setStorageTree(tree);
 		hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());
+
 	}
 
 	/**
 	 * Initialization of member variables. Safe to be called by sub-classes.
 	 */
 	protected void init() {
-		hashStorages = new HashMap<Integer, IStorage>();
 
+		hashStorages = new HashMap<Integer, IStorage>();
 		hashContentData = new HashMap<ContentVAType, ContentData>();
 		hashStorageData = new HashMap<StorageVAType, StorageData>(3);
 		defaultStorageData = new StorageData();
@@ -122,18 +120,18 @@ public class Set
 		statisticsResult = new StatisticsResult(this);
 	}
 
+	@Override
+	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+	}
+
+	@Override
+	public ISetBasedDataDomain getDataDomain() {
+		return dataDomain;
+	}
+
 	HashMap<ContentVAType, ContentData> getHashContentData() {
 		return hashContentData;
-	}
-
-	@Override
-	public void setSetType(ESetType setType) {
-		this.setType = setType;
-	}
-
-	@Override
-	public ESetType getSetType() {
-		return setType;
 	}
 
 	@Override
@@ -356,8 +354,6 @@ public class Set
 					+ "contains nominal storages. This is not possible!");
 		}
 	}
-	
-	
 
 	@Override
 	public Histogram getHistogram() {
@@ -436,10 +432,10 @@ public class Set
 		return contentData;
 
 	}
-	
+
 	@Override
 	public void restoreOriginalContentVA() {
-		ContentData contentData =  createContentData(ContentVAType.CONTENT);
+		ContentData contentData = createContentData(ContentVAType.CONTENT);
 		hashContentData.put(ContentVAType.CONTENT, contentData);
 	}
 
@@ -652,8 +648,6 @@ public class Set
 			if (contentResult != null) {
 				hashContentData.put(clusterState.getContentVAType(), contentResult);
 				contentTree = contentResult.getContentTree();
-				alClusterExamples = contentResult.getContentSampleElements();
-				alClusterSizes = contentResult.getContentClusterSizes();
 			}
 			StorageData storageResult = result.getStorageResult();
 			if (storageResult != null) {
@@ -665,23 +659,23 @@ public class Set
 
 	}
 
-//	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes) {
-//		this.alClusterSizes = alClusterSizes;
-//	}
+	// public void setAlClusterSizes(ArrayList<Integer> alClusterSizes) {
+	// this.alClusterSizes = alClusterSizes;
+	// }
 
-//	public ArrayList<Integer> getAlClusterSizes() {
-//		return alClusterSizes;
-//	}
+	// public ArrayList<Integer> getAlClusterSizes() {
+	// return alClusterSizes;
+	// }
 
-//	@Override
-//	public ArrayList<Integer> getAlExamples() {
-//		return alClusterExamples;
-//	}
-//
-//	@Override
-//	public void setAlExamples(ArrayList<Integer> alExamples) {
-//		this.alClusterExamples = alExamples;
-//	}
+	// @Override
+	// public ArrayList<Integer> getAlExamples() {
+	// return alClusterExamples;
+	// }
+	//
+	// @Override
+	// public void setAlExamples(ArrayList<Integer> alExamples) {
+	// this.alClusterExamples = alExamples;
+	// }
 
 	@Override
 	public void setGroupNrInfo(int[] arGroupInfo, boolean bGeneGroupInfo) {
@@ -822,7 +816,6 @@ public class Set
 		for (Integer storageID : hashStorages.keySet()) {
 			sm.unregisterItem(storageID);
 		}
-		gm.getSetManager().unregisterItem(iUniqueID);
 		// clearing the VAs. This should not be necessary since they should be destroyed automatically.
 		// However, to make sure.
 	}
@@ -835,7 +828,7 @@ public class Set
 
 	@Override
 	public String toString() {
-		return "Set " + getLabel() + " of type " + setType + " with " + hashStorages.size() + " storages.";
+		return "Set " + getLabel() + " with " + hashStorages.size() + " storages.";
 	}
 
 	@Override
@@ -936,7 +929,7 @@ public class Set
 				meanValues[contentCount] = sum / size();
 			}
 			meanStorage.setRawData(meanValues);
-			//meanStorage.normalize();
+			// meanStorage.normalize();
 		}
 		return meanStorage;
 	}

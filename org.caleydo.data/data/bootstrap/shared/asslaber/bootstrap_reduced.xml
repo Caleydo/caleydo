@@ -7,9 +7,9 @@
 			<CommandBuffer>
 
 				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_DATA_DOMAIN"
-					cmdId="13993" uniqueId="453010" label="create_data_domain" attrib1="CLINICAL_DATA" />
+					cmdId="13993" uniqueId="453010" label="create_data_domain" attrib1="org.caleydo.datadomain.clinical" />
 				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_DATA_DOMAIN"
-					cmdId="13993" uniqueId="453010" label="create_data_domain" attrib1="GENETIC_DATA" />
+					cmdId="13993" uniqueId="453010" label="create_data_domain" attrib1="org.caleydo.datadomain.genetic" />
 
 
 				<!-- read glyph definition to glyphManager -->

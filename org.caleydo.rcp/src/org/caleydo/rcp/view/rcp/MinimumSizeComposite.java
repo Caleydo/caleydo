@@ -22,10 +22,7 @@ public class MinimumSizeComposite
 
 	public MinimumSizeComposite(Composite parent, int style) {
 		super(parent, style);
-		setMinSizeEventListener = new SetMinViewSizeEventListener();
-		setMinSizeEventListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(SetMinViewSizeEvent.class,
-			setMinSizeEventListener);
+		registerEventListeners();
 		addListener(SWT.MouseWheel, new Listener() {
 			public void handleEvent(Event event) {
 
@@ -53,5 +50,28 @@ public class MinimumSizeComposite
 				listener.handleEvent(event);
 			}
 		});
+	}
+
+	@Override
+	public void registerEventListeners() {
+		setMinSizeEventListener = new SetMinViewSizeEventListener();
+		setMinSizeEventListener.setHandler(this);
+		GeneralManager.get().getEventPublisher().addListener(SetMinViewSizeEvent.class,
+			setMinSizeEventListener);
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		if (setMinSizeEventListener != null) {
+			GeneralManager.get().getEventPublisher().removeListener(setMinSizeEventListener);
+			setMinSizeEventListener = null;
+		}
+	}
+
+	@Override
+	public void dispose() {
+
+		unregisterEventListeners();
+		super.dispose();
 	}
 }

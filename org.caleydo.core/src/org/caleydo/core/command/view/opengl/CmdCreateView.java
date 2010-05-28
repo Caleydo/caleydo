@@ -8,12 +8,10 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.datadomain.EDataDomain;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 import org.caleydo.core.serialize.ASerializedView;
@@ -39,7 +37,7 @@ public class CmdCreateView
 	protected Vec3f cameraOrigin;
 	protected Rotf cameraRotation;
 
-	protected EDataDomain dataDomain;
+	protected String dataDomainType;
 
 	/**
 	 * Constructor.
@@ -161,22 +159,23 @@ public class CmdCreateView
 
 	}
 
-	public void setAttributes(final EDataDomain dataDomain, final EProjectionMode eProjectionMode,
+	public void setAttributes(final String dataDomainType, final EProjectionMode eProjectionMode,
 		final float fLeft, final float fRight, final float fBottom, final float fTop, final float fNear,
 		final float fFar, final int iParentCanvasID) {
 		viewFrustum = new ViewFrustum(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar);
 
-		this.dataDomain = dataDomain;
+		this.dataDomainType = dataDomainType;
 		this.iParentContainerId = iParentCanvasID;
 	}
 
-	public void setAttributes(final EDataDomain dataDomain, final EProjectionMode eProjectionMode,
+	public void setAttributes(final String dataDomainType, final EProjectionMode eProjectionMode,
 		final float fLeft, final float fRight, final float fBottom, final float fTop, final float fNear,
 		final float fFar, final int iParentCanvasID, final float fCamOriginX, final float fCamOriginY,
 		final float fCamOriginZ, final float fCamRotationX, final float fCamRotationY,
 		final float fCamRotationZ, final float fCamRotationAngle) {
 
-		setAttributes(dataDomain, eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar, iParentCanvasID);
+		setAttributes(dataDomainType, eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar,
+			iParentCanvasID);
 
 		cameraOrigin.set(fCamOriginX, fCamOriginY, fCamOriginZ);
 		cameraRotation.set(new Vec3f(fCamRotationX, fCamRotationY, fCamRotationZ), (float) Math
@@ -192,7 +191,7 @@ public class CmdCreateView
 	 */
 	public void setAttributesFromSerializedForm(ASerializedView serView) {
 		setViewFrustum(serView.getViewFrustum());
-		dataDomain = serView.getDataDomain();
+		dataDomainType = serView.getDataDomainType();
 	}
 
 	public void setParentCanvasID(int parentCanvasID) {
@@ -232,13 +231,13 @@ public class CmdCreateView
 		createdObject.getViewCamera().setCameraRotation(cameraRotation);
 		// createdObject.setSet(set);
 
-		IDataDomain useCase = GeneralManager.get().getUseCase(dataDomain);
-		ISet set = useCase.getSet();
+		IDataDomain dataDomain = DataDomainManager.getInstance().getDataDomain(dataDomainType);
+		// ISet set = useCase.getSet();
 		createdObject.setDataDomain(dataDomain);
-		createdObject.setUseCase(useCase);
-
-		if (set != null)
-			createdObject.setSet(set);
+		// createdObject.setUseCase(useCase);
+		//
+		// if (set != null)
+		// createdObject.setSet(set);
 
 		commandManager.runDoCommand(this);
 	}

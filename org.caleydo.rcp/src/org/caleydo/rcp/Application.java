@@ -21,8 +21,9 @@ import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.ADataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.net.GroupwareUtils;
 import org.caleydo.core.net.IGroupwareManager;
@@ -98,7 +99,7 @@ public class Application
 	/** list of initialized view instances */
 	public static List<String> initializedStartViews;
 
-	/** initialization data received from a caleydo-server-application during startup */
+	/** initialization data received from a Caleydo-server-application during startup */
 	public static ApplicationInitData initData = null;
 
 	public RCPBridge rcpGuiBridge;
@@ -149,7 +150,6 @@ public class Application
 
 			if (Application.applicationMode == EApplicationMode.PLEX_CLIENT) {
 				Application.initData = GroupwareUtils.startPlexClient(serverAddress);
-				GeneralManager.get().addUseCase(Application.initData.getUseCase());
 			}
 			else {
 				WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
@@ -164,8 +164,8 @@ public class Application
 				case GENE_EXPRESSION_SAMPLE_DATA:
 				case GENE_EXPRESSION_NEW_DATA:
 					sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
-					GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).setBootstrapFileName(
-						sCaleydoXMLfile);
+					DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic")
+						.setBootstrapFileName(sCaleydoXMLfile);
 					break;
 				case UNSPECIFIED_NEW_DATA:
 				case NO_DATA:
@@ -176,8 +176,8 @@ public class Application
 				case LOAD_PROJECT:
 				case COLLABORATION_CLIENT:
 				case PLEX_CLIENT:
-
-					sCaleydoXMLfile = GeneralManager.get().getMasterUseCase().getBootstrapFileName();
+					// TODO - make sure this is not needed
+					// sCaleydoXMLfile = GeneralManager.get().getMasterUseCase().getBootstrapFileName();
 
 					break;
 
@@ -219,10 +219,7 @@ public class Application
 
 		if (sArParam != null) {
 			for (String element : sArParam) {
-				if (element.equals("load_pathways")) {
-					bLoadPathwayData = true;
-				}
-				else if (element.startsWith("plexclient")) {
+				if (element.startsWith("plexclient")) {
 					if (sCaleydoXMLfile != null && !sCaleydoXMLfile.isEmpty()) {
 						throw new IllegalArgumentException(
 							"It is not allowed to specify a bootstrap-file in plex-client mode.");
@@ -308,8 +305,8 @@ public class Application
 
 		if (applicationMode == EApplicationMode.COLLABORATION_CLIENT
 			|| applicationMode == EApplicationMode.PLEX_CLIENT) {
-			IDataDomain useCase = initData.getUseCase();
-			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
+			IDataDomain dataDomain = initData.getDataDomain();
+			LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
 			SetUtils.saveSetFile(loadDataParameters, initData.getSetFileContent());
 			if (initData.getGeneClusterTree() != null) {
 				SetUtils.saveGeneTreeFile(loadDataParameters, initData.getGeneClusterTree());
@@ -318,46 +315,50 @@ public class Application
 				SetUtils.saveExperimentsTreeFile(loadDataParameters, initData.getGeneClusterTree());
 			}
 			// TODO remove temporary files (after storage creation or on shutdown)
-
-			GeneralManager.get().addUseCase(useCase);
-			GeneralManager.get().setMasterUseCase(applicationMode.getDataDomain());
-
-			SetUtils.createStorages(loadDataParameters);
-			ISet set = SetUtils.createData(useCase);
-
-			HashMap<ContentVAType, ContentVirtualArray> contentVAMap = initData.getContentVAMap();
-			for (Entry<ContentVAType, ContentVirtualArray> entry : contentVAMap.entrySet()) {
-				((ADataDomain) useCase).setContentVirtualArray(entry.getKey(), entry.getValue());
-			}
-
-			HashMap<StorageVAType, StorageVirtualArray> storageVAMap = initData.getStorageVAMap();
-			for (Entry<StorageVAType, StorageVirtualArray> entry : storageVAMap.entrySet()) {
-				((ADataDomain) useCase).setStorageVirtualArray(entry.getKey(), entry.getValue());
-			}
+			// FIXME: restore plex client - this is to set specific to work from now on
+			//
+			// SetUtils.createStorages(loadDataParameters);
+			// ISet set = SetUtils.createData(dataDomain);
+			//
+			// HashMap<ContentVAType, ContentVirtualArray> contentVAMap = initData.getContentVAMap();
+			// for (Entry<ContentVAType, ContentVirtualArray> entry : contentVAMap.entrySet()) {
+			// ((ADataDomain) dataDomain).setContentVirtualArray(entry.getKey(), entry.getValue());
+			// }
+			//
+			// HashMap<StorageVAType, StorageVirtualArray> storageVAMap = initData.getStorageVAMap();
+			// for (Entry<StorageVAType, StorageVirtualArray> entry : storageVAMap.entrySet()) {
+			// ((ADataDomain) dataDomain).setStorageVirtualArray(entry.getKey(), entry.getValue());
+			// }
 
 			// we need the VAs to be available before the tree is initialized
-			SetUtils.loadTrees(loadDataParameters, set);
+			// SetUtils.loadTrees(loadDataParameters, set);
 
 			Application.initData = null;
 		}
 		else if (applicationMode == EApplicationMode.LOAD_PROJECT
 			|| applicationMode == EApplicationMode.SAMPLE_PROJECT) {
 
-			IDataDomain useCase = initData.getUseCase();
-			GeneralManager.get().addUseCase(useCase);
+			IDataDomain dataDomain = initData.getDataDomain();
+			DataDomainManager.getInstance().register(dataDomain);
 
-			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
+			if (!(dataDomain instanceof ISetBasedDataDomain))
+				throw new IllegalStateException(
+					"loading data is not supported for non-set-based data domains. Implement it!");
+
+			ISetBasedDataDomain setBasedDataDomain = (ISetBasedDataDomain) dataDomain;
+
+			LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
 			SetUtils.createStorages(loadDataParameters);
-			ISet set = SetUtils.createData(useCase);
+			ISet set = SetUtils.createData(setBasedDataDomain);
 
 			HashMap<ContentVAType, ContentVirtualArray> contentVAMap = initData.getContentVAMap();
 			for (Entry<ContentVAType, ContentVirtualArray> entry : contentVAMap.entrySet()) {
-				((ADataDomain) useCase).setContentVirtualArray(entry.getKey(), entry.getValue());
+				setBasedDataDomain.setContentVirtualArray(entry.getKey(), entry.getValue());
 			}
 
 			HashMap<StorageVAType, StorageVirtualArray> storageVAMap = initData.getStorageVAMap();
 			for (Entry<StorageVAType, StorageVirtualArray> entry : storageVAMap.entrySet()) {
-				((ADataDomain) useCase).setStorageVirtualArray(entry.getKey(), entry.getValue());
+				setBasedDataDomain.setStorageVirtualArray(entry.getKey(), entry.getValue());
 			}
 			// we need the VAs to be available before the tree is initialized
 			SetUtils.loadTrees(loadDataParameters, set);
@@ -366,14 +367,6 @@ public class Application
 		}
 		else if (applicationMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA) {
 
-			GeneralManager.get().setMasterUseCase(applicationMode.getDataDomain());
-
-			CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
-			cmd.setAttributes(EDataDomain.PATHWAY_DATA);
-			cmd.doCommand();
-//			useCase = cmd.getCreatedObject();
-			//TODO: register pathway data domain
-			
 			WizardDialog dataImportWizard =
 				new WizardDialog(shell, new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
 
@@ -385,12 +378,6 @@ public class Application
 		else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA || applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
 			&& (sCaleydoXMLfile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE) || sCaleydoXMLfile.equals(""))) {
 
-			GeneralManager.get().setMasterUseCase(applicationMode.getDataDomain());
-
-			CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
-			cmd.setAttributes(EDataDomain.PATHWAY_DATA);
-			cmd.doCommand();
-			
 			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
 
 			if (Window.CANCEL == dataImportWizard.open()) {
@@ -399,22 +386,17 @@ public class Application
 			}
 		}
 
-		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
-		cmd.setAttributes(EDataDomain.PATHWAY_DATA);
-		cmd.doCommand();
-		
 		// TODO - this initializes the VA after the data is written correctly in the set - probably not the
 		// nicest place to do this.
 		// This is only necessary if started from xml. Otherwise this is done in FileLoadDataAction
 		if (isStartedFromXML) {
-			IDataDomain useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
-			GeneralManager.get().setMasterUseCase(useCase);
-			useCase.updateSetInViews();
+			// FIXME check if this works
+			// useCase.updateSetInViews();
 		}
 
 		initializeColorMapping();
 		if (initializedStartViews == null) {
-			initializeDefaultStartViews(applicationMode.getDataDomain());
+			initializeDefaultStartViews();
 		}
 	}
 
@@ -427,11 +409,11 @@ public class Application
 	 * Parses throw the list of start-views to initialize them by creating default serialized representations
 	 * of them.
 	 */
-	public static void initializeDefaultStartViews(EDataDomain dataDomain) {
+	public static void initializeDefaultStartViews() {
 		// Create view list dynamically when not specified via the command line
 
 		if (startViews.isEmpty()) {
-			addDefaultStartViews(dataDomain);
+			addDefaultStartViews();
 		}
 
 		initializedStartViews = new ArrayList<String>();
@@ -455,7 +437,8 @@ public class Application
 
 			ASerializedView view =
 				GeneralManager.get().getViewGLCanvasManager().getViewCreator(viewID).createSerializedView();
-			view.setDataDomain(dataDomain);
+			// FIXME this is only for genetic data, make it general
+			view.setDataDomainType("org.caleydo.datadomain.genetic");
 			initializedStartViews.add(viewID);
 		}
 		startViews = null;
@@ -480,17 +463,8 @@ public class Application
 	 * @param useCase
 	 *            {@link IDataDomain} to determine the correct default start views.
 	 */
-	private static void addDefaultStartViews(EDataDomain dataDomain) {
+	private static void addDefaultStartViews() {
 		startViews.add(EStartViewType.browser.getViewID());
-
-		IDataDomain useCase = GeneralManager.get().getUseCase(dataDomain);
-
-		// if ((useCase instanceof GeneticUseCase && !((GeneticUseCase) useCase).isPathwayViewerMode())
-		// || useCase instanceof UnspecifiedUseCase) {
-		// // alStartViews.add(EStartViewType.TABULAR);
-		// startViews.add(EStartViewType.parcoords.getViewID());
-		// startViews.add(EStartViewType.heatmap.getViewID());
-		// }
 
 		// Only show bucket when pathway data is loaded
 		if (GeneralManager.get().getPathwayManager().size() > 0) {

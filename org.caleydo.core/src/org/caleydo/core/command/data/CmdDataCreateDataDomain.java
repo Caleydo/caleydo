@@ -7,9 +7,6 @@ import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.datadomain.EDataDomain;
-import org.caleydo.core.manager.datadomain.UnspecifiedDataDomain;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
@@ -19,7 +16,7 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
  */
 public class CmdDataCreateDataDomain
 	extends ACmdCreational<IDataDomain> {
-	private EDataDomain dataDomain;
+	private String dataDomainType;
 
 	/**
 	 * Constructor.
@@ -27,35 +24,21 @@ public class CmdDataCreateDataDomain
 	public CmdDataCreateDataDomain(final ECommandType cmdType) {
 		super(cmdType);
 
-		dataDomain = EDataDomain.UNSPECIFIED;
+		dataDomainType = "unspecified";
 	}
 
 	/**
 	 * Load data from file using a token pattern.
 	 */
 	public void doCommand() {
-		createdObject = createUseCase(dataDomain);
-
-		GeneralManager.get().addUseCase(createdObject);
+		createdObject = createUseCase(dataDomainType);
 
 		commandManager.runDoCommand(this);
 	}
 
-	private IDataDomain createUseCase(EDataDomain dataDomain) {
-		switch (dataDomain) {
-			case CLINICAL_DATA:
-				return DataDomainManager.getInstance().createDataDomain("org.caleydo.datadomain.clinical.ClinicalDataDomain");
-			case GENETIC_DATA:
-				return DataDomainManager.getInstance().createDataDomain("org.caleydo.datadomain.genetic.GeneticDataDomain");
-			case TISSUE_DATA:
-				return DataDomainManager.getInstance().createDataDomain("org.caleydo.datadomain.tissue.TissueDataDomain");
-			case PATHWAY_DATA:
-				return DataDomainManager.getInstance().createDataDomain("org.caleydo.datadomain.pathway.PathwayDataDomain");
-			case UNSPECIFIED:
-				return new UnspecifiedDataDomain();
-			default:
-				throw new IllegalStateException("Unknow data domain type: " + dataDomain);
-		}
+	private IDataDomain createUseCase(String dataDomainType) {
+
+		return DataDomainManager.getInstance().createDataDomain(dataDomainType);
 	}
 
 	@Override
@@ -78,8 +61,6 @@ public class CmdDataCreateDataDomain
 			new StringTokenizer(parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey()),
 				IGeneralManager.sDelimiter_Paser_DataItemBlock);
 
-		String dataDomainString = "";
-
 		while (strToken_StorageBlock.hasMoreTokens()) {
 			/**
 			 * Separate "id1 id2 .."
@@ -89,15 +70,12 @@ public class CmdDataCreateDataDomain
 					IGeneralManager.sDelimiter_Parser_DataItems);
 
 			while (dataDomainToken.hasMoreTokens()) {
-				dataDomainString = dataDomainToken.nextToken();
+				dataDomainType = dataDomainToken.nextToken();
 			}
 		}
-
-		dataDomain = EDataDomain.valueOf(dataDomainString);
-
 	}
 
-	public void setAttributes(EDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
+	public void setAttributes(String dataDomainType) {
+		this.dataDomainType = dataDomainType;
 	}
 }

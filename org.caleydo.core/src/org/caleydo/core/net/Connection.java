@@ -18,8 +18,9 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.ADataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ApplicationInitData;
@@ -284,7 +285,9 @@ public class Connection {
 		ApplicationInitData initData = new ApplicationInitData();
 
 		// FIXME this should work for more than one use case now
-		ADataDomain useCase = (ADataDomain) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
+		ISetBasedDataDomain useCase =
+			(ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+				"org.caleydo.datadomain.genetic");
 		ISet set = useCase.getSet();
 
 		initData.setUseCase(useCase);

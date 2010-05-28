@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 
 public abstract class ASWTView
 	extends AView
-	implements ISWTView {
+	implements ISWTView, IListenerOwner {
 
 	/**
 	 * Constructor.
@@ -54,5 +54,17 @@ public abstract class ASWTView
 				listener.handleEvent(event);
 			}
 		});
+	}
+
+	@Override
+	public void registerEventListeners() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		// TODO Auto-generated method stub
+
 	}
 }

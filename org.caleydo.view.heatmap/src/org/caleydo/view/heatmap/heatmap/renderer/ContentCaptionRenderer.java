@@ -5,11 +5,11 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -27,8 +27,8 @@ public class ContentCaptionRenderer extends AContentRenderer {
 	public ContentCaptionRenderer(GLHeatMap heatMap) {
 		super(heatMap);
 
-		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN,
-				fontSize), false);
+		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, fontSize),
+				false);
 	}
 
 	public void render(GL gl) {
@@ -86,8 +86,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 			if (fieldHeight < HeatMapRenderStyle.MIN_FIELD_HEIGHT_FOR_CAPTION)
 				continue;
 
-			yPosition = contentSpacing.getYDistances().get(contentVA
-					.indexOf(contentID));
+			yPosition = contentSpacing.getYDistances().get(contentVA.indexOf(contentID));
 
 			textRenderer.setColor(0, 0, 0, 1);
 
@@ -116,10 +115,10 @@ public class ContentCaptionRenderer extends AContentRenderer {
 	private String getID(Integer contentID, boolean beVerbose) {
 		String sContent = "";
 
-		IIDMappingManager idMappingManager = GeneralManager.get()
-				.getIDMappingManager();
-		ESetType setType = heatMap.getSet().getSetType();
-		if (setType == ESetType.GENE_EXPRESSION_DATA) {
+		IIDMappingManager idMappingManager = GeneralManager.get().getIDMappingManager();
+		// ESetType setType = heatMap.getSet().getSetType();
+		if (heatMap.getDataDomain().getDataDomainType().equals(
+				"org.caleydo.datadomain.gentic")) {
 
 			// FIXME: Due to new mapping system, a mapping involving
 			// expression index can return a set of values,
@@ -146,8 +145,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 
 			if (beVerbose) {
 				Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(
-						EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA,
-						contentID);
+						EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA, contentID);
 
 				if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
 					String refSeq = (String) setRefSeqIDs.toArray()[0];
@@ -156,19 +154,20 @@ public class ContentCaptionRenderer extends AContentRenderer {
 					sContent += refSeq;
 				}
 			}
-		} else if (setType == ESetType.UNSPECIFIED) {
+		} else if (heatMap.getDataDomain().getDataDomainType().equals(
+				"org.caleydo.datadomain.genric")) {
 			sContent = idMappingManager.getID(EIDType.EXPRESSION_INDEX,
 					EIDType.UNSPECIFIED, contentID);
 		} else {
-			throw new IllegalStateException("Label extraction for " + setType
-					+ " not implemented yet!");
+			throw new IllegalStateException("Label extraction for data domain "
+					+ heatMap.getDataDomain() + " not implemented yet!");
 		}
 
 		return sContent;
 	}
 
-	private void renderCaption(GL gl, int contentIndex, float xOrigin,
-			float yOrigin, float zOrigin, float fontScaling) {
+	private void renderCaption(GL gl, int contentIndex, float xOrigin, float yOrigin,
+			float zOrigin, float fontScaling) {
 
 		String sLabel = getID(contentIndex, false);
 		if (sLabel == null)

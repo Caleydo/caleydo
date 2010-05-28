@@ -14,6 +14,7 @@ import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 
@@ -78,8 +79,7 @@ public class ProjectLoader {
 
 			String setFileName = dirName + ProjectSaver.SET_DATA_FILE_NAME;
 			useCase.getLoadDataParameters().setFileName(setFileName);
-			GeneralManager.get().setMasterUseCase(useCase);
-
+		
 			HashMap<ContentVAType, ContentVirtualArray> contentVAMap =
 				new HashMap<ContentVAType, ContentVirtualArray>(6);
 			ContentVAType tmpType = ContentVAType.CONTENT;
@@ -117,7 +117,7 @@ public class ProjectLoader {
 			}
 
 			initData = new ApplicationInitData();
-			initData.setUseCase(useCase);
+			initData.setUseCase((ISetBasedDataDomain)useCase);
 			initData.setContentVAMap(contentVAMap);
 			initData.setStorageVAMap(storageVAMap);
 			if (loadViews != null) {

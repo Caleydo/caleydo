@@ -26,16 +26,17 @@ public class DataFlipperToolBarMediator implements IListenerOwner {
 		registerEventListeners();
 	}
 
-	private void registerEventListeners() {
+	@Override
+	public void registerEventListeners() {
 	}
 
-	private void unregisterEventListeners() {
+	@Override
+	public void unregisterEventListeners() {
 
 	}
 
 	@Override
-	public void queueEvent(
-			final AEventListener<? extends IListenerOwner> listener,
+	public void queueEvent(final AEventListener<? extends IListenerOwner> listener,
 			final AEvent event) {
 		System.out.println("queue: listener.handleEvent(event);");
 		Display.getDefault().asyncExec(new Runnable() {

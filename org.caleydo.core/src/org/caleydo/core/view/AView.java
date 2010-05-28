@@ -1,18 +1,12 @@
 package org.caleydo.core.view;
 
 import org.caleydo.core.data.AUniqueObject;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
-import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.view.NewSetEvent;
+import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.listener.NewSetListener;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -24,36 +18,24 @@ import org.eclipse.swt.widgets.Composite;
  */
 public abstract class AView
 	extends AUniqueObject
-	implements IView, IListenerOwner {
+	implements IView {
 
 	public String viewType;
 
-	protected IGeneralManager generalManager;
+	protected GeneralManager generalManager;
 
 	protected IEventPublisher eventPublisher;
 
 	/**
 	 * The data domain the view is operating on
 	 */
-	protected EDataDomain dataDomain;
-
-	/**
-	 * The use case which determines the use case specific behavior of the view.
-	 */
-	protected IDataDomain useCase;
-
-	/**
-	 * Data set which the view operates on.
-	 */
-	protected ISet set;
+	protected IDataDomain dataDomain;
 
 	protected int iParentContainerId;
 
 	protected Composite parentComposite;
 
 	protected String sLabel;
-
-	private NewSetListener newSetListener;
 
 	/**
 	 * Constructor.
@@ -66,7 +48,7 @@ public abstract class AView
 
 		this.iParentContainerId = iParentContainerId;
 		this.sLabel = sLabel;
-		registerEventListeners();
+
 	}
 
 	/**
@@ -94,58 +76,13 @@ public abstract class AView
 	}
 
 	@Override
-	public EDataDomain getDataDomain() {
+	public IDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
 	@Override
-	public void setDataDomain(EDataDomain dataDomain) {
+	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-	}
-
-	@Override
-	public void setSet(ISet set) {
-		this.set = set;
-	}
-
-	@Override
-	public ISet getSet() {
-		return set;
-	}
-
-	@Override
-	public void setUseCase(IDataDomain useCase) {
-		this.useCase = useCase;
-	}
-
-	/**
-	 * <p>
-	 * Registers the listeners for this view to the event system. To release the allocated resources
-	 * unregisterEventListeners() has to be called. This method is intended to be overridden, but it's super()
-	 * should be called to be registered to the listeners defined by other classes in the hierarchy.
-	 * </p>
-	 * <p>
-	 * This method is called by the Constructor of {@link AView}, therefore there is no need to call it
-	 * yourself.
-	 * </p>
-	 */
-	public void registerEventListeners() {
-		newSetListener = new NewSetListener();
-		newSetListener.setHandler(this);
-		eventPublisher.addListener(NewSetEvent.class, newSetListener);
-		// default implementations does not react on events
-	}
-
-	/**
-	 * Unregisters the listeners for this view from the event system. To release the allocated resources
-	 * unregisterEventListenrs() has to be called. This method is intended to be overridden, but it's super()
-	 * should be called to unregistered the listeners defined by other classes in the hierarchy.
-	 */
-	public void unregisterEventListeners() {
-		if (newSetListener != null) {
-			eventPublisher.removeListener(newSetListener);
-			newSetListener = null;
-		}
 	}
 
 	/**
@@ -157,6 +94,7 @@ public abstract class AView
 	 * @param command
 	 *            selection-command to distribute
 	 */
+	@Deprecated
 	protected void sendSelectionCommandEvent(EIDType genomeType, SelectionCommand command) {
 		SelectionCommandEvent event = new SelectionCommandEvent();
 		event.setSender(this);

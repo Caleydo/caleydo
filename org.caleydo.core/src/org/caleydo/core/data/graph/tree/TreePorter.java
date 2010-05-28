@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.jgrapht.DirectedGraph;
@@ -43,6 +44,16 @@ public class TreePorter {
 	@XmlElement(name = "node")
 	Set<ClusterNode> nodeSet;
 
+	private ISetBasedDataDomain dataDomain;
+
+	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+	}
+
+	public ISetBasedDataDomain getDataDomain() {
+		return dataDomain;
+	}
+
 	/**
 	 * Imports a tree with the aid of {@link JAXBContext}.
 	 * 
@@ -64,18 +75,17 @@ public class TreePorter {
 		TreePorter treePorter = null;
 		Unmarshaller unmarshaller;
 
-		
-
 		jaxbContext = JAXBContext.newInstance(TreePorter.class);
 		unmarshaller = jaxbContext.createUnmarshaller();
 		treePorter =
 			(TreePorter) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
 				.getResource(fileName));
-		
-		int size = (int)(treePorter.nodeSet.size() * 1.5);
+
+		int size = (int) (treePorter.nodeSet.size() * 1.5);
 		HashMap<Integer, ClusterNode> hashClusterNr = new HashMap<Integer, ClusterNode>(size);
 		HashMap<String, ClusterNode> hashClusterNodes = new HashMap<String, ClusterNode>(size);
-		HashMap<Integer, ArrayList<Integer>> hashLeafIDToNodeIDs = new HashMap<Integer, ArrayList<Integer>>(size);
+		HashMap<Integer, ArrayList<Integer>> hashLeafIDToNodeIDs =
+			new HashMap<Integer, ArrayList<Integer>>(size);
 
 		for (ClusterNode node : treePorter.nodeSet) {
 			graph.addVertex(node);
@@ -117,7 +127,7 @@ public class TreePorter {
 		Tree<ClusterNode> tree = importTree(fileName);
 
 		org.caleydo.core.data.collection.set.Set set =
-			(org.caleydo.core.data.collection.set.Set) GeneralManager.get().getMasterUseCase().getSet();
+			(org.caleydo.core.data.collection.set.Set) dataDomain.getSet();
 		tree.getRoot().createMetaSets(set);
 		return tree;
 	}

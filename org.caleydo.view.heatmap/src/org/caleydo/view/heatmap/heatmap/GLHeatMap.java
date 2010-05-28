@@ -24,7 +24,6 @@ import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.event.view.storagebased.HideHeatMapElementsEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -229,7 +228,9 @@ public class GLHeatMap extends AStorageBasedView {
 		if (bIsDisplayListDirtyRemote) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
-			 generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
+			generalManager.getViewGLCanvasManager()
+					.getConnectedElementRepresentationManager()
+					.clearTransformedConnections();
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
@@ -306,11 +307,11 @@ public class GLHeatMap extends AStorageBasedView {
 	public String getShortInfo() {
 
 		if (contentVA == null)
-			return "Heat Map - 0 " + useCase.getContentLabel(false, true)
+			return "Heat Map - 0 " + dataDomain.getContentLabel(false, true)
 					+ " / 0 experiments";
 
 		return "Heat Map - " + contentVA.size() + " "
-				+ useCase.getContentLabel(false, true) + " / " + storageVA.size()
+				+ dataDomain.getContentLabel(false, true) + " / " + storageVA.size()
 				+ " experiments";
 	}
 
@@ -320,11 +321,12 @@ public class GLHeatMap extends AStorageBasedView {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Heat Map\n");
 
-		sInfoText.append(contentVA.size() + " " + useCase.getContentLabel(true, true)
+		sInfoText.append(contentVA.size() + " " + dataDomain.getContentLabel(true, true)
 				+ " in rows and " + storageVA.size() + " experiments in columns.\n");
 
 		if (bRenderOnlyContext) {
-			sInfoText.append("Showing only " + " " + useCase.getContentLabel(false, true)
+			sInfoText.append("Showing only " + " "
+					+ dataDomain.getContentLabel(false, true)
 					+ " which occur in one of the other views in focus\n");
 		} else {
 			if (bUseRandomSampling) {
@@ -373,8 +375,10 @@ public class GLHeatMap extends AStorageBasedView {
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
-				// Prevent handling of non genetic data in context menu
-				if (generalManager.getUseCase(dataDomain).getDataDomain() != EDataDomain.GENETIC_DATA)
+				// TODO this is not nice : Prevent handling of non genetic data
+				// in context menu
+				if (!dataDomain.getDataDomainType().equals(
+						"org.caleydo.datadomain.genetic"))
 					break;
 
 				if (!isRenderedRemote()) {
@@ -661,12 +665,12 @@ public class GLHeatMap extends AStorageBasedView {
 			float fXValue = 0;
 			try {
 				fXValue = -viewFrustum.getHeight()
-				+ getYCoordinateByContentIndex(iContentIndex);
+						+ getYCoordinateByContentIndex(iContentIndex);
 			} catch (Exception e) {
 				// FIXME: why is the y position not initialized here?
 				// this should never happen :) please check.
 			}
-			
+
 			float fYValue = renderStyle.getYCenter();
 
 			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
@@ -674,7 +678,7 @@ public class GLHeatMap extends AStorageBasedView {
 			vecPoint.setY(vecPoint.y());// + vecTranslation.y());
 			elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID,
 					vecPoint.x(), vecPoint.y(), 0);// - fAnimationTranslation,
-													// 0);
+			// 0);
 
 			alElementReps.add(elementRep);
 		}
@@ -716,9 +720,9 @@ public class GLHeatMap extends AStorageBasedView {
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (this.bRenderOnlyContext) {
-			contentVA = useCase.getContentVA(ContentVAType.CONTENT_CONTEXT);
+			contentVA = dataDomain.getContentVA(ContentVAType.CONTENT_CONTEXT);
 		} else {
-			contentVA = useCase.getContentVA(ContentVAType.CONTENT);
+			contentVA = dataDomain.getContentVA(ContentVAType.CONTENT);
 		}
 
 		contentSelectionManager.setVA(contentVA);
@@ -763,7 +767,8 @@ public class GLHeatMap extends AStorageBasedView {
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedHeatMapView serializedForm = new SerializedHeatMapView(dataDomain);
+		SerializedHeatMapView serializedForm = new SerializedHeatMapView(dataDomain
+				.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

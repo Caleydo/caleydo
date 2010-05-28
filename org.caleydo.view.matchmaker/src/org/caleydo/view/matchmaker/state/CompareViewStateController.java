@@ -14,8 +14,7 @@ import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -39,7 +38,7 @@ public class CompareViewStateController {
 	public CompareViewStateController(GLMatchmaker view, int viewID,
 			TextRenderer textRenderer, TextureManager textureManager,
 			PickingManager pickingManager, GLMouseListener glMouseListener,
-			ContextMenu contextMenu, EDataDomain dataDomain, IDataDomain useCase) {
+			ContextMenu contextMenu,  ISetBasedDataDomain useCase) {
 		DragAndDropController dragAndDropController = new DragAndDropController(
 				view);
 		SetBar setBar = new SetBar(viewID, pickingManager, textRenderer,
@@ -53,21 +52,21 @@ public class CompareViewStateController {
 
 		hashStates.put(ECompareViewStateType.DETAIL_VIEW, new DetailViewState(
 				view, viewID, textRenderer, textureManager, pickingManager,
-				glMouseListener, setBar, renderCommandFactory, dataDomain,
+				glMouseListener, setBar, renderCommandFactory, 
 				useCase, dragAndDropController, this));
 		hashStates.put(ECompareViewStateType.OVERVIEW, new OverviewState(view,
 				viewID, textRenderer, textureManager, pickingManager,
-				glMouseListener, setBar, renderCommandFactory, dataDomain,
+				glMouseListener, setBar, renderCommandFactory, 
 				useCase, dragAndDropController, this));
 		hashStates.put(ECompareViewStateType.OVERVIEW_TO_DETAIL_TRANSITION,
 				new OverviewToDetailTransition(view, viewID, textRenderer,
 						textureManager, pickingManager, glMouseListener,
-						setBar, renderCommandFactory, dataDomain, useCase,
+						setBar, renderCommandFactory,  useCase,
 						dragAndDropController, this));
 		hashStates.put(ECompareViewStateType.DETAIL_TO_OVERVIEW_TRANSITION,
 				new DetailToOverviewTransition(view, viewID, textRenderer,
 						textureManager, pickingManager, glMouseListener,
-						setBar, renderCommandFactory, dataDomain, useCase,
+						setBar, renderCommandFactory,  useCase,
 						dragAndDropController, this));
 
 		currentState = hashStates.get(ECompareViewStateType.OVERVIEW);

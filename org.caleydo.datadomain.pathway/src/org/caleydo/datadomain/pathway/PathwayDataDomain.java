@@ -6,18 +6,17 @@ import java.util.HashMap;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.selection.delta.ContentVADelta;
-import org.caleydo.core.data.selection.delta.StorageVADelta;
+import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 
 /**
  * TODO The use case for pathway input data.
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
 @XmlType
 @XmlRootElement
@@ -28,7 +27,7 @@ public class PathwayDataDomain
 	 * Constructor.
 	 */
 	public PathwayDataDomain() {
-		useCaseMode = EDataDomain.PATHWAY_DATA;
+		dataDomainType = "org.caleydo.datadomain.pathway";
 		possibleViews = new ArrayList<String>();
 		possibleViews.add("org.caleydo.view.pathwaybrowser");
 
@@ -40,21 +39,4 @@ public class PathwayDataDomain
 		new PathwayLoadingProgressIndicatorAction().run(null);
 	}
 
-	@Override
-	public void setSet(ISet set) {
-
-		super.setSet(set);
-	}
-
-	@Override
-	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleStorageVAUpdate(StorageVADelta vaDelta, String info) {
-		// TODO Auto-generated method stub
-
-	}
 }

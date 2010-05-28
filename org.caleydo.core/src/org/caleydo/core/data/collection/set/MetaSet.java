@@ -27,7 +27,7 @@ public class MetaSet
 		init();
 		
 		this.iUniqueID = GeneralManager.get().getIDManager().createID(EManagedObjectType.SET);
-		this.setSetType(originalSet.getSetType());
+//		this.setSetType(originalSet.getSetType());
 		// FIXME: this is not always true, but if we create the MetaSet from the serialization, we didn't
 		// check yet whether it was homogeneous
 		this.isSetHomogeneous = true;

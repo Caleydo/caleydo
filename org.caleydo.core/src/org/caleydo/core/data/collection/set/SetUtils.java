@@ -17,15 +17,14 @@ import org.caleydo.core.command.data.CmdDataCreateStorage;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
@@ -187,9 +186,9 @@ public class SetUtils {
 	 * @param loadDataParameters
 	 *            definition how to load the set
 	 */
-	public static ISet createData(IDataDomain useCase) {
+	public static ISet createData(ISetBasedDataDomain dataDomain) {
 
-		LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
+		LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
 		ArrayList<Integer> iAlStorageId = loadDataParameters.getStorageIds();
 
 		// Create SET
@@ -197,15 +196,7 @@ public class SetUtils {
 			(CmdDataCreateSet) GeneralManager.get().getCommandManager().createCommandByType(
 				ECommandType.CREATE_SET_DATA);
 
-		if (useCase.getDataDomain() == EDataDomain.GENETIC_DATA) {
-			cmdCreateSet.setAttributes(iAlStorageId, ESetType.GENE_EXPRESSION_DATA);
-		}
-		else if (useCase.getDataDomain() == EDataDomain.UNSPECIFIED) {
-			cmdCreateSet.setAttributes(iAlStorageId, ESetType.UNSPECIFIED);
-		}
-		else {
-			throw new IllegalStateException("Not implemented.");
-		}
+		cmdCreateSet.setAttributes(iAlStorageId, dataDomain);
 
 		cmdCreateSet.doCommand();
 
@@ -226,25 +217,25 @@ public class SetUtils {
 			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager().createCommandByType(
 				ECommandType.LOAD_LOOKUP_TABLE_FILE);
 
-		if (useCase.getDataDomain() == EDataDomain.GENETIC_DATA) {
+		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 			String lookupTableInfo =
 				loadDataParameters.getFileIDType().toString() + "_2_EXPRESSION_INDEX REVERSE";
 
 			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(), loadDataParameters
 				.getStartParseFileAtLine(), -1, lookupTableInfo, loadDataParameters.getDelimiter(), "");
 		}
-		else if (useCase.getDataDomain() == EDataDomain.UNSPECIFIED) {
+		else if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
 			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(), loadDataParameters
 				.getStartParseFileAtLine(), -1, "UNSPECIFIED_2_EXPRESSION_INDEX REVERSE", loadDataParameters
 				.getDelimiter(), "");
 		}
 		else {
-			throw new IllegalStateException("Not implemented.");
+			throw new IllegalStateException("Not implemented for " + dataDomain);
 		}
 
 		cmdLoadLookupTableFile.doCommand();
 
-		ISet set = useCase.getSet();
+		ISet set = dataDomain.getSet();
 
 		// loadTrees(loadDataParameters, set);
 
@@ -271,7 +262,7 @@ public class SetUtils {
 
 		// Since the data is filled to the new set
 		// the views of the current use case can be updated.
-		useCase.updateSetInViews();
+		dataDomain.updateSetInViews();
 
 		return set;
 	}
@@ -400,7 +391,7 @@ public class SetUtils {
 				TreePorter treePorter = new TreePorter();
 				Tree<ClusterNode> tree;
 				try {
-					
+
 					tree = treePorter.importTree(geneTreeFileName);
 					tree.setUseDefaultComparator(false);
 					set.setContentTree(tree);

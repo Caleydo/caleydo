@@ -17,7 +17,7 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLException;
 
-import org.caleydo.core.data.collection.ESetType;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -31,7 +31,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.glyph.GlyphChangePersonalNameEvent;
@@ -48,6 +48,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.ISetBasedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -84,9 +85,11 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLGlyph
 	extends AGLView
-	implements ISelectionUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
+	implements ISelectionUpdateHandler, ISelectionCommandHandler, IViewCommandHandler, ISetBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.glyph";
+
+	private ISet set;
 
 	GLGlyphGrid grid_;
 
@@ -133,6 +136,8 @@ public class GLGlyph
 	private GlyphSelectionBrushListener glyphSelectionBrushListener;
 	private GlyphChangePersonalNameListener glyphChangePersonalNameListener;
 	private GlyphUpdatePositionModelListener glyphUpdatePositionModelListener;
+
+	protected ISetBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -272,13 +277,11 @@ public class GLGlyph
 
 		grid_ = new GLGlyphGrid(renderStyle, !this.isRenderedRemote());
 
-		selectionManager = useCase.getStorageSelectionManager();
-		
-		if (generalManager.getUseCase(EDataDomain.CLINICAL_DATA) != null)
-			set = generalManager.getUseCase(EDataDomain.CLINICAL_DATA).getSet();
+		selectionManager = dataDomain.getStorageSelectionManager();
 
-		if (set.getSetType() == ESetType.CLINICAL_DATA)
-			grid_.loadData(set);
+		set = dataDomain.getSet();
+
+		grid_.loadData(set);
 
 		// init glyph gl
 		forceRebuild();
@@ -1158,7 +1161,7 @@ public class GLGlyph
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedGlyphView serializedForm = new SerializedGlyphView(dataDomain);
+		SerializedGlyphView serializedForm = new SerializedGlyphView(dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -1265,6 +1268,16 @@ public class GLGlyph
 	@Override
 	public void handleUpdateView() {
 		forceRebuild();
+	}
+
+	@Override
+	public ISet getSet() {
+		return set;
+	}
+
+	@Override
+	public void setSet(ISet set) {
+		this.set = set;
 	}
 
 }

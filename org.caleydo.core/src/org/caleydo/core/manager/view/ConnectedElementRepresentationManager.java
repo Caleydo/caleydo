@@ -321,7 +321,7 @@ public class ConnectedElementRepresentationManager
 	/**
 	 * Registers the event listeners.
 	 */
-	private void registerEventListeners() {
+	public void registerEventListeners() {
 		clearConnectionsListener = new ClearConnectionsListener();
 		clearConnectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearConnectionsEvent.class, clearConnectionsListener);
@@ -337,7 +337,7 @@ public class ConnectedElementRepresentationManager
 	}
 
 	@SuppressWarnings("unused")
-	private void unregisterEventListeners() {
+	public void unregisterEventListeners() {
 		if (clearConnectionsListener != null) {
 			eventPublisher.removeListener(clearConnectionsListener);
 			clearConnectionsListener = null;

@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.datadomain;
+package org.caleydo.datadomain.generic;
 
 import java.util.HashMap;
 
@@ -9,24 +9,25 @@ import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 
 /**
- * Use case for arbitrary data which is not further specified.
+ * Use case for generic set-based data which is not further specified.
  * 
  * @author Marc Streit
+ * @author Alexander lex
  */
 @XmlType
 @XmlRootElement
-public class UnspecifiedDataDomain
-	extends ADataDomain {
+public class GenericDataDomain extends ASetBasedDataDomain {
 
 	/**
 	 * Constructor.
 	 */
-	public UnspecifiedDataDomain() {
+	public GenericDataDomain() {
 
 		super();
-		useCaseMode = EDataDomain.UNSPECIFIED;
+		dataDomainType = "org.caleydo.datadomain.generic";
 		contentLabelSingular = "entity";
 		contentLabelPlural = "entities";
 

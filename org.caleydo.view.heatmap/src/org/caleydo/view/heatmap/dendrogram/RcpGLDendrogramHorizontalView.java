@@ -31,7 +31,7 @@ public class RcpGLDendrogramHorizontalView extends ARcpGLViewPart {
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedDendogramHorizontalView serializedView = new SerializedDendogramHorizontalView(
-				dataDomain);
+				dataDomain.getDataDomainType());
 		return serializedView;
 	}
 

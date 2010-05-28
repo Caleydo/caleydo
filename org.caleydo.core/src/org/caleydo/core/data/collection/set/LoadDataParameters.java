@@ -6,7 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 
 /**
  * Parameters to load the initial data-{@link Set}.
@@ -17,7 +17,7 @@ import org.caleydo.core.manager.datadomain.EDataDomain;
 public class LoadDataParameters {
 
 	/** The data domain associated with the loading process */
-	private EDataDomain dataDomain;
+	private ISetBasedDataDomain dataDomain;
 
 	/** TODO doc */
 	private ArrayList<Integer> storageIds;
@@ -78,14 +78,14 @@ public class LoadDataParameters {
 		this.delimiter = "";
 		this.startParseFileAtLine = 1;
 		this.stopParseFileAtLine = -1;
-		this.dataDomain = EDataDomain.UNSPECIFIED;
+		this.dataDomain = null;
 	}
 
-	public void setDataDomain(EDataDomain dataDomain) {
+	public void setDataDomain(ISetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 
-	public EDataDomain getDataDomain() {
+	public ISetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 

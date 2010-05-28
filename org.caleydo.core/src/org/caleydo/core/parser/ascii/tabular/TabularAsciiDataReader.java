@@ -10,7 +10,7 @@ import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.ascii.AbstractLoader;
 import org.caleydo.core.parser.ascii.IParserObject;
@@ -47,12 +47,12 @@ public class TabularAsciiDataReader
 
 	private boolean bUseExperimentClusterInfo;
 
-	private EDataDomain dataDomain;
+	private ISetBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
 	 */
-	public TabularAsciiDataReader(final String sFileName, EDataDomain dataDomain) {
+	public TabularAsciiDataReader(final String sFileName, ISetBasedDataDomain dataDomain) {
 		super(sFileName);
 
 		this.dataDomain = dataDomain;
@@ -293,7 +293,7 @@ public class TabularAsciiDataReader
 		int iStringArrayIndex = 0;
 		int iStorageIndex = 0;
 
-		ISet set = GeneralManager.get().getUseCase(dataDomain).getSet();
+		ISet set = dataDomain.getSet();
 
 		for (EStorageType storageType : alColumnDataTypes) {
 			// if(iStorageIndex + 1 == alTargetStorages.size())

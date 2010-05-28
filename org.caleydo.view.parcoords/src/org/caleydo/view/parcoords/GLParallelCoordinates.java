@@ -50,7 +50,6 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;

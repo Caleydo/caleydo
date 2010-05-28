@@ -1,6 +1,6 @@
 package org.caleydo.rcp;
 
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.perspective.PartListener;
@@ -72,7 +72,7 @@ public class ApplicationWorkbenchWindowAdvisor
 			getWindowConfigurer().getActionBarConfigurer().getStatusLineManager(),
 			getWindowConfigurer().getWindow().getShell().getDisplay());
 
-		if (GeneralManager.get().getUseCase(EDataDomain.UNSPECIFIED) != null) {
+		if (DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.generic") != null) {
 
 			IActionBarConfigurer configurer = getWindowConfigurer().getActionBarConfigurer();
 

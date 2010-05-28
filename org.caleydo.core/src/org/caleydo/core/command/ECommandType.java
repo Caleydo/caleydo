@@ -16,7 +16,7 @@ public enum ECommandType {
 	LOAD_LOOKUP_TABLE_FILE("cmd", "type", "", "Load a lookup table"),
 	LOAD_ON_DEMAND("cmd", "process", "LOAD_ON_DEMAND", "No description available!"),
 
-	SET_DATA_REPRESENTATION("cmd", "type", "-1", "Set data representation (Raw, Log2, Log10)"),
+//	SET_DATA_REPRESENTATION("cmd", "type", "-1", "Set data representation (Raw, Log2, Log10)"),
 	DATA_FILTER_MIN_MAX("cmd", "type", "-1", "Evaluate min and max of an entity"),
 
 	EVENT_MEDIATOR_ADD_OBJECT("cmd", "type", null, "Add Objects ad sender or receiver to Event Mediator"),

@@ -1,6 +1,5 @@
 package org.caleydo.view.tabular;
 
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -14,8 +13,8 @@ public class SerializedTabularDataView extends ASerializedView {
 	public SerializedTabularDataView() {
 	}
 
-	public SerializedTabularDataView(EDataDomain dataDomain) {
-		super(dataDomain);
+	public SerializedTabularDataView(String dataDomainType) {
+		super(dataDomainType);
 	}
 
 	@Override

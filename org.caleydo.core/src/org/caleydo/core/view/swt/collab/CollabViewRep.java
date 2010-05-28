@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -109,9 +108,7 @@ public class CollabViewRep
 
 	@Override
 	public void registerEventListeners() {
-		super.registerEventListeners();
-
-		testSerializationListener = new TestSerializationListener();
+			testSerializationListener = new TestSerializationListener();
 		testSerializationListener.setHandler(this);
 		eventPublisher.addListener(TestSerializationEvent.class, testSerializationListener);
 
@@ -408,7 +405,7 @@ public class CollabViewRep
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDummyView serializedForm = new SerializedDummyView(EDataDomain.UNSPECIFIED);
+		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

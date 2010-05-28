@@ -18,8 +18,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -38,15 +37,15 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public abstract class ACompareViewStateStatic extends ACompareViewState {
 
-	public ACompareViewStateStatic(GLMatchmaker view, int viewID, TextRenderer textRenderer,
-			TextureManager textureManager, PickingManager pickingManager,
-			GLMouseListener glMouseListener, SetBar setBar,
-			RenderCommandFactory renderCommandFactory, EDataDomain dataDomain,
-			IDataDomain useCase, DragAndDropController dragAndDropController,
+	public ACompareViewStateStatic(GLMatchmaker view, int viewID,
+			TextRenderer textRenderer, TextureManager textureManager,
+			PickingManager pickingManager, GLMouseListener glMouseListener,
+			SetBar setBar, RenderCommandFactory renderCommandFactory,
+			ISetBasedDataDomain dataDomain, DragAndDropController dragAndDropController,
 
 			CompareViewStateController compareViewStateController) {
 		super(view, viewID, textRenderer, textureManager, pickingManager,
-				glMouseListener, setBar, renderCommandFactory, dataDomain, useCase,
+				glMouseListener, setBar, renderCommandFactory, dataDomain,
 				dragAndDropController, compareViewStateController);
 	}
 
@@ -80,7 +79,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 
 			// FIXME: This is not ok! Probably this view should use its own
 			// selection manager
-			ContentSelectionManager contentSelectionManager = useCase
+			ContentSelectionManager contentSelectionManager = dataDomain
 					.getContentSelectionManager();
 			if (contentSelectionManager.checkStatus(selectionType, iExternalID)) {
 				break;
@@ -123,7 +122,8 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			if (leftHeatMapWrapperToDetailBands != null) {
 
 				DetailBand activeDetailBand = null;
-				for (ArrayList<DetailBand> detailBands : leftHeatMapWrapperToDetailBands.values()) {
+				for (ArrayList<DetailBand> detailBands : leftHeatMapWrapperToDetailBands
+						.values()) {
 					for (DetailBand detailBand : detailBands) {
 						if (iExternalID == detailBand.getBandID()) {
 							activeDetailBand = detailBand;
@@ -145,8 +145,8 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 						EIDType.EXPRESSION_INDEX);
 
 				for (Integer contentID : activeDetailBand.getContentIDs())
-					bandSelectionDelta
-							.addSelection(contentID, ACTIVE_HEATMAP_SELECTION_TYPE);
+					bandSelectionDelta.addSelection(contentID,
+							ACTIVE_HEATMAP_SELECTION_TYPE);
 
 				SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 				selectionUpdateEvent.setSender(this);
@@ -204,12 +204,13 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		selectionTypes.add(SelectionType.SELECTION);
 		selectionTypes.add(ACTIVE_HEATMAP_SELECTION_TYPE);
 
-//		for (SelectionType selectionType : contentSelectionManager.getSelectionTypes()) {
-//			if (selectionType.isManaged()) {
-//				selectionTypes.add(selectionType);
-//				break;
-//			}
-//		}
+		// for (SelectionType selectionType :
+		// contentSelectionManager.getSelectionTypes()) {
+		// if (selectionType.isManaged()) {
+		// selectionTypes.add(selectionType);
+		// break;
+		// }
+		// }
 
 		float z = 0;
 		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
@@ -250,34 +251,36 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			}
 		}
 
-//		ContentSelectionManager contentSelectionManager = heatMapWrappers.get(0)
-//				.getContentSelectionManager();
-//		ArrayList<SelectionType> selectionTypes = new ArrayList<SelectionType>();
-//		selectionTypes.add(ACTIVE_HEATMAP_SELECTION_TYPE);
-//		selectionTypes.add(SelectionType.MOUSE_OVER);
-//		selectionTypes.add(SelectionType.SELECTION);
-//
-//		for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
-//
-//			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
-//
-//			for (SelectionType selectionType : selectionTypes) {
-//
-//				for (Integer contentID : contentSelectionManager
-//						.getElements(selectionType)) {
-//					gl.glPushAttrib(GL.GL_LINE_BIT);
-//					setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
-//					HashMap<Integer, ArrayList<Vec3f>> map = contentIDToIndividualLines
-//							.get(heatMapWrapper);
-//					if (map != null) {
-//						renderSingleCurve(gl, map.get(contentID), contentID,
-//								40 + (int) (20 * Math.random()));
-//					}
-//
-//					gl.glPopAttrib();
-//				}
-//			}
-//		}
+		// ContentSelectionManager contentSelectionManager =
+		// heatMapWrappers.get(0)
+		// .getContentSelectionManager();
+		// ArrayList<SelectionType> selectionTypes = new
+		// ArrayList<SelectionType>();
+		// selectionTypes.add(ACTIVE_HEATMAP_SELECTION_TYPE);
+		// selectionTypes.add(SelectionType.MOUSE_OVER);
+		// selectionTypes.add(SelectionType.SELECTION);
+		//
+		// for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
+		//
+		// HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
+		//
+		// for (SelectionType selectionType : selectionTypes) {
+		//
+		// for (Integer contentID : contentSelectionManager
+		// .getElements(selectionType)) {
+		// gl.glPushAttrib(GL.GL_LINE_BIT);
+		// setRelationColor(gl, heatMapWrappers.get(0), contentID, true);
+		// HashMap<Integer, ArrayList<Vec3f>> map = contentIDToIndividualLines
+		// .get(heatMapWrapper);
+		// if (map != null) {
+		// renderSingleCurve(gl, map.get(contentID), contentID,
+		// 40 + (int) (20 * Math.random()));
+		// }
+		//
+		// gl.glPopAttrib();
+		// }
+		// }
+		// }
 	}
 
 	protected abstract void renderSelections(GL gl);

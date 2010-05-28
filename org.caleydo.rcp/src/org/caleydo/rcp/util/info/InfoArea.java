@@ -12,11 +12,11 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -85,10 +85,13 @@ public class InfoArea
 	protected ClearSelectionsListener clearSelectionsListener;
 	protected InfoAreaUpdateListener infoAreaUpdateListener;
 
+	protected ISetBasedDataDomain dataDomain;
+
 	/**
 	 * Constructor.
 	 */
-	public InfoArea() {
+	public InfoArea(ISetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 
@@ -156,7 +159,7 @@ public class InfoArea
 		contentTree = new TreeItem(selectionTree, SWT.NONE);
 		contentTree.setExpanded(true);
 		contentTree.setData(-1);
-		contentTree.setText(GeneralManager.get().getMasterUseCase().getContentLabel(true, true));
+		contentTree.setText(dataDomain.getContentLabel(true, true));
 
 		experimentTree = new TreeItem(selectionTree, SWT.NONE);
 		experimentTree.setExpanded(true);
@@ -227,7 +230,7 @@ public class InfoArea
 									(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
 
 							String sContentName = "";
-							if (generalManager.getUseCase(EDataDomain.GENETIC_DATA) != null) {
+							if (dataDomain.getDataDomainType() == "org.caleydo.datadomain.genetic") {
 
 								int iExpressionIndex = selectionItem.getPrimaryID();
 
@@ -335,28 +338,25 @@ public class InfoArea
 							// FIXME: This solution is not robust if new data
 							// are loaded -> REDESIGN
 
-							IDataDomain useCase = GeneralManager.get().getMasterUseCase();
-							if (useCase != null) {
+							ISet set = dataDomain.getSet();
+							TreeItem item = new TreeItem(experimentTree, SWT.NONE);
 
-								ISet set = useCase.getSet();
-								TreeItem item = new TreeItem(experimentTree, SWT.NONE);
-
-								try {
-									item.setText(set.get(selectionItem.getPrimaryID()).getLabel());
-								}
-								catch (IndexOutOfBoundsException e) {
-									item.setText("ERROR");
-								}
-								item.setData(selectionItem.getPrimaryID());
-								// item.setData("mapping_type",
-								// EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX.toString());
-								item.setData("selection_type", selectionItem.getSelectionType());
-								item.setBackground(color);
-
-								experimentTree.setExpanded(true);
+							try {
+								item.setText(set.get(selectionItem.getPrimaryID()).getLabel());
 							}
-							// addGlyphInfo(selectionItem, item);
+							catch (IndexOutOfBoundsException e) {
+								item.setText("ERROR");
+							}
+							item.setData(selectionItem.getPrimaryID());
+							// item.setData("mapping_type",
+							// EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX.toString());
+							item.setData("selection_type", selectionItem.getSelectionType());
+							item.setBackground(color);
+
+							experimentTree.setExpanded(true);
 						}
+						// addGlyphInfo(selectionItem, item);
+
 					}
 				}
 			}
@@ -529,8 +529,6 @@ public class InfoArea
 		if (vaDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
 			return;
 
-		
-		
 		if (parentComposite.isDisposed())
 			return;
 

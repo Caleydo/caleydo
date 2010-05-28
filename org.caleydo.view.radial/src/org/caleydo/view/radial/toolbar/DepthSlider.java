@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Slider;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Toolbar item that contains a slider for specifying the maximum displayed
+ * Tool-bar item that contains a slider for specifying the maximum displayed
  * hierarchy depth of RadialHierarchy.
  * 
  * @author Christian Partl
@@ -53,8 +53,8 @@ public class DepthSlider extends ControlContribution implements IToolBarItem,
 			public void handleEvent(Event event) {
 				SetMaxDisplayedHierarchyDepthEvent setMaxDisplayedHierarchyDepthEvent = new SetMaxDisplayedHierarchyDepthEvent();
 				setMaxDisplayedHierarchyDepthEvent.setSender(this);
-				setMaxDisplayedHierarchyDepthEvent
-						.setMaxDisplayedHierarchyDepth(slider.getSelection());
+				setMaxDisplayedHierarchyDepthEvent.setMaxDisplayedHierarchyDepth(slider
+						.getSelection());
 				GeneralManager.get().getEventPublisher().triggerEvent(
 						setMaxDisplayedHierarchyDepthEvent);
 			}
@@ -63,18 +63,12 @@ public class DepthSlider extends ControlContribution implements IToolBarItem,
 		iSelection = slider.getSelection();
 		slider.addListener(SWT.Selection, listener);
 
-		updateSliderPositionListener = new UpdateDepthSliderPositionListener();
-		updateSliderPositionListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(
-				UpdateDepthSliderPositionEvent.class,
-				updateSliderPositionListener);
-
+		registerEventListeners();
 		return composite;
 	}
 
 	@Override
-	public void queueEvent(
-			final AEventListener<? extends IListenerOwner> listener,
+	public void queueEvent(final AEventListener<? extends IListenerOwner> listener,
 			final AEvent event) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			public void run() {
@@ -97,11 +91,26 @@ public class DepthSlider extends ControlContribution implements IToolBarItem,
 
 	@Override
 	public void dispose() {
-		// Unregister event listener
+		unregisterEventListeners();
+
+	}
+
+	@Override
+	public void registerEventListeners() {
+		updateSliderPositionListener = new UpdateDepthSliderPositionListener();
+		updateSliderPositionListener.setHandler(this);
+		GeneralManager.get().getEventPublisher().addListener(
+				UpdateDepthSliderPositionEvent.class, updateSliderPositionListener);
+
+	}
+
+	@Override
+	public void unregisterEventListeners() {
 		if (updateSliderPositionListener != null) {
 			GeneralManager.get().getEventPublisher().removeListener(
 					updateSliderPositionListener);
 			updateSliderPositionListener = null;
 		}
+
 	}
 }

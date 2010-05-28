@@ -18,11 +18,12 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.datadomain.ADataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.system.FileOperations;
@@ -82,7 +83,7 @@ public class ProjectSaver {
 	public void saveRecentProject() {
 		ZipUtils zipUtils = new ZipUtils();
 		// FIXME - this works only for genetic data now
-		IDataDomain useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
+		IDataDomain useCase = DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic");
 		if (useCase != null) {
 			if (!useCase.getLoadDataParameters().getFileName().startsWith(RECENT_PROJECT_DIR_NAME)) {
 				zipUtils.deleteDirectory(RECENT_PROJECT_DIR_NAME);
@@ -114,9 +115,22 @@ public class ProjectSaver {
 		File tempDirFile = new File(dirName);
 		tempDirFile.mkdir();
 
+		for (IDataDomain dataDomain : DataDomainManager.getInstance().getDataDomains()) {
+			saveIndividualDataDomain(dataDomain, dirName);
+		}
+	}
+
+	private void saveIndividualDataDomain(IDataDomain dataDomain, String dirName) {
 		// FIXME - this works only for genetic data now
-		ADataDomain useCase = (ADataDomain) GeneralManager.get().getMasterUseCase();
-		LoadDataParameters parameters = useCase.getLoadDataParameters();
+		if (!(dataDomain instanceof ASetBasedDataDomain && dataDomain.getDataDomainType().equals(
+			"org.caleydo.datadomain.genetic"))) {
+			System.out.println("Can not save other data domains at the moment!");
+			return;
+		}
+
+		ASetBasedDataDomain setBasedDataDomain = (ASetBasedDataDomain) dataDomain;
+
+		LoadDataParameters parameters = setBasedDataDomain.getLoadDataParameters();
 		try {
 			FileOperations.writeInputStreamToFile(dirName + SET_DATA_FILE_NAME, GeneralManager.get()
 				.getResourceLoader().getResource(parameters.getFileName()));
@@ -132,26 +146,26 @@ public class ProjectSaver {
 			Marshaller marshaller = projectContext.createMarshaller();
 
 			for (ContentVAType type : ContentVAType.getRegisteredVATypes()) {
-				saveContentVA(marshaller, dirName, useCase, type);
+				saveContentVA(marshaller, dirName, setBasedDataDomain, type);
 			}
 
 			for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
-				saveStorageVA(marshaller, dirName, useCase, type);
+				saveStorageVA(marshaller, dirName, setBasedDataDomain, type);
 			}
 			TreePorter treePorter = new TreePorter();
-			Tree<ClusterNode> geneTree = useCase.getSet().getContentTree();
+			Tree<ClusterNode> geneTree = setBasedDataDomain.getSet().getContentTree();
 			if (geneTree != null) {
 				treePorter.exportTree(dirName + GENE_TREE_FILE_NAME, geneTree);
 			}
 
 			treePorter = new TreePorter();
-			Tree<ClusterNode> expTree = useCase.getSet().getStorageTree();
+			Tree<ClusterNode> expTree = setBasedDataDomain.getSet().getStorageTree();
 			if (expTree != null) {
 				treePorter.exportTree(dirName + EXP_TREE_FILE_NAME, expTree);
 			}
 
 			File useCaseFile = new File(dirName + USECASE_FILE_NAME);
-			marshaller.marshal(useCase, useCaseFile);
+			marshaller.marshal(setBasedDataDomain, useCaseFile);
 		}
 		catch (JAXBException ex) {
 			throw new RuntimeException("Error saving project files (xml serialization)", ex);
@@ -226,17 +240,17 @@ public class ProjectSaver {
 	 * @param type
 	 *            type of the virtual array within the given {@link IDataDomain}.
 	 */
-	private void saveContentVA(Marshaller marshaller, String dir, IDataDomain useCase, ContentVAType type)
-		throws JAXBException {
+	private void saveContentVA(Marshaller marshaller, String dir, ISetBasedDataDomain dataDomain,
+		ContentVAType type) throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
-		ContentVirtualArray va = (ContentVirtualArray) useCase.getContentVA(type);
+		ContentVirtualArray va = (ContentVirtualArray) dataDomain.getContentVA(type);
 		marshaller.marshal(va, new File(fileName));
 	}
 
-	private void saveStorageVA(Marshaller marshaller, String dir, IDataDomain useCase, StorageVAType type)
-		throws JAXBException {
+	private void saveStorageVA(Marshaller marshaller, String dir, ISetBasedDataDomain dataDomain,
+		StorageVAType type) throws JAXBException {
 		String fileName = dir + "va_" + type.toString() + ".xml";
-		StorageVirtualArray va = (StorageVirtualArray) useCase.getStorageVA(type);
+		StorageVirtualArray va = (StorageVirtualArray) dataDomain.getStorageVA(type);
 		marshaller.marshal(va, new File(fileName));
 	}
 

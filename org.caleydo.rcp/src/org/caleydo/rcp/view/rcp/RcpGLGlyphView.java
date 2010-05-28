@@ -1,6 +1,5 @@
 package org.caleydo.rcp.view.rcp;
 
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
@@ -29,7 +28,7 @@ public class RcpGLGlyphView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedGlyphView serializedView = new SerializedGlyphView(EDataDomain.CLINICAL_DATA);
+		SerializedGlyphView serializedView = new SerializedGlyphView("org.caleydo.datadomain.clinical");
 		return serializedView;
 	}
 

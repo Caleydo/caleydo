@@ -17,13 +17,11 @@ import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.animation.MovementVector2;
@@ -67,13 +65,13 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 			TextRenderer textRenderer, TextureManager textureManager,
 			PickingManager pickingManager, GLMouseListener glMouseListener,
 			SetBar setBar, RenderCommandFactory renderCommandFactory,
-			EDataDomain dataDomain, IDataDomain useCase,
+			ISetBasedDataDomain dataDomain,
 			DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
 
 		super(view, viewID, textRenderer, textureManager, pickingManager,
-				glMouseListener, setBar, renderCommandFactory, dataDomain,
-				useCase, dragAndDropController, compareViewStateController);
+				glMouseListener, setBar, renderCommandFactory,
+				dataDomain, dragAndDropController, compareViewStateController);
 
 		captionPositions = new HashMap<Integer, MovementVector3>();
 		captionTextDimensions = new HashMap<Integer, MovementVector2>();

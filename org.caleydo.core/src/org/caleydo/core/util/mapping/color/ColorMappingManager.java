@@ -52,7 +52,7 @@ public class ColorMappingManager
 		return colorMappingManager;
 	}
 
-	private void registerEventListeners() {
+	public void registerEventListeners() {
 
 		updateColorMappingListener = new UpdateColorMappingListener();
 		updateColorMappingListener.setHandler(this);
@@ -63,8 +63,7 @@ public class ColorMappingManager
 	/**
 	 * TODO from where should this method be called? are managers released anywhere?
 	 */
-	@SuppressWarnings("unused")
-	private void unregisterEventListeners() {
+	public void unregisterEventListeners() {
 
 		if (updateColorMappingListener != null) {
 			eventPublisher.removeListener(updateColorMappingListener);

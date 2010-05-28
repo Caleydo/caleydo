@@ -36,10 +36,7 @@ public abstract class AClusterer
 
 	public AClusterer() {
 		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
-		clustererCanceledListener = new ClustererCanceledListener();
-		clustererCanceledListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(ClustererCanceledEvent.class,
-			clustererCanceledListener);
+
 	}
 
 	public void setClusterState(ClusterState clusterState) {
@@ -52,15 +49,30 @@ public abstract class AClusterer
 	 * Call this when the object is ready for the garbage collector
 	 */
 	public void destroy() {
-		if (clustererCanceledListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(clustererCanceledListener);
-			clustererCanceledListener = null;
-		}
+		unregisterEventListeners();
 	}
 
 	@Override
 	public void cancel() {
 		bClusteringCanceled = true;
+	}
+
+	@Override
+	public void registerEventListeners() {
+		clustererCanceledListener = new ClustererCanceledListener();
+		clustererCanceledListener.setHandler(this);
+		GeneralManager.get().getEventPublisher().addListener(ClustererCanceledEvent.class,
+			clustererCanceledListener);
+
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+
+		if (clustererCanceledListener != null) {
+			GeneralManager.get().getEventPublisher().removeListener(clustererCanceledListener);
+			clustererCanceledListener = null;
+		}
 	}
 
 	/**

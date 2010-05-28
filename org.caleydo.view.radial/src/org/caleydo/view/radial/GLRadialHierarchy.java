@@ -16,7 +16,6 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.radial.ChangeColorModeEvent;
 import org.caleydo.core.manager.event.view.radial.DetailOutsideEvent;

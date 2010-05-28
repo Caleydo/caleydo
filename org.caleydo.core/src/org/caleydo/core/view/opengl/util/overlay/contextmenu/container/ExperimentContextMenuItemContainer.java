@@ -1,7 +1,8 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
@@ -20,10 +21,6 @@ public class ExperimentContextMenuItemContainer
 	 */
 	public ExperimentContextMenuItemContainer() {
 		super();
-
-		if (GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA) == null)
-			throw new IllegalStateException("This context menu container is only valid for genetic data");
-
 	}
 
 	/**
@@ -35,8 +32,8 @@ public class ExperimentContextMenuItemContainer
 
 	private void createMenuContent(int experimentIndex) {
 		String sExperimentTitle =
-			GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getSet().get(experimentIndex)
-				.getLabel();
+			((ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+				"org.caleydo.datadomain.genetic")).getSet().get(experimentIndex).getLabel();
 
 		addHeading(sExperimentTitle);
 

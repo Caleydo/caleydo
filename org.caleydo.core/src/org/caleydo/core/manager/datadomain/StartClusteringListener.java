@@ -5,7 +5,7 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 
 public class StartClusteringListener
-	extends AEventListener<ADataDomain> {
+	extends AEventListener<ASetBasedDataDomain> {
 
 	@Override
 	public void handleEvent(AEvent event) {

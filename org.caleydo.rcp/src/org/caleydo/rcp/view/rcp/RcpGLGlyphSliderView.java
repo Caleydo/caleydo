@@ -2,6 +2,7 @@ package org.caleydo.rcp.view.rcp;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLGlyphSliderView;
 import org.caleydo.core.view.opengl.canvas.glyph.sliderview.SerializedGlyphSliderView;
@@ -34,7 +35,7 @@ public class RcpGLGlyphSliderView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedGlyphSliderView serializedView = new SerializedGlyphSliderView(dataDomain);
+		SerializedGlyphSliderView serializedView = new SerializedGlyphSliderView(dataDomain.getDataDomainType());
 		return serializedView;
 	}
 

@@ -10,6 +10,7 @@ import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 
 /**
@@ -23,7 +24,7 @@ import org.caleydo.core.manager.datadomain.ADataDomain;
 public class ApplicationInitData {
 
 	/** defines the type of usage of the application */
-	private ADataDomain useCase;
+	private ISetBasedDataDomain dataDomain;
 
 	/** content of the set file the application is based on, only used to sync remote clients */
 	private byte[] setFileContent;
@@ -41,12 +42,12 @@ public class ApplicationInitData {
 	/** list of views in use, not used to sync remote clients */
 	private List<String> viewIDs;
 
-	public ADataDomain getUseCase() {
-		return useCase;
+	public ISetBasedDataDomain getDataDomain() {
+		return dataDomain;
 	}
 
-	public void setUseCase(ADataDomain useCase) {
-		this.useCase = useCase;
+	public void setUseCase(ISetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
 	}
 
 	public byte[] getSetFileContent() {

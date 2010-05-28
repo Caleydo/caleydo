@@ -14,8 +14,7 @@ import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -43,12 +42,12 @@ public class DetailViewState extends ACompareViewStateStatic {
 	public DetailViewState(GLMatchmaker view, int viewID, TextRenderer textRenderer,
 			TextureManager textureManager, PickingManager pickingManager,
 			GLMouseListener glMouseListener, SetBar setBar,
-			RenderCommandFactory renderCommandFactory, EDataDomain dataDomain,
-			IDataDomain useCase, DragAndDropController dragAndDropController,
+			RenderCommandFactory renderCommandFactory, 
+			ISetBasedDataDomain useCase, DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
 
 		super(view, viewID, textRenderer, textureManager, pickingManager,
-				glMouseListener, setBar, renderCommandFactory, dataDomain, useCase,
+				glMouseListener, setBar, renderCommandFactory, useCase,
 				dragAndDropController, compareViewStateController);
 		numSetsInFocus = 2;
 		indexOfHeatMapWrapperWithDendrogram = -1;
@@ -644,7 +643,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 					layouts.add(layout);
 
 					HeatMapWrapper heatMapWrapper = new HeatMapWrapper(heatMapWrapperID,
-							layout, view, null, useCase, view, dataDomain, this);
+							layout, view, null, dataDomain, view,  this);
 					heatMapWrappers.add(heatMapWrapper);
 					heatMapWrapperID++;
 				}

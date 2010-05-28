@@ -7,7 +7,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
 import org.caleydo.core.parser.parameter.IParameterHandler;
@@ -31,7 +31,7 @@ public class CmdLoadFileNStorages
 
 	private boolean bParsingOK = false;
 
-	EDataDomain dataDomain;
+	ISetBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -85,7 +85,6 @@ public class CmdLoadFileNStorages
 		} // if ( iArrayStartStop.length > 0 )
 
 		String dataDomainString = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE4.getXmlKey());
-		dataDomain = EDataDomain.valueOf(dataDomainString);
 		loadDataParameters.setDataDomain(dataDomain);
 
 	}
@@ -122,7 +121,7 @@ public class CmdLoadFileNStorages
 
 		generalManager.getGUIBridge().setFileNameCurrentDataSet(loadDataParameters.getFileName());
 
-		GeneralManager.get().getUseCase(dataDomain).setLoadDataParameters(loadDataParameters);
+		dataDomain.setLoadDataParameters(loadDataParameters);
 		commandManager.runDoCommand(this);
 	}
 

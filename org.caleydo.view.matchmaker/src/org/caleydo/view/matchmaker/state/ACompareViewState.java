@@ -21,8 +21,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -73,8 +72,7 @@ public abstract class ACompareViewState {
 
 	protected RenderCommandFactory renderCommandFactory;
 	protected IEventPublisher eventPublisher;
-	protected EDataDomain dataDomain;
-	protected IDataDomain useCase;
+	protected ISetBasedDataDomain dataDomain;
 	protected DragAndDropController dragAndDropController;
 	protected CompareViewStateController compareViewStateController;
 	protected int setBarDisplayListIndex;
@@ -121,8 +119,8 @@ public abstract class ACompareViewState {
 	public ACompareViewState(GLMatchmaker view, int viewID, TextRenderer textRenderer,
 			TextureManager textureManager, PickingManager pickingManager,
 			GLMouseListener glMouseListener, SetBar setBar,
-			RenderCommandFactory renderCommandFactory, EDataDomain dataDomain,
-			IDataDomain useCase, DragAndDropController dragAndDropController,
+			RenderCommandFactory renderCommandFactory,
+			ISetBasedDataDomain dataDomain, DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
 		this.view = view;
 		this.viewID = viewID;
@@ -133,7 +131,6 @@ public abstract class ACompareViewState {
 		this.setBar = setBar;
 		this.renderCommandFactory = renderCommandFactory;
 		this.dataDomain = dataDomain;
-		this.useCase = useCase;
 		this.dragAndDropController = dragAndDropController;
 		this.compareViewStateController = compareViewStateController;
 
@@ -168,7 +165,7 @@ public abstract class ACompareViewState {
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			if (!heatMapWrapper.isInitialized()) {
-				heatMapWrapper.init(gl, glMouseListener, null, dataDomain);
+				heatMapWrapper.init(gl, glMouseListener, null);
 			}
 			heatMapWrapper.processEvents();
 			heatMapWrapper.calculateDrawingParameters();

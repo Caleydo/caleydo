@@ -246,7 +246,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	 * coordinates
 	 */
 	private RemoteRenderingTransformer selectionTransformer;
-	
+
 	private RemoteLevelElement heatMapRemoteElement;
 
 	/**
@@ -611,7 +611,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 							iContentIndex)) {
 						fOpacity = 0.3f;
 					} else {
-						fOpacity = 1.0f; 
+						fOpacity = 1.0f;
 					}
 
 					fLookupValue = set.get(iStorageIndex).getFloat(
@@ -659,19 +659,19 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
 
-		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0,
-				fHeatMapHeight, 0, fHeatMapWidth, -20, 20, -1);
+		cmdView.setAttributes(dataDomain.getDataDomainType(),
+				EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth, -20,
+				20, -1);
 
 		cmdView.doCommand();
 
 		glHeatMapView = (GLHeatMap) cmdView.getCreatedObject();
-		glHeatMapView.setUseCase(useCase);
+		glHeatMapView.setDataDomain(dataDomain);
 		glHeatMapView.setRemoteRenderingGLView(this);
-			glHeatMapView.setRemoteLevelElement(heatMapRemoteElement);
+		glHeatMapView.setRemoteLevelElement(heatMapRemoteElement);
 		heatMapRemoteElement.setGLView(glHeatMapView);
 
 		glHeatMapView.setDataDomain(dataDomain);
-		glHeatMapView.setUseCase(useCase);
 		glHeatMapView.setSet(set);
 		glHeatMapView.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
 		glHeatMapView.initData();
@@ -691,28 +691,28 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
 
-		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0,
-				fHeatMapHeight, 0, fHeatMapWidth, -20, 20, -1);
+		cmdView.setAttributes(dataDomain.getDataDomainType(),
+				EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth, -20,
+				20, -1);
 
 		cmdView.doCommand();
 
 		glGeneDendrogramView = (GLDendrogram) cmdView.getCreatedObject();
 		glGeneDendrogramView.setDataDomain(dataDomain);
-		glGeneDendrogramView.setUseCase(useCase);
 		glGeneDendrogramView.setRemoteRenderingGLView(this);
 
 		cmdView = (CmdCreateView) generalManager.getCommandManager().createCommandByType(
 				ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(GLDendrogram.VIEW_ID + ".vertical");
 
-		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0,
-				fHeatMapHeight, 0, fHeatMapWidth, -20, 20, -1);
+		cmdView.setAttributes(dataDomain.getDataDomainType(),
+				EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth, -20,
+				20, -1);
 
 		cmdView.doCommand();
 
 		glExperimentDendrogramView = (GLDendrogram) cmdView.getCreatedObject();
 		glExperimentDendrogramView.setDataDomain(dataDomain);
-		glExperimentDendrogramView.setUseCase(useCase);
 		glExperimentDendrogramView.setRemoteRenderingGLView(this);
 
 		glGeneDendrogramView.setSet(set);
@@ -2544,23 +2544,21 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		fright = viewFrustum.getWidth() - fleftOffset;
 
-		//gl.glTranslatef(fleftOffset, -0.2f, 0);
+		// gl.glTranslatef(fleftOffset, -0.2f, 0);
 
 		// render embedded heat map
 		if (bExperimentDendrogramActive || bExperimentDendrogramRenderCut)
 			ftop -= renderStyle.getHeightExperimentDendrogram();
 
-		//glHeatMapView.getViewFrustum().setTop(ftop);
-		//glHeatMapView.getViewFrustum().setRight(fright);
-		//gl.glPushName(pickingManager.getPickingID(iUniqueID,
-		//		EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView
-		//				.getID()));
-		
+		// glHeatMapView.getViewFrustum().setTop(ftop);
+		// glHeatMapView.getViewFrustum().setRight(fright);
+		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		// EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView
+		// .getID()));
 
-		heatMapRemoteElement.getTransform().getTranslation().set(fleftOffset,
-				-0.2f, 0);
-		heatMapRemoteElement.getTransform().getScale().set(fright / 8,
-				1 * fAspectRatio, 1);
+		heatMapRemoteElement.getTransform().getTranslation().set(fleftOffset, -0.2f, 0);
+		heatMapRemoteElement.getTransform().getScale().set(fright / 8, 1 * fAspectRatio,
+				1);
 		// heatMapRemoteElement.getTransform().getTranslation().set(0, 0, 0);
 		// heatMapRemoteElement.getTransform().getScale().set(1, 0.5f, 1);
 
@@ -2572,8 +2570,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		float fAngle = rot.get(axis);
 
 		gl.glTranslatef(translation.x(), translation.y(), translation.z());
-		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(),
-				axis.z());
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 		// gl.glScalef(scale.x(), scale.y(), scale.z());
 		gl.glScalef(1, 1, 1);
 
@@ -2584,7 +2581,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		glHeatMapView.setFrustum(embeddedHeatMapFrustum);
 
 		glHeatMapView.displayRemote(gl);
-		
+
 		gl.glPopName();
 		renderStyle.setWidthLevel3(glHeatMapView.getViewFrustum().getWidth() - 0.95f);
 
@@ -3487,8 +3484,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		else
 			contentVAType = ContentVAType.CONTENT;
 
-		contentVA = useCase.getContentVA(contentVAType);
-		storageVA = useCase.getStorageVA(storageVAType);
+		contentVA = dataDomain.getContentVA(contentVAType);
+		storageVA = dataDomain.getStorageVA(storageVAType);
 
 		// In case of importing group info
 		if (set.isGeneClusterInfo())
@@ -3514,7 +3511,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	@Override
 	public String getShortInfo() {
 		return "Hierarchical Heat Map (" + contentVA.size() + " "
-				+ useCase.getContentLabel(false, true) + " / " + storageVA.size()
+				+ dataDomain.getContentLabel(false, true) + " / " + storageVA.size()
 				+ " experiments)";
 	}
 
@@ -3523,18 +3520,19 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Hierarchical Heat Map\n");
 
-		sInfoText.append(contentVA.size() + " " + useCase.getContentLabel(true, true)
+		sInfoText.append(contentVA.size() + " " + dataDomain.getContentLabel(true, true)
 				+ " in rows and " + storageVA.size() + " experiments in columns.\n");
 
 		if (bRenderOnlyContext) {
-			sInfoText.append("Showing only " + " " + useCase.getContentLabel(false, true)
+			sInfoText.append("Showing only " + " "
+					+ dataDomain.getContentLabel(false, true)
 					+ " which occur in one of the other views in focus\n");
 		} else {
 			if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
-				sInfoText.append("Showing all " + useCase.getContentLabel(false, true)
+				sInfoText.append("Showing all " + dataDomain.getContentLabel(false, true)
 						+ " in the dataset\n");
 			} else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
-				sInfoText.append("Showing all " + useCase.getContentLabel(false, true)
+				sInfoText.append("Showing all " + dataDomain.getContentLabel(false, true)
 						+ " that have a known DAVID ID mapping\n");
 			} else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 				sInfoText
@@ -4785,7 +4783,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedHierarchicalHeatMapView serializedForm = new SerializedHierarchicalHeatMapView(
-				dataDomain);
+				dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

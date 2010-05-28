@@ -4,10 +4,9 @@ import java.io.File;
 import java.util.Collection;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
-import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.id.IDCreator;
+import org.caleydo.core.manager.specialized.EOrganism;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
@@ -64,8 +63,6 @@ public interface IGeneralManager {
 
 	public IStorageManager getStorageManager();
 
-	public ISetManager getSetManager();
-
 	public ICommandManager getCommandManager();
 
 	public ISWTGUIManager getSWTGUIManager();
@@ -117,39 +114,6 @@ public interface IGeneralManager {
 
 	public TrackDataProvider getTrackDataProvider();
 
-	// /**
-	// * Returns the current use case. The use case determines which views are showing what kind of data and
-	// * which data set is currently in use.
-	// */
-	// public IUseCase getUseCase();
-
-	// /**
-	// * Set a different use case. The use case changes the behavior of the views and its loaded data.
-	// *
-	// * @param useCase
-	// * Returns the current use case. The use case determines which views are showing what kind of
-	// * data and which data set is currently in use.
-	// */
-	//
-	// public void setUseCase(IUseCase useCase);
-
-	public IDataDomain getUseCase(EDataDomain useCaseType);
-
-	// /**
-	// * Returns all use cases that are currently registered.
-	// *
-	// * @return
-	// */
-	// public ClinicalUseCase getClinicalUseCase();
-
-	public Collection<IDataDomain> getAllUseCases();
-
-	/**
-	 * Set a different use case. The use case changes the behavior of the views and its loaded data.
-	 * 
-	 * @param useCase
-	 */
-	public void addUseCase(IDataDomain useCase);
 
 	/**
 	 * Obtains the {@link IGroupwareManager} responsible for communication purposes with other calyedo
@@ -175,28 +139,9 @@ public interface IGeneralManager {
 	 */
 	public SerializationManager getSerializationManager();
 
-	/**
-	 * Returns the dominant use case of this analysis session.
-	 * 
-	 * @deprecated Will be replaced by new use case management / handling.
-	 * @return the use case
-	 */
-	@Deprecated
-	public IDataDomain getMasterUseCase();
+	public EOrganism getOrganism();
 
-	/**
-	 * Sets the dominant use case of this analysis session.
-	 * 
-	 * @deprecated Will be replaced by new use case management / handling.
-	 */
-	@Deprecated
-	public void setMasterUseCase(EDataDomain dataDomain);
 
-	/**
-	 * Sets the dominant use case of this analysis session.
-	 * 
-	 * @deprecated Will be replaced by new use case management / handling.
-	 */
-	@Deprecated
-	public void setMasterUseCase(IDataDomain useCase);
+
+
 }

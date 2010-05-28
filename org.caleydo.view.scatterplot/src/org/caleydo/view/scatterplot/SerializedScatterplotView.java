@@ -3,7 +3,6 @@ package org.caleydo.view.scatterplot;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -23,8 +22,8 @@ public class SerializedScatterplotView extends ASerializedView {
 	public SerializedScatterplotView() {
 	}
 
-	public SerializedScatterplotView(EDataDomain dataDomain) {
-		super(dataDomain);
+	public SerializedScatterplotView(String dataDomainType) {
+		super(dataDomainType);
 	}
 
 	@Override

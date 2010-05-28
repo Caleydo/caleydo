@@ -6,8 +6,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.animation.MovementVector2;
@@ -31,12 +30,12 @@ public class DetailToOverviewTransition extends ACompareViewStateTransition {
 			TextRenderer textRenderer, TextureManager textureManager,
 			PickingManager pickingManager, GLMouseListener glMouseListener,
 			SetBar setBar, RenderCommandFactory renderCommandFactory,
-			EDataDomain dataDomain, IDataDomain useCase,
+			ISetBasedDataDomain dataDomain,
 			DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
 		super(view, viewID, textRenderer, textureManager, pickingManager,
-				glMouseListener, setBar, renderCommandFactory, dataDomain,
-				useCase, dragAndDropController, compareViewStateController);
+				glMouseListener, setBar, renderCommandFactory,
+				dataDomain, dragAndDropController, compareViewStateController);
 		animationDuration = 0.5f;
 	}
 

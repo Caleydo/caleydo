@@ -5,24 +5,23 @@ import java.util.EnumMap;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.command.CommandManager;
-import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.data.set.SetManager;
 import org.caleydo.core.manager.data.storage.StorageManager;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.caleydo.core.manager.id.IDCreator;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.parser.XmlParserManager;
+import org.caleydo.core.manager.specialized.EOrganism;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
@@ -57,10 +56,9 @@ public class GeneralManager
 	/**
 	 * General manager as a singleton
 	 */
-	private static IGeneralManager generalManager;
+	private static GeneralManager generalManager;
 
 	private IStorageManager storageManager;
-	private ISetManager setManager;
 	private ICommandManager commandManager;
 	private ISWTGUIManager sWTGUIManager;
 	private IViewManager viewGLCanvasManager;
@@ -80,18 +78,7 @@ public class GeneralManager
 	private SerializationManager serializationManager;
 	private IStatisticsPerformer rStatisticsPerformer;
 
-	/**
-	 * The use case determines which kind of data is loaded in the views.
-	 */
-	private EnumMap<EDataDomain, IDataDomain> useCaseMap;
-
-	/**
-	 * The master use case of this analysis session.
-	 * 
-	 * @deprecated Will be replaced by new use case management / handling.
-	 */
-	@Deprecated
-	private IDataDomain masterUseCase;
+	EOrganism organism;
 
 	private boolean bIsWiiMode = false;
 
@@ -110,8 +97,6 @@ public class GeneralManager
 		initLogger();
 
 		storageManager = new StorageManager();
-		setManager = new SetManager();
-		// connectedElementRepManager = new SelectionManager();
 		commandManager = new CommandManager();
 		eventPublisher = new EventPublisher();
 		viewGLCanvasManager = new ViewManager();
@@ -135,7 +120,6 @@ public class GeneralManager
 		}
 
 		trackDataProvider = new TrackDataProvider();
-		useCaseMap = new EnumMap<EDataDomain, IDataDomain>(EDataDomain.class);
 	}
 
 	/**
@@ -144,12 +128,20 @@ public class GeneralManager
 	 * 
 	 * @return singleton GeneralManager instance
 	 */
-	public static IGeneralManager get() {
+	public static GeneralManager get() {
 		if (generalManager == null) {
 			generalManager = new GeneralManager();
 			generalManager.init();
 		}
 		return generalManager;
+	}
+
+	public EOrganism getOrganism() {
+		return organism;
+	}
+
+	public void setOrganism(EOrganism organism) {
+		this.organism = organism;
 	}
 
 	/**
@@ -172,11 +164,6 @@ public class GeneralManager
 	@Override
 	public IStorageManager getStorageManager() {
 		return storageManager;
-	}
-
-	@Override
-	public ISetManager getSetManager() {
-		return setManager;
 	}
 
 	@Override
@@ -277,16 +264,6 @@ public class GeneralManager
 	}
 
 	@Override
-	public void addUseCase(IDataDomain useCase) {
-		useCaseMap.put(useCase.getDataDomain(), useCase);
-	}
-
-	@Override
-	public IDataDomain getUseCase(EDataDomain useCaseType) {
-		return useCaseMap.get(useCaseType);
-	}
-
-	@Override
 	public IGroupwareManager getGroupwareManager() {
 		return groupwareManager;
 	}
@@ -301,23 +278,7 @@ public class GeneralManager
 		return serializationManager;
 	}
 
-	@Override
-	public Collection<IDataDomain> getAllUseCases() {
-		return useCaseMap.values();
-	}
-
-	@Override
-	public IDataDomain getMasterUseCase() {
-		return masterUseCase;
-	}
-
-	@Override
-	public void setMasterUseCase(EDataDomain dataDomain) {
-		this.masterUseCase = getUseCase(dataDomain);
-	}
-
-	@Override
-	public void setMasterUseCase(IDataDomain useCase) {
-		this.masterUseCase = useCase;
+	public static DataDomainManager getDataDomainManagerInstance() {
+		return DataDomainManager.getInstance();
 	}
 }

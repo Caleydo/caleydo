@@ -1243,7 +1243,7 @@ public abstract class AGLViewBrowser
 
 	public void resetView(boolean reinitialize) {
 
-		useCase.resetContextVA();
+//		useCase.resetContextVA();
 		if (containedGLViews == null)
 			return;
 
@@ -1632,9 +1632,9 @@ public abstract class AGLViewBrowser
 		cmdView.doCommand();
 
 		AGLView glView = cmdView.getCreatedObject();
-		glView.setUseCase(useCase);
+		glView.setDataDomain(dataDomain);
 		glView.setRemoteRenderingGLView(this);
-		glView.setSet(set);
+
 
 		triggerMostRecentDelta();
 

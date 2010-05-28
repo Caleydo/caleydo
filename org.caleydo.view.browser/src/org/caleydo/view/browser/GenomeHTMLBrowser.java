@@ -7,7 +7,6 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.event.view.browser.EBrowserQueryType;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -30,8 +29,7 @@ import org.eclipse.swt.widgets.Display;
  * 
  * @author Marc Streit
  */
-public class GenomeHTMLBrowser extends HTMLBrowser implements
-		ISelectionUpdateHandler {
+public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHandler {
 
 	private URLGenerator urlGenerator;
 
@@ -47,8 +45,8 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 	 */
 	public GenomeHTMLBrowser(int iParentContainerID, String sLabel) {
 
-		super(iParentContainerID, sLabel, GeneralManager.get().getIDManager()
-				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENOME));
+		super(iParentContainerID, sLabel, GeneralManager.get().getIDManager().createID(
+				EManagedObjectType.VIEW_SWT_BROWSER_GENOME));
 
 		urlGenerator = new URLGenerator();
 		iAlDavidID = new ArrayList<Integer>();
@@ -58,64 +56,52 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 	public void initViewSWTComposite(Composite parentComposite) {
 		super.initViewSWTComposite(parentComposite);
 
-		useCase = generalManager.getUseCase(EDataDomain.GENETIC_DATA);
+		final Combo queryTypeCombo = new Combo(subContributionComposite, SWT.READ_ONLY);
 
-		final Combo queryTypeCombo = new Combo(subContributionComposite,
-				SWT.READ_ONLY);
+		String storedDatabase = generalManager.getPreferenceStore().getString(
+				PreferenceConstants.BROWSER_QUERY_DATABASE);
+		// if (storedDatabase == "")
+		// storedDatabase = "GeneCards";
+		eBrowserQueryType = EBrowserQueryType.valueOf(storedDatabase);
 
-		if (useCase instanceof GeneticDataDomain) {
+		queryTypeCombo.add(EBrowserQueryType.EntrezGene.getTitle());
+		if (eBrowserQueryType == EBrowserQueryType.EntrezGene)
+			queryTypeCombo.select(0);
 
-			String storedDatabase = generalManager.getPreferenceStore()
-					.getString(PreferenceConstants.BROWSER_QUERY_DATABASE);
-			// if (storedDatabase == "")
-			// storedDatabase = "GeneCards";
-			eBrowserQueryType = EBrowserQueryType.valueOf(storedDatabase);
+		queryTypeCombo.add(EBrowserQueryType.PubMed.getTitle());
+		if (eBrowserQueryType == EBrowserQueryType.PubMed)
+			queryTypeCombo.select(1);
 
-			queryTypeCombo.add(EBrowserQueryType.EntrezGene.getTitle());
-			if (eBrowserQueryType == EBrowserQueryType.EntrezGene)
-				queryTypeCombo.select(0);
+		queryTypeCombo.add(EBrowserQueryType.GeneCards.getTitle());
+		if (eBrowserQueryType == EBrowserQueryType.GeneCards)
+			queryTypeCombo.select(2);
 
-			queryTypeCombo.add(EBrowserQueryType.PubMed.getTitle());
-			if (eBrowserQueryType == EBrowserQueryType.PubMed)
-				queryTypeCombo.select(1);
+		EOrganism organism = generalManager.getOrganism();
+		if (organism == EOrganism.HOMO_SAPIENS) {
+			queryTypeCombo.add(EBrowserQueryType.Ensembl_HomoSapiens.getTitle());
+			if (eBrowserQueryType == EBrowserQueryType.Ensembl_HomoSapiens)
+				queryTypeCombo.select(3);
 
-			queryTypeCombo.add(EBrowserQueryType.GeneCards.getTitle());
-			if (eBrowserQueryType == EBrowserQueryType.GeneCards)
-				queryTypeCombo.select(2);
+			queryTypeCombo.add(EBrowserQueryType.KEGG_HomoSapiens.getTitle());
+			if (eBrowserQueryType == EBrowserQueryType.KEGG_HomoSapiens)
+				queryTypeCombo.select(4);
 
-			EOrganism organism = ((GeneticDataDomain) useCase).getOrganism();
-			if (organism == EOrganism.HOMO_SAPIENS) {
-				queryTypeCombo.add(EBrowserQueryType.Ensembl_HomoSapiens
-						.getTitle());
-				if (eBrowserQueryType == EBrowserQueryType.Ensembl_HomoSapiens)
-					queryTypeCombo.select(3);
+			queryTypeCombo.add(EBrowserQueryType.BioCarta_HomoSapiens.getTitle());
+			if (eBrowserQueryType == EBrowserQueryType.BioCarta_HomoSapiens)
+				queryTypeCombo.select(5);
 
-				queryTypeCombo.add(EBrowserQueryType.KEGG_HomoSapiens
-						.getTitle());
-				if (eBrowserQueryType == EBrowserQueryType.KEGG_HomoSapiens)
-					queryTypeCombo.select(4);
+		} else if (organism == EOrganism.MUS_MUSCULUS) {
+			queryTypeCombo.add(EBrowserQueryType.Ensembl_MusMusculus.getTitle());
+			if (eBrowserQueryType == EBrowserQueryType.Ensembl_MusMusculus)
+				queryTypeCombo.select(3);
 
-				queryTypeCombo.add(EBrowserQueryType.BioCarta_HomoSapiens
-						.getTitle());
-				if (eBrowserQueryType == EBrowserQueryType.BioCarta_HomoSapiens)
-					queryTypeCombo.select(5);
+			queryTypeCombo.add(EBrowserQueryType.KEGG_MusMusculus.getTitle());
+			if (eBrowserQueryType == EBrowserQueryType.KEGG_MusMusculus)
+				queryTypeCombo.select(4);
 
-			} else if (organism == EOrganism.MUS_MUSCULUS) {
-				queryTypeCombo.add(EBrowserQueryType.Ensembl_MusMusculus
-						.getTitle());
-				if (eBrowserQueryType == EBrowserQueryType.Ensembl_MusMusculus)
-					queryTypeCombo.select(3);
-
-				queryTypeCombo.add(EBrowserQueryType.KEGG_MusMusculus
-						.getTitle());
-				if (eBrowserQueryType == EBrowserQueryType.KEGG_MusMusculus)
-					queryTypeCombo.select(4);
-
-				queryTypeCombo.add(EBrowserQueryType.BioCarta_MusMusculus
-						.getTitle());
-				if (eBrowserQueryType == EBrowserQueryType.BioCarta_MusMusculus)
-					queryTypeCombo.select(5);
-			}
+			queryTypeCombo.add(EBrowserQueryType.BioCarta_MusMusculus.getTitle());
+			if (eBrowserQueryType == EBrowserQueryType.BioCarta_MusMusculus)
+				queryTypeCombo.select(5);
 		}
 
 		queryTypeCombo.addSelectionListener(new SelectionAdapter() {
@@ -125,8 +111,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 				String sQueryTypeTitle = queryTypeCombo.getItem(queryTypeCombo
 						.getSelectionIndex());
 
-				for (EBrowserQueryType eBrowserQueryType : EBrowserQueryType
-						.values()) {
+				for (EBrowserQueryType eBrowserQueryType : EBrowserQueryType.values()) {
 					if (eBrowserQueryType.getTitle().equals(sQueryTypeTitle)) {
 						changeQueryType(eBrowserQueryType);
 						break;
@@ -145,8 +130,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 			return;
 
 		// Prevent handling of non genetic entities
-		if (useCase == null
-				|| useCase.getDataDomain() != EDataDomain.GENETIC_DATA)
+		if (!dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
 			return;
 
 		Display.getDefault().asyncExec(new Runnable() {
@@ -175,9 +159,8 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 						// specified when loading expression
 						// data.
 						// Possibly a different handling of the Set is required.
-						Set<String> setRefSeqIDs = generalManager
-								.getIDMappingManager().getIDAsSet(
-										EIDType.EXPRESSION_INDEX,
+						Set<String> setRefSeqIDs = generalManager.getIDMappingManager()
+								.getIDAsSet(EIDType.EXPRESSION_INDEX,
 										EIDType.REFSEQ_MRNA, expressionIndex);
 
 						String sRefSeqID = null;
@@ -192,10 +175,9 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 						// specified when loading expression
 						// data.
 						// Possibly a different handling of the Set is required.
-						Set<Integer> setDavidIDs = generalManager
-								.getIDMappingManager().getIDAsSet(
-										EIDType.EXPRESSION_INDEX,
-										EIDType.DAVID, expressionIndex);
+						Set<Integer> setDavidIDs = generalManager.getIDMappingManager()
+								.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.DAVID,
+										expressionIndex);
 
 						Integer iDavidID = null;
 						if ((setDavidIDs != null && !setDavidIDs.isEmpty())) {
@@ -206,8 +188,8 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 							continue;
 
 						if (iItemsToLoad == 0) {
-							String sURL = urlGenerator.createURL(
-									eBrowserQueryType, iDavidID);
+							String sURL = urlGenerator.createURL(eBrowserQueryType,
+									iDavidID);
 
 							browser.setUrl(sURL);
 							browser.update();
@@ -220,14 +202,12 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 						String sOutput = "";
 						sOutput = sOutput
 								+ generalManager.getIDMappingManager().getID(
-										EIDType.DAVID, EIDType.GENE_SYMBOL,
-										iDavidID);
+										EIDType.DAVID, EIDType.GENE_SYMBOL, iDavidID);
 
 						sOutput = sOutput + "\n";
 						sOutput = sOutput + sRefSeqID;
 
-						if (iAlDavidID.contains(selectionDeltaItem
-								.getPrimaryID())) {
+						if (iAlDavidID.contains(selectionDeltaItem.getPrimaryID())) {
 							continue;
 						}
 
@@ -247,11 +227,9 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 	public void changeQueryType(EBrowserQueryType eBrowserQueryType) {
 		this.eBrowserQueryType = eBrowserQueryType;
 		GeneralManager.get().getPreferenceStore().setValue(
-				PreferenceConstants.BROWSER_QUERY_DATABASE,
-				eBrowserQueryType.name());
+				PreferenceConstants.BROWSER_QUERY_DATABASE, eBrowserQueryType.name());
 		if (!iAlDavidID.isEmpty()) {
-			String sURL = urlGenerator.createURL(eBrowserQueryType, iAlDavidID
-					.get(0));
+			String sURL = urlGenerator.createURL(eBrowserQueryType, iAlDavidID.get(0));
 
 			browser.setUrl(sURL);
 			browser.update();
@@ -269,8 +247,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class,
-				selectionUpdateListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		// changeQueryTypeListener = new ChangeQueryTypeListener();
 		// changeQueryTypeListener.setBrowserView(this);
@@ -297,7 +274,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedHTMLBrowserView serializedForm = new SerializedHTMLBrowserView(
-				dataDomain);
+				dataDomain.getDataDomainType());
 		serializedForm.setViewID(getID());
 		serializedForm.setQueryType(getCurrentBrowserQueryType());
 		serializedForm.setUrl(getUrl());

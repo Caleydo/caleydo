@@ -20,6 +20,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -66,6 +67,8 @@ public class GLGlyphSliderView
 	private int iMaxCols = 100000;
 
 	private StorageSelectionManager selectionManager = null;
+	
+	protected ISetBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -85,7 +88,7 @@ public class GLGlyphSliderView
 		alGlyphAttributeTypes = new ArrayList<GlyphAttributeType>();
 		alGridPosition = new ArrayList<Vec2f>();
 
-		selectionManager = useCase.getStorageSelectionManager();
+		selectionManager = dataDomain.getStorageSelectionManager();
 		viewType = VIEW_ID;
 	}
 
@@ -376,7 +379,7 @@ public class GLGlyphSliderView
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedGlyphSliderView serializedForm = new SerializedGlyphSliderView(dataDomain);
+		SerializedGlyphSliderView serializedForm = new SerializedGlyphSliderView(dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

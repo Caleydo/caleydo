@@ -17,9 +17,9 @@ import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
-import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
@@ -54,7 +54,7 @@ public class SetExporter {
 			String identifier;
 			IIDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer iContentIndex : alGenes) {
-				if (set.getSetType().getDataDomain() == EDataDomain.GENETIC_DATA) {
+				if (set.getDataDomain().getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 					Set<String> setRefSeqIDs =
 						iDMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA,
 							iContentIndex);
@@ -92,10 +92,7 @@ public class SetExporter {
 		ContentVirtualArray contentVA = null;
 		StorageVirtualArray storageVA = null;
 
-		IDataDomain useCase = GeneralManager.get().getUseCase(set.getSetType().getDataDomain());
-
-		if (useCase.getDataDomain() != EDataDomain.GENETIC_DATA)
-			return;
+		ISetBasedDataDomain useCase = set.getDataDomain();
 
 		if (eWhichViewToExport == EWhichViewToExport.BUCKET) {
 
@@ -133,7 +130,7 @@ public class SetExporter {
 			String identifier;
 			IIDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer iContentIndex : contentVA) {
-				if (set.getSetType().getDataDomain() == EDataDomain.GENETIC_DATA) {
+				if (useCase.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 
 					// FIXME: Due to new mapping system, a mapping involving expression index can return a Set
 					// of
@@ -238,12 +235,14 @@ public class SetExporter {
 			Tree<ClusterNode> tree = set.getContentTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
+				treePorter.setDataDomain(set.getDataDomain());
 				treePorter.exportTree(directory + "/horizontal_gene.xml", tree);
 			}
 			// export experiment cluster tree to own xml file
 			tree = set.getStorageTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
+				treePorter.setDataDomain(set.getDataDomain());
 				treePorter.exportTree(directory + "/vertical_experiments.xml", tree);
 			}
 		}

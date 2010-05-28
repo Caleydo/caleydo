@@ -3,7 +3,6 @@ package org.caleydo.view.matchmaker;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -19,8 +18,8 @@ public class SerializedCompareView extends ASerializedView {
 	public SerializedCompareView() {
 	}
 
-	public SerializedCompareView(EDataDomain dataDomain) {
-		super(dataDomain);
+	public SerializedCompareView(String dataDomainType) {
+		super(dataDomainType);
 	}
 
 	@Override

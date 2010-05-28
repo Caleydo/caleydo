@@ -11,20 +11,16 @@ public class RcpTabularDataView extends CaleydoRCPViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		tabularDataView = (TabularDataView) GeneralManager.get()
-				.getViewGLCanvasManager().createView(
-						"org.caleydo.view.tabular", -1, "Tabular Data View");
+		tabularDataView = (TabularDataView) GeneralManager.get().getViewGLCanvasManager()
+				.createView("org.caleydo.view.tabular", -1, "Tabular Data View");
 
-		IDataDomain useCase = GeneralManager.get().getMasterUseCase();
-		tabularDataView.setSet(useCase.getSet());
-		tabularDataView.setUseCase(useCase);
+		tabularDataView.setDataDomain(dataDomain);
 		tabularDataView.initViewRCP(parent);
 		tabularDataView.drawView();
 
 		parentComposite = parent;
 
-		GeneralManager.get().getViewGLCanvasManager().registerItem(
-				tabularDataView);
+		GeneralManager.get().getViewGLCanvasManager().registerItem(tabularDataView);
 		view = tabularDataView;
 	}
 

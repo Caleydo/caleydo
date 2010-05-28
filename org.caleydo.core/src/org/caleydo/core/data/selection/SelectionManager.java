@@ -16,7 +16,6 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.RemoveManagedSelectionTypesEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

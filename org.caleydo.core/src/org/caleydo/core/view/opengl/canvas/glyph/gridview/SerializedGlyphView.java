@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -21,8 +20,8 @@ public class SerializedGlyphView
 	public SerializedGlyphView() {
 	}
 
-	public SerializedGlyphView(EDataDomain dataDomain) {
-		super(dataDomain);
+	public SerializedGlyphView(String dataDomainType) {
+		super(dataDomainType);
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import static org.caleydo.core.manager.IGeneralManager.USER_HOME_TEMPLATE;
 
 import java.io.Serializable;
 
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.EOrganism;
 

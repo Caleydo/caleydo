@@ -602,4 +602,6 @@ public class AffinityClusterer
 		return affinityPropagation(clusterState.getClustererType());
 
 	}
+
+
 }

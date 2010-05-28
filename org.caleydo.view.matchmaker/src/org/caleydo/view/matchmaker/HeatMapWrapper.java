@@ -27,8 +27,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -81,9 +80,9 @@ public class HeatMapWrapper {
 	private AGLView glParentView;
 	private ACompareViewState state;
 	private GLInfoAreaManager infoAreaManager;
-	private IDataDomain useCase;
+	private ISetBasedDataDomain dataDomain;
 	private IGLRemoteRenderingView parentView;
-	private EDataDomain dataDomain;
+
 
 	// private SelectionUpdateListener selectionUpdateListener;
 	private IEventPublisher eventPublisher;
@@ -94,8 +93,8 @@ public class HeatMapWrapper {
 	private boolean useFishEye = false;
 
 	public HeatMapWrapper(int id, AHeatMapLayout layout, AGLView glParentView,
-			GLInfoAreaManager infoAreaManager, IDataDomain useCase,
-			IGLRemoteRenderingView parentView, EDataDomain dataDomain,
+			GLInfoAreaManager infoAreaManager, ISetBasedDataDomain dataDomain,
+			IGLRemoteRenderingView parentView, 
 			ACompareViewState state) {
 
 		generalManager = GeneralManager.get();
@@ -108,14 +107,13 @@ public class HeatMapWrapper {
 		this.id = id;
 		this.glParentView = glParentView;
 		this.infoAreaManager = infoAreaManager;
-		this.useCase = useCase;
-		this.parentView = parentView;
 		this.dataDomain = dataDomain;
+		this.parentView = parentView;
 		this.state = state;
 
 		isNewSelection = false;
 		eventPublisher = GeneralManager.get().getEventPublisher();
-		contentSelectionManager = useCase.getContentSelectionManager();
+		contentSelectionManager = dataDomain.getContentSelectionManager();
 		// contentSelectionManager.addTypeToDeltaBlacklist(activeHeatMapSelectionType);
 		activeHeatMapID = -1;
 	}
@@ -127,13 +125,12 @@ public class HeatMapWrapper {
 						ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(GLHeatMap.VIEW_ID);
 
-		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 50,
+		cmdView.setAttributes(dataDomain.getDataDomainType(), EProjectionMode.ORTHOGRAPHIC, 0, 50,
 				0, 50, -20, 20, -1);
 
 		cmdView.doCommand();
 
 		GLHeatMap heatMap = (GLHeatMap) cmdView.getCreatedObject();
-		heatMap.setUseCase(useCase);
 		heatMap.setRemoteRenderingGLView(parentView);
 		heatMap.setSet(set);
 		heatMap.setDataDomain(dataDomain);
@@ -160,7 +157,7 @@ public class HeatMapWrapper {
 						ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(GLDendrogram.VIEW_ID + ".horizontal");
 
-		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 50,
+		cmdView.setAttributes(dataDomain.getDataDomainType(), EProjectionMode.ORTHOGRAPHIC, 0, 50,
 				0, 50, -20, 20, -1);
 
 		cmdView.doCommand();
@@ -168,7 +165,6 @@ public class HeatMapWrapper {
 		dendrogram = (GLDendrogram<ContentGroupList>) cmdView
 				.getCreatedObject();
 		dendrogram.setDataDomain(dataDomain);
-		dendrogram.setUseCase(useCase);
 		dendrogram.setRemoteRenderingGLView(parentView);
 		dendrogram.setSet(set);
 		dendrogram.setContentVAType(ContentVAType.CONTENT);
@@ -193,7 +189,7 @@ public class HeatMapWrapper {
 		}
 		hashHeatMaps.clear();
 		selectedGroups.clear();
-		contentSelectionManager = useCase.getContentSelectionManager();
+		contentSelectionManager = dataDomain.getContentSelectionManager();
 		// contentSelectionManager.clearSelections();
 		contentSelectionManager.setVA(contentVA);
 		ContentGroupList contentGroupList = contentVA.getGroupList();
@@ -220,7 +216,7 @@ public class HeatMapWrapper {
 	}
 
 	public void init(GL gl, GLMouseListener glMouseListener,
-			GLInfoAreaManager infoAreaManager, EDataDomain dataDomain) {
+			GLInfoAreaManager infoAreaManager) {
 
 		if (set == null)
 			return;

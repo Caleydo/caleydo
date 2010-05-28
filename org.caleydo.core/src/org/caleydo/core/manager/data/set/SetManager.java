@@ -1,6 +1,5 @@
 package org.caleydo.core.manager.data.set;
 
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.manager.AManager;
@@ -16,11 +15,21 @@ public class SetManager
 	extends AManager<ISet>
 	implements ISetManager {
 
-	@Override
-	public ISet createSet(final ESetType type) {
-		ISet set = new Set();
-		set.setSetType(type);
+	private static SetManager instance = null;
 
+	private SetManager() {
+	}
+
+	public static SetManager getInstance() {
+		if (instance == null)
+			instance = new SetManager();
+
+		return instance;
+	}
+
+	@Override
+	public ISet createSet() {
+		ISet set = new Set();
 		return set;
 	}
 }

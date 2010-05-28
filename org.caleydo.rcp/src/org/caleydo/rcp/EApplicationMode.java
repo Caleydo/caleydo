@@ -2,7 +2,6 @@ package org.caleydo.rcp;
 
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.selection.VirtualArray;
-import org.caleydo.core.manager.datadomain.EDataDomain;
 
 /**
  * the application mode tells the application how to start and which data-sets need to be loaded and how these
@@ -12,59 +11,36 @@ import org.caleydo.core.manager.datadomain.EDataDomain;
  * @author Alexander Lex
  */
 public enum EApplicationMode {
-	GENE_EXPRESSION_NEW_DATA(EDataDomain.GENETIC_DATA),
+	GENE_EXPRESSION_NEW_DATA,
 	// GENE_EXPRESSION_PATHWAY_VIEWER,
 
 	/** specifies to load an entire sample project */
-	SAMPLE_PROJECT(EDataDomain.GENETIC_DATA),
+	SAMPLE_PROJECT,
 
-	GENE_EXPRESSION_SAMPLE_DATA(EDataDomain.GENETIC_DATA),
-	UNSPECIFIED_NEW_DATA(EDataDomain.UNSPECIFIED),
+	GENE_EXPRESSION_SAMPLE_DATA,
+	UNSPECIFIED_NEW_DATA,
 
 	/**
 	 * specifies that the UseCase (including {@link Set} and {@link VirtualArray}) is loaded from a caleydo
 	 * server application
 	 */
-	COLLABORATION_CLIENT(EDataDomain.UNSPECIFIED),
+	COLLABORATION_CLIENT,
 
 	/**
 	 * specifies that the caleydo application runs as a client in a deskotheque environment, initialization is
 	 * done similar to {@link EApplicationMode#COLLABORATION_CLIENT}
 	 */
-	PLEX_CLIENT(EDataDomain.UNSPECIFIED),
+	PLEX_CLIENT,
 
 	/**
 	 * Needed for starting caleydo without loading any data. For example needed for eye tracker test setup.
 	 */
-	NO_DATA(null),
+	NO_DATA,
 
 	/**
 	 * specifies that the UseCase (including {@link Set} and {@link VirtualArray}) is loaded from the file
 	 * system
 	 */
-	LOAD_PROJECT(EDataDomain.UNSPECIFIED);
+	LOAD_PROJECT;
 
-	private EDataDomain dataDomain;
-
-	private EApplicationMode(EDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
-	}
-
-	/**
-	 * Returns the data domain (see {@link EDataDomain}) associated with the application mode
-	 * 
-	 * @return
-	 */
-	public EDataDomain getDataDomain() {
-		return dataDomain;
-	}
-
-	public static EApplicationMode getApplicationModeFromDomain(EDataDomain dataDomain) {
-		for (EApplicationMode mode : EApplicationMode.values()) {
-			if (mode.getDataDomain() == dataDomain)
-				return mode;
-		}
-
-		return EApplicationMode.GENE_EXPRESSION_NEW_DATA;
-	}
 }

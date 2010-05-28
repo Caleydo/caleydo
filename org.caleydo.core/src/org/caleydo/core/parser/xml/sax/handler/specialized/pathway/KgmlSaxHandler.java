@@ -280,6 +280,8 @@ public class KgmlSaxHandler
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			sAttributeName = attributes.getLocalName(iAttributeIndex);
 
+			try
+			{
 			if ("".equals(sAttributeName)) {
 				sAttributeName = attributes.getQName(iAttributeIndex);
 			}
@@ -301,6 +303,10 @@ public class KgmlSaxHandler
 			}
 			else if (sAttributeName.equals("type")) {
 				sShapeType = attributes.getValue(iAttributeIndex);
+			}
+			}
+			catch (NumberFormatException e) {
+				e.printStackTrace();
 			}
 		}
 

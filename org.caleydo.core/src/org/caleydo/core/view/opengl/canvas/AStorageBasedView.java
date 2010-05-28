@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.management.InvalidAttributeValueException;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
@@ -20,18 +21,20 @@ import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
+import org.caleydo.core.view.ISetBasedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
@@ -40,6 +43,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IStorageVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.NewSetListener;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceStorageVAListener;
@@ -58,8 +62,12 @@ import org.eclipse.core.runtime.Status;
  */
 public abstract class AStorageBasedView
 	extends AGLView
-	implements ISelectionUpdateHandler, IContentVAUpdateHandler, IStorageVAUpdateHandler,
+	implements ISetBasedView, ISelectionUpdateHandler, IContentVAUpdateHandler, IStorageVAUpdateHandler,
 	ISelectionCommandHandler, IViewCommandHandler {
+
+	protected ISet set;
+
+	protected ISetBasedDataDomain dataDomain;
 
 	// protected ArrayList<Boolean> alUseInRandomSampling;
 
@@ -103,6 +111,8 @@ public abstract class AStorageBasedView
 	protected RedrawViewListener redrawViewListener;
 	protected ClearSelectionsListener clearSelectionsListener;
 
+	protected NewSetListener newSetListener = new NewSetListener();
+
 	protected ContentVAUpdateListener contentVAUpdateListener;
 	protected StorageVAUpdateListener storageVAUpdateListener;
 	protected ReplaceContentVAListener replaceContentVAListener;
@@ -127,9 +137,8 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void setUseCase(IDataDomain useCase) {
-		this.useCase = useCase;
-		this.dataDomain = useCase.getDataDomain();
+	public void setDataDomain(IDataDomain dataDomain) {
+		this.dataDomain = (ISetBasedDataDomain) useCase;
 
 		contentSelectionManager = useCase.getContentSelectionManager();
 		storageSelectionManager = useCase.getStorageSelectionManager();
@@ -243,7 +252,7 @@ public abstract class AStorageBasedView
 
 		// Check for type that can be handled
 		if (selectionDelta.getIDType().getCategory() == EIDCategory.GENE
-			&& dataDomain == EDataDomain.GENETIC_DATA) {
+			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 			contentSelectionManager.setDelta(selectionDelta);
 			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
@@ -253,7 +262,7 @@ public abstract class AStorageBasedView
 		}
 
 		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
-			&& (dataDomain == EDataDomain.GENETIC_DATA)) {
+			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 			// generalManager.getIDMappingManager().getID(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX,
 			// key)(type)
 
@@ -264,7 +273,7 @@ public abstract class AStorageBasedView
 		}
 
 		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
-			&& dataDomain == EDataDomain.CLINICAL_DATA) {
+			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.clinical")) {
 
 			contentSelectionManager.setDelta(selectionDelta);
 
@@ -276,7 +285,7 @@ public abstract class AStorageBasedView
 		// FIXME: this is not nice since we use expression index for unspecified
 		// data
 		else if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX
-			&& dataDomain == EDataDomain.UNSPECIFIED) {
+			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")){
 
 			contentSelectionManager.setDelta(selectionDelta);
 			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
@@ -285,7 +294,7 @@ public abstract class AStorageBasedView
 		}
 
 		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
-			&& dataDomain == EDataDomain.UNSPECIFIED) {
+			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
 
 			storageSelectionManager.setDelta(selectionDelta);
 			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
@@ -541,6 +550,11 @@ public abstract class AStorageBasedView
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
+
+		newSetListener = new NewSetListener();
+		newSetListener.setHandler(this);
+		eventPublisher.addListener(NewSetEvent.class, newSetListener);
+
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
@@ -577,6 +591,12 @@ public abstract class AStorageBasedView
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
+
+		if (newSetListener != null) {
+			eventPublisher.removeListener(newSetListener);
+			newSetListener = null;
+		}
+
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
@@ -661,6 +681,17 @@ public abstract class AStorageBasedView
 	 */
 	public void setStorageVAType(StorageVAType vaType) {
 		this.storageVAType = vaType;
+	}
+
+	@Override
+	public void setSet(ISet set) {
+		this.set = set;
+		initData();
+	}
+
+	@Override
+	public ISet getSet() {
+		return set;
 	}
 
 }

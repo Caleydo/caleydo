@@ -1,7 +1,6 @@
 package org.caleydo.view.scatterplot;
 
 import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;

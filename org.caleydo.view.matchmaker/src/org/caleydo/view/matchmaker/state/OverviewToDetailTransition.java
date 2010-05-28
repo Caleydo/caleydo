@@ -6,8 +6,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.animation.MovementVector2;
@@ -31,13 +30,12 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 			TextRenderer textRenderer, TextureManager textureManager,
 			PickingManager pickingManager, GLMouseListener glMouseListener,
 			SetBar setBar, RenderCommandFactory renderCommandFactory,
-			EDataDomain dataDomain, IDataDomain useCase,
-			DragAndDropController dragAndDropController,
+			ISetBasedDataDomain dataDomain, DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
 
 		super(view, viewID, textRenderer, textureManager, pickingManager,
 				glMouseListener, setBar, renderCommandFactory, dataDomain,
-				useCase, dragAndDropController, compareViewStateController);
+				dragAndDropController, compareViewStateController);
 		animationDuration = 0.5f;
 	}
 
@@ -48,8 +46,7 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 			heatMapWrapper.setLayout(layout);
 		}
 
-		compareViewStateController
-				.setCurrentState(ECompareViewStateType.DETAIL_VIEW);
+		compareViewStateController.setCurrentState(ECompareViewStateType.DETAIL_VIEW);
 		ACompareViewState detailViewState = compareViewStateController
 				.getState(ECompareViewStateType.DETAIL_VIEW);
 		detailViewState.setAllDisplayListsDirty();
@@ -85,8 +82,7 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 		heatMapDimensions.clear();
 		heatMapPositions.clear();
 		sourceLayouts = overviewState.getLayouts();
-		ArrayList<AHeatMapLayout> destinationLayouts = detailViewState
-				.getLayouts();
+		ArrayList<AHeatMapLayout> destinationLayouts = detailViewState.getLayouts();
 		ArrayList<AHeatMapLayout> focusLayouts = new ArrayList<AHeatMapLayout>();
 
 		for (int i = 0; i < destinationLayouts.size(); i++) {
@@ -98,8 +94,7 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 					.getRenderCommandsOfLocalItems());
 			transitionLayout.setRemoteRenderCommands(srcLayout
 					.getRenderCommandsOfRemoteItems());
-			transitionLayout.setGroupPickingType(srcLayout
-					.getGroupPickingType());
+			transitionLayout.setGroupPickingType(srcLayout.getGroupPickingType());
 			focusLayouts.add(transitionLayout);
 
 			createMovementValues(gl, itemOffset + i, srcLayout, destLayout);
@@ -124,8 +119,7 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 						.getRenderCommandsOfLocalItems());
 				transitionLayout.setRemoteRenderCommands(srcLayout
 						.getRenderCommandsOfRemoteItems());
-				transitionLayout.setGroupPickingType(srcLayout
-						.getGroupPickingType());
+				transitionLayout.setGroupPickingType(srcLayout.getGroupPickingType());
 				layouts.add(transitionLayout);
 			} else if (i > itemOffset + destinationLayouts.size() - 1) {
 				createMovementValuesTargetOffset(gl, i, srcLayout, false);
@@ -135,8 +129,7 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 						.getRenderCommandsOfLocalItems());
 				transitionLayout.setRemoteRenderCommands(srcLayout
 						.getRenderCommandsOfRemoteItems());
-				transitionLayout.setGroupPickingType(srcLayout
-						.getGroupPickingType());
+				transitionLayout.setGroupPickingType(srcLayout.getGroupPickingType());
 				layouts.add(transitionLayout);
 			} else {
 				layouts.add(focusLayouts.get(i - itemOffset));
@@ -168,10 +161,9 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 
 		HeatMapWrapper heatMapWrapper = heatMapWrappers.get(id);
 
-		float textWidth = getCaptionLabelTextWidth(gl, heatMapWrapper
-				.getCaption(), srcLayout);
-		Vec3f captionStartPosition = srcLayout
-				.getCaptionLabelPosition(textWidth);
+		float textWidth = getCaptionLabelTextWidth(gl, heatMapWrapper.getCaption(),
+				srcLayout);
+		Vec3f captionStartPosition = srcLayout.getCaptionLabelPosition(textWidth);
 		Vec3f captionTargetPosition = new Vec3f(captionStartPosition.x()
 				+ captionPositionOffset[index].x(), captionStartPosition.y()
 				+ captionPositionOffset[index].y(), captionStartPosition.z()
@@ -184,8 +176,7 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 		float captionTargetHeight = captionStartHeight
 				+ captionTextDimensionsOffset[index].y();
 
-		float captionStartSpacingX = srcLayout
-				.getCaptionLabelHorizontalSpacing();
+		float captionStartSpacingX = srcLayout.getCaptionLabelHorizontalSpacing();
 		float captionStartSpacingY = srcLayout.getCaptionLabelVerticalSpacing();
 		float captionTargetSpacingX = captionStartSpacingX
 				+ captionTextSpacingOffset[index].x();
@@ -200,27 +191,26 @@ public class OverviewToDetailTransition extends ACompareViewStateTransition {
 
 		float heatMapStartWidth = srcLayout.getOverviewHeatMapWidth();
 		float heatMapStartHeight = srcLayout.getOverviewHeight();
-		float heatMapTargetWidth = heatMapStartWidth
-				+ heatMapDimensionsOffset[index].x();
+		float heatMapTargetWidth = heatMapStartWidth + heatMapDimensionsOffset[index].x();
 		float heatMapTargetHeight = heatMapStartHeight
 				+ heatMapDimensionsOffset[index].y();
 
-		MovementVector3 captionPosition = new MovementVector3(
-				captionStartPosition, captionTargetPosition, animationDuration);
+		MovementVector3 captionPosition = new MovementVector3(captionStartPosition,
+				captionTargetPosition, animationDuration);
 		captionPositions.put(id, captionPosition);
 
-		MovementVector2 captionDimenstions = new MovementVector2(
-				captionStartWidth, captionTargetWidth, captionStartHeight,
-				captionTargetHeight, animationDuration);
+		MovementVector2 captionDimenstions = new MovementVector2(captionStartWidth,
+				captionTargetWidth, captionStartHeight, captionTargetHeight,
+				animationDuration);
 		captionTextDimensions.put(id, captionDimenstions);
 
-		MovementVector2 captionSpacings = new MovementVector2(
-				captionStartSpacingX, captionTargetSpacingX,
-				captionStartSpacingY, captionTargetSpacingY, animationDuration);
+		MovementVector2 captionSpacings = new MovementVector2(captionStartSpacingX,
+				captionTargetSpacingX, captionStartSpacingY, captionTargetSpacingY,
+				animationDuration);
 		captionTextSpacing.put(id, captionSpacings);
 
-		MovementVector3 heatMapPosition = new MovementVector3(
-				heatMapStartPosition, heatMapTargetPosition, animationDuration);
+		MovementVector3 heatMapPosition = new MovementVector3(heatMapStartPosition,
+				heatMapTargetPosition, animationDuration);
 		heatMapPositions.put(id, heatMapPosition);
 
 		MovementVector2 heatMapDims = new MovementVector2(heatMapStartWidth,

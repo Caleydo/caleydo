@@ -43,28 +43,20 @@ public class RCPViewManager
 		return rcpViewManager;
 	}
 
-	/**
-	 * Registers the listeners for this view to the event system. To release the allocated resources
-	 * unregisterEventListeners() has to be called.
-	 */
-	private void registerEventListeners() {
+	@Override
+	public void registerEventListeners() {
 		activateViewListener = new ActivateViewListener();
 		activateViewListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(LoadPathwayEvent.class,
-			activateViewListener);
+		GeneralManager.get().getEventPublisher().addListener(LoadPathwayEvent.class, activateViewListener);
 		GeneralManager.get().getEventPublisher().addListener(LoadPathwaysByGeneEvent.class,
 			activateViewListener);
-		GeneralManager.get().getEventPublisher().addListener(OpenViewEvent.class,
-			activateViewListener);		
+		GeneralManager.get().getEventPublisher().addListener(OpenViewEvent.class, activateViewListener);
 		GeneralManager.get().getEventPublisher().addListener(OpenMatchmakerViewEvent.class,
-			activateViewListener);	
+			activateViewListener);
 	}
 
-	/**
-	 * Unregisters the listeners for this view from the event system. To release the allocated resources
-	 * unregisterEventListenrs() has to be called.
-	 */
-	private void unregisterEventListeners() {
+	@Override
+	public void unregisterEventListeners() {
 		if (activateViewListener != null) {
 			GeneralManager.get().getEventPublisher().removeListener(activateViewListener);
 			activateViewListener = null;

@@ -17,6 +17,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -105,6 +106,8 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	private ArrayList<ISet> setsToCompare;
 	private ArrayList<Integer> clusteredSets;
 
+	protected ISetBasedDataDomain dataDomain;
+
 	/**
 	 * Constructor.
 	 * 
@@ -144,7 +147,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		// storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
 		compareViewStateController = new CompareViewStateController(this, iUniqueID,
 				textRenderer, textureManager, pickingManager, glMouseListener,
-				contextMenu, dataDomain, useCase);
+				contextMenu, dataDomain);
 
 		compareViewStateController.init(gl);
 	}
@@ -323,7 +326,8 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedCompareView serializedForm = new SerializedCompareView(dataDomain);
+		SerializedCompareView serializedForm = new SerializedCompareView(dataDomain
+				.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -526,7 +530,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 		if (!allSetsClustered)
 			return;
-	
+
 		compareViewStateController.setSetsToCompare(setsToCompare);
 		compareViewStateController.handleReplaceContentVA(setID, idCategory, vaType);
 		clusteredSets.clear();

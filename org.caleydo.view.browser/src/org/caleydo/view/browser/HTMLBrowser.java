@@ -66,8 +66,8 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 	 * Constructor.
 	 */
 	public HTMLBrowser(final int iParentContainerId, final String sLabel) {
-		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager()
-				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENERAL));
+		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
+				EManagedObjectType.VIEW_SWT_BROWSER_GENERAL));
 		viewType = VIEW_ID;
 		init();
 	}
@@ -75,8 +75,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 	/**
 	 * Constructor.
 	 */
-	public HTMLBrowser(final int iParentContainerId, final String sLabel,
-			int iViewID) {
+	public HTMLBrowser(final int iParentContainerId, final String sLabel, int iViewID) {
 		super(iParentContainerId, sLabel, iViewID);
 		init();
 	}
@@ -96,8 +95,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 		Composite composite = new Composite(parentComposite, SWT.NONE);
 		GridLayout layout = new GridLayout(1, false);
 		composite.setLayout(layout);
-		composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL,
-				true, true));
+		composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 
 		Composite browserBarComposite = new Composite(composite, SWT.NONE);
 		browserBarComposite.setLayout(new GridLayout(3, false));
@@ -109,24 +107,23 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 		GridData data = new GridData(GridData.FILL_VERTICAL);
 		// toolbar.setLayoutData(data);
 
-		ResourceLoader resourceLoader = GeneralManager.get()
-				.getResourceLoader();
+		ResourceLoader resourceLoader = GeneralManager.get().getResourceLoader();
 
 		goButton = new ToolItem(toolbar, SWT.PUSH);
 		goButton.setImage(resourceLoader.getImage(parentComposite.getDisplay(),
 				EIconTextures.BROWSER_REFRESH_IMAGE.getFileName()));
 
 		backButton = new ToolItem(toolbar, SWT.PUSH);
-		backButton.setImage(resourceLoader.getImage(parentComposite
-				.getDisplay(), EIconTextures.BROWSER_BACK_IMAGE.getFileName()));
+		backButton.setImage(resourceLoader.getImage(parentComposite.getDisplay(),
+				EIconTextures.BROWSER_BACK_IMAGE.getFileName()));
 
 		stopButton = new ToolItem(toolbar, SWT.PUSH);
-		stopButton.setImage(resourceLoader.getImage(parentComposite
-				.getDisplay(), EIconTextures.BROWSER_STOP_IMAGE.getFileName()));
+		stopButton.setImage(resourceLoader.getImage(parentComposite.getDisplay(),
+				EIconTextures.BROWSER_STOP_IMAGE.getFileName()));
 
 		homeButton = new ToolItem(toolbar, SWT.PUSH);
-		homeButton.setImage(resourceLoader.getImage(parentComposite
-				.getDisplay(), EIconTextures.BROWSER_HOME_IMAGE.getFileName()));
+		homeButton.setImage(resourceLoader.getImage(parentComposite.getDisplay(),
+				EIconTextures.BROWSER_HOME_IMAGE.getFileName()));
 
 		textURL = new Text(browserBarComposite, SWT.BORDER);
 
@@ -193,20 +190,18 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 			@Override
 			public void completed(ProgressEvent event) {
 				// Give the focus back to active view
-				if (GeneralManager.get().getViewGLCanvasManager()
-						.getActiveSWTView() != null) {
-					GeneralManager.get().getViewGLCanvasManager()
-							.getActiveSWTView().setFocus();
+				if (GeneralManager.get().getViewGLCanvasManager().getActiveSWTView() != null) {
+					GeneralManager.get().getViewGLCanvasManager().getActiveSWTView()
+							.setFocus();
 				}
 			}
 
 			@Override
 			public void changed(ProgressEvent event) {
 				// Give the focus back to active view
-				if (GeneralManager.get().getViewGLCanvasManager()
-						.getActiveSWTView() != null) {
-					GeneralManager.get().getViewGLCanvasManager()
-							.getActiveSWTView().setFocus();
+				if (GeneralManager.get().getViewGLCanvasManager().getActiveSWTView() != null) {
+					GeneralManager.get().getViewGLCanvasManager().getActiveSWTView()
+							.setFocus();
 				}
 			}
 		});
@@ -216,15 +211,13 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 		// browser.addLocationListener(idExtractionLocationListener);
 
 		data = new GridData();
-		browser.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true,
-				true));
+		browser.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 	}
 
 	@Override
 	public void drawView() {
 		generalManager.getLogger().log(
-				new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Load "
-						+ url));
+				new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Load " + url));
 
 		try {
 			parentComposite.getDisplay().asyncExec(new Runnable() {
@@ -286,8 +279,7 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 		if (changeURLListener != null) {
-			eventPublisher.removeListener(ChangeURLEvent.class,
-					changeURLListener);
+			eventPublisher.removeListener(ChangeURLEvent.class, changeURLListener);
 			changeURLListener = null;
 		}
 	}
@@ -298,7 +290,8 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 	 */
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDummyView serializedForm = new SerializedDummyView(dataDomain);
+		SerializedDummyView serializedForm = new SerializedDummyView(dataDomain
+				.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

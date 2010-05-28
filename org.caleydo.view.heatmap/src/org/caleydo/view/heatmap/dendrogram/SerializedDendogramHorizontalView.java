@@ -3,7 +3,6 @@ package org.caleydo.view.heatmap.dendrogram;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -25,8 +24,8 @@ public class SerializedDendogramHorizontalView extends ASerializedView {
 	public SerializedDendogramHorizontalView() {
 	}
 
-	public SerializedDendogramHorizontalView(EDataDomain dataDomain) {
-		super(dataDomain);
+	public SerializedDendogramHorizontalView(String dataDomainType) {
+		super(dataDomainType);
 	}
 
 	@Override

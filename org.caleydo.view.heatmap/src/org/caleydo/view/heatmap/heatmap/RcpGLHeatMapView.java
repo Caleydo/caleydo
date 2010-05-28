@@ -23,9 +23,8 @@ public class RcpGLHeatMapView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		IDataDomain usecase = GeneralManager.get().getUseCase(dataDomain);
-		if (usecase != null && usecase instanceof GeneticDataDomain
-				&& ((GeneticDataDomain) usecase).isPathwayViewerMode()) {
+		if (dataDomain != null && dataDomain instanceof GeneticDataDomain
+				&& ((GeneticDataDomain) dataDomain).isPathwayViewerMode()) {
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
 			alert.setMessage("Cannot create heat map in pathway viewer mode!");
 			alert.open();
@@ -41,7 +40,7 @@ public class RcpGLHeatMapView extends ARcpGLViewPart {
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedHeatMapView serializedView = new SerializedHeatMapView(
-				dataDomain);
+				dataDomain.getDataDomainType());
 		return serializedView;
 	}
 

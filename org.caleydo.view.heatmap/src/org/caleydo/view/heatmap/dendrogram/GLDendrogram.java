@@ -29,7 +29,6 @@ import org.caleydo.core.data.selection.VABasedSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.NewContentGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.NewStorageGroupInfoEvent;
@@ -66,8 +65,8 @@ import com.sun.opengl.util.texture.TextureCoords;
  * 
  * @author Bernhard Schlegl
  */
-public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
-		AStorageBasedView implements IClusterNodeEventReceiver {
+public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorageBasedView
+		implements IClusterNodeEventReceiver {
 
 	public final static String VIEW_ID = "org.caleydo.view.dendrogram";
 
@@ -206,8 +205,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 
 	@Override
 	public void initRemote(final GL gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener,
-			GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
 
@@ -359,8 +357,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 			gl.glEnd();
 
 			tempTexture.disable();
-			tempTexture = textureManager.getIconTexture(gl,
-					EIconTextures.SLIDER_MIDDLE);
+			tempTexture = textureManager.getIconTexture(gl, EIconTextures.SLIDER_MIDDLE);
 			tempTexture.enable();
 			tempTexture.bind();
 
@@ -391,8 +388,9 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
 			gl.glVertex3f(fPosCut, -fSizeDendrogramArrow, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.top());
-			gl.glVertex3f(fPosCut + fSizeDendrogramArrow,
-					-fSizeDendrogramArrow, BUTTON_Z);
+			gl
+					.glVertex3f(fPosCut + fSizeDendrogramArrow, -fSizeDendrogramArrow,
+							BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.left(), texCoordsArrow.top());
 			gl.glVertex3f(fPosCut + fSizeDendrogramArrow, 0, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.left(), texCoordsArrow.bottom());
@@ -403,8 +401,9 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
 			gl.glVertex3f(fPosCut, -fSizeDendrogramArrow, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.top());
-			gl.glVertex3f(fPosCut - fSizeDendrogramArrow,
-					-fSizeDendrogramArrow, BUTTON_Z);
+			gl
+					.glVertex3f(fPosCut - fSizeDendrogramArrow, -fSizeDendrogramArrow,
+							BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.left(), texCoordsArrow.top());
 			gl.glVertex3f(fPosCut - fSizeDendrogramArrow, 0, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.left(), texCoordsArrow.bottom());
@@ -441,8 +440,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 			gl.glEnd();
 
 			tempTexture.disable();
-			tempTexture = textureManager.getIconTexture(gl,
-					EIconTextures.SLIDER_MIDDLE);
+			tempTexture = textureManager.getIconTexture(gl, EIconTextures.SLIDER_MIDDLE);
 			tempTexture.enable();
 			tempTexture.bind();
 			texCoords = tempTexture.getImageTexCoords();
@@ -474,8 +472,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
 			gl.glVertex3f(fWidth + fSizeDendrogramArrow, fPosCut, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.top());
-			gl.glVertex3f(fWidth + fSizeDendrogramArrow, fPosCut
-					+ fSizeDendrogramArrow, BUTTON_Z);
+			gl.glVertex3f(fWidth + fSizeDendrogramArrow, fPosCut + fSizeDendrogramArrow,
+					BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.left(), texCoordsArrow.top());
 			gl.glVertex3f(fWidth, fPosCut + fSizeDendrogramArrow, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.left(), texCoordsArrow.bottom());
@@ -486,8 +484,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
 			gl.glVertex3f(fWidth + fSizeDendrogramArrow, fPosCut, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.top());
-			gl.glVertex3f(fWidth + fSizeDendrogramArrow, fPosCut
-					- fSizeDendrogramArrow, BUTTON_Z);
+			gl.glVertex3f(fWidth + fSizeDendrogramArrow, fPosCut - fSizeDendrogramArrow,
+					BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.left(), texCoordsArrow.top());
 			gl.glVertex3f(fWidth, fPosCut - fSizeDendrogramArrow, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.left(), texCoordsArrow.bottom());
@@ -574,8 +572,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 	 * @param fHeight
 	 *            height of area for sub dendrogram
 	 */
-	public void renderSubTreeFromIndexToIndex(GL gl, int fromIndex,
-			int toIndex, int iNrLeafs, float fWidth, float fHeight) {
+	public void renderSubTreeFromIndexToIndex(GL gl, int fromIndex, int toIndex,
+			int iNrLeafs, float fWidth, float fHeight) {
 
 		if (tree == null)
 			return;
@@ -611,8 +609,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 	 *            boolean which identifies nodes in sub dendrogram
 	 * @return true if node is part of sub dendrogram, false otherwise
 	 */
-	private boolean determineNodesToRender(ClusterNode currentNode, int from,
-			int to, boolean inBlock) {
+	private boolean determineNodesToRender(ClusterNode currentNode, int from, int to,
+			boolean inBlock) {
 
 		boolean boolVar = inBlock;
 
@@ -755,8 +753,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 		if (bUseBlackColoring)
 			gl.glColor4f(0, 0, 0, 1);
 		else
-			gl.glColor4f(fArMappingColor[0], fArMappingColor[1],
-					fArMappingColor[2], 1);
+			gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], 1);
 
 		if (currentNode.isPartOfSubTree())
 			currentNode.getPosSubTree().x();
@@ -793,9 +790,10 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 
 			if (currentNode.isPartOfSubTree()) {
 
-				gl.glPushName(pickingManager.getPickingID(iUniqueID,
-						EPickingType.DENDROGRAM_GENE_NODE_SELECTION,
-						currentNode.getID()));
+				gl
+						.glPushName(pickingManager.getPickingID(iUniqueID,
+								EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode
+										.getID()));
 
 				// vertical line connecting all child nodes
 				gl.glBegin(GL.GL_LINES);
@@ -806,8 +804,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 				// horizontal lines connecting all children with their parent
 				for (int i = 0; i < iNrChildsNode; i++) {
 					gl.glBegin(GL.GL_LINES);
-					gl.glVertex3f(xmin, tempPositions[i].y(), tempPositions[i]
-							.z());
+					gl.glVertex3f(xmin, tempPositions[i].y(), tempPositions[i].z());
 					gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(),
 							tempPositions[i].z());
 					gl.glEnd();
@@ -821,22 +818,20 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(currentNode.getPosSubTree().x(), currentNode
 						.getPosSubTree().y(), currentNode.getPosSubTree().z());
-				gl.glVertex3f(xGlobalMaxSubTree, currentNode.getPosSubTree()
-						.y(), currentNode.getPosSubTree().z());
+				gl.glVertex3f(xGlobalMaxSubTree, currentNode.getPosSubTree().y(),
+						currentNode.getPosSubTree().z());
 				gl.glEnd();
 			}
 		}
 
 		if (currentNode.isPartOfSubTree()) {
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode
-							.getID()));
+					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode.getID()));
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(currentNode.getPosSubTree().x() + fLevelWidthSubTree,
-					currentNode.getPosSubTree().y(), currentNode
-							.getPosSubTree().z());
-			gl.glVertex3f(currentNode.getPosSubTree().x(), currentNode
-					.getPosSubTree().y(), currentNode.getPosSubTree().z());
+					currentNode.getPosSubTree().y(), currentNode.getPosSubTree().z());
+			gl.glVertex3f(currentNode.getPosSubTree().x(), currentNode.getPosSubTree()
+					.y(), currentNode.getPosSubTree().z());
 			gl.glEnd();
 			gl.glPopName();
 		}
@@ -970,28 +965,28 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 			gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 
 			gl.glBegin(GL.GL_QUADS);
-			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode
-					.getPos().y() - 0.025f, SELECTION_Z);
-			gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode
-					.getPos().y() - 0.025f, SELECTION_Z);
-			gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode
-					.getPos().y() + 0.025f, SELECTION_Z);
-			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode
-					.getPos().y() + 0.025f, SELECTION_Z);
+			gl.glVertex3f(currentNode.getPos().x() - 0.025f,
+					currentNode.getPos().y() - 0.025f, SELECTION_Z);
+			gl.glVertex3f(currentNode.getPos().x() + 0.025f,
+					currentNode.getPos().y() - 0.025f, SELECTION_Z);
+			gl.glVertex3f(currentNode.getPos().x() + 0.025f,
+					currentNode.getPos().y() + 0.025f, SELECTION_Z);
+			gl.glVertex3f(currentNode.getPos().x() - 0.025f,
+					currentNode.getPos().y() + 0.025f, SELECTION_Z);
 			gl.glEnd();
 
 		} else if (currentNode.getSelectionType() == SelectionType.SELECTION) {
 			gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 
 			gl.glBegin(GL.GL_QUADS);
-			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode
-					.getPos().y() - 0.025f, SELECTION_Z);
-			gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode
-					.getPos().y() - 0.025f, SELECTION_Z);
-			gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode
-					.getPos().y() + 0.025f, SELECTION_Z);
-			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode
-					.getPos().y() + 0.025f, SELECTION_Z);
+			gl.glVertex3f(currentNode.getPos().x() - 0.025f,
+					currentNode.getPos().y() - 0.025f, SELECTION_Z);
+			gl.glVertex3f(currentNode.getPos().x() + 0.025f,
+					currentNode.getPos().y() - 0.025f, SELECTION_Z);
+			gl.glVertex3f(currentNode.getPos().x() + 0.025f,
+					currentNode.getPos().y() + 0.025f, SELECTION_Z);
+			gl.glVertex3f(currentNode.getPos().x() - 0.025f,
+					currentNode.getPos().y() + 0.025f, SELECTION_Z);
 			gl.glEnd();
 
 		}
@@ -1021,8 +1016,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 		if (bUseBlackColoring)
 			gl.glColor4f(0, 0, 0, 1);
 		else
-			gl.glColor4f(fArMappingColor[0], fArMappingColor[1],
-					fArMappingColor[2], fOpacity);
+			gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2],
+					fOpacity);
 
 		float fDiff = 0;
 		float fTemp = currentNode.getPos().x();
@@ -1077,8 +1072,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 			fDiff = fTemp - xmin;
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode
-							.getID()));
+					EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode.getID()));
 
 			// vertical line connecting all child nodes
 			gl.glBegin(GL.GL_LINES);
@@ -1091,11 +1085,10 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(xmin, tempPositions[i].y(), tempPositions[i].z());
 				if (bCutOffActive[i] && bRenderUntilCut == false)
-					gl.glVertex3f(xGlobalMax, tempPositions[i].y(),
-							tempPositions[i].z());
+					gl.glVertex3f(xGlobalMax, tempPositions[i].y(), tempPositions[i].z());
 				else if (bCutOffActive[i] && bRenderUntilCut == true)
-					gl.glVertex3f(fPosCut + 0.1f, tempPositions[i].y(),
-							tempPositions[i].z());
+					gl.glVertex3f(fPosCut + 0.1f, tempPositions[i].y(), tempPositions[i]
+							.z());
 				else
 					gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(),
 							tempPositions[i].z());
@@ -1106,25 +1099,23 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 
 		} else {
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode
-							.getID()));
+					EPickingType.DENDROGRAM_GENE_LEAF_SELECTION, currentNode.getID()));
 
 			// horizontal line visualizing leaf nodes
 			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(),
-					currentNode.getPos().z());
-			gl.glVertex3f(xGlobalMax, currentNode.getPos().y(), currentNode
+			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode
 					.getPos().z());
+			gl.glVertex3f(xGlobalMax, currentNode.getPos().y(), currentNode.getPos().z());
 			gl.glEnd();
 
 			gl.glPopName();
 		}
 
 		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(currentNode.getPos().x() - fDiff, currentNode.getPos()
-				.y(), currentNode.getPos().z());
-		gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(),
+		gl.glVertex3f(currentNode.getPos().x() - fDiff, currentNode.getPos().y(),
 				currentNode.getPos().z());
+		gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode
+				.getPos().z());
 		gl.glEnd();
 
 	}
@@ -1138,8 +1129,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 	 *            Opacity value of the current node. In case of determine
 	 *            clusters with the cut off value.
 	 */
-	private void renderDendrogramExperiments(final GL gl,
-			ClusterNode currentNode, float fOpacity) {
+	private void renderDendrogramExperiments(final GL gl, ClusterNode currentNode,
+			float fOpacity) {
 
 		float fLookupValue = currentNode.getAverageExpressionValue();
 		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
@@ -1147,8 +1138,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 		if (bUseBlackColoring)
 			gl.glColor4f(0, 0, 0, 1);
 		else
-			gl.glColor4f(fArMappingColor[0], fArMappingColor[1],
-					fArMappingColor[2], fOpacity);
+			gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2],
+					fOpacity);
 
 		float fDiff = 0;
 		float fTemp = currentNode.getPos().y();
@@ -1204,8 +1195,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 			fDiff = fTemp - ymax;
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.DENDROGRAM_EXPERIMENT_NODE_SELECTION,
-					currentNode.getID()));
+					EPickingType.DENDROGRAM_EXPERIMENT_NODE_SELECTION, currentNode
+							.getID()));
 
 			// horizontal line connecting all child nodes
 			gl.glBegin(GL.GL_LINES);
@@ -1219,11 +1210,10 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(tempPositions[i].x(), ymax, tempPositions[i].z());
 				if (bCutOffActive[i] && bRenderUntilCut == false)
-					gl.glVertex3f(tempPositions[i].x(), yGlobalMin,
-							tempPositions[i].z());
+					gl.glVertex3f(tempPositions[i].x(), yGlobalMin, tempPositions[i].z());
 				else if (bCutOffActive[i] && bRenderUntilCut == true)
-					gl.glVertex3f(tempPositions[i].x(), fPosCut - 0.1f,
-							tempPositions[i].z());
+					gl.glVertex3f(tempPositions[i].x(), fPosCut - 0.1f, tempPositions[i]
+							.z());
 				else
 					gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(),
 							tempPositions[i].z());
@@ -1234,25 +1224,24 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 
 		} else {
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.DENDROGRAM_EXPERIMENT_LEAF_SELECTION,
-					currentNode.getID()));
+					EPickingType.DENDROGRAM_EXPERIMENT_LEAF_SELECTION, currentNode
+							.getID()));
 
 			// vertical line visualizing leaf nodes
 			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(),
-					currentNode.getPos().z());
-			gl.glVertex3f(currentNode.getPos().x(), yGlobalMin, currentNode
+			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode
 					.getPos().z());
+			gl.glVertex3f(currentNode.getPos().x(), yGlobalMin, currentNode.getPos().z());
 			gl.glEnd();
 
 			gl.glPopName();
 		}
 
 		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y()
-				- fDiff, currentNode.getPos().z());
-		gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(),
+		gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y() - fDiff,
 				currentNode.getPos().z());
+		gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode
+				.getPos().z());
 		gl.glEnd();
 	}
 
@@ -1291,17 +1280,13 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 			if (bHasFrustumChanged || bRedrawDendrogram) {
 				if (bRenderContentTree) {
 					xGlobalMax = viewFrustum.getWidth();
-					fSampleHeight = viewFrustum.getHeight()
-							/ rootNode.getNrLeaves();
-					fLevelWidth = (viewFrustum.getWidth() - 0.1f)
-							/ rootNode.getDepth();
+					fSampleHeight = viewFrustum.getHeight() / rootNode.getNrLeaves();
+					fLevelWidth = (viewFrustum.getWidth() - 0.1f) / rootNode.getDepth();
 					yPosInit = viewFrustum.getHeight();
 				} else {
 					yGlobalMin = 0.0f;
-					fSampleWidth = viewFrustum.getWidth()
-							/ rootNode.getNrLeaves();
-					fLevelHeight = (viewFrustum.getHeight() - 0.1f)
-							/ rootNode.getDepth();
+					fSampleWidth = viewFrustum.getWidth() / rootNode.getNrLeaves();
+					fLevelHeight = (viewFrustum.getHeight() - 0.1f) / rootNode.getDepth();
 					xPosInit = 0.0f;
 				}
 				determinePositions();
@@ -1362,8 +1347,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 			if (fArTargetWorldCoordinates[0] > 0.1f
 					&& fArTargetWorldCoordinates[0] < fWidth) {
 				if (isMirrored) {
-					fPosCut = -fArTargetWorldCoordinates[0]
-							+ (rootNode.getDepth() - 1) * fLevelWidth + 0.1f;
+					fPosCut = -fArTargetWorldCoordinates[0] + (rootNode.getDepth() - 1)
+							* fLevelWidth + 0.1f;
 				} else {
 					fPosCut = fArTargetWorldCoordinates[0] - fLevelWidth;
 				}
@@ -1398,9 +1383,9 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 		iAlClusterNodes.clear();
 		getNumberOfClustersRec(rootNode);
 		if (bRenderContentTree)
-			groupList = (GroupType)contentVA.buildNewGroupList(iAlClusterNodes);
+			groupList = (GroupType) contentVA.buildNewGroupList(iAlClusterNodes);
 		else
-			groupList = (GroupType)storageVA.buildNewGroupList(iAlClusterNodes);
+			groupList = (GroupType) storageVA.buildNewGroupList(iAlClusterNodes);
 
 		triggerGroupListEvent();
 
@@ -1526,24 +1511,23 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 
 				ClusterNode leafNode = tree.getNodeByNumber(iExternalID);
 				if (contentSelectionManager.checkStatus(leafNode.getLeafID()) == false
-						&& storageSelectionManager.checkStatus(leafNode
-								.getLeafID()) == false)
+						&& storageSelectionManager.checkStatus(leafNode.getLeafID()) == false)
 					break;
 
 				// Prevent handling of non genetic data in context menu
-				if (dataDomain != EDataDomain.GENETIC_DATA)
+				if (!dataDomain.getDataDomainType().equals(
+						"org.caleydo.datadomain.genetic"))
 					break;
 
 				if (!isRenderedRemote()) {
-					contextMenu.setLocation(pick.getPickedPoint(),
-							getParentGLCanvas().getWidth(), getParentGLCanvas()
-									.getHeight());
+					contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
+							.getWidth(), getParentGLCanvas().getHeight());
 					contextMenu.setMasterGLView(this);
 				}
 
 				ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
-				geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX,
-						leafNode.getLeafID());
+				geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX, leafNode
+						.getLeafID());
 				contextMenu.addItemContanier(geneContextMenuItemContainer);
 
 				break;
@@ -1554,8 +1538,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 				resetAllTreeSelections();
 
 				if (tree.getNodeByNumber(iExternalID) != null)
-					tree.getNodeByNumber(iExternalID).setSelectionType(
-							selectionType);
+					tree.getNodeByNumber(iExternalID).setSelectionType(selectionType);
 
 				ISelectionDelta selectionDelta = null;
 				VABasedSelectionManager selectionManager = null;
@@ -1595,14 +1578,12 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 
 				resetAllTreeSelections();
 
-				tree.getNodeByNumber(iExternalID).setSelectionType(
-						selectionType);
+				tree.getNodeByNumber(iExternalID).setSelectionType(selectionType);
 
 				ClusterNodeSelectionEvent clusterNodeEvent = new ClusterNodeSelectionEvent();
 				SelectionDelta selectionDeltaClusterNode = new SelectionDelta(
 						EIDType.CLUSTER_NUMBER);
-				selectionDeltaClusterNode.addSelection(iExternalID,
-						selectionType);
+				selectionDeltaClusterNode.addSelection(iExternalID, selectionType);
 				clusterNodeEvent.setSelectionDelta(selectionDeltaClusterNode);
 				eventPublisher.triggerEvent(clusterNodeEvent);
 			}
@@ -1625,21 +1606,18 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 				ClusterNode leafNode = tree.getNodeByNumber(iExternalID);
 
 				if (contentSelectionManager.checkStatus(leafNode.getLeafID()) == false
-						&& storageSelectionManager.checkStatus(leafNode
-								.getLeafID()) == false)
+						&& storageSelectionManager.checkStatus(leafNode.getLeafID()) == false)
 					break;
 
 				if (!isRenderedRemote()) {
-					contextMenu.setLocation(pick.getPickedPoint(),
-							getParentGLCanvas().getWidth(), getParentGLCanvas()
-									.getHeight());
+					contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
+							.getWidth(), getParentGLCanvas().getHeight());
 					contextMenu.setMasterGLView(this);
 				}
 
 				ExperimentContextMenuItemContainer experimentContextMenuItemContainer = new ExperimentContextMenuItemContainer();
 				experimentContextMenuItemContainer.setID(leafNode.getLeafID());
-				contextMenu
-						.addItemContanier(experimentContextMenuItemContainer);
+				contextMenu.addItemContanier(experimentContextMenuItemContainer);
 
 				break;
 			}
@@ -1649,8 +1627,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 				resetAllTreeSelections();
 
 				if (tree.getNodeByNumber(iExternalID) != null)
-					tree.getNodeByNumber(iExternalID).setSelectionType(
-							selectionType);
+					tree.getNodeByNumber(iExternalID).setSelectionType(selectionType);
 
 				ISelectionDelta selectionDelta = null;
 				VABasedSelectionManager selectionManager = null;
@@ -1682,11 +1659,9 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 			return new String("Dendrogram - no tree available");
 
 		if (bRenderContentTree)
-			return new String("Dendrogram - " + rootNode.getNrLeaves()
-					+ " genes");
+			return new String("Dendrogram - " + rootNode.getNrLeaves() + " genes");
 		else
-			return new String("Dendrogram - " + rootNode.getNrLeaves()
-					+ " experiments");
+			return new String("Dendrogram - " + rootNode.getNrLeaves() + " experiments");
 	}
 
 	@Override
@@ -1701,8 +1676,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 			return new String("Dendrogram - no tree available");
 
 		return "Standalone " + ((bRenderContentTree) ? "gene" : "experiment")
-				+ " dendrogram, rendered remote: " + isRenderedRemote()
-				+ ", Tree with: " + rootNode.getNrLeaves()
+				+ " dendrogram, rendered remote: " + isRenderedRemote() + ", Tree with: "
+				+ rootNode.getNrLeaves()
 				+ ((bRenderContentTree) ? " genes" : " experiments")
 				+ ", remoteRenderer: " + getRemoteRenderingGLCanvas();
 	}
@@ -1719,11 +1694,11 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 		ASerializedView serializedForm;
 		if (bRenderContentTree) {
 			SerializedDendogramHorizontalView horizontal = new SerializedDendogramHorizontalView(
-					dataDomain);
+					dataDomain.getDataDomainType());
 			serializedForm = horizontal;
 		} else {
 			SerializedDendogramVerticalView vertical = new SerializedDendogramVerticalView(
-					dataDomain);
+					dataDomain.getDataDomainType());
 			serializedForm = vertical;
 		}
 		serializedForm.setViewID(this.getID());
@@ -1744,8 +1719,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 		// else
 		contentVAType = ContentVAType.CONTENT;
 
-		contentVA = useCase.getContentVA(contentVAType);
-		storageVA = useCase.getStorageVA(storageVAType);
+		contentVA = dataDomain.getContentVA(contentVAType);
+		storageVA = dataDomain.getStorageVA(storageVAType);
 
 		contentSelectionManager.setVA(contentVA);
 		storageSelectionManager.setVA(storageVA);
@@ -1774,8 +1749,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 							.getNodeIDsFromLeafID(iIndex);
 					if (alClusterNumbers != null) {
 						for (Integer clusterNumber : alClusterNumbers) {
-							tree.getNodeByNumber(clusterNumber)
-									.setSelectionType(SelectionType.MOUSE_OVER);
+							tree.getNodeByNumber(clusterNumber).setSelectionType(
+									SelectionType.MOUSE_OVER);
 						}
 					}
 				}
@@ -1789,8 +1764,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 							.getNodeIDsFromLeafID(iIndex);
 					if (alClusterNumbers != null) {
 						for (Integer clusterNumber : alClusterNumbers) {
-							tree.getNodeByNumber(clusterNumber)
-									.setSelectionType(SelectionType.SELECTION);
+							tree.getNodeByNumber(clusterNumber).setSelectionType(
+									SelectionType.SELECTION);
 						}
 					}
 				}
@@ -1812,8 +1787,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 							.getNodeIDsFromLeafID(iIndex);
 					if (alClusterNumbers != null) {
 						for (Integer clusterNumber : alClusterNumbers) {
-							tree.getNodeByNumber(clusterNumber)
-									.setSelectionType(SelectionType.MOUSE_OVER);
+							tree.getNodeByNumber(clusterNumber).setSelectionType(
+									SelectionType.MOUSE_OVER);
 						}
 					}
 
@@ -1827,8 +1802,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 							.getNodeIDsFromLeafID(iIndex);
 					if (alClusterNumbers != null) {
 						for (Integer clusterNumber : alClusterNumbers) {
-							tree.getNodeByNumber(clusterNumber)
-									.setSelectionType(SelectionType.SELECTION);
+							tree.getNodeByNumber(clusterNumber).setSelectionType(
+									SelectionType.SELECTION);
 						}
 					}
 				}
@@ -1891,8 +1866,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends
 			if (tree != null) { // && bRenderGeneTree
 				resetAllTreeSelections();
 
-				Collection<SelectionDeltaItem> deltaItems = selectionDelta
-						.getAllItems();
+				Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
 
 				for (SelectionDeltaItem item : deltaItems) {
 					int clusterNr = item.getPrimaryID();

@@ -1,17 +1,16 @@
 package org.caleydo.core.manager.data;
 
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IManager;
 
 /**
  * Manages all ISets.
  * 
- * @author Michael Kalkusch
+ * @author Alexander Lex
  */
 public interface ISetManager
 	extends IManager<ISet> {
 
-	public ISet createSet(final ESetType setType);
+	public ISet createSet();
 
 }

@@ -16,6 +16,7 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageGroupList;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
 
@@ -26,27 +27,6 @@ import org.caleydo.core.util.clusterer.ClusterState;
  */
 public interface ISet
 	extends IUniqueObject, ICollection {
-
-	/**
-	 * Set the set type. Possible set types in ESetType.
-	 * 
-	 * @see ESetType
-	 * @param setType
-	 *            the type
-	 */
-	public void setSetType(ESetType setType);
-
-	/**
-	 * Get the set type. Possible set types in ESetType.
-	 * 
-	 * @see ESetType
-	 * @return the type
-	 */
-	public ESetType getSetType();
-
-	/**
-	 * add
-	 */
 
 	/**
 	 * Add a storage based on its id. The storage has to be fully initialized with data
@@ -77,6 +57,20 @@ public interface ISet
 	 * @return
 	 */
 	public int size();
+
+	/**
+	 * Set the data domain that is responsible for the set
+	 * 
+	 * @param dataDomain
+	 */
+	public void setDataDomain(ISetBasedDataDomain dataDomain);
+
+	/**
+	 * Get the data domain that is responsible for the set
+	 * 
+	 * @param dataDomain
+	 */
+	public ISetBasedDataDomain getDataDomain();
 
 	/**
 	 * Get the depth of the set, which is the length of the storages
@@ -366,35 +360,35 @@ public interface ISet
 	 */
 	public ClusterNode getStorageTreeRoot();
 
-//	/**
-//	 * Returns cluster sizes, determined by affinity clusterer
-//	 * 
-//	 * @param
-//	 * @return CNode
-//	 */
-//	public ArrayList<Integer> getAlClusterSizes();
-//
-//	/**
-//	 * Sets cluster sizes, used by affinity clusterer
-//	 * 
-//	 * @param CNode
-//	 */
-//	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes);
+	// /**
+	// * Returns cluster sizes, determined by affinity clusterer
+	// *
+	// * @param
+	// * @return CNode
+	// */
+	// public ArrayList<Integer> getAlClusterSizes();
+	//
+	// /**
+	// * Sets cluster sizes, used by affinity clusterer
+	// *
+	// * @param CNode
+	// */
+	// public void setAlClusterSizes(ArrayList<Integer> alClusterSizes);
 
-//	/**
-//	 * Returns cluster examples, determined by affinity clusterer
-//	 * 
-//	 * @param
-//	 * @return CNode
-//	 */
-//	public ArrayList<Integer> getAlExamples();
-//
-//	/**
-//	 * Sets cluster examples, used by affinity clusterer
-//	 * 
-//	 * @param CNode
-//	 */
-//	public void setAlExamples(ArrayList<Integer> alExamples);
+	// /**
+	// * Returns cluster examples, determined by affinity clusterer
+	// *
+	// * @param
+	// * @return CNode
+	// */
+	// public ArrayList<Integer> getAlExamples();
+	//
+	// /**
+	// * Sets cluster examples, used by affinity clusterer
+	// *
+	// * @param CNode
+	// */
+	// public void setAlExamples(ArrayList<Integer> alExamples);
 
 	/**
 	 * Sets imported group information
@@ -473,8 +467,7 @@ public interface ISet
 	 * @return the storage containing means for all content elements
 	 */
 	public NumericalStorage getMeanStorage();
-	
-	
+
 	/**
 	 * Restores the original virtual array using the whole set data.
 	 */

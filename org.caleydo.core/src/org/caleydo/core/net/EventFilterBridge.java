@@ -159,4 +159,16 @@ public class EventFilterBridge
 		this.blockedSender = blockedSender;
 	}
 
+	@Override
+	public void registerEventListeners() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

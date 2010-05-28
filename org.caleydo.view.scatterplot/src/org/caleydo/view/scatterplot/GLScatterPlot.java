@@ -43,7 +43,6 @@ import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SetPointSizeEvent;
@@ -2417,13 +2416,13 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 
 		String sLabel = null;
 		String genLabel = null;
-		if (useCase.getDataDomain() == EDataDomain.GENETIC_DATA) 
+		if (dataDomain.equals("org.caleydo.datadomain.genetic")) 
 		{
 			genLabel = idMappingManager.getID(EIDType.EXPRESSION_INDEX,
 					EIDType.GENE_SYMBOL, iContentIndex);
 
 			
-		} else if (useCase.getDataDomain() == EDataDomain.UNSPECIFIED) {
+		} else if (dataDomain.equals("org.caleydo.datadomain.generic")) {
 			genLabel = idMappingManager.getID(EIDType.EXPRESSION_INDEX,
 					EIDType.UNSPECIFIED, iContentIndex);
 		}
@@ -3058,8 +3057,8 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 				contentVAType = ContentVAType.CONTENT;
 		}
 
-		contentVA = useCase.getContentVA(contentVAType);
-		storageVA = useCase.getStorageVA(storageVAType);
+		contentVA = dataDomain.getContentVA(contentVAType);
+		storageVA = dataDomain.getStorageVA(storageVAType);
 
 		contentSelectionManager.setVA(contentVA);
 
@@ -3086,12 +3085,12 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 		
 		if (iDisplayEveryNthPoint == 1) {
 			tmpstring = "Scatterplot - " + iPointNr + " "
-					+ useCase.getContentLabel(false, true) + " / "
+					+ dataDomain.getContentLabel(false, true) + " / "
 					+ storageVA.size() + " experiments";
 		} else {
 			tmpstring = "Scatterplot - " + iPointNr
 					/ iDisplayEveryNthPoint + " out of " + iPointNr + " "
-					+ useCase.getContentLabel(false, true) + " / \n "
+					+ dataDomain.getContentLabel(false, true) + " / \n "
 					+ storageVA.size() + " experiments";
 		}
 		return tmpstring;
@@ -3103,12 +3102,12 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 		sInfoText.append("<b>Type:</b> Scatter Plot\n");
 
 		sInfoText.append(contentVA.size() + " "
-				+ useCase.getContentLabel(true, true) + " in rows and "
+				+ dataDomain.getContentLabel(true, true) + " in rows and "
 				+ storageVA.size() + " experiments in columns.\n");
 
 		if (bRenderOnlyContext) {
 			sInfoText.append("Showing only " + " "
-					+ useCase.getContentLabel(false, true)
+					+ dataDomain.getContentLabel(false, true)
 					+ " which occur in one of the other views in focus\n");
 		} else {
 			if (bUseRandomSampling) {
@@ -3480,7 +3479,7 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedScatterplotView serializedForm = new SerializedScatterplotView(
-				dataDomain);
+				dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

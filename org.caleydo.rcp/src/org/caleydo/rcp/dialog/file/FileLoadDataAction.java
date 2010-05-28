@@ -12,9 +12,10 @@ import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.dialog.LabelEditorDialog;
 import org.eclipse.jface.action.Action;
@@ -86,6 +87,10 @@ public class FileLoadDataAction
 	private boolean useGeneClusterInfo = false;
 	private boolean useExperimentClusterInfo = false;
 
+	private ISetBasedDataDomain dataDomain = null;
+
+	boolean isGenetic = false;
+
 	public FileLoadDataAction() {
 
 	}
@@ -118,10 +123,19 @@ public class FileLoadDataAction
 	private void createGUI() {
 		int numGridCols = 5;
 
-		if (GeneralManager.get().getMasterUseCase().getDataDomain() != EDataDomain.GENETIC_DATA)
-			numGridCols = 4;
+		// FIXME
+		DataDomainManager domainManager = DataDomainManager.getInstance();
+		ISetBasedDataDomain dataDomain =
+			(ISetBasedDataDomain) domainManager.getDataDomain("org.caleydo.datadomain.genetic");
 
-		loadDataParameters.setDataDomain(GeneralManager.get().getMasterUseCase().getDataDomain());
+		if (dataDomain == null) {
+			numGridCols = 4;
+			dataDomain = (ISetBasedDataDomain) domainManager.getDataDomain("org.caleydo.datadomain.generic");
+		}
+		else
+			isGenetic = true;
+
+		loadDataParameters.setDataDomain(dataDomain);
 
 		composite = new Composite(parentComposite, SWT.NONE);
 		GridLayout layout = new GridLayout(numGridCols, false);
@@ -156,7 +170,8 @@ public class FileLoadDataAction
 
 				createDataPreviewTable("\t");
 
-				if (loadDataParameters.getDataDomain() == EDataDomain.GENETIC_DATA) {
+				if (loadDataParameters.getDataDomain().getDataDomainType().equals(
+					"org.caleydo.datadomain.genetic")) {
 					determineFileIDType();
 				}
 			}
@@ -184,7 +199,7 @@ public class FileLoadDataAction
 			}
 		});
 
-		if (loadDataParameters.getDataDomain() == EDataDomain.GENETIC_DATA) {
+		if (isGenetic) {
 
 			Group idTypeGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 			idTypeGroup.setText("ID type");
@@ -243,7 +258,7 @@ public class FileLoadDataAction
 
 			createDataPreviewTable("\t");
 
-			if (loadDataParameters.getDataDomain() == EDataDomain.GENETIC_DATA)
+			if (isGenetic)
 				determineFileIDType();
 		}
 	}
@@ -715,16 +730,14 @@ public class FileLoadDataAction
 		}
 		readParameters();
 
-		IDataDomain useCase = GeneralManager.get().getUseCase(loadDataParameters.getDataDomain());
-		useCase.setLoadDataParameters(loadDataParameters);
+		dataDomain.setLoadDataParameters(loadDataParameters);
 
 		if (success) {
-			ISet set =
-				SetUtils.createData(GeneralManager.get().getUseCase(loadDataParameters.getDataDomain()));
-			if(set == null)
+			ISet set = SetUtils.createData(dataDomain);
+			if (set == null)
 				return false;
 		}
-		
+
 		return success;
 	}
 
@@ -747,7 +760,7 @@ public class FileLoadDataAction
 			}
 		}
 
-		if (loadDataParameters.getDataDomain() == EDataDomain.GENETIC_DATA) {
+		if (isGenetic) {
 			loadDataParameters.setFileIDType(alIDTypes.get(idCombo.getSelectionIndex()));
 		}
 

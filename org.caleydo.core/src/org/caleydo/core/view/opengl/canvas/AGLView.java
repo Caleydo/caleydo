@@ -12,7 +12,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -731,20 +730,7 @@ public abstract class AGLView
 		unregisterEventListeners();
 	}
 
-	/**
-	 * Sets the set, calls {@link #initData()} and sets display lists dirty
-	 */
-	@Override
-	public void setSet(ISet set) {
 
-		this.set = set;
-		initData();
-
-		// In GL views the new set is not immediately written to the set variable of AView.
-		// The new set is then assigned to the working set when the display list is dirty the next time.
-		// newSet = set;
-		// setDisplayListDirty();
-	}
 
 	@Override
 	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
@@ -763,7 +749,6 @@ public abstract class AGLView
 
 	@Override
 	public void registerEventListeners() {
-		super.registerEventListeners();
 		magnifyingGlassListener = new ToggleMagnifyingGlassListener();
 		magnifyingGlassListener.setHandler(this);
 		eventPublisher.addListener(ToggleMagnifyingGlassEvent.class, magnifyingGlassListener);
@@ -772,7 +757,6 @@ public abstract class AGLView
 
 	@Override
 	public void unregisterEventListeners() {
-		super.unregisterEventListeners();
 		if (magnifyingGlassListener != null) {
 			eventPublisher.removeListener(magnifyingGlassListener);
 			magnifyingGlassListener = null;

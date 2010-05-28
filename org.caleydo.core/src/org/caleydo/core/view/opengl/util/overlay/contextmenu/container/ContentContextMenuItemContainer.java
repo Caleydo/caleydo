@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
@@ -22,9 +21,6 @@ public class ContentContextMenuItemContainer
 	 */
 	public ContentContextMenuItemContainer() {
 		super();
-
-		if (GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA) == null)
-			throw new IllegalStateException("This context menu container is only valid for genetic data");
 
 	}
 

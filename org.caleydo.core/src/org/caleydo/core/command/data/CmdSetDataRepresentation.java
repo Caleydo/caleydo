@@ -8,7 +8,9 @@ import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.data.set.SetManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
@@ -129,7 +131,7 @@ public class CmdSetDataRepresentation
 		else {
 			ISet tmpSet = null;
 			for (int currentID : iAlIDs) {
-				tmpSet = generalManager.getSetManager().getItem(currentID);
+				tmpSet = SetManager.getInstance().getItem(currentID);
 
 				tmpSet.setExternalDataRepresentation(externalDataRep, bIsSetHomogeneous);
 			}

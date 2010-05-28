@@ -110,10 +110,10 @@ public class CommandFactory
 				createdCommand = new CmdLoadPathwayData(cmdType);
 				break;
 			}
-			case SET_DATA_REPRESENTATION: {
-				createdCommand = new CmdSetDataRepresentation(cmdType);
-				break;
-			}
+//			case SET_DATA_REPRESENTATION: {
+//				createdCommand = new CmdSetDataRepresentation(cmdType);
+//				break;
+//			}
 			case DATA_FILTER_MIN_MAX: {
 				createdCommand = new CmdDataFilterMinMax(cmdType);
 				break;

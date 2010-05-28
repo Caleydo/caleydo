@@ -51,12 +51,7 @@ public class ClusteringProgressBar
 	public void run() {
 		buildProgressBar();
 
-		clusterProgressListener = new ClusterProgressListener();
-		clusterProgressListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(ClusterProgressEvent.class,
-			clusterProgressListener);
-		GeneralManager.get().getEventPublisher().addListener(RenameProgressBarEvent.class,
-			clusterProgressListener);
+		registerEventListeners();
 
 	}
 
@@ -156,10 +151,7 @@ public class ClusteringProgressBar
 	}
 
 	private void close() {
-		if (clusterProgressListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(clusterProgressListener);
-			clusterProgressListener = null;
-		}
+		unregisterEventListeners();
 		if (!shell.isDisposed())
 			shell.close();
 
@@ -305,6 +297,24 @@ public class ClusteringProgressBar
 				listener.handleEvent(event);
 			}
 		});
+	}
+
+	@Override
+	public void registerEventListeners() {
+		clusterProgressListener = new ClusterProgressListener();
+		clusterProgressListener.setHandler(this);
+		GeneralManager.get().getEventPublisher().addListener(ClusterProgressEvent.class,
+			clusterProgressListener);
+		GeneralManager.get().getEventPublisher().addListener(RenameProgressBarEvent.class,
+			clusterProgressListener);
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		if (clusterProgressListener != null) {
+			GeneralManager.get().getEventPublisher().removeListener(clusterProgressListener);
+			clusterProgressListener = null;
+		}
 	}
 
 }

@@ -5,11 +5,11 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.ISetManager;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.eclipse.core.runtime.IStatus;
@@ -24,8 +24,8 @@ import org.eclipse.core.runtime.Status;
  */
 public class CmdDataCreateSet
 	extends ACmdCreational<ISet> {
-	private ESetType setType;
 
+	private ISetBasedDataDomain dataDomain;
 	private ArrayList<Integer> iAlStorageIDs;
 
 	/**
@@ -35,8 +35,6 @@ public class CmdDataCreateSet
 		super(cmdType);
 
 		iAlStorageIDs = new ArrayList<Integer>();
-
-		setType = ESetType.UNSPECIFIED;
 	}
 
 	private void fillSets(ISet newSet) {
@@ -52,9 +50,8 @@ public class CmdDataCreateSet
 	 * Load data from file using a token pattern.
 	 */
 	public void doCommand() {
-		ISetManager setManager = generalManager.getSetManager();
 
-		createdObject = setManager.createSet(setType);
+		createdObject = new Set();
 		createdObject.setLabel(sLabel);
 
 		if (iExternalID != -1) {
@@ -67,18 +64,7 @@ public class CmdDataCreateSet
 			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "New Set with internal ID "
 				+ createdObject.getID() + " and external ID " + iExternalID + " created."));
 
-		if (createdObject.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-			GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).setSet(createdObject);
-		}
-		else if (createdObject.getSetType() == ESetType.UNSPECIFIED) {
-			GeneralManager.get().getUseCase(EDataDomain.UNSPECIFIED).setSet(createdObject);
-		}
-		else if (createdObject.getSetType() == ESetType.CLINICAL_DATA) {
-			GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA).setSet(createdObject);
-		}
-		else
-			throw new IllegalStateException("Cannot find use case for set type " + createdObject.getSetType()
-				+ ".");
+		dataDomain.setSet(createdObject);
 
 		commandManager.runDoCommand(this);
 	}
@@ -122,18 +108,12 @@ public class CmdDataCreateSet
 		/**
 		 * read "attrib3" key ...
 		 */
-		String sAttrib3 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey());
+//		String sAttrib3 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey());
 
-		if (sAttrib3.length() > 0) {
-			setType = ESetType.valueOf(sAttrib3);
-		}
-		else {
-			setType = ESetType.UNSPECIFIED;
-		}
 	}
 
-	public void setAttributes(ArrayList<Integer> iAlStorageIDs, ESetType setType) {
-		this.setType = setType;
+	public void setAttributes(ArrayList<Integer> iAlStorageIDs, ISetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
 		this.iAlStorageIDs = iAlStorageIDs;
 	}
 }

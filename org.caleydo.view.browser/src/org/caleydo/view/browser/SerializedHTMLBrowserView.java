@@ -1,6 +1,5 @@
 package org.caleydo.view.browser;
 
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.manager.event.view.browser.EBrowserQueryType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -15,8 +14,8 @@ public class SerializedHTMLBrowserView extends ASerializedView {
 	public SerializedHTMLBrowserView() {
 	}
 
-	public SerializedHTMLBrowserView(EDataDomain dataDomain) {
-		super(dataDomain);
+	public SerializedHTMLBrowserView(String dataDomainType) {
+		super(dataDomainType);
 	}
 
 	/** current url of the browser */

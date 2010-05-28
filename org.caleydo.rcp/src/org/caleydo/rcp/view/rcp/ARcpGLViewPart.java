@@ -14,7 +14,9 @@ import javax.xml.bind.Unmarshaller;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializationManager;
@@ -44,6 +46,8 @@ public abstract class ARcpGLViewPart
 	protected Frame frameGL;
 	protected GLCaleydoCanvas glCanvas;
 	protected MinimumSizeComposite minSizeComposite;
+
+
 
 	/** serialized representation of the view to initialize the view itself */
 	protected ASerializedView initSerializedView;
@@ -78,11 +82,9 @@ public abstract class ARcpGLViewPart
 	protected AGLView createGLView(ASerializedView serializedView, int iParentCanvasID) {
 
 		String viewType = serializedView.getViewType();
-		dataDomain = serializedView.getDataDomain();
+		String dataDomainType = serializedView.getDataDomainType();
 
-		if (dataDomain == null) {
-			dataDomain = generalManager.getMasterUseCase().getDataDomain();
-		}
+		dataDomain = DataDomainManager.getInstance().getDataDomain(dataDomainType);
 
 		IGeneralManager generalManager = GeneralManager.get();
 
@@ -92,7 +94,7 @@ public abstract class ARcpGLViewPart
 		cmdView.setViewID(viewType);
 		if (viewType.equals("org.caleydo.view.bucket") || viewType.equals("org.caleydo.view.dataflipper")) {
 
-			cmdView.setAttributes(dataDomain, EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100,
+			cmdView.setAttributes(dataDomainType, EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100,
 				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 			// cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -2f, 2f, -2f,
 			// 2f, 3.82f, 100, set,
@@ -100,12 +102,12 @@ public abstract class ARcpGLViewPart
 		}
 		else if (viewType.equals("org.caleydo.view.glyph")) {
 
-			cmdView.setAttributes(dataDomain, EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100,
+			cmdView.setAttributes(dataDomainType, EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100,
 				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 		}
 		else {
 
-			cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20,
+			cmdView.setAttributes(dataDomainType, EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20,
 				iParentCanvasID);
 
 		}

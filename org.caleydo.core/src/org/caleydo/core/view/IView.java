@@ -1,11 +1,8 @@
 package org.caleydo.core.view;
 
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.listener.INewSetHandler;
 
 /**
  * Interface for the view representations.
@@ -15,7 +12,7 @@ import org.caleydo.core.view.opengl.canvas.listener.INewSetHandler;
  * @author Alexander Lex
  */
 public interface IView
-	extends IUniqueObject, INewSetHandler {
+	extends IUniqueObject{
 	/**
 	 * Sets the unique ID of the parent container. Normally it is already set in the constructor. Use this
 	 * method only if you want to change the parent during runtime.
@@ -38,30 +35,21 @@ public interface IView
 	void setLabel(String label);
 
 	/**
-	 * Set the data domain of the view
+	 * Set the data domain which determines the behavior of the view. Attention: The data domain need not be changed
+	 * at runtime.
+	 * 
+	 * @param dataDomain
 	 */
-	public void setDataDomain(EDataDomain dataDomain);
+	public void setDataDomain(IDataDomain dataDomain);
 
 	/**
 	 * Get the data domain the view is operating on
 	 * 
 	 * @return
 	 */
-	public EDataDomain getDataDomain();
+	public IDataDomain getDataDomain();
 
-	/**
-	 * Returns the current set which the view is rendering.
-	 */
-	public ISet getSet();
-
-	/**
-	 * Set the use case which determines the behavior of the view. Attention: The use case need not be changed
-	 * during runtime of the view.
-	 * 
-	 * @param useCase
-	 */
-	public void setUseCase(IDataDomain useCase);
-
+	
 	/**
 	 * Retrieves a serializeable representation of the view
 	 * 

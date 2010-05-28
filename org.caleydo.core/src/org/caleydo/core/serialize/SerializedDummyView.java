@@ -1,6 +1,5 @@
 package org.caleydo.core.serialize;
 
-import org.caleydo.core.manager.datadomain.EDataDomain;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
@@ -15,8 +14,8 @@ public class SerializedDummyView
 	public SerializedDummyView() {
 	}
 
-	public SerializedDummyView(EDataDomain dataDomain) {
-		super(dataDomain);
+	public SerializedDummyView(String dataDomainType) {
+		super(dataDomainType);
 	}
 
 	@Override
