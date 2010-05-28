@@ -13,9 +13,10 @@ import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -92,10 +93,10 @@ public class SelectionBrowser
 
 	private void initContent() {
 		ContentVAType contentVAType = ContentVAType.CONTENT;
-		IDataDomain useCase = generalManager.getUseCase(EDataDomain.GENETIC_DATA);
-		contentSelectionManager = useCase.getContentSelectionManager();
+		ISetBasedDataDomain dataDomain = ((ISetBasedDataDomain)DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic"));
+		contentSelectionManager = dataDomain.getContentSelectionManager();
 
-		ContentVirtualArray contentVA = useCase.getContentVA(contentVAType);
+		ContentVirtualArray contentVA = dataDomain.getContentVA(contentVAType);
 		contentSelectionManager.setVA(contentVA);
 	}
 

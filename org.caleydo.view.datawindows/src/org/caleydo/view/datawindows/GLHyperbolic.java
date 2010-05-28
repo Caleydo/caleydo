@@ -348,22 +348,13 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	@Override
 	public String getShortInfo() {
-		if (contentVA == null)
-			return "Scatterplot - 0 " + useCase.getContentLabel(false, true)
-					+ " / 0 experiments";
 
-		return "Scatterplot - " + contentVA.size() + " "
-				+ useCase.getContentLabel(false, true) + " / "
-				+ storageVA.size() + " experiments";
+		return "TODO: Hyperbolic info";
 	}
 
 	@Override
 	public String getDetailedInfo() {
-		StringBuffer sInfoText = new StringBuffer();
-		sInfoText.append("<b>Type:</b> Scatter Plot\n");
-		// TODO Everything
 
-		// return sInfoText.toString();
 		return "TODO: Hyperbolic Detail Info";
 	}
 
@@ -419,7 +410,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDataWindowsView serializedForm = new SerializedDataWindowsView(
-				dataDomain);
+				dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 
 		return serializedForm;
@@ -509,9 +500,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		cmdView.doCommand();
 
 		AGLView glView = cmdView.getCreatedObject();
-		glView.setUseCase(useCase);
+		glView.setDataDomain(dataDomain);
 		// glView.setRemoteRenderingGLView(this);
-		glView.setSet(set);
 
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
@@ -741,7 +731,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	@Deprecated
 	public GLPathway createPathwayView(GL gl) {
 
-		SerializedPathwayView serPathway = new SerializedPathwayView(dataDomain);
+		SerializedPathwayView serPathway = new SerializedPathwayView(dataDomain.getDataDomainType());
 		// serTestPathway.setPathwayID(generalManager.getPathwayManager().searchPathwayByName("TGF-beta signaling pathway",
 		// EPathwayDatabaseType.KEGG).getID());
 		serPathway.setPathwayID(((PathwayGraph) (generalManager
@@ -793,7 +783,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		if (!generalManager.getPathwayManager().isPathwayVisible(
 				generalManager.getPathwayManager().getItem(iPathwayID))) {
 			SerializedPathwayView serPathway = new SerializedPathwayView(
-					dataDomain);
+					dataDomain.getDataDomainType());
 			serPathway.setPathwayID(iPathwayID);
 			newViews.add(serPathway);
 		}

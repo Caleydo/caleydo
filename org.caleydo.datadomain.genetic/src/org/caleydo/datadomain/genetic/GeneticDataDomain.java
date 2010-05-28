@@ -56,6 +56,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		possibleIDCategories = new HashMap<EIDCategory, String>();
 		possibleIDCategories.put(EIDCategory.GENE, null);
 		possibleIDCategories.put(EIDCategory.EXPERIMENT, null);
+		
 		contentIDType = EIDType.EXPRESSION_INDEX;
 		storageIDType = EIDType.EXPERIMENT_INDEX;
 

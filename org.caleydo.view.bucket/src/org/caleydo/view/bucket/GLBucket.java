@@ -24,6 +24,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
@@ -215,6 +216,8 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 	protected SelectionUpdateListener selectionUpdateListener;
 
 	private Point upperLeftScreenPos = new Point(0, 0);
+	
+	private ISetBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -348,15 +351,14 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 				.getCommandManager().createCommandByType(
 						ECommandType.CREATE_GL_VIEW);
 		cmdCreateGLView.setViewID("org.caleydo.view.bookmarking");
-		cmdCreateGLView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC,
+		cmdCreateGLView.setAttributes(dataDomain.getDataDomainType(), EProjectionMode.ORTHOGRAPHIC,
 				0, 0.8f, 0.1f, 4.1f, -20, 20, -1);
 		// cmdCreateGLView.setSet(set);
 		cmdCreateGLView.doCommand();
 		glBookmarkContainer = (GLBookmarkManager) cmdCreateGLView
 				.getCreatedObject();
 		glBookmarkContainer.setRemoteRenderingGLView(this);
-		glBookmarkContainer.setUseCase(useCase);
-		glBookmarkContainer.setSet(set);
+		glBookmarkContainer.setDataDomain(dataDomain);
 		glBookmarkContainer.initData();
 
 		externalSelectionLevel.getElementByPositionIndex(0).setGLView(
@@ -1920,7 +1922,7 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 		if (!generalManager.getPathwayManager().isPathwayVisible(
 				generalManager.getPathwayManager().getItem(iPathwayID))) {
 			SerializedPathwayView serPathway = new SerializedPathwayView(
-					dataDomain);
+					dataDomain.getDataDomainType());
 			serPathway.setPathwayID(iPathwayID);
 			newViews.add(serPathway);
 		}
@@ -2350,7 +2352,7 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 
 	public void resetView(boolean reinitialize) {
 
-		useCase.resetContextVA();
+		dataDomain.resetContextVA();
 		if (containedGLViews == null)
 			return;
 
@@ -2717,9 +2719,8 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 		cmdView.doCommand();
 
 		AGLView glView = cmdView.getCreatedObject();
-		glView.setUseCase(useCase);
+		glView.setDataDomain(dataDomain);
 		glView.setRemoteRenderingGLView(this);
-		glView.setSet(set);
 
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
@@ -3030,7 +3031,7 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedBucketView serializedForm = new SerializedBucketView(
-				dataDomain);
+				dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		serializedForm.setPathwayTexturesEnabled(pathwayTexturesEnabled);
 		serializedForm.setNeighborhoodEnabled(neighborhoodEnabled);

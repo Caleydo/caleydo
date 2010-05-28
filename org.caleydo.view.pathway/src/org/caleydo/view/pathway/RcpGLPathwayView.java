@@ -15,7 +15,7 @@ public class RcpGLPathwayView extends ARcpGLViewPart {
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedPathwayView serializedView = new SerializedPathwayView(
-				dataDomain);
+				dataDomain.getDataDomainType());
 		return serializedView;
 	}
 

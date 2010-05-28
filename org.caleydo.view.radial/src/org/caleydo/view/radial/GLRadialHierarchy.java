@@ -16,6 +16,7 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.radial.ChangeColorModeEvent;
 import org.caleydo.core.manager.event.view.radial.DetailOutsideEvent;
@@ -116,8 +117,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 	private SelectionManager selectionManager;
 	boolean bUseDetailLevel = true;
-
-	// ISet set;
+	
+	private ISetBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -158,7 +159,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void init(GL gl) {
-		Tree<ClusterNode> tree = set.getContentTree();
+		Tree<ClusterNode> tree = dataDomain.getSet().getContentTree();
 		if (tree != null) {
 			// initHierarchy(tree);
 		} else {
@@ -168,8 +169,6 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-		if (set == null)
-			return;
 	}
 
 	@Override
@@ -527,7 +526,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 				if (pdPickedElement != null) {
 					// Prevent handling of non genetic data in context
 					// menu
-					if (dataDomain != EDataDomain.GENETIC_DATA)
+					if (!dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
 						break;
 					if (!pdPickedElement.hasChildren()) {
 						ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
@@ -831,7 +830,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedRadialHierarchyView serializedForm = new SerializedRadialHierarchyView(
-				dataDomain);
+				dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		serializedForm
 				.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
@@ -879,7 +878,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
 
-		Tree<ClusterNode> tree = set.getStorageTree();
+		Tree<ClusterNode> tree = dataDomain.getSet().getStorageTree();
 		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		if (tree != null) {
 			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
@@ -888,7 +887,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 			// new GeneClusterDataEventManager(this), alColorModes);
-			initHierarchy(tree, set.getStorageTreeRoot(),
+			initHierarchy(tree, dataDomain.getSet().getStorageTreeRoot(),
 					EIDType.CLUSTER_NUMBER,
 					new ExperimentClusterDataEventManager(this), alColorModes);
 		}
@@ -1069,7 +1068,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	@Override
 	public void handleUpdateView() {
 		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
-		Tree<ClusterNode> tree = set.getStorageTree();
+		Tree<ClusterNode> tree = dataDomain.getSet().getStorageTree();
 		if (tree != null) {
 
 			// if (pdRealRootElement == null) {
@@ -1080,7 +1079,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
 			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 			// new GeneClusterDataEventManager(this), alColorModes);
-			initHierarchy(tree, set.getStorageTreeRoot(),
+			initHierarchy(tree, ((ISetBasedDataDomain)dataDomain).getSet().getStorageTreeRoot(),
 					EIDType.CLUSTER_NUMBER,
 					new ExperimentClusterDataEventManager(this), alColorModes);
 			// }

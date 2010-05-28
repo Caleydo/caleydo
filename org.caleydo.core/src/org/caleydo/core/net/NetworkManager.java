@@ -155,19 +155,15 @@ public class NetworkManager
 		centralEventPublisher.triggerEvent(event);
 	}
 
-	/**
-	 * Registers the event listeners to the central event publishing system.
-	 */
-	private void registerEventListeners() {
+	@Override
+	public void registerEventListeners() {
 		connectToServerListener = new ConnectToServerListener();
 		connectToServerListener.setHandler(this);
 		centralEventPublisher.addListener(ConnectToServerEvent.class, connectToServerListener);
 	}
 
-	/**
-	 * Unregisters the event listeners from the central event publishing system.
-	 */
-	private void unregisterEventListeners() {
+	@Override
+	public void unregisterEventListeners() {
 		if (connectToServerListener != null) {
 			centralEventPublisher.removeListener(connectToServerListener);
 			connectToServerListener = null;

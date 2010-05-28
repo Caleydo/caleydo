@@ -19,8 +19,8 @@ public class SerializedGrouperView extends ASerializedView {
 	public SerializedGrouperView() {
 	}
 
-	public SerializedGrouperView(EDataDomain dataDomain) {
-		super(dataDomain);
+	public SerializedGrouperView(String dataDomainType) {
+		super(dataDomainType);
 	}
 
 	@Override

@@ -22,6 +22,8 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
@@ -71,6 +73,8 @@ public class GLPathwayContentCreator {
 	private ArrayList<Integer> iArSelectedEdgeRepId;
 
 	private IIDMappingManager idMappingManager;
+	
+	private ISetBasedDataDomain geneticDataDomain;
 
 	/**
 	 * Constructor.
@@ -92,6 +96,7 @@ public class GLPathwayContentCreator {
 		iArSelectedEdgeRepId = new ArrayList<Integer>();
 
 		idMappingManager = generalManager.getIDMappingManager();
+		geneticDataDomain = (ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic");
 	}
 
 	public void init(final GL gl,
@@ -919,8 +924,8 @@ public class GLPathwayContentCreator {
 									EIDType.EXPRESSION_INDEX,
 									((Integer) iRefSeqID))) {
 
-						return colorMapper.getColor(glPathwayView.getSet().get(
-								glPathwayView.iCurrentStorageIndex).getFloat(
+						return colorMapper.getColor(
+								geneticDataDomain.getSet().get(glPathwayView.iCurrentStorageIndex).getFloat(
 								EDataRepresentation.NORMALIZED,
 								((Integer) iExpressionIndex).intValue()));
 					}

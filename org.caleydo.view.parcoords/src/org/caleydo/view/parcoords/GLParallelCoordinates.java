@@ -287,8 +287,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	public void initData() {
 		super.initData();
 
-		if (glBookmarks != null)
-			glBookmarks.setSet(set);
 		initGates();
 		resetAxisSpacing();
 	}
@@ -385,7 +383,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			handleTrackInput(gl);
 
 		// TODO another display list
-		//clipToFrustum(gl);
+		// clipToFrustum(gl);
 
 		gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
 
@@ -418,13 +416,13 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		CmdCreateView cmdCreateGLView = (CmdCreateView) generalManager
 				.getCommandManager().createCommandByType(ECommandType.CREATE_GL_VIEW);
 		cmdCreateGLView.setViewID("org.caleydo.view.bookmarking");
-		cmdCreateGLView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 0.8f,
-				viewFrustum.getBottom(), viewFrustum.getTop(), -20, 20, -1);
+		cmdCreateGLView.setAttributes(dataDomain.getDataDomainType(),
+				EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, viewFrustum.getBottom(),
+				viewFrustum.getTop(), -20, 20, -1);
 		cmdCreateGLView.doCommand();
 		glBookmarks = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
 		glBookmarks.setRemoteRenderingGLView(this);
-		glBookmarks.setUseCase(useCase);
-		glBookmarks.setSet(set);
+		glBookmarks.setDataDomain(dataDomain);
 		glBookmarks.initData();
 
 		// FIXME: remoteRenderingGLCanvas is null, conceptual error
@@ -441,10 +439,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (bRenderOnlyContext) {
-			contentVA = useCase.getContentVA(ContentVAType.CONTENT_CONTEXT);
+			contentVA = dataDomain.getContentVA(ContentVAType.CONTENT_CONTEXT);
 		} else {
 
-			contentVA = useCase.getContentVA(ContentVAType.CONTENT);
+			contentVA = dataDomain.getContentVA(ContentVAType.CONTENT);
 		}
 
 		contentSelectionManager.setVA(contentVA);
@@ -555,9 +553,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		else
 			contentVAType = ContentVAType.CONTENT;
 
-		contentVA = useCase.getContentVA(contentVAType);
+		contentVA = dataDomain.getContentVA(contentVAType);
 
-		storageVA = useCase.getStorageVA(storageVAType);
+		storageVA = dataDomain.getStorageVA(storageVAType);
 
 		initContentVariables();
 
@@ -574,11 +572,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	private void initContentVariables() {
 		EIDType contentDataType;
 		EIDType storageDataType;
-		if (dataDomain == EDataDomain.GENETIC_DATA) {
+		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 			contentDataType = EIDType.EXPRESSION_INDEX;
 			storageDataType = EIDType.EXPERIMENT_INDEX;
-		} else if (dataDomain == EDataDomain.CLINICAL_DATA
-				|| dataDomain == EDataDomain.UNSPECIFIED) {
+		} else if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.clinical")
+				|| dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
 			contentDataType = EIDType.EXPERIMENT_INDEX;
 			storageDataType = EIDType.EXPERIMENT_RECORD;
 		} else {
@@ -1570,7 +1568,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				selectionType = SelectionType.SELECTION;
 
 				// Prevent handling of non genetic data in context menu
-				if (dataDomain != EDataDomain.GENETIC_DATA)
+				if (!dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
 					break;
 
 				ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
@@ -1987,12 +1985,12 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		int iNumLines = contentVA.size();
 		if (displayEveryNthPolyline == 1) {
 			message = "Parallel Coordinates - " + iNumLines + " "
-					+ useCase.getContentLabel(false, true) + " / " + storageVA.size()
+					+ dataDomain.getContentLabel(false, true) + " / " + storageVA.size()
 					+ " experiments";
 		} else {
 			message = "Parallel Coordinates - a sample of " + iNumLines
 					/ displayEveryNthPolyline + " out of " + iNumLines + " "
-					+ useCase.getContentLabel(false, true) + " / \n " + storageVA.size()
+					+ dataDomain.getContentLabel(false, true) + " / \n " + storageVA.size()
 					+ " experiments";
 		}
 		return message;
@@ -2003,7 +2001,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Parallel Coordinates\n");
-		sInfoText.append(contentVA.size() + useCase.getContentLabel(false, true)
+		sInfoText.append(contentVA.size() + dataDomain.getContentLabel(false, true)
 				+ " as polylines and " + storageVA.size() + " experiments as axis.\n");
 
 		if (bRenderOnlyContext) {
@@ -2018,10 +2016,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			}
 
 			if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
-				sInfoText.append("Showing all " + useCase.getContentLabel(false, true)
+				sInfoText.append("Showing all " + dataDomain.getContentLabel(false, true)
 						+ " in the dataset\n");
 			} else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
-				sInfoText.append("Showing all " + useCase.getContentLabel(false, true)
+				sInfoText.append("Showing all " + dataDomain.getContentLabel(false, true)
 						+ " that have a known DAVID ID mapping\n");
 			} else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 				sInfoText
@@ -2454,7 +2452,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedParallelCoordinatesView serializedForm = new SerializedParallelCoordinatesView(
-				dataDomain);
+				dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

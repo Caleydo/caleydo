@@ -11,8 +11,7 @@ import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
-import org.caleydo.core.manager.datadomain.ADataDomain;
-import org.caleydo.core.manager.datadomain.EDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 
 /**
  * TODO The use case for clinical input data.
@@ -22,14 +21,14 @@ import org.caleydo.core.manager.datadomain.EDataDomain;
 @XmlType
 @XmlRootElement
 public class ClinicalDataDomain
-	extends ADataDomain {
+	extends ASetBasedDataDomain {
 
 	/**
 	 * Constructor.
 	 */
 	public ClinicalDataDomain() {
 
-		useCaseMode = EDataDomain.CLINICAL_DATA;
+		dataDomainType = "org.caleydo.datadomain.clinical";
 
 		possibleViews = new ArrayList<String>();
 		possibleViews.add("org.caleydo.view.glyph");

@@ -413,23 +413,14 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 	@Override
 	public String getShortInfo() {
-		if (contentVA == null)
-			return "Scatterplot - 0 " + useCase.getContentLabel(false, true)
-					+ " / 0 experiments";
 
-		return "Scatterplot - " + contentVA.size() + " "
-				+ useCase.getContentLabel(false, true) + " / "
-				+ storageVA.size() + " experiments";
+		return "TODO: Data Windows Info";
 	}
 
 	@Override
 	public String getDetailedInfo() {
-		StringBuffer sInfoText = new StringBuffer();
-		sInfoText.append("<b>Type:</b> Scatter Plot\n");
-		// TODO Everything
 
-		// return sInfoText.toString();
-		return "TODO: ScatterploT Deatil Info";
+		return "TODO: Data Windows Detail Info";
 	}
 
 	@Override
@@ -543,7 +534,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDataWindowsView serializedForm = new SerializedDataWindowsView(
-				dataDomain);
+				dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 
 		return serializedForm;
@@ -585,7 +576,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		// Heat map
 		ASerializedView serView = new SerializedHeatMapView();// SerializedHierarchicalHeatMapView();//
-		serView.setDataDomain(EDataDomain.GENETIC_DATA);
+		serView.setDataDomainType(dataDomain.getDataDomainType());
 		AGLView view = createView(gl, serView);
 		((AStorageBasedView) view).renderContext(true);
 
@@ -599,7 +590,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		// Parallel coordinates
 		serView = new SerializedParallelCoordinatesView();
-		serView.setDataDomain(EDataDomain.GENETIC_DATA);
+		serView.setDataDomainType(dataDomain.getDataDomainType());
 		view = createView(gl, serView);
 		((AStorageBasedView) view).renderContext(true);
 
@@ -613,7 +604,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		// Hyperbolic view
 		serView = new SerializedHyperbolicView();
-		serView.setDataDomain(EDataDomain.GENETIC_DATA);
+		serView.setDataDomainType(dataDomain.getDataDomainType());
 		view = createView(gl, serView);
 		directHyperbolicView = (GLHyperbolic) view;
 
@@ -664,9 +655,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		cmdView.doCommand();
 
 		AGLView glView = cmdView.getCreatedObject();
-		glView.setUseCase(useCase);
+		serView.setDataDomainType(dataDomain.getDataDomainType());
 		glView.setRemoteRenderingGLView(this);
-		glView.setSet(set);
 
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;

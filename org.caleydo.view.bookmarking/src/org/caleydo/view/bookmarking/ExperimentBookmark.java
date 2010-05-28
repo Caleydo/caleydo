@@ -3,6 +3,8 @@ package org.caleydo.view.bookmarking;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
@@ -29,8 +31,9 @@ class ExperimentBookmark extends ABookmark {
 
 	@Override
 	public void render(GL gl) {
-		String sContent = GeneralManager.get().getUseCase(
-				EDataDomain.GENETIC_DATA).getSet().get(id).getLabel();
+		String sContent = ((ISetBasedDataDomain) DataDomainManager.getInstance()
+				.getDataDomain("org.caleydo.datadomain.genetic")).getSet().get(id).getLabel();
+		
 		GeneralManager.get().getIDMappingManager().getID(EIDType.DAVID,
 				EIDType.GENE_SYMBOL, id);
 

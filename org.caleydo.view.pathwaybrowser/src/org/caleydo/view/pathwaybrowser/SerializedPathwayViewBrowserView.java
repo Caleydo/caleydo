@@ -31,8 +31,8 @@ public class SerializedPathwayViewBrowserView extends ASerializedView {
 		init();
 	}
 
-	public SerializedPathwayViewBrowserView(EDataDomain dataDomain) {
-		super(dataDomain);
+	public SerializedPathwayViewBrowserView(String dataDomainType) {
+		super(dataDomainType);
 		init();
 	}
 

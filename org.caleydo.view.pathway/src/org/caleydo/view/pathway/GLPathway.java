@@ -1010,7 +1010,7 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedPathwayView serializedForm = new SerializedPathwayView(dataDomain);
+		SerializedPathwayView serializedForm = new SerializedPathwayView(dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		serializedForm.setPathwayID(pathway.getID());
 		return serializedForm;

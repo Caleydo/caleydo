@@ -54,20 +54,16 @@ public class StandardTransformer
 		registerEventListeners();
 	}
 
-	/**
-	 * Registers the event listeners.
-	 */
-	private void registerEventListeners() {
+	@Override
+	public void registerEventListeners() {
 		newConnectionsListener = new NewConnectionsListener();
 		newConnectionsListener.setHandler(this);
 		eventPublisher.addListener(NewConnectionsEvent.class, newConnectionsListener);
 
 	}
 
-	/**
-	 * Unregisters the event listeners and releases resources
-	 */
-	private void unregisterEventListeners() {
+	@Override
+	public void unregisterEventListeners() {
 		if (newConnectionsListener != null) {
 			eventPublisher.removeListener(newConnectionsListener);
 			newConnectionsListener = null;

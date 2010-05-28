@@ -49,7 +49,7 @@ public class PathwayDatabase
 		this.sImageMapPath = this.sImageMapPath.replace(CALEYDO_FOLDER_TEMPLATE, CALEYDO_FOLDER);
 
 		if (type == EPathwayDatabaseType.KEGG) {
-			EOrganism eOrganism = GeneralManager.get().getMasterUseCase().getOrganism();
+			EOrganism eOrganism = GeneralManager.get().getOrganism();
 
 			if (eOrganism == EOrganism.HOMO_SAPIENS) {
 				this.sImagePath += "hsa/";

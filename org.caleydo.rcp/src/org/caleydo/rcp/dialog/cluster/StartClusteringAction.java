@@ -2,6 +2,8 @@ package org.caleydo.rcp.dialog.cluster;
 
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterState;
@@ -88,7 +90,7 @@ public class StartClusteringAction
 
 		this.parentComposite = parentComposite;
 
-		sArTypeOptions[0] = GeneralManager.get().getMasterUseCase().getContentLabel(true, false);
+		sArTypeOptions[0] = ((ISetBasedDataDomain)DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic")).getContentLabel(true, false);
 	}
 
 	@Override

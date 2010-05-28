@@ -25,6 +25,7 @@ import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
@@ -131,6 +132,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 	private SelectionType selectionTypeClicked;
 
 	private Tree<ClusterNode> tree;
+	
+	private ISet set;
 
 	/**
 	 * Constructor.
@@ -174,13 +177,14 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 	@Override
 	public void init(GL gl) {
 
-		storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
+		set = ((ISetBasedDataDomain) dataDomain).getSet();
+		
+		storageVA = set.getStorageVA(StorageVAType.STORAGE);
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager,
 				iUniqueID, renderStyle);
 		if (set.getStorageTree() != null) {
 			// FIXME: do that differently.
 			// set = set.getStorageTree().getRoot().getMetaSet();
-			set = useCase.getSet();
 			tree = set.getStorageTree();
 			initHierarchy(set.getStorageTree());
 		} else {
@@ -343,15 +347,12 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 		// ClusterHelper.determineHierarchyDepth(tree);
 		// FIXME: do that differently.
 		// set = set.getStorageTree().getRoot().getMetaSet();
-		set = useCase.getSet();
 		ClusterHelper.determineExpressionValue(tree,
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
 		tree.setDirty();
 		tree.getRoot().createMetaSets(
 				(org.caleydo.core.data.collection.set.Set) set);
 		set.setStorageTree(tree);
-		ISet useCaseSet = GeneralManager.get().getMasterUseCase().getSet();
-		useCaseSet.setStorageTree(tree);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
 		storageVA = new StorageVirtualArray(StorageVAType.STORAGE, alIndices);
@@ -902,7 +903,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedGrouperView serializedForm = new SerializedGrouperView(
-				dataDomain);
+				dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

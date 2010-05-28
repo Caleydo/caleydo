@@ -31,8 +31,8 @@ public class SerializedTissueViewBrowserView extends ASerializedView {
 		init();
 	}
 
-	public SerializedTissueViewBrowserView(EDataDomain dataDomain) {
-		super(dataDomain);
+	public SerializedTissueViewBrowserView(String dataDomainType) {
+		super(dataDomainType);
 		init();
 	}
 

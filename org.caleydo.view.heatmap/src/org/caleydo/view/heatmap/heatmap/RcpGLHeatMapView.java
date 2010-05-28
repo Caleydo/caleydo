@@ -1,7 +1,5 @@
 package org.caleydo.view.heatmap.heatmap;
 
-import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;

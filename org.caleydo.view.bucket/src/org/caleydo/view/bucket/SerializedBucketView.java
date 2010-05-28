@@ -7,9 +7,10 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
 import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
 import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
 
@@ -45,11 +46,11 @@ public class SerializedBucketView extends ASerializedView {
 	 * parameters.
 	 */
 	public SerializedBucketView() {
-		this(EDataDomain.GENETIC_DATA);
+		this("org.caleydo.datadomain.unspecified");
 	}
 
-	public SerializedBucketView(EDataDomain dataDomain) {
-		super(dataDomain);
+	public SerializedBucketView(String dataDomainType) {
+		super(dataDomainType);
 		setPathwayTexturesEnabled(true);
 		setNeighborhoodEnabled(true);
 		setGeneMappingEnabled(true);
@@ -57,23 +58,22 @@ public class SerializedBucketView extends ASerializedView {
 
 		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>();
 
-		if (GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA) != null) {
+		if (DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic") != null) {
 			SerializedHeatMapView heatMap = new SerializedHeatMapView(
-					dataDomain);
+					"org.caleydo.datadomain.genetic");
 			remoteViews.add(heatMap);
 			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView(
-					dataDomain);
+					"org.caleydo.datadomain.genetic");
 			remoteViews.add(parCoords);
 		}
-
-//		if (GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA) != null) {
-//			SerializedGlyphView glyph1 = new SerializedGlyphView(
-//					EDataDomain.CLINICAL_DATA);
-//			remoteViews.add(glyph1);
-//			SerializedGlyphView glyph2 = new SerializedGlyphView(
-//					EDataDomain.CLINICAL_DATA);
-//			remoteViews.add(glyph2);
-//		}
+		else if (dataDomainType.equals("org.caleydo.datadomain.clinical")) {
+			SerializedGlyphView glyph1 = new SerializedGlyphView(
+					"org.caleydo.datadomain.clinical");
+			remoteViews.add(glyph1);
+			SerializedGlyphView glyph2 = new SerializedGlyphView(
+					"org.caleydo.datadomain.clinical");
+			remoteViews.add(glyph2);
+		}
 
 		ArrayList<ASerializedView> focusLevel = new ArrayList<ASerializedView>();
 		if (remoteViews.size() > 0) {
@@ -141,10 +141,5 @@ public class SerializedBucketView extends ASerializedView {
 	@Override
 	public String getViewType() {
 		return GLBucket.VIEW_ID;
-	}
-
-	@Override
-	public EDataDomain getDataDomain() {
-		return dataDomain;
 	}
 }

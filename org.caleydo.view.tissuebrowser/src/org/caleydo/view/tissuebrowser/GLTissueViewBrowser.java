@@ -8,7 +8,6 @@ import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
@@ -21,7 +20,6 @@ import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -65,14 +63,14 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	}
 
 	@Override
-	public void setUseCase(IDataDomain useCase) {
-		super.setUseCase(useCase);
-		contentVA = GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA)
-				.getContentVA(ContentVAType.CONTENT);
+	public void setDataDomain(IDataDomain dataDomain) {
+		super.setDataDomain(dataDomain);
+//		contentVA = dataDomain.getSet().getContentVA(ContentVAType.CONTENT);
 		experiementSelectionManager = new ContentSelectionManager(primaryIDType);
 		experiementSelectionManager.setVA(contentVA);
 
 		addInitialViews();
+
 	}
 
 	@Override
@@ -80,30 +78,34 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 		newViews.clear();
 		allTissueViews = new ArrayList<SerializedTissueView>();
-
-		ISet geneticSet = generalManager.getUseCase(EDataDomain.GENETIC_DATA)
-				.getSet();
-		for (int experimentIndex = 0; experimentIndex < 2; experimentIndex++) { //TODO: replace 2 with geneticSet.size()
-
-			generalManager.getViewGLCanvasManager().createGLView(
-					"org.caleydo.view.tissue", parentGLCanvas, "", viewFrustum);
-
-			mapExperimentToTexturePath.put(experimentIndex,
-					"data/tissue/breast_" + experimentIndex % 24 + ".jpg");
-
-			SerializedTissueView tissue = new SerializedTissueView();
-			tissue.setDataDomain(EDataDomain.TISSUE_DATA);
-			tissue.setTexturePath(mapExperimentToTexturePath
-					.get(experimentIndex));
-			//tissue.setLabel(geneticSet.get(experimentIndex).getLabel());
-			tissue.setExperimentIndex(experimentIndex);
-
-			allTissueViews.add(tissue);
-		}
-		
-		for (SerializedTissueView serTissue : allTissueViews) {
-			newViews.add(serTissue);
-		}
+		//
+		// ISet geneticSet =
+		// generalManager.getUseCase(EDataDomain.GENETIC_DATA).getSet();
+		// for (int experimentIndex = 0; experimentIndex < 2; experimentIndex++)
+		// { // TODO:
+		// // replace
+		// // 2
+		// // with
+		// // geneticSet.size()
+		//
+		// generalManager.getViewGLCanvasManager().createGLView(
+		// "org.caleydo.view.tissue", parentGLCanvas, "", viewFrustum);
+		//
+		// mapExperimentToTexturePath.put(experimentIndex, "data/tissue/breast_"
+		// + experimentIndex % 24 + ".jpg");
+		//
+		// SerializedTissueView tissue = new SerializedTissueView();
+		// tissue.setDataDomain(EDataDomain.TISSUE_DATA);
+		// tissue.setTexturePath(mapExperimentToTexturePath.get(experimentIndex));
+		// // tissue.setLabel(geneticSet.get(experimentIndex).getLabel());
+		// tissue.setExperimentIndex(experimentIndex);
+		//
+		// allTissueViews.add(tissue);
+		// }
+		//
+		// for (SerializedTissueView serTissue : allTissueViews) {
+		// newViews.add(serTissue);
+		// }
 	}
 
 	private void updateViews() {
@@ -174,13 +176,12 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(xOffset, fYAdd, 0));
-			transform.setScale(new Vec3f(fScalingFactorPoolLevel
-					* fSelectedScaling, fScalingFactorPoolLevel
-					* fSelectedScaling, fScalingFactorPoolLevel
-					* fSelectedScaling));
+			transform.setScale(new Vec3f(fScalingFactorPoolLevel * fSelectedScaling,
+					fScalingFactorPoolLevel * fSelectedScaling, fScalingFactorPoolLevel
+							* fSelectedScaling));
 
-			poolLevel.getElementByPositionIndex(iRemoteLevelElementIndex)
-					.setTransform(transform);
+			poolLevel.getElementByPositionIndex(iRemoteLevelElementIndex).setTransform(
+					transform);
 			iRemoteLevelElementIndex++;
 		}
 	}
@@ -194,8 +195,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		transform.setScale(new Vec3f(fScalingFactorSelectionLevel,
 				fScalingFactorSelectionLevel, fScalingFactorSelectionLevel));
 
-		externalSelectionLevel.getElementByPositionIndex(0).setTransform(
-				transform);
+		externalSelectionLevel.getElementByPositionIndex(0).setTransform(transform);
 	}
 
 	@Override
@@ -215,8 +215,8 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		float fScalingFactorSpawnLevel = 0.05f;
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(6.5f, 5, -0.2f));
-		transform.setScale(new Vec3f(fScalingFactorSpawnLevel,
-				fScalingFactorSpawnLevel, fScalingFactorSpawnLevel));
+		transform.setScale(new Vec3f(fScalingFactorSpawnLevel, fScalingFactorSpawnLevel,
+				fScalingFactorSpawnLevel));
 
 		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
 	}
@@ -281,8 +281,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class,
-				selectionUpdateListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		virtualArrayUpdateListener = new ContentVAUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
@@ -291,8 +290,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 		replaceVirtualArrayListener = new ReplaceContentVAListener();
 		replaceVirtualArrayListener.setHandler(this);
-		eventPublisher.addListener(ReplaceVAEvent.class,
-				replaceVirtualArrayListener);
+		eventPublisher.addListener(ReplaceVAEvent.class, replaceVirtualArrayListener);
 
 	}
 
@@ -354,21 +352,21 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 	@Override
 	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
-		if (idCategory != EIDCategory.EXPERIMENT)
-			return;
-
-		IDataDomain clinicalUseCase = GeneralManager.get().getUseCase(
-				EDataDomain.CLINICAL_DATA);
-
-		String primaryVAType = clinicalUseCase
-				.getVATypeForIDCategory(idCategory);
-		if (primaryVAType == null)
-			return;
-
-		contentVA = clinicalUseCase.getContentVA(vaType);
-		// contentSelectionManager.setVA(contentVA);
-
-		initData();
-		updateViews();
+		// if (idCategory != EIDCategory.EXPERIMENT)
+		// return;
+		//s
+		// IDataDomain clinicalUseCase = GeneralManager.get().getUseCase(
+		// EDataDomain.CLINICAL_DATA);
+		//
+		// String primaryVAType =
+		// clinicalUseCase.getVATypeForIDCategory(idCategory);
+		// if (primaryVAType == null)
+		// return;
+		//
+		// contentVA = clinicalUseCase.getContentVA(vaType);
+		// // contentSelectionManager.setVA(contentVA);
+		//
+		// initData();
+		// updateViews();
 	}
 }

@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
-import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.EOrganism;
@@ -102,7 +101,7 @@ public class CaleydoProjectWizard
 				cmd.doCommand();
 				dataDomain = cmd.getCreatedObject();
 
-				dataDomain.setOrganism(EOrganism.HOMO_SAPIENS);
+				GeneralManager.get().setOrganism(EOrganism.HOMO_SAPIENS);
 
 				Application.applicationMode = appMode;
 
@@ -126,7 +125,7 @@ public class CaleydoProjectWizard
 				cmd.doCommand();
 				dataDomain = cmd.getCreatedObject();
 
-				dataDomain.setOrganism(page.getOrganism());
+				GeneralManager.get().setOrganism(page.getOrganism());
 
 				Application.applicationMode = appMode;
 

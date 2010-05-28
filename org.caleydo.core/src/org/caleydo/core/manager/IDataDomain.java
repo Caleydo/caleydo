@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.set.LoadDataParameters;
-import org.caleydo.core.data.selection.ContentSelectionManager;
-import org.caleydo.core.data.selection.StorageSelectionManager;
-import org.caleydo.core.manager.specialized.EOrganism;
 
 /**
  * Use cases are the unique points of coordinations for views and its data. Genetic data is one example -
@@ -50,11 +47,5 @@ public interface IDataDomain {
 
 	/** Gets the name of the boots-trap xml-file this useCase was or should be loaded */
 	public void setBootstrapFileName(String bootstrapFileName);
-
-
-
-	public void setOrganism(EOrganism eOrganism);
-
-	public EOrganism getOrganism();
 
 }

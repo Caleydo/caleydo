@@ -273,8 +273,9 @@ public class VisLinkManager
 		}
 		return displayPoints;
 	}
-
-	private void registerEventListeners() {
+	
+	@Override
+	public void registerEventListeners() {
 		visLinkSelectionListener = new VisLinkSelectionListener();
 		visLinkSelectionListener.setHandler(this);
 		eventPublisher.addListener(VisLinkSelectionEvent.class, visLinkSelectionListener);
@@ -288,7 +289,8 @@ public class VisLinkManager
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 	}
 
-	private void unregisterEventListeners() {
+	@Override
+	public void unregisterEventListeners() {
 		if (visLinkSelectionListener != null) {
 			eventPublisher.removeListener(visLinkSelectionListener);
 			visLinkSelectionListener = null;

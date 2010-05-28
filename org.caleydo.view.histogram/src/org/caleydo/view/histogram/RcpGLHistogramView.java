@@ -3,6 +3,7 @@ package org.caleydo.view.histogram;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -79,7 +80,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements
 		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		SerializedHistogramView serialized = new SerializedHistogramView(
-				dataDomain);
+				dataDomain.getDataDomainType());
 		redrawView(serialized);
 	}
 
@@ -181,8 +182,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements
 							+ PreferenceConstants.COLOR_MARKER_POINT_VALUE
 							+ iCount);
 
-			double correspondingValue = GeneralManager.get().getUseCase(
-					dataDomain).getSet().getRawForNormalized(normalizedValue);
+			double correspondingValue = ((ISetBasedDataDomain)dataDomain).getSet().getRawForNormalized(normalizedValue);
 
 			labels.get(iCount - 1).setText(
 					Formatter.formatNumber(correspondingValue));
@@ -291,7 +291,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedHistogramView serializedView = new SerializedHistogramView(
-				dataDomain);
+				dataDomain.getDataDomainType());
 		return serializedView;
 	}
 

@@ -18,8 +18,8 @@ public class SerializedHistogramView extends ASerializedView {
 	public SerializedHistogramView() {
 	}
 
-	public SerializedHistogramView(EDataDomain dataDomain) {
-		super(dataDomain);
+	public SerializedHistogramView(String dataDomainType) {
+		super(dataDomainType);
 	}
 
 	@Override

@@ -25,8 +25,8 @@ public class SerializedPathwayView extends ASerializedView {
 	public SerializedPathwayView() {
 	}
 
-	public SerializedPathwayView(EDataDomain dataDomain) {
-		super(dataDomain);
+	public SerializedPathwayView(String dataDomainType) {
+		super(dataDomainType);
 		pathwayID = -1;
 	}
 

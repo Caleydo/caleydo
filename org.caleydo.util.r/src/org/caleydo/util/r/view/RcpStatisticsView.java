@@ -1,6 +1,5 @@
 package org.caleydo.util.r.view;
 
-import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;

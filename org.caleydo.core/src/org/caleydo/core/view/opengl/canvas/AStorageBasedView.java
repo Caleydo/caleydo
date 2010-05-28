@@ -138,10 +138,10 @@ public abstract class AStorageBasedView
 
 	@Override
 	public void setDataDomain(IDataDomain dataDomain) {
-		this.dataDomain = (ISetBasedDataDomain) useCase;
+		this.dataDomain = (ISetBasedDataDomain) dataDomain;
 
-		contentSelectionManager = useCase.getContentSelectionManager();
-		storageSelectionManager = useCase.getStorageSelectionManager();
+		contentSelectionManager = this.dataDomain.getContentSelectionManager();
+		storageSelectionManager = this.dataDomain.getStorageSelectionManager();
 
 	}
 

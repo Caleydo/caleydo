@@ -11,7 +11,6 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.ISetBasedDataDomain;
-import org.caleydo.core.manager.datadomain.ADataDomain;
 
 /**
  * Simple bean that holds the initialization data for new started caleydo application. Used to store and

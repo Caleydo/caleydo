@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.SetUtils;
@@ -22,7 +20,6 @@ import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
-import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.net.GroupwareUtils;

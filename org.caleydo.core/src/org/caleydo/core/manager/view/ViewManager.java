@@ -408,7 +408,8 @@ public class ViewManager
 		// });
 	}
 
-	private void registerEventListeners() {
+	@Override
+	public void registerEventListeners() {
 		IGeneralManager generalManager = GeneralManager.get();
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
@@ -418,7 +419,8 @@ public class ViewManager
 	}
 
 	@SuppressWarnings("unused")
-	private void unregisterEventListeners() {
+	@Override
+	public void unregisterEventListeners() {
 		IGeneralManager generalManager = GeneralManager.get();
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 

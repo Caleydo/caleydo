@@ -22,8 +22,8 @@ public class SerializedParallelCoordinatesView extends ASerializedView {
 	public SerializedParallelCoordinatesView() {
 	}
 
-	public SerializedParallelCoordinatesView(EDataDomain dataDomain) {
-		super(dataDomain);
+	public SerializedParallelCoordinatesView(String dataDomainType) {
+		super(dataDomainType);
 	}
 
 	@Override

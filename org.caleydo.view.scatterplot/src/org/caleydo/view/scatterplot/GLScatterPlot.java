@@ -3073,7 +3073,7 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 	@Override
 	public String getShortInfo() {
 		if (contentVA == null)
-			return "Scatterplot - 0 " + useCase.getContentLabel(false, true)
+			return "Scatterplot - 0 " + dataDomain.getContentLabel(false, true)
 					+ " / 0 experiments";
 
 //		return "Scatterplot - " + contentVA.size() + " "
@@ -3464,9 +3464,9 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (this.bRenderOnlyContext) {
-			contentVA = useCase.getContentVA(ContentVAType.CONTENT_CONTEXT);
+			contentVA = dataDomain.getContentVA(ContentVAType.CONTENT_CONTEXT);
 		} else {
-			contentVA = useCase.getContentVA(ContentVAType.CONTENT);
+			contentVA = dataDomain.getContentVA(ContentVAType.CONTENT);
 		}
 
 		contentSelectionManager.setVA(contentVA);

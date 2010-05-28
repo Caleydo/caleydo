@@ -3,6 +3,8 @@ package org.caleydo.view.bookmarking;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
+import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.collection.UniqueList;
@@ -27,7 +29,8 @@ class GeneBookmarkContainer extends ABookmarkContainer<ContentSelectionManager> 
 		colorMapping = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 
-		selectionManager = GeneralManager.get().getMasterUseCase()
+		selectionManager = ((ISetBasedDataDomain) DataDomainManager.getInstance()
+				.getDataDomain("org.caleydo.datadomain.genetic"))
 				.getContentSelectionManager();
 
 	}

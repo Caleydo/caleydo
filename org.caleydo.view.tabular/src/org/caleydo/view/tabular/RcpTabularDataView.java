@@ -1,6 +1,5 @@
 package org.caleydo.view.tabular;
 
-import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;

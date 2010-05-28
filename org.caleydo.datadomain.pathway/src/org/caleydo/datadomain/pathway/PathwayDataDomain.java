@@ -7,8 +7,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.selection.ContentSelectionManager;
-import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 

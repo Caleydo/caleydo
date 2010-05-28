@@ -1,7 +1,6 @@
 package org.caleydo.core.manager;
 
 import java.io.File;
-import java.util.Collection;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.data.IStorageManager;

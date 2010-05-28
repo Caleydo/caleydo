@@ -183,7 +183,7 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 		if (!generalManager.getPathwayManager().isPathwayVisible(
 				generalManager.getPathwayManager().getItem(iPathwayID))) {
 			SerializedPathwayView serPathway = new SerializedPathwayView(
-					EDataDomain.GENETIC_DATA);
+					dataDomain.getDataDomainType());
 			serPathway.setPathwayID(iPathwayID);
 			newViews.add(serPathway);
 		}

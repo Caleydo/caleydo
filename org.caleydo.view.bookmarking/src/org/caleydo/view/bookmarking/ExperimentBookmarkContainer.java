@@ -3,8 +3,9 @@ package org.caleydo.view.bookmarking;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.StorageSelectionManager;
+import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.collection.UniqueList;
 
 /**
@@ -20,7 +21,8 @@ class ExperimentBookmarkContainer extends
 		super(manager, EIDCategory.EXPERIMENT, EIDType.EXPERIMENT_INDEX);
 		bookmarkItems = new UniqueList<ABookmark>();
 
-		selectionManager = GeneralManager.get().getMasterUseCase()
+		selectionManager = ((ISetBasedDataDomain) DataDomainManager.getInstance()
+				.getDataDomain("org.caleydo.datadomain.genetic"))
 				.getStorageSelectionManager();
 
 	}

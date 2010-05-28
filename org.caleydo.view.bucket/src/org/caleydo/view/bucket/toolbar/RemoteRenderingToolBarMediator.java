@@ -41,7 +41,8 @@ public class RemoteRenderingToolBarMediator implements IRemoteRenderingHandler {
 		registerEventListeners();
 	}
 
-	private void registerEventListeners() {
+	@Override
+	public void registerEventListeners() {
 		enableConnectionLinesListener = new EnableConnectionLinesListener();
 		enableConnectionLinesListener.setHandler(this);
 		eventPublisher.addListener(EnableConnectionLinesEvent.class,
@@ -53,7 +54,8 @@ public class RemoteRenderingToolBarMediator implements IRemoteRenderingHandler {
 				disableConnectionLinesListener);
 	}
 
-	private void unregisterEventListeners() {
+	@Override
+	public void unregisterEventListeners() {
 
 		if (enableConnectionLinesListener != null) {
 			eventPublisher.removeListener(enableConnectionLinesListener);

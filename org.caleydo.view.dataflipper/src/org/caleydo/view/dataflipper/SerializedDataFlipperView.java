@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
@@ -36,8 +35,8 @@ public class SerializedDataFlipperView extends ASerializedView {
 		init();
 	}
 
-	public SerializedDataFlipperView(EDataDomain dataDomain) {
-		super(dataDomain);
+	public SerializedDataFlipperView(String dataDomainType) {
+		super(dataDomainType);
 		init();
 	}
 
@@ -45,29 +44,29 @@ public class SerializedDataFlipperView extends ASerializedView {
 		initialContainedViews = new ArrayList<ASerializedView>();
 
 		SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
-		parCoords.setDataDomain(EDataDomain.GENETIC_DATA);
+		parCoords.setDataDomainType("org.caleydo.datadomain.genetic");
 		initialContainedViews.add(parCoords);
 
 		SerializedTissueViewBrowserView tissueViewBrowser = new SerializedTissueViewBrowserView();
-		tissueViewBrowser.setDataDomain(EDataDomain.TISSUE_DATA);
+		tissueViewBrowser.setDataDomainType("org.caleydo.datadomain.tissue");
 		initialContainedViews.add(tissueViewBrowser);
 
 		SerializedHierarchicalHeatMapView heatMap = new SerializedHierarchicalHeatMapView();
-		heatMap.setDataDomain(EDataDomain.GENETIC_DATA);
+		heatMap.setDataDomainType("org.caleydo.datadomain.genetic");
 		initialContainedViews.add(heatMap);
 		
-		GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA).updateSetInViews();
+		//GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA).updateSetInViews();
 		
 		parCoords = new SerializedParallelCoordinatesView();
-		parCoords.setDataDomain(EDataDomain.CLINICAL_DATA);
+		parCoords.setDataDomainType("org.caleydo.datadomain.clinical");
 		initialContainedViews.add(parCoords);
 
 		SerializedPathwayViewBrowserView pathwayViewBrowser = new SerializedPathwayViewBrowserView();
-		pathwayViewBrowser.setDataDomain(EDataDomain.PATHWAY_DATA);
+		pathwayViewBrowser.setDataDomainType("org.caleydo.datadomain.pathway");
 		initialContainedViews.add(pathwayViewBrowser);
 
 		SerializedGlyphView glyph = new SerializedGlyphView();
-		glyph.setDataDomain(EDataDomain.CLINICAL_DATA);
+		glyph.setDataDomainType("org.caleydo.datadomain.clinical");
 		initialContainedViews.add(glyph);
 	}
 

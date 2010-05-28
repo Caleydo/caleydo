@@ -8,10 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.selection.ContentSelectionManager;
-import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.specialized.EOrganism;
 
 /**
  * Abstract use case class that implements data and view management.
@@ -50,11 +47,6 @@ public abstract class ADataDomain
 	 * VAType ({@link VAType#getPrimaryVAType()} is associated for the ID Category
 	 */
 	protected HashMap<EIDCategory, String> possibleIDCategories;
-
-	/**
-	 * Organism on which the genetic analysis data bases on.
-	 */
-	private EOrganism eOrganism = EOrganism.HOMO_SAPIENS;
 
 	public ADataDomain() {
 		
@@ -110,14 +102,6 @@ public abstract class ADataDomain
 
 	public void setBootstrapFileName(String bootsTrapFileName) {
 		this.bootsTrapFileName = bootsTrapFileName;
-	}
-
-	public void setOrganism(EOrganism eOrganism) {
-		this.eOrganism = eOrganism;
-	}
-
-	public EOrganism getOrganism() {
-		return eOrganism;
 	}
 
 	@Override

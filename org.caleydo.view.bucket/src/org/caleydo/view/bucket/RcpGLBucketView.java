@@ -30,8 +30,7 @@ public class RcpGLBucketView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedBucketView serializedView = new SerializedBucketView(
-				EDataDomain.GENETIC_DATA);
+		SerializedBucketView serializedView = new SerializedBucketView(dataDomain.getDataDomainType());
 		return serializedView;
 	}
 

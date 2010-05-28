@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
@@ -119,7 +119,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 	@Override
 	public void initData() {
 		super.initData();
-		histogram = set.getHistogram();
+		histogram = ((ISetBasedDataDomain)dataDomain).getSet().getHistogram();
 	}
 
 	@Override
@@ -390,7 +390,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 		textRenderer.setColor(0, 0, 0, 1);
 		gl.glDisable(GL.GL_DEPTH_TEST);
 
-		double correspondingValue = set.getRawForNormalized(normalizedValue);
+		double correspondingValue = ((ISetBasedDataDomain)dataDomain).getSet().getRawForNormalized(normalizedValue);
 
 		String text = Formatter.formatNumber(correspondingValue);
 
@@ -616,7 +616,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedHistogramView serializedForm = new SerializedHistogramView(dataDomain);
+		SerializedHistogramView serializedForm = new SerializedHistogramView(dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -644,15 +644,5 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
 		}
-	}
-
-	@Override
-	public void setSet(ISet set) {
-
-		// Ignore set update if the new set is not homogeneous
-		if (!set.isSetHomogeneous())
-			return;
-
-		super.setSet(set);
 	}
 }

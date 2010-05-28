@@ -75,7 +75,7 @@ public class PathwayLoaderThread
 		String sPathwayPath = pathwayDatabase.getXMLPath();
 		IPathwayResourceLoader pathwayResourceLoader = null;
 		EOrganism eOrganism =
-			GeneralManager.get().getMasterUseCase().getOrganism();
+			GeneralManager.get().getOrganism();
 
 		if (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG) {
 

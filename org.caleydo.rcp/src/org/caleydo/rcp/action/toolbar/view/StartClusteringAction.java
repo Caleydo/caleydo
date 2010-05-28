@@ -3,6 +3,8 @@ package org.caleydo.rcp.action.toolbar.view;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterState;
@@ -48,7 +50,7 @@ public class StartClusteringAction
 		if (sets == null || sets.size() == 0)
 		{
 			sets = new ArrayList<ISet>();
-			sets.add(GeneralManager.get().getMasterUseCase().getSet());
+			sets.add(((ISetBasedDataDomain)DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic")).getSet());
 		}
 		for(ISet tmpSet : sets) {
 			event = new StartClusteringEvent(clusterState, tmpSet.getID());

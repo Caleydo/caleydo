@@ -34,8 +34,8 @@ public class SerializedRadialHierarchyView extends ASerializedView {
 		init();
 	}
 
-	public SerializedRadialHierarchyView(EDataDomain dataDomain) {
-		super(dataDomain);
+	public SerializedRadialHierarchyView(String dataDomainType) {
+		super(dataDomainType);
 		init();
 	}
 

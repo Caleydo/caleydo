@@ -33,7 +33,7 @@ public class RcpGLRadialHierarchyView extends ARcpGLViewPart {
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedRadialHierarchyView serializedView = new SerializedRadialHierarchyView(
-				dataDomain);
+				dataDomain.getDataDomainType());
 		return serializedView;
 	}
 

@@ -1,11 +1,7 @@
 package org.caleydo.core.manager.general;
 
-import java.util.Collection;
-import java.util.EnumMap;
-
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;

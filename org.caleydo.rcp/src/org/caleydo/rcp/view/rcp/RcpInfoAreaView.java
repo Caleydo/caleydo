@@ -1,11 +1,11 @@
 package org.caleydo.rcp.view.rcp;
 
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.rcp.util.info.InfoArea;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.ViewPart;
 
 /**
  * Search view contains gene and pathway search.
@@ -13,7 +13,7 @@ import org.eclipse.ui.part.ViewPart;
  * @author Marc Streit
  */
 public class RcpInfoAreaView
-	extends ViewPart {
+	extends CaleydoRCPViewPart {
 
 	public static final String ID = "org.caleydo.rcp.views.swt.InfoAreaView";
 
@@ -69,7 +69,7 @@ public class RcpInfoAreaView
 		layout.marginHeight = layout.marginWidth = 0;
 
 		infoComposite.setLayout(layout);
-		infoArea = new InfoArea();
+		infoArea = new InfoArea((ISetBasedDataDomain)dataDomain);
 		infoArea.registerEventListeners();
 		infoArea.createControl(infoComposite);
 	}

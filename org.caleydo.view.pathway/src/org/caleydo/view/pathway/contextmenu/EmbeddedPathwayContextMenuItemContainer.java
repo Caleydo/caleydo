@@ -1,7 +1,7 @@
 package org.caleydo.view.pathway.contextmenu;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.LoadPathwaysByPathwayIDItem;
 
@@ -19,7 +19,7 @@ public class EmbeddedPathwayContextMenuItemContainer extends AItemContainer {
 	public EmbeddedPathwayContextMenuItemContainer() {
 		super();
 
-		if (GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA) == null)
+		if (DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic") == null)
 			throw new IllegalStateException(
 					"This context menu container is only valid for genetic data");
 

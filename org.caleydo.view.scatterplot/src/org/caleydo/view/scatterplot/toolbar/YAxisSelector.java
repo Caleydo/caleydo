@@ -114,4 +114,16 @@ public class YAxisSelector extends ControlContribution implements IToolBarItem,
 			initAxisComboListener = null;
 		}
 	}
+
+	@Override
+	public void registerEventListeners() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		// TODO Auto-generated method stub
+		
+	}
 }
