@@ -78,8 +78,6 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 	}
 
 	public void initData() {
-
-		dataDomain = useCase.getDataDomain();
 	}
 
 	private void createGUI() {
@@ -109,8 +107,8 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 
 				calulateReduction();
 
-//				if (reducedVA != null)
-//					reducedNumberLabel.setText("# Genes: " + reducedVA.size());
+				// if (reducedVA != null)
+				// reducedNumberLabel.setText("# Genes: " + reducedVA.size());
 
 				composite.layout();
 			}
@@ -124,14 +122,14 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 				performReduction();
 			}
 		});
-		
+
 		final Button buttonClear = new Button(composite, SWT.PUSH);
 		buttonClear.setText("Clear Statistics Results");
 		buttonClear.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				clearStatisticsResults();
-				
+
 				calulateReduction();
 			}
 		});
@@ -139,7 +137,8 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedStatisticsView serializedForm = new SerializedStatisticsView(dataDomain);
+		SerializedStatisticsView serializedForm = new SerializedStatisticsView(dataDomain
+				.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -151,8 +150,6 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 
 	@Override
 	public void registerEventListeners() {
-		super.registerEventListeners();
-
 		statisticsResultFinishedEventListener = new StatisticsResultFinishedEventListener();
 		statisticsResultFinishedEventListener.setHandler(this);
 		GeneralManager.get().getEventPublisher().addListener(
@@ -162,8 +159,7 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 
 	@Override
 	public void unregisterEventListeners() {
-		super.unregisterEventListeners();
-
+	
 		if (statisticsResultFinishedEventListener != null) {
 			GeneralManager.get().getEventPublisher().removeListener(
 					statisticsResultFinishedEventListener);
@@ -200,7 +196,7 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 							continue;
 						}
 					} else if (foldChangeSettings.getEvaluator() == FoldChangeEvaluator.LESS) {
-						if (foldChangeResult.getFirst()[contentIndex]*-1 < foldChangeSettings
+						if (foldChangeResult.getFirst()[contentIndex] * -1 < foldChangeSettings
 								.getRatio()) {
 							resultValid = false;
 							continue;
@@ -232,13 +228,14 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 				if (!resultValid)
 					continue;
 				// else
-				//	System.out.println("Found valid gene fulfilling statistics criteria: " +set +" "+contentIndex);
+				// System.out.println("Found valid gene fulfilling statistics criteria: "
+				// +set +" "+contentIndex);
 			}
 
 			if (resultValid)
 				reducedVA.appendUnique(contentIndex);
 		}
-		
+
 		if (reducedVA != null) {
 			reducedNumberLabel.setText("# Genes: " + reducedVA.size());
 			composite.layout();
@@ -250,13 +247,13 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 		if (reducedVA != null)
 			triggerReplaceContentVAEvent(reducedVA);
 	}
-	
+
 	private void clearStatisticsResults() {
-		
+
 		for (ISet set : setsWithPerformedStatistics) {
 			set.getStatisticsResult().clearStatisticsResults();
 		}
-		
+
 		calulateReduction();
 	}
 

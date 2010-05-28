@@ -63,7 +63,8 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		}
 	}
 
-	private void registerEventListeners() {
+	@Override
+	public void registerEventListeners() {
 
 		// compareGroupsEventListener = new CompareGroupsEventListener();
 		// compareGroupsEventListener.setHandler(this);
@@ -80,13 +81,13 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		GeneralManager.get().getEventPublisher().addListener(
 				StatisticsFoldChangeReductionEvent.class,
 				statisticsFoldChangeReductionListener);
-		
+
 		statisticsTwoSidedTTestReductionListener = new StatisticsTwoSidedTTestReductionListener();
 		statisticsTwoSidedTTestReductionListener.setHandler(this);
 		GeneralManager.get().getEventPublisher().addListener(
 				StatisticsTwoSidedTTestReductionEvent.class,
 				statisticsTwoSidedTTestReductionListener);
-		
+
 	}
 
 	// TODO: never called!
@@ -109,7 +110,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 					statisticsFoldChangeReductionListener);
 			statisticsFoldChangeReductionListener = null;
 		}
-		
+
 		if (statisticsTwoSidedTTestReductionListener != null) {
 			GeneralManager.get().getEventPublisher().removeListener(
 					statisticsTwoSidedTTestReductionListener);
@@ -144,9 +145,9 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 	public void foldChange(ISet set1, ISet set2) {
 
 		// Do nothing if the operations was already performed earlier
-//		if (set1.getStatisticsResult().getFoldChangeResult(set2) != null
-//				&& set2.getStatisticsResult().getFoldChangeResult(set1) != null)
-//			return;
+		// if (set1.getStatisticsResult().getFoldChangeResult(set2) != null
+		// && set2.getStatisticsResult().getFoldChangeResult(set1) != null)
+		// return;
 
 		NumericalStorage meanStorageVec1 = set1.getMeanStorage();
 		NumericalStorage meanStorageVec2 = set2.getMeanStorage();
@@ -178,27 +179,28 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 	public void oneSidedTTest(ArrayList<ISet> sets) {
 
-//		OpenViewEvent openViewEvent  = new OpenViewEvent();
-//		openViewEvent.setViewType("org.caleydo.view.statistics");
-//		openViewEvent.setSender(this);
-//		GeneralManager.get().getEventPublisher().triggerEvent(openViewEvent);
-		
+		// OpenViewEvent openViewEvent = new OpenViewEvent();
+		// openViewEvent.setViewType("org.caleydo.view.statistics");
+		// openViewEvent.setSender(this);
+		// GeneralManager.get().getEventPublisher().triggerEvent(openViewEvent);
+
 		boolean allCalculated = true;
 		for (ISet set : sets) {
-			if(set.getStatisticsResult().getOneSidedTTestResult() == null)
+			if (set.getStatisticsResult().getOneSidedTTestResult() == null)
 				continue;
-			
+
 			allCalculated = false;
 		}
-		
+
 		if (!allCalculated)
 			return;
-		
+
 		for (ISet set : sets) {
 			double[] pValueVector = new double[set.getContentVA(ContentVAType.CONTENT)
 					.size()];
 
-			for (int contentIndex = 0; contentIndex < set.getContentVA(ContentVAType.CONTENT).size(); contentIndex++) {
+			for (int contentIndex = 0; contentIndex < set.getContentVA(
+					ContentVAType.CONTENT).size(); contentIndex++) {
 
 				StorageVirtualArray storageVA1 = set.getStorageVA(StorageVAType.STORAGE);
 
@@ -213,82 +215,83 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 				engine.assign("set", compareVec1);
 
 				REXP compareResult = engine.eval("t.test(set)");
-				
-				//System.out.println(compareVec1[0] + " " + compareVec1[1] + " " +compareVec1[2]);
-				
+
+				// System.out.println(compareVec1[0] + " " + compareVec1[1] +
+				// " " +compareVec1[2]);
+
 				// If all values in the vector are the same R returns null
 				if (compareResult == null)
 					pValueVector[contentIndex] = 0;
 				else {
 					REXP pValue = (REXP) compareResult.asVector().get(2);
 					pValueVector[contentIndex] = pValue.asDouble();
-					// System.out.println(pValue.asDouble());					
+					// System.out.println(pValue.asDouble());
 				}
 			}
 
 			set.getStatisticsResult().setOneSiddedTTestResult(pValueVector);
 		}
-		
+
 		StatisticsResultFinishedEvent event = new StatisticsResultFinishedEvent(sets);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
-		
+
 		System.out.println("One-sided t-test finished");
 	}
 
 	public void twoSidedTTest(ArrayList<ISet> sets) {
-		
+
 		// Perform t-test between all neighboring sets (A<->B<->C)
-//		for (int setIndex = 0; setIndex < sets.size(); setIndex++) {
-//
-//			if (setIndex + 1 == sets.size())
-//				break;
+		// for (int setIndex = 0; setIndex < sets.size(); setIndex++) {
+		//
+		// if (setIndex + 1 == sets.size())
+		// break;
 
-			ISet set1 = sets.get(0);
-			ISet set2 = sets.get(1);
+		ISet set1 = sets.get(0);
+		ISet set2 = sets.get(1);
 
-			ArrayList<Double> pValueVector = new ArrayList<Double>();
+		ArrayList<Double> pValueVector = new ArrayList<Double>();
 
-			for (int contentIndex = 0; contentIndex < set1.get(
-					set1.getStorageVA(StorageVAType.STORAGE).get(0)).size(); contentIndex++) {
+		for (int contentIndex = 0; contentIndex < set1.get(
+				set1.getStorageVA(StorageVAType.STORAGE).get(0)).size(); contentIndex++) {
 
-				StorageVirtualArray storageVA1 = set1.getStorageVA(StorageVAType.STORAGE);
-				StorageVirtualArray storageVA2 = set2.getStorageVA(StorageVAType.STORAGE);
+			StorageVirtualArray storageVA1 = set1.getStorageVA(StorageVAType.STORAGE);
+			StorageVirtualArray storageVA2 = set2.getStorageVA(StorageVAType.STORAGE);
 
-				double[] compareVec1 = new double[storageVA1.size()];
-				double[] compareVec2 = new double[storageVA2.size()];
+			double[] compareVec1 = new double[storageVA1.size()];
+			double[] compareVec2 = new double[storageVA2.size()];
 
-				int storageCount = 0;
-				for (Integer storageIndex : storageVA1) {
-					compareVec1[storageCount++] = set1.get(storageIndex).getFloat(
-							EDataRepresentation.RAW, contentIndex);
-				}
-
-				storageCount = 0;
-				for (Integer storageIndex : storageVA2) {
-					compareVec2[storageCount++] = set2.get(storageIndex).getFloat(
-							EDataRepresentation.RAW, contentIndex);
-				}
-
-				engine.assign("set_1", compareVec1);
-				engine.assign("set_2", compareVec2);
-
-				REXP compareResult = engine.eval("t.test(set_1,set_2)");
-
-				// System.out.println("T-Test result: " + compareResult);
-
-				REXP pValue = (REXP) compareResult.asVector().get(2);
-				pValueVector.add(pValue.asDouble());
-				// System.out.println(pValue.asDouble());
+			int storageCount = 0;
+			for (Integer storageIndex : storageVA1) {
+				compareVec1[storageCount++] = set1.get(storageIndex).getFloat(
+						EDataRepresentation.RAW, contentIndex);
 			}
 
-			set1.getStatisticsResult().setTwoSiddedTTestResult(set2, pValueVector);
-			set2.getStatisticsResult().setTwoSiddedTTestResult(set1, pValueVector);
-//		}
+			storageCount = 0;
+			for (Integer storageIndex : storageVA2) {
+				compareVec2[storageCount++] = set2.get(storageIndex).getFloat(
+						EDataRepresentation.RAW, contentIndex);
+			}
+
+			engine.assign("set_1", compareVec1);
+			engine.assign("set_2", compareVec2);
+
+			REXP compareResult = engine.eval("t.test(set_1,set_2)");
+
+			// System.out.println("T-Test result: " + compareResult);
+
+			REXP pValue = (REXP) compareResult.asVector().get(2);
+			pValueVector.add(pValue.asDouble());
+			// System.out.println(pValue.asDouble());
+		}
+
+		set1.getStatisticsResult().setTwoSiddedTTestResult(set2, pValueVector);
+		set2.getStatisticsResult().setTwoSiddedTTestResult(set1, pValueVector);
+		// }
 
 		// setsToCompare.get(0).getStatisticsResult().getVABasedOnCompareResult(setsToCompare.get(1),
 		// 0.9f);
-		
+
 		StatisticsResultFinishedEvent event = new StatisticsResultFinishedEvent(sets);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
@@ -311,11 +314,10 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 	public void handleFoldChangeEvent(final ISet set1, final ISet set2) {
 
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-			
+
 			@Override
 			public void run() {
-				new FoldChangeDialog(new Shell(),
-						set1, set2).open();
+				new FoldChangeDialog(new Shell(), set1, set2).open();
 			}
 		});
 	}
