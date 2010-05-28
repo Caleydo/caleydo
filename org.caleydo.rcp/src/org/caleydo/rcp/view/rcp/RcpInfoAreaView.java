@@ -1,6 +1,7 @@
 package org.caleydo.rcp.view.rcp;
 
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.rcp.util.info.InfoArea;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -27,6 +28,8 @@ public class RcpInfoAreaView
 	public void createPartControl(Composite parent) {
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
 
+		dataDomain = DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic");
+		
 		// FIXME: when view plugin reorganizatin is done
 		// if (!GenomePerspective.bIsWideScreen) {
 		// bHorizontal = true;

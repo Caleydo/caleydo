@@ -93,7 +93,9 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void init(GL gl) {
-
+		
+		// FIXME: should be called from data domain
+		initData();
 	}
 
 	@Override

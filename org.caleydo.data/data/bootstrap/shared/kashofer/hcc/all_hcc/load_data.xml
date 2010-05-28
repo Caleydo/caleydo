@@ -20,11 +20,11 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="57301" label="HCC0116_K"  attrib1="NUMERICAL" attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="58301" label="HCC0119"  attrib1="NUMERICAL" attrib2="test data	from file" />
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label=""  attrib1="35201" attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301 55301 56301 57301 58301" attrib3="GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label=""  attrib1="35201" attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301 55301 56301 57301 58301" attrib3="org.caleydo.datadomain.genetic" />
 
 	<!-- Data file loading -->      
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/kashofer/all_hcc_clip_greater_10.csv"	
-			attrib1="FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;ABORT"	attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301 55301 56301 57301 58301" attrib3="1 -1" attrib4="GENETIC_DATA"/>			
+			attrib1="FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;ABORT"	attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301 55301 56301 57301 58301" attrib3="1 -1" attrib4="org.caleydo.datadomain.genetic"/>			
 		
 	<!-- Data filtering (preprocessing) -->																
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_DATA_REPRESENTATION"			cmdId="99010"	uniqueId="-1"	attrib1="NORMAL"	attrib2="85101" attrib3="SET"/>									

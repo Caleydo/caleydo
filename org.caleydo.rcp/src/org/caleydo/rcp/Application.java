@@ -26,11 +26,11 @@ import org.caleydo.core.net.GroupwareUtils;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.ApplicationInitData;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.core.bridge.RCPBridge;
-import org.caleydo.rcp.view.EStartViewType;
 import org.caleydo.rcp.view.RCPViewManager;
 import org.caleydo.rcp.wizard.firststart.InternetConfigurationWizard;
 import org.caleydo.rcp.wizard.firststart.ProxyConfigurationPage;
@@ -80,7 +80,7 @@ public class Application
 	public static boolean isStartedFromXML = false;
 
 	// The command line arguments overrules the preference store
-	public static boolean bLoadPathwayData = false;
+	public static boolean triggerEarlyPathwayLoading = false;
 	public static boolean bIsWindowsOS = false;
 	public static boolean bIsInterentConnectionOK = false;
 	public static boolean bDeleteRestoredWorkbenchState = false;
@@ -88,10 +88,10 @@ public class Application
 	/** startup information of the application */
 	public static EApplicationMode applicationMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
 
-	public static String sCaleydoXMLfile = "";
+	public static String xmlInputFile = "";
 
 	/** list of serialized-view class to create during startup */
-	public static List<String> startViews;
+	public static List<Pair<String, String>> startViewWithDataDomain;
 
 	/** list of initialized view instances */
 	public static List<String> initializedStartViews;
@@ -117,7 +117,7 @@ public class Application
 			bIsWindowsOS = true;
 		}
 
-		startViews = new ArrayList<String>();
+		startViewWithDataDomain = new ArrayList<Pair<String, String>>();
 
 		Map<String, Object> map = context.getArguments();
 
@@ -142,8 +142,15 @@ public class Application
 			internetConfigurationWizard.open();
 		}
 
+		// if (triggerEarlyPathwayLoading)
+		// {
+		// CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
+		// cmd.setAttributes("org.caleydo.datadomain.pathway");
+		// cmd.doCommand();
+		// }
+
 		// If no file is provided as command line argument a wizard page is opened to determine the xml file
-		if (sCaleydoXMLfile.equals("")) {
+		if (xmlInputFile.equals("")) {
 
 			if (Application.applicationMode == EApplicationMode.PLEX_CLIENT) {
 				Application.initData = GroupwareUtils.startPlexClient(serverAddress);
@@ -160,14 +167,14 @@ public class Application
 			switch (applicationMode) {
 				case GENE_EXPRESSION_SAMPLE_DATA:
 				case GENE_EXPRESSION_NEW_DATA:
-					sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
+					xmlInputFile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
 					DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic")
-						.setBootstrapFileName(sCaleydoXMLfile);
+						.setBootstrapFileName(xmlInputFile);
 					break;
 				case UNSPECIFIED_NEW_DATA:
 				case NO_DATA:
 					// not necessary to load any mapping or XML files
-					sCaleydoXMLfile = "";
+					xmlInputFile = "";
 					break;
 				case SAMPLE_PROJECT:
 				case LOAD_PROJECT:
@@ -212,12 +219,17 @@ public class Application
 	}
 
 	private void parseApplicationArguments(Map<String, Object> map) {
-		String[] sArParam = (String[]) map.get("application.args");
+		String[] runConfigParameters = (String[]) map.get("application.args");
 
-		if (sArParam != null) {
-			for (String element : sArParam) {
-				if (element.startsWith("plexclient")) {
-					if (sCaleydoXMLfile != null && !sCaleydoXMLfile.isEmpty()) {
+		if (runConfigParameters != null) {
+			for (String element : runConfigParameters) {
+
+				if (element.equals("load_pathways")) {
+					// Load pathway domain and therefore trigger pathway loading
+					triggerEarlyPathwayLoading = true;
+				}
+				else if (element.startsWith("plexclient")) {
+					if (xmlInputFile != null && !xmlInputFile.isEmpty()) {
 						throw new IllegalArgumentException(
 							"It is not allowed to specify a bootstrap-file in plex-client mode.");
 					}
@@ -229,22 +241,21 @@ public class Application
 						serverAddress = "127.0.0.1";
 					}
 				}
+				else if (element.contains(".xml")) {
+					// command line parameter was not a related to a view type, so it must be the
+					// bootstrap file
+					if (Application.applicationMode == EApplicationMode.PLEX_CLIENT) {
+						throw new IllegalArgumentException(
+							"It is not allowed to specify a bootstrap-file in plex-client mode.");
+					}
+					xmlInputFile = element;
+				}
 				else {
-					EStartViewType viewType = null;
-					try {
-						viewType = EStartViewType.valueOf(element);
-						startViews.add(viewType.getViewID());
-					}
-					catch (IllegalArgumentException ex) {
-						// command line parameter was not a related to a view type, so it must be the
-						// bootstrap file
-						if (Application.applicationMode == EApplicationMode.PLEX_CLIENT) {
-							throw new IllegalArgumentException(
-								"It is not allowed to specify a bootstrap-file in plex-client mode.");
-						}
-						sCaleydoXMLfile = element;
-					}
-
+					int delimiterPos = element.indexOf(":");
+					String view = "org.caleydo.view." + element.substring(delimiterPos+1, element.length());
+					String dataDomain =
+						"org.caleydo.datadomain." + element.substring(0, delimiterPos);
+					startViewWithDataDomain.add(new Pair<String, String>(view, dataDomain));
 				}
 			}
 		}
@@ -293,7 +304,7 @@ public class Application
 
 	public static void startCaleydoCore() {
 
-		caleydoCoreBootloader.setXmlFileName(sCaleydoXMLfile);
+		caleydoCoreBootloader.setXmlFileName(xmlInputFile);
 		caleydoCoreBootloader.start();
 
 		GeneralManager.get().getGUIBridge().init();
@@ -373,7 +384,7 @@ public class Application
 			}
 		}
 		else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA || applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
-			&& (sCaleydoXMLfile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE) || sCaleydoXMLfile.equals(""))) {
+			&& (xmlInputFile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE) || xmlInputFile.equals(""))) {
 
 			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
 
@@ -409,22 +420,19 @@ public class Application
 	public static void initializeDefaultStartViews() {
 		// Create view list dynamically when not specified via the command line
 
-		if (startViews.isEmpty()) {
+		if (startViewWithDataDomain.isEmpty()) {
 			addDefaultStartViews();
 		}
 
 		initializedStartViews = new ArrayList<String>();
-		for (String viewID : startViews) {
+		for (Pair<String, String> viewWithDataDomain : startViewWithDataDomain) {
 
 			// Force plugins of start views to load
 			try {
-				if (viewID.contains("hierarchical"))
-					Platform.getBundle(viewID.replace(".hierarchical", "")).start();
-				else
-					Platform.getBundle(viewID).start();
+				Platform.getBundle(viewWithDataDomain.getFirst()).start();
 			}
 			catch (NullPointerException ex) {
-				System.out.println(viewID);
+				System.out.println("Cannot load view plugni " + viewWithDataDomain.getFirst());
 				ex.printStackTrace();
 			}
 			catch (BundleException e) {
@@ -433,12 +441,14 @@ public class Application
 			}
 
 			ASerializedView view =
-				GeneralManager.get().getViewGLCanvasManager().getViewCreator(viewID).createSerializedView();
-			// FIXME this is only for genetic data, make it general
-			view.setDataDomainType("org.caleydo.datadomain.genetic");
-			initializedStartViews.add(viewID);
+				GeneralManager.get().getViewGLCanvasManager().getViewCreator(viewWithDataDomain.getFirst())
+					.createSerializedView();
+			
+			view.setDataDomainType(viewWithDataDomain.getSecond());
+			initializedStartViews.add(viewWithDataDomain.getFirst());
 		}
-		startViews = null;
+		
+		//startViewWithDataDomain = null;
 	}
 
 	public static void openRCPViews(IFolderLayout layout) {
@@ -451,7 +461,6 @@ public class Application
 				layout.addView(startViewID);
 			}
 		}
-
 	}
 
 	/**
@@ -461,11 +470,14 @@ public class Application
 	 *            {@link IDataDomain} to determine the correct default start views.
 	 */
 	private static void addDefaultStartViews() {
-		startViews.add(EStartViewType.browser.getViewID());
+
+		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.browser",
+			"org.caleydo.datadomain.genetic"));
 
 		// Only show bucket when pathway data is loaded
 		if (GeneralManager.get().getPathwayManager().size() > 0) {
-			startViews.add(EStartViewType.bucket.getViewID());
+			startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.bucket",
+				"org.caleydo.datadomain.genetic"));
 		}
 	}
 

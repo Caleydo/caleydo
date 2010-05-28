@@ -8,6 +8,7 @@ import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
 import org.caleydo.core.parser.parameter.IParameterHandler;
@@ -19,7 +20,6 @@ import org.eclipse.core.runtime.Status;
  * Command loads data from file using a token pattern and a target ISet. Use AMicroArrayLoader to load data
  * set.
  * 
- * @author Michael Kalkusch
  * @author Marc Streit
  */
 public class CmdLoadFileNStorages
@@ -81,10 +81,12 @@ public class CmdLoadFileNStorages
 					return;
 				}
 				loadDataParameters.setStopParseFileAtLine(iArrayStartStop[1]);
-			} // if ( iArrayStartStop.length > 0 )
-		} // if ( iArrayStartStop.length > 0 )
+			}
+		}
 
-		String dataDomainString = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE4.getXmlKey());
+		dataDomain = 
+			(ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+				parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE4.getXmlKey()));
 		loadDataParameters.setDataDomain(dataDomain);
 
 	}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -12,6 +13,7 @@ import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.preferences.PreferenceConstants;
@@ -20,6 +22,7 @@ import org.caleydo.core.view.opengl.canvas.listener.INewSetHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.NewSetListener;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
+import org.caleydo.rcp.Application;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.caleydo.rcp.view.rcp.MinimumSizeComposite;
 import org.eclipse.jface.action.IAction;
@@ -38,8 +41,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
-public class RcpGLHistogramView extends ARcpGLViewPart implements
-		IViewCommandHandler, IListenerOwner, INewSetHandler {
+public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHandler,
+		IListenerOwner, INewSetHandler {
 
 	private CLabel colorMappingPreviewLabel;
 
@@ -63,8 +66,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements
 	@Override
 	public void createPartControl(Composite parent) {
 
-		minSizeComposite = new MinimumSizeComposite(parent, SWT.H_SCROLL
-				| SWT.V_SCROLL);
+		minSizeComposite = new MinimumSizeComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
 		// fillToolBar();
 		histoComposite = new Composite(minSizeComposite, SWT.NULL);
 		minSizeComposite.setContent(histoComposite);
@@ -79,8 +81,11 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements
 		parentComposite = new Composite(histoComposite, SWT.EMBEDDED);
 		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		SerializedHistogramView serialized = new SerializedHistogramView(
-				dataDomain.getDataDomainType());
+		dataDomain = DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic");
+		
+		// FIXME: How to determine data domain for histogram dynamically?
+		SerializedHistogramView serialized = new SerializedHistogramView(dataDomain
+				.getDataDomainType());
 		redrawView(serialized);
 	}
 
@@ -123,11 +128,10 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				// TODO Auto-generated method stub
-				PreferenceDialog pref = PreferencesUtil
-						.createPreferenceDialogOn(
-								new Shell(),
-								"org.caleydo.rcp.preferences.ColorMappingPreferencePage",
-								null, null);
+				PreferenceDialog pref = PreferencesUtil.createPreferenceDialogOn(
+						new Shell(),
+						"org.caleydo.rcp.preferences.ColorMappingPreferencePage", null,
+						null);
 
 				if (pref != null) {
 					pref.open();
@@ -179,13 +183,12 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements
 
 			float normalizedValue = store
 					.getFloat(PreferenceConstants.GENE_EXPRESSION_PREFIX
-							+ PreferenceConstants.COLOR_MARKER_POINT_VALUE
-							+ iCount);
+							+ PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
 
-			double correspondingValue = ((ISetBasedDataDomain)dataDomain).getSet().getRawForNormalized(normalizedValue);
+			double correspondingValue = ((ISetBasedDataDomain) dataDomain).getSet()
+					.getRawForNormalized(normalizedValue);
 
-			labels.get(iCount - 1).setText(
-					Formatter.formatNumber(correspondingValue));
+			labels.get(iCount - 1).setText(Formatter.formatNumber(correspondingValue));
 			int iColorMarkerPoint = (int) (100 * normalizedValue);
 
 			// Gradient label does not need the 0 point
@@ -193,15 +196,13 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements
 				iArColorMarkerPoints[iCount - 2] = iColorMarkerPoint;
 			}
 
-			String color = store
-					.getString(PreferenceConstants.GENE_EXPRESSION_PREFIX
-							+ PreferenceConstants.COLOR_MARKER_POINT_COLOR
-							+ iCount);
+			String color = store.getString(PreferenceConstants.GENE_EXPRESSION_PREFIX
+					+ PreferenceConstants.COLOR_MARKER_POINT_COLOR + iCount);
 
 			int[] iArColor = ConversionTools.getIntColorFromString(color);
 
-			alColor[iCount - 1] = new Color(PlatformUI.getWorkbench()
-					.getDisplay(), iArColor[0], iArColor[1], iArColor[2]);
+			alColor[iCount - 1] = new Color(PlatformUI.getWorkbench().getDisplay(),
+					iArColor[0], iArColor[1], iArColor[2]);
 		}
 
 		colorMappingPreviewLabel.setBackground(alColor, iArColorMarkerPoints);
@@ -241,8 +242,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class,
-				clearSelectionsListener);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
 		newSetListener = new NewSetListener();
 		newSetListener.setHandler(this);
@@ -270,8 +270,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements
 
 	@Override
 	public synchronized void queueEvent(
-			final AEventListener<? extends IListenerOwner> listener,
-			final AEvent event) {
+			final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
 
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
@@ -290,8 +289,10 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
+
+		// FIXME: How to determine data domain for histogram dynamically?
 		SerializedHistogramView serializedView = new SerializedHistogramView(
-				dataDomain.getDataDomainType());
+				"org.caleydo.datadomain.genetic");
 		return serializedView;
 	}
 

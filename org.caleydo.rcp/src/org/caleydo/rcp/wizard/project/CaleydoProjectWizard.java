@@ -88,7 +88,7 @@ public class CaleydoProjectWizard
 				Application.initData = loader.load(SAMPLE_PROJECT_LOCATION);
 
 				dataDomain = Application.initData.getDataDomain();
-				Application.startViews.clear();
+				Application.startViewWithDataDomain.clear();
 				Application.initializedStartViews = Application.initData.getViewIDs();
 				Application.applicationMode = EApplicationMode.SAMPLE_PROJECT;
 				Application.bDeleteRestoredWorkbenchState = true;
@@ -178,7 +178,7 @@ public class CaleydoProjectWizard
 					throw new IllegalArgumentException("encoutnered unknown project-load-type");
 				}
 				dataDomain = Application.initData.getDataDomain();
-				Application.startViews.clear();
+				Application.startViewWithDataDomain.clear();
 				Application.initializedStartViews = Application.initData.getViewIDs();
 				Application.applicationMode = EApplicationMode.LOAD_PROJECT;
 				Application.bDeleteRestoredWorkbenchState = true;

@@ -28,7 +28,7 @@ public class DataDomainManager {
 
 	public IDataDomain createDataDomain(String dataDomainType) {
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
-
+		
 		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.datadomain.DataDomain");
 		IExtension ext = ep.getExtension(dataDomainType);
 		IConfigurationElement[] ce = ext.getConfigurationElements();

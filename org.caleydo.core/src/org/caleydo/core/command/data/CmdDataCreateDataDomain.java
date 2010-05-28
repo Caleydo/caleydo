@@ -31,12 +31,12 @@ public class CmdDataCreateDataDomain
 	 * Load data from file using a token pattern.
 	 */
 	public void doCommand() {
-		createdObject = createUseCase(dataDomainType);
+		createdObject = createDataDomain(dataDomainType);
 
 		commandManager.runDoCommand(this);
 	}
 
-	private IDataDomain createUseCase(String dataDomainType) {
+	private IDataDomain createDataDomain(String dataDomainType) {
 
 		return DataDomainManager.getInstance().createDataDomain(dataDomainType);
 	}

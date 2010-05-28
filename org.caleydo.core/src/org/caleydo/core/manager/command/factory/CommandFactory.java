@@ -6,6 +6,7 @@ import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.command.data.CmdDataCreateSet;
 import org.caleydo.core.command.data.CmdDataCreateStorage;
 import org.caleydo.core.command.data.CmdDataCreateVirtualArray;
+import org.caleydo.core.command.data.CmdSetDataRepresentation;
 import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
@@ -109,10 +110,10 @@ public class CommandFactory
 				createdCommand = new CmdLoadPathwayData(cmdType);
 				break;
 			}
-//			case SET_DATA_REPRESENTATION: {
-//				createdCommand = new CmdSetDataRepresentation(cmdType);
-//				break;
-//			}
+			case SET_DATA_REPRESENTATION: {
+				createdCommand = new CmdSetDataRepresentation(cmdType);
+				break;
+			}
 			case DATA_FILTER_MIN_MAX: {
 				createdCommand = new CmdDataFilterMinMax(cmdType);
 				break;

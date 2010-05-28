@@ -9,6 +9,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.eclipse.core.runtime.IStatus;
@@ -77,21 +78,11 @@ public class CmdDataCreateSet
 	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
-		/**
-		 * Read TAG_ATTRIBUTE2 "attrib2" for storage!
-		 */
-
-		/**
-		 * Separate "text1@text2"
-		 */
 		StringTokenizer strToken_StorageBlock =
 			new StringTokenizer(parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE2.getXmlKey()),
 				IGeneralManager.sDelimiter_Paser_DataItemBlock);
 
 		while (strToken_StorageBlock.hasMoreTokens()) {
-			/**
-			 * Separate "id1 id2 .."
-			 */
 			StringTokenizer strToken_StorageId =
 				new StringTokenizer(strToken_StorageBlock.nextToken(),
 					IGeneralManager.sDelimiter_Parser_DataItems);
@@ -104,11 +95,8 @@ public class CmdDataCreateSet
 		// Convert external IDs from XML file to internal IDs
 		iAlStorageIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(iAlStorageIDs);
 
-		/**
-		 * read "attrib3" key ...
-		 */
-//		String sAttrib3 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey());
-
+		String sAttrib3 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey());
+		dataDomain = (ISetBasedDataDomain)DataDomainManager.getInstance().getDataDomain(sAttrib3);		
 	}
 
 	public void setAttributes(ArrayList<Integer> iAlStorageIDs, ISetBasedDataDomain dataDomain) {

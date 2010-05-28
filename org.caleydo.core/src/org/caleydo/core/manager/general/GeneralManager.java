@@ -74,7 +74,7 @@ public class GeneralManager
 	private SerializationManager serializationManager;
 	private IStatisticsPerformer rStatisticsPerformer;
 
-	EOrganism organism;
+	private EOrganism organism = EOrganism.HOMO_SAPIENS;
 
 	private boolean bIsWiiMode = false;
 
