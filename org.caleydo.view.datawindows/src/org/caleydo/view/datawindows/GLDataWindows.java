@@ -66,7 +66,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 	private float viewSizeHyperbolic = 1;
 
-	private ArrayList<simpleSlerp> simpleSlerpActions;
+	private ArrayList<SimpleSlerp> simpleSlerpActions;
 
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(
 			0, 0);
@@ -125,7 +125,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		// tracker.startTracking();
 		viewSlerpStartPoint = new float[2];
 		viewSlerpTargetPoint = new float[2];
-		simpleSlerpActions = new ArrayList<simpleSlerp>();
+		simpleSlerpActions = new ArrayList<SimpleSlerp>();
 	}
 
 	@Override
@@ -695,12 +695,12 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 						.getWidth() - defaultLayoutHotSpot[0])
 						* (float) zoomIntensity);
 				viewSlerpTargetPoint[0] = defaultLayoutHotSpot[1];
-				simpleSlerpActions.add(new simpleSlerp());
+				simpleSlerpActions.add(new SimpleSlerp());
 
 			} else {
 				viewSlerpStartPoint = layoutHotSpot.clone();
 				viewSlerpTargetPoint = defaultLayoutHotSpot.clone();
-				simpleSlerpActions.add(new simpleSlerp());
+				simpleSlerpActions.add(new SimpleSlerp());
 				// System.out.println("inside focus");
 
 			}
@@ -714,12 +714,12 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 				viewSlerpTargetPoint[0] = defaultLayoutHotSpot[1]
 						* (1 - (float) zoomIntensity);
 
-				simpleSlerpActions.add(new simpleSlerp());
+				simpleSlerpActions.add(new SimpleSlerp());
 				System.out.println("inside focus");
 			} else {
 				viewSlerpStartPoint = layoutHotSpot.clone();
 				viewSlerpTargetPoint = defaultLayoutHotSpot.clone();
-				simpleSlerpActions.add(new simpleSlerp());
+				simpleSlerpActions.add(new SimpleSlerp());
 			}
 		} else if (viewType.equals("org.caleydo.view.parcoords")) {
 			if (inFocus == true) {
@@ -728,18 +728,18 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 						* (1 - (float) zoomIntensity);
 				viewSlerpTargetPoint[0] = viewFrustum.getHeight()
 						- (defaultLayoutHotSpot[1] * (1 - (float) zoomIntensity));
-				simpleSlerpActions.add(new simpleSlerp());
+				simpleSlerpActions.add(new SimpleSlerp());
 			} else {
 				viewSlerpStartPoint = layoutHotSpot.clone();
 				viewSlerpTargetPoint = defaultLayoutHotSpot.clone();
-				simpleSlerpActions.add(new simpleSlerp());
+				simpleSlerpActions.add(new SimpleSlerp());
 			}
 		}
 	}
 
 	public void doSlerpActions() {
 		if (simpleSlerpActions.isEmpty() == false) {
-			simpleSlerp singleSlerp = simpleSlerpActions.get(0);
+			SimpleSlerp singleSlerp = simpleSlerpActions.get(0);
 
 			if (singleSlerp.doASlerp() == true) {
 				moveLayoutPoint(viewSlerpTargetPoint, viewSlerpStartPoint,

@@ -124,7 +124,7 @@ public class FileLoadDataAction
 
 		// FIXME
 		DataDomainManager domainManager = DataDomainManager.getInstance();
-		ISetBasedDataDomain dataDomain =
+		dataDomain =
 			(ISetBasedDataDomain) domainManager.getDataDomain("org.caleydo.datadomain.genetic");
 
 		if (dataDomain == null) {

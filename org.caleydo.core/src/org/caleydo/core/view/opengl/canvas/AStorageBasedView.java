@@ -139,6 +139,8 @@ public abstract class AStorageBasedView
 	@Override
 	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = (ISetBasedDataDomain) dataDomain;
+		
+		set = this.dataDomain.getSet();
 
 		contentSelectionManager = this.dataDomain.getContentSelectionManager();
 		storageSelectionManager = this.dataDomain.getStorageSelectionManager();
@@ -694,4 +696,8 @@ public abstract class AStorageBasedView
 		return set;
 	}
 
+	@Override
+	public IDataDomain getDataDomain() {
+		return dataDomain;
+	}
 }

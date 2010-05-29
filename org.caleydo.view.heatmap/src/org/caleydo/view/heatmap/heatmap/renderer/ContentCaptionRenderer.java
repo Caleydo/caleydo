@@ -117,7 +117,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 		IIDMappingManager idMappingManager = GeneralManager.get().getIDMappingManager();
 		// ESetType setType = heatMap.getSet().getSetType();
 		if (heatMap.getDataDomain().getDataDomainType().equals(
-				"org.caleydo.datadomain.gentic")) {
+				"org.caleydo.datadomain.genetic")) {
 
 			// FIXME: Due to new mapping system, a mapping involving
 			// expression index can return a set of values,
@@ -154,7 +154,7 @@ public class ContentCaptionRenderer extends AContentRenderer {
 				}
 			}
 		} else if (heatMap.getDataDomain().getDataDomainType().equals(
-				"org.caleydo.datadomain.genric")) {
+				"org.caleydo.datadomain.generic")) {
 			sContent = idMappingManager.getID(EIDType.EXPRESSION_INDEX,
 					EIDType.UNSPECIFIED, contentID);
 		} else {

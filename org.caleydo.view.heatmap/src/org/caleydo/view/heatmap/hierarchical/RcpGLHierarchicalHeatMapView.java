@@ -37,6 +37,9 @@ public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
+		
+		super.createDefaultSerializedView();
+		
 		SerializedHierarchicalHeatMapView serializedView = new SerializedHierarchicalHeatMapView(
 				dataDomain.getDataDomainType());
 		return serializedView;

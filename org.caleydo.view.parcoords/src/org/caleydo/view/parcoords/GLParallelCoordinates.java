@@ -279,6 +279,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	@Override
 	public void init(final GL gl) {
 
+		//FIXME: Alex, is it save to call this here?
+		initData();
+		
 		fXDefaultTranslation = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
 	}
@@ -2553,11 +2556,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		return ("PCs, " + renderMode + ", " + iNumElements + " elements" + " Axis DT: "
 				+ storageSelectionManager.getIDType() + " Polyline DT:" + contentSelectionManager
 				.getIDType());
-	}
-
-	@Override
-	public void setSet(ISet set) {
-		super.setSet(set);
 	}
 
 	@Override

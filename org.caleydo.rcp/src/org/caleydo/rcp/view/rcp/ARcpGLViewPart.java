@@ -19,11 +19,13 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializationManager;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
+import org.caleydo.rcp.Application;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
@@ -263,7 +265,23 @@ public abstract class ARcpGLViewPart
 	 * 
 	 * @return serialized form of the gl-view with default initialization
 	 */
-	public abstract ASerializedView createDefaultSerializedView();
+	public ASerializedView createDefaultSerializedView() {
+		
+		// Find data domain for this view
+		for (Pair<String, String> startView : Application.startViewWithDataDomain) {
+			if (startView.getFirst().equals(this.getViewGUIID())) {
+				dataDomain = DataDomainManager.getInstance().getDataDomain(startView.getSecond());
+				Application.startViewWithDataDomain.remove(startView);
+				break;
+			}
+		}
+		
+		if (dataDomain == null)
+			throw new IllegalStateException("Data domain is not set for new view "+this.getViewGUIID());
+	
+		// The object needs to be assigned and returned in overwritten method
+		return null;
+	}
 
 	/**
 	 * Returns the rcp-ID of the view

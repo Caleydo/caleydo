@@ -26,18 +26,8 @@ public class RcpGLDataWindowsView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		
-		// Find data domain for this view
-		for (Pair<String, String> startView : Application.startViewWithDataDomain) {
-			if (startView.getFirst().equals(this.getViewGUIID())) {
-				dataDomain = DataDomainManager.getInstance().getDataDomain(startView.getSecond());
-				Application.startViewWithDataDomain.remove(startView);
-				break;
-			}
-		}
-		
-		if (dataDomain == null)
-			throw new IllegalStateException("Data domain is not set for new view "+this.getViewGUIID());
+			
+		super.createDefaultSerializedView();
 		
 		SerializedDataWindowsView serializedView = new SerializedDataWindowsView(dataDomain.getDataDomainType());
 		return serializedView;

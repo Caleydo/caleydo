@@ -291,6 +291,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	@Override
 	public void init(GL gl) {
 
+		//FIXME: Alex, is it save to call this here?
+		initData();
+		
 		createHeatMap();
 		createDendrogram();
 

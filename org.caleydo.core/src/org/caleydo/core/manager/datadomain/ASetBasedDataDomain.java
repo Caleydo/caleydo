@@ -79,7 +79,6 @@ public abstract class ASetBasedDataDomain
 			oldSet.destroy();
 			oldSet = null;
 		}
-
 	}
 
 	@XmlTransient

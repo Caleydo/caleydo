@@ -37,6 +37,8 @@ public class RcpGLParCoordsView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
+		super.createDefaultSerializedView();
+		
 		SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView(
 				dataDomain.getDataDomainType());
 		return serializedView;

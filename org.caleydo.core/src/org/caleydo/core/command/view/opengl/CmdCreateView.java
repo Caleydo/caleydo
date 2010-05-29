@@ -202,10 +202,6 @@ public class CmdCreateView
 		this.viewID = viewID;
 	}
 
-	// public void setSet(ISet set) {
-	// this.set = set;
-	// }
-
 	public void setViewFrustum(ViewFrustum viewFrustum) {
 		this.viewFrustum = viewFrustum;
 	}
@@ -229,15 +225,11 @@ public class CmdCreateView
 
 		createdObject.getViewCamera().setCameraPosition(cameraOrigin);
 		createdObject.getViewCamera().setCameraRotation(cameraRotation);
-		// createdObject.setSet(set);
 
 		IDataDomain dataDomain = DataDomainManager.getInstance().getDataDomain(dataDomainType);
-		// ISet set = useCase.getSet();
+
+		// Note: for AStoragebasedViews the set for the view is assigned in the setDataDomain method.
 		createdObject.setDataDomain(dataDomain);
-		// createdObject.setUseCase(useCase);
-		//
-		// if (set != null)
-		// createdObject.setSet(set);
 
 		commandManager.runDoCommand(this);
 	}

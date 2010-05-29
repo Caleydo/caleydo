@@ -252,9 +252,8 @@ public class Application
 				}
 				else {
 					int delimiterPos = element.indexOf(":");
-					String view = "org.caleydo.view." + element.substring(delimiterPos+1, element.length());
-					String dataDomain =
-						"org.caleydo.datadomain." + element.substring(0, delimiterPos);
+					String view = "org.caleydo.view." + element.substring(delimiterPos + 1, element.length());
+					String dataDomain = "org.caleydo.datadomain." + element.substring(0, delimiterPos);
 					startViewWithDataDomain.add(new Pair<String, String>(view, dataDomain));
 				}
 			}
@@ -382,6 +381,14 @@ public class Application
 				shutdown();
 				System.exit(0);
 			}
+
+			((ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+				"org.caleydo.datadomain.genetic")).updateSetInViews();
+
+			startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.heatmap.hierarchical",
+				"org.caleydo.datadomain.genetic"));
+			startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.parcoords",
+				"org.caleydo.datadomain.genetic"));
 		}
 		else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA || applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
 			&& (xmlInputFile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE) || xmlInputFile.equals(""))) {
@@ -398,8 +405,8 @@ public class Application
 		// nicest place to do this.
 		// This is only necessary if started from xml. Otherwise this is done in FileLoadDataAction
 		if (isStartedFromXML) {
-			// FIXME check if this works
-			// useCase.updateSetInViews();
+			((ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+				"org.caleydo.datadomain.genetic")).updateSetInViews();
 		}
 
 		initializeColorMapping();
@@ -429,10 +436,14 @@ public class Application
 
 			// Force plugins of start views to load
 			try {
-				Platform.getBundle(viewWithDataDomain.getFirst()).start();
+				String viewType = viewWithDataDomain.getFirst();
+				if (viewType.contains("hierarchical"))
+					viewType = viewType.replace(".hierarchical", "");
+
+				Platform.getBundle(viewType).start();
 			}
 			catch (NullPointerException ex) {
-				System.out.println("Cannot load view plugni " + viewWithDataDomain.getFirst());
+				System.out.println("Cannot load view plugin " + viewWithDataDomain.getFirst());
 				ex.printStackTrace();
 			}
 			catch (BundleException e) {
@@ -443,12 +454,10 @@ public class Application
 			ASerializedView view =
 				GeneralManager.get().getViewGLCanvasManager().getViewCreator(viewWithDataDomain.getFirst())
 					.createSerializedView();
-			
+
 			view.setDataDomainType(viewWithDataDomain.getSecond());
 			initializedStartViews.add(viewWithDataDomain.getFirst());
 		}
-		
-		//startViewWithDataDomain = null;
 	}
 
 	public static void openRCPViews(IFolderLayout layout) {

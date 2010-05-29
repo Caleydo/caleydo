@@ -77,7 +77,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	public Tree<PoincareNode> tree;
 	public float diskZoomIntensity = 0;
 
-	private ArrayList<simpleSlerp> simpleSlerpActions;
+	private ArrayList<SimpleSlerp> simpleSlerpActions;
 
 	private float currentAngleSlerpFactor;
 
@@ -115,7 +115,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		disk = new DataWindowsDisk(this);
 
 		arSlerpActions = new ArrayList<NodeSlerp>();
-		simpleSlerpActions = new ArrayList<simpleSlerp>();
+		simpleSlerpActions = new ArrayList<SimpleSlerp>();
 
 		newViews = new ArrayList<ASerializedView>();
 
@@ -263,7 +263,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	public void correctDiskAngle() {
 
 		this.previousSimpleSlerp = 0;
-		simpleSlerp actualSlerp = new simpleSlerp();
+		SimpleSlerp actualSlerp = new SimpleSlerp();
 		actualSlerp.endingCondition = disk.calculateCorrectDiskRotation(disk
 				.getCenteredNode());
 
@@ -543,7 +543,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		if (simpleSlerpActions.isEmpty() == false) {
 
-			simpleSlerp simpleSlerp = simpleSlerpActions.get(0);
+			SimpleSlerp simpleSlerp = simpleSlerpActions.get(0);
 			if (simpleSlerp.doASlerp() == true) {
 				double relativeSimpleSlerpState = simpleSlerp.state
 						- previousSimpleSlerp;

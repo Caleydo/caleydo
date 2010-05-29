@@ -175,6 +175,11 @@ public class PartListener
 		viewActivationEvent = new ViewActivationEvent();
 		viewActivationEvent.setSender(this);
 		viewActivationEvent.setViews(getAllViews(viewPart));
+		
+		// Do not trigger event when no view is assigned to view part (e.g. info area)
+		if (viewActivationEvent.getViewIDs().get(0) == null)
+			return;
+		
 		eventPublisher.triggerEvent(viewActivationEvent);
 	}
 
