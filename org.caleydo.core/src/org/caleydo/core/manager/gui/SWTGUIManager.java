@@ -212,8 +212,8 @@ public class SWTGUIManager
 
 	@Override
 	public void setProgressBarPercentageFromExternalThread(final int iPercentage) {
-		if (loadingProgressBar.isDisposed())
-			return;
+//		if (loadingProgressBar.isDisposed())
+//			return;
 
 		loadingProgressBar.getDisplay().asyncExec(new Runnable() {
 			public void run() {
