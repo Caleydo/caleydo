@@ -128,12 +128,11 @@ public class GLHeatMap extends AStorageBasedView {
 		viewType = GLHeatMap.VIEW_ID;
 
 		glKeyListener = new GLHeatMapKeyListener(this);
-
+		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
 	}
 
 	@Override
 	public void init(GL gl) {
-		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
 		super.renderStyle = renderStyle;
 
 		templateRenderer = new TemplateRenderer(this);

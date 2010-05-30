@@ -22,6 +22,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
@@ -3143,4 +3144,11 @@ public class GLBucket extends AGLView implements ISelectionUpdateHandler,
 	// public RemoteRenderingTransformer getSelectionTransformer() {
 	// return selectionTransformer;
 	// }
+	
+	@Override
+	public void setDataDomain(IDataDomain dataDomain) {
+		super.setDataDomain(dataDomain);
+		
+		this.dataDomain = (ISetBasedDataDomain) dataDomain;
+	}
 }

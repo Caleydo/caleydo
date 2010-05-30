@@ -140,11 +140,10 @@ public abstract class AStorageBasedView
 	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = (ISetBasedDataDomain) dataDomain;
 		
-		set = this.dataDomain.getSet();
-
 		contentSelectionManager = this.dataDomain.getContentSelectionManager();
 		storageSelectionManager = this.dataDomain.getStorageSelectionManager();
-
+		
+		setSet(this.dataDomain.getSet());
 	}
 
 	/**

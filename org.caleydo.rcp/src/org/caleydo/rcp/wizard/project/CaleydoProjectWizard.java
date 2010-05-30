@@ -63,10 +63,6 @@ public class CaleydoProjectWizard
 
 			PreferenceStore prefStore = GeneralManager.get().getPreferenceStore();
 
-			// When the user changed the selection use case mode compared to the stored mode in the
-			// preferences the old workbench state should be deleted.
-			// EApplicationMode eOldUseCaseMode =
-
 			EApplicationMode previousApplicationMode =
 				EApplicationMode.valueOf(prefStore
 					.getString(PreferenceConstants.LAST_CHOSEN_APPLICATION_MODE));
@@ -76,7 +72,6 @@ public class CaleydoProjectWizard
 
 			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_ORGANISM, page.getOrganism().name());
 
-			IDataDomain dataDomain;
 			EApplicationMode appMode = page.getApplicationMode();
 			if (appMode == EApplicationMode.SAMPLE_PROJECT) {
 
@@ -87,7 +82,7 @@ public class CaleydoProjectWizard
 
 				Application.initData = loader.load(SAMPLE_PROJECT_LOCATION);
 
-				dataDomain = Application.initData.getDataDomain();
+				//dataDomain = Application.initData.getDataDomain();
 				Application.startViewWithDataDomain.clear();
 				Application.initializedStartViews = Application.initData.getViewIDs();
 				Application.applicationMode = EApplicationMode.SAMPLE_PROJECT;
@@ -99,7 +94,7 @@ public class CaleydoProjectWizard
 				CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
 				cmd.setAttributes("org.caleydo.datadomain.genetic");
 				cmd.doCommand();
-				dataDomain = cmd.getCreatedObject();
+				//dataDomain = cmd.getCreatedObject();
 
 				GeneralManager.get().setOrganism(EOrganism.HOMO_SAPIENS);
 
@@ -123,7 +118,7 @@ public class CaleydoProjectWizard
 				CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
 				cmd.setAttributes("org.caleydo.datadomain.genetic");
 				cmd.doCommand();
-				dataDomain = cmd.getCreatedObject();
+				//dataDomain = cmd.getCreatedObject();
 
 				GeneralManager.get().setOrganism(page.getOrganism());
 
@@ -177,7 +172,7 @@ public class CaleydoProjectWizard
 				else {
 					throw new IllegalArgumentException("encoutnered unknown project-load-type");
 				}
-				dataDomain = Application.initData.getDataDomain();
+				//dataDomain = Application.initData.getDataDomain();
 				Application.startViewWithDataDomain.clear();
 				Application.initializedStartViews = Application.initData.getViewIDs();
 				Application.applicationMode = EApplicationMode.LOAD_PROJECT;
@@ -189,7 +184,7 @@ public class CaleydoProjectWizard
 				groupwareManager.setServerAddress(page.getNetworkAddress());
 				groupwareManager.startClient();
 				Application.initData = groupwareManager.getInitData();
-				dataDomain = Application.initData.getDataDomain();
+				//dataDomain = Application.initData.getDataDomain();
 				Application.applicationMode = EApplicationMode.COLLABORATION_CLIENT;
 			}
 			else {

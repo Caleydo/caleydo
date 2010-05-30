@@ -215,13 +215,13 @@ public class SWTGUIManager
 //		if (loadingProgressBar.isDisposed())
 //			return;
 
-		loadingProgressBar.getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				if (loadingProgressBar.isDisposed())
-					return;
-				loadingProgressBar.setSelection(iPercentage);
-			}
-		});
+//		loadingProgressBar.getDisplay().asyncExec(new Runnable() {
+//			public void run() {
+//				if (loadingProgressBar.isDisposed())
+//					return;
+//				loadingProgressBar.setSelection(iPercentage);
+//			}
+//		});
 	}
 
 	@Override
@@ -236,14 +236,14 @@ public class SWTGUIManager
 
 	@Override
 	public void setProgressBarTextFromExternalThread(final String sText) {
-		if (loadingProgressBar.isDisposed())
-			return;
+//		if (loadingProgressBar.isDisposed())
+//			return;
 
-		loadingProgressBar.getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				setProgressBarText(sText);
-			}
-		});
+//		loadingProgressBar.getDisplay().asyncExec(new Runnable() {
+//			public void run() {
+//				setProgressBarText(sText);
+//			}
+//		});
 	}
 
 	@Override

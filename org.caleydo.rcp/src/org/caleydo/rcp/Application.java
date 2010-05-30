@@ -251,7 +251,8 @@ public class Application
 					}
 					xmlInputFile = element;
 				}
-				else {
+				else if (element.contains(":")) {
+					// Parse initial start views
 					int delimiterPos = element.indexOf(":");
 					String view = "org.caleydo.view." + element.substring(delimiterPos + 1, element.length());
 					String dataDomain = "org.caleydo.datadomain." + element.substring(0, delimiterPos);
@@ -389,6 +390,8 @@ public class Application
 			startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.heatmap.hierarchical",
 				"org.caleydo.datadomain.genetic"));
 			startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.parcoords",
+				"org.caleydo.datadomain.genetic"));
+			startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.bucket",
 				"org.caleydo.datadomain.genetic"));
 		}
 		else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA || applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
