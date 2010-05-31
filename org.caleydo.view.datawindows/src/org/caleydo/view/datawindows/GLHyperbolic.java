@@ -49,11 +49,6 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.hyperbolic";
 
-	// private double viewport[] = new double[16];
-	//
-	// public float canvasWidth;
-	// public float canvasHeight;
-
 	private TrackDataProvider tracker;
 	private float[] receivedEyeData;
 
@@ -105,18 +100,12 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		// this.tracker = new TrackDataProvider();
 		// tracker.startTracking();
 
-		// remote test
-		// Transform transform = new Transform();
-		// transform.setTranslation(new Vec3f(0, 0, 0));
-		// transform.setScale(new Vec3f(0.5f, 0.5f, 1));
 		remoteNodeElement = new RemoteLevelElement(null);
-		// testRemoteElement.setTransform(transform);
 
 		disk = new DataWindowsDisk(this);
 
 		arSlerpActions = new ArrayList<NodeSlerp>();
 		simpleSlerpActions = new ArrayList<SimpleSlerp>();
-
 		newViews = new ArrayList<ASerializedView>();
 
 		displayFullView = false;
@@ -154,12 +143,6 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	@Override
 	public void displayLocal(GL gl) {
 
-		// gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, viewport, 0);
-		//
-		// canvasWidth = 2 / (float) viewport[0];
-		// canvasHeight = 2 / (float) viewport[5];// if (set == null)
-		// return;
-
 		if (bIsDisplayListDirtyLocal) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
@@ -178,10 +161,6 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	@Override
 	public void displayRemote(GL gl) {
-
-		// gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, viewport, 0);
-		// canvasWidth = 2 / (float) viewport[0];
-		// canvasHeight = 2 / (float) viewport[5];// if (set == null)
 
 		display(gl);
 		checkForHits(gl);
@@ -221,8 +200,12 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		doSlerpActions();
 		initNewView(gl);
+
+		// zoomTree has to be called every loop iteration, because every
+		// operation on the tree has to be transformed into zoomed coordinates
 		disk.zoomTree(diskZoomIntensity);
 
+		// renders the tree and all of it's nodes using the zoomed coordinates
 		disk
 				.renderTree(gl, textureManager, pickingManager, iUniqueID,
 						(float) viewFrustum.getWidth(), (float) viewFrustum
@@ -260,18 +243,17 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	}
 
+	// creates a slerp rotating the tree to the right position
 	public void correctDiskAngle() {
 
-		this.previousSimpleSlerp = 0;
+		previousSimpleSlerp = 0;
 		SimpleSlerp actualSlerp = new SimpleSlerp();
+		// the ending condition of the slerp is the correct angle
 		actualSlerp.endingCondition = disk.calculateCorrectDiskRotation(disk
 				.getCenteredNode());
 
-		System.out.println("hello from there" + actualSlerp.endingCondition);
 		actualSlerp.speed = 10;
-
 		simpleSlerpActions.add(actualSlerp);
-
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
@@ -319,7 +301,6 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.VIEW_SELECTION, glView.getID()));
-
 		gl.glPushMatrix();
 
 		Transform transform = element.getTransform();
@@ -330,12 +311,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		float fAngle = rot.get(axis);
 
 		// Corrections in translation and scaling for magnifying embedded views
-//		gl.glTranslatef(translation.x() - glView.getViewFrustum().getWidth()
-//				/ 2f * scale.x(), translation.y()
-//				- glView.getViewFrustum().getHeight() / 2f * scale.y(),
-//				translation.z());
-		gl.glTranslatef(translation.x(), translation.y(),
-				translation.z());
+		gl.glTranslatef(translation.x(), translation.y(), translation.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(),
 				axis.z());
 		gl.glScalef(scale.x(), scale.y(), scale.z());
@@ -371,22 +347,6 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		case BACKGROUND_HYPERBOLIC:
 			switch (pickingMode) {
 			case RIGHT_CLICKED:
-
-				
-				// // if (testZoomViewEventSwitch == false) {
-				// directHyperbolicView.disk.rotateDisk(Math.PI/180);
-
-				// this.previousSimpleSlerp = 0;
-				// simpleSlerp actualSlerp = new simpleSlerp();
-				// actualSlerp.endingCondition = disk
-				// .calculateCorrectDiskRotation(disk.getCenteredNode());
-				// actualSlerp.speed = 10;
-				//
-				// simpleSlerpActions.add(actualSlerp);
-
-				// this.focusViewEvent(2, 0.75, true);
-				// testZoomViewEventSwitch = true;
-				// // }
 				break;
 			}
 
@@ -394,13 +354,6 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 			switch (pickingMode) {
 
 			case CLICKED:
-
-				// arSlerpActions.add(new NodeSlerp(4, disk
-				// .getNodeByCompareableValue(iExternalID).getPosition(),
-				// new Point2D.Double(0, 0)));
-				//
-				// slerpedNode = disk.getNodeByCompareableValue(iExternalID);
-
 			}
 
 		}
@@ -501,7 +454,6 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		AGLView glView = cmdView.getCreatedObject();
 		glView.setDataDomain(dataDomain);
-		// glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
@@ -522,25 +474,28 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	}
 
 	public void doSlerpActions() {
+
 		// slerping the translation
 		if (arSlerpActions.isEmpty() == false) {
 
 			NodeSlerp singleSlerp = arSlerpActions.get(0);
 			if (singleSlerp.doASlerp(slerpedNode.getZoomedPosition()) == true) {
-
+				// translating the tree by the differental step, calculated by
+				// the node slerp
 				disk.translateTreeMoebius(singleSlerp.returnPoint);
 			} else {
-
-				disk.translateTreeMoebius(singleSlerp.returnPoint);
+                // the last translation, after the slerp has finished
 				disk.setCenteredNode(slerpedNode);
+				disk.translateTreeMoebius(singleSlerp.returnPoint);
+				
 				disk.centeredNodeSize = disk.findOptimalCenterNodeSize(disk
 						.getCenteredNode(), 10);
 
 				arSlerpActions.remove(0);
 			}
 		}
-		// slerping the rotation
 
+		// slerping the rotation
 		if (simpleSlerpActions.isEmpty() == false) {
 
 			SimpleSlerp simpleSlerp = simpleSlerpActions.get(0);
@@ -563,19 +518,22 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		Transform transform = new Transform();
 		transform.setScale(new Vec3f(size, size * fAspectRatio, 1));
-		
+
 		transform.setTranslation(new Vec3f(position[0], position[1], 0));
 
 		remoteNodeElement.setGLView(((ViewHyperbolicNode) node).getGlView());
 
 		if (this.displayFullView == true
 				&& (this.disk.getCenteredNode() == node)) {
-			System.out.println("Breite Node Viewfrustum:"
-					+ remoteNodeElement.getGLView().getViewFrustum().getWidth());
+			System.out
+					.println("Breite Node Viewfrustum:"
+							+ remoteNodeElement.getGLView().getViewFrustum()
+									.getWidth());
 
-			System.out.println("Breite Hyperbolic Viewfrustum:"+this.viewFrustum.getWidth());		
-			
-			transform.setScale(new Vec3f(1,1, 1));
+			System.out.println("Breite Hyperbolic Viewfrustum:"
+					+ this.viewFrustum.getWidth());
+
+			transform.setScale(new Vec3f(1, 1, 1));
 			transform.setTranslation(new Vec3f(viewFrustum.getWidth() / 2,
 					viewFrustum.getHeight() / 2, 0));
 		}
@@ -731,7 +689,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	@Deprecated
 	public GLPathway createPathwayView(GL gl) {
 
-		SerializedPathwayView serPathway = new SerializedPathwayView(dataDomain.getDataDomainType());
+		SerializedPathwayView serPathway = new SerializedPathwayView(dataDomain
+				.getDataDomainType());
 		// serTestPathway.setPathwayID(generalManager.getPathwayManager().searchPathwayByName("TGF-beta signaling pathway",
 		// EPathwayDatabaseType.KEGG).getID());
 		serPathway.setPathwayID(((PathwayGraph) (generalManager
