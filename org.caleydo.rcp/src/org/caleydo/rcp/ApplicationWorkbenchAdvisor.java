@@ -70,9 +70,10 @@ public class ApplicationWorkbenchAdvisor
 		filterPreferencePages();
 		initializeViews();
 
-		IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
-		autoSaver = new AutoSaver();
-		vm.getDisplayLoopExecution().executeMultiple(autoSaver);
+		// FIXME: turn on auto saver here when data domain integration is finished
+		//autoSaver = new AutoSaver();
+		// IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+		// vm.getDisplayLoopExecution().executeMultiple(autoSaver);
 	}
 
 	private void filterPreferencePages() {

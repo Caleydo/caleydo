@@ -277,7 +277,7 @@ public class GLGlyph
 
 		grid_ = new GLGlyphGrid(renderStyle, !this.isRenderedRemote());
 
-		selectionManager = this.dataDomain.getStorageSelectionManager();
+		selectionManager = dataDomain.getStorageSelectionManager();
 
 		set = dataDomain.getSet();
 

@@ -34,7 +34,6 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDCategory;
@@ -107,7 +106,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		IGLRemoteRenderingView {
 
 	public final static String VIEW_ID = "org.caleydo.view.parcoords";
-
+	
 	private EPickingType draggedObject;
 
 	/**
@@ -239,6 +238,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		// glSelectionHeatMap =
 		// ((ViewManager)generalManager.getViewGLCanvasManager()).getSelectionHeatMap();
+		
+		icon = EIconTextures.PAR_COORDS_ICON;
 	}
 
 	@Override

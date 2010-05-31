@@ -1,6 +1,9 @@
 package org.caleydo.core.view.opengl.util.texture;
 
 public enum EIconTextures {
+	
+	NO_ICON_AVAILABLE("resources/icons/general/no_icon_available.png"),
+	
 	ARROW_LEFT("resources/icons/view/remote/arrow-left.png"),
 	ARROW_RIGHT("resources/icons/view/remote/arrow-right.png"),
 	ARROW_UP("resources/icons/view/remote/arrow-up.png"),
@@ -94,10 +97,11 @@ public enum EIconTextures {
 		"resources/icons/view/dataflipper/view_icon_background_rounded.png"),
 	DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE(
 		"resources/icons/view/dataflipper/view_icon_background_square.png"),
-	DATA_FLIPPER_DATA_ICON_PATIENT("resources/icons/view/dataflipper/patient.png"),
-	DATA_FLIPPER_DATA_ICON_PATHWAY("resources/icons/view/dataflipper/pathway.png"),
-	DATA_FLIPPER_DATA_ICON_GENE_EXPRESSION("resources/icons/view/dataflipper/gene_expression.png"),
-	DATA_FLIPPER_DATA_ICON_TISSUE("resources/icons/view/dataflipper/tissue.png"),
+		
+	DATA_DOMAIN_CLINICAL("resources/icons/view/dataflipper/patient.png"),
+	DATA_DOMAIN_PATHWAY("resources/icons/view/dataflipper/pathway.png"),
+	DATA_DOMAIN_GENETIC("resources/icons/view/dataflipper/gene_expression.png"),
+	DATA_DOMAIN_TISSUE("resources/icons/view/dataflipper/tissue.png"),
 
 	LOADING("resources/loading/loading_background.png"),
 	LOADING_CIRCLE("resources/loading/loading_circle.png"),

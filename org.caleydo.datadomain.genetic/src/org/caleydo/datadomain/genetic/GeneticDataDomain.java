@@ -21,6 +21,7 @@ import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
  * Use case specialized to genetic data.
@@ -44,7 +45,11 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	public GeneticDataDomain() {
 
 		super();
+		
 		dataDomainType = "org.caleydo.datadomain.genetic";
+		icon = EIconTextures.DATA_DOMAIN_GENETIC;
+		
+		
 		pathwayViewerMode = false;
 		contentLabelSingular = "gene";
 		contentLabelPlural = "genes";

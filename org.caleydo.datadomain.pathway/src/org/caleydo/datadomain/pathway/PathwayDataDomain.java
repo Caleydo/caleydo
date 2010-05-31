@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.manager.datadomain.ADataDomain;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 
 /**
@@ -25,7 +26,10 @@ public class PathwayDataDomain
 	 * Constructor.
 	 */
 	public PathwayDataDomain() {
+		
 		dataDomainType = "org.caleydo.datadomain.pathway";
+		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
+		
 		possibleViews = new ArrayList<String>();
 		possibleViews.add("org.caleydo.view.pathwaybrowser");
 

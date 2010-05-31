@@ -7,7 +7,7 @@
             allowMultiple="true"
             category="org.caleydo.rcp.views"
             class="org.caleydo.view.tabular.RcpTabularDataView"
-            icon="resources/icons/tabular.png"
+            icon="resources/icons/tissue.png"
             id="org.caleydo.view.tabular"
             name="Tabular Data View">
       </view>
@@ -21,7 +21,7 @@
                label="View">
             <command
                   commandId="org.caleydo.view.tabular.command.opentabular"
-                  icon="resources/icons/tabular.png"
+                  icon="resources/icons/tissue.png"
                   style="push">
             </command>
          </menu>

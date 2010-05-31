@@ -12,6 +12,7 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
  * TODO The use case for clinical input data.
@@ -29,6 +30,7 @@ public class ClinicalDataDomain
 	public ClinicalDataDomain() {
 
 		dataDomainType = "org.caleydo.datadomain.clinical";
+		icon = EIconTextures.DATA_DOMAIN_CLINICAL;
 
 		possibleViews = new ArrayList<String>();
 		possibleViews.add("org.caleydo.view.glyph");

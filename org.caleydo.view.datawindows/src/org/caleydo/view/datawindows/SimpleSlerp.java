@@ -22,8 +22,6 @@ public class SimpleSlerp {
 
 	public boolean doASlerp() {
 
-		
-		
 		slerpFactor = speed * (float)time.deltaT();
 		
 		if (endingCondition >= 0) {
@@ -34,9 +32,7 @@ public class SimpleSlerp {
 				state = endingCondition;
 				System.out.println("slerp end");
 				return false;
-
-			}
-			
+			}	
 		} else {
 			relativeState=state+relativeState;
 			
@@ -45,15 +41,11 @@ public class SimpleSlerp {
 				state = endingCondition;
 				System.out.println("slerp end");
 				return false;
-
 			}
-			
 		}
 		
 		time.update();
-
 		return true;
-
 	}
 
 }

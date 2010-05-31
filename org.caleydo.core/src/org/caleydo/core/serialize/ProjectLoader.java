@@ -71,7 +71,7 @@ public class ProjectLoader {
 			try {
 				useCase =
 					(ADataDomain) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader().getResource(
-						dirName + ProjectSaver.USECASE_FILE_NAME));
+						dirName + ProjectSaver.DATA_DOMAIN_FILE_NAME));
 			}
 			catch (FileNotFoundException e1) {
 				throw new IllegalStateException("Cannot load use case from project file");

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.set.LoadDataParameters;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
  * Use cases are the unique points of coordinations for views and its data. Genetic data is one example -
@@ -20,6 +21,11 @@ public interface IDataDomain {
 	 */
 	public String getDataDomainType();
 
+	/**
+	 * Returns the icon representing the data contained in this domain
+	 */
+	public EIconTextures getIcon();
+	
 	/**
 	 * Returns a list of views that can visualize the data in the domain
 	 * 

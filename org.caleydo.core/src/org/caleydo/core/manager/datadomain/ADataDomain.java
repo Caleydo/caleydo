@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
  * Abstract use case class that implements data and view management.
@@ -33,6 +34,8 @@ public abstract class ADataDomain
 	 */
 	protected String dataDomainType = "unspecified";
 
+	protected EIconTextures icon = EIconTextures.NO_ICON_AVAILABLE;
+
 	/** parameters for loading the the data-{@link set} */
 	protected LoadDataParameters loadDataParameters;
 
@@ -49,13 +52,18 @@ public abstract class ADataDomain
 	protected HashMap<EIDCategory, String> possibleIDCategories;
 
 	public ADataDomain() {
-		
+
 	}
 
 	@Override
 	public String getDataDomainType() {
 		return dataDomainType;
 	}
+
+	@Override
+	public EIconTextures getIcon() {
+		return icon;
+	};
 
 	@Override
 	public ArrayList<String> getPossibleViews() {

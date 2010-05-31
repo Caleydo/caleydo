@@ -7,6 +7,7 @@ import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -21,6 +22,8 @@ public abstract class AView
 	implements IView {
 
 	public String viewType;
+	
+	public static EIconTextures icon = EIconTextures.NO_ICON_AVAILABLE;
 
 	protected GeneralManager generalManager;
 

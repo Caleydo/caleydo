@@ -68,9 +68,9 @@ public class SerializedDataFlipperView extends ASerializedView {
 		pathwayViewBrowser.setDataDomainType("org.caleydo.datadomain.pathway");
 		initialContainedViews.add(pathwayViewBrowser);
 
-		SerializedGlyphView glyph = new SerializedGlyphView();
-		glyph.setDataDomainType("org.caleydo.datadomain.clinical");
-		initialContainedViews.add(glyph);
+//		SerializedGlyphView glyph = new SerializedGlyphView();
+//		glyph.setDataDomainType("org.caleydo.datadomain.clinical");
+//		initialContainedViews.add(glyph);
 	}
 
 	@Override

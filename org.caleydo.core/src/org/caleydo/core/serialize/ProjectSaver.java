@@ -51,8 +51,8 @@ public class ProjectSaver {
 	/** file name of the set-data-file in project-folders */
 	public static final String SET_DATA_FILE_NAME = "data.csv";
 
-	/** file name of the usecase-file in project-folders */
-	public static final String USECASE_FILE_NAME = "usecase.xml";
+	/** file name of the datadomain-file in project-folders */
+	public static final String DATA_DOMAIN_FILE_NAME = "datadomain.xml";
 
 	/** file name of the view-file in project-folders */
 	public static final String VIEWS_FILE_NAME = "views.xml";
@@ -122,8 +122,7 @@ public class ProjectSaver {
 
 	private void saveIndividualDataDomain(IDataDomain dataDomain, String dirName) {
 		// FIXME - this works only for genetic data now
-		if (!(dataDomain instanceof ASetBasedDataDomain && dataDomain.getDataDomainType().equals(
-			"org.caleydo.datadomain.genetic"))) {
+		if (!dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 			System.out.println("Can not save other data domains at the moment!");
 			return;
 		}
@@ -164,8 +163,8 @@ public class ProjectSaver {
 				treePorter.exportTree(dirName + EXP_TREE_FILE_NAME, expTree);
 			}
 
-			File useCaseFile = new File(dirName + USECASE_FILE_NAME);
-			marshaller.marshal(setBasedDataDomain, useCaseFile);
+			File dataDomainFile = new File(dirName + DATA_DOMAIN_FILE_NAME);
+			marshaller.marshal(setBasedDataDomain, dataDomainFile);
 		}
 		catch (JAXBException ex) {
 			throw new RuntimeException("Error saving project files (xml serialization)", ex);
