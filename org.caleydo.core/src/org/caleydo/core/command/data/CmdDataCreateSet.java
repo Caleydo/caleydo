@@ -96,7 +96,13 @@ public class CmdDataCreateSet
 		iAlStorageIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(iAlStorageIDs);
 
 		String sAttrib3 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey());
-		dataDomain = (ISetBasedDataDomain)DataDomainManager.getInstance().getDataDomain(sAttrib3);		
+		dataDomain = (ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(sAttrib3);
+		if (dataDomain == null) {
+			DataDomainManager.getInstance().createDataDomain(sAttrib3);
+			GeneralManager.get().getLogger().log(
+				new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Lazy creation of data domain "
+					+ sAttrib3));
+		}
 	}
 
 	public void setAttributes(ArrayList<Integer> iAlStorageIDs, ISetBasedDataDomain dataDomain) {

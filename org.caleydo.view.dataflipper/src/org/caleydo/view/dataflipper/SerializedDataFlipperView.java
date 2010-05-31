@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
@@ -35,14 +37,17 @@ public class SerializedDataFlipperView extends ASerializedView {
 		init();
 	}
 
-	public SerializedDataFlipperView(String dataDomainType) {
-		super(dataDomainType);
-		init();
-	}
+//	public SerializedDataFlipperView(String dataDomainType) {
+//		super(dataDomainType);
+//		init();
+//	}
 
 	public void init() {
 		initialContainedViews = new ArrayList<ASerializedView>();
 
+		((ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+				"org.caleydo.datadomain.clinical")).updateSetInViews();
+		
 		SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
 		parCoords.setDataDomainType("org.caleydo.datadomain.genetic");
 		initialContainedViews.add(parCoords);
@@ -54,8 +59,6 @@ public class SerializedDataFlipperView extends ASerializedView {
 		SerializedHierarchicalHeatMapView heatMap = new SerializedHierarchicalHeatMapView();
 		heatMap.setDataDomainType("org.caleydo.datadomain.genetic");
 		initialContainedViews.add(heatMap);
-		
-		//GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA).updateSetInViews();
 		
 		parCoords = new SerializedParallelCoordinatesView();
 		parCoords.setDataDomainType("org.caleydo.datadomain.clinical");

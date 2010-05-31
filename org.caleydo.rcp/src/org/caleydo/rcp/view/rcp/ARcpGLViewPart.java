@@ -270,14 +270,15 @@ public abstract class ARcpGLViewPart
 		// Find data domain for this view
 		for (Pair<String, String> startView : Application.startViewWithDataDomain) {
 			if (startView.getFirst().equals(this.getViewGUIID())) {
+				String dataDomainType = startView.getSecond();
 				dataDomain = DataDomainManager.getInstance().getDataDomain(startView.getSecond());
 				Application.startViewWithDataDomain.remove(startView);
 				break;
 			}
 		}
 		
-		if (dataDomain == null)
-			throw new IllegalStateException("Data domain is not set for new view "+this.getViewGUIID());
+//		if (dataDomain == null)
+//			throw new IllegalStateException("Data domain is not set for new view "+this.getViewGUIID());
 	
 		// The object needs to be assigned and returned in overwritten method
 		return null;

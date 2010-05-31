@@ -145,9 +145,9 @@ public class Application
 		}
 
 		if (triggerEarlyPathwayLoading) {
-			CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
-			cmd.setAttributes("org.caleydo.datadomain.pathway");
-			cmd.doCommand();
+			// CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
+			// cmd.setAttributes("org.caleydo.datadomain.pathway");
+			// cmd.doCommand();
 		}
 
 		// If no file is provided as command line argument a wizard page is opened to determine the xml file
@@ -441,10 +441,13 @@ public class Application
 			// Force plugins of start views to load
 			try {
 				String viewType = viewWithDataDomain.getFirst();
-				if (viewType.contains("hierarchical"))
-					viewType = viewType.replace(".hierarchical", "");
 
-				Platform.getBundle(viewType).start();
+				if (!viewType.contains("unspecified")) {
+					if (viewType.contains("hierarchical"))
+						viewType = viewType.replace(".hierarchical", "");
+
+					Platform.getBundle(viewType).start();
+				}
 			}
 			catch (NullPointerException ex) {
 				System.out.println("Cannot load view plugin " + viewWithDataDomain.getFirst());

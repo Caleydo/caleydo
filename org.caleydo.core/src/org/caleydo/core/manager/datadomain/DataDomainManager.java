@@ -4,11 +4,15 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 
 public class DataDomainManager {
 
@@ -48,6 +52,7 @@ public class DataDomainManager {
 	}
 
 	public IDataDomain getDataDomain(String dataDomainType) {
+		
 		return registeredDataDomains.get(dataDomainType);
 	}
 

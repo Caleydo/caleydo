@@ -892,8 +892,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDataFlipperView serializedForm = new SerializedDataFlipperView(
-				dataDomain.getDataDomainType());
+		SerializedDataFlipperView serializedForm = new SerializedDataFlipperView();
 		serializedForm.setViewID(this.getID());
 
 		// IViewManager viewManager = generalManager.getViewGLCanvasManager();
