@@ -129,8 +129,9 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHa
 			return;
 
 		// Prevent handling of non genetic entities
-		if (!dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
-			return;
+		// if
+		// (!dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
+		// return;
 
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
@@ -272,8 +273,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHa
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedHTMLBrowserView serializedForm = new SerializedHTMLBrowserView(
-				dataDomain.getDataDomainType());
+		SerializedHTMLBrowserView serializedForm = new SerializedHTMLBrowserView();
 		serializedForm.setViewID(getID());
 		serializedForm.setQueryType(getCurrentBrowserQueryType());
 		serializedForm.setUrl(getUrl());

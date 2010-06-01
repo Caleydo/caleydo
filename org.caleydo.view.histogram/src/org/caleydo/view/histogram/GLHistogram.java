@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.Histogram;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.ISetBasedDataDomain;
@@ -24,6 +25,7 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.view.ISetBasedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -43,7 +45,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * 
  * @author Alexander Lex
  */
-public class GLHistogram extends AGLView implements IViewCommandHandler {
+public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.histogram";
 
@@ -69,6 +71,9 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 
 	private ColorMappingManager colorMappingManager;
 
+	private ISetBasedDataDomain dataDomain;
+	private ISet set;
+
 	/**
 	 * Constructor.
 	 * 
@@ -93,7 +98,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void init(GL gl) {
-		
+
 		// FIXME: should be called from data domain
 		initData();
 	}
@@ -121,7 +126,7 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 	@Override
 	public void initData() {
 		super.initData();
-		histogram = ((ISetBasedDataDomain)dataDomain).getSet().getHistogram();
+		histogram = ((ISetBasedDataDomain) dataDomain).getSet().getHistogram();
 	}
 
 	@Override
@@ -392,7 +397,8 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 		textRenderer.setColor(0, 0, 0, 1);
 		gl.glDisable(GL.GL_DEPTH_TEST);
 
-		double correspondingValue = ((ISetBasedDataDomain)dataDomain).getSet().getRawForNormalized(normalizedValue);
+		double correspondingValue = ((ISetBasedDataDomain) dataDomain).getSet()
+				.getRawForNormalized(normalizedValue);
 
 		String text = Formatter.formatNumber(correspondingValue);
 
@@ -618,7 +624,8 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedHistogramView serializedForm = new SerializedHistogramView(dataDomain.getDataDomainType());
+		SerializedHistogramView serializedForm = new SerializedHistogramView(dataDomain
+				.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -646,5 +653,25 @@ public class GLHistogram extends AGLView implements IViewCommandHandler {
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
 		}
+	}
+
+	@Override
+	public ISet getSet() {
+		return set;
+	}
+
+	@Override
+	public void setSet(ISet set) {
+		this.set = set;
+	}
+
+	@Override
+	public ISetBasedDataDomain getDataDomain() {
+		return dataDomain;
+	}
+
+	@Override
+	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
 	}
 }

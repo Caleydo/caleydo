@@ -1,5 +1,7 @@
 package org.caleydo.view.tabular;
 
+import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;
@@ -13,7 +15,8 @@ public class RcpTabularDataView extends CaleydoRCPViewPart {
 		tabularDataView = (TabularDataView) GeneralManager.get().getViewGLCanvasManager()
 				.createView("org.caleydo.view.tabular", -1, "Tabular Data View");
 
-		tabularDataView.setDataDomain(dataDomain);
+		tabularDataView.setDataDomain((ISetBasedDataDomain) DataDomainManager
+				.getInstance().getDataDomain(dataDomainType));
 		tabularDataView.initViewRCP(parent);
 		tabularDataView.drawView();
 

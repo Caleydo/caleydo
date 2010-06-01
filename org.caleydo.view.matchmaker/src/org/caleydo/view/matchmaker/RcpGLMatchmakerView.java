@@ -26,7 +26,7 @@ public class RcpGLMatchmakerView extends ARcpGLViewPart {
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedCompareView serializedView = new SerializedCompareView(
-				dataDomain.getDataDomainType());
+				dataDomainType);
 		return serializedView;
 	}
 

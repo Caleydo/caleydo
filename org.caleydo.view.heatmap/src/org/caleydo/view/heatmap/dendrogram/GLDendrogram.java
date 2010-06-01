@@ -1896,13 +1896,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		bUseBlackColoring = bUseBlackColoring ? (false) : (true);
 	}
 
-	@Override
-	public void setSet(ISet set) {
-		super.setSet(set);
-		tree = null;
-		rootNode = null;
-	}
-
 	public boolean isMirrored() {
 		return isMirrored;
 	}
@@ -1910,4 +1903,12 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	public void setMirrored(boolean isMirrored) {
 		this.isMirrored = isMirrored;
 	}
+
+	@Override
+	public void setSet(ISet set) {
+		super.setSet(set);
+		tree = null;
+		rootNode = null;
+	}
+
 }

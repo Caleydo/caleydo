@@ -41,6 +41,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EClustererType;
+import org.caleydo.core.view.ISetBasedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -89,7 +90,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Christian Partl
  * @author Alexander Lex
  */
-public class GLGrouper extends AGLView implements IViewCommandHandler,
+public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHandler,
 		ISelectionUpdateHandler, IClusterNodeEventReceiver {
 
 	public final static String VIEW_ID = "org.caleydo.view.grouper";
@@ -132,6 +133,8 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 	private SelectionType selectionTypeClicked;
 
 	private Tree<ClusterNode> tree;
+	
+	private ISetBasedDataDomain dataDomain;
 	
 	private ISet set;
 
@@ -177,7 +180,7 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 	@Override
 	public void init(GL gl) {
 
-		set = ((ISetBasedDataDomain) dataDomain).getSet();
+		set = dataDomain.getSet();
 		
 		storageVA = set.getStorageVA(StorageVAType.STORAGE);
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager,
@@ -1352,5 +1355,29 @@ public class GLGrouper extends AGLView implements IViewCommandHandler,
 				});
 
 		// groupRep.getClusterNode().getMetaSet().setLabel(groupRep.getClusterNode().getNodeName());
+	}
+
+	@Override
+	public ISet getSet() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setSet(ISet set) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ISetBasedDataDomain getDataDomain() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+		// TODO Auto-generated method stub
+		
 	}
 }

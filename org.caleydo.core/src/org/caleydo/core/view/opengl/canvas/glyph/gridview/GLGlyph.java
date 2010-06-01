@@ -1280,4 +1280,15 @@ public class GLGlyph
 		this.set = set;
 	}
 
+	@Override
+	public ISetBasedDataDomain getDataDomain() {
+		return dataDomain;
+
+	}
+
+	@Override
+	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+	}
+
 }

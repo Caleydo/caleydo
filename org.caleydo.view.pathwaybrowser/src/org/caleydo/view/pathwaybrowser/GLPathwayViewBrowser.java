@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.serialize.ASerializedView;
@@ -237,4 +238,5 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 		// TODO Auto-generated method stub
 
 	}
+
 }

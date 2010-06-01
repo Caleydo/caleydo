@@ -27,6 +27,7 @@ import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -73,9 +74,10 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author Marc Streit
  */
-public class TabularDataView extends ASWTView implements ISelectionUpdateHandler,
+public class TabularDataView extends ASWTView implements
+		IDataDomainBasedView<ISetBasedDataDomain>, ISelectionUpdateHandler,
 		IContentVAUpdateHandler, IStorageVAUpdateHandler, ISelectionCommandHandler,
-		IViewCommandHandler, IView, ISWTView {
+		IViewCommandHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.tabular";
 	private final static int COLUMN_OFFSET = 3;
@@ -755,6 +757,17 @@ public class TabularDataView extends ASWTView implements ISelectionUpdateHandler
 	@Override
 	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType) {
 		storageVA = dataDomain.getStorageVA(vaType);
+	}
+
+	@Override
+	public ISetBasedDataDomain getDataDomain() {
+		return dataDomain;
+	}
+
+	@Override
+	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+
 	}
 
 }

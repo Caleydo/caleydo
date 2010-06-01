@@ -22,7 +22,10 @@ import org.eclipse.ui.part.ViewPart;
 public abstract class CaleydoRCPViewPart
 	extends ViewPart {
 
-	protected IDataDomain dataDomain;
+
+	
+	protected String dataDomainType = null;
+	
 	protected static ArrayList<IAction> alToolbar;
 	// protected static ArrayList<IContributionItem> alToolbarContributions;
 

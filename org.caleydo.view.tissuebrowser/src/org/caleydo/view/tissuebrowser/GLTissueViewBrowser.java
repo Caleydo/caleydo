@@ -64,13 +64,18 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 	@Override
 	public void setDataDomain(IDataDomain dataDomain) {
-		super.setDataDomain(dataDomain);
+		this.dataDomain = dataDomain;
 //		contentVA = dataDomain.getSet().getContentVA(ContentVAType.CONTENT);
 		experiementSelectionManager = new ContentSelectionManager(primaryIDType);
 		experiementSelectionManager.setVA(contentVA);
 
 		addInitialViews();
 
+	}
+	
+	@Override
+	public IDataDomain getDataDomain() {
+		return dataDomain;
 	}
 
 	@Override
@@ -369,4 +374,6 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		// initData();
 		// updateViews();
 	}
+
+
 }

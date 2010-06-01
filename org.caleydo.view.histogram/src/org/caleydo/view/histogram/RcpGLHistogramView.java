@@ -53,6 +53,8 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 	protected NewSetListener newSetListener;
 
 	protected Composite histoComposite;
+	
+	protected ISetBasedDataDomain dataDomain;
 
 	PreferenceStore store = GeneralManager.get().getPreferenceStore();
 
@@ -81,9 +83,13 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 		parentComposite = new Composite(histoComposite, SWT.EMBEDDED);
 		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		dataDomain = DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic");
+		
+		determineDataDomainType();
+		dataDomain = (ISetBasedDataDomain)DataDomainManager.getInstance().getDataDomain(dataDomainType);
 		
 		// FIXME: How to determine data domain for histogram dynamically?
+		
+		
 		SerializedHistogramView serialized = new SerializedHistogramView(dataDomain
 				.getDataDomainType());
 		redrawView(serialized);

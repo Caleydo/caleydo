@@ -1,7 +1,6 @@
 package org.caleydo.core.view;
 
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 
 /**
@@ -33,21 +32,6 @@ public interface IView
 	 *            the label
 	 */
 	void setLabel(String label);
-
-	/**
-	 * Set the data domain which determines the behavior of the view. Attention: The data domain need not be changed
-	 * at runtime.
-	 * 
-	 * @param dataDomain
-	 */
-	public void setDataDomain(IDataDomain dataDomain);
-
-	/**
-	 * Get the data domain the view is operating on
-	 * 
-	 * @return
-	 */
-	public IDataDomain getDataDomain();
 
 	
 	/**

@@ -3,7 +3,6 @@ package org.caleydo.core.view;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -28,11 +27,6 @@ public abstract class AView
 	protected GeneralManager generalManager;
 
 	protected IEventPublisher eventPublisher;
-
-	/**
-	 * The data domain the view is operating on
-	 */
-	protected IDataDomain dataDomain;
 
 	protected int iParentContainerId;
 
@@ -76,16 +70,6 @@ public abstract class AView
 		if (parentComposite != null) {
 			parentComposite.getShell().setText(label);
 		}
-	}
-
-	@Override
-	public IDataDomain getDataDomain() {
-		return dataDomain;
-	}
-
-	@Override
-	public void setDataDomain(IDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
 	}
 
 	/**

@@ -17,7 +17,6 @@ public class RcpStatisticsView extends CaleydoRCPViewPart {
 
 		ISetBasedDataDomain dataDomain = (ISetBasedDataDomain) DataDomainManager
 				.getInstance().getDataDomain("org.caleydo.datadomain.genetic");
-		statisticsView.setDataDomain(dataDomain);
 		statisticsView.initViewRCP(parent);
 		statisticsView.drawView();
 

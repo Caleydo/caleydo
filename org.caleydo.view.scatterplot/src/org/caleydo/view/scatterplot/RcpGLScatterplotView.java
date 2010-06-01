@@ -24,7 +24,7 @@ public class RcpGLScatterplotView extends ARcpGLViewPart {
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedScatterplotView serializedView = new SerializedScatterplotView(
-				dataDomain.getDataDomainType());
+				dataDomainType);
 		return serializedView;
 	}
 

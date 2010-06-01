@@ -18,9 +18,12 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.datadomain.ADataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -58,8 +61,7 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
 /**
- * Class that is able to remotely rendering views. Subclasses implement the positioning of the views (bucket,
- * jukebox, etc.).
+ * Base class for view browsers such as tissue and pathway browser view
  * 
  * @author Marc Streit
  * @author Alexander Lex
@@ -67,7 +69,9 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public abstract class AGLViewBrowser
 	extends AGLView
-	implements ISelectionUpdateHandler, IGLRemoteRenderingView {
+	implements ISelectionUpdateHandler, IGLRemoteRenderingView, IDataDomainBasedView<IDataDomain> {
+
+	protected IDataDomain dataDomain;
 
 	private static final int SLERP_RANGE = 1000;
 	private static final int SLERP_SPEED = 1400;
@@ -1243,7 +1247,7 @@ public abstract class AGLViewBrowser
 
 	public void resetView(boolean reinitialize) {
 
-//		useCase.resetContextVA();
+		// useCase.resetContextVA();
 		if (containedGLViews == null)
 			return;
 
@@ -1622,6 +1626,7 @@ public abstract class AGLViewBrowser
 	 *            serialized form of the view to create
 	 * @return the created view ready to be used within the application
 	 */
+	@SuppressWarnings("unchecked")
 	protected AGLView createView(GL gl, ASerializedView serView) {
 
 		ICommandManager cm = generalManager.getCommandManager();
@@ -1632,9 +1637,10 @@ public abstract class AGLViewBrowser
 		cmdView.doCommand();
 
 		AGLView glView = cmdView.getCreatedObject();
-		glView.setDataDomain(dataDomain);
+		if (glView instanceof IDataDomainBasedView<?>) {
+			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(dataDomain);
+		}
 		glView.setRemoteRenderingGLView(this);
-
 
 		triggerMostRecentDelta();
 
@@ -1882,5 +1888,15 @@ public abstract class AGLViewBrowser
 
 	public void setSlerpActive(boolean isSlerpActive) {
 		this.isSlerpActive = isSlerpActive;
+	}
+
+	@Override
+	public IDataDomain getDataDomain() {
+		return dataDomain;
+	}
+
+	@Override
+	public void setDataDomain(IDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
 	}
 }

@@ -28,8 +28,8 @@ public class RcpInfoAreaView
 	public void createPartControl(Composite parent) {
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
 
-		dataDomain = DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic");
-		
+		// dataDomain = DataDomainManager.getInstance().getDataDomain(dataD);
+
 		// FIXME: when view plugin reorganizatin is done
 		// if (!GenomePerspective.bIsWideScreen) {
 		// bHorizontal = true;
@@ -72,7 +72,9 @@ public class RcpInfoAreaView
 		layout.marginHeight = layout.marginWidth = 0;
 
 		infoComposite.setLayout(layout);
-		infoArea = new InfoArea((ISetBasedDataDomain)dataDomain);
+		infoArea = new InfoArea();
+		infoArea.setDataDomain((ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+			dataDomainType));
 		infoArea.registerEventListeners();
 		infoArea.createControl(infoComposite);
 	}

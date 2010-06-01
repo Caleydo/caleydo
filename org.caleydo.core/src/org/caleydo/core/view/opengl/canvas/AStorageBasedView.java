@@ -25,6 +25,7 @@ import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.NewSetEvent;
@@ -63,7 +64,7 @@ import org.eclipse.core.runtime.Status;
 public abstract class AStorageBasedView
 	extends AGLView
 	implements ISetBasedView, ISelectionUpdateHandler, IContentVAUpdateHandler, IStorageVAUpdateHandler,
-	ISelectionCommandHandler, IViewCommandHandler {
+	ISelectionCommandHandler, IViewCommandHandler, IDataDomainBasedView<ISetBasedDataDomain> {
 
 	protected ISet set;
 
@@ -137,13 +138,18 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void setDataDomain(IDataDomain dataDomain) {
+	public void setDataDomain(ISetBasedDataDomain dataDomain) {
 		this.dataDomain = (ISetBasedDataDomain) dataDomain;
-		
+
 		contentSelectionManager = this.dataDomain.getContentSelectionManager();
 		storageSelectionManager = this.dataDomain.getStorageSelectionManager();
-		
+
 		setSet(this.dataDomain.getSet());
+	}
+
+	@Override
+	public ISetBasedDataDomain getDataDomain() {
+		return dataDomain;
 	}
 
 	/**
@@ -165,6 +171,8 @@ public abstract class AStorageBasedView
 	@Override
 	public void initData() {
 
+		set = dataDomain.getSet();
+		
 		super.initData();
 
 		bRenderOnlyContext =
@@ -286,7 +294,7 @@ public abstract class AStorageBasedView
 		// FIXME: this is not nice since we use expression index for unspecified
 		// data
 		else if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX
-			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")){
+			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
 
 			contentSelectionManager.setDelta(selectionDelta);
 			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
@@ -689,14 +697,10 @@ public abstract class AStorageBasedView
 		this.set = set;
 		initData();
 	}
-
 	@Override
 	public ISet getSet() {
-		return set;
+		// TODO Auto-generated method stub
+	return set;
 	}
 
-	@Override
-	public IDataDomain getDataDomain() {
-		return dataDomain;
-	}
 }

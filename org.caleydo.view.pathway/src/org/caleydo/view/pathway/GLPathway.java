@@ -27,8 +27,10 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
@@ -84,8 +86,8 @@ import org.eclipse.core.runtime.Status;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class GLPathway extends AGLView implements ISelectionUpdateHandler,
-		IViewCommandHandler, ISelectionCommandHandler {
+public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDomain>,
+		ISelectionUpdateHandler, IViewCommandHandler, ISelectionCommandHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.pathway";
 
@@ -135,6 +137,8 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 	protected ClearSelectionsListener clearSelectionsListener;
 
 	protected SelectionCommandListener selectionCommandListener;
+
+	protected IDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -283,7 +287,7 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 
 	private void renderPathway(final GL gl, final PathwayGraph pathway) {
 		gl.glPushMatrix();
-//		GLHelperFunctions.drawPointAt(gl, new Vec3f(0,0,0));
+		// GLHelperFunctions.drawPointAt(gl, new Vec3f(0,0,0));
 		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
 		gl.glScalef(vecScaling.x(), vecScaling.y(), vecScaling.z());
 
@@ -723,10 +727,10 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 			}
 
 			selectionManager.clearSelection(selectionType);
-			
-			 SelectionCommand command = new SelectionCommand(
-			 ESelectionCommandType.CLEAR, selectionType);
-			 sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+
+			SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
+					selectionType);
+			sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 			// Add new vertex to internal selection manager
 			selectionManager.addToType(selectionType, tmpVertexGraphItemRep.getId());
@@ -1010,7 +1014,8 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedPathwayView serializedForm = new SerializedPathwayView(dataDomain.getDataDomainType());
+		SerializedPathwayView serializedForm = new SerializedPathwayView(dataDomain
+				.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		serializedForm.setPathwayID(pathway.getID());
 		return serializedForm;
@@ -1021,6 +1026,17 @@ public class GLPathway extends AGLView implements ISelectionUpdateHandler,
 			SelectionCommand selectionCommand) {
 		if (EIDCategory.GENE == category)
 			selectionManager.executeSelectionCommand(selectionCommand);
+
+	}
+
+	@Override
+	public IDataDomain getDataDomain() {
+		return dataDomain;
+	}
+
+	@Override
+	public void setDataDomain(IDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
 
 	}
 

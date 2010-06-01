@@ -17,6 +17,9 @@ import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -139,8 +142,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 	@Override
 	public void initRemote(final GL gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener,
-			GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
 
@@ -204,15 +206,15 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		// Render invisible background for detecting clicks using GL selection
 		// mechanism
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.BACKGROUND, 0));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.BACKGROUND, 0));
 		gl.glColor4f(0, 0, 0, 0);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
-		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(),
-				viewFrustum.getBottom(), 0);
-		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(),
-				viewFrustum.getTop() - viewFrustum.getBottom(), 0);
+		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum
+				.getBottom(), 0);
+		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum
+				.getTop()
+				- viewFrustum.getBottom(), 0);
 		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop()
 				- viewFrustum.getBottom(), 0);
 		gl.glEnd();
@@ -221,7 +223,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		float canvasWidth = viewFrustum.getWidth();
 		float canvasHeight = viewFrustum.getHeight();
 
-		//System.out.println(canvasWidth+"|"+canvasHeight);
+		// System.out.println(canvasWidth+"|"+canvasHeight);
 		if (layoutHotSpotInitSwitch == false) {
 			layoutHotSpot[0] = canvasWidth / 2 + 1;
 			layoutHotSpot[1] = canvasHeight / 2;
@@ -241,8 +243,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		transform.setTranslation(new Vec3f((float) layoutHotSpot[0],
 				(float) layoutHotSpot[1], 0));
 
-		transform.setScale(new Vec3f(
-				(float) (canvasWidth - layoutHotSpot[0]) / 8,
+		transform.setScale(new Vec3f((float) (canvasWidth - layoutHotSpot[0]) / 8,
 				(float) (canvasHeight - layoutHotSpot[1]) / 8, 1));
 		remoteElementHeatMap.setTransform(transform);
 		Transform transform2 = new Transform();
@@ -275,10 +276,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		remoteElementHyperbolic.setTransform(transform2);
 		Transform transform3 = new Transform();
-		transform3.setTranslation(new Vec3f((float) layoutHotSpot[0],
-				(float) 0, 0));
-		transform3.setScale(new Vec3f(
-				(float) (canvasWidth - layoutHotSpot[0]) / 8,
+		transform3.setTranslation(new Vec3f((float) layoutHotSpot[0], (float) 0, 0));
+		transform3.setScale(new Vec3f((float) (canvasWidth - layoutHotSpot[0]) / 8,
 				(float) layoutHotSpot[1] / 8, 1));
 
 		remoteElementParCoords.setTransform(transform3);
@@ -375,8 +374,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		gl.glEndList();
 	}
 
-	private void renderRemoteLevelElement(final GL gl,
-			RemoteLevelElement element) {
+	private void renderRemoteLevelElement(final GL gl, RemoteLevelElement element) {
 
 		AGLView glView = element.getGLView();
 
@@ -386,8 +384,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.VIEW_SELECTION, glView.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
+				glView.getID()));
 
 		gl.glPushMatrix();
 
@@ -399,8 +397,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		float fAngle = rot.get(axis);
 
 		gl.glTranslatef(translation.x(), translation.y(), translation.z());
-		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(),
-				axis.z());
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
 		glView.displayRemote(gl);
@@ -446,19 +443,15 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		case VIEW_SELECTION:
 			switch (pickingMode) {
 			case MOUSE_OVER:
-//				this.focusViewEvent(iExternalID, 0.75, true);
+				// this.focusViewEvent(iExternalID, 0.75, true);
 				break;
 			case CLICKED:
 				evaluateUserSelection();
 				break;
 			case RIGHT_CLICKED:
-				
-			
 
-				
-				contextMenu.setLocation(pick.getPickedPoint(),
-						getParentGLCanvas().getWidth(), getParentGLCanvas()
-								.getHeight());
+				contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
+						.getWidth(), getParentGLCanvas().getHeight());
 				contextMenu.setMasterGLView(this);
 				break;
 
@@ -499,7 +492,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		}
 
 	}
-	
+
 	private void evaluateUserSelection() {
 		// simulating the eyetracker
 
@@ -516,16 +509,14 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 				float[] translation = new float[2];
 				float[] scalation = new float[2];
-				translation[0] = remoteElementHyperbolic.getTransform()
-						.getTranslation().x();
-				translation[1] = remoteElementHyperbolic.getTransform()
-						.getTranslation().y();
-				scalation[0] = remoteElementHyperbolic.getTransform()
-						.getScale().x();
-				scalation[1] = remoteElementHyperbolic.getTransform()
-						.getScale().y();
-				this.directHyperbolicView.setEyeTrackerAction(
-						mousePosition, translation, scalation);
+				translation[0] = remoteElementHyperbolic.getTransform().getTranslation()
+						.x();
+				translation[1] = remoteElementHyperbolic.getTransform().getTranslation()
+						.y();
+				scalation[0] = remoteElementHyperbolic.getTransform().getScale().x();
+				scalation[1] = remoteElementHyperbolic.getTransform().getScale().y();
+				this.directHyperbolicView.setEyeTrackerAction(mousePosition, translation,
+						scalation);
 			}
 		}
 
@@ -533,8 +524,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDataWindowsView serializedForm = new SerializedDataWindowsView(
-				dataDomain.getDataDomainType());
+		SerializedDataWindowsView serializedForm = new SerializedDataWindowsView();
 		serializedForm.setViewID(this.getID());
 
 		return serializedForm;
@@ -576,7 +566,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		// Heat map
 		ASerializedView serView = new SerializedHeatMapView();// SerializedHierarchicalHeatMapView();//
-		serView.setDataDomainType(dataDomain.getDataDomainType());
+		serView.setDataDomainType("org.caleydo.datadomain.genetic");
 		AGLView view = createView(gl, serView);
 		((AStorageBasedView) view).renderContext(true);
 
@@ -590,7 +580,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		// Parallel coordinates
 		serView = new SerializedParallelCoordinatesView();
-		serView.setDataDomainType(dataDomain.getDataDomainType());
+		serView.setDataDomainType("org.caleydo.datadomain.genetic");
 		view = createView(gl, serView);
 		((AStorageBasedView) view).renderContext(true);
 
@@ -604,7 +594,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		// Hyperbolic view
 		serView = new SerializedHyperbolicView();
-		serView.setDataDomainType(dataDomain.getDataDomainType());
 		view = createView(gl, serView);
 		directHyperbolicView = (GLHyperbolic) view;
 
@@ -620,8 +609,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		remoteElementHyperbolic.setGLView(view);
 		remoteElementHyperbolic.setTransform(transform);
 
-		mouseWheelListener = new DataWindowsMouseWheelListener(
-				this.directHyperbolicView);
+		mouseWheelListener = new DataWindowsMouseWheelListener(this.directHyperbolicView);
 
 		canvas.removeMouseWheelListener(glMouseListener);
 
@@ -645,6 +633,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		setDisplayListDirty();
 	}
 
+	@SuppressWarnings("unchecked")
 	private AGLView createView(GL gl, ASerializedView serView) {
 
 		ICommandManager cm = generalManager.getCommandManager();
@@ -655,14 +644,15 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		cmdView.doCommand();
 
 		AGLView glView = cmdView.getCreatedObject();
-		serView.setDataDomainType(dataDomain.getDataDomainType());
+		if (glView instanceof IDataDomainBasedView<?>)
+			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
+					.getInstance().getDataDomain(serView.getDataDomainType()));
 		glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
 
-			glPathway.setPathway(((SerializedPathwayView) serView)
-					.getPathwayID());
+			glPathway.setPathway(((SerializedPathwayView) serView).getPathwayID());
 			glPathway.enablePathwayTextures(true);
 			glPathway.enableNeighborhood(false);
 			glPathway.enableGeneMapping(false);
@@ -684,8 +674,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	// @param zoomintentsity: 0 is no zooming, 1 is max
 	public void focusViewEvent(int view, double zoomIntensity, boolean inFocus) {
 
-		String viewType = generalManager.getViewGLCanvasManager().getGLView(
-				view).getViewType();
+		String viewType = generalManager.getViewGLCanvasManager().getGLView(view)
+				.getViewType();
 
 		if (viewType.equals("org.caleydo.view.hyperbolic")) {
 			if (inFocus == true) {
@@ -755,14 +745,13 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		}
 	}
 
-	public void moveLayoutPoint(float[] targetPoint, float[] startPoint,
-			float state) {
+	public void moveLayoutPoint(float[] targetPoint, float[] startPoint, float state) {
 
 		float[] relativePosition = new float[2];
 		relativePosition[0] = startPoint[0] - targetPoint[0];
 		relativePosition[1] = startPoint[1] - targetPoint[1];
-		float distance = relativePosition[0] * relativePosition[0]
-				+ relativePosition[1] * relativePosition[1];
+		float distance = relativePosition[0] * relativePosition[0] + relativePosition[1]
+				* relativePosition[1];
 		distance = (float) Math.sqrt(distance);
 		distance = distance * state;
 

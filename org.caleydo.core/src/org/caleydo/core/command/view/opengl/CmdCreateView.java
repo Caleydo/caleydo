@@ -26,6 +26,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class CmdCreateView
 	extends ACmdCreational<AGLView> {
@@ -36,8 +37,6 @@ public class CmdCreateView
 
 	protected Vec3f cameraOrigin;
 	protected Rotf cameraRotation;
-
-	protected String dataDomainType;
 
 	/**
 	 * Constructor.
@@ -52,8 +51,6 @@ public class CmdCreateView
 	@Override
 	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
-
-		extractDataIDs();
 
 		String sPositionGLOrigin =
 			parameterHandler.getValueString(ECommandType.TAG_POS_GL_ORIGIN.getXmlKey());
@@ -116,65 +113,23 @@ public class CmdCreateView
 				fFar);
 	}
 
-	/**
-	 * Extract set and selection IDs from detail string. Example:
-	 * "SET_ID_1 SET_ID_2@SELECTION_ID_1 SELECTION_ID_2"
-	 * 
-	 * @deprecated
-	 */
-	@Deprecated
-	private void extractDataIDs() {
+	
 
-		// // Read Set and Selection IDs
-		// StringTokenizer divideSetAndSelectionIDs =
-		// new StringTokenizer(sDetail, IGeneralManager.sDelimiter_Paser_DataItemBlock);
-		//
-		// // Fill set IDs
-		// if (divideSetAndSelectionIDs.hasMoreTokens()) {
-		// StringTokenizer divideIDs =
-		// new StringTokenizer(divideSetAndSelectionIDs.nextToken(),
-		// IGeneralManager.sDelimiter_Parser_DataItems);
-		//
-		// while (divideIDs.hasMoreTokens()) {
-		// iAlSetIDs.add(Integer.valueOf(divideIDs.nextToken()).intValue());
-		// }
-		// }
-		//
-		// // Fill selection IDs
-		// // if (divideSetAndSelectionIDs.hasMoreTokens())
-		// // {
-		// // StringTokenizer divideIDs = new
-		// // StringTokenizer(divideSetAndSelectionIDs
-		// // .nextToken(), IGeneralManager.sDelimiter_Parser_DataItems);
-		// //
-		// // while (divideIDs.hasMoreTokens())
-		// // {
-		// // iAlSelectionIDs.add(StringConversionTool.convertStringToInt(divideIDs
-		// // .nextToken(), -1));
-		// // }
-		// // }
-		//
-		// // Convert external IDs from XML file to internal IDs
-		// set = GeneralManager.get().getIDManager().convertExternalToInternalIDs(iAlSetIDs);
-
-	}
-
-	public void setAttributes(final String dataDomainType, final EProjectionMode eProjectionMode,
+	public void setAttributes(final EProjectionMode eProjectionMode,
 		final float fLeft, final float fRight, final float fBottom, final float fTop, final float fNear,
 		final float fFar, final int iParentCanvasID) {
 		viewFrustum = new ViewFrustum(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar);
 
-		this.dataDomainType = dataDomainType;
 		this.iParentContainerId = iParentCanvasID;
 	}
 
-	public void setAttributes(final String dataDomainType, final EProjectionMode eProjectionMode,
+	public void setAttributes(final EProjectionMode eProjectionMode,
 		final float fLeft, final float fRight, final float fBottom, final float fTop, final float fNear,
 		final float fFar, final int iParentCanvasID, final float fCamOriginX, final float fCamOriginY,
 		final float fCamOriginZ, final float fCamRotationX, final float fCamRotationY,
 		final float fCamRotationZ, final float fCamRotationAngle) {
 
-		setAttributes(dataDomainType, eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar,
+		setAttributes( eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar,
 			iParentCanvasID);
 
 		cameraOrigin.set(fCamOriginX, fCamOriginY, fCamOriginZ);
@@ -191,7 +146,7 @@ public class CmdCreateView
 	 */
 	public void setAttributesFromSerializedForm(ASerializedView serView) {
 		setViewFrustum(serView.getViewFrustum());
-		dataDomainType = serView.getDataDomainType();
+//		dataDomainType = serView.getDataDomainType();
 	}
 
 	public void setParentCanvasID(int parentCanvasID) {
@@ -226,10 +181,10 @@ public class CmdCreateView
 		createdObject.getViewCamera().setCameraPosition(cameraOrigin);
 		createdObject.getViewCamera().setCameraRotation(cameraRotation);
 
-		IDataDomain dataDomain = DataDomainManager.getInstance().getDataDomain(dataDomainType);
-
-		// Note: for AStoragebasedViews the set for the view is assigned in the setDataDomain method.
-		createdObject.setDataDomain(dataDomain);
+//		IDataDomain dataDomain = DataDomainManager.getInstance().getDataDomain(dataDomainType);
+//
+//		// Note: for AStoragebasedViews the set for the view is assigned in the setDataDomain method.
+//		createdObject.setDataDomain(dataDomain);
 
 		commandManager.runDoCommand(this);
 	}

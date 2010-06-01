@@ -291,9 +291,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	@Override
 	public void init(GL gl) {
 
-		//FIXME: Alex, is it save to call this here?
+		// FIXME: Alex, is it save to call this here?
 		initData();
-		
+
 		createHeatMap();
 		createDendrogram();
 
@@ -662,9 +662,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
 
-		cmdView.setAttributes(dataDomain.getDataDomainType(),
-				EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth, -20,
-				20, -1);
+		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0,
+				fHeatMapWidth, -20, 20, -1);
 
 		cmdView.doCommand();
 
@@ -674,8 +673,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		glHeatMapView.setRemoteLevelElement(heatMapRemoteElement);
 		heatMapRemoteElement.setGLView(glHeatMapView);
 
-		glHeatMapView.setDataDomain(dataDomain);
-		glHeatMapView.setSet(set);
+		// glHeatMapView.setDataDomain(dataDomain);
+		// glHeatMapView.setSet(set);
 		glHeatMapView.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
 		glHeatMapView.initData();
 
@@ -694,9 +693,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
 
-		cmdView.setAttributes(dataDomain.getDataDomainType(),
-				EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth, -20,
-				20, -1);
+		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0,
+				fHeatMapWidth, -20, 20, -1);
 
 		cmdView.doCommand();
 
@@ -708,9 +706,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(GLDendrogram.VIEW_ID + ".vertical");
 
-		cmdView.setAttributes(dataDomain.getDataDomainType(),
-				EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth, -20,
-				20, -1);
+		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0,
+				fHeatMapWidth, -20, 20, -1);
 
 		cmdView.doCommand();
 

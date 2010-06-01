@@ -137,8 +137,7 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedStatisticsView serializedForm = new SerializedStatisticsView(dataDomain
-				.getDataDomainType());
+		SerializedStatisticsView serializedForm = new SerializedStatisticsView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

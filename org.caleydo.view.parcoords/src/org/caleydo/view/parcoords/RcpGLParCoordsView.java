@@ -22,7 +22,7 @@ public class RcpGLParCoordsView extends ARcpGLViewPart {
 
 		if (memento == null) {
 			SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView(
-					dataDomain.getDataDomainType());
+					dataDomainType);
 			initSerializedView = serializedView;
 		}
 	}
@@ -37,10 +37,10 @@ public class RcpGLParCoordsView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		super.createDefaultSerializedView();
-		
+		determineDataDomainType();
+
 		SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView(
-				dataDomain.getDataDomainType());
+				dataDomainType);
 		return serializedView;
 	}
 

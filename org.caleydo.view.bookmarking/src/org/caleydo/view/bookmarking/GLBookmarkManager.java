@@ -12,6 +12,8 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.data.RemoveBookmarkEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -42,7 +44,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Alexander Lex
  */
 public class GLBookmarkManager extends AGLView implements
-		ISelectionUpdateHandler, ISelectionCommandHandler {
+		IDataDomainBasedView<ISetBasedDataDomain>, ISelectionUpdateHandler,
+		ISelectionCommandHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.bookmarking";
 
@@ -65,6 +68,8 @@ public class GLBookmarkManager extends AGLView implements
 
 	private RemoveBookmarkListener removeBookmarkListener;
 
+	protected ISetBasedDataDomain dataDomain;
+
 	class PickingIDManager {
 		/**
 		 * A hash map that hashes the picking ID of an element to the
@@ -81,9 +86,8 @@ public class GLBookmarkManager extends AGLView implements
 
 			int pickingID = pickingManager.getPickingID(iUniqueID,
 					EPickingType.BOOKMARK_ELEMENT, idCount);
-			pickingIDToBookmarkContainer.put(idCount++,
-					new Pair<EIDCategory, Integer>(container.getCategory(),
-							privateID));
+			pickingIDToBookmarkContainer.put(idCount++, new Pair<EIDCategory, Integer>(
+					container.getCategory(), privateID));
 			return pickingID;
 		}
 
@@ -116,8 +120,7 @@ public class GLBookmarkManager extends AGLView implements
 		hashCategoryToBookmarkContainer = new EnumMap<EIDCategory, ABookmarkContainer<?>>(
 				EIDCategory.class);
 
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24),
-				false);
+		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 
 		pickingIDManager = new PickingIDManager();
 
@@ -127,8 +130,7 @@ public class GLBookmarkManager extends AGLView implements
 
 		ExperimentBookmarkContainer experimentContainer = new ExperimentBookmarkContainer(
 				this);
-		hashCategoryToBookmarkContainer.put(EIDCategory.EXPERIMENT,
-				experimentContainer);
+		hashCategoryToBookmarkContainer.put(EIDCategory.EXPERIMENT, experimentContainer);
 		bookmarkContainers.add(experimentContainer);
 
 	}
@@ -143,18 +145,15 @@ public class GLBookmarkManager extends AGLView implements
 
 		removeBookmarkListener = new RemoveBookmarkListener();
 		removeBookmarkListener.setHandler(this);
-		eventPublisher.addListener(RemoveBookmarkEvent.class,
-				removeBookmarkListener);
+		eventPublisher.addListener(RemoveBookmarkEvent.class, removeBookmarkListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class,
-				selectionUpdateListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		eventPublisher.addListener(SelectionCommandEvent.class,
-				selectionCommandListener);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 	}
 
@@ -187,8 +186,7 @@ public class GLBookmarkManager extends AGLView implements
 	@Override
 	public void display(GL gl) {
 
-		float currentHeight = viewFrustum.getHeight()
-				- BookmarkRenderStyle.TOP_SPACING;
+		float currentHeight = viewFrustum.getHeight() - BookmarkRenderStyle.TOP_SPACING;
 		for (ABookmarkContainer<?> container : bookmarkContainers) {
 			container.getDimensions().setOrigins(0.0f, currentHeight);
 			container.getDimensions().setWidth(viewFrustum.getWidth());
@@ -231,8 +229,7 @@ public class GLBookmarkManager extends AGLView implements
 			EPickingMode ePickingMode, int iExternalID, Pick pick) {
 		switch (ePickingType) {
 		case BOOKMARK_ELEMENT:
-			Pair<EIDCategory, Integer> pair = pickingIDManager
-					.getPrivateID(iExternalID);
+			Pair<EIDCategory, Integer> pair = pickingIDManager.getPrivateID(iExternalID);
 			hashCategoryToBookmarkContainer.get(pair.getFirst()).handleEvents(
 					ePickingType, ePickingMode, pair.getSecond(), pick);
 		}
@@ -242,11 +239,10 @@ public class GLBookmarkManager extends AGLView implements
 	 * @param <IDDataType>
 	 * @param event
 	 */
-	public <IDDataType> void handleNewBookmarkEvent(
-			BookmarkEvent<IDDataType> event) {
+	public <IDDataType> void handleNewBookmarkEvent(BookmarkEvent<IDDataType> event) {
 
-		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer
-				.get(event.getIDType().getCategory());
+		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(event
+				.getIDType().getCategory());
 		if (container == null)
 			throw new IllegalStateException("Can not handle bookmarks of type "
 					+ event.getIDType().getCategory());
@@ -256,8 +252,8 @@ public class GLBookmarkManager extends AGLView implements
 
 	public <IDDataType> void handleRemoveBookmarkEvent(
 			RemoveBookmarkEvent<IDDataType> event) {
-		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer
-				.get(event.getIDType().getCategory());
+		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(event
+				.getIDType().getCategory());
 		if (container == null)
 			throw new IllegalStateException("Can not handle bookmarks of type "
 					+ event.getIDType().getCategory());
@@ -278,8 +274,8 @@ public class GLBookmarkManager extends AGLView implements
 	}
 
 	@Override
-	public void initRemote(GL gl, AGLView glParentView,
-			GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+	public void initRemote(GL gl, AGLView glParentView, GLMouseListener glMouseListener,
+			GLInfoAreaManager infoAreaManager) {
 
 		init(gl);
 
@@ -322,8 +318,7 @@ public class GLBookmarkManager extends AGLView implements
 	@Override
 	public void handleSelectionCommand(EIDCategory category,
 			SelectionCommand selectionCommand) {
-		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer
-				.get(category);
+		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(category);
 		if (container != null)
 			container.handleSelectionCommand(selectionCommand);
 	}
@@ -338,5 +333,16 @@ public class GLBookmarkManager extends AGLView implements
 
 	PickingIDManager getPickingIDManager() {
 		return pickingIDManager;
+	}
+
+	@Override
+	public ISetBasedDataDomain getDataDomain() {
+
+		return dataDomain;
+	}
+
+	@Override
+	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
 	}
 }

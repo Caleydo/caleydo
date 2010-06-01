@@ -280,9 +280,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	@Override
 	public void init(final GL gl) {
 
-		//FIXME: Alex, is it save to call this here?
+		// FIXME: Alex, is it save to call this here?
 		initData();
-		
+
 		fXDefaultTranslation = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
 	}
@@ -420,9 +420,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		CmdCreateView cmdCreateGLView = (CmdCreateView) generalManager
 				.getCommandManager().createCommandByType(ECommandType.CREATE_GL_VIEW);
 		cmdCreateGLView.setViewID("org.caleydo.view.bookmarking");
-		cmdCreateGLView.setAttributes(dataDomain.getDataDomainType(),
-				EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, viewFrustum.getBottom(),
-				viewFrustum.getTop(), -20, 20, -1);
+		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, viewFrustum
+				.getBottom(), viewFrustum.getTop(), -20, 20, -1);
 		cmdCreateGLView.doCommand();
 		glBookmarks = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
 		glBookmarks.setRemoteRenderingGLView(this);
@@ -579,8 +578,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 			contentDataType = EIDType.EXPRESSION_INDEX;
 			storageDataType = EIDType.EXPERIMENT_INDEX;
-		} else if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.clinical")
-				|| dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
+		} else if (dataDomain.getDataDomainType().equals(
+				"org.caleydo.datadomain.clinical")
+				|| dataDomain.getDataDomainType()
+						.equals("org.caleydo.datadomain.generic")) {
 			contentDataType = EIDType.EXPERIMENT_INDEX;
 			storageDataType = EIDType.EXPERIMENT_RECORD;
 		} else {
@@ -1572,7 +1573,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				selectionType = SelectionType.SELECTION;
 
 				// Prevent handling of non genetic data in context menu
-				if (!dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
+				if (!dataDomain.getDataDomainType().equals(
+						"org.caleydo.datadomain.genetic"))
 					break;
 
 				ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
@@ -1994,8 +1996,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		} else {
 			message = "Parallel Coordinates - a sample of " + iNumLines
 					/ displayEveryNthPolyline + " out of " + iNumLines + " "
-					+ dataDomain.getContentLabel(false, true) + " / \n " + storageVA.size()
-					+ " experiments";
+					+ dataDomain.getContentLabel(false, true) + " / \n "
+					+ storageVA.size() + " experiments";
 		}
 		return message;
 

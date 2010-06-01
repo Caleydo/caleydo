@@ -92,7 +92,10 @@ public class Application
 
 	public static String xmlInputFile = "";
 
-	/** list of serialized-view class to create during startup */
+	/**
+	 * list of serialized-view class to create during startup, the first string is the view, the second the
+	 * datadomain
+	 */
 	public static List<Pair<String, String>> startViewWithDataDomain;
 
 	/** list of initialized view instances */
@@ -415,7 +418,7 @@ public class Application
 
 		initializeColorMapping();
 		if (initializedStartViews == null) {
-			initializeDefaultStartViews();
+			initializeStartViews();
 		}
 	}
 
@@ -428,7 +431,7 @@ public class Application
 	 * Parses throw the list of start-views to initialize them by creating default serialized representations
 	 * of them.
 	 */
-	public static void initializeDefaultStartViews() {
+	public static void initializeStartViews() {
 		// Create view list dynamically when not specified via the command line
 
 		if (startViewWithDataDomain.isEmpty()) {

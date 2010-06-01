@@ -25,6 +25,7 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
@@ -300,7 +301,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		if (glView == null) {
 			return;
 		}
-		
+
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
@@ -320,7 +321,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
 		if (lastPickedRemoteLevelElement != null)
-			renderBucketWall(gl, element.getGLView() == lastPickedRemoteLevelElement.getGLView() ? true : false);
+			renderBucketWall(gl, element.getGLView() == lastPickedRemoteLevelElement
+					.getGLView() ? true : false);
 
 		glView.displayRemote(gl);
 
@@ -689,7 +691,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				lastPickedView = lastPickedRemoteLevelElement.getGLView();
 				chainMove(lastPickedRemoteLevelElement);
 
-
 				break;
 			case MOUSE_OVER:
 
@@ -871,7 +872,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 				if (focusElement.getGLView() != null
 						&& focusElement.getGLView().getViewType().equals(viewType)
-						&& focusElement.getGLView().getDataDomain() == dataDomain) {
+						&& focusElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
 					element = focusElement;
 				}
 
@@ -879,7 +880,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					for (RemoteLevelElement tmpElement : stackElementsLeft) {
 						if (tmpElement.getGLView() != null
 								&& tmpElement.getGLView().getViewType().equals(viewType)
-								&& tmpElement.getGLView().getDataDomain() == dataDomain) {
+								&& tmpElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
 							element = tmpElement;
 						}
 					}
@@ -889,7 +890,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					for (RemoteLevelElement tmpElement : stackElementsRight) {
 						if (tmpElement.getGLView() != null
 								&& tmpElement.getGLView().getViewType().equals(viewType)
-								&& tmpElement.getGLView().getDataDomain() == dataDomain) {
+								&& tmpElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
 							element = tmpElement;
 						}
 					}
@@ -933,22 +934,26 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				}
 
 				for (SlerpAction slerp : arSlerpActions) {
-					
-					if (GeneralManager.get().getViewGLCanvasManager().getGLView(slerp.getElementId()) == null ||
-							GeneralManager.get().getViewGLCanvasManager().getGLView(slerp.getElementId()).viewType.equals(viewType)
-							|| GeneralManager.get().getViewGLCanvasManager().getGLView(slerp.getElementId()).getDataDomain() != dataDomain)
+
+					if (GeneralManager.get().getViewGLCanvasManager().getGLView(
+							slerp.getElementId()) == null
+							|| GeneralManager.get().getViewGLCanvasManager().getGLView(
+									slerp.getElementId()).viewType.equals(viewType)
+							|| ((IDataDomainBasedView<?>) GeneralManager.get()
+									.getViewGLCanvasManager().getGLView(
+											slerp.getElementId())).getDataDomain() != dataDomain)
 						continue;
-					
+
 					float xCorrectionRight = 0;
 					if (stackElementsRight.contains(element))
 						xCorrectionRight = -1.1f;
-					
+
 					SlerpMod slerpMod = new SlerpMod();
 					Transform transform = slerpMod.interpolate(slerp
 							.getOriginRemoteLevelElement().getTransform(), slerp
-							.getDestinationRemoteLevelElement().getTransform(), (float) iSlerpFactor
-							/ SLERP_RANGE);
-					
+							.getDestinationRemoteLevelElement().getTransform(),
+							(float) iSlerpFactor / SLERP_RANGE);
+
 					viewIconBackgroundColor = new float[] { 1f, 1f, 1f };
 					gl.glColor3fv(viewIconBackgroundColor, 0);
 					gl.glLineWidth(2);
@@ -958,9 +963,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 							* (viewIconWidth + 0.01f) - 1.5f + xCorrectionRight,
 							-y - 1.5f - 0.05f, 0);
 					gl.glEnd();
-					
+
 				}
-				
+
 				if (element != null)
 					gl.glPopName();
 			}

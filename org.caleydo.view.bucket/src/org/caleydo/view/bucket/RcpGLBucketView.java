@@ -30,28 +30,27 @@ public class RcpGLBucketView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		
-		super.createDefaultSerializedView();
-		
-		SerializedBucketView serializedView = new SerializedBucketView(dataDomain.getDataDomainType());
+
+		determineDataDomainType();
+
+		SerializedBucketView serializedView = new SerializedBucketView(dataDomainType);
 		return serializedView;
 	}
 
 	@Override
 	public void dispose() {
-		GLBucket glRemoteView = (GLBucket) GeneralManager.get()
-				.getViewGLCanvasManager().getGLView(view.getID());
+		GLBucket glRemoteView = (GLBucket) GeneralManager.get().getViewGLCanvasManager()
+				.getGLView(view.getID());
 
 		for (Integer iContainedViewID : iAlContainedViewIDs) {
-			glRemoteView.removeView(GeneralManager.get()
-					.getViewGLCanvasManager().getGLView(iContainedViewID));
+			glRemoteView.removeView(GeneralManager.get().getViewGLCanvasManager()
+					.getGLView(iContainedViewID));
 		}
 
 		super.dispose();
 
 		GeneralManager.get().getViewGLCanvasManager()
-				.getConnectedElementRepresentationManager().clearByView(
-						view.getID());
+				.getConnectedElementRepresentationManager().clearByView(view.getID());
 
 		GeneralManager.get().getPathwayManager().resetPathwayVisiblityState();
 	}

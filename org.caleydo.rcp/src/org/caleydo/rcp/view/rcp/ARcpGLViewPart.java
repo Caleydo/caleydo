@@ -14,8 +14,10 @@ import javax.xml.bind.Unmarshaller;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializationManager;
@@ -47,8 +49,6 @@ public abstract class ARcpGLViewPart
 	protected Frame frameGL;
 	protected GLCaleydoCanvas glCanvas;
 	protected MinimumSizeComposite minSizeComposite;
-
-
 
 	/** serialized representation of the view to initialize the view itself */
 	protected ASerializedView initSerializedView;
@@ -83,9 +83,6 @@ public abstract class ARcpGLViewPart
 	protected AGLView createGLView(ASerializedView serializedView, int iParentCanvasID) {
 
 		String viewType = serializedView.getViewType();
-		String dataDomainType = serializedView.getDataDomainType();
-
-		dataDomain = DataDomainManager.getInstance().getDataDomain(dataDomainType);
 
 		IGeneralManager generalManager = GeneralManager.get();
 
@@ -95,21 +92,20 @@ public abstract class ARcpGLViewPart
 		cmdView.setViewID(viewType);
 		if (viewType.equals("org.caleydo.view.bucket") || viewType.equals("org.caleydo.view.dataflipper")) {
 
-			cmdView.setAttributes(dataDomainType, EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100,
-				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
+			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100, iParentCanvasID,
+				0, 0, -8, 0, 0, 0, 0);
 			// cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -2f, 2f, -2f,
 			// 2f, 3.82f, 100, set,
 
 		}
 		else if (viewType.equals("org.caleydo.view.glyph")) {
 
-			cmdView.setAttributes(dataDomainType, EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100,
-				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
+			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100, iParentCanvasID,
+				0, 0, -8, 0, 0, 0, 0);
 		}
 		else {
 
-			cmdView.setAttributes(dataDomainType, EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20,
-				iParentCanvasID);
+			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, iParentCanvasID);
 
 		}
 
@@ -120,6 +116,11 @@ public abstract class ARcpGLViewPart
 		setGLData(glCanvas, glView);
 		createPartControlGL();
 
+		if (glView instanceof IDataDomainBasedView<?>) {
+			IDataDomain dataDomain =
+				DataDomainManager.getInstance().getDataDomain(serializedView.getDataDomainType());
+			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(dataDomain);
+		}
 		// glView.setViewID(getViewGUIID());
 		glView.initFromSerializableRepresentation(serializedView);
 
@@ -265,23 +266,24 @@ public abstract class ARcpGLViewPart
 	 * 
 	 * @return serialized form of the gl-view with default initialization
 	 */
-	public ASerializedView createDefaultSerializedView() {
-		
-		// Find data domain for this view
+	public abstract ASerializedView createDefaultSerializedView();
+
+	/**
+	 * Determines the dataDomainType based on the association of views to datadomains established in
+	 * {@link Application#startViewWithDataDomain}, saves it to the member
+	 * {@link CaleydoRCPViewPart#dataDomainType}, removes it from the startViewWithDataDomain and returns it.
+	 * 
+	 * @return
+	 */
+	protected String determineDataDomainType() {
 		for (Pair<String, String> startView : Application.startViewWithDataDomain) {
 			if (startView.getFirst().equals(this.getViewGUIID())) {
-				String dataDomainType = startView.getSecond();
-				dataDomain = DataDomainManager.getInstance().getDataDomain(startView.getSecond());
+				dataDomainType = startView.getSecond();
 				Application.startViewWithDataDomain.remove(startView);
 				break;
 			}
 		}
-		
-//		if (dataDomain == null)
-//			throw new IllegalStateException("Data domain is not set for new view "+this.getViewGUIID());
-	
-		// The object needs to be assigned and returned in overwritten method
-		return null;
+		return dataDomainType;
 	}
 
 	/**

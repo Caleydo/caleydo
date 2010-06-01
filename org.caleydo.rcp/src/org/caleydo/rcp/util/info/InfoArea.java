@@ -16,6 +16,7 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -54,8 +55,8 @@ import org.eclipse.ui.PlatformUI;
  * @author Alexander Lex
  */
 public class InfoArea
-	implements ISelectionUpdateHandler, IContentVAUpdateHandler, ISelectionCommandHandler,
-	IViewCommandHandler {
+	implements IDataDomainBasedView<ISetBasedDataDomain>, ISelectionUpdateHandler, IContentVAUpdateHandler,
+	ISelectionCommandHandler, IViewCommandHandler {
 
 	IGeneralManager generalManager = null;
 	IEventPublisher eventPublisher = null;
@@ -89,8 +90,7 @@ public class InfoArea
 	/**
 	 * Constructor.
 	 */
-	public InfoArea(ISetBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
+	public InfoArea() {
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 
@@ -555,6 +555,16 @@ public class InfoArea
 	@Override
 	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public ISetBasedDataDomain getDataDomain() {
+		return dataDomain;
+	}
+
+	@Override
+	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
 	}
 
 }

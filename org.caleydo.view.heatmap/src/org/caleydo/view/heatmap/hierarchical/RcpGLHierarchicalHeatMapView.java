@@ -21,15 +21,15 @@ public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		if (dataDomain != null && dataDomain instanceof GeneticDataDomain
-				&& ((GeneticDataDomain) dataDomain).isPathwayViewerMode()) {
-			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
-			alert.setMessage("Cannot create heat map in pathway viewer mode!");
-			alert.open();
-
-			dispose();
-			return;
-		}
+		// if (dataDomain != null && dataDomain instanceof GeneticDataDomain
+		// && ((GeneticDataDomain) dataDomain).isPathwayViewerMode()) {
+		// MessageBox alert = new MessageBox(new Shell(), SWT.OK);
+		// alert.setMessage("Cannot create heat map in pathway viewer mode!");
+		// alert.open();
+		//
+		// dispose();
+		// return;
+		// }
 
 		createGLCanvas();
 		createGLView(initSerializedView, glCanvas.getID());
@@ -37,11 +37,11 @@ public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		
-		super.createDefaultSerializedView();
-		
+
+		determineDataDomainType();
+
 		SerializedHierarchicalHeatMapView serializedView = new SerializedHierarchicalHeatMapView(
-				dataDomain.getDataDomainType());
+				dataDomainType);
 		return serializedView;
 	}
 

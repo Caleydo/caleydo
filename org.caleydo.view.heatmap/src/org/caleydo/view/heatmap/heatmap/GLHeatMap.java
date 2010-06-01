@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
@@ -950,4 +951,6 @@ public class GLHeatMap extends AStorageBasedView {
 		}
 		return zoomedElements;
 	}
+
+
 }
