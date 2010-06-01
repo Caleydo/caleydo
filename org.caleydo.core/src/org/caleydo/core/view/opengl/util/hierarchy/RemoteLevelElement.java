@@ -25,6 +25,7 @@ public class RemoteLevelElement
 	 * {@link #dataDomainBasedView}
 	 */
 	private AGLView glView = null;
+	
 	/** this is the same as {@link #glView}, only the type is different */
 	private IDataDomainBasedView<?> dataDomainBasedView = null;
 
@@ -48,8 +49,7 @@ public class RemoteLevelElement
 	 * @param glView
 	 */
 	public void setGLView(AGLView glView) {
-		if (glView == null)
-			return;
+
 		if (glView instanceof IDataDomainBasedView<?>)
 			this.dataDomainBasedView = (IDataDomainBasedView<?>) glView;
 		this.glView = glView;

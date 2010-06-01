@@ -23,7 +23,6 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
@@ -86,7 +85,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private ArrayList<RemoteLevelElement> stackElementsLeft;
 	private ArrayList<RemoteLevelElement> stackElementsRight;
 	private HashMap<String, HashMap<String, RemoteLevelElement>> viewSpawnPos;
-	// private RemoteLevelElement viewSpawnElement;
 
 	protected AGLConnectionLineRenderer glConnectionLineRenderer;
 
@@ -183,14 +181,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			stackElementsRight.add(newElement);
 			RemoteElementManager.get().registerItem(newElement);
 		}
-
-		// transform = new Transform();
-		// transform.setTranslation(new Vec3f(0, -0.5f, 4));
-		// transform.setScale(new Vec3f(0.1f, 0.1f, 0.1f));
-		// viewSpawnElement = new RemoteLevelElement(null);
-		// viewSpawnElement.setTransform(transform);
-		// RemoteElementManager.get().registerItem(viewSpawnElement);
-
+		
 		glConnectionLineRenderer = new GLConnectionLineRendererDataFlipper(focusElement,
 				stackElementsLeft, stackElementsRight);
 
@@ -361,7 +352,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		boolean renderBorder = false;
 		if (lastPickedRemoteLevelElement != null)
-
 			renderBorder = (element.getGLView() == lastPickedRemoteLevelElement
 					.getGLView()) ? true : false;
 		else
@@ -510,10 +500,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof IDataDomainBasedView<?>) {
-			((IDataDomainBasedView<IDataDomain>) glView)
-					.setDataDomain(DataDomainManager.getInstance().getDataDomain(serView.getDataDomainType()));
+			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
+					.getInstance().getDataDomain(serView.getDataDomainType()));
 		}
-		
+
 		return glView;
 	}
 
@@ -574,8 +564,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 				updateViewDetailLevels(tmpSlerpAction.getDestinationRemoteLevelElement());
 
-				AGLView glView = generalManager.getViewGLCanvasManager().getGLView(
-						tmpSlerpAction.getElementId());
+				// AGLView glView =
+				// generalManager.getViewGLCanvasManager().getGLView(
+				// tmpSlerpAction.getElementId());
 
 				// if (glView instanceof GLTissueViewBrowser)
 				// ((GLTissueViewBrowser) glView).setSlerpActive(false);
