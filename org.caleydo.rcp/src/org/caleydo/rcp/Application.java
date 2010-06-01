@@ -396,6 +396,9 @@ public class Application
 				"org.caleydo.datadomain.genetic"));
 			startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.bucket",
 				"org.caleydo.datadomain.genetic"));
+			startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.histogram",
+				"org.caleydo.datadomain.genetic"));
+
 		}
 		else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA || applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
 			&& (xmlInputFile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE) || xmlInputFile.equals(""))) {

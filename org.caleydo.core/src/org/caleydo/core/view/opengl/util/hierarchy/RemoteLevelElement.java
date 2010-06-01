@@ -39,26 +39,25 @@ public class RemoteLevelElement
 		return glView;
 	}
 
-	public IDataDomainBasedView<?> getDataDomainBasedView() {
-		return dataDomainBasedView;
-	}
-
 	/**
-	 * glView, if not null (which is legal), has to be an instance of AGLView as well as of
+	 * glView, if not null (which is legal),can be an instance of AGLView as well as of
 	 * {@link IDataDomainBasedView}. While the AGLView is checked at compile time, the IDataDomainBasedView is
-	 * checked at run-time, and an {@link IllegalArgumentException} is thrown if the view is no
-	 * IDataDomainBasedView
+	 * checked at run-time, and only if the view is of the type IDataDomainBasedView it is stored and
+	 * accessible as such
 	 * 
 	 * @param glView
 	 */
 	public void setGLView(AGLView glView) {
 		if (glView == null)
 			return;
-		if (!(glView instanceof IDataDomainBasedView<?>))
-			throw new IllegalArgumentException(glView
-				+ " is not of the type IDataDomainBasedView which is required for remote level elements.");
+		if (glView instanceof IDataDomainBasedView<?>)
+			this.dataDomainBasedView = (IDataDomainBasedView<?>) glView;
 		this.glView = glView;
-		this.dataDomainBasedView = (IDataDomainBasedView<?>) glView;
+
+	}
+
+	public IDataDomainBasedView<?> getDataDomainBasedView() {
+		return dataDomainBasedView;
 	}
 
 	public RemoteLevel getRemoteLevel() {
