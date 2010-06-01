@@ -147,11 +147,11 @@ public class Application
 			internetConfigurationWizard.open();
 		}
 
-		if (triggerEarlyPathwayLoading) {
-			// CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
-			// cmd.setAttributes("org.caleydo.datadomain.pathway");
-			// cmd.doCommand();
-		}
+//		if (triggerEarlyPathwayLoading) {
+//			 CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
+//			 cmd.setAttributes("org.caleydo.datadomain.pathway");
+//			 cmd.doCommand();
+//		}
 
 		// If no file is provided as command line argument a wizard page is opened to determine the xml file
 		if (xmlInputFile.equals("")) {

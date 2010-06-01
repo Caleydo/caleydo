@@ -13,6 +13,7 @@ import java.util.List;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
@@ -129,6 +130,13 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		viewSlerpStartPoint = new float[2];
 		viewSlerpTargetPoint = new float[2];
 		simpleSlerpActions = new ArrayList<SimpleSlerp>();
+
+		// FIXME: maybe we have to find a better place for trigger pathway
+		// loading
+		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(
+				ECommandType.CREATE_DATA_DOMAIN);
+		cmd.setAttributes("org.caleydo.datadomain.pathway");
+		cmd.doCommand();
 	}
 
 	@Override

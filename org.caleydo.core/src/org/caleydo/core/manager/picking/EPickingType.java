@@ -19,6 +19,7 @@ public enum EPickingType {
 	BUCKET_DRAG_ICON_SELECTION,
 	// BUCKET_SEARCH_PATHWAY,
 	VIEW_SELECTION,
+	VIEW_TYPE_SELECTION,
 	/** A remote level element is the place-holder for a view, basically the wall behind a view */
 	REMOTE_LEVEL_ELEMENT,
 	MEMO_PAD_SELECTION,

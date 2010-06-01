@@ -376,10 +376,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	@Override
 	public String toString() {
-		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote()
-				+ ", contentSize: " + contentVA.size() + ", storageSize: "
-				+ storageVA.size() + ", contentVAType: " + contentVAType
-				+ ", remoteRenderer:" + getRemoteRenderingGLCanvas();
+		return "TODO: Hyperbolic Info";
 	}
 
 	@Override

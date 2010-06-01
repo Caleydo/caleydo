@@ -146,7 +146,6 @@ public class CmdCreateView
 	 */
 	public void setAttributesFromSerializedForm(ASerializedView serView) {
 		setViewFrustum(serView.getViewFrustum());
-//		dataDomainType = serView.getDataDomainType();
 	}
 
 	public void setParentCanvasID(int parentCanvasID) {
