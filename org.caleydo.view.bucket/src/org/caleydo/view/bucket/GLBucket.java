@@ -26,6 +26,7 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
@@ -229,8 +230,8 @@ public class GLBucket extends AGLView implements
 			final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode) {
 
 		super(glCanvas, sLabel, viewFrustum, true);
-
 		viewType = GLBucket.VIEW_ID;
+		registerDataDomains();
 
 		this.layoutMode = layoutMode;
 
@@ -295,6 +296,15 @@ public class GLBucket extends AGLView implements
 
 		iPoolLevelCommonID = generalManager.getIDManager().createID(
 				EManagedObjectType.REMOTE_LEVEL_ELEMENT);
+	}
+
+	@Override
+	public void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+
+		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(
+				dataDomainTypes, viewType);
 	}
 
 	@Override

@@ -261,6 +261,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		super(glCanvas, sLabel, viewFrustum);
 		viewType = GLHierarchicalHeatMap.VIEW_ID;
+		registerDataDomains();
 
 		ArrayList<SelectionType> alSelectionTypes = new ArrayList<SelectionType>();
 		alSelectionTypes.add(SelectionType.NORMAL);

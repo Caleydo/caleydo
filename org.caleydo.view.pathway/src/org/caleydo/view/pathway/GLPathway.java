@@ -30,6 +30,7 @@ import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -167,6 +168,16 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 
 		// textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 24),
 		// false);
+
+	}
+
+	@Override
+	public void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.pathway");
+
+		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(
+				dataDomainTypes, viewType);
 	}
 
 	public void setPathway(final PathwayGraph pathway) {

@@ -20,8 +20,9 @@ public abstract class AView
 	extends AUniqueObject
 	implements IView {
 
+	/** The plugin name of the view */
 	public String viewType;
-	
+
 	public static EIconTextures icon = EIconTextures.NO_ICON_AVAILABLE;
 
 	protected GeneralManager generalManager;

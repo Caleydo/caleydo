@@ -24,6 +24,7 @@ import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
@@ -129,12 +130,23 @@ public abstract class AStorageBasedView
 	protected AStorageBasedView(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, true);
 
+	
 		connectedElementRepresentationManager =
 			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
 		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 		// registerEventListeners();
 
+	}
+
+	@Override
+	public void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.generic");
+		dataDomainTypes.add("org.caleydo.datadomain.clinical");
+
+		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 	@Override
@@ -172,7 +184,7 @@ public abstract class AStorageBasedView
 	public void initData() {
 
 		set = dataDomain.getSet();
-		
+
 		super.initData();
 
 		bRenderOnlyContext =
@@ -697,10 +709,11 @@ public abstract class AStorageBasedView
 		this.set = set;
 		initData();
 	}
+
 	@Override
 	public ISet getSet() {
 		// TODO Auto-generated method stub
-	return set;
+		return set;
 	}
 
 }

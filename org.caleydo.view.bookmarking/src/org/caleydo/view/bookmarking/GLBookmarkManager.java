@@ -13,6 +13,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.data.RemoveBookmarkEvent;
@@ -113,6 +114,7 @@ public class GLBookmarkManager extends AGLView implements
 
 		super(glCanvas, label, viewFrustum, false);
 		viewType = GLBookmarkManager.VIEW_ID;
+		registerDataDomains();
 
 		renderStyle = new BookmarkRenderStyle(viewFrustum);
 
@@ -133,6 +135,15 @@ public class GLBookmarkManager extends AGLView implements
 		hashCategoryToBookmarkContainer.put(EIDCategory.EXPERIMENT, experimentContainer);
 		bookmarkContainers.add(experimentContainer);
 
+	}
+
+	@Override
+	public void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+
+		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(
+				dataDomainTypes, viewType);
 	}
 
 	@Override

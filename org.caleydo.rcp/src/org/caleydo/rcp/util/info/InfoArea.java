@@ -1,5 +1,6 @@
 package org.caleydo.rcp.util.info;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.ISet;
@@ -16,6 +17,7 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -58,6 +60,8 @@ public class InfoArea
 	implements IDataDomainBasedView<ISetBasedDataDomain>, ISelectionUpdateHandler, IContentVAUpdateHandler,
 	ISelectionCommandHandler, IViewCommandHandler {
 
+	private static String viewType = "org.caleydo.view.infoarea";
+
 	IGeneralManager generalManager = null;
 	IEventPublisher eventPublisher = null;
 
@@ -91,6 +95,8 @@ public class InfoArea
 	 * Constructor.
 	 */
 	public InfoArea() {
+
+		registerDataDomains();
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 
@@ -98,6 +104,16 @@ public class InfoArea
 		idMappingManager = generalManager.getIDMappingManager();
 
 		registerEventListeners();
+	}
+
+	@Override
+	public void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.generic");
+		dataDomainTypes.add("org.caleydo.datadomain.clinical");
+
+		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 	public Control createControl(final Composite parent) {

@@ -117,8 +117,24 @@ public abstract class ARcpGLViewPart
 		createPartControlGL();
 
 		if (glView instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain =
-				DataDomainManager.getInstance().getDataDomain(serializedView.getDataDomainType());
+			String dataDomainType = serializedView.getDataDomainType();
+			IDataDomain dataDomain = null;
+			if (dataDomainType == null) {
+				ArrayList<IDataDomain> availableDomains =
+					DataDomainManager.getInstance().getListOfAvailableDataDomainTypesForViewTypes(viewType);
+				if (availableDomains.size() == 0)
+					throw new IllegalStateException("No datadomain for this view loaded");
+				else if (availableDomains.size() > 1)
+					throw new IllegalStateException(
+						"Not able to choose which data domain to use - not yet implemented");
+				else
+					dataDomain = availableDomains.get(0);
+
+			}
+			else {
+				dataDomain =
+					DataDomainManager.getInstance().getDataDomain(serializedView.getDataDomainType());
+			}
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(dataDomain);
 		}
 		// glView.setViewID(getViewGUIID());

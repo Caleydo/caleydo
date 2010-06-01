@@ -235,6 +235,7 @@ public class GLScatterPlot extends AStorageBasedView {
 
 		super(glCanvas, sLabel, viewFrustum);
 		viewType = GLScatterPlot.VIEW_ID;
+		registerDataDomains();
 
 		// ArrayList<SelectionType> alSelectionTypes = new
 		// ArrayList<SelectionType>();

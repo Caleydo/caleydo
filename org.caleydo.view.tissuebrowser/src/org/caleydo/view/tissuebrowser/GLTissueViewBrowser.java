@@ -16,6 +16,7 @@ import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -59,20 +60,30 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		super(glCanvas, sLabel, viewFrustum);
 
 		viewType = VIEW_ID;
+		registerDataDomains();
 		mapExperimentToTexturePath = new HashMap<Integer, String>();
+	}
+
+	@Override
+	public void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.tissue");
+
+		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(
+				dataDomainTypes, viewType);
 	}
 
 	@Override
 	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-//		contentVA = dataDomain.getSet().getContentVA(ContentVAType.CONTENT);
+		// contentVA = dataDomain.getSet().getContentVA(ContentVAType.CONTENT);
 		experiementSelectionManager = new ContentSelectionManager(primaryIDType);
 		experiementSelectionManager.setVA(contentVA);
 
 		addInitialViews();
 
 	}
-	
+
 	@Override
 	public IDataDomain getDataDomain() {
 		return dataDomain;
@@ -359,7 +370,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
 		// if (idCategory != EIDCategory.EXPERIMENT)
 		// return;
-		//s
+		// s
 		// IDataDomain clinicalUseCase = GeneralManager.get().getUseCase(
 		// EDataDomain.CLINICAL_DATA);
 		//
@@ -374,6 +385,5 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		// initData();
 		// updateViews();
 	}
-
 
 }

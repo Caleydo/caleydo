@@ -32,6 +32,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.glyph.GlyphChangePersonalNameEvent;
@@ -149,6 +150,7 @@ public class GLGlyph
 	public GLGlyph(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, true);
 		viewType = VIEW_ID;
+		registerDataDomains();
 
 		alSelectionBrushCornerPoints = new ArrayList<Vec2i>();
 		mouseListener_ = new GlyphMouseListener(this);
@@ -157,6 +159,15 @@ public class GLGlyph
 
 		gman = generalManager.getGlyphManager();
 	}
+	
+	@Override
+	public void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.clinical");
+
+		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
+	}
+
 
 	/**
 	 * Sets the used positioning model

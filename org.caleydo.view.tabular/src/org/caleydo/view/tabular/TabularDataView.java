@@ -26,6 +26,7 @@ import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.ReplaceVAEvent;
@@ -143,12 +144,25 @@ public class TabularDataView extends ASWTView implements
 				EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 
 		this.viewType = VIEW_ID;
+		registerDataDomains();
+
 
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 		storageSelectionManager = dataDomain.getStorageSelectionManager();
 
 		idMappingManager = generalManager.getIDMappingManager();
 	}
+	
+	@Override
+	public void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.generic");
+		dataDomainTypes.add("org.caleydo.datadomain.clinical");
+
+		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
+	}
+	
 
 	@Override
 	public void initViewSWTComposite(Composite parentComposite) {

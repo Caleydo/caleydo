@@ -13,6 +13,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
@@ -86,6 +87,7 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 		super(glCanvas, sLabel, viewFrustum, true);
 
 		viewType = VIEW_ID;
+		registerDataDomains();
 
 		colorMappingManager = ColorMappingManager.get();
 		colorMapping = colorMappingManager
@@ -94,6 +96,16 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
 		// registerEventListeners();
+	}
+
+	@Override
+	public void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.generic");
+
+		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(
+				dataDomainTypes, viewType);
 	}
 
 	@Override

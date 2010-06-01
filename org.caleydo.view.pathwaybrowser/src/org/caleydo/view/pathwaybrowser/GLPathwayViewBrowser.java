@@ -3,12 +3,13 @@ package org.caleydo.view.pathwaybrowser;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.serialize.ASerializedView;
@@ -36,18 +37,30 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 		super(glCanvas, sLabel, viewFrustum);
 
 		viewType = VIEW_ID;
+		registerDataDomains();
+	}
+
+	@Override
+	public void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+
+		dataDomainTypes.add("org.caleydo.datadomain.pathway");
+
+		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(
+				dataDomainTypes, viewType);
 	}
 
 	@Override
 	protected void addInitialViews() {
 
-//		for (int pathwayIndex = 0; pathwayIndex < 5; pathwayIndex++) {
-//			SerializedPathwayView pathway = new SerializedPathwayView();
-//			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager()
-//					.getAllItems().toArray()[pathwayIndex]).getID());
-//			pathway.setDataDomain(EDataDomain.PATHWAY_DATA);
-//			newViews.add(pathway);
-//		}
+		// for (int pathwayIndex = 0; pathwayIndex < 5; pathwayIndex++) {
+		// SerializedPathwayView pathway = new SerializedPathwayView();
+		// pathway.setPathwayID(((PathwayGraph)
+		// GeneralManager.get().getPathwayManager()
+		// .getAllItems().toArray()[pathwayIndex]).getID());
+		// pathway.setDataDomain(EDataDomain.PATHWAY_DATA);
+		// newViews.add(pathway);
+		// }
 	}
 
 	@Override
@@ -183,8 +196,8 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 	public void addPathwayView(int iPathwayID) {
 		if (!generalManager.getPathwayManager().isPathwayVisible(
 				generalManager.getPathwayManager().getItem(iPathwayID))) {
-			SerializedPathwayView serPathway = new SerializedPathwayView(
-					dataDomain.getDataDomainType());
+			SerializedPathwayView serPathway = new SerializedPathwayView(dataDomain
+					.getDataDomainType());
 			serPathway.setPathwayID(iPathwayID);
 			newViews.add(serPathway);
 		}
