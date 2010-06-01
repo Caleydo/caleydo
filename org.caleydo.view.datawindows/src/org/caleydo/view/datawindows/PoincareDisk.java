@@ -320,7 +320,7 @@ public class PoincareDisk {
 
 	}
 
-	// this method converts a real distance into a distance on the disk
+	// converts a real distance into a distance on the disk
 	public float getMetric(float[] position, float length) {
 
 		ComplexNumber targetPoint = new ComplexNumber(0, 0);
@@ -339,7 +339,7 @@ public class PoincareDisk {
 		return distancePoints(position, returnValue);
 	}
 
-	// this method is used to select a node without a picking manager
+	// can used to select a node without a picking manager
 	// argument area specifies the distance from a node which will be tolerated
 	public PoincareNode findNodeByCoordinate(float[] coordinate, float area) {
 
@@ -401,12 +401,14 @@ public class PoincareDisk {
 		return (currentDistance / 100) * (100 - intend) * 1.5f;
 	}
 
+	// start the recursive disk rotation algrithm
 	public void rotateDisk(float angle) {
 		PoincareNode root = tree.getRoot();
 		rotateNode(root, angle);
 	}
 
-	// rotates a node by a given angle around the origin
+	// rotates a node by a given angle around the origin, and recursively calls
+	// it self for the children of the node
 	public void rotateNode(PoincareNode parentNode, float angle) {
 
 		float[] oldPosition = new float[2];
@@ -434,6 +436,9 @@ public class PoincareDisk {
 		}
 	}
 
+	// the goal of this method is to calculate an angle, which rotates the disk
+	// so that the root node is on the left side of the next centered node
+	// this method can be called before and after a node translation
 	public float calculateCorrectDiskRotation(PoincareNode currentNode) {
 
 		if (currentNode != null) {
@@ -443,6 +448,7 @@ public class PoincareDisk {
 				float[] parentPosition;
 				parentPosition = currentNode.getParent().getPosition().clone();
 
+				// the vector from the next current node to the origin
 				float[] relativePosition = new float[2];
 				relativePosition[0] = -currentPosition[0];
 				relativePosition[1] = -currentPosition[1];
@@ -450,17 +456,18 @@ public class PoincareDisk {
 				currentPosition[0] = 0;
 				currentPosition[1] = 0;
 
+				// performing a moebiustransformation to get the correct
+				// position of the next root node
 				ComplexNumber moebiusTransformation = new ComplexNumber();
 				ComplexNumber complexParentPosition = new ComplexNumber();
-
 				moebiusTransformation.setValue((double) relativePosition[0],
 						(double) relativePosition[1]);
 				complexParentPosition.setValue((double) parentPosition[0],
 						(double) parentPosition[1]);
-
 				complexParentPosition = this.moebiusTransformation(
 						complexParentPosition, moebiusTransformation);
-
+				
+				//calculating the new vector from the current node to its root
 				relativePosition[0] = (float) complexParentPosition
 						.getRealPart();
 				relativePosition[1] = (float) complexParentPosition
@@ -476,8 +483,6 @@ public class PoincareDisk {
 				}
 
 			} else {
-				// Todo: calculate Root
-				System.out.println("vorsicht root");
 				float[] currentPosition = new float[2];
 				currentPosition = currentNode.getPosition().clone();
 				float[] childPosition;

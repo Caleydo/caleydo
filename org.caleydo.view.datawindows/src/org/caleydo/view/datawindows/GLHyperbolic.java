@@ -502,40 +502,48 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		// slerping the rotation
 		if (simpleSlerpActions.isEmpty() == false) {
-
 			SimpleSlerp simpleSlerp = simpleSlerpActions.get(0);
 			if (simpleSlerp.doASlerp() == true) {
-				double relativeSimpleSlerpState = simpleSlerp.state - previousSimpleSlerp;
+
+				// calculating the differential slerp angle
+				double relativeSimpleSlerpState = simpleSlerp.state
+						- previousSimpleSlerp;
+
+				// rotating the disk with the differential slerp angle
 				disk.rotateDisk(simpleSlerp.state - this.previousSimpleSlerp);
 				this.previousSimpleSlerp = simpleSlerp.state;
 			} else {
 				disk.rotateDisk(simpleSlerp.state - this.previousSimpleSlerp);
 				simpleSlerpActions.clear();
-
 			}
 		}
 
 	}
 
-	public void drawRemoteView(GL gl, PoincareNode node, float[] position, float size) {
+
+	// displays a node using a remote view
+	public void drawRemoteView(GL gl, PoincareNode node, float[] position,
+			float size) {
+
 
 		Transform transform = new Transform();
-		transform.setScale(new Vec3f(size, size * fAspectRatio, 1));
-
-		transform.setTranslation(new Vec3f(position[0], position[1], 0));
 
 		remoteNodeElement.setGLView(((ViewHyperbolicNode) node).getGlView());
 
-		if (this.displayFullView == true && (this.disk.getCenteredNode() == node)) {
-			System.out.println("Breite Node Viewfrustum:"
-					+ remoteNodeElement.getGLView().getViewFrustum().getWidth());
 
-			System.out.println("Breite Hyperbolic Viewfrustum:"
-					+ this.viewFrustum.getWidth());
+		// if a node is totally zoomed in, the remote view of the node is
+		// displayed on the full hyperbolic view
+		if (this.displayFullView == true
+				&& (this.disk.getCenteredNode() == node)) {
 
 			transform.setScale(new Vec3f(1, 1, 1));
 			transform.setTranslation(new Vec3f(viewFrustum.getWidth() / 2, viewFrustum
 					.getHeight() / 2, 0));
+		} else {
+			// in this case, the size of the displayed remote view depends on
+			// the position of the node
+			transform.setScale(new Vec3f(size, size * fAspectRatio, 1));
+			transform.setTranslation(new Vec3f(position[0], position[1], 0));
 		}
 
 		remoteNodeElement.setTransform(transform);
@@ -545,6 +553,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	private void createPathwayTree(GL gl) {
 
+		// creating a sample tree for testing
 		tree = new Tree<PoincareNode>();
 
 		GLPathway glPathwayView = createPathwayView(gl);
@@ -559,130 +568,15 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		tree.addChild(tree.getRoot(), node);
 
 		for (int i = 0; i < 5; i++) {
-
 			node = new ViewHyperbolicNode(tree, "child_pathway", i + 1,
 					createPathwayView(gl));
 			tree.addChild(tree.getRoot(), node);
-
 			for (int j = 0; j < 5; j++) {
-
 				ViewHyperbolicNode childNode = new ViewHyperbolicNode(tree,
 						"child_pathway", i + j + 2, createPathwayView(gl));
 				tree.addChild(node, childNode);
 			}
 		}
-
-		// tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
-		// tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
-		// tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
-		// tree.addChild(node, new PoincareNode(tree, "Child2 l1", 3));
-		// tree.addChild(node, new PoincareNode(tree, "Child1 l1", 3));
-
-		// int iCount = 3344;
-		// for (PoincareNode tempNode : tree.getChildren(node)) {
-		//
-		// PoincareNode tempNode22 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode, tempNode22);
-		//
-		// tree.addChild(tempNode22, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode22, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		//
-		// PoincareNode tempNode433 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode22, tempNode433);
-		// tree.addChild(tempNode433, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode433, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		//
-		// PoincareNode tempNode33 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode22, tempNode33);
-		// tree.addChild(tempNode33, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode33, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		//
-		// tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-		// iCount--));
-		// tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
-		// iCount--));
-		// tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-		// iCount--));
-		// tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
-		// iCount--));
-		// tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-		// iCount--));
-		// tree.addChild(tempNode, new PoincareNode(tree, "Child4 l1",
-		// iCount--));
-		// tree.addChild(tempNode, new PoincareNode(tree, "Child3 l1",
-		// iCount--));
-		//
-		// PoincareNode tempNode2 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode, tempNode2);
-		//
-		// tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode2, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// PoincareNode tempNode3 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode2, tempNode3);
-		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode3, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// PoincareNode tempNode34 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode3, tempNode34);
-		// tree.addChild(tempNode34, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode34, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// PoincareNode tempNode344 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode34, tempNode344);
-		// tree.addChild(tempNode344, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode344, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// PoincareNode tempNode3444 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode344, tempNode3444);
-		// tree.addChild(tempNode3444, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode3444, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// PoincareNode tempNode34444 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode3444, tempNode34444);
-		// tree.addChild(tempNode34444, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode34444, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// PoincareNode tempNode344444 = new PoincareNode(tree, "Child6 l1",
-		// iCount--);
-		// tree.addChild(tempNode34444, tempNode344444);
-		// tree.addChild(tempNode344444, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// tree.addChild(tempNode344444, new PoincareNode(tree, "Child7 l1",
-		// iCount--));
-		// }
-
 	}
 
 	@Deprecated
@@ -699,13 +593,12 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		return (GLPathway) createView(gl, serPathway);
 	}
 
-	// called, if the user focuses a point on the display
-
+	// called, if the user focuses a point on the display with his eyes
 	public void setEyeTrackerAction(float[] mousePoint, float[] offset, float[] scalation) {
 		// if (this.get != null) {
 		float[] mouseCoord = new float[2];
 
-		// normation of the mouseposition
+		// standardization of the mouseposition
 		float factorX = 1 / (float) (this.getParentGLCanvas().getWidth() * scalation[0]);
 		float factorY = 1 / (float) (this.getParentGLCanvas().getHeight());
 

@@ -17,8 +17,11 @@ public class NodeSlerp {
 	private Time time;
 	private float dLength = 0;
 	private DataWindowsDisk dummyDisk;
-	float precision = 0.01f;
-	int numberOfIterations = 1000;
+	private float precision = 0.01f;
+	private int numberOfIterations = 1000;
+	private float[] tempVector;
+	private float oldDistanceToTarget;
+	private float[] calcuatedPosition;
 
 	public NodeSlerp(float speed, float[] startPoint, float[] targetPoint) {
 		this.startPoint = startPoint;
@@ -44,46 +47,42 @@ public class NodeSlerp {
 		dummyDisk = new DataWindowsDisk(null);
 		Tree<PoincareNode> dummyTree = new Tree<PoincareNode>();
 		new PoincareNode(dummyTree, "dummyNode", 1);
+		tempVector = new float[2];
+		calcuatedPosition = new float[2];
 	}
 
 	public boolean doASlerp(float[] position) {
 
 		actualPoint = position.clone();
-
-		// do an accelerated movement, because of a lack of precision caused
-		// by the moebius transformation
-		// acceleration = -1 * ((normedStatus - 1) * (normedStatus - 1)) + 1;
-		slerpFactor = speed * (float) time.deltaT();// * acceleration;
-
-		float[] tempVector = new float[2];
-
-		tempVector[0] = actualPoint[0] - startPoint[0];
-		tempVector[1] = actualPoint[1] - startPoint[1];
+		slerpFactor = speed * (float) time.deltaT();
 
 		// the distance to the target:
 		tempVector[0] = targetPoint[0] - actualPoint[0];
 		tempVector[1] = targetPoint[1] - actualPoint[1];
+
 		distanceToTarget = (float) Math.sqrt(tempVector[0] * tempVector[0]
 				+ tempVector[1] * tempVector[1]);
 
+		// if another slerp is longer than the distance to the target, the
+		// lenght of the current slerp will be approximated
 		if (distanceToTarget <= slerpFactor) {
 			slerpFactor = 0;
 			if ((targetPoint[0] == 0) && (targetPoint[1] == 0)) {
-				returnPoint[0] = (position[0]) * -1;
-				returnPoint[1] = (position[1]) * -1;
+				returnPoint[0] = position[0] * -1;
+				returnPoint[1] = position[1] * -1;
 				return false;
 			}
 
-			float oldDistanceToTarget = distanceToTarget;
-			float[] calcuatedPosition = new float[2];
-			// the last slerp action should match the target exactly
+			oldDistanceToTarget = distanceToTarget;
 
+			// the last slerp action should match the target exactly
 			tempVector[0] = targetPoint[0] - actualPoint[0];
 			tempVector[1] = targetPoint[1] - actualPoint[1];
-			
+
 			oldDistanceToTarget = (float) Math.sqrt(tempVector[0]
 					* tempVector[0] + tempVector[1] * tempVector[1]);
 
+			// approximating the correct slerp vector
 			for (int i = 0; i < numberOfIterations; i++) {
 				actualPoint = position.clone();
 
@@ -93,11 +92,11 @@ public class NodeSlerp {
 				distanceToTarget = (float) Math.sqrt(tempVector[0]
 						* tempVector[0] + tempVector[1] * tempVector[1]);
 
-				// decide, if the last transformation was to much:
-
+				// decide, if the approximation is precise enough
 				if (distanceToTarget < precision) {
 					break;
 				}
+				// decide, if the failure of the approximation starts growing
 				if ((distanceToTarget > oldDistanceToTarget) && (i > 1)) {
 					break;
 				}
@@ -134,6 +133,7 @@ public class NodeSlerp {
 		directionVector[0] = tempVector[0] / dLength;
 		directionVector[1] = tempVector[1] / dLength;
 
+		//calculating the differential slerp vector
 		returnPoint[0] = directionVector[0] * slerpFactor;
 		returnPoint[1] = directionVector[1] * slerpFactor;
 		time.update();
