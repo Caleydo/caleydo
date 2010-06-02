@@ -13,12 +13,25 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
+/**
+ * <p>
+ * Singleton that manages dataDomains based on their dataDomainType (the string plug-in id) and the concrete
+ * object.
+ * </p>
+ * <p>
+ * Also holds associations between dataDomains and views that can use the datadomain.
+ * </p>
+ * 
+ * @author Alexander Lex
+ */
 public class DataDomainManager {
 
 	private static DataDomainManager dataDomainManager;
 	private HashMap<String, IDataDomain> registeredDataDomains;
 
+	/** maps a dataDomain to multiple views */
 	private MultiHashMap<String, String> dataDomainViewAssociations;
+	/** maps a view to multiple datadomains */
 	private MultiHashMap<String, String> viewDataDomainAssociations;
 
 	private DataDomainManager() {
@@ -34,8 +47,15 @@ public class DataDomainManager {
 		return dataDomainManager;
 	}
 
+	/**
+	 * Create a new dataDomain
+	 * 
+	 * @param dataDomainType
+	 *            the plug-in id of the datadomain
+	 * @return
+	 */
 	public IDataDomain createDataDomain(String dataDomainType) {
-		
+
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 
 		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.datadomain.DataDomain");
@@ -52,10 +72,22 @@ public class DataDomainManager {
 		}
 	}
 
+	/**
+	 * Returns all dataDomains
+	 * 
+	 * @return
+	 */
 	public Collection<IDataDomain> getDataDomains() {
 		return registeredDataDomains.values();
 	}
 
+	/**
+	 * Get the concrete dataDomain object for the dataDomainType. Returns null if no dataDomain is mapped to
+	 * the type.
+	 * 
+	 * @param dataDomainType
+	 * @return
+	 */
 	public IDataDomain getDataDomain(String dataDomainType) {
 
 		return registeredDataDomains.get(dataDomainType);
@@ -122,7 +154,23 @@ public class DataDomainManager {
 		return viewDataDomainAssociations.getAll(viewType);
 	}
 
-	public ArrayList<IDataDomain> getListOfAvailableDataDomainTypesForViewTypes(String viewType) {
+	/**
+	 * Get all viewTypes that can handle the datadomain of the specified type
+	 * 
+	 * @param dataDomainType
+	 * @return
+	 */
+	public Set<String> getViewTypesForDataDomain(String dataDomainType) {
+		return dataDomainViewAssociations.getAll(dataDomainType);
+	}
+
+	/**
+	 * Get all loaded concrete dataDomains that can be used by the view specified
+	 * 
+	 * @param viewType
+	 * @return
+	 */
+	public ArrayList<IDataDomain> getAvailableDataDomainTypesForViewTypes(String viewType) {
 		Set<String> dataDomainTypes = getDataDomainTypesForViewTypes(viewType);
 		ArrayList<IDataDomain> availabelDataDomainTypes = new ArrayList<IDataDomain>();
 
@@ -132,7 +180,6 @@ public class DataDomainManager {
 				availabelDataDomainTypes.add(dataDomain);
 		}
 		return availabelDataDomainTypes;
-
 	}
 
 }

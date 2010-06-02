@@ -27,13 +27,6 @@ public interface IDataDomain {
 	public EIconTextures getIcon();
 	
 	/**
-	 * Returns a list of views that can visualize the data in the domain
-	 * 
-	 * @return
-	 */
-	public ArrayList<String> getPossibleViews();
-
-	/**
 	 * Gets the parameters for loading the data-{@link Set} contained in this use case
 	 * 
 	 * @return parameters for loading the data-{@link Set} of this use case

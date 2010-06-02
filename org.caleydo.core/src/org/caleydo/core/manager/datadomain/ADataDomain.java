@@ -42,9 +42,6 @@ public abstract class ADataDomain
 	/** bootstrap filename this application was started with */
 	protected String bootsTrapFileName;
 
-	/** Every use case needs to state all views that can visualize its data */
-	protected ArrayList<String> possibleViews;
-
 	/**
 	 * Every use case needs to state all ID Categories it can handle. The string must specify which primary
 	 * VAType ({@link VAType#getPrimaryVAType()} is associated for the ID Category
@@ -64,11 +61,6 @@ public abstract class ADataDomain
 	public EIconTextures getIcon() {
 		return icon;
 	};
-
-	@Override
-	public ArrayList<String> getPossibleViews() {
-		return possibleViews;
-	}
 
 	public String getContentLabelSingular() {
 		return contentLabelSingular;

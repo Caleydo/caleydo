@@ -21,8 +21,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  */
 @XmlType
 @XmlRootElement
-public class ClinicalDataDomain
-	extends ASetBasedDataDomain {
+public class ClinicalDataDomain extends ASetBasedDataDomain {
 
 	/**
 	 * Constructor.
@@ -32,13 +31,9 @@ public class ClinicalDataDomain
 		dataDomainType = "org.caleydo.datadomain.clinical";
 		icon = EIconTextures.DATA_DOMAIN_CLINICAL;
 
-		possibleViews = new ArrayList<String>();
-		possibleViews.add("org.caleydo.view.glyph");
-		possibleViews.add("org.caleydo.view.parcoords");
-
 		possibleIDCategories = new HashMap<EIDCategory, String>();
 		possibleIDCategories.put(EIDCategory.EXPERIMENT, null);
-		
+
 		contentIDType = EIDType.EXPERIMENT_RECORD;
 		storageIDType = EIDType.EXPERIMENT_INDEX;
 	}

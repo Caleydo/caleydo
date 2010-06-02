@@ -54,10 +54,6 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		contentLabelSingular = "gene";
 		contentLabelPlural = "genes";
 
-		possibleViews = new ArrayList<String>();
-		possibleViews.add("org.caleydo.view.parcoords");
-		possibleViews.add("org.caleydo.view.heatmap.hierarchical");
-
 		possibleIDCategories = new HashMap<EIDCategory, String>();
 		possibleIDCategories.put(EIDCategory.GENE, null);
 		possibleIDCategories.put(EIDCategory.EXPERIMENT, null);

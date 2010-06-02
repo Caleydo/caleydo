@@ -181,7 +181,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			stackElementsRight.add(newElement);
 			RemoteElementManager.get().registerItem(newElement);
 		}
-		
+
 		glConnectionLineRenderer = new GLConnectionLineRendererDataFlipper(focusElement,
 				stackElementsLeft, stackElementsRight);
 
@@ -246,9 +246,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private void init(String dataDomainType) {
 
 		HashMap<String, RemoteLevelElement> viewSpawn = new HashMap<String, RemoteLevelElement>();
-		ArrayList<String> possibleViews = DataDomainManager.getInstance().getDataDomain(
-				dataDomainType).getPossibleViews();
-
+		Set<String> possibleViews = DataDomainManager.getInstance()
+				.getViewTypesForDataDomain(dataDomainType);
 		for (String viewType : possibleViews) {
 			viewSpawn.put(viewType, null);
 		}
@@ -868,7 +867,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				dataDomainType);
 		EIconTextures dataDomainIcon = dataDomain.getIcon();
 
-		ArrayList<String> possibleViews = dataDomain.getPossibleViews();
+		Set<String> possibleViewsSet = DataDomainManager.getInstance()
+				.getViewTypesForDataDomain(dataDomain.getDataDomainType());
 
 		// float x = 0.5f;
 		// float y = -2.07f;
@@ -892,7 +892,11 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		gl.glTranslatef(0, 0.31f, 0);
 
-		for (int viewIndex = 0; viewIndex < maxViewIcons; viewIndex++) {
+		
+		// FIXME: marc please review
+		// for (int viewIndex = 0; viewIndex < maxViewIcons; viewIndex++) {
+		int viewIndex = 0;
+		for (String viewType : possibleViewsSet) {
 
 			textureManager.renderTexture(gl,
 					EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED, new Vec3f(
@@ -900,138 +904,139 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 							0.0f, viewIconWidth, 0), new Vec3f(viewIconWidth,
 							viewIconWidth, 0), 1, 1, 1, 1);
 
-			if (viewIndex < possibleViews.size()) {
+			// if (viewIndex < possibleViews.size()) {
 
-				String viewType = possibleViews.get(viewIndex);
+			// String viewType = possibleViews.get(viewIndex);
 
-				Pair<String, String> viewDatadomainPair = new Pair<String, String>(
-						viewType, dataDomainType);
-				possibleViewsWithDataDomain.add(viewDatadomainPair);
+			Pair<String, String> viewDatadomainPair = new Pair<String, String>(viewType,
+					dataDomainType);
+			possibleViewsWithDataDomain.add(viewDatadomainPair);
 
-				RemoteLevelElement element = null;
+			RemoteLevelElement element = null;
 
-				if (focusElement.getGLView() != null
-						&& focusElement.getGLView().getViewType().equals(viewType)
-						&& focusElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
-					element = focusElement;
-				}
-
-				if (element == null) {
-					for (RemoteLevelElement tmpElement : stackElementsLeft) {
-						if (tmpElement.getGLView() != null
-								&& tmpElement.getGLView().getViewType().equals(viewType)
-								&& tmpElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
-							element = tmpElement;
-						}
-					}
-				}
-
-				if (element == null) {
-					for (RemoteLevelElement tmpElement : stackElementsRight) {
-						if (tmpElement.getGLView() != null
-								&& tmpElement.getGLView().getViewType().equals(viewType)
-								&& tmpElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
-							element = tmpElement;
-						}
-					}
-				}
-
-				if (element == null)
-					viewIconBackgroundColor = new float[] { 0.5f, 0.5f, 0.5f };
-				else if (element == lastPickedRemoteLevelElement)
-					viewIconBackgroundColor = new float[] { 1, 0, 0 };
-				else
-					viewIconBackgroundColor = new float[] { 1f, 1f, 1f };
-
-				if (element != null)
-					gl.glPushName(pickingManager.getPickingID(iUniqueID,
-							EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-				gl.glPushName(pickingManager.getPickingID(iUniqueID,
-						EPickingType.VIEW_TYPE_SELECTION, possibleViewsWithDataDomain
-								.size() - 1));
-
-				// Render view icon
-				textureManager.renderTexture(gl, determineViewIconPath(viewType),
-						new Vec3f(viewIconWidth - iconPadding, iconPadding, 0),
-						new Vec3f(iconPadding, iconPadding, 0), new Vec3f(iconPadding,
-								viewIconWidth - iconPadding, 0), new Vec3f(viewIconWidth
-								- iconPadding, viewIconWidth - iconPadding, 0),
-						viewIconBackgroundColor[0], viewIconBackgroundColor[1],
-						viewIconBackgroundColor[2], 1);
-
-				RemoteLevelElement viewSpawnLevelElement = viewSpawnPos.get(
-						dataDomainType).get(viewType);
-				Transform transform = null;
-				if (viewSpawnLevelElement == null) {
-					viewSpawnLevelElement = new RemoteLevelElement(null);
-					viewSpawnPos.get(dataDomainType).put(viewType, viewSpawnLevelElement);
-
-					transform = new Transform();
-					viewSpawnLevelElement.setTransform(transform);
-				} else {
-					transform = viewSpawnLevelElement.getTransform();
-				}
-
-				transform.setTranslation(new Vec3f(x + 1.6f + viewIndex
-						* (viewIconWidth + 0.01f), y + 1.9f, z));
-				transform.setScale(new Vec3f(0.01f, 0.01f, 0.01f));
-
-				if (element != null) {
-
-					float xCorrectionRight = 0;
-					if (stackElementsRight.contains(element))
-						xCorrectionRight = -1.1f;
-
-					transform = element.getTransform();
-					gl.glColor3fv(viewIconBackgroundColor, 0);
-					gl.glLineWidth(2);
-					gl.glBegin(GL.GL_LINES);
-					gl.glVertex3f(viewIconWidth / 2f, viewIconWidth, 0);
-					gl.glVertex3f(transform.getTranslation().x() - x - viewIndex
-							* (viewIconWidth + 0.01f) - 1.5f + xCorrectionRight,
-							-y - 1.5f - 0.05f, 0);
-					gl.glEnd();
-				}
-
-				// for (SlerpAction slerp : arSlerpActions) {
-				//					
-				// AGLView glView =
-				// GeneralManager.get().getViewGLCanvasManager()
-				// .getGLView(slerp.getElementId());
-				//					
-				// if (glView == null || glView.viewType.equals(viewType)
-				// || glView.getDataDomain() != dataDomain)
-				// continue;
-				//
-				// float xCorrectionRight = 0;
-				// // if (stackElementsRight.contains(element))
-				// // xCorrectionRight = -1.1f;
-				//
-				// SlerpMod slerpMod = new SlerpMod();
-				// Transform transform = slerpMod.interpolate(slerp
-				// .getOriginRemoteLevelElement().getTransform(), slerp
-				// .getDestinationRemoteLevelElement().getTransform(),
-				// (float) iSlerpFactor / SLERP_RANGE);
-				//
-				// viewIconBackgroundColor = new float[] { 1f, 1f, 1f };
-				// gl.glColor3fv(viewIconBackgroundColor, 0);
-				// gl.glLineWidth(2);
-				// gl.glBegin(GL.GL_LINES);
-				// gl.glVertex3f(viewIconWidth / 2f, viewIconWidth, 0);
-				// gl.glVertex3f(transform.getTranslation().x() - x - viewIndex
-				// * (viewIconWidth + 0.01f) - 1.5f + xCorrectionRight,
-				// -y - 1.5f - 0.05f, transform.getTranslation().z()-z);
-				// gl.glEnd();
-				// }
-
-				gl.glPopName();
-
-				if (element != null)
-					gl.glPopName();
+			if (focusElement.getGLView() != null
+					&& focusElement.getGLView().getViewType().equals(viewType)
+					&& focusElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
+				element = focusElement;
 			}
 
-			gl.glTranslatef(viewIconWidth + 0.01f, 0, 0);
+			if (element == null) {
+				for (RemoteLevelElement tmpElement : stackElementsLeft) {
+					if (tmpElement.getGLView() != null
+							&& tmpElement.getGLView().getViewType().equals(viewType)
+							&& tmpElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
+						element = tmpElement;
+					}
+				}
+			}
+
+			if (element == null) {
+				for (RemoteLevelElement tmpElement : stackElementsRight) {
+					if (tmpElement.getGLView() != null
+							&& tmpElement.getGLView().getViewType().equals(viewType)
+							&& tmpElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
+						element = tmpElement;
+					}
+				}
+			}
+
+			if (element == null)
+				viewIconBackgroundColor = new float[] { 0.5f, 0.5f, 0.5f };
+			else if (element == lastPickedRemoteLevelElement)
+				viewIconBackgroundColor = new float[] { 1, 0, 0 };
+			else
+				viewIconBackgroundColor = new float[] { 1f, 1f, 1f };
+
+			if (element != null)
+				gl.glPushName(pickingManager.getPickingID(iUniqueID,
+						EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					EPickingType.VIEW_TYPE_SELECTION,
+					possibleViewsWithDataDomain.size() - 1));
+
+			// Render view icon
+			textureManager.renderTexture(gl, determineViewIconPath(viewType), new Vec3f(
+					viewIconWidth - iconPadding, iconPadding, 0), new Vec3f(iconPadding,
+					iconPadding, 0), new Vec3f(iconPadding, viewIconWidth - iconPadding,
+					0), new Vec3f(viewIconWidth - iconPadding, viewIconWidth
+					- iconPadding, 0), viewIconBackgroundColor[0],
+					viewIconBackgroundColor[1], viewIconBackgroundColor[2], 1);
+
+			RemoteLevelElement viewSpawnLevelElement = viewSpawnPos.get(dataDomainType)
+					.get(viewType);
+			Transform transform = null;
+			if (viewSpawnLevelElement == null) {
+				viewSpawnLevelElement = new RemoteLevelElement(null);
+				viewSpawnPos.get(dataDomainType).put(viewType, viewSpawnLevelElement);
+
+				transform = new Transform();
+				viewSpawnLevelElement.setTransform(transform);
+			} else {
+				transform = viewSpawnLevelElement.getTransform();
+			}
+
+			transform.setTranslation(new Vec3f(x + 1.6f + viewIndex
+					* (viewIconWidth + 0.01f), y + 1.9f, z));
+			transform.setScale(new Vec3f(0.01f, 0.01f, 0.01f));
+
+			if (element != null) {
+
+				float xCorrectionRight = 0;
+				if (stackElementsRight.contains(element))
+					xCorrectionRight = -1.1f;
+
+				transform = element.getTransform();
+				gl.glColor3fv(viewIconBackgroundColor, 0);
+				gl.glLineWidth(2);
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(viewIconWidth / 2f, viewIconWidth, 0);
+				gl.glVertex3f(transform.getTranslation().x() - x - viewIndex
+						* (viewIconWidth + 0.01f) - 1.5f + xCorrectionRight,
+						-y - 1.5f - 0.05f, 0);
+				gl.glEnd();
+			}
+
+			// for (SlerpAction slerp : arSlerpActions) {
+			//					
+			// AGLView glView =
+			// GeneralManager.get().getViewGLCanvasManager()
+			// .getGLView(slerp.getElementId());
+			//					
+			// if (glView == null || glView.viewType.equals(viewType)
+			// || glView.getDataDomain() != dataDomain)
+			// continue;
+			//
+			// float xCorrectionRight = 0;
+			// // if (stackElementsRight.contains(element))
+			// // xCorrectionRight = -1.1f;
+			//
+			// SlerpMod slerpMod = new SlerpMod();
+			// Transform transform = slerpMod.interpolate(slerp
+			// .getOriginRemoteLevelElement().getTransform(), slerp
+			// .getDestinationRemoteLevelElement().getTransform(),
+			// (float) iSlerpFactor / SLERP_RANGE);
+			//
+			// viewIconBackgroundColor = new float[] { 1f, 1f, 1f };
+			// gl.glColor3fv(viewIconBackgroundColor, 0);
+			// gl.glLineWidth(2);
+			// gl.glBegin(GL.GL_LINES);
+			// gl.glVertex3f(viewIconWidth / 2f, viewIconWidth, 0);
+			// gl.glVertex3f(transform.getTranslation().x() - x - viewIndex
+			// * (viewIconWidth + 0.01f) - 1.5f + xCorrectionRight,
+			// -y - 1.5f - 0.05f, transform.getTranslation().z()-z);
+			// gl.glEnd();
+			// }
+
+			gl.glPopName();
+
+			if (element != null)
+				gl.glPopName();
+
+			viewIndex++;
 		}
+
+		gl.glTranslatef(viewIconWidth + 0.01f, 0, 0);
+		// }
 
 		gl.glTranslatef(-x - maxViewIcons * (viewIconWidth + 0.01f), -y - 0.31f, -z);
 

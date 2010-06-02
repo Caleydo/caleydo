@@ -26,9 +26,6 @@ public class TissueDataDomain extends ADataDomain {
 		dataDomainType = "org.caleydo.datadomain.tissue";
 		icon = EIconTextures.DATA_DOMAIN_TISSUE;
 
-		possibleViews = new ArrayList<String>();
-		possibleViews.add("org.caleydo.view.tissuebrowser");
-
 		possibleIDCategories = new HashMap<EIDCategory, String>();
 		// possibleIDCategories.put(EIDCategory.GENE, null);
 	}
