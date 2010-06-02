@@ -142,7 +142,7 @@ public class GLBookmarkManager extends AGLView implements
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 
-		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(
+		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
 				dataDomainTypes, viewType);
 	}
 

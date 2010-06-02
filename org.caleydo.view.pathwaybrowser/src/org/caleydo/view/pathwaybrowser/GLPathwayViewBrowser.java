@@ -46,7 +46,7 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 
 		dataDomainTypes.add("org.caleydo.datadomain.pathway");
 
-		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(
+		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
 				dataDomainTypes, viewType);
 	}
 

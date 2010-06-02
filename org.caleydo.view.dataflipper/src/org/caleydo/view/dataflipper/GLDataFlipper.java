@@ -247,7 +247,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		HashMap<String, RemoteLevelElement> viewSpawn = new HashMap<String, RemoteLevelElement>();
 		Set<String> possibleViews = DataDomainManager.getInstance()
-				.getViewTypesForDataDomain(dataDomainType);
+				.getAssociationManager().getViewTypesForDataDomain(dataDomainType);
 		for (String viewType : possibleViews) {
 			viewSpawn.put(viewType, null);
 		}
@@ -868,7 +868,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		EIconTextures dataDomainIcon = dataDomain.getIcon();
 
 		Set<String> possibleViewsSet = DataDomainManager.getInstance()
-				.getViewTypesForDataDomain(dataDomain.getDataDomainType());
+				.getAssociationManager().getViewTypesForDataDomain(dataDomain.getDataDomainType());
 
 		// float x = 0.5f;
 		// float y = -2.07f;

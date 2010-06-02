@@ -146,7 +146,7 @@ public abstract class AStorageBasedView
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
 		dataDomainTypes.add("org.caleydo.datadomain.clinical");
 
-		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
+		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 	@Override

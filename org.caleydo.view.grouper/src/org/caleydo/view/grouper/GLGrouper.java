@@ -183,7 +183,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 		dataDomainTypes.add("org.caleydo.datadomain.clinical");
 
-		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(
+		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
 				dataDomainTypes, viewType);
 	}
 

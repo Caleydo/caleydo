@@ -1,6 +1,5 @@
 package org.caleydo.core.manager.datadomain;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -12,7 +11,7 @@ import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
- * Abstract use case class that implements data and view management.
+ * Abstract class that implements data and view management.
  * 
  * @author Marc Streit
  * @author Alexander Lex
@@ -48,9 +47,7 @@ public abstract class ADataDomain
 	 */
 	protected HashMap<EIDCategory, String> possibleIDCategories;
 
-	public ADataDomain() {
-
-	}
+	
 
 	@Override
 	public String getDataDomainType() {

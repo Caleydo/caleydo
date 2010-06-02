@@ -104,7 +104,7 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
 
-		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(
+		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
 				dataDomainTypes, viewType);
 	}
 

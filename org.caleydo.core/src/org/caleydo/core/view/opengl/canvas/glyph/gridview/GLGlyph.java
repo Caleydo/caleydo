@@ -165,7 +165,7 @@ public class GLGlyph
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 		dataDomainTypes.add("org.caleydo.datadomain.clinical");
 
-		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
+		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 

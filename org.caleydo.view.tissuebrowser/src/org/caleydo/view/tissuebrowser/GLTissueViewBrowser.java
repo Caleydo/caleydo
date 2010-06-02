@@ -69,7 +69,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 		dataDomainTypes.add("org.caleydo.datadomain.tissue");
 
-		DataDomainManager.getInstance().registerDatadomainTypeViewTypeAssociation(
+		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
 				dataDomainTypes, viewType);
 	}
 
