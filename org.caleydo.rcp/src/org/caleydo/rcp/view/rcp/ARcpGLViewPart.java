@@ -226,8 +226,7 @@ public abstract class ARcpGLViewPart
 	@Override
 	public void dispose() {
 		super.dispose();
-
-		GeneralManager.get().getViewGLCanvasManager().getGLView(view.getID()).destroy();
+		getGLView().destroy();
 	}
 
 	@Override

@@ -28,9 +28,8 @@ public abstract class CaleydoRCPViewPart
 	/** serialized representation of the view to initialize the view itself */
 	protected ASerializedView initSerializedView;
 
-	
 	protected String dataDomainType = null;
-	
+
 	protected static ArrayList<IAction> alToolbar;
 	// protected static ArrayList<IContributionItem> alToolbarContributions;
 
@@ -51,10 +50,6 @@ public abstract class CaleydoRCPViewPart
 		super.init(site);
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
-//		registerEventListeners();
-		
-		
-		
 	}
 
 	/**
@@ -86,11 +81,23 @@ public abstract class CaleydoRCPViewPart
 
 	@Override
 	public void dispose() {
-//		unregisterEventListeners();
+		// unregisterEventListeners();
 		super.dispose();
 	}
-	
-	protected void determineDataDomain(IDataDomainBasedView<IDataDomain> dataDomainBasedView, ASerializedView serializedView) {
+
+	/**
+	 * Determines and sets the dataDomain based on the following rules:
+	 * <ul>
+	 * <li>If a dataDomainType is set in the serializable representation this is used</li>
+	 * <li>Else if there is exactly one loaded dataDomain which the view can this is used</li>
+	 * <li>Else an exception is thrown</li>
+	 * <ul>
+	 * 
+	 * @param dataDomainBasedView
+	 * @param serializedView
+	 */
+	protected void determineDataDomain(IDataDomainBasedView<IDataDomain> dataDomainBasedView,
+		ASerializedView serializedView) {
 		if (dataDomainBasedView instanceof IDataDomainBasedView<?>) {
 			String dataDomainType = serializedView.getDataDomainType();
 			IDataDomain dataDomain = null;
@@ -115,11 +122,11 @@ public abstract class CaleydoRCPViewPart
 		}
 	}
 
-//	public void registerEventListeners() {
-//		// no registration to the event system in the default implementation
-//	}
-//
-//	public void unregisterEventListeners() {
-//		// no registration to the event system in the default implementation
-//	}
+	// public void registerEventListeners() {
+	// // no registration to the event system in the default implementation
+	// }
+	//
+	// public void unregisterEventListeners() {
+	// // no registration to the event system in the default implementation
+	// }
 }
