@@ -6,7 +6,10 @@ import java.util.List;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
@@ -22,6 +25,8 @@ import org.eclipse.ui.part.ViewPart;
 public abstract class CaleydoRCPViewPart
 	extends ViewPart {
 
+	/** serialized representation of the view to initialize the view itself */
+	protected ASerializedView initSerializedView;
 
 	
 	protected String dataDomainType = null;
@@ -33,7 +38,6 @@ public abstract class CaleydoRCPViewPart
 	protected IEventPublisher eventPublisher = null;
 
 	protected IView view;
-
 
 	/**
 	 * stores the attach status of the viewpart, true means within caleydo's main window, false otherwise
@@ -47,7 +51,10 @@ public abstract class CaleydoRCPViewPart
 		super.init(site);
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
-		registerEventListeners();
+//		registerEventListeners();
+		
+		
+		
 	}
 
 	/**
@@ -56,9 +63,9 @@ public abstract class CaleydoRCPViewPart
 	 * @return list of all views contained in this view
 	 */
 	public List<IView> getAllViews() {
-		List<IView> viwes = new ArrayList<IView>();
-		viwes.add(getView());
-		return viwes;
+		List<IView> views = new ArrayList<IView>();
+		views.add(getView());
+		return views;
 	}
 
 	public IView getView() {
@@ -79,15 +86,40 @@ public abstract class CaleydoRCPViewPart
 
 	@Override
 	public void dispose() {
-		unregisterEventListeners();
+//		unregisterEventListeners();
 		super.dispose();
 	}
+	
+	protected void determineDataDomain(IDataDomainBasedView<IDataDomain> dataDomainBasedView, ASerializedView serializedView) {
+		if (dataDomainBasedView instanceof IDataDomainBasedView<?>) {
+			String dataDomainType = serializedView.getDataDomainType();
+			IDataDomain dataDomain = null;
+			if (dataDomainType == null) {
+				ArrayList<IDataDomain> availableDomains =
+					DataDomainManager.getInstance().getListOfAvailableDataDomainTypesForViewTypes(
+						serializedView.getViewType());
+				if (availableDomains.size() == 0)
+					throw new IllegalStateException("No datadomain for this view loaded");
+				else if (availableDomains.size() > 1)
+					throw new IllegalStateException(
+						"Not able to choose which data domain to use - not yet implemented");
+				else
+					dataDomain = availableDomains.get(0);
 
-	public void registerEventListeners() {
-		// no registration to the event system in the default implementation
+			}
+			else {
+				dataDomain =
+					DataDomainManager.getInstance().getDataDomain(serializedView.getDataDomainType());
+			}
+			dataDomainBasedView.setDataDomain(dataDomain);
+		}
 	}
 
-	public void unregisterEventListeners() {
-		// no registration to the event system in the default implementation
-	}
+//	public void registerEventListeners() {
+//		// no registration to the event system in the default implementation
+//	}
+//
+//	public void unregisterEventListeners() {
+//		// no registration to the event system in the default implementation
+//	}
 }

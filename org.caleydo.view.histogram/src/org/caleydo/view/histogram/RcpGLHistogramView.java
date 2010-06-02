@@ -53,7 +53,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 	protected NewSetListener newSetListener;
 
 	protected Composite histoComposite;
-	
+
 	protected ISetBasedDataDomain dataDomain;
 
 	PreferenceStore store = GeneralManager.get().getPreferenceStore();
@@ -83,13 +83,12 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 		parentComposite = new Composite(histoComposite, SWT.EMBEDDED);
 		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		
 		determineDataDomainType();
-		dataDomain = (ISetBasedDataDomain)DataDomainManager.getInstance().getDataDomain(dataDomainType);
-		
+		dataDomain = (ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+				dataDomainType);
+
 		// FIXME: How to determine data domain for histogram dynamically?
-		
-		
+
 		SerializedHistogramView serialized = new SerializedHistogramView(dataDomain
 				.getDataDomainType());
 		redrawView(serialized);
@@ -240,7 +239,6 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 
 	@Override
 	public void registerEventListeners() {
-		super.registerEventListeners();
 
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
@@ -257,8 +255,6 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 
 	@Override
 	public void unregisterEventListeners() {
-
-		super.unregisterEventListeners();
 
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);

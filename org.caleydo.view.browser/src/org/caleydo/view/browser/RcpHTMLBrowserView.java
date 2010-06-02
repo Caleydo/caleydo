@@ -1,5 +1,7 @@
 package org.caleydo.view.browser;
 
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;
@@ -17,6 +19,10 @@ public class RcpHTMLBrowserView extends CaleydoRCPViewPart {
 		browserView.initViewRCP(parent);
 		browserView.drawView();
 		view = browserView;
+		
+		if (view instanceof IDataDomainBasedView<?>) {
+			determineDataDomain((IDataDomainBasedView<IDataDomain>) view, view.getSerializableRepresentation());
+		}
 	}
 
 	@Override

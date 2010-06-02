@@ -1,7 +1,9 @@
 package org.caleydo.rcp.view.rcp;
 
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.rcp.util.info.InfoArea;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -12,6 +14,7 @@ import org.eclipse.swt.widgets.Composite;
  * Search view contains gene and pathway search.
  * 
  * @author Marc Streit
+ * @deprecated implement as view
  */
 public class RcpInfoAreaView
 	extends CaleydoRCPViewPart {
@@ -45,6 +48,7 @@ public class RcpInfoAreaView
 		this.parentComposite = parentComposite;
 
 		addInfoBar();
+
 	}
 
 	@Override
@@ -73,6 +77,18 @@ public class RcpInfoAreaView
 
 		infoComposite.setLayout(layout);
 		infoArea = new InfoArea();
+
+		// FIXME: this should be used once the infoarea is a real view
+		// if (view instanceof IDataDomainBasedView<?>) {
+		// determineDataDomain((IDataDomainBasedView<IDataDomain>) view, view
+		// .getSerializableRepresentation());
+		// }
+
+		// in the meantime:
+
+		if (dataDomainType == null)
+			dataDomainType = "org.caleydo.datadomain.genetic";
+
 		infoArea.setDataDomain((ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
 			dataDomainType));
 		infoArea.registerEventListeners();

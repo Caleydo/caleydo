@@ -171,6 +171,8 @@ public abstract class AGLView
 		// If the glCanvas object is null - then the view is rendered remote.
 		super(glCanvas != null ? glCanvas.getID() : -1, sLabel, GeneralManager.get().getIDManager().createID(
 			EManagedObjectType.GL_VIEW));
+		
+		registerEventListeners();
 
 		parentGLCanvas = glCanvas;
 

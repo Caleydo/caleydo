@@ -55,6 +55,7 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Marc Streit
  * @author Alexander Lex
+ * @deprecated implement as view
  */
 public class InfoArea
 	implements IDataDomainBasedView<ISetBasedDataDomain>, ISelectionUpdateHandler, IContentVAUpdateHandler,
