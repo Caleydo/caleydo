@@ -1,9 +1,6 @@
 package org.caleydo.view.datawindows;
 
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.collection.Pair;
-import org.caleydo.rcp.Application;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 

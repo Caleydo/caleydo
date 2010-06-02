@@ -316,8 +316,6 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		// translation.z());
 		gl.glTranslatef(translation.x(), translation.y(), translation.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
-		gl.glTranslatef(translation.x(), translation.y(), translation.z());
-		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
