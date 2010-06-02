@@ -16,7 +16,6 @@ import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -18,7 +17,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
 /**
- * TODO document
+ * Base class for all RCP views available in Caleydo.
  * 
  * @author Marc Streit
  */
@@ -31,9 +30,7 @@ public abstract class CaleydoRCPViewPart
 	protected String dataDomainType = null;
 
 	protected static ArrayList<IAction> alToolbar;
-	// protected static ArrayList<IContributionItem> alToolbarContributions;
 
-	protected IGeneralManager generalManager = null;
 	protected IEventPublisher eventPublisher = null;
 
 	protected IView view;
@@ -48,8 +45,7 @@ public abstract class CaleydoRCPViewPart
 	@Override
 	public void init(IViewSite site) throws PartInitException {
 		super.init(site);
-		generalManager = GeneralManager.get();
-		eventPublisher = generalManager.getEventPublisher();
+		eventPublisher = GeneralManager.get().getEventPublisher();
 	}
 
 	/**

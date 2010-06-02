@@ -214,19 +214,19 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		// Render invisible background for detecting clicks using GL selection
 		// mechanism
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.BACKGROUND, 0));
-		gl.glColor4f(0, 0, 0, 0);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
-		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum
-				.getBottom(), 0);
-		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum
-				.getTop()
-				- viewFrustum.getBottom(), 0);
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop()
-				- viewFrustum.getBottom(), 0);
-		gl.glEnd();
-		gl.glPopName();
+//		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.BACKGROUND, 0));
+//		gl.glColor4f(0, 0, 0, 0);
+//		gl.glBegin(GL.GL_POLYGON);
+//		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
+//		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum
+//				.getBottom(), 0);
+//		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum
+//				.getTop()
+//				- viewFrustum.getBottom(), 0);
+//		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop()
+//				- viewFrustum.getBottom(), 0);
+//		gl.glEnd();
+//		gl.glPopName();
 
 		float canvasWidth = viewFrustum.getWidth();
 		float canvasHeight = viewFrustum.getHeight();
@@ -392,7 +392,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_SELECTION,
 				glView.getID()));
 
 		gl.glPushMatrix();
@@ -448,7 +448,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 			}
 			break;
 
-		case VIEW_SELECTION:
+		case REMOTE_VIEW_SELECTION:
 			switch (pickingMode) {
 			case MOUSE_OVER:
 				// this.focusViewEvent(iExternalID, 0.75, true);

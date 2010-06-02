@@ -298,7 +298,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_SELECTION,
 				glView.getID()));
 		gl.glPushMatrix();
 

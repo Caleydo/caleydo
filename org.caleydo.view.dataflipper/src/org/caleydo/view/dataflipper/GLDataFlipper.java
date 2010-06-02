@@ -24,6 +24,7 @@ import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.datadomain.AssociationManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
@@ -55,6 +56,7 @@ import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.rcp.view.listener.AddPathwayListener;
 import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
 import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
@@ -89,6 +91,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	protected AGLConnectionLineRenderer glConnectionLineRenderer;
 
 	private ArrayList<Pair<String, String>> possibleViewsWithDataDomain;
+
+	private AssociationManager dataDomainViewAssociationManager;
 
 	/**
 	 * Transformation utility object to transform and project view related
@@ -237,17 +241,44 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			glConnectionLineRenderer.init(gl);
 		}
 
+		initDataDomainViewAssociation();
+
 		init("org.caleydo.datadomain.tissue");
 		init("org.caleydo.datadomain.clinical");
 		init("org.caleydo.datadomain.genetic");
 		init("org.caleydo.datadomain.pathway");
 	}
 
+	private void initDataDomainViewAssociation() {
+
+		dataDomainViewAssociationManager = new AssociationManager();
+
+		String dataDomainType = "org.caleydo.datadomain.genetic";
+		dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
+				dataDomainType, "org.caleydo.view.heatmap.hierarchical");
+		dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
+				dataDomainType, "org.caleydo.view.parcoords");
+
+		dataDomainType = "org.caleydo.datadomain.clinical";
+		dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
+				dataDomainType, "org.caleydo.view.glyph");
+		dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
+				dataDomainType, "org.caleydo.view.parcoords");
+
+		dataDomainType = "org.caleydo.datadomain.tissue";
+		dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
+				dataDomainType, "org.caleydo.view.tissuebrowser");
+
+		dataDomainType = "org.caleydo.datadomain.pathway";
+		dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
+				dataDomainType, "org.caleydo.view.pathwaybrowser");
+	}
+
 	private void init(String dataDomainType) {
 
 		HashMap<String, RemoteLevelElement> viewSpawn = new HashMap<String, RemoteLevelElement>();
-		Set<String> possibleViews = DataDomainManager.getInstance()
-				.getAssociationManager().getViewTypesForDataDomain(dataDomainType);
+		Set<String> possibleViews = dataDomainViewAssociationManager
+				.getViewTypesForDataDomain(dataDomainType);
 		for (String viewType : possibleViews) {
 			viewSpawn.put(viewType, null);
 		}
@@ -333,8 +364,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
-				glView.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.REMOTE_VIEW_SELECTION, glView.getID()));
 
 		gl.glPushMatrix();
 
@@ -387,49 +418,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			containedGLViews.add(view);
 
-			RemoteLevelElement viewSpawnElement = viewSpawnPos.get(
-					((IDataDomainBasedView<IDataDomain>) view).getDataDomain()
-							.getDataDomainType()).get(view.getViewType());
-			RemoteLevelElement destinationElement = null;
-
-			if (focusElement.isFree()) {
-				viewSpawnElement.setGLView(view);
-				view.setRemoteLevelElement(focusElement);
-				view.setDetailLevel(EDetailLevel.HIGH);
-				destinationElement = focusElement;
-			} else {
-
-				if (newViews.size() % 2 == 0) {
-
-					Iterator<RemoteLevelElement> iter = stackElementsLeft.iterator();
-					while (iter.hasNext()) {
-						RemoteLevelElement element = iter.next();
-						if (element.isFree()) {
-							destinationElement = element;
-							view.setRemoteLevelElement(element);
-							view.setDetailLevel(EDetailLevel.LOW);
-							break;
-						}
-					}
-				} else {
-					Iterator<RemoteLevelElement> iter = stackElementsRight.iterator();
-					while (iter.hasNext()) {
-						RemoteLevelElement element = iter.next();
-						if (element.isFree()) {
-							destinationElement = element;
-							view.setRemoteLevelElement(element);
-							view.setDetailLevel(EDetailLevel.LOW);
-
-							break;
-						}
-					}
-				}
-			}
-
-			if (destinationElement != null) {
-				viewSpawnElement.setGLView(view);
-				arSlerpActions.add(new SlerpAction(viewSpawnElement, destinationElement));
-			}
+			openView(view);
 
 			if (newViews.isEmpty()) {
 				triggerToolBarUpdate();
@@ -680,12 +669,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	protected void handlePickingEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick) {
+			EPickingMode pickingMode, int externalPickingID, Pick pick) {
 
 		// isPatientAlternativeGuideActive = false;
 		switch (pickingType) {
 
-		case VIEW_SELECTION:
+		case REMOTE_VIEW_SELECTION:
 			switch (pickingMode) {
 			case MOUSE_OVER:
 
@@ -701,9 +690,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				break;
 
 			}
-			// infoAreaManager.setData(iExternalID,
-			// EIDType.EXPRESSION_INDEX, pick.getPickedPoint(),
-			// 0.3f);// pick.getDepth());
 			break;
 
 		case REMOTE_LEVEL_ELEMENT:
@@ -718,7 +704,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 				arSlerpActions.clear();
 				lastPickedRemoteLevelElement = RemoteElementManager.get().getItem(
-						iExternalID);
+						externalPickingID);
 				lastPickedView = lastPickedRemoteLevelElement.getGLView();
 				chainMove(lastPickedRemoteLevelElement);
 
@@ -726,7 +712,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			case MOUSE_OVER:
 
 				lastPickedRemoteLevelElement = RemoteElementManager.get().getItem(
-						iExternalID);
+						externalPickingID);
 
 				break;
 			}
@@ -736,10 +722,54 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			switch (pickingMode) {
 			case CLICKED:
 
-				addNewView(possibleViewsWithDataDomain.get(iExternalID).getFirst(),
-						possibleViewsWithDataDomain.get(iExternalID).getSecond());
+				// AGLView view =
+				// GeneralManager.get().getViewGLCanvasManager().getGLView(
+				// externalPickingID);
+				// String viewType =
+				// possibleViewsWithDataDomain.get(externalPickingID).getFirst();
+				//				
+				// RemoteLevelElement element = null;
+				// if (focusElement.getGLView() != null &&
+				// focusElement.getGLView().getViewType().equals(viewType)) {
+				// element = focusElement;
+				// }
+				//
+				// for (RemoteLevelElement tmpElement : stackElementsLeft) {
+				// if (tmpElement.getGLView() != null &&
+				// tmpElement.getGLView().getViewType().equals(viewType)) {
+				// element = tmpElement;
+				// break;
+				// }
+				// }
+				//
+				// for (RemoteLevelElement tmpElement : stackElementsRight) {
+				// if (tmpElement.getGLView() != null &&
+				// tmpElement.getGLView().getViewType().equals(viewType)) {
+				// element = tmpElement;
+				// break;
+				// }
+				// }
+
+				// // Check if view already exists - if it exists, the view will
+				// be
+				// // closed
+				// if (element != null)
+				// closeView(element.getID());
+				// else
+				addView(externalPickingID);
+
 				break;
 
+			}
+			break;
+
+		case REMOTE_VIEW_REMOVE:
+
+			switch (pickingMode) {
+			case CLICKED:
+
+				closeView(externalPickingID);
+				break;
 			}
 			break;
 		}
@@ -867,15 +897,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				dataDomainType);
 		EIconTextures dataDomainIcon = dataDomain.getIcon();
 
-		Set<String> possibleViewsSet = DataDomainManager.getInstance()
-				.getAssociationManager().getViewTypesForDataDomain(dataDomain.getDataDomainType());
-
 		// float x = 0.5f;
 		// float y = -2.07f;
 		float z = 4;
 		float viewIconWidth = 0.12f;
 		float iconPadding = 0.015f;
 		float[] viewIconBackgroundColor = new float[] { 1, 1, 1 };
+		float[] connectionLineColor = new float[] { 1, 1, 1, 1 };
 		float maxViewIcons = 4;
 
 		gl.glTranslatef(x, y, z);
@@ -892,11 +920,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		gl.glTranslatef(0, 0.31f, 0);
 
+		String[] possibleViews = dataDomainViewAssociationManager
+				.getViewTypesForDataDomain(dataDomainType).toArray(
+						new String[dataDomainViewAssociationManager
+								.getViewTypesForDataDomain(dataDomainType).size()]);
 		
-		// FIXME: marc please review
-		// for (int viewIndex = 0; viewIndex < maxViewIcons; viewIndex++) {
-		int viewIndex = 0;
-		for (String viewType : possibleViewsSet) {
+		for (int viewIndex = 0; viewIndex < maxViewIcons; viewIndex++) {
 
 			textureManager.renderTexture(gl,
 					EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED, new Vec3f(
@@ -904,142 +933,186 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 							0.0f, viewIconWidth, 0), new Vec3f(viewIconWidth,
 							viewIconWidth, 0), 1, 1, 1, 1);
 
-			// if (viewIndex < possibleViews.size()) {
+			if (viewIndex < possibleViews.length) {
 
-			// String viewType = possibleViews.get(viewIndex);
+				String viewType = possibleViews[viewIndex];
 
-			Pair<String, String> viewDatadomainPair = new Pair<String, String>(viewType,
-					dataDomainType);
-			possibleViewsWithDataDomain.add(viewDatadomainPair);
+				Pair<String, String> viewDatadomainPair = new Pair<String, String>(
+						viewType, dataDomainType);
+				possibleViewsWithDataDomain.add(viewDatadomainPair);
 
-			RemoteLevelElement element = null;
+				RemoteLevelElement element = null;
 
-			if (focusElement.getGLView() != null
-					&& focusElement.getGLView().getViewType().equals(viewType)
-					&& focusElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
-				element = focusElement;
-			}
+				if (focusElement.getGLView() != null
+						&& focusElement.getGLView().getViewType().equals(viewType)
+						&& focusElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
+					element = focusElement;
+				}
 
-			if (element == null) {
-				for (RemoteLevelElement tmpElement : stackElementsLeft) {
-					if (tmpElement.getGLView() != null
-							&& tmpElement.getGLView().getViewType().equals(viewType)
-							&& tmpElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
-						element = tmpElement;
+				if (element == null) {
+					for (RemoteLevelElement tmpElement : stackElementsLeft) {
+						if (tmpElement.getGLView() != null
+								&& tmpElement.getGLView().getViewType().equals(viewType)
+								&& tmpElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
+							element = tmpElement;
+						}
 					}
 				}
-			}
 
-			if (element == null) {
-				for (RemoteLevelElement tmpElement : stackElementsRight) {
-					if (tmpElement.getGLView() != null
-							&& tmpElement.getGLView().getViewType().equals(viewType)
-							&& tmpElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
-						element = tmpElement;
+				if (element == null) {
+					for (RemoteLevelElement tmpElement : stackElementsRight) {
+						if (tmpElement.getGLView() != null
+								&& tmpElement.getGLView().getViewType().equals(viewType)
+								&& tmpElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
+							element = tmpElement;
+						}
 					}
 				}
-			}
 
-			if (element == null)
-				viewIconBackgroundColor = new float[] { 0.5f, 0.5f, 0.5f };
-			else if (element == lastPickedRemoteLevelElement)
-				viewIconBackgroundColor = new float[] { 1, 0, 0 };
-			else
-				viewIconBackgroundColor = new float[] { 1f, 1f, 1f };
+				if (element == null) {
+					viewIconBackgroundColor = new float[] { 0.5f, 0.5f, 0.5f };
+				} else if (element == lastPickedRemoteLevelElement) {
+					viewIconBackgroundColor = new float[] { 1, 0, 0 };
+					connectionLineColor = viewIconBackgroundColor;
+				} else {
+					viewIconBackgroundColor = new float[] { 1f, 1f, 1f };
+					connectionLineColor = new float[] { 0.3f, 0.3f, 0.3f, 1 };
+				}
 
-			if (element != null)
+				if (element != null)
+					gl.glPushName(pickingManager.getPickingID(iUniqueID,
+							EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 				gl.glPushName(pickingManager.getPickingID(iUniqueID,
-						EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.VIEW_TYPE_SELECTION,
-					possibleViewsWithDataDomain.size() - 1));
+						EPickingType.VIEW_TYPE_SELECTION, possibleViewsWithDataDomain
+								.size() - 1));
 
-			// Render view icon
-			textureManager.renderTexture(gl, determineViewIconPath(viewType), new Vec3f(
-					viewIconWidth - iconPadding, iconPadding, 0), new Vec3f(iconPadding,
-					iconPadding, 0), new Vec3f(iconPadding, viewIconWidth - iconPadding,
-					0), new Vec3f(viewIconWidth - iconPadding, viewIconWidth
-					- iconPadding, 0), viewIconBackgroundColor[0],
-					viewIconBackgroundColor[1], viewIconBackgroundColor[2], 1);
+				// Render view icon
+				textureManager.renderTexture(gl, determineViewIconPath(viewType),
+						new Vec3f(viewIconWidth - iconPadding, iconPadding, 0),
+						new Vec3f(iconPadding, iconPadding, 0), new Vec3f(iconPadding,
+								viewIconWidth - iconPadding, 0), new Vec3f(viewIconWidth
+								- iconPadding, viewIconWidth - iconPadding, 0),
+						viewIconBackgroundColor[0], viewIconBackgroundColor[1],
+						viewIconBackgroundColor[2], 1);
 
-			RemoteLevelElement viewSpawnLevelElement = viewSpawnPos.get(dataDomainType)
-					.get(viewType);
-			Transform transform = null;
-			if (viewSpawnLevelElement == null) {
-				viewSpawnLevelElement = new RemoteLevelElement(null);
-				viewSpawnPos.get(dataDomainType).put(viewType, viewSpawnLevelElement);
+				RemoteLevelElement viewSpawnLevelElement = viewSpawnPos.get(
+						dataDomainType).get(viewType);
+				Transform transform = null;
+				if (viewSpawnLevelElement == null) {
+					viewSpawnLevelElement = new RemoteLevelElement(null);
+					viewSpawnPos.get(dataDomainType).put(viewType, viewSpawnLevelElement);
 
-				transform = new Transform();
-				viewSpawnLevelElement.setTransform(transform);
-			} else {
-				transform = viewSpawnLevelElement.getTransform();
-			}
+					transform = new Transform();
+					viewSpawnLevelElement.setTransform(transform);
+				} else {
+					transform = viewSpawnLevelElement.getTransform();
+				}
 
-			transform.setTranslation(new Vec3f(x + 1.6f + viewIndex
-					* (viewIconWidth + 0.01f), y + 1.9f, z));
-			transform.setScale(new Vec3f(0.01f, 0.01f, 0.01f));
+				transform.setTranslation(new Vec3f(x + 1.6f + viewIndex
+						* (viewIconWidth + 0.01f), y + 1.9f, z));
+				transform.setScale(new Vec3f(0.01f, 0.01f, 0.01f));
 
-			if (element != null) {
+				if (element != null) {
 
-				float xCorrectionRight = 0;
-				if (stackElementsRight.contains(element))
-					xCorrectionRight = -1.1f;
+					float xCorrectionRight = 0;
+					if (stackElementsRight.contains(element))
+						xCorrectionRight = -1.1f;
 
-				transform = element.getTransform();
-				gl.glColor3fv(viewIconBackgroundColor, 0);
-				gl.glLineWidth(2);
-				gl.glBegin(GL.GL_LINES);
-				gl.glVertex3f(viewIconWidth / 2f, viewIconWidth, 0);
-				gl.glVertex3f(transform.getTranslation().x() - x - viewIndex
-						* (viewIconWidth + 0.01f) - 1.5f + xCorrectionRight,
-						-y - 1.5f - 0.05f, 0);
-				gl.glEnd();
-			}
+					transform = element.getTransform();
 
-			// for (SlerpAction slerp : arSlerpActions) {
-			//					
-			// AGLView glView =
-			// GeneralManager.get().getViewGLCanvasManager()
-			// .getGLView(slerp.getElementId());
-			//					
-			// if (glView == null || glView.viewType.equals(viewType)
-			// || glView.getDataDomain() != dataDomain)
-			// continue;
-			//
-			// float xCorrectionRight = 0;
-			// // if (stackElementsRight.contains(element))
-			// // xCorrectionRight = -1.1f;
-			//
-			// SlerpMod slerpMod = new SlerpMod();
-			// Transform transform = slerpMod.interpolate(slerp
-			// .getOriginRemoteLevelElement().getTransform(), slerp
-			// .getDestinationRemoteLevelElement().getTransform(),
-			// (float) iSlerpFactor / SLERP_RANGE);
-			//
-			// viewIconBackgroundColor = new float[] { 1f, 1f, 1f };
-			// gl.glColor3fv(viewIconBackgroundColor, 0);
-			// gl.glLineWidth(2);
-			// gl.glBegin(GL.GL_LINES);
-			// gl.glVertex3f(viewIconWidth / 2f, viewIconWidth, 0);
-			// gl.glVertex3f(transform.getTranslation().x() - x - viewIndex
-			// * (viewIconWidth + 0.01f) - 1.5f + xCorrectionRight,
-			// -y - 1.5f - 0.05f, transform.getTranslation().z()-z);
-			// gl.glEnd();
-			// }
+					float[] viewIconPos = new float[] { viewIconWidth / 2f,
+							viewIconWidth, 0 };
+					float[] viewPos = new float[] {
+							transform.getTranslation().x() - x - viewIndex
+									* (viewIconWidth + 0.01f) - 1.5f + xCorrectionRight,
+							-y - 1.5f - 0.05f, 0 };
 
-			gl.glPopName();
+					gl.glColor3fv(connectionLineColor, 0);
+					renderViewIconToViewRelation(gl, viewIconPos, viewPos);
+				}
 
-			if (element != null)
+				// for (SlerpAction slerp : arSlerpActions) {
+				//					
+				// AGLView glView =
+				// GeneralManager.get().getViewGLCanvasManager()
+				// .getGLView(slerp.getElementId());
+				//					
+				// if (glView == null || glView.viewType.equals(viewType)
+				// || glView.getDataDomain() != dataDomain)
+				// continue;
+				//
+				// float xCorrectionRight = 0;
+				// // if (stackElementsRight.contains(element))
+				// // xCorrectionRight = -1.1f;
+				//
+				// SlerpMod slerpMod = new SlerpMod();
+				// Transform transform = slerpMod.interpolate(slerp
+				// .getOriginRemoteLevelElement().getTransform(), slerp
+				// .getDestinationRemoteLevelElement().getTransform(),
+				// (float) iSlerpFactor / SLERP_RANGE);
+				//
+				// viewIconBackgroundColor = new float[] { 1f, 1f, 1f };
+				// gl.glColor3fv(viewIconBackgroundColor, 0);
+				// gl.glLineWidth(2);
+				// gl.glBegin(GL.GL_LINES);
+				// gl.glVertex3f(viewIconWidth / 2f, viewIconWidth, 0);
+				// gl.glVertex3f(transform.getTranslation().x() - x - viewIndex
+				// * (viewIconWidth + 0.01f) - 1.5f + xCorrectionRight,
+				// -y - 1.5f - 0.05f, transform.getTranslation().z()-z);
+				// gl.glEnd();
+				// }
+
 				gl.glPopName();
 
-			viewIndex++;
-		}
+				if (element != null)
+					gl.glPopName();
 
-		gl.glTranslatef(viewIconWidth + 0.01f, 0, 0);
-		// }
+			}
+
+			gl.glTranslatef(viewIconWidth + 0.01f, 0, 0);
+		}
 
 		gl.glTranslatef(-x - maxViewIcons * (viewIconWidth + 0.01f), -y - 0.31f, -z);
 
+	}
+
+	private void renderViewIconToViewRelation(GL gl, float[] viewIconPos, float[] viewPos) {
+
+		gl.glLineWidth(5);
+		// gl.glBegin(GL.GL_LINES);
+		// gl.glVertex3fv(viewIconPos, 0);
+		// gl.glVertex3fv(viewPos, 0);
+		// gl.glEnd();
+
+		float yLineOffset = (viewPos[1] - viewIconPos[1]);
+		float yLineOffsetFactor = 0.5f;// (Math.abs(viewIconPos[0] -
+		// viewPos[0]))/(viewFrustum.getWidth()*0.25f);
+		// System.out.println(yLineOffsetFactor);
+		// System.out.println(viewIconPos[0] - viewPos[0]);
+
+		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
+		points.add(new Vec3f(viewIconPos[0], viewIconPos[1], viewIconPos[2]));
+		points.add(new Vec3f(viewIconPos[0], viewIconPos[1] + yLineOffset
+				* yLineOffsetFactor, viewIconPos[2]));
+		points.add(new Vec3f(viewPos[0], viewPos[1] - yLineOffset
+				* (1 - yLineOffsetFactor), viewPos[2]));
+		points.add(new Vec3f(viewPos[0], viewPos[1], viewPos[2]));
+		renderSingleCurve(gl, points, 30);
+	}
+
+	public void renderSingleCurve(GL gl, ArrayList<Vec3f> points, int curvePoints) {
+
+		NURBSCurve curve = new NURBSCurve(points, curvePoints);
+		points = curve.getCurvePoints();
+
+		gl.glBegin(GL.GL_LINE_STRIP);
+		for (int i = 0; i < points.size(); i++) {
+			Vec3f point = points.get(i);
+			gl.glVertex3f(point.x(), point.y(), point.z());
+		}
+		gl.glEnd();
+
+		gl.glPopName();
 	}
 
 	private String determineViewIconPath(String viewName) {
@@ -1786,28 +1859,27 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		// Render icons
 		gl.glTranslatef(0, 2 + fHandleHeight, 0);
-		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION,
+		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_DRAG,
 				EIconTextures.NAVIGATION_DRAG_VIEW, fHandleHeight, fHandleHeight);
 		gl.glTranslatef(fHandleWidth - 2 * fHandleHeight, 0, 0);
 		if (bUpsideDown) {
 			gl.glRotatef(180, 1, 0, 0);
 			gl.glTranslatef(0, fHandleHeight, 0);
 		}
-		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_LOCK_ICON_SELECTION,
+		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_LOCK,
 				EIconTextures.NAVIGATION_LOCK_VIEW, fHandleHeight, fHandleHeight);
 		if (bUpsideDown) {
 			gl.glTranslatef(0, -fHandleHeight, 0);
 			gl.glRotatef(-180, 1, 0, 0);
 		}
 		gl.glTranslatef(fHandleHeight, 0, 0);
-		renderSingleHandle(gl, element.getID(),
-				EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_REMOVE,
 				EIconTextures.NAVIGATION_REMOVE_VIEW, fHandleHeight, fHandleHeight);
 		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
 		// Render background (also draggable)
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.BUCKET_DRAG_ICON_SELECTION, element.getID()));
+				EPickingType.REMOTE_VIEW_DRAG, element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(0 + fHandleHeight, 2 + fHandleHeight, 0);
@@ -2018,17 +2090,22 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	@Override
 	public void toggleZoom() {
 		// TODO Auto-generated method stub
-
 	}
 
-	private void addNewView(String viewType, String dataDomainType) {
+	private void addView(int viewID) {
+
+		String viewType = possibleViewsWithDataDomain.get(viewID).getFirst();
+		String dataDomainType = possibleViewsWithDataDomain.get(viewID).getSecond();
 
 		// Check if view already exists
 		for (AGLView glView : containedGLViews) {
 			if (glView.getViewType().equals(viewType)
 					&& ((IDataDomainBasedView<IDataDomain>) glView).getDataDomain()
-							.getDataDomainType().equals(dataDomainType))
+							.getDataDomainType().equals(dataDomainType)) {
+
+				openView(glView);
 				return;
+			}
 		}
 
 		ASerializedView serView = null;
@@ -2049,4 +2126,63 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		if (serView != null)
 			newViews.add(serView);
 	}
+
+	private void openView(AGLView view) {
+
+		RemoteLevelElement viewSpawnElement = viewSpawnPos.get(
+				((IDataDomainBasedView<IDataDomain>) view).getDataDomain()
+						.getDataDomainType()).get(view.getViewType());
+		RemoteLevelElement destinationElement = null;
+
+		if (focusElement.isFree()) {
+			viewSpawnElement.setGLView(view);
+			view.setRemoteLevelElement(focusElement);
+			view.setDetailLevel(EDetailLevel.HIGH);
+			destinationElement = focusElement;
+		} else {
+
+			Iterator<RemoteLevelElement> iter = stackElementsLeft.iterator();
+			while (iter.hasNext()) {
+				RemoteLevelElement element = iter.next();
+				if (element.isFree()) {
+					destinationElement = element;
+					view.setRemoteLevelElement(element);
+					view.setDetailLevel(EDetailLevel.LOW);
+					break;
+				}
+			}
+
+			iter = stackElementsRight.iterator();
+			while (iter.hasNext()) {
+				RemoteLevelElement element = iter.next();
+				if (element.isFree()) {
+					destinationElement = element;
+					view.setRemoteLevelElement(element);
+					view.setDetailLevel(EDetailLevel.LOW);
+					break;
+				}
+			}
+		}
+
+		if (destinationElement != null) {
+			viewSpawnElement.setGLView(view);
+			arSlerpActions.add(new SlerpAction(viewSpawnElement, destinationElement));
+		}
+	}
+
+	private void closeView(int remoteElementID) {
+
+		RemoteLevelElement sourceElement = RemoteElementManager.get().getItem(
+				remoteElementID);
+		AGLView view = sourceElement.getGLView();
+
+		RemoteLevelElement destinationElement = viewSpawnPos.get(
+				((IDataDomainBasedView<IDataDomain>) view).getDataDomain()
+						.getDataDomainType()).get(view.getViewType());
+
+		if (destinationElement != null) {
+			arSlerpActions.add(new SlerpAction(sourceElement, destinationElement));
+		}
+	}
+
 }

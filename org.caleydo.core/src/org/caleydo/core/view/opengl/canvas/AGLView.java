@@ -488,14 +488,14 @@ public abstract class AGLView
 	 *            the Picking type, held in EPickingType
 	 * @param ePickingMode
 	 *            the Picking mode (clicked, dragged etc.)
-	 * @param iExternalID
+	 * @param externalPickingID
 	 *            the name specified for an element with glPushName
 	 * @param pick
 	 *            the pick object which can be useful to retrieve for example the mouse position when the pick
 	 *            occurred
 	 */
 	abstract protected void handlePickingEvents(final EPickingType ePickingType,
-		final EPickingMode ePickingMode, final int iExternalID, final Pick pick);
+		final EPickingMode ePickingMode, final int externalPickingID, final Pick pick);
 
 	/**
 	 * Returns a short info string about the view. Typically this should mention the name of the view plus the

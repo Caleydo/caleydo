@@ -2,10 +2,15 @@ package org.caleydo.view.tissue;
 
 import gleem.linalg.Vec3f;
 
+import java.util.ArrayList;
+
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -22,12 +27,14 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
  * 
  * @author Marc Streit
  */
-public class GLTissue extends AGLView {
+public class GLTissue extends AGLView implements IDataDomainBasedView<IDataDomain> {
+
+	public final static String VIEW_ID = "org.caleydo.view.tissue";
 
 	private String texturePath;
 	private int experimentIndex;
 
-	public final static String VIEW_ID = "org.caleydo.view.tissue";
+	private IDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -38,8 +45,16 @@ public class GLTissue extends AGLView {
 
 		viewType = VIEW_ID;
 
-		// initialize internal gene selection manager
+		registerDataDomains();
+	}
 
+	@Override
+	public void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.tissue");
+
+		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
+				dataDomainTypes, viewType);
 	}
 
 	@Override
@@ -48,8 +63,8 @@ public class GLTissue extends AGLView {
 	}
 
 	@Override
-	public void initRemote(GL gl, AGLView glParentView,
-			GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+	public void initRemote(GL gl, AGLView glParentView, GLMouseListener glMouseListener,
+			GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
 		init(gl);
@@ -92,9 +107,8 @@ public class GLTissue extends AGLView {
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.TISSUE_SELECTION, experimentIndex));
 		if (texturePath != null && !texturePath.isEmpty()) {
-			textureManager.renderTexture(gl, texturePath, new Vec3f(0, 0, 0),
-					new Vec3f(8, 0, 0), new Vec3f(8, 8, 0), new Vec3f(0, 8, 0),
-					1, 1, 1, 1);
+			textureManager.renderTexture(gl, texturePath, new Vec3f(0, 0, 0), new Vec3f(
+					8, 0, 0), new Vec3f(8, 8, 0), new Vec3f(0, 8, 0), 1, 1, 1, 1);
 		}
 		gl.glPopName();
 
@@ -128,10 +142,11 @@ public class GLTissue extends AGLView {
 			gl.glLineWidth(3);
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), z);
-			gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(),
-					viewFrustum.getBottom(), z);
-			gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(),
-					viewFrustum.getTop() - viewFrustum.getBottom(), z);
+			gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum
+					.getBottom(), z);
+			gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum
+					.getTop()
+					- viewFrustum.getBottom(), z);
 			gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop()
 					- viewFrustum.getBottom(), z);
 			gl.glEnd();
@@ -275,6 +290,16 @@ public class GLTissue extends AGLView {
 
 	public int getExperimentIndex() {
 		return experimentIndex;
+	}
+
+	@Override
+	public IDataDomain getDataDomain() {
+		return dataDomain;
+	}
+
+	@Override
+	public void setDataDomain(IDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
 	}
 
 }

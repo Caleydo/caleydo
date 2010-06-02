@@ -626,7 +626,7 @@ public class GLBucket extends AGLView implements
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_SELECTION,
 				glView.getID()));
 
 		gl.glPushMatrix();
@@ -959,14 +959,14 @@ public class GLBucket extends AGLView implements
 
 		// Render icons
 		gl.glTranslatef(0, 2 + fHandleHeight, 0);
-		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION,
+		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_DRAG,
 				EIconTextures.NAVIGATION_DRAG_VIEW, fHandleHeight, fHandleHeight);
 		gl.glTranslatef(fHandleWidth - 2 * fHandleHeight, 0, 0);
 		if (bUpsideDown) {
 			gl.glRotatef(180, 1, 0, 0);
 			gl.glTranslatef(0, fHandleHeight, 0);
 		}
-		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_LOCK_ICON_SELECTION,
+		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_LOCK,
 				EIconTextures.NAVIGATION_LOCK_VIEW, fHandleHeight, fHandleHeight);
 		if (bUpsideDown) {
 			gl.glTranslatef(0, -fHandleHeight, 0);
@@ -974,13 +974,13 @@ public class GLBucket extends AGLView implements
 		}
 		gl.glTranslatef(fHandleHeight, 0, 0);
 		renderSingleHandle(gl, element.getID(),
-				EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+				EPickingType.REMOTE_VIEW_REMOVE,
 				EIconTextures.NAVIGATION_REMOVE_VIEW, fHandleHeight, fHandleHeight);
 		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
 		// Render background (also draggable)
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.BUCKET_DRAG_ICON_SELECTION, element.getID()));
+				EPickingType.REMOTE_VIEW_DRAG, element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(0 + fHandleHeight, 2 + fHandleHeight, 0);
@@ -1512,11 +1512,11 @@ public class GLBucket extends AGLView implements
 		gl.glTranslatef(fXOrigin + 2.5f / fAspectRatio, fYOrigin - fHeight / 2f + fHeight
 				- 1f, 1.8f);
 		gl.glScalef(fHandleScaleFactor, fHandleScaleFactor, fHandleScaleFactor);
-		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION,
+		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_DRAG,
 				EIconTextures.POOL_DRAG_VIEW, 0.1f, 0.1f);
 		gl.glTranslatef(0, -0.2f, 0);
 		renderSingleHandle(gl, element.getID(),
-				EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+				EPickingType.REMOTE_VIEW_REMOVE,
 				EIconTextures.POOL_REMOVE_VIEW, 0.1f, 0.1f);
 		gl.glTranslatef(0, 0.2f, 0);
 		gl.glScalef(1f / fHandleScaleFactor, 1f / fHandleScaleFactor,
@@ -1536,7 +1536,7 @@ public class GLBucket extends AGLView implements
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_SELECTION,
 				element.getID()));
 	}
 
@@ -1821,7 +1821,7 @@ public class GLBucket extends AGLView implements
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
 
 		switch (pickingType) {
-		case BUCKET_DRAG_ICON_SELECTION:
+		case REMOTE_VIEW_DRAG:
 
 			switch (pickingMode) {
 			case CLICKED:
@@ -1839,7 +1839,7 @@ public class GLBucket extends AGLView implements
 			}
 			break;
 
-		case BUCKET_REMOVE_ICON_SELECTION:
+		case REMOTE_VIEW_REMOVE:
 
 			switch (pickingMode) {
 			case CLICKED:
@@ -1865,7 +1865,7 @@ public class GLBucket extends AGLView implements
 			}
 			break;
 
-		case BUCKET_LOCK_ICON_SELECTION:
+		case REMOTE_VIEW_LOCK:
 
 			switch (pickingMode) {
 			case CLICKED:
@@ -1904,7 +1904,7 @@ public class GLBucket extends AGLView implements
 			}
 			break;
 
-		case VIEW_SELECTION:
+		case REMOTE_VIEW_SELECTION:
 			switch (pickingMode) {
 			case MOUSE_OVER:
 

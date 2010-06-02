@@ -49,7 +49,6 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		dataDomainType = "org.caleydo.datadomain.genetic";
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
 		
-		
 		pathwayViewerMode = false;
 		contentLabelSingular = "gene";
 		contentLabelPlural = "genes";
