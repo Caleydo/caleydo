@@ -100,9 +100,7 @@ public abstract class ARcpGLViewPart
 				0, 0, -8, 0, 0, 0, 0);
 		}
 		else {
-
 			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, iParentCanvasID);
-
 		}
 
 		cmdView.doCommand();

@@ -174,6 +174,7 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.parser.xml.sax.handler,
    org.xml.sax.helpers,
    org.xml.sax",
+ org.caleydo.core.manager.path,
  org.caleydo.core.manager.picking;uses:="org.caleydo.core.view.opengl.canvas,javax.media.opengl",
  org.caleydo.core.manager.specialized,
  org.caleydo.core.manager.specialized.clinical.glyph;uses:="org.caleydo.core.view.opengl.canvas.glyph.gridview,org.caleydo.core.view.opengl.canvas.glyph.gridview.data",

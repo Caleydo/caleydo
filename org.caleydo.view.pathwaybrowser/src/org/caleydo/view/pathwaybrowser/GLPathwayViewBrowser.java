@@ -12,6 +12,7 @@ import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -53,14 +54,13 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 	@Override
 	protected void addInitialViews() {
 
-		// for (int pathwayIndex = 0; pathwayIndex < 5; pathwayIndex++) {
-		// SerializedPathwayView pathway = new SerializedPathwayView();
-		// pathway.setPathwayID(((PathwayGraph)
-		// GeneralManager.get().getPathwayManager()
-		// .getAllItems().toArray()[pathwayIndex]).getID());
-		// pathway.setDataDomain(EDataDomain.PATHWAY_DATA);
-		// newViews.add(pathway);
-		// }
+		for (int pathwayIndex = 0; pathwayIndex < 5; pathwayIndex++) {
+			SerializedPathwayView pathway = new SerializedPathwayView();
+			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager()
+					.getAllItems().toArray()[pathwayIndex]).getID());
+			pathway.setDataDomainType(dataDomain.getDataDomainType());
+			newViews.add(pathway);
+		}
 	}
 
 	@Override

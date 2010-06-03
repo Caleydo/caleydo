@@ -49,6 +49,10 @@ public class Path {
 	public Set<DefaultEdge> getEdgesOf(Node node) {
 		return graph.edgesOf(node);
 	}
+	
+	public Node getLastNode() {
+		return lastNode;
+	}
 
 	public ArrayList<Node> getFollowingNodes(Node node) {
 		Set<DefaultEdge> edges = graph.outgoingEdgesOf(node);

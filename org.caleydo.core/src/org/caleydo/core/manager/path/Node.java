@@ -14,4 +14,12 @@ public class Node {
 	public String toString() {
 		return "[" + dataDomainType + ":" + viewType + "]";
 	}
+	
+	public String getDataDomainType() {
+		return dataDomainType;
+	}
+	
+	public String getViewType() {
+		return viewType;
+	}
 }

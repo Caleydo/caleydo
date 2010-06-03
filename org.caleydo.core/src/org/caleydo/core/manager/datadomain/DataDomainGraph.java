@@ -21,7 +21,6 @@ public class DataDomainGraph {
 		dataDomainGraph = new SimpleGraph<String, Edge>(edgeFactory);
 
 		initDataDomainGraph();
-
 	}
 
 	public void initDataDomainGraph() {
@@ -32,7 +31,6 @@ public class DataDomainGraph {
 
 		dataDomainGraph.addEdge(CLINICAL, GENETIC);
 		dataDomainGraph.addEdge(CLINICAL, TISSUE);
-
 		dataDomainGraph.addEdge(GENETIC, PATHWAY);
 	}
 
@@ -47,6 +45,10 @@ public class DataDomainGraph {
 
 	}
 
+	public SimpleGraph<String, Edge> getGraph() {
+		return dataDomainGraph;
+	}
+	
 	public static void main(String args[]) {
 		DataDomainGraph graph = new DataDomainGraph();
 
