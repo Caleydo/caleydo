@@ -366,7 +366,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			renderHandles(gl);
 
-			renderDataDomains(gl, focusDataDomainType, 0, -0.5f, -2.45f);
+			renderDataDomains(gl, focusDataDomainType, 0, 0f, -2.45f);
 
 			if (glConnectionLineRenderer != null && arSlerpActions.isEmpty()) {
 				glConnectionLineRenderer.render(gl);
@@ -395,7 +395,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			return;
 
 		// gl.glScalef(9f/10, 9f/10, 9f/10);
-		renderDataDomain(gl, dataDomainType, x - metaViewAnimation, y + height / 2f);
+		renderDataDomain(gl, dataDomainType, x - metaViewAnimation*2, y + height / 2f);
 		// gl.glScalef(10f/9, 10f/9, 10f/9);
 
 		depth += 1;
@@ -421,12 +421,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		for (String nextDataDomainType : neighbors) {
 
 			if (lastHistoryDataDomainType.equals(nextDataDomainType)) {
-				renderDataDomain(gl, nextDataDomainType, x - metaViewAnimation - depth, y
-						+ height / 2f);
+				renderDataDomain(gl, nextDataDomainType, x - metaViewAnimation*2 - 2
+						* depth, y + height / 2f);
 			} else {
 				yNeighbor += ySteps;
-				renderDataDomain(gl, nextDataDomainType, x - metaViewAnimation + depth,
-						yNeighbor);
+				renderDataDomain(gl, nextDataDomainType, x - metaViewAnimation*2 + 2
+						* depth, yNeighbor);
 			}
 			// gl.glLineWidth(5);
 			// gl.glColor3f(0.3f, 0.3f, 0.3f);
@@ -471,6 +471,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		else
 			renderBorder = true;
 
+		// if (!showFocusViewFullScreen)
 		renderBucketWall(gl, renderBorder);
 
 		glView.displayRemote(gl);
@@ -1022,7 +1023,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				dataDomainType);
 		EIconTextures dataDomainIcon = dataDomain.getIcon();
 
-		float scalingFactor = 0.85f;
+		float scalingFactor = 0.82f;
 
 		float z = 4;
 		float viewIconWidth = 0.12f * scalingFactor;
@@ -1060,12 +1061,24 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		for (int viewIndex = 0; viewIndex < maxViewIcons; viewIndex++) {
 
-			textureManager.renderTexture(gl,
-					EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED, new Vec3f(
-							viewIconWidth, 0.0f, 0), new Vec3f(0.0f, 0.0f, 0), new Vec3f(
-							0.0f, viewIconWidth, 0), new Vec3f(viewIconWidth,
-							viewIconWidth, 0), 1, 1, 1, 1);
+			EIconTextures icon = EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE;
+			if (viewIndex == 0 || viewIndex == maxViewIcons - 1)
+				icon = EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED;
 
+			if (viewIndex == maxViewIcons-1) {
+				gl.glTranslatef(0, viewIconWidth, 0);
+				gl.glRotatef(270, 0, 0, 1);				
+			}
+			
+			textureManager.renderTexture(gl, icon, new Vec3f(viewIconWidth, 0.0f, 0),
+					new Vec3f(0.0f, 0.0f, 0), new Vec3f(0.0f, viewIconWidth, 0),
+					new Vec3f(viewIconWidth, viewIconWidth, 0), 1, 1, 1, 1);
+
+			if (viewIndex == maxViewIcons-1) {
+				gl.glRotatef(-270, 0, 0, 1);			
+				gl.glTranslatef(0, -viewIconWidth, 0);
+			}
+			
 			if (viewIndex < possibleInterfaces.length) {
 
 				String viewType = possibleInterfaces[viewIndex];
@@ -2351,14 +2364,14 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			return;
 
 		if (showFocusViewFullScreen) {
-			focusTransformFullScreen.setTranslation(new Vec3f(-4 / fAspectRatio * 0.75f,
+			focusTransformFullScreen.setTranslation(new Vec3f(-4 / fAspectRatio * 0.4f,
 					-2.5f, 0));
 			focusTransformFullScreen.setScale(new Vec3f(1, 1, 1));
 			focusElement.setTransform(focusTransformFullScreen);
 
 			IViewFrustum frustum = focusElement.getGLView().getViewFrustum();
 			frustum.setLeft(0);
-			frustum.setRight(8 / fAspectRatio);
+			frustum.setRight(8);// / fAspectRatio);
 			frustum.setTop(8);
 			frustum.setBottom(0);
 		} else {
@@ -2370,5 +2383,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			frustum.setTop(4);
 			frustum.setBottom(-4);
 		}
+
+		focusView.setDisplayListDirty();
 	}
 }
