@@ -1,9 +1,15 @@
 package org.caleydo.core.manager.event;
 
 /**
+ * <p>
  * General event listener interface for classes that handle events. Inherited classes should usually handle
  * exactly one type of event. Related views or mediators should register one listener to exactly one event
  * within the event system.
+ * </p>
+ * <p>
+ * Optionally, a listener can have a dataDomainType set. As a consequence, it will receive only those events
+ * that are of the same dataDomainType or have no dataDomainType specified.
+ * </p>
  * 
  * @author Werner Puff
  * @author Alexander Lex
@@ -12,6 +18,7 @@ public abstract class AEventListener<T extends IListenerOwner> {
 
 	/** related handling object, usually a view or manager-type class */
 	protected T handler = null;
+	protected String dataDomainType = null;
 
 	/**
 	 * Returns the related handler object to this listener.
@@ -30,6 +37,26 @@ public abstract class AEventListener<T extends IListenerOwner> {
 	 */
 	public void setHandler(T handler) {
 		this.handler = handler;
+	}
+
+	/**
+	 * Set the dataDomainType - if this is set the listener will receive only events that have this or no
+	 * dataDomainType. Notice that this has to be set before the listener is registered with the event
+	 * publisher.
+	 * 
+	 * @param dataDomainType
+	 */
+	public void setDataDomainType(String dataDomainType) {
+		this.dataDomainType = dataDomainType;
+	}
+
+	/**
+	 * Returns the dataDomainType or null if none is specified
+	 * 
+	 * @return
+	 */
+	public String getDataDomainType() {
+		return dataDomainType;
 	}
 
 	/**

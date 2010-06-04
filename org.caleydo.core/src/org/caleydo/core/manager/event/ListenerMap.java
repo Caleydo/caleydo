@@ -10,9 +10,11 @@ import java.util.HashMap;
  * @author Werner Puff
  */
 public class ListenerMap
-	extends HashMap<Class<? extends AEvent>, Collection<AEventListener<?>>> {
+	extends HashMap<Class<? extends AEvent>, HashMap<String, Collection<AEventListener<?>>>> {
 
 	/** version uid */
 	public static final long serialVersionUID = 1L;
 
+
+	
 }

@@ -2,6 +2,7 @@ package org.caleydo.core.net.config;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.caleydo.core.manager.IEventPublisher;
@@ -33,8 +34,12 @@ public class ConfigureableEventBridge
 	public Collection<Class<? extends AEvent>> getSelectedEventTypes() {
 		Collection<Class<? extends AEvent>> selectedEventTypes = new ArrayList<Class<? extends AEvent>>();
 		ListenerMap listenerMap = publisher.getListenerMap();
-		for (Map.Entry<Class<? extends AEvent>, Collection<AEventListener<?>>> entry : listenerMap.entrySet()) {
-			Collection<AEventListener<?>> listeners = entry.getValue();
+		for (Map.Entry<Class<? extends AEvent>, HashMap<String, Collection<AEventListener<?>>>> entry : listenerMap
+			.entrySet()) {
+			Collection<AEventListener<?>> listeners = new ArrayList<AEventListener<?>>();
+			HashMap<String, Collection<AEventListener<?>>> dataDomainToListenersMap = entry.getValue();
+			for (Collection<AEventListener<?>> subListeners : dataDomainToListenersMap.values())
+				listeners.addAll(subListeners);
 			if (listeners.contains(bridge)) {
 				selectedEventTypes.add(entry.getKey());
 			}

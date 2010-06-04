@@ -2,6 +2,7 @@ package org.caleydo.core.manager.event;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import org.caleydo.core.manager.IEventPublisher;
 
@@ -28,24 +29,32 @@ public class EventPublisher
 	@Override
 	public synchronized void addListener(Class<? extends AEvent> eventClass, AEventListener<?> listener) {
 		listener.checkIntegrity();
-		Collection<AEventListener<?>> listeners = listenerMap.get(eventClass);
-		if (listeners == null) {
-			listeners = new ArrayList<AEventListener<?>>();
-			listenerMap.put(eventClass, listeners);
+		HashMap<String, Collection<AEventListener<?>>> allListeners = listenerMap.get(eventClass);
+		if (allListeners == null) {
+			allListeners = new HashMap<String, Collection<AEventListener<?>>>();
+			listenerMap.put(eventClass, allListeners);
 		}
-		listeners.add(listener);
+		Collection<AEventListener<?>> domainSpecificListeners =
+			allListeners.get(listener.getDataDomainType());
+		if (domainSpecificListeners == null) {
+			domainSpecificListeners = new ArrayList<AEventListener<?>>();
+			allListeners.put(listener.getDataDomainType(), domainSpecificListeners);
+		}
+
+		domainSpecificListeners.add(listener);
 	}
 
 	@Override
 	public synchronized void removeListener(Class<? extends AEvent> eventClass, AEventListener<?> listener) {
-		Collection<AEventListener<?>> listeners = listenerMap.get(eventClass);
+		Collection<AEventListener<?>> listeners =
+			listenerMap.get(eventClass).get(listener.getDataDomainType());
 		listeners.remove(listener);
 	}
 
 	@Override
 	public synchronized void removeListener(AEventListener<?> listener) {
-		for (Collection<AEventListener<?>> listeners : listenerMap.values()) {
-			listeners.remove(listener);
+		for (HashMap<String, Collection<AEventListener<?>>> allListeners : listenerMap.values()) {
+			allListeners.get(listener.getDataDomainType()).remove(listener);
 		}
 	}
 
@@ -54,16 +63,29 @@ public class EventPublisher
 		if (!event.checkIntegrity()) {
 			throw new IllegalStateException("Event " + event + " has failed integrity check");
 		}
-		Collection<AEventListener<?>> listeners = listenerMap.get(event.getClass());
+		String dataDomainType = event.getDataDomainType();
+		HashMap<String, Collection<AEventListener<?>>> dataDomainToListenersMap =
+			listenerMap.get(event.getClass());
+		if (dataDomainToListenersMap == null)
+			return;
+		if (dataDomainType != null)
+			triggerEvents(event, dataDomainToListenersMap.get(null));
+
+		triggerEvents(event, dataDomainToListenersMap.get(dataDomainType));
+		// Collection<AEventListener<?>> listeners = listenerMap.get(event.getClass()).get();
+
+	}
+
+	public ListenerMap getListenerMap() {
+		return listenerMap;
+	}
+
+	private void triggerEvents(AEvent event, Collection<AEventListener<?>> listeners) {
 		if (listeners != null) {
 			for (AEventListener<?> receiver : listeners) {
 				receiver.queueEvent(event);
 			}
 		}
-	}
-
-	public ListenerMap getListenerMap() {
-		return listenerMap;
 	}
 
 }
