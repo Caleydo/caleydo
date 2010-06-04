@@ -106,7 +106,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		IGLRemoteRenderingView {
 
 	public final static String VIEW_ID = "org.caleydo.view.parcoords";
-	
+
 	private EPickingType draggedObject;
 
 	/**
@@ -226,8 +226,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		super(glCanvas, sLabel, viewFrustum);
 		viewType = GLParallelCoordinates.VIEW_ID;
 		registerDataDomains();
-	
-		
 
 		renderStyle = new PCRenderStyle(this, viewFrustum);
 		super.renderStyle = this.renderStyle;
@@ -241,7 +239,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		// glSelectionHeatMap =
 		// ((ViewManager)generalManager.getViewGLCanvasManager()).getSelectionHeatMap();
-		
+
 		icon = EIconTextures.PAR_COORDS_ICON;
 	}
 
@@ -576,21 +574,25 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	 * arrays and selection managers
 	 */
 	private void initContentVariables() {
-		EIDType contentDataType;
-		EIDType storageDataType;
-		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
-			contentDataType = EIDType.EXPRESSION_INDEX;
-			storageDataType = EIDType.EXPERIMENT_INDEX;
-		} else if (dataDomain.getDataDomainType().equals(
-				"org.caleydo.datadomain.clinical")
-				|| dataDomain.getDataDomainType()
-						.equals("org.caleydo.datadomain.generic")) {
-			contentDataType = EIDType.EXPERIMENT_INDEX;
-			storageDataType = EIDType.EXPERIMENT_RECORD;
-		} else {
-			throw new IllegalStateException("Unsupported data domain (" + dataDomain
-					+ ") for parallel coordinates");
-		}
+		// EIDType contentDataType;
+		// EIDType storageDataType;
+		// if
+		// (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
+		// {
+		// contentDataType = EIDType.EXPRESSION_INDEX;
+		// storageDataType = EIDType.EXPERIMENT_INDEX;
+		// } else if (dataDomain.getDataDomainType().equals(
+		// "org.caleydo.datadomain.clinical")
+		// || dataDomain.getDataDomainType()
+		// .equals("org.caleydo.datadomain.generic")) {
+		// contentDataType = EIDType.EXPERIMENT;
+		// storageDataType = EIDType.EXPERIMENT_INDEX;
+		//			
+		// } else {
+		// throw new IllegalStateException("Unsupported data domain (" +
+		// dataDomain
+		// + ") for parallel coordinates");
+		// }
 	}
 
 	/**
@@ -1941,18 +1943,30 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		float x = 0;
 		float y = 0;
 
-		if (idType == EIDType.EXPERIMENT_INDEX) {
-			for (int iAxisNumber : storageVA) {
+		if (idType == EIDType.EXPERIMENT_INDEX
+				&& dataDomain.getDataDomainType()
+						.equals("org.caleydo.datadomain.genetic")) {
 
-				x = iAxisNumber * renderStyle.getAxisSpacing(storageVA.size());
+			int axisCount = 0;
+			for (int iAxisID : storageVA) {
+
+				x = axisCount * renderStyle.getAxisSpacing(storageVA.size());
+				axisCount++;
 				x = x + renderStyle.getXSpacing();
 				y = set.get(storageVA.get(storageVA.size() - 1)).getFloat(
-						EDataRepresentation.NORMALIZED, iAxisNumber);
+						EDataRepresentation.NORMALIZED, iAxisID);
 
 				// fYValue = renderStyle.getBottomSpacing();
 				alElementReps.add(new SelectedElementRep(idType, iUniqueID, x, y, 0.0f));
 			}
-		} else {
+		} 
+		else if (idType == EIDType.EXPERIMENT_INDEX
+				&& dataDomain.getDataDomainType()
+						.equals("org.caleydo.datadomain.clinical"))
+		{
+			
+		}
+		else {
 			// if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
 			// fXValue = viewFrustum.getRight() - 0.2f;
 			// else

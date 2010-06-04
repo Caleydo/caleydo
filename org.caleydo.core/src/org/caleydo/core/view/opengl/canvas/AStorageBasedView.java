@@ -296,11 +296,11 @@ public abstract class AStorageBasedView
 		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
 			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.clinical")) {
 
-			contentSelectionManager.setDelta(selectionDelta);
-
-			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
-			reactOnExternalSelection(scrollToSelection);
-			setDisplayListDirty();
+//			contentSelectionManager.setDelta(selectionDelta);
+//
+//			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
+//			reactOnExternalSelection(scrollToSelection);
+//			setDisplayListDirty();
 		}
 
 		// FIXME: this is not nice since we use expression index for unspecified

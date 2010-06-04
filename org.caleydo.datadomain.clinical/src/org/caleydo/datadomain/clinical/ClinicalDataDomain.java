@@ -1,6 +1,5 @@
 package org.caleydo.datadomain.clinical;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -34,8 +33,8 @@ public class ClinicalDataDomain extends ASetBasedDataDomain {
 		possibleIDCategories = new HashMap<EIDCategory, String>();
 		possibleIDCategories.put(EIDCategory.EXPERIMENT, null);
 
-		contentIDType = EIDType.EXPERIMENT_RECORD;
-		storageIDType = EIDType.EXPERIMENT_INDEX;
+		contentIDType = EIDType.EXPERIMENT_INDEX;
+		storageIDType = EIDType.EXPERIMENT_RECORD;
 	}
 
 	@Override
