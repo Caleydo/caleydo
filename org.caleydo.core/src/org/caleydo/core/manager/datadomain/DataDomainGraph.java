@@ -32,6 +32,7 @@ public class DataDomainGraph {
 		dataDomainGraph.addEdge(CLINICAL, GENETIC);
 		dataDomainGraph.addEdge(CLINICAL, TISSUE);
 		dataDomainGraph.addEdge(GENETIC, PATHWAY);
+		dataDomainGraph.addEdge(TISSUE, GENETIC);
 	}
 
 	public Set<String> getNeighboursOf(String vertex) {
