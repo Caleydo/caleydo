@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
@@ -16,6 +17,7 @@ import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
@@ -69,8 +71,8 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 		dataDomainTypes.add("org.caleydo.datadomain.tissue");
 
-		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
-				dataDomainTypes, viewType);
+		DataDomainManager.getInstance().getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 	@Override
@@ -94,34 +96,34 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 		newViews.clear();
 		allTissueViews = new ArrayList<SerializedTissueView>();
-		//
-		// ISet geneticSet =
-		// generalManager.getUseCase(EDataDomain.GENETIC_DATA).getSet();
-		// for (int experimentIndex = 0; experimentIndex < 2; experimentIndex++)
-		// { // TODO:
-		// // replace
-		// // 2
-		// // with
-		// // geneticSet.size()
-		//
-		// generalManager.getViewGLCanvasManager().createGLView(
-		// "org.caleydo.view.tissue", parentGLCanvas, "", viewFrustum);
-		//
-		// mapExperimentToTexturePath.put(experimentIndex, "data/tissue/breast_"
-		// + experimentIndex % 24 + ".jpg");
-		//
-		// SerializedTissueView tissue = new SerializedTissueView();
-		// tissue.setDataDomain(EDataDomain.TISSUE_DATA);
-		// tissue.setTexturePath(mapExperimentToTexturePath.get(experimentIndex));
-		// // tissue.setLabel(geneticSet.get(experimentIndex).getLabel());
-		// tissue.setExperimentIndex(experimentIndex);
-		//
-		// allTissueViews.add(tissue);
-		// }
-		//
-		// for (SerializedTissueView serTissue : allTissueViews) {
-		// newViews.add(serTissue);
-		// }
+
+		ISet geneticSet = ((ISetBasedDataDomain) DataDomainManager.getInstance()
+				.getDataDomain("org.caleydo.datadomain.genetic")).getSet();
+		
+		for (int experimentIndex = 0; experimentIndex < 4; experimentIndex++) { // TODO:
+			// replace
+			// 2
+			// with
+			// geneticSet.size()
+
+			generalManager.getViewGLCanvasManager().createGLView(
+					"org.caleydo.view.tissue", parentGLCanvas, "", viewFrustum);
+
+			mapExperimentToTexturePath.put(experimentIndex, "data/tissue/breast_"
+					+ experimentIndex % 24 + ".jpg");
+
+			SerializedTissueView tissue = new SerializedTissueView();
+			tissue.setDataDomainType("org.caleydo.view.tissue");
+			tissue.setTexturePath(mapExperimentToTexturePath.get(experimentIndex));
+			// tissue.setLabel(geneticSet.get(experimentIndex).getLabel());
+			tissue.setExperimentIndex(experimentIndex);
+
+			allTissueViews.add(tissue);
+		}
+
+		for (SerializedTissueView serTissue : allTissueViews) {
+			newViews.add(serTissue);
+		}
 	}
 
 	private void updateViews() {

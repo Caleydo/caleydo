@@ -22,6 +22,7 @@ public enum EPickingType {
 	REMOTE_VIEW_SELECTION,
 	VIEW_TYPE_SELECTION,
 	DATA_DOMAIN_SELECTION,
+	NEXT_DATA_DOMAIN_SELECTION,
 	
 	/** A remote level element is the place-holder for a view, basically the wall behind a view */
 	REMOTE_LEVEL_ELEMENT,

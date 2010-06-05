@@ -1,6 +1,5 @@
 package org.caleydo.view.dataflipper;
 
-import gleem.RightTruncPyrMapping;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
@@ -8,7 +7,6 @@ import gleem.linalg.open.Transform;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -85,10 +83,11 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private static final int SLERP_SPEED = 1400;
 
 	private static final int MAX_SIDE_VIEWS = 10;
-	
+
 	private static float DATA_DOMAIN_Z = 4;
 
 	private static float DATA_DOMAIN_SCALING_FACTOR = 1f;
+	private static float MAX_HISTORY_DATA_DOMAINS = 5;
 	private static float INTERFACE_WIDTH = 0.12f * DATA_DOMAIN_SCALING_FACTOR;
 	private static float ICON_PADDING = 0.015f * DATA_DOMAIN_SCALING_FACTOR;
 	private static float DATA_DOMAIN_SPACING = 1.2f;
@@ -183,6 +182,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		dataDomainGraph = new DataDomainGraph();
 		historyPath = new Path();
+		historyPath.addNode(new Node(startDataDomainType, ""));
 
 		// TODO: Move to render style
 		focusTransform = new Transform();
@@ -319,7 +319,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		Set<String> possibleViews = dataDomainViewAssociationManager
 				.getViewTypesForDataDomain(dataDomainType);
 		for (String viewType : possibleViews) {
-			viewSpawn.put(viewType, null);
+			RemoteLevelElement remoteLevelElement = new RemoteLevelElement(null);
+			remoteLevelElement.setTransform(new Transform());
+			viewSpawn.put(viewType, remoteLevelElement);
+
 		}
 
 		viewSpawnPos.put(dataDomainType, viewSpawn);
@@ -376,7 +379,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			renderHandles(gl);
 
-			renderDataDomains(gl, focusDataDomainType, 1f, -2.45f);
+			renderDataDomains(gl, focusDataDomainType, 1f, -2.55f);
 
 			if (glConnectionLineRenderer != null && arSlerpActions.isEmpty()) {
 				glConnectionLineRenderer.render(gl);
@@ -393,10 +396,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glTranslatef(0, 0, -fZTranslation);
 	}
 
-	private void renderDataDomains(GL gl, String dataDomainType, float x,
-			float y) {
+	private void renderDataDomains(GL gl, String dataDomainType, float x, float y) {
 
-		float height = 1.2f;
+		float height = 0.95f;
 
 		if (metaViewAnimation < 1)
 			metaViewAnimation += 0.01f;
@@ -409,43 +411,64 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		int numberOfVerticalDataDomains = neighbors.size() + 1;
 
-		String lastHistoryDataDomainType = "";
-		if (historyPath.getLastNode() != null) {
-			lastHistoryDataDomainType = historyPath.getLastNode().getDataDomainType();
-		}
+		// String lastHistoryDataDomainType = "";
+		// if (historyPath.getLastNode() != null) {
+		// lastHistoryDataDomainType =
+		// historyPath.getLastNode().getDataDomainType();
+		// }
 
-		for (String nextDataDomainType : neighbors) {
-			if (lastHistoryDataDomainType.equals(nextDataDomainType)) {
-				numberOfVerticalDataDomains--;
-				break;
+		// for (String nextDataDomainType : neighbors) {
+		// if (lastHistoryDataDomainType.equals(nextDataDomainType)) {
+		// numberOfVerticalDataDomains--;
+		// break;
+		// }
+		// }
+
+		// Render past data domains
+		Node historyNode = historyPath.getLastNode();
+		if (historyNode != null) {
+			for (int i = 0; i < MAX_HISTORY_DATA_DOMAINS; i++) {
+
+				if (historyPath.getPrecedingNode(historyNode).size() < 1)
+					break;
+
+				historyNode = historyPath.getPrecedingNode(historyNode).get(0);
+
+				if (historyNode == null)
+					break;
+
+				renderDataDomain(gl, historyNode.getDataDomainType(), x
+						- metaViewAnimation - (i + 1) * DATA_DOMAIN_SPACING, y + height
+						/ 2f);
+
+				gl.glLineWidth(5);
+				gl.glColor3f(0.3f, 0.3f, 0.3f);
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(x - metaViewAnimation + 0.5f * DATA_DOMAIN_SCALING_FACTOR,
+						y + height / 2f + 0.15f, 4);
+				gl.glVertex3f(x - metaViewAnimation + 0.5f - DATA_DOMAIN_SPACING
+						* (i + 1), y + height / 2f + 0.15f, 4);
+				gl.glEnd();
 			}
 		}
 
 		float ySteps = height / (numberOfVerticalDataDomains);
-
-		float yNeighbor = y;
+		float yNeighbor = y + 0.2f;
+		// Render possible next data domains
 		for (String nextDataDomainType : neighbors) {
 
-			if (lastHistoryDataDomainType.equals(nextDataDomainType)) {
-				renderDataDomain(gl, nextDataDomainType, x - metaViewAnimation - DATA_DOMAIN_SPACING, y + height / 2f);
-				
-				 gl.glLineWidth(5);
-				 gl.glColor3f(0.3f, 0.3f, 0.3f);
-				 gl.glBegin(GL.GL_LINES);
-				 gl.glVertex3f(x - metaViewAnimation + 0.5f*DATA_DOMAIN_SCALING_FACTOR, y + height / 2f + 0.15f, 4);
-				 gl.glVertex3f(x - metaViewAnimation - DATA_DOMAIN_SPACING, y + height / 2f + 0.15f, 4);
-				 gl.glEnd();
-			} else {
-				yNeighbor += ySteps;
-				renderDataDomain(gl, nextDataDomainType, x - metaViewAnimation + DATA_DOMAIN_SPACING, yNeighbor);
-		
-				 gl.glLineWidth(5);
-				 gl.glColor3f(0.3f, 0.3f, 0.3f);
-				 gl.glBegin(GL.GL_LINES);
-				 gl.glVertex3f(x - metaViewAnimation + 0.5f*DATA_DOMAIN_SCALING_FACTOR, y + height / 2f + 0.15f, 4);
-				 gl.glVertex3f(x - metaViewAnimation + DATA_DOMAIN_SPACING, yNeighbor + 0.15f, 4);
-				 gl.glEnd();
-			}
+			yNeighbor += ySteps;
+			renderNextDataDomain(gl, nextDataDomainType, x - metaViewAnimation
+					+ DATA_DOMAIN_SPACING, yNeighbor);
+
+			gl.glLineWidth(5);
+			gl.glColor3f(0.3f, 0.3f, 0.3f);
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(x - metaViewAnimation + 0.5f * DATA_DOMAIN_SCALING_FACTOR, y
+					+ height / 2f + 0.15f, 4);
+			gl.glVertex3f(x - metaViewAnimation + DATA_DOMAIN_SPACING, yNeighbor + 0.1f,
+					4);
+			gl.glEnd();
 		}
 	}
 
@@ -887,6 +910,29 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			}
 			break;
 
+		case NEXT_DATA_DOMAIN_SELECTION:
+
+			switch (pickingMode) {
+			case CLICKED:
+
+				for (IDataDomain tmpDataDomain : DataDomainManager.getInstance()
+						.getDataDomains()) {
+					String tmpDataDomainType = tmpDataDomain.getDataDomainType();
+					if (tmpDataDomainType.hashCode() == externalPickingID) {
+						String[] possibleInterfaces = dataDomainViewAssociationManager
+								.getViewTypesForDataDomain(tmpDataDomainType).toArray(
+										new String[dataDomainViewAssociationManager
+												.getViewTypesForDataDomain(
+														tmpDataDomainType).size()]);
+
+						addView(tmpDataDomain.getDataDomainType(), possibleInterfaces[0]);
+						break;
+					}
+				}
+				break;
+			}
+			break;
+
 		case REMOTE_VIEW_REMOVE:
 
 			switch (pickingMode) {
@@ -1056,7 +1102,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				dataDomainType);
 		EIconTextures dataDomainIcon = dataDomain.getIcon();
 
-
 		float maxViewIcons = 4;
 
 		gl.glTranslatef(x, y, DATA_DOMAIN_Z);
@@ -1067,15 +1112,18 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		// Data background
 		textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_DATA_ICON_BACKGROUND,
-				new Vec3f(0, 0, 0), new Vec3f(0.51f * DATA_DOMAIN_SCALING_FACTOR, 0, 0), new Vec3f(
-						0.51f * DATA_DOMAIN_SCALING_FACTOR, 0.3f * DATA_DOMAIN_SCALING_FACTOR, 0), new Vec3f(0,
+				new Vec3f(0, 0, 0), new Vec3f(0.51f * DATA_DOMAIN_SCALING_FACTOR, 0, 0),
+				new Vec3f(0.51f * DATA_DOMAIN_SCALING_FACTOR,
+						0.3f * DATA_DOMAIN_SCALING_FACTOR, 0), new Vec3f(0,
 						0.3f * DATA_DOMAIN_SCALING_FACTOR, 0), 1, 1, 1, 1);
 
 		// Data icon
 		textureManager.renderTexture(gl, dataDomainIcon, new Vec3f(0f, 0.02f, 0.01f),
-				new Vec3f(0.5f * DATA_DOMAIN_SCALING_FACTOR, 0.02f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), new Vec3f(
-						0.5f * DATA_DOMAIN_SCALING_FACTOR, 0.28f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), new Vec3f(
-						0.0f, 0.28f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), 1, 1, 1, 1);
+				new Vec3f(0.5f * DATA_DOMAIN_SCALING_FACTOR,
+						0.02f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), new Vec3f(
+						0.5f * DATA_DOMAIN_SCALING_FACTOR,
+						0.28f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), new Vec3f(0.0f,
+						0.28f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), 1, 1, 1, 1);
 
 		gl.glPopName();
 
@@ -1163,33 +1211,39 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				textureManager.renderTexture(gl, determineViewIconPath(viewType),
 						new Vec3f(INTERFACE_WIDTH - ICON_PADDING, ICON_PADDING, 0),
 						new Vec3f(ICON_PADDING, ICON_PADDING, 0), new Vec3f(ICON_PADDING,
-								INTERFACE_WIDTH - ICON_PADDING, 0), new Vec3f(INTERFACE_WIDTH
-								- ICON_PADDING, INTERFACE_WIDTH - ICON_PADDING, 0),
-						INTERFACE_ICON_BACKGROUND_COLOR[0], INTERFACE_ICON_BACKGROUND_COLOR[1],
+								INTERFACE_WIDTH - ICON_PADDING, 0), new Vec3f(
+								INTERFACE_WIDTH - ICON_PADDING, INTERFACE_WIDTH
+										- ICON_PADDING, 0),
+						INTERFACE_ICON_BACKGROUND_COLOR[0],
+						INTERFACE_ICON_BACKGROUND_COLOR[1],
 						INTERFACE_ICON_BACKGROUND_COLOR[2], 1);
 
 				RemoteLevelElement viewSpawnLevelElement = viewSpawnPos.get(
 						dataDomainType).get(viewType);
-				Transform transform = null;
-				if (viewSpawnLevelElement == null) {
-					viewSpawnLevelElement = new RemoteLevelElement(null);
-					viewSpawnPos.get(dataDomainType).put(viewType, viewSpawnLevelElement);
 
-					transform = new Transform();
-					viewSpawnLevelElement.setTransform(transform);
-				} else {
-					transform = viewSpawnLevelElement.getTransform();
-				}
-
+				Transform transform = viewSpawnLevelElement.getTransform();
 				transform.setTranslation(new Vec3f(x + 1.6f + viewIndex
 						* (INTERFACE_WIDTH + 0.01f), y + 1.9f, DATA_DOMAIN_Z));
 				transform.setScale(new Vec3f(0.01f, 0.01f, 0.01f));
+				viewSpawnLevelElement.setTransform(transform);
 
 				if (element != null) {
 
 					float xCorrectionRight = 0;
-					if (stackElementsRight.contains(element))
-						xCorrectionRight = -1.1f;
+					// FIXME: this correction is not nice - a actual calculation
+					// with the angle of the plane would be better
+					if (stackElementsRight.contains(element)) {
+						
+						if (stackElementsRight.get(0) == element)
+							xCorrectionRight = -1.03f;
+						else if (stackElementsRight.get(1) == element)
+							xCorrectionRight = -1.13f;
+						else if (stackElementsRight.get(2) == element)
+							xCorrectionRight = -1.23f;
+					}
+					else if (focusElement == element) {
+						xCorrectionRight +=  1.5f;
+					}
 
 					transform = element.getTransform();
 
@@ -1201,7 +1255,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 							-y - 1.5f - 0.05f, 0 };
 
 					gl.glColor3fv(CONNECTION_LINE_COLOR, 0);
-					renderViewIconToViewRelation(gl, viewIconPos, viewPos);
+					renderViewIconToViewRelation(gl, element, viewIconPos, viewPos);
 				}
 
 				// for (SlerpAction slerp : arSlerpActions) {
@@ -1250,7 +1304,39 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	}
 
-	private void renderViewIconToViewRelation(GL gl, float[] viewIconPos, float[] viewPos) {
+	private void renderNextDataDomain(final GL gl, String dataDomainType, float x, float y) {
+
+		IDataDomain dataDomain = DataDomainManager.getInstance().getDataDomain(
+				dataDomainType);
+		EIconTextures dataDomainIcon = dataDomain.getIcon();
+
+		gl.glTranslatef(x, y, DATA_DOMAIN_Z);
+
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.NEXT_DATA_DOMAIN_SELECTION, dataDomainType.hashCode()));
+
+		// Data background
+		textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_DATA_ICON_BACKGROUND,
+				new Vec3f(0, 0, 0), new Vec3f(0.21f * DATA_DOMAIN_SCALING_FACTOR, 0, 0),
+				new Vec3f(0.21f * DATA_DOMAIN_SCALING_FACTOR,
+						0.2f * DATA_DOMAIN_SCALING_FACTOR, 0), new Vec3f(0,
+						0.2f * DATA_DOMAIN_SCALING_FACTOR, 0), 1, 1, 1, 1);
+
+		// Data icon
+		textureManager.renderTexture(gl, dataDomainIcon, new Vec3f(0f, 0.02f, 0.01f),
+				new Vec3f(0.2f * DATA_DOMAIN_SCALING_FACTOR,
+						0.02f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), new Vec3f(
+						0.2f * DATA_DOMAIN_SCALING_FACTOR,
+						0.18f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), new Vec3f(0.0f,
+						0.18f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), 1, 1, 1, 1);
+
+		gl.glPopName();
+
+		gl.glTranslatef(-x, -y, -DATA_DOMAIN_Z);
+
+	}
+
+	private void renderViewIconToViewRelation(GL gl, RemoteLevelElement element, float[] viewIconPos, float[] viewPos) {
 
 		gl.glLineWidth(5);
 		// gl.glBegin(GL.GL_LINES);
@@ -1259,10 +1345,16 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// gl.glEnd();
 
 		float yLineOffset = (viewPos[1] - viewIconPos[1]);
-		float yLineOffsetFactor = 0.5f;// (Math.abs(viewIconPos[0] -
-		// viewPos[0]))/(viewFrustum.getWidth()*0.25f);
-		// System.out.println(yLineOffsetFactor);
-		// System.out.println(viewIconPos[0] - viewPos[0]);
+		float yLineOffsetFactor = 0.8f;
+		
+		if (stackElementsLeft.contains(element)){
+			int stackPos = stackElementsLeft.indexOf(element);
+			yLineOffsetFactor -= (stackPos+1)/10f;
+		}
+		else if (stackElementsRight.contains(element)) {
+			int stackPos = stackElementsRight.indexOf(element);
+			yLineOffsetFactor -= (stackPos+1)/10f;
+		}
 
 		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
 		points.add(new Vec3f(viewIconPos[0], viewIconPos[1], viewIconPos[2]));
@@ -2272,12 +2364,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private void addView(String dataDomainType, String viewType) {
 
 		if ((!dataDomainType.equals(focusDataDomainType))) {
-//			|| (historyPath
-//		}
-//				.getLastNode() != null && !historyPath.getLastNode().toString().equals(
-//				focusDataDomainType)))) {
+			// || (historyPath
+			// }
+			// .getLastNode() != null &&
+			// !historyPath.getLastNode().toString().equals(
+			// focusDataDomainType)))) {
 			metaViewAnimation = 0;
-			historyPath.addNode(new Node(focusDataDomainType, viewType));
+			historyPath.addNode(new Node(dataDomainType, viewType));
 		}
 
 		focusDataDomainType = dataDomainType;
@@ -2327,11 +2420,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	private void openView(AGLView view) {
 
-		String dataDomainType = ((IDataDomainBasedView<IDataDomain>) view).getDataDomain()
-		.getDataDomainType();
-		
-		RemoteLevelElement viewSpawnElement = viewSpawnPos.get(
-				dataDomainType).get(view.getViewType());
+		String dataDomainType = ((IDataDomainBasedView<IDataDomain>) view)
+				.getDataDomain().getDataDomainType();
+
+		RemoteLevelElement viewSpawnElement = viewSpawnPos.get(dataDomainType).get(
+				view.getViewType());
+
 		RemoteLevelElement destinationElement = null;
 
 		if (focusElement.isFree()) {
@@ -2354,8 +2448,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			// }
 			//			
 			// if (((IDataDomainBasedView<IDataDomain>) view).getDataDomain())
-			
-				freeFocusElementByChainMove(false);
+
+			freeFocusElementByChainMove(false);
 			destinationElement = focusElement;
 		}
 
