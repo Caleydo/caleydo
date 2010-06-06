@@ -57,6 +57,11 @@ public abstract class ASWTView
 	}
 
 	@Override
+	public Composite getComposite() {
+		return parentComposite;
+	}
+	
+	@Override
 	public void registerEventListeners() {
 		// TODO Auto-generated method stub
 

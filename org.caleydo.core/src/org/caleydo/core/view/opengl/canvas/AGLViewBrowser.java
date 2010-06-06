@@ -77,6 +77,8 @@ public abstract class AGLViewBrowser
 	private static final int SLERP_SPEED = 1400;
 
 	public final static float SIDE_PANEL_WIDTH = 0.8f;
+	
+	protected static final int MAX_VIEWS = 4;
 
 	private int iMouseOverObjectID = -1;
 

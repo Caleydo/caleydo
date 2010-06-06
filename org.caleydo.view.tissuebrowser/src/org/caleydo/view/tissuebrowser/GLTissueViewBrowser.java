@@ -100,7 +100,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		ISet geneticSet = ((ISetBasedDataDomain) DataDomainManager.getInstance()
 				.getDataDomain("org.caleydo.datadomain.genetic")).getSet();
 		
-		for (int experimentIndex = 0; experimentIndex < 4; experimentIndex++) { // TODO:
+		for (int experimentIndex = 0; experimentIndex < MAX_VIEWS; experimentIndex++) { // TODO:
 			// replace
 			// 2
 			// with

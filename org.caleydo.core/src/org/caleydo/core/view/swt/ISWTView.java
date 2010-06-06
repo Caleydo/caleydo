@@ -22,4 +22,9 @@ public interface ISWTView
 	 * Method is responsible for filling the composite with content.
 	 */
 	public void drawView();
+	
+	/**
+	 * Returns the current SWT composite in which the view renders.
+	 */
+	public Composite getComposite();
 }

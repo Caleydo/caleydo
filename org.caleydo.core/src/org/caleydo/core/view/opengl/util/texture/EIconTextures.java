@@ -93,6 +93,7 @@ public enum EIconTextures {
 	DATA_FLIPPER_GUIDANCE_CONNECTION_STRAIGHT_HIGHLIGHT(
 		"resources/icons/view/dataflipper/guidance_connection_straight_highlight.png"),
 	DATA_FLIPPER_DATA_ICON_BACKGROUND("resources/icons/view/dataflipper/data_icon_background.png"),
+	DATA_FLIPPER_DATA_ICON_BACKGROUND_ROUND("resources/icons/view/dataflipper/data_icon_background_round.png"),
 	DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED(
 		"resources/icons/view/dataflipper/view_icon_background_rounded.png"),
 	DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE(

@@ -54,7 +54,7 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 	@Override
 	protected void addInitialViews() {
 
-		for (int pathwayIndex = 0; pathwayIndex < 5; pathwayIndex++) {
+		for (int pathwayIndex = 0; pathwayIndex < MAX_VIEWS; pathwayIndex++) {
 			SerializedPathwayView pathway = new SerializedPathwayView();
 			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager()
 					.getAllItems().toArray()[pathwayIndex]).getID());
