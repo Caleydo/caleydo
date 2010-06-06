@@ -55,7 +55,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 	private ArrayList<SerializedTissueView> allTissueViews;
 
-	private boolean poolLeft = true;
+	private boolean poolLeft = false;
 
 	public GLTissueViewBrowser(GLCaleydoCanvas glCanvas, String sLabel,
 			IViewFrustum viewFrustum) {
@@ -100,11 +100,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		ISet geneticSet = ((ISetBasedDataDomain) DataDomainManager.getInstance()
 				.getDataDomain("org.caleydo.datadomain.genetic")).getSet();
 		
-		for (int experimentIndex = 0; experimentIndex < MAX_VIEWS; experimentIndex++) { // TODO:
-			// replace
-			// 2
-			// with
-			// geneticSet.size()
+		for (int experimentIndex = 0; experimentIndex < MAX_VIEWS; experimentIndex++) {
 
 			generalManager.getViewGLCanvasManager().createGLView(
 					"org.caleydo.view.tissue", parentGLCanvas, "", viewFrustum);

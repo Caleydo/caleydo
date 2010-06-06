@@ -156,7 +156,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private boolean showFocusViewFullScreen = false;
 
 	private String startDataDomainType = "org.caleydo.datadomain.clinical";
-	private String focusDataDomainType = startDataDomainType;
 
 	/**
 	 * Constructor.
@@ -301,10 +300,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				dataDomainType, "org.caleydo.view.heatmap.hierarchical");
 		dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
 				dataDomainType, "org.caleydo.view.parcoords");
-		// dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
-		// dataDomainType, "org.caleydo.analytical.clustering");
 		dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
-				dataDomainType, "org.caleydo.view.browser");
+				dataDomainType, "org.caleydo.analytical.clustering");
+//		dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
+//				dataDomainType, "org.caleydo.view.browser");
 
 		dataDomainType = "org.caleydo.datadomain.clinical";
 		dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
@@ -387,7 +386,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			renderHandles(gl);
 
-			renderDataDomains(gl, focusDataDomainType, 1f, -2.55f);
+			renderDataDomains(gl, historyPath.getLastNode().getDataDomainType(), 1f, -2.55f);
 
 			if (glConnectionLineRenderer != null && arSlerpActions.isEmpty()) {
 				glConnectionLineRenderer.render(gl);
@@ -408,7 +407,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		float height = 0.95f;
 
-		if (metaViewAnimation < 1)
+		if (metaViewAnimation < DATA_DOMAIN_SPACING)
 			metaViewAnimation += 0.01f;
 
 		// gl.glScalef(9f/10, 9f/10, 9f/10);
@@ -416,21 +415,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				/ 2f);
 		// gl.glScalef(10f/9, 10f/9, 10f/9);
 
-		Set<String> neighbors = dataDomainGraph.getNeighboursOf(focusDataDomainType);
+		Set<String> neighbors = dataDomainGraph.getNeighboursOf(historyPath.getLastNode().getDataDomainType());
 		int numberOfVerticalDataDomains = neighbors.size() + 1;
-
-		// String lastHistoryDataDomainType = "";
-		// if (historyPath.getLastNode() != null) {
-		// lastHistoryDataDomainType =
-		// historyPath.getLastNode().getDataDomainType();
-		// }
-
-		// for (String nextDataDomainType : neighbors) {
-		// if (lastHistoryDataDomainType.equals(nextDataDomainType)) {
-		// numberOfVerticalDataDomains--;
-		// break;
-		// }
-		// }
 
 		// Render past data domains
 		Node historyNode = historyPath.getLastNode();
@@ -891,50 +877,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			switch (pickingMode) {
 			case CLICKED:
 
-				// AGLView view =
-				// GeneralManager.get().getViewGLCanvasManager().getGLView(
-				// externalPickingID);
-				// String viewType =
-				// possibleViewsWithDataDomain.get(externalPickingID).getFirst();
-				//				
-				// RemoteLevelElement element = null;
-				// if (focusElement.getGLView() != null &&
-				// focusElement.getGLView().getViewType().equals(viewType)) {
-				// element = focusElement;
-				// }
-				//
-				// for (RemoteLevelElement tmpElement : stackElementsLeft) {
-				// if (tmpElement.getGLView() != null &&
-				// tmpElement.getGLView().getViewType().equals(viewType)) {
-				// element = tmpElement;
-				// break;
-				// }
-				// }
-				//
-				// for (RemoteLevelElement tmpElement : stackElementsRight) {
-				// if (tmpElement.getGLView() != null &&
-				// tmpElement.getGLView().getViewType().equals(viewType)) {
-				// element = tmpElement;
-				// break;
-				// }
-				// }
-
-				// // Check if view already exists - if it exists, the view will
-				// be
-				// // closed
-				// if (element != null)
-				// closeView(element.getID());
-				// else
-
-				String dataDomainType = possibleInterfacesWithDataDomain.get(
-						externalPickingID).getSecond();
-				String interfaceType = possibleInterfacesWithDataDomain.get(
-						externalPickingID).getFirst();
-
-				if (interfaceType.contains("view"))
-					addView(dataDomainType, interfaceType);
-				else
-					triggerAnalyticalInterface(dataDomainType, interfaceType);
+				handleDataDomainSelection(externalPickingID);
 
 				break;
 
@@ -946,15 +889,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			switch (pickingMode) {
 			case CLICKED:
 
-				String dataDomainType = possibleInterfacesWithDataDomain.get(
-						externalPickingID).getSecond();
-				String interfaceType = possibleInterfacesWithDataDomain.get(
-						externalPickingID).getFirst();
-
-				if (interfaceType.contains("view"))
-					addView(dataDomainType, interfaceType);
-				else
-					triggerAnalyticalInterface(dataDomainType, viewType);
+				handleDataDomainSelection(externalPickingID);
 
 				break;
 			}
@@ -975,6 +910,11 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 												.getViewTypesForDataDomain(
 														tmpDataDomainType).size()]);
 
+						if ((!historyPath.getLastNode().getDataDomainType().equals(tmpDataDomainType))) {
+							metaViewAnimation = 0;
+							historyPath.addNode(new Node(tmpDataDomainType, viewType));
+						}
+						
 						addView(tmpDataDomain.getDataDomainType(), possibleInterfaces[0]);
 						break;
 					}
@@ -993,6 +933,21 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			}
 			break;
 		}
+	}
+
+	private void handleDataDomainSelection(int externalPickingID) {
+		
+		String dataDomainType = possibleInterfacesWithDataDomain.get(
+				externalPickingID).getSecond();
+		String interfaceType = possibleInterfacesWithDataDomain.get(
+				externalPickingID).getFirst();
+
+		if (interfaceType.contains("view")) {
+			
+			addView(dataDomainType, interfaceType);
+		}
+		else
+			triggerAnalyticalInterface(dataDomainType, viewType);
 	}
 
 	private void triggerAnalyticalInterface(String dataDomainType, String interfaceType) {
@@ -1279,7 +1234,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				viewSpawnLevelElement.setTransform(transform);
 
 				if (element != null && node.containsView(element.getGLView())) {
-					
+
 					float xCorrectionRight = 0;
 					// FIXME: this correction is not nice - a actual calculation
 					// with the angle of the plane would be better
@@ -1308,36 +1263,35 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					renderViewIconToViewRelation(gl, element, viewIconPos, viewPos);
 				}
 
-				// for (SlerpAction slerp : arSlerpActions) {
-				//					
-				// AGLView glView =
-				// GeneralManager.get().getViewGLCanvasManager()
-				// .getGLView(slerp.getElementId());
-				//					
-				// if (glView == null || glView.viewType.equals(viewType)
-				// || glView.getDataDomain() != dataDomain)
-				// continue;
-				//
-				// float xCorrectionRight = 0;
-				// // if (stackElementsRight.contains(element))
-				// // xCorrectionRight = -1.1f;
-				//
-				// SlerpMod slerpMod = new SlerpMod();
-				// Transform transform = slerpMod.interpolate(slerp
-				// .getOriginRemoteLevelElement().getTransform(), slerp
-				// .getDestinationRemoteLevelElement().getTransform(),
-				// (float) iSlerpFactor / SLERP_RANGE);
-				//
-				// viewIconBackgroundColor = new float[] { 1f, 1f, 1f };
-				// gl.glColor3fv(viewIconBackgroundColor, 0);
-				// gl.glLineWidth(2);
-				// gl.glBegin(GL.GL_LINES);
-				// gl.glVertex3f(viewIconWidth / 2f, viewIconWidth, 0);
-				// gl.glVertex3f(transform.getTranslation().x() - x - viewIndex
-				// * (viewIconWidth + 0.01f) - 1.5f + xCorrectionRight,
-				// -y - 1.5f - 0.05f, transform.getTranslation().z()-z);
-				// gl.glEnd();
-				// }
+//				for (SlerpAction slerp : arSlerpActions) {
+//
+//					AGLView glView = GeneralManager.get().getViewGLCanvasManager()
+//							.getGLView(slerp.getElementId());
+//
+//					if (glView == null || glView.viewType.equals(viewType)
+//							|| ((IDataDomainBasedView<IDataDomain>)glView).getDataDomain() != dataDomain)
+//						continue;
+//
+//					float xCorrectionRight = 0;
+//					// if (stackElementsRight.contains(element))
+//					// xCorrectionRight = -1.1f;
+//
+//					SlerpMod slerpMod = new SlerpMod();
+//					transform = slerpMod.interpolate(slerp
+//							.getOriginRemoteLevelElement().getTransform(), slerp
+//							.getDestinationRemoteLevelElement().getTransform(),
+//							(float) iSlerpFactor / SLERP_RANGE);
+//
+//					INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 1f, 1f, 1f };
+//					gl.glColor3fv(INTERFACE_ICON_BACKGROUND_COLOR, 0);
+//					gl.glLineWidth(2);
+//					gl.glBegin(GL.GL_LINES);
+//					gl.glVertex3f(INTERFACE_WIDTH / 2f, INTERFACE_WIDTH, 0);
+//					gl.glVertex3f(transform.getTranslation().x() - x - viewIndex
+//							* (INTERFACE_WIDTH + 0.01f) - 1.5f + xCorrectionRight,
+//							-y - 1.5f - 0.05f, transform.getTranslation().z() - DATA_DOMAIN_Z);
+//					gl.glEnd();
+//				}
 
 				gl.glPopName();
 
@@ -1442,8 +1396,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		if (viewName.contains("hierarchical"))
 			viewName = viewName.replace(".hierarchical", "");
 
-		// if (viewName.contains("browser"))
-		// viewName = viewName.replace("browser", "");
+		if (viewName.contains("pathwaybrowser") || viewName.contains("tissuebrowser"))
+			viewName = viewName.replace("browser", "");
 
 		String subfolder = "";
 		if (viewName.contains("parcoords") || viewName.contains("heatmap"))
@@ -1795,18 +1749,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	private void addView(String dataDomainType, String viewType) {
-
-		if ((!dataDomainType.equals(focusDataDomainType))) {
-			// || (historyPath
-			// }
-			// .getLastNode() != null &&
-			// !historyPath.getLastNode().toString().equals(
-			// focusDataDomainType)))) {
-			metaViewAnimation = 0;
-			historyPath.addNode(new Node(dataDomainType, viewType));
-		}
-
-		focusDataDomainType = dataDomainType;
 
 		// Check if view already exists
 		for (AGLView glView : containedGLViews) {
