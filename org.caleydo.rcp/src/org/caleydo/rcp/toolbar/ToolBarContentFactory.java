@@ -159,7 +159,7 @@ public class ToolBarContentFactory {
 	/**
 	 * determines if a view is attached to the caleydo's main window or not
 	 * 
-	 * @param viewType
+	 * @param interfaceType
 	 *            view as used by {@link IViewManager}
 	 * @return true if the view is attached, false otherwise
 	 */

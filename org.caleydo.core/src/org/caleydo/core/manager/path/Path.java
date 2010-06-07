@@ -80,20 +80,20 @@ public class Path {
 	public static void main(String args[])
 	{
 		Path path = new Path();
-		path.addNode(new Node("Oans", "Oansaview"));
-		Node node = new Node("Zwoa", "Zwoaview");
-		path.addNode(node);
-		path.addNode(new Node("Drei", "Dreierview"));
-		path.addNode(node,  new Node("Via", "Viaraview"));
+//		path.addNode(new Node("Oans", "Oansaview"));
+//		Node node = new Node("Zwoa", "Zwoaview");
+//		path.addNode(node);
+//		path.addNode(new Node("Drei", "Dreierview"));
+//		path.addNode(node,  new Node("Via", "Viaraview"));
 		
 		
-		for(Node tempNode : path.getFollowingNodes(node))
-		{
-			System.out.println(tempNode);
-		}
-		System.out.println("");
-		
-		System.out.println(path.getGraph());
+//		for(Node tempNode : path.getFollowingNodes(node))
+//		{
+//			System.out.println(tempNode);
+//		}
+//		System.out.println("");
+//		
+//		System.out.println(path.getGraph());
 	}
 	
 
