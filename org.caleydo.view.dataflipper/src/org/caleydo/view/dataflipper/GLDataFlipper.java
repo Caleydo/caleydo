@@ -132,6 +132,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	private RemoteLevelElement lastPickedRemoteLevelElement;
 	private AGLView lastPickedView;
+	private Node lastSelectedDataDomainNode;
 
 	private DataDomainGraph dataDomainGraph;
 	private Path historyPath;
@@ -308,6 +309,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		historyPath = new Path();
 		historyPath.addNode(new Node(startDataDomainType,
 				dataDomainViewAssociationManager));
+		lastSelectedDataDomainNode = historyPath.getLastNode();
 	}
 
 	@Override
@@ -547,9 +549,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				// view.getViewFrustum().considerAspectRatio(true);
 
 				containedGLViews.add(view);
-				historyPath.getLastNode().addGLView(view);
+				lastSelectedDataDomainNode.addGLView(view);
 
-				openView(view, historyPath.getLastNode());
+				openView(view, lastSelectedDataDomainNode);
 
 				if (newViews.isEmpty()) {
 					triggerToolBarUpdate();
@@ -892,9 +894,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						}
 
 						if (dataDomainNode != null)
-							addView(dataDomainNode, dataDomainNode
-									.getInterfaceType(dataDomainNode
-											.getFirstInterfaceID()));
+							lastSelectedDataDomainNode = dataDomainNode;
+						addView(dataDomainNode, dataDomainNode
+								.getInterfaceType(dataDomainNode.getFirstInterfaceID()));
 						break;
 					}
 				}
@@ -934,6 +936,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						break;
 					continue;
 				}
+
+				lastSelectedDataDomainNode = historyNode;
 
 				if (interfaceType.contains("view")) {
 					addView(historyNode, interfaceType);
@@ -1025,7 +1029,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	private void freeFocusElementByChainMove(boolean left) {
 
-		if (left) {
+		if (!left) {
 
 			for (int iElementIndex = 0; iElementIndex < stackElementsRight.size(); iElementIndex++) {
 
@@ -1038,22 +1042,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			arSlerpActions.add(new SlerpAction(focusElement, stackElementsRight.get(0)));
 		} else {
-			
-			for (int iElementIndex = 0; iElementIndex < stackElementsRight.size(); iElementIndex++) {
-
-				if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
-					arSlerpActions.add(new SlerpAction(stackElementsRight
-							.get(iElementIndex + 1), stackElementsRight
-							.get(iElementIndex)));
-				}
-
-				if (iElementIndex == 0) {
-					arSlerpActions.add(new SlerpAction(stackElementsRight
-							.get(iElementIndex), focusElement));
-				}
-			}
-
-			arSlerpActions.add(new SlerpAction(focusElement, stackElementsLeft.get(0)));
 
 			for (int iElementIndex = 0; iElementIndex < stackElementsLeft.size(); iElementIndex++) {
 
@@ -1063,17 +1051,21 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 									stackElementsLeft.get(iElementIndex + 1)));
 				}
 			}
-			
-//			for (int iElementIndex = 0; iElementIndex < stackElementsLeft.size(); iElementIndex++) {
-//
-//				if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
-//					arSlerpActions
-//							.add(new SlerpAction(stackElementsLeft.get(iElementIndex),
-//									stackElementsLeft.get(iElementIndex + 1)));
-//				}
-//			}
 
-//			arSlerpActions.add(new SlerpAction(focusElement, stackElementsLeft.get(0)));
+			arSlerpActions.add(new SlerpAction(focusElement, stackElementsLeft.get(0)));
+
+			// for (int iElementIndex = 0; iElementIndex <
+			// stackElementsLeft.size(); iElementIndex++) {
+			//
+			// if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
+			// arSlerpActions
+			// .add(new SlerpAction(stackElementsLeft.get(iElementIndex),
+			// stackElementsLeft.get(iElementIndex + 1)));
+			// }
+			// }
+
+			// arSlerpActions.add(new SlerpAction(focusElement,
+			// stackElementsLeft.get(0)));
 		}
 	}
 
@@ -1182,16 +1174,14 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				RemoteLevelElement element = null;
 
 				if (focusElement.getGLView() != null
-						&& focusElement.getGLView().getViewType().equals(viewType)
-						&& focusElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
+						&& node.getGLView(viewType) == focusElement.getGLView()) {
 					element = focusElement;
 				}
 
 				if (element == null) {
 					for (RemoteLevelElement tmpElement : stackElementsLeft) {
 						if (tmpElement.getGLView() != null
-								&& tmpElement.getGLView().getViewType().equals(viewType)
-								&& tmpElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
+								&& node.getGLView(viewType) == tmpElement.getGLView()) {
 							element = tmpElement;
 						}
 					}
@@ -1200,8 +1190,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				if (element == null) {
 					for (RemoteLevelElement tmpElement : stackElementsRight) {
 						if (tmpElement.getGLView() != null
-								&& tmpElement.getGLView().getViewType().equals(viewType)
-								&& tmpElement.getDataDomainBasedView().getDataDomain() == dataDomain) {
+								&& node.getGLView(viewType) == tmpElement.getGLView()) {
 							element = tmpElement;
 						}
 					}
@@ -1769,7 +1758,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			if (!isViewOpen(glView))
 				openView(glView, dataDomainNode);
-		
+
 			return;
 		}
 
@@ -1796,7 +1785,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			newViews.add(serView);
 	}
 
-
 	private void openView(AGLView view, Node dataDomainNode) {
 
 		RemoteLevelElement viewSpawnElement = dataDomainNode.getSpawnPos(view
@@ -1810,35 +1798,37 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			destinationElement = focusElement;
 		} else {
 
-			// // Check if the focus element should be freed to the left or to
-			// the
-			// // right stack side
-			// Set<String> interfaces =
-			// DataDomainManager.getInstance().getAssociationManager()
-			// .getViewTypesForDataDomain(
-			// ((IDataDomainBasedView<IDataDomain>) view).getDataDomain()
-			// .getDataDomainType());
-			// for (String tmp : interfaces) {
-			// if (dataDomainType.equals(tmp))
-			// }
-			//			
-			// if (((IDataDomainBasedView<IDataDomain>) view).getDataDomain())
+			boolean freeFocusToLeft = false;
 
-			freeFocusElementByChainMove(false);
+			if (dataDomainNode != historyPath.getLastNode()
+					&& !dataDomainNode.containsView(focusElement.getGLView()))
+				freeFocusToLeft = false;
+			else {
+				freeFocusToLeft = true;
+			}
+
+			freeFocusElementByChainMove(freeFocusToLeft);
 			destinationElement = focusElement;
 		}
 
 		if (destinationElement != null) {
+			lastPickedView = view;
+			lastPickedRemoteLevelElement = focusElement;
 			viewSpawnElement.setGLView(view);
 			arSlerpActions.add(new SlerpAction(viewSpawnElement, destinationElement));
 		}
 	}
-	
+
 	private boolean isViewOpen(AGLView glView) {
 
 		for (RemoteLevelElement element : allElements) {
 			if (element.getGLView() == glView) {
-				chainMove(element);
+				// chainMove(element);
+				lastPickedRemoteLevelElement = element;
+				lastPickedView = lastPickedRemoteLevelElement.getGLView();
+				chainMove(lastPickedRemoteLevelElement);
+				// // arSlerpActions.add(new SlerpAction(focusElement,
+				// element));
 				return true;
 			}
 		}

@@ -12,26 +12,29 @@ public class Node {
 
 	private static int INTERFACE_ID_COUNTER = 0;
 
+	AssociationManager dataDomainViewAssociationManager;
 	String dataDomainType;
 	HashMap<Integer, String> hashInterfaceIDToInterfaceType;
 	HashMap<String, Integer> hashInterfaceTypeToInterfaceID;
 	HashMap<String, AGLView> hashViewTypeToGLView;
 	HashMap<String, RemoteLevelElement> hashViewTypeToSpawnPos;
-	
+
 	public Node(String dataDomainType, AssociationManager dataDomainViewAssociationManager) {
 		this.dataDomainType = dataDomainType;
+		this.dataDomainViewAssociationManager = dataDomainViewAssociationManager;
 		hashInterfaceIDToInterfaceType = new HashMap<Integer, String>();
 		hashViewTypeToGLView = new HashMap<String, AGLView>();
 		hashInterfaceTypeToInterfaceID = new HashMap<String, Integer>();
 		hashViewTypeToSpawnPos = new HashMap<String, RemoteLevelElement>();
 
-		for (String interfaceType : dataDomainViewAssociationManager.getViewTypesForDataDomain(dataDomainType)) {
+		for (String interfaceType : dataDomainViewAssociationManager
+			.getViewTypesForDataDomain(dataDomainType)) {
 			hashInterfaceIDToInterfaceType.put(++INTERFACE_ID_COUNTER, interfaceType);
 			hashInterfaceTypeToInterfaceID.put(interfaceType, INTERFACE_ID_COUNTER);
-			
+
 			RemoteLevelElement remoteLevelElement = new RemoteLevelElement(null);
 			remoteLevelElement.setTransform(new Transform());
-			hashViewTypeToSpawnPos.put(interfaceType, remoteLevelElement);	
+			hashViewTypeToSpawnPos.put(interfaceType, remoteLevelElement);
 		}
 	}
 
@@ -59,27 +62,29 @@ public class Node {
 	public AGLView getGLView(String viewType) {
 		return hashViewTypeToGLView.get(viewType);
 	}
-	
+
 	public boolean containsView(AGLView view) {
 		return hashViewTypeToGLView.get(view.getViewType()) == view;
 	}
-	
+
 	public String getInterfaceType(int interfaceID) {
 		return hashInterfaceIDToInterfaceType.get(interfaceID);
 	}
-	
+
 	public int getInterfaceID(String interfaceType) {
 		return hashInterfaceTypeToInterfaceID.get(interfaceType);
 	}
-	
+
 	public Integer getFirstInterfaceID() {
-		return (Integer)hashInterfaceIDToInterfaceType.keySet().toArray()[0];
+		return hashInterfaceTypeToInterfaceID.get(dataDomainViewAssociationManager.getViewTypesForDataDomain(
+			dataDomainType).toArray()[0]);
+		// return (Integer)hashInterfaceIDToInterfaceType.keySet().toArray()[0];
 	}
-	
+
 	public RemoteLevelElement getSpawnPos(String viewType) {
 		return hashViewTypeToSpawnPos.get(viewType);
 	}
-	
+
 	public String[] getAllInterfaces() {
 		String[] tmp = new String[hashInterfaceIDToInterfaceType.size()];
 		hashInterfaceTypeToInterfaceID.keySet().toArray(tmp);
