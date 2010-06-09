@@ -706,6 +706,7 @@ public class GLPathway
 
 				int iConnectionID = generalManager.getIDManager().createID(EManagedObjectType.CONNECTION);
 				selectionManager.addConnectionID(iConnectionID, tmpVertexGraphItemRep.getId());
+				//!!!!Multiple Connection Lines!!!!
 				connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 				gLPathwayContentCreator.performIdenticalNodeHighlighting(eSelectionType);
 

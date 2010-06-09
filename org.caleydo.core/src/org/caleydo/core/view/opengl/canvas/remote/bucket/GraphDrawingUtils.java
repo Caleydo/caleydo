@@ -37,10 +37,10 @@ public abstract class GraphDrawingUtils
 	protected final static char PARCOORDS = 2;
 	protected final static char PATHWAY = 3;
 	protected Vec3f vecCenter = new Vec3f();
+	protected ArrayList<float[]> colors;
 	
 	protected RemoteLevel focusLevel;
 	protected RemoteLevel stackLevel;
-
 	/**
 	 * Constructor.
 	 * 
@@ -50,9 +50,10 @@ public abstract class GraphDrawingUtils
 	public GraphDrawingUtils(final RemoteLevel focusLevel, final RemoteLevel stackLevel) {
 
 		super();
-
 		this.focusLevel = focusLevel;
 		this.stackLevel = stackLevel;
+		this.colors = new ArrayList<float[]>();
+		
 	}
 
 	@Override
@@ -72,8 +73,22 @@ public abstract class GraphDrawingUtils
 				viewToPointList = new HashMap<Integer, ArrayList<ArrayList<Vec3f>>>();
 				hashIDTypeToViewToPointLists.put(idType, viewToPointList);
 			}
-
+			//!!!!Multiple Connection Lines!!!!
+			/*
+			int count = 0;
+			if (typeConnections.getValue().entrySet().size() > colors.size())
+				colors.add(new float[]{(float)Math.random(), (float)Math.random(), (float)Math.random(), 1f});
+			*/
 			for (Entry<Integer, SelectedElementRepList> connections : typeConnections.getValue().entrySet()) {
+				//!!!!Multiple Connection Lines!!!!
+				/*HashMap<Integer, ArrayList<ArrayList<Vec3f>>> viewToPointList =
+					hashIDTypeToViewToPointLists.get(idType);
+
+				if (viewToPointList == null) {
+					viewToPointList = new HashMap<Integer, ArrayList<ArrayList<Vec3f>>>();
+					hashIDTypeToViewToPointLists.put(idType, viewToPointList);
+				}
+				*/
 				for (SelectedElementRep selectedElementRep : connections.getValue()) {
 
 					if (selectedElementRep.getIDType() != idType)
@@ -110,15 +125,27 @@ public abstract class GraphDrawingUtils
 						alPointLists.add(selectedElementRep.getPoints());
 					}
 				}
+
 			}
 			if (viewToPointList.size() > 1) {
 				renderLineBundling(gl, idType, new float[] { 0, 0, 0 });
+				/*if (count == typeConnections.getValue().entrySet().size()-1)
+					renderLineBundling(gl, idType, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, false);
+				else if (count >= colors.size())
+					return;
+				else
+					renderLineBundling(gl, idType, colors.get(count), true);
+				*/
 				hashIDTypeToViewToPointLists.clear();
+			//count++;
+
 			}
 		}
 	}
 
 	protected abstract void renderLineBundling(final GL gl, EIDType idType, float[] fArColor);
+	//!!!!Multiple Connection Lines!!!!
+	//protected abstract void renderLineBundling(final GL gl, EIDType idType, float[] fArColor, boolean transparancy);
 //	protected void renderLineBundling(final GL gl, EIDType idType, float[] fArColor) {
 //		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
 //		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();

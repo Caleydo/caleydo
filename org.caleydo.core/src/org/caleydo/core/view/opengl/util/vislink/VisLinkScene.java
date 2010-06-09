@@ -35,7 +35,11 @@ public class VisLinkScene {
 	
 	private EVisLinkStyleType style;
 	private boolean animation = true;
-
+	//!!!!Multiple Connection Lines!!!!
+	/*
+	private boolean transparency = false;
+	private float[] color;
+	 */
 	/**
 	 * Constructor
 	 * 
@@ -54,7 +58,12 @@ public class VisLinkScene {
 	 *            The GL-object
 	 */
 	public void renderLines(final GL gl) {
-
+	//public void renderLines(final GL gl, float[] fArColor, boolean transparency) {
+		//!!!!Multiple Connection Lines!!!!
+		/*
+		this.transparency = transparency;
+		this.color = fArColor;
+		*/
 		ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH =
 			GeneralManager.get().getPreferenceStore().getFloat(PreferenceConstants.VISUAL_LINKS_WIDTH);
 		ConnectionLineRenderStyle.ANIMATION =
@@ -163,6 +172,14 @@ public class VisLinkScene {
 		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
 
 		width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
+		//!!!!Multiple Connection Lines!!!!
+		/*if (transparency){
+			color = this.color;
+			color[3] = 0.2f;
+		}
+		else
+			color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
+		*/
 		color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
 		// antiAliasingQuality = 5;
 

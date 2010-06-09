@@ -59,18 +59,7 @@ public class GLConsecutiveConnectionGraphDrawing
 
 		this.focusLevel = focusLevel;
 		this.stackLevel = stackLevel;
-		// setControlPoints();
 	}
-
-	/**
-	 * initializing the list of control points
-	 */
-	/*
-	 * private void setControlPoints() { controlPoints.add(new Vec3f(-2, -2, 0)); controlPoints.add(new
-	 * Vec3f(-2, 2, 0)); controlPoints.add(new Vec3f(2, 2, 0)); controlPoints.add(new Vec3f(2, -2, 0));
-	 * controlPoints.add(new Vec3f(-2, 0, 0)); controlPoints.add(new Vec3f(0, 2, 0)); controlPoints.add(new
-	 * Vec3f(2, 0, 0)); controlPoints.add(new Vec3f(0, -2, 0)); controlPoints.add(new Vec3f(0, 0, 0)); }
-	 */
 
 	protected void renderLineBundling(final GL gl, EIDType idType, float[] fArColor) {
 
@@ -117,16 +106,13 @@ public class GLConsecutiveConnectionGraphDrawing
 
 	
 	/** a helper method that removes duplicate entries from the points list
-	 * @param type 
-	 * 
-	 * @param pointsList
+	 * @param type either heatmap or parcoords
+	 * @param pointsList list of points to be cleaned
 	 * @return the cleaned points list
 	 */
 	//TODO find a finer solution ;)
 	private ArrayList<ArrayList<Vec3f>> cleanUpPointsList(char type, ArrayList<ArrayList<Vec3f>> pointsList) {
 		ArrayList<ArrayList<Vec3f>> cleanPointsList = pointsList;
-
-//		ArrayList<DynamicViewPointContainer> pointContainer = new ArrayList<DynamicViewPointContainer>();
 		
 		int matches = 0;
 		int stepsize = 0;
@@ -134,30 +120,7 @@ public class GLConsecutiveConnectionGraphDrawing
 			stepsize = PARCOORDELEMENTS;
 		else
 			stepsize = HEATMAPELEMENTS;
-/*
-		DynamicViewPointContainer points = new DynamicViewPointContainer();
-		int tcounter = 0;
-		for (int count = 0; count < pointsList.size(); count++){
-			points.addPoint(pointsList.get(count));
-			tcounter++;
-			if (tcounter == stepsize){
-				tcounter = 0;
-				pointContainer.add(points);
-				points = new DynamicViewPointContainer();
-			}
-		}
-		if (points.getPoints().size() != 0)
-			pointContainer.add(points);
-		
-		
-		for (int count = 0; count < pointContainer.size()-1; count++){
-			for (int innerCount = 1; innerCount < pointContainer.size(); innerCount++){
-				if (pointContainer.get(count).isEqual(pointContainer.get(innerCount)))
-					break;
-			}
-			cleanPointsList.addAll(pointContainer.get(count).getPoints());
-		}
-*/		
+	
 		ArrayList<ArrayList<Vec3f>> firstTempArray = new ArrayList<ArrayList<Vec3f>>(stepsize);
 		ArrayList<ArrayList<Vec3f>> secondTempArray = new ArrayList<ArrayList<Vec3f>>(stepsize);
 		
@@ -1889,11 +1852,16 @@ public class GLConsecutiveConnectionGraphDrawing
 		VisLinkAnimationStage currentStage = null;
 		VisLinkAnimationStage bundling = null;
 
+		boolean arePathwaysConsecutive = checkIfPathwaysConsecutive(viewsToBeVisited);
+		
 		for (Integer key : viewsToBeVisited) {
 			if (key == heatMapID) {
 				if (heatmapPredecessor.size() > 0) {
 					// calculating control points and local bundling points
-					controlPoint = calculateControlPoint(calculateCenter(heatmapPredecessor), src);
+					/*if (arePathwaysConsecutive)
+						controlPoint = globalControlPoint;
+					else*/
+						controlPoint = calculateControlPoint(calculateCenter(heatmapPredecessor), src);
 					if (controlPoint == null)
 						return;
 
@@ -1964,7 +1932,10 @@ public class GLConsecutiveConnectionGraphDrawing
 			else if (key == parCoordID) {
 				if (parCoordsPredecessor.size() > 0) {
 					// calculating control points and local bundling points
-					controlPoint = calculateControlPoint(calculateCenter(parCoordsPredecessor), src);
+				/*	if (arePathwaysConsecutive)
+						controlPoint = globalControlPoint;
+					else*/
+						controlPoint = calculateControlPoint(calculateCenter(parCoordsPredecessor), src);
 					if (controlPoint == null)
 						return;
 
@@ -2032,8 +2003,17 @@ public class GLConsecutiveConnectionGraphDrawing
 			}
 			else {
 				// calculating control point and local bundling point
-				if (key != activeViewID)
-					controlPoint = calculateControlPoint(hashViewToCenterPoint.get(key), src);
+				if (key != activeViewID){
+					//get global bundling point
+					if (arePathwaysConsecutive){
+						//controlPoint = getWeightedControlPoint(hashViewToCenterPoint, src, viewsToBeVisited, key);
+						hashViewToCenterPoint.put(1, src);
+						controlPoint = calculateCenter(hashViewToCenterPoint.values());
+						hashViewToCenterPoint.remove(1);
+					}
+					else
+						controlPoint = calculateControlPoint(hashViewToCenterPoint.get(key), src);
+				}
 				if (controlPoint == null)
 					return;
 				vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(key), controlPoint);
@@ -2076,6 +2056,30 @@ public class GLConsecutiveConnectionGraphDrawing
 		VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
 		visLinkScene.renderLines(gl);
 
+	}
+
+	/*private Vec3f getWeightedControlPoint(HashMap<Integer, Vec3f> hashViewToCenterPoint, Vec3f src,
+		ArrayList<Integer> viewsToBeVisited, Integer key) {
+		ArrayList<Vec3f> pointList = new ArrayList<Vec3f>();
+		pointList.add(src);
+		pointList.add(hashViewToCenterPoint.get(key));
+		int positionOfKey = viewsToBeVisited.indexOf(key);
+		Vec3f controlPoint = null;
+		if (positionOfKey != viewsToBeVisited.size()-1){
+			int nextID = viewsToBeVisited.get(positionOfKey+1);
+			pointList.add(hashViewToCenterPoint.get(nextID));
+		}
+		controlPoint = calculateCenter(pointList);
+		return controlPoint;
+	}*/
+
+	private boolean checkIfPathwaysConsecutive(ArrayList<Integer> viewsToBeVisited) {
+		
+		for (int count = 1; count < viewsToBeVisited.size();  count++){ 
+			if (viewsToBeVisited.get(count-1) != heatMapID && viewsToBeVisited.get(count-1) != parCoordID && viewsToBeVisited.get(count) != parCoordID && viewsToBeVisited.get(count) != heatMapID)
+				return true;
+		}
+		return false;
 	}
 
 	/**

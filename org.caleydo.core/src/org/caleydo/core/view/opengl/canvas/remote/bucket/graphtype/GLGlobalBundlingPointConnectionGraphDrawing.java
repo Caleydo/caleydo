@@ -39,6 +39,8 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 	}
 
 	protected void renderLineBundling(final GL gl, EIDType idType, float[] fArColor) {
+	//protected void renderLineBundling(final GL gl, EIDType idType, float[] fArColor, boolean transparency) {
+		vecCenter = new Vec3f();
 		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
 		hashViewToCenterPoint = getOptimalDynamicPoints(idType);
@@ -95,6 +97,8 @@ public class GLGlobalBundlingPointConnectionGraphDrawing
 		
 		VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
 		visLinkScene.renderLines(gl);
+		//!!!!Multiple Connection Lines!!!!
+		//visLinkScene.renderLines(gl, fArColor, transparency);
 	}
 	
 	
