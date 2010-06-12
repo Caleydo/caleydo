@@ -8,7 +8,6 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
@@ -89,12 +88,10 @@ public class DataWindowsDisk extends PoincareDisk {
 		canvasWidth = viewingWidth;
 		canvasHeight = viewingHeight;
 		iUniqueID = iViewID;
-
 		// displayDetailLevels();
 
 		drawBackground();
 		PoincareNode root = getTree().getRoot();
-
 		// start rendering the nodes of the tree recursively
 		renderNode(root, 2);
 	}
@@ -135,34 +132,31 @@ public class DataWindowsDisk extends PoincareDisk {
 	public void drawNode(PoincareNode node, int mode) {
 
 		// for a realistic size, the size is a projected offset of the current
-		float size = getMetric(node.getPosition(), nodeSize);
-
-		if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 1) {
-			if (node.highLighted == true) {
-				size = size * 1.5f;
-			}
-
-			if (node == this.getCenteredNode()) {
-				size = centeredNodeSize;
-			}
+		float[] size = new float[2];
+		if (node != this.getCenteredNode()) {
+			size = getMetric(node.getPosition(), nodeSize);
 		}
 
-		Vec3f lowerLeftCorner = new Vec3f((-size + node.getZoomedPosition()[0]
-				* displayScaleFactorX + canvasWidth / 2), (-size
-				* (canvasHeight / canvasWidth) + node.getZoomedPosition()[1]
-				* displayScaleFactorY + canvasHeight / 2), 0);
-		Vec3f lowerRightCorner = new Vec3f((size + node.getZoomedPosition()[0]
-				* displayScaleFactorX + canvasWidth / 2), (-size
-				* (canvasHeight / canvasWidth) + node.getZoomedPosition()[1]
-				* displayScaleFactorY + canvasHeight / 2), 0);
-		Vec3f upperRightCorner = new Vec3f((size + node.getZoomedPosition()[0]
-				* displayScaleFactorX + canvasWidth / 2), (size
-				* (canvasHeight / canvasWidth) + node.getZoomedPosition()[1]
-				* displayScaleFactorY + canvasHeight / 2), 0);
-		Vec3f upperLeftCorner = new Vec3f((-size + node.getZoomedPosition()[0]
-				* displayScaleFactorX + canvasWidth / 2), (size
-				* (canvasHeight / canvasWidth) + node.getZoomedPosition()[1]
-				* displayScaleFactorY + canvasHeight / 2), 0);
+		Vec3f lowerLeftCorner = new Vec3f(
+				(-size[0] + node.getZoomedPosition()[0] * displayScaleFactorX + canvasWidth / 2),
+				(-size[1] * (canvasHeight / canvasWidth)
+						+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
+				0);
+		Vec3f lowerRightCorner = new Vec3f(
+				(size[0] + node.getZoomedPosition()[0] * displayScaleFactorX + canvasWidth / 2),
+				(-size[1] * (canvasHeight / canvasWidth)
+						+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
+				0);
+		Vec3f upperRightCorner = new Vec3f(
+				(size[0] + node.getZoomedPosition()[0] * displayScaleFactorX + canvasWidth / 2),
+				(size[1] * (canvasHeight / canvasWidth)
+						+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
+				0);
+		Vec3f upperLeftCorner = new Vec3f(
+				(-size[0] + node.getZoomedPosition()[0] * displayScaleFactorX + canvasWidth / 2),
+				(size[1] * (canvasHeight / canvasWidth)
+						+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
+				0);
 
 		Vec3f scalingPivot = new Vec3f(1, 1, 0);
 
@@ -181,14 +175,44 @@ public class DataWindowsDisk extends PoincareDisk {
 					upperLeftCorner, scalingPivot, 1, 1, 1, alpha, 100);
 		} else {
 
+			if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 1) {
+				if (node == this.getCenteredNode()) {
+
+					size = this.findOptimalCenterNodeSize(node, 0.001f);
+
+				}
+			}
+
 			float[] position = new float[2];
-			position[0] = -size + node.getZoomedPosition()[0]
-					* displayScaleFactorX + canvasWidth / 2;
-			position[1] = -size * (canvasHeight / canvasWidth)
+			position[0] = -size[0] * canvasWidth / 2
+					+ node.getZoomedPosition()[0] * displayScaleFactorX
+					+ canvasWidth / 2;
+			position[1] = -size[1] * canvasHeight / 2
+					* (canvasHeight / canvasWidth)
 					+ node.getZoomedPosition()[1] * displayScaleFactorY
 					+ canvasHeight / 2;
 
-			hyperbolic.drawRemoteView(gl, node, position, size /4);
+			 hyperbolic.drawRemoteView(gl, node, position,size[0]);
+
+//			if (node == this.getCenteredNode()) {
+//				this.drawCircle(size[0] * canvasWidth / 2 * 1.4142f, size[1]
+//						* canvasHeight / 2 * 1.4142f, canvasWidth / 2,
+//						canvasHeight / 2);
+//			}
+
+			// draw rectangle around the view for debuging reasons
+//			gl.glLineWidth((float) lineWidth);
+//			gl.glBegin(GL.GL_LINE_STRIP);
+//			gl.glColor3i(0, 0, 0);
+//
+//			gl.glVertex3f(position[0], position[1], 0);
+//			gl.glVertex3f(position[0] + size[0] * canvasWidth, position[1], 0);
+//			gl.glVertex3f(position[0] + size[0] * canvasWidth, position[1]
+//					+ size[1] * canvasHeight, 0);
+//			gl.glVertex3f(position[0], position[1] + size[1] * canvasHeight, 0);
+//			gl.glVertex3f(position[0], position[1], 0);
+//
+//			gl.glEnd();
 		}
 		gl.glPopName();
 	}
@@ -256,11 +280,10 @@ public class DataWindowsDisk extends PoincareDisk {
 			float[] startPoint = new float[2];
 			startPoint = this.projectPoint(node1.getZoomedPosition(), false);
 
-			
 			float[] endPoint = new float[2];
 			endPoint = projectPoint(node2.getZoomedPosition(), false);
 			float length = this.distancePoints(startPoint, endPoint);
-			
+
 			gl.glLineWidth((float) lineWidth);
 			gl.glBegin(GL.GL_LINE_STRIP);
 			gl.glColor3i(0, 0, 0);
@@ -298,8 +321,6 @@ public class DataWindowsDisk extends PoincareDisk {
 					* displayScaleFactorY + canvasHeight / 2, 0);
 			gl.glEnd();
 
-			// System.out.println("vector:" + stepVector[0] + "|"
-			// + stepVector[1]);
 		} else {
 			gl.glLineWidth((float) lineWidth);
 			gl.glBegin(GL.GL_LINE_STRIP);
@@ -351,7 +372,7 @@ public class DataWindowsDisk extends PoincareDisk {
 		// / displayScaleFactorX, (eyePosition[1] - canvasHeight / 2)
 		// / displayScaleFactorY);
 		//
-		// System.out.println("offset from Middle: " + offsetFromMiddle[0]
+
 		// + "|" + offsetFromMiddle[1]);
 		PoincareNode returnNode = null;
 
@@ -361,11 +382,9 @@ public class DataWindowsDisk extends PoincareDisk {
 		returnNode = findNodeByCoordinate(normedEyePosition, 0);
 
 		if (returnNode != null) {
-			float[] emptyPoint=new float[2];
-			emptyPoint[0]=0;
-			emptyPoint[1]=0;
-			System.out.println("position: "+returnNode.getPosition()[0]+"|"+returnNode.getPosition()[1]);
-			
+			float[] emptyPoint = new float[2];
+			emptyPoint[0] = 0;
+			emptyPoint[1] = 0;
 			arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
 					emptyPoint));
 		}
@@ -399,18 +418,18 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		return returnNode;
 	}
-	
-	public void insertNode(PoincareNode node, PoincareNode parentNode){
-		
-		float [] actualPosition = new float[2];
-		
-		actualPosition[0]=node.getPosition()[0];
-		actualPosition[1]=node.getPosition()[1];
-			
+
+	public void insertNode(PoincareNode node, PoincareNode parentNode) {
+
+		float[] actualPosition = new float[2];
+
+		actualPosition[0] = node.getPosition()[0] * -1;
+		actualPosition[1] = node.getPosition()[1] * -1;
+
 		this.getTree().addChild(parentNode, node);
 		this.moebiusLayoutTree(2);
-		
+
 		this.translateTreeMoebius(actualPosition);
-		
+
 	}
 }

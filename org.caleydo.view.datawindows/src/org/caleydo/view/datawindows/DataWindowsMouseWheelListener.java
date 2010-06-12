@@ -24,9 +24,7 @@ public class DataWindowsMouseWheelListener extends MouseAdapter implements
 		hyperbolic.diskZoomIntensity = hyperbolic.diskZoomIntensity
 				+ event.getWheelRotation() * wheelFactor;
 		hyperbolic.disk.zoomTree(hyperbolic.diskZoomIntensity);
-		hyperbolic.disk.centeredNodeSize = hyperbolic.disk
-				.findOptimalCenterNodeSize(hyperbolic.disk.getCenteredNode(),
-						10);
+		
 
 		if (hyperbolic.diskZoomIntensity < 1) {
 		    this.numberOfScrollsUntilFullScreen=this.numberOfScrollsToFullScreen;

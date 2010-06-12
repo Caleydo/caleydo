@@ -18,7 +18,7 @@ public class PoincareDisk {
 
 	public PoincareDisk() {
 		radius = 1;
-		nodeSize = 0.4f;
+		nodeSize = 0.1f;
 		lineWidth = 2;
 		absolutePosition = new float[2];
 	}
@@ -181,13 +181,10 @@ public class PoincareDisk {
 
 	public void clearHighlightedNodes() {
 		PoincareNode tempNode;
-		System.out.println("call clear" + tree.getNumberOfNodes());
 		for (int i = 1; i <= tree.getNumberOfNodes(); i++) {
-			System.out.println("untersuche: " + i);
 			tempNode = getNodeByCompareableValue(i);
 			if (tempNode != null) {
 				getNodeByCompareableValue(i).highLighted = false;
-				System.out.println("knoten: " + tempNode.nodeName);
 			}
 
 		}
@@ -294,7 +291,6 @@ public class PoincareDisk {
 
 			treeNodeCounter++;
 			children.get(i).iComparableValue = treeNodeCounter;
-			System.out.println("node layout:" + treeNodeCounter);
 			// recursion step:
 			moebiusNodeLayout(children.get(i), absoluteAngle, splitAngle, mode);
 			absoluteAngle = absoluteAngle + splitAngle;
@@ -321,13 +317,13 @@ public class PoincareDisk {
 	}
 
 	// converts a real distance into a distance on the disk
-	public float getMetric(float[] position, float length) {
+	public float[] getMetric(float[] position, float length) {
 
 		ComplexNumber targetPoint = new ComplexNumber(0, 0);
 
 		float[] eVectorPos = getEV(position);
 		ComplexNumber relativeTargetPoint = new ComplexNumber(eVectorPos[0]
-				* length, eVectorPos[1] * length);
+				* -length, eVectorPos[1] * -length);
 		ComplexNumber startingPoint = new ComplexNumber(position[0],
 				position[1]);
 		targetPoint.setValue(moebiusTransformation(startingPoint,
@@ -336,7 +332,11 @@ public class PoincareDisk {
 		float[] returnValue = new float[2];
 		returnValue[0] = (float) targetPoint.getRealPart();
 		returnValue[1] = (float) targetPoint.getImaginaryPart();
-		return distancePoints(position, returnValue);
+
+		float distance = distancePoints(position, returnValue);
+		returnValue[0] = distance;
+		returnValue[1] = distance;
+		return returnValue;
 	}
 
 	// can used to select a node without a picking manager
@@ -367,8 +367,12 @@ public class PoincareDisk {
 
 				distance = distancePoints(getNodeByCompareableValue(counter)
 						.getZoomedPosition(), coordinate);
-				nodeRadius = getMetric(getNodeByCompareableValue(counter)
+
+				float[] size = getMetric(getNodeByCompareableValue(counter)
 						.getPosition(), nodeSize);
+
+				nodeRadius = this.distanceFromOrigin(size);
+
 				if (distance <= nodeRadius) {
 					bestDistance = distance;
 					bestNode = getNodeByCompareableValue(counter);
@@ -382,23 +386,35 @@ public class PoincareDisk {
 
 	// the return value is normed on the unit disk
 	// the unit of the intend is procent of the resulting size
-	public float findOptimalCenterNodeSize(PoincareNode node, float intend) {
+	public float[] findOptimalCenterNodeSize(PoincareNode node, float intend) {
 		float currentDistance = 1;
-
+		PoincareNode closestNode = null;
+		float[] returnValue = new float[2];
+		// iterating all nodes by their comparable number
 		for (int i = 1;; i++) {
 			if (this.getNodeByCompareableValue(i) == null) {
 				break;
 			}
+
 			if (this.distanceFromOrigin(this.getNodeByCompareableValue(i)
 					.getZoomedPosition()) < currentDistance) {
 				if (node != this.getNodeByCompareableValue(i)) {
 					currentDistance = distanceFromOrigin(this
 							.getNodeByCompareableValue(i).getZoomedPosition());
+                    
+					closestNode = getNodeByCompareableValue(i);
+					//System.out.println("distance: "+currentDistance);
+
 				}
 			}
 		}
+	//	System.out.println("entgültig "+closestNode.getPosition()[0]+" "+closestNode.getPosition()[1]);
+		currentDistance=currentDistance-this.getMetric(closestNode.getPosition(), this.nodeSize*1.4142f)[0]-intend;
+		
+		returnValue[0] = currentDistance*0.7071f;
+		returnValue[1] = currentDistance*0.7071f;
 
-		return (currentDistance / 100) * (100 - intend) * 1.5f;
+		return returnValue;
 	}
 
 	// start the recursive disk rotation algrithm
@@ -466,8 +482,8 @@ public class PoincareDisk {
 						(double) parentPosition[1]);
 				complexParentPosition = this.moebiusTransformation(
 						complexParentPosition, moebiusTransformation);
-				
-				//calculating the new vector from the current node to its root
+
+				// calculating the new vector from the current node to its root
 				relativePosition[0] = (float) complexParentPosition
 						.getRealPart();
 				relativePosition[1] = (float) complexParentPosition
@@ -526,7 +542,7 @@ public class PoincareDisk {
 
 			}
 		} else {
-			System.out.println("null");
+			;
 		}
 		return 0;
 	}

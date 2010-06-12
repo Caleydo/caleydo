@@ -30,7 +30,6 @@ public class SimpleSlerp {
 			state = state + slerpFactor;
 			if (state >= endingCondition) {
 				state = endingCondition;
-				System.out.println("slerp end");
 				return false;
 			}	
 		} else {
@@ -39,11 +38,9 @@ public class SimpleSlerp {
 			state = state - slerpFactor;
 			if (state <= endingCondition) {
 				state = endingCondition;
-				System.out.println("slerp end");
 				return false;
 			}
 		}
-		
 		time.update();
 		return true;
 	}

@@ -33,6 +33,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.rcp.view.listener.AddPathwayListener;
@@ -99,7 +100,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		super(glCanvas, sLabel, viewFrustum, true);
 		viewType = GLHyperbolic.VIEW_ID;
 
-		// preparing the eyetrackerall
+		// preparing the eyetracker
 		// this.tracker = new TrackDataProvider();
 		// tracker.startTracking();
 
@@ -112,6 +113,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		newViews = new ArrayList<ASerializedView>();
 
 		displayFullView = false;
+		slerpedNode = new PoincareNode(null,"",1);
 
 	}
 
@@ -504,8 +506,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 				translationVector[1] = disk.getCenteredNode().getPosition()[1]
 						* -1;
 				disk.translateTreeMoebius(translationVector);
-				disk.centeredNodeSize = disk.findOptimalCenterNodeSize(disk
-						.getCenteredNode(), 10);
+				
 
 				arSlerpActions.remove(0);
 			}
@@ -536,17 +537,15 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 			float size) {
 
 		Transform transform = new Transform();
-
 		remoteNodeElement.setGLView(((ViewHyperbolicNode) node).getGlView());
-
+		
 		// if a node is totally zoomed in, the remote view of the node is
 		// displayed on the full hyperbolic view
 		if (this.displayFullView == true
 				&& (this.disk.getCenteredNode() == node)) {
-
 			transform.setScale(new Vec3f(1, 1, 1));
-			transform.setTranslation(new Vec3f(viewFrustum.getWidth() / 2,
-					viewFrustum.getHeight() / 2, 0));
+			transform.setTranslation(new Vec3f(0,
+					0, 0));
 		} else {
 			// in this case, the size of the displayed remote view depends on
 			// the position of the node
@@ -556,6 +555,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		remoteNodeElement.setTransform(transform);
 		renderRemoteLevelElement(gl, remoteNodeElement);
+	
 
 	}
 
