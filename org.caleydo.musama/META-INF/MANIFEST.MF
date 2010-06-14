@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Musama
+Bundle-SymbolicName: org.caleydo.musama
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.caleydo.musama.Activator
+Bundle-Vendor: Graz University of Technology
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.caleydo.core;bundle-version="1.3.1",
+ org.caleydo.rcp;bundle-version="1.3.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: lib/Base.jar,
+ lib/Config.jar,
+ lib/POJOP.jar,
+ lib/SExpression.jar,
+ lib/SQLSpaceAdapter-full.jar,
+ lib/Tuplespace.jar,
+ .
