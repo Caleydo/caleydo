@@ -95,6 +95,7 @@ import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
 import org.caleydo.rcp.view.listener.ToggleNavigationModeListener;
 import org.caleydo.rcp.view.listener.ToggleZoomListener;
 import org.caleydo.view.bookmarking.GLBookmarkManager;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
 import org.eclipse.core.runtime.IStatus;
@@ -469,8 +470,6 @@ public class GLBucket extends AGLView implements
 			bUpdateOffScreenTextures = true;
 		}
 
-		checkForHits(gl);
-
 		// gl.glCallList(iGLDisplayListIndexLocal);
 	}
 
@@ -483,6 +482,8 @@ public class GLBucket extends AGLView implements
 	public void display(final GL gl) {
 		time.update();
 		// processEvents();
+
+		checkForHits(gl);
 
 		// Update the pool transformations according to the current mouse over
 		// object
@@ -2580,11 +2581,12 @@ public class GLBucket extends AGLView implements
 		cmdView.doCommand();
 
 		AGLView glView = cmdView.getCreatedObject();
+		glView.setRemoteRenderingGLView(this);
+		
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<ISetBasedDataDomain>) glView)
 					.setDataDomain(dataDomain);
 		}
-		glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
