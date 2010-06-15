@@ -497,10 +497,10 @@ public class Application
 			"org.caleydo.datadomain.genetic"));
 
 		// Only show bucket when pathway data is loaded
-		if (GeneralManager.get().getPathwayManager().size() > 0) {
-			startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.bucket",
-				"org.caleydo.datadomain.genetic"));
-		}
+//		if (GeneralManager.get().getPathwayManager().size() > 0) {
+//			startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.bucket",
+//				"org.caleydo.datadomain.genetic"));
+//		}
 	}
 
 	public static boolean isInternetConnectionOK() {

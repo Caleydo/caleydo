@@ -8,18 +8,19 @@ import org.caleydo.core.manager.datadomain.AssociationManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
-public class Node {
+public class HistoryNode implements INode {
 
 	private static int INTERFACE_ID_COUNTER = 0;
 
-	AssociationManager dataDomainViewAssociationManager;
 	String dataDomainType;
+
+	AssociationManager dataDomainViewAssociationManager;
 	HashMap<Integer, String> hashInterfaceIDToInterfaceType;
 	HashMap<String, Integer> hashInterfaceTypeToInterfaceID;
 	HashMap<String, AGLView> hashViewTypeToGLView;
 	HashMap<String, RemoteLevelElement> hashViewTypeToSpawnPos;
 
-	public Node(String dataDomainType, AssociationManager dataDomainViewAssociationManager) {
+	public HistoryNode(String dataDomainType, AssociationManager dataDomainViewAssociationManager) {
 		this.dataDomainType = dataDomainType;
 		this.dataDomainViewAssociationManager = dataDomainViewAssociationManager;
 		hashInterfaceIDToInterfaceType = new HashMap<Integer, String>();
@@ -78,7 +79,6 @@ public class Node {
 	public Integer getFirstInterfaceID() {
 		return hashInterfaceTypeToInterfaceID.get(dataDomainViewAssociationManager.getViewTypesForDataDomain(
 			dataDomainType).toArray()[0]);
-		// return (Integer)hashInterfaceIDToInterfaceType.keySet().toArray()[0];
 	}
 
 	public RemoteLevelElement getSpawnPos(String viewType) {

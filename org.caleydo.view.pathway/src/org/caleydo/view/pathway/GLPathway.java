@@ -251,7 +251,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 		// // FIXME: not good because check in every rendered frame
 		// if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
 		// return;
-
+		
 		if (bIsDisplayListDirtyRemote) {
 			rebuildPathwayDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
@@ -265,6 +265,8 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 		// processEvents();
 		checkForHits(gl);
 
+		//GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		
 		// TODO: also put this in global DL
 		renderPathway(gl, pathway);
 

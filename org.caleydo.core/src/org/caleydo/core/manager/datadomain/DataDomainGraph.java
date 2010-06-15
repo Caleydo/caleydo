@@ -15,6 +15,7 @@ public class DataDomainGraph {
 	public static final String TISSUE = "org.caleydo.datadomain.tissue";
 	public static final String GENETIC = "org.caleydo.datadomain.genetic";
 	public static final String PATHWAY = "org.caleydo.datadomain.pathway";
+	public static final String ORGAN = "org.caleydo.datadomain.organ";
 
 	public DataDomainGraph() {
 		EdgeFactory edgeFactory = new EdgeFactory();
@@ -28,9 +29,11 @@ public class DataDomainGraph {
 		dataDomainGraph.addVertex(TISSUE);
 		dataDomainGraph.addVertex(GENETIC);
 		dataDomainGraph.addVertex(PATHWAY);
-
+		dataDomainGraph.addVertex(ORGAN);
+		
 		dataDomainGraph.addEdge(CLINICAL, GENETIC);
 		dataDomainGraph.addEdge(CLINICAL, TISSUE);
+		dataDomainGraph.addEdge(CLINICAL, ORGAN);
 		dataDomainGraph.addEdge(GENETIC, PATHWAY);
 		dataDomainGraph.addEdge(TISSUE, GENETIC);
 	}

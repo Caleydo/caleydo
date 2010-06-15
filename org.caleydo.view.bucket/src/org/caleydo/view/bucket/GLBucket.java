@@ -383,6 +383,8 @@ public class GLBucket extends AGLView implements
 		// buildDisplayList(gl);
 		// bIsDisplayListDirtyLocal = false;
 		// }
+		
+		pickingManager.handlePicking(this, gl);
 
 		display(gl);
 		ConnectedElementRepresentationManager cerm = GeneralManager.get()

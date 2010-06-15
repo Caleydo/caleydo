@@ -3,8 +3,8 @@ package org.caleydo.core.manager.path;
 import java.util.ArrayList;
 import java.util.Set;
 
+import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DefaultDirectedGraph;;
 
 /**
  * Directed graph used for history path and guidance path.
@@ -13,21 +13,19 @@ import org.jgrapht.graph.DefaultDirectedGraph;;
  */
 public class Path {
 
-	private DefaultDirectedGraph<Node, DefaultEdge> graph;
+	private DefaultDirectedGraph<INode, DefaultEdge> graph;
 
-	private Node lastNode = null;
+	private INode lastNode = null;
 
 	public Path() {
-		graph = new DefaultDirectedGraph<Node, DefaultEdge>(DefaultEdge.class);
-		// dataDomainGraph = new SimpleGraph<Node, Edge>(edgeFactory);
-
+		graph = new DefaultDirectedGraph<INode, DefaultEdge>(DefaultEdge.class);
 	}
 
 	/**
 	 * Append node to the node last added
 	 * @param newNode
 	 */
-	public void addNode(Node newNode) {
+	public void addNode(INode newNode) {
 		graph.addVertex(newNode);
 		if (lastNode == null) {
 			lastNode = newNode;
@@ -39,40 +37,44 @@ public class Path {
 		}
 	}
 	
-	public void addNode(Node existingNode, Node newNode)
+	public void addNode(INode existingNode, INode newNode)
 	{
 		graph.addVertex(newNode);
 		graph.addEdge(existingNode, newNode);
 		lastNode = newNode;
 	}
 
-	public Set<DefaultEdge> getEdgesOf(Node node) {
+	public Set<DefaultEdge> getEdgesOf(INode node) {
 		return graph.edgesOf(node);
 	}
 	
-	public Node getLastNode() {
+	public INode getLastNode() {
 		return lastNode;
 	}
+	
+	public void setLastNode(INode lastNode) {
+		this.lastNode = lastNode;
+	}
 
-	public ArrayList<Node> getFollowingNodes(Node node) {
+	public ArrayList<INode> getFollowingNodes(INode node) {
 		Set<DefaultEdge> edges = graph.outgoingEdgesOf(node);
-		ArrayList<Node> nodes = new ArrayList<Node>();
+		ArrayList<INode> nodes = new ArrayList<INode>();
 		for (DefaultEdge edge : edges) {
 			nodes.add(graph.getEdgeTarget(edge));
 		}
 		return nodes;
 	}
 
-	public ArrayList<Node> getPrecedingNode(Node node) {
+	public ArrayList<INode> getPrecedingNode(INode node) {
 		Set<DefaultEdge> edges = graph.incomingEdgesOf(node);
-		ArrayList<Node> nodes = new ArrayList<Node>();
+		ArrayList<INode> nodes = new ArrayList<INode>();
 		for (DefaultEdge edge : edges) {
 			nodes.add(graph.getEdgeSource(edge));
 		}
 		return nodes;
 	}
 
-	public DefaultDirectedGraph<Node, DefaultEdge> getGraph() {
+	public DefaultDirectedGraph<INode, DefaultEdge> getGraph() {
 		return graph;
 	}
 	
@@ -95,6 +97,4 @@ public class Path {
 //		
 //		System.out.println(path.getGraph());
 	}
-	
-
 }
