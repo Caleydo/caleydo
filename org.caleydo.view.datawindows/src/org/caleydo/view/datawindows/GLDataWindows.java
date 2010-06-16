@@ -5,8 +5,13 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +30,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.tracking.TrackDataProvider;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
@@ -46,7 +52,8 @@ import org.caleydo.view.pathway.SerializedPathwayView;
  * @author Marc Streit
  */
 @SuppressWarnings("unused")
-public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
+public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
+		MouseMotionListener {
 
 	public final static String VIEW_ID = "org.caleydo.view.datawindows";
 
@@ -101,7 +108,11 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 	private double[] viewPort;
 
-	private boolean eyeTrackerSwitch;
+	private enum inputType {
+		MOUSE_ONLY, EYETRACKER_ONLY, EYETRACKER_SIMULATED;
+	}
+
+	private inputType selectedInput;
 
 	/**
 	 * /** Constructor.
@@ -123,22 +134,23 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		defaultLayoutHotSpot = new float[2];
 		layoutHotSpot = new float[2];
 
-		eyeTrackerSwitch = false;
+		selectedInput = inputType.MOUSE_ONLY;
 
 		// remoteHyperbolicPosition.setLocation(0, canvasHeight / 2 -
 		// canvasHeight
 		// * remoteHyperbolicScalation[1] / 2);
 
-		// preparing the eyetracker
-		// this.tracker = new TrackDataProvider();
-		// tracker.startTracking();
+		if (selectedInput == inputType.EYETRACKER_ONLY
+				|| selectedInput == inputType.EYETRACKER_SIMULATED) {
+			eyeTracker = new eyeTracking(true, "insertIpAdressHere");
+			if (selectedInput == inputType.EYETRACKER_ONLY) {
+				eyeTracker.startTracking();
+			}
+		}
+
 		viewSlerpStartPoint = new float[2];
 		viewSlerpTargetPoint = new float[2];
 		simpleSlerpActions = new ArrayList<SimpleSlerp>();
-
-		if (eyeTrackerSwitch == true) {
-			eyeTracker = new eyeTracking(true, "insertIpAdressHere");
-		}
 
 		// FIXME: maybe we have to find a better place for trigger pathway
 		// loading
@@ -146,6 +158,16 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 				ECommandType.CREATE_DATA_DOMAIN);
 		cmd.setAttributes("org.caleydo.datadomain.pathway");
 		cmd.doCommand();
+
+		// simulatedPosition = new eyeTrackerSimulation();
+		getParentGLCanvas().getParentComposite().getDisplay().asyncExec(
+				new Runnable() {
+					@Override
+					public void run() {
+						upperLeftScreenPos = getParentGLCanvas()
+								.getParentComposite().toDisplay(1, 1);
+					}
+				});
 	}
 
 	@Override
@@ -207,6 +229,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		checkForHits(gl);
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void display(GL gl) {
 		doSlerpActions();
@@ -230,7 +253,9 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		// - viewFrustum.getBottom(), 0);
 		// gl.glEnd();
 		// gl.glPopName();
+		
 
+		 
 		float canvasWidth = viewFrustum.getWidth();
 		float canvasHeight = viewFrustum.getHeight();
 
@@ -268,13 +293,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 				1));
 		// transform2.setTranslation(new Vec3f(0, 0, 0));
 
-		if (eyeTrackerSwitch == true) {
-			float[] eyeTrackerOffset = new float[2];
-			eyeTrackerOffset[0] = 0;
-			eyeTrackerOffset[1] = canvasHeight - layoutHotSpot[0] / 2;
-			eyeTracker.setEyeTrackerOffset(eyeTrackerOffset);
-		}
-
 		// } else {
 		//
 		// transform2
@@ -306,25 +324,57 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		renderRemoteLevelElement(gl, remoteElementParCoords);
 
 		// simulation of the eye tracker
-		if (eyeTrackerSwitch==true){
-		eyeTracker.receiveData();
 
-		eyeTracker.cutWindowOffset(upperLeftScreenPos.x, upperLeftScreenPos.y);
-
-		eyeTracker.calculateGLCoordinates(canvasWidth, canvasHeight,
-				pixelWidth, pixelHeight);
-		
-
-		// visualisation of the eyetrackercursor
-		gl.glBegin(GL.GL_LINE);
-		gl
-				.glVertex3f(eyeTracker.glCoordinate[0],
-						eyeTracker.glCoordinate[1], 0);
-		gl.glVertex3f(eyeTracker.glCoordinate[0] + 1,
-				eyeTracker.glCoordinate[1] + 1, 0);
-		gl.glEnd();
+		if (selectedInput == inputType.EYETRACKER_SIMULATED) {
+			int[] mousePositionInt = new int[2];
+			
+			
+			mousePositionInt[0] = this.glMouseListener.mousePositionForEyeTracker[0];
+			mousePositionInt[1] = this.glMouseListener.mousePositionForEyeTracker[1];
+			eyeTracker.cutWindowOffset(upperLeftScreenPos.x,
+					upperLeftScreenPos.y);
+			// position should be set on real mouseposition on the
+			// screen
+			 this.eyeTracker
+			 .setRawEyeTrackerPosition(mousePositionInt);
+			 eyeTracker.cutWindowOffset(upperLeftScreenPos.x,
+						upperLeftScreenPos.y);
 		}
-		
+
+		if (selectedInput == inputType.EYETRACKER_ONLY) {
+			eyeTracker.receiveData();
+
+			eyeTracker.cutWindowOffset(upperLeftScreenPos.x,
+					upperLeftScreenPos.y);
+
+			// eyeTracker.calculateGLCoordinates(canvasWidth, canvasHeight,
+			// pixelWidth, pixelHeight);
+		}
+
+		if (selectedInput == inputType.EYETRACKER_ONLY
+				|| selectedInput == inputType.EYETRACKER_SIMULATED) {
+			eyeTracker.checkForFixedCoordinate();
+
+			if (eyeTracker.getFixedCoordinate()[0] != 0
+					&& eyeTracker.getFixedCoordinate()[1] != 0) {
+
+				System.out.println("Position: "
+						+ eyeTracker.getFixedCoordinate()[0] + " "
+						+ eyeTracker.getFixedCoordinate()[1]);
+			}
+
+		}
+
+		if (selectedInput == inputType.EYETRACKER_ONLY
+				|| selectedInput == inputType.EYETRACKER_SIMULATED) {
+
+			if (eyeTracker.getFixedCoordinate() != null) {
+				this.evaluateUserSelection();
+
+			}
+
+		}
+
 		contextMenu.render(gl, this);
 
 	}
@@ -397,6 +447,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 		SelectionType selectionType;
 		switch (ePickingType) {
 		case BACKGROUND:
+
 			switch (pickingMode) {
 
 			case CLICKED:
@@ -431,31 +482,65 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 	}
 
 	private void evaluateUserSelection() {
-		// simulating the eyetracker
 
 		testZoomViewEventSwitch = false;
+		selectedInput = inputType.EYETRACKER_SIMULATED;
+		if (selectedInput == inputType.EYETRACKER_ONLY
+				|| selectedInput == inputType.EYETRACKER_SIMULATED) {
 
-		if (glMouseListener.getPickedPoint() != null) {
+			float[] translation = new float[2];
+			float[] scalation = new float[2];
+			translation[0] = remoteElementHyperbolic.getTransform()
+					.getTranslation().x();
+			translation[1] = remoteElementHyperbolic.getTransform()
+					.getTranslation().y();
+			scalation[0] = remoteElementHyperbolic.getTransform().getScale()
+					.x();
+			scalation[1] = remoteElementHyperbolic.getTransform().getScale()
+					.y();
+			if (translation != null && scalation != null) {
 
-			if (manualPickFlag == true) {
-				mousePoint = glMouseListener.getPickedPoint();
-
-				float[] mousePosition = new float[2];
-				mousePosition[0] = (float) mousePoint.getX();
-				mousePosition[1] = (float) mousePoint.getY();
-
-				float[] translation = new float[2];
-				float[] scalation = new float[2];
-				translation[0] = remoteElementHyperbolic.getTransform()
-						.getTranslation().x();
-				translation[1] = remoteElementHyperbolic.getTransform()
-						.getTranslation().y();
-				scalation[0] = remoteElementHyperbolic.getTransform()
-						.getScale().x();
-				scalation[1] = remoteElementHyperbolic.getTransform()
-						.getScale().y();
-				this.directHyperbolicView.setEyeTrackerAction(mousePosition,
+				float[] fixedCoordinate = new float[2];
+				fixedCoordinate[0] = (float) this.eyeTracker
+						.getFixedCoordinate()[0];
+				fixedCoordinate[1] = (float) this.eyeTracker
+						.getFixedCoordinate()[1];
+				this.directHyperbolicView.setEyeTrackerAction(fixedCoordinate,
 						translation, scalation);
+			}
+			// reset the fixed eyetracker coordinate:
+			eyeTracker.resetFixedCoordinate();
+		}
+
+		if (selectedInput == inputType.MOUSE_ONLY) {
+
+			if (glMouseListener.getPickedPoint() != null) {
+
+				if (manualPickFlag == true) {
+					mousePoint = glMouseListener.getPickedPoint();
+
+					float[] mousePosition = new float[2];
+					System.out.println("Mouse Position:");
+					mousePosition[0] = (float) mousePoint.getX();
+					mousePosition[1] = (float) mousePoint.getY();
+					System.out.println("mouse position:" + mousePosition[0]
+							+ " " + mousePosition[1]);
+
+					float[] translation = new float[2];
+					float[] scalation = new float[2];
+					translation[0] = remoteElementHyperbolic.getTransform()
+							.getTranslation().x();
+					translation[1] = remoteElementHyperbolic.getTransform()
+							.getTranslation().y();
+					scalation[0] = remoteElementHyperbolic.getTransform()
+							.getScale().x();
+					scalation[1] = remoteElementHyperbolic.getTransform()
+							.getScale().y();
+
+					this.directHyperbolicView.setEyeTrackerAction(
+							mousePosition, translation, scalation);
+
+				}
 			}
 		}
 
@@ -690,6 +775,18 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView {
 
 		layoutHotSpot[0] = startPoint[0] + eVector[0] * distance;
 		layoutHotSpot[1] = startPoint[1] + eVector[1] * distance;
+
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 

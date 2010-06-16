@@ -6,7 +6,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 public class DataWindowsMouseWheelListener extends MouseAdapter implements
-		MouseWheelListener, MouseMotionListener {
+		MouseWheelListener {
 	private GLHyperbolic hyperbolic;
 	private float wheelFactor;
 	private int numberOfScrollsToFullScreen;

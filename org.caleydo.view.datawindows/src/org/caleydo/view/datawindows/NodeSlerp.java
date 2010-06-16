@@ -48,6 +48,9 @@ public class NodeSlerp {
 
 	public boolean doASlerp(float[] position) {
 
+		if (position==null){
+			return false;
+		}
 		actualPoint = position.clone();
 
 		// do an accelerated movement, because of a lack of precision caused

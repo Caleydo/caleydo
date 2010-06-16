@@ -113,7 +113,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		newViews = new ArrayList<ASerializedView>();
 
 		displayFullView = false;
-		slerpedNode = new PoincareNode(null,"",1);
+		slerpedNode = new PoincareNode(null, "", 1);
 
 	}
 
@@ -499,14 +499,13 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 				// the last translation, after the slerp has finished
 				disk.setCenteredNode(slerpedNode);
 
-				//move the node exactly in the middle of the disk
+				// move the node exactly in the middle of the disk
 				float[] translationVector = new float[2];
 				translationVector[0] = disk.getCenteredNode().getPosition()[0]
 						* -1;
 				translationVector[1] = disk.getCenteredNode().getPosition()[1]
 						* -1;
 				disk.translateTreeMoebius(translationVector);
-				
 
 				arSlerpActions.remove(0);
 			}
@@ -538,14 +537,13 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		Transform transform = new Transform();
 		remoteNodeElement.setGLView(((ViewHyperbolicNode) node).getGlView());
-		
+
 		// if a node is totally zoomed in, the remote view of the node is
 		// displayed on the full hyperbolic view
 		if (this.displayFullView == true
 				&& (this.disk.getCenteredNode() == node)) {
 			transform.setScale(new Vec3f(1, 1, 1));
-			transform.setTranslation(new Vec3f(0,
-					0, 0));
+			transform.setTranslation(new Vec3f(0, 0, 2));
 		} else {
 			// in this case, the size of the displayed remote view depends on
 			// the position of the node
@@ -555,7 +553,6 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		remoteNodeElement.setTransform(transform);
 		renderRemoteLevelElement(gl, remoteNodeElement);
-	
 
 	}
 
@@ -613,9 +610,11 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		float factorX = 1 / (float) (this.getParentGLCanvas().getWidth() * scalation[0]);
 		float factorY = 1 / (float) (this.getParentGLCanvas().getHeight());
 
-		mouseCoord[0] = (mousePoint[0] * factorX - offset[0]) * 2 - 1;
-		mouseCoord[1] = ((this.getParentGLCanvas().getHeight() - mousePoint[1])
-				* factorY - offset[1]) * 2 - 1;
+		if (mousePoint != null && offset != null) {
+			mouseCoord[0] = (mousePoint[0] * factorX - offset[0]) * 2 - 1;
+			mouseCoord[1] = ((this.getParentGLCanvas().getHeight() - mousePoint[1])
+					* factorY - offset[1]) * 2 - 1;
+		}
 
 		PoincareNode selectedNode = disk.processEyeTrackerAction(mouseCoord
 				.clone(), arSlerpActions);
@@ -630,8 +629,6 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 			slerpedNode = selectedNode;
 			// disk.setCenteredNode(selectedNode);
 
-		} else {
-			disk.setCenteredNode(null);
 		}
 
 		correctDiskAngle();

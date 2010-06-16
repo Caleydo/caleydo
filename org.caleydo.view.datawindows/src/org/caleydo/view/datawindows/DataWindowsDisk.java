@@ -137,29 +137,6 @@ public class DataWindowsDisk extends PoincareDisk {
 			size = getMetric(node.getPosition(), nodeSize);
 		}
 
-		Vec3f lowerLeftCorner = new Vec3f(
-				(-size[0] + node.getZoomedPosition()[0] * displayScaleFactorX + canvasWidth / 2),
-				(-size[1] * (canvasHeight / canvasWidth)
-						+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
-				0);
-		Vec3f lowerRightCorner = new Vec3f(
-				(size[0] + node.getZoomedPosition()[0] * displayScaleFactorX + canvasWidth / 2),
-				(-size[1] * (canvasHeight / canvasWidth)
-						+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
-				0);
-		Vec3f upperRightCorner = new Vec3f(
-				(size[0] + node.getZoomedPosition()[0] * displayScaleFactorX + canvasWidth / 2),
-				(size[1] * (canvasHeight / canvasWidth)
-						+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
-				0);
-		Vec3f upperLeftCorner = new Vec3f(
-				(-size[0] + node.getZoomedPosition()[0] * displayScaleFactorX + canvasWidth / 2),
-				(size[1] * (canvasHeight / canvasWidth)
-						+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
-				0);
-
-		Vec3f scalingPivot = new Vec3f(1, 1, 0);
-
 		int iPickingID = pickingManager.getPickingID(iUniqueID,
 				EPickingType.DATAW_NODE, node.iComparableValue);
 
@@ -170,6 +147,35 @@ public class DataWindowsDisk extends PoincareDisk {
 			if (node.markedToRemove == true) {
 				alpha = 0.7f;
 			}
+			size[0] = size[0] * 4;
+			size[1] = size[1] * 4;
+			Vec3f lowerLeftCorner = new Vec3f(
+					(-size[0] + node.getZoomedPosition()[0]
+							* displayScaleFactorX + canvasWidth / 2),
+					(-size[1] * (canvasHeight / canvasWidth)
+							+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
+					0);
+			Vec3f lowerRightCorner = new Vec3f(
+					(size[0] + node.getZoomedPosition()[0]
+							* displayScaleFactorX + canvasWidth / 2),
+					(-size[1] * (canvasHeight / canvasWidth)
+							+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
+					0);
+			Vec3f upperRightCorner = new Vec3f(
+					(size[0] + node.getZoomedPosition()[0]
+							* displayScaleFactorX + canvasWidth / 2),
+					(size[1] * (canvasHeight / canvasWidth)
+							+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
+					0);
+			Vec3f upperLeftCorner = new Vec3f(
+					(-size[0] + node.getZoomedPosition()[0]
+							* displayScaleFactorX + canvasWidth / 2),
+					(size[1] * (canvasHeight / canvasWidth)
+							+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
+					0);
+
+			Vec3f scalingPivot = new Vec3f(1, 1, 0);
+
 			textureManager.renderGUITexture(gl, EIconTextures.PATHWAY_ICON,
 					lowerLeftCorner, lowerRightCorner, upperRightCorner,
 					upperLeftCorner, scalingPivot, 1, 1, 1, alpha, 100);
@@ -192,27 +198,29 @@ public class DataWindowsDisk extends PoincareDisk {
 					+ node.getZoomedPosition()[1] * displayScaleFactorY
 					+ canvasHeight / 2;
 
-			 hyperbolic.drawRemoteView(gl, node, position,size[0]);
+			hyperbolic.drawRemoteView(gl, node, position, size[0]);
 
-//			if (node == this.getCenteredNode()) {
-//				this.drawCircle(size[0] * canvasWidth / 2 * 1.4142f, size[1]
-//						* canvasHeight / 2 * 1.4142f, canvasWidth / 2,
-//						canvasHeight / 2);
-//			}
+			// if (node == this.getCenteredNode()) {
+			// this.drawCircle(size[0] * canvasWidth / 2 * 1.4142f, size[1]
+			// * canvasHeight / 2 * 1.4142f, canvasWidth / 2,
+			// canvasHeight / 2);
+			// }
 
 			// draw rectangle around the view for debuging reasons
-//			gl.glLineWidth((float) lineWidth);
-//			gl.glBegin(GL.GL_LINE_STRIP);
-//			gl.glColor3i(0, 0, 0);
-//
-//			gl.glVertex3f(position[0], position[1], 0);
-//			gl.glVertex3f(position[0] + size[0] * canvasWidth, position[1], 0);
-//			gl.glVertex3f(position[0] + size[0] * canvasWidth, position[1]
-//					+ size[1] * canvasHeight, 0);
-//			gl.glVertex3f(position[0], position[1] + size[1] * canvasHeight, 0);
-//			gl.glVertex3f(position[0], position[1], 0);
-//
-//			gl.glEnd();
+			// gl.glLineWidth((float) lineWidth);
+			// gl.glBegin(GL.GL_LINE_STRIP);
+			// gl.glColor3i(0, 0, 0);
+			//
+			// gl.glVertex3f(position[0], position[1], 0);
+			// gl.glVertex3f(position[0] + size[0] * canvasWidth, position[1],
+			// 0);
+			// gl.glVertex3f(position[0] + size[0] * canvasWidth, position[1]
+			// + size[1] * canvasHeight, 0);
+			// gl.glVertex3f(position[0], position[1] + size[1] * canvasHeight,
+			// 0);
+			// gl.glVertex3f(position[0], position[1], 0);
+			//
+			// gl.glEnd();
 		}
 		gl.glPopName();
 	}
