@@ -17,7 +17,7 @@ public class PoincareDisk {
 	private float layoutLenseFactor = 1.45f;
 
 	public PoincareDisk() {
-		radius = 1;
+		radius = 1f;
 		nodeSize = 0.1f;
 		lineWidth = 2;
 		absolutePosition = new float[2];

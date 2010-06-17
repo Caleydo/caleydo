@@ -173,11 +173,11 @@ public class DataWindowsDisk extends PoincareDisk {
 							+ node.getZoomedPosition()[1] * displayScaleFactorY + canvasHeight / 2),
 					0);
 
-			Vec3f scalingPivot = new Vec3f(1, 1, 0);
+			Vec3f scalingPivot = new Vec3f(1, 1, 1);
 
 			textureManager.renderGUITexture(gl, EIconTextures.PATHWAY_ICON,
 					lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, scalingPivot, 1, 1, 1, alpha, 100);
+					upperLeftCorner, scalingPivot, 1, 1, 1, alpha, 0);
 		} else {
 
 			if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 1) {
@@ -373,19 +373,16 @@ public class DataWindowsDisk extends PoincareDisk {
 
 	public PoincareNode processEyeTrackerAction(float[] normedEyePosition,
 			ArrayList<NodeSlerp> arSlerpActions) {
-		// Point2D.float offsetFromMiddle = new Point2D.float();
-
-		// offsetFromMiddle.setLocation((eyePosition[0] - canvasWidth / 2)
-		// / displayScaleFactorX, (eyePosition[1] - canvasHeight / 2)
-		// / displayScaleFactorY);
-		//
-
+		
 		// + "|" + offsetFromMiddle[1]);
 		PoincareNode returnNode = null;
 
 		// comment in for eyetracker focus
-		// if (this.distanceFromOrigin(offsetFromMiddle) < eyeTrackerBorder) {
-		// System.out.println("inside of direct picking");
+		
+	//	System.out.println("distance:"+this.distanceFromOrigin(normedEyePosition));
+		
+		 if (this.distanceFromOrigin(normedEyePosition) < (levelOfDetailLimits[0])) {
+		// System.out.println("insidee of direct picking");
 		returnNode = findNodeByCoordinate(normedEyePosition, 0);
 
 		if (returnNode != null) {
@@ -396,7 +393,9 @@ public class DataWindowsDisk extends PoincareDisk {
 					emptyPoint));
 		}
 
-		// } else {
+		 } else {
+			 return null;
+		 }
 		// //focus far nodes with the eyetracker
 		// System.out.println("outside of direct picking");
 		// returnNode = findNodeByCoordinate(offsetFromMiddle,

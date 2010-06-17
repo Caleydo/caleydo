@@ -23,11 +23,9 @@ public class eyeTracking {
 	private double pauseTime;
 	private double eyeTrackerPauseStatus;
 
-	@SuppressWarnings("static-access")
 	public eyeTracking(boolean simulation, String ipTracker) {
 		setEyeTrackerOffset(new float[2]);
 		debugMode = 0;
-		// the coordinate, choosen by the eye
 		fixedCoordinate = new int[2];
 		timeToFixCoordinate = 0.5f;
 		radiusOfFixedCoordinate = 20;
@@ -42,9 +40,10 @@ public class eyeTracking {
 		coordinateList = new ArrayList<eyeCoordinateListEntry>();
 		totalTime = 0;
 		pauseTime = 1;
-		this.eyeTrackerPauseStatus=0;
+		this.eyeTrackerPauseStatus = 0;
 	}
 
+	@SuppressWarnings("static-access")
 	public void startTracking() {
 
 		tracker = new TrackDataProvider();
@@ -56,13 +55,8 @@ public class eyeTracking {
 	public void receiveData() {
 		if (simulation == false) {
 			receivedEyeData = tracker.getEyeTrackData();
-			if (debugMode == 1) {
-				System.out.println("Eye Tracker Data received: "
-						+ receivedEyeData[0] + " / " + receivedEyeData[1]);
-			}
 			rawEyeTrackerPosition[0] = (int) receivedEyeData[0];
 			rawEyeTrackerPosition[1] = (int) receivedEyeData[1];
-
 		}
 	}
 
@@ -70,14 +64,6 @@ public class eyeTracking {
 		rawEyeTrackerPosition[0] = rawEyeTrackerPosition[0] - x;
 		rawEyeTrackerPosition[1] = rawEyeTrackerPosition[1] - y;
 	}
-
-	// public void calculateGLCoordinates(float canvasWidth, float canvasHeight,
-	// int pixelWidth, int pixelHeight) {
-	// if (simulation == false) {
-	// glCoordinate[0] = receivedEyeData[0] * (canvasWidth / pixelWidth);
-	// glCoordinate[1] = receivedEyeData[1] * (canvasHeight / pixelHeight);
-	// }
-	// }
 
 	public void setRawEyeTrackerPosition(int[] rawEyeTrackerPosition) {
 		this.rawEyeTrackerPosition = rawEyeTrackerPosition;
@@ -105,26 +91,21 @@ public class eyeTracking {
 		totalTime = totalTime + deltaTime;
 		if (this.eyeTrackerPauseStatus > 0) {
 			this.eyeTrackerPauseStatus -= deltaTime;
-			System.out.println("pause beendet in:" + this.eyeTrackerPauseStatus);
 		} else {
 			this.eyeTrackerPauseStatus = 0;
 		}
-		// System.out.println("total time:"+this.totalTime);
-		time.update();
 
+		time.update();
 		this.coordinateList.add(new eyeCoordinateListEntry(
 				rawEyeTrackerPosition, totalTime));
-
 		int size = coordinateList.size();
-
-		double dy;
+	
 		double dx;
+		double dy;
 		eyeCoordinateListEntry actualEntry;
 		double length;
 		for (int i = 0; i < size; i++) {
 			actualEntry = coordinateList.get(i);
-			// System.out.println("time:"+actualEntry.getTime()+
-			// "actualtime"+totalTime);
 			if ((totalTime - actualEntry.getTime()) > this.timeToFixCoordinate) {
 				coordinateList.remove(i);
 				i--;
@@ -136,20 +117,14 @@ public class eyeTracking {
 				dx = (actualEntry.getcoordinate()[0] - rawEyeTrackerPosition[0]);
 				dy = (actualEntry.getcoordinate()[1] - rawEyeTrackerPosition[1]);
 				length = (float) Math.sqrt(dx * dx + dy * dy);
-				// System.out.println("entry: " +i+" aktuell"+
-				// actualEntry.getcoordinate()[0] );
-			//	System.out.println("dx:" + dx + " dy:" + dy + " distance: "
-			//			+ length);
 				if (length > this.radiusOfFixedCoordinate) {
 					return;
 				}
 			}
 		}
-		System.out.println("Point fixed!!!: " + rawEyeTrackerPosition[0] + " "
-				+ rawEyeTrackerPosition[1]);
-		if(this.eyeTrackerPauseStatus==0){
-		this.fixedCoordinate[0] = this.rawEyeTrackerPosition[0];
-		this.fixedCoordinate[1] = this.rawEyeTrackerPosition[1];
+		if (this.eyeTrackerPauseStatus == 0) {
+			this.fixedCoordinate[0] = this.rawEyeTrackerPosition[0];
+			this.fixedCoordinate[1] = this.rawEyeTrackerPosition[1];
 		}
 	}
 
@@ -165,5 +140,5 @@ public class eyeTracking {
 	public void pauseEyeTracker() {
 		this.eyeTrackerPauseStatus = this.pauseTime;
 	}
-
+	
 }

@@ -174,35 +174,6 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	@Override
 	public void display(GL gl) {
 
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-
-		// GLHelperFunctions.drawPointAt(gl,new Vec3f(0,0,0));
-		// GLHelperFunctions.drawPointAt(gl,new Vec3f(4,4,0));
-		// GLHelperFunctions.drawPointAt(gl,new Vec3f(-2,-2,0));
-
-		// receivedEyeData = tracker.getEyeTrackData();
-		//
-		// int offsetX = upperLeftScreenPos.x;
-		// int offsetY = upperLeftScreenPos.y;
-		//
-		// receivedEyeData[0] = receivedEyeData[0] - (float) offsetX;
-		// receivedEyeData[1] = receivedEyeData[1] - (float) offsetY;
-		//
-		// // System.out.println("Eye position korrigiert: " +
-		// receivedEyeData[0]
-		// // + " / " + receivedEyeData[1]);
-		// float factorX = canvasWidth / (float) viewport[2];
-		// float factorY = canvasHeight / (float) viewport[3];
-		//
-		// // visualisation of the eyecursor
-		// gl.glBegin(GL.GL_LINE);
-		// gl.glVertex3f(receivedEyeData[0] * factorX, receivedEyeData[1]
-		// * factorY, 0);
-		// gl.glVertex3f(2, 2, 0);
-		// gl.glEnd();
-
-		// remote test
-
 		doSlerpActions();
 		initNewView(gl);
 
@@ -605,22 +576,26 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	}
 
 	// called, if the user focuses a point on the display with his eyes
-	public boolean setEyeTrackerAction(float[] mousePoint, float[] offset,
+	public boolean setEyeTrackerAction(int[] mouseCoord, float[] offset,
 			float[] scalation) {
 		// if (this.get != null) {
-		float[] mouseCoord = new float[2];
+		float[] mousePoint=new float[2];
+		mousePoint[0]=(float)mouseCoord[0];
+		mousePoint[1]=(float)mouseCoord[1];	
+		
         boolean returnValue;
+        
 		// standardization of the mouseposition
 		float factorX = 1 / (float) (this.getParentGLCanvas().getWidth() * scalation[0]);
 		float factorY = 1 / (float) (this.getParentGLCanvas().getHeight());
 
 		if (mousePoint != null && offset != null) {
-			mouseCoord[0] = (mousePoint[0] * factorX - offset[0]) * 2 - 1;
-			mouseCoord[1] = ((this.getParentGLCanvas().getHeight() - mousePoint[1])
+			mousePoint[0] = (mousePoint[0] * factorX - offset[0]) * 2 - 1;
+			mousePoint[1] = ((this.getParentGLCanvas().getHeight() - mousePoint[1])
 					* factorY - offset[1]) * 2 - 1;
 		}
 
-		PoincareNode selectedNode = disk.processEyeTrackerAction(mouseCoord
+		PoincareNode selectedNode = disk.processEyeTrackerAction(mousePoint
 				.clone(), arSlerpActions);
 
 		if (selectedNode == disk.getCenteredNode()) {
@@ -629,15 +604,12 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		if (selectedNode != null) {
 			disk.setCenteredNode(selectedNode);
-
 			slerpedNode = selectedNode;
-			// disk.setCenteredNode(selectedNode);
 			returnValue=true;
 		}
 		else{
 			returnValue=false;
 		}
-
 		correctDiskAngle();
 		return returnValue;
 	}
