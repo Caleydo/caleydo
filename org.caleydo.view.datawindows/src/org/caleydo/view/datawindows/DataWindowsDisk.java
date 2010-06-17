@@ -40,7 +40,6 @@ public class DataWindowsDisk extends PoincareDisk {
 		hyperbolic = master;
 
 		radiussquare = radius * radius;
-
 	}
 
 	public void mouseOverNode(int nodeIndex) {

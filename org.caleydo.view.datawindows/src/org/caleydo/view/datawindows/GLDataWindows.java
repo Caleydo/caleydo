@@ -134,7 +134,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		defaultLayoutHotSpot = new float[2];
 		layoutHotSpot = new float[2];
 
-		selectedInput = inputType.MOUSE_ONLY;
+		selectedInput = inputType.EYETRACKER_SIMULATED;
 
 		// remoteHyperbolicPosition.setLocation(0, canvasHeight / 2 -
 		// canvasHeight
@@ -253,9 +253,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		// - viewFrustum.getBottom(), 0);
 		// gl.glEnd();
 		// gl.glPopName();
-		
 
-		 
 		float canvasWidth = viewFrustum.getWidth();
 		float canvasHeight = viewFrustum.getHeight();
 
@@ -327,18 +325,16 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 		if (selectedInput == inputType.EYETRACKER_SIMULATED) {
 			int[] mousePositionInt = new int[2];
-			
-			
+
 			mousePositionInt[0] = this.glMouseListener.mousePositionForEyeTracker[0];
 			mousePositionInt[1] = this.glMouseListener.mousePositionForEyeTracker[1];
 			eyeTracker.cutWindowOffset(upperLeftScreenPos.x,
 					upperLeftScreenPos.y);
 			// position should be set on real mouseposition on the
 			// screen
-			 this.eyeTracker
-			 .setRawEyeTrackerPosition(mousePositionInt);
-			 eyeTracker.cutWindowOffset(upperLeftScreenPos.x,
-						upperLeftScreenPos.y);
+			this.eyeTracker.setRawEyeTrackerPosition(mousePositionInt);
+			eyeTracker.cutWindowOffset(upperLeftScreenPos.x,
+					upperLeftScreenPos.y);
 		}
 
 		if (selectedInput == inputType.EYETRACKER_ONLY) {
@@ -482,7 +478,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	private void evaluateUserSelection() {
-
+		boolean foundNode = false;
 		testZoomViewEventSwitch = false;
 		selectedInput = inputType.EYETRACKER_SIMULATED;
 		if (selectedInput == inputType.EYETRACKER_ONLY
@@ -505,11 +501,15 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 						.getFixedCoordinate()[0];
 				fixedCoordinate[1] = (float) this.eyeTracker
 						.getFixedCoordinate()[1];
-				this.directHyperbolicView.setEyeTrackerAction(fixedCoordinate,
+				foundNode=this.directHyperbolicView.setEyeTrackerAction(fixedCoordinate,
 						translation, scalation);
 			}
 			// reset the fixed eyetracker coordinate:
 			eyeTracker.resetFixedCoordinate();
+
+			if(foundNode){
+			eyeTracker.pauseEyeTracker();
+			}
 		}
 
 		if (selectedInput == inputType.MOUSE_ONLY) {

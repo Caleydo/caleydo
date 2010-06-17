@@ -250,15 +250,19 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	// creates a slerp rotating the tree to the right position
 	public void correctDiskAngle() {
-
+		if (simpleSlerpActions.isEmpty()){
 		previousSimpleSlerp = 0;
 		SimpleSlerp actualSlerp = new SimpleSlerp();
+		
+		
 		// the ending condition of the slerp is the correct angle
 		actualSlerp.endingCondition = disk.calculateCorrectDiskRotation(disk
 				.getCenteredNode());
 
 		actualSlerp.speed = 10;
+		
 		simpleSlerpActions.add(actualSlerp);
+		}
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
@@ -601,11 +605,11 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	}
 
 	// called, if the user focuses a point on the display with his eyes
-	public void setEyeTrackerAction(float[] mousePoint, float[] offset,
+	public boolean setEyeTrackerAction(float[] mousePoint, float[] offset,
 			float[] scalation) {
 		// if (this.get != null) {
 		float[] mouseCoord = new float[2];
-
+        boolean returnValue;
 		// standardization of the mouseposition
 		float factorX = 1 / (float) (this.getParentGLCanvas().getWidth() * scalation[0]);
 		float factorY = 1 / (float) (this.getParentGLCanvas().getHeight());
@@ -620,7 +624,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 				.clone(), arSlerpActions);
 
 		if (selectedNode == disk.getCenteredNode()) {
-			return;
+			return true;
 		}
 
 		if (selectedNode != null) {
@@ -628,10 +632,14 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 			slerpedNode = selectedNode;
 			// disk.setCenteredNode(selectedNode);
-
+			returnValue=true;
+		}
+		else{
+			returnValue=false;
 		}
 
 		correctDiskAngle();
+		return returnValue;
 	}
 
 	@Override
