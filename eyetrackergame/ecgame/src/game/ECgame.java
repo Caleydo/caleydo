@@ -2,13 +2,19 @@ package game;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import jmetest.TutorialGuide.ExplosionFactory;
+
+import com.jme.bounding.BoundingBox;
+import com.jme.bounding.BoundingSphere;
 import com.jme.image.Texture;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
+import com.jme.input.util.SyntheticButton;
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
@@ -19,6 +25,7 @@ import com.jme.scene.Node;
 import com.jme.scene.Skybox;
 import com.jme.scene.Spatial;
 import com.jme.scene.Text;
+import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.Spatial.TextureCombineMode;
 import com.jme.scene.shape.Box;
 import com.jme.scene.shape.Capsule;
@@ -51,6 +58,7 @@ public class ECgame extends SimplePhysicsGame
 	private StaticPhysicsNode redNode_;
 	private StaticPhysicsNode greenNode_;
 	private StaticPhysicsNode blueNode_;
+	private Node explosions_;
 	
 	private DynamicPhysicsNode[] ballNode_;
 	private Sphere[] ball_;
@@ -94,33 +102,43 @@ public class ECgame extends SimplePhysicsGame
 	private boolean blue_opened_ = false;
 	private boolean opening_ = false;
 	private boolean closing_ = false;
+	private boolean spawning_ = false;
 	
 	private int ball_counter_ = 0;
 	private int max_ball_count_ = 5;
 	
 	private Random generator_;	
 	private boolean test = true;
-	private Color spawn_color_;
+	private Color spawn_color_ = null;
+	private float speed_;
+	
+	private ArrayList<Integer> spawn_list_;
+	//private Vector3f applied_force_;
 	
 	protected void simpleInitGame() 
 	{
 		display.setTitle("Eye-Controlled Game");
 		input.removeAllFromAttachedHandlers();
 		graphNode.detachChildNamed("f4");
-		
+		rootNode.setCullHint(CullHint.Never);
 		generator_ = new Random();
 		initMouseOverPos();
 		initCamera();
-	    
+	    explosions_ = new Node();
+	    rootNode.attachChild(explosions_);
 		buildSkyBox();
 	
 		staticNode_ = getPhysicsSpace().createStaticNode();
 		rootNode.attachChild( staticNode_ );
-		
+		 
         // Make the object default colors shine through
         ms_ = display.getRenderer().createMaterialState();
         ms_.setColorMaterial(ColorMaterial.AmbientAndDiffuse);
+        rootNode.setRenderState(ms_);
 		ExplosionFactory.warmup();
+		
+		spawn_list_ = new ArrayList<Integer>(); 
+		spawn_list_.clear();
 		
 		initPlatforms();
 		initWalls();
@@ -133,6 +151,9 @@ public class ECgame extends SimplePhysicsGame
 			ball_[i] = null;
 		}
 		
+		//applied_force_ = new Vector3f(80,390,0);
+		
+		speed_ = 1.4f;
 		
 		initHUD();
 		initGhost();
@@ -154,7 +175,6 @@ public class ECgame extends SimplePhysicsGame
 		//rootNode.updateRenderState();
 		
 		//showPhysics = true;
-
 			    		
 	}
 	
@@ -181,28 +201,45 @@ public class ECgame extends SimplePhysicsGame
 		switch(color)
 		{
 		case RED:
-			temp_color = ColorRGBA.red;
 			start_pos = new Vector3f(-11,5.5f,0);
 			break;
 		case GREEN:
-			temp_color = ColorRGBA.green;
 			start_pos = new Vector3f(-11,0.5f,0);
 			break;
 		case BLUE:
-			temp_color = ColorRGBA.blue;
 			start_pos = new Vector3f(-11,-4.5f,0);
 			break;
 		default:
 			return;
 		}
-			
+		
+		Color new_color = getRandomColor();	
+		
+		switch(new_color)
+		{
+		case RED:
+			temp_color = ColorRGBA.red;
+			break;
+		case GREEN:
+			temp_color = ColorRGBA.green;
+			break;
+		case BLUE:
+			temp_color = ColorRGBA.blue;
+			break;
+		default:
+			return;
+		}
+				
 		String name = "ball"+index;
-		ball_[index] = new Sphere(name,start_pos,10,10,0.4f);
+		ball_[index] = new Sphere(name,new Vector3f(0,0,0),10,10,0.4f);
+		ball_[index].setModelBound(new BoundingSphere());
+		ball_[index].updateModelBound();
 		ball_[index].setDefaultColor(temp_color);
 		//ballNode_[index].setMaterial(Material.OSMIUM);
 		ballNode_[index].attachChild(ball_[index]);
-		ballNode_[index].generatePhysicsGeometry();
 		
+		ballNode_[index].getLocalTranslation().set(start_pos);
+		ballNode_[index].generatePhysicsGeometry();
         ballNode_[index].setRenderState(ms_);
         ballNode_[index].updateRenderState();
 		
@@ -214,6 +251,8 @@ public class ECgame extends SimplePhysicsGame
 		ball_[index] = null;
 		ballNode_[index].delete();
 		ballNode_[index] = null;
+		
+		ball_counter_--;
 	}
 	
 	private void initHUD()
@@ -264,10 +303,50 @@ public class ECgame extends SimplePhysicsGame
 		hud_.attachChild(life1);
 		hud_.attachChild(life2);
 		hud_.attachChild(life3);
-		
         hud_.setRenderState(ms_);
         hud_.updateRenderState();
 	
+	}
+	
+	private void updateHUD()
+	{
+		score_string_ = "SCORE: " + score_;
+		player_score_.print(score_string_);
+		
+		ParticleMesh explosion;
+		int temp = hud_.getChildren().size()-2;
+		
+		if(temp != lives_)
+		{
+			switch(lives_)
+			{
+			case 0:
+				explosion = createExplosion(ColorRGBA.red);
+				explosion.getLocalScale().set(new Vector3f(0.03f,0.03f,0.03f));
+				Vector3f temp_vec = ((Sphere)hud_.getChild("life1")).center;
+				explosion.getLocalTranslation().set(temp_vec.x-1.2f,temp_vec.y,temp_vec.z);
+				hud_.detachChild(hud_.getChild("life1"));
+				return;
+			case 1:
+				explosion = createExplosion(ColorRGBA.green);
+				explosion.getLocalScale().set(new Vector3f(0.03f,0.03f,0.03f));
+				Vector3f temp_vec1 = ((Sphere)hud_.getChild("life2")).center;
+				explosion.getLocalTranslation().set(temp_vec1.x-0.6f,temp_vec1.y,temp_vec1.z);
+				hud_.detachChild(hud_.getChild("life2"));
+				return;
+			case 2:
+				explosion = createExplosion(ColorRGBA.blue);
+				explosion.getLocalScale().set(new Vector3f(0.03f,0.03f,0.03f));
+				explosion.getLocalTranslation().set(((Sphere)hud_.getChild("life3")).center);
+				hud_.detachChild(hud_.getChild("life3"));
+				return;
+			case 3:
+				return;
+			default:
+				//game over!!
+			}
+		}
+			
 	}
 	
 	private void initGhost()
@@ -348,9 +427,9 @@ public class ECgame extends SimplePhysicsGame
 		
 		player_ = new Box("player",new Vector3f(0,0,0),0.75f,0.3f,10);
 		
-		//playerNode_.createBox("player");
 		
-		
+		player_.setModelBound(new BoundingBox());
+		player_.updateModelBound();
 		//player_.setModelBound(new BoundingBox());
 		//player_.updateModelBound();
 		
@@ -395,20 +474,42 @@ public class ECgame extends SimplePhysicsGame
 		rootNode.attachChild(blueNode_);
 		
 		entranceRed_ = new Box("entranceRed",new Vector3f(0,0,0),0.25f,1.5f,10);
+		entranceRed_.setModelBound(new BoundingBox());
+		entranceRed_.updateModelBound();
 		Box topLeftWall = new Box("topLeftWall", new Vector3f(-9.75f,8.75f,0),0.25f,1.25f,10);
+		topLeftWall.setModelBound(new BoundingBox());
+		topLeftWall.updateModelBound();
 		Box topRightWall = new Box("topRightWall", new Vector3f(9.75f,7.25f,0),0.25f,2.75f,10);
+		topRightWall.setModelBound(new BoundingBox());
+		topRightWall.updateModelBound();
 			
 		
 		entranceGreen_ = new Box("entranceGreen",new Vector3f(0,0,0),0.25f,1.5f,10);
+		entranceGreen_.setModelBound(new BoundingBox());
+		entranceGreen_.updateModelBound();
 		Box highMiddleLeftWall = new Box("highMiddleLeftWall",new Vector3f(-9.75f,3.5f,0),0.25f,1,10);
+		highMiddleLeftWall.setModelBound(new BoundingBox());
+		highMiddleLeftWall.updateModelBound();
 		Box lowMiddleLeftWall = new Box("lowMiddleLeftWall", new Vector3f(-9.75f,-1.5f,0),0.25f,1,10);
+		lowMiddleLeftWall.setModelBound(new BoundingBox());
+		lowMiddleLeftWall.updateModelBound();
 		Box highMiddleRightWall = new Box("highMiddleRightWall", new Vector3f(9.75f,2,0),0.25f,2.5f,10);
+		highMiddleRightWall.setModelBound(new BoundingBox());
+		highMiddleRightWall.updateModelBound();
 		
 		
 		entranceBlue_ = new Box("entranceBlue",new Vector3f(0,0,0),0.25f,1.5f,10);
+		entranceBlue_.setModelBound(new BoundingBox());
+		entranceBlue_.updateModelBound();
 		Box bottomLeftWall = new Box("bottomLeftWall", new Vector3f(-9.75f,-7.75f,0),0.25f,2.25f,10);
+		bottomLeftWall.setModelBound(new BoundingBox());
+		bottomLeftWall.updateModelBound();
 		Box bottomRightWall = new Box("bottomRightWall", new Vector3f(9.75f,-7.75f,0),0.25f,2.25f,10);
+		bottomRightWall.setModelBound(new BoundingBox());
+		bottomRightWall.updateModelBound();
 		Box lowMiddleRightWall = new Box("lowMiddleRightWall", new Vector3f(9.75f,-3,0),0.25f,2.5f,10);
+		lowMiddleRightWall.setModelBound(new BoundingBox());
+		lowMiddleRightWall.updateModelBound();
 
 		
 		TextureState textStateRed = display.getRenderer().createTextureState();
@@ -486,16 +587,34 @@ public class ECgame extends SimplePhysicsGame
 	{
 		
 		Box topFirst = new Box("topFirst",new Vector3f(-8.125f,4.8f,0),4.875f,0.3f,10);
+		topFirst.setModelBound(new BoundingBox());
+		topFirst.updateModelBound();
 		Box topSecond = new Box("topSecond",new Vector3f(0.75f,4.8f,0),2.5f,0.3f,10);
+		topSecond.setModelBound(new BoundingBox());
+		topSecond.updateModelBound();
 		Box topThird = new Box("topThird",new Vector3f(7.375f,4.8f,0),2.625f,0.3f,10);	
+		topThird.setModelBound(new BoundingBox());
+		topThird.updateModelBound();
 		
 		Box middleFirst = new Box("middleFirst",new Vector3f(-8.875f,-0.2f,0),4.125f,0.3f,10);
+		middleFirst.setModelBound(new BoundingBox());
+		middleFirst.updateModelBound();
 		Box middleSecond = new Box("middleSecond",new Vector3f(-0.75f,-0.2f,0),2.5f,0.3f,10);
-		Box middleThird = new Box("middleThird",new Vector3f(6.625f,-0.2f,0),3.375f,0.3f,10);		
+		middleSecond.setModelBound(new BoundingBox());
+		middleSecond.updateModelBound();
+		Box middleThird = new Box("middleThird",new Vector3f(6.625f,-0.2f,0),3.375f,0.3f,10);
+		middleThird.setModelBound(new BoundingBox());
+		middleThird.updateModelBound();
 		
 		Box bottomFirst = new Box("bottomFirst",new Vector3f(-9.625f,-5.2f,0),3.375f,0.3f,10);
+		bottomFirst.setModelBound(new BoundingBox());
+		bottomFirst.updateModelBound();
 		Box bottomSecond = new Box("bottomSecond",new Vector3f(-2.25f,-5.2f,0),2.5f,0.3f,10);
+		bottomSecond.setModelBound(new BoundingBox());
+		bottomSecond.updateModelBound();
 		Box bottomThird = new Box("bottomThird",new Vector3f(5.875f,-5.2f,0),4.125f,0.3f,10);
+		bottomThird.setModelBound(new BoundingBox());
+		bottomThird.updateModelBound();
 		
 		TextureState textStateBricks = display.getRenderer().createTextureState();
 		Texture textbricks = TextureManager.loadTexture(ECgame.class.getResource("/data/bricks.jpg"),
@@ -600,6 +719,10 @@ public class ECgame extends SimplePhysicsGame
     
     protected void simpleUpdate()
     {  	
+    	if(!spawning_)
+    		spawn_color_ = null;
+    	
+    	ExplosionFactory.cleanExplosions();
     	handleMouse();
     	//handleEyeInput();
 		
@@ -614,56 +737,181 @@ public class ECgame extends SimplePhysicsGame
 		if(KeyBindingManager.getKeyBindingManager().isValidCommand("DETONATE", true))
 		{
 			ParticleMesh explosion = ExplosionFactory.getExplosion();
-			explosion.getLocalScale().set(new Vector3f(0.05f,0.05f,0.05f));
+			explosion.getLocalScale().set(new Vector3f(0.08f,0.08f,0.08f));
 			explosion.getLocalTranslation().set(playerNode_.getLocalTranslation().x,playerNode_.getLocalTranslation().y+0.7f,10);
 			explosion.forceRespawn();
-			rootNode.attachChild(explosion);
+			explosions_.attachChild(explosion);
 			
+	    	for(int i = 0; i < 5; i++)
+	    	{
+	    		if(ballNode_[i] != null)
+	    		{
+	    				if(ball_[i].hasCollision(player_,false))
+	    				{
+	    					//explosions_.detachAllChildren();
+	    					//System.out.println("treffer");
+	    					ballNode_[i].getLocalTranslation().set(new Vector3f(ballNode_[i].getLocalTranslation().x+3f,ballNode_[i].getLocalTranslation().y+7f,0));
+	    					ParticleMesh explosion1 = ExplosionFactory.getExplosion();
+	    					explosion1.getLocalScale().set(new Vector3f(0.08f,0.08f,0.08f));
+	    					explosion1.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
+	    					explosion1.forceRespawn();
+	    					explosions_.attachChild(explosion1);
+	    				}
+	    		}
+	    	}
 			
 		}
 		
-		moveGhost();
-		
-		//spawn a ball
-		if(test)
-		{
-			spawn_color_ = getRandomColor();
-			openEntrance(spawn_color_);
-			opening_ = true;
-			test = false;
-		}
-		
-		if(!test && opening_)
-		{
-			openEntrance(spawn_color_);
-		}
-		
-		if(entranceOpened(spawn_color_))
-		{
-			if(!closing_)
-			createBall(spawn_color_);
-			closeEntrance(spawn_color_);
-			closing_ = true;
-			clearBallStartDynamics();
-		}
-		
-		if(!test && closing_)
-		{
-			closeEntrance(spawn_color_);
-		}
-		
-		
+		handleScoreAndLives();
+		handleBallFallingDown();
+		handleList();
 
 		
+		if (KeyBindingManager.getKeyBindingManager().isValidCommand("TEST1", true))
+		{
+			if(!spawning_)
+			spawn_list_.add(0);
+		}
+		
+		moveGhost();	
+		
+		if(spawn_color_ != null)
+		{
+			if(opening_)
+				openEntrance(spawn_color_);
+			else if(closing_)
+				closeEntrance(spawn_color_);
+			else if(entranceOpened(spawn_color_))
+			{
+				spawnBall();
+			}
+		}
+		
+	
     }
     
-    private void clearBallStartDynamics()
+    private void handleList()
+    {
+    	if(!spawn_list_.isEmpty())
+    	{
+    		if(!spawning_)
+    		{
+    			initSpawnBall();
+    			spawn_list_.remove(spawn_list_.size()-1);
+    		}
+    	}
+    }
+    
+    private void spawnBall()
+    {
+			createBall(spawn_color_);
+			closing_ = true;
+    }
+    
+    private void initSpawnBall()
+    {
+    	spawning_ = true;
+    	spawn_color_ = getRandomColor();
+    	opening_ = true;
+
+    }
+    
+    
+    private void handleBallFallingDown()
     {
     	for(int i = 0; i < 5; i++)
     	{
     		if(ballNode_[i] != null)
     		{
-    				ballNode_[i].clearDynamics();
+    			if(ballNode_[i].getLocalTranslation().y < -11)
+    				ballNode_[i].getLocalTranslation().setY(11);
+    		}
+    	}
+    	
+    }
+    
+    private ParticleMesh createExplosion(ColorRGBA color)
+    {
+    	//explosions_.detachAllChildren();
+		ParticleMesh explosion = ExplosionFactory.getExplosion();
+		explosion.getLocalScale().set(new Vector3f(0.08f,0.08f,0.08f));
+		explosion.setStartColor(color);
+		explosion.setEndColor(color);
+		explosion.forceRespawn();
+		explosions_.attachChild(explosion);   	
+		
+		return explosion;
+    }
+    private void handleScoreAndLives()
+    {
+    	ColorRGBA temp_color;
+    	for(int i = 0; i < 5; i++)
+    	{
+    		if(ballNode_[i] != null)
+    		{
+    			
+    			temp_color = ball_[i].getDefaultColor();
+    
+    			if(ball_[i].hasCollision(staticNode_.getChild("topRightWall"),false))
+    			{
+    				//red
+    				if(temp_color == ColorRGBA.red)
+    				{
+    					score_ += 100;
+    					updateHUD();
+    					ParticleMesh explosion = createExplosion(temp_color);
+    					explosion.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
+    					removeBall(i);
+    				}
+    				else
+    				{
+    					lives_--;
+    					updateHUD();
+    					ParticleMesh explosion = createExplosion(ColorRGBA.darkGray);
+    					explosion.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
+    					removeBall(i);
+    				}
+    			}
+    			else if(ball_[i].hasCollision(staticNode_.getChild("highMiddleRightWall"),false))
+				{	
+					//green
+    				if(temp_color == ColorRGBA.green)
+    				{
+    					score_ += 100;
+    					updateHUD();
+    					ParticleMesh explosion = createExplosion(temp_color);
+    					explosion.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
+    					removeBall(i);
+    				}
+    				else
+    				{
+    					lives_--;
+    					updateHUD();
+    					ParticleMesh explosion = createExplosion(ColorRGBA.darkGray);
+    					explosion.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
+    					removeBall(i);
+    				}
+				}
+				else if(ball_[i].hasCollision(staticNode_.getChild("lowMiddleRightWall"),false))
+				{
+					//blue
+    				if(temp_color == ColorRGBA.blue)
+    				{
+    					score_ += 100;
+    					updateHUD();
+    					ParticleMesh explosion = createExplosion(temp_color);
+    					explosion.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
+    					removeBall(i);
+    				}
+    				else
+    				{
+    					lives_--;
+    					updateHUD();
+    					ParticleMesh explosion = createExplosion(ColorRGBA.darkGray);
+    					explosion.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
+    					removeBall(i);
+    				}
+				}
     		}
     	}
     }
@@ -681,19 +929,28 @@ public class ECgame extends SimplePhysicsGame
     			redNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
     		}
     		else
+    		{
+    			opening_ = false;
     			red_opened_ = true;
+    		}
     		return;	
     	case GREEN:
     		if(greenNode_.getLocalTranslation().x > -12)
     			greenNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
     		else
+    		{
+    			opening_ = false;
     			green_opened_ = true;
+    		}
     		return;
     	case BLUE:
     		if(blueNode_.getLocalTranslation().x > -12)
     			blueNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
     		else
+    		{
+    			opening_ = false;
     			blue_opened_ = true;
+    		}
     		return;
     	default:
     		return;
@@ -734,7 +991,7 @@ public class ECgame extends SimplePhysicsGame
     
     private void closeEntrance(Color color)
     {
-    	Vector3f movement = new Vector3f(1.5f,0,0);
+    	Vector3f movement = new Vector3f(speed_,0,0);
     	
     	switch(color)
     	{
@@ -742,18 +999,33 @@ public class ECgame extends SimplePhysicsGame
     		if(redNode_.getLocalTranslation().x < -9.75f)
     			redNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
     		else
+    		{
+    			closing_ = false;
     			red_opened_ = false;
+    			spawning_ = false;
+    		}
+    			
     		return;	
     	case GREEN:
     		if(greenNode_.getLocalTranslation().x < -9.75f)
     			greenNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
     		else
-    			green_opened_ = false;
+        	{
+        		closing_ = false;
+        		green_opened_ = false;
+        		spawning_ = false;
+        	}
+    		return;
     	case BLUE:
     		if(blueNode_.getLocalTranslation().x < -9.75f)
     			blueNode_.getLocalTranslation().addLocal(movement.mult(timer.getTimePerFrame()));
     		else
+    		{
+    			closing_ = false;
     			blue_opened_ = false;
+    			spawning_ = false;
+    		}
+    		return;
     	default:
     		return;
     	}
