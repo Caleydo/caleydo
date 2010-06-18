@@ -52,12 +52,12 @@ public class TrackDataListenerThread
 				serverSocket.receive(receivePacket);
 				String sentence = new String(receivePacket.getData());
 
-				// System.out.println("received data: "+sentence);
+				 //System.out.println("received data: "+sentence);
 
 				if (!sentence.contains("ET_SPL"))
 					continue;
 
-				// System.out.println(sentence);
+				//System.out.println(sentence);
 
 				StringTokenizer tokenizer = new StringTokenizer(sentence, " ");
 
@@ -65,7 +65,10 @@ public class TrackDataListenerThread
 
 				// added 9.2.2010
 				tokenizer.nextToken();
-
+				tokenizer.nextToken();
+				tokenizer.nextToken();
+				tokenizer.nextToken();
+				
 				int x = new Integer(tokenizer.nextToken());
 				int y = 0;
 				int diameter = 0;
@@ -74,7 +77,8 @@ public class TrackDataListenerThread
 
 					// added 9.2.2010
 
-					tokenizer.nextToken();
+					//tokenizer.nextToken();
+
 					y = new Integer(tokenizer.nextToken());
 					// tokenizer.nextToken();
 					// diameter = new Integer(tokenizer.nextToken());
@@ -90,6 +94,8 @@ public class TrackDataListenerThread
 
 					throw new IllegalStateException("Not implemented yet.");
 				}
+				
+				//System.out.println(x +" "+y);
 
 				if (x == 0 || y == 0)
 					continue;
