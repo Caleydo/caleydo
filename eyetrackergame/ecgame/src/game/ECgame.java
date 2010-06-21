@@ -2,21 +2,25 @@ package game;
 
 
 
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-
+import java.util.StringTokenizer;
 import jmetest.TutorialGuide.ExplosionFactory;
-import jmetest.TutorialGuide.TestPongCool;
-
 import com.jme.bounding.BoundingBox;
 import com.jme.bounding.BoundingSphere;
 import com.jme.image.Texture;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
-import com.jme.input.util.SyntheticButton;
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
@@ -46,7 +50,7 @@ import com.jmex.audio.MusicTrackQueue.RepeatType;
 import com.jmex.effects.particles.ParticleMesh;
 import com.jmex.physics.DynamicPhysicsNode;
 import com.jmex.physics.StaticPhysicsNode;
-import com.jmex.physics.material.Material;
+
 import com.jmex.physics.util.SimplePhysicsGame;
 
 import eyetracker.TrackDataProvider;
@@ -65,6 +69,7 @@ public class ECgame extends SimplePhysicsGame
 	private StaticPhysicsNode greenNode_;
 	private StaticPhysicsNode blueNode_;
 	private Node explosions_;
+	private Node highscoreNode_ = null;
 	
 	private DynamicPhysicsNode[] ballNode_;
 	private Sphere[] ball_;
@@ -97,10 +102,21 @@ public class ECgame extends SimplePhysicsGame
 	private Text show_game_over_restart_;
 	private Text game_restarted_;
 	private Text muted_;
+	private Text difficulty_select_;
+	private Text difficulty_;
+	private Text show_highscore_;
+	private Text show_insert_name_;
+	private Text insert_name1_;
+	private Text insert_name2_;
+	private Text insert_name3_;
 	private int lives_ = 3;
 	private int score_ = 0;
 	private String score_string_;
 	private String speed_ball_string_;
+	private String[] difficulty_strings_ = {"[<<] EASY [>>]","[<<] NORMAL [>>]","[<<] HARD [>>]"};
+	private String[] alphabet_ = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","_"," "};
+	private int difficulty_index_ = 1;
+	private String name_input_;
 	
 	private Vector2f[] mouse_over_;
 	
@@ -121,7 +137,10 @@ public class ECgame extends SimplePhysicsGame
 	private boolean spawning_ = false;
 	private boolean game_over_ = false;
 	private boolean restarted_ = false;
-	
+	private boolean start_screen_ = true;
+	private boolean display_highscore_ = false;
+	private boolean inserting_ = false;
+
 	private int ball_counter_ = 0;
 	private int balls_in_game_ = 1;
 	private int max_ball_count_ = 5;
@@ -130,9 +149,10 @@ public class ECgame extends SimplePhysicsGame
 	private int speed_level_step_ = 200;
 	private int ball_in_game_step_ = 1000;
 	private int step_offset_ = 0;
+	private int insert_count_ = 0;
+	private int alphabet_select_index_ = 0;
 	
 	private Random generator_;	
-	private boolean test = true;
 	private Color spawn_color_ = null;
 	private float speed_;
 	
@@ -187,18 +207,26 @@ public class ECgame extends SimplePhysicsGame
 		
 		initTestMouse();
 		initSound();
+		
 		KeyBindingManager.getKeyBindingManager().set("PLAYER_MOVE", KeyInput.KEY_LCONTROL);
 		KeyBindingManager.getKeyBindingManager().set("DETONATE", KeyInput.KEY_SPACE);
 		KeyBindingManager.getKeyBindingManager().set("MUTE", KeyInput.KEY_M);
-		KeyBindingManager.getKeyBindingManager().set("TEST1", KeyInput.KEY_LEFT);
-		KeyBindingManager.getKeyBindingManager().set("TEST2", KeyInput.KEY_RIGHT);
-		KeyBindingManager.getKeyBindingManager().set("TEST3", KeyInput.KEY_UP);
-		KeyBindingManager.getKeyBindingManager().set("TEST4", KeyInput.KEY_DOWN);
+		KeyBindingManager.getKeyBindingManager().set("COMMIT", KeyInput.KEY_RETURN);
+		KeyBindingManager.getKeyBindingManager().set("BACKWARD", KeyInput.KEY_LEFT);
+		KeyBindingManager.getKeyBindingManager().set("FORWARD", KeyInput.KEY_RIGHT);
+		KeyBindingManager.getKeyBindingManager().set("HIGHSCORE", KeyInput.KEY_TAB);
+		KeyBindingManager.getKeyBindingManager().set("UP", KeyInput.KEY_UP);
+		KeyBindingManager.getKeyBindingManager().set("DOWN", KeyInput.KEY_DOWN);
+		KeyBindingManager.getKeyBindingManager().set("TEST1", KeyInput.KEY_Q);
+		KeyBindingManager.getKeyBindingManager().set("TEST2", KeyInput.KEY_W);
+		KeyBindingManager.getKeyBindingManager().set("TEST3", KeyInput.KEY_E);
+		KeyBindingManager.getKeyBindingManager().set("TEST4", KeyInput.KEY_R);
 		KeyBindingManager.getKeyBindingManager().set("RESTART", KeyInput.KEY_BACK);
 		
+		
         //init eye tracking
-		eyeTracker_ = new TrackDataProvider();
-		eyeTracker_.startTracking();
+		//eyeTracker_ = new TrackDataProvider();
+		//eyeTracker_.startTracking();
 		
 		//rootNode.setRenderState(ms_);
 		//rootNode.updateRenderState();
@@ -377,8 +405,62 @@ public class ECgame extends SimplePhysicsGame
 		muted_.setTextColor(ColorRGBA.red);
 		muted_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
 		muted_.setLocalScale(new Vector3f(1.5f,1.5f,0));
-
 		
+		//show difficulty select	
+		difficulty_select_ = Text.createDefaultTextLabel("diffselect","SELECT DIFFICULTY");
+		difficulty_select_.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		difficulty_select_.setLightCombineMode(Spatial.LightCombineMode.Off);
+		difficulty_select_.setTextColor(ColorRGBA.red);
+		difficulty_select_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+		difficulty_select_.setLocalScale(new Vector3f(4f,4f,4f));
+		
+		//show difficulty
+		difficulty_ = Text.createDefaultTextLabel("diffselect",difficulty_strings_[difficulty_index_]);
+		difficulty_.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		difficulty_.setLightCombineMode(Spatial.LightCombineMode.Off);
+		difficulty_.setTextColor(ColorRGBA.red);
+		difficulty_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+		difficulty_.setLocalScale(new Vector3f(5f,5f,5f));
+		
+		//show highscore
+		show_highscore_ = Text.createDefaultTextLabel("highscore","HIT [TAB] TO SEE HIGHSCORES");
+		show_highscore_.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		show_highscore_.setLightCombineMode(Spatial.LightCombineMode.Off);
+		show_highscore_.setTextColor(ColorRGBA.red);
+		show_highscore_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+		show_highscore_.setLocalScale(new Vector3f(1.5f,1.5f,1.5f));
+		
+		//show insert name
+		show_insert_name_ = Text.createDefaultTextLabel("showinsert","INSERT NAME:");
+		show_insert_name_.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		show_insert_name_.setLightCombineMode(Spatial.LightCombineMode.Off);
+		show_insert_name_.setTextColor(ColorRGBA.red);
+		show_insert_name_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+		show_insert_name_.setLocalScale(new Vector3f(3f,3f,3f));
+		
+		//insert name
+		insert_name1_= Text.createDefaultTextLabel("insert1","_");
+		insert_name1_.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		insert_name1_.setLightCombineMode(Spatial.LightCombineMode.Off);
+		insert_name1_.setTextColor(ColorRGBA.red);
+		insert_name1_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+		insert_name1_.setLocalScale(new Vector3f(3f,3f,3f));
+		
+		//insert name
+		insert_name2_ = Text.createDefaultTextLabel("insert2","_");
+		insert_name2_.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		insert_name2_.setLightCombineMode(Spatial.LightCombineMode.Off);
+		insert_name2_.setTextColor(ColorRGBA.red);
+		insert_name2_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+		insert_name2_.setLocalScale(new Vector3f(3f,3f,3f));
+		
+		//insert name
+		insert_name3_ = Text.createDefaultTextLabel("insert3","_");
+		insert_name3_.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		insert_name3_.setLightCombineMode(Spatial.LightCombineMode.Off);
+		insert_name3_.setTextColor(ColorRGBA.red);
+		insert_name3_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+		insert_name3_.setLocalScale(new Vector3f(3f,3f,3f));
 		
 		hud_.attachChild(player_lives_);
 		hud_.attachChild(player_score_);
@@ -387,6 +469,13 @@ public class ECgame extends SimplePhysicsGame
 		hud_.attachChild(show_game_over_restart_);
 		hud_.attachChild(game_restarted_);
 		hud_.attachChild(muted_);
+		hud_.attachChild(difficulty_select_);
+		hud_.attachChild(difficulty_);
+		hud_.attachChild(show_highscore_);
+		hud_.attachChild(show_insert_name_);
+		hud_.attachChild(insert_name1_);
+		hud_.attachChild(insert_name2_);
+		hud_.attachChild(insert_name3_);
 		hud_.attachChild(life1);
 		hud_.attachChild(life2);
 		hud_.attachChild(life3);
@@ -406,7 +495,7 @@ public class ECgame extends SimplePhysicsGame
 		player_score_.print(score_string_);
 		
 		ParticleMesh explosion;
-		int temp = hud_.getChildren().size()-8;
+		int temp = hud_.getChildren().size()-15;
 		
 		
 		if(temp != lives_)
@@ -531,6 +620,7 @@ public class ECgame extends SimplePhysicsGame
 		player_.updateModelBound();
 		//player_.setModelBound(new BoundingBox());
 		//player_.updateModelBound();
+		player_.setDefaultColor(ColorRGBA.lightGray);
 		
 		TextureState textStateBricks = display.getRenderer().createTextureState();
 		Texture textbricks = TextureManager.loadTexture(ECgame.class.getResource("/data/bricks.jpg"),
@@ -558,7 +648,7 @@ public class ECgame extends SimplePhysicsGame
     public static void main(String[] args) 
     {
         ECgame game = new ECgame();
-        game.setConfigShowMode(ConfigShowMode.AlwaysShow);
+        game.setConfigShowMode(ConfigShowMode.AlwaysShow, ECgame.class.getResource("/data/icg.png"));
         game.start();
     }
     
@@ -820,7 +910,8 @@ public class ECgame extends SimplePhysicsGame
     {  	 
 		if (KeyBindingManager.getKeyBindingManager().isValidCommand("RESTART", false))
 			restart();
-		
+
+
 		if(audio_.isMuted())
 			showMuted();
 		
@@ -887,11 +978,9 @@ public class ECgame extends SimplePhysicsGame
 		    					explosion_sound_.play();
 		    				}
 		    		}
-		    	}
-				
+		    	}			
 			}
-			
-			
+				
 	    	for(int i = 0; i < 5; i++)
 	    	{
 	    		if(ballNode_[i] != null)
@@ -902,15 +991,35 @@ public class ECgame extends SimplePhysicsGame
 	    				{
 	    					bounce_sound_.setWorldPosition(ballNode_[i].getWorldTranslation());
 	    					bounce_sound_.play();
-	    				}
-	    				
+	    				}   				
 	    		}
 	    	}
 			
-			
-			dynamicDifficulty();
-			
-			
+	    	if(!start_screen_)
+	    		dynamicDifficulty();
+	    	else
+	    	{
+				if (KeyBindingManager.getKeyBindingManager().isValidCommand("BACKWARD", false))
+				{
+					difficulty_index_ = (difficulty_index_ + 2) % 3;
+					difficulty_.print(difficulty_strings_[difficulty_index_]);
+					bounce_sound_.setWorldPosition(difficulty_.getWorldTranslation());
+					bounce_sound_.play();
+				}
+				if (KeyBindingManager.getKeyBindingManager().isValidCommand("FORWARD", false))
+				{
+					difficulty_index_ = (difficulty_index_ + 1) % 3;
+					difficulty_.print(difficulty_strings_[difficulty_index_]);
+					bounce_sound_.setWorldPosition(difficulty_.getWorldTranslation());
+					bounce_sound_.play();
+				}
+	    		showDifficultySelect();
+				if (KeyBindingManager.getKeyBindingManager().isValidCommand("COMMIT", false))
+				{
+					changeDifficulty();
+				}
+	    		
+	    	}
 			handleScoreAndLives();
 			handleBallFallingDown();
 			handleList();
@@ -918,13 +1027,15 @@ public class ECgame extends SimplePhysicsGame
 			
 			if (KeyBindingManager.getKeyBindingManager().isValidCommand("TEST1", false))
 			{
-				if(!spawning_)
-				spawn_list_.add(0);
+				//if(!spawning_)
+				//spawn_list_.add(0);
+				//writeHighscore();
 			}
 			
 			if (KeyBindingManager.getKeyBindingManager().isValidCommand("TEST2", false))
 			{
 				game_over_ = true;
+				//readHighscore();
 			}
 			if (KeyBindingManager.getKeyBindingManager().isValidCommand("TEST3", false))
 			{
@@ -959,6 +1070,271 @@ public class ECgame extends SimplePhysicsGame
     	}
     	audio_.update();
     }
+    
+    private boolean checkInHighscore()
+    {
+    	ArrayList<String> from_file = readHighscore();
+    	if(from_file == null)
+    		return true;
+    	
+    	if(Integer.parseInt(from_file.get(from_file.size()-3)) < score_ || (from_file.size()/3 < 10))
+    		return true;
+    	else
+    		return false;
+    }
+    
+    private void writeHighscore()
+    {
+		// Stream to write file	
+    	ArrayList<String> from_file = readHighscore();
+    	
+    	if(from_file != null)
+    	{
+	    	if(from_file.size() >= 30)
+	    	{
+		    	String[] sorted_ = new String[from_file.size()/3];
+		    	for(int i = 0; i < from_file.size()-3; i+=3)
+		    	{
+		    		sorted_[i/3] = from_file.get(i) + " " + from_file.get(i+1) + " " + from_file.get(i+2);
+		    	}
+		    	
+				try
+				{
+				    // Open an output stream
+					FileOutputStream fout = new FileOutputStream ("bin/data/highscore.kerby",false);
+				    PrintStream ps = new PrintStream(fout);
+				    // Print a line of text
+				    ps.println(sorted_[0]);
+				    fout.close();
+				    fout = new FileOutputStream ("bin/data/highscore.kerby",true);
+				    ps = new PrintStream(fout);
+				    for(int i = 1; i < sorted_.length-1; i++)
+				    	ps.println(sorted_[i]);
+				    
+				    // Close our output stream
+				    fout.close();		
+				}		
+				
+				// Catches any error conditions
+				catch (IOException e)
+				{
+					System.err.println ("Unable to write to file");
+					System.exit(-1);
+				}
+	    	}
+    	}
+    	name_input_ = insert_name1_.getText().toString() + insert_name2_.getText().toString() + insert_name3_.getText().toString();
+    	String temp = "N/A";
+    	
+    	switch(difficulty_index_)
+    	{
+    	case 0:
+    		temp = "EASY";
+    		break;
+    	case 1:
+    		temp = "NORMAL";
+    		break;
+    	case 2:
+    		temp = "HARD";
+    		break;
+    	default:
+    		break;
+    		
+    	}
+    	
+    	String highscore_output = score_ + " " + name_input_ + " " + temp; 
+    			
+		try
+		{
+		    // Open an output stream
+			FileOutputStream fout = new FileOutputStream ("bin/data/highscore.kerby",true);
+
+		    // Print a line of text
+		    new PrintStream(fout).println(highscore_output);
+
+		    // Close our output stream
+		    fout.close();		
+		}		
+		
+		// Catches any error conditions
+		catch (IOException e)
+		{
+			System.err.println ("Unable to write to file");
+			System.exit(-1);
+		}
+    }
+    
+    private ArrayList<String> readHighscore()
+    {
+		// Stream to read file
+    	//System.out.println(return_string[i]);
+		boolean end = false;
+		ArrayList<String> temp_list = new ArrayList<String>();
+		
+		try
+		{
+		    // Open an input stream
+			File file = new File("bin/data/highscore.kerby");
+			file.createNewFile();
+			
+			FileInputStream fin = new FileInputStream("bin/data/highscore.kerby");
+			InputStreamReader isr = new InputStreamReader(fin);
+		    BufferedReader bis = new BufferedReader(isr);
+		    // Read a line of text
+		    while(!end)
+		    {
+		    	String temp = bis.readLine();
+		    	if(temp == null)
+		    		end = true;
+		    	else
+		    		temp_list.add(temp);
+		    }
+		        
+		    if(temp_list.size() < 1)
+		    {
+		    	return null;
+		    }
+		    // Close our input stream
+		    bis.close();
+		    isr.close();
+		    fin.close();
+		    
+		    //Collections.sort(temp_list, Collator.getInstance());
+		    StringTokenizer tokenizer;
+		    //Collections.sort(new String[5], Collator.getInstance());
+		    
+		    ArrayList<String> return_string = new ArrayList<String>();
+		    
+		    for(int i = 0; i < temp_list.size(); i++)
+		    {
+		    	tokenizer = new StringTokenizer(temp_list.get(i), " ");
+		    	for(int j = 0; j < 3; j++)
+		    	{
+		    		return_string.add(tokenizer.nextToken());
+		    	}
+		    }
+		    
+		    for(int i = 0; i < return_string.size()-3; i +=3)
+		    {
+		    	for(int j = 0; j < return_string.size()-3; j +=3)
+		    	{
+		    		if(Integer.parseInt(return_string.get(j)) < Integer.parseInt(return_string.get(j+3)))
+		    		{
+		    			String temp1 = return_string.get(j);
+		    			String temp2 = return_string.get(j+1);
+		    			String temp3 = return_string.get(j+2);
+		    			
+		    			return_string.set(j, return_string.get(j+3));
+		    			return_string.set(j+1, return_string.get(j+4));
+		    			return_string.set(j+2, return_string.get(j+5));
+		    			return_string.set(j+3, temp1);
+		    			return_string.set(j+4, temp2);
+		    			return_string.set(j+5, temp3);
+		    		}
+		    			
+		    	}
+		    }
+		    
+		   /* for(int i = 0; i < return_string.size(); i++)
+		    {
+		    	System.out.println(return_string.get(i));
+		    }*/
+		    
+		    return return_string;
+		    
+		}
+		// Catches any error conditions
+		catch (IOException e)
+		{
+			System.err.println ("Unable to read from file");
+			System.exit(-1);
+			return null;
+		}
+	
+    }
+    
+    private void showHighscore()
+    {
+    	show_game_over_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+    	show_highscore_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+    	
+    	highscoreNode_ = new Node();
+    	rootNode.attachChild(highscoreNode_);
+    	
+    	Text temp;
+    	
+		temp = Text.createDefaultTextLabel("HS","HIGHSCORES");
+		temp.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		temp.setLightCombineMode(Spatial.LightCombineMode.Off);
+		temp.setTextColor(ColorRGBA.red);
+		temp.setLocalTranslation(new Vector3f(150, display.getHeight()-150, 0));
+		temp.setLocalScale(new Vector3f(3f,3f,3f));
+		highscoreNode_.attachChild(temp);
+		
+		temp = Text.createDefaultTextLabel("HSS","SCORE");
+		temp.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		temp.setLightCombineMode(Spatial.LightCombineMode.Off);
+		temp.setTextColor(ColorRGBA.red);
+		temp.setLocalTranslation(new Vector3f(150, highscoreNode_.getChild("HS").getWorldTranslation().y-50, 0));
+		temp.setLocalScale(new Vector3f(2.5f,2.5f,2.5f));
+		highscoreNode_.attachChild(temp);
+		
+		temp = Text.createDefaultTextLabel("HSN","NAME");
+		temp.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		temp.setLightCombineMode(Spatial.LightCombineMode.Off);
+		temp.setTextColor(ColorRGBA.red);
+		temp.setLocalTranslation(new Vector3f(150 + 250, highscoreNode_.getChild("HS").getWorldTranslation().y-50, 0));
+		temp.setLocalScale(new Vector3f(2.5f,2.5f,2.5f));
+		highscoreNode_.attachChild(temp);
+		
+		temp = Text.createDefaultTextLabel("HSD","DIFFICULTY");
+		temp.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		temp.setLightCombineMode(Spatial.LightCombineMode.Off);
+		temp.setTextColor(ColorRGBA.red);
+		temp.setLocalTranslation(new Vector3f(150 + 500, highscoreNode_.getChild("HS").getWorldTranslation().y-50, 0));
+		temp.setLocalScale(new Vector3f(2.5f,2.5f,2.5f));
+		highscoreNode_.attachChild(temp);
+    	
+    	
+    	ArrayList<String> from_file = readHighscore();
+    	
+    	
+    	for(int i = 0; i < from_file.size(); i++)
+    	{
+    		//temp = Text.createDefaultTextLabel("HS"+i,from_file.get(i)+"     "+from_file.get(i+1)+"     "+from_file.get(i+2));
+    		
+    		temp = Text.createDefaultTextLabel("HS"+i,from_file.get(i));
+    		temp.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+    		temp.setLightCombineMode(Spatial.LightCombineMode.Off);
+    		temp.setTextColor(ColorRGBA.red);
+    		
+    		switch(i%3)
+    		{
+    		case 0:
+    			temp.setLocalTranslation(new Vector3f(150,  highscoreNode_.getChild("HSS").getWorldTranslation().y - 40 - ((i/3)*30), 0));
+    			break;
+    		case 1:
+    			temp.setLocalTranslation(new Vector3f(150 + 250,  highscoreNode_.getChild("HSS").getWorldTranslation().y - 40 - ((i/3)*30), 0));
+    			break;
+    		case 2:
+    			temp.setLocalTranslation(new Vector3f(150 + 500,  highscoreNode_.getChild("HSS").getWorldTranslation().y - 40 - ((i/3)*30), 0));
+    			break;
+    		default:
+    			break;
+    		}
+    		
+    		temp.setLocalScale(new Vector3f(2f,2f,2f));
+    		highscoreNode_.attachChild(temp);
+    		
+    	} 
+    	
+    	show_game_over_restart_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_restart_.getWidth()/2, temp.getWorldTranslation().y - 150, 0));
+    	show_game_over_score_.print("YOUR SCORE: "+score_);
+    	show_game_over_score_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_score_.getWidth()/2,temp.getWorldTranslation().y - 100, 0));
+    	
+    }
+    
+    
     private void gameOver()
     {
     	for(int i = 0; i < 5; i++)
@@ -969,31 +1345,149 @@ public class ECgame extends SimplePhysicsGame
     		}
     	}
     	
-    	if(show_game_over_.getLocalTranslation().x == display.getWidth()+1000)
+    	if(!display_highscore_)
     	{
-    		audio_.getMusicQueue().clearTracks();
-    		audio_.getMusicQueue().addTrack(music_game_over_);
-    		audio_.getMusicQueue().play();
+	    	if(show_game_over_.getLocalTranslation().x == display.getWidth()+1000)
+	    	{
+	    		if(checkInHighscore())
+	    			inserting_ = true;
+	    		audio_.getMusicQueue().clearTracks();
+	    		audio_.getMusicQueue().addTrack(music_game_over_);
+	    		audio_.getMusicQueue().play();
+	    	}
+	    	
+	    	
+	    	show_game_over_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_.getWidth()/2, display.getHeight()/2-show_game_over_.getHeight()/2, 0));
+	 
+	    	if(show_game_over_.getLocalScale().x <= 10)
+	    		show_game_over_.getLocalScale().addLocal(new Vector3f(0.7f,0.7f,0.7f).mult(timer.getTimePerFrame()));
+	    	else
+	    	{ 	
+	    		if(inserting_)
+	    		{
+	    			
+	    			show_game_over_score_.setLocalScale(new Vector3f(3,3,3));
+		    		show_game_over_score_.setTextColor(ColorRGBA.red);
+		    		show_game_over_score_.print("SCORE: "+score_);
+		    		show_game_over_score_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_score_.getWidth()/2, show_game_over_.getLocalTranslation().y-100, 0));
+	    			
+	    			show_insert_name_.setLocalTranslation(new Vector3f(new Vector3f(display.getWidth()/2 - show_insert_name_.getWidth()/2 - 100, show_game_over_.getLocalTranslation().y-200, 0)));
+	    			insert_name1_.setLocalTranslation(new Vector3f(new Vector3f(show_insert_name_.getLocalTranslation().x + 400, show_insert_name_.getLocalTranslation().y, 0)));
+	    			insert_name2_.setLocalTranslation(new Vector3f(new Vector3f(insert_name1_.getLocalTranslation().x + 30, show_insert_name_.getLocalTranslation().y, 0)));
+	    			insert_name3_.setLocalTranslation(new Vector3f(new Vector3f(insert_name2_.getLocalTranslation().x + 30, show_insert_name_.getLocalTranslation().y, 0)));
+	    			
+	    			if(insert_count_ < 3)
+	    				handleInsert();
+	    			else
+	    			{
+	    				writeHighscore();
+	    				insert_name1_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+	    				insert_name2_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+	    				insert_name3_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+	    				show_insert_name_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+	    				inserting_ = false;
+	    			}
+	    			
+	    		}
+	    		else
+	    		{
+		    		show_game_over_restart_.setLocalScale(new Vector3f(3,3,3));
+		    		show_game_over_restart_.setTextColor(ColorRGBA.red);
+		    		show_game_over_restart_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_restart_.getWidth()/2, show_game_over_.getLocalTranslation().y+show_game_over_.getHeight()/2+100, 0));  		
+		    		
+		    		show_game_over_score_.setLocalScale(new Vector3f(3,3,3));
+		    		show_game_over_score_.setTextColor(ColorRGBA.red);
+		    		show_game_over_score_.print("SCORE: "+score_);
+		    		show_game_over_score_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_score_.getWidth()/2, show_game_over_.getLocalTranslation().y-100, 0));
+		    		
+		    		show_highscore_.setLocalScale(new Vector3f(3,3,3));
+		    		show_highscore_.setTextColor(ColorRGBA.red);
+		    		show_highscore_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_highscore_.getWidth()/2, show_game_over_restart_.getLocalTranslation().y+100, 0));
+		    		
+		    		
+					if (KeyBindingManager.getKeyBindingManager().isValidCommand("HIGHSCORE", false))
+					{
+						display_highscore_ = true;
+						showHighscore();
+					}
+	    		}
+	    	}	
     	}
+    }
+    private void handleInsert()
+    {
     	
-    	
-    	show_game_over_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_.getWidth()/2, display.getHeight()/2-show_game_over_.getHeight()/2, 0));
- 
-    	if(show_game_over_.getLocalScale().x <= 10)
-    		show_game_over_.getLocalScale().addLocal(new Vector3f(0.7f,0.7f,0.7f).mult(timer.getTimePerFrame()));
-    	else
-    	{ 	
-    		show_game_over_restart_.setLocalScale(new Vector3f(3,3,3));
-    		show_game_over_restart_.setTextColor(ColorRGBA.red);
-    		show_game_over_restart_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_restart_.getWidth()/2, show_game_over_.getLocalTranslation().y+show_game_over_.getHeight()/2+100, 0));  		
-    		
-    		show_game_over_score_.setLocalScale(new Vector3f(3,3,3));
-    		show_game_over_score_.setTextColor(ColorRGBA.red);
-    		show_game_over_score_.print("SCORE: "+score_);
-    		show_game_over_score_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_score_.getWidth()/2, show_game_over_.getLocalTranslation().y-100, 0));
+		if (KeyBindingManager.getKeyBindingManager().isValidCommand("UP", false))
+		{
+			alphabet_select_index_ = (alphabet_select_index_ + 1) % 27;		
+			switch(insert_count_)
+			{
+			case 0:
+				insert_name1_.print(alphabet_[alphabet_select_index_]);
+				return;
+			case 1:
+				insert_name2_.print(alphabet_[alphabet_select_index_]);
+				return;
+			case 2:
+				insert_name3_.print(alphabet_[alphabet_select_index_]);
+				return;
+			default:
+				return;
+			}
+			
+		}
+		if (KeyBindingManager.getKeyBindingManager().isValidCommand("DOWN", false))
+		{
+			alphabet_select_index_ = (alphabet_select_index_ + 26) % 27;
+			switch(insert_count_)
+			{
+			case 0:
+				insert_name1_.print(alphabet_[alphabet_select_index_]);
+				return;
+			case 1:
+				insert_name2_.print(alphabet_[alphabet_select_index_]);
+				return;
+			case 2:
+				insert_name3_.print(alphabet_[alphabet_select_index_]);
+				return;
+			default:
+				return;
+			}
+		}
+		if (KeyBindingManager.getKeyBindingManager().isValidCommand("COMMIT", false))
+		{
+			insert_count_++;
+		}
+    }
+    
+    private void changeDifficulty()
+    {
+    	switch(difficulty_index_)
+    	{
+    	case 0: //easy
+    		ball_in_game_step_ = 2500;
+    		speed_level_step_ = 500;
+    		break;
+    	case 1: //normal //slower on higher level
+    		ball_in_game_step_ = 1000;
+    		speed_level_step_ = 200;
+    		break;
+    	case 2:	//hard
+    		ball_in_game_step_ = 1000;
+    		speed_level_step_ = 100;
+    		break;
+    	default:
+    		break;
     	}
-    		
-   
+    	start_screen_ = false;
+    	difficulty_select_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+    	difficulty_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+    }
+    
+    private void showDifficultySelect()
+    {
+    	difficulty_.setLocalTranslation(new Vector3f(display.getWidth()/2 - difficulty_.getWidth()/2, display.getHeight()/2-difficulty_.getHeight()/2 -100, 0));
+    	difficulty_select_.getLocalTranslation().set(display.getWidth()/2 - difficulty_select_.getWidth()/2, difficulty_.getLocalTranslation().y+difficulty_select_.getHeight()/2+200, 0);
     }
     
     private void showMuted()
@@ -1002,7 +1496,7 @@ public class ECgame extends SimplePhysicsGame
     	if(muted_.getLocalTranslation().x >= display.getWidth())
     		muted_.getLocalTranslation().set(0 - muted_.getWidth(), 30, 0);
     }
-    
+      
     private void showRestarted()
     {
     	game_restarted_.getLocalTranslation().addLocal(new Vector3f(200,0,0).mult(timer.getTimePerFrame()));
@@ -1020,6 +1514,13 @@ public class ECgame extends SimplePhysicsGame
     		}
     	}
     	
+    	if(highscoreNode_ != null)
+    	{
+	    	highscoreNode_.detachAllChildren();
+	    	rootNode.detachChild(highscoreNode_);
+	    	highscoreNode_ = null;
+    	}
+    	
 		red_opened_ = false;
 		green_opened_ = false;
 		blue_opened_ = false;
@@ -1027,6 +1528,8 @@ public class ECgame extends SimplePhysicsGame
 		closing_ = false;
 		spawning_ = false;
 		game_over_ = false;
+		start_screen_ = true;
+		display_highscore_ = false;
 		
 		lives_ = 3;
 		score_ = 0;
@@ -1040,6 +1543,9 @@ public class ECgame extends SimplePhysicsGame
 		speed_level_step_ = 200;
 		ball_in_game_step_ = 1000;
 		step_offset_ = 0;
+		difficulty_index_ = 1;
+		insert_count_ = 0;
+		alphabet_select_index_ = 0;
 		
 		spawn_list_.clear();
     	
@@ -1079,9 +1585,15 @@ public class ECgame extends SimplePhysicsGame
     		if(balls_in_game_ < 5)
     		{
     			balls_in_game_++;
-        		ball_in_game_step_ = 2500;
-        		speed_level_step_ = 500;
-        		step_offset_ = -1500;
+    			if(difficulty_index_ == 1)
+    			{
+	        		ball_in_game_step_ = 2500;
+	        		speed_level_step_ = 500;	
+	        		step_offset_ = -1500;
+    			}
+    			else if(difficulty_index_ == 2)
+    	        	speed_level_step_ = 200;	
+    			
     			speed_level_ = 1;
     			speed_ = 1.3f;
     			
@@ -1138,8 +1650,8 @@ public class ECgame extends SimplePhysicsGame
     		{
     			if(ballNode_[i].getLocalTranslation().y < -11)
     			{
-    				ballNode_[i].getLocalTranslation().setY(11);
-    				ballNode_[i].getLocalTranslation().setX(ballNode_[i].getLocalTranslation().x-1.6f);
+    				ballNode_[i].getLocalTranslation().setY(10);
+    				ballNode_[i].getLocalTranslation().setX(ballNode_[i].getLocalTranslation().x-1.8f);
     			}
     			
     		}
