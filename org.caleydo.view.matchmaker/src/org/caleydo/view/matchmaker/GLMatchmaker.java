@@ -18,6 +18,8 @@ import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -75,7 +77,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  */
 public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		IGLRemoteRenderingView, ISelectionUpdateHandler, ISelectionCommandHandler,
-		IContentVAUpdateHandler {
+		IContentVAUpdateHandler, IDataDomainBasedView<ISetBasedDataDomain> {
 
 	public final static String VIEW_ID = "org.caleydo.view.matchmaker";
 
@@ -120,6 +122,8 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		super(glCanvas, sLabel, viewFrustum, true);
 
 		viewType = VIEW_ID;
+		registerDataDomains();
+	
 		glKeyListener = new GLMatchmakerKeyListener(this);
 		isControlPressed = false;
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32), true, true);
@@ -562,5 +566,24 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 	public void setHideHeatMapElements(boolean hideElements) {
 		compareViewStateController.setHideHeatMapElements(hideElements);
+	}
+
+	@Override
+	public ISetBasedDataDomain getDataDomain() {
+		return dataDomain;
+	}
+
+	@Override
+	public void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+
+		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
+				dataDomainTypes, viewType);
+	}
+
+	@Override
+	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
 	}
 }

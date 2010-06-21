@@ -137,6 +137,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private HistoryNode lastSelectedDataDomainNode;
 	private HistoryNode mouseOverDataDomainNode;
 	private String mouseOverInterface;
+	private String mouseOverNextDataDomain;
 
 	private DataDomainGraph dataDomainGraph;
 	private Path historyPath;
@@ -842,6 +843,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int externalPickingID, Pick pick) {
 
+		mouseOverInterface = null;
+		mouseOverNextDataDomain = null;
+
 		switch (pickingType) {
 
 		case REMOTE_VIEW_SELECTION:
@@ -976,6 +980,19 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		case NEXT_DATA_DOMAIN_SELECTION:
 
 			switch (pickingMode) {
+
+			case MOUSE_OVER:
+
+				for (IDataDomain tmpDataDomain : DataDomainManager.getInstance()
+						.getDataDomains()) {
+					String tmpDataDomainType = tmpDataDomain.getDataDomainType();
+					if (tmpDataDomainType.hashCode() == externalPickingID) {
+						mouseOverNextDataDomain = tmpDataDomainType;
+						break;
+					}
+				}
+				break;
+
 			case CLICKED:
 
 				currentGuidanceNode = (GuidanceNode) guidancePath.getFollowingNodes(
@@ -1281,21 +1298,21 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.DATA_DOMAIN_SELECTION, node.getFirstInterfaceID()));
 
+		float r = 1;
+		float g = 1;
+		float b = 1;
+		if (mouseOverDataDomainNode != null && node == mouseOverDataDomainNode) {
+			r = 0.5f;
+			g = 0.5f;
+			b = 0.5f;
+		}
+
 		// Data background
 		textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_DATA_ICON_BACKGROUND,
 				new Vec3f(0, 0, 0), new Vec3f(0.51f * DATA_DOMAIN_SCALING_FACTOR, 0, 0),
 				new Vec3f(0.51f * DATA_DOMAIN_SCALING_FACTOR,
 						0.3f * DATA_DOMAIN_SCALING_FACTOR, 0), new Vec3f(0,
-						0.3f * DATA_DOMAIN_SCALING_FACTOR, 0), 1, 1, 1, 1);
-
-		float r = 1;
-		float g = 1;
-		float b = 1;
-		if (mouseOverDataDomainNode != null && node == mouseOverDataDomainNode) {
-			r = 0.3f;
-			g = 0f;
-			b = 0f;
-		}
+						0.3f * DATA_DOMAIN_SCALING_FACTOR, 0), r, g, b, 1);
 
 		// Data icon
 		textureManager.renderTexture(gl, dataDomainIcon, new Vec3f(0f, 0.02f, 0.01f),
@@ -1303,7 +1320,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						0.02f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), new Vec3f(
 						0.5f * DATA_DOMAIN_SCALING_FACTOR,
 						0.28f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), new Vec3f(0.0f,
-						0.28f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), r, g, b, 1);
+						0.28f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), 1, 1, 1, 1);
 
 		gl.glPopName();
 
@@ -1320,9 +1337,22 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				gl.glRotatef(270, 0, 0, 1);
 			}
 
+			if (viewIndex < node.getAllInterfaces().length && mouseOverInterface != null
+					&& node.getAllInterfaces()[viewIndex] == mouseOverInterface
+					&& mouseOverDataDomainNode != null && mouseOverDataDomainNode == node) {
+				r = 0.5f;
+				g = 0.5f;
+				b = 0.5f;
+			} else {
+				r = 1;
+				g = 1;
+				b = 1;
+			}
+
+			// Interface background
 			textureManager.renderTexture(gl, icon, new Vec3f(INTERFACE_WIDTH, 0.0f, 0),
 					new Vec3f(0.0f, 0.0f, 0), new Vec3f(0.0f, INTERFACE_WIDTH, 0),
-					new Vec3f(INTERFACE_WIDTH, INTERFACE_WIDTH, 0), 1, 1, 1, 1);
+					new Vec3f(INTERFACE_WIDTH, INTERFACE_WIDTH, 0), r, g, b, 1);
 
 			if (viewIndex == maxViewIcons - 1) {
 				gl.glRotatef(-270, 0, 0, 1);
