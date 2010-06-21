@@ -373,29 +373,26 @@ public class DataWindowsDisk extends PoincareDisk {
 
 	public PoincareNode processEyeTrackerAction(float[] normedEyePosition,
 			ArrayList<NodeSlerp> arSlerpActions) {
-		
-		// + "|" + offsetFromMiddle[1]);
 		PoincareNode returnNode = null;
 
-		// comment in for eyetracker focus
 		
-	//	System.out.println("distance:"+this.distanceFromOrigin(normedEyePosition));
+            if(this.distanceFromOrigin(normedEyePosition)<this.levelOfDetailLimits[0]){
 		
-		 if (this.distanceFromOrigin(normedEyePosition) < (levelOfDetailLimits[0])) {
-		// System.out.println("insidee of direct picking");
-		returnNode = findNodeByCoordinate(normedEyePosition, 0);
+			returnNode = findNodeByCoordinate(normedEyePosition, 10);
 
-		if (returnNode != null) {
-			float[] emptyPoint = new float[2];
-			emptyPoint[0] = 0;
-			emptyPoint[1] = 0;
-			arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
-					emptyPoint));
-		}
+            }
+            
+			if (returnNode != null) {
+				float[] emptyPoint = new float[2];
+				emptyPoint[0] = 0;
+				emptyPoint[1] = 0;
+				arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
+						emptyPoint));
+			}
+		
 
-		 } else {
-			 return null;
-		 }
+	
+
 		// //focus far nodes with the eyetracker
 		// System.out.println("outside of direct picking");
 		// returnNode = findNodeByCoordinate(offsetFromMiddle,

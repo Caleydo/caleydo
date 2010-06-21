@@ -35,6 +35,4 @@ public class DataWindowsNode extends PoincareNode{
 		return levelOfDetail;
 	}
 	
-	
-	
 }

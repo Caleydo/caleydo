@@ -27,8 +27,8 @@ public class eyeTracking {
 		setEyeTrackerOffset(new float[2]);
 		debugMode = 0;
 		fixedCoordinate = new int[2];
-		timeToFixCoordinate = 0.5f;
-		radiusOfFixedCoordinate = 20;
+		timeToFixCoordinate = 0.2f;
+		radiusOfFixedCoordinate = 40;
 		this.ipTracker = ipTracker;
 		this.simulation = simulation;
 		rawEyeTrackerPosition = new int[2];
@@ -47,17 +47,20 @@ public class eyeTracking {
 	public void startTracking() {
 
 		tracker = new TrackDataProvider();
-		tracker.IP_TRACKER = ipTracker;
+		//tracker.IP_TRACKER = ipTracker;
 		tracker.startTracking();
 
 	}
 
 	public void receiveData() {
-		if (simulation == false) {
+		
 			receivedEyeData = tracker.getEyeTrackData();
 			rawEyeTrackerPosition[0] = (int) receivedEyeData[0];
 			rawEyeTrackerPosition[1] = (int) receivedEyeData[1];
-		}
+			if(this.rawEyeTrackerPosition[0]!=0){
+			System.out.println("eyeTracker Working!!!:"+ rawEyeTrackerPosition[0]+" "+rawEyeTrackerPosition[0]);
+			}
+		
 	}
 
 	public void cutWindowOffset(int x, int y) {

@@ -113,6 +113,10 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	private float canvasWidth;
 	private float canvasHeight;
 
+	private float[] zoomPointHyperbolic;
+	private float[] zoomPointHeatmap;
+	private float[] zoomPointParCoord;
+
 	/**
 	 * /** Constructor.
 	 * 
@@ -140,7 +144,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		pixelDimensions = new int[2];
 		if (selectedInput == inputType.EYETRACKER_ONLY
 				|| selectedInput == inputType.EYETRACKER_SIMULATED) {
-			eyeTracker = new eyeTracking(true, "insertIpAdressHere");
+			eyeTracker = new eyeTracking(true, "192.168.1.100");
 			if (selectedInput == inputType.EYETRACKER_ONLY) {
 				eyeTracker.startTracking();
 			}
@@ -149,6 +153,16 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		viewSlerpStartPoint = new float[2];
 		viewSlerpTargetPoint = new float[2];
 		simpleSlerpActions = new ArrayList<SimpleSlerp>();
+
+		zoomPointHyperbolic = new float[2];
+		zoomPointHyperbolic[0] = 1.5f;
+		zoomPointHyperbolic[1] = 1;
+		zoomPointHeatmap = new float[2];
+		zoomPointHeatmap[0] = 0.5f;
+		zoomPointHeatmap[1] = 0.5f;
+		zoomPointParCoord = new float[2];
+		zoomPointParCoord[0] = 0.5f;
+		zoomPointParCoord[1] = 1.5f;
 
 		// FIXME: maybe we have to find a better place for trigger pathway
 		// loading
@@ -246,9 +260,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		defaultLayoutHotSpot[0] = canvasWidth / 2;
 		defaultLayoutHotSpot[1] = canvasHeight / 2;
 
-		GLHelperFunctions.drawPointAt(gl, (float) layoutHotSpot[0],
-				(float) layoutHotSpot[1], 1);
-
 		// transforming the hyperbolic view:
 		Transform heatmapTransform = new Transform();
 		heatmapTransform.setTranslation(new Vec3f((float) layoutHotSpot[0],
@@ -294,6 +305,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		}
 		if (selectedInput == inputType.EYETRACKER_ONLY) {
 			eyeTracker.receiveData();
+			System.out.println(upperLeftScreenPos.x);
 			eyeTracker.cutWindowOffset(upperLeftScreenPos.x,
 					upperLeftScreenPos.y);
 			eyeTracker.checkForFixedCoordinate();
@@ -431,9 +443,9 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 			scalation[1] = remoteElementHyperbolic.getTransform().getScale()
 					.y();
 			if (translation != null && scalation != null) {
-				foundNode = this.directHyperbolicView.setEyeTrackerAction(
-						eyeTracker.getFixedCoordinate(), translation,
-						scalation);
+				foundNode = this.directHyperbolicView
+						.setEyeTrackerAction(eyeTracker.getFixedCoordinate(),
+								translation, scalation);
 			}
 			// reset the fixed eyetracker coordinate:
 			eyeTracker.resetFixedCoordinate();
@@ -603,19 +615,21 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 		if (view == remoteViewType.HYPERBOLIC) {
 			viewSlerpStartPoint = layoutHotSpot.clone();
-			viewSlerpTargetPoint[0] = defaultLayoutHotSpot[0] * 1.4f;
-			viewSlerpTargetPoint[1] = defaultLayoutHotSpot[1];
+			viewSlerpTargetPoint[0] = defaultLayoutHotSpot[0]
+					* zoomPointHyperbolic[0];
+			viewSlerpTargetPoint[1] = defaultLayoutHotSpot[1]
+					* zoomPointHyperbolic[1];
 			simpleSlerpActions.add(new SimpleSlerp());
 		} else if (view == remoteViewType.HEATMAP) {
 
 			viewSlerpStartPoint = layoutHotSpot.clone();
-			viewSlerpTargetPoint[0] = defaultLayoutHotSpot[0] * 0.5f;
-			viewSlerpTargetPoint[1] = defaultLayoutHotSpot[1] * 0.5f;
+			viewSlerpTargetPoint[0] = defaultLayoutHotSpot[0] *zoomPointHeatmap[0];
+			viewSlerpTargetPoint[1] = defaultLayoutHotSpot[1] *zoomPointHeatmap[1];
 			simpleSlerpActions.add(new SimpleSlerp());
 		} else if (view == remoteViewType.PARCOORDS) {
 			viewSlerpStartPoint = layoutHotSpot.clone();
-			viewSlerpTargetPoint[0] = defaultLayoutHotSpot[0] * 0.5f;
-			viewSlerpTargetPoint[1] = defaultLayoutHotSpot[1] * 1.5f;
+			viewSlerpTargetPoint[0] = defaultLayoutHotSpot[0] * zoomPointParCoord[0];
+			viewSlerpTargetPoint[1] = defaultLayoutHotSpot[1] *  zoomPointParCoord[1];
 			simpleSlerpActions.add(new SimpleSlerp());
 		}
 
