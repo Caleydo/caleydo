@@ -2,11 +2,13 @@ package game;
 
 
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import jmetest.TutorialGuide.ExplosionFactory;
+import jmetest.TutorialGuide.TestPongCool;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.bounding.BoundingSphere;
@@ -37,6 +39,10 @@ import com.jme.scene.state.TextureState;
 import com.jme.scene.state.ZBufferState;
 import com.jme.scene.state.MaterialState.ColorMaterial;
 import com.jme.util.TextureManager;
+import com.jmex.audio.AudioSystem;
+import com.jmex.audio.AudioTrack;
+import com.jmex.audio.AudioTrack.TrackType;
+import com.jmex.audio.MusicTrackQueue.RepeatType;
 import com.jmex.effects.particles.ParticleMesh;
 import com.jmex.physics.DynamicPhysicsNode;
 import com.jmex.physics.StaticPhysicsNode;
@@ -76,15 +82,25 @@ public class ECgame extends SimplePhysicsGame
 	private Vector2f tmp_screen_pos_ = new Vector2f();
 	private Vector3f tmp_world_coord_ = new Vector3f();
 	private float[] eye_pos_ = new float[] { 0f, 0f };
-	private Sphere red_ball_;
-	private Sphere green_ball_;
-	private Sphere blue_ball_;
+	
+	private AudioSystem audio_;
+	private AudioTrack explosion_sound_;
+	private AudioTrack bounce_sound_;
+	private AudioTrack music_normal_;
+	private AudioTrack music_game_over_;
 	
 	private Text player_score_;
 	private Text player_lives_;
+	private Text show_speed_ball_lvl_;
+	private Text show_game_over_;
+	private Text show_game_over_score_;
+	private Text show_game_over_restart_;
+	private Text game_restarted_;
+	private Text muted_;
 	private int lives_ = 3;
 	private int score_ = 0;
 	private String score_string_;
+	private String speed_ball_string_;
 	
 	private Vector2f[] mouse_over_;
 	
@@ -103,9 +119,17 @@ public class ECgame extends SimplePhysicsGame
 	private boolean opening_ = false;
 	private boolean closing_ = false;
 	private boolean spawning_ = false;
+	private boolean game_over_ = false;
+	private boolean restarted_ = false;
 	
 	private int ball_counter_ = 0;
+	private int balls_in_game_ = 1;
 	private int max_ball_count_ = 5;
+	private int speed_level_ = 1;
+	private int max_speed_level_ = 5;
+	private int speed_level_step_ = 200;
+	private int ball_in_game_step_ = 1000;
+	private int step_offset_ = 0;
 	
 	private Random generator_;	
 	private boolean test = true;
@@ -116,7 +140,7 @@ public class ECgame extends SimplePhysicsGame
 	//private Vector3f applied_force_;
 	
 	protected void simpleInitGame() 
-	{
+	{			
 		display.setTitle("Eye-Controlled Game");
 		input.removeAllFromAttachedHandlers();
 		graphNode.detachChildNamed("f4");
@@ -153,19 +177,24 @@ public class ECgame extends SimplePhysicsGame
 		
 		//applied_force_ = new Vector3f(80,390,0);
 		
-		speed_ = 1.4f;
+		//max = 2.3f
+		speed_ = 1.3f;
 		
 		initHUD();
 		initGhost();
 		initPlayer();
-		
-		
+			
 		
 		initTestMouse();
+		initSound();
 		KeyBindingManager.getKeyBindingManager().set("PLAYER_MOVE", KeyInput.KEY_LCONTROL);
 		KeyBindingManager.getKeyBindingManager().set("DETONATE", KeyInput.KEY_SPACE);
+		KeyBindingManager.getKeyBindingManager().set("MUTE", KeyInput.KEY_M);
 		KeyBindingManager.getKeyBindingManager().set("TEST1", KeyInput.KEY_LEFT);
 		KeyBindingManager.getKeyBindingManager().set("TEST2", KeyInput.KEY_RIGHT);
+		KeyBindingManager.getKeyBindingManager().set("TEST3", KeyInput.KEY_UP);
+		KeyBindingManager.getKeyBindingManager().set("TEST4", KeyInput.KEY_DOWN);
+		KeyBindingManager.getKeyBindingManager().set("RESTART", KeyInput.KEY_BACK);
 		
         //init eye tracking
 		eyeTracker_ = new TrackDataProvider();
@@ -192,6 +221,9 @@ public class ECgame extends SimplePhysicsGame
 				break;
 			}
 		}
+		
+		if(index == 5)
+			return;
 		
 		rootNode.attachChild(ballNode_[index]);
 		
@@ -297,9 +329,64 @@ public class ECgame extends SimplePhysicsGame
 		player_score_.setLocalTranslation(new Vector3f(display.getWidth()-300 , display.getHeight() -30, 0));
 		player_score_.setLocalScale(new Vector3f(1.5f,1.5f,0));
 		
+		//speed and ball level
+		speed_ball_string_ = "BALLS/SPEED: " + balls_in_game_ +"/"+speed_level_;
+		show_speed_ball_lvl_ = Text.createDefaultTextLabel("speed",speed_ball_string_);
+		show_speed_ball_lvl_.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		show_speed_ball_lvl_.setLightCombineMode(Spatial.LightCombineMode.Off);
+		show_speed_ball_lvl_.setLocalTranslation(new Vector3f(display.getWidth()/2 -150 , display.getHeight() -30, 0));
+		show_speed_ball_lvl_.setLocalScale(new Vector3f(1.5f,1.5f,0));
+		
+		//init game over text
+		show_game_over_ = Text.createDefaultTextLabel("gameover","GAME OVER");
+		show_game_over_.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		show_game_over_.setLightCombineMode(Spatial.LightCombineMode.Off);
+		show_game_over_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+		show_game_over_.setLocalScale(new Vector3f(1.5f,1.5f,0));
+		show_game_over_.setTextColor(ColorRGBA.red);
+		hud_.attachChild(show_game_over_);
+		
+		//init game over score
+		show_game_over_score_ = Text.createDefaultTextLabel("finalscore", "SCORE: ");
+		show_game_over_score_.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		show_game_over_score_.setLightCombineMode(Spatial.LightCombineMode.Off);
+		show_game_over_score_.setTextColor(ColorRGBA.red);
+		show_game_over_score_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+		show_game_over_score_.setLocalScale(new Vector3f(1.5f,1.5f,0));
+		
+		//init game over restart
+		show_game_over_restart_ = Text.createDefaultTextLabel("score", "HIT [BACKSPACE] TO RESTART");
+		show_game_over_restart_.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		show_game_over_restart_.setLightCombineMode(Spatial.LightCombineMode.Off);
+		show_game_over_restart_.setTextColor(ColorRGBA.red);
+		show_game_over_restart_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+		show_game_over_restart_.setLocalScale(new Vector3f(1.5f,1.5f,0));
+		
+		//show restarted
+		game_restarted_ = Text.createDefaultTextLabel("restarted","GAME RESTARTED");
+		game_restarted_.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		game_restarted_.setLightCombineMode(Spatial.LightCombineMode.Off);
+		game_restarted_.setTextColor(ColorRGBA.red);
+		game_restarted_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+		game_restarted_.setLocalScale(new Vector3f(1.5f,1.5f,0));
+		
+		//show muted
+		muted_ = Text.createDefaultTextLabel("muted","GAME MUTED");
+		muted_.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+		muted_.setLightCombineMode(Spatial.LightCombineMode.Off);
+		muted_.setTextColor(ColorRGBA.red);
+		muted_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+		muted_.setLocalScale(new Vector3f(1.5f,1.5f,0));
+
+		
 		
 		hud_.attachChild(player_lives_);
 		hud_.attachChild(player_score_);
+		hud_.attachChild(show_speed_ball_lvl_);
+		hud_.attachChild(show_game_over_score_);
+		hud_.attachChild(show_game_over_restart_);
+		hud_.attachChild(game_restarted_);
+		hud_.attachChild(muted_);
 		hud_.attachChild(life1);
 		hud_.attachChild(life2);
 		hud_.attachChild(life3);
@@ -308,13 +395,19 @@ public class ECgame extends SimplePhysicsGame
 	
 	}
 	
-	private void updateHUD()
+	private void updateHUDSpeedAndBalls()
+	{
+		speed_ball_string_ = "BALLS/SPEED: "+balls_in_game_+"/"+speed_level_;
+		show_speed_ball_lvl_.print(speed_ball_string_);
+	}
+	private void updateHUDScoreAndLives()
 	{
 		score_string_ = "SCORE: " + score_;
 		player_score_.print(score_string_);
 		
 		ParticleMesh explosion;
-		int temp = hud_.getChildren().size()-2;
+		int temp = hud_.getChildren().size()-8;
+		
 		
 		if(temp != lives_)
 		{
@@ -325,6 +418,8 @@ public class ECgame extends SimplePhysicsGame
 				explosion.getLocalScale().set(new Vector3f(0.03f,0.03f,0.03f));
 				Vector3f temp_vec = ((Sphere)hud_.getChild("life1")).center;
 				explosion.getLocalTranslation().set(temp_vec.x-1.2f,temp_vec.y,temp_vec.z);
+				explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
+				explosion_sound_.play();
 				hud_.detachChild(hud_.getChild("life1"));
 				return;
 			case 1:
@@ -332,18 +427,22 @@ public class ECgame extends SimplePhysicsGame
 				explosion.getLocalScale().set(new Vector3f(0.03f,0.03f,0.03f));
 				Vector3f temp_vec1 = ((Sphere)hud_.getChild("life2")).center;
 				explosion.getLocalTranslation().set(temp_vec1.x-0.6f,temp_vec1.y,temp_vec1.z);
+				explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
+				explosion_sound_.play();
 				hud_.detachChild(hud_.getChild("life2"));
 				return;
 			case 2:
 				explosion = createExplosion(ColorRGBA.blue);
 				explosion.getLocalScale().set(new Vector3f(0.03f,0.03f,0.03f));
 				explosion.getLocalTranslation().set(((Sphere)hud_.getChild("life3")).center);
+				explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
+				explosion_sound_.play();
 				hud_.detachChild(hud_.getChild("life3"));
 				return;
 			case 3:
 				return;
 			default:
-				//game over!!
+				game_over_ = true;
 			}
 		}
 			
@@ -718,76 +817,290 @@ public class ECgame extends SimplePhysicsGame
 	}
     
     protected void simpleUpdate()
-    {  	
-    	if(!spawning_)
-    		spawn_color_ = null;
-    	
-    	ExplosionFactory.cleanExplosions();
-    	handleMouse();
-    	//handleEyeInput();
+    {  	 
+		if (KeyBindingManager.getKeyBindingManager().isValidCommand("RESTART", false))
+			restart();
 		
-		if (KeyBindingManager.getKeyBindingManager().isValidCommand("PLAYER_MOVE", true))
+		if(audio_.isMuted())
+			showMuted();
+		
+		if (KeyBindingManager.getKeyBindingManager().isValidCommand("MUTE", false))
 		{
-			playerNode_.getLocalTranslation().x = ghost_.getLocalTranslation().x;
-			playerNode_.getLocalTranslation().y = ghost_.getLocalTranslation().y;
-			
-
+			if(audio_.isMuted())
+			{
+				audio_.unmute();
+				muted_.setLocalTranslation(new Vector3f(display.getWidth()+1000, display.getHeight()+1000, 0));
+			}
+			else
+			{
+				audio_.mute();
+				muted_.getLocalTranslation().set(0 - muted_.getWidth(), 30, 0);
+			}
 		}
 		
-		if(KeyBindingManager.getKeyBindingManager().isValidCommand("DETONATE", true))
-		{
-			ParticleMesh explosion = ExplosionFactory.getExplosion();
-			explosion.getLocalScale().set(new Vector3f(0.08f,0.08f,0.08f));
-			explosion.getLocalTranslation().set(playerNode_.getLocalTranslation().x,playerNode_.getLocalTranslation().y+0.7f,10);
-			explosion.forceRespawn();
-			explosions_.attachChild(explosion);
+		if(restarted_)
+			showRestarted();
+		
+    	if(game_over_)
+    		gameOver();
+    	else
+    	{
+    		if(!spawning_)
+        		spawn_color_ = null;
+	    	ExplosionFactory.cleanExplosions();
+	    	handleMouse();
+	    	//handleEyeInput();
+			
+			if (KeyBindingManager.getKeyBindingManager().isValidCommand("PLAYER_MOVE", false))
+			{
+				playerNode_.getLocalTranslation().x = ghost_.getLocalTranslation().x;
+				playerNode_.getLocalTranslation().y = ghost_.getLocalTranslation().y;
+				
+	
+			}
+			
+			if(KeyBindingManager.getKeyBindingManager().isValidCommand("DETONATE", false))
+			{
+				ParticleMesh explosion = ExplosionFactory.getExplosion();
+				explosion.getLocalScale().set(new Vector3f(0.08f,0.08f,0.08f));
+				explosion.getLocalTranslation().set(playerNode_.getLocalTranslation().x,playerNode_.getLocalTranslation().y+0.7f,10);
+				explosion.forceRespawn();
+				explosions_.attachChild(explosion);
+				explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
+				explosion_sound_.play();
+				
+		    	for(int i = 0; i < 5; i++)
+		    	{
+		    		if(ballNode_[i] != null)
+		    		{
+		    				if(ball_[i].hasCollision(player_,false))
+		    				{
+		    					//explosions_.detachAllChildren();
+		    					//System.out.println("treffer");
+		    					ballNode_[i].getLocalTranslation().set(new Vector3f(ballNode_[i].getLocalTranslation().x+3f,ballNode_[i].getLocalTranslation().y+7f,0));
+		    					ParticleMesh explosion1 = ExplosionFactory.getExplosion();
+		    					explosion1.getLocalScale().set(new Vector3f(0.08f,0.08f,0.08f));
+		    					explosion1.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
+		    					explosion1.forceRespawn();
+		    					explosions_.attachChild(explosion1);
+		    					explosion_sound_.setWorldPosition(explosion1.getWorldTranslation());
+		    					explosion_sound_.play();
+		    				}
+		    		}
+		    	}
+				
+			}
+			
 			
 	    	for(int i = 0; i < 5; i++)
 	    	{
 	    		if(ballNode_[i] != null)
 	    		{
-	    				if(ball_[i].hasCollision(player_,false))
+	    				Vector3f temp_vec = ballNode_[i].getLinearVelocity(null);
+	    				//System.out.println(temp_vec.y);
+	    				if((ball_[i].hasCollision(playerNode_,false) || ball_[i].hasCollision(staticNode_,false)) && temp_vec.y < -3f)
 	    				{
-	    					//explosions_.detachAllChildren();
-	    					//System.out.println("treffer");
-	    					ballNode_[i].getLocalTranslation().set(new Vector3f(ballNode_[i].getLocalTranslation().x+3f,ballNode_[i].getLocalTranslation().y+7f,0));
-	    					ParticleMesh explosion1 = ExplosionFactory.getExplosion();
-	    					explosion1.getLocalScale().set(new Vector3f(0.08f,0.08f,0.08f));
-	    					explosion1.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
-	    					explosion1.forceRespawn();
-	    					explosions_.attachChild(explosion1);
+	    					bounce_sound_.setWorldPosition(ballNode_[i].getWorldTranslation());
+	    					bounce_sound_.play();
 	    				}
+	    				
 	    		}
 	    	}
 			
-		}
-		
-		handleScoreAndLives();
-		handleBallFallingDown();
-		handleList();
-
-		
-		if (KeyBindingManager.getKeyBindingManager().isValidCommand("TEST1", true))
-		{
-			if(!spawning_)
-			spawn_list_.add(0);
-		}
-		
-		moveGhost();	
-		
-		if(spawn_color_ != null)
-		{
-			if(opening_)
-				openEntrance(spawn_color_);
-			else if(closing_)
-				closeEntrance(spawn_color_);
-			else if(entranceOpened(spawn_color_))
-			{
-				spawnBall();
-			}
-		}
-		
+			
+			dynamicDifficulty();
+			
+			
+			handleScoreAndLives();
+			handleBallFallingDown();
+			handleList();
 	
+			
+			if (KeyBindingManager.getKeyBindingManager().isValidCommand("TEST1", false))
+			{
+				if(!spawning_)
+				spawn_list_.add(0);
+			}
+			
+			if (KeyBindingManager.getKeyBindingManager().isValidCommand("TEST2", false))
+			{
+				game_over_ = true;
+			}
+			if (KeyBindingManager.getKeyBindingManager().isValidCommand("TEST3", false))
+			{
+
+				speed_level_ = (speed_level_+ 1) % 6;
+				speed_ = 1.3f + 0.1f*speed_level_;
+				this.updateHUDSpeedAndBalls();
+				
+			}
+			if (KeyBindingManager.getKeyBindingManager().isValidCommand("TEST4", false))
+			{
+
+				balls_in_game_ = (balls_in_game_+ 1) % 6;
+				this.updateHUDSpeedAndBalls();
+				
+			}
+			
+			moveGhost();	
+			
+			if(spawn_color_ != null)
+			{
+				if(opening_)
+					openEntrance(spawn_color_);
+				else if(closing_)
+					closeEntrance(spawn_color_);
+				else if(entranceOpened(spawn_color_))
+				{
+					spawnBall();
+				}
+			}
+		
+    	}
+    	audio_.update();
+    }
+    private void gameOver()
+    {
+    	for(int i = 0; i < 5; i++)
+    	{
+    		if(ballNode_[i] != null)
+    		{
+    			ballNode_[i].delete();
+    		}
+    	}
+    	
+    	if(show_game_over_.getLocalTranslation().x == display.getWidth()+1000)
+    	{
+    		audio_.getMusicQueue().clearTracks();
+    		audio_.getMusicQueue().addTrack(music_game_over_);
+    		audio_.getMusicQueue().play();
+    	}
+    	
+    	
+    	show_game_over_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_.getWidth()/2, display.getHeight()/2-show_game_over_.getHeight()/2, 0));
+ 
+    	if(show_game_over_.getLocalScale().x <= 10)
+    		show_game_over_.getLocalScale().addLocal(new Vector3f(0.7f,0.7f,0.7f).mult(timer.getTimePerFrame()));
+    	else
+    	{ 	
+    		show_game_over_restart_.setLocalScale(new Vector3f(3,3,3));
+    		show_game_over_restart_.setTextColor(ColorRGBA.red);
+    		show_game_over_restart_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_restart_.getWidth()/2, show_game_over_.getLocalTranslation().y+show_game_over_.getHeight()/2+100, 0));  		
+    		
+    		show_game_over_score_.setLocalScale(new Vector3f(3,3,3));
+    		show_game_over_score_.setTextColor(ColorRGBA.red);
+    		show_game_over_score_.print("SCORE: "+score_);
+    		show_game_over_score_.setLocalTranslation(new Vector3f(display.getWidth()/2 - show_game_over_score_.getWidth()/2, show_game_over_.getLocalTranslation().y-100, 0));
+    	}
+    		
+   
+    }
+    
+    private void showMuted()
+    {
+    	muted_.getLocalTranslation().addLocal(new Vector3f(200,0,0).mult(timer.getTimePerFrame()));
+    	if(muted_.getLocalTranslation().x >= display.getWidth())
+    		muted_.getLocalTranslation().set(0 - muted_.getWidth(), 30, 0);
+    }
+    
+    private void showRestarted()
+    {
+    	game_restarted_.getLocalTranslation().addLocal(new Vector3f(200,0,0).mult(timer.getTimePerFrame()));
+    	if(game_restarted_.getLocalTranslation().x >= display.getWidth())
+    		restarted_ = false;
+    }
+    private void restart()
+    {
+    	for(int i = 0; i < 5; i++)
+    	{
+    		if(ballNode_[i] != null)
+    		{
+    			ballNode_[i].delete();
+    			ballNode_[i] = null;
+    		}
+    	}
+    	
+		red_opened_ = false;
+		green_opened_ = false;
+		blue_opened_ = false;
+		opening_ = false;
+		closing_ = false;
+		spawning_ = false;
+		game_over_ = false;
+		
+		lives_ = 3;
+		score_ = 0;
+		ball_counter_ = 0;
+		balls_in_game_ = 1;
+		max_ball_count_ = 5;
+		speed_level_ = 1;
+		max_speed_level_ = 5;
+		spawn_color_ = null;
+		speed_ = 1.3f;
+		speed_level_step_ = 200;
+		ball_in_game_step_ = 1000;
+		step_offset_ = 0;
+		
+		spawn_list_.clear();
+    	
+    	redNode_.getLocalTranslation().x = -9.75f;
+    	greenNode_.getLocalTranslation().x = -9.75f;
+    	blueNode_.getLocalTranslation().x = -9.75f;
+    	
+    	
+    	
+    	hud_.detachAllChildren();
+    	
+    	initHUD();
+    	
+		ghost_.getLocalTranslation().x = -2.5f;
+		ghost_.getLocalTranslation().y = 4.8f;
+		ghost_.getLocalTranslation().z = 0;
+		
+		audio_.getMusicQueue().clearTracks();
+		audio_.getMusicQueue().addTrack(music_normal_);
+		audio_.getMusicQueue().play();
+    	
+		playerNode_.getLocalTranslation().set(new Vector3f(-2.5f,4.8f,0));
+		restarted_ = true;
+		game_restarted_.getLocalTranslation().set(0 - game_restarted_.getWidth(), 50, 0);
+
+    }
+    
+    private void dynamicDifficulty()
+    {	 	
+    	if(ball_counter_ < balls_in_game_)
+    	{
+    		if(!spawning_)
+    			spawn_list_.add(0);
+    	}
+    	if(score_ == (balls_in_game_ * ball_in_game_step_ + step_offset_))
+    	{
+    		if(balls_in_game_ < 5)
+    		{
+    			balls_in_game_++;
+        		ball_in_game_step_ = 2500;
+        		speed_level_step_ = 500;
+        		step_offset_ = -1500;
+    			speed_level_ = 1;
+    			speed_ = 1.3f;
+    			
+    			updateHUDSpeedAndBalls();
+    		}
+    	}
+    	
+    	if(score_ == ((speed_level_ * speed_level_step_ + step_offset_)+((balls_in_game_-1)*ball_in_game_step_)))
+    	{
+    		speed_level_++;	
+    		if(speed_level_ <= max_speed_level_)
+    		{
+    			updateHUDSpeedAndBalls();
+    			speed_ += 0.2f;
+    		}
+    		
+    	}
+    	
+    	
     }
     
     private void handleList()
@@ -824,7 +1137,11 @@ public class ECgame extends SimplePhysicsGame
     		if(ballNode_[i] != null)
     		{
     			if(ballNode_[i].getLocalTranslation().y < -11)
+    			{
     				ballNode_[i].getLocalTranslation().setY(11);
+    				ballNode_[i].getLocalTranslation().setX(ballNode_[i].getLocalTranslation().x-1.6f);
+    			}
+    			
     		}
     	}
     	
@@ -858,18 +1175,22 @@ public class ECgame extends SimplePhysicsGame
     				if(temp_color == ColorRGBA.red)
     				{
     					score_ += 100;
-    					updateHUD();
+    					updateHUDScoreAndLives();
     					ParticleMesh explosion = createExplosion(temp_color);
     					explosion.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
     					removeBall(i);
+    					explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
+    					explosion_sound_.play();
     				}
     				else
     				{
     					lives_--;
-    					updateHUD();
+    					updateHUDScoreAndLives();
     					ParticleMesh explosion = createExplosion(ColorRGBA.darkGray);
     					explosion.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
     					removeBall(i);
+    					explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
+    					explosion_sound_.play();
     				}
     			}
     			else if(ball_[i].hasCollision(staticNode_.getChild("highMiddleRightWall"),false))
@@ -878,18 +1199,22 @@ public class ECgame extends SimplePhysicsGame
     				if(temp_color == ColorRGBA.green)
     				{
     					score_ += 100;
-    					updateHUD();
+    					updateHUDScoreAndLives();
     					ParticleMesh explosion = createExplosion(temp_color);
     					explosion.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
     					removeBall(i);
+    					explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
+    					explosion_sound_.play();
     				}
     				else
     				{
     					lives_--;
-    					updateHUD();
+    					updateHUDScoreAndLives();
     					ParticleMesh explosion = createExplosion(ColorRGBA.darkGray);
     					explosion.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
     					removeBall(i);
+    					explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
+    					explosion_sound_.play();
     				}
 				}
 				else if(ball_[i].hasCollision(staticNode_.getChild("lowMiddleRightWall"),false))
@@ -898,18 +1223,22 @@ public class ECgame extends SimplePhysicsGame
     				if(temp_color == ColorRGBA.blue)
     				{
     					score_ += 100;
-    					updateHUD();
+    					updateHUDScoreAndLives();
     					ParticleMesh explosion = createExplosion(temp_color);
     					explosion.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
     					removeBall(i);
+    					explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
+    					explosion_sound_.play();
     				}
     				else
     				{
     					lives_--;
-    					updateHUD();
+    					updateHUDScoreAndLives();
     					ParticleMesh explosion = createExplosion(ColorRGBA.darkGray);
     					explosion.getLocalTranslation().set(ballNode_[i].getLocalTranslation().x,ballNode_[i].getLocalTranslation().y,10);
     					removeBall(i);
+    					explosion_sound_.setWorldPosition(explosion.getWorldTranslation());
+    					explosion_sound_.play();
     				}
 				}
     		}
@@ -1049,7 +1378,9 @@ public class ECgame extends SimplePhysicsGame
 		//Handle Eye Input
 		eye_pos_ = eyeTracker_.getEyeTrackData();
 		tmp_screen_pos_.set(eye_pos_[0], eye_pos_[1]);
-		//System.out.println("eyePos x: "+ eye_pos_[0] + "       eyePos y: "+ eye_pos_[1]);
+		//System.out.println("eyePos x: "+ eye_pos_[0] + "       eyePos y: "+ eye_pos_[1]);	
+		//invert
+		tmp_screen_pos_.y = display.getHeight()-tmp_screen_pos_.y;
 		tmp_world_coord_ = display.getWorldCoordinates(tmp_screen_pos_, 0);
 		pointer_.getLocalTranslation().x = tmp_world_coord_.x;
 		pointer_.getLocalTranslation().y = tmp_world_coord_.y;
@@ -1104,5 +1435,47 @@ public class ECgame extends SimplePhysicsGame
     	else
     		return false;
     }
-   
+    
+    private void initSound() {
+		// grab a handle to our audio system.
+		audio_ = AudioSystem.getSystem();
+
+		// setup our ear tracker to track the camera's position and orientation.
+		audio_.getEar().trackOrientation(cam);
+		audio_.getEar().trackPosition(cam);
+
+		// setup a music score for our demo
+		music_normal_ = getMusic(ECgame.class.getResource("/data/theartofgardens.ogg"));
+		music_game_over_ = getMusic(ECgame.class.getResource("/data/threedrops.ogg"));
+		audio_.getMusicQueue().setRepeatType(RepeatType.ALL);
+		audio_.getMusicQueue().setCrossfadeinTime(2.5f);
+		audio_.getMusicQueue().setCrossfadeoutTime(2.5f);
+		audio_.getMusicQueue().addTrack(music_normal_);
+		audio_.getMusicQueue().play();
+		
+		
+
+		explosion_sound_ = audio_.createAudioTrack("/data/explosion.ogg", false);
+		explosion_sound_.setRelative(true);
+		explosion_sound_.setMaxAudibleDistance(100000);
+		explosion_sound_.setVolume(0.3f);
+		explosion_sound_.setTargetVolume(0.3f);
+		
+		bounce_sound_ = audio_.createAudioTrack("/data/ball.wav", false);
+		bounce_sound_.setRelative(true);
+		bounce_sound_.setMaxAudibleDistance(100000);
+		bounce_sound_.setVolume(0.4f);
+		bounce_sound_.setTargetVolume(0.4f);
+	}
+ 
+	private AudioTrack getMusic(URL resource) {
+		// Create a non-streaming, non-looping, relative sound clip.
+		AudioTrack sound = AudioSystem.getSystem().createAudioTrack(resource, true);
+		sound.setType(TrackType.MUSIC);
+		sound.setRelative(true);
+		sound.setTargetVolume(0.7f);
+		sound.setLooping(false);
+		return sound;
+	}
+
 }
