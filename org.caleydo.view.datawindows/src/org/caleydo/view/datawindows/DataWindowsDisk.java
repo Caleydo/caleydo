@@ -142,6 +142,7 @@ public class DataWindowsDisk extends PoincareDisk {
 		gl.glPushName(iPickingID);
 		// different textures for different detail levels
 		if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 2) {
+			node.eyeTrackable = false;
 			float alpha = 1;
 			if (node.markedToRemove == true) {
 				alpha = 0.7f;
@@ -187,6 +188,8 @@ public class DataWindowsDisk extends PoincareDisk {
 
 				}
 			}
+
+			node.eyeTrackable = true;
 
 			float[] position = new float[2];
 			position[0] = -size[0] * canvasWidth / 2
@@ -375,23 +378,24 @@ public class DataWindowsDisk extends PoincareDisk {
 			ArrayList<NodeSlerp> arSlerpActions) {
 		PoincareNode returnNode = null;
 
+	
 		
-            if(this.distanceFromOrigin(normedEyePosition)<this.levelOfDetailLimits[0]){
 		
+		if (this.distanceFromOrigin(normedEyePosition) < this.levelOfDetailLimits[0]) {
+
+			
 			returnNode = findNodeByCoordinate(normedEyePosition, 10);
 
-            }
-            
-			if (returnNode != null) {
-				float[] emptyPoint = new float[2];
-				emptyPoint[0] = 0;
-				emptyPoint[1] = 0;
-				arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
-						emptyPoint));
-			}
+		}
 		
 
-	
+		if (returnNode != null) {
+			float[] emptyPoint = new float[2];
+			emptyPoint[0] = 0;
+			emptyPoint[1] = 0;
+			arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
+					emptyPoint));
+		}
 
 		// //focus far nodes with the eyetracker
 		// System.out.println("outside of direct picking");

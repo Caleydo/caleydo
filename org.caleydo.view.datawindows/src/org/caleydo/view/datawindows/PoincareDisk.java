@@ -505,7 +505,7 @@ public class PoincareDisk {
 				currentPosition = currentNode.getPosition().clone();
 				float[] childPosition;
 				// the first child of the root
-				if (currentNode.getChildren() != null) {
+				if (currentNode.getNrLeaves() != 0) {
 					childPosition = currentNode.getChildren().get(0)
 							.getPosition();
 

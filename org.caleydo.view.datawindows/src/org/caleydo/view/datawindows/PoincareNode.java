@@ -16,7 +16,7 @@ public class PoincareNode extends AHierarchyElement<PoincareNode> {
 	
 	public boolean markedToRemove = false;
 	public boolean nonExistent = false;
-	
+	public boolean eyeTrackable=false;
 	
 	String nodeName;
 	int iComparableValue;

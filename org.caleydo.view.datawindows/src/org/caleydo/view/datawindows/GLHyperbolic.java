@@ -221,18 +221,17 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	// creates a slerp rotating the tree to the right position
 	public void correctDiskAngle() {
-		if (simpleSlerpActions.isEmpty()){
-		previousSimpleSlerp = 0;
-		SimpleSlerp actualSlerp = new SimpleSlerp();
-		
-		
-		// the ending condition of the slerp is the correct angle
-		actualSlerp.endingCondition = disk.calculateCorrectDiskRotation(disk
-				.getCenteredNode());
+		if (simpleSlerpActions.isEmpty()) {
+			previousSimpleSlerp = 0;
+			SimpleSlerp actualSlerp = new SimpleSlerp();
 
-		actualSlerp.speed = 10;
-		
-		simpleSlerpActions.add(actualSlerp);
+			// the ending condition of the slerp is the correct angle
+			actualSlerp.endingCondition = disk
+					.calculateCorrectDiskRotation(disk.getCenteredNode());
+
+			actualSlerp.speed = 10;
+
+			simpleSlerpActions.add(actualSlerp);
 		}
 	}
 
@@ -579,13 +578,16 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	public boolean setEyeTrackerAction(int[] mouseCoord, float[] offset,
 			float[] scalation) {
 		// if (this.get != null) {
-		float[] mousePoint=new float[2];
-		mousePoint[0]=(float)mouseCoord[0];
-		mousePoint[1]=(float)mouseCoord[1];	
-		
-        boolean returnValue;
-        
-		// standardization of the mouseposition
+		if (this.displayFullView) {
+			return false;
+		}
+
+		float[] mousePoint = new float[2];
+		mousePoint[0] = (float) mouseCoord[0];
+		mousePoint[1] = (float) mouseCoord[1];
+
+		boolean returnValue;
+
 		float factorX = 1 / (float) (this.getParentGLCanvas().getWidth() * scalation[0]);
 		float factorY = 1 / (float) (this.getParentGLCanvas().getHeight());
 
@@ -605,10 +607,9 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		if (selectedNode != null) {
 			disk.setCenteredNode(selectedNode);
 			slerpedNode = selectedNode;
-			returnValue=true;
-		}
-		else{
-			returnValue=false;
+			returnValue = true;
+		} else {
+			returnValue = false;
 		}
 		correctDiskAngle();
 		return returnValue;
