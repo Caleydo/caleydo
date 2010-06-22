@@ -15,6 +15,7 @@ public class PoincareDisk {
 	private PoincareNode centeredNode;
 	public float centeredNodeSize = 1;
 	private float layoutLenseFactor = 1.45f;
+	private boolean calculateRootNodeAngleSwitch = false;
 
 	public PoincareDisk() {
 		radius = 1f;
@@ -461,6 +462,9 @@ public class PoincareDisk {
 
 		if (currentNode != null) {
 			if (currentNode.iComparableValue != 1) {
+
+				calculateRootNodeAngleSwitch = true;
+
 				float[] currentPosition = new float[2];
 				currentPosition = currentNode.getPosition().clone();
 				float[] parentPosition;
@@ -505,49 +509,51 @@ public class PoincareDisk {
 				currentPosition = currentNode.getPosition().clone();
 				float[] childPosition;
 				// the first child of the root
-				if (currentNode.getNrLeaves() != 0) {
-					childPosition = currentNode.getChildren().get(0)
-							.getPosition();
+				if (this.calculateRootNodeAngleSwitch == true) {
+					if (currentNode.getChildren() != null) {
 
-					float[] relativePosition = new float[2];
-					relativePosition[0] = -currentPosition[0];
-					relativePosition[1] = -currentPosition[1];
+						childPosition = currentNode.getChildren().get(0)
+								.getPosition();
 
-					currentPosition[0] = 0;
-					currentPosition[1] = 0;
+						float[] relativePosition = new float[2];
+						relativePosition[0] = -currentPosition[0];
+						relativePosition[1] = -currentPosition[1];
 
-					ComplexNumber moebiusTransformation = new ComplexNumber();
-					ComplexNumber complexParentPosition = new ComplexNumber();
+						currentPosition[0] = 0;
+						currentPosition[1] = 0;
 
-					moebiusTransformation.setValue(
-							(double) relativePosition[0],
-							(double) relativePosition[1]);
-					complexParentPosition.setValue((double) childPosition[0],
-							(double) childPosition[1]);
+						ComplexNumber moebiusTransformation = new ComplexNumber();
+						ComplexNumber complexParentPosition = new ComplexNumber();
 
-					complexParentPosition = this.moebiusTransformation(
-							complexParentPosition, moebiusTransformation);
+						moebiusTransformation.setValue(
+								(double) relativePosition[0],
+								(double) relativePosition[1]);
+						complexParentPosition.setValue(
+								(double) childPosition[0],
+								(double) childPosition[1]);
 
-					relativePosition[0] = (float) complexParentPosition
-							.getRealPart();
-					relativePosition[1] = (float) complexParentPosition
-							.getImaginaryPart();
+						complexParentPosition = this.moebiusTransformation(
+								complexParentPosition, moebiusTransformation);
 
-					float[] eV = getEV(relativePosition);
-					float angle = (float) Math.atan2(eV[1], eV[0]);
+						relativePosition[0] = (float) complexParentPosition
+								.getRealPart();
+						relativePosition[1] = (float) complexParentPosition
+								.getImaginaryPart();
 
-					float angleOffset = ((float) Math.PI / (float) currentNode
-							.getChildren().size()) / 2;
-					angle = angle + angleOffset + (float) Math.PI / 2;
-					if (Math.abs(-angle + Math.PI) < Math.PI) {
-						return -angle + (float) Math.PI;
-					} else {
-						return -angle - (float) Math.PI;
+						float[] eV = getEV(relativePosition);
+						float angle = (float) Math.atan2(eV[1], eV[0]);
+
+						float angleOffset = ((float) Math.PI / (float) currentNode
+								.getChildren().size()) / 2;
+						angle = angle + angleOffset + (float) Math.PI / 2;
+						if (Math.abs(-angle + Math.PI) < Math.PI) {
+							return -angle + (float) Math.PI;
+						} else {
+							return -angle - (float) Math.PI;
+						}
 					}
 				}
 			}
-		} else {
-
 		}
 		return 0;
 	}

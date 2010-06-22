@@ -138,7 +138,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		layoutHotSpot = new float[2];
 
 		// change this attribute for different inputs
-		selectedInput = inputType.EYETRACKER_SIMULATED;
+		selectedInput = inputType.EYETRACKER_ONLY;
 
 		viewport = new int[4];
 		pixelDimensions = new int[2];
@@ -305,7 +305,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		}
 		if (selectedInput == inputType.EYETRACKER_ONLY) {
 			eyeTracker.receiveData();
-			System.out.println(upperLeftScreenPos.x);
 			eyeTracker.cutWindowOffset(upperLeftScreenPos.x,
 					upperLeftScreenPos.y);
 			eyeTracker.checkForFixedCoordinate();
