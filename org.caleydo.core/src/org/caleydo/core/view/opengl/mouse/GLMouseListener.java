@@ -54,6 +54,8 @@ public class GLMouseListener
 	private boolean bEnablePan = true;
 	private boolean bEnableRotate = true;
 	private boolean bEnableZoom = true;
+	
+	public int[] mousePosition;
 
 	/**
 	 * Define mouse sensitivity. Higher value indicates more degrees of rotation. Default value 1.0
@@ -68,6 +70,7 @@ public class GLMouseListener
 		pickedPointDragStart = new Point();
 
 		alGlCanvas = new ArrayList<AGLView>();
+		mousePosition=new int[2];
 	}
 
 	@Override
@@ -131,7 +134,11 @@ public class GLMouseListener
 
 	@Override
 	public void mouseMoved(MouseEvent mouseEvent) {
+	    this.mousePosition[0]=mouseEvent.getXOnScreen();
+	    this.mousePosition[1]=mouseEvent.getYOnScreen();
 
+		
+		
 		bMouseMoved = true;
 		pickedPointCurrent = mouseEvent.getPoint();
 	}
