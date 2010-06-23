@@ -511,7 +511,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		Transform transform = new Transform();
 		remoteNodeElement.setGLView(((ViewHyperbolicNode) node).getGlView());
-
+		//remoteNodeElement.getGLView().getViewFrustum().setBottom(fBottom)
 		// if a node is totally zoomed in, the remote view of the node is
 		// displayed on the full hyperbolic view
 		if (this.displayFullView == true
@@ -522,6 +522,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 			// in this case, the size of the displayed remote view depends on
 			// the position of the node
 			transform.setScale(new Vec3f(size, size * fAspectRatio, 1));
+			
 			transform.setTranslation(new Vec3f(position[0], position[1], 0));
 		}
 

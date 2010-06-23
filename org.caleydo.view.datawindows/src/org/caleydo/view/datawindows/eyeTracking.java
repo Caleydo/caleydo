@@ -47,7 +47,7 @@ public class eyeTracking {
 	public void startTracking() {
 
 		tracker = new TrackDataProvider();
-		//tracker.IP_TRACKER = ipTracker;
+
 		tracker.startTracking();
 
 	}
@@ -57,9 +57,9 @@ public class eyeTracking {
 			receivedEyeData = tracker.getEyeTrackData();
 			rawEyeTrackerPosition[0] = (int) receivedEyeData[0];
 			rawEyeTrackerPosition[1] = (int) receivedEyeData[1];
-			if(this.rawEyeTrackerPosition[0]!=0){
-			//System.out.println("eyeTracker Working: "+ rawEyeTrackerPosition[0]+" "+rawEyeTrackerPosition[0]);
-			}
+//			if(this.rawEyeTrackerPosition[0]!=0){
+//			//System.out.println("eyeTracker Working: "+ rawEyeTrackerPosition[0]+" "+rawEyeTrackerPosition[0]);
+//			}
 		
 	}
 
