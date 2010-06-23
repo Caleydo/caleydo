@@ -21,7 +21,7 @@ public class eyeTracking {
 	private Time time;
 	private double totalTime;
 	private double pauseTime;
-	private double eyeTrackerPauseStatus;
+	public double eyeTrackerPauseStatus;
 
 	public eyeTracking(boolean simulation, String ipTracker) {
 		setEyeTrackerOffset(new float[2]);
@@ -92,9 +92,12 @@ public class eyeTracking {
 		// there is no need to handle overflow
 		double deltaTime = time.deltaT();
 		totalTime = totalTime + deltaTime;
+		//System.out.println("pause status: "+eyeTrackerPauseStatus);
 		if (this.eyeTrackerPauseStatus > 0) {
+			
 			this.eyeTrackerPauseStatus -= deltaTime;
 		} else {
+		
 			this.eyeTrackerPauseStatus = 0;
 		}
 
@@ -125,10 +128,14 @@ public class eyeTracking {
 				}
 			}
 		}
+		
 		if (this.eyeTrackerPauseStatus == 0) {
+		
+
 			this.fixedCoordinate[0] = this.rawEyeTrackerPosition[0];
 			this.fixedCoordinate[1] = this.rawEyeTrackerPosition[1];
 		}
+
 	}
 
 	public int[] getFixedCoordinate() {

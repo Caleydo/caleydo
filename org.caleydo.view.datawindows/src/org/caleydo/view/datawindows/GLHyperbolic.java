@@ -577,7 +577,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	// called, if the user focuses a point on the display with his eyes
 	public boolean setEyeTrackerAction(int[] mouseCoord, float[] offset,
-			float[] scalation) {
+			float[] scalation,boolean eyeControlled) {
 		// if (this.get != null) {
 		if (this.displayFullView) {
 			return false;
@@ -597,9 +597,9 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 			mousePoint[1] = ((this.getParentGLCanvas().getHeight() - mousePoint[1])
 					* factorY - offset[1]) * 2 - 1;
 		}
-
+		
 		PoincareNode selectedNode = disk.processEyeTrackerAction(mousePoint
-				.clone(), arSlerpActions);
+				.clone(), arSlerpActions, eyeControlled);
 
 		if (selectedNode == disk.getCenteredNode()) {
 			return true;

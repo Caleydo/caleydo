@@ -48,7 +48,7 @@ public class DataWindowsDisk extends PoincareDisk {
 
 	public void displayDetailLevels() {
 
-		gl.glLineWidth(1);
+		
 
 		// drawCircle(levelOfDetailLimits[2] * displayScaleFactorX,
 		// canvasWidth / 2, canvasHeight / 2);
@@ -143,10 +143,11 @@ public class DataWindowsDisk extends PoincareDisk {
 		// different textures for different detail levels
 		if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 2) {
 			node.eyeTrackable = false;
-			float alpha = 1;
-			if (node.markedToRemove == true) {
-				alpha = 0.7f;
-			}
+			
+			System.out.println("size vorher:"+eyeTrackableNodes.size());
+			this.eyeTrackableNodes.remove(node);
+			System.out.println("size nacher:"+eyeTrackableNodes.size());
+
 			size[0] = size[0] * 4;
 			size[1] = size[1] * 4;
 			Vec3f lowerLeftCorner = new Vec3f(
@@ -178,8 +179,9 @@ public class DataWindowsDisk extends PoincareDisk {
 
 			textureManager.renderGUITexture(gl, EIconTextures.PATHWAY_ICON,
 					lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, scalingPivot, 1, 1, 1, alpha, 0);
-		} else {
+					upperLeftCorner, scalingPivot, 1, 1, 1, 1, 0);
+		} 
+		if(distanceToDetaillevel(node.getDistanceFromOrigin()) == 1) {
 
 			if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 1) {
 				if (node == this.getCenteredNode()) {
@@ -189,6 +191,10 @@ public class DataWindowsDisk extends PoincareDisk {
 				}
 			}
 
+			if(this.eyeTrackableNodes.contains(node)==false){
+			this.eyeTrackableNodes.add(node);
+			}
+			
 			node.eyeTrackable = true;
 
 			float[] position = new float[2];
@@ -375,27 +381,45 @@ public class DataWindowsDisk extends PoincareDisk {
 	}
 
 	public PoincareNode processEyeTrackerAction(float[] normedEyePosition,
-			ArrayList<NodeSlerp> arSlerpActions) {
+			ArrayList<NodeSlerp> arSlerpActions, boolean mouseControlled) {
 		PoincareNode returnNode = null;
-
 	
-		
-		
-		if (this.distanceFromOrigin(normedEyePosition) < this.levelOfDetailLimits[0]) {
-
+		if (mouseControlled) {
 			
-			returnNode = findNodeByCoordinate(normedEyePosition, 10);
+			returnNode = findNodeByCoordinate(normedEyePosition, 0);
+			if (returnNode != null) {
+				float[] emptyPoint = new float[2];
+				emptyPoint[0] = 0;
+				emptyPoint[1] = 0;
+				arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
+						emptyPoint));
+			}
 
+			return returnNode;
 		}
-		
 
-		if (returnNode != null) {
+		 //if (this.distanceFromOrigin(normedEyePosition) <
+		 //this.levelOfDetailLimits[0]) {
+
+		returnNode = findNodeByCoordinate(normedEyePosition,1f);
+		 //}		
+		
+		
+		if (this.eyeTrackableNodes.contains(returnNode)) {
+			System.out.println("returnnode: "+ normedEyePosition[0]);
 			float[] emptyPoint = new float[2];
 			emptyPoint[0] = 0;
 			emptyPoint[1] = 0;
 			arSlerpActions.add(new NodeSlerp(4, returnNode.getPosition(),
 					emptyPoint));
+			return returnNode;
+		} else {
+			return null;
 		}
+
+		// }
+
+		// if (returnNode != null) {
 
 		// //focus far nodes with the eyetracker
 		// System.out.println("outside of direct picking");
@@ -423,7 +447,6 @@ public class DataWindowsDisk extends PoincareDisk {
 		//
 		// }
 
-		return returnNode;
 	}
 
 	public void insertNode(PoincareNode node, PoincareNode parentNode) {

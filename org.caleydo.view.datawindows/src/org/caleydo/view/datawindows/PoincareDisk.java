@@ -16,12 +16,14 @@ public class PoincareDisk {
 	public float centeredNodeSize = 1;
 	private float layoutLenseFactor = 1.45f;
 	private boolean calculateRootNodeAngleSwitch = false;
-
+    protected ArrayList<PoincareNode> eyeTrackableNodes;
+	
 	public PoincareDisk() {
 		radius = 1f;
 		nodeSize = 0.1f;
 		lineWidth = 2;
 		absolutePosition = new float[2];
+		eyeTrackableNodes=new ArrayList<PoincareNode>();
 	}
 
 	public Tree<PoincareNode> getTree() {
@@ -556,5 +558,13 @@ public class PoincareDisk {
 			}
 		}
 		return 0;
+	}
+
+	public void setEyeTrackableNodes(ArrayList<PoincareNode> eyeTrackableNodes) {
+		this.eyeTrackableNodes = eyeTrackableNodes;
+	}
+
+	public ArrayList<PoincareNode> getEyeTrackableNodes() {
+		return eyeTrackableNodes;
 	}
 }
