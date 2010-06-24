@@ -1002,11 +1002,11 @@ public class HeatMapWrapper {
 		selectedGroups.clear();
 		contentVA.setGroupList(contentGroupList);
 		contentGroupList.updateGroupInfo();
-		for (int i = 0; i <= 10 && i < contentGroupList.size(); i++) {
-			Group group = contentGroupList.get(i);
-			group.setSelectionType(SelectionType.SELECTION);
-			selectedGroups.put(group, null);
-		}
+//		for (int i = 0; i <= 10 && i < contentGroupList.size(); i++) {
+//			Group group = contentGroupList.get(i);
+//			group.setSelectionType(SelectionType.SELECTION);
+//			selectedGroups.put(group, null);
+//		}
 		setHeatMapsInactive();
 		clearDeselected();
 

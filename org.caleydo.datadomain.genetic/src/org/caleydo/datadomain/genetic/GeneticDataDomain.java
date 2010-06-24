@@ -136,10 +136,10 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 			alTempList.add(iCount);
 		}
-		ContentVirtualArray contentVA = new ContentVirtualArray(ContentVAType.CONTENT,
-				alTempList);
-		// removeDuplicates(contentVA);
-		set.setContentVA(ContentVAType.CONTENT, contentVA);
+//		ContentVirtualArray contentVA = new ContentVirtualArray(ContentVAType.CONTENT,
+//				alTempList);
+//		// removeDuplicates(contentVA);
+//		set.setContentVA(ContentVAType.CONTENT, contentVA);
 	}
 
 	// public ContentVirtualArray removeDuplicates(ContentVirtualArray
