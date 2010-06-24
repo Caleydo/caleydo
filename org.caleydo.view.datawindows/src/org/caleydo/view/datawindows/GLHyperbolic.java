@@ -517,7 +517,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		if (this.displayFullView == true
 				&& (this.disk.getCenteredNode() == node)) {
 			transform.setScale(new Vec3f(1, 1, 1));
-			transform.setTranslation(new Vec3f(0, 0, 2));
+			transform.setTranslation(new Vec3f(0, 0, 0.1f));
 		} else {
 			// in this case, the size of the displayed remote view depends on
 			// the position of the node

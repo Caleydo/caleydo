@@ -138,7 +138,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		layoutHotSpot = new float[2];
 
 		// change this attribute for different inputs
-		selectedInput = inputType.EYETRACKER_SIMULATED;
+		selectedInput = inputType.MOUSE_ONLY;
 
 		viewport = new int[4];
 		pixelDimensions = new int[2];

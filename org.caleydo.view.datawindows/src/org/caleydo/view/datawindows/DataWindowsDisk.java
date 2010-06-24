@@ -144,9 +144,8 @@ public class DataWindowsDisk extends PoincareDisk {
 		if (distanceToDetaillevel(node.getDistanceFromOrigin()) == 2) {
 			node.eyeTrackable = false;
 			
-			System.out.println("size vorher:"+eyeTrackableNodes.size());
 			this.eyeTrackableNodes.remove(node);
-			System.out.println("size nacher:"+eyeTrackableNodes.size());
+			
 
 			size[0] = size[0] * 4;
 			size[1] = size[1] * 4;
@@ -305,7 +304,7 @@ public class DataWindowsDisk extends PoincareDisk {
 			gl.glColor3i(0, 0, 0);
 			gl.glVertex3d(node1.getZoomedPosition()[0] * displayScaleFactorX
 					+ (canvasWidth / 2), node1.getZoomedPosition()[1]
-					* displayScaleFactorY + canvasHeight / 2, 0);
+					* displayScaleFactorY + canvasHeight / 2, -2);
 
 			float[] eV = new float[2];
 			eV[0] = endPoint[0] - startPoint[0];
@@ -329,12 +328,12 @@ public class DataWindowsDisk extends PoincareDisk {
 				gl.glColor3i(0, 0, 0);
 				gl.glVertex3d(actProjectedPosition[0] * displayScaleFactorX
 						+ (canvasWidth / 2), actProjectedPosition[1]
-						* displayScaleFactorY + canvasHeight / 2, 0);
+						* displayScaleFactorY + canvasHeight / 2, -2);
 			}
 
 			gl.glVertex3d(node2.getZoomedPosition()[0] * displayScaleFactorX
 					+ (canvasWidth / 2), node2.getZoomedPosition()[1]
-					* displayScaleFactorY + canvasHeight / 2, 0);
+					* displayScaleFactorY + canvasHeight / 2, -2);
 			gl.glEnd();
 
 		} else {
@@ -453,12 +452,12 @@ public class DataWindowsDisk extends PoincareDisk {
 
 		float[] actualPosition = new float[2];
 
-		actualPosition[0] = node.getPosition()[0] * -1;
-		actualPosition[1] = node.getPosition()[1] * -1;
+		
 
 		this.getTree().addChild(parentNode, node);
 		this.moebiusLayoutTree(2);
-
+		actualPosition[0] = node.getPosition()[0] * -1;
+		actualPosition[1] = node.getPosition()[1] * -1;
 		this.translateTreeMoebius(actualPosition);
 
 	}
