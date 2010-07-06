@@ -16,7 +16,9 @@ public interface ISetBasedView
 	/**
 	 * Returns the current set which the view is rendering.
 	 */
+	@Deprecated
 	public ISet getSet();
 
+	@Deprecated
 	public void setSet(ISet set);
 }
