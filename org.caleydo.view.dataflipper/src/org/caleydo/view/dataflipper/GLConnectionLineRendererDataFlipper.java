@@ -49,6 +49,11 @@ public class GLConnectionLineRendererDataFlipper extends AGLConnectionLineRender
 	@Override
 	protected void renderConnectionLines(final GL gl) {
 
+		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>(
+				1);
+
+		VisLinkAnimationStage connectionLines = new VisLinkAnimationStage();
+
 		IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
 		for (Entry<EIDType, ConnectionMap> typeConnections : connectedElementRepManager
 				.getTransformedConnectionsByType().entrySet()) {
@@ -119,8 +124,15 @@ public class GLConnectionLineRendererDataFlipper extends AGLConnectionLineRender
 									.getGLView().getID())) {
 						for (ArrayList<Vec3f> targetViewPoints : viewToPointList
 								.get(stackElementsLeft.get(0).getGLView().getID())) {
-							renderLine(gl, sourceViewPoints.get(0), targetViewPoints
-									.get(0), 0, new float[] { 1, 0, 0 });
+							// renderLine(gl, sourceViewPoints.get(0),
+							// targetViewPoints
+							// .get(0), 0, new float[] { 1, 0, 0 });
+
+							ArrayList<Vec3f> line = new ArrayList<Vec3f>(2);
+							line.add(sourceViewPoints.get(0));
+							line.add(targetViewPoints.get(0));
+						
+							connectionLines.addLine(line);
 						}
 					}
 
@@ -135,8 +147,16 @@ public class GLConnectionLineRendererDataFlipper extends AGLConnectionLineRender
 									.getID())) {
 						for (ArrayList<Vec3f> targetViewPoints : viewToPointList
 								.get(stackElementsRight.get(0).getGLView().getID())) {
-							renderLine(gl, sourceViewPoints.get(0), targetViewPoints
-									.get(0), 0, new float[] { 1, 0, 0 });
+
+							// renderLine(gl, sourceViewPoints.get(0),
+							// targetViewPoints
+							// .get(0), 0, new float[] { 1, 0, 0 });
+
+							ArrayList<Vec3f> line = new ArrayList<Vec3f>(2);
+							line.add(sourceViewPoints.get(0));
+							line.add(targetViewPoints.get(0));
+
+							connectionLines.addLine(line);
 						}
 					}
 				}
@@ -144,69 +164,10 @@ public class GLConnectionLineRendererDataFlipper extends AGLConnectionLineRender
 
 			hashIDTypeToViewToPointLists.clear();
 		}
+		gl.glTranslatef(-1.5f, -1.5f, 0);
+		connectionLinesAllViews.add(connectionLines);
+		VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
+		visLinkScene.renderLines(gl);
+		gl.glTranslatef(1.5f, 1.5f, 0);
 	}
-
-	// protected void renderLineBundling(final GL gl, EIDType idType,
-	// float[] fArColor) {
-	//
-	// ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new
-	// ArrayList<VisLinkAnimationStage>(4);
-	//
-	// VisLinkAnimationStage connectionLines = new VisLinkAnimationStage();
-	//
-	// Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
-	//
-	// for (Integer iKey : keySet) {
-	//
-	// for (ArrayList<Vec3f> alCurrentPoints : hashIDTypeToViewToPointLists
-	// .get(idType).get(iKey)) {
-	//			
-	// ArrayList<Vec3f> line = new ArrayList<Vec3f>(2);
-	// line.add(alCurrentPoints.get(1));
-	// line.add(alCurrentPoints.get(0));
-	//				
-	// connectionLines.addLine(line);
-	// }
-	// }
-	//
-	// connectionLinesAllViews.add(connectionLines);
-	//
-	// VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
-	// visLinkScene.renderLines(gl);
-	// }
-
-//	@Override
-//	protected void renderLine(final GL gl, final Vec3f vecSrcPoint,
-//			final Vec3f vecDestPoint, final int iNumberOfLines, float[] fArColor) {
-//
-//		gl.glTranslatef(-1.5f, -1.5f, 0);
-//		super.renderLine(gl, vecSrcPoint, vecDestPoint, iNumberOfLines, fArColor);
-//
-//		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>(
-//				1);
-//
-//		VisLinkAnimationStage connectionLines = new VisLinkAnimationStage();
-//
-//		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
-//
-//		for (Integer iKey : keySet) {
-//
-//			for (ArrayList<Vec3f> alCurrentPoints : hashIDTypeToViewToPointLists.get(
-//					idType).get(iKey)) {
-//
-//				ArrayList<Vec3f> line = new ArrayList<Vec3f>(2);
-//				line.add(alCurrentPoints.get(1));
-//				line.add(alCurrentPoints.get(0));
-//
-//				connectionLines.addLine(line);
-//			}
-//		}
-//
-//		connectionLinesAllViews.add(connectionLines);
-//
-//		VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
-//		visLinkScene.renderLines(gl);
-//
-//		gl.glTranslatef(1.5f, 1.5f, 0);
-//	}
 }

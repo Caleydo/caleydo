@@ -871,6 +871,11 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		switch (pickingType) {
 
 		case REMOTE_VIEW_SELECTION:
+
+			// TODO: find out corresponding view and data domain type and set it!
+			mouseOverDataDomainNode = null;
+			mouseOverInterface = null;
+			
 			switch (pickingMode) {
 			case MOUSE_OVER:
 
@@ -889,6 +894,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			break;
 
 		case REMOTE_LEVEL_ELEMENT:
+			
 			switch (pickingMode) {
 			case CLICKED:
 
