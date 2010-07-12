@@ -9,7 +9,7 @@
             class="org.caleydo.view.dataflipper.RcpGLDataFlipperView"
             icon="resources/icons/dataflipper.png"
             id="org.caleydo.view.dataflipper"
-            name="Data Flipper">
+            name="Stack&apos;n&apos;Flip">
       </view>
    </extension>
    <extension
@@ -32,7 +32,7 @@
       <command
             defaultHandler="org.caleydo.view.dataflipper.command.handler.OpenDataFlipperHandler"
             id="org.caleydo.view.dataflipper.command.opendataflipper"
-            name="Data Flipper">
+            name="Stack&apos;n&apos;Flip">
       </command>
    </extension>
 

@@ -18,14 +18,15 @@ import org.caleydo.core.manager.view.SelectedElementRepList;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
+import org.caleydo.core.view.opengl.util.vislink.VisLinkAnimationStage;
+import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
 
 /**
  * Specialized connection line renderer for data flipper view.
  * 
  * @author Marc Streit
  */
-public class GLConnectionLineRendererDataFlipper extends
-		AGLConnectionLineRenderer {
+public class GLConnectionLineRendererDataFlipper extends AGLConnectionLineRenderer {
 
 	RemoteLevelElement focusElement;
 	ArrayList<RemoteLevelElement> stackElementsRight;
@@ -48,8 +49,7 @@ public class GLConnectionLineRendererDataFlipper extends
 	@Override
 	protected void renderConnectionLines(final GL gl) {
 
-		IViewManager viewGLCanvasManager = GeneralManager.get()
-				.getViewGLCanvasManager();
+		IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
 		for (Entry<EIDType, ConnectionMap> typeConnections : connectedElementRepManager
 				.getTransformedConnectionsByType().entrySet()) {
 			ArrayList<ArrayList<Vec3f>> alPointLists = null;
@@ -65,15 +65,14 @@ public class GLConnectionLineRendererDataFlipper extends
 
 			for (Entry<Integer, SelectedElementRepList> connections : typeConnections
 					.getValue().entrySet()) {
-				for (SelectedElementRep selectedElementRep : connections
-						.getValue()) {
+				for (SelectedElementRep selectedElementRep : connections.getValue()) {
 
 					if (selectedElementRep.getIDType() != idType)
 						throw new IllegalStateException(
 								"Current ID Type does not match the selected elemen rep's");
 
-					AGLView glView = viewGLCanvasManager
-							.getGLView(selectedElementRep.getSourceViewID());
+					AGLView glView = viewGLCanvasManager.getGLView(selectedElementRep
+							.getSourceViewID());
 
 					if (glView == null) {
 						// TODO: investigate! view must not be null here.
@@ -94,8 +93,8 @@ public class GLConnectionLineRendererDataFlipper extends
 							|| remoteLevelElement == focusElement) {
 						int viewID = selectedElementRep.getSourceViewID();
 
-						alPointLists = hashIDTypeToViewToPointLists.get(idType)
-								.get(viewID);
+						alPointLists = hashIDTypeToViewToPointLists.get(idType).get(
+								viewID);
 						if (alPointLists == null) {
 							alPointLists = new ArrayList<ArrayList<Vec3f>>();
 							viewToPointList.put(viewID, alPointLists);
@@ -109,36 +108,35 @@ public class GLConnectionLineRendererDataFlipper extends
 			if (focusElement == null || focusElement.getGLView() == null)
 				continue;
 			else if (viewToPointList.containsKey(focusElement.getGLView().getID())) {
-				
-				for (ArrayList<Vec3f> sourceViewPoints : viewToPointList
-						.get(focusElement.getGLView().getID())) {
-					
+
+				for (ArrayList<Vec3f> sourceViewPoints : viewToPointList.get(focusElement
+						.getGLView().getID())) {
+
 					// Connect point in focus view with points in first view in
 					// LEFT stack
-					if (stackElementsLeft.get(0).getGLView() != null && viewToPointList.containsKey(stackElementsLeft.get(0)
-							.getGLView().getID())) {
+					if (stackElementsLeft.get(0).getGLView() != null
+							&& viewToPointList.containsKey(stackElementsLeft.get(0)
+									.getGLView().getID())) {
 						for (ArrayList<Vec3f> targetViewPoints : viewToPointList
-								.get(stackElementsLeft.get(0).getGLView()
-										.getID())) {
-							renderLine(gl, sourceViewPoints.get(0),
-									targetViewPoints.get(0), 0, new float[] {
-											1, 0, 0 });
+								.get(stackElementsLeft.get(0).getGLView().getID())) {
+							renderLine(gl, sourceViewPoints.get(0), targetViewPoints
+									.get(0), 0, new float[] { 1, 0, 0 });
 						}
 					}
 
 					RemoteLevelElement rightElement = stackElementsRight.get(0);
 					if (rightElement == null || rightElement.getGLView() == null)
 						continue;
-					
+
 					// Connect point in focus view with points in first view in
 					// RIGHT stack
-					if (stackElementsRight.get(0).getGLView() != null && viewToPointList.containsKey(rightElement.getGLView().getID())) {
+					if (stackElementsRight.get(0).getGLView() != null
+							&& viewToPointList.containsKey(rightElement.getGLView()
+									.getID())) {
 						for (ArrayList<Vec3f> targetViewPoints : viewToPointList
-								.get(stackElementsRight.get(0).getGLView()
-										.getID())) {
-							renderLine(gl, sourceViewPoints.get(0),
-									targetViewPoints.get(0), 0, new float[] {
-											1, 0, 0 });
+								.get(stackElementsRight.get(0).getGLView().getID())) {
+							renderLine(gl, sourceViewPoints.get(0), targetViewPoints
+									.get(0), 0, new float[] { 1, 0, 0 });
 						}
 					}
 				}
@@ -148,35 +146,67 @@ public class GLConnectionLineRendererDataFlipper extends
 		}
 	}
 
-	protected void renderLineBundling(final GL gl, EIDType idType,
-			float[] fArColor) {
+	// protected void renderLineBundling(final GL gl, EIDType idType,
+	// float[] fArColor) {
+	//
+	// ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new
+	// ArrayList<VisLinkAnimationStage>(4);
+	//
+	// VisLinkAnimationStage connectionLines = new VisLinkAnimationStage();
+	//
+	// Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
+	//
+	// for (Integer iKey : keySet) {
+	//
+	// for (ArrayList<Vec3f> alCurrentPoints : hashIDTypeToViewToPointLists
+	// .get(idType).get(iKey)) {
+	//			
+	// ArrayList<Vec3f> line = new ArrayList<Vec3f>(2);
+	// line.add(alCurrentPoints.get(1));
+	// line.add(alCurrentPoints.get(0));
+	//				
+	// connectionLines.addLine(line);
+	// }
+	// }
+	//
+	// connectionLinesAllViews.add(connectionLines);
+	//
+	// VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
+	// visLinkScene.renderLines(gl);
+	// }
 
-		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
-
-		for (Integer iKey : keySet) {
-
-			for (ArrayList<Vec3f> alCurrentPoints : hashIDTypeToViewToPointLists
-					.get(idType).get(iKey)) {
-				// if (alCurrentPoints.size() > 1) {
-				// renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
-				// }
-				// else {
-				renderLine(gl, alCurrentPoints.get(1), alCurrentPoints.get(0),
-						0, fArColor);
-				// }
-			}
-
-			// renderLine(gl, vecViewBundlingPoint, vecCenter, 0, fArColor);
-		}
-	}
-
-	@Override
-	protected void renderLine(final GL gl, final Vec3f vecSrcPoint,
-			final Vec3f vecDestPoint, final int iNumberOfLines, float[] fArColor) {
-
-		gl.glTranslatef(-1.5f, -1.5f, 0);
-		super.renderLine(gl, vecSrcPoint, vecDestPoint, iNumberOfLines,
-				fArColor);
-		gl.glTranslatef(1.5f, 1.5f, 0);
-	}
+//	@Override
+//	protected void renderLine(final GL gl, final Vec3f vecSrcPoint,
+//			final Vec3f vecDestPoint, final int iNumberOfLines, float[] fArColor) {
+//
+//		gl.glTranslatef(-1.5f, -1.5f, 0);
+//		super.renderLine(gl, vecSrcPoint, vecDestPoint, iNumberOfLines, fArColor);
+//
+//		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>(
+//				1);
+//
+//		VisLinkAnimationStage connectionLines = new VisLinkAnimationStage();
+//
+//		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
+//
+//		for (Integer iKey : keySet) {
+//
+//			for (ArrayList<Vec3f> alCurrentPoints : hashIDTypeToViewToPointLists.get(
+//					idType).get(iKey)) {
+//
+//				ArrayList<Vec3f> line = new ArrayList<Vec3f>(2);
+//				line.add(alCurrentPoints.get(1));
+//				line.add(alCurrentPoints.get(0));
+//
+//				connectionLines.addLine(line);
+//			}
+//		}
+//
+//		connectionLinesAllViews.add(connectionLines);
+//
+//		VisLinkScene visLinkScene = new VisLinkScene(connectionLinesAllViews);
+//		visLinkScene.renderLines(gl);
+//
+//		gl.glTranslatef(1.5f, 1.5f, 0);
+//	}
 }

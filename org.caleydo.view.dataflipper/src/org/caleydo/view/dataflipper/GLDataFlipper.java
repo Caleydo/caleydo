@@ -6,7 +6,6 @@ import gleem.linalg.open.Transform;
 
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -69,6 +68,7 @@ import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
 import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
 import org.caleydo.view.browser.SerializedHTMLBrowserView;
 import org.caleydo.view.heatmap.hierarchical.SerializedHierarchicalHeatMapView;
+import org.caleydo.view.parcoords.GLParallelCoordinates;
 import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
 import org.caleydo.view.pathwaybrowser.SerializedPathwayViewBrowserView;
 import org.caleydo.view.tissuebrowser.SerializedTissueViewBrowserView;
@@ -294,7 +294,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		currentGuidanceNode = (GuidanceNode) guidancePath.getLastNode();
 
-		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.genetic", ""));
+		guidancePath.addNode(currentGuidanceNode, new GuidanceNode("org.caleydo.datadomain.organ", ""));
+		guidancePath.addNode(currentGuidanceNode, new GuidanceNode(
+				"org.caleydo.datadomain.genetic", ""));
+
 		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.pathway", ""));
 		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.genetic", ""));
 		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.clinical", ""));
@@ -465,15 +468,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			boolean highlight = false;
 
-			GuidanceNode nextGuidanceNode = null;
-			if (guidancePath.getFollowingNodes(currentGuidanceNode) != null
-					&& guidancePath.getFollowingNodes(currentGuidanceNode).size() > 0)
-				nextGuidanceNode = (GuidanceNode) guidancePath.getFollowingNodes(
-						currentGuidanceNode).get(0);
-
-			if (nextGuidanceNode != null
-					&& nextDataDomainType.equals(nextGuidanceNode.getDataDomainType()))
-				highlight = true;
+			for (INode nextGuidanceNode : guidancePath
+					.getFollowingNodes(currentGuidanceNode)) {
+				if (nextGuidanceNode.getDataDomainType().equals(nextDataDomainType)) {
+					highlight = true;
+					break;
+				}
+			}
 
 			boolean mouseOver = false;
 			if (mouseOverNextDataDomain == nextDataDomainType)
@@ -744,25 +745,23 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 				updateViewDetailLevels(tmpSlerpAction.getDestinationRemoteLevelElement());
 
-				// AGLView glView =
-				// generalManager.getViewGLCanvasManager().getGLView(
-				// tmpSlerpAction.getElementId());
+				AGLView glView = generalManager.getViewGLCanvasManager().getGLView(
+						tmpSlerpAction.getElementId());
 
 				// if (glView instanceof GLTissueViewBrowser)
 				// ((GLTissueViewBrowser) glView).setSlerpActive(false);
 				//
-				// if (glView instanceof GLParallelCoordinates
-				// && glView.getSet().getSetType() ==
-				// ESetType.GENE_EXPRESSION_DATA) {
-				//
-				// boolean renderConnectionsLeft = true;
-				// if (glView == focusElement.getGLView())
-				// renderConnectionsLeft = false;
-				//
-				// ((GLParallelCoordinates) glView)
-				// .setRenderConnectionState(renderConnectionsLeft);
-				//
-				// }
+				if (glView instanceof GLParallelCoordinates) {
+
+					boolean renderConnectionsLeft = true;
+					if (glView == focusElement.getGLView())
+						renderConnectionsLeft = false;
+
+					((GLParallelCoordinates) glView)
+							.setRenderConnectionState(renderConnectionsLeft);
+
+				}
+
 			}
 
 			arSlerpActions.clear();
@@ -1006,30 +1005,17 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		case NEXT_DATA_DOMAIN_SELECTION:
 
+			mouseOverInterface = null;
+			
 			switch (pickingMode) {
 
 			case MOUSE_OVER:
 
-				for (IDataDomain tmpDataDomain : DataDomainManager.getInstance()
-						.getDataDomains()) {
-					String tmpDataDomainType = tmpDataDomain.getDataDomainType();
-					if (tmpDataDomainType.hashCode() == externalPickingID) {
-						mouseOverNextDataDomain = tmpDataDomainType;
-						break;
-					}
-				}
-
-				// Handle data domain type "organ" - because the data domain
-				// class does not exist
-				if ("org.caleydo.datadomain.organ".hashCode() == externalPickingID)
-					mouseOverNextDataDomain = "org.caleydo.datadomain.organ";
+				mouseOverNextDataDomain = determineDataDomainByHash(externalPickingID);
 
 				break;
 
 			case CLICKED:
-
-				currentGuidanceNode = (GuidanceNode) guidancePath.getFollowingNodes(
-						currentGuidanceNode).get(0);
 
 				for (IDataDomain tmpDataDomain : DataDomainManager.getInstance()
 						.getDataDomains()) {
@@ -1057,14 +1043,22 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						}
 
 						if (dataDomainNode != null)
+						{
 							lastSelectedDataDomainNode = dataDomainNode;
+						
+							for (INode nextDataDomainNode : guidancePath.getFollowingNodes(
+									currentGuidanceNode)) {
+								if (nextDataDomainNode.getDataDomainType() == dataDomainNode.getDataDomainType())
+									currentGuidanceNode = (GuidanceNode) nextDataDomainNode;
+							}
+						}
 
 						addView(dataDomainNode, dataDomainNode
 								.getInterfaceType(dataDomainNode.getFirstInterfaceID()));
 						break;
 					}
 				}
-				break;
+				break;	
 			}
 			break;
 
@@ -1078,6 +1072,23 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			}
 			break;
 		}
+	}
+
+	private String determineDataDomainByHash(int externalPickingID) {
+		for (IDataDomain tmpDataDomain : DataDomainManager.getInstance()
+				.getDataDomains()) {
+			String tmpDataDomainType = tmpDataDomain.getDataDomainType();
+			if (tmpDataDomainType.hashCode() == externalPickingID) {
+				return tmpDataDomainType;
+			}
+		}
+
+		// Handle data domain type "organ" - because the data domain
+		// class does not exist
+		if ("org.caleydo.datadomain.organ".hashCode() == externalPickingID)
+			return "org.caleydo.datadomain.organ";
+
+		throw new IllegalStateException("Unable to find data domain for hash");
 	}
 
 	private void handleDataDomainSelection(int externalPickingID) {
@@ -1294,7 +1305,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			Set<String> neighbors = dataDomainGraph.getNeighboursOf(dataDomainType);
 			int numberOfVerticalDataDomains = neighbors.size();
-			float ySteps = DATA_DOMAIN_HEIGHT / (numberOfVerticalDataDomains);
+			float ySteps = DATA_DOMAIN_HEIGHT / (numberOfVerticalDataDomains) / 1.3f;
 			float yNeighbor = y + 0.4f;
 			for (String nextDataDomainType : neighbors) {
 
@@ -1302,13 +1313,22 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				if (nextDataDomainType == historyPath.getFollowingNodes(node).get(0)
 						.getDataDomainType())
 					continue;
+				
+				boolean highlight = false;
+//				for (INode nextGuidanceNode : guidancePath
+//						.getFollowingNodes(currentGuidanceNode)) {
+//					if (nextGuidanceNode.getDataDomainType().equals(nextDataDomainType)) {
+//						highlight = true;
+//						break;
+//					}
+//				}
 
 				boolean mouseOver = (nextDataDomainType == mouseOverNextDataDomain) ? true
 						: false;
 
 				yNeighbor += ySteps;
 				renderNextDataDomain(gl, nextDataDomainType, x + 0.9f - metaViewAnimation
-						+ DATA_DOMAIN_SPACING, yNeighbor - 0.47f, false, mouseOver);
+						+ DATA_DOMAIN_SPACING, yNeighbor - 0.47f, highlight, mouseOver);
 
 				gl.glLineWidth(5);
 
