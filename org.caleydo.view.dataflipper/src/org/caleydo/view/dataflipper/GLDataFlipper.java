@@ -6,6 +6,7 @@ import gleem.linalg.open.Transform;
 
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -438,7 +439,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						* DATA_DOMAIN_SPACING, y + DATA_DOMAIN_HEIGHT / 2f);
 
 				gl.glLineWidth(5);
-				gl.glColor3f(0.3f, 0.3f, 0.3f);
+				gl.glColor3f(0.3f, 0, 0);
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(x - metaViewAnimation + 0.5f * DATA_DOMAIN_SCALING_FACTOR,
 						y + DATA_DOMAIN_HEIGHT / 2f + 0.15f, DATA_DOMAIN_Z);
@@ -450,6 +451,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		float ySteps = DATA_DOMAIN_HEIGHT / (numberOfVerticalDataDomains);
 		float yNeighbor = y + 0.2f;
+
+		// Do not show possible next domain if the data domain is currently not
+		// in mouse over state
+		if (mouseOverDataDomainNode != null
+				&& dataDomainType != mouseOverDataDomainNode.getDataDomainType())
+			return;
+
 		// Render possible next data domains
 		for (String nextDataDomainType : neighbors) {
 
@@ -467,12 +475,24 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					&& nextDataDomainType.equals(nextGuidanceNode.getDataDomainType()))
 				highlight = true;
 
+			boolean mouseOver = false;
+			if (mouseOverNextDataDomain == nextDataDomainType)
+				mouseOver = true;
+
 			renderNextDataDomain(gl, nextDataDomainType, x - metaViewAnimation
-					+ DATA_DOMAIN_SPACING, yNeighbor, highlight);
+					+ DATA_DOMAIN_SPACING, yNeighbor, highlight, mouseOver);
 
 			gl.glLineWidth(5);
 
-			gl.glColor3f(0.3f, 0.3f, 0.3f);
+			float z = DATA_DOMAIN_Z;
+
+			if (highlight) {
+				gl.glColor3f(0.3f, 0f, 0f);
+				z += 0.01f;
+			} else if (mouseOver)
+				gl.glColor3f(0.15f, 0.15f, 0.15f);
+			else
+				gl.glColor3f(0.3f, 0.3f, 0.3f);
 
 			float x1 = x - metaViewAnimation + 0.5f * DATA_DOMAIN_SCALING_FACTOR;
 			float x2 = x - metaViewAnimation + DATA_DOMAIN_SPACING;
@@ -480,12 +500,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			float y2 = yNeighbor + 0.1f;
 
 			ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-			points.add(new Vec3f(x1, y1, DATA_DOMAIN_Z));
-			points.add(new Vec3f(x1 + Math.abs((x1 - x2) / 3), y1, DATA_DOMAIN_Z));
-			points.add(new Vec3f(x2 - Math.abs((x1 - x2) / 3), y2, DATA_DOMAIN_Z));
-			points.add(new Vec3f(x2, y2, DATA_DOMAIN_Z));
+			points.add(new Vec3f(x1, y1, z));
+			points.add(new Vec3f(x1 + Math.abs((x1 - x2) / 3), y1, z));
+			points.add(new Vec3f(x2 - Math.abs((x1 - x2) / 3), y2, z));
+			points.add(new Vec3f(x2, y2, z));
 
-			renderSingleCurve(gl, points, 30);
+			renderSingleCurve(gl, points, 20);
 		}
 	}
 
@@ -519,7 +539,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			renderBorder = (element.getGLView() == lastPickedRemoteLevelElement
 					.getGLView()) ? true : false;
 		else
-			renderBorder = true;
+			renderBorder = false;
 
 		// if (!showFocusViewFullScreen)
 		renderBucketWall(gl, renderBorder);
@@ -843,8 +863,11 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	protected void handlePickingEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int externalPickingID, Pick pick) {
 
-		mouseOverInterface = null;
+		// if (pickingType != EPickingType.REMOTE_LEVEL_ELEMENT) {
 		mouseOverNextDataDomain = null;
+		// lastPickedRemoteLevelElement = null;
+		// // mouseOverInterface = null;
+		// }
 
 		switch (pickingType) {
 
@@ -888,6 +911,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 				lastPickedRemoteLevelElement = RemoteElementManager.get().getItem(
 						externalPickingID);
+				// mouseOverInterface =
+				// lastPickedRemoteLevelElement.getGLView().getViewType();
 
 				break;
 			}
@@ -909,7 +934,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				if (historyNode != null) {
 					for (int i = 0; i < MAX_HISTORY_DATA_DOMAINS; i++) {
 
-						String dataDomainType = historyNode.getDataDomainType();
+						// String dataDomainType =
+						// historyNode.getDataDomainType();
 						String interfaceType = historyNode
 								.getInterfaceType(externalPickingID);
 
@@ -920,6 +946,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 							historyNode = (HistoryNode) historyPath.getPrecedingNode(
 									historyNode).get(0);
+							mouseOverDataDomainNode = historyNode;
 
 							if (historyNode == null)
 								break;
@@ -991,6 +1018,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						break;
 					}
 				}
+
+				// Handle data domain type "organ" - because the data domain
+				// class does not exist
+				if ("org.caleydo.datadomain.organ".hashCode() == externalPickingID)
+					mouseOverNextDataDomain = "org.caleydo.datadomain.organ";
+
 				break;
 
 			case CLICKED:
@@ -1270,12 +1303,19 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						.getDataDomainType())
 					continue;
 
+				boolean mouseOver = (nextDataDomainType == mouseOverNextDataDomain) ? true
+						: false;
+
 				yNeighbor += ySteps;
 				renderNextDataDomain(gl, nextDataDomainType, x + 0.9f - metaViewAnimation
-						+ DATA_DOMAIN_SPACING, yNeighbor - 0.47f, false);
+						+ DATA_DOMAIN_SPACING, yNeighbor - 0.47f, false, mouseOver);
 
 				gl.glLineWidth(5);
-				gl.glColor3f(0.3f, 0.3f, 0.3f);
+
+				if (!mouseOver)
+					gl.glColor3f(0.3f, 0.3f, 0.3f);
+				else
+					gl.glColor3f(0.15f, 0.15f, 0.15f);
 
 				float x1 = x - metaViewAnimation + 0.5f * DATA_DOMAIN_SCALING_FACTOR
 						+ 1.2f;
@@ -1289,7 +1329,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				points.add(new Vec3f(x2 - Math.abs((x1 - x2) / 3), y2, DATA_DOMAIN_Z));
 				points.add(new Vec3f(x2, y2, DATA_DOMAIN_Z));
 
-				renderSingleCurve(gl, points, 30);
+				renderSingleCurve(gl, points, 15);
 			}
 		}
 
@@ -1339,7 +1379,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			if (viewIndex < node.getAllInterfaces().length && mouseOverInterface != null
 					&& node.getAllInterfaces()[viewIndex] == mouseOverInterface
-					&& mouseOverDataDomainNode != null && mouseOverDataDomainNode == node) {
+					&& mouseOverDataDomainNode != null && node == mouseOverDataDomainNode) {
 				r = 0.5f;
 				g = 0.5f;
 				b = 0.5f;
@@ -1388,13 +1428,18 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					}
 				}
 
-				if (mouseOverInterface != null && mouseOverInterface.equals(viewType)) {
+				if (mouseOverInterface != null && mouseOverInterface.equals(viewType)
+						&& mouseOverDataDomainNode != null
+						&& mouseOverDataDomainNode == node) {
 					INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 1, 1, 1 };
+					CONNECTION_LINE_COLOR = new float[] { 0.15f, 0.15f, 0.15f, 1 };
 				} else if (element == null) {
 					INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 0.5f, 0.5f, 0.5f };
-				} else if (element == lastPickedRemoteLevelElement) {
-					INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 1, 1, 1 };
-					CONNECTION_LINE_COLOR = INTERFACE_ICON_BACKGROUND_COLOR;
+					// } else if (element == lastPickedRemoteLevelElement) {
+					// INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 1, 1, 1
+					// };
+					// CONNECTION_LINE_COLOR = new float[] { 0.15f, 0.15f, 0.15f
+					// };
 				} else {
 					INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 1f, 1f, 1f };
 					CONNECTION_LINE_COLOR = new float[] { 0.3f, 0.3f, 0.3f, 1 };
@@ -1405,6 +1450,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 							EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 				gl.glPushName(pickingManager.getPickingID(iUniqueID,
 						EPickingType.VIEW_TYPE_SELECTION, node.getInterfaceID(viewType)));
+				gl.glPushName(pickingManager.getPickingID(iUniqueID,
+						EPickingType.DATA_DOMAIN_SELECTION, node.getFirstInterfaceID()));
 
 				// Render view icon
 				textureManager.renderTexture(gl, determineViewIconPath(viewType),
@@ -1490,6 +1537,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				// }
 
 				gl.glPopName();
+				gl.glPopName();
 
 				if (element != null)
 					gl.glPopName();
@@ -1499,13 +1547,15 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			gl.glTranslatef(INTERFACE_WIDTH + 0.01f, 0, 0);
 		}
 
+		// gl.glPopName();
+
 		gl.glTranslatef(-x - maxViewIcons * (INTERFACE_WIDTH + 0.01f), -y - 0.31f
 				* DATA_DOMAIN_SCALING_FACTOR, -DATA_DOMAIN_Z);
 
 	}
 
 	private void renderNextDataDomain(final GL gl, String dataDomainType, float x,
-			float y, boolean highlight) {
+			float y, boolean highlight, boolean mouseOver) {
 
 		EIconTextures dataDomainIcon = null;
 
@@ -1526,7 +1576,11 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		float r = 1;
 		float g = 1;
 		float b = 1;
-		if (highlight) {
+		if (mouseOver) {
+			r = 0.3f;
+			g = 0.3f;
+			b = 0.3f;
+		} else if (highlight) {
 			r = 1f;
 			g = 0f;
 			b = 0f;
@@ -1581,7 +1635,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		points.add(new Vec3f(viewPos[0], viewPos[1] - yLineOffset
 				* (1 - yLineOffsetFactor), viewPos[2]));
 		points.add(new Vec3f(viewPos[0], viewPos[1], viewPos[2]));
-		renderSingleCurve(gl, points, 30);
+		renderSingleCurve(gl, points, 20);
 	}
 
 	public void renderSingleCurve(GL gl, ArrayList<Vec3f> points, int curvePoints) {
@@ -1856,7 +1910,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		if (!bRenderBorder)
 			return;
 
-		gl.glColor4f(1f, 1f, 1f, 1f);
+		gl.glColor4f(0.15f, 0.15f, 0.15f, 1f);
 		gl.glLineWidth(4f);
 
 		gl.glBegin(GL.GL_LINE_LOOP);
