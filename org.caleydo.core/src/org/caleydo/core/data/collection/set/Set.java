@@ -785,6 +785,16 @@ public class Set
 	}
 
 	@Override
+	public ContentData getContentData(ContentVAType vaType) {
+		return hashContentData.get(vaType);
+	}
+
+	@Override
+	public StorageData getStorageData(StorageVAType vaType) {
+		return hashStorageData.get(vaType);
+	}
+
+	@Override
 	public Tree<ClusterNode> getContentTree() {
 		return contentTree;
 	}

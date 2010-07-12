@@ -113,8 +113,7 @@ public class ClusterManager {
 		result.contentResult.contentClusterSizes = tempResult.clusterSizes;
 		result.contentResult.contentSampleElements = tempResult.sampleElements;
 		result.contentResult.contentTree = tempResult.tree;
-		
-		
+
 	}
 
 	private void runStorageClustering(AClusterer clusterer, ClusterState clusterState, ClusterResult result,
@@ -127,7 +126,12 @@ public class ClusterManager {
 			new StorageVirtualArray(clusterState.getStorageVAType(), tempResult.indices);
 		result.storageResult.storageClusterSizes = tempResult.clusterSizes;
 		result.storageResult.storageSampleElements = tempResult.sampleElements;
-		result.storageResult.storageTree = tempResult.tree;
+		if (tempResult.tree == null) {
+			result.storageResult.setDefaultTree(true);
+		}
+		else {
+			result.storageResult.storageTree = tempResult.tree;
+			result.storageResult.setDefaultTree(false);
+		}
 	}
-
 }

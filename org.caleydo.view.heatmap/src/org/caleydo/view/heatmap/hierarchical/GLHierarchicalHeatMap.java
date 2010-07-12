@@ -3316,7 +3316,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			gl.glPopAttrib();
 		}
 
-		if (set.getStorageTree() != null) {
+		if (!set.getStorageData(StorageVAType.STORAGE).isDefaultTree()) {
 
 			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -4767,7 +4767,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 			bGeneDendrogramRenderCut = false;
 		}
 
-		if (set.getStorageTree() != null) {
+		if (!set.getStorageData(StorageVAType.STORAGE).isDefaultTree()) {
 			bExperimentDendrogramActive = true;
 			bExperimentDendrogramRenderCut = false;
 			bFirstStartExperimentDendrogram = true;

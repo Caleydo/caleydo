@@ -1268,7 +1268,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 				} else
 					renderSymbol(gl);
 			} else {
-				if (set.getStorageTree() != null) {
+				if (!set.getStorageData(StorageVAType.STORAGE).isDefaultTree()
+						&& set.getStorageData(StorageVAType.STORAGE).getStorageTree() != null) {
 					tree = set.getStorageTree();
 					groupList = (GroupType) new StorageGroupList();
 					rootNode = set.getStorageTreeRoot();

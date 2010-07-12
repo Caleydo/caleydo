@@ -25,6 +25,8 @@ public class StorageData
 
 	Tree<ClusterNode> storageTree;
 
+	boolean isDefaultTree = true;
+
 	/** Root node for storage hierarchy which is only set in metaSets */
 	private ClusterNode storageTreeRoot = null;
 
@@ -50,6 +52,14 @@ public class StorageData
 
 	public void setStorageTree(Tree<ClusterNode> storageTree) {
 		this.storageTree = storageTree;
+	}
+
+	public void setDefaultTree(boolean isDefaultTree) {
+		this.isDefaultTree = isDefaultTree;
+	}
+
+	public boolean isDefaultTree() {
+		return isDefaultTree;
 	}
 
 	public ClusterNode getStorageTreeRoot() {

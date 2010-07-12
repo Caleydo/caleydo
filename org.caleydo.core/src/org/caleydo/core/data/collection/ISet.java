@@ -19,6 +19,8 @@ import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
+import org.caleydo.core.util.clusterer.ContentData;
+import org.caleydo.core.util.clusterer.StorageData;
 
 /**
  * Interface for Sets
@@ -213,8 +215,22 @@ public interface ISet
 	 *            a list of indices
 	 * @return the id of the newly created VA
 	 */
+	@Deprecated
 	public StorageVirtualArray getStorageVA(StorageVAType vaType);
+	
+	
+	public StorageData getStorageData(StorageVAType vaType);
+	
+	/**
+	 * Get the ContentData containing all information about a content type
+	 * 
+	 * @param vaType
+	 * @return
+	 */
 
+	public ContentData getContentData(ContentVAType vaType);
+
+	@Deprecated
 	public ContentVirtualArray getContentVA(ContentVAType vaType);
 
 	/**
@@ -321,6 +337,7 @@ public interface ISet
 	 * 
 	 * @param Tree
 	 */
+	@Deprecated
 	public void setContentTree(Tree<ClusterNode> clusteredTree);
 
 	/**
@@ -328,6 +345,7 @@ public interface ISet
 	 * 
 	 * @return Tree
 	 */
+	@Deprecated
 	public Tree<ClusterNode> getContentTree();
 
 	/**
@@ -335,6 +353,7 @@ public interface ISet
 	 * 
 	 * @param Tree
 	 */
+	@Deprecated
 	public void setStorageTree(Tree<ClusterNode> clusteredTree);
 
 	/**
@@ -342,6 +361,7 @@ public interface ISet
 	 * 
 	 * @return Tree
 	 */
+	@Deprecated
 	public Tree<ClusterNode> getStorageTree();
 
 	/**
@@ -351,6 +371,7 @@ public interface ISet
 	 * @param storageTreeRoot
 	 *            the root node of the storage tree
 	 */
+	@Deprecated
 	public void setStorageTreeRoot(ClusterNode storageTreeRoot);
 
 	/**
@@ -358,6 +379,7 @@ public interface ISet
 	 * 
 	 * @return
 	 */
+	@Deprecated
 	public ClusterNode getStorageTreeRoot();
 
 	// /**
@@ -412,12 +434,16 @@ public interface ISet
 
 	public void setExperimentClusterInfoFlag(boolean bExperimentClusterInfo);
 
+	@Deprecated
 	public void setContentGroupList(ContentGroupList groupList);
 
+	@Deprecated
 	public void setStorageGroupList(StorageGroupList groupList);
 
+	@Deprecated
 	public ContentGroupList getContentGroupList();
 
+	@Deprecated
 	public StorageGroupList getStorageGroupList();
 
 	/**

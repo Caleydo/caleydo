@@ -21,6 +21,8 @@ public class ContentData {
 	ArrayList<Integer> contentClusterSizes;
 
 	Tree<ClusterNode> contentTree;
+	
+	boolean isPartitionallyClustered = false;
 
 	public ContentVirtualArray getContentVA() {
 		return contentVA;
@@ -46,6 +48,7 @@ public class ContentData {
 	void finish() {
 		// calculate the group list based on contentClusterSizes (for example for affinity propagation
 		if (contentVA != null && contentClusterSizes != null && contentSampleElements != null) {
+			isPartitionallyClustered = true;
 			ContentGroupList contentGroupList = new ContentGroupList();
 
 			int cnt = 0;
@@ -85,6 +88,10 @@ public class ContentData {
 			contentVA.buildNewGroupList(contentTree.getRoot().getChildren());
 		}
 		contentTree.setUseDefaultComparator(false);
+	}
+	
+	public boolean isPartitionallyClustered() {
+		return isPartitionallyClustered;
 	}
 
 }
