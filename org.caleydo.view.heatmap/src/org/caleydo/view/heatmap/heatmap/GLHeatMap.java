@@ -50,6 +50,7 @@ import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -246,7 +247,7 @@ public class GLHeatMap extends AStorageBasedView {
 	public void display(GL gl) {
 
 		// GLHelperFunctions.drawPointAt(gl, 0, 0, 0);
-
+		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		gl.glCallList(iGLDisplayListToCall);
 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
@@ -952,6 +953,5 @@ public class GLHeatMap extends AStorageBasedView {
 		}
 		return zoomedElements;
 	}
-
 
 }

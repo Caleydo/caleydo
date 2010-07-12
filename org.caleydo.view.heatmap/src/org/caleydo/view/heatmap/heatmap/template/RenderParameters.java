@@ -2,7 +2,7 @@ package org.caleydo.view.heatmap.heatmap.template;
 
 import org.caleydo.view.heatmap.heatmap.renderer.ARenderer;
 
-class RenderParameters {
+public class RenderParameters {
 
 	ARenderer renderer;
 

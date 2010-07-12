@@ -2577,8 +2577,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		IViewFrustum embeddedHeatMapFrustum = glHeatMapView.getViewFrustum();
 		embeddedHeatMapFrustum.setLeft(0);
-		embeddedHeatMapFrustum.setRight(5);
-		embeddedHeatMapFrustum.setTop(5.51f);
+		embeddedHeatMapFrustum.setRight(viewFrustum.getRight() - translation.x());
+		embeddedHeatMapFrustum.setTop(ftop-translation.y());
+		embeddedHeatMapFrustum.setBottom(-translation.y());
 		glHeatMapView.setFrustum(embeddedHeatMapFrustum);
 
 		glHeatMapView.displayRemote(gl);

@@ -16,15 +16,16 @@ public class DefaultTemplate extends ATemplate {
 		row.sizeY = 1;
 		// heat map
 		RenderParameters heatMapLayout = new RenderParameters();
-		heatMapLayout.sizeX = 0.715f;
-		heatMapLayout.sizeY = 0.84f;
+//		heatMapLayout.sizeX = 0.715f;
+		heatMapLayout.sizeX = 0.806f;
+		heatMapLayout.sizeY = 0.883f;
 		heatMapLayout.renderer = new HeatMapRenderer(templateRenderer.heatMap);
 		templateRenderer.addRenderer(heatMapLayout);
 		templateRenderer.addHeatMapLayout(heatMapLayout);
 
 		RenderParameters contentSelectionLayout = new RenderParameters();
 		contentSelectionLayout.isBackground = true;
-		contentSelectionLayout.sizeX = 0.72f;
+		contentSelectionLayout.sizeX = heatMapLayout.sizeX;
 		contentSelectionLayout.renderer = new ContentSelectionRenderer(
 				templateRenderer.heatMap);
 		templateRenderer.addRenderer(contentSelectionLayout);
@@ -32,7 +33,7 @@ public class DefaultTemplate extends ATemplate {
 		RenderParameters storageSelectionLayout = new RenderParameters();
 		storageSelectionLayout.isBackground = true;
 		// contentSelectionLayout.sizeX = 1;
-		storageSelectionLayout.sizeY = 0.84f;
+		storageSelectionLayout.sizeY = heatMapLayout.sizeY;
 		storageSelectionLayout.renderer = new StorageSelectionRenderer(
 				templateRenderer.heatMap);
 		templateRenderer.addRenderer(storageSelectionLayout);
@@ -47,8 +48,8 @@ public class DefaultTemplate extends ATemplate {
 		
 		// content captions
 		RenderParameters contentCaptionLayout = new RenderParameters();
-		contentCaptionLayout.sizeX = 0.29f;
-		contentCaptionLayout.sizeY = 0.84f;
+		contentCaptionLayout.sizeX = 1-heatMapLayout.sizeX;
+		contentCaptionLayout.sizeY = heatMapLayout.sizeY;
 		// heatMapLayout.grabY = true;
 		contentCaptionLayout.transformX = 0.7f + templateRenderer.SPACING;
 		contentCaptionLayout.renderer = new ContentCaptionRenderer(
@@ -61,7 +62,7 @@ public class DefaultTemplate extends ATemplate {
 		add(row);
 
 		spacing = new RenderParameters();
-		spacing.sizeY = 0.16f;
+		spacing.sizeY = 1-heatMapLayout.sizeY;
 		add(spacing);
 
 	}
