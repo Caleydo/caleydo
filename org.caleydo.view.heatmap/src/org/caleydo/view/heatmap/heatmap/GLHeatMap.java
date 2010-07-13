@@ -247,7 +247,7 @@ public class GLHeatMap extends AStorageBasedView {
 	public void display(GL gl) {
 
 		// GLHelperFunctions.drawPointAt(gl, 0, 0, 0);
-		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		gl.glCallList(iGLDisplayListToCall);
 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);

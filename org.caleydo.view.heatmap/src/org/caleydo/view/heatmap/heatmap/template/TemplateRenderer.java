@@ -68,6 +68,7 @@ public class TemplateRenderer {
 
 		contentSpacing = null;
 
+		template.recalculateSpacings();
 		template.calculateScales(totalWidth, totalHeight);
 
 		for (RenderParameters parameters : renderers) {

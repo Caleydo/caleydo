@@ -30,6 +30,26 @@ public class RenderParameters {
 	float sizeScaledX = 0;
 	float sizeScaledY = 0;
 
+	public void setRenderer(ARenderer renderer) {
+		this.renderer = renderer;
+	}
+	
+	public void setSizeX(float sizeX) {
+		this.sizeX = sizeX;
+	}
+
+	public float getSizeX() {
+		return sizeX;
+	}
+
+	public void setSizeY(float sizeY) {
+		this.sizeY = sizeY;
+	}
+
+	public float getSizeY() {
+		return sizeY;
+	}
+
 	void calculateScales(float totalWidth, float totalHeight) {
 		if (scaleX) {
 			sizeScaledX = sizeX * totalWidth;

@@ -93,6 +93,7 @@ import org.caleydo.rcp.view.listener.StorageGroupMergingActionListener;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.template.HierarchicalHeatMapTemplate;
 import org.caleydo.view.heatmap.listener.GLHierarchicalHeatMapKeyListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
@@ -172,6 +173,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	/** embedded heat map */
 	private GLHeatMap glHeatMapView;
+	private HierarchicalHeatMapTemplate renderTemplate;
 	private boolean bIsHeatmapInFocus = false;
 
 	/** embedded dendrogram */
@@ -672,6 +674,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		glHeatMapView.setDataDomain(dataDomain);
 		glHeatMapView.setRemoteRenderingGLView(this);
 		glHeatMapView.setRemoteLevelElement(heatMapRemoteElement);
+		renderTemplate = new HierarchicalHeatMapTemplate();
+		glHeatMapView.setRenderTemplate(renderTemplate);
+		renderTemplate.setBottomSpacing(0.6f);
 		heatMapRemoteElement.setGLView(glHeatMapView);
 
 		// glHeatMapView.setDataDomain(dataDomain);
@@ -2578,10 +2583,11 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		IViewFrustum embeddedHeatMapFrustum = glHeatMapView.getViewFrustum();
 		embeddedHeatMapFrustum.setLeft(0);
 		embeddedHeatMapFrustum.setRight(viewFrustum.getRight() - translation.x());
-		embeddedHeatMapFrustum.setTop(ftop-translation.y());
+		embeddedHeatMapFrustum.setTop(ftop - translation.y());
 		embeddedHeatMapFrustum.setBottom(-translation.y());
-		glHeatMapView.setFrustum(embeddedHeatMapFrustum);
+		
 
+		glHeatMapView.setFrustum(embeddedHeatMapFrustum);
 		glHeatMapView.displayRemote(gl);
 
 		gl.glPopName();
