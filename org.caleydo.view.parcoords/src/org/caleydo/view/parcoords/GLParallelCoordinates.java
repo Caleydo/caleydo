@@ -538,6 +538,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent(set,
 				contentSelectionManager.getIDType().getCategory(), contentVAType,
 				contentVA);
+		event.setDataDomainType(dataDomain.getDataDomainType());
 
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
@@ -1329,6 +1330,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 		InfoAreaUpdateEvent event = new InfoAreaUpdateEvent();
+		event.setDataDomainType(dataDomain.getDataDomainType());
 		event.setSender(this);
 		event.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(event);
@@ -1536,6 +1538,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	private void triggerSelectionUpdate() {
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
+		selectionUpdateEvent.setDataDomainType(dataDomain.getDataDomainType());
 		selectionUpdateEvent.setSelectionDelta(contentSelectionManager.getDelta());
 		selectionUpdateEvent.setSender(this);
 		eventPublisher.triggerEvent(selectionUpdateEvent);
@@ -1650,6 +1653,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				handleConnectedElementRep(selectionDelta);
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
+				event.setDataDomainType(dataDomain.getDataDomainType());
 				event.setSelectionDelta((SelectionDelta) selectionDelta);
 				event.setInfo(getShortInfoLocal());
 				eventPublisher.triggerEvent(event);
@@ -1709,6 +1713,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			}
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
+			event.setDataDomainType(dataDomain.getDataDomainType());
 			event.setSelectionDelta((SelectionDelta) selectionDelta);
 			eventPublisher.triggerEvent(event);
 
@@ -1921,6 +1926,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	private void sendContentVAUpdateEvent(ContentVADelta delta) {
 		ContentVAUpdateEvent virtualArrayUpdateEvent = new ContentVAUpdateEvent();
 		virtualArrayUpdateEvent.setSender(this);
+		virtualArrayUpdateEvent.setDataDomainType(dataDomain.getDataDomainType());
 		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
 		virtualArrayUpdateEvent.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
@@ -1929,6 +1935,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	private void sendStorageVAUpdateEvent(StorageVADelta delta) {
 		StorageVAUpdateEvent virtualArrayUpdateEvent = new StorageVAUpdateEvent();
 		virtualArrayUpdateEvent.setSender(this);
+		virtualArrayUpdateEvent.setDataDomainType(dataDomain.getDataDomainType());
 		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
 		virtualArrayUpdateEvent.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(virtualArrayUpdateEvent);

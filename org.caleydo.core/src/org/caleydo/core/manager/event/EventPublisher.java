@@ -68,6 +68,8 @@ public class EventPublisher
 			listenerMap.get(event.getClass());
 		if (dataDomainToListenersMap == null)
 			return;
+		// if we have a dataDomainType we also want to notify those listeners that did not register for a
+		// dataDomain
 		if (dataDomainType != null)
 			triggerEvents(event, dataDomainToListenersMap.get(null));
 
@@ -83,7 +85,9 @@ public class EventPublisher
 	private void triggerEvents(AEvent event, Collection<AEventListener<?>> listeners) {
 		if (listeners != null) {
 			for (AEventListener<?> receiver : listeners) {
-				receiver.queueEvent(event);
+				// check if a receiver wants events that are not if his data domain
+				if (!(event.getDataDomainType() == null && receiver.isOnlyDataDomain()))
+					receiver.queueEvent(event);
 			}
 		}
 	}

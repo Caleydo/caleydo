@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentVAType;
@@ -40,6 +41,7 @@ import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.rcp.util.info.listener.InfoAreaUpdateListener;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
@@ -114,7 +116,8 @@ public class InfoArea
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
 		dataDomainTypes.add("org.caleydo.datadomain.clinical");
 
-		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
+		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
+			dataDomainTypes, viewType);
 	}
 
 	public Control createControl(final Composite parent) {
@@ -358,7 +361,15 @@ public class InfoArea
 							TreeItem item = new TreeItem(experimentTree, SWT.NONE);
 
 							try {
-								item.setText(set.get(selectionItem.getPrimaryID()).getLabel());
+								IStorage storage = set.get(selectionItem.getPrimaryID());
+								if (storage != null)
+									item.setText(storage.getLabel());
+								else {
+									generalManager.getLogger().log(
+										new Status(Status.WARNING, "org.caleydo.rcp",
+											"Info Area couldn't find the correct storage for ID: "
+												+ selectionItem.getPrimaryID() + ". Set was: " + set));
+								}
 							}
 							catch (IndexOutOfBoundsException e) {
 								item.setText("ERROR");
@@ -471,6 +482,7 @@ public class InfoArea
 	 */
 	public void registerEventListeners() {
 		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setDataDomainType("org.caleydo.datadomain.genetic");
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 

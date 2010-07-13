@@ -18,7 +18,13 @@ public abstract class AEventListener<T extends IListenerOwner> {
 
 	/** related handling object, usually a view or manager-type class */
 	protected T handler = null;
+	/** the dataDomainType string that decides whether a listenere listenes for events for this data domain */
 	protected String dataDomainType = null;
+	/**
+	 * flag determining whether a listener is listenig to both it's datadomain events and events where no
+	 * datadomain is specified (false), or only to events with the datadomain specified
+	 */
+	protected boolean isOnlyDataDomain = false;
 
 	/**
 	 * Returns the related handler object to this listener.
@@ -57,6 +63,17 @@ public abstract class AEventListener<T extends IListenerOwner> {
 	 */
 	public String getDataDomainType() {
 		return dataDomainType;
+	}
+
+	/**
+	 * @param dataDomainType
+	 */
+	public void setOnlyToDataDomain(String dataDomainType) {
+
+	}
+
+	public boolean isOnlyDataDomain() {
+		return isOnlyDataDomain;
 	}
 
 	/**
