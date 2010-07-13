@@ -35,6 +35,8 @@ public class GLTissue extends AGLView implements IDataDomainBasedView<IDataDomai
 	private int experimentIndex;
 
 	private IDataDomain dataDomain;
+	
+	private boolean updateTexture = false;
 
 	/**
 	 * Constructor.
@@ -52,7 +54,7 @@ public class GLTissue extends AGLView implements IDataDomainBasedView<IDataDomai
 	public void registerDataDomains() {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 		dataDomainTypes.add("org.caleydo.datadomain.tissue");
-
+		
 		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
 				dataDomainTypes, viewType);
 	}
@@ -104,11 +106,21 @@ public class GLTissue extends AGLView implements IDataDomainBasedView<IDataDomai
 
 	private void renderScene(final GL gl) {
 
+		if (updateTexture)
+			renewTextureInCache();
+		
+		float topMargin = 0.07f;
+		
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.TISSUE_SELECTION, experimentIndex));
 		if (texturePath != null && !texturePath.isEmpty()) {
-			textureManager.renderTexture(gl, texturePath, new Vec3f(0, 0, 0), new Vec3f(
-					8, 0, 0), new Vec3f(8, 8, 0), new Vec3f(0, 8, 0), 1, 1, 1, 1);
+		
+			try {
+				textureManager.renderTexture(gl, texturePath, new Vec3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0), new Vec3f(
+						viewFrustum.getRight(), viewFrustum.getBottom(), 0), new Vec3f(viewFrustum.getRight(), viewFrustum.getTop()- topMargin, 0), new Vec3f(viewFrustum.getLeft(), viewFrustum.getTop() - topMargin, 0), 1, 1, 1, 1);				
+			} catch (IllegalStateException e) {
+				// Render nothing if texture does not exist
+			}
 		}
 		gl.glPopName();
 
@@ -145,9 +157,9 @@ public class GLTissue extends AGLView implements IDataDomainBasedView<IDataDomai
 			gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum
 					.getBottom(), z);
 			gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum
-					.getTop()
+					.getTop()-topMargin
 					- viewFrustum.getBottom(), z);
-			gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop()
+			gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop()-topMargin
 					- viewFrustum.getBottom(), z);
 			gl.glEnd();
 		}
@@ -283,7 +295,22 @@ public class GLTissue extends AGLView implements IDataDomainBasedView<IDataDomai
 	public void setTexturePath(String texturePath) {
 		this.texturePath = texturePath;
 	}
-
+	
+	public void updateTexture() {
+		updateTexture = true;
+	}
+	
+	private void renewTextureInCache() {
+		
+		updateTexture = true;
+		
+		try {
+			textureManager.renewTexture(texturePath);			
+		} catch (Exception e) {
+			updateTexture = false;
+		}
+	}
+	
 	public void setExperimentIndex(int experimentIndex) {
 		this.experimentIndex = experimentIndex;
 	}

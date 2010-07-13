@@ -2,6 +2,7 @@ package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
 
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Set;
@@ -50,6 +51,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
+import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -161,6 +163,8 @@ public abstract class AGLView
 	// private String viewGUIID;
 
 	private boolean isVisible = true;
+	
+	private TextRenderer textRenderer;
 
 	/**
 	 * Constructor.
@@ -175,6 +179,8 @@ public abstract class AGLView
 		registerEventListeners();
 
 		parentGLCanvas = glCanvas;
+		
+		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 48), false);
 
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null) {
 			glMouseListener = parentGLCanvas.getGLMouseListener();
@@ -797,8 +803,8 @@ public abstract class AGLView
 	 */
 	protected void renderSymbol(GL gl, EIconTextures texture, float buttonSize) {
 
-		float fXButtonOrigin = viewFrustum.getLeft() + viewFrustum.getWidth() / 2 - buttonSize / 2;
-		float fYButtonOrigin = viewFrustum.getBottom() + viewFrustum.getHeight() / 2 - buttonSize / 2;
+		float xButtonOrigin = viewFrustum.getLeft() + viewFrustum.getWidth() / 2 - buttonSize / 2;
+		float yButtonOrigin = viewFrustum.getBottom() + viewFrustum.getHeight() / 2 - buttonSize / 2;
 		Texture tempTexture = textureManager.getIconTexture(gl, texture);
 		tempTexture.enable();
 		tempTexture.bind();
@@ -810,16 +816,22 @@ public abstract class AGLView
 		gl.glBegin(GL.GL_POLYGON);
 
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.01f);
+		gl.glVertex3f(xButtonOrigin, yButtonOrigin, 0.01f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin + buttonSize, 0.01f);
+		gl.glVertex3f(xButtonOrigin, yButtonOrigin + buttonSize, 0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fXButtonOrigin + buttonSize, fYButtonOrigin + buttonSize, 0.01f);
+		gl.glVertex3f(xButtonOrigin + buttonSize, yButtonOrigin + buttonSize, 0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fXButtonOrigin + buttonSize, fYButtonOrigin, 0.01f);
+		gl.glVertex3f(xButtonOrigin + buttonSize, yButtonOrigin, 0.01f);
 		gl.glEnd();
 		gl.glPopAttrib();
 		tempTexture.disable();
-
+	}
+	
+	public void renderText(GL gl, String text, float size, float x, float y, float z) {
+		textRenderer.setColor(0.3f, 0.3f, 0.3f, 1);
+		textRenderer.begin3DRendering();
+		textRenderer.draw3D(text, x, y, z, size);
+		textRenderer.end3DRendering();
 	}
 }

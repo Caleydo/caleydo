@@ -49,6 +49,11 @@ public class TextureManager {
 		}
 		return mapPathToTexture.get(texturePath);
 	}
+	
+	public void renewTexture(String texturePath) {
+		Texture tmpTexture = GeneralManager.get().getResourceLoader().getTexture(texturePath);
+		mapPathToTexture.put(texturePath, tmpTexture);
+	}
 
 	public Texture getIconTexture(GL gl, final EIconTextures eIconTexture) {
 

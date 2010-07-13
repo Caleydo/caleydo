@@ -62,15 +62,17 @@ import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
-import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.rcp.view.listener.AddPathwayListener;
 import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
 import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
+import org.caleydo.view.browser.HTMLBrowser;
 import org.caleydo.view.browser.SerializedHTMLBrowserView;
 import org.caleydo.view.heatmap.hierarchical.SerializedHierarchicalHeatMapView;
 import org.caleydo.view.parcoords.GLParallelCoordinates;
 import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
 import org.caleydo.view.pathwaybrowser.SerializedPathwayViewBrowserView;
+import org.caleydo.view.tissue.GLTissue;
+import org.caleydo.view.tissue.SerializedTissueView;
 import org.caleydo.view.tissuebrowser.SerializedTissueViewBrowserView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -86,7 +88,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	public final static String VIEW_ID = "org.caleydo.view.dataflipper";
 
 	private static final int SLERP_RANGE = 1000;
-	private static final int SLERP_SPEED = 1400;
+	private static final int SLERP_SPEED = 1500;
 
 	private static final int MAX_SIDE_VIEWS = 10;
 
@@ -159,6 +161,11 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private boolean showFocusViewFullScreen = false;
 
 	private String startDataDomainType = "org.caleydo.datadomain.clinical";
+
+	// TODO: change to empty dummy view instead of tissue
+	private GLTissue glBrowserImageView;
+	private Shell browserOverlayShell;
+	private HTMLBrowser browserView;
 
 	/**
 	 * Constructor.
@@ -294,7 +301,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		currentGuidanceNode = (GuidanceNode) guidancePath.getLastNode();
 
-		guidancePath.addNode(currentGuidanceNode, new GuidanceNode("org.caleydo.datadomain.organ", ""));
+		guidancePath.addNode(currentGuidanceNode, new GuidanceNode(
+				"org.caleydo.datadomain.organ", ""));
 		guidancePath.addNode(currentGuidanceNode, new GuidanceNode(
 				"org.caleydo.datadomain.genetic", ""));
 
@@ -318,8 +326,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				dataDomainType, "org.caleydo.view.parcoords");
 		dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
 				dataDomainType, "org.caleydo.analytical.clustering");
-		// dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
-		// dataDomainType, "org.caleydo.view.browser");
+		dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
+				dataDomainType, "org.caleydo.view.tissue");
 
 		dataDomainType = "org.caleydo.datadomain.clinical";
 		dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
@@ -413,7 +421,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private void renderDataDomains(GL gl, String dataDomainType, float x, float y) {
 
 		if (metaViewAnimation < DATA_DOMAIN_SPACING)
-			metaViewAnimation += 0.01f;
+			metaViewAnimation += 0.02f;
 
 		// gl.glScalef(9f/10, 9f/10, 9f/10);
 		renderDataDomain(gl, (HistoryNode) historyPath.getLastNode(), x
@@ -568,56 +576,65 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		if (!newViews.isEmpty()) {
 			ASerializedView serView = newViews.remove(0);
 
-			if (serView instanceof SerializedHTMLBrowserView) {
+			// if (serView instanceof SerializedHTMLBrowserView) {
 
-				// openBrowser();
+			// openBrowser();
 
-				for (IView view : GeneralManager.get().getViewGLCanvasManager()
-						.getAllItems()) {
-					if (view instanceof ASWTView) {
-						final ASWTView browserView = (ASWTView) view;
+			// for (IView view : GeneralManager.get().getViewGLCanvasManager()
+			// .getAllItems()) {
+			// if (view instanceof ASWTView) {
+			// final ASWTView browserView = (ASWTView) view;
+			//
+			// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(
+			// new Runnable() {
+			//
+			// @Override
+			// public void run() {
+			// Shell shell = new Shell(SWT.NO_TRIM | SWT.RESIZE);
+			//										
+			// int x = 730;
+			// int y = 150;
+			// shell.setBounds(x, y, 760, 760);
+			//
+			// browserView.getComposite().setParent(shell);
+			//
+			// FillLayout fillLayout = new FillLayout(
+			// SWT.VERTICAL);
+			// fillLayout.marginHeight = 5;
+			// fillLayout.marginWidth = 5;
+			// fillLayout.spacing = 1;
+			// shell.setLayout(fillLayout);
+			// shell.open();
+			// }
+			// });
+			// break;
+			// }
+			// }
+			//
+			// } else {
+			AGLView view = createView(gl, serView);
 
-						GeneralManager.get().getGUIBridge().getDisplay().asyncExec(
-								new Runnable() {
+			if (view instanceof GLTissue) {
+				glBrowserImageView = (GLTissue) view;
+				glBrowserImageView.setTexturePath(GeneralManager.CALEYDO_HOME_PATH
+						+ "swt.png");
+			}
 
-									@Override
-									public void run() {
-										Shell shell = new Shell(SWT.NO_TRIM | SWT.RESIZE);
-										shell.setBounds(730, 150, 760, 760);
+			// TODO: remove when activating slerp
+			view.initRemote(gl, this, glMouseListener, infoAreaManager);
+			// view.getViewFrustum().considerAspectRatio(true);
 
-										browserView.getComposite().setParent(shell);
+			containedGLViews.add(view);
+			lastSelectedDataDomainNode.addGLView(view);
 
-										FillLayout fillLayout = new FillLayout(
-												SWT.VERTICAL);
-										fillLayout.marginHeight = 5;
-										fillLayout.marginWidth = 5;
-										fillLayout.spacing = 1;
-										shell.setLayout(fillLayout);
-										shell.open();
-									}
-								});
-						break;
-					}
-				}
+			openView(view, lastSelectedDataDomainNode);
 
-			} else {
-				AGLView view = createView(gl, serView);
-
-				// TODO: remove when activating slerp
-				view.initRemote(gl, this, glMouseListener, infoAreaManager);
-				// view.getViewFrustum().considerAspectRatio(true);
-
-				containedGLViews.add(view);
-				lastSelectedDataDomainNode.addGLView(view);
-
-				openView(view, lastSelectedDataDomainNode);
-
-				if (newViews.isEmpty()) {
-					triggerToolBarUpdate();
-					enableUserInteraction();
-				}
+			if (newViews.isEmpty()) {
+				triggerToolBarUpdate();
+				enableUserInteraction();
 			}
 		}
+		// }
 	}
 
 	/**
@@ -761,11 +778,14 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 							.setRenderConnectionState(renderConnectionsLeft);
 
 				}
-
 			}
 
 			arSlerpActions.clear();
 			iSlerpFactor = 0;
+
+			if (focusElement.getGLView() instanceof GLTissue) {
+				openBrowserOverlay();
+			}
 
 			// Trigger chain move when selected view has not reached the focus
 			// position
@@ -872,10 +892,11 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		case REMOTE_VIEW_SELECTION:
 
-			// TODO: find out corresponding view and data domain type and set it!
+			// TODO: find out corresponding view and data domain type and set
+			// it!
 			mouseOverDataDomainNode = null;
 			mouseOverInterface = null;
-			
+
 			switch (pickingMode) {
 			case MOUSE_OVER:
 
@@ -894,7 +915,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			break;
 
 		case REMOTE_LEVEL_ELEMENT:
-			
+
 			switch (pickingMode) {
 			case CLICKED:
 
@@ -909,6 +930,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				lastPickedRemoteLevelElement = RemoteElementManager.get().getItem(
 						externalPickingID);
 				lastPickedView = lastPickedRemoteLevelElement.getGLView();
+
 				chainMove(lastPickedRemoteLevelElement);
 
 				break;
@@ -923,7 +945,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			}
 			break;
 
-		case VIEW_TYPE_SELECTION:
+		case INTERFACE_SELECTION:
 
 			mouseOverInterface = null;
 
@@ -974,7 +996,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			switch (pickingMode) {
 			case CLICKED:
-				handleDataDomainSelection(externalPickingID);
+				// handleDataDomainSelection(externalPickingID);
 
 				break;
 
@@ -1012,7 +1034,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		case NEXT_DATA_DOMAIN_SELECTION:
 
 			mouseOverInterface = null;
-			
+
 			switch (pickingMode) {
 
 			case MOUSE_OVER:
@@ -1048,13 +1070,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 							historyPath.addNode(dataDomainNode);
 						}
 
-						if (dataDomainNode != null)
-						{
+						if (dataDomainNode != null) {
 							lastSelectedDataDomainNode = dataDomainNode;
-						
-							for (INode nextDataDomainNode : guidancePath.getFollowingNodes(
-									currentGuidanceNode)) {
-								if (nextDataDomainNode.getDataDomainType() == dataDomainNode.getDataDomainType())
+
+							for (INode nextDataDomainNode : guidancePath
+									.getFollowingNodes(currentGuidanceNode)) {
+								if (nextDataDomainNode.getDataDomainType() == dataDomainNode
+										.getDataDomainType())
 									currentGuidanceNode = (GuidanceNode) nextDataDomainNode;
 							}
 						}
@@ -1064,7 +1086,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						break;
 					}
 				}
-				break;	
+				break;
 			}
 			break;
 
@@ -1081,8 +1103,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	private String determineDataDomainByHash(int externalPickingID) {
-		for (IDataDomain tmpDataDomain : DataDomainManager.getInstance()
-				.getDataDomains()) {
+		for (IDataDomain tmpDataDomain : DataDomainManager.getInstance().getDataDomains()) {
 			String tmpDataDomainType = tmpDataDomain.getDataDomainType();
 			if (tmpDataDomainType.hashCode() == externalPickingID) {
 				return tmpDataDomainType;
@@ -1125,6 +1146,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					addView(historyNode, interfaceType);
 				} else
 					triggerAnalyticalInterface(dataDomainType, interfaceType);
+
+				if (!interfaceType.equals("org.caleydo.view.tissue"))
+					closeBrowserOverlay();
 
 				break;
 			}
@@ -1319,15 +1343,17 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				if (nextDataDomainType == historyPath.getFollowingNodes(node).get(0)
 						.getDataDomainType())
 					continue;
-				
+
 				boolean highlight = false;
-//				for (INode nextGuidanceNode : guidancePath
-//						.getFollowingNodes(currentGuidanceNode)) {
-//					if (nextGuidanceNode.getDataDomainType().equals(nextDataDomainType)) {
-//						highlight = true;
-//						break;
-//					}
-//				}
+				// for (INode nextGuidanceNode : guidancePath
+				// .getFollowingNodes(currentGuidanceNode)) {
+				// if
+				// (nextGuidanceNode.getDataDomainType().equals(nextDataDomainType))
+				// {
+				// highlight = true;
+				// break;
+				// }
+				// }
 
 				boolean mouseOver = (nextDataDomainType == mouseOverNextDataDomain) ? true
 						: false;
@@ -1475,7 +1501,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					gl.glPushName(pickingManager.getPickingID(iUniqueID,
 							EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 				gl.glPushName(pickingManager.getPickingID(iUniqueID,
-						EPickingType.VIEW_TYPE_SELECTION, node.getInterfaceID(viewType)));
+						EPickingType.INTERFACE_SELECTION, node.getInterfaceID(viewType)));
 				gl.glPushName(pickingManager.getPickingID(iUniqueID,
 						EPickingType.DATA_DOMAIN_SELECTION, node.getFirstInterfaceID()));
 
@@ -1691,6 +1717,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		if (viewName.contains("pathwaybrowser") || viewName.contains("tissuebrowser"))
 			viewName = viewName.replace("browser", "");
+
+		// FIXME: remove if browser gl view has its own gl class
+		if (viewName.equals("tissue"))
+			viewName = "browser";
 
 		String subfolder = "";
 		if (viewName.contains("parcoords") || viewName.contains("heatmap"))
@@ -2070,6 +2100,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			serView = new SerializedGlyphView(dataDomainType);
 		} else if (interfaceType.equals("org.caleydo.view.browser")) {
 			serView = new SerializedHTMLBrowserView(dataDomainType);
+		} else if (interfaceType.equals("org.caleydo.view.tissue")) {
+			serView = new SerializedTissueView(dataDomainType);
 		}
 
 		if (serView != null)
@@ -2187,5 +2219,64 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		}
 
 		focusView.setDisplayListDirty();
+	}
+
+	private void openBrowserOverlay() {
+
+		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				if (browserOverlayShell == null) {
+					browserOverlayShell = new Shell(SWT.NO_TRIM | SWT.RESIZE);
+
+					int x = 729;
+					int y = 143;
+					browserOverlayShell.setBounds(x, y, 764, 760);
+
+					if (browserView == null) {
+						for (IView view : GeneralManager.get().getViewGLCanvasManager()
+								.getAllItems()) {
+							if (view instanceof HTMLBrowser) {
+								browserView = (HTMLBrowser) view;
+								break;
+							}
+						}
+					}
+					browserView.makeRegularScreenshots(true);
+
+					browserView.getComposite().setParent(browserOverlayShell);
+
+					FillLayout fillLayout = new FillLayout(SWT.VERTICAL);
+					fillLayout.marginHeight = 5;
+					fillLayout.marginWidth = 5;
+					fillLayout.spacing = 1;
+					browserOverlayShell.setLayout(fillLayout);
+					browserOverlayShell.open();
+				}
+
+				browserOverlayShell.setVisible(true);
+			}
+		});
+	}
+
+	private void closeBrowserOverlay() {
+		
+		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+
+				if (browserOverlayShell != null && !browserOverlayShell.isDisposed())
+					browserOverlayShell.setVisible(false);
+
+				if (glBrowserImageView != null) {
+					glBrowserImageView.updateTexture();
+				}
+				
+				if (browserView != null)
+					browserView.makeRegularScreenshots(false);
+			}
+		});
 	}
 }

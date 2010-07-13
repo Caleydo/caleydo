@@ -22,7 +22,6 @@ import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -329,7 +328,10 @@ public abstract class AGLViewBrowser
 		time.update();
 
 		if (focusLevel.getElementByPositionIndex(0).isFree() && arSlerpActions.isEmpty())
+		{
 			renderSymbol(gl, viewSymbol, 3);
+			renderText(gl, "Trigger pathway loading first!", 0.01f, 1, 0.5f, 0);
+		}
 		
 		// Update the pool transformations according to the current mouse over
 		// object
@@ -1700,22 +1702,6 @@ public abstract class AGLViewBrowser
 		canvasManager.getPickingManager().enablePicking(true);
 		canvasManager.releaseBusyMode(this);
 	}
-
-	// public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
-	//
-	// // add new pathways to bucket
-	// for (PathwayGraph pathway : newPathwayGraphs) {
-	// addPathwayView(pathway.getID());
-	// }
-	//
-	// if (!newViews.isEmpty()) {
-	// // Zoom out of the bucket when loading pathways
-	// if (bucketMouseWheelListener.isZoomedIn()) {
-	// bucketMouseWheelListener.triggerZoom(false);
-	// }
-	// disableUserInteraction();
-	// }
-	// }
 
 	@Override
 	public int getNumberOfSelections(SelectionType SelectionType) {

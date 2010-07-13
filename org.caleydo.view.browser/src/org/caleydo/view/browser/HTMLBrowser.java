@@ -20,6 +20,10 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -61,6 +65,8 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 	private ToolItem stopButton;
 
 	private ChangeURLListener changeURLListener;
+
+	private boolean makeRegularScreenshots = false;
 
 	/**
 	 * Constructor.
@@ -298,5 +304,41 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
 		// this implementation does not initialize anything yet
+	}
+
+	private void makeScreenshot() {
+
+		// Make screenshot of browser
+		Image screenshot = new Image(browser.getShell().getDisplay(), browser.getShell()
+				.getBounds());
+		GC gc = new GC(browser.getShell().getDisplay());
+		gc.copyArea(screenshot, 730, 150);
+		gc.dispose();
+
+		ImageLoader loader = new ImageLoader();
+		loader.data = new ImageData[] { screenshot.getImageData() };
+		loader.save(GeneralManager.CALEYDO_HOME_PATH + "swt.png", SWT.IMAGE_PNG);
+
+		screenshot.dispose();
+	}
+
+	public void makeRegularScreenshots(boolean makeRegularScreenshots) {
+	
+		Runnable timer = null;
+		
+		if (makeRegularScreenshots) {
+			 final int time = 500;
+				timer = new Runnable() {
+					public void run() {
+						browser.getDisplay().timerExec(time, this);
+						makeScreenshot();
+					}
+				};
+				browser.getDisplay().timerExec(time, timer);			
+		}
+		else {
+			if (timer != null)
+				browser.getDisplay().timerExec(-1, timer);
+		}
 	}
 }

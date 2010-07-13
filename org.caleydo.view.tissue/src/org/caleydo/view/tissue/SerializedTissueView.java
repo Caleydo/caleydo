@@ -29,6 +29,10 @@ public class SerializedTissueView extends ASerializedView {
 
 	}
 
+	public SerializedTissueView(String dataDomainType) {
+		super(dataDomainType);
+	}
+	
 	@Override
 	public ViewFrustum getViewFrustum() {
 		ViewFrustum viewFrustum = new ViewFrustum(EProjectionMode.ORTHOGRAPHIC,
