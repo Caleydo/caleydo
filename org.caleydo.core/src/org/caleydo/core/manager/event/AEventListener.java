@@ -10,6 +10,10 @@ package org.caleydo.core.manager.event;
  * Optionally, a listener can have a dataDomainType set. As a consequence, it will receive only those events
  * that are of the same dataDomainType or have no dataDomainType specified.
  * </p>
+ * <p>
+ * It is also possible to set a listener to receive exclusively events for the designated dataDomain, using
+ * the method {@link #setExclusiveDataDomainType(String)} instead of {@link #setDataDomainType(String)}.
+ * </p>
  * 
  * @author Werner Puff
  * @author Alexander Lex
@@ -18,13 +22,13 @@ public abstract class AEventListener<T extends IListenerOwner> {
 
 	/** related handling object, usually a view or manager-type class */
 	protected T handler = null;
-	/** the dataDomainType string that decides whether a listenere listenes for events for this data domain */
+	/** the dataDomainType string that decides whether a listener listens for events for this data domain */
 	protected String dataDomainType = null;
 	/**
-	 * flag determining whether a listener is listenig to both it's datadomain events and events where no
-	 * datadomain is specified (false), or only to events with the datadomain specified
+	 * flag determining whether a listener is listening to both it's dataDomain events and events where no
+	 * dataDomain is specified (false), or only to events with the dataDomain specified
 	 */
-	protected boolean isOnlyDataDomain = false;
+	protected boolean isExclusiveDataDomain = false;
 
 	/**
 	 * Returns the related handler object to this listener.
@@ -66,14 +70,25 @@ public abstract class AEventListener<T extends IListenerOwner> {
 	}
 
 	/**
+	 * Behaves similar to {@link #setDataDomainType(String)} in that it set's the dataDomainType, however, for
+	 * setDataDomainType, the listener receives events with not dataDomain specified, while, when using this
+	 * method, only events specifying a matching dataDomain are forwarded.
+	 * 
 	 * @param dataDomainType
 	 */
-	public void setOnlyToDataDomain(String dataDomainType) {
-
+	public void setExclusiveDataDomainType(String dataDomainType) {
+		this.dataDomainType = dataDomainType;
+		isExclusiveDataDomain = true;
 	}
 
-	public boolean isOnlyDataDomain() {
-		return isOnlyDataDomain;
+	/**
+	 * Check whether a listener is set to listen exclusively on it's datadomain (excluding events where the
+	 * datadomain is not set).
+	 * 
+	 * @return
+	 */
+	public boolean isExclusiveDataDomain() {
+		return isExclusiveDataDomain;
 	}
 
 	/**

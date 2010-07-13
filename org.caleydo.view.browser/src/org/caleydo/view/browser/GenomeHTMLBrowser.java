@@ -46,7 +46,8 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHa
 
 		super(iParentContainerID, sLabel, GeneralManager.get().getIDManager().createID(
 				EManagedObjectType.VIEW_SWT_BROWSER_GENOME));
-
+		
+		registerEventListeners();
 		urlGenerator = new URLGenerator();
 		iAlDavidID = new ArrayList<Integer>();
 	}
@@ -142,8 +143,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHa
 				// SelectionDeltaItem selectionItem;
 
 				for (SelectionDeltaItem selectionDeltaItem : selectionDelta) {
-					if (selectionDeltaItem.getSelectionType() == SelectionType.MOUSE_OVER
-							|| selectionDeltaItem.getSelectionType() == SelectionType.SELECTION) {
+					if (selectionDeltaItem.getSelectionType() == SelectionType.SELECTION) {
 
 						// Integer iRefSeqID =
 						// generalManager.getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
@@ -247,6 +247,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHa
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
+		selectionUpdateListener.setExclusiveDataDomainType("org.caleydo.datadomain.genetic");
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		// changeQueryTypeListener = new ChangeQueryTypeListener();
@@ -279,4 +280,6 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHa
 		serializedForm.setUrl(getUrl());
 		return serializedForm;
 	}
+	
+	
 }
