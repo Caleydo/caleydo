@@ -11,11 +11,6 @@ import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
-import org.caleydo.view.heatmap.hierarchical.SerializedHierarchicalHeatMapView;
-import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
-import org.caleydo.view.pathwaybrowser.SerializedPathwayViewBrowserView;
-import org.caleydo.view.tissuebrowser.SerializedTissueViewBrowserView;
 
 /**
  * Serialized form of the data flipper view.
@@ -36,11 +31,6 @@ public class SerializedDataFlipperView extends ASerializedView {
 	public SerializedDataFlipperView() {
 		init();
 	}
-
-//	public SerializedDataFlipperView(String dataDomainType) {
-//		super(dataDomainType);
-//		init();
-//	}
 
 	public void init() {
 		initialContainedViews = new ArrayList<ASerializedView>();

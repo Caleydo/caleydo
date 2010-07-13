@@ -92,6 +92,8 @@ public abstract class AGLViewBrowser
 	private ArrayList<SlerpAction> arSlerpActions;
 
 	private Time time;
+	
+	protected EIconTextures viewSymbol;
 
 	/**
 	 * Slerp factor: 0 = source; 1 = destination
@@ -326,6 +328,9 @@ public abstract class AGLViewBrowser
 	public void display(final GL gl) {
 		time.update();
 
+		if (focusLevel.getElementByPositionIndex(0).isFree() && arSlerpActions.isEmpty())
+			renderSymbol(gl, viewSymbol, 3);
+		
 		// Update the pool transformations according to the current mouse over
 		// object
 		initPoolLevel(iMouseOverObjectID);

@@ -23,7 +23,10 @@ public class ActivateViewListener
 		try {
 			if ((event instanceof LoadPathwayEvent || event instanceof LoadPathwaysByGeneEvent)
 				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
-					"org.caleydo.view.datawindows") == null) {
+					"org.caleydo.view.datawindows") == null
+				&& PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
+					"org.caleydo.view.dataflipper") == null) {
+				
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
 					"org.caleydo.view.bucket");
 			}

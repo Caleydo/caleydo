@@ -33,6 +33,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.tissue.GLTissue;
 import org.caleydo.view.tissue.SerializedTissueView;
 
@@ -62,6 +63,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		super(glCanvas, sLabel, viewFrustum);
 
 		viewType = VIEW_ID;
+		viewSymbol = EIconTextures.NO_ICON_AVAILABLE;
 		registerDataDomains();
 		mapExperimentToTexturePath = new HashMap<Integer, String>();
 	}

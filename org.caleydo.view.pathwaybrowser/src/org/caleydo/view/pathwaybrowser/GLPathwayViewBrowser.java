@@ -19,6 +19,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.AGLViewBrowser;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.rcp.view.listener.AddPathwayListener;
 import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
 import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
@@ -38,6 +39,7 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 		super(glCanvas, sLabel, viewFrustum);
 
 		viewType = VIEW_ID;
+		viewSymbol = EIconTextures.PATHWAY_SYMBOL;
 		registerDataDomains();
 	}
 
@@ -54,13 +56,13 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 	@Override
 	protected void addInitialViews() {
 
-		for (int pathwayIndex = 0; pathwayIndex < MAX_VIEWS; pathwayIndex++) {
-			SerializedPathwayView pathway = new SerializedPathwayView();
-			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager()
-					.getAllItems().toArray()[pathwayIndex]).getID());
-			pathway.setDataDomainType(dataDomain.getDataDomainType());
-			newViews.add(pathway);
-		}
+//		for (int pathwayIndex = 0; pathwayIndex < MAX_VIEWS; pathwayIndex++) {
+//			SerializedPathwayView pathway = new SerializedPathwayView();
+//			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager()
+//					.getAllItems().toArray()[pathwayIndex]).getID());
+//			pathway.setDataDomainType(dataDomain.getDataDomainType());
+//			newViews.add(pathway);
+//		}
 	}
 
 	@Override

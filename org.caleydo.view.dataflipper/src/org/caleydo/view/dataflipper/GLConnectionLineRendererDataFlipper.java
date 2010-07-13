@@ -130,6 +130,7 @@ public class GLConnectionLineRendererDataFlipper extends AGLConnectionLineRender
 
 							ArrayList<Vec3f> line = new ArrayList<Vec3f>(2);
 							line.add(sourceViewPoints.get(0));
+							line.add(new Vec3f(sourceViewPoints.get(0).x() - 0.5f, 2, 4));
 							line.add(targetViewPoints.get(0));
 						
 							connectionLines.addLine(line);
@@ -153,8 +154,10 @@ public class GLConnectionLineRendererDataFlipper extends AGLConnectionLineRender
 							// .get(0), 0, new float[] { 1, 0, 0 });
 
 							ArrayList<Vec3f> line = new ArrayList<Vec3f>(2);
-							line.add(sourceViewPoints.get(0));
+
 							line.add(targetViewPoints.get(0));
+//							line.add(new Vec3f(sourceViewPoints.get(0).x() + (targetViewPoints.get(0).x() - sourceViewPoints.get(0).x()) / 3f, 2, 4));
+							line.add(sourceViewPoints.get(0));
 
 							connectionLines.addLine(line);
 						}

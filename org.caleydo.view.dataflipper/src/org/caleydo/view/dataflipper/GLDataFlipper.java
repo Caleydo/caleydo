@@ -2182,20 +2182,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					-2.5f, 0));
 			focusTransformFullScreen.setScale(new Vec3f(1, 1, 1));
 			focusElement.setTransform(focusTransformFullScreen);
-
-			IViewFrustum frustum = focusElement.getGLView().getViewFrustum();
-			frustum.setLeft(0);
-			frustum.setRight(8);// / fAspectRatio);
-			frustum.setTop(8);
-			frustum.setBottom(0);
 		} else {
 			focusElement.setTransform(focusTransform);
-
-			IViewFrustum frustum = focusElement.getGLView().getViewFrustum();
-			frustum.setLeft(-4);
-			frustum.setRight(4);
-			frustum.setTop(4);
-			frustum.setBottom(-4);
 		}
 
 		focusView.setDisplayListDirty();
