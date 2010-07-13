@@ -421,8 +421,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		CmdCreateView cmdCreateGLView = (CmdCreateView) generalManager
 				.getCommandManager().createCommandByType(ECommandType.CREATE_GL_VIEW);
 		cmdCreateGLView.setViewID("org.caleydo.view.bookmarking");
-		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, viewFrustum
-				.getBottom(), viewFrustum.getTop(), -20, 20, -1);
+		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f,
+				viewFrustum.getBottom(), viewFrustum.getTop(), -20, 20, -1);
 		cmdCreateGLView.doCommand();
 		glBookmarks = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
 		glBookmarks.setRemoteRenderingGLView(this);
@@ -494,8 +494,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		ContentVADelta delta = contentSelectionManager.getBroadcastVADelta();
 		if (delta.size() > 20) {
-			getParentGLCanvas().getParentComposite().getDisplay().asyncExec(
-					new Runnable() {
+			getParentGLCanvas().getParentComposite().getDisplay()
+					.asyncExec(new Runnable() {
 
 						@Override
 						public void run() {
@@ -588,7 +588,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		// .equals("org.caleydo.datadomain.generic")) {
 		// contentDataType = EIDType.EXPERIMENT;
 		// storageDataType = EIDType.EXPERIMENT_INDEX;
-		//			
+		//
 		// } else {
 		// throw new IllegalStateException("Unsupported data domain (" +
 		// dataDomain
@@ -672,8 +672,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				- contentSelectionManager.getNumberOfElements(SelectionType.DESELECTED);
 
 		displayEveryNthPolyline = (contentVA.size() - contentSelectionManager
-				.getNumberOfElements(SelectionType.DESELECTED))
-				/ iNumberOfRandomElements;
+				.getNumberOfElements(SelectionType.DESELECTED)) / iNumberOfRandomElements;
 
 		if (displayEveryNthPolyline == 0) {
 			displayEveryNthPolyline = 1;
@@ -758,10 +757,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 					gl.glBegin(GL.GL_LINES);
 				}
 
-				gl.glVertex3f(fPreviousXValue, fPreviousYValue
-						* renderStyle.getAxisHeight(), renderState.zDepth);
-				gl.glVertex3f(fCurrentXValue, fCurrentYValue
-						* renderStyle.getAxisHeight(), renderState.zDepth);
+				gl.glVertex3f(fPreviousXValue,
+						fPreviousYValue * renderStyle.getAxisHeight(), renderState.zDepth);
+				gl.glVertex3f(fCurrentXValue,
+						fCurrentYValue * renderStyle.getAxisHeight(), renderState.zDepth);
 
 				if (bRenderingSelection) {
 					gl.glEnd();
@@ -781,8 +780,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				} else
 					throw new IllegalStateException("Unknown Storage Type");
 
-				renderBoxedYValues(gl, fCurrentXValue, fCurrentYValue
-						* renderStyle.getAxisHeight(), sRawValue, selectionType);
+				renderBoxedYValues(gl, fCurrentXValue,
+						fCurrentYValue * renderStyle.getAxisHeight(), sRawValue,
+						selectionType);
 			}
 
 			fPreviousXValue = fCurrentXValue;
@@ -909,8 +909,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 											/ renderStyle.getAxisHeight());
 
 							Rectangle2D bounds = textRenderer.getScaledBounds(gl,
-									Formatter.formatNumber(fNumber), renderStyle
-											.getSmallFontScalingFactor(),
+									Formatter.formatNumber(fNumber),
+									renderStyle.getSmallFontScalingFactor(),
 									PCRenderStyle.MIN_NUMBER_TEXT_SIZE);
 							float fWidth = (float) bounds.getWidth();
 							float fHeightHalf = (float) bounds.getHeight() / 3.0f;
@@ -963,8 +963,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 				// }
 				gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-				gl.glTranslatef(fXPosition, renderStyle.getAxisHeight()
-						+ renderStyle.getAxisCaptionSpacing(), 0);
+				gl.glTranslatef(
+						fXPosition,
+						renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(),
+						0);
 				gl.glRotatef(25, 0, 0, 1);
 				textRenderer.begin3DRendering();
 				float fScaling = renderStyle.getSmallFontScalingFactor();
@@ -1220,7 +1222,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// TODO eurovis hacke
 			// gl.glVertex3f(viewFrustum.getWidth(), fBottom, 0);
 			// gl.glVertex3f(viewFrustum.getWidth(), fTop, 0);
-			//			
+			//
 			gl.glVertex3f(fXOrigin - 0.05f, fTop, 0);
 			gl.glEnd();
 
@@ -1264,9 +1266,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 		gl.glColor4f(1f, 1f, 1f, 0.8f);
 		gl.glBegin(GL.GL_POLYGON);
-		gl
-				.glVertex3f(fXTextOrigin - fSmallSpacing, fYTextOrigin - fSmallSpacing,
-						LABEL_Z);
+		gl.glVertex3f(fXTextOrigin - fSmallSpacing, fYTextOrigin - fSmallSpacing, LABEL_Z);
 		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin - fSmallSpacing,
 				LABEL_Z);
 		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin + fBackPlaneHeight,
@@ -1841,11 +1841,12 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				hasFilterChanged = true;
 				AGate gate;
 				if (set.isSetHomogeneous()) {
-					gate = new Gate(++this.iGateCounter, iExternalID, (float) set
-							.getRawForNormalized(0), (float) set
-							.getRawForNormalized(0.5f), set, renderStyle);
+					gate = new Gate(++iGateCounter, iExternalID,
+							(float) set.getRawForNormalized(0),
+							(float) set.getRawForNormalized(0.5f), set, renderStyle);
 				} else {
-					gate = new NominalGate(this.iGateCounter, 0, 0.5f, set, renderStyle);
+					gate = new NominalGate(++iGateCounter, iExternalID, 0, 0.5f, set,
+							renderStyle);
 				}
 				hashGates.put(this.iGateCounter, gate);
 				hashIsGateBlocking.put(this.iGateCounter, new ArrayList<Integer>());
@@ -1860,9 +1861,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			switch (ePickingMode) {
 			case CLICKED:
 				hasFilterChanged = true;
-				Gate gate = new Gate(++iGateCounter, -1, (float) set
-						.getRawForNormalized(0), (float) set.getRawForNormalized(0.5f),
-						set, renderStyle);
+				Gate gate = new Gate(++iGateCounter, -1,
+						(float) set.getRawForNormalized(0),
+						(float) set.getRawForNormalized(0.5f), set, renderStyle);
 				gate.setMasterGate(true);
 				hashMasterGates.put(iGateCounter, gate);
 				hashIsGateBlocking.put(iGateCounter, new ArrayList<Integer>());
@@ -1966,14 +1967,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				// fYValue = renderStyle.getBottomSpacing();
 				alElementReps.add(new SelectedElementRep(idType, iUniqueID, x, y, 0.0f));
 			}
-		} 
-		else if (idType == EIDType.EXPERIMENT_INDEX
-				&& dataDomain.getDataDomainType()
-						.equals("org.caleydo.datadomain.clinical"))
-		{
-			
-		}
-		else {
+		} else if (idType == EIDType.EXPERIMENT_INDEX
+				&& dataDomain.getDataDomainType().equals(
+						"org.caleydo.datadomain.clinical")) {
+
+		} else {
 			// if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
 			// fXValue = viewFrustum.getRight() - 0.2f;
 			// else

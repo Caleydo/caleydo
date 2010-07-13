@@ -878,8 +878,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public String getShortInfo() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO return  something usefull
+		return "DataFilpper";
 	}
 
 	@Override
