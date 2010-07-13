@@ -68,6 +68,8 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 
 	private boolean makeRegularScreenshots = false;
 
+	private Runnable timer = null;
+
 	/**
 	 * Constructor.
 	 */
@@ -317,26 +319,32 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 
 		ImageLoader loader = new ImageLoader();
 		loader.data = new ImageData[] { screenshot.getImageData() };
-		loader.save(GeneralManager.CALEYDO_HOME_PATH + "swt.png", SWT.IMAGE_PNG);
+		loader.save(GeneralManager.CALEYDO_HOME_PATH + "browser.png", SWT.IMAGE_PNG);
+
+		//System.out.println("Write screenshot");
 
 		screenshot.dispose();
 	}
 
 	public void makeRegularScreenshots(boolean makeRegularScreenshots) {
-	
-		Runnable timer = null;
-		
+
 		if (makeRegularScreenshots) {
-			 final int time = 500;
-				timer = new Runnable() {
-					public void run() {
-						browser.getDisplay().timerExec(time, this);
-						makeScreenshot();
-					}
-				};
-				browser.getDisplay().timerExec(time, timer);			
-		}
-		else {
+			final int time = 1000;
+
+			if (timer != null) {
+				browser.getDisplay().timerExec(-1, timer);
+				timer = null;
+			}
+			
+			timer = new Runnable() {
+				public void run() {
+					browser.getDisplay().timerExec(time, this);
+					makeScreenshot();
+				}
+			};
+			browser.getDisplay().timerExec(time, timer);
+			
+		} else {
 			if (timer != null)
 				browser.getDisplay().timerExec(-1, timer);
 		}

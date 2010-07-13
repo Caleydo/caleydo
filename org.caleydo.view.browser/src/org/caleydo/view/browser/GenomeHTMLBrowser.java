@@ -280,6 +280,4 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHa
 		serializedForm.setUrl(getUrl());
 		return serializedForm;
 	}
-	
-	
 }

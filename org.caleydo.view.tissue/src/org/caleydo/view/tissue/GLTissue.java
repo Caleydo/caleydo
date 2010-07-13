@@ -302,12 +302,13 @@ public class GLTissue extends AGLView implements IDataDomainBasedView<IDataDomai
 	
 	private void renewTextureInCache() {
 		
-		updateTexture = true;
-		
+		updateTexture = false;
+	
 		try {
 			textureManager.renewTexture(texturePath);			
 		} catch (Exception e) {
-			updateTexture = false;
+			updateTexture = true;
+			System.out.println("invalid!");
 		}
 	}
 	

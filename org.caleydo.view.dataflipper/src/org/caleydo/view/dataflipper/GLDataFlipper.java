@@ -617,7 +617,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			if (view instanceof GLTissue) {
 				glBrowserImageView = (GLTissue) view;
 				glBrowserImageView.setTexturePath(GeneralManager.CALEYDO_HOME_PATH
-						+ "swt.png");
+						+ "browser.png");
 			}
 
 			// TODO: remove when activating slerp
@@ -785,6 +785,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			if (focusElement.getGLView() instanceof GLTissue) {
 				openBrowserOverlay();
+			}
+			else
+			{
+				closeBrowserOverlay();
 			}
 
 			// Trigger chain move when selected view has not reached the focus
@@ -2232,6 +2236,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 					int x = 729;
 					int y = 143;
+					
 					browserOverlayShell.setBounds(x, y, 764, 760);
 
 					if (browserView == null) {
@@ -2243,7 +2248,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 							}
 						}
 					}
-					browserView.makeRegularScreenshots(true);
 
 					browserView.getComposite().setParent(browserOverlayShell);
 
@@ -2256,6 +2260,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				}
 
 				browserOverlayShell.setVisible(true);
+				browserOverlayShell.open();
+				browserView.makeRegularScreenshots(true);
 			}
 		});
 	}
