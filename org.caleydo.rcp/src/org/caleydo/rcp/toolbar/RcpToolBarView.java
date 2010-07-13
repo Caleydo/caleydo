@@ -139,12 +139,6 @@ public class RcpToolBarView
 		if (eventTrigger instanceof AGLView) {
 			final AGLView glView = ((AGLView) eventTrigger);
 
-			// if (parentComposite == null || !parentComposite.isDisposed()) {
-			// GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID,
-			// "Parent composite is null. The toolbars can't be updated.", new NullPointerException()));
-			// return;
-			// }
-
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 				public void run() {
 					// Check if toolbar is present

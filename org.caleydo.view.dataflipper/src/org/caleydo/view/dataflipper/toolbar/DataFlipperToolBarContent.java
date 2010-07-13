@@ -15,12 +15,8 @@ import org.caleydo.view.dataflipper.GLDataFlipper;
  */
 public class DataFlipperToolBarContent extends AToolBarContent {
 
-	public static final String BUCKET_IMAGE_PATH = "resources/icons/view/remote/remote.png";
-	public static final String BUCKET_VIEW_TITLE = "Bucket";
-
-	// public static final String PATHWAY_IMAGE_PATH =
-	// "resources/icons/view/pathway/pathway.png";
-	// public static final String PATHWAY_VIEW_TITLE = "Pathways";
+	public static final String IMAGE_PATH = "resources/icons/view/remote/remote.png";
+	public static final String VIEW_TITLE = "Bucket";
 
 	DataFlipperToolBarMediator mediator;
 
@@ -45,12 +41,12 @@ public class DataFlipperToolBarContent extends AToolBarContent {
 	// private ToolBarContainer createBucketContainer() {
 	// mediator = new DataFlipperToolBarMediator();
 	// mediator.setToolBarContent(this);
-	// SerializedRemoteRenderingView serializedView =
-	// (SerializedRemoteRenderingView) getTargetViewData();
+	// SerializedDataFlipperView serializedView = (SerializedDataFlipperView)
+	// getTargetViewData();
 	// ActionToolBarContainer container = new ActionToolBarContainer();
 	//
-	// container.setImagePath(BUCKET_IMAGE_PATH);
-	// container.setTitle(BUCKET_VIEW_TITLE);
+	// container.setImagePath(IMAGE_PATH);
+	// container.setTitle(VIEW_TITLE);
 	// List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 	// container.setToolBarItems(actionList);
 	//

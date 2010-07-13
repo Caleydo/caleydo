@@ -7,6 +7,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.view.dataflipper.GLDataFlipper;
 import org.caleydo.view.dataflipper.SerializedDataFlipperView;
+import org.caleydo.view.dataflipper.toolbar.DataFlipperToolBarContent;
 
 public class ViewCreator extends AGLViewCreator {
 
@@ -25,5 +26,10 @@ public class ViewCreator extends AGLViewCreator {
 	public ASerializedView createSerializedView() {
 
 		return new SerializedDataFlipperView();
+	}
+	
+	@Override
+	public Object createToolBarContent() {
+		return new DataFlipperToolBarContent();
 	}
 }

@@ -188,7 +188,7 @@ public class PartListener
 	}
 
 	/**
-	 * draws the toolbar items within the views default toolbar (inline)
+	 * Draws the toolbar items within the views default toolbar (inline)
 	 * 
 	 * @param viewPart
 	 *            view to add the toolbar items

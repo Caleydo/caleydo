@@ -67,6 +67,7 @@ import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
 import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
 import org.caleydo.view.browser.HTMLBrowser;
 import org.caleydo.view.browser.SerializedHTMLBrowserView;
+import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 import org.caleydo.view.heatmap.hierarchical.SerializedHierarchicalHeatMapView;
 import org.caleydo.view.parcoords.GLParallelCoordinates;
 import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
@@ -575,43 +576,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		if (!newViews.isEmpty()) {
 			ASerializedView serView = newViews.remove(0);
-
-			// if (serView instanceof SerializedHTMLBrowserView) {
-
-			// openBrowser();
-
-			// for (IView view : GeneralManager.get().getViewGLCanvasManager()
-			// .getAllItems()) {
-			// if (view instanceof ASWTView) {
-			// final ASWTView browserView = (ASWTView) view;
-			//
-			// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(
-			// new Runnable() {
-			//
-			// @Override
-			// public void run() {
-			// Shell shell = new Shell(SWT.NO_TRIM | SWT.RESIZE);
-			//										
-			// int x = 730;
-			// int y = 150;
-			// shell.setBounds(x, y, 760, 760);
-			//
-			// browserView.getComposite().setParent(shell);
-			//
-			// FillLayout fillLayout = new FillLayout(
-			// SWT.VERTICAL);
-			// fillLayout.marginHeight = 5;
-			// fillLayout.marginWidth = 5;
-			// fillLayout.spacing = 1;
-			// shell.setLayout(fillLayout);
-			// shell.open();
-			// }
-			// });
-			// break;
-			// }
-			// }
-			//
-			// } else {
 			AGLView view = createView(gl, serView);
 
 			if (view instanceof GLTissue) {
@@ -634,7 +598,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				enableUserInteraction();
 			}
 		}
-		// }
 	}
 
 	/**
@@ -653,6 +616,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		views.add(this);
 		for (AGLView view : glViews) {
 			views.add(view);
+
+			// // Add the heatmap as a toolbar view because the hierarchical
+			// itself
+			// // has none toolbar
+			// if (view instanceof GLHierarchicalHeatMap)
+			// ((GLHierarchicalHeatMap) view).getRemoteRenderedViews();
 		}
 
 		viewActivationEvent.setViews(views);
@@ -785,9 +754,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			if (focusElement.getGLView() instanceof GLTissue) {
 				openBrowserOverlay();
-			}
-			else
-			{
+			} else {
 				closeBrowserOverlay();
 			}
 
@@ -878,7 +845,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public String getShortInfo() {
-		// TODO return  something usefull
+		// TODO return something usefull
 		return "DataFilpper";
 	}
 
@@ -2236,7 +2203,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 					int x = 729;
 					int y = 143;
-					
+
 					browserOverlayShell.setBounds(x, y, 764, 760);
 
 					if (browserView == null) {
@@ -2267,7 +2234,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	private void closeBrowserOverlay() {
-		
+
 		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
 
 			@Override
@@ -2279,7 +2246,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				if (glBrowserImageView != null) {
 					glBrowserImageView.updateTexture();
 				}
-				
+
 				if (browserView != null)
 					browserView.makeRegularScreenshots(false);
 			}

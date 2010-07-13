@@ -2585,7 +2585,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		embeddedHeatMapFrustum.setRight(viewFrustum.getRight() - translation.x());
 		embeddedHeatMapFrustum.setTop(ftop - translation.y());
 		embeddedHeatMapFrustum.setBottom(-translation.y());
-		
 
 		glHeatMapView.setFrustum(embeddedHeatMapFrustum);
 		glHeatMapView.displayRemote(gl);
@@ -5206,10 +5205,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
-		// List<AGLEventListener> views = new ArrayList<AGLEventListener>();
-		// views.add(glHeatMapView);
-		// return views;
-		return new ArrayList<AGLView>();
+		List<AGLView> views = new ArrayList<AGLView>();
+		views.add(glHeatMapView);
+		return views;
 	}
 
 	@Override
