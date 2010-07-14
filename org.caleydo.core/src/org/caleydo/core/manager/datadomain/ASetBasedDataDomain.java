@@ -191,6 +191,9 @@ public abstract class ASetBasedDataDomain
 
 	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType,
 		ContentVirtualArray virtualArray) {
+		
+		if(idCategory != contentIDType.getCategory())
+			return;
 		// String idCategoryAsscoatedVAType = possibleIDCategories.get(idCategory);
 		// if (idCategoryAsscoatedVAType == null)
 		// return;
