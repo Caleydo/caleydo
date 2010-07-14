@@ -24,6 +24,7 @@ import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.AssociationManager;
 import org.caleydo.core.manager.datadomain.DataDomainGraph;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -67,10 +68,10 @@ import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
 import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
 import org.caleydo.view.browser.HTMLBrowser;
 import org.caleydo.view.browser.SerializedHTMLBrowserView;
-import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 import org.caleydo.view.heatmap.hierarchical.SerializedHierarchicalHeatMapView;
 import org.caleydo.view.parcoords.GLParallelCoordinates;
 import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
+import org.caleydo.view.pathwaybrowser.GLPathwayViewBrowser;
 import org.caleydo.view.pathwaybrowser.SerializedPathwayViewBrowserView;
 import org.caleydo.view.tissue.GLTissue;
 import org.caleydo.view.tissue.SerializedTissueView;
@@ -167,6 +168,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private GLTissue glBrowserImageView;
 	private Shell browserOverlayShell;
 	private HTMLBrowser browserView;
+
+	// FIXME: it is not nice to store the view as a member var. instead the
+	// early initialized views should be handled differently
+	private AGLView pathwayBrowserView;
 
 	/**
 	 * Constructor.
@@ -293,6 +298,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		initDataDomainViewAssociation();
 		initGuidancePath();
+
+		ASerializedView serView = addView("org.caleydo.datadomain.pathway",
+				"org.caleydo.view.pathwaybrowser");
+		pathwayBrowserView = createView(gl, serView);
+		pathwayBrowserView.initRemote(gl, this, glMouseListener, infoAreaManager);
+		containedGLViews.add(pathwayBrowserView);
 	}
 
 	private void initGuidancePath() {
@@ -964,16 +975,43 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		case DATA_DOMAIN_SELECTION:
 
 			mouseOverDataDomainNode = null;
-
+			HistoryNode historyNode;
 			switch (pickingMode) {
 			case CLICKED:
 				// handleDataDomainSelection(externalPickingID);
+
+				// historyNode = (HistoryNode) historyPath.getLastNode();
+				// if (historyNode != null) {
+				// for (int i = 0; i < MAX_HISTORY_DATA_DOMAINS; i++) {
+				//
+				// String interfaceType = historyNode
+				// .getInterfaceType(externalPickingID);
+				//
+				// if (interfaceType == null) {
+				// if (historyPath.getPrecedingNode(historyNode) != null
+				// && historyPath.getPrecedingNode(historyNode).size() < 1)
+				// break;
+				//
+				// historyNode = (HistoryNode) historyPath.getPrecedingNode(
+				// historyNode).get(0);
+				//
+				// if (historyNode == null)
+				// break;
+				// continue;
+				// }
+				//
+				// if
+				// (historyNode.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
+				// addView(historyNode, "org.caleydo.view.pathwaybrowser");
+				// break;
+				// }
+				// }
 
 				break;
 
 			case MOUSE_OVER:
 
-				HistoryNode historyNode = (HistoryNode) historyPath.getLastNode();
+				historyNode = (HistoryNode) historyPath.getLastNode();
 				if (historyNode != null) {
 					for (int i = 0; i < MAX_HISTORY_DATA_DOMAINS; i++) {
 
@@ -1456,6 +1494,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						&& mouseOverDataDomainNode == node) {
 					INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 1, 1, 1 };
 					CONNECTION_LINE_COLOR = new float[] { 0.15f, 0.15f, 0.15f, 1 };
+
 				} else if (element == null) {
 					INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 0.5f, 0.5f, 0.5f };
 					// } else if (element == lastPickedRemoteLevelElement) {
@@ -1577,6 +1616,38 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	}
 
+	private boolean checkPreCondition(String dataDomainType, String mouseOverInterface) {
+
+		// TODO move conditions to own class
+
+		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
+			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.getInstance()
+					.getDataDomain("org.caleydo.datadomain.clinical")).getSet().depth();
+			if (numberOfPatients > 40)
+				return false;
+		} 
+		else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
+			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.getInstance()
+					.getDataDomain("org.caleydo.datadomain.genetic")).getSet().size();
+			if (numberOfPatients > 20)
+				return false;
+		} else if (dataDomainType.equals("org.caleydo.datadomain.pathway")) {
+
+			for (AGLView view : containedGLViews) {
+				if (view instanceof GLPathwayViewBrowser) {
+
+					if (((GLPathwayViewBrowser) view).getRemoteRenderedViews().size() == 0)
+						return false;
+
+					return true;
+				}
+			}
+			return false;
+		}
+
+		return true;
+	}
+
 	private void renderNextDataDomain(final GL gl, String dataDomainType, float x,
 			float y, boolean highlight, boolean mouseOver) {
 
@@ -1599,14 +1670,45 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		float r = 1;
 		float g = 1;
 		float b = 1;
-		if (mouseOver) {
+		float a = 1;
+
+		if (!checkPreCondition(dataDomainType, mouseOverInterface)) {
+			r = 1f;
+			g = 1f;
+			b = 1f;
+			a = 0.4f;
+
+			// TODO: render exclamation mark
+
+			// TODO: move conditions to own class
+			if (mouseOver) {
+				textRenderer.setColor(0f, 0f, 0f, 1);
+				textRenderer.begin3DRendering();
+				if (dataDomainType.equals("org.caleydo.datadomain.tissue"))
+					textRenderer.draw3D(
+							"Filter below 20 patients in order to inspect tissue slices",
+							0.3f, 0.05f, 0, 0.0035f);
+				else if (dataDomainType.equals("org.caleydo.datadomain.pathway"))
+					textRenderer.draw3D(
+							"Trigger pathway loading in order to inspect pathways ",
+							0.3f, 0.05f, 0, 0.0035f);
+				else if (dataDomainType.equals("org.caleydo.datadomain.genetic"))
+					textRenderer.draw3D(
+							"Filter below 40 patients in order to inspect their gene expression",
+							0.3f, 0.05f, 0, 0.0035f);
+
+				textRenderer.end3DRendering();
+			}
+		} else if (mouseOver) {
 			r = 0.3f;
 			g = 0.3f;
 			b = 0.3f;
+			a = 1;
 		} else if (highlight) {
 			r = 1f;
 			g = 0f;
 			b = 0f;
+			a = 1;
 		}
 
 		// Data background
@@ -1615,7 +1717,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				new Vec3f(0, 0, 0), new Vec3f(0.21f * DATA_DOMAIN_SCALING_FACTOR, 0, 0),
 				new Vec3f(0.21f * DATA_DOMAIN_SCALING_FACTOR,
 						0.2f * DATA_DOMAIN_SCALING_FACTOR, 0), new Vec3f(0,
-						0.2f * DATA_DOMAIN_SCALING_FACTOR, 0), r, g, b, 1);
+						0.2f * DATA_DOMAIN_SCALING_FACTOR, 0), r, g, b, a);
 
 		// Data icon
 		textureManager.renderTexture(gl, dataDomainIcon, new Vec3f(0f, 0.02f, 0.01f),
@@ -2004,7 +2106,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
-		// isPathwayContentAvailable = true;
+		metaViewAnimation = 0;
+		HistoryNode dataDomainNode = new HistoryNode("org.caleydo.datadomain.pathway",
+				dataDomainViewAssociationManager);
+		historyPath.addNode(dataDomainNode);
+		dataDomainNode.addGLView(pathwayBrowserView);
+		openView(pathwayBrowserView, dataDomainNode);
 	}
 
 	@Override
@@ -2054,7 +2161,20 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			return;
 		}
 
-		String dataDomainType = dataDomainNode.getDataDomainType();
+		// Do not create a pathway browser because it is created in the init
+		if (interfaceType.equals("org.caleydo.view.pathwaybrowser")) {
+			dataDomainNode.addGLView(pathwayBrowserView);
+			openView(pathwayBrowserView, dataDomainNode);
+			return;
+		}
+
+		ASerializedView serView = addView(dataDomainNode.getDataDomainType(),
+				interfaceType);
+		if (serView != null)
+			newViews.add(serView);
+	}
+
+	private ASerializedView addView(String dataDomainType, String interfaceType) {
 
 		ASerializedView serView = null;
 		if (interfaceType.equals("org.caleydo.view.parcoords")) {
@@ -2075,8 +2195,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			serView = new SerializedTissueView(dataDomainType);
 		}
 
-		if (serView != null)
-			newViews.add(serView);
+		return serView;
 	}
 
 	private void openView(AGLView view, HistoryNode dataDomainNode) {
