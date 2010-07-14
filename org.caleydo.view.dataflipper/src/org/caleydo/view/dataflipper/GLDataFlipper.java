@@ -413,7 +413,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			renderHandles(gl);
 
 			renderDataDomains(gl, historyPath.getLastNode().getDataDomainType(), 1f,
-					-2.55f);
+					-2.53f);
 
 			if (glConnectionLineRenderer != null && arSlerpActions.isEmpty()) {
 				glConnectionLineRenderer.render(gl);
@@ -1625,8 +1625,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					.getDataDomain("org.caleydo.datadomain.clinical")).getSet().depth();
 			if (numberOfPatients > 40)
 				return false;
-		} 
-		else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
+		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
 			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.getInstance()
 					.getDataDomain("org.caleydo.datadomain.genetic")).getSet().size();
 			if (numberOfPatients > 20)
@@ -1667,62 +1666,83 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.NEXT_DATA_DOMAIN_SELECTION, dataDomainType.hashCode()));
 
+		EIconTextures iconTextureBackgroundRound = EIconTextures.DATA_FLIPPER_DATA_ICON_BACKGROUND_ROUND;
 		float r = 1;
 		float g = 1;
 		float b = 1;
 		float a = 1;
+		float yIconOffset = 0.02f;
 
 		if (!checkPreCondition(dataDomainType, mouseOverInterface)) {
 			r = 1f;
 			g = 1f;
 			b = 1f;
-			a = 0.4f;
-
+			// a = 0.4f;
+			// r = 0.3f;
+			// g = 0.3f;
+			// b = 0.3f;
+			a = 1;
 			// TODO: render exclamation mark
 
 			// TODO: move conditions to own class
 			if (mouseOver) {
+
+				String conditionText = "";
+				if (dataDomainType.equals("org.caleydo.datadomain.tissue"))
+					conditionText = "Filter below 20 patients in order to inspect tissue slices";
+				else if (dataDomainType.equals("org.caleydo.datadomain.pathway"))
+					conditionText = "Trigger pathway loading in order to inspect pathways ";
+				else if (dataDomainType.equals("org.caleydo.datadomain.genetic"))
+					conditionText = "Filter below 40 patients in order to inspect their gene expression";
+
 				textRenderer.setColor(0f, 0f, 0f, 1);
 				textRenderer.begin3DRendering();
-				if (dataDomainType.equals("org.caleydo.datadomain.tissue"))
-					textRenderer.draw3D(
-							"Filter below 20 patients in order to inspect tissue slices",
-							0.3f, 0.05f, 0, 0.0035f);
-				else if (dataDomainType.equals("org.caleydo.datadomain.pathway"))
-					textRenderer.draw3D(
-							"Trigger pathway loading in order to inspect pathways ",
-							0.3f, 0.05f, 0, 0.0035f);
-				else if (dataDomainType.equals("org.caleydo.datadomain.genetic"))
-					textRenderer.draw3D(
-							"Filter below 40 patients in order to inspect their gene expression",
-							0.3f, 0.05f, 0, 0.0035f);
-
+				textRenderer.draw3D(conditionText, 0.35f, 0.05f, 0, 0.0035f);
 				textRenderer.end3DRendering();
+
+				r = 0.3f;
+				g = 0.3f;
+				b = 0.3f;
+				a = 1;
 			}
+
+			iconTextureBackgroundRound = EIconTextures.DATA_FLIPPER_DATA_ICON_BACKGROUND_ROUND_HIGHLIGHTED;
+			yIconOffset = 0.05f;
+			textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_EXCLAMATION_MARK,
+					new Vec3f(0.25f, 0.03f, 0), new Vec3f(0.3f, 0.03f, 0), new Vec3f(
+							0.3f, 0.17f, 0), new Vec3f(0.25f, 0.17f, 0), r, g, b, a);
+
 		} else if (mouseOver) {
 			r = 0.3f;
 			g = 0.3f;
 			b = 0.3f;
 			a = 1;
 		} else if (highlight) {
+			// r = 1f;
+			// g = 0f;
+			// b = 0f;
+			// a = 1;
 			r = 1f;
-			g = 0f;
-			b = 0f;
+			g = 0.3f;
+			b = 0.3f;
 			a = 1;
+
+			iconTextureBackgroundRound = EIconTextures.DATA_FLIPPER_DATA_ICON_BACKGROUND_ROUND_HIGHLIGHTED;
+			yIconOffset = 0.05f;
 		}
 
 		// Data background
-		textureManager.renderTexture(gl,
-				EIconTextures.DATA_FLIPPER_DATA_ICON_BACKGROUND_ROUND,
-				new Vec3f(0, 0, 0), new Vec3f(0.21f * DATA_DOMAIN_SCALING_FACTOR, 0, 0),
-				new Vec3f(0.21f * DATA_DOMAIN_SCALING_FACTOR,
+		textureManager.renderTexture(gl, iconTextureBackgroundRound, new Vec3f(0, 0, 0),
+				new Vec3f(0.21f * DATA_DOMAIN_SCALING_FACTOR, 0, 0), new Vec3f(
+						0.21f * DATA_DOMAIN_SCALING_FACTOR,
 						0.2f * DATA_DOMAIN_SCALING_FACTOR, 0), new Vec3f(0,
 						0.2f * DATA_DOMAIN_SCALING_FACTOR, 0), r, g, b, a);
 
 		// Data icon
-		textureManager.renderTexture(gl, dataDomainIcon, new Vec3f(0f, 0.02f, 0.01f),
-				new Vec3f(0.2f * DATA_DOMAIN_SCALING_FACTOR,
-						0.02f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), new Vec3f(
+		textureManager.renderTexture(gl, dataDomainIcon,
+				new Vec3f(0f, yIconOffset, 0.01f), new Vec3f(
+						0.2f * DATA_DOMAIN_SCALING_FACTOR, yIconOffset
+								* DATA_DOMAIN_SCALING_FACTOR, 0.01f), new Vec3f(
 						0.2f * DATA_DOMAIN_SCALING_FACTOR,
 						0.18f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), new Vec3f(0.0f,
 						0.18f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), 1, 1, 1, 1);

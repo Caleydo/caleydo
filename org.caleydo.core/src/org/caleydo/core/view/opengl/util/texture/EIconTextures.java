@@ -1,9 +1,9 @@
 package org.caleydo.core.view.opengl.util.texture;
 
 public enum EIconTextures {
-	
+
 	NO_ICON_AVAILABLE("resources/icons/general/no_icon_available.png"),
-	
+
 	ARROW_LEFT("resources/icons/view/remote/arrow-left.png"),
 	ARROW_RIGHT("resources/icons/view/remote/arrow-right.png"),
 	ARROW_UP("resources/icons/view/remote/arrow-up.png"),
@@ -94,11 +94,14 @@ public enum EIconTextures {
 		"resources/icons/view/dataflipper/guidance_connection_straight_highlight.png"),
 	DATA_FLIPPER_DATA_ICON_BACKGROUND("resources/icons/view/dataflipper/data_icon_background.png"),
 	DATA_FLIPPER_DATA_ICON_BACKGROUND_ROUND("resources/icons/view/dataflipper/data_icon_background_round.png"),
+	DATA_FLIPPER_DATA_ICON_BACKGROUND_ROUND_HIGHLIGHTED(
+		"resources/icons/view/dataflipper/data_icon_background_round_highlighted.png"),
 	DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED(
 		"resources/icons/view/dataflipper/view_icon_background_rounded.png"),
 	DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE(
 		"resources/icons/view/dataflipper/view_icon_background_square.png"),
-		
+	DATA_FLIPPER_EXCLAMATION_MARK("resources/icons/view/dataflipper/exclamation_mark.png"),
+
 	DATA_DOMAIN_CLINICAL("resources/icons/view/dataflipper/patient.png"),
 	DATA_DOMAIN_PATHWAY("resources/icons/view/dataflipper/pathway.png"),
 	DATA_DOMAIN_GENETIC("resources/icons/view/dataflipper/gene_expression.png"),
@@ -124,13 +127,13 @@ public enum EIconTextures {
 	CM_KEGG("/resources/context_menu/kegg.png"),
 	CM_SCROLL_BUTTON("/resources/context_menu/scroll_button.png"),
 	CM_SCROLL_BUTTON_OVER("/resources/context_menu/scroll_button_over.png"),
-	
+
 	COMPARER_SHOW_HIDDEN("/resources/icons/view/compare/show_hidden_elements.png"),
 	COMPARER_SHOW_CAPTIONS("/resources/icons/view/compare/show_captions.png"),
-	
+
 	GROUPER_COLLAPSE_PLUS("resources/icons/general/plus.png"),
 	GROUPER_COLLAPSE_MINUS("resources/icons/general/minus.png");
-	
+
 	private String sFileName;
 
 	EIconTextures(String sFileName) {
