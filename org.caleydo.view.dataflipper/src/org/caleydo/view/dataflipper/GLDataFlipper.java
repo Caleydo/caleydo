@@ -309,22 +309,54 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private void initGuidancePath() {
 		guidancePath = new Path();
 
-		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.clinical", ""));
+		ArrayList<String> interfaces = new ArrayList<String>();
+		interfaces.add("org.caleydo.view.parcoords");
+		interfaces.add("org.caleydo.view.glyph");
+		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.clinical",
+				interfaces, "Browse patients"));
+		interfaces.clear();
 
 		currentGuidanceNode = (GuidanceNode) guidancePath.getLastNode();
 
+		guidancePath
+				.addNode(currentGuidanceNode, new GuidanceNode(
+						"org.caleydo.datadomain.organ", interfaces,
+						"Inspect MR/CT/X-Ray images"));
+		interfaces.clear();
+
+		interfaces.add("org.caleydo.analytical.clustering");
 		guidancePath.addNode(currentGuidanceNode, new GuidanceNode(
-				"org.caleydo.datadomain.organ", ""));
-		guidancePath.addNode(currentGuidanceNode, new GuidanceNode(
-				"org.caleydo.datadomain.genetic", ""));
+				"org.caleydo.datadomain.genetic", interfaces,
+				"Cluster gene expression data"));
+		interfaces.clear();
 
-		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.pathway", ""));
-		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.genetic", ""));
-		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.clinical", ""));
+		interfaces.add("org.caleydo.view.heatmap.hierarchical");
+		interfaces.add("org.caleydo.view.parcoords");
+		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.genetic",
+				interfaces, "Inspect expression data"));
+		interfaces.clear();
 
-		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.tissue", ""));
+		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.pathway",
+				"org.caleydo.view.pathwaybrowser", "Explore related pathways"));
+		interfaces.clear();
 
-		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.clinical", ""));
+		interfaces.add("org.caleydo.view.browser");
+		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.genetic",
+				interfaces, "View gene information"));
+		interfaces.clear();
+
+		interfaces.add("org.caleydo.view.parcoords");
+		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.clinical",
+				interfaces, "Select patients"));
+		interfaces.clear();
+
+		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.tissue",
+				"org.caleydo.view.tissuebrowser", "View tissue"));
+		interfaces.clear();
+
+		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.clinical",
+				interfaces, "??????????????"));
+		interfaces.clear();
 	}
 
 	private void initDataDomainViewAssociation() {
@@ -396,9 +428,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		// gl.glCallList(iGLDisplayList);
 
+		// Translation and scaling make space for task description at the bottom
+		gl.glTranslatef(0, 0.08f, 0);
+		gl.glScalef(0.98f, 0.98f, 0.98f);
+
 		doSlerpActions(gl);
 		initNewView(gl);
-
 		renderRemoteLevelElement(gl, focusElement);
 
 		if (!showFocusViewFullScreen) {
@@ -421,6 +456,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		}
 
 		// renderGuidanceConnections(gl);
+
+		gl.glScalef(1 / 0.98f, 1 / 0.98f, 1 / 0.98f);
+		gl.glTranslatef(0, -0.08f, 0);
 
 		float fZTranslation = 0;
 		fZTranslation = 4f;
@@ -963,6 +1001,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						}
 
 						mouseOverInterface = interfaceType;
+
 						break;
 					}
 				}
@@ -1159,6 +1198,18 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				if (!interfaceType.equals("org.caleydo.view.tissue"))
 					closeBrowserOverlay();
 
+				// FIXME with general solution for the case when the
+				// next guidance not is of the same data domain type as
+				// the current.
+				// if analytical clustering is done -> continue with
+				// other genetic visual interfaces
+				if (interfaceType.equals("org.caleydo.analytical.clustering")) {
+					currentGuidanceNode = (GuidanceNode) guidancePath.getFollowingNodes(
+							currentGuidanceNode).get(0);
+				}
+
+				currentGuidanceNode.setInterfaceVisited(interfaceType);
+
 				break;
 			}
 		}
@@ -1354,16 +1405,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					continue;
 
 				boolean highlight = false;
-				// for (INode nextGuidanceNode : guidancePath
-				// .getFollowingNodes(currentGuidanceNode)) {
-				// if
-				// (nextGuidanceNode.getDataDomainType().equals(nextDataDomainType))
-				// {
-				// highlight = true;
-				// break;
-				// }
-				// }
-
 				boolean mouseOver = (nextDataDomainType == mouseOverNextDataDomain) ? true
 						: false;
 
@@ -1429,6 +1470,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		for (int viewIndex = 0; viewIndex < maxViewIcons; viewIndex++) {
 
+			String[] interfaces = node.getAllInterfaces();
 			EIconTextures icon = EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE;
 			if (viewIndex == 0 || viewIndex == maxViewIcons - 1)
 				icon = EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED;
@@ -1438,12 +1480,20 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				gl.glRotatef(270, 0, 0, 1);
 			}
 
-			if (viewIndex < node.getAllInterfaces().length && mouseOverInterface != null
-					&& node.getAllInterfaces()[viewIndex] == mouseOverInterface
-					&& mouseOverDataDomainNode != null && node == mouseOverDataDomainNode) {
+			if (viewIndex < interfaces.length && mouseOverInterface != null
+					&& viewType == mouseOverInterface && mouseOverDataDomainNode != null
+					&& node == mouseOverDataDomainNode) {
 				r = 0.5f;
 				g = 0.5f;
 				b = 0.5f;
+			} else if (viewIndex < interfaces.length
+					&& currentGuidanceNode.getInterfaceTypes().contains(
+							interfaces[viewIndex])
+					&& !currentGuidanceNode.isInterfaceVisited(interfaces[viewIndex])
+					&& currentGuidanceNode.getDataDomainType().equals(dataDomainType)) {
+				r = 1;
+				g = 0;
+				b = 0;
 			} else {
 				r = 1;
 				g = 1;
@@ -1460,10 +1510,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				gl.glTranslatef(0, -INTERFACE_WIDTH, 0);
 			}
 
-			if (viewIndex < node.getAllInterfaces().length) {
-
-				String viewType = node.getAllInterfaces()[viewIndex];
-
+			if (viewIndex < interfaces.length) {
+				String viewType = interfaces[viewIndex];
 				RemoteLevelElement element = null;
 
 				if (focusElement.getGLView() != null
@@ -1614,6 +1662,22 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glTranslatef(-x - maxViewIcons * (INTERFACE_WIDTH + 0.01f), -y - 0.31f
 				* DATA_DOMAIN_SCALING_FACTOR, -DATA_DOMAIN_Z);
 
+//		textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_DATA_ICON_BACKGROUND,
+//				new Vec3f(-1.4f, 0, 0), new Vec3f(0.51f, 0, 0), new Vec3f(0.51f, 0.3f, 0),
+//				new Vec3f(-1.4f, 0.3f, 0), 0, 0, 1, 1);
+		textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_TASK, new Vec3f(
+				-0.4f, -4.3f, 0), new Vec3f(-0.2f, -4.3f, 0), new Vec3f(-0.2f, -4.1f, 0),
+				new Vec3f(-0.4f, -4.1f, 0), 1, 1, 1, 1);
+		renderTaskDescription(currentGuidanceNode, -0.1f, -4.27f, 0.008f);
+
+	}
+
+	private void renderTaskDescription(GuidanceNode guidanceNode, float x, float y,
+			float fontScaling) {
+		textRenderer.setColor(0f, 0f, 0f, 1);
+		textRenderer.begin3DRendering();
+		textRenderer.draw3D(guidanceNode.getTaskDescription(), x, y, 0, fontScaling);
+		textRenderer.end3DRendering();
 	}
 
 	private boolean checkPreCondition(String dataDomainType, String mouseOverInterface) {
@@ -1673,7 +1737,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		float a = 1;
 		float yIconOffset = 0.02f;
 
-		if (!checkPreCondition(dataDomainType, mouseOverInterface)) {
+		if (!checkPreCondition(dataDomainType, mouseOverInterface)
+				&& currentGuidanceNode.allInterfacesVisited()) {
 			r = 1f;
 			g = 1f;
 			b = 1f;
@@ -1697,7 +1762,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 				textRenderer.setColor(0f, 0f, 0f, 1);
 				textRenderer.begin3DRendering();
-				textRenderer.draw3D(conditionText, 0.35f, 0.05f, 0, 0.0035f);
+				textRenderer.draw3D(conditionText, 0.34f, 0.0f, 0, 0.0028f);
 				textRenderer.end3DRendering();
 
 				r = 0.3f;
@@ -1717,11 +1782,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			g = 0.3f;
 			b = 0.3f;
 			a = 1;
-		} else if (highlight) {
-			// r = 1f;
-			// g = 0f;
-			// b = 0f;
-			// a = 1;
+		} else if (highlight && currentGuidanceNode.allInterfacesVisited()) {
 			r = 1f;
 			g = 0.3f;
 			b = 0.3f;
@@ -1748,6 +1809,14 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						0.18f * DATA_DOMAIN_SCALING_FACTOR, 0.01f), 1, 1, 1, 1);
 
 		gl.glPopName();
+
+		// Search for guidance node of next data domain
+		for (INode nextNode : guidancePath.getFollowingNodes(currentGuidanceNode)) {
+			if (nextNode.getDataDomainType().equals(dataDomainType) && currentGuidanceNode.allInterfacesVisited()) {
+				renderTaskDescription((GuidanceNode) nextNode, 0.34f, 0.07f, 0.0035f);
+				break;
+			}
+		}
 
 		gl.glTranslatef(-x, -y, -DATA_DOMAIN_Z);
 
@@ -2250,6 +2319,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			viewSpawnElement.setGLView(view);
 			arSlerpActions.add(new SlerpAction(viewSpawnElement, destinationElement));
 		}
+
+		currentGuidanceNode.setInterfaceVisited(view.getViewType());
 	}
 
 	private boolean isViewOpen(AGLView glView) {

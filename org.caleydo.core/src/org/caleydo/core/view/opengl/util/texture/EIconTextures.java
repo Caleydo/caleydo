@@ -101,6 +101,7 @@ public enum EIconTextures {
 	DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE(
 		"resources/icons/view/dataflipper/view_icon_background_square.png"),
 	DATA_FLIPPER_EXCLAMATION_MARK("resources/icons/view/dataflipper/exclamation_mark.png"),
+	DATA_FLIPPER_TASK("resources/icons/view/dataflipper/task.png"),	
 
 	DATA_DOMAIN_CLINICAL("resources/icons/view/dataflipper/patient.png"),
 	DATA_DOMAIN_PATHWAY("resources/icons/view/dataflipper/pathway.png"),
