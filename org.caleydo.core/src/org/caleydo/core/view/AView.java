@@ -50,6 +50,14 @@ public abstract class AView
 	}
 
 	/**
+	 * Empty implementation of initialize, should be overwritten in views if needed.
+	 */
+	@Override
+	public void initialize() {
+
+	}
+
+	/**
 	 * Sets the unique ID of the parent container. Normally it is already set in the constructor. Use this
 	 * method only if you want to change the parent during runtime.
 	 * 

@@ -667,6 +667,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0,
 				fHeatMapWidth, -20, 20, -1);
+		cmdView.setDataDomainType(dataDomain.getDataDomainType());
 
 		cmdView.doCommand();
 
@@ -701,16 +702,16 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0,
 				fHeatMapWidth, -20, 20, -1);
-
+		cmdView.setDataDomainType(dataDomain.getDataDomainType());
 		cmdView.doCommand();
 
 		glGeneDendrogramView = (GLDendrogram) cmdView.getCreatedObject();
-		glGeneDendrogramView.setDataDomain(dataDomain);
 		glGeneDendrogramView.setRemoteRenderingGLView(this);
 
 		cmdView = (CmdCreateView) generalManager.getCommandManager().createCommandByType(
 				ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(GLDendrogram.VIEW_ID + ".vertical");
+		cmdView.setDataDomainType(dataDomain.getDataDomainType());
 
 		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0,
 				fHeatMapWidth, -20, 20, -1);
@@ -892,16 +893,16 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
-		super.replaceContentVA(setID, idCategory, vaType);
+	public void replaceContentVA(int setID,String dataDomain, ContentVAType vaType) {
+		super.replaceContentVA(setID, dataDomain, vaType);
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
 		setDisplayListDirty();
 	}
 
 	@Override
-	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType) {
-		super.replaceStorageVA(idCategory, vaType);
+	public void replaceStorageVA(String dataDomain, StorageVAType vaType) {
+		super.replaceStorageVA(dataDomain, vaType);
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
 		setDisplayListDirty();

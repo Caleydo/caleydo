@@ -58,8 +58,8 @@ public abstract class ARcpGLViewPart
 
 	protected void createGLCanvas() {
 		CmdViewCreateRcpGLCanvas cmdCanvas =
-			(CmdViewCreateRcpGLCanvas) GeneralManager.get().getCommandManager().createCommandByType(
-				ECommandType.CREATE_VIEW_RCP_GLCANVAS);
+			(CmdViewCreateRcpGLCanvas) GeneralManager.get().getCommandManager()
+				.createCommandByType(ECommandType.CREATE_VIEW_RCP_GLCANVAS);
 		cmdCanvas.setAttributes(-1, false, false, false);
 		cmdCanvas.doCommand();
 
@@ -90,6 +90,7 @@ public abstract class ARcpGLViewPart
 
 			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100, iParentCanvasID,
 				0, 0, -8, 0, 0, 0, 0);
+			cmdView.setDataDomainType(serializedView.getDataDomainType());
 			// cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -2f, 2f, -2f,
 			// 2f, 3.82f, 100, set,
 
@@ -98,9 +99,11 @@ public abstract class ARcpGLViewPart
 
 			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100, iParentCanvasID,
 				0, 0, -8, 0, 0, 0, 0);
+			cmdView.setDataDomainType(serializedView.getDataDomainType());
 		}
 		else {
 			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, iParentCanvasID);
+			cmdView.setDataDomainType(serializedView.getDataDomainType());
 		}
 
 		cmdView.doCommand();

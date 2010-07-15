@@ -34,6 +34,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDCategory;
@@ -423,6 +424,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		cmdCreateGLView.setViewID("org.caleydo.view.bookmarking");
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f,
 				viewFrustum.getBottom(), viewFrustum.getTop(), -20, 20, -1);
+		cmdCreateGLView.setDataDomainType(dataDomain.getDataDomainType());
 		cmdCreateGLView.doCommand();
 		glBookmarks = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
 		glBookmarks.setRemoteRenderingGLView(this);
@@ -535,9 +537,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		contentVA.setGroupList(null);
 
 		// todo this doesn't work for turned stuff
-		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent(set,
-				contentSelectionManager.getIDType().getCategory(), contentVAType,
-				contentVA);
+		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent(
+				dataDomain.getDataDomainType(), contentVAType, contentVA);
 		event.setDataDomainType(dataDomain.getDataDomainType());
 
 		event.setSender(this);
@@ -2591,5 +2592,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	public void setRenderConnectionState(boolean renderConnectionssLeft) {
 		this.renderConnectionsLeft = renderConnectionssLeft;
 
+	}
+
+	public ISet getSet() {
+		return set;
 	}
 }

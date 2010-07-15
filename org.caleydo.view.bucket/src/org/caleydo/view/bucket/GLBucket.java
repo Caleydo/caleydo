@@ -358,7 +358,7 @@ public class GLBucket extends AGLView implements
 		cmdCreateGLView.setViewID("org.caleydo.view.bookmarking");
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0.1f, 4.1f,
 				-20, 20, -1);
-		// cmdCreateGLView.setSet(set);
+		cmdCreateGLView.setDataDomainType(dataDomain.getDataDomainType());
 		cmdCreateGLView.doCommand();
 		glBookmarkContainer = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
 		glBookmarkContainer.setRemoteRenderingGLView(this);

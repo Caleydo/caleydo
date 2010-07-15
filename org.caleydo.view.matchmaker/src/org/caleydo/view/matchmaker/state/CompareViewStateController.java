@@ -132,9 +132,9 @@ public class CompareViewStateController {
 		currentState.handleMouseWheel(gl, amount, wheelPoint);
 	}
 
-	public void handleReplaceContentVA(int setID, EIDCategory idCategory,
+	public void handleReplaceContentVA(int setID, String dataDomain,
 			ContentVAType vaType) {
-		currentState.handleReplaceContentVA(setID, idCategory, vaType);
+		currentState.handleReplaceContentVA(setID, dataDomain, vaType);
 	}
 	
 	public void handleClearSelections() {

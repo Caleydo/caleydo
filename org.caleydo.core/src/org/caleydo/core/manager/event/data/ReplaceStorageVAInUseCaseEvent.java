@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
@@ -14,10 +13,10 @@ import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
  * Event that can be called by views if their virtual array has changed so significantly that it is
  * inefficient (or even impossible) to communicate this via {@link VirtualArrayDelta}s. A possible example is
  * the saving of brushes in the parallel coordinates.
- *</p>
- *<p>
+ * </p>
+ * <p>
  * This event should not be received by the individual views, but by the UseCase
- *</p>
+ * </p>
  * 
  * @author Alexander Lex
  */
@@ -30,8 +29,8 @@ public class ReplaceStorageVAInUseCaseEvent
 		// nothing to initialize here
 	}
 
-	public ReplaceStorageVAInUseCaseEvent(ISet set, EIDCategory idCategory, StorageVAType vaType,
+	public ReplaceStorageVAInUseCaseEvent(ISet set, String dataDomain, StorageVAType vaType,
 		StorageVirtualArray virtualArray) {
-		super(set, idCategory, vaType, virtualArray);
+		super(set, dataDomain, vaType, virtualArray);
 	}
 }

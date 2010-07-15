@@ -93,7 +93,9 @@ public class SelectionBrowser
 
 	private void initContent() {
 		ContentVAType contentVAType = ContentVAType.CONTENT;
-		ISetBasedDataDomain dataDomain = ((ISetBasedDataDomain)DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic"));
+		ISetBasedDataDomain dataDomain =
+			((ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+				"org.caleydo.datadomain.genetic"));
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 
 		ContentVirtualArray contentVA = dataDomain.getContentVA(contentVAType);
@@ -399,7 +401,7 @@ public class SelectionBrowser
 	}
 
 	@Override
-	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
+	public void replaceContentVA(int setID, String dataDomain, ContentVAType vaType) {
 		// nothing to do here
 	}
 

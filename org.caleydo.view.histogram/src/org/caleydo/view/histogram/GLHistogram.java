@@ -104,8 +104,8 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
 
-		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
-				dataDomainTypes, viewType);
+		DataDomainManager.getInstance().getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 	@Override
@@ -226,9 +226,7 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 			gl.glVertex3f(fSpacing * iCount + SIDE_SPACING, SIDE_SPACING, 0);
 			gl.glVertex3f(fSpacing * iCount + SIDE_SPACING, SIDE_SPACING + iValue
 					* fOneHeightValue, 0);
-			gl
-					.glColor3fv(colorMapping.getColor(fContinuousColorRegion
-							* (iCount + 1)), 0);
+			gl.glColor3fv(colorMapping.getColor(fContinuousColorRegion * (iCount + 1)), 0);
 			gl.glVertex3f(fSpacing * (iCount + 1) + SIDE_SPACING, SIDE_SPACING + iValue
 					* fOneHeightValue, 0);
 			gl.glVertex3f(fSpacing * (iCount + 1) + SIDE_SPACING, SIDE_SPACING, 0);
@@ -285,9 +283,8 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight), SIDE_SPACING,
 						-0.1f);
-				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight), viewFrustum
-						.getHeight()
-						- SIDE_SPACING, -0.1f);
+				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight),
+						viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
 				gl.glVertex3f(fRight, viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
 				gl.glVertex3f(fRight, SIDE_SPACING, -0.001f);
 				gl.glEnd();
@@ -299,9 +296,8 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glVertex3f(fLeft, SIDE_SPACING, -0.1f);
 				gl.glVertex3f(fLeft, viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
-				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight), viewFrustum
-						.getHeight()
-						- SIDE_SPACING, -0.1f);
+				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight),
+						viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
 				gl.glVertex3f(fRight + fPickingScaling * (fLeft - fRight), SIDE_SPACING,
 						-0.001f);
 				gl.glEnd();
@@ -341,9 +337,8 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glVertex3f(fLeft, SIDE_SPACING, -0.011f);
 				gl.glVertex3f(fLeft, viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
-				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft), viewFrustum
-						.getHeight()
-						- SIDE_SPACING, -0.1f);
+				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft),
+						viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
 				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft), SIDE_SPACING,
 						-0.1f);
 				gl.glEnd();
@@ -355,9 +350,8 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft), SIDE_SPACING,
 						-0.011f);
-				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft), viewFrustum
-						.getHeight()
-						- SIDE_SPACING, -0.1f);
+				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft),
+						viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
 				gl.glVertex3f(fRight, viewFrustum.getHeight() - SIDE_SPACING, -0.1f);
 				gl.glVertex3f(fRight, SIDE_SPACING, -0.1f);
 				gl.glEnd();
@@ -636,8 +630,8 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedHistogramView serializedForm = new SerializedHistogramView(dataDomain
-				.getDataDomainType());
+		SerializedHistogramView serializedForm = new SerializedHistogramView(
+				dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -665,11 +659,6 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
 		}
-	}
-
-	@Override
-	public ISet getSet() {
-		return set;
 	}
 
 	@Override

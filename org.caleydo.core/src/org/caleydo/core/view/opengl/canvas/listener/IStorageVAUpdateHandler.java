@@ -27,6 +27,6 @@ public interface IStorageVAUpdateHandler
 	 * @param vaType
 	 *            the type of the VA which is updated
 	 */
-	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType);
+	public void replaceStorageVA(String dataDomain, StorageVAType vaType);
 
 }

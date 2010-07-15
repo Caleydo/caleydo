@@ -28,6 +28,7 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
+import org.caleydo.core.manager.event.data.ReplaceStorageVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -130,12 +131,10 @@ public abstract class AStorageBasedView
 	protected AStorageBasedView(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, true);
 
-	
 		connectedElementRepresentationManager =
 			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
 		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
-		// registerEventListeners();
 
 	}
 
@@ -146,7 +145,8 @@ public abstract class AStorageBasedView
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
 		dataDomainTypes.add("org.caleydo.datadomain.clinical");
 
-		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
+		DataDomainManager.getInstance().getAssociationManager()
+			.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 	@Override
@@ -296,11 +296,11 @@ public abstract class AStorageBasedView
 		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
 			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.clinical")) {
 
-//			contentSelectionManager.setDelta(selectionDelta);
-//
-//			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
-//			reactOnExternalSelection(scrollToSelection);
-//			setDisplayListDirty();
+			// contentSelectionManager.setDelta(selectionDelta);
+			//
+			// handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
+			// reactOnExternalSelection(scrollToSelection);
+			// setDisplayListDirty();
 		}
 
 		// FIXME: this is not nice since we use expression index for unspecified
@@ -602,11 +602,13 @@ public abstract class AStorageBasedView
 
 		replaceContentVAListener = new ReplaceContentVAListener();
 		replaceContentVAListener.setHandler(this);
+		replaceContentVAListener.setDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
 
 		replaceStorageVAListener = new ReplaceStorageVAListener();
 		replaceStorageVAListener.setHandler(this);
-		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceStorageVAListener);
+		replaceStorageVAListener.setDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(ReplaceStorageVAEvent.class, replaceStorageVAListener);
 	}
 
 	@Override
@@ -658,7 +660,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
+	public void replaceContentVA(int setID, String dataDomainType, ContentVAType vaType) {
 		// String primaryVAType = useCase.getVATypeForIDCategory(idCategory);
 		// if (primaryVAType == null)
 		// return;
@@ -668,18 +670,18 @@ public abstract class AStorageBasedView
 		if (this.contentVAType != vaType)
 			return;
 
-		contentVA = set.getContentVA(vaType);
+		contentVA = set.getContentData(vaType).getContentVA();
 		// contentSelectionManager.setVA(contentVA);
 
 		initData();
 	}
 
 	@Override
-	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType) {
+	public void replaceStorageVA(String dataDomain, StorageVAType vaType) {
 		if (vaType != storageVAType)
 			return;
 
-		storageVA = set.getStorageVA(vaType);
+		storageVA = set.getStorageData(vaType).getStorageVA();
 
 		initData();
 	}
@@ -708,12 +710,6 @@ public abstract class AStorageBasedView
 	public void setSet(ISet set) {
 		this.set = set;
 		initData();
-	}
-
-	@Override
-	public ISet getSet() {
-		// TODO Auto-generated method stub
-		return set;
 	}
 
 }

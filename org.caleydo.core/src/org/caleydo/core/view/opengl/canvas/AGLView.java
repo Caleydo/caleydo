@@ -64,7 +64,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public abstract class AGLView
 	extends AView
-	implements GLEventListener, IPollingListenerOwner, IResettableView {
+	implements GLEventListener, IResettableView {
 
 	public enum EBusyModeState {
 		SWITCH_OFF,
@@ -163,7 +163,7 @@ public abstract class AGLView
 	// private String viewGUIID;
 
 	private boolean isVisible = true;
-	
+
 	private TextRenderer textRenderer;
 
 	/**
@@ -173,13 +173,11 @@ public abstract class AGLView
 		final boolean bRegisterToParentCanvasNow) {
 
 		// If the glCanvas object is null - then the view is rendered remote.
-		super(glCanvas != null ? glCanvas.getID() : -1, sLabel, GeneralManager.get().getIDManager().createID(
-			EManagedObjectType.GL_VIEW));
-		
-		registerEventListeners();
+		super(glCanvas != null ? glCanvas.getID() : -1, sLabel, GeneralManager.get().getIDManager()
+			.createID(EManagedObjectType.GL_VIEW));
 
 		parentGLCanvas = glCanvas;
-		
+
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 48), false);
 
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null) {
@@ -201,6 +199,11 @@ public abstract class AGLView
 	}
 
 	@Override
+	public void initialize() {
+		registerEventListeners();
+	}
+
+	@Override
 	public void init(GLAutoDrawable drawable) {
 
 		glMouseListener.addGLCanvas(this);
@@ -216,7 +219,7 @@ public abstract class AGLView
 			processEvents();
 			if (!isVisible())
 				return;
-			
+
 			((GLEventListener) parentGLCanvas).display(drawable);
 
 			final Vec3f rot_Vec3f = new Vec3f();
@@ -225,7 +228,8 @@ public abstract class AGLView
 			GL gl = drawable.getGL();
 
 			gl.glTranslatef(position.x(), position.y(), position.z());
-			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
+			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(), rot_Vec3f.y(),
+				rot_Vec3f.z());
 
 			displayLocal(gl);
 
@@ -738,17 +742,15 @@ public abstract class AGLView
 		unregisterEventListeners();
 	}
 
-
-
 	@Override
 	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
 		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener, event));
 	}
 
-	@Override
-	public synchronized Pair<AEventListener<? extends IListenerOwner>, AEvent> getEvent() {
-		return queue.poll();
-	}
+	// @Override
+	// public synchronized Pair<AEventListener<? extends IListenerOwner>, AEvent> getEvent() {
+	// return queue.poll();
+	// }
 
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
@@ -827,7 +829,7 @@ public abstract class AGLView
 		gl.glPopAttrib();
 		tempTexture.disable();
 	}
-	
+
 	public void renderText(GL gl, String text, float size, float x, float y, float z) {
 		textRenderer.setColor(0.3f, 0.3f, 0.3f, 1);
 		textRenderer.begin3DRendering();

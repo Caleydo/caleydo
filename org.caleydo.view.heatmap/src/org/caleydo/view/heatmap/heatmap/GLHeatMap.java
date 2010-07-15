@@ -170,8 +170,8 @@ public class GLHeatMap extends AStorageBasedView {
 			renderStyle.setUseFishEye(false);
 
 		// Register keyboard listener to GL canvas
-		glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(
-				new Runnable() {
+		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
+				.asyncExec(new Runnable() {
 					public void run() {
 						glParentView.getParentGLCanvas().getParentComposite()
 								.addKeyListener(glKeyListener);
@@ -772,8 +772,8 @@ public class GLHeatMap extends AStorageBasedView {
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedHeatMapView serializedForm = new SerializedHeatMapView(dataDomain
-				.getDataDomainType());
+		SerializedHeatMapView serializedForm = new SerializedHeatMapView(
+				dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -942,8 +942,8 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	public Set<Integer> getZoomedElements() {
-		Set<Integer> zoomedElements = new HashSet<Integer>(contentSelectionManager
-				.getElements(SelectionType.SELECTION));
+		Set<Integer> zoomedElements = new HashSet<Integer>(
+				contentSelectionManager.getElements(SelectionType.SELECTION));
 		// zoomedElements.addAll(contentSelectionManager
 		// .getElements(SelectionType.MOUSE_OVER));
 		Iterator<Integer> elementIterator = zoomedElements.iterator();
@@ -955,6 +955,10 @@ public class GLHeatMap extends AStorageBasedView {
 				elementIterator.remove();
 		}
 		return zoomedElements;
+	}
+
+	public ISet getSet() {
+		return set;
 	}
 
 }

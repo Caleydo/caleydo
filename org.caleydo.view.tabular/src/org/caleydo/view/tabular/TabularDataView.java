@@ -140,19 +140,18 @@ public class TabularDataView extends ASWTView implements
 	 * Constructor.
 	 */
 	public TabularDataView(final int iParentContainerId, final String sLabel) {
-		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
-				EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
+		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager()
+				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 
 		this.viewType = VIEW_ID;
 		registerDataDomains();
-
 
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 		storageSelectionManager = dataDomain.getStorageSelectionManager();
 
 		idMappingManager = generalManager.getIDMappingManager();
 	}
-	
+
 	@Override
 	public void registerDataDomains() {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
@@ -160,9 +159,9 @@ public class TabularDataView extends ASWTView implements
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
 		dataDomainTypes.add("org.caleydo.datadomain.clinical");
 
-		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
+		DataDomainManager.getInstance().getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
-	
 
 	@Override
 	public void initViewSWTComposite(Composite parentComposite) {
@@ -707,7 +706,7 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
+	public void replaceContentVA(int setID, String dataDomainType, ContentVAType vaType) {
 
 		contentVA = dataDomain.getContentVA(vaType);
 
@@ -733,12 +732,12 @@ public class TabularDataView extends ASWTView implements
 					});
 					break;
 				case ADD:
-					addColumn(deltaItem.getIndex() + COLUMN_OFFSET, deltaItem
-							.getPrimaryID());
+					addColumn(deltaItem.getIndex() + COLUMN_OFFSET,
+							deltaItem.getPrimaryID());
 					break;
 				case COPY:
-					addColumn(deltaItem.getIndex() + 1 + COLUMN_OFFSET, storageVA
-							.get(deltaItem.getIndex()));
+					addColumn(deltaItem.getIndex() + 1 + COLUMN_OFFSET,
+							storageVA.get(deltaItem.getIndex()));
 
 					break;
 				case MOVE:
@@ -769,7 +768,7 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType) {
+	public void replaceStorageVA(String dataDomainType, StorageVAType vaType) {
 		storageVA = dataDomain.getStorageVA(vaType);
 	}
 

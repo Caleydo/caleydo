@@ -7,22 +7,22 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 
 public class ReplaceContentVAEvent
 	extends ReplaceVAEvent<ContentVirtualArray, ContentVAType> {
-	
+
 	public ReplaceContentVAEvent() {
 		// nothing to initialize here
 	}
 
-	public ReplaceContentVAEvent(ISet set, EIDCategory idCategory, ContentVAType vaType) {
-		super(set, idCategory, vaType);
+	public ReplaceContentVAEvent(ISet set, String dataDomainType, ContentVAType vaType) {
+		super(set, dataDomainType, vaType);
 	}
 
-	protected ReplaceContentVAEvent(ISet set, EIDCategory idCategory, ContentVAType vaType,
+	protected ReplaceContentVAEvent(ISet set, String dataDomainType, ContentVAType vaType,
 		ContentVirtualArray virtualArray) {
-		super(set, idCategory, vaType, virtualArray);
+		super(set, dataDomainType, vaType, virtualArray);
 	}
 
-	protected ReplaceContentVAEvent(EIDCategory idCategory, ContentVAType vaType,
+	protected ReplaceContentVAEvent(String dataDomainType, ContentVAType vaType,
 		ContentVirtualArray virtualArray) {
-		super(idCategory, vaType, virtualArray);
+		super(dataDomainType, vaType, virtualArray);
 	}
 }

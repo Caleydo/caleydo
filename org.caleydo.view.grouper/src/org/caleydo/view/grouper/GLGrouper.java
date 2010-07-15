@@ -91,8 +91,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Christian Partl
  * @author Alexander Lex
  */
-public class GLGrouper extends AGLView implements ISetBasedView,
-		IViewCommandHandler, ISelectionUpdateHandler, IClusterNodeEventReceiver {
+public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHandler,
+		ISelectionUpdateHandler, IClusterNodeEventReceiver {
 
 	public final static String VIEW_ID = "org.caleydo.view.grouper";
 
@@ -156,8 +156,8 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 		hashGroups = new HashMap<Integer, GroupRepresentation>();
 
 		dragAndDropController = new DragAndDropController(this);
-		selectionTypeClicked = new SelectionType("Clicked", new float[] { 1.0f,
-				0.0f, 1.0f, 0.0f }, 1, true, false, 1.0f);
+		selectionTypeClicked = new SelectionType("Clicked", new float[] { 1.0f, 0.0f,
+				1.0f, 0.0f }, 1, true, false, 1.0f);
 
 		// TODO:if this should be general, use dynamic idType
 		selectionManager = new SelectionManager(EIDType.CLUSTER_NUMBER);
@@ -167,8 +167,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 		selectionManager.addTypeToDeltaBlacklist(selectionTypeClicked);
 
 		renderStyle = new GrouperRenderStyle(viewFrustum);
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32),
-				true, true);
+		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32), true, true);
 
 		glKeyListener = new GLGrouperKeyListener(this);
 
@@ -185,8 +184,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 
 		DataDomainManager.getInstance().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						viewType);
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 	@Override
@@ -196,8 +194,8 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 		set = dataDomain.getSet();
 
 		storageVA = set.getStorageVA(StorageVAType.STORAGE);
-		drawingStrategyManager = new DrawingStrategyManager(pickingManager,
-				iUniqueID, renderStyle);
+		drawingStrategyManager = new DrawingStrategyManager(pickingManager, iUniqueID,
+				renderStyle);
 		if (set.getStorageTree() != null) {
 			// FIXME: do that differently.
 			// set = set.getStorageTree().getRoot().getMetaSet();
@@ -215,13 +213,11 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		// Register keyboard listener to GL canvas
-		parentGLCanvas.getParentComposite().getDisplay().asyncExec(
-				new Runnable() {
-					public void run() {
-						parentGLCanvas.getParentComposite().addKeyListener(
-								glKeyListener);
-					}
-				});
+		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		init(gl);
 	}
@@ -235,12 +231,11 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 				.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
 		iLastUsedGroupID = 0;
 
-		ClusterNode rootNode = new ClusterNode(tree, "Root",
-				iLastUsedGroupID++, true, -1);
+		ClusterNode rootNode = new ClusterNode(tree, "Root", iLastUsedGroupID++, true, -1);
 		tree.setRootNode(rootNode);
 
-		rootGroup = new GroupRepresentation(rootNode, renderStyle,
-				groupDrawingStrategy, drawingStrategyManager, this, false);
+		rootGroup = new GroupRepresentation(rootNode, renderStyle, groupDrawingStrategy,
+				drawingStrategyManager, this, false);
 		hashGroups.put(rootGroup.getID(), rootGroup);
 		// selectionManager.initialAdd(rootGroup.getID());
 		ArrayList<Integer> indexList = storageVA.getIndexList();
@@ -249,13 +244,12 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 
 			String nodeName = set.get(currentIndex).getLabel();
 			int leafID = currentIndex;
-			ClusterNode currentNode = new ClusterNode(tree, nodeName,
-					iLastUsedGroupID++, false, leafID);
+			ClusterNode currentNode = new ClusterNode(tree, nodeName, iLastUsedGroupID++,
+					false, leafID);
 			tree.addChild(rootNode, currentNode);
 
 			GroupRepresentation groupRep = new GroupRepresentation(currentNode,
-					renderStyle, groupDrawingStrategy, drawingStrategyManager,
-					this, true);
+					renderStyle, groupDrawingStrategy, drawingStrategyManager, this, true);
 			rootGroup.add(groupRep);
 
 			hashGroups.put(groupRep.getID(), groupRep);
@@ -282,9 +276,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 	private void initHierarchy(Tree<ClusterNode> tree) {
 
 		ClusterNode rootNode = tree.getRoot();
-		rootGroup = new GroupRepresentation(
-				rootNode,
-				renderStyle,
+		rootGroup = new GroupRepresentation(rootNode, renderStyle,
 				drawingStrategyManager
 						.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL),
 				drawingStrategyManager, this, !tree.hasChildren(rootNode));
@@ -319,9 +311,8 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 
 		for (ClusterNode child : alChildren) {
 			boolean bHasChildren = tree.hasChildren(child);
-			GroupRepresentation groupRep = new GroupRepresentation(child,
-					renderStyle, groupDrawingStrategy, drawingStrategyManager,
-					this, !bHasChildren);
+			GroupRepresentation groupRep = new GroupRepresentation(child, renderStyle,
+					groupDrawingStrategy, drawingStrategyManager, this, !bHasChildren);
 			parentGroupRep.add(groupRep);
 
 			hashGroups.put(groupRep.getID(), groupRep);
@@ -366,8 +357,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 		ClusterHelper.determineExpressionValue(tree,
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
 		tree.setDirty();
-		tree.getRoot().createMetaSets(
-				(org.caleydo.core.data.collection.set.Set) set);
+		tree.getRoot().createMetaSets((org.caleydo.core.data.collection.set.Set) set);
 		set.setStorageTree(tree);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
@@ -377,8 +367,8 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
-		eventPublisher.triggerEvent(new ReplaceStorageVAInUseCaseEvent(set,
-				EIDCategory.EXPERIMENT, StorageVAType.STORAGE, storageVA));
+		eventPublisher.triggerEvent(new ReplaceStorageVAInUseCaseEvent(set, dataDomain
+				.getDataDomainType(), StorageVAType.STORAGE, storageVA));
 
 		triggerSelectionEvents();
 	}
@@ -421,8 +411,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 
 	@Override
 	public void initRemote(final GL gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener,
-			GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
@@ -486,8 +475,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 		// processEvents();
 		gl.glCallList(iGLDisplayListToCall);
 
-		if (glMouseListener.wasMouseReleased()
-				&& !dragAndDropController.isDragging()
+		if (glMouseListener.wasMouseReleased() && !dragAndDropController.isDragging()
 				&& bPotentialNewSelection) {
 
 			bPotentialNewSelection = false;
@@ -496,12 +484,11 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 
 			potentialNewSelectedGroup.addAsDraggable(dragAndDropController);
 
-			potentialNewSelectedGroup.setSelectionTypeRec(
-					SelectionType.SELECTION, selectionManager);
+			potentialNewSelectedGroup.setSelectionTypeRec(SelectionType.SELECTION,
+					selectionManager);
 			selectionManager.addToType(selectionTypeClicked,
 					potentialNewSelectedGroup.getID());
-			rootGroup
-					.updateSelections(selectionManager, drawingStrategyManager);
+			rootGroup.updateSelections(selectionManager, drawingStrategyManager);
 			triggerSelectionEvents();
 			setDisplayListDirty();
 		}
@@ -552,16 +539,13 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 		rootGroup.draw(gl, textRenderer);
 
 		if (bHierarchyChanged) {
-			float fHierarchyHeight = rootGroup.getScaledHeight(parentGLCanvas
-					.getWidth());
-			float fHierarchyWidth = rootGroup.getScaledWidth(parentGLCanvas
-					.getWidth());
+			float fHierarchyHeight = rootGroup.getScaledHeight(parentGLCanvas.getWidth());
+			float fHierarchyWidth = rootGroup.getScaledWidth(parentGLCanvas.getWidth());
 			int minViewportHeight = (int) (parentGLCanvas.getHeight()
 					/ viewFrustum.getHeight() * fHierarchyHeight) + 10;
 			int minViewportWidth = (int) (parentGLCanvas.getWidth()
 					/ viewFrustum.getWidth() * fHierarchyWidth) + 10;
-			renderStyle.setMinViewDimensions(minViewportWidth,
-					minViewportHeight, this);
+			renderStyle.setMinViewDimensions(minViewportWidth, minViewportHeight, this);
 			bHierarchyChanged = false;
 
 			if (parentGLCanvas.getHeight() <= 0) {
@@ -597,27 +581,23 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 				iDraggedOverCollapseButtonID = -1;
 				if (groupRep != null) {
 					if (!bControlPressed
-							&& !selectionManager.checkStatus(
-									SelectionType.SELECTION, groupRep.getID())) {
+							&& !selectionManager.checkStatus(SelectionType.SELECTION,
+									groupRep.getID())) {
 						dragAndDropController.clearDraggables();
-						selectionManager
-								.clearSelection(SelectionType.SELECTION);
+						selectionManager.clearSelection(SelectionType.SELECTION);
 						selectionManager.clearSelection(selectionTypeClicked);
 					}
 					if (!bControlPressed) {
 						potentialNewSelectedGroup = groupRep;
 						bPotentialNewSelection = true;
 					}
-					dragAndDropController.setDraggingStartPosition(pick
-							.getPickedPoint());
+					dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
 					groupRep.addAsDraggable(dragAndDropController);
 
 					groupRep.setSelectionTypeRec(SelectionType.SELECTION,
 							selectionManager);
-					selectionManager.addToType(selectionTypeClicked, groupRep
-							.getID());
-					rootGroup.updateSelections(selectionManager,
-							drawingStrategyManager);
+					selectionManager.addToType(selectionTypeClicked, groupRep.getID());
+					rootGroup.updateSelections(selectionManager, drawingStrategyManager);
 					triggerSelectionEvents();
 					setDisplayListDirty();
 				}
@@ -647,15 +627,14 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 				if (groupRep != null) {
 					if (selectionManager.checkStatus(SelectionType.MOUSE_OVER,
 							groupRep.getID())
-							|| selectionManager.checkStatus(
-									SelectionType.SELECTION, groupRep.getID())) {
+							|| selectionManager.checkStatus(SelectionType.SELECTION,
+									groupRep.getID())) {
 						return;
 					}
 					selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-					selectionManager.addToType(SelectionType.MOUSE_OVER,
-							groupRep.getID());
-					rootGroup.updateSelections(selectionManager,
-							drawingStrategyManager);
+					selectionManager
+							.addToType(SelectionType.MOUSE_OVER, groupRep.getID());
+					rootGroup.updateSelections(selectionManager, drawingStrategyManager);
 					triggerSelectionEvents();
 					setDisplayListDirty();
 				}
@@ -667,8 +646,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 							groupRep.getID())
 							&& groupRep != rootGroup) {
 
-						RenameGroupItem renameItem = new RenameGroupItem(
-								iExternalID);
+						RenameGroupItem renameItem = new RenameGroupItem(iExternalID);
 						contextMenu.addContextMenueItem(renameItem);
 						// groupRep.addAsDraggable(dragAndDropController);
 						//
@@ -683,8 +661,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 						// setDisplayListDirty();
 
 						Set<Integer> setSelectedGroups = new HashSet<Integer>(
-								selectionManager
-										.getElements(SelectionType.SELECTION));
+								selectionManager.getElements(SelectionType.SELECTION));
 
 						CreateGroupItem createGroupItem = new CreateGroupItem(
 								setSelectedGroups);
@@ -699,8 +676,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 						contextMenu.addContextMenueItem(deleteGroupsItem);
 
 						Set<Integer> setClickedGroups = new HashSet<Integer>(
-								selectionManager
-										.getElements(selectionTypeClicked));
+								selectionManager.getElements(selectionTypeClicked));
 						ArrayList<ICompositeGraphic> orderedComposites = getOrderedCompositeList(
 								setClickedGroups, false);
 
@@ -712,7 +688,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 
 						// Lazy loading of R
 						// GeneralManager.get().getRStatisticsPerformer();
-						//								
+						//
 						// StatisticsPValueReductionItem pValueReductionItem =
 						// new StatisticsPValueReductionItem(
 						// selectedSets);
@@ -731,8 +707,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 							contextMenu.addSeparator();
 
 							OpenViewEvent openViewEvent = new OpenViewEvent();
-							openViewEvent
-									.setViewType("org.caleydo.view.statistics");
+							openViewEvent.setViewType("org.caleydo.view.statistics");
 							openViewEvent.setSender(this);
 							GeneralManager.get().getEventPublisher()
 									.triggerEvent(openViewEvent);
@@ -742,15 +717,12 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 
 							StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
 									selectedSets);
-							contextMenu
-									.addContextMenueItem(pValueReductionItem);
+							contextMenu.addContextMenueItem(pValueReductionItem);
 
 							if (orderedComposites.size() == 2) {
 								StatisticsFoldChangeReductionItem foldChangeReductionItem = new StatisticsFoldChangeReductionItem(
-										selectedSets.get(0), selectedSets
-												.get(1));
-								contextMenu
-										.addContextMenueItem(foldChangeReductionItem);
+										selectedSets.get(0), selectedSets.get(1));
+								contextMenu.addContextMenueItem(foldChangeReductionItem);
 
 								StatisticsTwoSidedTTestReductionItem twoSidedTTestReductionItem = new StatisticsTwoSidedTTestReductionItem(
 										selectedSets);
@@ -782,8 +754,8 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 
 					if (!isRenderedRemote() && bContextMenueItemsAvailable) {
 						contextMenu.setLocation(pick.getPickedPoint(),
-								getParentGLCanvas().getWidth(),
-								getParentGLCanvas().getHeight());
+								getParentGLCanvas().getWidth(), getParentGLCanvas()
+										.getHeight());
 						contextMenu.setMasterGLView(this);
 					}
 
@@ -800,8 +772,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 				iDraggedOverCollapseButtonID = -1;
 				dragAndDropController.clearDraggables();
 				selectionManager.clearSelections();
-				rootGroup.updateSelections(selectionManager,
-						drawingStrategyManager);
+				rootGroup.updateSelections(selectionManager, drawingStrategyManager);
 				triggerSelectionEvents();
 				setDisplayListDirty();
 				break;
@@ -869,7 +840,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 		// delta.addSelection(clusterNode.getLeafID(), item.getSelectionType());
 		// }
 		// }
-		//		
+		//
 		// SelectionUpdateEvent selectionUpdateEvent = new
 		// SelectionUpdateEvent();
 		// selectionUpdateEvent.setSender(this);
@@ -933,8 +904,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class,
-				clearSelectionsListener);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
 		createGroupListener = new CreateGroupListener();
 		createGroupListener.setHandler(this);
@@ -950,13 +920,11 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 
 		deleteGroupsListener = new DeleteGroupsListener();
 		deleteGroupsListener.setHandler(this);
-		eventPublisher.addListener(DeleteGroupsEvent.class,
-				deleteGroupsListener);
+		eventPublisher.addListener(DeleteGroupsEvent.class, deleteGroupsListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class,
-				selectionUpdateListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		clusterNodeSelectionListener = new ClusterNodeSelectionListener();
 		clusterNodeSelectionListener.setHandler(this);
@@ -1055,8 +1023,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 	 * @param groupRepresentation
 	 *            The GroupRepresentation object to be added.
 	 */
-	public void addGroupRepresentation(int iID,
-			GroupRepresentation groupRepresentation) {
+	public void addGroupRepresentation(int iID, GroupRepresentation groupRepresentation) {
 		hashGroups.put(iID, groupRepresentation);
 	}
 
@@ -1107,8 +1074,8 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 				setComposites.add(hashGroups.get(id));
 		}
 
-		rootGroup.getOrderedCompositeList(setComposites,
-				alOrderedTopLevelComposites, topLevelElementsOnly);
+		rootGroup.getOrderedCompositeList(setComposites, alOrderedTopLevelComposites,
+				topLevelElementsOnly);
 
 		return alOrderedTopLevelComposites;
 	}
@@ -1126,10 +1093,8 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 	public void createNewGroup(Set<Integer> setContainedGroups) {
 
 		tree = new Tree<ClusterNode>();
-		GroupRepresentation newGroup = new GroupRepresentation(
-				new ClusterNode(tree, "group" + iLastUsedGroupID,
-						iLastUsedGroupID++, false, -1),
-				renderStyle,
+		GroupRepresentation newGroup = new GroupRepresentation(new ClusterNode(tree,
+				"group" + iLastUsedGroupID, iLastUsedGroupID++, false, -1), renderStyle,
 				drawingStrategyManager
 						.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL),
 				drawingStrategyManager, this, false);
@@ -1151,8 +1116,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 		}
 
 		if (bSharedParent) {
-			commonParent.replaceChild(alOrderedTopLevelComposites.get(0),
-					newGroup);
+			commonParent.replaceChild(alOrderedTopLevelComposites.get(0), newGroup);
 			for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
 				composite.setParent(newGroup);
 				commonParent.delete(composite);
@@ -1163,8 +1127,8 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 			int iTempID[] = { iLastUsedGroupID };
 			for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
 				iTempID[0]++;
-				ICompositeGraphic copy = composite.createDeepCopyWithNewIDs(
-						tree, iTempID);
+				ICompositeGraphic copy = composite
+						.createDeepCopyWithNewIDs(tree, iTempID);
 				copy.setParent(newGroup);
 				newGroup.add(copy);
 			}
@@ -1190,8 +1154,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 	 *            Composites whose common parent shall be found for.
 	 * @return The common parent if there exists one, null otherwise.
 	 */
-	private ICompositeGraphic findCommonParent(
-			ArrayList<ICompositeGraphic> alComposites) {
+	private ICompositeGraphic findCommonParent(ArrayList<ICompositeGraphic> alComposites) {
 
 		ICompositeGraphic compositeWithLowestHierarchyLevel = null;
 		int iLowestHierarchyLevel = Integer.MAX_VALUE;
@@ -1260,8 +1223,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 		int iTempID[] = { iLastUsedGroupID };
 		for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
 			iTempID[0]++;
-			ICompositeGraphic copy = composite.createDeepCopyWithNewIDs(tree,
-					iTempID);
+			ICompositeGraphic copy = composite.createDeepCopyWithNewIDs(tree, iTempID);
 			parent.add(copy);
 		}
 		iLastUsedGroupID = iTempID[0] + 1;
@@ -1302,8 +1264,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 			boolean scrollToSelection, String info) {
 
 		if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
-			Collection<SelectionDeltaItem> deltaItems = selectionDelta
-					.getAllItems();
+			Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
 			Tree<ClusterNode> experimentTree = set.getStorageTree();
 
 			if (experimentTree != null) {
@@ -1322,8 +1283,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 						groupRep.setSelectionTypeRec(item.getSelectionType(),
 								selectionManager);
 					}
-					rootGroup.updateSelections(selectionManager,
-							drawingStrategyManager);
+					rootGroup.updateSelections(selectionManager, drawingStrategyManager);
 				}
 				setDisplayListDirty();
 			}
@@ -1339,8 +1299,7 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 
 			selectionManager.clearSelections();
 			selectionManager.setDelta(selectionDelta);
-			rootGroup
-					.updateSelections(selectionManager, drawingStrategyManager);
+			rootGroup.updateSelections(selectionManager, drawingStrategyManager);
 			setDisplayListDirty();
 		}
 
@@ -1354,25 +1313,19 @@ public class GLGrouper extends AGLView implements ISetBasedView,
 	 */
 	public void renameGroup(int groupID) {
 		final GroupRepresentation groupRep = hashGroups.get(groupID);
-		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(
-				new Runnable() {
+		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
 
-					@Override
-					public void run() {
-						ChangeGroupNameDialog.run(GeneralManager.get()
-								.getGUIBridge().getDisplay(), groupRep);
-						groupRep.getClusterNode().getMetaSet().setLabel(
-								groupRep.getClusterNode().getNodeName());
-						setDisplayListDirty();
-					}
-				});
+			@Override
+			public void run() {
+				ChangeGroupNameDialog.run(GeneralManager.get().getGUIBridge()
+						.getDisplay(), groupRep);
+				groupRep.getClusterNode().getMetaSet()
+						.setLabel(groupRep.getClusterNode().getNodeName());
+				setDisplayListDirty();
+			}
+		});
 
 		// groupRep.getClusterNode().getMetaSet().setLabel(groupRep.getClusterNode().getNodeName());
-	}
-
-	@Override
-	public ISet getSet() {
-		return set;
 	}
 
 	@Override

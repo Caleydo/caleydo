@@ -13,12 +13,4 @@ import org.caleydo.core.view.opengl.canvas.listener.INewSetHandler;
 public interface ISetBasedView
 	extends IDataDomainBasedView<ISetBasedDataDomain>, IView, INewSetHandler {
 
-	/**
-	 * Returns the current set which the view is rendering.
-	 */
-	@Deprecated
-	public ISet getSet();
-
-	@Deprecated
-	public void setSet(ISet set);
 }

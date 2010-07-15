@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.IVAType;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.AEvent;
@@ -21,7 +20,6 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 	extends AEvent {
 
 	T vaType = null;
-	EIDCategory idCategory = null;
 	E virtualArray;
 	boolean usesVADirectly = false;
 
@@ -39,14 +37,14 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 	 * 
 	 * @param vaType
 	 */
-	public ReplaceVAEvent(ISet set, EIDCategory idCategory, T vaType) {
-		this.idCategory = idCategory;
+	public ReplaceVAEvent(ISet set, String dataDomainType, T vaType) {
+		this.dataDomainType = dataDomainType;
 		this.vaType = vaType;
 		this.setID = set.getID();
 	}
 
-	public ReplaceVAEvent(ISet set, EIDCategory idCategory, T vaType, E virtualArray) {
-		this.idCategory = idCategory;
+	public ReplaceVAEvent(ISet set, String dataDomainType, T vaType, E virtualArray) {
+		this.dataDomainType = dataDomainType;
 		this.vaType = vaType;
 		this.virtualArray = virtualArray;
 		usesVADirectly = true;
@@ -60,20 +58,11 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 	 * @param vaType
 	 * @param virtualArray
 	 */
-	protected ReplaceVAEvent(EIDCategory idCategory, T vaType, E virtualArray) {
-		this.idCategory = idCategory;
+	protected ReplaceVAEvent(String dataDomainType, T vaType, E virtualArray) {
+		this.dataDomainType = dataDomainType;
 		this.vaType = vaType;
 		this.virtualArray = virtualArray;
 		usesVADirectly = true;
-	}
-
-	/**
-	 * Returns the id category for the virtual array to be replaced.
-	 * 
-	 * @return
-	 */
-	public EIDCategory getIDCategory() {
-		return idCategory;
 	}
 
 	/**
@@ -98,13 +87,9 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?, ?>, T exten
 		this.vaType = vaType;
 	}
 
-	public void setIDCategory(EIDCategory idCategory) {
-		this.idCategory = idCategory;
-	}
-
 	@Override
 	public boolean checkIntegrity() {
-		if (vaType == null || idCategory == null)
+		if (vaType == null)
 			return false;
 
 		if (usesVADirectly)

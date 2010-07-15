@@ -65,13 +65,12 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 			TextRenderer textRenderer, TextureManager textureManager,
 			PickingManager pickingManager, GLMouseListener glMouseListener,
 			SetBar setBar, RenderCommandFactory renderCommandFactory,
-			ISetBasedDataDomain dataDomain,
-			DragAndDropController dragAndDropController,
+			ISetBasedDataDomain dataDomain, DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
 
 		super(view, viewID, textRenderer, textureManager, pickingManager,
-				glMouseListener, setBar, renderCommandFactory,
-				dataDomain, dragAndDropController, compareViewStateController);
+				glMouseListener, setBar, renderCommandFactory, dataDomain,
+				dragAndDropController, compareViewStateController);
 
 		captionPositions = new HashMap<Integer, MovementVector3>();
 		captionTextDimensions = new HashMap<Integer, MovementVector2>();
@@ -81,13 +80,12 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 		previousTimeStamp = 0;
 		animationStarted = false;
 	}
-	
+
 	@Override
 	public void drawActiveElements(GL gl) {
 		if (animationStarted) {
 			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-				heatMapWrapper.drawRemoteItems(gl, glMouseListener,
-						pickingManager);
+				heatMapWrapper.drawRemoteItems(gl, glMouseListener, pickingManager);
 			}
 		}
 	}
@@ -96,37 +94,37 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	public void buildDisplayList(GL gl) {
 		if (animationStarted) {
 			for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-				heatMapWrapper.drawLocalItems(gl, textureManager,
-						pickingManager, glMouseListener, viewID);
+				heatMapWrapper.drawLocalItems(gl, textureManager, pickingManager,
+						glMouseListener, viewID);
 			}
 
 			IViewFrustum viewFrustum = view.getViewFrustum();
 
 			setBar.setWidth(viewFrustum.getWidth());
 			setBar.render(gl);
-			
+
 			contentIDToIndividualLines.clear();
 			leftHeatMapWrapperToDetailBands = new HashMap<HeatMapWrapper, ArrayList<DetailBand>>();
 			detailBandID = 0;
-			
+
 			for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
 
-				renderIndiviudalLineRelations(gl, heatMapWrappers.get(i), heatMapWrappers
-						.get(i + 1));
+				renderIndiviudalLineRelations(gl, heatMapWrappers.get(i),
+						heatMapWrappers.get(i + 1));
 
 				if (bandBundlingActive) {
 
 					// TODO: if we put the heatmapwarpper combination with the
 					// calculated detail bands in
 					// a hash map we have to calculate it only once!
-					calculateDetailBands(heatMapWrappers.get(i), heatMapWrappers
-							.get(i + 1), false);
+					calculateDetailBands(heatMapWrappers.get(i),
+							heatMapWrappers.get(i + 1), false);
 
 					renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i), true);
 					renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i + 1),
 							false);
-					renderDetailBandRelations(gl, heatMapWrappers.get(i), heatMapWrappers
-							.get(i + 1));
+					renderDetailBandRelations(gl, heatMapWrappers.get(i),
+							heatMapWrappers.get(i + 1));
 				}
 			}
 
@@ -161,8 +159,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public void handleContentGroupListUpdate(int setID,
-			ContentGroupList contentGroupList) {
+	public void handleContentGroupListUpdate(int setID, ContentGroupList contentGroupList) {
 	}
 
 	@Override
@@ -170,14 +167,12 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public void handlePickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick,
-			boolean isControlPressed) {
+	public void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode,
+			int iExternalID, Pick pick, boolean isControlPressed) {
 	}
 
 	@Override
-	public void handleReplaceContentVA(int setID, EIDCategory idCategory,
-			ContentVAType vaType) {
+	public void handleReplaceContentVA(int setID, String dataDomain, ContentVAType vaType) {
 	}
 
 	@Override
@@ -235,8 +230,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	 *            Text the scaling shall be calculated for.
 	 * @return Scaling factor for the specified text.
 	 */
-	protected float getCaptionLabelTextWidth(GL gl, String text,
-			AHeatMapLayout layout) {
+	protected float getCaptionLabelTextWidth(GL gl, String text, AHeatMapLayout layout) {
 
 		float captionLabelHeight = layout.getCaptionLabelHeight();
 		float captionLabelWidth = layout.getCaptionLabelWidth();
@@ -245,50 +239,39 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 		float fScalingWidth = captionLabelWidth / (float) bounds.getWidth();
 		float fScalingHeight = captionLabelHeight / (float) bounds.getHeight();
 
-		return (float) (bounds.getWidth() * Math.min(fScalingHeight,
-				fScalingWidth));
+		return (float) (bounds.getWidth() * Math.min(fScalingHeight, fScalingWidth));
 	}
 
 	protected void createOffsets(boolean isLowerOffsets, int id) {
 		int index = isLowerOffsets ? 0 : 1;
-		captionPositionOffset[index] = captionPositions.get(id)
-				.getRemainingVec3f();
+		captionPositionOffset[index] = captionPositions.get(id).getRemainingVec3f();
 		captionTextDimensionsOffset[index] = captionTextDimensions.get(id)
 				.getRemainingVec2f();
-		captionTextSpacingOffset[index] = captionTextSpacing.get(id)
-				.getRemainingVec2f();
-		heatMapDimensionsOffset[index] = heatMapDimensions.get(id)
-				.getRemainingVec2f();
-		heatMapPositionOffset[index] = heatMapPositions.get(id)
-				.getRemainingVec3f();
+		captionTextSpacingOffset[index] = captionTextSpacing.get(id).getRemainingVec2f();
+		heatMapDimensionsOffset[index] = heatMapDimensions.get(id).getRemainingVec2f();
+		heatMapPositionOffset[index] = heatMapPositions.get(id).getRemainingVec3f();
 	}
 
-	protected void createMovementValues(GL gl, int id,
-			AHeatMapLayout srcLayout, AHeatMapLayout destLayout) {
+	protected void createMovementValues(GL gl, int id, AHeatMapLayout srcLayout,
+			AHeatMapLayout destLayout) {
 
 		HeatMapWrapper heatMapWrapper = heatMapWrappers.get(id);
 
-		float textWidth = getCaptionLabelTextWidth(gl, heatMapWrapper
-				.getCaption(), srcLayout);
-		Vec3f captionStartPosition = srcLayout
-				.getCaptionLabelPosition(textWidth);
-		textWidth = getCaptionLabelTextWidth(gl, heatMapWrapper.getCaption(),
-				destLayout);
-		Vec3f captionTargetPosition = destLayout
-				.getCaptionLabelPosition(textWidth);
+		float textWidth = getCaptionLabelTextWidth(gl, heatMapWrapper.getCaption(),
+				srcLayout);
+		Vec3f captionStartPosition = srcLayout.getCaptionLabelPosition(textWidth);
+		textWidth = getCaptionLabelTextWidth(gl, heatMapWrapper.getCaption(), destLayout);
+		Vec3f captionTargetPosition = destLayout.getCaptionLabelPosition(textWidth);
 
 		float captionStartWidth = srcLayout.getCaptionLabelWidth();
 		float captionStartHeight = srcLayout.getCaptionLabelHeight();
 		float captionTargetWidth = destLayout.getCaptionLabelWidth();
 		float captionTargetHeight = destLayout.getCaptionLabelHeight();
 
-		float captionStartSpacingX = srcLayout
-				.getCaptionLabelHorizontalSpacing();
+		float captionStartSpacingX = srcLayout.getCaptionLabelHorizontalSpacing();
 		float captionStartSpacingY = srcLayout.getCaptionLabelVerticalSpacing();
-		float captionTargetSpacingX = destLayout
-				.getCaptionLabelHorizontalSpacing();
-		float captionTargetSpacingY = destLayout
-				.getCaptionLabelVerticalSpacing();
+		float captionTargetSpacingX = destLayout.getCaptionLabelHorizontalSpacing();
+		float captionTargetSpacingY = destLayout.getCaptionLabelVerticalSpacing();
 
 		Vec3f heatMapStartPosition = srcLayout.getOverviewHeatMapPosition();
 		Vec3f heatMapTargetPosition = destLayout.getOverviewHeatMapPosition();
@@ -298,22 +281,22 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 		float heatMapTargetWidth = destLayout.getOverviewHeatMapWidth();
 		float heatMapTargetHeight = destLayout.getOverviewHeight();
 
-		MovementVector3 captionPosition = new MovementVector3(
-				captionStartPosition, captionTargetPosition, animationDuration);
+		MovementVector3 captionPosition = new MovementVector3(captionStartPosition,
+				captionTargetPosition, animationDuration);
 		captionPositions.put(id, captionPosition);
 
-		MovementVector2 captionDimenstions = new MovementVector2(
-				captionStartWidth, captionTargetWidth, captionStartHeight,
-				captionTargetHeight, animationDuration);
+		MovementVector2 captionDimenstions = new MovementVector2(captionStartWidth,
+				captionTargetWidth, captionStartHeight, captionTargetHeight,
+				animationDuration);
 		captionTextDimensions.put(id, captionDimenstions);
 
-		MovementVector2 captionSpacings = new MovementVector2(
-				captionStartSpacingX, captionTargetSpacingX,
-				captionStartSpacingY, captionTargetSpacingY, animationDuration);
+		MovementVector2 captionSpacings = new MovementVector2(captionStartSpacingX,
+				captionTargetSpacingX, captionStartSpacingY, captionTargetSpacingY,
+				animationDuration);
 		captionTextSpacing.put(id, captionSpacings);
 
-		MovementVector3 heatMapPosition = new MovementVector3(
-				heatMapStartPosition, heatMapTargetPosition, animationDuration);
+		MovementVector3 heatMapPosition = new MovementVector3(heatMapStartPosition,
+				heatMapTargetPosition, animationDuration);
 		heatMapPositions.put(id, heatMapPosition);
 
 		MovementVector2 heatMapDims = new MovementVector2(heatMapStartWidth,
@@ -348,28 +331,22 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 
 			HeatMapLayoutConfigurable transitionLayout = (HeatMapLayoutConfigurable) layouts
 					.get(i);
-			transitionLayout.setCaptionLabelPosition(captionPositions.get(i)
-					.getVec3f());
-			transitionLayout.setCaptionLabelWidth(captionTextDimensions.get(i)
+			transitionLayout.setCaptionLabelPosition(captionPositions.get(i).getVec3f());
+			transitionLayout.setCaptionLabelWidth(captionTextDimensions.get(i).x());
+			transitionLayout.setCaptionLabelHeight(captionTextDimensions.get(i).y());
+			transitionLayout.setCaptionLabelHorizontalSpacing(captionTextSpacing.get(i)
 					.x());
-			transitionLayout.setCaptionLabelHeight(captionTextDimensions.get(i)
+			transitionLayout.setCaptionLabelHorizontalSpacing(captionTextSpacing.get(i)
 					.y());
-			transitionLayout
-					.setCaptionLabelHorizontalSpacing(captionTextSpacing.get(i)
-							.x());
-			transitionLayout
-					.setCaptionLabelHorizontalSpacing(captionTextSpacing.get(i)
-							.y());
 			transitionLayout.setOverviewHeatMapPosition(heatMapPositions.get(i)
 					.getVec3f());
-			transitionLayout.setOverviewHeatMapWidth(heatMapDimensions.get(i)
-					.x());
+			transitionLayout.setOverviewHeatMapWidth(heatMapDimensions.get(i).x());
 			transitionLayout.setOverviewHeight(heatMapDimensions.get(i).y());
 		}
 
 		setHeatMapWrapperDisplayListDirty();
 	}
-	
+
 	protected abstract void finish();
 
 	// protected abstract void drawActiveElements(GL gl, double timePassed);

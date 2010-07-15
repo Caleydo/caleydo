@@ -12,13 +12,13 @@ public class ReplaceStorageVAEvent
 		// nothing to initialize here
 	}
 
-	public ReplaceStorageVAEvent(ISet set, EIDCategory idCategory, StorageVAType vaType) {
-		super(set, idCategory, vaType);
+	public ReplaceStorageVAEvent(ISet set, String dataDomainType, StorageVAType vaType) {
+		super(set, dataDomainType, vaType);
 	}
 
-	public ReplaceStorageVAEvent(ISet set, EIDCategory idCategory, StorageVAType vaType,
+	public ReplaceStorageVAEvent(ISet set, String dataDomainType, StorageVAType vaType,
 		StorageVirtualArray virtualArray) {
-		super(set, idCategory, vaType, virtualArray);
+		super(set, dataDomainType, vaType, virtualArray);
 	}
 
 }

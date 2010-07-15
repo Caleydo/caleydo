@@ -11,7 +11,8 @@ import org.caleydo.core.data.selection.SelectionType;
 /**
  * Fixme: consolidate this and StorageData
  * 
- * @author alexsb
+ * @author Alexander Lex 
+ * 
  */
 public class ContentData {
 	ContentVirtualArray contentVA;

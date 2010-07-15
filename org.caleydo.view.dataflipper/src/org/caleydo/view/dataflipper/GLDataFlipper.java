@@ -715,10 +715,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		AGLView glView = cmdView.getCreatedObject();
 		glView.setRemoteRenderingGLView(this);
 
-		if (glView instanceof IDataDomainBasedView<?>) {
-			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
-					.getInstance().getDataDomain(serView.getDataDomainType()));
-		}
+//		if (glView instanceof IDataDomainBasedView<?>) {
+//			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
+//					.getInstance().getDataDomain(serView.getDataDomainType()));
+//		}
 
 		return glView;
 	}

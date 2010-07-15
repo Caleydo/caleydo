@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -26,8 +28,7 @@ public class GenericDataDomain extends ASetBasedDataDomain {
 	 */
 	public GenericDataDomain() {
 
-		super();
-		dataDomainType = "org.caleydo.datadomain.generic";
+		super("org.caleydo.datadomain.generic");
 		contentLabelSingular = "entity";
 		contentLabelPlural = "entities";
 
@@ -47,6 +48,13 @@ public class GenericDataDomain extends ASetBasedDataDomain {
 
 	@Override
 	public void handleStorageVAUpdate(StorageVADelta vaDelta, String info) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void handleContentVAUpdateForForeignDataDomain(int setID,
+			String dataDomainType, ContentVAType vaType, ContentVirtualArray virtualArray) {
 		// TODO Auto-generated method stub
 
 	}

@@ -11,7 +11,7 @@ import org.caleydo.core.serialize.ASerializedView;
  * @author Alexander Lex
  */
 public interface IView
-	extends IUniqueObject{
+	extends IUniqueObject {
 	/**
 	 * Sets the unique ID of the parent container. Normally it is already set in the constructor. Use this
 	 * method only if you want to change the parent during runtime.
@@ -26,6 +26,11 @@ public interface IView
 	public String getLabel();
 
 	/**
+	 * Initializes the view after setting all required parameters.
+	 */
+	public void initialize();
+
+	/**
 	 * Set the label of the view
 	 * 
 	 * @param label
@@ -33,9 +38,8 @@ public interface IView
 	 */
 	void setLabel(String label);
 
-	
 	/**
-	 * Retrieves a serializeable representation of the view
+	 * Retrieves a serializable representation of the view
 	 * 
 	 * @return serialized representation of the view
 	 */

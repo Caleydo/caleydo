@@ -318,10 +318,6 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 
 	}
 
-	@Override
-	public ISet getSet() {
-		throw new IllegalStateException("Should not be used");
-	}
 
 	@Override
 	public void setSet(ISet set) {

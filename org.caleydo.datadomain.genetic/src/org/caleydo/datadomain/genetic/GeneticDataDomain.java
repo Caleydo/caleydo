@@ -7,18 +7,26 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
+import org.caleydo.core.manager.datadomain.ReplaceContentVAInUseCaseListener;
+import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
+import org.caleydo.core.manager.event.data.ReplaceStorageVAEvent;
+import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -39,16 +47,17 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	 */
 	private boolean pathwayViewerMode;
 
+	ReplaceContentVAInUseCaseListener clinicalReplaceContentVirtualArrayInUseCaseListener;
+
 	/**
 	 * Constructor.
 	 */
 	public GeneticDataDomain() {
 
-		super();
-		
-		dataDomainType = "org.caleydo.datadomain.genetic";
+		super("org.caleydo.datadomain.genetic");
+
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
-		
+
 		pathwayViewerMode = false;
 		contentLabelSingular = "gene";
 		contentLabelPlural = "genes";
@@ -56,7 +65,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		possibleIDCategories = new HashMap<EIDCategory, String>();
 		possibleIDCategories.put(EIDCategory.GENE, null);
 		possibleIDCategories.put(EIDCategory.EXPERIMENT, null);
-		
+
 		contentIDType = EIDType.EXPRESSION_INDEX;
 		storageIDType = EIDType.EXPERIMENT_INDEX;
 
@@ -77,8 +86,8 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	protected void initFullVA() {
 
 		// TODO preferences seem not to be initialized here either in XML case
-		String sLevel = GeneralManager.get().getPreferenceStore().getString(
-				PreferenceConstants.DATA_FILTER_LEVEL);
+		String sLevel = GeneralManager.get().getPreferenceStore()
+				.getString(PreferenceConstants.DATA_FILTER_LEVEL);
 		if (sLevel.equals("complete")) {
 			dataFilterLevel = EDataFilterLevel.COMPLETE;
 		} else if (sLevel.equals("only_mapping")) {
@@ -136,10 +145,11 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 			alTempList.add(iCount);
 		}
-//		ContentVirtualArray contentVA = new ContentVirtualArray(ContentVAType.CONTENT,
-//				alTempList);
-//		// removeDuplicates(contentVA);
-//		set.setContentVA(ContentVAType.CONTENT, contentVA);
+		// ContentVirtualArray contentVA = new
+		// ContentVirtualArray(ContentVAType.CONTENT,
+		// alTempList);
+		// // removeDuplicates(contentVA);
+		// set.setContentVA(ContentVAType.CONTENT, contentVA);
 	}
 
 	// public ContentVirtualArray removeDuplicates(ContentVirtualArray
@@ -192,4 +202,67 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		va.setDelta(vaDelta);
 	}
 
+	@Override
+	public void handleContentVAUpdateForForeignDataDomain(int setID,
+			String dataDomainType, ContentVAType vaType, ContentVirtualArray virtualArray) {
+		String clinicalDataDomainType = "org.caleydo.datadomain.clinical";
+		if (dataDomainType.equals(clinicalDataDomainType)) {
+			StorageVirtualArray newStorageVirtualArray = new StorageVirtualArray();
+
+			// FIXME - this is a hack for one special dataset (asslaber)
+			ISet clinicalSet = ((ISetBasedDataDomain) DataDomainManager.getInstance()
+					.getDataDomain(clinicalDataDomainType)).getSet();
+			int storageID = clinicalSet.getStorageData(StorageVAType.STORAGE)
+					.getStorageVA().get(1);
+			INominalStorage clinicalStorage = (INominalStorage<String>) clinicalSet
+					.get(storageID);
+			StorageVirtualArray origianlGeneticStorageVA = set.getStorageData(
+					StorageVAType.STORAGE).getStorageVA();
+
+			for (Integer clinicalContentIndex : virtualArray) {
+				String label = (String) clinicalStorage.getRaw(clinicalContentIndex);
+
+				label = label.replace("\"", "");
+				System.out.println(label);
+
+				for (Integer storageIndex : origianlGeneticStorageVA) {
+					if (label.equals(set.get(storageIndex).getLabel()))
+						newStorageVirtualArray.append(storageIndex);
+				}
+
+			}
+
+			ReplaceStorageVAInUseCaseEvent event = new ReplaceStorageVAInUseCaseEvent();
+			event.setDataDomainType(this.dataDomainType);
+			event.setVaType(StorageVAType.STORAGE);
+			event.setVirtualArray(newStorageVirtualArray);
+
+			GeneralManager.get().getEventPublisher().triggerEvent(event);
+		}
+
+	}
+
+	@Override
+	public void registerEventListeners() {
+		super.registerEventListeners();
+
+		clinicalReplaceContentVirtualArrayInUseCaseListener = new ReplaceContentVAInUseCaseListener();
+		clinicalReplaceContentVirtualArrayInUseCaseListener.setHandler(this);
+		clinicalReplaceContentVirtualArrayInUseCaseListener
+				.setDataDomainType("org.caleydo.datadomain.clinical");
+		eventPublisher.addListener(ReplaceContentVAInUseCaseEvent.class,
+				clinicalReplaceContentVirtualArrayInUseCaseListener);
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+
+		super.unregisterEventListeners();
+
+		if (clinicalReplaceContentVirtualArrayInUseCaseListener != null) {
+			eventPublisher
+					.removeListener(clinicalReplaceContentVirtualArrayInUseCaseListener);
+			clinicalReplaceContentVirtualArrayInUseCaseListener = null;
+		}
+	}
 }

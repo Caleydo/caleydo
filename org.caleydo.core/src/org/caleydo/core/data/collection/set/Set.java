@@ -532,6 +532,7 @@ public class Set
 		StorageData storageData = hashStorageData.get(vaType);
 		if (storageData == null)
 			storageData = defaultStorageData.clone();
+		storageData.setStorageVA(virtualArray);
 		hashStorageData.put(vaType, storageData);
 	}
 
@@ -786,7 +787,12 @@ public class Set
 
 	@Override
 	public ContentData getContentData(ContentVAType vaType) {
-		return hashContentData.get(vaType);
+		ContentData contentData = hashContentData.get(vaType);
+		if (contentData == null) {
+			contentData = createContentData(vaType);
+			hashContentData.put(vaType, contentData);
+		}
+		return contentData;
 	}
 
 	@Override

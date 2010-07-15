@@ -415,8 +415,11 @@ public class Application
 		// nicest place to do this.
 		// This is only necessary if started from xml. Otherwise this is done in FileLoadDataAction
 		if (isStartedFromXML) {
-			((ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
-				"org.caleydo.datadomain.genetic")).updateSetInViews();
+			for(IDataDomain dataDomain : DataDomainManager.getInstance().getDataDomains())
+			{
+				if(dataDomain instanceof ISetBasedDataDomain)
+					((ISetBasedDataDomain) dataDomain).updateSetInViews();
+			}
 		}
 
 		initializeColorMapping();

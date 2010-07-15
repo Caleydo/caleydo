@@ -86,7 +86,9 @@ public class EventPublisher
 		if (listeners != null) {
 			for (AEventListener<?> receiver : listeners) {
 				// check if a receiver wants events that are not if his data domain
-				if (!(event.getDataDomainType() == null && receiver.isExclusiveDataDomain()))
+				if (event.getDataDomainType() == null && receiver.isExclusiveDataDomain())
+				{}
+				else
 					receiver.queueEvent(event);
 			}
 		}

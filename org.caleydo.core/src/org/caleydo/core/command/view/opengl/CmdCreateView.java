@@ -12,6 +12,7 @@ import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 import org.caleydo.core.serialize.ASerializedView;
@@ -32,6 +33,7 @@ public class CmdCreateView
 	extends ACmdCreational<AGLView> {
 
 	protected String viewID;
+	protected String dataDomainType;
 
 	protected IViewFrustum viewFrustum;
 
@@ -66,8 +68,8 @@ public class CmdCreateView
 
 		if (sPositionGLRotation != null) {
 			parameterHandler.setValueAndTypeAndDefault(ECommandType.TAG_POS_GL_ROTATION.getXmlKey(),
-				sPositionGLRotation, ParameterHandlerType.VEC4F, ECommandType.TAG_POS_GL_ROTATION
-					.getDefault());
+				sPositionGLRotation, ParameterHandlerType.VEC4F,
+				ECommandType.TAG_POS_GL_ROTATION.getDefault());
 		}
 
 		cameraOrigin = parameterHandler.getValueVec3f(ECommandType.TAG_POS_GL_ORIGIN.getXmlKey());
@@ -75,8 +77,8 @@ public class CmdCreateView
 		/* convert Vec4f to roation Rotf */
 		Vec4f vec4fRotation = parameterHandler.getValueVec4f(ECommandType.TAG_POS_GL_ROTATION.getXmlKey());
 
-		cameraRotation.set(new Vec3f(vec4fRotation.x(), vec4fRotation.y(), vec4fRotation.z()), (float) Math
-			.toRadians(vec4fRotation.w()));
+		cameraRotation.set(new Vec3f(vec4fRotation.x(), vec4fRotation.y(), vec4fRotation.z()),
+			(float) Math.toRadians(vec4fRotation.w()));
 
 		StringTokenizer frustumToken =
 			new StringTokenizer(sAttribute3, IGeneralManager.sDelimiter_Parser_DataItems);
@@ -113,28 +115,55 @@ public class CmdCreateView
 				fFar);
 	}
 
-	
-
-	public void setAttributes(final EProjectionMode eProjectionMode,
-		final float fLeft, final float fRight, final float fBottom, final float fTop, final float fNear,
-		final float fFar, final int iParentCanvasID) {
+	/**
+	 * Set attributes for view. Main information is the projection mode, the frustum, and the parent canvas ID
+	 * 
+	 * @param eProjectionMode
+	 * @param fLeft
+	 * @param fRight
+	 * @param fBottom
+	 * @param fTop
+	 * @param fNear
+	 * @param fFar
+	 * @param iParentCanvasID
+	 */
+	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft, final float fRight,
+		final float fBottom, final float fTop, final float fNear, final float fFar, final int iParentCanvasID) {
 		viewFrustum = new ViewFrustum(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar);
 
 		this.iParentContainerId = iParentCanvasID;
 	}
 
-	public void setAttributes(final EProjectionMode eProjectionMode,
-		final float fLeft, final float fRight, final float fBottom, final float fTop, final float fNear,
-		final float fFar, final int iParentCanvasID, final float fCamOriginX, final float fCamOriginY,
-		final float fCamOriginZ, final float fCamRotationX, final float fCamRotationY,
-		final float fCamRotationZ, final float fCamRotationAngle) {
+	/**
+	 * Set attributes of the view, including camera parameters.
+	 * 
+	 * @param eProjectionMode
+	 * @param fLeft
+	 * @param fRight
+	 * @param fBottom
+	 * @param fTop
+	 * @param fNear
+	 * @param fFar
+	 * @param iParentCanvasID
+	 * @param fCamOriginX
+	 * @param fCamOriginY
+	 * @param fCamOriginZ
+	 * @param fCamRotationX
+	 * @param fCamRotationY
+	 * @param fCamRotationZ
+	 * @param fCamRotationAngle
+	 */
+	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft, final float fRight,
+		final float fBottom, final float fTop, final float fNear, final float fFar,
+		final int iParentCanvasID, final float fCamOriginX, final float fCamOriginY, final float fCamOriginZ,
+		final float fCamRotationX, final float fCamRotationY, final float fCamRotationZ,
+		final float fCamRotationAngle) {
 
-		setAttributes( eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar,
-			iParentCanvasID);
+		setAttributes(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar, iParentCanvasID);
 
 		cameraOrigin.set(fCamOriginX, fCamOriginY, fCamOriginZ);
-		cameraRotation.set(new Vec3f(fCamRotationX, fCamRotationY, fCamRotationZ), (float) Math
-			.toRadians(fCamRotationAngle));
+		cameraRotation.set(new Vec3f(fCamRotationX, fCamRotationY, fCamRotationZ),
+			(float) Math.toRadians(fCamRotationAngle));
 	}
 
 	/**
@@ -146,6 +175,7 @@ public class CmdCreateView
 	 */
 	public void setAttributesFromSerializedForm(ASerializedView serView) {
 		setViewFrustum(serView.getViewFrustum());
+		dataDomainType = serView.getDataDomainType();
 	}
 
 	public void setParentCanvasID(int parentCanvasID) {
@@ -158,6 +188,10 @@ public class CmdCreateView
 
 	public void setViewFrustum(ViewFrustum viewFrustum) {
 		this.viewFrustum = viewFrustum;
+	}
+
+	public void setDataDomainType(String dataDomainType) {
+		this.dataDomainType = dataDomainType;
 	}
 
 	@Override
@@ -180,10 +214,19 @@ public class CmdCreateView
 		createdObject.getViewCamera().setCameraPosition(cameraOrigin);
 		createdObject.getViewCamera().setCameraRotation(cameraRotation);
 
-//		IDataDomain dataDomain = DataDomainManager.getInstance().getDataDomain(dataDomainType);
-//
-//		// Note: for AStoragebasedViews the set for the view is assigned in the setDataDomain method.
-//		createdObject.setDataDomain(dataDomain);
+		if (createdObject instanceof IDataDomainBasedView<?>) {
+			if (dataDomainType == null)
+				throw new IllegalStateException(
+					"No dataDomainType was set in CmdCreateView, while trying to create " + viewID);
+			IDataDomain dataDomain = DataDomainManager.getInstance().getDataDomain(dataDomainType);
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
+				(IDataDomainBasedView<IDataDomain>) createdObject;
+			dataDomainBasedView.setDataDomain(dataDomain);
+		}
+		createdObject.initialize();
+		//
+		// // Note: for AStoragebasedViews the set for the view is assigned in the setDataDomain method.
+		// createdObject.setDataDomain(dataDomain);
 
 		commandManager.runDoCommand(this);
 	}

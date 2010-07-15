@@ -77,7 +77,10 @@ public interface ISetBasedDataDomain
 	public StorageVirtualArray getStorageVA(StorageVAType vaType);
 
 	/**
-	 * Replaces the virtual array of that id category with the virtual array specified
+	 * Replaces the storage virtual array with the virtual array specified, if the dataDomain matches. If the
+	 * dataDomain doesn't match, the method
+	 * {@link #handleContentVAUpdateForForeignDataDomain(int, String, ContentVAType, ContentVirtualArray)} is
+	 * called.
 	 * 
 	 * @param idCategory
 	 *            the type of id
@@ -86,11 +89,28 @@ public interface ISetBasedDataDomain
 	 * @param virtualArray
 	 *            the new virtual array
 	 */
-	public void replaceStorageVA(EIDCategory idCategory, StorageVAType vaType,
-		StorageVirtualArray virtualArray);
+	public void replaceStorageVA(String dataDomainType, StorageVAType vaType, StorageVirtualArray virtualArray);
 
-	public void replaceContentVA(EIDCategory idCategory, ContentVAType vaType,
-		ContentVirtualArray virtualArray);
+	/**
+	 * This method is called if a content VA Update was requested, but the dataDomainType specified was not
+	 * this dataDomains type. Concrete handling can only be done in concrete dataDomains.
+	 * 
+	 * @param setID
+	 * @param dataDomainType
+	 * @param vaType
+	 * @param virtualArray
+	 */
+	public void handleContentVAUpdateForForeignDataDomain(int setID, String dataDomainType,
+		ContentVAType vaType, ContentVirtualArray virtualArray);
+
+	/**
+	 * Replaces the content virtua
+	 * 
+	 * @param dataDomainType
+	 * @param vaType
+	 * @param virtualArray
+	 */
+	public void replaceContentVA(String dataDomainType, ContentVAType vaType, ContentVirtualArray virtualArray);
 
 	/**
 	 * Restore the original data. All applied filters are undone.
@@ -115,8 +135,7 @@ public interface ISetBasedDataDomain
 	public void setContentVirtualArray(ContentVAType vaType, ContentVirtualArray virtualArray);
 
 	public void setStorageVirtualArray(StorageVAType vaType, StorageVirtualArray virtualArray);
-	
-	
+
 	/**
 	 * Returns a clone of the content selection manager. You have to set your virtual array manually. This is
 	 * the preferred way to initialize SelectionManagers.

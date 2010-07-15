@@ -30,13 +30,13 @@ public class ReplaceContentVAInUseCaseEvent
 		// nothing to initialize here
 	}
 
-	public ReplaceContentVAInUseCaseEvent(ISet set, EIDCategory idCategory, ContentVAType vaType,
+	public ReplaceContentVAInUseCaseEvent(ISet set, String dataDomain, ContentVAType vaType,
 		ContentVirtualArray virtualArray) {
-		super(set, idCategory, vaType, virtualArray);
+		super(set, dataDomain, vaType, virtualArray);
 	}
 	
-	public ReplaceContentVAInUseCaseEvent(EIDCategory idCategory, ContentVAType vaType,
+	public ReplaceContentVAInUseCaseEvent(String dataDomain, ContentVAType vaType,
 		ContentVirtualArray virtualArray) {
-		super(idCategory, vaType, virtualArray);
+		super(dataDomain, vaType, virtualArray);
 	}
 }

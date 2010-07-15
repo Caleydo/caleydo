@@ -101,7 +101,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 		ISet geneticSet = ((ISetBasedDataDomain) DataDomainManager.getInstance()
 				.getDataDomain("org.caleydo.datadomain.genetic")).getSet();
-		
+
 		for (int experimentIndex = 0; experimentIndex < MAX_VIEWS; experimentIndex++) {
 
 			generalManager.getViewGLCanvasManager().createGLView(
@@ -367,7 +367,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	}
 
 	@Override
-	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType) {
+	public void replaceContentVA(int setID, String dataDomainType, ContentVAType vaType) {
 		// if (idCategory != EIDCategory.EXPERIMENT)
 		// return;
 		// s

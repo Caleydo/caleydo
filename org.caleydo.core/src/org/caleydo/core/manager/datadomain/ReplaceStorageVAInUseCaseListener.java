@@ -10,10 +10,11 @@ public class ReplaceStorageVAInUseCaseListener
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if (event instanceof ReplaceContentVAInUseCaseEvent) {
+		if (event instanceof ReplaceStorageVAInUseCaseEvent) {
 			ReplaceStorageVAInUseCaseEvent vaEvent = (ReplaceStorageVAInUseCaseEvent) event;
 
-			handler.replaceStorageVA(vaEvent.getIDCategory(), vaEvent.getVaType(), vaEvent.getVirtualArray());
+			handler.replaceStorageVA(vaEvent.getDataDomainType(), vaEvent.getVaType(),
+				vaEvent.getVirtualArray());
 		}
 
 	}

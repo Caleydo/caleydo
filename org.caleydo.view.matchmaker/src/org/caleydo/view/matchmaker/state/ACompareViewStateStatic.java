@@ -101,7 +101,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			// selectionCommandEvent.setSelectionCommand(new
 			// SelectionCommand(ESelectionCommandType.CLEAR, selectionType));
 			// eventPublisher.triggerEvent(selectionCommandEvent);
-			//			
+			//
 			// ISelectionDelta selectionDelta = new
 			// SelectionDelta(EIDType.EXPRESSION_INDEX);
 			// selectionDelta.addSelection(iExternalID, selectionType);
@@ -186,8 +186,8 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 		}
 	}
 
-	public void handleReplaceContentVA(int setID, EIDCategory idCategory,
-			ContentVAType vaType) {
+	@Override
+	public void handleReplaceContentVA(int setID, String dataDomain, ContentVAType vaType) {
 
 		// FIXME: we should not destroy all the heat map wrappers when a
 		// contentVA is handled
@@ -239,8 +239,8 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 						for (Vec3f point : points)
 							point.setZ(z);
 
-						renderSingleCurve(gl, points, contentID, 40 + (int) (20 * Math
-								.random()));
+						renderSingleCurve(gl, points, contentID,
+								40 + (int) (20 * Math.random()));
 					}
 
 					gl.glPopName();

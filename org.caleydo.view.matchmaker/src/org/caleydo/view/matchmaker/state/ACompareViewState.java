@@ -783,7 +783,7 @@ public abstract class ACompareViewState {
 	public abstract void handleContentGroupListUpdate(int setID,
 			ContentGroupList contentGroupList);
 
-	public abstract void handleReplaceContentVA(int setID, EIDCategory idCategory,
+	public abstract void handleReplaceContentVA(int setID, String dataDomain,
 			ContentVAType vaType);
 
 	public abstract void init(GL gl);

@@ -11,6 +11,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
  */
 public interface IPollingListenerOwner
 	extends IListenerOwner {
+	
 	/**
 	 * Submit an event which is executed by the specified listener once the IListenerOwner thinks it's safe to
 	 * do so. This method needs to be implemented using the synchronized keyword.

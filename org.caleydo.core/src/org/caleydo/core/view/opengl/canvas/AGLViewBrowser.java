@@ -1642,7 +1642,7 @@ public abstract class AGLViewBrowser
 		CmdCreateView cmdView = (CmdCreateView) cm.createCommandByType(ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(serView.getViewType());
 		cmdView.setAttributesFromSerializedForm(serView);
-		// cmdView.setSet(set);
+//		cmdView.setSet(set);
 		cmdView.doCommand();
 
 		AGLView glView = cmdView.getCreatedObject();

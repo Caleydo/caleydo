@@ -1281,10 +1281,6 @@ public class GLGlyph
 		forceRebuild();
 	}
 
-	@Override
-	public ISet getSet() {
-		return set;
-	}
 
 	@Override
 	public void setSet(ISet set) {

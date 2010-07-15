@@ -79,9 +79,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Marc Streit
  */
 public class GLMatchmaker extends AGLView implements IViewCommandHandler,
-		IGLRemoteRenderingView, ISelectionUpdateHandler,
-		ISelectionCommandHandler, IContentVAUpdateHandler,
-		IDataDomainBasedView<ISetBasedDataDomain> {
+		IGLRemoteRenderingView, ISelectionUpdateHandler, ISelectionCommandHandler,
+		IContentVAUpdateHandler, IDataDomainBasedView<ISetBasedDataDomain> {
 
 	public final static String VIEW_ID = "org.caleydo.view.matchmaker";
 
@@ -130,8 +129,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 		glKeyListener = new GLMatchmakerKeyListener(this);
 		isControlPressed = false;
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32),
-				true, true);
+		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32), true, true);
 		compareMouseWheelListener = new CompareMouseWheelListener(this);
 
 		// Unregister standard mouse wheel listener
@@ -139,8 +137,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		// Register specialized compare mouse wheel listener
 		parentGLCanvas.addMouseWheelListener(compareMouseWheelListener);
 
-		SelectionTypeEvent event = new SelectionTypeEvent(
-				GLHeatMap.SELECTION_HIDDEN);
+		SelectionTypeEvent event = new SelectionTypeEvent(GLHeatMap.SELECTION_HIDDEN);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
@@ -157,29 +154,26 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		// contentVA = useCase.getContentVA(ContentVAType.CONTENT);
 		// storageVA = useCase.getStorageVA(StorageVAType.STORAGE);
 
-		compareViewStateController = new CompareViewStateController(this,
-				iUniqueID, textRenderer, textureManager, pickingManager,
-				glMouseListener, contextMenu, dataDomain);
+		compareViewStateController = new CompareViewStateController(this, iUniqueID,
+				textRenderer, textureManager, pickingManager, glMouseListener,
+				contextMenu, dataDomain);
 
 		compareViewStateController.init(gl);
 
-		parentGLCanvas.getParentComposite().getDisplay().asyncExec(
-				new Runnable() {
-					public void run() {
-						KeyListener listener = new org.eclipse.swt.events.KeyAdapter() {
+		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				KeyListener listener = new org.eclipse.swt.events.KeyAdapter() {
 
-							@Override
-							public void keyPressed(KeyEvent e) {
-								if (e.keyCode == SWT.CTRL) {
-									eventPublisher
-											.triggerEvent(new ClearSelectionsEvent());
-								}
-							}
-						};
-						parentGLCanvas.getParentComposite().addKeyListener(
-								listener);
+					@Override
+					public void keyPressed(KeyEvent e) {
+						if (e.keyCode == SWT.CTRL) {
+							eventPublisher.triggerEvent(new ClearSelectionsEvent());
+						}
 					}
-				});
+				};
+				parentGLCanvas.getParentComposite().addKeyListener(listener);
+			}
+		});
 
 	}
 
@@ -190,21 +184,18 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		// Register keyboard listener to GL canvas
-		parentGLCanvas.getParentComposite().getDisplay().asyncExec(
-				new Runnable() {
-					public void run() {
-						parentGLCanvas.getParentComposite().addKeyListener(
-								glKeyListener);
-					}
-				});
+		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		init(gl);
 	}
 
 	@Override
 	public void initRemote(final GL gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener,
-			GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
@@ -237,8 +228,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 		if (wasMouseWheeled) {
 			wasMouseWheeled = false;
-			compareViewStateController.handleMouseWheel(gl, wheelAmount,
-					wheelPoint);
+			compareViewStateController.handleMouseWheel(gl, wheelAmount, wheelPoint);
 		}
 
 		compareViewStateController.executeDrawingPreprocessing(gl,
@@ -311,11 +301,11 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
-		contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
-				.getWidth(), getParentGLCanvas().getHeight());
+		contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+				getParentGLCanvas().getHeight());
 		contextMenu.setMasterGLView(this);
-		compareViewStateController.handlePickingEvents(ePickingType,
-				pickingMode, iExternalID, pick, isControlPressed);
+		compareViewStateController.handlePickingEvents(ePickingType, pickingMode,
+				iExternalID, pick, isControlPressed);
 	}
 
 	@Override
@@ -374,8 +364,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		super.registerEventListeners();
 		compareGroupsEventListener = new CompareGroupsEventListener();
 		compareGroupsEventListener.setHandler(this);
-		eventPublisher.addListener(CompareGroupsEvent.class,
-				compareGroupsEventListener);
+		eventPublisher.addListener(CompareGroupsEvent.class, compareGroupsEventListener);
 
 		duplicateSetBarItemEventListener = new DuplicateSetBarItemEventListener();
 		duplicateSetBarItemEventListener.setHandler(this);
@@ -384,8 +373,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class,
-				selectionUpdateListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		adjustPValueOfSetEventListener = new AdjustPValueOfSetEventListener();
 		adjustPValueOfSetEventListener.setHandler(this);
@@ -394,13 +382,11 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		eventPublisher.addListener(SelectionCommandEvent.class,
-				selectionCommandListener);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		replaceContentVAListener = new ReplaceContentVAListener();
 		replaceContentVAListener.setHandler(this);
-		eventPublisher.addListener(ReplaceContentVAEvent.class,
-				replaceContentVAListener);
+		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
 
 		useSortingListener = new UseSortingListener();
 		useSortingListener.setHandler(this);
@@ -412,8 +398,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 		useBandBundlingListener = new UseBandBundlingListener();
 		useBandBundlingListener.setHandler(this);
-		eventPublisher.addListener(UseBandBundlingEvent.class,
-				useBandBundlingListener);
+		eventPublisher.addListener(UseBandBundlingEvent.class, useBandBundlingListener);
 
 		newContentGroupInfoEventListener = new NewContentGroupInfoEventListener();
 		newContentGroupInfoEventListener.setHandler(this);
@@ -427,8 +412,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class,
-				clearSelectionsListener);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
 		hideHeatMapElementsEventListener = new HideHeatMapElementsEventListener();
 		hideHeatMapElementsEventListener.setHandler(this);
@@ -543,8 +527,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	@Override
 	public void handleSelectionCommand(EIDCategory category,
 			SelectionCommand selectionCommand) {
-		compareViewStateController.handleSelectionCommand(category,
-				selectionCommand);
+		compareViewStateController.handleSelectionCommand(category, selectionCommand);
 	}
 
 	public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
@@ -559,8 +542,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void replaceContentVA(int setID, EIDCategory idCategory,
-			ContentVAType vaType) {
+	public void replaceContentVA(int setID, String dataDomain, ContentVAType vaType) {
 
 		clusteredSets.add(setID);
 
@@ -576,8 +558,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		// return;
 
 		compareViewStateController.setSetsToCompare(setsToCompare);
-		compareViewStateController.handleReplaceContentVA(setID, idCategory,
-				vaType);
+		compareViewStateController.handleReplaceContentVA(setID, dataDomain, vaType);
 		clusteredSets.clear();
 
 	}
@@ -594,10 +575,8 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		compareViewStateController.setUseZoom(useZoom);
 	}
 
-	public void handleContentGroupListUpdate(int setID,
-			ContentGroupList contentGroupList) {
-		compareViewStateController.handleContentGroupListUpdate(setID,
-				contentGroupList);
+	public void handleContentGroupListUpdate(int setID, ContentGroupList contentGroupList) {
+		compareViewStateController.handleContentGroupListUpdate(setID, contentGroupList);
 	}
 
 	public void setBandBundling(boolean bandBundlingActive) {
@@ -605,8 +584,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	public void setCreateSelctionTypes(boolean createSelectionTypes) {
-		compareViewStateController
-				.setCreateSelectionTypes(createSelectionTypes);
+		compareViewStateController.setCreateSelectionTypes(createSelectionTypes);
 	}
 
 	public void setHideHeatMapElements(boolean hideElements) {
@@ -624,8 +602,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 
 		DataDomainManager.getInstance().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						viewType);
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 	@Override

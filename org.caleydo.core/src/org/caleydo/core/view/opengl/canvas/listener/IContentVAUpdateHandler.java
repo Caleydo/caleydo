@@ -27,5 +27,5 @@ public interface IContentVAUpdateHandler
 	 * @param vaType
 	 *            the type of the VA which is updated
 	 */
-	public void replaceContentVA(int setID, EIDCategory idCategory, ContentVAType vaType);
+	public void replaceContentVA(int setID, String dataDomainType, ContentVAType vaType);
 }

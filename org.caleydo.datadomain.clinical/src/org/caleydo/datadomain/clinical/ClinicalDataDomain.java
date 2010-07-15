@@ -8,6 +8,10 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -21,13 +25,12 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 @XmlType
 @XmlRootElement
 public class ClinicalDataDomain extends ASetBasedDataDomain {
-
+	
 	/**
 	 * Constructor.
 	 */
 	public ClinicalDataDomain() {
-
-		dataDomainType = "org.caleydo.datadomain.clinical";
+		super("org.caleydo.datadomain.clinical");
 		icon = EIconTextures.DATA_DOMAIN_CLINICAL;
 
 		possibleIDCategories = new HashMap<EIDCategory, String>();
@@ -54,5 +57,13 @@ public class ClinicalDataDomain extends ASetBasedDataDomain {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void handleContentVAUpdateForForeignDataDomain(int setID,
+			String dataDomainType, ContentVAType vaType, ContentVirtualArray virtualArray) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

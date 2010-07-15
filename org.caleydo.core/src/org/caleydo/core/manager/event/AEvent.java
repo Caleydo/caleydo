@@ -24,7 +24,7 @@ public abstract class AEvent {
 	@XmlTransient
 	Object Sender;
 
-	private String dataDomainType = null;
+	protected String dataDomainType = null;
 
 	/**
 	 * Basic constructor
