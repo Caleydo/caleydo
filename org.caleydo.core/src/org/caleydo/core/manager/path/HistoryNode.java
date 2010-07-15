@@ -77,6 +77,13 @@ public class HistoryNode implements INode {
 	}
 
 	public Integer getFirstInterfaceID() {
+		
+		// FIXME: hack to ensure that the order of interfaces corresponds to the one needed in our workflow
+		if (dataDomainType.equals("org.caleydo.datadomain.genetic"))
+		{
+			return hashInterfaceTypeToInterfaceID.get("org.caleydo.analytical.clustering");
+		}
+		
 		return hashInterfaceTypeToInterfaceID.get(dataDomainViewAssociationManager.getViewTypesForDataDomain(
 			dataDomainType).toArray()[0]);
 	}
@@ -86,7 +93,20 @@ public class HistoryNode implements INode {
 	}
 
 	public String[] getAllInterfaces() {
+		
+
 		String[] tmp = new String[hashInterfaceIDToInterfaceType.size()];
+		
+		// FIXME: hack to ensure that the order of interfaces corresponds to the one needed in our workflow
+		if (dataDomainType.equals("org.caleydo.datadomain.genetic"))
+		{
+			tmp[0] = "org.caleydo.analytical.clustering";
+			tmp[1] = "org.caleydo.view.parcoords";
+			tmp[2] = "org.caleydo.view.heatmap.hierarchical";
+			tmp[3] = "org.caleydo.view.tissue"; // this is the fake browser
+			return tmp;
+		}
+		
 		hashInterfaceTypeToInterfaceID.keySet().toArray(tmp);
 		return tmp;
 	}
