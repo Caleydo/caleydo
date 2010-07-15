@@ -8,12 +8,16 @@ import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings.FoldCh
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainGraph;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.StatisticsResultFinishedEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.ISetBasedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
@@ -34,7 +38,7 @@ import org.eclipse.swt.widgets.Slider;
  * 
  * @author Marc Streit
  */
-public class StatisticsView extends ASWTView implements IView, ISWTView {
+public class StatisticsView extends ASWTView implements IView, ISWTView, ISetBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.statistics";
 	private Composite composite;
@@ -49,14 +53,17 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 
 	private Label reducedNumberLabel;
 
+	private ISetBasedDataDomain dataDomain;
+
 	/**
 	 * Constructor.
 	 */
 	public StatisticsView(final int iParentContainerId, final String sLabel) {
-		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
-				EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
+		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager()
+				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 
 		this.viewType = VIEW_ID;
+		registerDataDomains();
 
 		setsWithPerformedStatistics = new ArrayList<ISet>();
 	}
@@ -151,17 +158,19 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 	public void registerEventListeners() {
 		statisticsResultFinishedEventListener = new StatisticsResultFinishedEventListener();
 		statisticsResultFinishedEventListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(
-				StatisticsResultFinishedEvent.class,
-				statisticsResultFinishedEventListener);
+		GeneralManager
+				.get()
+				.getEventPublisher()
+				.addListener(StatisticsResultFinishedEvent.class,
+						statisticsResultFinishedEventListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
-	
+
 		if (statisticsResultFinishedEventListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(
-					statisticsResultFinishedEventListener);
+			GeneralManager.get().getEventPublisher()
+					.removeListener(statisticsResultFinishedEventListener);
 			statisticsResultFinishedEventListener = null;
 		}
 	}
@@ -258,7 +267,7 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 
 	public void triggerReplaceContentVAEvent(ContentVirtualArray newVA) {
 		ReplaceContentVAInUseCaseEvent event = new ReplaceContentVAInUseCaseEvent(
-				EIDCategory.GENE, ContentVAType.CONTENT, newVA);
+				dataDomain.getDataDomainType(), ContentVAType.CONTENT, newVA);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
@@ -269,4 +278,32 @@ public class StatisticsView extends ASWTView implements IView, ISWTView {
 		calulateReduction();
 
 	}
+
+	@Override
+	public void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.generic");
+		dataDomainTypes.add("org.caleydo.datadomain.clinical");
+
+		DataDomainManager.getInstance().getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
+	}
+
+	@Override
+	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+	}
+
+	@Override
+	public ISetBasedDataDomain getDataDomain() {
+		return dataDomain;
+	}
+
+	@Override
+	public void setSet(ISet set) {
+		// TODO Auto-generated method stub
+
+	}
+
 }
