@@ -1962,10 +1962,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				x = axisCount * renderStyle.getAxisSpacing(storageVA.size());
 				axisCount++;
 				x = x + renderStyle.getXSpacing();
-				y = set.get(storageVA.get(storageVA.size() - 1)).getFloat(
-						EDataRepresentation.NORMALIZED, iAxisID);
-
-				// fYValue = renderStyle.getBottomSpacing();
+				y = renderStyle.getBottomSpacing();
+				// y =set.get(storageVA.get(storageVA.size() - 1)).getFloat(
+				// EDataRepresentation.NORMALIZED, iAxisID);
 				alElementReps.add(new SelectedElementRep(idType, iUniqueID, x, y, 0.0f));
 			}
 		} else if (idType == EIDType.EXPERIMENT_INDEX

@@ -54,6 +54,7 @@ public class StartClusteringAction
 		}
 		for(ISet tmpSet : sets) {
 			event = new StartClusteringEvent(clusterState, tmpSet.getID());
+			event.setDataDomainType("org.caleydo.datadomain.genetic");
 			GeneralManager.get().getEventPublisher().triggerEvent(event);			
 		}
 	}

@@ -27,8 +27,10 @@ import org.caleydo.core.manager.datadomain.ReplaceContentVAInUseCaseListener;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAEvent;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
@@ -47,7 +49,10 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	 */
 	private boolean pathwayViewerMode;
 
-	ReplaceContentVAInUseCaseListener clinicalReplaceContentVirtualArrayInUseCaseListener;
+	private ReplaceContentVAInUseCaseListener clinicalReplaceContentVirtualArrayInUseCaseListener;
+	private SelectionUpdateListener clinicalSelectionUpdateListener;
+
+	private static final String CLINICAL_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
 
 	/**
 	 * Constructor.
@@ -205,13 +210,13 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	@Override
 	public void handleContentVAUpdateForForeignDataDomain(int setID,
 			String dataDomainType, ContentVAType vaType, ContentVirtualArray virtualArray) {
-		String clinicalDataDomainType = "org.caleydo.datadomain.clinical";
-		if (dataDomainType.equals(clinicalDataDomainType)) {
+
+		if (dataDomainType.equals(CLINICAL_DATADOMAIN_TYPE)) {
 			StorageVirtualArray newStorageVirtualArray = new StorageVirtualArray();
 
 			// FIXME - this is a hack for one special dataset (asslaber)
 			ISet clinicalSet = ((ISetBasedDataDomain) DataDomainManager.getInstance()
-					.getDataDomain(clinicalDataDomainType)).getSet();
+					.getDataDomain(CLINICAL_DATADOMAIN_TYPE)).getSet();
 			int storageID = clinicalSet.getStorageData(StorageVAType.STORAGE)
 					.getStorageVA().get(1);
 			INominalStorage clinicalStorage = (INominalStorage<String>) clinicalSet
@@ -249,9 +254,17 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		clinicalReplaceContentVirtualArrayInUseCaseListener = new ReplaceContentVAInUseCaseListener();
 		clinicalReplaceContentVirtualArrayInUseCaseListener.setHandler(this);
 		clinicalReplaceContentVirtualArrayInUseCaseListener
-				.setDataDomainType("org.caleydo.datadomain.clinical");
+				.setExclusiveDataDomainType(CLINICAL_DATADOMAIN_TYPE);
 		eventPublisher.addListener(ReplaceContentVAInUseCaseEvent.class,
 				clinicalReplaceContentVirtualArrayInUseCaseListener);
+
+		clinicalSelectionUpdateListener = new SelectionUpdateListener();
+		clinicalSelectionUpdateListener.setHandler(this);
+		clinicalSelectionUpdateListener
+				.setExclusiveDataDomainType(CLINICAL_DATADOMAIN_TYPE);
+		eventPublisher.addListener(SelectionUpdateEvent.class,
+				clinicalSelectionUpdateListener);
+
 	}
 
 	@Override

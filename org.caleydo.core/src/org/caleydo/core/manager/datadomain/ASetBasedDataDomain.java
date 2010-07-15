@@ -322,7 +322,7 @@ public abstract class ASetBasedDataDomain
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setDataDomainType(dataDomainType);
+		selectionUpdateListener.setExclusiveDataDomainType(dataDomainType);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
