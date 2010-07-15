@@ -8,8 +8,11 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.util.clusterer.ClusterState;
+import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -102,6 +105,20 @@ public interface ISetBasedDataDomain
 	 */
 	public void handleContentVAUpdateForForeignDataDomain(int setID, String dataDomainType,
 		ContentVAType vaType, ContentVirtualArray virtualArray);
+
+	/**
+	 * This method is called by the {@link ForeignSelectionUpdateListener}, signaling that a selection form
+	 * another dataDomain is available. If possible, it is converted to be compatible with the local
+	 * dataDomain and then sent out via a {@link SelectionUpdateEvent}.
+	 * 
+	 * @param dataDomainType
+	 *            the type of the dataDomain for which this selectionUpdate is intended
+	 * @param delta
+	 * @param scrollToSelection
+	 * @param info
+	 */
+	public void handleForeignSelectionUpdate(String dataDomainType, ISelectionDelta delta,
+		boolean scrollToSelection, String info);
 
 	/**
 	 * Replaces the content virtua

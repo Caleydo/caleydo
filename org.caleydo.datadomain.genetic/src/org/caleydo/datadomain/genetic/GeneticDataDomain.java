@@ -18,6 +18,8 @@ import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -30,6 +32,7 @@ import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -50,7 +53,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	private boolean pathwayViewerMode;
 
 	private ReplaceContentVAInUseCaseListener clinicalReplaceContentVirtualArrayInUseCaseListener;
-	private SelectionUpdateListener clinicalSelectionUpdateListener;
+	private ForeignSelectionUpdateListener clinicalSelectionUpdateListener;
 
 	private static final String CLINICAL_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
 
@@ -258,7 +261,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		eventPublisher.addListener(ReplaceContentVAInUseCaseEvent.class,
 				clinicalReplaceContentVirtualArrayInUseCaseListener);
 
-		clinicalSelectionUpdateListener = new SelectionUpdateListener();
+		clinicalSelectionUpdateListener = new ForeignSelectionUpdateListener();
 		clinicalSelectionUpdateListener.setHandler(this);
 		clinicalSelectionUpdateListener
 				.setExclusiveDataDomainType(CLINICAL_DATADOMAIN_TYPE);
@@ -277,5 +280,13 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 					.removeListener(clinicalReplaceContentVirtualArrayInUseCaseListener);
 			clinicalReplaceContentVirtualArrayInUseCaseListener = null;
 		}
+	}
+
+	@Override
+	public void handleForeignSelectionUpdate(String dataDomainType, ISelectionDelta delta,
+			boolean scrollToSelection, String info) {
+		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE)
+			System.out.println("TODO Convert and re-send selection from clinical to genetic");
+
 	}
 }

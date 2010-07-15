@@ -15,6 +15,7 @@ import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
@@ -440,6 +441,13 @@ public abstract class ASetBasedDataDomain
 	@Override
 	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void handleForeignSelectionUpdate(String dataDomainType, ISelectionDelta delta,
+		boolean scrollToSelection, String info) {
+		// may be interesting to implement in sub-class
 
 	}
 

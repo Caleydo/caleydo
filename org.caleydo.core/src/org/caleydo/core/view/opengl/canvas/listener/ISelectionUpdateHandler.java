@@ -13,7 +13,7 @@ public interface ISelectionUpdateHandler
 	extends IListenerOwner {
 
 	/**
-	 * Handler method to be called when a selection event is catched by a related
+	 * Handler method to be called when a selection event is caught by a related
 	 * {@link SelectionUpdateListener}.
 	 * 
 	 * @param selectionDelta
