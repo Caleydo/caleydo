@@ -30,6 +30,7 @@ import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
@@ -66,7 +67,6 @@ import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.util.graph.EGraphItemKind;
@@ -93,6 +93,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 
 	public final static String VIEW_ID = "org.caleydo.view.pathway";
 
+	ISetBasedDataDomain mappingDataDomain;
 	private PathwayGraph pathway;
 
 	private boolean bEnablePathwayTexture = true;
@@ -152,6 +153,8 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 		viewType = VIEW_ID;
 
 		pathwayManager = generalManager.getPathwayManager();
+		mappingDataDomain = (ISetBasedDataDomain) DataDomainManager.getInstance()
+				.getDataDomain("org.caleydo.datadomain.genetic");
 
 		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum, this);
 		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
@@ -177,8 +180,8 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 		dataDomainTypes.add("org.caleydo.datadomain.pathway");
 
-		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
-				dataDomainTypes, viewType);
+		DataDomainManager.getInstance().getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 	public void setPathway(final PathwayGraph pathway) {
@@ -251,7 +254,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 		// // FIXME: not good because check in every rendered frame
 		// if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
 		// return;
-		
+
 		if (bIsDisplayListDirtyRemote) {
 			rebuildPathwayDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
@@ -265,8 +268,8 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 		// processEvents();
 		checkForHits(gl);
 
-		//GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-		
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+
 		// TODO: also put this in global DL
 		renderPathway(gl, pathway);
 
@@ -400,10 +403,9 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 				SelectedElementRep elementRep = new SelectedElementRep(
 						EIDType.EXPRESSION_INDEX, iViewID, vertexRep.getXOrigin()
 								* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()
-								+ vecTranslation.x(), (iPathwayHeight - vertexRep
-								.getYOrigin())
-								* PathwayRenderStyle.SCALING_FACTOR_Y
-								* vecScaling.y()
+								+ vecTranslation.x(),
+						(iPathwayHeight - vertexRep.getYOrigin())
+								* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()
 								+ vecTranslation.y(), 0);
 
 				for (Integer iConnectionID : item.getConnectionIDs()) {
@@ -420,8 +422,8 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 		ArrayList<Integer> alExpressionIndex = new ArrayList<Integer>();
 
 		for (IGraphItem pathwayVertexGraphItem : generalManager.getPathwayItemManager()
-				.getItem(iPathwayVertexGraphItemRepID).getAllItemsByProp(
-						EGraphItemProperty.ALIAS_PARENT)) {
+				.getItem(iPathwayVertexGraphItemRepID)
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 			int iDavidID = generalManager.getPathwayItemManager()
 					.getDavidIdByPathwayVertexGraphItem(
 							(PathwayVertexGraphItem) pathwayVertexGraphItem);
@@ -563,9 +565,8 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 		if (iImageWidth == -1 || iImageHeight == -1) {
 			generalManager
 					.getLogger()
-					.log(
-							new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID,
-									"Problem because pathway texture width or height is invalid!"));
+					.log(new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID,
+							"Problem because pathway texture width or height is invalid!"));
 		}
 
 		float fTmpPathwayWidth = iImageWidth * PathwayRenderStyle.SCALING_FACTOR_X
@@ -580,11 +581,9 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 			vecScaling.setY(vecScaling.x());
 
 			vecTranslation
-					.set(
-							(viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
-									* PathwayRenderStyle.SCALING_FACTOR_X
-									* vecScaling.x()) / 2.0f, (viewFrustum.getTop()
-									- viewFrustum.getBottom() - iImageHeight
+					.set((viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
+							* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f,
+							(viewFrustum.getTop() - viewFrustum.getBottom() - iImageHeight
 									* PathwayRenderStyle.SCALING_FACTOR_Y
 									* vecScaling.y()) / 2.0f, 0);
 		} else if (fTmpPathwayHeight > viewFrustum.getTop() - viewFrustum.getBottom()) {
@@ -593,20 +592,18 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 			vecScaling.setX(vecScaling.y());
 
 			vecTranslation
-					.set(
-							(viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
-									* PathwayRenderStyle.SCALING_FACTOR_X
-									* vecScaling.x()) / 2.0f, (viewFrustum.getTop()
-									- viewFrustum.getBottom() - iImageHeight
+					.set((viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
+							* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f,
+							(viewFrustum.getTop() - viewFrustum.getBottom() - iImageHeight
 									* PathwayRenderStyle.SCALING_FACTOR_Y
 									* vecScaling.y()) / 2.0f, 0);
 		} else {
 			vecScaling.set(fPathwayScalingFactor, fPathwayScalingFactor, 1f);
 
 			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f
-					- fTmpPathwayWidth / 2.0f, (viewFrustum.getTop() - viewFrustum
-					.getBottom())
-					/ 2.0f - fTmpPathwayHeight / 2.0f, 0);
+					- fTmpPathwayWidth / 2.0f,
+					(viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f
+							- fTmpPathwayHeight / 2.0f, 0);
 		}
 	}
 
@@ -720,10 +717,12 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 
 						ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
-						geneContextMenuItemContainer.setID(EIDType.DAVID, generalManager
-								.getPathwayItemManager()
-								.getDavidIdByPathwayVertexGraphItem(
-										(PathwayVertexGraphItem) pathwayVertexGraphItem));
+						geneContextMenuItemContainer
+								.setID(EIDType.DAVID,
+										generalManager
+												.getPathwayItemManager()
+												.getDavidIdByPathwayVertexGraphItem(
+														(PathwayVertexGraphItem) pathwayVertexGraphItem));
 						contextMenu.addItemContanier(geneContextMenuItemContainer);
 					}
 				} else {
@@ -787,10 +786,9 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 					.getPathwayVertexRep(iVertexRepID);
 
 			SelectedElementRep elementRep = new SelectedElementRep(
-					EIDType.EXPRESSION_INDEX, iViewID, tmpPathwayVertexGraphItemRep
-							.getXOrigin()
-							* PathwayRenderStyle.SCALING_FACTOR_X
-							* vecScaling.x()
+					EIDType.EXPRESSION_INDEX, iViewID,
+					tmpPathwayVertexGraphItemRep.getXOrigin()
+							* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()
 							+ vecTranslation.x(),
 					(iPathwayHeight - tmpPathwayVertexGraphItemRep.getYOrigin())
 							* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()
@@ -948,6 +946,8 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
+		selectionUpdateListener.setExclusiveDataDomainType(mappingDataDomain
+				.getDataDomainType());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		// virtualArrayUpdateListener = new ContentVAUpdateListener();
@@ -961,10 +961,14 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
+		clearSelectionsListener.setDataDomainType(mappingDataDomain
+				.getDataDomainType());
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
+		selectionCommandListener.setDataDomainType(mappingDataDomain
+				.getDataDomainType());
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		// replaceVirtualArrayListener = new ReplaceContentVAListener();
@@ -1028,8 +1032,8 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedPathwayView serializedForm = new SerializedPathwayView(dataDomain
-				.getDataDomainType());
+		SerializedPathwayView serializedForm = new SerializedPathwayView(
+				dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		serializedForm.setPathwayID(pathway.getID());
 		return serializedForm;

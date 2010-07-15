@@ -574,26 +574,32 @@ public abstract class AStorageBasedView
 
 		newSetListener = new NewSetListener();
 		newSetListener.setHandler(this);
+		newSetListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(NewSetEvent.class, newSetListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
+		selectionUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		contentVAUpdateListener = new ContentVAUpdateListener();
 		contentVAUpdateListener.setHandler(this);
+		contentVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
 
 		storageVAUpdateListener = new StorageVAUpdateListener();
 		storageVAUpdateListener.setHandler(this);
+		storageVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(StorageVAUpdateEvent.class, storageVAUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
+		selectionCommandListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
+		redrawViewListener.setDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
 
 		clearSelectionsListener = new ClearSelectionsListener();
@@ -602,12 +608,12 @@ public abstract class AStorageBasedView
 
 		replaceContentVAListener = new ReplaceContentVAListener();
 		replaceContentVAListener.setHandler(this);
-		replaceContentVAListener.setDataDomainType(dataDomain.getDataDomainType());
+		replaceContentVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
 
 		replaceStorageVAListener = new ReplaceStorageVAListener();
 		replaceStorageVAListener.setHandler(this);
-		replaceStorageVAListener.setDataDomainType(dataDomain.getDataDomainType());
+		replaceStorageVAListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(ReplaceStorageVAEvent.class, replaceStorageVAListener);
 	}
 
