@@ -20,6 +20,7 @@ import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
@@ -211,46 +212,6 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	}
 
 	@Override
-	public void handleContentVAUpdateForForeignDataDomain(int setID,
-			String dataDomainType, ContentVAType vaType, ContentVirtualArray virtualArray) {
-
-		if (dataDomainType.equals(CLINICAL_DATADOMAIN_TYPE)) {
-			StorageVirtualArray newStorageVirtualArray = new StorageVirtualArray();
-
-			// FIXME - this is a hack for one special dataset (asslaber)
-			ISet clinicalSet = ((ISetBasedDataDomain) DataDomainManager.getInstance()
-					.getDataDomain(CLINICAL_DATADOMAIN_TYPE)).getSet();
-			int storageID = clinicalSet.getStorageData(StorageVAType.STORAGE)
-					.getStorageVA().get(1);
-			INominalStorage clinicalStorage = (INominalStorage<String>) clinicalSet
-					.get(storageID);
-			StorageVirtualArray origianlGeneticStorageVA = set.getStorageData(
-					StorageVAType.STORAGE).getStorageVA();
-
-			for (Integer clinicalContentIndex : virtualArray) {
-				String label = (String) clinicalStorage.getRaw(clinicalContentIndex);
-
-				label = label.replace("\"", "");
-				System.out.println(label);
-
-				for (Integer storageIndex : origianlGeneticStorageVA) {
-					if (label.equals(set.get(storageIndex).getLabel()))
-						newStorageVirtualArray.append(storageIndex);
-				}
-
-			}
-
-			ReplaceStorageVAInUseCaseEvent event = new ReplaceStorageVAInUseCaseEvent();
-			event.setDataDomainType(this.dataDomainType);
-			event.setVaType(StorageVAType.STORAGE);
-			event.setVirtualArray(newStorageVirtualArray);
-
-			GeneralManager.get().getEventPublisher().triggerEvent(event);
-		}
-
-	}
-
-	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
@@ -283,10 +244,85 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	}
 
 	@Override
-	public void handleForeignSelectionUpdate(String dataDomainType, ISelectionDelta delta,
-			boolean scrollToSelection, String info) {
+	public void handleForeignSelectionUpdate(String dataDomainType,
+			ISelectionDelta delta, boolean scrollToSelection, String info) {
 		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE)
-			System.out.println("TODO Convert and re-send selection from clinical to genetic");
+			System.out
+					.println("TODO Convert and re-send selection from clinical to genetic");
 
+		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
+			// for(ISeldelta)
+			SelectionUpdateEvent resendEvent = new SelectionUpdateEvent();
+			resendEvent.setDataDomainType(this.dataDomainType);
+
+			SelectionDelta convertedDelta = new SelectionDelta(delta.getIDType());
+			for (SelectionDeltaItem item : delta) {
+				SelectionDeltaItem convertedItem = new SelectionDeltaItem();
+				convertedItem.setSelectionType(item.getSelectionType());
+				Integer converteID = convertClinicalExperimentToGeneticExperiment(item
+						.getPrimaryID());
+				if (converteID == null)
+					continue;
+
+				convertedItem.setPrimaryID(converteID);
+				convertedItem.setConnectionIDs(item.getConnectionIDs());
+				convertedDelta.add(convertedItem);
+			}
+			resendEvent.setSelectionDelta((SelectionDelta) convertedDelta);
+
+			eventPublisher.triggerEvent(resendEvent);
+		} else
+			return;
+	}
+
+	@Override
+	public void handleForeignContentVAUpdate(int setID,
+			String dataDomainType, ContentVAType vaType, ContentVirtualArray virtualArray) {
+
+		if (dataDomainType.equals(CLINICAL_DATADOMAIN_TYPE)) {
+			StorageVirtualArray newStorageVirtualArray = new StorageVirtualArray();
+
+			for (Integer clinicalContentIndex : virtualArray) {
+				Integer converteID = convertClinicalExperimentToGeneticExperiment(clinicalContentIndex);
+				if (converteID != null)
+					newStorageVirtualArray.append(converteID);
+
+			}
+
+			ReplaceStorageVAInUseCaseEvent event = new ReplaceStorageVAInUseCaseEvent();
+			event.setDataDomainType(this.dataDomainType);
+			event.setVaType(StorageVAType.STORAGE);
+			event.setVirtualArray(newStorageVirtualArray);
+
+			GeneralManager.get().getEventPublisher().triggerEvent(event);
+		}
+
+	}
+
+	private Integer convertClinicalExperimentToGeneticExperiment(
+			Integer clinicalContentIndex) {
+
+		// FIXME - this is a hack for one special dataset (asslaber)
+		ISet clinicalSet = ((ISetBasedDataDomain) DataDomainManager.getInstance()
+				.getDataDomain(CLINICAL_DATADOMAIN_TYPE)).getSet();
+		int storageID = clinicalSet.getStorageData(StorageVAType.STORAGE).getStorageVA()
+				.get(1);
+
+		INominalStorage clinicalStorage = (INominalStorage<String>) clinicalSet
+				.get(storageID);
+		StorageVirtualArray origianlGeneticStorageVA = set.getStorageData(
+				StorageVAType.STORAGE).getStorageVA();
+
+		String label = (String) clinicalStorage.getRaw(clinicalContentIndex);
+
+		label = label.replace("\"", "");
+		System.out.println(label);
+
+		for (Integer storageIndex : origianlGeneticStorageVA) {
+			if (label.equals(set.get(storageIndex).getLabel()))
+				return storageIndex;
+		}
+
+		return null;
 	}
 }

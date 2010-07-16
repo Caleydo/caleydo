@@ -53,7 +53,7 @@ public class GenericDataDomain extends ASetBasedDataDomain {
 	}
 
 	@Override
-	public void handleContentVAUpdateForForeignDataDomain(int setID,
+	public void handleForeignContentVAUpdate(int setID,
 			String dataDomainType, ContentVAType vaType, ContentVirtualArray virtualArray) {
 		// TODO Auto-generated method stub
 

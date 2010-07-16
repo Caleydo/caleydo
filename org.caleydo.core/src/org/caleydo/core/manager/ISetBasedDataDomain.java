@@ -82,7 +82,7 @@ public interface ISetBasedDataDomain
 	/**
 	 * Replaces the storage virtual array with the virtual array specified, if the dataDomain matches. If the
 	 * dataDomain doesn't match, the method
-	 * {@link #handleContentVAUpdateForForeignDataDomain(int, String, ContentVAType, ContentVirtualArray)} is
+	 * {@link #handleForeignContentVAUpdate(int, String, ContentVAType, ContentVirtualArray)} is
 	 * called.
 	 * 
 	 * @param idCategory
@@ -103,7 +103,7 @@ public interface ISetBasedDataDomain
 	 * @param vaType
 	 * @param virtualArray
 	 */
-	public void handleContentVAUpdateForForeignDataDomain(int setID, String dataDomainType,
+	public void handleForeignContentVAUpdate(int setID, String dataDomainType,
 		ContentVAType vaType, ContentVirtualArray virtualArray);
 
 	/**

@@ -223,7 +223,7 @@ public abstract class ASetBasedDataDomain
 		ContentVirtualArray virtualArray) {
 
 		if (dataDomainType != this.dataDomainType) {
-			handleContentVAUpdateForForeignDataDomain(setID, dataDomainType, vaType, virtualArray);
+			handleForeignContentVAUpdate(setID, dataDomainType, vaType, virtualArray);
 			return;
 		}
 		ISet set;
