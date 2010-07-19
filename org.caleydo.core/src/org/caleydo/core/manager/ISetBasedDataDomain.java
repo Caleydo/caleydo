@@ -5,6 +5,7 @@ import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
@@ -82,8 +83,7 @@ public interface ISetBasedDataDomain
 	/**
 	 * Replaces the storage virtual array with the virtual array specified, if the dataDomain matches. If the
 	 * dataDomain doesn't match, the method
-	 * {@link #handleForeignContentVAUpdate(int, String, ContentVAType, ContentVirtualArray)} is
-	 * called.
+	 * {@link #handleForeignContentVAUpdate(int, String, ContentVAType, ContentVirtualArray)} is called.
 	 * 
 	 * @param idCategory
 	 *            the type of id
@@ -103,8 +103,8 @@ public interface ISetBasedDataDomain
 	 * @param vaType
 	 * @param virtualArray
 	 */
-	public void handleForeignContentVAUpdate(int setID, String dataDomainType,
-		ContentVAType vaType, ContentVirtualArray virtualArray);
+	public void handleForeignContentVAUpdate(int setID, String dataDomainType, ContentVAType vaType,
+		ContentVirtualArray virtualArray);
 
 	/**
 	 * This method is called by the {@link ForeignSelectionUpdateListener}, signaling that a selection form
@@ -119,6 +119,9 @@ public interface ISetBasedDataDomain
 	 */
 	public void handleForeignSelectionUpdate(String dataDomainType, ISelectionDelta delta,
 		boolean scrollToSelection, String info);
+
+	public void handleForeignSelectionCommand(String dataDomainType, EIDCategory category,
+		SelectionCommand selectionCommand);
 
 	/**
 	 * Replaces the content virtua

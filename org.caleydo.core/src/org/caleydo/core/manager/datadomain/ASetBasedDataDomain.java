@@ -36,6 +36,8 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
+import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.eclipse.swt.SWT;
@@ -444,11 +446,25 @@ public abstract class ASetBasedDataDomain
 
 	}
 
+	/**
+	 * Interface used by {@link ForeignSelectionUpdateListener} to signal foreign selection updates. Can be
+	 * implemented in concrete classes, has no functionality in base class.
+	 */
 	@Override
 	public void handleForeignSelectionUpdate(String dataDomainType, ISelectionDelta delta,
 		boolean scrollToSelection, String info) {
 		// may be interesting to implement in sub-class
 
+	}
+
+	/**
+	 * Interface used by {@link ForeignSelectionCommandListener} to signal foreign selection commands. Can be
+	 * implemented in concrete classes, has no functionality in base class.
+	 */
+	@Override
+	public void handleForeignSelectionCommand(String dataDomainType, EIDCategory category,
+		SelectionCommand selectionCommand) {
+		// may be interesting to implement in sub-class
 	}
 
 }

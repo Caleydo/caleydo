@@ -40,6 +40,7 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -1643,12 +1644,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// if (ePolylineDataType == EIDType.EXPRESSION_INDEX &&
 			// !bAngularBrushingSelectPolyline) {
 			if (!bAngularBrushingSelectPolyline) {
-				//
-				// SelectionCommand command =
-				// new SelectionCommand(ESelectionCommandType.CLEAR,
-				// SelectionType);
-				// // sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX,
-				// command);
+//				//
+//				SelectionCommand command = new SelectionCommand(
+//						ESelectionCommandType.CLEAR, selectionType);
+//				sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 				ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 				handleConnectedElementRep(selectionDelta);

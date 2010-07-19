@@ -14,6 +14,7 @@ import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
@@ -28,13 +29,14 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.datadomain.ReplaceContentVAInUseCaseListener;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
-import org.caleydo.core.manager.event.data.ReplaceStorageVAEvent;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
+import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
@@ -47,6 +49,8 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 @XmlRootElement
 public class GeneticDataDomain extends ASetBasedDataDomain {
 
+	private static final String CLINICAL_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
+
 	/**
 	 * <code>TRUE</code>if only pathways can be displayed (no gene-expression
 	 * data), <code>FALSE</code> otherwise
@@ -55,8 +59,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 	private ReplaceContentVAInUseCaseListener clinicalReplaceContentVirtualArrayInUseCaseListener;
 	private ForeignSelectionUpdateListener clinicalSelectionUpdateListener;
-
-	private static final String CLINICAL_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
+	private ForeignSelectionCommandListener clinicalSelectionCommandListener;
 
 	/**
 	 * Constructor.
@@ -229,6 +232,13 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		eventPublisher.addListener(SelectionUpdateEvent.class,
 				clinicalSelectionUpdateListener);
 
+		clinicalSelectionCommandListener = new ForeignSelectionCommandListener();
+		clinicalSelectionCommandListener.setHandler(this);
+		clinicalSelectionCommandListener
+				.setDataDomainType(CLINICAL_DATADOMAIN_TYPE);
+		eventPublisher.addListener(SelectionCommandEvent.class,
+				clinicalSelectionCommandListener);
+
 	}
 
 	@Override
@@ -241,14 +251,24 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 					.removeListener(clinicalReplaceContentVirtualArrayInUseCaseListener);
 			clinicalReplaceContentVirtualArrayInUseCaseListener = null;
 		}
+
+		if (clinicalSelectionUpdateListener != null) {
+			eventPublisher.removeListener(clinicalSelectionUpdateListener);
+			clinicalSelectionUpdateListener = null;
+		}
+
+		if (clinicalSelectionCommandListener != null) {
+			eventPublisher.removeListener(clinicalSelectionCommandListener);
+			clinicalSelectionCommandListener = null;
+		}
 	}
 
 	@Override
 	public void handleForeignSelectionUpdate(String dataDomainType,
 			ISelectionDelta delta, boolean scrollToSelection, String info) {
-		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE)
-			System.out
-					.println("TODO Convert and re-send selection from clinical to genetic");
+//		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE)
+//			System.out
+//					.println("TODO Convert and re-send selection from clinical to genetic");
 
 		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 			// for(ISeldelta)
@@ -266,6 +286,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 				convertedItem.setPrimaryID(converteID);
 				convertedItem.setConnectionIDs(item.getConnectionIDs());
+				convertedItem.setRemove(item.isRemove());
 				convertedDelta.add(convertedItem);
 			}
 			resendEvent.setSelectionDelta((SelectionDelta) convertedDelta);
@@ -276,8 +297,8 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	}
 
 	@Override
-	public void handleForeignContentVAUpdate(int setID,
-			String dataDomainType, ContentVAType vaType, ContentVirtualArray virtualArray) {
+	public void handleForeignContentVAUpdate(int setID, String dataDomainType,
+			ContentVAType vaType, ContentVirtualArray virtualArray) {
 
 		if (dataDomainType.equals(CLINICAL_DATADOMAIN_TYPE)) {
 			StorageVirtualArray newStorageVirtualArray = new StorageVirtualArray();
@@ -316,7 +337,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		String label = (String) clinicalStorage.getRaw(clinicalContentIndex);
 
 		label = label.replace("\"", "");
-		System.out.println(label);
+//		System.out.println(label);
 
 		for (Integer storageIndex : origianlGeneticStorageVA) {
 			if (label.equals(set.get(storageIndex).getLabel()))
@@ -324,5 +345,18 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		}
 
 		return null;
+	}
+
+	@Override
+	public void handleForeignSelectionCommand(String dataDomainType,
+			EIDCategory category, SelectionCommand selectionCommand) {
+		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE
+				&& category == EIDCategory.EXPERIMENT) {
+			SelectionCommandEvent newCommandEvent = new SelectionCommandEvent();
+			newCommandEvent.setSelectionCommand(selectionCommand);
+			newCommandEvent.setCategory(category);
+			newCommandEvent.setDataDomainType(dataDomainType);
+			eventPublisher.triggerEvent(newCommandEvent);
+		}
 	}
 }
