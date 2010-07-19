@@ -314,7 +314,8 @@ public class HTMLBrowser extends ASWTView implements ISWTView {
 		Image screenshot = new Image(browser.getShell().getDisplay(), browser.getShell()
 				.getBounds());
 		GC gc = new GC(browser.getShell().getDisplay());
-		gc.copyArea(screenshot, 730, 150);
+		gc.copyArea(screenshot, 743, 143);
+
 		gc.dispose();
 
 		ImageLoader loader = new ImageLoader();

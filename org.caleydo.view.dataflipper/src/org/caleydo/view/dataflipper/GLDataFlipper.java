@@ -19,6 +19,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
@@ -513,11 +514,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		float ySteps = DATA_DOMAIN_HEIGHT / (numberOfVerticalDataDomains);
 		float yNeighbor = y + 0.2f;
 
-		// Do not show possible next domain if the data domain is currently not
-		// in mouse over state
-		if (mouseOverDataDomainNode != null
-				&& dataDomainType != mouseOverDataDomainNode.getDataDomainType())
-			return;
+		// // Do not show possible next domain if the data domain is currently
+		// not
+		// // in mouse over state
+		// if (mouseOverDataDomainNode != null
+		// && dataDomainType != mouseOverDataDomainNode.getDataDomainType())
+		// return;
 
 		// Render possible next data domains
 		for (String nextDataDomainType : neighbors) {
@@ -538,33 +540,14 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			if (mouseOverNextDataDomain == nextDataDomainType)
 				mouseOver = true;
 
-			renderNextDataDomain(gl, nextDataDomainType, x - metaViewAnimation
-					+ DATA_DOMAIN_SPACING, yNeighbor, highlight, mouseOver);
-
-			gl.glLineWidth(5);
-
-			float z = DATA_DOMAIN_Z;
-
-			if (highlight) {
-				gl.glColor3f(0.3f, 0f, 0f);
-				z += 0.01f;
-			} else if (mouseOver)
-				gl.glColor3f(0.15f, 0.15f, 0.15f);
-			else
-				gl.glColor3f(0.3f, 0.3f, 0.3f);
-
 			float x1 = x - metaViewAnimation + 0.5f * DATA_DOMAIN_SCALING_FACTOR;
 			float x2 = x - metaViewAnimation + DATA_DOMAIN_SPACING;
 			float y1 = y + DATA_DOMAIN_HEIGHT / 2f + 0.15f;
 			float y2 = yNeighbor + 0.1f;
 
-			ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-			points.add(new Vec3f(x1, y1, z));
-			points.add(new Vec3f(x1 + Math.abs((x1 - x2) / 3), y1, z));
-			points.add(new Vec3f(x2 - Math.abs((x1 - x2) / 3), y2, z));
-			points.add(new Vec3f(x2, y2, z));
-
-			renderSingleCurve(gl, points, 20);
+			renderNextDataDomain(gl, nextDataDomainType, x - metaViewAnimation
+					+ DATA_DOMAIN_SPACING, yNeighbor, highlight, mouseOver, x1, x2, y1,
+					y2);
 		}
 	}
 
@@ -715,10 +698,11 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		AGLView glView = cmdView.getCreatedObject();
 		glView.setRemoteRenderingGLView(this);
 
-//		if (glView instanceof IDataDomainBasedView<?>) {
-//			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
-//					.getInstance().getDataDomain(serView.getDataDomainType()));
-//		}
+		// if (glView instanceof IDataDomainBasedView<?>) {
+		// ((IDataDomainBasedView<IDataDomain>)
+		// glView).setDataDomain(DataDomainManager
+		// .getInstance().getDataDomain(serView.getDataDomainType()));
+		// }
 
 		return glView;
 	}
@@ -801,9 +785,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			arSlerpActions.clear();
 			iSlerpFactor = 0;
 
-			if (focusElement.getGLView() instanceof GLTissue) {
+			if (focusElement.getGLView() instanceof GLTissue)
 				openBrowserOverlay();
-			} else {
+
+			if (!(focusElement.getGLView() instanceof GLTissue)) {
 				closeBrowserOverlay();
 			}
 
@@ -1233,6 +1218,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// Clear connection lines
 		generalManager.getViewGLCanvasManager()
 				.getConnectedElementRepresentationManager().clearAll();
+		
+		closeBrowserOverlay();
 
 		// Chain slerping to the right
 		if (stackElementsLeft.contains(selectedElement)) {
@@ -1293,47 +1280,34 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		}
 	}
 
-	private void freeFocusElementByChainMove(boolean left) {
-
-		if (!left) {
-
-			for (int iElementIndex = 0; iElementIndex < stackElementsRight.size(); iElementIndex++) {
-
-				if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
-					arSlerpActions.add(new SlerpAction(stackElementsRight
-							.get(iElementIndex), stackElementsRight
-							.get(iElementIndex + 1)));
-				}
-			}
-
-			arSlerpActions.add(new SlerpAction(focusElement, stackElementsRight.get(0)));
-		} else {
-
-			for (int iElementIndex = 0; iElementIndex < stackElementsLeft.size(); iElementIndex++) {
-
-				if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
-					arSlerpActions
-							.add(new SlerpAction(stackElementsLeft.get(iElementIndex),
-									stackElementsLeft.get(iElementIndex + 1)));
-				}
-			}
-
-			arSlerpActions.add(new SlerpAction(focusElement, stackElementsLeft.get(0)));
-
-			// for (int iElementIndex = 0; iElementIndex <
-			// stackElementsLeft.size(); iElementIndex++) {
-			//
-			// if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
-			// arSlerpActions
-			// .add(new SlerpAction(stackElementsLeft.get(iElementIndex),
-			// stackElementsLeft.get(iElementIndex + 1)));
-			// }
-			// }
-
-			// arSlerpActions.add(new SlerpAction(focusElement,
-			// stackElementsLeft.get(0)));
-		}
-	}
+//	private void freeFocusElementByChainMove(boolean left) {
+//
+//		if (!left) {
+//
+//			for (int iElementIndex = 0; iElementIndex < stackElementsRight.size(); iElementIndex++) {
+//
+//				if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
+//					arSlerpActions.add(new SlerpAction(stackElementsRight
+//							.get(iElementIndex), stackElementsRight
+//							.get(iElementIndex + 1)));
+//				}
+//			}
+//
+//			arSlerpActions.add(new SlerpAction(focusElement, stackElementsRight.get(0)));
+//		} else {
+//
+//			for (int iElementIndex = 0; iElementIndex < stackElementsLeft.size(); iElementIndex++) {
+//
+//				if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
+//					arSlerpActions
+//							.add(new SlerpAction(stackElementsLeft.get(iElementIndex),
+//									stackElementsLeft.get(iElementIndex + 1)));
+//				}
+//			}
+//
+//			arSlerpActions.add(new SlerpAction(focusElement, stackElementsLeft.get(0)));
+//		}
+//	}
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
@@ -1409,15 +1383,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						: false;
 
 				yNeighbor += ySteps;
-				renderNextDataDomain(gl, nextDataDomainType, x + 0.9f - metaViewAnimation
-						+ DATA_DOMAIN_SPACING, yNeighbor - 0.47f, highlight, mouseOver);
-
-				gl.glLineWidth(5);
-
-				if (!mouseOver)
-					gl.glColor3f(0.3f, 0.3f, 0.3f);
-				else
-					gl.glColor3f(0.15f, 0.15f, 0.15f);
 
 				float x1 = x - metaViewAnimation + 0.5f * DATA_DOMAIN_SCALING_FACTOR
 						+ 1.2f;
@@ -1425,13 +1390,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				float y1 = y + DATA_DOMAIN_HEIGHT / 2f + 0.15f - 0.47f;
 				float y2 = yNeighbor + 0.1f - 0.47f;
 
-				ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-				points.add(new Vec3f(x1, y1, DATA_DOMAIN_Z));
-				points.add(new Vec3f(x1 + Math.abs((x1 - x2) / 3), y1, DATA_DOMAIN_Z));
-				points.add(new Vec3f(x2 - Math.abs((x1 - x2) / 3), y2, DATA_DOMAIN_Z));
-				points.add(new Vec3f(x2, y2, DATA_DOMAIN_Z));
-
-				renderSingleCurve(gl, points, 15);
+				renderNextDataDomain(gl, nextDataDomainType, x + 0.9f - metaViewAnimation
+						+ DATA_DOMAIN_SPACING, yNeighbor - 0.47f, highlight, mouseOver,
+						x1, x2, y1, y2);
 			}
 		}
 
@@ -1451,10 +1412,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		// Data background
 		textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_DATA_ICON_BACKGROUND,
-				new Vec3f(0, 0, 0), new Vec3f(0.51f * DATA_DOMAIN_SCALING_FACTOR, 0, 0),
-				new Vec3f(0.51f * DATA_DOMAIN_SCALING_FACTOR,
-						0.3f * DATA_DOMAIN_SCALING_FACTOR, 0), new Vec3f(0,
-						0.3f * DATA_DOMAIN_SCALING_FACTOR, 0), r, g, b, 1);
+				new Vec3f(0, 0, 0.005f), new Vec3f(0.51f * DATA_DOMAIN_SCALING_FACTOR, 0,
+						0.005f), new Vec3f(0.51f * DATA_DOMAIN_SCALING_FACTOR,
+						0.3f * DATA_DOMAIN_SCALING_FACTOR, 0.005f), new Vec3f(0,
+						0.3f * DATA_DOMAIN_SCALING_FACTOR, 0.005f), r, g, b, 1);
 
 		// Data icon
 		textureManager.renderTexture(gl, dataDomainIcon, new Vec3f(0f, 0.02f, 0.01f),
@@ -1481,8 +1442,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			}
 
 			if (interfaceIndex < interfaces.length && mouseOverInterface != null
-					&& viewType == mouseOverInterface && mouseOverDataDomainNode != null
-					&& node == mouseOverDataDomainNode) {
+					&& interfaces[interfaceIndex].equals(mouseOverInterface)
+					&& mouseOverDataDomainNode != null && node == mouseOverDataDomainNode) {
 				r = 0.5f;
 				g = 0.5f;
 				b = 0.5f;
@@ -1694,7 +1655,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
 			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.getInstance()
-					.getDataDomain("org.caleydo.datadomain.clinical")).getSet().depth();
+					.getDataDomain(dataDomainType)).getSet().getStorageVA(
+					StorageVAType.STORAGE).size();
 			if (numberOfPatients > 40)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
@@ -1720,9 +1682,11 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	private void renderNextDataDomain(final GL gl, String dataDomainType, float x,
-			float y, boolean highlight, boolean mouseOver) {
+			float y, boolean highlight, boolean mouseOver, float splineAchorX1,
+			float splineAnchorX2, float splineAnchorY1, float splineAnchorY2) {
 
 		EIconTextures dataDomainIcon = null;
+		float[] connectionSplineColor = new float[] { 0.3f, 0.3f, 0.3f };
 
 		// Check if data domain is organ because this datadomain does not exist
 		// as plugin.
@@ -1745,8 +1709,16 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		float a = 1;
 		float yIconOffset = 0.02f;
 
+		boolean isGuidanceDomain = false;
+		for (INode guidanceNode : guidancePath.getFollowingNodes(currentGuidanceNode)) {
+			if (dataDomainType.equals(guidanceNode.getDataDomainType())) {
+				isGuidanceDomain = true;
+				break;
+			}
+		}
+
 		if (!checkPreCondition(dataDomainType, mouseOverInterface)
-				&& currentGuidanceNode.allInterfacesVisited()) {
+				&& currentGuidanceNode.allInterfacesVisited() && isGuidanceDomain) {
 			r = 1f;
 			g = 1f;
 			b = 1f;
@@ -1757,26 +1729,29 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			a = 1;
 			// TODO: render exclamation mark
 
+			String conditionText = "";
+			if (dataDomainType.equals("org.caleydo.datadomain.tissue"))
+				conditionText = "Filter below 20 patients in order to inspect tissue slices";
+			else if (dataDomainType.equals("org.caleydo.datadomain.pathway"))
+				conditionText = "Trigger pathway loading in order to inspect pathways ";
+			else if (dataDomainType.equals("org.caleydo.datadomain.genetic"))
+				conditionText = "Filter below 40 patients in order to inspect their gene expression";
+
+			textRenderer.setColor(0f, 0f, 0f, 1);
+			textRenderer.begin3DRendering();
+			textRenderer.draw3D(conditionText, 0.34f, 0.0f, 0, 0.0028f);
+			textRenderer.end3DRendering();
+
+			connectionSplineColor = new float[] { 0.3f, 0f, 0.0f };
+
 			// TODO: move conditions to own class
 			if (mouseOver) {
-
-				String conditionText = "";
-				if (dataDomainType.equals("org.caleydo.datadomain.tissue"))
-					conditionText = "Filter below 20 patients in order to inspect tissue slices";
-				else if (dataDomainType.equals("org.caleydo.datadomain.pathway"))
-					conditionText = "Trigger pathway loading in order to inspect pathways ";
-				else if (dataDomainType.equals("org.caleydo.datadomain.genetic"))
-					conditionText = "Filter below 40 patients in order to inspect their gene expression";
-
-				textRenderer.setColor(0f, 0f, 0f, 1);
-				textRenderer.begin3DRendering();
-				textRenderer.draw3D(conditionText, 0.34f, 0.0f, 0, 0.0028f);
-				textRenderer.end3DRendering();
-
 				r = 0.3f;
 				g = 0.3f;
 				b = 0.3f;
 				a = 1;
+
+				connectionSplineColor = new float[] { 0.15f, 0.15f, 0.15f };
 			}
 
 			iconTextureBackgroundRound = EIconTextures.DATA_FLIPPER_DATA_ICON_BACKGROUND_ROUND_HIGHLIGHTED;
@@ -1790,6 +1765,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			g = 0.3f;
 			b = 0.3f;
 			a = 1;
+
+			connectionSplineColor = new float[] { 0.15f, 0.15f, 0.15f };
 		} else if (highlight && currentGuidanceNode.allInterfacesVisited()) {
 			r = 1f;
 			g = 0.3f;
@@ -1798,6 +1775,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			iconTextureBackgroundRound = EIconTextures.DATA_FLIPPER_DATA_ICON_BACKGROUND_ROUND_HIGHLIGHTED;
 			yIconOffset = 0.05f;
+			connectionSplineColor = new float[] { 0.3f, 0.f, 0.f };
 		}
 
 		// Data background
@@ -1828,6 +1806,26 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		}
 
 		gl.glTranslatef(-x, -y, -DATA_DOMAIN_Z);
+
+		gl.glLineWidth(5);
+
+		float z = DATA_DOMAIN_Z;
+
+		// if (mouseOver) {
+		// z += 0.011f;
+		// }
+
+		gl.glColor3fv(connectionSplineColor, 0);
+
+		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
+		points.add(new Vec3f(splineAchorX1, splineAnchorY1, z));
+		points.add(new Vec3f(splineAchorX1
+				+ Math.abs((splineAchorX1 - splineAnchorX2) / 3), splineAnchorY1, z));
+		points.add(new Vec3f(splineAnchorX2
+				- Math.abs((splineAchorX1 - splineAnchorX2) / 3), splineAnchorY2, z));
+		points.add(new Vec3f(splineAnchorX2, splineAnchorY2, z));
+
+		renderSingleCurve(gl, points, 20);
 
 	}
 
@@ -2213,7 +2211,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			historyPath.addNode(dataDomainNode);
 			dataDomainNode.addGLView(pathwayBrowserView);
 			openView(pathwayBrowserView, dataDomainNode);
-			currentGuidanceNode = (GuidanceNode) guidancePath.getFollowingNodes(currentGuidanceNode).get(0);
+			currentGuidanceNode = (GuidanceNode) guidancePath.getFollowingNodes(
+					currentGuidanceNode).get(0);
 		} else {
 			for (INode historyNode : historyPath
 					.getPrecedingNode(lastSelectedDataDomainNode)) {
@@ -2323,22 +2322,32 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			destinationElement = focusElement;
 		} else {
 
-			boolean freeFocusToLeft = false;
+			// boolean freeFocusToLeft = false;
+			//
+			// if (dataDomainNode != historyPath.getLastNode()
+			// && !dataDomainNode.containsView(focusElement.getGLView()))
+			// freeFocusToLeft = false;
+			// else {
+			// freeFocusToLeft = true;
+			// }
+			//
+			// freeFocusElementByChainMove(freeFocusToLeft);
+			//			
+			// destinationElement = focusElement;
 
-			if (dataDomainNode != historyPath.getLastNode()
-					&& !dataDomainNode.containsView(focusElement.getGLView()))
-				freeFocusToLeft = false;
-			else {
-				freeFocusToLeft = true;
+			for (int i = stackElementsRight.size() - 1; i >= 0; i--) {
+
+				RemoteLevelElement element = stackElementsRight.get(i);
+
+				if (element.isFree()) {
+					destinationElement = element;
+				}
 			}
-
-			freeFocusElementByChainMove(freeFocusToLeft);
-			destinationElement = focusElement;
 		}
 
 		if (destinationElement != null) {
 			lastPickedView = view;
-			lastPickedRemoteLevelElement = focusElement;
+			lastPickedRemoteLevelElement = destinationElement;
 			viewSpawnElement.setGLView(view);
 			arSlerpActions.add(new SlerpAction(viewSpawnElement, destinationElement));
 		}
@@ -2434,10 +2443,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				if (browserOverlayShell == null) {
 					browserOverlayShell = new Shell(SWT.NO_TRIM | SWT.RESIZE);
 
-					int x = 729;
+					int x = 743;
 					int y = 143;
 
-					browserOverlayShell.setBounds(x, y, 764, 760);
+					browserOverlayShell.setBounds(x, y, 737, 735);
 
 					if (browserView == null) {
 						for (IView view : GeneralManager.get().getViewGLCanvasManager()

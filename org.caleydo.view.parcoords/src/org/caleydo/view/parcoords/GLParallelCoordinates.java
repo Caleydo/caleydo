@@ -356,6 +356,9 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 
 	@Override
 	public void display(final GL gl) {
+		
+		gl.glEnable(GL.GL_BLEND);
+		
 		if (bShowSelectionHeatMap) {
 
 			gl.glTranslatef(viewFrustum.getRight()
