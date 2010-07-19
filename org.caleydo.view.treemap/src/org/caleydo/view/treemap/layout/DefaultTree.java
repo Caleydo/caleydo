@@ -18,13 +18,13 @@ public class DefaultTree implements AbstractTree {
 		DefaultTreeNode node;
 		
 		children = new Vector<AbstractTreeNode>();
-		children.add(new DefaultTreeNode(1.0/12, Color.GREEN, new Vector<AbstractTreeNode>(),"3.1"));
-		children.add(new DefaultTreeNode(1.0/12, Color.RED, new Vector<AbstractTreeNode>(),"3.2"));
+		children.add(new DefaultTreeNode(1.0/12, Color.ORANGE, new Vector<AbstractTreeNode>(),"3.1"));
+		children.add(new DefaultTreeNode(1.0/12, Color.MAGENTA, new Vector<AbstractTreeNode>(),"3.2"));
 		
-		node=new DefaultTreeNode(2.0/12, null, children);
+		node=new DefaultTreeNode(1.0/6, null, children);
 		children = new Vector<AbstractTreeNode>();
 		children.add(node);
-		children.add(new DefaultTreeNode(1.0/6, Color.BLUE, new Vector<AbstractTreeNode>(),"2.1"));
+		children.add(new DefaultTreeNode(1.0/6, Color.GRAY, new Vector<AbstractTreeNode>(),"2.1"));
 		node = new DefaultTreeNode(1.0/3, null, children);
 		
 		Vector<AbstractTreeNode> children2 = new Vector<AbstractTreeNode>();
@@ -33,7 +33,7 @@ public class DefaultTree implements AbstractTree {
 		children2.add(new DefaultTreeNode(1.0/9, Color.BLUE, new Vector<AbstractTreeNode>(),"2.4"));
 		
 		Vector<AbstractTreeNode> children3 = new Vector<AbstractTreeNode>();
-		children3.add(new DefaultTreeNode(1.0/3, Color.RED, new Vector<AbstractTreeNode>(),"1.1"));
+		children3.add(new DefaultTreeNode(1.0/3, Color.CYAN, new Vector<AbstractTreeNode>(),"1.1"));
 		children3.add(node);
 		children3.add(new DefaultTreeNode(1.0/3, null, children2));
 		

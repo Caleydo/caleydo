@@ -5,7 +5,9 @@ public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
 	@Override
 	public void paint(AbstractTree tree, IGlPainter painter) {
 		// TODO Auto-generated method stub
+		painter.init();
 		paintHelp(tree.getRoot(), 0, 0, 1, 1, HORIZONTAL_ALIGNMENT, painter);
+		painter.finish();
 	}
 
 	private static final boolean HORIZONTAL_ALIGNMENT = true;
@@ -29,15 +31,17 @@ public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
 				float size;
 				for (AbstractTreeNode node : root.getChildren()) {
 					size = (node.getAreaSize() / area) * (yMax - yOffset);
-					paintHelp(node, xOffset, y, xOffset, y + size, !alignment,
+					paintHelp(node, xOffset, y, xMax, y + size, !alignment,
 							painter);
 					y += size;
 				}
 			}
 		} else {
-			painter.paintRectangle(xOffset, yOffset, xMax, yMax, root.getAreaColor());
-			//System.out.println("painting "+root.getAreaColor());
-			System.out.println("painting: "+root.getLabel());
+			painter.paintRectangle(xOffset, yOffset, xMax, yMax,
+					root.getAreaColor());
+			// System.out.println("painting "+root.getAreaColor());
+			System.out.println("painting: " + root.getLabel() + " " + xOffset
+					+ " " + yOffset + " " + xMax + " " + yMax);
 		}
 	}
 }

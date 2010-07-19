@@ -45,5 +45,9 @@ public class DefaultTreeNode implements AbstractTreeNode {
 		// TODO Auto-generated method stub
 		return label;
 	}
+	
+	public String toString(){
+		return label==null?"":label;
+	}
 
 }

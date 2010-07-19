@@ -24,7 +24,7 @@ public class GlPainter implements IGlPainter {
 		gl.glColor3f(color[0], color[1], color[2]);
 		
 		x=viewFrustum.getWidth()*x;
-		y=viewFrustum.getWidth()*y;		
+		y=viewFrustum.getHeight()*y;		
 		xmax=viewFrustum.getWidth()*xmax;
 		ymax=viewFrustum.getHeight()*ymax;
 		
@@ -39,12 +39,14 @@ public class GlPainter implements IGlPainter {
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
+		System.out.println("Start painting");
 		
 	}
 
 	@Override
 	public void finish() {
 		// TODO Auto-generated method stub
+		System.out.println("Finished painting");
 		
 	}
 }
