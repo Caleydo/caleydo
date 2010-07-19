@@ -1647,10 +1647,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// if (ePolylineDataType == EIDType.EXPRESSION_INDEX &&
 			// !bAngularBrushingSelectPolyline) {
 			if (!bAngularBrushingSelectPolyline) {
-//				//
-//				SelectionCommand command = new SelectionCommand(
-//						ESelectionCommandType.CLEAR, selectionType);
-//				sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+				// //
+				// SelectionCommand command = new SelectionCommand(
+				// ESelectionCommandType.CLEAR, selectionType);
+				// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 				ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 				handleConnectedElementRep(selectionDelta);
@@ -1958,9 +1958,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				&& dataDomain.getDataDomainType()
 						.equals("org.caleydo.datadomain.genetic")) {
 
-			int axisCount = 0;
-			for (int iAxisID : storageVA) {
-
+			int axisCount = storageVA.indexOf(iStorageIndex);
+//			for (int iAxisID : storageVA) {
 				x = axisCount * renderStyle.getAxisSpacing(storageVA.size());
 				axisCount++;
 				x = x + renderStyle.getXSpacing();
@@ -1968,10 +1967,13 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				// y =set.get(storageVA.get(storageVA.size() - 1)).getFloat(
 				// EDataRepresentation.NORMALIZED, iAxisID);
 				alElementReps.add(new SelectedElementRep(idType, iUniqueID, x, y, 0.0f));
-			}
-		} else if (idType == EIDType.EXPERIMENT_INDEX
-				&& dataDomain.getDataDomainType().equals(
-						"org.caleydo.datadomain.clinical")) {
+//			}
+//		}
+//		else if (idType == EIDType.EXPERIMENT_INDEX
+//				&& dataDomain.getDataDomainType().equals(
+//						"org.caleydo.datadomain.clinical")) {
+//			System.out.println("wu");
+//			alElementReps.add(new SelectedElementRep(idType, iUniqueID, 0, 0, 0.0f));
 
 		} else {
 			// if (eAxisDataType == EIDType.EXPERIMENT_RECORD)

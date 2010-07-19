@@ -275,9 +275,9 @@ public abstract class AStorageBasedView
 		if (selectionDelta.getIDType().getCategory() == EIDCategory.GENE
 			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 			contentSelectionManager.setDelta(selectionDelta);
-			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
+//			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
-			handleConnectedElementRep(internalDelta);
+			handleConnectedElementRep(selectionDelta);
 			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
 		}
@@ -288,7 +288,7 @@ public abstract class AStorageBasedView
 			// key)(type)
 
 			storageSelectionManager.setDelta(selectionDelta);
-			handleConnectedElementRep(storageSelectionManager.getCompleteDelta());
+			handleConnectedElementRep(selectionDelta);
 			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
 		}
@@ -309,7 +309,8 @@ public abstract class AStorageBasedView
 			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
 
 			contentSelectionManager.setDelta(selectionDelta);
-			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
+//			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
+			handleConnectedElementRep(selectionDelta);
 			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
 		}
@@ -318,7 +319,8 @@ public abstract class AStorageBasedView
 			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
 
 			storageSelectionManager.setDelta(selectionDelta);
-			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
+//			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
+			handleConnectedElementRep(selectionDelta);
 			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
 		}
