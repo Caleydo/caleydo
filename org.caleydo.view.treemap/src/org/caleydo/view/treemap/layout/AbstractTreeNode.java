@@ -10,4 +10,6 @@ public interface AbstractTreeNode {
 	public Color getAreaColor();
 	
 	public List<AbstractTreeNode> getChildren();
+	
+	public String getLabel();
 }

@@ -1,0 +1,43 @@
+package org.caleydo.view.treemap.layout;
+
+public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
+
+	@Override
+	public void paint(AbstractTree tree, IGlPainter painter) {
+		// TODO Auto-generated method stub
+		paintHelp(tree.getRoot(), 0, 0, 1, 1, HORIZONTAL_ALIGNMENT, painter);
+	}
+
+	private static final boolean HORIZONTAL_ALIGNMENT = true;
+	private static final boolean VERTICAL_ALIGNMENT = false;
+
+	private void paintHelp(AbstractTreeNode root, float xOffset, float yOffset,
+			float xMax, float yMax, boolean alignment, IGlPainter painter) {
+		if (root.getChildren() != null && root.getChildren().size() > 0) {
+			float area = (xMax - xOffset) * (yMax - yOffset);
+			if (alignment == HORIZONTAL_ALIGNMENT) {
+				float x = xOffset;
+				float size = 0;
+				for (AbstractTreeNode node : root.getChildren()) {
+					size = (node.getAreaSize() / area) * (xMax - xOffset);
+					paintHelp(node, x, yOffset, x + size, yMax, !alignment,
+							painter);
+					x += size;
+				}
+			} else {
+				float y = yOffset;
+				float size;
+				for (AbstractTreeNode node : root.getChildren()) {
+					size = (node.getAreaSize() / area) * (yMax - yOffset);
+					paintHelp(node, xOffset, y, xOffset, y + size, !alignment,
+							painter);
+					y += size;
+				}
+			}
+		} else {
+			painter.paintRectangle(xOffset, yOffset, xMax, yMax, root.getAreaColor());
+			//System.out.println("painting "+root.getAreaColor());
+			System.out.println("painting: "+root.getLabel());
+		}
+	}
+}
