@@ -17,15 +17,16 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLException;
 
+import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -112,7 +113,7 @@ public class GLGlyph
 
 	private GlyphManager gman = null;
 
-	private StorageSelectionManager selectionManager = null;
+	private ContentSelectionManager selectionManager = null;
 
 	private GlyphEntry oldMouseOverGlyphEntry = null;
 
@@ -279,6 +280,7 @@ public class GLGlyph
 			event.setSender(this);
 			event.setSelectionDelta((SelectionDelta) selectionDelta);
 			event.setInfo(getShortInfo());
+			event.setDataDomainType(dataDomain.getDataDomainType());
 			eventPublisher.triggerEvent(event);
 		}
 	}
@@ -288,7 +290,7 @@ public class GLGlyph
 
 		grid_ = new GLGlyphGrid(renderStyle, !this.isRenderedRemote());
 
-		selectionManager = dataDomain.getStorageSelectionManager();
+		selectionManager = dataDomain.getContentSelectionManager();
 
 		set = dataDomain.getSet();
 
@@ -936,7 +938,7 @@ public class GLGlyph
 					if (g == oldMouseOverGlyphEntry)
 						return;
 
-					selectionManager.clearSelections();
+					selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 					if (oldMouseOverGlyphEntry != null)
 						selectionManager.addToType(SelectionType.NORMAL, oldMouseOverGlyphEntry.getID());
 
@@ -1184,14 +1186,17 @@ public class GLGlyph
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
+		selectionUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
+		selectionCommandListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		removeUnselectedGlyphsListener = new RemoveUnselectedGlyphsListener();
 		removeUnselectedGlyphsListener.setHandler(this);
+		removeUnselectedGlyphsListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(RemoveUnselectedGlyphsEvent.class, removeUnselectedGlyphsListener);
 
 		setPositionModelListener = new SetPositionModelListener();
