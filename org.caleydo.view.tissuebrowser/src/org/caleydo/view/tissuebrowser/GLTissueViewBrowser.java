@@ -23,6 +23,9 @@ import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.picking.EPickingMode;
+import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -374,6 +377,22 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		//
 		// initData();
 		// updateViews();
+	}
+
+	@Override
+	protected void handlePickingEvents(EPickingType pickingType,
+			EPickingMode pickingMode, int iExternalID, Pick pick) {
+		super.handlePickingEvents(pickingType, pickingMode, iExternalID, pick);
+
+
+		switch (pickingType) {
+		case REMOTE_VIEW_SELECTION:
+			switch (pickingMode) {
+			case MOUSE_OVER:
+				System.out.println("WE!");
+
+			}
+		}
 	}
 
 }
