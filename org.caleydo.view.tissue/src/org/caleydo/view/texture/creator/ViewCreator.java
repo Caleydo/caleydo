@@ -1,12 +1,12 @@
-package org.caleydo.view.tissue.creator;
+package org.caleydo.view.texture.creator;
 
 import org.caleydo.core.manager.view.creator.AGLViewCreator;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.view.tissue.GLTissue;
-import org.caleydo.view.tissue.SerializedTissueView;
+import org.caleydo.view.texture.GLTexture;
+import org.caleydo.view.texture.SerializedTextureView;
 
 public class ViewCreator extends AGLViewCreator {
 
@@ -18,12 +18,12 @@ public class ViewCreator extends AGLViewCreator {
 	public AGLView createGLView(GLCaleydoCanvas glCanvas, String label,
 			IViewFrustum viewFrustum) {
 
-		return new GLTissue(glCanvas, label, viewFrustum);
+		return new GLTexture(glCanvas, label, viewFrustum);
 	}
 
 	@Override
 	public ASerializedView createSerializedView() {
 
-		return new SerializedTissueView();
+		return new SerializedTextureView();
 	}
 }

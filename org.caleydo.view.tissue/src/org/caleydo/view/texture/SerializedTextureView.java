@@ -1,4 +1,4 @@
-package org.caleydo.view.tissue;
+package org.caleydo.view.texture;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -8,13 +8,13 @@ import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
- * Serialized form of a heatmap-view.
+ * Serialized form of a texture-view.
  * 
- * @author Werner Puff
+ * @author Marc Streit
  */
 @XmlRootElement
 @XmlType
-public class SerializedTissueView extends ASerializedView {
+public class SerializedTextureView extends ASerializedView {
 
 	private String texturePath;
 
@@ -25,11 +25,11 @@ public class SerializedTissueView extends ASerializedView {
 	/**
 	 * Default constructor with default initialization
 	 */
-	public SerializedTissueView() {
+	public SerializedTextureView() {
 
 	}
 
-	public SerializedTissueView(String dataDomainType) {
+	public SerializedTextureView(String dataDomainType) {
 		super(dataDomainType);
 	}
 	
@@ -42,7 +42,7 @@ public class SerializedTissueView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLTissue.VIEW_ID;
+		return GLTexture.VIEW_ID;
 	}
 
 	public void setTexturePath(String texturePath) {

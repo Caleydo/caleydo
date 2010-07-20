@@ -34,8 +34,8 @@ import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.view.tissue.GLTissue;
-import org.caleydo.view.tissue.SerializedTissueView;
+import org.caleydo.view.texture.GLTexture;
+import org.caleydo.view.texture.SerializedTextureView;
 
 public class GLTissueViewBrowser extends AGLViewBrowser implements
 		IContentVAUpdateHandler {
@@ -54,7 +54,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 	private EIDType primaryIDType = EIDType.EXPERIMENT_INDEX;
 
-	private ArrayList<SerializedTissueView> allTissueViews;
+	private ArrayList<SerializedTextureView> allTissueViews;
 
 	private boolean poolLeft = false;
 
@@ -97,7 +97,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	protected void addInitialViews() {
 
 		newViews.clear();
-		allTissueViews = new ArrayList<SerializedTissueView>();
+		allTissueViews = new ArrayList<SerializedTextureView>();
 
 		ISet geneticSet = ((ISetBasedDataDomain) DataDomainManager.getInstance()
 				.getDataDomain("org.caleydo.datadomain.genetic")).getSet();
@@ -105,13 +105,13 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		for (int experimentIndex = 0; experimentIndex < MAX_VIEWS; experimentIndex++) {
 
 			generalManager.getViewGLCanvasManager().createGLView(
-					"org.caleydo.view.tissue", parentGLCanvas, "", viewFrustum);
+					"org.caleydo.view.texture", parentGLCanvas, "", viewFrustum);
 
 			mapExperimentToTexturePath.put(experimentIndex, "data/tissue/breast_"
 					+ experimentIndex % 24 + ".jpg");
 
-			SerializedTissueView tissue = new SerializedTissueView();
-			tissue.setDataDomainType("org.caleydo.view.tissue");
+			SerializedTextureView tissue = new SerializedTextureView();
+			tissue.setDataDomainType("org.caleydo.view.texture");
 			tissue.setTexturePath(mapExperimentToTexturePath.get(experimentIndex));
 			// tissue.setLabel(geneticSet.get(experimentIndex).getLabel());
 			tissue.setExperimentIndex(experimentIndex);
@@ -119,7 +119,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 			allTissueViews.add(tissue);
 		}
 
-		for (SerializedTissueView serTissue : allTissueViews) {
+		for (SerializedTextureView serTissue : allTissueViews) {
 			newViews.add(serTissue);
 		}
 	}
@@ -145,10 +145,10 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 		AGLView glView = super.createView(gl, serView);
 
-		((GLTissue) glView).setTexturePath(((SerializedTissueView) serView)
+		((GLTexture) glView).setTexturePath(((SerializedTextureView) serView)
 				.getTexturePath());
-		glView.setLabel(((SerializedTissueView) serView).getLabel());
-		((GLTissue) glView).setExperimentIndex(((SerializedTissueView) serView)
+		glView.setLabel(((SerializedTextureView) serView).getLabel());
+		((GLTexture) glView).setExperimentIndex(((SerializedTextureView) serView)
 				.getExperimentIndex());
 		return glView;
 	}

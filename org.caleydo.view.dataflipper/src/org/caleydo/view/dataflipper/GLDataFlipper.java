@@ -74,8 +74,8 @@ import org.caleydo.view.parcoords.GLParallelCoordinates;
 import org.caleydo.view.parcoords.SerializedParallelCoordinatesView;
 import org.caleydo.view.pathwaybrowser.GLPathwayViewBrowser;
 import org.caleydo.view.pathwaybrowser.SerializedPathwayViewBrowserView;
-import org.caleydo.view.tissue.GLTissue;
-import org.caleydo.view.tissue.SerializedTissueView;
+import org.caleydo.view.texture.GLTexture;
+import org.caleydo.view.texture.SerializedTextureView;
 import org.caleydo.view.tissuebrowser.SerializedTissueViewBrowserView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -166,7 +166,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private String startDataDomainType = "org.caleydo.datadomain.clinical";
 
 	// TODO: change to empty dummy view instead of tissue
-	private GLTissue glBrowserImageView;
+	private GLTexture glBrowserImageView;
 	private Shell browserOverlayShell;
 	private HTMLBrowser browserView;
 
@@ -341,7 +341,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				"org.caleydo.view.pathwaybrowser", "Explore related pathways"));
 		interfaces.clear();
 
-		interfaces.add("org.caleydo.view.tissue"); // this is the fake browser
+		interfaces.add("org.caleydo.view.texture"); // this is the fake browser
 		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.genetic",
 				interfaces, "View gene information"));
 		interfaces.clear();
@@ -372,7 +372,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
 				dataDomainType, "org.caleydo.analytical.clustering");
 		dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
-				dataDomainType, "org.caleydo.view.tissue");
+				dataDomainType, "org.caleydo.view.texture");
 
 		dataDomainType = "org.caleydo.datadomain.clinical";
 		dataDomainViewAssociationManager.registerDatadomainTypeViewTypeAssociation(
@@ -610,8 +610,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			ASerializedView serView = newViews.remove(0);
 			AGLView view = createView(gl, serView);
 
-			if (view instanceof GLTissue) {
-				glBrowserImageView = (GLTissue) view;
+			if (view instanceof GLTexture) {
+				glBrowserImageView = (GLTexture) view;
 				glBrowserImageView.setTexturePath(GeneralManager.CALEYDO_HOME_PATH
 						+ "browser.png");
 			}
@@ -785,10 +785,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			arSlerpActions.clear();
 			iSlerpFactor = 0;
 
-			if (focusElement.getGLView() instanceof GLTissue)
+			if (focusElement.getGLView() instanceof GLTexture)
 				openBrowserOverlay();
 
-			if (!(focusElement.getGLView() instanceof GLTissue)) {
+			if (!(focusElement.getGLView() instanceof GLTexture)) {
 				closeBrowserOverlay();
 			}
 
@@ -1180,7 +1180,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				} else
 					triggerAnalyticalInterface(dataDomainType, interfaceType);
 
-				if (!interfaceType.equals("org.caleydo.view.tissue"))
+				if (!interfaceType.equals("org.caleydo.view.texture"))
 					closeBrowserOverlay();
 
 				// FIXME with general solution for the case when the
@@ -1888,7 +1888,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			viewName = viewName.replace("browser", "");
 
 		// FIXME: remove if browser gl view has its own gl class
-		if (viewName.equals("tissue"))
+		if (viewName.equals("texture"))
 			viewName = "browser";
 
 		String subfolder = "";
@@ -2302,8 +2302,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			serView = new SerializedGlyphView(dataDomainType);
 		} else if (interfaceType.equals("org.caleydo.view.browser")) {
 			serView = new SerializedHTMLBrowserView(dataDomainType);
-		} else if (interfaceType.equals("org.caleydo.view.tissue")) {
-			serView = new SerializedTissueView(dataDomainType);
+		} else if (interfaceType.equals("org.caleydo.view.texture")) {
+			serView = new SerializedTextureView(dataDomainType);
 		}
 
 		return serView;

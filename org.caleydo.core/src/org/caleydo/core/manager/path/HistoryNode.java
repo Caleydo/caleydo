@@ -103,7 +103,7 @@ public class HistoryNode implements INode {
 			tmp[0] = "org.caleydo.analytical.clustering";
 			tmp[1] = "org.caleydo.view.parcoords";
 			tmp[2] = "org.caleydo.view.heatmap.hierarchical";
-			tmp[3] = "org.caleydo.view.tissue"; // this is the fake browser
+			tmp[3] = "org.caleydo.view.texture"; // this is the fake browser
 			return tmp;
 		}
 		

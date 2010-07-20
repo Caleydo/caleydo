@@ -1,4 +1,4 @@
-package org.caleydo.view.tissue;
+package org.caleydo.view.texture;
 
 import gleem.linalg.Vec3f;
 
@@ -27,9 +27,9 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
  * 
  * @author Marc Streit
  */
-public class GLTissue extends AGLView implements IDataDomainBasedView<IDataDomain> {
+public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDomain> {
 
-	public final static String VIEW_ID = "org.caleydo.view.tissue";
+	public final static String VIEW_ID = "org.caleydo.view.texture";
 
 	private String texturePath;
 	private int experimentIndex;
@@ -41,7 +41,7 @@ public class GLTissue extends AGLView implements IDataDomainBasedView<IDataDomai
 	/**
 	 * Constructor.
 	 */
-	public GLTissue(GLCaleydoCanvas glCanvas, final String sLabel,
+	public GLTexture(GLCaleydoCanvas glCanvas, final String sLabel,
 			final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, false);
 
@@ -54,6 +54,7 @@ public class GLTissue extends AGLView implements IDataDomainBasedView<IDataDomai
 	public void registerDataDomains() {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 		dataDomainTypes.add("org.caleydo.datadomain.tissue");
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 		
 		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
 				dataDomainTypes, viewType);
@@ -246,7 +247,7 @@ public class GLTissue extends AGLView implements IDataDomainBasedView<IDataDomai
 		//		
 		// return pathway.getTitle() + " (" +pathway.getType().getName() + ")";
 
-		return "Tissue Viewer";
+		return "";
 	}
 
 	@Override
@@ -264,7 +265,7 @@ public class GLTissue extends AGLView implements IDataDomainBasedView<IDataDomai
 		//
 		// return sInfoText.toString();
 
-		return "Tissuew Viewer";
+		return "";
 	}
 
 	@Override
