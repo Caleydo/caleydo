@@ -31,9 +31,9 @@ public class RcpGLBucketView extends ARcpGLViewPart {
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 
-		determineDataDomainType();
-
-		SerializedBucketView serializedView = new SerializedBucketView(dataDomainType);
+		SerializedBucketView serializedView = new SerializedBucketView();
+		dataDomainType = determineDataDomain(serializedView);
+		serializedView.setDataDomainType(dataDomainType);
 		return serializedView;
 	}
 

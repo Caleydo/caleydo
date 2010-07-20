@@ -46,11 +46,21 @@ public class SerializedBucketView extends ASerializedView {
 	 * parameters.
 	 */
 	public SerializedBucketView() {
-		this("org.caleydo.datadomain.unspecified");
 	}
 
 	public SerializedBucketView(String dataDomainType) {
 		super(dataDomainType);
+		init();
+	}
+
+	@Override
+	public void setDataDomainType(String dataDomainType) {
+		super.setDataDomainType(dataDomainType);
+		init();
+
+	}
+
+	private void init() {
 		setPathwayTexturesEnabled(true);
 		setNeighborhoodEnabled(true);
 		setGeneMappingEnabled(true);
@@ -58,15 +68,15 @@ public class SerializedBucketView extends ASerializedView {
 
 		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>();
 
-		if (DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic") != null) {
+		if (DataDomainManager.getInstance().getDataDomain(
+				"org.caleydo.datadomain.genetic") != null) {
 			SerializedHeatMapView heatMap = new SerializedHeatMapView(
 					"org.caleydo.datadomain.genetic");
 			remoteViews.add(heatMap);
 			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView(
 					"org.caleydo.datadomain.genetic");
 			remoteViews.add(parCoords);
-		}
-		else if (dataDomainType.equals("org.caleydo.datadomain.clinical")) {
+		} else if (dataDomainType.equals("org.caleydo.datadomain.clinical")) {
 			SerializedGlyphView glyph1 = new SerializedGlyphView(
 					"org.caleydo.datadomain.clinical");
 			remoteViews.add(glyph1);

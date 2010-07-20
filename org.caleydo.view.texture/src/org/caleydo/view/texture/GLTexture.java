@@ -47,17 +47,6 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 
 		viewType = VIEW_ID;
 
-		registerDataDomains();
-	}
-
-	@Override
-	public void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		dataDomainTypes.add("org.caleydo.datadomain.tissue");
-		dataDomainTypes.add("org.caleydo.datadomain.genetic");
-		
-		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
-				dataDomainTypes, viewType);
 	}
 
 	@Override

@@ -151,8 +151,6 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 		super(glCanvas, sLabel, viewFrustum, true);
 
 		viewType = VIEW_ID;
-		registerDataDomains();
-
 		hashGroups = new HashMap<Integer, GroupRepresentation>();
 
 		dragAndDropController = new DragAndDropController(this);
@@ -176,15 +174,6 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 		iLastUsedGroupID = 0;
 		bPotentialNewSelection = false;
 		// registerEventListeners();
-	}
-
-	@Override
-	public void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		dataDomainTypes.add("org.caleydo.datadomain.genetic");
-
-		DataDomainManager.getInstance().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 	@Override

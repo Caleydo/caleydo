@@ -87,8 +87,6 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 		super(glCanvas, sLabel, viewFrustum, true);
 
 		viewType = VIEW_ID;
-		registerDataDomains();
-
 		colorMappingManager = ColorMappingManager.get();
 		colorMapping = colorMappingManager
 				.getColorMapping(EColorMappingType.GENE_EXPRESSION);
@@ -98,15 +96,6 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 		// registerEventListeners();
 	}
 
-	@Override
-	public void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		dataDomainTypes.add("org.caleydo.datadomain.genetic");
-//		dataDomainTypes.add("org.caleydo.datadomain.generic");
-
-		DataDomainManager.getInstance().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
-	}
 
 	@Override
 	public void init(GL gl) {

@@ -66,6 +66,8 @@ public abstract class AGLView
 	extends AView
 	implements GLEventListener, IResettableView {
 
+	public final static String VIEW_ID = "unspecified";
+
 	public enum EBusyModeState {
 		SWITCH_OFF,
 		ON,

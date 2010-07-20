@@ -151,7 +151,6 @@ public class GLGlyph
 	public GLGlyph(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, true);
 		viewType = VIEW_ID;
-		registerDataDomains();
 
 		alSelectionBrushCornerPoints = new ArrayList<Vec2i>();
 		mouseListener_ = new GlyphMouseListener(this);
@@ -160,15 +159,6 @@ public class GLGlyph
 
 		gman = generalManager.getGlyphManager();
 	}
-	
-	@Override
-	public void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		dataDomainTypes.add("org.caleydo.datadomain.clinical");
-
-		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
-	}
-
 
 	/**
 	 * Sets the used positioning model
@@ -180,8 +170,8 @@ public class GLGlyph
 		grid_.setGlyphPositionModel(iconIDs);
 		forceRebuild();
 
-		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clear(
-			EIDType.EXPERIMENT_INDEX);
+		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+			.clear(EIDType.EXPERIMENT_INDEX);
 	}
 
 	/**
@@ -527,8 +517,8 @@ public class GLGlyph
 				continue;
 
 			gl.glTranslatef(pos.x(), -(float) pos.y(), 0f);
-			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GLYPH_FIELD_SELECTION, ge
-				.getID()));
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GLYPH_FIELD_SELECTION,
+				ge.getID()));
 			gl.glCallList(ge.getGlList(gl));
 			gl.glPopName();
 			gl.glTranslatef(-(float) pos.x(), pos.y(), 0f);
@@ -711,9 +701,9 @@ public class GLGlyph
 		gl.glGenTextures(1, colorBuffer, 0); // Create 1 Texture
 		gl.glBindTexture(GL.GL_TEXTURE_2D, colorBuffer[0]); // Bind The Texture
 		gl.glTexImage2D(
-		// Build Texture Using Information In data
-			GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, width, height, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, BufferUtil
-				.newByteBuffer(width * height * 4));
+			// Build Texture Using Information In data
+			GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, width, height, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE,
+			BufferUtil.newByteBuffer(width * height * 4));
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
 
@@ -946,14 +936,14 @@ public class GLGlyph
 
 					oldMouseOverGlyphEntry = g;
 
-					selectionManager.addConnectionID(generalManager.getIDManager().createID(
-						EManagedObjectType.CONNECTION), iExternalID);
+					selectionManager.addConnectionID(
+						generalManager.getIDManager().createID(EManagedObjectType.CONNECTION), iExternalID);
 
 					if (bEnableSelection)
 						brushSelect(g, !keyListener_.isControlDown());
 
-					generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clear(
-						EIDType.EXPERIMENT_INDEX);
+					generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+						.clear(EIDType.EXPERIMENT_INDEX);
 
 					SelectionCommand command =
 						new SelectionCommand(ESelectionCommandType.CLEAR, SelectionType.MOUSE_OVER);
@@ -1127,11 +1117,11 @@ public class GLGlyph
 					continue;
 				}
 
-				if (GeneralManager.get().getIDMappingManager().hasMapping(EIDType.EXPERIMENT_INDEX,
-					EIDType.EXPERIMENT)) {
+				if (GeneralManager.get().getIDMappingManager()
+					.hasMapping(EIDType.EXPERIMENT_INDEX, EIDType.EXPERIMENT)) {
 					String id =
-						GeneralManager.get().getIDMappingManager().getID(EIDType.EXPERIMENT_INDEX,
-							EIDType.EXPERIMENT, ge.getID());
+						GeneralManager.get().getIDMappingManager()
+							.getID(EIDType.EXPERIMENT_INDEX, EIDType.EXPERIMENT, ge.getID());
 
 					out.print(id);
 				}
@@ -1285,7 +1275,6 @@ public class GLGlyph
 	public void handleUpdateView() {
 		forceRebuild();
 	}
-
 
 	@Override
 	public void setSet(ISet set) {

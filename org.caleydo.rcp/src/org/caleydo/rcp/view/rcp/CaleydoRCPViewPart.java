@@ -6,10 +6,11 @@ import java.util.List;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IView;
+import org.caleydo.rcp.Application;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IViewSite;
@@ -84,6 +85,7 @@ public abstract class CaleydoRCPViewPart
 	/**
 	 * Determines and sets the dataDomain based on the following rules:
 	 * <ul>
+	 * <li>If no dataDomain is registered, null is returned</li>
 	 * <li>If a dataDomainType is set in the serializable representation this is used</li>
 	 * <li>Else if there is exactly one loaded dataDomain which the view can this is used</li>
 	 * <li>Else an exception is thrown</li>
@@ -92,29 +94,35 @@ public abstract class CaleydoRCPViewPart
 	 * @param dataDomainBasedView
 	 * @param serializedView
 	 */
-	protected void determineDataDomain(IDataDomainBasedView<IDataDomain> dataDomainBasedView,
-		ASerializedView serializedView) {
-		if (dataDomainBasedView instanceof IDataDomainBasedView<?>) {
-			String dataDomainType = serializedView.getDataDomainType();
-			IDataDomain dataDomain = null;
-			if (dataDomainType == null) {
-				ArrayList<IDataDomain> availableDomains =
-					DataDomainManager.getInstance().getAssociationManager().getAvailableDataDomainTypesForViewTypes(
-						serializedView.getViewType());
-				if (availableDomains.size() == 0)
-					throw new IllegalStateException("No datadomain for this view loaded");
-				else if (availableDomains.size() > 1)
-					throw new IllegalStateException(
-						"Not able to choose which data domain to use - not yet implemented");
-				else
-					dataDomain = availableDomains.get(0);
+	protected String determineDataDomain(ASerializedView serializedView) {
 
+		// first we check if the data domain was manually specified
+		for (Pair<String, String> startView : Application.startViewWithDataDomain) {
+			if (startView.getFirst().equals(serializedView.getViewID())) {
+				dataDomainType = startView.getSecond();
+				Application.startViewWithDataDomain.remove(startView);
+				return dataDomainType;
 			}
-			else {
-				dataDomain =
-					DataDomainManager.getInstance().getDataDomain(serializedView.getDataDomainType());
-			}
-			dataDomainBasedView.setDataDomain(dataDomain);
+		}
+
+		// then we check whether the serialization has a datadomain already
+		String dataDomainType = serializedView.getDataDomainType();
+		if (dataDomainType != null)
+			return dataDomainType;
+		else {
+			ArrayList<IDataDomain> availableDomains =
+				DataDomainManager.getInstance().getAssociationManager()
+					.getAvailableDataDomainTypesForViewTypes(serializedView.getViewType());
+			if(availableDomains == null)
+				return null;
+			else if (availableDomains.size() == 0)
+				throw new IllegalStateException("No datadomain for this view loaded");
+			else if (availableDomains.size() > 1)
+				throw new IllegalStateException(
+					"Not able to choose which data domain to use - not yet implemented");
+			else
+				return availableDomains.get(0).getDataDomainType();
+
 		}
 	}
 

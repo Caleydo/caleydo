@@ -141,7 +141,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 		super(glCanvas, sLabel, viewFrustum);
 
 		viewType = GLDendrogram.VIEW_ID;
-		registerDataDomains();
 
 		ArrayList<SelectionType> alSelectionTypes = new ArrayList<SelectionType>();
 		alSelectionTypes.add(SelectionType.NORMAL);

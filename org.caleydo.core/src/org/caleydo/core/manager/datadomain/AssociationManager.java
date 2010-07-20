@@ -89,13 +89,17 @@ public class AssociationManager {
 	}
 
 	/**
-	 * Get all loaded concrete dataDomains that can be used by the view specified
+	 * Get all loaded concrete dataDomains that can be used by the view specified. If no dataDomains are
+	 * registered for the view, null is returned
 	 * 
 	 * @param viewType
 	 * @return
 	 */
 	public ArrayList<IDataDomain> getAvailableDataDomainTypesForViewTypes(String viewType) {
+
 		Set<String> dataDomainTypes = getDataDomainTypesForViewTypes(viewType);
+		if (dataDomainTypes == null)
+			return null;
 		ArrayList<IDataDomain> availabelDataDomainTypes = new ArrayList<IDataDomain>();
 
 		for (String dataDomainType : dataDomainTypes) {

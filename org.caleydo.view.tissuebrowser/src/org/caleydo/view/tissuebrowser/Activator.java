@@ -1,5 +1,8 @@
 package org.caleydo.view.tissuebrowser;
 
+import java.util.ArrayList;
+
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.view.tissuebrowser.creator.ViewCreator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -33,9 +36,9 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-
-		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
-				new ViewCreator(GLTissueViewBrowser.VIEW_ID));
+		registerDataDomains();
+		GeneralManager.get().getViewGLCanvasManager()
+				.addViewCreator(new ViewCreator(GLTissueViewBrowser.VIEW_ID));
 	}
 
 	/*
@@ -58,6 +61,14 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static Activator getDefault() {
 		return plugin;
+	}
+
+	private void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.tissue");
+
+		DataDomainManager.getInstance().getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, PLUGIN_ID);
 	}
 
 }

@@ -63,7 +63,6 @@ public class StatisticsView extends ASWTView implements IView, ISWTView, ISetBas
 				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 
 		this.viewType = VIEW_ID;
-		registerDataDomains();
 
 		setsWithPerformedStatistics = new ArrayList<ISet>();
 	}
@@ -277,17 +276,6 @@ public class StatisticsView extends ASWTView implements IView, ISWTView, ISetBas
 
 		calulateReduction();
 
-	}
-
-	@Override
-	public void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		dataDomainTypes.add("org.caleydo.datadomain.genetic");
-		dataDomainTypes.add("org.caleydo.datadomain.generic");
-		dataDomainTypes.add("org.caleydo.datadomain.clinical");
-
-		DataDomainManager.getInstance().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 	@Override

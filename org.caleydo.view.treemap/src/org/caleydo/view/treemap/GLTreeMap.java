@@ -76,7 +76,6 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 
 		// super(glCanvas, sLabel, viewFrustum, null);
 		viewType = GLTreeMap.VIEW_ID;
-		registerDataDomains();
 
 		// ArrayList<SelectionType> alSelectionTypes = new
 		// ArrayList<SelectionType>();
@@ -347,15 +346,6 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		return dataDomain;
 	}
 
-	@Override
-	public void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		dataDomainTypes.add("org.caleydo.datadomain.genetic");
-
-		DataDomainManager.getInstance().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
-
-	}
 
 	@Override
 	public void setDataDomain(ISetBasedDataDomain dataDomain) {

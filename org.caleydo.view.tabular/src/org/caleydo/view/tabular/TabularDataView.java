@@ -144,24 +144,13 @@ public class TabularDataView extends ASWTView implements
 				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 
 		this.viewType = VIEW_ID;
-		registerDataDomains();
-
+	
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 		storageSelectionManager = dataDomain.getStorageSelectionManager();
 
 		idMappingManager = generalManager.getIDMappingManager();
 	}
 
-	@Override
-	public void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		dataDomainTypes.add("org.caleydo.datadomain.genetic");
-		dataDomainTypes.add("org.caleydo.datadomain.generic");
-		dataDomainTypes.add("org.caleydo.datadomain.clinical");
-
-		DataDomainManager.getInstance().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
-	}
 
 	@Override
 	public void initViewSWTComposite(Composite parentComposite) {

@@ -114,8 +114,7 @@ public class GLBookmarkManager extends AGLView implements
 
 		super(glCanvas, label, viewFrustum, false);
 		viewType = GLBookmarkManager.VIEW_ID;
-		registerDataDomains();
-
+		
 		renderStyle = new BookmarkRenderStyle(viewFrustum);
 
 		bookmarkContainers = new ArrayList<ABookmarkContainer<?>>();
@@ -137,14 +136,7 @@ public class GLBookmarkManager extends AGLView implements
 
 	}
 
-	@Override
-	public void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 
-		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
-				dataDomainTypes, viewType);
-	}
 
 	@Override
 	public void registerEventListeners() {

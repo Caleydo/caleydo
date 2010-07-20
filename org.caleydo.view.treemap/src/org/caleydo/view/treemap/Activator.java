@@ -1,5 +1,8 @@
 package org.caleydo.view.treemap;
 
+import java.util.ArrayList;
+
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.view.treemap.creator.ViewCreator;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -34,9 +37,9 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-
-		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
-				new ViewCreator(PLUGIN_ID));
+		registerDataDomains();
+		GeneralManager.get().getViewGLCanvasManager()
+				.addViewCreator(new ViewCreator(PLUGIN_ID));
 	}
 
 	/*
@@ -71,5 +74,13 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
+	}
+
+	private void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+
+		DataDomainManager.getInstance().getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, PLUGIN_ID);
 	}
 }

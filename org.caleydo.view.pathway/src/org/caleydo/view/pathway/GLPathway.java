@@ -175,15 +175,6 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 
 	}
 
-	@Override
-	public void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		dataDomainTypes.add("org.caleydo.datadomain.pathway");
-
-		DataDomainManager.getInstance().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
-	}
-
 	public void setPathway(final PathwayGraph pathway) {
 		// Unregister former pathway in visibility list
 		if (pathway != null) {
@@ -962,14 +953,12 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
-		clearSelectionsListener.setDataDomainType(mappingDataDomain
-				.getDataDomainType());
+		clearSelectionsListener.setDataDomainType(mappingDataDomain.getDataDomainType());
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		selectionCommandListener.setDataDomainType(mappingDataDomain
-				.getDataDomainType());
+		selectionCommandListener.setDataDomainType(mappingDataDomain.getDataDomainType());
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		// replaceVirtualArrayListener = new ReplaceContentVAListener();

@@ -16,6 +16,7 @@ import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -90,7 +91,7 @@ public abstract class ARcpGLViewPart
 
 			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100, iParentCanvasID,
 				0, 0, -8, 0, 0, 0, 0);
-			cmdView.setDataDomainType(serializedView.getDataDomainType());
+
 			// cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -2f, 2f, -2f,
 			// 2f, 3.82f, 100, set,
 
@@ -99,13 +100,13 @@ public abstract class ARcpGLViewPart
 
 			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100, iParentCanvasID,
 				0, 0, -8, 0, 0, 0, 0);
-			cmdView.setDataDomainType(serializedView.getDataDomainType());
 		}
 		else {
 			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, iParentCanvasID);
-			cmdView.setDataDomainType(serializedView.getDataDomainType());
-		}
-
+				}
+		
+		String dataDomainType = determineDataDomain(serializedView);
+		cmdView.setDataDomainType(dataDomainType);
 		cmdView.doCommand();
 
 		AGLView glView = cmdView.getCreatedObject();
@@ -114,7 +115,10 @@ public abstract class ARcpGLViewPart
 		createPartControlGL();
 
 		if (glView instanceof IDataDomainBasedView<?>) {
-			determineDataDomain((IDataDomainBasedView<IDataDomain>) glView, serializedView);
+			dataDomainType = determineDataDomain(serializedView);
+
+			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager.getInstance()
+				.getDataDomain(dataDomainType));
 		}
 		// glView.setViewID(getViewGUIID());
 		glView.initFromSerializableRepresentation(serializedView);
@@ -269,16 +273,21 @@ public abstract class ARcpGLViewPart
 	 * 
 	 * @return
 	 */
-	protected String determineDataDomainType() {
-		for (Pair<String, String> startView : Application.startViewWithDataDomain) {
-			if (startView.getFirst().equals(this.getViewGUIID())) {
-				dataDomainType = startView.getSecond();
-				Application.startViewWithDataDomain.remove(startView);
-				break;
-			}
-		}
-		return dataDomainType;
-	}
+	// protected String determineDataDomainType(String viewID) {
+	// for (Pair<String, String> startView : Application.startViewWithDataDomain) {
+	// if (startView.getFirst().equals(this.getViewGUIID())) {
+	// dataDomainType = startView.getSecond();
+	// Application.startViewWithDataDomain.remove(startView);
+	// break;
+	// }
+	// }
+	//
+	// if (dataDomainType == null) {
+	// ArrayList<IDataDomain> dataDomains = DataDomainManager.getInstance().getAssociationManager()
+	// .getAvailableDataDomainTypesForViewTypes(viewID);
+	// }
+	// return dataDomainType;
+	// }
 
 	/**
 	 * Returns the rcp-ID of the view

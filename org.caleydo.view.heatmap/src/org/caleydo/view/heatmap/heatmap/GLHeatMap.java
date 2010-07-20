@@ -128,7 +128,6 @@ public class GLHeatMap extends AStorageBasedView {
 
 		super(glCanvas, sLabel, viewFrustum);
 		viewType = GLHeatMap.VIEW_ID;
-		registerDataDomains();
 
 		glKeyListener = new GLHeatMapKeyListener(this);
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);

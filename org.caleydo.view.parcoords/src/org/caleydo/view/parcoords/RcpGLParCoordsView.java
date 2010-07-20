@@ -37,10 +37,10 @@ public class RcpGLParCoordsView extends ARcpGLViewPart {
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		determineDataDomainType();
 
-		SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView(
-				dataDomainType);
+		SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView();
+
+		serializedView.setDataDomainType(determineDataDomain(serializedView));
 		return serializedView;
 	}
 

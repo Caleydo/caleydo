@@ -125,7 +125,6 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		super(glCanvas, sLabel, viewFrustum, true);
 
 		viewType = VIEW_ID;
-		registerDataDomains();
 
 		glKeyListener = new GLMatchmakerKeyListener(this);
 		isControlPressed = false;
@@ -594,15 +593,6 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	@Override
 	public ISetBasedDataDomain getDataDomain() {
 		return dataDomain;
-	}
-
-	@Override
-	public void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		dataDomainTypes.add("org.caleydo.datadomain.genetic");
-
-		DataDomainManager.getInstance().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 	@Override

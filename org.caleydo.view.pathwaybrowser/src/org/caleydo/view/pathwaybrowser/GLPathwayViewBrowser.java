@@ -39,18 +39,9 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 
 		viewType = VIEW_ID;
 		viewSymbol = EIconTextures.PATHWAY_SYMBOL;
-		registerDataDomains();
+
 	}
 
-	@Override
-	public void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-
-		dataDomainTypes.add("org.caleydo.datadomain.pathway");
-
-		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
-				dataDomainTypes, viewType);
-	}
 
 	@Override
 	protected void addInitialViews() {

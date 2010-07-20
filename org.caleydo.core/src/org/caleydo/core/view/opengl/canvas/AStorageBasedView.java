@@ -138,16 +138,6 @@ public abstract class AStorageBasedView
 
 	}
 
-	@Override
-	public void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		dataDomainTypes.add("org.caleydo.datadomain.genetic");
-		dataDomainTypes.add("org.caleydo.datadomain.generic");
-		dataDomainTypes.add("org.caleydo.datadomain.clinical");
-
-		DataDomainManager.getInstance().getAssociationManager()
-			.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
-	}
 
 	@Override
 	public void setDataDomain(ISetBasedDataDomain dataDomain) {

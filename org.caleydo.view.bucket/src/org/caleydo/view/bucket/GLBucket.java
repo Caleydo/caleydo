@@ -26,7 +26,6 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
@@ -66,8 +65,8 @@ import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
-import org.caleydo.core.view.opengl.canvas.remote.GLConnectionLineRendererBucket;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle.LayoutMode;
+import org.caleydo.core.view.opengl.canvas.remote.GLConnectionLineRendererBucket;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRendererJukebox;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.JukeboxLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.list.ListLayoutRenderStyle;
@@ -95,7 +94,6 @@ import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
 import org.caleydo.rcp.view.listener.ToggleNavigationModeListener;
 import org.caleydo.rcp.view.listener.ToggleZoomListener;
 import org.caleydo.view.bookmarking.GLBookmarkManager;
-import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
 import org.eclipse.core.runtime.IStatus;
@@ -232,8 +230,7 @@ public class GLBucket extends AGLView implements
 
 		super(glCanvas, sLabel, viewFrustum, true);
 		viewType = GLBucket.VIEW_ID;
-		registerDataDomains();
-
+		
 		this.layoutMode = layoutMode;
 
 		if (generalManager.getTrackDataProvider().isTrackModeActive()) {
@@ -299,14 +296,7 @@ public class GLBucket extends AGLView implements
 				EManagedObjectType.REMOTE_LEVEL_ELEMENT);
 	}
 
-	@Override
-	public void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 
-		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
-				dataDomainTypes, viewType);
-	}
 
 	@Override
 	public void initLocal(final GL gl) {

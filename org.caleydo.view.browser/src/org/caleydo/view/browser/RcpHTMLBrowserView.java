@@ -1,6 +1,7 @@
 package org.caleydo.view.browser;
 
 import org.caleydo.core.manager.IDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
@@ -11,17 +12,20 @@ public class RcpHTMLBrowserView extends CaleydoRCPViewPart {
 	private HTMLBrowser browserView;
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void createPartControl(Composite parent) {
-		browserView = (GenomeHTMLBrowser) GeneralManager.get()
-				.getViewGLCanvasManager().createView(GenomeHTMLBrowser.VIEW_ID,
-						-1, "Browser");
+		browserView = (GenomeHTMLBrowser) GeneralManager.get().getViewGLCanvasManager()
+				.createView(GenomeHTMLBrowser.VIEW_ID, -1, "Browser");
 
 		browserView.initViewRCP(parent);
 		browserView.drawView();
 		view = browserView;
-		
+
 		if (view instanceof IDataDomainBasedView<?>) {
-			determineDataDomain((IDataDomainBasedView<IDataDomain>) view, view.getSerializableRepresentation());
+			String dataDomainType = determineDataDomain(view
+					.getSerializableRepresentation());
+			((IDataDomainBasedView<IDataDomain>) view).setDataDomain(DataDomainManager
+					.getInstance().getDataDomain(dataDomainType));
 		}
 	}
 
@@ -34,8 +38,7 @@ public class RcpHTMLBrowserView extends CaleydoRCPViewPart {
 	public void dispose() {
 		super.dispose();
 		browserView.unregisterEventListeners();
-		GeneralManager.get().getViewGLCanvasManager().unregisterItem(
-				browserView.getID());
+		GeneralManager.get().getViewGLCanvasManager().unregisterItem(browserView.getID());
 	}
 
 	public HTMLBrowser getHTMLBrowserViewRep() {

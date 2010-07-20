@@ -64,17 +64,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 		viewType = VIEW_ID;
 		viewSymbol = EIconTextures.NO_ICON_AVAILABLE;
-		registerDataDomains();
 		mapExperimentToTexturePath = new HashMap<Integer, String>();
-	}
-
-	@Override
-	public void registerDataDomains() {
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		dataDomainTypes.add("org.caleydo.datadomain.tissue");
-
-		DataDomainManager.getInstance().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 	@Override

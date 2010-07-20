@@ -1,5 +1,8 @@
 package org.caleydo.util.r;
 
+import java.util.ArrayList;
+
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.util.r.view.StatisticsView;
 import org.caleydo.util.r.view.ViewCreator;
@@ -34,9 +37,9 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		
-		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
-				new ViewCreator(StatisticsView.VIEW_ID));
+		registerDataDomains();
+		GeneralManager.get().getViewGLCanvasManager()
+				.addViewCreator(new ViewCreator(StatisticsView.VIEW_ID));
 	}
 
 	/*
@@ -59,6 +62,16 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static Activator getDefault() {
 		return plugin;
+	}
+
+	private void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.generic");
+		dataDomainTypes.add("org.caleydo.datadomain.clinical");
+
+		DataDomainManager.getInstance().getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, PLUGIN_ID);
 	}
 
 }

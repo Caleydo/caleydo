@@ -1,5 +1,8 @@
 package org.caleydo.view.glyph;
 
+import java.util.ArrayList;
+
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -31,7 +34,7 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-
+		registerDataDomains();
 		// GeneralManager.get().getViewGLCanvasManager().addGLViewCreator(
 		// new ViewCreator(SerializedScatterplotView.GUI_ID));
 	}
@@ -56,6 +59,14 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static Activator getDefault() {
 		return plugin;
+	}
+
+	private void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.clinical");
+
+		DataDomainManager.getInstance().getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, PLUGIN_ID);
 	}
 
 }

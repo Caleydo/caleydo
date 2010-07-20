@@ -109,15 +109,16 @@ public class InfoArea
 		registerEventListeners();
 	}
 
-	@Override
-	public void registerDataDomains() {
+	// FIXME this should go into the activator
+	@Deprecated
+	private void registerDataDomains() {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
 		dataDomainTypes.add("org.caleydo.datadomain.clinical");
 
-		DataDomainManager.getInstance().getAssociationManager().registerDatadomainTypeViewTypeAssociation(
-			dataDomainTypes, viewType);
+		DataDomainManager.getInstance().getAssociationManager()
+			.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, viewType);
 	}
 
 	public Control createControl(final Composite parent) {

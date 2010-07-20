@@ -83,14 +83,14 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 		parentComposite = new Composite(histoComposite, SWT.EMBEDDED);
 		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		determineDataDomainType();
+		dataDomainType = determineDataDomain(initSerializedView);
 		dataDomain = (ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
 				dataDomainType);
 
 		// FIXME: How to determine data domain for histogram dynamically?
 
-		SerializedHistogramView serialized = new SerializedHistogramView(dataDomain
-				.getDataDomainType());
+		SerializedHistogramView serialized = new SerializedHistogramView(
+				dataDomain.getDataDomainType());
 		redrawView(serialized);
 	}
 
