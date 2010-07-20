@@ -762,7 +762,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 					.getDelta());
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
-			event.setDataDomainType("org.caleydo.datadomain.genetic");
+			event.setDataDomainType(mappingDataDomain.getDataDomainType());
 			event.setSelectionDelta((SelectionDelta) selectionDelta);
 			event.setInfo(getShortInfoLocal());
 
