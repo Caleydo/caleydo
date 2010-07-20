@@ -338,7 +338,7 @@ public abstract class AGLViewBrowser
 		initPoolLevel(iMouseOverObjectID);
 
 		// initStackLevel();
-		initFocusLevel();
+		//initFocusLevel();
 
 		// Just for layout testing during runtime
 		// layoutRenderStyle.initStackLevel();
@@ -518,6 +518,27 @@ public abstract class AGLViewBrowser
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
+		if (level == focusLevel) {
+			
+			gl.glLineWidth(2);
+			gl.glColor4f(0.2f, 0.2f, 0.2f, 1);
+			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glVertex3f(0, 0, 0.f);
+			gl.glVertex3f(0, 8, 0.f);
+			gl.glVertex3f(8, 8, 0.f);
+			gl.glVertex3f(8, 0, 0.f);
+			gl.glEnd();
+			
+			gl.glColor4f(0.9f, 0.9f, 0.9f, 1);
+			
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glVertex3f(0, 0, -0.001f);
+			gl.glVertex3f(0, 8, -0.001f);
+			gl.glVertex3f(8, 8, -0.001f);
+			gl.glVertex3f(8, 0, -0.001f);
+			gl.glEnd();
+		}
+		
 		if (level == poolLevel) {
 			String sRenderText = glView.getShortInfo();
 
@@ -1111,6 +1132,8 @@ public abstract class AGLViewBrowser
 	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
 
+		iMouseOverObjectID = -1;
+		
 		switch (pickingType) {
 			case REMOTE_VIEW_DRAG:
 
