@@ -60,6 +60,16 @@ public class GuidanceNode implements INode {
 		return true;
 	}
 
+	public boolean oneInterfaceVisited() {
+		
+		for (String interfaceType : interfaceTypes) {
+			if (interfaceVisited.get(interfaceType))
+				return true;
+		}
+		
+		return false;
+	}
+	
 	public String getTaskDescription() {
 		return taskDescription;
 	}

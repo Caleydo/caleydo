@@ -334,7 +334,7 @@ public abstract class AGLViewBrowser
 				text = "Trigger pathway loading first!";
 			else
 				text = "Filter below 20 patients";
-			
+
 			renderText(gl, text, 0.01f, 1, 0.5f, 0);
 		}
 
@@ -1138,8 +1138,6 @@ public abstract class AGLViewBrowser
 	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
 
-		iMouseOverObjectID = -1;
-
 		switch (pickingType) {
 			case REMOTE_VIEW_DRAG:
 
@@ -1206,6 +1204,7 @@ public abstract class AGLViewBrowser
 				break;
 
 			case REMOTE_LEVEL_ELEMENT:
+
 				switch (pickingMode) {
 					case MOUSE_OVER:
 					case DRAGGED:
@@ -1230,6 +1229,7 @@ public abstract class AGLViewBrowser
 				break;
 
 			case REMOTE_VIEW_SELECTION:
+
 				switch (pickingMode) {
 					case MOUSE_OVER:
 
@@ -1278,9 +1278,10 @@ public abstract class AGLViewBrowser
 	 * Unregister view from event system. Remove view from GL render loop.
 	 */
 	public void removeView(AGLView glEventListener) {
-		if (glEventListener != null) {
-			glEventListener.destroy();
-		}
+		// FIXME: check why this caused a null pointer ex
+		// if (glEventListener != null) {
+		// glEventListener.destroy();
+		// }
 	}
 
 	public void resetView(boolean reinitialize) {

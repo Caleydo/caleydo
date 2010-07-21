@@ -1722,7 +1722,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		}
 
 		if (!checkPreCondition(dataDomainType, mouseOverInterface)
-				&& currentGuidanceNode.allInterfacesVisited() && isGuidanceDomain) {
+				&& currentGuidanceNode.oneInterfaceVisited() && isGuidanceDomain) {
 			r = 1f;
 			g = 1f;
 			b = 1f;
@@ -1771,7 +1771,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			a = 1;
 
 			connectionSplineColor = new float[] { 0.15f, 0.15f, 0.15f };
-		} else if (highlight && currentGuidanceNode.allInterfacesVisited()) {
+		} else if (highlight && currentGuidanceNode.oneInterfaceVisited()) {
 			r = 1f;
 			g = 0.3f;
 			b = 0.3f;
@@ -1803,7 +1803,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// Search for guidance node of next data domain
 		for (INode nextNode : guidancePath.getFollowingNodes(currentGuidanceNode)) {
 			if (nextNode.getDataDomainType().equals(dataDomainType)
-					&& currentGuidanceNode.allInterfacesVisited()) {
+					&& currentGuidanceNode.oneInterfaceVisited()) {
 				renderTaskDescription((GuidanceNode) nextNode, 0.34f, 0.07f, 0.0035f);
 				break;
 			}
