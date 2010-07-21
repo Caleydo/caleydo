@@ -60,7 +60,7 @@ public class ViewManager
 
 	private PickingManager pickingManager;
 
-	private ConnectedElementRepresentationManager selectionManager;
+	private ConnectedElementRepresentationManager connectedElementRepManager;
 
 	private GLInfoAreaManager infoAreaManager;
 
@@ -83,7 +83,7 @@ public class ViewManager
 	 */
 	public ViewManager() {
 		pickingManager = new PickingManager();
-		selectionManager = new ConnectedElementRepresentationManager();
+		connectedElementRepManager = ConnectedElementRepresentationManager.get();
 		infoAreaManager = new GLInfoAreaManager();
 
 		hashGLCanvasID2GLCanvas = new HashMap<Integer, GLCaleydoCanvas>();
@@ -104,7 +104,7 @@ public class ViewManager
 		displayLoopExecution = DisplayLoopExecution.get();
 		fpsAnimator.add(displayLoopExecution.getDisplayLoopCanvas());
 
-		displayLoopExecution.executeMultiple(selectionManager);
+		displayLoopExecution.executeMultiple(connectedElementRepManager);
 	}
 
 	@Override
@@ -304,7 +304,7 @@ public class ViewManager
 	}
 
 	public ConnectedElementRepresentationManager getConnectedElementRepresentationManager() {
-		return selectionManager;
+		return connectedElementRepManager;
 	}
 
 	public GLInfoAreaManager getInfoAreaManager() {

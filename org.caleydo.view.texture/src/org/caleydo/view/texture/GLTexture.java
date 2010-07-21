@@ -2,14 +2,11 @@ package org.caleydo.view.texture;
 
 import gleem.linalg.Vec3f;
 
-import java.util.ArrayList;
-
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.IDataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -20,6 +17,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 
 /**
@@ -35,8 +33,12 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	private int experimentIndex;
 
 	private IDataDomain dataDomain;
-	
+
 	private boolean updateTexture = false;
+
+	private SelectionType currentSelectionType = SelectionType.NORMAL;
+
+	private String info = "not set";
 
 	/**
 	 * Constructor.
@@ -90,6 +92,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	@Override
 	public void display(final GL gl) {
 		// processEvents();
+
 		checkForHits(gl);
 		renderScene(gl);
 	}
@@ -98,61 +101,41 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 
 		if (updateTexture)
 			renewTextureInCache();
-		
+
 		float topMargin = 0.07f;
-		
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.TISSUE_SELECTION, experimentIndex));
+
+		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		// EPickingType.TISSUE_SELECTION, experimentIndex));
 		if (texturePath != null && !texturePath.isEmpty()) {
-		
+
 			try {
-				textureManager.renderTexture(gl, texturePath, new Vec3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0), new Vec3f(
-						viewFrustum.getRight(), viewFrustum.getBottom(), 0), new Vec3f(viewFrustum.getRight(), viewFrustum.getTop()- topMargin, 0), new Vec3f(viewFrustum.getLeft(), viewFrustum.getTop() - topMargin, 0), 1, 1, 1, 1);				
+				textureManager.renderTexture(gl, texturePath,
+						new Vec3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0),
+						new Vec3f(viewFrustum.getRight(), viewFrustum.getBottom(), 0),
+						new Vec3f(viewFrustum.getRight(), viewFrustum.getTop()
+								- topMargin, 0), new Vec3f(viewFrustum.getLeft(),
+								viewFrustum.getTop() - topMargin, 0), 1, 1, 1, 1);
 			} catch (IllegalStateException e) {
 				// Render nothing if texture does not exist
 			}
 		}
-		gl.glPopName();
+		// gl.glPopName();
 
-		float[] color = null;
-
-		float z = 0.005f;
-
-		// FIXME: after view plugin reorganization
-		// SelectionType selectionType = ((GLTissueViewBrowser)
-		// glRemoteRenderingView)
-		// .getSelectionManager().getSelectionType(experimentIndex);
-		// if (selectionType == SelectionType.SELECTION)
-		// color = GeneralRenderStyle.SELECTED_COLOR;
-		// else if (selectionType == SelectionType.MOUSE_OVER)
-		// color = GeneralRenderStyle.MOUSE_OVER_COLOR;
-		// else if (selectionType == SelectionType.DESELECTED) {
-		// gl.glColor4f(1f, 1f, 1f, 0.7f);
-		// gl.glBegin(GL.GL_POLYGON);
-		// gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), z);
-		// gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(),
-		// viewFrustum.getBottom(), z);
-		// gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(),
-		// viewFrustum.getTop() - viewFrustum.getBottom(), z);
-		// gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop()
-		// - viewFrustum.getBottom(), z);
-		// gl.glEnd();
-		// }
-
-		if (color != null) {
-			gl.glColor4fv(color, 0);
-			gl.glLineWidth(3);
+		if (currentSelectionType != SelectionType.NORMAL) {
+			gl.glColor3fv(currentSelectionType.getColor(), 0);
+			gl.glLineWidth(4);
 			gl.glBegin(GL.GL_LINE_LOOP);
-			gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), z);
-			gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum
-					.getBottom(), z);
-			gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum
-					.getTop()-topMargin
-					- viewFrustum.getBottom(), z);
-			gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop()-topMargin
-					- viewFrustum.getBottom(), z);
+			gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
+			gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(),
+					viewFrustum.getBottom(), 0);
+			gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(),
+					viewFrustum.getTop() - viewFrustum.getBottom(), 0);
+			gl.glVertex3f(viewFrustum.getLeft(),
+					viewFrustum.getTop() - viewFrustum.getBottom(), 0);
+
 			gl.glEnd();
 		}
+
 	}
 
 	@Override
@@ -162,81 +145,29 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 		// return;
 		// }
 
-		switch (ePickingType) {
-		case TISSUE_SELECTION:
-			switch (pickingMode) {
-			case MOUSE_OVER: {
+		// switch (ePickingType) {
+		// case TISSUE_SELECTION:
+		// switch (pickingMode) {
+		// case MOUSE_OVER: {
+		//
+		// break;
+		// }
+		// }
+		// }
+	}
 
-				// FIXME: after view plugin reorganization
-				// SelectionManager selectionManager =
-				// ((GLTissueViewBrowser)
-				// glRemoteRenderingView).getSelectionManager();
-				// selectionManager.clearSelections();
-				// selectionManager.addToType(SelectionType.MOUSE_OVER,
-				// experimentIndex);
-				//
-				// SelectedElementRep selectedElementRep =
-				// new SelectedElementRep(EIDType.EXPERIMENT_INDEX,
-				// iUniqueID, 1f, 1f, 0);
-				//
-				// ConnectedElementRepresentationManager
-				// connectedElementRepresentationManager =
-				// generalManager.getViewGLCanvasManager()
-				// .getConnectedElementRepresentationManager();
-				// connectedElementRepresentationManager.clear(EIDType.EXPERIMENT_INDEX);
-				//
-				// int connectionID =
-				// generalManager.getIDManager().createID(EManagedObjectType.CONNECTION);
-				//
-				// selectionManager.addConnectionID(connectionID,
-				// experimentIndex);
-				//
-				// connectedElementRepresentationManager.addSelection(connectionID,
-				// selectedElementRep);
-				//
-				// //
-				// triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
-				// // axisSelectionManager
-				// // .getDelta(), null);
-				//
-				// SelectionCommand command =
-				// new SelectionCommand(ESelectionCommandType.CLEAR,
-				// SelectionType.MOUSE_OVER);
-				//
-				// SelectionCommandEvent event = new
-				// SelectionCommandEvent();
-				// event.setSender(this);
-				// event.setCategory(EIDCategory.EXPERIMENT);
-				// event.setSelectionCommand(command);
-				// eventPublisher.triggerEvent(event);
-				//
-				// ISelectionDelta selectionDelta =
-				// selectionManager.getDelta();
-				// // if (eAxisDataType == EIDType.EXPRESSION_INDEX
-				// // || eAxisDataType == EIDType.EXPERIMENT_INDEX) {
-				// // handleConnectedElementRep(selectionDelta);
-				// // }
-				// SelectionUpdateEvent selectionEvent = new
-				// SelectionUpdateEvent();
-				// selectionEvent.setSender(this);
-				// selectionEvent.setSelectionDelta((SelectionDelta)
-				// selectionDelta);
-				// eventPublisher.triggerEvent(selectionEvent);
-
-				break;
-			}
-			}
-		}
+	public void setCurrentSelectionType(SelectionType currentSelectionType) {
+		this.currentSelectionType = currentSelectionType;
 	}
 
 	@Override
 	public String getShortInfo() {
 		// PathwayGraph pathway =
 		// (generalManager.getPathwayManager().getItem(iPathwayID));
-		//		
+		//
 		// return pathway.getTitle() + " (" +pathway.getType().getName() + ")";
 
-		return "";
+		return info;
 	}
 
 	@Override
@@ -254,7 +185,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 		//
 		// return sInfoText.toString();
 
-		return "";
+		return info;
 	}
 
 	@Override
@@ -285,23 +216,23 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	public void setTexturePath(String texturePath) {
 		this.texturePath = texturePath;
 	}
-	
+
 	public void updateTexture() {
 		updateTexture = true;
 	}
-	
+
 	private void renewTextureInCache() {
-		
+
 		updateTexture = false;
-	
+
 		try {
-			textureManager.renewTexture(texturePath);			
+			textureManager.renewTexture(texturePath);
 		} catch (Exception e) {
 			updateTexture = true;
 			System.out.println("invalid!");
 		}
 	}
-	
+
 	public void setExperimentIndex(int experimentIndex) {
 		this.experimentIndex = experimentIndex;
 	}
@@ -318,6 +249,10 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	@Override
 	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
 	}
 
 }

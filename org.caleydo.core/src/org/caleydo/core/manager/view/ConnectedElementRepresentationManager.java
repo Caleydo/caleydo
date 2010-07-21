@@ -54,6 +54,8 @@ import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 public class ConnectedElementRepresentationManager
 	extends ADisplayLoopEventHandler {
 
+	private static ConnectedElementRepresentationManager connectedElementRepresenationManager;
+
 	/** Stored reference for common usage */
 	protected IGeneralManager generalManager;
 
@@ -85,7 +87,7 @@ public class ConnectedElementRepresentationManager
 	/**
 	 * Constructor.
 	 */
-	protected ConnectedElementRepresentationManager() {
+	private ConnectedElementRepresentationManager() {
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 
@@ -94,6 +96,13 @@ public class ConnectedElementRepresentationManager
 		canvasConnectionsByType = new HashMap<EIDType, CanvasConnectionMap>();
 
 		registerEventListeners();
+	}
+
+	public static ConnectedElementRepresentationManager get() {
+		if (connectedElementRepresenationManager == null) {
+			connectedElementRepresenationManager = new ConnectedElementRepresentationManager();
+		}
+		return connectedElementRepresenationManager;
 	}
 
 	/**

@@ -33,7 +33,7 @@ public abstract class AView
 
 	protected Composite parentComposite;
 
-	protected String sLabel;
+	protected String sLabel = "Label not set";
 
 	/**
 	 * Constructor.

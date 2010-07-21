@@ -77,7 +77,7 @@ public abstract class AGLViewBrowser
 
 	public final static float SIDE_PANEL_WIDTH = 0.8f;
 
-	protected static final int MAX_VIEWS = 4;
+	protected static final int MAX_VIEWS = 14;
 
 	private int iMouseOverObjectID = -1;
 
@@ -109,7 +109,7 @@ public abstract class AGLViewBrowser
 
 	protected ArrayList<ASerializedView> newViews;
 
-	private ArrayList<AGLView> containedGLViews;
+	protected ArrayList<AGLView> containedGLViews;
 
 	/**
 	 * The current view in which the user is performing actions.

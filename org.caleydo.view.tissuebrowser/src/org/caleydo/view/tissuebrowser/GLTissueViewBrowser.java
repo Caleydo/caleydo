@@ -8,13 +8,18 @@ import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.StorageVAType;
+import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.ISetBasedDataDomain;
@@ -23,9 +28,11 @@ import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -40,12 +47,26 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.texture.GLTexture;
 import org.caleydo.view.texture.SerializedTextureView;
 
+/**
+ * FIXME: this view uses and listenes to the clinical data domain despite beeing
+ * of the tissue data domain. This should be substituted with mappings in the
+ * tissue datadomain.
+ * 
+ * @author Marc Streit
+ * @author Alexander Lex
+ * 
+ */
 public class GLTissueViewBrowser extends AGLViewBrowser implements
 		IContentVAUpdateHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.tissuebrowser";
 
-	private static final int VIEW_THRESHOLD = 20;
+	/**
+	 * 
+	 * The foreign dataDomain
+	 */
+	public ISetBasedDataDomain foreignDataDomain;
+	public final static String FOREIGN_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
 
 	private HashMap<Integer, String> mapExperimentToTexturePath;
 
@@ -73,12 +94,15 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	@Override
 	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		// contentVA = dataDomain.getSet().getContentVA(ContentVAType.CONTENT);
-		experiementSelectionManager = new ContentSelectionManager(primaryIDType);
-		experiementSelectionManager.setVA(contentVA);
+
+		this.foreignDataDomain = (ISetBasedDataDomain) DataDomainManager.getInstance()
+				.getDataDomain(FOREIGN_DATADOMAIN_TYPE);
+
+		contentVA = foreignDataDomain.getContentVA(ContentVAType.CONTENT);
+
+		experiementSelectionManager = foreignDataDomain.getContentSelectionManager();
 
 		addInitialViews();
-
 	}
 
 	@Override
@@ -92,9 +116,6 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 		newViews.clear();
 		allTissueViews = new ArrayList<SerializedTextureView>();
 
-		ISet geneticSet = ((ISetBasedDataDomain) DataDomainManager.getInstance()
-				.getDataDomain("org.caleydo.datadomain.genetic")).getSet();
-
 		for (int experimentIndex = 0; experimentIndex < MAX_VIEWS; experimentIndex++) {
 
 			generalManager.getViewGLCanvasManager().createGLView(
@@ -106,7 +127,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 			SerializedTextureView tissue = new SerializedTextureView();
 			tissue.setDataDomainType("org.caleydo.view.texture");
 			tissue.setTexturePath(mapExperimentToTexturePath.get(experimentIndex));
-			// tissue.setLabel(geneticSet.get(experimentIndex).getLabel());
+			
 			tissue.setExperimentIndex(experimentIndex);
 
 			allTissueViews.add(tissue);
@@ -119,7 +140,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 	private void updateViews() {
 
-		if (contentVA.size() > VIEW_THRESHOLD)
+		if (contentVA.size() > MAX_VIEWS)
 			return;
 
 		newViews.clear();
@@ -136,13 +157,16 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	@Override
 	protected AGLView createView(GL gl, ASerializedView serView) {
 
-		AGLView glView = super.createView(gl, serView);
+		GLTexture glView = (GLTexture) super.createView(gl, serView);
 
-		((GLTexture) glView).setTexturePath(((SerializedTextureView) serView)
+		 glView.setTexturePath(((SerializedTextureView) serView)
 				.getTexturePath());
 		glView.setLabel(((SerializedTextureView) serView).getLabel());
-		((GLTexture) glView).setExperimentIndex(((SerializedTextureView) serView)
+	
+		glView.setExperimentIndex(((SerializedTextureView) serView)
 				.getExperimentIndex());
+		
+		setInfo(glView, glView.getExperimentIndex());
 		return glView;
 	}
 
@@ -277,6 +301,19 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 			boolean scrollToSelection, String info) {
 		if (selectionDelta.getIDType() == primaryIDType) {
 			experiementSelectionManager.setDelta(selectionDelta);
+
+			for (SelectionDeltaItem item : selectionDelta) {
+				int id = item.getPrimaryID() % MAX_VIEWS;
+				GLTexture textureView = ((GLTexture) containedGLViews.get(id));
+				SelectionType selectionType = item.getSelectionType();
+				if (item.isRemove())
+					selectionType = SelectionType.NORMAL;
+				else {
+					handleConnectedElementRep(item, textureView.getID());
+				}
+
+				textureView.setCurrentSelectionType(selectionType);
+			}
 		}
 	}
 
@@ -290,15 +327,18 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
+		selectionUpdateListener.setDataDomainType(FOREIGN_DATADOMAIN_TYPE);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		virtualArrayUpdateListener = new ContentVAUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
+		virtualArrayUpdateListener.setDataDomainType(FOREIGN_DATADOMAIN_TYPE);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class,
 				virtualArrayUpdateListener);
 
 		replaceVirtualArrayListener = new ReplaceContentVAListener();
 		replaceVirtualArrayListener.setHandler(this);
+		replaceVirtualArrayListener.setDataDomainType(FOREIGN_DATADOMAIN_TYPE);
 		eventPublisher.addListener(ReplaceVAEvent.class, replaceVirtualArrayListener);
 
 	}
@@ -384,15 +424,88 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
 		super.handlePickingEvents(pickingType, pickingMode, iExternalID, pick);
 
-
 		switch (pickingType) {
 		case REMOTE_VIEW_SELECTION:
+			SelectionType selectionType = SelectionType.NORMAL;
 			switch (pickingMode) {
 			case MOUSE_OVER:
-				System.out.println("WE!");
-
+				selectionType = SelectionType.MOUSE_OVER;
+				break;
+			case CLICKED:
+				selectionType = SelectionType.SELECTION;
+				break;
+			default:
+				return;
 			}
+
+			GLTexture textureView = (GLTexture) generalManager.getViewGLCanvasManager()
+					.getGLView(iExternalID);
+			if (textureView == null) {
+				System.out.println("Warning, unrecognized view ID");
+				return;
+			}
+			int experimentIndex = textureView.getExperimentIndex();
+
+			experiementSelectionManager.clearSelection(selectionType);
+			experiementSelectionManager.addToType(selectionType, experimentIndex);
+
+			experiementSelectionManager.addConnectionID(generalManager.getIDManager()
+					.createID(EManagedObjectType.CONNECTION), experimentIndex);
+
+			SelectionDelta delta = experiementSelectionManager.getDelta();
+
+			ConnectedElementRepresentationManager.get().clear(
+					experiementSelectionManager.getIDType());
+
+			for (SelectionDeltaItem item : delta) {
+				if (item.isRemove())
+					continue;
+				handleConnectedElementRep(item, textureView.getID());
+			}
+			setInfo(textureView, experimentIndex);
+			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setDataDomainType(FOREIGN_DATADOMAIN_TYPE);
+			event.setSelectionDelta(delta);
+			eventPublisher.triggerEvent(event);
+
 		}
 	}
 
+	private void handleConnectedElementRep(SelectionDeltaItem item, int sourceViewID) {
+
+		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
+		points.add(new Vec3f(1f, 1f, 0));
+		SelectedElementRep rep = new SelectedElementRep(primaryIDType, sourceViewID,
+				points);
+
+		ArrayList<Integer> connectionIDs = item.getConnectionIDs();
+		;
+
+		for (Integer connectionID : connectionIDs) {
+			ConnectedElementRepresentationManager.get().addSelection(connectionID, rep);
+		}
+	}
+
+	private void setInfo(GLTexture tissueView, Integer experimentIndex) {
+		StorageVirtualArray va = foreignDataDomain.getSet()
+				.getStorageData(StorageVAType.STORAGE).getStorageVA();
+
+		NominalStorage<String> storage = (NominalStorage<String>) foreignDataDomain
+				.getSet().get(va.get(1));
+		String label = storage.getRaw(experimentIndex);
+
+		tissueView.setInfo(label);
+	}
+
+	private void setInfo(SerializedTextureView tissueView, Integer experimentIndex) {
+		StorageVirtualArray va = foreignDataDomain.getSet()
+				.getStorageData(StorageVAType.STORAGE).getStorageVA();
+
+		NominalStorage<String> storage = (NominalStorage<String>) foreignDataDomain
+				.getSet().get(va.get(1));
+		String label = storage.getRaw(experimentIndex);
+
+		tissueView.setInfo(label);
+	}
+	
 }

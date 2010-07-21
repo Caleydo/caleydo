@@ -22,6 +22,8 @@ public class SerializedTextureView extends ASerializedView {
 
 	private int experimentIndex;
 
+	private String info;
+
 	/**
 	 * Default constructor with default initialization
 	 */
@@ -32,11 +34,11 @@ public class SerializedTextureView extends ASerializedView {
 	public SerializedTextureView(String dataDomainType) {
 		super(dataDomainType);
 	}
-	
+
 	@Override
 	public ViewFrustum getViewFrustum() {
-		ViewFrustum viewFrustum = new ViewFrustum(EProjectionMode.ORTHOGRAPHIC,
-				0, 8, 0, 8, -20, 20);
+		ViewFrustum viewFrustum = new ViewFrustum(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0,
+				8, -20, 20);
 		return viewFrustum;
 	}
 
@@ -67,5 +69,13 @@ public class SerializedTextureView extends ASerializedView {
 
 	public void setExperimentIndex(int experimentIndex) {
 		this.experimentIndex = experimentIndex;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
+	public String getInfo() {
+		return info;
 	}
 }
