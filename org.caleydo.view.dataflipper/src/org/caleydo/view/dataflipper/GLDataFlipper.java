@@ -311,6 +311,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		guidancePath = new Path();
 
 		ArrayList<String> interfaces = new ArrayList<String>();
+		
 		interfaces.add("org.caleydo.view.parcoords");
 		interfaces.add("org.caleydo.view.glyph");
 		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.clinical",
@@ -319,14 +320,20 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		currentGuidanceNode = (GuidanceNode) guidancePath.getLastNode();
 
+		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.tissue",
+				"org.caleydo.view.tissuebrowser", "View tissue"));
+		interfaces.clear();
+		
+		GuidanceNode tmpNode = (GuidanceNode) guidancePath.getLastNode();
+		
 		guidancePath
-				.addNode(currentGuidanceNode, new GuidanceNode(
+				.addNode(tmpNode, new GuidanceNode(
 						"org.caleydo.datadomain.organ", interfaces,
 						"Inspect MR/CT/X-Ray images"));
 		interfaces.clear();
 
 		interfaces.add("org.caleydo.analytical.clustering");
-		guidancePath.addNode(currentGuidanceNode, new GuidanceNode(
+		guidancePath.addNode(tmpNode, new GuidanceNode(
 				"org.caleydo.datadomain.genetic", interfaces,
 				"Cluster gene expression data"));
 		interfaces.clear();
@@ -349,10 +356,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		interfaces.add("org.caleydo.view.parcoords");
 		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.clinical",
 				interfaces, "Select patients"));
-		interfaces.clear();
-
-		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.tissue",
-				"org.caleydo.view.tissuebrowser", "View tissue"));
 		interfaces.clear();
 
 		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.clinical",
@@ -537,7 +540,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			}
 
 			boolean mouseOver = false;
-			if (mouseOverNextDataDomain == nextDataDomainType)
+			if (mouseOverNextDataDomain != null && mouseOverNextDataDomain.equals(nextDataDomainType))
 				mouseOver = true;
 
 			float x1 = x - metaViewAnimation + 0.5f * DATA_DOMAIN_SCALING_FACTOR;
@@ -1379,7 +1382,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					continue;
 
 				boolean highlight = false;
-				boolean mouseOver = (nextDataDomainType == mouseOverNextDataDomain) ? true
+				boolean mouseOver = (nextDataDomainType.equals(mouseOverNextDataDomain)) ? true
 						: false;
 
 				yNeighbor += ySteps;
@@ -1661,7 +1664,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
 			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.getInstance()
-					.getDataDomain("org.caleydo.datadomain.genetic")).getSet().size();
+					.getDataDomain("org.caleydo.datadomain.genetic")).getSet().getStorageVA(
+					StorageVAType.STORAGE).size();
 			if (numberOfPatients > 20)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.pathway")) {
@@ -2213,6 +2217,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			openView(pathwayBrowserView, dataDomainNode);
 			currentGuidanceNode = (GuidanceNode) guidancePath.getFollowingNodes(
 					currentGuidanceNode).get(0);
+			currentGuidanceNode.setInterfaceVisited("org.caleydo.view.pathwaybrowser");
 		} else {
 			for (INode historyNode : historyPath
 					.getPrecedingNode(lastSelectedDataDomainNode)) {

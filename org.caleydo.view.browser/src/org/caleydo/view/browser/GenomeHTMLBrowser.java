@@ -34,7 +34,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHa
 
 	private ArrayList<Integer> iAlDavidID;
 
-	private EBrowserQueryType eBrowserQueryType = EBrowserQueryType.GeneCards;
+	private EBrowserQueryType eBrowserQueryType = EBrowserQueryType.KEGG_HomoSapiens;
 
 	protected ChangeQueryTypeListener changeQueryTypeListener;
 	protected SelectionUpdateListener selectionUpdateListener;

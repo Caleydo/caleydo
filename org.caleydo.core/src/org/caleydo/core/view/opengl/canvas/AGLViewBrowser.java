@@ -76,7 +76,7 @@ public abstract class AGLViewBrowser
 	private static final int SLERP_SPEED = 1400;
 
 	public final static float SIDE_PANEL_WIDTH = 0.8f;
-	
+
 	protected static final int MAX_VIEWS = 4;
 
 	private int iMouseOverObjectID = -1;
@@ -91,7 +91,7 @@ public abstract class AGLViewBrowser
 	private ArrayList<SlerpAction> arSlerpActions;
 
 	private Time time;
-	
+
 	protected EIconTextures viewSymbol;
 
 	/**
@@ -327,18 +327,23 @@ public abstract class AGLViewBrowser
 	public void display(final GL gl) {
 		time.update();
 
-		if (focusLevel.getElementByPositionIndex(0).isFree() && arSlerpActions.isEmpty())
-		{
+		if (focusLevel.getElementByPositionIndex(0).isFree() && arSlerpActions.isEmpty()) {
 			renderSymbol(gl, viewSymbol, 3);
-			renderText(gl, "Trigger pathway loading first!", 0.01f, 1, 0.5f, 0);
+			String text = "";
+			if (viewType.equals("org.caleydo.view.pathwabrowser"))
+				text = "Trigger pathway loading first!";
+			else
+				text = "Filter below 20 patients";
+			
+			renderText(gl, text, 0.01f, 1, 0.5f, 0);
 		}
-		
+
 		// Update the pool transformations according to the current mouse over
 		// object
 		initPoolLevel(iMouseOverObjectID);
 
 		// initStackLevel();
-		//initFocusLevel();
+		// initFocusLevel();
 
 		// Just for layout testing during runtime
 		// layoutRenderStyle.initStackLevel();
@@ -503,7 +508,8 @@ public abstract class AGLViewBrowser
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT, element
 			.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_SELECTION, glView.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_SELECTION, glView
+			.getID()));
 
 		gl.glPushMatrix();
 
@@ -519,7 +525,7 @@ public abstract class AGLViewBrowser
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
 		if (level == focusLevel) {
-			
+
 			gl.glLineWidth(2);
 			gl.glColor4f(0.2f, 0.2f, 0.2f, 1);
 			gl.glBegin(GL.GL_LINE_LOOP);
@@ -528,9 +534,9 @@ public abstract class AGLViewBrowser
 			gl.glVertex3f(8, 8, 0.f);
 			gl.glVertex3f(8, 0, 0.f);
 			gl.glEnd();
-			
+
 			gl.glColor4f(0.9f, 0.9f, 0.9f, 1);
-			
+
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f(0, 0, -0.001f);
 			gl.glVertex3f(0, 8, -0.001f);
@@ -538,7 +544,7 @@ public abstract class AGLViewBrowser
 			gl.glVertex3f(8, 0, -0.001f);
 			gl.glEnd();
 		}
-		
+
 		if (level == poolLevel) {
 			String sRenderText = glView.getShortInfo();
 
@@ -878,8 +884,7 @@ public abstract class AGLViewBrowser
 		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
 		// Render background (also draggable)
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_DRAG, element
-			.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_DRAG, element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(0 + fHandleHeight, 2 + fHandleHeight, 0);
@@ -985,8 +990,8 @@ public abstract class AGLViewBrowser
 		int fHandleScaleFactor = 18;
 		gl.glTranslatef(fXOrigin - 1.2f, fYOrigin - fHeight / 2f + fHeight - 1f, 1.8f);
 		gl.glScalef(fHandleScaleFactor, fHandleScaleFactor, fHandleScaleFactor);
-		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_DRAG,
-			EIconTextures.POOL_DRAG_VIEW, 0.1f, 0.1f);
+		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_DRAG, EIconTextures.POOL_DRAG_VIEW,
+			0.1f, 0.1f);
 		gl.glTranslatef(0, -0.2f, 0);
 		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_REMOVE,
 			EIconTextures.POOL_REMOVE_VIEW, 0.1f, 0.1f);
@@ -1006,7 +1011,8 @@ public abstract class AGLViewBrowser
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT, element
 			.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_SELECTION, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_SELECTION, element
+			.getID()));
 	}
 
 	private void doSlerpActions(final GL gl) {
@@ -1133,7 +1139,7 @@ public abstract class AGLViewBrowser
 		Pick pick) {
 
 		iMouseOverObjectID = -1;
-		
+
 		switch (pickingType) {
 			case REMOTE_VIEW_DRAG:
 
@@ -1665,7 +1671,7 @@ public abstract class AGLViewBrowser
 		CmdCreateView cmdView = (CmdCreateView) cm.createCommandByType(ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(serView.getViewType());
 		cmdView.setAttributesFromSerializedForm(serView);
-//		cmdView.setSet(set);
+		// cmdView.setSet(set);
 		cmdView.doCommand();
 
 		AGLView glView = cmdView.getCreatedObject();
