@@ -311,7 +311,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		guidancePath = new Path();
 
 		ArrayList<String> interfaces = new ArrayList<String>();
-		
+
 		interfaces.add("org.caleydo.view.parcoords");
 		interfaces.add("org.caleydo.view.glyph");
 		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.clinical",
@@ -323,22 +323,23 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.tissue",
 				"org.caleydo.view.tissuebrowser", "View tissue"));
 		interfaces.clear();
-		
-		GuidanceNode tmpNode = (GuidanceNode) guidancePath.getLastNode();
-		
-		guidancePath
-				.addNode(tmpNode, new GuidanceNode(
-						"org.caleydo.datadomain.organ", interfaces,
-						"Inspect MR/CT/X-Ray images"));
-		interfaces.clear();
 
-		interfaces.add("org.caleydo.analytical.clustering");
-		guidancePath.addNode(tmpNode, new GuidanceNode(
-				"org.caleydo.datadomain.genetic", interfaces,
-				"Cluster gene expression data"));
+		GuidanceNode tmpNode = (GuidanceNode) guidancePath.getLastNode();
+
+		guidancePath.addNode(tmpNode, new GuidanceNode("org.caleydo.datadomain.organ",
+				interfaces, "Inspect MR/CT/X-Ray images"));
 		interfaces.clear();
 
 		interfaces.add("org.caleydo.view.parcoords");
+		guidancePath.addNode(tmpNode, new GuidanceNode("org.caleydo.datadomain.genetic",
+				interfaces, "Filter expression data"));
+		interfaces.clear();
+
+		interfaces.add("org.caleydo.analytical.clustering");
+		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.genetic",
+				interfaces, "Cluster gene expression data"));
+		interfaces.clear();
+
 		interfaces.add("org.caleydo.view.heatmap.hierarchical");
 		guidancePath.addNode(new GuidanceNode("org.caleydo.datadomain.genetic",
 				interfaces, "Inspect expression data"));
@@ -540,7 +541,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			}
 
 			boolean mouseOver = false;
-			if (mouseOverNextDataDomain != null && mouseOverNextDataDomain.equals(nextDataDomainType))
+			if (mouseOverNextDataDomain != null
+					&& mouseOverNextDataDomain.equals(nextDataDomainType))
 				mouseOver = true;
 
 			float x1 = x - metaViewAnimation + 0.5f * DATA_DOMAIN_SCALING_FACTOR;
@@ -1191,7 +1193,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				// the current.
 				// if analytical clustering is done -> continue with
 				// other genetic visual interfaces
-				if (interfaceType.equals("org.caleydo.analytical.clustering")) {
+				if (interfaceType.equals("org.caleydo.analytical.clustering")
+						|| (interfaceType.equals("org.caleydo.view.parcoords") && dataDomainType
+								.equals("org.caleydo.datadomain.genetic"))) {
 					currentGuidanceNode = (GuidanceNode) guidancePath.getFollowingNodes(
 							currentGuidanceNode).get(0);
 				}
@@ -1221,7 +1225,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// Clear connection lines
 		generalManager.getViewGLCanvasManager()
 				.getConnectedElementRepresentationManager().clearAll();
-		
+
 		closeBrowserOverlay();
 
 		// Chain slerping to the right
@@ -1283,34 +1287,38 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		}
 	}
 
-//	private void freeFocusElementByChainMove(boolean left) {
-//
-//		if (!left) {
-//
-//			for (int iElementIndex = 0; iElementIndex < stackElementsRight.size(); iElementIndex++) {
-//
-//				if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
-//					arSlerpActions.add(new SlerpAction(stackElementsRight
-//							.get(iElementIndex), stackElementsRight
-//							.get(iElementIndex + 1)));
-//				}
-//			}
-//
-//			arSlerpActions.add(new SlerpAction(focusElement, stackElementsRight.get(0)));
-//		} else {
-//
-//			for (int iElementIndex = 0; iElementIndex < stackElementsLeft.size(); iElementIndex++) {
-//
-//				if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
-//					arSlerpActions
-//							.add(new SlerpAction(stackElementsLeft.get(iElementIndex),
-//									stackElementsLeft.get(iElementIndex + 1)));
-//				}
-//			}
-//
-//			arSlerpActions.add(new SlerpAction(focusElement, stackElementsLeft.get(0)));
-//		}
-//	}
+	// private void freeFocusElementByChainMove(boolean left) {
+	//
+	// if (!left) {
+	//
+	// for (int iElementIndex = 0; iElementIndex < stackElementsRight.size();
+	// iElementIndex++) {
+	//
+	// if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
+	// arSlerpActions.add(new SlerpAction(stackElementsRight
+	// .get(iElementIndex), stackElementsRight
+	// .get(iElementIndex + 1)));
+	// }
+	// }
+	//
+	// arSlerpActions.add(new SlerpAction(focusElement,
+	// stackElementsRight.get(0)));
+	// } else {
+	//
+	// for (int iElementIndex = 0; iElementIndex < stackElementsLeft.size();
+	// iElementIndex++) {
+	//
+	// if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
+	// arSlerpActions
+	// .add(new SlerpAction(stackElementsLeft.get(iElementIndex),
+	// stackElementsLeft.get(iElementIndex + 1)));
+	// }
+	// }
+	//
+	// arSlerpActions.add(new SlerpAction(focusElement,
+	// stackElementsLeft.get(0)));
+	// }
+	// }
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
@@ -1664,8 +1672,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
 			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.getInstance()
-					.getDataDomain("org.caleydo.datadomain.genetic")).getSet().getStorageVA(
-					StorageVAType.STORAGE).size();
+					.getDataDomain("org.caleydo.datadomain.genetic")).getSet()
+					.getStorageVA(StorageVAType.STORAGE).size();
 			if (numberOfPatients > 20)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.pathway")) {
@@ -1804,6 +1812,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		for (INode nextNode : guidancePath.getFollowingNodes(currentGuidanceNode)) {
 			if (nextNode.getDataDomainType().equals(dataDomainType)
 					&& currentGuidanceNode.oneInterfaceVisited()) {
+
 				renderTaskDescription((GuidanceNode) nextNode, 0.34f, 0.07f, 0.0035f);
 				break;
 			}

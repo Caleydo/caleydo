@@ -81,7 +81,7 @@ public class HistoryNode implements INode {
 		// FIXME: hack to ensure that the order of interfaces corresponds to the one needed in our workflow
 		if (dataDomainType.equals("org.caleydo.datadomain.genetic"))
 		{
-			return hashInterfaceTypeToInterfaceID.get("org.caleydo.analytical.clustering");
+			return hashInterfaceTypeToInterfaceID.get("org.caleydo.view.parcoords");
 		}
 		
 		return hashInterfaceTypeToInterfaceID.get(dataDomainViewAssociationManager.getViewTypesForDataDomain(
@@ -100,8 +100,8 @@ public class HistoryNode implements INode {
 		// FIXME: hack to ensure that the order of interfaces corresponds to the one needed in our workflow
 		if (dataDomainType.equals("org.caleydo.datadomain.genetic"))
 		{
-			tmp[0] = "org.caleydo.analytical.clustering";
-			tmp[1] = "org.caleydo.view.parcoords";
+			tmp[0] = "org.caleydo.view.parcoords";
+			tmp[1] = "org.caleydo.analytical.clustering";
 			tmp[2] = "org.caleydo.view.heatmap.hierarchical";
 			tmp[3] = "org.caleydo.view.texture"; // this is the fake browser
 			return tmp;
