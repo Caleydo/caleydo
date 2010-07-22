@@ -550,9 +550,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			float y1 = y + DATA_DOMAIN_HEIGHT / 2f + 0.15f;
 			float y2 = yNeighbor + 0.1f;
 
-			renderNextDataDomain(gl, nextDataDomainType, x - metaViewAnimation
-					+ DATA_DOMAIN_SPACING, yNeighbor, highlight, mouseOver, x1, x2, y1,
-					y2);
+			renderNextDataDomain(gl, historyNode, nextDataDomainType, x
+					- metaViewAnimation + DATA_DOMAIN_SPACING, yNeighbor, highlight,
+					mouseOver, x1, x2, y1, y2);
 		}
 	}
 
@@ -1193,9 +1193,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				// the current.
 				// if analytical clustering is done -> continue with
 				// other genetic visual interfaces
-				if (interfaceType.equals("org.caleydo.analytical.clustering")
-						|| (interfaceType.equals("org.caleydo.view.parcoords") && dataDomainType
-								.equals("org.caleydo.datadomain.genetic"))) {
+				if (interfaceType.equals("org.caleydo.analytical.clustering")) {
 					currentGuidanceNode = (GuidanceNode) guidancePath.getFollowingNodes(
 							currentGuidanceNode).get(0);
 				}
@@ -1401,9 +1399,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				float y1 = y + DATA_DOMAIN_HEIGHT / 2f + 0.15f - 0.47f;
 				float y2 = yNeighbor + 0.1f - 0.47f;
 
-				renderNextDataDomain(gl, nextDataDomainType, x + 0.9f - metaViewAnimation
-						+ DATA_DOMAIN_SPACING, yNeighbor - 0.47f, highlight, mouseOver,
-						x1, x2, y1, y2);
+				renderNextDataDomain(gl, node, nextDataDomainType, x + 0.9f
+						- metaViewAnimation + DATA_DOMAIN_SPACING, yNeighbor - 0.47f,
+						highlight, mouseOver, x1, x2, y1, y2);
 			}
 		}
 
@@ -1485,6 +1483,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 			if (interfaceIndex < interfaces.length) {
 				String interfaceType = interfaces[interfaceIndex];
+
 				RemoteLevelElement element = null;
 
 				if (focusElement.getGLView() != null
@@ -1693,9 +1692,10 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		return true;
 	}
 
-	private void renderNextDataDomain(final GL gl, String dataDomainType, float x,
-			float y, boolean highlight, boolean mouseOver, float splineAchorX1,
-			float splineAnchorX2, float splineAnchorY1, float splineAnchorY2) {
+	private void renderNextDataDomain(final GL gl, HistoryNode historyNode,
+			String dataDomainType, float x, float y, boolean highlight,
+			boolean mouseOver, float splineAchorX1, float splineAnchorX2,
+			float splineAnchorY1, float splineAnchorY2) {
 
 		EIconTextures dataDomainIcon = null;
 		float[] connectionSplineColor = new float[] { 0.3f, 0.3f, 0.3f };
@@ -2367,6 +2367,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		}
 
 		currentGuidanceNode.setInterfaceVisited(view.getViewType());
+
+		// FIXME: this should not be forced
+		if (view.getViewType().equals("org.caleydo.view.parcoords") && dataDomainNode
+						.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
+			currentGuidanceNode = (GuidanceNode) guidancePath.getFollowingNodes(
+					currentGuidanceNode).get(0);
+		}
 	}
 
 	private boolean isViewOpen(AGLView glView) {
