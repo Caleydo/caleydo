@@ -341,9 +341,7 @@ public abstract class AGLViewBrowser
 		// Update the pool transformations according to the current mouse over
 		// object
 		initPoolLevel(iMouseOverObjectID);
-
-		// initStackLevel();
-		// initFocusLevel();
+		initFocusLevel();
 
 		// Just for layout testing during runtime
 		// layoutRenderStyle.initStackLevel();

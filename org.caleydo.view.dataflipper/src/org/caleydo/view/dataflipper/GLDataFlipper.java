@@ -76,6 +76,7 @@ import org.caleydo.view.pathwaybrowser.GLPathwayViewBrowser;
 import org.caleydo.view.pathwaybrowser.SerializedPathwayViewBrowserView;
 import org.caleydo.view.texture.GLTexture;
 import org.caleydo.view.texture.SerializedTextureView;
+import org.caleydo.view.tissuebrowser.GLTissueViewBrowser;
 import org.caleydo.view.tissuebrowser.SerializedTissueViewBrowserView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -778,11 +779,24 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				if (glView instanceof GLParallelCoordinates) {
 
 					boolean renderConnectionsLeft = true;
-					if (glView == focusElement.getGLView())
+					if (tmpSlerpAction.getDestinationRemoteLevelElement() == focusElement
+							|| stackElementsLeft.contains(tmpSlerpAction
+									.getDestinationRemoteLevelElement()))
 						renderConnectionsLeft = false;
 
 					((GLParallelCoordinates) glView)
 							.setRenderConnectionState(renderConnectionsLeft);
+
+				}
+
+				if (glView instanceof GLTissueViewBrowser) {
+
+					boolean renderPoolLeft = false;
+					if (stackElementsLeft.contains(tmpSlerpAction
+							.getDestinationRemoteLevelElement()))
+						renderPoolLeft = true;
+
+					((GLTissueViewBrowser) glView).setPoolSide(renderPoolLeft);
 
 				}
 			}
@@ -1193,7 +1207,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				// the current.
 				// if analytical clustering is done -> continue with
 				// other genetic visual interfaces
-				if (interfaceType.equals("org.caleydo.analytical.clustering")) {
+				if (interfaceType.equals("org.caleydo.analytical.clustering") || interfaceType.equals("org.caleydo.view.parcoords")
+				&& dataDomainType.equals("org.caleydo.datadomain.genetic")) {
 					currentGuidanceNode = (GuidanceNode) guidancePath.getFollowingNodes(
 							currentGuidanceNode).get(0);
 				}
@@ -2369,11 +2384,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		currentGuidanceNode.setInterfaceVisited(view.getViewType());
 
 		// FIXME: this should not be forced
-		if (view.getViewType().equals("org.caleydo.view.parcoords") && dataDomainNode
-						.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
-			currentGuidanceNode = (GuidanceNode) guidancePath.getFollowingNodes(
-					currentGuidanceNode).get(0);
-		}
+//		if (view.getViewType().equals("org.caleydo.view.parcoords")
+//				&& dataDomainNode.getDataDomainType().equals(
+//						"org.caleydo.datadomain.genetic")) {
+//			currentGuidanceNode = (GuidanceNode) guidancePath.getFollowingNodes(
+//					currentGuidanceNode).get(0);
+//		}
 	}
 
 	private boolean isViewOpen(AGLView glView) {
