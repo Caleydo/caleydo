@@ -3,7 +3,7 @@ package org.caleydo.view.treemap.layout;
 import java.awt.Color;
 import java.util.List;
 
-public class DefaultTreeNode implements AbstractTreeNode {
+public class DefaultTreeNode extends AbstractTreeNode {
 
 	float size;
 	Color color;
@@ -23,13 +23,13 @@ public class DefaultTreeNode implements AbstractTreeNode {
 	}
 	
 	@Override
-	public float getAreaSize() {
+	public float getSizeAttribute() {
 		// TODO Auto-generated method stub
 		return size;
 	}
 
 	@Override
-	public Color getAreaColor() {
+	public Color getColorAttribute() {
 		// TODO Auto-generated method stub
 		return color;
 	}

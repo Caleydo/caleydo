@@ -3,7 +3,7 @@ package org.caleydo.view.treemap.layout;
 public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
 
 	@Override
-	public void paint(AbstractTree tree, IGlPainter painter) {
+	public void layout(AbstractTree tree, IGlPainter painter) {
 		// TODO Auto-generated method stub
 		painter.init();
 		paintHelp(tree.getRoot(), 0, 0, 1, 1, HORIZONTAL_ALIGNMENT, painter);
@@ -15,13 +15,18 @@ public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
 
 	private void paintHelp(AbstractTreeNode root, float xOffset, float yOffset,
 			float xMax, float yMax, boolean alignment, IGlPainter painter) {
+		root.setMinX(xOffset);
+		root.setMinY(yOffset);
+		root.setMaxX(xMax);
+		root.setMaxY(yMax);
+		
 		if (root.getChildren() != null && root.getChildren().size() > 0) {
 			float area = (xMax - xOffset) * (yMax - yOffset);
 			if (alignment == HORIZONTAL_ALIGNMENT) {
 				float x = xOffset;
 				float size = 0;
 				for (AbstractTreeNode node : root.getChildren()) {
-					size = (node.getAreaSize() / area) * (xMax - xOffset);
+					size = (node.getSize() / area) * (xMax - xOffset);
 					paintHelp(node, x, yOffset, x + size, yMax, !alignment,
 							painter);
 					x += size;
@@ -30,18 +35,20 @@ public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
 				float y = yOffset;
 				float size;
 				for (AbstractTreeNode node : root.getChildren()) {
-					size = (node.getAreaSize() / area) * (yMax - yOffset);
+					size = (node.getSize() / area) * (yMax - yOffset);
 					paintHelp(node, xOffset, y, xMax, y + size, !alignment,
 							painter);
 					y += size;
 				}
 			}
-		} else {
-			painter.paintRectangle(xOffset, yOffset, xMax, yMax,
-					root.getAreaColor());
-			// System.out.println("painting "+root.getAreaColor());
-			System.out.println("painting: " + root.getLabel() + " " + xOffset
-					+ " " + yOffset + " " + xMax + " " + yMax);
-		}
+		} 
+//		else {
+//			// painter.paintRectangle(xOffset, yOffset, xMax, yMax,
+//			// root.getColorAttribute());
+//
+//			// System.out.println("painting "+root.getAreaColor());
+//			System.out.println("painting: " + root.getLabel() + " " + xOffset
+//					+ " " + yOffset + " " + xMax + " " + yMax);
+//		}
 	}
 }

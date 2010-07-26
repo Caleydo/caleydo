@@ -20,6 +20,6 @@ public interface IGlPainter {
 	 */
 	public void finish();
 
-	void paintRectangle(float x, float y, float xMax, float yMax, Color c);
+	void fillRectangle(float x, float y, float xMax, float yMax, Color c);
 
 }

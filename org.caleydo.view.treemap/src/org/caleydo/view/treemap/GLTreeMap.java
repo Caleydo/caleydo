@@ -179,19 +179,20 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 	@Override
 	public void display(GL gl) {
 
-		/*GLHelperFunctions.drawAxis(gl);
-		GLHelperFunctions.drawPointAt(gl, 1, 1, 1);
+//		GLHelperFunctions.drawAxis(gl);
+//		GLHelperFunctions.drawPointAt(gl, 1, 1, 1);
 		gl.glPushName(pickingManager.getPickingID(getID(),
 				EPickingType.TREEMAP_ELEMENT_SELECTED, 1));
-		gl.glBegin(GL.GL_QUADS);
-		gl.glColor3f(0, 1, 0);
-		gl.glVertex3f(0, 0, 0);
-		gl.glVertex3f(0, 1, 0);
-		gl.glVertex3f(1, 1, 0);
-		gl.glVertex3f(1, 0, 0);
-		gl.glEnd();
-		gl.glPopName();
-*/
+		
+//		gl.glBegin(GL.GL_QUADS);
+//		gl.glColor3f(0, 1, 0);
+//		gl.glVertex3f(0, 0, 0);
+//		gl.glVertex3f(0, 1, 0);
+//		gl.glVertex3f(1, 1, 0);
+//		gl.glVertex3f(1, 0, 0);
+//		gl.glEnd();
+//		gl.glPopName();
+
 		
 		GlPainter painter= new GlPainter(gl,viewFrustum);
 		
@@ -202,10 +203,15 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		
 		AbstractTree tree = DefaultTree.createSampleTree();
 		SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
-		layouter.paint(tree, painter);
 		
-		SelectionManager contentSelectionManager = dataDomain
-				.getContentSelectionManager();
+		layouter.layout(tree, painter);
+		painter.paint(tree);
+		
+		painter.paintRectangle((float)0.0,(float) 0.0,(float) 1/3, (float) 1, Color.YELLOW);
+		
+//		SelectionManager contentSelectionManager = dataDomain
+//				.getContentSelectionManager();
+		
 
 		
 	}
