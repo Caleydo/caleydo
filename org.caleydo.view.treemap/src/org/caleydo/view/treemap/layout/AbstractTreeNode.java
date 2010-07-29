@@ -3,6 +3,7 @@ package org.caleydo.view.treemap.layout;
 import java.awt.Color;
 import java.util.List;
 
+// TODO make a AHierarchyElement, rename to ATreeMapNode
 public abstract class AbstractTreeNode {
 	
 	private float minX, minY, maxX, maxY;
