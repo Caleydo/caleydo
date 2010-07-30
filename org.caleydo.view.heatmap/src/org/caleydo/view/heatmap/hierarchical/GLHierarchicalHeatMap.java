@@ -892,7 +892,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	public void replaceContentVA(int setID,String dataDomain, ContentVAType vaType) {
+	public void replaceContentVA(int setID, String dataDomain, ContentVAType vaType) {
 		super.replaceContentVA(setID, dataDomain, vaType);
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
@@ -4575,6 +4575,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	@Override
 	protected ArrayList<SelectedElementRep> createElementRep(EIDType idType,
 			int iStorageIndex) {
+
 		return null;
 	}
 

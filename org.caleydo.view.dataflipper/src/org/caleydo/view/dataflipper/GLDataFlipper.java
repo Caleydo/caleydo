@@ -29,7 +29,6 @@ import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.AssociationManager;
 import org.caleydo.core.manager.datadomain.DataDomainGraph;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.ClusterSetEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
@@ -91,6 +90,18 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	public final static String VIEW_ID = "org.caleydo.view.dataflipper";
 
+	public final static float[] GUIDANCE_COLOR = new float[] { 1f, 0, 0, 1 };
+	// public final static float[] MOUSE_OVER_INTERFACE_BACKGROUND_COLOR = new
+	// float[]{0.3f, 0.3f, 0.3f, 1};
+	public final static float[] INTERFACE_BACKGROUND_COLOR = new float[] { 1, 1, 1, 1 };
+
+	public final static float[] DATA_DOMAIN_BACKGROUND_COLOR = new float[] { 1, 1, 1, 1 };
+	public final static float[] MOUSE_OVER_DATA_DOMAIN_BACKGROUND_COLOR = new float[] {
+			0.5f, 0.5f, 0.5f, 1 };
+
+	private static float[] INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 1, 1, 1, 1 };
+	private static float[] CONNECTION_LINE_COLOR = new float[] { 1, 1, 1, 1 };
+
 	private static final int SLERP_RANGE = 1000;
 	private static final int SLERP_SPEED = 1500;
 
@@ -104,8 +115,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private static float ICON_PADDING = 0.015f * DATA_DOMAIN_SCALING_FACTOR;
 	private static float DATA_DOMAIN_SPACING = 1.2f;
 	private static float DATA_DOMAIN_HEIGHT = 0.95f;
-	private static float[] INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 1, 1, 1 };
-	private static float[] CONNECTION_LINE_COLOR = new float[] { 1, 1, 1, 1 };
 
 	private ArrayList<ASerializedView> newViews;
 
@@ -506,7 +515,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						* DATA_DOMAIN_SPACING, y + DATA_DOMAIN_HEIGHT / 2f);
 
 				gl.glLineWidth(5);
-				gl.glColor3f(0.3f, 0, 0);
+				gl.glColor3fv(GUIDANCE_COLOR, 0);
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(x - metaViewAnimation + 0.5f * DATA_DOMAIN_SCALING_FACTOR,
 						y + DATA_DOMAIN_HEIGHT / 2f + 0.15f, DATA_DOMAIN_Z);
@@ -1207,8 +1216,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				// the current.
 				// if analytical clustering is done -> continue with
 				// other genetic visual interfaces
-				if (interfaceType.equals("org.caleydo.analytical.clustering") || interfaceType.equals("org.caleydo.view.parcoords")
-				&& dataDomainType.equals("org.caleydo.datadomain.genetic")) {
+				if (interfaceType.equals("org.caleydo.analytical.clustering")
+						|| interfaceType.equals("org.caleydo.view.parcoords")
+						&& dataDomainType.equals("org.caleydo.datadomain.genetic")) {
 					currentGuidanceNode = (GuidanceNode) guidancePath.getFollowingNodes(
 							currentGuidanceNode).get(0);
 				}
@@ -1425,13 +1435,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.DATA_DOMAIN_SELECTION, node.getFirstInterfaceID()));
 
-		float r = 1;
-		float g = 1;
-		float b = 1;
+		float[] bgColor = DATA_DOMAIN_BACKGROUND_COLOR;
 		if (mouseOverDataDomainNode != null && node == mouseOverDataDomainNode) {
-			r = 0.5f;
-			g = 0.5f;
-			b = 0.5f;
+			bgColor = MOUSE_OVER_DATA_DOMAIN_BACKGROUND_COLOR;
 		}
 
 		// Data background
@@ -1439,7 +1445,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				new Vec3f(0, 0, 0.005f), new Vec3f(0.51f * DATA_DOMAIN_SCALING_FACTOR, 0,
 						0.005f), new Vec3f(0.51f * DATA_DOMAIN_SCALING_FACTOR,
 						0.3f * DATA_DOMAIN_SCALING_FACTOR, 0.005f), new Vec3f(0,
-						0.3f * DATA_DOMAIN_SCALING_FACTOR, 0.005f), r, g, b, 1);
+						0.3f * DATA_DOMAIN_SCALING_FACTOR, 0.005f), bgColor);
 
 		// Data icon
 		textureManager.renderTexture(gl, dataDomainIcon, new Vec3f(0f, 0.02f, 0.01f),
@@ -1468,28 +1474,22 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			if (interfaceIndex < interfaces.length && mouseOverInterface != null
 					&& interfaces[interfaceIndex].equals(mouseOverInterface)
 					&& mouseOverDataDomainNode != null && node == mouseOverDataDomainNode) {
-				r = 0.5f;
-				g = 0.5f;
-				b = 0.5f;
+				bgColor = MOUSE_OVER_DATA_DOMAIN_BACKGROUND_COLOR;
 			} else if (interfaceIndex < interfaces.length
 					&& currentGuidanceNode.getInterfaceTypes().contains(
 							interfaces[interfaceIndex])
 					&& !currentGuidanceNode
 							.isInterfaceVisited(interfaces[interfaceIndex])
 					&& currentGuidanceNode.getDataDomainType().equals(dataDomainType)) {
-				r = 1;
-				g = 0;
-				b = 0;
+				bgColor = GUIDANCE_COLOR;
 			} else {
-				r = 1;
-				g = 1;
-				b = 1;
+				bgColor = DATA_DOMAIN_BACKGROUND_COLOR;
 			}
 
 			// Interface background
 			textureManager.renderTexture(gl, icon, new Vec3f(INTERFACE_WIDTH, 0.0f, 0),
 					new Vec3f(0.0f, 0.0f, 0), new Vec3f(0.0f, INTERFACE_WIDTH, 0),
-					new Vec3f(INTERFACE_WIDTH, INTERFACE_WIDTH, 0), r, g, b, 1);
+					new Vec3f(INTERFACE_WIDTH, INTERFACE_WIDTH, 0), bgColor);
 
 			if (interfaceIndex == maxViewIcons - 1) {
 				gl.glRotatef(-270, 0, 0, 1);
@@ -1530,18 +1530,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 						&& mouseOverInterface.equals(interfaceType)
 						&& mouseOverDataDomainNode != null
 						&& mouseOverDataDomainNode == node) {
-					INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 1, 1, 1 };
+					INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 1, 1, 1, 1 };
 					CONNECTION_LINE_COLOR = new float[] { 0.15f, 0.15f, 0.15f, 1 };
 
 				} else if (element == null) {
 					INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 0.5f, 0.5f, 0.5f };
-					// } else if (element == lastPickedRemoteLevelElement) {
-					// INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 1, 1, 1
-					// };
-					// CONNECTION_LINE_COLOR = new float[] { 0.15f, 0.15f, 0.15f
-					// };
 				} else {
-					INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 1f, 1f, 1f };
+					INTERFACE_ICON_BACKGROUND_COLOR = new float[] { 1f, 1f, 1f, 1 };
 					CONNECTION_LINE_COLOR = new float[] { 0.3f, 0.3f, 0.3f, 1 };
 				}
 
@@ -1733,7 +1728,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		float r = 1;
 		float g = 1;
 		float b = 1;
-		float a = 1;
 		float yIconOffset = 0.02f;
 
 		boolean isGuidanceDomain = false;
@@ -1749,11 +1743,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			r = 1f;
 			g = 1f;
 			b = 1f;
-			// a = 0.4f;
-			// r = 0.3f;
-			// g = 0.3f;
-			// b = 0.3f;
-			a = 1;
 			// TODO: render exclamation mark
 
 			String conditionText = "";
@@ -1769,14 +1758,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			textRenderer.draw3D(conditionText, 0.34f, 0.0f, 0, 0.0028f);
 			textRenderer.end3DRendering();
 
-			connectionSplineColor = new float[] { 0.3f, 0f, 0.0f };
+			connectionSplineColor = GUIDANCE_COLOR;
 
 			// TODO: move conditions to own class
 			if (mouseOver) {
 				r = 0.3f;
 				g = 0.3f;
 				b = 0.3f;
-				a = 1;
 
 				connectionSplineColor = new float[] { 0.15f, 0.15f, 0.15f };
 			}
@@ -1785,24 +1773,22 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			yIconOffset = 0.05f;
 			textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_EXCLAMATION_MARK,
 					new Vec3f(0.25f, 0.03f, 0), new Vec3f(0.3f, 0.03f, 0), new Vec3f(
-							0.3f, 0.17f, 0), new Vec3f(0.25f, 0.17f, 0), r, g, b, a);
+							0.3f, 0.17f, 0), new Vec3f(0.25f, 0.17f, 0), r, g, b, 1);
 
 		} else if (mouseOver) {
 			r = 0.3f;
 			g = 0.3f;
 			b = 0.3f;
-			a = 1;
 
 			connectionSplineColor = new float[] { 0.15f, 0.15f, 0.15f };
 		} else if (highlight && currentGuidanceNode.oneInterfaceVisited()) {
 			r = 1f;
-			g = 0.3f;
-			b = 0.3f;
-			a = 1;
+			g = 1f;
+			b = 1f;
 
 			iconTextureBackgroundRound = EIconTextures.DATA_FLIPPER_DATA_ICON_BACKGROUND_ROUND_HIGHLIGHTED;
 			yIconOffset = 0.05f;
-			connectionSplineColor = new float[] { 0.3f, 0.f, 0.f };
+			connectionSplineColor = GUIDANCE_COLOR;
 		}
 
 		// Data background
@@ -1810,7 +1796,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 				new Vec3f(0.21f * DATA_DOMAIN_SCALING_FACTOR, 0, 0), new Vec3f(
 						0.21f * DATA_DOMAIN_SCALING_FACTOR,
 						0.2f * DATA_DOMAIN_SCALING_FACTOR, 0), new Vec3f(0,
-						0.2f * DATA_DOMAIN_SCALING_FACTOR, 0), r, g, b, a);
+						0.2f * DATA_DOMAIN_SCALING_FACTOR, 0), r, g, b, 1);
 
 		// Data icon
 		textureManager.renderTexture(gl, dataDomainIcon,
@@ -2384,12 +2370,12 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		currentGuidanceNode.setInterfaceVisited(view.getViewType());
 
 		// FIXME: this should not be forced
-//		if (view.getViewType().equals("org.caleydo.view.parcoords")
-//				&& dataDomainNode.getDataDomainType().equals(
-//						"org.caleydo.datadomain.genetic")) {
-//			currentGuidanceNode = (GuidanceNode) guidancePath.getFollowingNodes(
-//					currentGuidanceNode).get(0);
-//		}
+		// if (view.getViewType().equals("org.caleydo.view.parcoords")
+		// && dataDomainNode.getDataDomainType().equals(
+		// "org.caleydo.datadomain.genetic")) {
+		// currentGuidanceNode = (GuidanceNode) guidancePath.getFollowingNodes(
+		// currentGuidanceNode).get(0);
+		// }
 	}
 
 	private boolean isViewOpen(AGLView glView) {

@@ -118,6 +118,12 @@ public class TextureManager {
 		// tempTexture.disable();
 	}
 
+	public void renderTexture(GL gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner,
+		Vec3f lowerRightCorner, Vec3f upperRightCorner, Vec3f upperLeftCorner, float[] color) {
+		renderTexture(gl, eIconTextures, lowerLeftCorner,
+			lowerRightCorner, upperRightCorner, upperLeftCorner, color[0], color[1], color[2], color[3]);
+	}
+	
 	/**
 	 * Renders a texture on a rectangle with the specified minimum size.
 	 * 
