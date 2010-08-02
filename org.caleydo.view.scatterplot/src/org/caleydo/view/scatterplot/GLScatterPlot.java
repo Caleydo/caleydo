@@ -1540,7 +1540,7 @@ public class GLScatterPlot extends AStorageBasedView {
 	}
 
 	/**
-	 * render the Sletion Rectangles for the Scatter-Matrix
+	 * render the Selection Rectangles for the Scatter-Matrix
 	 * 
 	 * @param gl
 	 * @param icurrent_X_AXIS
@@ -2538,10 +2538,6 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 
 	/**
 	 * Evaluates which Scatterpoints are in the Selection rectangle
-	 * 
-	 */
-	
-	/**
 	 * 
 	 */
 	private void updateSelection() {
