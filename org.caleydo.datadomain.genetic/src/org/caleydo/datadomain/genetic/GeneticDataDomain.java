@@ -198,7 +198,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		if (targetCategory == EIDCategory.GENE
 				&& vaDelta.getIDType() != EIDType.EXPRESSION_INDEX)
 			vaDelta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, vaDelta);
-		ContentVirtualArray va = set.getContentVA(vaDelta.getVAType());
+		ContentVirtualArray va = set.getContentData(vaDelta.getVAType()).getContentVA();
 
 		va.setDelta(vaDelta);
 	}
@@ -209,7 +209,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		if (targetCategory != EIDCategory.EXPERIMENT)
 			return;
 
-		StorageVirtualArray va = set.getStorageVA(vaDelta.getVAType());
+		StorageVirtualArray va = set.getStorageData(vaDelta.getVAType()).getStorageVA();
 
 		va.setDelta(vaDelta);
 	}
@@ -234,8 +234,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 		clinicalSelectionCommandListener = new ForeignSelectionCommandListener();
 		clinicalSelectionCommandListener.setHandler(this);
-		clinicalSelectionCommandListener
-				.setDataDomainType(CLINICAL_DATADOMAIN_TYPE);
+		clinicalSelectionCommandListener.setDataDomainType(CLINICAL_DATADOMAIN_TYPE);
 		eventPublisher.addListener(SelectionCommandEvent.class,
 				clinicalSelectionCommandListener);
 
@@ -266,9 +265,9 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	@Override
 	public void handleForeignSelectionUpdate(String dataDomainType,
 			ISelectionDelta delta, boolean scrollToSelection, String info) {
-//		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE)
-//			System.out
-//					.println("TODO Convert and re-send selection from clinical to genetic");
+		// if (dataDomainType == CLINICAL_DATADOMAIN_TYPE)
+		// System.out
+		// .println("TODO Convert and re-send selection from clinical to genetic");
 
 		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 			// for(ISeldelta)
@@ -337,7 +336,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		String label = (String) clinicalStorage.getRaw(clinicalContentIndex);
 
 		label = label.replace("\"", "");
-//		System.out.println(label);
+		// System.out.println(label);
 
 		for (Integer storageIndex : origianlGeneticStorageVA) {
 			if (label.equals(set.get(storageIndex).getLabel()))

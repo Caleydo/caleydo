@@ -49,7 +49,7 @@ public class SetExporter {
 			out.println();
 
 			// IUseCase useCase = GeneralManager.get().getUseCase(set.getSetType().getDataDomain());
-			//		
+			//
 			String identifier;
 			IIDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer iContentIndex : alGenes) {
@@ -228,17 +228,18 @@ public class SetExporter {
 
 	}
 
+	// FIXME: implement different content data / storage data instances
 	public void exportTrees(ISet set, String directory) {
 		try {
 			// export gene cluster tree to own xml file
-			Tree<ClusterNode> tree = set.getContentTree();
+			Tree<ClusterNode> tree = set.getContentData(ContentVAType.CONTENT).getContentTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
 				treePorter.setDataDomain(set.getDataDomain());
 				treePorter.exportTree(directory + "/horizontal_gene.xml", tree);
 			}
 			// export experiment cluster tree to own xml file
-			tree = set.getStorageTree();
+			tree = set.getStorageData(StorageVAType.STORAGE).getStorageTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
 				treePorter.setDataDomain(set.getDataDomain());

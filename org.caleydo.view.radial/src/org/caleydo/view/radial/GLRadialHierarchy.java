@@ -117,7 +117,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 	private SelectionManager selectionManager;
 	boolean bUseDetailLevel = true;
-	
+
 	private ISetBasedDataDomain dataDomain;
 
 	/**
@@ -159,7 +159,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void init(GL gl) {
-		Tree<ClusterNode> tree = dataDomain.getSet().getContentTree();
+		Tree<ClusterNode> tree = dataDomain.getSet().getContentData(contentVAType)
+				.getContentTree();
 		if (tree != null) {
 			// initHierarchy(tree);
 		} else {
@@ -178,21 +179,18 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		// Register keyboard listener to GL canvas
-		parentGLCanvas.getParentComposite().getDisplay().asyncExec(
-				new Runnable() {
-					public void run() {
-						parentGLCanvas.getParentComposite().addKeyListener(
-								glKeyListener);
-					}
-				});
+		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		init(gl);
 	}
 
 	@Override
 	public void initRemote(final GL gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener,
-			GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay()
@@ -236,16 +234,15 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	 * @param alColorModes
 	 *            List of drawing strategies that shall be used as color modes.
 	 */
-	public <E extends AHierarchyElement<E>> void initHierarchy(Tree<E> tree,
-			E heRoot, EIDType idType, ADataEventManager dataEventManager,
+	public <E extends AHierarchyElement<E>> void initHierarchy(Tree<E> tree, E heRoot,
+			EIDType idType, ADataEventManager dataEventManager,
 			ArrayList<EPDDrawingStrategyType> alColorModes) {
 
 		hashPartialDiscs.clear();
 		selectionManager = new SelectionManager(idType);
 		partialDiscTree = new Tree<PartialDisc>();
 		navigationHistory.reset();
-		drawingController
-				.setDrawingState(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY);
+		drawingController.setDrawingState(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY);
 		LabelManager.get().clearLabels();
 		drawingStrategyManager.init(pickingManager, iUniqueID, alColorModes);
 
@@ -265,18 +262,18 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 		pdCurrentSelectedElement = pdRoot;
 		pdRealRootElement = pdRoot;
 
-		navigationHistory.addNewHistoryEntry(drawingController
-				.getCurrentDrawingState(), pdCurrentRootElement,
-				pdCurrentSelectedElement, iMaxDisplayedHierarchyDepth);
+		navigationHistory.addNewHistoryEntry(drawingController.getCurrentDrawingState(),
+				pdCurrentRootElement, pdCurrentSelectedElement,
+				iMaxDisplayedHierarchyDepth);
 
 		selectionManager.addToType(SelectionType.SELECTION,
 				pdCurrentRootElement.getElementID());
 
 		controlBox = new Rectangle(0, 0, 0.3f, 0.2f);
-		upwardNavigationSlider = new OneWaySlider(new Vec2f(controlBox
-				.getMinX() + 0.1f, controlBox.getMinY() + 0.1f), 0.2f, 1f,
-				pdRealRootElement.getHierarchyLevel(), 1, 0, pdRealRootElement
-						.getDepth() - 1);
+		upwardNavigationSlider = new OneWaySlider(new Vec2f(controlBox.getMinX() + 0.1f,
+				controlBox.getMinY() + 0.1f), 0.2f, 1f,
+				pdRealRootElement.getHierarchyLevel(), 1, 0,
+				pdRealRootElement.getDepth() - 1);
 		upwardNavigationSlider.setMinSize(80);
 
 	}
@@ -307,9 +304,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 		if (alChildNodes != null) {
 			for (E heChild : alChildNodes) {
-				PartialDisc pdCurrentChildDisc = new PartialDisc(
-						partialDiscTree, heChild, drawingStrategyManager
-								.getDefaultDrawingStrategy());
+				PartialDisc pdCurrentChildDisc = new PartialDisc(partialDiscTree,
+						heChild, drawingStrategyManager.getDefaultDrawingStrategy());
 				try {
 					alChildDiscs.add(pdCurrentChildDisc);
 					partialDiscTree.addChild(partialDisc, pdCurrentChildDisc);
@@ -405,13 +401,10 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 				gl.glLoadIdentity();
 				upwardNavigationSlider.draw(gl, pickingManager, textureManager,
 						iUniqueID, iUpwardNavigationSliderID,
-						iUpwardNavigationSliderButtonID,
-						iUpwardNavigationSliderBodyID);
+						iUpwardNavigationSliderButtonID, iUpwardNavigationSliderBodyID);
 
-				float fCurrentSliderWidth = upwardNavigationSlider
-						.getScaledWidth(gl);
-				float fCurrentSliderHeight = upwardNavigationSlider
-						.getScaledHeight(gl);
+				float fCurrentSliderWidth = upwardNavigationSlider.getScaledWidth(gl);
+				float fCurrentSliderHeight = upwardNavigationSlider.getScaledHeight(gl);
 
 				controlBox.setRectangle(0, 0, fCurrentSliderWidth * 2,
 						fCurrentSliderHeight + fCurrentSliderWidth);
@@ -445,18 +438,15 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 			gl.glLoadIdentity();
 
-			upwardNavigationSlider.draw(gl, pickingManager, textureManager,
-					iUniqueID, iUpwardNavigationSliderID,
-					iUpwardNavigationSliderButtonID,
+			upwardNavigationSlider.draw(gl, pickingManager, textureManager, iUniqueID,
+					iUpwardNavigationSliderID, iUpwardNavigationSliderButtonID,
 					iUpwardNavigationSliderBodyID);
 
-			float fCurrentSliderWidth = upwardNavigationSlider
-					.getScaledWidth(gl);
-			float fCurrentSliderHeight = upwardNavigationSlider
-					.getScaledHeight(gl);
+			float fCurrentSliderWidth = upwardNavigationSlider.getScaledWidth(gl);
+			float fCurrentSliderHeight = upwardNavigationSlider.getScaledHeight(gl);
 
-			controlBox.setRectangle(0, 0, fCurrentSliderWidth * 2,
-					fCurrentSliderHeight + fCurrentSliderWidth);
+			controlBox.setRectangle(0, 0, fCurrentSliderWidth * 2, fCurrentSliderHeight
+					+ fCurrentSliderWidth);
 			LabelManager.get().setControlBox(controlBox);
 			drawingController.draw(fXCenter, fYCenter, gl, new GLU());
 
@@ -479,14 +469,14 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 			bIsNewSelection = true;
 
-			PartialDisc pdSelectedElement = drawingController
-					.getCurrentDrawingState().getSelectedElement();
+			PartialDisc pdSelectedElement = drawingController.getCurrentDrawingState()
+					.getSelectedElement();
 			if (pdSelectedElement != null) {
 				pdCurrentSelectedElement = pdSelectedElement;
 				pdSelectedElement.setCurrentStartAngle(0);
 			}
-			navigationHistory.addNewHistoryEntry(drawingController
-					.getCurrentDrawingState(), pdCurrentRootElement,
+			navigationHistory.addNewHistoryEntry(
+					drawingController.getCurrentDrawingState(), pdCurrentRootElement,
 					pdCurrentSelectedElement, iMaxDisplayedHierarchyDepth);
 			setDisplayListDirty();
 
@@ -526,14 +516,14 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 				if (pdPickedElement != null) {
 					// Prevent handling of non genetic data in context
 					// menu
-					if (!dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
+					if (!dataDomain.getDataDomainType().equals(
+							"org.caleydo.datadomain.genetic"))
 						break;
 					if (!pdPickedElement.hasChildren()) {
 						ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
-						geneContextMenuItemContainer.setID(
-								EIDType.EXPRESSION_INDEX, iExternalID);
-						contextMenu
-								.addItemContanier(geneContextMenuItemContainer);
+						geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX,
+								iExternalID);
+						contextMenu.addItemContanier(geneContextMenuItemContainer);
 					} else {
 						DetailOutsideItem detailOutsideItem = new DetailOutsideItem(
 								iExternalID);
@@ -542,8 +532,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 					if (!isRenderedRemote()) {
 						contextMenu.setLocation(pick.getPickedPoint(),
-								getParentGLCanvas().getWidth(),
-								getParentGLCanvas().getHeight());
+								getParentGLCanvas().getWidth(), getParentGLCanvas()
+										.getHeight());
 						contextMenu.setMasterGLView(this);
 					}
 					break;
@@ -560,8 +550,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 			switch (pickingMode) {
 			case CLICKED:
 				if (iExternalID == iUpwardNavigationSliderID) {
-					if (upwardNavigationSlider
-							.handleSliderSelection(ePickingType)) {
+					if (upwardNavigationSlider.handleSliderSelection(ePickingType)) {
 						updateHierarchyAccordingToNavigationSlider();
 						setDisplayListDirty();
 					}
@@ -577,8 +566,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 			switch (pickingMode) {
 			case CLICKED:
 				if (iExternalID == iUpwardNavigationSliderButtonID) {
-					if (upwardNavigationSlider
-							.handleSliderSelection(ePickingType)) {
+					if (upwardNavigationSlider.handleSliderSelection(ePickingType)) {
 						updateHierarchyAccordingToNavigationSlider();
 						setDisplayListDirty();
 					}
@@ -594,8 +582,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 			switch (pickingMode) {
 			case CLICKED:
 				if (iExternalID == iUpwardNavigationSliderBodyID) {
-					if (upwardNavigationSlider
-							.handleSliderSelection(ePickingType)) {
+					if (upwardNavigationSlider.handleSliderSelection(ePickingType)) {
 						updateHierarchyAccordingToNavigationSlider();
 						setDisplayListDirty();
 					}
@@ -632,7 +619,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 		// ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
 		// event.setClusterNumber(1073741840);
 		// event.setSelectionType(SelectionType.SELECTION);
-		//		
+		//
 		// eventPublisher.triggerEvent(event);
 
 		drawingStrategyManager.setNextColorModeStrategyDefault();
@@ -665,8 +652,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	 */
 	public void setCurrentRootElement(PartialDisc pdCurrentRootElement) {
 		this.pdCurrentRootElement = pdCurrentRootElement;
-		upwardNavigationSlider.setSelectedValue(pdCurrentRootElement
-				.getHierarchyLevel());
+		upwardNavigationSlider.setSelectedValue(pdCurrentRootElement.getHierarchyLevel());
 	}
 
 	/**
@@ -730,10 +716,9 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 		if (this.iMaxDisplayedHierarchyDepth != iMaxDisplayedHierarchyDepth) {
 
 			renderStyle.setMinViewDimensions(MIN_DISPLAY_WIDTH
-					+ MIN_PIXELS_PER_DISPLAYED_LEVEL
-					* iMaxDisplayedHierarchyDepth, MIN_DISPLAY_HEIGHT
-					+ MIN_PIXELS_PER_DISPLAYED_LEVEL
-					* iMaxDisplayedHierarchyDepth, this);
+					+ MIN_PIXELS_PER_DISPLAYED_LEVEL * iMaxDisplayedHierarchyDepth,
+					MIN_DISPLAY_HEIGHT + MIN_PIXELS_PER_DISPLAYED_LEVEL
+							* iMaxDisplayedHierarchyDepth, this);
 
 			bIsNewSelection = false;
 			this.iMaxDisplayedHierarchyDepth = iMaxDisplayedHierarchyDepth;
@@ -784,8 +769,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	 * @param pdSelected
 	 *            Element that has been selected.
 	 */
-	public void setNewSelection(SelectionType selectionType,
-			PartialDisc pdSelected) {
+	public void setNewSelection(SelectionType selectionType, PartialDisc pdSelected) {
 
 		selectionManager.clearSelections();
 		selectionManager.addToType(selectionType, pdSelected.getElementID());
@@ -832,39 +816,33 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 		SerializedRadialHierarchyView serializedForm = new SerializedRadialHierarchyView(
 				dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
-		serializedForm
-				.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
+		serializedForm.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
 		serializedForm.setNewSelection(bIsNewSelection);
 		serializedForm.setDefaultDrawingStrategyType(drawingStrategyManager
 				.getDefaultDrawingStrategy().getDrawingStrategyType());
 
-		ADrawingState currentDrawingState = drawingController
-				.getCurrentDrawingState();
+		ADrawingState currentDrawingState = drawingController.getCurrentDrawingState();
 
 		if (pdCurrentRootElement != null) {
 			if ((currentDrawingState.getType() == EDrawingStateType.DRAWING_STATE_DETAIL_OUTSIDE)
 					|| (currentDrawingState.getType() == EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY)) {
 
-				serializedForm.setDrawingStateType(currentDrawingState
-						.getType());
-				serializedForm.setRootElementID(pdCurrentRootElement
-						.getElementID());
+				serializedForm.setDrawingStateType(currentDrawingState.getType());
+				serializedForm.setRootElementID(pdCurrentRootElement.getElementID());
 				serializedForm.setSelectedElementID(pdCurrentSelectedElement
 						.getElementID());
 				serializedForm.setRootElementStartAngle(pdCurrentRootElement
 						.getCurrentStartAngle());
-				serializedForm
-						.setSelectedElementStartAngle(pdCurrentSelectedElement
-								.getCurrentStartAngle());
+				serializedForm.setSelectedElementStartAngle(pdCurrentSelectedElement
+						.getCurrentStartAngle());
 			} else {
-				HistoryEntry historyEntry = navigationHistory
-						.getCurrentHistoryEntry();
-				serializedForm.setDrawingStateType(historyEntry
-						.getDrawingState().getType());
+				HistoryEntry historyEntry = navigationHistory.getCurrentHistoryEntry();
+				serializedForm.setDrawingStateType(historyEntry.getDrawingState()
+						.getType());
 				serializedForm.setRootElementID(historyEntry.getRootElement()
 						.getElementID());
-				serializedForm.setSelectedElementID(historyEntry
-						.getSelectedElement().getElementID());
+				serializedForm.setSelectedElementID(historyEntry.getSelectedElement()
+						.getElementID());
 				serializedForm.setRootElementStartAngle(historyEntry
 						.getRootElementStartAngle());
 				serializedForm.setSelectedElementStartAngle(historyEntry
@@ -878,7 +856,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
 
-		Tree<ClusterNode> tree = dataDomain.getSet().getStorageTree();
+		Tree<ClusterNode> tree = dataDomain.getSet().getStorageData(storageVAType)
+				.getStorageTree();
 		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		if (tree != null) {
 			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
@@ -887,19 +866,19 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 			// new GeneClusterDataEventManager(this), alColorModes);
-			initHierarchy(tree, dataDomain.getSet().getStorageTreeRoot(),
-					EIDType.CLUSTER_NUMBER,
+			initHierarchy(tree, dataDomain.getSet().getStorageData(storageVAType)
+					.getStorageTreeRoot(), EIDType.CLUSTER_NUMBER,
 					new ExperimentClusterDataEventManager(this), alColorModes);
 		}
 
 		SerializedRadialHierarchyView serializedView = (SerializedRadialHierarchyView) ser;
-		setupDisplay(serializedView.getDrawingStateType(), serializedView
-				.getDefaultDrawingStrategyType(), serializedView
-				.isNewSelection(), serializedView.getRootElementID(),
-				serializedView.getSelectedElementID(), serializedView
-						.getRootElementStartAngle(), serializedView
-						.getSelectedElementStartAngle(), serializedView
-						.getMaxDisplayedHierarchyDepth());
+		setupDisplay(serializedView.getDrawingStateType(),
+				serializedView.getDefaultDrawingStrategyType(),
+				serializedView.isNewSelection(), serializedView.getRootElementID(),
+				serializedView.getSelectedElementID(),
+				serializedView.getRootElementStartAngle(),
+				serializedView.getSelectedElementStartAngle(),
+				serializedView.getMaxDisplayedHierarchyDepth());
 	}
 
 	/**
@@ -925,9 +904,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	 */
 	public void setupDisplay(EDrawingStateType drawingStateType,
 			EPDDrawingStrategyType drawingStrategyType, boolean isNewSelection,
-			int rootElementID, int selectedElementID,
-			float rootElementStartAngle, float selectedElementStartAngle,
-			int maxDisplayedHierarchyDepth) {
+			int rootElementID, int selectedElementID, float rootElementStartAngle,
+			float selectedElementStartAngle, int maxDisplayedHierarchyDepth) {
 
 		this.iMaxDisplayedHierarchyDepth = maxDisplayedHierarchyDepth;
 		bIsNewSelection = isNewSelection;
@@ -940,8 +918,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 			pdCurrentSelectedElement = hashPartialDiscs.get(selectedElementID);
 			pdCurrentRootElement.setCurrentStartAngle(rootElementStartAngle);
 			if (pdCurrentSelectedElement != null) {
-				pdCurrentSelectedElement
-						.setCurrentStartAngle(selectedElementStartAngle);
+				pdCurrentSelectedElement.setCurrentStartAngle(selectedElementStartAngle);
 			}
 		}
 		setDisplayListDirty();
@@ -977,18 +954,15 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 		goBackInHistoryListener = new GoBackInHistoryListener();
 		goBackInHistoryListener.setHandler(this);
-		eventPublisher.addListener(GoBackInHistoryEvent.class,
-				goBackInHistoryListener);
+		eventPublisher.addListener(GoBackInHistoryEvent.class, goBackInHistoryListener);
 
 		goForthInHistoryListener = new GoForthInHistoryListener();
 		goForthInHistoryListener.setHandler(this);
-		eventPublisher.addListener(GoForthInHistoryEvent.class,
-				goForthInHistoryListener);
+		eventPublisher.addListener(GoForthInHistoryEvent.class, goForthInHistoryListener);
 
 		changeColorModeListener = new ChangeColorModeListener();
 		changeColorModeListener.setHandler(this);
-		eventPublisher.addListener(ChangeColorModeEvent.class,
-				changeColorModeListener);
+		eventPublisher.addListener(ChangeColorModeEvent.class, changeColorModeListener);
 
 		setMaxDisplayedHierarchyDepthListener = new SetMaxDisplayedHierarchyDepthListener();
 		setMaxDisplayedHierarchyDepthListener.setHandler(this);
@@ -997,8 +971,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 		detailOutsideListener = new DetailOutsideListener();
 		detailOutsideListener.setHandler(this);
-		eventPublisher.addListener(DetailOutsideEvent.class,
-				detailOutsideListener);
+		eventPublisher.addListener(DetailOutsideEvent.class, detailOutsideListener);
 
 		updateViewListener = new UpdateViewListener();
 		updateViewListener.setHandler(this);
@@ -1006,8 +979,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class,
-				clearSelectionsListener);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
 		if (dataEventManager != null)
 			dataEventManager.registerEventListeners();
@@ -1033,8 +1005,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 			changeColorModeListener = null;
 		}
 		if (setMaxDisplayedHierarchyDepthListener != null) {
-			eventPublisher
-					.removeListener(setMaxDisplayedHierarchyDepthListener);
+			eventPublisher.removeListener(setMaxDisplayedHierarchyDepthListener);
 			setMaxDisplayedHierarchyDepthListener = null;
 		}
 		if (detailOutsideListener != null) {
@@ -1068,7 +1039,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	@Override
 	public void handleUpdateView() {
 		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
-		Tree<ClusterNode> tree = dataDomain.getSet().getStorageTree();
+		Tree<ClusterNode> tree = dataDomain.getSet().getStorageData(storageVAType)
+				.getStorageTree();
 		if (tree != null) {
 
 			// if (pdRealRootElement == null) {
@@ -1079,9 +1051,10 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
 			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 			// new GeneClusterDataEventManager(this), alColorModes);
-			initHierarchy(tree, ((ISetBasedDataDomain)dataDomain).getSet().getStorageTreeRoot(),
-					EIDType.CLUSTER_NUMBER,
-					new ExperimentClusterDataEventManager(this), alColorModes);
+			initHierarchy(tree, ((ISetBasedDataDomain) dataDomain).getSet()
+					.getStorageData(storageVAType).getStorageTreeRoot(),
+					EIDType.CLUSTER_NUMBER, new ExperimentClusterDataEventManager(this),
+					alColorModes);
 			// }
 
 		} else {
@@ -1100,8 +1073,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	 */
 	public void handleKeyboardAlternativeDiscSelection() {
 
-		Set<Integer> setSelection = selectionManager
-				.getElements(SelectionType.SELECTION);
+		Set<Integer> setSelection = selectionManager.getElements(SelectionType.SELECTION);
 		PartialDisc pdCurrentMouseOverElement = null;
 		int iDisplayedHierarchyDepth = Math.min(iMaxDisplayedHierarchyDepth,
 				pdCurrentRootElement.getDepth());
@@ -1109,8 +1081,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 		if ((setSelection != null)) {
 			for (Integer elementID : setSelection) {
 				pdCurrentMouseOverElement = hashPartialDiscs.get(elementID);
-				if (pdCurrentMouseOverElement.isCurrentlyDisplayed(
-						pdCurrentRootElement, iDisplayedHierarchyDepth)) {
+				if (pdCurrentMouseOverElement.isCurrentlyDisplayed(pdCurrentRootElement,
+						iDisplayedHierarchyDepth)) {
 					drawingController
 							.handleAlternativeSelection(pdCurrentMouseOverElement);
 					return;
@@ -1123,8 +1095,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 		if ((setMouseOver != null)) {
 			for (Integer elementID : setMouseOver) {
 				pdCurrentMouseOverElement = hashPartialDiscs.get(elementID);
-				if (pdCurrentMouseOverElement.isCurrentlyDisplayed(
-						pdCurrentRootElement, iDisplayedHierarchyDepth)) {
+				if (pdCurrentMouseOverElement.isCurrentlyDisplayed(pdCurrentRootElement,
+						iDisplayedHierarchyDepth)) {
 					drawingController
 							.handleAlternativeSelection(pdCurrentMouseOverElement);
 					return;

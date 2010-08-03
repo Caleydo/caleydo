@@ -129,7 +129,7 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		// iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
-		tree = dataDomain.getSet().getContentTree();
+		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
 		init(gl);
 
 		gl.glNewList(iGLDisplayListIndexLocal, GL.GL_COMPILE);

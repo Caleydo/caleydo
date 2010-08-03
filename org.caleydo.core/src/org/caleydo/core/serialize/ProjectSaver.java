@@ -41,12 +41,12 @@ import org.eclipse.core.runtime.Status;
 public class ProjectSaver {
 
 	/** full path to directory to temporarily store the projects file before zipping */
-	public static final String TEMP_PROJECT_DIR_NAME =
-		IGeneralManager.CALEYDO_HOME_PATH + "tempSave" + File.separator;
+	public static final String TEMP_PROJECT_DIR_NAME = IGeneralManager.CALEYDO_HOME_PATH + "tempSave"
+		+ File.separator;
 
 	/** full path to directory of the recently open project */
-	public static final String RECENT_PROJECT_DIR_NAME =
-		IGeneralManager.CALEYDO_HOME_PATH + "recent_project" + File.separator;
+	public static final String RECENT_PROJECT_DIR_NAME = IGeneralManager.CALEYDO_HOME_PATH + "recent_project"
+		+ File.separator;
 
 	/** file name of the set-data-file in project-folders */
 	public static final String SET_DATA_FILE_NAME = "data.csv";
@@ -90,9 +90,12 @@ public class ProjectSaver {
 			}
 		}
 		else {
-			GeneralManager.get().getLogger().log(
-				new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
-					"no genetic useCase, cannot save project"));
+			GeneralManager
+				.get()
+				.getLogger()
+				.log(
+					new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+						"no genetic useCase, cannot save project"));
 			return;
 		}
 		saveProjectData(RECENT_PROJECT_DIR_NAME);
@@ -152,13 +155,15 @@ public class ProjectSaver {
 				saveStorageVA(marshaller, dirName, setBasedDataDomain, type);
 			}
 			TreePorter treePorter = new TreePorter();
-			Tree<ClusterNode> geneTree = setBasedDataDomain.getSet().getContentTree();
+			Tree<ClusterNode> geneTree =
+				setBasedDataDomain.getSet().getContentData(ContentVAType.CONTENT).getContentTree();
 			if (geneTree != null) {
 				treePorter.exportTree(dirName + GENE_TREE_FILE_NAME, geneTree);
 			}
 
 			treePorter = new TreePorter();
-			Tree<ClusterNode> expTree = setBasedDataDomain.getSet().getStorageTree();
+			Tree<ClusterNode> expTree =
+				setBasedDataDomain.getSet().getStorageData(StorageVAType.STORAGE).getStorageTree();
 			if (expTree != null) {
 				treePorter.exportTree(dirName + EXP_TREE_FILE_NAME, expTree);
 			}

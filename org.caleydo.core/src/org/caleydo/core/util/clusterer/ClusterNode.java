@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.MetaSet;
 import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionType;
@@ -96,12 +97,11 @@ public class ClusterNode
 
 		metaSet.setLabel(nodeName);
 
-		metaSet.setContentTree(set.getContentTree());
+		// metaSet.setContentTree(set.getContentTree());
 		// Tree<ClusterNode> subTree = tree.getSubTree();
 
 		ArrayList<Integer> storageIDs = this.getLeaveIds();
-		for (Integer storageID : storageIDs)
-			metaSet.addStorage(storageID);
+		SetUtils.setStorages(metaSet, storageIDs);
 	}
 
 	/**
@@ -259,8 +259,8 @@ public class ClusterNode
 	// public void sortByGeneExpression()
 	// {
 	// ArrayList<ClusterNode> children = getChildren();
-	//		
-	//		
+	//
+	//
 	// }
 
 	@Override

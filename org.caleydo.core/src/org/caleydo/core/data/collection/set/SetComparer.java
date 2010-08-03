@@ -11,8 +11,8 @@ public class SetComparer {
 	public static SetRelations compareSets(ISet setLeft, ISet setRight) {
 		SetRelations setRelations = new SetRelations(setLeft, setRight);
 
-		ContentVirtualArray contentVALeft = setLeft.getContentVA(ContentVAType.CONTENT);
-		ContentVirtualArray contentVARight = setRight.getContentVA(ContentVAType.CONTENT);
+		ContentVirtualArray contentVALeft = setLeft.getContentData(ContentVAType.CONTENT).getContentVA();
+		ContentVirtualArray contentVARight = setRight.getContentData(ContentVAType.CONTENT).getContentVA();
 
 		/** hash ID to index for faster accessibility */
 		HashMap<Integer, Integer> hashRightIndices = new HashMap<Integer, Integer>();

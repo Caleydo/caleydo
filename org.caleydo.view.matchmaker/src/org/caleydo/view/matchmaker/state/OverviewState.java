@@ -84,22 +84,22 @@ public class OverviewState extends ACompareViewStateStatic {
 
 			for (int i = 0; i < heatMapWrappers.size() - 1; i++) {
 
-				renderIndiviudalLineRelations(gl, heatMapWrappers.get(i), heatMapWrappers
-						.get(i + 1));
+				renderIndiviudalLineRelations(gl, heatMapWrappers.get(i),
+						heatMapWrappers.get(i + 1));
 
 				if (bandBundlingActive) {
 
 					// TODO: if we put the heatmapwarpper combination with the
 					// calculated detail bands in
 					// a hash map we have to calculate it only once!
-					calculateDetailBands(heatMapWrappers.get(i), heatMapWrappers
-							.get(i + 1), false);
+					calculateDetailBands(heatMapWrappers.get(i),
+							heatMapWrappers.get(i + 1), false);
 
 					renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i), true);
 					renderOverviewToDetailBandRelations(gl, heatMapWrappers.get(i + 1),
 							false);
-					renderDetailBandRelations(gl, heatMapWrappers.get(i), heatMapWrappers
-							.get(i + 1));
+					renderDetailBandRelations(gl, heatMapWrappers.get(i),
+							heatMapWrappers.get(i + 1));
 				}
 
 				// renderStraightLineRelation(gl, heatMapWrappers.get(i),
@@ -355,8 +355,8 @@ public class OverviewState extends ACompareViewStateStatic {
 				* viewFrustum.getWidth() / (float) heatMapWrappers.size();
 		int numTotalExperiments = 0;
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
-			numTotalExperiments += heatMapWrapper.getSet().getStorageVA(
-					StorageVAType.STORAGE).size();
+			numTotalExperiments += heatMapWrapper.getSet()
+					.getStorageData(StorageVAType.STORAGE).getStorageVA().size();
 		}
 		float heatMapWrapperGapWidth = (1 - HEATMAP_WRAPPER_SPACE_PORTION)
 				* viewFrustum.getWidth() / (float) (heatMapWrappers.size() - 1);
@@ -364,8 +364,8 @@ public class OverviewState extends ACompareViewStateStatic {
 		for (int i = 0; i < heatMapWrappers.size(); i++) {
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
 			AHeatMapLayout layout = layouts.get(i);
-			int numExperiments = heatMapWrapper.getSet().getStorageVA(
-					StorageVAType.STORAGE).size();
+			int numExperiments = heatMapWrapper.getSet()
+					.getStorageData(StorageVAType.STORAGE).getStorageVA().size();
 			// TODO: Maybe get info in layout from heatmapwrapper
 			layout.setTotalSpaceForAllHeatMapWrappers(spaceForHeatMapWrapperOverviews);
 			layout.setNumExperiments(numExperiments);

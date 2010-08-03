@@ -40,8 +40,8 @@ public abstract class ADetailViewLayoutState {
 		hashHeatMapHeights = new HashMap<Integer, Float>();
 	}
 
-	public void setLayoutParameters(float positionX, float positionY,
-			float totalHeight, float totalWidth) {
+	public void setLayoutParameters(float positionX, float positionY, float totalHeight,
+			float totalWidth) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.totalHeight = totalHeight;
@@ -69,8 +69,7 @@ public abstract class ADetailViewLayoutState {
 		hashHeatMapHeights.clear();
 
 		HeatMapWrapper heatMapWrapper = layout.getHeatMapWrapper();
-		HashMap<Group, Boolean> selectedGroups = heatMapWrapper
-				.getSelectedGroups();
+		HashMap<Group, Boolean> selectedGroups = heatMapWrapper.getSelectedGroups();
 
 		/** all genes currently rendered */
 		int totalNumberOfElements = 0;
@@ -90,8 +89,7 @@ public abstract class ADetailViewLayoutState {
 		float totalHeatMapOverheadSize = 0;
 
 		for (Group group : selectedGroups.keySet()) {
-			GLHeatMap heatMap = heatMapWrapper
-					.getHeatMap(group.getGroupIndex());
+			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupIndex());
 			int numElements = heatMap.getNumberOfVisibleElements();
 			totalNumberOfElements += numElements;
 			totalHeatMapOverheadSize += heatMap.getRequiredOverheadSpacing();
@@ -102,12 +100,10 @@ public abstract class ADetailViewLayoutState {
 
 		}
 
-		float gapSpace = getDetailHeight()
-				* DETAIL_HEATMAP_SPACING_PORTION_DEFAULT
+		float gapSpace = getDetailHeight() * DETAIL_HEATMAP_SPACING_PORTION_DEFAULT
 				* (selectedGroups.size() - 1);
 
-		detailHeatMapSpacing = getDetailHeight()
-				* DETAIL_HEATMAP_SPACING_PORTION_DEFAULT;
+		detailHeatMapSpacing = getDetailHeight() * DETAIL_HEATMAP_SPACING_PORTION_DEFAULT;
 
 		/**
 		 * the space that the actual heat maps can use for rendering, i.e.
@@ -118,8 +114,7 @@ public abstract class ADetailViewLayoutState {
 				- totalHeatMapOverheadSize;
 
 		/** the default spacing if no elements were in focus */
-		float defaultSpacing = availableSpaceForHeatMaps
-				/ totalNumberOfElements;
+		float defaultSpacing = availableSpaceForHeatMaps / totalNumberOfElements;
 
 		/** the minimum spacing for a whole heat map */
 		float hmMinSpacing = HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT * 1.5f;
@@ -137,8 +132,7 @@ public abstract class ADetailViewLayoutState {
 		int selectedElementsInOverhead = 0;
 
 		for (Group group : selectedGroups.keySet()) {
-			GLHeatMap heatMap = heatMapWrapper
-					.getHeatMap(group.getGroupIndex());
+			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupIndex());
 			int numElements = heatMap.getNumberOfVisibleElements();
 
 			if (numElements * defaultSpacing < hmMinSpacing) {
@@ -157,13 +151,11 @@ public abstract class ADetailViewLayoutState {
 			totalNumberOfElements -= elementsInOverhead;
 			numberOfFocusElements -= selectedElementsInOverhead;
 
-			defaultSpacing = availableSpaceForHeatMaps
-					/ (float) (totalNumberOfElements);
+			defaultSpacing = availableSpaceForHeatMaps / (float) (totalNumberOfElements);
 		}
 
 		// if we use a zoom layout and we have focus elements
-		if (layout.isUseZoom() && numberOfFocusElements > 0
-				&& selectedGroups.size() > 1) {
+		if (layout.isUseZoom() && numberOfFocusElements > 0 && selectedGroups.size() > 1) {
 			// the case where we have enough space for everything
 			if (defaultSpacing > requestedFocusSpacing) {
 				resultingFocusSpacing = defaultSpacing;
@@ -178,11 +170,12 @@ public abstract class ADetailViewLayoutState {
 				// / numberOfFocusElements;
 				// resultingNormalSpacing = (availableSpaceForHeatMaps / 3 * 2)
 				// / (totalNumberOfElements - numberOfFocusElements);
-//				resultingFocusSpacing = 2 * defaultSpacing;
-//				resultingNormalSpacing = (availableSpaceForHeatMaps - resultingFocusSpacing
-//						* numberOfFocusElements)
-//						/ totalNumberOfElements;
-				
+				// resultingFocusSpacing = 2 * defaultSpacing;
+				// resultingNormalSpacing = (availableSpaceForHeatMaps -
+				// resultingFocusSpacing
+				// * numberOfFocusElements)
+				// / totalNumberOfElements;
+
 				int nrDefaultElements = totalNumberOfElements - numberOfFocusElements;
 				resultingNormalSpacing = defaultSpacing / 2;
 				resultingFocusSpacing = (availableSpaceForHeatMaps - resultingNormalSpacing
@@ -195,15 +188,12 @@ public abstract class ADetailViewLayoutState {
 		}
 
 		for (Group group : selectedGroups.keySet()) {
-			GLHeatMap heatMap = heatMapWrapper
-					.getHeatMap(group.getGroupIndex());
+			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupIndex());
 			int numElements = heatMap.getNumberOfVisibleElements();
-			float currentHeatMapOverheadSize = heatMap
-					.getRequiredOverheadSpacing();
+			float currentHeatMapOverheadSize = heatMap.getRequiredOverheadSpacing();
 			float size = 0;
 			if (layout.isUseZoom() && heatMap.isForceMinSpacing()) {
-				size = (resultingFocusSpacing * numElements)
-						+ currentHeatMapOverheadSize;
+				size = (resultingFocusSpacing * numElements) + currentHeatMapOverheadSize;
 			} else {
 				size = (resultingNormalSpacing * numElements)
 						+ currentHeatMapOverheadSize;
@@ -238,26 +228,23 @@ public abstract class ADetailViewLayoutState {
 
 		HeatMapWrapper heatMapWrapper = layout.getHeatMapWrapper();
 		hashHeatMapPositions.clear();
-		HashMap<Group, Boolean> selectedGroups = heatMapWrapper
-				.getSelectedGroups();
+		HashMap<Group, Boolean> selectedGroups = heatMapWrapper.getSelectedGroups();
 
 		Vec3f detailPosition = layout.getDetailPosition();
 		float currentPositionY = detailPosition.y() + getDetailHeight();
 
-		for (Group group : heatMapWrapper.getSet().getContentVA(
-				ContentVAType.CONTENT).getGroupList()) {
+		for (Group group : heatMapWrapper.getSet().getContentData(ContentVAType.CONTENT)
+				.getContentVA().getGroupList()) {
 
 			if (!selectedGroups.containsKey(group))
 				continue;
-			GLHeatMap heatMap = heatMapWrapper
-					.getHeatMap(group.getGroupIndex());
+			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupIndex());
 			if (heatMap == null)
 				continue;
 
 			float heatMapHeight = getDetailHeatMapHeight(group.getGroupIndex());
-			hashHeatMapPositions.put(group.getGroupIndex(), new Vec3f(
-					detailPosition.x(), currentPositionY - heatMapHeight,
-					detailPosition.z()));
+			hashHeatMapPositions.put(group.getGroupIndex(), new Vec3f(detailPosition.x(),
+					currentPositionY - heatMapHeight, detailPosition.z()));
 			currentPositionY -= (heatMapHeight + getDetailHeatMapGapHeight());
 		}
 	}

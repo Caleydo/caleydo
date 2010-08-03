@@ -5,8 +5,8 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -23,10 +23,10 @@ import org.eclipse.core.runtime.Status;
  * @author Alexander Lex
  */
 public class CmdDataCreateSet
-	extends ACmdCreational<ISet> {
+	extends ACmdCreational<Set> {
 
 	private ISetBasedDataDomain dataDomain;
-	private ArrayList<Integer> iAlStorageIDs;
+	private ArrayList<Integer> storageIDs;
 
 	/**
 	 * Constructor.
@@ -34,16 +34,14 @@ public class CmdDataCreateSet
 	public CmdDataCreateSet(final ECommandType cmdType) {
 		super(cmdType);
 
-		iAlStorageIDs = new ArrayList<Integer>();
+		storageIDs = new ArrayList<Integer>();
 	}
 
-	private void fillSets(ISet newSet) {
-		if (iAlStorageIDs.isEmpty())
+	private void fillSets(Set newSet) {
+		if (storageIDs.isEmpty())
 			throw new IllegalStateException("No data available for creating storage.");
 
-		for (int iStorageID : iAlStorageIDs) {
-			newSet.addStorage(iStorageID);
-		}
+		SetUtils.setStorages(newSet, storageIDs);
 	}
 
 	/**
@@ -88,25 +86,28 @@ public class CmdDataCreateSet
 					IGeneralManager.sDelimiter_Parser_DataItems);
 
 			while (strToken_StorageId.hasMoreTokens()) {
-				iAlStorageIDs.add(Integer.valueOf(strToken_StorageId.nextToken()).intValue());
+				storageIDs.add(Integer.valueOf(strToken_StorageId.nextToken()).intValue());
 			}
 		}
 
 		// Convert external IDs from XML file to internal IDs
-		iAlStorageIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(iAlStorageIDs);
+		storageIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(storageIDs);
 
 		String sAttrib3 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey());
 		dataDomain = (ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(sAttrib3);
 		if (dataDomain == null) {
 			DataDomainManager.getInstance().createDataDomain(sAttrib3);
-			GeneralManager.get().getLogger().log(
-				new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Lazy creation of data domain "
-					+ sAttrib3));
+			GeneralManager
+				.get()
+				.getLogger()
+				.log(
+					new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Lazy creation of data domain "
+						+ sAttrib3));
 		}
 	}
 
 	public void setAttributes(ArrayList<Integer> iAlStorageIDs, ISetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		this.iAlStorageIDs = iAlStorageIDs;
+		this.storageIDs = iAlStorageIDs;
 	}
 }

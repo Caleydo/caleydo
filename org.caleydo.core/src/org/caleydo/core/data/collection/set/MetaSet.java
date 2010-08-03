@@ -5,12 +5,10 @@ import java.util.HashMap;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ContentVAType;
-import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.clusterer.ContentData;
 
 public class MetaSet
 	extends Set
@@ -43,10 +41,10 @@ public class MetaSet
 		return originalSet;
 	}
 
-	@Override
-	public ContentVirtualArray getContentVA(ContentVAType vaType) {
-
-		return super.getContentVA(vaType);
-	}
+//	@Override
+//	public ContentVirtualArray getContentVA(ContentVAType vaType) {
+//
+//		return super.getContentVA(vaType);
+//	}
 
 }

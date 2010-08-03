@@ -292,8 +292,8 @@ public class GLHeatMap extends AStorageBasedView {
 				contentVAType = ContentVAType.CONTENT;
 		}
 
-		contentVA = set.getContentVA(contentVAType);
-		storageVA = set.getStorageVA(storageVAType);
+		contentVA = set.getContentData(contentVAType).getContentVA();
+		storageVA = set.getStorageData(storageVAType).getStorageVA();
 
 		contentSelectionManager.setVA(contentVA);
 		storageSelectionManager.setVA(storageVA);

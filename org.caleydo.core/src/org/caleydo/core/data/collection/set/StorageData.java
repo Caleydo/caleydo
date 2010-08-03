@@ -1,4 +1,4 @@
-package org.caleydo.core.util.clusterer;
+package org.caleydo.core.data.collection.set;
 
 import java.util.ArrayList;
 
@@ -7,6 +7,7 @@ import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageGroupList;
 import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
  * Class that summarizes all information around a storageVA and its tree. No field is initialized by default.
@@ -42,8 +43,16 @@ public class StorageData
 		return storageClusterSizes;
 	}
 
+	public void setStorageClusterSizes(ArrayList<Integer> storageClusterSizes) {
+		this.storageClusterSizes = storageClusterSizes;
+	}
+
 	public ArrayList<Integer> getStorageSampleElements() {
 		return storageSampleElements;
+	}
+
+	public void setStorageSampleElements(ArrayList<Integer> storageSampleElements) {
+		this.storageSampleElements = storageSampleElements;
 	}
 
 	public Tree<ClusterNode> getStorageTree() {
@@ -72,7 +81,7 @@ public class StorageData
 		this.storageTreeRoot = storageTreeRoot;
 	}
 
-	void finish() {
+	public void finish() {
 
 		if (storageVA != null && storageClusterSizes != null && storageSampleElements != null) {
 			StorageGroupList storageGroupList = new StorageGroupList();
@@ -91,6 +100,7 @@ public class StorageData
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public StorageData clone() {
 		StorageData clone = null;
 		try {
@@ -109,5 +119,13 @@ public class StorageData
 
 		return clone;
 
+	}
+
+	public void reset() {
+		storageVA = null;
+		storageClusterSizes = null;
+		storageSampleElements = null;
+		storageTree = null;
+		storageTreeRoot = null;
 	}
 }

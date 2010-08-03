@@ -9,6 +9,10 @@ import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.set.SetUtils;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -108,9 +112,12 @@ public class TabularAsciiDataReader
 			else {
 				bAllTokensProper = false;
 
-				GeneralManager.get().getLogger().log(
-					new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "Unknown column data type: "
-						+ tokenPattern));
+				GeneralManager
+					.get()
+					.getLogger()
+					.log(
+						new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "Unknown column data type: "
+							+ tokenPattern));
 			}
 		}
 
@@ -226,8 +233,8 @@ public class TabularAsciiDataReader
 										+ "\" cannot be converted to a number. Please change the data selection and try again.";
 								MessageDialog.openError(new Shell(), "Error during parsing", sErrorMessage);
 
-								GeneralManager.get().getLogger().log(
-									new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID, sErrorMessage));
+								GeneralManager.get().getLogger()
+									.log(new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID, sErrorMessage));
 								throw nfe;
 							}
 
@@ -321,23 +328,23 @@ public class TabularAsciiDataReader
 				case GROUP_NUMBER:
 
 					int[] iArGroupInfo = alGroupInfo.get(0);
-					set.setGroupNrInfo(iArGroupInfo, true);
+					SetUtils.setContentGroupList((Set) set, ContentVAType.CONTENT, iArGroupInfo);
 
 					iIntArrayIndex++;
 					break;
 				case GROUP_REPRESENTATIVE:
 
 					int[] iArGroupRepr = alGroupInfo.get(1);
-					set.setGroupReprInfo(iArGroupRepr, true);
+					SetUtils.setContentGroupReprInfo((Set) set, ContentVAType.CONTENT, iArGroupRepr);
 
 					iIntArrayIndex++;
 					break;
 				case ABORT:
 					if (bUseExperimentClusterInfo) {
 						iArGroupInfo = alGroupInfo.get(2);
-						set.setGroupNrInfo(iArGroupInfo, false);
+						SetUtils.setStorageGroupList((Set) set, StorageVAType.STORAGE, iArGroupInfo);
 						iArGroupRepr = alGroupInfo.get(3);
-						set.setGroupReprInfo(iArGroupRepr, false);
+						SetUtils.setStorageGroupReprInfo((Set) set, StorageVAType.STORAGE, iArGroupRepr);
 					}
 					return;
 

@@ -8,7 +8,7 @@ package org.caleydo.core.data;
  */
 public interface IUniqueObject {
 	/**
-	 * Get the unique ID
+	 * Get the unique ID of the object
 	 * 
 	 * @return unique ID
 	 */

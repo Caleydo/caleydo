@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.export.SetExporter;
 import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
 import org.caleydo.core.data.collection.set.MetaSet;
 import org.caleydo.core.manager.IDataDomain;
@@ -184,17 +185,20 @@ public class ExportDataAction
 			else
 				continue;
 
+			SetExporter exporter = new SetExporter();
+//			exporter.export(this, sFileName, eWichViewToExport);
+			
 			ISet set = setBasedDataDomain.getSet();
 			if (set instanceof MetaSet)
 				continue;
 			if (radios[0].getSelection()) {
-				set.export(sFileName, EWhichViewToExport.BUCKET);
+				exporter.export(set, sFileName, EWhichViewToExport.BUCKET);
 			}
 			else if (radios[1].getSelection()) {
-				set.export(sFileName, EWhichViewToExport.WHOLE_DATA);
+				exporter.export(set, sFileName, EWhichViewToExport.WHOLE_DATA);
 			}
 			else if (radios[2].getSelection()) {
-				set.exportGroups(sFileName, genesToExport, experimentsToExport);
+				exporter.exportGroups(set,sFileName, genesToExport, experimentsToExport);
 			}
 
 		}

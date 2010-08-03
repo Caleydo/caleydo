@@ -1,5 +1,8 @@
 package org.caleydo.core.util.clusterer;
 
+import org.caleydo.core.data.collection.set.ContentData;
+import org.caleydo.core.data.collection.set.StorageData;
+
 public class ClusterResult {
 
 	ContentData contentResult;

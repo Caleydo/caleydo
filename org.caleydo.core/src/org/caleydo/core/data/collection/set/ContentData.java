@@ -1,4 +1,4 @@
-package org.caleydo.core.util.clusterer;
+package org.caleydo.core.data.collection.set;
 
 import java.util.ArrayList;
 
@@ -7,12 +7,12 @@ import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
  * Fixme: consolidate this and StorageData
  * 
- * @author Alexander Lex 
- * 
+ * @author Alexander Lex
  */
 public class ContentData {
 	ContentVirtualArray contentVA;
@@ -22,7 +22,7 @@ public class ContentData {
 	ArrayList<Integer> contentClusterSizes;
 
 	Tree<ClusterNode> contentTree;
-	
+
 	boolean isPartitionallyClustered = false;
 
 	public ContentVirtualArray getContentVA() {
@@ -31,22 +31,39 @@ public class ContentData {
 
 	public void setContentVA(ContentVirtualArray contentVA) {
 		this.contentVA = contentVA;
-
 	}
 
 	public ArrayList<Integer> getContentSampleElements() {
 		return contentSampleElements;
 	}
 
+	public void setContentSampleElements(ArrayList<Integer> contentSampleElements) {
+		this.contentSampleElements = contentSampleElements;
+	}
+
 	public ArrayList<Integer> getContentClusterSizes() {
 		return contentClusterSizes;
+	}
+
+	public void setContentClusterSizes(ArrayList<Integer> contentClusterSizes) {
+		this.contentClusterSizes = contentClusterSizes;
 	}
 
 	public Tree<ClusterNode> getContentTree() {
 		return contentTree;
 	}
 
-	void finish() {
+	public void setContentTree(Tree<ClusterNode> contentTree) {
+		this.contentTree = contentTree;
+	}
+
+	public void reset() {
+		contentClusterSizes = null;
+		contentSampleElements = null;
+		contentTree = null;
+	}
+
+	public void finish() {
 		// calculate the group list based on contentClusterSizes (for example for affinity propagation
 		if (contentVA != null && contentClusterSizes != null && contentSampleElements != null) {
 			isPartitionallyClustered = true;
@@ -90,7 +107,7 @@ public class ContentData {
 		}
 		contentTree.setUseDefaultComparator(false);
 	}
-	
+
 	public boolean isPartitionallyClustered() {
 		return isPartitionallyClustered;
 	}

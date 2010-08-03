@@ -42,8 +42,7 @@ public class HeatMapOverview {
 		overviewTextures = new ArrayList<ArrayList<Texture>>();
 	}
 
-	public void draw(GL gl, TextureManager textureManager,
-			PickingManager pickingManager,
+	public void draw(GL gl, TextureManager textureManager, PickingManager pickingManager,
 			ContentSelectionManager contentSelectionManager, int viewID,
 			int sliderPickingID) {
 
@@ -57,7 +56,7 @@ public class HeatMapOverview {
 		// overviewHeight,
 		// layout.getOverviewHeatmapWidth());
 		// drawSelections(gl, contentSelectionManager);
-		//		
+		//
 		// gl.glPopMatrix();
 
 		// gl.glPushMatrix();
@@ -84,7 +83,7 @@ public class HeatMapOverview {
 		// if (layout.getOverviewHeatMapPosition().x() <
 		// layout.getDetailPosition().x())
 		// isLeft = false;
-		//		
+		//
 		// if (contentGroupList != null) {
 		// float sampleHeight = layout.getOverviewHeight() / ((float)
 		// contentVA.size());
@@ -110,7 +109,7 @@ public class HeatMapOverview {
 		// groupPositionY -= groupHeight;
 		// }
 		// }
-		//		
+		//
 		// gl.glPopMatrix();
 
 		// slider
@@ -121,7 +120,7 @@ public class HeatMapOverview {
 
 	// private void drawSelections(GL gl,
 	// ContentSelectionManager contentSelectionManager) {
-	//		
+	//
 	// float overviewHeight = layout.getOverviewHeight();
 	// float sampleHeight = overviewHeight / contentVA.size();
 	//
@@ -173,8 +172,7 @@ public class HeatMapOverview {
 
 		if (slider.handleDragging(gl, glMouseListener)) {
 			Pair<Integer, Integer> bounds = getBoundaryIndicesOfElementsInFocus();
-			selectGroupsAccordingToBoundIndices(bounds.getFirst(), bounds
-					.getSecond());
+			selectGroupsAccordingToBoundIndices(bounds.getFirst(), bounds.getSecond());
 			return true;
 		}
 
@@ -190,8 +188,7 @@ public class HeatMapOverview {
 		int groupIndex = 0;
 		selectedGroups.clear();
 		for (Group group : contentGroupList) {
-			groupSampleEndIndex = groupSampleStartIndex + group.getNrElements()
-					- 1;
+			groupSampleEndIndex = groupSampleStartIndex + group.getNrElements() - 1;
 			if (groupSampleStartIndex >= lowerBoundIndex
 					&& groupSampleEndIndex <= upperBoundIndex) {
 				group.setSelectionType(SelectionType.SELECTION);
@@ -216,8 +213,7 @@ public class HeatMapOverview {
 		int numSamplesInFocus = (int) Math.ceil(sliderHeight / sampleHeight);
 		int sampleIndexTop = (int) Math
 				.floor((overviewHeight - (sliderTopPositionY - layout
-						.getOverviewPosition().y()))
-						/ sampleHeight);
+						.getOverviewPosition().y())) / sampleHeight);
 		if (sampleIndexTop < 0)
 			sampleIndexTop = 0;
 		int sampleIndexBottom = sampleIndexTop + numSamplesInFocus;
@@ -236,16 +232,15 @@ public class HeatMapOverview {
 		return new Pair<Integer, Integer>(sampleIndexTop, sampleIndexBottom);
 	}
 
-	public void handleSliderSelection(EPickingType pickingType,
-			EPickingMode pickingMode) {
+	public void handleSliderSelection(EPickingType pickingType, EPickingMode pickingMode) {
 		slider.handleSliderSelection(pickingType, pickingMode);
 	}
 
 	public void setSet(ISet set) {
 		this.set = set;
-		contentVA = set.getContentVA(ContentVAType.CONTENT);
-		storageVA = set.getStorageVA(StorageVAType.STORAGE);
-		
+		contentVA = set.getContentData(ContentVAType.CONTENT).getContentVA();
+		storageVA = set.getStorageData(StorageVAType.STORAGE).getStorageVA();
+
 		updateHeatMapTextures(null);
 	}
 
@@ -265,11 +260,10 @@ public class HeatMapOverview {
 		return slider;
 	}
 
-	public void updateHeatMapTextures(
-			ContentSelectionManager contentSelectionManager) {
+	public void updateHeatMapTextures(ContentSelectionManager contentSelectionManager) {
 		overviewTextures.clear();
 		ContentGroupList groupList = contentVA.getGroupList();
-		for(Group group : groupList) {
+		for (Group group : groupList) {
 			ContentVirtualArray clusterVA = new ContentVirtualArray();
 
 			for (int i = group.getStartIndex(); i <= group.getEndIndex(); i++) {

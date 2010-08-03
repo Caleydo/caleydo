@@ -1,6 +1,8 @@
 package org.caleydo.core.util.clusterer;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.ContentData;
+import org.caleydo.core.data.collection.set.StorageData;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.StorageVirtualArray;
@@ -89,7 +91,7 @@ public class ClusterManager {
 
 				runContentClustering(clusterer, clusterState, result, 0, 1);
 
-				if (result.storageResult.storageVA != null) {
+				if (result.storageResult.getStorageVA() != null) {
 					runContentClustering(clusterer, clusterState, result, 50, 1);
 				}
 			}
@@ -108,11 +110,11 @@ public class ClusterManager {
 		clusterer.setClusterState(clusterState);
 		TempResult tempResult = clusterer.getSortedVA(set, clusterState, progressBarOffset, progressBarMulti);
 		result.contentResult = new ContentData();
-		result.contentResult.contentVA =
-			new ContentVirtualArray(clusterState.getContentVAType(), tempResult.indices);
-		result.contentResult.contentClusterSizes = tempResult.clusterSizes;
-		result.contentResult.contentSampleElements = tempResult.sampleElements;
-		result.contentResult.contentTree = tempResult.tree;
+		result.contentResult.setContentVA(new ContentVirtualArray(clusterState.getContentVAType(),
+			tempResult.indices));
+		result.contentResult.setContentClusterSizes(tempResult.clusterSizes);
+		result.contentResult.setContentSampleElements(tempResult.sampleElements);
+		result.contentResult.setContentTree(tempResult.tree);
 
 	}
 
@@ -122,15 +124,15 @@ public class ClusterManager {
 
 		TempResult tempResult = clusterer.getSortedVA(set, clusterState, progressBarOffset, progressBarMulti);
 		result.storageResult = new StorageData();
-		result.storageResult.storageVA =
-			new StorageVirtualArray(clusterState.getStorageVAType(), tempResult.indices);
-		result.storageResult.storageClusterSizes = tempResult.clusterSizes;
-		result.storageResult.storageSampleElements = tempResult.sampleElements;
+		result.storageResult.setStorageVA(new StorageVirtualArray(clusterState.getStorageVAType(),
+			tempResult.indices));
+		result.storageResult.setStorageClusterSizes(tempResult.clusterSizes);
+		result.storageResult.setStorageSampleElements(tempResult.sampleElements);
 		if (tempResult.tree == null) {
 			result.storageResult.setDefaultTree(true);
 		}
 		else {
-			result.storageResult.storageTree = tempResult.tree;
+			result.storageResult.setStorageTree(tempResult.tree);
 			result.storageResult.setDefaultTree(false);
 		}
 	}

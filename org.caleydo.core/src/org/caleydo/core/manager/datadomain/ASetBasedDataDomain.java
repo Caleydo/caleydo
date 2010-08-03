@@ -2,6 +2,7 @@ package org.caleydo.core.manager.datadomain;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.graph.tree.Tree;
@@ -142,7 +143,7 @@ public abstract class ASetBasedDataDomain
 
 	@Override
 	public StorageVirtualArray getStorageVA(StorageVAType vaType) {
-		StorageVirtualArray va = set.getStorageVA(vaType);
+		StorageVirtualArray va = set.getStorageData(vaType).getStorageVA();
 		StorageVirtualArray vaCopy = va.clone();
 		return vaCopy;
 	}
@@ -154,7 +155,7 @@ public abstract class ASetBasedDataDomain
 		if (this.set.getID() == setID)
 			set = this.set;
 		else
-			set = this.set.getStorageTreeRoot().getMetaSetFromSubTree(setID);
+			set = this.set.getStorageData(StorageVAType.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
 
 		// TODO: warning
 		if (set == null)
@@ -233,26 +234,11 @@ public abstract class ASetBasedDataDomain
 			set = this.set;
 		}
 		else {
-			set = this.set.getStorageTree().getRoot().getMetaSetFromSubTree(setID);
+			set = this.set.getStorageData(StorageVAType.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
 		}
 
 		set.setContentVA(vaType, virtualArray.clone());
 
-		if (set.getContentTree() != null) {
-			// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
-			// public void run() {
-			// Shell shell = new Shell();
-			// MessageBox messageBox = new MessageBox(shell, SWT.CANCEL);
-			// messageBox.setText("Warning");
-			// messageBox
-			// .setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
-			// messageBox.open();
-			// }
-			// });
-
-			set.setContentTree(null);
-
-		}
 
 		virtualArray.setGroupList(null);
 
@@ -267,22 +253,20 @@ public abstract class ASetBasedDataDomain
 	public void replaceStorageVA(String dataDomainType, StorageVAType vaType, StorageVirtualArray virtualArray) {
 
 		set.setStorageVA(vaType, virtualArray);
-		set.setStorageTree(null);
 
-		if (set.getStorageTree() != null) {
-			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
-				public void run() {
-					Shell shell = new Shell();
-					MessageBox messageBox = new MessageBox(shell, SWT.CANCEL);
-					messageBox.setText("Warning");
-					messageBox
-						.setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
-					messageBox.open();
-				}
-			});
 
-			set.setStorageTree(null);
-		}
+//		if (set.getStorageData(StorageVAType.STORAGE).getStorageTree() != null) {
+//			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+//				public void run() {
+//					Shell shell = new Shell();
+//					MessageBox messageBox = new MessageBox(shell, SWT.CANCEL);
+//					messageBox.setText("Warning");
+//					messageBox
+//						.setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
+//					messageBox.open();
+//				}
+//			});
+//		}
 		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(set, dataDomainType, vaType));
 
 	}

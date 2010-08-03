@@ -859,7 +859,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// arSlerpActions.removeAll();
 		//
 		// iSlerpFactor = 0;
-		//			
+		//
 		// slerpAction.finished();
 		//
 		// // RemoteLevelElement destinationElement =
@@ -1112,8 +1112,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					if (tmpDataDomainType.hashCode() == externalPickingID) {
 
 						HistoryNode dataDomainNode = null;
-						if ((!historyPath.getLastNode().getDataDomainType().equals(
-								tmpDataDomainType))) {
+						if ((!historyPath.getLastNode().getDataDomainType()
+								.equals(tmpDataDomainType))) {
 
 							// Remove history path in case the user branched the
 							// path
@@ -1142,8 +1142,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 							}
 						}
 
-						addView(dataDomainNode, dataDomainNode
-								.getInterfaceType(dataDomainNode.getFirstInterfaceID()));
+						addView(dataDomainNode,
+								dataDomainNode.getInterfaceType(dataDomainNode
+										.getFirstInterfaceID()));
 						break;
 					}
 				}
@@ -1544,8 +1545,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					gl.glPushName(pickingManager.getPickingID(iUniqueID,
 							EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 				gl.glPushName(pickingManager.getPickingID(iUniqueID,
-						EPickingType.INTERFACE_SELECTION, node
-								.getInterfaceID(interfaceType)));
+						EPickingType.INTERFACE_SELECTION,
+						node.getInterfaceID(interfaceType)));
 				gl.glPushName(pickingManager.getPickingID(iUniqueID,
 						EPickingType.DATA_DOMAIN_SELECTION, node.getFirstInterfaceID()));
 
@@ -1675,14 +1676,14 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
 			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.getInstance()
-					.getDataDomain(dataDomainType)).getSet().getStorageVA(
-					StorageVAType.STORAGE).size();
+					.getDataDomain(dataDomainType)).getSet()
+					.getStorageData(StorageVAType.STORAGE).getStorageVA().size();
 			if (numberOfPatients > 40)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
 			int numberOfPatients = ((ASetBasedDataDomain) DataDomainManager.getInstance()
 					.getDataDomain("org.caleydo.datadomain.genetic")).getSet()
-					.getStorageVA(StorageVAType.STORAGE).size();
+					.getStorageData(StorageVAType.STORAGE).getStorageVA().size();
 			if (numberOfPatients > 20)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.pathway")) {
@@ -2347,7 +2348,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			// }
 			//
 			// freeFocusElementByChainMove(freeFocusToLeft);
-			//			
+			//
 			// destinationElement = focusElement;
 
 			for (int i = stackElementsRight.size() - 1; i >= 0; i--) {

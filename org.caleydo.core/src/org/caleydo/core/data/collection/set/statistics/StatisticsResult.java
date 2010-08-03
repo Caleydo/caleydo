@@ -135,7 +135,7 @@ public class StatisticsResult {
 	public int getElementNumberOfFoldChangeReduction(ISet compareSet) {
 		
 		int numberOfElements = 0;
-		ContentVirtualArray origVA = compareSet.getContentVA(ContentVAType.CONTENT);
+		ContentVirtualArray origVA = compareSet.getContentData(ContentVAType.CONTENT).getContentVA();
 
 		double[] resultVector = setToFoldChangeResult.get(compareSet).getFirst();
 		FoldChangeSettings settings = setToFoldChangeResult.get(compareSet).getSecond();

@@ -22,6 +22,12 @@ import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
+import org.caleydo.core.data.selection.ContentGroupList;
+import org.caleydo.core.data.selection.ContentVAType;
+import org.caleydo.core.data.selection.Group;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.StorageGroupList;
+import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
@@ -150,8 +156,8 @@ public class SetUtils {
 			switch (dataType) {
 				case FLOAT:
 					CmdDataCreateStorage cmdCreateStorage =
-						(CmdDataCreateStorage) GeneralManager.get().getCommandManager().createCommandByType(
-							ECommandType.CREATE_STORAGE);
+						(CmdDataCreateStorage) GeneralManager.get().getCommandManager()
+							.createCommandByType(ECommandType.CREATE_STORAGE);
 					cmdCreateStorage.setAttributes(EManagedObjectType.STORAGE_NUMERICAL);
 					cmdCreateStorage.doCommand();
 
@@ -193,8 +199,8 @@ public class SetUtils {
 
 		// Create SET
 		CmdDataCreateSet cmdCreateSet =
-			(CmdDataCreateSet) GeneralManager.get().getCommandManager().createCommandByType(
-				ECommandType.CREATE_SET_DATA);
+			(CmdDataCreateSet) GeneralManager.get().getCommandManager()
+				.createCommandByType(ECommandType.CREATE_SET_DATA);
 
 		cmdCreateSet.setAttributes(iAlStorageId, dataDomain);
 
@@ -202,8 +208,8 @@ public class SetUtils {
 
 		// Trigger file loading command
 		CmdLoadFileNStorages cmdLoadCsv =
-			(CmdLoadFileNStorages) GeneralManager.get().getCommandManager().createCommandByType(
-				ECommandType.LOAD_DATA_FILE);
+			(CmdLoadFileNStorages) GeneralManager.get().getCommandManager()
+				.createCommandByType(ECommandType.LOAD_DATA_FILE);
 
 		cmdLoadCsv.setAttributes(iAlStorageId, loadDataParameters);
 		cmdLoadCsv.doCommand();
@@ -214,20 +220,21 @@ public class SetUtils {
 		}
 
 		CmdLoadFileLookupTable cmdLoadLookupTableFile =
-			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager().createCommandByType(
-				ECommandType.LOAD_LOOKUP_TABLE_FILE);
+			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager()
+				.createCommandByType(ECommandType.LOAD_LOOKUP_TABLE_FILE);
 
 		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 			String lookupTableInfo =
 				loadDataParameters.getFileIDType().toString() + "_2_EXPRESSION_INDEX REVERSE";
 
-			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(), loadDataParameters
-				.getStartParseFileAtLine(), -1, lookupTableInfo, loadDataParameters.getDelimiter(), "");
+			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
+				loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
+				loadDataParameters.getDelimiter(), "");
 		}
 		else if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
-			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(), loadDataParameters
-				.getStartParseFileAtLine(), -1, "UNSPECIFIED_2_EXPRESSION_INDEX REVERSE", loadDataParameters
-				.getDelimiter(), "");
+			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
+				loadDataParameters.getStartParseFileAtLine(), -1, "UNSPECIFIED_2_EXPRESSION_INDEX REVERSE",
+				loadDataParameters.getDelimiter(), "");
 		}
 		else {
 			throw new IllegalStateException("Not implemented for " + dataDomain);
@@ -235,7 +242,7 @@ public class SetUtils {
 
 		cmdLoadLookupTableFile.doCommand();
 
-		ISet set = dataDomain.getSet();
+		Set set = (Set) dataDomain.getSet();
 
 		// loadTrees(loadDataParameters, set);
 
@@ -267,6 +274,12 @@ public class SetUtils {
 		return set;
 	}
 
+	public static void setStorages(Set set, ArrayList<Integer> storageIDs) {
+		for (int iStorageID : storageIDs) {
+			set.addStorage(iStorageID);
+		}
+	}
+
 	/**
 	 * Creates the gene-cluster information of the given {@link ISet} as xml-String
 	 * 
@@ -278,7 +291,7 @@ public class SetUtils {
 		String xml = null;
 
 		try {
-			xml = getTreeClusterXml(set.getContentTree());
+			xml = getTreeClusterXml(set.getContentData(ContentVAType.CONTENT).getContentTree());
 		}
 		catch (IOException ex) {
 			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
@@ -301,7 +314,7 @@ public class SetUtils {
 		String xml = null;
 
 		try {
-			xml = getTreeClusterXml(set.getStorageTree());
+			xml = getTreeClusterXml(set.getStorageData(StorageVAType.STORAGE).getStorageTree());
 		}
 		catch (IOException ex) {
 			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
@@ -384,9 +397,12 @@ public class SetUtils {
 		String geneTreeFileName = loadDataParameters.getGeneTreeFileName();
 		if (geneTreeFileName != null) {
 			if (geneTreeFileName.equals("") == false) {
-				GeneralManager.get().getLogger().log(
-					new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Loading gene tree from file "
-						+ geneTreeFileName));
+				GeneralManager
+					.get()
+					.getLogger()
+					.log(
+						new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Loading gene tree from file "
+							+ geneTreeFileName));
 
 				TreePorter treePorter = new TreePorter();
 				Tree<ClusterNode> tree;
@@ -394,7 +410,7 @@ public class SetUtils {
 
 					tree = treePorter.importTree(geneTreeFileName);
 					tree.setUseDefaultComparator(false);
-					set.setContentTree(tree);
+					set.getContentData(ContentVAType.CONTENT).setContentTree(tree);
 				}
 				catch (JAXBException e) {
 					e.printStackTrace();
@@ -409,15 +425,18 @@ public class SetUtils {
 		String experimentsTreeFileName = loadDataParameters.getExperimentsFileName();
 		if (experimentsTreeFileName != null) {
 			if (experimentsTreeFileName.equals("") == false) {
-				GeneralManager.get().getLogger().log(
-					new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Loading experiments tree from file "
-						+ experimentsTreeFileName));
+				GeneralManager
+					.get()
+					.getLogger()
+					.log(
+						new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID,
+							"Loading experiments tree from file " + experimentsTreeFileName));
 
 				TreePorter treePorter = new TreePorter();
 				Tree<ClusterNode> tree;
 				try {
 					tree = treePorter.importStorageTree(experimentsTreeFileName);
-					set.setStorageTree(tree);
+					set.getStorageData(StorageVAType.STORAGE).setStorageTree(tree);
 				}
 				catch (JAXBException e) {
 					e.printStackTrace();
@@ -425,6 +444,109 @@ public class SetUtils {
 				catch (FileNotFoundException e) {
 					// do nothing - no experiment tree is available
 				}
+			}
+		}
+	}
+
+	/**
+	 * Switch the representation of the data. When this is called the data in normalized is replaced with data
+	 * calculated from the mode specified.
+	 * 
+	 * @param externalDataRep
+	 *            Determines how the data is visualized. For options see {@link EExternalDataRepresentation}
+	 * @param bIsSetHomogeneous
+	 *            Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global
+	 *            maximum and minimum, meaning that all storages in the set contain equal data. If false, each
+	 *            storage is treated separately, has it's own min and max etc. Sets that contain nominal data
+	 *            MUST be inhomogeneous.
+	 */
+	public static void setExternalDataRepresentation(Set set, EExternalDataRepresentation externalDataRep,
+		boolean isSetHomogeneous) {
+		set.setExternalDataRepresentation(externalDataRep, isSetHomogeneous);
+	}
+
+	/**
+	 * Creates a group list for the imported group information
+	 * 
+	 * @param arGroupInfo
+	 * @param bGeneGroupInfo
+	 *            true in case of gene/entity cluster info, false in case of experiment cluster info
+	 */
+	public static void setContentGroupList(Set set, ContentVAType vaType, int[] arGroupInfo) {
+
+		int cluster = 0, cnt = 0;
+
+		ContentGroupList contentGroupList = set.getContentData(vaType).getContentVA().getGroupList();
+		contentGroupList.clear();
+
+		for (int i = 0; i < arGroupInfo.length; i++) {
+			Group group = null;
+			if (cluster != arGroupInfo[i]) {
+				group = new Group(cnt, false, 0, SelectionType.NORMAL);
+				contentGroupList.append(group);
+				cluster++;
+				cnt = 0;
+			}
+			cnt++;
+			if (i == arGroupInfo.length - 1) {
+				group = new Group(cnt, false, 0, SelectionType.NORMAL);
+				contentGroupList.append(group);
+			}
+		}
+	}
+
+	public static void setStorageGroupList(Set set, StorageVAType vaType, int[] arGroupInfo) {
+		int cluster = 0, cnt = 0;
+
+		StorageGroupList storageGroupList = set.getStorageData(vaType).getStorageVA().getGroupList();
+		storageGroupList.clear();
+
+		for (int i = 0; i < arGroupInfo.length; i++) {
+			Group group = null;
+			if (cluster != arGroupInfo[i]) {
+				group = new Group(cnt, false, 0, SelectionType.NORMAL);
+				storageGroupList.append(group);
+				cluster++;
+				cnt = 0;
+			}
+			cnt++;
+			if (i == arGroupInfo.length - 1) {
+				group = new Group(cnt, false, 0, SelectionType.NORMAL);
+				storageGroupList.append(group);
+			}
+		}
+	}
+
+	public static void setContentGroupReprInfo(Set set, ContentVAType vaType, int[] arGroupRepr) {
+
+		int group = 0;
+
+		ContentGroupList contentGroupList = set.getContentData(vaType).getContentVA().getGroupList();
+
+		contentGroupList.get(group).setIdxExample(0);
+		group++;
+
+		for (int i = 1; i < arGroupRepr.length; i++) {
+			if (arGroupRepr[i] != arGroupRepr[i - 1]) {
+				contentGroupList.get(group).setIdxExample(i);
+				group++;
+			}
+		}
+	}
+
+	public static void setStorageGroupReprInfo(Set set, StorageVAType vaType, int[] arGroupRepr) {
+
+		int group = 0;
+
+		StorageGroupList storageGroupList = set.getStorageData(vaType).getStorageVA().getGroupList();
+
+		storageGroupList.get(group).setIdxExample(0);
+		group++;
+
+		for (int i = 1; i < arGroupRepr.length; i++) {
+			if (arGroupRepr[i] != arGroupRepr[i - 1]) {
+				storageGroupList.get(group).setIdxExample(i);
+				group++;
 			}
 		}
 	}

@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.SetUtils;
@@ -69,7 +67,7 @@ public class Application
 	public static final boolean LAZY_VIEW_LOADING = false;
 
 	private static String BOOTSTRAP_FILE_GENE_EXPRESSION_MODE =
-		"data/bootstrap/shared/webstart/bootstrap_webstart_gene_expression.xml";
+		"data/bootstrap/webstart/bootstrap.xml";
 
 	private static String REAL_DATA_SAMPLE_FILE =
 		"data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";

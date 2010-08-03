@@ -388,9 +388,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
 			gl.glVertex3f(fPosCut, -fSizeDendrogramArrow, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.top());
-			gl
-					.glVertex3f(fPosCut + fSizeDendrogramArrow, -fSizeDendrogramArrow,
-							BUTTON_Z);
+			gl.glVertex3f(fPosCut + fSizeDendrogramArrow, -fSizeDendrogramArrow, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.left(), texCoordsArrow.top());
 			gl.glVertex3f(fPosCut + fSizeDendrogramArrow, 0, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.left(), texCoordsArrow.bottom());
@@ -401,9 +399,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
 			gl.glVertex3f(fPosCut, -fSizeDendrogramArrow, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.top());
-			gl
-					.glVertex3f(fPosCut - fSizeDendrogramArrow, -fSizeDendrogramArrow,
-							BUTTON_Z);
+			gl.glVertex3f(fPosCut - fSizeDendrogramArrow, -fSizeDendrogramArrow, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.left(), texCoordsArrow.top());
 			gl.glVertex3f(fPosCut - fSizeDendrogramArrow, 0, BUTTON_Z);
 			gl.glTexCoord2f(texCoordsArrow.left(), texCoordsArrow.bottom());
@@ -790,10 +786,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 			if (currentNode.isPartOfSubTree()) {
 
-				gl
-						.glPushName(pickingManager.getPickingID(iUniqueID,
-								EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode
-										.getID()));
+				gl.glPushName(pickingManager.getPickingID(iUniqueID,
+						EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode.getID()));
 
 				// vertical line connecting all child nodes
 				gl.glBegin(GL.GL_LINES);
@@ -1087,8 +1081,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 				if (bCutOffActive[i] && bRenderUntilCut == false)
 					gl.glVertex3f(xGlobalMax, tempPositions[i].y(), tempPositions[i].z());
 				else if (bCutOffActive[i] && bRenderUntilCut == true)
-					gl.glVertex3f(fPosCut + 0.1f, tempPositions[i].y(), tempPositions[i]
-							.z());
+					gl.glVertex3f(fPosCut + 0.1f, tempPositions[i].y(),
+							tempPositions[i].z());
 				else
 					gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(),
 							tempPositions[i].z());
@@ -1195,8 +1189,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			fDiff = fTemp - ymax;
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.DENDROGRAM_EXPERIMENT_NODE_SELECTION, currentNode
-							.getID()));
+					EPickingType.DENDROGRAM_EXPERIMENT_NODE_SELECTION,
+					currentNode.getID()));
 
 			// horizontal line connecting all child nodes
 			gl.glBegin(GL.GL_LINES);
@@ -1212,8 +1206,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 				if (bCutOffActive[i] && bRenderUntilCut == false)
 					gl.glVertex3f(tempPositions[i].x(), yGlobalMin, tempPositions[i].z());
 				else if (bCutOffActive[i] && bRenderUntilCut == true)
-					gl.glVertex3f(tempPositions[i].x(), fPosCut - 0.1f, tempPositions[i]
-							.z());
+					gl.glVertex3f(tempPositions[i].x(), fPosCut - 0.1f,
+							tempPositions[i].z());
 				else
 					gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(),
 							tempPositions[i].z());
@@ -1224,8 +1218,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 		} else {
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.DENDROGRAM_EXPERIMENT_LEAF_SELECTION, currentNode
-							.getID()));
+					EPickingType.DENDROGRAM_EXPERIMENT_LEAF_SELECTION,
+					currentNode.getID()));
 
 			// vertical line visualizing leaf nodes
 			gl.glBegin(GL.GL_LINES);
@@ -1260,18 +1254,18 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 			iAlClusterNodes.clear();
 
 			if (bRenderContentTree == true) {
-				if (set.getContentTree() != null) {
-					tree = set.getContentTree();
+				if (set.getContentData(contentVAType).getContentTree() != null) {
+					tree = set.getContentData(contentVAType).getContentTree();
 					groupList = (GroupType) new ContentGroupList();
 					rootNode = tree.getRoot();
 				} else
 					renderSymbol(gl);
 			} else {
-				if (!set.getStorageData(StorageVAType.STORAGE).isDefaultTree()
-						&& set.getStorageData(StorageVAType.STORAGE).getStorageTree() != null) {
-					tree = set.getStorageTree();
+				if (!set.getStorageData(storageVAType).isDefaultTree()
+						&& set.getStorageData(storageVAType).getStorageTree() != null) {
+					tree = set.getStorageData(storageVAType).getStorageTree();
 					groupList = (GroupType) new StorageGroupList();
-					rootNode = set.getStorageTreeRoot();
+					rootNode = tree.getRoot();
 				} else
 					renderSymbol(gl);
 			}
@@ -1527,8 +1521,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 				}
 
 				ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
-				geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX, leafNode
-						.getLeafID());
+				geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX,
+						leafNode.getLeafID());
 				contextMenu.addItemContanier(geneContextMenuItemContainer);
 
 				break;
@@ -1547,8 +1541,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 				selectionManager = contentSelectionManager;
 
 				selectionManager.clearSelection(selectionType);
-				selectionManager.addToType(selectionType, tree.getNodeByNumber(
-						iExternalID).getLeafID());
+				selectionManager.addToType(selectionType,
+						tree.getNodeByNumber(iExternalID).getLeafID());
 				selectionDelta = selectionManager.getDelta();
 
 				handleConnectedElementRep(selectionDelta);
@@ -1636,8 +1630,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 				selectionManager = storageSelectionManager;
 
 				selectionManager.clearSelection(selectionType);
-				selectionManager.addToType(selectionType, tree.getNodeByNumber(
-						iExternalID).getLeafID());
+				selectionManager.addToType(selectionType,
+						tree.getNodeByNumber(iExternalID).getLeafID());
 				selectionDelta = selectionManager.getDelta();
 
 				handleConnectedElementRep(selectionDelta);

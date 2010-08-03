@@ -1,6 +1,5 @@
 package org.caleydo.core.data.collection.set;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -11,20 +10,13 @@ import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.export.SetExporter;
-import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
 import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
-import org.caleydo.core.data.selection.Group;
-import org.caleydo.core.data.selection.GroupList;
-import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.StorageGroupList;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
@@ -37,8 +29,6 @@ import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.clusterer.ContentData;
-import org.caleydo.core.util.clusterer.StorageData;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -74,8 +64,6 @@ public class Set
 
 	protected StorageData defaultStorageData;
 
-	private ContentGroupList contentGroupList = new ContentGroupList();
-	private StorageGroupList storageGroupList = new StorageGroupList();
 	private boolean bGeneClusterInfo = false;
 	private boolean bExperimentClusterInfo = false;
 
@@ -130,61 +118,6 @@ public class Set
 		return dataDomain;
 	}
 
-	HashMap<ContentVAType, ContentData> getHashContentData() {
-		return hashContentData;
-	}
-
-	@Override
-	public void addStorage(int iStorageID) {
-		IStorageManager storageManager = GeneralManager.get().getStorageManager();
-
-		if (!storageManager.hasItem(iStorageID))
-			throw new IllegalArgumentException("Requested Storage with ID " + iStorageID + " does not exist.");
-
-		addStorage(storageManager.getItem(iStorageID));
-	}
-
-	@Override
-	public void addStorage(IStorage storage) {
-		if (hashStorages.isEmpty()) {
-			// iColumnLength = storage.size();
-			// rawDataType = storage.getRawDataType();
-			if (storage instanceof INumericalStorage) {
-				bIsNumerical = true;
-			}
-			else {
-				bIsNumerical = false;
-			}
-
-			rawDataType = storage.getRawDataType();
-			// iDepth = storage.size();
-		}
-		else {
-			if (!bIsNumerical && storage instanceof INumericalStorage)
-				throw new IllegalArgumentException(
-					"All storages in a set must be of the same basic type (nunmerical or nominal)");
-			if (rawDataType != storage.getRawDataType())
-				throw new IllegalArgumentException("All storages in a set must have the same raw data type");
-			// if (iDepth != storage.size())
-			// throw new IllegalArgumentException("All storages in a set must be of the same length");
-		}
-		hashStorages.put(storage.getID(), storage);
-		defaultStorageData.getStorageVA().append(storage.getID());
-
-		// this needs only be done by the root set
-		if ((this.getClass().equals(Set.class))) {
-			Tree<ClusterNode> tree = defaultStorageData.getStorageTree();
-			int id = defaultStorageData.getStorageVA().size();
-			ClusterNode node = new ClusterNode(tree, storage.getLabel(), id, false, storage.getID());
-			defaultStorageData.getStorageTree().addChild(tree.getRoot(), node);
-			node.createMetaSet(this);
-			tree.getRoot().createMetaSet(this);
-		}
-
-		hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());
-
-	}
-
 	@Override
 	public IStorage get(int iIndex) {
 		return hashStorages.get(iIndex);
@@ -211,21 +144,30 @@ public class Set
 		return depth;
 	}
 
-	private void normalize() {
+	/**
+	 * Normalize all storages in the set, based solely on the values within each storage. Operates with the
+	 * raw data as basis by default, however when a logarithmized representation is in the storage this is
+	 * used.
+	 */
+	private void normalizeLocally() {
 		isSetHomogeneous = false;
 		for (IStorage storage : hashStorages.values()) {
 			storage.normalize();
 		}
 	}
 
+	/**
+	 * Normalize all storages in the set, based on values of all storages. For a numerical storage, this would
+	 * mean, that global minima and maxima are retrieved instead of local ones (as is done with normalize())
+	 * Operates with the raw data as basis by default, however when a logarithmized representation is in the
+	 * storage this is used. Make sure that all storages are logarithmized.
+	 */
 	private void normalizeGlobally() {
 		isSetHomogeneous = true;
 		for (IStorage storage : hashStorages.values()) {
 			if (storage instanceof INumericalStorage) {
 				INumericalStorage nStorage = (INumericalStorage) storage;
-
 				nStorage.normalizeWithExternalExtrema(getMin(), getMax());
-
 			}
 			else
 				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"
@@ -262,18 +204,6 @@ public class Set
 			calculateGlobalExtrema();
 		}
 		return dMax;
-	}
-
-	@Override
-	public void setMin(double dMin) {
-		bArtificialMin = true;
-		this.dMin = dMin;
-	}
-
-	@Override
-	public void setMax(double dMax) {
-		bArtificialMax = true;
-		this.dMax = dMax;
 	}
 
 	@Override
@@ -329,33 +259,6 @@ public class Set
 	}
 
 	@Override
-	public void log10() {
-		for (IStorage storage : hashStorages.values()) {
-			if (storage instanceof INumericalStorage) {
-				INumericalStorage nStorage = (INumericalStorage) storage;
-				nStorage.log10();
-			}
-			else
-				throw new UnsupportedOperationException("Tried to calcualte log values on a set wich has"
-					+ "contains nominal storages. This is not possible!");
-		}
-	}
-
-	@Override
-	public void log2() {
-
-		for (IStorage storage : hashStorages.values()) {
-			if (storage instanceof INumericalStorage) {
-				INumericalStorage nStorage = (INumericalStorage) storage;
-				nStorage.log2();
-			}
-			else
-				throw new UnsupportedOperationException("Tried to calcualte log values on a set wich has"
-					+ "contains nominal storages. This is not possible!");
-		}
-	}
-
-	@Override
 	public Histogram getHistogram() {
 		if (!isSetHomogeneous) {
 			throw new UnsupportedOperationException(
@@ -397,27 +300,27 @@ public class Set
 	//
 	// }
 
-	@Override
-	public StorageVirtualArray getStorageVA(StorageVAType vaType) {
-		StorageData storageData = hashStorageData.get(vaType);
-		if (storageData == null) {
-			hashStorageData.put(vaType, defaultStorageData.clone());
-			storageData = hashStorageData.get(vaType);
-		}
-		return storageData.getStorageVA();
-	}
+	// @Override
+	// public StorageVirtualArray getStorageVA(StorageVAType vaType) {
+	// StorageData storageData = hashStorageData.get(vaType);
+	// if (storageData == null) {
+	// hashStorageData.put(vaType, defaultStorageData.clone());
+	// storageData = hashStorageData.get(vaType);
+	// }
+	// return storageData.getStorageVA();
+	// }
 
-	@Override
-	public ContentVirtualArray getContentVA(ContentVAType vaType) {
-
-		ContentData contentData = hashContentData.get(vaType);
-		if (contentData == null) {
-			contentData = createContentData(vaType);
-			hashContentData.put(vaType, contentData);
-		}
-		return contentData.getContentVA();
-
-	}
+	// @Override
+	// public ContentVirtualArray getContentVA(ContentVAType vaType) {
+	//
+	// ContentData contentData = hashContentData.get(vaType);
+	// if (contentData == null) {
+	// contentData = createContentData(vaType);
+	// hashContentData.put(vaType, contentData);
+	// }
+	// return contentData.getContentVA();
+	//
+	// }
 
 	private ContentData createContentData(ContentVAType vaType) {
 		ContentData contentData = new ContentData();
@@ -524,6 +427,8 @@ public class Set
 		ContentData contentData = hashContentData.get(vaType);
 		if (contentData == null)
 			contentData = createContentData(vaType);
+		else
+			contentData.reset();
 		contentData.setContentVA(virtualArray);
 		hashContentData.put(vaType, contentData);
 	}
@@ -532,6 +437,8 @@ public class Set
 		StorageData storageData = hashStorageData.get(vaType);
 		if (storageData == null)
 			storageData = defaultStorageData.clone();
+		else
+			storageData.reset();
 		storageData.setStorageVA(virtualArray);
 		hashStorageData.put(vaType, storageData);
 	}
@@ -557,53 +464,6 @@ public class Set
 				+ "on nominal data");
 	}
 
-	@Override
-	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep,
-		boolean bIsSetHomogeneous) {
-		this.isSetHomogeneous = bIsSetHomogeneous;
-		if (externalDataRep == this.externalDataRep)
-			return;
-
-		this.externalDataRep = externalDataRep;
-
-		for (IStorage storage : hashStorages.values()) {
-			if (storage instanceof INumericalStorage) {
-				((INumericalStorage) storage).setExternalDataRepresentation(externalDataRep);
-			}
-		}
-
-		if (bIsSetHomogeneous) {
-			switch (externalDataRep) {
-				case NORMAL:
-					normalizeGlobally();
-					break;
-				case LOG10:
-					log10();
-					normalizeGlobally();
-					break;
-				case LOG2:
-					log2();
-					normalizeGlobally();
-					break;
-			}
-		}
-		else {
-			switch (externalDataRep) {
-				case NORMAL:
-					normalize();
-					break;
-				case LOG10:
-					log10();
-					normalize();
-					break;
-				case LOG2:
-					log2();
-					normalize();
-					break;
-			}
-		}
-	}
-
 	public EExternalDataRepresentation getExternalDataRep() {
 		return externalDataRep;
 	}
@@ -613,17 +473,6 @@ public class Set
 		return isSetHomogeneous;
 	}
 
-	@Override
-	public void export(String sFileName, EWhichViewToExport eWichViewToExport) {
-		SetExporter exporter = new SetExporter();
-		exporter.export(this, sFileName, eWichViewToExport);
-	}
-
-	@Override
-	public void exportGroups(String sFileName, ArrayList<Integer> alGenes, ArrayList<Integer> alExperiments) {
-		SetExporter exporter = new SetExporter();
-		exporter.exportGroups(this, sFileName, alGenes, alExperiments);
-	}
 
 	@Override
 	public void cluster(ClusterState clusterState) {
@@ -632,14 +481,14 @@ public class Set
 
 			ContentVAType contentVAType = clusterState.getContentVAType();
 			if (contentVAType != null) {
-				clusterState.setContentVA(getContentVA(contentVAType));
-				this.setContentGroupList(getContentVA(contentVAType).getGroupList());
+				clusterState.setContentVA(getContentData(contentVAType).getContentVA());
+				// this.setContentGroupList(getContentVA(contentVAType).getGroupList());
 			}
 
 			StorageVAType storageVAType = clusterState.getStorageVAType();
 			if (storageVAType != null) {
-				clusterState.setStorageVA(hashStorageData.get(storageVAType).getStorageVA());
-				this.setStorageGroupList(getStorageVA(storageVAType).getGroupList());
+				clusterState.setStorageVA(getStorageData(storageVAType).getStorageVA());
+				// this.setStorageGroupList(getStorageVA(storageVAType).getGroupList());
 			}
 
 			ClusterManager clusterManager = new ClusterManager(this);
@@ -678,64 +527,7 @@ public class Set
 	// this.alClusterExamples = alExamples;
 	// }
 
-	@Override
-	public void setGroupNrInfo(int[] arGroupInfo, boolean bGeneGroupInfo) {
-
-		int cluster = 0, cnt = 0;
-
-		GroupList groupListTemp = null;
-
-		if (bGeneGroupInfo) {
-			groupListTemp = contentGroupList;
-			bGeneClusterInfo = true;
-		}
-		else {
-			groupListTemp = storageGroupList;
-			bExperimentClusterInfo = true;
-		}
-
-		groupListTemp.clear();
-
-		for (int i = 0; i < arGroupInfo.length; i++) {
-			Group group = null;
-			if (cluster != arGroupInfo[i]) {
-				group = new Group(cnt, false, 0, SelectionType.NORMAL);
-				groupListTemp.append(group);
-				cluster++;
-				cnt = 0;
-			}
-			cnt++;
-			if (i == arGroupInfo.length - 1) {
-				group = new Group(cnt, false, 0, SelectionType.NORMAL);
-				groupListTemp.append(group);
-			}
-		}
-	}
-
-	@Override
-	public void setGroupReprInfo(int[] arGroupRepr, boolean bGeneGroupInfo) {
-
-		int group = 0;
-
-		GroupList groupListTemp = null;
-
-		if (bGeneGroupInfo) {
-			groupListTemp = contentGroupList;
-		}
-		else {
-			groupListTemp = storageGroupList;
-		}
-
-		groupListTemp.get(group).setIdxExample(0);
-		group++;
-
-		for (int i = 1; i < arGroupRepr.length; i++) {
-			if (arGroupRepr[i] != arGroupRepr[i - 1]) {
-				groupListTemp.get(group).setIdxExample(i);
-				group++;
-			}
-		}
-	}
+	
 
 	@Override
 	public boolean isGeneClusterInfo() {
@@ -747,18 +539,18 @@ public class Set
 		return bExperimentClusterInfo;
 	}
 
-	@Override
-	public void setContentGroupList(ContentGroupList groupList) {
-		contentGroupList = groupList;
-		bGeneClusterInfo = true;
-	}
+	// @Override
+	// public void setContentGroupList(ContentGroupList groupList) {
+	// contentGroupList = groupList;
+	// bGeneClusterInfo = true;
+	// }
 
-	@Override
-	public void setStorageGroupList(StorageGroupList groupList) {
-		storageGroupList = groupList;
-		bExperimentClusterInfo = true;
-
-	}
+	// @Override
+	// public void setStorageGroupList(StorageGroupList groupList) {
+	// storageGroupList = groupList;
+	// bExperimentClusterInfo = true;
+	//
+	// }
 
 	@Override
 	public void setGeneClusterInfoFlag(boolean bGeneClusterInfo) {
@@ -770,21 +562,7 @@ public class Set
 		this.bExperimentClusterInfo = bExperimentClusterInfo;
 	}
 
-	@Override
-	public ContentGroupList getContentGroupList() {
-		return this.contentGroupList;
-	}
-
-	@Override
-	public StorageGroupList getStorageGroupList() {
-		return this.storageGroupList;
-	}
-
-	@Override
-	public void setContentTree(Tree<ClusterNode> contentTree) {
-		this.contentTree = contentTree;
-	}
-
+	
 	@Override
 	public ContentData getContentData(ContentVAType vaType) {
 		ContentData contentData = hashContentData.get(vaType);
@@ -800,30 +578,6 @@ public class Set
 		return hashStorageData.get(vaType);
 	}
 
-	@Override
-	public Tree<ClusterNode> getContentTree() {
-		return contentTree;
-	}
-
-	@Override
-	public void setStorageTree(Tree<ClusterNode> storageTree) {
-		hashStorageData.get(StorageVAType.STORAGE).setStorageTree(storageTree);
-	}
-
-	@Override
-	public Tree<ClusterNode> getStorageTree() {
-		return hashStorageData.get(StorageVAType.STORAGE).getStorageTree();
-	}
-
-	@Override
-	public ClusterNode getStorageTreeRoot() {
-		return hashStorageData.get(StorageVAType.STORAGE).getStorageTreeRoot();
-	}
-
-	@Override
-	public void setStorageTreeRoot(ClusterNode storageTreeRoot) {
-		hashStorageData.get(StorageVAType.STORAGE).setStorageTreeRoot(storageTreeRoot);
-	}
 
 	@Override
 	public void destroy() {
@@ -838,8 +592,8 @@ public class Set
 
 	@Override
 	public void finalize() {
-		GeneralManager.get().getLogger().log(
-			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Set " + this + "destroyed"));
+		GeneralManager.get().getLogger()
+			.log(new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Set " + this + "destroyed"));
 	}
 
 	@Override
@@ -953,4 +707,181 @@ public class Set
 	public void setStatisticsResult(StatisticsResult statisticsResult) {
 		this.statisticsResult = statisticsResult;
 	}
+
+	// -------------------- set creation ------------------------------
+	// set creation is achieved by employing methods of SetUtils which utilizes package private methods in the
+	// set.
+
+	/**
+	 * Add a storage based on its id. The storage has to be fully initialized with data
+	 * 
+	 * @param storageID
+	 */
+	void addStorage(int iStorageID) {
+		IStorageManager storageManager = GeneralManager.get().getStorageManager();
+
+		if (!storageManager.hasItem(iStorageID))
+			throw new IllegalArgumentException("Requested Storage with ID " + iStorageID + " does not exist.");
+
+		addStorage(storageManager.getItem(iStorageID));
+	}
+
+	/**
+	 * Add a storage by reference. The storage has to be fully initialized with data
+	 * 
+	 * @param storage
+	 *            the storage
+	 */
+	void addStorage(IStorage storage) {
+		if (hashStorages.isEmpty()) {
+			// iColumnLength = storage.size();
+			// rawDataType = storage.getRawDataType();
+			if (storage instanceof INumericalStorage) {
+				bIsNumerical = true;
+			}
+			else {
+				bIsNumerical = false;
+			}
+
+			rawDataType = storage.getRawDataType();
+			// iDepth = storage.size();
+		}
+		else {
+			if (!bIsNumerical && storage instanceof INumericalStorage)
+				throw new IllegalArgumentException(
+					"All storages in a set must be of the same basic type (nunmerical or nominal)");
+			if (rawDataType != storage.getRawDataType())
+				throw new IllegalArgumentException("All storages in a set must have the same raw data type");
+			// if (iDepth != storage.size())
+			// throw new IllegalArgumentException("All storages in a set must be of the same length");
+		}
+		hashStorages.put(storage.getID(), storage);
+		defaultStorageData.getStorageVA().append(storage.getID());
+
+		// this needs only be done by the root set
+		if ((this.getClass().equals(Set.class))) {
+			Tree<ClusterNode> tree = defaultStorageData.getStorageTree();
+			int id = defaultStorageData.getStorageVA().size();
+			ClusterNode node = new ClusterNode(tree, storage.getLabel(), id, false, storage.getID());
+			defaultStorageData.getStorageTree().addChild(tree.getRoot(), node);
+			node.createMetaSet(this);
+			tree.getRoot().createMetaSet(this);
+		}
+
+		hashStorageData.put(StorageVAType.STORAGE, defaultStorageData.clone());
+
+	}
+
+	/**
+	 * Set an artificial minimum for the dataset. All elements smaller than that are clipped to this value in
+	 * the representation. This only affects the normalization, does not alter the raw data
+	 */
+	void setMin(double dMin) {
+		bArtificialMin = true;
+		this.dMin = dMin;
+	}
+
+	/**
+	 * Set an artificial maximum for the dataset. All elements smaller than that are clipped to this value in
+	 * the representation. This only affects the normalization, does not alter the raw data
+	 */
+	void setMax(double dMax) {
+		bArtificialMax = true;
+		this.dMax = dMax;
+	}
+
+	/**
+	 * Switch the representation of the data. When this is called the data in normalized is replaced with data
+	 * calculated from the mode specified.
+	 * 
+	 * @param externalDataRep
+	 *            Determines how the data is visualized. For options see {@link EExternalDataRepresentation}
+	 * @param bIsSetHomogeneous
+	 *            Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global
+	 *            maximum and minimum, meaning that all storages in the set contain equal data. If false, each
+	 *            storage is treated separately, has it's own min and max etc. Sets that contain nominal data
+	 *            MUST be inhomogeneous.
+	 */
+	void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep, boolean bIsSetHomogeneous) {
+		this.isSetHomogeneous = bIsSetHomogeneous;
+		if (externalDataRep == this.externalDataRep)
+			return;
+
+		this.externalDataRep = externalDataRep;
+
+		for (IStorage storage : hashStorages.values()) {
+			if (storage instanceof INumericalStorage) {
+				((INumericalStorage) storage).setExternalDataRepresentation(externalDataRep);
+			}
+		}
+
+		if (bIsSetHomogeneous) {
+			switch (externalDataRep) {
+				case NORMAL:
+					normalizeGlobally();
+					break;
+				case LOG10:
+					log10();
+					normalizeGlobally();
+					break;
+				case LOG2:
+					log2();
+					normalizeGlobally();
+					break;
+			}
+		}
+		else {
+			switch (externalDataRep) {
+				case NORMAL:
+					normalizeLocally();
+					break;
+				case LOG10:
+					log10();
+					normalizeLocally();
+					break;
+				case LOG2:
+					log2();
+					normalizeLocally();
+					break;
+			}
+		}
+	}
+
+	/**
+	 * Calculates log10 on all storages in the set. Take care that the set contains only numerical storages,
+	 * since nominal storages will cause a runtime exception. If you have mixed data you have to call log10 on
+	 * all the storages that support it manually.
+	 */
+	void log10() {
+		for (IStorage storage : hashStorages.values()) {
+			if (storage instanceof INumericalStorage) {
+				INumericalStorage nStorage = (INumericalStorage) storage;
+				nStorage.log10();
+			}
+			else
+				throw new UnsupportedOperationException("Tried to calcualte log values on a set wich has"
+					+ "contains nominal storages. This is not possible!");
+		}
+	}
+
+	/**
+	 * Calculates log2 on all storages in the set. Take care that the set contains only numerical storages,
+	 * since nominal storages will cause a runtime exception. If you have mixed data you have to call log2 on
+	 * all the storages that support it manually.
+	 */
+	void log2() {
+
+		for (IStorage storage : hashStorages.values()) {
+			if (storage instanceof INumericalStorage) {
+				INumericalStorage nStorage = (INumericalStorage) storage;
+				nStorage.log2();
+			}
+			else
+				throw new UnsupportedOperationException("Tried to calcualte log values on a set wich has"
+					+ "contains nominal storages. This is not possible!");
+		}
+	}
+	
+
+
 }

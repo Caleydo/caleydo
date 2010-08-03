@@ -130,7 +130,7 @@ public class HeatMapWrapper {
 		heatMap.setRemoteRenderingGLView(parentView);
 		heatMap.setDataDomain(dataDomain);
 		heatMap.setSet(set);
-	
+
 		heatMap.setContentVAType(ContentVAType.CONTENT_EMBEDDED_HM);
 
 		if (layout instanceof HeatMapLayoutDetailViewRight)
@@ -173,7 +173,7 @@ public class HeatMapWrapper {
 
 	public void setSet(ISet set) {
 		this.set = set;
-		contentVA = set.getContentVA(ContentVAType.CONTENT);
+		contentVA = set.getContentData(ContentVAType.CONTENT).getContentVA();
 
 		// FIXME: Can we do this? Shall we do this in some other way? Do it also
 		// with dendrogram.
@@ -828,7 +828,7 @@ public class HeatMapWrapper {
 
 	public void handleReplaceContentVA(EIDCategory idCategory, ContentVAType vaType) {
 
-		contentVA = set.getContentVA(vaType);
+		contentVA = set.getContentData(vaType).getContentVA();
 	}
 
 	public void handleClearSelections() {
@@ -1002,11 +1002,11 @@ public class HeatMapWrapper {
 		selectedGroups.clear();
 		contentVA.setGroupList(contentGroupList);
 		contentGroupList.updateGroupInfo();
-//		for (int i = 0; i <= 10 && i < contentGroupList.size(); i++) {
-//			Group group = contentGroupList.get(i);
-//			group.setSelectionType(SelectionType.SELECTION);
-//			selectedGroups.put(group, null);
-//		}
+		// for (int i = 0; i <= 10 && i < contentGroupList.size(); i++) {
+		// Group group = contentGroupList.get(i);
+		// group.setSelectionType(SelectionType.SELECTION);
+		// selectedGroups.put(group, null);
+		// }
 		setHeatMapsInactive();
 		clearDeselected();
 

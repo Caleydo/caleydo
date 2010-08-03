@@ -6,8 +6,9 @@ import java.util.StringTokenizer;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.set.SetManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -128,11 +129,11 @@ public class CmdSetDataRepresentation
 			}
 		}
 		else {
-			ISet tmpSet = null;
+			Set tmpSet = null;
 			for (int currentID : iAlIDs) {
-				tmpSet = SetManager.getInstance().getItem(currentID);
+				tmpSet = (Set) SetManager.getInstance().getItem(currentID);
 
-				tmpSet.setExternalDataRepresentation(externalDataRep, bIsSetHomogeneous);
+				SetUtils.setExternalDataRepresentation(tmpSet, externalDataRep, bIsSetHomogeneous);
 			}
 		}
 		commandManager.runDoCommand(this);

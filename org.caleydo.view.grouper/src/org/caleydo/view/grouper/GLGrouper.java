@@ -14,7 +14,6 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -26,7 +25,6 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.ISetBasedDataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.data.ReplaceStorageVAInUseCaseEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
@@ -182,14 +180,14 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 		// DataDomainManager.getInstance().getDataDomain()
 		set = dataDomain.getSet();
 
-		storageVA = set.getStorageVA(StorageVAType.STORAGE);
+		storageVA = set.getStorageData(StorageVAType.STORAGE).getStorageVA();
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager, iUniqueID,
 				renderStyle);
-		if (set.getStorageTree() != null) {
+		if (set.getStorageData(storageVAType).getStorageTree() != null) {
 			// FIXME: do that differently.
 			// set = set.getStorageTree().getRoot().getMetaSet();
-			tree = set.getStorageTree();
-			initHierarchy(set.getStorageTree());
+			tree = set.getStorageData(storageVAType).getStorageTree();
+			initHierarchy(tree);
 		} else {
 			createNewHierarchy();
 		}
@@ -250,7 +248,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 		// ClusterHelper.determineHierarchyDepth(tree);
 		ClusterHelper.determineExpressionValue(tree,
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
-		set.setStorageTree(tree);
+		set.getStorageData(storageVAType).setStorageTree(tree);
 		// useCase.replaceVirtualArray(idCategory, vaType, virtualArray)
 	}
 
@@ -347,7 +345,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 				EClustererType.EXPERIMENTS_CLUSTERING, set);
 		tree.setDirty();
 		tree.getRoot().createMetaSets((org.caleydo.core.data.collection.set.Set) set);
-		set.setStorageTree(tree);
+		set.getStorageData(storageVAType).setStorageTree(tree);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
 		storageVA = new StorageVirtualArray(StorageVAType.STORAGE, alIndices);
@@ -1254,7 +1252,8 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 
 		if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 			Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
-			Tree<ClusterNode> experimentTree = set.getStorageTree();
+			Tree<ClusterNode> experimentTree = set.getStorageData(storageVAType)
+					.getStorageTree();
 
 			if (experimentTree != null) {
 				selectionManager.clearSelections();

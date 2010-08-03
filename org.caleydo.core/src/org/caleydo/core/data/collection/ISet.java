@@ -1,26 +1,20 @@
 package org.caleydo.core.data.collection;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.naming.OperationNotSupportedException;
 
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
+import org.caleydo.core.data.collection.set.ContentData;
+import org.caleydo.core.data.collection.set.StorageData;
 import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
-import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
-import org.caleydo.core.data.selection.StorageGroupList;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.ISetBasedDataDomain;
-import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.clusterer.ContentData;
-import org.caleydo.core.util.clusterer.StorageData;
 
 /**
  * Interface for Sets
@@ -29,36 +23,6 @@ import org.caleydo.core.util.clusterer.StorageData;
  */
 public interface ISet
 	extends IUniqueObject, ICollection {
-
-	/**
-	 * Add a storage based on its id. The storage has to be fully initialized with data
-	 * 
-	 * @param iStorageID
-	 */
-	public void addStorage(int iStorageID);
-
-	/**
-	 * Add a storage by reference. The storage has to be fully initialized with data
-	 * 
-	 * @param storage
-	 *            the storage
-	 */
-	public void addStorage(IStorage storage);
-
-	/**
-	 * Get the storage at the index iIndex
-	 * 
-	 * @param iIndex
-	 * @return
-	 */
-	public IStorage get(int iIndex);
-
-	/**
-	 * Get the number of storages in a set
-	 * 
-	 * @return
-	 */
-	public int size();
 
 	/**
 	 * Set the data domain that is responsible for the set
@@ -75,25 +39,28 @@ public interface ISet
 	public ISetBasedDataDomain getDataDomain();
 
 	/**
-	 * Get the depth of the set, which is the length of the storages
+	 * Get the storage associated with the ID provided. Returns null if no such storage is registered.
+	 * 
+	 * @param storageID
+	 *            a unique storage ID
+	 * @return
+	 */
+	public IStorage get(int storageID);
+
+	/**
+	 * Get the number of storages in a set
+	 * 
+	 * @return
+	 */
+	public int size();
+
+	/**
+	 * Get the depth of the set, which is the length of the storages (i.e. the number of content elements)
 	 * 
 	 * @return the number of elements in the storages contained in the list
 	 */
 	public int depth();
 
-	/**
-	 * Normalize all storages in the set, based solely on the values within each storage. Operates with the
-	 * raw data as basis by default, however when a logarithmized representation is in the storage this is
-	 * used.
-	 */
-	// public void normalize();
-	/**
-	 * Normalize all storages in the set, based on values of all storages. For a numerical storage, this would
-	 * mean, that global minima and maxima are retrieved instead of local ones (as is done with normalize())
-	 * Operates with the raw data as basis by default, however when a logarithmized representation is in the
-	 * storage this is used. Make sure that all storages are logarithmized.
-	 */
-	// public void normalizeGlobally();
 	/**
 	 * Get the minimum value in the set.
 	 * 
@@ -135,18 +102,6 @@ public interface ISet
 	public double getMaxAs(EExternalDataRepresentation dataRepresentation);
 
 	/**
-	 * Set an artificial minimum for the dataset. All elements smaller than that are clipped to this value in
-	 * the representation. This only affects the normalization, does not alter the raw data
-	 */
-	public void setMin(double dMin);
-
-	/**
-	 * Set an artificial maximum for the dataset. All elements smaller than that are clipped to this value in
-	 * the representation. This only affects the normalization, does not alter the raw data
-	 */
-	public void setMax(double dMax);
-
-	/**
 	 * Calculates a raw value based on min and max from a normalized value.
 	 * 
 	 * @param dNormalized
@@ -165,21 +120,6 @@ public interface ISet
 	public double getNormalizedForRaw(double dRaw);
 
 	/**
-	 * Switch the representation of the data. When this is called the data in normalized is replaced with data
-	 * calculated from the mode specified.
-	 * 
-	 * @param externalDataRep
-	 *            Determines how the data is visualized. For options see {@link EExternalDataRepresentation}
-	 * @param bIsSetHomogeneous
-	 *            Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global
-	 *            maximum and minimum, meaning that all storages in the set contain equal data. If false, each
-	 *            storage is treated separately, has it's own min and max etc. Sets that contain nominal data
-	 *            MUST be inhomogeneous.
-	 */
-	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep,
-		boolean bIsSetHomogeneous);
-
-	/**
 	 * Returns the current external data rep.
 	 * 
 	 * @return
@@ -195,43 +135,22 @@ public interface ISet
 	public boolean isSetHomogeneous();
 
 	/**
-	 * Calculates log10 on all storages in the set. Take care that the set contains only numerical storages,
-	 * since nominal storages will cause a runtime exception. If you have mixed data you have to call log10 on
-	 * all the storages that support it manually.
-	 */
-	public void log10();
-
-	/**
-	 * Calculates log2 on all storages in the set. Take care that the set contains only numerical storages,
-	 * since nominal storages will cause a runtime exception. If you have mixed data you have to call log2 on
-	 * all the storages that support it manually.
-	 */
-	public void log2();
-
-	/**
-	 * Creates a virtual array based on the list of indices supplied for the storages in the set, aka content
-	 * 
-	 * @param iAlSelections
-	 *            a list of indices
-	 * @return the id of the newly created VA
-	 */
-	@Deprecated
-	public StorageVirtualArray getStorageVA(StorageVAType vaType);
-	
-	
-	public StorageData getStorageData(StorageVAType vaType);
-	
-	/**
-	 * Get the ContentData containing all information about a content type
+	 * Returns a {@link StorageData} object for the specified StorageVAType. The StorageData provides access
+	 * to all data on a storage, e.g., virtualArryay, cluster tree, group list etc.
 	 * 
 	 * @param vaType
 	 * @return
 	 */
+	public StorageData getStorageData(StorageVAType vaType);
 
+	/**
+	 * Returns a {@link ContentData} object for the specified ContentVAType. The ContentData provides access
+	 * to all data on a storage, e.g., virtualArryay, cluster tree, group list etc.
+	 * 
+	 * @param vaType
+	 * @return
+	 */
 	public ContentData getContentData(ContentVAType vaType);
-
-	@Deprecated
-	public ContentVirtualArray getContentVA(ContentVAType vaType);
 
 	/**
 	 * Iterate over the storages based on a virtual array
@@ -242,87 +161,22 @@ public interface ISet
 	public Iterator<IStorage> iterator(StorageVAType type);
 
 	/**
-	 * FIXME needs to be replaced after VA Management re-design.
+	 * Set a contentVA. The contentVA in the contentData object is replaced and the other elements in the
+	 * contentData are reset.
 	 * 
-	 * @return
-	 */
-	// public IVirtualArray createCompleteStorageVA();
-
-	/**
-	 * FIXME needs to be replaced after VA Management re-design.
-	 * 
-	 * @return
-	 */
-	// public IVirtualArray createCompleteContentVA();
-
-	/**
-	 * Creates a default virtual array for the set
-	 * 
-	 * @return the unique id associated with the virtual array
-	 */
-	// public int createStorageVA(EVAType vaType);
-	/**
-	 * Creates a virtual array based on the list of indices supplied for the set
-	 * 
-	 * @param iAlSelections
-	 *            a list of indices
-	 * @return the unique id associated with the virtual array
-	 */
-	// public int createStorageVA(EVAType vaType, ArrayList<Integer> iAlSelections);
-	/**
-	 * Returns the virtual array associated with the unique ID
-	 * 
-	 * @param iUniqueID
-	 *            the unique id
-	 * @return the virtual array associated with the unique ID
-	 */
-	// public IVirtualArray getVA(int iUniqueID);
-
-	/**
-	 * Replaces the virtual array associated with the unique ID with the one provided
-	 * 
-	 * @param iUniqueID
+	 * @param vaType
 	 * @param virtualArray
 	 */
-	// public void replaceVA(int iUniqueID, IVirtualArray virtualArray);
-
 	public void setContentVA(ContentVAType vaType, ContentVirtualArray virtualArray);
 
+	/**
+	 * Sets a storageVA. The storageVA in the storageData object is replaced and the other elements in the
+	 * storageData are reset.
+	 * 
+	 * @param vaType
+	 * @param virtualArray
+	 */
 	public void setStorageVA(StorageVAType vaType, StorageVirtualArray virtualArray);
-
-	/**
-	 * Deletes the virtual arrays associated with the unique id
-	 * 
-	 * @param iUniqueID
-	 *            the unique ID associated with the virtual array
-	 */
-	// public void removeVirtualArray(int iUniqueID);
-
-	/**
-	 * Resets the virtual arrays to the original values
-	 * 
-	 * @param iUniqueID
-	 *            the unique ID associated with the virtual array
-	 */
-	// public void resetVirtualArray(int iUniqueID);
-
-	/**
-	 * Export a manipulated subset of the data to the destination specified in sFileName. Determine which view
-	 * to export by the int flag. This is only temporary.
-	 * 
-	 * @param sFileName
-	 * @param bExportBucketInternal
-	 */
-	public void export(String sFileName, EWhichViewToExport eWhichViewToExport);
-
-	/**
-	 * Export a sub set of genes to the destination specified in sFileName.
-	 * 
-	 * @param sFileName
-	 * @param alGenes
-	 * @param alExperiments
-	 */
-	public void exportGroups(String sFileName, ArrayList<Integer> alGenes, ArrayList<Integer> alExperiments);
 
 	/**
 	 * Clusters a Storage
@@ -332,119 +186,9 @@ public interface ISet
 	 */
 	public void cluster(ClusterState clusterState);
 
-	/**
-	 * Sets clustered Tree for genes
-	 * 
-	 * @param Tree
-	 */
-	@Deprecated
-	public void setContentTree(Tree<ClusterNode> clusteredTree);
-
-	/**
-	 * Returns clustered Tree for genes
-	 * 
-	 * @return Tree
-	 */
-	@Deprecated
-	public Tree<ClusterNode> getContentTree();
-
-	/**
-	 * Sets clustered Tree for experiments
-	 * 
-	 * @param Tree
-	 */
-	@Deprecated
-	public void setStorageTree(Tree<ClusterNode> clusteredTree);
-
-	/**
-	 * Returns clustered Tree for experiments
-	 * 
-	 * @return Tree
-	 */
-	@Deprecated
-	public Tree<ClusterNode> getStorageTree();
-
-	/**
-	 * Set the root of the storage tree. This is only necessary if you want the root to be different from the
-	 * original root of the tree (which is typically the case in meta-sets)
-	 * 
-	 * @param storageTreeRoot
-	 *            the root node of the storage tree
-	 */
-	@Deprecated
-	public void setStorageTreeRoot(ClusterNode storageTreeRoot);
-
-	/**
-	 * Returns the root node of the storage tree
-	 * 
-	 * @return
-	 */
-	@Deprecated
-	public ClusterNode getStorageTreeRoot();
-
-	// /**
-	// * Returns cluster sizes, determined by affinity clusterer
-	// *
-	// * @param
-	// * @return CNode
-	// */
-	// public ArrayList<Integer> getAlClusterSizes();
-	//
-	// /**
-	// * Sets cluster sizes, used by affinity clusterer
-	// *
-	// * @param CNode
-	// */
-	// public void setAlClusterSizes(ArrayList<Integer> alClusterSizes);
-
-	// /**
-	// * Returns cluster examples, determined by affinity clusterer
-	// *
-	// * @param
-	// * @return CNode
-	// */
-	// public ArrayList<Integer> getAlExamples();
-	//
-	// /**
-	// * Sets cluster examples, used by affinity clusterer
-	// *
-	// * @param CNode
-	// */
-	// public void setAlExamples(ArrayList<Integer> alExamples);
-
-	/**
-	 * Sets imported group information
-	 * 
-	 * @param arGroupInfo
-	 * @param bGeneGroupInfo
-	 *            true in case of gene/entity cluster info, false in case of experiment cluster info
-	 */
-	public void setGroupNrInfo(int[] arGroupInfo, boolean bGeneGroupInfo);
-
-	/**
-	 * Sets imported representatives
-	 * 
-	 * @param arGroupRepr
-	 * @param bGeneGroupInfo
-	 *            true in case of gene/entity cluster info, false in case of experiment cluster info
-	 */
-	public void setGroupReprInfo(int[] arGroupRepr, boolean bGeneGroupInfo);
-
 	public void setGeneClusterInfoFlag(boolean bGeneClusterInfo);
 
 	public void setExperimentClusterInfoFlag(boolean bExperimentClusterInfo);
-
-	@Deprecated
-	public void setContentGroupList(ContentGroupList groupList);
-
-	@Deprecated
-	public void setStorageGroupList(StorageGroupList groupList);
-
-	@Deprecated
-	public ContentGroupList getContentGroupList();
-
-	@Deprecated
-	public StorageGroupList getStorageGroupList();
 
 	/**
 	 * Flag determines if gene cluster information was imported or not.
@@ -498,4 +242,5 @@ public interface ISet
 	 * Restores the original virtual array using the whole set data.
 	 */
 	public void restoreOriginalContentVA();
+
 }

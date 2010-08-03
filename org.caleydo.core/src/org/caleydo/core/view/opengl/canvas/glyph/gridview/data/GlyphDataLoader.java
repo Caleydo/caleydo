@@ -59,7 +59,7 @@ public class GlyphDataLoader {
 		{ // convert values to dictionary indices
 			int counter = 0;
 			int pcounter = 0;
-			StorageVirtualArray storageVA = glyphData.getStorageVA(StorageVAType.STORAGE);
+			StorageVirtualArray storageVA = glyphData.getStorageData(StorageVAType.STORAGE).getStorageVA();
 			for (Integer storageID : storageVA) {
 				IStorage tmpStorage = glyphData.get(storageID);
 				GlyphAttributeType glyphAttributeType =
@@ -77,10 +77,13 @@ public class GlyphDataLoader {
 						if (tmpStorage instanceof NominalStorage) {
 							INominalStorage<String> storage = (INominalStorage<String>) tmpStorage;
 							if (storage.getRaw(i) == null) {
-								GeneralManager.get().getLogger().log(
-									new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
-										"GlyphDataLoader: no numerical data found"
-											+ " - empty line in csv file?????"));
+								GeneralManager
+									.get()
+									.getLogger()
+									.log(
+										new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+											"GlyphDataLoader: no numerical data found"
+												+ " - empty line in csv file?????"));
 								temp2[i] = -1;
 								continue;
 							}
@@ -90,10 +93,13 @@ public class GlyphDataLoader {
 						else if (tmpStorage instanceof NumericalStorage) {
 							INumericalStorage storage = (INumericalStorage) tmpStorage;
 							if (storage.get(EDataRepresentation.RAW, i) == null) {
-								GeneralManager.get().getLogger().log(
-									new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
-										"GlyphDataLoader: no numerical data found"
-											+ " - empty line in csv file?????"));
+								GeneralManager
+									.get()
+									.getLogger()
+									.log(
+										new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+											"GlyphDataLoader: no numerical data found"
+												+ " - empty line in csv file?????"));
 								temp2[i] = -1;
 								continue;
 							}
