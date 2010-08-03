@@ -3377,9 +3377,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		int iCount = iFirstSampleLevel1 + iFirstSampleLevel2;
 
 		if (iCount < 0) {
-			System.out.println("iFirstSampleLevel1: " + iFirstSampleLevel1);
-			System.out.println("iFirstSampleLevel2: " + iFirstSampleLevel2);
-			throw new IllegalStateException();
+			throw new IllegalStateException("First Sample Level 1 (" + iFirstSampleLevel1
+					+ ") was smaller than First Sample Level 2 (" + iFirstSampleLevel2
+					+ ")");
 		}
 
 		glHeatMapView.resetView();
@@ -3497,10 +3497,10 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		storageVA = dataDomain.getStorageVA(storageVAType);
 
 		// In case of importing group info
-//		if (set.isGeneClusterInfo())
-//			contentVA.setGroupList(set.getContentGroupList());
-//		if (set.isExperimentClusterInfo())
-//			storageVA.setGroupList(set.getStorageGroupList());
+		// if (set.isGeneClusterInfo())
+		// contentVA.setGroupList(set.getContentGroupList());
+		// if (set.isExperimentClusterInfo())
+		// storageVA.setGroupList(set.getStorageGroupList());
 
 		contentSelectionManager.setVA(contentVA);
 		storageSelectionManager.setVA(storageVA);
