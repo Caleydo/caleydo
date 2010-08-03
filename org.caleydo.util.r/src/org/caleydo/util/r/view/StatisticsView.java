@@ -5,12 +5,9 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings;
 import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings.FoldChangeEvaluator;
-import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.manager.ISetBasedDataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainGraph;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.StatisticsResultFinishedEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -183,7 +180,7 @@ public class StatisticsView extends ASWTView implements IView, ISWTView, ISetBas
 		reducedVA = new ContentVirtualArray();
 
 		for (int contentIndex = 0; contentIndex < setsWithPerformedStatistics.get(0)
-				.getContentVA(ContentVAType.CONTENT).size(); contentIndex++) {
+				.getContentData(ContentVAType.CONTENT).getContentVA().size(); contentIndex++) {
 			boolean resultValid = true;
 
 			for (ISet set : setsWithPerformedStatistics) {

@@ -73,20 +73,27 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 		statisticsPValueReductionListener = new StatisticsPValueReductionListener();
 		statisticsPValueReductionListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(
-				StatisticsPValueReductionEvent.class, statisticsPValueReductionListener);
+		GeneralManager
+				.get()
+				.getEventPublisher()
+				.addListener(StatisticsPValueReductionEvent.class,
+						statisticsPValueReductionListener);
 
 		statisticsFoldChangeReductionListener = new StatisticsFoldChangeReductionListener();
 		statisticsFoldChangeReductionListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(
-				StatisticsFoldChangeReductionEvent.class,
-				statisticsFoldChangeReductionListener);
+		GeneralManager
+				.get()
+				.getEventPublisher()
+				.addListener(StatisticsFoldChangeReductionEvent.class,
+						statisticsFoldChangeReductionListener);
 
 		statisticsTwoSidedTTestReductionListener = new StatisticsTwoSidedTTestReductionListener();
 		statisticsTwoSidedTTestReductionListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(
-				StatisticsTwoSidedTTestReductionEvent.class,
-				statisticsTwoSidedTTestReductionListener);
+		GeneralManager
+				.get()
+				.getEventPublisher()
+				.addListener(StatisticsTwoSidedTTestReductionEvent.class,
+						statisticsTwoSidedTTestReductionListener);
 
 	}
 
@@ -100,20 +107,20 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		// }
 
 		if (statisticsPValueReductionListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(
-					statisticsPValueReductionListener);
+			GeneralManager.get().getEventPublisher()
+					.removeListener(statisticsPValueReductionListener);
 			statisticsPValueReductionListener = null;
 		}
 
 		if (statisticsFoldChangeReductionListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(
-					statisticsFoldChangeReductionListener);
+			GeneralManager.get().getEventPublisher()
+					.removeListener(statisticsFoldChangeReductionListener);
 			statisticsFoldChangeReductionListener = null;
 		}
 
 		if (statisticsTwoSidedTTestReductionListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(
-					statisticsTwoSidedTTestReductionListener);
+			GeneralManager.get().getEventPublisher()
+					.removeListener(statisticsTwoSidedTTestReductionListener);
 			statisticsTwoSidedTTestReductionListener = null;
 		}
 	}
@@ -196,13 +203,14 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 			return;
 
 		for (ISet set : sets) {
-			double[] pValueVector = new double[set.getContentVA(ContentVAType.CONTENT)
-					.size()];
+			double[] pValueVector = new double[set.getContentData(ContentVAType.CONTENT)
+					.getContentVA().size()];
 
-			for (int contentIndex = 0; contentIndex < set.getContentVA(
-					ContentVAType.CONTENT).size(); contentIndex++) {
+			for (int contentIndex = 0; contentIndex < set
+					.getContentData(ContentVAType.CONTENT).getContentVA().size(); contentIndex++) {
 
-				StorageVirtualArray storageVA1 = set.getStorageVA(StorageVAType.STORAGE);
+				StorageVirtualArray storageVA1 = set
+						.getStorageData(StorageVAType.STORAGE).getStorageVA();
 
 				double[] compareVec1 = new double[storageVA1.size()];
 
@@ -253,10 +261,10 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		ArrayList<Double> pValueVector = new ArrayList<Double>();
 
 		for (int contentIndex = 0; contentIndex < set1.get(
-				set1.getStorageVA(StorageVAType.STORAGE).get(0)).size(); contentIndex++) {
+				set1.getStorageData(StorageVAType.STORAGE).getStorageVA().get(0)).size(); contentIndex++) {
 
-			StorageVirtualArray storageVA1 = set1.getStorageVA(StorageVAType.STORAGE);
-			StorageVirtualArray storageVA2 = set2.getStorageVA(StorageVAType.STORAGE);
+			StorageVirtualArray storageVA1 = set1.getStorageData(StorageVAType.STORAGE).getStorageVA();
+			StorageVirtualArray storageVA2 = set2.getStorageData(StorageVAType.STORAGE).getStorageVA();
 
 			double[] compareVec1 = new double[storageVA1.size()];
 			double[] compareVec2 = new double[storageVA2.size()];
