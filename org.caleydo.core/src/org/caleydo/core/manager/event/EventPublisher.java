@@ -54,7 +54,11 @@ public class EventPublisher
 	@Override
 	public synchronized void removeListener(AEventListener<?> listener) {
 		for (HashMap<String, Collection<AEventListener<?>>> allListeners : listenerMap.values()) {
-			allListeners.get(listener.getDataDomainType()).remove(listener);
+
+			Collection<AEventListener<?>> listeners = allListeners.get(listener.getDataDomainType());
+			if (listeners == null)
+				continue;
+			listeners.remove(listener);
 		}
 	}
 
@@ -86,8 +90,8 @@ public class EventPublisher
 		if (listeners != null) {
 			for (AEventListener<?> receiver : listeners) {
 				// check if a receiver wants events that are not if his data domain
-				if (event.getDataDomainType() == null && receiver.isExclusiveDataDomain())
-				{}
+				if (event.getDataDomainType() == null && receiver.isExclusiveDataDomain()) {
+				}
 				else
 					receiver.queueEvent(event);
 			}
