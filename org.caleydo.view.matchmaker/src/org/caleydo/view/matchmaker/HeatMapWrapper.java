@@ -27,7 +27,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -80,7 +80,7 @@ public class HeatMapWrapper {
 	private AGLView glParentView;
 	private ACompareViewState state;
 	private GLInfoAreaManager infoAreaManager;
-	private ISetBasedDataDomain dataDomain;
+	private ASetBasedDataDomain dataDomain;
 	private IGLRemoteRenderingView parentView;
 
 	// private SelectionUpdateListener selectionUpdateListener;
@@ -92,7 +92,7 @@ public class HeatMapWrapper {
 	private boolean useFishEye = false;
 
 	public HeatMapWrapper(int id, AHeatMapLayout layout, AGLView glParentView,
-			GLInfoAreaManager infoAreaManager, ISetBasedDataDomain dataDomain,
+			GLInfoAreaManager infoAreaManager, ASetBasedDataDomain dataDomain,
 			IGLRemoteRenderingView parentView, ACompareViewState state) {
 
 		generalManager = GeneralManager.get();

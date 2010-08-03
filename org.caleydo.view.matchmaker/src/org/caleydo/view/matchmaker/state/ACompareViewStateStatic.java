@@ -18,7 +18,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -41,7 +41,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 			TextRenderer textRenderer, TextureManager textureManager,
 			PickingManager pickingManager, GLMouseListener glMouseListener,
 			SetBar setBar, RenderCommandFactory renderCommandFactory,
-			ISetBasedDataDomain dataDomain, DragAndDropController dragAndDropController,
+			ASetBasedDataDomain dataDomain, DragAndDropController dragAndDropController,
 
 			CompareViewStateController compareViewStateController) {
 		super(view, viewID, textRenderer, textureManager, pickingManager,

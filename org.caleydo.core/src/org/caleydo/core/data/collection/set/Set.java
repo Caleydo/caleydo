@@ -20,9 +20,9 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.data.set.SetManager;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterManager;
@@ -73,7 +73,7 @@ public class Set
 
 	private StatisticsResult statisticsResult;
 
-	private ISetBasedDataDomain dataDomain;
+	private ASetBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor for the set. Creates and initializes members and registers the set whit the set manager.
@@ -103,7 +103,7 @@ public class Set
 		defaultStorageData.setStorageVA(new StorageVirtualArray(StorageVAType.STORAGE));
 		statisticsResult = new StatisticsResult(this);
 	}
-	
+
 	/**
 	 * Creates a {@link MetaSet} for every node in the storage tree.
 	 */
@@ -111,15 +111,14 @@ public class Set
 		ClusterNode rootNode = hashStorageData.get(StorageVAType.STORAGE).getStorageTreeRoot();
 		rootNode.createMetaSets(this);
 	}
-	
 
 	@Override
-	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 
 	@Override
-	public ISetBasedDataDomain getDataDomain() {
+	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
@@ -149,7 +148,6 @@ public class Set
 		return depth;
 	}
 
-	
 	@Override
 	public void setLabel(String sLabel) {
 		this.sLabel = sLabel;
@@ -261,9 +259,6 @@ public class Set
 
 		return histogram;
 	}
-
-
-
 
 	@Override
 	public void restoreOriginalContentVA() {
@@ -476,7 +471,6 @@ public class Set
 		return getDataRepFromRaw(result, dataRepresentation);
 	}
 
-
 	@Override
 	public StatisticsResult getStatisticsResult() {
 		return statisticsResult;
@@ -511,10 +505,10 @@ public class Set
 		this.statisticsResult = statisticsResult;
 	}
 
-	// ----------------------------------------------------------------------------	
-	//                     END OF PUBLIC INTERFACE
 	// ----------------------------------------------------------------------------
-	
+	// END OF PUBLIC INTERFACE
+	// ----------------------------------------------------------------------------
+
 	// -------------------- set creation ------------------------------
 	// Set creation is achieved by employing methods of SetUtils which utilizes package private methods in the
 	// set.
@@ -688,7 +682,7 @@ public class Set
 					+ "contains nominal storages. This is not possible!");
 		}
 	}
-	
+
 	/**
 	 * Normalize all storages in the set, based solely on the values within each storage. Operates with the
 	 * raw data as basis by default, however when a logarithmized representation is in the storage this is
@@ -719,9 +713,9 @@ public class Set
 					+ "contains nominal storages, currently not supported!");
 		}
 	}
-	
+
 	// ---------------------- helper functions ------------------------------
-	
+
 	private ContentData createContentData(ContentVAType vaType) {
 		ContentData contentData = new ContentData();
 
@@ -735,8 +729,7 @@ public class Set
 		return contentData;
 
 	}
-	
-	
+
 	/**
 	 * Converts a raw value to the specified data representation.
 	 * 
@@ -759,7 +752,7 @@ public class Set
 					+ dataRepresentation);
 		}
 	}
-	
+
 	/**
 	 * Converts the specified value into raw using the current external data representation.
 	 * 
@@ -780,7 +773,7 @@ public class Set
 					+ externalDataRep);
 		}
 	}
-	
+
 	private void calculateGlobalExtrema() {
 		double dTemp = 1.0;
 
@@ -801,6 +794,5 @@ public class Set
 			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
 				+ "on nominal data");
 	}
-
 
 }

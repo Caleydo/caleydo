@@ -17,7 +17,6 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLException;
 
-import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
@@ -32,8 +31,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.glyph.GlyphChangePersonalNameEvent;
@@ -139,7 +137,7 @@ public class GLGlyph
 	private GlyphChangePersonalNameListener glyphChangePersonalNameListener;
 	private GlyphUpdatePositionModelListener glyphUpdatePositionModelListener;
 
-	protected ISetBasedDataDomain dataDomain;
+	protected ASetBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -1282,13 +1280,13 @@ public class GLGlyph
 	}
 
 	@Override
-	public ISetBasedDataDomain getDataDomain() {
+	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 
 	}
 
 	@Override
-	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 

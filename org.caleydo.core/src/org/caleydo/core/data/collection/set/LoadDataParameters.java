@@ -3,10 +3,11 @@ package org.caleydo.core.data.collection.set;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 
 /**
  * Parameters to load the initial data-{@link Set}.
@@ -17,7 +18,8 @@ import org.caleydo.core.manager.ISetBasedDataDomain;
 public class LoadDataParameters {
 
 	/** The data domain associated with the loading process */
-	private ISetBasedDataDomain dataDomain;
+	@XmlTransient
+	private ASetBasedDataDomain dataDomain;
 
 	/** TODO doc */
 	private ArrayList<Integer> storageIds;
@@ -81,11 +83,11 @@ public class LoadDataParameters {
 		this.dataDomain = null;
 	}
 
-	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 
-	public ISetBasedDataDomain getDataDomain() {
+	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 

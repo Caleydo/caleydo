@@ -22,6 +22,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -72,7 +73,7 @@ public abstract class ACompareViewState {
 
 	protected RenderCommandFactory renderCommandFactory;
 	protected IEventPublisher eventPublisher;
-	protected ISetBasedDataDomain dataDomain;
+	protected ASetBasedDataDomain dataDomain;
 	protected DragAndDropController dragAndDropController;
 	protected CompareViewStateController compareViewStateController;
 	protected int setBarDisplayListIndex;
@@ -119,8 +120,8 @@ public abstract class ACompareViewState {
 	public ACompareViewState(GLMatchmaker view, int viewID, TextRenderer textRenderer,
 			TextureManager textureManager, PickingManager pickingManager,
 			GLMouseListener glMouseListener, SetBar setBar,
-			RenderCommandFactory renderCommandFactory,
-			ISetBasedDataDomain dataDomain, DragAndDropController dragAndDropController,
+			RenderCommandFactory renderCommandFactory, ASetBasedDataDomain dataDomain,
+			DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
 		this.view = view;
 		this.viewID = viewID;
@@ -418,10 +419,10 @@ public abstract class ACompareViewState {
 		float top = leftHeatMapWrapper.getLayout().getOverviewHeatMapPosition().y()
 				+ leftHeatMapWrapper.getLayout().getOverviewHeight();
 
-		rightHeatMapWrapper.choosePassiveHeatMaps(leftHeatMapWrapper
-				.getContentVAsOfHeatMaps(false), false, false, false);
-		leftHeatMapWrapper.choosePassiveHeatMaps(rightHeatMapWrapper
-				.getContentVAsOfHeatMaps(false), false, false, false);
+		rightHeatMapWrapper.choosePassiveHeatMaps(
+				leftHeatMapWrapper.getContentVAsOfHeatMaps(false), false, false, false);
+		leftHeatMapWrapper.choosePassiveHeatMaps(
+				rightHeatMapWrapper.getContentVAsOfHeatMaps(false), false, false, false);
 
 		// Needed for minimizing parallel detail band effect (fan out of detail
 		// to detail relations)
@@ -544,8 +545,8 @@ public abstract class ACompareViewState {
 				}
 
 				if (!bandBundlingActive) {
-					renderSingleCurve(gl, points, contentID, 40 + (int) (20 * Math
-							.random()));
+					renderSingleCurve(gl, points, contentID,
+							40 + (int) (20 * Math.random()));
 				}
 
 				HashMap<Integer, ArrayList<Vec3f>> map = contentIDToIndividualLines
@@ -563,8 +564,9 @@ public abstract class ACompareViewState {
 			HeatMapWrapper rightHeatMapWrapper) {
 
 		// Find detail bands for heatmapwrapper
-		ArrayList<DetailBand> detailBands = leftHeatMapWrapperToDetailBands.get(leftHeatMapWrapper);
-		
+		ArrayList<DetailBand> detailBands = leftHeatMapWrapperToDetailBands
+				.get(leftHeatMapWrapper);
+
 		for (DetailBand detailBand : detailBands) {
 			ArrayList<Integer> contentIDs = detailBand.getContentIDs();
 

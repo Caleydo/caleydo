@@ -14,7 +14,7 @@ import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -38,36 +38,30 @@ public class CompareViewStateController {
 	public CompareViewStateController(GLMatchmaker view, int viewID,
 			TextRenderer textRenderer, TextureManager textureManager,
 			PickingManager pickingManager, GLMouseListener glMouseListener,
-			ContextMenu contextMenu,  ISetBasedDataDomain useCase) {
-		DragAndDropController dragAndDropController = new DragAndDropController(
-				view);
+			ContextMenu contextMenu, ASetBasedDataDomain dataDomain) {
+		DragAndDropController dragAndDropController = new DragAndDropController(view);
 		SetBar setBar = new SetBar(viewID, pickingManager, textRenderer,
-				dragAndDropController, glMouseListener, view, contextMenu,
-				textureManager);
+				dragAndDropController, glMouseListener, view, contextMenu, textureManager);
 		setBar.setPosition(new Vec3f(0.0f, 0.0f, 0.01f));
-		RenderCommandFactory renderCommandFactory = new RenderCommandFactory(
-				viewID, pickingManager, textureManager, textRenderer);
+		RenderCommandFactory renderCommandFactory = new RenderCommandFactory(viewID,
+				pickingManager, textureManager, textRenderer);
 
 		hashStates = new HashMap<ECompareViewStateType, ACompareViewState>();
 
-		hashStates.put(ECompareViewStateType.DETAIL_VIEW, new DetailViewState(
-				view, viewID, textRenderer, textureManager, pickingManager,
-				glMouseListener, setBar, renderCommandFactory, 
-				useCase, dragAndDropController, this));
-		hashStates.put(ECompareViewStateType.OVERVIEW, new OverviewState(view,
-				viewID, textRenderer, textureManager, pickingManager,
-				glMouseListener, setBar, renderCommandFactory, 
-				useCase, dragAndDropController, this));
+		hashStates.put(ECompareViewStateType.DETAIL_VIEW, new DetailViewState(view,
+				viewID, textRenderer, textureManager, pickingManager, glMouseListener,
+				setBar, renderCommandFactory, dataDomain, dragAndDropController, this));
+		hashStates.put(ECompareViewStateType.OVERVIEW, new OverviewState(view, viewID,
+				textRenderer, textureManager, pickingManager, glMouseListener, setBar,
+				renderCommandFactory, dataDomain, dragAndDropController, this));
 		hashStates.put(ECompareViewStateType.OVERVIEW_TO_DETAIL_TRANSITION,
 				new OverviewToDetailTransition(view, viewID, textRenderer,
-						textureManager, pickingManager, glMouseListener,
-						setBar, renderCommandFactory,  useCase,
-						dragAndDropController, this));
+						textureManager, pickingManager, glMouseListener, setBar,
+						renderCommandFactory, dataDomain, dragAndDropController, this));
 		hashStates.put(ECompareViewStateType.DETAIL_TO_OVERVIEW_TRANSITION,
 				new DetailToOverviewTransition(view, viewID, textRenderer,
-						textureManager, pickingManager, glMouseListener,
-						setBar, renderCommandFactory,  useCase,
-						dragAndDropController, this));
+						textureManager, pickingManager, glMouseListener, setBar,
+						renderCommandFactory, dataDomain, dragAndDropController, this));
 
 		currentState = hashStates.get(ECompareViewStateType.OVERVIEW);
 		setBar.setViewState(currentState);
@@ -97,11 +91,10 @@ public class CompareViewStateController {
 		currentState.drawActiveElements(gl);
 	}
 
-	public void handlePickingEvents(EPickingType ePickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick,
-			boolean isControlPressed) {
-		currentState.handlePickingEvents(ePickingType, pickingMode,
-				iExternalID, pick, isControlPressed);
+	public void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode,
+			int iExternalID, Pick pick, boolean isControlPressed) {
+		currentState.handlePickingEvents(ePickingType, pickingMode, iExternalID, pick,
+				isControlPressed);
 	}
 
 	public void setSetsToCompare(ArrayList<ISet> setsToCompare) {
@@ -114,8 +107,7 @@ public class CompareViewStateController {
 
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
-		currentState.handleSelectionUpdate(selectionDelta, scrollToSelection,
-				info);
+		currentState.handleSelectionUpdate(selectionDelta, scrollToSelection, info);
 	}
 
 	public void handleSelectionCommand(EIDCategory category,
@@ -132,11 +124,10 @@ public class CompareViewStateController {
 		currentState.handleMouseWheel(gl, amount, wheelPoint);
 	}
 
-	public void handleReplaceContentVA(int setID, String dataDomain,
-			ContentVAType vaType) {
+	public void handleReplaceContentVA(int setID, String dataDomain, ContentVAType vaType) {
 		currentState.handleReplaceContentVA(setID, dataDomain, vaType);
 	}
-	
+
 	public void handleClearSelections() {
 		currentState.handleClearSelections();
 	}
@@ -157,8 +148,7 @@ public class CompareViewStateController {
 		currentState.setBandBundling(bandBundlingActive);
 	}
 
-	public void handleContentGroupListUpdate(int setID,
-			ContentGroupList contentGroupList) {
+	public void handleContentGroupListUpdate(int setID, ContentGroupList contentGroupList) {
 		currentState.handleContentGroupListUpdate(setID, contentGroupList);
 	}
 
@@ -167,11 +157,11 @@ public class CompareViewStateController {
 	}
 
 	public void setCreateSelectionTypes(boolean createSelectionTypes) {
-		for(ACompareViewState state : hashStates.values()) {
+		for (ACompareViewState state : hashStates.values()) {
 			state.setCreateSelectionTypes(createSelectionTypes);
 		}
 	}
-	
+
 	public void setHideHeatMapElements(boolean hideElements) {
 		currentState.setHeatMapWrapperDisplayListDirty();
 	}

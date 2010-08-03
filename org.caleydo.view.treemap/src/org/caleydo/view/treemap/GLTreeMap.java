@@ -1,7 +1,6 @@
 package org.caleydo.view.treemap;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
@@ -13,7 +12,7 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -68,7 +67,7 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 
 	private boolean bUpdateMainView = false;
 
-	private ISetBasedDataDomain dataDomain;
+	private ASetBasedDataDomain dataDomain;
 
 	private Tree<ClusterNode> tree;
 
@@ -382,12 +381,12 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 	}
 
 	@Override
-	public ISetBasedDataDomain getDataDomain() {
+	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
 	@Override
-	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 
 	}

@@ -7,7 +7,7 @@ import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings;
 import org.caleydo.core.data.collection.set.statistics.FoldChangeSettings.FoldChangeEvaluator;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.data.ReplaceContentVAInUseCaseEvent;
 import org.caleydo.core.manager.event.data.StatisticsResultFinishedEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -50,7 +50,7 @@ public class StatisticsView extends ASWTView implements IView, ISWTView, ISetBas
 
 	private Label reducedNumberLabel;
 
-	private ISetBasedDataDomain dataDomain;
+	private ASetBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -276,12 +276,12 @@ public class StatisticsView extends ASWTView implements IView, ISWTView, ISetBas
 	}
 
 	@Override
-	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 
 	@Override
-	public ISetBasedDataDomain getDataDomain() {
+	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 

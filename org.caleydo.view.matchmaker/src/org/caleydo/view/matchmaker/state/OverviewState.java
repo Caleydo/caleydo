@@ -11,7 +11,7 @@ import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -40,12 +40,12 @@ public class OverviewState extends ACompareViewStateStatic {
 	public OverviewState(GLMatchmaker view, int viewID, TextRenderer textRenderer,
 			TextureManager textureManager, PickingManager pickingManager,
 			GLMouseListener glMouseListener, SetBar setBar,
-			RenderCommandFactory renderCommandFactory, ISetBasedDataDomain useCase,
+			RenderCommandFactory renderCommandFactory, ASetBasedDataDomain dataDomain,
 			DragAndDropController dragAndDropController,
 			CompareViewStateController compareViewStateController) {
 
 		super(view, viewID, textRenderer, textureManager, pickingManager,
-				glMouseListener, setBar, renderCommandFactory, useCase,
+				glMouseListener, setBar, renderCommandFactory, dataDomain,
 				dragAndDropController, compareViewStateController);
 		numSetsInFocus = 4;
 	}

@@ -3,6 +3,7 @@ package org.caleydo.core.manager.datadomain;
 import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.set.LoadDataParameters;
@@ -36,6 +37,7 @@ public abstract class ADataDomain
 	protected EIconTextures icon = EIconTextures.NO_ICON_AVAILABLE;
 
 	/** parameters for loading the the data-{@link set} */
+	@XmlTransient
 	protected LoadDataParameters loadDataParameters;
 
 	/** bootstrap filename this application was started with */
@@ -47,11 +49,14 @@ public abstract class ADataDomain
 	 */
 	protected HashMap<EIDCategory, String> possibleIDCategories;
 
-	
-
 	@Override
 	public String getDataDomainType() {
 		return dataDomainType;
+	}
+
+	@Override
+	public void setDataDomainType(String dataDomainType) {
+		this.dataDomainType = dataDomainType;
 	}
 
 	@Override
@@ -83,10 +88,12 @@ public abstract class ADataDomain
 		this.dataFilterLevel = dataFilterLevel;
 	}
 
+	@XmlTransient
 	@Override
 	public LoadDataParameters getLoadDataParameters() {
 		return loadDataParameters;
 	}
+
 
 	@Override
 	public void setLoadDataParameters(LoadDataParameters loadDataParameters) {

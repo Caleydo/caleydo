@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.jgrapht.DirectedGraph;
@@ -44,13 +44,13 @@ public class TreePorter {
 	@XmlElement(name = "node")
 	Set<ClusterNode> nodeSet;
 
-	private ISetBasedDataDomain dataDomain;
+	private ASetBasedDataDomain dataDomain;
 
-	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 
-	public ISetBasedDataDomain getDataDomain() {
+	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 

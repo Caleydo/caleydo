@@ -1,6 +1,5 @@
 package org.caleydo.core.manager;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.set.LoadDataParameters;
@@ -22,10 +21,17 @@ public interface IDataDomain {
 	public String getDataDomainType();
 
 	/**
+	 * Set the dataDomain Type.
+	 * 
+	 * @param dataDomainType
+	 */
+	public void setDataDomainType(String dataDomainType);
+
+	/**
 	 * Returns the icon representing the data contained in this domain
 	 */
 	public EIconTextures getIcon();
-	
+
 	/**
 	 * Gets the parameters for loading the data-{@link Set} contained in this use case
 	 * 

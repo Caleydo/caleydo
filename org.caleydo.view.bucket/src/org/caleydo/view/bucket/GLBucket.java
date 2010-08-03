@@ -26,6 +26,7 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
@@ -113,12 +114,12 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Werner Puff
  */
 public class GLBucket extends AGLView implements
-		IDataDomainBasedView<ISetBasedDataDomain>, ISelectionUpdateHandler,
+		IDataDomainBasedView<ASetBasedDataDomain>, ISelectionUpdateHandler,
 		IGLBucketView, IRemoteRenderingHandler {
 
 	public final static String VIEW_ID = "org.caleydo.view.bucket";
 
-	protected ISetBasedDataDomain dataDomain;
+	protected ASetBasedDataDomain dataDomain;
 
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
 
@@ -230,7 +231,7 @@ public class GLBucket extends AGLView implements
 
 		super(glCanvas, sLabel, viewFrustum, true);
 		viewType = GLBucket.VIEW_ID;
-		
+
 		this.layoutMode = layoutMode;
 
 		if (generalManager.getTrackDataProvider().isTrackModeActive()) {
@@ -295,8 +296,6 @@ public class GLBucket extends AGLView implements
 		iPoolLevelCommonID = generalManager.getIDManager().createID(
 				EManagedObjectType.REMOTE_LEVEL_ELEMENT);
 	}
-
-
 
 	@Override
 	public void initLocal(final GL gl) {
@@ -373,7 +372,7 @@ public class GLBucket extends AGLView implements
 		// buildDisplayList(gl);
 		// bIsDisplayListDirtyLocal = false;
 		// }
-		
+
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
@@ -390,8 +389,8 @@ public class GLBucket extends AGLView implements
 		}
 
 		if (dragAndDrop.isDragActionRunning()) {
-			dragAndDrop.renderDragThumbnailTexture(gl, bucketMouseWheelListener
-					.isZoomedIn());
+			dragAndDrop.renderDragThumbnailTexture(gl,
+					bucketMouseWheelListener.isZoomedIn());
 		}
 
 		if (glMouseListener.wasMouseReleased() && dragAndDrop.isDragActionRunning()) {
@@ -491,8 +490,8 @@ public class GLBucket extends AGLView implements
 
 			// TODO: very performance intensive - better solution needed (only
 			// in reshape)!
-			getParentGLCanvas().getParentComposite().getDisplay().asyncExec(
-					new Runnable() {
+			getParentGLCanvas().getParentComposite().getDisplay()
+					.asyncExec(new Runnable() {
 						@Override
 						public void run() {
 							upperLeftScreenPos = getParentGLCanvas().getParentComposite()
@@ -619,8 +618,8 @@ public class GLBucket extends AGLView implements
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_SELECTION,
-				glView.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.REMOTE_VIEW_SELECTION, glView.getID()));
 
 		gl.glPushMatrix();
 
@@ -966,8 +965,7 @@ public class GLBucket extends AGLView implements
 			gl.glRotatef(-180, 1, 0, 0);
 		}
 		gl.glTranslatef(fHandleHeight, 0, 0);
-		renderSingleHandle(gl, element.getID(),
-				EPickingType.REMOTE_VIEW_REMOVE,
+		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_REMOVE,
 				EIconTextures.NAVIGATION_REMOVE_VIEW, fHandleHeight, fHandleHeight);
 		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
@@ -1508,8 +1506,7 @@ public class GLBucket extends AGLView implements
 		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_DRAG,
 				EIconTextures.POOL_DRAG_VIEW, 0.1f, 0.1f);
 		gl.glTranslatef(0, -0.2f, 0);
-		renderSingleHandle(gl, element.getID(),
-				EPickingType.REMOTE_VIEW_REMOVE,
+		renderSingleHandle(gl, element.getID(), EPickingType.REMOTE_VIEW_REMOVE,
 				EIconTextures.POOL_REMOVE_VIEW, 0.1f, 0.1f);
 		gl.glTranslatef(0, 0.2f, 0);
 		gl.glScalef(1f / fHandleScaleFactor, 1f / fHandleScaleFactor,
@@ -1529,8 +1526,8 @@ public class GLBucket extends AGLView implements
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_VIEW_SELECTION,
-				element.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.REMOTE_VIEW_SELECTION, element.getID()));
 	}
 
 	private void doSlerpActions(final GL gl) {
@@ -1602,8 +1599,8 @@ public class GLBucket extends AGLView implements
 				glConnectionLineRenderer.enableRendering(true);
 			}
 
-			generalManager.getViewGLCanvasManager().getInfoAreaManager().enable(
-					!bEnableNavigationOverlay);
+			generalManager.getViewGLCanvasManager().getInfoAreaManager()
+					.enable(!bEnableNavigationOverlay);
 			generalManager.getViewGLCanvasManager()
 					.getConnectedElementRepresentationManager()
 					.clearTransformedConnections();
@@ -1695,24 +1692,24 @@ public class GLBucket extends AGLView implements
 				if (!focusLevel.hasFreePosition()) {
 					// Slerp focus view to free spot in stack
 					SlerpAction reverseSlerpAction = new SlerpAction(focusLevel
-							.getElementByPositionIndex(0).getGLView().getID(), focusLevel
-							.getElementByPositionIndex(0), element);
+							.getElementByPositionIndex(0).getGLView().getID(),
+							focusLevel.getElementByPositionIndex(0), element);
 					arSlerpActions.add(reverseSlerpAction);
 				}
 
 				// Slerp selected view from transition position to focus
 				// position
 				SlerpAction slerpAction = new SlerpAction(element.getGLView().getID(),
-						transitionLevel.getElementByPositionIndex(0), focusLevel
-								.getElementByPositionIndex(0));
+						transitionLevel.getElementByPositionIndex(0),
+						focusLevel.getElementByPositionIndex(0));
 				arSlerpActions.add(slerpAction);
 			}
 			// Check if focus position is free
 			else if (focusLevel.hasFreePosition()) {
 
 				// Slerp selected view to focus position
-				SlerpAction slerpActionTransition = new SlerpAction(element, focusLevel
-						.getElementByPositionIndex(0));
+				SlerpAction slerpActionTransition = new SlerpAction(element,
+						focusLevel.getElementByPositionIndex(0));
 				arSlerpActions.add(slerpActionTransition);
 
 			} else {
@@ -1733,16 +1730,16 @@ public class GLBucket extends AGLView implements
 					// if
 					// (stackLevel.getElementByPositionIndex(iTmpReplacePosition).isLocked())
 					// continue;
-					//						
+					//
 					// iReplacePosition = iTmpReplacePosition + 1; // +1 to
 					// start with left view for outsourcing
-					//						
+					//
 					// if (iReplacePosition == 4)
 					// iReplacePosition = 0;
-					//						
+					//
 					// break;
 					// }
-					//					
+					//
 					// if (iReplacePosition == -1)
 					// throw new
 					// IllegalStateException("All views in stack are locked!");
@@ -1764,16 +1761,16 @@ public class GLBucket extends AGLView implements
 
 				if (!focusLevel.hasFreePosition()) {
 					// Slerp focus view to free spot in stack
-					SlerpAction reverseSlerpAction2 = new SlerpAction(focusLevel
-							.getElementByPositionIndex(0), freeStackElement);
+					SlerpAction reverseSlerpAction2 = new SlerpAction(
+							focusLevel.getElementByPositionIndex(0), freeStackElement);
 					arSlerpActions.add(reverseSlerpAction2);
 				}
 
 				// Slerp selected view from transition position to focus
 				// position
-				SlerpAction slerpAction = new SlerpAction(glView.getID(), transitionLevel
-						.getElementByPositionIndex(0), focusLevel
-						.getElementByPositionIndex(0));
+				SlerpAction slerpAction = new SlerpAction(glView.getID(),
+						transitionLevel.getElementByPositionIndex(0),
+						focusLevel.getElementByPositionIndex(0));
 				arSlerpActions.add(slerpAction);
 			}
 		}
@@ -1802,8 +1799,8 @@ public class GLBucket extends AGLView implements
 
 		if (!generalManager.getPathwayManager().isPathwayVisible(
 				generalManager.getPathwayManager().getItem(iPathwayID))) {
-			SerializedPathwayView serPathway = new SerializedPathwayView(dataDomain
-					.getDataDomainType());
+			SerializedPathwayView serPathway = new SerializedPathwayView(
+					dataDomain.getDataDomainType());
 			serPathway.setPathwayID(iPathwayID);
 			newViews.add(serPathway);
 		}
@@ -1934,8 +1931,8 @@ public class GLBucket extends AGLView implements
 				break;
 
 			}
-			infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX, pick
-					.getPickedPoint(), 0.3f);// pick.getDepth());
+			infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX,
+					pick.getPickedPoint(), 0.3f);// pick.getDepth());
 			break;
 
 		case BUCKET_MOVE_IN_ICON_SELECTION:
@@ -1972,8 +1969,8 @@ public class GLBucket extends AGLView implements
 
 				RemoteLevelElement element = RemoteElementManager.get().getItem(
 						iExternalID);
-				SlerpAction slerpActionTransition = new SlerpAction(element, poolLevel
-						.getNextFree());
+				SlerpAction slerpActionTransition = new SlerpAction(element,
+						poolLevel.getNextFree());
 				arSlerpActions.add(slerpActionTransition);
 
 				bEnableNavigationOverlay = false;
@@ -2022,23 +2019,23 @@ public class GLBucket extends AGLView implements
 				// Check if destination position in stack is free
 				if (stackLevel.getElementByPositionIndex(iDestinationPosIndex)
 						.getGLView() == null) {
-					SlerpAction slerpAction = new SlerpAction(selectedElement, stackLevel
-							.getElementByPositionIndex(iDestinationPosIndex));
+					SlerpAction slerpAction = new SlerpAction(selectedElement,
+							stackLevel.getElementByPositionIndex(iDestinationPosIndex));
 					arSlerpActions.add(slerpAction);
 				} else {
 					SlerpAction slerpActionTransition = new SlerpAction(selectedElement,
 							transitionLevel.getElementByPositionIndex(0));
 					arSlerpActions.add(slerpActionTransition);
 
-					SlerpAction slerpAction = new SlerpAction(stackLevel
-							.getElementByPositionIndex(iDestinationPosIndex),
+					SlerpAction slerpAction = new SlerpAction(
+							stackLevel.getElementByPositionIndex(iDestinationPosIndex),
 							selectedElement);
 					arSlerpActions.add(slerpAction);
 
 					SlerpAction slerpActionTransitionReverse = new SlerpAction(
-							selectedElement.getGLView().getID(), transitionLevel
-									.getElementByPositionIndex(0), stackLevel
-									.getElementByPositionIndex(iDestinationPosIndex));
+							selectedElement.getGLView().getID(),
+							transitionLevel.getElementByPositionIndex(0),
+							stackLevel.getElementByPositionIndex(iDestinationPosIndex));
 					arSlerpActions.add(slerpActionTransitionReverse);
 				}
 
@@ -2085,23 +2082,23 @@ public class GLBucket extends AGLView implements
 				// Check if destination position in stack is free
 				if (stackLevel.getElementByPositionIndex(iDestinationPosIndex)
 						.getGLView() == null) {
-					SlerpAction slerpAction = new SlerpAction(selectedElement, stackLevel
-							.getElementByPositionIndex(iDestinationPosIndex));
+					SlerpAction slerpAction = new SlerpAction(selectedElement,
+							stackLevel.getElementByPositionIndex(iDestinationPosIndex));
 					arSlerpActions.add(slerpAction);
 				} else {
 					SlerpAction slerpActionTransition = new SlerpAction(selectedElement,
 							transitionLevel.getElementByPositionIndex(0));
 					arSlerpActions.add(slerpActionTransition);
 
-					SlerpAction slerpAction = new SlerpAction(stackLevel
-							.getElementByPositionIndex(iDestinationPosIndex),
+					SlerpAction slerpAction = new SlerpAction(
+							stackLevel.getElementByPositionIndex(iDestinationPosIndex),
 							selectedElement);
 					arSlerpActions.add(slerpAction);
 
 					SlerpAction slerpActionTransitionReverse = new SlerpAction(
-							selectedElement.getGLView().getID(), transitionLevel
-									.getElementByPositionIndex(0), stackLevel
-									.getElementByPositionIndex(iDestinationPosIndex));
+							selectedElement.getGLView().getID(),
+							transitionLevel.getElementByPositionIndex(0),
+							stackLevel.getElementByPositionIndex(iDestinationPosIndex));
 					arSlerpActions.add(slerpActionTransitionReverse);
 				}
 
@@ -2128,8 +2125,8 @@ public class GLBucket extends AGLView implements
 
 	@Override
 	public String getShortInfo() {
-		AGLView activeView = GeneralManager.get().getViewGLCanvasManager().getGLView(
-				iActiveViewID);
+		AGLView activeView = GeneralManager.get().getViewGLCanvasManager()
+				.getGLView(iActiveViewID);
 		if (activeView == null)
 			return "Bucket";
 		else
@@ -2187,7 +2184,7 @@ public class GLBucket extends AGLView implements
 			// {
 			// if (iElementID == -1)
 			// continue;
-			//				
+			//
 			// poolLevel.addElement(iElementID);
 			// // poolLevel.setElementVisibilityById(true, iElementID);
 			// }
@@ -2535,8 +2532,10 @@ public class GLBucket extends AGLView implements
 		} else if (poolLevel.hasFreePosition()) {
 			destination = poolLevel.getNextFree();
 		} else {
-			GeneralManager.get().getLogger().log(
-					new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
+			GeneralManager
+					.get()
+					.getLogger()
+					.log(new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID,
 							"No empty space left to add new pathway!"));
 			newViews.clear();
 			return false;
@@ -2574,7 +2573,7 @@ public class GLBucket extends AGLView implements
 
 		AGLView glView = cmdView.getCreatedObject();
 		glView.setRemoteRenderingGLView(this);
-		
+
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<ISetBasedDataDomain>) glView)
 					.setDataDomain(dataDomain);
@@ -2703,23 +2702,27 @@ public class GLBucket extends AGLView implements
 		int iViewHeight = parentGLCanvas.getHeight();
 
 		if (stackLevel.getElementByPositionIndex(0).getGLView() != null) {
-			glOffScreenRenderer.renderToTexture(gl, stackLevel.getElementByPositionIndex(
-					0).getGLView().getID(), 0, iViewWidth, iViewHeight);
+			glOffScreenRenderer.renderToTexture(gl,
+					stackLevel.getElementByPositionIndex(0).getGLView().getID(), 0,
+					iViewWidth, iViewHeight);
 		}
 
 		if (stackLevel.getElementByPositionIndex(1).getGLView() != null) {
-			glOffScreenRenderer.renderToTexture(gl, stackLevel.getElementByPositionIndex(
-					1).getGLView().getID(), 1, iViewWidth, iViewHeight);
+			glOffScreenRenderer.renderToTexture(gl,
+					stackLevel.getElementByPositionIndex(1).getGLView().getID(), 1,
+					iViewWidth, iViewHeight);
 		}
 
 		if (stackLevel.getElementByPositionIndex(2).getGLView() != null) {
-			glOffScreenRenderer.renderToTexture(gl, stackLevel.getElementByPositionIndex(
-					2).getGLView().getID(), 2, iViewWidth, iViewHeight);
+			glOffScreenRenderer.renderToTexture(gl,
+					stackLevel.getElementByPositionIndex(2).getGLView().getID(), 2,
+					iViewWidth, iViewHeight);
 		}
 
 		if (stackLevel.getElementByPositionIndex(3).getGLView() != null) {
-			glOffScreenRenderer.renderToTexture(gl, stackLevel.getElementByPositionIndex(
-					3).getGLView().getID(), 3, iViewWidth, iViewHeight);
+			glOffScreenRenderer.renderToTexture(gl,
+					stackLevel.getElementByPositionIndex(3).getGLView().getID(), 3,
+					iViewWidth, iViewHeight);
 		}
 
 		gl.glPopMatrix();
@@ -2877,8 +2880,8 @@ public class GLBucket extends AGLView implements
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedBucketView serializedForm = new SerializedBucketView(dataDomain
-				.getDataDomainType());
+		SerializedBucketView serializedForm = new SerializedBucketView(
+				dataDomain.getDataDomainType());
 		serializedForm.setViewID(this.getID());
 		serializedForm.setPathwayTexturesEnabled(pathwayTexturesEnabled);
 		serializedForm.setNeighborhoodEnabled(neighborhoodEnabled);
@@ -2984,12 +2987,12 @@ public class GLBucket extends AGLView implements
 	}
 
 	@Override
-	public ISetBasedDataDomain getDataDomain() {
+	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
 	@Override
-	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 }

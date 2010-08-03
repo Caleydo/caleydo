@@ -24,7 +24,7 @@ import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
@@ -66,11 +66,11 @@ import org.eclipse.core.runtime.Status;
 public abstract class AStorageBasedView
 	extends AGLView
 	implements ISetBasedView, ISelectionUpdateHandler, IContentVAUpdateHandler, IStorageVAUpdateHandler,
-	ISelectionCommandHandler, IViewCommandHandler, IDataDomainBasedView<ISetBasedDataDomain> {
+	ISelectionCommandHandler, IViewCommandHandler, IDataDomainBasedView<ASetBasedDataDomain> {
 
 	protected ISet set;
 
-	protected ISetBasedDataDomain dataDomain;
+	protected ASetBasedDataDomain dataDomain;
 
 	// protected ArrayList<Boolean> alUseInRandomSampling;
 
@@ -78,13 +78,13 @@ public abstract class AStorageBasedView
 
 	/**
 	 * This manager is responsible for the content in the storages (the indices). The contentSelectionManager
-	 * is initialized when the useCase is set ({@link #setUseCase(IDataDomain)}).
+	 * is initialized when the useCase is set ({@link #setDataDomain(IDataDomain)}).
 	 */
 	protected ContentSelectionManager contentSelectionManager;
 
 	/**
 	 * This manager is responsible for the management of the storages in the set. The storageSelectionManager
-	 * is initialized when the useCase is set ( {@link #setUseCase(IDataDomain)}).
+	 * is initialized when the useCase is set ( {@link #setDataDomain(IDataDomain)}).
 	 */
 	protected StorageSelectionManager storageSelectionManager;
 
@@ -140,8 +140,8 @@ public abstract class AStorageBasedView
 
 
 	@Override
-	public void setDataDomain(ISetBasedDataDomain dataDomain) {
-		this.dataDomain = (ISetBasedDataDomain) dataDomain;
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+		this.dataDomain = (ASetBasedDataDomain) dataDomain;
 
 		contentSelectionManager = this.dataDomain.getContentSelectionManager();
 		storageSelectionManager = this.dataDomain.getStorageSelectionManager();
@@ -150,7 +150,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public ISetBasedDataDomain getDataDomain() {
+	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 

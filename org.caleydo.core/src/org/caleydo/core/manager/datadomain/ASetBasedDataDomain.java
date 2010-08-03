@@ -1,8 +1,9 @@
 package org.caleydo.core.manager.datadomain;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.graph.tree.Tree;
@@ -16,7 +17,6 @@ import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
@@ -41,10 +41,9 @@ import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListe
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
 
+@XmlType
+@XmlRootElement
 public abstract class ASetBasedDataDomain
 	extends ADataDomain
 	implements ISetBasedDataDomain {
@@ -67,6 +66,11 @@ public abstract class ASetBasedDataDomain
 
 	/** central {@link IEventPublisher} to receive and send events */
 	protected IEventPublisher eventPublisher;
+
+	public ASetBasedDataDomain() {
+		eventPublisher = GeneralManager.get().getEventPublisher();
+		registerEventListeners();
+	}
 
 	public ASetBasedDataDomain(String dataDomainType) {
 		this.dataDomainType = dataDomainType;

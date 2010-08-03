@@ -10,7 +10,7 @@ import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 
 /**
  * Simple bean that holds the initialization data for new started caleydo application. Used to store and
@@ -23,7 +23,7 @@ import org.caleydo.core.manager.ISetBasedDataDomain;
 public class ApplicationInitData {
 
 	/** defines the type of usage of the application */
-	private ISetBasedDataDomain dataDomain;
+	private ASetBasedDataDomain dataDomain;
 
 	/** content of the set file the application is based on, only used to sync remote clients */
 	private byte[] setFileContent;
@@ -41,11 +41,11 @@ public class ApplicationInitData {
 	/** list of views in use, not used to sync remote clients */
 	private List<String> viewIDs;
 
-	public ISetBasedDataDomain getDataDomain() {
+	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
-	public void setUseCase(ISetBasedDataDomain dataDomain) {
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 

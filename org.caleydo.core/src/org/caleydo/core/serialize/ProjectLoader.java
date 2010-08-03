@@ -14,8 +14,8 @@ import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.ADataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 
 /**
@@ -26,8 +26,8 @@ import org.caleydo.core.manager.general.GeneralManager;
 public class ProjectLoader {
 
 	/** full path to directory to temporarily store the projects file before zipping */
-	public static final String TEMP_PROJECT_DIR_NAME =
-		IGeneralManager.CALEYDO_HOME_PATH + "tempLoad" + File.separator;
+	public static final String TEMP_PROJECT_DIR_NAME = IGeneralManager.CALEYDO_HOME_PATH + "tempLoad"
+		+ File.separator;
 
 	/**
 	 * Loads the project from a specified zip-archive.
@@ -67,19 +67,19 @@ public class ProjectLoader {
 
 		try {
 			Unmarshaller unmarshaller = projectContext.createUnmarshaller();
-			ADataDomain useCase;
+			ADataDomain dataDomain;
 			try {
-				useCase =
-					(ADataDomain) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader().getResource(
-						dirName + ProjectSaver.DATA_DOMAIN_FILE_NAME));
+				dataDomain =
+					(ADataDomain) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
+						.getResource(dirName + ProjectSaver.DATA_DOMAIN_FILE_NAME));
 			}
 			catch (FileNotFoundException e1) {
 				throw new IllegalStateException("Cannot load use case from project file");
 			}
 
 			String setFileName = dirName + ProjectSaver.SET_DATA_FILE_NAME;
-			useCase.getLoadDataParameters().setFileName(setFileName);
-		
+			dataDomain.getLoadDataParameters().setFileName(setFileName);
+
 			HashMap<ContentVAType, ContentVirtualArray> contentVAMap =
 				new HashMap<ContentVAType, ContentVirtualArray>(6);
 			ContentVAType tmpType = ContentVAType.CONTENT;
@@ -103,29 +103,31 @@ public class ProjectLoader {
 				.put(tempStorageType, loadStorageVirtualArray(unmarshaller, dirName, tempStorageType));
 
 			// FIXME: this should be done like this:
-//			for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
-//				storageVAMap.put(type, loadStorageVirtualArray(unmarshaller, dirName, type));
-//			}
+			// for (StorageVAType type : StorageVAType.getRegisteredVATypes()) {
+			// storageVAMap.put(type, loadStorageVirtualArray(unmarshaller, dirName, type));
+			// }
 			ViewList loadViews = null;
 			try {
 				loadViews =
-					(ViewList) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader().getResource(
-						dirName + ProjectSaver.VIEWS_FILE_NAME));
+					(ViewList) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
+						.getResource(dirName + ProjectSaver.VIEWS_FILE_NAME));
 			}
 			catch (FileNotFoundException e) {
 				// do nothing - no view list available
 			}
 
 			initData = new ApplicationInitData();
-			initData.setUseCase((ISetBasedDataDomain)useCase);
+			initData.setDataDomain((ASetBasedDataDomain) dataDomain);
 			initData.setContentVAMap(contentVAMap);
 			initData.setStorageVAMap(storageVAMap);
 			if (loadViews != null) {
 				initData.setViews(loadViews.getViews());
 			}
 
-			useCase.getLoadDataParameters().setGeneTreeFileName(dirName + ProjectSaver.GENE_TREE_FILE_NAME);
-			useCase.getLoadDataParameters().setExperimentsFileName(dirName + ProjectSaver.EXP_TREE_FILE_NAME);
+			dataDomain.getLoadDataParameters()
+				.setGeneTreeFileName(dirName + ProjectSaver.GENE_TREE_FILE_NAME);
+			dataDomain.getLoadDataParameters().setExperimentsFileName(
+				dirName + ProjectSaver.EXP_TREE_FILE_NAME);
 		}
 		catch (JAXBException ex) {
 			throw new RuntimeException("Error while loading project", ex);

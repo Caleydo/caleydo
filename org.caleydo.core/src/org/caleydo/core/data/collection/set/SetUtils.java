@@ -30,7 +30,7 @@ import org.caleydo.core.data.selection.StorageGroupList;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
@@ -190,10 +190,8 @@ public class SetUtils {
 	/**
 	 * Creates the set from a previously prepared storage definition.
 	 * 
-	 * @param loadDataParameters
-	 *            definition how to load the set
 	 */
-	public static ISet createData(ISetBasedDataDomain dataDomain) {
+	public static Set createData(ASetBasedDataDomain dataDomain) {
 
 		LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
 		ArrayList<Integer> iAlStorageId = loadDataParameters.getStorageIds();

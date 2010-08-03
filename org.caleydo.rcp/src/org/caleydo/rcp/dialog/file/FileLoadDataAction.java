@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.dialog.LabelEditorDialog;
@@ -86,7 +87,7 @@ public class FileLoadDataAction
 	private boolean useGeneClusterInfo = false;
 	private boolean useExperimentClusterInfo = false;
 
-	private ISetBasedDataDomain dataDomain = null;
+	private ASetBasedDataDomain dataDomain = null;
 
 	boolean isGenetic = false;
 
@@ -124,12 +125,11 @@ public class FileLoadDataAction
 
 		// FIXME
 		DataDomainManager domainManager = DataDomainManager.getInstance();
-		dataDomain =
-			(ISetBasedDataDomain) domainManager.getDataDomain("org.caleydo.datadomain.genetic");
+		dataDomain = (ASetBasedDataDomain) domainManager.getDataDomain("org.caleydo.datadomain.genetic");
 
 		if (dataDomain == null) {
 			numGridCols = 4;
-			dataDomain = (ISetBasedDataDomain) domainManager.getDataDomain("org.caleydo.datadomain.generic");
+			dataDomain = (ASetBasedDataDomain) domainManager.getDataDomain("org.caleydo.datadomain.generic");
 		}
 		else
 			isGenetic = true;
@@ -169,8 +169,8 @@ public class FileLoadDataAction
 
 				createDataPreviewTable("\t");
 
-				if (loadDataParameters.getDataDomain().getDataDomainType().equals(
-					"org.caleydo.datadomain.genetic")) {
+				if (loadDataParameters.getDataDomain().getDataDomainType()
+					.equals("org.caleydo.datadomain.genetic")) {
 					determineFileIDType();
 				}
 			}
@@ -732,7 +732,7 @@ public class FileLoadDataAction
 		dataDomain.setLoadDataParameters(loadDataParameters);
 
 		if (success) {
-			ISet set = SetUtils.createData(dataDomain);
+			Set set = SetUtils.createData(dataDomain);
 			if (set == null)
 				return false;
 		}
@@ -880,8 +880,8 @@ public class FileLoadDataAction
 					}
 					else if (idType.equals(EIDType.REFSEQ_MRNA)) {
 						if (currentID.contains(".")) {
-							if (idMappingManager.doesElementExist(idType, currentID.substring(0, currentID
-								.indexOf(".")))) {
+							if (idMappingManager.doesElementExist(idType,
+								currentID.substring(0, currentID.indexOf(".")))) {
 								currentCorrectElements++;
 							}
 						}

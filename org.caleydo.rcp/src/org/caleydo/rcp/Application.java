@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
@@ -20,6 +20,7 @@ import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.net.GroupwareUtils;
@@ -66,8 +67,7 @@ public class Application
 	 */
 	public static final boolean LAZY_VIEW_LOADING = false;
 
-	private static String BOOTSTRAP_FILE_GENE_EXPRESSION_MODE =
-		"data/bootstrap/webstart/bootstrap.xml";
+	private static String BOOTSTRAP_FILE_GENE_EXPRESSION_MODE = "data/bootstrap/webstart/bootstrap.xml";
 
 	private static String REAL_DATA_SAMPLE_FILE =
 		"data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
@@ -145,11 +145,11 @@ public class Application
 			internetConfigurationWizard.open();
 		}
 
-//		if (triggerEarlyPathwayLoading) {
-//			 CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
-//			 cmd.setAttributes("org.caleydo.datadomain.pathway");
-//			 cmd.doCommand();
-//		}
+		// if (triggerEarlyPathwayLoading) {
+		// CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
+		// cmd.setAttributes("org.caleydo.datadomain.pathway");
+		// cmd.doCommand();
+		// }
 
 		// If no file is provided as command line argument a wizard page is opened to determine the xml file
 		if (xmlInputFile.equals("")) {
@@ -355,11 +355,11 @@ public class Application
 				throw new IllegalStateException(
 					"loading data is not supported for non-set-based data domains. Implement it!");
 
-			ISetBasedDataDomain setBasedDataDomain = (ISetBasedDataDomain) dataDomain;
+			ASetBasedDataDomain setBasedDataDomain = (ASetBasedDataDomain) dataDomain;
 
 			LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
 			SetUtils.createStorages(loadDataParameters);
-			ISet set = SetUtils.createData(setBasedDataDomain);
+			Set set = SetUtils.createData(setBasedDataDomain);
 
 			HashMap<ContentVAType, ContentVirtualArray> contentVAMap = initData.getContentVAMap();
 			for (Entry<ContentVAType, ContentVirtualArray> entry : contentVAMap.entrySet()) {
@@ -413,9 +413,8 @@ public class Application
 		// nicest place to do this.
 		// This is only necessary if started from xml. Otherwise this is done in FileLoadDataAction
 		if (isStartedFromXML) {
-			for(IDataDomain dataDomain : DataDomainManager.getInstance().getDataDomains())
-			{
-				if(dataDomain instanceof ISetBasedDataDomain)
+			for (IDataDomain dataDomain : DataDomainManager.getInstance().getDataDomains()) {
+				if (dataDomain instanceof ISetBasedDataDomain)
 					((ISetBasedDataDomain) dataDomain).updateSetInViews();
 			}
 		}
@@ -498,10 +497,10 @@ public class Application
 			"org.caleydo.datadomain.genetic"));
 
 		// Only show bucket when pathway data is loaded
-//		if (GeneralManager.get().getPathwayManager().size() > 0) {
-//			startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.bucket",
-//				"org.caleydo.datadomain.genetic"));
-//		}
+		// if (GeneralManager.get().getPathwayManager().size() > 0) {
+		// startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.bucket",
+		// "org.caleydo.datadomain.genetic"));
+		// }
 	}
 
 	public static boolean isInternetConnectionOK() {

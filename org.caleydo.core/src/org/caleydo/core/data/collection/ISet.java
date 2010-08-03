@@ -15,7 +15,7 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.util.clusterer.ClusterState;
 
 /**
@@ -42,14 +42,14 @@ public interface ISet
 	 * 
 	 * @param dataDomain
 	 */
-	public void setDataDomain(ISetBasedDataDomain dataDomain);
+	public void setDataDomain(ASetBasedDataDomain dataDomain);
 
 	/**
 	 * Get the data domain that is responsible for the set
 	 * 
 	 * @param dataDomain
 	 */
-	public ISetBasedDataDomain getDataDomain();
+	public ASetBasedDataDomain getDataDomain();
 
 	/**
 	 * Get the storage associated with the ID provided. Returns null if no such storage is registered.

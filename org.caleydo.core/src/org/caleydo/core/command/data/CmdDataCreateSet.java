@@ -9,6 +9,7 @@ import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
@@ -25,7 +26,7 @@ import org.eclipse.core.runtime.Status;
 public class CmdDataCreateSet
 	extends ACmdCreational<Set> {
 
-	private ISetBasedDataDomain dataDomain;
+	private ASetBasedDataDomain dataDomain;
 	private ArrayList<Integer> storageIDs;
 
 	/**
@@ -94,7 +95,7 @@ public class CmdDataCreateSet
 		storageIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(storageIDs);
 
 		String sAttrib3 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey());
-		dataDomain = (ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(sAttrib3);
+		dataDomain = (ASetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(sAttrib3);
 		if (dataDomain == null) {
 			DataDomainManager.getInstance().createDataDomain(sAttrib3);
 			GeneralManager
@@ -106,7 +107,7 @@ public class CmdDataCreateSet
 		}
 	}
 
-	public void setAttributes(ArrayList<Integer> iAlStorageIDs, ISetBasedDataDomain dataDomain) {
+	public void setAttributes(ArrayList<Integer> iAlStorageIDs, ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		this.storageIDs = iAlStorageIDs;
 	}

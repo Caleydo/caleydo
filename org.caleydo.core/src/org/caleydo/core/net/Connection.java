@@ -18,7 +18,7 @@ import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -284,12 +284,12 @@ public class Connection {
 		ApplicationInitData initData = new ApplicationInitData();
 
 		// FIXME this should work for more than one use case now
-		ISetBasedDataDomain useCase =
-			(ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+		ASetBasedDataDomain useCase =
+			(ASetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
 				"org.caleydo.datadomain.genetic");
 		ISet set = useCase.getSet();
 
-		initData.setUseCase(useCase);
+		initData.setDataDomain(useCase);
 		initData.setSetFileContent(SetUtils.loadSetFile(useCase.getLoadDataParameters()));
 		initData.setGeneClusterTree(SetUtils.getGeneClusterXml(set));
 		initData.setExperimentClusterTree(SetUtils.getExperimentClusterXml(set));

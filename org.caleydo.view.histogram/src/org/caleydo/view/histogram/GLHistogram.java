@@ -13,7 +13,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.ISetBasedDataDomain;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
@@ -72,8 +72,7 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 
 	private ColorMappingManager colorMappingManager;
 
-	private ISetBasedDataDomain dataDomain;
-	private ISet set;
+	private ASetBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -650,18 +649,21 @@ public class GLHistogram extends AGLView implements ISetBasedView, IViewCommandH
 		}
 	}
 
-	@Override
-	public void setSet(ISet set) {
-		this.set = set;
-	}
 
 	@Override
-	public ISetBasedDataDomain getDataDomain() {
+	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
 	@Override
-	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
+	}
+
+
+	@Override
+	public void setSet(ISet set) {
+		// TODO Auto-generated method stub
+		
 	}
 }

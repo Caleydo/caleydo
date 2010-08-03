@@ -1,7 +1,6 @@
 package org.caleydo.core.view;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.view.opengl.canvas.listener.INewSetHandler;
 
@@ -11,6 +10,6 @@ import org.caleydo.core.view.opengl.canvas.listener.INewSetHandler;
  * @author Alexander Lex
  */
 public interface ISetBasedView
-	extends IDataDomainBasedView<ISetBasedDataDomain>, IView, INewSetHandler {
+	extends IDataDomainBasedView<ASetBasedDataDomain>, IView, INewSetHandler {
 
 }
