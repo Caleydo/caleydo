@@ -32,8 +32,10 @@ import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.view.treemap.layout.ATreeMapNode;
 import org.caleydo.view.treemap.layout.AbstractTree;
 import org.caleydo.view.treemap.layout.DefaultTree;
+import org.caleydo.view.treemap.layout.DefaultTreeNode;
 import org.caleydo.view.treemap.layout.GlPainter;
 import org.caleydo.view.treemap.layout.SimpleLayoutAlgorithm;
 import org.caleydo.view.treemap.renderstyle.TreeMapRenderStyle;
@@ -55,6 +57,8 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 
 	private SelectionManager treeSelectionManager;
 
+	GlPainter painter;
+	
 	// private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 	// private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
 
@@ -94,6 +98,8 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 				EColorMappingType.GENE_EXPRESSION);
 
 		treeSelectionManager = new SelectionManager(primaryIDType);
+		
+		
 
 	}
 
@@ -105,6 +111,8 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		super.renderStyle = renderStyle;
 		detailLevel = EDetailLevel.HIGH;
 
+		painter= new GlPainter(gl, viewFrustum, pickingManager, getID());
+		
 	}
 
 	@Override
@@ -183,10 +191,20 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 	@Override
 	public void display(GL gl) {
 
+		if(bIsDisplayListDirtyLocal){
+			AbstractTree tree= DefaultTree.createSampleTree();
+			SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
+			layouter.layout(tree, painter);
+			painter.paintTreeMap(tree);
+			bIsDisplayListDirtyLocal=false;
+		}
+			
+		painter.paintTreeMapFromCache();
+		
 		// GLHelperFunctions.drawAxis(gl);
 		// GLHelperFunctions.drawPointAt(gl, 1, 1, 1);
-		gl.glPushName(pickingManager.getPickingID(getID(),
-				EPickingType.TREEMAP_ELEMENT_SELECTED, 1));
+//		gl.glPushName(pickingManager.getPickingID(getID(),
+//				EPickingType.TREEMAP_ELEMENT_SELECTED, 1));
 
 		// gl.glBegin(GL.GL_QUADS);
 		// gl.glColor3f(0, 1, 0);
@@ -197,26 +215,26 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		// gl.glEnd();
 		// gl.glPopName();
 
-		GlPainter painter = new GlPainter(gl, viewFrustum);
+		//GlPainter painter = new GlPainter(gl, viewFrustum);
 
 		// painter.paintRectangle(0, 0,(float) 1.0/3, 1, Color.RED);
 		// painter.paintRectangle((float) 1.0/3, 0,(float) 2.0/3, 1,
 		// Color.GREEN);
 		// painter.paintRectangle((float) 2.0/3, 0, 1, 1, Color.BLUE);
 
-		Tree<ClusterNode> contentTree = dataDomain.getSet()
-				.getContentData(ContentVAType.CONTENT).getContentTree();
+//		Tree<ClusterNode> contentTree = dataDomain.getSet()
+//				.getContentData(ContentVAType.CONTENT).getContentTree();
 		// Tree<ClusterNode> storageTree = dataDomain.getSet()
 		// .getStorageData(StorageVAType.STORAGE).getStorageTree();
 
-		AbstractTree tree = DefaultTree.createSampleTree();
-		SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
-
-		layouter.layout(tree, painter);
-		painter.paint(tree);
-
-		painter.paintRectangle((float) 0.0, (float) 0.0, (float) 1 / 3, (float) 1,
-				Color.YELLOW);
+//		AbstractTree tree = DefaultTree.createSampleTree();
+//		SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
+//
+//		layouter.layout(tree, painter);
+//		painter.paintTreeMap(tree);
+//
+//		painter.paintRectangle((float) 0.0, (float) 0.0, (float) 1 / 3, (float) 1,
+//				Color.YELLOW);
 
 		// SelectionManager contentSelectionManager = dataDomain
 		// .getContentSelectionManager();

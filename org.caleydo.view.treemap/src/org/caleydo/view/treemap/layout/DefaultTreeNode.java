@@ -1,25 +1,27 @@
 package org.caleydo.view.treemap.layout;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultTreeNode extends AbstractTreeNode {
+public class DefaultTreeNode extends ATreeMapNode {
 
 	float size;
 	Color color;
-	List<AbstractTreeNode> children;
+	ArrayList<ATreeMapNode> children;
 	String label="";
 	
 	
-	public DefaultTreeNode(double size, Color color, List<AbstractTreeNode> children, String label){
+	public DefaultTreeNode(AbstractTree root, double size, Color color, ArrayList<ATreeMapNode> children, String label){
+		super(root);
 		this.size=(float) size;
 		this.color=color;
 		this.children=children;
 		this.label=label;
 	}
 	
-	public DefaultTreeNode(double size, Color color, List<AbstractTreeNode> children){
-		this(size, color, children, "");
+	public DefaultTreeNode(AbstractTree root, double size, Color color, ArrayList<ATreeMapNode> children){
+		this(root, size, color, children, "");
 	}
 	
 	@Override
@@ -35,7 +37,7 @@ public class DefaultTreeNode extends AbstractTreeNode {
 	}
 
 	@Override
-	public List<AbstractTreeNode> getChildren() {
+	public ArrayList<ATreeMapNode> getChildren() {
 		// TODO Auto-generated method stub
 		return children;
 	}

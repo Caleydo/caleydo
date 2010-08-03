@@ -3,18 +3,18 @@ package org.caleydo.view.treemap.layout;
 public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
 
 	@Override
-	public void layout(AbstractTree tree, IGlPainter painter) {
+	public void layout(AbstractTree tree, GlPainter painter) {
 		// TODO Auto-generated method stub
-		painter.init();
+		
 		paintHelp(tree.getRoot(), 0, 0, 1, 1, HORIZONTAL_ALIGNMENT, painter);
-		painter.finish();
+		
 	}
 
 	private static final boolean HORIZONTAL_ALIGNMENT = true;
 	private static final boolean VERTICAL_ALIGNMENT = false;
 
-	private void paintHelp(AbstractTreeNode root, float xOffset, float yOffset,
-			float xMax, float yMax, boolean alignment, IGlPainter painter) {
+	private void paintHelp(ATreeMapNode root, float xOffset, float yOffset,
+			float xMax, float yMax, boolean alignment, GlPainter painter) {
 		root.setMinX(xOffset);
 		root.setMinY(yOffset);
 		root.setMaxX(xMax);
@@ -25,7 +25,7 @@ public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
 			if (alignment == HORIZONTAL_ALIGNMENT) {
 				float x = xOffset;
 				float size = 0;
-				for (AbstractTreeNode node : root.getChildren()) {
+				for (ATreeMapNode node : root.getChildren()) {
 					size = (node.getSize() / area) * (xMax - xOffset);
 					paintHelp(node, x, yOffset, x + size, yMax, !alignment,
 							painter);
@@ -34,7 +34,7 @@ public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
 			} else {
 				float y = yOffset;
 				float size;
-				for (AbstractTreeNode node : root.getChildren()) {
+				for (ATreeMapNode node : root.getChildren()) {
 					size = (node.getSize() / area) * (yMax - yOffset);
 					paintHelp(node, xOffset, y, xMax, y + size, !alignment,
 							painter);

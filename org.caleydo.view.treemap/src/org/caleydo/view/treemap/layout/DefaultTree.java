@@ -1,44 +1,47 @@
 package org.caleydo.view.treemap.layout;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Vector;
 
-public class DefaultTree implements AbstractTree {
+public class DefaultTree extends AbstractTree {
 
-	public AbstractTreeNode root;
+	public ATreeMapNode root;
 	
 	@Override
-	public AbstractTreeNode getRoot() {
+	public ATreeMapNode getRoot() {
 		// TODO Auto-generated method stub
 		return root;
 	}
 	
 	public static AbstractTree createSampleTree(){
-		Vector<AbstractTreeNode> children;
+		DefaultTree tree = new DefaultTree();
+		
+		ArrayList<ATreeMapNode> children;
 		DefaultTreeNode node;
 		
-		children = new Vector<AbstractTreeNode>();
-		children.add(new DefaultTreeNode(1.0/12, Color.ORANGE, new Vector<AbstractTreeNode>(),"3.1"));
-		children.add(new DefaultTreeNode(1.0/12, Color.MAGENTA, new Vector<AbstractTreeNode>(),"3.2"));
+		children = new ArrayList<ATreeMapNode>();
+		children.add(new DefaultTreeNode(tree, 1.0/12, Color.ORANGE, new ArrayList<ATreeMapNode>(),"3.1"));
+		children.add(new DefaultTreeNode(tree, 1.0/12, Color.MAGENTA, new ArrayList<ATreeMapNode>(),"3.2"));
 		
-		node=new DefaultTreeNode(1.0/6, null, children);
-		children = new Vector<AbstractTreeNode>();
+		node=new DefaultTreeNode(tree, 1.0/6, null, children);
+		children = new ArrayList<ATreeMapNode>();
 		children.add(node);
-		children.add(new DefaultTreeNode(1.0/6, Color.GRAY, new Vector<AbstractTreeNode>(),"2.1"));
-		node = new DefaultTreeNode(1.0/3, null, children);
+		children.add(new DefaultTreeNode(tree, 1.0/6, Color.GRAY, new ArrayList<ATreeMapNode>(),"2.1"));
+		node = new DefaultTreeNode(tree, 1.0/3, null, children);
 		
-		Vector<AbstractTreeNode> children2 = new Vector<AbstractTreeNode>();
-		children2.add(new DefaultTreeNode(1.0/9, Color.RED, new Vector<AbstractTreeNode>(),"2.2"));
-		children2.add(new DefaultTreeNode(1.0/9, Color.GREEN, new Vector<AbstractTreeNode>(),"2.3"));
-		children2.add(new DefaultTreeNode(1.0/9, Color.BLUE, new Vector<AbstractTreeNode>(),"2.4"));
+		ArrayList<ATreeMapNode> children2 = new ArrayList<ATreeMapNode>();
+		children2.add(new DefaultTreeNode(tree, 1.0/9, Color.RED, new ArrayList<ATreeMapNode>(),"2.2"));
+		children2.add(new DefaultTreeNode(tree, 1.0/9, Color.GREEN, new ArrayList<ATreeMapNode>(),"2.3"));
+		children2.add(new DefaultTreeNode(tree, 1.0/9, Color.BLUE, new ArrayList<ATreeMapNode>(),"2.4"));
 		
-		Vector<AbstractTreeNode> children3 = new Vector<AbstractTreeNode>();
-		children3.add(new DefaultTreeNode(1.0/3, Color.CYAN, new Vector<AbstractTreeNode>(),"1.1"));
+		ArrayList<ATreeMapNode> children3 = new ArrayList<ATreeMapNode>();
+		children3.add(new DefaultTreeNode(tree, 1.0/3, Color.CYAN, new ArrayList<ATreeMapNode>(),"1.1"));
 		children3.add(node);
-		children3.add(new DefaultTreeNode(1.0/3, null, children2));
+		children3.add(new DefaultTreeNode(tree, 1.0/3, null, children2));
 		
-		DefaultTree tree = new DefaultTree();
-		tree.root= new DefaultTreeNode(1, null, children3);
+		
+		tree.root= new DefaultTreeNode(tree, 1, null, children3);
 		return tree;
 	}
 

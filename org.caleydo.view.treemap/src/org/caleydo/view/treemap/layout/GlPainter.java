@@ -5,29 +5,53 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 
-public class GlPainter implements IGlPainter {
+public class GlPainter {
 
 	GL gl;
 	IViewFrustum viewFrustum;
+	PickingManager pickingManager;
+	int viewID;
 
-	public GlPainter(GL gl, IViewFrustum viewFrustum) {
+	int treemapList, highlightList;
+	
+	public GlPainter(GL gl, IViewFrustum viewFrustum, PickingManager pickingManager, int viewID) {
+		this.pickingManager=pickingManager;
 		this.gl = gl;
 		this.viewFrustum = viewFrustum;
+		this.viewID=viewID;
+		
+		treemapList=gl.glGenLists(1);
+		highlightList=gl.glGenLists(1);
 	}
 
-	public void paint(AbstractTree tree) {
+	public void paintHighlighting(){
+		
+	}
+	
+	public void paintTreeMapFromCache(){
+		gl.glCallList(treemapList);
+	}
+	
+	public void paintTreeMap(AbstractTree tree) {
+		gl.glNewList(treemapList, GL.GL_COMPILE);
 		paintHelp(tree.getRoot());
+		gl.glEndList();
 
 	}
 	
-	private void paintHelp(AbstractTreeNode root){
-		List<AbstractTreeNode> children = root.getChildren();
-		if(children==null||children.size()==0)
+	private void paintHelp(ATreeMapNode root){
+		List<ATreeMapNode> children = root.getChildren();
+		if(children==null||children.size()==0){
+			gl.glPushName(pickingManager.getPickingID(viewID, EPickingType.TREEMAP_ELEMENT_SELECTED, 1));
 			fillRectangle(root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(), root.getColorAttribute());
+			
+		}
 		else{
-			for(AbstractTreeNode node: children){
+			for(ATreeMapNode node: children){
 				paintHelp(node);
 			}
 		}
@@ -39,7 +63,7 @@ public class GlPainter implements IGlPainter {
 		gl.glBegin(GL.GL_LINE_LOOP);
 
 		float color[] = c.getRGBColorComponents(null);
-		gl.glColor3f(color[0], color[1], color[2]);
+		gl.glColor4f(color[0], color[1], color[2],1);
 
 		
 		
@@ -76,17 +100,5 @@ public class GlPainter implements IGlPainter {
 		gl.glEnd();
 	}
 
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		System.out.println("Start painting");
 
-	}
-
-	@Override
-	public void finish() {
-		// TODO Auto-generated method stub
-		System.out.println("Finished painting");
-
-	}
 }

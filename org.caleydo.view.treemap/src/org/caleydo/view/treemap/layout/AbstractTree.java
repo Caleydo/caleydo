@@ -1,7 +1,7 @@
 package org.caleydo.view.treemap.layout;
 
-public interface AbstractTree {
+public abstract class AbstractTree {
 	
-	public AbstractTreeNode getRoot();
+	public abstract ATreeMapNode getRoot();
 
 }
