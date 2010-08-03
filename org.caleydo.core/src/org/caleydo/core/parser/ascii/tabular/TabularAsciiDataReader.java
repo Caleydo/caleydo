@@ -335,7 +335,7 @@ public class TabularAsciiDataReader
 				case GROUP_REPRESENTATIVE:
 
 					int[] iArGroupRepr = alGroupInfo.get(1);
-					SetUtils.setContentGroupReprInfo((Set) set, ContentVAType.CONTENT, iArGroupRepr);
+					SetUtils.setContentGroupRepresentatives((Set) set, ContentVAType.CONTENT, iArGroupRepr);
 
 					iIntArrayIndex++;
 					break;
@@ -344,7 +344,7 @@ public class TabularAsciiDataReader
 						iArGroupInfo = alGroupInfo.get(2);
 						SetUtils.setStorageGroupList((Set) set, StorageVAType.STORAGE, iArGroupInfo);
 						iArGroupRepr = alGroupInfo.get(3);
-						SetUtils.setStorageGroupReprInfo((Set) set, StorageVAType.STORAGE, iArGroupRepr);
+						SetUtils.setStorageGroupRepresentatives((Set) set, StorageVAType.STORAGE, iArGroupRepr);
 					}
 					return;
 

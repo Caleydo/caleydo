@@ -64,12 +64,8 @@ public class Set
 
 	protected StorageData defaultStorageData;
 
-	private boolean bGeneClusterInfo = false;
-	private boolean bExperimentClusterInfo = false;
-
-	/** Tree for content hierarchy */
-	private Tree<ClusterNode> contentTree;
-	/** Tree for storage hierarchy */
+	// private boolean bGeneClusterInfo = false;
+	// private boolean bExperimentClusterInfo = false;
 
 	protected EExternalDataRepresentation externalDataRep;
 
@@ -107,6 +103,15 @@ public class Set
 		defaultStorageData.setStorageVA(new StorageVirtualArray(StorageVAType.STORAGE));
 		statisticsResult = new StatisticsResult(this);
 	}
+	
+	/**
+	 * Creates a {@link MetaSet} for every node in the storage tree.
+	 */
+	public void createMetaSets() {
+		ClusterNode rootNode = hashStorageData.get(StorageVAType.STORAGE).getStorageTreeRoot();
+		rootNode.createMetaSets(this);
+	}
+	
 
 	@Override
 	public void setDataDomain(ISetBasedDataDomain dataDomain) {
@@ -144,37 +149,7 @@ public class Set
 		return depth;
 	}
 
-	/**
-	 * Normalize all storages in the set, based solely on the values within each storage. Operates with the
-	 * raw data as basis by default, however when a logarithmized representation is in the storage this is
-	 * used.
-	 */
-	private void normalizeLocally() {
-		isSetHomogeneous = false;
-		for (IStorage storage : hashStorages.values()) {
-			storage.normalize();
-		}
-	}
-
-	/**
-	 * Normalize all storages in the set, based on values of all storages. For a numerical storage, this would
-	 * mean, that global minima and maxima are retrieved instead of local ones (as is done with normalize())
-	 * Operates with the raw data as basis by default, however when a logarithmized representation is in the
-	 * storage this is used. Make sure that all storages are logarithmized.
-	 */
-	private void normalizeGlobally() {
-		isSetHomogeneous = true;
-		for (IStorage storage : hashStorages.values()) {
-			if (storage instanceof INumericalStorage) {
-				INumericalStorage nStorage = (INumericalStorage) storage;
-				nStorage.normalizeWithExternalExtrema(getMin(), getMax());
-			}
-			else
-				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"
-					+ "contains nominal storages, currently not supported!");
-		}
-	}
-
+	
 	@Override
 	public void setLabel(String sLabel) {
 		this.sLabel = sLabel;
@@ -287,54 +262,8 @@ public class Set
 		return histogram;
 	}
 
-	// @Override
-	// public int createVA(VAType vaType, List<Integer> iAlSelections) {
-	// if (vaType == VAType.STORAGE) {
-	// IVirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
-	// return createStorageVA(virtualArray);
-	// }
-	// else {
-	// IVirtualArray va = new VirtualArray(vaType, depth(), iAlSelections);
-	// return createContentVA(va);
-	// }
-	//
-	// }
 
-	// @Override
-	// public StorageVirtualArray getStorageVA(StorageVAType vaType) {
-	// StorageData storageData = hashStorageData.get(vaType);
-	// if (storageData == null) {
-	// hashStorageData.put(vaType, defaultStorageData.clone());
-	// storageData = hashStorageData.get(vaType);
-	// }
-	// return storageData.getStorageVA();
-	// }
 
-	// @Override
-	// public ContentVirtualArray getContentVA(ContentVAType vaType) {
-	//
-	// ContentData contentData = hashContentData.get(vaType);
-	// if (contentData == null) {
-	// contentData = createContentData(vaType);
-	// hashContentData.put(vaType, contentData);
-	// }
-	// return contentData.getContentVA();
-	//
-	// }
-
-	private ContentData createContentData(ContentVAType vaType) {
-		ContentData contentData = new ContentData();
-
-		ContentVirtualArray contentVA = new ContentVirtualArray(vaType);
-		if (!vaType.isEmptyByDefault()) {
-			for (int count = 0; count < depth(); count++) {
-				contentVA.append(count);
-			}
-		}
-		contentData.setContentVA(contentVA);
-		return contentData;
-
-	}
 
 	@Override
 	public void restoreOriginalContentVA() {
@@ -443,27 +372,6 @@ public class Set
 		hashStorageData.put(vaType, storageData);
 	}
 
-	private void calculateGlobalExtrema() {
-		double dTemp = 1.0;
-
-		if (bIsNumerical) {
-			for (IStorage storage : hashStorages.values()) {
-				INumericalStorage nStorage = (INumericalStorage) storage;
-				dTemp = nStorage.getMin();
-				if (!bArtificialMin && dTemp < dMin) {
-					dMin = dTemp;
-				}
-				dTemp = nStorage.getMax();
-				if (!bArtificialMax && dTemp > dMax) {
-					dMax = dTemp;
-				}
-			}
-		}
-		else if (hashStorages.get(0) instanceof INominalStorage<?>)
-			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
-				+ "on nominal data");
-	}
-
 	public EExternalDataRepresentation getExternalDataRep() {
 		return externalDataRep;
 	}
@@ -472,7 +380,6 @@ public class Set
 	public boolean isSetHomogeneous() {
 		return isSetHomogeneous;
 	}
-
 
 	@Override
 	public void cluster(ClusterState clusterState) {
@@ -497,7 +404,6 @@ public class Set
 			ContentData contentResult = result.getContentResult();
 			if (contentResult != null) {
 				hashContentData.put(clusterState.getContentVAType(), contentResult);
-				contentTree = contentResult.getContentTree();
 			}
 			StorageData storageResult = result.getStorageResult();
 			if (storageResult != null) {
@@ -509,60 +415,6 @@ public class Set
 
 	}
 
-	// public void setAlClusterSizes(ArrayList<Integer> alClusterSizes) {
-	// this.alClusterSizes = alClusterSizes;
-	// }
-
-	// public ArrayList<Integer> getAlClusterSizes() {
-	// return alClusterSizes;
-	// }
-
-	// @Override
-	// public ArrayList<Integer> getAlExamples() {
-	// return alClusterExamples;
-	// }
-	//
-	// @Override
-	// public void setAlExamples(ArrayList<Integer> alExamples) {
-	// this.alClusterExamples = alExamples;
-	// }
-
-	
-
-	@Override
-	public boolean isGeneClusterInfo() {
-		return bGeneClusterInfo;
-	}
-
-	@Override
-	public boolean isExperimentClusterInfo() {
-		return bExperimentClusterInfo;
-	}
-
-	// @Override
-	// public void setContentGroupList(ContentGroupList groupList) {
-	// contentGroupList = groupList;
-	// bGeneClusterInfo = true;
-	// }
-
-	// @Override
-	// public void setStorageGroupList(StorageGroupList groupList) {
-	// storageGroupList = groupList;
-	// bExperimentClusterInfo = true;
-	//
-	// }
-
-	@Override
-	public void setGeneClusterInfoFlag(boolean bGeneClusterInfo) {
-		this.bGeneClusterInfo = bGeneClusterInfo;
-	}
-
-	@Override
-	public void setExperimentClusterInfoFlag(boolean bExperimentClusterInfo) {
-		this.bExperimentClusterInfo = bExperimentClusterInfo;
-	}
-
-	
 	@Override
 	public ContentData getContentData(ContentVAType vaType) {
 		ContentData contentData = hashContentData.get(vaType);
@@ -577,7 +429,6 @@ public class Set
 	public StorageData getStorageData(StorageVAType vaType) {
 		return hashStorageData.get(vaType);
 	}
-
 
 	@Override
 	public void destroy() {
@@ -625,54 +476,6 @@ public class Set
 		return getDataRepFromRaw(result, dataRepresentation);
 	}
 
-	/**
-	 * Converts the specified value into raw using the current external data representation.
-	 * 
-	 * @param dNumber
-	 *            Value in the current external data representation.
-	 * @return Raw value converted from the specified value.
-	 */
-	private double getRawFromExternalDataRep(double dNumber) {
-		switch (externalDataRep) {
-			case NORMAL:
-				return dNumber;
-			case LOG2:
-				return Math.pow(2, dNumber);
-			case LOG10:
-				return Math.pow(10, dNumber);
-			default:
-				throw new IllegalStateException("Conversion to raw not implemented for data rep"
-					+ externalDataRep);
-		}
-	}
-
-	/**
-	 * Converts a raw value to the specified data representation.
-	 * 
-	 * @param dRaw
-	 *            Raw value that shall be converted
-	 * @param dataRepresentation
-	 *            Data representation the raw value shall be converted to.
-	 * @return Value in the specified data representation converted from the raw value.
-	 */
-	private double getDataRepFromRaw(double dRaw, EExternalDataRepresentation dataRepresentation) {
-		switch (dataRepresentation) {
-			case NORMAL:
-				return dRaw;
-			case LOG2:
-				return Math.log(dRaw) / Math.log(2);
-			case LOG10:
-				return Math.log10(dRaw);
-			default:
-				throw new IllegalStateException("Conversion to data rep not implemented for data rep"
-					+ dataRepresentation);
-		}
-	}
-
-	public void createMetaSets() {
-		ClusterNode rootNode = hashStorageData.get(StorageVAType.STORAGE).getStorageTreeRoot();
-		rootNode.createMetaSets(this);
-	}
 
 	@Override
 	public StatisticsResult getStatisticsResult() {
@@ -708,8 +511,12 @@ public class Set
 		this.statisticsResult = statisticsResult;
 	}
 
+	// ----------------------------------------------------------------------------	
+	//                     END OF PUBLIC INTERFACE
+	// ----------------------------------------------------------------------------
+	
 	// -------------------- set creation ------------------------------
-	// set creation is achieved by employing methods of SetUtils which utilizes package private methods in the
+	// Set creation is achieved by employing methods of SetUtils which utilizes package private methods in the
 	// set.
 
 	/**
@@ -882,6 +689,118 @@ public class Set
 		}
 	}
 	
+	/**
+	 * Normalize all storages in the set, based solely on the values within each storage. Operates with the
+	 * raw data as basis by default, however when a logarithmized representation is in the storage this is
+	 * used.
+	 */
+	private void normalizeLocally() {
+		isSetHomogeneous = false;
+		for (IStorage storage : hashStorages.values()) {
+			storage.normalize();
+		}
+	}
+
+	/**
+	 * Normalize all storages in the set, based on values of all storages. For a numerical storage, this would
+	 * mean, that global minima and maxima are retrieved instead of local ones (as is done with normalize())
+	 * Operates with the raw data as basis by default, however when a logarithmized representation is in the
+	 * storage this is used. Make sure that all storages are logarithmized.
+	 */
+	private void normalizeGlobally() {
+		isSetHomogeneous = true;
+		for (IStorage storage : hashStorages.values()) {
+			if (storage instanceof INumericalStorage) {
+				INumericalStorage nStorage = (INumericalStorage) storage;
+				nStorage.normalizeWithExternalExtrema(getMin(), getMax());
+			}
+			else
+				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"
+					+ "contains nominal storages, currently not supported!");
+		}
+	}
+	
+	// ---------------------- helper functions ------------------------------
+	
+	private ContentData createContentData(ContentVAType vaType) {
+		ContentData contentData = new ContentData();
+
+		ContentVirtualArray contentVA = new ContentVirtualArray(vaType);
+		if (!vaType.isEmptyByDefault()) {
+			for (int count = 0; count < depth(); count++) {
+				contentVA.append(count);
+			}
+		}
+		contentData.setContentVA(contentVA);
+		return contentData;
+
+	}
+	
+	
+	/**
+	 * Converts a raw value to the specified data representation.
+	 * 
+	 * @param dRaw
+	 *            Raw value that shall be converted
+	 * @param dataRepresentation
+	 *            Data representation the raw value shall be converted to.
+	 * @return Value in the specified data representation converted from the raw value.
+	 */
+	private double getDataRepFromRaw(double dRaw, EExternalDataRepresentation dataRepresentation) {
+		switch (dataRepresentation) {
+			case NORMAL:
+				return dRaw;
+			case LOG2:
+				return Math.log(dRaw) / Math.log(2);
+			case LOG10:
+				return Math.log10(dRaw);
+			default:
+				throw new IllegalStateException("Conversion to data rep not implemented for data rep"
+					+ dataRepresentation);
+		}
+	}
+	
+	/**
+	 * Converts the specified value into raw using the current external data representation.
+	 * 
+	 * @param dNumber
+	 *            Value in the current external data representation.
+	 * @return Raw value converted from the specified value.
+	 */
+	private double getRawFromExternalDataRep(double dNumber) {
+		switch (externalDataRep) {
+			case NORMAL:
+				return dNumber;
+			case LOG2:
+				return Math.pow(2, dNumber);
+			case LOG10:
+				return Math.pow(10, dNumber);
+			default:
+				throw new IllegalStateException("Conversion to raw not implemented for data rep"
+					+ externalDataRep);
+		}
+	}
+	
+	private void calculateGlobalExtrema() {
+		double dTemp = 1.0;
+
+		if (bIsNumerical) {
+			for (IStorage storage : hashStorages.values()) {
+				INumericalStorage nStorage = (INumericalStorage) storage;
+				dTemp = nStorage.getMin();
+				if (!bArtificialMin && dTemp < dMin) {
+					dMin = dTemp;
+				}
+				dTemp = nStorage.getMax();
+				if (!bArtificialMax && dTemp > dMax) {
+					dMax = dTemp;
+				}
+			}
+		}
+		else if (hashStorages.get(0) instanceof INominalStorage<?>)
+			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
+				+ "on nominal data");
+	}
 
 
 }

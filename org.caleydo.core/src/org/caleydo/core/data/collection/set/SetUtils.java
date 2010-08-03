@@ -39,9 +39,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Utility class that features loading and saving set-files and set-creation and storage-creation.
+ * Utility class that features creating, loading and saving sets and storages.
  * 
  * @author Werner Puff
+ * @author Alexander Lex
  */
 public class SetUtils {
 
@@ -49,10 +50,10 @@ public class SetUtils {
 	public static final String DATA_FILE_PREFIX = "setfile";
 
 	/** prefix for temporary gene-tree--file */
-	public static final String GENE_FILE_PREFIX = "genetree";
+	public static final String CONTENT_TREE_FILE_PREFIX = "contenttree";
 
 	/** prefix for temporary experiment-tree-file */
-	public static final String EXPERIMENT_FILE_PREFIX = "exptree";
+	public static final String STORAGE_TREE_FILE_PREFIX = "storagetree";
 
 	/**
 	 * Loads the set-file as specified in the {@link IDataDomain}'s {@link LoadDataParameters} and stores the
@@ -187,7 +188,7 @@ public class SetUtils {
 	}
 
 	/**
-	 * Creates the set from a previously prepared storage defintion.
+	 * Creates the set from a previously prepared storage definition.
 	 * 
 	 * @param loadDataParameters
 	 *            definition how to load the set
@@ -362,7 +363,7 @@ public class SetUtils {
 		File homeDir = new File(IGeneralManager.CALEYDO_HOME_PATH);
 		File geneFile;
 		try {
-			geneFile = File.createTempFile(GENE_FILE_PREFIX, "xml", homeDir);
+			geneFile = File.createTempFile(CONTENT_TREE_FILE_PREFIX, "xml", homeDir);
 			parameters.setGeneTreeFileName(geneFile.getCanonicalPath());
 		}
 		catch (IOException ex) {
@@ -383,7 +384,7 @@ public class SetUtils {
 		File homeDir = new File(IGeneralManager.CALEYDO_HOME_PATH);
 		File expFile;
 		try {
-			expFile = File.createTempFile(EXPERIMENT_FILE_PREFIX, "xml", homeDir);
+			expFile = File.createTempFile(STORAGE_TREE_FILE_PREFIX, "xml", homeDir);
 			parameters.setExperimentsFileName(expFile.getCanonicalPath());
 		}
 		catch (IOException ex) {
@@ -392,6 +393,13 @@ public class SetUtils {
 		saveFile(data.getBytes(), expFile);
 	}
 
+	/**
+	 * Load trees as specified in loadDataParameters and write them to the set. FIXME: this is not aware of
+	 * possibly alternative {@link ContentVAType}s or {@link StorageVAType}s
+	 * 
+	 * @param loadDataParameters
+	 * @param set
+	 */
 	public static void loadTrees(LoadDataParameters loadDataParameters, ISet set) {
 		// import gene tree
 		String geneTreeFileName = loadDataParameters.getGeneTreeFileName();
@@ -466,58 +474,76 @@ public class SetUtils {
 	}
 
 	/**
-	 * Creates a group list for the imported group information
+	 * Creates a contentGroupList from the group information read from a stored file
 	 * 
-	 * @param arGroupInfo
-	 * @param bGeneGroupInfo
-	 *            true in case of gene/entity cluster info, false in case of experiment cluster info
+	 * @param set
+	 * @param vaType
+	 *            specify for which va type this is valid
+	 * @param groupInfo
+	 *            the array list extracted from the file
 	 */
-	public static void setContentGroupList(Set set, ContentVAType vaType, int[] arGroupInfo) {
+	public static void setContentGroupList(Set set, ContentVAType vaType, int[] groupInfo) {
 
 		int cluster = 0, cnt = 0;
 
 		ContentGroupList contentGroupList = set.getContentData(vaType).getContentVA().getGroupList();
 		contentGroupList.clear();
 
-		for (int i = 0; i < arGroupInfo.length; i++) {
+		for (int i = 0; i < groupInfo.length; i++) {
 			Group group = null;
-			if (cluster != arGroupInfo[i]) {
+			if (cluster != groupInfo[i]) {
 				group = new Group(cnt, false, 0, SelectionType.NORMAL);
 				contentGroupList.append(group);
 				cluster++;
 				cnt = 0;
 			}
 			cnt++;
-			if (i == arGroupInfo.length - 1) {
+			if (i == groupInfo.length - 1) {
 				group = new Group(cnt, false, 0, SelectionType.NORMAL);
 				contentGroupList.append(group);
 			}
 		}
 	}
 
-	public static void setStorageGroupList(Set set, StorageVAType vaType, int[] arGroupInfo) {
+	/**
+	 * Creates a storageGroupList from the group information read from a stored file
+	 * 
+	 * @param set
+	 * @param vaType
+	 *            specify for which va type this is valid
+	 * @param groupInfo
+	 *            the array list extracted from the file
+	 */
+	public static void setStorageGroupList(Set set, StorageVAType vaType, int[] groupInfo) {
 		int cluster = 0, cnt = 0;
 
 		StorageGroupList storageGroupList = set.getStorageData(vaType).getStorageVA().getGroupList();
 		storageGroupList.clear();
 
-		for (int i = 0; i < arGroupInfo.length; i++) {
+		for (int i = 0; i < groupInfo.length; i++) {
 			Group group = null;
-			if (cluster != arGroupInfo[i]) {
+			if (cluster != groupInfo[i]) {
 				group = new Group(cnt, false, 0, SelectionType.NORMAL);
 				storageGroupList.append(group);
 				cluster++;
 				cnt = 0;
 			}
 			cnt++;
-			if (i == arGroupInfo.length - 1) {
+			if (i == groupInfo.length - 1) {
 				group = new Group(cnt, false, 0, SelectionType.NORMAL);
 				storageGroupList.append(group);
 			}
 		}
 	}
 
-	public static void setContentGroupReprInfo(Set set, ContentVAType vaType, int[] arGroupRepr) {
+	/**
+	 * Set representative elements for contentGroupLists read from file
+	 * 
+	 * @param set
+	 * @param vaType
+	 * @param groupReps
+	 */
+	public static void setContentGroupRepresentatives(Set set, ContentVAType vaType, int[] groupReps) {
 
 		int group = 0;
 
@@ -526,15 +552,22 @@ public class SetUtils {
 		contentGroupList.get(group).setIdxExample(0);
 		group++;
 
-		for (int i = 1; i < arGroupRepr.length; i++) {
-			if (arGroupRepr[i] != arGroupRepr[i - 1]) {
+		for (int i = 1; i < groupReps.length; i++) {
+			if (groupReps[i] != groupReps[i - 1]) {
 				contentGroupList.get(group).setIdxExample(i);
 				group++;
 			}
 		}
 	}
 
-	public static void setStorageGroupReprInfo(Set set, StorageVAType vaType, int[] arGroupRepr) {
+	/**
+	 * Set representative elements for storageGroupLists read from file
+	 * 
+	 * @param set
+	 * @param vaType
+	 * @param groupReps
+	 */
+	public static void setStorageGroupRepresentatives(Set set, StorageVAType vaType, int[] groupReps) {
 
 		int group = 0;
 
@@ -543,8 +576,8 @@ public class SetUtils {
 		storageGroupList.get(group).setIdxExample(0);
 		group++;
 
-		for (int i = 1; i < arGroupRepr.length; i++) {
-			if (arGroupRepr[i] != arGroupRepr[i - 1]) {
+		for (int i = 1; i < groupReps.length; i++) {
+			if (groupReps[i] != groupReps[i - 1]) {
 				storageGroupList.get(group).setIdxExample(i);
 				group++;
 			}

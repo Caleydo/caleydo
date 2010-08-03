@@ -6,6 +6,7 @@ import javax.naming.OperationNotSupportedException;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.set.ContentData;
+import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.collection.set.StorageData;
 import org.caleydo.core.data.collection.set.statistics.StatisticsResult;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
@@ -13,11 +14,23 @@ import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.StorageVirtualArray;
+import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.util.clusterer.ClusterState;
 
 /**
- * Interface for Sets
+ * <h2>General Information</h2>
+ * <p>
+ * A set is the main container for tabular data in Caleydo. A set is made up of {@link IStorage}s, where each
+ * storage corresponds to a column in a tabular data set. Columns are therefore always refered to as
+ * <b>Storages</b> and rows as <b>Content</b> The data should be accessed through {@link VirtualArray}s, which
+ * are stored in {@link StorageData}s for Storages and {@link ContentData}s for Content.
+ * </p>
+ * <h2>Set Creation</h2>
+ * <p>
+ * A set relies heavily upon {@link SetUtils} for being created. Many creation related functions are provided
+ * there, sometimes interfacing with package private methods in this class.
+ * </p>
  * 
  * @author Alexander Lex
  */
@@ -185,24 +198,6 @@ public interface ISet
 	 * @return ArrayList<IVirtualArray> Virtual arrays holding cluster result
 	 */
 	public void cluster(ClusterState clusterState);
-
-	public void setGeneClusterInfoFlag(boolean bGeneClusterInfo);
-
-	public void setExperimentClusterInfoFlag(boolean bExperimentClusterInfo);
-
-	/**
-	 * Flag determines if gene cluster information was imported or not.
-	 * 
-	 * @return cluster info flag
-	 */
-	public boolean isGeneClusterInfo();
-
-	/**
-	 * Flag determines if experiment cluster information was imported or not.
-	 * 
-	 * @return cluster info flag
-	 */
-	public boolean isExperimentClusterInfo();
 
 	/**
 	 * Returns a histogram of the values of all storages in the set (not considering VAs). The number of the

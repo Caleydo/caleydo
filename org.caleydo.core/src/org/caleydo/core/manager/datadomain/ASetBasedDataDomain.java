@@ -155,7 +155,9 @@ public abstract class ASetBasedDataDomain
 		if (this.set.getID() == setID)
 			set = this.set;
 		else
-			set = this.set.getStorageData(StorageVAType.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
+			set =
+				this.set.getStorageData(StorageVAType.STORAGE).getStorageTreeRoot()
+					.getMetaSetFromSubTree(setID);
 
 		// TODO: warning
 		if (set == null)
@@ -164,8 +166,6 @@ public abstract class ASetBasedDataDomain
 		set.cluster(clusterState);
 
 		// This should be done to avoid problems with group info in HHM
-		set.setGeneClusterInfoFlag(false);
-		set.setExperimentClusterInfoFlag(false);
 
 		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, dataDomainType, clusterState
 			.getContentVAType()));
@@ -234,11 +234,12 @@ public abstract class ASetBasedDataDomain
 			set = this.set;
 		}
 		else {
-			set = this.set.getStorageData(StorageVAType.STORAGE).getStorageTreeRoot().getMetaSetFromSubTree(setID);
+			set =
+				this.set.getStorageData(StorageVAType.STORAGE).getStorageTreeRoot()
+					.getMetaSetFromSubTree(setID);
 		}
 
 		set.setContentVA(vaType, virtualArray.clone());
-
 
 		virtualArray.setGroupList(null);
 
@@ -254,19 +255,18 @@ public abstract class ASetBasedDataDomain
 
 		set.setStorageVA(vaType, virtualArray);
 
-
-//		if (set.getStorageData(StorageVAType.STORAGE).getStorageTree() != null) {
-//			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
-//				public void run() {
-//					Shell shell = new Shell();
-//					MessageBox messageBox = new MessageBox(shell, SWT.CANCEL);
-//					messageBox.setText("Warning");
-//					messageBox
-//						.setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
-//					messageBox.open();
-//				}
-//			});
-//		}
+		// if (set.getStorageData(StorageVAType.STORAGE).getStorageTree() != null) {
+		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+		// public void run() {
+		// Shell shell = new Shell();
+		// MessageBox messageBox = new MessageBox(shell, SWT.CANCEL);
+		// messageBox.setText("Warning");
+		// messageBox
+		// .setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
+		// messageBox.open();
+		// }
+		// });
+		// }
 		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(set, dataDomainType, vaType));
 
 	}
