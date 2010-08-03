@@ -2,10 +2,9 @@ package org.caleydo.core.parser.xml.sax.handler.command;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
-import org.caleydo.core.command.queue.ICommandQueue;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
+import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -28,9 +27,6 @@ public class CommandSaxHandler
 	 * Since the opening tag is handled by the external handler this fal is set to true by default.
 	 */
 	private boolean bCommandBuffer_isActive = false;
-	private boolean bCommandQueue_isActive = false;
-
-	protected ICommandQueue commandQueueIter = null;
 
 	/**
 	 * <Application > <CommandBuffer> <Cmd /> <Cmd /> </CommandBuffer> </Application>
@@ -68,8 +64,8 @@ public class CommandSaxHandler
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_MEMENTO_ID.getXmlKey(),
 			ECommandType.TAG_MEMENTO_ID.getDefault(), ParameterHandlerType.INT);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_TYPE.getXmlKey(), ECommandType.TAG_TYPE
-			.getDefault(), ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_TYPE.getXmlKey(),
+			ECommandType.TAG_TYPE.getDefault(), ParameterHandlerType.STRING);
 
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_PARENT.getXmlKey(),
 			ECommandType.TAG_PARENT.getDefault(), ParameterHandlerType.INT);
@@ -114,7 +110,7 @@ public class CommandSaxHandler
 
 		return lastCommand;
 	}
-	
+
 	/**
 	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 */
@@ -143,66 +139,20 @@ public class CommandSaxHandler
 					 * <CommandBuffer> ... <Cmd ...>
 					 */
 
-					if (bCommandQueue_isActive) {
-						/**
-						 * <CommandBuffer> ... <CmdQueue> <br>
-						 * ... <Cmd ...>
-						 */
+					// readCommandQueueData( attrs, true );
+					ICommand lastCommand = readCommandData(attrs, true);
 
-						// readCommandQueueData( attrs, true );
-						ICommand lastCommand = readCommandData(attrs, true);
-
-						if (lastCommand != null) {
-							commandQueueIter.addCmdToQueue(lastCommand);
-						}
-						else {
-							// generalManager.logMsg(
-							// "CommandQueue: no Command to add. skip it.",
-							// LoggerType.VERBOSE );
-						}
-					}
-					else {
-						/**
-						 * <CommandBuffer> ... <Cmd ...>
-						 */
-
-						// readCommandQueueData( attrs, true );
-						ICommand lastCommand = readCommandData(attrs, true);
-
-						if (lastCommand == null) {
-							// generalManager.logMsg(
-							// "Command: can not execute command due to error while parsing. skip it."
-							// ,
-							// LoggerType.VERBOSE );
-						}
-
+					if (lastCommand == null) {
+						// generalManager.logMsg(
+						// "Command: can not execute command due to error while parsing. skip it."
+						// ,
+						// LoggerType.VERBOSE );
 					}
 
 				}
 				else
 					throw new SAXException("<" + sTag_Command + "> opens without <" + sOpeningTag
 						+ "> being opened!");
-			}
-			else if (eName.equals(sTag_Command)) {
-
-				/**
-				 * <CmdQueue ...>
-				 */
-				if (bCommandBuffer_isActive) {
-
-					if (bCommandQueue_isActive)
-						throw new SAXException("<" + sTag_CommandQueue + "> opens inside a <"
-							+ sTag_CommandQueue + "> block!");
-
-					bCommandQueue_isActive = true;
-
-					// readCommandQueueData(attrs, true);
-
-				}
-				else
-					throw new SAXException("<" + sTag_Command + "> opens without <" + sOpeningTag
-						+ "> being opened!");
-
 			}
 		}
 	}
@@ -241,22 +191,7 @@ public class CommandSaxHandler
 						+ " being opened.");
 
 			}
-			else if (eName.equals(sTag_CommandQueue)) {
-
-				/**
-				 * </CmdQueue ...>
-				 */
-				if (bCommandBuffer_isActive) {
-
-					bCommandQueue_isActive = false;
-				}
-				else
-					throw new SAXException("<" + sTag_CommandQueue + "> opens without " + sOpeningTag
-						+ " being opened.");
-			}
-
-			// end:else if (eName.equals(...)) {
-		} // end: if (null != eName) {
+		}
 
 	}
 

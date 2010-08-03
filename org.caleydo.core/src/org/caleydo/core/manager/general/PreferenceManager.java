@@ -130,7 +130,7 @@ public class PreferenceManager {
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES, EPathwayDatabaseType.KEGG
 			.name()
 			+ ";" + EPathwayDatabaseType.BIOCARTA.name());
-		store.setDefault(PreferenceConstants.LAST_CHOSEN_APPLICATION_MODE, "SAMPLE_PROJECT");
+		store.setDefault(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE, "SAMPLE_PROJECT");
 		store.setDefault(PreferenceConstants.USE_PROXY, false);
 		store.setDefault(PreferenceConstants.BROWSER_QUERY_DATABASE, EBrowserQueryType.GeneCards.name());
 

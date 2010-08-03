@@ -10,8 +10,6 @@ import org.caleydo.core.manager.specialized.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.caleydo.rcp.Application;
-import org.caleydo.rcp.EApplicationMode;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -54,15 +52,15 @@ public class ChooseProjectTypePage
 	public Wizard parentWizard = null;
 
 	/**
-	 * If we load a project (i.e. projectMode is either {@link EApplicationMode#SAMPLE_PROJECT} or
-	 * {@link EApplicationMode#LOAD_PROJECT}, this enum specifies the options we have.
+	 * If we load a project (i.e. projectMode is either {@link ProjectMode#SAMPLE_PROJECT} or
+	 * {@link ProjectMode#LOAD_PROJECT}, this enum specifies the options we have.
 	 */
 	public enum EProjectLoadType {
 		RECENT,
 		SPECIFIED
 	}
 
-	private EApplicationMode projectMode = EApplicationMode.SAMPLE_PROJECT;
+	private ProjectMode projectMode = ProjectMode.SAMPLE_PROJECT;
 
 	private EOrganism organism;
 
@@ -123,8 +121,8 @@ public class ChooseProjectTypePage
 		final TabFolder tabFolder = new TabFolder(composite, SWT.BORDER);
 
 		projectMode =
-			EApplicationMode.valueOf(GeneralManager.get().getPreferenceStore().getString(
-				PreferenceConstants.LAST_CHOSEN_APPLICATION_MODE));
+			ProjectMode.valueOf(GeneralManager.get().getPreferenceStore().getString(
+				PreferenceConstants.LAST_CHOSEN_PROJECT_MODE));
 
 		createSampleTab(tabFolder);
 		createGeneticUseCaseTab(tabFolder);
@@ -134,26 +132,26 @@ public class ChooseProjectTypePage
 			createCollaborationClientTab(tabFolder);
 
 		// restore the previously selected tab
-		if (projectMode == null || projectMode.equals(EApplicationMode.SAMPLE_PROJECT)) {
+		if (projectMode == null || projectMode.equals(ProjectMode.SAMPLE_PROJECT)) {
 			tabFolder.setSelection(0);
 		}
-		else if (projectMode.equals(EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA)) {
+		else if (projectMode.equals(ProjectMode.GENE_EXPRESSION_SAMPLE_DATA)) {
 			tabFolder.setSelection(0);
 		}
-		else if (projectMode.equals(EApplicationMode.GENE_EXPRESSION_NEW_DATA)) {
+		else if (projectMode.equals(ProjectMode.GENE_EXPRESSION_NEW_DATA)) {
 			tabFolder.setSelection(1);
 		}
-		else if (projectMode.equals(EApplicationMode.UNSPECIFIED_NEW_DATA)) {
+		else if (projectMode.equals(ProjectMode.UNSPECIFIED_NEW_DATA)) {
 			tabFolder.setSelection(2);
 		}
-		else if (projectMode.equals(EApplicationMode.LOAD_PROJECT)) {
+		else if (projectMode.equals(ProjectMode.LOAD_PROJECT)) {
 			tabFolder.setSelection(3);
 		}
-		else if (projectMode.equals(EApplicationMode.COLLABORATION_CLIENT)) {
+		else if (projectMode.equals(ProjectMode.COLLABORATION_CLIENT)) {
 			// if we are in release mode we don't have the collab client
 			if (GeneralManager.IS_IN_RELEASE_MODE) {
 				tabFolder.setSelection(0);
-				projectMode = EApplicationMode.SAMPLE_PROJECT;
+				projectMode = ProjectMode.SAMPLE_PROJECT;
 			}
 			else {
 				tabFolder.setSelection(4);
@@ -165,22 +163,22 @@ public class ChooseProjectTypePage
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (((TabItem) e.item) == generalDataUseCaseTab) {
-					projectMode = EApplicationMode.UNSPECIFIED_NEW_DATA;
+					projectMode = ProjectMode.UNSPECIFIED_NEW_DATA;
 				}
 				else if (((TabItem) e.item) == sampleTab) {
 					if (btnSampleProject.getSelection())
-						projectMode = EApplicationMode.SAMPLE_PROJECT;
+						projectMode = ProjectMode.SAMPLE_PROJECT;
 					else
-						projectMode = EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA;
+						projectMode = ProjectMode.GENE_EXPRESSION_SAMPLE_DATA;
 				}
 				else if (((TabItem) e.item) == geneticDataUseCaseTab) {
-					projectMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
+					projectMode = ProjectMode.GENE_EXPRESSION_NEW_DATA;
 				}
 				else if (((TabItem) e.item) == loadProjectTab) {
-					projectMode = EApplicationMode.LOAD_PROJECT;
+					projectMode = ProjectMode.LOAD_PROJECT;
 				}
 				else if (((TabItem) e.item) == collaborationClientTab) {
-					projectMode = EApplicationMode.COLLABORATION_CLIENT;
+					projectMode = ProjectMode.COLLABORATION_CLIENT;
 				}
 				else
 					throw new IllegalStateException("Not implemented!");
@@ -209,7 +207,7 @@ public class ChooseProjectTypePage
 
 		btnSampleProject = new Button(composite, SWT.RADIO);
 		btnSampleProject.setText("Load sample project");
-		if (projectMode != EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA)
+		if (projectMode != ProjectMode.GENE_EXPRESSION_SAMPLE_DATA)
 			btnSampleProject.setSelection(true);
 
 		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
@@ -219,7 +217,7 @@ public class ChooseProjectTypePage
 		btnSampleProject.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				projectMode = EApplicationMode.SAMPLE_PROJECT;
+				projectMode = ProjectMode.SAMPLE_PROJECT;
 				setPageComplete(true);
 			}
 		});
@@ -237,7 +235,7 @@ public class ChooseProjectTypePage
 		Button btnSampleData = new Button(composite, SWT.RADIO);
 		btnSampleData.setText("Start with sample gene expression data");
 		// buttonSampleDataMode.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
-		if (projectMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA)
+		if (projectMode == ProjectMode.GENE_EXPRESSION_SAMPLE_DATA)
 			btnSampleData.setSelection(true);
 		else
 			btnSampleData.setSelection(false);
@@ -297,7 +295,7 @@ public class ChooseProjectTypePage
 		btnSampleData.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				projectMode = EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA;
+				projectMode = ProjectMode.GENE_EXPRESSION_SAMPLE_DATA;
 				setPageComplete(true);
 			}
 		});
@@ -400,11 +398,11 @@ public class ChooseProjectTypePage
 			bLoadBioCartaPathwayData = false;
 		}
 
-		if (GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.FIRST_START)
-			&& !Application.isInternetConnectionOK()) {
+//		if (GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.FIRST_START)
+//			&& !Application.isInternetConnectionOK()) {
 			btnLoadPathwayData.setEnabled(false);
 			groupPathways.setEnabled(false);
-		}
+//		}
 
 		btnLoadKEGGPathwayData.setEnabled(btnLoadPathwayData.getSelection());
 		btnLoadBioCartaPathwayData.setEnabled(btnLoadPathwayData.getSelection());
@@ -475,7 +473,7 @@ public class ChooseProjectTypePage
 		buttonNewProject.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				projectMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
+				projectMode = ProjectMode.GENE_EXPRESSION_NEW_DATA;
 				setPageComplete(true);
 			}
 		});
@@ -501,7 +499,7 @@ public class ChooseProjectTypePage
 		buttonNewProject.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				projectMode = EApplicationMode.UNSPECIFIED_NEW_DATA;
+				projectMode = ProjectMode.UNSPECIFIED_NEW_DATA;
 				setPageComplete(true);
 			}
 		});
@@ -638,7 +636,7 @@ public class ChooseProjectTypePage
 		setPageComplete(true);
 	}
 
-	public EApplicationMode getApplicationMode() {
+	public ProjectMode getProjectMode() {
 		return projectMode;
 	}
 

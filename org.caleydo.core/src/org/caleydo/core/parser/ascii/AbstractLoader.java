@@ -201,11 +201,8 @@ public abstract class AbstractLoader
 				brFile.close();
 			}
 		}
-		catch (IOException ioe) {
-			return false;
-		}
-		catch (NumberFormatException nfe) {
-			return false;
+		catch (Exception e) {
+			throw new RuntimeException("Could not read data file '" + sFileName + "'", e);
 		}
 
 		GeneralManager.get().getLogger().log(

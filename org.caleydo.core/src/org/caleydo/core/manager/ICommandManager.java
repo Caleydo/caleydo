@@ -4,7 +4,6 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.ICommandActionListener;
 import org.caleydo.core.command.ICommandListener;
-import org.caleydo.core.command.queue.ICommandQueue;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
@@ -60,25 +59,6 @@ public interface ICommandManager
 	 * @return true if the reference is bound to this ICommandManager
 	 */
 	public boolean hasCommandListener(ICommandListener hasCommandListener);
-
-	/**
-	 * Get a command queue by it's commandQueueId, which is only a key for the commandQueue and is not a
-	 * uniqueSystem wide Id.
-	 * 
-	 * @param iCmdQueueId
-	 *            commandQueueId
-	 * @return command queue
-	 */
-	public ICommandQueue getCommandQueueByCmdQueueId(final int iCmdQueueId);
-
-	/**
-	 * Tests if a iCmdQueueId is registered with a CommandQueue object.
-	 * 
-	 * @param iCmdQueueId
-	 *            test this id
-	 * @return TRUE if an CommandQueue is bound that iCmdQueueId
-	 */
-	public boolean hasCommandQueueId(final int iCmdQueueId);
 
 	/**
 	 * Register a org.caleydo.core.command.ICommand after its doCommand() method was called. Used for

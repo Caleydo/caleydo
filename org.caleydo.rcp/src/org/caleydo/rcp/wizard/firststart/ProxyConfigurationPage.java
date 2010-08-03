@@ -89,21 +89,21 @@ public final class ProxyConfigurationPage
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				updateInternetStatusLabel();
-
-				PreferenceStore prefStore =
-					Application.caleydoCoreBootloader.getGeneralManager().getPreferenceStore();
-				prefStore.setValue(PreferenceConstants.USE_PROXY, bUseProxy);
-
-				if (bUseProxy) {
-					prefStore.setValue(PreferenceConstants.PROXY_SERVER, txtProxyServer.getText());
-					prefStore.setValue(PreferenceConstants.PROXY_PORT, txtProxyPort.getText());
-
-					System.setProperty("network.proxy_host", prefStore
-						.getString(PreferenceConstants.PROXY_SERVER));
-					System.setProperty("network.proxy_port", prefStore
-						.getString(PreferenceConstants.PROXY_PORT));
-				}
+//				updateInternetStatusLabel();
+//
+//				PreferenceStore prefStore =
+//					Application.caleydoCoreBootloader.getGeneralManager().getPreferenceStore();
+//				prefStore.setValue(PreferenceConstants.USE_PROXY, bUseProxy);
+//
+//				if (bUseProxy) {
+//					prefStore.setValue(PreferenceConstants.PROXY_SERVER, txtProxyServer.getText());
+//					prefStore.setValue(PreferenceConstants.PROXY_PORT, txtProxyPort.getText());
+//
+//					System.setProperty("network.proxy_host", prefStore
+//						.getString(PreferenceConstants.PROXY_SERVER));
+//					System.setProperty("network.proxy_port", prefStore
+//						.getString(PreferenceConstants.PROXY_PORT));
+//				}
 			}
 		});
 
@@ -218,12 +218,12 @@ public final class ProxyConfigurationPage
 			}
 		}
 		catch (Exception e) {
-			Application.bIsInterentConnectionOK = false;
+//			Application.bIsInterentConnectionOK = false;
 			setPageComplete(false);
 			return false;
 		}
 
-		Application.bIsInterentConnectionOK = true;
+//		Application.bIsInterentConnectionOK = true;
 		setPageComplete(true);
 		return true;
 	}

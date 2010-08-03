@@ -1,7 +1,6 @@
 package org.caleydo.rcp.perspective;
 
-import org.caleydo.rcp.Application;
-import org.caleydo.rcp.EApplicationMode;
+import org.caleydo.rcp.startup.StartupProcessor;
 import org.caleydo.rcp.toolbar.RcpToolBarView;
 import org.caleydo.rcp.view.rcp.RcpInfoAreaView;
 import org.eclipse.swt.graphics.Rectangle;
@@ -17,6 +16,8 @@ public class GenomePerspective
 	// private static final String LOG_VIEW = "org.eclipse.pde.runtime.LogView";
 
 	public static boolean bIsWideScreen = false;
+	
+	public static IFolderLayout mainViewFolder;
 
 	@Override
 	public void createInitialLayout(final IPageLayout layout) {
@@ -39,15 +40,15 @@ public class GenomePerspective
 				layout.createFolder("topLeft", IPageLayout.LEFT, fRatio, IPageLayout.ID_EDITOR_AREA);
 			topLeft.addView(RcpToolBarView.ID);
 
-			if (Application.applicationMode != EApplicationMode.NO_DATA) {
+//			if (Application.applicationMode != ApplicationMode.NO_DATA) {
 				IFolderLayout middleLeft =
 					layout.createFolder("middleLeft", IPageLayout.BOTTOM, 0.5f, "topLeft");
 				middleLeft.addView(RcpInfoAreaView.ID);
-				middleLeft.addPlaceholder("org.caleydo.view.statistics");
-
+//				middleLeft.addPlaceholder("org.caleydo.view.statistics");
+//
 				layout.addStandaloneView("org.caleydo.view.histogram", true, IPageLayout.BOTTOM, 0.7f,
 					"middleLeft");
-			}
+//			}
 			// IFolderLayout bottomLeft = layout.createFolder("bottomLeft", IPageLayout.BOTTOM, 0.45f,
 			// "middleLeft");
 			// bottomLeft.addPlaceholder(GLHistogramView.ID);
@@ -56,7 +57,7 @@ public class GenomePerspective
 				layout.createFolder("folderLayoutRight", IPageLayout.RIGHT, 1 - fRatio,
 					IPageLayout.ID_EDITOR_AREA);
 
-			Application.openRCPViews(mainLayout);
+			StartupProcessor.get().openRCPViews(mainLayout);
 
 		}
 		else {
@@ -68,10 +69,10 @@ public class GenomePerspective
 				layout.createFolder("top", IPageLayout.TOP, fRatio, IPageLayout.ID_EDITOR_AREA);
 			topFolder.addView(RcpToolBarView.ID);
 
-			if (Application.applicationMode != EApplicationMode.NO_DATA) {
+//			if (Application.applicationMode != ApplicationMode.NO_DATA) {
 				layout.addStandaloneView(RcpInfoAreaView.ID, true, IPageLayout.RIGHT, 0.75f, "top");
 				layout.addStandaloneView("org.caleydo.view.histogram", true, IPageLayout.RIGHT, 0.8f, "top");
-			}
+//			}
 			// IFolderLayout bottomFolder = layout.createFolder("bottom", IPageLayout.BOTTOM, 1 - fRatio,
 			// IPageLayout.ID_EDITOR_AREA);
 
@@ -82,7 +83,7 @@ public class GenomePerspective
 				layout.createFolder("folderLayoutRight", IPageLayout.BOTTOM, 1 - fRatio,
 					IPageLayout.ID_EDITOR_AREA);
 
-			Application.openRCPViews(mainLayout);
+			StartupProcessor.get().openRCPViews(mainLayout);
 		}
 		// layout.addPlaceholder("org.caleydo.view.grouper", IPageLayout.RIGHT, (float) 0.85,
 		// "folderLayoutRight");

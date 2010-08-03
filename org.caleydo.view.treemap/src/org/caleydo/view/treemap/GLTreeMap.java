@@ -335,17 +335,6 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 	}
 
 	@Override
-	public RemoteLevelElement getRemoteLevelElement() {
-
-		// If the view is rendered remote - the remote level element from the
-		// parent is returned
-		if (glRemoteRenderingView != null && glRemoteRenderingView instanceof AGLView)
-			return ((AGLView) glRemoteRenderingView).getRemoteLevelElement();
-
-		return super.getRemoteLevelElement();
-	}
-
-	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
 

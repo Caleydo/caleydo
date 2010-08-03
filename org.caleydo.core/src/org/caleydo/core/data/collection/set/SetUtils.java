@@ -266,10 +266,6 @@ public class SetUtils {
 		else
 			throw new IllegalStateException("Unknown data representation type");
 
-		// Since the data is filled to the new set
-		// the views of the current use case can be updated.
-		dataDomain.updateSetInViews();
-
 		return set;
 	}
 

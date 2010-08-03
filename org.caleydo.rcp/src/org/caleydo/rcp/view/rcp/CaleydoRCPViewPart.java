@@ -11,6 +11,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IView;
 import org.caleydo.rcp.Application;
+import org.caleydo.rcp.startup.StartupProcessor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IViewSite;
@@ -97,10 +98,10 @@ public abstract class CaleydoRCPViewPart
 	protected String determineDataDomain(ASerializedView serializedView) {
 
 		// first we check if the data domain was manually specified
-		for (Pair<String, String> startView : Application.startViewWithDataDomain) {
+		for (Pair<String, String> startView : StartupProcessor.get().getAppArgumentStartViewWithDataDomain()) {
 			if (startView.getFirst().equals(serializedView.getViewID())) {
 				dataDomainType = startView.getSecond();
-				Application.startViewWithDataDomain.remove(startView);
+//				StartupProcessor.get().getAppArgumentStartViewWithDataDomain().remove(startView);
 				return dataDomainType;
 			}
 		}

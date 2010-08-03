@@ -1,0 +1,9 @@
+<caleydo version="0.1">
+
+	<CommandBuffer>
+
+		<read-xml-file target="data/bootstrap/load_genome_id_mapping.xml" />
+
+	</CommandBuffer>
+
+</caleydo>

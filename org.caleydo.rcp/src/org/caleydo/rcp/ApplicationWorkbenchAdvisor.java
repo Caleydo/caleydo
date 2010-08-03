@@ -4,6 +4,7 @@ import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.AutoSaver;
 import org.caleydo.core.serialize.ProjectSaver;
+import org.caleydo.rcp.startup.ApplicationMode;
 import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.ui.IWorkbenchPage;
@@ -47,28 +48,28 @@ public class ApplicationWorkbenchAdvisor
 	public void postStartup() {
 		super.postStartup();
 
-		if (!Application.LAZY_VIEW_LOADING) {
-			String[] serViews = new String[Application.initializedStartViews.size()];
-			serViews = Application.initializedStartViews.toArray(serViews);
-			IWorkbenchPage activePage = workbenchConfigurer.getWindow().getActivePage();
-			for (String startView : serViews) {
-				try {
-					activePage.showView(startView);
-				}
-				catch (PartInitException ex) {
-					ex.printStackTrace();
-				}
-			}
-		}
+//		if (!Application.LAZY_VIEW_LOADING) {
+//			String[] serViews = new String[Application.initializedStartViews.size()];
+//			serViews = Application.initializedStartViews.toArray(serViews);
+//			IWorkbenchPage activePage = workbenchConfigurer.getWindow().getActivePage();
+//			for (String startView : serViews) {
+//				try {
+//					activePage.showView(startView);
+//				}
+//				catch (PartInitException ex) {
+//					ex.printStackTrace();
+//				}
+//			}
+//		}
 
-		// Check if an early exit should be performed
-		if (Application.bDoExit) {
-			this.getWorkbenchConfigurer().getWorkbench().close();
-			return;
-		}
+//		// Check if an early exit should be performed
+//		if (Application.bDoExit) {
+//			this.getWorkbenchConfigurer().getWorkbench().close();
+//			return;
+//		}
 
 		filterPreferencePages();
-		initializeViews();
+//		initializeViews();
 
 		// FIXME: turn on auto saver here when data domain integration is finished
 		//autoSaver = new AutoSaver();
@@ -94,9 +95,9 @@ public class ApplicationWorkbenchAdvisor
 	 * restored serialized-representation.
 	 */
 	private void initializeViews() {
-		if (Application.applicationMode == EApplicationMode.LOAD_PROJECT) {
-
-		}
+//		if (Application.applicationMode == ApplicationMode.LOAD_PROJECT) {
+//
+//		}
 	}
 
 	@Override

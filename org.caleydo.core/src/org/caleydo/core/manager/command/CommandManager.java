@@ -6,14 +6,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Hashtable;
 import java.util.Vector;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.ICommandListener;
 import org.caleydo.core.command.base.ACommand;
-import org.caleydo.core.command.queue.ICommandQueue;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
@@ -45,9 +43,6 @@ public class CommandManager
 	 */
 	private Vector<ICommand> vecCmdSchedule;
 
-	protected Hashtable<Integer, ICommandQueue> hashCommandQueueId;
-	// protected Hashtable<Integer, ICommand> hashCommandId;
-
 	protected Vector<ICommand> vecUndo;
 	protected Vector<ICommand> vecRedo;
 
@@ -62,8 +57,6 @@ public class CommandManager
 		vecCmdHandle = new Vector<ICommand>();
 		vecCmdSchedule = new Vector<ICommand>();
 
-		hashCommandQueueId = new Hashtable<Integer, ICommandQueue>();
-		// hashCommandId = new Hashtable<Integer, ICommand>();
 
 		vecUndo = new Vector<ICommand>(100);
 		vecRedo = new Vector<ICommand>(100);
@@ -104,11 +97,6 @@ public class CommandManager
 
 	@Override
 	public void registerItem(ICommand command) {
-		if (command instanceof ICommandQueue) {
-			hashCommandQueueId.put(command.getID(), (ICommandQueue) command);
-			return;
-		}
-
 		vecCmdHandle.addElement(command);
 		hashItems.put(command.getID(), command);
 	}
@@ -144,18 +132,6 @@ public class CommandManager
 		}
 
 		return createdCommand;
-	}
-
-	@Override
-	public boolean hasCommandQueueId(final int iCmdQueueId) {
-
-		return hashCommandQueueId.containsKey(iCmdQueueId);
-	}
-
-	@Override
-	public ICommandQueue getCommandQueueByCmdQueueId(final int iCmdQueueId) {
-
-		return hashCommandQueueId.get(iCmdQueueId);
 	}
 
 	// @Override

@@ -64,11 +64,15 @@ public class ToolBarContentFactory {
 		info.ignored = false;
 		toolBarInfos.put(info.viewType, info);
 
-		// Removed because it is empty. Insert again when you have content for the toolbar.
-		// info = new ToolBarInfo();
-		// info.viewType = "org.caleydo.view.heatmap.hierarchical";
-		// info.ignored = false;
-		// toolBarInfos.put(info.viewType, info);
+		info = new ToolBarInfo();
+		info.viewType = "org.caleydo.view.heatmap.hierarchical";
+		info.ignored = true;
+		toolBarInfos.put(info.viewType, info);
+
+		info = new ToolBarInfo();
+		info.viewType = "org.caleydo.view.histogram";
+		info.ignored = true;
+		toolBarInfos.put(info.viewType, info);
 
 		info = new ToolBarInfo();
 		info.viewType = "org.caleydo.view.parcoords";

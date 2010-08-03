@@ -28,7 +28,7 @@ public class PreferenceConstants {
 	public static final String LAST_CHOSEN_ORGANISM = "lastLoadedOrganism";
 	// public static final String LAST_CHOSEN_USE_CASE_MODE = "lastChosenUseCaseMode";
 	/** The application mode chosen during the last time. A value of EApplicationMode */
-	public static final String LAST_CHOSEN_APPLICATION_MODE = "lastChosenApplicationMode";
+	public static final String LAST_CHOSEN_PROJECT_MODE = "lastChosenApplicationMode";
 
 	// TODO: make it specific for each pathway database + organism combination
 	public static final String LAST_PATHWAY_UPDATE = "lastPathwayDataUpdate";

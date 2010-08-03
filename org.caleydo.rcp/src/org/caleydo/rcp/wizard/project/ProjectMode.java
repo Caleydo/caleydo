@@ -1,18 +1,9 @@
-package org.caleydo.rcp;
+package org.caleydo.rcp.wizard.project;
 
-import org.caleydo.core.data.collection.set.Set;
-import org.caleydo.core.data.selection.VirtualArray;
 
-/**
- * the application mode tells the application how to start and which data-sets need to be loaded and how these
- * data-sets should be loaded.
- * 
- * @author Werner Puff
- * @author Alexander Lex
- */
-public enum EApplicationMode {
+public enum ProjectMode {
+
 	GENE_EXPRESSION_NEW_DATA,
-	// GENE_EXPRESSION_PATHWAY_VIEWER,
 
 	/** specifies to load an entire sample project */
 	SAMPLE_PROJECT,

@@ -1,26 +1,14 @@
 <caleydo version="0.1">
 
-	<workspace title="primary" server="localhost">
+	<CommandBuffer>
 
-		<Application remote="no" IP="127.0.0.1" port="4000">
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_DATA_DOMAIN"
+			cmdId="13993" uniqueId="453010" label="create_data_domain"
+			attrib1="org.caleydo.datadomain.genetic" />
 
-			<CommandBuffer>
+		<!-- Creating Data -->
+		<read-xml-file target="data/bootstrap/sample/load_data.xml" />
 
-				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_DATA_DOMAIN"
-					cmdId="13993" uniqueId="453010" label="create_data_domain"
-					attrib1="org.caleydo.datadomain.genetic" />
-
-				<!-- Creating GenomeId mapping -->
-				<read-xml-file
-					target="data/bootstrap/load_genome_id_mapping.xml" />
-
-				<!-- Creating Data -->
-				<read-xml-file target="data/bootstrap/sample/load_data.xml" />
-
-			</CommandBuffer>
-
-		</Application>
-
-	</workspace>
+	</CommandBuffer>
 
 </caleydo>

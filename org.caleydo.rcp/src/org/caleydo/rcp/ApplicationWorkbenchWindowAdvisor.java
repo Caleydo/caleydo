@@ -4,6 +4,7 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.perspective.PartListener;
+import org.caleydo.rcp.startup.StartupProcessor;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -22,7 +23,9 @@ public class ApplicationWorkbenchWindowAdvisor
 	 */
 	public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		super(configurer);
-		Application.startCaleydoCore();
+		
+		// Init the core because the workbench must already be initialized for the XML startup progress bar
+		StartupProcessor.get().initCore();
 	}
 
 	@Override

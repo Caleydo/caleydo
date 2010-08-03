@@ -125,6 +125,9 @@ public class CmdLoadFileNStorages
 		generalManager.getGUIBridge().setFileNameCurrentDataSet(loadDataParameters.getFileName());
 
 		dataDomain.setLoadDataParameters(loadDataParameters);
+		
+		dataDomain.updateSetInViews();
+		
 		commandManager.runDoCommand(this);
 	}
 
