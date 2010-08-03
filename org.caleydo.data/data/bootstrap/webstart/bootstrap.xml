@@ -7,10 +7,7 @@
     <CommandBuffer>  			   				
 
       	<!-- Creating GenomeId mapping -->
-		  	<read-xml-file target="data/bootstrap/shared/sample/load_genome_id_mapping.xml" />	   				
-							
-		<!-- Creating Data -->
-			<read-xml-file target="data/bootstrap/shared/sample/load_data.xml" />						   																															
+		  	<read-xml-file target="data/bootstrap/load_genome_id_mapping.xml" />	   							
 			
    </CommandBuffer>
     

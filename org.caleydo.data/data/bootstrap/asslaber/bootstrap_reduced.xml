@@ -18,12 +18,13 @@
 
 				<!-- Creating GenomeId mapping -->
 				<read-xml-file
-					target="data/bootstrap/shared/asslaber/load_genome_id_mapping.xml" />
+					target="data/bootstrap/load_genome_id_mapping.xml" />
 
 				<!-- Creating Data -->
-				<read-xml-file target="data/bootstrap/shared/asslaber/load_data.xml" />
-				<read-xml-file target="data/bootstrap/shared/glyph/load_data.xml" />
-				
+				<read-xml-file
+					target="data/bootstrap/asslaber/load_data_reduced.xml" />
+				<read-xml-file target="data/bootstrap/glyph/load_data.xml" />
+
 			</CommandBuffer>
 
 		</Application>
