@@ -1,13 +1,9 @@
 package org.caleydo.view.treemap;
 
-import java.awt.Color;
-
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -29,12 +25,9 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
-import org.caleydo.view.treemap.layout.ATreeMapNode;
 import org.caleydo.view.treemap.layout.AbstractTree;
 import org.caleydo.view.treemap.layout.DefaultTree;
-import org.caleydo.view.treemap.layout.DefaultTreeNode;
 import org.caleydo.view.treemap.layout.GlPainter;
 import org.caleydo.view.treemap.layout.SimpleLayoutAlgorithm;
 import org.caleydo.view.treemap.renderstyle.TreeMapRenderStyle;

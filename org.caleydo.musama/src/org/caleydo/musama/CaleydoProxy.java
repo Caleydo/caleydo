@@ -5,7 +5,6 @@ import java.net.UnknownHostException;
 import java.util.concurrent.TimeoutException;
 
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 

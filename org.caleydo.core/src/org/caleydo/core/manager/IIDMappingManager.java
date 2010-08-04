@@ -1,6 +1,5 @@
 package org.caleydo.core.manager;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 

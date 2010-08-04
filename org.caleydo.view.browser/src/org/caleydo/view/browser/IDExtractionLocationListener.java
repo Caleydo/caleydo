@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.util.graph.EGraphItemProperty;

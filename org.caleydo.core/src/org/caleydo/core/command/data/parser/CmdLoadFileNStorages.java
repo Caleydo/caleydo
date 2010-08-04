@@ -7,7 +7,6 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;

@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;

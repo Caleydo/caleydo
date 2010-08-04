@@ -4,9 +4,7 @@ import java.io.IOException;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
-import org.caleydo.core.command.window.swt.CmdContainerCreate;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.net.StandardGroupwareManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;

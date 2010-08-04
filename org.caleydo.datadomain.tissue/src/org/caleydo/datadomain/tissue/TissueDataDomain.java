@@ -1,12 +1,10 @@
 package org.caleydo.datadomain.tissue;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 

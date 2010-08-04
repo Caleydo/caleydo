@@ -8,7 +8,6 @@ import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;

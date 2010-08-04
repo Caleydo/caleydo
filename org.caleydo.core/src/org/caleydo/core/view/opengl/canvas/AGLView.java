@@ -23,7 +23,6 @@ import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.IPollingListenerOwner;
 import org.caleydo.core.manager.event.view.ToggleMagnifyingGlassEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;

@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;

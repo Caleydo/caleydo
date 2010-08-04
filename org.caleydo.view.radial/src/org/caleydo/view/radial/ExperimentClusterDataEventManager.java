@@ -3,7 +3,6 @@ package org.caleydo.view.radial;
 import java.util.Collection;
 
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;

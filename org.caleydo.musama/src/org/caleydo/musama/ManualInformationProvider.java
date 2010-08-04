@@ -8,8 +8,8 @@ import org.caleydo.musama.InformationProviderEvent.Type;
 
 import de.mmis.core.base.event.AbstractObservable;
 import de.mmis.core.pojop.NetworkPublisher;
-import de.mmis.core.pojop.Server;
 import de.mmis.core.pojop.NetworkPublisher.ServerType;
+import de.mmis.core.pojop.Server;
 import de.mmis.core.pojop.logging.LoggingMode;
 import de.mmis.core.sexpression.Atom;
 import de.mmis.core.tuplespace.TuplespaceException;

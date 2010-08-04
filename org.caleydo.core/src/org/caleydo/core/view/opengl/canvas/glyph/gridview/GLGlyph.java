@@ -18,8 +18,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLException;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.EVAOperation;

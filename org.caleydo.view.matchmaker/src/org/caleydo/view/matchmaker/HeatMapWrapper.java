@@ -11,8 +11,6 @@ import javax.media.opengl.GL;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;

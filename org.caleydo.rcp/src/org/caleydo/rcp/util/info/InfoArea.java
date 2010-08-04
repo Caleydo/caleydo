@@ -1,13 +1,10 @@
 package org.caleydo.rcp.util.info;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -15,7 +12,6 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;

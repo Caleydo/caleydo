@@ -1,12 +1,10 @@
 package org.caleydo.datadomain.pathway;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;

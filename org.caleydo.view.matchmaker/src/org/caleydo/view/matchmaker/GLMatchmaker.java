@@ -8,7 +8,6 @@ import java.util.List;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.EVAOperation;

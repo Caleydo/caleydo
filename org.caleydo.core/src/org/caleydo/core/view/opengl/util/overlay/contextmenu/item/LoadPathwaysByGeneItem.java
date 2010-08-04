@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;

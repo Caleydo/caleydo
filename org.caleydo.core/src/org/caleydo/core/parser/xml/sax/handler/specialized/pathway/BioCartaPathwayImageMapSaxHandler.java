@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;

@@ -6,7 +6,6 @@ import java.awt.Point;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.InfoAreaRenderStyle;

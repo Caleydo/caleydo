@@ -9,10 +9,10 @@ import java.util.Random;
 import weka.clusterers.RandomizableClusterer;
 import weka.clusterers.UpdateableClusterer;
 import weka.core.Capabilities;
+import weka.core.Capabilities.Capability;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.RevisionUtils;
-import weka.core.Capabilities.Capability;
 
 /**
  * Cobweb cluster algorithm

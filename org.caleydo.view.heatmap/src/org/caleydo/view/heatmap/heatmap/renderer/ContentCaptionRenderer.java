@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.IIDMappingManager;

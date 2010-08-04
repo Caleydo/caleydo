@@ -9,7 +9,6 @@ import java.util.HashMap;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.storage.NominalStorage;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.SelectedElementRep;

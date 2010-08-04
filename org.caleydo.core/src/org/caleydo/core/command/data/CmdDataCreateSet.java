@@ -8,7 +8,6 @@ import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;

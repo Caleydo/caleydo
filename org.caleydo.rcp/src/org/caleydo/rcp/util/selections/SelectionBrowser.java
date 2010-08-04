@@ -2,7 +2,6 @@ package org.caleydo.rcp.util.selections;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;

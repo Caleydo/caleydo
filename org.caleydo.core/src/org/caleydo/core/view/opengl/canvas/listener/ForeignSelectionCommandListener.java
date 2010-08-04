@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
-import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.AEvent;

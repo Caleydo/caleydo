@@ -6,7 +6,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 
 /**

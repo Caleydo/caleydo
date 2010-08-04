@@ -4,8 +4,6 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;

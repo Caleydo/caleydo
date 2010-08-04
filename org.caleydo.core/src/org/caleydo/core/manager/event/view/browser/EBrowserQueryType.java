@@ -1,6 +1,5 @@
 package org.caleydo.core.manager.event.view.browser;
 
-import org.caleydo.core.data.mapping.EMappingType;
 
 /**
  * This type is passed to browser to know how to handle the incoming string. Example: For an search on PubMed

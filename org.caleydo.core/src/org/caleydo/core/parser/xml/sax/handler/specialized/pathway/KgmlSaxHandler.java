@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;

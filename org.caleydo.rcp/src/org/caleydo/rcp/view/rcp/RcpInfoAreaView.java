@@ -1,9 +1,7 @@
 package org.caleydo.rcp.view.rcp;
 
-import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
-import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.rcp.util.info.InfoArea;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

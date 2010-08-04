@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
-import org.caleydo.core.util.clusterer.ClusterNode;
 
 // TODO make a AHierarchyElement, rename to ATreeMapNode
 public abstract class ATreeMapNode extends AHierarchyElement<ATreeMapNode>{

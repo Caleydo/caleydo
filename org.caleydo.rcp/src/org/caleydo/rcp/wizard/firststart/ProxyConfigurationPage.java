@@ -6,9 +6,6 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
 
-import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.caleydo.rcp.Application;
-import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;

@@ -2,7 +2,6 @@ package org.caleydo.view.treemap.layout;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class DefaultTree extends AbstractTree {
 

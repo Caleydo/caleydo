@@ -11,7 +11,6 @@ import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashSet;
 
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;

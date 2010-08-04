@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;

@@ -10,7 +10,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IView;
-import org.caleydo.rcp.Application;
 import org.caleydo.rcp.startup.StartupProcessor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;

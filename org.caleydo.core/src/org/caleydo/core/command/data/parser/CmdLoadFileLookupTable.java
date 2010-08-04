@@ -5,7 +5,6 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;

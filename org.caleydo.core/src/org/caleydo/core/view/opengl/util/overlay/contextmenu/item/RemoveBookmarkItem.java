@@ -2,7 +2,6 @@ package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.data.RemoveBookmarkEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;

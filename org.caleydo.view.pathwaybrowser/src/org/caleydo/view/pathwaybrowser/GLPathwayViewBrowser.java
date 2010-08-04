@@ -3,13 +3,11 @@ package org.caleydo.view.pathwaybrowser;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.serialize.ASerializedView;

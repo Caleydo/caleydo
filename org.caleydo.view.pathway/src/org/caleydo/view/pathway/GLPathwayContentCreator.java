@@ -17,7 +17,6 @@ import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexShape;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.IGeneralManager;

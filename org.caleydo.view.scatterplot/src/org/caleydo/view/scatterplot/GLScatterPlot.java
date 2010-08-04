@@ -32,7 +32,6 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectedElementRep;

@@ -1,12 +1,8 @@
 package org.caleydo.view.heatmap.heatmap;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
 
 public class RcpGLHeatMapView extends ARcpGLViewPart {
 

@@ -4,8 +4,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ProjectLoader;
 import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.Application;
-import org.caleydo.rcp.wizard.project.ChooseProjectTypePage;
-import org.caleydo.rcp.wizard.project.ProjectMode;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
