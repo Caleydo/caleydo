@@ -30,6 +30,10 @@ public class IDType {
 
 		return idType;
 	}
+	
+	public static IDType getIDType(String typeName) {
+		return registeredTypes.get(typeName);
+	}
 
 	public String getTypeName() {
 		return typeName;
@@ -50,5 +54,4 @@ public class IDType {
 	public void setInternalType(boolean isInternalType) {
 		this.isInternalType = isInternalType;
 	}
-
 }

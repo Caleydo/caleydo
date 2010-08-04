@@ -56,6 +56,7 @@ public enum ECommandType {
 	TAG_ATTRIBUTE2("cmd", "attrib2", ""),
 	TAG_ATTRIBUTE3("cmd", "attrib3", ""),
 	TAG_ATTRIBUTE4("cmd", "attrib4", ""),
+	TAG_ATTRIBUTE5("cmd", "attrib4", ""),
 	TAG_DETAIL("cmd", "detail", ""),
 	TAG_LABEL("cmd", "label", ""),
 	TAG_PARENT("cmd", "label", ""),

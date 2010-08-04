@@ -52,4 +52,10 @@ public class MappingType
 	public boolean isMultiMap() {
 		return isMultiMap;
 	}
+	
+	@Override
+	public String toString() {
+		
+		return fromIDType+"_2_"+toIDType;
+	}
 }

@@ -6,10 +6,12 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.EStorageType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.mapping.MappingType;
 import org.caleydo.core.parser.ascii.AbstractLoader;
 
 /**
@@ -20,7 +22,7 @@ import org.caleydo.core.parser.ascii.AbstractLoader;
  */
 public class LookupTableLoader
 	extends AbstractLoader {
-	protected EMappingType mappingType;
+	protected MappingType mappingType;
 
 	protected final IIDMappingManager genomeIdManager;
 
@@ -35,10 +37,8 @@ public class LookupTableLoader
 	/**
 	 * Constructor.
 	 */
-	public LookupTableLoader(final String sFileName, final EMappingType mappingType) {
+	public LookupTableLoader(String sFileName, IDType fromIDType, IDType toIDType, boolean isMultiMap) {
 		super(sFileName);
-
-		this.mappingType = mappingType;
 
 		swtGuiManager = GeneralManager.get().getSWTGUIManager();
 		genomeIdManager = GeneralManager.get().getIDMappingManager();
@@ -47,7 +47,7 @@ public class LookupTableLoader
 
 		IIDMappingManager genomeIdManager = GeneralManager.get().getIDMappingManager();
 
-		genomeIdManager.createMap(mappingType);
+		mappingType = genomeIdManager.createMap(fromIDType, toIDType, isMultiMap);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class LookupTableLoader
 					if (sLine.length() != 0 && strTokenText.countTokens() == 1) {
 						// Special case for creating indexing of storages
 						// TODO review sLine should be integer?
-						if (mappingType.getTypeTarget().equals(EIDType.EXPRESSION_INDEX)) {
+						if (mappingType.getToIDType().getTypeName().equals("CONTENT")) {
 
 							// Remove multiple RefSeqs because all point to the
 							// same gene DAVID ID
@@ -86,7 +86,7 @@ public class LookupTableLoader
 								sLine = sLine.substring(0, sLine.indexOf("."));
 							}
 
-							if (mappingType.getTypeOrigin().getStorageType() == EStorageType.INT) {
+							if (mappingType.getFromIDType().getStorageType() == EStorageType.INT) {
 								try {
 									Integer id = Integer.parseInt(sLine);
 									genomeIdManager.getMap(mappingType).put(id,
@@ -95,7 +95,7 @@ public class LookupTableLoader
 								catch (NumberFormatException e) {
 								}
 							}
-							else if (mappingType.getTypeOrigin().getStorageType() == EStorageType.STRING) {
+							else if (mappingType.getFromIDType().getStorageType() == EStorageType.STRING) {
 								genomeIdManager.getMap(mappingType).put(sLine,
 									iLineInFile - iStartParsingAtLine);
 							}
@@ -112,9 +112,9 @@ public class LookupTableLoader
 							String buffer = strTokenText.nextToken();
 
 							// Special case for creating indexing of storages
-							if (mappingType.getTypeTarget().equals(EIDType.EXPRESSION_INDEX)) {
+							if (mappingType.getToIDType().getTypeName().equals("CONTENT")) {
 
-								if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX)) {
+//								if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX)) {
 									// Remove multiple RefSeqs because all point to
 									// the same gene DAVID ID
 									if (buffer.contains(";")) {
@@ -124,7 +124,7 @@ public class LookupTableLoader
 									// Remove version in RefSeq (NM_*.* -> NM_*)
 									if (buffer.contains(".")) {
 										buffer = buffer.substring(0, buffer.indexOf("."));
-									}
+//									}
 								}
 
 								// Check for integer values that must be ignored
@@ -132,11 +132,11 @@ public class LookupTableLoader
 								// cell is empty
 								try {
 									Float.valueOf(buffer);
-									if (mappingType.getTypeOrigin().getStorageType() == EStorageType.INT) {
+									if (mappingType.getFromIDType().getStorageType() == EStorageType.INT) {
 										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
 											iLineInFile - iStartParsingAtLine);
 									}
-									else if (mappingType.getTypeOrigin() == EIDType.UNSPECIFIED) {
+									else if (mappingType.getFromIDType().getTypeName().equals("UNSPECIFIED")) {
 										genomeIdManager.getMap(mappingType).put(buffer,
 											iLineInFile - iStartParsingAtLine);
 									}
@@ -151,24 +151,24 @@ public class LookupTableLoader
 								break;
 							}
 							else {
-								if (mappingType.getTypeOrigin().getStorageType() == EStorageType.INT) {
-									if (mappingType.getTypeTarget().getStorageType() == EStorageType.INT) {
+								if (mappingType.getFromIDType().getStorageType() == EStorageType.INT) {
+									if (mappingType.getToIDType().getStorageType() == EStorageType.INT) {
 										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
 											Integer.valueOf(strTokenText.nextToken()));
 									}
-									else if (mappingType.getTypeTarget().getStorageType() == EStorageType.STRING) {
+									else if (mappingType.getToIDType().getStorageType() == EStorageType.STRING) {
 										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
 											strTokenText.nextToken());
 									}
 									else
 										throw new IllegalStateException("Unsupported data type!");
 								}
-								else if (mappingType.getTypeOrigin().getStorageType() == EStorageType.STRING) {
-									if (mappingType.getTypeTarget().getStorageType() == EStorageType.INT) {
+								else if (mappingType.getFromIDType().getStorageType() == EStorageType.STRING) {
+									if (mappingType.getToIDType().getStorageType() == EStorageType.INT) {
 										genomeIdManager.getMap(mappingType).put(buffer,
 											Integer.valueOf(strTokenText.nextToken()));
 									}
-									else if (mappingType.getTypeTarget().getStorageType() == EStorageType.STRING) {
+									else if (mappingType.getToIDType().getStorageType() == EStorageType.STRING) {
 										genomeIdManager.getMap(mappingType).put(buffer,
 											strTokenText.nextToken());
 									}

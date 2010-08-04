@@ -30,7 +30,7 @@ public interface IIDMappingManager {
 	 * @param isMultiMap
 	 *            Determines if a multi map will be created.
 	 */
-	public <K, V> void createMap(IDType fromIDType, IDType toIDType, boolean isMultiMap);
+	public <K, V> MappingType createMap(IDType fromIDType, IDType toIDType, boolean isMultiMap);
 
 	/**
 	 * Creates a reverse map to an already existent map.
@@ -129,7 +129,7 @@ public interface IIDMappingManager {
 	 *            IDType of the element.
 	 * @param element
 	 *            Element to be found.
-	 * @return True, if such an element is fund, fals otherwise.
+	 * @return True, if such an element is fund, false otherwise.
 	 */
 	public <T> boolean doesElementExist(IDType idType, T element);
 
@@ -139,5 +139,7 @@ public interface IIDMappingManager {
 	 * @return
 	 */
 	public HashSet<IDType> getIDTypes();
+
+	MappingType getMappingType(String mappingTypeString);
 
 }
