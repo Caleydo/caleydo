@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.mapping.MappingType;
 
@@ -120,11 +119,6 @@ public interface IIDMappingManager {
 	 * @return If no mapping is found, null, otherwise the Set containing the corresponding ID(s).
 	 */
 	public <K, V> Set<V> getIDAsSet(IDType source, IDType destination, K sourceID);
-
-	/**
-	 * @return Set of all IDTypes supported.
-	 */
-	public List<IDType> getIDTypes(EIDCategory category);
 
 	/**
 	 * Determines whether the IIDMappingManager holds a map that contains the specified element of the
