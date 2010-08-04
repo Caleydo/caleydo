@@ -39,8 +39,8 @@ public class CmdViewCreateRcpGLCanvas
 		// Register GL canvas to view manager
 		viewManager.registerGLCanvas(createdObject);
 
-		if (iExternalID != -1) {
-			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), iExternalID);
+		if (externalID != -1) {
+			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), externalID);
 		}
 
 		createdObject.setNavigationModes(bEnablePan, bEnableRotate, bEnableZoom);
@@ -55,7 +55,7 @@ public class CmdViewCreateRcpGLCanvas
 
 	public void setAttributes(int iParentCanvasID, boolean bEnablePan, boolean bEnableRotate,
 		boolean bEnableZoom) {
-		iExternalID = iParentCanvasID;
+		externalID = iParentCanvasID;
 
 		this.bEnablePan = bEnablePan;
 		this.bEnableRotate = bEnableRotate;

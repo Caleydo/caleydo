@@ -29,9 +29,9 @@ public class CmdDataCreateStorage
 	public void doCommand() {
 		IStorageManager storageManager = generalManager.getStorageManager();
 		createdObject = storageManager.createStorage(storageType);
-		createdObject.setLabel(sLabel);
+		createdObject.setLabel(label);
 
-		generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), iExternalID);
+		generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), externalID);
 
 		// generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
 		// "Created Storage with ID: " + createdObject.getID()));
@@ -47,11 +47,11 @@ public class CmdDataCreateStorage
 	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
-		if (sAttribute1.length() > 0) {
-			if (sAttribute1.equalsIgnoreCase("NOMINAL")) {
+		if (attrib1.length() > 0) {
+			if (attrib1.equalsIgnoreCase("NOMINAL")) {
 				storageType = EManagedObjectType.STORAGE_NOMINAL;
 			}
-			else if (sAttribute1.equalsIgnoreCase("NUMERICAL")) {
+			else if (attrib1.equalsIgnoreCase("NUMERICAL")) {
 				storageType = EManagedObjectType.STORAGE_NUMERICAL;
 			}
 			else

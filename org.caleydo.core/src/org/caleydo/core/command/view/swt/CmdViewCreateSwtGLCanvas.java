@@ -25,20 +25,20 @@ public class CmdViewCreateSwtGLCanvas
 	public void doCommand() {
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
-		if (iExternalID != -1) {
-			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
+		if (externalID != -1) {
+			parentContainerID = generalManager.getIDManager().getInternalFromExternalID(parentContainerID);
 		}
 
 		SwtJoglGLCanvasViewRep swtGLCanvasView =
 			(SwtJoglGLCanvasViewRep) viewManager.createGLView(EManagedObjectType.VIEW_GL_CANVAS,
-				iParentContainerId, sLabel);
+				parentContainerID, label);
 
 		swtGLCanvasView.initViewSWTComposite(null);
 		swtGLCanvasView.drawView();
 
-		if (iExternalID != -1) {
+		if (externalID != -1) {
 			generalManager.getIDManager().mapInternalToExternalID(swtGLCanvasView.getGLCanvasID(),
-				iExternalID);
+				externalID);
 		}
 
 		commandManager.runDoCommand(this);

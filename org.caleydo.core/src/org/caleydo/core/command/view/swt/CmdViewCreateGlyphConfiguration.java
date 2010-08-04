@@ -26,13 +26,13 @@ public class CmdViewCreateGlyphConfiguration
 
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
-		if (iExternalID != -1) {
-			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
+		if (externalID != -1) {
+			parentContainerID = generalManager.getIDManager().getInternalFromExternalID(parentContainerID);
 		}
 
 		GlyphMappingConfigurationViewRep view =
 			(GlyphMappingConfigurationViewRep) viewManager.createView(
-				"org.caleydo.view.glyph.mappingconfiguration", iParentContainerId, sLabel);
+				"org.caleydo.view.glyph.mappingconfiguration", parentContainerID, label);
 
 		viewManager.registerItem(view);
 
@@ -40,8 +40,8 @@ public class CmdViewCreateGlyphConfiguration
 		view.initView();
 		view.drawView();
 
-		if (iExternalID != -1) {
-			generalManager.getIDManager().mapInternalToExternalID(view.getID(), iExternalID);
+		if (externalID != -1) {
+			generalManager.getIDManager().mapInternalToExternalID(view.getID(), externalID);
 		}
 
 		commandManager.runDoCommand(this);

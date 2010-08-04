@@ -15,24 +15,24 @@ public abstract class ACmdExternalAttributes
 	/**
 	 * Unique Id of the object, that will be created.
 	 */
-	protected int iExternalID = -1;
+	protected int externalID = -1;
 
 	/**
 	 * Label of the new object, that will be created.
 	 */
-	protected String sLabel = "";
+	protected String label = "";
 
-	protected String sAttribute1;
+	protected String attrib1;
 
-	protected String sAttribute2;
+	protected String attrib2;
 
-	protected String sAttribute3;
+	protected String attrib3;
 
-	protected String sAttribute4;
+	protected String attrib4;
 
-	protected String sDetail = "";
+	protected String detail = "";
 
-	protected int iParentContainerId = -1;
+	protected int parentContainerID = -1;
 
 	/**
 	 * Constructor
@@ -45,13 +45,13 @@ public abstract class ACmdExternalAttributes
 	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
-		iExternalID = parameterHandler.getValueInt(ECommandType.TAG_UNIQUE_ID.getXmlKey());
-		sLabel = parameterHandler.getValueString(ECommandType.TAG_LABEL.getXmlKey());
-		sAttribute1 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey());
-		sAttribute2 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE2.getXmlKey());
-		sAttribute3 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey());
-		sAttribute4 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE4.getXmlKey());
-		sDetail = parameterHandler.getValueString(ECommandType.TAG_DETAIL.getXmlKey());
-		iParentContainerId = parameterHandler.getValueInt(ECommandType.TAG_PARENT.getXmlKey());
+		externalID = parameterHandler.getValueInt(ECommandType.TAG_UNIQUE_ID.getXmlKey());
+		label = parameterHandler.getValueString(ECommandType.TAG_LABEL.getXmlKey());
+		attrib1 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey());
+		attrib2 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE2.getXmlKey());
+		attrib3 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey());
+		attrib4 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE4.getXmlKey());
+		detail = parameterHandler.getValueString(ECommandType.TAG_DETAIL.getXmlKey());
+		parentContainerID = parameterHandler.getValueInt(ECommandType.TAG_PARENT.getXmlKey());
 	}
 }

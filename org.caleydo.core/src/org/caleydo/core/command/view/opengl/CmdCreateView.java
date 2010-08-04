@@ -81,7 +81,7 @@ public class CmdCreateView
 			(float) Math.toRadians(vec4fRotation.w()));
 
 		StringTokenizer frustumToken =
-			new StringTokenizer(sAttribute3, IGeneralManager.sDelimiter_Parser_DataItems);
+			new StringTokenizer(attrib3, IGeneralManager.sDelimiter_Parser_DataItems);
 
 		// try
 		// {
@@ -131,7 +131,7 @@ public class CmdCreateView
 		final float fBottom, final float fTop, final float fNear, final float fFar, final int iParentCanvasID) {
 		viewFrustum = new ViewFrustum(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar);
 
-		this.iParentContainerId = iParentCanvasID;
+		this.parentContainerID = iParentCanvasID;
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class CmdCreateView
 	}
 
 	public void setParentCanvasID(int parentCanvasID) {
-		this.iParentContainerId = parentCanvasID;
+		this.parentContainerID = parentCanvasID;
 	}
 
 	public void setViewID(String viewID) {
@@ -199,16 +199,16 @@ public class CmdCreateView
 
 		IViewManager glCanvasManager = generalManager.getViewGLCanvasManager();
 
-		if (iExternalID != -1 && iParentContainerId != -1) {
-			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
+		if (externalID != -1 && parentContainerID != -1) {
+			parentContainerID = generalManager.getIDManager().getInternalFromExternalID(parentContainerID);
 		}
 
-		GLCaleydoCanvas glCanvas = generalManager.getViewGLCanvasManager().getCanvas(iParentContainerId);
+		GLCaleydoCanvas glCanvas = generalManager.getViewGLCanvasManager().getCanvas(parentContainerID);
 
-		createdObject = glCanvasManager.createGLView(viewID, glCanvas, sLabel, viewFrustum);
+		createdObject = glCanvasManager.createGLView(viewID, glCanvas, label, viewFrustum);
 
-		if (iExternalID != -1) {
-			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), iExternalID);
+		if (externalID != -1) {
+			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), externalID);
 		}
 
 		createdObject.getViewCamera().setCameraPosition(cameraOrigin);

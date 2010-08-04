@@ -1,5 +1,6 @@
 package org.caleydo.core.manager.command.factory;
 
+import org.caleydo.core.command.CmdCreateIDType;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
@@ -17,8 +18,6 @@ import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.command.view.swt.CmdViewCreateGlyphConfiguration;
 import org.caleydo.core.command.view.swt.CmdViewCreateSwtGLCanvas;
-import org.caleydo.core.command.window.swt.CmdContainerCreate;
-import org.caleydo.core.command.window.swt.CmdWindowCreate;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -50,6 +49,11 @@ public class CommandFactory
 		ICommand createdCommand = null;
 
 		switch (cmdType) {
+			
+			case CREATE_ID_TYPE: {
+				createdCommand = new CmdCreateIDType(cmdType);
+				break;
+			}			
 			case LOAD_LOOKUP_TABLE_FILE: {
 				createdCommand = new CmdLoadFileLookupTable(cmdType);
 				break;
@@ -72,14 +76,6 @@ public class CommandFactory
 			}
 			case CREATE_SET_DATA: {
 				createdCommand = new CmdDataCreateSet(cmdType);
-				break;
-			}
-			case CREATE_SWT_WINDOW: {
-				createdCommand = new CmdWindowCreate(cmdType);
-				break;
-			}
-			case CREATE_SWT_CONTAINER: {
-				createdCommand = new CmdContainerCreate(cmdType);
 				break;
 			}
 			case CREATE_VIEW_SWT_GLCANVAS: {

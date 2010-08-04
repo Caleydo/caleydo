@@ -40,7 +40,7 @@ public class CmdLoadGlyphDefinition
 	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
-		sXMLPath = this.sAttribute1;
+		sXMLPath = this.attrib1;
 	}
 
 	/**

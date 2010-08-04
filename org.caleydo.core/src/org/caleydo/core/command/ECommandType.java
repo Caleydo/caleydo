@@ -31,6 +31,7 @@ public enum ECommandType {
 	CREATE_SET_DATA("cmd", "type", "-1", "Create SET"),
 	CREATE_STORAGE("cmd", "type", "-1", "Create Storage"),
 	CREATE_VIRTUAL_ARRAY("cmd", "type", "-1", "Create VirtualArray"),
+	CREATE_ID_TYPE("cmd", "type", "-1", "Create ID Type"),
 
 	CREATE_SWT_WINDOW("cmd", "type", "-1", "Create SWT window"),
 	CREATE_SWT_CONTAINER("cmd", "type", "-1", "Create SWTContainer"),
@@ -45,48 +46,19 @@ public enum ECommandType {
 
 	LOAD_PATHWAY_DATA("cmd", "type", "-1", "load pathway data"),
 
-	RUN_CMD_NOW("cmd", "process", "RUN_CMD_NOW", "No description available!"),
-	MEMENTO("cmd", "process", null, "No description available!"),
-
-	/*
-	 * ------- COMMAND QUEUE --------
-	 */
-	COMMAND_QUEUE_OPEN("cmdqueue", "type", null, "Open a command queue"),
-	COMMAND_QUEUE_RUN("cmdqueue", "type", null, "execute a command queue"),
-
-	CMD_ID("cmdqueue", "cmdId", "-1", "No description available!"),
-	CMDQUEUE_ID("cmdqueue", "cmdQueueId", "-1", "No description available!"),
-
-	RUN_QUEUE_ON_DEMAND("cmdqueue", "process", "RUN_QUEUE_ON_DEMAND", "No description available!"),
-	RUN_QUEUE("cmdqueue", "process", "RUN_QUEUE", "No description available!"),
-
-	CMD_THREAD_POOL_ID("cmdqueue", "queue_thread", "-1", "No description available!"),
-	CMD_THREAD_POOL_WAIT_ID("cmdqueue", "queue_thread_wait", "-1", "No description available!"),
-
-	/*
-	 * ================================================= Import from former Type "CommandType"
-	 * =================================================
-	 */
 	SYSTEM_SHUT_DOWN("cmd", "type", "-1", "Caleydo system shut down"),
 
-	/*
-	 * ================================================== TAG's used only while parsing XML files
-	 * ==================================================
-	 */
 	TAG_CMD("cmd", "Cmd", ""),
 	TAG_CMD_QUEUE("cmd", "CmdQueue", ""),
-	TAG_CMD_ID("cmd", "cmdId", "-1"),
 	TAG_UNIQUE_ID("cmd", "uniqueId", "-1"),
-	TAG_MEMENTO_ID("cmd", "mementoId", "-1"),
 	TAG_TYPE("cmd", "type", "NO_OPERATION"),
 	TAG_ATTRIBUTE1("cmd", "attrib1", ""),
 	TAG_ATTRIBUTE2("cmd", "attrib2", ""),
 	TAG_ATTRIBUTE3("cmd", "attrib3", ""),
 	TAG_ATTRIBUTE4("cmd", "attrib4", ""),
 	TAG_DETAIL("cmd", "detail", ""),
-	TAG_PARENT("cmd", "parent", "-1"),
-	TAG_PROCESS("cmd", "process", "RUN_CMD_NOW"),
 	TAG_LABEL("cmd", "label", ""),
+	TAG_PARENT("cmd", "label", ""),
 	TAG_POS_GL_ORIGIN("cmd", "gl_origin", "0 0 0"),
 
 	/** Values indicate axis: (X,Y,Z) and rotation-angle (ALPHA) in (radiant). */

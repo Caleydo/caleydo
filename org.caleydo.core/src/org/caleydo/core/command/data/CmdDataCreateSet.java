@@ -50,17 +50,17 @@ public class CmdDataCreateSet
 	public void doCommand() {
 
 		createdObject = new Set();
-		createdObject.setLabel(sLabel);
+		createdObject.setLabel(label);
 
-		if (iExternalID != -1) {
-			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), iExternalID);
+		if (externalID != -1) {
+			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), externalID);
 		}
 
 		fillSets(createdObject);
 
 		generalManager.getLogger().log(
 			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "New Set with internal ID "
-				+ createdObject.getID() + " and external ID " + iExternalID + " created."));
+				+ createdObject.getID() + " and external ID " + externalID + " created."));
 
 		dataDomain.setSet(createdObject);
 

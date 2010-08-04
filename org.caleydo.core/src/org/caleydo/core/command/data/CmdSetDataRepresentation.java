@@ -46,13 +46,13 @@ public class CmdSetDataRepresentation
 	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
-		externalDataRep = EExternalDataRepresentation.valueOf(sAttribute1);
+		externalDataRep = EExternalDataRepresentation.valueOf(attrib1);
 
 		/**
 		 * Fill storage IDs
 		 */
 		StringTokenizer strToken_DataTypes =
-			new StringTokenizer(sAttribute2, IGeneralManager.sDelimiter_Parser_DataItems);
+			new StringTokenizer(attrib2, IGeneralManager.sDelimiter_Parser_DataItems);
 
 		while (strToken_DataTypes.hasMoreTokens()) {
 			iAlIDs.add(Integer.valueOf(strToken_DataTypes.nextToken()).intValue());
@@ -61,25 +61,25 @@ public class CmdSetDataRepresentation
 		// Convert external IDs from XML file to internal IDs
 		iAlIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(iAlIDs);
 
-		if (sAttribute3.equals("")) {
+		if (attrib3.equals("")) {
 			objectType = EManagedObjectType.STORAGE;
 		}
 		else {
-			objectType = EManagedObjectType.valueOf(sAttribute3);
+			objectType = EManagedObjectType.valueOf(attrib3);
 			if (objectType != EManagedObjectType.SET)
 				throw new IllegalArgumentException(
 					"Setting of external data rep is only allowed on storages or sets");
 		}
 
 		// default is homogeneous
-		if (sAttribute4.equals("")) {
+		if (attrib4.equals("")) {
 			bIsSetHomogeneous = true;
 		}
 		else {
-			if (sAttribute4.equals("homogeneous")) {
+			if (attrib4.equals("homogeneous")) {
 				bIsSetHomogeneous = true;
 			}
-			else if (sAttribute4.equals("inhomogeneous")) {
+			else if (attrib4.equals("inhomogeneous")) {
 				bIsSetHomogeneous = false;
 			}
 			else
