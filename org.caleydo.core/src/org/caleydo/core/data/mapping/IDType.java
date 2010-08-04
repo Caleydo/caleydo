@@ -6,7 +6,7 @@ import org.caleydo.core.data.collection.EStorageType;
 
 public class IDType {
 
-	private static HashMap<IDType, Boolean> registeredTypes = new HashMap<IDType, Boolean>();
+	private static HashMap<String, IDType> registeredTypes = new HashMap<String, IDType>();
 	
 	private String typeName;
 	
@@ -19,8 +19,11 @@ public class IDType {
 	
 	public static IDType registerType(String typeName, EStorageType storageType) {
 		
+		if (registeredTypes.containsKey(typeName))
+			return registeredTypes.get(typeName);
+		
 		IDType idType = new IDType(typeName, storageType);
-		registeredTypes.put(idType, null);
+		registeredTypes.put(typeName, idType);
 		
 		return idType;
 	}
