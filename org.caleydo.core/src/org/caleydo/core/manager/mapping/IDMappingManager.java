@@ -142,7 +142,8 @@ public class IDMappingManager
 				if (originKeyType.getStorageType() == EStorageType.INT
 					&& destValueType.getStorageType() == EStorageType.INT) {
 					codeResolvedMap = new HashMap<Integer, Integer>();
-					MappingType conversionType = mappingType;//MappingType.valueOf(originValueType + "_2_" + destValueType);
+					MappingType conversionType = mappingType;// MappingType.valueOf(originValueType + "_2_" +
+																// destValueType);
 
 					if (!mappingType.isMultiMap()) {
 						codeResolvedMap = new HashMap<Integer, Integer>();
@@ -191,7 +192,8 @@ public class IDMappingManager
 				}
 				else if (originKeyType.getStorageType() == EStorageType.STRING
 					&& destValueType.getStorageType() == EStorageType.INT) {
-					MappingType conversionType = mappingType;//MappingType.valueOf(originValueType + "_2_" + destValueType);
+					MappingType conversionType = mappingType;// MappingType.valueOf(originValueType + "_2_" +
+																// destValueType);
 
 					if (!mappingType.isMultiMap()) {
 						codeResolvedMap = new HashMap<String, Integer>();
@@ -234,7 +236,8 @@ public class IDMappingManager
 					&& destValueType.getStorageType() == EStorageType.INT) {
 					codeResolvedMap = new HashMap<Integer, Integer>();
 
-					MappingType conversionType = mappingType;//MappingType.valueOf(originKeyType + "_2_" + destKeyType);
+					MappingType conversionType = mappingType;// MappingType.valueOf(originKeyType + "_2_" +
+																// destKeyType);
 
 					if (!mappingType.isMultiMap()) {
 						codeResolvedMap = new HashMap<Integer, Integer>();
@@ -276,7 +279,8 @@ public class IDMappingManager
 					&& destValueType.getStorageType() == EStorageType.STRING) {
 					codeResolvedMap = new HashMap<Integer, String>();
 
-					MappingType conversionType = mappingType;//MappingType.valueOf(originKeyType + "_2_" + destKeyType);
+					MappingType conversionType = mappingType;// MappingType.valueOf(originKeyType + "_2_" +
+																// destKeyType);
 
 					for (KeyType key : srcMap.keySet()) {
 						codeResolvedMap.put(
@@ -499,5 +503,16 @@ public class IDMappingManager
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public HashSet<IDType> getIDTypes() {
+		HashSet<IDType> idTypes = new HashSet<IDType>();
+		for (MappingType mappingType : hashMappingType2Map.keySet()) {
+			idTypes.add(mappingType.getFromIDType());
+			idTypes.add(mappingType.getToIDType());
+		}
+
+		return idTypes;
 	}
 }

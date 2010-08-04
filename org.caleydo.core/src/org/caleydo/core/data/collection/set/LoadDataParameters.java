@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 
 /**
@@ -24,7 +25,7 @@ public class LoadDataParameters {
 	private ArrayList<Integer> storageIds;
 
 	/** Specifies the IDType that is used in the main data file */
-	private EIDType fileIDType;
+	private IDType fileIDType;
 
 	/** path to main data file */
 	private String fileName;
@@ -210,11 +211,11 @@ public class LoadDataParameters {
 		this.useExperimentClusterInfo = useExperimentClusterInfo;
 	}
 
-	public void setFileIDType(EIDType fileIDType) {
+	public void setFileIDType(IDType fileIDType) {
 		this.fileIDType = fileIDType;
 	}
 
-	public EIDType getFileIDType() {
+	public IDType getFileIDType() {
 		return fileIDType;
 	}
 

@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.graph.tree.Tree;
@@ -32,6 +33,7 @@ import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.mapping.MappingType;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererType;
@@ -69,12 +71,22 @@ public abstract class ASetBasedDataDomain
 	public ASetBasedDataDomain() {
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
+		init();
 	}
 
 	public ASetBasedDataDomain(String dataDomainType) {
 		this.dataDomainType = dataDomainType;
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
+		init();
+	}
+
+	private void init()
+	{
+		contentIDType = IDType.registerType("content_"+dataDomainType + "_" + hashCode(), EStorageType.INT);
+		storageIDType = IDType.registerType("storage_"+dataDomainType + "_" + hashCode(), EStorageType.INT);
+		
+		MappingType mappingType = new MappingType(fromIDType, toIDType, isMultiMap)
 	}
 
 	@Override

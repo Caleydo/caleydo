@@ -189,7 +189,6 @@ public class SetUtils {
 
 	/**
 	 * Creates the set from a previously prepared storage definition.
-	 * 
 	 */
 	public static Set createData(ASetBasedDataDomain dataDomain) {
 
@@ -222,6 +221,7 @@ public class SetUtils {
 			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager()
 				.createCommandByType(ECommandType.LOAD_LOOKUP_TABLE_FILE);
 
+		// FIXME use id type created by data domain.
 		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 			String lookupTableInfo =
 				loadDataParameters.getFileIDType().toString() + "_2_EXPRESSION_INDEX REVERSE";

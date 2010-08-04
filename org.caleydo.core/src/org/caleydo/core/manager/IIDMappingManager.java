@@ -1,5 +1,6 @@
 package org.caleydo.core.manager;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -132,5 +133,11 @@ public interface IIDMappingManager {
 	 */
 	public <T> boolean doesElementExist(IDType idType, T element);
 
-	// public void printGraph();
+	/**
+	 * Returns all id types registered in this ID Mapping Manager
+	 * 
+	 * @return
+	 */
+	public HashSet<IDType> getIDTypes();
+
 }

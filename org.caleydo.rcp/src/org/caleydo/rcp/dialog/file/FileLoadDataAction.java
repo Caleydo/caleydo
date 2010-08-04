@@ -4,12 +4,14 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.set.SetUtils;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -72,7 +74,7 @@ public class FileLoadDataAction
 
 	private Combo idCombo;
 
-	private ArrayList<EIDType> alIDTypes;
+	private ArrayList<IDType> alIDTypes;
 
 	private String inputFile = "";
 	private String filePath = "";
@@ -202,20 +204,19 @@ public class FileLoadDataAction
 			idTypeGroup.setLayout(new RowLayout());
 
 			idCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
-			alIDTypes = new ArrayList<EIDType>();
+			alIDTypes = new ArrayList<IDType>();
 
-			ArrayList<EIDType> alIDTypesTemp =
-				(ArrayList<EIDType>) GeneralManager.get().getIDMappingManager().getIDTypes(EIDCategory.GENE);
+			HashSet<IDType> tempIDTypes = GeneralManager.get().getIDMappingManager().getIDTypes();
 
-			for (EIDType idType : alIDTypesTemp) {
-				if (!idType.equals(EIDType.REFSEQ_MRNA_INT))
+			for (IDType idType : tempIDTypes) {
+				if (!idType.isInternalType())
 					alIDTypes.add(idType);
 			}
 
 			String[] idTypes = new String[alIDTypes.size()];
 			int index = 0;
-			for (EIDType idType : alIDTypes) {
-				idTypes[index] = idType.getName();
+			for (IDType idType : alIDTypes) {
+				idTypes[index] = idType.getTypeName();
 				index++;
 			}
 			idCombo.setItems(idTypes);
@@ -843,19 +844,18 @@ public class FileLoadDataAction
 			rowIndex++;
 		}
 		if (alIDTypes == null) {
-			alIDTypes = new ArrayList<EIDType>();
-			ArrayList<EIDType> alIDTypesTemp =
-				(ArrayList<EIDType>) GeneralManager.get().getIDMappingManager().getIDTypes(EIDCategory.GENE);
-			for (EIDType idType : alIDTypesTemp) {
-				if (!idType.equals(EIDType.REFSEQ_MRNA_INT))
+			alIDTypes = new ArrayList<IDType>();
+			HashSet<IDType> alIDTypesTemp = GeneralManager.get().getIDMappingManager().getIDTypes();
+			for (IDType idType : alIDTypesTemp) {
+				if (!idType.isInternalType())
 					alIDTypes.add(idType);
 			}
 		}
 
 		int maxCorrectElements = 0;
-		EIDType mostProbableIDType = EIDType.REFSEQ_MRNA;
+		IDType mostProbableIDType = null;
 
-		for (EIDType idType : alIDTypes) {
+		for (IDType idType : alIDTypes) {
 
 			int currentCorrectElements = 0;
 
@@ -875,7 +875,7 @@ public class FileLoadDataAction
 					if (idMappingManager.doesElementExist(idType, currentID)) {
 						currentCorrectElements++;
 					}
-					else if (idType.equals(EIDType.REFSEQ_MRNA)) {
+					else if (idType.getTypeName().equals("REFSEQ_MRNA")) {
 						if (currentID.contains(".")) {
 							if (idMappingManager.doesElementExist(idType,
 								currentID.substring(0, currentID.indexOf(".")))) {
@@ -889,7 +889,7 @@ public class FileLoadDataAction
 			if (currentCorrectElements >= idList.size()) {
 				idCombo.select(alIDTypes.indexOf(idType));
 				TableColumn idColumn = previewTable.getColumn(1);
-				idColumn.setText(idType.getName());
+				idColumn.setText(idType.getTypeName());
 				return;
 			}
 			if (currentCorrectElements >= maxCorrectElements) {
@@ -900,7 +900,7 @@ public class FileLoadDataAction
 
 		idCombo.select(alIDTypes.indexOf(mostProbableIDType));
 		TableColumn idColumn = previewTable.getColumn(1);
-		idColumn.setText(mostProbableIDType.getName());
+		idColumn.setText(mostProbableIDType.getTypeName());
 
 	}
 }

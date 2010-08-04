@@ -51,6 +51,7 @@ public class CmdCreateIDType
 
 		typeName = detail;
 		storageType = EStorageType.valueOf(attrib1);
+		
 
 	}
 
