@@ -9,12 +9,14 @@ import org.jgrapht.graph.DefaultWeightedEdge;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class MappingEdge
+public class MappingType
 	extends DefaultWeightedEdge {
 
 	private static final long serialVersionUID = 1L;
 	private IDType fromIDType;
 	private IDType toIDType;
+	
+	private boolean isMultiMap = false;
 
 	/**
 	 * Constructor.
@@ -24,10 +26,11 @@ public class MappingEdge
 	 * @param toIDType
 	 *            Target ID type.
 	 */
-	public MappingEdge(IDType fromIDType, IDType toIDType) {
+	public MappingType(IDType fromIDType, IDType toIDType, boolean isMultiMap) {
 		super();
 		this.fromIDType = fromIDType;
 		this.toIDType = toIDType;
+		this.isMultiMap = isMultiMap;
 	}
 	
 	public void setFromIDType(IDType fromIDType) {
@@ -44,5 +47,9 @@ public class MappingEdge
 	
 	public IDType getToIDType() {
 		return toIDType;
+	}
+	
+	public boolean isMultiMap() {
+		return isMultiMap;
 	}
 }

@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.manager.mapping.MappingType;
 
 /**
  * Generic interface for the mapping ID managers.
@@ -24,10 +24,14 @@ public interface IIDMappingManager {
 	 *            Type of Keys of the map
 	 * @param <V>
 	 *            Type of Values of the map
-	 * @param mappingType
-	 *            Specifies the source and destination IDType.
+	 * @param fromIDType
+	 *            Specifies the source ID type.
+	 * @param toIDType
+	 *            Specifies the target ID type.
+	 * @param isMultiMap
+	 *            Determines if a multi map will be created.
 	 */
-	public <K, V> void createMap(EMappingType mappingType);
+	public <K, V> void createMap(IDType fromIDType, IDType toIDType, boolean isMultiMap);
 
 	/**
 	 * Creates a reverse map to an already existent map.
@@ -39,7 +43,7 @@ public interface IIDMappingManager {
 	 * @param reverseType
 	 *            Mapping type of the reverse map.
 	 */
-	public <SrcType, DestType> void createReverseMap(EMappingType sourceType, EMappingType reverseType);
+	public <SrcType, DestType> void createReverseMap(MappingType sourceType, MappingType reverseType);
 
 	/**
 	 * Method takes a map that contains identifier codes and creates a new resolved codes. Resolving means
@@ -53,8 +57,8 @@ public interface IIDMappingManager {
 	 * @param destMappingType
 	 *            Mapping type of the resolved map.
 	 */
-	public <KeyType, ValueType> void createCodeResolvedMap(EMappingType mappingType,
-		EMappingType destMappingType);
+	public <KeyType, ValueType> void createCodeResolvedMap(MappingType mappingType,
+		MappingType destMappingType);
 
 	/**
 	 * Gets the map of the specified mapping type for manipulation.
@@ -65,7 +69,7 @@ public interface IIDMappingManager {
 	 *            Mapping type that identifies the map.
 	 * @return Map that corresponds to the specified mapping type. If no such map exists, null is returned.
 	 */
-	public <KeyType, ValueType> Map<KeyType, ValueType> getMap(EMappingType type);
+	public <KeyType, ValueType> Map<KeyType, ValueType> getMap(MappingType type);
 
 	/**
 	 * Returns, whether a mapping is possible from the specified source IDType to the destination IDType.
@@ -76,7 +80,7 @@ public interface IIDMappingManager {
 	 *            Destination IDType of the mapping.
 	 * @return True, if a mapping is possible, false otherwise.
 	 */
-	public boolean hasMapping(EIDType source, EIDType destination);
+	public boolean hasMapping(IDType source, IDType destination);
 
 	/**
 	 * Tries to find the mapping from the source IDType to the destination IDType of the specified sourceID
@@ -96,7 +100,7 @@ public interface IIDMappingManager {
 	 *            ID for which the mapping shall be found
 	 * @return If no mapping is found, null, otherwise the corresponding ID, or Set of IDs.
 	 */
-	public <K, V> V getID(EIDType source, EIDType destination, K sourceID);
+	public <K, V> V getID(IDType source, IDType destination, K sourceID);
 
 	/**
 	 * Tries to find the mapping from the source IDType to the destination IDType of the specified sourceID
@@ -115,12 +119,12 @@ public interface IIDMappingManager {
 	 *            ID for which the mapping shall be found
 	 * @return If no mapping is found, null, otherwise the Set containing the corresponding ID(s).
 	 */
-	public <K, V> Set<V> getIDAsSet(EIDType source, EIDType destination, K sourceID);
+	public <K, V> Set<V> getIDAsSet(IDType source, IDType destination, K sourceID);
 
 	/**
 	 * @return Set of all IDTypes supported.
 	 */
-	public List<EIDType> getIDTypes(EIDCategory category);
+	public List<IDType> getIDTypes(EIDCategory category);
 
 	/**
 	 * Determines whether the IIDMappingManager holds a map that contains the specified element of the
@@ -133,7 +137,7 @@ public interface IIDMappingManager {
 	 *            Element to be found.
 	 * @return True, if such an element is fund, fals otherwise.
 	 */
-	public <T> boolean doesElementExist(EIDType idType, T element);
+	public <T> boolean doesElementExist(IDType idType, T element);
 
 	// public void printGraph();
 }
