@@ -28,9 +28,7 @@ public class PathwayDataDomain
 		dataDomainType = "org.caleydo.datadomain.pathway";
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 
-		possibleIDCategories = new HashMap<EIDCategory, String>();
-		// possibleIDCategories.put(EIDCategory.GENE, null);
-		possibleIDCategories.put(EIDCategory.PATHWAY, null);
+	
 		
 		// Trigger pathway loading
 		new PathwayLoadingProgressIndicatorAction().run(null);

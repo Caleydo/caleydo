@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -25,9 +26,9 @@ public class SelectionCommandListener
 		if (event instanceof SelectionCommandEvent) {
 			SelectionCommandEvent selectionCommandEvent = (SelectionCommandEvent) event;
 			SelectionCommand selectionCommand = selectionCommandEvent.getSelectionCommand();
-			EIDCategory category = selectionCommandEvent.getCategory();
+			IDType idType = selectionCommandEvent.getIDType();
 
-			handler.handleSelectionCommand(category, selectionCommand);
+			handler.handleSelectionCommand(idType, selectionCommand);
 		}
 	}
 

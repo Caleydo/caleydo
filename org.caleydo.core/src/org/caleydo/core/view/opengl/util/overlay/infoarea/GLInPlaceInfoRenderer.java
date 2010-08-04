@@ -10,6 +10,7 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
 import org.caleydo.core.view.opengl.renderstyle.InfoAreaRenderStyle;
@@ -62,12 +63,12 @@ public class GLInPlaceInfoRenderer {
 	 * Set the data to be rendered.
 	 * 
 	 * @param iCaleydoID
-	 * @param eInputDataTypes
+	 * @param inputDataTypes
 	 * @param pickedPoint
 	 */
-	public void setData(int iCaleydoID, EIDType eInputDataTypes) {
+	public void setData(int iCaleydoID, IDType inputDataTypes) {
 
-		this.sContent = contentCreator.getStringContentForID(iCaleydoID, eInputDataTypes);
+		this.sContent = contentCreator.getStringContentForID(iCaleydoID, inputDataTypes);
 		// this.pickedPoint = pickedPoint;
 		// miniView = new GLParCoordsMiniView();
 		fHeight = 0;

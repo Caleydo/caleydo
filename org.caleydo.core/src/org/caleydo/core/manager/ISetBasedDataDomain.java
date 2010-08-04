@@ -1,6 +1,7 @@
 package org.caleydo.core.manager;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
@@ -28,7 +29,7 @@ public interface ISetBasedDataDomain
 	 * @param idCategory
 	 * @return
 	 */
-	public String getVATypeForIDCategory(EIDCategory idCategory);
+//	public String getVATypeForIDCategory(EIDCategory idCategory);
 
 	/**
 	 * Returns the set which is currently loaded and used inside the views for this use case.
@@ -119,7 +120,7 @@ public interface ISetBasedDataDomain
 	public void handleForeignSelectionUpdate(String dataDomainType, ISelectionDelta delta,
 		boolean scrollToSelection, String info);
 
-	public void handleForeignSelectionCommand(String dataDomainType, EIDCategory category,
+	public void handleForeignSelectionCommand(String dataDomainType, IDType idType,
 		SelectionCommand selectionCommand);
 
 	/**

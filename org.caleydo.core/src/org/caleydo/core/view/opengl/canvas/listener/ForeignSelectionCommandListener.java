@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.event.AEvent;
@@ -26,9 +27,9 @@ public class ForeignSelectionCommandListener
 		if (event instanceof SelectionCommandEvent) {
 			SelectionCommandEvent selectionCommandEvent = (SelectionCommandEvent) event;
 			SelectionCommand selectionCommand = selectionCommandEvent.getSelectionCommand();
-			EIDCategory category = selectionCommandEvent.getCategory();
+			IDType idType = selectionCommandEvent.getIDType();
 			String dataDomainType = selectionCommandEvent.getDataDomainType();
-			handler.handleForeignSelectionCommand(dataDomainType, category, selectionCommand);
+			handler.handleForeignSelectionCommand(dataDomainType, idType, selectionCommand);
 		}
 	}
 

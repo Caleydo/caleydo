@@ -109,6 +109,14 @@ public abstract class ASetBasedDataDomain
 		return set;
 	}
 
+	public IDType getContentIDType() {
+		return contentIDType;
+	}
+
+	public IDType getStorageIDType() {
+		return storageIDType;
+	}
+
 	@Override
 	public void updateSetInViews() {
 
@@ -398,10 +406,10 @@ public abstract class ASetBasedDataDomain
 
 	}
 
-	@Override
-	public String getVATypeForIDCategory(EIDCategory idCategory) {
-		return possibleIDCategories.get(idCategory);
-	}
+	// @Override
+	// public String getVATypeForIDCategory(IDCategory idCategory) {
+	// return possibleIDCategories.get(idCategory);
+	// }
 
 	@Override
 	public String getContentLabel(boolean bCapitalized, boolean bPlural) {
@@ -440,7 +448,7 @@ public abstract class ASetBasedDataDomain
 	}
 
 	@Override
-	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(IDType idType, SelectionCommand selectionCommand) {
 		// TODO Auto-generated method stub
 
 	}
@@ -461,7 +469,7 @@ public abstract class ASetBasedDataDomain
 	 * implemented in concrete classes, has no functionality in base class.
 	 */
 	@Override
-	public void handleForeignSelectionCommand(String dataDomainType, EIDCategory category,
+	public void handleForeignSelectionCommand(String dataDomainType, IDType idType,
 		SelectionCommand selectionCommand) {
 		// may be interesting to implement in sub-class
 	}

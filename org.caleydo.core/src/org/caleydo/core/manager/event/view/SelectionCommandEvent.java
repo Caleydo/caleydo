@@ -3,6 +3,7 @@ package org.caleydo.core.manager.event.view;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.VABasedSelectionManager;
@@ -22,7 +23,7 @@ public class SelectionCommandEvent
 	extends AEvent {
 
 	/** selected genome data-type */
-	EIDCategory category;
+	IDType idType;
 
 	/** list of selection commands to handle by the receiver */
 	SelectionCommand selectionCommand = null;
@@ -34,10 +35,18 @@ public class SelectionCommandEvent
 	public void setSelectionCommand(SelectionCommand selectionCommand) {
 		this.selectionCommand = selectionCommand;
 	}
+	
+	public IDType getIDType() {
+		return idType;
+	}
+	
+	public void setIdType(IDType idType) {
+		this.idType = idType;
+	}
 
 	@Override
 	public boolean checkIntegrity() {
-		if (category == null)
+		if (idType == null)
 			throw new NullPointerException("category was null");
 		if (selectionCommand == null)
 			throw new NullPointerException("selectionCommands was null");

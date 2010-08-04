@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
@@ -25,7 +26,7 @@ public abstract class AGLConnectionLineRenderer {
 
 	protected boolean bEnableRendering = true;
 
-	protected EnumMap<EIDType, HashMap<Integer, ArrayList<ArrayList<Vec3f>>>> hashIDTypeToViewToPointLists;
+	protected HashMap<IDType, HashMap<Integer, ArrayList<ArrayList<Vec3f>>>> hashIDTypeToViewToPointLists;
 
 	protected int activeViewID = -1;
 
@@ -37,8 +38,7 @@ public abstract class AGLConnectionLineRenderer {
 		connectedElementRepManager =
 			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
-		hashIDTypeToViewToPointLists =
-			new EnumMap<EIDType, HashMap<Integer, ArrayList<ArrayList<Vec3f>>>>(EIDType.class);
+		hashIDTypeToViewToPointLists = new HashMap<IDType, HashMap<Integer, ArrayList<ArrayList<Vec3f>>>>();
 	}
 
 	public void enableRendering(final boolean bEnableRendering) {

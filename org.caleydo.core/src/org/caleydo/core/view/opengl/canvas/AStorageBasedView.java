@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.management.InvalidAttributeValueException;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -118,6 +119,9 @@ public abstract class AStorageBasedView
 	protected ReplaceContentVAListener replaceContentVAListener;
 	protected ReplaceStorageVAListener replaceStorageVAListener;
 
+	protected IDType contentIDType;
+	protected IDType storageIDType;
+
 	/**
 	 * Constructor for storage based views
 	 * 
@@ -135,13 +139,15 @@ public abstract class AStorageBasedView
 
 	}
 
-
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = (ASetBasedDataDomain) dataDomain;
 
 		contentSelectionManager = this.dataDomain.getContentSelectionManager();
 		storageSelectionManager = this.dataDomain.getStorageSelectionManager();
+
+		contentIDType = dataDomain.getContentIDType();
+		storageIDType = dataDomain.getStorageIDType();
 
 		setSet(this.dataDomain.getSet());
 	}
@@ -248,7 +254,7 @@ public abstract class AStorageBasedView
 	 * @throws InvalidAttributeValueException
 	 *             when the selectionDelta does not contain a valid type for this view
 	 */
-	protected abstract ArrayList<SelectedElementRep> createElementRep(EIDType idType, int iStorageIndex)
+	protected abstract ArrayList<SelectedElementRep> createElementRep(IDType idType, int iStorageIndex)
 		throws InvalidAttributeValueException;
 
 	@Override
@@ -259,18 +265,16 @@ public abstract class AStorageBasedView
 		// + ", received in: " + this.getClass().getSimpleName());
 
 		// Check for type that can be handled
-		if (selectionDelta.getIDType().getCategory() == EIDCategory.GENE
-			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
+		if (selectionDelta.getIDType() == contentIDType) {
 			contentSelectionManager.setDelta(selectionDelta);
-//			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
+			// ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
 			handleConnectedElementRep(selectionDelta);
 			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
 		}
 
-		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
-			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
+		else if (selectionDelta.getIDType() == storageIDType) {
 			// generalManager.getIDMappingManager().getID(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX,
 			// key)(type)
 
@@ -280,37 +284,37 @@ public abstract class AStorageBasedView
 			setDisplayListDirty();
 		}
 
-		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
-			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.clinical")) {
-
-			contentSelectionManager.setDelta(selectionDelta);
-			//
-			 handleConnectedElementRep(selectionDelta);
-			 reactOnExternalSelection(scrollToSelection);
-			 setDisplayListDirty();
-		}
-
-		// FIXME: this is not nice since we use expression index for unspecified
-		// data
-		else if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX
-			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
-
-			contentSelectionManager.setDelta(selectionDelta);
-//			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
-			handleConnectedElementRep(selectionDelta);
-			reactOnExternalSelection(scrollToSelection);
-			setDisplayListDirty();
-		}
-
-		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
-			&& dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
-
-			storageSelectionManager.setDelta(selectionDelta);
-//			handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
-			handleConnectedElementRep(selectionDelta);
-			reactOnExternalSelection(scrollToSelection);
-			setDisplayListDirty();
-		}
+		// else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
+		// && dataDomain.getDataDomainType().equals("org.caleydo.datadomain.clinical")) {
+		//
+		// contentSelectionManager.setDelta(selectionDelta);
+		// //
+		// handleConnectedElementRep(selectionDelta);
+		// reactOnExternalSelection(scrollToSelection);
+		// setDisplayListDirty();
+		// }
+		//
+		// // FIXME: this is not nice since we use expression index for unspecified
+		// // data
+		// else if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX
+		// && dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
+		//
+		// contentSelectionManager.setDelta(selectionDelta);
+		// // handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
+		// handleConnectedElementRep(selectionDelta);
+		// reactOnExternalSelection(scrollToSelection);
+		// setDisplayListDirty();
+		// }
+		//
+		// else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
+		// && dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
+		//
+		// storageSelectionManager.setDelta(selectionDelta);
+		// // handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
+		// handleConnectedElementRep(selectionDelta);
+		// reactOnExternalSelection(scrollToSelection);
+		// setDisplayListDirty();
+		// }
 
 	}
 
@@ -323,8 +327,8 @@ public abstract class AStorageBasedView
 
 		contentVA.setGroupList(null);
 
-		if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT)
-			delta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, delta);
+		// if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT)
+		// delta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, delta);
 
 		reactOnContentVAChanges(delta);
 		contentSelectionManager.setVADelta(delta);
@@ -372,7 +376,8 @@ public abstract class AStorageBasedView
 
 	@Override
 	public void clearAllSelections() {
-		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
+		connectedElementRepresentationManager.clear(contentIDType);
+		connectedElementRepresentationManager.clear(storageIDType);
 		contentSelectionManager.clearSelections();
 		storageSelectionManager.clearSelections();
 
@@ -426,8 +431,8 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
-		if (category == EIDCategory.GENE)
+	public void handleSelectionCommand(IDType idType, SelectionCommand selectionCommand) {
+		if (idType == contentIDType)
 			contentSelectionManager.executeSelectionCommand(selectionCommand);
 		else
 			storageSelectionManager.executeSelectionCommand(selectionCommand);
@@ -445,7 +450,7 @@ public abstract class AStorageBasedView
 			int iStorageIndex = -1;
 
 			int iID = -1;
-			EIDType idType;
+			IDType idType;
 
 			if (selectionDelta.size() > 0) {
 				for (SelectionDeltaItem item : selectionDelta) {
@@ -456,30 +461,30 @@ public abstract class AStorageBasedView
 						continue;
 					}
 
-					if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
+					if (selectionDelta.getIDType() == contentIDType) {
 						iStorageIndex = item.getPrimaryID();
 
 						iID = item.getSecondaryID();
-						idType = EIDType.EXPRESSION_INDEX;
+						idType = contentIDType;
 
 					}
-					else if (selectionDelta.getSecondaryIDType() == EIDType.EXPRESSION_INDEX) {
-						iStorageIndex = item.getSecondaryID();
-
-						iID = item.getPrimaryID();
-						idType = EIDType.EXPRESSION_INDEX;
-					}
-					else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
+					// else if (selectionDelta.getSecondaryIDType() == EIDType.EXPRESSION_INDEX) {
+					// iStorageIndex = item.getSecondaryID();
+					//
+					// iID = item.getPrimaryID();
+					// idType = EIDType.EXPRESSION_INDEX;
+					// }
+					else if (selectionDelta.getIDType() == storageIDType) {
 						iID = item.getPrimaryID();
 						iStorageIndex = iID;
-						idType = EIDType.EXPERIMENT_INDEX;
+						idType = storageIDType;
 					}
-					else if (selectionDelta.getIDType() == EIDType.UNSPECIFIED) {
-						iStorageIndex = item.getPrimaryID();
-
-						iID = item.getPrimaryID();
-						idType = EIDType.UNSPECIFIED;
-					}
+					// else if (selectionDelta.getIDType() == EIDType.UNSPECIFIED) {
+					// iStorageIndex = item.getPrimaryID();
+					//
+					// iID = item.getPrimaryID();
+					// idType = EIDType.UNSPECIFIED;
+					// }
 					else
 						throw new InvalidAttributeValueException("Can not handle data type: "
 							+ selectionDelta.getIDType());

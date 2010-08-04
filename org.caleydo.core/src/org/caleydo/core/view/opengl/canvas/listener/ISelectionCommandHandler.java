@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.IListenerOwner;
 
@@ -17,5 +18,5 @@ public interface ISelectionCommandHandler
 	 * 
 	 * @param selectionCommands
 	 */
-	public void handleSelectionCommand(EIDCategory category, SelectionCommand selectionCommand);
+	public void handleSelectionCommand(IDType idType, SelectionCommand selectionCommand);
 }

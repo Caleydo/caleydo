@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -52,11 +53,11 @@ public class GLConnectionLineRendererBucket
 	protected void renderConnectionLines(final GL gl) {
 		IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
 
-		for (Entry<EIDType, ConnectionMap> typeConnections : connectedElementRepManager
+		for (Entry<IDType, ConnectionMap> typeConnections : connectedElementRepManager
 			.getTransformedConnectionsByType().entrySet()) {
 			ArrayList<ArrayList<Vec3f>> alPointLists = null;
 
-			EIDType idType = typeConnections.getKey();
+			IDType idType = typeConnections.getKey();
 			HashMap<Integer, ArrayList<ArrayList<Vec3f>>> viewToPointList =
 				hashIDTypeToViewToPointLists.get(idType);
 
@@ -109,7 +110,7 @@ public class GLConnectionLineRendererBucket
 		}
 	}
 
-	protected void renderLineBundling(final GL gl, EIDType idType, float[] fArColor) {
+	protected void renderLineBundling(final GL gl, IDType idType, float[] fArColor) {
 		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
 
@@ -205,7 +206,7 @@ public class GLConnectionLineRendererBucket
 		// gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
 		// gl.glVertex3f(alPoints.get(0).x(), alPoints.get(0).y(),
 		// alPoints.get(0).z());
-		//		
+		//
 		// gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
 		// gl.glVertex3f(alPoints.get(alPoints.size()-1).x(),
 		// alPoints.get(alPoints.size()-1).y(), alPoints.get(0).z());
@@ -224,7 +225,7 @@ public class GLConnectionLineRendererBucket
 		// gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
 		// gl.glVertex3f(alPoints.get(0).x(), alPoints.get(0).y(),
 		// alPoints.get(0).z());
-		//		
+		//
 		// gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
 		// gl.glVertex3f(alPoints.get(alPoints.size()-1).x(),
 		// alPoints.get(alPoints.size()-1).y(), alPoints.get(0).z());
@@ -314,7 +315,7 @@ public class GLConnectionLineRendererBucket
 	// final int iNumberOfLines, Vec3f vecViewCenterPoint)
 	// {
 	// Vec3f[] arSplinePoints = new Vec3f[3];
-	//		
+	//
 	// // Vec3f vecDirection = new Vec3f();
 	// // vecDirection = vecCenter.minus(vecViewCenter);
 	// // float fLength = vecDirection.length();
@@ -326,15 +327,15 @@ public class GLConnectionLineRendererBucket
 	// // vecViewBundlingPoint = vecViewCenter.copy();
 	// // vecDirection.scale(fLength / 3);
 	// // vecViewBundlingPoint.add(vecDirection);
-	//		
+	//
 	// arSplinePoints[0] = vecSrcPoint.copy();
 	// arSplinePoints[1] = calculateBundlingPoint(vecSrcPoint,
 	// vecViewCenterPoint);
 	// arSplinePoints[2] = vecDestPoint.copy();
-	//		
+	//
 	// // FIXME: Do not create spline in every render frame
 	// Spline3D spline = new Spline3D(arSplinePoints, 0.001f, 0.01f);
-	//		
+	//
 	// // // Line shadow
 	// // gl.glColor4f(0.3f, 0.3f, 0.3f, 1);// , 0.6f);
 	// // gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH +

@@ -71,13 +71,6 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		contentLabelSingular = "gene";
 		contentLabelPlural = "genes";
 
-		possibleIDCategories = new HashMap<EIDCategory, String>();
-		possibleIDCategories.put(EIDCategory.GENE, null);
-		possibleIDCategories.put(EIDCategory.EXPERIMENT, null);
-
-		contentIDType = EIDType.EXPRESSION_INDEX;
-		storageIDType = EIDType.EXPERIMENT_INDEX;
-
 	}
 
 	@Override
@@ -266,7 +259,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		// System.out
 		// .println("TODO Convert and re-send selection from clinical to genetic");
 
-		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
+		if (delta.getIDType() == storageIDType) {
 			// for(ISeldelta)
 			SelectionUpdateEvent resendEvent = new SelectionUpdateEvent();
 			resendEvent.setDataDomainType(this.dataDomainType);

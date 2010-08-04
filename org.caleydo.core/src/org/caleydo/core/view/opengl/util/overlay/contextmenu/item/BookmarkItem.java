@@ -2,6 +2,7 @@ package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -19,7 +20,7 @@ public class BookmarkItem
 	 * 
 	 * @param iStorageIndex
 	 */
-	public BookmarkItem(EIDType idType, int id) {
+	public BookmarkItem(IDType idType, int id) {
 		super();
 		setIconTexture(EIconTextures.CM_BOOKMARK);
 		setText("Bookmark");
@@ -34,7 +35,7 @@ public class BookmarkItem
 	 * 
 	 * @param alStorageIndex
 	 */
-	public BookmarkItem(EIDType idType, ArrayList<Integer> ids) {
+	public BookmarkItem(IDType idType, ArrayList<Integer> ids) {
 		super();
 		setIconTexture(EIconTextures.CM_BOOKMARK);
 		setText("Bookmark");

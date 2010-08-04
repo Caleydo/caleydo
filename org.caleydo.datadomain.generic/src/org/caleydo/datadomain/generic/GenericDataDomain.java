@@ -30,12 +30,6 @@ public class GenericDataDomain extends ASetBasedDataDomain {
 		contentLabelSingular = "entity";
 		contentLabelPlural = "entities";
 
-		contentIDType = EIDType.UNSPECIFIED;
-		storageIDType = EIDType.EXPERIMENT_INDEX;
-
-		possibleIDCategories = new HashMap<EIDCategory, String>();
-		possibleIDCategories.put(EIDCategory.OTHER, null);
-		possibleIDCategories.put(EIDCategory.EXPERIMENT, null);
 	}
 
 	@Override
@@ -51,8 +45,8 @@ public class GenericDataDomain extends ASetBasedDataDomain {
 	}
 
 	@Override
-	public void handleForeignContentVAUpdate(int setID,
-			String dataDomainType, ContentVAType vaType, ContentVirtualArray virtualArray) {
+	public void handleForeignContentVAUpdate(int setID, String dataDomainType,
+			ContentVAType vaType, ContentVirtualArray virtualArray) {
 		// TODO Auto-generated method stub
 
 	}

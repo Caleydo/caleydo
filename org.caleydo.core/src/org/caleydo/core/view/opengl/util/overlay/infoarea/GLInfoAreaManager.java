@@ -6,6 +6,7 @@ import java.awt.Point;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.InfoAreaRenderStyle;
@@ -140,7 +141,7 @@ public class GLInfoAreaManager {
 	 * @param eInputDataTypes
 	 * @param pickedPoint
 	 */
-	public void setData(int iCaleydoID, EIDType eInputDataTypes, Point pickedPoint, float fDepth) {
+	public void setData(int iCaleydoID, IDType eInputDataTypes, Point pickedPoint, float fDepth) {
 
 		// this.sContent = contentCreator.getStringContentForID(iCaleydoID,
 		// eInputDataTypes);
