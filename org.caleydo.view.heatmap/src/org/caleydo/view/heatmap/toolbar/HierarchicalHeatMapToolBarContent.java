@@ -19,7 +19,7 @@ public class HierarchicalHeatMapToolBarContent extends AToolBarContent {
 
 	public static final String IMAGE_PATH = "resources/icons/view/storagebased/heatmap/heatmap.png";
 
-	public static final String VIEW_TITLE = "Full Heat Map";
+	public static final String VIEW_TITLE = "Hierarchical Heat Map";
 
 	@Override
 	public Class<?> getViewClass() {

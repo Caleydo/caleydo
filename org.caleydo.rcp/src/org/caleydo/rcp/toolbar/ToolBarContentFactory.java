@@ -243,6 +243,8 @@ public class ToolBarContentFactory {
 	public boolean isIgnored(List<IView> views) {
 		boolean ignored = false;
 		for (IView view : views) {
+			if (view == null)
+				return ignored;
 			ToolBarInfo info;
 			try {
 				info = toolBarInfos.get(view.getViewType());
@@ -252,6 +254,9 @@ public class ToolBarContentFactory {
 			}
 			catch (IllegalArgumentException ex) {
 				ignored = true;
+			}
+			catch (NullPointerException ex) {
+				ex.printStackTrace();
 			}
 		}
 		return ignored;
