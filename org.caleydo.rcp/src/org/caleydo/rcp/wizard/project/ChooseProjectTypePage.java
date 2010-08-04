@@ -397,13 +397,7 @@ public class ChooseProjectTypePage
 			btnLoadBioCartaPathwayData.setSelection(false);
 			bLoadBioCartaPathwayData = false;
 		}
-
-//		if (GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.FIRST_START)
-//			&& !Application.isInternetConnectionOK()) {
-			btnLoadPathwayData.setEnabled(false);
-			groupPathways.setEnabled(false);
-//		}
-
+		
 		btnLoadKEGGPathwayData.setEnabled(btnLoadPathwayData.getSelection());
 		btnLoadBioCartaPathwayData.setEnabled(btnLoadPathwayData.getSelection());
 

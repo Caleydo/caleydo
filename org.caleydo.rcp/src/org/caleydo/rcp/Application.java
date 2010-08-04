@@ -12,55 +12,33 @@ import org.eclipse.ui.PlatformUI;
 /**
  * This class controls all aspects of the application's execution
  */
-@SuppressWarnings("restriction")
 public class Application
 	implements IApplication {
 
-	// The command line arguments overrules the preference store
-	// public static boolean triggerEarlyPathwayLoading = false;
-	// public static boolean bIsWindowsOS = false;
-	// public static boolean bIsInterentConnectionOK = false;
 	public static boolean bDeleteRestoredWorkbenchState = false;
-
-	/** startup information of the application */
-	// public static ApplicationMode applicationMode;// = ApplicationMode.GENE_EXPRESSION_NEW_DATA;
-
-	// public static String xmlInputFile = "";
-
-	/**
-	 * list of serialized-view class to create during startup, the first string is the view, the second the
-	 * datadomain
-	 */
-	// public static List<Pair<String, String>> startViewWithDataDomain;
-
-	/** list of initialized view instances */
-	// public static List<String> initializedStartViews;
 
 	/** initialization data received from a Caleydo-server-application during startup */
 	public static ApplicationInitData initData = null;
-
-	// public RCPBridge rcpGuiBridge;
-
-	// private PreferenceStore prefStore;
 
 	// TODO: server address for plex-client mode, should be obtained from deskotheque instead from command
 	// line param
 	// private String serverAddress = null;
 
-	@Override
 	@SuppressWarnings("unchecked")
+	@Override
 	public Object start(IApplicationContext context) throws Exception {
+
+		GeneralManager.get().getPreferenceStore();
+		GeneralManager.get().getViewGLCanvasManager().init();
+
+		StartupProcessor.get().initStartupProcudure(context.getArguments());
+
 		// System.out.println("Start Caleydo...");
 		// System.out.println("OS Name:" +System.getProperty("os.name"));
 
 		// if (System.getProperty("os.name").contains("Win")) {
 		// bIsWindowsOS = true;
 		// }
-
-		GeneralManager.get().getPreferenceStore();
-		GeneralManager.get().getViewGLCanvasManager().init();
-
-		StartupProcessor.get().initStartupProcudure(context.getArguments());
 
 		// // Check if Caleydo will be started the first time and no Internet connection is detected
 		// if (prefStore.getBoolean(PreferenceConstants.FIRST_START) && !isInternetConnectionOK()) {
@@ -69,53 +47,9 @@ public class Application
 		// internetConfigurationWizard.open();
 		// }
 
-		// if (triggerEarlyPathwayLoading) {
-		// CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
-		// cmd.setAttributes("org.caleydo.datadomain.pathway");
-		// cmd.doCommand();
-		// }
-
-		// If no file is provided as command line argument a wizard page is opened to determine the xml file
-		// if (xmlInputFile.equals("")) {
-
 		// if (Application.applicationMode == ApplicationMode.PLEX_CLIENT) {
 		// Application.initData = GroupwareUtils.startPlexClient(serverAddress);
-		// }
-		// else {
-		// WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
-		// projectWizardDialog.open();
-		// if (bDoExit) {
-		// shutdown();
-		// System.exit(0);
-		// }
-		// }
-
-		// switch (applicationMode) {
-		// case GENE_EXPRESSION_SAMPLE_DATA:
-		// case GENE_EXPRESSION_NEW_DATA:
-		// xmlInputFile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
-		// DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic")
-		// .setBootstrapFileName(xmlInputFile);
-		// break;
-		// case UNSPECIFIED_NEW_DATA:
-		// case NO_DATA:
-		// // not necessary to load any mapping or XML files
-		// xmlInputFile = "";
-		// break;
-		// case SAMPLE_PROJECT:
-		// case LOAD_PROJECT:
-		// case COLLABORATION_CLIENT:
-		// case PLEX_CLIENT:
-		// // TODO - make sure this is not needed
-		// // sCaleydoXMLfile = GeneralManager.get().getMasterUseCase().getBootstrapFileName();
-		//
-		// break;
-		//
-		// default:
-		// throw new IllegalStateException("Unknown application mode " + applicationMode);
-		// }
-		// }
-
+		
 		// if (bDeleteRestoredWorkbenchState) {
 		// removeStoredWorkbenchState();
 		// }

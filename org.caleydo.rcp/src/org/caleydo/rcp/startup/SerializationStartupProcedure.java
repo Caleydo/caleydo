@@ -17,7 +17,10 @@ public class SerializationStartupProcedure
 	private boolean loadSampleProject = false;
 
 	@Override
-	public void init() {
+	public void init(ApplicationInitData appInitData) {
+
+		super.init(appInitData);
+
 		GeneralManager.get().getLogger()
 			.log(new Status(IStatus.INFO, Activator.PLUGIN_ID, "Load sample project"));
 
@@ -50,7 +53,7 @@ public class SerializationStartupProcedure
 		}
 
 		// CODE FROM APPLICATION.JAVA
-		
+
 		// IDataDomain dataDomain = initData.getDataDomain();
 		// DataDomainManager.getInstance().register(dataDomain);
 		//

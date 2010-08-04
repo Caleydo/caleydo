@@ -2,6 +2,12 @@ package org.caleydo.rcp.startup;
 
 import org.caleydo.core.manager.general.GeneralManager;
 
+/**
+ * Startup procedure for XML bootstrapping.
+ * 
+ * @author Marc Streit
+ *
+ */
 public class XMLStartupProcedure
 	extends AStartupProcedure {
 
@@ -12,7 +18,10 @@ public class XMLStartupProcedure
 	}
 
 	@Override
-	public void init() {
+	public void init(ApplicationInitData appInitData) {
+		
+		super.init(appInitData);
+		
 		GeneralManager.get().getXmlParserManager().parseXmlFileByName(fileName);
 	}
 

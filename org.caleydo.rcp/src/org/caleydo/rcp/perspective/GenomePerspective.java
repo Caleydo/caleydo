@@ -57,7 +57,7 @@ public class GenomePerspective
 				layout.createFolder("folderLayoutRight", IPageLayout.RIGHT, 1 - fRatio,
 					IPageLayout.ID_EDITOR_AREA);
 
-			StartupProcessor.get().openRCPViews(mainLayout);
+			StartupProcessor.get().getStartupProcedure().openRCPViews(mainLayout);
 
 		}
 		else {
@@ -83,7 +83,7 @@ public class GenomePerspective
 				layout.createFolder("folderLayoutRight", IPageLayout.BOTTOM, 1 - fRatio,
 					IPageLayout.ID_EDITOR_AREA);
 
-			StartupProcessor.get().openRCPViews(mainLayout);
+			StartupProcessor.get().getStartupProcedure().openRCPViews(mainLayout);
 		}
 		// layout.addPlaceholder("org.caleydo.view.grouper", IPageLayout.RIGHT, (float) 0.85,
 		// "folderLayoutRight");

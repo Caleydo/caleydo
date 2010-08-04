@@ -12,6 +12,12 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
+/**
+ * Startup procedure for project wizard.
+ * 
+ * @author Marc Streit
+ *
+ */
 public class GUIStartupProcedure
 	extends AStartupProcedure {
 
@@ -21,9 +27,9 @@ public class GUIStartupProcedure
 		"data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
 
 	@Override
-	public void init() {
+	public void init(ApplicationInitData appInitData) {
 
-		Shell shell = StartupProcessor.get().getDisplay().getActiveShell();
+		super.init(appInitData);
 
 		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
 		cmd.setAttributes("org.caleydo.datadomain.genetic");
@@ -31,16 +37,32 @@ public class GUIStartupProcedure
 
 		GeneralManager.get().setOrganism(EOrganism.HOMO_SAPIENS);
 
-		if (loadSampleData) {
-			WizardDialog dataImportWizard =
-				new WizardDialog(shell, new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
+		GeneralManager.get().getXmlParserManager().parseXmlFileByName("data/bootstrap/bootstrap.xml");
+		
+		if (loadSampleData) {	
+			appInitData.setLoadPathways(true);
+		}
+	}
 
+	@Override
+	public void execute() {
+		super.execute();
+
+		Shell shell = StartupProcessor.get().getDisplay().getActiveShell();
+
+		WizardDialog dataImportWizard;
+		
+		if (loadSampleData) {
+			
+			dataImportWizard =
+				new WizardDialog(shell, new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
+			
 			if (Window.CANCEL == dataImportWizard.open()) {
 				StartupProcessor.get().shutdown();
 			}
 		}
 		else {
-			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
+			dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
 
 			if (Window.CANCEL == dataImportWizard.open()) {
 				StartupProcessor.get().shutdown();
@@ -56,7 +78,7 @@ public class GUIStartupProcedure
 	public void addDefaultStartViews() {
 
 		List<Pair<String, String>> startViewWithDataDomain =
-			StartupProcessor.get().getAppArgumentStartViewWithDataDomain();
+			appInitData.getAppArgumentStartViewWithDataDomain();
 
 		// Do not add any default views if at least one view is specified as application argument
 		if (!startViewWithDataDomain.isEmpty())
@@ -71,7 +93,9 @@ public class GUIStartupProcedure
 		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.histogram",
 			"org.caleydo.datadomain.genetic"));
 
-//		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.bucket",
-//			"org.caleydo.datadomain.genetic"));
+		if (appInitData.isLoadPathways()) {
+			startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.bucket",
+				"org.caleydo.datadomain.genetic"));
+		}
 	}
 }

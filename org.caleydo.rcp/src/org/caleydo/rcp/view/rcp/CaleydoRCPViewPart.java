@@ -98,10 +98,11 @@ public abstract class CaleydoRCPViewPart
 	protected String determineDataDomain(ASerializedView serializedView) {
 
 		// first we check if the data domain was manually specified
-		for (Pair<String, String> startView : StartupProcessor.get().getAppArgumentStartViewWithDataDomain()) {
+		for (Pair<String, String> startView : StartupProcessor.get().getAppInitData()
+			.getAppArgumentStartViewWithDataDomain()) {
 			if (startView.getFirst().equals(serializedView.getViewID())) {
 				dataDomainType = startView.getSecond();
-//				StartupProcessor.get().getAppArgumentStartViewWithDataDomain().remove(startView);
+				// StartupProcessor.get().getAppArgumentStartViewWithDataDomain().remove(startView);
 				return dataDomainType;
 			}
 		}
@@ -114,7 +115,7 @@ public abstract class CaleydoRCPViewPart
 			ArrayList<IDataDomain> availableDomains =
 				DataDomainManager.getInstance().getAssociationManager()
 					.getAvailableDataDomainTypesForViewTypes(serializedView.getViewType());
-			if(availableDomains == null)
+			if (availableDomains == null)
 				return null;
 			else if (availableDomains.size() == 0)
 				throw new IllegalStateException("No datadomain for this view loaded");

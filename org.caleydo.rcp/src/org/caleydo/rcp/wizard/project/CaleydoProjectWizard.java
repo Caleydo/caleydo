@@ -81,53 +81,34 @@ public class CaleydoProjectWizard
 			}
 			else if (projectMode == ProjectMode.GENE_EXPRESSION_SAMPLE_DATA) {
 
-//				String sNewPathwayDataSources =
-//					EPathwayDatabaseType.KEGG.name() + ";" + EPathwayDatabaseType.BIOCARTA.name() + ";";
-//
-//				if (sNewPathwayDataSources != prefStore
-//					.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES))
-//					Application.bDeleteRestoredWorkbenchState = true;
-//
-//				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES,
-//					sNewPathwayDataSources);
-//
-//				CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
-//				cmd.setAttributes("org.caleydo.datadomain.pathway");
-//				cmd.doCommand();
-
 				GUIStartupProcedure startupProcedure =
 					(GUIStartupProcedure) StartupProcessor.get().createStartupProcedure(ApplicationMode.GUI);
 				startupProcedure.setLoadSampleData(true);
 			}
 			else if (projectMode == ProjectMode.GENE_EXPRESSION_NEW_DATA) {
 
-//				boolean loadPathways = false;
-//
-//				String sNewPathwayDataSources = "";
-//				if (page.isKEGGPathwayDataLoadingRequested()) {
-//					loadPathways = true;
-//					sNewPathwayDataSources += EPathwayDatabaseType.KEGG.name() + ";";
-//				}
-//				if (page.isBioCartaPathwayLoadingRequested()) {
-//					loadPathways = true;
-//					sNewPathwayDataSources += EPathwayDatabaseType.BIOCARTA.name() + ";";
-//				}
-//
-//				if (loadPathways) {
-//					cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
-//					cmd.setAttributes("org.caleydo.datadomain.pathway");
-//					cmd.doCommand();
-//				}
-//
-//				if (sNewPathwayDataSources != prefStore
-//					.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES))
-//					Application.bDeleteRestoredWorkbenchState = true;
-//
-//				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES,
-//					sNewPathwayDataSources);
+				boolean loadPathways = false;
+
+				String sNewPathwayDataSources = "";
+				if (page.isKEGGPathwayDataLoadingRequested()) {
+					loadPathways = true;
+					sNewPathwayDataSources += EPathwayDatabaseType.KEGG.name() + ";";
+				}
+				if (page.isBioCartaPathwayLoadingRequested()) {
+					loadPathways = true;
+					sNewPathwayDataSources += EPathwayDatabaseType.BIOCARTA.name() + ";";
+				}
+
+				if (sNewPathwayDataSources != prefStore
+					.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES))
+					Application.bDeleteRestoredWorkbenchState = true;
+
+				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES,
+					sNewPathwayDataSources);
 				
 				GUIStartupProcedure startupProcedure =
 					(GUIStartupProcedure) StartupProcessor.get().createStartupProcedure(ApplicationMode.GUI);
+				StartupProcessor.get().getAppInitData().setLoadPathways(loadPathways);
 			}
 			else if (projectMode == ProjectMode.UNSPECIFIED_NEW_DATA) {
 				CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
@@ -141,7 +122,6 @@ public class CaleydoProjectWizard
 				groupwareManager.setServerAddress(page.getNetworkAddress());
 				groupwareManager.startClient();
 				Application.initData = groupwareManager.getInitData();
-				// dataDomain = Application.initData.getDataDomain();
 			}
 			else {
 				throw new IllegalStateException("Not implemented!");
