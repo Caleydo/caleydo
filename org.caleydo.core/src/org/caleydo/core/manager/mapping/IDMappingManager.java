@@ -10,8 +10,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -28,15 +27,17 @@ import org.jgrapht.graph.DefaultDirectedWeightedGraph;
  */
 public class IDMappingManager
 	implements IIDMappingManager {
+	
 	/**
 	 * HashMap that contains all mappings identified by their MappingType.
 	 */
 	protected HashMap<EMappingType, Map<?, ?>> hashType2Mapping;
+	
 	/**
 	 * Graph of mappings. IDTypes are the vertices of the graph, edges represent a mapping from one IDType to
 	 * another that is backed up by a corresponding map in hashType2Mapping.
 	 */
-	private DefaultDirectedWeightedGraph<EIDType, MappingEdge> mappingGraph;
+	private DefaultDirectedWeightedGraph<IDType, MappingEdge> mappingGraph;
 
 	private IGeneralManager generalManager = GeneralManager.get();
 
@@ -45,14 +46,14 @@ public class IDMappingManager
 	 */
 	public IDMappingManager() {
 		hashType2Mapping = new HashMap<EMappingType, Map<?, ?>>();
-		mappingGraph = new DefaultDirectedWeightedGraph<EIDType, MappingEdge>(MappingEdge.class);
+		mappingGraph = new DefaultDirectedWeightedGraph<IDType, MappingEdge>(MappingEdge.class);
 	}
 
 	@Override
 	public <K, V> void createMap(EMappingType mappingType) {
 
-		EIDType fromIDType = mappingType.getTypeOrigin();
-		EIDType toIDType = mappingType.getTypeTarget();
+		IDType fromIDType = mappingType.getTypeOrigin();
+		IDType toIDType = mappingType.getTypeTarget();
 
 		if (!mappingGraph.containsVertex(fromIDType))
 			mappingGraph.addVertex(fromIDType);
@@ -125,10 +126,10 @@ public class IDMappingManager
 		Map codeResolvedMap = null;
 		// int iMappingErrors = 0;
 
-		EIDType originKeyType = mappingType.getTypeOrigin();
-		EIDType originValueType = mappingType.getTypeTarget();
-		EIDType destKeyType = destMappingType.getTypeOrigin();
-		EIDType destValueType = destMappingType.getTypeTarget();
+		IDType originKeyType = mappingType.getTypeOrigin();
+		IDType originValueType = mappingType.getTypeTarget();
+		IDType destKeyType = destMappingType.getTypeOrigin();
+		IDType destValueType = destMappingType.getTypeTarget();
 
 		Map<KeyType, ValueType> srcMap = (Map<KeyType, ValueType>) hashType2Mapping.get(mappingType);
 
@@ -320,7 +321,7 @@ public class IDMappingManager
 	}
 
 	@Override
-	public final boolean hasMapping(EIDType source, EIDType destination) {
+	public final boolean hasMapping(IDType source, IDType destination) {
 
 		if (source.equals(destination))
 			return true;
@@ -334,7 +335,7 @@ public class IDMappingManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <K, V> V getID(EIDType source, EIDType destination, K sourceID) {
+	public <K, V> V getID(IDType source, IDType destination, K sourceID) {
 
 		if (source.equals(destination))
 			return (V) sourceID;
@@ -403,7 +404,7 @@ public class IDMappingManager
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <K, V> Set<V> getIDAsSet(EIDType source, EIDType destination, K sourceID) {
+	public <K, V> Set<V> getIDAsSet(IDType source, IDType destination, K sourceID) {
 
 		Set<V> setResult = new HashSet<V>();
 
@@ -475,10 +476,10 @@ public class IDMappingManager
 	}
 
 	@Override
-	public List<EIDType> getIDTypes(EIDCategory category) {
-		ArrayList<EIDType> idTypes = new ArrayList<EIDType>();
+	public List<IDType> getIDTypes(EIDCategory category) {
+		ArrayList<IDType> idTypes = new ArrayList<IDType>();
 
-		for (EIDType idType : mappingGraph.vertexSet()) {
+		for (IDType idType : mappingGraph.vertexSet()) {
 			if (idType.getCategory().equals(category))
 				idTypes.add(idType);
 		}
@@ -490,7 +491,7 @@ public class IDMappingManager
 	// }
 
 	@Override
-	public <T> boolean doesElementExist(EIDType idType, T element) {
+	public <T> boolean doesElementExist(IDType idType, T element) {
 		Set<MappingEdge> edges = mappingGraph.edgesOf(idType);
 
 		for (MappingEdge edge : edges) {

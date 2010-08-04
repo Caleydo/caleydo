@@ -1,44 +1,48 @@
 package org.caleydo.core.manager.mapping;
 
-import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.mapping.IDType;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 /**
- * Edge of a mapping graph. It holds the mapping type the edge represents.
+ * Edge of a mapping graph. It holds the the source and target ID type.
  * 
- * @author Christian Partl
+ * @author Marc Streit
+ * @author Alexander Lex
  */
 public class MappingEdge
 	extends DefaultWeightedEdge {
 
 	private static final long serialVersionUID = 1L;
-	EMappingType mappingType;
+	private IDType fromIDType;
+	private IDType toIDType;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param mappingType
-	 *            MappingType of the edge.
+	 * @param fromIDType
+	 *            Source ID type.
+	 * @param toIDType
+	 *            Target ID type.
 	 */
-	public MappingEdge(EMappingType mappingType) {
+	public MappingEdge(IDType fromIDType, IDType toIDType) {
 		super();
-		this.mappingType = mappingType;
+		this.fromIDType = fromIDType;
+		this.toIDType = toIDType;
 	}
-
-	/**
-	 * @return MappingType of the edge.
-	 */
-	public EMappingType getMappingType() {
-		return mappingType;
+	
+	public void setFromIDType(IDType fromIDType) {
+		this.fromIDType = fromIDType;
 	}
-
-	/**
-	 * Sets the MappingType of the edge.
-	 * 
-	 * @param mappingType
-	 *            MappingType the edge shall represent.
-	 */
-	public void setMappingType(EMappingType mappingType) {
-		this.mappingType = mappingType;
+	
+	public void setToIDType(IDType toIDType) {
+		this.toIDType = toIDType;
+	}
+	
+	public IDType getFromIDType() {
+		return fromIDType;
+	}
+	
+	public IDType getToIDType() {
+		return toIDType;
 	}
 }
