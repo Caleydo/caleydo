@@ -3,7 +3,7 @@ package org.caleydo.core.manager.event.data;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
@@ -17,19 +17,19 @@ import org.caleydo.core.manager.event.AEvent;
 public class RemoveBookmarkEvent<IDDataType>
 	extends AEvent {
 
-	private EIDType idType;
+	private IDType idType;
 	ArrayList<IDDataType> elements;
 
-	public RemoveBookmarkEvent(EIDType idType) {
+	public RemoveBookmarkEvent(IDType idType) {
 		this.idType = idType;
 		elements = new ArrayList<IDDataType>();
 	}
 
-	public void setIDType(EIDType idType) {
+	public void setIDType(IDType idType) {
 		this.idType = idType;
 	}
 
-	public EIDType getIDType() {
+	public IDType getIDType() {
 		return idType;
 	}
 

@@ -2,7 +2,7 @@ package org.caleydo.core.net;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.view.CanvasConnectionMap;
 import org.caleydo.core.serialize.ApplicationInitData;
 
@@ -81,7 +81,7 @@ public interface IGroupwareManager
 	 * 
 	 * @param canvasConnections
 	 */
-	public void sendConnectionLines(HashMap<EIDType, CanvasConnectionMap> canvasConnections);
+	public void sendConnectionLines(HashMap<IDType, CanvasConnectionMap> canvasConnections);
 
 	/**
 	 * <code>true</code> if the used groupware system is able to draw display comprehensive connection lines,

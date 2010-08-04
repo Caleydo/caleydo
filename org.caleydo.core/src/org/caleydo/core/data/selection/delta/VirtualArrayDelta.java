@@ -6,7 +6,7 @@ import java.util.Iterator;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.IVAType;
 import org.caleydo.core.util.collection.UniqueList;
 
@@ -23,10 +23,10 @@ public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<C
 	private UniqueList<VADeltaItem> deltaItems;
 
 	@XmlElement
-	private EIDType idType;
+	private IDType idType;
 
 	@XmlElement
-	private EIDType secondaryIDType;
+	private IDType secondaryIDType;
 
 	@XmlElement
 	private VAType vaType;
@@ -35,13 +35,13 @@ public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<C
 		deltaItems = new UniqueList<VADeltaItem>();
 	}
 
-	public VirtualArrayDelta(VAType vaType, EIDType idType) {
+	public VirtualArrayDelta(VAType vaType, IDType idType) {
 		this.vaType = vaType;
 		this.idType = idType;
 		deltaItems = new UniqueList<VADeltaItem>();
 	}
 
-	public VirtualArrayDelta(VAType vaType, EIDType idType, EIDType secondaryIDType) {
+	public VirtualArrayDelta(VAType vaType, IDType idType, IDType secondaryIDType) {
 		this(vaType, idType);
 		this.secondaryIDType = secondaryIDType;
 	}
@@ -67,17 +67,17 @@ public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<C
 	}
 
 	@Override
-	public void setIDType(EIDType idType) {
+	public void setIDType(IDType idType) {
 		this.idType = idType;
 	}
 
 	@Override
-	public EIDType getIDType() {
+	public IDType getIDType() {
 		return idType;
 	}
 
 	@Override
-	public EIDType getSecondaryIDType() {
+	public IDType getSecondaryIDType() {
 		return secondaryIDType;
 	}
 

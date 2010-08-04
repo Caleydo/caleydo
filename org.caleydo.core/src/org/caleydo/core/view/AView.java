@@ -1,7 +1,7 @@
 package org.caleydo.core.view;
 
 import org.caleydo.core.data.AUniqueObject;
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -91,10 +91,9 @@ public abstract class AView
 	 *            selection-command to distribute
 	 */
 	@Deprecated
-	protected void sendSelectionCommandEvent(EIDType genomeType, SelectionCommand command) {
+	protected void sendSelectionCommandEvent(IDType genomeType, SelectionCommand command) {
 		SelectionCommandEvent event = new SelectionCommandEvent();
 		event.setSender(this);
-		event.setCategory(genomeType.getCategory());
 		event.setSelectionCommand(command);
 		eventPublisher.triggerEvent(event);
 	}

@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.util.graph.EGraphItemHierarchy;
@@ -46,7 +46,7 @@ public class GeneticIDMappingHelper {
 	 * @param geneID
 	 * @return a Set of PathwayGraphs or null if no such mapping exists
 	 */
-	public Set<PathwayGraph> getPathwayGraphsByGeneID(EIDType idType, int geneID) {
+	public Set<PathwayGraph> getPathwayGraphsByGeneID(IDType idType, int geneID) {
 
 		// set to avoid duplicate pathways
 		Set<PathwayGraph> newPathways = new HashSet<PathwayGraph>();
@@ -74,7 +74,7 @@ public class GeneticIDMappingHelper {
 	 * @param geneID
 	 * @return the PathwayVertexGraphItem corresponding to the mapping or null if no such mapping exists
 	 */
-	public PathwayVertexGraphItem convertGeneIDToPathwayVertex(EIDType idType, int geneID) {
+	public PathwayVertexGraphItem convertGeneIDToPathwayVertex(IDType idType, int geneID) {
 
 		// int iGraphItemID = 0;
 		Integer iDavidID = -1;

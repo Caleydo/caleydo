@@ -2,7 +2,7 @@ package org.caleydo.core.data.selection.delta;
 
 import java.util.Set;
 
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.general.GeneralManager;
 
 /**
@@ -33,7 +33,7 @@ public class DeltaConverter {
 	 * @return the new delta, which can be longer than the original
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends IDelta> T convertDelta(EIDType targetType, T delta) {
+	public static <T extends IDelta> T convertDelta(IDType targetType, T delta) {
 		T newDelta = null;
 		if (delta instanceof SelectionDelta) {
 			newDelta = (T) new SelectionDelta(targetType, delta.getIDType());
@@ -54,8 +54,8 @@ public class DeltaConverter {
 		for (Object tempItem : delta) {
 			IDeltaItem item = (IDeltaItem) tempItem;
 			Set<Integer> setIDs =
-				GeneralManager.get().getIDMappingManager().getIDAsSet(delta.getIDType(), targetType,
-					item.getPrimaryID());
+				GeneralManager.get().getIDMappingManager()
+					.getIDAsSet(delta.getIDType(), targetType, item.getPrimaryID());
 			if (setIDs == null) {
 				continue;
 			}

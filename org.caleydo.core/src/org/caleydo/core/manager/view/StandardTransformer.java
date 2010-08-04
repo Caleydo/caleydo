@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IViewManager;
@@ -71,8 +71,8 @@ public class StandardTransformer
 	}
 
 	@Override
-	public void project(GL gl, String deskoXID, HashMap<EIDType, ConnectionMap> source,
-		HashMap<EIDType, CanvasConnectionMap> target) {
+	public void project(GL gl, String deskoXID, HashMap<IDType, ConnectionMap> source,
+		HashMap<IDType, CanvasConnectionMap> target) {
 		final double mvmatrix[] = new double[16];
 		final double projmatrix[] = new double[16];
 		final int viewport[] = new int[4];
@@ -88,7 +88,7 @@ public class StandardTransformer
 		AGLView view = vm.getGLView(viewID);
 		int canvasHeight = view.getParentGLCanvas().getHeight();
 
-		for (Entry<EIDType, ConnectionMap> typeConnections : source.entrySet()) {
+		for (Entry<IDType, ConnectionMap> typeConnections : source.entrySet()) {
 			CanvasConnectionMap canvasConnectionMap = target.get(typeConnections.getKey());
 			if (canvasConnectionMap == null) {
 				canvasConnectionMap = new CanvasConnectionMap();
@@ -119,14 +119,14 @@ public class StandardTransformer
 	}
 
 	@Override
-	public boolean transform(HashMap<EIDType, ConnectionMap> source, HashMap<EIDType, ConnectionMap> target) {
+	public boolean transform(HashMap<IDType, ConnectionMap> source, HashMap<IDType, ConnectionMap> target) {
 
 		if (transformationFinished) {
 			return false;
 		}
 		transformationFinished = true;
 
-		for (Entry<EIDType, ConnectionMap> typeConnections : source.entrySet()) {
+		for (Entry<IDType, ConnectionMap> typeConnections : source.entrySet()) {
 
 			ConnectionMap connectionMap = target.get(typeConnections.getKey());
 			if (connectionMap == null) {

@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionType;
 
 /**
@@ -21,8 +21,8 @@ public class SelectionDelta
 
 	private HashMap<Integer, SelectionDeltaItem> selectionItems = null;
 
-	private EIDType idType;
-	private EIDType secondaryIDType = null;
+	private IDType idType;
+	private IDType secondaryIDType = null;
 
 	/**
 	 * Default Constructor.
@@ -31,14 +31,14 @@ public class SelectionDelta
 
 	}
 
-	public SelectionDelta(EIDType idType) {
+	public SelectionDelta(IDType idType) {
 		if (idType == null)
 			throw new IllegalArgumentException("idType was null");
 		selectionItems = new HashMap<Integer, SelectionDeltaItem>();
 		this.idType = idType;
 	}
 
-	public SelectionDelta(EIDType idType, EIDType internalIDType) {
+	public SelectionDelta(IDType idType, IDType internalIDType) {
 		this(idType);
 
 		this.secondaryIDType = internalIDType;
@@ -61,7 +61,7 @@ public class SelectionDelta
 		// if (item != null)
 		// System.out.println("ID: " + iSelectionID + " Old: " +
 		// item.getSelectionType() + " New: " + selectionType);
-		//		
+		//
 	}
 
 	@Override
@@ -128,20 +128,20 @@ public class SelectionDelta
 	}
 
 	@Override
-	public EIDType getIDType() {
+	public IDType getIDType() {
 		return idType;
 	}
 
-	public void setIDType(EIDType idType) {
+	public void setIDType(IDType idType) {
 		this.idType = idType;
 	}
 
 	@Override
-	public EIDType getSecondaryIDType() {
+	public IDType getSecondaryIDType() {
 		return secondaryIDType;
 	}
 
-	public void setSecondaryIDType(EIDType secondaryIDType) {
+	public void setSecondaryIDType(IDType secondaryIDType) {
 		this.secondaryIDType = secondaryIDType;
 	}
 

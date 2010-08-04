@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.event.IListenerOwner;
 
 /**
@@ -32,15 +32,15 @@ public interface ISelectionTransformer
 	 * @param target
 	 *            is filled with connection points in the view's canvas coordinate system.
 	 */
-	public void project(GL gl, String deskoXID, HashMap<EIDType, ConnectionMap> source,
-		HashMap<EIDType, CanvasConnectionMap> target);
+	public void project(GL gl, String deskoXID, HashMap<IDType, ConnectionMap> source,
+		HashMap<IDType, CanvasConnectionMap> target);
 
 	/**
 	 * Transforms all selection points related to this {@link ISelectionTransformer}'s view from the
 	 * source-map into the view's coordinate system. This is necessary to get the selection points in
 	 * remote-rendered view's coordinate system into the remote-rendering view's coordinate system.
 	 */
-	public boolean transform(HashMap<EIDType, ConnectionMap> source, HashMap<EIDType, ConnectionMap> target);
+	public boolean transform(HashMap<IDType, ConnectionMap> source, HashMap<IDType, ConnectionMap> target);
 
 	/**
 	 * Handling method for connection-point updates

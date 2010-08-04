@@ -7,7 +7,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
@@ -63,19 +63,19 @@ public class ConnectedElementRepresentationManager
 	protected IEventPublisher eventPublisher;
 
 	/** Stores a {@link ConnectionMap} for each possible type as originally provided by the views. */
-	HashMap<EIDType, ConnectionMap> sourceConnectionsByType;
+	HashMap<IDType, ConnectionMap> sourceConnectionsByType;
 
 	/**
 	 * Stores a {@link ConnectionMap} with only transformed selection-points as defined by the transformation
 	 * needed within remote rendered views.
 	 */
-	HashMap<EIDType, ConnectionMap> transformedConnectionsByType;
+	HashMap<IDType, ConnectionMap> transformedConnectionsByType;
 
 	/**
 	 * Stores {@link CanvasConnectionMap}s with only transformed selection-points as defined by the
 	 * transformation needed within remote rendered views.
 	 */
-	HashMap<EIDType, CanvasConnectionMap> canvasConnectionsByType;
+	HashMap<IDType, CanvasConnectionMap> canvasConnectionsByType;
 
 	ClearConnectionsListener clearConnectionsListener;
 	ClearTransformedConnectionsListener clearTransformedConnectionsListener;
@@ -91,9 +91,9 @@ public class ConnectedElementRepresentationManager
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 
-		sourceConnectionsByType = new HashMap<EIDType, ConnectionMap>();
-		transformedConnectionsByType = new HashMap<EIDType, ConnectionMap>();
-		canvasConnectionsByType = new HashMap<EIDType, CanvasConnectionMap>();
+		sourceConnectionsByType = new HashMap<IDType, ConnectionMap>();
+		transformedConnectionsByType = new HashMap<IDType, ConnectionMap>();
+		canvasConnectionsByType = new HashMap<IDType, CanvasConnectionMap>();
 
 		registerEventListeners();
 	}
@@ -176,7 +176,7 @@ public class ConnectedElementRepresentationManager
 	 * 
 	 * @return a Set of EIDType
 	 */
-	public Set<EIDType> getOccuringIDTypes() {
+	public Set<IDType> getOccuringIDTypes() {
 		return sourceConnectionsByType.keySet();
 	}
 
@@ -185,7 +185,7 @@ public class ConnectedElementRepresentationManager
 	 * 
 	 * @return a Set of IDs
 	 */
-	public Set<Integer> getIDList(EIDType idType) {
+	public Set<Integer> getIDList(IDType idType) {
 		return sourceConnectionsByType.get(idType).keySet();
 	}
 
@@ -198,7 +198,7 @@ public class ConnectedElementRepresentationManager
 	 *            the id of the object to be connected
 	 * @return a list of the representations of the points
 	 */
-	public ArrayList<SelectedElementRep> getSelectedElementRepsByElementID(EIDType idType,
+	public ArrayList<SelectedElementRep> getSelectedElementRepsByElementID(IDType idType,
 		final int iElementID) {
 
 		ArrayList<SelectedElementRep> tempList = sourceConnectionsByType.get(idType).get(iElementID);
@@ -220,7 +220,7 @@ public class ConnectedElementRepresentationManager
 	/**
 	 * Sends event to clear all selections of a given type
 	 */
-	public void clear(EIDType idType) {
+	public void clear(IDType idType) {
 		ClearConnectionsEvent event = new ClearConnectionsEvent();
 		event.setIdType(idType);
 		eventPublisher.triggerEvent(event);
@@ -229,7 +229,7 @@ public class ConnectedElementRepresentationManager
 	/**
 	 * Clear all selections of a given type
 	 */
-	public void handleClearEvent(EIDType idType) {
+	public void handleClearEvent(IDType idType) {
 		ConnectionMap tmp = sourceConnectionsByType.get(idType);
 		if (tmp != null) {
 			tmp.clear();
@@ -246,7 +246,7 @@ public class ConnectedElementRepresentationManager
 	 * @param iViewID
 	 *            the id of the view
 	 */
-	public void clearByViewAndType(EIDType idType, int iViewID) {
+	public void clearByViewAndType(IDType idType, int iViewID) {
 		ConnectionMap hashReps = sourceConnectionsByType.get(idType);
 		if (hashReps == null)
 			return;
@@ -271,14 +271,14 @@ public class ConnectedElementRepresentationManager
 	 *            the view which id's should be removed
 	 */
 	public void clearByView(int iViewID) {
-		for (EIDType idType : sourceConnectionsByType.keySet()) {
+		for (IDType idType : sourceConnectionsByType.keySet()) {
 			clearByViewAndType(idType, iViewID);
 		}
 		transformedConnectionsByType.clear();
 		canvasConnectionsByType.clear();
 	}
 
-	public void clearByConnectionID(EIDType idType, int iConnectionID) {
+	public void clearByConnectionID(IDType idType, int iConnectionID) {
 		sourceConnectionsByType.get(idType).remove(iConnectionID);
 		transformedConnectionsByType.clear();
 		canvasConnectionsByType.clear();
@@ -367,7 +367,7 @@ public class ConnectedElementRepresentationManager
 	 * 
 	 * @return 2D canvas selection vertices
 	 */
-	public HashMap<EIDType, CanvasConnectionMap> getCanvasConnectionsByType() {
+	public HashMap<IDType, CanvasConnectionMap> getCanvasConnectionsByType() {
 		return canvasConnectionsByType;
 	}
 
@@ -378,7 +378,7 @@ public class ConnectedElementRepresentationManager
 	 * 
 	 * @return
 	 */
-	public HashMap<EIDType, ConnectionMap> getTransformedConnectionsByType() {
+	public HashMap<IDType, ConnectionMap> getTransformedConnectionsByType() {
 		return transformedConnectionsByType;
 	}
 

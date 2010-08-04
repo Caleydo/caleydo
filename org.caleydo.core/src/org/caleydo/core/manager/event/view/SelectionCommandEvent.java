@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.VABasedSelectionManager;
@@ -35,14 +34,6 @@ public class SelectionCommandEvent
 
 	public void setSelectionCommand(SelectionCommand selectionCommand) {
 		this.selectionCommand = selectionCommand;
-	}
-
-	public EIDCategory getCategory() {
-		return category;
-	}
-
-	public void setCategory(EIDCategory category) {
-		this.category = category;
 	}
 
 	@Override

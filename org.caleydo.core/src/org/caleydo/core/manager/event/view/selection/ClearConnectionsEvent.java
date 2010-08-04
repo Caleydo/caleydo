@@ -3,7 +3,7 @@ package org.caleydo.core.manager.event.view.selection;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
@@ -17,7 +17,7 @@ public class ClearConnectionsEvent
 	extends AEvent {
 
 	/** selection type to be deleted */
-	private EIDType idType;
+	private IDType idType;
 
 	@Override
 	public boolean checkIntegrity() {
@@ -27,11 +27,11 @@ public class ClearConnectionsEvent
 		return true;
 	}
 
-	public EIDType getIdType() {
+	public IDType getIdType() {
 		return idType;
 	}
 
-	public void setIdType(EIDType idType) {
+	public void setIdType(IDType idType) {
 		this.idType = idType;
 	}
 

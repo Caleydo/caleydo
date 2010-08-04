@@ -1,6 +1,7 @@
 package org.caleydo.rcp.util.info;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.ISet;
@@ -14,6 +15,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
@@ -179,6 +181,8 @@ public class InfoArea
 		contentTree = new TreeItem(selectionTree, SWT.NONE);
 		contentTree.setExpanded(true);
 		contentTree.setData(-1);
+		
+//		Collection<IDataDomain> list = DataDomainManager.getInstance().getDataDomains();
 		contentTree.setText(dataDomain.getContentLabel(true, true));
 
 		experimentTree = new TreeItem(selectionTree, SWT.NONE);

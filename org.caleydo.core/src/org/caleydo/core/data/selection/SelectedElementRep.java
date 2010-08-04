@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 
 /**
  * Class that holds information about a selected element in a specific view.
@@ -21,7 +21,7 @@ public class SelectedElementRep {
 	/** viewID of the view the 3d-coordinates are transformed to */
 	private int remoteViewID;
 
-	private EIDType idType;
+	private IDType idType;
 
 	// private float fXCoord = Float.NaN;
 	// private float fYCoord = Float.NaN;
@@ -43,7 +43,7 @@ public class SelectedElementRep {
 	 * @param z
 	 *            coordinate in z direction
 	 */
-	public SelectedElementRep(EIDType idType, final int sourceViewID, final float x, final float y,
+	public SelectedElementRep(IDType idType, final int sourceViewID, final float x, final float y,
 		final float z) {
 		this(idType, sourceViewID, sourceViewID, x, y, z);
 	}
@@ -61,7 +61,7 @@ public class SelectedElementRep {
 	 * @param y
 	 * @param z
 	 */
-	public SelectedElementRep(EIDType idType, final int sourceViewID, int remoteViewID, final float x,
+	public SelectedElementRep(IDType idType, final int sourceViewID, int remoteViewID, final float x,
 		final float y, final float z) {
 		this.idType = idType;
 		this.sourceViewID = sourceViewID;
@@ -78,7 +78,7 @@ public class SelectedElementRep {
 	 * @param points3d
 	 *            the list of connection points
 	 */
-	public SelectedElementRep(EIDType idType, final int sourceViewID, final ArrayList<Vec3f> points3d) {
+	public SelectedElementRep(IDType idType, final int sourceViewID, final ArrayList<Vec3f> points3d) {
 		this(idType, sourceViewID, sourceViewID, points3d);
 	}
 
@@ -92,7 +92,7 @@ public class SelectedElementRep {
 	 * @param points3d
 	 *            the list of connection points
 	 */
-	public SelectedElementRep(EIDType idType, final int sourceViewID, int remoteViewID,
+	public SelectedElementRep(IDType idType, final int sourceViewID, int remoteViewID,
 		final ArrayList<Vec3f> points3d) {
 		this.idType = idType;
 		this.sourceViewID = sourceViewID;
@@ -106,7 +106,7 @@ public class SelectedElementRep {
 	 * 
 	 * @return the type of the id
 	 */
-	public EIDType getIDType() {
+	public IDType getIDType() {
 		return idType;
 	}
 

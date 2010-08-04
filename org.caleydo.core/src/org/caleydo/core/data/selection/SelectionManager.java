@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -54,7 +54,7 @@ public class SelectionManager
 
 	private HashMap<Integer, ArrayList<Integer>> hashConnectionToElementID;
 
-	protected EIDType iDType;
+	protected IDType iDType;
 
 	protected ArrayList<SelectionType> selectionTypes;
 
@@ -68,7 +68,7 @@ public class SelectionManager
 	/**
 	 * Constructor
 	 */
-	public SelectionManager(EIDType idType) {
+	public SelectionManager(IDType idType) {
 		this.iDType = idType;
 		selectionTypes = new ArrayList<SelectionType>(SelectionType.getDefaultTypes());
 
@@ -91,7 +91,7 @@ public class SelectionManager
 	 * 
 	 * @return
 	 */
-	public EIDType getIDType() {
+	public IDType getIDType() {
 		return iDType;
 	}
 
@@ -491,9 +491,12 @@ public class SelectionManager
 			selectionID = item.getPrimaryID();
 
 			if (selectionID == -1) {
-				GeneralManager.get().getLogger().log(
-					new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "No internal id for "
-						+ item.getPrimaryID()));
+				GeneralManager
+					.get()
+					.getLogger()
+					.log(
+						new Status(IStatus.WARNING, IGeneralManager.PLUGIN_ID, "No internal id for "
+							+ item.getPrimaryID()));
 
 				continue;
 			}
@@ -645,7 +648,7 @@ public class SelectionManager
 	public void removeMangagedSelectionTypes() {
 
 		for (int selectionTypeIndex = 0; selectionTypeIndex < selectionTypes.size(); selectionTypeIndex++) {
-			
+
 			SelectionType selectionType = selectionTypes.get(selectionTypeIndex);
 			if (selectionType.isManaged()) {
 				selectionTypes.remove(selectionType);
@@ -678,14 +681,14 @@ public class SelectionManager
 		addSelectionTypeListener = new SelectionTypeListener();
 
 		addSelectionTypeListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(SelectionTypeEvent.class,
-			addSelectionTypeListener);
-		
+		GeneralManager.get().getEventPublisher()
+			.addListener(SelectionTypeEvent.class, addSelectionTypeListener);
+
 		removeManagedSelectionTypesListener = new RemoveManagedSelectionTypesListener();
 
 		removeManagedSelectionTypesListener.setHandler(this);
-		GeneralManager.get().getEventPublisher().addListener(RemoveManagedSelectionTypesEvent.class,
-			removeManagedSelectionTypesListener);
+		GeneralManager.get().getEventPublisher()
+			.addListener(RemoveManagedSelectionTypesEvent.class, removeManagedSelectionTypesListener);
 
 	}
 
@@ -694,7 +697,7 @@ public class SelectionManager
 			GeneralManager.get().getEventPublisher().removeListener(addSelectionTypeListener);
 			addSelectionTypeListener = null;
 		}
-		
+
 		if (removeManagedSelectionTypesListener != null) {
 			GeneralManager.get().getEventPublisher().removeListener(removeManagedSelectionTypesListener);
 			removeManagedSelectionTypesListener = null;
@@ -739,8 +742,8 @@ public class SelectionManager
 		clone.hashConnectionToElementID =
 			(HashMap<Integer, ArrayList<Integer>>) this.hashConnectionToElementID.clone();
 		for (Integer id : clone.hashConnectionToElementID.keySet()) {
-			clone.hashConnectionToElementID.put(id, (ArrayList<Integer>) this.hashConnectionToElementID.get(
-				id).clone());
+			clone.hashConnectionToElementID.put(id,
+				(ArrayList<Integer>) this.hashConnectionToElementID.get(id).clone());
 		}
 
 		// clone hashSelectionTypes

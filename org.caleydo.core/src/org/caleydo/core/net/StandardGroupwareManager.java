@@ -3,7 +3,7 @@ package org.caleydo.core.net;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.view.CanvasConnectionMap;
 import org.caleydo.core.serialize.ApplicationInitData;
 
@@ -70,7 +70,7 @@ public class StandardGroupwareManager
 	}
 
 	@Override
-	public void sendConnectionLines(HashMap<EIDType, CanvasConnectionMap> canvasConnections) {
+	public void sendConnectionLines(HashMap<IDType, CanvasConnectionMap> canvasConnections) {
 		// throw new RuntimeException("no connection line drawing standard network mode");
 	}
 

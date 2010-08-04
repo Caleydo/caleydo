@@ -1,6 +1,6 @@
 package org.caleydo.core.manager.view.listener;
 
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.selection.ClearConnectionsEvent;
@@ -13,7 +13,7 @@ public class ClearConnectionsListener
 	public void handleEvent(AEvent event) {
 		if (event instanceof ClearConnectionsEvent) {
 			ClearConnectionsEvent clearConnectionsEvent = (ClearConnectionsEvent) event;
-			EIDType idType = clearConnectionsEvent.getIdType();
+			IDType idType = clearConnectionsEvent.getIdType();
 			handler.handleClearEvent(idType);
 		}
 	}

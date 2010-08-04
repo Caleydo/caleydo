@@ -3,7 +3,7 @@ package org.caleydo.core.data.selection;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
@@ -45,7 +45,7 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 	/**
 	 * Constructor
 	 */
-	public VABasedSelectionManager(EIDType idType) {
+	public VABasedSelectionManager(IDType idType) {
 		super(idType);
 	}
 

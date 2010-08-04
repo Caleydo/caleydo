@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -51,14 +51,14 @@ public class DummyTransformer
 	 * @see ISelectionTransformer#transform(HashMap, HashMap)
 	 */
 	@Override
-	public boolean transform(HashMap<EIDType, ConnectionMap> source, HashMap<EIDType, ConnectionMap> target) {
+	public boolean transform(HashMap<IDType, ConnectionMap> source, HashMap<IDType, ConnectionMap> target) {
 
 		if (transformationFinished) {
 			return false;
 		}
 		transformationFinished = true;
 
-		for (Entry<EIDType, ConnectionMap> typeConnections : source.entrySet()) {
+		for (Entry<IDType, ConnectionMap> typeConnections : source.entrySet()) {
 
 			ConnectionMap connectionMap = target.get(typeConnections.getKey());
 			if (connectionMap == null) {
@@ -124,13 +124,13 @@ public class DummyTransformer
 		//
 		// fArHeadPosition[0] = fArHeadPosition[0] - 1730/2;
 		// fArHeadPosition[1] = (fArHeadPosition[1] - 1055/2f);
-		//			
+		//
 		// fArHeadPosition[0] = fArHeadPosition[0] / 1730 * 4f;
 		// fArHeadPosition[1] = fArHeadPosition[1] / 1055 * 4f * 0.61f;
-		//			
+		//
 		// // fArHeadPosition[0] = 0f;
 		// // fArHeadPosition[1] = -1.3f;
-		//			
+		//
 		// // fArHeadPosition[0] = fArHeadPosition[0] * 4 + 4;
 		// // fArHeadPosition[1] *= 4;
 		//

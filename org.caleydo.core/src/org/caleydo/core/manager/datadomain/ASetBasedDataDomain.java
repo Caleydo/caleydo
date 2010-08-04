@@ -8,7 +8,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDCategory;
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
@@ -58,8 +58,8 @@ public abstract class ASetBasedDataDomain
 	/** The set which is currently loaded and used inside the views for this use case. */
 	protected ISet set;
 
-	protected EIDType contentIDType;
-	protected EIDType storageIDType;
+	protected IDType contentIDType;
+	protected IDType storageIDType;
 
 	protected ContentSelectionManager contentSelectionManager;
 	protected StorageSelectionManager storageSelectionManager;

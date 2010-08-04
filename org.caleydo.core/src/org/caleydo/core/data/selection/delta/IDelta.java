@@ -2,7 +2,7 @@ package org.caleydo.core.data.selection.delta;
 
 import java.util.Collection;
 
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.IDType;
 
 /**
  * Interface for all deltas that contain information on changes and are used to submit information to other
@@ -20,14 +20,14 @@ public interface IDelta<T extends IDeltaItem>
 	public Collection<T> getAllItems();
 
 	/** Set the id type of the delta */
-	public void setIDType(EIDType idType);
+	public void setIDType(IDType idType);
 
 	/**
 	 * Get the type of the id, which has to be listed in {@link EIDType}
 	 * 
 	 * @return the type of the id
 	 */
-	public EIDType getIDType();
+	public IDType getIDType();
 
 	/**
 	 * Get the type of the secondary ID, which has to be listed in {@link EIDType}. Returns null if no
@@ -35,7 +35,7 @@ public interface IDelta<T extends IDeltaItem>
 	 * 
 	 * @return the type of the internal id
 	 */
-	public EIDType getSecondaryIDType();
+	public IDType getSecondaryIDType();
 
 	/**
 	 * Returns the number of elements in the selection delta
