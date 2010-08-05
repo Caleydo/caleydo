@@ -1,7 +1,6 @@
 package org.caleydo.datadomain.genetic;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -10,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -47,6 +47,8 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 public class GeneticDataDomain extends ASetBasedDataDomain {
 
 	private static final String CLINICAL_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
+	
+	public static IDType centralIDType; 
 
 	/**
 	 * <code>TRUE</code>if only pathways can be displayed (no gene-expression
@@ -66,6 +68,8 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		super("org.caleydo.datadomain.genetic");
 
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
+		centralIDType = IDType.getIDType("DAVID");
+		humanReadableIDType = IDType.getIDType("GENE_SHORT_NAME");
 
 		pathwayViewerMode = false;
 		contentLabelSingular = "gene";

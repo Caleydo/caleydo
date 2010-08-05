@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
+package org.caleydo.datadomain.genetic.contextmenu.item;
 
 import java.util.ArrayList;
 import java.util.Collections;

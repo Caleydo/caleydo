@@ -46,7 +46,7 @@ public abstract class ADataDomain
 	 * Every use case needs to state all ID Categories it can handle. The string must specify which primary
 	 * VAType ({@link VAType#getPrimaryVAType()} is associated for the ID Category
 	 */
-	protected HashMap<EIDCategory, String> possibleIDCategories;
+//	protected HashMap<IDCategory, String> possibleIDCategories;
 
 	@Override
 	public String getDataDomainType() {

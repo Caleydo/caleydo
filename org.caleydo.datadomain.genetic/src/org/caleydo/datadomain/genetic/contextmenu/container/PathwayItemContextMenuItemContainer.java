@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
+package org.caleydo.datadomain.genetic.contextmenu.container;
 
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 

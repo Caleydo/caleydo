@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.RemoveBookmarkItem;
+import org.caleydo.datadomain.genetic.contextmenu.container.ContentContextMenuItemContainer;
 
 /**
  * Implementation of AItemContainer for elements in the bookmark menue. You need to pass an ID and an ID type.

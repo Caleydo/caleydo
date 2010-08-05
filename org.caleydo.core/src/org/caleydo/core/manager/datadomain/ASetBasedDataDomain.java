@@ -59,6 +59,8 @@ public abstract class ASetBasedDataDomain
 	/** The set which is currently loaded and used inside the views for this use case. */
 	protected ISet set;
 
+	protected IDType humanReadableIDType;
+
 	protected IDType contentIDType;
 	protected IDType storageIDType;
 
@@ -86,7 +88,7 @@ public abstract class ASetBasedDataDomain
 		contentIDType = IDType.registerType("content_"+dataDomainType + "_" + hashCode(), EStorageType.INT);
 		storageIDType = IDType.registerType("storage_"+dataDomainType + "_" + hashCode(), EStorageType.INT);
 		
-		MappingType mappingType = new MappingType(fromIDType, toIDType, isMultiMap)
+		MappingType mappingType = new MappingType(fromIDType, toIDType, isMultiMap);
 	}
 
 	@Override
@@ -474,4 +476,13 @@ public abstract class ASetBasedDataDomain
 		// may be interesting to implement in sub-class
 	}
 
+	/**
+	 * Returns the id type that should be used if an entity of this data domain should be printed human
+	 * readable
+	 * 
+	 * @return
+	 */
+	public IDType getHumanReadableIDType() {
+		return humanReadableIDType;
+	}
 }
