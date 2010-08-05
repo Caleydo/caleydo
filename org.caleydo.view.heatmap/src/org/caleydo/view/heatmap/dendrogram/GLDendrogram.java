@@ -1520,7 +1520,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 				}
 
 				ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
-				geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX,
+				geneContextMenuItemContainer.setID(contentIDType,
 						leafNode.getLeafID());
 				contextMenu.addItemContanier(geneContextMenuItemContainer);
 

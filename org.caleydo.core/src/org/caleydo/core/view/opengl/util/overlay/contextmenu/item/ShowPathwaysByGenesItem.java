@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
@@ -43,7 +44,7 @@ public class ShowPathwaysByGenesItem
 	 * @param david
 	 *            the int code associated with a refseq
 	 */
-	public void setIDs(EIDType idType, ArrayList<Integer> genes) {
+	public void setIDs(IDType idType, ArrayList<Integer> genes) {
 
 		HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
 		for (int gene : genes) {

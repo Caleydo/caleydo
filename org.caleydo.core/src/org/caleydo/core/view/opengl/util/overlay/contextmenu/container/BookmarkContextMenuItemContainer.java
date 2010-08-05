@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.RemoveBookmarkItem;
 
@@ -21,11 +22,11 @@ public class BookmarkContextMenuItemContainer
 	/**
 	 * Set the experiment index
 	 */
-	public void setID(EIDType idType, int id) {
+	public void setID(IDType idType, int id) {
 		createMenuContent(idType, id);
 	}
 
-	private void createMenuContent(EIDType idType, int id) {
+	private void createMenuContent(IDType idType, int id) {
 
 		if (idType.getCategory() == EIDCategory.GENE) {
 			ContentContextMenuItemContainer geneContainer = new ContentContextMenuItemContainer();

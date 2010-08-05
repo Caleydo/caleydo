@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
@@ -23,8 +24,8 @@ public class ContentContextMenuItemContainer
 
 	}
 
-	public void setID(EIDType idType, int id) {
-		Integer davidID = GeneralManager.get().getIDMappingManager().getID(idType, EIDType.DAVID, id);
+	public void setID(IDType idType, int id) {
+		Integer davidID = GeneralManager.get().getIDMappingManager().getID(idType, IDType.DAVID, id);
 		if (davidID == null)
 			return;
 		createMenuContent(davidID);

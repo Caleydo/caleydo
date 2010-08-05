@@ -2,6 +2,7 @@ package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.ExportClustersItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.InterchangeGroupsItem;
@@ -64,7 +65,7 @@ public class GroupContextMenuItemContainer
 		}
 	}
 
-	public void setGenes(EIDType idType, ArrayList<Integer> genes) {
+	public void setGenes(IDType idType, ArrayList<Integer> genes) {
 		if (isGeneGroup) {
 			ShowPathwaysByGenesItem pathwaysItem = new ShowPathwaysByGenesItem();
 			pathwaysItem.setIDs(idType, genes);
