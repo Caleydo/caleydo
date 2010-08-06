@@ -3,10 +3,10 @@ package org.caleydo.view.treemap.layout;
 public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
 
 	@Override
-	public void layout(AbstractTree tree, GlPainter painter) {
+	public void layout(ATreeMapNode tree, GlPainter painter) {
 		// TODO Auto-generated method stub
 		
-		paintHelp(tree.getRoot(), 0, 0, 1, 1, HORIZONTAL_ALIGNMENT, painter);
+		paintHelp(tree, 0, 0, 1, 1, HORIZONTAL_ALIGNMENT, painter);
 		
 	}
 

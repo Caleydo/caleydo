@@ -1,10 +1,13 @@
 package org.caleydo.view.treemap.layout;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -15,14 +18,17 @@ public class GlPainter {
 	IViewFrustum viewFrustum;
 	PickingManager pickingManager;
 	int viewID;
-
+	
 	int treemapList, highlightList;
 	
-	public GlPainter(GL gl, IViewFrustum viewFrustum, PickingManager pickingManager, int viewID) {
+	SelectionManager selectionManager;
+	
+	public GlPainter(GL gl, IViewFrustum viewFrustum, PickingManager pickingManager, int viewID, SelectionManager selectionManager) {
 		this.pickingManager=pickingManager;
 		this.gl = gl;
 		this.viewFrustum = viewFrustum;
 		this.viewID=viewID;
+		this.selectionManager=selectionManager;
 		
 		treemapList=gl.glGenLists(1);
 		highlightList=gl.glGenLists(1);
@@ -36,9 +42,9 @@ public class GlPainter {
 		gl.glCallList(treemapList);
 	}
 	
-	public void paintTreeMap(AbstractTree tree) {
+	public void paintTreeMap(ATreeMapNode tree) {
 		gl.glNewList(treemapList, GL.GL_COMPILE);
-		paintHelp(tree.getRoot());
+		paintHelp(tree);
 		gl.glEndList();
 
 	}
@@ -46,9 +52,12 @@ public class GlPainter {
 	private void paintHelp(ATreeMapNode root){
 		List<ATreeMapNode> children = root.getChildren();
 		if(children==null||children.size()==0){
-			gl.glPushName(pickingManager.getPickingID(viewID, EPickingType.TREEMAP_ELEMENT_SELECTED, 1));
+			gl.glPushName(pickingManager.getPickingID(viewID, EPickingType.TREEMAP_ELEMENT_SELECTED, root.getPickingID()));
 			fillRectangle(root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(), root.getColorAttribute());
 			
+			ArrayList<SelectionType> selections = selectionManager.getSelectionTypes(root.getPickingID());
+			if(selections!=null&&selections.contains(SelectionType.SELECTION))
+				paintRectangle(root.getMinX(), root.getMinY(), root.getMaxX(), root.getMaxY(), Color.YELLOW);
 		}
 		else{
 			for(ATreeMapNode node: children){
