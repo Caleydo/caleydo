@@ -8,6 +8,8 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 
+import org.caleydo.core.data.collection.EStorageType;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
@@ -20,6 +22,9 @@ import org.jgrapht.graph.DefaultEdge;
  * @param <NodeType>
  */
 public class Tree<NodeType extends AHierarchyElement<NodeType>> {
+
+	private IDType nodeIDType;
+	private IDType leaveIDType;
 
 	private NodeType rootNode;
 
@@ -40,13 +45,54 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	@XmlElement
 	private boolean useDefaultComparator = true;
 
+	/**
+	 * Constructor that should only be used for de-serialization, use {@link #Tree(IDType)} instead.
+	 */
 	public Tree() {
+		init();
+	}
 
+	/**
+	 * Sets the id type of the leaves and creates a new node id type. This should only be used for
+	 * de-serialization or internally.
+	 * 
+	 * @param leaveIDType
+	 */
+	public void setLeaveIDType(IDType leaveIDType) {
+		this.leaveIDType = leaveIDType;
+		nodeIDType =
+			IDType.registerType("tree_" + this.hashCode(), leaveIDType.getIdCategory(), EStorageType.INT);
+	}
+
+	public Tree(IDType leaveIDType) {
+		init();
+		setLeaveIDType(leaveIDType);
+	}
+
+	private void init() {
 		graph = new DefaultDirectedGraph<NodeType, DefaultEdge>(DefaultEdge.class);
 		hashNodes = new HashMap<Integer, NodeType>();
 		mNodeMap = new HashMap<NodeType, NodeInfo>();
 		mLayerMap = new HashMap<Integer, Integer>();
 		hashLeafIDToNodeIDs = new HashMap<Integer, ArrayList<Integer>>();
+	}
+
+	/**
+	 * Returns the id type of the leaves
+	 * 
+	 * @return
+	 */
+	public IDType getLeaveIDType() {
+		return leaveIDType;
+	}
+
+	/**
+	 * Returns the id type of the nodes. The node ID Type is dynamically generated on construction.
+	 * 
+	 * @return
+	 */
+	public IDType getNodeIDType() {
+		return nodeIDType;
 	}
 
 	public void setHashMap(HashMap<Integer, NodeType> hashNodes) {
@@ -376,7 +422,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	// public Tree<NodeType> getSubTree(NodeType newRoot)
 	// {
 	// Tree<NodeType> subTree = new Tree<NodeType>();
-	//		
+	//
 	// }
 
 	public void setUseDefaultComparator(boolean useDefaultComparator) {

@@ -13,6 +13,7 @@ import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
 /**
  * <p>
@@ -48,10 +49,10 @@ public class ShowPathwaysByGenesItem
 
 		HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
 		for (int gene : genes) {
-			int david = GeneralManager.get().getIDMappingManager().getID(idType, EIDType.DAVID, gene);
+			int david = GeneralManager.get().getIDMappingManager().getID(idType, GeneticDataDomain.centralIDType, gene);
 
 			Set<PathwayGraph> pathwayGraphs =
-				GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(EIDType.DAVID, david);
+				GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(GeneticDataDomain.centralIDType, david);
 
 			// int iPathwayCount = 0;
 

@@ -31,7 +31,7 @@ public abstract class ADataDomain
 	 * not further specified data set is loaded. In the case of the unspecified data set some specialized gene
 	 * expression features are not available.
 	 */
-	protected String dataDomainType = "unspecified";
+	public static String dataDomainType = "unspecified";
 
 	protected EIconTextures icon = EIconTextures.NO_ICON_AVAILABLE;
 
@@ -50,12 +50,12 @@ public abstract class ADataDomain
 
 	@Override
 	public String getDataDomainType() {
-		return dataDomainType;
+		return DATA_DOMAIN_TYPE;
 	}
 
 	@Override
 	public void setDataDomainType(String dataDomainType) {
-		this.dataDomainType = dataDomainType;
+		this.DATA_DOMAIN_TYPE = dataDomainType;
 	}
 
 	@Override
@@ -109,6 +109,6 @@ public abstract class ADataDomain
 
 	@Override
 	public String toString() {
-		return dataDomainType;
+		return DATA_DOMAIN_TYPE;
 	}
 }

@@ -8,6 +8,7 @@ import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
@@ -61,6 +62,9 @@ public abstract class ASetBasedDataDomain
 
 	protected IDType humanReadableIDType;
 
+	protected IDCategory contentIDCategory;
+	protected IDCategory storageIDCategory;
+
 	protected IDType contentIDType;
 	protected IDType storageIDType;
 
@@ -83,11 +87,12 @@ public abstract class ASetBasedDataDomain
 		init();
 	}
 
-	private void init()
-	{
-		contentIDType = IDType.registerType("content_"+dataDomainType + "_" + hashCode(), EStorageType.INT);
-		storageIDType = IDType.registerType("storage_"+dataDomainType + "_" + hashCode(), EStorageType.INT);
+	private void init() {
+		TODO create ID Categories
 		
+		contentIDType = IDType.registerType("content_" + dataDomainType + "_" + hashCode(), contentIDCategory, EStorageType.INT);
+		storageIDType = IDType.registerType("storage_" + dataDomainType + "_" + hashCode(), storageIDCategory, EStorageType.INT);
+
 		MappingType mappingType = new MappingType(fromIDType, toIDType, isMultiMap);
 	}
 
@@ -117,6 +122,14 @@ public abstract class ASetBasedDataDomain
 
 	public IDType getStorageIDType() {
 		return storageIDType;
+	}
+
+	public IDCategory getContentIDCategory() {
+		return contentIDCategory;
+	}
+
+	public IDCategory getStorageIDCategory() {
+		return storageIDCategory;
 	}
 
 	@Override

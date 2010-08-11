@@ -155,7 +155,7 @@ public class GlyphDataLoader {
 			return;
 		}
 
-		IIDMappingManager IdMappingManager = generalManager.getIDMappingManager();
+		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
 		// now convert the storages to real glyphs
 
 		// if (!IdMappingManager.hasMapping(EIDType.EXPERIMENT, EIDType.EXPERIMENT_INDEX)) {
@@ -170,7 +170,7 @@ public class GlyphDataLoader {
 			// Extract glyph ID from mapping
 			try {
 				iExperimentID =
-					IdMappingManager.getID(EIDType.EXPERIMENT, EIDType.EXPERIMENT_INDEX, alsStoreString
+					idMappingManager.getID(EIDType.EXPERIMENT, EIDType.EXPERIMENT_INDEX, alsStoreString
 						.get(0).getRaw(i));
 			}
 			catch (Exception NullPointerException) {

@@ -58,7 +58,7 @@ public class AssociationManager {
 	 * Wrapper for {@link #registerDatadomainTypeViewTypeAssociation(String, String)} that uses a collection
 	 * for dataDomain types
 	 * 
-	 * @param dataDomainType
+	 * @param DATA_DOMAIN_TYPE
 	 * @param viewTypes
 	 */
 	public void registerDatadomainTypeViewTypeAssociation(Collection<String> dataDomainTypes, String viewType) {

@@ -9,28 +9,31 @@ public class IDType {
 	private static HashMap<String, IDType> registeredTypes = new HashMap<String, IDType>();
 
 	private String typeName;
+	private IDCategory idCategory;
 
 	private EStorageType storageType;
 
 	/** flag determining whether a type is internal only (true), or publicly known (eg refseq) */
 	private boolean isInternalType = false;
 
-	private IDType(String typeName, EStorageType storageType) {
+	private IDType(String typeName, IDCategory idCategory, EStorageType storageType) {
 		this.typeName = typeName;
+		this.idCategory = idCategory;
 		this.storageType = storageType;
+		
 	}
 
-	public static IDType registerType(String typeName, EStorageType storageType) {
+	public static IDType registerType(String typeName, IDCategory idCategory, EStorageType storageType) {
 
 		if (registeredTypes.containsKey(typeName))
 			return registeredTypes.get(typeName);
 
-		IDType idType = new IDType(typeName, storageType);
+		IDType idType = new IDType(typeName,idCategory, storageType);
 		registeredTypes.put(typeName, idType);
 
 		return idType;
 	}
-	
+
 	public static IDType getIDType(String typeName) {
 		return registeredTypes.get(typeName);
 	}
@@ -53,5 +56,9 @@ public class IDType {
 
 	public void setInternalType(boolean isInternalType) {
 		this.isInternalType = isInternalType;
+	}
+	
+	public IDCategory getIdCategory() {
+		return idCategory;
 	}
 }

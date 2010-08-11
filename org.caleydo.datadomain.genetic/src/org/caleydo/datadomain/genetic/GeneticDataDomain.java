@@ -266,7 +266,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		if (delta.getIDType() == storageIDType) {
 			// for(ISeldelta)
 			SelectionUpdateEvent resendEvent = new SelectionUpdateEvent();
-			resendEvent.setDataDomainType(this.dataDomainType);
+			resendEvent.setDataDomainType(this.DATA_DOMAIN_TYPE);
 
 			SelectionDelta convertedDelta = new SelectionDelta(delta.getIDType());
 			for (SelectionDeltaItem item : delta) {
@@ -304,7 +304,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 			}
 
 			ReplaceStorageVAInUseCaseEvent event = new ReplaceStorageVAInUseCaseEvent();
-			event.setDataDomainType(this.dataDomainType);
+			event.setDataDomainType(this.DATA_DOMAIN_TYPE);
 			event.setVaType(StorageVAType.STORAGE);
 			event.setVirtualArray(newStorageVirtualArray);
 

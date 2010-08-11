@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -29,6 +30,7 @@ import org.jgrapht.graph.DefaultEdge;
  * Class responsible for exporting and importing (clustered) {@link Tree}
  * 
  * @author Bernhard Schlegl
+ * @author Alexander Lex
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -43,6 +45,9 @@ public class TreePorter {
 	@XmlElementWrapper(name = "nodes")
 	@XmlElement(name = "node")
 	Set<ClusterNode> nodeSet;
+
+	@XmlElement
+	String leaveIDTypeString;
 
 	private ASetBasedDataDomain dataDomain;
 
@@ -66,6 +71,7 @@ public class TreePorter {
 	public Tree<ClusterNode> importTree(String fileName) throws JAXBException, FileNotFoundException {
 
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
+		tree.setLeaveIDType(IDType.getIDType(leaveIDTypeString));
 		ClusterNode rootNode = null;
 
 		DirectedGraph<ClusterNode, DefaultEdge> graph =
@@ -187,6 +193,7 @@ public class TreePorter {
 		}
 
 		nodeSet = tree.graph.vertexSet();
+		leaveIDTypeString = tree.getLeaveIDType().getTypeName();
 
 		JAXBContext jaxbContext = JAXBContext.newInstance(TreePorter.class, DefaultEdge.class);
 		Marshaller marshaller = jaxbContext.createMarshaller();

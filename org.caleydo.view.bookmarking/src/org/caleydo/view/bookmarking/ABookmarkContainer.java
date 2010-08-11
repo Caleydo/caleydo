@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
@@ -60,7 +61,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	/** The category of the container */
 	EIDCategory category;
 	/** The type the container uses to internally store the data */
-	EIDType internalIDType;
+	IDType internalIDType;
 	/** The dimensions (height, width, position, etc.) of the whole container */
 	Dimensions dimensions;
 	/** The name displayed as the heading in the sidebar */
@@ -106,7 +107,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 *            bookmars
 	 */
 	ABookmarkContainer(GLBookmarkManager manager, EIDCategory category,
-			EIDType internalIDType) {
+			IDType internalIDType) {
 		this.internalIDType = internalIDType;
 		this.manager = manager;
 		this.category = category;

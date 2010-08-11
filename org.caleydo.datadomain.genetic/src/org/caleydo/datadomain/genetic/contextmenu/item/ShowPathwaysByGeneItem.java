@@ -8,6 +8,7 @@ import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
 /**
  * <p>
@@ -42,7 +43,7 @@ public class ShowPathwaysByGeneItem
 	public void setDavid(int david) {
 
 		Set<PathwayGraph> pathwayGraphs =
-			GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(EIDType.DAVID, david);
+			GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(GeneticDataDomain.centralIDType, david);
 
 		int iPathwayCount = 0;
 

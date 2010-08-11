@@ -3,6 +3,7 @@ package org.caleydo.datadomain.genetic.contextmenu.item;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
 /**
  * <p>
@@ -38,7 +39,7 @@ public class LoadPathwaysByGeneItem
 		LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
 		loadPathwaysByGeneEvent.setSender(this);
 		loadPathwaysByGeneEvent.setGeneID(david);
-		loadPathwaysByGeneEvent.setIdType(EIDType.DAVID);
+		loadPathwaysByGeneEvent.setIdType(GeneticDataDomain.centralIDType);
 		registerEvent(loadPathwaysByGeneEvent);
 	}
 }
