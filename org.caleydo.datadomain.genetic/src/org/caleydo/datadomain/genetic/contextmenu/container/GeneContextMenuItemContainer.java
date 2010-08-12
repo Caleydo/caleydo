@@ -10,13 +10,12 @@ import org.caleydo.datadomain.genetic.contextmenu.item.LoadPathwaysByGeneItem;
 import org.caleydo.datadomain.genetic.contextmenu.item.ShowPathwaysByGeneItem;
 
 /**
- * Implementation of AItemContainer for Genes. By passing a RefSeq int code all relevant context menu items
- * are constructed automatically
+ * Implementation of AItemContainer for Genes. By passing a RefSeq int code all
+ * relevant context menu items are constructed automatically
  * 
  * @author Alexander Lex
  */
-public class GeneContextMenuItemContainer
-	extends AItemContainer {
+public class GeneContextMenuItemContainer extends AItemContainer {
 
 	/**
 	 * Constructor.
@@ -27,7 +26,8 @@ public class GeneContextMenuItemContainer
 	}
 
 	public void setID(IDType idType, int id) {
-		Integer davidID = GeneralManager.get().getIDMappingManager().getID(idType, GeneticDataDomain.centralIDType, id);
+		Integer davidID = GeneralManager.get().getIDMappingManager()
+				.getID(idType, dataDomain.getPrimaryContentMappingType(), id);
 		if (davidID == null)
 			return;
 		createMenuContent(davidID);
@@ -35,24 +35,30 @@ public class GeneContextMenuItemContainer
 
 	private void createMenuContent(int davidID) {
 		GeneralManager generalManager = GeneralManager.get();
-		
-		String sGeneSymbol =
-			generalManager.getIDMappingManager().getID(GeneticDataDomain.centralIDType, ((GeneticDataDomain)(DataDomainManager.getInstance().getDataDomain(GeneticDataDomain.dataDomainType))).getHumanReadableContentIDType(), davidID);
+
+		String sGeneSymbol = generalManager.getIDMappingManager().getID(
+				dataDomain.getPrimaryContentMappingType(),
+				((GeneticDataDomain) (DataDomainManager.getInstance()
+						.getDataDomain(GeneticDataDomain.dataDomainType)))
+						.getHumanReadableContentIDType(), davidID);
 		if (sGeneSymbol == "" || sGeneSymbol == null)
 			sGeneSymbol = "Unkonwn Gene";
 		addHeading(sGeneSymbol);
 
 		if (GeneralManager.get().getPathwayManager().isPathwayLoadingFinished()) {
 			LoadPathwaysByGeneItem loadPathwaysByGeneItem = new LoadPathwaysByGeneItem();
-			loadPathwaysByGeneItem.setDavid(davidID);
+			loadPathwaysByGeneItem.setDavid(dataDomain.getPrimaryContentMappingType(),
+					davidID);
 			addContextMenuItem(loadPathwaysByGeneItem);
 
 			ShowPathwaysByGeneItem showPathwaysByGeneItem = new ShowPathwaysByGeneItem();
-			showPathwaysByGeneItem.setDavid(davidID);
+			showPathwaysByGeneItem.setDavid(dataDomain.getPrimaryContentMappingType(),
+					davidID);
 			addContextMenuItem(showPathwaysByGeneItem);
 		}
 
-		BookmarkItem addToListItem = new BookmarkItem(GeneticDataDomain.centralIDType, davidID);
+		BookmarkItem addToListItem = new BookmarkItem(
+				dataDomain.getPrimaryContentMappingType(), davidID);
 
 		addContextMenuItem(addToListItem);
 	}

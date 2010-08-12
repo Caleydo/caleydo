@@ -8,6 +8,7 @@ import java.util.List;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -522,7 +523,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void handleSelectionCommand(EIDCategory category,
+	public void handleSelectionCommand(IDCategory category,
 			SelectionCommand selectionCommand) {
 		compareViewStateController.handleSelectionCommand(category, selectionCommand);
 	}

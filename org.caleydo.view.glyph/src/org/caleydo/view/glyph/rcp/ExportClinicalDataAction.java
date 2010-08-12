@@ -43,7 +43,7 @@ public class ExportClinicalDataAction
 	private String sFileName = "";
 	private String sFilePath = "";
 
-	private GLGlyph glyphview = null;
+//	private GLGlyph glyphview = null;
 
 	/**
 	 * Constructor.
@@ -52,17 +52,17 @@ public class ExportClinicalDataAction
 		super("Export Clinical Data");
 		this.parentComposite = parentComposite;
 
-		for (AGLView view : GeneralManager.get().getViewGLCanvasManager().getAllGLViews()) {
-			if (view instanceof GLGlyph) {
-				if (view.getID() == iViewID) {
-					glyphview = (GLGlyph) view;
-				}
-			}
-		}
-
-		if (glyphview == null)
-			throw new IllegalStateException(
-				"Clinical Data Export in Toolbar wants to export a view witch doesn't exist");
+//		for (AGLView view : GeneralManager.get().getViewGLCanvasManager().getAllGLViews()) {
+//			if (view instanceof GLGlyph) {
+//				if (view.getID() == iViewID) {
+//					glyphview = (GLGlyph) view;
+//				}
+//			}
+//		}
+//
+//		if (glyphview == null)
+//			throw new IllegalStateException(
+//				"Clinical Data Export in Toolbar wants to export a view witch doesn't exist");
 
 	}
 

@@ -1,10 +1,10 @@
 package org.caleydo.rcp.util.info;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -16,6 +16,7 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.AEvent;
@@ -58,7 +59,7 @@ import org.eclipse.ui.PlatformUI;
  * @deprecated implement as view
  */
 public class InfoArea
-	implements IDataDomainBasedView<ISetBasedDataDomain>, ISelectionUpdateHandler, IContentVAUpdateHandler,
+	implements IDataDomainBasedView<ASetBasedDataDomain>, ISelectionUpdateHandler, IContentVAUpdateHandler,
 	ISelectionCommandHandler, IViewCommandHandler {
 
 	private static String viewType = "org.caleydo.view.infoarea";
@@ -90,7 +91,7 @@ public class InfoArea
 	protected ClearSelectionsListener clearSelectionsListener;
 	protected InfoAreaUpdateListener infoAreaUpdateListener;
 
-	protected ISetBasedDataDomain dataDomain;
+	protected ASetBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -177,8 +178,8 @@ public class InfoArea
 		contentTree = new TreeItem(selectionTree, SWT.NONE);
 		contentTree.setExpanded(true);
 		contentTree.setData(-1);
-		
-//		Collection<IDataDomain> list = DataDomainManager.getInstance().getDataDomains();
+
+		// Collection<IDataDomain> list = DataDomainManager.getInstance().getDataDomains();
 		contentTree.setText(dataDomain.getContentName(true, true));
 
 		experimentTree = new TreeItem(selectionTree, SWT.NONE);
@@ -205,7 +206,7 @@ public class InfoArea
 					lblViewInfoContent.setText(info);
 				}
 
-				if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
+				if (selectionDelta.getIDType() == dataDomain.getContentIDType()) {
 
 					for (SelectionDeltaItem selectionItem : selectionDelta) {
 
@@ -249,65 +250,65 @@ public class InfoArea
 								new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
 									(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
 
-							String sContentName = "";
-							if (dataDomain.getDataDomainType() == "org.caleydo.datadomain.genetic") {
-
-								int iExpressionIndex = selectionItem.getPrimaryID();
-
-								// FIXME: Due to new mapping system, a mapping
-								// involving expression index can
-								// return a Set of
-								// values, depending on the IDType that has been
-								// specified when loading
-								// expression data.
-								// Possibly a different handling of the Set is
-								// required.
-								Set<String> setRefSeqIDs =
-									idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX,
-										EIDType.REFSEQ_MRNA, iExpressionIndex);
-								String sRefSeqID = null;
-								if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
-									sRefSeqID = (String) setRefSeqIDs.toArray()[0];
-								}
-
-								// FIXME: Due to new mapping system, a mapping
-								// involving expression index can
-								// return a Set of
-								// values, depending on the IDType that has been
-								// specified when loading
-								// expression data.
-								// Possibly a different handling of the Set is
-								// required.
-								Set<String> setGeneSymbols =
-									idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX,
-										EIDType.GENE_SYMBOL, iExpressionIndex);
-
-								if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
-									sContentName = (String) setGeneSymbols.toArray()[0];
-								}
-
-								// FIXME horizontal toolbar style support
-								// if (ToolBarView.bHorizontal ||
-								// Application.bIsWindowsOS) {
-								// FIXME: when view plugin reorganization is
-								// done
-								// if (Application.bIsWindowsOS) {
-								// sContentName = sContentName + " - " +
-								// sRefSeqID;
-								// }
-								// else {
-								sContentName = sContentName + "\n" + sRefSeqID;
-								// }
-							}
-							else {
-								sContentName =
-									idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED,
-										selectionItem.getPrimaryID());
-							}
-
-							if (sContentName == null) {
-								sContentName = "Unknown";
-							}
+							String sContentName = dataDomain.getContentLabel(selectionItem.getPrimaryID());
+							// if (dataDomain.getDataDomainType() == "org.caleydo.datadomain.genetic") {
+							//
+							// int iExpressionIndex = selectionItem.getPrimaryID();
+							//
+							// // FIXME: Due to new mapping system, a mapping
+							// // involving expression index can
+							// // return a Set of
+							// // values, depending on the IDType that has been
+							// // specified when loading
+							// // expression data.
+							// // Possibly a different handling of the Set is
+							// // required.
+							// Set<String> setRefSeqIDs =
+							// idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX,
+							// EIDType.REFSEQ_MRNA, iExpressionIndex);
+							// String sRefSeqID = null;
+							// if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+							// sRefSeqID = (String) setRefSeqIDs.toArray()[0];
+							// }
+							//
+							// // FIXME: Due to new mapping system, a mapping
+							// // involving expression index can
+							// // return a Set of
+							// // values, depending on the IDType that has been
+							// // specified when loading
+							// // expression data.
+							// // Possibly a different handling of the Set is
+							// // required.
+							// Set<String> setGeneSymbols =
+							// idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX,
+							// EIDType.GENE_SYMBOL, iExpressionIndex);
+							//
+							// if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
+							// sContentName = (String) setGeneSymbols.toArray()[0];
+							// }
+							//
+							// // FIXME horizontal toolbar style support
+							// // if (ToolBarView.bHorizontal ||
+							// // Application.bIsWindowsOS) {
+							// // FIXME: when view plugin reorganization is
+							// // done
+							// // if (Application.bIsWindowsOS) {
+							// // sContentName = sContentName + " - " +
+							// // sRefSeqID;
+							// // }
+							// // else {
+							// sContentName = sContentName + "\n" + sRefSeqID;
+							// // }
+							// }
+							// else {
+							// sContentName =
+							// idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED,
+							// selectionItem.getPrimaryID());
+							// }
+							//
+							// if (sContentName == null) {
+							// sContentName = "Unknown";
+							// }
 
 							TreeItem item = new TreeItem(contentTree, SWT.NONE);
 
@@ -320,7 +321,7 @@ public class InfoArea
 						}
 					}
 				}
-				else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
+				else if (selectionDelta.getIDType() == dataDomain.getStorageIDType()) {
 					if (info != null) {
 						lblViewInfoContent.setText(info);
 					}
@@ -416,7 +417,7 @@ public class InfoArea
 	// }
 
 	@Override
-	public void handleSelectionCommand(EIDCategory category, final SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(IDCategory category, final SelectionCommand selectionCommand) {
 
 		if (parentComposite.isDisposed())
 			return;
@@ -555,7 +556,7 @@ public class InfoArea
 
 	@Override
 	public void handleContentVAUpdate(ContentVADelta vaDelta, final String info) {
-		if (vaDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
+		if (vaDelta.getIDType() != dataDomain.getContentIDType())
 			return;
 
 		if (parentComposite.isDisposed())
@@ -588,12 +589,12 @@ public class InfoArea
 	}
 
 	@Override
-	public ISetBasedDataDomain getDataDomain() {
+	public ASetBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
 	@Override
-	public void setDataDomain(ISetBasedDataDomain dataDomain) {
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 

@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -53,11 +54,11 @@ public class GLConnectionLineRendererDataFlipper extends AGLConnectionLineRender
 		VisLinkAnimationStage connectionLines = new VisLinkAnimationStage();
 
 		IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
-		for (Entry<EIDType, ConnectionMap> typeConnections : connectedElementRepManager
+		for (Entry<IDType, ConnectionMap> typeConnections : connectedElementRepManager
 				.getTransformedConnectionsByType().entrySet()) {
 			ArrayList<ArrayList<Vec3f>> alPointLists = null;
 
-			EIDType idType = typeConnections.getKey();
+			IDType idType = typeConnections.getKey();
 			HashMap<Integer, ArrayList<ArrayList<Vec3f>>> viewToPointList = hashIDTypeToViewToPointLists
 					.get(idType);
 

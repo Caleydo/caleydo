@@ -12,6 +12,7 @@ import java.util.HashMap;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -175,7 +176,7 @@ public abstract class ACompareViewStateTransition extends ACompareViewState {
 	}
 
 	@Override
-	public void handleSelectionCommand(EIDCategory category,
+	public void handleSelectionCommand(IDCategory category,
 			SelectionCommand selectionCommand) {
 	}
 

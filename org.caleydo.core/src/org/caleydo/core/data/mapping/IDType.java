@@ -58,7 +58,7 @@ public class IDType {
 		this.isInternalType = isInternalType;
 	}
 	
-	public IDCategory getIdCategory() {
+	public IDCategory getIDCategory() {
 		return idCategory;
 	}
 }

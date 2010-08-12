@@ -63,6 +63,8 @@ public abstract class ASetBasedDataDomain
 	protected IDType humanReadableContentIDType;
 	protected IDType humanReadableStorageIDType;
 
+	protected IDType primaryContentMappingType;
+
 	protected IDCategory contentIDCategory;
 	protected IDCategory storageIDCategory;
 
@@ -97,6 +99,7 @@ public abstract class ASetBasedDataDomain
 		storageIDType =
 			IDType.registerType("storage_" + dataDomainType + "_" + hashCode(), storageIDCategory,
 				EStorageType.INT);
+		
 
 		// MappingType mappingType = new MappingType(fromIDType, toIDType, isMultiMap);
 	}
@@ -522,6 +525,16 @@ public abstract class ASetBasedDataDomain
 	 */
 	public AItemContainer getContentItemContainer(IDType idType, int id) {
 		return null;
+	}
+
+	/**
+	 * Returns the primary mapping type of the content. This type is not determined at run-time but something
+	 * permanent like an official gene mapping type like david.
+	 * 
+	 * @return
+	 */
+	public IDType getPrimaryContentMappingType() {
+		return primaryContentMappingType;
 	}
 
 }

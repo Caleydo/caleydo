@@ -1,6 +1,6 @@
 package org.caleydo.rcp.view.rcp;
 
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.rcp.util.info.InfoArea;
 import org.eclipse.swt.SWT;
@@ -87,7 +87,7 @@ public class RcpInfoAreaView
 		if (dataDomainType == null)
 			dataDomainType = "org.caleydo.datadomain.genetic";
 
-		infoArea.setDataDomain((ISetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+		infoArea.setDataDomain((ASetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
 			dataDomainType));
 		infoArea.registerEventListeners();
 		infoArea.createControl(infoComposite);

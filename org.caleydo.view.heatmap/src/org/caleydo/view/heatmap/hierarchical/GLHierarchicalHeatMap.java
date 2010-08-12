@@ -26,6 +26,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
@@ -147,8 +148,6 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 	private ColorMapping colorMapper;
 
-	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
-	private EIDType eExperimentDataType = EIDType.EXPERIMENT_INDEX;
 
 	private int iNrTextures = 0;
 	/** array of textures for holding the data samples */
@@ -3382,9 +3381,9 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		glHeatMapView.resetView();
 		ContentVADelta embeddedDelta = new ContentVADelta(
-				ContentVAType.CONTENT_EMBEDDED_HM, eFieldDataType);
+				ContentVAType.CONTENT_EMBEDDED_HM, contentIDType);
 		ContentVirtualArray hmContentVa = new ContentVirtualArray();
-		ISelectionDelta selectionDelta = new SelectionDelta(eFieldDataType);
+		ISelectionDelta selectionDelta = new SelectionDelta(contentIDType);
 
 		int iIndex = 0;
 
@@ -3449,8 +3448,8 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 
 		// selected experiments
 
-		StorageVADelta deltaExp = new StorageVADelta(storageVAType, eExperimentDataType);
-		ISelectionDelta selectionDeltaEx = new SelectionDelta(eExperimentDataType);
+		StorageVADelta deltaExp = new StorageVADelta(storageVAType, storageIDType);
+		ISelectionDelta selectionDeltaEx = new SelectionDelta(storageIDType);
 
 		setMouseOverElements = storageSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
@@ -4188,7 +4187,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 				GroupContextMenuItemContainer groupContextMenuItemContainer = new GroupContextMenuItemContainer();
 				groupContextMenuItemContainer.setContextMenuFlags(true, bEnableMerge,
 						bEnableInterchange, bEnableExport);
-				groupContextMenuItemContainer.setGenes(EIDType.EXPRESSION_INDEX,
+				groupContextMenuItemContainer.setGenes(contentIDType,
 						contentVA.getGeneIdsOfGroup(iExternalID));
 
 				contextMenu.addItemContanier(groupContextMenuItemContainer);
@@ -4573,7 +4572,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(EIDType idType,
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType,
 			int iStorageIndex) {
 
 		return null;

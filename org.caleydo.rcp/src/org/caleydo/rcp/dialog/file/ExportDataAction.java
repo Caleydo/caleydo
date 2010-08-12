@@ -8,6 +8,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.export.SetExporter;
 import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
 import org.caleydo.core.data.collection.set.MetaSet;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -189,16 +190,17 @@ public class ExportDataAction
 //			exporter.export(this, sFileName, eWichViewToExport);
 			
 			ISet set = setBasedDataDomain.getSet();
+			IDType targetIDType = setBasedDataDomain.getPrimaryContentMappingType();
 			if (set instanceof MetaSet)
 				continue;
 			if (radios[0].getSelection()) {
-				exporter.export(set, sFileName, EWhichViewToExport.BUCKET);
+				exporter.export(set, sFileName, EWhichViewToExport.BUCKET, targetIDType);
 			}
 			else if (radios[1].getSelection()) {
-				exporter.export(set, sFileName, EWhichViewToExport.WHOLE_DATA);
+				exporter.export(set, sFileName, EWhichViewToExport.WHOLE_DATA, targetIDType);
 			}
 			else if (radios[2].getSelection()) {
-				exporter.exportGroups(set,sFileName, genesToExport, experimentsToExport);
+				exporter.exportGroups(set,sFileName, genesToExport, experimentsToExport, targetIDType);
 			}
 
 		}

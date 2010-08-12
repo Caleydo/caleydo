@@ -28,7 +28,7 @@ import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
@@ -65,7 +65,9 @@ import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -90,7 +92,8 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 
 	public final static String VIEW_ID = "org.caleydo.view.pathway";
 
-	ISetBasedDataDomain mappingDataDomain;
+	private ASetBasedDataDomain mappingDataDomain;
+	protected PathwayDataDomain dataDomain;
 	private PathwayGraph pathway;
 
 	private boolean bEnablePathwayTexture = true;
@@ -138,8 +141,6 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 
 	protected SelectionCommandListener selectionCommandListener;
 
-	protected IDataDomain dataDomain;
-
 	/**
 	 * Constructor.
 	 */
@@ -150,7 +151,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 		viewType = VIEW_ID;
 
 		pathwayManager = generalManager.getPathwayManager();
-		mappingDataDomain = (ISetBasedDataDomain) DataDomainManager.getInstance()
+		mappingDataDomain = (ASetBasedDataDomain) DataDomainManager.getInstance()
 				.getDataDomain("org.caleydo.datadomain.genetic");
 
 		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum, this);
@@ -165,7 +166,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 		vecTranslation = new Vec3f(0, 0, 0);
 
 		// initialize internal gene selection manager
-		selectionManager = new SelectionManager(EIDType.PATHWAY_VERTEX);
+		selectionManager = new SelectionManager(dataDomain.getPrimaryIDType());
 
 		// textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 24),
 		// false);
@@ -355,7 +356,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 		// "Update called by " + eventTrigger.getClass().getSimpleName()
 		// + ", received in: " + this.getClass().getSimpleName());
 
-		if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
+		if (selectionDelta.getIDType() == mappingDataDomain.getContentIDType()) {
 			for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
 				if (item.getSelectionType() == SelectionType.MOUSE_OVER) {
 					iCurrentStorageIndex = item.getPrimaryID();
@@ -364,7 +365,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 			}
 			setDisplayListDirty();
 
-		} else if (selectionDelta.getIDType().getCategory() == EIDCategory.GENE) {
+		} else if (selectionDelta.getIDType().getIDCategory() == mappingDataDomain.getContentIDCategory()) {
 
 			ISelectionDelta resolvedDelta = resolveExternalSelectionDelta(selectionDelta);
 			selectionManager.setDelta(resolvedDelta);
@@ -389,7 +390,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 				// iViewID = glRemoteRenderingView.getID();
 
 				SelectedElementRep elementRep = new SelectedElementRep(
-						EIDType.EXPRESSION_INDEX, iViewID, vertexRep.getXOrigin()
+						mappingDataDomain.getContentIDType(), iViewID, vertexRep.getXOrigin()
 								* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()
 								+ vecTranslation.x(),
 						(iPathwayHeight - vertexRep.getYOrigin())

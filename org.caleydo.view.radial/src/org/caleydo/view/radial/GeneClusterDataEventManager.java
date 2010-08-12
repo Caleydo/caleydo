@@ -52,21 +52,18 @@ public class GeneClusterDataEventManager extends ADataEventManager implements
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
-		if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
-			SelectionManager selectionManager = radialHierarchy
-					.getSelectionManager();
-			Collection<PartialDisc> partialDiscs = radialHierarchy
-					.getPartialDiscs();
+		if (selectionDelta.getIDType() == radialHierarchy.getDataDomain()
+				.getContentIDType()) {
+			SelectionManager selectionManager = radialHierarchy.getSelectionManager();
+			Collection<PartialDisc> partialDiscs = radialHierarchy.getPartialDiscs();
 
 			selectionManager.clearSelections();
-			Collection<SelectionDeltaItem> deltaItems = selectionDelta
-					.getAllItems();
+			Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
 
 			// TODO: The performance of this approach is not good...
 			for (SelectionDeltaItem item : deltaItems) {
 				for (PartialDisc disc : partialDiscs) {
-					AHierarchyElement<?> hierarchyData = disc
-							.getHierarchyData();
+					AHierarchyElement<?> hierarchyData = disc.getHierarchyData();
 					ClusterNode clusterNode = null;
 
 					if (hierarchyData instanceof ClusterNode) {
@@ -90,19 +87,17 @@ public class GeneClusterDataEventManager extends ADataEventManager implements
 	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
 		SelectionDelta selectionDelta = event.getSelectionDelta();
 
-		if (selectionDelta.getIDType() == EIDType.CLUSTER_NUMBER) {
+		if (selectionDelta.getIDType() == radialHierarchy.getNodeIDType()) {
 			if (event.isSenderRadialHierarchy()) {
-				radialHierarchy.setupDisplay(event.getDrawingStateType(), event
-						.getDefaultDrawingStrategyType(), event
-						.isNewSelection(), event.getRootElementID(), event
-						.getSelectedElementID(), event
-						.getRootElementStartAngle(), event
-						.getSelectedElementStartAngle(), event
-						.getMaxDisplayedHierarchyDepth());
+				radialHierarchy.setupDisplay(event.getDrawingStateType(),
+						event.getDefaultDrawingStrategyType(), event.isNewSelection(),
+						event.getRootElementID(), event.getSelectedElementID(),
+						event.getRootElementStartAngle(),
+						event.getSelectedElementStartAngle(),
+						event.getMaxDisplayedHierarchyDepth());
 			}
 
-			SelectionManager selectionManager = radialHierarchy
-					.getSelectionManager();
+			SelectionManager selectionManager = radialHierarchy.getSelectionManager();
 			selectionManager.clearSelections();
 			selectionManager.setDelta(selectionDelta);
 			radialHierarchy.setNewSelection(true);
@@ -127,8 +122,8 @@ public class GeneClusterDataEventManager extends ADataEventManager implements
 			if (hierarchyData instanceof ClusterNode) {
 				clusterNode = (ClusterNode) hierarchyData;
 
-				SelectionDelta delta = new SelectionDelta(
-						EIDType.EXPRESSION_INDEX);
+				SelectionDelta delta = new SelectionDelta(radialHierarchy.getDataDomain()
+						.getContentIDType());
 				delta.addSelection(clusterNode.getLeafID(), selectionType);
 				SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 				selectionUpdateEvent.setSender(this);
@@ -137,23 +132,20 @@ public class GeneClusterDataEventManager extends ADataEventManager implements
 				eventPublisher.triggerEvent(selectionUpdateEvent);
 			}
 		} else {
-			SelectionManager selectionManager = radialHierarchy
-					.getSelectionManager();
+			SelectionManager selectionManager = radialHierarchy.getSelectionManager();
 
 			ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
 			event.setSender(this);
 			event.setSelectionDelta(selectionManager.getDelta());
 			// Specific elements for other RadialHierarchy Views
-			event.setSelectedElementID(radialHierarchy
-					.getCurrentSelectedElement().getElementID());
+			event.setSelectedElementID(radialHierarchy.getCurrentSelectedElement()
+					.getElementID());
 			event.setSelectedElementStartAngle(radialHierarchy
 					.getCurrentSelectedElement().getCurrentStartAngle());
-			event.setRootElementID(radialHierarchy.getCurrentRootElement()
-					.getElementID());
-			event.setRootElementStartAngle(radialHierarchy
-					.getCurrentRootElement().getCurrentStartAngle());
-			event.setDrawingStateType(radialHierarchy
-					.getCurrentDrawingStateType());
+			event.setRootElementID(radialHierarchy.getCurrentRootElement().getElementID());
+			event.setRootElementStartAngle(radialHierarchy.getCurrentRootElement()
+					.getCurrentStartAngle());
+			event.setDrawingStateType(radialHierarchy.getCurrentDrawingStateType());
 			event.setMaxDisplayedHierarchyDepth(radialHierarchy
 					.getMaxDisplayedHierarchyDepth());
 			event.setDefaultDrawingStrategyType(radialHierarchy

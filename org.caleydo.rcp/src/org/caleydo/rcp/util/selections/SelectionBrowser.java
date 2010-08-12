@@ -2,6 +2,7 @@ package org.caleydo.rcp.util.selections;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
@@ -293,7 +294,7 @@ public class SelectionBrowser
 	}
 
 	@Override
-	public void handleSelectionCommand(EIDCategory category, final SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(IDCategory category, final SelectionCommand selectionCommand) {
 
 		// nothing to do here
 	}

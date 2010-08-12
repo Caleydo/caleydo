@@ -1,5 +1,6 @@
 package org.caleydo.datadomain.genetic.contextmenu.item;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -35,11 +36,11 @@ public class LoadPathwaysByGeneItem
 	 * @param david
 	 *            the david ID
 	 */
-	public void setDavid(int david) {
+	public void setDavid(IDType idType, int david) {
 		LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
 		loadPathwaysByGeneEvent.setSender(this);
 		loadPathwaysByGeneEvent.setGeneID(david);
-		loadPathwaysByGeneEvent.setIdType(GeneticDataDomain.centralIDType);
+		loadPathwaysByGeneEvent.setIDType(idType);
 		registerEvent(loadPathwaysByGeneEvent);
 	}
 }

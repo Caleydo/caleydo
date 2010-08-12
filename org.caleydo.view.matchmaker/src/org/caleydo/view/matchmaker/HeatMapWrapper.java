@@ -11,6 +11,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
@@ -710,7 +711,7 @@ public class HeatMapWrapper {
 					if (hideVisible) {
 						// hide the elements not in the source vas
 						SelectionDelta contentSelectionDelta = new SelectionDelta(
-								EIDType.EXPRESSION_INDEX);
+								dataDomain.getContentIDType());
 
 						for (int contentIndex = nrGenes; contentIndex < contentVA.size(); contentIndex++) {
 							SelectionDeltaItem item = new SelectionDeltaItem();
@@ -802,7 +803,7 @@ public class HeatMapWrapper {
 
 		SelectionCommandEvent event = new SelectionCommandEvent();
 		event.setSelectionCommand(selectionCommand);
-		event.setCategory(EIDCategory.GENE);
+		event.setIDCategory(dataDomain.getContentIDCategory());
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
@@ -814,7 +815,7 @@ public class HeatMapWrapper {
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 
-		if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
+		if (selectionDelta.getIDType() == dataDomain.getContentIDType()) {
 			contentSelectionManager.setDelta(selectionDelta);
 			// TODO: Maybe just set selection list dirty
 			if (selectedGroups.isEmpty())
@@ -824,7 +825,7 @@ public class HeatMapWrapper {
 		}
 	}
 
-	public void handleReplaceContentVA(EIDCategory idCategory, ContentVAType vaType) {
+	public void handleReplaceContentVA(IDCategory idCategory, ContentVAType vaType) {
 
 		contentVA = set.getContentData(vaType).getContentVA();
 	}

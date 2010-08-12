@@ -7,6 +7,7 @@ import java.util.HashMap;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.Group;
@@ -457,12 +458,12 @@ public class DetailViewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void handleSelectionCommand(EIDCategory category,
+	public void handleSelectionCommand(IDCategory category,
 			SelectionCommand selectionCommand) {
 
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			if (category == heatMapWrapper.getContentSelectionManager().getIDType()
-					.getCategory())
+					.getIDCategory())
 				heatMapWrapper.getContentSelectionManager().executeSelectionCommand(
 						selectionCommand);
 			else

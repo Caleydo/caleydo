@@ -2313,9 +2313,11 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 			serView = new SerializedTissueViewBrowserView(dataDomainType);
 		} else if (interfaceType.equals("org.caleydo.view.pathwaybrowser")) {
 			serView = new SerializedPathwayViewBrowserView(dataDomainType);
-		} else if (interfaceType.equals("org.caleydo.view.glyph")) {
-			serView = new SerializedGlyphView(dataDomainType);
-		} else if (interfaceType.equals("org.caleydo.view.browser")) {
+		}
+		// else if (interfaceType.equals("org.caleydo.view.glyph")) {
+		// serView = new SerializedGlyphView(dataDomainType);
+		// }
+		else if (interfaceType.equals("org.caleydo.view.browser")) {
 			serView = new SerializedHTMLBrowserView(dataDomainType);
 		} else if (interfaceType.equals("org.caleydo.view.texture")) {
 			serView = new SerializedTextureView(dataDomainType);

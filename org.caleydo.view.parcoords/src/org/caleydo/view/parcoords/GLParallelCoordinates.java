@@ -37,6 +37,8 @@ import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.mapping.IDCategory;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -82,10 +84,10 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.datadomain.genetic.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.view.bookmarking.GLBookmarkManager;
 import org.caleydo.view.parcoords.PCRenderStyle.PolyLineState;
 import org.caleydo.view.parcoords.listener.AngularBrushingListener;
@@ -479,7 +481,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			alCurrent.clear();
 		}
 		setDisplayListDirty();
-		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
+		connectedElementRepresentationManager.clear(contentIDType);
 
 		if (glBookmarks != null) {
 			glBookmarks.clearAllSelections();
@@ -515,7 +517,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		if (!isRenderedRemote()) {
 			bShowSelectionHeatMap = true;
 			BookmarkEvent<Integer> bookmarkEvent = new BookmarkEvent<Integer>(
-					EIDType.EXPRESSION_INDEX);
+					contentIDType);
 			for (VADeltaItem item : delta.getAllItems()) {
 				bookmarkEvent.addBookmark(item.getPrimaryID());
 			}
@@ -1586,9 +1588,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 						"org.caleydo.datadomain.genetic"))
 					break;
 
-				ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
-				geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX, iExternalID);
-				contextMenu.addItemContanier(geneContextMenuItemContainer);
+				ContentContextMenuItemContainer contentContextMenuItemContainer = new ContentContextMenuItemContainer();
+				contentContextMenuItemContainer.setDataDomain(dataDomain);
+				contentContextMenuItemContainer.setID(contentIDType, iExternalID);
+				contextMenu.addItemContanier(contentContextMenuItemContainer);
 
 				if (!isRenderedRemote()) {
 					contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas()
@@ -1681,7 +1684,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 					contextMenu.setMasterGLView(this);
 				}
 				ExperimentContextMenuItemContainer experimentContextMenuItemContainer = new ExperimentContextMenuItemContainer();
-				experimentContextMenuItemContainer.setID(iExternalID);
+				experimentContextMenuItemContainer.setID(storageIDType, iExternalID);
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);
 
 			default:
@@ -1707,9 +1710,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// sendSelectionCommandEvent(eAxisDataType, command);
 
 			ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
-			if (storageSelectionManager.getIDType() == EIDType.EXPERIMENT_INDEX) {
-				handleConnectedElementRep(selectionDelta);
-			}
+			// if (storageSelectionManager.getIDType() ==
+			// EIDType.EXPERIMENT_INDEX) {
+			handleConnectedElementRep(selectionDelta);
+			// }
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
 			event.setDataDomainType(dataDomain.getDataDomainType());
@@ -1788,7 +1792,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				storageVA.remove(iExternalID);
 				storageSelectionManager.remove(iExternalID, false);
 				StorageVADelta vaDelta = new StorageVADelta(StorageVAType.STORAGE,
-						EIDType.EXPERIMENT_INDEX);
+						storageIDType);
 				vaDelta.add(VADeltaItem.remove(iExternalID));
 				sendStorageVAUpdateEvent(vaDelta);
 				setDisplayListDirty();
@@ -1822,7 +1826,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 				if (iExternalID >= 0) {
 					storageVA.copy(iExternalID);
 					StorageVADelta vaDelta = new StorageVADelta(StorageVAType.STORAGE,
-							EIDType.EXPERIMENT_INDEX);
+							storageIDType);
 					vaDelta.add(VADeltaItem.copy(iExternalID));
 					sendStorageVAUpdateEvent(vaDelta);
 
@@ -1942,7 +1946,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(EIDType idType,
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType,
 			int iStorageIndex) throws InvalidAttributeValueException {
 
 		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>();
@@ -1950,7 +1954,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		float x = 0;
 		float y = 0;
 
-		if (idType == EIDType.EXPERIMENT_INDEX
+		if (idType == storageIDType
 				&& dataDomain.getDataDomainType()
 						.equals("org.caleydo.datadomain.genetic")) {
 
@@ -1988,8 +1992,8 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			// fXValue = viewFrustum.getRight() - 0.2f;
 			// else
 			x = viewFrustum.getLeft() + renderStyle.getXSpacing();
-			y = set.get(storageVA.get(0)).getFloat(
-					EDataRepresentation.NORMALIZED, iStorageIndex);
+			y = set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
+					iStorageIndex);
 			// }
 
 			// // get the value on the leftmost axis
@@ -2327,7 +2331,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			alAxisSpacing.add(iSwitchAxisWithThis, fWidth);
 
 			StorageVADelta vaDelta = new StorageVADelta(storageVAType,
-					EIDType.EXPERIMENT_INDEX);
+					storageIDType);
 			vaDelta.add(VADeltaItem.move(iMovedAxisPosition, iSwitchAxisWithThis));
 			sendStorageVAUpdateEvent(vaDelta);
 			iMovedAxisPosition = iSwitchAxisWithThis;
@@ -2561,11 +2565,11 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	}
 
 	@Override
-	public void handleSelectionCommand(EIDCategory category,
+	public void handleSelectionCommand(IDCategory category,
 			SelectionCommand selectionCommand) {
-		if (category == contentSelectionManager.getIDType().getCategory())
+		if (category == contentSelectionManager.getIDType().getIDCategory())
 			contentSelectionManager.executeSelectionCommand(selectionCommand);
-		else if (category == storageSelectionManager.getIDType().getCategory())
+		else if (category == storageSelectionManager.getIDType().getIDCategory())
 			storageSelectionManager.executeSelectionCommand(selectionCommand);
 		else
 			return;

@@ -17,6 +17,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.GroupList;
@@ -51,10 +52,10 @@ import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.datadomain.genetic.contextmenu.container.ContentContextMenuItemContainer;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -1519,10 +1520,11 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 					contextMenu.setMasterGLView(this);
 				}
 
-				ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
-				geneContextMenuItemContainer.setID(contentIDType,
-						leafNode.getLeafID());
-				contextMenu.addItemContanier(geneContextMenuItemContainer);
+				ContentContextMenuItemContainer contentContextMenuItemContainer = new ContentContextMenuItemContainer();
+				contentContextMenuItemContainer.setDataDomain(dataDomain);
+				contentContextMenuItemContainer
+						.setID(contentIDType, leafNode.getLeafID());
+				contextMenu.addItemContanier(contentContextMenuItemContainer);
 
 				break;
 			}
@@ -1576,7 +1578,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 				ClusterNodeSelectionEvent clusterNodeEvent = new ClusterNodeSelectionEvent();
 				SelectionDelta selectionDeltaClusterNode = new SelectionDelta(
-						EIDType.CLUSTER_NUMBER);
+						tree.getNodeIDType());
 				selectionDeltaClusterNode.addSelection(iExternalID, selectionType);
 				clusterNodeEvent.setSelectionDelta(selectionDeltaClusterNode);
 				eventPublisher.triggerEvent(clusterNodeEvent);
@@ -1610,7 +1612,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 				}
 
 				ExperimentContextMenuItemContainer experimentContextMenuItemContainer = new ExperimentContextMenuItemContainer();
-				experimentContextMenuItemContainer.setID(leafNode.getLeafID());
+				experimentContextMenuItemContainer.setID(tree.getLeaveIDType(),
+						leafNode.getLeafID());
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);
 
 				break;
@@ -1700,7 +1703,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(EIDType idType,
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType,
 			int storageIndex) throws InvalidAttributeValueException {
 		return null;
 	}
@@ -1855,7 +1858,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 		SelectionDelta selectionDelta = event.getSelectionDelta();
 
-		if (selectionDelta.getIDType() == EIDType.CLUSTER_NUMBER) {
+		if (selectionDelta.getIDType() == tree.getNodeIDType()) {
 			// cluster mouse over events only used for gene trees
 			if (tree != null) { // && bRenderGeneTree
 				resetAllTreeSelections();

@@ -71,7 +71,7 @@ public class TreePorter {
 	public Tree<ClusterNode> importTree(String fileName) throws JAXBException, FileNotFoundException {
 
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
-		tree.setLeaveIDType(IDType.getIDType(leaveIDTypeString));
+		tree.initializeIDTypes(IDType.getIDType(leaveIDTypeString));
 		ClusterNode rootNode = null;
 
 		DirectedGraph<ClusterNode, DefaultEdge> graph =

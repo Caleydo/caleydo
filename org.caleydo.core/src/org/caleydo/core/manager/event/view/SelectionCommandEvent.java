@@ -39,7 +39,7 @@ public class SelectionCommandEvent
 		return idCategory;
 	}
 
-	public void setIdCategory(IDCategory idCategory) {
+	public void setIDCategory(IDCategory idCategory) {
 		this.idCategory = idCategory;
 	}
 

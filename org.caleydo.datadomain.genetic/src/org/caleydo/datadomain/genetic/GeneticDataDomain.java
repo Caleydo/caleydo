@@ -52,7 +52,6 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 	private static final String CLINICAL_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
 
-	public static IDType centralIDType;
 
 	/**
 	 * <code>TRUE</code>if only pathways can be displayed (no gene-expression
@@ -75,7 +74,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		super("org.caleydo.datadomain.genetic");
 
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
-		centralIDType = IDType.getIDType("DAVID");
+		primaryContentMappingType = IDType.getIDType("DAVID");
 		humanReadableContentIDType = IDType.getIDType("GENE_SHORT_NAME");
 		humanReadableStorageIDType = IDType.getIDType("STORAGE");
 
@@ -131,7 +130,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 				// loading expression data.
 				// Possibly a different handling of the Set is required.
 				Set<Integer> setDavidIDs = GeneralManager.get().getIDMappingManager()
-						.getIDAsSet(contentIDType, centralIDType, iCount);
+						.getIDAsSet(contentIDType, primaryContentMappingType, iCount);
 
 				if ((setDavidIDs != null && !setDavidIDs.isEmpty())) {
 					iDavidID = (Integer) setDavidIDs.toArray()[0];
@@ -193,7 +192,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 	@Override
 	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
-		IDCategory targetCategory = vaDelta.getIDType().getIdCategory();
+		IDCategory targetCategory = vaDelta.getIDType().getIDCategory();
 		if (targetCategory != contentIDCategory)
 			return;
 
@@ -206,7 +205,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 	@Override
 	public void handleStorageVAUpdate(StorageVADelta vaDelta, String info) {
-		IDCategory targetCategory = vaDelta.getIDType().getIdCategory();
+		IDCategory targetCategory = vaDelta.getIDType().getIDCategory();
 		if (targetCategory != storageIDCategory)
 			return;
 
@@ -353,7 +352,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE && idCategory == storageIDCategory) {
 			SelectionCommandEvent newCommandEvent = new SelectionCommandEvent();
 			newCommandEvent.setSelectionCommand(selectionCommand);
-			newCommandEvent.setIdCategory(idCategory);
+			newCommandEvent.setIDCategory(idCategory);
 			newCommandEvent.setDataDomainType(dataDomainType);
 			eventPublisher.triggerEvent(newCommandEvent);
 		}

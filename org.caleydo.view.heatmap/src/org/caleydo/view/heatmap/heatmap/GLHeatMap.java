@@ -12,6 +12,7 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
@@ -49,10 +50,10 @@ import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.datadomain.genetic.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.template.ATemplate;
 import org.caleydo.view.heatmap.heatmap.template.DefaultTemplate;
@@ -74,8 +75,8 @@ public class GLHeatMap extends AStorageBasedView {
 
 	HeatMapRenderStyle renderStyle;
 
-	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
-	private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
+	// private EIDType eldDataType = EIDType.EXPRESSION_INDEX;
+	// private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
 
 	private float fAnimationTargetTranslation = 0;
 
@@ -387,7 +388,8 @@ public class GLHeatMap extends AStorageBasedView {
 				}
 
 				ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
-				geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX, iExternalID);
+				geneContextMenuItemContainer.setDataDomain(dataDomain);
+				geneContextMenuItemContainer.setID(contentIDType, iExternalID);
 				contextMenu.addItemContanier(geneContextMenuItemContainer);
 			default:
 				return;
@@ -414,7 +416,8 @@ public class GLHeatMap extends AStorageBasedView {
 					contextMenu.setMasterGLView(this);
 				}
 				ExperimentContextMenuItemContainer experimentContextMenuItemContainer = new ExperimentContextMenuItemContainer();
-				experimentContextMenuItemContainer.setID(iExternalID);
+				experimentContextMenuItemContainer.setDataDomain(dataDomain);
+				experimentContextMenuItemContainer.setID(storageIDType, iExternalID);
 				contextMenu.addItemContanier(experimentContextMenuItemContainer);
 			default:
 				return;
@@ -467,7 +470,7 @@ public class GLHeatMap extends AStorageBasedView {
 				&& contentSelectionManager.getElements(SelectionType.MOUSE_OVER).size() == 0)
 			return;
 
-		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
+		connectedElementRepresentationManager.clear(contentIDType);
 
 		contentSelectionManager.clearSelection(selectionType);
 
@@ -490,18 +493,15 @@ public class GLHeatMap extends AStorageBasedView {
 		contentSelectionManager.addToType(selectionType, contentID);
 		contentSelectionManager.addConnectionID(iMappingID, contentID);
 
-		if (eFieldDataType == EIDType.EXPRESSION_INDEX) {
-			SelectionDelta selectionDelta = contentSelectionManager.getDelta();
+		SelectionDelta selectionDelta = contentSelectionManager.getDelta();
 
-			handleConnectedElementRep(selectionDelta);
-			SelectionUpdateEvent event = new SelectionUpdateEvent();
-			event.setSender(this);
-			event.setDataDomainType(dataDomain.getDataDomainType());
-			event.setSelectionDelta(selectionDelta);
-			event.setInfo(getShortInfoLocal());
-			eventPublisher.triggerEvent(event);
-
-		}
+		handleConnectedElementRep(selectionDelta);
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
+		event.setDataDomainType(dataDomain.getDataDomainType());
+		event.setSelectionDelta(selectionDelta);
+		event.setInfo(getShortInfoLocal());
+		eventPublisher.triggerEvent(event);
 
 		setDisplayListDirty();
 	}
@@ -522,15 +522,13 @@ public class GLHeatMap extends AStorageBasedView {
 		storageSelectionManager.clearSelection(selectionType);
 		storageSelectionManager.addToType(selectionType, storageID);
 
-		if (eStorageDataType == EIDType.EXPERIMENT_INDEX) {
+		SelectionDelta selectionDelta = storageSelectionManager.getDelta();
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
+		event.setDataDomainType(dataDomain.getDataDomainType());
+		event.setSelectionDelta(selectionDelta);
+		eventPublisher.triggerEvent(event);
 
-			SelectionDelta selectionDelta = storageSelectionManager.getDelta();
-			SelectionUpdateEvent event = new SelectionUpdateEvent();
-			event.setSender(this);
-			event.setDataDomainType(dataDomain.getDataDomainType());
-			event.setSelectionDelta(selectionDelta);
-			eventPublisher.triggerEvent(event);
-		}
 		setDisplayListDirty();
 	}
 
@@ -615,7 +613,7 @@ public class GLHeatMap extends AStorageBasedView {
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(EIDType idType,
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType,
 			int iStorageIndex) throws InvalidAttributeValueException {
 
 		SelectedElementRep elementRep;
@@ -678,7 +676,7 @@ public class GLHeatMap extends AStorageBasedView {
 			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
 			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
 			vecPoint.setY(vecPoint.y());// + vecTranslation.y());
-			elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID,
+			elementRep = new SelectedElementRep(contentIDType, iUniqueID,
 					vecPoint.x(), vecPoint.y(), 0);// - fAnimationTranslation,
 			// 0);
 
@@ -749,7 +747,8 @@ public class GLHeatMap extends AStorageBasedView {
 			// System.out.println("beginning clustering");
 			AffinityClusterer clusterer = new AffinityClusterer();
 			ClusterState state = new ClusterState(EClustererAlgo.AFFINITY_PROPAGATION,
-					EClustererType.CONTENT_CLUSTERING, EDistanceMeasure.EUCLIDEAN_DISTANCE);
+					EClustererType.CONTENT_CLUSTERING,
+					EDistanceMeasure.EUCLIDEAN_DISTANCE);
 			int contentVAID = contentVA.getID();
 			state.setContentVA(contentVA);
 			state.setStorageVA(storageVA);

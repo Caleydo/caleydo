@@ -154,8 +154,6 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 		selectionTypeClicked = new SelectionType("Clicked", new float[] { 1.0f, 0.0f,
 				1.0f, 0.0f }, 1, true, false, 1.0f);
 
-		// TODO:if this should be general, use dynamic idType
-		selectionManager = new SelectionManager(EIDType.CLUSTER_NUMBER);
 		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
 				selectionTypeClicked);
 		eventPublisher.triggerEvent(selectionTypeEvent);
@@ -186,6 +184,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 			// FIXME: do that differently.
 			// set = set.getStorageTree().getRoot().getMetaSet();
 			tree = set.getStorageData(storageVAType).getStorageTree();
+			selectionManager = new SelectionManager(tree.getNodeIDType());
 			initHierarchy(tree);
 		} else {
 			createNewHierarchy();
@@ -245,8 +244,8 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 		rootGroup.calculateHierarchyLevels(0);
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
-		ClusterHelper.determineExpressionValue(tree,
-				EClustererType.STORAGE_CLUSTERING, set);
+		ClusterHelper.determineExpressionValue(tree, EClustererType.STORAGE_CLUSTERING,
+				set);
 		set.getStorageData(storageVAType).setStorageTree(tree);
 		// useCase.replaceVirtualArray(idCategory, vaType, virtualArray)
 	}
@@ -340,8 +339,8 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 		// ClusterHelper.determineHierarchyDepth(tree);
 		// FIXME: do that differently.
 		// set = set.getStorageTree().getRoot().getMetaSet();
-		ClusterHelper.determineExpressionValue(tree,
-				EClustererType.STORAGE_CLUSTERING, set);
+		ClusterHelper.determineExpressionValue(tree, EClustererType.STORAGE_CLUSTERING,
+				set);
 		tree.setDirty();
 		tree.getRoot().createMetaSets((org.caleydo.core.data.collection.set.Set) set);
 		set.getStorageData(storageVAType).setStorageTree(tree);
@@ -1249,7 +1248,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 
-		if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
+		if (selectionDelta.getIDType() == dataDomain.getStorageIDType()) {
 			Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
 			Tree<ClusterNode> experimentTree = set.getStorageData(storageVAType)
 					.getStorageTree();
@@ -1282,7 +1281,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
 		SelectionDelta selectionDelta = event.getSelectionDelta();
 
-		if (selectionDelta.getIDType() == EIDType.CLUSTER_NUMBER) {
+		if (selectionDelta.getIDType() == selectionManager.getIDType()) {
 
 			selectionManager.clearSelections();
 			selectionManager.setDelta(selectionDelta);

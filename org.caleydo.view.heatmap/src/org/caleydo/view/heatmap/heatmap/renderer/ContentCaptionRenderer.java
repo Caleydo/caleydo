@@ -111,57 +111,60 @@ public class ContentCaptionRenderer extends AContentRenderer {
 	}
 
 	private String getID(Integer contentID, boolean beVerbose) {
-		String sContent = "";
-
-		IIDMappingManager idMappingManager = GeneralManager.get().getIDMappingManager();
-		// ESetType setType = heatMap.getSet().getSetType();
-		if (heatMap.getDataDomain().getDataDomainType().equals(
-				"org.caleydo.datadomain.genetic")) {
-
-			// FIXME: Due to new mapping system, a mapping involving
-			// expression index can return a set of values,
-			// depending on the IDType that has been specified when
-			// loading expression data. Possibly a different
-			// handling of the Set is required.
-			Set<String> setGeneSymbols = idMappingManager.getIDAsSet(
-					EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, contentID);
-
-			if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
-				sContent = (String) setGeneSymbols.toArray()[0];
-			}
-
-			if (sContent == null || sContent.equals(""))
-				sContent = "Unkonwn Gene";
-
-			// FIXME: Due to new mapping system, a mapping involving
-			// expression index can return a set of values,
-			// depending on the IDType that has been specified when
-			// loading expression data. Possibly a different
-			// handling of the Set is required.
-
-			// GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
-
-			if (beVerbose) {
-				Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(
-						EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA, contentID);
-
-				if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
-					String refSeq = (String) setRefSeqIDs.toArray()[0];
-					sContent += " | ";
-					// Render heat map element name
-					sContent += refSeq;
-				}
-			}
-		} else if (heatMap.getDataDomain().getDataDomainType().equals(
-				"org.caleydo.datadomain.generic")) {
-			sContent = idMappingManager.getID(EIDType.EXPRESSION_INDEX,
-					EIDType.UNSPECIFIED, contentID);
-		} else {
-			throw new IllegalStateException("Label extraction for data domain "
-					+ heatMap.getDataDomain() + " not implemented yet!");
-		}
-
-		return sContent;
+		return heatMap.getDataDomain().getContentLabel(contentID);
+		// String sContent = "";
+		//
+		// IIDMappingManager idMappingManager =
+		// GeneralManager.get().getIDMappingManager();
+		// // ESetType setType = heatMap.getSet().getSetType();
+		// if (heatMap.getDataDomain().getDataDomainType().equals(
+		// "org.caleydo.datadomain.genetic")) {
+		//
+		// // FIXME: Due to new mapping system, a mapping involving
+		// // expression index can return a set of values,
+		// // depending on the IDType that has been specified when
+		// // loading expression data. Possibly a different
+		// // handling of the Set is required.
+		// Set<String> setGeneSymbols = idMappingManager.getIDAsSet(
+		// EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, contentID);
+		//
+		// if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
+		// sContent = (String) setGeneSymbols.toArray()[0];
+		// }
+		//
+		// if (sContent == null || sContent.equals(""))
+		// sContent = "Unkonwn Gene";
+		//
+		// // FIXME: Due to new mapping system, a mapping involving
+		// // expression index can return a set of values,
+		// // depending on the IDType that has been specified when
+		// // loading expression data. Possibly a different
+		// // handling of the Set is required.
+		//
+		// //
+		// GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
+		//
+		// if (beVerbose) {
+		// Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(
+		// EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA, contentID);
+		//
+		// if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+		// String refSeq = (String) setRefSeqIDs.toArray()[0];
+		// sContent += " | ";
+		// // Render heat map element name
+		// sContent += refSeq;
+		// }
+		// }
+		// } else if (heatMap.getDataDomain().getDataDomainType().equals(
+		// "org.caleydo.datadomain.generic")) {
+		// sContent = idMappingManager.getID(EIDType.EXPRESSION_INDEX,
+		// EIDType.UNSPECIFIED, contentID);
+		// } else {
+		// throw new IllegalStateException("Label extraction for data domain "
+		// + heatMap.getDataDomain() + " not implemented yet!");
+		// }
+		//
+		// return sContent;
 	}
 
 	private void renderCaption(GL gl, int contentIndex, float xOrigin, float yOrigin,

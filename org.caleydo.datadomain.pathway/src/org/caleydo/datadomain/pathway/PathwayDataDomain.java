@@ -3,6 +3,7 @@ package org.caleydo.datadomain.pathway;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -20,6 +21,8 @@ import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 @XmlRootElement
 public class PathwayDataDomain
 	extends ADataDomain {
+	
+	IDType primaryIDType;
 
 	/**
 	 * Constructor.
@@ -28,6 +31,8 @@ public class PathwayDataDomain
 		
 		dataDomainType = "org.caleydo.datadomain.pathway";
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
+		
+		
 
 		KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
 		GeneralManager.get().getXmlParserManager().registerAndInitSaxHandler(kgmlParser);
@@ -37,6 +42,12 @@ public class PathwayDataDomain
 		
 		// Trigger pathway loading
 		new PathwayLoadingProgressIndicatorAction().run(null);
+		
+		primaryIDType = IDType.getIDType("PATHWAY_VERTEX");
+	}
+	
+	public IDType getPrimaryIDType() {
+		return primaryIDType;
 	}
 
 }

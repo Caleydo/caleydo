@@ -1,13 +1,12 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 
 import org.caleydo.core.data.mapping.IDType;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
 
 /**
- * Implementation of AItemContainer for Genes. By passing a RefSeq int code all relevant context menu items
- * are constructed automatically
+ * Implementation of AItemContainer for Content Items. Dynamically adds dataDomain specific content Context
+ * menu if a dataDomain is specified.
  * 
  * @author Alexander Lex
  */

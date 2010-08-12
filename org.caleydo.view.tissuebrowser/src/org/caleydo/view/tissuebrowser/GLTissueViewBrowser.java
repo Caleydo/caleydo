@@ -9,6 +9,7 @@ import java.util.HashMap;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.storage.NominalStorage;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -22,6 +23,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
@@ -64,7 +66,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	 * 
 	 * The foreign dataDomain
 	 */
-	public ISetBasedDataDomain foreignDataDomain;
+	public ASetBasedDataDomain foreignDataDomain;
 	public final static String FOREIGN_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
 
 	private HashMap<Integer, String> mapExperimentToTexturePath;
@@ -75,7 +77,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	private ContentVAUpdateListener virtualArrayUpdateListener;
 	private ReplaceContentVAListener replaceVirtualArrayListener;
 
-	private EIDType primaryIDType = EIDType.EXPERIMENT_INDEX;
+	private IDType primaryIDType;
 
 	private ArrayList<SerializedTextureView> allTissueViews;
 
@@ -94,10 +96,11 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 
-		this.foreignDataDomain = (ISetBasedDataDomain) DataDomainManager.getInstance()
+		this.foreignDataDomain = (ASetBasedDataDomain) DataDomainManager.getInstance()
 				.getDataDomain(FOREIGN_DATADOMAIN_TYPE);
 
 		contentVA = foreignDataDomain.getContentVA(ContentVAType.CONTENT);
+		primaryIDType = foreignDataDomain.getContentIDType();
 
 		experiementSelectionManager = foreignDataDomain.getContentSelectionManager();
 
@@ -126,7 +129,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 			SerializedTextureView tissue = new SerializedTextureView();
 			tissue.setDataDomainType("org.caleydo.view.texture");
 			tissue.setTexturePath(mapExperimentToTexturePath.get(experimentIndex));
-			
+
 			tissue.setExperimentIndex(experimentIndex);
 
 			allTissueViews.add(tissue);
@@ -158,13 +161,11 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 		GLTexture glView = (GLTexture) super.createView(gl, serView);
 
-		 glView.setTexturePath(((SerializedTextureView) serView)
-				.getTexturePath());
+		glView.setTexturePath(((SerializedTextureView) serView).getTexturePath());
 		glView.setLabel(((SerializedTextureView) serView).getLabel());
-	
-		glView.setExperimentIndex(((SerializedTextureView) serView)
-				.getExperimentIndex());
-		
+
+		glView.setExperimentIndex(((SerializedTextureView) serView).getExperimentIndex());
+
 		setInfo(glView, glView.getExperimentIndex());
 		return glView;
 	}
@@ -380,8 +381,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 	protected void removeSelection(int iElementID) {
 
 		experiementSelectionManager.remove(iElementID, false);
-		ContentVADelta vaDelta = new ContentVADelta(ContentVAType.CONTENT,
-				EIDType.EXPERIMENT_INDEX);
+		ContentVADelta vaDelta = new ContentVADelta(ContentVAType.CONTENT, primaryIDType);
 		vaDelta.add(VADeltaItem.removeElement(iElementID));
 
 		ContentVAUpdateEvent virtualArrayUpdateEvent = new ContentVAUpdateEvent();
@@ -506,5 +506,5 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements
 
 		tissueView.setInfo(label);
 	}
-	
+
 }

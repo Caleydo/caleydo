@@ -425,10 +425,10 @@ public class TabularDataView extends ASWTView implements
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scroolToSelection, String info) {
 		// Check for type that can be handled
-		if (selectionDelta.getIDType().getIdCategory() == dataDomain
+		if (selectionDelta.getIDType().getIDCategory() == dataDomain
 				.getContentIDCategory()) {
 			contentSelectionManager.setDelta(selectionDelta);
-		} else if (selectionDelta.getIDType().getIdCategory() == dataDomain
+		} else if (selectionDelta.getIDType().getIDCategory() == dataDomain
 				.getStorageIDCategory()) {
 			storageSelectionManager.setDelta(selectionDelta);
 		}

@@ -11,6 +11,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
@@ -799,7 +800,7 @@ public abstract class ACompareViewState {
 	public abstract void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info);
 
-	public abstract void handleSelectionCommand(EIDCategory category,
+	public abstract void handleSelectionCommand(IDCategory category,
 			SelectionCommand selectionCommand);
 
 	public abstract void setSetsInFocus(ArrayList<ISet> setsInFocus);

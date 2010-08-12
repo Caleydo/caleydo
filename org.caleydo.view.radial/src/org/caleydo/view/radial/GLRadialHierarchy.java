@@ -12,10 +12,12 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.radial.ChangeColorModeEvent;
 import org.caleydo.core.manager.event.view.radial.DetailOutsideEvent;
@@ -40,6 +42,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DetailOutsideItem;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -72,22 +75,14 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	private boolean bIsAnimationActive;
 	private boolean bIsNewSelection;
 
-	/**
-	 * Tree where all partial discs are stored.
-	 */
+	/** Tree where all partial discs are stored. */
 	private Tree<PartialDisc> partialDiscTree;
-	/**
-	 * Hashmap for partial disc picking.
-	 */
+	/** Hashmap for partial disc picking. */
 	private HashMap<Integer, PartialDisc> hashPartialDiscs;
 
-	/**
-	 * The root element of the partial disc tree.
-	 */
+	/** The root element of the partial disc tree. */
 	private PartialDisc pdRealRootElement;
-	/**
-	 * The partial disc that is currently displayed as root.
-	 */
+	/** The partial disc that is currently displayed as root. */
 	private PartialDisc pdCurrentRootElement;
 	/**
 	 * The partial disc that is currently "selected" regarding the current
@@ -116,7 +111,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	private SelectionManager selectionManager;
 	boolean bUseDetailLevel = true;
 
-	private ISetBasedDataDomain dataDomain;
+	private ASetBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -233,11 +228,11 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	 *            List of drawing strategies that shall be used as color modes.
 	 */
 	public <E extends AHierarchyElement<E>> void initHierarchy(Tree<E> tree, E heRoot,
-			EIDType idType, ADataEventManager dataEventManager,
+			ADataEventManager dataEventManager,
 			ArrayList<EPDDrawingStrategyType> alColorModes) {
 
 		hashPartialDiscs.clear();
-		selectionManager = new SelectionManager(idType);
+		selectionManager = new SelectionManager(tree.getNodeIDType());
 		partialDiscTree = new Tree<PartialDisc>();
 		navigationHistory.reset();
 		drawingController.setDrawingState(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY);
@@ -247,6 +242,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 		PartialDisc pdRoot = new PartialDisc(partialDiscTree, heRoot,
 				drawingStrategyManager.getDefaultDrawingStrategy());
 		partialDiscTree.setRootNode(pdRoot);
+		partialDiscTree.setLeafIDType(tree.getLeaveIDType());
+		partialDiscTree.setNodeIDType(tree.getNodeIDType());
 		hashPartialDiscs.put(heRoot.getID(), pdRoot);
 		// selectionManager.initialAdd(heRoot.getID());
 		buildTree(tree, heRoot, pdRoot);
@@ -519,7 +516,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 						break;
 					if (!pdPickedElement.hasChildren()) {
 						ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
-						geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX,
+						geneContextMenuItemContainer.setDataDomain(dataDomain);
+						geneContextMenuItemContainer.setID(dataDomain.getContentIDType(),
 								iExternalID);
 						contextMenu.addItemContanier(geneContextMenuItemContainer);
 					} else {
@@ -865,8 +863,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 			// new GeneClusterDataEventManager(this), alColorModes);
 			initHierarchy(tree, dataDomain.getSet().getStorageData(storageVAType)
-					.getStorageTreeRoot(), EIDType.CLUSTER_NUMBER,
-					new ExperimentClusterDataEventManager(this), alColorModes);
+					.getStorageTreeRoot(), new ExperimentClusterDataEventManager(this),
+					alColorModes);
 		}
 
 		SerializedRadialHierarchyView serializedView = (SerializedRadialHierarchyView) ser;
@@ -1051,8 +1049,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 			// new GeneClusterDataEventManager(this), alColorModes);
 			initHierarchy(tree, ((ISetBasedDataDomain) dataDomain).getSet()
 					.getStorageData(storageVAType).getStorageTreeRoot(),
-					EIDType.CLUSTER_NUMBER, new ExperimentClusterDataEventManager(this),
-					alColorModes);
+					new ExperimentClusterDataEventManager(this), alColorModes);
 			// }
 
 		} else {
@@ -1136,6 +1133,14 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 	public Collection<PartialDisc> getPartialDiscs() {
 		return hashPartialDiscs.values();
+	}
+
+	public ASetBasedDataDomain getDataDomain() {
+		return dataDomain;
+	}
+
+	IDType getNodeIDType() {
+		return partialDiscTree.getNodeIDType();
 	}
 
 }

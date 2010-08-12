@@ -134,13 +134,13 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 					break;
 
 				SelectionCommandEvent selectionCommandEvent = new SelectionCommandEvent();
-				selectionCommandEvent.setCategory(EIDCategory.GENE);
+				selectionCommandEvent.setIDCategory(dataDomain.getContentIDCategory());
 				selectionCommandEvent.setSelectionCommand(new SelectionCommand(
 						ESelectionCommandType.CLEAR, ACTIVE_HEATMAP_SELECTION_TYPE));
 				eventPublisher.triggerEvent(selectionCommandEvent);
 
 				ISelectionDelta bandSelectionDelta = new SelectionDelta(
-						EIDType.EXPRESSION_INDEX);
+						dataDomain.getContentIDType());
 
 				for (Integer contentID : activeDetailBand.getContentIDs())
 					bandSelectionDelta.addSelection(contentID,

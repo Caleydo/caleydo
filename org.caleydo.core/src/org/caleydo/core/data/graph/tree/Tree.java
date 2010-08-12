@@ -24,7 +24,7 @@ import org.jgrapht.graph.DefaultEdge;
 public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	private IDType nodeIDType;
-	private IDType leaveIDType;
+	private IDType leafIDType;
 
 	private NodeType rootNode;
 
@@ -56,17 +56,39 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	 * Sets the id type of the leaves and creates a new node id type. This should only be used for
 	 * de-serialization or internally.
 	 * 
-	 * @param leaveIDType
+	 * @param leafIDType
 	 */
-	public void setLeaveIDType(IDType leaveIDType) {
-		this.leaveIDType = leaveIDType;
+	public void initializeIDTypes(IDType leafIDType) {
+		this.leafIDType = leafIDType;
 		nodeIDType =
-			IDType.registerType("tree_" + this.hashCode(), leaveIDType.getIdCategory(), EStorageType.INT);
+			IDType.registerType("tree_" + this.hashCode(), leafIDType.getIDCategory(), EStorageType.INT);
+	}
+
+	/**
+	 * Sets a node id type. This should only be done when this tree is a copy of another tree (for example
+	 * with different nodes types), and not for a new tree. For a new tree use
+	 * {@link #initializeIDTypes(IDType)}
+	 * 
+	 * @param nodeIDType
+	 */
+	public void setNodeIDType(IDType nodeIDType) {
+		this.nodeIDType = nodeIDType;
+	}
+
+	/**
+	 * Sets a leaf id type. This should only be done when this tree is a copy of another tree (for example
+	 * with different nodes types), and not for a new tree. For a new tree use
+	 * {@link #initializeIDTypes(IDType)}
+	 * 
+	 * @param leafIDType
+	 */
+	public void setLeafIDType(IDType leafIDType) {
+		this.leafIDType = leafIDType;
 	}
 
 	public Tree(IDType leaveIDType) {
 		init();
-		setLeaveIDType(leaveIDType);
+		initializeIDTypes(leaveIDType);
 	}
 
 	private void init() {
@@ -83,7 +105,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	 * @return
 	 */
 	public IDType getLeaveIDType() {
-		return leaveIDType;
+		return leafIDType;
 	}
 
 	/**

@@ -8,7 +8,6 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -51,7 +50,7 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 	private SelectionManager treeSelectionManager;
 
 	GlPainter painter;
-	
+
 	// private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 	// private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
 
@@ -64,8 +63,6 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 	private ASetBasedDataDomain dataDomain;
 
 	private Tree<ClusterNode> tree;
-
-	private EIDType primaryIDType = EIDType.CLUSTER_NUMBER;
 
 	/**
 	 * Constructor.
@@ -90,9 +87,7 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 
-		treeSelectionManager = new SelectionManager(primaryIDType);
-		
-		
+		// treeSelectionManager = new SelectionManager(primaryIDType);
 
 	}
 
@@ -104,8 +99,6 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		super.renderStyle = renderStyle;
 		detailLevel = EDetailLevel.HIGH;
 
-		
-		
 	}
 
 	@Override
@@ -131,13 +124,13 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		// iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
+		treeSelectionManager = new SelectionManager(tree.getNodeIDType());
 		init(gl);
 
 		gl.glNewList(iGLDisplayListIndexLocal, GL.GL_COMPILE);
 		gl.glEndList();
 
 		// ScatterPlotRenderStyle.setTextureNr(NR_TEXTURESX,NR_TEXTURESY);
-		
 
 	}
 
@@ -185,11 +178,10 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 	@Override
 	public void display(GL gl) {
 
-	
 		// GLHelperFunctions.drawAxis(gl);
 		// GLHelperFunctions.drawPointAt(gl, 1, 1, 1);
-//		gl.glPushName(pickingManager.getPickingID(getID(),
-//				EPickingType.TREEMAP_ELEMENT_SELECTED, 1));
+		// gl.glPushName(pickingManager.getPickingID(getID(),
+		// EPickingType.TREEMAP_ELEMENT_SELECTED, 1));
 
 		// gl.glBegin(GL.GL_QUADS);
 		// gl.glColor3f(0, 1, 0);
@@ -200,44 +192,45 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		// gl.glEnd();
 		// gl.glPopName();
 
-		//GlPainter painter = new GlPainter(gl, viewFrustum);
+		// GlPainter painter = new GlPainter(gl, viewFrustum);
 
 		// painter.paintRectangle(0, 0,(float) 1.0/3, 1, Color.RED);
 		// painter.paintRectangle((float) 1.0/3, 0,(float) 2.0/3, 1,
 		// Color.GREEN);
 		// painter.paintRectangle((float) 2.0/3, 0, 1, 1, Color.BLUE);
 
-//		Tree<ClusterNode> contentTree = dataDomain.getSet()
-//				.getContentData(ContentVAType.CONTENT).getContentTree();
-		
-		
+		// Tree<ClusterNode> contentTree = dataDomain.getSet()
+		// .getContentData(ContentVAType.CONTENT).getContentTree();
+
 		// Tree<ClusterNode> storageTree = dataDomain.getSet()
 		// .getStorageData(StorageVAType.STORAGE).getStorageTree();
 
-//		AbstractTree tree = DefaultTree.createSampleTree();
-//		SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
-//
-//		layouter.layout(tree, painter);
-//		painter.paintTreeMap(tree);
-//
-//		painter.paintRectangle((float) 0.0, (float) 0.0, (float) 1 / 3, (float) 1,
-//				Color.YELLOW);
+		// AbstractTree tree = DefaultTree.createSampleTree();
+		// SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
+		//
+		// layouter.layout(tree, painter);
+		// painter.paintTreeMap(tree);
+		//
+		// painter.paintRectangle((float) 0.0, (float) 0.0, (float) 1 / 3,
+		// (float) 1,
+		// Color.YELLOW);
 
 		// SelectionManager contentSelectionManager = dataDomain
 		// .getContentSelectionManager();
-		
-		if(bIsDisplayListDirtyLocal){
-			painter= new GlPainter(gl, viewFrustum, pickingManager, getID(), treeSelectionManager);
-			ATreeMapNode root= DefaultTreeNode.createSampleTree();
-			//ClusterTreeMapNode root = ClusterTreeMapNode.createFromClusterNodeTree(contentTree);
+
+		if (bIsDisplayListDirtyLocal) {
+			painter = new GlPainter(gl, viewFrustum, pickingManager, getID(),
+					treeSelectionManager);
+			ATreeMapNode root = DefaultTreeNode.createSampleTree();
+			// ClusterTreeMapNode root =
+			// ClusterTreeMapNode.createFromClusterNodeTree(contentTree);
 			SimpleLayoutAlgorithm layouter = new SimpleLayoutAlgorithm();
 			layouter.layout(root, painter);
 			painter.paintTreeMap(root);
-			bIsDisplayListDirtyLocal=false;
+			bIsDisplayListDirtyLocal = false;
 		}
-			
+
 		painter.paintTreeMapFromCache();
-		
 
 	}
 
@@ -286,9 +279,9 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 				return;
 
 			}
-//			treeSelectionManager.addToType(selectionType, iExternalID);
-			
-			//treeSelectionManager.getElements(SelectionType.SELECTION);
+			// treeSelectionManager.addToType(selectionType, iExternalID);
+
+			// treeSelectionManager.getElements(SelectionType.SELECTION);
 			// treeSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
 			// iElementID);
 			//
@@ -378,12 +371,6 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		return dataDomain;
 	}
 
-//	@Override
-//	public void setDataDomain(ASetBasedDataDomain dataDomain) {
-//		this.dataDomain = dataDomain;
-//
-//	}
-
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
@@ -392,9 +379,9 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 	}
 
 	@Override
-	public void setDataDomain(ISetBasedDataDomain dataDomain) {
-		// TODO Auto-generated method stub
-		
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+
 	}
 
 }
