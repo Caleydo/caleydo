@@ -38,7 +38,7 @@ public class HierarchicalClusterer
 
 		int iPercentage = 1;
 
-		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
+		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
 
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
@@ -118,7 +118,7 @@ public class HierarchicalClusterer
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
-		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING)
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Cobweb clustering of genes in progress"));
 		else

@@ -12,6 +12,7 @@ import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
@@ -34,7 +35,7 @@ public class SetExporter {
 	}
 
 	public void exportGroups(ISet set, String sFileName, ArrayList<Integer> alGenes,
-		ArrayList<Integer> alExperiments) {
+		ArrayList<Integer> alExperiments, IDType targetIDType) {
 
 		try {
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(sFileName)));
@@ -54,7 +55,7 @@ public class SetExporter {
 			for (Integer iContentIndex : alGenes) {
 				if (set.getDataDomain().getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 					Set<String> setRefSeqIDs =
-						iDMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA,
+						iDMappingManager.getIDAsSet(set.getDataDomain().getContentIDType(), targetIDType,
 							iContentIndex);
 
 					if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
@@ -66,7 +67,8 @@ public class SetExporter {
 				}
 				else {
 					identifier =
-						iDMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED, iContentIndex);
+						iDMappingManager.getID(set.getDataDomain().getContentIDType(), targetIDType,
+							iContentIndex);
 				}
 				out.print(identifier + "\t");
 				for (Integer iStorageIndex : alExperiments) {
@@ -86,7 +88,7 @@ public class SetExporter {
 	}
 
 	@SuppressWarnings("unused")
-	public void export(ISet set, String sFileName, EWhichViewToExport eWhichViewToExport) {
+	public void export(ISet set, String sFileName, EWhichViewToExport eWhichViewToExport, IDType targetIDType) {
 		ContentVirtualArray contentVA = null;
 		StorageVirtualArray storageVA = null;
 
@@ -135,7 +137,7 @@ public class SetExporter {
 					// values, depending on the IDType that has been specified when loading expression data.
 					// Possibly a different handling of the Set is required.
 					Set<String> setRefSeqIDs =
-						iDMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA,
+						iDMappingManager.getIDAsSet(set.getDataDomain().getContentIDType(), targetIDType,
 							iContentIndex);
 
 					if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
@@ -156,7 +158,8 @@ public class SetExporter {
 				}
 				else {
 					identifier =
-						iDMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED, iContentIndex);
+						iDMappingManager.getID(set.getDataDomain().getContentIDType(), targetIDType,
+							iContentIndex);
 				}
 				out.print(identifier + "\t");
 				for (Integer iStorageIndex : storageVA) {

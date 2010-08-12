@@ -3518,7 +3518,7 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 	@Override
 	public String getShortInfo() {
 		return "Hierarchical Heat Map (" + contentVA.size() + " "
-				+ dataDomain.getContentLabel(false, true) + " / " + storageVA.size()
+				+ dataDomain.getContentName(false, true) + " / " + storageVA.size()
 				+ " experiments)";
 	}
 
@@ -3527,19 +3527,19 @@ public class GLHierarchicalHeatMap extends AStorageBasedView implements
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Hierarchical Heat Map\n");
 
-		sInfoText.append(contentVA.size() + " " + dataDomain.getContentLabel(true, true)
+		sInfoText.append(contentVA.size() + " " + dataDomain.getContentName(true, true)
 				+ " in rows and " + storageVA.size() + " experiments in columns.\n");
 
 		if (bRenderOnlyContext) {
 			sInfoText.append("Showing only " + " "
-					+ dataDomain.getContentLabel(false, true)
+					+ dataDomain.getContentName(false, true)
 					+ " which occur in one of the other views in focus\n");
 		} else {
 			if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
-				sInfoText.append("Showing all " + dataDomain.getContentLabel(false, true)
+				sInfoText.append("Showing all " + dataDomain.getContentName(false, true)
 						+ " in the dataset\n");
 			} else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
-				sInfoText.append("Showing all " + dataDomain.getContentLabel(false, true)
+				sInfoText.append("Showing all " + dataDomain.getContentName(false, true)
 						+ " that have a known DAVID ID mapping\n");
 			} else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 				sInfoText

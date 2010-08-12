@@ -306,11 +306,11 @@ public class GLHeatMap extends AStorageBasedView {
 	public String getShortInfo() {
 
 		if (contentVA == null)
-			return "Heat Map - 0 " + dataDomain.getContentLabel(false, true)
+			return "Heat Map - 0 " + dataDomain.getContentName(false, true)
 					+ " / 0 experiments";
 
 		return "Heat Map - " + contentVA.size() + " "
-				+ dataDomain.getContentLabel(false, true) + " / " + storageVA.size()
+				+ dataDomain.getContentName(false, true) + " / " + storageVA.size()
 				+ " experiments";
 	}
 
@@ -320,12 +320,12 @@ public class GLHeatMap extends AStorageBasedView {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Heat Map\n");
 
-		sInfoText.append(contentVA.size() + " " + dataDomain.getContentLabel(true, true)
+		sInfoText.append(contentVA.size() + " " + dataDomain.getContentName(true, true)
 				+ " in rows and " + storageVA.size() + " experiments in columns.\n");
 
 		if (bRenderOnlyContext) {
 			sInfoText.append("Showing only " + " "
-					+ dataDomain.getContentLabel(false, true)
+					+ dataDomain.getContentName(false, true)
 					+ " which occur in one of the other views in focus\n");
 		} else {
 			if (bUseRandomSampling) {
@@ -749,7 +749,7 @@ public class GLHeatMap extends AStorageBasedView {
 			// System.out.println("beginning clustering");
 			AffinityClusterer clusterer = new AffinityClusterer();
 			ClusterState state = new ClusterState(EClustererAlgo.AFFINITY_PROPAGATION,
-					EClustererType.GENE_CLUSTERING, EDistanceMeasure.EUCLIDEAN_DISTANCE);
+					EClustererType.CONTENT_CLUSTERING, EDistanceMeasure.EUCLIDEAN_DISTANCE);
 			int contentVAID = contentVA.getID();
 			state.setContentVA(contentVA);
 			state.setStorageVA(storageVA);

@@ -1,6 +1,7 @@
 package org.caleydo.core.manager;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
@@ -29,7 +30,7 @@ public interface ISetBasedDataDomain
 	 * @param idCategory
 	 * @return
 	 */
-//	public String getVATypeForIDCategory(EIDCategory idCategory);
+	// public String getVATypeForIDCategory(EIDCategory idCategory);
 
 	/**
 	 * Returns the set which is currently loaded and used inside the views for this use case.
@@ -52,7 +53,7 @@ public interface ISetBasedDataDomain
 	public void updateSetInViews();
 
 	/**
-	 * Returns the content label. E.g. gene for genome use case, entity for generic use case
+	 * Returns the label for the content. E.g. gene for genome use case, entity for generic use case
 	 * 
 	 * @param bUpperCase
 	 *            TRUE makes the label upper case
@@ -60,7 +61,49 @@ public interface ISetBasedDataDomain
 	 *            TRUE label = plural, FALSE label = singular
 	 * @return label valid for the specific use case
 	 */
-	public String getContentLabel(boolean bUpperCase, boolean bPlural);
+	public String getContentName(boolean bUpperCase, boolean bPlural);
+
+	/**
+	 * Get the human readable content label for a specific id. The id has to be of the contentIDType of the
+	 * dataDomain.
+	 * 
+	 * @param id
+	 *            the id to convert to a human readable label
+	 * @return the readable label
+	 */
+	public String getContentLabel(Object id);
+
+	/**
+	 * Get the human readable content label for a specific id.
+	 * 
+	 * @param idType
+	 *            specify of which id type the id is
+	 * @param id
+	 *            the id to convert to a human readable label
+	 * @return the readable label
+	 */
+	public String getContentLabel(IDType idType, Object id);
+
+	/**
+	 * Get the human readable storage label for a specific id. The id has to be of the storageIDType of the
+	 * dataDomain.
+	 * 
+	 * @param id
+	 *            the id to convert to a human readable label
+	 * @return the readable label
+	 */
+	public abstract String getStorageLabel(Object id);
+
+	/**
+	 * Get the human readable storage label for a specific id.
+	 * 
+	 * @param idType
+	 *            specify of which id type the id is
+	 * @param id
+	 *            the id to convert to a human readable label
+	 * @return the readable label
+	 */
+	public abstract String getStorageLabel(IDType idType, Object id);
 
 	/**
 	 * Returns the virtual array for the type
@@ -120,7 +163,7 @@ public interface ISetBasedDataDomain
 	public void handleForeignSelectionUpdate(String dataDomainType, ISelectionDelta delta,
 		boolean scrollToSelection, String info);
 
-	public void handleForeignSelectionCommand(String dataDomainType, IDType idType,
+	public void handleForeignSelectionCommand(String dataDomainType, IDCategory idCategory,
 		SelectionCommand selectionCommand);
 
 	/**

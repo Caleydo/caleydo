@@ -80,10 +80,10 @@ public class ClusterManager {
 		ClusterResult result = new ClusterResult();
 
 		try {
-			if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
+			if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
 				runContentClustering(clusterer, clusterState, result, 0, 2);
 			}
-			else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
+			else if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING) {
 
 				runStorageClustering(clusterer, clusterState, result, 0, 2);
 			}

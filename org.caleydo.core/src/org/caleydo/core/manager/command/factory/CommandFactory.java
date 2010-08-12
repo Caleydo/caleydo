@@ -1,5 +1,6 @@
 package org.caleydo.core.manager.command.factory;
 
+import org.caleydo.core.command.CmdCreateIDCategory;
 import org.caleydo.core.command.CmdCreateIDType;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
@@ -50,6 +51,10 @@ public class CommandFactory
 
 		switch (cmdType) {
 			
+			case CREATE_ID_CATEGORY: {
+				createdCommand = new CmdCreateIDCategory(cmdType);
+				break;
+			}
 			case CREATE_ID_TYPE: {
 				createdCommand = new CmdCreateIDType(cmdType);
 				break;

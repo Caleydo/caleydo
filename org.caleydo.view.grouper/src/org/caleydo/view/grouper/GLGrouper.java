@@ -246,7 +246,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 		ClusterHelper.determineExpressionValue(tree,
-				EClustererType.EXPERIMENTS_CLUSTERING, set);
+				EClustererType.STORAGE_CLUSTERING, set);
 		set.getStorageData(storageVAType).setStorageTree(tree);
 		// useCase.replaceVirtualArray(idCategory, vaType, virtualArray)
 	}
@@ -341,7 +341,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 		// FIXME: do that differently.
 		// set = set.getStorageTree().getRoot().getMetaSet();
 		ClusterHelper.determineExpressionValue(tree,
-				EClustererType.EXPERIMENTS_CLUSTERING, set);
+				EClustererType.STORAGE_CLUSTERING, set);
 		tree.setDirty();
 		tree.getRoot().createMetaSets((org.caleydo.core.data.collection.set.Set) set);
 		set.getStorageData(storageVAType).setStorageTree(tree);

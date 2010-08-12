@@ -90,7 +90,7 @@ public class StartClusteringAction
 
 		this.parentComposite = parentComposite;
 
-		sArTypeOptions[0] = ((ISetBasedDataDomain)DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic")).getContentLabel(true, false);
+		sArTypeOptions[0] = ((ISetBasedDataDomain)DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic")).getContentName(true, false);
 	}
 
 	@Override
@@ -505,9 +505,9 @@ public class StartClusteringAction
 		}
 
 		if (clusterType.equals(sArTypeOptions[0]))
-			clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
+			clusterState.setClustererType(EClustererType.CONTENT_CLUSTERING);
 		else if (clusterType.equals(sArTypeOptions[1]))
-			clusterState.setClustererType(EClustererType.EXPERIMENTS_CLUSTERING);
+			clusterState.setClustererType(EClustererType.STORAGE_CLUSTERING);
 		else if (clusterType.equals(sArTypeOptions[2]))
 			clusterState.setClustererType(EClustererType.BI_CLUSTERING);
 

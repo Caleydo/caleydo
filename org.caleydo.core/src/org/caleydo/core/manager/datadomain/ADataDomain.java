@@ -46,16 +46,16 @@ public abstract class ADataDomain
 	 * Every use case needs to state all ID Categories it can handle. The string must specify which primary
 	 * VAType ({@link VAType#getPrimaryVAType()} is associated for the ID Category
 	 */
-//	protected HashMap<IDCategory, String> possibleIDCategories;
+	// protected HashMap<IDCategory, String> possibleIDCategories;
 
 	@Override
 	public String getDataDomainType() {
-		return DATA_DOMAIN_TYPE;
+		return dataDomainType;
 	}
 
 	@Override
 	public void setDataDomainType(String dataDomainType) {
-		this.DATA_DOMAIN_TYPE = dataDomainType;
+		this.dataDomainType = dataDomainType;
 	}
 
 	@Override
@@ -93,7 +93,6 @@ public abstract class ADataDomain
 		return loadDataParameters;
 	}
 
-
 	@Override
 	public void setLoadDataParameters(LoadDataParameters loadDataParameters) {
 		this.loadDataParameters = loadDataParameters;
@@ -109,6 +108,6 @@ public abstract class ADataDomain
 
 	@Override
 	public String toString() {
-		return DATA_DOMAIN_TYPE;
+		return dataDomainType;
 	}
 }

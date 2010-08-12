@@ -1,13 +1,14 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
-import org.caleydo.core.data.mapping.IDType;
+import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.IListenerOwner;
 
 /**
- * TODO javadoc; what are TriggerSelectionCommands good for?
+ * Interface for classes that handle {@link SelectionCommand}s.
  * 
  * @author Werner Puff
+ * @author Alexander Lex
  */
 public interface ISelectionCommandHandler
 	extends IListenerOwner {
@@ -18,5 +19,5 @@ public interface ISelectionCommandHandler
 	 * 
 	 * @param selectionCommands
 	 */
-	public void handleSelectionCommand(IDType idType, SelectionCommand selectionCommand);
+	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand);
 }

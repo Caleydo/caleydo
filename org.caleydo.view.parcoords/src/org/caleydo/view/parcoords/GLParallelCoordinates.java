@@ -2015,12 +2015,12 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		int iNumLines = contentVA.size();
 		if (displayEveryNthPolyline == 1) {
 			message = "Parallel Coordinates - " + iNumLines + " "
-					+ dataDomain.getContentLabel(false, true) + " / " + storageVA.size()
+					+ dataDomain.getContentName(false, true) + " / " + storageVA.size()
 					+ " experiments";
 		} else {
 			message = "Parallel Coordinates - a sample of " + iNumLines
 					/ displayEveryNthPolyline + " out of " + iNumLines + " "
-					+ dataDomain.getContentLabel(false, true) + " / \n "
+					+ dataDomain.getContentName(false, true) + " / \n "
 					+ storageVA.size() + " experiments";
 		}
 		return message;
@@ -2031,7 +2031,7 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Parallel Coordinates\n");
-		sInfoText.append(contentVA.size() + dataDomain.getContentLabel(false, true)
+		sInfoText.append(contentVA.size() + dataDomain.getContentName(false, true)
 				+ " as polylines and " + storageVA.size() + " experiments as axis.\n");
 
 		if (bRenderOnlyContext) {
@@ -2046,10 +2046,10 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 			}
 
 			if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
-				sInfoText.append("Showing all " + dataDomain.getContentLabel(false, true)
+				sInfoText.append("Showing all " + dataDomain.getContentName(false, true)
 						+ " in the dataset\n");
 			} else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
-				sInfoText.append("Showing all " + dataDomain.getContentLabel(false, true)
+				sInfoText.append("Showing all " + dataDomain.getContentName(false, true)
 						+ " that have a known DAVID ID mapping\n");
 			} else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 				sInfoText

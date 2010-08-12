@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
@@ -21,6 +23,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
+import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -47,8 +50,8 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 public class GeneticDataDomain extends ASetBasedDataDomain {
 
 	private static final String CLINICAL_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
-	
-	public static IDType centralIDType; 
+
+	public static IDType centralIDType;
 
 	/**
 	 * <code>TRUE</code>if only pathways can be displayed (no gene-expression
@@ -60,6 +63,9 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	private ForeignSelectionUpdateListener clinicalSelectionUpdateListener;
 	private ForeignSelectionCommandListener clinicalSelectionCommandListener;
 
+	private IIDMappingManager idMappingManager = GeneralManager.get()
+			.getIDMappingManager();
+
 	/**
 	 * Constructor.
 	 */
@@ -69,7 +75,8 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
 		centralIDType = IDType.getIDType("DAVID");
-		humanReadableIDType = IDType.getIDType("GENE_SHORT_NAME");
+		humanReadableContentIDType = IDType.getIDType("GENE_SHORT_NAME");
+		humanReadableStorageIDType = IDType.getIDType("STORAGE");
 
 		pathwayViewerMode = false;
 		contentLabelSingular = "gene";
@@ -123,7 +130,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 				// loading expression data.
 				// Possibly a different handling of the Set is required.
 				Set<Integer> setDavidIDs = GeneralManager.get().getIDMappingManager()
-						.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.DAVID, iCount);
+						.getIDAsSet(contentIDType, centralIDType, iCount);
 
 				if ((setDavidIDs != null && !setDavidIDs.isEmpty())) {
 					iDavidID = (Integer) setDavidIDs.toArray()[0];
@@ -185,13 +192,12 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 	@Override
 	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
-		EIDCategory targetCategory = vaDelta.getIDType().getCategory();
-		if (targetCategory != EIDCategory.GENE)
+		IDCategory targetCategory = vaDelta.getIDType().getIdCategory();
+		if (targetCategory != contentIDCategory)
 			return;
 
-		if (targetCategory == EIDCategory.GENE
-				&& vaDelta.getIDType() != EIDType.EXPRESSION_INDEX)
-			vaDelta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, vaDelta);
+		if (targetCategory == contentIDCategory && vaDelta.getIDType() != contentIDType)
+			vaDelta = DeltaConverter.convertDelta(contentIDType, vaDelta);
 		ContentVirtualArray va = set.getContentData(vaDelta.getVAType()).getContentVA();
 
 		va.setDelta(vaDelta);
@@ -199,8 +205,8 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 	@Override
 	public void handleStorageVAUpdate(StorageVADelta vaDelta, String info) {
-		EIDCategory targetCategory = vaDelta.getIDType().getCategory();
-		if (targetCategory != EIDCategory.EXPERIMENT)
+		IDCategory targetCategory = vaDelta.getIDType().getIdCategory();
+		if (targetCategory != storageIDCategory)
 			return;
 
 		StorageVirtualArray va = set.getStorageData(vaDelta.getVAType()).getStorageVA();
@@ -266,7 +272,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		if (delta.getIDType() == storageIDType) {
 			// for(ISeldelta)
 			SelectionUpdateEvent resendEvent = new SelectionUpdateEvent();
-			resendEvent.setDataDomainType(this.DATA_DOMAIN_TYPE);
+			resendEvent.setDataDomainType(this.dataDomainType);
 
 			SelectionDelta convertedDelta = new SelectionDelta(delta.getIDType());
 			for (SelectionDeltaItem item : delta) {
@@ -304,7 +310,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 			}
 
 			ReplaceStorageVAInUseCaseEvent event = new ReplaceStorageVAInUseCaseEvent();
-			event.setDataDomainType(this.DATA_DOMAIN_TYPE);
+			event.setDataDomainType(this.dataDomainType);
 			event.setVaType(StorageVAType.STORAGE);
 			event.setVirtualArray(newStorageVirtualArray);
 
@@ -341,15 +347,54 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	}
 
 	@Override
-	public void handleForeignSelectionCommand(String dataDomainType,
-			EIDCategory category, SelectionCommand selectionCommand) {
+	public void handleForeignSelectionCommand(String dataDomainType, IDCategory idCategory,
+			SelectionCommand selectionCommand) {
 		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE
-				&& category == EIDCategory.EXPERIMENT) {
+				&& idCategory == storageIDCategory) {
 			SelectionCommandEvent newCommandEvent = new SelectionCommandEvent();
 			newCommandEvent.setSelectionCommand(selectionCommand);
-			newCommandEvent.setCategory(category);
+			newCommandEvent.setIdCategory(idCategory);
 			newCommandEvent.setDataDomainType(dataDomainType);
 			eventPublisher.triggerEvent(newCommandEvent);
 		}
+	}
+
+	
+	@Override
+	public String getContentLabel(IDType idType, Object id) {
+		String geneSymbol = null;
+		String refSeq = null;
+
+		// FIXME: Due to new mapping system, a mapping involving
+		// expression index can return a Set of
+		// values, depending on the IDType that has been specified when
+		// loading expression data.
+		// Possibly a different handling of the Set is required.
+		Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(idType,
+				IDType.getIDType("REFSEQ_MRNA"), id);
+
+		if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+			refSeq = (String) setRefSeqIDs.toArray()[0];
+		}
+
+		// FIXME: Due to new mapping system, a mapping involving
+		// expression index can return a Set of
+		// values, depending on the IDType that has been specified when
+		// loading expression data.
+		// Possibly a different handling of the Set is required.
+		Set<String> setGeneSymbols = idMappingManager.getIDAsSet(contentIDType,
+				humanReadableContentIDType, id);
+
+		if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
+			geneSymbol = (String) setGeneSymbols.toArray()[0];
+		}
+
+		return refSeq + " | " + geneSymbol;
+	}
+
+	@Override
+	public String getStorageLabel(IDType idType, Object id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

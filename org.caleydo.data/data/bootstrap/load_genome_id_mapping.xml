@@ -1,33 +1,60 @@
 <details>
-	<Cmd type="CREATE_ID_TYPE" detail="DAVID" attrib1="INT" />
 
-	<Cmd type="CREATE_ID_TYPE" detail="GENE_NAME" attrib1="STRING" />
+	<!-- ************************** GENES ************************** -->
 
-	<Cmd type="CREATE_ID_TYPE" detail="GENE_SYMBOL" attrib1="STRING" />
+	<Cmd type="CREATE_ID_CATEGORY" detail="GENE" />
 
-	<Cmd type="CREATE_ID_TYPE" detail="BIOCARTA_GENE_ID" attrib1="STRING" />
+	<Cmd type="CREATE_ID_TYPE" detail="DAVID" attrib1="GENE" attrib2="INT" />
 
-	<Cmd type="CREATE_ID_TYPE" detail="REFSEQ_MRNA" attrib1="STRING" />
+	<Cmd type="CREATE_ID_TYPE" detail="GENE_NAME" attrib1="GENE"
+		attrib2="STRING" />
 
-	<Cmd type="CREATE_ID_TYPE" detail="REFSEQ_MRNA_INT" attrib1="INT" />
+	<Cmd type="CREATE_ID_TYPE" detail="GENE_SYMBOL" attrib1="GENE"
+		attrib2="STRING" />
 
-	<Cmd type="CREATE_ID_TYPE" detail="ENSEMBL_GENE_ID" attrib1="STRING" />
+	<Cmd type="CREATE_ID_TYPE" detail="BIOCARTA_GENE_ID" attrib1="GENE"
+		attrib2="STRING" />
 
-	<Cmd type="CREATE_ID_TYPE" detail="ENTREZ_GENE_ID" attrib1="INT" />
+	<Cmd type="CREATE_ID_TYPE" detail="REFSEQ_MRNA" attrib1="GENE"
+		attrib2="STRING" />
 
-	<Cmd type="CREATE_ID_TYPE" detail="CONTENT_INDEX" attrib1="INT" />
+	<Cmd type="CREATE_ID_TYPE" detail="REFSEQ_MRNA_INT" attrib1="GENE"
+		attrib2="INT" />
 
-	<Cmd type="CREATE_ID_TYPE" detail="PATHWAY_VERTEX" attrib1="INT" />
+	<Cmd type="CREATE_ID_TYPE" detail="ENSEMBL_GENE_ID" attrib1="GENE"
+		attrib2="STRING" />
 
-	<Cmd type="CREATE_ID_TYPE" detail="PATHWAY" attrib1="INT" />
+	<Cmd type="CREATE_ID_TYPE" detail="ENTREZ_GENE_ID" attrib1="GENE"
+		attrib2="INT" />
 
-	<Cmd type="CREATE_ID_TYPE" detail="STORAGE" attrib1="STRING" />
+	<!-- TODO this should created dynamically in datadomain! -->
+	<Cmd type="CREATE_ID_TYPE" detail="CONTENT_INDEX" attrib1="GENE"
+		attrib2="INT" />
 
-	<Cmd type="CREATE_ID_TYPE" detail="STORAGE_INDEX" attrib1="INT" />
+	<Cmd type="CREATE_ID_TYPE" detail="PATHWAY_VERTEX" attrib1="GENE"
+		attrib2="INT" />
 
-	<Cmd type="CREATE_ID_TYPE" detail="CLUSTER_NUMBER" attrib1="INT" />
+	<Cmd type="CREATE_ID_TYPE" detail="PATHWAY" attrib1="GENE" attrib2="INT" />
 
-	<Cmd type="CREATE_ID_TYPE" detail="STRING" attrib1="INT" />
+
+	<!-- ************************** Experiments ************************** -->
+
+	<Cmd type="CREATE_ID_CATEGORY" detail="EXPERIMENT" />
+
+	<Cmd type="CREATE_ID_TYPE" detail="STORAGE" attrib1="EXPERIMENT"
+		attrib2="STRING" />
+
+	<!-- TODO this should created dynamically in datadomain! -->
+	<Cmd type="CREATE_ID_TYPE" detail="STORAGE_INDEX" attrib1="EXPERIMENT"
+		attrib2="INT" />
+
+	<!-- TODO this should created dynamically when creating a new tree! -->
+	<!--<Cmd type="CREATE_ID_TYPE" detail="CLUSTER_NUMBER" attrib="INT" /> -->
+
+
+
+	<!-- ************************** Loading Mappings ************************** -->
+
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE"
 		detail="data/genome/mapping/david/ORGANISM_DAVID2REFSEQ_MRNA.txt"

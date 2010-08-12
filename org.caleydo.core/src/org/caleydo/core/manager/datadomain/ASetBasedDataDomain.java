@@ -34,7 +34,6 @@ import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.mapping.MappingType;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererType;
@@ -60,7 +59,8 @@ public abstract class ASetBasedDataDomain
 	/** The set which is currently loaded and used inside the views for this use case. */
 	protected ISet set;
 
-	protected IDType humanReadableIDType;
+	protected IDType humanReadableContentIDType;
+	protected IDType humanReadableStorageIDType;
 
 	protected IDCategory contentIDCategory;
 	protected IDCategory storageIDCategory;
@@ -88,12 +88,16 @@ public abstract class ASetBasedDataDomain
 	}
 
 	private void init() {
-		TODO create ID Categories
-		
-		contentIDType = IDType.registerType("content_" + dataDomainType + "_" + hashCode(), contentIDCategory, EStorageType.INT);
-		storageIDType = IDType.registerType("storage_" + dataDomainType + "_" + hashCode(), storageIDCategory, EStorageType.INT);
+		// TODO create ID Categories
 
-		MappingType mappingType = new MappingType(fromIDType, toIDType, isMultiMap);
+		contentIDType =
+			IDType.registerType("content_" + dataDomainType + "_" + hashCode(), contentIDCategory,
+				EStorageType.INT);
+		storageIDType =
+			IDType.registerType("storage_" + dataDomainType + "_" + hashCode(), storageIDCategory,
+				EStorageType.INT);
+
+		// MappingType mappingType = new MappingType(fromIDType, toIDType, isMultiMap);
 	}
 
 	@Override
@@ -209,7 +213,7 @@ public abstract class ASetBasedDataDomain
 			.getContentVAType()));
 		eventPublisher.triggerEvent(new ReplaceStorageVAEvent(set, dataDomainType, StorageVAType.STORAGE));
 
-		if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING
+		if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING
 			|| clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
 			((Set) set).createMetaSets();
 		}
@@ -427,7 +431,7 @@ public abstract class ASetBasedDataDomain
 	// }
 
 	@Override
-	public String getContentLabel(boolean bCapitalized, boolean bPlural) {
+	public String getContentName(boolean bCapitalized, boolean bPlural) {
 
 		String sContentLabel = "";
 
@@ -463,7 +467,7 @@ public abstract class ASetBasedDataDomain
 	}
 
 	@Override
-	public void handleSelectionCommand(IDType idType, SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand) {
 		// TODO Auto-generated method stub
 
 	}
@@ -484,7 +488,7 @@ public abstract class ASetBasedDataDomain
 	 * implemented in concrete classes, has no functionality in base class.
 	 */
 	@Override
-	public void handleForeignSelectionCommand(String dataDomainType, IDType idType,
+	public void handleForeignSelectionCommand(String dataDomainType, IDCategory idCategory,
 		SelectionCommand selectionCommand) {
 		// may be interesting to implement in sub-class
 	}
@@ -495,7 +499,18 @@ public abstract class ASetBasedDataDomain
 	 * 
 	 * @return
 	 */
-	public IDType getHumanReadableIDType() {
-		return humanReadableIDType;
+	public IDType getHumanReadableContentIDType() {
+		return humanReadableContentIDType;
 	}
+
+	@Override
+	public String getContentLabel(Object id) {
+		return getContentLabel(contentIDType, id);
+	}
+
+	@Override
+	public String getStorageLabel(Object id) {
+		return getStorageLabel(storageIDType, id);
+	}
+
 }

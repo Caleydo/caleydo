@@ -1,6 +1,6 @@
 package org.caleydo.view.tabular;
 
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
@@ -15,7 +15,7 @@ public class RcpTabularDataView extends CaleydoRCPViewPart {
 		tabularDataView = (TabularDataView) GeneralManager.get().getViewGLCanvasManager()
 				.createView("org.caleydo.view.tabular", -1, "Tabular Data View");
 
-		tabularDataView.setDataDomain((ISetBasedDataDomain) DataDomainManager
+		tabularDataView.setDataDomain((ASetBasedDataDomain) DataDomainManager
 				.getInstance().getDataDomain(dataDomainType));
 		tabularDataView.initViewRCP(parent);
 		tabularDataView.drawView();
@@ -35,8 +35,8 @@ public class RcpTabularDataView extends CaleydoRCPViewPart {
 	public void dispose() {
 		super.dispose();
 		tabularDataView.unregisterEventListeners();
-		GeneralManager.get().getViewGLCanvasManager().unregisterItem(
-				tabularDataView.getID());
+		GeneralManager.get().getViewGLCanvasManager()
+				.unregisterItem(tabularDataView.getID());
 	}
 
 	public TabularDataView getTabularDataView() {

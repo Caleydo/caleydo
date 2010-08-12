@@ -62,9 +62,9 @@ public class AffinityClusterer
 		super.setClusterState(clusterState);
 
 		try {
-			if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+			if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING)
 				this.iNrSamples = clusterState.getContentVA().size();
-			else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
+			else if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING)
 				this.iNrSamples = clusterState.getStorageVA().size();
 
 			this.iNrSimilarities = iNrSamples * iNrSamples;
@@ -102,7 +102,7 @@ public class AffinityClusterer
 
 		int iPercentage = 1;
 
-		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
+		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
 
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
@@ -286,7 +286,7 @@ public class AffinityClusterer
 
 		int iPercentage = 1;
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
+		if (eClustererType == EClustererType.CONTENT_CLUSTERING)
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Affinity propagation of genes in progress"));
 		else
@@ -540,7 +540,7 @@ public class AffinityClusterer
 		ArrayList<Integer> alIndexListContent = contentVA.getIndexList();
 		ArrayList<Integer> alIndexListStorage = storageVA.getIndexList();
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING) {
+		if (eClustererType == EClustererType.CONTENT_CLUSTERING) {
 			for (Integer example : alExamples) {
 				for (int index = 0; index < alIndexListContent.size(); index++) {
 					if (idx[index] == example) {
@@ -580,7 +580,7 @@ public class AffinityClusterer
 	public TempResult getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
 
-		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING)
 			fClusterFactor = clusterState.getAffinityPropClusterFactorGenes();
 		else
 			fClusterFactor = clusterState.getAffinityPropClusterFactorExperiments();

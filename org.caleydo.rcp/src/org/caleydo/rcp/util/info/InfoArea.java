@@ -179,7 +179,7 @@ public class InfoArea
 		contentTree.setData(-1);
 		
 //		Collection<IDataDomain> list = DataDomainManager.getInstance().getDataDomains();
-		contentTree.setText(dataDomain.getContentLabel(true, true));
+		contentTree.setText(dataDomain.getContentName(true, true));
 
 		experimentTree = new TreeItem(selectionTree, SWT.NONE);
 		experimentTree.setExpanded(true);

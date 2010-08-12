@@ -11,6 +11,7 @@ import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashSet;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -18,6 +19,8 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.execution.ADisplayLoopEventHandler;
@@ -31,16 +34,24 @@ import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+/**
+ * @author Werner Puff
+ * @author Marc Streit
+ * @author Alexander Lex
+ */
 public class VisLinkManager
 	extends ADisplayLoopEventHandler
 	implements IViewCommandHandler, ISelectionUpdateHandler {
 
 	private static VisLinkManager visLinkManager = null;
 
+	ASetBasedDataDomain dataDomain = (ASetBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+		"org.caleydo.datadomain.genetic");
 	private Display display;
 
 	private String appName = null;
@@ -125,17 +136,20 @@ public class VisLinkManager
 
 		IIDMappingManager idmm = GeneralManager.get().getIDMappingManager();
 		int destId = 0;
+
 		try {
-			destId = idmm.getID(EIDType.UNSPECIFIED, EIDType.EXPRESSION_INDEX, selectionId);
+			destId = idmm.getID(IDType.getIDType("UNSPECIFIED"), dataDomain.getContentIDType(), selectionId);
 		}
 		catch (NullPointerException e) {
-			HashSet set = idmm.getID(EIDType.GENE_SYMBOL, EIDType.EXPRESSION_INDEX, selectionId);
+			HashSet set =
+				idmm.getID(IDType.getIDType("GENE_SYMBOL"), dataDomain.getContentIDType(), selectionId);
 			destId = (Integer) set.iterator().next();
 		}
-		SelectionDelta sd = new SelectionDelta(EIDType.EXPRESSION_INDEX);
+		SelectionDelta sd = new SelectionDelta(dataDomain.getContentIDType());
 		SelectionDeltaItem sdi = sd.addSelection(destId, SelectionType.MOUSE_OVER);
 		sdi.addConnectionID(885);
 		SelectionUpdateEvent sue = new SelectionUpdateEvent();
+		sue.setDataDomainType(dataDomain.getDataDomainType());
 		sue.setSelectionDelta(sd);
 		sue.setSender(this);
 		eventPublisher.triggerEvent(sue);
@@ -157,19 +171,21 @@ public class VisLinkManager
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		System.out.println("VisLinkManager: handleSelectionUpdate");
 
-		SelectionDeltaItem sdi = null;
-		for (SelectionDeltaItem s : selectionDelta.getAllItems()) {
-			if (s.getSelectionType() == SelectionType.MOUSE_OVER) {
-				sdi = s;
-			}
-		}
-		if (sdi != null) {
+		for (SelectionDeltaItem deltaItem : selectionDelta.getAllItems()) {
+			if (deltaItem.getSelectionType() != GeneralRenderStyle.VISLINK_SELECTION_TYPE)
+				continue;
+
+			// caleydoSelectionId = deltaItem.getPrimaryID();
+
 			IIDMappingManager idmm = GeneralManager.get().getIDMappingManager();
+			//
 			caleydoSelectionId =
-				idmm.getID(EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED, sdi.getPrimaryID());
+				idmm.getID(selectionDelta.getIDType(), IDType.getIDType("UNSPECIFIED"),
+					deltaItem.getPrimaryID());
 			if (caleydoSelectionId == null) {
 				caleydoSelectionId =
-					idmm.getID(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, sdi.getPrimaryID());
+					idmm.getID(selectionDelta.getIDType(), IDType.getIDType("GENE_SYMBOL"),
+						deltaItem.getPrimaryID());
 			}
 		}
 	}
@@ -217,7 +233,8 @@ public class VisLinkManager
 		ConnectedElementRepresentationManager cerm =
 			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
 		if (cerm.isNewCanvasVertices()) {
-			final CanvasConnectionMap ccm = cerm.getCanvasConnectionsByType().get(EIDType.EXPRESSION_INDEX);
+			final CanvasConnectionMap ccm =
+				cerm.getCanvasConnectionsByType().get(dataDomain.getContentIDType());
 			if (ccm != null) {
 				cerm.setNewCanvasVertices(false);
 				display.asyncExec(new Runnable() {
@@ -272,7 +289,7 @@ public class VisLinkManager
 		}
 		return displayPoints;
 	}
-	
+
 	@Override
 	public void registerEventListeners() {
 		visLinkSelectionListener = new VisLinkSelectionListener();

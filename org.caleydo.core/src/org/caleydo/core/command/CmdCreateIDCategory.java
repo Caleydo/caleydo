@@ -1,31 +1,26 @@
 package org.caleydo.core.command;
 
 import org.caleydo.core.command.base.ACmdCreational;
-import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.mapping.IDCategory;
-import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Command creates a new ID type.
+ * Command creates a new ID category.
  * 
- * @author Marc Streit
  * @author Alexander Lex
  */
-public class CmdCreateIDType
-	extends ACmdCreational<IDType> {
+public class CmdCreateIDCategory
+	extends ACmdCreational<IDCategory> {
 
-	private String typeName;
-	private EStorageType storageType;
-	private IDCategory idCategory;
+	private String categoryName;
 
 	/**
 	 * Constructor.
 	 */
-	public CmdCreateIDType(final ECommandType cmdType) {
+	public CmdCreateIDCategory(final ECommandType cmdType) {
 		super(cmdType);
 
 	}
@@ -35,7 +30,7 @@ public class CmdCreateIDType
 	 */
 	public void doCommand() {
 
-		createdObject = IDType.registerType(typeName, idCategory, storageType);
+		createdObject = IDCategory.registerCategory(categoryName);
 
 		generalManager.getLogger().log(
 			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Created ID Type " + createdObject));
@@ -52,15 +47,11 @@ public class CmdCreateIDType
 	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
-		typeName = detail;
-		idCategory = IDCategory.getIDCategory(attrib1);
-		storageType = EStorageType.valueOf(attrib2);
+		categoryName = detail;
 
 	}
 
-	public void setAttributes(String typeName, IDCategory idCategory, EStorageType storageType) {
-		this.typeName = typeName;
-		this.idCategory = idCategory;
-		this.storageType = storageType;
+	public void setAttributes(String categoryName) {
+		this.categoryName = categoryName;
 	}
 }

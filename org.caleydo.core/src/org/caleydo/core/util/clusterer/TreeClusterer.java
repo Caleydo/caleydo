@@ -63,11 +63,11 @@ public class TreeClusterer
 		super.setClusterState(clusterState);
 		try {
 			tree = new Tree<ClusterNode>();
-			if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
+			if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
 				tree.setUseDefaultComparator(false);
 				this.iNrSamples = clusterState.getContentVA().size();
 			}
-			else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
+			else if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING)
 				this.iNrSamples = clusterState.getStorageVA().size();
 			else
 				throw new IllegalArgumentException("Can not handle cluster type "
@@ -103,7 +103,7 @@ public class TreeClusterer
 		int icnt1 = 0, icnt2 = 0, isto = 0;
 		int iPercentage = 1;
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING) {
+		if (eClustererType == EClustererType.CONTENT_CLUSTERING) {
 
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
@@ -412,7 +412,7 @@ public class TreeClusterer
 
 		int iPercentage = 1;
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
+		if (eClustererType == EClustererType.CONTENT_CLUSTERING)
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Tree clustering of genes in progress"));
 		else
@@ -640,7 +640,7 @@ public class TreeClusterer
 
 		int iPercentage = 1;
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
+		if (eClustererType == EClustererType.CONTENT_CLUSTERING)
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Tree clustering of genes in progress"));
 		else
@@ -742,35 +742,35 @@ public class TreeClusterer
 	private String getNodeName(EClustererType eClustererType, int index) {
 		String nodeName = null;
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING) {
+		if (eClustererType == EClustererType.CONTENT_CLUSTERING) {
 //			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
 
 				// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
 				// values, depending on the IDType that has been specified when loading expression data.
 				// Possibly a different handling of the Set is required.
-				Set<String> setGeneSymbols =
-					GeneralManager.get().getIDMappingManager().getIDAsSet(EIDType.EXPRESSION_INDEX,
-						EIDType.GENE_SYMBOL, contentVA.get(index));
+				Set<String> humanReadableContentSymbols =
+					GeneralManager.get().getIDMappingManager().getIDAsSet(set.getDataDomain().getContentIDType(),
+						set.getDataDomain().getHumanReadableContentIDType(), contentVA.get(index));
 
-				if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
-					nodeName = (String) setGeneSymbols.toArray()[0];
+				if ((humanReadableContentSymbols != null && !humanReadableContentSymbols.isEmpty())) {
+					nodeName = (String) humanReadableContentSymbols.toArray()[0];
 				}
 				if (nodeName == null || nodeName.equals(""))
-					nodeName = "Unkonwn Gene";
+					nodeName = "Unkonwn";
 				String refSeq = null;
 				// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
 				// values, depending on the IDType that has been specified when loading expression data.
 				// Possibly a different handling of the Set is required.
-				Set<String> setRefSeqIDs =
-					GeneralManager.get().getIDMappingManager().getIDAsSet(EIDType.EXPRESSION_INDEX,
-						EIDType.REFSEQ_MRNA, contentVA.get(index));
-
-				if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
-					refSeq = (String) setRefSeqIDs.toArray()[0];
-				}
-
-				nodeName += " | ";
-				nodeName += (refSeq == null) ? ("Unknown") : (refSeq);
+//				Set<String> setRefSeqIDs =
+//					GeneralManager.get().getIDMappingManager().getIDAsSet(EIDType.EXPRESSION_INDEX,
+//						EIDType.REFSEQ_MRNA, contentVA.get(index));
+//
+//				if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+//					refSeq = (String) setRefSeqIDs.toArray()[0];
+//				}
+//
+//				nodeName += " | ";
+//				nodeName += (refSeq == null) ? ("Unknown") : (refSeq);
 //			}
 //			else if (set.getSetType() == ESetType.UNSPECIFIED) {
 //				nodeName = generalManager.getIDMappingManager().getID( contentVA.get(index));
@@ -816,7 +816,7 @@ public class TreeClusterer
 
 		int nodeNr = 0;
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING) {
+		if (eClustererType == EClustererType.CONTENT_CLUSTERING) {
 			nodeNr = contentVA.get(index);
 		}
 		else {

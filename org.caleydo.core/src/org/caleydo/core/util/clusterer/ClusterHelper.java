@@ -147,7 +147,7 @@ public class ClusterHelper {
 			int iNrElements = 0;
 			float[][] fArTempValues;
 
-			if (eClustererType == EClustererType.GENE_CLUSTERING) {
+			if (eClustererType == EClustererType.CONTENT_CLUSTERING) {
 				// IVirtualArray storageVA = set.getVA(iVAIdStorage);
 				// IVirtualArray storageVA = set.createCompleteStorageVA();
 				iNrElements = storageVA.size();
@@ -183,7 +183,7 @@ public class ClusterHelper {
 		// no children --> leaf node
 		else {
 
-			if (eClustererType == EClustererType.GENE_CLUSTERING) {
+			if (eClustererType == EClustererType.CONTENT_CLUSTERING) {
 				// IVirtualArray storageVA = set.getVA(iVAIdStorage);
 				// IVirtualArray storageVA = set.createCompleteStorageVA();
 				fArExpressionValues = new float[storageVA.size()];
@@ -262,7 +262,7 @@ public class ClusterHelper {
 		int iNrExamples = examples.size();
 		float[] fColorSum = null;
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING) {
+		if (eClustererType == EClustererType.CONTENT_CLUSTERING) {
 
 			int icontent = 0;
 			fColorSum = new float[iNrExamples];
@@ -281,7 +281,7 @@ public class ClusterHelper {
 				icontent++;
 			}
 		}
-		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING) {
+		else if (eClustererType == EClustererType.STORAGE_CLUSTERING) {
 
 			int icontent = 0;
 			fColorSum = new float[iNrExamples];

@@ -2,11 +2,11 @@ package org.caleydo.view.tabular;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
@@ -23,7 +23,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.ISetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.EDataFilterLevel;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.data.ReplaceVAEvent;
@@ -71,7 +71,7 @@ import org.eclipse.swt.widgets.Text;
  * @author Marc Streit
  */
 public class TabularDataView extends ASWTView implements
-		IDataDomainBasedView<ISetBasedDataDomain>, ISelectionUpdateHandler,
+		IDataDomainBasedView<ASetBasedDataDomain>, ISelectionUpdateHandler,
 		IContentVAUpdateHandler, IStorageVAUpdateHandler, ISelectionCommandHandler,
 		IViewCommandHandler {
 
@@ -127,7 +127,7 @@ public class TabularDataView extends ASWTView implements
 	protected ClearSelectionsListener clearSelectionsListener;
 	protected ReplaceContentVAListener replaceVirtualArrayListener;
 
-	protected ISetBasedDataDomain dataDomain;
+	protected ASetBasedDataDomain dataDomain;
 
 	protected ISet set;
 
@@ -139,13 +139,12 @@ public class TabularDataView extends ASWTView implements
 				.createID(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 
 		this.viewType = VIEW_ID;
-	
+
 		contentSelectionManager = dataDomain.getContentSelectionManager();
 		storageSelectionManager = dataDomain.getStorageSelectionManager();
 
 		idMappingManager = generalManager.getIDMappingManager();
 	}
-
 
 	@Override
 	public void initViewSWTComposite(Composite parentComposite) {
@@ -360,54 +359,7 @@ public class TabularDataView extends ASWTView implements
 			// item.setData(iContentIndex);
 			item.setText(0, Integer.toString(index));
 
-			if (dataDomain.equals("org.caleydo.datadomain.genetic")) {
-				String sGeneSymbol = null;
-				String srefSeqID = null;
-
-				// FIXME: Due to new mapping system, a mapping involving
-				// expression index can return a Set of
-				// values, depending on the IDType that has been specified when
-				// loading expression data.
-				// Possibly a different handling of the Set is required.
-				Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(
-						EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA, iContentIndex);
-
-				if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
-					srefSeqID = (String) setRefSeqIDs.toArray()[0];
-				}
-
-				item.setText(1, srefSeqID);
-
-				// FIXME: Due to new mapping system, a mapping involving
-				// expression index can return a Set of
-				// values, depending on the IDType that has been specified when
-				// loading expression data.
-				// Possibly a different handling of the Set is required.
-				Set<String> setGeneSymbols = idMappingManager.getIDAsSet(
-						EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, iContentIndex);
-
-				if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
-					sGeneSymbol = (String) setGeneSymbols.toArray()[0];
-				}
-
-				if (sGeneSymbol != null) {
-					item.setText(2, sGeneSymbol);
-				} else {
-					item.setText(2, "Unknown");
-				}
-			} else if (dataDomain.equals("org.caleydo.datadomain.generic")) {
-
-				String expressionLabel = (String) idMappingManager.getID(
-						EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED, iContentIndex);
-
-				if (expressionLabel == null || expressionLabel.equals(""))
-					expressionLabel = "Unknown";
-
-				item.setText(1, expressionLabel);
-			} else {
-				throw new IllegalStateException("The use case type " + dataDomain
-						+ " is not implemented in the tabular data viewer.");
-			}
+			item.setText(1, dataDomain.getContentLabel(iContentIndex));
 
 			int i = 3;
 			for (Integer iStorageIndex : storageVA) {
@@ -461,11 +413,11 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void handleSelectionCommand(EIDCategory category,
+	public void handleSelectionCommand(IDCategory category,
 			SelectionCommand selectionCommand) {
-		if (EIDCategory.GENE == category)
+		if (dataDomain.getContentIDCategory() == category)
 			contentSelectionManager.executeSelectionCommand(selectionCommand);
-		else
+		else if (dataDomain.getStorageIDCategory() == category)
 			storageSelectionManager.executeSelectionCommand(selectionCommand);
 	}
 
@@ -473,10 +425,11 @@ public class TabularDataView extends ASWTView implements
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta,
 			boolean scroolToSelection, String info) {
 		// Check for type that can be handled
-		if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT
-				|| selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
+		if (selectionDelta.getIDType().getIdCategory() == dataDomain
+				.getContentIDCategory()) {
 			contentSelectionManager.setDelta(selectionDelta);
-		} else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
+		} else if (selectionDelta.getIDType().getIdCategory() == dataDomain
+				.getStorageIDCategory()) {
 			storageSelectionManager.setDelta(selectionDelta);
 		}
 
@@ -549,39 +502,42 @@ public class TabularDataView extends ASWTView implements
 		contentSelectionManager.clearSelection(SelectionType);
 		contentSelectionManager.addToType(SelectionType, iContentIndex);
 
-		if (dataDomain.equals("org.caleydo.datadomain.genetic")) {
-			// Resolve multiple spotting on chip and add all to the
-			// selection manager.
-			Integer iRefSeqID = null;
-			// FIXME: Due to new mapping system, a mapping involving expression
-			// index can return a Set of
-			// values, depending on the IDType that has been specified when
-			// loading expression data.
-			// Possibly a different handling of the Set is required.
-			Set<Integer> setRefSeqIDs = idMappingManager.getIDAsSet(
-					EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT, iContentIndex);
-
-			if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
-				iRefSeqID = (Integer) setRefSeqIDs.toArray()[0];
-			}
-			if (iRefSeqID != null) {
-				for (Object iExpressionIndex : idMappingManager
-						.<Integer, Object> getIDAsSet(EIDType.REFSEQ_MRNA_INT,
-								EIDType.EXPRESSION_INDEX, iRefSeqID)) {
-					contentSelectionManager.addToType(SelectionType,
-							(Integer) iExpressionIndex);
-				}
-			}
-		}
+		// if (dataDomain.equals("org.caleydo.datadomain.genetic")) {
+		// // Resolve multiple spotting on chip and add all to the
+		// // selection manager.
+		// Integer iRefSeqID = null;
+		// // FIXME: Due to new mapping system, a mapping involving expression
+		// // index can return a Set of
+		// // values, depending on the IDType that has been specified when
+		// // loading expression data.
+		// // Possibly a different handling of the Set is required.
+		// Set<Integer> setRefSeqIDs = idMappingManager.getIDAsSet(
+		// EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT, iContentIndex);
+		//
+		// if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+		// iRefSeqID = (Integer) setRefSeqIDs.toArray()[0];
+		// }
+		// if (iRefSeqID != null) {
+		// for (Object iExpressionIndex : idMappingManager
+		// .<Integer, Object> getIDAsSet(EIDType.REFSEQ_MRNA_INT,
+		// EIDType.EXPRESSION_INDEX, iRefSeqID)) {
+		// contentSelectionManager.addToType(SelectionType,
+		// (Integer) iExpressionIndex);
+		// }
+		// }
+		// }
 
 		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 
-		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
-				SelectionType);
-		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+		// SelectionCommand command = new
+		// SelectionCommand(ESelectionCommandType.CLEAR,
+		// SelectionType);
+		// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
+
 		event.setSender(this);
+
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
 		eventPublisher.triggerEvent(event);
 	}
@@ -596,7 +552,7 @@ public class TabularDataView extends ASWTView implements
 
 		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
 				SelectionType);
-		sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
+		sendSelectionCommandEvent(dataDomain.getContentIDType(), command);
 
 		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -684,8 +640,8 @@ public class TabularDataView extends ASWTView implements
 
 	@Override
 	public void handleContentVAUpdate(ContentVADelta vaDelta, String info) {
-		if (vaDelta.getIDType() == EIDType.REFSEQ_MRNA_INT)
-			vaDelta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, vaDelta);
+		if (vaDelta.getIDType() != dataDomain.getContentIDType())
+			vaDelta = DeltaConverter.convertDelta(dataDomain.getContentIDType(), vaDelta);
 		contentSelectionManager.setVADelta(vaDelta);
 	}
 
@@ -701,7 +657,7 @@ public class TabularDataView extends ASWTView implements
 
 	@Override
 	public void handleStorageVAUpdate(StorageVADelta vaDelta, String info) {
-		if (vaDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
+		if (vaDelta.getIDType() == dataDomain.getStorageIDType()) {
 			storageSelectionManager.setVADelta(vaDelta);
 
 			for (VADeltaItem deltaItem : vaDelta.getAllItems()) {
@@ -757,14 +713,14 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public ISetBasedDataDomain getDataDomain() {
-		return dataDomain;
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+
 	}
 
 	@Override
-	public void setDataDomain(ISetBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
-
+	public ASetBasedDataDomain getDataDomain() {
+		return dataDomain;
 	}
 
 }

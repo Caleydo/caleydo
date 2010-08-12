@@ -71,7 +71,7 @@ public class KMeansClusterer
 
 		int iPercentage = 1;
 
-		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
+		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
 
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
@@ -163,7 +163,7 @@ public class KMeansClusterer
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
-		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING)
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("KMeans clustering of genes in progress"));
 		else
@@ -259,7 +259,7 @@ public class KMeansClusterer
 		// TODO find a better solution for sorting
 		ClusterHelper.sortClusters(set, contentVA, storageVA, alExamples, clusterState.getClustererType());
 
-		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
+		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
 			for (int cluster : alExamples) {
 				for (int i = 0; i < data.numInstances(); i++) {
 					if (ClusterAssignments[i] == hashExamples.get(cluster)) {
@@ -309,7 +309,7 @@ public class KMeansClusterer
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
-		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING)
 			iNrCluster = clusterState.getKMeansClusterCntGenes();
 		else
 			iNrCluster = clusterState.getKMeansClusterCntExperiments();

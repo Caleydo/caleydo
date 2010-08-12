@@ -3068,7 +3068,7 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 	@Override
 	public String getShortInfo() {
 		if (contentVA == null)
-			return "Scatterplot - 0 " + dataDomain.getContentLabel(false, true)
+			return "Scatterplot - 0 " + dataDomain.getContentName(false, true)
 					+ " / 0 experiments";
 
 //		return "Scatterplot - " + contentVA.size() + " "
@@ -3080,12 +3080,12 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 		
 		if (iDisplayEveryNthPoint == 1) {
 			tmpstring = "Scatterplot - " + iPointNr + " "
-					+ dataDomain.getContentLabel(false, true) + " / "
+					+ dataDomain.getContentName(false, true) + " / "
 					+ storageVA.size() + " experiments";
 		} else {
 			tmpstring = "Scatterplot - " + iPointNr
 					/ iDisplayEveryNthPoint + " out of " + iPointNr + " "
-					+ dataDomain.getContentLabel(false, true) + " / \n "
+					+ dataDomain.getContentName(false, true) + " / \n "
 					+ storageVA.size() + " experiments";
 		}
 		return tmpstring;
@@ -3097,12 +3097,12 @@ private void renderTextures(GL gl, boolean bIsSelection, float z)
 		sInfoText.append("<b>Type:</b> Scatter Plot\n");
 
 		sInfoText.append(contentVA.size() + " "
-				+ dataDomain.getContentLabel(true, true) + " in rows and "
+				+ dataDomain.getContentName(true, true) + " in rows and "
 				+ storageVA.size() + " experiments in columns.\n");
 
 		if (bRenderOnlyContext) {
 			sInfoText.append("Showing only " + " "
-					+ dataDomain.getContentLabel(false, true)
+					+ dataDomain.getContentName(false, true)
 					+ " which occur in one of the other views in focus\n");
 		} else {
 			if (bUseRandomSampling) {

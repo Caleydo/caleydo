@@ -5,6 +5,7 @@ import java.util.HashMap;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
@@ -49,5 +50,17 @@ public class GenericDataDomain extends ASetBasedDataDomain {
 			ContentVAType vaType, ContentVirtualArray virtualArray) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public String getContentLabel(IDType idType, Object id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getStorageLabel(IDType idType, Object id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

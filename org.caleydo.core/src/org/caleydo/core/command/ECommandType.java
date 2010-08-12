@@ -7,6 +7,7 @@ package org.caleydo.core.command;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public enum ECommandType {
 	/**
@@ -31,6 +32,8 @@ public enum ECommandType {
 	CREATE_SET_DATA("cmd", "type", "-1", "Create SET"),
 	CREATE_STORAGE("cmd", "type", "-1", "Create Storage"),
 	CREATE_VIRTUAL_ARRAY("cmd", "type", "-1", "Create VirtualArray"),
+
+	CREATE_ID_CATEGORY("cmd", "type", "Create ID Category"),
 	CREATE_ID_TYPE("cmd", "type", "-1", "Create ID Type"),
 
 	CREATE_SWT_WINDOW("cmd", "type", "-1", "Create SWT window"),

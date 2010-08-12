@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.renderstyle;
 
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.SetMinViewSizeEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -47,6 +48,9 @@ public class GeneralRenderStyle {
 	protected static final float BUTTON_WIDTH = 0.018f;
 
 	protected IViewFrustum viewFrustum;
+	
+	/** The selection type for which vislinks should be rendered */
+	public static final SelectionType VISLINK_SELECTION_TYPE = SelectionType.SELECTION;
 
 	protected int minViewWidth;
 	protected int minViewHeight;
