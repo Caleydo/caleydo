@@ -79,10 +79,10 @@ public class GeneticIDMappingHelper {
 		// int iGraphItemID = 0;
 		Integer iDavidID = -1;
 
-		if (idType == EIDType.REFSEQ_MRNA_INT) {
-			iDavidID = idMappingManager.getID(EIDType.REFSEQ_MRNA_INT, EIDType.DAVID, geneID);
+		if (idType == IDType.getIDType("REF_SEQ_MRNA_INT")) {
+			iDavidID = idMappingManager.getID(IDType.getIDType("REF_SEQ_MRNA_INT"), IDType.getIDType("DAVID"), geneID);
 		}
-		else if (idType == EIDType.DAVID) {
+		else if (idType == IDType.getIDType("DAVID")) {
 			iDavidID = geneID;
 		}
 		else

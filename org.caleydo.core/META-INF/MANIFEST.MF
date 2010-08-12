@@ -217,7 +217,6 @@ Export-Package: org.caleydo.core.application.mapping,
    org.caleydo.core.parser.xml.sax.handler,
    org.xml.sax",
  org.caleydo.core.parser.xml.sax.handler.recursion;uses:="org.caleydo.core.parser.xml.sax.handler,org.xml.sax",
- org.caleydo.core.parser.xml.sax.handler.specialized.pathway;uses:="org.caleydo.core.parser.xml.sax.handler,org.xml.sax",
  org.caleydo.core.serialize,
  org.caleydo.core.util,
  org.caleydo.core.util.clusterer;
