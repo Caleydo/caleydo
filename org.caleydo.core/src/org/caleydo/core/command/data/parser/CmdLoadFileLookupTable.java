@@ -1,6 +1,5 @@
 package org.caleydo.core.command.data.parser;
 
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.command.ECommandType;
@@ -9,7 +8,6 @@ import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.mapping.MappingType;
 import org.caleydo.core.manager.specialized.EOrganism;
 import org.caleydo.core.parser.ascii.lookuptable.LookupTableLoader;
@@ -161,7 +159,7 @@ public class CmdLoadFileLookupTable
 		// genomeIdManager.removeMapByType(EMappingType.valueOf(sLookupTableType));
 
 		MappingType mappingType = genomeIdManager.getMappingType(fromIDType.getTypeName()+"_2_"+toIDType.getTypeName());
-rite 
+
 		// FIXME MAPPING
 //		if (bResolveCodeMappingUsingCodeToId_LUT) {
 //			

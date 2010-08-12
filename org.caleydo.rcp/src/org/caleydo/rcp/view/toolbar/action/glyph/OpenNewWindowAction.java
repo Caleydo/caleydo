@@ -1,6 +1,5 @@
 package org.caleydo.rcp.view.toolbar.action.glyph;
 
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.rcp.RcpGLGlyphView;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;

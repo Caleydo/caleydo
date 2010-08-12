@@ -1,6 +1,5 @@
 package org.caleydo.rcp.command.handler.view;
 
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

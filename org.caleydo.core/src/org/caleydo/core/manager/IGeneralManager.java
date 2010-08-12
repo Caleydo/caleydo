@@ -6,7 +6,6 @@ import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.IDCreator;
 import org.caleydo.core.manager.specialized.EOrganism;
-import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.net.IGroupwareManager;
@@ -78,8 +77,6 @@ public interface IGeneralManager {
 
 	public IIDMappingManager getIDMappingManager();
 
-	public GlyphManager getGlyphManager();
-
 	public IDCreator getIDManager();
 
 	public IStatisticsPerformer getRStatisticsPerformer();
@@ -139,8 +136,4 @@ public interface IGeneralManager {
 	public SerializationManager getSerializationManager();
 
 	public EOrganism getOrganism();
-
-
-
-
 }

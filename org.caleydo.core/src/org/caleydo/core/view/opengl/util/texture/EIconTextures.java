@@ -56,12 +56,6 @@ public enum EIconTextures {
 
 	RADIAL_SYMBOL("resources/icons/view/radial/radial.png"),
 
-	GLYPH_SYMBOL("resources/icons/view/glyph/glyph128x128.png"),
-	GLYPH_ICON("resources/icons/view/glyph/glyph.png"),
-	GLYPH_SORT_RANDOM("resources/icons/view/glyph/sort_random.png"),
-	GLYPH_SORT_CIRCLE("resources/icons/view/glyph/sort_spirale.png"),
-	GLYPH_SORT_RECTANGLE("resources/icons/view/glyph/sort_zickzack.png"),
-
 	BROWSER_REFRESH_IMAGE("resources/icons/view/browser/refresh.png"),
 	BROWSER_BACK_IMAGE("resources/icons/view/browser/back.png"),
 	BROWSER_STOP_IMAGE("resources/icons/view/browser/stop.png"),

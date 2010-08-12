@@ -51,7 +51,6 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;

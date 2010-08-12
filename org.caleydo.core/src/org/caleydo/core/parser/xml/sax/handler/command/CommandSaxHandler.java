@@ -20,7 +20,6 @@ public class CommandSaxHandler
 
 	/* XML Tags */
 	private final String sTag_Command = ECommandType.TAG_CMD.getXmlKey();
-	private final String sTag_CommandQueue = ECommandType.TAG_CMD_QUEUE.getXmlKey();
 	/* END: XML Tags */
 
 	/**
@@ -48,21 +47,11 @@ public class CommandSaxHandler
 
 		IParameterHandler phAttributes = new ParameterHandler();
 
-		/* create new Frame */
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_PROCESS.getXmlKey(),
-			ECommandType.TAG_PROCESS.getDefault(), ParameterHandlerType.STRING);
-
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_LABEL.getXmlKey(),
 			ECommandType.TAG_LABEL.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_CMD_ID.getXmlKey(),
-			ECommandType.TAG_CMD_ID.getDefault(), ParameterHandlerType.INT);
-
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_UNIQUE_ID.getXmlKey(),
 			ECommandType.TAG_UNIQUE_ID.getDefault(), ParameterHandlerType.INT);
-
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_MEMENTO_ID.getXmlKey(),
-			ECommandType.TAG_MEMENTO_ID.getDefault(), ParameterHandlerType.INT);
 
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_TYPE.getXmlKey(),
 			ECommandType.TAG_TYPE.getDefault(), ParameterHandlerType.STRING);
@@ -91,22 +80,7 @@ public class CommandSaxHandler
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_DETAIL.getXmlKey(),
 			ECommandType.TAG_DETAIL.getDefault(), ParameterHandlerType.STRING);
 
-		// generalManager.logMsg(
-		// "XML-TAG= " + phAttributes.getValueString(
-		// CommandType.TAG_LABEL.getXmlKey() ),
-		// LoggerType.FULL );
-
 		lastCommand = generalManager.getCommandManager().createCommand(phAttributes);
-
-		if (lastCommand != null) {
-			String sData_Cmd_process = phAttributes.getValueString(ECommandType.TAG_PROCESS.getXmlKey());
-
-			if (sData_Cmd_process.equals(ECommandType.RUN_CMD_NOW.toString())) {
-				lastCommand.doCommand();
-			}
-		}
-		else {
-		}
 
 		return lastCommand;
 	}

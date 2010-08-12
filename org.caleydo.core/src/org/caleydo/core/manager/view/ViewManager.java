@@ -28,7 +28,6 @@ import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import org.eclipse.core.runtime.IStatus;
@@ -175,11 +174,6 @@ public class ViewManager
 
 		AGLView glView = null;
 		
-		// FIXME: remove after glyph is ported to own plugin
-		if (viewID.equals("org.caleydo.view.glyph")) {
-			glView = new GLGlyph(glCanvas, label, viewFrustum);
-		}
-
 		// Force plugins of start views to load
 		try {
 			if (viewID.contains("hierarchical") || viewID.contains("vertical")

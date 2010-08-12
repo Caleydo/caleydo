@@ -1,8 +1,6 @@
 package org.caleydo.rcp.view.rcp;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLGlyphView

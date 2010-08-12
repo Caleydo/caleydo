@@ -1,6 +1,5 @@
 package org.caleydo.core.manager.event.view.browser;
 
-
 /**
  * This type is passed to browser to know how to handle the incoming string. Example: For an search on PubMed
  * just an element ID is sent to the browser. Because of the EBrowserQueryType the browser knows that the ID

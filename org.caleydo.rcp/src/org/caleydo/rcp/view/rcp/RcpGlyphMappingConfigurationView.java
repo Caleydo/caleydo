@@ -1,7 +1,6 @@
 package org.caleydo.rcp.view.rcp;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 

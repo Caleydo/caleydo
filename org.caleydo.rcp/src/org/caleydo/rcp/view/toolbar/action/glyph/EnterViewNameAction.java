@@ -1,9 +1,7 @@
 package org.caleydo.rcp.view.toolbar.action.glyph;
 
-import org.caleydo.core.manager.event.view.glyph.GlyphChangePersonalNameEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.util.glyph.TextInputDialog;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;

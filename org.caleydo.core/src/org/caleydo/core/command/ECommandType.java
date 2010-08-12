@@ -38,14 +38,8 @@ public enum ECommandType {
 
 	CREATE_SWT_WINDOW("cmd", "type", "-1", "Create SWT window"),
 	CREATE_SWT_CONTAINER("cmd", "type", "-1", "Create SWTContainer"),
-	CREATE_VIEW_GLYPHCONFIG("cmd", "type", "-1", "Create Mixer"),
 	CREATE_VIEW_SWT_GLCANVAS("cmd", "type", "-1", "Create SWT GL Canvas"),
 	CREATE_VIEW_RCP_GLCANVAS("cmd", "type", "-1", "Create RCP GL Canvas"),
-
-	/**
-	 * Load data definition for glyph view
-	 */
-	LOAD_GLYPH_DEFINITIONS("cmd", "type", "-1", "load definition for the glyphs"),
 
 	LOAD_PATHWAY_DATA("cmd", "type", "-1", "load pathway data"),
 

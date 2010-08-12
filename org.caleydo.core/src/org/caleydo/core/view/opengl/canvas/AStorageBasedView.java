@@ -16,7 +16,6 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageSelectionManager;
 import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
-import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.StorageVADelta;

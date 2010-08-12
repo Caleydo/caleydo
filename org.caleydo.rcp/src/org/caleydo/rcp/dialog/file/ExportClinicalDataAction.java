@@ -5,7 +5,6 @@ import java.util.Date;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

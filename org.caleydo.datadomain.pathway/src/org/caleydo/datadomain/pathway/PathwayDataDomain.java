@@ -1,7 +1,5 @@
 package org.caleydo.datadomain.pathway;
 
-import java.util.HashMap;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 

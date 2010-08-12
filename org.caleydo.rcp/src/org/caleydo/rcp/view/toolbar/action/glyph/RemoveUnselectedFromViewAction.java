@@ -1,6 +1,5 @@
 package org.caleydo.rcp.view.toolbar.action.glyph;
 
-import org.caleydo.core.manager.event.view.glyph.RemoveUnselectedGlyphsEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;

@@ -3,8 +3,6 @@ package org.caleydo.rcp.view.rcp;
 import java.util.ArrayList;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLGlyphSliderView;
-import org.caleydo.core.view.opengl.canvas.glyph.sliderview.SerializedGlyphSliderView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 

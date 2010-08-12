@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import org.caleydo.core.manager.event.view.glyph.GlyphUpdatePositionModelEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.EPositionModel;
 import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;

@@ -18,7 +18,6 @@ import org.caleydo.core.manager.id.IDCreator;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.parser.XmlParserManager;
 import org.caleydo.core.manager.specialized.EOrganism;
-import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayItemManager;
@@ -63,7 +62,6 @@ public class GeneralManager
 	private IEventPublisher eventPublisher;
 	private IXmlParserManager xmlParserManager;
 	private IIDMappingManager genomeIdManager;
-	private GlyphManager glyphManager;
 	private IDCreator IDManager;
 	private ILog logger;
 	private IGUIBridge guiBridge;
@@ -101,7 +99,6 @@ public class GeneralManager
 		pathwayManager = new PathwayManager();
 		pathwayItemManager = new PathwayItemManager();
 		xmlParserManager = new XmlParserManager();
-		glyphManager = new GlyphManager();
 		IDManager = new IDCreator();
 		xmlParserManager.initHandlers();
 
@@ -200,11 +197,6 @@ public class GeneralManager
 	@Override
 	public ICommandManager getCommandManager() {
 		return commandManager;
-	}
-
-	@Override
-	public GlyphManager getGlyphManager() {
-		return glyphManager;
 	}
 
 	@Override

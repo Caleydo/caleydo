@@ -93,11 +93,6 @@ public enum EPickingType {
 	DENDROGRAM_EXPERIMENT_NODE_SELECTION,
 	DENDROGRAM_CUT_SELECTION,
 
-	// glyph
-	GLYPH_FIELD_SELECTION,
-	// TODO: works only for glyph sliders now, new solution?
-	SLIDER_SELECTION,
-
 	// radial hierarchy
 	RAD_HIERARCHY_PDISC_SELECTION,
 	RAD_HIERARCHY_SLIDER_SELECTION,

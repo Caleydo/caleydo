@@ -2,8 +2,6 @@ package org.caleydo.rcp.view.toolbar.action.glyph;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.EPositionModel;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.caleydo.rcp.view.toolbar.action.AToolBarAction;

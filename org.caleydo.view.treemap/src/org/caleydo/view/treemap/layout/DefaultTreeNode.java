@@ -3,7 +3,6 @@ package org.caleydo.view.treemap.layout;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 public class DefaultTreeNode extends ATreeMapNode {

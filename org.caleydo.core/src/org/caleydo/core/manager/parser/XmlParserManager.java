@@ -5,7 +5,6 @@ import java.util.Iterator;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.command.CommandSaxHandler;
 import org.caleydo.core.parser.xml.sax.handler.recursion.OpenExternalXmlFileSaxHandler;
-import org.caleydo.core.parser.xml.sax.handler.specialized.glyph.GlyphDefinitionSaxHandler;
 import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.BioCartaPathwayImageMapSaxHandler;
 import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.KgmlSaxHandler;
 import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.PathwayImageMapSaxHandler;
@@ -38,14 +37,12 @@ public class XmlParserManager
 		PathwayImageMapSaxHandler pathwayImageMapParser = new PathwayImageMapSaxHandler();
 		BioCartaPathwayImageMapSaxHandler biocartaPathwayParser = new BioCartaPathwayImageMapSaxHandler();
 		CommandSaxHandler cmdHandler = new CommandSaxHandler();
-		GlyphDefinitionSaxHandler glyphHandler = new GlyphDefinitionSaxHandler();
 
 		registerAndInitSaxHandler(externalFileHandler);
 		registerAndInitSaxHandler(kgmlParser);
 		registerAndInitSaxHandler(pathwayImageMapParser);
 		registerAndInitSaxHandler(biocartaPathwayParser);
 		registerAndInitSaxHandler(cmdHandler);
-		registerAndInitSaxHandler(glyphHandler);
 	}
 
 	@Override

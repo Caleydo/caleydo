@@ -7,7 +7,6 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.ExportClustersItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.InterchangeGroupsItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.MergeClustersItem;
-import org.caleydo.datadomain.genetic.contextmenu.item.ShowPathwaysByGenesItem;
 
 /**
  * Implementation of AItemContainer for groups/clusters. In this context menu all operations related to group

@@ -66,7 +66,6 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
-import org.caleydo.datadomain.genetic.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;

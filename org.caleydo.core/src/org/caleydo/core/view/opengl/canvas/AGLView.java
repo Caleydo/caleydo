@@ -256,7 +256,6 @@ public abstract class AGLView
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
 		if (glRemoteRenderingView != null || this.getViewType().equals("org.caleydo.view.bucket")
-			|| this.getViewType().equals("org.caleydo.view.glyph")
 			|| this.getViewType().equals("org.caleydo.view.dataflipper")) {
 			viewFrustum.considerAspectRatio(true);
 		}
