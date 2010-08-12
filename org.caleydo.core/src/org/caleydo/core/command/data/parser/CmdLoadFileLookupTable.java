@@ -161,25 +161,7 @@ public class CmdLoadFileLookupTable
 		// genomeIdManager.removeMapByType(EMappingType.valueOf(sLookupTableType));
 
 		MappingType mappingType = genomeIdManager.getMappingType(fromIDType.getTypeName()+"_2_"+toIDType.getTypeName());
-		
-		int iIndex = 0;
-		if (sFileName.equals("generate")) {
-			MappingType tmpMappingType = genomeIdManager.createMap(IDType.getIDType("REFSEQ_MRNA"), IDType.getIDType("REFSEQ_MRNA_INT"), false);
-			
-			Map<String, Integer> hashTmp = genomeIdManager.getMap(tmpMappingType);
-
-			for (Object refSeqIDObject : genomeIdManager.getMap(genomeIdManager.getMappingType("DAVID_2_REFSEQ_MRNA")).values()) {
-
-				hashTmp.put((String) refSeqIDObject, iIndex++);
-			}
-		}
-		else if (!sFileName.equals("already_loaded")) {
-			loader = new LookupTableLoader(sFileName, fromIDType, toIDType, false);
-			loader.setTokenSeperator(sLookupTableDelimiter);
-			loader.setStartParsingStopParsingAtLine(iStartPareseFileAtLine, iStopParseFileAtLine);
-			loader.loadData();
-		}
-
+rite 
 		// FIXME MAPPING
 //		if (bResolveCodeMappingUsingCodeToId_LUT) {
 //			
