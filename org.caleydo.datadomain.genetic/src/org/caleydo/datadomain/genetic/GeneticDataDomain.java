@@ -36,7 +36,9 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.genetic.contextmenu.container.GeneContextMenuItemContainer;
 
 /**
  * Use case specialized to genetic data.
@@ -346,10 +348,9 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	}
 
 	@Override
-	public void handleForeignSelectionCommand(String dataDomainType, IDCategory idCategory,
-			SelectionCommand selectionCommand) {
-		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE
-				&& idCategory == storageIDCategory) {
+	public void handleForeignSelectionCommand(String dataDomainType,
+			IDCategory idCategory, SelectionCommand selectionCommand) {
+		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE && idCategory == storageIDCategory) {
 			SelectionCommandEvent newCommandEvent = new SelectionCommandEvent();
 			newCommandEvent.setSelectionCommand(selectionCommand);
 			newCommandEvent.setIdCategory(idCategory);
@@ -358,7 +359,6 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		}
 	}
 
-	
 	@Override
 	public String getContentLabel(IDType idType, Object id) {
 		String geneSymbol = null;
@@ -395,5 +395,13 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	public String getStorageLabel(IDType idType, Object id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public AItemContainer getContentItemContainer(IDType idType, int id) {
+
+		GeneContextMenuItemContainer geneContainer = new GeneContextMenuItemContainer();
+		geneContainer.setID(idType, id);
+		return geneContainer;
 	}
 }

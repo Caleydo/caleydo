@@ -66,9 +66,10 @@ public class GroupContextMenuItemContainer
 
 	public void setGenes(IDType idType, ArrayList<Integer> genes) {
 		if (isGeneGroup) {
-			ShowPathwaysByGenesItem pathwaysItem = new ShowPathwaysByGenesItem();
-			pathwaysItem.setIDs(idType, genes);
-			addContextMenuItem(pathwaysItem);
+//			ShowPathwaysByGenesItem pathwaysItem = new ShowPathwaysByGenesItem();
+//			pathwaysItem.setIDs(idType, genes);
+//			addContextMenuItem(pathwaysItem);
+			System.out.println("Add implementation");
 		}
 	}
 }

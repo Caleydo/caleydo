@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
@@ -57,9 +58,21 @@ public class ClinicalDataDomain extends ASetBasedDataDomain {
 	}
 
 	@Override
-	public void handleSelectionCommand(IDType idType, SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String getContentLabel(IDType idType, Object id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getStorageLabel(IDType idType, Object id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

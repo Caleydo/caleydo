@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.management.InvalidAttributeValueException;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
@@ -430,11 +431,13 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void handleSelectionCommand(IDType idType, SelectionCommand selectionCommand) {
-		if (idType == contentIDType)
+	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand) {
+		if (idCategory == dataDomain.getContentIDCategory())
 			contentSelectionManager.executeSelectionCommand(selectionCommand);
-		else
+		else if (idCategory == dataDomain.getStorageIDCategory())
 			storageSelectionManager.executeSelectionCommand(selectionCommand);
+		else
+			return;
 		setDisplayListDirty();
 	}
 

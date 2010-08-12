@@ -15,13 +15,13 @@ import org.caleydo.datadomain.genetic.contextmenu.item.ShowPathwaysByGeneItem;
  * 
  * @author Alexander Lex
  */
-public class ContentContextMenuItemContainer
+public class GeneContextMenuItemContainer
 	extends AItemContainer {
 
 	/**
 	 * Constructor.
 	 */
-	public ContentContextMenuItemContainer() {
+	public GeneContextMenuItemContainer() {
 		super();
 
 	}
@@ -37,7 +37,7 @@ public class ContentContextMenuItemContainer
 		GeneralManager generalManager = GeneralManager.get();
 		
 		String sGeneSymbol =
-			generalManager.getIDMappingManager().getID(GeneticDataDomain.centralIDType, ((GeneticDataDomain)(DataDomainManager.getInstance().getDataDomain(GeneticDataDomain.dataDomainType))).getHumanReadableIDType(), davidID);
+			generalManager.getIDMappingManager().getID(GeneticDataDomain.centralIDType, ((GeneticDataDomain)(DataDomainManager.getInstance().getDataDomain(GeneticDataDomain.dataDomainType))).getHumanReadableContentIDType(), davidID);
 		if (sGeneSymbol == "" || sGeneSymbol == null)
 			sGeneSymbol = "Unkonwn Gene";
 		addHeading(sGeneSymbol);

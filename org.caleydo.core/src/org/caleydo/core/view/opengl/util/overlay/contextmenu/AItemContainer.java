@@ -3,6 +3,8 @@ package org.caleydo.core.view.opengl.util.overlay.contextmenu;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+
 /**
  * Abstract implementation for a container for items grouped by a specific topic. It holds a list of
  * AContextMenuItem which should be specified by inheriting classes. Subclasses of AItemContainer are intended
@@ -15,6 +17,8 @@ public abstract class AItemContainer
 	implements Iterable<IContextMenuEntry> {
 
 	private ArrayList<IContextMenuEntry> contextMenuEntries;
+
+	protected ASetBasedDataDomain dataDomain = null;
 
 	/**
 	 * Constructor
@@ -61,5 +65,9 @@ public abstract class AItemContainer
 	@Override
 	public Iterator<IContextMenuEntry> iterator() {
 		return contextMenuEntries.iterator();
+	}
+
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
 	}
 }

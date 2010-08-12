@@ -43,61 +43,64 @@ public class InformationContentCreator {
 	 * @return
 	 */
 	ArrayList<String> getStringContentForID(final int iUniqueID, final IDType eInputDataTypes) {
+		ArrayList<String> result = new ArrayList<String>();
+		result.add("Not implemented");
+		return result;
 
-		sContent.clear();
-		switch (eInputDataTypes) {
-			case EXPRESSION_INDEX:
-
-				String sRefSeq = "unknown";
-				String sGeneName = "unknown";
-				String sGeneSymbol = "unknown";
-
-				if (iUniqueID != -1) {
-					sRefSeq = "as";
-					// generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_REFSEQ_MRNA,
-					// iUniqueID);
-					sGeneName = "as";
-					// generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_NAME, iUniqueID);
-					sGeneSymbol = "aas";
-					// generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_SYMBOL,
-					// iUniqueID);
-				}
-
-				// Cut too long gene names
-				if (sGeneName.length() >= 50) {
-					sGeneName = sGeneName.substring(0, 50) + "...";
-				}
-
-				sContent.add("Type: Gene");
-				sContent.add("RefSeq: " + sRefSeq);
-				sContent.add("Symbol:" + sGeneSymbol);
-				sContent.add("Name: " + sGeneName);
-
-				break;
-
-			case PATHWAY:
-
-				PathwayGraph pathway = generalManager.getPathwayManager().getItem(iUniqueID);
-
-				if (pathway == null) {
-					break;
-				}
-
-				String sPathwayTitle = pathway.getTitle();
-
-				sContent.add("Type: " + pathway.getType().getName() + "Pathway");
-				sContent.add("PW: " + sPathwayTitle);
-				break;
-
-			case EXPERIMENT:
-
-				sContent.add("Type: Experiment");
-				break;
-
-			default:
-				sContent.add("No Data");
-		}
-
-		return sContent;
+		// sContent.clear();
+		// switch (eInputDataTypes) {
+		// case EXPRESSION_INDEX:
+		//
+		// String sRefSeq = "unknown";
+		// String sGeneName = "unknown";
+		// String sGeneSymbol = "unknown";
+		//
+		// if (iUniqueID != -1) {
+		// sRefSeq = "as";
+		// // generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_REFSEQ_MRNA,
+		// // iUniqueID);
+		// sGeneName = "as";
+		// // generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_NAME, iUniqueID);
+		// sGeneSymbol = "aas";
+		// // generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_SYMBOL,
+		// // iUniqueID);
+		// }
+		//
+		// // Cut too long gene names
+		// if (sGeneName.length() >= 50) {
+		// sGeneName = sGeneName.substring(0, 50) + "...";
+		// }
+		//
+		// sContent.add("Type: Gene");
+		// sContent.add("RefSeq: " + sRefSeq);
+		// sContent.add("Symbol:" + sGeneSymbol);
+		// sContent.add("Name: " + sGeneName);
+		//
+		// break;
+		//
+		// case PATHWAY:
+		//
+		// PathwayGraph pathway = generalManager.getPathwayManager().getItem(iUniqueID);
+		//
+		// if (pathway == null) {
+		// break;
+		// }
+		//
+		// String sPathwayTitle = pathway.getTitle();
+		//
+		// sContent.add("Type: " + pathway.getType().getName() + "Pathway");
+		// sContent.add("PW: " + sPathwayTitle);
+		// break;
+		//
+		// case EXPERIMENT:
+		//
+		// sContent.add("Type: Experiment");
+		// break;
+		//
+		// default:
+		// sContent.add("No Data");
+		// }
+		//
+		// return sContent;
 	}
 }

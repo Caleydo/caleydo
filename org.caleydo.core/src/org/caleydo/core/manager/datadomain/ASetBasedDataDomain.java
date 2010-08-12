@@ -42,6 +42,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListe
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 
 @XmlType
 @XmlRootElement
@@ -511,6 +512,16 @@ public abstract class ASetBasedDataDomain
 	@Override
 	public String getStorageLabel(Object id) {
 		return getStorageLabel(storageIDType, id);
+	}
+
+	/**
+	 * A dataDomain may contribute to the context menu. This function returns the contentItemContainer of the
+	 * context menue if one was specified. This should be overridden by subclasses if needed.
+	 * 
+	 * @return a context menu item container related to content items
+	 */
+	public AItemContainer getContentItemContainer(IDType idType, int id) {
+		return null;
 	}
 
 }
