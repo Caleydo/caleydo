@@ -5,9 +5,6 @@ import java.util.Iterator;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.command.CommandSaxHandler;
 import org.caleydo.core.parser.xml.sax.handler.recursion.OpenExternalXmlFileSaxHandler;
-import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.BioCartaPathwayImageMapSaxHandler;
-import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.KgmlSaxHandler;
-import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.PathwayImageMapSaxHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -23,25 +20,15 @@ import org.xml.sax.SAXException;
 public class XmlParserManager
 	extends AXmlParserManager {
 
-	/**
-	 * count number of recursions in order to detect misbehavior.
-	 */
-	private int iCountOpenedFiles = 0;
-
 	protected boolean bUnloadSaxHandlerAfterBootstraping = false;
 
 	@Override
 	public void initHandlers() {
 		OpenExternalXmlFileSaxHandler externalFileHandler = new OpenExternalXmlFileSaxHandler();
-		KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
-		PathwayImageMapSaxHandler pathwayImageMapParser = new PathwayImageMapSaxHandler();
-		BioCartaPathwayImageMapSaxHandler biocartaPathwayParser = new BioCartaPathwayImageMapSaxHandler();
+		
 		CommandSaxHandler cmdHandler = new CommandSaxHandler();
 
 		registerAndInitSaxHandler(externalFileHandler);
-		registerAndInitSaxHandler(kgmlParser);
-		registerAndInitSaxHandler(pathwayImageMapParser);
-		registerAndInitSaxHandler(biocartaPathwayParser);
 		registerAndInitSaxHandler(cmdHandler);
 	}
 
@@ -217,8 +204,6 @@ public class XmlParserManager
 
 	@Override
 	public boolean parseXmlFileByName(final String sFileName) {
-		iCountOpenedFiles++;
-
 		return parseOnce(sFileName);
 	}
 

@@ -1,4 +1,4 @@
-package org.caleydo.data.pathway.biocarta;
+package org.caleydo.datadomain.pathway.parser;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,14 +31,9 @@ public class BioCartaPathwayResourceLoader implements IPathwayResourceLoader {
 			try {
 				file = new BufferedReader(new FileReader(sFileName));
 			} catch (FileNotFoundException e) {
-				throw new IllegalStateException("Cannot load resource: "
-						+ sFileName);
+				throw new IllegalStateException("Cannot load resource: " + sFileName);
 			}
 		}
-
-		if (file == null)
-			throw new IllegalStateException("Cannot load resource: "
-					+ sFileName);
 
 		return file;
 	}
@@ -50,17 +45,11 @@ public class BioCartaPathwayResourceLoader implements IPathwayResourceLoader {
 			inputSource = new InputSource(loadResourceAsInputStream(sFileName));
 		} else {
 			try {
-				inputSource = new InputSource(new FileReader(
-						new File(sFileName)));
+				inputSource = new InputSource(new FileReader(new File(sFileName)));
 			} catch (IOException e) {
-				throw new IllegalStateException("Cannot load resource: "
-						+ sFileName);
+				throw new IllegalStateException("Cannot load resource: " + sFileName);
 			}
 		}
-
-		if (inputSource == null)
-			throw new IllegalStateException("Cannot load resource: "
-					+ sFileName);
 
 		return inputSource;
 	}
@@ -71,8 +60,7 @@ public class BioCartaPathwayResourceLoader implements IPathwayResourceLoader {
 		file = this.getClass().getClassLoader().getResourceAsStream(sFileName);
 
 		if (file == null)
-			throw new IllegalStateException("Cannot load resource: "
-					+ sFileName);
+			throw new IllegalStateException("Cannot load resource: " + sFileName);
 
 		return file;
 	}
@@ -85,8 +73,8 @@ public class BioCartaPathwayResourceLoader implements IPathwayResourceLoader {
 				texture = TextureIO.newTexture(TextureIO.newTextureData(
 						loadResourceAsInputStream(sFileName), true, "GIF"));
 			} else {
-				texture = TextureIO.newTexture(TextureIO.newTextureData(
-						new File(sFileName), true, "GIF"));
+				texture = TextureIO.newTexture(TextureIO.newTextureData(new File(
+						sFileName), true, "GIF"));
 			}
 		} catch (Exception e) {
 			throw new IllegalStateException("Cannot load texture: " + sFileName);

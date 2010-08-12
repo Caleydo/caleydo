@@ -1,9 +1,8 @@
-package org.caleydo.core.parser.xml.sax.handler.specialized.pathway;
+package org.caleydo.datadomain.pathway.parser;
 
 import java.awt.Rectangle;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.manager.specialized.genetic.pathway.PathwayManager;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -83,11 +82,7 @@ public class PathwayImageMapSaxHandler
 			sImageLink = attributes.getValue(0);
 		}
 
-		// generalManager.logMsg(
-		// "Load image map from: " + sImageLink,
-		// LoggerType.FULL );
-		//		
-		generalManager.getPathwayManager().createPathwayImageMap(sImageLink);
+		//generalManager.getPathwayManager().createPathwayImageMap(sImageLink);
 	}
 
 	/**
@@ -131,8 +126,9 @@ public class PathwayImageMapSaxHandler
 		rectArea.y = Integer.parseInt(token.nextToken());
 		rectArea.add(Integer.parseInt(token.nextToken()), Integer.parseInt(token.nextToken()));
 
-		((PathwayManager) generalManager.getPathwayManager()).getCurrentPathwayImageMap().addArea(rectArea,
-			sImageLink);
+		// ((PathwayManager)
+		// generalManager.getPathwayManager()).getCurrentPathwayImageMap().addArea(rectArea,
+		// sImageLink);
 	}
 
 	/**

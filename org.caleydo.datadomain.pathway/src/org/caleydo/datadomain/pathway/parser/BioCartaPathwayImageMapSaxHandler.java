@@ -1,9 +1,10 @@
-package org.caleydo.core.parser.xml.sax.handler.specialized.pathway;
+package org.caleydo.datadomain.pathway.parser;
 
 import java.util.ArrayList;
 import java.util.Set;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
@@ -177,7 +178,7 @@ public class BioCartaPathwayImageMapSaxHandler
 		// Convert BioCarta ID to DAVID ID
 		IIDMappingManager genomeIdManager = generalManager.getIDMappingManager();
 
-		Set<Integer> iSetDavidID = genomeIdManager.getID(EIDType.BIOCARTA_GENE_ID, EIDType.DAVID, sName);
+		Set<Integer> iSetDavidID = genomeIdManager.getID(IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("DAVID"), sName);
 
 		if (iSetDavidID == null)
 			return;

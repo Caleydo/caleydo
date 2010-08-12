@@ -11,7 +11,6 @@ import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
-import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.PathwayImageMap;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.core.Graph;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -47,11 +46,11 @@ public class PathwayManager
 	 */
 	private Graph rootPathwayGraph;
 
-	/**
-	 * Used for pathways where only images can be loaded. The image map defines the clickable regions on that
-	 * pathway image.
-	 */
-	private PathwayImageMap currentPathwayImageMap;
+//	/**
+//	 * Used for pathways where only images can be loaded. The image map defines the clickable regions on that
+//	 * pathway image.
+//	 */
+//	private PathwayImageMap currentPathwayImageMap;
 
 	private PathwayGraph currentPathwayGraph;
 
@@ -172,11 +171,16 @@ public class PathwayManager
 		return hashPathwayToVisibilityState.get(pathway);
 	}
 
-	@Override
-	public void createPathwayImageMap(final String sImageLink) {
-		currentPathwayImageMap = new PathwayImageMap(sImageLink);
-	}
+//	@Override
+//	public void createPathwayImageMap(final String sImageLink) {
+//		currentPathwayImageMap = new PathwayImageMap(sImageLink);
+//	}
 
+//	@Override
+//	public PathwayImageMap getCurrentPathwayImageMap() {
+//		return currentPathwayImageMap;
+//	}
+	
 	@Override
 	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type) {
 		return hashPathwayDatabase.get(type);
@@ -184,11 +188,6 @@ public class PathwayManager
 
 	protected PathwayGraph getCurrenPathwayGraph() {
 		return currentPathwayGraph;
-	}
-
-	@Override
-	public PathwayImageMap getCurrentPathwayImageMap() {
-		return currentPathwayImageMap;
 	}
 
 	public void notifyPathwayLoadingFinished(boolean pathwayLoadingFinished) {

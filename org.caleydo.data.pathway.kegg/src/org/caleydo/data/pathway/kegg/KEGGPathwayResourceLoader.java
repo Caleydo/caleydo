@@ -36,10 +36,6 @@ public class KEGGPathwayResourceLoader implements IPathwayResourceLoader {
 			}
 		}
 
-		if (file == null)
-			throw new IllegalStateException("Cannot load resource: "
-					+ sFileName);
-
 		return file;
 	}
 
@@ -57,10 +53,6 @@ public class KEGGPathwayResourceLoader implements IPathwayResourceLoader {
 						+ sFileName);
 			}
 		}
-
-		if (inputSource == null)
-			throw new IllegalStateException("Cannot load resource: "
-					+ sFileName);
 
 		return inputSource;
 	}

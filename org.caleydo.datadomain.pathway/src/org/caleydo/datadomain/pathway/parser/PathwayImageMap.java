@@ -1,4 +1,4 @@
-package org.caleydo.core.parser.xml.sax.handler.specialized.pathway;
+package org.caleydo.datadomain.pathway.parser;
 
 import java.awt.Point;
 import java.awt.Rectangle;

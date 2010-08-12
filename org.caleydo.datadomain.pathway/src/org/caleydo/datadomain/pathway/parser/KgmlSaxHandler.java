@@ -1,10 +1,11 @@
-package org.caleydo.core.parser.xml.sax.handler.specialized.pathway;
+package org.caleydo.datadomain.pathway.parser;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
@@ -228,8 +229,8 @@ public class KgmlSaxHandler
 
 				try {
 					iDavidId =
-						generalManager.getIDMappingManager().getID(EIDType.ENTREZ_GENE_ID, EIDType.DAVID,
-							Integer.valueOf(sTmpVertexName.substring(4)));					
+						generalManager.getIDMappingManager().getID(IDType.getIDType("ENTREZ_GENE_ID"), IDType.getIDType("DAVID"),
+							Integer.valueOf(sTmpVertexName.substring(4)));
 				}
 				catch (Exception e) {
 					// TODO: investigate!!

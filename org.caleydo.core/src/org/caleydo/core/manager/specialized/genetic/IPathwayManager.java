@@ -5,7 +5,6 @@ import org.caleydo.core.manager.IManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.specialized.genetic.pathway.IPathwayResourceLoader;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayDatabase;
-import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.PathwayImageMap;
 
 /**
  * Interface for creating and accessing pathways.
@@ -23,9 +22,9 @@ public interface IPathwayManager
 
 	public void triggerParsingPathwayDatabases();
 
-	public void createPathwayImageMap(final String sImageLink);
+	//public void createPathwayImageMap(final String sImageLink);
 
-	public PathwayImageMap getCurrentPathwayImageMap();
+	//public PathwayImageMap getCurrentPathwayImageMap();
 
 	public PathwayGraph searchPathwayByName(final String sPathwayName,
 		EPathwayDatabaseType ePathwayDatabaseType);
