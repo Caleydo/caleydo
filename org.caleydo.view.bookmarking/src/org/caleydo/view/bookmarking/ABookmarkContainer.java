@@ -99,20 +99,20 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 * @param manager
 	 *            The gl view managing the container.
 	 * @param category
-	 *            Every cateogry in {@link EIDCategory} can have one bookmark
+	 *            Every category in {@link EIDCategory} can have one bookmark
 	 *            container, therefore you need to specify the concrete
 	 *            category. The category should be specified by the concrete
 	 *            subclass and therefore not be part of its constructor.
 	 * @param internalIDType
 	 *            the id type the container uses to internally store the
-	 *            bookmars
+	 *            bookmarks
 	 */
-	ABookmarkContainer(GLBookmarkManager manager, EIDCategory category,
+	ABookmarkContainer(GLBookmarkManager manager, IDCategory category,
 			IDType internalIDType) {
 		this.internalIDType = internalIDType;
 		this.manager = manager;
 		this.category = category;
-		this.categoryName = category.getName();
+		this.categoryName = category.getCategoryName();
 		this.pickingIDManager = manager.getPickingIDManager();
 		this.textRenderer = manager.getTextRenderer();
 		dimensions = new Dimensions();
@@ -133,7 +133,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 * 
 	 * @return
 	 */
-	EIDCategory getCategory() {
+	IDCategory getCategory() {
 		return category;
 	}
 
@@ -152,27 +152,23 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 
 		// render heading
 
-		RenderingHelpers.renderText(gl, textRenderer, categoryName, dimensions
-				.getXOrigin()
-				+ BookmarkRenderStyle.SIDE_SPACING, yOrigin,
+		RenderingHelpers.renderText(gl, textRenderer, categoryName,
+				dimensions.getXOrigin() + BookmarkRenderStyle.SIDE_SPACING, yOrigin,
 				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
 		for (ABookmark item : bookmarkItems) {
 
-			item.getDimensions().setOrigins(BookmarkRenderStyle.SIDE_SPACING,
-					yOrigin);
+			item.getDimensions().setOrigins(BookmarkRenderStyle.SIDE_SPACING, yOrigin);
 			item.getDimensions().setWidth(
-					dimensions.getWidth() - 2
-							* BookmarkRenderStyle.SIDE_SPACING);
+					dimensions.getWidth() - 2 * BookmarkRenderStyle.SIDE_SPACING);
 			yOrigin -= item.getDimensions().getHeight();
 
 			float[] highlightColor = null;
 
-			if (selectionManager.checkStatus(SelectionType.MOUSE_OVER, item
-					.getID())) {
+			if (selectionManager.checkStatus(SelectionType.MOUSE_OVER, item.getID())) {
 				highlightColor = SelectionType.MOUSE_OVER.getColor();
-			} else if (selectionManager.checkStatus(SelectionType.SELECTION,
-					item.getID())) {
+			} else if (selectionManager
+					.checkStatus(SelectionType.SELECTION, item.getID())) {
 				highlightColor = SelectionType.SELECTION.getColor();
 
 			}
@@ -231,15 +227,14 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 				selectionType = SelectionType.SELECTION;
 
 				BookmarkContextMenuItemContainer bookmarkContextMenuItemContainer = new BookmarkContextMenuItemContainer();
-				bookmarkContextMenuItemContainer.setID(internalIDType,
-						iExternalID);
+				bookmarkContextMenuItemContainer.setID(internalIDType, iExternalID);
 				ContextMenu contextMenu = manager.getContextMenu();
 				contextMenu.addItemContanier(bookmarkContextMenuItemContainer);
 
 				if (manager.isRenderedRemote()) {
 					contextMenu.setLocation(pick.getPickedPoint(), manager
-							.getParentGLCanvas().getWidth(), manager
-							.getParentGLCanvas().getHeight());
+							.getParentGLCanvas().getWidth(), manager.getParentGLCanvas()
+							.getHeight());
 					contextMenu.setMasterGLView(manager);
 				}
 				break;
@@ -250,11 +245,11 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 			selectionManager.clearSelection(selectionType);
 			selectionManager.addToType(selectionType, iExternalID);
 
-			SelectionCommand command = new SelectionCommand(
-					ESelectionCommandType.CLEAR, selectionType);
+			SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
+					selectionType);
 			SelectionCommandEvent commandEvent = new SelectionCommandEvent();
 			commandEvent.setSender(this);
-			commandEvent.setCategory(category);
+			commandEvent.setIDCategory(category);
 			commandEvent.setSelectionCommand(command);
 			GeneralManager.get().getEventPublisher().triggerEvent(commandEvent);
 
@@ -281,8 +276,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 *            The event containing the information about the new bookmark to
 	 *            be added.
 	 */
-	abstract <IDDataType> void handleNewBookmarkEvent(
-			BookmarkEvent<IDDataType> event);
+	abstract <IDDataType> void handleNewBookmarkEvent(BookmarkEvent<IDDataType> event);
 
 	/**
 	 * Handles the removal of bookmarks by using the informatinon in the event.
@@ -293,15 +287,13 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 	 *            The event containing the information about the bookmark to be
 	 *            removed.
 	 */
-	<IDDataType> void handleRemoveBookmarkEvent(
-			RemoveBookmarkEvent<IDDataType> event) {
+	<IDDataType> void handleRemoveBookmarkEvent(RemoveBookmarkEvent<IDDataType> event) {
 		Integer id = null;
 		for (IDDataType tempID : event.getBookmarks()) {
 			if (tempID instanceof Integer) {
 				id = (Integer) tempID;
 			} else
-				throw new IllegalStateException(
-						"Can not handle strings for experiments");
+				throw new IllegalStateException("Can not handle strings for experiments");
 
 			Iterator<ABookmark> iterator = bookmarkItems.iterator();
 

@@ -99,7 +99,6 @@ public abstract class ASetBasedDataDomain
 		storageIDType =
 			IDType.registerType("storage_" + dataDomainType + "_" + hashCode(), storageIDCategory,
 				EStorageType.INT);
-		
 
 		// MappingType mappingType = new MappingType(fromIDType, toIDType, isMultiMap);
 	}
@@ -535,6 +534,10 @@ public abstract class ASetBasedDataDomain
 	 */
 	public IDType getPrimaryContentMappingType() {
 		return primaryContentMappingType;
+	}
+
+	public IDType getPrimaryStorageMappingType() {
+		return storageIDType;
 	}
 
 }

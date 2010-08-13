@@ -1,5 +1,7 @@
 package org.caleydo.view.bookmarking;
 
+import org.caleydo.core.data.mapping.IDCategory;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
@@ -16,13 +18,16 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
  * 
  * @author Alexander Lex
  */
-class GeneBookmarkContainer extends ABookmarkContainer<ContentSelectionManager> {
+class ContentBookmarkContainer extends ABookmarkContainer<ContentSelectionManager> {
 
 	ColorMapping colorMapping;
+	IDCategory category;
+	IDType idType;
 
-	GeneBookmarkContainer(GLBookmarkManager manager) {
-		super(manager, EIDCategory.GENE, EIDType.DAVID);
+	ContentBookmarkContainer(GLBookmarkManager manager, IDCategory category, IDType idType) {
+		super(manager, category, manager.getDataDomain().getPrimaryContentMappingType());
 		bookmarkItems = new UniqueList<ABookmark>();
+		this.idType = idType;
 
 		colorMapping = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
@@ -36,18 +41,19 @@ class GeneBookmarkContainer extends ABookmarkContainer<ContentSelectionManager> 
 	@Override
 	<IDDataType> void handleNewBookmarkEvent(BookmarkEvent<IDDataType> event) {
 		// ArrayList<Integer> ids;
-		Integer davidID;
+		Integer convertedID;
 
 		for (IDDataType id : event.getBookmarks()) {
 
-			if (event.getIDType().getCategory() == EIDCategory.GENE) {
-				davidID = GeneralManager.get().getIDMappingManager().getID(
-						event.getIDType(), EIDType.DAVID, id);
-				if (davidID == null)
+			if (event.getIDType().getIDCategory() == category) {
+				convertedID = GeneralManager.get().getIDMappingManager()
+						.getID(event.getIDType(), idType, id);
+				if (convertedID == null)
 					continue;
 			} else
 				throw new IllegalStateException("ID type unhandled");
-			GeneBookmark bookmark = new GeneBookmark(textRenderer, davidID);
+			ContentBookmark bookmark = new ContentBookmark(manager, idType, convertedID,
+					textRenderer);
 			bookmarkItems.add(bookmark);
 			// selectionManager.add(davidID);
 		}

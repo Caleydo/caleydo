@@ -1073,10 +1073,11 @@ public class GLBucket extends AGLView implements
 		} else if (view.getViewType().equals("org.caleydo.view.pathway")) {
 			textureViewSymbol = textureManager.getIconTexture(gl,
 					EIconTextures.PATHWAY_SYMBOL);
-		} else if (view.getViewType().equals("org.caleydo.view.glyph")) {
-			textureViewSymbol = textureManager.getIconTexture(gl,
-					EIconTextures.GLYPH_SYMBOL);
-		}
+		} 
+//		else if (view.getViewType().equals("org.caleydo.view.glyph")) {
+//			textureViewSymbol = textureManager.getIconTexture(gl,
+//					EIconTextures.GLYPH_SYMBOL);
+//		}
 		// else if (view instanceof GLCell) {
 		// textureViewSymbol = textureManager.getIconTexture(gl,
 		// EIconTextures.GLYPH_SYMBOL);
@@ -1930,8 +1931,8 @@ public class GLBucket extends AGLView implements
 				break;
 
 			}
-			infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX,
-					pick.getPickedPoint(), 0.3f);// pick.getDepth());
+//			infoAreaManager.setData(iExternalID, dataDomain.get,
+//					pick.getPickedPoint(), 0.3f);// pick.getDepth());
 			break;
 
 		case BUCKET_MOVE_IN_ICON_SELECTION:

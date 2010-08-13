@@ -2,6 +2,8 @@ package org.caleydo.view.bookmarking;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.mapping.IDType;
+
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
@@ -13,17 +15,21 @@ public abstract class ABookmark {
 
 	protected Dimensions dimensions;
 
+	protected IDType idType;
 	protected int id;
 
 	TextRenderer textRenderer;
+
+	GLBookmarkManager manager;
 
 	/**
 	 * The constructor takes a TextRenderer which is used to render all text
 	 * 
 	 * @param textRenderer
 	 */
-	public ABookmark(TextRenderer textRenderer) {
+	public ABookmark(GLBookmarkManager manager, IDType idType, TextRenderer textRenderer) {
 		this.textRenderer = textRenderer;
+		this.manager = manager;
 		dimensions = new Dimensions();
 	}
 

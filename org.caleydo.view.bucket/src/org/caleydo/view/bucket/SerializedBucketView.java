@@ -75,14 +75,15 @@ public class SerializedBucketView extends ASerializedView {
 			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView(
 					"org.caleydo.datadomain.genetic");
 			remoteViews.add(parCoords);
-		} else if (dataDomainType.equals("org.caleydo.datadomain.clinical")) {
-			SerializedGlyphView glyph1 = new SerializedGlyphView(
-					"org.caleydo.datadomain.clinical");
-			remoteViews.add(glyph1);
-			SerializedGlyphView glyph2 = new SerializedGlyphView(
-					"org.caleydo.datadomain.clinical");
-			remoteViews.add(glyph2);
-		}
+		} 
+//		else if (dataDomainType.equals("org.caleydo.datadomain.clinical")) {
+//			SerializedGlyphView glyph1 = new SerializedGlyphView(
+//					"org.caleydo.datadomain.clinical");
+//			remoteViews.add(glyph1);
+//			SerializedGlyphView glyph2 = new SerializedGlyphView(
+//					"org.caleydo.datadomain.clinical");
+//			remoteViews.add(glyph2);
+//		}
 
 		ArrayList<ASerializedView> focusLevel = new ArrayList<ASerializedView>();
 		if (remoteViews.size() > 0) {

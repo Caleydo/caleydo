@@ -2,7 +2,7 @@ package org.caleydo.view.bookmarking;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -12,33 +12,34 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * 
  * @author Alexander Lex
  */
-class GeneBookmark extends ABookmark {
+class ContentBookmark extends ABookmark {
 
 	/**
 	 * Constructor taking a textRenderer
 	 * 
 	 * @param textRenderer
-	 * @param davidID
+	 * @param id
 	 */
-	public GeneBookmark(TextRenderer textRenderer, Integer davidID) {
-		super(textRenderer);
-		this.id = davidID;
+	public ContentBookmark(GLBookmarkManager manager, IDType idType, Integer id,
+			TextRenderer textRenderer) {
+		super(manager, idType, textRenderer);
+		this.id = id;
 		dimensions.setHeight(0.1f);
 	}
 
 	@Override
 	public void render(GL gl) {
-		String sContent = GeneralManager.get().getIDMappingManager().getID(
-				EIDType.DAVID, EIDType.GENE_SYMBOL, id);
-
+//		String sContent = GeneralManager.get().getIDMappingManager().getID(
+//				manager.getDataDomain().getPrimaryContentMappingType(), EIDType.GENE_SYMBOL, id);
+//
 		float yOrigin = dimensions.getYOrigin() - 0.08f;
+		String sContent = manager.getDataDomain().getStorageLabel(idType, id);
 		RenderingHelpers.renderText(gl, textRenderer, sContent, dimensions
 				.getXOrigin()
 				+ BookmarkRenderStyle.SIDE_SPACING, yOrigin,
 				GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
 	}
-
 	// fAlXDistances.clear();
 	// renderStyle.updateFieldSizes();
 	// float fXPosition = 0;

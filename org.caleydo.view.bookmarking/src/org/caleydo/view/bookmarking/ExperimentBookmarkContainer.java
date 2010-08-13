@@ -12,11 +12,11 @@ import org.caleydo.core.util.collection.UniqueList;
  * 
  * @author Alexander Lex
  */
-class ExperimentBookmarkContainer extends
-		ABookmarkContainer<StorageSelectionManager> {
+class ExperimentBookmarkContainer extends ABookmarkContainer<StorageSelectionManager> {
 
 	ExperimentBookmarkContainer(GLBookmarkManager manager) {
-		super(manager, EIDCategory.EXPERIMENT, EIDType.EXPERIMENT_INDEX);
+		super(manager, manager.getDataDomain().getStorageIDCategory(), manager
+				.getDataDomain().getPrimaryStorageMappingType());
 		bookmarkItems = new UniqueList<ABookmark>();
 
 		selectionManager = ((ISetBasedDataDomain) DataDomainManager.getInstance()
@@ -33,15 +33,13 @@ class ExperimentBookmarkContainer extends
 			if (tempID instanceof Integer) {
 				id = (Integer) tempID;
 			} else
-				throw new IllegalStateException(
-						"Can not handle strings for experiments");
+				throw new IllegalStateException("Can not handle strings for experiments");
 
-			ExperimentBookmark bookmark = new ExperimentBookmark(textRenderer,
-					id);
+			StorageBookmark bookmark = new StorageBookmark(manager, internalIDType, id,
+					textRenderer);
 			bookmarkItems.add(bookmark);
 			// selectionManager.add(id);
 		}
 
 	}
-
 }
