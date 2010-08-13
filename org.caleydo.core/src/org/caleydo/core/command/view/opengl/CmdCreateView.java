@@ -228,13 +228,10 @@ public class CmdCreateView
 		//
 		// // Note: for AStoragebasedViews the set for the view is assigned in the setDataDomain method.
 		// createdObject.setDataDomain(dataDomain);
-
-		commandManager.runDoCommand(this);
 	}
 
 	@Override
 	public void undoCommand() {
-		commandManager.runUndoCommand(this);
 	}
 
 }

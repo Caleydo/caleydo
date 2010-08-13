@@ -1,13 +1,15 @@
 package org.caleydo.core.command.data.parser;
 
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.base.ACommand;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.mapping.MappingType;
 import org.caleydo.core.manager.specialized.EOrganism;
 import org.caleydo.core.parser.ascii.lookuptable.LookupTableLoader;
@@ -21,13 +23,14 @@ import org.caleydo.core.util.system.StringConversionTool;
  * @author Marc Streit
  */
 public class CmdLoadFileLookupTable
-	extends ACommand {
+	extends ACmdExternalAttributes {
+
 	protected String sFileName;
 
 	private String sLookupTableInfo;
 
 	private IDType fromIDType;
-	
+
 	private IDType toIDType;
 
 	/**
@@ -70,6 +73,8 @@ public class CmdLoadFileLookupTable
 
 	private String sCodeResolvingLUTMappingType;
 
+	private boolean isMultiMap;
+
 	/**
 	 * Constructor.
 	 * 
@@ -81,22 +86,25 @@ public class CmdLoadFileLookupTable
 
 	@Override
 	public void setParameterHandler(final IParameterHandler parameterHandler) {
-		sFileName = parameterHandler.getValueString(ECommandType.TAG_DETAIL.getXmlKey());
 
-		sLookupTableInfo = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey());
+		super.setParameterHandler(parameterHandler);
 
-		sLookupTableDelimiter = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE2.getXmlKey());
+		sFileName = detail;
+		sLookupTableInfo = attrib1;
+		sLookupTableDelimiter = attrib2;
 
-		int[] iArrayStartStop =
-			StringConversionTool.convertStringToIntArray(parameterHandler
-				.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
+		if (attrib3 != null) {
+			int[] iArrayStartStop = StringConversionTool.convertStringToIntArray(attrib3, " ");
 
-		if (iArrayStartStop.length == 2) {
-			iStartPareseFileAtLine = iArrayStartStop[0];
-			iStopParseFileAtLine = iArrayStartStop[1];
+			if (iArrayStartStop.length == 2) {
+				iStartPareseFileAtLine = iArrayStartStop[0];
+				iStopParseFileAtLine = iArrayStartStop[1];
+			}
 		}
 
-		sCodeResolvingLUTTypes = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE4.getXmlKey());
+		sCodeResolvingLUTTypes = attrib4;
+
+		isMultiMap = Boolean.parseBoolean(attrib5);
 
 		extractParameters();
 	}
@@ -116,13 +124,16 @@ public class CmdLoadFileLookupTable
 	}
 
 	private void extractParameters() {
+
 		StringTokenizer tokenizer =
 			new StringTokenizer(sLookupTableInfo, IGeneralManager.sDelimiter_Parser_DataItems);
 
 		String mappingTypeString = tokenizer.nextToken();
 		fromIDType = IDType.getIDType(mappingTypeString.substring(0, mappingTypeString.indexOf("_2_")));
-		toIDType = IDType.getIDType(mappingTypeString.substring(mappingTypeString.indexOf("_2_")+3, mappingTypeString.length()));
-		
+		toIDType =
+			IDType.getIDType(mappingTypeString.substring(mappingTypeString.indexOf("_2_") + 3,
+				mappingTypeString.length()));
+
 		while (tokenizer.hasMoreTokens()) {
 			sLookupTableOptions = tokenizer.nextToken();
 
@@ -158,34 +169,45 @@ public class CmdLoadFileLookupTable
 		// Remove old lookuptable if it already exists
 		// genomeIdManager.removeMapByType(EMappingType.valueOf(sLookupTableType));
 
-		MappingType mappingType = genomeIdManager.getMappingType(fromIDType.getTypeName()+"_2_"+toIDType.getTypeName());
+		MappingType mappingType = genomeIdManager.createMap(fromIDType, toIDType, isMultiMap);
 
-		// FIXME MAPPING
-//		if (bResolveCodeMappingUsingCodeToId_LUT) {
-//			
-//			genomeIdManager.createCodeResolvedMap(mappingType, EMappingType.valueOf(sCodeResolvingLUTMappingType));
-//		}
-//
-//		/* --- create reverse Map ... --- */
-//		if (bCreateReverseMap) {
-//			if (sCodeResolvingLUTMappingType != null) {
-//				mappingType = EMappingType.valueOf(sCodeResolvingLUTMappingType);
-//			}
-//
-//			// Concatenate genome id type target and origin type in swapped
-//			// order to determine reverse genome mapping type.
-//			EMappingType reverseMappingType =
-//				EMappingType.valueOf(mappingType.getTypeTarget().toString() + "_2_"
-//					+ mappingType.getTypeOrigin().toString());
-//
-//			genomeIdManager.createReverseMap(mappingType, reverseMappingType);
-//		}
+		if (bResolveCodeMappingUsingCodeToId_LUT) {
 
-		commandManager.runDoCommand(this);
+			IDType codeResolvedFromIDType =
+				IDType.getIDType(sCodeResolvingLUTMappingType.substring(0,
+					sCodeResolvingLUTMappingType.indexOf("_2_")));
+			IDType codeResolvedToIDType =
+				IDType.getIDType(sCodeResolvingLUTMappingType.substring(
+					sCodeResolvingLUTMappingType.indexOf("_2_") + 3, sCodeResolvingLUTMappingType.length()));
+
+			genomeIdManager.createCodeResolvedMap(mappingType, codeResolvedFromIDType, codeResolvedToIDType);
+		}
+
+		/* --- create reverse Map ... --- */
+		if (bCreateReverseMap) {
+			genomeIdManager.createReverseMap(mappingType);
+		}
+
+		int iIndex = 0;
+		if (sFileName.equals("generate")) {
+
+			Map<String, Integer> hashTmp = genomeIdManager.getMap(mappingType);
+			for (Object refSeqIDObject : genomeIdManager.getMap(
+				genomeIdManager.getMappingType("DAVID_2_REFSEQ_MRNA")).values()) {
+
+				hashTmp.put((String) refSeqIDObject, iIndex++);
+			}
+		}
+		else if (!sFileName.equals("already_loaded")) {
+			loader = new LookupTableLoader(sFileName, mappingType);
+			loader.setTokenSeperator(sLookupTableDelimiter);
+			loader.setStartParsingStopParsingAtLine(iStartPareseFileAtLine, iStopParseFileAtLine);
+			loader.loadData();
+		}
+
 	}
 
 	@Override
 	public void undoCommand() {
-		commandManager.runUndoCommand(this);
 	}
 }

@@ -64,12 +64,10 @@ public class CmdDataCreateSet
 
 		dataDomain.setSet(createdObject);
 
-		commandManager.runDoCommand(this);
 	}
 
 	@Override
 	public void undoCommand() {
-		commandManager.runUndoCommand(this);
 	}
 
 	@Override

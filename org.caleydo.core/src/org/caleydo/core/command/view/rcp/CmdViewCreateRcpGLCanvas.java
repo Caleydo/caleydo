@@ -44,13 +44,10 @@ public class CmdViewCreateRcpGLCanvas
 		}
 
 		createdObject.setNavigationModes(bEnablePan, bEnableRotate, bEnableZoom);
-
-		commandManager.runDoCommand(this);
 	}
 
 	@Override
 	public void undoCommand() {
-		commandManager.runUndoCommand(this);
 	}
 
 	public void setAttributes(int iParentCanvasID, boolean bEnablePan, boolean bEnableRotate,

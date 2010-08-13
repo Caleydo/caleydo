@@ -84,4 +84,9 @@ public class IDType {
 	public IDCategory getIDCategory() {
 		return idCategory;
 	}
+	
+	@Override
+	public String toString() {
+		return typeName;
+	}
 }

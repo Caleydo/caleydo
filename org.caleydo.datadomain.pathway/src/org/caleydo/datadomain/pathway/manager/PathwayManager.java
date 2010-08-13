@@ -10,6 +10,8 @@ import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.parser.BioCartaPathwayImageMapSaxHandler;
+import org.caleydo.datadomain.pathway.parser.KgmlSaxHandler;
 import org.caleydo.datadomain.pathway.parser.PathwayImageMap;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.core.Graph;
@@ -22,16 +24,17 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 
 /**
- * The pathway manager is in charge of creating and handling the pathways. The class is implemented as a
- * singleton.
+ * The pathway manager is in charge of creating and handling the pathways. The
+ * class is implemented as a singleton.
  * 
  * @author Marc Streit
  */
-public class PathwayManager
-	extends AManager<PathwayGraph> {
+public class PathwayManager extends AManager<PathwayGraph> {
 
 	private static PathwayManager pathwayManager;
-	
+
+	private PathwayParserManager xmlParserManager;
+
 	public IPathwayResourceLoader keggPathwayResourceLoader;
 	public IPathwayResourceLoader biocartaPathwayResourceLoader;
 
@@ -42,14 +45,15 @@ public class PathwayManager
 	private HashMap<EPathwayDatabaseType, PathwayDatabase> hashPathwayDatabase;
 
 	/**
-	 * Root pathway contains all nodes that are loaded into the system. Therefore it represents the overall
-	 * topological network. (The root pathway is independent from the representation of the nodes.)
+	 * Root pathway contains all nodes that are loaded into the system.
+	 * Therefore it represents the overall topological network. (The root
+	 * pathway is independent from the representation of the nodes.)
 	 */
 	private Graph rootPathwayGraph;
 
 	/**
-	 * Used for pathways where only images can be loaded. The image map defines the clickable regions on that
-	 * pathway image.
+	 * Used for pathways where only images can be loaded. The image map defines
+	 * the clickable regions on that pathway image.
 	 */
 	private PathwayImageMap currentPathwayImageMap;
 
@@ -58,12 +62,12 @@ public class PathwayManager
 	private boolean pathwayLoadingFinished;
 
 	private PathwayManager() {
-		
+
 	}
-	
+
 	/**
-	 * Returns the pathway manager as a singleton object. When first called the manager is created
-	 * (lazy).
+	 * Returns the pathway manager as a singleton object. When first called the
+	 * manager is created (lazy).
 	 * 
 	 * @return singleton PathwayManager instance
 	 */
@@ -74,40 +78,53 @@ public class PathwayManager
 		}
 		return pathwayManager;
 	}
-	
+
 	private void init() {
 		hashPathwayTitleToPathway = new HashMap<String, PathwayGraph>();
 		hashPathwayDatabase = new HashMap<EPathwayDatabaseType, PathwayDatabase>();
 		hashPathwayToVisibilityState = new HashMap<PathwayGraph, Boolean>();
 
 		rootPathwayGraph = new Graph(0);
+		
+		xmlParserManager = new PathwayParserManager();
+		KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
+		xmlParserManager.registerAndInitSaxHandler(kgmlParser);
+		BioCartaPathwayImageMapSaxHandler biocartaPathwayParser = new BioCartaPathwayImageMapSaxHandler();
+		xmlParserManager.registerAndInitSaxHandler(biocartaPathwayParser);
 	}
 
-	public void createPathwayDatabase(final EPathwayDatabaseType type, final String sXMLPath,
-		final String sImagePath, final String sImageMapPath) {
+	public void createPathwayDatabase(final EPathwayDatabaseType type,
+			final String sXMLPath, final String sImagePath, final String sImageMapPath) {
 		// Check if requested pathway database is already loaded (e.g. using
 		// caching)
 		if (hashPathwayDatabase.containsKey(type))
 			return;
 
-		PathwayDatabase tmpPathwayDatabase = new PathwayDatabase(type, sXMLPath, sImagePath, sImagePath);
+		PathwayDatabase tmpPathwayDatabase = new PathwayDatabase(type, sXMLPath,
+				sImagePath, sImagePath);
 
 		hashPathwayDatabase.put(type, tmpPathwayDatabase);
 
-		GeneralManager.get().getLogger().log(
-			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID,
-				"Setting pathway loading path: database-type:[" + type + "] " + "xml-path:["
-					+ tmpPathwayDatabase.getXMLPath() + "] image-path:[" + tmpPathwayDatabase.getImagePath()
-					+ "] image-map-path:[" + tmpPathwayDatabase.getImageMapPath() + "]"));
+		GeneralManager
+				.get()
+				.getLogger()
+				.log(new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID,
+						"Setting pathway loading path: database-type:[" + type + "] "
+								+ "xml-path:[" + tmpPathwayDatabase.getXMLPath()
+								+ "] image-path:[" + tmpPathwayDatabase.getImagePath()
+								+ "] image-map-path:["
+								+ tmpPathwayDatabase.getImageMapPath() + "]"));
 	}
 
 	public void triggerParsingPathwayDatabases() {
 		new PathwayLoaderThread(hashPathwayDatabase.values());
 	}
 
-	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName,
-		final String sTitle, final String sImageLink, final String sExternalLink) {
-		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, sImageLink, sExternalLink);
+	public PathwayGraph createPathway(final EPathwayDatabaseType type,
+			final String sName, final String sTitle, final String sImageLink,
+			final String sExternalLink) {
+		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, sImageLink,
+				sExternalLink);
 
 		registerItem(pathway);
 		hashPathwayTitleToPathway.put(sTitle, pathway);
@@ -121,7 +138,7 @@ public class PathwayManager
 	}
 
 	public PathwayGraph searchPathwayByName(final String sPathwayName,
-		EPathwayDatabaseType ePathwayDatabaseType) {
+			EPathwayDatabaseType ePathwayDatabaseType) {
 		waitUntilPathwayLoadingIsFinished();
 
 		Iterator<String> iterPathwayName = hashPathwayTitleToPathway.keySet().iterator();
@@ -160,7 +177,8 @@ public class PathwayManager
 		return super.getAllItems();
 	}
 
-	public void setPathwayVisibilityState(final PathwayGraph pathway, final boolean bVisibilityState) {
+	public void setPathwayVisibilityState(final PathwayGraph pathway,
+			final boolean bVisibilityState) {
 		waitUntilPathwayLoadingIsFinished();
 
 		hashPathwayToVisibilityState.put(pathway, bVisibilityState);
@@ -187,7 +205,7 @@ public class PathwayManager
 	public PathwayImageMap getCurrentPathwayImageMap() {
 		return currentPathwayImageMap;
 	}
-	
+
 	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type) {
 		return hashPathwayDatabase.get(type);
 	}
@@ -204,9 +222,9 @@ public class PathwayManager
 		while (!pathwayLoadingFinished) {
 			try {
 				Thread.sleep(1000);
-			}
-			catch (InterruptedException e) {
-				throw new IllegalThreadStateException("Pathway loader thread has been interrupted!");
+			} catch (InterruptedException e) {
+				throw new IllegalThreadStateException(
+						"Pathway loader thread has been interrupted!");
 			}
 		}
 	}
@@ -220,32 +238,34 @@ public class PathwayManager
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 
 		if (type == EPathwayDatabaseType.KEGG) {
-			IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
-			IExtension ext = ep.getExtension("org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader");
+			IExtensionPoint ep = reg
+					.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
+			IExtension ext = ep
+					.getExtension("org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader");
 			IConfigurationElement[] ce = ext.getConfigurationElements();
 
 			try {
-				keggPathwayResourceLoader = (IPathwayResourceLoader) ce[0].createExecutableExtension("class");
+				keggPathwayResourceLoader = (IPathwayResourceLoader) ce[0]
+						.createExecutableExtension("class");
+			} catch (Exception ex) {
+				throw new RuntimeException(
+						"Could not instantiate KEGG Pathway Resource Loader", ex);
 			}
-			catch (Exception ex) {
-				throw new RuntimeException("Could not instantiate KEGG Pathway Resource Loader", ex);
-			}
-		}
-		else if (type == EPathwayDatabaseType.BIOCARTA) {
-			IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
-			IExtension ext =
-				ep.getExtension("org.caleydo.data.pathway.biocarta.BioCartaPathwayResourceLoader");
+		} else if (type == EPathwayDatabaseType.BIOCARTA) {
+			IExtensionPoint ep = reg
+					.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
+			IExtension ext = ep
+					.getExtension("org.caleydo.data.pathway.biocarta.BioCartaPathwayResourceLoader");
 			IConfigurationElement[] ce = ext.getConfigurationElements();
 
 			try {
-				biocartaPathwayResourceLoader =
-					(IPathwayResourceLoader) ce[0].createExecutableExtension("class");
+				biocartaPathwayResourceLoader = (IPathwayResourceLoader) ce[0]
+						.createExecutableExtension("class");
+			} catch (Exception ex) {
+				throw new RuntimeException(
+						"Could not instantiate BioCarta Pathway Resource Loader", ex);
 			}
-			catch (Exception ex) {
-				throw new RuntimeException("Could not instantiate BioCarta Pathway Resource Loader", ex);
-			}
-		}
-		else {
+		} else {
 			throw new IllegalStateException("Unknown pathway database " + type);
 		}
 	}
@@ -254,11 +274,14 @@ public class PathwayManager
 
 		if (type == EPathwayDatabaseType.KEGG) {
 			return keggPathwayResourceLoader;
-		}
-		else if (type == EPathwayDatabaseType.BIOCARTA) {
+		} else if (type == EPathwayDatabaseType.BIOCARTA) {
 			return biocartaPathwayResourceLoader;
 		}
 
 		throw new IllegalStateException("Unknown pathway database " + type);
+	}
+	
+	public PathwayParserManager getXmlParserManager() {
+		return xmlParserManager;
 	}
 }

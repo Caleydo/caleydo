@@ -136,11 +136,9 @@ public class CmdSetDataRepresentation
 				SetUtils.setExternalDataRepresentation(tmpSet, externalDataRep, bIsSetHomogeneous);
 			}
 		}
-		commandManager.runDoCommand(this);
 	}
 
 	@Override
 	public void undoCommand() {
-		commandManager.runUndoCommand(this);
 	}
 }

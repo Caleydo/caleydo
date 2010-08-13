@@ -71,7 +71,6 @@ Export-Package: org.caleydo.core.application.mapping,
  org.caleydo.core.data.mapping;uses:="org.caleydo.core.data.collection",
  org.caleydo.core.data.selection;uses:="org.caleydo.core.data.mapping,org.caleydo.core.data,org.caleydo.core.data.selection.delta",
  org.caleydo.core.data.selection.delta;uses:="org.caleydo.core.data.mapping,org.caleydo.core.data.selection",
- org.caleydo.core.data.xml;uses:="org.caleydo.core.manager.id,org.caleydo.core.parser.xml.sax,org.caleydo.core.data",
  org.caleydo.core.manager;
   uses:="org.caleydo.core.util.wii,
    org.eclipse.core.runtime,

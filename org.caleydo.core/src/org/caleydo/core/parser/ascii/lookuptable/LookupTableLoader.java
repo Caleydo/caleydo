@@ -6,7 +6,6 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.ISWTGUIManager;
@@ -37,17 +36,15 @@ public class LookupTableLoader
 	/**
 	 * Constructor.
 	 */
-	public LookupTableLoader(String sFileName, IDType fromIDType, IDType toIDType, boolean isMultiMap) {
+	public LookupTableLoader(String sFileName, MappingType mappingType) {
 		super(sFileName);
 
+		this.mappingType = mappingType;
+		
 		swtGuiManager = GeneralManager.get().getSWTGUIManager();
 		genomeIdManager = GeneralManager.get().getIDMappingManager();
 
 		setTokenSeperator(IGeneralManager.sDelimiter_Parser_DataType);
-
-		IIDMappingManager genomeIdManager = GeneralManager.get().getIDMappingManager();
-
-		mappingType = genomeIdManager.createMap(fromIDType, toIDType, isMultiMap);
 	}
 
 	@Override

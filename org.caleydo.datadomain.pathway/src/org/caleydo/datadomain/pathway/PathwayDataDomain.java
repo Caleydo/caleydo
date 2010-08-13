@@ -8,6 +8,7 @@ import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.datadomain.pathway.manager.PathwayParserManager;
 import org.caleydo.datadomain.pathway.parser.BioCartaPathwayImageMapSaxHandler;
 import org.caleydo.datadomain.pathway.parser.KgmlSaxHandler;
 import org.caleydo.datadomain.pathway.rcp.PathwayLoadingProgressIndicatorAction;
@@ -34,12 +35,6 @@ public class PathwayDataDomain
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 
 		PathwayManager.get().triggerParsingPathwayDatabases();
-
-		KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
-		GeneralManager.get().getXmlParserManager().registerAndInitSaxHandler(kgmlParser);
-		
-		BioCartaPathwayImageMapSaxHandler biocartaPathwayParser = new BioCartaPathwayImageMapSaxHandler();
-		GeneralManager.get().getXmlParserManager().registerAndInitSaxHandler(biocartaPathwayParser);
 		
 		// Trigger pathway loading
 		new PathwayLoadingProgressIndicatorAction().run(null);

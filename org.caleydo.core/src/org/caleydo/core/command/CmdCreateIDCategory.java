@@ -34,13 +34,10 @@ public class CmdCreateIDCategory
 
 		generalManager.getLogger().log(
 			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Created ID Type " + createdObject));
-
-		commandManager.runDoCommand(this);
 	}
 
 	@Override
 	public void undoCommand() {
-		commandManager.runUndoCommand(this);
 	}
 
 	@Override

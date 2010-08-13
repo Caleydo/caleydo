@@ -42,7 +42,6 @@ public abstract class ACmdExternalAttributes
 	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
-		
 		externalID = parameterHandler.getValueInt(ECommandType.TAG_UNIQUE_ID.getXmlKey());
 		label = parameterHandler.getValueString(ECommandType.TAG_LABEL.getXmlKey());
 		attrib1 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey());

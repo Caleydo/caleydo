@@ -35,12 +35,10 @@ public class CmdDataCreateStorage
 
 		// generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
 		// "Created Storage with ID: " + createdObject.getID()));
-		commandManager.runDoCommand(this);
 	}
 
 	@Override
 	public void undoCommand() {
-		commandManager.runUndoCommand(this);
 	}
 
 	@Override

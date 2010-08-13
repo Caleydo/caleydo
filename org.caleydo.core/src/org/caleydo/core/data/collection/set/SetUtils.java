@@ -201,7 +201,6 @@ public class SetUtils {
 				.createCommandByType(ECommandType.CREATE_SET_DATA);
 
 		cmdCreateSet.setAttributes(iAlStorageId, dataDomain);
-
 		cmdCreateSet.doCommand();
 
 		// Trigger file loading command
@@ -224,7 +223,7 @@ public class SetUtils {
 		// FIXME use id type created by data domain.
 		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 			String lookupTableInfo =
-				loadDataParameters.getFileIDType().toString() + "_2_EXPRESSION_INDEX REVERSE";
+				loadDataParameters.getFileIDType().getTypeName() + "_2_" +dataDomain.getContentIDType().getTypeName()+" REVERSE";
 
 			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
 				loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,

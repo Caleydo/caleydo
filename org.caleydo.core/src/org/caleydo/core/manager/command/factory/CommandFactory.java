@@ -79,10 +79,6 @@ public class CommandFactory
 				createdCommand = new CmdDataCreateSet(cmdType);
 				break;
 			}
-//			case CREATE_VIEW_SWT_GLCANVAS: {
-//				createdCommand = new CmdViewCreateSwtGLCanvas(cmdType);
-//				break;
-//			}
 			case CREATE_VIEW_RCP_GLCANVAS: {
 				createdCommand = new CmdViewCreateRcpGLCanvas(cmdType);
 				break;
@@ -105,7 +101,7 @@ public class CommandFactory
 			}
 			default:
 				throw new IllegalStateException("Unsupported CommandQueue key= [" + cmdType + "]");
-		} // end switch
+		}
 
 		return createdCommand;
 	}

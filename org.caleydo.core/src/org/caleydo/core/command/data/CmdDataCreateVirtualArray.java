@@ -21,12 +21,10 @@ public class CmdDataCreateVirtualArray
 
 	@Override
 	public void doCommand() {
-		commandManager.runUndoCommand(this);
 	}
 
 	@Override
 	public void undoCommand() {
-		commandManager.runUndoCommand(this);
 	}
 
 	@Override

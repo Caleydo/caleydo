@@ -136,9 +136,7 @@ public class PathwayLoaderThread
 					continue;
 				}
 
-				PathwayParserManager xmlParserManager = new PathwayParserManager();
-				xmlParserManager.initHandlers();
-				xmlParserManager.parseXmlFileByName(sPathwayPath + sPathwayName);
+				PathwayManager.get().getXmlParserManager().parseXmlFileByName(sPathwayPath + sPathwayName);
 
 				tmpPathwayGraph =
 					((PathwayManager) PathwayManager.get()).getCurrenPathwayGraph();

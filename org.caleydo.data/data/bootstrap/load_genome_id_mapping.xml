@@ -58,10 +58,10 @@
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE"
 		detail="data/genome/mapping/david/ORGANISM_DAVID2REFSEQ_MRNA.txt"
-		attrib1="DAVID_2_REFSEQ_MRNA REVERSE" attrib2="\t" attrib3="0 -1" />
+		attrib1="DAVID_2_REFSEQ_MRNA REVERSE" attrib2="\t" attrib3="0 -1" attrib5="true" />
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="generate"
-		attrib1="REFSEQ_MRNA_2_REFSEQ_MRNA_INT REVERSE" />
+		attrib1="REFSEQ_MRNA_2_REFSEQ_MRNA_INT REVERSE" attrib5="false" />
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="already_loaded"
 		attrib1="DAVID_2_REFSEQ_MRNA REVERSE LUT" attrib2="\t" attrib3="0 -1"
@@ -69,19 +69,19 @@
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE"
 		detail="data/genome/mapping/david/ORGANISM_DAVID2ENTREZ_GENE_ID.txt"
-		attrib1="DAVID_2_ENTREZ_GENE_ID REVERSE" attrib2="\t" attrib3="0 -1" />
+		attrib1="DAVID_2_ENTREZ_GENE_ID REVERSE" attrib2="\t" attrib3="0 -1" attrib5="false" />
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE"
 		detail="data/genome/mapping/david/ORGANISM_DAVID2GENE_SYMBOL.txt"
-		attrib1="DAVID_2_GENE_SYMBOL REVERSE" attrib2="\t" attrib3="0 -1" />
+		attrib1="DAVID_2_GENE_SYMBOL REVERSE" attrib2="\t" attrib3="0 -1" attrib5="false" />
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/david/ORGANISM_DAVID2GENE_NAME.txt"
-		attrib1="DAVID_2_GENE_NAME" attrib2="\t" attrib3="0 -1" />
+		attrib1="DAVID_2_GENE_NAME" attrib2="\t" attrib3="0 -1" attrib5="false" />
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE"
 		detail="data/genome/mapping/ORGANISM_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt"
 		attrib1="BIOCARTA_GENE_ID_2_REFSEQ_MRNA REVERSE LUT" attrib2=";"
-		attrib3="0 -1" attrib4="BIOCARTA_GENE_ID_2_DAVID" />
+		attrib3="0 -1" attrib4="BIOCARTA_GENE_ID_2_DAVID" attrib5="false" />
 
 	<!--<Cmd type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010" uniqueId="-1" detail="data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv" 
 		attrib1="REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT" attrib2="\t" attrib3="1 

@@ -1,6 +1,5 @@
 package org.caleydo.core.parser.xml.sax;
 
-import org.caleydo.core.data.xml.IMementoCallbackXML;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -29,11 +28,6 @@ public abstract class ASaxParserHandler
 	 * Reference to the local Locator
 	 */
 	private LocatorImpl locator;
-
-	/**
-	 * Reference to the calling MenmentoXML object.
-	 */
-	protected IMementoCallbackXML parentMementoCaller = null;
 
 	/**
 	 * This variabel defines, if a parsing error shall throw a org.xml.sax.SAXParseException. If an parsing
@@ -167,19 +161,6 @@ public abstract class ASaxParserHandler
 
 		sErrorMessage = "";
 		bErrorWhileParsing = false;
-	}
-
-	/**
-	 * Sets the reference to the calling memento object. Used to tigger a callback event
-	 * 
-	 * @see
-	 * @param setRefParent
-	 *            reference to the parent obejct or the object, that sould be triggert in case of a callback
-	 *            action
-	 */
-	public void setParentMementoCaller(IMementoCallbackXML setRefParent) {
-
-		parentMementoCaller = setRefParent;
 	}
 
 	@Override

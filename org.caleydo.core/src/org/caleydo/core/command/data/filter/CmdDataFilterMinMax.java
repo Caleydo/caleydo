@@ -48,14 +48,10 @@ public class CmdDataFilterMinMax
 		}
 		else
 			throw new IllegalStateException("You have to initialize the filter before using it");
-
-		commandManager.runDoCommand(this);
-
 	}
 
 	@Override
 	public void undoCommand() {
-		commandManager.runUndoCommand(this);
 	}
 
 	/**

@@ -126,8 +126,6 @@ public class CmdLoadFileNStorages
 		dataDomain.setLoadDataParameters(loadDataParameters);
 		
 		dataDomain.updateSetInViews();
-		
-		commandManager.runDoCommand(this);
 	}
 
 	@Override

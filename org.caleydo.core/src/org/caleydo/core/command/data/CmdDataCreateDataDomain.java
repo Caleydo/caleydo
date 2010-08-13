@@ -32,8 +32,6 @@ public class CmdDataCreateDataDomain
 	 */
 	public void doCommand() {
 		createdObject = createDataDomain(dataDomainType);
-
-		commandManager.runDoCommand(this);
 	}
 
 	private IDataDomain createDataDomain(String dataDomainType) {
@@ -43,7 +41,6 @@ public class CmdDataCreateDataDomain
 
 	@Override
 	public void undoCommand() {
-		commandManager.runUndoCommand(this);
 	}
 
 	@Override

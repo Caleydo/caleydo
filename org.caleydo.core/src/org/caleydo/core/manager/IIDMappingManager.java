@@ -37,12 +37,10 @@ public interface IIDMappingManager {
 	 * 
 	 * @param <SrcType>
 	 * @param <DestType>
-	 * @param sourceType
+	 * @param sourceMappingType
 	 *            Mapping type the reverse map shall be created for.
-	 * @param reverseType
-	 *            Mapping type of the reverse map.
 	 */
-	public <SrcType, DestType> void createReverseMap(MappingType sourceType, MappingType reverseType);
+	public <SrcType, DestType> void createReverseMap(MappingType sourceMappingType);
 
 	/**
 	 * Method takes a map that contains identifier codes and creates a new resolved codes. Resolving means
@@ -53,11 +51,9 @@ public interface IIDMappingManager {
 	 * @param mappingType
 	 *            Mapping type that specifies the already existent map which is used for creating the code
 	 *            resolved map.
-	 * @param destMappingType
-	 *            Mapping type of the resolved map.
 	 */
 	public <KeyType, ValueType> void createCodeResolvedMap(MappingType mappingType,
-		MappingType destMappingType);
+		IDType codeResolvedFromType, IDType codeResolvedToType);
 
 	/**
 	 * Gets the map of the specified mapping type for manipulation.
