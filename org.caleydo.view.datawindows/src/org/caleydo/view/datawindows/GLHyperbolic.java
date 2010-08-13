@@ -33,11 +33,12 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.datadomain.pathway.IPathwayLoader;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneListener;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.rcp.view.listener.AddPathwayListener;
 import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
-import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
 
@@ -48,7 +49,7 @@ import org.caleydo.view.pathway.SerializedPathwayView;
  * @author Marc Streit
  */
 @SuppressWarnings("unused")
-public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
+public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler, IPathwayLoader {
 
 	public final static String VIEW_ID = "org.caleydo.view.hyperbolic";
 

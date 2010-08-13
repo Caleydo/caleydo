@@ -61,10 +61,11 @@ import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
+import org.caleydo.datadomain.pathway.IPathwayLoader;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneListener;
 import org.caleydo.rcp.view.listener.AddPathwayListener;
 import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
-import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
 import org.caleydo.view.browser.HTMLBrowser;
 import org.caleydo.view.browser.SerializedHTMLBrowserView;
 import org.caleydo.view.heatmap.hierarchical.SerializedHierarchicalHeatMapView;
@@ -85,7 +86,7 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
 public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
-		IRemoteRenderingHandler {
+		IRemoteRenderingHandler, IPathwayLoader {
 
 	public final static String VIEW_ID = "org.caleydo.view.dataflipper";
 

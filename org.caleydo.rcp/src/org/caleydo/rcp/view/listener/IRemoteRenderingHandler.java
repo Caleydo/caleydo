@@ -1,7 +1,5 @@
 package org.caleydo.rcp.view.listener;
 
-import java.util.Set;
-
 import org.caleydo.core.manager.event.IListenerOwner;
 
 public interface IRemoteRenderingHandler
@@ -20,5 +18,4 @@ public interface IRemoteRenderingHandler
 	public void toggleNavigationMode();
 
 	public void toggleZoom();
-
 }

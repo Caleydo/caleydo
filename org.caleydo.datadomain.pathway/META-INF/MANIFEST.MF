@@ -19,4 +19,5 @@ Export-Package: org.caleydo.datadomain.pathway,
  org.caleydo.datadomain.pathway.graph,
  org.caleydo.datadomain.pathway.graph.item.edge,
  org.caleydo.datadomain.pathway.graph.item.vertex,
+ org.caleydo.datadomain.pathway.listener,
  org.caleydo.datadomain.pathway.manager

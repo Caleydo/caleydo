@@ -1,7 +1,5 @@
 package org.caleydo.core.manager.parser;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Hashtable;
 import java.util.LinkedList;
 
@@ -9,13 +7,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
-import org.ccil.cowan.tagsoup.HTMLSchema;
-import org.ccil.cowan.tagsoup.Parser;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * Abstract parser manager.

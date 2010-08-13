@@ -79,7 +79,9 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.pathway.IPathwayLoader;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneListener;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.rcp.view.listener.AddPathwayListener;
 import org.caleydo.rcp.view.listener.DisableConnectionLinesListener;
@@ -91,7 +93,6 @@ import org.caleydo.rcp.view.listener.EnableGeneMappingListener;
 import org.caleydo.rcp.view.listener.EnableNeighborhoodListener;
 import org.caleydo.rcp.view.listener.EnableTexturesListener;
 import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
-import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
 import org.caleydo.rcp.view.listener.ToggleNavigationModeListener;
 import org.caleydo.rcp.view.listener.ToggleZoomListener;
 import org.caleydo.view.bookmarking.GLBookmarkManager;
@@ -115,7 +116,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLBucket extends AGLView implements
 		IDataDomainBasedView<ASetBasedDataDomain>, ISelectionUpdateHandler,
-		IGLBucketView, IRemoteRenderingHandler {
+		IGLBucketView, IRemoteRenderingHandler, IPathwayLoader {
 
 	public final static String VIEW_ID = "org.caleydo.view.bucket";
 

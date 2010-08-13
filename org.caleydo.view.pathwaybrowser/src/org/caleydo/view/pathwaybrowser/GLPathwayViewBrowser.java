@@ -16,16 +16,17 @@ import org.caleydo.core.view.opengl.canvas.AGLViewBrowser;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.pathway.IPathwayLoader;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneListener;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.rcp.view.listener.AddPathwayListener;
 import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
-import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
 
 public class GLPathwayViewBrowser extends AGLViewBrowser implements
-		IRemoteRenderingHandler {
+		IRemoteRenderingHandler, IPathwayLoader {
 
 	public final static String VIEW_ID = "org.caleydo.view.pathwaybrowser";
 
@@ -194,6 +195,7 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 		}
 	}
 
+	@Override
 	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
 
 		// add new pathways to bucket
