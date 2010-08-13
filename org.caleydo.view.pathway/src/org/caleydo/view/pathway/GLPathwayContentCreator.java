@@ -114,10 +114,10 @@ public class GLPathwayContentCreator {
 
 		// hashElementId2MappingColorArray.clear();
 
-		if (!generalManager.getIDMappingManager().hasMapping(EIDType.REFSEQ_MRNA_INT,
-				EIDType.EXPRESSION_INDEX)) {
-			bEnableGeneMapping = false;
-		}
+//		if (!generalManager.getIDMappingManager().hasMapping(EIDType.REFSEQ_MRNA_INT,
+//				EIDType.EXPRESSION_INDEX)) {
+//			bEnableGeneMapping = false;
+//		}
 	}
 
 	public void buildPathwayDisplayList(final GL gl, final IUniqueObject containingView,
@@ -194,7 +194,8 @@ public class GLPathwayContentCreator {
 			List<IGraphItem> items = ((IGraphItem) pathwayItemManager
 					.getItem(graphItemID))
 					.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT);
-			for (IGraphItem graphItem : ((IGraphItem) pathwayItemManager.getItem(graphItemID))
+			for (IGraphItem graphItem : ((IGraphItem) pathwayItemManager
+					.getItem(graphItemID))
 					.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 				List<IGraphItem> items2 = graphItem
 						.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
@@ -869,51 +870,50 @@ public class GLPathwayContentCreator {
 	private float[] determineNodeColor(PathwayVertexGraphItemRep vertexRep) {
 
 		int iDavidID = pathwayItemManager
-				.getDavidIdByPathwayVertexGraphItem(
-						(PathwayVertexGraphItem) vertexRep.getAllItemsByProp(
-								EGraphItemProperty.ALIAS_PARENT).get(0));
+				.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) vertexRep
+						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0));
 
 		if (iDavidID == -1 || iDavidID == 0) {
 			// generalManager.getLogger().log(new Status(Status.WARNING,
 			// GeneralManager.PLUGIN_ID,
 			// "Invalid David Gene ID."));
 		} else {
-			Set<Integer> iSetRefSeq = idMappingManager.getID(EIDType.DAVID,
-					EIDType.REFSEQ_MRNA_INT, iDavidID);
+			// Set<Integer> iSetRefSeq = idMappingManager.getID(EIDType.DAVID,
+			// EIDType.REFSEQ_MRNA_INT, iDavidID);
+			//
+			// if (iSetRefSeq == null) {
+			// // generalManager.getLogger().log(new Status(Status.ERROR,
+			// // GeneralManager.PLUGIN_ID,
+			// // "No RefSeq IDs found for David: " + iDavidID));
+			// } else {
+			// // Check for multiple mapping
+			// if (iSetRefSeq.size() > 1)
+			// return new float[] { 0, 1, 1 };
+			//
+			// for (Object iRefSeqID : iSetRefSeq) {
+			//
+			// if (idMappingManager.getIDAsSet(EIDType.REFSEQ_MRNA_INT,
+			// EIDType.EXPRESSION_INDEX, ((Integer) iRefSeqID)) == null) {
+			// break;
+			// }
+			// FIXME: Due to new mapping system, a mapping involving
+			// expression index can return a Set
+			// of
+			// values, depending on the IDType that has been specified
+			// when loading expression data.
+			// Possibly a different handling of the Set is required.
+			for (Object iExpressionIndex : idMappingManager.<Integer, Object> getIDAsSet(
+					glPathwayView.getDataDomain().getDavidIDType(), glPathwayView.getMappingDataDomain().getContentIDType(),
+					((Integer) iDavidID))) {
 
-			if (iSetRefSeq == null) {
-				// generalManager.getLogger().log(new Status(Status.ERROR,
-				// GeneralManager.PLUGIN_ID,
-				// "No RefSeq IDs found for David: " + iDavidID));
-			} else {
-				// Check for multiple mapping
-				if (iSetRefSeq.size() > 1)
-					return new float[] { 0, 1, 1 };
-
-				for (Object iRefSeqID : iSetRefSeq) {
-
-					if (idMappingManager.getIDAsSet(EIDType.REFSEQ_MRNA_INT,
-							EIDType.EXPRESSION_INDEX, ((Integer) iRefSeqID)) == null) {
-						break;
-					}
-					// FIXME: Due to new mapping system, a mapping involving
-					// expression index can return a Set
-					// of
-					// values, depending on the IDType that has been specified
-					// when loading expression data.
-					// Possibly a different handling of the Set is required.
-					for (Object iExpressionIndex : idMappingManager
-							.<Integer, Object> getIDAsSet(EIDType.REFSEQ_MRNA_INT,
-									EIDType.EXPRESSION_INDEX, ((Integer) iRefSeqID))) {
-
-						return colorMapper.getColor(geneticDataDomain
-								.getSet()
-								.get(glPathwayView.iCurrentStorageIndex)
-								.getFloat(EDataRepresentation.NORMALIZED,
-										((Integer) iExpressionIndex).intValue()));
-					}
-				}
+				return colorMapper.getColor(geneticDataDomain
+						.getSet()
+						.get(glPathwayView.iCurrentStorageIndex)
+						.getFloat(EDataRepresentation.NORMALIZED,
+								((Integer) iExpressionIndex).intValue()));
 			}
+			// }
+			// }
 		}
 
 		// No mapping found

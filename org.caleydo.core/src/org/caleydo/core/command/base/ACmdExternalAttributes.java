@@ -15,7 +15,7 @@ public abstract class ACmdExternalAttributes
 	/**
 	 * Unique Id of the object, that will be created.
 	 */
-	protected int externalID = -1;
+	protected Integer externalID = -1;
 
 	/**
 	 * Label of the new object, that will be created.
@@ -30,8 +30,7 @@ public abstract class ACmdExternalAttributes
 
 	protected String detail = "";
 
-	protected int parentContainerID = -1;
-
+	
 	/**
 	 * Constructor
 	 */
@@ -43,6 +42,7 @@ public abstract class ACmdExternalAttributes
 	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
+		
 		externalID = parameterHandler.getValueInt(ECommandType.TAG_UNIQUE_ID.getXmlKey());
 		label = parameterHandler.getValueString(ECommandType.TAG_LABEL.getXmlKey());
 		attrib1 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey());
@@ -51,6 +51,5 @@ public abstract class ACmdExternalAttributes
 		attrib4 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE4.getXmlKey());
 		attrib5 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE5.getXmlKey());
 		detail = parameterHandler.getValueString(ECommandType.TAG_DETAIL.getXmlKey());
-		parentContainerID = parameterHandler.getValueInt(ECommandType.TAG_PARENT.getXmlKey());
 	}
 }

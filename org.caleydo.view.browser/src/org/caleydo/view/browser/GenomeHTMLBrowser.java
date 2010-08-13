@@ -6,6 +6,7 @@ import java.util.Set;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.browser.EBrowserQueryType;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -15,6 +16,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -27,8 +29,10 @@ import org.eclipse.swt.widgets.Display;
  * 
  * @author Marc Streit
  */
-public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHandler {
+public class GenomeHTMLBrowser extends HTMLBrowser implements
+		IDataDomainBasedView<GeneticDataDomain>, ISelectionUpdateHandler {
 
+	private GeneticDataDomain dataDomain;
 	private URLGenerator urlGenerator;
 
 	private ArrayList<Integer> iAlDavidID;
@@ -43,9 +47,9 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHa
 	 */
 	public GenomeHTMLBrowser(int iParentContainerID, String sLabel) {
 
-		super(iParentContainerID, sLabel, GeneralManager.get().getIDManager().createID(
-				EManagedObjectType.VIEW_SWT_BROWSER_GENOME));
-		
+		super(iParentContainerID, sLabel, GeneralManager.get().getIDManager()
+				.createID(EManagedObjectType.VIEW_SWT_BROWSER_GENOME));
+
 		registerEventListeners();
 		urlGenerator = new URLGenerator();
 		iAlDavidID = new ArrayList<Integer>();
@@ -125,7 +129,8 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHa
 
 	public void handleSelectionUpdate(final ISelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
-		if (selectionDelta.getIDType() != EIDType.EXPRESSION_INDEX)
+		if (selectionDelta.getIDType().getIDCategory() != dataDomain
+				.getContentIDCategory())
 			return;
 
 		// Prevent handling of non genetic entities
@@ -144,76 +149,76 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHa
 				for (SelectionDeltaItem selectionDeltaItem : selectionDelta) {
 					if (selectionDeltaItem.getSelectionType() == SelectionType.SELECTION) {
 
-						// Integer iRefSeqID =
-						// generalManager.getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
-						// EIDType.REFSEQ_MRNA_INT,
-						// selectionDeltaItem.getPrimaryID());
+//						// Integer iRefSeqID =
+//						// generalManager.getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
+//						// EIDType.REFSEQ_MRNA_INT,
+//						// selectionDeltaItem.getPrimaryID());
+//
+//						int expressionIndex = selectionDeltaItem.getPrimaryID();
+//
+//						// FIXME: Due to new mapping system, a mapping involving
+//						// expression index can return a
+//						// Set of
+//						// values, depending on the IDType that has been
+//						// specified when loading expression
+//						// data.
+//						// Possibly a different handling of the Set is required.
+//						Set<String> setRefSeqIDs = generalManager.getIDMappingManager()
+//								.getIDAsSet(EIDType.EXPRESSION_INDEX,
+//										EIDType.REFSEQ_MRNA, expressionIndex);
+//
+//						String sRefSeqID = null;
+//						if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+//							sRefSeqID = (String) setRefSeqIDs.toArray()[0];
+//						}
+//
+//						// FIXME: Due to new mapping system, a mapping involving
+//						// expression index can return a
+//						// Set of
+//						// values, depending on the IDType that has been
+//						// specified when loading expression
+//						// data.
+//						// Possibly a different handling of the Set is required.
+//						Set<Integer> setDavidIDs = generalManager.getIDMappingManager()
+//								.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.DAVID,
+//										expressionIndex);
+//
+//						Integer iDavidID = null;
+//						if ((setDavidIDs != null && !setDavidIDs.isEmpty())) {
+//							iDavidID = (Integer) setDavidIDs.toArray()[0];
+//						}
+//
+//						if (iDavidID == null)
+//							continue;
+//
+//						if (iItemsToLoad == 0) {
+//							String sURL = urlGenerator.createURL(eBrowserQueryType,
+//									iDavidID);
+//
+//							browser.setUrl(sURL);
+//							browser.update();
+//							textURL.setText(sURL);
+//
+//							iAlDavidID.clear();
+//							// list.removeAll();
+//						}
 
-						int expressionIndex = selectionDeltaItem.getPrimaryID();
-
-						// FIXME: Due to new mapping system, a mapping involving
-						// expression index can return a
-						// Set of
-						// values, depending on the IDType that has been
-						// specified when loading expression
-						// data.
-						// Possibly a different handling of the Set is required.
-						Set<String> setRefSeqIDs = generalManager.getIDMappingManager()
-								.getIDAsSet(EIDType.EXPRESSION_INDEX,
-										EIDType.REFSEQ_MRNA, expressionIndex);
-
-						String sRefSeqID = null;
-						if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
-							sRefSeqID = (String) setRefSeqIDs.toArray()[0];
-						}
-
-						// FIXME: Due to new mapping system, a mapping involving
-						// expression index can return a
-						// Set of
-						// values, depending on the IDType that has been
-						// specified when loading expression
-						// data.
-						// Possibly a different handling of the Set is required.
-						Set<Integer> setDavidIDs = generalManager.getIDMappingManager()
-								.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.DAVID,
-										expressionIndex);
-
-						Integer iDavidID = null;
-						if ((setDavidIDs != null && !setDavidIDs.isEmpty())) {
-							iDavidID = (Integer) setDavidIDs.toArray()[0];
-						}
-
-						if (iDavidID == null)
-							continue;
-
-						if (iItemsToLoad == 0) {
-							String sURL = urlGenerator.createURL(eBrowserQueryType,
-									iDavidID);
-
-							browser.setUrl(sURL);
-							browser.update();
-							textURL.setText(sURL);
-
-							iAlDavidID.clear();
-							// list.removeAll();
-						}
-
-						String sOutput = "";
-						sOutput = sOutput
-								+ generalManager.getIDMappingManager().getID(
-										EIDType.DAVID, EIDType.GENE_SYMBOL, iDavidID);
-
-						sOutput = sOutput + "\n";
-						sOutput = sOutput + sRefSeqID;
-
-						if (iAlDavidID.contains(selectionDeltaItem.getPrimaryID())) {
-							continue;
-						}
-
-						// list.add(sOutput);
-						iAlDavidID.add(iDavidID);
-
-						iItemsToLoad++;
+//						String sOutput = "";
+//						sOutput = sOutput
+//								+ generalManager.getIDMappingManager().getID(
+//										EIDType.DAVID, EIDType.GENE_SYMBOL, iDavidID);
+//
+//						sOutput = sOutput + "\n";
+//						sOutput = sOutput + sRefSeqID;
+//
+//						if (iAlDavidID.contains(selectionDeltaItem.getPrimaryID())) {
+//							continue;
+//						}
+//
+//						// list.add(sOutput);
+//						iAlDavidID.add(iDavidID);
+//
+//						iItemsToLoad++;
 					}
 				}
 
@@ -225,8 +230,11 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHa
 
 	public void changeQueryType(EBrowserQueryType eBrowserQueryType) {
 		this.eBrowserQueryType = eBrowserQueryType;
-		GeneralManager.get().getPreferenceStore().setValue(
-				PreferenceConstants.BROWSER_QUERY_DATABASE, eBrowserQueryType.name());
+		GeneralManager
+				.get()
+				.getPreferenceStore()
+				.setValue(PreferenceConstants.BROWSER_QUERY_DATABASE,
+						eBrowserQueryType.name());
 		if (!iAlDavidID.isEmpty()) {
 			String sURL = urlGenerator.createURL(eBrowserQueryType, iAlDavidID.get(0));
 
@@ -246,7 +254,8 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHa
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setExclusiveDataDomainType("org.caleydo.datadomain.genetic");
+		selectionUpdateListener
+				.setExclusiveDataDomainType("org.caleydo.datadomain.genetic");
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		// changeQueryTypeListener = new ChangeQueryTypeListener();
@@ -278,5 +287,15 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHa
 		serializedForm.setQueryType(getCurrentBrowserQueryType());
 		serializedForm.setUrl(getUrl());
 		return serializedForm;
+	}
+
+	@Override
+	public void setDataDomain(GeneticDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+	}
+
+	@Override
+	public GeneticDataDomain getDataDomain() {
+		return dataDomain;
 	}
 }

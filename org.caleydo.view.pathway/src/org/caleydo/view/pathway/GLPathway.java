@@ -474,8 +474,8 @@ public class GLPathway extends AGLView implements
 
 	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta) {
 
-		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.PATHWAY_VERTEX,
-				EIDType.DAVID);
+		ISelectionDelta newSelectionDelta = new SelectionDelta(
+				dataDomain.getPrimaryIDType(), dataDomain.getDavidIDType());
 
 		PathwayVertexGraphItem pathwayVertexGraphItem;
 
@@ -489,7 +489,7 @@ public class GLPathway extends AGLView implements
 			// loading expression data.
 			// Possibly a different handling of the Set is required.
 			Set<Integer> setIDs = idMappingManager.getIDAsSet(selectionDelta.getIDType(),
-					EIDType.DAVID, item.getPrimaryID());
+					dataDomain.getDavidIDType(), item.getPrimaryID());
 
 			if (setIDs == null || setIDs.isEmpty()) {
 				continue;
@@ -712,8 +712,9 @@ public class GLPathway extends AGLView implements
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 
 						ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
+						geneContextMenuItemContainer.setDataDomain(mappingDataDomain);
 						geneContextMenuItemContainer
-								.setID(EIDType.DAVID,
+								.setID(dataDomain.getDavidIDType(),
 										pathwayItemManager
 												.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) pathwayVertexGraphItem));
 						contextMenu.addItemContanier(geneContextMenuItemContainer);
@@ -802,7 +803,7 @@ public class GLPathway extends AGLView implements
 	public void broadcastElements(EVAOperation type) {
 
 		ContentVADelta delta = new ContentVADelta(ContentVAType.CONTENT_CONTEXT,
-				EIDType.REFSEQ_MRNA_INT);
+				dataDomain.getDavidIDType());
 		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
 
 		for (IGraphItem tmpPathwayVertexGraphItemRep : pathway
@@ -819,20 +820,21 @@ public class GLPathway extends AGLView implements
 					continue;
 				}
 
-				Set<Integer> iSetRefSeq = idMappingManager.getID(EIDType.DAVID,
-						EIDType.REFSEQ_MRNA_INT, iDavidID);
+				// Set<Integer> iSetRefSeq =
+				// idMappingManager.getID(EIDType.DAVID,
+				// EIDType.REFSEQ_MRNA_INT, iDavidID);
+				//
+				// if (iSetRefSeq == null) {
+				//
+				// generalManager.getLogger().log(
+				// new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID,
+				// "No RefSeq IDs found for David: " + iDavidID));
+				// continue;
+				// }
 
-				if (iSetRefSeq == null) {
-
-					generalManager.getLogger().log(
-							new Status(IStatus.ERROR, IGeneralManager.PLUGIN_ID,
-									"No RefSeq IDs found for David: " + iDavidID));
-					continue;
-				}
-
-				for (Object iRefSeqID : iSetRefSeq) {
-					delta.add(VADeltaItem.create(type, (Integer) iRefSeqID));
-				}
+				// for (Object iRefSeqID : iSetRefSeq) {
+				delta.add(VADeltaItem.create(type, (Integer) iDavidID));
+				// }
 			}
 		}
 
@@ -1048,6 +1050,10 @@ public class GLPathway extends AGLView implements
 	public void setDataDomain(PathwayDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 
+	}
+
+	public ASetBasedDataDomain getMappingDataDomain() {
+		return mappingDataDomain;
 	}
 
 }

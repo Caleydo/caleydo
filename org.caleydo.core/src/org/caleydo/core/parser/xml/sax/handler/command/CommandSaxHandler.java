@@ -56,9 +56,6 @@ public class CommandSaxHandler
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_TYPE.getXmlKey(),
 			ECommandType.TAG_TYPE.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_PARENT.getXmlKey(),
-			ECommandType.TAG_PARENT.getDefault(), ParameterHandlerType.INT);
-
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE1.getXmlKey(),
 			ECommandType.TAG_ATTRIBUTE1.getDefault(), ParameterHandlerType.STRING);
 

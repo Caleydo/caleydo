@@ -24,7 +24,7 @@ public interface IParameterHandler {
 
 	public abstract ParameterHandlerType getValueType(final String key);
 
-	public abstract int getValueInt(final String key);
+	public abstract Integer getValueInt(final String key);
 
 	public abstract float getValueFloat(final String key);
 

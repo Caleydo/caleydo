@@ -50,4 +50,9 @@ public class PathwayDataDomain
 	public IDType getPrimaryIDType() {
 		return primaryIDType;
 	}
+	
+	public IDType getDavidIDType()
+	{
+		return IDType.getIDType("DAVID");
+	}
 }

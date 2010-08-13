@@ -38,7 +38,7 @@ public enum ECommandType {
 
 	CREATE_SWT_WINDOW("cmd", "type", "-1", "Create SWT window"),
 	CREATE_SWT_CONTAINER("cmd", "type", "-1", "Create SWTContainer"),
-	CREATE_VIEW_SWT_GLCANVAS("cmd", "type", "-1", "Create SWT GL Canvas"),
+//	CREATE_VIEW_SWT_GLCANVAS("cmd", "type", "-1", "Create SWT GL Canvas"),
 	CREATE_VIEW_RCP_GLCANVAS("cmd", "type", "-1", "Create RCP GL Canvas"),
 
 	SYSTEM_SHUT_DOWN("cmd", "type", "-1", "Caleydo system shut down"),
@@ -54,7 +54,7 @@ public enum ECommandType {
 	TAG_ATTRIBUTE5("cmd", "attrib4", ""),
 	TAG_DETAIL("cmd", "detail", ""),
 	TAG_LABEL("cmd", "label", ""),
-	TAG_PARENT("cmd", "label", ""),
+//	TAG_PARENT("cmd", "label", ""),
 	TAG_POS_GL_ORIGIN("cmd", "gl_origin", "0 0 0"),
 
 	/** Values indicate axis: (X,Y,Z) and rotation-angle (ALPHA) in (radiant). */

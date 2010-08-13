@@ -81,7 +81,8 @@ public final class ParameterHandler
 	}
 
 	@Override
-	public int getValueInt(final String key) {
+	public Integer getValueInt(final String key) {
+		
 		return hashKey2Integer.getValue(key);
 	}
 

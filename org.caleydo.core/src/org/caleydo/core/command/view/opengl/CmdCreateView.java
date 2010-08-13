@@ -40,6 +40,8 @@ public class CmdCreateView
 	protected Vec3f cameraOrigin;
 	protected Rotf cameraRotation;
 
+	protected Integer parentCanvasID;
+
 	/**
 	 * Constructor.
 	 */
@@ -131,7 +133,7 @@ public class CmdCreateView
 		final float fBottom, final float fTop, final float fNear, final float fFar, final int iParentCanvasID) {
 		viewFrustum = new ViewFrustum(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar);
 
-		this.parentContainerID = iParentCanvasID;
+		this.parentCanvasID = iParentCanvasID;
 	}
 
 	/**
@@ -154,12 +156,11 @@ public class CmdCreateView
 	 * @param fCamRotationAngle
 	 */
 	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft, final float fRight,
-		final float fBottom, final float fTop, final float fNear, final float fFar,
-		final int iParentCanvasID, final float fCamOriginX, final float fCamOriginY, final float fCamOriginZ,
-		final float fCamRotationX, final float fCamRotationY, final float fCamRotationZ,
-		final float fCamRotationAngle) {
+		final float fBottom, final float fTop, final float fNear, final float fFar, final int parentCanvasID,
+		final float fCamOriginX, final float fCamOriginY, final float fCamOriginZ, final float fCamRotationX,
+		final float fCamRotationY, final float fCamRotationZ, final float fCamRotationAngle) {
 
-		setAttributes(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar, iParentCanvasID);
+		setAttributes(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar, parentCanvasID);
 
 		cameraOrigin.set(fCamOriginX, fCamOriginY, fCamOriginZ);
 		cameraRotation.set(new Vec3f(fCamRotationX, fCamRotationY, fCamRotationZ),
@@ -179,7 +180,7 @@ public class CmdCreateView
 	}
 
 	public void setParentCanvasID(int parentCanvasID) {
-		this.parentContainerID = parentCanvasID;
+		this.parentCanvasID = parentCanvasID;
 	}
 
 	public void setViewID(String viewID) {
@@ -199,11 +200,11 @@ public class CmdCreateView
 
 		IViewManager glCanvasManager = generalManager.getViewGLCanvasManager();
 
-		if (externalID != -1 && parentContainerID != -1) {
-			parentContainerID = generalManager.getIDManager().getInternalFromExternalID(parentContainerID);
-		}
+		// if (externalID != -1 && parentCanvasID != -1) {
+		// parentCanvasID = generalManager.getIDManager().getInternalFromExternalID(parentContainerID);
+		// }
 
-		GLCaleydoCanvas glCanvas = generalManager.getViewGLCanvasManager().getCanvas(parentContainerID);
+		GLCaleydoCanvas glCanvas = generalManager.getViewGLCanvasManager().getCanvas(parentCanvasID);
 
 		createdObject = glCanvasManager.createGLView(viewID, glCanvas, label, viewFrustum);
 

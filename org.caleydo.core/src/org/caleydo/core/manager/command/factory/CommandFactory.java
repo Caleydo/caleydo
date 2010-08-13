@@ -15,7 +15,6 @@ import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
 import org.caleydo.core.command.system.CmdSystemExit;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
-import org.caleydo.core.command.view.swt.CmdViewCreateSwtGLCanvas;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -80,10 +79,10 @@ public class CommandFactory
 				createdCommand = new CmdDataCreateSet(cmdType);
 				break;
 			}
-			case CREATE_VIEW_SWT_GLCANVAS: {
-				createdCommand = new CmdViewCreateSwtGLCanvas(cmdType);
-				break;
-			}
+//			case CREATE_VIEW_SWT_GLCANVAS: {
+//				createdCommand = new CmdViewCreateSwtGLCanvas(cmdType);
+//				break;
+//			}
 			case CREATE_VIEW_RCP_GLCANVAS: {
 				createdCommand = new CmdViewCreateRcpGLCanvas(cmdType);
 				break;

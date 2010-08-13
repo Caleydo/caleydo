@@ -3,6 +3,7 @@ package org.caleydo.view.browser;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
@@ -55,7 +56,7 @@ public class IDExtractionLocationListener extends LocationAdapter {
 					.substring(sSearchPhrase_NCBIGeneId.length());
 
 			Integer iDavidId = generalManager.getIDMappingManager().getID(
-					EIDType.ENTREZ_GENE_ID, EIDType.DAVID,
+					IDType.getIDType("ENTREZ_GENE_ID"), IDType.getIDType("DAVID"),
 					Integer.valueOf(sExtractedID));
 
 			if (iDavidId == null || iDavidId == -1)

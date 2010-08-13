@@ -36,14 +36,6 @@
       <view
             allowMultiple="false"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.rcp.RcpSearchView"
-            icon="resources/icons/view/search.png"
-            id="org.caleydo.rcp.views.swt.SearchView"
-            name="Search">
-      </view>
-      <view
-            allowMultiple="false"
-            category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.view.rcp.RcpInfoAreaView"
             icon="resources/icons/view/info.png"
             id="org.caleydo.rcp.views.swt.InfoAreaView"
@@ -168,11 +160,6 @@
             defaultHandler="org.caleydo.rcp.command.handler.help.ReportBugHandler"
             id="org.caleydo.rcp.command.help.report_bug"
             name="Report Bug">
-      </command>
-      <command
-            defaultHandler="org.caleydo.rcp.command.handler.view.OpenSearchHandler"
-            id="org.caleydo.rcp.command.openviews.search"
-            name="Open Search">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.StartTrackingHandler"
