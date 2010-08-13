@@ -1,4 +1,4 @@
-package org.caleydo.core.data.graph.pathway.item.edge;
+package org.caleydo.datadomain.pathway.graph.item.edge;
 
 import java.io.Serializable;
 

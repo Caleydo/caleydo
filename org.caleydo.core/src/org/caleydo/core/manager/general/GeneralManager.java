@@ -18,10 +18,6 @@ import org.caleydo.core.manager.id.IDCreator;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.parser.XmlParserManager;
 import org.caleydo.core.manager.specialized.EOrganism;
-import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
-import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
-import org.caleydo.core.manager.specialized.genetic.pathway.PathwayItemManager;
-import org.caleydo.core.manager.specialized.genetic.pathway.PathwayManager;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;
@@ -57,8 +53,6 @@ public class GeneralManager
 	private ICommandManager commandManager;
 	private ISWTGUIManager sWTGUIManager;
 	private IViewManager viewGLCanvasManager;
-	private IPathwayManager pathwayManager;
-	private IPathwayItemManager pathwayItemManager;
 	private IEventPublisher eventPublisher;
 	private IXmlParserManager xmlParserManager;
 	private IIDMappingManager genomeIdManager;
@@ -96,8 +90,6 @@ public class GeneralManager
 		viewGLCanvasManager = new ViewManager();
 		sWTGUIManager = new SWTGUIManager();
 		genomeIdManager = new IDMappingManager();
-		pathwayManager = new PathwayManager();
-		pathwayItemManager = new PathwayItemManager();
 		xmlParserManager = new XmlParserManager();
 		IDManager = new IDCreator();
 		xmlParserManager.initHandlers();
@@ -163,17 +155,7 @@ public class GeneralManager
 	public IViewManager getViewGLCanvasManager() {
 		return viewGLCanvasManager;
 	}
-
-	@Override
-	public IPathwayManager getPathwayManager() {
-		return pathwayManager;
-	}
-
-	@Override
-	public IPathwayItemManager getPathwayItemManager() {
-		return pathwayItemManager;
-	}
-
+	
 	@Override
 	public ISWTGUIManager getSWTGUIManager() {
 		return sWTGUIManager;

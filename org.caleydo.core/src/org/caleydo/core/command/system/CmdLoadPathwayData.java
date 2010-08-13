@@ -21,7 +21,6 @@ public class CmdLoadPathwayData
 
 	@Override
 	public void doCommand() {
-		generalManager.getPathwayManager().triggerParsingPathwayDatabases();
 		commandManager.runDoCommand(this);
 	}
 

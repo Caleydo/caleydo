@@ -2,11 +2,12 @@ package org.caleydo.view.pathway.toolbar;
 
 import java.util.Collection;
 
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.rcp.util.search.SearchBox;
 import org.caleydo.rcp.view.toolbar.IToolBarItem;
 import org.eclipse.jface.action.ControlContribution;
@@ -66,8 +67,7 @@ public class PathwaySearchBox extends ControlContribution implements
 						return;
 					}
 
-					Collection<PathwayGraph> allPathways = GeneralManager.get()
-							.getPathwayManager().getAllItems();
+					Collection<PathwayGraph> allPathways = PathwayManager.get().getAllItems();
 					String[] sArSearchItems = new String[allPathways.size()];
 					int iIndex = 0;
 					String sPathwayTitle = "";
@@ -167,7 +167,7 @@ public class PathwaySearchBox extends ControlContribution implements
 
 		sEntity = sEntity.substring(0, sEntity.indexOf(" ("));
 
-		PathwayGraph pathway = GeneralManager.get().getPathwayManager()
+		PathwayGraph pathway = PathwayManager.get()
 				.searchPathwayByName(sEntity, ePathwayDatabaseType);
 
 		if (pathway == null)

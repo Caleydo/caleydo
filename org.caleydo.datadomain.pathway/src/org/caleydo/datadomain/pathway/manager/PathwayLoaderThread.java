@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.specialized.genetic.pathway;
+package org.caleydo.datadomain.pathway.manager;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -7,11 +7,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.EOrganism;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -51,20 +51,21 @@ public class PathwayLoaderThread
 
 		Iterator<PathwayDatabase> iterPathwayDatabase = pathwayDatabases.iterator();
 		while (iterPathwayDatabase.hasNext()) {
-			loadAllPathwaysByType(generalManager, iterPathwayDatabase.next());
+			loadAllPathwaysByType(iterPathwayDatabase.next());
 		}
 
 		viewManager.releaseBusyMode(this);
-		generalManager.getPathwayManager().notifyPathwayLoadingFinished(true);
+		PathwayManager.get().notifyPathwayLoadingFinished(true);
 		// notifyViews();
 	}
 
-	public static void loadAllPathwaysByType(final IGeneralManager generalManager,
-		final PathwayDatabase pathwayDatabase) {
+	public static void loadAllPathwaysByType(final PathwayDatabase pathwayDatabase) {
 		// // Try reading list of files directly from local hard dist
 		// File folder = new File(sXMLPath);
 		// File[] arFiles = folder.listFiles();
 
+		IGeneralManager generalManager = GeneralManager.get();
+		
 		generalManager.getLogger().log(
 			new Status(IStatus.INFO, IGeneralManager.PLUGIN_ID, "Start parsing " + pathwayDatabase.getName()
 				+ " pathways."));
@@ -108,9 +109,9 @@ public class PathwayLoaderThread
 				"Loading BioCarta Pathways...");
 		}
 
-		generalManager.getPathwayManager().createPathwayResourceLoader(pathwayDatabase.getType());
+		PathwayManager.get().createPathwayResourceLoader(pathwayDatabase.getType());
 		pathwayResourceLoader =
-			generalManager.getPathwayManager().getPathwayResourceLoader(pathwayDatabase.getType());
+			PathwayManager.get().getPathwayResourceLoader(pathwayDatabase.getType());
 
 		int iPathwayIndex = 0;
 
@@ -138,7 +139,7 @@ public class PathwayLoaderThread
 				generalManager.getXmlParserManager().parseXmlFileByName(sPathwayPath + sPathwayName);
 
 				tmpPathwayGraph =
-					((PathwayManager) generalManager.getPathwayManager()).getCurrenPathwayGraph();
+					((PathwayManager) PathwayManager.get()).getCurrenPathwayGraph();
 				tmpPathwayGraph.setWidth(Integer.valueOf(tokenizer.nextToken()).intValue());
 				tmpPathwayGraph.setHeight(Integer.valueOf(tokenizer.nextToken()).intValue());
 

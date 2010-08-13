@@ -1,11 +1,11 @@
 package org.caleydo.datadomain.genetic.contextmenu.item;
 
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
-import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
  * Implementation of AContextMenuItem for loading pathways by pathway IDs. Automatically creates the events.
@@ -32,7 +32,7 @@ public class LoadPathwaysByPathwayIDItem
 	}
 
 	private void setPathwayID(int pathwayID) {
-		PathwayGraph pathway = GeneralManager.get().getPathwayManager().getItem(pathwayID);
+		PathwayGraph pathway = PathwayManager.get().getItem(pathwayID);
 
 		String pathwayName = pathway.getTitle();
 		if (numberOfOccurences == 0)

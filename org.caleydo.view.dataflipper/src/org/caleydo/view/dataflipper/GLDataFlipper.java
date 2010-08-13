@@ -16,7 +16,6 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.StorageVAType;
@@ -62,6 +61,7 @@ import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.rcp.view.listener.AddPathwayListener;
 import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
 import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
@@ -2214,7 +2214,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	}
 
-	@Override
 	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
 		metaViewAnimation = 0;
 

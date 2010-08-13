@@ -14,7 +14,6 @@ import java.io.IOException;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.view.browser.EBrowserQueryType;
 import org.caleydo.core.manager.specialized.EOrganism;
-import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.jface.preference.IPreferenceStore;

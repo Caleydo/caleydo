@@ -5,11 +5,12 @@ import java.util.LinkedList;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -45,7 +46,7 @@ public class GLPathwayTextureManager {
 		String sPathwayTexturePath = pathway.getImageLink();
 		EPathwayDatabaseType type = pathway.getType();
 
-		sPathwayTexturePath = generalManager.getPathwayManager()
+		sPathwayTexturePath = PathwayManager.get()
 				.getPathwayDatabaseByType(type).getImagePath()
 				+ sPathwayTexturePath;
 
@@ -54,11 +55,11 @@ public class GLPathwayTextureManager {
 						"Load pathway texture with ID: " + pathway.getID()));
 
 		if (type == EPathwayDatabaseType.BIOCARTA) {
-			pathwayTexture = generalManager.getPathwayManager()
+			pathwayTexture = PathwayManager.get()
 					.getPathwayResourceLoader(EPathwayDatabaseType.BIOCARTA)
 					.getTexture(sPathwayTexturePath);
 		} else if (type == EPathwayDatabaseType.KEGG) {
-			pathwayTexture = generalManager.getPathwayManager()
+			pathwayTexture = PathwayManager.get()
 					.getPathwayResourceLoader(EPathwayDatabaseType.KEGG)
 					.getTexture(sPathwayTexturePath);
 

@@ -6,8 +6,6 @@ import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.IDCreator;
 import org.caleydo.core.manager.specialized.EOrganism;
-import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
-import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
@@ -70,10 +68,6 @@ public interface IGeneralManager {
 	public IEventPublisher getEventPublisher();
 
 	public IXmlParserManager getXmlParserManager();
-
-	public IPathwayManager getPathwayManager();
-
-	public IPathwayItemManager getPathwayItemManager();
 
 	public IIDMappingManager getIDMappingManager();
 

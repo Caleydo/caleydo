@@ -3,13 +3,13 @@ package org.caleydo.datadomain.pathway.parser;
 import java.util.ArrayList;
 import java.util.Set;
 
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
-import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
-import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.util.graph.IGraphItem;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -21,8 +21,9 @@ import org.xml.sax.SAXException;
  */
 public class BioCartaPathwayImageMapSaxHandler
 	extends AXmlParserHandler {
-	private IPathwayItemManager pathwayItemManager;
-	private IPathwayManager pathwayManager;
+	
+	private PathwayItemManager pathwayItemManager;
+	private PathwayManager pathwayManager;
 
 	private final static String BIOCARTA_EXTERNAL_URL_PATHWAY = "http://cgap.nci.nih.gov/Pathways/BioCarta/";
 	private final static String BIOCARTA_EXTERNAL_URL_VERTEX = "http://cgap.nci.nih.gov";
@@ -43,8 +44,8 @@ public class BioCartaPathwayImageMapSaxHandler
 	public BioCartaPathwayImageMapSaxHandler() {
 		super();
 
-		pathwayItemManager = generalManager.getPathwayItemManager();
-		pathwayManager = generalManager.getPathwayManager();
+		pathwayItemManager = PathwayItemManager.get();
+		pathwayManager = PathwayManager.get();
 
 		setXmlActivationTag("span");
 	}
@@ -187,7 +188,7 @@ public class BioCartaPathwayImageMapSaxHandler
 			pathwayItemManager.createVertexGene(sName, "gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink,
 				"", iSetDavidID);
 
-		generalManager.getPathwayItemManager().createVertexRep(currentPathway, alVertex, sName, sShape,
+		pathwayItemManager.createVertexRep(currentPathway, alVertex, sName, sShape,
 			sCoords);
 	}
 

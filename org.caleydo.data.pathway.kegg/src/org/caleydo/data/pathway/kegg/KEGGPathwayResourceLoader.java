@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.caleydo.core.manager.specialized.genetic.pathway.IPathwayResourceLoader;
+import org.caleydo.datadomain.pathway.manager.IPathwayResourceLoader;
 import org.xml.sax.InputSource;
 
 import com.sun.opengl.util.texture.Texture;

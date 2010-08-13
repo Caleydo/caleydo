@@ -9,10 +9,6 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
-import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -47,8 +43,6 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
-import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -68,6 +62,13 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ContentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -98,7 +99,8 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 
 	private boolean bEnablePathwayTexture = true;
 
-	private IPathwayManager pathwayManager;
+	private PathwayManager pathwayManager;
+	private PathwayItemManager pathwayItemManager;
 
 	private GLPathwayContentCreator gLPathwayContentCreator;
 
@@ -150,7 +152,9 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 		super(glCanvas, sLabel, viewFrustum, false);
 		viewType = VIEW_ID;
 
-		pathwayManager = generalManager.getPathwayManager();
+		pathwayManager = PathwayManager.get();
+		pathwayItemManager = PathwayItemManager.get();
+		
 		mappingDataDomain = (ASetBasedDataDomain) DataDomainManager.getInstance()
 				.getDataDomain("org.caleydo.datadomain.genetic");
 
@@ -176,7 +180,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 	public void setPathway(final PathwayGraph pathway) {
 		// Unregister former pathway in visibility list
 		if (pathway != null) {
-			generalManager.getPathwayManager().setPathwayVisibilityState(pathway, false);
+			pathwayManager.setPathwayVisibilityState(pathway, false);
 		}
 
 		this.pathway = pathway;
@@ -184,7 +188,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 
 	public void setPathway(final int iPathwayID) {
 
-		setPathway(generalManager.getPathwayManager().getItem(iPathwayID));
+		setPathway(pathwayManager.getItem(iPathwayID));
 	}
 
 	public PathwayGraph getPathway() {
@@ -214,7 +218,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 	@Override
 	public void init(final GL gl) {
 		// Check if pathway exists or if it's already loaded
-		if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
+		if (!pathwayManager.hasItem(pathway.getID()))
 			return;
 
 		initPathwayData(gl);
@@ -225,7 +229,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 
 		// Check if pathway exists or if it's already loaded
 		// FIXME: not good because check in every rendered frame
-		if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
+		if (!pathwayManager.hasItem(pathway.getID()))
 			return;
 
 		pickingManager.handlePicking(this, gl);
@@ -379,8 +383,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 					continue;
 				}
 
-				PathwayVertexGraphItemRep vertexRep = (PathwayVertexGraphItemRep) generalManager
-						.getPathwayItemManager().getItem(item.getPrimaryID());
+				PathwayVertexGraphItemRep vertexRep = (PathwayVertexGraphItemRep) pathwayItemManager.getItem(item.getPrimaryID());
 
 				int iViewID = iUniqueID;
 				// If rendered remote (hierarchical heat map) - use the remote
@@ -410,10 +413,10 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 
 		ArrayList<Integer> alExpressionIndex = new ArrayList<Integer>();
 
-		for (IGraphItem pathwayVertexGraphItem : generalManager.getPathwayItemManager()
+		for (IGraphItem pathwayVertexGraphItem : pathwayItemManager
 				.getItem(iPathwayVertexGraphItemRepID)
 				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
-			int iDavidID = generalManager.getPathwayItemManager()
+			int iDavidID = pathwayItemManager
 					.getDavidIdByPathwayVertexGraphItem(
 							(PathwayVertexGraphItem) pathwayVertexGraphItem);
 
@@ -490,7 +493,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 			}
 			Integer iDavidID = (Integer) setIDs.toArray()[0];
 
-			pathwayVertexGraphItem = generalManager.getPathwayItemManager()
+			pathwayVertexGraphItem = pathwayItemManager
 					.getPathwayVertexGraphItemByDavidId(iDavidID);
 
 			// Ignore David IDs that do not exist in any pathway
@@ -642,8 +645,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 
 			SelectionType selectionType;
 
-			PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager
-					.getPathwayItemManager().getItem(iExternalID);
+			PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) pathwayItemManager.getItem(iExternalID);
 
 			setDisplayListDirty();
 
@@ -655,7 +657,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 
 				// Load embedded pathway
 				if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map) {
-					PathwayGraph pathway = generalManager.getPathwayManager()
+					PathwayGraph pathway = pathwayManager
 							.searchPathwayByName(tmpVertexGraphItemRep.getName(),
 									EPathwayDatabaseType.KEGG);
 
@@ -696,8 +698,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 				if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map) {
 
 					EmbeddedPathwayContextMenuItemContainer pathwayContextMenuItemContainer = new EmbeddedPathwayContextMenuItemContainer();
-					pathwayContextMenuItemContainer.setPathway(generalManager
-							.getPathwayManager().searchPathwayByName(
+					pathwayContextMenuItemContainer.setPathway(pathwayManager.searchPathwayByName(
 									tmpVertexGraphItemRep.getName(),
 									EPathwayDatabaseType.KEGG));
 					contextMenu.addItemContanier(pathwayContextMenuItemContainer);
@@ -708,8 +709,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 						ContentContextMenuItemContainer geneContextMenuItemContainer = new ContentContextMenuItemContainer();
 						geneContextMenuItemContainer
 								.setID(EIDType.DAVID,
-										generalManager
-												.getPathwayItemManager()
+										pathwayItemManager
 												.getDavidIdByPathwayVertexGraphItem(
 														(PathwayVertexGraphItem) pathwayVertexGraphItem));
 						contextMenu.addItemContanier(geneContextMenuItemContainer);
@@ -772,7 +772,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 		// iViewID = glRemoteRenderingView.getID();
 
 		for (int iVertexRepID : selectionManager.getElements(SelectionType)) {
-			tmpPathwayVertexGraphItemRep = generalManager.getPathwayItemManager()
+			tmpPathwayVertexGraphItemRep = pathwayItemManager
 					.getPathwayVertexRep(iVertexRepID);
 
 			SelectedElementRep elementRep = new SelectedElementRep(
@@ -804,7 +804,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 				.getAllItemsByKind(EGraphItemKind.NODE)) {
 			for (IGraphItem tmpPathwayVertexGraphItem : tmpPathwayVertexGraphItemRep
 					.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
-				int iDavidID = generalManager.getPathwayItemManager()
+				int iDavidID = pathwayItemManager
 						.getDavidIdByPathwayVertexGraphItem(
 								(PathwayVertexGraphItem) tmpPathwayVertexGraphItem);
 
@@ -892,7 +892,7 @@ public class GLPathway extends AGLView implements IDataDomainBasedView<IDataDoma
 
 	@Override
 	public void destroy() {
-		generalManager.getPathwayManager().setPathwayVisibilityState(pathway, false);
+		pathwayManager.setPathwayVisibilityState(pathway, false);
 
 		super.destroy();
 	}

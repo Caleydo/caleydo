@@ -1,10 +1,11 @@
-package org.caleydo.rcp.progress;
+package org.caleydo.datadomain.pathway.rcp;
 
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
-import org.caleydo.core.manager.specialized.genetic.pathway.PathwayLoaderThread;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayLoaderThread;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -37,24 +38,22 @@ public class PathwayLoadingProgressIndicatorAction
 					if (sPathwayDataSources.contains(EPathwayDatabaseType.KEGG.name())) {
 						monitor.subTask("KEGG");
 
-						GeneralManager.get().getPathwayManager().createPathwayDatabase(
+						PathwayManager.get().createPathwayDatabase(
 							EPathwayDatabaseType.KEGG, "data/xml/", "data/images/", "");
-						PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), GeneralManager.get()
-							.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG));
+						PathwayLoaderThread.loadAllPathwaysByType(PathwayManager.get().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG));
 						// monitor.worked(50);
 					}
 
 					if (sPathwayDataSources.contains(EPathwayDatabaseType.BIOCARTA.name())) {
 						monitor.subTask("BioCarta");
 
-						GeneralManager.get().getPathwayManager().createPathwayDatabase(
+						PathwayManager.get().createPathwayDatabase(
 							EPathwayDatabaseType.BIOCARTA, "data/html/", "data/images/", "data/html");
-						PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), GeneralManager.get()
-							.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.BIOCARTA));
+						PathwayLoaderThread.loadAllPathwaysByType(PathwayManager.get().getPathwayDatabaseByType(EPathwayDatabaseType.BIOCARTA));
 						// monitor.worked(50);
 					}
 
-					GeneralManager.get().getPathwayManager().notifyPathwayLoadingFinished(true);
+					PathwayManager.get().notifyPathwayLoadingFinished(true);
 					monitor.done();
 
 					viewManager.releaseBusyMode(this);

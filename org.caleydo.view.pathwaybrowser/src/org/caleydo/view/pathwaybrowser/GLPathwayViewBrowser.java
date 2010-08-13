@@ -7,7 +7,6 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.serialize.ASerializedView;
@@ -17,6 +16,8 @@ import org.caleydo.core.view.opengl.canvas.AGLViewBrowser;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.rcp.view.listener.AddPathwayListener;
 import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
 import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
@@ -184,8 +185,8 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 
 	@Override
 	public void addPathwayView(int iPathwayID) {
-		if (!generalManager.getPathwayManager().isPathwayVisible(
-				generalManager.getPathwayManager().getItem(iPathwayID))) {
+		if (!PathwayManager.get().isPathwayVisible(
+				PathwayManager.get().getItem(iPathwayID))) {
 			SerializedPathwayView serPathway = new SerializedPathwayView(dataDomain
 					.getDataDomainType());
 			serPathway.setPathwayID(iPathwayID);
@@ -193,7 +194,6 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 		}
 	}
 
-	@Override
 	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
 
 		// add new pathways to bucket

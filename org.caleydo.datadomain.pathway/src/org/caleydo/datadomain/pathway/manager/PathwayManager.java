@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.specialized.genetic.pathway;
+package org.caleydo.datadomain.pathway.manager;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -6,11 +6,11 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.parser.PathwayImageMap;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.core.Graph;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -28,9 +28,10 @@ import org.eclipse.core.runtime.Status;
  * @author Marc Streit
  */
 public class PathwayManager
-	extends AManager<PathwayGraph>
-	implements IPathwayManager {
+	extends AManager<PathwayGraph> {
 
+	private static PathwayManager pathwayManager;
+	
 	public IPathwayResourceLoader keggPathwayResourceLoader;
 	public IPathwayResourceLoader biocartaPathwayResourceLoader;
 
@@ -46,20 +47,35 @@ public class PathwayManager
 	 */
 	private Graph rootPathwayGraph;
 
-//	/**
-//	 * Used for pathways where only images can be loaded. The image map defines the clickable regions on that
-//	 * pathway image.
-//	 */
-//	private PathwayImageMap currentPathwayImageMap;
+	/**
+	 * Used for pathways where only images can be loaded. The image map defines the clickable regions on that
+	 * pathway image.
+	 */
+	private PathwayImageMap currentPathwayImageMap;
 
 	private PathwayGraph currentPathwayGraph;
 
 	private boolean pathwayLoadingFinished;
 
+	private PathwayManager() {
+		
+	}
+	
 	/**
-	 * Constructor.
+	 * Returns the pathway manager as a singleton object. When first called the manager is created
+	 * (lazy).
+	 * 
+	 * @return singleton PathwayManager instance
 	 */
-	public PathwayManager() {
+	public static PathwayManager get() {
+		if (pathwayManager == null) {
+			pathwayManager = new PathwayManager();
+			pathwayManager.init();
+		}
+		return pathwayManager;
+	}
+	
+	private void init() {
 		hashPathwayTitleToPathway = new HashMap<String, PathwayGraph>();
 		hashPathwayDatabase = new HashMap<EPathwayDatabaseType, PathwayDatabase>();
 		hashPathwayToVisibilityState = new HashMap<PathwayGraph, Boolean>();
@@ -85,12 +101,10 @@ public class PathwayManager
 					+ "] image-map-path:[" + tmpPathwayDatabase.getImageMapPath() + "]"));
 	}
 
-	@Override
 	public void triggerParsingPathwayDatabases() {
 		new PathwayLoaderThread(hashPathwayDatabase.values());
 	}
 
-	@Override
 	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName,
 		final String sTitle, final String sImageLink, final String sExternalLink) {
 		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, sImageLink, sExternalLink);
@@ -106,7 +120,6 @@ public class PathwayManager
 		return pathway;
 	}
 
-	@Override
 	public PathwayGraph searchPathwayByName(final String sPathwayName,
 		EPathwayDatabaseType ePathwayDatabaseType) {
 		waitUntilPathwayLoadingIsFinished();
@@ -141,21 +154,18 @@ public class PathwayManager
 		return rootPathwayGraph;
 	}
 
-	@Override
 	public Collection<PathwayGraph> getAllItems() {
 		waitUntilPathwayLoadingIsFinished();
 
 		return super.getAllItems();
 	}
 
-	@Override
 	public void setPathwayVisibilityState(final PathwayGraph pathway, final boolean bVisibilityState) {
 		waitUntilPathwayLoadingIsFinished();
 
 		hashPathwayToVisibilityState.put(pathway, bVisibilityState);
 	}
 
-	@Override
 	public void resetPathwayVisiblityState() {
 		waitUntilPathwayLoadingIsFinished();
 
@@ -164,24 +174,20 @@ public class PathwayManager
 		}
 	}
 
-	@Override
 	public boolean isPathwayVisible(final PathwayGraph pathway) {
 		waitUntilPathwayLoadingIsFinished();
 
 		return hashPathwayToVisibilityState.get(pathway);
 	}
 
-//	@Override
-//	public void createPathwayImageMap(final String sImageLink) {
-//		currentPathwayImageMap = new PathwayImageMap(sImageLink);
-//	}
+	public void createPathwayImageMap(final String sImageLink) {
+		currentPathwayImageMap = new PathwayImageMap(sImageLink);
+	}
 
-//	@Override
-//	public PathwayImageMap getCurrentPathwayImageMap() {
-//		return currentPathwayImageMap;
-//	}
+	public PathwayImageMap getCurrentPathwayImageMap() {
+		return currentPathwayImageMap;
+	}
 	
-	@Override
 	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type) {
 		return hashPathwayDatabase.get(type);
 	}
@@ -205,12 +211,10 @@ public class PathwayManager
 		}
 	}
 
-	@Override
 	public boolean isPathwayLoadingFinished() {
 		return pathwayLoadingFinished;
 	}
 
-	@Override
 	public void createPathwayResourceLoader(EPathwayDatabaseType type) {
 
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
@@ -246,7 +250,6 @@ public class PathwayManager
 		}
 	}
 
-	@Override
 	public IPathwayResourceLoader getPathwayResourceLoader(EPathwayDatabaseType type) {
 
 		if (type == EPathwayDatabaseType.KEGG) {

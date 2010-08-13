@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.specialized.genetic.pathway;
+package org.caleydo.datadomain.pathway.manager;
 
 /**
  * Class holds all supported pathway database types.

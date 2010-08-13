@@ -1,8 +1,5 @@
 package org.caleydo.view.bucket.toolbar;
 
-import java.util.Set;
-
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -145,12 +142,6 @@ public class RemoteRenderingToolBarMediator implements IRemoteRenderingHandler {
 
 	@Override
 	public void addPathwayView(int pathwayID) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
 		// TODO Auto-generated method stub
 
 	}

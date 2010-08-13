@@ -1,9 +1,9 @@
 package org.caleydo.view.pathway.contextmenu;
 
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.datadomain.genetic.contextmenu.item.LoadPathwaysByPathwayIDItem;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 /**
  * Implementation of AItemContainer for embedded pathways. By passing a pathway

@@ -15,7 +15,6 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -80,6 +79,8 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.rcp.view.listener.AddPathwayListener;
 import org.caleydo.rcp.view.listener.DisableConnectionLinesListener;
 import org.caleydo.rcp.view.listener.DisableGeneMappingListener;
@@ -1797,8 +1798,8 @@ public class GLBucket extends AGLView implements
 	 */
 	public void addPathwayView(final int iPathwayID) {
 
-		if (!generalManager.getPathwayManager().isPathwayVisible(
-				generalManager.getPathwayManager().getItem(iPathwayID))) {
+		if (!PathwayManager.get().isPathwayVisible(
+				PathwayManager.get().getItem(iPathwayID))) {
 			SerializedPathwayView serPathway = new SerializedPathwayView(
 					dataDomain.getDataDomainType());
 			serPathway.setPathwayID(iPathwayID);
@@ -2252,7 +2253,7 @@ public class GLBucket extends AGLView implements
 		}
 
 		if (reinitialize) {
-			generalManager.getPathwayManager().resetPathwayVisiblityState();
+			PathwayManager.get().resetPathwayVisiblityState();
 		}
 
 		// Send out remove broadcast for views that are currently slerped
@@ -2451,7 +2452,7 @@ public class GLBucket extends AGLView implements
 	 */
 	private void initNewView(GL gl) {
 		if (!newViews.isEmpty()
-				&& GeneralManager.get().getPathwayManager().isPathwayLoadingFinished()
+				&& PathwayManager.get().isPathwayLoadingFinished()
 				&& arSlerpActions.isEmpty()) {
 
 			ASerializedView serView = newViews.remove(0);

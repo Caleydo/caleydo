@@ -1,14 +1,14 @@
-package org.caleydo.core.manager.specialized.genetic;
+package org.caleydo.datadomain.pathway.manager;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -92,6 +92,6 @@ public class GeneticIDMappingHelper {
 			return null;
 		// throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
 
-		return GeneralManager.get().getPathwayItemManager().getPathwayVertexGraphItemByDavidId(iDavidID);
+		return PathwayItemManager.get().getPathwayVertexGraphItemByDavidId(iDavidID);
 	}
 }

@@ -3,9 +3,10 @@ package org.caleydo.view.browser;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
 import org.eclipse.swt.browser.Browser;
@@ -60,8 +61,7 @@ public class IDExtractionLocationListener extends LocationAdapter {
 			if (iDavidId == null || iDavidId == -1)
 				return;
 
-			PathwayVertexGraphItem vertexItemBuffer = generalManager
-					.getPathwayItemManager()
+			PathwayVertexGraphItem vertexItemBuffer = PathwayItemManager.get()
 					.getPathwayVertexGraphItemByDavidId(iDavidId);
 
 			if (vertexItemBuffer == null)

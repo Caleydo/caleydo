@@ -12,7 +12,6 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionType;
@@ -22,7 +21,6 @@ import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -35,6 +33,8 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.rcp.view.listener.AddPathwayListener;
 import org.caleydo.rcp.view.listener.IRemoteRenderingHandler;
 import org.caleydo.rcp.view.listener.LoadPathwaysByGeneListener;
@@ -128,8 +128,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 	@Override
 	public void initRemote(final GL gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener,
-			GLInfoAreaManager infoAreaManager) {
+			final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
 
@@ -181,10 +180,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		disk.zoomTree(diskZoomIntensity);
 
 		// renders the tree and all of it's nodes using the zoomed coordinates
-		disk
-				.renderTree(gl, textureManager, pickingManager, iUniqueID,
-						(float) viewFrustum.getWidth(), (float) viewFrustum
-								.getHeight());
+		disk.renderTree(gl, textureManager, pickingManager, iUniqueID,
+				(float) viewFrustum.getWidth(), (float) viewFrustum.getHeight());
 
 		// if (!containedGLViews.isEmpty()) {
 		//
@@ -225,8 +222,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 			SimpleSlerp actualSlerp = new SimpleSlerp();
 
 			// the ending condition of the slerp is the correct angle
-			actualSlerp.endingCondition = disk
-					.calculateCorrectDiskRotation(disk.getCenteredNode());
+			actualSlerp.endingCondition = disk.calculateCorrectDiskRotation(disk
+					.getCenteredNode());
 
 			actualSlerp.speed = 10;
 
@@ -252,22 +249,20 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	 * @param GL
 	 */
 	private void initNewView(GL gl) {
-		if (!newViews.isEmpty()
-				&& GeneralManager.get().getPathwayManager()
-						.isPathwayLoadingFinished() && arSlerpActions.isEmpty()) {
+		if (!newViews.isEmpty() && PathwayManager.get().isPathwayLoadingFinished()
+				&& arSlerpActions.isEmpty()) {
 
 			ASerializedView serView = newViews.remove(0);
 			AGLView view = createView(gl, serView);
 
-			ViewHyperbolicNode node = new ViewHyperbolicNode(tree, view
-					.getLabel(), 1, view);
+			ViewHyperbolicNode node = new ViewHyperbolicNode(tree, view.getLabel(), 1,
+					view);
 			disk.insertNode(node, disk.getCenteredNode());
 
 		}
 	}
 
-	private void renderRemoteLevelElement(final GL gl,
-			RemoteLevelElement element) {
+	private void renderRemoteLevelElement(final GL gl, RemoteLevelElement element) {
 
 		AGLView glView = element.getGLView();
 
@@ -294,8 +289,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		// - glView.getViewFrustum().getHeight() / 2f * scale.y(),
 		// translation.z());
 		gl.glTranslatef(translation.x(), translation.y(), translation.z());
-		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(),
-				axis.z());
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
@@ -435,16 +429,14 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		AGLView glView = cmdView.getCreatedObject();
 		if (glView instanceof IDataDomainBasedView<?>) {
-			((IDataDomainBasedView<IDataDomain>) glView)
-					.setDataDomain(DataDomainManager.getInstance()
-							.getDataDomain(serView.getDataDomainType()));
+			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
+					.getInstance().getDataDomain(serView.getDataDomainType()));
 		}
 
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
 
-			glPathway.setPathway(((SerializedPathwayView) serView)
-					.getPathwayID());
+			glPathway.setPathway(((SerializedPathwayView) serView).getPathwayID());
 			glPathway.enablePathwayTextures(true);
 			glPathway.enableNeighborhood(false);
 			glPathway.enableGeneMapping(false);
@@ -474,10 +466,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 				// move the node exactly in the middle of the disk
 				float[] translationVector = new float[2];
-				translationVector[0] = disk.getCenteredNode().getPosition()[0]
-						* -1;
-				translationVector[1] = disk.getCenteredNode().getPosition()[1]
-						* -1;
+				translationVector[0] = disk.getCenteredNode().getPosition()[0] * -1;
+				translationVector[1] = disk.getCenteredNode().getPosition()[1] * -1;
 				disk.translateTreeMoebius(translationVector);
 
 				arSlerpActions.remove(0);
@@ -490,8 +480,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 			if (simpleSlerp.doASlerp() == true) {
 
 				// calculating the differential slerp angle
-				double relativeSimpleSlerpState = simpleSlerp.state
-						- previousSimpleSlerp;
+				double relativeSimpleSlerpState = simpleSlerp.state - previousSimpleSlerp;
 
 				// rotating the disk with the differential slerp angle
 				disk.rotateDisk(simpleSlerp.state - this.previousSimpleSlerp);
@@ -505,23 +494,21 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	}
 
 	// displays a node using a remote view
-	public void drawRemoteView(GL gl, PoincareNode node, float[] position,
-			float size) {
+	public void drawRemoteView(GL gl, PoincareNode node, float[] position, float size) {
 
 		Transform transform = new Transform();
 		remoteNodeElement.setGLView(((ViewHyperbolicNode) node).getGlView());
-		//remoteNodeElement.getGLView().getViewFrustum().setBottom(fBottom)
+		// remoteNodeElement.getGLView().getViewFrustum().setBottom(fBottom)
 		// if a node is totally zoomed in, the remote view of the node is
 		// displayed on the full hyperbolic view
-		if (this.displayFullView == true
-				&& (this.disk.getCenteredNode() == node)) {
+		if (this.displayFullView == true && (this.disk.getCenteredNode() == node)) {
 			transform.setScale(new Vec3f(1, 1, 1));
 			transform.setTranslation(new Vec3f(0, 0, 0.1f));
 		} else {
 			// in this case, the size of the displayed remote view depends on
 			// the position of the node
 			transform.setScale(new Vec3f(size, size * fAspectRatio, 1));
-			
+
 			transform.setTranslation(new Vec3f(position[0], position[1], 0));
 		}
 
@@ -543,8 +530,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 
 		tree.setRootNode(node);
 
-		node = new ViewHyperbolicNode(tree, "child_pathway", 1,
-				createPathwayView(gl));
+		node = new ViewHyperbolicNode(tree, "child_pathway", 1, createPathwayView(gl));
 		tree.addChild(tree.getRoot(), node);
 
 		for (int i = 0; i < 5; i++) {
@@ -566,17 +552,16 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 				"org.caleydo.datadomain.pathway");
 		// serTestPathway.setPathwayID(generalManager.getPathwayManager().searchPathwayByName("TGF-beta signaling pathway",
 		// EPathwayDatabaseType.KEGG).getID());
-		serPathway.setPathwayID(((PathwayGraph) (generalManager
-				.getPathwayManager().getAllItems().toArray()[randomGenerator
-				.nextInt(generalManager.getPathwayManager().getAllItems()
-						.size())])).getID());
+		serPathway.setPathwayID(((PathwayGraph) (PathwayManager.get().getAllItems()
+				.toArray()[randomGenerator.nextInt(PathwayManager.get().getAllItems()
+				.size())])).getID());
 
 		return (GLPathway) createView(gl, serPathway);
 	}
 
 	// called, if the user focuses a point on the display with his eyes
 	public boolean setEyeTrackerAction(int[] mouseCoord, float[] offset,
-			float[] scalation,boolean eyeControlled) {
+			float[] scalation, boolean eyeControlled) {
 		// if (this.get != null) {
 		if (this.displayFullView) {
 			return false;
@@ -596,9 +581,9 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 			mousePoint[1] = ((this.getParentGLCanvas().getHeight() - mousePoint[1])
 					* factorY - offset[1]) * 2 - 1;
 		}
-		
-		PoincareNode selectedNode = disk.processEyeTrackerAction(mousePoint
-				.clone(), arSlerpActions, eyeControlled);
+
+		PoincareNode selectedNode = disk.processEyeTrackerAction(mousePoint.clone(),
+				arSlerpActions, eyeControlled);
 
 		if (selectedNode == disk.getCenteredNode()) {
 			return true;
@@ -618,8 +603,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 	@Override
 	public void addPathwayView(int iPathwayID) {
 
-		if (!generalManager.getPathwayManager().isPathwayVisible(
-				generalManager.getPathwayManager().getItem(iPathwayID))) {
+		if (!PathwayManager.get().isPathwayVisible(
+				PathwayManager.get().getItem(iPathwayID))) {
 			SerializedPathwayView serPathway = new SerializedPathwayView(
 					"org.caleydo.datadomain.pathway");
 			serPathway.setPathwayID(iPathwayID);
@@ -627,7 +612,6 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler {
 		}
 	}
 
-	@Override
 	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
 
 		for (PathwayGraph pathway : newPathwayGraphs) {

@@ -1,4 +1,4 @@
-package org.caleydo.core.data.graph.pathway.item.vertex;
+package org.caleydo.datadomain.pathway.graph.item.vertex;
 
 import java.io.Serializable;
 

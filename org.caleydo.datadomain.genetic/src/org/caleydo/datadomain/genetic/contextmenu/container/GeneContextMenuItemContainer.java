@@ -8,6 +8,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.genetic.contextmenu.item.LoadPathwaysByGeneItem;
 import org.caleydo.datadomain.genetic.contextmenu.item.ShowPathwaysByGeneItem;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
  * Implementation of AItemContainer for Genes. By passing a RefSeq int code all
@@ -45,7 +46,7 @@ public class GeneContextMenuItemContainer extends AItemContainer {
 			sGeneSymbol = "Unkonwn Gene";
 		addHeading(sGeneSymbol);
 
-		if (GeneralManager.get().getPathwayManager().isPathwayLoadingFinished()) {
+		if (PathwayManager.get().isPathwayLoadingFinished()) {
 			LoadPathwaysByGeneItem loadPathwaysByGeneItem = new LoadPathwaysByGeneItem();
 			loadPathwaysByGeneItem.setDavid(dataDomain.getPrimaryContentMappingType(),
 					davidID);

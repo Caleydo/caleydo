@@ -2,13 +2,10 @@ package org.caleydo.rcp.view.listener;
 
 import java.util.Set;
 
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.event.IListenerOwner;
 
 public interface IRemoteRenderingHandler
 	extends IListenerOwner {
-
-	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs);
 
 	public void setConnectionLinesEnabled(boolean enabled);
 

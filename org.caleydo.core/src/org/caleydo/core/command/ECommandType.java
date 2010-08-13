@@ -41,8 +41,6 @@ public enum ECommandType {
 	CREATE_VIEW_SWT_GLCANVAS("cmd", "type", "-1", "Create SWT GL Canvas"),
 	CREATE_VIEW_RCP_GLCANVAS("cmd", "type", "-1", "Create RCP GL Canvas"),
 
-	LOAD_PATHWAY_DATA("cmd", "type", "-1", "load pathway data"),
-
 	SYSTEM_SHUT_DOWN("cmd", "type", "-1", "Caleydo system shut down"),
 
 	TAG_CMD("cmd", "Cmd", ""),

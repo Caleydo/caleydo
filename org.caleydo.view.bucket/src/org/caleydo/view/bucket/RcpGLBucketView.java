@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.rcp.view.rcp.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -52,7 +53,7 @@ public class RcpGLBucketView extends ARcpGLViewPart {
 		GeneralManager.get().getViewGLCanvasManager()
 				.getConnectedElementRepresentationManager().clearByView(view.getID());
 
-		GeneralManager.get().getPathwayManager().resetPathwayVisiblityState();
+		PathwayManager.get().resetPathwayVisiblityState();
 	}
 
 	@Override

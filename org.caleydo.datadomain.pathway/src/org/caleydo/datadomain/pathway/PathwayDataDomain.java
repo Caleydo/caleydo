@@ -7,9 +7,10 @@ import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.datadomain.pathway.parser.BioCartaPathwayImageMapSaxHandler;
 import org.caleydo.datadomain.pathway.parser.KgmlSaxHandler;
-import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
+import org.caleydo.datadomain.pathway.rcp.PathwayLoadingProgressIndicatorAction;
 
 /**
  * TODO The use case for pathway input data.
@@ -21,7 +22,7 @@ import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 @XmlRootElement
 public class PathwayDataDomain
 	extends ADataDomain {
-	
+
 	IDType primaryIDType;
 
 	/**
@@ -31,8 +32,8 @@ public class PathwayDataDomain
 		
 		dataDomainType = "org.caleydo.datadomain.pathway";
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
-		
-		
+
+		PathwayManager.get().triggerParsingPathwayDatabases();
 
 		KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
 		GeneralManager.get().getXmlParserManager().registerAndInitSaxHandler(kgmlParser);
@@ -49,5 +50,4 @@ public class PathwayDataDomain
 	public IDType getPrimaryIDType() {
 		return primaryIDType;
 	}
-
 }

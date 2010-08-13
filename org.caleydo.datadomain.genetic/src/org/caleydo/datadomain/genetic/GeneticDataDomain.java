@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.IDCategory;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentVAType;
@@ -39,6 +38,9 @@ import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListen
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.genetic.contextmenu.container.GeneContextMenuItemContainer;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
  * Use case specialized to genetic data.
@@ -108,7 +110,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		} else if (sLevel.equals("only_context")) {
 			// Only apply only_context when pathways are loaded
 			// TODO we need to wait for the pathways to be loaded here!
-			if (GeneralManager.get().getPathwayManager().size() > 100) {
+			if (PathwayManager.get().size() > 100) {
 				dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 			} else {
 				dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
@@ -146,8 +148,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 				if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 					// Here all values are contained within pathways as well
-					PathwayVertexGraphItem tmpPathwayVertexGraphItem = GeneralManager
-							.get().getPathwayItemManager()
+					PathwayVertexGraphItem tmpPathwayVertexGraphItem = PathwayItemManager.get()
 							.getPathwayVertexGraphItemByDavidId(iDavidID);
 
 					if (tmpPathwayVertexGraphItem == null) {

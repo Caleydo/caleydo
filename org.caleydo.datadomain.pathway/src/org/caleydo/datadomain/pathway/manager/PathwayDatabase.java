@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.specialized.genetic.pathway;
+package org.caleydo.datadomain.pathway.manager;
 
 import static org.caleydo.core.manager.IGeneralManager.CALEYDO_FOLDER;
 import static org.caleydo.core.manager.IGeneralManager.CALEYDO_FOLDER_TEMPLATE;

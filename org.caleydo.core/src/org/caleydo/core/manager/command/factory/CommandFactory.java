@@ -12,7 +12,6 @@ import org.caleydo.core.command.data.CmdSetDataRepresentation;
 import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
-import org.caleydo.core.command.system.CmdLoadPathwayData;
 import org.caleydo.core.command.system.CmdSystemExit;
 import org.caleydo.core.command.view.opengl.CmdCreateView;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
@@ -95,10 +94,6 @@ public class CommandFactory
 			}
 			case SYSTEM_SHUT_DOWN: {
 				createdCommand = new CmdSystemExit(cmdType);
-				break;
-			}
-			case LOAD_PATHWAY_DATA: {
-				createdCommand = new CmdLoadPathwayData(cmdType);
 				break;
 			}
 			case SET_DATA_REPRESENTATION: {

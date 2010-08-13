@@ -2,7 +2,6 @@ package org.caleydo.core.view.opengl.util.overlay.infoarea;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
