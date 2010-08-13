@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.view.genesearch.RcpGeneSearchView"
+            icon="resources/icons/search.png"
+            id="org.caleydo.view.genesearch"
+            name="genesearch">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.caleydo.menu.view"
+               label="View">
+            <command
+                  commandId="org.caleydo.view.template.command.opentemplate"
+                  icon="resources/icons/icon.png"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.genesearch.command.handler.OpenGeneSearchHandler"
+            id="org.caleydo.view.genesearch.command.opengenesearch"
+            name="Genesearch">
+      </command>
+   </extension>
+
+</plugin>
