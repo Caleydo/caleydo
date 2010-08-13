@@ -207,6 +207,19 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 	}
 
 	@Override
+	public void resetView(boolean reinitialize) {
+
+		if (reinitialize) {
+			PathwayManager.get().resetPathwayVisiblityState();
+		}
+	}
+	
+	@Override
+	public boolean readyForLoadingNewViews() {
+		return super.readyForLoadingNewViews();
+	}
+	
+	@Override
 	public void setConnectionLinesEnabled(boolean enabled) {
 		// TODO Auto-generated method stub
 

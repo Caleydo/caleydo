@@ -379,7 +379,7 @@ public class ChooseProjectTypePage
 		btnLoadBioCartaPathwayData.setText("BioCarta");
 
 		// Set pathway databases which was used in last session
-		if (sLastChosenPathwayDataSources.contains(EPathwayDatabaseType.KEGG.name())) {
+		if (sLastChosenPathwayDataSources.contains("KEGG")) {
 			btnLoadKEGGPathwayData.setSelection(true);
 			btnLoadKEGGPathwayData.setEnabled(true);
 		}
@@ -388,7 +388,7 @@ public class ChooseProjectTypePage
 			bLoadKEGGPathwayData = false;
 		}
 
-		if (sLastChosenPathwayDataSources.contains(EPathwayDatabaseType.BIOCARTA.name())) {
+		if (sLastChosenPathwayDataSources.contains("BioCarta")) {
 			btnLoadBioCartaPathwayData.setSelection(true);
 			bLoadBioCartaPathwayData = true;
 		}

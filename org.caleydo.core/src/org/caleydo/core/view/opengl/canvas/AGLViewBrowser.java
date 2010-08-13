@@ -1321,10 +1321,6 @@ public abstract class AGLViewBrowser
 			containedGLViews.clear();
 		}
 
-		if (reinitialize) {
-			generalManager.getPathwayManager().resetPathwayVisiblityState();
-		}
-
 		// Send out remove broadcast for views that are currently slerped
 		for (SlerpAction slerpAction : arSlerpActions) {
 			viewManager.getGLView(slerpAction.getElementId()).broadcastElements(EVAOperation.REMOVE_ELEMENT);
@@ -1537,7 +1533,7 @@ public abstract class AGLViewBrowser
 		if (isSlerpActive)
 			return;
 
-		if (!newViews.isEmpty() && GeneralManager.get().getPathwayManager().isPathwayLoadingFinished()
+		if (!newViews.isEmpty() && readyForLoadingNewViews()
 			&& arSlerpActions.isEmpty()) {
 
 			ASerializedView serView = newViews.remove(0);
@@ -1573,6 +1569,10 @@ public abstract class AGLViewBrowser
 				enableUserInteraction();
 			}
 		}
+	}
+
+	public boolean readyForLoadingNewViews() {
+		return true;
 	}
 
 	/**

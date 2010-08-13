@@ -89,11 +89,11 @@ public class CaleydoProjectWizard
 				String sNewPathwayDataSources = "";
 				if (page.isKEGGPathwayDataLoadingRequested()) {
 					loadPathways = true;
-					sNewPathwayDataSources += EPathwayDatabaseType.KEGG.name() + ";";
+					sNewPathwayDataSources += "KEGG" + ";";
 				}
 				if (page.isBioCartaPathwayLoadingRequested()) {
 					loadPathways = true;
-					sNewPathwayDataSources += EPathwayDatabaseType.BIOCARTA.name() + ";";
+					sNewPathwayDataSources += "BioCarta" + ";";
 				}
 
 				if (sNewPathwayDataSources != prefStore

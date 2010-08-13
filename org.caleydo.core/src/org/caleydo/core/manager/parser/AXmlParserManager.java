@@ -74,21 +74,9 @@ public abstract class AXmlParserManager
 
 		IXmlParserHandler buffer = currentHandler;
 
-		// generalManager.logMsg(
-		// "AXmlParserManger.closeCurrentTag() key=[" +
-		// currentHandler.getXmlActivationTag() + "] " +
-		// currentHandler.getClass().getSimpleName(),
-		// LoggerType.VERBOSE_EXTRA );
-
 		if (!llXmlParserStack.isEmpty()) {
 
-			// llXmlParserStack.removeLast();
-
 			if (!llXmlParserStack.remove(buffer))
-				// generalManager.logMsg(
-				// "AXmlParserManger.closeCurrentTag() can not remove IXmlParserHandler from list, because it is not inside!"
-				// ,
-				// LoggerType.MINOR_ERROR);
 				return false;
 
 			/**
@@ -99,18 +87,18 @@ public abstract class AXmlParserManager
 				 * stack is empty, set currentHandler null!
 				 */
 				currentHandler = null;
-			} // if ( llXmlParserStack.isEmpty() )
+			}
 			else {
 				/**
 				 * Get previous item from stack.
 				 */
 				currentHandler = llXmlParserStack.getLast();
-			} // else .. if ( llXmlParserStack.isEmpty() )
+			}
 
-		} // if ( ! llXmlParserStack.isEmpty() ) {
+		}
 		else {
 			currentHandler = null;
-		} // else ... if ( ! llXmlParserStack.isEmpty() ) {
+		}
 
 		/**
 		 * Clean up XmlParserHandler..
@@ -119,14 +107,6 @@ public abstract class AXmlParserManager
 			unregisterSaxHandler(buffer.getXmlActivationTag());
 			buffer.destroyHandler();
 			buffer = null;
-		}
-		else {
-			// generalManager.logMsg(
-			// "AXmlParserManger.closeCurrentTag() key=[" +
-			// buffer.getXmlActivationTag() + "] " +
-			// buffer.getClass().getSimpleName() +
-			// " do not destroyHandler() since it may be needed later on.",
-			// LoggerType.FULL );
 		}
 
 		return true;
@@ -157,12 +137,6 @@ public abstract class AXmlParserManager
 
 		hashTag2XmlParser.put(key, handler);
 
-		// generalManager.logMsg(
-		// "XmlParserManager.registerAndInitSaxHandler( key=["
-		// + handler.getXmlActivationTag() + "] " +
-		// handler.getClass().getSimpleName() + " ) done.",
-		// LoggerType.TRANSITION );
-
 		handler.initHandler();
 
 		return true;
@@ -191,81 +165,5 @@ public abstract class AXmlParserManager
 	@Override
 	public final IXmlParserHandler getCurrentXmlParserHandler() {
 		return this.currentHandler;
-	}
-
-	public boolean parseOnce(final String sFileName) {
-
-		InputSource inputSource;
-
-		// FIXME: not smart to parse for hsa and mmu when searching kegg pathways
-		if (sFileName.contains("hsa") || sFileName.contains("mmu")) {
-			inputSource =
-				GeneralManager.get().getPathwayManager().getPathwayResourceLoader(EPathwayDatabaseType.KEGG)
-					.getInputSource(sFileName);
-		}
-		else if (sFileName.contains("h_") || sFileName.contains("m_")) {
-
-			inputSource =
-				GeneralManager.get().getPathwayManager().getPathwayResourceLoader(
-					EPathwayDatabaseType.BIOCARTA).getInputSource(sFileName);
-		}
-		else
-			try {
-				inputSource = generalManager.getResourceLoader().getInputSource(sFileName);
-			}
-			catch (FileNotFoundException e) {
-				throw new IllegalStateException("Cannot load input file " + sFileName);
-			}
-
-		try {
-			XMLReader reader = null;
-
-			if (sFileName.contains(".xml")) {
-				reader = XMLReaderFactory.createXMLReader();
-
-				// Entity resolver avoids the XML Reader
-				// to check external DTDs.
-				reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-
-				reader.setEntityResolver(this);
-				reader.setContentHandler(this);
-			}
-			else {
-				reader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
-				// reader.setFeature(org.ccil.cowan.tagsoup.Parser.
-				// defaultAttributesFeature, false);
-
-				reader.setEntityResolver(this);
-				reader.setContentHandler(this);
-
-				HTMLSchema htmlSchema = new HTMLSchema();
-				reader.setProperty(Parser.schemaProperty, htmlSchema);
-			}
-
-			// generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-			// "Start parsing file " + sFileName));
-
-			reader.parse(inputSource);
-
-			if (inputSource.getByteStream() != null) {
-				inputSource.getByteStream().close();
-			}
-			else if (inputSource.getCharacterStream() != null) {
-				inputSource.getCharacterStream().close();
-			}
-
-			// generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-			// "Finished parsing file " + sFileName));
-
-		}
-		catch (SAXException saxe) {
-			throw new IllegalStateException("SAXParser-error during parsing file " + sFileName
-				+ ".\n SAX error: " + saxe.toString());
-		}
-		catch (IOException ioe) {
-			throw new IllegalStateException("IO-error during parsing");
-		}
-
-		return true;
 	}
 }

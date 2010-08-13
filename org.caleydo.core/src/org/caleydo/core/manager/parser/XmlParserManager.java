@@ -1,12 +1,19 @@
 package org.caleydo.core.manager.parser;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Iterator;
 
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.command.CommandSaxHandler;
 import org.caleydo.core.parser.xml.sax.handler.recursion.OpenExternalXmlFileSaxHandler;
+import org.ccil.cowan.tagsoup.HTMLSchema;
+import org.ccil.cowan.tagsoup.Parser;
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * Administer several XML-SaxHandelers. Switches between several XML-SaxHandeler automatically, based by a
@@ -25,7 +32,7 @@ public class XmlParserManager
 	@Override
 	public void initHandlers() {
 		OpenExternalXmlFileSaxHandler externalFileHandler = new OpenExternalXmlFileSaxHandler();
-		
+
 		CommandSaxHandler cmdHandler = new CommandSaxHandler();
 
 		registerAndInitSaxHandler(externalFileHandler);
@@ -42,14 +49,9 @@ public class XmlParserManager
 		setXmlFileProcessedNow(false);
 
 		if (currentHandler != null) {
-			// generalManager.logMsg( "XmlParserManager.endDocument()  key=[" +
-			// currentHandler.getXmlActivationTag() + "]  call " +
-			// currentHandler.getClass().getSimpleName() +
-			// ".endDocument() ...",
-			// LoggerType.FULL );
 
 			currentHandler.endDocument();
-		} // if ( currentHandler != null )
+		}
 		else {
 			if (bUnloadSaxHandlerAfterBootstraping) {
 				this.destroyHandler();
@@ -61,8 +63,6 @@ public class XmlParserManager
 	public void startElement(String uri, String localName, String qName, Attributes attrib)
 		throws SAXException {
 		if (currentHandler == null) {
-			// generalManager.logMsg( " < TAG= " + qName,
-			// LoggerType.FULL );
 
 			startElementSearch4Tag(uri, localName, qName, attrib);
 
@@ -71,7 +71,7 @@ public class XmlParserManager
 				 * forwared event if currentHandler was set inside startElement_search4Tag(..)
 				 */
 				currentHandler.startElement(uri, localName, qName, attrib);
-			} // if ( currentHandler != null )
+			}
 
 			/* early return from if () */
 			return;
@@ -98,7 +98,6 @@ public class XmlParserManager
 			IXmlParserHandler handler = hashTag2XmlParser.get(qName);
 
 			try
-			// catch (SAXException se)
 			{
 				/**
 				 * Register handler only if it is not the OpenExternalXmlFileSaxHandler ...
@@ -118,18 +117,6 @@ public class XmlParserManager
 
 				}
 
-				/**
-				 * Regular case: register new handler ...
-				 */
-
-				// generalManager.logMsg(
-				// "AXmlParserManager.openCurrentTag( key=[" +
-				// handler.getXmlActivationTag() + "] " +
-				// handler.getClass().getSimpleName() + " )",
-				// LoggerType.VERBOSE_EXTRA );
-				/**
-				 * register new handler ...
-				 */
 				llXmlParserStack.add(handler);
 				currentHandler = handler;
 
@@ -140,23 +127,14 @@ public class XmlParserManager
 				// se.toString(),
 				// LoggerType.ERROR );
 
-			} // try .. catch (SAXException se)
-
-		} // if ( hashTag2XmlParser.containsKey( qName ) )
-
+			}
+		}
 	}
 
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 
-		// generalManager.logMsg( "        " + qName + " TAG -->",
-		// LoggerType.FULL );
-
 		if (currentHandler != null) {
-			// if ( sCurrentClosingTag.equals( qName ) ) {
-			// this.closeCurrentTag();
-			// return;
-			// }
 
 			currentHandler.endElement(uri, localName, qName);
 		}
@@ -203,22 +181,77 @@ public class XmlParserManager
 	}
 
 	@Override
-	public boolean parseXmlFileByName(final String sFileName) {
-		return parseOnce(sFileName);
+	public boolean parseXmlFileByName(final String fileName) {
+
+		InputSource inputSource = getInputSource(fileName);
+
+		try {
+			XMLReader reader = null;
+
+			if (fileName.contains(".xml")) {
+				reader = XMLReaderFactory.createXMLReader();
+
+				// Entity resolver avoids the XML Reader
+				// to check external DTDs.
+				reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
+				reader.setEntityResolver(this);
+				reader.setContentHandler(this);
+			}
+			else {
+				reader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
+				// reader.setFeature(org.ccil.cowan.tagsoup.Parser.
+				// defaultAttributesFeature, false);
+
+				reader.setEntityResolver(this);
+				reader.setContentHandler(this);
+
+				HTMLSchema htmlSchema = new HTMLSchema();
+				reader.setProperty(Parser.schemaProperty, htmlSchema);
+			}
+
+			// generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+			// "Start parsing file " + sFileName));
+
+			reader.parse(inputSource);
+
+			if (inputSource.getByteStream() != null) {
+				inputSource.getByteStream().close();
+			}
+			else if (inputSource.getCharacterStream() != null) {
+				inputSource.getCharacterStream().close();
+			}
+
+			// generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+			// "Finished parsing file " + sFileName));
+
+		}
+		catch (SAXException saxe) {
+			throw new IllegalStateException("SAXParser-error during parsing file " + fileName
+				+ ".\n SAX error: " + saxe.toString());
+		}
+		catch (IOException ioe) {
+			throw new IllegalStateException("IO-error during parsing");
+		}
+
+		return true;
+	}
+	
+	public InputSource getInputSource(String fileName) {
+		
+		InputSource inputSource = null;
+		try {
+			inputSource = generalManager.getResourceLoader().getInputSource(fileName);
+		}
+		catch (FileNotFoundException e) {
+			throw new IllegalStateException("Cannot load input file " + fileName);
+		}
+		return inputSource;
 	}
 
 	public void destroyHandler() {
-		if (llXmlParserStack == null) {
-			// generalManager.logMsg(
-			// "XmlParserManager.destoryHandler() llXmlParserStack is null",
-			// LoggerType.FULL );
-		} // if ( llXmlParserStack == null )
-		else {
-			// generalManager.logMsg(
-			// "XmlParserManager.destoryHandler() llXmlParserStack remove objects.."
-			// ,
-			// LoggerType.FULL );
-
+		
+		if (llXmlParserStack != null) {
 			if (!llXmlParserStack.isEmpty()) {
 				Iterator<IXmlParserHandler> iterParserHandler = llXmlParserStack.iterator();
 
@@ -227,30 +260,14 @@ public class XmlParserManager
 
 					unregisterSaxHandler(handler.getXmlActivationTag());
 					handler.destroyHandler();
-				} // while ( iterParserHandler.hasNext() )
+				}
 
 				llXmlParserStack.clear();
-
-			} // if ( ! llXmlParserStack.isEmpty() )
-
+			}
 			llXmlParserStack = null;
-		} // else .. if ( llXmlParserStack == null )
+		}
 
-		/**
-		 * Hashtable ...
-		 */
-
-		if (hashTag2XmlParser == null) {
-			// generalManager.logMsg(
-			// "XmlParserManager.destoryHandler() hashTag2XmlParser is null",
-			// LoggerType.FULL );
-		} // if ( hashTag2XmlParser == null )
-		else {
-			// generalManager.logMsg(
-			// "XmlParserManager.destoryHandler() hashTag2XmlParser remove objects.."
-			// ,
-			// LoggerType.FULL );
-
+		if (hashTag2XmlParser != null) {
 			if (!hashTag2XmlParser.isEmpty()) {
 				Iterator<IXmlParserHandler> iterHandler = hashTag2XmlParser.values().iterator();
 
@@ -261,21 +278,10 @@ public class XmlParserManager
 						handler.destroyHandler();
 						handler = null;
 					}
-
-				} // while ( iterHandler.hasNext() )
-
+				}
 				hashTag2XmlParser.clear();
-
-			} // if ( ! hashTag2XmlParser.isEmpty() ) {
+			}
 			hashTag2XmlParser = null;
-
-		} // else .. if ( hashTag2XmlParser == null )
-
-		// generalManager.logMsg( "XmlParserManager.destoryHandler() ... done!",
-		// LoggerType.FULL );
-
-		// generalManager.logMsg( "XML file was read sucessfully.",
-		// LoggerType.STATUS );
-
+		}
 	}
 }
