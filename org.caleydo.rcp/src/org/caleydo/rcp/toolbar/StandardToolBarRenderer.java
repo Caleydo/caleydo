@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
 import org.caleydo.rcp.action.toolbar.general.ImportDataAction;
-import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
 import org.caleydo.rcp.action.toolbar.general.RestoreOriginalDataAction;
 import org.caleydo.rcp.action.toolbar.general.SaveProjectAction;
 import org.caleydo.rcp.action.toolbar.view.ClearSelectionsAction;
@@ -66,7 +65,7 @@ public class StandardToolBarRenderer
 		toolBarManager.add(new TakeSnapshotAction());
 
 		toolBarManager2.add(new StartClusteringAction());
-		toolBarManager2.add(new OpenSearchViewAction());
+//		toolBarManager2.add(new OpenSearchViewAction());
 		toolBarManager2.add(new ClearSelectionsAction());
 		toolBarManager2.add(new RestoreOriginalDataAction());
 		

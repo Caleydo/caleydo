@@ -3,10 +3,8 @@ package org.caleydo.rcp.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
 import org.caleydo.rcp.action.toolbar.general.ImportDataAction;
-import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
 import org.caleydo.rcp.action.toolbar.general.RestoreOriginalDataAction;
 import org.caleydo.rcp.action.toolbar.general.SaveProjectAction;
 import org.caleydo.rcp.action.toolbar.view.ClearSelectionsAction;
@@ -71,9 +69,9 @@ public class WideScreenToolBarRenderer
 		// IToolBarItem startClustering = new StartClusteringAction(targetViewID);
 		// actionList.add(startClustering);
 
-		if (DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic") != null) {
-			toolBarManager2.add(new OpenSearchViewAction());
-		}
+//		if (DataDomainManager.getInstance().getDataDomain("org.caleydo.datadomain.genetic") != null) {
+//			toolBarManager2.add(new OpenSearchViewAction());
+//		}
 
 		toolBarManager2.add(new ClearSelectionsAction());
 		toolBarManager2.add(new StartClusteringAction());
