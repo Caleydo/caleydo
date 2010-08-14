@@ -40,7 +40,7 @@ public class LookupTableLoader
 		super(sFileName);
 
 		this.mappingType = mappingType;
-		
+
 		swtGuiManager = GeneralManager.get().getSWTGUIManager();
 		genomeIdManager = GeneralManager.get().getIDMappingManager();
 
@@ -68,9 +68,9 @@ public class LookupTableLoader
 				try {
 					// Check if line consists of just one entity
 					if (sLine.length() != 0 && strTokenText.countTokens() == 1) {
+						
 						// Special case for creating indexing of storages
-						// TODO review sLine should be integer?
-						if (mappingType.getToIDType().getTypeName().equals("CONTENT")) {
+						if (mappingType.getToIDType().getTypeName().equals("content_")) {
 
 							// Remove multiple RefSeqs because all point to the
 							// same gene DAVID ID
@@ -109,11 +109,11 @@ public class LookupTableLoader
 							String buffer = strTokenText.nextToken();
 
 							// Special case for creating indexing of storages
-							if (mappingType.getToIDType().getTypeName().equals("CONTENT")) {
+							if (mappingType.getToIDType().getTypeName().contains("content_")) {
 
-//								if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX)) {
-									// Remove multiple RefSeqs because all point to
-									// the same gene DAVID ID
+								if (mappingType.getFromIDType().getTypeName().equals("REF_SEQ")) {
+//									 Remove multiple RefSeqs because all point to
+//									 the same gene DAVID ID
 									if (buffer.contains(";")) {
 										buffer = sLine.substring(0, sLine.indexOf(";"));
 									}
@@ -121,7 +121,7 @@ public class LookupTableLoader
 									// Remove version in RefSeq (NM_*.* -> NM_*)
 									if (buffer.contains(".")) {
 										buffer = buffer.substring(0, buffer.indexOf("."));
-//									}
+									}
 								}
 
 								// Check for integer values that must be ignored

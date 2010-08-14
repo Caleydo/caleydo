@@ -25,7 +25,7 @@ import org.caleydo.core.util.system.StringConversionTool;
 public class CmdLoadFileLookupTable
 	extends ACmdExternalAttributes {
 
-	protected String sFileName;
+	protected String fileName;
 
 	private String sLookupTableInfo;
 
@@ -89,7 +89,7 @@ public class CmdLoadFileLookupTable
 
 		super.setParameterHandler(parameterHandler);
 
-		sFileName = detail;
+		fileName = detail;
 		sLookupTableInfo = attrib1;
 		sLookupTableDelimiter = attrib2;
 
@@ -118,7 +118,7 @@ public class CmdLoadFileLookupTable
 		this.sLookupTableInfo = sLookupTableInfo;
 		this.sLookupTableDelimiter = sLookupTableDelimiter;
 		this.sCodeResolvingLUTTypes = sCodeResolvingLUTTypes;
-		this.sFileName = sFileName;
+		this.fileName = sFileName;
 
 		extractParameters();
 	}
@@ -159,9 +159,9 @@ public class CmdLoadFileLookupTable
 	public void doCommand() {
 		LookupTableLoader loader = null;
 
-		if (sFileName.contains("ORGANISM")) {
+		if (fileName.contains("ORGANISM")) {
 			EOrganism eOrganism = GeneralManager.get().getOrganism();
-			this.sFileName = sFileName.replace("ORGANISM", eOrganism.toString());
+			this.fileName = fileName.replace("ORGANISM", eOrganism.toString());
 		}
 
 		IIDMappingManager genomeIdManager = generalManager.getIDMappingManager();
@@ -183,13 +183,8 @@ public class CmdLoadFileLookupTable
 			genomeIdManager.createCodeResolvedMap(mappingType, codeResolvedFromIDType, codeResolvedToIDType);
 		}
 
-		/* --- create reverse Map ... --- */
-		if (bCreateReverseMap) {
-			genomeIdManager.createReverseMap(mappingType);
-		}
-
 		int iIndex = 0;
-		if (sFileName.equals("generate")) {
+		if (fileName.equals("generate")) {
 
 			Map<String, Integer> hashTmp = genomeIdManager.getMap(mappingType);
 			for (Object refSeqIDObject : genomeIdManager.getMap(
@@ -198,13 +193,17 @@ public class CmdLoadFileLookupTable
 				hashTmp.put((String) refSeqIDObject, iIndex++);
 			}
 		}
-		else if (!sFileName.equals("already_loaded")) {
-			loader = new LookupTableLoader(sFileName, mappingType);
+		else if (!fileName.equals("already_loaded")) {
+			loader = new LookupTableLoader(fileName, mappingType);
 			loader.setTokenSeperator(sLookupTableDelimiter);
 			loader.setStartParsingStopParsingAtLine(iStartPareseFileAtLine, iStopParseFileAtLine);
 			loader.loadData();
 		}
 
+		/* --- create reverse Map ... --- */
+		if (bCreateReverseMap) {
+			genomeIdManager.createReverseMap(mappingType);
+		}
 	}
 
 	@Override

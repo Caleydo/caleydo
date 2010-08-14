@@ -54,7 +54,6 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 	private static final String CLINICAL_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
 
-
 	/**
 	 * <code>TRUE</code>if only pathways can be displayed (no gene-expression
 	 * data), <code>FALSE</code> otherwise
