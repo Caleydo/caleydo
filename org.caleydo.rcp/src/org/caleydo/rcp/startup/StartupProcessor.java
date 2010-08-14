@@ -106,7 +106,8 @@ public class StartupProcessor {
 
 		if (startupProcedure == null) {
 
-			Shell shell = display.getActiveShell();
+			Shell shell = new Shell();
+			shell.setActive();
 			WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
 
 			if (projectWizardDialog.open() == Window.CANCEL) {
