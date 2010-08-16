@@ -30,6 +30,9 @@ public class GUIStartupProcedure
 	public void init(ApplicationInitData appInitData) {
 
 		super.init(appInitData);
+		
+		GeneralManager.get().getXmlParserManager().parseXmlFileByName("data/bootstrap/bootstrap.xml");
+		
 
 		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
 		cmd.setAttributes("org.caleydo.datadomain.genetic");
@@ -37,7 +40,6 @@ public class GUIStartupProcedure
 
 		GeneralManager.get().setOrganism(Organism.HOMO_SAPIENS);
 
-		GeneralManager.get().getXmlParserManager().parseXmlFileByName("data/bootstrap/bootstrap.xml");
 		
 		if (loadSampleData) {	
 			appInitData.setLoadPathways(true);
