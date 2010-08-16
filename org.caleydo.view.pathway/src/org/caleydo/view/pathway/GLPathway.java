@@ -171,12 +171,6 @@ public class GLPathway extends AGLView implements
 		vecScaling = new Vec3f(1, 1, 1);
 		vecTranslation = new Vec3f(0, 0, 0);
 
-		// initialize internal gene selection manager
-		selectionManager = new SelectionManager(dataDomain.getPrimaryIDType());
-
-		// textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 24),
-		// false);
-
 	}
 
 	public void setPathway(final PathwayGraph pathway) {
@@ -1049,7 +1043,9 @@ public class GLPathway extends AGLView implements
 	@Override
 	public void setDataDomain(PathwayDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-
+		
+		// initialize internal gene selection manager
+		selectionManager = new SelectionManager(dataDomain.getPrimaryIDType());
 	}
 
 	public ASetBasedDataDomain getMappingDataDomain() {

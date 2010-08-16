@@ -44,7 +44,7 @@ public class PathwayLoadingProgressIndicatorAction
 						// monitor.worked(50);
 					}
 
-					if (sPathwayDataSources.contains(EPathwayDatabaseType.BIOCARTA.name())) {
+					if (sPathwayDataSources.contains(EPathwayDatabaseType.BIOCARTA.getName())) {
 						monitor.subTask("BioCarta");
 
 						PathwayManager.get().createPathwayDatabase(

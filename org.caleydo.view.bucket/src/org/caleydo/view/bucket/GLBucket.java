@@ -2569,7 +2569,6 @@ public class GLBucket extends AGLView implements
 				.createCommandByType(ECommandType.CREATE_GL_VIEW);
 		cmdView.setViewID(serView.getViewType());
 		cmdView.setAttributesFromSerializedForm(serView);
-		// cmdView.setSet(set);
 		cmdView.doCommand();
 
 		AGLView glView = cmdView.getCreatedObject();

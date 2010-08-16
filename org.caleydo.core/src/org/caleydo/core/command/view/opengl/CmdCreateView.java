@@ -40,7 +40,7 @@ public class CmdCreateView
 	protected Vec3f cameraOrigin;
 	protected Rotf cameraRotation;
 
-	protected Integer parentCanvasID;
+	protected Integer parentCanvasID = -1;
 
 	/**
 	 * Constructor.

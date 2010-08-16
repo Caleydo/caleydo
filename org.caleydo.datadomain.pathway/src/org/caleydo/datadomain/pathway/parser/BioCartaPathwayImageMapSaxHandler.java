@@ -16,7 +16,6 @@ import org.xml.sax.SAXException;
 
 /**
  * Class is able to parse BioCarta pathway files. The creation of the pathway objects is triggered.
- * 
  * @author Marc Streit
  */
 public class BioCartaPathwayImageMapSaxHandler

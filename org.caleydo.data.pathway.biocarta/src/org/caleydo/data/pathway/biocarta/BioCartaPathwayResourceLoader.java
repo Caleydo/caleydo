@@ -1,4 +1,4 @@
-package org.caleydo.datadomain.pathway.parser;
+package org.caleydo.data.pathway.biocarta;
 
 import java.io.BufferedReader;
 import java.io.File;

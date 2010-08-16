@@ -123,14 +123,12 @@ public class IDMappingManager
 			}
 		}
 
-		MappingType edge =
-			new MappingType(reverseType.getFromIDType(), reverseType.getToIDType(), reverseType.isMultiMap());
-		mappingGraph.addEdge(reverseType.getFromIDType(), reverseType.getToIDType(), edge);
+		mappingGraph.addEdge(reverseType.getFromIDType(), reverseType.getToIDType(), reverseType);
 		if (reverseType.isMultiMap()) {
-			mappingGraph.setEdgeWeight(edge, Double.MAX_VALUE);
+			mappingGraph.setEdgeWeight(reverseType, Double.MAX_VALUE);
 		}
 		else {
-			mappingGraph.setEdgeWeight(edge, 1);
+			mappingGraph.setEdgeWeight(reverseType, 1);
 		}
 	}
 
@@ -323,7 +321,6 @@ public class IDMappingManager
 
 		// Add new code resolved map
 		hashMappingType2Map.put(destMappingType, codeResolvedMap);
-
 		mappingGraph.addEdge(destMappingType.getFromIDType(), destMappingType.getToIDType(), mappingType);
 		if (destMappingType.isMultiMap()) {
 			mappingGraph.setEdgeWeight(mappingType, Double.MAX_VALUE);
