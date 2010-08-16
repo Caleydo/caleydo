@@ -1,4 +1,4 @@
-package org.caleydo.core.application.mapping;
+package org.caleydo.data.mapping;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,12 +10,10 @@ import java.io.PrintWriter;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
-import org.caleydo.core.manager.IGeneralManager;
-
 public class MappingBuilder_BioCartaGeneID2Accession {
 
 	private static String BIOCARTA_INPUT_FOLDER_PATH =
-		System.getProperty("user.home") + File.separator + IGeneralManager.CALEYDO_FOLDER + File.separator
+		System.getProperty("user.home") + File.separator + ".caleydo_1.3" + File.separator
 			+ "cgap.nci.nih.gov/Genes";
 
 	// private static String OUTPUT_FILE_PATH =

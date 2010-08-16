@@ -1,4 +1,4 @@
-package org.caleydo.core.application.helper.cacher;
+package org.caleydo.core.util;
 
 import java.util.Enumeration;
 import java.util.Properties;

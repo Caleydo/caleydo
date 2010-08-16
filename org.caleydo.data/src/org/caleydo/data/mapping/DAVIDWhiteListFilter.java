@@ -1,4 +1,4 @@
-package org.caleydo.core.application.mapping.david;
+package org.caleydo.data.mapping;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
