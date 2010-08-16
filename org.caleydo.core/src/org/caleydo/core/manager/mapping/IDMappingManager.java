@@ -64,7 +64,7 @@ public class IDMappingManager
 		if (!mappingGraph.containsVertex(toIDType))
 			mappingGraph.addVertex(toIDType);
 
-		MappingType mappingType = new MappingType(fromIDType, toIDType, isMultiMap);
+		MappingType mappingType = MappingType.registerMappingType(fromIDType, toIDType, isMultiMap);
 		hashMappingTypeString2MappingType.put(mappingType.toString(), mappingType);
 		mappingGraph.addEdge(fromIDType, toIDType, mappingType);
 		if (mappingType.isMultiMap()) {
@@ -84,10 +84,10 @@ public class IDMappingManager
 	public <SrcType, DestType> void createReverseMap(MappingType srcMappingType) {
 
 		MappingType reverseType =
-			new MappingType(srcMappingType.getToIDType(), srcMappingType.getFromIDType(),
+			MappingType.registerMappingType(srcMappingType.getToIDType(), srcMappingType.getFromIDType(),
 				srcMappingType.isMultiMap());
 		hashMappingTypeString2MappingType.put(reverseType.toString(), reverseType);
-		
+
 		Map<DestType, SrcType> reverseMap;
 
 		if (srcMappingType.isMultiMap()) {
@@ -124,6 +124,7 @@ public class IDMappingManager
 		}
 
 		mappingGraph.addEdge(reverseType.getFromIDType(), reverseType.getToIDType(), reverseType);
+
 		if (reverseType.isMultiMap()) {
 			mappingGraph.setEdgeWeight(reverseType, Double.MAX_VALUE);
 		}
@@ -145,7 +146,8 @@ public class IDMappingManager
 		IDType destKeyType = codeResolvedFromType;
 		IDType destValueType = codeResolvedToType;
 
-		MappingType destMappingType = new MappingType(codeResolvedFromType, codeResolvedToType, false); //MULTI??
+		MappingType destMappingType =
+			MappingType.registerMappingType(codeResolvedFromType, codeResolvedToType, false); // MULTI??
 		hashMappingTypeString2MappingType.put(mappingType.toString(), mappingType);
 
 		Map<KeyType, ValueType> srcMap = (Map<KeyType, ValueType>) hashMappingType2Map.get(mappingType);
@@ -162,15 +164,15 @@ public class IDMappingManager
 				if (originKeyType.getStorageType() == EStorageType.INT
 					&& destValueType.getStorageType() == EStorageType.INT) {
 					codeResolvedMap = new HashMap<Integer, Integer>();
-			
+
 					if (!mappingType.isMultiMap()) {
 						codeResolvedMap = new HashMap<Integer, Integer>();
 
 						for (KeyType key : srcMap.keySet()) {
 							codeResolvedMap.put(
 								key,
-								generalManager.getIDMappingManager().getID(originValueType,
-									destValueType, srcMap.get(key)));
+								generalManager.getIDMappingManager().getID(originValueType, destValueType,
+									srcMap.get(key)));
 						}
 					}
 					else {
@@ -181,8 +183,8 @@ public class IDMappingManager
 						for (KeyType key : srcMap.keySet()) {
 							for (String sID : srcMultiMap.getAll(key)) {
 								iID =
-									generalManager.getIDMappingManager().getID(
-										originValueType, destValueType, sID);
+									generalManager.getIDMappingManager().getID(originValueType,
+										destValueType, sID);
 
 								if (iID == null || iID == -1) {
 									continue;
@@ -217,8 +219,8 @@ public class IDMappingManager
 						for (KeyType key : srcMap.keySet()) {
 							codeResolvedMap.put(
 								key,
-								generalManager.getIDMappingManager().getID(originValueType,
-									destValueType, srcMap.get(key)));
+								generalManager.getIDMappingManager().getID(originValueType, destValueType,
+									srcMap.get(key)));
 						}
 					}
 					else {
@@ -229,8 +231,8 @@ public class IDMappingManager
 						for (KeyType key : srcMap.keySet()) {
 							for (String sID : srcMultiMap.getAll(key)) {
 								iID =
-									generalManager.getIDMappingManager().getID(
-										originValueType, destValueType, sID);
+									generalManager.getIDMappingManager().getID(originValueType,
+										destValueType, sID);
 
 								if (iID == null || iID == -1) {
 									continue;

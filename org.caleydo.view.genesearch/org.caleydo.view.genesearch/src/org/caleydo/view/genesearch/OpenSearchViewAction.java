@@ -1,8 +1,7 @@
-package org.caleydo.rcp.action.toolbar.general;
+package org.caleydo.view.genesearch;
 
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.view.toolbar.action.AToolBarAction;
-import org.caleydo.view.template.RcpSearchView;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -29,7 +28,7 @@ public class OpenSearchViewAction
 		super.run();
 
 		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(RcpSearchView.ID);
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(RcpGeneSearchView.VIEW_ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

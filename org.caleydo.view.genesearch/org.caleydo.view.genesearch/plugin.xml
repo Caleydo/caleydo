@@ -9,7 +9,7 @@
             class="org.caleydo.view.genesearch.RcpGeneSearchView"
             icon="resources/icons/search.png"
             id="org.caleydo.view.genesearch"
-            name="genesearch">
+            name="Search for Genes">
       </view>
    </extension>
    <extension
@@ -18,10 +18,10 @@
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
                id="org.caleydo.menu.view"
-               label="View">
+               label="Search for Genes">
             <command
-                  commandId="org.caleydo.view.template.command.opentemplate"
-                  icon="resources/icons/icon.png"
+                  commandId="org.caleydo.view.genesearch.command.opengenesearch"
+                  icon="resources/icons/search.png"
                   style="push">
             </command>
          </menu>
@@ -32,7 +32,7 @@
       <command
             defaultHandler="org.caleydo.view.genesearch.command.handler.OpenGeneSearchHandler"
             id="org.caleydo.view.genesearch.command.opengenesearch"
-            name="Genesearch">
+            name="Search for Genes">
       </command>
    </extension>
 

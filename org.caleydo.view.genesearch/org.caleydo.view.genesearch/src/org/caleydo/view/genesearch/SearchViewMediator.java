@@ -3,6 +3,7 @@ package org.caleydo.view.genesearch;
 import java.util.ArrayList;
 import java.util.Set;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -40,11 +41,11 @@ public class SearchViewMediator {
 		LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
 		loadPathwaysByGeneEvent.setSender(this);
 		loadPathwaysByGeneEvent.setGeneID((davidID));
-		loadPathwaysByGeneEvent.setIDType(EIDType.DAVID);
+		loadPathwaysByGeneEvent.setIDType(IDType.getIDType("DAVID"));
 		eventPublisher.triggerEvent(loadPathwaysByGeneEvent);
 	}
 
-	public void selectGeneSystemWide(int davidID) {
+	public void selectGeneSystemWide(IDType contentIDType, int davidID) {
 
 		// First the current selections need to be cleared
 		ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
@@ -55,11 +56,10 @@ public class SearchViewMediator {
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 		selectionUpdateEvent.setSender(this);
 
-		ISelectionDelta delta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
+		ISelectionDelta delta = new SelectionDelta(contentIDType);
 
-		Set<Integer> setExpIndex =
-			GeneralManager.get().getIDMappingManager().getIDAsSet(EIDType.DAVID, EIDType.EXPRESSION_INDEX,
-				davidID);
+		Set<Integer> setExpIndex = GeneralManager.get().getIDMappingManager()
+				.getIDAsSet(IDType.getIDType("DAVID"), contentIDType, davidID);
 
 		ArrayList<Integer> alExpressionIndex = null;
 
