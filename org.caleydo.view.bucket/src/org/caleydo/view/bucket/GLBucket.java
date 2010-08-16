@@ -349,7 +349,6 @@ public class GLBucket extends AGLView implements
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0.1f, 4.1f,
 				-20, 20, -1);
 		cmdCreateGLView.setDataDomainType(dataDomain.getDataDomainType());
-		cmdCreateGLView.setParentCanvasID(this.parentGLCanvas.getID());
 		cmdCreateGLView.doCommand();
 		glBookmarkContainer = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
 		glBookmarkContainer.setRemoteRenderingGLView(this);

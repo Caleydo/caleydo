@@ -426,7 +426,6 @@ public class GLParallelCoordinates extends AStorageBasedView implements
 		cmdCreateGLView.setViewID("org.caleydo.view.bookmarking");
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f,
 				viewFrustum.getBottom(), viewFrustum.getTop(), -20, 20, -1);
-		cmdCreateGLView.setParentCanvasID(parentGLCanvas.getID());
 		cmdCreateGLView.setDataDomainType(dataDomain.getDataDomainType());
 		cmdCreateGLView.doCommand();
 		glBookmarks = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
