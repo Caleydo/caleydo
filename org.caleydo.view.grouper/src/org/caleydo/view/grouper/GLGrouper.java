@@ -157,7 +157,6 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
 				selectionTypeClicked);
 		eventPublisher.triggerEvent(selectionTypeEvent);
-		selectionManager.addTypeToDeltaBlacklist(selectionTypeClicked);
 
 		renderStyle = new GrouperRenderStyle(viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32), true, true);
@@ -174,21 +173,6 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 	@Override
 	public void init(GL gl) {
 
-		// DataDomainManager.getInstance().getDataDomain()
-		set = dataDomain.getSet();
-
-		storageVA = set.getStorageData(StorageVAType.STORAGE).getStorageVA();
-		drawingStrategyManager = new DrawingStrategyManager(pickingManager, iUniqueID,
-				renderStyle);
-		if (set.getStorageData(storageVAType).getStorageTree() != null) {
-			// FIXME: do that differently.
-			// set = set.getStorageTree().getRoot().getMetaSet();
-			tree = set.getStorageData(storageVAType).getStorageTree();
-			selectionManager = new SelectionManager(tree.getNodeIDType());
-			initHierarchy(tree);
-		} else {
-			createNewHierarchy();
-		}
 	}
 
 	@Override
@@ -1326,8 +1310,24 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+
 		this.dataDomain = dataDomain;
-
+		
+		setSet(this.dataDomain.getSet());
+		
+		storageVA = set.getStorageData(StorageVAType.STORAGE).getStorageVA();
+		drawingStrategyManager = new DrawingStrategyManager(pickingManager, iUniqueID,
+				renderStyle);
+		if (set.getStorageData(storageVAType).getStorageTree() != null) {
+			// FIXME: do that differently.
+			// set = set.getStorageTree().getRoot().getMetaSet();
+			tree = set.getStorageData(storageVAType).getStorageTree();
+			selectionManager = new SelectionManager(tree.getNodeIDType());
+			initHierarchy(tree);
+		} else {
+			createNewHierarchy();
+		}
+		
+		selectionManager.addTypeToDeltaBlacklist(selectionTypeClicked);
 	}
-
 }

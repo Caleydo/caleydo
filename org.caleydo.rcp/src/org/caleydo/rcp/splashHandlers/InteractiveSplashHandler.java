@@ -20,10 +20,14 @@ public class InteractiveSplashHandler
 	extends AbstractSplashHandler {
 	private ProgressBar progressBar;
 
+	private static Shell shell;
+	
 	@Override
 	public void init(Shell splash) {
 		// Store the shell
 		super.init(splash);
+		
+		shell = splash;
 
 		// Create UI
 		createUI();
@@ -36,6 +40,10 @@ public class InteractiveSplashHandler
 		// "resources/icons/caleydo16.gif"));
 
 		splash.setText("Loading Caleydo...");
+	}
+	
+	public static Shell getShell() {
+		return shell;
 	}
 
 	private void createUI() {

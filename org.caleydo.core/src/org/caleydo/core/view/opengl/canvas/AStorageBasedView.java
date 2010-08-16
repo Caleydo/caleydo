@@ -385,13 +385,6 @@ public abstract class AStorageBasedView
 	}
 
 	// @Override
-	// public void setSet(ISet set) {
-	// super.setSet(set);
-	//
-	// // resetView();
-	// }
-
-	// @Override
 	// public void triggerEvent(EMediatorType eMediatorType, IEventContainer
 	// eventContainer) {
 	// generalManager.getEventPublisher().triggerEvent(eMediatorType, this,

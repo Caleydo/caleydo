@@ -11,6 +11,7 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.ApplicationWorkbenchAdvisor;
 import org.caleydo.rcp.core.bridge.RCPBridge;
+import org.caleydo.rcp.splashHandlers.InteractiveSplashHandler;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -105,7 +106,7 @@ public class StartupProcessor {
 		GeneralManager.get().getGUIBridge().init();
 
 		if (startupProcedure == null) {
-			Shell shell = display.getActiveShell();
+			Shell shell = InteractiveSplashHandler.getShell();
 			WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
 
 			if (projectWizardDialog.open() == Window.CANCEL) {
