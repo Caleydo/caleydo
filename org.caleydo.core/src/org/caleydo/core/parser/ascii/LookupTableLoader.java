@@ -1,4 +1,4 @@
-package org.caleydo.core.parser.ascii.lookuptable;
+package org.caleydo.core.parser.ascii;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +11,6 @@ import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.mapping.MappingType;
-import org.caleydo.core.parser.ascii.AbstractLoader;
 
 /**
  * Abstract lookup table loader.
@@ -205,12 +204,6 @@ public class LookupTableLoader
 
 	@Override
 	protected void setArraysToStorages() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void init() {
 		// TODO Auto-generated method stub
 
 	}

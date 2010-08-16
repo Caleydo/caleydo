@@ -15,8 +15,7 @@ import org.eclipse.core.runtime.Status;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public abstract class AbstractLoader
-	implements IParserObject {
+public abstract class AbstractLoader {
 	/**
 	 * File name
 	 */
@@ -59,10 +58,8 @@ public abstract class AbstractLoader
 	public AbstractLoader(final String sFileName) {
 		this.sFileName = sFileName;
 		this.swtGuiManager = GeneralManager.get().getSWTGUIManager();
-
-		init();
 	}
-
+	
 	/**
 	 * Set the current token separator.
 	 * 
@@ -122,10 +119,6 @@ public abstract class AbstractLoader
 
 		if (iStartParsingAtLine > iStopParsingAtLine) {
 			this.iStopParsingAtLine = Integer.MAX_VALUE;
-			// generalManager.logMsg(
-			// "AMicroArrayLoader.setStartParsingStopParsingAtLine() stop index is smaller than start index. set stop index to end of file!"
-			// ,
-			// LoggerType.MINOR_ERROR );
 			return;
 		}
 		this.iStopParsingAtLine = iStopParsingAtLine;

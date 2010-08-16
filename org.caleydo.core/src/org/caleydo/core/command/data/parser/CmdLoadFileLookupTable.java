@@ -9,10 +9,9 @@ import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.mapping.MappingType;
-import org.caleydo.core.manager.specialized.EOrganism;
-import org.caleydo.core.parser.ascii.lookuptable.LookupTableLoader;
+import org.caleydo.core.manager.specialized.Organism;
+import org.caleydo.core.parser.ascii.LookupTableLoader;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.system.StringConversionTool;
 
@@ -160,7 +159,7 @@ public class CmdLoadFileLookupTable
 		LookupTableLoader loader = null;
 
 		if (fileName.contains("ORGANISM")) {
-			EOrganism eOrganism = GeneralManager.get().getOrganism();
+			Organism eOrganism = GeneralManager.get().getOrganism();
 			this.fileName = fileName.replace("ORGANISM", eOrganism.toString());
 		}
 

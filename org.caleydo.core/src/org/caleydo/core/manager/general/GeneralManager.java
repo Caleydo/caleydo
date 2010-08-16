@@ -17,7 +17,7 @@ import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.caleydo.core.manager.id.IDCreator;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.parser.XmlParserManager;
-import org.caleydo.core.manager.specialized.EOrganism;
+import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;
@@ -66,7 +66,7 @@ public class GeneralManager
 	private SerializationManager serializationManager;
 	private IStatisticsPerformer rStatisticsPerformer;
 
-	private EOrganism organism = EOrganism.HOMO_SAPIENS;
+	private Organism organism = Organism.HOMO_SAPIENS;
 
 	private boolean bIsWiiMode = false;
 
@@ -121,11 +121,11 @@ public class GeneralManager
 		return generalManager;
 	}
 
-	public EOrganism getOrganism() {
+	public Organism getOrganism() {
 		return organism;
 	}
 
-	public void setOrganism(EOrganism organism) {
+	public void setOrganism(Organism organism) {
 		this.organism = organism;
 	}
 

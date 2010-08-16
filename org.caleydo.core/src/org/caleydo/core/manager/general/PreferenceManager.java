@@ -13,7 +13,7 @@ import java.io.IOException;
 
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.view.browser.EBrowserQueryType;
-import org.caleydo.core.manager.specialized.EOrganism;
+import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -125,7 +125,7 @@ public class PreferenceManager {
 		store.setDefault(PreferenceConstants.VERSION, IGeneralManager.VERSION);
 		store.setDefault(PreferenceConstants.FIRST_START, true);
 		store.setDefault(PreferenceConstants.PATHWAY_DATA_OK, "");
-		store.setDefault(PreferenceConstants.LAST_CHOSEN_ORGANISM, EOrganism.HOMO_SAPIENS.name());
+		store.setDefault(PreferenceConstants.LAST_CHOSEN_ORGANISM, Organism.HOMO_SAPIENS.name());
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES, "KEGG;BioCarta");
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE, "SAMPLE_PROJECT");
 		store.setDefault(PreferenceConstants.USE_PROXY, false);

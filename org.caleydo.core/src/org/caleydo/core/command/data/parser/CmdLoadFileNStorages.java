@@ -10,7 +10,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
+import org.caleydo.core.parser.ascii.TabularAsciiDataReader;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.eclipse.core.runtime.IStatus;

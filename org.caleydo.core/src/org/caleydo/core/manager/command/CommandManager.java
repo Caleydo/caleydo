@@ -5,7 +5,6 @@ import org.caleydo.core.command.ICommand;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.command.factory.CommandFactory;
-import org.caleydo.core.manager.command.factory.ICommandFactory;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
@@ -17,7 +16,8 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
 public class CommandManager
 	extends AManager<ICommand>
 	implements ICommandManager {
-	private ICommandFactory commandFactory;
+
+	private CommandFactory commandFactory;
 
 	/**
 	 * Constructor.

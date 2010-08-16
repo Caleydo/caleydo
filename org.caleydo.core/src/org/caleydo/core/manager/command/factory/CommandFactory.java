@@ -25,8 +25,8 @@ import org.caleydo.core.manager.general.GeneralManager;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public class CommandFactory
-	implements ICommandFactory {
+public class CommandFactory {
+	
 	private ICommand lastCommand;
 
 	protected final IGeneralManager generalManager;
@@ -41,7 +41,13 @@ public class CommandFactory
 		this.commandManager = generalManager.getCommandManager();
 	}
 
-	@Override
+	/**
+	 * Create a new Command assigned to a cmdType.
+	 * 
+	 * @param cmdType
+	 *            specify the ICommand to be created.
+	 * @return new ICommand
+	 */
 	public ICommand createCommandByType(final ECommandType cmdType) {
 		ICommand createdCommand = null;
 

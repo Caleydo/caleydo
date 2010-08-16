@@ -1,4 +1,4 @@
-package org.caleydo.core.parser.ascii.tabular;
+package org.caleydo.core.parser.ascii;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,8 +16,6 @@ import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.parser.ascii.AbstractLoader;
-import org.caleydo.core.parser.ascii.IParserObject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -31,8 +29,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Alexander Lex
  */
 public class TabularAsciiDataReader
-	extends AbstractLoader
-	implements IParserObject {
+	extends AbstractLoader {
 
 	/**
 	 * Imports data from file to this set. uses first storage and overwrites first selection.
@@ -68,8 +65,6 @@ public class TabularAsciiDataReader
 		alStringBuffers = new ArrayList<ArrayList<String>>();
 
 		alGroupInfo = new ArrayList<int[]>();
-
-		init();
 	}
 
 	/**
@@ -353,16 +348,6 @@ public class TabularAsciiDataReader
 						+ storageType.toString());
 			}
 		}
-	}
-
-	/**
-	 * Init data structures. Use this to reset the state also!
-	 * 
-	 * @see org.caleydo.core.parser.ascii.IParserObject#init()
-	 */
-	public void init() {
-
-		iLineInFile = 0;
 	}
 
 	public ArrayList<EStorageType> getColumnDataTypes() {

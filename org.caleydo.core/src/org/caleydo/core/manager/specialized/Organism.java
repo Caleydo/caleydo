@@ -5,7 +5,7 @@ package org.caleydo.core.manager.specialized;
  * 
  * @author Marc Streit
  */
-public enum EOrganism {
+public enum Organism {
 
 	/**
 	 * Human

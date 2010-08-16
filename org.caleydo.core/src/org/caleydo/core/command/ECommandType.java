@@ -15,18 +15,11 @@ public enum ECommandType {
 	 */
 	LOAD_DATA_FILE("cmd", "type", "", "No description available!"),
 	LOAD_LOOKUP_TABLE_FILE("cmd", "type", "", "Load a lookup table"),
-	LOAD_ON_DEMAND("cmd", "process", "LOAD_ON_DEMAND", "No description available!"),
 
 	SET_DATA_REPRESENTATION("cmd", "type", "-1", "Set data representation (Raw, Log2, Log10)"),
 	DATA_FILTER_MIN_MAX("cmd", "type", "-1", "Evaluate min and max of an entity"),
 
-	EVENT_MEDIATOR_ADD_OBJECT("cmd", "type", null, "Add Objects ad sender or receiver to Event Mediator"),
-
 	CREATE_GL_VIEW("cmd", "type", "-1", "Create GL View"),
-
-	EXTERNAL_OBJECT_SETTER("cmd", "type", "-1", "External object setter"),
-	EXTERNAL_FLAG_SETTER("cmd", "type", "-1", "External flag setter"),
-	EXTERNAL_ACTION_TRIGGER("cmd", "type", "-1", "External action trigger"),
 
 	CREATE_DATA_DOMAIN("cmd", "type", "-1", "Create Data Domain"),
 	CREATE_SET_DATA("cmd", "type", "-1", "Create SET"),
@@ -38,7 +31,6 @@ public enum ECommandType {
 
 	CREATE_SWT_WINDOW("cmd", "type", "-1", "Create SWT window"),
 	CREATE_SWT_CONTAINER("cmd", "type", "-1", "Create SWTContainer"),
-//	CREATE_VIEW_SWT_GLCANVAS("cmd", "type", "-1", "Create SWT GL Canvas"),
 	CREATE_VIEW_RCP_GLCANVAS("cmd", "type", "-1", "Create RCP GL Canvas"),
 
 	SYSTEM_SHUT_DOWN("cmd", "type", "-1", "Caleydo system shut down"),

@@ -5,7 +5,7 @@ import java.io.File;
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.IDCreator;
-import org.caleydo.core.manager.specialized.EOrganism;
+import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
@@ -129,5 +129,5 @@ public interface IGeneralManager {
 	 */
 	public SerializationManager getSerializationManager();
 
-	public EOrganism getOrganism();
+	public Organism getOrganism();
 }
