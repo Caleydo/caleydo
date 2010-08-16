@@ -29,7 +29,7 @@ public abstract class AView
 
 	protected IEventPublisher eventPublisher;
 
-	protected int iParentContainerId;
+	protected int parentContainerID;
 
 	protected Composite parentComposite;
 
@@ -44,7 +44,7 @@ public abstract class AView
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 
-		this.iParentContainerId = iParentContainerId;
+		this.parentContainerID = iParentContainerId;
 		this.sLabel = sLabel;
 
 	}
@@ -64,7 +64,7 @@ public abstract class AView
 	 * @param iParentContainerId
 	 */
 	public void setParentContainerId(int iParentContainerId) {
-		this.iParentContainerId = iParentContainerId;
+		this.parentContainerID = iParentContainerId;
 	}
 
 	@Override
@@ -95,6 +95,7 @@ public abstract class AView
 		SelectionCommandEvent event = new SelectionCommandEvent();
 		event.setSender(this);
 		event.setSelectionCommand(command);
+		event.setIDCategory(genomeType.getIDCategory());
 		eventPublisher.triggerEvent(event);
 	}
 

@@ -39,7 +39,7 @@ public abstract class ASWTView
 		 */
 		SWTNativeWidget sWTNativeWidget =
 			(SWTNativeWidget) generalManager.getSWTGUIManager().createWidget(
-				EManagedObjectType.GUI_SWT_NATIVE_WIDGET, iParentContainerId);
+				EManagedObjectType.GUI_SWT_NATIVE_WIDGET, parentContainerID);
 
 		parentComposite = sWTNativeWidget.getSWTWidget();
 

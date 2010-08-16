@@ -351,6 +351,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	@Override
 	public void handleForeignSelectionCommand(String dataDomainType,
 			IDCategory idCategory, SelectionCommand selectionCommand) {
+		
 		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE && idCategory == storageIDCategory) {
 			SelectionCommandEvent newCommandEvent = new SelectionCommandEvent();
 			newCommandEvent.setSelectionCommand(selectionCommand);
