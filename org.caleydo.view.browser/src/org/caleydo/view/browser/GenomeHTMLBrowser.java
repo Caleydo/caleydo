@@ -133,11 +133,6 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 				.getContentIDCategory())
 			return;
 
-		// Prevent handling of non genetic entities
-		// if
-		// (!dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
-		// return;
-
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				if (!checkInternetConnection())
