@@ -20,11 +20,13 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IDataDomain;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISetBasedDataDomain;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
@@ -1802,6 +1804,7 @@ public class GLBucket extends AGLView implements
 				PathwayManager.get().getItem(iPathwayID))) {
 			SerializedPathwayView serPathway = new SerializedPathwayView(
 					dataDomain.getDataDomainType());
+			serPathway.setDataDomainType("org.caleydo.datadomain.pathway");
 			serPathway.setPathwayID(iPathwayID);
 			newViews.add(serPathway);
 		}
@@ -2575,8 +2578,8 @@ public class GLBucket extends AGLView implements
 		glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof IDataDomainBasedView<?>) {
-			((IDataDomainBasedView<ISetBasedDataDomain>) glView)
-					.setDataDomain(dataDomain);
+			((IDataDomainBasedView<IDataDomain>) glView)
+					.setDataDomain((IDataDomain) DataDomainManager.getInstance().getDataDomain(serView.getDataDomainType()));
 		}
 
 		if (glView instanceof GLPathway) {
