@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.EOrganism;
+import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -75,15 +75,15 @@ public class PathwayLoaderThread
 		String sFileName = "";
 		String sPathwayPath = pathwayDatabase.getXMLPath();
 		IPathwayResourceLoader pathwayResourceLoader = null;
-		EOrganism eOrganism =
+		Organism eOrganism =
 			GeneralManager.get().getOrganism();
 
 		if (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG) {
 
-			if (eOrganism == EOrganism.HOMO_SAPIENS) {
+			if (eOrganism == Organism.HOMO_SAPIENS) {
 				sFileName = "data/pathway_list_KEGG_homo_sapiens.txt";
 			}
-			else if (eOrganism == EOrganism.MUS_MUSCULUS) {
+			else if (eOrganism == Organism.MUS_MUSCULUS) {
 				sFileName = "data/pathway_list_KEGG_mus_musculus.txt";
 			}
 			else {
@@ -95,10 +95,10 @@ public class PathwayLoaderThread
 		}
 		else if (pathwayDatabase.getType() == EPathwayDatabaseType.BIOCARTA) {
 
-			if (eOrganism == EOrganism.HOMO_SAPIENS) {
+			if (eOrganism == Organism.HOMO_SAPIENS) {
 				sFileName = "data/pathway_list_BIOCARTA_homo_sapiens.txt";
 			}
-			else if (eOrganism == EOrganism.MUS_MUSCULUS) {
+			else if (eOrganism == Organism.MUS_MUSCULUS) {
 				sFileName = "data/pathway_list_BIOCARTA_mus_musculus.txt";
 			}
 			else {

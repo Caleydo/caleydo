@@ -6,7 +6,7 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.EOrganism;
+import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.eclipse.core.runtime.IExtension;
@@ -61,7 +61,7 @@ public class ChooseProjectTypePage
 
 	private ProjectMode projectMode = ProjectMode.SAMPLE_PROJECT;
 
-	private EOrganism organism;
+	private Organism organism;
 
 	private boolean bLoadKEGGPathwayData;
 	private boolean bLoadBioCartaPathwayData;
@@ -327,7 +327,7 @@ public class ChooseProjectTypePage
 		btnOrganismHuman.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				organism = EOrganism.HOMO_SAPIENS;
+				organism = Organism.HOMO_SAPIENS;
 			}
 		});
 
@@ -337,21 +337,21 @@ public class ChooseProjectTypePage
 		btnOrganismMouse.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				organism = EOrganism.MUS_MUSCULUS;
+				organism = Organism.MUS_MUSCULUS;
 			}
 		});
 
 		// Set organism which was used in last session
-		EOrganism lastChosenOrganism =
-			EOrganism.valueOf(GeneralManager.get().getPreferenceStore().getString(
+		Organism lastChosenOrganism =
+			Organism.valueOf(GeneralManager.get().getPreferenceStore().getString(
 				PreferenceConstants.LAST_CHOSEN_ORGANISM));
-		if (lastChosenOrganism == EOrganism.HOMO_SAPIENS) {
+		if (lastChosenOrganism == Organism.HOMO_SAPIENS) {
 			btnOrganismHuman.setSelection(true);
-			organism = EOrganism.HOMO_SAPIENS;
+			organism = Organism.HOMO_SAPIENS;
 		}
 		else {
 			btnOrganismMouse.setSelection(true);
-			organism = EOrganism.MUS_MUSCULUS;
+			organism = Organism.MUS_MUSCULUS;
 		}
 		btnLoadPathwayData = new Button(composite, SWT.CHECK);
 		btnLoadPathwayData.setText("Load pathway data");
@@ -672,7 +672,7 @@ public class ChooseProjectTypePage
 		return projectLoadType;
 	}
 
-	public EOrganism getOrganism() {
+	public Organism getOrganism() {
 		return organism;
 	}
 

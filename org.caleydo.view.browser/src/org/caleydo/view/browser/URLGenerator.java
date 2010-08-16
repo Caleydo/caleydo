@@ -1,9 +1,6 @@
 package org.caleydo.view.browser;
 
-import java.util.Set;
-
 import org.caleydo.core.manager.event.view.browser.EBrowserQueryType;
-import org.caleydo.core.manager.general.GeneralManager;
 
 public class URLGenerator {
 	public String createURL(EBrowserQueryType eBrowserQueryType, int iDavidID) {

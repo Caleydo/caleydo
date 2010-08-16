@@ -87,8 +87,8 @@ public abstract class AStartupProcedure {
 		if (!appInitData.isLoadPathways())
 			return;
 		
-//		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
-//		cmd.setAttributes("org.caleydo.datadomain.pathway");
-//		cmd.doCommand();
+		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
+		cmd.setAttributes("org.caleydo.datadomain.pathway");
+		cmd.doCommand();
 	}
 }

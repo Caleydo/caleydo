@@ -11,7 +11,6 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.ApplicationWorkbenchAdvisor;
 import org.caleydo.rcp.core.bridge.RCPBridge;
-import org.caleydo.rcp.splashHandlers.InteractiveSplashHandler;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

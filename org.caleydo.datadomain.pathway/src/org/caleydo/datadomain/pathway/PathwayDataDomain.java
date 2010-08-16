@@ -6,8 +6,6 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.datadomain.ADataDomain;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.caleydo.datadomain.pathway.rcp.PathwayLoadingProgressIndicatorAction;
 
 /**
  * TODO The use case for pathway input data.

@@ -7,7 +7,7 @@ import static org.caleydo.core.manager.IGeneralManager.USER_HOME_TEMPLATE;
 import java.io.Serializable;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.EOrganism;
+import org.caleydo.core.manager.specialized.Organism;
 
 /**
  * Class that holds information about a specific pathway database.
@@ -49,13 +49,13 @@ public class PathwayDatabase
 		this.sImageMapPath = this.sImageMapPath.replace(CALEYDO_FOLDER_TEMPLATE, CALEYDO_FOLDER);
 
 		if (type == EPathwayDatabaseType.KEGG) {
-			EOrganism eOrganism = GeneralManager.get().getOrganism();
+			Organism eOrganism = GeneralManager.get().getOrganism();
 
-			if (eOrganism == EOrganism.HOMO_SAPIENS) {
+			if (eOrganism == Organism.HOMO_SAPIENS) {
 				this.sImagePath += "hsa/";
 				this.sXMLPath += "hsa/";
 			}
-			else if (eOrganism == EOrganism.MUS_MUSCULUS) {
+			else if (eOrganism == Organism.MUS_MUSCULUS) {
 				this.sImagePath += "mmu/";
 				this.sXMLPath += "mmu/";
 			}

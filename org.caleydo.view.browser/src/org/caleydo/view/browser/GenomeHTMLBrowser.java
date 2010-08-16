@@ -1,7 +1,6 @@
 package org.caleydo.view.browser;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -11,7 +10,7 @@ import org.caleydo.core.manager.event.view.browser.EBrowserQueryType;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.specialized.EOrganism;
+import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -79,8 +78,8 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 		if (eBrowserQueryType == EBrowserQueryType.GeneCards)
 			queryTypeCombo.select(2);
 
-		EOrganism organism = generalManager.getOrganism();
-		if (organism == EOrganism.HOMO_SAPIENS) {
+		Organism organism = generalManager.getOrganism();
+		if (organism == Organism.HOMO_SAPIENS) {
 			queryTypeCombo.add(EBrowserQueryType.Ensembl_HomoSapiens.getTitle());
 			if (eBrowserQueryType == EBrowserQueryType.Ensembl_HomoSapiens)
 				queryTypeCombo.select(3);
@@ -93,7 +92,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 			if (eBrowserQueryType == EBrowserQueryType.BioCarta_HomoSapiens)
 				queryTypeCombo.select(5);
 
-		} else if (organism == EOrganism.MUS_MUSCULUS) {
+		} else if (organism == Organism.MUS_MUSCULUS) {
 			queryTypeCombo.add(EBrowserQueryType.Ensembl_MusMusculus.getTitle());
 			if (eBrowserQueryType == EBrowserQueryType.Ensembl_MusMusculus)
 				queryTypeCombo.select(3);

@@ -5,7 +5,7 @@ import java.util.List;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.EOrganism;
+import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.rcp.wizard.project.DataImportWizard;
 import org.eclipse.jface.window.Window;
@@ -35,7 +35,7 @@ public class GUIStartupProcedure
 		cmd.setAttributes("org.caleydo.datadomain.genetic");
 		cmd.doCommand();
 
-		GeneralManager.get().setOrganism(EOrganism.HOMO_SAPIENS);
+		GeneralManager.get().setOrganism(Organism.HOMO_SAPIENS);
 
 		GeneralManager.get().getXmlParserManager().parseXmlFileByName("data/bootstrap/bootstrap.xml");
 		
