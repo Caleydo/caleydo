@@ -353,7 +353,6 @@ public class GLBucket extends AGLView implements
 		cmdCreateGLView.doCommand();
 		glBookmarkContainer = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
 		glBookmarkContainer.setRemoteRenderingGLView(this);
-		glBookmarkContainer.setDataDomain(dataDomain);
 		glBookmarkContainer.initData();
 
 		externalSelectionLevel.getElementByPositionIndex(0)

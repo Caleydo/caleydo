@@ -121,20 +121,6 @@ public class GLBookmarkManager extends AGLView implements
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 
 		pickingIDManager = new PickingIDManager();
-
-		ContentBookmarkContainer geneContainer = new ContentBookmarkContainer(this,
-				dataDomain.getContentIDCategory(),
-				dataDomain.getPrimaryContentMappingType());
-		hashCategoryToBookmarkContainer.put(dataDomain.getContentIDCategory(),
-				geneContainer);
-		bookmarkContainers.add(geneContainer);
-
-		ExperimentBookmarkContainer experimentContainer = new ExperimentBookmarkContainer(
-				this);
-		hashCategoryToBookmarkContainer.put(dataDomain.getStorageIDCategory(),
-				experimentContainer);
-		bookmarkContainers.add(experimentContainer);
-
 	}
 
 	@Override
@@ -345,5 +331,18 @@ public class GLBookmarkManager extends AGLView implements
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
+		
+		ContentBookmarkContainer geneContainer = new ContentBookmarkContainer(this,
+				dataDomain.getContentIDCategory(),
+				dataDomain.getPrimaryContentMappingType());
+		hashCategoryToBookmarkContainer.put(dataDomain.getContentIDCategory(),
+				geneContainer);
+		bookmarkContainers.add(geneContainer);
+
+		ExperimentBookmarkContainer experimentContainer = new ExperimentBookmarkContainer(
+				this);
+		hashCategoryToBookmarkContainer.put(dataDomain.getStorageIDCategory(),
+				experimentContainer);
+		bookmarkContainers.add(experimentContainer);
 	}
 }

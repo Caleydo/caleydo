@@ -216,14 +216,13 @@ public class CmdCreateView
 				throw new IllegalStateException(
 					"No dataDomainType was set in CmdCreateView, while trying to create " + viewID);
 			IDataDomain dataDomain = DataDomainManager.getInstance().getDataDomain(dataDomainType);
+			@SuppressWarnings("unchecked")
 			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
 				(IDataDomainBasedView<IDataDomain>) createdObject;
 			dataDomainBasedView.setDataDomain(dataDomain);
 		}
+		
 		createdObject.initialize();
-		//
-		// // Note: for AStoragebasedViews the set for the view is assigned in the setDataDomain method.
-		// createdObject.setDataDomain(dataDomain);
 	}
 
 	@Override
