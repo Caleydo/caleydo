@@ -235,7 +235,7 @@ public class KgmlSaxHandler
 				}
 				catch (Exception e) {
 					// TODO: investigate!!
-					System.out.println("TODO: check why the parsing error occurs");
+//					System.out.println("TODO: check why the parsing error occurs");
 				}
 
 				if (iDavidId == null) {

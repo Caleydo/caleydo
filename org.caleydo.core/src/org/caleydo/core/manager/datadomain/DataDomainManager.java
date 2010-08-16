@@ -46,7 +46,7 @@ public class DataDomainManager {
 	 * Create a new dataDomain
 	 * 
 	 * @param dataDomainType
-	 *            the plug-in id of the datadomain
+	 *            the plug-in id of the data domain
 	 * @return
 	 */
 	public IDataDomain createDataDomain(String dataDomainType) {
@@ -89,7 +89,7 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * register a concrete datadomain
+	 * register a concrete data domain
 	 * 
 	 * @param dataDomain
 	 */

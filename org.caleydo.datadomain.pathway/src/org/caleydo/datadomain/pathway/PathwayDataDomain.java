@@ -5,12 +5,8 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.manager.datadomain.ADataDomain;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.caleydo.datadomain.pathway.manager.PathwayParserManager;
-import org.caleydo.datadomain.pathway.parser.BioCartaPathwayImageMapSaxHandler;
-import org.caleydo.datadomain.pathway.parser.KgmlSaxHandler;
 import org.caleydo.datadomain.pathway.rcp.PathwayLoadingProgressIndicatorAction;
 
 /**
@@ -34,10 +30,10 @@ public class PathwayDataDomain
 		dataDomainType = "org.caleydo.datadomain.pathway";
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 
-		PathwayManager.get().triggerParsingPathwayDatabases();
-		
-		// Trigger pathway loading
-		new PathwayLoadingProgressIndicatorAction().run(null);
+//		PathwayManager.get().triggerParsingPathwayDatabases();
+//		
+//		// Trigger pathway loading
+//		new PathwayLoadingProgressIndicatorAction().run(null);
 		
 		primaryIDType = IDType.getIDType("PATHWAY_VERTEX");
 	}

@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.parser.xml.sax.handler.command.CommandSaxHandler;
+import org.caleydo.core.parser.xml.sax.handler.recursion.OpenExternalXmlFileSaxHandler;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.parser.BioCartaPathwayImageMapSaxHandler;
 import org.caleydo.datadomain.pathway.parser.KgmlSaxHandler;
@@ -87,6 +89,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		rootPathwayGraph = new Graph(0);
 		
 		xmlParserManager = new PathwayParserManager();
+		
 		KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
 		xmlParserManager.registerAndInitSaxHandler(kgmlParser);
 		BioCartaPathwayImageMapSaxHandler biocartaPathwayParser = new BioCartaPathwayImageMapSaxHandler();

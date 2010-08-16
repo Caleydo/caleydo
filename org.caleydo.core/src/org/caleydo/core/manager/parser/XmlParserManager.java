@@ -32,7 +32,6 @@ public class XmlParserManager
 	@Override
 	public void initHandlers() {
 		OpenExternalXmlFileSaxHandler externalFileHandler = new OpenExternalXmlFileSaxHandler();
-
 		CommandSaxHandler cmdHandler = new CommandSaxHandler();
 
 		registerAndInitSaxHandler(externalFileHandler);
@@ -166,13 +165,11 @@ public class XmlParserManager
 		 */
 		setXmlFileProcessedNow(false);
 
-		/**
-		 * 
-		 */
-		if (currentHandler != handler)
-			throw new IllegalStateException("sectionFinishedByHandler() called by wrong handler!");
+//		if (currentHandler != handler)
+//			throw new IllegalStateException("sectionFinishedByHandler() called by wrong handler!");
 
-		closeCurrentTag();
+		if (currentHandler != null)
+			closeCurrentTag();
 
 		/**
 		 * enable processing flag again. Return "token".
