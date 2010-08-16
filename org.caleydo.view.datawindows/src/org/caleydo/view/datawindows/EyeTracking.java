@@ -6,7 +6,7 @@ import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.util.tracking.TrackDataProvider;
 
-public class eyeTracking {
+public class EyeTracking {
 	private int[] rawEyeTrackerPosition;
 	private TrackDataProvider tracker;
 	private float[] receivedEyeData;
@@ -17,13 +17,13 @@ public class eyeTracking {
 	private float radiusOfFixedCoordinate;
 	private String ipTracker;
 	public int debugMode;
-	private ArrayList<eyeCoordinateListEntry> coordinateList;
+	private ArrayList<EyeCoordinateListEntry> coordinateList;
 	private Time time;
 	private double totalTime;
 	private double pauseTime;
 	public double eyeTrackerPauseStatus;
 
-	public eyeTracking(boolean simulation, String ipTracker) {
+	public EyeTracking(boolean simulation, String ipTracker) {
 		setEyeTrackerOffset(new float[2]);
 		debugMode = 0;
 		fixedCoordinate = new int[2];
@@ -37,7 +37,7 @@ public class eyeTracking {
 		time = new SystemTime();
 		((SystemTime) time).rebase();
 		time.update();
-		coordinateList = new ArrayList<eyeCoordinateListEntry>();
+		coordinateList = new ArrayList<EyeCoordinateListEntry>();
 		totalTime = 0;
 		pauseTime = 1;
 		this.eyeTrackerPauseStatus = 0;
@@ -102,13 +102,13 @@ public class eyeTracking {
 		}
 
 		time.update();
-		this.coordinateList.add(new eyeCoordinateListEntry(
+		this.coordinateList.add(new EyeCoordinateListEntry(
 				rawEyeTrackerPosition, totalTime));
 		int size = coordinateList.size();
 	
 		double dx;
 		double dy;
-		eyeCoordinateListEntry actualEntry;
+		EyeCoordinateListEntry actualEntry;
 		double length;
 		for (int i = 0; i < size; i++) {
 			actualEntry = coordinateList.get(i);

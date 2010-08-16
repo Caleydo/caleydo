@@ -1,10 +1,10 @@
 package org.caleydo.view.datawindows;
 
-public class eyeCoordinateListEntry {
+public class EyeCoordinateListEntry {
 	private int[] coordinate;
 	private double time;
 
-	public eyeCoordinateListEntry(int[] coordinate, double time) {
+	public EyeCoordinateListEntry(int[] coordinate, double time) {
 		this.coordinate = new int[2];
 
 		this.coordinate[0] = coordinate[0];

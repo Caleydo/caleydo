@@ -88,7 +88,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	private float[] viewSlerpTargetPoint;
 	private float[] viewSlerpStartPoint;
 
-	private eyeTracking eyeTracker;
+	private EyeTracking eyeTracker;
 
 	private enum remoteViewType {
 		HYPERBOLIC, PARCOORDS, HEATMAP;
@@ -137,7 +137,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		viewport = new int[4];
 		pixelDimensions = new int[2];
 
-		eyeTracker = new eyeTracking(true, "192.168.1.100");
+		eyeTracker = new EyeTracking(true, "192.168.1.100");
 		if (selectedInput == inputType.EYETRACKER_ONLY) {
 			eyeTracker.startTracking();
 		}
