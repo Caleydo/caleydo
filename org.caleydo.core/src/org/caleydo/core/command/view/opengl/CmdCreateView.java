@@ -200,10 +200,6 @@ public class CmdCreateView
 
 		IViewManager glCanvasManager = generalManager.getViewGLCanvasManager();
 
-		// if (externalID != -1 && parentCanvasID != -1) {
-		// parentCanvasID = generalManager.getIDManager().getInternalFromExternalID(parentContainerID);
-		// }
-
 		GLCaleydoCanvas glCanvas = generalManager.getViewGLCanvasManager().getCanvas(parentCanvasID);
 
 		createdObject = glCanvasManager.createGLView(viewID, glCanvas, label, viewFrustum);

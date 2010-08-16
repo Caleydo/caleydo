@@ -40,7 +40,7 @@ public class GeneContextMenuItemContainer extends AItemContainer {
 		String sGeneSymbol = generalManager.getIDMappingManager().getID(
 				dataDomain.getPrimaryContentMappingType(),
 				((GeneticDataDomain) (DataDomainManager.getInstance()
-						.getDataDomain(GeneticDataDomain.dataDomainType)))
+						.getDataDomain(dataDomain.getDataDomainType())))
 						.getHumanReadableContentIDType(), davidID);
 		if (sGeneSymbol == "" || sGeneSymbol == null)
 			sGeneSymbol = "Unkonwn Gene";

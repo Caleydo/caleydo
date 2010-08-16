@@ -10,4 +10,23 @@
           name="PathwayDataDomain"
           class="org.caleydo.datadomain.pathway.PathwayDataDomain" />
    </extension>
+      <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.caleydo.rcp.actionSet"
+            label="actionSet"
+            visible="true">
+         <action
+               class="org.caleydo.datadomain.pathway.rcp.PathwayLoadingProgressIndicatorAction"
+               id="org.caleydo.rcp.action.progressindicator"
+               label="Progress Indicator"
+               state="true"
+               style="push">
+         </action>
+         <menu
+               id="org.caleydo.rcp.menu1"
+               label="label">
+         </menu>
+      </actionSet>
+   </extension>
 </plugin>

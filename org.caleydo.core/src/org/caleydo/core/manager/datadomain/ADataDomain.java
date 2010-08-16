@@ -29,7 +29,7 @@ public abstract class ADataDomain
 	 * not further specified data set is loaded. In the case of the unspecified data set some specialized gene
 	 * expression features are not available.
 	 */
-	public static String dataDomainType = "unspecified";
+	protected String dataDomainType = "unspecified";
 
 	protected EIconTextures icon = EIconTextures.NO_ICON_AVAILABLE;
 

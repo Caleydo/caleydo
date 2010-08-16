@@ -35,7 +35,7 @@ public class PathwayLoadingProgressIndicatorAction
 
 					monitor.beginTask("Loading pathways", 100);
 
-					if (sPathwayDataSources.contains(EPathwayDatabaseType.KEGG.name())) {
+					if (sPathwayDataSources.contains(EPathwayDatabaseType.KEGG.getName())) {
 						monitor.subTask("KEGG");
 
 						PathwayManager.get().createPathwayDatabase(

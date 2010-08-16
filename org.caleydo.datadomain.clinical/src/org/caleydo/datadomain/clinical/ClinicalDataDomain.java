@@ -23,11 +23,13 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 @XmlRootElement
 public class ClinicalDataDomain extends ASetBasedDataDomain {
 
+	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.clinical";
+	
 	/**
 	 * Constructor.
 	 */
 	public ClinicalDataDomain() {
-		super("org.caleydo.datadomain.clinical");
+		super(DATA_DOMAIN_TYPE);
 		icon = EIconTextures.DATA_DOMAIN_CLINICAL;
 
 	}

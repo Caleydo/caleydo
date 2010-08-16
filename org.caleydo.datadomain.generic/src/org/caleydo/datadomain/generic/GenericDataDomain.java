@@ -20,12 +20,15 @@ import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 @XmlRootElement
 public class GenericDataDomain extends ASetBasedDataDomain {
 
+	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.generic";
+	
 	/**
 	 * Constructor.
 	 */
 	public GenericDataDomain() {
 
-		super("org.caleydo.datadomain.generic");
+		super(DATA_DOMAIN_TYPE);
+		
 		contentLabelSingular = "entity";
 		contentLabelPlural = "entities";
 

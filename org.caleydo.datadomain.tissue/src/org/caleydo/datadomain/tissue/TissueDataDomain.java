@@ -15,11 +15,13 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 @XmlRootElement
 public class TissueDataDomain extends ADataDomain {
 
+	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.tissue";
+
 	/**
 	 * Constructor.
 	 */
 	public TissueDataDomain() {
-		dataDomainType = "org.caleydo.datadomain.tissue";
+		dataDomainType = DATA_DOMAIN_TYPE;
 		icon = EIconTextures.DATA_DOMAIN_TISSUE;
 
 		// possibleIDCategories.put(EIDCategory.GENE, null);

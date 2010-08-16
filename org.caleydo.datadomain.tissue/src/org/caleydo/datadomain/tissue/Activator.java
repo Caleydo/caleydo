@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends Plugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.caleydo.datadomain.tissue";
+	public static final String PLUGIN_ID = TissueDataDomain.DATA_DOMAIN_TYPE;
 
 	// The shared instance
 	private static Activator plugin;

@@ -52,6 +52,8 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
 @XmlRootElement
 public class GeneticDataDomain extends ASetBasedDataDomain {
 
+	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.genetic";
+
 	private static final String CLINICAL_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
 
 	/**
@@ -72,7 +74,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	 */
 	public GeneticDataDomain() {
 
-		super("org.caleydo.datadomain.genetic");
+		super(DATA_DOMAIN_TYPE);
 
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
 		primaryContentMappingType = IDType.getIDType("DAVID");
