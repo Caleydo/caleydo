@@ -24,7 +24,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 public class ClinicalDataDomain extends ASetBasedDataDomain {
 
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.clinical";
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -60,9 +60,10 @@ public class ClinicalDataDomain extends ASetBasedDataDomain {
 	}
 
 	@Override
-	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(IDCategory idCategory,
+			SelectionCommand selectionCommand) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -75,6 +76,14 @@ public class ClinicalDataDomain extends ASetBasedDataDomain {
 	public String getStorageLabel(IDType idType, Object id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	protected void assignIDCategories() {
+		contentIDCategory = IDCategory.getIDCategory("EXPERIMENT");
+		storageIDCategory = IDCategory.getIDCategory("EXPERIMENT_DATA");
+		
+	
 	}
 
 }

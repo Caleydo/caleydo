@@ -91,8 +91,13 @@ public abstract class ASetBasedDataDomain
 	}
 
 	private void init() {
-		// TODO create ID Categories
 
+		assignIDCategories();
+		if (contentIDCategory == null || storageIDCategory == null) {
+			throw new IllegalStateException("A ID category in " + toString()
+				+ " was null, contentIDCategory: " + contentIDCategory + ", storageIDCategory: "
+				+ storageIDCategory);
+		}
 		contentIDType =
 			IDType.registerType("content_" + dataDomainType + "_" + hashCode(), contentIDCategory,
 				EStorageType.INT);
@@ -101,7 +106,15 @@ public abstract class ASetBasedDataDomain
 				EStorageType.INT);
 
 		// MappingType mappingType = new MappingType(fromIDType, toIDType, isMultiMap);
+
 	}
+
+	/**
+	 * Assign {@link #contentIDCategory} and {@link #storageIDCategory} in the concrete implementing classes.
+	 * ID Categories should typically be already existing through the data mapping. Assign the correct types
+	 * using {@link IDCategory#getIDCategory(String)}.
+	 */
+	protected abstract void assignIDCategories();
 
 	@Override
 	public void setSet(ISet set) {

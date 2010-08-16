@@ -149,8 +149,8 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 				if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 					// Here all values are contained within pathways as well
-					PathwayVertexGraphItem tmpPathwayVertexGraphItem = PathwayItemManager.get()
-							.getPathwayVertexGraphItemByDavidId(iDavidID);
+					PathwayVertexGraphItem tmpPathwayVertexGraphItem = PathwayItemManager
+							.get().getPathwayVertexGraphItemByDavidId(iDavidID);
 
 					if (tmpPathwayVertexGraphItem == null) {
 						continue;
@@ -370,26 +370,27 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		// values, depending on the IDType that has been specified when
 		// loading expression data.
 		// Possibly a different handling of the Set is required.
-//		Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(idType,
-//				IDType.getIDType("REFSEQ_MRNA"), id);
-//
-//		if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
-//			refSeq = (String) setRefSeqIDs.toArray()[0];
-//		}
+		// Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(idType,
+		// IDType.getIDType("REFSEQ_MRNA"), id);
+		//
+		// if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+		// refSeq = (String) setRefSeqIDs.toArray()[0];
+		// }
 
 		// FIXME: Due to new mapping system, a mapping involving
 		// expression index can return a Set of
 		// values, depending on the IDType that has been specified when
 		// loading expression data.
 		// Possibly a different handling of the Set is required.
-//		Set<String> setGeneSymbols = idMappingManager.getIDAsSet(contentIDType,
-//				humanReadableContentIDType, id);
-//
-//		if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
-//			geneSymbol = (String) setGeneSymbols.toArray()[0];
-//		}
+		// Set<String> setGeneSymbols =
+		// idMappingManager.getIDAsSet(contentIDType,
+		// humanReadableContentIDType, id);
+		//
+		// if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
+		// geneSymbol = (String) setGeneSymbols.toArray()[0];
+		// }
 
-//		return refSeq + " | " + geneSymbol;
+		// return refSeq + " | " + geneSymbol;
 		return "FIXME";
 	}
 
@@ -405,5 +406,12 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		GeneContextMenuItemContainer geneContainer = new GeneContextMenuItemContainer();
 		geneContainer.setID(idType, id);
 		return geneContainer;
+	}
+
+	@Override
+	protected void assignIDCategories() {
+		contentIDCategory = IDCategory.getIDCategory("GENE");
+		storageIDCategory = IDCategory.getIDCategory("EXPERIMENT");
+
 	}
 }
