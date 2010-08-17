@@ -35,7 +35,6 @@ import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.rcp.util.info.listener.InfoAreaUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -73,13 +72,13 @@ public class SelectionBrowser
 	private Button btnSub;;
 	private Composite parentComposite;
 
-	protected SelectionUpdateListener selectionUpdateListener;
-	protected ContentVAUpdateListener virtualArrayUpdateListener;
-	protected SelectionCommandListener selectionCommandListener;
+	private SelectionUpdateListener selectionUpdateListener;
+	private ContentVAUpdateListener virtualArrayUpdateListener;
+	private SelectionCommandListener selectionCommandListener;
 
-	protected RedrawViewListener redrawViewListener;
-	protected ClearSelectionsListener clearSelectionsListener;
-	protected InfoAreaUpdateListener infoAreaUpdateListener;
+	private RedrawViewListener redrawViewListener;
+	private ClearSelectionsListener clearSelectionsListener;
+
 
 	/**
 	 * Constructor.

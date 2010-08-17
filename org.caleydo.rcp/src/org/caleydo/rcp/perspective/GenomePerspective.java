@@ -2,7 +2,6 @@ package org.caleydo.rcp.perspective;
 
 import org.caleydo.rcp.startup.StartupProcessor;
 import org.caleydo.rcp.toolbar.RcpToolBarView;
-import org.caleydo.rcp.view.rcp.RcpInfoAreaView;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IFolderLayout;
@@ -16,7 +15,7 @@ public class GenomePerspective
 	// private static final String LOG_VIEW = "org.eclipse.pde.runtime.LogView";
 
 	public static boolean bIsWideScreen = false;
-	
+
 	public static IFolderLayout mainViewFolder;
 
 	@Override
@@ -40,15 +39,16 @@ public class GenomePerspective
 				layout.createFolder("topLeft", IPageLayout.LEFT, fRatio, IPageLayout.ID_EDITOR_AREA);
 			topLeft.addView(RcpToolBarView.ID);
 
-//			if (Application.applicationMode != ApplicationMode.NO_DATA) {
-				IFolderLayout middleLeft =
-					layout.createFolder("middleLeft", IPageLayout.BOTTOM, 0.5f, "topLeft");
-				middleLeft.addView(RcpInfoAreaView.ID);
-//				middleLeft.addPlaceholder("org.caleydo.view.statistics");
-//
-				layout.addStandaloneView("org.caleydo.view.histogram", true, IPageLayout.BOTTOM, 0.7f,
-					"middleLeft");
-//			}
+			// if (Application.applicationMode != ApplicationMode.NO_DATA) {
+			IFolderLayout middleLeft = layout.createFolder("middleLeft", IPageLayout.BOTTOM, 0.5f, "topLeft");
+			// FIXME add info area again
+			// middleLeft.addView(RcpInfoAreaView.ID);
+
+			// middleLeft.addPlaceholder("org.caleydo.view.statistics");
+			//
+			layout.addStandaloneView("org.caleydo.view.histogram", true, IPageLayout.BOTTOM, 0.7f,
+				"middleLeft");
+			// }
 			// IFolderLayout bottomLeft = layout.createFolder("bottomLeft", IPageLayout.BOTTOM, 0.45f,
 			// "middleLeft");
 			// bottomLeft.addPlaceholder(GLHistogramView.ID);
@@ -69,10 +69,11 @@ public class GenomePerspective
 				layout.createFolder("top", IPageLayout.TOP, fRatio, IPageLayout.ID_EDITOR_AREA);
 			topFolder.addView(RcpToolBarView.ID);
 
-//			if (Application.applicationMode != ApplicationMode.NO_DATA) {
-				layout.addStandaloneView(RcpInfoAreaView.ID, true, IPageLayout.RIGHT, 0.75f, "top");
-				layout.addStandaloneView("org.caleydo.view.histogram", true, IPageLayout.RIGHT, 0.8f, "top");
-//			}
+			// if (Application.applicationMode != ApplicationMode.NO_DATA) {
+			// FIXME add info area again
+			// layout.addStandaloneView(RcpInfoAreaView.ID, true, IPageLayout.RIGHT, 0.75f, "top");
+			layout.addStandaloneView("org.caleydo.view.histogram", true, IPageLayout.RIGHT, 0.8f, "top");
+			// }
 			// IFolderLayout bottomFolder = layout.createFolder("bottom", IPageLayout.BOTTOM, 1 - fRatio,
 			// IPageLayout.ID_EDITOR_AREA);
 
