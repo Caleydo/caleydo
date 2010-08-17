@@ -120,7 +120,7 @@ public abstract class ASetBasedDataDomain
 	public void setSet(ISet set) {
 		assert (set != null);
 
-//		set.setDataDomain(this);
+		// set.setDataDomain(this);
 
 		ISet oldSet = this.set;
 		this.set = set;
@@ -264,11 +264,12 @@ public abstract class ASetBasedDataDomain
 		if (storageTree == null)
 			return;
 		else {
-
-			for (ISet tmpSet : storageTree.getRoot().getAllMetaSetsFromSubTree()) {
-				tmpSet.setContentVA(vaType, virtualArray.clone());
-				eventPublisher.triggerEvent(new ReplaceContentVAEvent(tmpSet, dataDomainType, vaType));
-			}
+			// TODO check whether we need this for the meat sets, it fires a lot of unnecessar events in other
+			// cases
+			// for (ISet tmpSet : storageTree.getRoot().getAllMetaSetsFromSubTree()) {
+			// tmpSet.setContentVA(vaType, virtualArray.clone());
+			// eventPublisher.triggerEvent(new ReplaceContentVAEvent(tmpSet, dataDomainType, vaType));
+			// }
 		}
 	}
 
@@ -300,7 +301,7 @@ public abstract class ASetBasedDataDomain
 		set.setContentVA(vaType, virtualArray.clone());
 
 		virtualArray.setGroupList(null);
-
+		System.out.println("Triggering event");
 		eventPublisher.triggerEvent(new ReplaceContentVAEvent(set, dataDomainType, vaType));
 	}
 
@@ -527,6 +528,11 @@ public abstract class ASetBasedDataDomain
 	@Override
 	public String getStorageLabel(Object id) {
 		return getStorageLabel(storageIDType, id);
+	}
+
+	@Override
+	public String getStorageLabel(IDType idType, Object id) {
+		return set.get((Integer) id).getLabel();
 	}
 
 	/**

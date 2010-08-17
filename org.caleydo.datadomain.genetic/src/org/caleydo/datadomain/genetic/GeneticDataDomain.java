@@ -351,7 +351,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 	@Override
 	public void handleForeignSelectionCommand(String dataDomainType,
 			IDCategory idCategory, SelectionCommand selectionCommand) {
-		
+
 		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE && idCategory == storageIDCategory) {
 			SelectionCommandEvent newCommandEvent = new SelectionCommandEvent();
 			newCommandEvent.setSelectionCommand(selectionCommand);
@@ -366,39 +366,37 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 		String geneSymbol = null;
 		String refSeq = null;
 
-		// FIXME: Due to new mapping system, a mapping involving
-		// expression index can return a Set of
-		// values, depending on the IDType that has been specified when
-		// loading expression data.
-		// Possibly a different handling of the Set is required.
-		// Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(idType,
-		// IDType.getIDType("REFSEQ_MRNA"), id);
-		//
-		// if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
-		// refSeq = (String) setRefSeqIDs.toArray()[0];
-		// }
+		Set<String> setRefSeqIDs = idMappingManager.getIDAsSet(idType,
+				IDType.getIDType("REFSEQ_MRNA"), id);
+
+		if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+			refSeq = (String) setRefSeqIDs.toArray()[0];
+		}
 
 		// FIXME: Due to new mapping system, a mapping involving
 		// expression index can return a Set of
 		// values, depending on the IDType that has been specified when
 		// loading expression data.
 		// Possibly a different handling of the Set is required.
-		// Set<String> setGeneSymbols =
-		// idMappingManager.getIDAsSet(contentIDType,
-		// humanReadableContentIDType, id);
-		//
-		// if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
-		// geneSymbol = (String) setGeneSymbols.toArray()[0];
-		// }
+		Set<String> setGeneSymbols = idMappingManager.getIDAsSet(contentIDType,
+				humanReadableContentIDType, id);
 
-		// return refSeq + " | " + geneSymbol;
-		return "FIXME";
+		if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
+			geneSymbol = (String) setGeneSymbols.toArray()[0];
+		}
+
+		if (geneSymbol != null)
+			return geneSymbol + " | " + refSeq;
+		else if (refSeq != null)
+			return refSeq;
+		else
+			return "Unknown";
+
 	}
 
 	@Override
 	public String getStorageLabel(IDType idType, Object id) {
-		// TODO Auto-generated method stub
-		return null;
+		return super.getStorageLabel(idType, id);
 	}
 
 	@Override

@@ -54,18 +54,16 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 	 * Set a virtual array if the data you are managing with this selection manager is also managed by a
 	 * virtual array.
 	 * </p>
-	 * <p>
-	 * If you reset this virtual array at runtime the manager is completely resetted and reinitialized with
-	 * the data of the virtual array
-	 * </p>
 	 * 
 	 * @param virtualArray
 	 *            the currently active virtual array
 	 */
 	public void setVA(VA virtualArray) {
-		// resetSelectionManager();
+		clearSelections();
+//		resetSelectionManager();
 		// initialAdd(virtualArray.getIndexList());
 		this.virtualArray = virtualArray;
+
 	}
 
 	/**
@@ -240,11 +238,11 @@ public class VABasedSelectionManager<ConcreteType extends VABasedSelectionManage
 
 		Set<Integer> zoomedElements = super.getElements(selectionType);
 
-//		Iterator<Integer> elementIterator = zoomedElements.iterator();
-//		while (elementIterator.hasNext()) {
-//			if (virtualArray.containsElement(elementIterator.next()) == 0)
-//				elementIterator.remove();
-//		}
+		// Iterator<Integer> elementIterator = zoomedElements.iterator();
+		// while (elementIterator.hasNext()) {
+		// if (virtualArray.containsElement(elementIterator.next()) == 0)
+		// elementIterator.remove();
+		// }
 		return zoomedElements;
 	}
 }

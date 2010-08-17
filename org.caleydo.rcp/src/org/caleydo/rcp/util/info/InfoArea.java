@@ -1,32 +1,37 @@
 package org.caleydo.rcp.util.info;
 
 import java.util.ArrayList;
+import java.util.Set;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.mapping.IDCategory;
+import org.caleydo.core.data.selection.ContentSelectionManager;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.StorageSelectionManager;
+import org.caleydo.core.data.selection.StorageVAType;
 import org.caleydo.core.data.selection.delta.ContentVADelta;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.data.selection.delta.StorageVADelta;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.data.ReplaceContentVAEvent;
+import org.caleydo.core.manager.event.data.ReplaceStorageVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.ContentVAUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.StorageVAUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
@@ -34,12 +39,15 @@ import org.caleydo.core.view.opengl.canvas.listener.ContentVAUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.IContentVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IStorageVAUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
+import org.caleydo.core.view.opengl.canvas.listener.ReplaceContentVAListener;
+import org.caleydo.core.view.opengl.canvas.listener.ReplaceStorageVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.StorageVAUpdateListener;
 import org.caleydo.rcp.util.info.listener.InfoAreaUpdateListener;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
@@ -59,7 +67,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class InfoArea
 	implements IDataDomainBasedView<ASetBasedDataDomain>, ISelectionUpdateHandler, IContentVAUpdateHandler,
-	ISelectionCommandHandler, IViewCommandHandler {
+	IStorageVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	private static String viewType = "org.caleydo.view.infoarea";
 
@@ -71,19 +79,16 @@ public class InfoArea
 	private Tree selectionTree;
 
 	private TreeItem contentTree;
-	private TreeItem experimentTree;
-	// private TreeItem pathwayTree;
+	private TreeItem storageTree;
 
 	private AGLView updateTriggeringView;
 	private Composite parentComposite;
 
-	// private GlyphManager glyphManager;
-	private IIDMappingManager idMappingManager;
-
-	// private String shortInfo;
-
 	protected SelectionUpdateListener selectionUpdateListener;
-	protected ContentVAUpdateListener virtualArrayUpdateListener;
+	protected ContentVAUpdateListener contentVAUpdateListener;
+	protected StorageVAUpdateListener storageVAUpdateListener;
+	protected ReplaceContentVAListener replaceContentVAListener;
+	protected ReplaceStorageVAListener replaceStorageVAListener;
 	protected SelectionCommandListener selectionCommandListener;
 
 	protected RedrawViewListener redrawViewListener;
@@ -91,6 +96,9 @@ public class InfoArea
 	protected InfoAreaUpdateListener infoAreaUpdateListener;
 
 	protected ASetBasedDataDomain dataDomain;
+
+	ContentSelectionManager contentSelectionManager;
+	StorageSelectionManager storageSelectionManager;
 
 	/**
 	 * Constructor.
@@ -101,10 +109,6 @@ public class InfoArea
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 
-		// glyphManager = GeneralManager.get().getGlyphManager();
-		idMappingManager = generalManager.getIDMappingManager();
-
-		registerEventListeners();
 	}
 
 	// FIXME this should go into the activator
@@ -120,6 +124,9 @@ public class InfoArea
 	}
 
 	public Control createControl(final Composite parent) {
+
+		contentSelectionManager = dataDomain.getContentSelectionManager();
+		storageSelectionManager = dataDomain.getStorageSelectionManager();
 
 		parentComposite = parent;
 
@@ -159,32 +166,16 @@ public class InfoArea
 
 		selectionTree.setLayoutData(gridData);
 
-		// selectionTree.setItemCount(2);
-		// selectionTree.addSelectionListener(new SelectionAdapter() {
-		//
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// super.widgetSelected(e);
-		//
-		// // ((HTMLBrowserView)
-		// //
-		// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-		// //
-		// .findView(HTMLBrowserView.ID)).getHTMLBrowserViewRep().setUrl("bla");
-		// }
-		// });
-
 		contentTree = new TreeItem(selectionTree, SWT.NONE);
 		contentTree.setExpanded(true);
 		contentTree.setData(-1);
 
-		// Collection<IDataDomain> list = DataDomainManager.getInstance().getDataDomains();
 		contentTree.setText(dataDomain.getContentName(true, true));
 
-		experimentTree = new TreeItem(selectionTree, SWT.NONE);
-		experimentTree.setExpanded(true);
-		experimentTree.setData(-1);
-		experimentTree.setText("Experiments");
+		storageTree = new TreeItem(selectionTree, SWT.NONE);
+		storageTree.setExpanded(true);
+		storageTree.setData(-1);
+		storageTree.setText("Experiments");
 
 		// pathwayTree = new TreeItem(selectionTree, SWT.NONE);
 		// pathwayTree.setText("Pathways");
@@ -197,7 +188,22 @@ public class InfoArea
 	@Override
 	public void handleSelectionUpdate(final ISelectionDelta selectionDelta, final boolean scrollToSelection,
 		final String info) {
+		if (selectionDelta.getIDType() == contentSelectionManager.getIDType()) {
+			contentSelectionManager.setDelta(selectionDelta);
+			updateTree(true, contentSelectionManager, contentTree, info);
+		}
+		else if (selectionDelta.getIDType() == storageSelectionManager.getIDType()) {
+			storageSelectionManager.setDelta(selectionDelta);
+			updateTree(false, storageSelectionManager, storageTree, info);
+		}
+		else
+			throw new IllegalStateException("Mapping does not match, no selection manager can handle: "
+				+ selectionDelta.getIDType());
 
+	}
+
+	private void updateTree(final boolean isContent, final SelectionManager selectionManager,
+		final TreeItem tree, final String info) {
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 
@@ -205,215 +211,44 @@ public class InfoArea
 					lblViewInfoContent.setText(info);
 				}
 
-				if (selectionDelta.getIDType() == dataDomain.getContentIDType()) {
-
-					for (SelectionDeltaItem selectionItem : selectionDelta) {
-
-						// Flush old genes from this selection type
-						for (TreeItem item : contentTree.getItems()) {
-							if (item.getData("selection_type") == selectionItem.getSelectionType()
-								|| ((Integer) item.getData()) == selectionItem.getPrimaryID()) {
-
-								item.dispose();
-							}
-						}
-
-						// if (selectionItem.getSelectionType() ==
-						// SelectionType.NORMAL
-						// || selectionItem.getSelectionType() ==
-						// SelectionType.DESELECTED) {
-						// // Flush old items that become deselected/normal
-						// for (TreeItem tmpItem : selectionTree.getItems()) {
-						// if (tmpItem.getData() == null
-						// || ((Integer) tmpItem.getData()).intValue() ==
-						// selectionItem
-						// .getPrimaryID()) {
-						// tmpItem.dispose();
-						// }
-						// }
-						// }
-						if (selectionItem.getSelectionType() == SelectionType.MOUSE_OVER
-							|| selectionItem.getSelectionType() == SelectionType.SELECTION) {
-
-							Color color;
-							float[] fArColor = null;
-
-							if (selectionItem.getSelectionType() == SelectionType.SELECTION) {
-								fArColor = SelectionType.SELECTION.getColor();
-							}
-							else if (selectionItem.getSelectionType() == SelectionType.MOUSE_OVER) {
-								fArColor = SelectionType.MOUSE_OVER.getColor();
-							}
-
-							color =
-								new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
-									(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
-
-							String sContentName = dataDomain.getContentLabel(selectionItem.getPrimaryID());
-							// if (dataDomain.getDataDomainType() == "org.caleydo.datadomain.genetic") {
-							//
-							// int iExpressionIndex = selectionItem.getPrimaryID();
-							//
-							// // FIXME: Due to new mapping system, a mapping
-							// // involving expression index can
-							// // return a Set of
-							// // values, depending on the IDType that has been
-							// // specified when loading
-							// // expression data.
-							// // Possibly a different handling of the Set is
-							// // required.
-							// Set<String> setRefSeqIDs =
-							// idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX,
-							// EIDType.REFSEQ_MRNA, iExpressionIndex);
-							// String sRefSeqID = null;
-							// if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
-							// sRefSeqID = (String) setRefSeqIDs.toArray()[0];
-							// }
-							//
-							// // FIXME: Due to new mapping system, a mapping
-							// // involving expression index can
-							// // return a Set of
-							// // values, depending on the IDType that has been
-							// // specified when loading
-							// // expression data.
-							// // Possibly a different handling of the Set is
-							// // required.
-							// Set<String> setGeneSymbols =
-							// idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX,
-							// EIDType.GENE_SYMBOL, iExpressionIndex);
-							//
-							// if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
-							// sContentName = (String) setGeneSymbols.toArray()[0];
-							// }
-							//
-							// // FIXME horizontal toolbar style support
-							// // if (ToolBarView.bHorizontal ||
-							// // Application.bIsWindowsOS) {
-							// // FIXME: when view plugin reorganization is
-							// // done
-							// // if (Application.bIsWindowsOS) {
-							// // sContentName = sContentName + " - " +
-							// // sRefSeqID;
-							// // }
-							// // else {
-							// sContentName = sContentName + "\n" + sRefSeqID;
-							// // }
-							// }
-							// else {
-							// sContentName =
-							// idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED,
-							// selectionItem.getPrimaryID());
-							// }
-							//
-							// if (sContentName == null) {
-							// sContentName = "Unknown";
-							// }
-
-							TreeItem item = new TreeItem(contentTree, SWT.NONE);
-
-							item.setText(sContentName);
-							item.setBackground(color);
-							item.setData(selectionItem.getPrimaryID());
-							item.setData("selection_type", selectionItem.getSelectionType());
-
-							contentTree.setExpanded(true);
-						}
-					}
+				// Flush old items from this selection type
+				for (TreeItem item : tree.getItems()) {
+					item.dispose();
 				}
-				else if (selectionDelta.getIDType() == dataDomain.getStorageIDType()) {
-					if (info != null) {
-						lblViewInfoContent.setText(info);
-					}
 
-					for (SelectionDeltaItem selectionItem : selectionDelta) {
+				Set<Integer> mouseOverIDs = selectionManager.getElements(SelectionType.MOUSE_OVER);
+				createItems(isContent, tree, SelectionType.MOUSE_OVER, mouseOverIDs);
 
-						if (selectionItem.getSelectionType() == SelectionType.MOUSE_OVER
-							|| selectionItem.getSelectionType() == SelectionType.SELECTION) {
+				Set<Integer> selectedIDs = selectionManager.getElements(SelectionType.SELECTION);
+				createItems(isContent, tree, SelectionType.SELECTION, selectedIDs);
 
-							// Flush old experiments from this selection type
-							for (TreeItem item : experimentTree.getItems()) {
-								if (item.getData() == null
-									|| item.getData("selection_type") == selectionItem.getSelectionType()
-									|| ((Integer) item.getData()) == selectionItem.getPrimaryID()) {
-									item.dispose();
-
-								}
-							}
-
-							Color color;
-							float[] fArColor = null;
-
-							if (selectionItem.getSelectionType() == SelectionType.SELECTION) {
-								fArColor = SelectionType.SELECTION.getColor();
-							}
-							else if (selectionItem.getSelectionType() == SelectionType.MOUSE_OVER) {
-								fArColor = SelectionType.MOUSE_OVER.getColor();
-							}
-
-							color =
-								new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
-									(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
-
-							// Retrieve current set
-							// FIXME: This solution is not robust if new data
-							// are loaded -> REDESIGN
-
-							ISet set = dataDomain.getSet();
-							TreeItem item = new TreeItem(experimentTree, SWT.NONE);
-
-							try {
-								IStorage storage = set.get(selectionItem.getPrimaryID());
-								if (storage != null)
-									item.setText(storage.getLabel());
-								else {
-									generalManager.getLogger().log(
-										new Status(Status.WARNING, "org.caleydo.rcp",
-											"Info Area couldn't find the correct storage for ID: "
-												+ selectionItem.getPrimaryID() + ". Set was: " + set));
-								}
-							}
-							catch (IndexOutOfBoundsException e) {
-								item.setText("ERROR");
-							}
-							item.setData(selectionItem.getPrimaryID());
-							// item.setData("mapping_type",
-							// EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX.toString());
-							item.setData("selection_type", selectionItem.getSelectionType());
-							item.setBackground(color);
-
-							experimentTree.setExpanded(true);
-						}
-						// addGlyphInfo(selectionItem, item);
-
-					}
-				}
 			}
 		});
 	}
 
-	// private void addGlyphInfo(SelectionDeltaItem selectionItem, TreeItem
-	// item) {
-	// GlyphEntry entry =
-	// glyphManager.getGlyphs().get(selectionItem.getPrimaryID());
-	//
-	// if (entry == null)
-	// return;
-	//
-	// for (int i = 0; i < entry.getNumberOfParameters(); ++i) {
-	// String info =
-	// glyphManager.getGlyphAttributeInfoStringWithInternalColumnNumber(i,
-	// entry.getParameter(i));
-	//
-	// TreeItem subitem = new TreeItem(item, SWT.NONE);
-	// subitem.setText(info);
-	// }
-	//
-	// for (String key : entry.getStringParameterColumnNames()) {
-	// String info = key + ": " + entry.getStringParameter(key);
-	// TreeItem subitem = new TreeItem(item, SWT.NONE);
-	// subitem.setText(info);
-	// }
-	// }
+	private void createItems(boolean isContent, TreeItem tree, SelectionType selectionType, Set<Integer> ids) {
+		Color color;
+		int[] intColor = selectionType.getIntColor();
+
+		color = new Color(parentComposite.getDisplay(), intColor[0], intColor[1], intColor[2]);
+
+		for (Integer id : ids) {
+			String name;
+			if (isContent)
+				name = dataDomain.getContentLabel(id);
+			else
+				name = dataDomain.getStorageLabel(id);
+
+			TreeItem item = new TreeItem(tree, SWT.NONE);
+
+			item.setText(name);
+			item.setBackground(color);
+			item.setData(id);
+			item.setData("selection_type", selectionType);
+		}
+
+		tree.setExpanded(true);
+	}
 
 	@Override
 	public void handleSelectionCommand(IDCategory category, final SelectionCommand selectionCommand) {
@@ -460,7 +295,9 @@ public class InfoArea
 	@Override
 	public void handleClearSelections() {
 		contentTree.removeAll();
-		experimentTree.removeAll();
+		storageTree.removeAll();
+		contentSelectionManager.clearSelections();
+		storageSelectionManager.clearSelections();
 	}
 
 	/**
@@ -483,16 +320,33 @@ public class InfoArea
 	 */
 	public void registerEventListeners() {
 		selectionUpdateListener = new SelectionUpdateListener();
-		selectionUpdateListener.setDataDomainType("org.caleydo.datadomain.genetic");
 		selectionUpdateListener.setHandler(this);
+		selectionUpdateListener.setDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
-		virtualArrayUpdateListener = new ContentVAUpdateListener();
-		virtualArrayUpdateListener.setHandler(this);
-		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
+		contentVAUpdateListener = new ContentVAUpdateListener();
+		contentVAUpdateListener.setHandler(this);
+		contentVAUpdateListener.setDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(ContentVAUpdateEvent.class, contentVAUpdateListener);
+
+		replaceContentVAListener = new ReplaceContentVAListener();
+		replaceContentVAListener.setHandler(this);
+		replaceContentVAListener.setDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(ReplaceContentVAEvent.class, replaceContentVAListener);
+
+		storageVAUpdateListener = new StorageVAUpdateListener();
+		storageVAUpdateListener.setHandler(this);
+		storageVAUpdateListener.setDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(StorageVAUpdateEvent.class, storageVAUpdateListener);
+
+		replaceStorageVAListener = new ReplaceStorageVAListener();
+		replaceStorageVAListener.setHandler(this);
+		replaceStorageVAListener.setDataDomainType(dataDomain.getDataDomainType());
+		eventPublisher.addListener(ReplaceStorageVAEvent.class, replaceStorageVAListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
+		selectionCommandListener.setDataDomainType(dataDomain.getDataDomainType());
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		redrawViewListener = new RedrawViewListener();
@@ -517,9 +371,21 @@ public class InfoArea
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
 		}
-		if (virtualArrayUpdateListener != null) {
-			eventPublisher.removeListener(virtualArrayUpdateListener);
-			virtualArrayUpdateListener = null;
+		if (contentVAUpdateListener != null) {
+			eventPublisher.removeListener(contentVAUpdateListener);
+			contentVAUpdateListener = null;
+		}
+		if (replaceContentVAListener != null) {
+			eventPublisher.removeListener(replaceContentVAListener);
+			replaceContentVAListener = null;
+		}
+		if (storageVAUpdateListener != null) {
+			eventPublisher.removeListener(storageVAUpdateListener);
+			storageVAUpdateListener = null;
+		}
+		if (replaceStorageVAListener != null) {
+			eventPublisher.removeListener(replaceStorageVAListener);
+			replaceStorageVAListener = null;
 		}
 		if (selectionCommandListener != null) {
 			eventPublisher.removeListener(selectionCommandListener);
@@ -549,6 +415,7 @@ public class InfoArea
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				listener.handleEvent(event);
+
 			}
 		});
 	}
@@ -557,34 +424,35 @@ public class InfoArea
 	public void handleContentVAUpdate(ContentVADelta vaDelta, final String info) {
 		if (vaDelta.getIDType() != dataDomain.getContentIDType())
 			return;
-
 		if (parentComposite.isDisposed())
 			return;
 
-		if (info != null) {
-			parentComposite.getDisplay().asyncExec(new Runnable() {
-				public void run() {
-					lblViewInfoContent.setText(info);
-
-					// for (VADeltaItem item : delta) {
-					// if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
-					// // Flush old items that become deselected/normal
-					// for (TreeItem tmpItem : selectionTree.getItems()) {
-					// if (((Integer) tmpItem.getData()).intValue() ==
-					// item.getPrimaryID()) {
-					// tmpItem.dispose();
-					// }
-					// }
-					// }
-					// }
-				}
-			});
-		}
+		contentSelectionManager.setVADelta(vaDelta);
+		updateTree(true, contentSelectionManager, contentTree, info);
 	}
 
 	@Override
 	public void replaceContentVA(int setID, String dataDomain, ContentVAType vaType) {
-		// TODO Auto-generated method stub
+		contentSelectionManager.setVA(this.dataDomain.getContentVA(vaType));
+		updateTree(true, contentSelectionManager, contentTree, "");
+	}
+
+	@Override
+	public void handleStorageVAUpdate(StorageVADelta vaDelta, String info) {
+		if (vaDelta.getIDType() != dataDomain.getStorageIDType())
+			return;
+		if (parentComposite.isDisposed())
+			return;
+		storageSelectionManager.setVADelta(vaDelta);
+		updateTree(false, storageSelectionManager, storageTree, info);
+	}
+
+	@Override
+	public void replaceStorageVA(String dataDomain, StorageVAType vaType) {
+		if (parentComposite.isDisposed())
+			return;
+		storageSelectionManager.setVA(this.dataDomain.getStorageVA(vaType));
+		updateTree(false, storageSelectionManager, storageTree, "");
 	}
 
 	@Override

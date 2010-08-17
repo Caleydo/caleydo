@@ -76,12 +76,7 @@ public class RcpInfoAreaView
 		infoComposite.setLayout(layout);
 		infoArea = new InfoArea();
 
-		// FIXME: this should be used once the infoarea is a real view
-		// if (view instanceof IDataDomainBasedView<?>) {
-		// determineDataDomain((IDataDomainBasedView<IDataDomain>) view, view
-		// .getSerializableRepresentation());
-		// }
-
+	
 		// in the meantime:
 
 		if (dataDomainType == null)
