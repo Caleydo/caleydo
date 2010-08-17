@@ -22,10 +22,11 @@ public class MetaSet
 
 	@SuppressWarnings("unchecked")
 	public MetaSet(Set originalSet, Tree<ClusterNode> storageTree, ClusterNode storageTreeRoot) {
+		super(originalSet.getDataDomain());
 		init();
-		
+
 		this.iUniqueID = GeneralManager.get().getIDManager().createID(EManagedObjectType.SET);
-//		this.setSetType(originalSet.getSetType());
+		// this.setSetType(originalSet.getSetType());
 		// FIXME: this is not always true, but if we create the MetaSet from the serialization, we didn't
 		// check yet whether it was homogeneous
 		this.isSetHomogeneous = true;
@@ -41,10 +42,10 @@ public class MetaSet
 		return originalSet;
 	}
 
-//	@Override
-//	public ContentVirtualArray getContentVA(ContentVAType vaType) {
-//
-//		return super.getContentVA(vaType);
-//	}
+	// @Override
+	// public ContentVirtualArray getContentVA(ContentVAType vaType) {
+	//
+	// return super.getContentVA(vaType);
+	// }
 
 }

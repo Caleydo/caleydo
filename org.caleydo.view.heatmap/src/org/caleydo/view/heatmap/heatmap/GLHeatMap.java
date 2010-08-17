@@ -676,8 +676,8 @@ public class GLHeatMap extends AStorageBasedView {
 			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
 			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
 			vecPoint.setY(vecPoint.y());// + vecTranslation.y());
-			elementRep = new SelectedElementRep(contentIDType, iUniqueID,
-					vecPoint.x(), vecPoint.y(), 0);// - fAnimationTranslation,
+			elementRep = new SelectedElementRep(contentIDType, iUniqueID, vecPoint.x(),
+					vecPoint.y(), 0);// - fAnimationTranslation,
 			// 0);
 
 			alElementReps.add(elementRep);

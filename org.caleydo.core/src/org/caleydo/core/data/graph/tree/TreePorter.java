@@ -68,9 +68,9 @@ public class TreePorter {
 	 * @throws JAXBException
 	 *             in case of a XML-serialization error
 	 */
-	public Tree<ClusterNode> importTree(String fileName) throws JAXBException, FileNotFoundException {
+	public Tree<ClusterNode> importTree(String fileName, IDType idType) throws JAXBException, FileNotFoundException {
 
-		Tree<ClusterNode> tree = new Tree<ClusterNode>();
+		Tree<ClusterNode> tree = new Tree<ClusterNode>(idType);
 		tree.initializeIDTypes(IDType.getIDType(leaveIDTypeString));
 		ClusterNode rootNode = null;
 
@@ -130,7 +130,7 @@ public class TreePorter {
 	}
 
 	public Tree<ClusterNode> importStorageTree(String fileName) throws JAXBException, FileNotFoundException {
-		Tree<ClusterNode> tree = importTree(fileName);
+		Tree<ClusterNode> tree = importTree(fileName, dataDomain.getStorageIDType());
 
 		org.caleydo.core.data.collection.set.Set set =
 			(org.caleydo.core.data.collection.set.Set) dataDomain.getSet();

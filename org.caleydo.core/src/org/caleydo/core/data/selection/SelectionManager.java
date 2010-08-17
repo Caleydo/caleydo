@@ -629,8 +629,10 @@ public class SelectionManager
 	 * {@link SelectionTypeEvent}
 	 */
 	public void addSelectionType(SelectionType selectionType) {
-		hashSelectionTypes.put(selectionType, new HashMap<Integer, Integer>());
-		selectionTypes.add(selectionType);
+		if (!hashSelectionTypes.containsKey(selectionType)) {
+			hashSelectionTypes.put(selectionType, new HashMap<Integer, Integer>());
+			selectionTypes.add(selectionType);
+		}
 	}
 
 	/**

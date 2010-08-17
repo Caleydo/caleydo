@@ -49,7 +49,7 @@ public class CmdDataCreateSet
 	 */
 	public void doCommand() {
 
-		createdObject = new Set();
+		createdObject = new Set(dataDomain);
 		createdObject.setLabel(label);
 
 		if (externalID != -1) {

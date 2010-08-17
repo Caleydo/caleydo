@@ -57,14 +57,14 @@ public class SelectionType {
 	 */
 	private boolean isManaged = false;
 
-	public static final SelectionType NORMAL =
-		new SelectionType("Normal", new float[] { 0, 0, 0, 1 }, 1, true, false, 0);
-	public static final SelectionType MOUSE_OVER =
-		new SelectionType("MouseOver", new int[] { 116, 169, 207 }, 3, true, true, 1);
-	public static final SelectionType SELECTION =
-		new SelectionType("Selected", new int[] { 5, 112, 176 }, 3, true, false, 0.99f);
-	public static final SelectionType DESELECTED =
-		new SelectionType("Deselected", new float[] { 0, 0, 0, 1 }, 1, false, false, 0);
+	public static final SelectionType NORMAL = new SelectionType("Normal", new float[] { 0, 0, 0, 1 }, 1,
+		true, false, 0);
+	public static final SelectionType MOUSE_OVER = new SelectionType("MouseOver",
+		new int[] { 116, 169, 207 }, 3, true, true, 1);
+	public static final SelectionType SELECTION = new SelectionType("Selected", new int[] { 5, 112, 176 }, 3,
+		true, false, 0.99f);
+	public static final SelectionType DESELECTED = new SelectionType("Deselected",
+		new float[] { 0, 0, 0, 1 }, 1, false, false, 0);
 
 	private static ArrayList<SelectionType> defaultTypes = new ArrayList<SelectionType>();
 
@@ -341,6 +341,14 @@ public class SelectionType {
 
 	public boolean isManaged() {
 		return isManaged;
+	}
+
+	/**
+	 * We use the type string to hash the selection types
+	 */
+	@Override
+	public int hashCode() {
+		return type.hashCode();
 	}
 
 }

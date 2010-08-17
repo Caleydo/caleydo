@@ -223,7 +223,8 @@ public class SetUtils {
 		// FIXME use id type created by data domain.
 		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 			String lookupTableInfo =
-				loadDataParameters.getFileIDType().getTypeName() + "_2_" +dataDomain.getContentIDType().getTypeName()+" REVERSE";
+				loadDataParameters.getFileIDType().getTypeName() + "_2_"
+					+ dataDomain.getContentIDType().getTypeName() + " REVERSE";
 
 			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
 				loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
@@ -409,7 +410,7 @@ public class SetUtils {
 				Tree<ClusterNode> tree;
 				try {
 
-					tree = treePorter.importTree(geneTreeFileName);
+					tree = treePorter.importTree(geneTreeFileName, set.getDataDomain().getContentIDType());
 					tree.setUseDefaultComparator(false);
 					set.getContentData(ContentVAType.CONTENT).setContentTree(tree);
 				}

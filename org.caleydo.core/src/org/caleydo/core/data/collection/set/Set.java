@@ -79,11 +79,13 @@ public class Set
 	 * Constructor for the set. Creates and initializes members and registers the set whit the set manager.
 	 * Also creates a new default tree. This should not be called by implementing sub-classes.
 	 */
-	public Set() {
+	public Set(ASetBasedDataDomain dataDomain) {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.SET));
+		this.dataDomain = dataDomain;
 		SetManager.getInstance().registerItem(this);
 		init();
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
+		tree.initializeIDTypes(dataDomain.getStorageIDType());
 		ClusterNode root = new ClusterNode(tree, "Root", 1, true, -1);
 		tree.setRootNode(root);
 		defaultStorageData.setStorageTree(tree);
@@ -384,12 +386,14 @@ public class Set
 			ContentVAType contentVAType = clusterState.getContentVAType();
 			if (contentVAType != null) {
 				clusterState.setContentVA(getContentData(contentVAType).getContentVA());
+				clusterState.setContentIDType(dataDomain.getContentIDType());
 				// this.setContentGroupList(getContentVA(contentVAType).getGroupList());
 			}
 
 			StorageVAType storageVAType = clusterState.getStorageVAType();
 			if (storageVAType != null) {
 				clusterState.setStorageVA(getStorageData(storageVAType).getStorageVA());
+				clusterState.setStorageIDType(dataDomain.getStorageIDType());
 				// this.setStorageGroupList(getStorageVA(storageVAType).getGroupList());
 			}
 
@@ -717,7 +721,7 @@ public class Set
 	// ---------------------- helper functions ------------------------------
 
 	private ContentData createContentData(ContentVAType vaType) {
-		ContentData contentData = new ContentData();
+		ContentData contentData = new ContentData(dataDomain.getContentIDType());
 
 		ContentVirtualArray contentVA = new ContentVirtualArray(vaType);
 		if (!vaType.isEmptyByDefault()) {

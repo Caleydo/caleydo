@@ -57,8 +57,6 @@ public class ClusterManager {
 
 		}
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new UpdateViewEvent());
-
 		if (clusterResult == null) {
 
 			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
@@ -71,6 +69,9 @@ public class ClusterManager {
 				}
 			});
 
+		}
+		else {
+			GeneralManager.get().getEventPublisher().triggerEvent(new UpdateViewEvent());
 		}
 
 		return clusterResult;
@@ -109,11 +110,12 @@ public class ClusterManager {
 
 		clusterer.setClusterState(clusterState);
 		TempResult tempResult = clusterer.getSortedVA(set, clusterState, progressBarOffset, progressBarMulti);
-		result.contentResult = new ContentData();
+		result.contentResult = new ContentData(set.getDataDomain().getContentIDType());
 		result.contentResult.setContentVA(new ContentVirtualArray(clusterState.getContentVAType(),
 			tempResult.indices));
 		result.contentResult.setContentClusterSizes(tempResult.clusterSizes);
 		result.contentResult.setContentSampleElements(tempResult.sampleElements);
+		tempResult.tree.initializeIDTypes(clusterState.getContentIDType());
 		result.contentResult.setContentTree(tempResult.tree);
 
 	}
@@ -135,5 +137,6 @@ public class ClusterManager {
 			result.storageResult.setStorageTree(tempResult.tree);
 			result.storageResult.setDefaultTree(false);
 		}
+		result.storageResult.getStorageTree().initializeIDTypes(clusterState.getContentIDType());
 	}
 }

@@ -159,6 +159,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 		} else {
 			// initTestHierarchy();
 		}
+		partialDiscTree.setLeafIDType(tree.getLeaveIDType());
+		partialDiscTree.setNodeIDType(tree.getNodeIDType());
 
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glEnable(GL.GL_BLEND);

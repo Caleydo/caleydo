@@ -46,7 +46,8 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	private boolean useDefaultComparator = true;
 
 	/**
-	 * Constructor that should only be used for de-serialization, use {@link #Tree(IDType)} instead.
+	 * Constructor that should only be used for de-serialization or for trees synchronized with a previously
+	 * existing tree. For other cases use {@link #Tree(IDType)} instead.
 	 */
 	public Tree() {
 		init();

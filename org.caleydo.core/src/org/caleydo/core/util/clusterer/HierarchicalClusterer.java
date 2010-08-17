@@ -21,7 +21,7 @@ public class HierarchicalClusterer
 
 	private Cobweb clusterer;
 
-	private Tree<ClusterNode> tree = new Tree<ClusterNode>();
+	private Tree<ClusterNode> tree;
 
 	public HierarchicalClusterer() {
 		clusterer = new Cobweb();
@@ -40,6 +40,7 @@ public class HierarchicalClusterer
 
 		if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
 
+			tree = new Tree<ClusterNode>(set.getDataDomain().getContentIDType());
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
 
@@ -78,7 +79,8 @@ public class HierarchicalClusterer
 			}
 		}
 		else {
-
+			tree = new Tree<ClusterNode>(set.getDataDomain().getStorageIDType());
+			
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
 

@@ -2,6 +2,7 @@ package org.caleydo.core.util.clusterer;
 
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentVAType;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.StorageVAType;
@@ -16,6 +17,8 @@ import org.caleydo.core.data.selection.StorageVirtualArray;
 @XmlType
 public class ClusterState {
 
+	private IDType contentIDType;
+	private IDType storageIDType;
 	private EClustererAlgo clustererAlgo;
 	private EClustererType clustererType;
 	private EDistanceMeasure distanceMeasure;
@@ -39,6 +42,22 @@ public class ClusterState {
 		this.setClustererAlgo(algo);
 		this.setClustererType(type);
 		this.setDistanceMeasure(dist);
+	}
+
+	public void setContentIDType(IDType contentIDType) {
+		this.contentIDType = contentIDType;
+	}
+
+	public IDType getContentIDType() {
+		return contentIDType;
+	}
+
+	public void setStorageIDType(IDType storageIDType) {
+		this.storageIDType = storageIDType;
+	}
+
+	public IDType getStorageIDType() {
+		return storageIDType;
 	}
 
 	public void setContentVAType(ContentVAType contentVAType) {

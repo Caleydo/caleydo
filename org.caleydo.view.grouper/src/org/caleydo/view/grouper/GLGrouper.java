@@ -154,10 +154,6 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 		selectionTypeClicked = new SelectionType("Clicked", new float[] { 1.0f, 0.0f,
 				1.0f, 0.0f }, 1, true, false, 1.0f);
 
-		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
-				selectionTypeClicked);
-		eventPublisher.triggerEvent(selectionTypeEvent);
-
 		renderStyle = new GrouperRenderStyle(viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32), true, true);
 
@@ -195,7 +191,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 	 * Creates a new shallow tree for cluster nodes and GroupRepresentations.
 	 */
 	private void createNewHierarchy() {
-		Tree<ClusterNode> tree = new Tree<ClusterNode>();
+		Tree<ClusterNode> tree = new Tree<ClusterNode>(dataDomain.getStorageIDType());
 		IGroupDrawingStrategy groupDrawingStrategy = drawingStrategyManager
 				.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
 		iLastUsedGroupID = 0;
@@ -300,7 +296,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 	 * according to the structure of the composite GroupRepresentation tree.
 	 */
 	public void updateClusterTreeAccordingToGroupHierarchy() {
-		tree = new Tree<ClusterNode>();
+		tree = new Tree<ClusterNode>(dataDomain.getStorageIDType());
 		ClusterNode rootNode = rootGroup.getClusterNode();
 		rootNode.setTree(tree);
 		tree.setRootNode(rootNode);
@@ -1061,7 +1057,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 	 */
 	public void createNewGroup(Set<Integer> setContainedGroups) {
 
-		tree = new Tree<ClusterNode>();
+		tree = new Tree<ClusterNode>(dataDomain.getStorageIDType());
 		GroupRepresentation newGroup = new GroupRepresentation(new ClusterNode(tree,
 				"group" + iLastUsedGroupID, iLastUsedGroupID++, false, -1), renderStyle,
 				drawingStrategyManager
@@ -1180,7 +1176,7 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 	 *            ID of the group where the copied groups should be pasted in.
 	 */
 	public void pasteGroups(int iParentGroupID) {
-		tree = new Tree<ClusterNode>();
+		tree = new Tree<ClusterNode>(dataDomain.getStorageIDType());
 		GroupRepresentation parent = hashGroups.get(iParentGroupID);
 
 		if (parent == null || setCopiedGroups == null || parent.isLeaf())
@@ -1312,9 +1308,9 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 
 		this.dataDomain = dataDomain;
-		
+
 		setSet(this.dataDomain.getSet());
-		
+
 		storageVA = set.getStorageData(StorageVAType.STORAGE).getStorageVA();
 		drawingStrategyManager = new DrawingStrategyManager(pickingManager, iUniqueID,
 				renderStyle);
@@ -1322,12 +1318,19 @@ public class GLGrouper extends AGLView implements ISetBasedView, IViewCommandHan
 			// FIXME: do that differently.
 			// set = set.getStorageTree().getRoot().getMetaSet();
 			tree = set.getStorageData(storageVAType).getStorageTree();
-			selectionManager = new SelectionManager(tree.getNodeIDType());
+
 			initHierarchy(tree);
 		} else {
 			createNewHierarchy();
 		}
-		
+
+		selectionManager = new SelectionManager(tree.getNodeIDType());
+//		selectionManager.addSelectionType(selectionTypeClicked);
+
+		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
+				selectionTypeClicked);
+		eventPublisher.triggerEvent(selectionTypeEvent);
+
 		selectionManager.addTypeToDeltaBlacklist(selectionTypeClicked);
 	}
 }

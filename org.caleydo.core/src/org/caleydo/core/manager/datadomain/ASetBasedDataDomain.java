@@ -120,7 +120,7 @@ public abstract class ASetBasedDataDomain
 	public void setSet(ISet set) {
 		assert (set != null);
 
-		set.setDataDomain(this);
+//		set.setDataDomain(this);
 
 		ISet oldSet = this.set;
 		this.set = set;

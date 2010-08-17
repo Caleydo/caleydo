@@ -1858,7 +1858,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends AStorage
 
 		SelectionDelta selectionDelta = event.getSelectionDelta();
 
-		if (selectionDelta.getIDType() == tree.getNodeIDType()) {
+		if (tree != null && selectionDelta.getIDType() == tree.getNodeIDType()) {
 			// cluster mouse over events only used for gene trees
 			if (tree != null) { // && bRenderGeneTree
 				resetAllTreeSelections();

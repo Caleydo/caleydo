@@ -3,6 +3,7 @@ package org.caleydo.core.data.collection.set;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.mapping.IDType;
 import org.caleydo.core.data.selection.ContentGroupList;
 import org.caleydo.core.data.selection.ContentVirtualArray;
 import org.caleydo.core.data.selection.Group;
@@ -24,6 +25,19 @@ public class ContentData {
 	Tree<ClusterNode> contentTree;
 
 	boolean isPartitionallyClustered = false;
+
+	IDType contentIDIdType;
+
+	// public ContentData() {
+	// }
+
+	public ContentData(IDType contentIDType) {
+		this.contentIDIdType = contentIDType;
+	}
+
+	public void setContentIDIdType(IDType contentIDIdType) {
+		this.contentIDIdType = contentIDIdType;
+	}
 
 	public ContentVirtualArray getContentVA() {
 		return contentVA;
@@ -71,7 +85,7 @@ public class ContentData {
 
 			int cnt = 0;
 			// int iOffset = 0;
-			contentTree = new Tree<ClusterNode>();
+			contentTree = new Tree<ClusterNode>(contentIDIdType);
 			contentTree.setUseDefaultComparator(false);
 			int clusterNr = 0;
 			ClusterNode root = new ClusterNode(contentTree, "Root", clusterNr++, true, -1);

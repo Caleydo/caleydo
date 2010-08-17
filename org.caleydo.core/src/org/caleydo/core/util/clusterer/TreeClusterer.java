@@ -62,13 +62,16 @@ public class TreeClusterer
 	public void setClusterState(ClusterState clusterState) {
 		super.setClusterState(clusterState);
 		try {
-			tree = new Tree<ClusterNode>();
+
 			if (clusterState.getClustererType() == EClustererType.CONTENT_CLUSTERING) {
+				tree = new Tree<ClusterNode>();
 				tree.setUseDefaultComparator(false);
 				this.iNrSamples = clusterState.getContentVA().size();
 			}
-			else if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING)
+			else if (clusterState.getClustererType() == EClustererType.STORAGE_CLUSTERING) {
+				tree = new Tree<ClusterNode>();
 				this.iNrSamples = clusterState.getStorageVA().size();
+			}
 			else
 				throw new IllegalArgumentException("Can not handle cluster type "
 					+ clusterState.getClustererType());
@@ -105,8 +108,8 @@ public class TreeClusterer
 
 		if (eClustererType == EClustererType.CONTENT_CLUSTERING) {
 
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for gene clustering"));
 
 			float[] dArInstance1 = new float[storageVA.size()];
 			float[] dArInstance2 = new float[storageVA.size()];
@@ -117,8 +120,8 @@ public class TreeClusterer
 					int tempPercentage = (int) ((float) icnt1 / contentVA.size() * 100);
 
 					if (iPercentage == tempPercentage) {
-						GeneralManager.get().getEventPublisher().triggerEvent(
-							new ClusterProgressEvent(iPercentage, false));
+						GeneralManager.get().getEventPublisher()
+							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
@@ -159,8 +162,8 @@ public class TreeClusterer
 		}
 		else {
 
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
 
 			float[] dArInstance1 = new float[contentVA.size()];
 			float[] dArInstance2 = new float[contentVA.size()];
@@ -170,8 +173,8 @@ public class TreeClusterer
 				if (bClusteringCanceled == false) {
 					int tempPercentage = (int) ((float) icnt1 / storageVA.size() * 100);
 					if (iPercentage == tempPercentage) {
-						GeneralManager.get().getEventPublisher().triggerEvent(
-							new ClusterProgressEvent(iPercentage, false));
+						GeneralManager.get().getEventPublisher()
+							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
@@ -209,8 +212,11 @@ public class TreeClusterer
 				}
 			}
 		}
-		GeneralManager.get().getEventPublisher().triggerEvent(
-			new ClusterProgressEvent(iProgressBarMultiplier * 25 + iProgressBarOffsetValue, true));
+		GeneralManager
+			.get()
+			.getEventPublisher()
+			.triggerEvent(
+				new ClusterProgressEvent(iProgressBarMultiplier * 25 + iProgressBarOffsetValue, true));
 		normalizeSimilarities();
 
 		return 0;
@@ -368,8 +374,11 @@ public class TreeClusterer
 		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
 		// virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), alIndices);
 
-		GeneralManager.get().getEventPublisher().triggerEvent(
-			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
+		GeneralManager
+			.get()
+			.getEventPublisher()
+			.triggerEvent(
+				new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
 		TempResult tempResult = new TempResult();
 		tempResult.indices = indices;
@@ -413,11 +422,11 @@ public class TreeClusterer
 		int iPercentage = 1;
 
 		if (eClustererType == EClustererType.CONTENT_CLUSTERING)
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("Tree clustering of genes in progress"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("Tree clustering of genes in progress"));
 		else
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("Tree clustering of experiments in progress"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("Tree clustering of experiments in progress"));
 
 		for (int n = iNrSamples; n > 1; n--) {
 			if (bClusteringCanceled == false) {
@@ -427,8 +436,8 @@ public class TreeClusterer
 
 				int tempPercentage = (int) ((float) (iNrSamples - n) / iNrSamples * 100);
 				if (iPercentage == tempPercentage) {
-					GeneralManager.get().getEventPublisher().triggerEvent(
-						new ClusterProgressEvent(iPercentage, false));
+					GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(iPercentage, false));
 					iPercentage++;
 				}
 
@@ -498,8 +507,11 @@ public class TreeClusterer
 
 		indices = tree.getRoot().getLeaveIds();
 
-		GeneralManager.get().getEventPublisher().triggerEvent(
-			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
+		GeneralManager
+			.get()
+			.getEventPublisher()
+			.triggerEvent(
+				new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
 		TempResult tempResult = new TempResult();
 		tempResult.indices = indices;
@@ -641,19 +653,19 @@ public class TreeClusterer
 		int iPercentage = 1;
 
 		if (eClustererType == EClustererType.CONTENT_CLUSTERING)
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("Tree clustering of genes in progress"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("Tree clustering of genes in progress"));
 		else
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new RenameProgressBarEvent("Tree clustering of experiments in progress"));
+			GeneralManager.get().getEventPublisher()
+				.triggerEvent(new RenameProgressBarEvent("Tree clustering of experiments in progress"));
 
 		for (int n = iNrSamples; n > 1; n--) {
 
 			if (bClusteringCanceled == false) {
 				int tempPercentage = (int) ((float) (iNrSamples - n) / iNrSamples * 100);
 				if (iPercentage == tempPercentage) {
-					GeneralManager.get().getEventPublisher().triggerEvent(
-						new ClusterProgressEvent(iPercentage, false));
+					GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(iPercentage, false));
 					iPercentage++;
 				}
 
@@ -719,8 +731,11 @@ public class TreeClusterer
 		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
 		// virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), indices);
 
-		GeneralManager.get().getEventPublisher().triggerEvent(
-			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
+		GeneralManager
+			.get()
+			.getEventPublisher()
+			.triggerEvent(
+				new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
 		TempResult tempResult = new TempResult();
 		tempResult.tree = tree;
@@ -743,42 +758,45 @@ public class TreeClusterer
 		String nodeName = null;
 
 		if (eClustererType == EClustererType.CONTENT_CLUSTERING) {
-//			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+			// if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
 
-				// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
-				// values, depending on the IDType that has been specified when loading expression data.
-				// Possibly a different handling of the Set is required.
-				Set<String> humanReadableContentSymbols =
-					GeneralManager.get().getIDMappingManager().getIDAsSet(set.getDataDomain().getContentIDType(),
+			// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+			// values, depending on the IDType that has been specified when loading expression data.
+			// Possibly a different handling of the Set is required.
+			Set<String> humanReadableContentSymbols =
+				GeneralManager
+					.get()
+					.getIDMappingManager()
+					.getIDAsSet(set.getDataDomain().getContentIDType(),
 						set.getDataDomain().getHumanReadableContentIDType(), contentVA.get(index));
 
-				if ((humanReadableContentSymbols != null && !humanReadableContentSymbols.isEmpty())) {
-					nodeName = (String) humanReadableContentSymbols.toArray()[0];
-				}
-				if (nodeName == null || nodeName.equals(""))
-					nodeName = "Unkonwn";
-				String refSeq = null;
-				// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
-				// values, depending on the IDType that has been specified when loading expression data.
-				// Possibly a different handling of the Set is required.
-//				Set<String> setRefSeqIDs =
-//					GeneralManager.get().getIDMappingManager().getIDAsSet(EIDType.EXPRESSION_INDEX,
-//						EIDType.REFSEQ_MRNA, contentVA.get(index));
-//
-//				if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
-//					refSeq = (String) setRefSeqIDs.toArray()[0];
-//				}
-//
-//				nodeName += " | ";
-//				nodeName += (refSeq == null) ? ("Unknown") : (refSeq);
-//			}
-//			else if (set.getSetType() == ESetType.UNSPECIFIED) {
-//				nodeName = generalManager.getIDMappingManager().getID( contentVA.get(index));
-//			}
-//			else {
-//				throw new IllegalStateException("Label extraction for " + set.getSetType()
-//					+ " not implemented yet!");
-//			}
+			if ((humanReadableContentSymbols != null && !humanReadableContentSymbols.isEmpty())) {
+				nodeName = (String) humanReadableContentSymbols.toArray()[0];
+			}
+			if (nodeName == null || nodeName.equals(""))
+				nodeName = "Unkonwn";
+			String refSeq = null;
+			// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+			// values, depending on the IDType that has been specified when loading expression data.
+			// Possibly a different handling of the Set is required.
+			// Set<String> setRefSeqIDs =
+			// GeneralManager.get().getIDMappingManager().getIDAsSet(EIDType.EXPRESSION_INDEX,
+			// EIDType.REFSEQ_MRNA, contentVA.get(index));
+			//
+			// if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+			// refSeq = (String) setRefSeqIDs.toArray()[0];
+			// }
+			//
+			// nodeName += " | ";
+			// nodeName += (refSeq == null) ? ("Unknown") : (refSeq);
+			// }
+			// else if (set.getSetType() == ESetType.UNSPECIFIED) {
+			// nodeName = generalManager.getIDMappingManager().getID( contentVA.get(index));
+			// }
+			// else {
+			// throw new IllegalStateException("Label extraction for " + set.getSetType()
+			// + " not implemented yet!");
+			// }
 		}
 		else {
 			nodeName = set.get(storageVA.get(index)).getLabel();
