@@ -9,7 +9,7 @@
             class="org.caleydo.view.tabular.RcpTabularDataView"
             icon="resources/icons/tissue.png"
             id="org.caleydo.view.tabular"
-            name="Tabular Data View">
+            name="Tabular Data">
       </view>
    </extension>
    <extension
@@ -32,7 +32,7 @@
       <command
             defaultHandler="org.caleydo.view.tabular.command.handler.OpenTabularDataHandler"
             id="org.caleydo.view.tabular.command.opentabular"
-            name="Tabular Data View">
+            name="Tabular Data">
       </command>
    </extension>
 

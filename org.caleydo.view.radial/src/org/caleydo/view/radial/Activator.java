@@ -1,6 +1,9 @@
 package org.caleydo.view.radial;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.datadomain.DataDomainManager;
 import org.caleydo.view.radial.creator.ViewCreator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -33,9 +36,10 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		registerDataDomains();
 
-		GeneralManager.get().getViewGLCanvasManager().addViewCreator(
-				new ViewCreator(PLUGIN_ID));
+		GeneralManager.get().getViewGLCanvasManager()
+				.addViewCreator(new ViewCreator(PLUGIN_ID));
 	}
 
 	/*
@@ -60,4 +64,18 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	private void registerDataDomains() {
+		ArrayList<String> dataDomainTypes = new ArrayList<String>();
+		dataDomainTypes.add("org.caleydo.datadomain.genetic");
+		dataDomainTypes.add("org.caleydo.datadomain.generic");
+
+		DataDomainManager.getInstance().getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, PLUGIN_ID);
+		DataDomainManager
+				.getInstance()
+				.getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
+						GLRadialHierarchy.VIEW_ID);
+
+	}
 }

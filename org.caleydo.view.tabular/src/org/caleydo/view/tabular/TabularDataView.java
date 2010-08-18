@@ -140,9 +140,6 @@ public class TabularDataView extends ASWTView implements
 
 		this.viewType = VIEW_ID;
 
-		contentSelectionManager = dataDomain.getContentSelectionManager();
-		storageSelectionManager = dataDomain.getStorageSelectionManager();
-
 		idMappingManager = generalManager.getIDMappingManager();
 	}
 
@@ -153,7 +150,6 @@ public class TabularDataView extends ASWTView implements
 		layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
 		composite.setLayout(layout);
 
-		initData();
 		createTable();
 	}
 
@@ -166,6 +162,9 @@ public class TabularDataView extends ASWTView implements
 
 		set = dataDomain.getSet();
 
+		contentSelectionManager = dataDomain.getContentSelectionManager();
+		storageSelectionManager = dataDomain.getStorageSelectionManager();
+		
 		if (set == null) {
 			contentSelectionManager.resetSelectionManager();
 			storageSelectionManager.resetSelectionManager();
@@ -305,7 +304,7 @@ public class TabularDataView extends ASWTView implements
 		column.setText("#");
 		column.setWidth(50);
 
-		if (dataDomain.equals("org.caleydo.datadomain.genetic")) {
+		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic")) {
 
 			column = new TableColumn(contentTable, SWT.NONE);
 			column.setText("RefSeq ID");
@@ -314,7 +313,7 @@ public class TabularDataView extends ASWTView implements
 			column = new TableColumn(contentTable, SWT.NONE);
 			column.setText("Gene Symbol");
 			column.setWidth(110);
-		} else if (dataDomain.equals("org.caleydo.datadomain.generic")) {
+		} else if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
 
 			column = new TableColumn(contentTable, SWT.NONE);
 			column.setText("ID");
@@ -568,8 +567,7 @@ public class TabularDataView extends ASWTView implements
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedTabularDataView serializedForm = new SerializedTabularDataView(
-				dataDomain.getDataDomainType());
+		SerializedTabularDataView serializedForm = new SerializedTabularDataView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -715,7 +713,8 @@ public class TabularDataView extends ASWTView implements
 	@Override
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-
+		
+		initData();
 	}
 
 	@Override

@@ -36,6 +36,7 @@ import org.caleydo.view.treemap.renderstyle.TreeMapRenderStyle;
  * Rendering the Treemap
  * 
  * @author Alexander Lex
+ * @author Michael Lafer
  */
 
 public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBasedView,
@@ -123,8 +124,6 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		// iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
-		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
-		treeSelectionManager = new SelectionManager(tree.getNodeIDType());
 		init(gl);
 
 		gl.glNewList(iGLDisplayListIndexLocal, GL.GL_COMPILE);
@@ -382,6 +381,7 @@ public class GLTreeMap extends AGLView implements IViewCommandHandler, ISetBased
 	public void setDataDomain(ASetBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 
+		tree = dataDomain.getSet().getContentData(contentVAType).getContentTree();
+		treeSelectionManager = new SelectionManager(tree.getNodeIDType());
 	}
-
 }

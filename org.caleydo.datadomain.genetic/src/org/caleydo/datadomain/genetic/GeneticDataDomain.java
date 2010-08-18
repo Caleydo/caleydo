@@ -78,7 +78,7 @@ public class GeneticDataDomain extends ASetBasedDataDomain {
 
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
 		primaryContentMappingType = IDType.getIDType("DAVID");
-		humanReadableContentIDType = IDType.getIDType("GENE_SHORT_NAME");
+		humanReadableContentIDType = IDType.getIDType("GENE_SYMBOL");
 		humanReadableStorageIDType = IDType.getIDType("STORAGE");
 
 		pathwayViewerMode = false;

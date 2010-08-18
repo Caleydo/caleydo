@@ -3,6 +3,8 @@ package org.caleydo.view.tabular;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.datadomain.ASetBasedDataDomain;
 import org.caleydo.core.manager.datadomain.DataDomainManager;
+import org.caleydo.core.manager.datadomain.IDataDomain;
+import org.caleydo.core.manager.datadomain.IDataDomainBasedView;
 import org.caleydo.rcp.view.rcp.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -15,15 +17,20 @@ public class RcpTabularDataView extends CaleydoRCPViewPart {
 		tabularDataView = (TabularDataView) GeneralManager.get().getViewGLCanvasManager()
 				.createView("org.caleydo.view.tabular", -1, "Tabular Data View");
 
-		tabularDataView.setDataDomain((ASetBasedDataDomain) DataDomainManager
-				.getInstance().getDataDomain(dataDomainType));
-		tabularDataView.initViewRCP(parent);
-		tabularDataView.drawView();
-
 		parentComposite = parent;
 
 		GeneralManager.get().getViewGLCanvasManager().registerItem(tabularDataView);
 		view = tabularDataView;
+		
+		if (view instanceof IDataDomainBasedView<?>) {
+			String dataDomainType = determineDataDomain(view
+					.getSerializableRepresentation());
+			((IDataDomainBasedView<IDataDomain>) view).setDataDomain(DataDomainManager
+					.getInstance().getDataDomain(dataDomainType));
+		}
+		
+		tabularDataView.initViewRCP(parent);
+		tabularDataView.drawView();
 	}
 
 	@Override

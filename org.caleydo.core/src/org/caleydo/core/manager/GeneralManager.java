@@ -184,11 +184,11 @@ public class GeneralManager {
 	}
 
 	public XmlParserManager getXmlParserManager() {
-		return this.xmlParserManager;
+		return xmlParserManager;
 	}
 
 	public IDMappingManager getIDMappingManager() {
-		return this.genomeIdManager;
+		return genomeIdManager;
 	}
 
 	public CommandManager getCommandManager() {

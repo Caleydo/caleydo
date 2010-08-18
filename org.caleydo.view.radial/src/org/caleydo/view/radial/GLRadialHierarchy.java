@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.IDType;
@@ -33,6 +34,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
+import org.caleydo.core.view.ISetBasedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -58,7 +60,8 @@ import org.caleydo.view.radial.listener.SetMaxDisplayedHierarchyDepthListener;
  * 
  * @author Christian Partl
  */
-public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
+public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
+		ISetBasedView {
 
 	public final static String VIEW_ID = "org.caleydo.view.radial";
 
@@ -854,20 +857,21 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
 
-		Tree<ClusterNode> tree = dataDomain.getSet().getStorageData(storageVAType)
-				.getStorageTree();
-		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
-		if (tree != null) {
-			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
-			alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
-			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
-
-			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
-			// new GeneClusterDataEventManager(this), alColorModes);
-			initHierarchy(tree, dataDomain.getSet().getStorageData(storageVAType)
-					.getStorageTreeRoot(), new ExperimentClusterDataEventManager(this),
-					alColorModes);
-		}
+		//FIXME: this code has been moved to setDataDomain - is this ok?
+//		Tree<ClusterNode> tree = dataDomain.getSet().getStorageData(storageVAType)
+//				.getStorageTree();
+//		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+//		if (tree != null) {
+//			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
+//			alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
+//			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
+//
+//			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
+//			// new GeneClusterDataEventManager(this), alColorModes);
+//			initHierarchy(tree, dataDomain.getSet().getStorageData(storageVAType)
+//					.getStorageTreeRoot(), new ExperimentClusterDataEventManager(this),
+//					alColorModes);
+//		}
 
 		SerializedRadialHierarchyView serializedView = (SerializedRadialHierarchyView) ser;
 		setupDisplay(serializedView.getDrawingStateType(),
@@ -1143,6 +1147,32 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler {
 
 	IDType getNodeIDType() {
 		return partialDiscTree.getNodeIDType();
+	}
+
+	@Override
+	public void setDataDomain(ASetBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+
+		Tree<ClusterNode> tree = dataDomain.getSet().getStorageData(storageVAType)
+				.getStorageTree();
+		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		if (tree != null) {
+			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
+			alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
+			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
+
+			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
+			// new GeneClusterDataEventManager(this), alColorModes);
+			initHierarchy(tree, dataDomain.getSet().getStorageData(storageVAType)
+					.getStorageTreeRoot(), new ExperimentClusterDataEventManager(this),
+					alColorModes);
+		}
+
+	}
+
+	@Override
+	public void setSet(ISet set) {
+		throw new IllegalStateException("Should not be used");
 	}
 
 }
