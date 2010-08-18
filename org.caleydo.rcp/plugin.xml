@@ -33,22 +33,6 @@
             id="org.caleydo.rcp.views.swt.CollabView"
             name="Collaboration">
       </view>
-      <view
-            allowMultiple="false"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.rcp.RcpInfoAreaView"
-            icon="resources/icons/view/info.png"
-            id="org.caleydo.rcp.views.swt.InfoAreaView"
-            name="Info">
-      </view>
-      <view
-            allowMultiple="false"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.rcp.RcpSelectionBrowserView"
-            icon="resources/icons/view/info.png"
-            id="org.caleydo.rcp.views.swt.SelectionBrowserView"
-            name="Selection Browser">
-      </view>
    </extension>   
    
    <extension
@@ -119,12 +103,12 @@
       <command
             defaultHandler="org.caleydo.rcp.command.handler.view.ObtainViewHandler"
             id="org.caleydo.rcp.command.sendviews.obtain"
-            name="Send Bucket">
+            name="Obtain View">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.view.PublishViewHandler"
             id="org.caleydo.rcp.command.sendviews.publish"
-            name="Send Bucket">
+            name="Publish View">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.ExportDataHandler"
@@ -175,11 +159,6 @@
             defaultHandler="org.caleydo.rcp.command.handler.ClusterHandler"
             id="org.caleydo.rcp.command.cluster"
             name="Cluster">
-      </command>
-      <command
-            defaultHandler="org.caleydo.rcp.command.handler.view.OpenSelectionBrowserHandler"
-            id="org.caleydo.rcp.command.openselectionbrowser"
-            name="Selection Browser">
       </command>
       		
    </extension>
@@ -328,48 +307,6 @@
                   style="push">
             </command>
          </menu>
-      </menuContribution>
-      <menuContribution
-            locationURI="menu:org.caleydo.rcp.views.opengl.GLRemoteRenderingView">
-         <command
-               commandId="org.caleydo.rcp.command.sendviews.remote"
-               label="Send View to ..."
-               style="push">
-         </command>
-         <command
-               commandId="org.caleydo.rcp.command.sendviews.obtain"
-               label="Obtain View"
-               style="push">
-         </command>
-         <command
-               commandId="org.caleydo.rcp.command.sendviews.publish"
-               label="Publish View"
-               style="push">
-         </command>
-      </menuContribution>
-      <menuContribution
-            locationURI="menu:org.caleydo.rcp.views.opengl.GLParCoordsView">
-         <command
-               commandId="org.caleydo.rcp.command.sendviews.remote"
-               label="Send View to ..."
-               style="push">
-         </command>
-      </menuContribution>
-      <menuContribution
-            locationURI="menu:org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView">
-         <command
-               commandId="org.caleydo.rcp.command.sendviews.remote"
-               label="Send View to ..."
-               style="push">
-         </command>
-      </menuContribution>
-      <menuContribution
-            locationURI="menu:org.caleydo.rcp.views.GLRadialHierarchyView">
-         <command
-               commandId="org.caleydo.rcp.command.sendviews.remote"
-               label="Send View to ..."
-               style="push">
-         </command>
       </menuContribution>
    </extension>
    <extension
