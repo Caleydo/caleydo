@@ -41,8 +41,7 @@ public class GenomePerspective
 
 			// if (Application.applicationMode != ApplicationMode.NO_DATA) {
 			IFolderLayout middleLeft = layout.createFolder("middleLeft", IPageLayout.BOTTOM, 0.5f, "topLeft");
-			// FIXME add info area again
-			// middleLeft.addView(RcpInfoAreaView.ID);
+			middleLeft.addView("org.caleydo.view.info");
 
 			// middleLeft.addPlaceholder("org.caleydo.view.statistics");
 			//
@@ -70,8 +69,8 @@ public class GenomePerspective
 			topFolder.addView(RcpToolBarView.ID);
 
 			// if (Application.applicationMode != ApplicationMode.NO_DATA) {
-			// FIXME add info area again
-			// layout.addStandaloneView(RcpInfoAreaView.ID, true, IPageLayout.RIGHT, 0.75f, "top");
+
+			layout.addStandaloneView("org.caleydo.view.info", true, IPageLayout.RIGHT, 0.75f, "top");
 			layout.addStandaloneView("org.caleydo.view.histogram", true, IPageLayout.RIGHT, 0.8f, "top");
 			// }
 			// IFolderLayout bottomFolder = layout.createFolder("bottom", IPageLayout.BOTTOM, 1 - fRatio,

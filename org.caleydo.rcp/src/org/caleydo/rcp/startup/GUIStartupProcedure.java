@@ -7,6 +7,7 @@ import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.wizard.project.DataImportWizard;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -16,7 +17,6 @@ import org.eclipse.swt.widgets.Shell;
  * Startup procedure for project wizard.
  * 
  * @author Marc Streit
- *
  */
 public class GUIStartupProcedure
 	extends AStartupProcedure {
@@ -29,10 +29,7 @@ public class GUIStartupProcedure
 	@Override
 	public void init(ApplicationInitData appInitData) {
 
-		super.init(appInitData);
-		
 		GeneralManager.get().getXmlParserManager().parseXmlFileByName("data/bootstrap/bootstrap.xml");
-		
 
 		CmdDataCreateDataDomain cmd = new CmdDataCreateDataDomain(ECommandType.CREATE_DATA_DOMAIN);
 		cmd.setAttributes("org.caleydo.datadomain.genetic");
@@ -40,10 +37,17 @@ public class GUIStartupProcedure
 
 		GeneralManager.get().setOrganism(Organism.HOMO_SAPIENS);
 
-		
-		if (loadSampleData) {	
+		if (loadSampleData) {
 			appInitData.setLoadPathways(true);
+
+			GeneralManager.get().getPreferenceStore()
+				.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES, "KEGG;BioCarta");
+
+			GeneralManager.get().getPreferenceStore()
+				.setValue(PreferenceConstants.LAST_CHOSEN_ORGANISM, Organism.HOMO_SAPIENS.name());
 		}
+
+		super.init(appInitData);
 	}
 
 	@Override
@@ -53,12 +57,11 @@ public class GUIStartupProcedure
 		Shell shell = StartupProcessor.get().getDisplay().getActiveShell();
 
 		WizardDialog dataImportWizard;
-		
+
 		if (loadSampleData) {
-			
-			dataImportWizard =
-				new WizardDialog(shell, new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
-			
+
+			dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
+
 			if (Window.CANCEL == dataImportWizard.open()) {
 				StartupProcessor.get().shutdown();
 			}
