@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.remote.jukebox;
+package org.caleydo.view.bucket;
 
 import javax.media.opengl.GL;
 

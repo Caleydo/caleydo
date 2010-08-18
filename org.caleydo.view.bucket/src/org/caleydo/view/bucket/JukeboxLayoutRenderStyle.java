@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.remote.jukebox;
+package org.caleydo.view.bucket;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
